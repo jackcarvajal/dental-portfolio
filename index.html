@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Dental CAD/CAM | Casos Clínicos Digitales</title>
+    <meta name="description" content="Portafolio profesional de casos dentales con diseño CAD/CAM en Exocad">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="brand">
+                    <h1 class="brand-title">🦷 Portafolio Digital</h1>
+                    <p class="brand-subtitle">CAD/CAM Dental Excellence</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-patients">0</span>
+                        <span class="stat-label">Casos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">Exocad</span>
+                        <span class="stat-label">Platform</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Search & Filter Section -->
+            <section class="controls">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        class="search-input" 
+                        placeholder="🔍 Buscar por nombre, código o tipo de caso..."
+                    >
+                </div>
+                <div class="filter-chips">
+                    <button class="filter-chip active" data-type="all">Todos</button>
+                    <button class="filter-chip" data-type="rehabilitacion">Rehabilitación</button>
+                    <button class="filter-chip" data-type="implantes">Implantes</button>
+                    <button class="filter-chip" data-type="estetica">Estética</button>
+                    <button class="filter-chip" data-type="ferulas">Férulas</button>
+                </div>
+            </section>
+
+            <!-- Patients Grid -->
+            <section class="patients-section">
+                <div class="section-header">
+                    <h2 class="section-title">Casos Clínicos</h2>
+                    <p class="section-subtitle" id="results-count">Cargando casos...</p>
+                </div>
+                <div class="patients-grid" id="patients-grid">
+                    <!-- Se genera dinámicamente con JavaScript -->
+                </div>
+                <div class="empty-state" id="empty-state" style="display: none;">
+                    <div class="empty-icon">🔍</div>
+                    <h3>No se encontraron casos</h3>
+                    <p>Intenta con otros términos de búsqueda</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                Portafolio Profesional CAD/CAM Dental
+                <span class="separator">•</span>
+                Diseñado para Exocad Workflow
+                <span class="separator">•</span>
+                <span id="current-year">2025</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/patients-data.js"></script>
+    <script>
+        // ============================================
+        // SISTEMA DE RENDERIZADO DINÁMICO
+        // ============================================
+
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        function renderPatients() {
+            const grid = document.getElementById('patients-grid');
+            const emptyState = document.getElementById('empty-state');
+            const resultsCount = document.getElementById('results-count');
+            
+            // Filtrar pacientes
+            let filteredPatients = PATIENTS_DATA.filter(patient => {
+                const matchesType = currentFilter === 'all' || patient.type === currentFilter;
+                const matchesSearch = patient.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                    patient.code.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                    patient.description.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchesType && matchesSearch;
+            });
+
+            // Actualizar contador
+            document.getElementById('total-patients').textContent = PATIENTS_DATA.length;
+            resultsCount.textContent = `${filteredPatients.length} ${filteredPatients.length === 1 ? 'caso' : 'casos'} ${currentFilter !== 'all' ? 'en esta categoría' : 'disponibles'}`;
+
+            // Mostrar/ocultar empty state
+            if (filteredPatients.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'flex';
+                return;
+            } else {
+                grid.style.display = 'grid';
+                emptyState.style.display = 'none';
+            }
+
+            // Renderizar tarjetas
+            grid.innerHTML = filteredPatients.map(patient => `
+                <article class="patient-card" data-type="${patient.type}">
+                    <a href="patient.html?id=${patient.id}" class="card-link">
+                        <div class="card-image">
+                            <img src="${patient.coverImage}" alt="${patient.name}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%231e293b%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22%2364748b%22 font-size=%2248%22 text-anchor=%22middle%22 dy=%22.3em%22%3E🦷%3C/text%3E%3C/svg%3E'">
+                            <div class="card-overlay">
+                                <span class="view-case">Ver Caso Completo →</span>
+                            </div>
+                            <div class="card-badge">${getTypeBadge(patient.type)}</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h3 class="card-title">${patient.name}</h3>
+                                <span class="card-code">${patient.code}</span>
+                            </div>
+                            <p class="card-description">${patient.description}</p>
+                            <div class="card-meta">
+                                <div class="meta-item">
+                                    <span class="meta-icon">📅</span>
+                                    <span>${patient.date}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-icon">📸</span>
+                                    <span>${patient.galleryCount || 0} fotos</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            `).join('');
+        }
+
+        function getTypeBadge(type) {
+            const badges = {
+                rehabilitacion: '🔬 Rehabilitación',
+                implantes: '⚙️ Implantes',
+                estetica: '✨ Estética',
+                ferulas: '🛡️ Férulas',
+                ortodoncia: '📐 Ortodoncia'
+            };
+            return badges[type] || '📋 Caso Dental';
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPatients();
+
+            // Filtros
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentFilter = e.target.dataset.type;
+                    renderPatients();
+                });
+            });
+
+            // Búsqueda
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value;
+                renderPatients();
+            });
+
+            // Año actual
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>

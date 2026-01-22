@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Caso Dental | Portafolio CAD/CAM</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="patient-page">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-back">
+                <span class="back-icon">←</span>
+                <span>Volver al Portfolio</span>
+            </a>
+            <div class="nav-patient-info" id="nav-info">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Patient Header -->
+    <header class="patient-header" id="patient-header">
+        <!-- Se llena dinámicamente -->
+    </header>
+
+    <!-- Main Content -->
+    <main class="patient-main">
+        <div class="container">
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="viewer">
+                    🔍 Visualizador 3D
+                </button>
+                <button class="tab-btn" data-tab="gallery">
+                    📸 Galería de Imágenes
+                </button>
+                <button class="tab-btn" data-tab="info">
+                    📋 Información del Caso
+                </button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="tab-content active" id="tab-viewer">
+                <div class="viewer-container">
+                    <div class="viewer-header">
+                        <h2>Visualizador Exocad Interactivo</h2>
+                        <button class="btn-fullscreen" onclick="toggleFullscreen()">
+                            <span id="fullscreen-icon">⛶</span> Pantalla Completa
+                        </button>
+                    </div>
+                    <div class="viewer-frame" id="viewer-frame">
+                        <iframe 
+                            id="exocad-iframe" 
+                            src="" 
+                            frameborder="0"
+                            allow="fullscreen"
+                            loading="lazy"
+                        ></iframe>
+                        <div class="viewer-loading" id="viewer-loading">
+                            <div class="loading-spinner"></div>
+                            <p>Cargando visualizador 3D...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-gallery">
+                <div class="gallery-grid" id="gallery-grid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-info">
+                <div class="info-panel" id="info-panel">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Download Section (Visible en todas las tabs) -->
+            <aside class="download-section">
+                <div class="download-card">
+                    <div class="download-icon">💾</div>
+                    <div class="download-content">
+                        <h3>Descargar Escena CAD</h3>
+                        <p>Archivo completo de diseño en formato nativo Exocad</p>
+                    </div>
+                    <a href="#" id="download-btn" class="btn-download" target="_blank" rel="noopener">
+                        Descargar desde Drive →
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Lightbox para galería -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">×</button>
+            <button class="lightbox-prev" onclick="prevImage()">‹</button>
+            <img src="" alt="" id="lightbox-img">
+            <button class="lightbox-next" onclick="nextImage()">›</button>
+            <div class="lightbox-counter" id="lightbox-counter">1 / 1</div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/patients-data.js"></script>
+    <script>
+        // ============================================
+        // SISTEMA DE CARGA DE PACIENTE INDIVIDUAL
+        // ============================================
+
+        let currentPatient = null;
+        let currentImageIndex = 0;
+
+        function getPatientFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const patientId = params.get('id');
+            return PATIENTS_DATA.find(p => p.id === patientId);
+        }
+
+        function renderPatientPage() {
+            currentPatient = getPatientFromURL();
+
+            if (!currentPatient) {
+                document.body.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 2rem;">
+                        <h1 style="font-size: 3rem; margin-bottom: 1rem;">❌</h1>
+                        <h2 style="margin-bottom: 1rem;">Paciente no encontrado</h2>
+                        <a href="index.html" style="color: #0ea5e9; text-decoration: none;">← Volver al portafolio</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Actualizar título de la página
+            document.getElementById('page-title').textContent = `${currentPatient.name} | Portafolio Dental`;
+
+            // Renderizar header
+            document.getElementById('patient-header').innerHTML = `
+                <div class="container">
+                    <div class="patient-header-content">
+                        <div>
+                            <div class="patient-badge">${getTypeBadge(currentPatient.type)}</div>
+                            <h1 class="patient-title">${currentPatient.name}</h1>
+                            <p class="patient-subtitle">${currentPatient.description}</p>
+                            <div class="patient-meta-list">
+                                <div class="meta-item">
+                                    <span class="meta-label">Código:</span>
+                                    <span class="meta-value">${currentPatient.code}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Fecha:</span>
+                                    <span class="meta-value">${currentPatient.date}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Tipo:</span>
+                                    <span class="meta-value">${currentPatient.type}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Configurar navbar info
+            document.getElementById('nav-info').innerHTML = `
+                <span class="nav-code">${currentPatient.code}</span>
+                <span class="nav-separator">•</span>
+                <span class="nav-name">${currentPatient.name}</span>
+            `;
+
+            // Cargar iframe de Exocad
+            const iframe = document.getElementById('exocad-iframe');
+            const loading = document.getElementById('viewer-loading');
+            iframe.src = currentPatient.exocadFile;
+            iframe.onload = () => {
+                loading.style.display = 'none';
+            };
+
+            // Configurar botón de descarga
+            document.getElementById('download-btn').href = currentPatient.driveLink;
+
+            // Renderizar galería
+            renderGallery();
+
+            // Renderizar info panel
+            renderInfoPanel();
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('gallery-grid');
+            
+            if (!currentPatient.gallery || currentPatient.gallery.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-gallery">
+                        <div class="empty-icon">📸</div>
+                        <p>No hay imágenes adicionales para este caso</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = currentPatient.gallery.map((img, index) => `
+                <div class="gallery-item" onclick="openLightbox(${index})">
+                    <img src="${img}" alt="Imagen ${index + 1}" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="gallery-icon">🔍</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderInfoPanel() {
+            const panel = document.getElementById('info-panel');
+            panel.innerHTML = `
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>📋 Detalles del Caso</h3>
+                        <div class="info-list">
+                            <div class="info-row">
+                                <span class="info-key">Código de Caso:</span>
+                                <span class="info-value">${currentPatient.code}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-key">Nombre del Paciente:</span>
+                                <span class="info-value">${currentPatient.name}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-key">Fecha de Diseño:</span>
+                                <span class="info-value">${currentPatient.date}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-key">Tipo de Tratamiento:</span>
+                                <span class="info-value">${currentPatient.type}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-key">Descripción:</span>
+                                <span class="info-value">${currentPatient.description}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>🔧 Información Técnica</h3>
+                        <div class="info-list">
+                            <div class="info-row">
+                                <span class="info-key">Software Utilizado:</span>
+                                <span class="info-value">Exocad CAD/CAM</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-key">Formato de Archivo:</span>
+                                <span class="info-value">HTML Interactivo + .CAD</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-key">Imágenes Disponibles:</span>
+                                <span class="info-value">${currentPatient.gallery?.length || 0} renders</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getTypeBadge(type) {
+            const badges = {
+                rehabilitacion: '🔬 Rehabilitación',
+                implantes: '⚙️ Implantes',
+                estetica: '✨ Estética',
+                ferulas: '🛡️ Férulas',
+                ortodoncia: '📐 Ortodoncia'
+            };
+            return badges[type] || '📋 Caso Dental';
+        }
+
+        // ============================================
+        // SISTEMA DE TABS
+        // ============================================
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+        }
+
+        // ============================================
+        // LIGHTBOX PARA GALERÍA
+        // ============================================
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            updateLightboxImage();
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateLightboxImage() {
+            const img = document.getElementById('lightbox-img');
+            const counter = document.getElementById('lightbox-counter');
+            img.src = currentPatient.gallery[currentImageIndex];
+            counter.textContent = `${currentImageIndex + 1} / ${currentPatient.gallery.length}`;
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + currentPatient.gallery.length) % currentPatient.gallery.length;
+            updateLightboxImage();
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % currentPatient.gallery.length;
+            updateLightboxImage();
+        }
+
+        // ============================================
+        // FULLSCREEN
+        // ============================================
+
+        function toggleFullscreen() {
+            const frame = document.getElementById('viewer-frame');
+            const icon = document.getElementById('fullscreen-icon');
+            
+            if (!document.fullscreenElement) {
+                frame.requestFullscreen();
+                icon.textContent = '⛶';
+            } else {
+                document.exitFullscreen();
+                icon.textContent = '⛶';
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPatientPage();
+
+            // Tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    switchTab(btn.dataset.tab);
+                });
+            });
+
+            // Cerrar lightbox con ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'ArrowRight') nextImage();
+            });
+
+            // Cerrar lightbox al hacer click fuera
+            document.getElementById('lightbox').addEventListener('click', (e) => {
+                if (e.target.id === 'lightbox') closeLightbox();
+            });
+        });
+    </script>
+</body>
+</html>
