@@ -27,6 +27,30 @@ const PATIENTS_DATA = [
             "patients/patient-001/gallery/foto-9.jpeg"
         ],
         galleryCount: 9
+    },,
+    {
+        id: "patient-002",
+        name: "caso de carillas full arch",
+        code: "patient-002",
+        type: "estetica",
+        date: "enero 2024",
+        description: "caso de carillas",
+        
+        coverImage: "patients/patient-002/cover.jpeg",
+        exocadFile: "patients/patient-002/exocad.html",
+        driveLink: "no",
+        
+        gallery: [
+            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.22",
+            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.21 (1)",
+            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.21",
+            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.22 (1)",
+            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.22 (2)",
+            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.22 (3)",
+            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.23 (1)",
+            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.23"
+        ],
+        galleryCount: 8
     }
 ];
 

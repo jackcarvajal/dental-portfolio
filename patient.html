@@ -7,31 +7,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <style>
-        /* Estilos específicos para patient.html */
-        body {
-            background: var(--charcoal);
-            padding-top: 70px;
-        }
-
-        /* Navbar específica */
-        .patient-navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10,14,26,0.98);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-subtle);
-            z-index: 1000;
-            padding: 20px 40px;
-        }
-
-        .patient-nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Estilos del logo */
+        .logo-img {
+            height: 45px;
+            width: auto;
         }
 
         .nav-back {
@@ -48,517 +27,246 @@
             color: var(--exocad-orange);
         }
 
-        .nav-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: rgba(248,250,252,0.7);
-        }
-
-        .nav-code {
-            color: var(--exocad-orange);
-            font-weight: 700;
-        }
-
-        /* Header del paciente */
-        .patient-header {
-            background: var(--soft-charcoal);
-            padding: 60px 40px;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .header-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .patient-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, var(--exocad-orange), var(--exocad-gold));
-            color: white;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .patient-title {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: var(--soft-white);
-        }
-
-        .patient-description {
-            font-size: 1.2rem;
-            color: rgba(248,250,252,0.7);
-            margin-bottom: 30px;
-        }
-
-        .patient-meta {
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-
-        .meta-item {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .meta-label {
-            font-size: 0.85rem;
-            color: rgba(248,250,252,0.5);
-            text-transform: uppercase;
-        }
-
-        .meta-value {
-            font-size: 1.1rem;
-            color: var(--soft-white);
-            font-weight: 600;
-        }
-
-        /* Tabs */
-        .patient-main {
-            padding: 60px 40px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
-            border-bottom: 2px solid var(--border-subtle);
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            padding: 15px 30px;
-            background: transparent;
-            border: none;
-            color: rgba(248,250,252,0.6);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-        }
-
-        .tab-btn:hover {
-            color: var(--exocad-orange);
-        }
-
-        .tab-btn.active {
-            color: var(--exocad-orange);
-            border-bottom-color: var(--exocad-orange);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Visualizador */
-        .viewer-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-subtle);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .viewer-header {
-            padding: 25px 30px;
-            background: rgba(255,107,53,0.05);
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .viewer-title {
-            font-size: 1.5rem;
-            margin: 0;
-        }
-
-        .btn-fullscreen {
-            padding: 10px 25px;
-            background: rgba(255,107,53,0.15);
-            border: 1px solid var(--exocad-orange);
-            color: var(--exocad-orange);
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-fullscreen:hover {
-            background: var(--exocad-orange);
-            color: white;
-        }
-
-        .viewer-iframe {
-            position: relative;
-            width: 100%;
-            height: 600px;
-            background: var(--charcoal);
-        }
-
-        .viewer-iframe iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .viewer-loading {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--charcoal);
-            z-index: 10;
-        }
-
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255,107,53,0.2);
-            border-top-color: var(--exocad-orange);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Galería */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .gallery-item {
-            position: relative;
-            cursor: pointer;
-            border-radius: 15px;
-            overflow: hidden;
-            aspect-ratio: 4/3;
-            background: var(--card-bg);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .gallery-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10,14,26,0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .gallery-icon {
-            font-size: 3rem;
-            color: var(--exocad-orange);
-        }
-
-        .empty-gallery {
-            text-align: center;
-            padding: 80px 20px;
-            color: rgba(248,250,252,0.5);
-        }
-
-        .empty-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-
-        /* Panel de información */
-        .info-cards {
-            display: grid;
-            gap: 30px;
-        }
-
-        .info-card {
+        /* Sistema de comentarios */
+        .comments-section {
+            margin-top: 60px;
             background: var(--card-bg);
             border: 1px solid var(--border-subtle);
             border-radius: 20px;
             padding: 40px;
         }
 
-        .info-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .comments-title {
+            font-size: 1.8rem;
             color: var(--exocad-orange);
         }
 
-        .info-list {
+        .comments-count {
+            color: rgba(248,250,252,0.6);
+            font-size: 0.9rem;
+        }
+
+        .comment-form {
+            background: rgba(255,107,53,0.05);
+            border: 1px solid var(--border-subtle);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(248,250,252,0.8);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--charcoal);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--soft-white);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--exocad-orange);
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-submit-comment {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--exocad-orange), var(--exocad-gold));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit-comment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,53,0.4);
+        }
+
+        .comments-list {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        .info-row {
+        .comment-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .comment-item:hover {
+            border-color: rgba(255,107,53,0.3);
+        }
+
+        .comment-header {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-key {
-            color: rgba(248,250,252,0.6);
-            font-weight: 600;
-        }
-
-        .info-value {
-            color: var(--soft-white);
-            text-align: right;
-        }
-
-        /* Sección de descarga */
-        .download-section {
-            margin-top: 60px;
-        }
-
-        .download-card {
-            background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(247,147,30,0.1));
-            border: 2px solid var(--exocad-orange);
-            border-radius: 20px;
-            padding: 40px;
-            display: flex;
             align-items: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .download-icon {
-            font-size: 3.5rem;
-        }
-
-        .download-content {
-            flex: 1;
-            min-width: 250px;
-        }
-
-        .download-content h3 {
-            font-size: 1.5rem;
             margin-bottom: 10px;
         }
 
-        .download-content p {
-            color: rgba(248,250,252,0.7);
+        .comment-author {
+            font-weight: 600;
+            color: var(--exocad-orange);
         }
 
-        .btn-download {
-            padding: 15px 35px;
-            background: linear-gradient(135deg, var(--exocad-orange), var(--exocad-gold));
+        .comment-date {
+            font-size: 0.85rem;
+            color: rgba(248,250,252,0.5);
+        }
+
+        .comment-text {
+            color: rgba(248,250,252,0.8);
+            line-height: 1.6;
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 40px;
+            color: rgba(248,250,252,0.5);
+        }
+
+        .no-comments-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        /* Botón WhatsApp STL flotante */
+        .whatsapp-stl-float {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 998;
+        }
+
+        .btn-whatsapp-stl {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
             color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: 600;
-            white-space: nowrap;
+            font-size: 1rem;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
             transition: all 0.3s ease;
-            display: inline-block;
         }
 
-        .btn-download:hover {
+        .btn-whatsapp-stl:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(255,107,53,0.5);
-        }
-
-        /* Lightbox */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .lightbox.active {
-            display: flex;
-        }
-
-        .lightbox-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-        }
-
-        .lightbox img {
-            max-width: 100%;
-            max-height: 90vh;
-            object-fit: contain;
-        }
-
-        .lightbox-close,
-        .lightbox-prev,
-        .lightbox-next {
-            position: absolute;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
-            font-size: 2.5rem;
-            cursor: pointer;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .lightbox-close {
-            top: 20px;
-            right: 20px;
-        }
-
-        .lightbox-prev {
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .lightbox-next {
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .lightbox-close:hover,
-        .lightbox-prev:hover,
-        .lightbox-next:hover {
-            background: rgba(255,107,53,0.8);
-        }
-
-        .lightbox-counter {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
-            padding: 10px 25px;
-            border-radius: 25px;
-            color: white;
-            font-weight: 600;
+            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6);
         }
 
         @media (max-width: 768px) {
-            .patient-header {
-                padding: 40px 20px;
+            .comments-section {
+                padding: 25px 20px;
             }
 
-            .patient-title {
-                font-size: 1.8rem;
+            .whatsapp-stl-float {
+                bottom: 80px;
+                right: 20px;
             }
 
-            .patient-main {
-                padding: 40px 20px;
+            .btn-whatsapp-stl span {
+                display: none;
             }
 
-            .viewer-iframe {
-                height: 400px;
-            }
-
-            .download-card {
-                flex-direction: column;
-                text-align: center;
+            .btn-whatsapp-stl {
+                width: 60px;
+                height: 60px;
+                padding: 0;
+                justify-content: center;
+                border-radius: 50%;
             }
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="patient-navbar">
-        <div class="patient-nav-content">
+    <nav class="patient-navbar" style="position: fixed; top: 0; left: 0; right: 0; background: rgba(10,14,26,0.98); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-subtle); z-index: 1000; padding: 20px 40px;">
+        <div class="patient-nav-content" style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
             <a href="index.html" class="nav-back">
-                <i class="fas fa-arrow-left"></i>
+                <img src="images/logo-prodigy.png" alt="PRODIGY Logo" class="logo-img">
                 <span>Volver al Portfolio</span>
             </a>
-            <div class="nav-info" id="navInfo"></div>
+            <div class="nav-info" id="navInfo" style="display: flex; align-items: center; gap: 15px; color: rgba(248,250,252,0.7);"></div>
         </div>
     </nav>
 
+    <!-- Botón flotante WhatsApp STL -->
+    <div class="whatsapp-stl-float">
+        <a href="https://wa.me/573219581949?text=Hola,%20quiero%20enviar%20un%20archivo%20STL%20para%20diseño" 
+           class="btn-whatsapp-stl" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+            <span>Enviar Caso STL</span>
+        </a>
+    </div>
+
     <!-- Header -->
-    <header class="patient-header" id="patientHeader"></header>
+    <header class="patient-header" id="patientHeader" style="background: var(--soft-charcoal); padding: 60px 40px; margin-top: 70px; border-bottom: 1px solid var(--border-subtle);"></header>
 
     <!-- Main Content -->
-    <main class="patient-main">
+    <main class="patient-main" style="padding: 60px 40px; max-width: 1400px; margin: 0 auto;">
         <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('viewer')">
+        <div class="tabs" style="display: flex; gap: 15px; margin-bottom: 40px; border-bottom: 2px solid var(--border-subtle); flex-wrap: wrap;">
+            <button class="tab-btn active" onclick="switchTab('viewer')" style="padding: 15px 30px; background: transparent; border: none; color: rgba(248,250,252,0.6); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border-bottom: 3px solid transparent; margin-bottom: -2px;">
                 <i class="fas fa-cube"></i> Visualizador 3D
             </button>
-            <button class="tab-btn" onclick="switchTab('gallery')">
+            <button class="tab-btn" onclick="switchTab('gallery')" style="padding: 15px 30px; background: transparent; border: none; color: rgba(248,250,252,0.6); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border-bottom: 3px solid transparent; margin-bottom: -2px;">
                 <i class="fas fa-images"></i> Galería de Imágenes
             </button>
-            <button class="tab-btn" onclick="switchTab('info')">
+            <button class="tab-btn" onclick="switchTab('info')" style="padding: 15px 30px; background: transparent; border: none; color: rgba(248,250,252,0.6); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border-bottom: 3px solid transparent; margin-bottom: -2px;">
                 <i class="fas fa-info-circle"></i> Información del Caso
             </button>
         </div>
 
         <!-- Tab: Visualizador -->
-        <div id="tab-viewer" class="tab-content active">
-            <div class="viewer-box">
-                <div class="viewer-header">
-                    <h2 class="viewer-title">Visualizador Exocad Interactivo</h2>
-                    <button class="btn-fullscreen" onclick="toggleFullscreen()">
+        <div id="tab-viewer" class="tab-content active" style="display: block;">
+            <div class="viewer-box" style="background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 20px; overflow: hidden;">
+                <div class="viewer-header" style="padding: 25px 30px; background: rgba(255,107,53,0.05); border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <h2 class="viewer-title" style="font-size: 1.5rem; margin: 0;">Visualizador Exocad Interactivo</h2>
+                    <button class="btn-fullscreen" onclick="toggleFullscreen()" style="padding: 10px 25px; background: rgba(255,107,53,0.15); border: 1px solid var(--exocad-orange); color: var(--exocad-orange); border-radius: 30px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">
                         <i class="fas fa-expand"></i> Pantalla Completa
                     </button>
                 </div>
-                <div class="viewer-iframe">
-                    <iframe id="exocadIframe" src=""></iframe>
-                    <div class="viewer-loading" id="viewerLoading">
-                        <div class="loading-spinner"></div>
+                <div class="viewer-iframe" style="position: relative; width: 100%; height: 600px; background: var(--charcoal);">
+                    <iframe id="exocadIframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+                    <div class="viewer-loading" id="viewerLoading" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--charcoal); z-index: 10;">
+                        <div style="width: 60px; height: 60px; border: 4px solid rgba(255,107,53,0.2); border-top-color: var(--exocad-orange); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
                         <p style="color: rgba(248,250,252,0.7);">Cargando visualizador 3D...</p>
                     </div>
                 </div>
@@ -566,40 +274,60 @@
         </div>
 
         <!-- Tab: Galería -->
-        <div id="tab-gallery" class="tab-content">
-            <div class="gallery-grid" id="galleryGrid"></div>
+        <div id="tab-gallery" class="tab-content" style="display: none;">
+            <div class="gallery-grid" id="galleryGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;"></div>
         </div>
 
         <!-- Tab: Información -->
-        <div id="tab-info" class="tab-content">
-            <div class="info-cards" id="infoCards"></div>
+        <div id="tab-info" class="tab-content" style="display: none;">
+            <div class="info-cards" id="infoCards" style="display: grid; gap: 30px;"></div>
+        </div>
+
+        <!-- Sección de comentarios -->
+        <div class="comments-section" id="commentsSection">
+            <div class="comments-header">
+                <h3 class="comments-title"><i class="fas fa-comments"></i> Comentarios</h3>
+                <span class="comments-count" id="commentsCount">0 comentarios</span>
+            </div>
+
+            <div class="comment-form">
+                <form id="commentForm">
+                    <div class="form-group">
+                        <label for="commentName">Nombre (opcional)</label>
+                        <input type="text" id="commentName" placeholder="Dr. Juan Pérez">
+                    </div>
+                    <div class="form-group">
+                        <label for="commentText">Tu comentario</label>
+                        <textarea id="commentText" placeholder="Excelente trabajo, me gustó la anatomía..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit-comment">
+                        <i class="fas fa-paper-plane"></i> Publicar Comentario
+                    </button>
+                </form>
+            </div>
+
+            <div class="comments-list" id="commentsList">
+                <div class="no-comments">
+                    <div class="no-comments-icon">💬</div>
+                    <p>Sé el primero en comentar sobre este caso</p>
+                </div>
+            </div>
         </div>
 
         <!-- Sección de descarga -->
-        <div class="download-section">
-            <div class="download-card">
-                <div class="download-icon">💾</div>
-                <div class="download-content">
-                    <h3>Descargar Escena CAD</h3>
-                    <p>Archivo completo de diseño en formato nativo Exocad</p>
+        <div class="download-section" style="margin-top: 60px;">
+            <div class="download-card" style="background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(247,147,30,0.1)); border: 2px solid var(--exocad-orange); border-radius: 20px; padding: 40px; display: flex; align-items: center; gap: 30px; flex-wrap: wrap;">
+                <div class="download-icon" style="font-size: 3.5rem;">💾</div>
+                <div class="download-content" style="flex: 1; min-width: 250px;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 10px;">Descargar Escena CAD</h3>
+                    <p style="color: rgba(248,250,252,0.7);">Archivo completo de diseño en formato nativo Exocad</p>
                 </div>
-                <a href="#" id="downloadBtn" class="btn-download" target="_blank">
+                <a href="#" id="downloadBtn" class="btn-download" target="_blank" style="padding: 15px 35px; background: linear-gradient(135deg, var(--exocad-orange), var(--exocad-gold)); color: white; text-decoration: none; border-radius: 50px; font-weight: 600; white-space: nowrap; transition: all 0.3s ease; display: inline-block;">
                     <i class="fab fa-google-drive"></i> Descargar desde Drive
                 </a>
             </div>
         </div>
     </main>
-
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <div class="lightbox-content" onclick="event.stopPropagation()">
-            <button class="lightbox-close" onclick="closeLightbox()">×</button>
-            <button class="lightbox-prev" onclick="prevImage()">‹</button>
-            <img src="" alt="" id="lightboxImg">
-            <button class="lightbox-next" onclick="nextImage()">›</button>
-            <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
-        </div>
-    </div>
 
     <!-- Scripts -->
     <script src="js/patients-data.js"></script>
@@ -607,32 +335,21 @@
         let currentPatient = null;
         let currentImageIndex = 0;
 
-        // Obtener paciente de la URL
         function getPatientFromURL() {
             const params = new URLSearchParams(window.location.search);
             const patientId = params.get('id');
             return PATIENTS_DATA.find(p => p.id === patientId);
         }
 
-        // Renderizar página
         function renderPage() {
             currentPatient = getPatientFromURL();
-
             if (!currentPatient) {
-                document.body.innerHTML = `
-                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 2rem; background: var(--charcoal); color: var(--soft-white);">
-                        <h1 style="font-size: 3rem; margin-bottom: 1rem;">❌</h1>
-                        <h2 style="margin-bottom: 1rem;">Paciente no encontrado</h2>
-                        <a href="index.html" style="color: #ff6b35; text-decoration: none; font-weight: 600;">← Volver al portafolio</a>
-                    </div>
-                `;
+                document.body.innerHTML = `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 2rem; background: var(--charcoal); color: var(--soft-white);"><h1 style="font-size: 3rem; margin-bottom: 1rem;">❌</h1><h2 style="margin-bottom: 1rem;">Paciente no encontrado</h2><a href="index.html" style="color: #ff6b35; text-decoration: none; font-weight: 600;">← Volver al portafolio</a></div>`;
                 return;
             }
 
-            // Título de la página
             document.getElementById('page-title').textContent = `${currentPatient.name} | PRODIGY`;
 
-            // Navbar info
             const typeBadges = {
                 rehabilitacion: '🔬 Rehabilitación',
                 implantes: '⚙️ Implantes',
@@ -641,184 +358,214 @@
                 ortodoncia: '📐 Ortodoncia'
             };
 
-            document.getElementById('navInfo').innerHTML = `
-                <span class="nav-code">${currentPatient.code}</span>
-                <span>•</span>
-                <span>${currentPatient.name}</span>
-            `;
+            document.getElementById('navInfo').innerHTML = `<span style="color: var(--exocad-orange); font-weight: 700;">${currentPatient.code}</span><span>•</span><span>${currentPatient.name}</span>`;
 
-            // Header
-            document.getElementById('patientHeader').innerHTML = `
-                <div class="header-container">
-                    <div class="patient-badge">${typeBadges[currentPatient.type] || '📋 Caso Dental'}</div>
-                    <h1 class="patient-title">${currentPatient.name}</h1>
-                    <p class="patient-description">${currentPatient.description}</p>
-                    <div class="patient-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Código</span>
-                            <span class="meta-value">${currentPatient.code}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Fecha</span>
-                            <span class="meta-value">${currentPatient.date}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Tipo</span>
-                            <span class="meta-value">${currentPatient.type}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
+            document.getElementById('patientHeader').innerHTML = `<div style="max-width: 1400px; margin: 0 auto;"><div style="display: inline-block; padding: 8px 20px; background: linear-gradient(135deg, var(--exocad-orange), var(--exocad-gold)); color: white; border-radius: 25px; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px;">${typeBadges[currentPatient.type] || '📋 Caso Dental'}</div><h1 style="font-size: 2.5rem; margin-bottom: 15px;">${currentPatient.name}</h1><p style="font-size: 1.2rem; color: rgba(248,250,252,0.7); margin-bottom: 30px;">${currentPatient.description}</p><div style="display: flex; gap: 40px; flex-wrap: wrap;"><div style="display: flex; flex-direction: column; gap: 5px;"><span style="font-size: 0.85rem; color: rgba(248,250,252,0.5); text-transform: uppercase;">Código</span><span style="font-size: 1.1rem; font-weight: 600;">${currentPatient.code}</span></div><div style="display: flex; flex-direction: column; gap: 5px;"><span style="font-size: 0.85rem; color: rgba(248,250,252,0.5); text-transform: uppercase;">Fecha</span><span style="font-size: 1.1rem; font-weight: 600;">${currentPatient.date}</span></div><div style="display: flex; flex-direction: column; gap: 5px;"><span style="font-size: 0.85rem; color: rgba(248,250,252,0.5); text-transform: uppercase;">Tipo</span><span style="font-size: 1.1rem; font-weight: 600;">${currentPatient.type}</span></div></div></div>`;
 
-            // Iframe de Exocad
             const iframe = document.getElementById('exocadIframe');
             const loading = document.getElementById('viewerLoading');
             iframe.src = currentPatient.exocadFile;
             iframe.onload = () => loading.style.display = 'none';
 
-            // Botón de descarga
             document.getElementById('downloadBtn').href = currentPatient.driveLink;
 
-            // Galería
             renderGallery();
-
-            // Info
             renderInfo();
+            initCommentsSystem();
         }
 
-        // Renderizar galería
         function renderGallery() {
             const grid = document.getElementById('galleryGrid');
-            
             if (!currentPatient.gallery || currentPatient.gallery.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-gallery">
-                        <div class="empty-icon">📸</div>
-                        <p>No hay imágenes adicionales para este caso</p>
-                    </div>
-                `;
+                grid.innerHTML = `<div style="text-align: center; padding: 80px 20px; color: rgba(248,250,252,0.5);"><div style="font-size: 4rem; margin-bottom: 20px;">📸</div><p>No hay imágenes adicionales para este caso</p></div>`;
                 return;
             }
-
-            grid.innerHTML = currentPatient.gallery.map((img, index) => `
-                <div class="gallery-item" onclick="openLightbox(${index})">
-                    <img src="${img}" alt="Imagen ${index + 1}" loading="lazy">
-                    <div class="gallery-overlay">
-                        <div class="gallery-icon"><i class="fas fa-search-plus"></i></div>
-                    </div>
-                </div>
-            `).join('');
+            grid.innerHTML = currentPatient.gallery.map((img, index) => `<div onclick="openLightbox(${index})" style="position: relative; cursor: pointer; border-radius: 15px; overflow: hidden; aspect-ratio: 4/3; background: var(--card-bg);"><img src="${img}" alt="Imagen ${index + 1}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"><div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,14,26,0.7); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;"><div style="font-size: 3rem; color: var(--exocad-orange);"><i class="fas fa-search-plus"></i></div></div></div>`).join('');
         }
 
-        // Renderizar información
         function renderInfo() {
-            document.getElementById('infoCards').innerHTML = `
-                <div class="info-card">
-                    <h3><i class="fas fa-clipboard-list"></i> Detalles del Caso</h3>
-                    <div class="info-list">
-                        <div class="info-row">
-                            <span class="info-key">Código de Caso:</span>
-                            <span class="info-value">${currentPatient.code}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-key">Nombre del Paciente:</span>
-                            <span class="info-value">${currentPatient.name}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-key">Fecha de Diseño:</span>
-                            <span class="info-value">${currentPatient.date}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-key">Tipo de Tratamiento:</span>
-                            <span class="info-value">${currentPatient.type}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-key">Descripción:</span>
-                            <span class="info-value">${currentPatient.description}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-card">
-                    <h3><i class="fas fa-tools"></i> Información Técnica</h3>
-                    <div class="info-list">
-                        <div class="info-row">
-                            <span class="info-key">Software Utilizado:</span>
-                            <span class="info-value">Exocad CAD/CAM</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-key">Formato de Archivo:</span>
-                            <span class="info-value">HTML Interactivo + .CAD</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-key">Imágenes Disponibles:</span>
-                            <span class="info-value">${currentPatient.gallery?.length || 0} renders</span>
-                        </div>
-                    </div>
-                </div>
-            `;
+            document.getElementById('infoCards').innerHTML = `<div style="background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 40px;"><h3 style="font-size: 1.5rem; margin-bottom: 25px; color: var(--exocad-orange);"><i class="fas fa-clipboard-list"></i> Detalles del Caso</h3><div style="display: flex; flex-direction: column; gap: 20px;"><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Código de Caso:</span><span style="text-align: right;">${currentPatient.code}</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Nombre del Paciente:</span><span style="text-align: right;">${currentPatient.name}</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Fecha de Diseño:</span><span style="text-align: right;">${currentPatient.date}</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Tipo de Tratamiento:</span><span style="text-align: right;">${currentPatient.type}</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0;"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Descripción:</span><span style="text-align: right;">${currentPatient.description}</span></div></div></div><div style="background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 40px;"><h3 style="font-size: 1.5rem; margin-bottom: 25px; color: var(--exocad-orange);"><i class="fas fa-tools"></i> Información Técnica</h3><div style="display: flex; flex-direction: column; gap: 20px;"><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Software Utilizado:</span><span style="text-align: right;">Exocad CAD/CAM</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Formato de Archivo:</span><span style="text-align: right;">HTML Interactivo + .CAD</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0;"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Imágenes Disponibles:</span><span style="text-align: right;">${currentPatient.gallery?.length || 0} renders</span></div></div></div>`;
         }
 
-        // Cambiar tabs
         function switchTab(tabName) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
             event.target.classList.add('active');
-            document.getElementById(`tab-${tabName}`).classList.add('active');
+            document.getElementById(`tab-${tabName}`).style.display = 'block';
         }
 
-        // Lightbox
-        function openLightbox(index) {
-            currentImageIndex = index;
-            updateLightboxImage();
-            document.getElementById('lightbox').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function updateLightboxImage() {
-            const img = document.getElementById('lightboxImg');
-            const counter = document.getElementById('lightboxCounter');
-            img.src = currentPatient.gallery[currentImageIndex];
-            counter.textContent = `${currentImageIndex + 1} / ${currentPatient.gallery.length}`;
-        }
-
-        function prevImage() {
-            currentImageIndex = (currentImageIndex - 1 + currentPatient.gallery.length) % currentPatient.gallery.length;
-            updateLightboxImage();
-        }
-
-        function nextImage() {
-            currentImageIndex = (currentImageIndex + 1) % currentPatient.gallery.length;
-            updateLightboxImage();
-        }
-
-        // Fullscreen
         function toggleFullscreen() {
             const iframe = document.querySelector('.viewer-iframe');
-            if (!document.fullscreenElement) {
-                iframe.requestFullscreen();
-            } else {
-                document.exitFullscreen();
-            }
+            if (!document.fullscreenElement) iframe.requestFullscreen();
+            else document.exitFullscreen();
         }
 
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (document.getElementById('lightbox').classList.contains('active')) {
-                if (e.key === 'Escape') closeLightbox();
-                if (e.key === 'ArrowLeft') prevImage();
-                if (e.key === 'ArrowRight') nextImage();
+        // Sistema de comentarios con LocalStorage
+        function initCommentsSystem() {
+            const caseId = currentPatient.id;
+            const commentsKey = `prodigy-comments-${caseId}`;
+            
+            function loadComments() {
+                const comments = JSON.parse(localStorage.getItem(commentsKey) || '[]');
+                const commentsList = document.getElementById('commentsList');
+                const commentsCount = document.getElementById('commentsCount');
+                
+                commentsCount.textContent = `${comments.length} comentario${comments.length !== 1 ? 's' : ''}`;
+                
+                if (comments.length === 0) {
+                    commentsList.innerHTML = '<div class="no-comments"><div class="no-comments-icon">💬</div><p>Sé el primero en comentar sobre este caso</p></div>';
+                    return;
+                }
+                
+                commentsList.innerHTML = comments.reverse().map(comment => `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">${comment.name || 'Anónimo'}</span>
+                            <span class="comment-date">${comment.date}</span>
+                        </div>
+                        <p class="comment-text">${comment.text}</p>
+                    </div>
+                `).join('');
             }
-        });
+            
+            document.getElementById('commentForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('commentName').value.trim() || 'Anónimo';
+                const text = document.getElementById('commentText').value.trim();
+                
+                if (!text) return;
+                
+                const comments = JSON.parse(localStorage.getItem(commentsKey) || '[]');
+                comments.push({
+                    name: name,
+                    text: text,
+                    date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
+                });
+                
+                localStorage.setItem(commentsKey, JSON.stringify(comments));
+                
+                document.getElementById('commentName').value = '';
+                document.getElementById('commentText').value = '';
+                
+                loadComments();
+            });
+            
+            loadComments();
+        }
 
-        // Inicializar
         document.addEventListener('DOMContentLoaded', renderPage);
     </script>
 </body>
 </html>
+
+<!-- SISTEMA DE PROTECCIÓN INTEGRADO -->
+<script>
+(function() {
+    'use strict';
+    const CONFIG = {
+        watermarkText: '© PRODIGY',
+        watermarkOpacity: 0.08,
+        enableScreenshotProtection: true,
+        enableRightClickBlock: true,
+        enableImageProtection: true
+    };
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'PrintScreen' || (e.key === 'F12') || 
+            ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'S' || e.key === 'I')) ||
+            ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 's'))) {
+            e.preventDefault();
+            showAlert();
+        }
+    });
+
+    if (CONFIG.enableImageProtection) {
+        function addWatermark(img) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            ctx.drawImage(img, 0, 0);
+            ctx.globalAlpha = CONFIG.watermarkOpacity;
+            ctx.fillStyle = '#FFD700';
+            ctx.font = 'bold 40px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(CONFIG.watermarkText, canvas.width / 2, canvas.height / 2);
+            ctx.font = 'bold 25px Arial';
+            ctx.fillText(CONFIG.watermarkText, canvas.width / 4, canvas.height / 4);
+            ctx.fillText(CONFIG.watermarkText, (canvas.width * 3) / 4, (canvas.height * 3) / 4);
+            img.src = canvas.toDataURL();
+        }
+
+        function protectImages() {
+            document.querySelectorAll('img:not([data-protected])').forEach(img => {
+                img.setAttribute('data-protected', 'true');
+                if (img.complete) addWatermark(img);
+                else img.addEventListener('load', () => addWatermark(img));
+            });
+        }
+
+        setInterval(protectImages, 1000);
+    }
+
+    if (CONFIG.enableRightClickBlock) {
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            showAlert();
+        });
+    }
+
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+            showAlert();
+        }
+    });
+
+    document.addEventListener('copy', function(e) {
+        const selection = window.getSelection().toString();
+        if (selection.length > 50) {
+            e.preventDefault();
+            e.clipboardData.setData('text/plain', selection + '\n\n' + CONFIG.watermarkText);
+        }
+    });
+
+    function showAlert() {
+        const alert = document.createElement('div');
+        alert.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#1a1a2e,#0a0e1a);padding:40px;border-radius:20px;border:2px solid #FFD700;z-index:999999;text-align:center;max-width:400px;';
+        alert.innerHTML = '<div style="font-size:3rem;margin-bottom:15px;">🔒</div><h3 style="color:#FFD700;margin-bottom:10px;">Contenido Protegido</h3><p style="color:#fff;opacity:0.8;margin-bottom:20px;">© PRODIGY - The Art of Digital Excellence</p><button onclick="this.parentElement.remove()" style="padding:12px 30px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:30px;font-weight:600;cursor:pointer;">Cerrar</button>';
+        document.body.appendChild(alert);
+        setTimeout(() => alert.remove(), 3000);
+    }
+
+    console.log('%c🔒 CONTENIDO PROTEGIDO POR PRODIGY', 'color:#FFD700;font-size:20px;font-weight:bold;');
+})();
+</script>
+<div id="lightbox" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:99999;align-items:center;justify-content:center;">
+    <button onclick="closeLightbox()" style="position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.1);border:none;color:white;font-size:2.5rem;cursor:pointer;width:60px;height:60px;border-radius:50%;">×</button>
+    <button onclick="prevImage()" style="position:absolute;left:20px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);border:none;color:white;font-size:2.5rem;cursor:pointer;width:60px;height:60px;border-radius:50%;">‹</button>
+    <img id="lightboxImg" src="" style="max-width:90%;max-height:90vh;object-fit:contain;">
+    <button onclick="nextImage()" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);border:none;color:white;font-size:2.5rem;cursor:pointer;width:60px;height:60px;border-radius:50%;">›</button>
+    <div id="lightboxCounter" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);padding:10px 25px;border-radius:25px;color:white;font-weight:600;"></div>
+</div>
+<script>
+let galleryImages=[];
+function openLightbox(i){currentImageIndex=i;updateLightboxImage();document.getElementById('lightbox').style.display='flex';document.body.style.overflow='hidden';}
+function closeLightbox(){document.getElementById('lightbox').style.display='none';document.body.style.overflow='auto';}
+function updateLightboxImage(){document.getElementById('lightboxImg').src=galleryImages[currentImageIndex];document.getElementById('lightboxCounter').textContent=`${currentImageIndex+1}/${galleryImages.length}`;}
+function prevImage(){currentImageIndex=(currentImageIndex-1+galleryImages.length)%galleryImages.length;updateLightboxImage();}
+function nextImage(){currentImageIndex=(currentImageIndex+1)%galleryImages.length;updateLightboxImage();}
+document.addEventListener('keydown',e=>{if(document.getElementById('lightbox').style.display==='flex'){if(e.key==='Escape')closeLightbox();if(e.key==='ArrowLeft')prevImage();if(e.key==='ArrowRight')nextImage();}});
+</script>
+<style>
+@media (max-width: 768px) {
+    .logo-img { height: 35px !important; }
+    .social-float { right: 15px !important; bottom: 80px !important; }
+    .social-btn { width: 45px !important; height: 45px !important; }
+    .whatsapp-stl-float { bottom: 20px !important; right: 15px !important; }
+    .btn-whatsapp-stl { width: 55px !important; height: 55px !important; padding: 0 !important; border-radius: 50% !important; }
+    .btn-whatsapp-stl span { display: none !important; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+}
+</style>

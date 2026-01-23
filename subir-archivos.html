@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Archivos - PRODIGY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo-prodigy.png" alt="PRODIGY Logo" style="height:45px;">
+            </a>
+        </div>
+    </nav>
+
+    <div style="padding:120px 20px 80px;max-width:900px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:50px;">
+            <div style="font-size:4rem;margin-bottom:20px;">📤</div>
+            <h1 style="font-size:2.5rem;background:linear-gradient(135deg,#ff6b35,#f7931e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px;">Subir Archivos a Drive PRODIGY</h1>
+            <p style="font-size:1.1rem;color:rgba(248,250,252,0.8);">Llena el formulario y sube tus archivos. Te notificaremos automáticamente.</p>
+        </div>
+
+        <!-- FORMULARIO DE DATOS -->
+        <form id="uploadForm" style="background:var(--card-bg);border:1px solid var(--border-subtle);border-radius:20px;padding:40px;margin-bottom:30px;">
+            <h2 style="color:#ff6b35;margin-bottom:30px;font-size:1.5rem;">📋 Información del Caso</h2>
+            
+            <div style="display:grid;gap:20px;">
+                <!-- Datos del Profesional -->
+                <div style="background:rgba(255,107,53,0.05);padding:20px;border-radius:10px;">
+                    <h3 style="color:#ff6b35;margin-bottom:15px;font-size:1.2rem;">Tus Datos</h3>
+                    <div style="display:grid;gap:15px;">
+                        <div>
+                            <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Nombre Completo *</label>
+                            <input type="text" id="doctorName" required style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,107,53,0.3);border-radius:8px;color:white;font-size:1rem;">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+                            <div>
+                                <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Email *</label>
+                                <input type="email" id="doctorEmail" required style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,107,53,0.3);border-radius:8px;color:white;font-size:1rem;">
+                            </div>
+                            <div>
+                                <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">WhatsApp *</label>
+                                <input type="tel" id="doctorPhone" required placeholder="+57 321 123 4567" style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,107,53,0.3);border-radius:8px;color:white;font-size:1rem;">
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Clínica/Laboratorio</label>
+                            <input type="text" id="clinic" style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,107,53,0.3);border-radius:8px;color:white;font-size:1rem;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Datos del Caso -->
+                <div style="background:rgba(33,150,243,0.05);padding:20px;border-radius:10px;">
+                    <h3 style="color:#2196F3;margin-bottom:15px;font-size:1.2rem;">Datos del Caso</h3>
+                    <div style="display:grid;gap:15px;">
+                        <div style="display:grid;grid-template-columns:2fr 1fr;gap:15px;">
+                            <div>
+                                <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Nombre del Paciente *</label>
+                                <input type="text" id="patientName" required style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(33,150,243,0.3);border-radius:8px;color:white;font-size:1rem;">
+                            </div>
+                            <div>
+                                <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Código Caso</label>
+                                <input type="text" id="caseCode" placeholder="Ej: C-001" style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(33,150,243,0.3);border-radius:8px;color:white;font-size:1rem;">
+                            </div>
+                        </div>
+                        
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+                            <div>
+                                <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Tipo de Trabajo *</label>
+                                <select id="workType" required style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(33,150,243,0.3);border-radius:8px;color:white;font-size:1rem;">
+                                    <option value="">-- Selecciona --</option>
+                                    <option value="corona">Corona</option>
+                                    <option value="puente">Puente</option>
+                                    <option value="inlay-onlay">Inlay/Onlay</option>
+                                    <option value="implante">Corona sobre Implante</option>
+                                    <option value="protesis-fija">Prótesis Fija</option>
+                                    <option value="full-arch">Full Arch</option>
+                                    <option value="guia-quirurgica">Guía Quirúrgica</option>
+                                    <option value="ferula">Férula Oclusal</option>
+                                    <option value="alineadores">Alineadores</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Material *</label>
+                                <select id="material" required style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(33,150,243,0.3);border-radius:8px;color:white;font-size:1rem;">
+                                    <option value="">-- Selecciona --</option>
+                                    <option value="zirconia">Zirconia</option>
+                                    <option value="disilicato">Disilicato de Litio</option>
+                                    <option value="pmma">PMMA</option>
+                                    <option value="resina">Resina</option>
+                                    <option value="metal-ceramica">Metal-Cerámica</option>
+                                    <option value="peek">PEEK</option>
+                                    <option value="titanio">Titanio</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+                            <div>
+                                <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Color/Shade *</label>
+                                <input type="text" id="shade" required placeholder="Ej: A2" style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(33,150,243,0.3);border-radius:8px;color:white;font-size:1rem;">
+                            </div>
+                            <div>
+                                <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Fecha de Entrega *</label>
+                                <input type="date" id="deliveryDate" required style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(33,150,243,0.3);border-radius:8px;color:white;font-size:1rem;">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Instrucciones / Notas Especiales</label>
+                            <textarea id="instructions" rows="3" placeholder="Cualquier indicación especial..." style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(33,150,243,0.3);border-radius:8px;color:white;font-size:1rem;resize:vertical;"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Archivos a Subir -->
+                <div style="background:rgba(76,175,80,0.05);padding:20px;border-radius:10px;">
+                    <h3 style="color:#4caf50;margin-bottom:15px;font-size:1.2rem;">📎 Archivos a Subir</h3>
+                    <div style="color:rgba(248,250,252,0.8);margin-bottom:15px;line-height:1.6;">
+                        <p style="margin-bottom:10px;">Marca los archivos que vas a subir:</p>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+                            <label style="display:flex;align-items:center;gap:8px;">
+                                <input type="checkbox" id="hasSTL" checked style="width:18px;height:18px;">
+                                <span>Escaneos STL</span>
+                            </label>
+                            <label style="display:flex;align-items:center;gap:8px;">
+                                <input type="checkbox" id="hasPhotos" checked style="width:18px;height:18px;">
+                                <span>Fotos Intraorales</span>
+                            </label>
+                            <label style="display:flex;align-items:center;gap:8px;">
+                                <input type="checkbox" id="hasOrder" checked style="width:18px;height:18px;">
+                                <span>Orden de Trabajo</span>
+                            </label>
+                            <label style="display:flex;align-items:center;gap:8px;">
+                                <input type="checkbox" id="hasXrays" style="width:18px;height:18px;">
+                                <span>Radiografías</span>
+                            </label>
+                            <label style="display:flex;align-items:center;gap:8px;">
+                                <input type="checkbox" id="hasPreop" style="width:18px;height:18px;">
+                                <span>Modelos Preoperatorios</span>
+                            </label>
+                            <label style="display:flex;align-items:center;gap:8px;">
+                                <input type="checkbox" id="hasOther" style="width:18px;height:18px;">
+                                <span>Otros Archivos</span>
+                            </label>
+                        </div>
+                    </div>
+                    <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;font-style:italic;">
+                        💡 Después de enviar este formulario, te daremos el enlace para subir los archivos a Drive
+                    </p>
+                </div>
+            </div>
+
+            <!-- Aceptación de Términos -->
+            <div style="background:rgba(255,193,7,0.1);border:2px solid #FFC107;border-radius:15px;padding:25px;margin-top:30px;">
+                <label style="display:flex;align-items:start;gap:15px;cursor:pointer;">
+                    <input type="checkbox" id="acceptTerms" required style="width:24px;height:24px;margin-top:3px;cursor:pointer;">
+                    <div style="color:rgba(248,250,252,0.95);line-height:1.7;">
+                        <strong style="color:#FFC107;">He leído y acepto los 
+                            <a href="terminos-y-pagos.html" target="_blank" style="color:#FFC107;text-decoration:underline;">
+                                Términos y Condiciones de Servicio
+                            </a>
+                        </strong>
+                        <p style="margin-top:10px;font-size:0.95rem;opacity:0.9;">
+                            Esto incluye:
+                        </p>
+                        <ul style="margin-top:8px;margin-left:20px;font-size:0.9rem;">
+                            <li>Pago del 50% de adelanto para iniciar el caso</li>
+                            <li>Aprobación informada de propuestas de diseño</li>
+                            <li>Pago del 50% final antes de recibir archivos</li>
+                        </ul>
+                    </div>
+                </label>
+            </div>
+
+            <div style="margin-top:25px;">
+                <button type="submit" id="submitBtn" disabled style="width:100%;padding:18px;background:linear-gradient(135deg,#ff6b35,#f7931e);color:white;border:none;border-radius:50px;font-size:1.2rem;font-weight:700;cursor:not-allowed;transition:all 0.3s ease;opacity:0.5;">
+                    <i class="fas fa-check-circle"></i> Generar Enlace de Subida
+                </button>
+            </div>
+        </form>
+
+        <!-- Resultado (se muestra después de submit) -->
+        <div id="result" style="display:none;">
+            <div style="background:rgba(76,175,80,0.15);border:2px solid #4caf50;border-radius:20px;padding:40px;text-align:center;">
+                <div style="font-size:4rem;margin-bottom:20px;">✅</div>
+                <h2 style="color:#4caf50;margin-bottom:20px;">¡Caso Registrado!</h2>
+                <p style="color:rgba(248,250,252,0.9);margin-bottom:30px;font-size:1.1rem;" id="caseId"></p>
+                
+                <div style="background:rgba(0,0,0,0.3);border-radius:15px;padding:25px;margin-bottom:30px;">
+                    <p style="color:rgba(248,250,252,0.8);margin-bottom:15px;">Ahora sube tus archivos aquí:</p>
+                    <a id="driveLink" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:12px;padding:18px 40px;background:linear-gradient(135deg,#4285F4,#34A853);color:white;text-decoration:none;border-radius:50px;font-weight:700;font-size:1.1rem;">
+                        <i class="fab fa-google-drive"></i> Subir a Google Drive
+                    </a>
+                </div>
+
+                <div style="background:rgba(33,150,243,0.1);border-radius:10px;padding:20px;margin-bottom:20px;">
+                    <h4 style="color:#2196F3;margin-bottom:15px;">📝 Instrucciones:</h4>
+                    <ol style="text-align:left;color:rgba(248,250,252,0.9);line-height:1.8;margin-left:40px;">
+                        <li>Haz clic en "Subir a Google Drive"</li>
+                        <li>Crea una carpeta con el nombre: <strong id="folderName" style="color:#2196F3;"></strong></li>
+                        <li>Sube TODOS tus archivos a esa carpeta</li>
+                        <li>Recibirás confirmación automática por WhatsApp</li>
+                    </ol>
+                </div>
+
+                <p style="color:rgba(248,250,252,0.7);font-size:0.95rem;">
+                    📱 Te enviamos notificación a: <strong id="confirmPhone" style="color:#4caf50;"></strong>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Habilitar botón solo si acepta términos
+        document.getElementById('acceptTerms').addEventListener('change', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            if (this.checked) {
+                submitBtn.disabled = false;
+                submitBtn.style.cursor = 'pointer';
+                submitBtn.style.opacity = '1';
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.style.cursor = 'not-allowed';
+                submitBtn.style.opacity = '0.5';
+            }
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Recopilar datos
+            const data = {
+                // Datos del profesional
+                doctorName: document.getElementById('doctorName').value,
+                doctorEmail: document.getElementById('doctorEmail').value,
+                doctorPhone: document.getElementById('doctorPhone').value,
+                clinic: document.getElementById('clinic').value,
+                
+                // Datos del caso
+                patientName: document.getElementById('patientName').value,
+                caseCode: document.getElementById('caseCode').value || 'AUTO',
+                workType: document.getElementById('workType').value,
+                material: document.getElementById('material').value,
+                shade: document.getElementById('shade').value,
+                deliveryDate: document.getElementById('deliveryDate').value,
+                instructions: document.getElementById('instructions').value,
+                
+                // Archivos
+                hasSTL: document.getElementById('hasSTL').checked,
+                hasPhotos: document.getElementById('hasPhotos').checked,
+                hasOrder: document.getElementById('hasOrder').checked,
+                hasXrays: document.getElementById('hasXrays').checked,
+                hasPreop: document.getElementById('hasPreop').checked,
+                hasOther: document.getElementById('hasOther').checked,
+                
+                // Metadata
+                timestamp: new Date().toISOString(),
+                status: 'pending_upload'
+            };
+
+            // Generar ID del caso
+            const caseId = `PRODIGY-${Date.now()}`;
+            data.id = caseId;
+            
+            // Nombre de carpeta
+            const folderName = `${data.patientName.replace(/\s+/g, '-')}-${caseId}`;
+            
+            // Guardar en localStorage temporalmente
+            localStorage.setItem(caseId, JSON.stringify(data));
+            
+            // Mostrar resultado
+            document.getElementById('uploadForm').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('caseId').textContent = `Caso: ${caseId}`;
+            document.getElementById('folderName').textContent = folderName;
+            document.getElementById('confirmPhone').textContent = data.doctorPhone;
+            
+            // Link de Drive compartido de PRODIGY
+            const driveLink = 'https://drive.google.com/drive/folders/1M53LxKd_j-ZG4WRtyOythrTQU7P4QbqQ?usp=sharing';
+            document.getElementById('driveLink').href = driveLink;
+            
+            // Enviar notificación (esto lo conectaremos después)
+            sendNotification(data, folderName);
+        });
+
+        function sendNotification(data, folderName) {
+            // OPCIÓN 1: Enviar a Make.com / Zapier / n8n
+            fetch('https://hook.make.com/TU_WEBHOOK_ID', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...data,
+                    folderName: folderName
+                })
+            }).then(response => {
+                console.log('Notificación enviada', response);
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+            
+            // OPCIÓN 2: Abrir WhatsApp automáticamente
+            const message = `🦷 *NUEVO CASO REGISTRADO*%0A%0A` +
+                `📋 *Caso:* ${data.id}%0A` +
+                `👤 *Paciente:* ${data.patientName}%0A` +
+                `🔧 *Tipo:* ${data.workType}%0A` +
+                `📅 *Entrega:* ${data.deliveryDate}%0A` +
+                `📁 *Carpeta:* ${folderName}%0A%0A` +
+                `Los archivos están siendo subidos a Drive.`;
+            
+            // Auto-envío a tu WhatsApp
+            setTimeout(() => {
+                window.open(`https://wa.me/573219581949?text=${message}`, '_blank');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

@@ -6,12 +6,137 @@
     <title>PRODIGY | Diseño Dental Digital Premium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Estilos adicionales para las nuevas funcionalidades */
+        .logo-img {
+            height: 50px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Botón flotante WhatsApp STL */
+        .whatsapp-stl-float {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 998;
+        }
+
+        .btn-whatsapp-stl {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-whatsapp-stl:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6);
+        }
+
+        .btn-whatsapp-stl i {
+            font-size: 1.4rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 40px rgba(37, 211, 102, 0.7);
+            }
+        }
+
+        /* Sistema de reacciones */
+        .case-reactions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .reaction-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            background: rgba(255,107,53,0.1);
+            border: 1px solid rgba(255,107,53,0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .reaction-btn:hover {
+            background: rgba(255,107,53,0.2);
+            transform: scale(1.05);
+        }
+
+        .reaction-btn.reacted {
+            background: rgba(255,107,53,0.3);
+            border-color: var(--exocad-orange);
+        }
+
+        .reaction-emoji {
+            font-size: 1.2rem;
+        }
+
+        .reaction-count {
+            color: var(--soft-white);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-stl-float {
+                bottom: 80px;
+                right: 20px;
+            }
+
+            .btn-whatsapp-stl span {
+                display: none;
+            }
+
+            .btn-whatsapp-stl {
+                width: 60px;
+                height: 60px;
+                padding: 0;
+                justify-content: center;
+                border-radius: 50%;
+            }
+
+            .btn-whatsapp-stl i {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">🦷 PRODIGY</div>
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo-prodigy.png" alt="PRODIGY Logo" class="logo-img">
+            </a>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#home" class="nav-link active">Home</a></li>
                 <li><a href="#remote-design" class="nav-link">Diseño Remoto</a></li>
@@ -30,6 +155,15 @@
             </div>
         </div>
     </nav>
+
+    <!-- Botón flotante WhatsApp STL -->
+    <div class="whatsapp-stl-float">
+        <a href="https://wa.me/573219581949?text=Hola,%20quiero%20enviar%20un%20archivo%20STL%20para%20diseño" 
+           class="btn-whatsapp-stl" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+            <span>Enviar Caso STL</span>
+        </a>
+    </div>
 
     <!-- Social Float -->
     <div class="social-float">
@@ -273,5 +407,210 @@
 
     <script src="js/patients-data.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        // Sistema de reacciones con Local Storage
+        function initReactionSystem() {
+            // Obtener reacciones guardadas
+            const reactions = JSON.parse(localStorage.getItem('prodigy-reactions') || '{}');
+            
+            // Agregar botones de reacción a cada caso
+            document.querySelectorAll('.portfolio-card').forEach((card, index) => {
+                const caseId = card.dataset.caseId || `case-${index}`;
+                card.dataset.caseId = caseId;
+                
+                const reactionsDiv = document.createElement('div');
+                reactionsDiv.className = 'case-reactions';
+                reactionsDiv.innerHTML = `
+                    <button class="reaction-btn" data-reaction="tooth" data-case="${caseId}">
+                        <span class="reaction-emoji">🦷</span>
+                        <span class="reaction-count">${reactions[caseId]?.tooth || 0}</span>
+                    </button>
+                    <button class="reaction-btn" data-reaction="fire" data-case="${caseId}">
+                        <span class="reaction-emoji">🔥</span>
+                        <span class="reaction-count">${reactions[caseId]?.fire || 0}</span>
+                    </button>
+                    <button class="reaction-btn" data-reaction="diamond" data-case="${caseId}">
+                        <span class="reaction-emoji">💎</span>
+                        <span class="reaction-count">${reactions[caseId]?.diamond || 0}</span>
+                    </button>
+                `;
+                
+                card.querySelector('.portfolio-content').appendChild(reactionsDiv);
+            });
+            
+            // Manejar clics en reacciones
+            document.addEventListener('click', function(e) {
+                const btn = e.target.closest('.reaction-btn');
+                if (!btn) return;
+                
+                const caseId = btn.dataset.case;
+                const reactionType = btn.dataset.reaction;
+                const countSpan = btn.querySelector('.reaction-count');
+                
+                // Obtener reacciones actuales
+                const reactions = JSON.parse(localStorage.getItem('prodigy-reactions') || '{}');
+                if (!reactions[caseId]) reactions[caseId] = {};
+                
+                // Toggle reacción
+                if (btn.classList.contains('reacted')) {
+                    btn.classList.remove('reacted');
+                    reactions[caseId][reactionType] = Math.max(0, (reactions[caseId][reactionType] || 0) - 1);
+                } else {
+                    btn.classList.add('reacted');
+                    reactions[caseId][reactionType] = (reactions[caseId][reactionType] || 0) + 1;
+                }
+                
+                countSpan.textContent = reactions[caseId][reactionType];
+                localStorage.setItem('prodigy-reactions', JSON.stringify(reactions));
+            });
+        }
+        
+        // Inicializar sistema de reacciones cuando se carguen los casos
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initReactionSystem, 500);
+        });
+    </script>
 </body>
 </html>
+
+<!-- SISTEMA DE PROTECCIÓN INTEGRADO -->
+<script>
+(function() {
+    'use strict';
+    const CONFIG = {
+        watermarkText: '© PRODIGY',
+        watermarkOpacity: 0.08,
+        enableScreenshotProtection: true,
+        enableRightClickBlock: true,
+        enableImageProtection: true
+    };
+
+    // Bloquear teclas de captura
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'PrintScreen' || (e.key === 'F12') || 
+            ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'S' || e.key === 'I')) ||
+            ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 's'))) {
+            e.preventDefault();
+            showAlert();
+        }
+    });
+
+    // Marca de agua en imágenes
+    if (CONFIG.enableImageProtection) {
+        function addWatermark(img) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            ctx.drawImage(img, 0, 0);
+            ctx.globalAlpha = CONFIG.watermarkOpacity;
+            ctx.fillStyle = '#FFD700';
+            ctx.font = 'bold 40px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(CONFIG.watermarkText, canvas.width / 2, canvas.height / 2);
+            ctx.font = 'bold 25px Arial';
+            ctx.fillText(CONFIG.watermarkText, canvas.width / 4, canvas.height / 4);
+            ctx.fillText(CONFIG.watermarkText, (canvas.width * 3) / 4, (canvas.height * 3) / 4);
+            img.src = canvas.toDataURL();
+        }
+
+        function protectImages() {
+            document.querySelectorAll('img:not([data-protected])').forEach(img => {
+                img.setAttribute('data-protected', 'true');
+                if (img.complete) addWatermark(img);
+                else img.addEventListener('load', () => addWatermark(img));
+            });
+        }
+
+        setInterval(protectImages, 1000);
+    }
+
+    // Bloquear clic derecho
+    if (CONFIG.enableRightClickBlock) {
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            showAlert();
+        });
+    }
+
+    // Bloquear arrastrar imágenes
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+            showAlert();
+        }
+    });
+
+    // Proteger texto copiado
+    document.addEventListener('copy', function(e) {
+        const selection = window.getSelection().toString();
+        if (selection.length > 50) {
+            e.preventDefault();
+            e.clipboardData.setData('text/plain', selection + '\n\n' + CONFIG.watermarkText);
+        }
+    });
+
+    function showAlert() {
+        const alert = document.createElement('div');
+        alert.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#1a1a2e,#0a0e1a);padding:40px;border-radius:20px;border:2px solid #FFD700;z-index:999999;text-align:center;max-width:400px;';
+        alert.innerHTML = '<div style="font-size:3rem;margin-bottom:15px;">🔒</div><h3 style="color:#FFD700;margin-bottom:10px;">Contenido Protegido</h3><p style="color:#fff;opacity:0.8;margin-bottom:20px;">© PRODIGY - The Art of Digital Excellence</p><button onclick="this.parentElement.remove()" style="padding:12px 30px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:30px;font-weight:600;cursor:pointer;">Cerrar</button>';
+        document.body.appendChild(alert);
+        setTimeout(() => alert.remove(), 3000);
+    }
+
+    console.log('%c🔒 CONTENIDO PROTEGIDO POR PRODIGY', 'color:#FFD700;font-size:20px;font-weight:bold;');
+})();
+</script>
+<style>
+@media (max-width: 768px) {
+    .logo-img { height: 35px !important; }
+    .social-float { right: 15px !important; bottom: 80px !important; }
+    .social-btn { width: 45px !important; height: 45px !important; }
+    .whatsapp-stl-float { bottom: 20px !important; right: 15px !important; }
+    .btn-whatsapp-stl { width: 55px !important; height: 55px !important; padding: 0 !important; border-radius: 50% !important; }
+    .btn-whatsapp-stl span { display: none !important; }
+    .btn-whatsapp-stl i { font-size: 1.6rem !important; }
+    .portfolio-grid { grid-template-columns: 1fr !important; }
+    .hero-title { font-size: 2rem !important; }
+}
+</style>
+
+<!-- Botón adicional para enviar casos -->
+<style>
+.send-case-float {
+    position: fixed;
+    bottom: 170px;
+    right: 30px;
+    z-index: 998;
+}
+.btn-send-case {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #0a0e1a;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 8px 30px rgba(255,215,0,0.4);
+    transition: all 0.3s ease;
+}
+.btn-send-case:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(255,215,0,0.6);
+}
+@media (max-width: 768px) {
+    .send-case-float { bottom: 90px; right: 15px; }
+    .btn-send-case { width: 55px; height: 55px; padding: 0; border-radius: 50%; justify-content: center; }
+    .btn-send-case span { display: none; }
+    .btn-send-case i { font-size: 1.6rem; }
+}
+</style>
+<div class="send-case-float">
+    <a href="enviar-caso.html" class="btn-send-case">
+        <i class="fas fa-paper-plane"></i>
+        <span>Enviar Caso</span>
+    </a>
+</div>
