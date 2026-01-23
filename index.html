@@ -3,250 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio Dental CAD/CAM | J. Alejandro Carvajal</title>
-    <meta name="description" content="Portafolio profesional de casos dentales CAD/CAM - Exocad, 3Shape, Inlab">
-    <link rel="stylesheet" href="css/styles.css">
+    <title>PRODIGY | Diseño Dental Digital Premium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- BOTONES FLOTANTES DE REDES SOCIALES -->
-    <div class="social-float-container">
-        <a href="https://wa.me/573219581949?text=Hola,%20vi%20tu%20portafolio%20dental%20y%20me%20interesa%20más%20información" 
-           class="social-float whatsapp-float" 
-           target="_blank"
-           title="WhatsApp">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">🦷 PRODIGY</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#remote-design" class="nav-link">Diseño Remoto</a></li>
+                <li><a href="#courses" class="nav-link">Cursos</a></li>
+                <li>
+                    <a href="https://wa.me/573219581949?text=Hola,%20quiero%20más%20información" 
+                       class="nav-cta" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Contactar
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Social Float -->
+    <div class="social-float">
+        <a href="https://wa.me/573219581949" class="social-btn social-whatsapp" target="_blank">
             <i class="fab fa-whatsapp"></i>
         </a>
-        <a href="https://www.instagram.com/jackcarvajal/" 
-           class="social-float instagram-float" 
-           target="_blank"
-           title="Instagram">
+        <a href="https://www.instagram.com/jackcarvajal/" class="social-btn social-instagram" target="_blank">
             <i class="fab fa-instagram"></i>
         </a>
-        <a href="https://www.linkedin.com/in/j-alejandro-carvajal/" 
-           class="social-float linkedin-float" 
-           target="_blank"
-           title="LinkedIn">
+        <a href="https://www.linkedin.com/in/j-alejandro-carvajal/" class="social-btn social-linkedin" target="_blank">
             <i class="fab fa-linkedin-in"></i>
         </a>
     </div>
 
-    <!-- Header -->
-    <header class="header">
+    <!-- HOME - Portfolio Section -->
+    <section id="home">
         <div class="container">
-            <div class="header-content">
-                <div class="brand">
-                    <h1 class="brand-title">🦷 J. Alejandro Carvajal</h1>
-                    <p class="brand-subtitle">Diseñador Dental CAD/CAM • Especialista en Exocad</p>
-                    <div class="brand-social">
-                        <a href="https://wa.me/573219581949" target="_blank" title="WhatsApp">
-                            <i class="fab fa-whatsapp"></i> +57 321 958 1949
-                        </a>
-                        <a href="https://www.instagram.com/jackcarvajal/" target="_blank" title="Instagram">
-                            <i class="fab fa-instagram"></i> @jackcarvajal
-                        </a>
-                        <a href="https://www.linkedin.com/in/j-alejandro-carvajal/" target="_blank" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i> LinkedIn
-                        </a>
-                    </div>
-                </div>
-                <div class="header-stats">
-                    <div class="stat-item">
-                        <span class="stat-number" id="total-patients">0</span>
-                        <span class="stat-label">Casos</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">Multi</span>
-                        <span class="stat-label">Platform</span>
-                    </div>
+            <div class="hero-content">
+                <h1 class="hero-title">You Scan. We Design.</h1>
+                <p class="hero-subtitle">
+                    Diseño dental digital de alta precisión con tecnología CAD/CAM<br>
+                    Exocad • 3Shape • Workflow profesional para tu laboratorio
+                </p>
+                <div class="hero-cta">
+                    <a href="#remote-design" class="btn btn-primary">
+                        <i class="fas fa-laptop-code"></i> Servicio Remoto
+                    </a>
+                    <a href="#courses" class="btn btn-secondary">
+                        <i class="fas fa-graduation-cap"></i> Ver Cursos
+                    </a>
                 </div>
             </div>
 
-            <!-- Software y Escáneres -->
-            <div class="software-banner">
-                <div class="banner-section">
-                    <h4><i class="fas fa-laptop-code"></i> Software</h4>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Exocad</span>
-                        <span class="tech-tag">3Shape</span>
-                        <span class="tech-tag">3Shape Ortho</span>
-                        <span class="tech-tag">CEREC Inlab</span>
-                        <span class="tech-tag">DentalCAD</span>
-                        <span class="tech-tag">Dental System</span>
+            <div class="portfolio-filters">
+                <button class="filter-btn active" data-filter="all">Todos los Casos</button>
+                <button class="filter-btn" data-filter="rehabilitacion">🔬 Rehabilitación</button>
+                <button class="filter-btn" data-filter="implantes">⚙️ Implantes</button>
+                <button class="filter-btn" data-filter="estetica">✨ Estética</button>
+                <button class="filter-btn" data-filter="ferulas">🛡️ Férulas</button>
+                <button class="filter-btn" data-filter="ortodoncia">📐 Ortodoncia</button>
+            </div>
+
+            <div class="portfolio-grid" id="portfolioGrid"></div>
+        </div>
+    </section>
+
+    <!-- REMOTE DESIGN Section -->
+    <section id="remote-design">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Diseño Remoto 24/7</h2>
+                <p class="section-subtitle">
+                    Servicio profesional de diseño dental digital. Tú escaneas, nosotros diseñamos.
+                    Entrega en 24-48 horas con calidad garantizada.
+                </p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-camera"></i>
                     </div>
+                    <h3>Escaneas</h3>
+                    <p>Realiza el escaneo intraoral con cualquier escáner. Aceptamos todos los formatos.</p>
                 </div>
-                <div class="banner-section">
-                    <h4><i class="fas fa-scanner"></i> Escáneres Aceptados</h4>
-                    <div class="tech-tags">
-                        <span class="tech-tag">iTero</span>
-                        <span class="tech-tag">TRIOS</span>
-                        <span class="tech-tag">Medit</span>
-                        <span class="tech-tag">Primescan</span>
-                        <span class="tech-tag">Carestream</span>
-                        <span class="tech-tag">Todos STL/PLY</span>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3>Subes Archivos</h3>
+                    <p>Envía por Drive, WhatsApp o WeTransfer. Servicio disponible 24/7.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Diseñamos</h3>
+                    <p>Nuestro equipo diseña con Exocad o 3Shape. Calidad profesional certificada.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Recibes Listo</h3>
+                    <p>Archivo optimizado listo para fresar o imprimir en 24-48 horas.</p>
+                </div>
+            </div>
+
+            <div class="upload-wrapper">
+                <div class="upload-box">
+                    <div class="upload-icon-big">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3>Envía Tus Archivos</h3>
+                    <p>Elige tu método preferido de envío</p>
+                    
+                    <div class="upload-buttons">
+                        <a href="https://wa.me/573219581949?text=Hola,%20necesito%20enviar%20archivos%20STL%20para%20diseño" 
+                           class="btn-upload whatsapp" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Enviar por WhatsApp
+                        </a>
+                        <a href="https://drive.google.com/drive/folders/TU_LINK_AQUI" 
+                           class="btn-upload drive" target="_blank">
+                            <i class="fab fa-google-drive"></i> Subir a Google Drive
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
+    </section>
 
-    <!-- Main Content -->
-    <main class="main-content">
+    <!-- COURSES Section -->
+    <section id="courses">
         <div class="container">
-            <!-- Controles -->
-            <section class="controls">
-                <div class="search-box">
-                    <input type="text" id="search-input" class="search-input" 
-                           placeholder="🔍 Buscar por nombre, código o tipo de caso...">
-                </div>
-                <div class="filter-chips">
-                    <button class="filter-chip active" data-type="all">Todos</button>
-                    <button class="filter-chip" data-type="rehabilitacion">🔬 Rehabilitación</button>
-                    <button class="filter-chip" data-type="implantes">⚙️ Implantes</button>
-                    <button class="filter-chip" data-type="estetica">✨ Estética</button>
-                    <button class="filter-chip" data-type="ferulas">🛡️ Férulas</button>
-                </div>
-            </section>
+            <div class="section-header">
+                <h2 class="section-title">Cursos de Exocad</h2>
+                <p class="section-subtitle">
+                    Capacitación profesional certificada. Aprende con expertos y lleva tu laboratorio al siguiente nivel.
+                </p>
+            </div>
 
-            <!-- Grid de Pacientes -->
-            <section class="patients-section">
-                <div class="section-header">
-                    <h2 class="section-title">Portafolio de Casos Clínicos</h2>
-                    <p class="section-subtitle" id="results-count">Cargando casos...</p>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-badge online">💻 ONLINE</div>
+                    <div class="course-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Curso Online</h3>
+                    <p>Aprende desde casa con clases en vivo por Zoom. Grabaciones incluidas.</p>
+                    <ul class="course-features">
+                        <li><i class="fas fa-check"></i> Clases en vivo por Zoom</li>
+                        <li><i class="fas fa-check"></i> Acceso a grabaciones</li>
+                        <li><i class="fas fa-check"></i> Material descargable</li>
+                        <li><i class="fas fa-check"></i> Certificado digital</li>
+                        <li><i class="fas fa-check"></i> Soporte 30 días</li>
+                    </ul>
+                    <a href="https://wa.me/573219581949?text=Hola,%20quiero%20información%20sobre%20el%20CURSO%20ONLINE%20de%20Exocad" 
+                       class="btn-course" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Consultar Disponibilidad
+                    </a>
                 </div>
-                <div class="patients-grid" id="patients-grid"></div>
-                <div class="empty-state" id="empty-state" style="display: none;">
-                    <div class="empty-icon">🔍</div>
-                    <h3>No se encontraron casos</h3>
-                    <p>Intenta con otros términos de búsqueda</p>
+
+                <div class="course-card featured">
+                    <div class="course-badge presencial">⭐ PRESENCIAL</div>
+                    <div class="featured-ribbon">Más Popular</div>
+                    <div class="course-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Curso Presencial</h3>
+                    <p>Capacitación intensiva hands-on en Bogotá con equipos profesionales.</p>
+                    <ul class="course-features">
+                        <li><i class="fas fa-check"></i> Práctica con escáneres reales</li>
+                        <li><i class="fas fa-check"></i> Computador individual Exocad</li>
+                        <li><i class="fas fa-check"></i> Casos clínicos reales</li>
+                        <li><i class="fas fa-check"></i> Certificado físico + digital</li>
+                        <li><i class="fas fa-check"></i> Coffee break y almuerzo</li>
+                        <li><i class="fas fa-check"></i> Grupos reducidos (máx 6)</li>
+                    </ul>
+                    <a href="https://wa.me/573219581949?text=Hola,%20quiero%20RESERVAR%20CUPO%20para%20el%20curso%20PRESENCIAL%20de%20Exocad" 
+                       class="btn-course btn-course-featured" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Reservar Cupo Ahora
+                    </a>
                 </div>
-            </section>
+
+                <div class="course-card">
+                    <div class="course-badge">🎓 EMPRESARIAL</div>
+                    <div class="course-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>In-Company</h3>
+                    <p>Capacitación personalizada para tu equipo en tu laboratorio o clínica.</p>
+                    <ul class="course-features">
+                        <li><i class="fas fa-check"></i> Horario 100% flexible</li>
+                        <li><i class="fas fa-check"></i> Contenido personalizado</li>
+                        <li><i class="fas fa-check"></i> Usamos tu equipo</li>
+                        <li><i class="fas fa-check"></i> Certificados para todos</li>
+                        <li><i class="fas fa-check"></i> Consultoría workflow</li>
+                    </ul>
+                    <a href="https://wa.me/573219581949?text=Hola,%20necesito%20cotización%20para%20CAPACITACIÓN%20EMPRESARIAL" 
+                       class="btn-course" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Solicitar Cotización
+                    </a>
+                </div>
+            </div>
         </div>
-    </main>
+    </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>J. Alejandro Carvajal</h4>
-                    <p>Diseñador Dental CAD/CAM</p>
-                    <p>Especialista en Workflow Digital</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Contacto</h4>
-                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/573219581949" target="_blank">+57 321 958 1949</a></p>
-                    <p><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/jackcarvajal/" target="_blank">@jackcarvajal</a></p>
-                    <p><i class="fab fa-linkedin-in"></i> <a href="https://www.linkedin.com/in/j-alejandro-carvajal/" target="_blank">LinkedIn</a></p>
-                </div>
-                <div class="footer-col">
-                    <h4>Tecnología</h4>
-                    <p>Exocad • 3Shape • Inlab</p>
-                    <p>Workflow Digital Completo</p>
-                    <p>Todos los formatos: STL, PLY, OBJ</p>
-                </div>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>PRODIGY</h4>
+                <p>Diseño Dental Digital Profesional</p>
+                <p>Especialistas en CAD/CAM</p>
+                <p>+10 años de experiencia</p>
+                <p>Bogotá, Colombia</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; <span id="current-year">2025</span> J. Alejandro Carvajal | Portafolio Dental CAD/CAM</p>
+
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <a href="https://wa.me/573219581949" target="_blank">
+                    <i class="fab fa-whatsapp"></i> +57 321 958 1949
+                </a>
+                <a href="https://www.instagram.com/jackcarvajal/" target="_blank">
+                    <i class="fab fa-instagram"></i> @jackcarvajal
+                </a>
+                <a href="https://www.linkedin.com/in/j-alejandro-carvajal/" target="_blank">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
             </div>
+
+            <div class="footer-col">
+                <h4>Servicios</h4>
+                <p>• Prótesis CAD/CAM</p>
+                <p>• Guías Quirúrgicas</p>
+                <p>• Alineadores Invisibles</p>
+                <p>• Implantología Digital</p>
+                <p>• Modelos 3D</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Tecnología</h4>
+                <p>Exocad • 3Shape • CEREC</p>
+                <p>Todos los escáneres</p>
+                <p>STL • PLY • OBJ • DCM</p>
+                <p>Diseño Remoto 24/7</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 PRODIGY | Diseño Dental Digital Premium</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="js/patients-data.js"></script>
-    <script>
-        let currentFilter = 'all';
-        let currentSearch = '';
-
-        function renderPatients() {
-            const grid = document.getElementById('patients-grid');
-            const emptyState = document.getElementById('empty-state');
-            const resultsCount = document.getElementById('results-count');
-            
-            let filteredPatients = PATIENTS_DATA.filter(patient => {
-                const matchesType = currentFilter === 'all' || patient.type === currentFilter;
-                const matchesSearch = patient.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
-                                    patient.code.toLowerCase().includes(currentSearch.toLowerCase()) ||
-                                    patient.description.toLowerCase().includes(currentSearch.toLowerCase());
-                return matchesType && matchesSearch;
-            });
-
-            document.getElementById('total-patients').textContent = PATIENTS_DATA.length;
-            resultsCount.textContent = `${filteredPatients.length} ${filteredPatients.length === 1 ? 'caso' : 'casos'} ${currentFilter !== 'all' ? 'en esta categoría' : 'disponibles'}`;
-
-            if (filteredPatients.length === 0) {
-                grid.style.display = 'none';
-                emptyState.style.display = 'flex';
-                return;
-            } else {
-                grid.style.display = 'grid';
-                emptyState.style.display = 'none';
-            }
-
-            grid.innerHTML = filteredPatients.map(patient => `
-                <article class="patient-card" data-type="${patient.type}">
-                    <a href="patient.html?id=${patient.id}" class="card-link">
-                        <div class="card-image">
-                            <img src="${patient.coverImage}" alt="${patient.name}" loading="lazy" 
-                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%231e293b%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22%2364748b%22 font-size=%2248%22 text-anchor=%22middle%22 dy=%22.3em%22%3E🦷%3C/text%3E%3C/svg%3E'">
-                            <div class="card-overlay">
-                                <span class="view-case">Ver Caso Completo →</span>
-                            </div>
-                            <div class="card-badge">${getTypeBadge(patient.type)}</div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-header">
-                                <h3 class="card-title">${patient.name}</h3>
-                                <span class="card-code">${patient.code}</span>
-                            </div>
-                            <p class="card-description">${patient.description}</p>
-                            <div class="card-meta">
-                                <div class="meta-item">
-                                    <span class="meta-icon">📅</span>
-                                    <span>${patient.date}</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-icon">📸</span>
-                                    <span>${patient.galleryCount || 0} fotos</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </article>
-            `).join('');
-        }
-
-        function getTypeBadge(type) {
-            const badges = {
-                rehabilitacion: '🔬 Rehabilitación',
-                implantes: '⚙️ Implantes',
-                estetica: '✨ Estética',
-                ferulas: '🛡️ Férulas',
-                ortodoncia: '📐 Ortodoncia'
-            };
-            return badges[type] || '📋 Caso Dental';
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderPatients();
-
-            document.querySelectorAll('.filter-chip').forEach(chip => {
-                chip.addEventListener('click', (e) => {
-                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-                    e.target.classList.add('active');
-                    currentFilter = e.target.dataset.type;
-                    renderPatients();
-                });
-            });
-
-            const searchInput = document.getElementById('search-input');
-            searchInput.addEventListener('input', (e) => {
-                currentSearch = e.target.value;
-                renderPatients();
-            });
-
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-        });
-    </script>
+    <script src="js/main.js"></script>
 </body>
 </html>
