@@ -681,6 +681,10 @@
                 <button class="payment-btn btn-banco" onclick="showPayModal('banco')">🏦 BRE-B</button>
             </div>
 
+            <button onclick="pagarConWompi()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-top:10px;">
+                💳 Pagar con Wompi (PSE / Tarjeta)
+            </button>
+
             <!-- CONFIRMACIÓN DE PAGO -->
             <div class="accordion" style="border:1.5px solid rgba(212,175,55,.3);margin-bottom:0;">
                 <div class="accordion-header" onclick="toggleAccordion(this)" style="padding:13px 16px;">
@@ -1270,5 +1274,16 @@
     </div>
     <div id="google_translate_element" style="position:fixed;bottom:90px;right:80px;z-index:9999;display:none;background:rgba(0,0,0,0.92);border:1px solid rgba(212,175,55,0.3);border-radius:12px;padding:10px 14px;"></div>
 
+
+    <script src="js/pagos.js"></script>
+    <script>
+    function pagarConWompi() {
+        const totalEl = document.getElementById('calc-total');
+        const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;
+        if (!monto) { alert('Selecciona un servicio para calcular el total.'); return; }
+        const ref = 'PRD-DIS-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+        abrirCheckoutWompi({ monto, referencia: ref, descripcion: 'PRODIGY — Diseño CAD' });
+    }
+    </script>
 </body>
 </html>

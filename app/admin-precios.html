@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>PRODIGY — Admin Precios</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="../js/auth-guard.js"></script>
+    <style>
+        body { visibility: hidden; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #050505; --sidebar: #0d0a00; --card: #14100a;
+            --gold: #D4AF37; --gold2: #D946A6; --cyan: #00d2ff; --green: #00FF41;
+            --text: #fff; --muted: #64748b; --border: rgba(212,175,55,0.15);
+        }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; }
+
+        /* ── SIDEBAR (igual que admin-panel) ─────────────────────── */
+        .sidebar {
+            width: 240px; min-height: 100vh; background: var(--sidebar);
+            border-right: 1px solid var(--border); padding: 24px 16px;
+            display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
+        }
+        .sidebar-logo { text-align: center; padding: 12px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+        .sidebar-logo h1 { font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; color: var(--gold); }
+        .sidebar-logo p  { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+        .role-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; padding: 3px 10px; font-size: 0.65rem; font-weight: 700; color: var(--gold); margin-top: 8px; }
+        .nav-section { font-size: 0.62rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 1.5px; padding: 16px 12px 6px; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #94a3b8; text-decoration: none; transition: all 0.2s; }
+        .nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
+        .nav-item.active { background: rgba(212,175,55,0.1); color: var(--gold); border: 1px solid rgba(212,175,55,0.25); }
+        .nav-item i { width: 16px; text-align: center; }
+        .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
+
+        /* ── MAIN ────────────────────────────────────────────────── */
+        .main { flex: 1; padding: 32px; overflow-y: auto; }
+        .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+        .page-header h1 { font-size: 1.5rem; font-weight: 900; color: #fff; }
+        .page-header p  { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+        /* ── FILTROS ─────────────────────────────────────────────── */
+        .filtros-bar {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center;
+        }
+        .filtro-btn {
+            padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.12); background: transparent; color: #94a3b8;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .filtro-btn:hover  { border-color: rgba(255,255,255,0.3); color: #fff; }
+        .filtro-btn.active { background: rgba(212,175,55,0.12); border-color: rgba(212,175,55,0.45); color: var(--gold); }
+        .search-input {
+            padding: 7px 14px; border-radius: 20px; font-size: 0.78rem;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; outline: none; min-width: 200px; margin-left: auto;
+        }
+        .search-input::placeholder { color: #475569; }
+        .search-input:focus { border-color: rgba(212,175,55,0.4); }
+
+        /* ── TABLA CATÁLOGO ──────────────────────────────────────── */
+        .tabla-wrap {
+            background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+        }
+        .tabla-header {
+            padding: 16px 22px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .tabla-header h2 { font-size: 0.9rem; font-weight: 800; color: #fff; }
+        .item-count { font-size: 0.72rem; color: var(--muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        th { padding: 10px 16px; text-align: left; color: var(--muted); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.8px; border-bottom: 1px solid rgba(255,255,255,0.05); white-space: nowrap; }
+        td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); color: #e2e8f0; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,255,255,0.015); }
+
+        /* Celda editable de precio */
+        .precio-cell {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .precio-input {
+            width: 90px; padding: 6px 10px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 7px; color: var(--gold); font-weight: 700; font-size: 0.82rem;
+            outline: none; transition: border-color 0.2s;
+        }
+        .precio-input:focus { border-color: rgba(212,175,55,0.5); background: rgba(212,175,55,0.05); }
+        .precio-input.changed { border-color: rgba(251,191,36,0.7); background: rgba(251,191,36,0.06); }
+        .precio-input.saved   { border-color: rgba(0,255,65,0.5); background: rgba(0,255,65,0.04); }
+
+        .btn-save {
+            padding: 5px 11px; background: rgba(0,255,65,0.1); border: 1px solid rgba(0,255,65,0.3);
+            color: var(--green); border-radius: 6px; font-size: 0.7rem; font-weight: 800;
+            cursor: pointer; transition: all 0.2s; display: none; align-items: center; gap: 4px;
+        }
+        .btn-save.visible { display: inline-flex; }
+        .btn-save:hover { background: rgba(0,255,65,0.18); }
+
+        /* Toggle activo */
+        .toggle-wrap { display: flex; align-items: center; gap: 8px; }
+        .toggle {
+            width: 36px; height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;
+            position: relative; cursor: pointer; transition: background 0.25s; flex-shrink: 0;
+        }
+        .toggle.on { background: rgba(0,255,65,0.4); border: 1px solid rgba(0,255,65,0.5); }
+        .toggle::after {
+            content: ''; position: absolute; width: 14px; height: 14px;
+            background: #fff; border-radius: 50%; top: 3px; left: 3px; transition: left 0.2s;
+        }
+        .toggle.on::after { left: 19px; }
+
+        .cat-badge {
+            display: inline-block; padding: 2px 9px; border-radius: 20px;
+            font-size: 0.68rem; font-weight: 700;
+        }
+
+        /* ── TABLA EXTRAS ────────────────────────────────────────── */
+        .section-extras {
+            background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+            overflow: hidden; margin-top: 24px;
+        }
+
+        /* ── TOAST ───────────────────────────────────────────────── */
+        #toast {
+            position: fixed; bottom: 28px; right: 28px;
+            background: #111; border: 1px solid rgba(0,255,65,0.4); border-radius: 10px;
+            padding: 12px 20px; font-size: 0.82rem; color: var(--green);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: none; align-items: center; gap: 10px; z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn { from { transform: translateY(20px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+
+        /* Resumen de cambios pendientes */
+        #pending-bar {
+            display: none; position: sticky; top: 0; z-index: 100;
+            background: linear-gradient(90deg, rgba(251,191,36,0.12), rgba(212,175,55,0.08));
+            border: 1px solid rgba(251,191,36,0.35); border-radius: 10px;
+            padding: 10px 18px; margin-bottom: 16px;
+            align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+        }
+        .btn-save-all {
+            padding: 8px 18px; background: linear-gradient(135deg,var(--gold),#B8860B);
+            color: #000; border: none; border-radius: 8px; font-size: 0.8rem; font-weight: 800;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .btn-save-all:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(212,175,55,0.4); }
+
+        @media(max-width:768px){ .sidebar{ display:none; } table{ font-size:0.72rem; } }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <h1>PRODIGY</h1>
+        <p>Digital Dentistry</p>
+        <div class="role-badge"><i class="fas fa-crown"></i> Admin CEO</div>
+    </div>
+    <p class="nav-section">Operaciones</p>
+    <a href="admin-panel.html"  class="nav-item"><i class="fas fa-chart-line"></i> Dashboard</a>
+    <a href="#"                 class="nav-item"><i class="fas fa-folder-open"></i> Todos los Casos</a>
+    <a href="#"                 class="nav-item"><i class="fas fa-users-gear"></i> Asignar Operadores</a>
+    <p class="nav-section">Configuración</p>
+    <a href="admin-precios.html" class="nav-item active"><i class="fas fa-tags"></i> Precios y Catálogo</a>
+    <a href="#"                  class="nav-item"><i class="fas fa-users"></i> Usuarios</a>
+    <div class="sidebar-footer">
+        <a href="login.html" class="nav-item" onclick="sessionStorage.clear()"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+    <div class="page-header">
+        <div>
+            <h1><i class="fas fa-tags" style="color:var(--gold);margin-right:10px;font-size:1.2rem;"></i>Catálogo de Precios</h1>
+            <p>Tabla <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#94a3b8;">catalogo</code> · Edita y guarda precios en tiempo real · Cambios reflejados inmediatamente en calculadoras</p>
+        </div>
+        <button onclick="exportarCSV()" style="padding:9px 18px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);color:var(--gold);border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;">
+            <i class="fas fa-download"></i> Exportar CSV
+        </button>
+    </div>
+
+    <!-- PENDING BAR -->
+    <div id="pending-bar">
+        <span style="font-size:0.82rem;color:#fbbf24;"><i class="fas fa-circle-exclamation"></i> <strong id="pending-count">0</strong> cambio(s) sin guardar</span>
+        <div style="display:flex;gap:8px;">
+            <button onclick="descartarCambios()" style="padding:7px 14px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:#94a3b8;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;">Descartar</button>
+            <button class="btn-save-all" onclick="guardarTodo()"><i class="fas fa-check"></i> Guardar Todo</button>
+        </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros-bar">
+        <button class="filtro-btn active" onclick="filtrar('todos',this)">Todos</button>
+        <button class="filtro-btn" onclick="filtrar('resina_modelo',this)" data-cat="resina_modelo">Modelos</button>
+        <button class="filtro-btn" onclick="filtrar('resina_temporal',this)" data-cat="resina_temporal">Temporales</button>
+        <button class="filtro-btn" onclick="filtrar('resina_definitiva',this)" data-cat="resina_definitiva">Definitivas</button>
+        <button class="filtro-btn" onclick="filtrar('resina_calcinable',this)" data-cat="resina_calcinable">Calcinables</button>
+        <button class="filtro-btn" onclick="filtrar('resina_ferulas_guias',this)" data-cat="resina_ferulas_guias">Férulas</button>
+        <button class="filtro-btn" onclick="filtrar('resina_biomodelos',this)" data-cat="resina_biomodelos">Biomodelos</button>
+        <button class="filtro-btn" onclick="filtrar('diseno_cad',this)" data-cat="diseno_cad">Diseño CAD</button>
+        <input type="text" class="search-input" placeholder="🔍 Buscar por nombre..." oninput="buscar(this.value)">
+    </div>
+
+    <!-- TABLA CATÁLOGO -->
+    <div class="tabla-wrap">
+        <div class="tabla-header">
+            <h2><i class="fas fa-table-list" style="color:var(--gold);margin-right:8px;"></i>Ítems del Catálogo</h2>
+            <span class="item-count" id="item-count">Cargando...</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Categoría</th>
+                    <th>Nombre del Ítem</th>
+                    <th>Precio (COP)</th>
+                    <th>Fast Ready</th>
+                    <th>Activo</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-body">
+                <tr><td colspan="7" style="text-align:center;padding:28px;color:var(--muted);">
+                    <i class="fas fa-circle-notch fa-spin"></i> Cargando catálogo desde supabase-mock...
+                </td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TABLA EXTRAS/RECARGOS -->
+    <div class="section-extras">
+        <div class="tabla-header">
+            <h2><i class="fas fa-plus-circle" style="color:var(--cyan);margin-right:8px;"></i>Extras y Recargos</h2>
+            <span class="item-count">tabla <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#64748b;">config_precios</code></span>
+        </div>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Nombre</th><th>Tipo</th><th>Precio (COP)</th><th>Acción</th></tr>
+            </thead>
+            <tbody id="extras-body">
+                <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted);">
+                    <i class="fas fa-circle-notch fa-spin"></i> Cargando...
+                </td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- NOTA MIGRACIÓN -->
+    <div style="margin-top:24px;background:rgba(0,210,255,0.04);border:1px solid rgba(0,210,255,0.15);border-radius:12px;padding:18px 20px;font-size:0.8rem;color:#94a3b8;line-height:1.7;">
+        <i class="fas fa-database" style="color:var(--cyan);margin-right:8px;"></i>
+        <strong style="color:var(--cyan);">Datos vía supabase-mock.js</strong> — Las ediciones persisten solo en memoria de sesión.
+        Al conectar <strong style="color:#fff;">Supabase real</strong>, cada <code style="color:#fbbf24;">updatePrecio(id, valor)</code> hará un
+        <code style="color:#fbbf24;">UPDATE catalogo SET precio = $1 WHERE id = $2</code> en PostgreSQL.
+        La UI de esta tabla no cambiará — solo cambia la fuente de datos.
+    </div>
+</main>
+
+<!-- TOAST -->
+<div id="toast"><i class="fas fa-check-circle"></i> <span id="toast-msg">Guardado</span></div>
+
+<script type="module">
+    import { supabase, updatePrecio } from '../js/supabase-mock.js';
+
+    // ── Guardia de sesión real ─────────────────────────────────
+    await ProdigyAuth.require('admin');
+
+    // ── Estado de cambios pendientes ──────────────────────────
+    const pendingChanges = new Map(); // id → nuevoPrecio
+
+    function formatCOP(n) { return '$' + Number(n).toLocaleString('es-CO'); }
+
+    const CAT_COLORS = {
+        resina_modelo:        { label:'Modelos',      bg:'rgba(0,210,255,0.1)',    color:'#00d2ff' },
+        resina_temporal:      { label:'Temporales',   bg:'rgba(251,191,36,0.1)',   color:'#fbbf24' },
+        resina_definitiva:    { label:'Definitivas',  bg:'rgba(167,139,250,0.1)',  color:'#a78bfa' },
+        resina_calcinable:    { label:'Calcinables',  bg:'rgba(251,146,60,0.1)',   color:'#fb923c' },
+        resina_ferulas_guias: { label:'Férulas/Guías',bg:'rgba(16,185,129,0.1)',   color:'#10b981' },
+        resina_biomodelos:    { label:'Biomodelos',   bg:'rgba(212,197,169,0.1)',  color:'#d4c5a9' },
+        diseno_cad:           { label:'Diseño CAD',   bg:'rgba(217,70,166,0.1)',   color:'#D946A6' },
+    };
+
+    let allItems   = [];
+    let filtroActivo = 'todos';
+    let busquedaActiva = '';
+
+    // ── Cargar catálogo ───────────────────────────────────────
+    async function cargarCatalogo() {
+        const { data, error } = await supabase.from('catalogo').select('*');
+        if (error) { document.getElementById('tabla-body').innerHTML = `<tr><td colspan="7" style="color:#ef4444;padding:20px;text-align:center;">${error.message}</td></tr>`; return; }
+        allItems = data;
+        renderTabla(data);
+    }
+
+    function renderTabla(items) {
+        const tbody = document.getElementById('tabla-body');
+        document.getElementById('item-count').textContent = items.length + ' ítems';
+
+        if (!items.length) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Sin resultados</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = items.map(item => {
+            const cc  = CAT_COLORS[item.categoria] || { label: item.categoria, bg:'rgba(255,255,255,0.06)', color:'#94a3b8' };
+            const hasPending = pendingChanges.has(item.id);
+            return `
+            <tr id="row-${item.id}">
+                <td><code style="font-size:0.7rem;color:#475569;">${item.id}</code></td>
+                <td><span class="cat-badge" style="background:${cc.bg};color:${cc.color};">${cc.label}</span></td>
+                <td style="max-width:280px;">${item.nombre}<br><span style="font-size:0.72rem;color:var(--muted);">${item.descripcion || ''}</span></td>
+                <td>
+                    <div class="precio-cell">
+                        <input type="number" class="precio-input ${hasPending ? 'changed' : ''}"
+                               id="precio-${item.id}"
+                               value="${item.precio}"
+                               min="1000" step="1000"
+                               onchange="onPrecioChange('${item.id}', this)"
+                               oninput="onPrecioChange('${item.id}', this)">
+                        <span style="font-size:0.7rem;color:var(--muted);">${formatCOP(item.precio)}</span>
+                    </div>
+                </td>
+                <td style="text-align:center;">
+                    ${item.fast_ready ? '<i class="fas fa-bolt" style="color:#fbbf24;" title="Fast Ready"></i>' : '<span style="color:#475569;">—</span>'}
+                </td>
+                <td>
+                    <div class="toggle-wrap">
+                        <div class="toggle ${item.activo ? 'on' : ''}" id="toggle-${item.id}" onclick="toggleActivo('${item.id}', this)" title="${item.activo ? 'Activo' : 'Inactivo'}"></div>
+                        <span style="font-size:0.72rem;color:var(--muted);" id="toggle-label-${item.id}">${item.activo ? 'Activo' : 'Inactivo'}</span>
+                    </div>
+                </td>
+                <td>
+                    <button class="btn-save ${hasPending ? 'visible' : ''}" id="btn-${item.id}" onclick="guardarUno('${item.id}')">
+                        <i class="fas fa-check"></i> Guardar
+                    </button>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    // ── Cargar extras ─────────────────────────────────────────
+    async function cargarExtras() {
+        const { data } = await supabase.from('config_precios').select('*');
+        const tbody = document.getElementById('extras-body');
+        tbody.innerHTML = data.map(item => `
+            <tr id="extra-row-${item.id}">
+                <td><code style="font-size:0.7rem;color:#475569;">${item.id}</code></td>
+                <td>${item.nombre}</td>
+                <td><span style="font-size:0.72rem;color:#94a3b8;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:10px;">${item.tipo}</span></td>
+                <td>
+                    <div class="precio-cell">
+                        <input type="number" class="precio-input" id="extra-precio-${item.id}"
+                               value="${item.precio}" min="0" step="1000"
+                               onchange="onExtraChange('${item.id}', this)"
+                               oninput="onExtraChange('${item.id}', this)">
+                        <span style="font-size:0.7rem;color:var(--muted);">${formatCOP(item.precio)}</span>
+                    </div>
+                </td>
+                <td>
+                    <button class="btn-save" id="extra-btn-${item.id}" onclick="guardarExtra('${item.id}')">
+                        <i class="fas fa-check"></i> Guardar
+                    </button>
+                </td>
+            </tr>`).join('');
+    }
+
+    // ── Handlers ──────────────────────────────────────────────
+    window.onPrecioChange = (id, input) => {
+        const original = allItems.find(x => x.id === id)?.precio;
+        const nuevo    = parseInt(input.value);
+        if (nuevo !== original && !isNaN(nuevo)) {
+            pendingChanges.set(id, nuevo);
+            input.classList.add('changed');
+            input.classList.remove('saved');
+            document.getElementById('btn-' + id)?.classList.add('visible');
+        } else {
+            pendingChanges.delete(id);
+            input.classList.remove('changed');
+            document.getElementById('btn-' + id)?.classList.remove('visible');
+        }
+        actualizarPendingBar();
+    };
+
+    window.onExtraChange = (id, input) => {
+        const btn = document.getElementById('extra-btn-' + id);
+        btn?.classList.add('visible');
+        input.classList.add('changed');
+    };
+
+    window.toggleActivo = async (id, el) => {
+        el.classList.toggle('on');
+        const activo = el.classList.contains('on');
+        document.getElementById('toggle-label-' + id).textContent = activo ? 'Activo' : 'Inactivo';
+        await supabase.from('catalogo').update({ activo }).eq('id', id);
+        const item = allItems.find(x => x.id === id);
+        if (item) item.activo = activo;
+        showToast(activo ? 'Ítem activado' : 'Ítem desactivado');
+    };
+
+    window.guardarUno = async (id) => {
+        const nuevo = pendingChanges.get(id);
+        if (nuevo === undefined) return;
+        const { error } = await updatePrecio(id, nuevo);
+        if (!error) {
+            const item = allItems.find(x => x.id === id);
+            if (item) item.precio = nuevo;
+            pendingChanges.delete(id);
+            const input = document.getElementById('precio-' + id);
+            input.classList.remove('changed');
+            input.classList.add('saved');
+            document.getElementById('btn-' + id)?.classList.remove('visible');
+            actualizarPendingBar();
+            showToast('Precio actualizado: ' + formatCOP(nuevo));
+        }
+    };
+
+    window.guardarExtra = async (id) => {
+        const input = document.getElementById('extra-precio-' + id);
+        const nuevo = parseInt(input.value);
+        const { error } = await supabase.from('config_precios').update({ precio: nuevo }).eq('id', id);
+        if (!error) {
+            input.classList.remove('changed');
+            input.classList.add('saved');
+            document.getElementById('extra-btn-' + id)?.classList.remove('visible');
+            showToast('Extra actualizado: ' + formatCOP(nuevo));
+        }
+    };
+
+    window.guardarTodo = async () => {
+        const ids = [...pendingChanges.keys()];
+        for (const id of ids) await window.guardarUno(id);
+        showToast('✅ ' + ids.length + ' precios guardados');
+    };
+
+    window.descartarCambios = () => {
+        pendingChanges.clear();
+        renderTabla(itemsFiltrados());
+        actualizarPendingBar();
+    };
+
+    function actualizarPendingBar() {
+        const bar   = document.getElementById('pending-bar');
+        const count = pendingChanges.size;
+        bar.style.display = count > 0 ? 'flex' : 'none';
+        document.getElementById('pending-count').textContent = count;
+    }
+
+    // ── Filtros / Búsqueda ────────────────────────────────────
+    function itemsFiltrados() {
+        let items = allItems;
+        if (filtroActivo !== 'todos') items = items.filter(i => i.categoria === filtroActivo);
+        if (busquedaActiva) items = items.filter(i => i.nombre.toLowerCase().includes(busquedaActiva.toLowerCase()));
+        return items;
+    }
+
+    window.filtrar = (cat, btn) => {
+        filtroActivo = cat;
+        document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderTabla(itemsFiltrados());
+    };
+
+    window.buscar = (q) => {
+        busquedaActiva = q;
+        renderTabla(itemsFiltrados());
+    };
+
+    // ── Toast ─────────────────────────────────────────────────
+    let toastTimer;
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        document.getElementById('toast-msg').textContent = msg;
+        t.style.display = 'flex';
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3000);
+    }
+
+    // ── Export CSV ────────────────────────────────────────────
+    window.exportarCSV = () => {
+        const rows = [['id','categoria','nombre','precio','activo','fast_ready']];
+        allItems.forEach(i => rows.push([i.id, i.categoria, `"${i.nombre}"`, i.precio, i.activo, i.fast_ready]));
+        const blob = new Blob([rows.map(r => r.join(',')).join('\n')], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'prodigy-catalogo-' + new Date().toISOString().slice(0,10) + '.csv';
+        a.click();
+    };
+
+    // ── Init ──────────────────────────────────────────────────
+    await cargarCatalogo();
+    await cargarExtras();
+</script>
+</body>
+</html>

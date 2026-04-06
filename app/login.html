@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>PRODIGY — Acceso Doctor</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #050505;
+            --card: #0d1525;
+            --gold: #D946A6;
+            --gold-dark: #B82F8B;
+            --gold-text: #D4AF37;
+            --cyan: #00d2ff;
+            --text: #fff;
+            --muted: #64748b;
+            --border: rgba(217,70,166,0.2);
+            --border-gold: rgba(212,175,55,0.25);
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(217,70,166,0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 80%, rgba(0,210,255,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .login-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        /* LOGO */
+        .logo-area {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .logo-icon {
+            width: 68px; height: 68px;
+            background: rgba(217,70,166,0.12);
+            border-radius: 50%;
+            border: 2px solid rgba(217,70,166,0.35);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 12px;
+        }
+        .logo-area h1 { font-size: 1.55rem; font-weight: 900; letter-spacing: 3px; color: #fff; }
+        .logo-area p  { font-size: 0.76rem; color: var(--muted); margin-top: 4px; }
+
+        /* BANNER COTIZAR */
+        .banner-cotizar {
+            background: linear-gradient(135deg,rgba(212,175,55,0.1),rgba(212,175,55,0.04));
+            border: 1px solid var(--border-gold);
+            border-radius: 10px;
+            padding: 11px 14px;
+            margin-bottom: 22px;
+            display: none;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .banner-cotizar i { color: var(--gold-text); margin-top: 2px; flex-shrink: 0; }
+        .banner-cotizar p { font-size: 0.8rem; color: #e2c97a; line-height: 1.5; }
+
+        /* TABS PRINCIPALES: Ingresar / Registrarse */
+        .main-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            margin-bottom: 26px;
+            border-bottom: 2px solid rgba(255,255,255,0.07);
+        }
+        .main-tab {
+            padding: 11px 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.83rem;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+        .main-tab.active {
+            color: var(--gold-text);
+            border-bottom-color: var(--gold-text);
+        }
+        .main-tab i { margin-right: 6px; }
+
+        /* ROLE SELECTOR (solo en login) */
+        .role-tabs {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 8px;
+            margin-bottom: 24px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px;
+            padding: 6px;
+        }
+        .role-tab {
+            padding: 9px 6px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--muted);
+            user-select: none;
+        }
+        .role-tab.active {
+            background: rgba(217,70,166,0.15);
+            color: #D946A6;
+            border: 1px solid rgba(217,70,166,0.35);
+        }
+        .role-tab i { display: block; font-size: 1.1rem; margin-bottom: 4px; }
+
+        /* FORM */
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block; font-size: 0.76rem; font-weight: 700;
+            color: #94a3b8; margin-bottom: 5px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.91rem;
+            transition: border-color 0.2s;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        .form-group select option { background: #0d1525; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 4px 18px rgba(217,70,166,0.35);
+            margin-top: 8px;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(217,70,166,0.5); }
+
+        #error-box {
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.35);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 0.82rem;
+            color: #f87171;
+            margin-bottom: 14px;
+            display: none;
+        }
+        #success-box {
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.35);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 0.82rem;
+            color: #86efac;
+            margin-bottom: 14px;
+            display: none;
+            text-align: center;
+        }
+
+        .demo-hint {
+            margin-top: 18px;
+            padding: 11px 13px;
+            background: rgba(212,175,55,0.06);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 8px;
+            font-size: 0.74rem;
+            color: #94a3b8;
+            line-height: 1.65;
+            text-align: center;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            font-size: 0.77rem;
+            color: var(--muted);
+            text-decoration: none;
+        }
+        .back-link:hover { color: var(--gold-text); }
+
+        /* Panel oculto/visible */
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+    </style>
+</head>
+<body>
+<div class="login-card">
+
+    <!-- LOGO -->
+    <div class="logo-area">
+        <div class="logo-icon">
+            <i class="fas fa-tooth" style="font-size:1.9rem;color:#D946A6;filter:drop-shadow(0 0 10px rgba(217,70,166,0.7));"></i>
+        </div>
+        <h1>PRODIGY</h1>
+        <p>Acceso Doctor · Digital Dentistry</p>
+    </div>
+
+    <!-- BANNER: aparece cuando vienen desde checkAuth -->
+    <div class="banner-cotizar" id="banner-cotizar" style="display:flex;">
+        <i class="fas fa-lock"></i>
+        <p>Para cotizar y realizar pedidos, por favor ingresa o regístrate como <strong>profesional aliado</strong>.</p>
+    </div>
+
+    <!-- TABS PRINCIPALES -->
+    <div class="main-tabs">
+        <div class="main-tab active" id="tab-login" onclick="switchMain('login')">
+            <i class="fas fa-arrow-right-to-bracket"></i>Ingresar
+        </div>
+        <div class="main-tab" id="tab-register" onclick="switchMain('register')">
+            <i class="fas fa-user-plus"></i>Registrarme
+        </div>
+    </div>
+
+    <!-- MENSAJES -->
+    <div id="error-box"><i class="fas fa-circle-exclamation"></i> <span id="error-msg"></span></div>
+    <div id="success-box" id="success-box"><i class="fas fa-check-circle"></i> <span id="success-msg"></span></div>
+
+    <!-- ============ PANEL: INGRESAR ============ -->
+    <div class="tab-panel active" id="panel-login">
+        <!-- Selector de rol -->
+        <div class="role-tabs" id="role-tabs">
+            <div class="role-tab active" onclick="setRole('client',this)">
+                <i class="fas fa-user-md"></i>Doctor
+            </div>
+            <div class="role-tab" onclick="setRole('operator',this)">
+                <i class="fas fa-drafting-compass"></i>Operador
+            </div>
+            <div class="role-tab" onclick="setRole('admin',this)">
+                <i class="fas fa-crown"></i>Admin
+            </div>
+        </div>
+
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>Correo electrónico</label>
+                <input type="email" id="login-email" placeholder="doctor@clinica.com" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="login-pass" placeholder="••••••••" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-arrow-right-to-bracket"></i> &nbsp;Ingresar al Panel
+            </button>
+        </form>
+
+        <div class="demo-hint">
+            <i class="fas fa-shield-halved" style="color:#D4AF37;"></i> &nbsp;Autenticación real con Supabase.<br>
+            <span style="color:#64748b;font-size:0.7rem;">Si olvidaste tu contraseña, contacta a PRODIGY por WhatsApp.</span>
+        </div>
+    </div>
+
+    <!-- ============ PANEL: REGISTRARSE ============ -->
+    <div class="tab-panel" id="panel-register">
+        <form onsubmit="handleRegister(event)">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" id="reg-nombre" placeholder="Dr. Juan López" required>
+                </div>
+                <div class="form-group">
+                    <label>Apellido</label>
+                    <input type="text" id="reg-apellido" placeholder="López" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Nombre de la Clínica / Consultorio</label>
+                <input type="text" id="reg-clinica" placeholder="Clínica Dental del Norte" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ciudad</label>
+                    <input type="text" id="reg-ciudad" placeholder="Bogotá" required>
+                </div>
+                <div class="form-group">
+                    <label>Especialidad</label>
+                    <select id="reg-especialidad" required>
+                        <option value="" disabled selected>Seleccionar</option>
+                        <option>Odontología General</option>
+                        <option>Prostodoncia</option>
+                        <option>Implantología</option>
+                        <option>Ortodoncia</option>
+                        <option>Endodoncia</option>
+                        <option>Cirugía Maxilofacial</option>
+                        <option>Laboratorio Dental</option>
+                        <option>Otra</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Correo electrónico profesional</label>
+                <input type="email" id="reg-email" placeholder="doctor@clinica.com" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" required minlength="8">
+            </div>
+            <div class="form-group">
+                <label>Teléfono / WhatsApp (opcional)</label>
+                <input type="tel" id="reg-tel" placeholder="+57 300 000 0000">
+            </div>
+            <button type="submit" class="btn-submit" style="background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;">
+                <i class="fas fa-user-plus"></i> &nbsp;Crear Cuenta Profesional
+            </button>
+        </form>
+
+        <p style="font-size:0.73rem;color:#64748b;text-align:center;margin-top:14px;line-height:1.5;">
+            Al registrarte aceptas nuestros <a href="../terminos-y-legal.html" style="color:#D4AF37;">Términos y Condiciones</a>.<br>
+            Tu cuenta será validada por el equipo PRODIGY.
+        </p>
+    </div>
+
+    <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Volver al sitio principal</a>
+</div>
+
+<script>
+    const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+    const ADMIN_EMAILS  = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com'];
+    const DEST_MAP      = { admin: 'panel-interno-operaciones.html', operator: 'operator-panel.html', client: 'client-panel.html' };
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    // Redirigir si ya hay sesión activa
+    sb.auth.getSession().then(({ data: { session } }) => {
+        if (session) redirectByRole(session.user);
+    });
+
+    // Banner si viene desde guard
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById('banner-cotizar').style.display =
+        (params.get('msg') === 'cotizar' || params.get('msg') === 'sesion') ? 'flex' : 'none';
+
+    function getRole(user) {
+        if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
+        return user.user_metadata?.role || 'client';
+    }
+
+    function redirectByRole(user) {
+        const role = getRole(user);
+        window.location.href = DEST_MAP[role] || 'client-panel.html';
+    }
+
+    function switchMain(tab) {
+        document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+        document.getElementById('panel-register').classList.toggle('active', tab === 'register');
+        document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+        document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+        clearMessages();
+    }
+
+    function setRole(role, el) {
+        document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function showError(msg) {
+        document.getElementById('error-msg').textContent = msg;
+        document.getElementById('error-box').style.display = 'block';
+        document.getElementById('success-box').style.display = 'none';
+    }
+
+    function showSuccess(msg) {
+        document.getElementById('success-msg').textContent = msg;
+        document.getElementById('success-box').style.display = 'block';
+        document.getElementById('error-box').style.display = 'none';
+    }
+
+    function clearMessages() {
+        document.getElementById('error-box').style.display = 'none';
+        document.getElementById('success-box').style.display = 'none';
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value.trim().toLowerCase();
+        const pass  = document.getElementById('login-pass').value;
+        const btn   = e.target.querySelector('button[type=submit]');
+        btn.disabled = true;
+        btn.textContent = 'Verificando...';
+        clearMessages();
+
+        const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> &nbsp;Ingresar al Panel';
+
+        if (error) {
+            showError(error.message === 'Invalid login credentials'
+                ? 'Correo o contraseña incorrectos.'
+                : error.message);
+            return;
+        }
+        redirectByRole(data.user);
+    }
+
+    async function handleRegister(e) {
+        e.preventDefault();
+        const nombre  = document.getElementById('reg-nombre').value.trim();
+        const apellido= document.getElementById('reg-apellido').value.trim();
+        const clinica = document.getElementById('reg-clinica').value.trim();
+        const ciudad  = document.getElementById('reg-ciudad').value.trim();
+        const email   = document.getElementById('reg-email').value.trim().toLowerCase();
+        const pass    = document.getElementById('reg-pass').value;
+        const espec   = document.getElementById('reg-especialidad').value;
+        const tel     = document.getElementById('reg-tel').value.trim();
+        const btn     = e.target.querySelector('button[type=submit]');
+        btn.disabled = true;
+        btn.textContent = 'Creando cuenta...';
+        clearMessages();
+
+        const { data, error } = await sb.auth.signUp({
+            email,
+            password: pass,
+            options: {
+                data: { nombre: `${nombre} ${apellido}`, clinica, ciudad, especialidad: espec, telefono: tel, role: 'client' }
+            }
+        });
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-user-plus"></i> &nbsp;Crear Cuenta Profesional';
+
+        if (error) { showError(error.message); return; }
+
+        showSuccess(`¡Bienvenido, ${nombre}! Revisa tu correo ${email} para confirmar tu cuenta. El equipo PRODIGY activará tu acceso en breve.`);
+    }
+</script>
+</body>
+</html>

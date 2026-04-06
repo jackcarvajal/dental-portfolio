@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>PRODIGY — Panel Operador</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="../js/auth-guard.js"></script>
+    <style>
+        body { visibility: hidden; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #050505; --sidebar: #05100d; --card: #0a1812;
+            --green: #00FF41; --cyan: #00d2ff; --gold: #D4AF37;
+            --text: #fff; --muted: #64748b; --border: rgba(0,255,65,0.12);
+        }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: 230px; min-height: 100vh; background: var(--sidebar);
+            border-right: 1px solid var(--border); padding: 24px 16px;
+            display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
+        }
+        .sidebar-logo { text-align: center; padding: 12px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+        .sidebar-logo h1 { font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; color: var(--green); }
+        .sidebar-logo p  { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+        .role-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(0,255,65,0.08); border: 1px solid rgba(0,255,65,0.2); border-radius: 20px; padding: 3px 10px; font-size: 0.65rem; font-weight: 700; color: var(--green); margin-top: 8px; }
+
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #94a3b8; text-decoration: none; transition: all 0.2s; }
+        .nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
+        .nav-item.active { background: rgba(0,255,65,0.07); color: var(--green); border: 1px solid rgba(0,255,65,0.18); }
+        .nav-item i { width: 16px; text-align: center; }
+        .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
+
+        .main { flex: 1; padding: 32px; overflow-y: auto; }
+        .page-header { margin-bottom: 28px; }
+        .page-header h1 { font-size: 1.6rem; font-weight: 900; color: #fff; }
+        .page-header p  { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+        /* KANBAN */
+        .kanban-board { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+        @media(max-width:1000px){ .kanban-board { grid-template-columns: 1fr; } }
+
+        .kanban-col {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 16px;
+        }
+        .kanban-col-header {
+            font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 14px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex; align-items: center; gap: 8px; justify-content: space-between;
+        }
+        .col-count { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 2px 8px; font-size: 0.68rem; }
+
+        .caso-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px; padding: 14px; margin-bottom: 10px; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .caso-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
+        .caso-card .caso-id { font-size: 0.7rem; color: var(--cyan); font-family: monospace; margin-bottom: 4px; }
+        .caso-card .caso-paciente { font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
+        .caso-card .caso-meta { font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
+        .caso-card .caso-actions { display: flex; gap: 6px; margin-top: 10px; }
+
+        .btn-xs {
+            padding: 4px 10px; border-radius: 6px; font-size: 0.68rem; font-weight: 700;
+            border: 1px solid; cursor: pointer; background: transparent; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; color: inherit;
+        }
+        .btn-green { color: var(--green); border-color: rgba(0,255,65,0.3); }
+        .btn-green:hover { background: rgba(0,255,65,0.1); }
+        .btn-cyan  { color: var(--cyan);  border-color: rgba(0,210,255,0.3); }
+        .btn-cyan:hover  { background: rgba(0,210,255,0.1); }
+        .btn-red   { color: #f87171;      border-color: rgba(239,68,68,0.3); }
+        .btn-red:hover   { background: rgba(239,68,68,0.1); }
+
+        .urgente-dot { width: 7px; height: 7px; background: #ef4444; border-radius: 50%; display: inline-block; margin-left: 4px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
+
+        @media(max-width:768px){ .sidebar { display: none; } }
+    </style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <h1>PRODIGY</h1>
+        <p>Digital Dentistry</p>
+        <div class="role-badge"><i class="fas fa-drafting-compass"></i> Operador</div>
+    </div>
+    <a href="operator-panel.html" class="nav-item active"><i class="fas fa-columns"></i> Mis Casos</a>
+    <a href="#" class="nav-item"><i class="fas fa-inbox"></i> Recibidos</a>
+    <a href="#" class="nav-item"><i class="fas fa-cloud-upload-alt"></i> Subir Final</a>
+    <a href="#" class="nav-item"><i class="fas fa-history"></i> Historial</a>
+    <div class="sidebar-footer">
+        <a href="#" class="nav-item" onclick="ProdigyAuth.signOut()"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
+    </div>
+</aside>
+
+<main class="main">
+    <div class="page-header">
+        <h1>Panel Operador <span style="color:var(--green);">CAD/CAM</span></h1>
+        <p>Casos asignados · Solo ves tus tareas — sin acceso a finanzas ni precios</p>
+    </div>
+
+    <!-- KANBAN BOARD -->
+    <div class="kanban-board">
+
+        <!-- PENDIENTES -->
+        <div class="kanban-col">
+            <div class="kanban-col-header" style="color:#fbbf24;">
+                <span><i class="fas fa-inbox"></i> &nbsp;Pendientes</span>
+                <span class="col-count">2</span>
+            </div>
+            <div class="caso-card" style="border-color:rgba(239,68,68,0.25);">
+                <div class="caso-id">#PRD-2025-041 <span class="urgente-dot"></span></div>
+                <div class="caso-paciente">Juan López</div>
+                <div class="caso-meta">
+                    <i class="fas fa-pen-nib" style="color:#D946A6;"></i> Diseño Express Posterior<br>
+                    <i class="fas fa-clock" style="color:#fbbf24;"></i> Entrega: hoy 5:00 PM<br>
+                    <i class="fas fa-tooth" style="color:#94a3b8;"></i> Piezas: 14, 15
+                </div>
+                <div class="caso-actions">
+                    <a href="#" class="btn-xs btn-cyan"><i class="fas fa-download"></i> STL</a>
+                    <button class="btn-xs btn-green" onclick="moverCaso(this,'En Proceso')"><i class="fas fa-play"></i> Iniciar</button>
+                </div>
+            </div>
+            <div class="caso-card">
+                <div class="caso-id">#PRD-2025-040</div>
+                <div class="caso-paciente">Ana Martínez</div>
+                <div class="caso-meta">
+                    <i class="fas fa-print" style="color:#00d2ff;"></i> Impresión — Modelo Studio<br>
+                    <i class="fas fa-clock" style="color:#94a3b8;"></i> Entrega: mañana 12:00 PM
+                </div>
+                <div class="caso-actions">
+                    <a href="#" class="btn-xs btn-cyan"><i class="fas fa-download"></i> STL</a>
+                    <button class="btn-xs btn-green" onclick="moverCaso(this,'En Proceso')"><i class="fas fa-play"></i> Iniciar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- EN PROCESO -->
+        <div class="kanban-col">
+            <div class="kanban-col-header" style="color:var(--cyan);">
+                <span><i class="fas fa-circle-notch fa-spin"></i> &nbsp;En Proceso</span>
+                <span class="col-count">1</span>
+            </div>
+            <div class="caso-card" style="border-color:rgba(0,210,255,0.2);">
+                <div class="caso-id">#PRD-2025-039</div>
+                <div class="caso-paciente">Carlos Rivas</div>
+                <div class="caso-meta">
+                    <i class="fas fa-gear" style="color:#D4AF37;"></i> Fresado — Zirconio 5Y<br>
+                    <i class="fas fa-clock" style="color:#94a3b8;"></i> Entrega: mañana 10:00 AM<br>
+                    <i class="fas fa-tooth"></i> Piezas: 25, 26, 27
+                </div>
+                <div class="caso-actions">
+                    <button class="btn-xs btn-cyan"><i class="fas fa-cloud-upload-alt"></i> Subir final</button>
+                    <button class="btn-xs btn-green" onclick="moverCaso(this,'Revisión')"><i class="fas fa-check"></i> Listo</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- REVISIÓN / ENTREGADO -->
+        <div class="kanban-col">
+            <div class="kanban-col-header" style="color:var(--green);">
+                <span><i class="fas fa-check-double"></i> &nbsp;Revisión / Entregado</span>
+                <span class="col-count">1</span>
+            </div>
+            <div class="caso-card" style="border-color:rgba(0,255,65,0.15);">
+                <div class="caso-id">#PRD-2025-038</div>
+                <div class="caso-paciente">María García</div>
+                <div class="caso-meta">
+                    <i class="fas fa-print" style="color:#00d2ff;"></i> Impresión — Biomodelo FDM<br>
+                    <i class="fas fa-check-circle" style="color:var(--green);"></i> Entregado: 2025-03-28
+                </div>
+                <div class="caso-actions">
+                    <span style="font-size:0.68rem;color:var(--green);"><i class="fas fa-check"></i> Completado</span>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /kanban -->
+
+    <!-- AVISO -->
+    <div style="margin-top:28px;background:rgba(0,210,255,0.05);border:1px solid rgba(0,210,255,0.15);border-radius:12px;padding:18px 20px;font-size:0.82rem;color:#94a3b8;">
+        <i class="fas fa-lock" style="color:#00d2ff;margin-right:8px;"></i>
+        <strong style="color:#00d2ff;">Acceso restringido:</strong> Solo puedes ver los casos que el Admin te ha asignado. Los precios, facturación y datos financieros no están disponibles en este nivel.
+        El Kanban funcional con drag & drop llegará con la integración a Supabase.
+    </div>
+</main>
+
+<script>
+    ProdigyAuth.require('operator');
+
+    function moverCaso(btn, estado) {
+        const card = btn.closest('.caso-card');
+        const dest = document.querySelectorAll('.kanban-col');
+        const map  = { 'En Proceso': 1, 'Revisión': 2 };
+        if (dest[map[estado]]) {
+            dest[map[estado]].appendChild(card);
+            // Actualizar conteos
+            document.querySelectorAll('.kanban-col').forEach(col => {
+                const count = col.querySelectorAll('.caso-card').length;
+                col.querySelector('.col-count').textContent = count;
+            });
+        }
+    }
+</script>
+</body>
+</html>
