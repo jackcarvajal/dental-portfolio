@@ -6,9 +6,20 @@
     <meta name="theme-color" content="#0a0a0a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Calculadora de fresado CAD/CAM — Zirconio, PMMA, CrCo, PEEK. Cotiza y confirma tu pedido dental en línea. PRODIGY, Bogotá, Colombia.">
+    <meta name="keywords" content="Fresado dental, Zirconio, PMMA, CrCo, PEEK, CAD CAM dental, Fresado zirconio Colombia, laboratorio dental Bogotá">
+    <meta property="og:title" content="PRODIGY | Centro de Fresado Digital">
+    <meta property="og:description" content="Calculadora de fresado CAD/CAM — Zirconio, PMMA, CrCo, PEEK. Cotiza y confirma tu pedido dental en línea.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/prodigy-preview.jpg">
+    <meta property="og:url" content="https://prodigylab.co/flujo-fresado.html">
+    <meta name="geo.region" content="CO-DC">
+    <meta name="geo.placename" content="Bogotá">
     <title>PRODIGY - Centro de Fresado Digital</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/global-nav.min.css">
     <style>
         * {
             margin: 0;
@@ -105,6 +116,7 @@
             display: grid;
             grid-template-columns: 1fr 380px;
             gap: 30px;
+            padding-top: 80px;
         }
 
         header {
@@ -1350,15 +1362,27 @@
         }
 
         
-        /* === Luxury Payment Modal === */
-        #modal-payment .modal-content{background:linear-gradient(145deg,#0a0a0a,#111)!important;border:1px solid var(--gold-dark)!important;box-shadow:0 15px 35px rgba(0,0,0,0.9),inset 0 0 15px rgba(212,175,55,0.05)!important;border-radius:16px!important;padding:30px!important;}
-        .pay-box{background:#000;border:1px dashed var(--gold-dark);padding:20px;border-radius:12px;margin:12px 0;text-align:center;}
-        .pay-box h3{color:var(--gold-primary);font-size:1.1rem;margin-bottom:4px;}
-        .pay-qr{background:#fff;padding:8px;border-radius:10px;width:185px;height:185px;margin:0 auto 12px auto;border:3px solid var(--gold-primary);display:flex;align-items:center;justify-content:center;}
+        /* === Premium Payment Modal Fresado === */
+        #modal-payment .modal-content{background:linear-gradient(160deg,#060a14 0%,#0d1525 100%)!important;border:1px solid rgba(212,175,55,0.2)!important;box-shadow:0 25px 60px rgba(0,0,0,0.97),0 0 50px rgba(212,175,55,0.06)!important;border-radius:20px!important;padding:28px!important;position:relative!important;}
+        #modal-payment-title{font-size:1.1rem!important;font-weight:800!important;letter-spacing:3px!important;text-align:center!important;text-transform:uppercase!important;margin-bottom:0!important;}
+        .pay-total-pill{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:30px;padding:7px 20px;margin:12px auto 16px;width:fit-content;font-size:0.95rem;font-weight:700;color:#fff;letter-spacing:0.5px;}
+        .pay-box{background:linear-gradient(135deg,#0c1520,#152035);border:1px solid rgba(255,255,255,0.07);padding:18px 18px 16px;border-radius:14px;margin:10px 0;text-align:center;position:relative;overflow:hidden;}
+        .pay-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--pay-accent,var(--gold-primary));}
+        .pay-box h3{color:var(--pay-accent,var(--gold-primary));font-size:1rem;margin-bottom:2px;font-weight:700;}
+        .pay-method-tag{font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;opacity:0.4;margin-bottom:8px;display:block;}
+        .pay-qr{background:#fff;padding:7px;border-radius:10px;width:155px;height:155px;margin:0 auto 12px;border:3px solid var(--pay-accent,var(--gold-primary));display:flex;align-items:center;justify-content:center;box-shadow:0 0 25px rgba(212,175,55,0.2);}
         .pay-qr img{width:100%;height:100%;object-fit:contain;}
-        .pay-num{font-size:1.7rem;font-weight:700;letter-spacing:2px;margin:10px 0;}
-        .pay-copy{background:rgba(212,175,55,0.1);border:1px solid var(--gold-primary);color:var(--gold-light);padding:8px 18px;border-radius:6px;cursor:pointer;font-size:0.85rem;margin-top:8px;}
-        .pay-copy:hover{background:rgba(212,175,55,0.25);}
+        .pay-num{font-size:1.7rem;font-weight:800;letter-spacing:3px;margin:8px 0 12px;color:var(--pay-accent,var(--gold-primary));text-shadow:0 0 20px var(--pay-accent,var(--gold-primary));}
+        .pay-copy{background:rgba(212,175,55,0.08);border:1px solid var(--pay-accent,var(--gold-primary));color:var(--pay-accent,var(--gold-primary));padding:9px 22px;border-radius:8px;cursor:pointer;font-size:0.82rem;font-weight:700;letter-spacing:0.5px;margin-top:6px;transition:all 0.2s;display:inline-block;}
+        .pay-copy:hover{background:var(--pay-accent,var(--gold-primary));color:#fff;box-shadow:0 0 18px rgba(212,175,55,0.4);}
+        .pay-divider{display:flex;align-items:center;gap:8px;margin:8px 0;color:rgba(255,255,255,0.2);font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;}
+        .pay-divider::before,.pay-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.06);}
+        .pay-info{font-size:0.78rem;color:rgba(255,255,255,0.45);margin-top:8px;line-height:1.6;}
+        .pay-info strong{color:rgba(255,255,255,0.8);}
+        .modal-close-x{position:absolute;top:15px;right:15px;background:none;border:none;color:var(--text-secondary,#e2e8f0);font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s;z-index:10;padding:0;line-height:1;}
+        .modal-close-x:hover{transform:scale(1.1);}
+        #btn-whatsapp-confirm:not(:disabled){opacity:1!important;cursor:pointer!important;}
+        #btn-whatsapp-confirm:disabled{opacity:0.45!important;cursor:not-allowed!important;}
 
         
         /* Centrado strict disi_c14 y cera_calc */
@@ -1918,6 +1942,41 @@
         </style>
 </head>
 <body>
+    <!-- MENÚ MÓVIL -->
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="index.html#portfolio">Portafolio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="seguimiento-caso.html">📦 Seguimiento</a>
+        <a href="https://wa.me/573212816716" target="_blank"><i class="fab fa-whatsapp"></i> Contactar</a>
+        <a href="app/login.html" style="color:#D4AF37;"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar · Registro</a>
+    </div>
+
+    <!-- NAVBAR GLOBAL PRODIGY -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileMenu()" title="Menú">
+                <i class="fas fa-bars" id="hamburger-icon"></i>
+            </button>
+            <div class="nav-left">
+                <a href="index.html#portfolio">PORTAFOLIO</a>
+                <a href="catalogo.html">CATÁLOGO</a>
+            </div>
+            <a href="index.html" class="nav-logo-box">
+                <h1>PRODIGY</h1>
+                <span>DIGITAL DENTISTRY</span>
+            </a>
+            <div class="nav-right">
+                <a href="seguimiento-caso.html">📦 SEGUIMIENTO</a>
+                <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> CONTACTAR
+                </a>
+                <a href="app/login.html" class="nav-access-btn" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:transparent;border:1.5px solid rgba(212,175,55,.5);color:#D4AF37;border-radius:8px;font-size:.78rem;font-weight:800;text-decoration:none;letter-spacing:.6px;transition:all .25s;white-space:nowrap;" onmouseover="this.style.background='rgba(212,175,55,.12)';this.style.borderColor='#D4AF37'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(212,175,55,.5)'">
+                    <i class="fas fa-arrow-right-to-bracket"></i> INGRESAR · REGISTRO
+                </a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <header>
             <!-- Menú Hamburguesa -->
@@ -2148,42 +2207,112 @@
                 </div>
                 <div class="accordion-content">
                     <div class="accordion-inner">
-                        <div class="alert alert-info" style="margin-bottom: 20px;">
-                            <strong style="display: block; margin-bottom: 8px;">⚠️ INSTRUCCIONES PARA ARCHIVOS:</strong>
-                            <p style="margin: 0; line-height: 1.6;">
-                                Sube tus archivos STL/3DM a <strong>Google Drive</strong> o <strong>WeTransfer</strong>. 
-                                Asegúrate de que el enlace sea <strong>PÚBLICO</strong> (Cualquier persona con el enlace puede ver). 
-                                Si el enlace es privado, el tiempo de entrega <strong>no comenzará a correr</strong>.
+                        <!-- ── BLOQUE 1: ARCHIVOS STL ─────────────────── -->
+                        <div style="background:rgba(0,97,255,0.04); border:1px solid rgba(0,97,255,0.2); border-radius:12px; padding:20px 18px; margin-bottom:18px;">
+                        <p style="margin:0 0 14px; font-size:0.78rem; font-weight:800; color:#4d9fff; text-transform:uppercase; letter-spacing:1.5px; display:flex; align-items:center; gap:7px;"><i class="fas fa-file-code"></i> Archivos STL / Diseño</p>
+
+                        <!-- ⚠️ BANNER SOP NOMENCLATURA -->
+                        <div style="background:linear-gradient(135deg,rgba(239,68,68,0.12),rgba(212,175,55,0.08)); border:1.5px solid rgba(239,68,68,0.55); border-radius:10px; padding:14px 16px; margin-bottom:18px; display:flex; gap:12px; align-items:flex-start;">
+                            <i class="fas fa-triangle-exclamation" style="color:#ef4444; font-size:1.4rem; margin-top:2px; flex-shrink:0;"></i>
+                            <div>
+                                <p style="margin:0 0 5px; font-size:0.88rem; font-weight:900; color:#ef4444; text-transform:uppercase; letter-spacing:0.5px;">⚠️ Nombra tus archivos antes de subir</p>
+                                <p style="margin:0; font-size:0.82rem; color:#e2e8f0; line-height:1.6;">Usa el nombre del paciente en el archivo o comprímelos en un <strong style="color:#D4AF37;">.ZIP</strong> con su nombre.<br>
+                                <span style="color:#94a3b8;">Ejemplo: </span><code style="background:rgba(255,255,255,0.08); color:#fbbf24; padding:2px 7px; border-radius:4px; font-size:0.8rem;">JuanLopez_MaxilarSup.stl</code> &nbsp;o&nbsp; <code style="background:rgba(255,255,255,0.08); color:#fbbf24; padding:2px 7px; border-radius:4px; font-size:0.8rem;">JuanLopez_Caso.zip</code><br>
+                                <span style="color:#64748b; font-size:0.78rem;">Sin nombre → no podemos asignar el caso correctamente.</span></p>
+                            </div>
+                        </div>
+
+                        <!-- BOTÓN DROPBOX PRIMARIO -->
+                        <div style="margin-bottom: 22px;">
+                            <a href="https://www.dropbox.com/request/zAQNVD0AyQyfUgOshArY" target="_blank" rel="noopener"
+                               onclick="document.getElementById('linkSTL').value='https://www.dropbox.com/request/zAQNVD0AyQyfUgOshArY'; document.getElementById('link-feedback').innerHTML='<i class=\'fas fa-circle-check\' style=\'color:#0061ff\'></i> Archivos en camino al Buzón PRODIGY'; document.getElementById('link-feedback').style.color='#0061ff';"
+                               style="display:flex; align-items:center; justify-content:center; gap:12px; width:100%; padding:18px 20px; background:linear-gradient(135deg,#0061ff,#0041aa); color:#fff; text-decoration:none; border-radius:12px; font-size:1rem; font-weight:800; letter-spacing:0.3px; box-shadow:0 6px 24px rgba(0,97,255,0.4); transition:all 0.25s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 32px rgba(0,97,255,0.55)'" onmouseout="this.style.transform='';this.style.boxShadow='0 6px 24px rgba(0,97,255,0.4)'">
+                                <svg width="28" height="24" viewBox="0 0 528 444" fill="white"><path d="M264 18L132 101l132 83 132-83zM0 184l132 83 132-83-132-83zm396-83l-132 83 132 83 132-83zM132 285l132 83 132-83-132-83zm132 101l132-83-132-83-132 83z"/></svg>
+                                📤 Subir al Buzón PRODIGY (Recomendado)
+                            </a>
+                            <p style="text-align:center; margin:8px 0 0; color:#888; font-size:0.78rem;">Rápido, seguro y sin crear cuentas. Los archivos llegan directo a nosotros.</p>
+                        </div>
+
+                        <!-- SEPARADOR -->
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+                            <div style="flex:1; height:1px; background:rgba(255,255,255,0.1);"></div>
+                            <span style="color:#666; font-size:0.78rem; font-weight:600; white-space:nowrap;">O usa otra plataforma</span>
+                            <div style="flex:1; height:1px; background:rgba(255,255,255,0.1);"></div>
+                        </div>
+
+                        <!-- BANNER INSTRUCCIONES -->
+                        <div style="background: rgba(0,210,255,0.06); border: 1px solid rgba(0,210,255,0.25); border-radius: 10px; padding: 16px 18px; margin-bottom: 20px;">
+                            <strong style="display: flex; align-items: center; gap: 8px; color: var(--accent-cyan, #00d2ff); margin-bottom: 10px; font-size:0.9rem;">
+                                <i class="fas fa-circle-info"></i> Si prefieres Drive o WeTransfer:
+                            </strong>
+                            <ol style="margin: 0; padding-left: 18px; color: #ccc; font-size: 0.85rem; line-height: 1.8;">
+                                <li>Sube tus archivos STL/3DM a <strong style="color:#fff;">Google Drive</strong> o <strong style="color:#fff;">WeTransfer</strong></li>
+                                <li>En Drive: clic derecho → <em>Compartir</em> → <em>"Cualquier persona con el enlace"</em></li>
+                                <li>Copia el enlace y pégalo abajo (<kbd style="background:#333;padding:1px 5px;border-radius:3px;font-size:0.8rem;">Ctrl+V</kbd>)</li>
+                            </ol>
+                            <p style="margin: 10px 0 0; font-size:0.78rem; color:#f87171; font-weight:600;">
+                                <i class="fas fa-triangle-exclamation"></i> Enlace privado = el tiempo de entrega NO inicia hasta hacerlo público.
                             </p>
                         </div>
 
+                        <!-- CAMPO LINK STL -->
                         <div class="form-group">
                             <label>Link STL/Diseño (Público) *</label>
-                            <input type="url" id="linkSTL" placeholder="📋 Pegue aquí el enlace (Ctrl+V / Cmd+V)" autocomplete="off" onkeydown="if(event.key!=='Tab'&&event.key!=='Backspace'&&event.key!=='Delete'&&!(event.ctrlKey||event.metaKey)){event.preventDefault();}" onpaste="setTimeout(()=>{if(this.value.length>5)STATE.link=this.value;},100);" style="width:100%;padding:12px;background:var(--bg-dark);border:1px solid var(--border-subtle);border-radius:8px;color:#fff;">
+                            <input type="url" id="linkSTL"
+                                placeholder="📋 Pega aquí el enlace — Dropbox, Drive o WeTransfer"
+                                autocomplete="off"
+                                onkeydown="if(event.key!=='Tab'&&event.key!=='Backspace'&&event.key!=='Delete'&&!(event.ctrlKey||event.metaKey)){event.preventDefault();}"
+                                onpaste="setTimeout(()=>{ const v=this.value; const ok=v.includes('drive.google.com')||v.includes('wetransfer.com')||v.includes('we.tl')||v.includes('dropbox.com'); const fb=document.getElementById('link-feedback'); if(v.length>5){ STATE.link=v; if(ok){ this.style.borderColor='#10b981'; fb.innerHTML='<i class=\'fas fa-circle-check\' style=\'color:#10b981\'></i> Enlace válido'; fb.style.color='#10b981'; }else{ this.style.borderColor='#f87171'; fb.innerHTML='<i class=\'fas fa-triangle-exclamation\' style=\'color:#f87171\'></i> Solo se aceptan Dropbox, Drive o WeTransfer'; fb.style.color='#f87171'; } }else{ this.style.borderColor=''; fb.innerHTML=''; } },150);"
+                                style="width:100%;padding:12px;background:var(--bg-dark);border:1px solid var(--border-subtle);border-radius:8px;color:#fff;transition:border-color 0.3s;">
+                            <div id="link-feedback" style="margin-top:6px;font-size:0.82rem;min-height:18px;"></div>
                         </div>
 
-                        <div class="icon-links">
-                            <a href="https://drive.google.com" target="_blank" class="icon-link">
-                                📁 Google Drive
+                        <!-- LINKS RÁPIDOS -->
+                        <div style="display:flex; gap:10px; margin: 5px 0 20px;">
+                            <a href="https://drive.google.com" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; background:rgba(66,133,244,0.1); border:1px solid rgba(66,133,244,0.4); border-radius:8px; color:#4285f4; text-decoration:none; font-size:0.85rem; font-weight:700; transition:background 0.2s;" onmouseover="this.style.background='rgba(66,133,244,0.2)'" onmouseout="this.style.background='rgba(66,133,244,0.1)'">
+                                <i class="fab fa-google-drive"></i> Google Drive
                             </a>
-                            <a href="https://wetransfer.com" target="_blank" class="icon-link">
-                                📤 WeTransfer
+                            <a href="https://wetransfer.com" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; background:rgba(0,189,165,0.1); border:1px solid rgba(0,189,165,0.4); border-radius:8px; color:#00bda5; text-decoration:none; font-size:0.85rem; font-weight:700; transition:background 0.2s;" onmouseover="this.style.background='rgba(0,189,165,0.2)'" onmouseout="this.style.background='rgba(0,189,165,0.1)'">
+                                <i class="fas fa-cloud-arrow-up"></i> WeTransfer
                             </a>
                         </div>
 
-                        <div class="form-group" style="margin-top: 25px;">
-                            <label>Comprobante de Pago *</label>
-                            <div class="file-upload" onclick="document.getElementById('comprobante').click()">
-                                <input type="file" id="comprobante" accept="image/*,.pdf" onchange="handleFileUpload(this)">
-                                <p>📎 Clic para adjuntar imagen o PDF</p>
-                                <p class="file-name" id="file-name"></p>
+                        </div><!-- /bloque archivos STL -->
+
+                        <!-- ── BLOQUE 2: COMPROBANTE DE PAGO ─────────── -->
+                        <div style="background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.2); border-radius:12px; padding:20px 18px; margin-bottom:18px;">
+                        <p style="margin:0 0 14px; font-size:0.78rem; font-weight:800; color:var(--gold-primary); text-transform:uppercase; letter-spacing:1.5px; display:flex; align-items:center; gap:7px;"><i class="fas fa-receipt"></i> Comprobante de Pago</p>
+
+                        <div class="form-group">
+                            <label style="display:none;">Comprobante de Pago *</label>
+                            <div id="drop-zone"
+                                onclick="document.getElementById('comprobante').click()"
+                                ondragover="event.preventDefault(); this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.08)';"
+                                ondragleave="this.style.borderColor=''; this.style.background='';"
+                                ondrop="event.preventDefault(); this.style.borderColor=''; this.style.background=''; handleFileUpload({files: event.dataTransfer.files}, true);"
+                                style="cursor:pointer; border:2px dashed var(--border-subtle); border-radius:10px; padding:24px 16px; text-align:center; transition:all 0.25s; background:var(--bg-dark); position:relative;">
+                                <input type="file" id="comprobante" accept="image/*,.pdf" onchange="handleFileUpload(this, false)" style="display:none;">
+                                <div id="comprobante-placeholder">
+                                    <i class="fas fa-cloud-arrow-up" style="font-size:2rem; color:var(--gold-primary); display:block; margin-bottom:8px;"></i>
+                                    <p style="margin:0; color:#ccc; font-size:0.9rem;"><strong style="color:#fff;">Arrastra el comprobante aquí</strong> o haz clic</p>
+                                    <p style="margin:6px 0 0; color:#666; font-size:0.75rem;">PNG, JPG, PDF · Máx. 10 MB</p>
+                                </div>
+                                <div id="comprobante-preview" style="display:none; align-items:center; gap:12px; justify-content:center;">
+                                    <img id="preview-img" src="" alt="preview" style="max-height:60px; max-width:80px; border-radius:6px; border:1px solid #444; object-fit:cover;">
+                                    <div style="text-align:left;">
+                                        <p id="file-name" class="file-name" style="margin:0; color:var(--success); font-weight:700; font-size:0.9rem;"></p>
+                                        <p style="margin:4px 0 0; color:#666; font-size:0.75rem;">Clic para cambiar</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="alert alert-error">
-                                ⛔ Sin comprobante NO se inicia producción
+                            <div class="alert alert-error" style="margin-top:8px;">
+                                <i class="fas fa-ban"></i> Sin comprobante NO se inicia producción
                             </div>
                         </div>
+                        </div><!-- /bloque comprobante -->
 
-                        <div class="form-group" style="margin-top: 25px;">
+                        <!-- ── BLOQUE 3: ENVÍO ────────────────────────── -->
+                        <div class="form-group" style="margin-top: 4px;">
                             <label>Método de Envío *</label>
                             <select id="envio" onchange="calcularTotal()">
                                 <option value="retiro">Retiro en sede (Gratis)</option>
@@ -2265,10 +2394,29 @@
                 <span class="label">TOTAL:</span>
                 <span class="value calc-total" id="calc-total">$0</span>
             </div>
+            <div id="line-ingreso" class="calc-line" style="display:none; color:#cbd5e1; font-size:0.85rem; margin-top:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; flex-direction:column; gap:2px;"></div>
+            <div id="line-entrega-fecha" class="calc-line" style="display:none; color:#D4AF37; font-weight:bold; font-size:0.95rem; margin-bottom:15px;"></div>
+
+            <div id="line-wompi" class="calc-line hidden" style="padding-top:6px;">
+                <span class="label" style="color:#f87171;">Comisión Wompi (3%):</span>
+                <span class="value" id="calc-wompi" style="color:#f87171;">+$0</span>
+            </div>
 
             <div class="payment-banner">
                 💵 PAGO 100% ANTICIPADO
             </div>
+
+            <!-- WOMPI / TRANSFERENCIA -->
+            <div style="background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.2);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
+                <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.82rem;color:#e2e8f0;line-height:1.5;">
+                    <input type="checkbox" id="chk-transferencia" onchange="calcularTotal()" style="width:16px;height:16px;accent-color:#D4AF37;flex-shrink:0;margin-top:2px;" checked>
+                    <span>Pago por <strong style="color:#D4AF37;">transferencia directa</strong> (Nequi / Daviplata / Nu)<br>
+                    <span style="font-size:.75rem;color:#94a3b8;">Sin comisión. PSE / tarjeta: +3% Wompi.</span></span>
+                </label>
+            </div>
+            <button onclick="pagarConWompi()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-bottom:12px;">
+                💳 Pagar con Wompi (PSE / Tarjeta)
+            </button>
 
             <div class="payment-buttons">
                 <button class="payment-btn btn-nequi" onclick="showPaymentModal('nequi')">
@@ -2315,12 +2463,10 @@
     </div>
 
     <div class="modal" id="modal-payment">
-        <div class="modal-content">
+        <div class="modal-content" style="position:relative;">
+            <button class="modal-close-x" onclick="closeModal('modal-payment')" title="Cerrar"><i class="fas fa-times"></i></button>
             <h3 id="modal-payment-title">Información de Pago</h3>
             <div id="modal-payment-body"></div>
-            <div class="modal-buttons">
-                <button class="modal-btn modal-btn-cancel" onclick="closeModal('modal-payment')">Cerrar</button>
-            </div>
         </div>
     </div>
 
@@ -2342,9 +2488,15 @@
                 </p>
             </div>
             
-            <div class="modal-buttons" style="display: flex; gap: 12px; margin-top: 25px;">
+            <div style="margin: 15px 0; padding: 14px 16px; background: rgba(0,255,65,0.05); border-radius: 10px; border: 1px solid rgba(0,255,65,0.15);">
+                <label style="display:flex; align-items:flex-start; gap:12px; cursor:pointer; color:var(--text-secondary,#e2e8f0); font-size:0.88rem; line-height:1.5;">
+                    <input type="checkbox" id="check-terminos-confirm" onchange="toggleWhatsAppBtn(this)" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;cursor:pointer;accent-color:var(--neon-green);">
+                    <span>He leído y acepto los <span onclick="showTerms();event.stopPropagation();" style="color:var(--gold-primary);cursor:pointer;text-decoration:underline;">Términos y Condiciones</span> del servicio PRODIGY.</span>
+                </label>
+            </div>
+            <div class="modal-buttons" style="display: flex; gap: 12px; margin-top: 20px;">
                 <button class="modal-btn modal-btn-cancel" onclick="closeModal('modal-confirmation')" style="flex: 1;">Cancelar</button>
-                <button class="modal-btn modal-btn-confirm" onclick="sendToWhatsApp()" style="flex: 2; background: linear-gradient(135deg, var(--neon-green) 0%, #00CC35 100%); font-weight: 700;">
+                <button id="btn-whatsapp-confirm" class="modal-btn modal-btn-confirm" onclick="sendToWhatsApp()" disabled style="flex: 2; background: linear-gradient(135deg, var(--neon-green) 0%, #00CC35 100%); font-weight: 700; opacity:0.45; cursor:not-allowed;">
                     🚀 CONFIRMAR Y ABRIR WHATSAPP
                 </button>
             </div>
@@ -3002,6 +3154,7 @@
             calcularTotal();
             updateTimeline();
             clearTimeSlotIfInvalid();
+            actualizarResumenFechas();
         }
 
         function selectFerulaGuia(tipo) {
@@ -3044,7 +3197,7 @@
             const max = parseInt(input.max, 10);
             let val = parseInt(input.value, 10) || 0;
             if (val > max) {
-                alert(`⚠️ No puedes aplicar este proceso a más de ${max} unidades (la cantidad original de tu caso).`);
+                showProdigyAlert('⚠️ Límite de Unidades', `Solo puedes aplicar este proceso a máximo <strong>${max} unidades</strong> — la cantidad original de tu caso. El valor ha sido ajustado automáticamente.`, 'Entendido');
                 input.value = max;
             } else if (val < 0) {
                 input.value = 0;
@@ -3099,30 +3252,123 @@
             }
         }
 
-        // Lógica base para calcular entrega de 24h
-        function calcularFecha24h(hC){let f=new Date();let h=f.getHours();let d=f.getDay();if(d===0||(d===6&&h>=12)){f.setDate(f.getDate()+(d===0?1:2));d=1;h=8;}f.setDate(f.getDate()+(h>=hC?2:1));if(f.getDay()===6)f.setDate(f.getDate()+2);if(f.getDay()===0)f.setDate(f.getDate()+1);return f;}
+        // ==========================================
+        // FESTIVOS DINÁMICOS COLOMBIA (Algoritmo de Butcher)
+        // ==========================================
+        function obtenerFestivos(anio) {
+            const set = new Set();
+            function add(mes, dia) { set.add(new Date(anio, mes - 1, dia).toDateString()); }
+            function emiliani(mes, dia) {
+                const d = new Date(anio, mes - 1, dia);
+                const dow = d.getDay();
+                if (dow !== 1) d.setDate(d.getDate() + (dow === 0 ? 1 : 8 - dow));
+                set.add(d.toDateString());
+            }
+            add(1,1); add(5,1); add(7,20); add(8,7); add(12,8); add(12,25);
+            emiliani(1,6); emiliani(3,19); emiliani(6,29);
+            emiliani(8,15); emiliani(10,12); emiliani(11,1); emiliani(11,11);
+            const a=anio%19,b=Math.floor(anio/100),c=anio%100,d2=Math.floor(b/4),e=b%4,
+                  f2=Math.floor((b+8)/25),g=Math.floor((b-f2+1)/3),
+                  h=(19*a+b-d2-g+15)%30,i=Math.floor(c/4),k=c%4,
+                  l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),
+                  mp=Math.floor((h+l-7*m+114)/31),dp=((h+l-7*m+114)%31)+1;
+            const pascua=new Date(anio,mp-1,dp);
+            const jSanto=new Date(pascua); jSanto.setDate(pascua.getDate()-3);
+            const vSanto=new Date(pascua); vSanto.setDate(pascua.getDate()-2);
+            set.add(jSanto.toDateString()); set.add(vSanto.toDateString());
+            function emilianiDesde(base,dias) {
+                const d=new Date(base); d.setDate(d.getDate()+dias);
+                const dow=d.getDay();
+                if(dow!==1) d.setDate(d.getDate()+(dow===0?1:8-dow));
+                set.add(d.toDateString());
+            }
+            emilianiDesde(pascua,39); emilianiDesde(pascua,60); emilianiDesde(pascua,68);
+            return set;
+        }
+        const _festCache = {};
+        function esFestivo(fecha) {
+            const a = fecha.getFullYear();
+            if (!_festCache[a]) _festCache[a] = obtenerFestivos(a);
+            return _festCache[a].has(fecha.toDateString());
+        }
+
+        // Matriz de Checkpoints Fresado
+        const MATRIZ_FRESADO = {
+            9:  { iH: 9,  eOff: 0, eH: 17 }, // Express: ingresa 9am → entrega HOY 5pm
+            12: { iH: 12, eOff: 1, eH: 10 }, // Mediodía: ingresa 12pm → entrega MAÑANA 10am
+            17: { iH: 17, eOff: 1, eH: 17 }  // Tarde: ingresa 5pm → entrega MAÑANA 5pm
+        };
+
+        function calcularFechasTurnoFresado(horaBoton) {
+            const ahora = new Date();
+            const horaActual = ahora.getHours() + (ahora.getMinutes() / 60);
+            const off = horaActual >= horaBoton ? 1 : 0;
+            function construirFecha(diasOffset, hora) {
+                const f = new Date(ahora);
+                f.setDate(f.getDate() + diasOffset);
+                f.setHours(hora, 0, 0, 0);
+                while (f.getDay() === 0 || esFestivo(f)) f.setDate(f.getDate() + 1);
+                if (f.getDay() === 6 && f.getHours() >= 13) {
+                    f.setDate(f.getDate() + 2);
+                    f.setHours(9, 0, 0, 0);
+                    while (esFestivo(f)) f.setDate(f.getDate() + 1);
+                }
+                return f;
+            }
+            const c = MATRIZ_FRESADO[horaBoton];
+            return {
+                fechaIngreso: construirFecha(off, c.iH),
+                fechaEntrega: construirFecha(off + c.eOff, c.eH)
+            };
+        }
+
+        function formatearFechaTurno(fecha) {
+            const dias  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+            const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+            const h = fecha.getHours();
+            const m = fecha.getMinutes().toString().padStart(2, '0');
+            const ampm = h < 12 ? 'AM' : 'PM';
+            const hD = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+            return `${dias[fecha.getDay()]} ${fecha.getDate()} ${meses[fecha.getMonth()]} ${hD}:${m} ${ampm}`;
+        }
+
 
         function updateTimeline() {
             const ahora = new Date();
-            const horaActual = ahora.getHours();
-            const minutoActual = ahora.getMinutes();
-            const horaDecimal = horaActual + (minutoActual / 60);
+            const horaDecimal = ahora.getHours() + (ahora.getMinutes() / 60);
 
             const expressSlot = document.querySelector('[data-slot="express"]');
-            const mediodiaSlot = document.querySelector('[data-slot="mediodia"]');
-            const tardeSlot = document.querySelector('[data-slot="tarde"]');
-
             const alertExpress = document.getElementById('alert-express');
             const cantidad = parseInt(document.getElementById('cantidad')?.value || 1);
 
-            // Express disponible solo para Zirc y PMMA, sin extras, antes de 9 AM, y máximo 3 unidades
-            if (['zirc', 'pmma'].includes(STATE.materialTipo) && !STATE.tieneExtras) {
-                alertExpress.classList.remove('hidden');
+            // --- Slots 12pm y 5pm (siempre visibles con festivos) ---
+            const f12 = calcularFechasTurnoFresado(12);
+            document.getElementById('date-mediodia').innerHTML =
+                `<span style="font-size:0.72rem;color:var(--accent-cyan);">📥 ${formatearFechaTurno(f12.fechaIngreso)}</span><br>` +
+                `<span style="font-size:0.72rem;color:var(--gold-primary);">📦 ${formatearFechaTurno(f12.fechaEntrega)}</span>`;
 
-                if (horaDecimal < CONFIG.horarios_corte.express) {
-                    const hoy = new Date(ahora);
+            const f17 = calcularFechasTurnoFresado(17);
+            document.getElementById('date-tarde').innerHTML =
+                `<span style="font-size:0.72rem;color:var(--accent-cyan);">📥 ${formatearFechaTurno(f17.fechaIngreso)}</span><br>` +
+                `<span style="font-size:0.72rem;color:var(--gold-primary);">📦 ${formatearFechaTurno(f17.fechaEntrega)}</span>`;
+
+            // --- Slot Express ---
+            if (STATE.sinterType === 'rapido') {
+                // Sinterizado rápido fuerza express (slot siempre activo)
+                alertExpress.classList.add('hidden');
+                const f9 = calcularFechasTurnoFresado(9);
+                document.getElementById('date-express').innerHTML =
+                    `<span style="font-size:0.72rem;color:var(--accent-cyan);">📥 ${formatearFechaTurno(f9.fechaIngreso)}</span><br>` +
+                    `<span style="font-size:0.72rem;color:var(--gold-primary);">📦 ${formatearFechaTurno(f9.fechaEntrega)}</span>`;
+                expressSlot.classList.remove('disabled');
+            } else if (['zirc', 'pmma'].includes(STATE.materialTipo) && !STATE.tieneExtras) {
+                alertExpress.classList.remove('hidden');
+                if (horaDecimal < 9) {
+                    const f9 = calcularFechasTurnoFresado(9);
                     if (cantidad <= 3) {
-                        document.getElementById('date-express').innerHTML=`Entrega HOY<br>${formatearFecha(hoy)}<br><span style="color:var(--gold-primary);font-size:0.7rem;">5:00 PM · Express</span>`;
+                        document.getElementById('date-express').innerHTML =
+                            `<span style="font-size:0.72rem;color:var(--accent-cyan);">📥 ${formatearFechaTurno(f9.fechaIngreso)}</span><br>` +
+                            `<span style="font-size:0.72rem;color:var(--gold-primary);">📦 ${formatearFechaTurno(f9.fechaEntrega)}</span>`;
                         expressSlot.classList.remove('disabled');
                     } else {
                         document.getElementById('date-express').innerHTML = `Máximo 3 unidades<br>Fair Play Express`;
@@ -3138,13 +3384,6 @@
                 document.getElementById('date-express').innerHTML = `No disponible<br>para este material`;
             }
 
-            let fechaMediadia = calcularFecha24h(CONFIG.horarios_corte.mediodia);
-            document.getElementById('date-mediodia').innerHTML = `Entrega<br>${formatearFecha(fechaMediadia)}<br>12:00 PM`;
-
-            let fechaTarde = calcularFecha24h(CONFIG.horarios_corte.tarde);
-            document.getElementById('date-tarde').innerHTML = `Entrega<br>${formatearFecha(fechaTarde)}<br>5:00 PM`;
-            
-            // Validar coherencia de estado
             clearTimeSlotIfInvalid();
             setSelectedSlotUI(STATE.timeSlot);
         }
@@ -3164,6 +3403,25 @@
             return `${dias[fecha.getDay()]} ${fecha.getDate()} ${meses[fecha.getMonth()]}`;
         }
 
+        function actualizarResumenFechas() {
+            if (!STATE.timeSlot) return;
+            // Express usa corte 9 en la MATRIZ_FRESADO
+            const corteMap = { express: 9, mediodia: 12, tarde: 17 };
+            const corte = corteMap[STATE.timeSlot];
+            if (!corte) return;
+            const { fechaIngreso, fechaEntrega } = calcularFechasTurnoFresado(corte);
+            const divIngreso = document.getElementById('line-ingreso');
+            const divEntrega = document.getElementById('line-entrega-fecha');
+            if (divIngreso) {
+                divIngreso.innerHTML = `📥 <strong>Ingreso:</strong> ${formatearFechaTurno(fechaIngreso)}`;
+                divIngreso.style.display = 'flex';
+            }
+            if (divEntrega) {
+                divEntrega.innerHTML = `📦 <strong>Entrega:</strong> ${formatearFechaTurno(fechaEntrega)}`;
+                divEntrega.style.display = 'flex';
+            }
+        }
+
         function selectTimeSlot(slot) {
             if (event.currentTarget.classList.contains('disabled')) return;
 
@@ -3173,6 +3431,7 @@
             event.currentTarget.classList.add('selected');
             STATE.timeSlot = slot;
             calcularTotal();
+            actualizarResumenFechas();
         }
 
         function setSelectedSlotUI(slot) {
@@ -3184,6 +3443,7 @@
 
         function clearTimeSlotIfInvalid() {
             if (!STATE.timeSlot) return;
+            if (STATE.sinterType === 'rapido') return; // Express forzado por sinterizado rápido
             const el = document.querySelector(`.timeline-slot[data-slot="${STATE.timeSlot}"]`);
             if (!el || el.classList.contains('disabled')) {
                 STATE.timeSlot = null;
@@ -3278,7 +3538,18 @@
                 envio = CONFIG.precios_extras.envio_nacional;
             }
 
-            const total = subtotal + adicionales + express + envio;
+            let total = subtotal + adicionales + express + envio;
+            if (isNaN(total) || total < 0) total = 0;
+
+            // Wompi +3% si no es transferencia
+            const chkTrans = document.getElementById('chk-transferencia');
+            const wompiAmt = (chkTrans && !chkTrans.checked) ? Math.round(total * 0.03) : 0;
+            total += wompiAmt;
+            const lineWompi = document.getElementById('line-wompi');
+            if (lineWompi) {
+                if (wompiAmt > 0) { lineWompi.classList.remove('hidden'); document.getElementById('calc-wompi').textContent = '+' + formatCurrency(wompiAmt); }
+                else lineWompi.classList.add('hidden');
+            }
 
             document.getElementById('calc-material').textContent = STATE.submaterialNombre || '-';
             document.getElementById('calc-proceso').textContent = STATE.proceso || '-';
@@ -3319,25 +3590,40 @@
 
             const totalElement = document.getElementById('calc-total');
             totalElement.textContent = formatCurrency(total);
-            
+
             // Animación premium al recalcular
             totalElement.classList.remove('pulse');
             setTimeout(() => totalElement.classList.add('pulse'), 10);
             setTimeout(() => totalElement.classList.remove('pulse'), 610);
+
+            return total;
         }
 
         function formatCurrency(amount) {
             return '$' + amount.toLocaleString('es-CO');
         }
 
-        function handleFileUpload(input) {
-            const fileName = input.files[0]?.name || '';
-            const fileNameDisplay = document.getElementById('file-name');
-            if (fileName) {
-                fileNameDisplay.textContent = '✅ ' + fileName;
-                fileNameDisplay.style.color = 'var(--success)';
+        function handleFileUpload(input, fromDrop) {
+            if (fromDrop && input.files) {
+                const dt = new DataTransfer();
+                if (input.files[0]) dt.items.add(input.files[0]);
+                document.getElementById('comprobante').files = dt.files;
+            }
+            const file = (fromDrop ? input.files[0] : document.getElementById('comprobante').files[0]);
+            if (!file) return;
+            const placeholder = document.getElementById('comprobante-placeholder');
+            const preview    = document.getElementById('comprobante-preview');
+            const previewImg = document.getElementById('preview-img');
+            const fileNameEl = document.getElementById('file-name');
+            fileNameEl.textContent = '✅ ' + file.name;
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = e => { previewImg.src = e.target.result; placeholder.style.display = 'none'; preview.style.display = 'flex'; };
+                reader.readAsDataURL(file);
             } else {
-                fileNameDisplay.textContent = '';
+                previewImg.style.display = 'none';
+                placeholder.style.display = 'none';
+                preview.style.display = 'flex';
             }
             validateChecks();
         }
@@ -3357,55 +3643,61 @@
         }
 
         function showPaymentModal(tipo) {
-            const modal = document.getElementById('modal-payment');
+            const totalNum = parseInt((document.getElementById('calc-total')?.textContent || '0').replace(/\D/g,'')) || 0;
+            if (totalNum <= 0) {
+                showProdigyAlert('✨ ¡Casi Listo!', 'Para continuar con tu pedido PRODIGY, primero selecciona el <strong>material</strong> (ej. Zirconio o Resina 3D) y especifica la cantidad. ¡Solo te tomará unos segundos!', 'Ir a Selección');
+                return;
+            }
+            const totalFmt = document.getElementById('calc-total')?.textContent || '$0';
             const title = document.getElementById('modal-payment-title');
             const body = document.getElementById('modal-payment-body');
+            const totalPill = `<div class="pay-total-pill">💰 Total a pagar: <strong>${totalFmt}</strong></div>`;
 
             let content = '';
             if (tipo === 'nequi') {
                 title.textContent = '💙 PAGAR CON NEQUI';
-                content = `
-                    <div class="pay-box">
-                        <div class="pay-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=3228774481" alt="QR Nequi" style="width: 200px; height: 200px; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;"></div>
+                content = `${totalPill}
+                    <div class="pay-box" style="--pay-accent:#9B5DE5;">
+                        <span class="pay-method-tag">billetera digital</span>
+                        <div class="pay-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=3228774481" alt="QR Nequi" style="width:100%;height:100%;image-rendering:crisp-edges;"></div>
                         <h3>Jessica Mendez</h3>
-                        <div class="pay-num" style="color:#9B5DE5;">322 877 4481</div>
-                        <button class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ Copiado';setTimeout(()=>this.textContent='📋 Copiar número',2000);">📋 Copiar número</button>
-                        <p style="font-size:0.78rem;margin-top:12px;color:#aaa;">📸 Sube el comprobante en el portal</p>
-                    </div>
-                `;
+                        <div class="pay-num">322 877 4481</div>
+                        <button class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500);">📋 Copiar número</button>
+                        <p class="pay-info">📸 Sube el comprobante en el portal</p>
+                    </div>`;
             } else if (tipo === 'daviplata') {
                 title.textContent = '💗 PAGAR CON DAVIPLATA';
-                content = `
-                    <div class="pay-box" style="border-color:#E91E8C;">
-                        <i class="fas fa-mobile-alt" style="font-size:2.5rem;color:#E91E8C;margin-bottom:12px;display:block;"></i>
-                        <h3 style="color:#E91E8C;">Jessica Mendez</h3>
-                        <div class="pay-num" style="color:#E91E8C;">322 877 4481</div>
-                        <button class="pay-copy" style="border-color:#E91E8C;color:#E91E8C;" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ Copiado';setTimeout(()=>this.textContent='📋 Copiar número',2000);">📋 Copiar número</button>
-                        <p style="font-size:0.75rem;margin-top:10px;color:#aaa;">* Use el número directamente en su app Daviplata.</p>
-                    </div>
-                `;
+                content = `${totalPill}
+                    <div class="pay-box" style="--pay-accent:#E91E8C;">
+                        <span class="pay-method-tag">billetera digital</span>
+                        <i class="fas fa-mobile-alt" style="font-size:2.5rem;color:#E91E8C;margin-bottom:12px;display:block;filter:drop-shadow(0 0 10px #E91E8C88);"></i>
+                        <h3>Jessica Mendez</h3>
+                        <div class="pay-num">322 877 4481</div>
+                        <button class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500);">📋 Copiar número</button>
+                        <p class="pay-info">Usa el número directamente en tu app Daviplata.</p>
+                    </div>`;
             } else if (tipo === 'banco') {
                 title.textContent = '🏦 TRANSFERENCIA BANCARIA';
-                content = `
-                    <div class="pay-box" style="border-color:#8A05BE;">
-                        <h3 style="color:#8A05BE;">Nu · Cuenta de Ahorros</h3>
-                        <p style="color:#aaa;font-size:0.85rem;margin-bottom:6px;">Titular: Jessica Mendez Carmelo</p>
-                        <div class="pay-num" style="color:#8A05BE;font-size:1.1rem;">@LXY423</div>
-                        <button class="pay-copy" onclick="navigator.clipboard.writeText('LXY423');this.textContent='✅ Copiado';setTimeout(()=>this.textContent='📋 Copiar llave',2000);">📋 Copiar llave</button>
-                        <p style="font-size:0.7rem;color:#666;margin-top:8px;">Cuenta: 22253814 • CE: 7582423</p>
+                content = `${totalPill}
+                    <div class="pay-box" style="--pay-accent:#8A05BE;">
+                        <span class="pay-method-tag">cuenta de ahorros · Nu</span>
+                        <h3>Jessica Mendez Carmelo</h3>
+                        <div class="pay-num">@LXY423</div>
+                        <button class="pay-copy" onclick="navigator.clipboard.writeText('LXY423');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar llave',1500);">📋 Copiar llave</button>
+                        <p class="pay-info"><strong>Cuenta:</strong> 22253814 &nbsp;•&nbsp; <strong>CE:</strong> 7582423</p>
                     </div>
-                    <div class="pay-box">
-                        <h3>Breb</h3>
-                        <p style="color:#aaa;font-size:0.85rem;margin-bottom:4px;">Titular: Jessica</p>
+                    <div class="pay-divider">o también</div>
+                    <div class="pay-box" style="--pay-accent:var(--gold-primary);">
+                        <span class="pay-method-tag">Breb · billetera</span>
+                        <h3>Jessica</h3>
                         <div class="pay-num">322 877 4481</div>
-                        <button class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ Copiado';setTimeout(()=>this.textContent='📋 Copiar',2000);">📋 Copiar</button>
+                        <button class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar',1500);">📋 Copiar</button>
                     </div>
-                    <p style="font-size:0.75rem;color:#aaa;text-align:center;margin-top:4px;">📸 Sube el comprobante en el portal</p>
-                `;
+                    <p class="pay-info" style="text-align:center;margin-top:6px;">📸 Sube el comprobante en el portal</p>`;
             }
 
             body.innerHTML = content;
-            modal.classList.add('active');
+            document.getElementById('modal-payment').classList.add('active');
         }
 
         function openModal(modalId) {
@@ -3414,6 +3706,17 @@
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
+            if (modalId === 'modal-confirmation') {
+                const cb = document.getElementById('check-terminos-confirm');
+                const btn = document.getElementById('btn-whatsapp-confirm');
+                if (cb) cb.checked = false;
+                if (btn) { btn.disabled = true; btn.style.opacity = '0.45'; }
+            }
+        }
+
+        function toggleWhatsAppBtn(cb) {
+            const btn = document.getElementById('btn-whatsapp-confirm');
+            if (btn) btn.disabled = !cb.checked;
         }
 
         function showTerms() {
@@ -3433,13 +3736,13 @@
             const pRef = document.getElementById('pago_referencia').value.trim();
 
             if (!pMetodo || !pTitular) {
-                alert('⚠️ Por favor completa los datos de confirmación de pago para procesar tu orden.');
+                showProdigyAlert('📋 Datos Incompletos', 'Para procesar tu orden, completa el <strong>método de pago</strong> y el nombre del <strong>titular</strong>. Estos datos nos permiten verificar tu transacción. ¡Ya casi terminamos!', 'Completar Datos');
                 document.getElementById('pago_metodo').focus();
                 return;
             }
 
             if (!STATE.timeSlot && !STATE.horaCorte) {
-                alert('⚠️ OBLIGATORIO: Debe seleccionar un horario de entrega antes de continuar.');
+                showProdigyAlert('⏰ Horario Requerido', 'Para finalizar tu orden, selecciona un <strong>horario de entrega</strong> en la línea de tiempo. Elige la opción que mejor se adapte a tus necesidades.', 'Seleccionar Horario');
                 document.querySelector('.timeline-slots')?.scrollIntoView({behavior:'smooth',block:'center'});
                 return;
             }
@@ -3486,12 +3789,12 @@
             }
 
             if (!STATE.submaterialId && STATE.proceso !== 'solo_sinter') {
-                alert('⚠️ Selecciona un material específico');
+                showProdigyAlert('🦷 Material Pendiente', 'Por favor selecciona el <strong>material específico</strong> de tu caso. Sin esta información no podemos generar correctamente tu orden.', 'Seleccionar Material');
                 return;
             }
 
             if (!STATE.timeSlot) {
-                alert('⚠️ Selecciona horario de entrega');
+                showProdigyAlert('⏰ Horario Pendiente', 'Para enviar tu orden por WhatsApp, selecciona el <strong>horario de entrega</strong> que prefieras en la línea de tiempo.', 'Seleccionar Horario');
                 return;
             }
 
@@ -3501,11 +3804,12 @@
             }
             
             // Validar que el enlace sea de WeTransfer o Google Drive
-            const esWeTransfer = linkSTL.toLowerCase().includes('wetransfer.com');
-            const esDrive = linkSTL.toLowerCase().includes('drive.google.com');
-            
-            if (!esWeTransfer && !esDrive) {
-                showError(document.getElementById('linkSTL'), 'Solo se aceptan enlaces de WeTransfer o Google Drive');
+            const esWeTransfer = linkSTL.toLowerCase().includes('wetransfer.com') || linkSTL.toLowerCase().includes('we.tl');
+            const esDrive     = linkSTL.toLowerCase().includes('drive.google.com');
+            const esDropbox   = linkSTL.toLowerCase().includes('dropbox.com');
+
+            if (!esWeTransfer && !esDrive && !esDropbox) {
+                showError(document.getElementById('linkSTL'), 'Acepta Buzón PRODIGY (Dropbox), Google Drive o WeTransfer');
                 return;
             }
 
@@ -3518,7 +3822,10 @@
 
             const orderId = 'PROD-' + Math.random().toString(36).substr(2, 10).toUpperCase();
             const cantidad = cantidadNum;
-            const total = document.getElementById('calc-total').textContent;
+            const totalVerificado = calcularTotal();
+            const total = totalVerificado
+                ? `$${Number(totalVerificado).toLocaleString('es-CO')}`
+                : document.getElementById('calc-total').textContent;
             const timeSlotNames = {
                 'express': '🚀 Express 9 AM',
                 'mediodia': '☀️ Mediodía 12 PM',
@@ -3571,10 +3878,27 @@
         }
 
         function sendToWhatsApp() {
+            const btn = document.getElementById('btn-whatsapp-confirm');
+            if (btn && btn.dataset.sending === '1') return;
+
+            // Rate limiting: máx 1 pedido cada 2 min por sesión
+            const _wts = localStorage.getItem('prodigy_wts');
+            if (_wts && (Date.now() - parseInt(_wts)) < 120000) {
+                const _min = Math.ceil((120000 - (Date.now() - parseInt(_wts))) / 60000);
+                showProdigyAlert('⏱️ Por Favor Espera', `Genera un nuevo pedido en ${_min} minuto(s) para evitar duplicados.`, 'Entendido');
+                return;
+            }
+            localStorage.setItem('prodigy_wts', Date.now().toString());
+
+            if (btn) { btn.dataset.sending = '1'; btn.disabled = true; btn.textContent = '⏳ Generando Orden...'; }
+            setTimeout(() => {
+                if (btn) { btn.dataset.sending = '0'; btn.disabled = false; btn.textContent = '🚀 CONFIRMAR Y ABRIR WHATSAPP'; }
+            }, 3000);
+
             closeModal('modal-confirmation');
-            
+
             // Construir mensaje de WhatsApp con datos de pago
-            let texto = `🏥 *NUEVA ORDEN PRODIGY*\n\n`;
+            let texto = `*💎 ORDEN DE FRESADO DIGITAL - PRODIGY*\n\n`;
             texto += `📋 *ID:* ${STATE.ordenId}\n`;
             texto += `👤 *Cliente:* ${STATE.nombreCliente}\n`;
             texto += `📱 *WhatsApp:* ${STATE.whatsappCliente}\n`;
@@ -3582,7 +3906,7 @@
             texto += `🦷 *Paciente:* ${STATE.nombrePaciente}\n`;
             texto += `📍 *Origen:* ${STATE.origen}\n\n`;
             
-            texto += `💎 *MATERIAL:* ${STATE.submaterialNombre || 'N/A'}\n`;
+            texto += `💎 *MATERIAL:* ${sanitizar(STATE.submaterialNombre || 'N/A')}\n`;
             texto += `⚙️ *Proceso:* ${STATE.proceso || 'Standard'}\n`;
             if(STATE.colorVita) texto += `🎨 *Color VITA:* ${STATE.colorVita}\n`;
             texto += `🔢 *Cantidad:* ${STATE.cantidad} unidades\n\n`;
@@ -3600,7 +3924,8 @@
             texto += `• Ref: ${STATE.pagoReferencia || 'No proporcionada'}\n\n`;
             
             texto += `💵 *TOTAL: ${STATE.total}*\n\n`;
-            texto += `📎 *Archivos STL:* ${STATE.linkSTL}`;
+            texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n\n`;
+            texto += `_✅ Acepto los términos y condiciones de PRODIGY (Malla/Diseño verificado)_`;
             
             // TODO: Migración futura a WhatsApp Business API
             // En lugar de window.open, enviar datos a endpoint:
@@ -3625,7 +3950,7 @@
                     exito.classList.add('active');
                 }
             } catch(e) {
-                alert('⚠️ Error al abrir WhatsApp. Por favor intenta de nuevo.');
+                showProdigyAlert('📱 Error de Conexión', 'No se pudo abrir WhatsApp automáticamente. Verifica que tienes WhatsApp instalado e intenta de nuevo.', 'Intentar de Nuevo');
             }
         }
 
@@ -3906,7 +4231,7 @@
                     }
                 }, 1000);
             } else {
-                alert('✅ Google Translate ya está cargado. Usa el selector en la parte superior de la página.');
+                showProdigyAlert('🌐 Google Translate', 'El traductor ya está activo. Usa el <strong>selector de idioma</strong> en la parte superior de la página para cambiar el idioma del contenido.', 'Entendido');
             }
         }
 
@@ -3918,6 +4243,22 @@
             menu.classList.toggle('active');
             overlay.classList.toggle('active');
         }
+        // Hamburguesa navbar global canónico
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-nav');
+            const icon = document.getElementById('hamburger-icon');
+            if (!menu) return;
+            const open = menu.classList.toggle('open');
+            icon.className = open ? 'fas fa-times' : 'fas fa-bars';
+        }
+        document.querySelectorAll('.mobile-nav a').forEach(a => {
+            a.addEventListener('click', () => {
+                const m = document.getElementById('mobile-nav');
+                if (m) m.classList.remove('open');
+                const ic = document.getElementById('hamburger-icon');
+                if (ic) ic.className = 'fas fa-bars';
+            });
+        });
 
         // FUNCIÓN SCROLL A SECCIONES
         function scrollToSection(sectionId) {
@@ -4008,7 +4349,103 @@
             modal.onclick = (e) => { if(e.target === modal) modal.remove(); };
             document.body.appendChild(modal);
         }
+        // === SISTEMA DE ALERTAS PREMIUM PRODIGY ===
+        function showProdigyAlert(titulo, mensaje, btnTexto) {
+            document.getElementById('custom-alert-title').innerHTML = titulo;
+            document.getElementById('custom-alert-message').innerHTML = mensaje;
+            document.getElementById('custom-alert-btn').textContent = btnTexto || 'Entendido';
+            document.getElementById('custom-alert-overlay').style.display = 'flex';
+        }
+        function closeProdigyAlert() {
+            document.getElementById('custom-alert-overlay').style.display = 'none';
+        }
     </script>
 
+    <!-- POP-UP DE ALERTA PREMIUM PRODIGY -->
+    <div id="custom-alert-overlay" onclick="if(event.target===this)closeProdigyAlert()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(6px); z-index:10000; justify-content:center; align-items:center;">
+        <div style="background:#0d1525; border-radius:14px; padding:35px 30px 28px; width:90%; max-width:420px; text-align:center; border:1px solid rgba(255,255,255,0.08); box-shadow:0 20px 60px rgba(0,0,0,0.8); position:relative; overflow:hidden;">
+            <div style="height:3px; background:linear-gradient(90deg,#9B5DE5,#D946A6,#D4AF37); position:absolute; top:0; left:0; right:0;"></div>
+            <h3 id="custom-alert-title" style="color:#e2e8f0; font-size:1.25rem; margin:10px 0 12px; font-weight:700;"></h3>
+            <p id="custom-alert-message" style="color:#a8a8a8; font-size:0.95rem; line-height:1.6; margin-bottom:24px;"></p>
+            <button id="custom-alert-btn" onclick="closeProdigyAlert()" style="background:linear-gradient(135deg,#D946A6,#9B5DE5); color:#fff; border:none; padding:12px 32px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.95rem; letter-spacing:0.5px;"></button>
+        </div>
+    </div>
+
+    <!-- FOOTER GLOBAL PRODIGY -->
+    <footer class="prodigy-global-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>PRODIGY</h4>
+                <ul>
+                    <li>Diseño Dental Digital</li>
+                    <li>Bogotá, Colombia</li>
+                    <li>Alta Precisión CAD/CAM</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>CONTACTO</h4>
+                <ul>
+                    <li><a href="tel:+573212816716">+57 321 281 6716</a></li>
+                    <li><a href="mailto:labdentalprodigy@gmail.com">labdentalprodigy@gmail.com</a></li>
+                    <li><a href="https://instagram.com/prodigydigitaldentistry" target="_blank">@prodigydigitaldentistry</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>SERVICIOS</h4>
+                <ul>
+                    <li><a href="flujo-impresion.html">Impresión 3D</a></li>
+                    <li><a href="flujo-fresado.html">Fresado CAD/CAM</a></li>
+                    <li><a href="seguimiento-caso.html">Seguimiento de Pedidos</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>LEGAL</h4>
+                <ul>
+                    <li><a href="terminos-y-legal.html">Términos y Condiciones</a></li>
+                    <li><a href="terminos-y-legal.html#privacidad">Política de Privacidad</a></li>
+                    <li><a href="https://wa.me/573212816716?text=Hola%20equipo%20Prodigy.%20Tengo%20una%20sugerencia%2Freporte%20sobre%20la%20p%C3%A1gina%20web%3A" target="_blank" rel="noopener noreferrer">💡 Sugerencias o Reportar Fallo</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>© 2026 PRODIGY Digital Dentistry. Bogotá, Colombia. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- FLOTANTES UX -->
+    <div class="ux-floaters">
+        <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba"><i class="fas fa-arrow-up"></i></button>
+        <button class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro">🌙</button>
+        <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte." class="ux-btn" target="_blank" rel="noopener" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);"><i class="fab fa-whatsapp" style="color:#25D366;"></i></a>
+    </div>
+
+    <script>
+        // Scroll to top visibility
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('scroll-top-btn');
+            if (btn) btn.classList.toggle('visible', window.scrollY > 300);
+        });
+        // Modo claro/oscuro
+        function toggleTheme() {
+            const light = document.body.classList.toggle('light-mode');
+            const btn = document.getElementById('theme-btn');
+            if (btn) btn.textContent = light ? '☀️' : '🌙';
+            localStorage.setItem('prodigy_theme', light ? 'light' : 'dark');
+        }
+        if (localStorage.getItem('prodigy_theme') === 'light') {
+            document.body.classList.add('light-mode');
+            setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
+        }
+    </script>
+    <script src="js/pagos.js"></script>
+    <script>
+        function pagarConWompi() {
+            const totalEl = document.getElementById('calc-total');
+            const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;
+            if (!monto) { alert('Selecciona un material y proceso para calcular el total.'); return; }
+            const ref = 'PRD-FRS-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            abrirCheckoutWompi({ monto, referencia: ref, descripcion: 'PRODIGY — Fresado CAD/CAM' });
+        }
+    </script>
 </body>
 </html>
