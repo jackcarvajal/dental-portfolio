@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>PRODIGY — Panel Interno de Operaciones</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #050505; --sidebar: #0d0a00; --card: #14100a;
+            --gold: #D4AF37; --gold2: #D946A6; --cyan: #00d2ff;
+            --text: #fff; --muted: #64748b; --border: rgba(212,175,55,0.15);
+        }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; }
+
+        /* OVERLAY AUTH */
+        #auth-overlay { position:fixed; inset:0; background:#050505; display:flex; align-items:center; justify-content:center; z-index:9999; flex-direction:column; gap:16px; }
+        #auth-overlay p { color:#94a3b8; font-size:0.9rem; }
+        .spinner { width:36px; height:36px; border:3px solid rgba(212,175,55,0.2); border-top-color:#D4AF37; border-radius:50%; animation:spin 0.8s linear infinite; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* SIDEBAR */
+        .sidebar { width:240px; min-height:100vh; background:var(--sidebar); border-right:1px solid var(--border); padding:24px 16px; display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
+        .sidebar-logo { text-align:center; padding:12px 0 24px; border-bottom:1px solid var(--border); margin-bottom:16px; }
+        .sidebar-logo h1 { font-size:1.1rem; font-weight:900; letter-spacing:2px; color:var(--gold); }
+        .sidebar-logo p  { font-size:0.65rem; color:var(--muted); margin-top:2px; }
+        .sidebar-user { font-size:0.72rem; color:#cbd5e1; margin-top:6px; word-break:break-all; }
+        .role-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); border-radius:20px; padding:3px 10px; font-size:0.65rem; font-weight:700; color:var(--gold); margin-top:8px; }
+
+        .nav-section { font-size:0.62rem; font-weight:800; color:#475569; text-transform:uppercase; letter-spacing:1.5px; padding:16px 12px 6px; }
+        .nav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600; color:#94a3b8; text-decoration:none; transition:all 0.2s; border:1px solid transparent; }
+        .nav-item:hover { background:rgba(255,255,255,0.04); color:#fff; }
+        .nav-item.active { background:rgba(212,175,55,0.1); color:var(--gold); border-color:rgba(212,175,55,0.25); }
+        .nav-item i { width:16px; text-align:center; }
+        .sidebar-footer { margin-top:auto; padding-top:20px; border-top:1px solid var(--border); }
+
+        /* MAIN */
+        .main { flex:1; padding:32px; overflow-y:auto; display:none; }
+        .main.visible { display:block; }
+        .page-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:28px; gap:20px; flex-wrap:wrap; }
+        .page-header h1 { font-size:1.6rem; font-weight:900; }
+        .page-header p  { color:var(--muted); font-size:0.88rem; margin-top:4px; }
+
+        /* TABS */
+        .tab-bar { display:flex; gap:4px; margin-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:0; }
+        .tab-btn { padding:10px 20px; background:transparent; border:none; border-bottom:2px solid transparent; color:var(--muted); font-size:0.85rem; font-weight:700; cursor:pointer; transition:all 0.2s; margin-bottom:-1px; }
+        .tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
+        .tab-btn:hover { color:#fff; }
+        .tab-panel { display:none; }
+        .tab-panel.active { display:block; }
+
+        /* KPI */
+        .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+        @media(max-width:1100px){ .kpi-grid { grid-template-columns:repeat(2,1fr); } }
+        .kpi-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px 18px; position:relative; overflow:hidden; }
+        .kpi-card::after { content:''; position:absolute; top:0; right:0; width:80px; height:80px; border-radius:50%; transform:translate(30px,-30px); }
+        .kpi-card.k1::after { background:radial-gradient(circle,rgba(0,255,65,0.15),transparent); }
+        .kpi-card.k2::after { background:radial-gradient(circle,rgba(212,175,55,0.15),transparent); }
+        .kpi-card.k3::after { background:radial-gradient(circle,rgba(0,210,255,0.12),transparent); }
+        .kpi-card.k4::after { background:radial-gradient(circle,rgba(217,70,166,0.15),transparent); }
+        .kpi-icon { font-size:1.4rem; margin-bottom:10px; }
+        .kpi-value { font-size:2.2rem; font-weight:900; line-height:1; margin-bottom:4px; }
+        .kpi-label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; }
+
+        /* TABLA */
+        .section-card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:24px; }
+        .section-header { padding:16px 20px; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:space-between; }
+        .section-header h2 { font-size:0.9rem; font-weight:800; }
+        table { width:100%; border-collapse:collapse; font-size:0.8rem; }
+        th { padding:10px 16px; text-align:left; color:var(--muted); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.8px; border-bottom:1px solid rgba(255,255,255,0.05); }
+        td { padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.03); color:#e2e8f0; vertical-align:top; }
+        tr:last-child td { border-bottom:none; }
+        tr:hover td { background:rgba(255,255,255,0.02); }
+
+        .status-badge { display:inline-flex; align-items:center; gap:5px; padding:2px 9px; border-radius:20px; font-size:0.68rem; font-weight:700; }
+        .s-pend  { background:rgba(251,191,36,0.1); color:#fbbf24; }
+        .s-pago  { background:rgba(0,210,255,0.1);  color:#00d2ff; }
+        .s-prod  { background:rgba(217,70,166,0.1); color:#D946A6; }
+        .s-done  { background:rgba(0,255,65,0.1);   color:#00FF41; }
+
+        .btn-xs { padding:4px 10px; border-radius:6px; font-size:0.68rem; font-weight:700; border:1px solid; cursor:pointer; background:transparent; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:inherit; transition:all 0.2s; }
+        .btn-gold  { color:var(--gold); border-color:rgba(212,175,55,0.4); }
+        .btn-gold:hover  { background:rgba(212,175,55,0.1); }
+        .btn-pink  { color:#D946A6; border-color:rgba(217,70,166,0.35); }
+        .btn-pink:hover  { background:rgba(217,70,166,0.08); }
+        .btn-primary { padding:10px 20px; background:linear-gradient(135deg,#D4AF37,#B8860B); color:#000; border:none; border-radius:8px; font-weight:700; font-size:0.85rem; cursor:pointer; }
+        .btn-primary:hover { opacity:0.9; }
+        .btn-primary:disabled { opacity:0.5; cursor:not-allowed; }
+
+        /* FORMULARIO PORTAFOLIO */
+        .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        @media(max-width:700px){ .form-grid { grid-template-columns:1fr; } }
+        .form-group { display:flex; flex-direction:column; gap:6px; }
+        .form-group label { font-size:0.75rem; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; }
+        .form-group input, .form-group select, .form-group textarea {
+            background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+            color:#fff; border-radius:8px; padding:10px 14px; font-size:0.85rem;
+            transition:border-color 0.2s; font-family:inherit;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline:none; border-color:var(--gold);
+        }
+        .form-group textarea { resize:vertical; min-height:90px; }
+        .form-group select option { background:#1a1a1a; }
+        .drop-zone {
+            border:2px dashed rgba(212,175,55,0.3); border-radius:12px; padding:32px;
+            text-align:center; cursor:pointer; transition:all 0.2s; grid-column:1/-1;
+        }
+        .drop-zone:hover, .drop-zone.drag-over { border-color:var(--gold); background:rgba(212,175,55,0.04); }
+        .drop-zone p { color:var(--muted); font-size:0.85rem; margin-top:8px; }
+        .drop-zone strong { color:#fff; }
+        .preview-img { max-width:100%; max-height:200px; border-radius:8px; margin-top:12px; }
+
+        /* LOADING / EMPTY */
+        .loading-row td { text-align:center; color:var(--muted); padding:32px; }
+        .empty-state { text-align:center; padding:48px 20px; color:var(--muted); }
+        .empty-state i { font-size:2.5rem; margin-bottom:12px; display:block; color:rgba(212,175,55,0.3); }
+
+        /* TOAST */
+        #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:#1a2332; border:1px solid rgba(212,175,55,0.3); color:#fff; padding:12px 24px; border-radius:12px; font-size:0.85rem; font-weight:600; transition:transform 0.3s; z-index:9998; pointer-events:none; }
+        #toast.show { transform:translateX(-50%) translateY(0); }
+        #toast.success { border-color:rgba(0,255,65,0.4); }
+        #toast.error   { border-color:rgba(239,68,68,0.4); }
+
+        @media(max-width:768px){ .sidebar { display:none; } .main { padding:20px; } }
+    </style>
+</head>
+<body>
+
+<!-- Auth overlay mientras verifica sesión -->
+<div id="auth-overlay">
+    <div class="spinner"></div>
+    <p>Verificando acceso de administrador…</p>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar" style="display:none;">
+    <div class="sidebar-logo">
+        <h1>PRODIGY</h1>
+        <p>Digital Dentistry</p>
+        <div class="role-badge"><i class="fas fa-crown"></i> Admin</div>
+        <div class="sidebar-user" id="admin-email">—</div>
+    </div>
+
+    <p class="nav-section">Panel</p>
+    <a href="#" class="nav-item active" onclick="switchTab('pedidos',this)">
+        <i class="fas fa-inbox"></i> Pedidos
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('portafolio',this)">
+        <i class="fas fa-images"></i> Portafolio
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('clientes',this)">
+        <i class="fas fa-users"></i> Clientes
+    </a>
+
+    <p class="nav-section">Configuración</p>
+    <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Catálogo</a>
+    <a href="../index.html" class="nav-item" target="_blank"><i class="fas fa-globe"></i> Ver Sitio</a>
+
+    <div class="sidebar-footer">
+        <a href="#" class="nav-item" onclick="cerrarSesion()">
+            <i class="fas fa-arrow-right-from-bracket"></i> Cerrar Sesión
+        </a>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main" id="main-content">
+
+    <!-- ═══════════ TAB PEDIDOS ═══════════ -->
+    <div id="tab-pedidos" class="tab-panel active">
+        <div class="page-header">
+            <div>
+                <h1>Pedidos <span style="color:var(--gold);">PRODIGY</span></h1>
+                <p>Gestión de casos y estados de producción en tiempo real</p>
+            </div>
+            <button class="btn-primary" onclick="cargarPedidos()">
+                <i class="fas fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-grid">
+            <div class="kpi-card k1">
+                <div class="kpi-icon" style="color:#00FF41;"><i class="fas fa-money-bill-wave"></i></div>
+                <div class="kpi-value" style="color:#00FF41;" id="kpi-ingresos">—</div>
+                <div class="kpi-label">Ingresos totales</div>
+            </div>
+            <div class="kpi-card k2">
+                <div class="kpi-icon" style="color:var(--gold);"><i class="fas fa-folder-open"></i></div>
+                <div class="kpi-value" style="color:var(--gold);" id="kpi-total">—</div>
+                <div class="kpi-label">Total pedidos</div>
+            </div>
+            <div class="kpi-card k3">
+                <div class="kpi-icon" style="color:var(--cyan);"><i class="fas fa-clock"></i></div>
+                <div class="kpi-value" style="color:var(--cyan);" id="kpi-pendientes">—</div>
+                <div class="kpi-label">Pendientes de pago</div>
+            </div>
+            <div class="kpi-card k4">
+                <div class="kpi-icon" style="color:#D946A6;"><i class="fas fa-truck-fast"></i></div>
+                <div class="kpi-value" style="color:#D946A6;" id="kpi-produccion">—</div>
+                <div class="kpi-label">En producción</div>
+            </div>
+        </div>
+
+        <!-- Filtro estado -->
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+            <button class="btn-xs btn-gold" onclick="filtrarPedidos('todos')" id="f-todos" style="background:rgba(212,175,55,0.1);">Todos</button>
+            <button class="btn-xs btn-gold" onclick="filtrarPedidos('Pendiente')" id="f-Pendiente">Pendiente</button>
+            <button class="btn-xs btn-gold" onclick="filtrarPedidos('Pagado')" id="f-Pagado">Pagado</button>
+            <button class="btn-xs btn-gold" onclick="filtrarPedidos('En Producción')" id="f-En Producción">En Producción</button>
+            <button class="btn-xs btn-gold" onclick="filtrarPedidos('Despachado')" id="f-Despachado">Despachado</button>
+        </div>
+
+        <div class="section-card">
+            <div class="section-header">
+                <h2><i class="fas fa-table-list" style="color:var(--gold);margin-right:8px;"></i>Casos</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Código</th><th>Tipo</th><th>Material</th><th>Total</th><th>Pasarela</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr>
+                </thead>
+                <tbody id="tbody-pedidos">
+                    <tr class="loading-row"><td colspan="8"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ═══════════ TAB PORTAFOLIO ═══════════ -->
+    <div id="tab-portafolio" class="tab-panel">
+        <div class="page-header">
+            <div>
+                <h1>Portafolio <span style="color:var(--gold);">Upload</span></h1>
+                <p>Sube casos exitosos directamente desde aquí. Van a la tabla <code style="color:var(--gold);">portfolio</code> de Supabase.</p>
+            </div>
+        </div>
+
+        <div class="section-card" style="padding:28px;">
+            <form id="form-portafolio" onsubmit="subirCaso(event)">
+                <div class="form-grid">
+
+                    <!-- Imagen del caso -->
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label>Imagen del caso</label>
+                        <div class="drop-zone" id="drop-zone" onclick="document.getElementById('img-input').click()"
+                             ondrop="handleDrop(event)" ondragover="event.preventDefault();this.classList.add('drag-over')"
+                             ondragleave="this.classList.remove('drag-over')">
+                            <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:rgba(212,175,55,0.5);"></i>
+                            <p><strong>Clic para seleccionar</strong> o arrastra la imagen aquí</p>
+                            <p style="font-size:0.75rem;margin-top:4px;">JPG, PNG, WebP — máx. 10 MB</p>
+                            <img id="img-preview" class="preview-img" style="display:none;">
+                        </div>
+                        <input type="file" id="img-input" accept="image/*" style="display:none;" onchange="previewImg(this)">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Título del caso</label>
+                        <input type="text" id="p-titulo" placeholder="Ej: Corona Zirconio E-max 24" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de trabajo</label>
+                        <select id="p-tipo" required>
+                            <option value="">Seleccionar…</option>
+                            <option>Diseño CAD</option>
+                            <option>Fresado CAD/CAM</option>
+                            <option>Impresión 3D</option>
+                            <option>Prótesis Completa</option>
+                            <option>Biomodelo</option>
+                            <option>Estructura Metálica</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Material</label>
+                        <input type="text" id="p-material" placeholder="Ej: Zirconio 3Y, E-max, Resina…">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Software / Sistema</label>
+                        <input type="text" id="p-software" placeholder="Ej: Exocad, 3Shape, Medit…">
+                    </div>
+
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label>Descripción técnica</label>
+                        <textarea id="p-descripcion" placeholder="Describe el caso, técnica, resultado…"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dificultad / Categoría</label>
+                        <select id="p-categoria">
+                            <option value="Estética">Estética</option>
+                            <option value="Rehabilitación">Rehabilitación</option>
+                            <option value="Implantes">Implantes</option>
+                            <option value="Ortopedia">Ortopedia</option>
+                            <option value="Biomodelo">Biomodelo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Destacado en portafolio</label>
+                        <select id="p-destacado">
+                            <option value="false">No</option>
+                            <option value="true">Sí — mostrar primero</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div style="margin-top:24px;display:flex;gap:12px;justify-content:flex-end;">
+                    <button type="button" class="btn-xs btn-gold" onclick="limpiarFormPortafolio()">
+                        <i class="fas fa-rotate-left"></i> Limpiar
+                    </button>
+                    <button type="submit" class="btn-primary" id="btn-subir">
+                        <i class="fas fa-cloud-upload-alt"></i> Publicar en Catálogo
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Casos publicados -->
+        <div class="section-card" style="margin-top:24px;">
+            <div class="section-header">
+                <h2><i class="fas fa-images" style="color:var(--gold);margin-right:8px;"></i>Casos publicados</h2>
+                <button class="btn-xs btn-gold" onclick="cargarPortafolio()"><i class="fas fa-rotate-right"></i></button>
+            </div>
+            <div id="portafolio-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:20px;">
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-images"></i>
+                    <p>Cargando casos…</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ TAB CLIENTES ═══════════ -->
+    <div id="tab-clientes" class="tab-panel">
+        <div class="page-header">
+            <div>
+                <h1>Clientes <span style="color:var(--gold);">/ Doctores</span></h1>
+                <p>Directorio de doctores registrados con historial de pedidos</p>
+            </div>
+            <button class="btn-primary" onclick="cargarClientes()">
+                <i class="fas fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+
+        <div class="section-card">
+            <div class="section-header">
+                <h2><i class="fas fa-users" style="color:var(--gold);margin-right:8px;"></i>Doctores registrados</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Doctor</th><th>Email</th><th>Clínica</th><th>Ciudad</th><th>País</th><th>Registro</th><th>Pedidos</th></tr>
+                </thead>
+                <tbody id="tbody-clientes">
+                    <tr class="loading-row"><td colspan="7"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+<div id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   SUPABASE CONFIG
+══════════════════════════════════════════ */
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// Emails autorizados como admin (fuente de verdad adicional al rol en Supabase)
+const ADMIN_EMAILS = [
+    'jackalejandroc@gmail.com',
+    'labdentalprodigy@gmail.com'
+];
+
+/* ══════════════════════════════════════════
+   AUTH — Verificar sesión admin al cargar
+══════════════════════════════════════════ */
+let currentUser = null;
+let todosLosPedidos = [];
+
+async function verificarAdmin() {
+    try {
+        const { data: { session }, error } = await sb.auth.getSession();
+
+        if (error || !session) {
+            window.location.href = 'login.html?msg=admin_required';
+            return;
+        }
+
+        const user = session.user;
+        const role = user.user_metadata?.role;
+        const email = user.email;
+
+        // Verificar: rol admin en metadata O email en lista autorizada
+        const esAdmin = role === 'admin' || ADMIN_EMAILS.includes(email);
+
+        if (!esAdmin) {
+            window.location.href = role === 'operator'
+                ? 'operator-panel.html'
+                : 'client-panel.html';
+            return;
+        }
+
+        // Acceso concedido
+        currentUser = user;
+        document.getElementById('admin-email').textContent = email;
+        document.getElementById('auth-overlay').style.display = 'none';
+        document.getElementById('sidebar').style.display = 'flex';
+        document.getElementById('main-content').classList.add('visible');
+
+        // Cargar datos iniciales
+        await cargarPedidos();
+
+    } catch (e) {
+        // Fallback: sessionStorage si Supabase no responde
+        const role = sessionStorage.getItem('prodigy_role');
+        if (role === 'admin') {
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'flex';
+            document.getElementById('main-content').classList.add('visible');
+        } else {
+            window.location.href = 'login.html';
+        }
+    }
+}
+
+async function cerrarSesion() {
+    await sb.auth.signOut();
+    sessionStorage.clear();
+    window.location.href = 'login.html';
+}
+
+/* ══════════════════════════════════════════
+   TABS
+══════════════════════════════════════════ */
+function switchTab(tab, el) {
+    // Sidebar
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    // Panels
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+
+    // Cargar datos al abrir tab por primera vez
+    if (tab === 'portafolio') cargarPortafolio();
+    if (tab === 'clientes')   cargarClientes();
+}
+
+/* ══════════════════════════════════════════
+   TAB 1 — PEDIDOS
+══════════════════════════════════════════ */
+const fmtCOP = (v) => Number(v || 0).toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
+const fmtFecha = (d) => d ? new Date(d).toLocaleDateString('es-CO') : '—';
+
+const BADGE = {
+    'Pendiente':     '<span class="status-badge s-pend"><i class="fas fa-clock"></i> Pendiente</span>',
+    'Pagado':        '<span class="status-badge s-pago"><i class="fas fa-check-circle"></i> Pagado</span>',
+    'En Producción': '<span class="status-badge s-prod"><i class="fas fa-circle-notch fa-spin"></i> En Prod.</span>',
+    'Despachado':    '<span class="status-badge s-done"><i class="fas fa-truck-fast"></i> Despachado</span>',
+};
+
+async function cargarPedidos() {
+    document.getElementById('tbody-pedidos').innerHTML =
+        '<tr class="loading-row"><td colspan="8"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
+
+    try {
+        const { data, error } = await sb
+            .from('pedidos')
+            .select('*, clientes(nombre,email)')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        todosLosPedidos = data || [];
+        renderPedidos(todosLosPedidos);
+        actualizarKPIs(todosLosPedidos);
+
+    } catch (e) {
+        document.getElementById('tbody-pedidos').innerHTML =
+            `<tr><td colspan="8" style="text-align:center;color:#f87171;padding:24px;">${e.message}</td></tr>`;
+    }
+}
+
+function renderPedidos(lista) {
+    if (!lista || lista.length === 0) {
+        document.getElementById('tbody-pedidos').innerHTML =
+            '<tr><td colspan="8" class="empty-state"><i class="fas fa-inbox"></i><br>Sin pedidos aún</td></tr>';
+        return;
+    }
+
+    document.getElementById('tbody-pedidos').innerHTML = lista.map(p => `
+    <tr>
+        <td style="font-family:monospace;color:var(--cyan);">${p.codigo || p.id?.slice(0,8)}</td>
+        <td>${p.tipo_trabajo || '—'}</td>
+        <td>${p.material || '—'}</td>
+        <td style="color:#00FF41;font-weight:700;">${fmtCOP(p.precio_total)}</td>
+        <td style="font-size:0.75rem;color:#94a3b8;">${p.pasarela || '—'}</td>
+        <td>
+            <select onchange="cambiarEstado('${p.id}',this.value)"
+                    style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:6px;padding:4px 8px;font-size:0.72rem;">
+                ${['Pendiente','Pagado','En Producción','Despachado'].map(e =>
+                    `<option ${p.estado===e?'selected':''}>${e}</option>`).join('')}
+            </select>
+        </td>
+        <td style="font-size:0.75rem;">${fmtFecha(p.created_at)}</td>
+        <td>
+            ${p.stl_url ? `<a href="${p.stl_url}" target="_blank" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
+        </td>
+    </tr>`).join('');
+}
+
+async function cambiarEstado(pedidoId, nuevoEstado) {
+    const { error } = await sb.from('pedidos').update({ estado: nuevoEstado }).eq('id', pedidoId);
+    if (error) toast('Error al actualizar: ' + error.message, 'error');
+    else toast('Estado actualizado → ' + nuevoEstado, 'success');
+}
+
+function filtrarPedidos(estado) {
+    document.querySelectorAll('[id^="f-"]').forEach(b => b.style.background = '');
+    const btn = document.getElementById('f-' + estado);
+    if (btn) btn.style.background = 'rgba(212,175,55,0.15)';
+
+    const filtrado = estado === 'todos'
+        ? todosLosPedidos
+        : todosLosPedidos.filter(p => p.estado === estado);
+    renderPedidos(filtrado);
+}
+
+function actualizarKPIs(data) {
+    const total    = data.length;
+    const ingresos = data.reduce((s, p) => s + (parseFloat(p.precio_total) || 0), 0);
+    const pend     = data.filter(p => p.estado === 'Pendiente').length;
+    const prod     = data.filter(p => p.estado === 'En Producción').length;
+
+    document.getElementById('kpi-total').textContent     = total;
+    document.getElementById('kpi-ingresos').textContent  = fmtCOP(ingresos);
+    document.getElementById('kpi-pendientes').textContent = pend;
+    document.getElementById('kpi-produccion').textContent = prod;
+}
+
+/* ══════════════════════════════════════════
+   TAB 2 — PORTAFOLIO
+══════════════════════════════════════════ */
+let imgFile = null;
+
+function previewImg(input) {
+    imgFile = input.files[0];
+    if (!imgFile) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        const img = document.getElementById('img-preview');
+        img.src = e.target.result;
+        img.style.display = 'block';
+    };
+    reader.readAsDataURL(imgFile);
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('drop-zone').classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+        imgFile = file;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            const img = document.getElementById('img-preview');
+            img.src = ev.target.result;
+            img.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+async function subirCaso(e) {
+    e.preventDefault();
+    if (!imgFile) { toast('Selecciona una imagen primero', 'error'); return; }
+
+    const btn = document.getElementById('btn-subir');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo…';
+
+    try {
+        // 1. Subir imagen al bucket dental-cases/portafolio/
+        const ext      = imgFile.name.split('.').pop();
+        const filename = `portafolio/${Date.now()}.${ext}`;
+        const { error: upErr } = await sb.storage.from('dental-cases').upload(filename, imgFile, { contentType: imgFile.type });
+        if (upErr) throw upErr;
+
+        const { data: { publicUrl } } = sb.storage.from('dental-cases').getPublicUrl(filename);
+
+        // 2. Insertar registro en tabla portfolio
+        const { error: dbErr } = await sb.from('portfolio').insert([{
+            titulo:      document.getElementById('p-titulo').value,
+            tipo:        document.getElementById('p-tipo').value,
+            material:    document.getElementById('p-material').value,
+            software:    document.getElementById('p-software').value,
+            descripcion: document.getElementById('p-descripcion').value,
+            categoria:   document.getElementById('p-categoria').value,
+            destacado:   document.getElementById('p-destacado').value === 'true',
+            imagen_url:  publicUrl,
+        }]);
+        if (dbErr) throw dbErr;
+
+        toast('✅ Caso publicado en el catálogo', 'success');
+        limpiarFormPortafolio();
+        cargarPortafolio();
+
+    } catch (err) {
+        toast('Error: ' + err.message, 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Publicar en Catálogo';
+    }
+}
+
+function limpiarFormPortafolio() {
+    document.getElementById('form-portafolio').reset();
+    document.getElementById('img-preview').style.display = 'none';
+    imgFile = null;
+}
+
+async function cargarPortafolio() {
+    const grid = document.getElementById('portafolio-grid');
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>';
+
+    try {
+        const { data, error } = await sb.from('portfolio').select('*').order('created_at', { ascending: false });
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><p>Sin casos publicados aún.<br>Usa el formulario de arriba.</p></div>';
+            return;
+        }
+
+        grid.innerHTML = data.map(c => `
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+            <img src="${c.imagen_url}" alt="${c.titulo}" style="width:100%;height:130px;object-fit:cover;">
+            <div style="padding:10px;">
+                <div style="font-weight:700;font-size:0.8rem;margin-bottom:4px;">${c.titulo}</div>
+                <div style="font-size:0.72rem;color:var(--muted);">${c.tipo} · ${c.material || ''}</div>
+                ${c.destacado ? '<span style="color:#D4AF37;font-size:0.65rem;font-weight:700;">⭐ DESTACADO</span>' : ''}
+                <div style="margin-top:8px;display:flex;gap:6px;">
+                    <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>`).join('');
+
+    } catch (err) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;color:#f87171;">${err.message}</div>`;
+    }
+}
+
+async function eliminarCaso(id) {
+    if (!confirm('¿Eliminar este caso del portafolio?')) return;
+    const { error } = await sb.from('portfolio').delete().eq('id', id);
+    if (error) toast('Error: ' + error.message, 'error');
+    else { toast('Caso eliminado', 'success'); cargarPortafolio(); }
+}
+
+/* ══════════════════════════════════════════
+   TAB 3 — CLIENTES
+══════════════════════════════════════════ */
+async function cargarClientes() {
+    document.getElementById('tbody-clientes').innerHTML =
+        '<tr class="loading-row"><td colspan="7"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
+
+    try {
+        // Clientes con conteo de pedidos
+        const { data, error } = await sb
+            .from('clientes')
+            .select('*, pedidos(count)')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            document.getElementById('tbody-clientes').innerHTML =
+                '<tr><td colspan="7" class="empty-state"><i class="fas fa-users"></i><br>Sin clientes registrados aún</td></tr>';
+            return;
+        }
+
+        document.getElementById('tbody-clientes').innerHTML = data.map(c => `
+        <tr>
+            <td style="font-weight:700;">${c.nombre || '—'}</td>
+            <td style="font-size:0.78rem;color:#94a3b8;">${c.email}</td>
+            <td>${c.clinica || '—'}</td>
+            <td>${c.ciudad || '—'}</td>
+            <td>${c.pais || 'Colombia'}</td>
+            <td style="font-size:0.75rem;">${fmtFecha(c.created_at)}</td>
+            <td style="text-align:center;font-weight:700;color:var(--gold);">
+                ${c.pedidos?.[0]?.count ?? 0}
+            </td>
+        </tr>`).join('');
+
+    } catch (err) {
+        document.getElementById('tbody-clientes').innerHTML =
+            `<tr><td colspan="7" style="text-align:center;color:#f87171;padding:24px;">${err.message}</td></tr>`;
+    }
+}
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+let toastTimer;
+function toast(msg, tipo = '') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'show ' + tipo;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { el.className = ''; }, 3500);
+}
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+verificarAdmin();
+</script>
+</body>
+</html>
