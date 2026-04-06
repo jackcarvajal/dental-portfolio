@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Caso - WeTransfer - PRODIGY Dental Lab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F4C430;
+            --bg-black: #000000;
+            --bg-dark: #0a0a0a;
+            --input-bg: #1a1a1a;
+            --text-white: #ffffff;
+            --text-gray: #999;
+            --danger: #FF4444;
+            --success: #00FF88;
+            --wetransfer-blue: #409FFF;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-black);
+            color: var(--text-white);
+            line-height: 1.5;
+            padding: 20px;
+            font-size: 15px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--bg-dark);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gold);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: var(--gold);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-gray);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header .platform-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            background: linear-gradient(135deg, var(--wetransfer-blue), #5ab4ff);
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ADVERTENCIA CRÍTICA WETRANSFER */
+        .wetransfer-warning {
+            background: linear-gradient(135deg, rgba(255, 68, 68, 0.15), rgba(255, 140, 0, 0.15));
+            border: 2px solid var(--danger);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .wetransfer-warning::before {
+            content: '⚠️';
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-dark);
+            padding: 5px 18px;
+            font-size: 24px;
+        }
+
+        .wetransfer-warning h3 {
+            color: var(--danger);
+            font-size: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .wetransfer-warning ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .wetransfer-warning ul li {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            color: var(--text-white);
+        }
+
+        .wetransfer-warning ul li::before {
+            content: '⚠';
+            position: absolute;
+            left: 0;
+            color: var(--danger);
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        /* DATOS BÁSICOS */
+        .datos-basicos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 6px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            padding: 12px 14px;
+            background: var(--input-bg);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 4px;
+            color: var(--text-white);
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .input-group input::placeholder {
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        /* MATRIZ DENTAL */
+        .seccion-titulo {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .matriz-dental {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .check-item:hover {
+            background: rgba(212, 175, 55, 0.05);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .check-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--gold);
+        }
+
+        .check-item label {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-white);
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        .check-item.checked {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .check-item.checked label {
+            color: var(--gold);
+        }
+
+        /* SECCIÓN WETRANSFER */
+        .seccion-wetransfer {
+            background: linear-gradient(135deg, rgba(64, 159, 255, 0.1), rgba(90, 180, 255, 0.05));
+            border: 2px solid var(--wetransfer-blue);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .wetransfer-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--wetransfer-blue), #5ab4ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(64, 159, 255, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .wetransfer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(64, 159, 255, 0.5);
+        }
+
+        .wetransfer-instructions {
+            background: rgba(0, 0, 0, 0.4);
+            border-left: 3px solid var(--wetransfer-blue);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 18px;
+        }
+
+        .wetransfer-instructions h4 {
+            color: var(--wetransfer-blue);
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .wetransfer-instructions ol {
+            margin-left: 18px;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .wetransfer-instructions ol li {
+            margin-bottom: 6px;
+            color: var(--text-gray);
+        }
+
+        .wetransfer-instructions ol li strong {
+            color: var(--text-white);
+        }
+
+        /* CAMPOS DE CARGA */
+        .carga-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .file-upload-compact {
+            position: relative;
+        }
+
+        .file-upload-compact input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-compact label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px;
+            background: var(--input-bg);
+            border: 2px dashed var(--gold);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gold);
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .file-upload-compact label:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-style: solid;
+        }
+
+        .file-status {
+            font-size: 13px;
+            color: var(--success);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* POLÍTICAS */
+        .politicas-compact {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 25px;
+        }
+
+        .policy-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .policy-check:last-child {
+            margin-bottom: 0;
+        }
+
+        .policy-check input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--gold);
+        }
+
+        .policy-check label {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-white);
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        .policy-check label a {
+            color: var(--gold);
+            text-decoration: underline;
+            font-weight: 700;
+        }
+
+        /* BOTÓN DE ENVÍO */
+        .submit-area {
+            text-align: center;
+        }
+
+        .submit-btn {
+            padding: 16px 60px;
+            font-size: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .submit-btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .submit-btn:not(:disabled) {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: #000;
+            cursor: pointer;
+        }
+
+        .submit-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+        }
+
+        .warning-text {
+            display: block;
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .datos-basicos,
+            .matriz-dental {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            body {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ SOLICITUD DE PRODUCCIÓN</h1>
+            <span class="platform-badge">📤 VÍA WETRANSFER</span>
+            <p>Sistema Compacto Profesional</p>
+        </div>
+
+        <!-- ADVERTENCIA CRÍTICA WETRANSFER -->
+        <div class="wetransfer-warning">
+            <h3>⚠️ IMPORTANTE: LEE ANTES DE USAR WETRANSFER</h3>
+            <ul>
+                <li><strong>Los archivos solo duran 7 días</strong> en WeTransfer. Si no procesas tu caso rápido, se borrarán.</li>
+                <li><strong>SIN número de seguimiento automático.</strong> Puede que tu caso no se registre si no envías correctamente el link.</li>
+                <li><strong>Si NO has pagado el anticipo del 50%,</strong> tu caso NO será procesado aunque subas los archivos.</li>
+                <li><strong>ASEGÚRATE de subir TODOS los archivos completos</strong> (Superior, Inferior, Mordida) antes de copiar el link.</li>
+                <li><strong>RECOMENDADO:</strong> Envía una captura de pantalla de los archivos que estás subiendo para evitar errores.</li>
+            </ul>
+        </div>
+
+        <form id="formCaso">
+            <!-- DATOS BÁSICOS -->
+            <div class="datos-basicos">
+                <div class="input-group">
+                    <label>Cliente *</label>
+                    <input type="text" id="cliente" placeholder="Tu nombre u Odontólogo" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Paciente *</label>
+                    <input type="text" id="paciente" placeholder="Nombre del Paciente" required>
+                </div>
+
+                <div class="input-group">
+                    <label>WhatsApp Activo *</label>
+                    <input type="tel" id="whatsapp" placeholder="+57 321 1234567" required>
+                </div>
+            </div>
+
+            <!-- MATRIZ DENTAL -->
+            <div class="seccion-titulo">
+                <i class="fas fa-clipboard-check"></i>
+                TIPO DE PRODUCCIÓN (Selecciona)
+            </div>
+
+            <div class="matriz-dental">
+                <div class="check-item" data-value="Foto 1:1 con Retractor">
+                    <input type="checkbox" id="check1" value="Foto 1:1 con Retractor">
+                    <label for="check1">📸 Foto 1:1 (Con Retractor)</label>
+                </div>
+
+                <div class="check-item" data-value="Foto Labios en Reposo">
+                    <input type="checkbox" id="check2" value="Foto Labios en Reposo">
+                    <label for="check2">👄 Foto Labios en Reposo</label>
+                </div>
+
+                <div class="check-item" data-value="Escaneo Pre-operatorio">
+                    <input type="checkbox" id="check3" value="Escaneo Pre-operatorio">
+                    <label for="check3">🦷 Escaneo Pre-operatorio</label>
+                </div>
+
+                <div class="check-item" data-value="Fotos de Referencia/Guía">
+                    <input type="checkbox" id="check4" value="Fotos de Referencia/Guía">
+                    <label for="check4">🖼️ Fotos de Referencia/Guía</label>
+                </div>
+            </div>
+
+            <!-- SECCIÓN WETRANSFER -->
+            <div class="seccion-wetransfer">
+                <div class="seccion-titulo" style="border: none; margin-bottom: 15px;">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    CARGA VÍA WETRANSFER
+                </div>
+
+                <div class="wetransfer-instructions">
+                    <h4>📋 INSTRUCCIONES:</h4>
+                    <ol>
+                        <li><strong>1.</strong> Haz clic en "Abrir WeTransfer"</li>
+                        <li><strong>2.</strong> Sube TODOS tus archivos (STL/DICOM/Fotos)</li>
+                        <li><strong>3.</strong> Pon como destinatario: <strong>casos@prodigylab.com</strong></li>
+                        <li><strong>4.</strong> Copia el LINK que te genera WeTransfer</li>
+                        <li><strong>5.</strong> Pega ese link en el campo de abajo</li>
+                    </ol>
+                </div>
+
+                <a href="https://wetransfer.com/" target="_blank" class="wetransfer-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    ABRIR WETRANSFER
+                </a>
+
+                <div class="carga-grid">
+                    <div class="input-group">
+                        <label>Link de WeTransfer *</label>
+                        <input type="url" 
+                               id="linkArchivos" 
+                               placeholder="https://we.tl/..."
+                               required>
+                    </div>
+
+                    <div class="file-upload-compact">
+                        <input type="file" id="comprobante" accept="image/*,application/pdf" required>
+                        <label for="comprobante">
+                            <i class="fas fa-file-upload"></i>
+                            Subir Comprobante de Pago (50%)
+                        </label>
+                        <div class="file-status" id="fileStatus"></div>
+                    </div>
+
+                    <div class="file-upload-compact">
+                        <input type="file" id="captura" accept="image/*">
+                        <label for="captura">
+                            <i class="fas fa-camera"></i>
+                            Captura de Archivos (Opcional pero Recomendado)
+                        </label>
+                        <div class="file-status" id="capturaStatus"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POLÍTICAS -->
+            <div class="politicas-compact">
+                <div class="policy-check">
+                    <input type="checkbox" id="policy1" required>
+                    <label for="policy1">
+                        Acepto <a href="terminos-y-pagos.html" target="_blank">Políticas de Pago</a> (Anticipo 50%)
+                    </label>
+                </div>
+
+                <div class="policy-check">
+                    <input type="checkbox" id="policy2" required>
+                    <label for="policy2">
+                        Entiendo que los archivos en WeTransfer son temporales y debo verificar que estén completos
+                    </label>
+                </div>
+
+                <div class="policy-check">
+                    <input type="checkbox" id="policy3" required>
+                    <label for="policy3">
+                        Confirmo que he pagado el anticipo del 50% y adjunto el comprobante
+                    </label>
+                </div>
+            </div>
+
+            <!-- BOTÓN DE ENVÍO -->
+            <div class="submit-area">
+                <button type="submit" id="submitBtn" class="submit-btn" disabled>
+                    🏭 INICIAR PRODUCCIÓN
+                </button>
+                <span class="warning-text" id="warningMsg">Complete todos los campos para habilitar</span>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // ELEMENTOS
+        const form = document.getElementById('formCaso');
+        const submitBtn = document.getElementById('submitBtn');
+        const warningMsg = document.getElementById('warningMsg');
+        const fileStatus = document.getElementById('fileStatus');
+        const capturaStatus = document.getElementById('capturaStatus');
+        const comprobante = document.getElementById('comprobante');
+        const captura = document.getElementById('captura');
+
+        const cliente = document.getElementById('cliente');
+        const paciente = document.getElementById('paciente');
+        const whatsapp = document.getElementById('whatsapp');
+        const linkArchivos = document.getElementById('linkArchivos');
+        const policy1 = document.getElementById('policy1');
+        const policy2 = document.getElementById('policy2');
+        const policy3 = document.getElementById('policy3');
+
+        // CHECKBOXES CLÍNICOS
+        const checkItems = document.querySelectorAll('.check-item');
+        const checkboxes = document.querySelectorAll('.check-item input[type="checkbox"]');
+
+        // EFECTO VISUAL EN CHECKS
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener('change', function() {
+                const parent = this.closest('.check-item');
+                if (this.checked) {
+                    parent.classList.add('checked');
+                } else {
+                    parent.classList.remove('checked');
+                }
+                validarFormulario();
+            });
+        });
+
+        // PREVIEW DE ARCHIVOS
+        comprobante.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                fileStatus.textContent = '✓ ' + this.files[0].name;
+            } else {
+                fileStatus.textContent = '';
+            }
+            validarFormulario();
+        });
+
+        captura.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                capturaStatus.textContent = '✓ ' + this.files[0].name;
+            } else {
+                capturaStatus.textContent = '';
+            }
+        });
+
+        // VALIDACIÓN EN TIEMPO REAL
+        [cliente, paciente, whatsapp, linkArchivos, policy1, policy2, policy3].forEach(el => {
+            el.addEventListener('input', validarFormulario);
+            el.addEventListener('change', validarFormulario);
+        });
+
+        function validarFormulario() {
+            const todosCampos = cliente.value && paciente.value && whatsapp.value && linkArchivos.value;
+            const archivo = comprobante.files.length > 0;
+            const politicas = policy1.checked && policy2.checked && policy3.checked;
+
+            if (todosCampos && archivo && politicas) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '✅ ENVIAR CASO';
+                warningMsg.style.display = 'none';
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.textContent = '🏭 INICIAR PRODUCCIÓN';
+                warningMsg.style.display = 'block';
+            }
+        }
+
+        // ENVÍO DEL FORMULARIO
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // OBTENER CHECKS MARCADOS
+            const checksSeleccionados = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value)
+                .join(', ');
+
+            // GENERAR ID ÚNICO
+            const casoID = 'CASO-WT-' + Date.now().toString().slice(-6);
+
+            // VERIFICAR SI HAY CAPTURA
+            const tieneCaptura = captura.files.length > 0 ? 'SÍ (adjunta en siguiente mensaje)' : 'NO';
+
+            // CONSTRUIR MENSAJE DE WHATSAPP
+            const mensaje = `💎 NUEVO CASO ${casoID}
+📤 VÍA: WETRANSFER
+
+👤 Cliente: ${cliente.value}
+🦷 Paciente: ${paciente.value}
+📱 WhatsApp: ${whatsapp.value}
+
+📂 Link WeTransfer: ${linkArchivos.value}
+
+✅ Incluye:
+${checksSeleccionados || 'No especificado'}
+
+📸 Captura de archivos: ${tieneCaptura}
+💳 Comprobante de pago: Adjunto
+
+⚠️ Nota: Archivos temporales en WeTransfer (7 días)
+
+—
+Enviado desde formulario web PRODIGY`;
+
+            const mensajeCodificado = encodeURIComponent(mensaje);
+            const numeroWhatsApp = '573219581949';
+
+            // ABRIR WHATSAPP
+            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
+
+            submitBtn.textContent = '📤 ENVIANDO...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                window.open(urlWhatsApp, '_blank');
+
+                warningMsg.textContent = '✅ Caso enviado. Continúa en WhatsApp para adjuntar comprobante' + 
+                                        (captura.files.length > 0 ? ' y captura de archivos.' : '.');
+                warningMsg.style.color = 'var(--success)';
+                warningMsg.style.display = 'block';
+
+                setTimeout(() => {
+                    form.reset();
+                    checkItems.forEach(item => item.classList.remove('checked'));
+                    fileStatus.textContent = '';
+                    capturaStatus.textContent = '';
+                    validarFormulario();
+                }, 3000);
+            }, 1500);
+        });
+
+        // VALIDACIÓN INICIAL
+        validarFormulario();
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 // =============================================
-// PRODIGY - BASE DE DATOS DE CASOS
+// PRODIGY - BASE DE DATOS DE CASOS CLÍNICOS
+// Última actualización: Febrero 2025
 // =============================================
 
 const PATIENTS_DATA = [
@@ -12,7 +13,7 @@ const PATIENTS_DATA = [
         description: "Rehabilitación completa de arcada superior con 14 unidades cerámicas sobre implantes.",
         
         coverImage: "patients/patient-001/cover.jpeg",
-        exocadFile: "patients/patient-001/exocad.html",  // ← CORREGIDO: era paul.html
+        exocadFile: "patients/patient-001/exocad.html",
         driveLink: "https://drive.google.com/file/d/TU_ID_AQUI/view",
         
         gallery: [
@@ -27,31 +28,54 @@ const PATIENTS_DATA = [
             "patients/patient-001/gallery/foto-9.jpeg"
         ],
         galleryCount: 9
-    },,
+    },
     {
         id: "patient-002",
-        name: "caso de carillas full arch",
-        code: "patient-002",
+        name: "Carillas Superior e Inferior",
+        code: "PATIENT-002",
         type: "estetica",
-        date: "enero 2024",
-        description: "caso de carillas",
+        date: "2025",
+        description: "Carillas estéticas completas superior e inferior.",
         
-        coverImage: "patients/patient-002/cover.jpeg",
-        exocadFile: "patients/patient-002/exocad.html",
-        driveLink: "no",
+        coverImage: "patients/patient-002/C.jpeg",
+        exocadFile: "patients/patient-002/felipe pinzon.html",
+        driveLink: null,
         
         gallery: [
-            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.22",
-            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.21 (1)",
-            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.21",
-            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.22 (1)",
-            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.22 (2)",
-            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.22 (3)",
-            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.23 (1)",
-            "patients/patient-002/gallery/WhatsApp Image 2025-12-10 at 19.53.23"
+            "patients/patient-002/gallery/1.jpeg",
+            "patients/patient-002/gallery/2.jpeg",
+            "patients/patient-002/gallery/3.jpeg",
+            "patients/patient-002/gallery/4.jpeg",
+            "patients/patient-002/gallery/5.jpeg",
+            "patients/patient-002/gallery/6.jpeg",
+            "patients/patient-002/gallery/7.jpeg",
+            "patients/patient-002/gallery/8.jpeg"
         ],
         galleryCount: 8
     }
 ];
 
-console.log(`✅ PRODIGY: ${PATIENTS_DATA.length} casos cargados`);
+// ===== FUNCIONES AUXILIARES =====
+function getPatientById(patientId) {
+    return PATIENTS_DATA.find(patient => patient.id === patientId) || null;
+}
+
+function filterPatientsByType(type) {
+    if (!type) return PATIENTS_DATA;
+    return PATIENTS_DATA.filter(patient => patient.type === type);
+}
+
+function getAllCaseTypes() {
+    return [...new Set(PATIENTS_DATA.map(patient => patient.type))];
+}
+
+// Exportar para uso global
+if (typeof window !== 'undefined') {
+    window.PATIENTS_DATA = PATIENTS_DATA;
+    window.getPatientById = getPatientById;
+    window.filterPatientsByType = filterPatientsByType;
+    window.getAllCaseTypes = getAllCaseTypes;
+}
+
+// Log de verificación
+console.log('✅ PATIENTS_DATA cargado:', PATIENTS_DATA.length, 'casos');

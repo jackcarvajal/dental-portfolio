@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro Legal & Soporte | PRODIGY</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --gold: #D4AF37;
+            --bg-black: #050505;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-black);
+            color: #e8e8e8;
+            line-height: 1.7;
+            padding-top: 82px; /* [FIX] Altura real del navbar (15px top/bottom padding + logo 2 líneas) */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            font-feature-settings: "kern" 1;
+            font-kerning: normal;
+        }
+        
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto;
+            padding: 0 20px 100px 20px;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* Wrapper del header: ocupa ancho completo, fondo negro */
+        .page-header-wrapper {
+            background: var(--bg-black);
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 60px 0 50px;   /* Espacio generoso: arriba del título y abajo */
+            border-bottom: 2px solid var(--gold);
+            margin-bottom: 0;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--gold);
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            text-shadow: 0 2px 10px rgba(212,175,55,0.3);
+        }
+        
+        .header h1 i {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(255,215,0,0.4));
+        }
+        
+        .header p { font-size: 1.15rem; color: #aaa; }
+        
+        .tabs-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            /* STICKY: se pega justo debajo del navbar al hacer scroll.
+               top se sobreescribe por JS con la altura real del navbar.
+               Valor CSS = fallback seguro si JS no cargó. */
+            position: sticky;
+            top: 82px;
+            z-index: 9998;
+            background: var(--bg-black);
+            padding: 14px 10px 12px;
+            border-bottom: 1px solid #2a2a2a;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.95);
+            /* El sticky funciona porque .container NO tiene overflow hidden/auto */
+        }
+        
+        .tab-button {
+            padding: 18px 30px;
+            background: transparent;
+            border: 2px solid #333;
+            border-radius: 50px;
+            color: #aaa;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+        
+        .tab-button i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .tab-button:hover { 
+            border-color: var(--gold); 
+            color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212,175,55,0.2);
+        }
+        
+        .tab-button.active { 
+            background: linear-gradient(135deg, var(--gold) 0%, #F4C430 100%);
+            color: #000; 
+            border-color: var(--gold); 
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(212,175,55,0.4);
+        }
+        
+        .tab-button.active i {
+            transform: scale(1.1);
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        details {
+            background: #000000;
+            border: 1px solid #333;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        details[open] { border-color: var(--gold); box-shadow: 0 0 25px rgba(212,175,55,0.15); }
+        
+        summary {
+            padding: 25px 30px;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--gold);
+            background: rgba(0,0,0,0.5);
+            user-select: none;
+            transition: all 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+        
+        summary i {
+            margin-right: 12px;
+            font-size: 1.3rem;
+            filter: drop-shadow(0 0 6px currentColor);
+        }
+        
+        summary:hover { background: rgba(212, 175, 55, 0.12); }
+        summary::after { content: '▼'; font-size: 0.85rem; color: var(--gold); transition: transform 0.3s ease; }
+        details[open] summary::after { transform: rotate(180deg); }
+        
+        .accordion-content {
+            padding: 35px 40px;
+            color: #d4d4d4;
+            background: #0a0a0a;
+            font-size: 1.05rem;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+        
+        .accordion-content h3 {
+            color: #fff;
+            font-size: 1.4rem;
+            margin: 30px 0 18px 0;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .accordion-content h3 i {
+            font-size: 1.5rem;
+        }
+        
+        /* ICONOS A COLOR */
+        .fa-handshake { color: #4CAF50; }
+        .fa-building { color: #2196F3; }
+        .fa-credit-card { color: #9C27B0; }
+        .fa-user-shield { color: #FF9800; }
+        .fa-clock { color: #00BCD4; }
+        .fa-shipping-fast { color: #FF5722; }
+        .fa-pencil-ruler { color: #E91E63; }
+        .fa-stamp { color: #F44336; }
+        .fa-redo { color: #3F51B5; }
+        .fa-sync-alt { color: #009688; }
+        .fa-stopwatch { color: #FF5722; }
+        .fa-check-double { color: #4CAF50; }
+        .fa-ban { color: #F44336; }
+        .fa-clipboard-list { color: #607D8B; }
+        .fa-gem { color: #9C27B0; }
+        .fa-shield-alt { color: #2196F3; }
+        .fa-camera { color: #E91E63; }
+        .fa-balance-scale { color: #795548; }
+        .fa-sync { color: #00BCD4; }
+        .fa-upload { color: #4CAF50; }
+        .fa-times-circle { color: #F44336; }
+        .fa-file-contract { color: #FFD700; }
+        .fa-palette { color: #E91E63; }
+        .fa-cog { color: #607D8B; }
+        .fa-flag { color: #FF9800; }
+        .fa-question-circle { color: #2196F3; }
+        .fa-exclamation-triangle { color: #FFC107; }
+        .fa-info-circle { color: #2196F3; }
+        .fa-check-circle { color: #4CAF50; }
+        .fa-landmark { color: #FFD700; }
+        .fa-user-tie { color: #2196F3; }
+        .fa-user { color: #9C27B0; }
+        .fa-exclamation-circle { color: #F44336; }
+        .fa-list-ol { color: #00BCD4; }
+        .fa-wrench { color: #FF9800; }
+        .fa-file-excel { color: #F44336; }
+        .fa-tooth { color: #fff; }
+        .fa-flask { color: #E91E63; }
+        .fa-cube { color: #9C27B0; }
+        .fa-database { color: #2196F3; }
+        .fa-lock { color: #4CAF50; }
+        .fa-gavel { color: #795548; }
+        .fa-comments { color: #00BCD4; }
+        .fa-bell { color: #FF9800; }
+        .fa-headset { color: #4CAF50; }
+        .fa-whatsapp { color: #25D366; }
+        .fa-envelope { color: #EA4335; }
+        .fa-instagram { 
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .fa-map-marker-alt { color: #4CAF50; }
+        .fa-truck { color: #FF9800; }
+        .fa-alarm-clock { color: #F44336; }
+        .fa-arrow-right { color: #FFD700; }
+        .fa-clipboard-check { color: #4CAF50; }
+        .fa-dollar-sign { color: #4CAF50; }
+        .fa-percent { color: #FF9800; }
+        .fa-gift { color: #E91E63; }
+        .fa-user-md { color: #2196F3; }
+        .fa-paper-plane { color: #00BCD4; }
+        .fa-file-alt { color: #607D8B; }
+        .fa-pencil-alt { color: #9C27B0; }
+        .fa-file-upload { color: #4CAF50; }
+        
+        .accordion-content h3:first-child { margin-top: 0; }
+        
+        .accordion-content p { 
+            margin-bottom: 18px; 
+            line-height: 1.85;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+        .accordion-content ul { margin-left: 25px; margin-bottom: 20px; }
+        .accordion-content li { 
+            margin-bottom: 12px; 
+            line-height: 1.85;
+            -webkit-font-smoothing: antialiased;
+        }
+        .accordion-content ol { margin-left: 25px; margin-bottom: 20px; }
+        .accordion-content ol li { 
+            margin-bottom: 12px;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .alert-box {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.15) 0%, rgba(244, 67, 54, 0.08) 100%);
+            border-left: 5px solid #F44336;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+        
+        .alert-box h4 { color: #F44336; margin-bottom: 15px; font-weight: 800; font-size: 1.2rem; }
+        
+        .info-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.12) 0%, rgba(255, 193, 7, 0.05) 100%);
+            border-left: 5px solid #FFC107;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+        
+        .info-box h4 { color: #FFC107; margin-bottom: 15px; font-weight: 800; font-size: 1.2rem; }
+        
+        .success-box {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.12) 0%, rgba(76, 175, 80, 0.05) 100%);
+            border-left: 5px solid #4CAF50;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+        
+        .success-box h4 { color: #4CAF50; margin-bottom: 15px; font-weight: 800; font-size: 1.2rem; }
+        
+        .titular-card {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(20,20,20,0.9) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .titular-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212,175,55,0.25);
+        }
+        
+        .titular-card h4 { 
+            color: var(--gold); 
+            font-size: 1.2rem; 
+            margin-bottom: 12px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            text-shadow: 0 2px 8px rgba(212,175,55,0.3);
+        }
+        .titular-card p { 
+            color: #fff; 
+            margin-bottom: 8px; 
+            font-size: 1.05rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .titular-card ul { margin-left: 20px; margin-top: 12px; }
+        .titular-card li { 
+            font-size: 1.05rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .footer {
+            margin-top: 100px;
+            padding-top: 40px;
+            border-top: 2px solid #333;
+            text-align: center;
+            color: #666;
+        }
+        
+        .footer a { color: var(--gold); text-decoration: none; margin: 0 15px; font-size: 1.05rem; }
+        .footer a:hover { text-decoration: underline; }
+        
+        /* ==================== NAVBAR (copiado de página principal) ==================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 15px 0;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 0 40px;
+            gap: 20px;
+        }
+        .nav-left, .nav-right { display: flex; gap: 30px; }
+        .nav-left { justify-content: flex-start; }
+        .nav-right { justify-content: flex-end; align-items: center; }
+        .nav-left a, .nav-right a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        .nav-left a:hover, .nav-right a:hover { color: #D4AF37; }
+        .nav-logo-box { text-decoration: none; text-align: center; display: block; }
+        .nav-logo-box h1 {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin: 0;
+            color: #D4AF37;
+        }
+        .nav-logo-box span {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #f5f5f7;
+            text-transform: uppercase;
+            display: block;
+        }
+        .nav-contact-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #F4C430 100%);
+            color: #000 !important;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 13px !important;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .nav-contact-btn:hover {
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+            transform: translateY(-1px);
+        }
+
+        /* ==================== REDES SOCIALES FLOTANTES ==================== */
+        .social-floating {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 9000;
+        }
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+        .social-icon i { font-size: 22px; color: #fff; }
+        .social-icon:hover { transform: scale(1.15); }
+        .social-whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); box-shadow: 0 4px 15px rgba(37,211,102,0.35); }
+        .social-instagram { background: linear-gradient(135deg, #E4405F 0%, #C13584 50%, #833AB4 100%); box-shadow: 0 4px 15px rgba(193,53,132,0.35); }
+        .social-facebook { background: linear-gradient(135deg, #1877F2 0%, #0C63D4 100%); box-shadow: 0 4px 15px rgba(24,119,242,0.35); }
+        .social-linkedin { background: linear-gradient(135deg, #0A66C2 0%, #004182 100%); box-shadow: 0 4px 15px rgba(10,102,194,0.35); }
+
+        /* ==================== FOOTER (copiado de página principal) ==================== */
+        .footer-prodigy {
+            background: #000000;
+            width: 100%;
+            padding: 80px 0 30px;
+            border-top: 2px solid #D4AF37;
+            margin-top: 80px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+        .footer-col h4 {
+            color: #D4AF37;
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .footer-col ul { list-style: none; padding: 0; margin: 0; }
+        .footer-col li { padding: 8px 0; color: #86868b; font-size: 14px; }
+        .footer-col a { color: #86868b; text-decoration: none; transition: color 0.3s; }
+        .footer-col a:hover { color: #D4AF37; }
+        .footer-copyright {
+            text-align: center;
+            color: #86868b;
+            font-size: 14px;
+            padding: 30px 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ==================== RESPONSIVE NAVBAR ==================== */
+        @media (max-width: 768px) {
+            .nav-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 0 20px;
+                gap: 12px;
+            }
+            .nav-left, .nav-right {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .social-floating { right: 12px; gap: 10px; }
+            .social-icon { width: 42px; height: 42px; }
+            .social-icon i { font-size: 18px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+            #btn-top { bottom: 20px; right: 62px; } /* Evita chocar con sociales en móvil */
+        }
+
+        /* [REUSABLE] Botón flotante Volver Arriba */
+        #btn-top {
+            display: none;
+            position: fixed;
+            bottom: 35px;
+            right: 95px; /* Desplazado izquierda para no tapar redes sociales flotantes */
+            z-index: 9997;
+            background: linear-gradient(135deg, #D4AF37 0%, #F4C430 100%);
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 54px;
+            height: 54px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(212,175,55,0.5);
+            transition: all 0.3s ease;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+        #btn-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(212,175,55,0.7);
+        }
+        #btn-top.visible { display: flex; }
+        /* =============================================
+           SEGURIDAD CSS - MIGRABLE A WEB APP
+           ============================================= */
+        
+        /* [SECURITY] Bloquear selección de texto en toda la página */
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* [SECURITY] Protección de imágenes */
+        img {
+            pointer-events: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            user-drag: none;
+        }
+
+        /* [SECURITY] Bloquear impresión */
+        @media print {
+            * { display: none !important; }
+            body::after {
+                display: block !important;
+                content: 'Impresión no autorizada - PRODIGY Digital Dentistry © 2026';
+                text-align: center;
+                padding: 100px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== NAVBAR PRODIGY ========== -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html#servicios">SERVICIOS</a>
+                <a href="index.html#portfolio">PORTAFOLIO</a>
+                <a href="index.html#workflow-247">SUBIR DISEÑO</a>
+            </div>
+            <a href="index.html" class="nav-logo-box">
+                <h1>PRODIGY</h1>
+                <span>DIGITAL DENTISTRY</span>
+            </a>
+            <div class="nav-right">
+                <a href="index.html#production">PRODUCCIÓN CAM</a>
+                <a href="index.html#academy">ACADEMY</a>
+                <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> CONTACTAR
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== REDES SOCIALES FLOTANTES ========== -->
+    <div class="social-floating">
+        <a href="https://wa.me/573212816716" class="social-icon social-whatsapp" target="_blank" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://instagram.com/prodigydigitaldentistry" class="social-icon social-instagram" target="_blank" title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://facebook.com/prodigy.dental" class="social-icon social-facebook" target="_blank" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://linkedin.com/company/prodigy-dental" class="social-icon social-linkedin" target="_blank" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+        </a>
+    </div>
+
+    <!-- ========== BOTÓN VOLVER ARRIBA ========== -->
+    <button id="btn-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <div class="page-header-wrapper">
+        <div class="container">
+            <div class="header">
+                <h1><i class="fas fa-landmark"></i> CENTRO LEGAL & SOPORTE</h1>
+                <p>Transparencia, Protección al Consumidor y Normativa Colombiana</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="tabs-container">
+            <button class="tab-button active" onclick="openTab(event, 'terminos')">
+                <i class="fas fa-file-contract"></i> Términos Generales
+            </button>
+            <button class="tab-button" onclick="openTab(event, 'diseno')">
+                <i class="fas fa-palette"></i> Políticas de Diseño
+            </button>
+            <button class="tab-button" onclick="openTab(event, 'fresado')">
+                <i class="fas fa-cog"></i> Garantía Fresado
+            </button>
+            <button class="tab-button" onclick="openTab(event, 'legal')">
+                <i class="fas fa-flag"></i> Legal Colombia
+            </button>
+            <button class="tab-button" onclick="openTab(event, 'faq')">
+                <i class="fas fa-question-circle"></i> FAQ & Soporte
+            </button>
+        </div>
+        
+        <!-- TÉRMINOS GENERALES -->
+        <div id="terminos" class="tab-content active">
+            
+            <details>
+                <summary><i class="fas fa-handshake"></i> Naturaleza del Servicio: B2B Profesional</summary>
+                <div class="accordion-content">
+                    <h3><i class="fas fa-building"></i> Relación Comercial Business-to-Business</h3>
+                    <p>PRODIGY Digital Dentistry es un <strong>laboratorio dental especializado</strong> que presta servicios <strong>exclusivamente a profesionales odontólogos colegiados</strong>. No atendemos pacientes finales. La relación contractual es de carácter Business-to-Business (B2B).</p>
+                    
+                    <div class="info-box">
+                        <h4><i class="fas fa-exclamation-triangle"></i> IMPORTANTE: Responsabilidad Profesional</h4>
+                        <p>El odontólogo tratante es el <strong>único responsable</strong> ante su paciente por:</p>
+                        <ul>
+                            <li>Diagnóstico y plan de tratamiento</li>
+                            <li>Toma de impresiones o escaneos digitales</li>
+                            <li>Resultado clínico final y ajuste de las restauraciones</li>
+                            <li>Seguimiento post-instalación del paciente</li>
+                        </ul>
+                        <p style="margin-top: 15px;">PRODIGY actúa como <strong>proveedor técnico</strong> bajo las especificaciones entregadas por el profesional. Nuestra responsabilidad se limita a la calidad del producto fabricado según el diseño aprobado.</p>
+                    </div>
+                    
+                    <h3><i class="fas fa-check-circle"></i> Aceptación de Términos</h3>
+                    <p>Al solicitar servicios a PRODIGY, el odontólogo acepta automáticamente estos términos y condiciones en su totalidad. La realización del pago implica aceptación expresa de todas las políticas aquí descritas.</p>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-credit-card"></i> Política de Pagos: 100% Anticipo</summary>
+                <div class="accordion-content">
+                    <p>Todos los servicios de PRODIGY requieren <strong>pago completo (100%) antes de iniciar producción</strong>. No se aceptan pagos parciales, contrareembolso ni crédito bajo ninguna circunstancia.</p>
+                    
+                    <h3><i class="fas fa-info-circle"></i> Razón de esta Política</h3>
+                    <p>Esta política nos permite garantizar:</p>
+                    <ul>
+                        <li>Dedicación completa de recursos técnicos al caso</li>
+                        <li>Adquisición inmediata de materiales específicos</li>
+                        <li>Priorización según orden de pago recibido</li>
+                        <li>Protección mutua contra imprevistos</li>
+                    </ul>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-user-shield"></i> TITULARES AUTORIZADOS PARA RECIBIR PAGOS</summary>
+                <div class="accordion-content">
+                    <div class="alert-box">
+                        <h4><i class="fas fa-exclamation-circle"></i> ÚNICAMENTE ESTAS PERSONAS ESTÁN AUTORIZADAS</h4>
+                        <p style="margin-bottom: 20px;">Los pagos deben realizarse <strong>EXCLUSIVAMENTE</strong> a las siguientes cuentas:</p>
+                        
+                        <div class="titular-card">
+                            <h4><i class="fas fa-user-tie"></i> TITULAR PRINCIPAL</h4>
+                            <p><strong>Alejandro Cañón</strong> - Representante Legal</p>
+                            <ul>
+                                <li><strong>Nequi:</strong> 321 958 1949</li>
+                                <li><strong>Transferencia BRE-B (Cédula):</strong> 1019051396</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="titular-card">
+                            <h4><i class="fas fa-user"></i> TITULAR AUTORIZADA</h4>
+                            <p><strong>Jessica Mendez</strong> - Gestión de Pagos</p>
+                            <ul>
+                                <li><strong>Daviplata:</strong> 322 877 4481</li>
+                                <li><strong>Transferencia BRE-B (Celular 1):</strong> 3219581949</li>
+                                <li><strong>Transferencia BRE-B (Celular 2):</strong> 3228774481</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: rgba(255,0,0,0.25); padding: 18px; border-radius: 10px; border: 3px solid #ff0000; margin-top: 20px;">
+                            <p style="color: #ff6b6b; font-weight: 800; text-align: center; font-size: 1.1rem; margin-bottom: 10px;"><i class="fas fa-ban"></i> ADVERTENCIA ANTI-FRAUDE</p>
+                            <p style="color: #fff; text-align: center; line-height: 1.7;">PRODIGY <strong>NO se hace responsable</strong> por pagos realizados a cuentas o titulares diferentes a los mencionados aquí. Cualquier transferencia a nombres no autorizados es responsabilidad exclusiva del cliente y no se reconocerá como pago válido.</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-clock"></i> Tiempos de Entrega Estimados</summary>
+                <div class="accordion-content">
+                    <p>Los tiempos son <strong>referenciales</strong> y se cuentan desde que se confirma contar con <strong>toda la información técnica completa</strong> del caso.</p>
+                    
+                    <h3><i class="fas fa-laptop"></i> Diseño CAD</h3>
+                    <ul>
+                        <li><strong>Diseño simple:</strong> Normalmente <strong>24 horas o menos</strong></li>
+                        <li><strong>Diseño complejo:</strong> 24 a 48 horas hábiles</li>
+                        <li><strong>Diseño con planificación quirúrgica:</strong> 5-7 días hábiles</li>
+                    </ul>
+                    
+                    <h3><i class="fas fa-industry"></i> Fresado</h3>
+                    <div style="display:grid; gap:15px; margin-top:15px;">
+                        <div style="background:rgba(0,0,0,0.5); padding:18px; border-radius:10px; border-left:5px solid #FFD700;">
+                            <p style="color:#FFD700; font-weight:800; font-size:1.1rem; margin-bottom:8px;"><i class="fas fa-bolt"></i> Línea Express</p>
+                            <p style="font-size:1.8rem; font-weight:900; color:var(--gold);">8 HORAS</p>
+                            <p style="color:#aaa; font-size:0.95rem;">Aplica <strong>exclusivamente</strong> a Zirconio bajo especificaciones únicas</p>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.5); padding:18px; border-radius:10px; border-left:5px solid #607D8B;">
+                            <p style="color:#90A4AE; font-weight:800; font-size:1.1rem; margin-bottom:8px;"><i class="fas fa-industry"></i> Línea Estándar</p>
+                            <p style="font-size:1.8rem; font-weight:900; color:#90A4AE;">24 HORAS</p>
+                            <p style="color:#aaa; font-size:0.95rem;">Sujeto a volumen de producción y disponibilidad de materiales</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-box" style="margin-top:25px;">
+                        <h4><i class="fas fa-info-circle"></i> Aviso Legal Importante</h4>
+                        <ul>
+                            <li>PRODIGY se reserva el derecho de modificar los tiempos con <strong>aviso previo al cliente</strong></li>
+                            <li>El tiempo de fresado/terminado se valida únicamente cuando el <strong>producto base está listo</strong> para ese proceso</li>
+                            <li>Se notificará cada etapa al cliente para <strong>total transparencia</strong></li>
+                            <li>En temporadas de alta demanda (diciembre, enero, semana santa) los tiempos pueden extenderse</li>
+                        </ul>
+                    </div>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-shipping-fast"></i> Política de Envíos y Responsabilidad</summary>
+                <div class="accordion-content">
+                    <h3><i class="fas fa-box"></i> Embalaje y Documentación</h3>
+                    <p>PRODIGY garantiza un <strong>embalaje de protección de alto nivel</strong> y documenta con fotografía el estado perfecto del caso al momento de salir del laboratorio.</p>
+                    
+                    <div class="alert-box">
+                        <h4><i class="fas fa-exclamation-triangle"></i> DESLINDE DE RESPONSABILIDAD EN TRANSPORTE</h4>
+                        <p><strong>La responsabilidad de PRODIGY termina en el momento exacto en que el paquete es entregado a la empresa transportadora.</strong> A partir de ese instante, cualquier incidente es responsabilidad exclusiva del tercero.</p>
+                        <p style="margin-top: 15px;">Daños, pérdidas, robos, retrasos o cualquier incidente durante el tránsito son <strong>responsabilidad exclusiva de la empresa transportadora</strong>.</p>
+                        <p style="margin-top: 15px; padding: 12px; background: rgba(244,67,54,0.2); border-radius: 8px; font-weight: 700;">
+                            <i class="fas fa-ban"></i> <strong>PRODIGY NO asume reposiciones gratuitas</strong> por daños, extravíos o deterioros causados por el transportador. El cliente debe realizar el reclamo <strong>directamente ante la transportadora responsable</strong>.
+                        </p>
+                    </div>
+                    
+                    <h3><i class="fas fa-clipboard-list"></i> Proceso de Reclamación por Daños en Tránsito</h3>
+                    <ol>
+                        <li>El cliente debe abrir reclamación directamente con la transportadora</li>
+                        <li>PRODIGY proporcionará las fotografías del embalaje como evidencia</li>
+                        <li>La reposición solo procede si la transportadora reconoce la responsabilidad</li>
+                        <li>PRODIGY colaborará en el proceso pero no asume costos de reposición</li>
+                    </ol>
+                    
+                    <h3><i class="fas fa-truck"></i> Opciones de Envío</h3>
+                    <ul>
+                        <li><strong>Entrega personal en Bogotá:</strong> Sin costo adicional (zona acordada)</li>
+                        <li><strong>Coordinadora / Servientrega:</strong> Costo según destino y peso</li>
+                        <li><strong>Transportadora de preferencia del cliente:</strong> Cliente asume costo y riesgo total</li>
+                    </ul>
+                </div>
+            </details>
+            
+        </div>
+        
+        <!-- POLÍTICAS DE DISEÑO -->
+        <div id="diseno" class="tab-content">
+            
+            <details>
+                <summary><i class="fas fa-pencil-ruler"></i> Naturaleza del Servicio: Obligación de Medio</summary>
+                <div class="accordion-content">
+                    <p>El diseño CAD es un <strong>servicio intangible</strong> que se cobra por el tiempo y conocimiento del diseñador. PRODIGY se compromete a entregar un diseño profesional basado en las especificaciones del odontólogo, pero <strong>no garantiza ajuste clínico si los datos de entrada (escaneo, impresión) son deficientes</strong>.</p>
+                    
+                    <div class="info-box">
+                        <h4><i class="fas fa-info-circle"></i> Principio GIGO (Garbage In, Garbage Out)</h4>
+                        <p>La calidad del diseño está <strong>directamente relacionada</strong> con la calidad del escaneo o impresión enviada.</p>
+                        <p style="margin-top: 12px;">Si el modelo digital presenta distorsiones, mallas abiertas, falta de márgenes claros o preparaciones inadecuadas, PRODIGY no puede garantizar el ajuste del diseño resultante.</p>
+                    </div>
+                    
+                    <h3><i class="fas fa-search"></i> Proceso de Aprobación</h3>
+                    <p>El diseño se entrega al odontólogo mediante:</p>
+                    <ul>
+                        <li>Viewer 3D interactivo (link privado)</li>
+                        <li>Capturas de pantalla vía WhatsApp</li>
+                        <li>Archivo STL para revisión en software propio</li>
+                    </ul>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-stamp"></i> CLÁUSULA DE APROBACIÓN VINCULANTE</summary>
+                <div class="accordion-content">
+                    <div class="alert-box">
+                        <h4><i class="fas fa-gavel"></i> IMPORTANTE: RESPONSABILIDAD POST-APROBACIÓN</h4>
+                        <p>Una vez el odontólogo aprueba el diseño (mediante confirmación escrita por WhatsApp, correo o verbalmente), <strong>se considera aceptado en su totalidad</strong>.</p>
+                        <p style="margin-top: 15px;">Si posteriormente la pieza fresada/impresa no ajusta debido a un <strong>error de diseño</strong> (no de manufactura), el costo de repetición lo asume el cliente por haber aprobado un diseño deficiente.</p>
+                    </div>
+                    
+                    <h3><i class="fas fa-balance-scale"></i> Diferencia entre Error de Diseño y Error de Manufactura</h3>
+                    <p><strong>Error de Diseño (cliente responsable si aprobó):</strong></p>
+                    <ul>
+                        <li>Margen cervical abierto o corto</li>
+                        <li>Contacto oclusal excesivo o insuficiente</li>
+                        <li>Anatomía inadecuada para función</li>
+                        <li>Grosor de pared insuficiente</li>
+                    </ul>
+                    
+                    <p style="margin-top: 15px;"><strong>Error de Manufactura (PRODIGY responsable):</strong></p>
+                    <ul>
+                        <li>La pieza física no corresponde al diseño aprobado</li>
+                        <li>Fractura del material por defecto de fabricación</li>
+                        <li>Error dimensional mayor al 2%</li>
+                    </ul>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-redo"></i> Revisiones Incluidas</summary>
+                <div class="accordion-content">
+                    <p>Cada diseño incluye <strong>hasta 2 revisiones gratuitas</strong> antes de la aprobación final.</p>
+                    
+                    <h3><i class="fas fa-calendar-check"></i> Condiciones para Revisiones</h3>
+                    <ul>
+                        <li>Las revisiones deben solicitarse dentro de las <strong>48 horas</strong> posteriores a la entrega del diseño</li>
+                        <li>Deben ser modificaciones razonables al diseño original</li>
+                        <li>No aplica si el cambio implica rediseño completo por cambio de indicación</li>
+                    </ul>
+                    
+                    <h3><i class="fas fa-dollar-sign"></i> Revisiones Adicionales</h3>
+                    <p>A partir de la <strong>tercera revisión</strong>, se cobrará el <strong>50% del valor original del diseño</strong> por cada revisión adicional.</p>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-sync-alt"></i> Política de Repeticiones</summary>
+                <div class="accordion-content">
+                    <div class="alert-box">
+                        <h4><i class="fas fa-exclamation-circle"></i> RESPONSABILIDAD EN REPETICIONES</h4>
+                        <p><strong>Si la repetición se debe a un error en el archivo original, escaneo defectuoso o un diseño aprobado por el cliente que resultó no funcional, el nuevo trabajo se cobrará al 100% como una orden nueva.</strong></p>
+                    </div>
+                    
+                    <h3><i class="fas fa-list-ul"></i> Clasificación de Repeticiones</h3>
+                    
+                    <div class="success-box">
+                        <h4><i class="fas fa-gift"></i> 1. Error de PRODIGY → GRATUITO</h4>
+                        <p>Si el error es atribuible 100% al laboratorio y el diseño NO fue aprobado previamente.</p>
+                    </div>
+                    
+                    <div class="info-box">
+                        <h4><i class="fas fa-percent"></i> 2. Diseño Aprobado con Problemas → 50% del Valor</h4>
+                        <p>Si el cliente aprobó el diseño y luego solicita cambios porque no ajusta clínicamente.</p>
+                    </div>
+                    
+                    <div class="alert-box">
+                        <h4><i class="fas fa-redo"></i> 3. Archivo/Escaneo Deficiente → 100% del Valor</h4>
+                        <p>Cuando el problema se origina en el archivo STL o escaneo enviado por el odontólogo.</p>
+                    </div>
+                </div>
+            </details>
+            
+        </div>
+        
+        <!-- GARANTÍA FRESADO -->
+        <div id="fresado" class="tab-content">
+            
+            <details>
+                <summary><i class="fas fa-stopwatch"></i> TIEMPOS LÍMITE PARA REPORTAR INCONFORMIDADES</summary>
+                <div class="accordion-content">
+                    <div class="alert-box">
+                        <h4><i class="fas fa-alarm-clock"></i> POLÍTICA ESTRICTA DE TIEMPO DE REPORTE</h4>
+                        <p style="margin-bottom: 20px;">El cliente tiene un plazo <strong>ESTRICTO</strong> para reportar inconformidades:</p>
+                        
+                        <div style="display: grid; gap: 15px; margin-bottom: 20px;">
+                            <div style="background: rgba(0,0,0,0.5); padding: 18px; border-radius: 10px; border-left: 5px solid var(--gold);">
+                                <p style="font-size: 1rem; margin-bottom: 8px;"><i class="fas fa-map-marker-alt"></i> <strong>Entregas en Bogotá / Locales:</strong></p>
+                                <p style="color: var(--gold); font-size: 1.8rem; font-weight: 900;">12 HORAS</p>
+                                <p style="color: #aaa; font-size: 0.95rem;">Tras la entrega física del caso</p>
+                            </div>
+                            
+                            <div style="background: rgba(0,0,0,0.5); padding: 18px; border-radius: 10px; border-left: 5px solid var(--gold);">
+                                <p style="font-size: 1rem; margin-bottom: 8px;"><i class="fas fa-truck"></i> <strong>Entregas Nacionales:</strong></p>
+                                <p style="color: var(--gold); font-size: 1.8rem; font-weight: 900;">24 HORAS</p>
+                                <p style="color: #aaa; font-size: 0.95rem;">Tras firma de recibido de la transportadora</p>
+                            </div>
+                        </div>
+                        
+                        <p style="color: #F44336; font-weight: 800; text-align: center; font-size: 1.15rem; padding: 15px; background: rgba(244,67,54,0.2); border-radius: 10px;">
+                            <i class="fas fa-ban"></i> Pasado este tiempo, se asume conformidad total y el caso se CIERRA. NO se aceptan reclamos posteriores.
+                        </p>
+                    </div>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-check-double"></i> Cobertura de Garantía</summary>
+                <div class="accordion-content">
+                    <p>Dentro del tiempo límite establecido, PRODIGY garantiza las piezas contra:</p>
+                    
+                    <h3><i class="fas fa-wrench"></i> Defectos Cubiertos</h3>
+                    <ul>
+                        <li><strong>Fracturas del material:</strong> Por defectos de fabricación o sinterizado (no por trauma oclusal)</li>
+                        <li><strong>Defectos de superficie:</strong> Porosidades, grietas o irregularidades no causadas por el diseño</li>
+                        <li><strong>Errores dimensionales:</strong> Variaciones mayores al 2% respecto al STL original</li>
+                        <li><strong>Fidelidad al diseño aprobado:</strong> Si la pieza no corresponde al diseño aprobado</li>
+                    </ul>
+                    
+                    <div class="info-box">
+                        <h4><i class="fas fa-clipboard-check"></i> Condiciones para Hacer Válida la Garantía</h4>
+                        <ul>
+                            <li>Reportar dentro del tiempo límite (12h local / 24h nacional)</li>
+                            <li>Enviar fotografías claras del defecto</li>
+                            <li>Devolver la pieza defectuosa (si PRODIGY lo solicita)</li>
+                            <li>No haber manipulado la pieza (pulido, ajuste, cementación)</li>
+                        </ul>
+                    </div>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-ban"></i> Exclusiones de Garantía: Cláusula GIGO</summary>
+                <div class="accordion-content">
+                    <div class="alert-box">
+                        <h4><i class="fas fa-file-excel"></i> ARCHIVO STL DEFICIENTE (Garbage In, Garbage Out)</h4>
+                        <p>PRODIGY <strong>NO ofrece garantía de ajuste clínico</strong> en los siguientes casos:</p>
+                        
+                        <h3 style="margin-top: 20px;"><i class="fas fa-exclamation-triangle"></i> Problemas Técnicos del Archivo</h3>
+                        <ul>
+                            <li>Mallas abiertas (non-manifold geometry)</li>
+                            <li>Distorsiones por escaneo deficiente</li>
+                            <li>Preparaciones inadecuadas (socavados, falta de retención)</li>
+                            <li>Grosor de pared menor a 0.6mm (riesgo de fractura)</li>
+                            <li>Errores de orientación o scaling</li>
+                            <li>Archivos con ruido digital o artefactos</li>
+                        </ul>
+                        
+                        <p style="margin-top: 20px; font-weight: 800; font-size: 1.1rem;">
+                            <i class="fas fa-arrow-right"></i> En estos casos, PRODIGY fresará/imprimirá exactamente lo que está en el archivo, sin responsabilidad por el ajuste final.
+                        </p>
+                    </div>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-clipboard-list"></i> Proceso de Reclamación</summary>
+                <div class="accordion-content">
+                    <h3><i class="fas fa-list-ol"></i> Pasos para Realizar una Reclamación</h3>
+                    <ol>
+                        <li>Contactar soporte vía WhatsApp dentro del tiempo límite: <strong>+57 321 281 6716</strong></li>
+                        <li>Enviar evidencia fotográfica clara del defecto (mínimo 3 fotos desde diferentes ángulos)</li>
+                        <li>Describir específicamente el problema detectado</li>
+                        <li>PRODIGY evalúa el caso en máximo <strong>24 horas hábiles</strong></li>
+                        <li>Si procede: Reposición gratuita en 24-48 horas</li>
+                        <li>Si no procede: Se explica técnicamente la causa al odontólogo</li>
+                    </ol>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-gem"></i> Materiales y Especificaciones Técnicas</summary>
+                <div class="accordion-content">
+                    <h3><i class="fas fa-tooth"></i> Zirconio</h3>
+                    <p><strong>Zirconio 3D Pro / SMILE:</strong></p>
+                    <ul>
+                        <li>Resistencia flexural: >1200 MPa</li>
+                        <li>Translucidez: Alta (HT) / Media (MT)</li>
+                        <li>Aplicación: Coronas, puentes, carillas</li>
+                    </ul>
+                    
+                    <h3><i class="fas fa-flask"></i> Disilicato de Litio (e.max)</h3>
+                    <ul>
+                        <li>Resistencia flexural: 500 MPa</li>
+                        <li>Estética: Premium con translucidez natural</li>
+                        <li>Aplicación: Inlays, onlays, carillas, coronas anteriores</li>
+                    </ul>
+                    
+                    <h3><i class="fas fa-cube"></i> PMMA</h3>
+                    <ul>
+                        <li>Uso: Temporal (máximo 6 meses)</li>
+                        <li>No garantizado para uso definitivo prolongado</li>
+                        <li>Resistencia limitada a fuerzas oclusales</li>
+                    </ul>
+                </div>
+            </details>
+            <details id="fresado-familia-xtpro">
+                <summary><i class="fas fa-atom"></i> FAMILIA ZIRCONIO XT-PRO (TOSOH CERTIFIED)</summary>
+                <div class="accordion-content">
+                    <p><strong>Familia Zirconio XT-PRO (Materia Prima Tosoh®):</strong> Se garantiza el uso de polvo japonés original en toda la línea XT-PRO. La garantía cubre fallas estructurales de material, siempre que se respete el diseño de conectores mínimo y los ciclos de sinterización específicos para cada grado.</p>
+                    <ul>
+                        <li><strong style="color:#4caf50;">⚡ FAST READY — Monocapa, HT, SHTML, TT-AIR:</strong> Garantía completa en ciclos rápidos y estándar. Cubre fractura, porosidad y error dimensional atribuibles al laboratorio.</li>
+                        <li><strong style="color:#ff8800;">⏳ 3D Pro XT-PRO (Categoría: Premium Anterior):</strong> La garantía aplica <u>únicamente</u> con ciclo de sinterización estándar. El ciclo rápido compromete la integridad del gradiente triple y excluye cobertura.</li>
+                        <li><strong style="color:#ff4444;">⏳ SMILE XT-PRO (Categoría: Estética Ultra-Traslúcida):</strong> Exige enfriamiento lento obligatorio. El choque térmico por ciclo rápido anula la garantía automáticamente sin excepción.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details id="fresado-disilicato">
+                <summary><i class="fas fa-gem"></i> DISILICATO DE LITIO — XTCERA NEBULA LSi</summary>
+                <div class="accordion-content">
+                    <p><strong>Disilicato de Litio (XTCERA Nebula LSi):</strong> Material cerámico reforzado para restauraciones mínimamente invasivas. Resistencia certificada de 460 MPa. La garantía se invalida en caso de preparaciones por debajo de los 0.2mm o cementación no adhesiva.</p>
+                    <ul>
+                        <li><strong>Resistencia biaxial:</strong> ≥ 400–460 MPa (supera disilicatos genéricos ≈300 MPa)</li>
+                        <li><strong>Espesor mínimo:</strong> 0.2 mm — cementación adhesiva obligatoria</li>
+                        <li><strong>Cristalización:</strong> Ciclo de 90 minutos — cumplimiento del programa Dry time/Heating rate obligatorio</li>
+                        <li>Alta traslucidez y fluorescencia natural para mimetización óptica</li>
+                    </ul>
+                    <p style="color:#aaa;font-size:0.85rem;">PRODIGY no asume responsabilidad por fallos derivados de cementación convencional en espesores ≤ 0.3 mm o incumplimiento del protocolo de cristalización.</p>
+                </div>
+            </details>
+            
+        </div>
+        
+        <!-- LEGAL COLOMBIA -->
+        <div id="legal" class="tab-content">
+            
+            <details>
+                <summary><i class="fas fa-shield-alt"></i> Ley 1581 de 2012: Protección de Datos Personales (Habeas Data)</summary>
+                <div class="accordion-content">
+                    <p>En cumplimiento de la <strong>Ley 1581 de 2012</strong> y el <strong>Decreto 1377 de 2013</strong>, PRODIGY informa:</p>
+                    
+                    <div class="info-box">
+                        <h4><i class="fas fa-database"></i> Tratamiento de Datos Sensibles de Salud</h4>
+                        <p>Al enviar información de casos clínicos (escaneos, fotografías intraorales, datos del paciente), el odontólogo:</p>
+                        <ul>
+                            <li>Declara contar con <strong>autorización expresa del paciente</strong> para compartir sus datos de salud</li>
+                            <li>Autoriza a PRODIGY a procesar dichos datos exclusivamente para <strong>fines de trazabilidad, archivo técnico y mejora del servicio</strong></li>
+                            <li>Acepta que PRODIGY almacene archivos STL y fotografías por un período de <strong>5 años</strong> (según normativa de historias clínicas odontológicas)</li>
+                        </ul>
+                    </div>
+                    
+                    <h3><i class="fas fa-lock"></i> Seguridad de la Información</h3>
+                    <p>PRODIGY implementa medidas de seguridad técnicas y administrativas para proteger los datos:</p>
+                    <ul>
+                        <li>Almacenamiento encriptado en servidores seguros</li>
+                        <li>Acceso restringido solo a personal autorizado</li>
+                        <li>Protocolos de confidencialidad con todo el equipo</li>
+                        <li>Backups periódicos con encriptación</li>
+                    </ul>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-camera"></i> PROTOCOLO DE USO DE IMAGEN</summary>
+                <div class="accordion-content">
+                    
+                    <h3><i class="fas fa-file-signature"></i> 1. Declaración del Cliente (Odontólogo)</h3>
+                    <p>Al cargar archivos fotográficos, escaneos intraorales o videos del paciente en la plataforma de PRODIGY, el Cliente declara y garantiza bajo juramento que cuenta con el <strong>Consentimiento Informado, Expreso y Escrito del paciente</strong> para la captura, tratamiento y transmisión de dichas imágenes con fines clínicos y académicos.</p>
+                    
+                    <div class="warning-box" style="background: linear-gradient(135deg, #1a0000 0%, #2d0a0a 100%); border-left: 4px solid #D4AF37; padding: 20px; margin: 20px 0; border-radius: 8px;">
+                        <h3 style="color: #D4AF37; margin-top: 0;"><i class="fas fa-certificate"></i> 2. Licencia de Uso Perpetua e Irrevocable</h3>
+                        <p>Al enviar material visual del caso clínico a PRODIGY, el Cliente otorga a <strong>PRODIGY / Alejandro Cañón</strong> una <strong>licencia de uso perpetua, irrevocable, gratuita y mundial</strong> para utilizar el material visual del caso (fotos de antes/después, diseños digitales, renders 3D, texturas, videos) en:</p>
+                        <ul>
+                            <li>Catálogos de portafolio profesional</li>
+                            <li>Publicaciones académicas y conferencias científicas</li>
+                            <li>Redes Sociales (Instagram, TikTok, Facebook, LinkedIn) con fines demostrativos de la calidad técnica del trabajo</li>
+                            <li>Material educativo y capacitaciones a profesionales del sector</li>
+                            <li>Sitio web corporativo y plataformas digitales de PRODIGY</li>
+                        </ul>
+                        
+                        <div class="info-box" style="background: rgba(212, 175, 55, 0.1); border: 1px solid #D4AF37; padding: 15px; margin-top: 15px; border-radius: 6px;">
+                            <h4 style="color: #D4AF37; margin-top: 0;"><i class="fas fa-shield-alt"></i> Protección de Inversión en Marketing</h4>
+                            <p style="margin-bottom: 0;">PRODIGY invierte recursos significativos en edición profesional, diseño gráfico, anonimización y producción de contenido para redes sociales. Por esta razón, la licencia otorgada es <strong>IRREVOCABLE</strong> salvo las excepciones establecidas en el punto 4.</p>
+                        </div>
+                        
+                        <p style="margin-top: 15px; font-weight: 600; color: #FFD700;">
+                            <i class="fas fa-exclamation-triangle"></i> <strong>IMPORTANTE:</strong> Si el Cliente NO desea otorgar esta licencia, debe manifestarlo <strong>POR ESCRITO ANTES de iniciar la orden</strong>. El silencio o la entrega del caso se interpreta como aceptación tácita de estos términos.
+                        </p>
+                    </div>
+                    
+                    <div class="success-box">
+                        <h4><i class="fas fa-user-shield"></i> 3. Política de Anonimización (Protección de Identidad)</h4>
+                        <p>PRODIGY se compromete a proteger la dignidad del paciente mediante técnicas de edición profesional:</p>
+                        <ul>
+                            <li><strong>Fotos de Sonrisa/Dientes:</strong> Se usarán libremente en publicaciones</li>
+                            <li><strong>Fotos de Rostro Completo:</strong> Se aplicará una franja negra o difuminado en la zona de los ojos (<strong>Técnica de Gafas Virtuales</strong>) para evitar el reconocimiento facial directo, a menos que el objetivo sea mostrar armonía facial completa y el Doctor autorice explícitamente su publicación sin censura.</li>
+                            <li><strong>Datos Personales:</strong> NUNCA se publicarán nombres, números de cédula, direcciones, teléfonos o información médica sensible del paciente</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="warning-box" style="background: linear-gradient(135deg, #0a0a2d 0%, #1a1a3d 100%); border-left: 4px solid #FF6B6B; padding: 20px; margin: 20px 0; border-radius: 8px;">
+                        <h3 style="color: #FF6B6B; margin-top: 0;"><i class="fas fa-ban"></i> 4. Restricciones de Retiro de Contenido</h3>
+                        <p>Dado que la licencia otorgada es <strong>irrevocable</strong>, PRODIGY <strong>NO está obligado</strong> a eliminar contenido publicado por las siguientes razones:</p>
+                        <ul>
+                            <li>❌ Arrepentimiento del odontólogo después de entregar el caso</li>
+                            <li>❌ Cambios de opinión del Cliente sobre publicidad</li>
+                            <li>❌ Conflictos comerciales o profesionales posteriores entre el Cliente y PRODIGY</li>
+                            <li>❌ Solicitudes unilaterales sin fundamento legal</li>
+                        </ul>
+                        
+                        <h4 style="color: #FFD700; margin-top: 20px;"><i class="fas fa-gavel"></i> Excepciones Legales (Eliminación Obligatoria)</h4>
+                        <p>PRODIGY eliminará el contenido publicado <strong>ÚNICAMENTE</strong> en los siguientes casos:</p>
+                        <ol style="margin-top: 10px;">
+                            <li><strong>Revocación del Paciente Titular:</strong> Si el paciente titular de los datos personales revoca expresamente su consentimiento y lo notifica por escrito (correo electrónico o carta dirigida a PRODIGY), el contenido será retirado en un plazo de <strong>72 horas hábiles</strong>.</li>
+                            <li><strong>Orden Judicial:</strong> Si una autoridad judicial colombiana competente ordena mediante providencia el retiro del contenido por vulneración de derechos fundamentales (intimidad, imagen, datos personales).</li>
+                            <li><strong>Violación de Ley 1581/2012:</strong> Si se comprueba que el material fue compartido sin el consentimiento informado del paciente, violando la normativa de Habeas Data.</li>
+                        </ol>
+                        
+                        <p style="margin-top: 15px; padding: 12px; background: rgba(255, 107, 107, 0.15); border-radius: 6px; font-weight: 600;">
+                            <i class="fas fa-info-circle"></i> En caso de retiro por orden judicial, el Cliente deberá reembolsar a PRODIGY los costos de edición y producción del contenido retirado, calculados en <strong>$150,000 COP por pieza de contenido eliminada</strong>.
+                        </p>
+                    </div>
+                    
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-balance-scale"></i> Resolución de Conflictos</summary>
+                <div class="accordion-content">
+                    <p>Cualquier controversia derivada de estos términos se resolverá mediante:</p>
+                    
+                    <h3><i class="fas fa-comments"></i> 1. Diálogo Directo</h3>
+                    <p>Primera instancia: Comunicación directa con PRODIGY</p>
+                    <ul>
+                        <li>Email: <a href="mailto:labdentalprodigy@gmail.com" style="color: var(--gold);">labdentalprodigy@gmail.com</a></li>
+                        <li>WhatsApp: +57 321 281 6716</li>
+                    </ul>
+                    
+                    <h3><i class="fas fa-handshake"></i> 2. Mediación Voluntaria</h3>
+                    <p>Segunda instancia: Mediación ante Cámara de Comercio de Bogotá</p>
+                    
+                    <h3><i class="fas fa-gavel"></i> 3. Jurisdicción Ordinaria</h3>
+                    <p>Tercera instancia: Jurisdicción ordinaria colombiana (Bogotá D.C.)</p>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-sync"></i> Modificaciones a los Términos</summary>
+                <div class="accordion-content">
+                    <p>PRODIGY se reserva el derecho de modificar estos términos en cualquier momento.</p>
+                    
+                    <div class="info-box">
+                        <h4><i class="fas fa-bell"></i> Notificación de Cambios</h4>
+                        <p>Los cambios serán notificados mediante:</p>
+                        <ul>
+                            <li>Correo electrónico a todos los clientes registrados</li>
+                            <li>Publicación en esta página web</li>
+                            <li>Anuncio en redes sociales oficiales</li>
+                        </ul>
+                        <p style="margin-top: 12px;">Los cambios entrarán en vigor <strong>15 días calendario</strong> después de su notificación.</p>
+                    </div>
+                </div>
+            </details>
+            
+        </div>
+        
+        <!-- FAQ -->
+        <div id="faq" class="tab-content">
+            
+            <details>
+                <summary><i class="fas fa-clock"></i> ¿Cuánto tardan en entregar mi caso?</summary>
+                <div class="accordion-content">
+                    <p><strong>Diseño CAD simple:</strong> Normalmente <strong>24 horas o menos</strong> desde que se confirma info completa</p>
+                    <p><strong>Diseño CAD complejo:</strong> 24 a 48 horas hábiles</p>
+                    <p><strong>Fresado Express (Zirconio bajo especificaciones):</strong> <strong>8 horas</strong></p>
+                    <p><strong>Fresado Estándar:</strong> 24 horas (sujeto a volumen y materiales)</p>
+                    
+                    <div class="info-box" style="margin-top: 15px;">
+                        <h4><i class="fas fa-info-circle"></i> Importante</h4>
+                        <p>Los tiempos se cuentan desde que PRODIGY confirma tener <strong>toda la información técnica necesaria</strong>. Se notifica cada etapa al cliente. PRODIGY se reserva el derecho de ajustar tiempos con aviso previo.</p>
+                    </div>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-upload"></i> ¿Cómo debo enviar mis archivos digitales?</summary>
+                <div class="accordion-content">
+                    <h3><i class="fas fa-check-circle"></i> Opción 1: Google Drive (Recomendada)</h3>
+                    <ul>
+                        <li>Sube tus archivos a nuestra carpeta: <a href="https://drive.google.com/drive/folders/1sq3ygI28JH4tk94op4d5_gdBIxi5aqfw" target="_blank" style="color: #4285F4; font-weight: 700;">Carpeta PRODIGY</a></li>
+                        <li>Nombra los archivos con tu nombre (ej: "DrGarcia_Corona46.stl")</li>
+                        <li><strong>Ventaja:</strong> Sin límite de tiempo, archivos permanentes</li>
+                    </ul>
+                    
+                    <h3><i class="fas fa-paper-plane"></i> Opción 2: WeTransfer</h3>
+                    <ul>
+                        <li>Envía a: <strong><a href="mailto:labdentalprodigy@gmail.com" style="color: var(--gold);">labdentalprodigy@gmail.com</a></strong></li>
+                        <li><strong>Advertencia:</strong> Archivos duran solo 7 días</li>
+                    </ul>
+                    
+                    <h3><i class="fas fa-file-alt"></i> Archivos Requeridos</h3>
+                    <ul>
+                        <li>Archivo STL del diseño o modelo</li>
+                        <li>Archivo .constructionInfo (Exocad, Ceramill, Zirkonzahn)</li>
+                    </ul>
+                </div>
+            </details>
+            
+            <details>
+                <summary><i class="fas fa-times-circle"></i> ¿Qué hago si mi pieza no ajusta?</summary>
+                <div class="accordion-content">
+                    <h3><i class="fas fa-wrench"></i> Si es un Defecto de Manufactura</h3>
+                    <p>(Fractura, porosidad, error dimensional)</p>
+                    <ul>
+                        <li>Contacta soporte en <strong>máximo 12h (Bogotá)</strong> o <strong>24h (Nacional)</strong></li>
+                        <li>WhatsApp: <strong>+57 321 281 6716</strong></li>
+                        <li>Envía fotos del defecto</li>
+                        <li>PRODIGY repondrá sin costo en 24-48 horas</li>
+                    </ul>
+                    
+                    <h3><i class="fas fa-pencil-alt"></i> Si es un Problema de Diseño</h3>
+                    <ul>
+                        <li><strong>Si aprobaste el diseño antes de fresar:</strong> Costo de repetición 50%</li>
+                        <li><strong>Si NO aprobaste diseño (fresado directo de tu STL):</strong> Verifica que tu archivo sea correcto (principio GIGO)</li>
+                    </ul>
+                    
+                    <h3><i class="fas fa-file-upload"></i> Si es un Problema del Escaneo Original</h3>
+                    <p>Mallas abiertas, distorsiones, preparación inadecuada:</p>
+                    <ul>
+                        <li>PRODIGY no puede garantizar ajuste</li>
+                        <li>Recomendamos mejorar el escaneo y rehacer el caso</li>
+                        <li>Se cobra al 100% como orden nueva</li>
+                    </ul>
+                </div>
+            </details>
+            <details id="faq-materiales-xtpro">
+                <summary><i class="fas fa-flask"></i> ¿Qué Zirconio XT-PRO debo elegir?</summary>
+                <div class="accordion-content">
+                    <p style="font-size:0.88rem;color:#aaa;margin-bottom:14px;">Todos usan <strong>Polvo Certificado Tosoh (Japón)</strong> · ISO 13356. La diferencia está en traslucidez y ciclo de sinterizado.</p>
+                    <div style="display:grid;gap:8px;">
+                        <div style="border-left:3px solid var(--gold-primary,#D4AF37);padding:10px 14px;background:rgba(212,175,55,0.05);border-radius:0 6px 6px 0;"><strong style="color:var(--gold-primary,#D4AF37);">🛡️ Monocapa XT-PRO — Categoría: Estructural Alta Resistencia · ⚡ FAST</strong><br><span style="font-size:0.85rem;">1200 MPa | 43% Trans. · All-on-4, puentes arco completo, muñones oscuros.</span></div>
+                        <div style="border-left:3px solid var(--gold-primary,#D4AF37);padding:10px 14px;background:rgba(212,175,55,0.05);border-radius:0 6px 6px 0;"><strong style="color:var(--gold-primary,#D4AF37);">🔗 HT XT-PRO — Categoría: Estándar Clínico · ⚡ FAST</strong><br><span style="font-size:0.85rem;">1000 MPa | 46% Trans. · Coronas monolíticas y puentes hasta 3 uds.</span></div>
+                        <div style="border-left:3px solid var(--gold-primary,#D4AF37);padding:10px 14px;background:rgba(212,175,55,0.05);border-radius:0 6px 6px 0;"><strong style="color:var(--gold-primary,#D4AF37);">🎨 SHTML XT-PRO — Categoría: Aesthetic Plus · ⚡ FAST</strong><br><span style="font-size:0.85rem;">1000 MPa multicapa | Degradado cromático cuello→incisal integrado.</span></div>
+                        <div style="border-left:3px solid var(--gold-primary,#D4AF37);padding:10px 14px;background:rgba(212,175,55,0.05);border-radius:0 6px 6px 0;"><strong style="color:var(--gold-primary,#D4AF37);">🚀 TT-AIR XT-PRO — Categoría: High Speed · ⚡ FAST</strong><br><span style="font-size:0.85rem;">1000 MPa grano refinado | 49% Trans. · Urgencias estéticas, entrega mismo día.</span></div>
+                        <div style="border-left:3px solid #ff8800;padding:10px 14px;background:rgba(255,136,0,0.05);border-radius:0 6px 6px 0;"><strong style="color:#ff8800;">👑 3D Pro XT-PRO — Categoría: Premium Anterior · ⏳ CICLO ESTÁNDAR</strong><br><span style="font-size:0.85rem;">Triple gradiente 1050→700 MPa | hasta 49%. <em>No compatible con ciclo rápido.</em></span></div>
+                        <div style="border-left:3px solid #ff4444;padding:10px 14px;background:rgba(255,68,68,0.05);border-radius:0 6px 6px 0;"><strong style="color:#ff4444;">✨ SMILE XT-PRO — Categoría: Estética Ultra-Traslúcida · ⏳ SOLO CICLO LENTO</strong><br><span style="font-size:0.85rem;">600 MPa | 57% Trans. (≡ Disilicato) · Carillas premium. <em>Choque térmico anula garantía.</em></span></div>
+                    </div>
+                </div>
+            </details>
+            
+            <div style="text-align: center; margin-top: 60px; padding: 40px; background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(212,175,55,0.05) 100%); border-radius: 20px; border: 2px solid var(--gold);">
+                <h3 style="color: var(--gold); margin-bottom: 25px; font-size: 1.5rem;">
+                    <i class="fas fa-headset"></i> ¿Necesitas Asistencia Personalizada?
+                </h3>
+                <a href="https://wa.me/573212816716" target="_blank" style="display: inline-flex; align-items: center; gap: 12px; padding: 22px 45px; background: linear-gradient(135deg, var(--gold) 0%, #F4C430 100%); color: #000; text-decoration: none; border-radius: 50px; font-weight: 800; font-size: 1.15rem; box-shadow: 0 8px 25px rgba(212,175,55,0.4); transition: all 0.3s ease;">
+                    <i class="fab fa-whatsapp" style="font-size: 1.6rem;"></i>
+                    Contactar Soporte Humano
+                </a>
+            </div>
+            
+        </div>
+        
+    </div><!-- /container -->
+
+    <!-- ========== FOOTER PRODIGY ========== -->
+    <footer class="footer-prodigy">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>PRODIGY</h4>
+                <ul>
+                    <li>Diseño Dental Digital</li>
+                    <li>Bogotá, Colombia</li>
+                    <li>Alta Precisión CAD/CAM</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>CONTACTO</h4>
+                <ul>
+                    <li><a href="tel:+573212816716">+57 321 281 6716</a></li>
+                    <li><a href="mailto:labdentalprodigy@gmail.com">labdentalprodigy@gmail.com</a></li>
+                    <li><a href="https://instagram.com/prodigydigitaldentistry" target="_blank">@prodigydigitaldentistry</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>SERVICIOS</h4>
+                <ul>
+                    <li>Diseño CAD/CAM</li>
+                    <li>Fresado Zirconio</li>
+                    <li>Impresión 3D</li>
+                    <li>Estética Dental</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>TECNOLOGÍA</h4>
+                <ul>
+                    <li>Exocad Expert</li>
+                    <li>3Shape Design</li>
+                    <li>Fresado CAM</li>
+                    <li>Impresión 3D</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>© 2026 PRODIGY Digital Dentistry. Bogotá, Colombia. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // POSICIONAMIENTO DINÁMICO: mide el navbar real
+        // y actualiza top de tabs + paddingTop del body
+        // [MIGRATION NOTE] En Web App: usar CSS custom
+        // properties con ResizeObserver
+        // =============================================
+        function syncNavHeight() {
+            const navbar = document.querySelector('.navbar');
+            const tabs   = document.querySelector('.tabs-container');
+            if (!navbar) return;
+
+            const navH = navbar.getBoundingClientRect().height;
+
+            // 1. Body: compensa la navbar fija exactamente
+            document.body.style.paddingTop = navH + 'px';
+
+            // 2. Tabs sticky: se ancla justo debajo del navbar
+            if (tabs) tabs.style.top = navH + 'px';
+        }
+
+        // Ejecutar en carga, tras fonts/imágenes y en resize
+        syncNavHeight();
+        window.addEventListener('load',   syncNavHeight);
+        window.addEventListener('resize', syncNavHeight);
+
+        // =============================================
+        // NAVEGACIÓN POR PESTAÑAS
+        // =============================================
+        function openTab(evt, tabName) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // =============================================
+        // EFECTO NAVBAR AL HACER SCROLL (main.js)
+        // =============================================
+        (function initNavbarScroll() {
+            const navbar = document.querySelector('.navbar');
+            if (!navbar) return;
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 50) {
+                    navbar.style.background = 'rgba(0,0,0,0.98)';
+                    navbar.style.boxShadow  = '0 2px 20px rgba(0,0,0,0.8)';
+                } else {
+                    navbar.style.background = 'rgba(0,0,0,0.95)';
+                    navbar.style.boxShadow  = 'none';
+                }
+            });
+        })();
+
+        // =============================================
+        // BOTÓN VOLVER ARRIBA
+        // =============================================
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('btn-top');
+            if (!btn) return;
+            if (window.scrollY > 400) btn.classList.add('visible');
+            else btn.classList.remove('visible');
+        });
+
+        // =============================================
+        // SEGURIDAD PRODIGY - MIGRABLE A WEB APP
+        // Capa 1: Bloquear menú contextual
+        // =============================================
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Capa 2: Bloquear atajos de devtools
+        document.addEventListener('keydown', function(e) {
+            if (
+                e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                (e.ctrlKey && e.key === 'u') ||
+                (e.ctrlKey && e.key === 'U')
+            ) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        });
+
+        // Capa 3: Detección pasiva de devtools abiertos
+        const devtools = /./;
+        devtools.toString = function() { this.opened = true; };
+        console.log('%c', devtools);
+
+        // Capa 4: Bloquear selección de texto
+        document.onselectstart = () => false;
+
+        // Capa 5: Bloquear arrastre de elementos
+        document.ondragstart = () => false;
+
+        // Capa 6: Bloquear impresión de página
+        window.onbeforeprint = function() {
+            document.body.innerHTML = '<div style="text-align:center;padding:100px;font-family:sans-serif;"><h1 style="color:#D4AF37;">⚠️ PRODIGY</h1><p>Impresión no autorizada. Este documento es confidencial.</p></div>';
+        };
+
+        // Capa 7: Limpieza periódica de consola
+        setInterval(() => console.clear(), 3000);
+
+        // Capa 8: Advertencia en consola
+        console.log('%c⚠️ ADVERTENCIA DE SEGURIDAD', 'color: #F44336; font-size: 24px; font-weight: bold;');
+        console.log('%cEste sitio está protegido. No ejecutes código desconocido en esta consola.', 'color: #FFC107; font-size: 16px;');
+        console.log('%cPRODIGY Digital Dentistry © 2026 - Todos los derechos reservados.', 'color: #D4AF37; font-size: 14px;');
+
+        // Capa 9: Anti-iframe (clickjacking)
+        if (window.top !== window.self) {
+            window.top.location = window.self.location;
+        }
+
+        // Capa 10: Bloquear eruda y herramientas de inspección móvil
+        Object.defineProperty(window, 'eruda', {
+            get: function() { return this._eruda; },
+            set: function(val) { this._eruda = val; this.opened = true; }
+        });
+
+        // Capa 11: Bloquear VConsole (debug móvil)
+        Object.defineProperty(window, 'VConsole', {
+            get: function() { return this._VConsole; },
+            set: function(val) { this._VConsole = val; }
+        });
+
+        // Capa 12: Protección de imágenes (anti-drag y pointer-events)
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('img').forEach(function(img) {
+                img.setAttribute('draggable', 'false');
+                img.style.pointerEvents = 'none';
+                img.style.userSelect = 'none';
+                img.style.webkitUserSelect = 'none';
+            });
+        });
+
+        // [MIGRATION NOTE] Al migrar a Web App:
+        // - Mover seguridad al servidor (CSP headers)
+        // - Implementar Content-Security-Policy
+        // - Agregar X-Frame-Options: DENY
+        // - Implementar autenticación JWT para acceso al centro legal
+
+        // =============================================
+        // MENSAJES DE BIENVENIDA EN CONSOLA (main.js)
+        // =============================================
+        console.log('%c💎 PRODIGY', 'font-size: 24px; font-weight: bold; color: #D4AF37;');
+        console.log('%cDigital Dental Excellence', 'font-size: 14px; color: #86868b;');
+        console.log('%cDesarrollado con precisión quirúrgica', 'font-size: 12px; color: #FF6600;');
+        console.log('%c✅ Centro Legal & Soporte cargado correctamente', 'font-size: 12px; color: #4CAF50;');
+
+    </script>
+
+    <a href="index.html" id="btn-volver-cotizador" style="position:fixed;bottom:80px;right:24px;background:var(--gold-primary,#D4AF37);color:#000;font-weight:900;font-size:0.82rem;padding:12px 18px;border-radius:8px;text-decoration:none;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(212,175,55,0.4);z-index:9999;letter-spacing:0.3px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><i class="fas fa-calculator"></i> Volver al Cotizador</a>
+</body>
+</html>

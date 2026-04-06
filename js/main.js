@@ -1,113 +1,247 @@
 // =============================================
-// PRODIGY - JAVASCRIPT PRINCIPAL
-// NO TOCAR ESTE ARCHIVO
+// PRODIGY - MAIN SCRIPT
 // =============================================
 
-// Navigation scroll effect
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(10,14,26,0.98)';
-        navbar.style.boxShadow = '0 10px 40px rgba(0,0,0,0.5)';
-    } else {
-        navbar.style.background = 'rgba(10,14,26,0.95)';
-        navbar.style.boxShadow = 'none';
-    }
-});
+(function() {
+    'use strict';
 
-// Active nav link on scroll
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-link');
+    // ===== PROTECCIÓN BÁSICA (Opcional) =====
+    // Nota: Estas medidas son fácilmente eludibles y solo disuaden usuarios básicos
+    function initProtection() {
+        // Deshabilitar menú contextual
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
 
-window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (scrollY >= sectionTop - 200) {
-            current = section.getAttribute('id');
-        }
-    });
-
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').slice(1) === current) {
-            link.classList.add('active');
-        }
-    });
-});
-
-// Close mobile menu on link click
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        const navMenu = document.getElementById('navMenu');
-        navMenu.classList.remove('active');
-    });
-});
-
-// Portfolio rendering
-const typeBadges = {
-    rehabilitacion: '🔬 Rehabilitación',
-    implantes: '⚙️ Implantes',
-    estetica: '✨ Estética',
-    ferulas: '🛡️ Férulas',
-    ortodoncia: '📐 Ortodoncia'
-};
-
-let currentFilter = 'all';
-
-function renderPortfolio(filter = 'all') {
-    const grid = document.getElementById('portfolioGrid');
-    if (!grid) return;
-    
-    grid.innerHTML = '';
-
-    const filteredData = filter === 'all' 
-        ? PATIENTS_DATA 
-        : PATIENTS_DATA.filter(p => p.type === filter);
-
-    if (filteredData.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; color: rgba(248,250,252,0.5);">No hay casos en esta categoría</p>';
-        return;
+        // Deshabilitar atajos de teclado comunes de DevTools
+        document.addEventListener('keydown', function(e) {
+            // F12
+            if (e.key === 'F12') {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Ctrl+Shift+I (Inspector)
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Ctrl+U (Ver código fuente)
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Ctrl+Shift+C (Selector de elementos)
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                return false;
+            }
+        });
     }
 
-    filteredData.forEach(patient => {
+    // ===== GENERACIÓN DINÁMICA DEL PORTAFOLIO =====
+    function initPortfolio() {
+        const portfolioGrid = document.querySelector('.portfolio-grid');
+        
+        // Validar que existe el contenedor
+        if (!portfolioGrid) {
+            console.error('❌ No se encontró el contenedor .portfolio-grid');
+            return;
+        }
+
+        // Validar que existen datos
+        if (typeof PATIENTS_DATA === 'undefined' || !PATIENTS_DATA || PATIENTS_DATA.length === 0) {
+            console.error('❌ No hay datos de pacientes disponibles');
+            portfolioGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                    <p style="color: var(--color-gold); font-size: 1.2rem;">
+                        No hay casos disponibles en este momento
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
+        // Limpiar el grid por si acaso
+        portfolioGrid.innerHTML = '';
+
+        // Generar las tarjetas dinámicamente
+        PATIENTS_DATA.forEach((patient, index) => {
+            const card = createPortfolioCard(patient, index);
+            portfolioGrid.appendChild(card);
+        });
+
+        console.log(`✅ ${PATIENTS_DATA.length} tarjetas de portafolio generadas correctamente`);
+    }
+
+    // ===== CREAR TARJETA DE PORTAFOLIO =====
+    function createPortfolioCard(patient, index) {
         const card = document.createElement('div');
         card.className = 'portfolio-card';
+        card.setAttribute('data-patient-id', patient.id);
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', `Ver caso: ${patient.name}`);
+
+        // Determinar estrategia de carga de imagen
+        const loadingStrategy = index < 4 ? 'eager' : 'lazy';
+
         card.innerHTML = `
-            <img src="${patient.coverImage}" 
-                 alt="${patient.name}" 
-                 class="portfolio-image" 
-                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%23151b2e%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22%23ff6b35%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.3em%22%3E🦷%3C/text%3E%3C/svg%3E'">
-            <div class="portfolio-content">
-                <span class="portfolio-badge">${typeBadges[patient.type]}</span>
+            <div class="image-wrapper">
+                <img src="${patient.coverImage}" 
+                     alt="${patient.name}" 
+                     loading="${loadingStrategy}"
+                     onerror="handleImageError(this)">
+                <div class="watermark">© PRODIGY</div>
+            </div>
+            <div class="card-info">
                 <h3>${patient.name}</h3>
-                <p>${patient.description}</p>
-                <div class="portfolio-meta">
-                    <span><i class="fas fa-calendar"></i> ${patient.date}</span>
-                    <span><i class="fas fa-images"></i> ${patient.galleryCount || 0} fotos</span>
-                </div>
+                <p>${patient.description || 'Caso clínico de alta complejidad'}</p>
+                <span class="card-date">${patient.date || 'Fecha no especificada'}</span>
             </div>
         `;
-        card.onclick = () => {
+
+        // Eventos de navegación
+        const navigateToPatient = () => {
             window.location.href = `patient.html?id=${patient.id}`;
         };
-        grid.appendChild(card);
-    });
-}
 
-// Filter buttons
-document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        renderPortfolio(currentFilter);
-    });
-});
+        card.addEventListener('click', navigateToPatient);
+        
+        // Soporte de teclado (accesibilidad)
+        card.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                navigateToPatient();
+            }
+        });
 
-// Initial render
-document.addEventListener('DOMContentLoaded', () => {
-    renderPortfolio();
-    console.log('✅ PRODIGY iniciado correctamente');
-});
+        return card;
+    }
+
+    // ===== MANEJO DE ERRORES DE IMAGEN =====
+    window.handleImageError = function(img) {
+        console.warn(`⚠️ Error al cargar imagen: ${img.src}`);
+        
+        // Intentar con imagen por defecto
+        if (!img.src.includes('default.jpg')) {
+            img.src = 'assets/default.jpg';
+        } else {
+            // Si incluso la imagen por defecto falla, usar un placeholder
+            img.style.display = 'none';
+            const wrapper = img.closest('.image-wrapper');
+            if (wrapper) {
+                wrapper.style.background = 'linear-gradient(135deg, #1e2433 0%, #0a0e1a 100%)';
+                wrapper.innerHTML += '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #D4AF37; font-size: 3rem;">💎</div>';
+            }
+        }
+    };
+
+    // ===== SCROLL SUAVE CON OFFSET DEL NAVBAR =====
+    function initSmoothScroll() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                
+                // Ignorar enlaces que solo son "#"
+                if (href === '#') return;
+                
+                const target = document.querySelector(href);
+                if (!target) return;
+                
+                e.preventDefault();
+                
+                const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 90;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    }
+
+    // ===== EFECTO DE NAVBAR AL HACER SCROLL =====
+    function initNavbarScroll() {
+        const navbar = document.querySelector('.navbar');
+        if (!navbar) return;
+
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+            
+            // Agregar clase "scrolled" cuando se hace scroll
+            if (currentScroll > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            lastScroll = currentScroll;
+        });
+    }
+
+    // ===== ANIMACIONES AL HACER SCROLL (Intersection Observer) =====
+    function initScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observar elementos que queremos animar
+        const animateElements = document.querySelectorAll(
+            '.portfolio-card, .service-card, .method-card, .course-card, .production-card'
+        );
+        
+        animateElements.forEach(el => observer.observe(el));
+    }
+
+    // ===== INICIALIZACIÓN AL CARGAR EL DOM =====
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 Iniciando PRODIGY...');
+
+        // Inicializar protección (opcional)
+        initProtection();
+
+        // Inicializar portafolio
+        initPortfolio();
+
+        // Inicializar scroll suave
+        initSmoothScroll();
+
+        // Inicializar efectos del navbar
+        initNavbarScroll();
+
+        // Inicializar animaciones de scroll
+        if ('IntersectionObserver' in window) {
+            initScrollAnimations();
+        }
+
+        console.log('✅ PRODIGY inicializado correctamente');
+    });
+
+    // ===== MANEJO DE ERRORES GLOBALES =====
+    window.addEventListener('error', function(e) {
+        console.error('❌ Error capturado:', e.message, e.filename, e.lineno);
+    });
+
+    // ===== MENSAJES DE BIENVENIDA EN CONSOLA =====
+    console.log('%c💎 PRODIGY', 'font-size: 24px; font-weight: bold; color: #D4AF37;');
+    console.log('%cDigital Dental Excellence', 'font-size: 14px; color: #86868b;');
+    console.log('%cDesarrollado con precisión quirúrgica', 'font-size: 12px; color: #FF6600;');
+
+})();

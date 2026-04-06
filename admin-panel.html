@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🦷 PRODIGY Admin - Detección Inteligente</title>
+    <title>🦷 PRODIGY Admin Panel - Gestión de Casos</title>
     <style>
         * {
             margin: 0;
@@ -20,13 +20,17 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .header {
             text-align: center;
             margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255,215,0,0.2);
         }
 
         .header h1 {
@@ -34,240 +38,386 @@
             background: linear-gradient(135deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 10px;
         }
 
+        .header p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            border-color: #FFD700;
+            background: rgba(255,215,0,0.1);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #0a0e1a;
+            border-color: #FFD700;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== CARDS ===== */
         .main-card {
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,215,0,0.2);
             border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
+            padding: 30px;
+            margin-bottom: 25px;
         }
 
+        .card-title {
+            color: #FFD700;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ===== CASOS EXISTENTES ===== */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .case-card {
+            background: rgba(0,0,0,0.4);
+            border: 2px solid rgba(255,215,0,0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .case-card:hover {
+            border-color: #FFD700;
+            transform: translateY(-5px);
+        }
+
+        .case-card-header {
+            background: rgba(255,215,0,0.1);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .case-card-id {
+            font-family: 'Courier New', monospace;
+            color: #FFD700;
+            font-weight: 700;
+        }
+
+        .case-card-badge {
+            background: #4caf50;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .case-card-body {
+            padding: 20px;
+        }
+
+        .case-card-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .case-card-info {
+            display: grid;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .case-card-info span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .case-card-actions {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-edit, .btn-delete {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: rgba(33,150,243,0.2);
+            color: #2196f3;
+            border: 1px solid #2196f3;
+        }
+
+        .btn-edit:hover {
+            background: #2196f3;
+            color: white;
+        }
+
+        .btn-delete {
+            background: rgba(244,67,54,0.2);
+            color: #f44336;
+            border: 1px solid #f44336;
+        }
+
+        .btn-delete:hover {
+            background: #f44336;
+            color: white;
+        }
+
+        /* ===== FORMULARIO NUEVO CASO ===== */
         .instructions-box {
             background: rgba(255,215,0,0.1);
             border: 2px solid rgba(255,215,0,0.5);
             border-radius: 15px;
             padding: 25px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .instructions-box h3 {
             color: #FFD700;
             margin-bottom: 15px;
-            font-size: 1.3rem;
         }
 
         .instructions-box ol {
             margin-left: 20px;
-            line-height: 1.8;
+            line-height: 2;
         }
 
-        .instructions-box li {
-            margin-bottom: 10px;
+        .instructions-box code {
+            background: rgba(0,0,0,0.4);
+            padding: 3px 8px;
+            border-radius: 5px;
+            color: #4caf50;
         }
 
-        .instructions-box strong {
-            color: #FFD700;
-        }
-
-        .upload-section {
+        .upload-grid {
             display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .upload-card {
             background: rgba(0,0,0,0.3);
-            border: 2px solid rgba(255,215,0,0.3);
+            border: 2px dashed rgba(255,215,0,0.3);
             border-radius: 15px;
             padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
         }
 
-        .upload-card h4 {
-            color: #FFD700;
+        .upload-card:hover {
+            border-color: #FFD700;
+            background: rgba(255,215,0,0.05);
+        }
+
+        .upload-card.success {
+            border-style: solid;
+            border-color: #4caf50;
+            background: rgba(76,175,80,0.1);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
             margin-bottom: 15px;
-            font-size: 1.1rem;
         }
 
-        .file-input-wrapper {
-            position: relative;
+        .upload-title {
+            color: #FFD700;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .upload-desc {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .upload-btn {
             display: inline-block;
-            width: 100%;
-        }
-
-        .file-input-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
+            padding: 12px 25px;
             background: linear-gradient(135deg, #FFD700, #FFA500);
             color: #0a0e1a;
             border: none;
             border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
-        .file-input-btn:hover {
+        .upload-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255,215,0,0.5);
+            box-shadow: 0 5px 20px rgba(255,215,0,0.4);
+        }
+
+        .upload-result {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(76,175,80,0.2);
+            border-radius: 8px;
+            color: #4caf50;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .upload-result.active {
+            display: block;
         }
 
         input[type="file"] {
             display: none;
         }
 
-        .file-preview {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(76,175,80,0.1);
-            border: 1px solid #4caf50;
-            border-radius: 10px;
-            display: none;
-        }
-
-        .file-preview.active {
-            display: block;
-        }
-
-        .file-preview-item {
-            color: #4caf50;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            padding: 5px 0;
-        }
-
-        .detected-files {
-            background: rgba(0,0,0,0.4);
-            border: 2px solid rgba(255,215,0,0.3);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 25px 0;
-            display: none;
-        }
-
-        .detected-files.active {
-            display: block;
-        }
-
-        .file-grid {
+        /* ===== FORM FIELDS ===== */
+        .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .file-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,215,0,0.2);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .file-card.success {
-            border-color: #4caf50;
-            background: rgba(76,175,80,0.1);
-        }
-
-        .file-card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .file-card-title {
-            font-weight: 600;
-            color: #FFD700;
-            margin-bottom: 8px;
-        }
-
-        .file-card-value {
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            opacity: 0.8;
-            word-break: break-all;
-        }
-
-        .gallery-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 15px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            padding: 15px;
-        }
-
-        .gallery-item {
-            padding: 5px 10px;
-            margin: 3px 0;
-            background: rgba(255,255,255,0.05);
-            border-radius: 5px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-        }
-
-        .form-section {
-            margin-top: 30px;
-            display: none;
-        }
-
-        .form-section.active {
-            display: block;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
             color: #FFD700;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
-        input, textarea, select {
-            width: 100%;
-            padding: 15px;
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 14px 18px;
             background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,215,0,0.3);
+            border: 2px solid rgba(255,215,0,0.2);
             border-radius: 10px;
             color: white;
             font-size: 1rem;
+            transition: all 0.3s;
         }
 
-        input:focus, textarea:focus, select:focus {
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: #FFD700;
-            box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+            box-shadow: 0 0 15px rgba(255,215,0,0.2);
         }
 
-        textarea {
-            resize: vertical;
+        .form-group textarea {
             min-height: 100px;
+            resize: vertical;
         }
 
+        .form-group select option {
+            background: #1a1a2e;
+        }
+
+        .form-full {
+            grid-column: 1 / -1;
+        }
+
+        /* ===== BUTTONS ===== */
         .btn-primary {
+            display: block;
             width: 100%;
-            padding: 18px 40px;
+            padding: 18px;
             background: linear-gradient(135deg, #FFD700, #FFA500);
             color: #0a0e1a;
             border: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+            margin-top: 30px;
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(255,215,0,0.6);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.4);
         }
 
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: transparent;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,215,0,0.1);
+        }
+
+        /* ===== OUTPUT ===== */
         .output-section {
             display: none;
             margin-top: 30px;
@@ -278,40 +428,51 @@
         }
 
         .output-box {
-            background: #1e1e1e;
-            border: 2px solid #FFD700;
+            background: #0d1117;
+            border: 2px solid rgba(255,215,0,0.3);
             border-radius: 15px;
-            padding: 30px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            max-height: 600px;
-            overflow-y: auto;
+            padding: 20px;
             position: relative;
-            color: #d4d4d4;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .output-box pre {
+            color: #e6edf3;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
         }
 
         .copy-btn {
             position: absolute;
             top: 15px;
             right: 15px;
-            padding: 10px 25px;
+            padding: 10px 20px;
             background: #FFD700;
             color: #0a0e1a;
             border: none;
-            border-radius: 20px;
-            cursor: pointer;
+            border-radius: 8px;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
         }
 
         .success-msg {
-            background: rgba(76, 175, 80, 0.2);
-            border: 2px solid #4caf50;
-            color: #4caf50;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
             margin-top: 20px;
+            padding: 20px;
+            background: rgba(76,175,80,0.2);
+            border: 2px solid #4caf50;
+            border-radius: 12px;
+            color: #4caf50;
+            text-align: center;
+            font-weight: 600;
             display: none;
         }
 
@@ -319,11 +480,100 @@
             display: block;
         }
 
-        code {
-            background: rgba(0,0,0,0.5);
-            padding: 2px 8px;
-            border-radius: 5px;
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background: #45a049;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== GALLERY PREVIEW ===== */
+        .gallery-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+
+        .gallery-item {
+            background: rgba(255,255,255,0.1);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #4caf50;
+            text-align: center;
+            word-break: break-all;
+        }
+
+        /* ===== STATS ===== */
+        .stats-bar {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255,215,0,0.1);
+            border-radius: 12px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 900;
             color: #FFD700;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -331,248 +581,550 @@
     <div class="container">
         <div class="header">
             <h1>🦷 PRODIGY Admin Panel</h1>
-            <p style="opacity: 0.8; font-size: 1.1rem;">The Art of Digital Excellence</p>
+            <p>Gestión de Casos Clínicos del Portafolio</p>
         </div>
 
-        <div class="main-card">
-            <div class="instructions-box">
-                <h3>📋 Instrucciones Paso a Paso:</h3>
-                <ol>
-                    <li><strong>Paso 1:</strong> Escribe el nombre de tu carpeta (ej: patient-002)</li>
-                    <li><strong>Paso 2:</strong> Selecciona UNA imagen de portada</li>
-                    <li><strong>Paso 3:</strong> Selecciona el archivo HTML de Exocad</li>
-                    <li><strong>Paso 4:</strong> Selecciona TODAS las imágenes de la galería (mantén Ctrl/Cmd para seleccionar múltiples)</li>
-                    <li><strong>Paso 5:</strong> Llena el formulario y genera el código</li>
-                </ol>
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('existing')">📁 Casos Existentes</button>
+            <button class="tab-btn" onclick="showTab('new')">➕ Agregar Nuevo Caso</button>
+            <button class="tab-btn" onclick="showTab('generate')">📄 Generar JS Completo</button>
+        </div>
+
+        <!-- TAB 1: CASOS EXISTENTES -->
+        <div id="tab-existing" class="tab-content active">
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalCases">0</span>
+                    <span class="stat-label">Casos<br>Totales</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="totalImages">0</span>
+                    <span class="stat-label">Imágenes<br>en Galerías</span>
+                </div>
             </div>
 
-            <div class="upload-section">
-                <div class="upload-card">
-                    <h4>📁 Paso 1: Nombre de la Carpeta</h4>
-                    <input type="text" id="folderName" placeholder="patient-002" style="margin-top: 10px;">
+            <div class="main-card">
+                <h3 class="card-title">📋 Casos en el Sistema</h3>
+                <div class="cases-grid" id="casesGrid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: AGREGAR NUEVO CASO -->
+        <div id="tab-new" class="tab-content">
+            <div class="instructions-box">
+                <h3>📌 Instrucciones - Detección Automática por Ubicación</h3>
+                <ol>
+                    <li><strong>Paso 1:</strong> Escribe el nombre de la carpeta (ej: <code>patient-003</code>)</li>
+                    <li><strong>Paso 2:</strong> Selecciona la imagen de PORTADA (la que está junto al HTML)</li>
+                    <li><strong>Paso 3:</strong> Selecciona el archivo HTML de Exocad</li>
+                    <li><strong>Paso 4:</strong> Selecciona TODAS las imágenes de la carpeta <code>gallery/</code></li>
+                    <li><strong>Paso 5:</strong> Completa los datos y genera el código</li>
+                </ol>
+                <p style="margin-top: 15px; color: #4caf50;">✅ Los archivos se detectan por ubicación, no necesitas renombrarlos</p>
+            </div>
+
+            <div class="main-card">
+                <h3 class="card-title">📁 Archivos del Caso</h3>
+                
+                <div class="form-group" style="margin-bottom: 25px;">
+                    <label>Nombre de la Carpeta *</label>
+                    <input type="text" id="folderName" placeholder="patient-003" style="max-width: 400px;">
+                    <small style="color: #888;">Debe coincidir exactamente con el nombre de la carpeta en /patients/</small>
                 </div>
 
-                <div class="upload-card">
-                    <h4>🖼️ Paso 2: Imagen de Portada</h4>
-                    <div class="file-input-wrapper">
-                        <button class="file-input-btn" onclick="document.getElementById('coverInput').click()">
+                <div class="upload-grid">
+                    <div class="upload-card" id="coverCard">
+                        <div class="upload-icon">🖼️</div>
+                        <div class="upload-title">Imagen de Portada</div>
+                        <div class="upload-desc">La imagen que está junto al HTML</div>
+                        <button class="upload-btn" onclick="document.getElementById('coverInput').click()">
                             Seleccionar Imagen
                         </button>
                         <input type="file" id="coverInput" accept="image/*">
+                        <div class="upload-result" id="coverResult"></div>
                     </div>
-                    <div class="file-preview" id="coverPreview"></div>
-                </div>
 
-                <div class="upload-card">
-                    <h4>📊 Paso 3: Archivo HTML de Exocad</h4>
-                    <div class="file-input-wrapper">
-                        <button class="file-input-btn" onclick="document.getElementById('exocadInput').click()">
+                    <div class="upload-card" id="exocadCard">
+                        <div class="upload-icon">📊</div>
+                        <div class="upload-title">Archivo Exocad</div>
+                        <div class="upload-desc">El archivo .html del visor 3D</div>
+                        <button class="upload-btn" onclick="document.getElementById('exocadInput').click()">
                             Seleccionar HTML
                         </button>
-                        <input type="file" id="exocadInput" accept=".html">
+                        <input type="file" id="exocadInput" accept=".html,.htm">
+                        <div class="upload-result" id="exocadResult"></div>
                     </div>
-                    <div class="file-preview" id="exocadPreview"></div>
-                </div>
 
-                <div class="upload-card">
-                    <h4>📸 Paso 4: Imágenes de Galería</h4>
-                    <p style="opacity: 0.7; margin-bottom: 10px; font-size: 0.9rem;">Mantén Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples imágenes</p>
-                    <div class="file-input-wrapper">
-                        <button class="file-input-btn" onclick="document.getElementById('galleryInput').click()">
+                    <div class="upload-card" id="galleryCard">
+                        <div class="upload-icon">📸</div>
+                        <div class="upload-title">Galería de Imágenes</div>
+                        <div class="upload-desc">Todas las imágenes de /gallery/</div>
+                        <button class="upload-btn" onclick="document.getElementById('galleryInput').click()">
                             Seleccionar Imágenes
                         </button>
                         <input type="file" id="galleryInput" accept="image/*" multiple>
+                        <div class="upload-result" id="galleryResult"></div>
+                        <div class="gallery-preview" id="galleryPreview"></div>
                     </div>
-                    <div class="file-preview" id="galleryPreview"></div>
                 </div>
             </div>
 
-            <div class="detected-files" id="detectedFiles">
-                <h3 style="color: #FFD700; margin-bottom: 20px;">✅ Archivos Listos</h3>
-                <div class="file-grid" id="fileGrid"></div>
-            </div>
-
-            <div class="form-section" id="formSection">
-                <form id="caseForm">
+            <div class="main-card">
+                <h3 class="card-title">📝 Información del Caso</h3>
+                
+                <div class="form-grid">
                     <div class="form-group">
                         <label>Nombre del Caso *</label>
-                        <input type="text" id="caseName" placeholder="Rehabilitación Full Arch Superior" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Código del Caso *</label>
-                        <input type="text" id="caseCode" placeholder="CASO-002" required>
+                        <input type="text" id="caseName" placeholder="Rehabilitación Full Arch Superior">
                     </div>
 
                     <div class="form-group">
                         <label>Tipo de Tratamiento *</label>
-                        <select id="caseType" required>
+                        <select id="caseType">
                             <option value="">-- Selecciona --</option>
                             <option value="rehabilitacion">🔬 Rehabilitación</option>
                             <option value="implantes">⚙️ Implantes</option>
                             <option value="estetica">✨ Estética</option>
                             <option value="ferulas">🛡️ Férulas</option>
                             <option value="ortodoncia">📐 Ortodoncia</option>
+                            <option value="coronas">👑 Coronas</option>
+                            <option value="carillas">💎 Carillas</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Fecha *</label>
-                        <input type="text" id="caseDate" placeholder="Enero 2025" required>
+                        <input type="text" id="caseDate" placeholder="Febrero 2025">
                     </div>
 
                     <div class="form-group">
+                        <label>Link de Google Drive (opcional)</label>
+                        <input type="text" id="driveLink" placeholder="https://drive.google.com/...">
+                    </div>
+
+                    <div class="form-group form-full">
                         <label>Descripción *</label>
-                        <textarea id="caseDescription" placeholder="Descripción detallada del caso clínico..." required></textarea>
+                        <textarea id="caseDescription" placeholder="Descripción detallada del caso clínico..."></textarea>
                     </div>
-
-                    <div class="form-group">
-                        <label>Link de Google Drive *</label>
-                        <input type="text" id="driveLink" placeholder="https://drive.google.com/file/d/..." required>
-                    </div>
-
-                    <button type="submit" class="btn-primary">
-                        ✨ Generar y Copiar JSON
-                    </button>
-                </form>
-            </div>
-
-            <div id="outputSection" class="output-section">
-                <h2 style="color: #FFD700; margin-bottom: 20px;">📋 Código JSON Generado</h2>
-                <div class="output-box">
-                    <button class="copy-btn" onclick="copyCode()">📋 Copiar</button>
-                    <pre id="generatedCode"></pre>
                 </div>
-                <div id="successMsg" class="success-msg">
-                    ✅ ¡Código copiado! Pégalo en <code>js/patients-data.js</code>
+
+                <button class="btn-primary" id="addCaseBtn" onclick="addNewCase()">
+                    ➕ Agregar Caso al Sistema
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 3: GENERAR JS COMPLETO -->
+        <div id="tab-generate" class="tab-content">
+            <div class="main-card">
+                <h3 class="card-title">📄 Generar Archivo patients-data.js</h3>
+                <p style="color: #888; margin-bottom: 20px;">
+                    Este botón generará el archivo completo con TODOS los casos del sistema.
+                    Copia el código y reemplaza tu archivo <code>patients-data.js</code>
+                </p>
+
+                <button class="btn-primary" onclick="generateFullJS()">
+                    🔄 Generar patients-data.js Completo
+                </button>
+
+                <div class="output-section" id="outputSection">
+                    <h3 style="color: #FFD700; margin: 30px 0 20px;">📋 Código Generado</h3>
+                    <div class="output-box">
+                        <button class="copy-btn" onclick="copyCode()">📋 Copiar</button>
+                        <pre id="generatedCode"></pre>
+                    </div>
+                    
+                    <div class="success-msg" id="successMsg">
+                        ✅ ¡Código copiado al portapapeles!<br>
+                        <small>Pégalo en tu archivo <code>patients-data.js</code></small>
+                    </div>
+
+                    <button class="btn-secondary" onclick="downloadJS()">
+                        💾 Descargar como Archivo
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        let detectedFiles = {
+        // =============================================
+        // BASE DE DATOS LOCAL (Cargar casos existentes)
+        // =============================================
+        let casesDatabase = [
+            {
+                id: "patient-001",
+                name: "Rehabilitación Full Arch Superior",
+                code: "CASO-001",
+                type: "rehabilitacion",
+                date: "Enero 2025",
+                description: "Rehabilitación completa de arcada superior con 14 unidades cerámicas sobre implantes.",
+                coverImage: "patients/patient-001/cover.jpeg",
+                exocadFile: "patients/patient-001/exocad.html",
+                driveLink: "https://drive.google.com/file/d/TU_ID_AQUI/view",
+                gallery: [
+                    "patients/patient-001/gallery/foto-1.jpeg",
+                    "patients/patient-001/gallery/foto-2.jpeg",
+                    "patients/patient-001/gallery/foto-3.jpeg",
+                    "patients/patient-001/gallery/foto-4.jpeg",
+                    "patients/patient-001/gallery/foto-5.jpeg",
+                    "patients/patient-001/gallery/foto-6.jpeg",
+                    "patients/patient-001/gallery/foto-7.jpeg",
+                    "patients/patient-001/gallery/foto-8.jpeg",
+                    "patients/patient-001/gallery/foto-9.jpeg"
+                ],
+                galleryCount: 9
+            },
+            {
+                id: "patient-002",
+                name: "Carillas Superior e Inferior",
+                code: "PATIENT-002",
+                type: "estetica",
+                date: "2025",
+                description: "Carillas estéticas completas superior e inferior.",
+                coverImage: "patients/patient-002/C.jpeg",
+                exocadFile: "patients/patient-002/felipe pinzon.html",
+                driveLink: null,
+                gallery: [
+                    "patients/patient-002/gallery/1.jpeg",
+                    "patients/patient-002/gallery/2.jpeg",
+                    "patients/patient-002/gallery/3.jpeg",
+                    "patients/patient-002/gallery/4.jpeg",
+                    "patients/patient-002/gallery/5.jpeg",
+                    "patients/patient-002/gallery/6.jpeg",
+                    "patients/patient-002/gallery/7.jpeg",
+                    "patients/patient-002/gallery/8.jpeg"
+                ],
+                galleryCount: 8
+            }
+        ];
+
+        // Variables para nuevo caso
+        let newCaseFiles = {
             folder: '',
             cover: null,
             exocad: null,
             gallery: []
         };
 
-        // Listeners
-        document.getElementById('folderName').addEventListener('input', updateDetection);
-        document.getElementById('coverInput').addEventListener('change', handleCover);
-        document.getElementById('exocadInput').addEventListener('change', handleExocad);
-        document.getElementById('galleryInput').addEventListener('change', handleGallery);
+        // =============================================
+        // TABS
+        // =============================================
+        function showTab(tabName) {
+            // Ocultar todos los tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
 
-        function handleCover(e) {
-            if (e.target.files[0]) {
-                detectedFiles.cover = e.target.files[0].name;
-                document.getElementById('coverPreview').innerHTML = `
-                    <div class="file-preview-item">✓ ${detectedFiles.cover}</div>
-                `;
-                document.getElementById('coverPreview').classList.add('active');
-                updateDetection();
+            // Mostrar tab seleccionado
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Actualizar contenido si es necesario
+            if (tabName === 'existing') {
+                renderCases();
             }
         }
 
-        function handleExocad(e) {
-            if (e.target.files[0]) {
-                detectedFiles.exocad = e.target.files[0].name;
-                document.getElementById('exocadPreview').innerHTML = `
-                    <div class="file-preview-item">✓ ${detectedFiles.exocad}</div>
-                `;
-                document.getElementById('exocadPreview').classList.add('active');
-                updateDetection();
-            }
-        }
+        // =============================================
+        // RENDERIZAR CASOS EXISTENTES
+        // =============================================
+        function renderCases() {
+            const grid = document.getElementById('casesGrid');
+            const totalCases = document.getElementById('totalCases');
+            const totalImages = document.getElementById('totalImages');
 
-        function handleGallery(e) {
-            detectedFiles.gallery = Array.from(e.target.files).map(f => f.name).sort();
-            document.getElementById('galleryPreview').innerHTML = `
-                <div class="file-preview-item">✓ ${detectedFiles.gallery.length} imágenes seleccionadas</div>
-                <div class="gallery-list">
-                    ${detectedFiles.gallery.map((img, i) => `
-                        <div class="gallery-item">${i + 1}. ${img}</div>
-                    `).join('')}
+            let imagesCount = 0;
+            casesDatabase.forEach(c => imagesCount += c.galleryCount);
+
+            totalCases.textContent = casesDatabase.length;
+            totalImages.textContent = imagesCount;
+
+            grid.innerHTML = casesDatabase.map((caseData, index) => `
+                <div class="case-card">
+                    <div class="case-card-header">
+                        <span class="case-card-id">${caseData.id}</span>
+                        <span class="case-card-badge">${caseData.type}</span>
+                    </div>
+                    <div class="case-card-body">
+                        <div class="case-card-name">${caseData.name}</div>
+                        <div class="case-card-info">
+                            <span>📅 ${caseData.date}</span>
+                            <span>🖼️ Portada: ${caseData.coverImage.split('/').pop()}</span>
+                            <span>📊 Exocad: ${caseData.exocadFile.split('/').pop()}</span>
+                            <span>📸 ${caseData.galleryCount} imágenes en galería</span>
+                        </div>
+                    </div>
+                    <div class="case-card-actions">
+                        <button class="btn-edit" onclick="editCase(${index})">✏️ Editar</button>
+                        <button class="btn-delete" onclick="deleteCase(${index})">🗑️ Eliminar</button>
+                    </div>
                 </div>
-            `;
-            document.getElementById('galleryPreview').classList.add('active');
-            updateDetection();
+            `).join('');
         }
 
-        function updateDetection() {
-            detectedFiles.folder = document.getElementById('folderName').value.trim();
-
-            const allReady = detectedFiles.folder && detectedFiles.cover && detectedFiles.exocad && detectedFiles.gallery.length > 0;
-
-            if (allReady) {
-                document.getElementById('fileGrid').innerHTML = `
-                    <div class="file-card success">
-                        <div class="file-card-icon">📁</div>
-                        <div class="file-card-title">Carpeta</div>
-                        <div class="file-card-value">${detectedFiles.folder}</div>
-                    </div>
-                    <div class="file-card success">
-                        <div class="file-card-icon">🖼️</div>
-                        <div class="file-card-title">Portada</div>
-                        <div class="file-card-value">${detectedFiles.cover}</div>
-                    </div>
-                    <div class="file-card success">
-                        <div class="file-card-icon">📊</div>
-                        <div class="file-card-title">Exocad</div>
-                        <div class="file-card-value">${detectedFiles.exocad}</div>
-                    </div>
-                    <div class="file-card success">
-                        <div class="file-card-icon">📸</div>
-                        <div class="file-card-title">Galería</div>
-                        <div class="file-card-value">${detectedFiles.gallery.length} imágenes</div>
-                    </div>
-                `;
-                document.getElementById('detectedFiles').classList.add('active');
-                document.getElementById('formSection').classList.add('active');
-                document.getElementById('caseCode').value = detectedFiles.folder.toUpperCase();
-            }
-        }
-
-        document.getElementById('caseForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            generateJSON();
+        // =============================================
+        // MANEJO DE ARCHIVOS
+        // =============================================
+        document.getElementById('folderName').addEventListener('input', function(e) {
+            newCaseFiles.folder = e.target.value.trim();
         });
 
-        function generateJSON() {
-            const name = document.getElementById('caseName').value;
-            const code = document.getElementById('caseCode').value;
+        document.getElementById('coverInput').addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                newCaseFiles.cover = e.target.files[0].name;
+                document.getElementById('coverResult').textContent = '✓ ' + newCaseFiles.cover;
+                document.getElementById('coverResult').classList.add('active');
+                document.getElementById('coverCard').classList.add('success');
+            }
+        });
+
+        document.getElementById('exocadInput').addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                newCaseFiles.exocad = e.target.files[0].name;
+                document.getElementById('exocadResult').textContent = '✓ ' + newCaseFiles.exocad;
+                document.getElementById('exocadResult').classList.add('active');
+                document.getElementById('exocadCard').classList.add('success');
+            }
+        });
+
+        document.getElementById('galleryInput').addEventListener('change', function(e) {
+            newCaseFiles.gallery = Array.from(e.target.files).map(f => f.name).sort((a, b) => {
+                // Ordenar numéricamente si los nombres son números
+                const numA = parseInt(a.match(/\d+/)?.[0] || 0);
+                const numB = parseInt(b.match(/\d+/)?.[0] || 0);
+                return numA - numB;
+            });
+            
+            document.getElementById('galleryResult').textContent = '✓ ' + newCaseFiles.gallery.length + ' imágenes';
+            document.getElementById('galleryResult').classList.add('active');
+            document.getElementById('galleryCard').classList.add('success');
+            
+            // Mostrar preview
+            document.getElementById('galleryPreview').innerHTML = newCaseFiles.gallery
+                .map((name, i) => `<div class="gallery-item">${i + 1}. ${name}</div>`)
+                .join('');
+        });
+
+        // =============================================
+        // AGREGAR NUEVO CASO
+        // =============================================
+        function addNewCase() {
+            // Validaciones
+            if (!newCaseFiles.folder) {
+                alert('❌ Ingresa el nombre de la carpeta');
+                return;
+            }
+            if (!newCaseFiles.cover) {
+                alert('❌ Selecciona la imagen de portada');
+                return;
+            }
+            if (!newCaseFiles.exocad) {
+                alert('❌ Selecciona el archivo HTML de Exocad');
+                return;
+            }
+            if (newCaseFiles.gallery.length === 0) {
+                alert('❌ Selecciona las imágenes de la galería');
+                return;
+            }
+
+            const name = document.getElementById('caseName').value.trim();
             const type = document.getElementById('caseType').value;
-            const date = document.getElementById('caseDate').value;
-            const description = document.getElementById('caseDescription').value;
-            const drive = document.getElementById('driveLink').value;
+            const date = document.getElementById('caseDate').value.trim();
+            const description = document.getElementById('caseDescription').value.trim();
+            const driveLink = document.getElementById('driveLink').value.trim();
 
-            const galleryArray = detectedFiles.gallery
-                .map(file => `            "patients/${detectedFiles.folder}/gallery/${file}"`)
-                .join(',\n');
+            if (!name || !type || !date || !description) {
+                alert('❌ Completa todos los campos obligatorios');
+                return;
+            }
 
-            const json = `,
-    {
-        id: "${detectedFiles.folder}",
-        name: "${name}",
-        code: "${code}",
-        type: "${type}",
-        date: "${date}",
-        description: "${description}",
+            // Crear objeto del caso
+            const newCase = {
+                id: newCaseFiles.folder,
+                name: name,
+                code: newCaseFiles.folder.toUpperCase(),
+                type: type,
+                date: date,
+                description: description,
+                coverImage: `patients/${newCaseFiles.folder}/${newCaseFiles.cover}`,
+                exocadFile: `patients/${newCaseFiles.folder}/${newCaseFiles.exocad}`,
+                driveLink: driveLink || null,
+                gallery: newCaseFiles.gallery.map(img => `patients/${newCaseFiles.folder}/gallery/${img}`),
+                galleryCount: newCaseFiles.gallery.length
+            };
+
+            // Verificar si ya existe
+            const existingIndex = casesDatabase.findIndex(c => c.id === newCase.id);
+            if (existingIndex !== -1) {
+                if (confirm(`⚠️ Ya existe un caso con ID "${newCase.id}". ¿Deseas reemplazarlo?`)) {
+                    casesDatabase[existingIndex] = newCase;
+                } else {
+                    return;
+                }
+            } else {
+                casesDatabase.push(newCase);
+            }
+
+            // Limpiar formulario
+            resetNewCaseForm();
+
+            // Cambiar a tab de casos existentes
+            alert('✅ Caso agregado correctamente!\n\nAhora ve a "Generar JS Completo" para obtener el código actualizado.');
+            document.querySelector('.tab-btn').click();
+        }
+
+        function resetNewCaseForm() {
+            newCaseFiles = { folder: '', cover: null, exocad: null, gallery: [] };
+            
+            document.getElementById('folderName').value = '';
+            document.getElementById('caseName').value = '';
+            document.getElementById('caseType').value = '';
+            document.getElementById('caseDate').value = '';
+            document.getElementById('caseDescription').value = '';
+            document.getElementById('driveLink').value = '';
+            
+            document.getElementById('coverInput').value = '';
+            document.getElementById('exocadInput').value = '';
+            document.getElementById('galleryInput').value = '';
+            
+            document.getElementById('coverResult').classList.remove('active');
+            document.getElementById('exocadResult').classList.remove('active');
+            document.getElementById('galleryResult').classList.remove('active');
+            
+            document.getElementById('coverCard').classList.remove('success');
+            document.getElementById('exocadCard').classList.remove('success');
+            document.getElementById('galleryCard').classList.remove('success');
+            
+            document.getElementById('galleryPreview').innerHTML = '';
+        }
+
+        // =============================================
+        // EDITAR CASO
+        // =============================================
+        function editCase(index) {
+            const caseData = casesDatabase[index];
+            
+            // Cambiar a tab de nuevo caso
+            document.querySelectorAll('.tab-btn')[1].click();
+            
+            // Llenar datos
+            document.getElementById('folderName').value = caseData.id;
+            document.getElementById('caseName').value = caseData.name;
+            document.getElementById('caseType').value = caseData.type;
+            document.getElementById('caseDate').value = caseData.date;
+            document.getElementById('caseDescription').value = caseData.description;
+            document.getElementById('driveLink').value = caseData.driveLink || '';
+            
+            // Simular archivos detectados
+            newCaseFiles.folder = caseData.id;
+            newCaseFiles.cover = caseData.coverImage.split('/').pop();
+            newCaseFiles.exocad = caseData.exocadFile.split('/').pop();
+            newCaseFiles.gallery = caseData.gallery.map(g => g.split('/').pop());
+            
+            // Mostrar como si estuvieran cargados
+            document.getElementById('coverResult').textContent = '✓ ' + newCaseFiles.cover;
+            document.getElementById('coverResult').classList.add('active');
+            document.getElementById('coverCard').classList.add('success');
+            
+            document.getElementById('exocadResult').textContent = '✓ ' + newCaseFiles.exocad;
+            document.getElementById('exocadResult').classList.add('active');
+            document.getElementById('exocadCard').classList.add('success');
+            
+            document.getElementById('galleryResult').textContent = '✓ ' + newCaseFiles.gallery.length + ' imágenes';
+            document.getElementById('galleryResult').classList.add('active');
+            document.getElementById('galleryCard').classList.add('success');
+            
+            document.getElementById('galleryPreview').innerHTML = newCaseFiles.gallery
+                .map((name, i) => `<div class="gallery-item">${i + 1}. ${name}</div>`)
+                .join('');
+
+            alert('📝 Modo edición activado.\n\nModifica los datos y haz clic en "Agregar Caso" para guardar los cambios.');
+        }
+
+        // =============================================
+        // ELIMINAR CASO
+        // =============================================
+        function deleteCase(index) {
+            const caseData = casesDatabase[index];
+            if (confirm(`⚠️ ¿Estás seguro de eliminar "${caseData.name}"?\n\nEsta acción no se puede deshacer.`)) {
+                casesDatabase.splice(index, 1);
+                renderCases();
+                alert('✅ Caso eliminado.\n\nRecuerda generar el JS completo para aplicar los cambios.');
+            }
+        }
+
+        // =============================================
+        // GENERAR JS COMPLETO
+        // =============================================
+        function generateFullJS() {
+            const casesJSON = casesDatabase.map(c => {
+                const galleryStr = c.gallery.map(g => `            "${g}"`).join(',\n');
+                return `    {
+        id: "${c.id}",
+        name: "${c.name}",
+        code: "${c.code}",
+        type: "${c.type}",
+        date: "${c.date}",
+        description: "${c.description}",
         
-        coverImage: "patients/${detectedFiles.folder}/${detectedFiles.cover}",
-        exocadFile: "patients/${detectedFiles.folder}/${detectedFiles.exocad}",
-        driveLink: "${drive}",
+        coverImage: "${c.coverImage}",
+        exocadFile: "${c.exocadFile}",
+        driveLink: ${c.driveLink ? `"${c.driveLink}"` : 'null'},
         
         gallery: [
-${galleryArray}
+${galleryStr}
         ],
-        galleryCount: ${detectedFiles.gallery.length}
+        galleryCount: ${c.galleryCount}
     }`;
+            }).join(',\n');
 
-            document.getElementById('generatedCode').textContent = json;
+            const fullJS = `// =============================================
+// PRODIGY - BASE DE DATOS DE CASOS CLÍNICOS
+// Generado automáticamente: ${new Date().toLocaleString('es-CO')}
+// Total de casos: ${casesDatabase.length}
+// =============================================
+
+const PATIENTS_DATA = [
+${casesJSON}
+];
+
+// ===== FUNCIONES AUXILIARES =====
+function getPatientById(patientId) {
+    return PATIENTS_DATA.find(patient => patient.id === patientId) || null;
+}
+
+function filterPatientsByType(type) {
+    if (!type) return PATIENTS_DATA;
+    return PATIENTS_DATA.filter(patient => patient.type === type);
+}
+
+function getAllCaseTypes() {
+    return [...new Set(PATIENTS_DATA.map(patient => patient.type))];
+}
+
+// Exportar para uso global
+if (typeof window !== 'undefined') {
+    window.PATIENTS_DATA = PATIENTS_DATA;
+    window.getPatientById = getPatientById;
+    window.filterPatientsByType = filterPatientsByType;
+    window.getAllCaseTypes = getAllCaseTypes;
+}
+
+// Log de verificación
+console.log('✅ PATIENTS_DATA cargado:', PATIENTS_DATA.length, 'casos');
+`;
+
+            document.getElementById('generatedCode').textContent = fullJS;
             document.getElementById('outputSection').classList.add('active');
-            copyCode();
+            
+            // Scroll al output
             document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -586,6 +1138,26 @@ ${galleryArray}
                 }, 3000);
             });
         }
+
+        function downloadJS() {
+            const code = document.getElementById('generatedCode').textContent;
+            const blob = new Blob([code], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'patients-data.js';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // =============================================
+        // INICIALIZACIÓN
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCases();
+        });
     </script>
 </body>
 </html>

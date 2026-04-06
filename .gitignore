@@ -1,0 +1,55 @@
+# ============================================================
+# PRODIGY — .gitignore
+# Archivos que NUNCA deben subirse a GitHub
+# ============================================================
+
+# ---- Credenciales y datos sensibles ----
+*.env
+.env.*
+*.key
+*.pem
+*.p12
+secrets.js
+config.js
+
+# ---- QR de pagos y archivos personales ----
+qr nequi*.jpeg
+qr nequi*.jpg
+*.qr.*
+
+# ---- Base de datos / esquemas (mover a carpeta privada antes de producción) ----
+ESQUEMA_SUPABASE_PRODIGY.sql
+PRODIGY_SCHEMA_SUPABASE.sql
+
+# ---- Panel de administración y carga (proteger antes de producción) ----
+admin-panel.html
+agregar-caso.html
+
+# ---- Archivos temporales y de desarrollo interno ----
+temporal/
+*.tmp
+*.bak
+*BACKUP*
+*- copia*
+*- COPIA*
+
+# ---- Google Drive sync temp files ----
+.tmp.driveupload/
+.tmp.drivedownload/
+
+# ---- Configuración local de Claude ----
+.claude/
+
+# ---- Node.js ----
+node_modules/
+npm-debug.log*
+
+# ---- Sistema operativo ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Archivos de IDE ----
+.vscode/settings.json
+*.suo
+*.user

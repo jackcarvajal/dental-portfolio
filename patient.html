@@ -3,115 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Caso Dental | PRODIGY</title>
+    <title>Detalle del Caso | PRODIGY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.css">
     <style>
-        /* Estilos del logo */
-        .logo-img {
-            height: 45px;
-            width: auto;
+        /* =============================================
+           VARIABLES Y BASE
+           ============================================= */
+        :root {
+            --luxury-gold: #D4AF37;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --bg-dark: #0a0e1a;
+            --bg-card: #1c1c1e;
+            --border-gold: rgba(212, 175, 55, 0.3);
         }
 
-        .nav-back {
-            display: flex;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* =============================================
+           BOTÓN DE REGRESO
+           ============================================= */
+        .back-btn {
+            color: var(--luxury-gold);
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
             align-items: center;
             gap: 10px;
-            color: var(--soft-white);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .nav-back:hover {
-            color: var(--exocad-orange);
-        }
-
-        /* Sistema de comentarios */
-        .comments-section {
-            margin-top: 60px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-subtle);
-            border-radius: 20px;
-            padding: 40px;
-        }
-
-        .comments-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 30px;
+            transition: all 0.3s;
+            font-size: 16px;
         }
 
-        .comments-title {
-            font-size: 1.8rem;
-            color: var(--exocad-orange);
+        .back-btn:hover {
+            transform: translateX(-5px);
+            color: #FDB931;
         }
 
-        .comments-count {
-            color: rgba(248,250,252,0.6);
+        /* =============================================
+           HEADER DEL PACIENTE
+           ============================================= */
+        .patient-header {
+            background: linear-gradient(135deg, rgba(212,175,55,0.12), rgba(255,102,0,0.08));
+            border: 1px solid var(--border-gold);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .patient-header h1 {
+            font-size: 2rem;
+            color: var(--luxury-gold);
+            margin-bottom: 10px;
+            font-weight: 900;
+        }
+
+        .patient-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .patient-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
             font-size: 0.9rem;
         }
 
-        .comment-form {
-            background: rgba(255,107,53,0.05);
-            border: 1px solid var(--border-subtle);
+        .meta-item strong {
+            color: var(--luxury-gold);
+        }
+
+        /* =============================================
+           VISOR EXOCAD
+           ============================================= */
+        .viewer-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            color: var(--luxury-gold);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .viewer-container {
+            width: 100%;
+            min-height: 500px;
+            height: 600px;
+            border: 2px solid var(--luxury-gold);
+            border-radius: 20px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .viewer-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .no-viewer {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1f35 0%, #0a0e1a 100%);
+        }
+
+        .no-viewer i {
+            font-size: 5rem;
+            color: var(--luxury-gold);
+            opacity: 0.3;
+            margin-bottom: 20px;
+        }
+
+        .no-viewer h3 {
+            color: var(--luxury-gold);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .no-viewer p {
+            color: var(--text-secondary);
+        }
+
+        /* =============================================
+           GALERÍA DE IMÁGENES
+           ============================================= */
+        .gallery-section {
+            margin-bottom: 50px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 200px;
             border-radius: 15px;
-            padding: 25px;
+            overflow: hidden;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--bg-card);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: var(--luxury-gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e2433 0%, #0a0e1a 100%);
+        }
+
+        .gallery-placeholder i {
+            font-size: 2.5rem;
+            color: var(--luxury-gold);
+            opacity: 0.3;
+            margin-bottom: 10px;
+        }
+
+        .gallery-placeholder p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            color: rgba(255, 215, 0, 0.08);
+            font-weight: 900;
+            font-size: 1.2rem;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* =============================================
+           MÓDULO DE FEEDBACK CLÍNICO
+           ============================================= */
+        .feedback-section {
+            background: #111111;
+            border: 2px solid var(--border-gold);
+            border-radius: 24px;
+            padding: 50px 40px;
+            margin-bottom: 60px;
+        }
+
+        .feedback-section h2 {
+            color: var(--luxury-gold);
+            font-size: 2rem;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Reacciones */
+        .reactions-container {
+            margin-bottom: 50px;
+        }
+
+        .reactions-title {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .reactions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .reaction-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 25px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .reaction-btn:hover {
+            transform: translateY(-5px);
+            border-color: var(--luxury-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* Estado activo con brillo dorado */
+        .reaction-btn.active {
+            background: linear-gradient(135deg, rgba(212,175,55,0.25), rgba(255,102,0,0.2));
+            border-color: var(--luxury-gold);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #D4AF37;  /* Brillo dorado requerido */
+            animation: reactionPulse 0.3s ease;
+        }
+
+        @keyframes reactionPulse {
+            0%, 100% { transform: scale(1.05); }
+            50% { transform: scale(1.1); }
+        }
+
+        .reaction-emoji {
+            font-size: 2.5rem;
+            filter: grayscale(100%);
+            transition: all 0.3s;
+        }
+
+        .reaction-btn:hover .reaction-emoji,
+        .reaction-btn.active .reaction-emoji {
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+
+        /* Efecto especial para el diamante */
+        .reaction-btn[data-reaction="perfeccion"] .reaction-emoji {
+            animation: diamondShine 2s ease-in-out infinite;
+        }
+
+        @keyframes diamondShine {
+            0%, 100% { filter: grayscale(100%) brightness(1); }
+            50% { filter: grayscale(0%) brightness(1.3); }
+        }
+
+        .reaction-btn[data-reaction="perfeccion"].active .reaction-emoji {
+            animation: diamondShineActive 1s ease-in-out infinite;
+        }
+
+        @keyframes diamondShineActive {
+            0%, 100% { transform: scale(1.1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(5deg); }
+        }
+
+        .reaction-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .reaction-btn.active .reaction-label {
+            color: var(--luxury-gold);
+            font-weight: 700;
+        }
+
+        /* Comentarios */
+        .comments-container {
+            margin-top: 40px;
+        }
+
+        .comments-title {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .comment-form {
             margin-bottom: 30px;
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: rgba(248,250,252,0.8);
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group textarea {
+        .comment-textarea {
             width: 100%;
-            padding: 12px 15px;
-            background: var(--charcoal);
-            border: 1px solid var(--border-subtle);
-            border-radius: 10px;
-            color: var(--soft-white);
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
             font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--exocad-orange);
-            box-shadow: 0 0 0 3px rgba(255,107,53,0.1);
-        }
-
-        .form-group textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 120px;
+            transition: all 0.3s;
         }
 
-        .btn-submit-comment {
-            padding: 12px 30px;
-            background: linear-gradient(135deg, var(--exocad-orange), var(--exocad-gold));
-            color: white;
+        .comment-textarea:focus {
+            outline: none;
+            border-color: var(--luxury-gold);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .comment-textarea::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .publish-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #F4C430 100%);
+            color: #000;
             border: none;
+            padding: 15px 40px;
             border-radius: 50px;
-            font-weight: 600;
+            font-weight: 900;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .btn-submit-comment:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255,107,53,0.4);
+        .publish-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
         }
 
+        .publish-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Lista de comentarios */
         .comments-list {
             display: flex;
             flex-direction: column;
@@ -119,15 +423,22 @@
         }
 
         .comment-item {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border-subtle);
-            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 12px;
             padding: 20px;
-            transition: all 0.3s ease;
+            animation: fadeIn 0.3s ease;
         }
 
-        .comment-item:hover {
-            border-color: rgba(255,107,53,0.3);
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .comment-header {
@@ -138,434 +449,941 @@
         }
 
         .comment-author {
-            font-weight: 600;
-            color: var(--exocad-orange);
+            color: var(--luxury-gold);
+            font-weight: 700;
+            font-size: 0.95rem;
         }
 
         .comment-date {
+            color: var(--text-secondary);
             font-size: 0.85rem;
-            color: rgba(248,250,252,0.5);
         }
 
         .comment-text {
-            color: rgba(248,250,252,0.8);
+            color: var(--text-primary);
             line-height: 1.6;
+            font-size: 1rem;
         }
 
         .no-comments {
             text-align: center;
+            color: var(--text-secondary);
             padding: 40px;
-            color: rgba(248,250,252,0.5);
+            font-size: 1rem;
         }
 
-        .no-comments-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-
-        /* Botón WhatsApp STL flotante */
-        .whatsapp-stl-float {
+        /* =============================================
+           LIGHTBOX CON CARRUSEL
+           ============================================= */
+        #lightbox {
+            display: none;
             position: fixed;
-            bottom: 100px;
-            right: 30px;
-            z-index: 998;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn-whatsapp-stl {
+        #lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 15px 25px;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            text-decoration: none;
+            justify-content: center;
+        }
+
+        #lightbox-img {
+            max-width: 100%;
+            max-height: 85vh;
+            border: 3px solid var(--luxury-gold);
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.4);
+            border-radius: 10px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: var(--luxury-gold);
+            font-size: 3rem;
+            cursor: pointer;
+            z-index: 10001;
+            transition: all 0.3s;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--luxury-gold);
+            border: 2px solid var(--luxury-gold);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            z-index: 10001;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--luxury-gold);
+            color: #000;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        .lightbox-counter {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--luxury-gold);
+            padding: 10px 25px;
             border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
-            transition: all 0.3s ease;
+            font-weight: 700;
+            border: 2px solid var(--luxury-gold);
+            z-index: 10001;
         }
 
-        .btn-whatsapp-stl:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6);
+        .lightbox-watermark {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--luxury-gold);
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 10001;
         }
 
+        /* =============================================
+           FOOTER CORPORATIVO
+           ============================================= */
+        .footer {
+            background: #000000;
+            width: 100%;
+            padding: 80px 0 30px;
+            border-top: 2px solid var(--luxury-gold);
+            margin-top: 60px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .footer-col h4 {
+            color: var(--luxury-gold);
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col li {
+            padding: 8px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .footer-col a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: var(--luxury-gold);
+        }
+
+        .footer-copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        /* =============================================
+           ERROR MESSAGE
+           ============================================= */
+        .error-message {
+            background: linear-gradient(135deg, rgba(255, 67, 54, 0.1), rgba(244, 67, 54, 0.05));
+            border: 2px solid rgba(255, 67, 54, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .error-message i {
+            font-size: 4rem;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        .error-message h2 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+
+        .error-message p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* =============================================
+           RESPONSIVE
+           ============================================= */
         @media (max-width: 768px) {
-            .comments-section {
-                padding: 25px 20px;
+            body {
+                padding: 15px;
             }
 
-            .whatsapp-stl-float {
-                bottom: 80px;
-                right: 20px;
+            .patient-header h1 {
+                font-size: 1.5rem;
             }
 
-            .btn-whatsapp-stl span {
-                display: none;
+            .viewer-container {
+                min-height: 350px;
+                height: 400px;
             }
 
-            .btn-whatsapp-stl {
-                width: 60px;
-                height: 60px;
-                padding: 0;
-                justify-content: center;
-                border-radius: 50%;
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .gallery-item {
+                height: 150px;
+            }
+
+            .feedback-section {
+                padding: 30px 20px;
+            }
+
+            .reactions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .reaction-emoji {
+                font-size: 2rem;
+            }
+
+            .lightbox-nav {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .lightbox-prev {
+                left: 10px;
+            }
+
+            .lightbox-next {
+                right: 10px;
+            }
+
+            .lightbox-close {
+                top: 10px;
+                right: 10px;
+                font-size: 2rem;
+                width: 40px;
+                height: 40px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
         }
     </style>
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="patient-navbar" style="position: fixed; top: 0; left: 0; right: 0; background: rgba(10,14,26,0.98); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-subtle); z-index: 1000; padding: 20px 40px;">
-        <div class="patient-nav-content" style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-            <a href="index.html" class="nav-back">
-                <img src="images/logo-prodigy.png" alt="PRODIGY Logo" class="logo-img">
-                <span>Volver al Portfolio</span>
-            </a>
-            <div class="nav-info" id="navInfo" style="display: flex; align-items: center; gap: 15px; color: rgba(248,250,252,0.7);"></div>
-        </div>
-    </nav>
+<body oncontextmenu="return false;">
 
-    <!-- Botón flotante WhatsApp STL -->
-    <div class="whatsapp-stl-float">
-        <a href="https://wa.me/573219581949?text=Hola,%20quiero%20enviar%20un%20archivo%20STL%20para%20diseño" 
-           class="btn-whatsapp-stl" target="_blank">
-            <i class="fab fa-whatsapp"></i>
-            <span>Enviar Caso STL</span>
+    <div class="container">
+        <!-- BOTÓN DE REGRESO -->
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> VOLVER AL PORTAFOLIO
         </a>
+
+        <!-- CONTENIDO DINÁMICO -->
+        <div id="patient-content"></div>
+
+        <!-- MÓDULO DE FEEDBACK CLÍNICO -->
+        <div id="feedback-section" class="feedback-section" style="display:none;">
+            <h2>💬 Feedback Clínico</h2>
+            
+            <!-- REACCIONES -->
+            <div class="reactions-container">
+                <h3 class="reactions-title">¿Qué te pareció este diseño?</h3>
+                <div class="reactions-grid">
+                    <div class="reaction-btn" data-reaction="aprobado">
+                        <span class="reaction-emoji">👍</span>
+                        <span class="reaction-label">Aprobado</span>
+                    </div>
+                    <div class="reaction-btn" data-reaction="encanta">
+                        <span class="reaction-emoji">❤️</span>
+                        <span class="reaction-label">Me Encanta</span>
+                    </div>
+                    <div class="reaction-btn" data-reaction="impecable">
+                        <span class="reaction-emoji">🔥</span>
+                        <span class="reaction-label">Impecable</span>
+                    </div>
+                    <div class="reaction-btn" data-reaction="anatomia">
+                        <span class="reaction-emoji">🦷</span>
+                        <span class="reaction-label">Anatomía Top</span>
+                    </div>
+                    <div class="reaction-btn" data-reaction="perfeccion">
+                        <span class="reaction-emoji">💎</span>
+                        <span class="reaction-label">Perfección</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMENTARIOS -->
+            <div class="comments-container">
+                <h3 class="comments-title">Notas Clínicas</h3>
+                <div class="comment-form">
+                    <textarea 
+                        id="comment-textarea" 
+                        class="comment-textarea" 
+                        placeholder="Agregar nota clínica (ej: ajustes en oclusión, cambios en color, etc.)..."></textarea>
+                    <button id="publish-btn" class="publish-btn">
+                        <i class="fas fa-paper-plane"></i> Publicar Nota
+                    </button>
+                </div>
+                <div id="comments-list" class="comments-list"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- Header -->
-    <header class="patient-header" id="patientHeader" style="background: var(--soft-charcoal); padding: 60px 40px; margin-top: 70px; border-bottom: 1px solid var(--border-subtle);"></header>
-
-    <!-- Main Content -->
-    <main class="patient-main" style="padding: 60px 40px; max-width: 1400px; margin: 0 auto;">
-        <!-- Tabs -->
-        <div class="tabs" style="display: flex; gap: 15px; margin-bottom: 40px; border-bottom: 2px solid var(--border-subtle); flex-wrap: wrap;">
-            <button class="tab-btn active" onclick="switchTab('viewer')" style="padding: 15px 30px; background: transparent; border: none; color: rgba(248,250,252,0.6); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border-bottom: 3px solid transparent; margin-bottom: -2px;">
-                <i class="fas fa-cube"></i> Visualizador 3D
-            </button>
-            <button class="tab-btn" onclick="switchTab('gallery')" style="padding: 15px 30px; background: transparent; border: none; color: rgba(248,250,252,0.6); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border-bottom: 3px solid transparent; margin-bottom: -2px;">
-                <i class="fas fa-images"></i> Galería de Imágenes
-            </button>
-            <button class="tab-btn" onclick="switchTab('info')" style="padding: 15px 30px; background: transparent; border: none; color: rgba(248,250,252,0.6); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border-bottom: 3px solid transparent; margin-bottom: -2px;">
-                <i class="fas fa-info-circle"></i> Información del Caso
-            </button>
+    <!-- LIGHTBOX CON CARRUSEL -->
+    <div id="lightbox">
+        <div class="lightbox-close" onclick="closeLightbox()">
+            <i class="fas fa-times"></i>
         </div>
+        <div class="lightbox-nav lightbox-prev" onclick="prevImage()">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Imagen">
+        </div>
+        <div class="lightbox-nav lightbox-next" onclick="nextImage()">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="lightbox-counter" id="lightbox-counter">1 / 1</div>
+        <div class="lightbox-watermark">© PRODIGY - Contenido Protegido</div>
+    </div>
 
-        <!-- Tab: Visualizador -->
-        <div id="tab-viewer" class="tab-content active" style="display: block;">
-            <div class="viewer-box" style="background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 20px; overflow: hidden;">
-                <div class="viewer-header" style="padding: 25px 30px; background: rgba(255,107,53,0.05); border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                    <h2 class="viewer-title" style="font-size: 1.5rem; margin: 0;">Visualizador Exocad Interactivo</h2>
-                    <button class="btn-fullscreen" onclick="toggleFullscreen()" style="padding: 10px 25px; background: rgba(255,107,53,0.15); border: 1px solid var(--exocad-orange); color: var(--exocad-orange); border-radius: 30px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">
-                        <i class="fas fa-expand"></i> Pantalla Completa
-                    </button>
-                </div>
-                <div class="viewer-iframe" style="position: relative; width: 100%; height: 600px; background: var(--charcoal);">
-                    <iframe id="exocadIframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
-                    <div class="viewer-loading" id="viewerLoading" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--charcoal); z-index: 10;">
-                        <div style="width: 60px; height: 60px; border: 4px solid rgba(255,107,53,0.2); border-top-color: var(--exocad-orange); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
-                        <p style="color: rgba(248,250,252,0.7);">Cargando visualizador 3D...</p>
-                    </div>
-                </div>
+    <!-- FOOTER CORPORATIVO -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>PRODIGY</h4>
+                <ul>
+                    <li>Diseño Dental Digital</li>
+                    <li>Bogotá, Colombia</li>
+                    <li>Alta Precisión CAD/CAM</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>CONTACTO</h4>
+                <ul>
+                    <li><a href="tel:+573219581949">+57 321 958 1949</a></li>
+                    <li><a href="mailto:info@prodigy.com">info@prodigy.com</a></li>
+                    <li><a href="https://instagram.com/jackcarvajal" target="_blank">@jackcarvajal</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>SERVICIOS</h4>
+                <ul>
+                    <li>Diseño CAD/CAM</li>
+                    <li>Implantología</li>
+                    <li>Ortodoncia</li>
+                    <li>Estética Dental</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>TECNOLOGÍA</h4>
+                <ul>
+                    <li>Exocad Expert</li>
+                    <li>3Shape Design</li>
+                    <li>Fresado CNC</li>
+                    <li>Impresión 3D</li>
+                </ul>
             </div>
         </div>
-
-        <!-- Tab: Galería -->
-        <div id="tab-gallery" class="tab-content" style="display: none;">
-            <div class="gallery-grid" id="galleryGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;"></div>
+        <div class="footer-copyright">
+            <p>© 2025 PRODIGY Digital Dentistry. Bogotá, Colombia</p>
         </div>
+    </footer>
 
-        <!-- Tab: Información -->
-        <div id="tab-info" class="tab-content" style="display: none;">
-            <div class="info-cards" id="infoCards" style="display: grid; gap: 30px;"></div>
-        </div>
-
-        <!-- Sección de comentarios -->
-        <div class="comments-section" id="commentsSection">
-            <div class="comments-header">
-                <h3 class="comments-title"><i class="fas fa-comments"></i> Comentarios</h3>
-                <span class="comments-count" id="commentsCount">0 comentarios</span>
-            </div>
-
-            <div class="comment-form">
-                <form id="commentForm">
-                    <div class="form-group">
-                        <label for="commentName">Nombre (opcional)</label>
-                        <input type="text" id="commentName" placeholder="Dr. Juan Pérez">
-                    </div>
-                    <div class="form-group">
-                        <label for="commentText">Tu comentario</label>
-                        <textarea id="commentText" placeholder="Excelente trabajo, me gustó la anatomía..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-submit-comment">
-                        <i class="fas fa-paper-plane"></i> Publicar Comentario
-                    </button>
-                </form>
-            </div>
-
-            <div class="comments-list" id="commentsList">
-                <div class="no-comments">
-                    <div class="no-comments-icon">💬</div>
-                    <p>Sé el primero en comentar sobre este caso</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sección de descarga -->
-        <div class="download-section" style="margin-top: 60px;">
-            <div class="download-card" style="background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(247,147,30,0.1)); border: 2px solid var(--exocad-orange); border-radius: 20px; padding: 40px; display: flex; align-items: center; gap: 30px; flex-wrap: wrap;">
-                <div class="download-icon" style="font-size: 3.5rem;">💾</div>
-                <div class="download-content" style="flex: 1; min-width: 250px;">
-                    <h3 style="font-size: 1.5rem; margin-bottom: 10px;">Descargar Escena CAD</h3>
-                    <p style="color: rgba(248,250,252,0.7);">Archivo completo de diseño en formato nativo Exocad</p>
-                </div>
-                <a href="#" id="downloadBtn" class="btn-download" target="_blank" style="padding: 15px 35px; background: linear-gradient(135deg, var(--exocad-orange), var(--exocad-gold)); color: white; text-decoration: none; border-radius: 50px; font-weight: 600; white-space: nowrap; transition: all 0.3s ease; display: inline-block;">
-                    <i class="fab fa-google-drive"></i> Descargar desde Drive
-                </a>
-            </div>
-        </div>
-    </main>
-
-    <!-- Scripts -->
-    <script src="js/patients-data.js"></script>
+    <!-- SCRIPTS -->
     <script>
-        let currentPatient = null;
-        let currentImageIndex = 0;
+        // =============================================
+        // DATOS EMBEBIDOS (GARANTÍA DE FUNCIONAMIENTO)
+        // =============================================
+        const EMBEDDED_PATIENTS_DATA = [
+            {
+                id: "patient-001",
+                name: "Rehabilitación Full Arch Superior",
+                code: "CASO-001",
+                type: "rehabilitacion",
+                date: "Enero 2025",
+                description: "Rehabilitación completa de arcada superior con 14 unidades cerámicas sobre implantes.",
+                coverImage: "patients/patient-001/cover.jpeg",
+                exocadFile: "patients/patient-001/exocad.html",
+                gallery: [
+                    "patients/patient-001/gallery/foto-1.jpeg",
+                    "patients/patient-001/gallery/foto-2.jpeg",
+                    "patients/patient-001/gallery/foto-3.jpeg",
+                    "patients/patient-001/gallery/foto-4.jpeg",
+                    "patients/patient-001/gallery/foto-5.jpeg",
+                    "patients/patient-001/gallery/foto-6.jpeg",
+                    "patients/patient-001/gallery/foto-7.jpeg",
+                    "patients/patient-001/gallery/foto-8.jpeg",
+                    "patients/patient-001/gallery/foto-9.jpeg"
+                ]
+            },
+            {
+                id: "patient-002",
+                name: "Carillas Superior e Inferior",
+                code: "PATIENT-002",
+                type: "estetica",
+                date: "2025",
+                description: "Carillas estéticas completas superior e inferior.",
+                coverImage: "patients/patient-002/C.jpeg",
+                exocadFile: "patients/patient-002/felipe pinzon.html",
+                gallery: [
+                    "patients/patient-002/gallery/1.jpeg",
+                    "patients/patient-002/gallery/2.jpeg",
+                    "patients/patient-002/gallery/3.jpeg",
+                    "patients/patient-002/gallery/4.jpeg",
+                    "patients/patient-002/gallery/5.jpeg",
+                    "patients/patient-002/gallery/6.jpeg",
+                    "patients/patient-002/gallery/7.jpeg",
+                    "patients/patient-002/gallery/8.jpeg"
+                ]
+            }
+        ];
 
-        function getPatientFromURL() {
+        // =============================================
+        // VARIABLES GLOBALES
+        // =============================================
+        let currentImageIndex = 0;
+        let imageGallery = [];
+        let PATIENTS_DATA = EMBEDDED_PATIENTS_DATA;
+        let currentPatientId = null;
+        
+        // =============================================
+        // SEGURIDAD: BLOQUEO DE TECLAS
+        // =============================================
+        document.addEventListener('keydown', e => {
+            // Bloquear F12, Ctrl+Shift+I, Ctrl+U
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+                (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+            }
+            
+            // Navegación con teclado en lightbox
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox && lightbox.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'Escape') closeLightbox();
+            }
+        });
+
+        // =============================================
+        // FUNCIÓN DE SANEAMIENTO DE RUTAS (NO MODIFICAR)
+        // Esta función maneja espacios en nombres de archivos
+        // =============================================
+        function sanitizePath(path) {
+            if (!path) return '';
+            // Usar encodeURI para convertir espacios a %20
+            return encodeURI(path);
+        }
+
+        // =============================================
+        // FUNCIÓN PRINCIPAL
+        // =============================================
+        function initPatientPage() {
+            console.log('🚀 Iniciando página de paciente...');
+
+            // Obtener ID del paciente desde URL
             const params = new URLSearchParams(window.location.search);
             const patientId = params.get('id');
-            return PATIENTS_DATA.find(p => p.id === patientId);
-        }
-
-        function renderPage() {
-            currentPatient = getPatientFromURL();
-            if (!currentPatient) {
-                document.body.innerHTML = `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 2rem; background: var(--charcoal); color: var(--soft-white);"><h1 style="font-size: 3rem; margin-bottom: 1rem;">❌</h1><h2 style="margin-bottom: 1rem;">Paciente no encontrado</h2><a href="index.html" style="color: #ff6b35; text-decoration: none; font-weight: 600;">← Volver al portafolio</a></div>`;
-                return;
-            }
-
-            document.getElementById('page-title').textContent = `${currentPatient.name} | PRODIGY`;
-
-            const typeBadges = {
-                rehabilitacion: '🔬 Rehabilitación',
-                implantes: '⚙️ Implantes',
-                estetica: '✨ Estética',
-                ferulas: '🛡️ Férulas',
-                ortodoncia: '📐 Ortodoncia'
-            };
-
-            document.getElementById('navInfo').innerHTML = `<span style="color: var(--exocad-orange); font-weight: 700;">${currentPatient.code}</span><span>•</span><span>${currentPatient.name}</span>`;
-
-            document.getElementById('patientHeader').innerHTML = `<div style="max-width: 1400px; margin: 0 auto;"><div style="display: inline-block; padding: 8px 20px; background: linear-gradient(135deg, var(--exocad-orange), var(--exocad-gold)); color: white; border-radius: 25px; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px;">${typeBadges[currentPatient.type] || '📋 Caso Dental'}</div><h1 style="font-size: 2.5rem; margin-bottom: 15px;">${currentPatient.name}</h1><p style="font-size: 1.2rem; color: rgba(248,250,252,0.7); margin-bottom: 30px;">${currentPatient.description}</p><div style="display: flex; gap: 40px; flex-wrap: wrap;"><div style="display: flex; flex-direction: column; gap: 5px;"><span style="font-size: 0.85rem; color: rgba(248,250,252,0.5); text-transform: uppercase;">Código</span><span style="font-size: 1.1rem; font-weight: 600;">${currentPatient.code}</span></div><div style="display: flex; flex-direction: column; gap: 5px;"><span style="font-size: 0.85rem; color: rgba(248,250,252,0.5); text-transform: uppercase;">Fecha</span><span style="font-size: 1.1rem; font-weight: 600;">${currentPatient.date}</span></div><div style="display: flex; flex-direction: column; gap: 5px;"><span style="font-size: 0.85rem; color: rgba(248,250,252,0.5); text-transform: uppercase;">Tipo</span><span style="font-size: 1.1rem; font-weight: 600;">${currentPatient.type}</span></div></div></div>`;
-
-            const iframe = document.getElementById('exocadIframe');
-            const loading = document.getElementById('viewerLoading');
-            iframe.src = currentPatient.exocadFile;
-            iframe.onload = () => loading.style.display = 'none';
-
-            document.getElementById('downloadBtn').href = currentPatient.driveLink;
-
-            renderGallery();
-            renderInfo();
-            initCommentsSystem();
-        }
-
-        function renderGallery() {
-            const grid = document.getElementById('galleryGrid');
-            if (!currentPatient.gallery || currentPatient.gallery.length === 0) {
-                grid.innerHTML = `<div style="text-align: center; padding: 80px 20px; color: rgba(248,250,252,0.5);"><div style="font-size: 4rem; margin-bottom: 20px;">📸</div><p>No hay imágenes adicionales para este caso</p></div>`;
-                return;
-            }
-            grid.innerHTML = currentPatient.gallery.map((img, index) => `<div onclick="openLightbox(${index})" style="position: relative; cursor: pointer; border-radius: 15px; overflow: hidden; aspect-ratio: 4/3; background: var(--card-bg);"><img src="${img}" alt="Imagen ${index + 1}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"><div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,14,26,0.7); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;"><div style="font-size: 3rem; color: var(--exocad-orange);"><i class="fas fa-search-plus"></i></div></div></div>`).join('');
-        }
-
-        function renderInfo() {
-            document.getElementById('infoCards').innerHTML = `<div style="background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 40px;"><h3 style="font-size: 1.5rem; margin-bottom: 25px; color: var(--exocad-orange);"><i class="fas fa-clipboard-list"></i> Detalles del Caso</h3><div style="display: flex; flex-direction: column; gap: 20px;"><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Código de Caso:</span><span style="text-align: right;">${currentPatient.code}</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Nombre del Paciente:</span><span style="text-align: right;">${currentPatient.name}</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Fecha de Diseño:</span><span style="text-align: right;">${currentPatient.date}</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Tipo de Tratamiento:</span><span style="text-align: right;">${currentPatient.type}</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0;"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Descripción:</span><span style="text-align: right;">${currentPatient.description}</span></div></div></div><div style="background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 40px;"><h3 style="font-size: 1.5rem; margin-bottom: 25px; color: var(--exocad-orange);"><i class="fas fa-tools"></i> Información Técnica</h3><div style="display: flex; flex-direction: column; gap: 20px;"><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Software Utilizado:</span><span style="text-align: right;">Exocad CAD/CAM</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-subtle);"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Formato de Archivo:</span><span style="text-align: right;">HTML Interactivo + .CAD</span></div><div style="display: flex; justify-content: space-between; padding: 15px 0;"><span style="color: rgba(248,250,252,0.6); font-weight: 600;">Imágenes Disponibles:</span><span style="text-align: right;">${currentPatient.gallery?.length || 0} renders</span></div></div></div>`;
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
-            event.target.classList.add('active');
-            document.getElementById(`tab-${tabName}`).style.display = 'block';
-        }
-
-        function toggleFullscreen() {
-            const iframe = document.querySelector('.viewer-iframe');
-            if (!document.fullscreenElement) iframe.requestFullscreen();
-            else document.exitFullscreen();
-        }
-
-        // Sistema de comentarios con LocalStorage
-        function initCommentsSystem() {
-            const caseId = currentPatient.id;
-            const commentsKey = `prodigy-comments-${caseId}`;
+            currentPatientId = patientId;
             
+            console.log('🎯 ID solicitado:', patientId);
+
+            // Buscar paciente en datos
+            const paciente = PATIENTS_DATA.find(p => p.id === patientId);
+            
+            if (!paciente) {
+                console.error('❌ Paciente no encontrado');
+                renderError(patientId);
+                return;
+            }
+
+            console.log('✅ Paciente encontrado:', paciente.name);
+            renderPatient(paciente);
+            initFeedbackModule();
+        }
+
+        // =============================================
+        // RENDERIZAR ERROR
+        // =============================================
+        function renderError(patientId) {
+            document.getElementById('patient-content').innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>Caso No Encontrado</h2>
+                    <p>No se encontró información para el ID: <strong>${patientId || 'N/A'}</strong></p>
+                </div>
+            `;
+        }
+
+        // =============================================
+        // RENDERIZAR PACIENTE
+        // =============================================
+        function renderPatient(paciente) {
+            const contentDiv = document.getElementById('patient-content');
+            
+            contentDiv.innerHTML = `
+                <div class="patient-header">
+                    <h1>${paciente.name}</h1>
+                    <p>${paciente.description || 'Sin descripción'}</p>
+                    <div class="patient-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-hashtag"></i>
+                            <strong>Código:</strong> ${paciente.code || 'N/A'}
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <strong>Fecha:</strong> ${paciente.date || 'N/A'}
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-tag"></i>
+                            <strong>Tipo:</strong> ${paciente.type || 'N/A'}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="viewer-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-cube"></i> Visor 3D Exocad
+                    </h2>
+                    <div id="viewer-container" class="viewer-container"></div>
+                </div>
+
+                <div class="gallery-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-images"></i> Galería de Imágenes
+                    </h2>
+                    <div id="gallery-container" class="gallery-grid"></div>
+                </div>
+            `;
+
+            loadViewer(paciente);
+            loadGallery(paciente);
+            
+            // Mostrar sección de feedback
+            document.getElementById('feedback-section').style.display = 'block';
+        }
+
+        // =============================================
+        // CARGAR VISOR EXOCAD (NO MODIFICAR encodeURI)
+        // =============================================
+        function loadViewer(paciente) {
+            const container = document.getElementById('viewer-container');
+            
+            if (paciente.exocadFile && paciente.exocadFile.trim() !== '') {
+                // Aplicar sanitizePath para manejar espacios
+                const path = sanitizePath(paciente.exocadFile);
+                console.log('📂 Cargando visor:', path);
+                
+                container.innerHTML = `<iframe src="${path}" title="Visor 3D Exocad"></iframe>`;
+            } else {
+                container.innerHTML = `
+                    <div class="no-viewer">
+                        <i class="fas fa-cube"></i>
+                        <h3>Vista 3D No Disponible</h3>
+                        <p>Este caso no tiene archivo de visualización 3D.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // =============================================
+        // CARGAR GALERÍA (NO MODIFICAR encodeURI)
+        // =============================================
+        function loadGallery(paciente) {
+            const container = document.getElementById('gallery-container');
+            
+            if (!paciente.gallery || paciente.gallery.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                        <i class="fas fa-image" style="font-size: 3rem; color: var(--luxury-gold); opacity: 0.3; margin-bottom: 15px;"></i>
+                        <p style="color: var(--text-secondary);">No hay imágenes disponibles.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            console.log(`📷 Cargando ${paciente.gallery.length} imágenes...`);
+            
+            // Aplicar sanitizePath a todas las rutas para manejar espacios
+            imageGallery = paciente.gallery.map(sanitizePath);
+            
+            paciente.gallery.forEach((imgPath, index) => {
+                const path = sanitizePath(imgPath);
+                
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                
+                const img = document.createElement('img');
+                img.src = path;
+                img.alt = `Imagen ${index + 1}`;
+                
+                // Manejo de errores de carga
+                img.onerror = function() {
+                    console.warn(`⚠️ Error al cargar: ${imgPath}`);
+                    item.innerHTML = `
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-image"></i>
+                            <p>PRODIGY</p>
+                        </div>
+                        <div class="watermark">© PRODIGY</div>
+                    `;
+                };
+                
+                img.onload = function() {
+                    console.log(`✅ Imagen ${index + 1} cargada`);
+                };
+                
+                item.appendChild(img);
+                
+                // Agregar watermark
+                const watermark = document.createElement('div');
+                watermark.className = 'watermark';
+                watermark.textContent = '© PRODIGY';
+                item.appendChild(watermark);
+                
+                // Click para abrir lightbox
+                item.onclick = () => openLightbox(index);
+                
+                container.appendChild(item);
+            });
+        }
+
+        // =============================================
+        // LIGHTBOX CON CARRUSEL (NO MODIFICAR)
+        // =============================================
+        function openLightbox(index) {
+            currentImageIndex = index;
+            updateLightboxImage();
+            document.getElementById('lightbox').classList.add('active');
+            console.log(`🖼️ Lightbox abierto - Imagen ${index + 1}`);
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            console.log('❌ Lightbox cerrado');
+        }
+
+        function nextImage() {
+            if (imageGallery.length === 0) return;
+            currentImageIndex = (currentImageIndex + 1) % imageGallery.length;
+            updateLightboxImage();
+            console.log(`➡️ Siguiente imagen: ${currentImageIndex + 1}`);
+        }
+
+        function prevImage() {
+            if (imageGallery.length === 0) return;
+            currentImageIndex = (currentImageIndex - 1 + imageGallery.length) % imageGallery.length;
+            updateLightboxImage();
+            console.log(`⬅️ Imagen anterior: ${currentImageIndex + 1}`);
+        }
+
+        function updateLightboxImage() {
+            const img = document.getElementById('lightbox-img');
+            const counter = document.getElementById('lightbox-counter');
+            
+            img.src = imageGallery[currentImageIndex];
+            counter.textContent = `${currentImageIndex + 1} / ${imageGallery.length}`;
+        }
+
+        // Cerrar lightbox al hacer click en el fondo (NO MODIFICAR)
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // =============================================
+        // MÓDULO DE FEEDBACK CLÍNICO CON LOCALSTORAGE
+        // =============================================
+        function initFeedbackModule() {
+            // Verificar que tenemos un ID de paciente
+            if (!currentPatientId) {
+                console.error('❌ No hay ID de paciente para feedback');
+                return;
+            }
+
+            // Claves únicas de localStorage por paciente
+            const storageKeyReaction = `reaccion_p${currentPatientId.replace('patient-', '')}`;
+            const storageKeyComments = `notas_p${currentPatientId.replace('patient-', '')}`;
+            
+            console.log('💾 Claves de localStorage:', storageKeyReaction, storageKeyComments);
+
+            // ===== SISTEMA DE REACCIONES =====
+            const reactionButtons = document.querySelectorAll('.reaction-btn');
+            
+            // Cargar reacción guardada (si existe)
+            try {
+                const savedReaction = localStorage.getItem(storageKeyReaction);
+                
+                if (savedReaction) {
+                    const savedBtn = document.querySelector(`[data-reaction="${savedReaction}"]`);
+                    if (savedBtn) {
+                        savedBtn.classList.add('active');
+                        console.log('✅ Reacción cargada:', savedReaction);
+                    }
+                } else {
+                    console.log('ℹ️ No hay reacción guardada previamente');
+                }
+            } catch (error) {
+                console.error('❌ Error al cargar reacción:', error);
+            }
+            
+            // Manejar clicks en reacciones
+            reactionButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const reaction = this.getAttribute('data-reaction');
+                    
+                    try {
+                        // Remover active de todos los botones
+                        reactionButtons.forEach(b => b.classList.remove('active'));
+                        
+                        // Activar el seleccionado (con brillo dorado)
+                        this.classList.add('active');
+                        
+                        // Guardar en localStorage
+                        localStorage.setItem(storageKeyReaction, reaction);
+                        console.log('💾 Reacción guardada:', reaction);
+                        
+                    } catch (error) {
+                        console.error('❌ Error al guardar reacción:', error);
+                        alert('No se pudo guardar la reacción. Verifica los permisos del navegador.');
+                    }
+                });
+            });
+
+            // ===== SISTEMA DE NOTAS CLÍNICAS =====
+            const commentTextarea = document.getElementById('comment-textarea');
+            const publishBtn = document.getElementById('publish-btn');
+            const commentsList = document.getElementById('comments-list');
+            
+            // Función para cargar comentarios desde localStorage
             function loadComments() {
-                const comments = JSON.parse(localStorage.getItem(commentsKey) || '[]');
-                const commentsList = document.getElementById('commentsList');
-                const commentsCount = document.getElementById('commentsCount');
+                try {
+                    const savedComments = localStorage.getItem(storageKeyComments);
+                    let comments = [];
+                    
+                    // Parsear comentarios guardados (manejo de errores)
+                    if (savedComments) {
+                        try {
+                            comments = JSON.parse(savedComments);
+                            if (!Array.isArray(comments)) {
+                                console.warn('⚠️ Datos de comentarios corruptos, reiniciando...');
+                                comments = [];
+                            }
+                        } catch (parseError) {
+                            console.error('❌ Error al parsear comentarios:', parseError);
+                            comments = [];
+                        }
+                    }
+                    
+                    console.log(`💬 Cargando ${comments.length} comentarios...`);
+                    
+                    // Si no hay comentarios, mostrar mensaje
+                    if (comments.length === 0) {
+                        commentsList.innerHTML = `
+                            <div class="no-comments">
+                                <i class="fas fa-comment-slash" style="font-size: 2rem; opacity: 0.3; margin-bottom: 10px;"></i>
+                                <p>Aún no hay notas clínicas para este caso.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    // Limpiar lista
+                    commentsList.innerHTML = '';
+                    
+                    // Mostrar comentarios en orden inverso (más reciente primero)
+                    comments.slice().reverse().forEach(comment => {
+                        const commentItem = document.createElement('div');
+                        commentItem.className = 'comment-item';
+                        commentItem.innerHTML = `
+                            <div class="comment-header">
+                                <span class="comment-author">
+                                    <i class="fas fa-user-md"></i> Especialista PRODIGY
+                                </span>
+                                <span class="comment-date">${comment.date || 'Fecha no disponible'}</span>
+                            </div>
+                            <div class="comment-text">${comment.text || 'Sin contenido'}</div>
+                        `;
+                        commentsList.appendChild(commentItem);
+                    });
+                    
+                } catch (error) {
+                    console.error('❌ Error al cargar comentarios:', error);
+                    commentsList.innerHTML = `
+                        <div class="no-comments">
+                            <p style="color: #ff6b6b;">Error al cargar los comentarios.</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Función para publicar nuevo comentario
+            publishBtn.addEventListener('click', function() {
+                const text = commentTextarea.value.trim();
                 
-                commentsCount.textContent = `${comments.length} comentario${comments.length !== 1 ? 's' : ''}`;
-                
-                if (comments.length === 0) {
-                    commentsList.innerHTML = '<div class="no-comments"><div class="no-comments-icon">💬</div><p>Sé el primero en comentar sobre este caso</p></div>';
+                // Validar que haya texto
+                if (text === '') {
+                    alert('⚠️ Por favor, escribe una nota antes de publicar.');
                     return;
                 }
                 
-                commentsList.innerHTML = comments.reverse().map(comment => `
-                    <div class="comment-item">
-                        <div class="comment-header">
-                            <span class="comment-author">${comment.name || 'Anónimo'}</span>
-                            <span class="comment-date">${comment.date}</span>
-                        </div>
-                        <p class="comment-text">${comment.text}</p>
-                    </div>
-                `).join('');
-            }
-            
-            document.getElementById('commentForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('commentName').value.trim() || 'Anónimo';
-                const text = document.getElementById('commentText').value.trim();
-                
-                if (!text) return;
-                
-                const comments = JSON.parse(localStorage.getItem(commentsKey) || '[]');
-                comments.push({
-                    name: name,
-                    text: text,
-                    date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
-                });
-                
-                localStorage.setItem(commentsKey, JSON.stringify(comments));
-                
-                document.getElementById('commentName').value = '';
-                document.getElementById('commentText').value = '';
-                
-                loadComments();
+                try {
+                    // Obtener comentarios existentes
+                    const savedComments = localStorage.getItem(storageKeyComments);
+                    let comments = [];
+                    
+                    if (savedComments) {
+                        try {
+                            comments = JSON.parse(savedComments);
+                            if (!Array.isArray(comments)) {
+                                comments = [];
+                            }
+                        } catch (error) {
+                            console.warn('⚠️ Datos corruptos, reiniciando array');
+                            comments = [];
+                        }
+                    }
+                    
+                    // Crear nuevo comentario con fecha/hora
+                    const newComment = {
+                        text: text,
+                        date: new Date().toLocaleString('es-CO', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }),
+                        timestamp: Date.now()
+                    };
+                    
+                    // Agregar al array
+                    comments.push(newComment);
+                    
+                    // Guardar en localStorage
+                    localStorage.setItem(storageKeyComments, JSON.stringify(comments));
+                    
+                    console.log('✅ Comentario publicado:', newComment);
+                    
+                    // Limpiar textarea
+                    commentTextarea.value = '';
+                    
+                    // Recargar comentarios
+                    loadComments();
+                    
+                    // Feedback visual temporal
+                    publishBtn.innerHTML = '✅ ¡Publicado!';
+                    setTimeout(() => {
+                        publishBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publicar Nota';
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('❌ Error al publicar comentario:', error);
+                    alert('No se pudo guardar el comentario. Verifica los permisos del navegador.');
+                }
             });
             
+            // Cargar comentarios al iniciar
             loadComments();
+            
+            console.log('✅ Módulo de feedback inicializado correctamente');
         }
 
-        document.addEventListener('DOMContentLoaded', renderPage);
+        // =============================================
+        // INICIALIZACIÓN
+        // =============================================
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPatientPage);
+        } else {
+            initPatientPage();
+        }
+        
+        console.log('✅ Sistema de visualización de pacientes cargado');
     </script>
+    
+    <!-- Intentar cargar archivo externo (opcional) -->
+    <script src="patients-data.js" onerror="console.log('ℹ️ Usando datos embebidos')"></script>
 </body>
 </html>
-
-<!-- SISTEMA DE PROTECCIÓN INTEGRADO -->
-<script>
-(function() {
-    'use strict';
-    const CONFIG = {
-        watermarkText: '© PRODIGY',
-        watermarkOpacity: 0.08,
-        enableScreenshotProtection: true,
-        enableRightClickBlock: true,
-        enableImageProtection: true
-    };
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'PrintScreen' || (e.key === 'F12') || 
-            ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'S' || e.key === 'I')) ||
-            ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 's'))) {
-            e.preventDefault();
-            showAlert();
-        }
-    });
-
-    if (CONFIG.enableImageProtection) {
-        function addWatermark(img) {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
-            ctx.drawImage(img, 0, 0);
-            ctx.globalAlpha = CONFIG.watermarkOpacity;
-            ctx.fillStyle = '#FFD700';
-            ctx.font = 'bold 40px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(CONFIG.watermarkText, canvas.width / 2, canvas.height / 2);
-            ctx.font = 'bold 25px Arial';
-            ctx.fillText(CONFIG.watermarkText, canvas.width / 4, canvas.height / 4);
-            ctx.fillText(CONFIG.watermarkText, (canvas.width * 3) / 4, (canvas.height * 3) / 4);
-            img.src = canvas.toDataURL();
-        }
-
-        function protectImages() {
-            document.querySelectorAll('img:not([data-protected])').forEach(img => {
-                img.setAttribute('data-protected', 'true');
-                if (img.complete) addWatermark(img);
-                else img.addEventListener('load', () => addWatermark(img));
-            });
-        }
-
-        setInterval(protectImages, 1000);
-    }
-
-    if (CONFIG.enableRightClickBlock) {
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            showAlert();
-        });
-    }
-
-    document.addEventListener('dragstart', function(e) {
-        if (e.target.tagName === 'IMG') {
-            e.preventDefault();
-            showAlert();
-        }
-    });
-
-    document.addEventListener('copy', function(e) {
-        const selection = window.getSelection().toString();
-        if (selection.length > 50) {
-            e.preventDefault();
-            e.clipboardData.setData('text/plain', selection + '\n\n' + CONFIG.watermarkText);
-        }
-    });
-
-    function showAlert() {
-        const alert = document.createElement('div');
-        alert.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#1a1a2e,#0a0e1a);padding:40px;border-radius:20px;border:2px solid #FFD700;z-index:999999;text-align:center;max-width:400px;';
-        alert.innerHTML = '<div style="font-size:3rem;margin-bottom:15px;">🔒</div><h3 style="color:#FFD700;margin-bottom:10px;">Contenido Protegido</h3><p style="color:#fff;opacity:0.8;margin-bottom:20px;">© PRODIGY - The Art of Digital Excellence</p><button onclick="this.parentElement.remove()" style="padding:12px 30px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:30px;font-weight:600;cursor:pointer;">Cerrar</button>';
-        document.body.appendChild(alert);
-        setTimeout(() => alert.remove(), 3000);
-    }
-
-    console.log('%c🔒 CONTENIDO PROTEGIDO POR PRODIGY', 'color:#FFD700;font-size:20px;font-weight:bold;');
-})();
-</script>
-<div id="lightbox" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:99999;align-items:center;justify-content:center;">
-    <button onclick="closeLightbox()" style="position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.1);border:none;color:white;font-size:2.5rem;cursor:pointer;width:60px;height:60px;border-radius:50%;">×</button>
-    <button onclick="prevImage()" style="position:absolute;left:20px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);border:none;color:white;font-size:2.5rem;cursor:pointer;width:60px;height:60px;border-radius:50%;">‹</button>
-    <img id="lightboxImg" src="" style="max-width:90%;max-height:90vh;object-fit:contain;">
-    <button onclick="nextImage()" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);border:none;color:white;font-size:2.5rem;cursor:pointer;width:60px;height:60px;border-radius:50%;">›</button>
-    <div id="lightboxCounter" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);padding:10px 25px;border-radius:25px;color:white;font-weight:600;"></div>
-</div>
-<script>
-let galleryImages=[];
-function openLightbox(i){currentImageIndex=i;updateLightboxImage();document.getElementById('lightbox').style.display='flex';document.body.style.overflow='hidden';}
-function closeLightbox(){document.getElementById('lightbox').style.display='none';document.body.style.overflow='auto';}
-function updateLightboxImage(){document.getElementById('lightboxImg').src=galleryImages[currentImageIndex];document.getElementById('lightboxCounter').textContent=`${currentImageIndex+1}/${galleryImages.length}`;}
-function prevImage(){currentImageIndex=(currentImageIndex-1+galleryImages.length)%galleryImages.length;updateLightboxImage();}
-function nextImage(){currentImageIndex=(currentImageIndex+1)%galleryImages.length;updateLightboxImage();}
-document.addEventListener('keydown',e=>{if(document.getElementById('lightbox').style.display==='flex'){if(e.key==='Escape')closeLightbox();if(e.key==='ArrowLeft')prevImage();if(e.key==='ArrowRight')nextImage();}});
-</script>
-<style>
-@media (max-width: 768px) {
-    .logo-img { height: 35px !important; }
-    .social-float { right: 15px !important; bottom: 80px !important; }
-    .social-btn { width: 45px !important; height: 45px !important; }
-    .whatsapp-stl-float { bottom: 20px !important; right: 15px !important; }
-    .btn-whatsapp-stl { width: 55px !important; height: 55px !important; padding: 0 !important; border-radius: 50% !important; }
-    .btn-whatsapp-stl span { display: none !important; }
-    .gallery-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
-}
-</style>

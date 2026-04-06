@@ -3,278 +3,467 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seguimiento de Caso - PRODIGY</title>
+    <title>Seguimiento de Caso | ProDigy</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body style="padding-top: 80px;">
+<style>
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 15px 0;
+}
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 40px;
+    gap: 20px;
+}
+.nav-left, .nav-right { display: flex; gap: 30px; }
+.nav-left { justify-content: flex-start; }
+.nav-right { justify-content: flex-end; align-items: center; }
+.nav-left a, .nav-right a {
+    color: #f5f5f7;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+.nav-left a:hover, .nav-right a:hover { color: #D4AF37; }
+.nav-logo-box { text-decoration: none; text-align: center; }
+.nav-logo-box h1 {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    margin: 0;
+    color: #D4AF37;
+}
+.nav-logo-box span {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #f5f5f7;
+    text-transform: uppercase;
+}
+.nav-contact-btn {
+    background: linear-gradient(135deg, #D4AF37 0%, #F4C430 100%);
+    color: #000 !important;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 13px !important;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <img src="images/logo-prodigy.png" alt="PRODIGY Logo" style="height:45px;">
+            <div class="nav-left">
+                <a href="index.html#servicios">SERVICIOS</a>
+                <a href="index.html#portfolio">PORTAFOLIO</a>
+                <a href="index.html#workflow-247">SUBIR DISEÑO</a>
+            </div>
+            
+            <a href="index.html" class="nav-logo-box">
+                <h1>PRODIGY</h1>
+                <span>DIGITAL DENTISTRY</span>
             </a>
+            
+            <div class="nav-right">
+                <a href="index.html#production">PRODUCCIÓN CAM</a>
+                <a href="index.html#academy">ACADEMY</a>
+                <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> CONTACTAR
+                </a>
+            </div>
         </div>
     </nav>
 
-    <div style="padding:120px 20px 80px;max-width:900px;margin:0 auto;">
-        <div style="text-align:center;margin-bottom:50px;">
-            <div style="font-size:4rem;margin-bottom:20px;">🔍</div>
-            <h1 style="font-size:2.5rem;background:linear-gradient(135deg,#ff6b35,#f7931e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px;">Seguimiento de Tu Caso</h1>
-            <p style="font-size:1.1rem;color:rgba(248,250,252,0.8);">Consulta el estado actual de tu caso en tiempo real</p>
-        </div>
 
-        <!-- Formulario de búsqueda -->
-        <div style="background:var(--card-bg);border:1px solid var(--border-subtle);border-radius:20px;padding:40px;margin-bottom:30px;">
-            <h2 style="color:#ff6b35;margin-bottom:25px;">Buscar Caso</h2>
-            <form id="searchForm" style="display:grid;gap:20px;">
+<style>
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 15px 0;
+}
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 40px;
+    gap: 20px;
+}
+.nav-left, .nav-right {
+    display: flex;
+    gap: 30px;
+}
+.nav-left { justify-content: flex-start; }
+.nav-right { justify-content: flex-end; align-items: center; }
+.nav-left a, .nav-right a {
+    color: #f5f5f7;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+.nav-left a:hover, .nav-right a:hover { color: #D4AF37; }
+.nav-logo-box {
+    text-decoration: none;
+    text-align: center;
+}
+.nav-logo-box h1 {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    margin: 0;
+    color: #D4AF37;
+}
+.nav-logo-box span {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #f5f5f7;
+    text-transform: uppercase;
+}
+.nav-contact-btn {
+    background: linear-gradient(135deg, #D4AF37 0%, #F4C430 100%);
+    color: #000 !important;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 13px !important;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    
+
+
+    
+
+    <div style="max-width:1100px;margin:80px auto;padding:40px 20px;">
+        
+        <!-- ÁREA DE BÚSQUEDA -->
+        <div style="background:linear-gradient(135deg,rgba(142,36,170,0.2),rgba(30,40,66,0.5));padding:60px 40px;border-radius:20px;margin-bottom:40px;">
+            <div style="text-align:center;margin-bottom:40px;">
+                <div style="font-size:4rem;margin-bottom:20px;">🔍</div>
+                <h1 style="font-size:2.5rem;background:linear-gradient(135deg,#FFD700,#8E24AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px;">
+                    Seguimiento de Tu Caso
+                </h1>
+                <p style="color:rgba(248,250,252,0.8);font-size:1.1rem;">Consulta el estado en tiempo real</p>
+            </div>
+
+            <div style="background:rgba(30,40,66,0.7);border:2px solid rgba(255,215,0,0.3);border-radius:20px;padding:40px;">
+                <h3 style="color:#FFD700;margin-bottom:25px;"><i class="fas fa-search"></i> Buscar Caso</h3>
+                
                 <div>
-                    <label style="display:block;color:rgba(248,250,252,0.9);margin-bottom:8px;font-weight:600;">Código del Caso o Nombre del Paciente</label>
-                    <input type="text" id="searchQuery" placeholder="Ej: PRODIGY-1234567890 o María López" style="width:100%;padding:15px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,107,53,0.3);border-radius:10px;color:white;font-size:1rem;">
+                    <label style="color:rgba(248,250,252,0.9);font-weight:600;display:block;margin-bottom:8px;">Buscar por Número de Orden</label>
+                    <input type="text" id="searchOrden" placeholder="PRD-2026-XXXX" style="width:100%;padding:15px;background:rgba(10,14,26,0.6);border:2px solid rgba(255,215,0,0.3);border-radius:12px;color:white;font-size:1rem;margin-bottom:20px;">
+                    
+                    <div style="text-align:center;color:rgba(248,250,252,0.6);font-weight:600;margin:20px 0;">- O -</div>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-bottom:20px;">
+                        <div>
+                            <label style="color:rgba(248,250,252,0.9);font-weight:600;display:block;margin-bottom:8px;">Nombre del Paciente</label>
+                            <input type="text" id="searchNombre" placeholder="María López" style="width:100%;padding:15px;background:rgba(10,14,26,0.6);border:2px solid rgba(255,215,0,0.3);border-radius:12px;color:white;">
+                        </div>
+                        <div>
+                            <label style="color:rgba(248,250,252,0.9);font-weight:600;display:block;margin-bottom:8px;">Teléfono</label>
+                            <input type="tel" id="searchTelefono" placeholder="3219581949" style="width:100%;padding:15px;background:rgba(10,14,26,0.6);border:2px solid rgba(255,215,0,0.3);border-radius:12px;color:white;">
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" style="padding:15px;background:linear-gradient(135deg,#ff6b35,#f7931e);color:white;border:none;border-radius:50px;font-size:1.1rem;font-weight:600;cursor:pointer;">
-                    <i class="fas fa-search"></i> Buscar
+                
+                <button onclick="buscarCaso()" style="width:100%;padding:15px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:50px;font-size:1.1rem;font-weight:700;cursor:pointer;">
+                    <i class="fas fa-search"></i> Buscar Caso
                 </button>
-            </form>
-        </div>
-
-        <!-- Resultado -->
-        <div id="result" style="display:none;">
-            <!-- Estado del Caso -->
-            <div style="background:var(--card-bg);border:1px solid var(--border-subtle);border-radius:20px;padding:40px;margin-bottom:30px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;flex-wrap:wrap;gap:20px;">
-                    <div>
-                        <h2 style="color:#ff6b35;margin-bottom:5px;" id="caseName">Caso de María López</h2>
-                        <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;" id="caseId">PRODIGY-1234567890</p>
-                    </div>
-                    <div id="statusBadge" style="padding:12px 25px;border-radius:25px;font-weight:700;font-size:1rem;">
-                        <!-- Se llena con JS -->
-                    </div>
-                </div>
-
-                <!-- Timeline de Estados -->
-                <div id="timeline" style="position:relative;padding-left:40px;">
-                    <!-- Se llena con JS -->
-                </div>
-            </div>
-
-            <!-- Detalles del Caso -->
-            <div style="background:var(--card-bg);border:1px solid var(--border-subtle);border-radius:20px;padding:40px;">
-                <h3 style="color:#ff6b35;margin-bottom:25px;">📋 Detalles del Caso</h3>
-                <div id="caseDetails" style="display:grid;gap:15px;">
-                    <!-- Se llena con JS -->
-                </div>
             </div>
         </div>
 
-        <!-- No encontrado -->
-        <div id="notFound" style="display:none;text-align:center;padding:60px 40px;background:rgba(244,67,54,0.1);border:2px solid rgba(244,67,54,0.3);border-radius:20px;">
+        <!-- RESULTADO -->
+        <div id="resultado" style="display:none;background:linear-gradient(135deg,rgba(30,40,66,0.5),rgba(142,36,170,0.1));padding:40px;border-radius:20px;border:2px solid rgba(255,215,0,0.3);">
+            
+            <!-- ENCABEZADO -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;flex-wrap:wrap;gap:20px;">
+                <div>
+                    <h2 style="color:#FFD700;margin-bottom:5px;">Caso de: <span id="nombrePacienteDisplay"></span></h2>
+                    <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;">Orden: <span id="ordenDisplay" style="color:#8E24AA;font-weight:700;"></span></p>
+                    <p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-top:5px;">
+                        <i class="fas fa-shield-alt"></i> Datos protegidos por Ley 1581 (Habeas Data)
+                    </p>
+                </div>
+                <div id="estadoBadge" style="padding:12px 25px;border-radius:25px;font-weight:700;font-size:1.1rem;"></div>
+            </div>
+
+            <!-- BARRA DE PROGRESO -->
+            <div style="background:rgba(10,14,26,0.4);border:2px solid rgba(142,36,170,0.3);border-radius:15px;padding:30px;margin-bottom:30px;">
+                <h3 style="color:#8E24AA;margin-bottom:20px;"><i class="fas fa-tasks"></i> Estado de Producción</h3>
+                
+                <div style="position:relative;background:rgba(10,14,26,0.6);height:8px;border-radius:10px;margin:30px 0;overflow:hidden;">
+                    <div id="barraProgreso" style="height:100%;background:linear-gradient(90deg,#8E24AA,#FFD700);border-radius:10px;transition:width 0.5s;width:0%;"></div>
+                </div>
+                
+                <div style="display:flex;justify-content:space-between;margin-top:40px;" id="pasos">
+                    <div class="paso" data-estado="Recibido" style="flex:1;text-align:center;">
+                        <div style="width:50px;height:50px;border-radius:50%;background:rgba(10,14,26,0.8);border:3px solid rgba(142,36,170,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:1.5rem;">📥</div>
+                        <p style="color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;">Recibido</p>
+                    </div>
+                    <div class="paso" data-estado="En Diseño" style="flex:1;text-align:center;">
+                        <div style="width:50px;height:50px;border-radius:50%;background:rgba(10,14,26,0.8);border:3px solid rgba(142,36,170,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:1.5rem;">🎨</div>
+                        <p style="color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;">En Diseño</p>
+                    </div>
+                    <div class="paso" data-estado="En Impresión/Fresado" style="flex:1;text-align:center;">
+                        <div style="width:50px;height:50px;border-radius:50%;background:rgba(10,14,26,0.8);border:3px solid rgba(142,36,170,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:1.5rem;">🖨️</div>
+                        <p style="color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;">En Producción</p>
+                    </div>
+                    <div class="paso" data-estado="Control de Calidad" style="flex:1;text-align:center;">
+                        <div style="width:50px;height:50px;border-radius:50%;background:rgba(10,14,26,0.8);border:3px solid rgba(142,36,170,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:1.5rem;">✓</div>
+                        <p style="color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;">Control de Calidad</p>
+                    </div>
+                    <div class="paso" data-estado="Listo para Entrega" style="flex:1;text-align:center;">
+                        <div style="width:50px;height:50px;border-radius:50%;background:rgba(10,14,26,0.8);border:3px solid rgba(142,36,170,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:1.5rem;">🎉</div>
+                        <p style="color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;">Listo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETALLES -->
+            <div style="background:rgba(10,14,26,0.4);border:2px solid rgba(255,215,0,0.3);border-radius:15px;padding:30px;margin-bottom:30px;">
+                <h3 style="color:#FFD700;margin-bottom:25px;"><i class="fas fa-info-circle"></i> Detalles del Caso</h3>
+                <div id="detalles" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;"></div>
+            </div>
+
+            <!-- ZONA DE DESCARGAS (solo si está listo) -->
+            <div id="zonaDescargas" style="display:none;background:rgba(76,175,80,0.1);border:2px solid rgba(76,175,80,0.3);border-radius:15px;padding:30px;margin-bottom:30px;">
+                <h3 style="color:#4CAF50;margin-bottom:25px;"><i class="fas fa-download"></i> Archivos Disponibles</h3>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;">
+                    <div style="background:rgba(10,14,26,0.6);border:2px solid rgba(76,175,80,0.3);border-radius:15px;padding:25px;text-align:center;">
+                        <i class="fas fa-cube" style="font-size:2.5rem;color:#4CAF50;margin-bottom:15px;"></i>
+                        <h4 style="color:#4CAF50;margin-bottom:10px;">STL Final</h4>
+                        <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;margin-bottom:15px;">Archivo de diseño</p>
+                        <a href="#" onclick="descargar('stl'); return false;" style="display:inline-block;padding:12px 25px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;text-decoration:none;border-radius:50px;font-weight:700;">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                    <div style="background:rgba(10,14,26,0.6);border:2px solid rgba(76,175,80,0.3);border-radius:15px;padding:25px;text-align:center;">
+                        <i class="fas fa-file-pdf" style="font-size:2.5rem;color:#4CAF50;margin-bottom:15px;"></i>
+                        <h4 style="color:#4CAF50;margin-bottom:10px;">Reporte de Diseño</h4>
+                        <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;margin-bottom:15px;">Especificaciones</p>
+                        <a href="#" onclick="descargar('reporte'); return false;" style="display:inline-block;padding:12px 25px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;text-decoration:none;border-radius:50px;font-weight:700;">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                    <div style="background:rgba(10,14,26,0.6);border:2px solid rgba(76,175,80,0.3);border-radius:15px;padding:25px;text-align:center;">
+                        <i class="fas fa-receipt" style="font-size:2.5rem;color:#4CAF50;margin-bottom:15px;"></i>
+                        <h4 style="color:#4CAF50;margin-bottom:10px;">Factura</h4>
+                        <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;margin-bottom:15px;">Comprobante</p>
+                        <a href="#" onclick="descargar('factura'); return false;" style="display:inline-block;padding:12px 25px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;text-decoration:none;border-radius:50px;font-weight:700;">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTÓN WHATSAPP -->
+            <div style="text-align:center;">
+                <a href="#" onclick="activarNotificaciones(); return false;" style="display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#25D366,#128C7E);color:white;text-decoration:none;border-radius:50px;font-weight:700;font-size:1.1rem;">
+                    <i class="fab fa-whatsapp"></i> Recibir Aviso de Avance por WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <!-- NO ENCONTRADO -->
+        <div id="noEncontrado" style="display:none;text-align:center;padding:60px 40px;background:rgba(244,67,54,0.1);border:2px solid rgba(244,67,54,0.3);border-radius:20px;">
             <div style="font-size:4rem;margin-bottom:20px;">❌</div>
-            <h3 style="color:#f44336;margin-bottom:15px;">Caso No Encontrado</h3>
-            <p style="color:rgba(248,250,252,0.8);margin-bottom:25px;">Verifica el código o nombre del paciente e intenta nuevamente.</p>
-            <button onclick="location.reload()" style="padding:12px 30px;background:linear-gradient(135deg,#ff6b35,#f7931e);color:white;border:none;border-radius:30px;font-weight:600;cursor:pointer;">
-                Buscar Otro Caso
-            </button>
+            <h3 style="color:#F44336;margin-bottom:15px;">Caso No Encontrado</h3>
+            <p style="color:rgba(248,250,252,0.8);margin-bottom:25px;">Verifica el número de orden o datos del paciente</p>
+            <button onclick="location.reload()" style="padding:12px 30px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:30px;font-weight:700;cursor:pointer;">Buscar Otro Caso</button>
         </div>
     </div>
 
     <script>
-        // Estados posibles
-        const STATES = {
-            pending_upload: {
-                name: 'Pendiente de Archivos',
-                color: '#FFC107',
-                bg: 'rgba(255,193,7,0.15)',
-                icon: '⏳',
-                description: 'Esperando que subas los archivos'
-            },
-            received: {
-                name: 'Archivos Recibidos',
-                color: '#2196F3',
-                bg: 'rgba(33,150,243,0.15)',
-                icon: '📥',
-                description: 'Archivos recibidos correctamente'
-            },
-            reviewing: {
-                name: 'En Revisión',
-                color: '#9C27B0',
-                bg: 'rgba(156,39,176,0.15)',
-                icon: '🔍',
-                description: 'Revisando archivos y orden de trabajo'
-            },
-            incomplete: {
-                name: 'Información Incompleta',
-                color: '#FF5722',
-                bg: 'rgba(255,87,34,0.15)',
-                icon: '⚠️',
-                description: 'Faltan archivos o información'
-            },
-            in_design: {
-                name: 'En Diseño',
-                color: '#00BCD4',
-                bg: 'rgba(0,188,212,0.15)',
-                icon: '🎨',
-                description: 'Diseñando tu caso'
-            },
-            in_production: {
-                name: 'En Producción',
-                color: '#4CAF50',
-                bg: 'rgba(76,175,80,0.15)',
-                icon: '⚙️',
-                description: 'Caso en producción'
-            },
-            quality_check: {
-                name: 'Control de Calidad',
-                color: '#3F51B5',
-                bg: 'rgba(63,81,181,0.15)',
-                icon: '✓',
-                description: 'Verificando calidad'
-            },
-            ready: {
-                name: 'Listo para Entrega',
-                color: '#4CAF50',
-                bg: 'rgba(76,175,80,0.15)',
-                icon: '✅',
-                description: 'Caso completado y listo'
-            },
-            delivered: {
-                name: 'Entregado',
-                color: '#4CAF50',
-                bg: 'rgba(76,175,80,0.15)',
-                icon: '🎉',
-                description: 'Caso entregado exitosamente'
-            },
-            on_hold: {
-                name: 'En Espera',
-                color: '#FF9800',
-                bg: 'rgba(255,152,0,0.15)',
-                icon: '⏸️',
-                description: 'Caso pausado temporalmente'
-            }
+        const ESTADOS = {
+            'Recibido': { color: '#2196F3', bg: 'rgba(33,150,243,0.2)', progress: 0 },
+            'En Diseño': { color: '#9C27B0', bg: 'rgba(156,39,176,0.2)', progress: 25 },
+            'En Impresión/Fresado': { color: '#FF9800', bg: 'rgba(255,152,0,0.2)', progress: 50 },
+            'Control de Calidad': { color: '#00BCD4', bg: 'rgba(0,188,212,0.2)', progress: 75 },
+            'Listo para Entrega': { color: '#4CAF50', bg: 'rgba(76,175,80,0.2)', progress: 100 }
         };
 
-        // Base de datos de ejemplo (en producción esto vendría de tu sistema)
-        const casesDB = {
-            'PRODIGY-1234567890': {
-                id: 'PRODIGY-1234567890',
-                patientName: 'María López',
-                doctorName: 'Dr. Carlos Pérez',
-                workType: 'Corona sobre Implante',
-                material: 'Zirconia',
-                shade: 'A2',
-                deliveryDate: '2025-01-30',
-                currentStatus: 'in_design',
-                timeline: [
-                    { status: 'pending_upload', date: '2025-01-23 10:00', note: 'Caso registrado' },
-                    { status: 'received', date: '2025-01-23 10:30', note: 'Archivos recibidos correctamente' },
-                    { status: 'reviewing', date: '2025-01-23 11:00', note: 'Revisión iniciada' },
-                    { status: 'in_design', date: '2025-01-23 14:00', note: 'Diseño en proceso - Técnico: Juan' }
-                ],
-                notes: 'Cliente solicita perfil de emergencia natural'
-            }
-        };
-
-        document.getElementById('searchForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function buscarCaso() {
+            const orden = document.getElementById('searchOrden').value.trim().toUpperCase();
+            const nombre = document.getElementById('searchNombre').value.trim().toLowerCase();
+            const telefono = document.getElementById('searchTelefono').value.trim();
             
-            const query = document.getElementById('searchQuery').value.trim().toUpperCase();
+            const ordenes = JSON.parse(localStorage.getItem('ordenes') || '[]');
+            let encontrado = null;
             
-            // Buscar en la base de datos
-            let found = null;
-            for (let id in casesDB) {
-                const caso = casesDB[id];
-                if (caso.id.includes(query) || caso.patientName.toUpperCase().includes(query)) {
-                    found = caso;
-                    break;
-                }
+            if (orden) {
+                encontrado = ordenes.find(o => o.numeroOrden === orden);
+            } else if (nombre && telefono) {
+                encontrado = ordenes.find(o => 
+                    o.nombrePaciente.toLowerCase().includes(nombre) && 
+                    o.telefono.includes(telefono)
+                );
             }
-
-            if (found) {
-                showCase(found);
+            
+            if (encontrado) {
+                mostrarCaso(encontrado);
             } else {
-                document.getElementById('result').style.display = 'none';
-                document.getElementById('notFound').style.display = 'block';
+                document.getElementById('resultado').style.display = 'none';
+                document.getElementById('noEncontrado').style.display = 'block';
             }
-        });
+        }
 
-        function showCase(caso) {
-            document.getElementById('notFound').style.display = 'none';
-            document.getElementById('result').style.display = 'block';
+        function mostrarCaso(caso) {
+            document.getElementById('noEncontrado').style.display = 'none';
+            document.getElementById('resultado').style.display = 'block';
             
-            // Actualizar información básica
-            document.getElementById('caseName').textContent = `Caso de ${caso.patientName}`;
-            document.getElementById('caseId').textContent = caso.id;
+            // PROTECCIÓN LEY 1581 - Ocultar parcialmente nombre
+            const partes = caso.nombrePaciente.split(' ');
+            const nombreProtegido = partes.map(p => p.substring(0, 2) + '•'.repeat(Math.max(p.length - 2, 0))).join(' ');
             
-            // Badge de estado actual
-            const state = STATES[caso.currentStatus];
-            const badge = document.getElementById('statusBadge');
-            badge.style.background = state.bg;
-            badge.style.color = state.color;
-            badge.style.border = `2px solid ${state.color}`;
-            badge.innerHTML = `${state.icon} ${state.name}`;
+            document.getElementById('nombrePacienteDisplay').textContent = nombreProtegido;
+            document.getElementById('ordenDisplay').textContent = caso.numeroOrden;
             
-            // Timeline
-            const timeline = document.getElementById('timeline');
-            timeline.innerHTML = caso.timeline.map((item, index) => {
-                const itemState = STATES[item.status];
-                const isLast = index === caso.timeline.length - 1;
-                
-                return `
-                    <div style="position:relative;margin-bottom:${isLast ? '0' : '30px'};">
-                        ${!isLast ? `<div style="position:absolute;left:-28px;top:35px;width:2px;height:calc(100% + 30px);background:rgba(255,107,53,0.3);"></div>` : ''}
-                        <div style="position:absolute;left:-40px;top:5px;width:24px;height:24px;border-radius:50%;background:${itemState.color};display:flex;align-items:center;justify-content:center;font-size:0.8rem;">
-                            ${itemState.icon}
-                        </div>
-                        <div style="background:${itemState.bg};border-left:3px solid ${itemState.color};padding:15px 20px;border-radius:10px;">
-                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
-                                <strong style="color:${itemState.color};">${itemState.name}</strong>
-                                <span style="color:rgba(248,250,252,0.6);font-size:0.85rem;">${formatDate(item.date)}</span>
-                            </div>
-                            <p style="color:rgba(248,250,252,0.8);font-size:0.9rem;margin:0;">${item.note}</p>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            // Estado actual
+            const estado = caso.estado || 'Recibido';
+            const estadoInfo = ESTADOS[estado];
+            
+            const badge = document.getElementById('estadoBadge');
+            badge.style.background = estadoInfo.bg;
+            badge.style.color = estadoInfo.color;
+            badge.style.border = `2px solid ${estadoInfo.color}`;
+            badge.textContent = estado;
+            
+            // Barra de progreso
+            document.getElementById('barraProgreso').style.width = estadoInfo.progress + '%';
+            
+            // Actualizar pasos
+            const estadosOrden = Object.keys(ESTADOS);
+            const estadoActualIndex = estadosOrden.indexOf(estado);
+            
+            document.querySelectorAll('.paso').forEach((paso, index) => {
+                const circulo = paso.querySelector('div');
+                if (index < estadoActualIndex) {
+                    circulo.style.background = 'linear-gradient(135deg,#4CAF50,#2E7D32)';
+                    circulo.style.borderColor = '#4CAF50';
+                } else if (index === estadoActualIndex) {
+                    circulo.style.background = 'linear-gradient(135deg,#8E24AA,#6A1B9A)';
+                    circulo.style.borderColor = '#FFD700';
+                    circulo.style.boxShadow = '0 0 20px rgba(255,215,0,0.5)';
+                    circulo.style.transform = 'scale(1.2)';
+                }
+            });
             
             // Detalles
-            document.getElementById('caseDetails').innerHTML = `
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
-                    <div>
-                        <p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Doctor/Clínica</p>
-                        <p style="color:white;font-weight:600;">${caso.doctorName}</p>
-                    </div>
-                    <div>
-                        <p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Tipo de Trabajo</p>
-                        <p style="color:white;font-weight:600;">${caso.workType}</p>
-                    </div>
-                    <div>
-                        <p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Material</p>
-                        <p style="color:white;font-weight:600;">${caso.material}</p>
-                    </div>
-                    <div>
-                        <p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Color</p>
-                        <p style="color:white;font-weight:600;">${caso.shade}</p>
-                    </div>
-                    <div>
-                        <p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Fecha de Entrega</p>
-                        <p style="color:white;font-weight:600;">${formatDate(caso.deliveryDate, true)}</p>
-                    </div>
-                </div>
-                ${caso.notes ? `
-                    <div style="background:rgba(33,150,243,0.1);border-left:3px solid #2196F3;padding:15px;border-radius:8px;margin-top:15px;">
-                        <p style="color:#2196F3;font-weight:600;margin-bottom:8px;">📝 Notas:</p>
-                        <p style="color:rgba(248,250,252,0.9);">${caso.notes}</p>
-                    </div>
-                ` : ''}
+            document.getElementById('detalles').innerHTML = `
+                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Servicio</p><p style="color:white;font-weight:600;">${caso.tipoServicio}</p></div>
+                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Tipo de Caso</p><p style="color:white;font-weight:600;">${caso.tipoCaso}</p></div>
+                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Material</p><p style="color:white;font-weight:600;">${caso.material}</p></div>
+                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Shade</p><p style="color:white;font-weight:600;">${caso.shade}</p></div>
+                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Entrega</p><p style="color:white;font-weight:600;">${new Date(caso.fechaEntrega).toLocaleDateString('es-ES')}</p></div>
+                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Doctor</p><p style="color:white;font-weight:600;">${caso.nombreDoctor}</p></div>
             `;
+            
+            // Mostrar descargas si está listo
+            document.getElementById('zonaDescargas').style.display = 
+                estado === 'Listo para Entrega' ? 'block' : 'none';
+            
+            document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function formatDate(dateStr, dateOnly = false) {
-            const date = new Date(dateStr);
-            const options = dateOnly ? 
-                { year: 'numeric', month: 'long', day: 'numeric' } :
-                { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-            return date.toLocaleDateString('es-ES', options);
+        function descargar(tipo) {
+            const msgs = {
+                stl: 'Descargando archivo STL...',
+                reporte: 'Descargando reporte de diseño...',
+                factura: 'Descargando factura...'
+            };
+            alert(msgs[tipo] + '\n\n(En producción, esto iniciaría la descarga real)');
+        }
+
+        function activarNotificaciones() {
+            const orden = document.getElementById('ordenDisplay').textContent;
+            const msg = `Hola, quiero recibir notificaciones de mi caso ${orden} por WhatsApp`;
+            window.open(`https://wa.me/573219581949?text=${encodeURIComponent(msg)}`, '_blank');
         }
     </script>
+
+    <footer class="footer" style="background: #0a0a0a; padding: 60px 50px 30px; margin-top: 80px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+        <div style="max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 40px;">
+            <div>
+                <h4 style="color: #FFD700; font-size: 16px; margin-bottom: 20px; text-transform: uppercase;">PRODIGY</h4>
+                <ul style="list-style: none;">
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Diseño Dental Digital</li>
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Bogotá, Colombia</li>
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Alta Precisión CAD/CAM</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: #FFD700; font-size: 16px; margin-bottom: 20px; text-transform: uppercase;">CONTACTO</h4>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 10px;"><a href="tel:+573212816716" style="color: rgba(255,255,255,0.7); text-decoration: none;">+57 321 281 6716</a></li>
+                    <li style="margin-bottom: 10px;"><a href="mailto:info@prodigy.com" style="color: rgba(255,255,255,0.7); text-decoration: none;">info@prodigy.com</a></li>
+                    <li style="margin-bottom: 10px;"><a href="https://instagram.com/jackcarvajal" target="_blank" style="color: rgba(255,255,255,0.7); text-decoration: none;">@jackcarvajal</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: #FFD700; font-size: 16px; margin-bottom: 20px; text-transform: uppercase;">SERVICIOS</h4>
+                <ul style="list-style: none;">
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Diseño CAD/CAM</li>
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Implantología</li>
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Ortodoncia</li>
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Estética Dental</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: #FFD700; font-size: 16px; margin-bottom: 20px; text-transform: uppercase;">TECNOLOGÍA</h4>
+                <ul style="list-style: none;">
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Exocad Expert</li>
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">3Shape Design</li>
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Fresado CAM</li>
+                    <li style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Impresión 3D</li>
+                </ul>
+            </div>
+        </div>
+        <div style="text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); font-size: 14px;">
+            <p>© 2025 PRODIGY Digital Dentistry. Bogotá, Colombia</p>
+        </div>
+    </footer>
+
 </body>
 </html>

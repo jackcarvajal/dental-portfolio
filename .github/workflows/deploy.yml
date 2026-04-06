@@ -1,0 +1,58 @@
+# ============================================================
+# PRODIGY — CI/CD: Auto-deploy a GitHub Pages
+# Dispara en cada push a main → minifica CSS → publica sitio
+# ============================================================
+
+name: Deploy PRODIGY
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:           # botón manual en GitHub → Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false    # espera a que termine el deploy anterior
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # 1 — Clonar el repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2 — Node para correr minify.js (usa solo módulos built-in, sin npm install)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3 — Regenerar .min.css en caso de que global-nav.css haya cambiado
+      - name: Minificar CSS
+        run: node minify.js
+
+      # 4 — Configurar GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      # 5 — Subir todo el repositorio como artefacto de Pages
+      #     (excluye carpetas que ya están en .gitignore)
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      # 6 — Publicar
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

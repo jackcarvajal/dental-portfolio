@@ -3,614 +3,1644 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRODIGY | Diseño Dental Digital Premium</title>
+    <title>PRODIGY | Digital Dental Excellence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.css">
     <style>
-        /* Estilos adicionales para las nuevas funcionalidades */
-        .logo-img {
-            height: 50px;
-            width: auto;
-            transition: transform 0.3s ease;
+        /* ============================================
+           PRODIGY - CSS ARQUITECTURA "DOBLE CAJA"
+           ============================================ */
+
+        /* ========================================
+           VARIABLES CSS
+           ======================================== */
+        :root {
+            --luxury-gold: #D4AF37;
+            --exocad-orange: #FF6600;
+            --pro-purple: #9c27b0;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --bg-dark: #050505;
+            --bg-gray: #111111;
+            --bg-card: #1c1c1e;
+            --border-gold: rgba(212, 175, 55, 0.2);
         }
 
-        .logo-img:hover {
-            transform: scale(1.05);
+        /* ========================================
+           RESET Y BASE
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .nav-logo {
-            display: flex;
-            align-items: center;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
-        /* Botón flotante WhatsApp STL */
-        .whatsapp-stl-float {
+        /* ========================================
+           NAVBAR (INTACTO - NO TOCAR)
+           ======================================== */
+        .navbar {
             position: fixed;
-            bottom: 100px;
-            right: 30px;
-            z-index: 998;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-gold);
+            padding: 15px 0;
         }
 
-        .btn-whatsapp-stl {
-            display: flex;
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            gap: 12px;
-            padding: 15px 25px;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
+            padding: 0 40px;
+            gap: 20px;
+        }
+        
+        .nav-left, .nav-right {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-left {
+            justify-content: flex-start;
+        }
+        
+        .nav-right {
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .nav-left a, .nav-right a {
+            color: var(--text-primary);
             text-decoration: none;
-            border-radius: 50px;
+            font-size: 14px;
             font-weight: 600;
-            font-size: 1rem;
-            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
         }
 
-        .btn-whatsapp-stl:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6);
+        .nav-left a:hover, .nav-right a:hover {
+            color: var(--luxury-gold);
         }
 
-        .btn-whatsapp-stl i {
-            font-size: 1.4rem;
+        .nav-logo-box {
+            text-decoration: none;
+            text-align: center;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
-            }
-            50% {
-                box-shadow: 0 8px 40px rgba(37, 211, 102, 0.7);
-            }
+        .nav-logo-box h1 {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin: 0;
+            color: var(--luxury-gold);
         }
 
-        /* Sistema de reacciones */
-        .case-reactions {
+        .nav-logo-box span {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+        }
+
+        .nav-contact-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #F4C430 100%);
+            color: #000 !important;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 13px !important;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ========================================
+           REDES SOCIALES FLOTANTES
+           ======================================== */
+        .social-floating {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-subtle);
+            flex-direction: column;
+            gap: 15px;
+            z-index: 999;
         }
 
-        .reaction-btn {
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 5px;
-            padding: 8px 15px;
-            background: rgba(255,107,53,0.1);
-            border: 1px solid rgba(255,107,53,0.3);
-            border-radius: 20px;
+            justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.3s;
+            text-decoration: none;
+        }
+
+        .social-icon i {
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .social-whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); }
+        .social-instagram { background: linear-gradient(135deg, #E4405F 0%, #C13584 50%, #833AB4 100%); }
+        .social-facebook { background: linear-gradient(135deg, #1877F2 0%, #0C63D4 100%); }
+        .social-linkedin { background: linear-gradient(135deg, #0A66C2 0%, #004182 100%); }
+
+        /* ========================================
+           HERO SECTION (INTACTO - NO TOCAR)
+           ======================================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%);
+            padding: 120px 20px 60px;
+            gap: 20px;
+        }
+
+        .hero-workflow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .wf-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .wf-perfection {
+            color: #C77DFF;
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(199, 125, 255, 0.8);
+        }
+
+        .wf-arrow {
+            width: 30px;
+            height: 15px;
+            filter: drop-shadow(0 0 8px #9C27B0);
+        }
+
+        .hero-title-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-title-main {
+            font-size: clamp(5rem, 13vw, 10rem);
+            font-weight: 900;
+            line-height: 0.9;
+            margin: 0;
+            background: linear-gradient(to bottom, #FFD700 0%, #FDB931 40%, #F4A300 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -4px;
+        }
+
+        .diamond-in-y {
+            position: absolute;
+            right: 8%;
+            top: -15%;
+            font-size: 2.5rem;
+            animation: floatDiamond 3s ease-in-out infinite;
+        }
+
+        @keyframes floatDiamond {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-8px) rotate(5deg); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 8px;
+            color: var(--luxury-gold);
+            text-transform: uppercase;
+            margin: 8px 0;
+        }
+
+        .hero-desc {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-top: 15px;
+            max-width: 700px;
+        }
+
+        /* ============================================
+           ARQUITECTURA "DOBLE CAJA" PARA SECCIONES
+           ============================================ */
+
+        /* CAPA 1: SECTION (Color de fondo full-width) */
+        section {
+            width: 100%;
+            padding: 80px 0;
+        }
+
+        /* CAPA 2: CONTAINER (Contenido centrado con márgenes) */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ========================================
+           RITMO VISUAL - COLORES ALTERNOS
+           ======================================== */
+        
+        /* Negro Puro */
+        #portfolio {
+            background: #000000;
+        }
+
+        /* ========================================
+           JERARQUÍA DE TÍTULOS
+           ======================================== */
+        .section-header {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--luxury-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 50px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        /* ========================================
+           PORTAFOLIO
+           ======================================== */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            margin-top: 50px;
+        }
+
+        .portfolio-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-12px);
+            border-color: #FFD700;
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.3);
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .portfolio-card:hover .image-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            color: rgba(255, 215, 0, 0.1);
+            font-size: 1.5rem;
+            font-weight: 900;
+            pointer-events: none;
+        }
+
+        .card-info {
+            padding: 25px;
+        }
+
+        .card-info h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 12px;
+        }
+
+        .card-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .card-date {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* ========================================
+           GRIDS DE SERVICIOS (COMPACTOS)
+           ======================================== */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .step-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .step-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--luxury-gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .step-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+        }
+
+        .step-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            line-height: 1.5;
             font-size: 0.9rem;
         }
 
-        .reaction-btn:hover {
-            background: rgba(255,107,53,0.2);
-            transform: scale(1.05);
+        /* ========================================
+           PRODUCCIÓN CAM
+           ======================================== */
+        .production-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
         }
 
-        .reaction-btn.reacted {
-            background: rgba(255,107,53,0.3);
-            border-color: var(--exocad-orange);
+        .production-card {
+            background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(255,102,0,0.05));
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            padding: 30px 25px;
+            text-align: center;
+            transition: all 0.3s;
         }
 
-        .reaction-emoji {
+        .production-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--luxury-gold);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.4);
+        }
+
+        .production-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
+        }
+
+        .production-card h3 {
+            color: var(--luxury-gold);
             font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
         }
 
-        .reaction-count {
-            color: var(--soft-white);
-            font-weight: 600;
+        .production-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
+        /* ========================================
+           ACADEMY
+           ======================================== */
+        .academy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .course-card {
+            background: linear-gradient(135deg, #1c1c1e 0%, #0a0e1a 100%);
+            border: 2px solid rgba(255, 102, 0, 0.3);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #D4AF37, #FF6600, #D4AF37);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .course-card:hover::before {
+            opacity: 1;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--exocad-orange);
+            box-shadow: 0 20px 40px rgba(255, 102, 0, 0.4);
+        }
+
+        .course-icon {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 12px rgba(255, 102, 0, 0.6));
+        }
+
+        .course-card h3 {
+            color: var(--exocad-orange);
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .course-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .course-price {
+            color: var(--luxury-gold);
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin: 20px 0;
+        }
+
+        /* ========================================
+           BOTONES DE WHATSAPP PERSONALIZADOS
+           ======================================== */
+        .whatsapp-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: #fff;
+            padding: 20px 30px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
+            border-color: #25D366;
+        }
+
+        .whatsapp-btn i {
+            font-size: 1.5rem;
+        }
+
+        /* ========================================
+           BOTONES
+           ======================================== */
+        .method-btn {
+            padding: 14px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 700;
+            color: white;
+            transition: all 0.3s;
+            margin-top: 20px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .method-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #D4AF37 0%, #F4C430 100%);
+            color: #000 !important;
+        }
+
+        .btn-blue { background: #2196f3; }
+        .btn-purple { background: var(--pro-purple); }
+
+        .btn {
+            padding: 18px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 900;
+            margin: 15px;
+            display: inline-block;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        .btn-orange {
+            background: var(--exocad-orange);
+            color: white;
+        }
+
+        .alert-box {
+            background: linear-gradient(135deg, rgba(212,175,55,0.12), rgba(255,102,0,0.08));
+            border-left: 5px solid var(--luxury-gold);
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .alert-box h3 {
+            color: var(--luxury-gold);
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .alert-box p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        /* ============================================
+           FOOTER - REPARADO CON GRID
+           ============================================ */
+        .footer {
+            background: #000000;
+            width: 100%;
+            padding: 80px 0 30px;
+            border-top: 2px solid var(--luxury-gold);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .footer-col h4 {
+            color: var(--luxury-gold);
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col li {
+            padding: 8px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .footer-col a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: var(--luxury-gold);
+        }
+
+        .footer-copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
         @media (max-width: 768px) {
-            .whatsapp-stl-float {
-                bottom: 80px;
-                right: 20px;
+            .nav-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 0 20px;
             }
-
-            .btn-whatsapp-stl span {
-                display: none;
-            }
-
-            .btn-whatsapp-stl {
-                width: 60px;
-                height: 60px;
-                padding: 0;
+            
+            .nav-left, .nav-right {
                 justify-content: center;
-                border-radius: 50%;
+                flex-wrap: wrap;
+                gap: 15px;
             }
 
-            .btn-whatsapp-stl i {
-                font-size: 1.8rem;
+            .container {
+                padding: 0 15px;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .section-header {
+                font-size: 2rem;
+                margin-bottom: 40px;
+            }
+
+            .hero-title-main {
+                font-size: 4rem;
+            }
+
+            .portfolio-grid,
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
         }
     </style>
 </head>
-<body>
-    <!-- Navigation -->
+<body style="padding-top: 80px;">
+<style>
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 15px 0;
+}
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 40px;
+    gap: 20px;
+}
+.nav-left, .nav-right { display: flex; gap: 30px; }
+.nav-left { justify-content: flex-start; }
+.nav-right { justify-content: flex-end; align-items: center; }
+.nav-left a, .nav-right a {
+    color: #f5f5f7;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+.nav-left a:hover, .nav-right a:hover { color: #D4AF37; }
+.nav-logo-box { text-decoration: none; text-align: center; }
+.nav-logo-box h1 {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    margin: 0;
+    color: #D4AF37;
+}
+.nav-logo-box span {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #f5f5f7;
+    text-transform: uppercase;
+}
+.nav-contact-btn {
+    background: linear-gradient(135deg, #D4AF37 0%, #F4C430 100%);
+    color: #000 !important;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 13px !important;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <img src="images/logo-prodigy.png" alt="PRODIGY Logo" class="logo-img">
+            <div class="nav-left">
+                <a href="index.html#servicios">SERVICIOS</a>
+                <a href="index.html#portfolio">PORTAFOLIO</a>
+                <a href="index.html#workflow-247">SUBIR DISEÑO</a>
+            </div>
+            
+            <a href="index.html" class="nav-logo-box">
+                <h1>PRODIGY</h1>
+                <span>DIGITAL DENTISTRY</span>
             </a>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#remote-design" class="nav-link">Diseño Remoto</a></li>
-                <li><a href="#courses" class="nav-link">Cursos</a></li>
-                <li>
-                    <a href="https://wa.me/573219581949?text=Hola,%20quiero%20más%20información" 
-                       class="nav-cta" target="_blank">
-                        <i class="fab fa-whatsapp"></i> Contactar
-                    </a>
-                </li>
-            </ul>
-            <div class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
+            
+            <div class="nav-right">
+                <a href="index.html#production">PRODUCCIÓN CAM</a>
+                <a href="index.html#academy">ACADEMY</a>
+                <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> CONTACTAR
+                </a>
             </div>
         </div>
     </nav>
 
-    <!-- Botón flotante WhatsApp STL -->
-    <div class="whatsapp-stl-float">
-        <a href="https://wa.me/573219581949?text=Hola,%20quiero%20enviar%20un%20archivo%20STL%20para%20diseño" 
-           class="btn-whatsapp-stl" target="_blank">
-            <i class="fab fa-whatsapp"></i>
-            <span>Enviar Caso STL</span>
-        </a>
-    </div>
 
-    <!-- Social Float -->
-    <div class="social-float">
-        <a href="https://wa.me/573219581949" class="social-btn social-whatsapp" target="_blank">
+
+    <!-- NAVBAR -->
+    
+        <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html#servicios">SERVICIOS</a>
+                <a href="index.html#portfolio">PORTAFOLIO</a>
+                <a href="index.html#workflow-247">SUBIR DISEÑO</a>
+            </div>
+            
+            <a href="index.html" class="nav-logo-box">
+                <h1>PRODIGY</h1>
+                <span>DIGITAL DENTISTRY</span>
+            </a>
+            
+            <div class="nav-right">
+                <a href="index.html#production">PRODUCCIÓN CAM</a>
+                <a href="index.html#academy">ACADEMY</a>
+                <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> CONTACTAR
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- REDES SOCIALES FLOTANTES -->
+    <div class="social-floating">
+        <a href="https://wa.me/573212816716" class="social-icon social-whatsapp" target="_blank">
             <i class="fab fa-whatsapp"></i>
         </a>
-        <a href="https://www.instagram.com/jackcarvajal/" class="social-btn social-instagram" target="_blank">
+        <a href="https://instagram.com/prodigy_dental" class="social-icon social-instagram" target="_blank">
             <i class="fab fa-instagram"></i>
         </a>
-        <a href="https://www.linkedin.com/in/j-alejandro-carvajal/" class="social-btn social-linkedin" target="_blank">
+        <a href="https://facebook.com/prodigy.dental" class="social-icon social-facebook" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://linkedin.com/company/prodigy-dental" class="social-icon social-linkedin" target="_blank">
             <i class="fab fa-linkedin-in"></i>
         </a>
     </div>
 
-    <!-- HOME - Portfolio Section -->
-    <section id="home">
+    <!-- HERO -->
+    <header class="hero">
+        <div class="hero-workflow">
+            <span class="wf-text">YOU SCAN</span>
+            <svg class="wf-arrow" viewBox="0 0 40 20">
+                <path d="M 2 10 L 35 10 M 28 3 L 38 10 L 28 17" stroke="#9C27B0" stroke-width="3" fill="none"/>
+            </svg>
+            
+            <span class="wf-text">WE DESIGN</span>
+            <svg class="wf-arrow" viewBox="0 0 40 20">
+                <path d="M 2 10 L 35 10 M 28 3 L 38 10 L 28 17" stroke="#9C27B0" stroke-width="3" fill="none"/>
+            </svg>
+            
+            <span class="wf-text">WE PRODUCE</span>
+            <svg class="wf-arrow" viewBox="0 0 40 20">
+                <path d="M 2 10 L 35 10 M 28 3 L 38 10 L 28 17" stroke="#9C27B0" stroke-width="3" fill="none"/>
+            </svg>
+            
+            <span class="wf-text wf-perfection">PERFECTION</span>
+        </div>
+
+        <div class="hero-title-container">
+            <h1 class="hero-title-main">PRODIGY</h1>
+            <div class="diamond-in-y">💎</div>
+        </div>
+
+        <p class="hero-subtitle">LUXURY CAD/CAM</p>
+        <p class="hero-desc">Diseño dental digital de alta precisión para tus necesidades</p>
+    </header>
+
+    <!-- PORTAFOLIO (Fondo Negro) -->
+    <section id="servicios" style="background: var(--bg-gray); padding: 45px 0;">
         <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">You Scan. We Design.</h1>
-                <p class="hero-subtitle">
-                    Diseño dental digital de alta precisión con tecnología CAD/CAM<br>
-                    Exocad • 3Shape • Workflow profesional para tu laboratorio
-                </p>
-                <div class="hero-cta">
-                    <a href="#remote-design" class="btn btn-primary">
-                        <i class="fas fa-laptop-code"></i> Servicio Remoto
-                    </a>
-                    <a href="#courses" class="btn btn-secondary">
-                        <i class="fas fa-graduation-cap"></i> Ver Cursos
-                    </a>
+            <h2 class="section-header">Servicios de Diseño CAD/CAM</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">👑</div>
+                    <h3>Coronas & Puentes</h3>
+                    <p>Diseño anatómico perfecto con ajuste pasivo garantizado.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">💎</div>
+                    <h3>Carillas Estéticas</h3>
+                    <p>Mock-ups digitales precisos para sonrisas perfectas.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">🔩</div>
+                    <h3>Implantología</h3>
+                    <p>Barras, guías quirúrgicas y rehabilitaciones full arch.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">📐</div>
+                    <h3>Ortodoncia</h3>
+                    <p>Set-ups digitales y diseño de alineadores.</p>
                 </div>
             </div>
-
-            <div class="portfolio-filters">
-                <button class="filter-btn active" data-filter="all">Todos los Casos</button>
-                <button class="filter-btn" data-filter="rehabilitacion">🔬 Rehabilitación</button>
-                <button class="filter-btn" data-filter="implantes">⚙️ Implantes</button>
-                <button class="filter-btn" data-filter="estetica">✨ Estética</button>
-                <button class="filter-btn" data-filter="ferulas">🛡️ Férulas</button>
-                <button class="filter-btn" data-filter="ortodoncia">📐 Ortodoncia</button>
-            </div>
-
-            <div class="portfolio-grid" id="portfolioGrid"></div>
         </div>
     </section>
 
-    <!-- REMOTE DESIGN Section -->
-    <section id="remote-design">
+    <section id="portfolio">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Diseño Remoto 24/7</h2>
-                <p class="section-subtitle">
-                    Servicio profesional de diseño dental digital. Tú escaneas, nosotros diseñamos.
-                    Entrega en 24-48 horas con calidad garantizada.
-                </p>
+            <h2 class="section-header">PORTAFOLIO DE DISEÑOS</h2>
+            <div class="portfolio-grid" id="portfolio-grid">
+                <!-- JavaScript generará las tarjetas aquí -->
             </div>
+        </div>
+    </section>
 
+    <section id="workflow-247" style="background: var(--bg-dark); padding: 45px 0;">
+        <div class="container">
+            <h2 class="section-header">Diseño Remoto 24/7</h2>
+            <p class="section-subtitle">Servicio profesional de diseño dental digital. Tú escaneas, nosotros diseñamos. Entrega en 24-48 horas con calidad garantizada.</p>
+            
             <div class="steps-grid">
+                <!-- PASO 1 -->
                 <div class="step-card">
-                    <div class="step-number">1</div>
-                    <div class="step-icon">
-                        <i class="fas fa-camera"></i>
-                    </div>
+                    <div class="step-number" style="background: linear-gradient(135deg, #D4AF37, #F4C430); color: #000; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: 900; font-size: 1.5rem;">1</div>
+                    <div class="step-icon">🦷</div>
                     <h3>Escaneas</h3>
                     <p>Realiza el escaneo intraoral con cualquier escáner. Aceptamos todos los formatos.</p>
                 </div>
 
+                <!-- PASO 2 -->
                 <div class="step-card">
-                    <div class="step-number">2</div>
-                    <div class="step-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
+                    <div class="step-number" style="background: linear-gradient(135deg, #D4AF37, #F4C430); color: #000; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: 900; font-size: 1.5rem;">2</div>
+                    <div class="step-icon">📤</div>
                     <h3>Subes Archivos</h3>
                     <p>Envía por Drive, WhatsApp o WeTransfer. Servicio disponible 24/7.</p>
                 </div>
 
+                <!-- PASO 3 -->
                 <div class="step-card">
-                    <div class="step-number">3</div>
-                    <div class="step-icon">
-                        <i class="fas fa-magic"></i>
-                    </div>
+                    <div class="step-number" style="background: linear-gradient(135deg, #D4AF37, #F4C430); color: #000; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: 900; font-size: 1.5rem;">3</div>
+                    <div class="step-icon">⚡</div>
                     <h3>Diseñamos</h3>
-                    <p>Nuestro equipo diseña con Exocad o 3Shape. Calidad profesional certificada.</p>
+                    <p>Diseño especializado de Coronas, Carillas, Puentes, Incrustaciones, Híbridas y Guías Quirúrgicas.</p>
                 </div>
 
+                <!-- PASO 4 -->
                 <div class="step-card">
-                    <div class="step-number">4</div>
-                    <div class="step-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
+                    <div class="step-number" style="background: linear-gradient(135deg, #D4AF37, #F4C430); color: #000; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: 900; font-size: 1.5rem;">4</div>
+                    <div class="step-icon">✅</div>
                     <h3>Recibes Listo</h3>
-                    <p>Archivo optimizado listo para fresar o imprimir en 24-48 horas.</p>
+                    <p>Producción en 24 horas o menos. Archivo optimizado y listo para envío inmediato.</p>
                 </div>
             </div>
 
-            <div class="upload-wrapper">
-                <div class="upload-box">
-                    <div class="upload-icon-big">
-                        <i class="fas fa-cloud-upload-alt"></i>
+            <!-- Call to Action -->
+            <!-- ============================================
+         SECCIÓN: CANALES DE ENVÍO (ICONOS ORIGINALES)
+         ============================================ -->
+            <section class="canales-envio-persuasive" style="background: radial-gradient(ellipse at center, #FFD700 0%, #D4AF37 50%, #B8860B 100%); padding: 50px 0; position: relative; overflow: hidden; margin: 25px 0 0 0;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.05) 10px, rgba(255, 255, 255, 0.05) 20px); pointer-events: none;"></div>
+
+                <div class="container">
+                    <h2 style="text-align: center; font-size: 42px; font-weight: 900; color: #000; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 3px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); position: relative; z-index: 1;">
+                        SELECCIONA TU CANAL DE ENVÍO
+                    </h2>
+
+                    <div class="cajones-persuasive-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 850px; margin: 0 auto; position: relative; z-index: 1;">
+
+                        <!-- WhatsApp (ICONO ORIGINAL) -->
+                        <a href="https://wa.me/573212816716?text=Hola%20PRODIGY.%20Deseo%20enviar%20un%20caso%20de%20forma%20manual.%20(Entiendo%20que%20usar%20el%20formulario%20Web%20es%20más%20rápido%20y%20tiene%20seguimiento%20automático,%20pero%20prefiero%20ayuda%20de%20un%20asesor)" target="_blank" class="cajon-persuasive cajon-whatsapp" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #25D366; border-radius: 20px; padding: 24px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s ease; position: relative; overflow: hidden; box-shadow: 0 6px 25px rgba(37, 211, 102, 0.3); display: block;">
+                            <i class="fab fa-whatsapp" style="font-size: 60px; color: #25D366; margin-bottom: 15px; filter: drop-shadow(0 3px 8px rgba(37, 211, 102, 0.5));"></i>
+                            <h3 style="font-size: 22px; font-weight: 900; margin-bottom: 10px; color: #25D366; text-transform: uppercase; letter-spacing: 1px;">WhatsApp</h3>
+                            <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; margin-bottom: 16px; min-height: 35px;">Chat y Envío Manual</p>
+                            <div style="display: inline-block; padding: 10px 22px; background: #25D366; color: #fff; border-radius: 40px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px;">Comenzar</div>
+                            <div style="display: block; font-size: 11px; color: #FF6B6B; font-weight: 700; margin-top: 8px; line-height: 1.3;">🕒 Espera de Asesor</div>
+                        </a>
+
+                        <!-- Google Drive (ICONO ORIGINAL) -->
+                        <a href="enviar-caso.html" class="cajon-persuasive cajon-drive" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #4285F4; border-radius: 20px; padding: 24px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s ease; position: relative; overflow: hidden; box-shadow: 0 6px 25px rgba(66, 133, 244, 0.3); display: block;">
+                            <i class="fab fa-google-drive" style="font-size: 60px; color: #4285F4; margin-bottom: 15px; filter: drop-shadow(0 3px 8px rgba(66, 133, 244, 0.5));"></i>
+                            <h3 style="font-size: 22px; font-weight: 900; margin-bottom: 10px; color: #4285F4; text-transform: uppercase; letter-spacing: 1px;">Google Drive</h3>
+                            <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; margin-bottom: 16px; min-height: 35px;">Carpetas Pesadas</p>
+                            <div style="display: inline-block; padding: 10px 22px; background: #4285F4; color: #fff; border-radius: 40px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px;">Comenzar</div>
+                            <div style="display: block; font-size: 11px; color: #00FF88; font-weight: 700; margin-top: 8px; line-height: 1.3; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);">⚡ PROCESAMIENTO INMEDIATO</div>
+                        </a>
+
+                        <!-- WeTransfer (ICONO SVG ORIGINAL) -->
+                        <a href="enviar-caso-wetransfer.html" class="cajon-persuasive cajon-wetransfer" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #409FFF; border-radius: 20px; padding: 24px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s ease; position: relative; overflow: hidden; box-shadow: 0 6px 25px rgba(64, 159, 255, 0.3); display: block;">
+                            <div style="margin-bottom: 15px;">
+                                <svg width="60" height="60" viewBox="0 0 512 512" style="filter: drop-shadow(0 3px 8px rgba(64, 159, 255, 0.5));">
+                                    <circle cx="256" cy="256" r="256" fill="#409FFF"/>
+                                    <path d="M256 128L128 256h85.333v128h85.334V256H384z" fill="#fff"/>
+                                </svg>
+                            </div>
+                            <h3 style="font-size: 22px; font-weight: 900; margin-bottom: 10px; color: #409FFF; text-transform: uppercase; letter-spacing: 1px;">WeTransfer</h3>
+                            <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; margin-bottom: 16px; min-height: 35px;">Archivos Gigantes</p>
+                            <div style="display: inline-block; padding: 10px 22px; background: #409FFF; color: #fff; border-radius: 40px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px;">Comenzar</div>
+                            <div style="display: block; font-size: 11px; color: #00FF88; font-weight: 700; margin-top: 8px; line-height: 1.3; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);">⚡ PROCESAMIENTO INMEDIATO</div>
+                        </a>
+
                     </div>
-                    <h3>Envía Tus Archivos</h3>
-                    <p>Elige tu método preferido de envío</p>
-                    
-                    <div class="upload-buttons">
-                        <a href="https://wa.me/573219581949?text=Hola,%20necesito%20enviar%20archivos%20STL%20para%20diseño" 
-                           class="btn-upload whatsapp" target="_blank">
-                            <i class="fab fa-whatsapp"></i> Enviar por WhatsApp
+
+                    <p style="text-align: center; color: rgba(0, 0, 0, 0.7); font-size: 13px; margin-top: 20px; font-weight: 600; position: relative; z-index: 1;">
+                        Al enviar un caso, aceptas nuestras <a href="terminos-y-pagos.html" style="color: #000; text-decoration: underline; font-weight: 800;">Políticas de Servicio</a>
+                    </p>
+                </div>
+            </section>
+
+    <!-- SERVICIOS (Fondo Gris) -->
+    
+
+    <!-- WORKFLOW 24/7 (Fondo Negro) -->
+    
+
+            <!-- ============================================
+                 FRANJA MORADA
+                 ============================================ -->
+            <div class="purple-divider" style="height: 45px; background: linear-gradient(90deg, #8B4789 0%, #9C27B0 50%, #8B4789 100%); position: relative;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: radial-gradient(circle, rgba(139, 71, 137, 0.4) 0%, transparent 70%);"></div>
+            </div>
+
+            <!-- ============================================
+                 BOTONES WHATSAPP (ICONOS ORIGINALES)
+                 ============================================ -->
+            <section style="background: #000; padding: 45px 0;">
+                <div class="container">
+                    <h2 style="text-align: center; font-size: 36px; font-weight: 900; color: #fff; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;">
+                        CONTACTO DIRECTO WHATSAPP
+                    </h2>
+
+                    <div class="whatsapp-buttons-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto;">
+
+                        <!-- Informes Casos Nuevos -->
+                        <a href="https://wa.me/573219581949?text=Hola%20PRODIGY,%20deseo%20información%20para%20enviar%20un%20nuevo%20caso%20de%20diseño." class="whatsapp-btn-card" target="_blank" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <i class="fab fa-whatsapp" style="font-size: 38px; color: #fff;"></i>
+                            <span style="font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">Informes Casos Nuevos</span>
                         </a>
-                        <a href="https://drive.google.com/drive/folders/TU_LINK_AQUI" 
-                           class="btn-upload drive" target="_blank">
-                            <i class="fab fa-google-drive"></i> Subir a Google Drive
+
+                        <!-- Seguimiento de Casos -->
+                        <a href="https://wa.me/573219581949?text=Hola%20PRODIGY,%20necesito%20consultar%20el%20estado%20de%20un%20caso%20enviado." class="whatsapp-btn-card" target="_blank" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <i class="fab fa-whatsapp" style="font-size: 38px; color: #fff;"></i>
+                            <span style="font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">Seguimiento de Casos</span>
                         </a>
+
+                        <!-- Dudas / Soporte -->
+                        <a href="https://wa.me/573219581949?text=Hola%20PRODIGY,%20tengo%20una%20duda%20técnica%20sobre%20un%20diseño." class="whatsapp-btn-card" target="_blank" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <i class="fab fa-whatsapp" style="font-size: 38px; color: #fff;"></i>
+                            <span style="font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">Dudas / Soporte</span>
+                        </a>
+
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
+
+            <style>
+            /* Hover effects para cajones persuasivos */
+            .cajon-persuasive:hover {
+                transform: translateY(-10px) scale(1.02);
+                box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+            }
+
+            .cajon-whatsapp:hover {
+                border-color: #128C7E;
+                box-shadow: 0 15px 45px rgba(37, 211, 102, 0.6);
+            }
+
+            .cajon-whatsapp:hover i {
+                color: #128C7E;
+            }
+
+            .cajon-drive:hover {
+                border-color: #5a9bfc;
+                box-shadow: 0 15px 45px rgba(66, 133, 244, 0.6);
+            }
+
+            .cajon-drive:hover i {
+                color: #5a9bfc;
+            }
+
+            .cajon-wetransfer:hover {
+                border-color: #5ab4ff;
+                box-shadow: 0 15px 45px rgba(64, 159, 255, 0.6);
+            }
+
+            .cajon-wetransfer:hover svg circle {
+                fill: #5ab4ff;
+            }
+
+            /* Hover effects para botones WhatsApp */
+            .whatsapp-btn-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6);
+            }
+
+            /* Responsive */
+            @media (max-width: 1024px) {
+                .cajones-persuasive-grid, .whatsapp-buttons-grid {
+                    grid-template-columns: repeat(2, 1fr) !important;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .canales-envio-persuasive {
+                    padding: 35px 15px !important;
+                }
+
+                .canales-envio-persuasive h2 {
+                    font-size: 32px !important;
+                    margin-bottom: 20px !important;
+                }
+
+                .cajones-persuasive-grid, .whatsapp-buttons-grid {
+                    grid-template-columns: 1fr !important;
+                    gap: 15px !important;
+                }
+
+                .cajon-persuasive {
+                    padding: 22px 18px !important;
+                }
+
+                .whatsapp-btn-card {
+                    padding: 20px 18px !important;
+                }
+            }
+            </style>
     </section>
 
-    <!-- COURSES Section -->
-    <section id="courses">
+    <!-- PRODUCCIÓN CAM (Fondo Gris) -->
+    
+
+    <!-- ACADEMY (Fondo Negro) -->
+    
+    <!-- FOOTER (Fondo Negro con Borde Dorado) -->
+    <section id="production" style="background: var(--bg-gray); padding: 45px 0;">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Cursos de Exocad</h2>
-                <p class="section-subtitle">
-                    Capacitación profesional certificada. Aprende con expertos y lleva tu laboratorio al siguiente nivel.
+            <h2 class="section-header">Producción CAM de Alta Precisión</h2>
+            <p class="section-subtitle">Tecnología de manufactura dental digital con estándares internacionales</p>
+            
+            <div class="production-grid">
+                <div class="production-card">
+                    <div class="production-icon">⚙️</div>
+                    <h3>FRESADO</h3>
+                    <p>Maquinado de circonio y disilicato de litio con tolerancias de ±20 micras. Sistema de 5 ejes con control de calidad automatizado.</p>
+                </div>
+
+                <div class="production-card">
+                    <div class="production-icon">🧊</div>
+                    <h3>Impresión 3D</h3>
+                    <p>Modelos de alta definición con resolución de 25 micras. Resinas biocompatibles certificadas para uso dental profesional.</p>
+                </div>
+
+                <div class="production-card">
+                    <div class="production-icon">💎</div>
+                    <h3>Materiales Premium</h3>
+                    <p>Bloques multicapa de zirconio 3Y-TZP, e.max CAD y PMMA de última generación. Stock permanente de todas las escalas Vita.</p>
+                </div>
+
+                <div class="production-card">
+                    <div class="production-icon">🔬</div>
+                    <h3>Control de Calidad</h3>
+                    <p>Inspección dimensional por coordenadas 3D. Triple verificación: digital, física y clínica antes de cada entrega.</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px; padding: 40px; background: rgba(212, 175, 55, 0.1); border-radius: 20px; border: 2px solid var(--border-gold);">
+                <h3 style="color: var(--luxury-gold); font-size: 1.5rem; margin-bottom: 15px; font-weight: 900;">🏭 CAPACIDAD DE PRODUCCIÓN</h3>
+                <p style="color: var(--text-primary); font-size: 1.1rem; line-height: 1.8;">
+                    <strong style="color: var(--luxury-gold);">50+ unidades diarias</strong> • Fresado y pulido automatizado • 
+                    <strong style="color: var(--luxury-gold);">Entrega exprés disponible</strong> • Envíos nacionales e internacionales
                 </p>
             </div>
+        </div>
+    
 
-            <div class="courses-grid">
+    <!-- ============================================
+         SECCIÓN: TARJETAS DE PRODUCCIÓN CAM
+         ============================================ -->
+
+    <div style="max-width: 800px; margin: 40px auto 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; padding: 0 20px;">
+
+        <!-- FRESADO -->
+        <a href="flujo-fresado.html" class="cajon-persuasive cajon-fresado" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #8B7355; border-radius: 20px; padding: 28px 24px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: block; position: relative; overflow: hidden;">
+            <div style="position: relative; z-index: 2;">
+                <svg viewBox="0 0 120 120" style="width: 80px; height: 80px; margin-bottom: 18px;">
+    <g stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <!-- Base/Mesa -->
+        <rect x="25" y="90" width="70" height="8" fill="#1a1a1a" stroke="#D4AF37"/>
+        <rect x="30" y="98" width="60" height="4" fill="#2a2a2a"/>
+        
+        <!-- Cuerpo principal de la máquina -->
+        <rect x="35" y="40" width="50" height="50" rx="4" fill="#1a1a1a" stroke="#D4AF37" stroke-width="2.5"/>
+        
+        <!-- Ventana frontal (vidrio) -->
+        <rect x="40" y="50" width="40" height="30" fill="rgba(212, 175, 55, 0.1)" stroke="#D4AF37" stroke-width="1.5"/>
+        
+        <!-- Pieza dental dentro -->
+        <path d="M 55 68 Q 55 62 60 62 Q 65 62 65 68 Q 65 72 60 72 Q 55 72 55 68" fill="#FFD700" opacity="0.6"/>
+        
+        <!-- Eje Z vertical -->
+        <rect x="58" y="45" width="4" height="15" fill="#2a2a2a" stroke="#D4AF37"/>
+        
+        <!-- Husillo/Fresa -->
+        <circle cx="60" y="45" r="3" fill="#D4AF37"/>
+        <rect x="58.5" y="38" width="3" height="7" fill="#FFD700"/>
+        <path d="M 58 38 L 60 34 L 62 38" fill="#D4AF37"/>
+        
+        <!-- Panel de control lateral -->
+        <rect x="86" y="55" width="8" height="20" fill="#2a2a2a" stroke="#D4AF37"/>
+        <circle cx="90" cy="60" r="1.5" fill="#FFD700"/>
+        <circle cx="90" cy="65" r="1.5" fill="#D4AF37" opacity="0.5"/>
+        <circle cx="90" cy="70" r="1.5" fill="#D4AF37" opacity="0.5"/>
+        
+        <!-- Ejes de movimiento (indicadores) -->
+        <line x1="33" y1="45" x2="33" y2="35" stroke="#D4AF37" stroke-width="1" opacity="0.6" stroke-dasharray="2,2"/>
+        <line x1="28" y1="40" x2="38" y2="40" stroke="#D4AF37" stroke-width="1" opacity="0.6" stroke-dasharray="2,2"/>
+        
+        <!-- Display digital -->
+        <rect x="42" y="44" width="16" height="4" fill="#000" stroke="#D4AF37" stroke-width="0.5"/>
+        <text x="44" y="47" font-size="2.5" fill="#00FF00" font-family="monospace">88:88</text>
+        
+        <!-- Detalles técnicos -->
+        <circle cx="45" cy="85" r="1.5" fill="#D4AF37" opacity="0.4"/>
+        <circle cx="75" cy="85" r="1.5" fill="#D4AF37" opacity="0.4"/>
+        
+        <!-- Rieles/guías -->
+        <line x1="37" y1="88" x2="83" y2="88" stroke="#D4AF37" stroke-width="1.5" opacity="0.3"/>
+    </g>
+</svg>
+                <h3 style="font-size: 24px; font-weight: 900; margin-bottom: 12px; color: #D4AF37; text-transform: uppercase; letter-spacing: 1px;">FRESADO</h3>
+                <p style="font-size: 15px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; margin-bottom: 18px;">Zirconio & Disilicato<br>Alta Precisión</p>
+                <div style="background: rgba(212, 175, 55, 0.15); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; padding: 14px; font-size: 14px; color: #FFD700; font-weight: 700; margin-top: 10px; line-height: 1.3; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);">⚡ PRODUCCIÓN 24-48H</div>
+            </div>
+        </a>
+
+        <!-- IMPRESIÓN 3D -->
+        <a href="flujo-impresion.html" class="cajon-persuasive cajon-impresion" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #FF6B9D; border-radius: 20px; padding: 28px 24px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: block; position: relative; overflow: hidden;">
+            <div style="position: relative; z-index: 2;">
+                <svg viewBox="0 0 120 120" style="width: 80px; height: 80px; margin-bottom: 18px;">
+                        <g stroke="#FF6B9D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                            <rect x="20" y="30" width="80" height="70" rx="5" fill="#1a1a1a"/>
+                            <rect x="20" y="20" width="80" height="12" rx="3" fill="#2a2a2a"/>
+                            <circle cx="95" cy="26" r="3" fill="#FF6B9D"/>
+                            <rect x="30" y="40" width="60" height="45" fill="#0a0a0a" stroke-width="2"/>
+                            <rect x="40" y="65" width="40" height="3" fill="#FF6B9D" opacity="0.7"/>
+                            <rect x="55" y="45" width="10" height="20" fill="#2a2a2a"/>
+                            <rect x="45" y="42" width="30" height="2" fill="#FF6B9D" opacity="0.8"/>
+                            <rect x="35" y="70" width="50" height="12" fill="#FF6B9D" opacity="0.2" stroke-width="1.5"/>
+                            <rect x="37" y="76" width="46" height="4" fill="#FF6B9D" opacity="0.4"/>
+                            <circle cx="30" cy="92" r="2.5" fill="#FF6B9D" opacity="0.6"/>
+                            <circle cx="40" cy="92" r="2.5" fill="#FF6B9D" opacity="0.6"/>
+                            <rect x="50" y="90" width="15" height="4" rx="2" fill="#FF6B9D" opacity="0.3"/>
+                            <circle cx="60" cy="78" r="2" fill="#FF6B9D"/>
+                            <circle cx="60" cy="78" r="4" opacity="0.3"/>
+                            <rect x="25" y="100" width="8" height="3" fill="#2a2a2a"/>
+                            <rect x="87" y="100" width="8" height="3" fill="#2a2a2a"/>
+                        </g>
+                    </svg>
+                <h3 style="font-size: 24px; font-weight: 900; margin-bottom: 12px; color: #FF6B9D; text-transform: uppercase; letter-spacing: 1px;">Impresión 3D</h3>
+                <p style="font-size: 15px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; margin-bottom: 18px;">Modelos & Guías<br>Resina Biocompatible</p>
+                <div style="background: rgba(255, 107, 157, 0.15); border: 1px solid rgba(255, 107, 157, 0.3); border-radius: 10px; padding: 14px; font-size: 14px; color: #FF6B9D; font-weight: 700; margin-top: 10px; line-height: 1.3; text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);">⚡ ENTREGA 24H</div>
+            </div>
+        </a>
+
+    </div>
+
+    <style>
+        .cajon-fresado:hover {
+            border-color: #D4AF37;
+            box-shadow: 0 15px 45px rgba(212, 175, 55, 0.6);
+            transform: translateY(-5px);
+        }
+
+        .cajon-impresion:hover {
+            border-color: #FF6B9D;
+            box-shadow: 0 15px 45px rgba(255, 107, 157, 0.6);
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .cajon-persuasive {
+                padding: 24px 20px !important;
+            }
+        }
+    </style>
+
+</section>
+
+    <section id="academy" style="background: var(--bg-dark); padding: 45px 0;">
+        <div class="container">
+            <h2 class="section-header" style="color: var(--exocad-orange);">PRODIGY Academy</h2>
+            <p class="section-subtitle">Formación profesional en diseño dental digital CAD/CAM</p>
+            
+            <div class="academy-grid">
+                <!-- Curso Básico -->
                 <div class="course-card">
-                    <div class="course-badge online">💻 ONLINE</div>
-                    <div class="course-icon">
-                        <i class="fas fa-video"></i>
-                    </div>
-                    <h3>Curso Online</h3>
-                    <p>Aprende desde casa con clases en vivo por Zoom. Grabaciones incluidas.</p>
-                    <ul class="course-features">
-                        <li><i class="fas fa-check"></i> Clases en vivo por Zoom</li>
-                        <li><i class="fas fa-check"></i> Acceso a grabaciones</li>
-                        <li><i class="fas fa-check"></i> Material descargable</li>
-                        <li><i class="fas fa-check"></i> Certificado digital</li>
-                        <li><i class="fas fa-check"></i> Soporte 30 días</li>
+                    <div class="course-icon">🎓</div>
+                    <h3>Curso Básico</h3>
+                    <p>Fundamentos de diseño CAD dental. Interfaz, herramientas básicas, flujo de trabajo y casos simples.</p>
+                    <div class="course-price">$299 USD</div>
+                    <ul style="list-style: none; padding: 0; text-align: left; color: var(--text-secondary); font-size: 0.9rem; line-height: 2;">
+                        <li>✓ 20 horas de contenido</li>
+                        <li>✓ Certificado digital</li>
+                        <li>✓ Acceso de por vida</li>
+                        <li>✓ Soporte 24/7</li>
                     </ul>
-                    <a href="https://wa.me/573219581949?text=Hola,%20quiero%20información%20sobre%20el%20CURSO%20ONLINE%20de%20Exocad" 
-                       class="btn-course" target="_blank">
-                        <i class="fab fa-whatsapp"></i> Consultar Disponibilidad
+                    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20quiero%20información%20sobre%20el%20Curso%20Básico%20de%20CAD." style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: var(--exocad-orange); color: #fff; text-decoration: none; border-radius: 50px; font-weight: 700; transition: all 0.3s;">
+                        Más Información
                     </a>
                 </div>
 
-                <div class="course-card featured">
-                    <div class="course-badge presencial">⭐ PRESENCIAL</div>
-                    <div class="featured-ribbon">Más Popular</div>
-                    <div class="course-icon">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
-                    <h3>Curso Presencial</h3>
-                    <p>Capacitación intensiva hands-on en Bogotá con equipos profesionales.</p>
-                    <ul class="course-features">
-                        <li><i class="fas fa-check"></i> Práctica con escáneres reales</li>
-                        <li><i class="fas fa-check"></i> Computador individual Exocad</li>
-                        <li><i class="fas fa-check"></i> Casos clínicos reales</li>
-                        <li><i class="fas fa-check"></i> Certificado físico + digital</li>
-                        <li><i class="fas fa-check"></i> Coffee break y almuerzo</li>
-                        <li><i class="fas fa-check"></i> Grupos reducidos (máx 6)</li>
+                <!-- Curso Avanzado -->
+                <div class="course-card">
+                    <div class="course-icon">🏆</div>
+                    <h3>Curso Avanzado</h3>
+                    <p>Diseño complejo: implantología digital, barras protésicas, guías quirúrgicas y rehabilitaciones full arch.</p>
+                    <div class="course-price">$599 USD</div>
+                    <ul style="list-style: none; padding: 0; text-align: left; color: var(--text-secondary); font-size: 0.9rem; line-height: 2;">
+                        <li>✓ 40 horas de contenido</li>
+                        <li>✓ Casos reales complejos</li>
+                        <li>✓ Mentoría personalizada</li>
+                        <li>✓ Bolsa de trabajo</li>
                     </ul>
-                    <a href="https://wa.me/573219581949?text=Hola,%20quiero%20RESERVAR%20CUPO%20para%20el%20curso%20PRESENCIAL%20de%20Exocad" 
-                       class="btn-course btn-course-featured" target="_blank">
-                        <i class="fab fa-whatsapp"></i> Reservar Cupo Ahora
+                    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20quiero%20información%20sobre%20el%20Curso%20Avanzado%20de%20CAD." style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: var(--exocad-orange); color: #fff; text-decoration: none; border-radius: 50px; font-weight: 700; transition: all 0.3s;">
+                        Más Información
                     </a>
                 </div>
 
+                <!-- Curso Máster -->
                 <div class="course-card">
-                    <div class="course-badge">🎓 EMPRESARIAL</div>
-                    <div class="course-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>In-Company</h3>
-                    <p>Capacitación personalizada para tu equipo en tu laboratorio o clínica.</p>
-                    <ul class="course-features">
-                        <li><i class="fas fa-check"></i> Horario 100% flexible</li>
-                        <li><i class="fas fa-check"></i> Contenido personalizado</li>
-                        <li><i class="fas fa-check"></i> Usamos tu equipo</li>
-                        <li><i class="fas fa-check"></i> Certificados para todos</li>
-                        <li><i class="fas fa-check"></i> Consultoría workflow</li>
+                    <div class="course-icon">💎</div>
+                    <h3>Máster Pro</h3>
+                    <p>Formación completa: desde básico hasta experto. Incluye especialización en estética digital y flujo de trabajo clínico.</p>
+                    <div class="course-price">$999 USD</div>
+                    <ul style="list-style: none; padding: 0; text-align: left; color: var(--text-secondary); font-size: 0.9rem; line-height: 2;">
+                        <li>✓ 80+ horas de contenido</li>
+                        <li>✓ Certificación internacional</li>
+                        <li>✓ 6 meses de mentoría</li>
+                        <li>✓ Prácticas en laboratorio</li>
                     </ul>
-                    <a href="https://wa.me/573219581949?text=Hola,%20necesito%20cotización%20para%20CAPACITACIÓN%20EMPRESARIAL" 
-                       class="btn-course" target="_blank">
-                        <i class="fab fa-whatsapp"></i> Solicitar Cotización
+                    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20quiero%20información%20sobre%20el%20Máster%20Pro%20de%20CAD." style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: var(--luxury-gold); color: #000; text-decoration: none; border-radius: 50px; font-weight: 900; transition: all 0.3s;">
+                        Más Información
                     </a>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 60px;">
+                <h3 style="color: var(--exocad-orange); font-size: 1.8rem; margin-bottom: 20px; font-weight: 900;">🎯 MODALIDADES DE ESTUDIO</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
+                    <div style="background: rgba(255, 102, 0, 0.1); padding: 25px; border-radius: 16px; border: 2px solid rgba(255, 102, 0, 0.3);">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">📹</div>
+                        <h4 style="color: var(--exocad-orange); margin-bottom: 8px;">Online</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Clases grabadas 24/7</p>
+                    </div>
+                    <div style="background: rgba(255, 102, 0, 0.1); padding: 25px; border-radius: 16px; border: 2px solid rgba(255, 102, 0, 0.3);">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🎥</div>
+                        <h4 style="color: var(--exocad-orange); margin-bottom: 8px;">En Vivo</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Sesiones interactivas</p>
+                    </div>
+                    <div style="background: rgba(255, 102, 0, 0.1); padding: 25px; border-radius: 16px; border: 2px solid rgba(255, 102, 0, 0.3);">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🏢</div>
+                        <h4 style="color: var(--exocad-orange); margin-bottom: 8px;">Presencial</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Bogotá, Colombia</p>
+                    </div>
+                    <div style="background: rgba(255, 102, 0, 0.1); padding: 25px; border-radius: 16px; border: 2px solid rgba(255, 102, 0, 0.3);">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🤝</div>
+                        <h4 style="color: var(--exocad-orange); margin-bottom: 8px;">Híbrido</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Lo mejor de ambos</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="footer-grid">
             <div class="footer-col">
                 <h4>PRODIGY</h4>
-                <p>Diseño Dental Digital Profesional</p>
-                <p>Especialistas en CAD/CAM</p>
-                <p>+10 años de experiencia</p>
-                <p>Bogotá, Colombia</p>
+                <ul>
+                    <li>Diseño Dental Digital</li>
+                    <li>Bogotá, Colombia</li>
+                    <li>Alta Precisión CAD/CAM</li>
+                </ul>
             </div>
-
             <div class="footer-col">
-                <h4>Contacto</h4>
-                <a href="https://wa.me/573219581949" target="_blank">
-                    <i class="fab fa-whatsapp"></i> +57 321 958 1949
-                </a>
-                <a href="https://www.instagram.com/jackcarvajal/" target="_blank">
-                    <i class="fab fa-instagram"></i> @jackcarvajal
-                </a>
-                <a href="https://www.linkedin.com/in/j-alejandro-carvajal/" target="_blank">
-                    <i class="fab fa-linkedin"></i> LinkedIn
-                </a>
+                <h4>CONTACTO</h4>
+                <ul>
+                    <li><a href="tel:+573212816716">+57 321 281 6716</a></li>
+                    <li><a href="/cdn-cgi/l/email-protection#85ecebe3eac5f5f7eae1ece2fcabe6eae8"><span class="__cf_email__" data-cfemail="d2bbbcb4bd92a2a0bdb6bbb5abfcb1bdbf">[email&#160;protected]</span></a></li>
+                    <li><a href="https://instagram.com/jackcarvajal" target="_blank">@jackcarvajal</a></li>
+                </ul>
             </div>
-
             <div class="footer-col">
-                <h4>Servicios</h4>
-                <p>• Prótesis CAD/CAM</p>
-                <p>• Guías Quirúrgicas</p>
-                <p>• Alineadores Invisibles</p>
-                <p>• Implantología Digital</p>
-                <p>• Modelos 3D</p>
+                <h4>SERVICIOS</h4>
+                <ul>
+                    <li>Diseño CAD/CAM</li>
+                    <li>Implantología</li>
+                    <li>Ortodoncia</li>
+                    <li>Estética Dental</li>
+                </ul>
             </div>
-
             <div class="footer-col">
-                <h4>Tecnología</h4>
-                <p>Exocad • 3Shape • CEREC</p>
-                <p>Todos los escáneres</p>
-                <p>STL • PLY • OBJ • DCM</p>
-                <p>Diseño Remoto 24/7</p>
+                <h4>TECNOLOGÍA</h4>
+                <ul>
+                    <li>Exocad Expert</li>
+                    <li>3Shape Design</li>
+                    <li>FRESADO</li>
+                    <li>Impresión 3D</li>
+                </ul>
             </div>
         </div>
-
-        <div class="footer-bottom">
-            <p>&copy; 2025 PRODIGY | Diseño Dental Digital Premium</p>
+        <div class="footer-copyright">
+            <p>© 2025 PRODIGY Digital Dentistry. Bogotá, Colombia</p>
         </div>
     </footer>
 
-    <script src="js/patients-data.js"></script>
-    <script src="js/main.js"></script>
+    <!-- SCRIPTS -->
+    <script src="patients-data.js"></script>
+    <script src="main.js"></script>
+    
+    <!-- SCRIPT DE RENDERIZADO DINÁMICO "A PRUEBA DE FALLOS" -->
     <script>
-        // Sistema de reacciones con Local Storage
-        function initReactionSystem() {
-            // Obtener reacciones guardadas
-            const reactions = JSON.parse(localStorage.getItem('prodigy-reactions') || '{}');
+        // =============================================
+        // DATOS DE RESPALDO (FALLBACK)
+        // =============================================
+        const FALLBACK_DATA = [
+            {
+                id: "patient-001",
+                name: "Rehabilitación Full Arch Superior",
+                code: "CASO-001",
+                type: "rehabilitacion",
+                date: "Enero 2025",
+                description: "Rehabilitación completa de arcada superior con 14 unidades cerámicas sobre implantes.",
+                coverImage: "patients/patient-001/cover.jpeg",
+                exocadFile: "patients/patient-001/exocad.html",
+                gallery: []
+            },
+            {
+                id: "patient-002",
+                name: "Carillas Superior e Inferior",
+                code: "PATIENT-002",
+                type: "estetica",
+                date: "2025",
+                description: "Carillas estéticas completas superior e inferior.",
+                coverImage: "patients/patient-002/C.jpeg",
+                exocadFile: "patients/patient-002/felipe pinzon.html",
+                gallery: []
+            }
+        ];
+        
+        // =============================================
+        // RENDERIZADO DINÁMICO CON FALLBACK
+        // =============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Iniciando renderizado de portafolio...');
+            console.log('📁 Verificando carga de datos...');
             
-            // Agregar botones de reacción a cada caso
-            document.querySelectorAll('.portfolio-card').forEach((card, index) => {
-                const caseId = card.dataset.caseId || `case-${index}`;
-                card.dataset.caseId = caseId;
-                
-                const reactionsDiv = document.createElement('div');
-                reactionsDiv.className = 'case-reactions';
-                reactionsDiv.innerHTML = `
-                    <button class="reaction-btn" data-reaction="tooth" data-case="${caseId}">
-                        <span class="reaction-emoji">🦷</span>
-                        <span class="reaction-count">${reactions[caseId]?.tooth || 0}</span>
-                    </button>
-                    <button class="reaction-btn" data-reaction="fire" data-case="${caseId}">
-                        <span class="reaction-emoji">🔥</span>
-                        <span class="reaction-count">${reactions[caseId]?.fire || 0}</span>
-                    </button>
-                    <button class="reaction-btn" data-reaction="diamond" data-case="${caseId}">
-                        <span class="reaction-emoji">💎</span>
-                        <span class="reaction-count">${reactions[caseId]?.diamond || 0}</span>
-                    </button>
+            // Obtener el contenedor
+            const portfolioGrid = document.getElementById('portfolio-grid');
+            
+            if (!portfolioGrid) {
+                console.error('❌ CRÍTICO: No se encontró el contenedor #portfolio-grid');
+                return;
+            }
+            
+            // LÓGICA DE FALLBACK: Usar datos externos o respaldo
+            let dataToUse = null;
+            
+            if (typeof PATIENTS_DATA !== 'undefined' && PATIENTS_DATA && PATIENTS_DATA.length > 0) {
+                console.log(`✅ Datos externos cargados: ${PATIENTS_DATA.length} casos`);
+                dataToUse = PATIENTS_DATA;
+            } else {
+                console.warn('⚠️ Datos externos no disponibles. Usando datos de respaldo...');
+                dataToUse = FALLBACK_DATA;
+                console.log(`✅ Datos de respaldo cargados: ${FALLBACK_DATA.length} casos`);
+            }
+            
+            // Si aún no hay datos, mostrar mensaje
+            if (!dataToUse || dataToUse.length === 0) {
+                console.error('❌ No hay datos disponibles (ni externos ni respaldo)');
+                portfolioGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                        <p style="color: #D4AF37; font-size: 1.5rem; margin-bottom: 20px;">
+                            💎 No hay casos disponibles en este momento
+                        </p>
+                        <p style="color: var(--text-secondary); font-size: 1rem;">
+                            Por favor, verifica que el archivo patients-data.js esté cargado correctamente.
+                        </p>
+                    </div>
                 `;
-                
-                card.querySelector('.portfolio-content').appendChild(reactionsDiv);
+                return;
+            }
+            
+            // Limpiar el contenedor
+            portfolioGrid.innerHTML = '';
+            console.log('🧹 Contenedor limpiado');
+            
+            // Generar tarjetas dinámicamente
+            dataToUse.forEach((patient, index) => {
+                console.log(`📦 Creando tarjeta ${index + 1}: ${patient.name}`);
+                const card = createPatientCard(patient, index);
+                portfolioGrid.appendChild(card);
             });
             
-            // Manejar clics en reacciones
-            document.addEventListener('click', function(e) {
-                const btn = e.target.closest('.reaction-btn');
-                if (!btn) return;
-                
-                const caseId = btn.dataset.case;
-                const reactionType = btn.dataset.reaction;
-                const countSpan = btn.querySelector('.reaction-count');
-                
-                // Obtener reacciones actuales
-                const reactions = JSON.parse(localStorage.getItem('prodigy-reactions') || '{}');
-                if (!reactions[caseId]) reactions[caseId] = {};
-                
-                // Toggle reacción
-                if (btn.classList.contains('reacted')) {
-                    btn.classList.remove('reacted');
-                    reactions[caseId][reactionType] = Math.max(0, (reactions[caseId][reactionType] || 0) - 1);
-                } else {
-                    btn.classList.add('reacted');
-                    reactions[caseId][reactionType] = (reactions[caseId][reactionType] || 0) + 1;
-                }
-                
-                countSpan.textContent = reactions[caseId][reactionType];
-                localStorage.setItem('prodigy-reactions', JSON.stringify(reactions));
+            console.log('✅ Portafolio renderizado correctamente');
+            console.log(`📊 Total de tarjetas: ${dataToUse.length}`);
+        });
+        
+        // =============================================
+        // FUNCIÓN PARA CREAR TARJETA DE PACIENTE
+        // =============================================
+        function createPatientCard(patient, index) {
+            // Crear elemento de tarjeta
+            const card = document.createElement('div');
+            card.className = 'portfolio-card';
+            card.setAttribute('data-patient-id', patient.id);
+            card.style.cursor = 'pointer';
+            
+            // Estrategia de carga de imagen (lazy loading después de las primeras 4)
+            const loadingStrategy = index < 4 ? 'eager' : 'lazy';
+            
+            // Construir HTML de la tarjeta
+            card.innerHTML = `
+                <div class="image-wrapper">
+                    <img src="${patient.coverImage}" 
+                         alt="${patient.name}" 
+                         loading="${loadingStrategy}"
+                         onerror="handleImageError(this, '${patient.id}')">
+                    <div class="watermark">© PRODIGY</div>
+                </div>
+                <div class="card-info">
+                    <h3>${patient.name}</h3>
+                    <p>${patient.description || 'Caso clínico de alta complejidad'}</p>
+                    <span class="card-date">${patient.date || 'Fecha no especificada'}</span>
+                </div>
+            `;
+            
+            // Agregar evento de click para redirigir a página de detalle
+            card.addEventListener('click', function() {
+                console.log(`🔗 Navegando a: patient.html?id=${patient.id}`);
+                window.location.href = `patient.html?id=${patient.id}`;
             });
+            
+            // Efecto hover visual adicional
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-12px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+            
+            return card;
         }
         
-        // Inicializar sistema de reacciones cuando se carguen los casos
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initReactionSystem, 500);
-        });
+        // =============================================
+        // MANEJO DE ERRORES DE IMAGEN (MEJORADO)
+        // =============================================
+        function handleImageError(img, patientId) {
+            console.warn(`⚠️ Error al cargar imagen para: ${patientId}`);
+            console.log(`📸 Ruta fallida: ${img.src}`);
+            
+            // Ocultar la imagen original
+            img.style.display = 'none';
+            
+            // Obtener el wrapper de la imagen
+            const wrapper = img.closest('.image-wrapper');
+            
+            if (wrapper) {
+                // Aplicar degradado de fondo elegante
+                wrapper.style.background = 'linear-gradient(135deg, #1e2433 0%, #0a0e1a 100%)';
+                
+                // Agregar icono de placeholder dorado
+                const placeholder = document.createElement('div');
+                placeholder.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: #D4AF37;
+                    font-size: 4rem;
+                    text-align: center;
+                `;
+                placeholder.innerHTML = '💎<br><span style="font-size: 1rem; letter-spacing: 2px;">PRODIGY</span>';
+                wrapper.appendChild(placeholder);
+                
+                console.log(`✅ Placeholder aplicado para: ${patientId}`);
+            }
+        }
+        
+        // Log de éxito de carga del script
+        console.log('✅ Sistema de renderizado "A Prueba de Fallos" cargado');
+        console.log('📋 Datos de respaldo disponibles:', FALLBACK_DATA.length, 'casos');
     </script>
+    
 </body>
 </html>
-
-<!-- SISTEMA DE PROTECCIÓN INTEGRADO -->
-<script>
-(function() {
-    'use strict';
-    const CONFIG = {
-        watermarkText: '© PRODIGY',
-        watermarkOpacity: 0.08,
-        enableScreenshotProtection: true,
-        enableRightClickBlock: true,
-        enableImageProtection: true
-    };
-
-    // Bloquear teclas de captura
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'PrintScreen' || (e.key === 'F12') || 
-            ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'S' || e.key === 'I')) ||
-            ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 's'))) {
-            e.preventDefault();
-            showAlert();
-        }
-    });
-
-    // Marca de agua en imágenes
-    if (CONFIG.enableImageProtection) {
-        function addWatermark(img) {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
-            ctx.drawImage(img, 0, 0);
-            ctx.globalAlpha = CONFIG.watermarkOpacity;
-            ctx.fillStyle = '#FFD700';
-            ctx.font = 'bold 40px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(CONFIG.watermarkText, canvas.width / 2, canvas.height / 2);
-            ctx.font = 'bold 25px Arial';
-            ctx.fillText(CONFIG.watermarkText, canvas.width / 4, canvas.height / 4);
-            ctx.fillText(CONFIG.watermarkText, (canvas.width * 3) / 4, (canvas.height * 3) / 4);
-            img.src = canvas.toDataURL();
-        }
-
-        function protectImages() {
-            document.querySelectorAll('img:not([data-protected])').forEach(img => {
-                img.setAttribute('data-protected', 'true');
-                if (img.complete) addWatermark(img);
-                else img.addEventListener('load', () => addWatermark(img));
-            });
-        }
-
-        setInterval(protectImages, 1000);
-    }
-
-    // Bloquear clic derecho
-    if (CONFIG.enableRightClickBlock) {
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            showAlert();
-        });
-    }
-
-    // Bloquear arrastrar imágenes
-    document.addEventListener('dragstart', function(e) {
-        if (e.target.tagName === 'IMG') {
-            e.preventDefault();
-            showAlert();
-        }
-    });
-
-    // Proteger texto copiado
-    document.addEventListener('copy', function(e) {
-        const selection = window.getSelection().toString();
-        if (selection.length > 50) {
-            e.preventDefault();
-            e.clipboardData.setData('text/plain', selection + '\n\n' + CONFIG.watermarkText);
-        }
-    });
-
-    function showAlert() {
-        const alert = document.createElement('div');
-        alert.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#1a1a2e,#0a0e1a);padding:40px;border-radius:20px;border:2px solid #FFD700;z-index:999999;text-align:center;max-width:400px;';
-        alert.innerHTML = '<div style="font-size:3rem;margin-bottom:15px;">🔒</div><h3 style="color:#FFD700;margin-bottom:10px;">Contenido Protegido</h3><p style="color:#fff;opacity:0.8;margin-bottom:20px;">© PRODIGY - The Art of Digital Excellence</p><button onclick="this.parentElement.remove()" style="padding:12px 30px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:30px;font-weight:600;cursor:pointer;">Cerrar</button>';
-        document.body.appendChild(alert);
-        setTimeout(() => alert.remove(), 3000);
-    }
-
-    console.log('%c🔒 CONTENIDO PROTEGIDO POR PRODIGY', 'color:#FFD700;font-size:20px;font-weight:bold;');
-})();
-</script>
-<style>
-@media (max-width: 768px) {
-    .logo-img { height: 35px !important; }
-    .social-float { right: 15px !important; bottom: 80px !important; }
-    .social-btn { width: 45px !important; height: 45px !important; }
-    .whatsapp-stl-float { bottom: 20px !important; right: 15px !important; }
-    .btn-whatsapp-stl { width: 55px !important; height: 55px !important; padding: 0 !important; border-radius: 50% !important; }
-    .btn-whatsapp-stl span { display: none !important; }
-    .btn-whatsapp-stl i { font-size: 1.6rem !important; }
-    .portfolio-grid { grid-template-columns: 1fr !important; }
-    .hero-title { font-size: 2rem !important; }
-}
-</style>
-
-<!-- Botón adicional para enviar casos -->
-<style>
-.send-case-float {
-    position: fixed;
-    bottom: 170px;
-    right: 30px;
-    z-index: 998;
-}
-.btn-send-case {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 15px 25px;
-    background: linear-gradient(135deg, #FFD700, #FFA500);
-    color: #0a0e1a;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 1rem;
-    box-shadow: 0 8px 30px rgba(255,215,0,0.4);
-    transition: all 0.3s ease;
-}
-.btn-send-case:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(255,215,0,0.6);
-}
-@media (max-width: 768px) {
-    .send-case-float { bottom: 90px; right: 15px; }
-    .btn-send-case { width: 55px; height: 55px; padding: 0; border-radius: 50%; justify-content: center; }
-    .btn-send-case span { display: none; }
-    .btn-send-case i { font-size: 1.6rem; }
-}
-</style>
-<div class="send-case-float">
-    <a href="enviar-caso.html" class="btn-send-case">
-        <i class="fas fa-paper-plane"></i>
-        <span>Enviar Caso</span>
-    </a>
-</div>
