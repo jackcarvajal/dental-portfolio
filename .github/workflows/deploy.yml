@@ -52,7 +52,15 @@ jobs:
         with:
           path: '.'
 
-      # 6 — Publicar
+      # 6 — Publicar en GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # 7 — Sincronizar a prodigy-web (Vercel → prodigylabdental.com)
+      - name: Push a prodigy-web/principal
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add prodigy-web https://x-access-token:${{ secrets.PRODIGY_WEB_TOKEN }}@github.com/jackcarvajal/prodigy-web.git
+          git push prodigy-web HEAD:principal --force
