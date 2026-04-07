@@ -4137,6 +4137,9 @@
         function generarTarjetaIG() {
             const canvas = document.getElementById('ig-canvas');
             if (!canvas) return;
+            const btn = document.querySelector('button[onclick="generarTarjetaIG()"]');
+            if (btn) { btn.disabled = true; btn.textContent = 'Generando tarjeta...'; }
+            setTimeout(() => {
             const ctx = canvas.getContext('2d');
             canvas.width  = 1080;
             canvas.height = 1080;
@@ -4205,7 +4208,9 @@
                 const a = document.createElement('a');
                 a.href = url; a.download = 'prodigy-caso-' + ordenId + '.png'; a.click();
                 URL.revokeObjectURL(url);
+                if (btn) { btn.disabled = false; btn.textContent = '📸 Compartir en Instagram'; }
             }, 'image/png');
+            }, 60); // fin setTimeout — cede hilo antes del bloqueo CPU
         }
 
         document.addEventListener('contextmenu', e => e.preventDefault());

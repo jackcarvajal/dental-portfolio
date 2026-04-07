@@ -382,6 +382,7 @@
             // Auto-release: mostrar descargas cuando estado es Aprobado o Listo para Entrega
             const puedeDescargar = ['Aprobado', 'Listo para Entrega'].includes(estado);
             document.getElementById('zonaDescargas').style.display = puedeDescargar ? 'block' : 'none';
+            if (puedeDescargar) activarObserverInteres();
 
             // Conectar botón STL con ruta real del bucket dental-cases
             if (puedeDescargar && caso.archivo_stl_path) {
@@ -477,7 +478,7 @@
         }
 
         // ── LEAD SCORING ─────────────────────────────────────────────────────────
-        function registrarLeadActivity(tipo) {
+        function registrarLeadActivity(tipo, interes) {
             const ordenId = document.getElementById('ordenDisplay')?.textContent?.trim()
                          || new URLSearchParams(window.location.search).get('id')
                          || '';
@@ -489,24 +490,52 @@
             if (tipo === 'stl')    data.descargas = (data.descargas || 0) + 1;
             localStorage.setItem(key, JSON.stringify(data));
 
-            const score   = data.visitas + (data.descargas * 3);
+            const score    = data.visitas + (data.descargas * 3);
             const etiqueta = score >= 5 ? 'hot_lead' : score >= 2 ? 'warm' : 'cold';
 
-            if (score >= 2 || tipo === 'stl') {
+            if (score >= 2 || tipo === 'stl' || interes) {
                 try {
                     const sb = getSbSeg();
-                    sb.from('leads').upsert({
+                    const payload = {
                         orden_id:       ordenId,
                         visitas:        data.visitas,
                         descargas_stl:  data.descargas,
                         score,
                         etiqueta,
                         updated_at:     new Date().toISOString()
-                    }, { onConflict: 'orden_id' }).then(({ error }) => {
-                        if (error) console.warn('[PRODIGY] Lead score:', error.message);
-                    });
+                    };
+                    if (interes) payload.interes = interes;
+                    sb.from('leads').upsert(payload, { onConflict: 'orden_id' })
+                      .then(({ error }) => {
+                          if (error) console.warn('[PRODIGY] Lead score:', error.message);
+                      });
                 } catch (_) {}
             }
+        }
+
+        // ── INTERSECTION OBSERVER — intención real del doctor ─────────────────────
+        // Observa zonaDescargas: si está en pantalla ≥30 s → registra interes='descarga'
+        function activarObserverInteres() {
+            const zona = document.getElementById('zonaDescargas');
+            if (!zona || !('IntersectionObserver' in window)) return;
+
+            let _timer = null;
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Inicia cuenta de 30 s al entrar en viewport
+                        if (!_timer) _timer = setTimeout(() => {
+                            registrarLeadActivity('interes', 'descarga_stl_30s');
+                            _timer = null;
+                        }, 30000);
+                    } else {
+                        // Sale del viewport antes de 30 s → cancelar
+                        clearTimeout(_timer);
+                        _timer = null;
+                    }
+                });
+            }, { threshold: 0.5 }); // 50 % del bloque visible
+            observer.observe(zona);
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>

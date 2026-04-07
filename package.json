@@ -1,5 +1,11 @@
 {
+  "scripts": {
+    "lint": "eslint js/flujo-impresion.js js/supabase-client.js js/upload-guard.js js/main.js --max-warnings=0"
+  },
   "dependencies": {
     "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0"
   }
 }

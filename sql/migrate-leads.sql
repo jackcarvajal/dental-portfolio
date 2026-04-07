@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS leads (
     score        INT         NOT NULL DEFAULT 0,
     etiqueta     TEXT        NOT NULL DEFAULT 'cold'
                              CHECK (etiqueta IN ('cold','warm','hot_lead')),
+    interes      TEXT        DEFAULT NULL,  -- 'descarga_stl_30s' | NULL
     created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
 );

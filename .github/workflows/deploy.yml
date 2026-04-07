@@ -63,13 +63,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2 — Node para correr minify.js (usa solo módulos built-in, sin npm install)
+      # 2 — Node para ESLint + minify.js (sin npm install en producción extra)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      # 3 — Regenerar .min.css en caso de que global-nav.css haya cambiado
+      # 3 — ESLint: abortar si hay error de sintaxis o variable no definida
+      - name: Lint JS crítico
+        run: |
+          npm install --save-dev eslint 2>/dev/null
+          npm run lint || { echo "LINT FAILED — corrige errores antes de deploy"; exit 1; }
+
+      # 4 — Regenerar .min.css en caso de que global-nav.css haya cambiado
       - name: Minificar CSS
         run: node minify.js
 

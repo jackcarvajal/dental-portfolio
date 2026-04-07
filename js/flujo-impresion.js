@@ -2292,6 +2292,13 @@
         function generarTarjetaIG() {
             const canvas = document.getElementById('ig-canvas');
             if (!canvas) return;
+
+            // Spinner: bloquear botón y mostrar estado mientras el hilo renderiza
+            const btn = document.querySelector('button[onclick="generarTarjetaIG()"]');
+            if (btn) { btn.disabled = true; btn.textContent = 'Generando tarjeta...'; }
+
+            // Ceder el hilo al browser (60 ms) para que pinte el spinner antes del bloqueo CPU
+            setTimeout(() => {
             const ctx = canvas.getContext('2d');
             canvas.width  = 1080;
             canvas.height = 1080;
@@ -2376,7 +2383,7 @@
             ctx.fillStyle = 'rgba(255,255,255,0.35)';
             ctx.fillText('prodigylabdental.com', 540, 965);
 
-            // Descargar imagen
+            // Descargar imagen y restaurar botón
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 const a   = document.createElement('a');
@@ -2384,7 +2391,9 @@
                 a.download = 'prodigy-caso-' + ordenId + '.png';
                 a.click();
                 URL.revokeObjectURL(url);
+                if (btn) { btn.disabled = false; btn.textContent = '📸 Compartir en Instagram'; }
             }, 'image/png');
+            }, 60); // fin setTimeout
         }
 
         document.addEventListener('contextmenu', e => e.preventDefault());
