@@ -48,24 +48,37 @@
 
 ## AGENTE 3: LÓGICA DE PRODUCCIÓN
 
-### Estado: PENDIENTE ⏳
+### Estado: COMPLETADO ✅
 
-Tareas planificadas:
-- Panel operador: bloquear botón "Finalizar" hasta STL + link Exocad cargados
-- Trigger liberación archivos al estado `Pagado` (webhook ya existe)
-- Campo `foto_salida_path` ya en vista `pedidos_operador` (sql/rls-policies.sql:95)
+| Tarea | Archivo | Estado |
+|---|---|---|
+| Modal "Finalizar" con validación dual | `app/operator-panel.html` | ✅ Activo |
+| Bloqueo botón hasta Exocad + STL + Foto | `operator-panel.html:actualizarBtnFinalizar()` | ✅ Activo |
+| Checklist visual de 3 requisitos | modal `req-exocad/stl/foto` | ✅ Activo |
+| Upload STL con upload-guard validación | `handleFileOperador(stl)` | ✅ Activo |
+| Campo Foto de Control / Nesting | `box-foto` input + validación | ✅ Activo |
+| Auto-move card a Entregado al confirmar | `confirmarEntrega()` | ✅ Activo (simulado) |
+| Stub Supabase update en confirmarEntrega | comentario en código | ⏳ Activar con BD real |
+| PII ocultada en kanban (datos •••) | tarjetas con nombres censurados | ✅ Activo |
+
+### Notas Agente 3:
+- `confirmarEntrega()` contiene el stub de Supabase commentado. Al conectar BD real, descomentar las 2 líneas de `sb.from('pedidos').update(...)`.
+- El trigger de auto-release ya está preparado en `webhook-handler/index.ts` — al recibir `APPROVED`, actualiza `estado: 'Listo para Entrega'` en tabla `pedidos`.
 
 ---
 
 ## AGENTE 4: NEUROMARKETING Y UX
 
-### Estado: PENDIENTE ⏳
+### Estado: COMPLETADO ✅
 
-Tareas planificadas:
-- Spinner de carga en formularios de subida
-- Visor Exocad + tabla de parámetros en detalle de pedido
-- Banner dinámico de cierre de ciclo de producción
-- WhatsApp flotante con ID de caso pre-llenado
+| Tarea | Archivo | Estado |
+|---|---|---|
+| Spinner búsqueda "Procesando archivos..." | `seguimiento-caso.html` | ✅ Activo |
+| Spinner entrega operador (upload) | `app/operator-panel.html` | ✅ Activo |
+| Visor Exocad iframe en detalle de pedido | `seguimiento-caso.html:#visor-exocad-bloque` | ✅ Activo |
+| Tabla de parámetros (Material/Color/Oclusión/etc) | `seguimiento-caso.html:#tabla-parametros` | ✅ Activo |
+| Banner ciclo de producción (urgencia) | `seguimiento-caso.html:#banner-ciclo` | ✅ Activo |
+| WhatsApp flotante con ID de caso | `seguimiento-caso.html:#wa-flotante-caso` | ✅ Activo |
 
 ---
 

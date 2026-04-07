@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="../js/auth-guard.js"></script>
+    <script src="../js/upload-guard.js"></script>
     <style>
         body { visibility: hidden; }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,43 +44,109 @@
         /* KANBAN */
         .kanban-board { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
         @media(max-width:1000px){ .kanban-board { grid-template-columns: 1fr; } }
-
-        .kanban-col {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 14px; padding: 16px;
-        }
-        .kanban-col-header {
-            font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 14px; padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            display: flex; align-items: center; gap: 8px; justify-content: space-between;
-        }
+        .kanban-col { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+        .kanban-col-header { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px; justify-content: space-between; }
         .col-count { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 2px 8px; font-size: 0.68rem; }
 
-        .caso-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 10px; padding: 14px; margin-bottom: 10px; cursor: pointer;
-            transition: all 0.2s;
-        }
+        .caso-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px; margin-bottom: 10px; transition: all 0.2s; }
         .caso-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
         .caso-card .caso-id { font-size: 0.7rem; color: var(--cyan); font-family: monospace; margin-bottom: 4px; }
         .caso-card .caso-paciente { font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
         .caso-card .caso-meta { font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
-        .caso-card .caso-actions { display: flex; gap: 6px; margin-top: 10px; }
+        .caso-card .caso-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
 
-        .btn-xs {
-            padding: 4px 10px; border-radius: 6px; font-size: 0.68rem; font-weight: 700;
-            border: 1px solid; cursor: pointer; background: transparent; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; color: inherit;
-        }
+        .btn-xs { padding: 4px 10px; border-radius: 6px; font-size: 0.68rem; font-weight: 700; border: 1px solid; cursor: pointer; background: transparent; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; color: inherit; }
         .btn-green { color: var(--green); border-color: rgba(0,255,65,0.3); }
         .btn-green:hover { background: rgba(0,255,65,0.1); }
         .btn-cyan  { color: var(--cyan);  border-color: rgba(0,210,255,0.3); }
         .btn-cyan:hover  { background: rgba(0,210,255,0.1); }
         .btn-red   { color: #f87171;      border-color: rgba(239,68,68,0.3); }
         .btn-red:hover   { background: rgba(239,68,68,0.1); }
+        .btn-gold  { color: var(--gold);  border-color: rgba(212,175,55,0.3); }
+        .btn-gold:hover  { background: rgba(212,175,55,0.1); }
 
         .urgente-dot { width: 7px; height: 7px; background: #ef4444; border-radius: 50%; display: inline-block; margin-left: 4px; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
+
+        /* ── MODAL ENTREGA DUAL ── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.82); z-index: 1000;
+            align-items: center; justify-content: center; padding: 16px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: #0d1a12; border: 1px solid rgba(0,255,65,0.25);
+            border-radius: 16px; width: 100%; max-width: 520px;
+            padding: 28px; position: relative; max-height: 92vh; overflow-y: auto;
+        }
+        .modal-title { font-size: 1.05rem; font-weight: 900; color: var(--green); margin-bottom: 6px; }
+        .modal-subtitle { font-size: 0.78rem; color: var(--muted); margin-bottom: 22px; }
+        .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; }
+
+        .form-field { margin-bottom: 16px; }
+        .form-label { font-size: 0.78rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px; display: block; }
+        .form-label .req { color: #ef4444; margin-left: 3px; }
+        .form-input {
+            width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 0.82rem;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus { outline: none; border-color: var(--green); }
+        .form-input.valid  { border-color: var(--green); }
+        .form-input.error  { border-color: #ef4444; }
+
+        /* Upload box */
+        .upload-box {
+            border: 2px dashed rgba(0,255,65,0.2); border-radius: 10px;
+            padding: 18px; text-align: center; cursor: pointer;
+            transition: all 0.2s; position: relative;
+        }
+        .upload-box:hover, .upload-box.drag-over { border-color: var(--green); background: rgba(0,255,65,0.04); }
+        .upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+        .upload-box .ub-icon { font-size: 1.6rem; margin-bottom: 6px; }
+        .upload-box .ub-label { font-size: 0.78rem; font-weight: 700; color: #cbd5e1; }
+        .upload-box .ub-hint  { font-size: 0.68rem; color: var(--muted); margin-top: 3px; }
+        .upload-box .ub-file  { font-size: 0.72rem; color: var(--green); margin-top: 6px; font-weight: 700; word-break: break-all; }
+        .upload-box.uploaded  { border-color: var(--green); background: rgba(0,255,65,0.06); }
+
+        /* Checklist de requisitos */
+        .req-checklist { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 14px; margin-bottom: 20px; }
+        .req-item { display: flex; align-items: center; gap: 10px; font-size: 0.78rem; padding: 5px 0; }
+        .req-item .req-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; flex-shrink: 0; }
+        .req-item.ok   .req-icon { background: rgba(0,255,65,0.15); color: var(--green); }
+        .req-item.pending .req-icon { background: rgba(255,255,255,0.06); color: var(--muted); }
+        .req-item.ok   .req-text { color: var(--green); }
+        .req-item.pending .req-text { color: var(--muted); }
+
+        /* Btn finalizar */
+        .btn-finalizar {
+            width: 100%; padding: 13px; border: none; border-radius: 10px; font-size: 0.9rem;
+            font-weight: 800; cursor: pointer; transition: all 0.25s;
+            background: linear-gradient(135deg, rgba(0,255,65,0.2), rgba(0,255,65,0.1));
+            color: var(--muted); border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-finalizar.ready {
+            background: linear-gradient(135deg, #00b33a, #00FF41);
+            color: #050505; box-shadow: 0 4px 20px rgba(0,255,65,0.35);
+        }
+        .btn-finalizar.ready:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,255,65,0.5); }
+
+        /* Spinner de carga */
+        .upload-spinner {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+            z-index: 2000; align-items: center; justify-content: center; flex-direction: column;
+            gap: 20px;
+        }
+        .upload-spinner.active { display: flex; }
+        .spinner-ring {
+            width: 60px; height: 60px; border: 4px solid rgba(0,255,65,0.15);
+            border-top-color: var(--green); border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner-msg { font-size: 0.92rem; font-weight: 700; color: #fff; text-align: center; max-width: 300px; line-height: 1.5; }
+        .spinner-sub { font-size: 0.72rem; color: var(--muted); text-align: center; }
 
         @media(max-width:768px){ .sidebar { display: none; } }
     </style>
@@ -115,9 +182,9 @@
                 <span><i class="fas fa-inbox"></i> &nbsp;Pendientes</span>
                 <span class="col-count">2</span>
             </div>
-            <div class="caso-card" style="border-color:rgba(239,68,68,0.25);">
+            <div class="caso-card" style="border-color:rgba(239,68,68,0.25);" data-id="PRD-2025-041" data-paciente="J•• L•••••" data-servicio="Diseño Express Posterior" data-material="Zirconio 3Y" data-color="A2" data-piezas="14, 15" data-oclusion="Articulado en MIC" data-espacio-cemento="60 µm">
                 <div class="caso-id">#PRD-2025-041 <span class="urgente-dot"></span></div>
-                <div class="caso-paciente">Juan López</div>
+                <div class="caso-paciente">J•• L•••••</div>
                 <div class="caso-meta">
                     <i class="fas fa-pen-nib" style="color:#D946A6;"></i> Diseño Express Posterior<br>
                     <i class="fas fa-clock" style="color:#fbbf24;"></i> Entrega: hoy 5:00 PM<br>
@@ -128,9 +195,9 @@
                     <button class="btn-xs btn-green" onclick="moverCaso(this,'En Proceso')"><i class="fas fa-play"></i> Iniciar</button>
                 </div>
             </div>
-            <div class="caso-card">
+            <div class="caso-card" data-id="PRD-2025-040" data-paciente="A•• M••••••••" data-servicio="Impresión — Modelo Studio" data-material="Resina Studio" data-color="-" data-piezas="General" data-oclusion="-" data-espacio-cemento="-">
                 <div class="caso-id">#PRD-2025-040</div>
-                <div class="caso-paciente">Ana Martínez</div>
+                <div class="caso-paciente">A•• M••••••••</div>
                 <div class="caso-meta">
                     <i class="fas fa-print" style="color:#00d2ff;"></i> Impresión — Modelo Studio<br>
                     <i class="fas fa-clock" style="color:#94a3b8;"></i> Entrega: mañana 12:00 PM
@@ -148,17 +215,18 @@
                 <span><i class="fas fa-circle-notch fa-spin"></i> &nbsp;En Proceso</span>
                 <span class="col-count">1</span>
             </div>
-            <div class="caso-card" style="border-color:rgba(0,210,255,0.2);">
+            <div class="caso-card" style="border-color:rgba(0,210,255,0.2);" data-id="PRD-2025-039" data-paciente="C•••• R•••••" data-servicio="Fresado — Zirconio 5Y" data-material="Zirconio 5Y" data-color="B1" data-piezas="25, 26, 27" data-oclusion="Carga total" data-espacio-cemento="80 µm">
                 <div class="caso-id">#PRD-2025-039</div>
-                <div class="caso-paciente">Carlos Rivas</div>
+                <div class="caso-paciente">C•••• R•••••</div>
                 <div class="caso-meta">
                     <i class="fas fa-gear" style="color:#D4AF37;"></i> Fresado — Zirconio 5Y<br>
                     <i class="fas fa-clock" style="color:#94a3b8;"></i> Entrega: mañana 10:00 AM<br>
                     <i class="fas fa-tooth"></i> Piezas: 25, 26, 27
                 </div>
                 <div class="caso-actions">
-                    <button class="btn-xs btn-cyan"><i class="fas fa-cloud-upload-alt"></i> Subir final</button>
-                    <button class="btn-xs btn-green" onclick="moverCaso(this,'Revisión')"><i class="fas fa-check"></i> Listo</button>
+                    <button class="btn-xs btn-gold" onclick="abrirModalEntrega(this.closest('.caso-card'))">
+                        <i class="fas fa-upload"></i> Finalizar
+                    </button>
                 </div>
             </div>
         </div>
@@ -169,9 +237,9 @@
                 <span><i class="fas fa-check-double"></i> &nbsp;Revisión / Entregado</span>
                 <span class="col-count">1</span>
             </div>
-            <div class="caso-card" style="border-color:rgba(0,255,65,0.15);">
+            <div class="caso-card" style="border-color:rgba(0,255,65,0.15);" data-id="PRD-2025-038">
                 <div class="caso-id">#PRD-2025-038</div>
-                <div class="caso-paciente">María García</div>
+                <div class="caso-paciente">M•••• G••••••</div>
                 <div class="caso-meta">
                     <i class="fas fa-print" style="color:#00d2ff;"></i> Impresión — Biomodelo FDM<br>
                     <i class="fas fa-check-circle" style="color:var(--green);"></i> Entregado: 2025-03-28
@@ -188,25 +256,240 @@
     <div style="margin-top:28px;background:rgba(0,210,255,0.05);border:1px solid rgba(0,210,255,0.15);border-radius:12px;padding:18px 20px;font-size:0.82rem;color:#94a3b8;">
         <i class="fas fa-lock" style="color:#00d2ff;margin-right:8px;"></i>
         <strong style="color:#00d2ff;">Acceso restringido:</strong> Solo puedes ver los casos que el Admin te ha asignado. Los precios, facturación y datos financieros no están disponibles en este nivel.
-        El Kanban funcional con drag & drop llegará con la integración a Supabase.
     </div>
 </main>
 
+<!-- ═══ MODAL: ENTREGA DUAL (Agente 3) ═══ -->
+<div class="modal-overlay" id="modal-entrega">
+    <div class="modal-box">
+        <button class="modal-close" onclick="cerrarModal()"><i class="fas fa-times"></i></button>
+        <div class="modal-title"><i class="fas fa-flag-checkered"></i> Finalizar Entrega del Caso</div>
+        <div class="modal-subtitle" id="modal-caso-id">Caso #—</div>
+
+        <!-- Checklist de requisitos -->
+        <div class="req-checklist">
+            <div class="req-item pending" id="req-exocad">
+                <div class="req-icon"><i class="fas fa-link"></i></div>
+                <span class="req-text">Link Visor Exocad HTML</span>
+            </div>
+            <div class="req-item pending" id="req-stl">
+                <div class="req-icon"><i class="fas fa-cube"></i></div>
+                <span class="req-text">Archivo STL Final</span>
+            </div>
+            <div class="req-item pending" id="req-foto">
+                <div class="req-icon"><i class="fas fa-camera"></i></div>
+                <span class="req-text">Foto de Control (Nesting)</span>
+            </div>
+        </div>
+
+        <!-- Link Exocad -->
+        <div class="form-field">
+            <label class="form-label">Link Visor Exocad HTML <span class="req">*</span></label>
+            <input type="url" id="input-exocad-link" class="form-input"
+                placeholder="https://viewer.exocad.com/case/..."
+                oninput="validarExocadLink(this)">
+            <div style="font-size:0.68rem;color:var(--muted);margin-top:4px;">
+                Exporta desde Exocad → Archivo → Exportar visor HTML → copia el link.
+            </div>
+        </div>
+
+        <!-- STL Final -->
+        <div class="form-field">
+            <label class="form-label">STL Final <span class="req">*</span></label>
+            <div class="upload-box" id="box-stl"
+                ondragover="event.preventDefault(); this.classList.add('drag-over')"
+                ondragleave="this.classList.remove('drag-over')"
+                ondrop="handleDropOperador(event,'stl')">
+                <input type="file" accept=".stl,.obj,.ply" id="input-stl" onchange="handleFileOperador(this,'stl')">
+                <div class="ub-icon">📦</div>
+                <div class="ub-label">Arrastra el STL aquí o haz clic</div>
+                <div class="ub-hint">Formatos: .stl · .obj · .ply — Máx. 500 MB</div>
+                <div class="ub-file" id="stl-filename"></div>
+            </div>
+        </div>
+
+        <!-- Foto de Control -->
+        <div class="form-field">
+            <label class="form-label">Foto de Control / Nesting <span class="req">*</span>
+                <span style="font-size:0.65rem;color:var(--muted);font-weight:400;">— evidencia ante reclamos técnicos</span>
+            </label>
+            <div class="upload-box" id="box-foto"
+                ondragover="event.preventDefault(); this.classList.add('drag-over')"
+                ondragleave="this.classList.remove('drag-over')"
+                ondrop="handleDropOperador(event,'foto')">
+                <input type="file" accept=".jpg,.jpeg,.png,.webp" id="input-foto" onchange="handleFileOperador(this,'foto')">
+                <div class="ub-icon">📷</div>
+                <div class="ub-label">Foto del anidado / foto de salida</div>
+                <div class="ub-hint">JPG · PNG · WEBP — Máx. 20 MB</div>
+                <div class="ub-file" id="foto-filename"></div>
+            </div>
+        </div>
+
+        <!-- Notas opcionales -->
+        <div class="form-field">
+            <label class="form-label">Notas para el cliente <span style="color:var(--muted);font-weight:400;">(opcional)</span></label>
+            <textarea id="input-notas" class="form-input" rows="3"
+                placeholder="Observaciones, instrucciones de cementación, etc."
+                style="resize:vertical;"></textarea>
+        </div>
+
+        <button class="btn-finalizar" id="btn-confirmar-entrega" disabled onclick="confirmarEntrega()">
+            <i class="fas fa-lock" style="margin-right:6px;"></i> Completa los 3 requisitos para finalizar
+        </button>
+    </div>
+</div>
+
+<!-- ═══ SPINNER DE CARGA (Agente 4) ═══ -->
+<div class="upload-spinner" id="upload-spinner">
+    <div class="spinner-ring"></div>
+    <div class="spinner-msg">🚀 Procesando archivos de ingeniería...</div>
+    <div class="spinner-sub">No cierres esta ventana para asegurar la integridad del diseño</div>
+</div>
+
 <script>
     ProdigyAuth.require('operator');
+
+    /* ── Estado del modal ── */
+    const _entrega = { caseId: null, exocadLink: false, stlFile: null, fotoFile: null };
+
+    function abrirModalEntrega(card) {
+        const id = card.dataset.id || '—';
+        document.getElementById('modal-caso-id').textContent = 'Caso #' + id;
+        _entrega.caseId    = id;
+        _entrega.exocadLink = false;
+        _entrega.stlFile    = null;
+        _entrega.fotoFile   = null;
+        // Reset UI
+        ['input-exocad-link','input-notas'].forEach(id => document.getElementById(id).value = '');
+        ['input-stl','input-foto'].forEach(id => document.getElementById(id).value = '');
+        ['box-stl','box-foto'].forEach(id => document.getElementById(id).classList.remove('uploaded'));
+        ['stl-filename','foto-filename'].forEach(id => document.getElementById(id).textContent = '');
+        ['req-exocad','req-stl','req-foto'].forEach(id => setReq(id, false));
+        actualizarBtnFinalizar();
+        document.getElementById('modal-entrega').classList.add('open');
+    }
+
+    function cerrarModal() {
+        document.getElementById('modal-entrega').classList.remove('open');
+    }
+
+    function setReq(reqId, ok) {
+        const el = document.getElementById(reqId);
+        el.className = 'req-item ' + (ok ? 'ok' : 'pending');
+    }
+
+    function validarExocadLink(input) {
+        const val = input.value.trim();
+        const ok  = val.length > 10 && (val.startsWith('http://') || val.startsWith('https://'));
+        _entrega.exocadLink = ok;
+        input.className = 'form-input ' + (ok ? 'valid' : (val ? 'error' : ''));
+        setReq('req-exocad', ok);
+        actualizarBtnFinalizar();
+    }
+
+    function handleFileOperador(input, tipo) {
+        const file = input.files[0];
+        if (!file) return;
+        const ruleMap = { stl: 'CAD', foto: 'FOTO_SALIDA' };
+        if (window.validateUpload) {
+            const r = validateUpload(file, ruleMap[tipo]);
+            if (!r.valid) { showUploadError(r.error); input.value = ''; return; }
+        }
+        if (tipo === 'stl') {
+            _entrega.stlFile = file;
+            document.getElementById('stl-filename').textContent = '✓ ' + file.name;
+            document.getElementById('box-stl').classList.add('uploaded');
+            setReq('req-stl', true);
+        } else {
+            _entrega.fotoFile = file;
+            document.getElementById('foto-filename').textContent = '✓ ' + file.name;
+            document.getElementById('box-foto').classList.add('uploaded');
+            setReq('req-foto', true);
+        }
+        actualizarBtnFinalizar();
+    }
+
+    function handleDropOperador(event, tipo) {
+        event.preventDefault();
+        const box = event.currentTarget;
+        box.classList.remove('drag-over');
+        const input = box.querySelector('input[type="file"]');
+        const dt = new DataTransfer();
+        if (event.dataTransfer.files[0]) dt.items.add(event.dataTransfer.files[0]);
+        input.files = dt.files;
+        handleFileOperador(input, tipo);
+    }
+
+    function actualizarBtnFinalizar() {
+        const listo = _entrega.exocadLink && _entrega.stlFile && _entrega.fotoFile;
+        const btn = document.getElementById('btn-confirmar-entrega');
+        btn.disabled = !listo;
+        btn.className = 'btn-finalizar' + (listo ? ' ready' : '');
+        btn.innerHTML = listo
+            ? '<i class="fas fa-flag-checkered" style="margin-right:6px;"></i> Confirmar Entrega al Cliente'
+            : '<i class="fas fa-lock" style="margin-right:6px;"></i> Completa los 3 requisitos para finalizar';
+    }
+
+    function confirmarEntrega() {
+        if (!(_entrega.exocadLink && _entrega.stlFile && _entrega.fotoFile)) return;
+        cerrarModal();
+
+        // Mostrar spinner
+        const spinner = document.getElementById('upload-spinner');
+        spinner.classList.add('active');
+
+        // Simular subida (en producción: supabase.storage.from('casos').upload(...))
+        setTimeout(() => {
+            spinner.classList.remove('active');
+            // Mover tarjeta a Entregado
+            const card = document.querySelector(`.caso-card[data-id="${_entrega.caseId}"]`);
+            if (card) {
+                const destCol = document.querySelectorAll('.kanban-col')[2];
+                if (destCol) {
+                    const newMeta = card.querySelector('.caso-meta');
+                    if (newMeta) {
+                        newMeta.innerHTML = `
+                            <i class="fas fa-check-circle" style="color:var(--green);"></i> Entregado: ${new Date().toLocaleDateString('es-CO')}<br>
+                            <i class="fas fa-link" style="color:var(--cyan);"></i> Visor Exocad adjunto
+                        `;
+                    }
+                    const actions = card.querySelector('.caso-actions');
+                    if (actions) actions.innerHTML = '<span style="font-size:0.68rem;color:var(--green);"><i class="fas fa-check"></i> Completado</span>';
+                    card.style.borderColor = 'rgba(0,255,65,0.15)';
+                    destCol.appendChild(card);
+                    actualizarConteos();
+                }
+            }
+            // Toast de confirmación
+            showUploadError('✅ Caso ' + _entrega.caseId + ' entregado. El cliente puede descargar su STL.');
+            // En producción, aquí se actualizaría el estado en Supabase:
+            // sb.from('pedidos').update({ estado: 'Listo para Entrega', archivo_final_path: stlPath, exocad_link: link, foto_salida_path: fotoPath }).eq('codigo', _entrega.caseId)
+        }, 2800);
+    }
 
     function moverCaso(btn, estado) {
         const card = btn.closest('.caso-card');
         const dest = document.querySelectorAll('.kanban-col');
         const map  = { 'En Proceso': 1, 'Revisión': 2 };
         if (dest[map[estado]]) {
+            // Añadir botón "Finalizar" en columna En Proceso
+            if (estado === 'En Proceso') {
+                const actions = card.querySelector('.caso-actions');
+                actions.innerHTML = `
+                    <button class="btn-xs btn-gold" onclick="abrirModalEntrega(this.closest('.caso-card'))">
+                        <i class="fas fa-upload"></i> Finalizar
+                    </button>`;
+            }
             dest[map[estado]].appendChild(card);
-            // Actualizar conteos
-            document.querySelectorAll('.kanban-col').forEach(col => {
-                const count = col.querySelectorAll('.caso-card').length;
-                col.querySelector('.col-count').textContent = count;
-            });
+            actualizarConteos();
         }
+    }
+
+    function actualizarConteos() {
+        document.querySelectorAll('.kanban-col').forEach(col => {
+            const count = col.querySelectorAll('.caso-card').length;
+            col.querySelector('.col-count').textContent = count;
+        });
     }
 </script>
 </body>
