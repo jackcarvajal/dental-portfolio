@@ -1726,9 +1726,11 @@
                 envio = CONFIG.precios_extras.envio_nacional;
             }
 
-            const terminado = STATE.precioTerminado || 0;
-            const total = subtotal + adicionales + express + envio + terminado;
-            
+            const terminado    = STATE.precioTerminado || 0;
+            const valorSeguro  = document.getElementById('seguro-garantia')?.checked ? 5000 : 0;
+            const valorEnvioGPS = Number(document.getElementById('recargo-distancia')?.value) || 0;
+            const total = subtotal + adicionales + express + envio + terminado + valorSeguro + valorEnvioGPS;
+
             // Protección NaN - Si alguna variable es undefined/null
             if (isNaN(total) || total < 0) {
                 console.warn('Error en cálculo: ', {subtotal, adicionales, express, envio});
@@ -2203,7 +2205,9 @@
                         billing_razon:          STATE.billingRazon || null,
                         billing_email:          STATE.billingEmail || null,
                         terminos_aceptados_at:  new Date().toISOString(),
-                        user_agent:             navigator.userAgent.slice(0, 250)
+                        user_agent:             navigator.userAgent.slice(0, 250),
+                        seguro_garantia_activo: document.getElementById('seguro-garantia')?.checked || false,
+                        costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0
                     }]).then(({ error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido no guardado en BD:', _e.message);
                     });

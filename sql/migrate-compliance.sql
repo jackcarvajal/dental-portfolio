@@ -3,10 +3,12 @@
 -- Ejecutar en Supabase SQL Editor
 -- ────────────────────────────────────────────────────────────────
 
--- ── 1. AUDITORÍA LEGAL en pedidos ────────────────────────────────
-ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS terminos_aceptados_at TIMESTAMPTZ;
-ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS ip_registro            TEXT;
-ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS user_agent             TEXT;
+-- ── 1. AUDITORÍA LEGAL + INGRESOS en pedidos ─────────────────────
+ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS terminos_aceptados_at  TIMESTAMPTZ;
+ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS ip_registro             TEXT;
+ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS user_agent              TEXT;
+ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS seguro_garantia_activo  BOOLEAN   DEFAULT false;
+ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS costo_envio             INT       DEFAULT 0;
 
 -- ── 2. HOJA DE VIDA DE EQUIPOS ───────────────────────────────────
 CREATE TABLE IF NOT EXISTS equipo_mantenimiento (
