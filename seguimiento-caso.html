@@ -417,19 +417,24 @@
 
         async function descargar(tipo, ruta) {
             if (tipo === 'stl' && ruta) {
-                // Solicitar URL firmada temporal (1 hora) al bucket dental-cases
-                const sb = getSbSeg();
-                const { data, error } = await sb.storage
-                    .from('dental-cases')
-                    .createSignedUrl(ruta, 3600);
-                if (error || !data?.signedUrl) {
-                    alert('No se pudo generar el enlace de descarga. Contacta soporte.');
-                    return;
+                const spinner = document.getElementById('search-spinner');
+                if (spinner) spinner.style.display = 'block';
+                try {
+                    const sb = getSbSeg();
+                    const { data, error } = await sb.storage
+                        .from('dental-cases')
+                        .createSignedUrl(ruta, 3600);
+                    if (error || !data?.signedUrl) {
+                        alert('No se pudo generar el enlace de descarga. Contacta soporte.');
+                        return;
+                    }
+                    const a = document.createElement('a');
+                    a.href = data.signedUrl;
+                    a.download = ruta.split('/').pop();
+                    a.click();
+                } finally {
+                    if (spinner) spinner.style.display = 'none';
                 }
-                const a = document.createElement('a');
-                a.href = data.signedUrl;
-                a.download = ruta.split('/').pop();
-                a.click();
             } else {
                 // Reporte / factura — pendiente generación real
                 alert('Documento en preparación. Lo recibirás por WhatsApp o correo cuando esté listo.');
@@ -539,5 +544,62 @@
         <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte." class="ux-btn" target="_blank" rel="noopener" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);"><i class="fab fa-whatsapp" style="color:#25D366;"></i></a>
     </div>
 
+
+<script>
+/* ── Service Worker + Web Push — Agente de Comunicaciones ── */
+(function registrarSW() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+
+    navigator.serviceWorker.register('/app/sw.js', { scope: '/' })
+        .then(reg => {
+            // Guardar registro para suscripción futura
+            window._swReg = reg;
+        })
+        .catch(err => console.warn('SW registro fallido:', err));
+})();
+
+/**
+ * Solicita permiso push y suscribe al cliente.
+ * Llamar desde el botón "Activar notificaciones" del panel de seguimiento.
+ * La suscripción se almacena en Supabase → tabla push_subscriptions.
+ */
+async function suscribirNotificaciones(caseId) {
+    if (!window._swReg) {
+        alert('Tu navegador no soporta notificaciones push.');
+        return;
+    }
+    const permiso = await Notification.requestPermission();
+    if (permiso !== 'granted') {
+        alert('Activa los permisos de notificación en tu navegador para recibir alertas de tu pedido.');
+        return;
+    }
+    // VAPID public key — generar con: supabase functions invoke generate-vapid-keys
+    // y pegar la clave pública aquí (base64url)
+    const VAPID_PUBLIC_KEY = Deno?.env?.get?.('VAPID_PUBLIC_KEY') || '';
+    if (!VAPID_PUBLIC_KEY) {
+        console.warn('VAPID_PUBLIC_KEY no configurada — push activo solo localmente.');
+    }
+    try {
+        const sub = await window._swReg.pushManager.subscribe({
+            userVisibleOnly:      true,
+            applicationServerKey: VAPID_PUBLIC_KEY || undefined,
+        });
+        // Guardar suscripción en Supabase
+        const sb = typeof getSbSeg === 'function' ? getSbSeg() : null;
+        if (sb) {
+            await sb.from('push_subscriptions').upsert({
+                case_id:      caseId,
+                endpoint:     sub.endpoint,
+                p256dh:       btoa(String.fromCharCode(...new Uint8Array(sub.getKey('p256dh')))),
+                auth:         btoa(String.fromCharCode(...new Uint8Array(sub.getKey('auth')))),
+                created_at:   new Date().toISOString(),
+            });
+        }
+        console.log('Push activo para caso', caseId);
+    } catch (e) {
+        console.error('Error suscripción push:', e);
+    }
+}
+</script>
 </body>
 </html>

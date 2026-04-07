@@ -1,12 +1,50 @@
-# PRODIGY — Sistema de Pagos v4.0 · FINAL RELEASE
+# PRODIGY — v1.1 API CONNECTED · FINAL RELEASE
 
-## Variables de entorno requeridas (Supabase Secrets)
+## Variables de entorno requeridas (Supabase Dashboard → Settings → Secrets)
 
 | Variable | Descripción |
 |---|---|
 | `WOMPI_INTEGRITY_SECRET` | Clave integridad Wompi (privada) |
-| `PADDLE_API_KEY` | `pdl_live_apikey_01kngjme31ee55wn1xa3ek99he_...` (privada — no en frontend) |
+| `PADDLE_API_KEY` | API Key Paddle Live (privada — nunca en frontend) |
+| `META_ACCESS_TOKEN` | Token System User permanente de la Graph API |
+| `WA_PHONE_ID` | ID numérico del número WhatsApp Business |
+| `META_APP_ID` | ID numérico de la App de Meta (para logs) |
+| `META_PIXEL_ID` | ID del Pixel de Meta para CAPI |
+| `META_TEST_CODE` | Código de prueba CAPI (solo desarrollo, omitir en prod) |
+| `VAPID_PUBLIC_KEY` | Clave pública VAPID para Web Push (generar con `npx web-push generate-vapid-keys`) |
 | `SUPABASE_ANON_KEY` | Clave pública Supabase (ya en frontend) |
+
+---
+
+## AGENTE 5: COMUNICACIONES E INTELIGENCIA (V1.1 — API CONNECTED)
+
+### Estado: SKELETONS DESPLEGADOS — Pendiente credenciales Meta reales
+
+| Tarea | Archivo | Estado |
+|---|---|---|
+| Service Worker Web Push | `app/sw.js` | Desplegado |
+| Registro SW en seguimiento-caso | `seguimiento-caso.html:~543` | Activo |
+| suscribirNotificaciones() | `seguimiento-caso.html` | Activo (VAPID pendiente) |
+| Edge Function WhatsApp | `supabase/functions/notify-wa/index.ts` | Pendiente deploy + credenciales |
+| Edge Function Meta CAPI | `supabase/functions/meta-capi/index.ts` | Pendiente deploy + credenciales |
+| Spinner en descargar() STL | `seguimiento-caso.html:descargar()` | Activo |
+| PayPal return URL → /success | `js/pagos.js:abrirCheckoutPayPal()` | Activo |
+| Paddle successUrl → /success | `js/pagos.js:abrirCheckoutPaddle()` | Activo |
+
+### Mensajes WhatsApp automatizados (notify-wa):
+1. `pago_confirmado` — Trigger: webhook PayPal/Paddle/Wompi → `confirmarEntrega()`
+2. `diseno_listo` — Trigger: operario sube STL + foto → estado `Listo para Entrega`
+3. `recordatorio` — Trigger: Cron si >12h sin aprobación (configurar en Supabase Cron)
+4. `alerta_alejandro` — Trigger: cliente aprueba → notifica a Alejandro con moneda + tipo
+
+### Instrucciones pendientes (Agente 5):
+1. **Meta Credenciales reales** → business.facebook.com → WhatsApp Manager → copiar Phone Number ID real (numérico, ~15 dígitos) → Supabase Secret `WA_PHONE_ID`
+2. **System User Token** → business.facebook.com → Settings → System Users → generar token permanente → `META_ACCESS_TOKEN`
+3. **Pixel ID** → business.facebook.com → Events Manager → tu Pixel → copiar ID → `META_PIXEL_ID`
+4. **VAPID keys** → `npx web-push generate-vapid-keys` → pegar pública en `sw.js` línea ~80 → privada en `VAPID_PUBLIC_KEY` secret
+5. **Deploy funciones** → `supabase functions deploy notify-wa` + `supabase functions deploy meta-capi`
+6. **Tabla push_subscriptions** → crear en Supabase: `case_id text, endpoint text, p256dh text, auth text, created_at timestamptz`
+7. **Página /success** → crear `success.html` que lea `?pedido=ID` y muestre confirmación + dispare `notify-wa` tipo `pago_confirmado`
 
 ---
 

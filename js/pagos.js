@@ -296,7 +296,7 @@ async function abrirCheckoutPayPal({ montoUSD, referencia, descripcion, containe
         }),
         onApprove: (data, actions) => actions.order.capture().then(details => {
             if (onSuccess) onSuccess({ referencia, details });
-            else window.location.href = `seguimiento-caso.html?pedido=${referencia}&pago=ok`;
+            else window.location.href = `https://prodigylabdental.com/success?pedido=${referencia}`;
         }),
         onError: (err) => {
             console.error('PayPal error:', err);
@@ -366,7 +366,7 @@ async function abrirCheckoutPaddle({ montoUSD, referencia, email, containerId, o
             frameStyle: 'width: 100%; background: transparent; border: none;',
             theme: 'dark',
             locale: 'es',
-            successUrl: `${window.location.origin}/seguimiento-caso.html?pedido=${referencia}&pago=ok`
+            successUrl: `https://prodigylabdental.com/success?pedido=${referencia}`
         }
     });
 
