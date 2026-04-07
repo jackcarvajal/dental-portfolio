@@ -749,9 +749,11 @@
                 <button class="payment-btn btn-davi" onclick="showPaymentModal('daviplata');closeModal('modal-exito');">💗 DAVIPLATA</button>
                 <button class="payment-btn btn-banco" onclick="showPaymentModal('banco');closeModal('modal-exito');">🏦 BRE-B</button>
             </div>
+            <button onclick="generarTarjetaIG()" style="width:100%;padding:11px;margin-bottom:10px;background:linear-gradient(135deg,#833AB4,#FD1D1D,#F77737);border:none;border-radius:50px;color:#fff;font-weight:700;font-size:0.9rem;cursor:pointer;letter-spacing:0.5px;">📸 Compartir en Instagram</button>
             <button class="pay-copy" style="width:100%;padding:12px;" onclick="closeModal('modal-exito');location.reload();">+ Nueva Orden</button>
         </div>
     </div>
+    <canvas id="ig-canvas" style="display:none;"></canvas>
     <!-- Overlay del menú -->
     <div class="nav-overlay" id="nav-overlay" onclick="toggleMenu()"></div>
     

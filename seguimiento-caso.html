@@ -376,6 +376,9 @@
                 ? new Date(caso.fecha_entrega).toLocaleDateString('es-CO', {day:'2-digit',month:'long',year:'numeric'})
                 : (caso.fechaEntrega ? new Date(caso.fechaEntrega).toLocaleDateString('es-CO') : '—'));
             
+            // Lead scoring: registrar visita al ver el caso
+            registrarLeadActivity('visita');
+
             // Auto-release: mostrar descargas cuando estado es Aprobado o Listo para Entrega
             const puedeDescargar = ['Aprobado', 'Listo para Entrega'].includes(estado);
             document.getElementById('zonaDescargas').style.display = puedeDescargar ? 'block' : 'none';
@@ -457,6 +460,7 @@
                     a.href = data.signedUrl;
                     a.download = ruta.split('/').pop();
                     a.click();
+                    registrarLeadActivity('stl');
                 } finally {
                     if (spinner) spinner.style.display = 'none';
                 }
@@ -470,6 +474,39 @@
             const orden = document.getElementById('ordenDisplay').textContent;
             const msg = `Hola, quiero recibir notificaciones de mi caso ${orden} por WhatsApp`;
             window.open(`https://wa.me/573212816716?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // ── LEAD SCORING ─────────────────────────────────────────────────────────
+        function registrarLeadActivity(tipo) {
+            const ordenId = document.getElementById('ordenDisplay')?.textContent?.trim()
+                         || new URLSearchParams(window.location.search).get('id')
+                         || '';
+            if (!ordenId || ordenId === '—') return;
+
+            const key  = 'prodigy_lead_' + ordenId;
+            const data = JSON.parse(localStorage.getItem(key) || '{"visitas":0,"descargas":0}');
+            if (tipo === 'visita') data.visitas = (data.visitas || 0) + 1;
+            if (tipo === 'stl')    data.descargas = (data.descargas || 0) + 1;
+            localStorage.setItem(key, JSON.stringify(data));
+
+            const score   = data.visitas + (data.descargas * 3);
+            const etiqueta = score >= 5 ? 'hot_lead' : score >= 2 ? 'warm' : 'cold';
+
+            if (score >= 2 || tipo === 'stl') {
+                try {
+                    const sb = getSbSeg();
+                    sb.from('leads').upsert({
+                        orden_id:       ordenId,
+                        visitas:        data.visitas,
+                        descargas_stl:  data.descargas,
+                        score,
+                        etiqueta,
+                        updated_at:     new Date().toISOString()
+                    }, { onConflict: 'orden_id' }).then(({ error }) => {
+                        if (error) console.warn('[PRODIGY] Lead score:', error.message);
+                    });
+                } catch (_) {}
+            }
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>

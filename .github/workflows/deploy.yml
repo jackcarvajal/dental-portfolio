@@ -20,7 +20,39 @@ concurrency:
   cancel-in-progress: false    # espera a que termine el deploy anterior
 
 jobs:
+  # ── Job 0: Validaciones rápidas antes de desplegar ──────────────
+  validate:
+    name: Validar integridad
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Archivos críticos presentes
+        run: |
+          for f in index.html flujo-impresion.html flujo-fresado.html \
+                   seguimiento-caso.html app/admin-precios.html \
+                   js/flujo-impresion.js js/supabase-client.js; do
+            [ -f "$f" ] && echo "OK: $f" || { echo "FALTA: $f"; exit 1; }
+          done
+
+      - name: Sin imports de supabase-mock en producción
+        run: |
+          if grep -l "supabase-mock" flujo-impresion.html flujo-fresado.html \
+              seguimiento-caso.html 2>/dev/null | grep .; then
+            echo "ERROR: supabase-mock encontrado en archivo de producción"; exit 1
+          fi
+          echo "OK: sin referencias a mock"
+
+      - name: Migraciones SQL presentes
+        run: |
+          for f in sql/migrate-catalogo-completo.sql \
+                   sql/migrate-seguimiento-rpc-v2.sql \
+                   sql/migrate-leads.sql; do
+            [ -f "$f" ] && echo "OK: $f" || echo "WARN: falta $f (no bloquea deploy)"
+          done
+
   deploy:
+    needs: validate
     runs-on: ubuntu-latest
     environment:
       name: github-pages

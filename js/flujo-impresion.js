@@ -2288,6 +2288,105 @@
             if (fields) fields.style.display = document.getElementById('chk-factura').checked ? 'block' : 'none';
         }
 
+        // ── INSTAGRAM SHARE CANVAS ────────────────────────────────────────────────
+        function generarTarjetaIG() {
+            const canvas = document.getElementById('ig-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width  = 1080;
+            canvas.height = 1080;
+
+            // Fondo
+            const bg = ctx.createLinearGradient(0, 0, 1080, 1080);
+            bg.addColorStop(0, '#050505');
+            bg.addColorStop(1, '#0a1628');
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, 1080, 1080);
+
+            // Barras laterales magenta-dorado
+            const barGrad = ctx.createLinearGradient(0, 0, 1080, 0);
+            barGrad.addColorStop(0, '#D946A6');
+            barGrad.addColorStop(1, '#D4AF37');
+            ctx.fillStyle = barGrad;
+            ctx.fillRect(0, 0, 1080, 14);
+            ctx.fillRect(0, 1066, 1080, 14);
+
+            // Marco interior
+            ctx.strokeStyle = 'rgba(217,70,166,0.25)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(50, 50, 980, 980);
+
+            // PRODIGY
+            ctx.textAlign = 'center';
+            ctx.font = 'bold 90px Arial, sans-serif';
+            const logoGrad = ctx.createLinearGradient(200, 0, 880, 0);
+            logoGrad.addColorStop(0, '#D946A6');
+            logoGrad.addColorStop(1, '#D4AF37');
+            ctx.fillStyle = logoGrad;
+            ctx.fillText('PRODIGY', 540, 170);
+
+            ctx.font = '26px Arial, sans-serif';
+            ctx.fillStyle = 'rgba(255,255,255,0.45)';
+            ctx.fillText('LABORATORIO DENTAL DIGITAL — CAD/CAM', 540, 215);
+
+            // Divisor
+            ctx.strokeStyle = 'rgba(212,175,55,0.4)';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(140, 248); ctx.lineTo(940, 248); ctx.stroke();
+
+            // Datos del caso
+            const ordenId    = document.getElementById('exito-orden-id')?.textContent || STATE.ordenId || '—';
+            const cliente    = document.getElementById('exito-cliente')?.textContent   || STATE.nombreCliente || '—';
+            const total      = document.getElementById('exito-total')?.textContent     || STATE.total || '—';
+            const servicio   = (CONFIG.materiales?.[STATE.materialTipo]?.nom || STATE.materialTipo || '—');
+            const submat     = STATE.submaterialNombre || '';
+            const fechaTxt   = STATE.fechaEntregaTxt || '';
+
+            const rows = [
+                ['ID Orden',  ordenId],
+                ['Doctor',    cliente],
+                ['Servicio',  servicio + (submat ? ' — ' + submat : '')],
+                ['Total',     total],
+                ['Entrega',   fechaTxt || '—'],
+            ];
+
+            let y = 320;
+            rows.forEach(([label, value]) => {
+                ctx.textAlign = 'left';
+                ctx.font = '24px Arial, sans-serif';
+                ctx.fillStyle = 'rgba(255,255,255,0.45)';
+                ctx.fillText(label.toUpperCase(), 150, y);
+                ctx.font = 'bold 34px Arial, sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(value, 150, y + 44);
+                y += 110;
+            });
+
+            // Divisor inferior
+            ctx.strokeStyle = 'rgba(217,70,166,0.35)';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(140, 890); ctx.lineTo(940, 890); ctx.stroke();
+
+            // Pie
+            ctx.textAlign = 'center';
+            ctx.font = 'bold 26px Arial, sans-serif';
+            ctx.fillStyle = '#D4AF37';
+            ctx.fillText('Tecnología CAD/CAM · Alta Precisión · Bogotá', 540, 930);
+            ctx.font = '22px Arial, sans-serif';
+            ctx.fillStyle = 'rgba(255,255,255,0.35)';
+            ctx.fillText('prodigylabdental.com', 540, 965);
+
+            // Descargar imagen
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a   = document.createElement('a');
+                a.href     = url;
+                a.download = 'prodigy-caso-' + ordenId + '.png';
+                a.click();
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || 
