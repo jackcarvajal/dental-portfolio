@@ -1171,6 +1171,36 @@
             if (STATE.observaciones) msg += `📝 *Indicaciones:* ${STATE.observaciones}\n`;
             msg += `\n_✅ Acepto los términos y condiciones PRODIGY · Diseño CAD_`;
 
+            // ── Guardar en Supabase ───────────────────────────────────────────
+            const _nonce = Math.random().toString(36).substr(2,12).toUpperCase();
+            try {
+                const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
+                if (_sb) {
+                    _sb.from('pedidos').insert([{
+                        codigo:                STATE.ordenId,
+                        doctor:                STATE.nombreCliente,
+                        whatsapp:              STATE.whatsappCliente,
+                        servicio:              STATE.subtipoNombre || STATE.categoriaNombre,
+                        material:              STATE.categoriaKey,
+                        submaterial:           STATE.subtipoId,
+                        cantidad:              cantidad,
+                        total:                 typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total,
+                        estado:                'Borrador',
+                        link_stl:              STATE.linkSTL,
+                        nonce:                 _nonce,
+                        flujo:                 'diseno',
+                        terminos_aceptados_at: new Date().toISOString(),
+                        user_agent:            navigator.userAgent.slice(0, 250),
+                        seguro_garantia_activo: false,
+                        costo_envio:           0
+                    }]).then(({ error: _e }) => {
+                        if (_e) console.warn('[PRODIGY] Pedido diseño no guardado:', _e.message);
+                    });
+                }
+            } catch(_e2) { /* silencioso */ }
+
+            msg += `\n🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso.html?id=${STATE.ordenId}&key=${_nonce}\n`;
+
             try {
                 window.open(`https://wa.me/573228774481?text=${encodeURIComponent(msg)}`, '_blank');
                 document.getElementById('exito-id').textContent      = STATE.ordenId;
@@ -1255,13 +1285,12 @@
             new google.translate.TranslateElement({pageLanguage:'es',includedLanguages:'en,pt,fr'}, 'google_translate_element');
         };
         function toggleTheme() {
-            const light = document.body.classList.toggle('light-mode');
-            const btn = document.getElementById('theme-btn');
-            if (btn) btn.textContent = light ? '☀️' : '🌙';
-            localStorage.setItem('prodigy_theme', light ? 'light' : 'dark');
+            const light = document.body.classList.toggle('light-theme');
+            document.querySelectorAll('[id="theme-btn"]').forEach(b => b.textContent = light ? '☀️' : '🌙');
+            localStorage.setItem('theme', light ? 'light' : 'dark');
         }
-        if (localStorage.getItem('prodigy_theme') === 'light') {
-            document.body.classList.add('light-mode');
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-theme');
             setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
         }
     </script>
@@ -1280,6 +1309,8 @@
     <div id="google_translate_element" style="position:fixed;bottom:90px;right:80px;z-index:9999;display:none;background:rgba(0,0,0,0.92);border:1px solid rgba(212,175,55,0.3);border-radius:12px;padding:10px 14px;"></div>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="js/supabase-client.js"></script>
     <script src="js/upload-guard.js"></script>
     <script src="js/pagos.js"></script>
     <script>
