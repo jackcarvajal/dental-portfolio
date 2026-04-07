@@ -34,7 +34,7 @@ const RECARGAS: Record<string, { pct: number; moneda: "COP" | "USD" | "EUR" }> =
     wompi:         { pct: 0.03,  moneda: "COP" }, // PSE / tarjeta Colombia
     transferencia: { pct: 0,     moneda: "COP" }, // Sin comisión
     paypal:        { pct: 0.054, moneda: "USD" }, // Internacional retail
-    paddle:        { pct: 0.054, moneda: "USD" }, // B2B / Merchant of Record
+    paddle:        { pct: 0.07,  moneda: "USD" }, // Merchant of Record — 7%
 };
 
 function json(data: unknown, status = 200) {

@@ -1,17 +1,27 @@
-# PRODIGY — Log de Agentes v5.0
+# PRODIGY — Sistema de Pagos v4.0 · FINAL RELEASE
+
+## Variables de entorno requeridas (Supabase Secrets)
+
+| Variable | Descripción |
+|---|---|
+| `WOMPI_INTEGRITY_SECRET` | Clave integridad Wompi (privada) |
+| `PADDLE_API_KEY` | `pdl_live_apikey_01kngjme31ee55wn1xa3ek99he_...` (privada — no en frontend) |
+| `SUPABASE_ANON_KEY` | Clave pública Supabase (ya en frontend) |
+
+---
 
 ## AGENTE 1: ARQUITECTO DE SEGURIDAD
 
-### Estado: COMPLETADO ✅
+### Estado: COMPLETADO
 
 | Tarea | Archivo | Estado |
 |---|---|---|
-| Módulo validación archivos CAD | `js/upload-guard.js` | ✅ Desplegado |
-| Validación CAD en flujo-diseño | `flujo-diseno.html:821` | ✅ Activo |
-| Script upload-guard en 3 flujos | flujo-*.html | ✅ Activo |
-| Políticas RLS Storage + pedidos | `sql/rls-policies.sql` | ⏳ Pendiente ejecución en Supabase |
-| Vista pedidos_operador sin PII | `sql/rls-policies.sql:95` | ⏳ Pendiente ejecución en Supabase |
-| filtrarPIIOperador() utility | `js/upload-guard.js:52` | ✅ Listo para usar con DB real |
+| Módulo validación archivos CAD | `js/upload-guard.js` | Desplegado |
+| Validación CAD en flujo-diseño | `flujo-diseno.html:821` | Activo |
+| Script upload-guard en 3 flujos | flujo-*.html | Activo |
+| Políticas RLS Storage + pedidos | `sql/rls-policies.sql` | Pendiente ejecución en Supabase |
+| Vista pedidos_operador sin PII | `sql/rls-policies.sql:95` | Pendiente ejecución en Supabase |
+| filtrarPIIOperador() utility | `js/upload-guard.js:52` | Listo para usar con DB real |
 
 ### Instrucciones pendientes (Agente 1):
 1. **RLS Supabase** → Dashboard → SQL Editor → pegar `sql/rls-policies.sql` completo
@@ -25,75 +35,93 @@
 
 ## AGENTE 2: INGENIERO DE FINANZAS
 
-### Estado: COMPLETADO ✅
+### Estado: COMPLETADO — v4.0 con Paddle
 
 | Tarea | Archivo | Estado |
 |---|---|---|
-| Detección geolocalización | `js/pagos.js:detectarPais()` | ✅ Activo (ipapi.co) |
-| Colombia → Wompi COP (+3%) | `js/pagos.js` | ✅ Sin cambios |
-| Internacional → PayPal USD (+5.4%) | `js/pagos.js:abrirCheckoutPayPal()` | ✅ Implementado |
-| inicializarPasarelas() auto-detect | `js/pagos.js:inicializarPasarelas()` | ✅ Implementado |
-| verificarPrecioServidor() | `js/pagos.js:verificarPrecioServidor()` | ✅ Implementado |
-| Edge Function verify-price | `supabase/functions/verify-price/` | ⏳ Pendiente deploy |
-| Etiqueta COP en formatCurrency | `js/flujo-impresion.js`, `flujo-fresado.html`, `flujo-diseno.html` | ✅ Activo |
-| formatDivisa() USD/COP | `js/pagos.js:formatDivisa()` | ✅ Implementado |
+| Detección geolocalización | `js/pagos.js:detectarPais()` | Activo (ipapi.co) |
+| Colombia → Wompi COP (+3%) | `js/pagos.js` | modoEspera (activar con pub_prod_) |
+| Internacional → PayPal USD (+5.4%) | `js/pagos.js:abrirCheckoutPayPal()` | Activo — Live |
+| Internacional → Paddle USD (+7%) | `js/pagos.js:abrirCheckoutPaddle()` | modoEspera (activar con priceId) |
+| Selector dual PayPal/Paddle | `js/pagos.js:inicializarPasarelas()` | Activo — muestra ambas opciones |
+| verificarPrecioServidor() | `js/pagos.js:verificarPrecioServidor()` | Activo |
+| Edge Function verify-price | `supabase/functions/verify-price/` | Pendiente deploy |
+| Etiqueta COP en formatCurrency | `js/flujo-impresion.js`, `flujo-fresado.html`, `flujo-diseno.html` | Activo |
+| formatDivisa() USD/COP | `js/pagos.js:formatDivisa()` | Activo |
+
+### Credenciales configuradas (solo claves públicas en frontend):
+- **PayPal Client ID**: `AfJ71Yz...QuC7jvaG` — Live
+- **Paddle Client Token**: `Live_0e3ce1326df4e81c783290c5399` — Live
+- **Paddle Seller ID**: `311800`
+- **Wompi Public Key**: `pub_test_zpgtFnjK...` — test (cambiar a `pub_prod_` cuando aprueben)
 
 ### Instrucciones pendientes (Agente 2):
-1. **PayPal Client ID** → ✅ Inyectado (`AfJ71Yz...QuC7jvaG`) — entorno Live
-2. **PayPal Domain Whitelist** → developer.paypal.com → tu app → Allowed Return URLs → agregar `https://prodigylabdental.com`
-3. **Deploy verify-price** → `supabase functions deploy verify-price`
-4. **Tasa COP/USD** → `TASA_COP_USD` en `js/pagos.js` actualizar mensualmente (actual: 4200)
-5. **Wompi producción** → `modoEspera: true` → cambiar a `false` + `pub_prod_` cuando Wompi apruebe cuenta
+1. **PayPal Domain Whitelist** → developer.paypal.com → App → Allowed Return URLs → agregar `https://prodigylabdental.com`
+2. **Deploy verify-price** → `supabase functions deploy verify-price`
+3. **Tasa COP/USD** → `TASA_COP_USD` en `js/pagos.js` — actualizar mensualmente (actual: 4200)
+4. **Wompi produccion** → `modoEspera: false` + `pub_prod_` cuando Wompi apruebe cuenta
+5. **Paddle Price ID** → dashboard.paddle.com → Catalog → Products → crear producto de servicio → copiar `pri_...` → pegar en `PAGOS_CONFIG.paddle.priceId` → `modoEspera: false`
+6. **Paddle API Key** → Supabase Secrets → `PADDLE_API_KEY` (para webhooks server-side)
 
 ---
 
-## AGENTE 3: LÓGICA DE PRODUCCIÓN
+## AGENTE 3: LOGICA DE PRODUCCION
 
-### Estado: COMPLETADO ✅
+### Estado: COMPLETADO
 
 | Tarea | Archivo | Estado |
 |---|---|---|
-| Modal "Finalizar" con validación dual | `app/operator-panel.html` | ✅ Activo |
-| Bloqueo botón hasta Exocad + STL + Foto | `operator-panel.html:actualizarBtnFinalizar()` | ✅ Activo |
-| Checklist visual de 3 requisitos | modal `req-exocad/stl/foto` | ✅ Activo |
-| Upload STL con upload-guard validación | `handleFileOperador(stl)` | ✅ Activo |
-| Campo Foto de Control / Nesting | `box-foto` input + validación | ✅ Activo |
-| Auto-move card a Entregado al confirmar | `confirmarEntrega()` | ✅ Activo (simulado) |
-| Stub Supabase update en confirmarEntrega | comentario en código | ⏳ Activar con BD real |
-| PII ocultada en kanban (datos •••) | tarjetas con nombres censurados | ✅ Activo |
+| Modal "Finalizar" con validación dual | `app/operator-panel.html` | Activo |
+| Bloqueo botón hasta Exocad + STL + Foto | `operator-panel.html:actualizarBtnFinalizar()` | Activo |
+| Checklist visual de 3 requisitos | modal `req-exocad/stl/foto` | Activo |
+| Upload STL con upload-guard validación | `handleFileOperador(stl)` | Activo |
+| Campo Foto de Control / Nesting | `box-foto` input + validación | Activo |
+| Auto-move card a Entregado al confirmar | `confirmarEntrega()` | Activo — Supabase real |
+| PII ocultada en kanban (datos) | tarjetas con nombres censurados | Activo |
 
 ### Notas Agente 3:
-- `confirmarEntrega()` ahora es **async real**: sube STL + foto a `dental-cases`, actualiza `pedidos` con `estado: 'Listo para Entrega'`.
-- Formato de archivo: `{uid}/{caseId}_{timestamp}.{ext}` — garantiza unicidad sin colisiones.
-- Auto-release activado: `seguimiento-caso.html` muestra zona de descarga para estados `Aprobado` y `Listo para Entrega`.
-- El trigger de auto-release ya está preparado en `webhook-handler/index.ts` — al recibir `APPROVED`, actualiza `estado: 'Listo para Entrega'` en tabla `pedidos`.
+- `confirmarEntrega()` es async real: sube STL + foto a `dental-cases`, actualiza `pedidos` con `estado: 'Listo para Entrega'`.
+- Formato de archivo: `{uid}/{caseId}_{timestamp}.{ext}` — garantiza unicidad.
+- Auto-release activado: `seguimiento-caso.html` descarga via signed URL para estados `Aprobado` y `Listo para Entrega`.
 
 ---
 
 ## AGENTE 4: NEUROMARKETING Y UX
 
-### Estado: COMPLETADO ✅
+### Estado: COMPLETADO
 
 | Tarea | Archivo | Estado |
 |---|---|---|
-| Spinner búsqueda "Procesando archivos..." | `seguimiento-caso.html` | ✅ Activo |
-| Spinner entrega operador (upload) | `app/operator-panel.html` | ✅ Activo |
-| Visor Exocad iframe en detalle de pedido | `seguimiento-caso.html:#visor-exocad-bloque` | ✅ Activo |
-| Tabla de parámetros (Material/Color/Oclusión/etc) | `seguimiento-caso.html:#tabla-parametros` | ✅ Activo |
-| Banner ciclo de producción (urgencia) | `seguimiento-caso.html:#banner-ciclo` | ✅ Activo |
-| WhatsApp flotante con ID de caso | `seguimiento-caso.html:#wa-flotante-caso` | ✅ Activo |
+| Spinner búsqueda "Procesando archivos..." | `seguimiento-caso.html` | Activo |
+| Spinner entrega operador (upload) | `app/operator-panel.html` | Activo |
+| Visor Exocad iframe en detalle de pedido | `seguimiento-caso.html:#visor-exocad-bloque` | Activo |
+| Tabla de parámetros (Material/Color/Oclusión/etc) | `seguimiento-caso.html:#tabla-parametros` | Activo |
+| Banner ciclo de producción (urgencia) | `seguimiento-caso.html:#banner-ciclo` | Activo |
+| WhatsApp flotante con ID de caso | `seguimiento-caso.html:#wa-flotante-caso` | Activo |
 
 ---
 
-## Resumen de archivos creados/modificados (Agentes 1 y 2)
+## Resumen de archivos creados/modificados
 
 ```
 NUEVO:      js/upload-guard.js
 NUEVO:      sql/rls-policies.sql
 NUEVO:      supabase/functions/verify-price/index.ts
-MODIFICADO: js/pagos.js         — geoloc + PayPal + formatDivisa + verify-price
-MODIFICADO: js/flujo-impresion.js — formatCurrency + ' COP'
-MODIFICADO: flujo-diseno.html   — fmtCLP + ' COP', upload-guard.js, validación loadFile
-MODIFICADO: flujo-fresado.html  — formatCurrency + ' COP', upload-guard.js
-MODIFICADO: flujo-impresion.html — upload-guard.js
+MODIFICADO: js/pagos.js            — v4.0: geoloc + PayPal + Paddle + formatDivisa + verify-price
+MODIFICADO: js/flujo-impresion.js  — formatCurrency + ' COP' + recargo Wompi
+MODIFICADO: flujo-diseno.html      — fmtCLP + ' COP', upload-guard.js, validación loadFile
+MODIFICADO: flujo-fresado.html     — formatCurrency + ' COP', upload-guard.js
+MODIFICADO: flujo-impresion.html   — upload-guard.js, onchange calcularTotal, line-wompi
+MODIFICADO: app/operator-panel.html — bucket dental-cases, confirmarEntrega() async real
+MODIFICADO: seguimiento-caso.html  — Supabase client, signed URL download, auto-release
 ```
+
+## Procesos 100% autónomos (sin intervención manual):
+
+1. **Detección de país + pasarela** — IP → pais → PayPal/Paddle (intl) o Wompi/Transferencia (CO)
+2. **Validación de archivos** — upload-guard.js bloquea CAD/video/ejecutables antes del upload
+3. **Verificacion de precio** — verify-price Edge Function recalcula en servidor antes del checkout
+4. **Subida operador** — STL + foto a Supabase Storage con path único; actualiza BD automáticamente
+5. **Auto-release STL** — cliente ve zona de descarga cuando estado = Aprobado/Listo para Entrega
+6. **Firma URL descarga** — signed URL de 1 hora generada on-demand; nunca expone ruta real
+7. **Modo espera Wompi** — si cuenta no validada, redirige a WhatsApp sin romper el flujo

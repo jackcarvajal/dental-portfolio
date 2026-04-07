@@ -1,15 +1,20 @@
 /**
- * PRODIGY — Sistema de Pagos v3.0 (Agente 2: Finanzas)
+ * PRODIGY — Sistema de Pagos v4.0 (Agente 2: Finanzas + Paddle)
  * ─────────────────────────────────────────────────────────────
  * ✅ Claves PÚBLICAS (seguras en frontend):
  *    - Wompi Public Key (test)
+ *    - PayPal Client ID (Live)
+ *    - Paddle Client Token (Live)
+ *    - Paddle Seller ID
  *
  * ❌ Claves PRIVADAS (NUNCA en frontend):
- *    - Wompi Private Key → supabase secrets
- *    - Wompi Integrity Secret → supabase secrets
+ *    - Wompi Private Key → supabase secrets (WOMPI_INTEGRITY_SECRET)
+ *    - Paddle API Key    → supabase secrets (PADDLE_API_KEY)
  * ─────────────────────────────────────────────────────────────
  * Recargos:
- *   Wompi:         +3%  (PSE / tarjeta / Nequi online)
+ *   Wompi:         +3%  (PSE / tarjeta / Nequi online — Colombia)
+ *   PayPal:        +5.4% (checkout internacional)
+ *   Paddle:        +7%  (Merchant of Record — internacional)
  *   Transferencia: +0%  (prioridad si total > $400.000 COP)
  */
 
@@ -32,6 +37,19 @@ const PAGOS_CONFIG = {
         icono:     '🌎',
         currency:  'USD',
         paises:    ['*']            // Internacional (excluye CO)
+    },
+    paddle: {
+        clientToken: 'Live_0e3ce1326df4e81c783290c5399',
+        sellerId:    311800,
+        recargo:     0.07,
+        label:       'Paddle — Tarjeta / Apple Pay / Google Pay',
+        icono:       '💼',
+        currency:    'USD',
+        // ⏳ PENDIENTE: crear producto en Paddle Dashboard y pegar el priceId aquí
+        // dashboard.paddle.com → Catalog → Products → + New product → copiar "pri_..."
+        priceId:     null,
+        modoEspera:  true,          // activar cuando priceId esté configurado
+        paises:      ['*']          // Internacional (excluye CO)
     },
     transferencia: {
         recargo:             0,
@@ -288,6 +306,79 @@ async function abrirCheckoutPayPal({ montoUSD, referencia, descripcion, containe
 }
 
 /* ═══════════════════════════════════════
+   PADDLE — checkout internacional (Merchant of Record)
+═══════════════════════════════════════ */
+
+let _paddleLoaded = false;
+
+/**
+ * Carga el SDK de Paddle v2 de forma diferida.
+ */
+function cargarSDKPaddle() {
+    if (_paddleLoaded || document.getElementById('paddle-sdk')) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+        const s   = document.createElement('script');
+        s.id      = 'paddle-sdk';
+        s.src     = 'https://cdn.paddle.com/paddle/v2/paddle.js';
+        s.onload  = () => {
+            window.Paddle.Initialize({ token: PAGOS_CONFIG.paddle.clientToken });
+            _paddleLoaded = true;
+            resolve();
+        };
+        s.onerror = () => reject(new Error('No se pudo cargar Paddle SDK'));
+        document.head.appendChild(s);
+    });
+}
+
+/**
+ * Abre el checkout de Paddle inline.
+ * Requiere que PAGOS_CONFIG.paddle.priceId esté configurado.
+ * @param {object} opts - { montoUSD, referencia, email, containerId, onSuccess }
+ */
+async function abrirCheckoutPaddle({ montoUSD, referencia, email, containerId, onSuccess }) {
+    const cfg = PAGOS_CONFIG.paddle;
+
+    if (cfg.modoEspera || !cfg.priceId) {
+        const msg = 'Paddle estará disponible pronto.\n\n'
+                  + 'Por favor usa PayPal para pago internacional o contáctanos por WhatsApp.';
+        if (confirm(msg + '\n\n¿Abrir WhatsApp ahora?')) {
+            const ref = encodeURIComponent('Quiero pagar por Paddle — Ref: ' + referencia);
+            window.open('https://wa.me/573212816716?text=' + ref, '_blank');
+        }
+        return;
+    }
+
+    try {
+        await cargarSDKPaddle();
+    } catch {
+        alert('No se pudo conectar con Paddle. Intenta con PayPal.');
+        return;
+    }
+
+    window.Paddle.Checkout.open({
+        items:      [{ priceId: cfg.priceId, quantity: 1 }],
+        customer:   email ? { email } : undefined,
+        customData: { referencia, monto_usd: montoUSD.toFixed(2) },
+        settings: {
+            displayMode: containerId ? 'inline' : 'overlay',
+            frameTarget:  containerId || undefined,
+            frameInitialHeight: 450,
+            frameStyle: 'width: 100%; background: transparent; border: none;',
+            theme: 'dark',
+            locale: 'es',
+            successUrl: `${window.location.origin}/seguimiento-caso.html?pedido=${referencia}&pago=ok`
+        }
+    });
+
+    // Escuchar evento de completado
+    window.Paddle.eventCallback = (data) => {
+        if (data.name === 'checkout.completed' && onSuccess) {
+            onSuccess({ referencia, details: data.data });
+        }
+    };
+}
+
+/* ═══════════════════════════════════════
    VERIFY PRICE — verificación server-side
 ═══════════════════════════════════════ */
 
@@ -364,6 +455,9 @@ async function inicializarPasarelas(containerId, precioBase, onSelect) {
         const recargoUSD  = parseFloat((totalUSD * PAGOS_CONFIG.paypal.recargo).toFixed(2));
         const totalFinalUSD = parseFloat((totalUSD + recargoUSD).toFixed(2));
 
+        const totalPaddleUSD  = parseFloat((totalUSD * (1 + PAGOS_CONFIG.paddle.recargo)).toFixed(2));
+        const recargoPaddleUSD = parseFloat((totalUSD * PAGOS_CONFIG.paddle.recargo).toFixed(2));
+
         container.innerHTML = `
         <div style="background:rgba(0,97,255,0.06);border:1px solid rgba(0,97,255,0.25);border-radius:12px;padding:14px;margin:12px 0;">
             <div style="font-size:.75rem;color:#60a5fa;font-weight:700;margin-bottom:8px;">
@@ -374,18 +468,48 @@ async function inicializarPasarelas(containerId, precioBase, onSelect) {
                 <strong style="color:#D4AF37;">${formatDivisa(precioBase,'COP')}</strong>
                 ≈ <strong style="color:#60a5fa;">${formatDivisa(totalUSD,'USD')}</strong>
             </div>
-            <div style="font-size:.78rem;color:#f87171;margin-bottom:8px;">
-                + ${(PAGOS_CONFIG.paypal.recargo*100).toFixed(1)}% PayPal =
-                <strong>${formatDivisa(recargoUSD,'USD')}</strong>
+
+            <div style="display:flex;gap:10px;margin:10px 0;">
+                <!-- Opción PayPal -->
+                <label style="flex:1;border:1.5px solid rgba(212,175,55,0.3);border-radius:10px;padding:12px;cursor:pointer;background:rgba(255,255,255,0.03);" id="opt-paypal">
+                    <input type="radio" name="gw-intl" value="paypal" checked style="accent-color:#D4AF37;">
+                    <span style="font-size:1.1rem;margin-left:6px;">🌎</span>
+                    <div style="font-size:.8rem;font-weight:700;color:#f5f5f7;margin-top:4px;">PayPal</div>
+                    <div style="font-size:.72rem;color:#f87171;">+${(PAGOS_CONFIG.paypal.recargo*100).toFixed(1)}% = ${formatDivisa(recargoUSD,'USD')}</div>
+                    <div style="font-size:.9rem;font-weight:900;color:#60a5fa;">${formatDivisa(totalFinalUSD,'USD')}</div>
+                </label>
+                <!-- Opción Paddle -->
+                <label style="flex:1;border:1.5px solid rgba(212,175,55,0.3);border-radius:10px;padding:12px;cursor:pointer;background:rgba(255,255,255,0.03);opacity:${PAGOS_CONFIG.paddle.modoEspera ? '.55' : '1'};" id="opt-paddle">
+                    <input type="radio" name="gw-intl" value="paddle" ${PAGOS_CONFIG.paddle.modoEspera ? 'disabled' : ''} style="accent-color:#D4AF37;">
+                    <span style="font-size:1.1rem;margin-left:6px;">💼</span>
+                    <div style="font-size:.8rem;font-weight:700;color:#f5f5f7;margin-top:4px;">Paddle${PAGOS_CONFIG.paddle.modoEspera ? ' <span style="font-size:.65rem;color:#fbbf24;">Próximamente</span>' : ''}</div>
+                    <div style="font-size:.72rem;color:#f87171;">+${(PAGOS_CONFIG.paddle.recargo*100).toFixed(1)}% = ${formatDivisa(recargoPaddleUSD,'USD')}</div>
+                    <div style="font-size:.9rem;font-weight:900;color:#60a5fa;">${formatDivisa(totalPaddleUSD,'USD')}</div>
+                </label>
             </div>
-            <div style="font-size:1rem;font-weight:900;color:#fff;margin-bottom:12px;">
-                TOTAL: <span style="color:#60a5fa;">${formatDivisa(totalFinalUSD,'USD')}</span>
-            </div>
+
             <div id="paypal-button-container"></div>
+            <div id="paddle-checkout-container" style="display:none;min-height:420px;"></div>
+
             <p style="font-size:.72rem;color:#64748b;margin-top:8px;text-align:center;">
-                PayPal acepta Visa, Mastercard y saldo PayPal de cualquier país.
+                PayPal: Visa / Mastercard / saldo PayPal. Paddle: Apple Pay, Google Pay, tarjeta.
             </p>
         </div>`;
+
+        // Cambio de pasarela internacional
+        container.querySelectorAll('input[name="gw-intl"]').forEach(r => {
+            r.addEventListener('change', () => {
+                const ppBox  = container.querySelector('#paypal-button-container');
+                const pdBox  = container.querySelector('#paddle-checkout-container');
+                if (r.value === 'paypal') {
+                    ppBox.style.display = ''; pdBox.style.display = 'none';
+                    if (onSelect) onSelect('paypal', { total: totalFinalUSD, recargoAmt: recargoUSD, moneda: 'USD' });
+                } else {
+                    ppBox.style.display = 'none'; pdBox.style.display = '';
+                    if (onSelect) onSelect('paddle', { total: totalPaddleUSD, recargoAmt: recargoPaddleUSD, moneda: 'USD' });
+                }
+            });
+        });
 
         if (onSelect) onSelect('paypal', {
             total:     totalFinalUSD,
@@ -403,7 +527,7 @@ async function inicializarPasarelas(containerId, precioBase, onSelect) {
 if (typeof module !== 'undefined') {
     module.exports = {
         PAGOS_CONFIG, calcularConPasarela, pasarelaPrioritaria,
-        abrirCheckoutWompi, abrirCheckoutPayPal,
+        abrirCheckoutWompi, abrirCheckoutPayPal, abrirCheckoutPaddle,
         renderSelectorPasarelas, inicializarPasarelas,
         detectarPais, verificarPrecioServidor, formatDivisa
     };
