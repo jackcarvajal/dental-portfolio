@@ -138,7 +138,7 @@ async function obtenerHistorial() {
     const sb = getSupabase();
     if (!sb) throw new Error('Supabase no disponible');
 
-    const { data, error } = await sb.from('historial_doctor').select('*');
+    const { data, error } = await sb.from('pedidos').select('*').order('created_at', { ascending: false }).limit(50);
     if (error) throw error;
     return data;
 }
