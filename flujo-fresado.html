@@ -3192,7 +3192,7 @@
             calcularTotal();
         }
 
-        function selectVita(color){document.querySelectorAll('.vita-option').forEach(o=>{o.classList.remove('selected');});event.currentTarget.classList.add('selected');STATE.colorVita=color;const wCD=document.getElementById('warning-color-cd');if(wCD){if(color.startsWith('C')||color.startsWith('D'))wCD.classList.remove('hidden');else wCD.classList.add('hidden');}calcularTotal();}
+        function selectVita(color){document.querySelectorAll('.vita-option').forEach(o=>{o.classList.remove('selected');});event.currentTarget.classList.add('selected');STATE.colorVita=color;document.querySelectorAll('[id="warning-color-cd"]').forEach(wCD=>{if(color.startsWith('C')||color.startsWith('D'))wCD.classList.remove('hidden');else wCD.classList.add('hidden');});calcularTotal();}
 
         function selectSinterType(tipo) {
             document.querySelectorAll('.sinter-pill').forEach(pill => {
@@ -3534,22 +3534,24 @@
         }
 
         function actualizarVisibilidadColor() {
-            const colorVita = document.getElementById('color-vita');
-            if (!colorVita) return;
+            const colorVitas = document.querySelectorAll('[id="color-vita"]');
+            if (!colorVitas.length) return;
             const requiereColor =
                 (STATE.materialTipo === 'zirc' ||
                  STATE.materialTipo === 'disi' ||
                  STATE.submaterialId === 'p_mono' ||
                  STATE.submaterialId === 'p_multi') &&
                 STATE.proceso !== 'solo_sinter';
-            if (requiereColor) {
-                colorVita.style.display = 'block';
-                colorVita.classList.remove('hidden');
-            } else {
-                colorVita.style.display = 'none';
-                colorVita.classList.add('hidden');
-                STATE.colorVita = null;
-            }
+            colorVitas.forEach(colorVita => {
+                if (requiereColor) {
+                    colorVita.style.display = 'block';
+                    colorVita.classList.remove('hidden');
+                } else {
+                    colorVita.style.display = 'none';
+                    colorVita.classList.add('hidden');
+                }
+            });
+            if (!requiereColor) STATE.colorVita = null;
         }
 
         function calcularTotal() {
@@ -4459,28 +4461,16 @@
     <script>
         // FUNCIÓN THEME TOGGLE
         function toggleTheme() {
-            const body = document.body;
-            const themeBtn = document.getElementById('theme-btn');
-            
-            body.classList.toggle('light-theme');
-            
-            if (body.classList.contains('light-theme')) {
-                themeBtn.textContent = '☀️';
-                localStorage.setItem('theme', 'light');
-            } else {
-                themeBtn.textContent = '🌙';
-                localStorage.setItem('theme', 'dark');
-            }
+            const light = document.body.classList.toggle('light-theme');
+            document.querySelectorAll('[id="theme-btn"]').forEach(b => b.textContent = light ? '☀️' : '🌙');
+            localStorage.setItem('theme', light ? 'light' : 'dark');
         }
 
         // CARGAR TEMA GUARDADO
         document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('theme');
-            const themeBtn = document.getElementById('theme-btn');
-            
-            if (savedTheme === 'light') {
+            if (localStorage.getItem('theme') === 'light') {
                 document.body.classList.add('light-theme');
-                themeBtn.textContent = '☀️';
+                document.querySelectorAll('[id="theme-btn"]').forEach(b => b.textContent = '☀️');
             }
         });
 
@@ -4706,17 +4696,7 @@
             const btn = document.getElementById('scroll-top-btn');
             if (btn) btn.classList.toggle('visible', window.scrollY > 300);
         });
-        // Modo claro/oscuro
-        function toggleTheme() {
-            const light = document.body.classList.toggle('light-mode');
-            const btn = document.getElementById('theme-btn');
-            if (btn) btn.textContent = light ? '☀️' : '🌙';
-            localStorage.setItem('prodigy_theme', light ? 'light' : 'dark');
-        }
-        if (localStorage.getItem('prodigy_theme') === 'light') {
-            document.body.classList.add('light-mode');
-            setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
-        }
+        // Scroll to top visibility (theme toggle defined earlier in page)
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="js/supabase-client.js"></script>

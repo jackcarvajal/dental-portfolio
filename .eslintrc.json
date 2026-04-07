@@ -25,6 +25,9 @@
     "inicializarCatalogo": "readonly",
     "showProdigyAlert": "readonly",
     "closeModal":       "readonly",
-    "showPaymentModal": "readonly"
+    "showPaymentModal": "readonly",
+    "PATIENTS_DATA":    "readonly",
+    "google":           "readonly",
+    "module":           "writable"
   }
 }

@@ -1070,14 +1070,13 @@
             if (btn) btn.classList.toggle('visible', window.scrollY > 350);
         });
         function toggleTheme() {
-            const light = document.body.classList.toggle('light-mode');
-            const btn = document.getElementById('theme-btn');
-            if (btn) btn.textContent = light ? '☀️' : '🌙';
-            localStorage.setItem('prodigy_theme', light ? 'light' : 'dark');
+            const light = document.body.classList.toggle('light-theme');
+            document.querySelectorAll('[id="theme-btn"]').forEach(b => b.textContent = light ? '☀️' : '🌙');
+            localStorage.setItem('theme', light ? 'light' : 'dark');
         }
-        if (localStorage.getItem('prodigy_theme') === 'light') {
-            document.body.classList.add('light-mode');
-            setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-theme');
+            setTimeout(() => { document.querySelectorAll('[id="theme-btn"]').forEach(b => b.textContent = '☀️'); }, 0);
         }
     </script>
     <!-- FLOTANTES UX -->
