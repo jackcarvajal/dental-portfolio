@@ -84,7 +84,6 @@
             portfolioGrid.appendChild(card);
         });
 
-        console.log(`✅ ${PATIENTS_DATA.length} tarjetas de portafolio generadas correctamente`);
     }
 
     // ===== CREAR TARJETA DE PORTAFOLIO =====
@@ -222,7 +221,6 @@
 
     // ===== INICIALIZACIÓN AL CARGAR EL DOM =====
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 Iniciando PRODIGY...');
 
         // Inicializar protección (opcional)
         initExternalLinkSecurity();
@@ -242,7 +240,6 @@
             initScrollAnimations();
         }
 
-        console.log('✅ PRODIGY inicializado correctamente');
     });
 
     // ===== MANEJO DE ERRORES GLOBALES =====

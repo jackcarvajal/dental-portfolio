@@ -12,11 +12,13 @@
     <meta property="og:description" content="Calculadora de fresado CAD/CAM — Zirconio, PMMA, CrCo, PEEK. Cotiza y confirma tu pedido dental en línea.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="assets/prodigy-preview.jpg">
-    <meta property="og:url" content="https://prodigylab.co/flujo-fresado.html">
+    <meta property="og:url" content="https://prodigylabdental.com/flujo-fresado.html">
     <meta name="geo.region" content="CO-DC">
     <meta name="geo.placename" content="Bogotá">
+    <link rel="canonical" href="https://prodigylabdental.com/flujo-fresado.html">
     <title>PRODIGY - Centro de Fresado Digital</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/global-nav.min.css">
@@ -3413,11 +3415,17 @@
             const divIngreso = document.getElementById('line-ingreso');
             const divEntrega = document.getElementById('line-entrega-fecha');
             if (divIngreso) {
-                divIngreso.innerHTML = `📥 <strong>Ingreso:</strong> ${formatearFechaTurno(fechaIngreso)}`;
+                divIngreso.textContent = '';
+                const sIng = document.createElement('span'); sIng.textContent = '📥 Ingreso: ';
+                const bIng = document.createElement('strong'); bIng.textContent = formatearFechaTurno(fechaIngreso);
+                sIng.appendChild(bIng); divIngreso.appendChild(sIng);
                 divIngreso.style.display = 'flex';
             }
             if (divEntrega) {
-                divEntrega.innerHTML = `📦 <strong>Entrega:</strong> ${formatearFechaTurno(fechaEntrega)}`;
+                divEntrega.textContent = '';
+                const sEnt = document.createElement('span'); sEnt.textContent = '📦 Entrega: ';
+                const bEnt = document.createElement('strong'); bEnt.textContent = formatearFechaTurno(fechaEntrega);
+                sEnt.appendChild(bEnt); divEntrega.appendChild(sEnt);
                 divEntrega.style.display = 'flex';
             }
         }

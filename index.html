@@ -1605,32 +1605,20 @@
         // =============================================
         
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🎯 Iniciando renderizado de portafolio...');
-            console.log('📁 Verificando carga de datos...');
-            
             // Obtener el contenedor
             const portfolioGrid = document.getElementById('portfolio-grid');
-            
-            if (!portfolioGrid) {
-                console.error('❌ CRÍTICO: No se encontró el contenedor #portfolio-grid');
-                return;
-            }
-            
+            if (!portfolioGrid) return;
+
             // LÓGICA DE FALLBACK: Usar datos externos o respaldo
             let dataToUse = null;
-            
+
             if (typeof PATIENTS_DATA !== 'undefined' && PATIENTS_DATA && PATIENTS_DATA.length > 0) {
-                console.log(`✅ Datos externos cargados: ${PATIENTS_DATA.length} casos`);
                 dataToUse = PATIENTS_DATA;
             } else {
-                console.warn('⚠️ Datos externos no disponibles. Usando datos de respaldo...');
                 dataToUse = FALLBACK_DATA;
-                console.log(`✅ Datos de respaldo cargados: ${FALLBACK_DATA.length} casos`);
             }
-            
-            // Si aún no hay datos, mostrar mensaje
+
             if (!dataToUse || dataToUse.length === 0) {
-                console.error('❌ No hay datos disponibles (ni externos ni respaldo)');
                 portfolioGrid.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
                         <p style="color: #D4AF37; font-size: 1.5rem; margin-bottom: 20px;">
@@ -1643,21 +1631,13 @@
                 `;
                 return;
             }
-            
-            // Limpiar el contenedor
+
             portfolioGrid.innerHTML = '';
-            console.log('🧹 Contenedor limpiado');
-            
-            // Solo los 3 primeros casos como destacados (el resto en catalogo.html)
             const featured = dataToUse.slice(0, 3);
             featured.forEach((patient, index) => {
-                console.log(`📦 Creando tarjeta ${index + 1}: ${patient.name}`);
                 const card = createPatientCard(patient, index);
                 portfolioGrid.appendChild(card);
             });
-            
-            console.log('✅ Portafolio renderizado correctamente');
-            console.log(`📊 Total de tarjetas: ${dataToUse.length}`);
         });
         
         // =============================================
@@ -1742,9 +1722,6 @@
             }
         }
         
-        // Log de éxito de carga del script
-        console.log('✅ Sistema de renderizado "A Prueba de Fallos" cargado');
-        console.log('📋 Datos de respaldo disponibles:', FALLBACK_DATA.length, 'casos');
 
         // =============================================
         // FILTRO DE ACCESO: redirige a login si no hay sesión

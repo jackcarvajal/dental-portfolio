@@ -184,4 +184,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-console.log('Translations.js loaded 🌍');
