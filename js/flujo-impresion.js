@@ -1728,7 +1728,7 @@
         }
 
         function formatCurrency(amount) {
-            return '$' + amount.toLocaleString('es-CO');
+            return '$' + Math.round(amount).toLocaleString('es-CO') + ' COP';
         }
 
         function handleFileUpload(input, fromDrop) {

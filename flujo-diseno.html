@@ -816,6 +816,11 @@
 
         function loadFile(file) {
             if (!file) return;
+            // Agente 1: validación de tipo antes de cargar
+            if (window.validateUpload) {
+                const check = validateUpload(file, 'CAD');
+                if (!check.valid) { showUploadError(check.error); return; }
+            }
             fnEl.textContent = '📄 ' + file.name;
             const reader = new FileReader();
             reader.onload = e => {
@@ -904,7 +909,7 @@
         };
 
         // ── HELPERS ───────────────────────────────────────────────────────────
-        function fmtCLP(n)  { return '$' + n.toLocaleString('es-CO'); }
+        function fmtCLP(n)  { return '$' + Math.round(n).toLocaleString('es-CO') + ' COP'; }
         function sanitizar(txt) { const d=document.createElement('div'); d.textContent=String(txt||''); return d.innerHTML; }
 
         function showErr(id, msg) {
@@ -1275,6 +1280,7 @@
     <div id="google_translate_element" style="position:fixed;bottom:90px;right:80px;z-index:9999;display:none;background:rgba(0,0,0,0.92);border:1px solid rgba(212,175,55,0.3);border-radius:12px;padding:10px 14px;"></div>
 
 
+    <script src="js/upload-guard.js"></script>
     <script src="js/pagos.js"></script>
     <script>
     function pagarConWompi() {

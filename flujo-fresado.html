@@ -3600,7 +3600,7 @@
         }
 
         function formatCurrency(amount) {
-            return '$' + amount.toLocaleString('es-CO');
+            return '$' + Math.round(amount).toLocaleString('es-CO') + ' COP';
         }
 
         function handleFileUpload(input, fromDrop) {
@@ -4437,6 +4437,7 @@
             setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
         }
     </script>
+    <script src="js/upload-guard.js"></script>
     <script src="js/pagos.js"></script>
     <script>
         function pagarConWompi() {

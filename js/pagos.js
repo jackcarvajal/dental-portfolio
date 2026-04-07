@@ -1,5 +1,5 @@
 /**
- * PRODIGY — Sistema de Pagos v2.0
+ * PRODIGY — Sistema de Pagos v3.0 (Agente 2: Finanzas)
  * ─────────────────────────────────────────────────────────────
  * ✅ Claves PÚBLICAS (seguras en frontend):
  *    - Wompi Public Key (test)
@@ -19,16 +19,32 @@ const PAGOS_CONFIG = {
         recargo:   0.03,
         label:     'Tarjeta / PSE / Nequi — Wompi',
         icono:     '💳',
-        currency:  'COP'
+        currency:  'COP',
+        paises:    ['CO']           // Solo Colombia
+    },
+    paypal: {
+        clientId:  'TU_PAYPAL_CLIENT_ID',   // ← reemplazar en producción
+        recargo:   0.054,
+        label:     'PayPal / Tarjeta Internacional',
+        icono:     '🌎',
+        currency:  'USD',
+        paises:    ['*']            // Todos los países excepto CO
     },
     transferencia: {
         recargo:             0,
         label:               'Transferencia Lulo Bank / Bre-B',
         icono:               '🏦',
         umbralPrioritario:   400000,
-        instrucciones:       'Solicita el número de cuenta vía WhatsApp. Sube el comprobante aquí para confirmar tu pedido.'
+        instrucciones:       'Solicita el número de cuenta vía WhatsApp. Sube el comprobante aquí para confirmar tu pedido.',
+        paises:              ['CO']
     }
 };
+
+/* ── Tasa de cambio referencial COP → USD ── */
+const TASA_COP_USD = 4200;
+
+/* ── URL del endpoint de verificación de precio en servidor ── */
+const VERIFY_PRICE_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/verify-price';
 
 /* ── Calcular total según pasarela ── */
 function calcularConPasarela(precioBaseCOP, pasarela) {
@@ -167,10 +183,214 @@ function renderSelectorPasarelas(containerId, precioBase, onSelect) {
     document.head.appendChild(style);
 })();
 
+/* ═══════════════════════════════════════
+   GEOLOCALIZACIÓN — detectar país del cliente
+═══════════════════════════════════════ */
+
+/**
+ * Detecta el país del visitante vía ipapi.co (gratis, 1000 req/día).
+ * Cachea el resultado en sessionStorage para no repetir la llamada.
+ * @returns {Promise<string>} código ISO del país, ej: 'CO', 'US', 'MX'
+ */
+async function detectarPais() {
+    const cached = sessionStorage.getItem('prodigy_pais');
+    if (cached) return cached;
+    try {
+        const resp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
+        const data = await resp.json();
+        const pais = data.country_code || 'CO';
+        sessionStorage.setItem('prodigy_pais', pais);
+        return pais;
+    } catch {
+        return 'CO'; // fallback: mostrar Wompi
+    }
+}
+
+/**
+ * Devuelve la pasarela óptima según país y monto.
+ * Colombia + monto < 400k → wompi
+ * Colombia + monto ≥ 400k → transferencia
+ * Internacional           → paypal
+ */
+async function pasarelaOptimaPorPais(precioBase) {
+    const pais = await detectarPais();
+    if (pais !== 'CO') return 'paypal';
+    return pasarelaPrioritaria(precioBase);
+}
+
+/* ═══════════════════════════════════════
+   PAYPAL — checkout internacional
+═══════════════════════════════════════ */
+
+let _paypalLoaded = false;
+
+/**
+ * Carga el SDK de PayPal de forma diferida (solo para usuarios internacionales).
+ */
+function cargarSDKPayPal() {
+    if (_paypalLoaded || document.getElementById('paypal-sdk')) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+        const s  = document.createElement('script');
+        s.id     = 'paypal-sdk';
+        s.src    = `https://www.paypal.com/sdk/js?client-id=${PAGOS_CONFIG.paypal.clientId}&currency=USD&intent=capture`;
+        s.onload  = () => { _paypalLoaded = true; resolve(); };
+        s.onerror = () => reject(new Error('No se pudo cargar PayPal SDK'));
+        document.head.appendChild(s);
+    });
+}
+
+/**
+ * Abre el checkout de PayPal en un div contenedor.
+ * @param {object} opts - { montoUSD, referencia, descripcion, containerId, onSuccess }
+ */
+async function abrirCheckoutPayPal({ montoUSD, referencia, descripcion, containerId, onSuccess }) {
+    try {
+        await cargarSDKPayPal();
+    } catch {
+        alert('No se pudo conectar con PayPal. Intenta con transferencia internacional o contáctanos.');
+        return;
+    }
+    const container = document.getElementById(containerId || 'paypal-button-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    window.paypal.Buttons({
+        createOrder: (data, actions) => actions.order.create({
+            purchase_units: [{
+                reference_id: referencia,
+                description:  descripcion || 'PRODIGY Digital Dentistry',
+                amount: { value: montoUSD.toFixed(2), currency_code: 'USD' }
+            }]
+        }),
+        onApprove: (data, actions) => actions.order.capture().then(details => {
+            if (onSuccess) onSuccess({ referencia, details });
+            else window.location.href = `seguimiento-caso.html?pedido=${referencia}&pago=ok`;
+        }),
+        onError: (err) => {
+            console.error('PayPal error:', err);
+            alert('Pago PayPal no completado. Intenta de nuevo.');
+        }
+    }).render(`#${containerId || 'paypal-button-container'}`);
+}
+
+/* ═══════════════════════════════════════
+   VERIFY PRICE — verificación server-side
+═══════════════════════════════════════ */
+
+/**
+ * Consulta la Edge Function verify-price para obtener el total verificado.
+ * Usar este total (no el del frontend) al abrir el checkout.
+ * @param {number} precioBase - Precio base en COP
+ * @param {string} pasarela   - 'wompi' | 'paypal' | 'transferencia'
+ * @returns {Promise<object>} { total, total_cop, total_usd, moneda, recargo_pct, referencia_pre }
+ */
+async function verificarPrecioServidor(precioBase, pasarela) {
+    const pais = await detectarPais();
+    try {
+        const resp = await fetch(VERIFY_PRICE_URL, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ precio_base: precioBase, pasarela, pais }),
+            signal:  AbortSignal.timeout(5000)
+        });
+        if (!resp.ok) throw new Error(`verify-price HTTP ${resp.status}`);
+        return await resp.json();
+    } catch (e) {
+        // Fallback: calcular localmente si el servidor no responde
+        console.warn('verify-price no disponible, usando cálculo local:', e.message);
+        const { total, recargoAmt } = calcularConPasarela(precioBase, pasarela);
+        return {
+            total, total_cop: total, total_usd: null,
+            moneda: 'COP', recargo_pct: PAGOS_CONFIG[pasarela]?.recargo ?? 0,
+            referencia_pre: 'PRD-' + Math.random().toString(36).substr(2,8).toUpperCase(),
+            _fallback: true
+        };
+    }
+}
+
+/* ═══════════════════════════════════════
+   ETIQUETA DIVISA — formato con moneda explícita
+═══════════════════════════════════════ */
+
+/**
+ * Formatea un monto con la etiqueta de moneda explícita.
+ * Ej: formatDivisa(150000, 'COP') → '$150.000 COP'
+ *     formatDivisa(35.50,  'USD') → 'US$35.50 USD'
+ */
+function formatDivisa(amount, moneda = 'COP') {
+    if (moneda === 'USD') {
+        return 'US$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' USD';
+    }
+    return '$' + Math.round(amount).toLocaleString('es-CO') + ' COP';
+}
+
+/* ═══════════════════════════════════════
+   INICIALIZAR PASARELAS — punto de entrada principal
+   Detecta país y muestra opciones correctas.
+═══════════════════════════════════════ */
+
+/**
+ * Inicializa el selector de pasarelas según el país detectado.
+ * Para Colombia: Wompi + Transferencia
+ * Para internacional: PayPal + Transferencia (wire)
+ *
+ * @param {string}   containerId - ID del div contenedor
+ * @param {number}   precioBase  - Precio base en COP
+ * @param {function} onSelect    - Callback(pasarela, { total, recargoAmt, moneda })
+ */
+async function inicializarPasarelas(containerId, precioBase, onSelect) {
+    const pais = await detectarPais();
+    const esInternacional = pais !== 'CO';
+
+    if (esInternacional) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const totalUSD    = parseFloat((precioBase / TASA_COP_USD).toFixed(2));
+        const recargoUSD  = parseFloat((totalUSD * PAGOS_CONFIG.paypal.recargo).toFixed(2));
+        const totalFinalUSD = parseFloat((totalUSD + recargoUSD).toFixed(2));
+
+        container.innerHTML = `
+        <div style="background:rgba(0,97,255,0.06);border:1px solid rgba(0,97,255,0.25);border-radius:12px;padding:14px;margin:12px 0;">
+            <div style="font-size:.75rem;color:#60a5fa;font-weight:700;margin-bottom:8px;">
+                🌎 PAGO INTERNACIONAL — ${pais}
+            </div>
+            <div style="font-size:.82rem;color:#e2e8f0;margin-bottom:4px;">
+                Precio base:
+                <strong style="color:#D4AF37;">${formatDivisa(precioBase,'COP')}</strong>
+                ≈ <strong style="color:#60a5fa;">${formatDivisa(totalUSD,'USD')}</strong>
+            </div>
+            <div style="font-size:.78rem;color:#f87171;margin-bottom:8px;">
+                + ${(PAGOS_CONFIG.paypal.recargo*100).toFixed(1)}% PayPal =
+                <strong>${formatDivisa(recargoUSD,'USD')}</strong>
+            </div>
+            <div style="font-size:1rem;font-weight:900;color:#fff;margin-bottom:12px;">
+                TOTAL: <span style="color:#60a5fa;">${formatDivisa(totalFinalUSD,'USD')}</span>
+            </div>
+            <div id="paypal-button-container"></div>
+            <p style="font-size:.72rem;color:#64748b;margin-top:8px;text-align:center;">
+                PayPal acepta Visa, Mastercard y saldo PayPal de cualquier país.
+            </p>
+        </div>`;
+
+        if (onSelect) onSelect('paypal', {
+            total:     totalFinalUSD,
+            recargoAmt: recargoUSD,
+            moneda:    'USD'
+        });
+    } else {
+        // Colombia: flujo normal con Wompi + Transferencia
+        renderSelectorPasarelas(containerId, precioBase, (pasarela, info) => {
+            if (onSelect) onSelect(pasarela, { ...info, moneda: 'COP' });
+        });
+    }
+}
+
 if (typeof module !== 'undefined') {
     module.exports = {
         PAGOS_CONFIG, calcularConPasarela, pasarelaPrioritaria,
-        abrirCheckoutWompi,
-        renderSelectorPasarelas
+        abrirCheckoutWompi, abrirCheckoutPayPal,
+        renderSelectorPasarelas, inicializarPasarelas,
+        detectarPais, verificarPrecioServidor, formatDivisa
     };
 }
