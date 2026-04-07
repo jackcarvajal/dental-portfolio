@@ -1200,9 +1200,26 @@
                     // Determinar si ingreso es HOY para feedback visual
                     const esHoy = fechaIngreso.toDateString() === new Date().toDateString();
 
-                    p.innerHTML =
-                        `<span style="font-size:0.72rem;color:var(--accent-cyan);">📥 Ingreso: <strong>${txtIngreso}</strong></span><br>` +
-                        `<span style="font-size:0.72rem;color:var(--gold-primary);">📦 Entrega: <strong>${txtEntrega}</strong></span>`;
+                    // Escape defensivo: txtIngreso/txtEntrega son fechas internas,
+                    // pero usamos textContent en nodos para eliminar cualquier riesgo XSS.
+                    const spanIng = document.createElement('span');
+                    spanIng.style.cssText = 'font-size:0.72rem;color:var(--accent-cyan);';
+                    spanIng.textContent   = '📥 Ingreso: ';
+                    const strongIng = document.createElement('strong');
+                    strongIng.textContent = txtIngreso;
+                    spanIng.appendChild(strongIng);
+
+                    const spanEnt = document.createElement('span');
+                    spanEnt.style.cssText = 'font-size:0.72rem;color:var(--gold-primary);';
+                    spanEnt.textContent   = '📦 Entrega: ';
+                    const strongEnt = document.createElement('strong');
+                    strongEnt.textContent = txtEntrega;
+                    spanEnt.appendChild(strongEnt);
+
+                    p.innerHTML = '';
+                    p.appendChild(spanIng);
+                    p.appendChild(document.createElement('br'));
+                    p.appendChild(spanEnt);
 
                     if (esHoy) {
                         slotEl.style.opacity = "1";

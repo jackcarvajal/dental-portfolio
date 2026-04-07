@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Confirmado | ProDigy</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold:    #D946A6;
+            --cyan:    #00d2ff;
+            --green:   #00FF41;
+            --bg:      #050505;
+            --card:    #1a2332;
+            --text:    #ffffff;
+            --muted:   #64748b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(0,255,65,0.2);
+            border-radius: 20px;
+            padding: 40px 32px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(0,255,65,0.06);
+        }
+        .icon-check {
+            width: 72px; height: 72px;
+            background: rgba(0,255,65,0.1);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem;
+            margin: 0 auto 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(0,255,65,0.3); }
+            50%      { box-shadow: 0 0 0 14px rgba(0,255,65,0); }
+        }
+        h1 { font-size: 1.5rem; font-weight: 800; color: var(--green); margin-bottom: 8px; }
+        .sub { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 24px; line-height: 1.6; }
+        .case-badge {
+            display: inline-block;
+            background: rgba(0,210,255,0.1);
+            border: 1px solid rgba(0,210,255,0.3);
+            color: var(--cyan);
+            font-size: 0.85rem; font-weight: 700;
+            padding: 6px 18px; border-radius: 50px;
+            margin-bottom: 28px;
+            letter-spacing: 1px;
+        }
+        .wa-status {
+            background: rgba(0,255,65,0.06);
+            border: 1px solid rgba(0,255,65,0.15);
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 0.82rem;
+            color: #94a3b8;
+            margin-bottom: 28px;
+            text-align: left;
+        }
+        .wa-status .wa-icon { font-size: 1.1rem; margin-right: 6px; }
+        .wa-status strong { color: var(--green); }
+        .btn-seguimiento {
+            display: block; width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #D946A6, #00d2ff);
+            color: #fff; font-family: inherit;
+            font-size: 0.95rem; font-weight: 700;
+            border: none; border-radius: 12px;
+            cursor: pointer; text-decoration: none;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .btn-seguimiento:hover { opacity: 0.88; transform: translateY(-1px); }
+        .btn-home {
+            display: block; margin-top: 12px;
+            color: var(--muted); font-size: 0.8rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .btn-home:hover { color: #cbd5e1; }
+        .spinner-dot {
+            display: inline-block; width: 8px; height: 8px;
+            background: var(--green); border-radius: 50%;
+            margin: 0 3px;
+            animation: blink 1.4s infinite both;
+        }
+        .spinner-dot:nth-child(2) { animation-delay: 0.2s; }
+        .spinner-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0%,80%,100% { opacity: 0; } 40% { opacity: 1; } }
+        #wa-loading { display: none; }
+        #wa-sent    { display: none; }
+        #wa-error   { display: none; color: #f87171; font-size: 0.78rem; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon-check">✅</div>
+        <h1>¡Pago Confirmado!</h1>
+        <p class="sub">Tu pedido ha entrado a la cola de diseño.<br>Nuestro equipo comenzará a trabajar de inmediato.</p>
+
+        <div id="case-badge-wrap" class="case-badge" style="display:none;"></div>
+
+        <!-- Estado WA: cargando -->
+        <div class="wa-status" id="wa-loading">
+            <span class="wa-icon">💬</span>
+            Enviando confirmación por WhatsApp
+            <span class="spinner-dot"></span>
+            <span class="spinner-dot"></span>
+            <span class="spinner-dot"></span>
+        </div>
+
+        <!-- Estado WA: enviado -->
+        <div class="wa-status" id="wa-sent">
+            <span class="wa-icon">✅</span>
+            <strong>WhatsApp enviado.</strong> Revisa tu teléfono para la confirmación del caso.
+        </div>
+
+        <!-- Estado WA: error silencioso -->
+        <div id="wa-error">
+            No se pudo enviar la notificación automática. Te contactaremos en breve.
+        </div>
+
+        <a id="btn-track" href="/seguimiento-caso.html" class="btn-seguimiento">
+            Ver Seguimiento del Caso
+        </a>
+        <a href="/" class="btn-home">Volver al inicio</a>
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script>
+    (async function init() {
+        const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+        const NOTIFY_WA_URL = `${SUPABASE_URL}/functions/v1/notify-wa`;
+
+        // Capturar ?pedido= de la URL
+        const params  = new URLSearchParams(window.location.search);
+        const caseId  = params.get('pedido') || '';
+
+        // Actualizar badge + link de seguimiento
+        if (caseId) {
+            const badge = document.getElementById('case-badge-wrap');
+            badge.textContent = 'Caso #' + caseId;
+            badge.style.display = 'inline-block';
+            document.getElementById('btn-track').href =
+                `/seguimiento-caso.html?pedido=${encodeURIComponent(caseId)}`;
+        }
+
+        if (!caseId) return;
+
+        // Mostrar spinner WA
+        document.getElementById('wa-loading').style.display = 'block';
+
+        try {
+            // Esperar a que el SDK de Supabase cargue (defer)
+            await waitForSupabase();
+            const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+            // Obtener datos del pedido para el mensaje WA
+            const { data: caso, error } = await sb
+                .from('pedidos')
+                .select('codigo, nombre_doctor, telefono, servicio, moneda, monto_total')
+                .eq('codigo', caseId)
+                .single();
+
+            if (error || !caso) throw new Error('Pedido no encontrado');
+
+            // Disparar Edge Function notify-wa
+            const resp = await fetch(NOTIFY_WA_URL, {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON },
+                body: JSON.stringify({
+                    tipo:     'pago_confirmado',
+                    telefono: caso.telefono || '',
+                    nombre:   caso.nombre_doctor || 'Doctor',
+                    caseId:   caso.codigo,
+                    moneda:   caso.moneda  || 'COP',
+                    monto:    caso.monto_total ? String(caso.monto_total) : '',
+                }),
+                signal: AbortSignal.timeout(8000)
+            });
+
+            document.getElementById('wa-loading').style.display = 'none';
+
+            if (resp.ok) {
+                document.getElementById('wa-sent').style.display = 'block';
+            } else {
+                throw new Error(`notify-wa HTTP ${resp.status}`);
+            }
+        } catch (e) {
+            console.warn('notify-wa:', e.message);
+            document.getElementById('wa-loading').style.display = 'none';
+            document.getElementById('wa-error').style.display   = 'block';
+        }
+    })();
+
+    function waitForSupabase(ms = 5000) {
+        return new Promise((resolve, reject) => {
+            if (window.supabase) return resolve();
+            const t = Date.now();
+            const id = setInterval(() => {
+                if (window.supabase) { clearInterval(id); resolve(); }
+                else if (Date.now() - t > ms) { clearInterval(id); reject(new Error('Supabase timeout')); }
+            }, 50);
+        });
+    }
+    </script>
+</body>
+</html>
