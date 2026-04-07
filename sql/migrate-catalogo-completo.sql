@@ -58,7 +58,7 @@ ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS flujo        TEXT DEFAULT 'impresio
 -- ─────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS billeteras (
     id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    whatsapp    TEXT NOT NULL UNIQUE,  -- clave: número WA del doctor
+    whatsapp    TEXT NOT NULL UNIQUE,  -- clave: número WA del cliente
     doctor_name TEXT,
     saldo_favor NUMERIC(12,0) NOT NULL DEFAULT 0,
     updated_at  TIMESTAMPTZ DEFAULT now()

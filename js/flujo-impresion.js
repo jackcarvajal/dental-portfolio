@@ -2357,7 +2357,7 @@
 
             const rows = [
                 ['ID Orden',  ordenId],
-                ['Doctor',    cliente],
+                ['Cliente',   cliente],
                 ['Servicio',  servicio + (submat ? ' — ' + submat : '')],
                 ['Total',     total],
                 ['Entrega',   fechaTxt || '—'],

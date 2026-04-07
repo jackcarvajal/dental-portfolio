@@ -57,7 +57,7 @@ async function loginSupabase(email, password) {
     return data;
 }
 
-async function registrarDoctor(email, password, meta = {}) {
+async function registrarCliente(email, password, meta = {}) {
     const sb = getSupabase();
     if (!sb) throw new Error('Supabase SDK no cargado');
     const { data, error } = await sb.auth.signUp({
@@ -180,7 +180,7 @@ async function registrarPago(datos) {
 if (typeof module !== 'undefined') {
     module.exports = {
         SUPABASE_URL, SUPABASE_ANON, getSupabase,
-        checkAuthSupabase, loginSupabase, registrarDoctor, logoutSupabase,
+        checkAuthSupabase, loginSupabase, registrarCliente, logoutSupabase,
         subirSTL, subirComprobante,
         crearPedido, obtenerHistorial, actualizarEstadoPedido,
         registrarPago

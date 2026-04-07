@@ -33,11 +33,11 @@ CREATE POLICY "anon_select_mantenimiento" ON equipo_mantenimiento
 CREATE INDEX IF NOT EXISTS idx_equipo_id ON equipo_mantenimiento(equipo_id);
 
 -- ── 3. CITAS DE ESCANEO INTRAORAL ────────────────────────────────
--- NOTA: doctor identificado por whatsapp TEXT (no FK a auth.users)
+-- NOTA: cliente identificado por whatsapp TEXT (no FK a auth.users)
 CREATE TABLE IF NOT EXISTS citas_escaneo (
     id         UUID        PRIMARY KEY DEFAULT uuid_generate_v4(),
-    whatsapp   TEXT        NOT NULL,   -- identifica al doctor (igual que pedidos)
-    doctor     TEXT,
+    whatsapp   TEXT        NOT NULL,   -- identifica al cliente (igual que pedidos)
+    cliente    TEXT,
     direccion  TEXT        NOT NULL,
     fecha_cita TIMESTAMPTZ NOT NULL,
     estado     TEXT        NOT NULL DEFAULT 'PROGRAMADA'

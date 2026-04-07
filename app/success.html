@@ -190,7 +190,7 @@
                 body: JSON.stringify({
                     tipo:     'pago_confirmado',
                     telefono: caso.telefono || '',
-                    nombre:   caso.nombre_doctor || 'Doctor',
+                    nombre:   caso.nombre_doctor || 'Cliente',
                     caseId:   caso.codigo,
                     moneda:   caso.moneda  || 'COP',
                     monto:    caso.monto_total ? String(caso.monto_total) : '',
