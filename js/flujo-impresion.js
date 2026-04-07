@@ -2197,11 +2197,13 @@
                         link_stl:         STATE.linkSTL,
                         nonce:            _nonce,
                         flujo:            'impresion',
-                        requiere_factura: STATE.billingReq  || false,
-                        billing_tipo:     STATE.billingTipo  || null,
-                        billing_nit:      STATE.billingNit   || null,
-                        billing_razon:    STATE.billingRazon || null,
-                        billing_email:    STATE.billingEmail || null
+                        requiere_factura:       STATE.billingReq  || false,
+                        billing_tipo:           STATE.billingTipo  || null,
+                        billing_nit:            STATE.billingNit   || null,
+                        billing_razon:          STATE.billingRazon || null,
+                        billing_email:          STATE.billingEmail || null,
+                        terminos_aceptados_at:  new Date().toISOString(),
+                        user_agent:             navigator.userAgent.slice(0, 250)
                     }]).then(({ error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido no guardado en BD:', _e.message);
                     });
