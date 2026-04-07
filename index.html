@@ -238,7 +238,7 @@
         }
 
         .hero-title-main {
-            font-size: clamp(5rem, 13vw, 10rem);
+            font-size: clamp(2.8rem, 13vw, 10rem);
             font-weight: 900;
             line-height: 0.9;
             margin: 0;
@@ -790,32 +790,52 @@
                 gap: 10px;
             }
 
-            .container {
-                padding: 0 15px;
-            }
+            .container { padding: 0 14px; }
 
-            section {
-                padding: 60px 0;
-            }
+            section { padding: 36px 0; }
 
             .section-header {
-                font-size: 2rem;
-                margin-bottom: 40px;
+                font-size: 1.6rem;
+                margin-bottom: 24px;
             }
+            .section-subtitle { font-size: 0.82rem; margin-bottom: 20px; }
 
-            .hero-title-main {
-                font-size: 4rem;
-            }
+            /* HERO */
+            .hero-title-main { font-size: 3rem; letter-spacing: -2px; }
+            .hero-subtitle { font-size: 0.85rem; letter-spacing: 3px; }
+            .hero-desc { font-size: 0.88rem; padding: 0 4px; }
+            .diamond-in-y { font-size: 1.6rem; right: 2%; top: -8%; }
 
+            /* GRIDS → columna única */
             .portfolio-grid,
-            .steps-grid {
-                grid-template-columns: 1fr;
-            }
+            .steps-grid,
+            .cajones-persuasive-grid,
+            .whatsapp-buttons-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
 
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
+            .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+
+            /* CARDS — reducir padding e íconos */
+            .cajon-persuasive, .cajon-persuasive * { min-height: unset !important; }
+            .cajon-persuasive { padding: 20px 16px !important; }
+            .whatsapp-btn-card { padding: 16px 14px !important; }
+
+            /* Círculos de íconos en cajones */
+            .cajon-persuasive > div:first-child { width: 52px !important; height: 52px !important; margin-bottom: 12px !important; }
+            .cajon-persuasive i[style*="font-size:2.4rem"] { font-size: 1.6rem !important; }
+
+            /* Títulos inline de secciones */
+            .canales-envio-persuasive h2 { font-size: 1.4rem !important; letter-spacing: 1px !important; }
+            [style*="font-size: 36px"] { font-size: 1.4rem !important; }
+            [style*="font-size: 2.2rem"] { font-size: 1.4rem !important; }
+        }
+
+        /* ── Phones pequeños ≤ 420px ── */
+        @media (max-width: 420px) {
+            .hero-title-main { font-size: 2.4rem; letter-spacing: -1px; }
+            .hero-subtitle { font-size: 0.75rem; letter-spacing: 2px; }
+            section { padding: 28px 0; }
+            .section-header { font-size: 1.35rem; }
+            .cajon-persuasive { padding: 16px 12px !important; }
         }
     </style>
 </head>
@@ -1799,6 +1819,52 @@
             setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
         }
     </script>
-    
+
+    <!-- ── MOBILE FIX GLOBAL — cubre inline styles ── -->
+    <style>
+    @media (max-width: 768px) {
+        /* Secciones con padding inline excesivo */
+        section[style*="padding: 45px"],
+        section[style*="padding: 55px"],
+        .canales-envio-persuasive { padding-top: 30px !important; padding-bottom: 30px !important; }
+
+        /* Grid de tarjetas de producción CAM (repeat 2→1) */
+        div[style*="repeat(2, 1fr)"] { grid-template-columns: 1fr !important; gap: 14px !important; }
+
+        /* SVGs de equipos — no tan enormes */
+        .cajon-fresado svg, .cajon-impresion svg { width: 60px !important; height: 60px !important; margin-bottom: 10px !important; }
+
+        /* Párrafos con min-height fijo */
+        p[style*="min-height"] { min-height: unset !important; }
+
+        /* Títulos inline grandes */
+        h2[style*="font-size: 36px"],
+        h2[style*="font-size: 2.2rem"],
+        h2[style*="font-size: 2rem"] {
+            font-size: 1.35rem !important;
+            letter-spacing: 1px !important;
+            margin-bottom: 18px !important;
+        }
+
+        /* Hero stats si existe */
+        .hero-stats { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+
+        /* Navbar logo más pequeño en móvil */
+        .nav-logo-box h1 { font-size: 20px !important; }
+    }
+
+    @media (max-width: 420px) {
+        /* Grids de 2 → 1 en phones muy pequeños */
+        div[style*="repeat(2, 1fr)"] { grid-template-columns: 1fr !important; }
+
+        /* Íconos de contact WhatsApp */
+        .whatsapp-btn-card i[style*="font-size: 38px"] { font-size: 26px !important; }
+        .whatsapp-btn-card span[style*="font-size: 15px"] { font-size: 13px !important; }
+
+        /* Badges "RECOMENDADO" no salgan del card */
+        [style*="position:absolute"][style*="top:-10px"] { font-size: 7px !important; padding: 2px 7px !important; }
+    }
+    </style>
+
 </body>
 </html>
