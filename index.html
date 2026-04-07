@@ -806,11 +806,9 @@
             .hero-desc { font-size: 0.88rem; padding: 0 4px; }
             .diamond-in-y { font-size: 1.6rem; right: 2%; top: -8%; }
 
-            /* GRIDS → columna única */
-            .portfolio-grid,
-            .steps-grid,
-            .cajones-persuasive-grid,
-            .whatsapp-buttons-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+            /* GRIDS → columna única (steps; cajones y portfolio van a scroll horizontal via bloque al final) */
+            .steps-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+            .footer-grid { grid-template-columns: repeat(2,1fr); gap: 24px; }
 
             .footer-grid { grid-template-columns: 1fr; gap: 24px; }
 
@@ -1258,18 +1256,8 @@
                     margin-bottom: 20px !important;
                 }
 
-                .cajones-persuasive-grid, .whatsapp-buttons-grid {
-                    grid-template-columns: 1fr !important;
-                    gap: 15px !important;
-                }
-
-                .cajon-persuasive {
-                    padding: 22px 18px !important;
-                }
-
-                .whatsapp-btn-card {
-                    padding: 20px 18px !important;
-                }
+                /* cajones → scroll horizontal gestionado por bloque MOBILE FIX al final */
+                .canales-envio-persuasive h2 { font-size: 1.3rem !important; }
             }
             </style>
     </section>
@@ -1820,49 +1808,102 @@
         }
     </script>
 
-    <!-- ── MOBILE FIX GLOBAL — cubre inline styles ── -->
+    <!-- ── MOBILE FIX GLOBAL v2 ── -->
     <style>
     @media (max-width: 768px) {
-        /* Secciones con padding inline excesivo */
-        section[style*="padding: 45px"],
-        section[style*="padding: 55px"],
-        .canales-envio-persuasive { padding-top: 30px !important; padding-bottom: 30px !important; }
 
-        /* Grid de tarjetas de producción CAM (repeat 2→1) */
-        div[style*="repeat(2, 1fr)"] { grid-template-columns: 1fr !important; gap: 14px !important; }
+        /* ── 1. OCULTAR FLOTANTES QUE TAPAN CONTENIDO ── */
+        .social-floating { display: none !important; }
+        .ux-floaters {
+            bottom: 12px !important;
+            right: 12px !important;
+            gap: 7px !important;
+        }
+        .ux-btn { width: 38px !important; height: 38px !important; font-size: 0.9rem !important; }
 
-        /* SVGs de equipos — no tan enormes */
-        .cajon-fresado svg, .cajon-impresion svg { width: 60px !important; height: 60px !important; margin-bottom: 10px !important; }
+        /* ── 2. PORTFOLIO → SCROLL HORIZONTAL ── */
+        .portfolio-grid {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            gap: 14px !important;
+            padding-bottom: 12px !important;
+            margin-top: 24px !important;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .portfolio-card {
+            flex: 0 0 78vw !important;
+            max-width: 300px !important;
+            scroll-snap-align: start;
+        }
+        .portfolio-grid::-webkit-scrollbar { height: 4px; }
+        .portfolio-grid::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
+        .portfolio-grid::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.4); border-radius: 2px; }
+        .image-wrapper { height: 180px !important; }
 
-        /* Párrafos con min-height fijo */
+        /* ── 3. CAJONES DE ENVÍO → SCROLL HORIZONTAL ── */
+        .cajones-persuasive-grid {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            gap: 12px !important;
+            padding-bottom: 10px !important;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            max-width: 100% !important;
+        }
+        .cajon-persuasive {
+            flex: 0 0 72vw !important;
+            max-width: 260px !important;
+            scroll-snap-align: start;
+            padding: 20px 14px !important;
+        }
         p[style*="min-height"] { min-height: unset !important; }
 
-        /* Títulos inline grandes */
-        h2[style*="font-size: 36px"],
-        h2[style*="font-size: 2.2rem"],
-        h2[style*="font-size: 2rem"] {
-            font-size: 1.35rem !important;
-            letter-spacing: 1px !important;
-            margin-bottom: 18px !important;
+        /* ── 4. WHATSAPP BUTTONS → 1 columna compacta ── */
+        .whatsapp-buttons-grid {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
         }
+        .whatsapp-btn-card { padding: 14px 16px !important; }
+        .whatsapp-btn-card i[style*="38px"] { font-size: 26px !important; }
 
-        /* Hero stats si existe */
-        .hero-stats { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+        /* ── 5. FOOTER COMPACTO ── */
+        .prodigy-global-footer { padding: 28px 0 16px !important; }
+        .footer-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 18px !important;
+            margin-bottom: 20px !important;
+            padding: 0 16px !important;
+        }
+        .footer-col h4 { font-size: 13px !important; margin-bottom: 10px !important; }
+        .footer-col li  { padding: 4px 0 !important; font-size: 12px !important; }
+        .footer-copyright { font-size: 11px !important; padding-top: 14px !important; }
 
-        /* Navbar logo más pequeño en móvil */
-        .nav-logo-box h1 { font-size: 20px !important; }
+        /* ── 6. SECCIONES CON PADDING INLINE EXCESIVO ── */
+        section[style*="padding: 45px"],
+        section[style*="padding: 55px"],
+        .canales-envio-persuasive { padding-top: 28px !important; padding-bottom: 28px !important; }
+
+        /* ── 7. GRID CAM (repeat 2 → 1) ── */
+        div[style*="repeat(2, 1fr)"] { grid-template-columns: 1fr !important; gap: 14px !important; }
+        .cajon-fresado svg, .cajon-impresion svg { width: 56px !important; height: 56px !important; }
+
+        /* ── 8. TÍTULOS INLINE ── */
+        h2[style*="font-size: 36px"],
+        h2[style*="font-size: 2.2rem"] { font-size: 1.3rem !important; letter-spacing: 1px !important; margin-bottom: 16px !important; }
+
+        /* ── 9. NAVBAR LOGO ── */
+        .nav-logo-box h1 { font-size: 20px !important; letter-spacing: 2px !important; }
     }
 
     @media (max-width: 420px) {
-        /* Grids de 2 → 1 en phones muy pequeños */
-        div[style*="repeat(2, 1fr)"] { grid-template-columns: 1fr !important; }
-
-        /* Íconos de contact WhatsApp */
-        .whatsapp-btn-card i[style*="font-size: 38px"] { font-size: 26px !important; }
-        .whatsapp-btn-card span[style*="font-size: 15px"] { font-size: 13px !important; }
-
-        /* Badges "RECOMENDADO" no salgan del card */
-        [style*="position:absolute"][style*="top:-10px"] { font-size: 7px !important; padding: 2px 7px !important; }
+        .portfolio-card  { flex: 0 0 88vw !important; }
+        .cajon-persuasive { flex: 0 0 85vw !important; }
+        .footer-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+        .hero-title-main  { font-size: 2.2rem !important; }
+        section { padding: 22px 0 !important; }
     }
     </style>
 
