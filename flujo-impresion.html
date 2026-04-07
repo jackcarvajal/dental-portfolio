@@ -537,6 +537,10 @@
                 <span class="label">📦 Entrega:</span>
                 <span class="value" id="calc-entrega-fecha" style="font-size:0.75rem;color:var(--gold-primary);">-</span>
             </div>
+            <div class="calc-line hidden" id="line-wompi">
+                <span class="label" style="color:#f87171;">Comisión Wompi (3%):</span>
+                <span class="value" id="calc-wompi">$0</span>
+            </div>
             <div class="calc-line">
                 <span class="label">TOTAL:</span>
                 <span class="value calc-total" id="calc-total">$0</span>
@@ -560,7 +564,7 @@
             <!-- WOMPI / TRANSFERENCIA -->
             <div style="background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.2);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
                 <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.82rem;color:#e2e8f0;line-height:1.5;">
-                    <input type="checkbox" id="chk-transferencia" style="width:16px;height:16px;accent-color:#D4AF37;flex-shrink:0;margin-top:2px;" checked>
+                    <input type="checkbox" id="chk-transferencia" onchange="calcularTotal()" style="width:16px;height:16px;accent-color:#D4AF37;flex-shrink:0;margin-top:2px;" checked>
                     <span>Pago por <strong style="color:#D4AF37;">transferencia directa</strong> (Nequi / Daviplata / Nu)<br>
                     <span style="font-size:.75rem;color:#94a3b8;">Sin comisión. PSE / tarjeta: +3% Wompi.</span></span>
                 </label>
