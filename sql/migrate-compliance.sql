@@ -9,6 +9,10 @@ ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS ip_registro             TEXT;
 ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS user_agent              TEXT;
 ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS seguro_garantia_activo  BOOLEAN   DEFAULT false;
 ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS costo_envio             INT       DEFAULT 0;
+ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS hash_seguridad          TEXT;     -- token link seguimiento
+
+-- Índice para búsqueda rápida por WhatsApp
+CREATE INDEX IF NOT EXISTS idx_pedidos_whatsapp ON pedidos(whatsapp);
 
 -- ── 2. HOJA DE VIDA DE EQUIPOS ───────────────────────────────────
 CREATE TABLE IF NOT EXISTS equipo_mantenimiento (
