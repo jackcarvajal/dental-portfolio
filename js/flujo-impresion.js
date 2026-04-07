@@ -1,4 +1,4 @@
-﻿        const SUB_MATERIALES = {
+﻿        const SUB_MATERIALES_FALLBACK = {
             'resina_modelo': [
                 { id: 'mod_base',     nom: 'Z-Model Base (Estudio/Trabajo)',        precio: 25000, fastReady: true, icon: '📐', info: 'Sólido, acabado mate. Diagnóstico y articulación.' },
                 { id: 'mod_termo',    nom: 'Modelo Termoformado (Alineadores)',     precio: 35000, fastReady: true, icon: '😁', info: 'Alta resistencia térmica y mecánica.' },
@@ -83,10 +83,73 @@
         }
 
         // Aplicar congelamiento profundo
-        deepFreeze(SUB_MATERIALES);
-        if(CONFIG.precios_extras) deepFreeze(CONFIG.precios_extras);
+        deepFreeze(SUB_MATERIALES_FALLBACK);
+        // CONFIG.precios_extras NO se congela: Supabase puede actualizar sus valores en runtime
         if(CONFIG.horarios_corte) deepFreeze(CONFIG.horarios_corte);
         deepFreeze(CONFIG);
+
+        // SUB_MATERIALES mutable: se parchará con precios Supabase en inicializarCatalogo()
+        let SUB_MATERIALES = SUB_MATERIALES_FALLBACK;
+
+        // ─────────────────────────────────────────────
+        // CATÁLOGO DINÁMICO: precios desde Supabase + Kill Switch
+        // ─────────────────────────────────────────────
+        async function inicializarCatalogo() {
+            const sb = (typeof getSupabase === 'function') ? getSupabase() : null;
+            if (!sb) return; // sin SDK → fallback estático, todo funciona igual
+
+            try {
+                const { data: items, error } = await sb
+                    .from('catalogo')
+                    .select('id,precio,activo')
+                    .eq('flujo', 'impresion');
+                if (error || !items || !items.length) return;
+
+                const mapa = Object.fromEntries(items.map(i => [i.id, i]));
+
+                // Reconstruir SUB_MATERIALES filtrando inactivos y actualizando precios
+                const nuevoSub = {};
+                for (const [cat, arr] of Object.entries(SUB_MATERIALES_FALLBACK)) {
+                    nuevoSub[cat] = arr
+                        .filter(item => {
+                            const row = mapa[item.id];
+                            return !row || row.activo !== false;
+                        })
+                        .map(item => {
+                            const row = mapa[item.id];
+                            return row ? { ...item, precio: row.precio } : item;
+                        });
+                }
+                SUB_MATERIALES = nuevoSub;
+                deepFreeze(SUB_MATERIALES);
+
+                // Si el usuario ya eligió un material, actualizar el precio en STATE
+                if (STATE.submaterialId && mapa[STATE.submaterialId]) {
+                    STATE.submaterialPrecio = mapa[STATE.submaterialId].precio;
+                    calcularTotal();
+                }
+
+                // Cargar también extras desde config_precios
+                const { data: extras } = await sb
+                    .from('config_precios')
+                    .select('id,precio')
+                    .eq('flujo', 'impresion');
+                if (extras && extras.length) {
+                    const extMap = Object.fromEntries(extras.map(e => [e.id, e.precio]));
+                    // CONFIG.precios_extras no está congelado → mutación directa segura
+                    if (extMap['postproceso_pulido'])   CONFIG.precios_extras.postproceso_pulido = extMap['postproceso_pulido'];
+                    if (extMap['postproceso_pintado'])  CONFIG.precios_extras.postproceso_pintado = extMap['postproceso_pintado'];
+                    if (extMap['acabado_uv'])           CONFIG.precios_extras.acabado_uv = extMap['acabado_uv'];
+                    if (extMap['express_impresion'])    CONFIG.precios_extras.express = extMap['express_impresion'];
+                    if (extMap['express_12h'])          CONFIG.precios_extras.express_12h = extMap['express_12h'];
+                    if (extMap['resolucion_25_micras']) CONFIG.precios_extras.resolucion_25_micras = extMap['resolucion_25_micras'];
+                    if (extMap['envio_nacional'])       CONFIG.precios_extras.envio_nacional = extMap['envio_nacional'];
+                    calcularTotal();
+                }
+            } catch (e) {
+                console.warn('[PRODIGY] Catálogo: usando precios estáticos.', e.message);
+            }
+        }
 
 
         let STATE = {
@@ -2107,7 +2170,43 @@
             
             texto += `💵 *TOTAL: ${STATE.total}*\n\n`;
             texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n`;
-            texto += `🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso.html?id=${STATE.ordenId}\n\n`;
+
+            // Nonce de seguridad para tracking
+            const _nonce = btoa(STATE.ordenId + ':' + Date.now().toString(36)).replace(/[+/=]/g, c => c==='+' ? '-' : c==='/' ? '_' : '');
+            STATE.nonce = _nonce;
+            texto += `🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso.html?id=${STATE.ordenId}&key=${_nonce}\n\n`;
+
+            // Persistir en Supabase (no-blocking — si falla, WA sigue igual)
+            try {
+                const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
+                if (_sb) {
+                    const _fechaElem = document.getElementById('fecha-entrega');
+                    const _fechaTxt  = _fechaElem ? (_fechaElem.innerText||_fechaElem.textContent).replace('Entrega estimada: ','').trim() : null;
+                    _sb.from('pedidos').insert([{
+                        codigo:           STATE.ordenId,
+                        doctor:           STATE.nombreCliente,
+                        whatsapp:         STATE.whatsappCliente,
+                        servicio:         CONFIG.materiales[STATE.materialTipo]?.nom || STATE.materialTipo,
+                        material:         STATE.materialTipo,
+                        submaterial:      STATE.submaterialNombre,
+                        color_vita:       STATE.colorVita,
+                        cantidad:         STATE.cantidad,
+                        total:            typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total,
+                        estado:           'Borrador',
+                        fecha_entrega:    _fechaTxt,
+                        link_stl:         STATE.linkSTL,
+                        nonce:            _nonce,
+                        flujo:            'impresion',
+                        requiere_factura: STATE.billingReq  || false,
+                        billing_tipo:     STATE.billingTipo  || null,
+                        billing_nit:      STATE.billingNit   || null,
+                        billing_razon:    STATE.billingRazon || null,
+                        billing_email:    STATE.billingEmail || null
+                    }]).then(({ error: _e }) => {
+                        if (_e) console.warn('[PRODIGY] Pedido no guardado en BD:', _e.message);
+                    });
+                }
+            } catch(_e2) { /* silencioso */ }
             if (STATE.billingReq) {
                 texto += `🧾 *FACTURA ELECTRÓNICA (DIAN)*\n`;
                 texto += `• Tipo doc: ${STATE.billingTipo}\n`;
@@ -2201,8 +2300,11 @@
         document.addEventListener('copy', e => e.preventDefault());
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Cargar precios dinámicos desde Supabase (async, no bloquea UI)
+            inicializarCatalogo();
+
             limitarExtras();
-            
+
             // FORZAR limpieza de "Cargando..." INMEDIATAMENTE
             document.getElementById('date-express').innerHTML = `<span style="color:#999;">Selecciona material</span>`;
             document.getElementById('date-mediodia').innerHTML = `<span style="color:#999;">Selecciona material</span>`;

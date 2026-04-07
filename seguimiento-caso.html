@@ -303,9 +303,13 @@
                 document.getElementById('noEncontrado').style.display = 'block';
                 return;
             }
+            // Leer nonce del URL (presente cuando viene desde link de WhatsApp)
+            const _nonce = new URLSearchParams(window.location.search).get('key') || null;
             try {
                 const sb = getSbSeg();
-                const { data, error } = await sb.rpc('buscar_pedido_publico', { p_codigo: orden });
+                const rpcParams = { p_codigo: orden };
+                if (_nonce) rpcParams.p_nonce = _nonce;
+                const { data, error } = await sb.rpc('buscar_pedido_publico', rpcParams);
                 if (error || !data) throw new Error('no data');
                 mostrarCaso(data);
             } catch(_) {
@@ -470,9 +474,10 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script>
-        // Auto-fill desde ?id= (link enviado por WhatsApp)
+        // Auto-fill desde ?id=&key= (link enviado por WhatsApp)
         window.addEventListener('load', function() {
-            const id = new URLSearchParams(window.location.search).get('id');
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
             if (id) {
                 const el = document.getElementById('searchOrden');
                 if (el) { el.value = id; buscarCasoConSpinner(); }

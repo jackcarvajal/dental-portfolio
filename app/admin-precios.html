@@ -228,7 +228,7 @@
             </thead>
             <tbody id="tabla-body">
                 <tr><td colspan="7" style="text-align:center;padding:28px;color:var(--muted);">
-                    <i class="fas fa-circle-notch fa-spin"></i> Cargando catálogo desde supabase-mock...
+                    <i class="fas fa-circle-notch fa-spin"></i> Cargando catálogo desde Supabase...
                 </td></tr>
             </tbody>
         </table>
@@ -255,7 +255,7 @@
     <!-- NOTA MIGRACIÓN -->
     <div style="margin-top:24px;background:rgba(0,210,255,0.04);border:1px solid rgba(0,210,255,0.15);border-radius:12px;padding:18px 20px;font-size:0.8rem;color:#94a3b8;line-height:1.7;">
         <i class="fas fa-database" style="color:var(--cyan);margin-right:8px;"></i>
-        <strong style="color:var(--cyan);">Datos vía supabase-mock.js</strong> — Las ediciones persisten solo en memoria de sesión.
+        <strong style="color:var(--cyan);">Datos en tiempo real — Supabase PostgreSQL</strong> — Los cambios se reflejan inmediatamente en las calculadoras.
         Al conectar <strong style="color:#fff;">Supabase real</strong>, cada <code style="color:#fbbf24;">updatePrecio(id, valor)</code> hará un
         <code style="color:#fbbf24;">UPDATE catalogo SET precio = $1 WHERE id = $2</code> en PostgreSQL.
         La UI de esta tabla no cambiará — solo cambia la fuente de datos.
@@ -266,7 +266,14 @@
 <div id="toast"><i class="fas fa-check-circle"></i> <span id="toast-msg">Guardado</span></div>
 
 <script type="module">
-    import { supabase, updatePrecio } from '../js/supabase-mock.js';
+    // Cliente Supabase real (CDN ya cargado en <head>)
+    const _SUPA_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+    const _SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+    const _sbReal    = window.supabase.createClient(_SUPA_URL, _SUPA_ANON);
+    const supabase   = { from: (t) => _sbReal.from(t), auth: _sbReal.auth };
+    async function updatePrecio(itemId, nuevoPrecio) {
+        return _sbReal.from('catalogo').update({ precio: nuevoPrecio, updated_at: new Date().toISOString() }).eq('id', itemId);
+    }
 
     // ── Guardia de sesión real ─────────────────────────────────
     await ProdigyAuth.require('admin');
