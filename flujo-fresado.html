@@ -2477,7 +2477,8 @@
                                 <option value="CC">Cédula de Ciudadanía</option>
                                 <option value="CE">Cédula de Extranjería</option>
                             </select>
-                            <input type="text" id="billing_nit" placeholder="NIT / Cédula (ej: 900123456-1)" maxlength="20" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
+                            <input type="text" id="billing_nit" oninput="validarNIT(this)" placeholder="NIT / Cédula (ej: 900123456-1)" maxlength="20" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:4px;font-size:.85rem;">
+                            <span id="nit-indicator" style="font-size:.72rem;display:block;margin-top:3px;min-height:16px;margin-bottom:4px;"></span>
                             <input type="text" id="billing_razon" placeholder="Razón Social o Nombre Completo" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
                             <input type="email" id="billing_email" placeholder="Correo para factura (contabilidad@...)" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);font-size:.85rem;">
                             <p style="font-size:.72rem;color:#94a3b8;margin-top:6px;">Factura enviada al correo indicado en máx. 24h hábiles.</p>
@@ -3971,7 +3972,8 @@
             texto += `• Ref: ${STATE.pagoReferencia || 'No proporcionada'}\n\n`;
             
             texto += `💵 *TOTAL: ${STATE.total}*\n\n`;
-            texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n\n`;
+            texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n`;
+            texto += `🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso.html?id=${STATE.ordenId}\n\n`;
             if (STATE.billingReq) {
                 texto += `🧾 *FACTURA ELECTRÓNICA (DIAN)*\n`;
                 texto += `• Tipo doc: ${STATE.billingTipo}\n`;
@@ -4006,6 +4008,46 @@
             } catch(e) {
                 showProdigyAlert('📱 Error de Conexión', 'No se pudo abrir WhatsApp automáticamente. Verifica que tienes WhatsApp instalado e intenta de nuevo.', 'Intentar de Nuevo');
             }
+        }
+
+        function calcularDV(nit) {
+            const primos = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
+            const digits = String(nit).replace(/\D/g,'').split('').reverse();
+            let sum = 0;
+            for (let i = 0; i < digits.length && i < primos.length; i++) {
+                sum += parseInt(digits[i]) * primos[i];
+            }
+            const rem = sum % 11;
+            return rem <= 1 ? rem : 11 - rem;
+        }
+
+        function validarNIT(input) {
+            let ind = document.getElementById('nit-indicator');
+            if (!ind) return;
+            const raw = input.value.trim();
+            const match = raw.match(/^(\d{6,15})[-\s]?(\d)$/);
+            if (!match) {
+                ind.textContent = raw.length > 5 ? '⚠️ Formato: 123456789-0' : '';
+                ind.style.color = '#f59e0b';
+                return;
+            }
+            const dv = parseInt(match[2]);
+            const calc = calcularDV(match[1]);
+            if (dv === calc) {
+                ind.textContent = '✓ NIT válido';
+                ind.style.color = '#00FF41';
+            } else {
+                ind.textContent = `✗ DV incorrecto — debe ser ${calc}`;
+                ind.style.color = '#f87171';
+            }
+        }
+
+        function copiarId() {
+            const id = document.getElementById('exito-orden-id')?.textContent;
+            if (id && id !== '—') navigator.clipboard.writeText(id).then(() => {
+                const btn = document.querySelector('#modal-exito button[onclick="copiarId()"]');
+                if (btn) { btn.textContent = '✓ Copiado'; setTimeout(() => { btn.textContent = '📋 Copiar'; }, 2000); }
+            });
         }
 
         function toggleBillingSection() {
@@ -4052,6 +4094,20 @@
                     if (max !== null && !Number.isNaN(max)) v = Math.min(max, v);
 
                     input.value = String(v);
+                });
+            });
+            // Autosave: restore profile fields
+            const _prof = JSON.parse(localStorage.getItem('prodigy_profile') || '{}');
+            if (_prof.nombre) { const el = document.getElementById('nombreCliente'); if (el && !el.value) el.value = _prof.nombre; }
+            if (_prof.wa)     { const el = document.getElementById('whatsappCliente'); if (el && !el.value) el.value = _prof.wa; }
+            if (_prof.ciudad) { const el = document.getElementById('ciudad'); if (el && !el.value) el.value = _prof.ciudad; }
+            // Autosave: save on input
+            ['nombreCliente','whatsappCliente','ciudad'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', () => {
+                    const p = JSON.parse(localStorage.getItem('prodigy_profile') || '{}');
+                    p[id === 'nombreCliente' ? 'nombre' : id === 'whatsappCliente' ? 'wa' : 'ciudad'] = el.value;
+                    localStorage.setItem('prodigy_profile', JSON.stringify(p));
                 });
             });
         });
@@ -4113,7 +4169,11 @@
             <h2 style="color:var(--gold-primary);margin-bottom:8px;">¡Orden Registrada!</h2>
             <p style="color:#aaa;font-size:0.9rem;margin-bottom:20px;">Tu caso ha sido ingresado al sistema correctamente.</p>
             <div class="pay-box" style="text-align:left;font-size:0.9rem;margin-bottom:15px;">
-                <p><strong style="color:var(--gold-primary);">ID Orden:</strong> <span id="exito-orden-id">—</span></p>
+                <p style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                    <strong style="color:var(--gold-primary);">ID Orden:</strong>
+                    <span id="exito-orden-id">—</span>
+                    <button onclick="copiarId()" style="background:rgba(0,210,255,.15);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;" title="Copiar ID">📋 Copiar</button>
+                </p>
                 <p style="margin-top:6px;"><strong style="color:var(--gold-primary);">Cliente:</strong> <span id="exito-cliente">—</span></p>
                 <p style="margin-top:6px;"><strong style="color:var(--gold-primary);">Total:</strong> <span id="exito-total">—</span></p>
             </div>

@@ -2106,7 +2106,8 @@
             texto += `• Ref: ${STATE.pagoReferencia || 'No proporcionada'}\n\n`;
             
             texto += `💵 *TOTAL: ${STATE.total}*\n\n`;
-            texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n\n`;
+            texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n`;
+            texto += `🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso.html?id=${STATE.ordenId}\n\n`;
             if (STATE.billingReq) {
                 texto += `🧾 *FACTURA ELECTRÓNICA (DIAN)*\n`;
                 texto += `• Tipo doc: ${STATE.billingTipo}\n`;
@@ -2141,6 +2142,46 @@
             } catch(e) {
                 showProdigyAlert('📱 Error de Conexión', 'No se pudo abrir WhatsApp automáticamente. Verifica que tienes WhatsApp instalado e intenta de nuevo.', 'Intentar de Nuevo');
             }
+        }
+
+        function calcularDV(nit) {
+            const primos = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
+            const digits = String(nit).replace(/\D/g,'').split('').reverse();
+            let sum = 0;
+            for (let i = 0; i < digits.length && i < primos.length; i++) {
+                sum += parseInt(digits[i]) * primos[i];
+            }
+            const rem = sum % 11;
+            return rem <= 1 ? rem : 11 - rem;
+        }
+
+        function validarNIT(input) {
+            let ind = document.getElementById('nit-indicator');
+            if (!ind) return;
+            const raw = input.value.trim();
+            const match = raw.match(/^(\d{6,15})[-\s]?(\d)$/);
+            if (!match) {
+                ind.textContent = raw.length > 5 ? '⚠️ Formato: 123456789-0' : '';
+                ind.style.color = '#f59e0b';
+                return;
+            }
+            const dv = parseInt(match[2]);
+            const calc = calcularDV(match[1]);
+            if (dv === calc) {
+                ind.textContent = '✓ NIT válido';
+                ind.style.color = '#00FF41';
+            } else {
+                ind.textContent = `✗ DV incorrecto — debe ser ${calc}`;
+                ind.style.color = '#f87171';
+            }
+        }
+
+        function copiarId() {
+            const id = document.getElementById('exito-orden-id')?.textContent;
+            if (id && id !== '—') navigator.clipboard.writeText(id).then(() => {
+                const btn = document.querySelector('#modal-exito button[onclick="copiarId()"]');
+                if (btn) { btn.textContent = '✓ Copiado'; setTimeout(() => { btn.textContent = '📋 Copiar'; }, 2000); }
+            });
         }
 
         function toggleBillingSection() {
@@ -2202,6 +2243,20 @@
                     if (max !== null && !Number.isNaN(max)) v = Math.min(max, v);
 
                     input.value = String(v);
+                });
+            });
+            // Autosave: restore profile fields
+            const _prof = JSON.parse(localStorage.getItem('prodigy_profile') || '{}');
+            if (_prof.nombre) { const el = document.getElementById('nombreCliente'); if (el && !el.value) el.value = _prof.nombre; }
+            if (_prof.wa)     { const el = document.getElementById('whatsappCliente'); if (el && !el.value) el.value = _prof.wa; }
+            if (_prof.ciudad) { const el = document.getElementById('ciudad'); if (el && !el.value) el.value = _prof.ciudad; }
+            // Autosave: save on input
+            ['nombreCliente','whatsappCliente','ciudad'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', () => {
+                    const p = JSON.parse(localStorage.getItem('prodigy_profile') || '{}');
+                    p[id === 'nombreCliente' ? 'nombre' : id === 'whatsappCliente' ? 'wa' : 'ciudad'] = el.value;
+                    localStorage.setItem('prodigy_profile', JSON.stringify(p));
                 });
             });
         });
