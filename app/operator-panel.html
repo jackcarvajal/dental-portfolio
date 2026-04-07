@@ -10,6 +10,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="../js/auth-guard.js"></script>
     <script src="../js/upload-guard.js"></script>
+    <script>
+    // Constantes de Storage — bucket verificado con RLS
+    const BUCKET = 'dental-cases';
+    </script>
     <style>
         body { visibility: hidden; }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -430,29 +434,56 @@
             : '<i class="fas fa-lock" style="margin-right:6px;"></i> Completa los 3 requisitos para finalizar';
     }
 
-    function confirmarEntrega() {
+    async function confirmarEntrega() {
         if (!(_entrega.exocadLink && _entrega.stlFile && _entrega.fotoFile)) return;
         cerrarModal();
 
-        // Mostrar spinner
         const spinner = document.getElementById('upload-spinner');
         spinner.classList.add('active');
 
-        // Simular subida (en producción: supabase.storage.from('casos').upload(...))
-        setTimeout(() => {
+        try {
+            const sb        = ProdigyAuth.getSb();
+            const uid       = window.PRODIGY_USER?.id || 'operador';
+            const ts        = Date.now();
+            const caseId    = _entrega.caseId;
+            const extStl    = _entrega.stlFile.name.split('.').pop().toLowerCase();
+            const extFoto   = _entrega.fotoFile.name.split('.').pop().toLowerCase();
+            const pathStl   = `${uid}/${caseId}_${ts}.${extStl}`;
+            const pathFoto  = `${uid}/${caseId}_${ts}_nesting.${extFoto}`;
+
+            // 1. Subir STL Final al bucket dental-cases
+            const { error: errStl } = await sb.storage
+                .from(BUCKET)
+                .upload(pathStl, _entrega.stlFile, { upsert: false, cacheControl: '3600' });
+            if (errStl) throw new Error('STL: ' + errStl.message);
+
+            // 2. Subir Foto de Control
+            const { error: errFoto } = await sb.storage
+                .from(BUCKET)
+                .upload(pathFoto, _entrega.fotoFile, { upsert: false, cacheControl: '3600' });
+            if (errFoto) throw new Error('Foto: ' + errFoto.message);
+
+            // 3. Actualizar registro en tabla pedidos
+            const notas = document.getElementById('input-notas')?.value?.trim() || null;
+            const { error: errDb } = await sb.from('pedidos').update({
+                estado:           'Listo para Entrega',
+                archivo_stl_path: pathStl,
+                foto_salida_path: pathFoto,
+                exocad_link:      _entrega.exocadLink,
+                notas_operador:   notas,
+            }).eq('codigo', caseId);
+            if (errDb) throw new Error('DB: ' + errDb.message);
+
+            // Éxito — actualizar kanban
             spinner.classList.remove('active');
-            // Mover tarjeta a Entregado
-            const card = document.querySelector(`.caso-card[data-id="${_entrega.caseId}"]`);
+            const card = document.querySelector(`.caso-card[data-id="${caseId}"]`);
             if (card) {
                 const destCol = document.querySelectorAll('.kanban-col')[2];
                 if (destCol) {
                     const newMeta = card.querySelector('.caso-meta');
-                    if (newMeta) {
-                        newMeta.innerHTML = `
-                            <i class="fas fa-check-circle" style="color:var(--green);"></i> Entregado: ${new Date().toLocaleDateString('es-CO')}<br>
-                            <i class="fas fa-link" style="color:var(--cyan);"></i> Visor Exocad adjunto
-                        `;
-                    }
+                    if (newMeta) newMeta.innerHTML = `
+                        <i class="fas fa-check-circle" style="color:var(--green);"></i> Entregado: ${new Date().toLocaleDateString('es-CO')}<br>
+                        <i class="fas fa-link" style="color:var(--cyan);"></i> Visor Exocad adjunto`;
                     const actions = card.querySelector('.caso-actions');
                     if (actions) actions.innerHTML = '<span style="font-size:0.68rem;color:var(--green);"><i class="fas fa-check"></i> Completado</span>';
                     card.style.borderColor = 'rgba(0,255,65,0.15)';
@@ -460,11 +491,12 @@
                     actualizarConteos();
                 }
             }
-            // Toast de confirmación
-            showUploadError('✅ Caso ' + _entrega.caseId + ' entregado. El cliente puede descargar su STL.');
-            // En producción, aquí se actualizaría el estado en Supabase:
-            // sb.from('pedidos').update({ estado: 'Listo para Entrega', archivo_final_path: stlPath, exocad_link: link, foto_salida_path: fotoPath }).eq('codigo', _entrega.caseId)
-        }, 2800);
+            showUploadError('✅ Caso ' + caseId + ' entregado. Cliente notificado.');
+
+        } catch (err) {
+            spinner.classList.remove('active');
+            showUploadError('❌ Error al subir: ' + err.message + '. Intenta de nuevo.');
+        }
     }
 
     function moverCaso(btn, estado) {

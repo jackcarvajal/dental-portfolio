@@ -15,20 +15,23 @@
 
 const PAGOS_CONFIG = {
     wompi: {
+        // ⏳ PENDIENTE VALIDACIÓN CUENTA — modo test activo
+        // Cambiar a pub_prod_... cuando Wompi apruebe la cuenta
         publicKey: 'pub_test_zpgtFnjKTnbfCL0pWFRRer7608bTBkii',
+        modoEspera: true,           // bloquea checkout real hasta validación
         recargo:   0.03,
-        label:     'Tarjeta / PSE / Nequi — Wompi',
+        label:     'PSE / Nequi / Tarjeta — Wompi (Colombia)',
         icono:     '💳',
         currency:  'COP',
-        paises:    ['CO']           // Solo Colombia
+        paises:    ['CO']
     },
     paypal: {
-        clientId:  'TU_PAYPAL_CLIENT_ID',   // ← reemplazar en producción
+        clientId:  'AfJ71Yzfk4hmHF_hj6F9sdUqTLCK9tilmCegiXOTpScB81NhLLDuiKX2u37aY_E4swf8UO8QuC7jvaG',
         recargo:   0.054,
         label:     'PayPal / Tarjeta Internacional',
         icono:     '🌎',
         currency:  'USD',
-        paises:    ['*']            // Todos los países excepto CO
+        paises:    ['*']            // Internacional (excluye CO)
     },
     transferencia: {
         recargo:             0,
@@ -79,6 +82,16 @@ function pasarelaPrioritaria(precioBaseCOP) {
  * @param {object} opts - { monto, referencia, email, descripcion, onSuccess }
  */
 function abrirCheckoutWompi({ monto, referencia, email, descripcion, onSuccess }) {
+    // Modo espera: Wompi pendiente de validación de cuenta
+    if (PAGOS_CONFIG.wompi.modoEspera) {
+        const msg = 'El pago con PSE/Tarjeta estará disponible en 24–48 h mientras validamos la cuenta.\n\n'
+                  + 'Por favor usa Transferencia (Nequi/Daviplata/Nu) o contacta por WhatsApp.';
+        if (confirm(msg + '\n\n¿Abrir WhatsApp ahora?')) {
+            const ref = encodeURIComponent('Quiero pagar por transferencia — Ref: ' + referencia);
+            window.open('https://wa.me/573212816716?text=' + ref, '_blank');
+        }
+        return;
+    }
     const centavos = Math.round(monto * 100);
     const params = new URLSearchParams({
         'public-key':      PAGOS_CONFIG.wompi.publicKey,
@@ -232,7 +245,8 @@ function cargarSDKPayPal() {
     return new Promise((resolve, reject) => {
         const s  = document.createElement('script');
         s.id     = 'paypal-sdk';
-        s.src    = `https://www.paypal.com/sdk/js?client-id=${PAGOS_CONFIG.paypal.clientId}&currency=USD&intent=capture`;
+        // Entorno Live — no agregar &debug=true ni &env=sandbox
+        s.src    = `https://www.paypal.com/sdk/js?client-id=${PAGOS_CONFIG.paypal.clientId}&currency=USD&intent=capture&disable-funding=credit,card`;
         s.onload  = () => { _paypalLoaded = true; resolve(); };
         s.onerror = () => reject(new Error('No se pudo cargar PayPal SDK'));
         document.head.appendChild(s);

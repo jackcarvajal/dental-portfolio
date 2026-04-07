@@ -39,10 +39,11 @@
 | formatDivisa() USD/COP | `js/pagos.js:formatDivisa()` | ✅ Implementado |
 
 ### Instrucciones pendientes (Agente 2):
-1. **PayPal Client ID** → reemplazar `'TU_PAYPAL_CLIENT_ID'` en `js/pagos.js:25` con ID real de PayPal Developer
-2. **Deploy verify-price** → `supabase functions deploy verify-price`
-3. **Tasa COP/USD** → `TASA_COP_USD` en `js/pagos.js:35` actualizar mensualmente (actual: 4200)
-4. **Wompi producción** → cambiar `pub_test_` → `pub_prod_` cuando Wompi apruebe cuenta
+1. **PayPal Client ID** → ✅ Inyectado (`AfJ71Yz...QuC7jvaG`) — entorno Live
+2. **PayPal Domain Whitelist** → developer.paypal.com → tu app → Allowed Return URLs → agregar `https://prodigylabdental.com`
+3. **Deploy verify-price** → `supabase functions deploy verify-price`
+4. **Tasa COP/USD** → `TASA_COP_USD` en `js/pagos.js` actualizar mensualmente (actual: 4200)
+5. **Wompi producción** → `modoEspera: true` → cambiar a `false` + `pub_prod_` cuando Wompi apruebe cuenta
 
 ---
 
@@ -62,7 +63,9 @@
 | PII ocultada en kanban (datos •••) | tarjetas con nombres censurados | ✅ Activo |
 
 ### Notas Agente 3:
-- `confirmarEntrega()` contiene el stub de Supabase commentado. Al conectar BD real, descomentar las 2 líneas de `sb.from('pedidos').update(...)`.
+- `confirmarEntrega()` ahora es **async real**: sube STL + foto a `dental-cases`, actualiza `pedidos` con `estado: 'Listo para Entrega'`.
+- Formato de archivo: `{uid}/{caseId}_{timestamp}.{ext}` — garantiza unicidad sin colisiones.
+- Auto-release activado: `seguimiento-caso.html` muestra zona de descarga para estados `Aprobado` y `Listo para Entrega`.
 - El trigger de auto-release ya está preparado en `webhook-handler/index.ts` — al recibir `APPROVED`, actualiza `estado: 'Listo para Entrega'` en tabla `pedidos`.
 
 ---

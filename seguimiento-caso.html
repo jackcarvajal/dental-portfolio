@@ -213,7 +213,7 @@
                         <i class="fas fa-cube" style="font-size:2.5rem;color:#4CAF50;margin-bottom:15px;"></i>
                         <h4 style="color:#4CAF50;margin-bottom:10px;">STL Final</h4>
                         <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;margin-bottom:15px;">Archivo de diseño</p>
-                        <a href="#" onclick="descargar('stl'); return false;" style="display:inline-block;padding:12px 25px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;text-decoration:none;border-radius:50px;font-weight:700;">
+                        <a id="btn-download-stl" href="#" onclick="descargar('stl',null); return false;" style="display:inline-block;padding:12px 25px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;text-decoration:none;border-radius:50px;font-weight:700;">
                             <i class="fas fa-download"></i> Descargar
                         </a>
                     </div>
@@ -351,9 +351,17 @@
                 <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Doctor</p><p style="color:white;font-weight:600;">${caso.nombreDoctor}</p></div>
             `;
             
-            // Mostrar descargas si está listo
-            document.getElementById('zonaDescargas').style.display =
-                estado === 'Listo para Entrega' ? 'block' : 'none';
+            // Auto-release: mostrar descargas cuando estado es Aprobado o Listo para Entrega
+            const puedeDescargar = ['Aprobado', 'Listo para Entrega'].includes(estado);
+            document.getElementById('zonaDescargas').style.display = puedeDescargar ? 'block' : 'none';
+
+            // Conectar botón STL con ruta real del bucket dental-cases
+            if (puedeDescargar && caso.archivo_stl_path) {
+                const btnStl = document.getElementById('btn-download-stl');
+                if (btnStl) {
+                    btnStl.onclick = (e) => { e.preventDefault(); descargar('stl', caso.archivo_stl_path); };
+                }
+            }
 
             // Agente 4: Visor Exocad + tabla de parámetros
             const visorBloque = document.getElementById('visor-exocad-bloque');
@@ -396,21 +404,45 @@
             document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function descargar(tipo) {
-            const msgs = {
-                stl: 'Descargando archivo STL...',
-                reporte: 'Descargando reporte de diseño...',
-                factura: 'Descargando factura...'
-            };
-            alert(msgs[tipo] + '\n\n(En producción, esto iniciaría la descarga real)');
+        /* ── AUTO-RELEASE: genera URL firmada desde bucket dental-cases ── */
+        let _sbSeg = null;
+        function getSbSeg() {
+            if (_sbSeg) return _sbSeg;
+            _sbSeg = window.supabase.createClient(
+                'https://zgihrwqfyvgyapbwzkvw.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634'
+            );
+            return _sbSeg;
+        }
+
+        async function descargar(tipo, ruta) {
+            if (tipo === 'stl' && ruta) {
+                // Solicitar URL firmada temporal (1 hora) al bucket dental-cases
+                const sb = getSbSeg();
+                const { data, error } = await sb.storage
+                    .from('dental-cases')
+                    .createSignedUrl(ruta, 3600);
+                if (error || !data?.signedUrl) {
+                    alert('No se pudo generar el enlace de descarga. Contacta soporte.');
+                    return;
+                }
+                const a = document.createElement('a');
+                a.href = data.signedUrl;
+                a.download = ruta.split('/').pop();
+                a.click();
+            } else {
+                // Reporte / factura — pendiente generación real
+                alert('Documento en preparación. Lo recibirás por WhatsApp o correo cuando esté listo.');
+            }
         }
 
         function activarNotificaciones() {
             const orden = document.getElementById('ordenDisplay').textContent;
             const msg = `Hola, quiero recibir notificaciones de mi caso ${orden} por WhatsApp`;
-            window.open(`https://wa.me/573219581949?text=${encodeURIComponent(msg)}`, '_blank');
+            window.open(`https://wa.me/573212816716?text=${encodeURIComponent(msg)}`, '_blank');
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
     <!-- FOOTER GLOBAL PRODIGY -->
     <footer class="prodigy-global-footer">
