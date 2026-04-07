@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Casos — PRODIGY Digital Dentistry</title>
+    <meta name="description" content="Catálogo completo de casos clínicos de diseño dental digital. Rehabilitaciones, estética, implantes y más.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/global-nav.min.css">
+    <script src="js/patients-data.js"></script>
+    <style>
+        :root {
+            --gold:    #D4AF37;
+            --magenta: #D946A6;
+            --cyan:    #00d2ff;
+            --bg:      #050505;
+            --card:    #0d1117;
+            --border:  rgba(212,175,55,0.15);
+            --text:    #f5f5f7;
+            --muted:   #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ---- HERO ---- */
+        .page-hero {
+            min-height: 52vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(ellipse at 50% 0%, #1a0b2e 0%, #050505 65%);
+            padding: 120px 20px 60px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(212,175,55,0.12);
+        }
+
+        /* Línea decorativa superior dorada */
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--magenta), var(--gold), transparent);
+        }
+
+        /* Resplandor difuso fondo */
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 300px;
+            background: radial-gradient(ellipse, rgba(212,175,55,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(212,175,55,0.08);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 50px;
+            padding: 7px 20px;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            line-height: 1.05;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title .line-gold {
+            display: block;
+            background: linear-gradient(135deg, #D4AF37 0%, #F4C430 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title .line-sub {
+            display: block;
+            background: linear-gradient(135deg, #D946A6 0%, #00d2ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 0.48em;
+            letter-spacing: 8px;
+            margin-top: 8px;
+            font-weight: 700;
+        }
+
+        .hero-desc {
+            color: var(--muted);
+            font-size: 1rem;
+            max-width: 480px;
+            line-height: 1.75;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 9px 22px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
+            transition: color 0.2s, border-color 0.2s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-back:hover {
+            color: var(--gold);
+            border-color: rgba(212,175,55,0.4);
+        }
+
+        /* ---- FILTROS ---- */
+        .filters-section {
+            background: rgba(0,0,0,0.6);
+            border-bottom: 1px solid var(--border);
+            padding: 24px 20px;
+            position: sticky;
+            top: 62px;
+            z-index: 90;
+            backdrop-filter: blur(12px);
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .filter-btn {
+            padding: 8px 22px;
+            border-radius: 50px;
+            border: 1px solid rgba(212,175,55,0.2);
+            background: transparent;
+            color: var(--muted);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(212,175,55,0.05);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--gold), var(--magenta));
+            border-color: transparent;
+            color: #000;
+            font-weight: 700;
+        }
+
+        /* ---- BARRA DE CONTEO ---- */
+        .count-bar {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.82rem;
+            padding: 18px 20px 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .count-bar strong {
+            color: var(--gold);
+        }
+
+        /* ---- GRID ---- */
+        .grid-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 20px 80px;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 28px;
+        }
+
+        /* ---- TARJETA ---- */
+        .case-card {
+            background: var(--card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+            transition: transform 0.35s, border-color 0.35s, box-shadow 0.35s;
+        }
+
+        .case-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+            box-shadow: 0 20px 50px rgba(212,175,55,0.2);
+        }
+
+        .card-img {
+            position: relative;
+            width: 100%;
+            height: 230px;
+            overflow: hidden;
+            background: #080808;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .case-card:hover .card-img img {
+            transform: scale(1.07);
+        }
+
+        .card-watermark {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .card-watermark span {
+            color: rgba(255,215,0,0.07);
+            font-size: 1.3rem;
+            font-weight: 900;
+            transform: rotate(-35deg);
+        }
+
+        .card-type-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 50px;
+            background: rgba(0,0,0,0.8);
+            border: 1px solid rgba(212,175,55,0.4);
+            color: var(--gold);
+            backdrop-filter: blur(8px);
+        }
+
+        .card-body {
+            padding: 20px 22px 22px;
+        }
+
+        .card-body h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .card-body p {
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.65;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-date {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .card-arrow {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--magenta));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            color: #000;
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+
+        .case-card:hover .card-arrow {
+            transform: translateX(3px);
+        }
+
+        /* ---- VACÍO ---- */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--muted);
+            grid-column: 1 / -1;
+        }
+
+        .empty-icon { font-size: 3rem; margin-bottom: 14px; opacity: 0.35; }
+
+        /* ---- ANIMACIONES ---- */
+
+        /* Entrada escalonada de tarjetas */
+        .case-card {
+            opacity: 0;
+            transform: translateY(40px) scale(0.97);
+            transition:
+                opacity 0.55s ease,
+                transform 0.55s ease,
+                border-color 0.35s,
+                box-shadow 0.35s;
+        }
+
+        .case-card.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Hover ya combina translateY + tilt 3D vía JS (no CSS hover transform aquí) */
+        .case-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 20px 50px rgba(212,175,55,0.22);
+        }
+
+        /* Contador animado */
+        @keyframes countPop {
+            0%   { transform: scale(1.4); color: var(--magenta); }
+            100% { transform: scale(1);   color: var(--gold); }
+        }
+
+        #countVisible.pop { animation: countPop 0.35s ease forwards; }
+
+        /* ---- PROTECCIÓN DE IMÁGENES ---- */
+        img {
+            -webkit-user-drag: none;
+            user-drag: none;
+            pointer-events: none;
+        }
+
+        .case-card { -webkit-user-select: none; user-select: none; }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 768px) {
+            .page-hero { padding: 100px 16px 48px; min-height: 45vh; }
+            .hero-title { font-size: 2.2rem; }
+            .cases-grid { grid-template-columns: 1fr; gap: 18px; }
+            .filters-section { top: 56px; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<!-- ============================================================ -->
+<!-- MENÚ MÓVIL -->
+<div class="mobile-nav" id="mobile-nav">
+    <a href="index.html#portfolio">Portafolio</a>
+    <a href="catalogo.html" style="color:#D4AF37;">Catálogo</a>
+    <a href="seguimiento-caso.html">📦 Seguimiento</a>
+    <a href="https://wa.me/573212816716" target="_blank"><i class="fab fa-whatsapp"></i> Contactar</a>
+    <a href="app/login.html" style="color:#D4AF37;"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar · Registro</a>
+</div>
+
+<!-- NAV (mismo del proyecto) -->
+<!-- ============================================================ -->
+<nav class="navbar">
+    <div class="nav-container">
+        <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileMenu()" title="Menú">
+            <i class="fas fa-bars" id="hamburger-icon"></i>
+        </button>
+        <div class="nav-left">
+            <a href="index.html#portfolio">PORTAFOLIO</a>
+            <a href="catalogo.html" style="color:#D4AF37;">CATÁLOGO</a>
+        </div>
+        <a href="index.html" class="nav-logo-box">
+            <h1>PRODIGY</h1>
+            <span>DIGITAL DENTISTRY</span>
+        </a>
+        <div class="nav-right">
+            <a href="seguimiento-caso.html">📦 SEGUIMIENTO</a>
+            <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i> CONTACTAR
+            </a>
+            <a href="app/login.html" class="nav-access-btn" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:transparent;border:1.5px solid rgba(212,175,55,.5);color:#D4AF37;border-radius:8px;font-size:.78rem;font-weight:800;text-decoration:none;letter-spacing:.6px;transition:all .25s;white-space:nowrap;" onmouseover="this.style.background='rgba(212,175,55,.12)';this.style.borderColor='#D4AF37'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(212,175,55,.5)'">
+                <i class="fas fa-arrow-right-to-bracket"></i> INGRESAR · REGISTRO
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- ============================================================ -->
+<!-- HERO -->
+<!-- ============================================================ -->
+<section class="page-hero">
+    <h1 class="hero-title">
+        <span class="line-gold">PORTAFOLIO</span>
+        <span class="line-sub">DISEÑOS DENTALES · CAD/CAM</span>
+    </h1>
+    <p class="hero-desc">
+        Casos reales de rehabilitación, estética y prótesis. Cada trabajo refleja precisión técnica y excelencia clínica.
+    </p>
+    <a href="index.html" class="hero-back">
+        <i class="fas fa-arrow-left"></i> Volver al inicio
+    </a>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILTROS (sticky) -->
+<!-- ============================================================ -->
+<div class="filters-section">
+    <div class="filters" id="filterBtns">
+        <button class="filter-btn active" data-type="todos" onclick="filtrar('todos', this)">Todos</button>
+        <button class="filter-btn" data-type="rehabilitacion" onclick="filtrar('rehabilitacion', this)">Rehabilitación</button>
+        <button class="filter-btn" data-type="estetica" onclick="filtrar('estetica', this)">Estética</button>
+        <button class="filter-btn" data-type="implantes" onclick="filtrar('implantes', this)">Implantes</button>
+        <button class="filter-btn" data-type="protesis" onclick="filtrar('protesis', this)">Prótesis</button>
+        <button class="filter-btn" data-type="alineadores" onclick="filtrar('alineadores', this)">Alineadores</button>
+    </div>
+</div>
+
+<div class="count-bar">
+    Mostrando <strong id="countVisible">0</strong> caso<span id="countPlural">s</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- GRID -->
+<!-- ============================================================ -->
+<section class="grid-section">
+    <div class="cases-grid" id="casesGrid">
+        <!-- JS renderiza aquí -->
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FOOTER (igual al resto del proyecto) -->
+<!-- ============================================================ -->
+<footer class="prodigy-global-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>PRODIGY</h4>
+            <ul>
+                <li>Diseño Dental Digital</li>
+                <li>Bogotá, Colombia</li>
+                <li>Alta Precisión CAD/CAM</li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>CONTACTO</h4>
+            <ul>
+                <li><a href="tel:+573212816716">+57 321 281 6716</a></li>
+                <li><a href="mailto:labdentalprodigy@gmail.com">labdentalprodigy@gmail.com</a></li>
+                <li><a href="https://instagram.com/prodigydigitaldentistry" target="_blank" rel="noopener">@prodigydigitaldentistry</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>SERVICIOS</h4>
+            <ul>
+                <li><a href="flujo-impresion.html">Impresión 3D</a></li>
+                <li><a href="flujo-fresado.html">Fresado CAD/CAM</a></li>
+                <li><a href="seguimiento-caso.html">Seguimiento de Pedidos</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>LEGAL</h4>
+            <ul>
+                <li><a href="terminos-y-legal.html">Términos y Condiciones</a></li>
+                <li><a href="terminos-y-legal.html#privacidad">Política de Privacidad</a></li>
+                <li><a href="https://wa.me/573212816716?text=Hola%20equipo%20Prodigy.%20Tengo%20una%20sugerencia%2Freporte%20sobre%20la%20p%C3%A1gina%20web%3A" target="_blank" rel="noopener noreferrer">💡 Sugerencias o Reportar Fallo</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2026 PRODIGY Digital Dentistry. Bogotá, Colombia. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<!-- ============================================================ -->
+<!-- JAVASCRIPT -->
+<!-- ============================================================ -->
+<script>
+const TYPE_LABELS = {
+    rehabilitacion: 'Rehabilitación',
+    estetica:       'Estética',
+    implantes:      'Implantes',
+    protesis:       'Prótesis',
+    alineadores:    'Alineadores',
+};
+
+function getTypeLabel(type) {
+    return TYPE_LABELS[type] || (type ? type.charAt(0).toUpperCase() + type.slice(1) : 'Caso');
+}
+
+let allCases = [];
+
+// IntersectionObserver para scroll reveal
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+// Tilt 3D en hover (perspectiva suave)
+function addTilt(card) {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const cx   = rect.left + rect.width  / 2;
+        const cy   = rect.top  + rect.height / 2;
+        const dx   = (e.clientX - cx) / (rect.width  / 2);
+        const dy   = (e.clientY - cy) / (rect.height / 2);
+        card.style.transform = `perspective(900px) rotateY(${dx * 6}deg) rotateX(${-dy * 4}deg) translateY(-8px) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+    });
+}
+
+function renderCases(cases) {
+    const grid   = document.getElementById('casesGrid');
+    const countEl = document.getElementById('countVisible');
+    const plural = document.getElementById('countPlural');
+
+    // Animación del contador
+    countEl.classList.remove('pop');
+    void countEl.offsetWidth;
+    countEl.textContent  = cases.length;
+    countEl.classList.add('pop');
+    plural.textContent = cases.length === 1 ? '' : 's';
+
+    if (!cases.length) {
+        grid.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">🦷</div>
+                <p>No hay casos en esta categoría aún.</p>
+            </div>`;
+        return;
+    }
+
+    grid.innerHTML = cases.map((c, i) => `
+        <a class="case-card" href="patient.html?id=${c.id}&from=catalogo" style="transition-delay:${Math.min(i * 80, 400)}ms">
+            <div class="card-img">
+                <img src="${c.coverImage}" alt="${c.name}"
+                     loading="${i < 6 ? 'eager' : 'lazy'}"
+                     onerror="this.parentElement.style.background='#0a0a0a'">
+                <div class="card-watermark"><span>© PRODIGY</span></div>
+                <div class="card-type-badge">${getTypeLabel(c.type)}</div>
+            </div>
+            <div class="card-body">
+                <h3>${c.name}</h3>
+                <p>${c.description || 'Caso clínico de diseño dental digital.'}</p>
+                <div class="card-meta">
+                    <span class="card-date">${c.date || ''}</span>
+                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                </div>
+            </div>
+        </a>
+    `).join('');
+
+    // Aplicar reveal + tilt a cada tarjeta
+    grid.querySelectorAll('.case-card').forEach(card => {
+        revealObserver.observe(card);
+        addTilt(card);
+    });
+}
+
+function filtrar(type, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filtered = type === 'todos' ? allCases : allCases.filter(c => c.type === type);
+    renderCases(filtered);
+}
+
+(function init() {
+    if (typeof PATIENTS_DATA === 'undefined' || !PATIENTS_DATA.length) {
+        document.getElementById('casesGrid').innerHTML =
+            '<div class="empty-state"><div class="empty-icon">⚠️</div><p>No se encontraron casos. Verifica patients-data.js.</p></div>';
+        return;
+    }
+
+    allCases = PATIENTS_DATA;
+
+    // Agregar filtros para tipos nuevos que no estén en los botones fijos
+    const existing  = new Set(Array.from(document.querySelectorAll('.filter-btn[data-type]')).map(b => b.dataset.type));
+    const dataTypes = [...new Set(allCases.map(c => c.type).filter(Boolean))];
+    const filterWrap = document.getElementById('filterBtns');
+
+    dataTypes.forEach(type => {
+        if (!existing.has(type)) {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn';
+            btn.dataset.type = type;
+            btn.textContent = getTypeLabel(type);
+            btn.onclick = function() { filtrar(type, this); };
+            filterWrap.appendChild(btn);
+        }
+    });
+
+    renderCases(allCases);
+})();
+
+// ---- Protección básica de contenido ----
+document.addEventListener('keydown', e => {
+    if (e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+        (e.ctrlKey && e.key === 'u')) {
+        e.preventDefault();
+    }
+});
+
+document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
+</script>
+<script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-nav');
+        const icon = document.getElementById('hamburger-icon');
+        if (!menu) return;
+        const open = menu.classList.toggle('open');
+        icon.className = open ? 'fas fa-times' : 'fas fa-bars';
+    }
+    document.querySelectorAll('.mobile-nav a').forEach(a => {
+        a.addEventListener('click', () => {
+            const m = document.getElementById('mobile-nav');
+            if (m) m.classList.remove('open');
+            const ic = document.getElementById('hamburger-icon');
+            if (ic) ic.className = 'fas fa-bars';
+        });
+    });
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('scroll-top-btn');
+        if (btn) btn.classList.toggle('visible', window.scrollY > 350);
+    });
+    function toggleTheme() {
+        const light = document.body.classList.toggle('light-mode');
+        const btn = document.getElementById('theme-btn');
+        if (btn) btn.textContent = light ? '☀️' : '🌙';
+        localStorage.setItem('prodigy_theme', light ? 'light' : 'dark');
+    }
+    if (localStorage.getItem('prodigy_theme') === 'light') {
+        document.body.classList.add('light-mode');
+        setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
+    }
+</script>
+<!-- FLOTANTES UX -->
+<div class="ux-floaters">
+    <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba"><i class="fas fa-arrow-up"></i></button>
+    <button class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro">🌙</button>
+    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte." class="ux-btn" target="_blank" rel="noopener" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);"><i class="fab fa-whatsapp" style="color:#25D366;"></i></a>
+</div>
+
+</body>
+</html>

@@ -7,7 +7,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+    <link rel="stylesheet" href="css/global-nav.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -385,7 +385,7 @@
             padding: 0 40px;
             gap: 20px;
         }
-        .nav-left, .nav-right { display: flex; gap: 30px; }
+        .nav-left, .nav-right { display: flex; gap: 24px; flex-wrap: nowrap; }
         .nav-left { justify-content: flex-start; }
         .nav-right { justify-content: flex-end; align-items: center; }
         .nav-left a, .nav-right a {
@@ -394,7 +394,8 @@
             font-size: 14px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
+            white-space: nowrap;
             transition: color 0.3s;
         }
         .nav-left a:hover, .nav-right a:hover { color: #D4AF37; }
@@ -582,23 +583,36 @@
 </head>
 <body>
 
+    <!-- MENÚ MÓVIL -->
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="index.html#portfolio">Portafolio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="seguimiento-caso.html">📦 Seguimiento</a>
+        <a href="https://wa.me/573212816716" target="_blank"><i class="fab fa-whatsapp"></i> Contactar</a>
+        <a href="app/login.html" style="color:#D4AF37;"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar · Registro</a>
+    </div>
+
     <!-- ========== NAVBAR PRODIGY ========== -->
     <nav class="navbar">
         <div class="nav-container">
+            <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileMenu()" title="Menú">
+                <i class="fas fa-bars" id="hamburger-icon"></i>
+            </button>
             <div class="nav-left">
-                <a href="index.html#servicios">SERVICIOS</a>
                 <a href="index.html#portfolio">PORTAFOLIO</a>
-                <a href="index.html#workflow-247">SUBIR DISEÑO</a>
+                <a href="catalogo.html">CATÁLOGO</a>
             </div>
             <a href="index.html" class="nav-logo-box">
                 <h1>PRODIGY</h1>
                 <span>DIGITAL DENTISTRY</span>
             </a>
             <div class="nav-right">
-                <a href="index.html#production">PRODUCCIÓN CAM</a>
-                <a href="index.html#academy">ACADEMY</a>
+                <a href="seguimiento-caso.html">📦 SEGUIMIENTO</a>
                 <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank">
                     <i class="fab fa-whatsapp"></i> CONTACTAR
+                </a>
+                <a href="app/login.html" class="nav-access-btn" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:transparent;border:1.5px solid rgba(212,175,55,.5);color:#D4AF37;border-radius:8px;font-size:.78rem;font-weight:800;text-decoration:none;letter-spacing:.6px;transition:all .25s;white-space:nowrap;" onmouseover="this.style.background='rgba(212,175,55,.12)';this.style.borderColor='#D4AF37'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(212,175,55,.5)'">
+                    <i class="fas fa-arrow-right-to-bracket"></i> INGRESAR · REGISTRO
                 </a>
             </div>
         </div>
@@ -1020,6 +1034,31 @@
                     </ul>
                 </div>
             </details>
+            <details id="fresado-familia-xtpro">
+                <summary><i class="fas fa-atom"></i> FAMILIA ZIRCONIO XT-PRO (TOSOH CERTIFIED)</summary>
+                <div class="accordion-content">
+                    <p><strong>Familia Zirconio XT-PRO (Materia Prima Tosoh®):</strong> Se garantiza el uso de polvo japonés original en toda la línea XT-PRO. La garantía cubre fallas estructurales de material, siempre que se respete el diseño de conectores mínimo y los ciclos de sinterización específicos para cada grado.</p>
+                    <ul>
+                        <li><strong style="color:#4caf50;">⚡ FAST READY — Monocapa, HT, SHTML, TT-AIR:</strong> Garantía completa en ciclos rápidos y estándar. Cubre fractura, porosidad y error dimensional atribuibles al laboratorio.</li>
+                        <li><strong style="color:#ff8800;">⏳ 3D Pro XT-PRO (Categoría: Premium Anterior):</strong> La garantía aplica <u>únicamente</u> con ciclo de sinterización estándar. El ciclo rápido compromete la integridad del gradiente triple y excluye cobertura.</li>
+                        <li><strong style="color:#ff4444;">⏳ SMILE XT-PRO (Categoría: Estética Ultra-Traslúcida):</strong> Exige enfriamiento lento obligatorio. El choque térmico por ciclo rápido anula la garantía automáticamente sin excepción.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details id="fresado-disilicato">
+                <summary><i class="fas fa-gem"></i> DISILICATO DE LITIO — XTCERA NEBULA LSi</summary>
+                <div class="accordion-content">
+                    <p><strong>Disilicato de Litio (XTCERA Nebula LSi):</strong> Material cerámico reforzado para restauraciones mínimamente invasivas. Resistencia certificada de 460 MPa. La garantía se invalida en caso de preparaciones por debajo de los 0.2mm o cementación no adhesiva.</p>
+                    <ul>
+                        <li><strong>Resistencia biaxial:</strong> ≥ 400–460 MPa (supera disilicatos genéricos ≈300 MPa)</li>
+                        <li><strong>Espesor mínimo:</strong> 0.2 mm — cementación adhesiva obligatoria</li>
+                        <li><strong>Cristalización:</strong> Ciclo de 90 minutos — cumplimiento del programa Dry time/Heating rate obligatorio</li>
+                        <li>Alta traslucidez y fluorescencia natural para mimetización óptica</li>
+                    </ul>
+                    <p style="color:#aaa;font-size:0.85rem;">PRODIGY no asume responsabilidad por fallos derivados de cementación convencional en espesores ≤ 0.3 mm o incumplimiento del protocolo de cristalización.</p>
+                </div>
+            </details>
             
         </div>
         
@@ -1225,7 +1264,42 @@
                     </ul>
                 </div>
             </details>
+            <details id="faq-materiales-xtpro">
+                <summary><i class="fas fa-flask"></i> ¿Qué Zirconio XT-PRO debo elegir?</summary>
+                <div class="accordion-content">
+                    <p style="font-size:0.88rem;color:#aaa;margin-bottom:14px;">Todos usan <strong>Polvo Certificado Tosoh (Japón)</strong> · ISO 13356. La diferencia está en traslucidez y ciclo de sinterizado.</p>
+                    <div style="display:grid;gap:8px;">
+                        <div style="border-left:3px solid var(--gold-primary,#D4AF37);padding:10px 14px;background:rgba(212,175,55,0.05);border-radius:0 6px 6px 0;"><strong style="color:var(--gold-primary,#D4AF37);">🛡️ Monocapa XT-PRO — Categoría: Estructural Alta Resistencia · ⚡ FAST</strong><br><span style="font-size:0.85rem;">1200 MPa | 43% Trans. · All-on-4, puentes arco completo, muñones oscuros.</span></div>
+                        <div style="border-left:3px solid var(--gold-primary,#D4AF37);padding:10px 14px;background:rgba(212,175,55,0.05);border-radius:0 6px 6px 0;"><strong style="color:var(--gold-primary,#D4AF37);">🔗 HT XT-PRO — Categoría: Estándar Clínico · ⚡ FAST</strong><br><span style="font-size:0.85rem;">1000 MPa | 46% Trans. · Coronas monolíticas y puentes hasta 3 uds.</span></div>
+                        <div style="border-left:3px solid var(--gold-primary,#D4AF37);padding:10px 14px;background:rgba(212,175,55,0.05);border-radius:0 6px 6px 0;"><strong style="color:var(--gold-primary,#D4AF37);">🎨 SHTML XT-PRO — Categoría: Aesthetic Plus · ⚡ FAST</strong><br><span style="font-size:0.85rem;">1000 MPa multicapa | Degradado cromático cuello→incisal integrado.</span></div>
+                        <div style="border-left:3px solid var(--gold-primary,#D4AF37);padding:10px 14px;background:rgba(212,175,55,0.05);border-radius:0 6px 6px 0;"><strong style="color:var(--gold-primary,#D4AF37);">🚀 TT-AIR XT-PRO — Categoría: High Speed · ⚡ FAST</strong><br><span style="font-size:0.85rem;">1000 MPa grano refinado | 49% Trans. · Urgencias estéticas, entrega mismo día.</span></div>
+                        <div style="border-left:3px solid #ff8800;padding:10px 14px;background:rgba(255,136,0,0.05);border-radius:0 6px 6px 0;"><strong style="color:#ff8800;">👑 3D Pro XT-PRO — Categoría: Premium Anterior · ⏳ CICLO ESTÁNDAR</strong><br><span style="font-size:0.85rem;">Triple gradiente 1050→700 MPa | hasta 49%. <em>No compatible con ciclo rápido.</em></span></div>
+                        <div style="border-left:3px solid #ff4444;padding:10px 14px;background:rgba(255,68,68,0.05);border-radius:0 6px 6px 0;"><strong style="color:#ff4444;">✨ SMILE XT-PRO — Categoría: Estética Ultra-Traslúcida · ⏳ SOLO CICLO LENTO</strong><br><span style="font-size:0.85rem;">600 MPa | 57% Trans. (≡ Disilicato) · Carillas premium. <em>Choque térmico anula garantía.</em></span></div>
+                    </div>
+                </div>
+            </details>
             
+            <!-- POLÍTICA DE ALMACENAMIENTO Y SERVICIO -->
+            <div style="margin-top: 50px; padding: 30px; background: rgba(0,97,255,0.06); border: 1px solid rgba(0,97,255,0.3); border-radius: 14px;">
+                <h3 style="color: #4d9fff; margin: 0 0 18px; font-size: 1.15rem; display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-server"></i> Política de Almacenamiento de Archivos y Servicio
+                </h3>
+                <div style="color: #ccc; font-size: 0.93rem; line-height: 1.75;">
+                    <p style="margin-bottom:14px;">
+                        <strong style="color:#fff;">Almacenamiento seguro:</strong> PRODIGY almacena los archivos enviados por el cliente (STL, 3DM, DICOM, imágenes de comprobante) en nuestros servidores seguros por un máximo de <strong style="color:#fbbf24;">30 días calendario</strong> a partir de la fecha de entrega del trabajo finalizado. Pasado este tiempo, los archivos son eliminados permanentemente de nuestros sistemas.
+                    </p>
+                    <p style="margin-bottom:14px;">
+                        <strong style="color:#fff;">Responsabilidad del cliente:</strong> El cliente es responsable de conservar y respaldar sus diseños digitales finales. PRODIGY no se responsabiliza por la pérdida de archivos una vez vencido el período de almacenamiento o ante fallas externas fuera de nuestro control.
+                    </p>
+                    <p style="margin-bottom:14px;">
+                        <strong style="color:#fff;">Tiempos de entrega:</strong> Los tiempos de entrega para servicios Express o mediante IA (inteligencia artificial) están sujetos a la viabilidad técnica del escaneo original. Escáneres con artefactos, movimiento o zonas sin registro pueden requerir tiempo adicional sin costo extra para el cliente, siempre y cuando se notifique oportunamente.
+                    </p>
+                    <p style="margin-bottom:0;">
+                        <strong style="color:#fff;">Buzón PRODIGY (Dropbox):</strong> Los archivos subidos a través del Buzón PRODIGY son recibidos directamente en nuestra carpeta segura. El acceso es exclusivo del equipo PRODIGY. Los archivos no son compartidos con terceros y se eliminan según la política de 30 días descrita arriba.
+                    </p>
+                </div>
+            </div>
+
             <div style="text-align: center; margin-top: 60px; padding: 40px; background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(212,175,55,0.05) 100%); border-radius: 20px; border: 2px solid var(--gold);">
                 <h3 style="color: var(--gold); margin-bottom: 25px; font-size: 1.5rem;">
                     <i class="fas fa-headset"></i> ¿Necesitas Asistencia Personalizada?
@@ -1240,8 +1314,8 @@
         
     </div><!-- /container -->
 
-    <!-- ========== FOOTER PRODIGY ========== -->
-    <footer class="footer-prodigy">
+    <!-- ========== FOOTER GLOBAL PRODIGY ========== -->
+    <footer class="prodigy-global-footer">
         <div class="footer-grid">
             <div class="footer-col">
                 <h4>PRODIGY</h4>
@@ -1262,19 +1336,17 @@
             <div class="footer-col">
                 <h4>SERVICIOS</h4>
                 <ul>
-                    <li>Diseño CAD/CAM</li>
-                    <li>Fresado Zirconio</li>
-                    <li>Impresión 3D</li>
-                    <li>Estética Dental</li>
+                    <li><a href="flujo-impresion.html">Impresión 3D</a></li>
+                    <li><a href="flujo-fresado.html">Fresado CAD/CAM</a></li>
+                    <li><a href="seguimiento-caso.html">Seguimiento de Pedidos</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>TECNOLOGÍA</h4>
+                <h4>LEGAL</h4>
                 <ul>
-                    <li>Exocad Expert</li>
-                    <li>3Shape Design</li>
-                    <li>Fresado CAM</li>
-                    <li>Impresión 3D</li>
+                    <li><a href="terminos-y-legal.html">Términos y Condiciones</a></li>
+                    <li><a href="terminos-y-legal.html#privacidad">Política de Privacidad</a></li>
+                    <li><a href="https://wa.me/573212816716?text=Hola%20equipo%20Prodigy.%20Tengo%20una%20sugerencia%2Freporte%20sobre%20la%20p%C3%A1gina%20web%3A" target="_blank" rel="noopener noreferrer">💡 Sugerencias o Reportar Fallo</a></li>
                 </ul>
             </div>
         </div>
@@ -1432,6 +1504,42 @@
         console.log('%cDesarrollado con precisión quirúrgica', 'font-size: 12px; color: #FF6600;');
         console.log('%c✅ Centro Legal & Soporte cargado correctamente', 'font-size: 12px; color: #4CAF50;');
 
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-nav');
+            const icon = document.getElementById('hamburger-icon');
+            if (!menu) return;
+            const open = menu.classList.toggle('open');
+            icon.className = open ? 'fas fa-times' : 'fas fa-bars';
+        }
+        document.querySelectorAll('.mobile-nav a').forEach(a => {
+            a.addEventListener('click', () => {
+                const m = document.getElementById('mobile-nav');
+                if (m) m.classList.remove('open');
+                const ic = document.getElementById('hamburger-icon');
+                if (ic) ic.className = 'fas fa-bars';
+            });
+        });
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('scroll-top-btn');
+            if (btn) btn.classList.toggle('visible', window.scrollY > 350);
+        });
+        function toggleTheme() {
+            const light = document.body.classList.toggle('light-mode');
+            const btn = document.getElementById('theme-btn');
+            if (btn) btn.textContent = light ? '☀️' : '🌙';
+            localStorage.setItem('prodigy_theme', light ? 'light' : 'dark');
+        }
+        if (localStorage.getItem('prodigy_theme') === 'light') {
+            document.body.classList.add('light-mode');
+            setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
+        }
     </script>
+    <div class="ux-floaters">
+        <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba"><i class="fas fa-arrow-up"></i></button>
+        <button class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro">🌙</button>
+        <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte." class="ux-btn" target="_blank" rel="noopener" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);"><i class="fab fa-whatsapp" style="color:#25D366;"></i></a>
+    </div>
+
+    <a href="index.html" id="btn-volver-cotizador" style="position:fixed;bottom:80px;right:24px;background:var(--gold-primary,#D4AF37);color:#000;font-weight:900;font-size:0.82rem;padding:12px 18px;border-radius:8px;text-decoration:none;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(212,175,55,0.4);z-index:9999;letter-spacing:0.3px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><i class="fas fa-calculator"></i> Volver al Cotizador</a>
 </body>
 </html>

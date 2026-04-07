@@ -5,6 +5,16 @@
 (function() {
     'use strict';
 
+    // ===== SEGURIDAD: noopener noreferrer en todos los enlaces externos =====
+    function initExternalLinkSecurity() {
+        document.querySelectorAll('a[target="_blank"]').forEach(function(a) {
+            var rel = a.getAttribute('rel') || '';
+            if (!rel.includes('noopener')) {
+                a.setAttribute('rel', (rel + ' noopener noreferrer').trim());
+            }
+        });
+    }
+
     // ===== PROTECCIÓN BÁSICA (Opcional) =====
     // Nota: Estas medidas son fácilmente eludibles y solo disuaden usuarios básicos
     function initProtection() {
@@ -215,6 +225,7 @@
         console.log('🚀 Iniciando PRODIGY...');
 
         // Inicializar protección (opcional)
+        initExternalLinkSecurity();
         initProtection();
 
         // Inicializar portafolio

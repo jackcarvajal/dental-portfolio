@@ -38,7 +38,7 @@ const PATIENTS_DATA = [
         description: "Carillas estéticas completas superior e inferior.",
         
         coverImage: "patients/patient-002/C.jpeg",
-        exocadFile: "patients/patient-002/felipe pinzon.html",
+        exocadFile: "patients/patient-002/caso.html",
         driveLink: null,
         
         gallery: [

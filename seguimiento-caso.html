@@ -575,10 +575,7 @@ async function suscribirNotificaciones(caseId) {
     }
     // VAPID public key — generar con: supabase functions invoke generate-vapid-keys
     // y pegar la clave pública aquí (base64url)
-    const VAPID_PUBLIC_KEY = Deno?.env?.get?.('VAPID_PUBLIC_KEY') || '';
-    if (!VAPID_PUBLIC_KEY) {
-        console.warn('VAPID_PUBLIC_KEY no configurada — push activo solo localmente.');
-    }
+    const VAPID_PUBLIC_KEY = 'BBM_wMygR0mR3v2UR0oN5Kt-4so8qpyomGfqGNgY7I3Jc2wd1lXjBecomRhscmuqH_0mSr5ppvHew0ck2LmQ1wQ';
     try {
         const sub = await window._swReg.pushManager.subscribe({
             userVisibleOnly:      true,

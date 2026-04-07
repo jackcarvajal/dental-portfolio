@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PRODIGY Digital Dentistry — Laboratorio dental especializado en fresado CAD/CAM, impresión 3D dental y diseño Exocad/3Shape. Alta precisión. Bogotá, Colombia.">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="keywords" content="Diseño dental 3D, Exocad, 3Shape, Fresado Zirconio, Impresión 3D dental, Laboratorio dental Colombia, CAD CAM dental, coronas dentales">
+    <meta property="og:title" content="PRODIGY | Digital Dental Excellence">
+    <meta property="og:description" content="Diseño CAD avanzado a nivel mundial y producción CAM en Colombia. Calcula tu pedido en tiempo real.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/prodigy-preview.jpg">
+    <meta property="og:url" content="https://prodigylab.co">
     <title>PRODIGY | Digital Dental Excellence</title>
+    <!-- Performance: preconnect a recursos externos críticos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://wa.me">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/global-nav.min.css">
     <style>
         /* ============================================
            PRODIGY - CSS ARQUITECTURA "DOBLE CAJA"
@@ -72,13 +86,14 @@
         
         .nav-left, .nav-right {
             display: flex;
-            gap: 30px;
+            gap: 24px;
+            flex-wrap: nowrap;
         }
 
         .nav-left {
             justify-content: flex-start;
         }
-        
+
         .nav-right {
             justify-content: flex-end;
             align-items: center;
@@ -90,7 +105,8 @@
             font-size: 14px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
+            white-space: nowrap;
             transition: color 0.3s;
         }
 
@@ -719,17 +735,59 @@
         /* ========================================
            RESPONSIVE
            ======================================== */
+        /* HAMBURGUESA MOBILE */
+        .hamburger-btn {
+            display: none;
+            background: none; border: none; cursor: pointer;
+            padding: 6px; color: #D4AF37; font-size: 1.4rem;
+        }
+        .mobile-nav {
+            display: none;
+            position: fixed; top: 66px; left: 0; right: 0;
+            background: rgba(0,0,0,0.97); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212,175,55,0.2);
+            padding: 20px 30px; z-index: 999;
+            flex-direction: column; gap: 14px;
+        }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a {
+            color: #f5f5f7; text-decoration: none; font-size: 1rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .mobile-nav a:hover { color: #D4AF37; }
+        .mobile-nav a:last-child { border-bottom: none; }
+
+        /* FLOTANTES BOTTOM-RIGHT */
+        .ux-floaters {
+            position: fixed; bottom: 25px; right: 25px;
+            display: flex; flex-direction: column; gap: 10px;
+            z-index: 998;
+        }
+        .ux-btn {
+            width: 46px; height: 46px;
+            background: rgba(10,10,10,0.92); border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.25s; color: #D4AF37;
+            font-size: 1.1rem; text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .ux-btn:hover { border-color: #D4AF37; background: rgba(212,175,55,0.12); transform: scale(1.1); }
+        #scroll-top-btn { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        #scroll-top-btn.visible { opacity: 1; pointer-events: all; }
+
+        /* GOOGLE TRANSLATE - ocultar widget nativo, solo mostrar ícono */
+        .goog-te-gadget { display: none !important; }
+        .goog-te-banner-frame { display: none !important; }
+        body { top: 0 !important; }
+
         @media (max-width: 768px) {
+            .nav-left, .nav-right { display: none; }
+            .hamburger-btn { display: block; }
             .nav-container {
-                grid-template-columns: 1fr;
-                text-align: center;
-                padding: 0 20px;
-            }
-            
-            .nav-left, .nav-right {
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 15px;
+                grid-template-columns: auto 1fr auto;
+                padding: 0 16px;
+                gap: 10px;
             }
 
             .container {
@@ -784,7 +842,7 @@
     padding: 0 40px;
     gap: 20px;
 }
-.nav-left, .nav-right { display: flex; gap: 30px; }
+.nav-left, .nav-right { display: flex; gap: 24px; flex-wrap: nowrap; }
 .nav-left { justify-content: flex-start; }
 .nav-right { justify-content: flex-end; align-items: center; }
 .nav-left a, .nav-right a {
@@ -793,7 +851,8 @@
     font-size: 14px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
     transition: color 0.3s;
 }
 .nav-left a:hover, .nav-right a:hover { color: #D4AF37; }
@@ -827,56 +886,46 @@
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <!-- MENÚ MÓVIL DESLIZABLE -->
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="index.html#portfolio">Portafolio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="seguimiento-caso.html">📦 Seguimiento</a>
+        <a href="https://wa.me/573212816716" target="_blank"><i class="fab fa-whatsapp"></i> Contactar</a>
+        <a href="app/login.html" style="color:#D4AF37;"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar · Registro</a>
+    </div>
+
     <nav class="navbar">
         <div class="nav-container">
+            <!-- HAMBURGUESA (solo mobile) -->
+            <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileMenu()" title="Menú">
+                <i class="fas fa-bars" id="hamburger-icon"></i>
+            </button>
+
+            <!-- IZQUIERDA -->
             <div class="nav-left">
-                <a href="index.html#servicios">SERVICIOS</a>
                 <a href="index.html#portfolio">PORTAFOLIO</a>
-                <a href="index.html#workflow-247">SUBIR DISEÑO</a>
+                <a href="catalogo.html">CATÁLOGO</a>
             </div>
-            
+
+            <!-- CENTRO — Logo PRODIGY (eje de simetría) -->
             <a href="index.html" class="nav-logo-box">
                 <h1>PRODIGY</h1>
                 <span>DIGITAL DENTISTRY</span>
             </a>
-            
+
+            <!-- DERECHA -->
             <div class="nav-right">
-                <a href="index.html#production">PRODUCCIÓN CAM</a>
-                <a href="index.html#academy">ACADEMY</a>
+                <a href="seguimiento-caso.html">📦 SEGUIMIENTO</a>
                 <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank">
                     <i class="fab fa-whatsapp"></i> CONTACTAR
+                </a>
+                <a href="app/login.html" class="nav-access-btn" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:transparent;border:1.5px solid rgba(212,175,55,0.5);color:#D4AF37;border-radius:8px;font-size:0.78rem;font-weight:800;text-decoration:none;letter-spacing:0.6px;transition:all 0.25s;white-space:nowrap;" onmouseover="this.style.background='rgba(212,175,55,0.12)';this.style.borderColor='#D4AF37'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(212,175,55,0.5)'">
+                    <i class="fas fa-arrow-right-to-bracket"></i> INGRESAR · REGISTRO
                 </a>
             </div>
         </div>
     </nav>
-
-
-
-    <!-- NAVBAR -->
-    
-        <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-left">
-                <a href="index.html#servicios">SERVICIOS</a>
-                <a href="index.html#portfolio">PORTAFOLIO</a>
-                <a href="index.html#workflow-247">SUBIR DISEÑO</a>
-            </div>
-            
-            <a href="index.html" class="nav-logo-box">
-                <h1>PRODIGY</h1>
-                <span>DIGITAL DENTISTRY</span>
-            </a>
-            
-            <div class="nav-right">
-                <a href="index.html#production">PRODUCCIÓN CAM</a>
-                <a href="index.html#academy">ACADEMY</a>
-                <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank">
-                    <i class="fab fa-whatsapp"></i> CONTACTAR
-                </a>
-            </div>
-        </div>
-    </nav>
-
 
     <!-- REDES SOCIALES FLOTANTES -->
     <div class="social-floating">
@@ -959,6 +1008,11 @@
             <div class="portfolio-grid" id="portfolio-grid">
                 <!-- JavaScript generará las tarjetas aquí -->
             </div>
+            <div style="text-align:center;margin-top:48px;">
+                <a href="catalogo.html" style="display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;text-decoration:none;border-radius:50px;font-weight:800;font-size:1rem;letter-spacing:0.5px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                    Ver Portafolio de Diseños <span style="font-size:1.1rem;">→</span>
+                </a>
+            </div>
         </div>
     </section>
 
@@ -1001,57 +1055,73 @@
                 </div>
             </div>
 
+            <!-- CTA DISEÑO CAD -->
+            <div style="text-align:center;margin-top:40px;">
+                <button onclick="checkAuth('flujo-diseno.html')" style="display:inline-flex;align-items:center;gap:10px;padding:16px 40px;background:linear-gradient(135deg,#D4AF37,#F4C430);color:#000;border:none;border-radius:50px;font-weight:900;font-size:1rem;letter-spacing:0.5px;cursor:pointer;transition:all 0.25s;box-shadow:0 6px 25px rgba(212,175,55,0.35);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 35px rgba(212,175,55,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 25px rgba(212,175,55,0.35)'">
+                    <i class="fas fa-laptop-medical"></i> COTIZAR DISEÑO CAD →
+                </button>
+                <p style="color:#64748b;font-size:0.78rem;margin-top:10px;">Requiere registro gratuito como profesional aliado</p>
+            </div>
+
             <!-- Call to Action -->
             <!-- ============================================
-         SECCIÓN: CANALES DE ENVÍO (ICONOS ORIGINALES)
+         SECCIÓN: CANALES DE ENVÍO (CAJONES ORIGINALES)
          ============================================ -->
-            <section class="canales-envio-persuasive" style="background: radial-gradient(ellipse at center, #FFD700 0%, #D4AF37 50%, #B8860B 100%); padding: 50px 0; position: relative; overflow: hidden; margin: 25px 0 0 0;">
-                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.05) 10px, rgba(255, 255, 255, 0.05) 20px); pointer-events: none;"></div>
+            <section class="canales-envio-persuasive" style="background: radial-gradient(ellipse at center, #FFD700 0%, #D4AF37 50%, #B8860B 100%); padding: 55px 0; position: relative; overflow: hidden; margin: 25px 0 0 0;">
 
                 <div class="container">
-                    <h2 style="text-align: center; font-size: 42px; font-weight: 900; color: #000; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 3px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); position: relative; z-index: 1;">
+                    <h2 style="text-align: center; font-size: 2.2rem; font-weight: 900; color: #000; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1;">
                         SELECCIONA TU CANAL DE ENVÍO
                     </h2>
+                    <p style="text-align:center; color:#3a2a00; font-size:0.9rem; margin-bottom:36px; position:relative; z-index:1; font-weight:600;">Elige el método que más te convenga · Disponible 24/7</p>
 
-                    <div class="cajones-persuasive-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 850px; margin: 0 auto; position: relative; z-index: 1;">
+                    <div class="cajones-persuasive-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1280px; margin: 0 auto; position: relative; z-index: 1;">
 
-                        <!-- WhatsApp (ICONO ORIGINAL) -->
-                        <a href="https://wa.me/573212816716?text=Hola%20PRODIGY.%20Deseo%20enviar%20un%20caso%20de%20forma%20manual.%20(Entiendo%20que%20usar%20el%20formulario%20Web%20es%20más%20rápido%20y%20tiene%20seguimiento%20automático,%20pero%20prefiero%20ayuda%20de%20un%20asesor)" target="_blank" class="cajon-persuasive cajon-whatsapp" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #25D366; border-radius: 20px; padding: 24px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s ease; position: relative; overflow: hidden; box-shadow: 0 6px 25px rgba(37, 211, 102, 0.3); display: block;">
-                            <i class="fab fa-whatsapp" style="font-size: 60px; color: #25D366; margin-bottom: 15px; filter: drop-shadow(0 3px 8px rgba(37, 211, 102, 0.5));"></i>
-                            <h3 style="font-size: 22px; font-weight: 900; margin-bottom: 10px; color: #25D366; text-transform: uppercase; letter-spacing: 1px;">WhatsApp</h3>
-                            <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; margin-bottom: 16px; min-height: 35px;">Chat y Envío Manual</p>
-                            <div style="display: inline-block; padding: 10px 22px; background: #25D366; color: #fff; border-radius: 40px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px;">Comenzar</div>
-                            <div style="display: block; font-size: 11px; color: #FF6B6B; font-weight: 700; margin-top: 8px; line-height: 1.3;">🕒 Espera de Asesor</div>
+                        <!-- CAJÓN 1: WHATSAPP -->
+                        <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20enviar%20archivos%20STL%20para%20un%20caso." class="cajon-persuasive cajon-whatsapp" target="_blank" rel="noopener" style="background: #0a0f0a; border: 2px solid #25D366; border-radius: 18px; padding: 32px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.35s ease; box-shadow: 0 6px 25px rgba(37,211,102,0.25); display: block;">
+                            <div style="width:72px;height:72px;margin:0 auto 18px;background:rgba(37,211,102,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(37,211,102,0.5);">
+                                <i class="fab fa-whatsapp" style="font-size:2.4rem;color:#25D366;filter:drop-shadow(0 0 10px rgba(37,211,102,0.7));"></i>
+                            </div>
+                            <h3 style="font-size:1rem;font-weight:900;margin-bottom:10px;color:#25D366;text-transform:uppercase;letter-spacing:1px;">WhatsApp</h3>
+                            <p style="font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.6;margin-bottom:20px;min-height:54px;">Envía tus archivos STL directamente. Respuesta inmediata en horario hábil.</p>
+                            <div style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.55);color:#25D366;border-radius:40px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;">Enviar ahora <i class="fas fa-arrow-right" style="font-size:9px;"></i></div>
                         </a>
 
-                        <!-- Google Drive (ICONO ORIGINAL) -->
-                        <a href="enviar-caso.html" class="cajon-persuasive cajon-drive" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #4285F4; border-radius: 20px; padding: 24px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s ease; position: relative; overflow: hidden; box-shadow: 0 6px 25px rgba(66, 133, 244, 0.3); display: block;">
-                            <i class="fab fa-google-drive" style="font-size: 60px; color: #4285F4; margin-bottom: 15px; filter: drop-shadow(0 3px 8px rgba(66, 133, 244, 0.5));"></i>
-                            <h3 style="font-size: 22px; font-weight: 900; margin-bottom: 10px; color: #4285F4; text-transform: uppercase; letter-spacing: 1px;">Google Drive</h3>
-                            <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; margin-bottom: 16px; min-height: 35px;">Carpetas Pesadas</p>
-                            <div style="display: inline-block; padding: 10px 22px; background: #4285F4; color: #fff; border-radius: 40px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px;">Comenzar</div>
-                            <div style="display: block; font-size: 11px; color: #00FF88; font-weight: 700; margin-top: 8px; line-height: 1.3; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);">⚡ PROCESAMIENTO INMEDIATO</div>
+                        <!-- CAJÓN 2: GOOGLE DRIVE -->
+                        <a href="enviar-caso.html" class="cajon-persuasive cajon-drive" style="background: #080d14; border: 2px solid #4285F4; border-radius: 18px; padding: 32px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.35s ease; box-shadow: 0 6px 25px rgba(66,133,244,0.25); display: block;">
+                            <div style="width:72px;height:72px;margin:0 auto 18px;background:rgba(66,133,244,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(66,133,244,0.5);">
+                                <i class="fab fa-google-drive" style="font-size:2.4rem;color:#4285F4;filter:drop-shadow(0 0 10px rgba(66,133,244,0.7));"></i>
+                            </div>
+                            <h3 style="font-size:1rem;font-weight:900;margin-bottom:10px;color:#4d9fff;text-transform:uppercase;letter-spacing:1px;">Google Drive</h3>
+                            <p style="font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.6;margin-bottom:20px;min-height:54px;">Sube tus archivos pesados a Drive y comparte el enlace. Sin límite de tamaño.</p>
+                            <div style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:rgba(66,133,244,0.15);border:1px solid rgba(66,133,244,0.55);color:#4d9fff;border-radius:40px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;">Subir a Drive <i class="fas fa-arrow-right" style="font-size:9px;"></i></div>
                         </a>
 
-                        <!-- WeTransfer (ICONO SVG ORIGINAL) -->
-                        <a href="enviar-caso-wetransfer.html" class="cajon-persuasive cajon-wetransfer" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #409FFF; border-radius: 20px; padding: 24px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s ease; position: relative; overflow: hidden; box-shadow: 0 6px 25px rgba(64, 159, 255, 0.3); display: block;">
-                            <div style="margin-bottom: 15px;">
-                                <svg width="60" height="60" viewBox="0 0 512 512" style="filter: drop-shadow(0 3px 8px rgba(64, 159, 255, 0.5));">
-                                    <circle cx="256" cy="256" r="256" fill="#409FFF"/>
-                                    <path d="M256 128L128 256h85.333v128h85.334V256H384z" fill="#fff"/>
+                        <!-- CAJÓN 3: WETRANSFER -->
+                        <a href="enviar-caso-wetransfer.html" class="cajon-persuasive cajon-wetransfer" style="background: #080d14; border: 2px solid #409FFF; border-radius: 18px; padding: 32px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.35s ease; box-shadow: 0 6px 25px rgba(64,159,255,0.25); display: block;">
+                            <div style="width:72px;height:72px;margin:0 auto 18px;background:rgba(64,159,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(64,159,255,0.5);">
+                                <svg width="38" height="38" viewBox="0 0 100 100" style="filter:drop-shadow(0 0 10px rgba(64,159,255,0.7));">
+                                    <circle cx="50" cy="50" r="46" fill="#409FFF"/>
+                                    <text x="50" y="58" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="30" fill="#fff">We</text>
                                 </svg>
                             </div>
-                            <h3 style="font-size: 22px; font-weight: 900; margin-bottom: 10px; color: #409FFF; text-transform: uppercase; letter-spacing: 1px;">WeTransfer</h3>
-                            <p style="font-size: 14px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; margin-bottom: 16px; min-height: 35px;">Archivos Gigantes</p>
-                            <div style="display: inline-block; padding: 10px 22px; background: #409FFF; color: #fff; border-radius: 40px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px;">Comenzar</div>
-                            <div style="display: block; font-size: 11px; color: #00FF88; font-weight: 700; margin-top: 8px; line-height: 1.3; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);">⚡ PROCESAMIENTO INMEDIATO</div>
+                            <h3 style="font-size:1rem;font-weight:900;margin-bottom:10px;color:#5ab4ff;text-transform:uppercase;letter-spacing:1px;">WeTransfer</h3>
+                            <p style="font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.6;margin-bottom:20px;min-height:54px;">Transferencia directa de hasta 2 GB. Sin cuenta, sin complicaciones.</p>
+                            <div style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:rgba(64,159,255,0.15);border:1px solid rgba(64,159,255,0.55);color:#5ab4ff;border-radius:40px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;">Enviar por We <i class="fas fa-arrow-right" style="font-size:9px;"></i></div>
+                        </a>
+
+                        <!-- CAJÓN 4: BUZÓN DROPBOX PRODIGY (NUEVO) -->
+                        <a href="https://www.dropbox.com/request/zAQNVD0AyQyfUgOshArY" class="cajon-persuasive cajon-dropbox" target="_blank" rel="noopener" style="background: #080d14; border: 2px solid #0061ff; border-radius: 18px; padding: 32px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.35s ease; box-shadow: 0 6px 25px rgba(0,97,255,0.25); display: block; position:relative;">
+                            <div style="position:absolute;top:-10px;right:14px;background:#0061ff;color:#fff;font-size:9px;font-weight:900;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;">RECOMENDADO</div>
+                            <div style="width:72px;height:72px;margin:0 auto 18px;background:rgba(0,97,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(0,97,255,0.5);">
+                                <svg width="34" height="29" viewBox="0 0 528 444" fill="#0061ff" style="filter:drop-shadow(0 0 10px rgba(0,97,255,0.8));"><path d="M264 18L132 101l132 83 132-83zM0 184l132 83 132-83-132-83zm396-83l-132 83 132 83 132-83zM132 285l132 83 132-83-132-83zm132 101l132-83-132-83-132 83z"/></svg>
+                            </div>
+                            <h3 style="font-size:1rem;font-weight:900;margin-bottom:10px;color:#4d9fff;text-transform:uppercase;letter-spacing:1px;">Buzón PRODIGY</h3>
+                            <p style="font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.6;margin-bottom:20px;min-height:54px;">Dropbox seguro y privado. Sin crear cuenta. Archivos organizados automáticamente.</p>
+                            <div style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:rgba(0,97,255,0.15);border:1px solid rgba(0,97,255,0.55);color:#4d9fff;border-radius:40px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;">Abrir Buzón <i class="fas fa-arrow-right" style="font-size:9px;"></i></div>
                         </a>
 
                     </div>
-
-                    <p style="text-align: center; color: rgba(0, 0, 0, 0.7); font-size: 13px; margin-top: 20px; font-weight: 600; position: relative; z-index: 1;">
-                        Al enviar un caso, aceptas nuestras <a href="terminos-y-pagos.html" style="color: #000; text-decoration: underline; font-weight: 800;">Políticas de Servicio</a>
-                    </p>
                 </div>
             </section>
 
@@ -1086,9 +1156,10 @@
                         </a>
 
                         <!-- Seguimiento de Casos -->
-                        <a href="https://wa.me/573219581949?text=Hola%20PRODIGY,%20necesito%20consultar%20el%20estado%20de%20un%20caso%20enviado." class="whatsapp-btn-card" target="_blank" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                            <i class="fab fa-whatsapp" style="font-size: 38px; color: #fff;"></i>
-                            <span style="font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">Seguimiento de Casos</span>
+                        <a href="seguimiento-caso.html" style="background: linear-gradient(135deg, #1a2035 0%, #0d1525 100%); border: 2px solid #D4AF37; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(212,175,55,0.25); display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <i class="fas fa-search" style="font-size: 38px; color: #D4AF37;"></i>
+                            <span style="font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #D4AF37;">Seguimiento de Casos</span>
+                            <span style="font-size: 12px; color: #94a3b8; font-weight: 400;">Consulta el estado de tu orden</span>
                         </a>
 
                         <!-- Dudas / Soporte -->
@@ -1133,6 +1204,15 @@
 
             .cajon-wetransfer:hover svg circle {
                 fill: #5ab4ff;
+            }
+
+            .cajon-dropbox:hover {
+                border-color: #3a8fff;
+                box-shadow: 0 15px 45px rgba(0, 97, 255, 0.6);
+            }
+
+            .cajon-dropbox:hover svg {
+                filter: drop-shadow(0 0 14px rgba(0,97,255,1)) !important;
             }
 
             /* Hover effects para botones WhatsApp */
@@ -1228,7 +1308,7 @@
     <div style="max-width: 800px; margin: 40px auto 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; padding: 0 20px;">
 
         <!-- FRESADO -->
-        <a href="flujo-fresado.html" class="cajon-persuasive cajon-fresado" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #8B7355; border-radius: 20px; padding: 28px 24px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: block; position: relative; overflow: hidden;">
+        <a href="#" onclick="checkAuth('flujo-fresado.html'); return false;" class="cajon-persuasive cajon-fresado" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #8B7355; border-radius: 20px; padding: 28px 24px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: block; position: relative; overflow: hidden;">
             <div style="position: relative; z-index: 2;">
                 <svg viewBox="0 0 120 120" style="width: 80px; height: 80px; margin-bottom: 18px;">
     <g stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
@@ -1282,7 +1362,7 @@
         </a>
 
         <!-- IMPRESIÓN 3D -->
-        <a href="flujo-impresion.html" class="cajon-persuasive cajon-impresion" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #FF6B9D; border-radius: 20px; padding: 28px 24px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: block; position: relative; overflow: hidden;">
+        <a href="#" onclick="checkAuth('flujo-impresion.html'); return false;" class="cajon-persuasive cajon-impresion" style="background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); border: 3px solid #FF6B9D; border-radius: 20px; padding: 28px 24px; text-align: center; text-decoration: none; color: #fff; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: block; position: relative; overflow: hidden;">
             <div style="position: relative; z-index: 2;">
                 <svg viewBox="0 0 120 120" style="width: 80px; height: 80px; margin-bottom: 18px;">
                         <g stroke="#FF6B9D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
@@ -1420,7 +1500,7 @@
         </div>
     </section>
 
-    <footer class="footer">
+    <footer class="prodigy-global-footer">
         <div class="footer-grid">
             <div class="footer-col">
                 <h4>PRODIGY</h4>
@@ -1434,33 +1514,57 @@
                 <h4>CONTACTO</h4>
                 <ul>
                     <li><a href="tel:+573212816716">+57 321 281 6716</a></li>
-                    <li><a href="/cdn-cgi/l/email-protection#85ecebe3eac5f5f7eae1ece2fcabe6eae8"><span class="__cf_email__" data-cfemail="d2bbbcb4bd92a2a0bdb6bbb5abfcb1bdbf">[email&#160;protected]</span></a></li>
-                    <li><a href="https://instagram.com/jackcarvajal" target="_blank">@jackcarvajal</a></li>
+                    <li><a href="mailto:labdentalprodigy@gmail.com">labdentalprodigy@gmail.com</a></li>
+                    <li><a href="https://instagram.com/prodigydigitaldentistry" target="_blank">@prodigydigitaldentistry</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>SERVICIOS</h4>
                 <ul>
-                    <li>Diseño CAD/CAM</li>
-                    <li>Implantología</li>
-                    <li>Ortodoncia</li>
-                    <li>Estética Dental</li>
+                    <li><a href="#" onclick="checkAuth('flujo-impresion.html'); return false;">Impresión 3D</a></li>
+                    <li><a href="#" onclick="checkAuth('flujo-fresado.html'); return false;">Fresado CAD/CAM</a></li>
+                    <li><a href="seguimiento-caso.html">Seguimiento de Pedidos</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>TECNOLOGÍA</h4>
+                <h4>LEGAL</h4>
                 <ul>
-                    <li>Exocad Expert</li>
-                    <li>3Shape Design</li>
-                    <li>FRESADO</li>
-                    <li>Impresión 3D</li>
+                    <li><a href="terminos-y-legal.html">Términos y Condiciones</a></li>
+                    <li><a href="terminos-y-legal.html#privacidad">Política de Privacidad</a></li>
+                    <li><a href="https://wa.me/573212816716?text=Hola%20equipo%20Prodigy.%20Tengo%20una%20sugerencia%2Freporte%20sobre%20la%20p%C3%A1gina%20web%3A" target="_blank" rel="noopener noreferrer">💡 Sugerencias o Reportar Fallo</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-copyright">
-            <p>© 2025 PRODIGY Digital Dentistry. Bogotá, Colombia</p>
+            <p>© 2026 PRODIGY Digital Dentistry. Bogotá, Colombia. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <!-- ============================================
+         FLOTANTES UX — BOTTOM RIGHT
+         ============================================ -->
+    <div class="ux-floaters">
+        <!-- Scroll to Top -->
+        <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+        <!-- Modo claro/oscuro -->
+        <button class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro">🌙</button>
+
+        <!-- Google Translate -->
+        <button class="ux-btn" id="translate-btn" onclick="toggleTranslate()" title="Traducir página">
+            🌐
+        </button>
+
+        <!-- WhatsApp Soporte Rápido -->
+        <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte%20rápido." class="ux-btn" target="_blank" rel="noopener" title="Soporte WhatsApp" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);">
+            <i class="fab fa-whatsapp" style="color:#25D366;"></i>
+        </a>
+    </div>
+
+    <!-- Google Translate (oculto) -->
+    <div id="google_translate_element" style="position:fixed;bottom:90px;right:80px;z-index:9999;display:none;background:rgba(0,0,0,0.92);border:1px solid rgba(212,175,55,0.3);border-radius:12px;padding:10px 14px;"></div>
 
     <!-- SCRIPTS -->
     <script src="patients-data.js"></script>
@@ -1491,7 +1595,7 @@
                 date: "2025",
                 description: "Carillas estéticas completas superior e inferior.",
                 coverImage: "patients/patient-002/C.jpeg",
-                exocadFile: "patients/patient-002/felipe pinzon.html",
+                exocadFile: "patients/patient-002/caso.html",
                 gallery: []
             }
         ];
@@ -1544,8 +1648,9 @@
             portfolioGrid.innerHTML = '';
             console.log('🧹 Contenedor limpiado');
             
-            // Generar tarjetas dinámicamente
-            dataToUse.forEach((patient, index) => {
+            // Solo los 3 primeros casos como destacados (el resto en catalogo.html)
+            const featured = dataToUse.slice(0, 3);
+            featured.forEach((patient, index) => {
                 console.log(`📦 Creando tarjeta ${index + 1}: ${patient.name}`);
                 const card = createPatientCard(patient, index);
                 portfolioGrid.appendChild(card);
@@ -1640,6 +1745,82 @@
         // Log de éxito de carga del script
         console.log('✅ Sistema de renderizado "A Prueba de Fallos" cargado');
         console.log('📋 Datos de respaldo disponibles:', FALLBACK_DATA.length, 'casos');
+
+        // =============================================
+        // FILTRO DE ACCESO: redirige a login si no hay sesión
+        // =============================================
+        function checkAuth(destino) {
+            const rol = sessionStorage.getItem('prodigy_role');
+            if (rol) {
+                window.location.href = destino;
+            } else {
+                sessionStorage.setItem('prodigy_redirect', destino);
+                window.location.href = 'app/login.html?msg=cotizar';
+            }
+        }
+
+        // =============================================
+        // MENÚ HAMBURGUESA MOBILE
+        // =============================================
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-nav');
+            const icon = document.getElementById('hamburger-icon');
+            const open = menu.classList.toggle('open');
+            icon.className = open ? 'fas fa-times' : 'fas fa-bars';
+        }
+        // Cerrar menú al hacer clic en un enlace
+        document.querySelectorAll('.mobile-nav a').forEach(a => {
+            a.addEventListener('click', () => {
+                document.getElementById('mobile-nav').classList.remove('open');
+                document.getElementById('hamburger-icon').className = 'fas fa-bars';
+            });
+        });
+
+        // =============================================
+        // SCROLL TO TOP
+        // =============================================
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('scroll-top-btn');
+            if (btn) {
+                if (window.scrollY > 350) btn.classList.add('visible');
+                else btn.classList.remove('visible');
+            }
+        });
+
+        // =============================================
+        // GOOGLE TRANSLATE TOGGLE
+        // =============================================
+        let translateLoaded = false;
+        function toggleTranslate() {
+            const el = document.getElementById('google_translate_element');
+            if (el.style.display === 'none' || !el.style.display) {
+                el.style.display = 'block';
+                if (!translateLoaded) {
+                    translateLoaded = true;
+                    const s = document.createElement('script');
+                    s.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                    document.body.appendChild(s);
+                    window.googleTranslateElementInit = function() {
+                        new google.translate.TranslateElement(
+                            { pageLanguage: 'es', layout: google.translate.TranslateElement.InlineLayout.SIMPLE },
+                            'google_translate_element'
+                        );
+                    };
+                }
+            } else {
+                el.style.display = 'none';
+            }
+        }
+        function toggleTheme() {
+            const light = document.body.classList.toggle('light-mode');
+            const btn = document.getElementById('theme-btn');
+            if (btn) btn.textContent = light ? '☀️' : '🌙';
+            localStorage.setItem('prodigy_theme', light ? 'light' : 'dark');
+        }
+        if (localStorage.getItem('prodigy_theme') === 'light') {
+            document.body.classList.add('light-mode');
+            setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
+        }
     </script>
     
 </body>

@@ -752,10 +752,19 @@
 <body oncontextmenu="return false;">
 
     <div class="container">
-        <!-- BOTÓN DE REGRESO -->
-        <a href="index.html" class="back-btn">
-            <i class="fas fa-arrow-left"></i> VOLVER AL PORTAFOLIO
+        <!-- BOTÓN DE REGRESO (destino dinámico: catálogo o inicio) -->
+        <a id="back-btn" href="index.html#portfolio" class="back-btn">
+            <i class="fas fa-arrow-left"></i> <span id="back-label">VOLVER AL PORTAFOLIO</span>
         </a>
+        <script>
+            (function() {
+                const from = new URLSearchParams(window.location.search).get('from');
+                if (from === 'catalogo') {
+                    document.getElementById('back-btn').href = 'catalogo.html';
+                    document.getElementById('back-label').textContent = 'VOLVER AL CATÁLOGO';
+                }
+            })();
+        </script>
 
         <!-- CONTENIDO DINÁMICO -->
         <div id="patient-content"></div>
@@ -904,7 +913,7 @@
                 date: "2025",
                 description: "Carillas estéticas completas superior e inferior.",
                 coverImage: "patients/patient-002/C.jpeg",
-                exocadFile: "patients/patient-002/felipe pinzon.html",
+                exocadFile: "patients/patient-002/caso.html",
                 gallery: [
                     "patients/patient-002/gallery/1.jpeg",
                     "patients/patient-002/gallery/2.jpeg",

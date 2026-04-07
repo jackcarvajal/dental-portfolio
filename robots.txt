@@ -1,0 +1,18 @@
+# robots.txt - PRODIGY Dental Lab
+# ⚠️ IMPORTANTE: Reemplaza TU-DOMINIO-AQUI.com con tu dominio real antes de subir al servidor.
+
+User-agent: *
+Allow: /
+
+# Directorios y archivos privados — NO indexar
+Disallow: /patients/
+Disallow: /temporal/
+Disallow: /app/
+Disallow: /admin-panel.html
+Disallow: /enviar-produccion-drive.html
+Disallow: /enviar-produccion-wetransfer.html
+Disallow: /*.sql$
+
+# Sitemap
+# ⚠️ Reemplaza el dominio antes de publicar
+Sitemap: https://TU-DOMINIO-AQUI.com/sitemap.xml
