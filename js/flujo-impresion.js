@@ -2034,6 +2034,17 @@
             STATE.pagoTitular = pTitular;
             STATE.pagoReferencia = pRef;
 
+            // Facturación DIAN
+            STATE.billingReq   = document.getElementById('chk-factura')?.checked || false;
+            STATE.billingTipo  = STATE.billingReq ? (document.getElementById('billing_tipo')?.value  || '') : '';
+            STATE.billingNit   = STATE.billingReq ? (document.getElementById('billing_nit')?.value.trim()   || '') : '';
+            STATE.billingRazon = STATE.billingReq ? (document.getElementById('billing_razon')?.value.trim() || '') : '';
+            STATE.billingEmail = STATE.billingReq ? (document.getElementById('billing_email')?.value.trim() || '') : '';
+            if (STATE.billingReq && (!STATE.billingTipo || !STATE.billingNit || !STATE.billingRazon || !STATE.billingEmail)) {
+                showProdigyAlert('🧾 Datos de Facturación', 'Si requieres factura, completa <strong>todos los campos</strong> de facturación electrónica.', 'Completar');
+                return;
+            }
+
             document.getElementById('modal-confirmation').classList.add('active');
         }
 
@@ -2096,6 +2107,13 @@
             
             texto += `💵 *TOTAL: ${STATE.total}*\n\n`;
             texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n\n`;
+            if (STATE.billingReq) {
+                texto += `🧾 *FACTURA ELECTRÓNICA (DIAN)*\n`;
+                texto += `• Tipo doc: ${STATE.billingTipo}\n`;
+                texto += `• NIT/Cédula: ${STATE.billingNit}\n`;
+                texto += `• Razón Social: ${STATE.billingRazon}\n`;
+                texto += `• Email factura: ${STATE.billingEmail}\n\n`;
+            }
             texto += `_✅ Acepto los términos y condiciones de PRODIGY (Malla STL verificada)_`;
             
             // TODO: Migración futura a WhatsApp Business API
@@ -2123,6 +2141,11 @@
             } catch(e) {
                 showProdigyAlert('📱 Error de Conexión', 'No se pudo abrir WhatsApp automáticamente. Verifica que tienes WhatsApp instalado e intenta de nuevo.', 'Intentar de Nuevo');
             }
+        }
+
+        function toggleBillingSection() {
+            const fields = document.getElementById('billing-fields');
+            if (fields) fields.style.display = document.getElementById('chk-factura').checked ? 'block' : 'none';
         }
 
         document.addEventListener('contextmenu', e => e.preventDefault());

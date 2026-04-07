@@ -2458,6 +2458,34 @@
                 </div>
             </div>
 
+            <!-- FACTURACIÓN ELECTRÓNICA DIAN -->
+            <div class="accordion" style="margin-top:12px;border:2px solid #1e3a5f;">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h2 style="font-size:0.9rem;"><i class="fa-solid fa-file-invoice"></i> FACTURA ELECTRÓNICA (OPCIONAL)</h2>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-inner">
+                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.85rem;color:#e2e8f0;margin-bottom:12px;">
+                            <input type="checkbox" id="chk-factura" onchange="toggleBillingSection()" style="width:16px;height:16px;accent-color:#00d2ff;flex-shrink:0;">
+                            <span>Requiero <strong style="color:#00d2ff;">Factura Electrónica</strong> (DIAN)</span>
+                        </label>
+                        <div id="billing-fields" style="display:none;">
+                            <select id="billing_tipo" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
+                                <option value="">Tipo de documento</option>
+                                <option value="NIT">NIT (Empresa / Clínica)</option>
+                                <option value="CC">Cédula de Ciudadanía</option>
+                                <option value="CE">Cédula de Extranjería</option>
+                            </select>
+                            <input type="text" id="billing_nit" placeholder="NIT / Cédula (ej: 900123456-1)" maxlength="20" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
+                            <input type="text" id="billing_razon" placeholder="Razón Social o Nombre Completo" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
+                            <input type="email" id="billing_email" placeholder="Correo para factura (contabilidad@...)" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);font-size:.85rem;">
+                            <p style="font-size:.72rem;color:#94a3b8;margin-top:6px;">Factura enviada al correo indicado en máx. 24h hábiles.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <button class="payment-btn btn-submit" id="btn-submit" onclick="submitOrder()" disabled>
                 🚀 GENERAR ORDEN 🎯
             </button>
@@ -3882,6 +3910,17 @@
             STATE.pagoTitular = pTitular;
             STATE.pagoReferencia = pRef;
 
+            // Facturación DIAN
+            STATE.billingReq   = document.getElementById('chk-factura')?.checked || false;
+            STATE.billingTipo  = STATE.billingReq ? (document.getElementById('billing_tipo')?.value  || '') : '';
+            STATE.billingNit   = STATE.billingReq ? (document.getElementById('billing_nit')?.value.trim()   || '') : '';
+            STATE.billingRazon = STATE.billingReq ? (document.getElementById('billing_razon')?.value.trim() || '') : '';
+            STATE.billingEmail = STATE.billingReq ? (document.getElementById('billing_email')?.value.trim() || '') : '';
+            if (STATE.billingReq && (!STATE.billingTipo || !STATE.billingNit || !STATE.billingRazon || !STATE.billingEmail)) {
+                showProdigyAlert('🧾 Datos de Facturación', 'Si requieres factura, completa <strong>todos los campos</strong> de facturación electrónica.', 'Completar');
+                return;
+            }
+
             document.getElementById('modal-confirmation').classList.add('active');
         }
 
@@ -3933,6 +3972,13 @@
             
             texto += `💵 *TOTAL: ${STATE.total}*\n\n`;
             texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n\n`;
+            if (STATE.billingReq) {
+                texto += `🧾 *FACTURA ELECTRÓNICA (DIAN)*\n`;
+                texto += `• Tipo doc: ${STATE.billingTipo}\n`;
+                texto += `• NIT/Cédula: ${STATE.billingNit}\n`;
+                texto += `• Razón Social: ${STATE.billingRazon}\n`;
+                texto += `• Email factura: ${STATE.billingEmail}\n\n`;
+            }
             texto += `_✅ Acepto los términos y condiciones de PRODIGY (Malla/Diseño verificado)_`;
             
             // TODO: Migración futura a WhatsApp Business API
@@ -3962,9 +4008,14 @@
             }
         }
 
+        function toggleBillingSection() {
+            const fields = document.getElementById('billing-fields');
+            if (fields) fields.style.display = document.getElementById('chk-factura').checked ? 'block' : 'none';
+        }
+
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
-            if (e.key === 'F12' || 
+            if (e.key === 'F12' ||
                 (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
                 (e.ctrlKey && e.key === 'U')) {
                 e.preventDefault();
