@@ -263,46 +263,52 @@
 
     <script>
         const ESTADOS = {
-            'Recibido': { color: '#2196F3', bg: 'rgba(33,150,243,0.2)', progress: 0 },
-            'En Diseño': { color: '#9C27B0', bg: 'rgba(156,39,176,0.2)', progress: 25 },
-            'En Impresión/Fresado': { color: '#FF9800', bg: 'rgba(255,152,0,0.2)', progress: 50 },
-            'Control de Calidad': { color: '#00BCD4', bg: 'rgba(0,188,212,0.2)', progress: 75 },
-            'Listo para Entrega': { color: '#4CAF50', bg: 'rgba(76,175,80,0.2)', progress: 100 }
+            'Recibido':             { color: '#2196F3', bg: 'rgba(33,150,243,0.2)',  progress: 5  },
+            'En Diseño':            { color: '#9C27B0', bg: 'rgba(156,39,176,0.2)',  progress: 25 },
+            'En Impresión/Fresado': { color: '#FF9800', bg: 'rgba(255,152,0,0.2)',   progress: 55 },
+            'Control de Calidad':   { color: '#00BCD4', bg: 'rgba(0,188,212,0.2)',   progress: 78 },
+            'Listo para Entrega':   { color: '#4CAF50', bg: 'rgba(76,175,80,0.2)',   progress: 100 }
         };
 
-        /* Agente 4: búsqueda con spinner */
-        function buscarCasoConSpinner() {
+        // Mapeo de estados del schema → estados de display
+        const ESTADO_MAP = {
+            'Borrador':           'Recibido',
+            'En Diseño':          'En Diseño',
+            'En Revisión':        'Control de Calidad',
+            'Aprobado':           'Control de Calidad',
+            'En Producción':      'En Impresión/Fresado',
+            'Listo para Entrega': 'Listo para Entrega',
+            'Entregado':          'Listo para Entrega',
+            'Cancelado':          'Recibido'
+        };
+
+        /* Búsqueda con spinner */
+        async function buscarCasoConSpinner() {
             const spinner = document.getElementById('search-spinner');
             const btn = document.querySelector('button[onclick="buscarCasoConSpinner()"]');
-            spinner.style.display = 'block';
-            if (btn) btn.style.display = 'none';
-            setTimeout(() => {
-                spinner.style.display = 'none';
-                if (btn) btn.style.display = '';
-                buscarCaso();
-            }, 900);
+            if (spinner) spinner.style.display = 'block';
+            if (btn) btn.disabled = true;
+            try {
+                await buscarCaso();
+            } finally {
+                if (spinner) spinner.style.display = 'none';
+                if (btn) btn.disabled = false;
+            }
         }
 
-        function buscarCaso() {
+        async function buscarCaso() {
             const orden = document.getElementById('searchOrden').value.trim().toUpperCase();
-            const nombre = document.getElementById('searchNombre').value.trim().toLowerCase();
-            const telefono = document.getElementById('searchTelefono').value.trim();
-
-            const ordenes = JSON.parse(localStorage.getItem('ordenes') || '[]');
-            let encontrado = null;
-
-            if (orden) {
-                encontrado = ordenes.find(o => o.numeroOrden === orden);
-            } else if (nombre && telefono) {
-                encontrado = ordenes.find(o =>
-                    o.nombrePaciente.toLowerCase().includes(nombre) &&
-                    o.telefono.includes(telefono)
-                );
+            if (!orden) {
+                document.getElementById('resultado').style.display = 'none';
+                document.getElementById('noEncontrado').style.display = 'block';
+                return;
             }
-
-            if (encontrado) {
-                mostrarCaso(encontrado);
-            } else {
+            try {
+                const sb = getSbSeg();
+                const { data, error } = await sb.rpc('buscar_pedido_publico', { p_codigo: orden });
+                if (error || !data) throw new Error('no data');
+                mostrarCaso(data);
+            } catch(_) {
                 document.getElementById('resultado').style.display = 'none';
                 document.getElementById('noEncontrado').style.display = 'block';
             }
@@ -311,17 +317,14 @@
         function mostrarCaso(caso) {
             document.getElementById('noEncontrado').style.display = 'none';
             document.getElementById('resultado').style.display = 'block';
-            
-            // PROTECCIÓN LEY 1581 - Ocultar parcialmente nombre
-            const partes = caso.nombrePaciente.split(' ');
-            const nombreProtegido = partes.map(p => p.substring(0, 2) + '•'.repeat(Math.max(p.length - 2, 0))).join(' ');
-            
-            document.getElementById('nombrePacienteDisplay').textContent = nombreProtegido;
-            document.getElementById('ordenDisplay').textContent = caso.numeroOrden;
-            
-            // Estado actual
-            const estado = caso.estado || 'Recibido';
-            const estadoInfo = ESTADOS[estado];
+
+            document.getElementById('nombrePacienteDisplay').textContent = 'Caso Registrado';
+            document.getElementById('ordenDisplay').textContent = caso.codigo || caso.numeroOrden || '—';
+
+            // Estado actual — mapear estado del schema al estado de display
+            const estadoRaw  = caso.estado || 'Borrador';
+            const estado     = ESTADO_MAP[estadoRaw] || 'Recibido';
+            const estadoInfo = ESTADOS[estado] || ESTADOS['Recibido'];
             
             const badge = document.getElementById('estadoBadge');
             badge.style.background = estadoInfo.bg;
@@ -350,14 +353,24 @@
             });
             
             // Detalles
-            document.getElementById('detalles').innerHTML = `
-                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Servicio</p><p style="color:white;font-weight:600;">${caso.tipoServicio}</p></div>
-                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Tipo de Caso</p><p style="color:white;font-weight:600;">${caso.tipoCaso}</p></div>
-                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Material</p><p style="color:white;font-weight:600;">${caso.material}</p></div>
-                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Shade</p><p style="color:white;font-weight:600;">${caso.shade}</p></div>
-                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Entrega</p><p style="color:white;font-weight:600;">${new Date(caso.fechaEntrega).toLocaleDateString('es-ES')}</p></div>
-                <div><p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;">Doctor</p><p style="color:white;font-weight:600;">${caso.nombreDoctor}</p></div>
-            `;
+            const det = document.getElementById('detalles');
+            det.innerHTML = '';
+            const addDet = (label, val) => {
+                if (!val) return;
+                const d = document.createElement('div');
+                const lp = document.createElement('p'); lp.style.cssText = 'color:rgba(248,250,252,0.6);font-size:0.85rem;margin-bottom:5px;'; lp.textContent = label;
+                const vp = document.createElement('p'); vp.style.cssText = 'color:white;font-weight:600;'; vp.textContent = val;
+                d.appendChild(lp); d.appendChild(vp); det.appendChild(d);
+            };
+            addDet('Servicio',  caso.servicio   || caso.tipoServicio || '—');
+            addDet('Material',  caso.material   || '—');
+            addDet('Submaterial', caso.submaterial || '');
+            addDet('Color VITA',  caso.color_vita  || '');
+            addDet('Cantidad',  caso.cantidad ? `${caso.cantidad} unidades` : '');
+            addDet('Estado real', estadoRaw);
+            addDet('Entrega estimada', caso.fecha_entrega
+                ? new Date(caso.fecha_entrega).toLocaleDateString('es-CO', {day:'2-digit',month:'long',year:'numeric'})
+                : (caso.fechaEntrega ? new Date(caso.fechaEntrega).toLocaleDateString('es-CO') : '—'));
             
             // Auto-release: mostrar descargas cuando estado es Aprobado o Listo para Entrega
             const puedeDescargar = ['Aprobado', 'Listo para Entrega'].includes(estado);
@@ -456,6 +469,16 @@
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script>
+        // Auto-fill desde ?id= (link enviado por WhatsApp)
+        window.addEventListener('load', function() {
+            const id = new URLSearchParams(window.location.search).get('id');
+            if (id) {
+                const el = document.getElementById('searchOrden');
+                if (el) { el.value = id; buscarCasoConSpinner(); }
+            }
+        });
+    </script>
 
     <!-- FOOTER GLOBAL PRODIGY -->
     <footer class="prodigy-global-footer">
