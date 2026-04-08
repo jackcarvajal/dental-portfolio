@@ -2070,5 +2070,134 @@
     }
     </style>
 
+    <!-- ── ANIMACIONES Y PULIDO VISUAL MÓVIL ── -->
+    <style>
+    /* Entrada fade+slide de secciones */
+    @keyframes fadeSlideUp {
+        from { opacity: 0; transform: translateY(22px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+    }
+    .reveal.visible {
+        animation: fadeSlideUp 0.45s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    /* Press feedback táctil en cards */
+    @media (max-width: 768px) {
+        .portfolio-card:active,
+        .step-card:active,
+        .production-card:active,
+        .cajon-persuasive:active,
+        .course-card:active,
+        .whatsapp-btn-card:active {
+            transform: scale(0.96) !important;
+            transition: transform 0.1s ease !important;
+        }
+
+        /* Navbar: sombra al hacer scroll */
+        .navbar.scrolled {
+            box-shadow: 0 4px 24px rgba(0,0,0,0.6) !important;
+            border-bottom-color: rgba(212,175,55,0.35) !important;
+        }
+
+        /* Dots indicadores de carrusel */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 8px;
+        }
+        .carousel-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: background 0.25s, width 0.25s;
+        }
+        .carousel-dot.active {
+            background: #D4AF37;
+            width: 14px;
+            border-radius: 3px;
+        }
+
+        /* Gradiente de fade al borde derecho (indica más contenido) */
+        .carousel-fade-wrap {
+            position: relative;
+        }
+        .carousel-fade-wrap::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 36px; height: calc(100% - 8px);
+            background: linear-gradient(to right, transparent, rgba(5,5,5,0.85));
+            pointer-events: none;
+            border-radius: 0 14px 14px 0;
+        }
+    }
+    </style>
+
+    <script>
+    (function mobilePolish() {
+        if (window.innerWidth > 768) return;
+
+        // 1. Reveal al hacer scroll (Intersection Observer)
+        const targets = document.querySelectorAll('section, .section-header, .hero-workflow');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('visible'), i * 60);
+                    io.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.08 });
+        targets.forEach(el => { el.classList.add('reveal'); io.observe(el); });
+
+        // 2. Navbar sombra al scrollear
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            navbar?.classList.toggle('scrolled', window.scrollY > 10);
+        }, { passive: true });
+
+        // 3. Dots indicadores para carruseles principales
+        const carousels = [
+            { el: document.querySelector('.portfolio-grid'),          id: 'dots-portfolio' },
+            { el: document.querySelector('.steps-grid'),              id: 'dots-steps'     },
+            { el: document.querySelector('.cajones-persuasive-grid'), id: 'dots-cajones'   },
+        ];
+        carousels.forEach(({ el, id }) => {
+            if (!el) return;
+            const items = el.children;
+            if (items.length < 2) return;
+
+            // Envolver en wrapper para fade
+            const wrap = document.createElement('div');
+            wrap.className = 'carousel-fade-wrap';
+            el.parentNode.insertBefore(wrap, el);
+            wrap.appendChild(el);
+
+            // Dots
+            const dotsEl = document.createElement('div');
+            dotsEl.className = 'carousel-dots';
+            dotsEl.id = id;
+            for (let i = 0; i < items.length; i++) {
+                const d = document.createElement('div');
+                d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dotsEl.appendChild(d);
+            }
+            wrap.appendChild(dotsEl);
+
+            // Actualizar dot activo al scrollear
+            el.addEventListener('scroll', () => {
+                const idx = Math.round(el.scrollLeft / (items[0]?.offsetWidth + 10));
+                dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) => {
+                    d.classList.toggle('active', i === idx);
+                });
+            }, { passive: true });
+        });
+    })();
+    </script>
+
 </body>
 </html>
