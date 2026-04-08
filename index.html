@@ -1908,102 +1908,215 @@
     })();
     </script>
 
-    <!-- ── MOBILE FIX GLOBAL v2 ── -->
+    <!-- ── MOBILE FIX GLOBAL v3 — Mobile First Alta Gama ── -->
     <style>
+
+    /* ── HELPER: ocultar scrollbar en carruseles ── */
+    .carousel-snap::-webkit-scrollbar { display: none; }
+    .carousel-snap { -ms-overflow-style: none; scrollbar-width: none; }
+
     @media (max-width: 768px) {
 
-        /* ── 1. OCULTAR FLOTANTES QUE TAPAN CONTENIDO ── */
-        .social-floating { display: none !important; }
-        .ux-floaters {
-            bottom: 12px !important;
-            right: 12px !important;
-            gap: 7px !important;
-        }
-        .ux-btn { width: 38px !important; height: 38px !important; font-size: 0.9rem !important; }
+        /* ── 1. NAVBAR — horizontal scrollable, sin hamburguesa ── */
+        .hamburger-btn { display: none !important; }
+        .mobile-nav    { display: none !important; }
+        .nav-left, .nav-right { display: flex !important; }
 
-        /* ── 2. PORTFOLIO → SCROLL HORIZONTAL ── */
+        .nav-container {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            overflow-x: auto !important;
+            white-space: nowrap !important;
+            padding: 0 10px !important;
+            gap: 6px !important;
+            scrollbar-width: none !important;
+        }
+        .nav-container::-webkit-scrollbar { display: none !important; }
+
+        .nav-left, .nav-right {
+            gap: 8px !important;
+            flex-shrink: 0 !important;
+        }
+        .nav-left a, .nav-right a {
+            font-size: 9px !important;
+            padding: 4px 7px !important;
+            letter-spacing: 0.5px !important;
+            white-space: nowrap !important;
+        }
+        .nav-logo-box h1     { font-size: 16px !important; letter-spacing: 2px !important; }
+        .nav-logo-box span   { font-size: 7px !important; }
+        .nav-btn-cta         { font-size: 9px !important; padding: 5px 10px !important; }
+
+        /* ── 2. HERO — tipografía fluida ── */
+        .hero-title-main { font-size: clamp(2rem, 10vw, 3.5rem) !important; letter-spacing: -1px !important; }
+        .hero-subtitle   { font-size: clamp(0.65rem, 2.5vw, 0.85rem) !important; }
+        .hero-desc       { font-size: 0.85rem !important; padding: 0 4px !important; }
+
+        /* hero-workflow pills → scroll horizontal */
+        .hero-workflow {
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            justify-content: flex-start !important;
+            padding-bottom: 6px !important;
+            gap: 8px !important;
+            scrollbar-width: none !important;
+        }
+        .hero-workflow::-webkit-scrollbar { display: none !important; }
+        .wf-text { font-size: 1rem !important; white-space: nowrap !important; }
+
+        /* ── 3. TÍTULOS DE SECCIÓN ── */
+        .section-header { font-size: clamp(1.2rem, 5vw, 1.6rem) !important; margin-bottom: 16px !important; }
+        .section-subtitle { font-size: 0.8rem !important; }
+        h2[style*="font-size: 36px"],
+        h2[style*="font-size: 2.2rem"] { font-size: clamp(1.1rem, 4.5vw, 1.4rem) !important; letter-spacing: 1px !important; margin-bottom: 14px !important; }
+
+        /* ── 4. STEPS-GRID → carrusel táctil ── */
+        .steps-grid {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            -webkit-overflow-scrolling: touch !important;
+            gap: 12px !important;
+            padding-bottom: 10px !important;
+            scrollbar-width: none !important;
+        }
+        .steps-grid::-webkit-scrollbar { display: none !important; }
+        .steps-grid > * {
+            flex: 0 0 75vw !important;
+            max-width: 280px !important;
+            scroll-snap-align: center !important;
+        }
+
+        /* ── 5. PRODUCTION-GRID → carrusel táctil ── */
+        .production-grid {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            -webkit-overflow-scrolling: touch !important;
+            gap: 14px !important;
+            padding-bottom: 10px !important;
+            scrollbar-width: none !important;
+        }
+        .production-grid::-webkit-scrollbar { display: none !important; }
+        .production-card {
+            flex: 0 0 72vw !important;
+            max-width: 260px !important;
+            scroll-snap-align: center !important;
+            padding: 22px 16px !important;
+        }
+        .production-icon { font-size: 2rem !important; margin-bottom: 12px !important; }
+
+        /* ── 6. PORTFOLIO → carrusel táctil ── */
         .portfolio-grid {
             display: flex !important;
             flex-wrap: nowrap !important;
             overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            -webkit-overflow-scrolling: touch !important;
             gap: 14px !important;
             padding-bottom: 12px !important;
-            margin-top: 24px !important;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
+            margin-top: 20px !important;
+            scrollbar-width: none !important;
         }
+        .portfolio-grid::-webkit-scrollbar { display: none !important; }
         .portfolio-card {
             flex: 0 0 78vw !important;
-            max-width: 300px !important;
-            scroll-snap-align: start;
+            max-width: 290px !important;
+            scroll-snap-align: center !important;
         }
-        .portfolio-grid::-webkit-scrollbar { height: 4px; }
-        .portfolio-grid::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
-        .portfolio-grid::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.4); border-radius: 2px; }
-        .image-wrapper { height: 180px !important; }
+        .image-wrapper { height: 175px !important; }
 
-        /* ── 3. CAJONES DE ENVÍO → SCROLL HORIZONTAL ── */
+        /* ── 7. CAJONES DE ENVÍO → carrusel táctil ── */
         .cajones-persuasive-grid {
             display: flex !important;
             flex-wrap: nowrap !important;
             overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            -webkit-overflow-scrolling: touch !important;
             gap: 12px !important;
             padding-bottom: 10px !important;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            max-width: 100% !important;
+            scrollbar-width: none !important;
         }
+        .cajones-persuasive-grid::-webkit-scrollbar { display: none !important; }
         .cajon-persuasive {
             flex: 0 0 72vw !important;
             max-width: 260px !important;
-            scroll-snap-align: start;
-            padding: 20px 14px !important;
+            scroll-snap-align: center !important;
+            padding: 18px 14px !important;
         }
         p[style*="min-height"] { min-height: unset !important; }
+        .cajon-persuasive > div:first-child { width: 46px !important; height: 46px !important; margin-bottom: 10px !important; }
 
-        /* ── 4. WHATSAPP BUTTONS → 1 columna compacta ── */
+        /* ── 8. WHATSAPP BUTTONS → 2 columnas al pulgar ── */
         .whatsapp-buttons-grid {
-            grid-template-columns: 1fr !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
             gap: 10px !important;
         }
-        .whatsapp-btn-card { padding: 14px 16px !important; }
-        .whatsapp-btn-card i[style*="38px"] { font-size: 26px !important; }
+        .whatsapp-btn-card { padding: 12px 10px !important; }
+        .whatsapp-btn-card i[style*="38px"] { font-size: 22px !important; }
+        .whatsapp-btn-card span,
+        .whatsapp-btn-card p { font-size: 11px !important; }
 
-        /* ── 5. FOOTER COMPACTO ── */
-        .prodigy-global-footer { padding: 28px 0 16px !important; }
+        /* ── 9. ACADEMY CARDS → carrusel táctil ── */
+        .academy-grid {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            -webkit-overflow-scrolling: touch !important;
+            gap: 14px !important;
+            padding-bottom: 10px !important;
+            scrollbar-width: none !important;
+        }
+        .academy-grid::-webkit-scrollbar { display: none !important; }
+        .course-card {
+            flex: 0 0 80vw !important;
+            max-width: 300px !important;
+            scroll-snap-align: center !important;
+        }
+
+        /* ── 10. FLOTANTES ── */
+        .social-floating { display: none !important; }
+        .ux-floaters { bottom: 10px !important; right: 10px !important; gap: 6px !important; }
+        .ux-btn { width: 36px !important; height: 36px !important; font-size: 0.85rem !important; }
+
+        /* ── 11. FOOTER COMPACTO ── */
+        .prodigy-global-footer { padding: 24px 0 14px !important; }
         .footer-grid {
             grid-template-columns: repeat(2, 1fr) !important;
-            gap: 18px !important;
-            margin-bottom: 20px !important;
-            padding: 0 16px !important;
+            gap: 16px !important;
+            margin-bottom: 18px !important;
+            padding: 0 14px !important;
         }
-        .footer-col h4 { font-size: 13px !important; margin-bottom: 10px !important; }
-        .footer-col li  { padding: 4px 0 !important; font-size: 12px !important; }
-        .footer-copyright { font-size: 11px !important; padding-top: 14px !important; }
+        .footer-col h4 { font-size: 12px !important; margin-bottom: 8px !important; }
+        .footer-col li  { padding: 3px 0 !important; font-size: 11px !important; }
+        .footer-copyright { font-size: 10px !important; padding-top: 12px !important; }
 
-        /* ── 6. SECCIONES CON PADDING INLINE EXCESIVO ── */
+        /* ── 12. SECCIONES — padding vertical compacto ── */
+        section { padding: 28px 0 !important; }
+        .container { padding: 0 14px !important; }
         section[style*="padding: 45px"],
         section[style*="padding: 55px"],
-        .canales-envio-persuasive { padding-top: 28px !important; padding-bottom: 28px !important; }
+        .canales-envio-persuasive { padding-top: 26px !important; padding-bottom: 26px !important; }
 
-        /* ── 7. GRID CAM (repeat 2 → 1) ── */
-        div[style*="repeat(2, 1fr)"] { grid-template-columns: 1fr !important; gap: 14px !important; }
-        .cajon-fresado svg, .cajon-impresion svg { width: 56px !important; height: 56px !important; }
-
-        /* ── 8. TÍTULOS INLINE ── */
-        h2[style*="font-size: 36px"],
-        h2[style*="font-size: 2.2rem"] { font-size: 1.3rem !important; letter-spacing: 1px !important; margin-bottom: 16px !important; }
-
-        /* ── 9. NAVBAR LOGO ── */
-        .nav-logo-box h1 { font-size: 20px !important; letter-spacing: 2px !important; }
+        /* ── 13. GRIDS INLINE CON repeat(2,1fr) CAM ── */
+        .cajon-fresado svg, .cajon-impresion svg { width: 52px !important; height: 52px !important; }
     }
 
     @media (max-width: 420px) {
-        .portfolio-card  { flex: 0 0 88vw !important; }
-        .cajon-persuasive { flex: 0 0 85vw !important; }
-        .footer-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
-        .hero-title-main  { font-size: 2.2rem !important; }
-        section { padding: 22px 0 !important; }
+        .portfolio-card    { flex: 0 0 88vw !important; }
+        .cajon-persuasive  { flex: 0 0 86vw !important; }
+        .production-card   { flex: 0 0 84vw !important; }
+        .steps-grid > *    { flex: 0 0 86vw !important; }
+        .course-card       { flex: 0 0 88vw !important; }
+        .footer-grid       { grid-template-columns: 1fr !important; gap: 12px !important; }
+        .hero-title-main   { font-size: 2rem !important; }
+        section            { padding: 20px 0 !important; }
+        .whatsapp-buttons-grid { grid-template-columns: 1fr 1fr !important; }
     }
     </style>
 
