@@ -117,6 +117,18 @@ body.ready { visibility: visible; }
 .qa-item input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green); }
 .qa-item label { font-size: .8rem; cursor: pointer; }
 
+/* Fotos empaque */
+.foto-zone { border: 2px dashed rgba(0,255,65,.25); border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+.foto-zone-title { font-size: .78rem; font-weight: 700; color: var(--green); margin-bottom: 8px; }
+.foto-zone-hint  { font-size: .72rem; color: var(--muted); margin-bottom: 10px; }
+.foto-previews   { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; min-height: 0; }
+.foto-thumb      { width: 72px; height: 72px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(0,255,65,.3); }
+.foto-thumb-wrap { position: relative; }
+.foto-thumb-del  { position: absolute; top: -4px; right: -4px; background: var(--red); color: #fff; border: none; border-radius: 50%; width: 16px; height: 16px; font-size: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.btn-add-foto    { background: rgba(0,255,65,.08); border: 1px solid rgba(0,255,65,.25); color: var(--green); border-radius: 8px; padding: 7px 14px; font-size: .8rem; font-weight: 700; cursor: pointer; width: 100%; }
+.foto-upload-bar { display: none; align-items: center; gap: 8px; font-size: .75rem; color: var(--muted); margin-top: 6px; }
+.foto-upload-bar.show { display: flex; }
+
 /* Loader */
 .loader { display: flex; align-items: center; gap: 10px; color: var(--muted); padding: 30px; justify-content: center; }
 .spinner { width: 20px; height: 20px; border: 3px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin .7s linear infinite; }
@@ -255,6 +267,20 @@ body.ready { visibility: visible; }
             <label>Notas de QA (opcional)</label>
             <textarea id="qa-notas" placeholder="Observaciones adicionales..."></textarea>
         </div>
+
+        <!-- Fotos de empaque -->
+        <div class="foto-zone">
+            <div class="foto-zone-title">Fotos de Empaque <span style="color:var(--red)">*</span></div>
+            <div class="foto-zone-hint">Mínimo 1 foto. Captura el caso empacado listo para despacho.</div>
+            <div class="foto-previews" id="qa-foto-previews"></div>
+            <input type="file" id="qa-foto-input" accept="image/*" capture="environment" multiple style="display:none" onchange="agregarFotosEmpaque(event)">
+            <button class="btn-add-foto" onclick="document.getElementById('qa-foto-input').click()">+ Agregar foto</button>
+            <div class="foto-upload-bar" id="qa-upload-bar">
+                <div class="spinner" style="width:14px;height:14px;border-width:2px"></div>
+                <span id="qa-upload-msg">Subiendo fotos...</span>
+            </div>
+        </div>
+
         <div class="modal-footer">
             <button class="btn-modal btn-modal-outline" onclick="cerrarModal('modal-qa')">Cancelar</button>
             <button class="btn-modal btn-modal-primary" id="btn-aprobar-qa" onclick="aprobarQA()">Aprobar para Envío</button>
@@ -403,25 +429,84 @@ async function avanzarEstado(pedidoId, nuevoEstado) {
 }
 
 // ── QA ────────────────────────────────────────────────────────────
+// ── Fotos empaque ─────────────────────────────────────────────────
+let _fotosEmpaque = []; // { file, previewUrl }
+
 function abrirQA(pedidoId, codigo) {
     document.getElementById('qa-pedido-id').value = pedidoId;
     document.getElementById('qa-caso-sub').textContent = 'Caso #' + codigo;
     document.getElementById('qa-notas').value = '';
     ['qa1','qa2','qa3','qa4','qa5','qa6'].forEach(id => document.getElementById(id).checked = false);
+    _fotosEmpaque = [];
+    document.getElementById('qa-foto-previews').innerHTML = '';
+    document.getElementById('qa-foto-input').value = '';
     document.getElementById('modal-qa').classList.add('open');
+}
+
+function agregarFotosEmpaque(event) {
+    const files = Array.from(event.target.files);
+    const previews = document.getElementById('qa-foto-previews');
+    files.forEach(file => {
+        const idx = _fotosEmpaque.length;
+        const url = URL.createObjectURL(file);
+        _fotosEmpaque.push({ file, previewUrl: url });
+        const wrap = document.createElement('div');
+        wrap.className = 'foto-thumb-wrap';
+        wrap.innerHTML = `<img class="foto-thumb" src="${url}"><button class="foto-thumb-del" onclick="eliminarFotoEmpaque(${idx})">✕</button>`;
+        previews.appendChild(wrap);
+    });
+    event.target.value = '';
+}
+
+function eliminarFotoEmpaque(idx) {
+    _fotosEmpaque.splice(idx, 1);
+    // Re-render previews
+    const previews = document.getElementById('qa-foto-previews');
+    previews.innerHTML = '';
+    _fotosEmpaque.forEach((f, i) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'foto-thumb-wrap';
+        wrap.innerHTML = `<img class="foto-thumb" src="${f.previewUrl}"><button class="foto-thumb-del" onclick="eliminarFotoEmpaque(${i})">✕</button>`;
+        previews.appendChild(wrap);
+    });
 }
 
 async function aprobarQA() {
     const checks = ['qa1','qa2','qa3','qa4','qa5','qa6'].every(id => document.getElementById(id).checked);
     if (!checks) { toast('Completa todos los ítems del checklist de CC', 'err'); return; }
+    if (_fotosEmpaque.length === 0) { toast('Agrega al menos 1 foto del empaque', 'err'); return; }
+
     const pedidoId = document.getElementById('qa-pedido-id').value;
+    const bar = document.getElementById('qa-upload-bar');
+    const msg = document.getElementById('qa-upload-msg');
+    bar.classList.add('show');
+    document.getElementById('btn-aprobar-qa').disabled = true;
+
+    // Subir fotos al bucket
+    const paths = [];
+    for (let i = 0; i < _fotosEmpaque.length; i++) {
+        msg.textContent = `Subiendo foto ${i + 1} de ${_fotosEmpaque.length}...`;
+        const path = `${pedidoId}/empaque_${Date.now()}_${i}.jpg`;
+        const { error: eUp } = await sb.storage.from('evidencias-entrega').upload(path, _fotosEmpaque[i].file, { contentType: 'image/jpeg', upsert: true });
+        if (!eUp) {
+            const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
+            paths.push(publicUrl);
+        }
+    }
+
+    msg.textContent = 'Guardando...';
     const { error } = await sb.from('pedidos').update({
         estado_operativo: 'QA_APROBADO',
         timestamp_qa: new Date().toISOString(),
         estado: 'terminado',
+        fotos_empaque: paths,
     }).eq('id', pedidoId);
+
+    bar.classList.remove('show');
+    document.getElementById('btn-aprobar-qa').disabled = false;
+
     if (error) { toast('Error: ' + error.message, 'err'); return; }
-    toast('QA aprobado — caso listo para despacho', 'ok');
+    toast(`QA aprobado — ${paths.length} foto(s) guardada(s)`, 'ok');
     cerrarModal('modal-qa');
     await cargarPedidos();
 }

@@ -93,3 +93,6 @@ SELECT
 FROM pedidos p
 WHERE p.estado_operativo NOT IN ('ENTREGADO','CANCELADO')
 ORDER BY urgencia DESC, p.created_at ASC;
+
+-- ── 4. Evidencias de empaque en pedidos ─────────────────────────
+ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS fotos_empaque TEXT[] DEFAULT '{}';
