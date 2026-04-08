@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>PRODIGY — Taller & Equipos</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔧</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="../js/auth-guard.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #050505; --card: #0d1525; --sidebar: #080e1a;
+            --gold: #D4AF37; --magenta: #D946A6; --cyan: #00d2ff;
+            --green: #00FF41; --red: #f87171;
+            --text: #fff; --muted: #64748b; --border: rgba(212,175,55,0.15);
+        }
+        body { visibility: hidden; background: var(--bg); color: var(--text);
+               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+               min-height: 100vh; }
+
+        /* HEADER */
+        .top-bar { background: var(--sidebar); border-bottom: 1px solid var(--border);
+                   padding: 14px 20px; display: flex; align-items: center;
+                   justify-content: space-between; gap: 12px; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; }
+        .top-bar h1 { font-size: 1.05rem; font-weight: 900; letter-spacing: 1.5px; color: var(--gold); }
+        .top-bar .sub { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
+        .top-bar-right { display: flex; align-items: center; gap: 10px; }
+        .user-pill { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2);
+                     border-radius: 20px; padding: 4px 12px; font-size: 0.7rem; color: var(--gold); }
+
+        /* MAIN */
+        .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+
+        /* CARD */
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+                padding: 20px; margin-bottom: 20px; }
+        .card-title { font-size: 0.9rem; font-weight: 800; color: #fff; margin-bottom: 16px;
+                      display: flex; align-items: center; gap: 8px; }
+        .card-title i { color: var(--gold); }
+
+        /* QR SCANNER */
+        #qr-reader { border-radius: 10px; overflow: hidden; background: #000; }
+        #qr-reader video { border-radius: 10px; }
+        .qr-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+        .qr-bar input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+                        color: #fff; border-radius: 8px; padding: 10px 14px; font-size: 0.9rem; }
+        .qr-bar input::placeholder { color: var(--muted); }
+        .qr-bar input:focus { outline: none; border-color: var(--gold); }
+
+        /* FORM */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media(max-width:500px){ .form-grid { grid-template-columns: 1fr; } }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1/-1; }
+        label { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
+        input[type=text], input[type=number], select, textarea {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+            color: #fff; border-radius: 8px; padding: 10px 14px; font-size: 0.88rem;
+            transition: border-color 0.2s; width: 100%;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); }
+        select option { background: #1a2332; }
+        textarea { resize: vertical; min-height: 80px; font-family: inherit; }
+
+        /* FOTO PREVIEW */
+        .foto-label { display: flex; align-items: center; gap: 10px; cursor: pointer;
+                      background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.15);
+                      border-radius: 8px; padding: 12px 16px; transition: border-color 0.2s; }
+        .foto-label:hover { border-color: var(--gold); }
+        .foto-label i { font-size: 1.2rem; color: var(--gold); }
+        .foto-label span { font-size: 0.82rem; color: var(--muted); }
+        #foto-preview { width: 100%; max-height: 180px; object-fit: cover;
+                        border-radius: 8px; display: none; margin-top: 8px; }
+
+        /* BTN */
+        .btn-primary {
+            width: 100%; padding: 14px; border: none; border-radius: 10px; cursor: pointer;
+            background: linear-gradient(135deg, var(--gold), #B8860B);
+            color: #000; font-weight: 900; font-size: 1rem;
+            box-shadow: 0 4px 18px rgba(212,175,55,0.3);
+            transition: all 0.2s; margin-top: 4px;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,175,55,0.45); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .btn-scan { background: rgba(0,210,255,0.1); border: 1px solid rgba(0,210,255,0.3);
+                    color: var(--cyan); border-radius: 8px; padding: 10px 16px;
+                    cursor: pointer; font-size: 0.82rem; font-weight: 700; white-space: nowrap;
+                    transition: all 0.2s; }
+        .btn-scan:hover { background: rgba(0,210,255,0.2); }
+        .btn-scan.active { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: var(--red); }
+
+        /* HISTORIAL */
+        .hist-filter { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+        .hist-filter input { flex: 1; min-width: 160px; }
+        .btn-sm { padding: 8px 14px; border-radius: 6px; font-size: 0.78rem; font-weight: 700;
+                  border: 1px solid rgba(212,175,55,0.35); color: var(--gold);
+                  background: transparent; cursor: pointer; transition: all 0.2s; }
+        .btn-sm:hover { background: rgba(212,175,55,0.1); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        th { padding: 10px 14px; text-align: left; color: var(--muted);
+             font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.7px;
+             border-bottom: 1px solid rgba(255,255,255,0.06); }
+        td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.03); color: #e2e8f0; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+
+        .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px;
+                 border-radius: 20px; font-size: 0.68rem; font-weight: 700; }
+        .badge-cambio   { background: rgba(0,210,255,0.1);  color: var(--cyan); }
+        .badge-limpieza { background: rgba(0,255,65,0.1);   color: var(--green); }
+        .badge-rep      { background: rgba(239,68,68,0.1);  color: var(--red); }
+        .badge-rev      { background: rgba(212,175,55,0.1); color: var(--gold); }
+
+        .foto-thumb { width: 38px; height: 38px; border-radius: 6px; object-fit: cover;
+                      cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+
+        .empty-state { text-align: center; padding: 32px; color: var(--muted); font-size: 0.85rem; }
+        .empty-state i { font-size: 2rem; margin-bottom: 10px; display: block; color: rgba(255,255,255,0.1); }
+
+        .spinner { width: 28px; height: 28px; border: 3px solid rgba(212,175,55,0.2);
+                   border-top-color: var(--gold); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 24px auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* TOAST */
+        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
+                 background: #1a2332; border: 1px solid rgba(212,175,55,0.3); color: #fff;
+                 padding: 10px 22px; border-radius: 10px; font-size: 0.84rem; font-weight: 600;
+                 transition: transform 0.3s; z-index: 9999; pointer-events: none; }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+        #toast.ok    { border-color: rgba(0,255,65,0.5); }
+        #toast.error { border-color: rgba(239,68,68,0.5); }
+
+        /* MODAL FOTO */
+        #modal-foto { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+                      z-index: 1000; align-items: center; justify-content: center; }
+        #modal-foto.open { display: flex; }
+        #modal-foto img { max-width: 90vw; max-height: 85vh; border-radius: 10px; }
+        #modal-foto-close { position: absolute; top: 16px; right: 20px; font-size: 1.6rem;
+                             color: #fff; cursor: pointer; opacity: 0.7; }
+
+        /* EQUIPO INFO CARD */
+        .equipo-info { background: rgba(0,210,255,0.06); border: 1px solid rgba(0,210,255,0.2);
+                       border-radius: 10px; padding: 12px 16px; margin-bottom: 14px;
+                       display: none; }
+        .equipo-info.visible { display: block; }
+        .equipo-info-id { font-size: 1.1rem; font-weight: 900; color: var(--cyan); font-family: monospace; }
+        .equipo-info-last { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+        @media(max-width:768px) {
+            .container { padding: 16px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <div>
+        <h1>PRODIGY — Taller</h1>
+        <div class="sub" id="user-label">Cargando...</div>
+    </div>
+    <div class="top-bar-right">
+        <span class="user-pill"><i class="fas fa-wrench"></i> Equipos</span>
+        <a href="admin-panel.html" style="color:var(--muted);font-size:0.78rem;text-decoration:none;">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+    <!-- REGISTRAR MANTENIMIENTO -->
+    <div class="card">
+        <div class="card-title"><i class="fas fa-tools"></i> Registrar Mantenimiento</div>
+
+        <!-- QR SCANNER -->
+        <div class="qr-bar">
+            <input type="text" id="equipo-id-input" placeholder="ID del equipo (escanea QR o escribe)" autocomplete="off">
+            <button class="btn-scan" id="btn-qr" onclick="toggleQR()">
+                <i class="fas fa-qrcode"></i> QR
+            </button>
+        </div>
+        <div id="qr-reader" style="width:100%;max-width:400px;margin:0 auto 16px;display:none;"></div>
+
+        <!-- INFO DEL EQUIPO -->
+        <div class="equipo-info" id="equipo-info-card">
+            <div class="equipo-info-id" id="equipo-info-id"></div>
+            <div class="equipo-info-last" id="equipo-info-last"></div>
+        </div>
+
+        <!-- FORM -->
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Técnico</label>
+                <input type="text" id="tecnico-input" placeholder="Nombre del técnico">
+            </div>
+            <div class="form-group">
+                <label>Acción</label>
+                <select id="accion-select">
+                    <option value="">— Seleccionar —</option>
+                    <option value="CAMBIO_FRESA">Cambio de Fresa</option>
+                    <option value="LIMPIEZA">Limpieza</option>
+                    <option value="REPARACION">Reparación</option>
+                    <option value="REVISION">Revisión General</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Minutos de uso (desde último cambio)</label>
+                <input type="number" id="duracion-input" placeholder="Ej: 1200" min="0">
+            </div>
+            <div class="form-group">
+                <label>Foto evidencia</label>
+                <label class="foto-label" for="foto-input">
+                    <i class="fas fa-camera"></i>
+                    <span id="foto-label-text">Tomar / seleccionar foto</span>
+                </label>
+                <input type="file" id="foto-input" accept="image/*" capture="environment" style="display:none" onchange="previewFoto(this)">
+                <img id="foto-preview" alt="Preview foto">
+            </div>
+            <div class="form-group full">
+                <label>Notas</label>
+                <textarea id="notas-input" placeholder="Describe el trabajo realizado, piezas cambiadas, estado observado..."></textarea>
+            </div>
+        </div>
+        <button class="btn-primary" id="btn-guardar" onclick="guardarMantenimiento()">
+            <i class="fas fa-save"></i> Guardar Registro
+        </button>
+    </div>
+
+    <!-- HISTORIAL -->
+    <div class="card">
+        <div class="card-title"><i class="fas fa-history"></i> Historial de Equipos</div>
+        <div class="hist-filter">
+            <input type="text" id="hist-filter-input" placeholder="Filtrar por ID equipo..." oninput="filtrarHistorial(this.value)">
+            <button class="btn-sm" onclick="cargarHistorial()"><i class="fas fa-refresh"></i> Actualizar</button>
+        </div>
+        <div id="hist-container">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL FOTO AMPLIADA -->
+<div id="modal-foto">
+    <span id="modal-foto-close" onclick="cerrarFoto()">×</span>
+    <img id="modal-foto-img" src="" alt="Evidencia">
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+let _qrScanner   = null;
+let _qrActivo    = false;
+let _historialAll = [];
+let _toastTimer  = null;
+let _userEmail   = '';
+
+/* ── TOAST ─────────────────────────────────────────────────── */
+function toast(msg, tipo = '') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'show ' + tipo;
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => { el.className = ''; }, 3500);
+}
+
+/* ── AUTH ──────────────────────────────────────────────────── */
+async function init() {
+    const session = await ProdigyAuth.require('admin');
+    if (!session) return;
+    _userEmail = session.user.email;
+    document.getElementById('user-label').textContent = _userEmail;
+    document.getElementById('tecnico-input').value = session.user.user_metadata?.nombre || _userEmail.split('@')[0];
+    document.body.style.visibility = 'visible';
+    await cargarHistorial();
+}
+
+/* ── QR SCANNER ────────────────────────────────────────────── */
+function toggleQR() {
+    const btn = document.getElementById('btn-qr');
+    const reader = document.getElementById('qr-reader');
+    if (_qrActivo) {
+        _qrScanner?.stop().catch(() => {});
+        _qrActivo = false;
+        reader.style.display = 'none';
+        btn.innerHTML = '<i class="fas fa-qrcode"></i> QR';
+        btn.classList.remove('active');
+    } else {
+        reader.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-times"></i> Cerrar';
+        btn.classList.add('active');
+        _qrScanner = new Html5Qrcode('qr-reader');
+        _qrScanner.start(
+            { facingMode: 'environment' },
+            { fps: 10, qrbox: { width: 250, height: 150 } },
+            (decoded) => {
+                document.getElementById('equipo-id-input').value = decoded;
+                toggleQR();
+                mostrarInfoEquipo(decoded);
+                toast('Equipo escaneado: ' + decoded, 'ok');
+            },
+            () => {}
+        ).catch(() => { toast('No se pudo acceder a la cámara', 'error'); toggleQR(); });
+    }
+}
+
+/* ── INFO EQUIPO (último mantenimiento) ───────────────────── */
+async function mostrarInfoEquipo(equipoId) {
+    if (!equipoId) { document.getElementById('equipo-info-card').classList.remove('visible'); return; }
+    const { data } = await sb.from('equipo_mantenimiento')
+        .select('accion,created_at,duracion_min,tecnico')
+        .eq('equipo_id', equipoId)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+    const card = document.getElementById('equipo-info-card');
+    document.getElementById('equipo-info-id').textContent = equipoId;
+    if (data) {
+        const d = new Date(data.created_at);
+        const ago = Math.round((Date.now() - d.getTime()) / 3600000);
+        document.getElementById('equipo-info-last').textContent =
+            `Último registro: ${data.accion} · ${ago}h atrás · ${data.tecnico || '?'}${data.duracion_min ? ` · ${data.duracion_min} min uso` : ''}`;
+    } else {
+        document.getElementById('equipo-info-last').textContent = 'Sin registros previos';
+    }
+    card.classList.add('visible');
+}
+
+document.getElementById('equipo-id-input').addEventListener('blur', (e) => {
+    if (e.target.value.trim()) mostrarInfoEquipo(e.target.value.trim());
+});
+
+/* ── FOTO PREVIEW ───────────────────────────────────────────── */
+function previewFoto(input) {
+    const preview = document.getElementById('foto-preview');
+    const label   = document.getElementById('foto-label-text');
+    if (input.files && input.files[0]) {
+        preview.src = URL.createObjectURL(input.files[0]);
+        preview.style.display = 'block';
+        label.textContent = input.files[0].name;
+    }
+}
+
+/* ── GUARDAR MANTENIMIENTO ──────────────────────────────────── */
+async function guardarMantenimiento() {
+    const equipoId = document.getElementById('equipo-id-input').value.trim();
+    const tecnico  = document.getElementById('tecnico-input').value.trim();
+    const accion   = document.getElementById('accion-select').value;
+    const notas    = document.getElementById('notas-input').value.trim();
+    const duracion = document.getElementById('duracion-input').value;
+    const fotoFile = document.getElementById('foto-input').files[0];
+
+    if (!equipoId) { toast('Ingresa el ID del equipo', 'error'); return; }
+    if (!accion)   { toast('Selecciona una acción', 'error'); return; }
+
+    const btn = document.getElementById('btn-guardar');
+    btn.disabled = true;
+    btn.textContent = 'Guardando...';
+
+    try {
+        let foto_url = null;
+
+        // Upload foto si hay
+        if (fotoFile) {
+            const bytes = new Uint8Array(6);
+            crypto.getRandomValues(bytes);
+            const rand = Array.from(bytes).map(b => b.toString(16).padStart(2,'0')).join('');
+            const path = `taller/${equipoId}/${Date.now()}_${rand}.jpg`;
+            const { data: up, error: upErr } = await sb.storage.from('evidencias-entrega').upload(path, fotoFile, { contentType: fotoFile.type });
+            if (!upErr && up) {
+                const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
+                foto_url = publicUrl;
+            }
+        }
+
+        const payload = { equipo_id: equipoId, tecnico, accion, notas: notas || null, foto_url };
+        if (duracion) payload.duracion_min = parseInt(duracion, 10);
+
+        const { error } = await sb.from('equipo_mantenimiento').insert(payload);
+        if (error) throw error;
+
+        toast(`Registro guardado — ${accion}`, 'ok');
+        // Reset form
+        document.getElementById('equipo-id-input').value = '';
+        document.getElementById('accion-select').value = '';
+        document.getElementById('notas-input').value = '';
+        document.getElementById('duracion-input').value = '';
+        document.getElementById('foto-input').value = '';
+        document.getElementById('foto-preview').style.display = 'none';
+        document.getElementById('foto-label-text').textContent = 'Tomar / seleccionar foto';
+        document.getElementById('equipo-info-card').classList.remove('visible');
+        await cargarHistorial();
+    } catch (e) {
+        toast('Error: ' + e.message, 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> Guardar Registro';
+    }
+}
+
+/* ── HISTORIAL ──────────────────────────────────────────────── */
+async function cargarHistorial() {
+    document.getElementById('hist-container').innerHTML = '<div class="spinner"></div>';
+    const { data, error } = await sb.from('equipo_mantenimiento')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(200);
+
+    if (error) {
+        document.getElementById('hist-container').innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>${error.message}</div>`;
+        return;
+    }
+    _historialAll = data || [];
+    renderHistorial(_historialAll);
+}
+
+function filtrarHistorial(q) {
+    const filtrado = q.trim()
+        ? _historialAll.filter(r => r.equipo_id?.toLowerCase().includes(q.toLowerCase()))
+        : _historialAll;
+    renderHistorial(filtrado);
+}
+
+const _BADGE = {
+    CAMBIO_FRESA: 'badge-cambio',
+    LIMPIEZA:     'badge-limpieza',
+    REPARACION:   'badge-rep',
+    REVISION:     'badge-rev',
+};
+const _LABEL = {
+    CAMBIO_FRESA: 'Cambio Fresa',
+    LIMPIEZA:     'Limpieza',
+    REPARACION:   'Reparación',
+    REVISION:     'Revisión',
+};
+
+function escH(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+function renderHistorial(lista) {
+    const c = document.getElementById('hist-container');
+    if (!lista.length) {
+        c.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i>Sin registros aún</div>';
+        return;
+    }
+    c.innerHTML = `<table>
+        <thead><tr>
+            <th>Equipo</th><th>Acción</th><th>Técnico</th><th>Min Uso</th><th>Notas</th><th>Foto</th><th>Fecha</th>
+        </tr></thead>
+        <tbody>
+        ${lista.map(r => `<tr>
+            <td style="font-family:monospace;color:var(--cyan);">${escH(r.equipo_id)}</td>
+            <td><span class="badge ${_BADGE[r.accion] || ''}">${_LABEL[r.accion] || escH(r.accion)}</span></td>
+            <td>${escH(r.tecnico || '—')}</td>
+            <td style="color:var(--muted);">${r.duracion_min ?? '—'}</td>
+            <td style="font-size:.75rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escH(r.notas || '')}">${escH(r.notas || '—')}</td>
+            <td>${r.foto_url && r.foto_url.startsWith('https://')
+                ? `<img class="foto-thumb" src="${escH(r.foto_url)}" onclick="abrirFoto('${escH(r.foto_url)}')" alt="foto" loading="lazy">`
+                : '—'}</td>
+            <td style="font-size:.72rem;color:var(--muted);white-space:nowrap;">${new Date(r.created_at).toLocaleString('es-CO',{dateStyle:'short',timeStyle:'short'})}</td>
+        </tr>`).join('')}
+        </tbody>
+    </table>`;
+}
+
+/* ── MODAL FOTO ─────────────────────────────────────────────── */
+function abrirFoto(url) {
+    document.getElementById('modal-foto-img').src = url;
+    document.getElementById('modal-foto').classList.add('open');
+}
+function cerrarFoto() {
+    document.getElementById('modal-foto').classList.remove('open');
+    document.getElementById('modal-foto-img').src = '';
+}
+document.getElementById('modal-foto').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modal-foto')) cerrarFoto();
+});
+
+init();
+</script>
+</body>
+</html>

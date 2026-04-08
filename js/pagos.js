@@ -20,10 +20,8 @@
 
 const PAGOS_CONFIG = {
     wompi: {
-        // ⏳ PENDIENTE VALIDACIÓN CUENTA — modo test activo
-        // Cambiar a pub_prod_... cuando Wompi apruebe la cuenta
-        publicKey: 'pub_test_zpgtFnjKTnbfCL0pWFRRer7608bTBkii',
-        modoEspera: true,           // bloquea checkout real hasta validación
+        publicKey: 'pub_prod_toFqXMM5Ko9rn6Htt6kiEma7jh19zuN0',
+        modoEspera: false,          // ✅ Producción activa
         recargo:   0.03,
         label:     'PSE / Nequi / Tarjeta — Wompi (Colombia)',
         icono:     '💳',
@@ -64,8 +62,9 @@ const PAGOS_CONFIG = {
 /* ── Tasa de cambio referencial COP → USD ── */
 const TASA_COP_USD = 4200;
 
-/* ── URL del endpoint de verificación de precio en servidor ── */
-const VERIFY_PRICE_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/verify-price';
+/* ── URLs de Edge Functions ── */
+const VERIFY_PRICE_URL    = 'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/verify-price';
+const WOMPI_SIGNATURE_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/wompi-signature';
 
 /* ── Calcular total según pasarela ── */
 function calcularConPasarela(precioBaseCOP, pasarela) {
@@ -99,11 +98,9 @@ function pasarelaPrioritaria(precioBaseCOP) {
  * Webhook: .../webhook-handler?source=wompi
  * @param {object} opts - { monto, referencia, email, descripcion, onSuccess }
  */
-function abrirCheckoutWompi({ monto, referencia, email, descripcion, onSuccess }) {
-    // Modo espera: Wompi pendiente de validación de cuenta
+async function abrirCheckoutWompi({ monto, referencia, email, descripcion, onSuccess }) {
     if (PAGOS_CONFIG.wompi.modoEspera) {
-        const msg = 'El pago con PSE/Tarjeta estará disponible en 24–48 h mientras validamos la cuenta.\n\n'
-                  + 'Por favor usa Transferencia (Nequi/Daviplata/Nu) o contacta por WhatsApp.';
+        const msg = 'El pago con PSE/Tarjeta estará disponible en 24–48 h.\n\nUsa Transferencia o contacta por WhatsApp.';
         if (confirm(msg + '\n\n¿Abrir WhatsApp ahora?')) {
             const ref = encodeURIComponent('Quiero pagar por transferencia — Ref: ' + referencia);
             window.open('https://wa.me/573212816716?text=' + ref, '_blank');
@@ -111,15 +108,31 @@ function abrirCheckoutWompi({ monto, referencia, email, descripcion, onSuccess }
         return;
     }
     const centavos = Math.round(monto * 100);
+
+    // Obtener firma SHA-256 desde Edge Function (el secreto nunca sale del servidor)
+    let signature = '';
+    try {
+        const sigRes = await fetch(WOMPI_SIGNATURE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ referencia, monto_en_centavos: centavos, moneda: 'COP' })
+        });
+        if (sigRes.ok) {
+            const sigData = await sigRes.json();
+            signature = sigData.signature ?? '';
+        }
+    } catch (_e) { /* sin firma — Wompi igual procesa, solo sin validación extra */ }
+
     const params = new URLSearchParams({
         'public-key':      PAGOS_CONFIG.wompi.publicKey,
         'currency':        'COP',
-        'amount-in-cents': centavos,
+        'amount-in-cents': String(centavos),
         'reference':       referencia,
         'redirect-url':    `${window.location.origin}/seguimiento-caso.html?pedido=${referencia}&pago=ok`
     });
     if (email)       params.set('customer-email', email);
     if (descripcion) params.set('checkout[name]', descripcion);
+    if (signature)   params.set('signature:integrity', signature);
 
     const popup = window.open(
         `https://checkout.wompi.co/p/?${params.toString()}`,

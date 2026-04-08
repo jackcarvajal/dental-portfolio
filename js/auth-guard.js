@@ -16,15 +16,17 @@
     const ADMIN_EMAILS  = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com'];
 
     const DEST_MAP = {
-        admin:    'panel-interno-operaciones.html',
-        operator: 'operator-panel.html',
-        client:   'client-panel.html'
+        admin:     'panel-interno-operaciones.html',
+        operator:  'operator-panel.html',
+        mensajero: 'mensajero.html',
+        client:    'client-panel.html'
     };
 
     function getRole(user) {
         if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
         const meta = user.user_metadata || {};
-        if (meta.role === 'operator') return 'operator';
+        if (meta.role === 'operator')  return 'operator';
+        if (meta.role === 'mensajero') return 'mensajero';
         return 'client';
     }
 

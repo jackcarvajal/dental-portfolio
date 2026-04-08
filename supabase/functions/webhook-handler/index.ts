@@ -1,15 +1,15 @@
 /**
- * PRODIGY — Edge Function: Webhook Handler v2.0
+ * PRODIGY — Edge Function: Webhook Handler v2.1
  * Maneja webhooks de Wompi para actualizar estado de pedidos.
  *
  * Deploy:
  *   supabase functions deploy webhook-handler
  *
- * ⚠️ Secrets requeridos:
+ * Secrets requeridos:
  *   supabase secrets set WOMPI_INTEGRITY_SECRET=<del dashboard Wompi>
  *   supabase secrets set SUPABASE_SERVICE_ROLE_KEY=eyJhbGci...
  *
- * Webhook URL:
+ * Webhook URL a configurar en Wompi Dashboard:
  *   https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/webhook-handler?source=wompi
  */
 
@@ -26,42 +26,68 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    if (source === "wompi") return await handleWompi(sb, req, body);
+    if (source === "wompi") return await handleWompi(sb, body);
     return new Response("source no reconocido", { status: 400 });
   } catch (e) {
     return new Response(JSON.stringify({ error: e.message }), { status: 500 });
   }
 });
 
-async function handleWompi(sb: any, req: Request, payload: any) {
-  // Verificar firma de integridad Wompi
-  const integrity  = Deno.env.get("WOMPI_INTEGRITY_SECRET") ?? "";
-  const evento     = payload.data?.transaction;
-  const referencia = evento?.reference ?? "";
-  const monto      = evento?.amount_in_cents ?? 0;
-  const moneda     = evento?.currency ?? "COP";
-  const checksum   = evento?.signature?.checksum ?? "";
-
-  // SHA256(referencia + monto + moneda + integrity)
-  const raw  = `${referencia}${monto}${moneda}${integrity}`;
-  const enc  = new TextEncoder().encode(raw);
+async function sha256hex(input: string): Promise<string> {
+  const enc  = new TextEncoder().encode(input);
   const hash = await crypto.subtle.digest("SHA-256", enc);
-  const hex  = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,"0")).join("");
+  return Array.from(new Uint8Array(hash))
+              .map(b => b.toString(16).padStart(2, "0"))
+              .join("");
+}
 
-  if (integrity && hex !== checksum) {
-    return new Response("firma inválida", { status: 401 });
+async function handleWompi(sb: any, payload: any) {
+  const integrity = Deno.env.get("WOMPI_INTEGRITY_SECRET") ?? "";
+  const evento    = payload.data?.transaction;
+
+  if (!evento) return new Response("payload inesperado", { status: 400 });
+
+  // ── Verificar firma Wompi (fórmula correcta para eventos webhook) ──
+  // SHA256( transaction.id + transaction.status + amount_in_cents + integrity_secret )
+  // Referencia: https://docs.wompi.co/docs/colombia/eventos
+  const checksum  = evento?.signature?.checksum ?? "";
+  const txId      = String(evento?.id ?? "");
+  const txStatus  = String(evento?.status ?? "");
+  const monto     = Number(evento?.amount_in_cents ?? 0);
+
+  if (integrity) {
+    const expected = await sha256hex(`${txId}${txStatus}${monto}${integrity}`);
+    if (expected !== checksum) {
+      return new Response("firma inválida", { status: 401 });
+    }
   }
 
-  const status = evento?.status; // APPROVED | DECLINED | VOIDED
-  if (status === "APPROVED" && referencia) {
+  const referencia = String(evento?.reference ?? "");
+  const moneda     = String(evento?.currency   ?? "COP");
+
+  if (evento?.status === "APPROVED" && referencia) {
+
+    // ── Idempotencia: no procesar si ya está Pagado ──
+    const { data: existing } = await sb
+      .from("pedidos")
+      .select("estado")
+      .eq("codigo", referencia)
+      .maybeSingle();
+
+    if (existing?.estado === "Pagado") {
+      return new Response("ya procesado", { status: 200 });
+    }
+
+    // ── Actualizar pedido ──
     await sb.from("pedidos")
       .update({ estado: "Pagado" })
-      .eq("codigo", referencia);
+      .eq("codigo", referencia)
+      .neq("estado", "Pagado");   // guard extra contra race condition
 
+    // ── Registrar pago ──
     await sb.from("pagos").insert({
-      pedido_id:      null,           // se puede relacionar por código si se ajusta la query
       pasarela:       "wompi",
-      transaction_id: evento?.id ?? referencia,
+      transaction_id: txId,
       monto:          monto / 100,
       moneda,
       estado:         "completado",

@@ -66,10 +66,16 @@ self.addEventListener('notificationclick', (event) => {
 
     if (event.action === 'ignorar') return;
 
-    const caseId = event.notification.data?.caseId || '';
-    const url    = caseId
-        ? `/seguimiento-caso.html?pedido=${caseId}`
-        : '/seguimiento-caso.html';
+    const data   = event.notification.data || {};
+    const tag    = event.notification.tag  || '';
+    // Notificaciones de despacho van al panel del mensajero
+    const url    = data.url
+        ? data.url
+        : tag === 'nuevo-despacho'
+            ? '/app/mensajero.html'
+            : data.caseId
+                ? `/seguimiento-caso.html?pedido=${data.caseId}`
+                : '/seguimiento-caso.html';
 
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then(winClients => {

@@ -3915,7 +3915,8 @@
                 return;
             }
 
-            const orderId = 'PROD-' + Math.random().toString(36).substr(2, 10).toUpperCase();
+            const _rnd = new Uint8Array(6); crypto.getRandomValues(_rnd);
+            const orderId = 'PROD-' + Array.from(_rnd).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
             const cantidad = cantidadNum;
             const totalVerificado = calcularTotal();
             const total = totalVerificado
@@ -4723,7 +4724,8 @@
             const totalEl = document.getElementById('calc-total');
             const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;
             if (!monto) { alert('Selecciona un material y proceso para calcular el total.'); return; }
-            const ref = 'PRD-FRS-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            const _r2 = new Uint8Array(5); crypto.getRandomValues(_r2);
+            const ref = 'PRD-FRS-' + Array.from(_r2).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
             abrirCheckoutWompi({ monto, referencia: ref, descripcion: 'PRODIGY — Fresado CAD/CAM' });
         }
     </script>

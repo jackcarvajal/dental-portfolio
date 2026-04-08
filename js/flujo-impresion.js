@@ -2045,7 +2045,8 @@
                 return;
             }
 
-            const orderId = 'PROD-' + Math.random().toString(36).substr(2, 10).toUpperCase();
+            const _rnd = new Uint8Array(6); crypto.getRandomValues(_rnd);
+            const orderId = 'PROD-' + Array.from(_rnd).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
             const cantidad = cantidadNum;
             const totalVerificado = calcularTotal();
             const total = totalVerificado

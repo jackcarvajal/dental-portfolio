@@ -267,6 +267,28 @@
         /* ── RESPONSIVE ── */
         @media (max-width:900px) { .container { grid-template-columns:1fr; } .calculator { position:static; max-height:none; } .categoria-grid { grid-template-columns:1fr 1fr; } .form-grid { grid-template-columns:1fr 1fr; } }
         @media (max-width:550px) { .categoria-grid { grid-template-columns:1fr 1fr; gap:10px; } .checklist-matrix { grid-template-columns:1fr; } .timeline-slots { grid-template-columns:1fr; } .form-grid { grid-template-columns:1fr; } }
+
+        /* ── MODO CLARO ── */
+        body.light-theme {
+            --bg-darker:#f5f5f5; --bg-dark:#ffffff; --bg-card:#ffffff; --bg-card-hover:#f8f8f8;
+            --text-primary:#1a1a1a; --text-secondary:#4a4a4a; --text-tertiary:#6a6a6a;
+            --border-subtle:rgba(0,0,0,.1);
+        }
+        body.light-theme .accordion,
+        body.light-theme .calculator { background:#ffffff; border-color:rgba(0,0,0,.12); }
+        body.light-theme .accordion-header { background:linear-gradient(135deg,#f0f0f0,#e8e8e8); }
+        body.light-theme .accordion-header h2 { color:#1a1a1a; }
+        body.light-theme label { color:#1a1a1a; }
+        body.light-theme input,
+        body.light-theme select,
+        body.light-theme textarea { background:#f5f5f5; border-color:rgba(0,0,0,.2); color:#1a1a1a; }
+        body.light-theme .categoria-card { background:linear-gradient(135deg,#f0f0f0,#e8e8e8); }
+        body.light-theme .subtipo-chip { background:#f0f0f0; border-color:rgba(0,0,0,.15); color:#1a1a1a; }
+        body.light-theme .subtipo-chip.selected { border-color:var(--gold-primary); background:rgba(212,175,55,.1); }
+        body.light-theme .modal-content { background:#ffffff; }
+        body.light-theme p, body.light-theme span, body.light-theme li { color:#4a4a4a; }
+        body.light-theme .tech-subtitle { color:rgba(0,130,180,.9); }
+        body.light-theme .calc-total { background:linear-gradient(135deg,#f0ece0,#e8e2d0); }
     </style>
 </head>
 <body>
@@ -1096,7 +1118,8 @@
             if (!link)           { showErr('linkSTL',        'Link de archivos requerido'); return; }
             if (!pMetodo || !pTitular) { alert('Completa el método de pago y nombre del titular en el resumen.'); return; }
 
-            const orderId  = 'CAD-' + Math.random().toString(36).substr(2,8).toUpperCase();
+            const _r0 = new Uint8Array(5); crypto.getRandomValues(_r0);
+            const orderId  = 'CAD-' + Array.from(_r0).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
             const cantidad = parseInt(document.getElementById('cantidad').value,10) || 1;
             const total    = fmtCLP(calcularTotal());
 
@@ -1172,7 +1195,8 @@
             msg += `\n_✅ Acepto los términos y condiciones PRODIGY · Diseño CAD_`;
 
             // ── Guardar en Supabase ───────────────────────────────────────────
-            const _nonce = Math.random().toString(36).substr(2,12).toUpperCase();
+            const _r1 = new Uint8Array(8); crypto.getRandomValues(_r1);
+            const _nonce = Array.from(_r1).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
             try {
                 const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
                 if (_sb) {
@@ -1318,7 +1342,8 @@
         const totalEl = document.getElementById('calc-total');
         const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;
         if (!monto) { alert('Selecciona un servicio para calcular el total.'); return; }
-        const ref = 'PRD-DIS-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+        const _r3 = new Uint8Array(5); crypto.getRandomValues(_r3);
+        const ref = 'PRD-DIS-' + Array.from(_r3).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
         abrirCheckoutWompi({ monto, referencia: ref, descripcion: 'PRODIGY — Diseño CAD' });
     }
     </script>

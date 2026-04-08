@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>PRODIGY — Panel Cliente</title>
+    <title>PRODIGY — Portal Cliente</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -20,30 +20,19 @@
         body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; }
 
         /* SIDEBAR */
-        .sidebar {
-            width: 230px; min-height: 100vh; background: var(--sidebar);
-            border-right: 1px solid var(--border); padding: 24px 16px;
-            display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
-        }
+        .sidebar { width: 230px; min-height: 100vh; background: var(--sidebar); border-right: 1px solid var(--border); padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
         .sidebar-logo { text-align: center; padding: 12px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
         .sidebar-logo h1 { font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; color: var(--gold); }
         .sidebar-logo p  { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
         .role-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(217,70,166,0.1); border: 1px solid rgba(217,70,166,0.3); border-radius: 20px; padding: 3px 10px; font-size: 0.65rem; font-weight: 700; color: var(--gold); margin-top: 8px; }
-
-        .nav-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 12px; border-radius: 8px; cursor: pointer;
-            font-size: 0.82rem; font-weight: 600; color: #94a3b8;
-            text-decoration: none; transition: all 0.2s;
-        }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #94a3b8; text-decoration: none; transition: all 0.2s; }
         .nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
         .nav-item.active { background: rgba(217,70,166,0.1); color: var(--gold); border: 1px solid rgba(217,70,166,0.25); }
         .nav-item i { width: 16px; text-align: center; }
-
         .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
 
         /* MAIN */
-        .main { flex: 1; padding: 32px; overflow-y: auto; }
+        .main { flex: 1; padding: 32px; overflow-y: auto; min-width: 0; }
         .page-header { margin-bottom: 28px; }
         .page-header h1 { font-size: 1.6rem; font-weight: 900; color: #fff; }
         .page-header p  { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
@@ -51,112 +40,174 @@
         /* STATS */
         .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
         @media(max-width:900px){ .stats-grid { grid-template-columns: repeat(2,1fr); } }
-        .stat-card {
-            background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-            padding: 20px 18px;
-        }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 18px; }
         .stat-card .stat-value { font-size: 2rem; font-weight: 900; margin: 8px 0 4px; }
         .stat-card .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
 
-        /* TABLA CASOS */
+        /* SECTION CARD */
         .section-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 24px; }
         .section-header { padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; }
         .section-header h2 { font-size: 0.95rem; font-weight: 800; color: #fff; }
         table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
         th { padding: 12px 18px; text-align: left; color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        td { padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.03); color: #e2e8f0; }
+        td { padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.03); color: #e2e8f0; vertical-align: middle; }
         tr:last-child td { border-bottom: none; }
         tr:hover td { background: rgba(255,255,255,0.02); }
-
-        .status-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700;
-        }
+        .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
         .status-badge.pendiente  { background: rgba(251,191,36,0.1); color: #fbbf24; }
-        .status-badge.en-proceso { background: rgba(0,210,255,0.1);  color: #00d2ff; }
+        .status-badge.produccion { background: rgba(0,210,255,0.1);  color: #00d2ff; }
+        .status-badge.listo      { background: rgba(212,175,55,0.1); color: #D4AF37; }
+        .status-badge.camino     { background: rgba(217,70,166,0.1); color: #D946A6; }
         .status-badge.entregado  { background: rgba(0,255,65,0.1);   color: #00FF41; }
-        .status-badge.revision   { background: rgba(239,68,68,0.1);  color: #f87171; }
-
+        .status-badge.default    { background: rgba(100,116,139,0.1);color: #94a3b8; }
         .btn-sm { padding: 5px 12px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; border: 1px solid; cursor: pointer; background: transparent; text-decoration: none; display: inline-block; }
         .btn-gold  { color: var(--gold);  border-color: rgba(217,70,166,0.4); }
         .btn-gold:hover  { background: rgba(217,70,166,0.1); }
+        .btn-cyan  { color: var(--cyan);  border-color: rgba(0,210,255,0.4); }
+        .btn-cyan:hover  { background: rgba(0,210,255,0.1); }
 
-        /* NUEVA ORDEN CTA */
-        .cta-nuevo {
-            background: linear-gradient(135deg, rgba(217,70,166,0.08), rgba(0,210,255,0.04));
-            border: 1px dashed rgba(217,70,166,0.3);
-            border-radius: 14px;
-            padding: 28px;
-            text-align: center;
-            margin-bottom: 24px;
-        }
+        /* PROGRESS BAR */
+        .progress-steps { display: flex; align-items: center; width: 100%; min-width: 200px; }
+        .step { display: flex; flex-direction: column; align-items: center; flex: 1; }
+        .step-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.15); flex-shrink: 0; position: relative; z-index: 1; }
+        .step-dot.done { background: var(--green); border-color: var(--green); }
+        .step-dot.active { background: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 8px rgba(0,210,255,0.6); }
+        .step-line { height: 2px; flex: 1; background: rgba(255,255,255,0.08); margin: 0 -1px; }
+        .step-line.done { background: var(--green); }
+        .step-label { font-size: 0.55rem; color: var(--muted); margin-top: 4px; text-align: center; white-space: nowrap; }
+        .step-label.active { color: var(--cyan); font-weight: 700; }
+        .step-label.done   { color: var(--green); }
+
+        /* CTA */
+        .cta-nuevo { background: linear-gradient(135deg, rgba(217,70,166,0.08), rgba(0,210,255,0.04)); border: 1px dashed rgba(217,70,166,0.3); border-radius: 14px; padding: 28px; text-align: center; margin-bottom: 24px; }
         .cta-nuevo h3 { font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
         .cta-nuevo p  { font-size: 0.82rem; color: var(--muted); margin-bottom: 16px; }
-        .btn-nuevo-caso {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 12px 24px; background: linear-gradient(135deg, var(--gold), #B82F8B);
-            color: #fff; border: none; border-radius: 10px;
-            font-size: 0.88rem; font-weight: 800; cursor: pointer; text-decoration: none;
-            transition: all 0.25s; box-shadow: 0 4px 18px rgba(217,70,166,0.35);
-        }
+        .btn-nuevo-caso { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: linear-gradient(135deg, var(--gold), #B82F8B); color: #fff; border: none; border-radius: 10px; font-size: 0.88rem; font-weight: 800; cursor: pointer; text-decoration: none; transition: all 0.25s; box-shadow: 0 4px 18px rgba(217,70,166,0.35); }
         .btn-nuevo-caso:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(217,70,166,0.5); }
 
-        /* RESPONSIVE SIDEBAR */
-        @media(max-width:768px){ .sidebar { display: none; } }
+        /* WALLET CARD */
+        .wallet-card { background: linear-gradient(135deg, rgba(217,70,166,0.12), rgba(0,210,255,0.06)); border: 1px solid rgba(217,70,166,0.25); border-radius: 14px; padding: 22px; margin-bottom: 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .wallet-saldo { font-size: 2.2rem; font-weight: 900; color: var(--green); }
+        .wallet-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
+        .wallet-puntos { font-size: 1.4rem; font-weight: 900; color: #D4AF37; }
+        .nivel-pill { padding: 4px 14px; border-radius: 20px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .nivel-Bronce  { background: rgba(180,100,0,0.15); color: #cd7f32; border: 1px solid rgba(180,100,0,0.3); }
+        .nivel-Plata   { background: rgba(192,192,192,0.1); color: #c0c0c0; border: 1px solid rgba(192,192,192,0.3); }
+        .nivel-Oro     { background: rgba(212,175,55,0.1);  color: #D4AF37; border: 1px solid rgba(212,175,55,0.3); }
+        .nivel-Platino { background: rgba(0,210,255,0.1);   color: var(--cyan); border: 1px solid rgba(0,210,255,0.3); }
+
+        /* SPINNER */
+        .spinner { width: 32px; height: 32px; border: 3px solid rgba(217,70,166,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 32px auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* TOAST */
+        #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1a2332; border: 1px solid rgba(212,175,55,0.3); color: #fff; padding: 12px 24px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; transition: transform 0.3s; z-index: 9998; pointer-events: none; }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+        #toast.ok    { border-color: rgba(0,255,65,0.4); }
+        #toast.error { border-color: rgba(239,68,68,0.4); }
+
+        /* NPS MODAL */
+        #modal-nps { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        #modal-nps.open { display: flex; }
+        .nps-box { background: #0d1525; border: 1px solid rgba(217,70,166,0.3); border-radius: 18px; padding: 32px; max-width: 400px; width: 100%; text-align: center; }
+        .nps-box h3 { font-size: 1.1rem; font-weight: 900; margin-bottom: 6px; }
+        .nps-box p  { font-size: 0.82rem; color: var(--muted); margin-bottom: 24px; }
+        .stars { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
+        .star { font-size: 2rem; cursor: pointer; color: rgba(255,255,255,0.15); transition: all 0.15s; }
+        .star:hover, .star.sel { color: #D4AF37; transform: scale(1.15); }
+        .nps-comentario { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #fff; border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; resize: none; margin-bottom: 16px; font-family: inherit; }
+        .nps-comentario:focus { outline: none; border-color: var(--gold); }
+        .btn-nps-send { width: 100%; padding: 12px; border: none; border-radius: 10px; background: linear-gradient(135deg, var(--gold), #B82F8B); color: #fff; font-weight: 900; font-size: 0.95rem; cursor: pointer; }
+        .btn-nps-skip { background: none; border: none; color: var(--muted); font-size: 0.78rem; cursor: pointer; margin-top: 8px; }
+
+        /* EMPTY / LOADING */
+        .empty-state { padding: 40px; text-align: center; color: var(--muted); font-size: 0.85rem; }
+        .empty-state i { font-size: 2rem; margin-bottom: 10px; display: block; opacity: 0.3; }
+
+        /* TOKEN BANNER */
+        .token-banner { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2); border-radius: 10px; padding: 10px 18px; margin-bottom: 20px; font-size: 0.8rem; color: #D4AF37; display: flex; align-items: center; gap: 8px; }
+
+        @media(max-width:768px){ .sidebar { display: none; } .main { padding: 20px 14px; } }
     </style>
 </head>
 <body>
+
 <!-- SIDEBAR -->
 <aside class="sidebar">
     <div class="sidebar-logo">
         <h1>PRODIGY</h1>
         <p>Digital Dentistry</p>
-        <div class="role-badge"><i class="fas fa-user-md"></i> Cliente</div>
+        <div class="role-badge"><i class="fas fa-user-md"></i> <span id="sidebar-role">Cliente</span></div>
     </div>
     <a href="client-panel.html" class="nav-item active"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="#" class="nav-item"><i class="fas fa-folder-open"></i> Mis Casos</a>
     <a href="../flujo-diseno.html" class="nav-item"><i class="fas fa-pen-nib"></i> Diseño CAD</a>
     <a href="../flujo-fresado.html" class="nav-item"><i class="fas fa-gear"></i> Fresado</a>
     <a href="../flujo-impresion.html" class="nav-item"><i class="fas fa-print"></i> Impresión 3D</a>
     <a href="../seguimiento-caso.html" class="nav-item"><i class="fas fa-search"></i> Seguimiento</a>
     <div class="sidebar-footer">
-        <a href="#" class="nav-item" onclick="ProdigyAuth.signOut()"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
+        <a href="#" class="nav-item" id="btn-logout"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
     </div>
 </aside>
 
 <!-- MAIN -->
 <main class="main">
     <div class="page-header">
-        <h1>Bienvenido al Panel <span id="user-display" style="color:var(--gold);"></span></h1>
-        <p>Historial de casos, cotizadores y estado de producción</p>
+        <h1>Bienvenido<span id="user-display" style="color:var(--gold);"></span></h1>
+        <p id="page-sub">Cargando tus casos...</p>
+    </div>
+
+    <!-- TOKEN BANNER (modo link firmado) -->
+    <div class="token-banner" id="token-banner" style="display:none;">
+        <i class="fas fa-link"></i>
+        Accediste mediante link seguro — vista de solo lectura.
+        <a href="login.html" style="color:var(--cyan);margin-left:auto;font-weight:700;">Iniciar sesión</a>
+    </div>
+
+    <!-- WALLET -->
+    <div class="wallet-card" id="wallet-card" style="display:none;">
+        <div>
+            <div class="wallet-label">Saldo prepago</div>
+            <div class="wallet-saldo" id="wallet-saldo">$0</div>
+        </div>
+        <div>
+            <div class="wallet-label">Puntos ProDigy</div>
+            <div class="wallet-puntos" id="wallet-puntos">0 pts</div>
+        </div>
+        <div>
+            <div class="wallet-label">Nivel</div>
+            <div id="wallet-nivel"></div>
+        </div>
+        <div style="margin-left:auto;font-size:0.75rem;color:var(--muted);">
+            Total gastado: <strong id="wallet-gastado" style="color:#fff;"></strong>
+        </div>
     </div>
 
     <!-- ESTADÍSTICAS -->
     <div class="stats-grid">
         <div class="stat-card">
             <div style="font-size:1.5rem;color:var(--cyan);"><i class="fas fa-folder-open"></i></div>
-            <div class="stat-value" style="color:#fff;">12</div>
+            <div class="stat-value" style="color:#fff;" id="stat-total">—</div>
             <div class="stat-label">Casos totales</div>
         </div>
         <div class="stat-card">
             <div style="font-size:1.5rem;color:#fbbf24;"><i class="fas fa-clock"></i></div>
-            <div class="stat-value" style="color:#fbbf24;">3</div>
+            <div class="stat-value" style="color:#fbbf24;" id="stat-activos">—</div>
             <div class="stat-label">En producción</div>
         </div>
         <div class="stat-card">
             <div style="font-size:1.5rem;color:var(--green);"><i class="fas fa-check-circle"></i></div>
-            <div class="stat-value" style="color:var(--green);">8</div>
+            <div class="stat-value" style="color:var(--green);" id="stat-entregados">—</div>
             <div class="stat-label">Entregados</div>
         </div>
         <div class="stat-card">
             <div style="font-size:1.5rem;color:var(--gold);"><i class="fas fa-star"></i></div>
-            <div class="stat-value" style="color:var(--gold);">4.9</div>
+            <div class="stat-value" style="color:var(--gold);" id="stat-satisfaccion">—</div>
             <div class="stat-label">Satisfacción</div>
         </div>
     </div>
 
     <!-- CTA NUEVO CASO -->
-    <div class="cta-nuevo">
+    <div class="cta-nuevo" id="cta-nuevo">
         <h3>¿Listo para tu próximo caso?</h3>
         <p>Cotiza y envía tus archivos STL en menos de 2 minutos.</p>
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
@@ -166,77 +217,309 @@
         </div>
     </div>
 
-    <!-- TABLA CASOS RECIENTES -->
-    <div class="section-card">
+    <!-- CASOS ACTIVOS CON BARRA DE PROGRESO -->
+    <div class="section-card" id="card-activos" style="display:none;">
         <div class="section-header">
-            <h2><i class="fas fa-list" style="color:var(--gold);margin-right:8px;"></i>Casos Recientes</h2>
-            <a href="#" class="btn-sm btn-gold">Ver todos</a>
+            <h2><i class="fas fa-circle-notch fa-spin" style="color:var(--cyan);margin-right:8px;"></i>En Producción</h2>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID Caso</th>
-                    <th>Paciente</th>
-                    <th>Servicio</th>
-                    <th>Fecha</th>
-                    <th>Estado</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="font-family:monospace;color:var(--cyan);">#PRD-2025-041</td>
-                    <td>Juan López</td>
-                    <td>Diseño CAD Express</td>
-                    <td>2025-04-02</td>
-                    <td><span class="status-badge en-proceso"><i class="fas fa-circle-notch fa-spin"></i> En proceso</span></td>
-                    <td><a href="../seguimiento-caso.html" class="btn-sm btn-gold">Ver</a></td>
-                </tr>
-                <tr>
-                    <td style="font-family:monospace;color:var(--cyan);">#PRD-2025-038</td>
-                    <td>María García</td>
-                    <td>Impresión 3D — Modelo</td>
-                    <td>2025-03-28</td>
-                    <td><span class="status-badge entregado"><i class="fas fa-check"></i> Entregado</span></td>
-                    <td><a href="../seguimiento-caso.html" class="btn-sm btn-gold">Ver</a></td>
-                </tr>
-                <tr>
-                    <td style="font-family:monospace;color:var(--cyan);">#PRD-2025-035</td>
-                    <td>Carlos Rivas</td>
-                    <td>Fresado — Zirconio 3Y</td>
-                    <td>2025-03-22</td>
-                    <td><span class="status-badge entregado"><i class="fas fa-check"></i> Entregado</span></td>
-                    <td><a href="../seguimiento-caso.html" class="btn-sm btn-gold">Ver</a></td>
-                </tr>
-                <tr>
-                    <td style="font-family:monospace;color:var(--cyan);">#PRD-2025-032</td>
-                    <td>Ana Martínez</td>
-                    <td>Diseño Signature Ant.</td>
-                    <td>2025-03-18</td>
-                    <td><span class="status-badge pendiente"><i class="fas fa-clock"></i> Pendiente pago</span></td>
-                    <td><a href="../seguimiento-caso.html" class="btn-sm btn-gold">Ver</a></td>
-                </tr>
-            </tbody>
-        </table>
+        <div id="tabla-activos"></div>
     </div>
 
-    <!-- AVISO MÓDULO EN CONSTRUCCIÓN -->
-    <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:12px;padding:20px;text-align:center;">
-        <i class="fas fa-wrench" style="font-size:1.5rem;color:#D4AF37;margin-bottom:8px;display:block;"></i>
-        <p style="font-size:0.84rem;color:#94a3b8;line-height:1.6;">
-            <strong style="color:#D4AF37;">Módulo en construcción.</strong> El historial real, las notificaciones y la descarga de archivos finales
-            estarán disponibles con la integración a <strong style="color:#fff;">Supabase</strong>. Los datos mostrados son de demostración.
-        </p>
+    <!-- HISTORIAL COMPLETO -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2><i class="fas fa-list" style="color:var(--gold);margin-right:8px;"></i>Historial de Casos</h2>
+        </div>
+        <div id="tabla-historial"><div class="spinner"></div></div>
     </div>
 </main>
 
+<!-- MODAL NPS -->
+<div id="modal-nps">
+    <div class="nps-box">
+        <h3>Califica tu experiencia</h3>
+        <p id="nps-pedido-label">Pedido recibido. ¿Cómo fue el servicio?</p>
+        <div class="stars" id="stars">
+            <span class="star" data-v="1" onclick="selStar(1)">★</span>
+            <span class="star" data-v="2" onclick="selStar(2)">★</span>
+            <span class="star" data-v="3" onclick="selStar(3)">★</span>
+            <span class="star" data-v="4" onclick="selStar(4)">★</span>
+            <span class="star" data-v="5" onclick="selStar(5)">★</span>
+        </div>
+        <textarea class="nps-comentario" id="nps-comentario" rows="3" placeholder="Comentario opcional..."></textarea>
+        <button class="btn-nps-send" onclick="enviarNPS()">Enviar calificación</button>
+        <br>
+        <button class="btn-nps-skip" onclick="cerrarNPS()">Saltar por ahora</button>
+    </div>
+</div>
+
+<div id="toast"></div>
+
 <script>
-    ProdigyAuth.require('client').then(session => {
-        if (session) {
-            const nombre = session.user.user_metadata?.nombre || session.user.email.split('@')[0];
-            document.getElementById('user-display').textContent = nombre;
-        }
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+let _pedidos     = [];
+let _npsId       = null;
+let _npsStar     = 0;
+let _modoToken   = false;
+let _toastTimer  = null;
+
+/* ── UTILS ─────────────────────────────────────────────────── */
+function escH(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+function fmtCOP(n) {
+    if (!n && n !== 0) return '—';
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(n);
+}
+
+function fmtFecha(ts) {
+    if (!ts) return '—';
+    return new Date(ts).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function toast(msg, tipo = '') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'show ' + tipo;
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => { el.className = ''; }, 3500);
+}
+
+/* ── PROGRESS BAR ───────────────────────────────────────────── */
+const PASOS = [
+    { key: 'recibido',   label: 'Recibido' },
+    { key: 'produccion', label: 'Producción' },
+    { key: 'listo',      label: 'Listo' },
+    { key: 'camino',     label: 'En Camino' },
+    { key: 'entregado',  label: 'Entregado' },
+];
+
+function estadoAPaso(estado) {
+    const e = (estado || '').toLowerCase();
+    if (['entregado','entregado'].includes(e)) return 4;
+    if (['en_reparto','despachado'].includes(e)) return 3;
+    if (['terminado','por_despachar','listo'].includes(e)) return 2;
+    if (['en producción','en produccion','pagado'].includes(e)) return 1;
+    return 0;
+}
+
+function renderProgress(estadoStr) {
+    const paso = estadoAPaso(estadoStr);
+    const steps = PASOS.map((p, i) => {
+        const done   = i < paso;
+        const active = i === paso;
+        const cls    = done ? 'done' : (active ? 'active' : '');
+        const lCls   = done ? 'done' : (active ? 'active' : '');
+        const lineCls = i < paso ? 'done' : '';
+        const line   = i < PASOS.length - 1 ? `<div class="step-line ${lineCls}"></div>` : '';
+        return `<div class="step"><div class="step-dot ${cls}"></div><div class="step-label ${lCls}">${p.label}</div></div>${line}`;
+    }).join('');
+    return `<div class="progress-steps">${steps}</div>`;
+}
+
+/* ── BADGE ESTADO ───────────────────────────────────────────── */
+function estadoBadge(estado) {
+    const e = (estado || '').toLowerCase();
+    if (e.includes('entregado')) return `<span class="status-badge entregado"><i class="fas fa-check"></i> Entregado</span>`;
+    if (e.includes('camino') || e.includes('reparto') || e.includes('despacha')) return `<span class="status-badge camino"><i class="fas fa-motorcycle"></i> En Camino</span>`;
+    if (e.includes('terminado') || e.includes('listo')) return `<span class="status-badge listo"><i class="fas fa-star"></i> Listo</span>`;
+    if (e.includes('producc') || e.includes('pagado')) return `<span class="status-badge produccion"><i class="fas fa-circle-notch fa-spin"></i> En Producción</span>`;
+    return `<span class="status-badge pendiente"><i class="fas fa-clock"></i> ${escH(estado || 'Pendiente')}</span>`;
+}
+
+/* ── RENDER PEDIDOS ─────────────────────────────────────────── */
+function renderTablas(pedidos) {
+    const activos = pedidos.filter(p => {
+        const e = (p.estado || '').toLowerCase();
+        return !e.includes('entregado') && !e.includes('cancelado') && !e.includes('borrador');
     });
+    const historial = [...pedidos].sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+
+    // Activos con progress bar
+    const cardActivos = document.getElementById('card-activos');
+    const tablaActivos = document.getElementById('tabla-activos');
+    if (activos.length) {
+        cardActivos.style.display = 'block';
+        tablaActivos.innerHTML = `<table>
+            <thead><tr><th>ID</th><th>Paciente</th><th>Servicio</th><th>Progreso</th><th>Acción</th></tr></thead>
+            <tbody>
+            ${activos.map(p => {
+                const puedeSTL = ['terminado','pagado','en producción','en produccion'].some(s => (p.estado||'').toLowerCase().includes(s)) && p.stl_url?.startsWith('https://');
+                return `<tr>
+                    <td style="font-family:monospace;color:var(--cyan);">${escH(p.codigo || p.id?.slice(0,8))}</td>
+                    <td>${escH(p.nombre_paciente || '—')}</td>
+                    <td style="font-size:.75rem;">${escH(p.tipo_trabajo || p.material || '—')}</td>
+                    <td>${renderProgress(p.estado)}</td>
+                    <td>
+                        <a href="../seguimiento-caso.html?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold" style="margin-right:4px;">Ver</a>
+                        ${puedeSTL ? `<a href="${escH(p.stl_url)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</a>` : ''}
+                    </td>
+                </tr>`;
+            }).join('')}
+            </tbody></table>`;
+    } else {
+        cardActivos.style.display = 'none';
+    }
+
+    // Historial completo
+    document.getElementById('tabla-historial').innerHTML = historial.length ? `<table>
+        <thead><tr><th>ID Caso</th><th>Paciente</th><th>Servicio</th><th>Fecha</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody>
+        ${historial.map(p => {
+            const esEntregado = (p.estado || '').toLowerCase().includes('entregado');
+            const puedeSTL = esEntregado && p.stl_url?.startsWith('https://');
+            const yaCalif  = !!p.calificacion;
+            return `<tr>
+                <td style="font-family:monospace;color:var(--cyan);">${escH(p.codigo || p.id?.slice(0,8))}</td>
+                <td>${escH(p.nombre_paciente || '—')}</td>
+                <td style="font-size:.75rem;">${escH(p.tipo_trabajo || p.material || '—')}</td>
+                <td style="font-size:.75rem;color:#94a3b8;">${fmtFecha(p.created_at)}</td>
+                <td style="color:#00FF41;font-weight:700;">${fmtCOP(p.precio_total)}</td>
+                <td>${estadoBadge(p.estado)}</td>
+                <td style="display:flex;gap:5px;flex-wrap:wrap;">
+                    <a href="../seguimiento-caso.html?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold">Ver</a>
+                    ${puedeSTL ? `<a href="${escH(p.stl_url)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</a>` : ''}
+                    ${esEntregado && !yaCalif ? `<button onclick="abrirNPS('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#D4AF37;border-color:rgba(212,175,55,0.3);">⭐ Calificar</button>` : ''}
+                    ${yaCalif ? `<span style="font-size:.7rem;color:#D4AF37;">${'★'.repeat(p.calificacion)}</span>` : ''}
+                </td>
+            </tr>`;
+        }).join('')}
+        </tbody></table>` : `<div class="empty-state"><i class="fas fa-inbox"></i>Sin casos aún. ¡Crea tu primer pedido!</div>`;
+
+    // Stats
+    document.getElementById('stat-total').textContent = pedidos.length;
+    document.getElementById('stat-activos').textContent = activos.length;
+    const entregados = pedidos.filter(p => (p.estado||'').toLowerCase().includes('entregado'));
+    document.getElementById('stat-entregados').textContent = entregados.length;
+    const calif = pedidos.filter(p => p.calificacion);
+    const avg   = calif.length ? (calif.reduce((s,p) => s + p.calificacion, 0) / calif.length).toFixed(1) : '—';
+    document.getElementById('stat-satisfaccion').textContent = avg;
+    document.getElementById('page-sub').textContent = `${pedidos.length} casos en tu historial · Dr. ${_nombreDoctor}`;
+}
+
+let _nombreDoctor = '';
+
+/* ── MODO TOKEN (link firmado desde WhatsApp) ───────────────── */
+async function loadByToken(token) {
+    document.getElementById('token-banner').style.display = 'flex';
+    document.getElementById('btn-logout').style.display = 'none';
+    document.getElementById('cta-nuevo').style.display = 'none';
+
+    const { data, error } = await sb.from('pedidos')
+        .select('*')
+        .eq('hash_seguridad', token)
+        .order('created_at', { ascending: false });
+
+    if (error || !data || !data.length) {
+        document.getElementById('tabla-historial').innerHTML = '<div class="empty-state"><i class="fas fa-lock"></i>Link inválido o expirado. <a href="login.html" style="color:var(--cyan);">Inicia sesión</a></div>';
+        document.body.style.visibility = 'visible';
+        return;
+    }
+
+    _nombreDoctor = data[0].nombre_doctor || '';
+    document.getElementById('user-display').textContent = _nombreDoctor ? `, Dr. ${_nombreDoctor}` : '';
+    _pedidos = data;
+    _modoToken = true;
+    renderTablas(data);
+    document.body.style.visibility = 'visible';
+}
+
+/* ── MODO AUTH (sesión Supabase) ────────────────────────────── */
+async function loadByAuth(session) {
+    const email = session.user.email;
+    const { data: pedidos, error } = await sb.from('pedidos')
+        .select('*')
+        .eq('email', email)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        document.getElementById('tabla-historial').innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>${escH(error.message)}</div>`;
+        return;
+    }
+
+    _pedidos = pedidos || [];
+    _nombreDoctor = session.user.user_metadata?.nombre || email.split('@')[0];
+    document.getElementById('user-display').textContent = `, ${_nombreDoctor}`;
+    document.getElementById('sidebar-role').textContent = session.user.user_metadata?.rol || 'Cliente';
+
+    // Cargar wallet si existe
+    const whatsapp = session.user.user_metadata?.whatsapp || session.user.phone || '';
+    if (whatsapp || email) {
+        const { data: wallet } = await sb.from('creditos_cliente').select('*')
+            .or(whatsapp ? `whatsapp.eq.${whatsapp},nombre_doctor.eq.${encodeURIComponent(_nombreDoctor)}` : `nombre_doctor.eq.${encodeURIComponent(_nombreDoctor)}`)
+            .maybeSingle();
+        if (wallet) {
+            document.getElementById('wallet-card').style.display = 'flex';
+            document.getElementById('wallet-saldo').textContent = fmtCOP(wallet.saldo_cop);
+            document.getElementById('wallet-puntos').textContent = wallet.puntos + ' pts';
+            document.getElementById('wallet-gastado').textContent = fmtCOP(wallet.total_gastado);
+            const nivel = wallet.nivel || 'Bronce';
+            document.getElementById('wallet-nivel').innerHTML = `<span class="nivel-pill nivel-${escH(nivel)}">${escH(nivel)}</span>`;
+        }
+    }
+
+    renderTablas(_pedidos);
+}
+
+/* ── NPS ────────────────────────────────────────────────────── */
+function abrirNPS(pedidoId, codigo) {
+    if (_modoToken) return; // solo en sesión activa
+    _npsId   = pedidoId;
+    _npsStar = 0;
+    document.querySelectorAll('.star').forEach(s => s.classList.remove('sel'));
+    document.getElementById('nps-comentario').value = '';
+    document.getElementById('nps-pedido-label').textContent = `Pedido ${codigo} · ¿Cómo fue el servicio?`;
+    document.getElementById('modal-nps').classList.add('open');
+}
+
+function cerrarNPS() { document.getElementById('modal-nps').classList.remove('open'); }
+
+function selStar(v) {
+    _npsStar = v;
+    document.querySelectorAll('.star').forEach(s => {
+        s.classList.toggle('sel', parseInt(s.dataset.v, 10) <= v);
+    });
+}
+
+async function enviarNPS() {
+    if (!_npsStar) { toast('Selecciona una calificación', 'error'); return; }
+    const comentario = document.getElementById('nps-comentario').value.trim();
+    const { error } = await sb.from('pedidos').update({
+        calificacion: _npsStar,
+        calificacion_comentario: comentario || null,
+    }).eq('id', _npsId);
+    if (error) { toast('Error: ' + error.message, 'error'); return; }
+    toast('¡Gracias por tu calificación!', 'ok');
+    cerrarNPS();
+    // Actualizar localmente
+    const p = _pedidos.find(x => x.id === _npsId);
+    if (p) { p.calificacion = _npsStar; p.calificacion_comentario = comentario; }
+    renderTablas(_pedidos);
+}
+
+/* ── INIT ───────────────────────────────────────────────────── */
+document.getElementById('btn-logout').addEventListener('click', (e) => {
+    e.preventDefault();
+    ProdigyAuth.signOut();
+});
+
+(async function init() {
+    const params = new URLSearchParams(location.search);
+    const token  = params.get('token');
+
+    if (token) {
+        await loadByToken(token);
+        return;
+    }
+
+    // Auth normal
+    const session = await ProdigyAuth.require('client');
+    if (!session) return;
+    document.body.style.visibility = 'visible';
+    await loadByAuth(session);
+})();
 </script>
 </body>
 </html>
