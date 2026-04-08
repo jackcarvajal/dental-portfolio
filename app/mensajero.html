@@ -571,5 +571,67 @@ async function initPush() {
 init();
 initPush();
 </script>
+
+<!-- Botón pánico flotante -->
+<style>
+#panico-fab { position:fixed; bottom:20px; left:20px; z-index:900; padding:10px 16px; border-radius:10px; border:1px solid #ef4444; background:rgba(239,68,68,.12); color:#ef4444; font-size:.78rem; font-weight:800; cursor:pointer; letter-spacing:.5px; animation:panicoGlow 3s infinite; }
+#panico-fab:hover { background:rgba(239,68,68,.22); }
+@keyframes panicoGlow { 0%,100%{ border-color:rgba(239,68,68,.35); } 50%{ border-color:#ef4444; } }
+#modal-panico-fab { display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:1000; align-items:center; justify-content:center; padding:16px; }
+#modal-panico-fab.open { display:flex; }
+.pan-box { background:#0d1117; border:1px solid rgba(239,68,68,.3); border-radius:14px; padding:24px; width:100%; max-width:420px; }
+.pan-box h3 { color:#ef4444; font-size:.95rem; margin-bottom:4px; }
+.pan-box p { color:#64748b; font-size:.75rem; margin-bottom:16px; }
+.pan-field { margin-bottom:12px; }
+.pan-field label { font-size:.72rem; color:#cbd5e1; display:block; margin-bottom:4px; }
+.pan-field select, .pan-field textarea { width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:9px 12px; color:#fff; font-size:.82rem; }
+.pan-field textarea { min-height:70px; resize:vertical; }
+.pan-footer { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+.pan-btn { padding:9px 18px; border-radius:8px; font-size:.82rem; font-weight:700; border:none; cursor:pointer; }
+</style>
+<button id="panico-fab" onclick="document.getElementById('modal-panico-fab').classList.add('open')">INCIDENCIA</button>
+<div id="modal-panico-fab">
+    <div class="pan-box">
+        <h3>Reportar Incidencia</h3>
+        <p>El administrador recibirá alerta inmediata.</p>
+        <div class="pan-field">
+            <label>Tipo</label>
+            <select id="pfab-tipo">
+                <option value="DIRECCION_INCORRECTA">Dirección incorrecta</option>
+                <option value="CLIENTE_AUSENTE">Cliente ausente</option>
+                <option value="FALLA_MAQUINA">Problema con vehículo/ruta</option>
+                <option value="OTRO">Otro</option>
+            </select>
+        </div>
+        <div class="pan-field">
+            <label>Severidad</label>
+            <select id="pfab-sev">
+                <option value="MEDIA">Media</option>
+                <option value="ALTA">Alta</option>
+                <option value="CRITICA">Crítica</option>
+            </select>
+        </div>
+        <div class="pan-field">
+            <label>Descripción</label>
+            <textarea id="pfab-desc" placeholder="Describe el problema..."></textarea>
+        </div>
+        <div class="pan-footer">
+            <button class="pan-btn" style="background:transparent;border:1px solid rgba(255,255,255,.15);color:#94a3b8" onclick="document.getElementById('modal-panico-fab').classList.remove('open')">Cancelar</button>
+            <button class="pan-btn" style="background:#ef4444;color:#fff" onclick="enviarPanicoFab()">Enviar Alerta</button>
+        </div>
+    </div>
+</div>
+<script>
+async function enviarPanicoFab() {
+    const desc = document.getElementById('pfab-desc').value.trim();
+    if (!desc) { alert('Describe el problema'); return; }
+    const sbP = window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634');
+    const { data: { session } } = await sbP.auth.getSession();
+    await sbP.from('logs_incidencias').insert({ emisor_id: session?.user?.id, tipo: document.getElementById('pfab-tipo').value, descripcion: desc, severidad: document.getElementById('pfab-sev').value });
+    document.getElementById('modal-panico-fab').classList.remove('open');
+    document.getElementById('pfab-desc').value = '';
+    alert('Incidencia reportada. El admin fue notificado.');
+}
+</script>
 </body>
 </html>

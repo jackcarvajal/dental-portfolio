@@ -1,528 +1,531 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>PRODIGY — Panel Operador</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <script src="../js/auth-guard.js"></script>
-    <script src="../js/upload-guard.js"></script>
-    <script>
-    // Constantes de Storage — bucket verificado con RLS
-    const BUCKET = 'dental-cases';
-    </script>
-    <style>
-        body { visibility: hidden; }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root {
-            --bg: #050505; --sidebar: #05100d; --card: #0a1812;
-            --green: #00FF41; --cyan: #00d2ff; --gold: #D4AF37;
-            --text: #fff; --muted: #64748b; --border: rgba(0,255,65,0.12);
-        }
-        body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>PRODIGY — Panel Operador</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../js/auth-guard.js"></script>
+<style>
+:root {
+    --bg:     #050505; --card:   #0a1812;
+    --green:  #00FF41; --cyan:   #00d2ff;
+    --gold:   #D4AF37; --red:    #ef4444;
+    --yellow: #fbbf24; --pink:   #D946A6;
+    --txt:    #ffffff; --muted:  #64748b;
+    --border: rgba(0,255,65,.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--txt); font-family: 'Segoe UI', sans-serif; display: flex; min-height: 100vh; visibility: hidden; }
+body.ready { visibility: visible; }
 
-        .sidebar {
-            width: 230px; min-height: 100vh; background: var(--sidebar);
-            border-right: 1px solid var(--border); padding: 24px 16px;
-            display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
-        }
-        .sidebar-logo { text-align: center; padding: 12px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
-        .sidebar-logo h1 { font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; color: var(--green); }
-        .sidebar-logo p  { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
-        .role-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(0,255,65,0.08); border: 1px solid rgba(0,255,65,0.2); border-radius: 20px; padding: 3px 10px; font-size: 0.65rem; font-weight: 700; color: var(--green); margin-top: 8px; }
+/* ── Sidebar ── */
+.sidebar { width: 220px; min-height: 100vh; background: #05100d; border-right: 1px solid var(--border); padding: 20px 14px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+.logo { text-align: center; padding: 10px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+.logo h1 { font-size: 1.05rem; font-weight: 900; letter-spacing: 2px; color: var(--green); }
+.logo p { font-size: .62rem; color: var(--muted); margin-top: 2px; }
+.role-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(0,255,65,.08); border: 1px solid rgba(0,255,65,.2); border-radius: 20px; padding: 3px 10px; font-size: .62rem; font-weight: 700; color: var(--green); margin-top: 6px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: .82rem; font-weight: 600; color: var(--muted); text-decoration: none; transition: .2s; }
+.nav-item:hover { background: rgba(255,255,255,.04); color: #fff; }
+.nav-item.active { background: rgba(0,255,65,.07); color: var(--green); }
+.sidebar-footer { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); }
 
-        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #94a3b8; text-decoration: none; transition: all 0.2s; }
-        .nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
-        .nav-item.active { background: rgba(0,255,65,0.07); color: var(--green); border: 1px solid rgba(0,255,65,0.18); }
-        .nav-item i { width: 16px; text-align: center; }
-        .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
+/* ── Botón pánico ── */
+.panico-btn { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--red); background: rgba(239,68,68,.1); color: var(--red); font-size: .8rem; font-weight: 800; cursor: pointer; transition: .2s; margin-top: 8px; letter-spacing: .5px; animation: pulseBorder 3s infinite; }
+.panico-btn:hover { background: rgba(239,68,68,.2); }
+@keyframes pulseBorder { 0%,100%{ border-color: rgba(239,68,68,.4); } 50%{ border-color: var(--red); } }
 
-        .main { flex: 1; padding: 32px; overflow-y: auto; }
-        .page-header { margin-bottom: 28px; }
-        .page-header h1 { font-size: 1.6rem; font-weight: 900; color: #fff; }
-        .page-header p  { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+/* ── Main ── */
+.main { flex: 1; padding: 28px; overflow-y: auto; }
+.page-header { margin-bottom: 22px; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.page-header h1 { font-size: 1.5rem; font-weight: 900; }
+.page-header p  { color: var(--muted); font-size: .84rem; margin-top: 3px; }
 
-        /* KANBAN */
-        .kanban-board { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
-        @media(max-width:1000px){ .kanban-board { grid-template-columns: 1fr; } }
-        .kanban-col { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
-        .kanban-col-header { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px; justify-content: space-between; }
-        .col-count { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 2px 8px; font-size: 0.68rem; }
+/* ── Timer global ── */
+.timer-bar { background: rgba(251,191,36,.07); border: 1px solid rgba(251,191,36,.2); border-radius: 10px; padding: 10px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: .82rem; color: var(--yellow); display: none; }
+.timer-bar.visible { display: flex; }
+.timer-bar.critico { background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.3); color: var(--red); }
 
-        .caso-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px; margin-bottom: 10px; transition: all 0.2s; }
-        .caso-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
-        .caso-card .caso-id { font-size: 0.7rem; color: var(--cyan); font-family: monospace; margin-bottom: 4px; }
-        .caso-card .caso-paciente { font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
-        .caso-card .caso-meta { font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
-        .caso-card .caso-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+/* ── Kanban ── */
+.kanban { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+@media(max-width:1100px) { .kanban { grid-template-columns: 1fr; } }
+.k-col { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+.k-hdr { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,.05); display: flex; align-items: center; justify-content: space-between; }
+.k-count { background: rgba(255,255,255,.08); border-radius: 10px; padding: 2px 8px; font-size: .65rem; }
 
-        .btn-xs { padding: 4px 10px; border-radius: 6px; font-size: 0.68rem; font-weight: 700; border: 1px solid; cursor: pointer; background: transparent; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; color: inherit; }
-        .btn-green { color: var(--green); border-color: rgba(0,255,65,0.3); }
-        .btn-green:hover { background: rgba(0,255,65,0.1); }
-        .btn-cyan  { color: var(--cyan);  border-color: rgba(0,210,255,0.3); }
-        .btn-cyan:hover  { background: rgba(0,210,255,0.1); }
-        .btn-red   { color: #f87171;      border-color: rgba(239,68,68,0.3); }
-        .btn-red:hover   { background: rgba(239,68,68,0.1); }
-        .btn-gold  { color: var(--gold);  border-color: rgba(212,175,55,0.3); }
-        .btn-gold:hover  { background: rgba(212,175,55,0.1); }
+/* ── Caso card ── */
+.caso-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); border-radius: 10px; padding: 14px; margin-bottom: 10px; transition: .2s; position: relative; }
+.caso-card:hover { background: rgba(255,255,255,.05); }
+.caso-id { font-size: .68rem; color: var(--cyan); font-family: monospace; margin-bottom: 3px; }
+.caso-nombre { font-size: .88rem; font-weight: 700; margin-bottom: 5px; }
+.caso-meta { font-size: .72rem; color: var(--muted); line-height: 1.7; }
+.caso-actions { display: flex; gap: 5px; margin-top: 10px; flex-wrap: wrap; }
 
-        .urgente-dot { width: 7px; height: 7px; background: #ef4444; border-radius: 50%; display: inline-block; margin-left: 4px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
+/* ── Timer en card ── */
+.card-timer { font-size: .68rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; margin-bottom: 6px; display: inline-block; }
+.card-timer.ok     { background: rgba(0,255,65,.1);  color: var(--green); }
+.card-timer.alerta { background: rgba(251,191,36,.1); color: var(--yellow); }
+.card-timer.critico{ background: rgba(239,68,68,.15); color: var(--red); animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:.5; } }
 
-        /* ── MODAL ENTREGA DUAL ── */
-        .modal-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.82); z-index: 1000;
-            align-items: center; justify-content: center; padding: 16px;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal-box {
-            background: #0d1a12; border: 1px solid rgba(0,255,65,0.25);
-            border-radius: 16px; width: 100%; max-width: 520px;
-            padding: 28px; position: relative; max-height: 92vh; overflow-y: auto;
-        }
-        .modal-title { font-size: 1.05rem; font-weight: 900; color: var(--green); margin-bottom: 6px; }
-        .modal-subtitle { font-size: 0.78rem; color: var(--muted); margin-bottom: 22px; }
-        .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; }
+/* ── Buttons ── */
+.btn-xs { padding: 5px 10px; border-radius: 6px; font-size: .68rem; font-weight: 700; border: 1px solid; cursor: pointer; background: transparent; display: inline-flex; align-items: center; gap: 4px; color: inherit; transition: .15s; white-space: nowrap; }
+.btn-green { color: var(--green); border-color: rgba(0,255,65,.3); }
+.btn-green:hover { background: rgba(0,255,65,.1); }
+.btn-cyan  { color: var(--cyan);  border-color: rgba(0,210,255,.3); }
+.btn-cyan:hover  { background: rgba(0,210,255,.1); }
+.btn-red   { color: var(--red);   border-color: rgba(239,68,68,.3); }
+.btn-red:hover   { background: rgba(239,68,68,.1); }
+.btn-gold  { color: var(--gold);  border-color: rgba(212,175,55,.3); }
+.btn-gold:hover  { background: rgba(212,175,55,.1); }
+.btn-yellow{ color: var(--yellow);border-color: rgba(251,191,36,.3); }
+.btn-yellow:hover{ background: rgba(251,191,36,.1); }
+.urgente-dot { width: 7px; height: 7px; background: var(--red); border-radius: 50%; display: inline-block; animation: pulse 1.2s infinite; }
 
-        .form-field { margin-bottom: 16px; }
-        .form-label { font-size: 0.78rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px; display: block; }
-        .form-label .req { color: #ef4444; margin-left: 3px; }
-        .form-input {
-            width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 0.82rem;
-            transition: border-color 0.2s;
-        }
-        .form-input:focus { outline: none; border-color: var(--green); }
-        .form-input.valid  { border-color: var(--green); }
-        .form-input.error  { border-color: #ef4444; }
+/* ── Ficha de Puesto ── */
+.ficha-section { margin-top: 28px; }
+.ficha-section h2 { font-size: .95rem; font-weight: 800; color: var(--cyan); margin-bottom: 14px; }
+.ficha-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 14px; }
+.ficha-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+.ficha-card h4 { font-size: .78rem; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
+.ficha-item { display: flex; align-items: center; gap: 8px; font-size: .78rem; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+.ficha-item:last-child { border-bottom: none; }
+.ficha-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 
-        /* Upload box */
-        .upload-box {
-            border: 2px dashed rgba(0,255,65,0.2); border-radius: 10px;
-            padding: 18px; text-align: center; cursor: pointer;
-            transition: all 0.2s; position: relative;
-        }
-        .upload-box:hover, .upload-box.drag-over { border-color: var(--green); background: rgba(0,255,65,0.04); }
-        .upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-        .upload-box .ub-icon { font-size: 1.6rem; margin-bottom: 6px; }
-        .upload-box .ub-label { font-size: 0.78rem; font-weight: 700; color: #cbd5e1; }
-        .upload-box .ub-hint  { font-size: 0.68rem; color: var(--muted); margin-top: 3px; }
-        .upload-box .ub-file  { font-size: 0.72rem; color: var(--green); margin-top: 6px; font-weight: 700; word-break: break-all; }
-        .upload-box.uploaded  { border-color: var(--green); background: rgba(0,255,65,0.06); }
+/* ── Modal ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.82); z-index: 1000; align-items: center; justify-content: center; padding: 16px; }
+.modal-overlay.open { display: flex; }
+.modal-box { background: #0d1a12; border: 1px solid rgba(0,255,65,.25); border-radius: 14px; width: 100%; max-width: 480px; padding: 26px; max-height: 90vh; overflow-y: auto; position: relative; }
+.modal-title { font-size: 1rem; font-weight: 900; color: var(--green); margin-bottom: 4px; }
+.modal-sub   { font-size: .75rem; color: var(--muted); margin-bottom: 20px; }
+.modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; }
+.field { margin-bottom: 14px; }
+.field label { font-size: .75rem; font-weight: 700; color: #cbd5e1; display: block; margin-bottom: 5px; }
+.field input, .field select, .field textarea { width: 100%; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 9px 12px; color: #fff; font-size: .82rem; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--green); }
+.field textarea { resize: vertical; min-height: 70px; }
+.modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+.btn-modal { padding: 9px 20px; border-radius: 8px; font-size: .84rem; font-weight: 700; border: none; cursor: pointer; transition: .2s; }
+.btn-modal-primary { background: linear-gradient(135deg,#00b33a,var(--green)); color: #050505; }
+.btn-modal-outline { background: transparent; border: 1px solid rgba(255,255,255,.15); color: var(--muted); }
 
-        /* Checklist de requisitos */
-        .req-checklist { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 14px; margin-bottom: 20px; }
-        .req-item { display: flex; align-items: center; gap: 10px; font-size: 0.78rem; padding: 5px 0; }
-        .req-item .req-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; flex-shrink: 0; }
-        .req-item.ok   .req-icon { background: rgba(0,255,65,0.15); color: var(--green); }
-        .req-item.pending .req-icon { background: rgba(255,255,255,0.06); color: var(--muted); }
-        .req-item.ok   .req-text { color: var(--green); }
-        .req-item.pending .req-text { color: var(--muted); }
+/* QA Checklist */
+.qa-list { background: rgba(0,0,0,.3); border-radius: 10px; padding: 14px; margin-bottom: 16px; }
+.qa-item { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.04); cursor: pointer; }
+.qa-item:last-child { border-bottom: none; }
+.qa-item input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green); }
+.qa-item label { font-size: .8rem; cursor: pointer; }
 
-        /* Btn finalizar */
-        .btn-finalizar {
-            width: 100%; padding: 13px; border: none; border-radius: 10px; font-size: 0.9rem;
-            font-weight: 800; cursor: pointer; transition: all 0.25s;
-            background: linear-gradient(135deg, rgba(0,255,65,0.2), rgba(0,255,65,0.1));
-            color: var(--muted); border: 1px solid rgba(255,255,255,0.1);
-        }
-        .btn-finalizar.ready {
-            background: linear-gradient(135deg, #00b33a, #00FF41);
-            color: #050505; box-shadow: 0 4px 20px rgba(0,255,65,0.35);
-        }
-        .btn-finalizar.ready:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,255,65,0.5); }
+/* Loader */
+.loader { display: flex; align-items: center; gap: 10px; color: var(--muted); padding: 30px; justify-content: center; }
+.spinner { width: 20px; height: 20px; border: 3px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Spinner de carga */
-        .upload-spinner {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88);
-            z-index: 2000; align-items: center; justify-content: center; flex-direction: column;
-            gap: 20px;
-        }
-        .upload-spinner.active { display: flex; }
-        .spinner-ring {
-            width: 60px; height: 60px; border: 4px solid rgba(0,255,65,0.15);
-            border-top-color: var(--green); border-radius: 50%;
-            animation: spin 0.9s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spinner-msg { font-size: 0.92rem; font-weight: 700; color: #fff; text-align: center; max-width: 300px; line-height: 1.5; }
-        .spinner-sub { font-size: 0.72rem; color: var(--muted); text-align: center; }
+/* Toast */
+#toast { position: fixed; bottom: 20px; right: 20px; padding: 10px 18px; border-radius: 10px; font-size: .85rem; font-weight: 600; z-index: 9999; opacity: 0; transform: translateY(8px); transition: .3s; pointer-events: none; }
+#toast.show { opacity: 1; transform: translateY(0); }
+#toast.ok  { background: rgba(0,255,65,.15); border: 1px solid var(--green); color: var(--green); }
+#toast.err { background: rgba(239,68,68,.15); border: 1px solid var(--red);   color: var(--red); }
 
-        @media(max-width:768px){ .sidebar { display: none; } }
-    </style>
+@media(max-width:768px) { .sidebar { display: none; } .main { padding: 16px; } }
+</style>
 </head>
 <body>
+
 <aside class="sidebar">
-    <div class="sidebar-logo">
+    <div class="logo">
         <h1>PRODIGY</h1>
         <p>Digital Dentistry</p>
-        <div class="role-badge"><i class="fas fa-drafting-compass"></i> Operador</div>
+        <div class="role-badge">Operador CAD/CAM</div>
     </div>
-    <a href="operator-panel.html" class="nav-item active"><i class="fas fa-columns"></i> Mis Casos</a>
-    <a href="#" class="nav-item"><i class="fas fa-inbox"></i> Recibidos</a>
-    <a href="#" class="nav-item"><i class="fas fa-cloud-upload-alt"></i> Subir Final</a>
-    <a href="#" class="nav-item"><i class="fas fa-history"></i> Historial</a>
+    <a href="operator-panel.html" class="nav-item active">Mis Casos</a>
+    <a href="inventario.html" class="nav-item">Inventario</a>
     <div class="sidebar-footer">
-        <a href="#" class="nav-item" onclick="ProdigyAuth.signOut()"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
+        <button class="panico-btn" onclick="abrirPanico()">INCIDENCIA</button>
+        <a href="#" class="nav-item" onclick="ProdigyAuth.signOut()" style="margin-top:8px">Cerrar Sesión</a>
     </div>
 </aside>
 
 <main class="main">
     <div class="page-header">
-        <h1>Panel Operador <span style="color:var(--green);">CAD/CAM</span></h1>
-        <p>Casos asignados · Solo ves tus tareas — sin acceso a finanzas ni precios</p>
+        <div>
+            <h1>Panel Operador <span style="color:var(--green)">CAD/CAM</span></h1>
+            <p id="hdr-sub">Cargando casos...</p>
+        </div>
     </div>
 
-    <!-- KANBAN BOARD -->
-    <div class="kanban-board">
+    <!-- Timer alerta global -->
+    <div class="timer-bar" id="timer-alerta">
+        ALERTA: Tienes casos en validación por más de 25 minutos. Revisa la columna de pendientes.
+    </div>
 
-        <!-- PENDIENTES -->
-        <div class="kanban-col">
-            <div class="kanban-col-header" style="color:#fbbf24;">
-                <span><i class="fas fa-inbox"></i> &nbsp;Pendientes</span>
-                <span class="col-count">2</span>
+    <!-- Kanban -->
+    <div class="kanban">
+        <div class="k-col">
+            <div class="k-hdr" style="color:var(--yellow)">
+                Pendientes / Validar <span class="k-count" id="cnt-pend">0</span>
             </div>
-            <div class="caso-card" style="border-color:rgba(239,68,68,0.25);" data-id="PRD-2025-041" data-paciente="J•• L•••••" data-servicio="Diseño Express Posterior" data-material="Zirconio 3Y" data-color="A2" data-piezas="14, 15" data-oclusion="Articulado en MIC" data-espacio-cemento="60 µm">
-                <div class="caso-id">#PRD-2025-041 <span class="urgente-dot"></span></div>
-                <div class="caso-paciente">J•• L•••••</div>
-                <div class="caso-meta">
-                    <i class="fas fa-pen-nib" style="color:#D946A6;"></i> Diseño Express Posterior<br>
-                    <i class="fas fa-clock" style="color:#fbbf24;"></i> Entrega: hoy 5:00 PM<br>
-                    <i class="fas fa-tooth" style="color:#94a3b8;"></i> Piezas: 14, 15
-                </div>
-                <div class="caso-actions">
-                    <a href="#" class="btn-xs btn-cyan"><i class="fas fa-download"></i> STL</a>
-                    <button class="btn-xs btn-green" onclick="moverCaso(this,'En Proceso')"><i class="fas fa-play"></i> Iniciar</button>
-                </div>
-            </div>
-            <div class="caso-card" data-id="PRD-2025-040" data-paciente="A•• M••••••••" data-servicio="Impresión — Modelo Studio" data-material="Resina Studio" data-color="-" data-piezas="General" data-oclusion="-" data-espacio-cemento="-">
-                <div class="caso-id">#PRD-2025-040</div>
-                <div class="caso-paciente">A•• M••••••••</div>
-                <div class="caso-meta">
-                    <i class="fas fa-print" style="color:#00d2ff;"></i> Impresión — Modelo Studio<br>
-                    <i class="fas fa-clock" style="color:#94a3b8;"></i> Entrega: mañana 12:00 PM
-                </div>
-                <div class="caso-actions">
-                    <a href="#" class="btn-xs btn-cyan"><i class="fas fa-download"></i> STL</a>
-                    <button class="btn-xs btn-green" onclick="moverCaso(this,'En Proceso')"><i class="fas fa-play"></i> Iniciar</button>
-                </div>
-            </div>
+            <div id="col-pend"><div class="loader"><div class="spinner"></div></div></div>
         </div>
-
-        <!-- EN PROCESO -->
-        <div class="kanban-col">
-            <div class="kanban-col-header" style="color:var(--cyan);">
-                <span><i class="fas fa-circle-notch fa-spin"></i> &nbsp;En Proceso</span>
-                <span class="col-count">1</span>
+        <div class="k-col">
+            <div class="k-hdr" style="color:var(--cyan)">
+                En Producción <span class="k-count" id="cnt-prod">0</span>
             </div>
-            <div class="caso-card" style="border-color:rgba(0,210,255,0.2);" data-id="PRD-2025-039" data-paciente="C•••• R•••••" data-servicio="Fresado — Zirconio 5Y" data-material="Zirconio 5Y" data-color="B1" data-piezas="25, 26, 27" data-oclusion="Carga total" data-espacio-cemento="80 µm">
-                <div class="caso-id">#PRD-2025-039</div>
-                <div class="caso-paciente">C•••• R•••••</div>
-                <div class="caso-meta">
-                    <i class="fas fa-gear" style="color:#D4AF37;"></i> Fresado — Zirconio 5Y<br>
-                    <i class="fas fa-clock" style="color:#94a3b8;"></i> Entrega: mañana 10:00 AM<br>
-                    <i class="fas fa-tooth"></i> Piezas: 25, 26, 27
-                </div>
-                <div class="caso-actions">
-                    <button class="btn-xs btn-gold" onclick="abrirModalEntrega(this.closest('.caso-card'))">
-                        <i class="fas fa-upload"></i> Finalizar
-                    </button>
-                </div>
-            </div>
+            <div id="col-prod"><div class="loader"><div class="spinner"></div></div></div>
         </div>
-
-        <!-- REVISIÓN / ENTREGADO -->
-        <div class="kanban-col">
-            <div class="kanban-col-header" style="color:var(--green);">
-                <span><i class="fas fa-check-double"></i> &nbsp;Revisión / Entregado</span>
-                <span class="col-count">1</span>
+        <div class="k-col">
+            <div class="k-hdr" style="color:var(--green)">
+                QA / Completados <span class="k-count" id="cnt-done">0</span>
             </div>
-            <div class="caso-card" style="border-color:rgba(0,255,65,0.15);" data-id="PRD-2025-038">
-                <div class="caso-id">#PRD-2025-038</div>
-                <div class="caso-paciente">M•••• G••••••</div>
-                <div class="caso-meta">
-                    <i class="fas fa-print" style="color:#00d2ff;"></i> Impresión — Biomodelo FDM<br>
-                    <i class="fas fa-check-circle" style="color:var(--green);"></i> Entregado: 2025-03-28
-                </div>
-                <div class="caso-actions">
-                    <span style="font-size:0.68rem;color:var(--green);"><i class="fas fa-check"></i> Completado</span>
-                </div>
-            </div>
+            <div id="col-done"><div class="loader"><div class="spinner"></div></div></div>
         </div>
+    </div>
 
-    </div><!-- /kanban -->
-
-    <!-- AVISO -->
-    <div style="margin-top:28px;background:rgba(0,210,255,0.05);border:1px solid rgba(0,210,255,0.15);border-radius:12px;padding:18px 20px;font-size:0.82rem;color:#94a3b8;">
-        <i class="fas fa-lock" style="color:#00d2ff;margin-right:8px;"></i>
-        <strong style="color:#00d2ff;">Acceso restringido:</strong> Solo puedes ver los casos que el Admin te ha asignado. Los precios, facturación y datos financieros no están disponibles en este nivel.
+    <!-- Ficha de Puesto -->
+    <div class="ficha-section">
+        <h2>Ficha de Puesto — Hoy</h2>
+        <div class="ficha-grid" id="ficha-grid">
+            <div class="loader"><div class="spinner"></div></div>
+        </div>
     </div>
 </main>
 
-<!-- ═══ MODAL: ENTREGA DUAL (Agente 3) ═══ -->
-<div class="modal-overlay" id="modal-entrega">
+<!-- Modal: Reportar Incidencia -->
+<div class="modal-overlay" id="modal-panico">
     <div class="modal-box">
-        <button class="modal-close" onclick="cerrarModal()"><i class="fas fa-times"></i></button>
-        <div class="modal-title"><i class="fas fa-flag-checkered"></i> Finalizar Entrega del Caso</div>
-        <div class="modal-subtitle" id="modal-caso-id">Caso #—</div>
-
-        <!-- Checklist de requisitos -->
-        <div class="req-checklist">
-            <div class="req-item pending" id="req-exocad">
-                <div class="req-icon"><i class="fas fa-link"></i></div>
-                <span class="req-text">Link Visor Exocad HTML</span>
-            </div>
-            <div class="req-item pending" id="req-stl">
-                <div class="req-icon"><i class="fas fa-cube"></i></div>
-                <span class="req-text">Archivo STL Final</span>
-            </div>
-            <div class="req-item pending" id="req-foto">
-                <div class="req-icon"><i class="fas fa-camera"></i></div>
-                <span class="req-text">Foto de Control (Nesting)</span>
-            </div>
+        <button class="modal-close" onclick="cerrarModal('modal-panico')">✕</button>
+        <div class="modal-title" style="color:var(--red)">REPORTAR INCIDENCIA</div>
+        <div class="modal-sub">El administrador recibirá una alerta push inmediata.</div>
+        <input type="hidden" id="inc-pedido-id">
+        <div class="field">
+            <label>Tipo de incidencia</label>
+            <select id="inc-tipo">
+                <option value="ERROR_STL">Error en archivo STL</option>
+                <option value="FALLA_MAQUINA">Falla de máquina</option>
+                <option value="STOCK_CRITICO">Stock crítico / agotado</option>
+                <option value="RETRASO_VALIDACION">Retraso en validación</option>
+                <option value="DIRECCION_INCORRECTA">Dirección incorrecta</option>
+                <option value="CLIENTE_AUSENTE">Cliente ausente</option>
+                <option value="OTRO">Otro</option>
+            </select>
         </div>
-
-        <!-- Link Exocad -->
-        <div class="form-field">
-            <label class="form-label">Link Visor Exocad HTML <span class="req">*</span></label>
-            <input type="url" id="input-exocad-link" class="form-input"
-                placeholder="https://viewer.exocad.com/case/..."
-                oninput="validarExocadLink(this)">
-            <div style="font-size:0.68rem;color:var(--muted);margin-top:4px;">
-                Exporta desde Exocad → Archivo → Exportar visor HTML → copia el link.
-            </div>
+        <div class="field">
+            <label>Pedido afectado (opcional)</label>
+            <select id="inc-pedido-sel">
+                <option value="">Sin pedido específico</option>
+            </select>
         </div>
-
-        <!-- STL Final -->
-        <div class="form-field">
-            <label class="form-label">STL Final <span class="req">*</span></label>
-            <div class="upload-box" id="box-stl"
-                ondragover="event.preventDefault(); this.classList.add('drag-over')"
-                ondragleave="this.classList.remove('drag-over')"
-                ondrop="handleDropOperador(event,'stl')">
-                <input type="file" accept=".stl,.obj,.ply" id="input-stl" onchange="handleFileOperador(this,'stl')">
-                <div class="ub-icon">📦</div>
-                <div class="ub-label">Arrastra el STL aquí o haz clic</div>
-                <div class="ub-hint">Formatos: .stl · .obj · .ply — Máx. 500 MB</div>
-                <div class="ub-file" id="stl-filename"></div>
-            </div>
+        <div class="field">
+            <label>Severidad</label>
+            <select id="inc-sev">
+                <option value="BAJA">Baja — puede esperar</option>
+                <option value="MEDIA" selected>Media — atender hoy</option>
+                <option value="ALTA">Alta — atender ahora</option>
+                <option value="CRITICA">Crítica — producción detenida</option>
+            </select>
         </div>
-
-        <!-- Foto de Control -->
-        <div class="form-field">
-            <label class="form-label">Foto de Control / Nesting <span class="req">*</span>
-                <span style="font-size:0.65rem;color:var(--muted);font-weight:400;">— evidencia ante reclamos técnicos</span>
-            </label>
-            <div class="upload-box" id="box-foto"
-                ondragover="event.preventDefault(); this.classList.add('drag-over')"
-                ondragleave="this.classList.remove('drag-over')"
-                ondrop="handleDropOperador(event,'foto')">
-                <input type="file" accept=".jpg,.jpeg,.png,.webp" id="input-foto" onchange="handleFileOperador(this,'foto')">
-                <div class="ub-icon">📷</div>
-                <div class="ub-label">Foto del anidado / foto de salida</div>
-                <div class="ub-hint">JPG · PNG · WEBP — Máx. 20 MB</div>
-                <div class="ub-file" id="foto-filename"></div>
-            </div>
+        <div class="field">
+            <label>Descripción</label>
+            <textarea id="inc-desc" placeholder="Describe el problema en detalle..."></textarea>
         </div>
-
-        <!-- Notas opcionales -->
-        <div class="form-field">
-            <label class="form-label">Notas para el cliente <span style="color:var(--muted);font-weight:400;">(opcional)</span></label>
-            <textarea id="input-notas" class="form-input" rows="3"
-                placeholder="Observaciones, instrucciones de cementación, etc."
-                style="resize:vertical;"></textarea>
+        <div class="modal-footer">
+            <button class="btn-modal btn-modal-outline" onclick="cerrarModal('modal-panico')">Cancelar</button>
+            <button class="btn-modal" style="background:var(--red);color:#fff" onclick="enviarIncidencia()">Enviar Alerta</button>
         </div>
-
-        <button class="btn-finalizar" id="btn-confirmar-entrega" disabled onclick="confirmarEntrega()">
-            <i class="fas fa-lock" style="margin-right:6px;"></i> Completa los 3 requisitos para finalizar
-        </button>
     </div>
 </div>
 
-<!-- ═══ SPINNER DE CARGA (Agente 4) ═══ -->
-<div class="upload-spinner" id="upload-spinner">
-    <div class="spinner-ring"></div>
-    <div class="spinner-msg">🚀 Procesando archivos de ingeniería...</div>
-    <div class="spinner-sub">No cierres esta ventana para asegurar la integridad del diseño</div>
+<!-- Modal: QA Checklist + finalizar -->
+<div class="modal-overlay" id="modal-qa">
+    <div class="modal-box">
+        <button class="modal-close" onclick="cerrarModal('modal-qa')">✕</button>
+        <div class="modal-title">Control de Calidad — QA</div>
+        <div class="modal-sub" id="qa-caso-sub">Caso #—</div>
+        <div class="qa-list">
+            <div class="qa-item"><input type="checkbox" id="qa1"><label for="qa1">Margen gingival dentro de tolerancia</label></div>
+            <div class="qa-item"><input type="checkbox" id="qa2"><label for="qa2">Espacio oclusal correcto</label></div>
+            <div class="qa-item"><input type="checkbox" id="qa3"><label for="qa3">Puntos de contacto proximal OK</label></div>
+            <div class="qa-item"><input type="checkbox" id="qa4"><label for="qa4">Color VITA verificado con el pedido</label></div>
+            <div class="qa-item"><input type="checkbox" id="qa5"><label for="qa5">Sin burbujas, defectos ni fracturas</label></div>
+            <div class="qa-item"><input type="checkbox" id="qa6"><label for="qa6">Acabado superficial aprobado</label></div>
+        </div>
+        <input type="hidden" id="qa-pedido-id">
+        <div class="field">
+            <label>Notas de QA (opcional)</label>
+            <textarea id="qa-notas" placeholder="Observaciones adicionales..."></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-modal btn-modal-outline" onclick="cerrarModal('modal-qa')">Cancelar</button>
+            <button class="btn-modal btn-modal-primary" id="btn-aprobar-qa" onclick="aprobarQA()">Aprobar para Envío</button>
+        </div>
+    </div>
 </div>
 
+<div id="toast"></div>
+
 <script>
-    ProdigyAuth.require('operator');
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const ADMIN_PUSH_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/send-push';
 
-    /* ── Estado del modal ── */
-    const _entrega = { caseId: null, exocadLink: false, stlFile: null, fotoFile: null };
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+let _pedidos = [];
+let _userId  = null;
+let _timerInterval = null;
 
-    function abrirModalEntrega(card) {
-        const id = card.dataset.id || '—';
-        document.getElementById('modal-caso-id').textContent = 'Caso #' + id;
-        _entrega.caseId    = id;
-        _entrega.exocadLink = false;
-        _entrega.stlFile    = null;
-        _entrega.fotoFile   = null;
-        // Reset UI
-        ['input-exocad-link','input-notas'].forEach(id => document.getElementById(id).value = '');
-        ['input-stl','input-foto'].forEach(id => document.getElementById(id).value = '');
-        ['box-stl','box-foto'].forEach(id => document.getElementById(id).classList.remove('uploaded'));
-        ['stl-filename','foto-filename'].forEach(id => document.getElementById(id).textContent = '');
-        ['req-exocad','req-stl','req-foto'].forEach(id => setReq(id, false));
-        actualizarBtnFinalizar();
-        document.getElementById('modal-entrega').classList.add('open');
+// Estados operativos por columna
+const PENDIENTES = ['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE'];
+const PRODUCCION = ['EN_PRODUCCION','DISENO_FINALIZADO','FRESADO_INICIADO'];
+const COMPLETADOS = ['QA_APROBADO','POR_DESPACHAR','EN_REPARTO','ENTREGADO'];
+
+// ── Init ──────────────────────────────────────────────────────────
+(async function init() {
+    const session = await ProdigyAuth.require(['admin','operator','encargado_inventario']);
+    if (!session) return;
+    _userId = session.user.id;
+    document.body.classList.add('ready');
+    document.getElementById('hdr-sub').textContent =
+        `Operador: ${session.user.email}  ·  ${new Date().toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'})}`;
+    await cargarPedidos();
+    // Actualizar timers cada 30s
+    _timerInterval = setInterval(actualizarTimers, 30000);
+})();
+
+// ── Cargar pedidos ────────────────────────────────────────────────
+async function cargarPedidos() {
+    const { data, error } = await sb.from('pedidos')
+        .select('id, codigo, nombre_paciente, servicio, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material')
+        .not('estado', 'in', '("cancelado","CANCELADO")')
+        .order('created_at', { ascending: false })
+        .limit(100);
+
+    if (error) { toast('Error cargando pedidos: ' + error.message, 'err'); return; }
+    _pedidos = (data || []).map(p => ({
+        ...p,
+        estado_operativo: p.estado_operativo || 'VALIDACION_PENDIENTE'
+    }));
+
+    renderKanban();
+    renderFichaPuesto();
+    poblarSelectIncidencias();
+    actualizarTimers();
+}
+
+// ── Render kanban ─────────────────────────────────────────────────
+function renderKanban() {
+    const pend = _pedidos.filter(p => PENDIENTES.includes(p.estado_operativo));
+    const prod = _pedidos.filter(p => PRODUCCION.includes(p.estado_operativo));
+    const done = _pedidos.filter(p => COMPLETADOS.includes(p.estado_operativo));
+
+    document.getElementById('cnt-pend').textContent = pend.length;
+    document.getElementById('cnt-prod').textContent = prod.length;
+    document.getElementById('cnt-done').textContent = done.length;
+
+    document.getElementById('col-pend').innerHTML = pend.length
+        ? pend.map(p => cardHTML(p, 'pend')).join('')
+        : '<p style="color:var(--muted);font-size:.8rem;padding:10px">Sin casos pendientes</p>';
+
+    document.getElementById('col-prod').innerHTML = prod.length
+        ? prod.map(p => cardHTML(p, 'prod')).join('')
+        : '<p style="color:var(--muted);font-size:.8rem;padding:10px">Sin casos en producción</p>';
+
+    document.getElementById('col-done').innerHTML = done.length
+        ? done.map(p => cardHTML(p, 'done')).join('')
+        : '<p style="color:var(--muted);font-size:.8rem;padding:10px">Sin casos completados</p>';
+}
+
+function cardHTML(p, col) {
+    const mins   = (Date.now() - new Date(p.created_at).getTime()) / 60000;
+    const urgente = col === 'pend' && mins > 40;
+    const alerta  = col === 'pend' && mins > 25 && !urgente;
+    const timerClass = urgente ? 'critico' : alerta ? 'alerta' : 'ok';
+    const timerLabel = col === 'pend'
+        ? `${Math.floor(mins)}min desde creación`
+        : '';
+
+    const actions = col === 'pend'
+        ? `<button class="btn-xs btn-green" onclick="avanzarEstado('${p.id}','EN_PRODUCCION')">OK — Iniciar</button>
+           <button class="btn-xs btn-red"   onclick="reportarIncidenciaCard('${p.id}','ERROR_STL')">Incidencia STL</button>`
+        : col === 'prod'
+        ? `<button class="btn-xs btn-cyan"  onclick="avanzarEstado('${p.id}','DISENO_FINALIZADO')">Diseño OK</button>
+           <button class="btn-xs btn-gold"  onclick="avanzarEstado('${p.id}','FRESADO_INICIADO')">Fresado</button>
+           <button class="btn-xs btn-yellow" onclick="abrirQA('${p.id}','${p.codigo||''}')">QA</button>`
+        : `<span style="font-size:.68rem;color:var(--green)">✓ ${p.estado_operativo}</span>`;
+
+    return `
+    <div class="caso-card" style="${urgente ? 'border-color:rgba(239,68,68,.4)' : alerta ? 'border-color:rgba(251,191,36,.3)' : ''}">
+        ${timerLabel ? `<div class="card-timer ${timerClass}">${timerLabel}</div>` : ''}
+        <div class="caso-id">#${p.codigo || p.id.slice(0,8)} ${urgente ? '<span class="urgente-dot"></span>' : ''}</div>
+        <div class="caso-nombre">${p.nombre_paciente || 'Sin nombre'}</div>
+        <div class="caso-meta">
+            ${p.servicio || '—'}<br>
+            ${p.material ? 'Material: ' + p.material : ''}
+            ${p.color_vita ? ' · Color: ' + p.color_vita : ''}
+        </div>
+        <div class="caso-actions">${actions}</div>
+    </div>`;
+}
+
+// ── Timers ────────────────────────────────────────────────────────
+function actualizarTimers() {
+    const tieneAlerta = _pedidos.some(p => {
+        if (!PENDIENTES.includes(p.estado_operativo)) return false;
+        const mins = (Date.now() - new Date(p.created_at).getTime()) / 60000;
+        return mins > 25;
+    });
+    const tieneCritico = _pedidos.some(p => {
+        if (!PENDIENTES.includes(p.estado_operativo)) return false;
+        const mins = (Date.now() - new Date(p.created_at).getTime()) / 60000;
+        return mins > 40;
+    });
+    const bar = document.getElementById('timer-alerta');
+    bar.className = 'timer-bar';
+    if (tieneCritico) {
+        bar.classList.add('visible','critico');
+        bar.textContent = 'CRITICO: Caso(s) con más de 40 minutos sin validar. Tiempo de gracia por vencer.';
+    } else if (tieneAlerta) {
+        bar.classList.add('visible');
+        bar.textContent = 'ALERTA: Tienes casos en validación por más de 25 minutos.';
     }
+}
 
-    function cerrarModal() {
-        document.getElementById('modal-entrega').classList.remove('open');
-    }
+// ── Avanzar estado ────────────────────────────────────────────────
+async function avanzarEstado(pedidoId, nuevoEstado) {
+    const updates = { estado_operativo: nuevoEstado };
+    if (nuevoEstado === 'EN_PRODUCCION') updates.timestamp_validacion = new Date().toISOString();
+    if (nuevoEstado === 'FRESADO_INICIADO') updates.timestamp_produccion = new Date().toISOString();
 
-    function setReq(reqId, ok) {
-        const el = document.getElementById(reqId);
-        el.className = 'req-item ' + (ok ? 'ok' : 'pending');
-    }
+    const { error } = await sb.from('pedidos').update(updates).eq('id', pedidoId);
+    if (error) { toast('Error: ' + error.message, 'err'); return; }
+    toast('Estado actualizado: ' + nuevoEstado, 'ok');
+    await cargarPedidos();
+}
 
-    function validarExocadLink(input) {
-        const val = input.value.trim();
-        const ok  = val.length > 10 && (val.startsWith('http://') || val.startsWith('https://'));
-        _entrega.exocadLink = ok;
-        input.className = 'form-input ' + (ok ? 'valid' : (val ? 'error' : ''));
-        setReq('req-exocad', ok);
-        actualizarBtnFinalizar();
-    }
+// ── QA ────────────────────────────────────────────────────────────
+function abrirQA(pedidoId, codigo) {
+    document.getElementById('qa-pedido-id').value = pedidoId;
+    document.getElementById('qa-caso-sub').textContent = 'Caso #' + codigo;
+    document.getElementById('qa-notas').value = '';
+    ['qa1','qa2','qa3','qa4','qa5','qa6'].forEach(id => document.getElementById(id).checked = false);
+    document.getElementById('modal-qa').classList.add('open');
+}
 
-    function handleFileOperador(input, tipo) {
-        const file = input.files[0];
-        if (!file) return;
-        const ruleMap = { stl: 'CAD', foto: 'FOTO_SALIDA' };
-        if (window.validateUpload) {
-            const r = validateUpload(file, ruleMap[tipo]);
-            if (!r.valid) { showUploadError(r.error); input.value = ''; return; }
-        }
-        if (tipo === 'stl') {
-            _entrega.stlFile = file;
-            document.getElementById('stl-filename').textContent = '✓ ' + file.name;
-            document.getElementById('box-stl').classList.add('uploaded');
-            setReq('req-stl', true);
-        } else {
-            _entrega.fotoFile = file;
-            document.getElementById('foto-filename').textContent = '✓ ' + file.name;
-            document.getElementById('box-foto').classList.add('uploaded');
-            setReq('req-foto', true);
-        }
-        actualizarBtnFinalizar();
-    }
+async function aprobarQA() {
+    const checks = ['qa1','qa2','qa3','qa4','qa5','qa6'].every(id => document.getElementById(id).checked);
+    if (!checks) { toast('Completa todos los ítems del checklist de CC', 'err'); return; }
+    const pedidoId = document.getElementById('qa-pedido-id').value;
+    const { error } = await sb.from('pedidos').update({
+        estado_operativo: 'QA_APROBADO',
+        timestamp_qa: new Date().toISOString(),
+        estado: 'terminado',
+    }).eq('id', pedidoId);
+    if (error) { toast('Error: ' + error.message, 'err'); return; }
+    toast('QA aprobado — caso listo para despacho', 'ok');
+    cerrarModal('modal-qa');
+    await cargarPedidos();
+}
 
-    function handleDropOperador(event, tipo) {
-        event.preventDefault();
-        const box = event.currentTarget;
-        box.classList.remove('drag-over');
-        const input = box.querySelector('input[type="file"]');
-        const dt = new DataTransfer();
-        if (event.dataTransfer.files[0]) dt.items.add(event.dataTransfer.files[0]);
-        input.files = dt.files;
-        handleFileOperador(input, tipo);
-    }
+// ── Incidencias ───────────────────────────────────────────────────
+function abrirPanico() {
+    document.getElementById('inc-pedido-id').value = '';
+    document.getElementById('modal-panico').classList.add('open');
+}
 
-    function actualizarBtnFinalizar() {
-        const listo = _entrega.exocadLink && _entrega.stlFile && _entrega.fotoFile;
-        const btn = document.getElementById('btn-confirmar-entrega');
-        btn.disabled = !listo;
-        btn.className = 'btn-finalizar' + (listo ? ' ready' : '');
-        btn.innerHTML = listo
-            ? '<i class="fas fa-flag-checkered" style="margin-right:6px;"></i> Confirmar Entrega al Cliente'
-            : '<i class="fas fa-lock" style="margin-right:6px;"></i> Completa los 3 requisitos para finalizar';
-    }
+function reportarIncidenciaCard(pedidoId, tipo) {
+    document.getElementById('inc-pedido-sel').value = pedidoId;
+    document.getElementById('inc-tipo').value = tipo;
+    document.getElementById('modal-panico').classList.add('open');
+}
 
-    async function confirmarEntrega() {
-        if (!(_entrega.exocadLink && _entrega.stlFile && _entrega.fotoFile)) return;
-        cerrarModal();
+function poblarSelectIncidencias() {
+    const sel = document.getElementById('inc-pedido-sel');
+    sel.innerHTML = '<option value="">Sin pedido específico</option>';
+    _pedidos.filter(p => !COMPLETADOS.includes(p.estado_operativo)).forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = `#${p.codigo || p.id.slice(0,8)} — ${p.nombre_paciente || '—'}`;
+        sel.appendChild(opt);
+    });
+}
 
-        const spinner = document.getElementById('upload-spinner');
-        spinner.classList.add('active');
+async function enviarIncidencia() {
+    const desc = document.getElementById('inc-desc').value.trim();
+    if (!desc) { toast('Describe el problema', 'err'); return; }
 
-        try {
-            const sb        = ProdigyAuth.getSb();
-            const uid       = window.PRODIGY_USER?.id || 'operador';
-            const ts        = Date.now();
-            const caseId    = _entrega.caseId;
-            const extStl    = _entrega.stlFile.name.split('.').pop().toLowerCase();
-            const extFoto   = _entrega.fotoFile.name.split('.').pop().toLowerCase();
-            const pathStl   = `${uid}/${caseId}_${ts}.${extStl}`;
-            const pathFoto  = `${uid}/${caseId}_${ts}_nesting.${extFoto}`;
+    const pedidoId = document.getElementById('inc-pedido-sel').value || null;
+    const tipo     = document.getElementById('inc-tipo').value;
+    const sev      = document.getElementById('inc-sev').value;
 
-            // 1. Subir STL Final al bucket dental-cases
-            const { error: errStl } = await sb.storage
-                .from(BUCKET)
-                .upload(pathStl, _entrega.stlFile, { upsert: false, cacheControl: '3600' });
-            if (errStl) throw new Error('STL: ' + errStl.message);
+    const { error } = await sb.from('logs_incidencias').insert({
+        pedido_id:   pedidoId || undefined,
+        emisor_id:   _userId,
+        tipo, descripcion: desc, severidad: sev,
+    });
+    if (error) { toast('Error al registrar: ' + error.message, 'err'); return; }
 
-            // 2. Subir Foto de Control
-            const { error: errFoto } = await sb.storage
-                .from(BUCKET)
-                .upload(pathFoto, _entrega.fotoFile, { upsert: false, cacheControl: '3600' });
-            if (errFoto) throw new Error('Foto: ' + errFoto.message);
-
-            // 3. Actualizar registro en tabla pedidos
-            const notas = document.getElementById('input-notas')?.value?.trim() || null;
-            const { error: errDb } = await sb.from('pedidos').update({
-                estado:           'Listo para Entrega',
-                archivo_stl_path: pathStl,
-                foto_salida_path: pathFoto,
-                exocad_link:      _entrega.exocadLink,
-                notas_operador:   notas,
-            }).eq('codigo', caseId);
-            if (errDb) throw new Error('DB: ' + errDb.message);
-
-            // Éxito — actualizar kanban
-            spinner.classList.remove('active');
-            const card = document.querySelector(`.caso-card[data-id="${caseId}"]`);
-            if (card) {
-                const destCol = document.querySelectorAll('.kanban-col')[2];
-                if (destCol) {
-                    const newMeta = card.querySelector('.caso-meta');
-                    if (newMeta) newMeta.innerHTML = `
-                        <i class="fas fa-check-circle" style="color:var(--green);"></i> Entregado: ${new Date().toLocaleDateString('es-CO')}<br>
-                        <i class="fas fa-link" style="color:var(--cyan);"></i> Visor Exocad adjunto`;
-                    const actions = card.querySelector('.caso-actions');
-                    if (actions) actions.innerHTML = '<span style="font-size:0.68rem;color:var(--green);"><i class="fas fa-check"></i> Completado</span>';
-                    card.style.borderColor = 'rgba(0,255,65,0.15)';
-                    destCol.appendChild(card);
-                    actualizarConteos();
-                }
-            }
-            showUploadError('✅ Caso ' + caseId + ' entregado. Cliente notificado.');
-
-        } catch (err) {
-            spinner.classList.remove('active');
-            showUploadError('❌ Error al subir: ' + err.message + '. Intenta de nuevo.');
-        }
-    }
-
-    function moverCaso(btn, estado) {
-        const card = btn.closest('.caso-card');
-        const dest = document.querySelectorAll('.kanban-col');
-        const map  = { 'En Proceso': 1, 'Revisión': 2 };
-        if (dest[map[estado]]) {
-            // Añadir botón "Finalizar" en columna En Proceso
-            if (estado === 'En Proceso') {
-                const actions = card.querySelector('.caso-actions');
-                actions.innerHTML = `
-                    <button class="btn-xs btn-gold" onclick="abrirModalEntrega(this.closest('.caso-card'))">
-                        <i class="fas fa-upload"></i> Finalizar
-                    </button>`;
-            }
-            dest[map[estado]].appendChild(card);
-            actualizarConteos();
-        }
-    }
-
-    function actualizarConteos() {
-        document.querySelectorAll('.kanban-col').forEach(col => {
-            const count = col.querySelectorAll('.caso-card').length;
-            col.querySelector('.col-count').textContent = count;
+    // Notificar admin via push
+    try {
+        await fetch(ADMIN_PUSH_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: null, // admin
+                title: `INCIDENCIA ${sev}`,
+                body:  `${tipo}: ${desc.slice(0,80)}`,
+                tag:   'incidencia-prod',
+                url:   '/app/admin-panel.html',
+            }),
         });
-    }
+    } catch {}
+
+    toast('Incidencia reportada — admin notificado', 'ok');
+    cerrarModal('modal-panico');
+    document.getElementById('inc-desc').value = '';
+}
+
+// ── Ficha de Puesto ───────────────────────────────────────────────
+function renderFichaPuesto() {
+    const hoy = new Date().toLocaleDateString('es-CO', { dateStyle: 'full' });
+    const pendientes = _pedidos.filter(p => PENDIENTES.includes(p.estado_operativo));
+    const produccion = _pedidos.filter(p => PRODUCCION.includes(p.estado_operativo));
+    const urgentes   = pendientes.filter(p => {
+        const mins = (Date.now() - new Date(p.created_at).getTime()) / 60000;
+        return mins > 25;
+    });
+
+    document.getElementById('ficha-grid').innerHTML = `
+    <div class="ficha-card">
+        <h4>Resumen del día — ${hoy}</h4>
+        <div class="ficha-item"><div class="ficha-dot" style="background:var(--yellow)"></div>Pendientes de validar: <strong style="margin-left:auto">${pendientes.length}</strong></div>
+        <div class="ficha-item"><div class="ficha-dot" style="background:var(--cyan)"></div>En producción: <strong style="margin-left:auto">${produccion.length}</strong></div>
+        <div class="ficha-item"><div class="ficha-dot" style="background:var(--red)"></div>Urgentes (+25 min): <strong style="margin-left:auto;color:${urgentes.length?'var(--red)':'inherit'}">${urgentes.length}</strong></div>
+    </div>
+    <div class="ficha-card">
+        <h4>Checklist de turno</h4>
+        <div class="ficha-item"><div class="ficha-dot" style="background:var(--green)"></div>Revisar bandeja de STLs entrantes</div>
+        <div class="ficha-item"><div class="ficha-dot" style="background:var(--green)"></div>Validar parámetros Exocad antes de iniciar</div>
+        <div class="ficha-item"><div class="ficha-dot" style="background:var(--green)"></div>Reportar nivel de fresas al encargado</div>
+        <div class="ficha-item"><div class="ficha-dot" style="background:var(--green)"></div>QA visual antes de marcar "terminado"</div>
+    </div>
+    <div class="ficha-card">
+        <h4>Protocolos de Incidencia</h4>
+        <div class="ficha-item"><div class="ficha-dot" style="background:var(--red)"></div>STL con error → botón "Incidencia STL"</div>
+        <div class="ficha-item"><div class="ficha-dot" style="background:var(--yellow)"></div>Falla de máquina → INCIDENCIA → Falla máquina</div>
+        <div class="ficha-item"><div class="ficha-dot" style="background:var(--cyan)"></div>Duda técnica → WhatsApp al Admin</div>
+    </div>`;
+}
+
+// ── Helpers ───────────────────────────────────────────────────────
+function cerrarModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function toast(msg, type = 'ok') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = `show ${type}`;
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.remove('show'), 3000);
+}
 </script>
 </body>
 </html>
