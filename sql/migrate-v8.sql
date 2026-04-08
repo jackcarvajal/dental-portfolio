@@ -60,12 +60,25 @@ CREATE TRIGGER inc_updated_at
     FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 -- ── 3. Contador de uso en equipos (para semáforo de mantenimiento) ─
+CREATE TABLE IF NOT EXISTS equipo_mantenimiento (
+    id              UUID        PRIMARY KEY DEFAULT uuid_generate_v4(),
+    nombre          TEXT        NOT NULL,
+    tipo            TEXT        NOT NULL DEFAULT 'Fresadora',
+    estado          TEXT        NOT NULL DEFAULT 'operativo'
+                                CHECK (estado IN ('operativo','mantenimiento','fuera_de_servicio')),
+    ultimo_mantenimiento TIMESTAMPTZ,
+    proximo_mantenimiento TIMESTAMPTZ,
+    horas_uso       INT         NOT NULL DEFAULT 0,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 ALTER TABLE equipo_mantenimiento ADD COLUMN IF NOT EXISTS horas_uso INT DEFAULT 0;
 
 -- Vista: pedidos en validación con tiempo transcurrido
 CREATE OR REPLACE VIEW v_pedidos_urgentes AS
 SELECT
-    p.id, p.codigo, p.nombre_paciente, p.servicio, p.estado_operativo,
+    p.id, p.codigo, p.nombre_paciente, p.estado_operativo,
     p.created_at, p.timestamp_validacion,
     EXTRACT(EPOCH FROM (now() - p.created_at)) / 60 AS minutos_desde_creacion,
     CASE
