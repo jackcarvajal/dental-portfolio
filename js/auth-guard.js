@@ -16,17 +16,19 @@
     const ADMIN_EMAILS  = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com'];
 
     const DEST_MAP = {
-        admin:     'panel-interno-operaciones.html',
-        operator:  'operator-panel.html',
-        mensajero: 'mensajero.html',
-        client:    'client-panel.html'
+        admin:                'panel-interno-operaciones.html',
+        operator:             'operator-panel.html',
+        mensajero:            'mensajero.html',
+        encargado_inventario: 'inventario.html',
+        client:               'client-panel.html'
     };
 
     function getRole(user) {
         if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
         const meta = user.user_metadata || {};
-        if (meta.role === 'operator')  return 'operator';
-        if (meta.role === 'mensajero') return 'mensajero';
+        if (meta.role === 'operator')             return 'operator';
+        if (meta.role === 'mensajero')            return 'mensajero';
+        if (meta.role === 'encargado_inventario') return 'encargado_inventario';
         return 'client';
     }
 
@@ -47,7 +49,8 @@
             return null;
         }
         const role = getRole(session.user);
-        if (neededRole && role !== neededRole) {
+        const allowed = Array.isArray(neededRole) ? neededRole : (neededRole ? [neededRole] : null);
+        if (allowed && !allowed.includes(role)) {
             window.location.href = DEST_MAP[role] || 'login.html';
             return null;
         }
