@@ -480,7 +480,20 @@ async function procesarConfirmacion(){
     }).eq('id',_activeDespId);
 
     if(eD){ toast('Error guardando: '+eD.message,'error'); btnFinal.disabled=false; prog.classList.remove('show'); return; }
-    if(_activePedidoId) await sb.from('pedidos').update({ estado:'ENTREGADO' }).eq('id',_activePedidoId);
+    if(_activePedidoId) {
+        await sb.from('pedidos').update({ estado:'ENTREGADO', estado_operativo:'ENTREGADO' }).eq('id',_activePedidoId);
+        // Notificación al doctor — hito 3/3
+        try {
+            const { data:ped } = await sb.from('pedidos').select('email,codigo').eq('id',_activePedidoId).single();
+            if (ped?.email) {
+                await fetch(`${SUPABASE_URL}/functions/v1/send-push`, {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_ANON}`},
+                    body: JSON.stringify({ email: ped.email, titulo:`Caso ${ped.codigo}`, cuerpo:'Caso entregado con éxito. La evidencia fotográfica está en su portal.' })
+                });
+            }
+        } catch(_){}
+    }
 
     prog.classList.remove('show');
     cerrarModalConfirmar();

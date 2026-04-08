@@ -287,36 +287,102 @@ function toast(msg, tipo = '') {
     _toastTimer = setTimeout(() => { el.className = ''; }, 3500);
 }
 
-/* ── PROGRESS BAR ───────────────────────────────────────────── */
-const PASOS = [
-    { key: 'recibido',   label: 'Recibido' },
-    { key: 'produccion', label: 'Producción' },
-    { key: 'listo',      label: 'Listo' },
-    { key: 'camino',     label: 'En Camino' },
-    { key: 'entregado',  label: 'Entregado' },
-];
+/* ── PROGRESS BAR — condicional por tipo de servicio ──────── */
+// Orden numérico de estados operativos
+const ESTADO_ORD = {
+    'VALIDACION_PENDIENTE': 0,
+    'EN_PRODUCCION':        1,
+    'DISENO_FINALIZADO':    2,
+    'FRESADO_INICIADO':     3,
+    'QA_APROBADO':          4,
+    'POR_DESPACHAR':        4,
+    'EN_REPARTO':           5,
+    'ENTREGADO':            6,
+};
 
-function estadoAPaso(estado) {
-    const e = (estado || '').toLowerCase();
-    if (['entregado','entregado'].includes(e)) return 4;
-    if (['en_reparto','despachado'].includes(e)) return 3;
-    if (['terminado','por_despachar','listo'].includes(e)) return 2;
-    if (['en producción','en produccion','pagado'].includes(e)) return 1;
+function estadoAOrden(estadoOp, estadoLegacy) {
+    const op = (estadoOp || '').toUpperCase();
+    if (ESTADO_ORD[op] !== undefined) return ESTADO_ORD[op];
+    // Fallback al campo estado antiguo
+    const e = (estadoLegacy || '').toLowerCase();
+    if (e.includes('entregado'))                         return 6;
+    if (e.includes('reparto') || e.includes('camino'))   return 5;
+    if (e.includes('terminado') || e.includes('listo'))  return 4;
+    if (e.includes('producc') || e.includes('pagado'))   return 1;
     return 0;
 }
 
-function renderProgress(estadoStr) {
-    const paso = estadoAPaso(estadoStr);
-    const steps = PASOS.map((p, i) => {
-        const done   = i < paso;
-        const active = i === paso;
-        const cls    = done ? 'done' : (active ? 'active' : '');
-        const lCls   = done ? 'done' : (active ? 'active' : '');
-        const lineCls = i < paso ? 'done' : '';
-        const line   = i < PASOS.length - 1 ? `<div class="step-line ${lineCls}"></div>` : '';
-        return `<div class="step"><div class="step-dot ${cls}"></div><div class="step-label ${lCls}">${p.label}</div></div>${line}`;
+function getPasos(servicio) {
+    const s = (servicio || '').toLowerCase();
+    const diseno  = s.includes('dise') || s.includes('design');
+    const fresado = s.includes('fres');
+    const impresion = s.includes('impres');
+
+    if (diseno && fresado) return [
+        { label: 'Recibido',     min: 0 },
+        { label: 'Validando',    min: 1 },
+        { label: 'Diseñando',    min: 2 },
+        { label: 'Fresando',     min: 3 },
+        { label: 'QA & Empaque', min: 4 },
+        { label: 'En Camino',    min: 5 },
+        { label: 'Entregado',    min: 6 },
+    ];
+    if (diseno) return [
+        { label: 'Recibido',  min: 0 },
+        { label: 'Validando', min: 1 },
+        { label: 'Diseñando', min: 2 },
+        { label: 'QA',        min: 4 },
+        { label: 'Entregado', min: 6 },
+    ];
+    if (impresion) return [
+        { label: 'Recibido',     min: 0 },
+        { label: 'Validando',    min: 1 },
+        { label: 'Imprimiendo',  min: 3 },
+        { label: 'QA & Empaque', min: 4 },
+        { label: 'En Camino',    min: 5 },
+        { label: 'Entregado',    min: 6 },
+    ];
+    // Default: Fresado
+    return [
+        { label: 'Recibido',     min: 0 },
+        { label: 'Validando',    min: 1 },
+        { label: 'Fresando',     min: 3 },
+        { label: 'QA & Empaque', min: 4 },
+        { label: 'En Camino',    min: 5 },
+        { label: 'Entregado',    min: 6 },
+    ];
+}
+
+function renderProgress(p) {
+    const pasos = getPasos(p.servicio || p.tipo_trabajo || '');
+    const orden = estadoAOrden(p.estado_operativo, p.estado);
+    const steps = pasos.map((paso, i) => {
+        const nextMin = i < pasos.length - 1 ? pasos[i + 1].min : Infinity;
+        const done    = orden >= nextMin;
+        const active  = !done && orden >= paso.min;
+        const cls     = done ? 'done' : (active ? 'active' : '');
+        const line    = i < pasos.length - 1 ? `<div class="step-line ${done ? 'done' : ''}"></div>` : '';
+        return `<div class="step"><div class="step-dot ${cls}"></div><div class="step-label ${cls}">${paso.label}</div></div>${line}`;
     }).join('');
     return `<div class="progress-steps">${steps}</div>`;
+}
+
+// Realtime: actualiza la barra cuando el operador avanza el caso
+let _realtimeChannel = null;
+function suscribirRealtime() {
+    if (_realtimeChannel) { sb.removeChannel(_realtimeChannel); }
+    const ids = new Set(_pedidos.map(p => p.id));
+    _realtimeChannel = sb.channel('tracker-cliente')
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'pedidos' }, payload => {
+            if (!ids.has(payload.new.id)) return;
+            const idx = _pedidos.findIndex(p => p.id === payload.new.id);
+            if (idx >= 0) {
+                _pedidos[idx] = { ..._pedidos[idx], ...payload.new };
+                renderTablas(_pedidos);
+                toast('Tu caso avanzó de estado', 'ok');
+            }
+        })
+        .subscribe();
 }
 
 /* ── BADGE ESTADO ───────────────────────────────────────────── */
@@ -351,7 +417,7 @@ function renderTablas(pedidos) {
                     <td style="font-family:monospace;color:var(--cyan);">${escH(p.codigo || p.id?.slice(0,8))}</td>
                     <td>${escH(p.nombre_paciente || '—')}</td>
                     <td style="font-size:.75rem;">${escH(p.tipo_trabajo || p.material || '—')}</td>
-                    <td>${renderProgress(p.estado)}</td>
+                    <td>${renderProgress(p)}</td>
                     <td>
                         <a href="../seguimiento-caso.html?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold" style="margin-right:4px;">Ver</a>
                         ${puedeSTL ? `<a href="${escH(p.stl_url)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</a>` : ''}
@@ -423,6 +489,7 @@ async function loadByToken(token) {
     _pedidos = data;
     _modoToken = true;
     renderTablas(data);
+    suscribirRealtime();
     document.body.style.visibility = 'visible';
 }
 
@@ -461,6 +528,7 @@ async function loadByAuth(session) {
     }
 
     renderTablas(_pedidos);
+    suscribirRealtime();
 }
 
 /* ── NPS ────────────────────────────────────────────────────── */

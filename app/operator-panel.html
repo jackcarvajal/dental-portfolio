@@ -417,13 +417,33 @@ function actualizarTimers() {
 }
 
 // ── Avanzar estado ────────────────────────────────────────────────
+async function notificarCliente(pedidoId, mensaje) {
+    try {
+        // Obtener email del doctor para push personalizada
+        const { data: p } = await sb.from('pedidos').select('email,nombre_doctor,codigo').eq('id', pedidoId).single();
+        if (!p?.email) return;
+        await fetch(ADMIN_PUSH_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
+            body: JSON.stringify({ email: p.email, titulo: `Caso ${p.codigo}`, cuerpo: mensaje })
+        });
+    } catch (_) { /* push no crítico, ignorar fallo */ }
+}
+
 async function avanzarEstado(pedidoId, nuevoEstado) {
     const updates = { estado_operativo: nuevoEstado };
-    if (nuevoEstado === 'EN_PRODUCCION') updates.timestamp_validacion = new Date().toISOString();
-    if (nuevoEstado === 'FRESADO_INICIADO') updates.timestamp_produccion = new Date().toISOString();
+    if (nuevoEstado === 'EN_PRODUCCION')    updates.timestamp_validacion = new Date().toISOString();
+    if (nuevoEstado === 'FRESADO_INICIADO') updates.timestamp_produccion  = new Date().toISOString();
 
     const { error } = await sb.from('pedidos').update(updates).eq('id', pedidoId);
     if (error) { toast('Error: ' + error.message, 'err'); return; }
+
+    // Notificaciones en los 3 hitos clave
+    if (nuevoEstado === 'EN_PRODUCCION')
+        notificarCliente(pedidoId, 'Su caso superó la validación técnica y ha entrado a producción.');
+    if (nuevoEstado === 'EN_REPARTO')
+        notificarCliente(pedidoId, 'Control de calidad superado. Nuestro mensajero va en camino.');
+
     toast('Estado actualizado: ' + nuevoEstado, 'ok');
     await cargarPedidos();
 }
