@@ -71,7 +71,21 @@
   status = 404
   force  = true
 
-# 2) Bloquear acceso a paneles internos de app (sin forzar — el auth-guard JS redirige)
+# 2) MODO COMING SOON — redirige raíz y páginas públicas a coming-soon.html
+# REMOVER estos 3 bloques cuando el sitio esté listo para publicar
+[[redirects]]
+  from   = "/"
+  to     = "/coming-soon.html"
+  status = 302
+  force  = true
+
+[[redirects]]
+  from   = "/index.html"
+  to     = "/coming-soon.html"
+  status = 302
+  force  = true
+
+# 3) Bloquear acceso a paneles internos de app (sin forzar — el auth-guard JS redirige)
 [[redirects]]
   from   = "/app/mensajero.html"
   to     = "/app/login.html"
