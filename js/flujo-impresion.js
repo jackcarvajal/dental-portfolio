@@ -2234,7 +2234,7 @@
             //     })
             // });
             
-            const urlWhatsapp = `https://wa.me/573228774481?text=${encodeURIComponent(texto)}`;
+            const urlWhatsapp = `https://wa.me/573212816716?text=${encodeURIComponent(texto)}`;
             
             try {
                 window.open(urlWhatsapp, '_blank');
@@ -2676,7 +2676,7 @@
                                 <li style="color:#000 !important;">🍔 Menú navegación</li>
                                 <li style="color:#000 !important;">❓ Esta ayuda</li>
                             </ul>
-                            <button onclick="window.open('https://wa.me/573228774481?text=Hola,%20necesito%20ayuda%20para%20crear%20mi%20orden%20en%20PRODIGY','_blank');document.getElementById('help-modal').remove();" style="width:100%;padding:10px;background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);border:none;border-radius:6px;color:#fff;font-size:0.85rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.3s;">
+                            <button onclick="window.open('https://wa.me/573212816716?text=Hola,%20necesito%20ayuda%20para%20crear%20mi%20orden%20en%20PRODIGY','_blank');document.getElementById('help-modal').remove();" style="width:100%;padding:10px;background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);border:none;border-radius:6px;color:#fff;font-size:0.85rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.3s;">
                                 <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i>
                                 <span>Soporte WhatsApp</span>
                             </button>

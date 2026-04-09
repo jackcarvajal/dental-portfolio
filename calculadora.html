@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Precios Dental CAD/CAM — Coronas, Carillas, Zirconio | ProDigy</title>
+  <meta name="description" content="Calcula al instante el precio de tu corona en zirconio, carilla de disilicato, puente CAD/CAM o modelo 3D. Laboratorio dental digital en Bogotá, Colombia. Entrega 24h.">
+  <meta name="keywords" content="precio corona zirconio Colombia, costo carilla dental, calculadora laboratorio dental, precio puente dental CAD CAM, cotización laboratorio dental Bogotá">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Calculadora Dental CAD/CAM — ¿Cuánto cuesta tu restauración?">
+  <meta property="og:description" content="Calcula al instante: corona zirconio, carilla disilicato, puente, provisional. Precios reales. Entrega 24-48h. ProDigy Lab Colombia.">
+  <meta property="og:url" content="https://prodigylabdental.com/calculadora.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://prodigylabdental.com/calculadora.html">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculadora de Precios Dental CAD/CAM — ProDigy",
+    "description": "Herramienta gratuita para calcular el precio estimado de restauraciones dentales CAD/CAM: coronas en zirconio, carillas de disilicato, puentes, provisionales e impresión 3D dental.",
+    "url": "https://prodigylabdental.com/calculadora.html",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "COP",
+      "description": "Calculadora gratuita sin registro"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "PRODIGY Digital Dentistry",
+      "url": "https://prodigylabdental.com"
+    }
+  }
+  </script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:      #050505;
+      --card:    #0d1525;
+      --gold:    #D4AF37;
+      --magenta: #D946A6;
+      --cyan:    #00d2ff;
+      --green:   #00FF41;
+      --text:    #fff;
+      --muted:   #64748b;
+      --border:  rgba(212,175,55,0.18);
+      --border-m:rgba(217,70,166,0.22);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 15%, rgba(217,70,166,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 85%, rgba(212,175,55,0.06) 0%, transparent 50%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px;
+      background: rgba(5,5,5,0.88); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none;
+                font-weight: 800; font-size: 1.05rem; letter-spacing: 1px; color: var(--text); }
+    .nav-logo span { background: linear-gradient(90deg,var(--magenta),var(--gold));
+                     -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-back { color: var(--muted); text-decoration: none; font-size: 0.85rem;
+                display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+    .nav-back:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: clamp(48px,8vw,80px) 24px 32px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 999px; padding: 5px 14px;
+      font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 18px;
+    }
+    .hero h1 { font-size: clamp(1.8rem,6vw,3rem); font-weight: 900; line-height: 1.1; margin-bottom: 12px; }
+    .hero h1 em { font-style: normal; background: linear-gradient(90deg,var(--gold),var(--magenta));
+                  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: clamp(0.9rem,2.2vw,1.05rem); color: #94a3b8; max-width: 500px; margin: 0 auto; }
+
+    /* LAYOUT */
+    .calc-wrap {
+      position: relative; z-index: 1;
+      max-width: 960px; margin: 0 auto;
+      padding: 0 20px 80px;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 24px;
+      align-items: start;
+    }
+    @media(max-width:768px) {
+      .calc-wrap { grid-template-columns: 1fr; }
+      .result-col { order: -1; }
+    }
+
+    /* CARDS */
+    .calc-card {
+      background: linear-gradient(160deg, #0d1525 0%, #080f1c 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px; padding: 24px;
+      margin-bottom: 16px;
+    }
+    .calc-card:last-child { margin-bottom: 0; }
+    .card-title {
+      font-size: 0.82rem; font-weight: 800; letter-spacing: 0.5px;
+      text-transform: uppercase; color: var(--gold);
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    /* SERVICIO GRID */
+    .servicio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .servicio-btn {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text);
+    }
+    .servicio-btn:hover { border-color: var(--border); background: rgba(212,175,55,0.06); }
+    .servicio-btn.selected {
+      border-color: var(--gold);
+      background: rgba(212,175,55,0.12);
+      box-shadow: 0 0 12px rgba(212,175,55,0.15);
+    }
+    .servicio-btn .icon { font-size: 1.5rem; margin-bottom: 6px; display: block; }
+    .servicio-btn .label { font-size: 0.75rem; font-weight: 700; line-height: 1.2; }
+    .servicio-btn .precio { font-size: 0.68rem; color: var(--muted); margin-top: 3px; }
+
+    /* MATERIAL CHIPS */
+    .material-grid {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .mat-chip {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 999px; padding: 6px 14px;
+      font-size: 0.78rem; cursor: pointer;
+      transition: all 0.2s; color: #cbd5e1;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .mat-chip:hover { border-color: var(--border-m); color: var(--magenta); }
+    .mat-chip.selected { background: rgba(217,70,166,0.15); border-color: var(--magenta); color: var(--magenta); }
+    .mat-chip .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* CANTIDAD */
+    .qty-row { display: flex; align-items: center; gap: 14px; }
+    .qty-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.3);
+      color: var(--gold); font-size: 1.1rem; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .qty-btn:hover { background: rgba(212,175,55,0.2); }
+    .qty-num { font-size: 1.6rem; font-weight: 900; min-width: 40px; text-align: center; }
+    .qty-label { font-size: 0.8rem; color: var(--muted); }
+
+    /* OPCIONES EXTRA */
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-info { font-size: 0.85rem; }
+    .toggle-info small { display: block; font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .toggle-price { font-size: 0.8rem; color: var(--gold); font-weight: 700; margin-right: 12px; }
+    .toggle {
+      position: relative; width: 42px; height: 24px;
+      background: rgba(255,255,255,0.1); border-radius: 999px;
+      cursor: pointer; transition: background 0.2s; flex-shrink: 0;
+    }
+    .toggle.on { background: var(--magenta); }
+    .toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #fff; transition: transform 0.2s;
+    }
+    .toggle.on::after { transform: translateX(18px); }
+
+    /* RESULTADO */
+    .result-col { position: sticky; top: 80px; }
+    .result-card {
+      background: linear-gradient(160deg, #0d1525 0%, #080f1c 100%);
+      border: 1.5px solid transparent;
+      border-radius: 20px; padding: 28px;
+      box-shadow:
+        0 0 0 1.5px rgba(212,175,55,0.4),
+        0 0 0 3px rgba(217,70,166,0.12),
+        0 24px 60px rgba(0,0,0,0.5);
+      position: relative; overflow: hidden;
+    }
+    .result-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--magenta), transparent);
+    }
+    .result-label { font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase;
+                    color: var(--muted); margin-bottom: 6px; }
+    .result-servicio { font-size: 0.88rem; font-weight: 700; color: var(--gold); margin-bottom: 16px; min-height: 20px; }
+    .result-total {
+      font-size: clamp(2rem,5vw,3rem); font-weight: 900;
+      background: linear-gradient(90deg, var(--gold), #e8c050);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 4px; line-height: 1;
+    }
+    .result-unit { font-size: 0.75rem; color: var(--muted); margin-bottom: 20px; }
+    .result-breakdown {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 16px; margin-bottom: 20px;
+    }
+    .breakdown-row {
+      display: flex; justify-content: space-between;
+      font-size: 0.8rem; padding: 5px 0;
+      color: #94a3b8;
+    }
+    .breakdown-row.total-row {
+      color: var(--text); font-weight: 800; font-size: 0.9rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 6px; padding-top: 8px;
+    }
+    .result-note {
+      background: rgba(0,255,65,0.06); border: 1px solid rgba(0,255,65,0.15);
+      border-radius: 10px; padding: 10px 14px; font-size: 0.75rem;
+      color: #94a3b8; line-height: 1.5; margin-bottom: 20px;
+    }
+    .result-note strong { color: var(--green); }
+
+    /* FORM LEAD */
+    .lead-section-title {
+      font-size: 0.78rem; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 14px; margin-top: 4px;
+    }
+    .field { margin-bottom: 12px; }
+    .field input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 11px 14px;
+      color: var(--text); font-size: 0.88rem; outline: none;
+      transition: border-color 0.2s;
+    }
+    .field input::placeholder { color: var(--muted); }
+    .field input:focus { border-color: rgba(212,175,55,0.5); }
+    .btn-cotizar {
+      width: 100%;
+      background: linear-gradient(135deg, var(--magenta) 0%, #B82F8B 100%);
+      background-size: 200% auto;
+      color: #fff; font-weight: 800; font-size: 0.95rem;
+      border: none; border-radius: 12px; padding: 14px;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      box-shadow: 0 4px 20px rgba(217,70,166,0.35);
+    }
+    .btn-cotizar:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(217,70,166,0.5); }
+    .btn-cotizar:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-wa {
+      width: 100%; margin-top: 10px;
+      background: rgba(37,211,102,0.1);
+      border: 1px solid rgba(37,211,102,0.35);
+      color: #25D366; font-weight: 700; font-size: 0.88rem;
+      border-radius: 12px; padding: 12px;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-wa:hover { background: rgba(37,211,102,0.18); }
+    .form-msg { font-size: 0.8rem; text-align: center; min-height: 18px; margin-top: 8px; }
+    .form-msg.ok  { color: var(--green); }
+    .form-msg.err { color: #f87171; }
+
+    /* CONFIANZA */
+    .trust-row {
+      display: flex; gap: 8px; margin-top: 16px;
+      justify-content: center; flex-wrap: wrap;
+    }
+    .trust-chip {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 999px; padding: 4px 10px;
+      font-size: 0.7rem; color: var(--muted);
+    }
+    .trust-chip i { color: var(--gold); font-size: 0.65rem; }
+
+    /* TOAST */
+    #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+             background: #0d1525; border: 1px solid var(--border-m); color: #fff;
+             padding: 12px 22px; border-radius: 12px; font-size: 0.85rem;
+             box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+             transition: transform 0.35s cubic-bezier(.34,1.56,.64,1); z-index: 999;
+             white-space: nowrap; }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+    #toast.ok   { border-color: rgba(0,255,65,0.4); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">💎 <span>PRODIGY</span></a>
+  <a href="index.html" class="nav-back"><i class="fa-solid fa-arrow-left"></i> Inicio</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge"><i class="fa-solid fa-calculator"></i> Calculadora de caso</div>
+  <h1>¿Cuánto cuesta<br>tu <em>restauración</em>?</h1>
+  <p>Selecciona el servicio, material y cantidad para obtener un estimado al instante. Sin sorpresas.</p>
+</section>
+
+<div class="calc-wrap">
+
+  <!-- COLUMNA IZQUIERDA -->
+  <div class="left-col">
+
+    <!-- SERVICIOS -->
+    <div class="calc-card">
+      <div class="card-title"><i class="fa-solid fa-tooth"></i> Tipo de restauración</div>
+      <div class="servicio-grid" id="servicioGrid">
+
+        <button class="servicio-btn selected" data-key="corona" onclick="selServicio(this)">
+          <span class="icon">👑</span>
+          <div class="label">Corona unitaria</div>
+          <div class="precio">Desde $180K</div>
+        </button>
+        <button class="servicio-btn" data-key="carilla" onclick="selServicio(this)">
+          <span class="icon">✨</span>
+          <div class="label">Carilla</div>
+          <div class="precio">Desde $220K</div>
+        </button>
+        <button class="servicio-btn" data-key="inlay" onclick="selServicio(this)">
+          <span class="icon">🔷</span>
+          <div class="label">Inlay / Onlay</div>
+          <div class="precio">Desde $160K</div>
+        </button>
+        <button class="servicio-btn" data-key="puente" onclick="selServicio(this)">
+          <span class="icon">🌉</span>
+          <div class="label">Puente 3 pzas</div>
+          <div class="precio">Desde $480K</div>
+        </button>
+        <button class="servicio-btn" data-key="provisional" onclick="selServicio(this)">
+          <span class="icon">🏗️</span>
+          <div class="label">Provisional CAD</div>
+          <div class="precio">Desde $90K</div>
+        </button>
+        <button class="servicio-btn" data-key="modelo" onclick="selServicio(this)">
+          <span class="icon">🖨️</span>
+          <div class="label">Modelo impreso</div>
+          <div class="precio">Desde $60K</div>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- MATERIAL -->
+    <div class="calc-card">
+      <div class="card-title"><i class="fa-solid fa-gem"></i> Material</div>
+      <div class="material-grid" id="materialGrid">
+        <button class="mat-chip selected" data-mat="zirconio-mono" onclick="selMaterial(this)">
+          <span class="dot" style="background:#a78bfa;"></span> Zirconio Monolítico
+        </button>
+        <button class="mat-chip" data-mat="zirconio-multi" onclick="selMaterial(this)">
+          <span class="dot" style="background:#c4b5fd;"></span> Zirconio Multicapa
+        </button>
+        <button class="mat-chip" data-mat="disilicato" onclick="selMaterial(this)">
+          <span class="dot" style="background:#f9a8d4;"></span> Disilicato de Litio
+        </button>
+        <button class="mat-chip" data-mat="pmma" onclick="selMaterial(this)">
+          <span class="dot" style="background:#7dd3fc;"></span> PMMA Fresado
+        </button>
+        <button class="mat-chip" data-mat="resina3d" onclick="selMaterial(this)">
+          <span class="dot" style="background:#86efac;"></span> Resina 3D
+        </button>
+      </div>
+    </div>
+
+    <!-- CANTIDAD -->
+    <div class="calc-card">
+      <div class="card-title"><i class="fa-solid fa-hashtag"></i> Cantidad de unidades</div>
+      <div class="qty-row">
+        <button class="qty-btn" onclick="cambiarQty(-1)">−</button>
+        <div class="qty-num" id="qtyNum">1</div>
+        <div class="qty-label">unidad(es)</div>
+        <button class="qty-btn" onclick="cambiarQty(1)">+</button>
+      </div>
+    </div>
+
+    <!-- EXTRAS -->
+    <div class="calc-card">
+      <div class="card-title"><i class="fa-solid fa-plus-circle"></i> Opciones adicionales</div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          Entrega urgente 24h
+          <small>Disponible para casos en stock de materiales</small>
+        </div>
+        <span class="toggle-price" id="precio-urgente">+$40K</span>
+        <div class="toggle" id="tog-urgente" onclick="toggleOpcion('urgente')"></div>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          Diseño de sonrisa (DSD)
+          <small>Planificación estética previa al diseño</small>
+        </div>
+        <span class="toggle-price" id="precio-dsd">+$80K</span>
+        <div class="toggle" id="tog-dsd" onclick="toggleOpcion('dsd')"></div>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          Envío a domicilio
+          <small>Mensajero PRODIGY — zona metropolitana</small>
+        </div>
+        <span class="toggle-price" id="precio-envio">+$20K</span>
+        <div class="toggle" id="tog-envio" onclick="toggleOpcion('envio')"></div>
+      </div>
+
+    </div>
+
+  </div><!-- /left-col -->
+
+  <!-- COLUMNA RESULTADO -->
+  <div class="result-col">
+    <div class="result-card">
+      <div class="result-label">Estimado total</div>
+      <div class="result-servicio" id="res-servicio">Corona unitaria · Zirconio Monolítico</div>
+      <div class="result-total" id="res-total">$180.000</div>
+      <div class="result-unit">COP · precio referencia</div>
+
+      <div class="result-breakdown" id="res-breakdown">
+        <div class="breakdown-row"><span>Precio unitario</span><span id="bd-unit">$180.000</span></div>
+        <div class="breakdown-row"><span>Unidades</span><span id="bd-qty">× 1</span></div>
+        <div class="breakdown-row" id="bd-urgente-row" style="display:none;"><span>Urgente 24h</span><span>+$40.000</span></div>
+        <div class="breakdown-row" id="bd-dsd-row"     style="display:none;"><span>DSD</span><span>+$80.000</span></div>
+        <div class="breakdown-row" id="bd-envio-row"   style="display:none;"><span>Envío</span><span>+$20.000</span></div>
+        <div class="breakdown-row total-row"><span>Total estimado</span><span id="bd-total">$180.000</span></div>
+      </div>
+
+      <div class="result-note">
+        <strong>Entrega en 24–48h.</strong> Este es un precio estimado. El valor final puede variar según el caso clínico. Solicita cotización exacta.
+      </div>
+
+      <!-- FORM LEAD -->
+      <div class="lead-section-title">Recibe cotización exacta por WhatsApp</div>
+      <form id="formCotizar" onsubmit="enviarCotizacion(event)">
+        <div class="field">
+          <input type="text" id="cot-nombre" placeholder="Dr. / Dra. Nombre" required maxlength="100">
+        </div>
+        <div class="field">
+          <input type="tel" id="cot-wa" placeholder="WhatsApp (+57...)" required maxlength="20">
+        </div>
+        <button type="submit" class="btn-cotizar" id="btnCotizar">
+          <i class="fa-solid fa-paper-plane"></i> Solicitar cotización exacta
+        </button>
+        <button type="button" class="btn-wa" id="btnWA" onclick="abrirWA()">
+          <i class="fa-brands fa-whatsapp"></i> Enviar caso por WhatsApp
+        </button>
+        <div class="form-msg" id="cotMsg"></div>
+      </form>
+
+      <div class="trust-row">
+        <div class="trust-chip"><i class="fa-solid fa-shield-halved"></i> Sin compromiso</div>
+        <div class="trust-chip"><i class="fa-solid fa-clock"></i> Respuesta en &lt;2h</div>
+        <div class="trust-chip"><i class="fa-solid fa-star"></i> 98% satisfacción</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /calc-wrap -->
+
+<div id="toast"></div>
+
+<script>
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+let sb;
+document.addEventListener('DOMContentLoaded', () => {
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+});
+
+const WA_NUMBER = '573212816716';
+
+/* ── PRECIOS BASE (COP) ─────────────────────────────── */
+const PRECIOS = {
+  corona:      { base: 180000, label: 'Corona unitaria' },
+  carilla:     { base: 220000, label: 'Carilla' },
+  inlay:       { base: 160000, label: 'Inlay / Onlay' },
+  puente:      { base: 480000, label: 'Puente 3 pzas', fixedQty: true },
+  provisional: { base: 90000,  label: 'Provisional CAD' },
+  modelo:      { base: 60000,  label: 'Modelo impreso' },
+};
+const MAT_DELTA = {
+  'zirconio-mono':  0,
+  'zirconio-multi': 40000,
+  'disilicato':     60000,
+  'pmma':          -20000,
+  'resina3d':      -30000,
+};
+const MAT_LABEL = {
+  'zirconio-mono':  'Zirconio Monolítico',
+  'zirconio-multi': 'Zirconio Multicapa',
+  'disilicato':     'Disilicato de Litio',
+  'pmma':           'PMMA Fresado',
+  'resina3d':       'Resina 3D',
+};
+const EXTRAS = { urgente: 40000, dsd: 80000, envio: 20000 };
+
+/* ── ESTADO ──────────────────────────────────────────── */
+let state = {
+  servicio: 'corona',
+  material: 'zirconio-mono',
+  qty: 1,
+  urgente: false,
+  dsd: false,
+  envio: false,
+};
+
+/* ── HELPERS ─────────────────────────────────────────── */
+const fmtCOP = (v) => '$' + Number(v).toLocaleString('es-CO');
+
+function calcTotal() {
+  const srv = PRECIOS[state.servicio];
+  const qty  = srv.fixedQty ? 1 : state.qty;
+  const unit = srv.base + (MAT_DELTA[state.material] || 0);
+  let total  = unit * qty;
+  if (state.urgente) total += EXTRAS.urgente;
+  if (state.dsd)     total += EXTRAS.dsd;
+  if (state.envio)   total += EXTRAS.envio;
+  return { unit, qty, total, srv };
+}
+
+function renderResult() {
+  const { unit, qty, total, srv } = calcTotal();
+  document.getElementById('res-servicio').textContent =
+    `${srv.label} · ${MAT_LABEL[state.material]}`;
+  document.getElementById('res-total').textContent = fmtCOP(total);
+  document.getElementById('bd-unit').textContent   = fmtCOP(unit);
+  document.getElementById('bd-qty').textContent    = `× ${qty}`;
+  document.getElementById('bd-total').textContent  = fmtCOP(total);
+  document.getElementById('bd-urgente-row').style.display = state.urgente ? '' : 'none';
+  document.getElementById('bd-dsd-row').style.display     = state.dsd     ? '' : 'none';
+  document.getElementById('bd-envio-row').style.display   = state.envio   ? '' : 'none';
+}
+
+/* ── SELECTORES ──────────────────────────────────────── */
+function selServicio(btn) {
+  document.querySelectorAll('.servicio-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.servicio = btn.dataset.key;
+  const srv = PRECIOS[state.servicio];
+  if (srv.fixedQty) {
+    state.qty = 1;
+    document.getElementById('qtyNum').textContent = 1;
+  }
+  renderResult();
+}
+
+function selMaterial(btn) {
+  document.querySelectorAll('.mat-chip').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.material = btn.dataset.mat;
+  renderResult();
+}
+
+function cambiarQty(delta) {
+  const srv = PRECIOS[state.servicio];
+  if (srv.fixedQty) return;
+  state.qty = Math.max(1, Math.min(20, state.qty + delta));
+  document.getElementById('qtyNum').textContent = state.qty;
+  renderResult();
+}
+
+function toggleOpcion(key) {
+  state[key] = !state[key];
+  const tog = document.getElementById('tog-' + key);
+  tog.classList.toggle('on', state[key]);
+  renderResult();
+}
+
+/* ── ENVIAR COTIZACIÓN ────────────────────────────────── */
+async function enviarCotizacion(e) {
+  e.preventDefault();
+  const nombre = document.getElementById('cot-nombre').value.trim();
+  const wa     = document.getElementById('cot-wa').value.trim();
+  const btn    = document.getElementById('btnCotizar');
+  const msg    = document.getElementById('cotMsg');
+  const { total, srv } = calcTotal();
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+
+  const { error } = await sb.from('leads_doctores').insert({
+    nombre,
+    whatsapp: wa,
+    recurso_descargado: `Calculadora: ${srv.label} · ${MAT_LABEL[state.material]} · ${state.qty}u · ${fmtCOP(total)} COP`,
+  });
+
+  if (error) {
+    msg.className = 'form-msg err';
+    msg.textContent = 'Error al enviar. Intenta de nuevo.';
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Solicitar cotización exacta';
+    return;
+  }
+
+  msg.className = 'form-msg ok';
+  msg.textContent = '✓ Recibido. Te contactamos en menos de 2 horas.';
+  btn.innerHTML = '<i class="fa-solid fa-check"></i> Solicitud enviada';
+  btn.style.background = 'linear-gradient(135deg,#00FF41,#00cc33)';
+  btn.style.color = '#050505';
+  showToast('Cotización enviada con éxito', 'ok');
+}
+
+function abrirWA() {
+  const nombre = document.getElementById('cot-nombre').value.trim() || 'Doctor/a';
+  const { total, srv } = calcTotal();
+  const texto = encodeURIComponent(
+    `Hola PRODIGY! Soy ${nombre}.\n` +
+    `Calculé mi caso:\n` +
+    `• Servicio: ${srv.label}\n` +
+    `• Material: ${MAT_LABEL[state.material]}\n` +
+    `• Cantidad: ${state.qty}\n` +
+    `• Extras: ${[state.urgente?'Urgente 24h':'',state.dsd?'DSD':'',state.envio?'Envío domicilio':''].filter(Boolean).join(', ') || 'Ninguno'}\n` +
+    `• Total estimado: ${fmtCOP(calcTotal().total)} COP\n\n` +
+    `¿Me pueden confirmar precio final y tiempo de entrega?`
+  );
+  window.open(`https://wa.me/${WA_NUMBER}?text=${texto}`, '_blank');
+}
+
+function showToast(text, type = 'ok') {
+  const t = document.getElementById('toast');
+  t.textContent = text;
+  t.className = `show ${type}`;
+  setTimeout(() => t.className = '', 3500);
+}
+
+// Init
+renderResult();
+</script>
+</body>
+</html>

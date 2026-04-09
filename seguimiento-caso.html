@@ -43,7 +43,7 @@
         <a href="index.html#portfolio">Portafolio</a>
         <a href="catalogo.html">Catálogo</a>
         <a href="seguimiento-caso.html" style="color:#D4AF37;">📦 Seguimiento</a>
-        <a href="https://wa.me/573212816716" target="_blank"><i class="fab fa-whatsapp"></i> Contactar</a>
+        <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Contactar</a>
         <a href="app/login.html" style="color:#D4AF37;"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar · Registro</a>
     </div>
 
@@ -62,7 +62,7 @@
             </a>
             <div class="nav-right">
                 <a href="seguimiento-caso.html" style="color:#D4AF37!important;">📦 SEGUIMIENTO</a>
-                <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank">
+                <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank" rel="noopener noreferrer">
                     <i class="fab fa-whatsapp"></i> CONTACTAR
                 </a>
                 <a href="app/login.html" class="nav-access-btn" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:transparent;border:1.5px solid rgba(212,175,55,.5);color:#D4AF37;border-radius:8px;font-size:.78rem;font-weight:800;text-decoration:none;letter-spacing:.6px;transition:all .25s;white-space:nowrap;" onmouseover="this.style.background='rgba(212,175,55,.12)';this.style.borderColor='#D4AF37'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(212,175,55,.5)'">
@@ -593,7 +593,7 @@
                 <ul>
                     <li><a href="tel:+573212816716">+57 321 281 6716</a></li>
                     <li><a href="mailto:labdentalprodigy@gmail.com">labdentalprodigy@gmail.com</a></li>
-                    <li><a href="https://instagram.com/prodigydigitaldentistry" target="_blank">@prodigydigitaldentistry</a></li>
+                    <li><a href="https://instagram.com/prodigydigitaldentistry" target="_blank" rel="noopener noreferrer">@prodigydigitaldentistry</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -703,7 +703,7 @@ async function suscribirNotificaciones(caseId) {
     }
     // VAPID public key — generar con: supabase functions invoke generate-vapid-keys
     // y pegar la clave pública aquí (base64url)
-    const VAPID_PUBLIC_KEY = 'BBM_wMygR0mR3v2UR0oN5Kt-4so8qpyomGfqGNgY7I3Jc2wd1lXjBecomRhscmuqH_0mSr5ppvHew0ck2LmQ1wQ';
+    const VAPID_PUBLIC_KEY = 'BD8r001C3ekRLo4w-S-lQZTXHtucMBenkucKZgqmoca07SfMg35MF1EFFIIubc7RI6RVKJW12iSlV-KGpUolUu4';
     try {
         const sub = await window._swReg.pushManager.subscribe({
             userVisibleOnly:      true,

@@ -128,6 +128,87 @@
         .token-banner { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2); border-radius: 10px; padding: 10px 18px; margin-bottom: 20px; font-size: 0.8rem; color: #D4AF37; display: flex; align-items: center; gap: 8px; }
 
         @media(max-width:768px){ .sidebar { display: none; } .main { padding: 20px 14px; } }
+
+        /* ── PEDIDOS DOCTOR ONLINE ──────────────────── */
+        .pd-online-card { background:linear-gradient(135deg,rgba(217,70,166,.08),rgba(0,210,255,.04)); border:1px solid rgba(217,70,166,.2); border-radius:14px; overflow:hidden; margin-bottom:24px; }
+        .pd-online-item { padding:14px 20px; border-bottom:1px solid rgba(255,255,255,.04); display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+        .pd-online-item:last-child { border-bottom:none; }
+        .pd-online-svc { font-size:.85rem; font-weight:700; flex:1; min-width:120px; }
+        .pd-online-svc small { display:block; font-size:.68rem; color:#64748b; font-weight:400; margin-top:2px; }
+        .pd-online-est { font-size:.7rem; padding:3px 10px; border-radius:12px; font-weight:700; background:rgba(212,175,55,.1); color:#D4AF37; }
+        .pd-online-est.en_diseno { background:rgba(0,210,255,.12); color:#00d2ff; }
+        .pd-online-est.en_fresado { background:rgba(212,175,55,.12); color:#D4AF37; }
+        .pd-online-est.control_calidad { background:rgba(0,255,65,.1); color:#00FF41; }
+        .pd-online-est.listo { background:rgba(0,255,65,.15); color:#00FF41; }
+        .pd-online-est.enviado { background:rgba(0,255,65,.18); color:#00FF41; }
+        .btn-revisar { padding:8px 16px; background:linear-gradient(135deg,#00d2ff22,#00d2ff11); border:1px solid rgba(0,210,255,.4); color:#00d2ff; border-radius:9px; font-weight:800; font-size:.78rem; cursor:pointer; animation:pulseBtn 2s ease-in-out infinite; }
+        @keyframes pulseBtn { 0%,100%{box-shadow:0 0 0 0 rgba(0,210,255,.3)} 50%{box-shadow:0 0 0 6px rgba(0,210,255,0)} }
+        .btn-revisar.aprobado { background:rgba(0,255,65,.08); border-color:rgba(0,255,65,.3); color:#00FF41; animation:none; cursor:default; }
+
+        /* ── MODAL APROBACION DISEÑO ────────────────── */
+        #modal-dap { display:none; position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:3000; flex-direction:column; align-items:center; justify-content:center; padding:16px; }
+        #modal-dap.open { display:flex; }
+        .dap-box { background:#0d1525; border:1px solid rgba(217,70,166,.3); border-radius:16px; width:100%; max-width:960px; max-height:92vh; display:flex; flex-direction:column; overflow:hidden; }
+        .dap-head { padding:14px 20px; border-bottom:1px solid rgba(255,255,255,.06); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+        .dap-head h3 { font-size:.92rem; font-weight:800; }
+        .dap-close { background:none; border:none; color:#64748b; font-size:1.1rem; cursor:pointer; padding:4px 8px; }
+        .dap-close:hover { color:#fff; }
+        .dap-iframe-wrap { flex:1; min-height:380px; overflow:hidden; position:relative; background:#000; }
+        .dap-iframe-wrap iframe { width:100%; height:100%; border:none; min-height:380px; }
+        .dap-notas-area { display:none; padding:12px 20px; border-top:1px solid rgba(255,255,255,.05); flex-shrink:0; }
+        .dap-notas-area textarea { width:100%; padding:10px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:8px; color:#fff; font-size:.82rem; min-height:80px; resize:vertical; outline:none; font-family:inherit; }
+        .dap-footer { padding:14px 20px; border-top:1px solid rgba(255,255,255,.05); display:flex; gap:10px; flex-wrap:wrap; flex-shrink:0; }
+        .dap-btn-aprobar { flex:1; padding:12px; background:linear-gradient(135deg,#00FF41,#00cc33); color:#000; border:none; border-radius:10px; font-weight:900; font-size:.88rem; cursor:pointer; min-width:200px; }
+        .dap-btn-cambios { padding:12px 18px; background:rgba(212,175,55,.1); border:1px solid rgba(212,175,55,.3); color:#D4AF37; border-radius:10px; font-weight:700; font-size:.82rem; cursor:pointer; }
+        .dap-btn-enviar { display:none; padding:12px 18px; background:rgba(217,70,166,.12); border:1px solid rgba(217,70,166,.3); color:var(--gold); border-radius:10px; font-weight:700; font-size:.82rem; cursor:pointer; }
+        .dap-ext { text-align:center; font-size:.63rem; color:#334155; padding:0 20px 12px; flex-shrink:0; }
+
+        /* ── MODAL NUEVO PEDIDO ONLINE ── */
+        .pd-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:900;
+          display:none;align-items:center;justify-content:center;padding:16px;}
+        .pd-overlay.open{display:flex;}
+        .pd-modal{background:#111827;border-radius:16px;width:100%;max-width:640px;
+          max-height:90vh;overflow-y:auto;border:1px solid rgba(217,70,166,.25);}
+        .pd-head{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.07);
+          display:flex;align-items:center;justify-content:space-between;}
+        .pd-head h2{font-size:1.05rem;font-weight:800;}
+        .pd-close{background:none;border:none;color:var(--muted);font-size:1.5rem;
+          cursor:pointer;line-height:1;padding:0 4px;}
+        .pd-close:hover{color:#ef4444;}
+        .pd-body{padding:22px;}
+        .pd-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+        .pd-row.full{grid-template-columns:1fr;}
+        @media(max-width:480px){.pd-row{grid-template-columns:1fr;}}
+        .pd-fg label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);
+          margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;}
+        .pd-fg input,.pd-fg select,.pd-fg textarea{width:100%;background:#0d1525;
+          border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;
+          padding:9px 12px;font-size:.86rem;outline:none;font-family:inherit;}
+        .pd-fg input:focus,.pd-fg select:focus,.pd-fg textarea:focus{border-color:var(--magenta);}
+        .pd-fg textarea{resize:vertical;min-height:70px;}
+        .pd-fg select option{background:#0d1525;}
+        .pd-extras{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+        .pd-tog{display:flex;align-items:center;gap:7px;padding:7px 12px;
+          background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+          border-radius:8px;cursor:pointer;font-size:.8rem;color:var(--muted);
+          user-select:none;transition:all .2s;}
+        .pd-tog.on{background:rgba(217,70,166,.1);border-color:rgba(217,70,166,.35);color:#fff;}
+        .pd-tog .pdot{width:12px;height:12px;border-radius:50%;border:2px solid currentColor;}
+        .pd-tog.on .pdot{background:var(--magenta);border-color:var(--magenta);}
+        .pd-precio{background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.2);
+          border-radius:8px;padding:12px 16px;margin-bottom:14px;
+          display:flex;justify-content:space-between;align-items:center;}
+        .pd-precio span{font-size:.8rem;color:var(--muted);}
+        .pd-precio strong{color:var(--gold);font-size:1.1rem;font-weight:900;}
+        .pd-submit{width:100%;padding:13px;background:linear-gradient(135deg,var(--magenta),#B82F8B);
+          color:#fff;border:none;border-radius:10px;font-weight:800;font-size:.95rem;
+          cursor:pointer;transition:opacity .2s;}
+        .pd-submit:disabled{opacity:.45;cursor:not-allowed;}
+        .pd-submit:not(:disabled):hover{opacity:.87;}
+        .pd-msg{padding:9px 13px;border-radius:8px;font-size:.83rem;
+          margin-bottom:12px;display:none;}
+        .pd-msg.ok{background:rgba(34,197,94,.1);color:#22c55e;border:1px solid rgba(34,197,94,.25);}
+        .pd-msg.err{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.25);}
     </style>
 </head>
 <body>
@@ -209,12 +290,26 @@
     <!-- CTA NUEVO CASO -->
     <div class="cta-nuevo" id="cta-nuevo">
         <h3>¿Listo para tu próximo caso?</h3>
-        <p>Cotiza y envía tus archivos STL en menos de 2 minutos.</p>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-            <a href="../flujo-diseno.html" class="btn-nuevo-caso"><i class="fas fa-pen-nib"></i> Diseño CAD</a>
-            <a href="../flujo-fresado.html" class="btn-nuevo-caso" style="background:linear-gradient(135deg,#D4AF37,#B8860B);box-shadow:0 4px 18px rgba(212,175,55,0.3);"><i class="fas fa-gear"></i> Fresado</a>
-            <a href="../flujo-impresion.html" class="btn-nuevo-caso" style="background:linear-gradient(135deg,#0061ff,#0041aa);box-shadow:0 4px 18px rgba(0,97,255,0.3);"><i class="fas fa-print"></i> Impresión</a>
+        <p>Pide directamente desde aquí o usa los flujos detallados.</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
+            <button onclick="pdAbrir()" class="btn-nuevo-caso" style="font-size:.95rem;padding:14px 28px;">
+              <i class="fas fa-plus-circle"></i> Nuevo Pedido Online
+            </button>
         </div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <a href="../flujo-diseno.html" class="btn-nuevo-caso" style="font-size:.78rem;padding:9px 14px;background:rgba(255,255,255,.06);box-shadow:none;border:1px solid rgba(255,255,255,.1);"><i class="fas fa-pen-nib"></i> Flujo Diseño</a>
+            <a href="../flujo-fresado.html" class="btn-nuevo-caso" style="font-size:.78rem;padding:9px 14px;background:rgba(255,255,255,.06);box-shadow:none;border:1px solid rgba(255,255,255,.1);"><i class="fas fa-gear"></i> Flujo Fresado</a>
+            <a href="../flujo-impresion.html" class="btn-nuevo-caso" style="font-size:.78rem;padding:9px 14px;background:rgba(255,255,255,.06);box-shadow:none;border:1px solid rgba(255,255,255,.1);"><i class="fas fa-print"></i> Flujo Impresión</a>
+        </div>
+    </div>
+
+    <!-- PEDIDOS ONLINE (pedidos_doctor) -->
+    <div class="pd-online-card" id="card-pedidos-doc" style="display:none;">
+        <div class="section-header">
+            <h2><i class="fas fa-inbox" style="color:var(--gold);margin-right:8px;"></i>Mis Pedidos Online</h2>
+            <span id="badge-aprobacion" style="display:none;background:rgba(0,210,255,.15);color:#00d2ff;border:1px solid rgba(0,210,255,.3);border-radius:12px;padding:2px 10px;font-size:.7rem;font-weight:800;">Diseño listo para revisar</span>
+        </div>
+        <div id="lista-pedidos-doc"></div>
     </div>
 
     <!-- CASOS ACTIVOS CON BARRA DE PROGRESO -->
@@ -233,6 +328,37 @@
         <div id="tabla-historial"><div class="spinner"></div></div>
     </div>
 </main>
+
+<!-- MODAL APROBACION DISEÑO -->
+<div id="modal-dap">
+    <div class="dap-box">
+        <div class="dap-head">
+            <h3>Revisar Diseño <span style="color:var(--cyan)">— Aprobación requerida</span></h3>
+            <button class="dap-close" onclick="cerrarAprobacion()">✕</button>
+        </div>
+        <div class="dap-iframe-wrap">
+            <iframe id="dap-iframe" src="" allowfullscreen></iframe>
+        </div>
+        <div class="dap-notas-area" id="dap-notas-area">
+            <p style="font-size:.75rem;color:#94a3b8;margin-bottom:8px;">Describe qué cambios necesitas:</p>
+            <textarea id="dap-notas" placeholder="Ej: aumentar emergencia del perfil, ajustar contacto proximal diente 12…"></textarea>
+        </div>
+        <div class="dap-footer">
+            <button class="dap-btn-aprobar" onclick="aprobarDiseno()">
+                ✅ Apruebo este diseño → Proceder a producción
+            </button>
+            <button class="dap-btn-cambios" id="dap-btn-cambios" onclick="toggleCambiosModal()">
+                ✏️ Pedir cambios
+            </button>
+            <button class="dap-btn-enviar" id="dap-btn-enviar" onclick="enviarCambios()">
+                Enviar solicitud
+            </button>
+        </div>
+        <p class="dap-ext">Si el visor no carga dentro del panel:
+            <a id="dap-link-ext" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Abrir en nueva pestaña</a>
+        </p>
+    </div>
+</div>
 
 <!-- MODAL NPS -->
 <div id="modal-nps">
@@ -254,6 +380,81 @@
 </div>
 
 <div id="toast"></div>
+
+<!-- ═══ MODAL NUEVO PEDIDO ONLINE ═══ -->
+<div class="pd-overlay" id="pd-overlay" onclick="pdCerrarSiOverlay(event)">
+  <div class="pd-modal">
+    <div class="pd-head">
+      <h2><i class="fas fa-plus-circle" style="color:var(--magenta);margin-right:8px"></i>Nuevo Pedido</h2>
+      <button class="pd-close" onclick="pdCerrar()">×</button>
+    </div>
+    <div class="pd-body">
+      <div class="pd-msg" id="pd-msg"></div>
+      <div class="pd-row">
+        <div class="pd-fg">
+          <label>Tipo de servicio *</label>
+          <select id="pd-tipo" onchange="pdActualizarMat()">
+            <option value="">— Selecciona —</option>
+            <option value="corona">👑 Corona unitaria</option>
+            <option value="carilla">✨ Carilla</option>
+            <option value="puente">🔗 Puente (3+ unidades)</option>
+            <option value="modelo">🖨️ Modelo de estudio</option>
+            <option value="provisional">🦷 Provisional PMMA/3D</option>
+            <option value="dsd">🎨 Diseño DSD completo</option>
+            <option value="ferula">🛡️ Férula oclusal</option>
+          </select>
+        </div>
+        <div class="pd-fg">
+          <label>Material *</label>
+          <select id="pd-material" onchange="pdCalc()">
+            <option value="">— Elige servicio primero —</option>
+          </select>
+        </div>
+      </div>
+      <div class="pd-row">
+        <div class="pd-fg">
+          <label>N° unidades *</label>
+          <input type="number" id="pd-uds" min="1" max="28" value="1" oninput="pdCalc()">
+        </div>
+        <div class="pd-fg">
+          <label>Pieza(s) dental(es)</label>
+          <input type="text" id="pd-dientes" placeholder='Ej: "11, 21, 22"'>
+        </div>
+      </div>
+      <div class="pd-row full">
+        <div class="pd-fg">
+          <label>Link archivos STL (Drive / WeTransfer)</label>
+          <input type="url" id="pd-link" placeholder="https://drive.google.com/...">
+        </div>
+      </div>
+      <div class="pd-row full">
+        <div class="pd-fg">
+          <label>Notas clínicas</label>
+          <textarea id="pd-notas" placeholder="Color VITA, guía de sombra, oclusión, indicaciones especiales..."></textarea>
+        </div>
+      </div>
+      <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;font-weight:700;">Extras</div>
+      <div class="pd-extras">
+        <div class="pd-tog" id="pd-tog-urgente" onclick="pdToggle('urgente')">
+          <div class="pdot"></div><span>⚡ Urgente 24h</span>
+        </div>
+        <div class="pd-tog" id="pd-tog-dsd" onclick="pdToggle('dsd')">
+          <div class="pdot"></div><span>🎨 Incluye DSD</span>
+        </div>
+        <div class="pd-tog" id="pd-tog-envio" onclick="pdToggle('envio')">
+          <div class="pdot"></div><span>🚚 Envío incluido</span>
+        </div>
+      </div>
+      <div class="pd-precio">
+        <span>Precio estimado:</span>
+        <strong id="pd-precio-val">Selecciona servicio</strong>
+      </div>
+      <button class="pd-submit" id="pd-btn" onclick="pdEnviar()">
+        <i class="fas fa-paper-plane"></i> Enviar Pedido
+      </button>
+    </div>
+  </div>
+</div>
 
 <script>
 const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
@@ -529,6 +730,7 @@ async function loadByAuth(session) {
 
     renderTablas(_pedidos);
     suscribirRealtime();
+    cargarPedidosDoc_cliente(session.user.id);
 }
 
 /* ── NPS ────────────────────────────────────────────────────── */
@@ -565,6 +767,248 @@ async function enviarNPS() {
     const p = _pedidos.find(x => x.id === _npsId);
     if (p) { p.calificacion = _npsStar; p.calificacion_comentario = comentario; }
     renderTablas(_pedidos);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NUEVO PEDIDO ONLINE — pedidos_doctor
+   ═══════════════════════════════════════════════════════════ */
+const PD_PRECIOS = {
+    corona:      {'zirconio-mono':180000,'zirconio-multi':220000,'disilicato':240000,'pmma':90000,'resina3d':70000},
+    carilla:     {'disilicato':220000,'zirconio-multi':200000,'pmma':100000},
+    puente:      {'zirconio-mono':480000,'zirconio-multi':560000,'disilicato':600000},
+    modelo:      {'resina3d':60000,'pmma':80000},
+    provisional: {'pmma':90000,'resina3d':70000},
+    dsd:         {'digital':160000},
+    ferula:      {'pmma':120000,'resina3d':90000},
+};
+const PD_MAT_LABEL = {
+    'zirconio-mono':'Zirconio Monolítico 3Y','zirconio-multi':'Zirconio Multicapa 5Y',
+    'disilicato':'Disilicato e.max','pmma':'PMMA Fresado','resina3d':'Resina 3D','digital':'Diseño Digital',
+};
+const PD_EXTRAS_PRICE = {urgente:40000,dsd:80000,envio:20000};
+let _pdExtras = {urgente:false,dsd:false,envio:false};
+
+function pdAbrir() {
+    document.getElementById('pd-overlay').classList.add('open');
+    document.getElementById('pd-msg').style.display = 'none';
+    document.body.style.overflow = 'hidden';
+}
+function pdCerrar() {
+    document.getElementById('pd-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+}
+function pdCerrarSiOverlay(e) {
+    if (e.target === document.getElementById('pd-overlay')) pdCerrar();
+}
+function pdToggle(k) {
+    _pdExtras[k] = !_pdExtras[k];
+    document.getElementById('pd-tog-' + k).classList.toggle('on', _pdExtras[k]);
+    pdCalc();
+}
+function pdActualizarMat() {
+    const tipo = document.getElementById('pd-tipo').value;
+    const sel  = document.getElementById('pd-material');
+    sel.innerHTML = '<option value="">— Selecciona material —</option>';
+    if (tipo && PD_PRECIOS[tipo]) {
+        Object.keys(PD_PRECIOS[tipo]).forEach(m => {
+            const o = document.createElement('option');
+            o.value = m; o.textContent = PD_MAT_LABEL[m] || m;
+            sel.appendChild(o);
+        });
+    }
+    pdCalc();
+}
+function pdCalc() {
+    const tipo = document.getElementById('pd-tipo').value;
+    const mat  = document.getElementById('pd-material').value;
+    const uds  = parseInt(document.getElementById('pd-uds').value) || 1;
+    const el   = document.getElementById('pd-precio-val');
+    if (!tipo || !mat || !PD_PRECIOS[tipo]?.[mat]) { el.textContent = 'Selecciona servicio'; return; }
+    let total = PD_PRECIOS[tipo][mat] * uds;
+    if (_pdExtras.urgente) total += PD_EXTRAS_PRICE.urgente * uds;
+    if (_pdExtras.dsd)     total += PD_EXTRAS_PRICE.dsd;
+    if (_pdExtras.envio)   total += PD_EXTRAS_PRICE.envio;
+    el.textContent = fmtCOP(total) + ' est.';
+}
+async function pdEnviar() {
+    const tipo  = document.getElementById('pd-tipo').value;
+    const mat   = document.getElementById('pd-material').value;
+    const uds   = parseInt(document.getElementById('pd-uds').value) || 1;
+    const dien  = document.getElementById('pd-dientes').value.trim();
+    const link  = document.getElementById('pd-link').value.trim();
+    const notas = document.getElementById('pd-notas').value.trim();
+    const btn   = document.getElementById('pd-btn');
+    const msgEl = document.getElementById('pd-msg');
+
+    const mostrar = (txt, tipo) => { msgEl.textContent = txt; msgEl.className = 'pd-msg ' + tipo; msgEl.style.display = 'block'; };
+
+    if (!tipo || !mat) { mostrar('Selecciona tipo de servicio y material.', 'err'); return; }
+
+    const session = await sb.auth.getSession();
+    const user = session?.data?.session?.user;
+    if (!user) { mostrar('Sesión expirada. Recarga la página.', 'err'); return; }
+
+    let precio = PD_PRECIOS[tipo]?.[mat] ? PD_PRECIOS[tipo][mat] * uds : 0;
+    if (_pdExtras.urgente) precio += PD_EXTRAS_PRICE.urgente * uds;
+    if (_pdExtras.dsd)     precio += PD_EXTRAS_PRICE.dsd;
+    if (_pdExtras.envio)   precio += PD_EXTRAS_PRICE.envio;
+
+    btn.disabled = true; btn.textContent = 'Enviando...';
+
+    const { error } = await sb.from('pedidos_doctor').insert({
+        doctor_id:       user.id,
+        doctor_nombre:   user.user_metadata?.nombre  || '',
+        doctor_clinica:  user.user_metadata?.clinica || '',
+        doctor_whatsapp: user.user_metadata?.telefono || '',
+        tipo_servicio:   tipo,
+        material:        mat,
+        unidades:        uds,
+        dientes:         dien || null,
+        notas_clinicas:  notas || null,
+        link_archivo:    link || null,
+        urgente:         _pdExtras.urgente,
+        incluye_dsd:     _pdExtras.dsd,
+        incluye_envio:   _pdExtras.envio,
+        precio_estimado: precio || null,
+        estado:          'recibido',
+    });
+
+    btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Pedido';
+    if (error) { mostrar('Error: ' + error.message, 'err'); return; }
+
+    mostrar('¡Pedido enviado! El laboratorio te confirma pronto.', 'ok');
+
+    // Notificación WA al lab
+    const wa = `https://wa.me/573212816716?text=${encodeURIComponent(
+        `🔔 NUEVO PEDIDO — Portal Doctor\nDoctor: ${user.user_metadata?.nombre || user.email}\nServicio: ${tipo} / ${PD_MAT_LABEL[mat]}\nUnidades: ${uds}${dien ? '\nPiezas: ' + dien : ''}${_pdExtras.urgente ? '\n⚡ URGENTE' : ''}\nEstimado: ${fmtCOP(precio)}`
+    )}`;
+    setTimeout(() => window.open(wa, '_blank', 'noopener noreferrer'), 150);
+
+    // Reset y cierre
+    setTimeout(() => {
+        pdCerrar();
+        ['pd-tipo','pd-material','pd-dientes','pd-link','pd-notas'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+        document.getElementById('pd-uds').value = '1';
+        _pdExtras = {urgente:false,dsd:false,envio:false};
+        ['urgente','dsd','envio'].forEach(k => document.getElementById('pd-tog-' + k).classList.remove('on'));
+        document.getElementById('pd-precio-val').textContent = 'Selecciona servicio';
+        document.getElementById('pd-material').innerHTML = '<option value="">— Elige servicio primero —</option>';
+        msgEl.style.display = 'none';
+    }, 2000);
+}
+
+/* ── PEDIDOS ONLINE — aprobación de diseño ─────────────────── */
+const PD_EST_LABEL = {
+    recibido:'Recibido', en_diseno:'En diseño', en_fresado:'En fresado',
+    control_calidad:'Control QA', listo:'Listo', enviado:'Enviado', cancelado:'Cancelado'
+};
+const PD_SVC_LABEL = {
+    corona:'Corona', carilla:'Carilla', puente:'Puente', dsd:'DSD',
+    ferula:'Férula', modelo:'Modelo', provisional:'Provisional'
+};
+const PD_MAT_LABEL2 = {
+    'zirconio-mono':'Zirconio 3Y-PSZ','zirconio-multi':'Zirconio 5Y-PSZ',
+    'disilicato':'Disilicato e.max','pmma':'PMMA','resina3d':'Resina 3D','digital':'Digital'
+};
+
+let _dapId = null;
+
+async function cargarPedidosDoc_cliente(uid) {
+    const { data, error } = await sb.from('pedidos_doctor')
+        .select('id,tipo_servicio,material,unidades,dientes,estado,urgente,incluye_dsd,precio_estimado,created_at,link_diseno,diseno_aprobado,notas_cambios')
+        .eq('doctor_id', uid)
+        .not('estado', 'in', '("cancelado")')
+        .order('created_at', { ascending: false });
+
+    if (error || !data?.length) return;
+
+    const card = document.getElementById('card-pedidos-doc');
+    card.style.display = 'block';
+
+    const pendAprobacion = data.filter(p => p.estado === 'en_diseno' && p.link_diseno && !p.diseno_aprobado);
+    document.getElementById('badge-aprobacion').style.display = pendAprobacion.length ? 'inline-block' : 'none';
+
+    document.getElementById('lista-pedidos-doc').innerHTML = data.map(p => {
+        const svc  = PD_SVC_LABEL[p.tipo_servicio] || p.tipo_servicio;
+        const mat  = PD_MAT_LABEL2[p.material] || p.material;
+        const fecha = new Date(p.created_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'});
+        const estClass = (p.estado || '').replace('_','-');
+        const estLabel = PD_EST_LABEL[p.estado] || p.estado;
+        const necesitaAprobacion = p.estado === 'en_diseno' && p.link_diseno && !p.diseno_aprobado;
+        const yaAprobado = p.diseno_aprobado;
+
+        return `<div class="pd-online-item">
+            <div class="pd-online-svc">
+                ${escH(svc)}${p.dientes ? ' · piezas ' + escH(p.dientes) : ''}
+                <small>${escH(mat)} · ${p.unidades} ud${p.unidades>1?'s':''}${p.urgente?' · ⚡ Urgente':''}${p.incluye_dsd?' · 🎨 DSD':''}</small>
+                <small style="color:#475569">${fecha}</small>
+            </div>
+            <span class="pd-online-est ${escH(p.estado)}">${estLabel}</span>
+            ${necesitaAprobacion
+                ? `<button class="btn-revisar" onclick="abrirAprobacion('${escH(p.id)}','${escH(p.link_diseno)}')">
+                       <i class="fas fa-eye"></i> Revisar y Aprobar Diseño
+                   </button>`
+                : yaAprobado
+                    ? `<span style="font-size:.7rem;color:#00FF41;font-weight:700"><i class="fas fa-check-circle"></i> Diseño aprobado</span>`
+                    : ''
+            }
+            ${p.notas_cambios
+                ? `<span style="font-size:.65rem;color:#f59e0b;"><i class="fas fa-comment-dots"></i> Cambios solicitados</span>`
+                : ''
+            }
+        </div>`;
+    }).join('');
+}
+
+function abrirAprobacion(id, link) {
+    _dapId = id;
+    document.getElementById('dap-iframe').src = link;
+    document.getElementById('dap-link-ext').href = link;
+    document.getElementById('dap-notas-area').style.display = 'none';
+    document.getElementById('dap-btn-cambios').style.display = 'inline-block';
+    document.getElementById('dap-btn-enviar').style.display = 'none';
+    document.getElementById('dap-notas').value = '';
+    document.getElementById('modal-dap').classList.add('open');
+}
+
+function cerrarAprobacion() {
+    document.getElementById('modal-dap').classList.remove('open');
+    document.getElementById('dap-iframe').src = '';
+    _dapId = null;
+}
+
+function toggleCambiosModal() {
+    const area = document.getElementById('dap-notas-area');
+    const vis  = area.style.display === 'none';
+    area.style.display = vis ? 'block' : 'none';
+    document.getElementById('dap-btn-enviar').style.display   = vis ? 'inline-block' : 'none';
+    document.getElementById('dap-btn-cambios').style.display  = vis ? 'none' : 'inline-block';
+    if (vis) document.getElementById('dap-notas').focus();
+}
+
+async function aprobarDiseno() {
+    if (!_dapId) return;
+    const { error } = await sb.from('pedidos_doctor')
+        .update({ diseno_aprobado: true, estado: 'en_fresado' })
+        .eq('id', _dapId);
+    if (error) { toast('Error al aprobar: ' + error.message, 'error'); return; }
+    cerrarAprobacion();
+    toast('¡Diseño aprobado! Pasa a producción.', 'ok');
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) cargarPedidosDoc_cliente(session.user.id);
+}
+
+async function enviarCambios() {
+    const notas = (document.getElementById('dap-notas').value || '').trim();
+    if (!notas) { toast('Describe los cambios que necesitas', 'error'); return; }
+    const { error } = await sb.from('pedidos_doctor')
+        .update({ notas_cambios: notas })
+        .eq('id', _dapId);
+    if (error) { toast('Error: ' + error.message, 'error'); return; }
+    cerrarAprobacion();
+    toast('Solicitud de cambios enviada al laboratorio', 'ok');
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) cargarPedidosDoc_cliente(session.user.id);
 }
 
 /* ── INIT ───────────────────────────────────────────────────── */

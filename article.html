@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="meta-title">Artículo | ProDigy Lab Dental</title>
+  <meta id="meta-desc" name="description" content="">
+  <meta id="og-title" property="og:title" content="">
+  <meta id="og-desc" property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ProDigy Lab Dental">
+  <meta id="og-url" property="og:url" content="">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" id="canonical" href="">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script id="jsonld-schema" type="application/ld+json"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#050505; --bg-card:#0d1525; --gold:#D4AF37;
+      --magenta:#D946A6; --cyan:#00d2ff; --text:#fff;
+      --text2:#e2e8f0; --text3:#94a3b8; --muted:#64748b;
+      --radius:14px;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      font-size:16px;line-height:1.7;}
+    body::before{content:'';position:fixed;inset:0;
+      background:radial-gradient(ellipse at 20% 20%,rgba(217,70,166,.06) 0%,transparent 55%),
+                 radial-gradient(ellipse at 80% 80%,rgba(0,210,255,.04) 0%,transparent 50%);
+      pointer-events:none;z-index:0;}
+
+    /* ── NAV ── */
+    nav{position:sticky;top:0;z-index:100;
+      background:rgba(5,5,5,.85);backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 24px;height:56px;}
+    .nav-logo{font-weight:900;font-size:1.1rem;text-decoration:none;
+      background:linear-gradient(135deg,var(--gold),var(--magenta));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .nav-links{display:flex;gap:20px;align-items:center;}
+    .nav-links a{color:var(--text3);text-decoration:none;font-size:.83rem;font-weight:600;
+      transition:color .2s;}
+    .nav-links a:hover{color:var(--text);}
+    .nav-cta{background:linear-gradient(135deg,var(--magenta),#B82F8B);
+      color:#fff!important;padding:7px 16px;border-radius:20px;font-size:.78rem!important;}
+
+    /* ── LAYOUT ── */
+    .page-wrap{max-width:1100px;margin:0 auto;padding:40px 24px 80px;
+      display:grid;grid-template-columns:1fr 300px;gap:48px;position:relative;z-index:1;}
+    @media(max-width:820px){.page-wrap{grid-template-columns:1fr;}}
+
+    /* ── HERO ── */
+    .hero{margin-bottom:32px;}
+    .hero-chip{display:inline-block;padding:4px 12px;border-radius:20px;
+      font-size:.72rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+      margin-bottom:14px;}
+    .chip-ia{background:rgba(0,210,255,.12);color:var(--cyan);border:1px solid rgba(0,210,255,.25);}
+    .chip-material{background:rgba(212,175,55,.12);color:var(--gold);border:1px solid rgba(212,175,55,.25);}
+    .chip-protocolo{background:rgba(0,255,65,.1);color:#00FF41;border:1px solid rgba(0,255,65,.2);}
+    .chip-equipo{background:rgba(217,70,166,.12);color:var(--magenta);border:1px solid rgba(217,70,166,.25);}
+    .hero h1{font-size:clamp(1.5rem,3.5vw,2.4rem);font-weight:900;line-height:1.2;
+      margin-bottom:14px;}
+    .hero-sub{color:var(--text3);font-size:1rem;line-height:1.6;margin-bottom:20px;}
+    .hero-meta{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:.8rem;
+      padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.07);}
+    .hero-meta span{display:flex;align-items:center;gap:5px;}
+    .hero-thumb{width:100%;height:200px;border-radius:var(--radius);
+      display:flex;align-items:center;justify-content:center;font-size:5rem;
+      margin-bottom:32px;overflow:hidden;}
+    .grad-1{background:linear-gradient(135deg,#1a0a2e,#0d1525);}
+    .grad-2{background:linear-gradient(135deg,#001a1f,#0d1525);}
+    .grad-3{background:linear-gradient(135deg,#1a1000,#0d1525);}
+    .grad-4{background:linear-gradient(135deg,#001a10,#0d1525);}
+
+    /* ── CONTENT ── */
+    .article-body{color:var(--text2);}
+    .article-body h2{color:var(--text);font-size:1.3rem;font-weight:800;
+      margin:36px 0 12px;padding-left:14px;
+      border-left:3px solid var(--magenta);}
+    .article-body p{margin-bottom:16px;line-height:1.8;}
+    .article-body ul{list-style:none;margin:0 0 20px;padding:0;}
+    .article-body ul li{padding:8px 0 8px 20px;position:relative;color:var(--text2);
+      border-bottom:1px solid rgba(255,255,255,.04);}
+    .article-body ul li::before{content:'▸';position:absolute;left:0;color:var(--magenta);}
+    blockquote{background:rgba(217,70,166,.06);border-left:4px solid var(--magenta);
+      border-radius:0 var(--radius) var(--radius) 0;padding:20px 24px;margin:28px 0;}
+    blockquote p{margin:0 0 6px;font-style:italic;color:var(--text);}
+    blockquote cite{font-size:.8rem;color:var(--muted);}
+
+    /* ── TABLE ── */
+    .table-wrap{overflow-x:auto;margin:20px 0 28px;border-radius:var(--radius);}
+    table{width:100%;border-collapse:collapse;font-size:.85rem;}
+    th{background:rgba(217,70,166,.15);color:var(--text);font-weight:700;
+      padding:11px 14px;text-align:left;white-space:nowrap;}
+    td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05);color:var(--text2);}
+    tr:hover td{background:rgba(255,255,255,.02);}
+
+    /* ── FAQ ── */
+    .faq-section{margin-top:40px;}
+    .faq-section h2{color:var(--text);font-size:1.2rem;font-weight:800;margin-bottom:16px;}
+    details{background:var(--bg-card);border-radius:var(--radius);
+      margin-bottom:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06);}
+    summary{padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;
+      list-style:none;display:flex;justify-content:space-between;align-items:center;}
+    summary::after{content:'＋';color:var(--magenta);font-size:1.2rem;flex-shrink:0;}
+    details[open] summary::after{content:'－';}
+    details p{padding:0 20px 18px;color:var(--text3);font-size:.9rem;line-height:1.7;}
+
+    /* ── REFERENCIAS ── */
+    .refs-section{margin-top:40px;}
+    .refs-section h2{color:var(--text);font-size:1.1rem;font-weight:800;margin-bottom:14px;}
+    .ref-item{background:var(--bg-card);border-radius:10px;padding:14px 18px;
+      margin-bottom:10px;font-size:.82rem;color:var(--text3);
+      border:1px solid rgba(255,255,255,.05);}
+    .ref-item strong{color:var(--text2);display:block;margin-bottom:4px;}
+    .ref-item a{color:var(--cyan);text-decoration:none;font-size:.78rem;}
+    .ref-item a:hover{text-decoration:underline;}
+
+    /* ── VIDEO SCRIPT ── */
+    .video-section{margin-top:40px;}
+    .video-section h2{color:var(--text);font-size:1.1rem;font-weight:800;margin-bottom:14px;
+      display:flex;align-items:center;gap:8px;}
+    .video-box{background:var(--bg-card);border-radius:var(--radius);padding:20px;
+      border:1px solid rgba(0,210,255,.15);white-space:pre-line;
+      font-size:.83rem;color:var(--text3);line-height:1.7;}
+    .video-badge{background:rgba(0,210,255,.1);color:var(--cyan);
+      font-size:.7rem;font-weight:800;padding:3px 8px;border-radius:10px;}
+
+    /* ── SIDEBAR ── */
+    .sidebar{position:relative;}
+    .sidebar-sticky{position:sticky;top:80px;}
+    .sidebar-card{background:var(--bg-card);border-radius:var(--radius);padding:20px;
+      margin-bottom:20px;border:1px solid rgba(255,255,255,.07);}
+    .sidebar-card h3{font-size:.9rem;font-weight:800;margin-bottom:14px;color:var(--text);}
+    .rec-item{display:flex;gap:12px;align-items:flex-start;
+      padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);
+      text-decoration:none;}
+    .rec-item:last-child{border-bottom:none;}
+    .rec-thumb{width:44px;height:44px;border-radius:8px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.4rem;flex-shrink:0;}
+    .rec-body{flex:1;}
+    .rec-body h4{font-size:.8rem;font-weight:700;color:var(--text);
+      line-height:1.3;margin-bottom:3px;}
+    .rec-body span{font-size:.72rem;color:var(--muted);}
+    .cta-wa{display:flex;align-items:center;justify-content:center;gap:8px;
+      padding:13px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.25);
+      border-radius:var(--radius);color:#25D366;text-decoration:none;
+      font-weight:700;font-size:.85rem;transition:background .2s;}
+    .cta-wa:hover{background:rgba(37,211,102,.18);}
+    .cta-calc{display:flex;align-items:center;justify-content:center;gap:8px;
+      padding:13px;background:linear-gradient(135deg,var(--magenta),#B82F8B);
+      border-radius:var(--radius);color:#fff;text-decoration:none;
+      font-weight:700;font-size:.85rem;margin-top:10px;transition:opacity .2s;}
+    .cta-calc:hover{opacity:.9;}
+    .share-row{display:flex;gap:8px;flex-wrap:wrap;}
+    .share-btn{flex:1;min-width:80px;padding:9px;border:none;border-radius:10px;
+      cursor:pointer;font-size:.78rem;font-weight:700;display:flex;
+      align-items:center;justify-content:center;gap:6px;text-decoration:none;}
+    .share-wa{background:rgba(37,211,102,.1);color:#25D366;border:1px solid rgba(37,211,102,.25);}
+    .share-li{background:rgba(0,119,181,.1);color:#0077B5;border:1px solid rgba(0,119,181,.25);}
+    .share-cp{background:rgba(255,255,255,.05);color:var(--text3);border:1px solid rgba(255,255,255,.1);}
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb{display:flex;align-items:center;gap:6px;font-size:.78rem;
+      color:var(--muted);margin-bottom:24px;flex-wrap:wrap;}
+    .breadcrumb a{color:var(--muted);text-decoration:none;}
+    .breadcrumb a:hover{color:var(--text);}
+
+    /* ── 404 ── */
+    #not-found{text-align:center;padding:80px 24px;display:none;}
+    #not-found .code{font-size:5rem;font-weight:900;
+      background:linear-gradient(135deg,var(--gold),var(--magenta));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">💎 ProDigy</a>
+  <div class="nav-links">
+    <a href="journal.html"><i class="fa-regular fa-newspaper"></i> Insights</a>
+    <a href="portafolio.html">Portafolio</a>
+    <a href="calculadora.html" class="nav-cta"><i class="fa-solid fa-calculator"></i> Calcular</a>
+  </div>
+</nav>
+
+<!-- NOT FOUND -->
+<div id="not-found">
+  <div class="code">404</div>
+  <h2 style="margin-bottom:10px;">Artículo no encontrado</h2>
+  <p style="color:var(--muted);margin-bottom:24px;">Este artículo puede haber sido movido o aún no existe.</p>
+  <a href="journal.html" style="color:var(--magenta);text-decoration:none;font-weight:700;">← Ver todos los artículos</a>
+</div>
+
+<!-- ARTICLE CONTENT -->
+<div class="page-wrap" id="article-wrap">
+  <main>
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a href="index.html">Inicio</a>
+      <span>›</span>
+      <a href="journal.html">Insights</a>
+      <span>›</span>
+      <span id="bc-title">Artículo</span>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-thumb" id="hero-thumb"></div>
+      <div id="hero-chip" class="hero-chip"></div>
+      <h1 id="article-title"></h1>
+      <p class="hero-sub" id="article-sub"></p>
+      <div class="hero-meta" id="article-meta"></div>
+    </div>
+
+    <!-- Body rendered by JS -->
+    <div class="article-body" id="article-body"></div>
+
+    <!-- FAQ -->
+    <div class="faq-section" id="faq-section">
+      <h2><i class="fa-regular fa-circle-question"></i> Preguntas frecuentes</h2>
+      <div id="faq-list"></div>
+    </div>
+
+    <!-- Referencias -->
+    <div class="refs-section" id="refs-section">
+      <h2><i class="fa-solid fa-book-open"></i> Referencias científicas</h2>
+      <div id="refs-list"></div>
+    </div>
+
+    <!-- Guión de video -->
+    <div class="video-section" id="video-section">
+      <h2>
+        <i class="fa-brands fa-instagram"></i> Guión Reel
+        <span class="video-badge">Para tus redes</span>
+      </h2>
+      <div class="video-box" id="video-script"></div>
+    </div>
+  </main>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-sticky">
+      <!-- CTA -->
+      <div class="sidebar-card">
+        <h3>¿Tienes un caso?</h3>
+        <a class="cta-wa" href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp
+        </a>
+        <a class="cta-calc" href="calculadora.html">
+          <i class="fa-solid fa-calculator"></i> Calcular precio estimado
+        </a>
+      </div>
+
+      <!-- Artículos relacionados -->
+      <div class="sidebar-card">
+        <h3>Artículos recientes</h3>
+        <div id="recientes"></div>
+      </div>
+
+      <!-- Compartir -->
+      <div class="sidebar-card">
+        <h3>Compartir</h3>
+        <div class="share-row">
+          <a id="share-wa" class="share-btn share-wa" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-whatsapp"></i> WA
+          </a>
+          <a id="share-li" class="share-btn share-li" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-linkedin"></i> LinkedIn
+          </a>
+          <button class="share-btn share-cp" onclick="copiarLink()">
+            <i class="fa-regular fa-copy"></i> Copiar
+          </button>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script src="articles.js"></script>
+<script>
+const CAT_CLASS = {ia:'chip-ia', material:'chip-material', protocolo:'chip-protocolo', equipo:'chip-equipo'};
+const CAT_LABEL = {ia:'IA', material:'Materiales', protocolo:'Protocolo', equipo:'Equipos'};
+
+function getParam(key) {
+  return new URLSearchParams(window.location.search).get(key);
+}
+
+function fechaLegible(iso) {
+  const [y,m,d] = iso.split('-');
+  const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;
+}
+
+function renderContent(bloques) {
+  return bloques.map(b => {
+    if (b.t === 'h2') return `<h2>${b.c}</h2>`;
+    if (b.t === 'p')  return `<p>${b.c}</p>`;
+    if (b.t === 'quote') return `<blockquote><p>"${b.c}"</p><cite>— ${b.author}</cite></blockquote>`;
+    if (b.t === 'list') return `<ul>${b.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+    if (b.t === 'img')  return `<figure style="margin:20px 0"><img src="${b.src}" alt="${b.alt||''}" style="width:100%;border-radius:10px"><figcaption style="text-align:center;font-size:.78rem;color:var(--muted);margin-top:6px">${b.caption||''}</figcaption></figure>`;
+    if (b.t === 'video') return `<div style="margin:24px 0;border-radius:12px;overflow:hidden;aspect-ratio:16/9"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/${b.youtube}" title="${b.title||''}" frameborder="0" allowfullscreen></iframe></div>`;
+    if (b.t === 'table') return `<div class="table-wrap"><table><thead><tr>${b.headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${b.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    return '';
+  }).join('');
+}
+
+function renderFAQ(faqs) {
+  return faqs.map((f,i) => `
+    <details>
+      <summary>${f.q}</summary>
+      <p>${f.a}</p>
+    </details>`).join('');
+}
+
+function renderRefs(refs) {
+  return refs.map(r => {
+    const doi = r.doi ? `<a href="https://doi.org/${r.doi}" target="_blank" rel="noopener">DOI: ${r.doi}</a>` : '';
+    const pm  = r.pubmed ? `<a href="${r.pubmed}" target="_blank" rel="noopener">PubMed</a>` : '';
+    const links = [doi, pm].filter(Boolean).join(' · ');
+    return `<div class="ref-item">
+      <strong>${r.autores}</strong>
+      ${r.titulo} <em>${r.revista}</em>. ${r.año};${r.vol}(${r.num}):${r.pags}.
+      ${links ? `<br>${links}` : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderRecientes(recientes) {
+  return recientes.map(a => `
+    <a class="rec-item" href="article.html?id=${a.id}">
+      <div class="rec-thumb ${a.grad}">${a.emoji}</div>
+      <div class="rec-body">
+        <h4>${a.titulo}</h4>
+        <span><i class="fa-regular fa-clock"></i> ${a.lectura}</span>
+      </div>
+    </a>`).join('');
+}
+
+function buildSchema(art) {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Article',
+        'headline': art.titulo,
+        'description': art.subtitulo,
+        'datePublished': art.fecha,
+        'dateModified': art.fecha,
+        'author': {'@type':'Person','name':'Alejandro Carvajal','jobTitle':'Experto CAD/CAM Dental'},
+        'publisher': {'@type':'Organization','name':'ProDigy Lab Dental','url':'https://prodigylabdental.com'},
+        'mainEntityOfPage': `https://prodigylabdental.com/article.html?id=${art.id}`,
+        'keywords': art.chip + ', CAD/CAM dental, odontología digital, laboratorio dental Colombia'
+      },
+      {
+        '@type': 'FAQPage',
+        'mainEntity': (art.faq||[]).map(f => ({'@type':'Question','name':f.q,'acceptedAnswer':{'@type':'Answer','text':f.a}}))
+      }
+    ]
+  };
+  return JSON.stringify(schema);
+}
+
+function copiarLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.querySelector('.share-cp');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Copiado';
+    setTimeout(() => btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar', 2000);
+  });
+}
+
+/* ── INIT ── */
+(function init() {
+  const id = getParam('id');
+  if (!id) { showNotFound(); return; }
+
+  const art = getArticle(id);
+  if (!art || art.proximas) { showNotFound(); return; }
+
+  const url = `https://prodigylabdental.com/article.html?id=${id}`;
+  const canonicalUrl = url;
+
+  /* Meta tags */
+  document.title = art.titulo + ' | ProDigy Lab Dental';
+  document.getElementById('meta-title').textContent = art.titulo + ' | ProDigy Lab Dental';
+  document.getElementById('meta-desc').content = art.subtitulo;
+  document.getElementById('og-title').content = art.titulo;
+  document.getElementById('og-desc').content = art.subtitulo;
+  document.getElementById('og-url').content = canonicalUrl;
+  document.getElementById('canonical').href = canonicalUrl;
+  document.getElementById('jsonld-schema').textContent = buildSchema(art);
+
+  /* Breadcrumb */
+  document.getElementById('bc-title').textContent = art.titulo.substring(0,50) + '…';
+
+  /* Hero */
+  const thumb = document.getElementById('hero-thumb');
+  thumb.textContent = art.emoji;
+  thumb.className = 'hero-thumb ' + art.grad;
+
+  const chip = document.getElementById('hero-chip');
+  chip.textContent = art.chip;
+  chip.className = 'hero-chip ' + (CAT_CLASS[art.categoria] || 'chip-ia');
+
+  document.getElementById('article-title').textContent = art.titulo;
+  document.getElementById('article-sub').textContent   = art.subtitulo;
+  document.getElementById('article-meta').innerHTML = `
+    <span><i class="fa-regular fa-calendar"></i> ${fechaLegible(art.fecha)}</span>
+    <span><i class="fa-regular fa-clock"></i> ${art.lectura} lectura</span>
+    <span><i class="fa-solid fa-eye"></i> ${art.vistas} vistas</span>
+    <span><i class="fa-solid fa-user"></i> Alejandro Carvajal</span>`;
+
+  /* Body */
+  document.getElementById('article-body').innerHTML = renderContent(art.contenido || []);
+
+  /* FAQ */
+  if (art.faq && art.faq.length) {
+    document.getElementById('faq-list').innerHTML = renderFAQ(art.faq);
+  } else {
+    document.getElementById('faq-section').style.display = 'none';
+  }
+
+  /* Referencias */
+  if (art.referencias && art.referencias.length) {
+    document.getElementById('refs-list').innerHTML = renderRefs(art.referencias);
+  } else {
+    document.getElementById('refs-section').style.display = 'none';
+  }
+
+  /* Video script */
+  if (art.video_script) {
+    document.getElementById('video-script').textContent = art.video_script;
+  } else {
+    document.getElementById('video-section').style.display = 'none';
+  }
+
+  /* Recientes */
+  document.getElementById('recientes').innerHTML = renderRecientes(getRecientes(id));
+
+  /* Share */
+  const shareText = encodeURIComponent('📖 ' + art.titulo + ' — ProDigy Lab Dental\n' + canonicalUrl);
+  document.getElementById('share-wa').href = `https://wa.me/?text=${shareText}`;
+  document.getElementById('share-li').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`;
+})();
+
+function showNotFound() {
+  document.getElementById('article-wrap').style.display = 'none';
+  document.getElementById('not-found').style.display = 'block';
+}
+</script>
+</body>
+</html>

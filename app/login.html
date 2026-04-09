@@ -42,14 +42,27 @@
         }
 
         .login-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
+            background: linear-gradient(160deg, #0d1525 0%, #080f1c 100%);
+            border: 1.5px solid transparent;
+            background-clip: padding-box;
+            border-radius: 22px;
             padding: 40px 36px;
             width: 100%;
             max-width: 440px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 0 0 1.5px rgba(217,70,166,0.5),
+                        0 0 0 3px rgba(212,175,55,0.15),
+                        0 24px 80px rgba(0,0,0,0.7),
+                        0 0 60px rgba(217,70,166,0.08) inset;
             position: relative;
+        }
+        /* Línea de acento superior */
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 10%; right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #D946A6, #D4AF37, #D946A6, transparent);
+            border-radius: 2px;
         }
 
         /* LOGO */
@@ -57,13 +70,20 @@
             text-align: center;
             margin-bottom: 28px;
         }
+        @keyframes diamondFloat {
+            0%, 100% { transform: translateY(0px) rotate(-2deg); }
+            50%       { transform: translateY(-8px) rotate(2deg); }
+        }
         .logo-icon {
-            width: 68px; height: 68px;
-            background: rgba(217,70,166,0.12);
+            width: 76px; height: 76px;
+            background: radial-gradient(circle, rgba(217,70,166,0.18) 0%, rgba(212,175,55,0.08) 100%);
             border-radius: 50%;
-            border: 2px solid rgba(217,70,166,0.35);
+            border: 2px solid rgba(217,70,166,0.5);
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto 12px;
+            font-size: 2.2rem;
+            animation: diamondFloat 3s ease-in-out infinite, logoPulse 2.2s ease-in-out infinite;
+            box-shadow: 0 8px 30px rgba(217,70,166,0.25);
         }
         .logo-area h1 { font-size: 1.55rem; font-weight: 900; letter-spacing: 3px; color: #fff; }
         .logo-area p  { font-size: 0.76rem; color: var(--muted); margin-top: 4px; }
@@ -223,6 +243,124 @@
         /* Panel oculto/visible */
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
+
+        /* ── FONDO ANIMADO ── */
+        @keyframes bgShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(217,70,166,0.06) 0%, rgba(0,210,255,0.04) 50%, rgba(212,175,55,0.05) 100%);
+            background-size: 300% 300%;
+            animation: bgShift 8s ease infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .login-card { position: relative; z-index: 1; }
+
+        /* ── LOGO ANIMADO ── */
+        @keyframes logoPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(217,70,166,0.45); }
+            50%       { box-shadow: 0 0 0 12px rgba(217,70,166,0); }
+        }
+        .logo-icon { animation: logoPulse 2.2s ease-in-out infinite; }
+
+        /* ── PRUEBA SOCIAL ── */
+        .social-proof {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .sp-item {
+            text-align: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px;
+            padding: 8px 12px;
+            flex: 1;
+        }
+        .sp-num {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--gold-text);
+            line-height: 1;
+        }
+        .sp-label {
+            display: block;
+            font-size: 0.6rem;
+            color: #64748b;
+            margin-top: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        /* ── GATILLOS MENTALES ── */
+        .mental-trigger {
+            background: linear-gradient(135deg, rgba(212,175,55,0.14), rgba(217,70,166,0.1));
+            border: 1px solid rgba(212,175,55,0.4);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 18px;
+            font-size: 0.8rem;
+            color: #f0d98c;
+            line-height: 1.6;
+            box-shadow: 0 0 20px rgba(212,175,55,0.08) inset;
+        }
+        .mental-trigger strong { color: #FFD700; text-shadow: 0 0 12px rgba(212,175,55,0.5); }
+
+        /* ── BENEFICIOS REGISTRO ── */
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .benefits-list li {
+            font-size: 0.77rem;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .benefits-list li i { color: #00FF41; font-size: 0.7rem; flex-shrink: 0; }
+
+        /* ── BTN SUBMIT ANIMADO ── */
+        @keyframes btnShimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .btn-submit {
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-dark) 40%, #D4AF37 70%, var(--gold) 100%) !important;
+            background-size: 200% auto !important;
+            animation: btnShimmer 2.5s linear infinite;
+        }
+        .btn-submit:hover { animation: none; opacity: 0.9; }
+
+        /* ── LIVE INDICATOR ── */
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.65rem;
+            color: #00FF41;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        .live-dot {
+            width: 7px; height: 7px;
+            background: #00FF41;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00FF41;
+            animation: logoPulse 1.4s ease-in-out infinite;
+        }
     </style>
 </head>
 <body>
@@ -230,11 +368,30 @@
 
     <!-- LOGO -->
     <div class="logo-area">
-        <div class="logo-icon">
-            <i class="fas fa-tooth" style="font-size:1.9rem;color:#D946A6;filter:drop-shadow(0 0 10px rgba(217,70,166,0.7));"></i>
-        </div>
+        <div class="logo-icon">💎</div>
         <h1>PRODIGY</h1>
-        <p>Acceso Cliente · Digital Dentistry</p>
+        <p>Acceso Profesional · CAD/CAM Digital</p>
+    </div>
+
+    <!-- LIVE INDICATOR -->
+    <div style="text-align:center;">
+        <span class="live-badge"><span class="live-dot"></span> Operadores en línea ahora</span>
+    </div>
+
+    <!-- PRUEBA SOCIAL -->
+    <div class="social-proof">
+        <div class="sp-item">
+            <span class="sp-num">200+</span>
+            <span class="sp-label">Doctores activos</span>
+        </div>
+        <div class="sp-item">
+            <span class="sp-num">24h</span>
+            <span class="sp-label">Entrega garantizada</span>
+        </div>
+        <div class="sp-item">
+            <span class="sp-num">98%</span>
+            <span class="sp-label">Satisfacción</span>
+        </div>
     </div>
 
     <!-- BANNER: aparece cuando vienen desde checkAuth -->
@@ -286,14 +443,52 @@
             </button>
         </form>
 
-        <div class="demo-hint">
-            <i class="fas fa-shield-halved" style="color:#D4AF37;"></i> &nbsp;Autenticación real con Supabase.<br>
-            <span style="color:#64748b;font-size:0.7rem;">Si olvidaste tu contraseña, contacta a PRODIGY por WhatsApp.</span>
+        <!-- ¿OLVIDASTE TU CONTRASEÑA? -->
+        <p style="text-align:center;margin-top:14px;">
+            <button onclick="toggleReset()" style="background:none;border:none;color:#64748b;font-size:0.75rem;cursor:pointer;text-decoration:underline;padding:0;">
+                ¿Olvidaste tu contraseña?
+            </button>
+        </p>
+
+        <!-- PANEL RESET (oculto por defecto) -->
+        <div id="reset-panel" style="display:none;margin-top:14px;background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.25);border-radius:12px;padding:16px;">
+            <p style="font-size:0.78rem;color:#e2c97a;margin-bottom:10px;">
+                <i class="fas fa-envelope" style="color:#D4AF37;"></i>
+                &nbsp;Ingresa tu correo registrado y te enviamos un enlace seguro para restablecer tu contraseña.
+            </p>
+            <div style="display:flex;gap:8px;">
+                <input type="email" id="reset-email" placeholder="correo@empresa.com"
+                    style="flex:1;padding:9px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:0.85rem;outline:none;">
+                <button onclick="handleReset()" id="reset-btn"
+                    style="padding:9px 16px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;border:none;border-radius:8px;font-weight:800;font-size:0.78rem;cursor:pointer;white-space:nowrap;">
+                    Enviar link
+                </button>
+            </div>
+            <p id="reset-msg" style="display:none;margin-top:8px;font-size:0.75rem;color:#86efac;"></p>
+        </div>
+
+        <div style="margin-top:12px;text-align:center;font-size:0.68rem;color:#374151;">
+            <i class="fas fa-shield-halved" style="color:#D4AF37;"></i> Autenticación segura · Supabase Auth
         </div>
     </div>
 
     <!-- ============ PANEL: REGISTRARSE ============ -->
     <div class="tab-panel" id="panel-register">
+
+        <!-- GATILLO MENTAL -->
+        <div class="mental-trigger">
+            <strong>Tu competencia ya diseña digitalmente.</strong><br>
+            Regístrate gratis y accede a producción CAD/CAM en 24h con seguimiento en tiempo real.
+        </div>
+
+        <!-- BENEFICIOS -->
+        <ul class="benefits-list">
+            <li><i class="fas fa-check-circle"></i> Seguimiento en vivo de cada caso</li>
+            <li><i class="fas fa-check-circle"></i> Historial completo de pedidos</li>
+            <li><i class="fas fa-check-circle"></i> Notificaciones cuando tu caso avanza</li>
+            <li><i class="fas fa-check-circle"></i> Cuenta gratuita — sin tarjeta</li>
+        </ul>
+
         <form onsubmit="handleRegister(event)">
             <div class="form-row">
                 <div class="form-group">
@@ -432,6 +627,33 @@
             return;
         }
         redirectByRole(data.user);
+    }
+
+    function toggleReset() {
+        const p = document.getElementById('reset-panel');
+        p.style.display = p.style.display === 'none' ? 'block' : 'none';
+        if (p.style.display === 'block') document.getElementById('reset-email').focus();
+    }
+
+    async function handleReset() {
+        const email = document.getElementById('reset-email').value.trim().toLowerCase();
+        const btn   = document.getElementById('reset-btn');
+        const msg   = document.getElementById('reset-msg');
+        if (!email) { msg.style.display='block'; msg.style.color='#f87171'; msg.textContent='Ingresa tu correo.'; return; }
+        btn.disabled = true; btn.textContent = 'Enviando...';
+        const { error } = await sb.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/app/reset-password.html'
+        });
+        btn.disabled = false; btn.textContent = 'Enviar link';
+        msg.style.display = 'block';
+        if (error) {
+            msg.style.color = '#f87171';
+            msg.textContent = 'No se pudo enviar. Verifica que el correo esté registrado.';
+        } else {
+            msg.style.color = '#86efac';
+            msg.textContent = '¡Listo! Revisa tu correo — el enlace vence en 1 hora.';
+            document.getElementById('reset-email').value = '';
+        }
     }
 
     async function handleRegister(e) {

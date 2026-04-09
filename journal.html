@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProDigy Insights & Tech — Vanguardia en Odontología Digital</title>
+  <meta name="description" content="Artículos técnicos sobre CAD/CAM dental, zirconio multicapa, disilicato, IA en Exocad, escáneres intraorales y el futuro de la clínica digital. Por ProDigy Lab, Colombia.">
+  <meta name="keywords" content="CAD CAM dental Colombia, zirconio multicapa vs disilicato, IA Exocad, escáner intraoral, laboratorio dental digital, odontología digital Bogotá">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ProDigy Insights — Revista de Odontología Digital">
+  <meta property="og:description" content="Artículos técnicos sobre zirconio, IA en Exocad, escáneres y el futuro de la clínica digital. Descarga guías clínicas gratuitas.">
+  <meta property="og:url" content="https://prodigylabdental.com/journal.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ProDigy Insights — Odontología Digital">
+  <link rel="canonical" href="https://prodigylabdental.com/journal.html">
+  <!-- JSON-LD: Blog + FAQ — para indexación AIO (ChatGPT, Perplexity, Google SGE) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "ProDigy Insights & Tech",
+    "description": "Publicaciones técnicas sobre odontología digital, materiales CAD/CAM, IA en diseño dental y equipos del futuro.",
+    "url": "https://prodigylabdental.com/journal.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "PRODIGY Digital Dentistry",
+      "url": "https://prodigylabdental.com"
+    },
+    "blogPost": [
+      {
+        "@type": "BlogPosting",
+        "headline": "IA en Exocad: Reduciendo tiempos de diseño hasta un 40%",
+        "description": "Cómo los módulos de inteligencia artificial en Exocad 2024 automatizan la propuesta de anatomía oclusal y reducen correcciones en laboratorios dentales.",
+        "keywords": "IA Exocad, diseño dental automatizado, CAD dental inteligencia artificial",
+        "author": { "@type": "Organization", "name": "ProDigy Lab" },
+        "datePublished": "2026-04-01"
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "Resinas 3D vs PMMA Fresado: Comparativa técnica real",
+        "description": "Análisis de resistencia flexural, acabado superficial y costo por unidad entre resinas 3D impresas y PMMA fresado en uso clínico dental.",
+        "keywords": "resina 3D dental, PMMA fresado, impresión 3D dental, comparativa materiales CAD CAM",
+        "author": { "@type": "Organization", "name": "ProDigy Lab" },
+        "datePublished": "2026-03-15"
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "Zirconio Multicapa Ultra-Translúcido: el nuevo estándar anterior",
+        "description": "Evaluación clínica de los nuevos bloques 5Y-PSZ con gradiente de translucidez y su impacto en la estética del sector anterior dental.",
+        "keywords": "zirconio multicapa, 5Y-PSZ, zirconio translúcido, estética dental anterior, corona zirconio Colombia",
+        "author": { "@type": "Organization", "name": "ProDigy Lab" },
+        "datePublished": "2026-02-20"
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "Flujo digital completo: del escáner al fresado en 24 horas",
+        "description": "El protocolo ProDigy para garantizar entregas en 24h sin comprometer calidad. Pasos, checkpoints y criterio de aprobación de diseño.",
+        "keywords": "flujo digital dental, entrega 24 horas laboratorio dental, protocolo CAD CAM, escáner intraoral fresado",
+        "author": { "@type": "Organization", "name": "ProDigy Lab" },
+        "datePublished": "2026-01-10"
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cuándo usar zirconio multicapa vs disilicato de litio?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "El zirconio multicapa es ideal para zonas posteriores con alta carga oclusal y cuando se necesita resistencia sin sacrificar estética. El disilicato de litio (e.max) es preferible en el sector anterior cuando la translucidez y el mimetismo del esmalte son prioritarios. La elección depende de la zona anatómica, el espacio de preparación disponible y los requerimientos estéticos del caso."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué ventajas tiene el fresado CAD/CAM sobre las técnicas tradicionales?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "El fresado CAD/CAM ofrece mayor precisión dimensional (±20 micras vs ±100 micras del método convencional), reproducibilidad total, tiempos de entrega hasta 5 veces más rápidos, eliminación de variables humanas en la fundición, y compatibilidad directa con escáneres intraorales eliminando la impresión física."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuáles son los tiempos de entrega de un laboratorio dental digital en Colombia?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "En ProDigy Lab, los tiempos estándar son: coronas unitarias en zirconio 24-48 horas, carillas de disilicato 48-72 horas, puentes de 3 piezas 48-72 horas, y modelos impresos 24 horas. Los casos urgentes con entrega en 24 horas están disponibles para coronas unitarias en materiales de stock."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cómo funciona el flujo digital de envío de casos a un laboratorio dental?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "El flujo digital completo inicia con el escaneo intraoral del paciente usando escáner compatible (iTero, 3Shape, Medit, etc.), exportación del archivo STL/PLY, envío digital al laboratorio (sin impresiones físicas), diseño CAD en Exocad o 3Shape, producción CAM en fresadora de 5 ejes o impresora 3D, y entrega del trabajo terminado. ProDigy acepta casos por plataforma digital con trazabilidad en tiempo real."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué es la inteligencia artificial aplicada al diseño dental?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La IA en diseño dental automatiza la propuesta anatómica inicial de restauraciones, sugiere morfología oclusal basada en dientes adyacentes y antagonistas, detecta interferencias en oclusión, y reduce el tiempo de diseño en hasta un 40%. Softwares como Exocad y 3Shape incorporan módulos de IA que el técnico ajusta según el criterio clínico específico del caso."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #050505;
+      --bg-card:      #0d1525;
+      --bg-glass:     rgba(13,21,37,0.7);
+      --gold:         #D946A6;
+      --gold-dark:    #B82F8B;
+      --gold-text:    #D4AF37;
+      --cyan:         #00d2ff;
+      --green:        #00FF41;
+      --text:         #fff;
+      --muted:        #64748b;
+      --border-m:     rgba(217,70,166,0.25);
+      --border-gold:  rgba(212,175,55,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 10%, rgba(217,70,166,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 90%, rgba(0,210,255,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 40%, rgba(212,175,55,0.04) 0%, transparent 45%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      background: rgba(5,5,5,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-m);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      color: var(--text);
+    }
+    .nav-logo span {
+      background: linear-gradient(90deg, var(--gold), var(--gold-text));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--gold); }
+
+    /* ── HERO ────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: clamp(60px,10vw,100px) 24px clamp(40px,6vw,70px);
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(217,70,166,0.12);
+      border: 1px solid var(--border-m);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 22px;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem,7vw,3.8rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      margin-bottom: 18px;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(100deg, var(--gold) 0%, var(--gold-text) 50%, var(--cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: clamp(0.95rem,2.5vw,1.15rem);
+      color: #94a3b8;
+      max-width: 560px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: clamp(16px,4vw,40px);
+      flex-wrap: wrap;
+    }
+    .hero-stat {
+      text-align: center;
+    }
+    .hero-stat strong {
+      display: block;
+      font-size: clamp(1.4rem,3.5vw,2rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--gold), var(--gold-text));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-stat span {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── LEAD MAGNET ─────────────────────────────────── */
+    .lead-section {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .lead-card {
+      background: linear-gradient(135deg, rgba(13,21,37,0.95) 0%, rgba(8,15,28,0.98) 100%);
+      backdrop-filter: blur(24px);
+      border: 1.5px solid transparent;
+      border-radius: 24px;
+      padding: clamp(28px,5vw,48px) clamp(24px,5vw,52px);
+      box-shadow:
+        0 0 0 1.5px rgba(212,175,55,0.4),
+        0 0 0 3px rgba(217,70,166,0.12),
+        0 32px 80px rgba(0,0,0,0.6),
+        0 0 80px rgba(212,175,55,0.05) inset;
+      position: relative;
+      overflow: hidden;
+    }
+    .lead-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-text), var(--gold), transparent);
+    }
+    .lead-card::after {
+      content: '🦷';
+      position: absolute;
+      right: -20px; bottom: -20px;
+      font-size: 120px;
+      opacity: 0.04;
+      transform: rotate(-15deg);
+      pointer-events: none;
+    }
+    .lead-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    @media (max-width: 640px) {
+      .lead-inner { grid-template-columns: 1fr; gap: 28px; }
+    }
+    .lead-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold-text);
+      margin-bottom: 14px;
+    }
+    .lead-left h2 {
+      font-size: clamp(1.3rem,3vw,1.85rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .lead-left h2 em {
+      font-style: normal;
+      color: var(--gold-text);
+    }
+    .lead-left p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+    .lead-benefits {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .lead-benefits li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+    .lead-benefits li i {
+      color: var(--green);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .lead-form {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 28px 24px;
+    }
+    .lead-form h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .lead-form .sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .form-field {
+      position: relative;
+      margin-bottom: 14px;
+    }
+    .form-field i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .form-field input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px 14px 12px 38px;
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-field input::placeholder { color: var(--muted); }
+    .form-field input:focus {
+      border-color: rgba(212,175,55,0.5);
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
+    }
+    .btn-descargar {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold-text) 0%, #e8c050 50%, var(--gold-text) 100%);
+      background-size: 200% auto;
+      color: #080f1c;
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 20px;
+      cursor: pointer;
+      transition: background-position 0.4s, transform 0.15s, box-shadow 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(212,175,55,0.3);
+      margin-top: 6px;
+    }
+    .btn-descargar:hover {
+      background-position: right center;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(212,175,55,0.45);
+    }
+    .btn-descargar:active { transform: translateY(0); }
+    .btn-descargar.loading { opacity: 0.7; pointer-events: none; }
+    .form-msg {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      text-align: center;
+      min-height: 20px;
+    }
+    .form-msg.ok  { color: var(--green); }
+    .form-msg.err { color: #f87171; }
+    .form-privacy {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    /* ── ARTÍCULOS ───────────────────────────────────── */
+    .articles-section {
+      position: relative;
+      z-index: 1;
+      padding: 0 0 80px;
+    }
+    .section-header {
+      padding: 0 24px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .section-header h2 {
+      font-size: clamp(1.4rem,3.5vw,2.1rem);
+      font-weight: 800;
+    }
+    .section-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .filter-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tag-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tag-btn.active, .tag-btn:hover {
+      background: rgba(217,70,166,0.15);
+      border-color: var(--border-m);
+      color: var(--gold);
+    }
+
+    /* Carrusel */
+    .articles-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 16px;
+      padding: 4px 24px 20px;
+      scrollbar-width: none;
+    }
+    .articles-track::-webkit-scrollbar { display: none; }
+
+    .article-card {
+      flex: 0 0 80vw;
+      max-width: 340px;
+      scroll-snap-align: start;
+      background: linear-gradient(160deg, #0d1525 0%, #080f1c 100%);
+      border: 1px solid var(--border-m);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .article-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(217,70,166,0.2);
+    }
+    .card-thumb {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-thumb-bg {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+    }
+    .card-thumb-bg.grad-1 { background: linear-gradient(135deg,#1a0a2e,#0d1525); }
+    .card-thumb-bg.grad-2 { background: linear-gradient(135deg,#001a1f,#0d1525); }
+    .card-thumb-bg.grad-3 { background: linear-gradient(135deg,#1a1000,#0d1525); }
+    .card-thumb-bg.grad-4 { background: linear-gradient(135deg,#001a10,#0d1525); }
+    .card-thumb-bg.grad-5 { background: linear-gradient(135deg,#1a0a0a,#0d1525); }
+    .card-thumb .chip {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.68rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .chip.cat-ia       { color: var(--cyan); border-color: rgba(0,210,255,0.3); }
+    .chip.cat-material { color: var(--gold-text); border-color: rgba(212,175,55,0.3); }
+    .chip.cat-equipo   { color: var(--gold); border-color: rgba(217,70,166,0.3); }
+    .chip.cat-protocolo{ color: var(--green); border-color: rgba(0,255,65,0.3); }
+    .card-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: flex;
+      gap: 12px;
+    }
+    .card-body h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .card-body p {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      line-height: 1.55;
+      flex: 1;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .read-more {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: gap 0.2s;
+    }
+    .article-card:hover .read-more { gap: 9px; }
+    .card-time {
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Desktop — mostrar más columnas */
+    @media (min-width: 769px) {
+      .article-card { flex: 0 0 300px; }
+    }
+    @media (min-width: 1200px) {
+      .articles-track { padding-left: calc((100vw - 1100px)/2); padding-right: calc((100vw - 1100px)/2); }
+      .article-card { flex: 0 0 320px; }
+    }
+
+    /* ── PRÓXIMAMENTE ────────────────────────────────── */
+    .coming-section {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px 80px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .coming-card {
+      background: rgba(13,21,37,0.6);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 36px;
+      text-align: center;
+    }
+    .coming-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .coming-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .notify-form {
+      display: flex;
+      gap: 10px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    @media (max-width: 480px) { .notify-form { flex-direction: column; } }
+    .notify-form input {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: var(--text);
+      font-size: 0.88rem;
+      outline: none;
+    }
+    .notify-form input:focus { border-color: var(--border-m); }
+    .btn-notify {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-notify:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(217,70,166,0.35); }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── TOAST ───────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: #0d1525;
+      border: 1px solid var(--border-m);
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 0.88rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      z-index: 999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), opacity 0.3s;
+      max-width: 320px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.ok  { border-color: rgba(0,255,65,0.4); }
+    .toast.err { border-color: rgba(248,113,113,0.4); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    💎 <span>PRODIGY</span>
+  </a>
+  <a href="index.html" class="nav-back">
+    <i class="fa-solid fa-arrow-left"></i> Inicio
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Publicaciones técnicas verificadas
+  </div>
+  <h1>ProDigy<br><span class="grad">Insights & Tech</span></h1>
+  <p>Explorando la vanguardia en diseño CAD/CAM, materiales y el futuro de la clínica digital. Conocimiento técnico sin filtros.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <strong>200+</strong>
+      <span>Doctores suscritos</span>
+    </div>
+    <div class="hero-stat">
+      <strong>98%</strong>
+      <span>Casos entregados a tiempo</span>
+    </div>
+    <div class="hero-stat">
+      <strong>5+</strong>
+      <span>Años en digital</span>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD MAGNET -->
+<section class="lead-section">
+  <div class="lead-card">
+    <div class="lead-inner">
+      <!-- Izquierda: info -->
+      <div class="lead-left">
+        <div class="lead-tag"><i class="fa-solid fa-file-pdf"></i> Guía Clínica 2026 — Descarga gratuita</div>
+        <h2>¿Cuándo usar <em>Zirconio Multicapa</em> vs <em>Disilicato</em>?</h2>
+        <p>El protocolo que usan los laboratorios de élite para elegir el material correcto según el caso. Evita errores costosos y acorta la curva de aprendizaje.</p>
+        <ul class="lead-benefits">
+          <li><i class="fa-solid fa-circle-check"></i> Tabla comparativa por zona anatómica y carga oclusal</li>
+          <li><i class="fa-solid fa-circle-check"></i> Guía de translucidez vs resistencia para zonas anteriores</li>
+          <li><i class="fa-solid fa-circle-check"></i> Checklist pre-diseño en Exocad / 3Shape</li>
+          <li><i class="fa-solid fa-circle-check"></i> Casos clínicos reales con fotografías</li>
+        </ul>
+      </div>
+      <!-- Derecha: formulario -->
+      <div class="lead-form">
+        <h3>Descarga gratis tu guía</h3>
+        <p class="sub">Recíbela en WhatsApp en menos de 2 minutos</p>
+        <form id="leadForm" onsubmit="submitLead(event)">
+          <div class="form-field">
+            <i class="fa-solid fa-user-doctor"></i>
+            <input type="text" id="leadNombre" placeholder="Dr. / Dra. Nombre completo" required maxlength="120">
+          </div>
+          <div class="form-field">
+            <i class="fa-brands fa-whatsapp"></i>
+            <input type="tel" id="leadWA" placeholder="WhatsApp con código de país (+57...)" required maxlength="20">
+          </div>
+          <button type="submit" class="btn-descargar" id="btnDescargar">
+            <i class="fa-solid fa-download"></i>
+            Descargar Guía Gratuita
+          </button>
+          <div class="form-msg" id="formMsg"></div>
+          <p class="form-privacy"><i class="fa-solid fa-lock" style="font-size:0.65rem;margin-right:4px;"></i>Sin spam. Solo contenido técnico de valor.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTÍCULOS -->
+<section class="articles-section">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Artículos técnicos</div>
+      <h2>Tecnología que transforma clínicas</h2>
+      <div class="section-sub">Desliza para explorar →</div>
+    </div>
+    <div class="filter-tags">
+      <button class="tag-btn active" onclick="filterArticles(this,'all')">Todos</button>
+      <button class="tag-btn" onclick="filterArticles(this,'ia')">IA</button>
+      <button class="tag-btn" onclick="filterArticles(this,'material')">Materiales</button>
+      <button class="tag-btn" onclick="filterArticles(this,'equipo')">Equipos</button>
+      <button class="tag-btn" onclick="filterArticles(this,'protocolo')">Protocolos</button>
+    </div>
+  </div>
+
+  <div class="articles-track" id="articlesTrack">
+
+    <a class="article-card" href="article.html?id=ia-exocad-cad-cam" data-cat="ia">
+      <div class="card-thumb">
+        <div class="card-thumb-bg grad-1">🤖</div>
+        <span class="chip cat-ia">IA</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Abr 2026</span><span><i class="fa-regular fa-clock"></i> 6 min</span></div>
+        <h3>IA en Exocad: Reduciendo tiempos de diseño hasta un 40%</h3>
+        <p>Cómo los módulos de inteligencia artificial en Exocad 2024 automatizan la propuesta de anatomía oclusal y reducen correcciones.</p>
+      </div>
+      <div class="card-footer">
+        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="card-time"><i class="fa-solid fa-eye"></i> 1.2k</span>
+      </div>
+    </a>
+
+    <a class="article-card" href="article.html?id=resinas-3d-vs-pmma" data-cat="material">
+      <div class="card-thumb">
+        <div class="card-thumb-bg grad-3">🦷</div>
+        <span class="chip cat-material">Materiales</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Mar 2026</span><span><i class="fa-regular fa-clock"></i> 8 min</span></div>
+        <h3>Resinas 3D vs PMMA Fresado: Comparativa técnica real</h3>
+        <p>Análisis de resistencia flexural, acabado superficial y costo por unidad entre materiales impresos y fresados en uso clínico.</p>
+      </div>
+      <div class="card-footer">
+        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="card-time"><i class="fa-solid fa-eye"></i> 987</span>
+      </div>
+    </a>
+
+    <a class="article-card" href="article.html?id=escaneres-intraorales-2026" data-cat="equipo">
+      <div class="card-thumb">
+        <div class="card-thumb-bg grad-2">📡</div>
+        <span class="chip cat-equipo">Equipos</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Mar 2026</span><span><i class="fa-regular fa-clock"></i> 10 min</span></div>
+        <h3>Nuevos protocolos para escáneres intraorales en 2026</h3>
+        <p>Guía de calibración, flujo de exportación STL y compatibilidad con los principales softwares de diseño dental del mercado.</p>
+      </div>
+      <div class="card-footer">
+        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="card-time"><i class="fa-solid fa-eye"></i> 743</span>
+      </div>
+    </a>
+
+    <a class="article-card" href="article.html?id=3shape-automate-revision" data-cat="ia">
+      <div class="card-thumb">
+        <div class="card-thumb-bg grad-1">🧠</div>
+        <span class="chip cat-ia">IA</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Feb 2026</span><span><i class="fa-regular fa-clock"></i> 7 min</span></div>
+        <h3>3Shape Automate: ¿Reemplaza al diseñador o lo potencia?</h3>
+        <p>Revisamos el módulo de automatización de 3Shape y su impacto real en flujos de producción de laboratorios de alto volumen.</p>
+      </div>
+      <div class="card-footer">
+        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="card-time"><i class="fa-solid fa-eye"></i> 1.5k</span>
+      </div>
+    </a>
+
+    <a class="article-card" href="article.html?id=zirconio-ultratranslucido-5ypzs" data-cat="material">
+      <div class="card-thumb">
+        <div class="card-thumb-bg grad-3">💎</div>
+        <span class="chip cat-material">Materiales</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Feb 2026</span><span><i class="fa-regular fa-clock"></i> 9 min</span></div>
+        <h3>Zirconio Multicapa Ultra-Translúcido: el nuevo estándar anterior</h3>
+        <p>Evaluación clínica de los nuevos bloques 5Y-PSZ con gradiente de translucidez y su impacto en la estética del sector anterior.</p>
+      </div>
+      <div class="card-footer">
+        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="card-time"><i class="fa-solid fa-eye"></i> 2.1k</span>
+      </div>
+    </a>
+
+    <a class="article-card" href="article.html?id=flujo-digital-24h" data-cat="protocolo">
+      <div class="card-thumb">
+        <div class="card-thumb-bg grad-4">📋</div>
+        <span class="chip cat-protocolo">Protocolo</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Ene 2026</span><span><i class="fa-regular fa-clock"></i> 5 min</span></div>
+        <h3>Flujo digital completo: del escáner al fresado en 24 horas</h3>
+        <p>El protocolo ProDigy para garantizar entregas en 24h sin comprometer calidad. Pasos, checkpoints y criterio de aprobación de diseño.</p>
+      </div>
+      <div class="card-footer">
+        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="card-time"><i class="fa-solid fa-eye"></i> 3.4k</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- PRÓXIMAMENTE / NOTIFICACIÓN -->
+<section class="coming-section">
+  <div class="coming-card">
+    <h3>Próximas publicaciones</h3>
+    <p>Deja tu WhatsApp y te avisamos cuando publiquemos nuevos artículos técnicos.</p>
+    <div class="notify-form">
+      <input type="tel" id="notifyWA" placeholder="WhatsApp (+57...)">
+      <button class="btn-notify" onclick="subscribeNotify()">
+        <i class="fa-brands fa-whatsapp"></i> Avisar
+      </button>
+    </div>
+    <div class="form-msg" id="notifyMsg" style="margin-top:12px;font-size:0.82rem;text-align:center;min-height:20px;"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <a href="index.html">ProDigy Lab</a> · Odontología digital de vanguardia</p>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+  let sb;
+  document.addEventListener('DOMContentLoaded', () => {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  });
+
+  /* ── LEAD MAGNET ──────────────────────────────────── */
+  async function submitLead(e) {
+    e.preventDefault();
+    const btn  = document.getElementById('btnDescargar');
+    const msg  = document.getElementById('formMsg');
+    const nombre = document.getElementById('leadNombre').value.trim();
+    const wa     = document.getElementById('leadWA').value.trim();
+
+    btn.classList.add('loading');
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registrando...';
+    msg.textContent = '';
+
+    const { error } = await sb.from('leads_doctores').insert({
+      nombre,
+      whatsapp: wa,
+      recurso_descargado: 'Guía Clínica 2026: Zirconio Multicapa vs Disilicato'
+    });
+
+    btn.classList.remove('loading');
+
+    if (error) {
+      console.error(error);
+      msg.className = 'form-msg err';
+      msg.textContent = 'Error al registrar. Intenta de nuevo.';
+      btn.innerHTML = '<i class="fa-solid fa-download"></i> Descargar Guía Gratuita';
+      return;
+    }
+
+    msg.className = 'form-msg ok';
+    msg.textContent = '✓ ¡Listo! Enviaremos tu guía en menos de 2 minutos.';
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Registrado';
+    btn.style.background = 'linear-gradient(135deg,#00FF41,#00cc33)';
+    showToast('Guía en camino a tu WhatsApp 🎉', 'ok');
+
+    // Limpiar form después de 3s
+    setTimeout(() => {
+      document.getElementById('leadForm').reset();
+      btn.innerHTML = '<i class="fa-solid fa-download"></i> Descargar Guía Gratuita';
+      btn.style.background = '';
+      msg.textContent = '';
+    }, 4000);
+  }
+
+  /* ── FILTRO ARTÍCULOS ─────────────────────────────── */
+  function filterArticles(btnEl, cat) {
+    document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+    document.querySelectorAll('.article-card').forEach(card => {
+      const show = cat === 'all' || card.dataset.cat === cat;
+      card.style.display = show ? 'flex' : 'none';
+    });
+    // Scroll al inicio del track
+    document.getElementById('articlesTrack').scrollTo({ left: 0, behavior: 'smooth' });
+  }
+
+  /* ── NOTIFICACIÓN ─────────────────────────────────── */
+  async function subscribeNotify() {
+    const wa  = document.getElementById('notifyWA').value.trim();
+    const msg = document.getElementById('notifyMsg');
+    if (!wa) { msg.className = 'err'; msg.textContent = 'Ingresa tu WhatsApp.'; return; }
+
+    const { error } = await sb.from('leads_doctores').insert({
+      nombre: 'Suscriptor Journal',
+      whatsapp: wa,
+      recurso_descargado: 'Notificacion Journal'
+    });
+
+    if (error) { msg.className = 'err'; msg.textContent = 'Error. Intenta de nuevo.'; return; }
+    msg.className = 'ok';
+    msg.textContent = '✓ Te avisaremos cuando haya nuevos artículos.';
+    document.getElementById('notifyWA').value = '';
+    showToast('Suscrito con éxito', 'ok');
+  }
+
+  /* ── TOAST ────────────────────────────────────────── */
+  function showToast(text, type = 'ok') {
+    const t = document.getElementById('toast');
+    t.textContent = text;
+    t.className = `toast ${type} show`;
+    setTimeout(() => t.className = 'toast', 3500);
+  }
+</script>
+</body>
+</html>

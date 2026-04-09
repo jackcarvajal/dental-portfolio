@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Página no encontrada | ProDigy Lab</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #050505; --gold: #D4AF37; --magenta: #D946A6;
+      --cyan: #00d2ff; --text: #fff; --muted: #64748b;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 24px; overflow: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 30%, rgba(217,70,166,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at 70% 70%, rgba(0,210,255,0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .diamond {
+      font-size: 4rem; margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-14px) rotate(3deg); }
+    }
+    .code {
+      font-size: clamp(5rem,20vw,10rem);
+      font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, var(--gold), var(--magenta), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 16px; letter-spacing: -4px;
+    }
+    h1 { font-size: clamp(1.2rem,3vw,1.8rem); font-weight: 700; margin-bottom: 12px; }
+    p { color: var(--muted); font-size: clamp(0.88rem,2vw,1rem);
+        max-width: 400px; line-height: 1.6; margin-bottom: 36px; }
+    .links {
+      display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+    }
+    .link-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 12px;
+      font-size: 0.88rem; font-weight: 700; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .link-primary {
+      background: linear-gradient(135deg, var(--magenta), #B82F8B);
+      color: #fff; box-shadow: 0 4px 20px rgba(217,70,166,0.35);
+    }
+    .link-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(217,70,166,0.5); }
+    .link-secondary {
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.35);
+      color: var(--gold);
+    }
+    .link-secondary:hover { background: rgba(212,175,55,0.18); }
+    .link-wa {
+      background: rgba(37,211,102,0.1);
+      border: 1px solid rgba(37,211,102,0.3);
+      color: #25D366;
+    }
+    .link-wa:hover { background: rgba(37,211,102,0.18); }
+    footer { position: fixed; bottom: 20px; font-size: 0.72rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="diamond">💎</div>
+  <div class="code">404</div>
+  <h1>Esta página no existe</h1>
+  <p>Puede que el enlace esté roto o la página fue movida. Vuelve al inicio o contáctanos.</p>
+  <div class="links">
+    <a href="index.html" class="link-btn link-primary">
+      <i class="fa-solid fa-house"></i> Ir al inicio
+    </a>
+    <a href="calculadora.html" class="link-btn link-secondary">
+      <i class="fa-solid fa-calculator"></i> Calcular caso
+    </a>
+    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20encontré%20un%20enlace%20roto%20en%20la%20web." target="_blank" rel="noopener noreferrer" class="link-btn link-wa">
+      <i class="fa-brands fa-whatsapp"></i> Reportar error
+    </a>
+  </div>
+  <footer>© 2026 ProDigy Digital Dentistry</footer>
+</body>
+</html>

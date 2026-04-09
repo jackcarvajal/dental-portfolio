@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex, nofollow">
     <title>PRODIGY — Hoja de Ruta</title>
     <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -549,7 +550,7 @@ function lanzarConfetti(){
 async function cerrarSesion(){ await ProdigyAuth.signOut(); }
 
 /* ── WEB PUSH SUBSCRIPTION ─────────────────────────────────── */
-const VAPID_PUBLIC_KEY = 'BNsncZw6ZDvmXUP78bqsBNu3ZXkZH4fLtEK2_X6cbfMoa11pcdunnrOl2MZ6Zuwdtcp9AfCrAwBNQunYHU-rktM';
+const VAPID_PUBLIC_KEY = 'BD8r001C3ekRLo4w-S-lQZTXHtucMBenkucKZgqmoca07SfMg35MF1EFFIIubc7RI6RVKJW12iSlV-KGpUolUu4';
 
 function urlBase64ToUint8Array(b64) {
     const pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - b64.length % 4);

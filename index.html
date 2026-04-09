@@ -10,8 +10,72 @@
     <meta property="og:description" content="Diseño CAD avanzado a nivel mundial y producción CAM en Colombia. Calcula tu pedido en tiempo real.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://prodigylabdental.com/assets/prodigy-preview.jpg">
-    <meta property="og:url" content="https://prodigylab.co">
-    <title>PRODIGY | Digital Dental Excellence</title>
+    <meta property="og:url" content="https://prodigylabdental.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PRODIGY | Laboratorio Dental CAD/CAM Colombia">
+    <meta name="twitter:description" content="Coronas en zirconio, carillas, impresión 3D dental. Diseño Exocad/3Shape. Entrega 24h. Bogotá, Colombia.">
+    <link rel="canonical" href="https://prodigylabdental.com/">
+    <link rel="icon" type="image/png" href="/images/logo-prodigy.png">
+    <link rel="apple-touch-icon" href="/images/logo-prodigy.png">
+    <title>PRODIGY | Laboratorio Dental CAD/CAM — Zirconio, Disilicato, Impresión 3D Bogotá</title>
+    <!-- JSON-LD: LocalBusiness + MedicalOrganization para Google y AIs -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["LocalBusiness", "MedicalOrganization"],
+      "name": "PRODIGY Digital Dentistry",
+      "alternateName": "ProDigy Lab",
+      "description": "Laboratorio dental CAD/CAM especializado en fresado de zirconio, disilicato de litio, impresión 3D dental y diseño digital con Exocad y 3Shape. Entregas en 24 horas. Bogotá, Colombia.",
+      "url": "https://prodigylabdental.com",
+      "telephone": "+573001234567",
+      "email": "contacto@prodigylabdental.com",
+      "url": "https://prodigylabdental.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bogotá",
+        "addressRegion": "Cundinamarca",
+        "addressCountry": "CO"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "4.7110",
+        "longitude": "-74.0721"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+          "opens": "08:00",
+          "closes": "18:00"
+        }
+      ],
+      "priceRange": "$$",
+      "currenciesAccepted": "COP",
+      "paymentAccepted": "Cash, Transfer",
+      "areaServed": {
+        "@type": "GeoCircle",
+        "geoMidpoint": { "@type": "GeoCoordinates", "latitude": "4.7110", "longitude": "-74.0721" },
+        "geoRadius": "500000"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios de laboratorio dental digital",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Corona CAD/CAM en Zirconio", "description": "Corona unitaria fresada en zirconio monolítico o multicapa. Diseño digital Exocad/3Shape." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Carilla de Disilicato de Litio", "description": "Carilla estética en disilicato e.max, diseño digital previo a la producción." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Impresión 3D Dental", "description": "Modelos, guías quirúrgicas y provisionales en resina 3D de alta precisión." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Diseño de Sonrisa Digital (DSD)", "description": "Planificación estética digital previa al tratamiento usando fotografía y software especializado." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Puente CAD/CAM", "description": "Puentes de 3 o más piezas en zirconio de alta resistencia." } }
+        ]
+      },
+      "knowsAbout": [
+        "Exocad", "3Shape", "Fresado CNC dental", "Zirconio multicapa",
+        "Disilicato de litio", "Impresión 3D dental", "CAD/CAM dental",
+        "Diseño de sonrisa digital", "DSD", "Prótesis dental digital"
+      ],
+      "sameAs": []
+    }
+    </script>
     <!-- Performance: preconnect a recursos externos críticos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -146,6 +210,35 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+        }
+
+        /* ACCESO · REGISTRO — pill con shimmer en navbar */
+        @keyframes navAccesoShimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .nav-acceso-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 18px;
+            background: linear-gradient(90deg, #D946A6 0%, #B82F8B 35%, #D4AF37 65%, #D946A6 100%);
+            background-size: 200% auto;
+            color: #fff !important;
+            border-radius: 30px;
+            font-size: 12px !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            white-space: nowrap;
+            animation: navAccesoShimmer 3s linear infinite;
+            box-shadow: 0 3px 12px rgba(217,70,166,0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .nav-acceso-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(217,70,166,0.55);
+            animation: none;
         }
 
         /* ========================================
@@ -758,6 +851,49 @@
         .mobile-nav a:hover { color: #D4AF37; }
         .mobile-nav a:last-child { border-bottom: none; }
 
+        /* ── INGRESAR FLOTANTE — solo móvil, en desktop va en el navbar ── */
+        @media (min-width: 769px) { .ingresa-floating { display: none !important; } }
+
+        /* (definición base abajo) */
+        @keyframes ingreseShimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes ingreseFloat {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-4px); }
+        }
+        .ingresa-floating {
+            position: fixed;
+            top: 70px; right: 16px;
+            z-index: 1100;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            background: linear-gradient(90deg, #D4AF37 0%, #D946A6 40%, #D4AF37 80%);
+            background-size: 200% auto;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 30px;
+            box-shadow: 0 4px 18px rgba(217,70,166,0.45);
+            animation: ingreseShimmer 2.5s linear infinite, ingreseFloat 3s ease-in-out infinite;
+            white-space: nowrap;
+        }
+        .ingresa-floating:hover {
+            transform: translateY(-2px) scale(1.05) !important;
+            animation: ingreseShimmer 1.2s linear infinite;
+            box-shadow: 0 8px 28px rgba(217,70,166,0.65);
+        }
+        @media (max-width: 768px) {
+            .ingresa-floating { top: auto; bottom: 80px; right: 12px; font-size: 0.7rem; padding: 8px 14px; }
+            /* En desktop el flotante se oculta — va en el navbar */
+        }
+
         /* FLOTANTES BOTTOM-RIGHT */
         .ux-floaters {
             position: fixed; bottom: 25px; right: 25px;
@@ -906,11 +1042,14 @@
 
     <!-- MENÚ MÓVIL DESLIZABLE -->
     <div class="mobile-nav" id="mobile-nav">
+        <a href="index.html#servicios">Servicios</a>
         <a href="index.html#portfolio">Portafolio</a>
-        <a href="catalogo.html">Catálogo</a>
-        <a href="seguimiento-caso.html">📦 Seguimiento</a>
-        <a href="https://wa.me/573212816716" target="_blank"><i class="fab fa-whatsapp"></i> Contactar</a>
-        <a href="app/login.html" style="color:#D4AF37;"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar · Registro</a>
+        <a href="index.html#workflow-247">CAD · Diseño</a>
+        <a href="index.html#production">CAM · Producción</a>
+        <a href="index.html#academy">Academia</a>
+        <a href="seguimiento-caso.html">📦 Seguimiento de Casos</a>
+        <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Contactar</a>
+        <a href="app/login.html" style="color:#D946A6;font-weight:900;"><i class="fas fa-key"></i> Acceso · Registro</a>
     </div>
 
     <nav class="navbar">
@@ -921,9 +1060,12 @@
             </button>
 
             <!-- IZQUIERDA -->
+            <!-- IZQUIERDA: 4 secciones de contenido -->
             <div class="nav-left">
+                <a href="index.html#servicios">SERVICIOS</a>
                 <a href="index.html#portfolio">PORTAFOLIO</a>
-                <a href="catalogo.html">CATÁLOGO</a>
+                <a href="index.html#workflow-247">CAD</a>
+                <a href="index.html#production">CAM</a>
             </div>
 
             <!-- CENTRO — Logo PRODIGY (eje de simetría) -->
@@ -932,31 +1074,38 @@
                 <span>DIGITAL DENTISTRY</span>
             </a>
 
-            <!-- DERECHA -->
+            <!-- DERECHA: 2 links + 2 botones accionables -->
             <div class="nav-right">
-                <a href="seguimiento-caso.html">📦 SEGUIMIENTO</a>
-                <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank">
+                <a href="portafolio.html">PORTAFOLIO</a>
+                <a href="journal.html">INSIGHTS</a>
+                <a href="seguimiento-caso.html">SEGUIMIENTO</a>
+                <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;">
                     <i class="fab fa-whatsapp"></i> CONTACTAR
                 </a>
-                <a href="app/login.html" class="nav-access-btn" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:transparent;border:1.5px solid rgba(212,175,55,0.5);color:#D4AF37;border-radius:8px;font-size:0.78rem;font-weight:800;text-decoration:none;letter-spacing:0.6px;transition:all 0.25s;white-space:nowrap;" onmouseover="this.style.background='rgba(212,175,55,0.12)';this.style.borderColor='#D4AF37'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(212,175,55,0.5)'">
-                    <i class="fas fa-arrow-right-to-bracket"></i> INGRESAR · REGISTRO
+                <a href="app/login.html" class="nav-acceso-btn">
+                    <i class="fas fa-key"></i> ACCESO · REGISTRO
                 </a>
             </div>
         </div>
     </nav>
 
+    <!-- INGRESAR FLOTANTE — siempre visible -->
+    <a href="app/login.html" class="ingresa-floating">
+        <i class="fas fa-arrow-right-to-bracket"></i> INGRESAR
+    </a>
+
     <!-- REDES SOCIALES FLOTANTES -->
     <div class="social-floating">
-        <a href="https://wa.me/573212816716" class="social-icon social-whatsapp" target="_blank">
+        <a href="https://wa.me/573212816716" class="social-icon social-whatsapp" target="_blank" rel="noopener noreferrer">
             <i class="fab fa-whatsapp"></i>
         </a>
-        <a href="https://instagram.com/prodigy_dental" class="social-icon social-instagram" target="_blank">
+        <a href="https://instagram.com/prodigy_dental" class="social-icon social-instagram" target="_blank" rel="noopener noreferrer">
             <i class="fab fa-instagram"></i>
         </a>
-        <a href="https://facebook.com/prodigy.dental" class="social-icon social-facebook" target="_blank">
+        <a href="https://facebook.com/prodigy.dental" class="social-icon social-facebook" target="_blank" rel="noopener noreferrer">
             <i class="fab fa-facebook-f"></i>
         </a>
-        <a href="https://linkedin.com/company/prodigy-dental" class="social-icon social-linkedin" target="_blank">
+        <a href="https://linkedin.com/company/prodigy-dental" class="social-icon social-linkedin" target="_blank" rel="noopener noreferrer">
             <i class="fab fa-linkedin-in"></i>
         </a>
     </div>
@@ -1012,7 +1161,7 @@
                     <p>Barras, guías quirúrgicas y rehabilitaciones full arch.</p>
                 </div>
                 <div class="step-card">
-                    <div class="step-icon">📐</div>
+                    <div class="step-icon">🛡️</div>
                     <h3>Ortodoncia</h3>
                     <p>Set-ups digitales y diseño de alineadores.</p>
                 </div>
@@ -1023,12 +1172,42 @@
     <section id="portfolio">
         <div class="container">
             <h2 class="section-header">PORTAFOLIO DE DISEÑOS</h2>
-            <div class="portfolio-grid" id="portfolio-grid">
-                <!-- JavaScript generará las tarjetas aquí -->
+            <p class="section-subtitle">Casos reales diseñados en Exocad y 3Shape — zirconio, disilicato, PMMA y resina 3D</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:36px;">
+              <!-- Caso 1 -->
+              <a href="portafolio.html" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid rgba(212,175,55,.12);transition:all .3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(212,175,55,.12)'">
+                <div style="height:160px;background:linear-gradient(135deg,#1a0828,#0d1525);display:flex;align-items:center;justify-content:center;font-size:4rem;">👑</div>
+                <div style="padding:18px 20px;">
+                  <div style="display:inline-block;background:rgba(212,175,55,.12);color:#D4AF37;border:1px solid rgba(212,175,55,.25);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;margin-bottom:10px;">ZIRCONIO MULTICAPA</div>
+                  <h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">Corona Anterior 5Y-PSZ Multicapa</h3>
+                  <p style="color:#94a3b8;font-size:.82rem;line-height:1.5;">Restauración unitaria 12 con gradiente de translucidez. Fresado, sinterizado y glaseado en 24 h.</p>
+                  <div style="margin-top:14px;color:#D946A6;font-size:.8rem;font-weight:700;">Ver caso completo →</div>
+                </div>
+              </a>
+              <!-- Caso 2 -->
+              <a href="portafolio.html" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid rgba(0,210,255,.1);transition:all .3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(0,210,255,.35)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(0,210,255,.1)'">
+                <div style="height:160px;background:linear-gradient(135deg,#001a1f,#0d1525);display:flex;align-items:center;justify-content:center;font-size:4rem;">✨</div>
+                <div style="padding:18px 20px;">
+                  <div style="display:inline-block;background:rgba(0,210,255,.1);color:#00d2ff;border:1px solid rgba(0,210,255,.2);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;margin-bottom:10px;">DISILICATO DE LITIO</div>
+                  <h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">Carillas e.max Sector Anterior</h3>
+                  <p style="color:#94a3b8;font-size:.82rem;line-height:1.5;">6 carillas IPS e.max CAD. Diseño DSD previo. Espesor 0.3–0.5 mm en sector 13–23.</p>
+                  <div style="margin-top:14px;color:#00d2ff;font-size:.8rem;font-weight:700;">Ver caso completo →</div>
+                </div>
+              </a>
+              <!-- Caso 3 -->
+              <a href="portafolio.html" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid rgba(0,255,65,.08);transition:all .3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(0,255,65,.3)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(0,255,65,.08)'">
+                <div style="height:160px;background:linear-gradient(135deg,#001a10,#0d1525);display:flex;align-items:center;justify-content:center;font-size:4rem;">🖨️</div>
+                <div style="padding:18px 20px;">
+                  <div style="display:inline-block;background:rgba(0,255,65,.08);color:#00FF41;border:1px solid rgba(0,255,65,.2);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;margin-bottom:10px;">MODELO 3D + DSD</div>
+                  <h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">Modelo de Estudio + Digital Smile Design</h3>
+                  <p style="color:#94a3b8;font-size:.82rem;line-height:1.5;">Flujo completo: escaneo iTero → diseño DSD → modelo impreso → aprobación del paciente antes de fresar.</p>
+                  <div style="margin-top:14px;color:#00FF41;font-size:.8rem;font-weight:700;">Ver caso completo →</div>
+                </div>
+              </a>
             </div>
-            <div style="text-align:center;margin-top:48px;">
-                <a href="catalogo.html" style="display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;text-decoration:none;border-radius:50px;font-weight:800;font-size:1rem;letter-spacing:0.5px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                    Ver Portafolio de Diseños <span style="font-size:1.1rem;">→</span>
+            <div style="text-align:center;margin-top:40px;">
+                <a href="portafolio.html" style="display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;text-decoration:none;border-radius:50px;font-weight:800;font-size:1rem;letter-spacing:0.5px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                    Ver Portafolio Completo <span style="font-size:1.1rem;">→</span>
                 </a>
             </div>
         </div>
@@ -1073,12 +1252,87 @@
                 </div>
             </div>
 
-            <!-- CTA DISEÑO CAD -->
-            <div style="text-align:center;margin-top:40px;">
-                <button onclick="checkAuth('flujo-diseno.html')" style="display:inline-flex;align-items:center;gap:10px;padding:16px 40px;background:linear-gradient(135deg,#D4AF37,#F4C430);color:#000;border:none;border-radius:50px;font-weight:900;font-size:1rem;letter-spacing:0.5px;cursor:pointer;transition:all 0.25s;box-shadow:0 6px 25px rgba(212,175,55,0.35);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 35px rgba(212,175,55,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 25px rgba(212,175,55,0.35)'">
-                    <i class="fas fa-laptop-medical"></i> COTIZAR DISEÑO CAD →
+            <!-- CTA DISEÑO CAD — PREMIUM -->
+            <style>
+            @keyframes shimmerCTA {
+                0%   { background-position: -200% center; }
+                100% { background-position: 200% center; }
+            }
+            @keyframes glowPulse {
+                0%, 100% { box-shadow: 0 6px 30px rgba(212,175,55,0.45), 0 0 0 0 rgba(212,175,55,0.35); }
+                50%       { box-shadow: 0 10px 45px rgba(217,70,166,0.55), 0 0 0 10px rgba(212,175,55,0); }
+            }
+            @keyframes badgePop {
+                0%, 100% { transform: scale(1); }
+                50%       { transform: scale(1.15); }
+            }
+            .cta-pedir {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                padding: 18px 48px;
+                background: linear-gradient(90deg, #D4AF37 0%, #D946A6 40%, #D4AF37 80%, #F4C430 100%);
+                background-size: 200% auto;
+                color: #fff;
+                border: none;
+                border-radius: 50px;
+                font-weight: 900;
+                font-size: 1.05rem;
+                letter-spacing: 0.8px;
+                cursor: pointer;
+                text-transform: uppercase;
+                animation: shimmerCTA 2.8s linear infinite, glowPulse 2.2s ease-in-out infinite;
+                transition: transform 0.2s ease;
+            }
+            .cta-pedir:hover  { transform: translateY(-3px) scale(1.03); }
+            .cta-pedir:active { transform: scale(0.97); }
+            .cta-pedir .badge-24h {
+                position: absolute;
+                top: -10px; right: -10px;
+                background: #FF2D55;
+                color: #fff;
+                font-size: 9px;
+                font-weight: 900;
+                padding: 3px 7px;
+                border-radius: 20px;
+                letter-spacing: 0.5px;
+                animation: badgePop 1.4s ease-in-out infinite;
+                box-shadow: 0 2px 8px rgba(255,45,85,0.6);
+            }
+            .cta-pedir i { font-size: 1.1rem; }
+            .cta-urgencia {
+                margin-top: 10px;
+                font-size: 0.75rem;
+                color: #94a3b8;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+            }
+            .cta-urgencia span.dot {
+                display: inline-block;
+                width: 7px; height: 7px;
+                background: #00FF41;
+                border-radius: 50%;
+                box-shadow: 0 0 6px #00FF41;
+                animation: badgePop 1.2s ease-in-out infinite;
+            }
+            </style>
+            <div style="text-align:center;margin-top:44px;">
+                <button class="cta-pedir" onclick="checkAuth('flujo-diseno.html')">
+                    <span class="badge-24h">24H</span>
+                    <i class="fas fa-bolt"></i>
+                    PEDIR MI CASO AHORA
+                    <i class="fas fa-arrow-right"></i>
                 </button>
-                <p style="color:#64748b;font-size:0.78rem;margin-top:10px;">Requiere registro gratuito como profesional aliado</p>
+                <a href="calculadora.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:10px 22px;border-radius:999px;border:1px solid rgba(212,175,55,0.4);color:#D4AF37;font-size:0.82rem;font-weight:700;text-decoration:none;transition:all 0.2s;letter-spacing:0.5px;" onmouseover="this.style.background='rgba(212,175,55,0.1)'" onmouseout="this.style.background='transparent'">
+                    <i class="fas fa-calculator"></i> Calcular precio estimado
+                </a>
+                <p class="cta-urgencia">
+                    <span class="dot"></span>
+                    Operadores en línea · Entrega garantizada en 24 h
+                </p>
             </div>
 
             <!-- Call to Action -->
@@ -1168,7 +1422,7 @@
                     <div class="whatsapp-buttons-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto;">
 
                         <!-- Informes Casos Nuevos -->
-                        <a href="https://wa.me/573219581949?text=Hola%20PRODIGY,%20deseo%20información%20para%20enviar%20un%20nuevo%20caso%20de%20diseño." class="whatsapp-btn-card" target="_blank" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <a href="https://wa.me/573219581949?text=Hola%20PRODIGY,%20deseo%20información%20para%20enviar%20un%20nuevo%20caso%20de%20diseño." class="whatsapp-btn-card" target="_blank" rel="noopener noreferrer" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); display: flex; flex-direction: column; align-items: center; gap: 10px;">
                             <i class="fab fa-whatsapp" style="font-size: 38px; color: #fff;"></i>
                             <span style="font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">Informes Casos Nuevos</span>
                         </a>
@@ -1181,7 +1435,7 @@
                         </a>
 
                         <!-- Dudas / Soporte -->
-                        <a href="https://wa.me/573219581949?text=Hola%20PRODIGY,%20tengo%20una%20duda%20técnica%20sobre%20un%20diseño." class="whatsapp-btn-card" target="_blank" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <a href="https://wa.me/573219581949?text=Hola%20PRODIGY,%20tengo%20una%20duda%20técnica%20sobre%20un%20diseño." class="whatsapp-btn-card" target="_blank" rel="noopener noreferrer" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); display: flex; flex-direction: column; align-items: center; gap: 10px;">
                             <i class="fab fa-whatsapp" style="font-size: 38px; color: #fff;"></i>
                             <span style="font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">Dudas / Soporte</span>
                         </a>
@@ -1523,7 +1777,7 @@
                 <ul>
                     <li><a href="tel:+573212816716">+57 321 281 6716</a></li>
                     <li><a href="mailto:labdentalprodigy@gmail.com">labdentalprodigy@gmail.com</a></li>
-                    <li><a href="https://instagram.com/prodigydigitaldentistry" target="_blank">@prodigydigitaldentistry</a></li>
+                    <li><a href="https://instagram.com/prodigydigitaldentistry" target="_blank" rel="noopener noreferrer">@prodigydigitaldentistry</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -1934,12 +2188,15 @@
         .nav-btn-cta       { font-size: 8.5px !important; padding: 4px 8px !important; }
 
         /* ── HERO ── */
+        .hero { min-height: 55vh !important; padding: 68px 16px 28px !important; gap: 10px !important; overflow-x: hidden !important; }
         .hero-title-main { font-size: clamp(1.8rem, 9vw, 2.8rem) !important; letter-spacing: -1px !important; }
         .hero-subtitle   { font-size: 0.65rem !important; letter-spacing: 2px !important; }
         .hero-desc       { font-size: 0.82rem !important; padding: 0 2px !important; }
-        .hero-workflow   { flex-wrap: nowrap !important; overflow-x: auto !important; justify-content: flex-start !important; padding-bottom: 4px !important; gap: 6px !important; scrollbar-width: none !important; }
-        .hero-workflow::-webkit-scrollbar { display: none !important; }
-        .wf-text { font-size: 0.85rem !important; white-space: nowrap !important; }
+        /* Workflow: 2 filas centradas, todo visible */
+        .hero-workflow   { flex-wrap: wrap !important; justify-content: center !important; gap: 4px 6px !important; margin-bottom: 10px !important; width: 100% !important; overflow: visible !important; }
+        .wf-text { font-size: 0.68rem !important; white-space: nowrap !important; letter-spacing: 0.5px !important; }
+        .wf-arrow { width: 18px !important; height: 10px !important; }
+        .wf-perfection { font-size: 0.68rem !important; }
 
         /* ── SECCIONES ── */
         section { padding: 22px 0 !important; }
@@ -2012,16 +2269,19 @@
         .card-info p     { font-size: 0.72rem !important; margin-bottom: 4px !important; }
         .card-date       { font-size: 0.68rem !important; }
 
-        /* ── CAJONES: compactos, 1.4 visibles ── */
+        /* ── CAJONES: compactos, 1.6 visibles ── */
         .cajon-persuasive {
-            flex: 0 0 60vw !important;
-            max-width: 210px !important;
+            flex: 0 0 52vw !important;
+            max-width: 180px !important;
             scroll-snap-align: start !important;
-            padding: 14px 12px !important;
-            border-radius: 14px !important;
+            padding: 12px 10px !important;
+            border-radius: 12px !important;
         }
-        .cajon-persuasive > div:first-child { width: 38px !important; height: 38px !important; margin-bottom: 8px !important; }
-        .cajon-persuasive i[style*="font-size:2.4rem"] { font-size: 1.3rem !important; }
+        .cajon-persuasive > div:first-child { width: 32px !important; height: 32px !important; margin-bottom: 6px !important; }
+        .cajon-persuasive i[style*="font-size:2.4rem"] { font-size: 1.1rem !important; }
+        .cajon-persuasive h3 { font-size: 0.78rem !important; margin-bottom: 4px !important; }
+        .cajon-persuasive p  { font-size: 0.68rem !important; line-height: 1.35 !important; margin-bottom: 8px !important; }
+        .cajon-persuasive > a, .cajon-persuasive [style*="inline-flex"] { font-size: 9px !important; padding: 6px 12px !important; }
         p[style*="min-height"] { min-height: unset !important; }
 
         /* ── ACADEMY CARDS compactas ── */
@@ -2031,16 +2291,34 @@
             scroll-snap-align: start !important;
         }
 
-        /* ── WHATSAPP: 2 columnas compactas al pulgar ── */
+        /* ── WHATSAPP: sandwich vertical — WA pequeño / Seguimiento grande / WA pequeño ── */
         .whatsapp-buttons-grid {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
+            display: flex !important;
+            flex-direction: column !important;
             gap: 8px !important;
+            max-width: 320px !important;
+            margin: 0 auto !important;
         }
-        .whatsapp-btn-card { padding: 10px 8px !important; }
-        .whatsapp-btn-card i[style*="38px"] { font-size: 18px !important; }
-        .whatsapp-btn-card span,
-        .whatsapp-btn-card p { font-size: 10px !important; }
+        /* Los 2 botones WA (1ro y 3ro): compactos horizontales */
+        .whatsapp-buttons-grid > a:nth-child(1),
+        .whatsapp-buttons-grid > a:nth-child(3) {
+            flex-direction: row !important;
+            padding: 10px 14px !important;
+            gap: 10px !important;
+            border-radius: 10px !important;
+        }
+        .whatsapp-buttons-grid > a:nth-child(1) i,
+        .whatsapp-buttons-grid > a:nth-child(3) i { font-size: 18px !important; }
+        .whatsapp-buttons-grid > a:nth-child(1) span,
+        .whatsapp-buttons-grid > a:nth-child(3) span { font-size: 11px !important; }
+        /* Seguimiento en medio: más destacado */
+        .whatsapp-buttons-grid > a:nth-child(2) {
+            padding: 16px 14px !important;
+            border-radius: 12px !important;
+        }
+        .whatsapp-buttons-grid > a:nth-child(2) i { font-size: 26px !important; }
+        .whatsapp-buttons-grid > a:nth-child(2) span { font-size: 13px !important; }
+        .whatsapp-buttons-grid > a:nth-child(2) > span:last-of-type { font-size: 10px !important; }
 
         /* ── FLOTANTES ── */
         .social-floating { display: none !important; }
@@ -2062,7 +2340,7 @@
         .steps-grid > *    { flex: 0 0 72vw !important; }
         .production-card   { flex: 0 0 70vw !important; }
         .portfolio-card    { flex: 0 0 72vw !important; }
-        .cajon-persuasive  { flex: 0 0 72vw !important; }
+        .cajon-persuasive  { flex: 0 0 64vw !important; }
         .course-card       { flex: 0 0 78vw !important; }
         .footer-grid       { grid-template-columns: 1fr !important; }
         .hero-title-main   { font-size: 1.75rem !important; }
@@ -2120,6 +2398,124 @@
             background: #D4AF37;
             width: 14px;
             border-radius: 3px;
+        }
+
+        /* ══════════════════════════════════════════════════
+           CAJONES ENVÍO — glow en color propio (fresado/impresión)
+           ══════════════════════════════════════════════════ */
+        /* Banner etiqueta sobre la sección */
+        .canales-envio-persuasive::before {
+            content: '⚡ SUBE TU CASO · FRESADO & IMPRESIÓN';
+            display: block;
+            text-align: center;
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #000;
+            opacity: 0.55;
+            margin-bottom: -24px;
+            padding-top: 10px;
+        }
+
+        @keyframes glowGreen {
+            0%, 100% { box-shadow: 0 6px 25px rgba(37,211,102,0.25), 0 0 0 0 rgba(37,211,102,0.5); }
+            50%       { box-shadow: 0 10px 40px rgba(37,211,102,0.55), 0 0 0 10px rgba(37,211,102,0); }
+        }
+        @keyframes glowBlue {
+            0%, 100% { box-shadow: 0 6px 25px rgba(66,133,244,0.25), 0 0 0 0 rgba(66,133,244,0.5); }
+            50%       { box-shadow: 0 10px 40px rgba(66,133,244,0.55), 0 0 0 10px rgba(66,133,244,0); }
+        }
+        @keyframes glowCyan {
+            0%, 100% { box-shadow: 0 6px 25px rgba(90,180,255,0.25), 0 0 0 0 rgba(90,180,255,0.5); }
+            50%       { box-shadow: 0 10px 40px rgba(90,180,255,0.55), 0 0 0 10px rgba(90,180,255,0); }
+        }
+        @keyframes glowInk {
+            0%, 100% { box-shadow: 0 6px 25px rgba(0,97,255,0.25), 0 0 0 0 rgba(0,97,255,0.5); }
+            50%       { box-shadow: 0 10px 40px rgba(0,97,255,0.55), 0 0 0 10px rgba(0,97,255,0); }
+        }
+
+        .cajon-whatsapp   { animation: glowGreen 2.6s ease-in-out infinite; }
+        .cajon-drive      { animation: glowBlue  2.9s ease-in-out infinite; }
+        .cajon-wetransfer { animation: glowCyan  3.1s ease-in-out infinite; }
+        .cajon-dropbox    { animation: glowInk   2.7s ease-in-out infinite; }
+
+        /* Desactivar glow al hover para no acumular animaciones */
+        .cajon-whatsapp:hover, .cajon-drive:hover,
+        .cajon-wetransfer:hover, .cajon-dropbox:hover {
+            animation: none;
+        }
+
+        /* ══════════════════════════════════════════════════
+           ANIMACIONES CTAs CRÍTICOS — cada uno distinto
+           ══════════════════════════════════════════════════ */
+
+        /* 1. "Ver Portafolio" — tug sutil hacia la derecha */
+        @keyframes tugRight {
+            0%, 75%, 100% { transform: translateX(0); }
+            82%            { transform: translateX(6px); }
+            88%            { transform: translateX(2px); }
+            94%            { transform: translateX(5px); }
+        }
+        .btn-portfolio-cta {
+            animation: tugRight 4s ease-in-out infinite;
+        }
+        .btn-portfolio-cta:hover { animation: none; opacity: 0.85; }
+
+        /* 2. Cajón WhatsApp pill "Enviar ahora" — glint sweep */
+        @keyframes glintSweep {
+            0%       { left: -110%; }
+            45%, 100%{ left: 160%; }
+        }
+        .cajon-whatsapp div[style*="inline-flex"] {
+            position: relative;
+            overflow: hidden;
+        }
+        .cajon-whatsapp div[style*="inline-flex"]::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -110%;
+            width: 55%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.38), transparent);
+            animation: glintSweep 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        /* 3. Cards WhatsApp (Informes / Dudas) — ripple verde expansivo */
+        @keyframes rippleWA {
+            0%   { box-shadow: 0 6px 20px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.45); }
+            65%  { box-shadow: 0 6px 20px rgba(37,211,102,0.4), 0 0 0 14px rgba(37,211,102,0); }
+            100% { box-shadow: 0 6px 20px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0); }
+        }
+        .whatsapp-btn-card {
+            animation: rippleWA 2.4s ease-out infinite;
+        }
+
+        /* 4. Card "Seguimiento de Casos" — border gold que respira */
+        @keyframes goldBreath {
+            0%, 100% { box-shadow: 0 6px 20px rgba(212,175,55,0.25), 0 0 0 0 rgba(212,175,55,0.5); }
+            50%       { box-shadow: 0 10px 32px rgba(212,175,55,0.5), 0 0 0 8px rgba(212,175,55,0); }
+        }
+        .whatsapp-buttons-grid > a:nth-child(2) {
+            animation: goldBreath 2.8s ease-in-out infinite;
+        }
+
+        /* 5. Botón CONTACTAR nav — live dot "en línea" */
+        @keyframes liveDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.4; transform: scale(0.65); }
+        }
+        .nav-contact-btn {
+            position: relative;
+        }
+        .nav-contact-btn::after {
+            content: '';
+            position: absolute;
+            top: -2px; right: -2px;
+            width: 8px; height: 8px;
+            background: #00FF41;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00FF41;
+            animation: liveDot 1.6s ease-in-out infinite;
         }
 
         /* Gradiente de fade al borde derecho (indica más contenido) */

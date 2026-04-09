@@ -1,18 +1,43 @@
-# robots.txt - PRODIGY Dental Lab
-# ⚠️ IMPORTANTE: Reemplaza TU-DOMINIO-AQUI.com con tu dominio real antes de subir al servidor.
-
+# robots.txt - PRODIGY Digital Dentistry
 User-agent: *
 Allow: /
 
-# Directorios y archivos privados — NO indexar
+# Indexar explícitamente las páginas clave de SEO
+Allow: /index.html
+Allow: /journal.html
+Allow: /calculadora.html
+Allow: /seguimiento-caso.html
+Allow: /flujo-fresado.html
+Allow: /flujo-impresion.html
+
+# Paneles internos y archivos privados — NO indexar
+Disallow: /app/
 Disallow: /patients/
 Disallow: /temporal/
-Disallow: /app/
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /patient.html
 Disallow: /admin-panel.html
+Disallow: /agregar-caso.html
 Disallow: /enviar-produccion-drive.html
 Disallow: /enviar-produccion-wetransfer.html
-Disallow: /*.sql$
+Disallow: /flujo-diseno.html
+Disallow: /*.bat$
 
-# Sitemap
-# ⚠️ Reemplaza el dominio antes de publicar
-Sitemap: https://TU-DOMINIO-AQUI.com/sitemap.xml
+# Bots de IA — permitir (para ser citados en ChatGPT, Perplexity, etc.)
+User-agent: GPTBot
+Allow: /journal.html
+Allow: /calculadora.html
+Allow: /index.html
+
+User-agent: PerplexityBot
+Allow: /journal.html
+Allow: /calculadora.html
+Allow: /index.html
+
+User-agent: anthropic-ai
+Allow: /journal.html
+Allow: /calculadora.html
+Allow: /index.html
+
+Sitemap: https://prodigylabdental.com/sitemap.xml

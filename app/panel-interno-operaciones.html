@@ -128,6 +128,42 @@
         #toast.error   { border-color:rgba(239,68,68,0.4); }
 
         @media(max-width:768px){ .sidebar { display:none; } .main { padding:20px; } }
+
+        /* ── RUTADOR DE CASOS ─────────────────────────── */
+        .lanes { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; align-items:start; }
+        @media(max-width:1200px){ .lanes { grid-template-columns:1fr 1fr; } }
+        @media(max-width:768px){ .lanes { grid-template-columns:1fr; } }
+        .lane { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+        .lane-head { padding:14px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); }
+        .lane-head h3 { font-size:0.82rem; font-weight:800; display:flex; align-items:center; gap:8px; }
+        .lane-count { min-width:22px; height:22px; border-radius:11px; display:inline-flex; align-items:center; justify-content:center; font-size:0.68rem; font-weight:900; padding:0 6px; }
+        .lane-diseno  { border-top:3px solid #D946A6; }
+        .lane-diseno .lane-count  { background:rgba(217,70,166,0.2); color:#D946A6; }
+        .lane-fresado { border-top:3px solid #D4AF37; }
+        .lane-fresado .lane-count { background:rgba(212,175,55,0.2); color:#D4AF37; }
+        .lane-impresion { border-top:3px solid #00d2ff; }
+        .lane-impresion .lane-count { background:rgba(0,210,255,0.2); color:#00d2ff; }
+        .lane-qa { border-top:3px solid #00FF41; }
+        .lane-qa .lane-count { background:rgba(0,255,65,0.15); color:#00FF41; }
+        .lane-body { padding:12px; display:flex; flex-direction:column; gap:8px; min-height:120px; }
+        .kcase { background:#0d0a00; border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:12px 14px; position:relative; transition:transform 0.15s; }
+        .kcase:hover { transform:translateY(-2px); border-color:rgba(212,175,55,0.2); }
+        .kcase-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+        .kcase-doc { font-size:0.8rem; font-weight:700; }
+        .kcase-cli { font-size:0.68rem; color:#64748b; }
+        .kcase-service { font-size:0.75rem; color:#cbd5e1; margin-bottom:8px; }
+        .kcase-mat { display:inline-block; font-size:0.62rem; font-weight:700; padding:1px 7px; border-radius:10px; background:rgba(212,175,55,0.1); color:#D4AF37; margin-right:4px; }
+        .kcase-urg { font-size:0.62rem; font-weight:700; padding:1px 7px; border-radius:10px; background:rgba(239,68,68,0.15); color:#f87171; }
+        .kcase-dsd { font-size:0.62rem; font-weight:700; padding:1px 7px; border-radius:10px; background:rgba(217,70,166,0.12); color:#D946A6; }
+        .kcase-footer { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+        .kcase-date { font-size:0.65rem; color:#475569; }
+        .kcase-btn { padding:3px 10px; border-radius:6px; font-size:0.65rem; font-weight:700; border:1px solid; cursor:pointer; background:transparent; color:#D4AF37; border-color:rgba(212,175,55,0.35); transition:all 0.15s; }
+        .kcase-btn:hover { background:rgba(212,175,55,0.1); }
+        .kcase-wa { color:#25D366; font-size:0.7rem; text-decoration:none; margin-left:6px; }
+        .lane-empty { text-align:center; padding:28px 12px; color:#334155; font-size:0.78rem; }
+        .lane-empty i { display:block; font-size:1.4rem; margin-bottom:8px; }
+        .rut-reload { padding:6px 14px; background:transparent; border:1px solid var(--border); color:var(--muted); border-radius:8px; font-size:0.72rem; cursor:pointer; }
+        .rut-reload:hover { color:#fff; border-color:rgba(255,255,255,0.2); }
     </style>
 </head>
 <body>
@@ -156,6 +192,19 @@
     </a>
     <a href="#" class="nav-item" onclick="switchTab('clientes',this)">
         <i class="fas fa-users"></i> Clientes
+    </a>
+
+    <a href="#" class="nav-item" onclick="switchTab('equipo',this)">
+        <i class="fas fa-user-shield"></i> Equipo PRODIGY
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('leads',this)">
+        <i class="fas fa-magnet"></i> Leads Journal
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('pedidos-doc',this)">
+        <i class="fas fa-inbox"></i> Pedidos Doctores
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('rutador',this)">
+        <i class="fas fa-code-branch"></i> Rutador de Casos
     </a>
 
     <p class="nav-section">Configuración</p>
@@ -366,9 +415,280 @@
         </div>
     </div>
 
+    <!-- ═══════════ TAB EQUIPO ═══════════ -->
+    <div id="tab-equipo" class="tab-panel">
+        <div class="page-header">
+            <div>
+                <h1>Equipo <span style="color:var(--gold);">PRODIGY</span></h1>
+                <p>Crea agentes, asigna roles y gestiona accesos del equipo interno</p>
+            </div>
+            <button class="btn-primary" onclick="abrirModalAgente()">
+                <i class="fas fa-user-plus"></i> Nuevo Agente
+            </button>
+        </div>
+
+        <!-- KPIs equipo -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
+            <div class="kpi-card k1"><div class="kpi-label">Operadores</div><div class="kpi-value" id="kpi-operators">—</div></div>
+            <div class="kpi-card k2"><div class="kpi-label">Mensajeros</div><div class="kpi-value" id="kpi-mensajeros">—</div></div>
+            <div class="kpi-card k3"><div class="kpi-label">Taller</div><div class="kpi-value" id="kpi-taller">—</div></div>
+            <div class="kpi-card k4"><div class="kpi-label">Activos total</div><div class="kpi-value" id="kpi-activos">—</div></div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;">
+                <h2><i class="fas fa-users-gear" style="color:var(--gold);margin-right:8px;"></i>Agentes registrados</h2>
+                <div style="display:flex;gap:8px;">
+                    <select id="filtro-rol-equipo" onchange="filtrarEquipo()" style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.78rem;">
+                        <option value="">Todos los roles</option>
+                        <option value="operator">Operador</option>
+                        <option value="mensajero">Mensajero</option>
+                        <option value="taller">Taller</option>
+                        <option value="inventario">Inventario</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <button class="btn-primary" style="padding:6px 12px;font-size:0.78rem;" onclick="cargarEquipo()">
+                        <i class="fas fa-rotate-right"></i>
+                    </button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th><th>Email</th><th>Rol</th>
+                        <th>Estado</th><th>Alta</th><th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-equipo">
+                    <tr class="loading-row"><td colspan="6"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ═══════════ TAB LEADS ═══════════ -->
+    <div id="tab-leads" class="tab-panel">
+        <div class="page-header">
+            <div>
+                <h1>Leads <span style="color:var(--gold);">Journal</span></h1>
+                <p>Doctores que descargaron guías o se suscribieron desde el Journal</p>
+            </div>
+            <button class="btn-primary" onclick="cargarLeads()">
+                <i class="fas fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;">
+            <div class="kpi-card k1"><div class="kpi-label">Total leads</div><div class="kpi-value" id="kpi-leads-total">—</div></div>
+            <div class="kpi-card k2"><div class="kpi-label">Sin contactar</div><div class="kpi-value" id="kpi-leads-pending">—</div></div>
+            <div class="kpi-card k3"><div class="kpi-label">Contactados</div><div class="kpi-value" id="kpi-leads-done">—</div></div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="section-card">
+            <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+                <h2><i class="fas fa-magnet" style="color:var(--gold);margin-right:8px;"></i>Doctores registrados</h2>
+                <div style="display:flex;gap:8px;">
+                    <select id="filtro-leads-contactado" onchange="filtrarLeads()" style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.78rem;">
+                        <option value="">Todos</option>
+                        <option value="false">Sin contactar</option>
+                        <option value="true">Contactados</option>
+                    </select>
+                    <input type="text" id="filtro-leads-q" placeholder="Buscar nombre o WA..." oninput="filtrarLeads()"
+                        style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.78rem;width:180px;">
+                </div>
+            </div>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Doctor</th>
+                            <th>WhatsApp</th>
+                            <th>Recurso</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-leads">
+                        <tr class="loading-row"><td colspan="6"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ TAB PEDIDOS DOCTORES ═══════════ -->
+    <div id="tab-pedidos-doc" class="tab-panel">
+        <div class="page-header">
+            <div>
+                <h1>Pedidos <span style="color:var(--magenta);">Doctores</span></h1>
+                <p>Órdenes enviadas desde el portal de clientes</p>
+            </div>
+            <button class="btn-primary" onclick="cargarPedidosDoc()">
+                <i class="fas fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
+            <div class="kpi-card k1"><div class="kpi-label">Total</div><div class="kpi-value" id="kpid-total">—</div></div>
+            <div class="kpi-card k2"><div class="kpi-label">Pendientes</div><div class="kpi-value" id="kpid-pend">—</div></div>
+            <div class="kpi-card k3"><div class="kpi-label">Urgentes</div><div class="kpi-value" id="kpid-urg">—</div></div>
+            <div class="kpi-card k4"><div class="kpi-label">Listos/Enviados</div><div class="kpi-value" id="kpid-ok">—</div></div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+                <h2><i class="fas fa-inbox" style="color:var(--magenta);margin-right:8px;"></i>Cola de pedidos</h2>
+                <div style="display:flex;gap:8px;">
+                    <select id="filtro-pdd-estado" onchange="filtrarPedidosDoc()"
+                        style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.78rem;">
+                        <option value="">Todos los estados</option>
+                        <option value="recibido">Recibido</option>
+                        <option value="en_diseno">En diseño</option>
+                        <option value="en_fresado">En fresado</option>
+                        <option value="control_calidad">Control QA</option>
+                        <option value="listo">Listo</option>
+                        <option value="enviado">Enviado</option>
+                    </select>
+                    <input type="text" id="filtro-pdd-q" placeholder="Doctor o clínica..."
+                        oninput="filtrarPedidosDoc()"
+                        style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.78rem;width:160px;">
+                </div>
+            </div>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Doctor</th>
+                            <th>Servicio</th>
+                            <th>Material</th>
+                            <th>Uds</th>
+                            <th>Extras</th>
+                            <th>Precio est.</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-pdd">
+                        <tr class="loading-row"><td colspan="9"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </main>
 
+<!-- ═══ MODAL CREAR AGENTE ═══ -->
+<div id="modal-agente" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:5000;align-items:center;justify-content:center;">
+    <div style="background:#0d1525;border:1px solid rgba(217,70,166,0.4);border-radius:18px;padding:32px;width:100%;max-width:480px;position:relative;box-shadow:0 0 0 1px rgba(212,175,55,0.15),0 24px 60px rgba(0,0,0,0.7);">
+        <button onclick="cerrarModalAgente()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#64748b;font-size:1.1rem;cursor:pointer;"><i class="fas fa-xmark"></i></button>
+        <h2 style="font-size:1.1rem;font-weight:900;margin-bottom:4px;color:#fff;">Nuevo Agente</h2>
+        <p style="font-size:0.76rem;color:#64748b;margin-bottom:22px;">El agente recibirá un correo para establecer su contraseña.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+                <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Nombre completo</label>
+                <input id="ag-nombre" type="text" placeholder="Carlos López" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.88rem;outline:none;">
+            </div>
+            <div>
+                <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Rol</label>
+                <select id="ag-rol" style="width:100%;padding:10px 12px;background:#0d1525;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.88rem;outline:none;-webkit-appearance:none;">
+                    <option value="operator">Operador CAD/CAM</option>
+                    <option value="mensajero">Mensajero</option>
+                    <option value="taller">Taller</option>
+                    <option value="inventario">Inventario</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Correo corporativo</label>
+            <input id="ag-email" type="email" placeholder="operador@prodigy.com" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.88rem;outline:none;">
+        </div>
+
+        <div style="margin-bottom:20px;">
+            <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Teléfono (opcional)</label>
+            <input id="ag-tel" type="tel" placeholder="+57 300 000 0000" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.88rem;outline:none;">
+        </div>
+
+        <div id="modal-msg" style="display:none;padding:10px 12px;border-radius:8px;font-size:0.8rem;margin-bottom:14px;"></div>
+
+        <button id="btn-crear-agente" onclick="crearAgente()" style="width:100%;padding:13px;background:linear-gradient(90deg,#D946A6,#D4AF37,#D946A6);background-size:200% auto;color:#fff;border:none;border-radius:10px;font-weight:900;font-size:0.92rem;cursor:pointer;animation:btnShimmer 2.5s linear infinite;">
+            <i class="fas fa-user-plus"></i> &nbsp;Crear Agente y Enviar Invitación
+        </button>
+        <p style="font-size:0.68rem;color:#475569;text-align:center;margin-top:10px;">
+            <i class="fas fa-envelope" style="color:#D4AF37;"></i>
+            El agente recibirá el link de activación en su correo. Válido por 1 hora.
+        </p>
+    </div>
+</div>
+
 <div id="toast"></div>
+
+    <!-- ══ TAB RUTADOR ══════════════════════════════════ -->
+    <div id="tab-rutador" class="tab-panel">
+        <div class="page-header">
+            <div>
+                <h1>Rutador de <span style="color:var(--gold)">Casos</span></h1>
+                <p>Cola automática por tipo de trabajo — diseño / fresado / impresión 3D</p>
+            </div>
+            <button class="rut-reload" onclick="cargarRutador()">
+                <i class="fas fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+
+        <div class="lanes">
+            <div class="lane lane-diseno">
+                <div class="lane-head">
+                    <h3><i class="fas fa-pen-nib" style="color:#D946A6"></i> Diseño CAD</h3>
+                    <span class="lane-count" id="rut-cnt-diseno">0</span>
+                </div>
+                <div class="lane-body" id="rut-diseno">
+                    <div class="lane-empty"><i class="fas fa-check-circle"></i>Sin casos</div>
+                </div>
+            </div>
+
+            <div class="lane lane-fresado">
+                <div class="lane-head">
+                    <h3><i class="fas fa-cog" style="color:#D4AF37"></i> Fresado / Sinterizado</h3>
+                    <span class="lane-count" id="rut-cnt-fresado">0</span>
+                </div>
+                <div class="lane-body" id="rut-fresado">
+                    <div class="lane-empty"><i class="fas fa-check-circle"></i>Sin casos</div>
+                </div>
+            </div>
+
+            <div class="lane lane-impresion">
+                <div class="lane-head">
+                    <h3><i class="fas fa-layer-group" style="color:#00d2ff"></i> Impresión 3D</h3>
+                    <span class="lane-count" id="rut-cnt-impresion">0</span>
+                </div>
+                <div class="lane-body" id="rut-impresion">
+                    <div class="lane-empty"><i class="fas fa-check-circle"></i>Sin casos</div>
+                </div>
+            </div>
+
+            <div class="lane lane-qa">
+                <div class="lane-head">
+                    <h3><i class="fas fa-microscope" style="color:#00FF41"></i> Control QA</h3>
+                    <span class="lane-count" id="rut-cnt-qa">0</span>
+                </div>
+                <div class="lane-body" id="rut-qa">
+                    <div class="lane-empty"><i class="fas fa-check-circle"></i>Sin casos</div>
+                </div>
+            </div>
+        </div>
+
+        <p style="margin-top:20px;font-size:0.72rem;color:#334155;text-align:center">
+            Casos terminados (Listo / Enviado) → ver en <a href="#" onclick="switchTab('pedidos-doc',null)" style="color:var(--gold)">Pedidos Doctores</a>
+        </p>
+    </div><!-- /tab-rutador -->
 
 <script>
 /* ══════════════════════════════════════════
@@ -458,6 +778,10 @@ function switchTab(tab, el) {
     // Cargar datos al abrir tab por primera vez
     if (tab === 'portafolio') cargarPortafolio();
     if (tab === 'clientes')   cargarClientes();
+    if (tab === 'equipo')     cargarEquipo();
+    if (tab === 'leads')        cargarLeads();
+    if (tab === 'pedidos-doc')  cargarPedidosDoc();
+    if (tab === 'rutador')      cargarRutador();
 }
 
 /* ══════════════════════════════════════════
@@ -722,6 +1046,533 @@ function toast(msg, tipo = '') {
     el.className = 'show ' + tipo;
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { el.className = ''; }, 3500);
+}
+
+/* ══════════════════════════════════════════
+   EQUIPO — GESTIÓN DE AGENTES
+══════════════════════════════════════════ */
+const ROL_LABELS = {
+    admin: '👑 Admin', operator: '🎨 Operador', mensajero: '🚚 Mensajero',
+    taller: '🔧 Taller', inventario: '📦 Inventario', client: '👤 Cliente'
+};
+const ROL_COLORS = {
+    admin:'#D4AF37', operator:'#00d2ff', mensajero:'#25D366',
+    taller:'#D946A6', inventario:'#F59E0B', client:'#64748b'
+};
+
+let _equipoData = [];
+
+function abrirModalAgente() {
+    document.getElementById('modal-agente').style.display = 'flex';
+    document.getElementById('modal-msg').style.display = 'none';
+    ['ag-nombre','ag-email','ag-tel'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('ag-rol').value = 'operator';
+}
+function cerrarModalAgente() {
+    document.getElementById('modal-agente').style.display = 'none';
+}
+
+async function crearAgente() {
+    const nombre = document.getElementById('ag-nombre').value.trim();
+    const email  = document.getElementById('ag-email').value.trim().toLowerCase();
+    const rol    = document.getElementById('ag-rol').value;
+    const tel    = document.getElementById('ag-tel').value.trim();
+    const btn    = document.getElementById('btn-crear-agente');
+    const msg    = document.getElementById('modal-msg');
+
+    if (!nombre || !email) { showModalMsg('Nombre y correo son obligatorios.', 'err'); return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> &nbsp;Creando cuenta...';
+
+    // 1. Crear usuario en Supabase Auth con contraseña temporal aleatoria
+    const tempPass = 'Prodigy@' + Math.random().toString(36).slice(2, 8).toUpperCase();
+    const { data: signData, error: signError } = await sb.auth.signUp({
+        email,
+        password: tempPass,
+        options: { data: { nombre, role: rol, telefono: tel } }
+    });
+
+    if (signError) {
+        showModalMsg(signError.message.includes('already')
+            ? 'Este correo ya está registrado.'
+            : signError.message, 'err');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-user-plus"></i> &nbsp;Crear Agente y Enviar Invitación';
+        return;
+    }
+
+    // 2. Insertar en tabla perfiles
+    if (signData?.user?.id) {
+        await sb.from('perfiles').upsert({
+            id: signData.user.id, nombre, email, rol, telefono: tel || null, activo: true
+        });
+    }
+
+    // 3. Enviar email de restablecimiento → el agente establece su propia contraseña
+    await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/app/reset-password.html'
+    });
+
+    showModalMsg(`✓ Agente creado. Se envió el link de activación a ${email}`, 'ok');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-user-plus"></i> &nbsp;Crear Agente y Enviar Invitación';
+    cargarEquipo();
+}
+
+function showModalMsg(text, type) {
+    const el = document.getElementById('modal-msg');
+    el.style.display = 'block';
+    el.style.background = type === 'ok' ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)';
+    el.style.border = type === 'ok' ? '1px solid rgba(34,197,94,0.35)' : '1px solid rgba(239,68,68,0.35)';
+    el.style.color  = type === 'ok' ? '#86efac' : '#f87171';
+    el.textContent  = text;
+}
+
+async function cargarEquipo() {
+    document.getElementById('tbody-equipo').innerHTML =
+        '<tr class="loading-row"><td colspan="6"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
+
+    const { data, error } = await sb.from('perfiles')
+        .select('*')
+        .neq('rol', 'client')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        document.getElementById('tbody-equipo').innerHTML =
+            `<tr><td colspan="6" style="text-align:center;color:#f87171;padding:20px;">${error.message}</td></tr>`;
+        return;
+    }
+
+    _equipoData = data || [];
+    renderEquipo(_equipoData);
+
+    // KPIs
+    const count = (r) => _equipoData.filter(a => a.rol === r && a.activo).length;
+    document.getElementById('kpi-operators').textContent = count('operator');
+    document.getElementById('kpi-mensajeros').textContent = count('mensajero');
+    document.getElementById('kpi-taller').textContent = count('taller');
+    document.getElementById('kpi-activos').textContent = _equipoData.filter(a => a.activo).length;
+}
+
+function filtrarEquipo() {
+    const rol = document.getElementById('filtro-rol-equipo').value;
+    renderEquipo(rol ? _equipoData.filter(a => a.rol === rol) : _equipoData);
+}
+
+function renderEquipo(lista) {
+    const tbody = document.getElementById('tbody-equipo');
+    if (!lista.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><i class="fas fa-users"></i><br>Sin agentes registrados</td></tr>';
+        return;
+    }
+    tbody.innerHTML = lista.map(a => `
+        <tr style="opacity:${a.activo ? 1 : 0.45};">
+            <td><strong>${a.nombre}</strong></td>
+            <td style="color:#94a3b8;font-size:0.82rem;">${a.email}</td>
+            <td><span style="background:${ROL_COLORS[a.rol]}22;color:${ROL_COLORS[a.rol]};border:1px solid ${ROL_COLORS[a.rol]}55;border-radius:20px;padding:3px 10px;font-size:0.72rem;font-weight:700;">${ROL_LABELS[a.rol] || a.rol}</span></td>
+            <td><span style="color:${a.activo ? '#00FF41' : '#f87171'};font-size:0.8rem;font-weight:700;">${a.activo ? '● Activo' : '○ Inactivo'}</span></td>
+            <td style="color:#64748b;font-size:0.78rem;">${new Date(a.created_at).toLocaleDateString('es-CO')}</td>
+            <td>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                    <button onclick="resetearContrasena('${a.email}')" title="Enviar link reset" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.35);color:#D4AF37;border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
+                        <i class="fas fa-key"></i> Reset
+                    </button>
+                    <button onclick="toggleActivo('${a.id}', ${a.activo})" title="${a.activo ? 'Desactivar' : 'Activar'}" style="background:${a.activo ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)'};border:1px solid ${a.activo ? 'rgba(239,68,68,0.35)' : 'rgba(34,197,94,0.35)'};color:${a.activo ? '#f87171' : '#86efac'};border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
+                        <i class="fas fa-${a.activo ? 'ban' : 'check'}"></i> ${a.activo ? 'Desactivar' : 'Activar'}
+                    </button>
+                    <select onchange="cambiarRol('${a.id}', this.value)" style="background:#0d1525;border:1px solid rgba(255,255,255,0.1);color:#94a3b8;border-radius:6px;padding:4px 6px;font-size:0.72rem;cursor:pointer;">
+                        <option value="">Cambiar rol...</option>
+                        <option value="operator">Operador</option>
+                        <option value="mensajero">Mensajero</option>
+                        <option value="taller">Taller</option>
+                        <option value="inventario">Inventario</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function resetearContrasena(email) {
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/app/reset-password.html'
+    });
+    toast(error ? 'Error al enviar: ' + error.message : `Link de reset enviado a ${email}`, !error);
+}
+
+async function toggleActivo(id, actual) {
+    const { error } = await sb.from('perfiles').update({ activo: !actual }).eq('id', id);
+    if (error) { toast('Error: ' + error.message, false); return; }
+    toast(actual ? 'Agente desactivado' : 'Agente activado', true);
+    cargarEquipo();
+}
+
+async function cambiarRol(id, nuevoRol) {
+    if (!nuevoRol) return;
+    const { error } = await sb.from('perfiles').update({ rol: nuevoRol }).eq('id', id);
+    if (error) { toast('Error: ' + error.message, false); return; }
+    toast('Rol actualizado a ' + ROL_LABELS[nuevoRol], true);
+    cargarEquipo();
+}
+
+/* ══════════════════════════════════════════
+   TAB LEADS JOURNAL
+══════════════════════════════════════════ */
+let _leadsData = [];
+
+async function cargarLeads() {
+    document.getElementById('tbody-leads').innerHTML =
+        '<tr class="loading-row"><td colspan="6"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
+
+    const { data, error } = await sb.from('leads_doctores')
+        .select('*')
+        .order('fecha_descarga', { ascending: false });
+
+    if (error) {
+        document.getElementById('tbody-leads').innerHTML =
+            `<tr><td colspan="6" style="text-align:center;color:#f87171;padding:24px;">Error: ${error.message}</td></tr>`;
+        return;
+    }
+    _leadsData = data || [];
+    document.getElementById('kpi-leads-total').textContent   = _leadsData.length;
+    document.getElementById('kpi-leads-pending').textContent = _leadsData.filter(l => !l.contactado).length;
+    document.getElementById('kpi-leads-done').textContent    = _leadsData.filter(l => l.contactado).length;
+    renderLeads(_leadsData);
+}
+
+function filtrarLeads() {
+    const q    = document.getElementById('filtro-leads-q').value.toLowerCase();
+    const cont = document.getElementById('filtro-leads-contactado').value;
+    let arr = _leadsData;
+    if (cont !== '') arr = arr.filter(l => String(l.contactado) === cont);
+    if (q)           arr = arr.filter(l =>
+        (l.nombre || '').toLowerCase().includes(q) ||
+        (l.whatsapp || '').includes(q)
+    );
+    renderLeads(arr);
+}
+
+function renderLeads(arr) {
+    const tbody = document.getElementById('tbody-leads');
+    if (!arr.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b;padding:28px;">Sin leads aún</td></tr>';
+        return;
+    }
+    tbody.innerHTML = arr.map(l => {
+        const fecha = l.fecha_descarga ? new Date(l.fecha_descarga).toLocaleDateString('es-CO') : '—';
+        const badge = l.contactado
+            ? '<span style="background:rgba(0,255,65,0.1);color:#00FF41;border:1px solid rgba(0,255,65,0.3);border-radius:20px;padding:2px 9px;font-size:0.68rem;font-weight:700;">Contactado</span>'
+            : '<span style="background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.3);border-radius:20px;padding:2px 9px;font-size:0.68rem;font-weight:700;">Pendiente</span>';
+        const recursoCorto = (l.recurso_descargado || '').length > 30
+            ? l.recurso_descargado.substring(0, 30) + '…'
+            : (l.recurso_descargado || '—');
+        const waLink = l.whatsapp
+            ? `<a href="https://wa.me/${l.whatsapp.replace(/\D/g,'')}" target="_blank" style="color:var(--gold);text-decoration:none;">
+                 <i class="fab fa-whatsapp"></i> ${l.whatsapp}
+               </a>`
+            : '—';
+        return `<tr>
+            <td style="font-weight:600;">${l.nombre || '—'}</td>
+            <td>${waLink}</td>
+            <td style="font-size:0.75rem;color:#94a3b8;" title="${l.recurso_descargado}">${recursoCorto}</td>
+            <td style="font-size:0.78rem;color:#64748b;">${fecha}</td>
+            <td>${badge}</td>
+            <td>
+                <button onclick="toggleContactado('${l.id}', ${l.contactado})"
+                    style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);color:#D4AF37;border-radius:6px;padding:4px 10px;font-size:0.72rem;cursor:pointer;">
+                    ${l.contactado ? 'Desmarcar' : 'Marcar contactado'}
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+async function toggleContactado(id, actual) {
+    const { error } = await sb.from('leads_doctores')
+        .update({ contactado: !actual })
+        .eq('id', id);
+    if (!error) cargarLeads();
+}
+
+/* ════════════════════════════════════════════
+   RUTADOR DE CASOS — panel HTML insertado antes
+════════════════════════════════════════════ */
+// (panel HTML en el body, JS abajo)
+
+/* ════════════════════════════════════════════
+   PEDIDOS DOCTORES
+════════════════════════════════════════════ */
+let _pedidosDoc = [];
+
+async function cargarPedidosDoc() {
+    document.getElementById('tbody-pdd').innerHTML =
+        '<tr class="loading-row"><td colspan="9"><div class="spinner" style="margin:0 auto"></div></td></tr>';
+
+    const { data, error } = await sb.from('pedidos_doctor')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        document.getElementById('tbody-pdd').innerHTML =
+            `<tr><td colspan="9" style="color:#ef4444;text-align:center;padding:20px">Error: ${error.message}</td></tr>`;
+        return;
+    }
+    _pedidosDoc = data || [];
+
+    // KPIs
+    const activos = ['recibido','en_diseno','en_fresado','control_calidad'];
+    document.getElementById('kpid-total').textContent = _pedidosDoc.length;
+    document.getElementById('kpid-pend').textContent  = _pedidosDoc.filter(p => activos.includes(p.estado)).length;
+    document.getElementById('kpid-urg').textContent   = _pedidosDoc.filter(p => p.urgente && activos.includes(p.estado)).length;
+    document.getElementById('kpid-ok').textContent    = _pedidosDoc.filter(p => ['listo','enviado'].includes(p.estado)).length;
+
+    filtrarPedidosDoc();
+}
+
+function filtrarPedidosDoc() {
+    const est = document.getElementById('filtro-pdd-estado').value;
+    const q   = (document.getElementById('filtro-pdd-q').value || '').toLowerCase();
+    const arr = _pedidosDoc.filter(p => {
+        const matchEst = !est || p.estado === est;
+        const matchQ   = !q || (p.doctor_nombre||'').toLowerCase().includes(q) || (p.doctor_clinica||'').toLowerCase().includes(q);
+        return matchEst && matchQ;
+    });
+    renderPedidosDoc(arr);
+}
+
+const PDD_EST_LABEL = {recibido:'Recibido',en_diseno:'En diseño',en_fresado:'En fresado',
+    control_calidad:'Control QA',listo:'Listo',enviado:'Enviado',cancelado:'Cancelado'};
+const PDD_MAT = {'zirconio-mono':'Zirc.3Y','zirconio-multi':'Zirc.5Y','disilicato':'e.max',
+    'pmma':'PMMA','resina3d':'Resina3D','digital':'Digital'};
+
+function renderPedidosDoc(arr) {
+    const tbody = document.getElementById('tbody-pdd');
+    if (!arr.length) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:30px;color:#64748b;">Sin pedidos en este filtro.</td></tr>';
+        return;
+    }
+    tbody.innerHTML = arr.map(p => {
+        const fecha = new Date(p.created_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+        const precio = p.precio_estimado
+            ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(p.precio_estimado)
+            : '—';
+        const extras = [p.urgente?'⚡':'',p.incluye_dsd?'🎨':'',p.incluye_envio?'🚚':''].filter(Boolean).join(' ');
+        const estadoOpts = Object.keys(PDD_EST_LABEL).map(e =>
+            `<option value="${e}" ${p.estado===e?'selected':''}>${PDD_EST_LABEL[e]}</option>`).join('');
+        const wa = p.doctor_whatsapp
+            ? `<a href="https://wa.me/57${p.doctor_whatsapp.replace(/\D/g,'').replace(/^57/,'')}" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-size:.75rem;"><i class="fab fa-whatsapp"></i></a>` : '';
+        return `<tr>
+            <td><strong style="font-size:.85rem">${p.doctor_nombre||'—'}</strong><br><span style="font-size:.72rem;color:#64748b">${p.doctor_clinica||''}</span>${wa?'&nbsp;'+wa:''}</td>
+            <td style="font-size:.82rem">${p.tipo_servicio||'—'}</td>
+            <td style="font-size:.8rem;color:#94a3b8">${PDD_MAT[p.material]||p.material}</td>
+            <td style="text-align:center">${p.unidades}</td>
+            <td style="font-size:.8rem">${extras||'—'}</td>
+            <td style="color:#D4AF37;font-weight:700;font-size:.82rem">${precio}</td>
+            <td>
+                <select onchange="cambiarEstadoDoc('${p.id}',this.value)"
+                    style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:4px 8px;border-radius:6px;font-size:.75rem;">
+                    ${estadoOpts}
+                </select>
+            </td>
+            <td style="color:#64748b;font-size:.78rem">${fecha}</td>
+            <td>
+                ${p.link_archivo ? `<a href="${p.link_archivo}" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);font-size:.75rem;"><i class="fas fa-link"></i> STL</a>` : '—'}
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+async function cambiarEstadoDoc(id, nuevoEstado) {
+    const { error } = await sb.from('pedidos_doctor')
+        .update({ estado: nuevoEstado })
+        .eq('id', id);
+    if (error) alert('Error actualizando estado: ' + error.message);
+    // No recarga completa — el select ya actualizó la UI visualmente
+}
+
+/* ════════════════════════════════════════════
+   RUTADOR DE CASOS
+════════════════════════════════════════════ */
+
+// Qué tipos de servicio van a cada lane
+const RUTA = {
+    diseno:    ['corona','carilla','puente','dsd'],
+    fresado:   ['corona','carilla','puente','ferula'],
+    impresion: ['modelo','provisional']
+};
+const NEXT_ESTADO = {
+    recibido:       'en_diseno',
+    en_diseno:      'en_fresado',
+    en_fresado:     'control_calidad',
+    control_calidad:'listo'
+};
+const MAT_LABEL = {
+    'zirconio-mono':'3Y-PSZ','zirconio-multi':'5Y-PSZ','disilicato':'e.max',
+    'pmma':'PMMA','resina3d':'Resina 3D','digital':'Digital'
+};
+const SVC_LABEL = {
+    corona:'Corona', carilla:'Carilla', puente:'Puente', dsd:'DSD',
+    ferula:'Férula', modelo:'Modelo', provisional:'Provisional'
+};
+
+let _rutCasos = [];
+
+async function cargarRutador() {
+    ['rut-diseno','rut-fresado','rut-impresion','rut-qa'].forEach(id => {
+        document.getElementById(id).innerHTML =
+            '<div class="lane-empty"><i class="fas fa-circle-notch fa-spin"></i>Cargando…</div>';
+    });
+
+    const { data, error } = await sb.from('pedidos_doctor')
+        .select('*')
+        .not('estado', 'in', '("listo","enviado","cancelado")')
+        .order('urgente', { ascending: false })
+        .order('created_at', { ascending: true });
+
+    if (error) {
+        ['rut-diseno','rut-fresado','rut-impresion','rut-qa'].forEach(id => {
+            document.getElementById(id).innerHTML =
+                `<div class="lane-empty" style="color:#ef4444">Error: ${error.message}</div>`;
+        });
+        return;
+    }
+    _rutCasos = data || [];
+    renderRutador(_rutCasos);
+}
+
+function renderRutador(casos) {
+    // Clasificar en 4 colas
+    const lanes = { diseno: [], fresado: [], impresion: [], qa: [] };
+
+    casos.forEach(c => {
+        const tipo = c.tipo_servicio;
+        const est  = c.estado;
+        if (est === 'control_calidad') {
+            lanes.qa.push(c);
+        } else if (RUTA.impresion.includes(tipo)) {
+            lanes.impresion.push(c);
+        } else if (est === 'en_fresado' || (est === 'recibido' && tipo === 'ferula')) {
+            lanes.fresado.push(c);
+        } else if (RUTA.diseno.includes(tipo) && ['recibido','en_diseno'].includes(est)) {
+            lanes.diseno.push(c);
+        }
+        // Si no encaja en ninguna, no aparece (estado no esperado)
+    });
+
+    // Actualizar contadores de header
+    document.getElementById('rut-cnt-diseno').textContent    = lanes.diseno.length;
+    document.getElementById('rut-cnt-fresado').textContent   = lanes.fresado.length;
+    document.getElementById('rut-cnt-impresion').textContent = lanes.impresion.length;
+    document.getElementById('rut-cnt-qa').textContent        = lanes.qa.length;
+
+    // Renderizar cada lane
+    renderLane('rut-diseno',    lanes.diseno,    'Iniciar diseño → En diseño');
+    renderLane('rut-fresado',   lanes.fresado,   'Iniciar fresado → QA');
+    renderLane('rut-impresion', lanes.impresion, 'Avanzar → QA');
+    renderLane('rut-qa',        lanes.qa,        'Marcar listo');
+}
+
+function renderLane(laneId, casos, btnLabel) {
+    const el = document.getElementById(laneId);
+    if (!casos.length) {
+        el.innerHTML = '<div class="lane-empty"><i class="fas fa-check-circle"></i>Sin casos en esta cola</div>';
+        return;
+    }
+    el.innerHTML = casos.map(c => {
+        const fecha  = new Date(c.created_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+        const mat    = MAT_LABEL[c.material] || c.material || '—';
+        const svc    = SVC_LABEL[c.tipo_servicio] || c.tipo_servicio;
+        const next   = NEXT_ESTADO[c.estado] || 'listo';
+        const nextLabel = {
+            en_diseno:'→ En diseño', en_fresado:'→ Fresado',
+            control_calidad:'→ QA', listo:'→ Listo'
+        }[next] || '→ Siguiente';
+        const wa = c.doctor_whatsapp
+            ? `<a class="kcase-wa" href="https://wa.me/57${c.doctor_whatsapp.replace(/\D/g,'').replace(/^57/,'')}" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>` : '';
+        return `<div class="kcase" id="kc-${c.id}">
+            <div class="kcase-top">
+                <div>
+                    <div class="kcase-doc">${c.doctor_nombre||'Doctor'} ${wa}</div>
+                    <div class="kcase-cli">${c.doctor_clinica||''}</div>
+                </div>
+                <div style="text-align:right;font-size:.65rem;color:#475569">${c.estado.replace('_',' ')}</div>
+            </div>
+            <div class="kcase-service">${svc}${c.dientes ? ' · dientes '+c.dientes : ''}</div>
+            <div>
+                <span class="kcase-mat">${mat}</span>
+                ${c.urgente ? '<span class="kcase-urg">⚡ URGENTE</span>' : ''}
+                ${c.incluye_dsd ? '<span class="kcase-dsd">🎨 DSD</span>' : ''}
+            </div>
+            <div class="kcase-footer">
+                <span class="kcase-date">${fecha}</span>
+                <button class="kcase-btn" onclick="avanzarCaso('${c.id}','${next}')">${nextLabel}</button>
+            </div>
+            ${c.estado === 'en_diseno' ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);">
+                ${c.link_diseno
+                    ? `<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+                        <span style="color:#00FF41;font-size:.62rem;font-weight:700"><i class="fas fa-check-circle"></i> Diseño enviado</span>
+                        <button class="kcase-btn" style="font-size:.6rem;padding:2px 7px;" onclick="toggleDsh('${c.id}')">Actualizar link</button>
+                       </div>`
+                    : `<button class="kcase-btn" style="width:100%;font-size:.65rem;color:#00d2ff;border-color:rgba(0,210,255,.3);" onclick="toggleDsh('${c.id}')"><i class="fas fa-share-nodes"></i> Compartir HTML diseño</button>`
+                }
+                <div id="dsh-inp-${c.id}" style="display:none;margin-top:7px;">
+                    <input id="dsh-url-${c.id}" type="url"
+                        placeholder="Link HTML Exocad (Drive /preview o Supabase Storage)"
+                        value="${(c.link_diseno||'').replace(/"/g,'&quot;')}"
+                        style="width:100%;padding:5px 8px;background:#050505;border:1px solid rgba(0,210,255,.3);border-radius:6px;color:#fff;font-size:.63rem;outline:none;font-family:inherit;">
+                    <button onclick="guardarLinkDiseno('${c.id}')"
+                        style="margin-top:5px;width:100%;padding:5px;background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.25);color:#00FF41;border-radius:6px;font-size:.65rem;font-weight:700;cursor:pointer;">
+                        <i class="fas fa-paper-plane"></i> Guardar y activar aprobación del doctor
+                    </button>
+                </div>
+            </div>` : ''}
+        </div>`;
+    }).join('');
+}
+
+function toggleDsh(id) {
+    const el = document.getElementById('dsh-inp-' + id);
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    if (el.style.display === 'block') document.getElementById('dsh-url-' + id).focus();
+}
+
+async function guardarLinkDiseno(id) {
+    const url = (document.getElementById('dsh-url-' + id).value || '').trim();
+    if (!url) { showToast('Pega el link del HTML primero', 'error'); return; }
+
+    const { error } = await sb.from('pedidos_doctor')
+        .update({ link_diseno: url, diseno_aprobado: false })
+        .eq('id', id);
+
+    if (error) { showToast('Error: ' + error.message, 'error'); return; }
+
+    const caso = _rutCasos.find(c => c.id === id);
+    if (caso) caso.link_diseno = url;
+    renderRutador(_rutCasos);
+    showToast('Link guardado — el doctor verá el botón de aprobación en su portal', 'success');
+}
+
+async function avanzarCaso(id, nuevoEstado) {
+    const btn = document.querySelector(`#kc-${id} .kcase-btn`);
+    if (btn) { btn.disabled = true; btn.textContent = '…'; }
+
+    const { error } = await sb.from('pedidos_doctor')
+        .update({ estado: nuevoEstado })
+        .eq('id', id);
+
+    if (error) {
+        showToast('Error: ' + error.message, 'error');
+        if (btn) { btn.disabled = false; btn.textContent = 'Reintentar'; }
+        return;
+    }
+
+    // Actualizar localmente sin recargar todo
+    const caso = _rutCasos.find(c => c.id === id);
+    if (caso) caso.estado = nuevoEstado;
+    renderRutador(_rutCasos);
+    showToast('Caso avanzado → ' + nuevoEstado.replace('_',' '), 'success');
 }
 
 /* ══════════════════════════════════════════
