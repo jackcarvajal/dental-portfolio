@@ -71,8 +71,14 @@
   status = 404
   force  = true
 
-# 2) MODO COMING SOON — redirige raíz y páginas públicas a coming-soon.html
-# REMOVER estos 3 bloques cuando el sitio esté listo para publicar
+# 2) MODO COMING SOON con bypass para staff con cookie prodigy_preview
+# Si tiene cookie → ve el sitio real. Si no → coming-soon.
+[[redirects]]
+  from   = "/"
+  to     = "/index.html"
+  status = 200
+  conditions = { Cookie = ["prodigy_preview"] }
+
 [[redirects]]
   from   = "/"
   to     = "/coming-soon.html"
