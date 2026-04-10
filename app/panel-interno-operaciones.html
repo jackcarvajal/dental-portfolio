@@ -164,6 +164,7 @@
         .lane-empty i { display:block; font-size:1.4rem; margin-bottom:8px; }
         .rut-reload { padding:6px 14px; background:transparent; border:1px solid var(--border); color:var(--muted); border-radius:8px; font-size:0.72rem; cursor:pointer; }
         .rut-reload:hover { color:#fff; border-color:rgba(255,255,255,0.2); }
+        @keyframes blink-rt { 0%,100%{opacity:1} 50%{opacity:0.3} }
     </style>
 </head>
 <body>
@@ -638,9 +639,15 @@
                 <h1>Rutador de <span style="color:var(--gold)">Casos</span></h1>
                 <p>Cola automática por tipo de trabajo — diseño / fresado / impresión 3D</p>
             </div>
-            <button class="rut-reload" onclick="cargarRutador()">
-                <i class="fas fa-rotate-right"></i> Actualizar
-            </button>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-size:.65rem;color:#334155;display:flex;align-items:center;gap:5px;">
+                    <span style="width:7px;height:7px;border-radius:50%;background:#00FF41;animation:blink-rt 2s ease-in-out infinite;display:inline-block;box-shadow:0 0 6px #00FF41"></span>
+                    Realtime activo
+                </span>
+                <button class="rut-reload" onclick="cargarRutador()">
+                    <i class="fas fa-rotate-right"></i> Recargar
+                </button>
+            </div>
         </div>
 
         <div class="lanes">
@@ -1418,6 +1425,7 @@ const SVC_LABEL = {
 };
 
 let _rutCasos = [];
+let _rutChannel = null;
 
 async function cargarRutador() {
     ['rut-diseno','rut-fresado','rut-impresion','rut-qa'].forEach(id => {
@@ -1440,6 +1448,44 @@ async function cargarRutador() {
     }
     _rutCasos = data || [];
     renderRutador(_rutCasos);
+    iniciarRealtimeRutador();
+}
+
+function iniciarRealtimeRutador() {
+    if (_rutChannel) sb.removeChannel(_rutChannel);
+
+    _rutChannel = sb.channel('rutador-pedidos-doctor')
+        .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'pedidos_doctor'
+        }, (payload) => {
+            const { eventType, new: nuevo, old } = payload;
+
+            if (eventType === 'INSERT') {
+                const ESTADOS_ACTIVOS = ['recibido','en_diseno','en_fresado','impresion_3d','control_calidad'];
+                if (ESTADOS_ACTIVOS.includes(nuevo.estado)) {
+                    _rutCasos.unshift(nuevo);
+                    renderRutador(_rutCasos);
+                    showToast('Nuevo caso recibido — ' + (nuevo.doctor_nombre || ''), 'success');
+                }
+            } else if (eventType === 'UPDATE') {
+                const idx = _rutCasos.findIndex(c => c.id === nuevo.id);
+                const ESTADOS_FINALES = ['listo','enviado','cancelado'];
+                if (ESTADOS_FINALES.includes(nuevo.estado)) {
+                    if (idx !== -1) _rutCasos.splice(idx, 1);
+                } else if (idx !== -1) {
+                    _rutCasos[idx] = nuevo;
+                } else {
+                    _rutCasos.unshift(nuevo);
+                }
+                renderRutador(_rutCasos);
+            } else if (eventType === 'DELETE') {
+                _rutCasos = _rutCasos.filter(c => c.id !== old.id);
+                renderRutador(_rutCasos);
+            }
+        })
+        .subscribe();
 }
 
 function renderRutador(casos) {
