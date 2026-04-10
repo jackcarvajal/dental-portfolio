@@ -1561,6 +1561,23 @@ async function guardarLinkDiseno(id) {
     if (caso) caso.link_diseno = url;
     renderRutador(_rutCasos);
     showToast('Link guardado — el doctor verá el botón de aprobación en su portal', 'success');
+
+    // Notificar al doctor por WhatsApp
+    if (caso?.doctor_whatsapp) {
+        fetch(`${SUPABASE_URL}/functions/v1/notify-wa`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
+            body: JSON.stringify({
+                tipo:            'diseno_listo',
+                telefono:        caso.doctor_whatsapp,
+                nombre:          caso.doctor_nombre || 'Doctor',
+                caseId:          caso.codigo || id,
+                url_seguimiento: url
+            })
+        }).then(r => r.json()).then(r => {
+            if (r.ok) showToast('WA enviado al doctor', 'success');
+        }).catch(() => {}); // falla silenciosa si META no está configurado aún
+    }
 }
 
 async function asignarCaso(id, nombre) {
