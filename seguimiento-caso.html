@@ -703,7 +703,7 @@ async function suscribirNotificaciones(caseId) {
     }
     // VAPID public key — generar con: supabase functions invoke generate-vapid-keys
     // y pegar la clave pública aquí (base64url)
-    const VAPID_PUBLIC_KEY = 'BD8r001C3ekRLo4w-S-lQZTXHtucMBenkucKZgqmoca07SfMg35MF1EFFIIubc7RI6RVKJW12iSlV-KGpUolUu4';
+    const VAPID_PUBLIC_KEY = 'BBcrrX9eueoOCmBcNZAt8_tYdiHMMKatHrvSaonK1RlFU5cNIB6KOpefDw3heqyUn6Opr5ILk01hPRIDxpC3ML8';
     try {
         const sub = await window._swReg.pushManager.subscribe({
             userVisibleOnly:      true,
