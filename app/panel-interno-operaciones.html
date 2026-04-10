@@ -1505,6 +1505,15 @@ function renderLane(laneId, casos, btnLabel) {
                 ${c.urgente ? '<span class="kcase-urg">⚡ URGENTE</span>' : ''}
                 ${c.incluye_dsd ? '<span class="kcase-dsd">🎨 DSD</span>' : ''}
             </div>
+            <div style="margin:6px 0;display:flex;align-items:center;gap:6px;">
+                <span style="font-size:.6rem;color:#475569;white-space:nowrap">Asignado:</span>
+                <input id="asi-${c.id}" type="text"
+                    value="${(c.asignado_a||'').replace(/"/g,'&quot;')}"
+                    placeholder="— sin asignar"
+                    onblur="asignarCaso('${c.id}',this.value)"
+                    onkeydown="if(event.key==='Enter'){this.blur()}"
+                    style="flex:1;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.1);color:#cbd5e1;font-size:.65rem;outline:none;padding:1px 2px;font-family:inherit;">
+            </div>
             <div class="kcase-footer">
                 <span class="kcase-date">${fecha}</span>
                 <button class="kcase-btn" onclick="avanzarCaso('${c.id}','${next}')">${nextLabel}</button>
@@ -1552,6 +1561,21 @@ async function guardarLinkDiseno(id) {
     if (caso) caso.link_diseno = url;
     renderRutador(_rutCasos);
     showToast('Link guardado — el doctor verá el botón de aprobación en su portal', 'success');
+}
+
+async function asignarCaso(id, nombre) {
+    const valor = nombre.trim();
+    const caso = _rutCasos.find(c => c.id === id);
+    if (caso && caso.asignado_a === valor) return; // sin cambio
+
+    const { error } = await sb.from('pedidos_doctor')
+        .update({ asignado_a: valor || null })
+        .eq('id', id);
+
+    if (error) { showToast('Error al asignar: ' + error.message, 'error'); return; }
+
+    if (caso) caso.asignado_a = valor || null;
+    showToast(valor ? `Asignado a ${valor}` : 'Asignación removida', 'success');
 }
 
 async function avanzarCaso(id, nuevoEstado) {
