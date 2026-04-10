@@ -71,25 +71,8 @@
   status = 404
   force  = true
 
-# 2) MODO COMING SOON con bypass para staff con cookie prodigy_preview
-# Si tiene cookie → ve el sitio real. Si no → coming-soon.
-[[redirects]]
-  from   = "/"
-  to     = "/index.html"
-  status = 200
-  conditions = { Cookie = ["prodigy_preview"] }
-
-[[redirects]]
-  from   = "/"
-  to     = "/coming-soon.html"
-  status = 302
-  force  = true
-
-[[redirects]]
-  from   = "/index.html"
-  to     = "/coming-soon.html"
-  status = 302
-  force  = true
+# 2) SITIO PÚBLICO — coming-soon desactivado
+# coming-soon.html y acceso-staff.html se mantienen pero ya no redirigen
 
 # 3) Bloquear acceso a paneles internos de app (sin forzar — el auth-guard JS redirige)
 [[redirects]]
