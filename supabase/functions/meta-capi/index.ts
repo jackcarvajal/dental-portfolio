@@ -16,8 +16,7 @@
  * eventos: 'Purchase' | 'InitiateCheckout' | 'Lead'
  */
 
-import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { createHash } from "https://deno.land/std@0.177.0/hash/mod.ts";
+import { serve } from "https://deno.land/std@0.208.0/http/server.ts";
 
 const CORS = {
     "Access-Control-Allow-Origin":  "*",
@@ -31,8 +30,10 @@ function json(data: unknown, status = 200) {
 }
 
 /** SHA-256 hash normalizado para PII (Meta requiere hash) */
-function hashPII(value: string): string {
-    return createHash("sha256").update(value.toLowerCase().trim()).toString();
+async function hashPII(value: string): Promise<string> {
+    const encoded = new TextEncoder().encode(value.toLowerCase().trim());
+    const hashBuffer = await crypto.subtle.digest("SHA-256", encoded);
+    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
 serve(async (req) => {
@@ -72,14 +73,14 @@ serve(async (req) => {
     const userData: Record<string, unknown> = {
         client_ip_address: ip || req.headers.get("x-forwarded-for") || "0.0.0.0",
         client_user_agent: ua || req.headers.get("user-agent") || "unknown",
-        country:           [hashPII(pais.toLowerCase())],
+        country:           [await hashPII(pais.toLowerCase())],
     };
-    if (email)    userData.em  = [hashPII(email)];
-    if (telefono) userData.ph  = [hashPII(telefono.replace(/[^0-9]/g, ""))];
+    if (email)    userData.em  = [await hashPII(email)];
+    if (telefono) userData.ph  = [await hashPII(telefono.replace(/[^0-9]/g, ""))];
     if (nombre) {
         const parts = nombre.trim().split(" ");
-        userData.fn = [hashPII(parts[0] || "")];
-        if (parts[1]) userData.ln = [hashPII(parts.slice(1).join(" "))];
+        userData.fn = [await hashPII(parts[0] || "")];
+        if (parts[1]) userData.ln = [await hashPII(parts.slice(1).join(" "))];
     }
 
     const eventData: Record<string, unknown> = {
