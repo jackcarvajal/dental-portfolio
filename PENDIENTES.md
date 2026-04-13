@@ -21,6 +21,7 @@
 | 11 | `sql/migrate-billing.sql` | Tabla facturación | ✅ Ejecutado |
 | 12 | `sql/migrate-compliance.sql` | Tabla compliance / auditoría | ✅ Ejecutado |
 | 13 | `sql/migrate-scanner.sql` | Tabla `solicitudes_scanner` (escáner landing) | ⏳ **Pendiente** — correr en SQL Editor |
+| 14 | `sql/migrate-domicilio.sql` | Tabla `citas_domicilio` (agendamiento a domicilio) | ⏳ **Pendiente** — correr en SQL Editor |
 
 ---
 

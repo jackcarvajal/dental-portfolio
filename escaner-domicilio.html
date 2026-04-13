@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Escaneo intraoral a domicilio en el norte de Bogotá. PRODIGY va a tu clínica o consultorio con escáner Medit i700. Agenda tu cita en línea. Sin mover tu sillón.">
+    <meta name="keywords" content="escáner intraoral domicilio Bogotá, escaneo dental a domicilio norte Bogotá, Medit i700 domicilio, laboratorio digital a domicilio Colombia">
+    <meta property="og:title" content="Escaneo intraoral a domicilio — Norte de Bogotá | PRODIGY">
+    <meta property="og:description" content="Llevamos el escáner a tu clínica. Norte de Bogotá. Agenda en línea, anticipo para confirmar, archivo STL en 2 horas.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://prodigylabdental.com/escaner-domicilio.html">
+    <link rel="canonical" href="https://prodigylabdental.com/escaner-domicilio.html">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <title>Escaneo intraoral a domicilio — Norte de Bogotá | PRODIGY</title>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Escaneo intraoral a domicilio",
+      "provider": { "@type": "LocalBusiness", "name": "PRODIGY Digital Dentistry", "url": "https://prodigylabdental.com" },
+      "description": "Servicio de escaneo intraoral con Medit i700 a domicilio en clínicas y consultorios del norte de Bogotá. Archivo STL entregado en 2 horas hábiles.",
+      "areaServed": { "@type": "City", "name": "Bogotá" },
+      "serviceType": "Escaneo dental a domicilio"
+    }
+    </script>
+
+    <!-- Google Analytics GA4 — reemplazar G-XXXXXXXXXX con el Measurement ID real -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/global-nav.min.css">
+
+    <style>
+        :root {
+            --gold:    #D4AF37;
+            --magenta: #D946A6;
+            --cyan:    #00d2ff;
+            --green:   #00FF41;
+            --orange:  #f59e0b;
+            --red:     #ef4444;
+            --bg:      #050505;
+            --bg-card: #0d1520;
+            --bg-input:#0a1628;
+            --border:  rgba(212,175,55,.18);
+            --text:    #f5f5f7;
+            --muted:   #94a3b8;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;}
+
+        /* ── NAV ── */
+        .navbar{position:fixed;top:0;left:0;right:0;background:rgba(0,0,0,.95);
+            backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 0;z-index:1000;}
+        .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;
+            justify-content:space-between;padding:0 24px;gap:16px;}
+        .nav-logo{text-decoration:none;flex-shrink:0;}
+        .nav-logo h1{font-size:20px;font-weight:900;letter-spacing:3px;color:var(--gold);}
+        .nav-logo span{font-size:10px;font-weight:700;letter-spacing:4px;color:var(--text);display:block;}
+        .nav-links{display:flex;gap:20px;align-items:center;flex-wrap:wrap;}
+        .nav-links a{color:var(--muted);text-decoration:none;font-size:12px;font-weight:600;
+            text-transform:uppercase;letter-spacing:.8px;transition:color .2s;white-space:nowrap;}
+        .nav-links a:hover{color:var(--gold);}
+        .btn-nav-cta{background:linear-gradient(135deg,var(--cyan),#0ea5e9);
+            color:#000 !important;padding:9px 20px;border-radius:7px;
+            font-size:12px !important;letter-spacing:.3px !important;font-weight:700 !important;}
+
+        /* ── HERO ── */
+        .hero{padding:140px 24px 72px;text-align:center;
+            background:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(0,210,255,.09) 0%,transparent 70%);}
+        .badge{display:inline-flex;align-items:center;gap:8px;
+            background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.28);
+            padding:5px 16px;border-radius:20px;font-size:11px;
+            color:var(--cyan);font-weight:700;letter-spacing:.8px;
+            margin-bottom:24px;text-transform:uppercase;}
+        .hero h1{font-size:clamp(2rem,5.5vw,3.8rem);font-weight:900;line-height:1.08;
+            margin-bottom:18px;letter-spacing:-1.5px;}
+        .hero h1 .hl{background:linear-gradient(135deg,var(--cyan),var(--magenta));
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .hero-sub{font-size:clamp(.95rem,2vw,1.15rem);color:var(--muted);
+            max-width:580px;margin:0 auto 36px;}
+        .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+        .btn-primary{background:linear-gradient(135deg,var(--cyan),#0ea5e9);color:#000;
+            padding:14px 32px;border-radius:9px;font-weight:800;font-size:15px;
+            text-decoration:none;transition:transform .18s,opacity .18s;display:inline-flex;
+            align-items:center;gap:8px;}
+        .btn-primary:hover{transform:translateY(-2px);opacity:.9;}
+        .btn-outline{border:1px solid rgba(212,175,55,.35);color:var(--gold);
+            padding:14px 28px;border-radius:9px;font-weight:600;font-size:14px;
+            text-decoration:none;transition:border-color .2s;display:inline-flex;align-items:center;gap:8px;}
+        .btn-outline:hover{border-color:var(--gold);}
+
+        /* ── ZONAS ── */
+        .zonas-sec{padding:48px 24px;border-top:1px solid rgba(255,255,255,.05);
+            border-bottom:1px solid rgba(255,255,255,.05);}
+        .zonas-inner{max-width:960px;margin:0 auto;text-align:center;}
+        .zonas-inner p{font-size:11px;color:var(--muted);letter-spacing:2.5px;
+            text-transform:uppercase;margin-bottom:20px;}
+        .zonas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;text-align:left;}
+        .zona-card{background:var(--bg-card);border:1px solid rgba(0,210,255,.15);
+            border-radius:12px;padding:16px 20px;transition:border-color .2s;}
+        .zona-card:hover{border-color:rgba(0,210,255,.4);}
+        .zona-card .zona-nombre{font-size:14px;font-weight:700;color:var(--cyan);margin-bottom:6px;}
+        .zona-card .zona-barrios{font-size:11px;color:var(--muted);line-height:1.6;}
+        .zona-nota{font-size:12px;color:#475569;margin-top:16px;
+            background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);
+            border-radius:8px;padding:10px 16px;display:inline-block;}
+        .zona-nota i{color:var(--orange);margin-right:6px;}
+
+        /* ── SECCIONES GENERALES ── */
+        .sec{padding:72px 24px;}
+        .sec-inner{max-width:1100px;margin:0 auto;}
+        .sec-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+            color:var(--cyan);margin-bottom:10px;}
+        .sec-title{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:900;
+            margin-bottom:40px;letter-spacing:-.5px;}
+
+        /* ── PASOS ── */
+        .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+        .step{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+            padding:28px 24px;position:relative;transition:border-color .2s;}
+        .step:hover{border-color:rgba(0,210,255,.3);}
+        .step-n{font-size:42px;font-weight:900;line-height:1;
+            background:linear-gradient(135deg,var(--cyan),var(--magenta));
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px;}
+        .step h3{font-size:16px;font-weight:700;margin-bottom:8px;}
+        .step p{font-size:13px;color:var(--muted);}
+        .step-badge{position:absolute;top:16px;right:16px;background:rgba(0,210,255,.1);
+            border:1px solid rgba(0,210,255,.2);border-radius:20px;
+            padding:3px 10px;font-size:10px;font-weight:700;color:var(--cyan);}
+
+        /* ── PRECIOS ── */
+        .precios-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+        .precio-card{background:var(--bg-card);border:1px solid var(--border);
+            border-radius:14px;padding:28px;text-align:center;position:relative;}
+        .precio-card.featured{border-color:rgba(0,210,255,.4);
+            background:linear-gradient(135deg,rgba(0,210,255,.06),rgba(14,165,233,.03));}
+        .precio-chip{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+            padding:4px 12px;border-radius:20px;margin-bottom:16px;display:inline-block;}
+        .chip-std{background:rgba(255,255,255,.06);color:var(--muted);}
+        .chip-pop{background:rgba(0,210,255,.15);color:var(--cyan);}
+        .precio-nombre{font-size:16px;font-weight:700;margin-bottom:8px;}
+        .precio-monto{font-size:2.2rem;font-weight:900;color:var(--text);letter-spacing:-1px;}
+        .precio-monto span{font-size:14px;font-weight:500;color:var(--muted);}
+        .precio-desc{font-size:12px;color:var(--muted);margin:10px 0 20px;}
+        .precio-items{list-style:none;text-align:left;}
+        .precio-items li{font-size:12px;color:var(--muted);padding:5px 0;
+            border-bottom:1px solid rgba(255,255,255,.05);display:flex;gap:8px;align-items:flex-start;}
+        .precio-items li:last-child{border-bottom:none;}
+        .precio-items i{color:var(--cyan);margin-top:3px;flex-shrink:0;}
+        .anticipo-box{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);
+            border-radius:10px;padding:14px 18px;margin-top:20px;font-size:12px;
+            color:var(--orange);text-align:left;}
+        .anticipo-box strong{display:block;margin-bottom:4px;font-size:13px;}
+
+        /* ── FORMULARIO ── */
+        .form-section{padding:80px 24px;
+            background:radial-gradient(ellipse 60% 40% at 50% 100%,rgba(0,210,255,.05) 0%,transparent 70%);}
+        .form-wrap{max-width:760px;margin:0 auto;
+            background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:48px 40px;}
+        @media(max-width:600px){.form-wrap{padding:28px 18px;}}
+        .form-head h2{font-size:1.5rem;font-weight:900;margin-bottom:6px;}
+        .form-head p{font-size:13px;color:var(--muted);margin-bottom:32px;}
+        .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+        @media(max-width:560px){.frow{grid-template-columns:1fr;}}
+        .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+        .fg label{font-size:11px;font-weight:700;color:var(--muted);
+            text-transform:uppercase;letter-spacing:.5px;}
+        .fg input,.fg select,.fg textarea{
+            background:var(--bg-input);border:1px solid rgba(255,255,255,.09);
+            color:var(--text);padding:11px 13px;border-radius:8px;font-size:14px;
+            font-family:'Inter',sans-serif;transition:border-color .2s;outline:none;width:100%;}
+        .fg input::placeholder,.fg textarea::placeholder{color:#475569;}
+        .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--cyan);}
+        .fg select option{background:#0d1520;}
+        .fg textarea{resize:vertical;min-height:80px;}
+        .fg input[type="date"]::-webkit-calendar-picker-indicator{
+            filter:invert(1) opacity(.5);cursor:pointer;}
+
+        /* Selector de franja */
+        .franja-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+        .franja-btn{background:var(--bg-input);border:1px solid rgba(255,255,255,.09);
+            border-radius:10px;padding:16px 12px;cursor:pointer;text-align:center;
+            transition:border-color .2s,background .2s;}
+        .franja-btn:hover{border-color:rgba(0,210,255,.4);}
+        .franja-btn.sel{border-color:var(--cyan);background:rgba(0,210,255,.08);}
+        .franja-btn .fi{font-size:22px;display:block;margin-bottom:6px;}
+        .franja-btn .fn{font-size:13px;font-weight:700;}
+        .franja-btn .fh{font-size:11px;color:var(--muted);}
+
+        /* Nota fecha */
+        .fecha-nota{font-size:11px;color:#475569;margin-top:-10px;margin-bottom:14px;}
+        .fecha-nota i{color:var(--orange);}
+
+        /* ── ANTICIPO PASO ── */
+        .anticipo-step{display:none;text-align:center;padding:10px 0;}
+        .anticipo-step.show{display:block;}
+        .anticipo-amount{font-size:3rem;font-weight:900;color:var(--cyan);
+            letter-spacing:-2px;margin:16px 0 8px;}
+        .anticipo-amount span{font-size:1.2rem;font-weight:500;color:var(--muted);}
+        .pago-methods{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;}
+        .pago-card{background:var(--bg-input);border:1px solid rgba(255,255,255,.09);
+            border-radius:12px;padding:18px;text-align:center;}
+        .pago-card .pm-logo{font-size:28px;margin-bottom:6px;display:block;}
+        .pago-card .pm-name{font-size:12px;font-weight:700;margin-bottom:4px;}
+        .pago-card .pm-num{font-size:16px;font-weight:900;color:var(--cyan);}
+        .pago-card .pm-titular{font-size:11px;color:var(--muted);margin-top:2px;}
+        .comprobante-note{font-size:13px;color:var(--muted);margin:16px 0;
+            background:rgba(0,210,255,.04);border:1px solid rgba(0,210,255,.12);
+            border-radius:8px;padding:12px 16px;}
+        .comprobante-note strong{color:var(--cyan);}
+        .btn-confirmar-pago{width:100%;padding:14px;border:none;border-radius:10px;
+            background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;
+            font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s;
+            display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
+        .btn-confirmar-pago:hover{opacity:.9;}
+
+        /* ── PROGRESO / ÉXITO ── */
+        .prog{display:none;margin-bottom:14px;}
+        .prog.show{display:block;}
+        .pbar-wrap{background:rgba(255,255,255,.06);border-radius:4px;height:5px;overflow:hidden;}
+        .pbar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--magenta));width:0%;transition:width .3s;}
+        .prog-lbl{font-size:12px;color:var(--muted);margin-top:5px;}
+        .success{display:none;text-align:center;padding:16px;}
+        .success.show{display:block;}
+        .sico{width:68px;height:68px;border-radius:50%;
+            background:rgba(0,255,65,.08);border:2px solid rgba(0,255,65,.25);
+            display:flex;align-items:center;justify-content:center;
+            font-size:28px;color:var(--green);margin:0 auto 18px;}
+        .success h2{font-size:1.35rem;font-weight:900;margin-bottom:8px;}
+        .success p{font-size:14px;color:var(--muted);margin-bottom:22px;}
+        .btn-wa{display:inline-flex;align-items:center;gap:8px;
+            background:#25D366;color:#fff;padding:13px 28px;
+            border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;}
+
+        /* ── DISCLAIMER ── */
+        .disclaimer-sec{padding:48px 24px;
+            background:rgba(239,68,68,.03);border-top:1px solid rgba(239,68,68,.12);}
+        .disclaimer-inner{max-width:860px;margin:0 auto;}
+        .disc-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+        .disc-header i{font-size:20px;color:var(--red);}
+        .disc-header h3{font-size:15px;font-weight:700;color:var(--red);}
+        .disc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+        .disc-item{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.12);
+            border-radius:10px;padding:18px;}
+        .disc-item h4{font-size:12px;font-weight:700;color:#fca5a5;margin-bottom:6px;
+            text-transform:uppercase;letter-spacing:.5px;}
+        .disc-item p{font-size:12px;color:var(--muted);line-height:1.6;}
+        .disc-legal{font-size:11px;color:#475569;margin-top:20px;line-height:1.6;}
+
+        /* ── FOOTER ── */
+        footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;
+            text-align:center;font-size:13px;color:#475569;}
+        footer a{color:var(--gold);text-decoration:none;}
+    </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+            <h1>PRODIGY</h1>
+            <span>Digital Dentistry</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Inicio</a>
+            <a href="calculadora.html">Precios</a>
+            <a href="envia-tu-scanner.html">Enviar escáner</a>
+            <a href="#agenda" class="btn-nav-cta">
+                <i class="fas fa-calendar-check"></i> Agendar visita
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+    <div class="badge"><i class="fas fa-route"></i> Servicio a domicilio — norte de Bogotá</div>
+    <h1>
+        Tu escáner intraoral,<br>
+        <span class="hl">en tu clínica.</span>
+    </h1>
+    <p class="hero-sub">
+        Llevamos el escáner Medit i700 a tu consultorio. Sin mover tu sillón, sin desplazar al paciente.
+        Archivo STL listo en <strong style="color:var(--text)">2 horas hábiles</strong>.
+    </p>
+    <div class="hero-cta">
+        <a href="#agenda" class="btn-primary">
+            <i class="fas fa-calendar-plus"></i> Agendar cita
+        </a>
+        <a href="calculadora.html" class="btn-outline">
+            <i class="fas fa-calculator"></i> Ver precios completos
+        </a>
+    </div>
+</section>
+
+<!-- ── ZONAS DE COBERTURA ── -->
+<section class="zonas-sec">
+    <div class="zonas-inner">
+        <p>Cobertura actual — norte de Bogotá</p>
+        <div class="zonas-grid">
+            <div class="zona-card">
+                <div class="zona-nombre"><i class="fas fa-map-pin" style="margin-right:6px"></i>Usaquén</div>
+                <div class="zona-barrios">Chicó · Santa Bárbara · Country Club · La Calleja · Cedritos · Toberín · Santa Ana · Belmira</div>
+            </div>
+            <div class="zona-card">
+                <div class="zona-nombre"><i class="fas fa-map-pin" style="margin-right:6px"></i>Chapinero Alto</div>
+                <div class="zona-barrios">El Nogal · Rosales · Granada · Chicó Norte · El Retiro · La Cabrera</div>
+            </div>
+            <div class="zona-card">
+                <div class="zona-nombre"><i class="fas fa-map-pin" style="margin-right:6px"></i>Suba</div>
+                <div class="zona-barrios">Alhambra · Colina Campestre · La Floresta · Niza · Batan · Niza Norte</div>
+            </div>
+            <div class="zona-card">
+                <div class="zona-nombre"><i class="fas fa-map-pin" style="margin-right:6px"></i>Barrios Unidos</div>
+                <div class="zona-barrios">Doce de Octubre · Los Alcázares · Rionegro · Jorge Eliécer Gaitán · Pablo VI</div>
+            </div>
+            <div class="zona-card">
+                <div class="zona-nombre"><i class="fas fa-map-pin" style="margin-right:6px"></i>Teusaquillo</div>
+                <div class="zona-barrios">Quinta Paredes · Palermo · La Soledad · Galerías · Armenia</div>
+            </div>
+        </div>
+        <div class="zona-nota">
+            <i class="fas fa-exclamation-triangle"></i>
+            ¿Tu zona no aparece? Escríbenos — evaluamos cobertura caso a caso.
+            <a href="https://wa.me/573212816716?text=Hola PRODIGY, quiero saber si tienen cobertura de escaneo a domicilio en mi zona." target="_blank" rel="noopener" style="color:var(--gold);margin-left:6px">Consultar por WhatsApp</a>
+        </div>
+    </div>
+</section>
+
+<!-- ── CÓMO FUNCIONA ── -->
+<section class="sec">
+    <div class="sec-inner">
+        <p class="sec-label">Proceso</p>
+        <h2 class="sec-title">4 pasos. Mismo día.</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-n">01</div>
+                <div class="step-badge">Online</div>
+                <h3>Agenda y paga anticipo</h3>
+                <p>Selecciona fecha, franja horaria y tu zona. Pagas el anticipo por Nequi o Daviplata para confirmar el cupo.</p>
+            </div>
+            <div class="step">
+                <div class="step-n">02</div>
+                <div class="step-badge">WA</div>
+                <h3>Confirmación por WhatsApp</h3>
+                <p>Recibes confirmación en menos de 2 horas hábiles con los datos del operador y la ventana de llegada (±45 min).</p>
+            </div>
+            <div class="step">
+                <div class="step-n">03</div>
+                <div class="step-badge">Visita</div>
+                <h3>Escaneo en tu clínica</h3>
+                <p>El operador llega con el escáner Medit i700, realiza el escaneo de uno o varios pacientes y entrega el comprobante de visita.</p>
+            </div>
+            <div class="step">
+                <div class="step-n">04</div>
+                <div class="step-badge">2 h</div>
+                <h3>Archivo STL listo</h3>
+                <p>En máximo 2 horas hábiles recibes el archivo .stl por WhatsApp o correo, listo para diseño CAD o envío al laboratorio.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── PRECIOS ── -->
+<section class="sec" style="padding-top:0">
+    <div class="sec-inner">
+        <p class="sec-label">Tarifas</p>
+        <h2 class="sec-title">Transparente desde el primer clic</h2>
+        <div class="precios-grid">
+            <div class="precio-card">
+                <span class="precio-chip chip-std">Básico</span>
+                <div class="precio-nombre">Visita + 1 paciente</div>
+                <div class="precio-monto">$120.000 <span>COP</span></div>
+                <div class="precio-desc">Escaneo de un arco o dos. Un paciente por visita.</div>
+                <ul class="precio-items">
+                    <li><i class="fas fa-check"></i> Desplazamiento incluido (norte Bogotá)</li>
+                    <li><i class="fas fa-check"></i> Arco completo superior + inferior</li>
+                    <li><i class="fas fa-check"></i> Registro de mordida en MIC</li>
+                    <li><i class="fas fa-check"></i> Archivo STL en 2 horas hábiles</li>
+                    <li><i class="fas fa-check"></i> 1 revisión de malla incluida</li>
+                </ul>
+                <div class="anticipo-box">
+                    <strong><i class="fas fa-lock" style="margin-right:5px"></i>Anticipo para confirmar: $50.000 COP</strong>
+                    El saldo ($70.000) se paga al terminar la visita.
+                </div>
+            </div>
+            <div class="precio-card featured">
+                <span class="precio-chip chip-pop">Más solicitado</span>
+                <div class="precio-nombre">Visita + hasta 3 pacientes</div>
+                <div class="precio-monto">$280.000 <span>COP</span></div>
+                <div class="precio-desc">Optimiza el desplazamiento. Hasta 3 pacientes en la misma visita.</div>
+                <ul class="precio-items">
+                    <li><i class="fas fa-check"></i> Todo lo del plan Básico × 3 pacientes</li>
+                    <li><i class="fas fa-check"></i> 3 archivos STL independientes</li>
+                    <li><i class="fas fa-check"></i> Descuento vs. 3 visitas individuales (–$80K)</li>
+                    <li><i class="fas fa-check"></i> Prioridad en agenda para la siguiente cita</li>
+                    <li><i class="fas fa-check"></i> Reporte de calidad de escaneo por paciente</li>
+                </ul>
+                <div class="anticipo-box">
+                    <strong><i class="fas fa-lock" style="margin-right:5px"></i>Anticipo para confirmar: $100.000 COP</strong>
+                    El saldo ($180.000) se paga al terminar la visita.
+                </div>
+            </div>
+            <div class="precio-card">
+                <span class="precio-chip chip-std">Especializado</span>
+                <div class="precio-nombre">Implantes / CBCT + escáner</div>
+                <div class="precio-monto">$180.000 <span>COP</span></div>
+                <div class="precio-desc">Caso de implantología. Incluye escaneo + superposición con CBCT (si se provee el DICOM).</div>
+                <ul class="precio-items">
+                    <li><i class="fas fa-check"></i> Escaneo intraoral de zonas edéntulas</li>
+                    <li><i class="fas fa-check"></i> Superposición STL + CBCT (si hay DICOM)</li>
+                    <li><i class="fas fa-check"></i> Diseño de guía quirúrgica disponible aparte</li>
+                    <li><i class="fas fa-check"></i> Archivo exportado en STL + OBJ</li>
+                    <li><i class="fas fa-check"></i> Soporte técnico post-escaneo incluido</li>
+                </ul>
+                <div class="anticipo-box">
+                    <strong><i class="fas fa-lock" style="margin-right:5px"></i>Anticipo para confirmar: $70.000 COP</strong>
+                    El saldo ($110.000) se paga al terminar la visita.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── FORMULARIO DE AGENDAMIENTO ── -->
+<section class="form-section" id="agenda">
+    <div class="form-wrap">
+
+        <!-- Paso 1: Formulario -->
+        <div id="paso1">
+            <div class="form-head">
+                <h2>Agendar visita</h2>
+                <p>Completa los datos. Luego te mostramos las instrucciones de anticipo para confirmar el cupo. Solo L–S, 8am–5pm.</p>
+            </div>
+
+            <form id="agendaForm" novalidate>
+                <div class="frow">
+                    <div class="fg">
+                        <label>Doctor / responsable *</label>
+                        <input type="text" id="nombre" placeholder="Dr. Nombre Apellido" required>
+                    </div>
+                    <div class="fg">
+                        <label>Clínica / consultorio</label>
+                        <input type="text" id="clinica" placeholder="Clínica Dental X">
+                    </div>
+                </div>
+
+                <div class="frow">
+                    <div class="fg">
+                        <label>WhatsApp *</label>
+                        <input type="tel" id="whatsapp" placeholder="+57 300 000 0000" required>
+                    </div>
+                    <div class="fg">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="doctor@clinica.com">
+                    </div>
+                </div>
+
+                <div class="frow">
+                    <div class="fg">
+                        <label>Zona *</label>
+                        <select id="zona" required>
+                            <option value="">— Selecciona tu zona —</option>
+                            <option value="usaquen">Usaquén (Chicó, Cedritos, Santa Bárbara…)</option>
+                            <option value="chapinero">Chapinero Alto (Nogal, Rosales, Granada…)</option>
+                            <option value="suba">Suba (Alhambra, Colina, Niza…)</option>
+                            <option value="barrios_unidos">Barrios Unidos</option>
+                            <option value="teusaquillo">Teusaquillo (Galerías, Palermo…)</option>
+                            <option value="otro">Otra zona — verificar cobertura</option>
+                        </select>
+                    </div>
+                    <div class="fg">
+                        <label>Servicio *</label>
+                        <select id="servicio" required>
+                            <option value="">— Tipo de escaneo —</option>
+                            <option value="arco_completo">Arco completo (1 paciente)</option>
+                            <option value="tres_pacientes">Hasta 3 pacientes</option>
+                            <option value="implantes">Implantología + CBCT</option>
+                            <option value="otro">Otro — describir en notas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="fg">
+                    <label>Dirección exacta *</label>
+                    <input type="text" id="direccion" placeholder="Calle 90 # 15-32, Consultorio 304, Bogotá" required>
+                </div>
+
+                <div class="fg">
+                    <label>Referencia / acceso</label>
+                    <input type="text" id="referencia" placeholder="Edificio frente al parque, piso 3, intercomunicador 304">
+                </div>
+
+                <div class="frow">
+                    <div class="fg">
+                        <label>Fecha deseada *</label>
+                        <input type="date" id="fecha_cita" required>
+                    </div>
+                    <div class="fg">
+                        <label>Número de pacientes</label>
+                        <input type="number" id="num_piezas" min="1" max="10" placeholder="Ej: 2">
+                    </div>
+                </div>
+                <p class="fecha-nota"><i class="fas fa-info-circle"></i> Solo L–S. Mínimo 24 h de antelación. Domingos y festivos sin servicio.</p>
+
+                <div class="fg"><label>Franja horaria preferida *</label></div>
+                <div class="franja-grid" id="franjaGrid">
+                    <div class="franja-btn sel" data-val="manana" onclick="selFranja(this)">
+                        <span class="fi">🌅</span>
+                        <div class="fn">Mañana</div>
+                        <div class="fh">8:00 am – 12:00 pm</div>
+                    </div>
+                    <div class="franja-btn" data-val="tarde" onclick="selFranja(this)">
+                        <span class="fi">🌤️</span>
+                        <div class="fn">Tarde</div>
+                        <div class="fh">1:00 pm – 5:00 pm</div>
+                    </div>
+                </div>
+                <input type="hidden" id="franja_hidden" value="manana">
+
+                <div class="fg">
+                    <label>Notas adicionales</label>
+                    <textarea id="notas" placeholder="Tipo de restauración, número de dientes, nombre del paciente, instrucciones especiales…"></textarea>
+                </div>
+
+                <!-- Checkbox disclaimer -->
+                <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:20px;
+                    background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);
+                    border-radius:8px;padding:14px;">
+                    <input type="checkbox" id="acepta_politica" style="margin-top:3px;flex-shrink:0;
+                        accent-color:var(--cyan);width:16px;height:16px;" required>
+                    <label for="acepta_politica" style="font-size:12px;color:var(--muted);cursor:pointer;
+                        text-transform:none;letter-spacing:0;">
+                        He leído y acepto las
+                        <a href="#politica" style="color:var(--cyan)">políticas de cancelación y uso del servicio</a>:
+                        el anticipo no es reembolsable si cancelo con menos de 24 horas de antelación,
+                        la hora de llegada tiene una ventana de ±45 minutos, y en caso de no-show
+                        se cobra la visita completa.
+                    </label>
+                </div>
+
+                <div class="prog" id="prog">
+                    <div class="pbar-wrap"><div class="pbar" id="pbar"></div></div>
+                    <p class="prog-lbl" id="prog-lbl">Guardando solicitud…</p>
+                </div>
+
+                <button type="submit" id="btnSolicitar" style="width:100%;padding:15px;border:none;
+                    border-radius:10px;background:linear-gradient(135deg,var(--cyan),#0ea5e9);
+                    color:#000;font-size:15px;font-weight:800;cursor:pointer;
+                    transition:opacity .2s;display:flex;align-items:center;
+                    justify-content:center;gap:8px;">
+                    <i class="fas fa-arrow-right"></i> Continuar al pago del anticipo
+                </button>
+                <p style="font-size:12px;color:#475569;text-align:center;margin-top:10px;">
+                    Tu cupo queda confirmado solo cuando recibimos el comprobante de anticipo.
+                </p>
+            </form>
+        </div>
+
+        <!-- Paso 2: Instrucciones de anticipo -->
+        <div class="anticipo-step" id="paso2">
+            <i class="fas fa-lock" style="font-size:32px;color:var(--cyan);margin-bottom:12px;display:block"></i>
+            <h2 style="font-size:1.4rem;font-weight:900;margin-bottom:6px">Paga el anticipo para confirmar</h2>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:8px">
+                Tu solicitud quedó registrada. Para asegurar el cupo envía el anticipo por uno de estos medios y mándanos el comprobante por WhatsApp.
+            </p>
+            <div class="anticipo-amount"><span>$</span><span id="montoAnticipo">50.000</span> <span>COP</span></div>
+
+            <div class="pago-methods">
+                <div class="pago-card">
+                    <span class="pm-logo">📱</span>
+                    <div class="pm-name">Nequi</div>
+                    <div class="pm-num">321 281 6716</div>
+                    <div class="pm-titular">PRODIGY Lab Dental</div>
+                </div>
+                <div class="pago-card">
+                    <span class="pm-logo">💳</span>
+                    <div class="pm-name">Daviplata</div>
+                    <div class="pm-num">321 281 6716</div>
+                    <div class="pm-titular">PRODIGY Lab Dental</div>
+                </div>
+            </div>
+
+            <div class="comprobante-note">
+                <strong><i class="fas fa-whatsapp" style="color:#25D366;margin-right:6px"></i>Envía el comprobante por WhatsApp</strong>
+                Una vez que pagues, manda el screenshot al WhatsApp de PRODIGY indicando tu nombre y la fecha de tu cita. Confirmamos en menos de 2 horas hábiles.
+            </div>
+
+            <a id="waAnticipo" href="#" target="_blank" rel="noopener" class="btn-confirmar-pago">
+                <i class="fab fa-whatsapp"></i> Enviar comprobante por WhatsApp
+            </a>
+            <p style="font-size:11px;color:#475569;margin-top:12px">
+                Si tienes problemas con el pago o prefieres transferencia bancaria, escríbenos y te enviamos los datos.
+            </p>
+        </div>
+
+        <!-- Éxito -->
+        <div class="success" id="successScreen">
+            <div class="sico"><i class="fas fa-check"></i></div>
+            <h2>¡Solicitud registrada!</h2>
+            <p id="successMsg">Recibimos tu solicitud. Completa el pago del anticipo para confirmar el cupo y te contactaremos en breve.</p>
+            <a class="btn-wa" id="waSuccess" href="#" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i> Escribir a PRODIGY
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── POLÍTICAS Y DISCLAIMER ── -->
+<section class="disclaimer-sec" id="politica">
+    <div class="disclaimer-inner">
+        <div class="disc-header">
+            <i class="fas fa-shield-halved"></i>
+            <h3>Políticas del servicio — leer antes de agendar</h3>
+        </div>
+        <div class="disc-grid">
+            <div class="disc-item">
+                <h4><i class="fas fa-clock" style="margin-right:5px"></i>Ventana de llegada</h4>
+                <p>La hora confirmada es una <strong style="color:#fca5a5">franja de ±45 minutos</strong>. El tráfico en Bogotá no permite horarios exactos. Si el operador se retrasará más de 1 hora, te avisamos por WhatsApp con antelación.</p>
+            </div>
+            <div class="disc-item">
+                <h4><i class="fas fa-ban" style="margin-right:5px"></i>Cancelación y anticipo</h4>
+                <p>Cancelaciones con <strong style="color:#fca5a5">más de 24 horas</strong> de antelación: anticipo reembolsable en 72 h hábiles. Cancelaciones con menos de 24 horas o no-show: <strong style="color:#fca5a5">anticipo NO reembolsable</strong>. Puedes reagendar sin costo con más de 24 h de aviso.</p>
+            </div>
+            <div class="disc-item">
+                <h4><i class="fas fa-user-slash" style="margin-right:5px"></i>No-show (nadie en clínica)</h4>
+                <p>Si el operador llega y no hay nadie disponible para atenderlo, la cita se considera <strong style="color:#fca5a5">no-show</strong> y se cobra la tarifa completa del servicio. Por favor confirmar disponibilidad del paciente antes de agendar.</p>
+            </div>
+            <div class="disc-item">
+                <h4><i class="fas fa-calendar-xmark" style="margin-right:5px"></i>Días y horarios</h4>
+                <p>Servicio disponible <strong style="color:#fca5a5">lunes a sábado, 8am a 5pm</strong>. Sin servicio domingos ni festivos colombianos. Pedidos para el mismo día solo si hay disponibilidad confirmada (consultar por WA).</p>
+            </div>
+            <div class="disc-item">
+                <h4><i class="fas fa-cloud-rain" style="margin-right:5px"></i>Fuerza mayor</h4>
+                <p>En caso de lluvia intensa, bloqueos viales o situación de orden público que impida el desplazamiento, PRODIGY puede <strong style="color:#fca5a5">reagendar sin penalización</strong> para la siguiente fecha disponible. Se notifica por WhatsApp.</p>
+            </div>
+            <div class="disc-item">
+                <h4><i class="fas fa-map-location-dot" style="margin-right:5px"></i>Cobertura</h4>
+                <p>Servicio activo en las <strong style="color:#fca5a5">zonas listadas del norte de Bogotá</strong>. Zonas fuera del mapa están sujetas a verificación y posible recargo por desplazamiento. No cubrimos municipios aledaños (Chía, Zipaquirá, Cajicá) por el momento.</p>
+            </div>
+        </div>
+        <p class="disc-legal">
+            Al agendar este servicio, el solicitante declara haber leído y aceptado las presentes políticas.
+            PRODIGY Digital Dentistry se reserva el derecho de cancelar citas en circunstancias de fuerza mayor
+            o cuando la ubicación solicitada esté fuera del área de cobertura verificada, en cuyo caso el anticipo
+            será reembolsado en su totalidad. Los archivos STL generados son propiedad del doctor solicitante.
+            PRODIGY no se hace responsable de errores en el escaneo derivados de condiciones clínicas
+            del paciente (tejidos inflamados, sangrado, paciente no colaborador) que impidan un escaneo de calidad.
+        </p>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <p>
+        &copy; 2025 PRODIGY Digital Dentistry — Bogotá, Colombia —
+        <a href="index.html">Inicio</a> &bull;
+        <a href="calculadora.html">Cotizador</a> &bull;
+        <a href="envia-tu-scanner.html">Enviar escáner</a> &bull;
+        <a href="terminos-y-legal.html">Términos</a>
+    </p>
+</footer>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const WA_PRODIGY   = '573212816716';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+/* Montos de anticipo por servicio */
+const ANTICIPOS = {
+    arco_completo:    { monto: 50000,  label: '50.000' },
+    tres_pacientes:   { monto: 100000, label: '100.000' },
+    implantes:        { monto: 70000,  label: '70.000' },
+    otro:             { monto: 50000,  label: '50.000' }
+};
+
+/* ── Selector de franja ── */
+function selFranja(el) {
+    document.querySelectorAll('.franja-btn').forEach(b => b.classList.remove('sel'));
+    el.classList.add('sel');
+    document.getElementById('franja_hidden').value = el.dataset.val;
+}
+window.selFranja = selFranja;
+
+/* Bloquear fechas pasadas y domingos en el input date */
+(function() {
+    const inp = document.getElementById('fecha_cita');
+    const hoy = new Date();
+    hoy.setDate(hoy.getDate() + 1); // mínimo mañana
+    inp.min = hoy.toISOString().split('T')[0];
+
+    inp.addEventListener('change', () => {
+        const d = new Date(inp.value + 'T00:00:00');
+        if (d.getDay() === 0) { // domingo
+            alert('No trabajamos los domingos. Por favor elige otro día.');
+            inp.value = '';
+        }
+    });
+})();
+
+/* ── Progreso ── */
+function setProg(pct, lbl) {
+    document.getElementById('prog').classList.add('show');
+    document.getElementById('pbar').style.width = pct + '%';
+    document.getElementById('prog-lbl').textContent = lbl;
+}
+function hideProg() { document.getElementById('prog').classList.remove('show'); }
+
+/* ── Submit ── */
+document.getElementById('agendaForm').addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const nombre    = document.getElementById('nombre').value.trim();
+    const clinica   = document.getElementById('clinica').value.trim();
+    const whatsapp  = document.getElementById('whatsapp').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const zona      = document.getElementById('zona').value;
+    const servicio  = document.getElementById('servicio').value;
+    const direccion = document.getElementById('direccion').value.trim();
+    const referencia= document.getElementById('referencia').value.trim();
+    const fecha     = document.getElementById('fecha_cita').value;
+    const franja    = document.getElementById('franja_hidden').value;
+    const piezas    = document.getElementById('num_piezas').value;
+    const notas     = document.getElementById('notas').value.trim();
+    const acepta    = document.getElementById('acepta_politica').checked;
+
+    if (!nombre || !whatsapp || !zona || !servicio || !direccion || !fecha) {
+        alert('Por favor completa todos los campos obligatorios (*).'); return;
+    }
+    if (!acepta) {
+        alert('Debes aceptar las políticas del servicio para continuar.'); return;
+    }
+
+    const btn = document.getElementById('btnSolicitar');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando…';
+    setProg(40, 'Guardando solicitud…');
+
+    const anticipo = ANTICIPOS[servicio] || ANTICIPOS['otro'];
+
+    const { error } = await sb.from('citas_domicilio').insert({
+        nombre, clinica: clinica || null, whatsapp, email: email || null,
+        zona, servicio, direccion, referencia: referencia || null,
+        fecha_cita: fecha, franja_horaria: franja,
+        num_piezas: piezas ? parseInt(piezas) : null,
+        notas: notas || null,
+        anticipo_solicitado: anticipo.monto
+    });
+
+    if (error) console.warn('Insert error:', error);
+
+    setProg(100, 'Listo');
+
+    // Notificar a PRODIGY (silencioso)
+    fetch(`${SUPABASE_URL}/functions/v1/notify-wa`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_ANON}`},
+        body: JSON.stringify({
+            tipo: 'cita_domicilio',
+            telefono: WA_PRODIGY,
+            nombre,
+            caseId: zona,
+            mensaje: `Nueva cita domicilio: ${servicio} — ${zona} — ${fecha} (${franja}) — WA: ${whatsapp} — ${direccion}`
+        })
+    }).catch(() => {});
+
+    setTimeout(() => {
+        hideProg();
+        document.getElementById('paso1').style.display = 'none';
+
+        // Mostrar paso 2 (anticipo)
+        const paso2 = document.getElementById('paso2');
+        paso2.classList.add('show');
+        document.getElementById('montoAnticipo').textContent = anticipo.label;
+
+        const msg = encodeURIComponent(
+            `Hola PRODIGY, acabo de agendar una visita de escaneo a domicilio.\n` +
+            `Nombre: ${nombre}\nZona: ${zona}\nFecha: ${fecha} (${franja === 'manana' ? 'mañana' : 'tarde'})\n` +
+            `Servicio: ${servicio}\nAdjunto comprobante de anticipo de $${anticipo.label} COP.`
+        );
+        document.getElementById('waAnticipo').href = `https://wa.me/${WA_PRODIGY}?text=${msg}`;
+        paso2.scrollIntoView({ behavior:'smooth', block:'center' });
+    }, 600);
+});
+</script>
+</body>
+</html>
