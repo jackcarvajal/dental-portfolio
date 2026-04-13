@@ -140,11 +140,12 @@
         .nav-container {
             max-width: 1400px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
+            display: flex;
             align-items: center;
-            padding: 0 120px 0 40px;
-            gap: 20px;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: relative;
+            gap: 16px;
         }
         
         .nav-left, .nav-right {
@@ -178,8 +179,13 @@
         }
 
         .nav-logo-box {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             text-decoration: none;
             text-align: center;
+            z-index: 1;
+            pointer-events: auto;
         }
 
         .nav-logo-box h1 {
@@ -1028,27 +1034,37 @@
 .nav-container {
     max-width: 1400px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
     align-items: center;
-    padding: 0 120px 0 40px; /* extra derecha para botón INGRESAR absoluto */
-    gap: 20px;
+    justify-content: space-between;
+    padding: 0 24px;
+    position: relative;
+    gap: 16px;
 }
-.nav-left, .nav-right { display: flex; gap: 24px; flex-wrap: nowrap; }
+.nav-left, .nav-right { display: flex; gap: 20px; flex-wrap: nowrap; align-items: center; }
 .nav-left { justify-content: flex-start; }
-.nav-right { justify-content: flex-end; align-items: center; }
+.nav-right { justify-content: flex-end; }
 .nav-left a, .nav-right a {
     color: #f5f5f7;
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.7px;
     white-space: nowrap;
     transition: color 0.3s;
 }
 .nav-left a:hover, .nav-right a:hover { color: #D4AF37; }
-.nav-logo-box { text-decoration: none; text-align: center; }
+/* LEY DE ORO: logo SIEMPRE centrado sin importar qué */
+.nav-logo-box {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-decoration: none;
+    text-align: center;
+    z-index: 1;
+    pointer-events: auto;
+}
 .nav-logo-box h1 {
     font-size: 28px;
     font-weight: 900;
@@ -1080,14 +1096,15 @@
 
     <!-- MENÚ MÓVIL DESLIZABLE -->
     <div class="mobile-nav" id="mobile-nav">
-        <a href="index.html#servicios">Servicios</a>
-        <a href="index.html#portfolio">Portafolio</a>
-        <a href="index.html#workflow-247">CAD · Diseño</a>
-        <a href="index.html#production">CAM · Producción</a>
-        <a href="index.html#academy">Academia</a>
-        <a href="seguimiento-caso.html">📦 Seguimiento de Casos</a>
-        <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Contactar</a>
-        <a href="app/login.html" style="color:#D946A6;font-weight:900;"><i class="fas fa-key"></i> Acceso · Registro</a>
+        <a href="#servicios">DISEÑOS CAD</a>
+        <a href="#production">CENTRO FRESADO E IMPRESIÓN</a>
+        <a href="#escaner">ESCÁNER MÓVIL</a>
+        <a href="#portfolio">PORTAFOLIO</a>
+        <a href="envia-tu-scanner.html">ENVÍA TU ESCÁNER</a>
+        <a href="#blog">BLOG CIENTÍFICO</a>
+        <a href="seguimiento-caso.html">SIGUE TU CASO</a>
+        <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> CONTACTAR</a>
+        <a href="app/login.html" style="color:#D946A6;font-weight:900;"><i class="fas fa-key"></i> INGRESAR</a>
     </div>
 
     <nav class="navbar">
@@ -1105,12 +1122,12 @@
                         SERVICIOS <i class="fas fa-chevron-down" style="font-size:9px;transition:transform .25s" id="nav-dd-arrow"></i>
                     </button>
                     <div class="nav-dd-menu" id="nav-dd-menu">
-                        <a href="flujo-diseno.html"><i class="fas fa-pen-ruler"></i> DISEÑOS CAD</a>
-                        <a href="flujo-fresado.html"><i class="fas fa-cog"></i> CENTRO FRESADO E IMPRESIÓN</a>
-                        <a href="escaner-domicilio.html"><i class="fas fa-mobile-alt"></i> ESCÁNER MÓVIL</a>
+                        <a href="#servicios"><i class="fas fa-pen-ruler"></i> DISEÑOS CAD</a>
+                        <a href="#production"><i class="fas fa-cog"></i> CENTRO FRESADO E IMPRESIÓN</a>
+                        <a href="#escaner"><i class="fas fa-mobile-alt"></i> ESCÁNER MÓVIL</a>
                     </div>
                 </div>
-                <a href="portafolio.html">PORTAFOLIO</a>
+                <a href="#portfolio">PORTAFOLIO</a>
                 <a href="envia-tu-scanner.html">ENVÍA TU ESCÁNER</a>
             </div>
 
@@ -1122,7 +1139,7 @@
 
             <!-- DERECHA -->
             <div class="nav-right">
-                <a href="journal.html">BLOG CIENTÍFICO</a>
+                <a href="#blog">BLOG CIENTÍFICO</a>
                 <a href="seguimiento-caso.html">SIGUE TU CASO</a>
                 <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;">
                     <i class="fab fa-whatsapp"></i> CONTACTAR
@@ -1707,6 +1724,66 @@
 
 </section>
 
+    <!-- ENVÍA TU ESCÁNER -->
+    <section id="envia-scanner" style="background: var(--bg-dark); padding: 60px 0;">
+        <div class="container">
+            <h2 class="section-header">¿Tienes escáner y necesitas un lab?</h2>
+            <p class="section-subtitle" style="max-width:680px;margin:0 auto 36px;">Tienes el escáner intraoral — nosotros recibimos tu archivo, diseñamos y fabricamos lo que necesitas. Sin intermediarios, con entrega en 24 h.</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-upload" style="color:#D946A6;font-size:1.8rem;"></i></div>
+                    <h3>Envías el STL</h3>
+                    <p>Sube el archivo desde tu escáner Medit, 3Shape, iTero o cualquier dispositivo compatible.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-pen-ruler" style="color:#D4AF37;font-size:1.8rem;"></i></div>
+                    <h3>Diseñamos en CAD</h3>
+                    <p>Nuestros diseñadores en Exocad y 3Shape crean la restauración con precisión micrométrica.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-box-open" style="color:#00d2ff;font-size:1.8rem;"></i></div>
+                    <h3>Fabricamos y entregamos</h3>
+                    <p>Fresado en zirconio, disilicato o impresión 3D. Recibes la pieza terminada en tu consultorio.</p>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:40px;">
+                <a href="envia-tu-scanner.html" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:linear-gradient(135deg,#D946A6,#B82F8B);color:#fff;font-weight:900;font-size:.9rem;letter-spacing:1px;border-radius:50px;text-decoration:none;text-transform:uppercase;box-shadow:0 4px 20px rgba(217,70,166,.4);transition:all .25s;">
+                    <i class="fas fa-paper-plane"></i> Enviar mi caso ahora
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ESCÁNER MÓVIL A DOMICILIO -->
+    <section id="escaner" style="background: var(--bg-gray); padding: 60px 0;">
+        <div class="container">
+            <h2 class="section-header">¿No tienes escáner? Vamos a tu consultorio</h2>
+            <p class="section-subtitle" style="max-width:680px;margin:0 auto 36px;">No necesitas invertir en equipos. Nuestro técnico llega con tecnología de escaneo de última generación, captura el caso in situ y en 24 h tienes el archivo listo para producción.</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-mobile-alt" style="color:#00d2ff;font-size:1.8rem;"></i></div>
+                    <h3>Agendas</h3>
+                    <p>Seleccionas el día y hora. Cobertura en Usaquén, Chapinero, Suba, Engativá y zonas aledañas.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-tooth" style="color:#D946A6;font-size:1.8rem;"></i></div>
+                    <h3>Escaneamos</h3>
+                    <p>El técnico llega al consultorio, escanea el paciente y verifica la calidad del archivo en el acto.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-file-export" style="color:#D4AF37;font-size:1.8rem;"></i></div>
+                    <h3>Recibes el STL en 24h</h3>
+                    <p>Archivo optimizado y compatible con Exocad, 3Shape o el software de tu laboratorio.</p>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:40px;">
+                <a href="escaner-domicilio.html" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:linear-gradient(135deg,#00d2ff,#0094b3);color:#000;font-weight:900;font-size:.9rem;letter-spacing:1px;border-radius:50px;text-decoration:none;text-transform:uppercase;box-shadow:0 4px 20px rgba(0,210,255,.35);transition:all .25s;">
+                    <i class="fas fa-calendar-check"></i> Agendar Escaneo
+                </a>
+            </div>
+        </div>
+    </section>
+
     <section id="academy" style="background: var(--bg-dark); padding: 45px 0;">
         <div class="container">
             <h2 class="section-header" style="color: var(--exocad-orange);">PRODIGY Academy</h2>
@@ -1789,6 +1866,52 @@
                         <p style="color: var(--text-secondary); font-size: 0.9rem;">Lo mejor de ambos</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BLOG CIENTÍFICO PREVIEW -->
+    <section id="blog" style="background: var(--bg-gray); padding: 60px 0;">
+        <div class="container">
+            <h2 class="section-header">Blog Científico</h2>
+            <p class="section-subtitle">Artículos técnicos sobre materiales, IA en CAD y protocolos clínicos — escritos por especialistas</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:36px;">
+
+                <a href="article.html?id=3shape-automate-revision" style="text-decoration:none;display:flex;flex-direction:column;background:rgba(26,35,50,.85);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(217,70,166,.25)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+                    <div style="height:120px;background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center;font-size:3rem;">🧠</div>
+                    <div style="padding:20px;flex:1;display:flex;flex-direction:column;gap:8px;">
+                        <span style="font-size:.72rem;letter-spacing:1px;color:#D946A6;font-weight:700;text-transform:uppercase;">IA · Feb 2026 · 7 min</span>
+                        <h3 style="color:#fff;font-size:1rem;font-weight:800;line-height:1.4;margin:0;">3Shape Automate: ¿Reemplaza al diseñador o lo potencia?</h3>
+                        <p style="color:#94a3b8;font-size:.85rem;line-height:1.5;margin:0;flex:1;">Revisamos el módulo de automatización y su impacto real en flujos de producción de alto volumen.</p>
+                        <span style="color:#D4AF37;font-size:.82rem;font-weight:700;">Leer artículo →</span>
+                    </div>
+                </a>
+
+                <a href="article.html?id=zirconio-ultratranslucido-5ypzs" style="text-decoration:none;display:flex;flex-direction:column;background:rgba(26,35,50,.85);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(212,175,55,.25)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+                    <div style="height:120px;background:linear-gradient(135deg,#0f2027,#203a43);display:flex;align-items:center;justify-content:center;font-size:3rem;">💎</div>
+                    <div style="padding:20px;flex:1;display:flex;flex-direction:column;gap:8px;">
+                        <span style="font-size:.72rem;letter-spacing:1px;color:#D4AF37;font-weight:700;text-transform:uppercase;">Materiales · Feb 2026 · 9 min</span>
+                        <h3 style="color:#fff;font-size:1rem;font-weight:800;line-height:1.4;margin:0;">Zirconio Multicapa Ultra-Translúcido: el nuevo estándar anterior</h3>
+                        <p style="color:#94a3b8;font-size:.85rem;line-height:1.5;margin:0;flex:1;">Evaluación clínica de bloques 5Y-PSZ con gradiente de translucidez y su impacto estético.</p>
+                        <span style="color:#D4AF37;font-size:.82rem;font-weight:700;">Leer artículo →</span>
+                    </div>
+                </a>
+
+                <a href="article.html?id=escaneres-intraorales-2026" style="text-decoration:none;display:flex;flex-direction:column;background:rgba(26,35,50,.85);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(0,210,255,.2)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+                    <div style="height:120px;background:linear-gradient(135deg,#0d1b2a,#1b2838);display:flex;align-items:center;justify-content:center;font-size:3rem;">📡</div>
+                    <div style="padding:20px;flex:1;display:flex;flex-direction:column;gap:8px;">
+                        <span style="font-size:.72rem;letter-spacing:1px;color:#00d2ff;font-weight:700;text-transform:uppercase;">Equipos · Mar 2026 · 10 min</span>
+                        <h3 style="color:#fff;font-size:1rem;font-weight:800;line-height:1.4;margin:0;">Nuevos protocolos para escáneres intraorales en 2026</h3>
+                        <p style="color:#94a3b8;font-size:.85rem;line-height:1.5;margin:0;flex:1;">Calibración, exportación STL y compatibilidad con los principales softwares del mercado.</p>
+                        <span style="color:#D4AF37;font-size:.82rem;font-weight:700;">Leer artículo →</span>
+                    </div>
+                </a>
+
+            </div>
+            <div style="text-align:center;margin-top:40px;">
+                <a href="journal.html" style="display:inline-flex;align-items:center;gap:8px;padding:13px 34px;background:transparent;border:1.5px solid rgba(212,175,55,.5);color:#D4AF37;font-weight:700;font-size:.88rem;letter-spacing:1px;border-radius:50px;text-decoration:none;text-transform:uppercase;transition:all .25s;" onmouseover="this.style.background='rgba(212,175,55,.1)';" onmouseout="this.style.background='transparent';">
+                    Ver todos los artículos <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -2214,6 +2337,7 @@
         .nav-container::-webkit-scrollbar { display: none !important; }
         .nav-left, .nav-right { gap: 4px !important; flex-shrink: 0 !important; }
         .nav-left a, .nav-right a { font-size: 8.5px !important; padding: 3px 6px !important; letter-spacing: 0 !important; white-space: nowrap !important; }
+        .nav-logo-box { position: static !important; transform: none !important; }
         .nav-logo-box h1   { font-size: 14px !important; letter-spacing: 1.5px !important; }
         .nav-logo-box span { font-size: 6px !important; }
         .nav-btn-cta       { font-size: 8.5px !important; padding: 4px 8px !important; }

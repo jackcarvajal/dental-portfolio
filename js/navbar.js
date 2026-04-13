@@ -22,7 +22,7 @@
 
     /* Contenedor simétrico */
     '.pnav-c{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;',
-      'max-width:1360px;margin:0 auto;padding:0 110px 0 24px;gap:16px;}',
+      'max-width:1360px;margin:0 auto;padding:0 80px;gap:16px;}',
 
     '.pnav-left{display:flex;gap:20px;align-items:center;justify-content:flex-start;}',
     '.pnav-right{display:flex;gap:14px;align-items:center;justify-content:flex-end;}',
@@ -122,7 +122,7 @@
     /* Responsive */
     '@media(max-width:1100px){',
       '.pnav-left > a,.pnav-right > a,.pnav-dd-trigger{font-size:10.5px;letter-spacing:.3px;}',
-      '.pnav-c{gap:10px;padding:0 100px 0 16px;}',
+      '.pnav-c{gap:8px;padding:0 60px;}',
     '}',
     '@media(max-width:768px){',
       '.pnav-left,.pnav-right{display:none!important;}',
@@ -199,10 +199,8 @@
 
     /* ── OVERLAY MÓVIL ── */
     '<div class="pnav-ov" id="pnav-ov">' +
-      /* Servicios expandido en móvil */
       '<a href="flujo-diseno.html"><i class="fas fa-pen-ruler" style="margin-right:6px"></i> DISEÑOS CAD</a>' +
-      '<span class="ov-sub">Centro de Fresado e Impresión</span>' +
-      '<a href="flujo-fresado.html"><i class="fas fa-cog" style="margin-right:6px"></i> FRESADO E IMPRESIÓN</a>' +
+      '<a href="flujo-fresado.html"><i class="fas fa-cog" style="margin-right:6px"></i> CENTRO FRESADO E IMPRESIÓN</a>' +
       '<a href="escaner-domicilio.html"><i class="fas fa-mobile-alt" style="margin-right:6px"></i> ESCÁNER MÓVIL</a>' +
       '<a href="portafolio.html">PORTAFOLIO</a>' +
       '<a href="envia-tu-scanner.html">ENVÍA TU ESCÁNER</a>' +
