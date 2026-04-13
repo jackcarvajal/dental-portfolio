@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="¿Tu clínica tiene iTero, Medit o 3Shape Trios y no tienes laboratorio propio? Envíanos el archivo y PRODIGY diseña y produce tu restauración. Entrega 24–48 h. Bogotá, Colombia.">
+    <meta name="keywords" content="laboratorio dental iTero Colombia, enviar escaner intraoral, Medit i700 diseño CAD, 3Shape Trios sin lab, laboratorio CAD CAM Bogotá, corona zirconio desde escaner">
+    <meta property="og:title" content="¿Tienes escáner intraoral? Nosotros diseñamos y producimos | PRODIGY">
+    <meta property="og:description" content="iTero, Medit, 3Shape Trios. Sin Exocad propio. Diseño CAD + producción CAM. Entrega 24–48 h. Bogotá, Colombia.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://prodigylabdental.com/envia-tu-scanner.html">
+    <link rel="canonical" href="https://prodigylabdental.com/envia-tu-scanner.html">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <title>Envía tu escáner intraoral | PRODIGY — Laboratorio CAD/CAM Bogotá</title>
+
+    <!-- JSON-LD para Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Diseño y producción dental desde escáner intraoral",
+      "provider": { "@type": "LocalBusiness", "name": "PRODIGY Digital Dentistry", "url": "https://prodigylabdental.com" },
+      "description": "Servicio de diseño CAD con Exocad y producción CAM (fresado/impresión 3D) a partir de archivos STL de escáneres intraorales iTero, Medit y 3Shape Trios. Para clínicas sin laboratorio propio.",
+      "areaServed": { "@type": "Country", "name": "Colombia" }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/global-nav.min.css">
+
+    <!-- Google Analytics GA4 — reemplazar G-XXXXXXXXXX con el Measurement ID real -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    <!-- Three.js importmap para visor STL -->
+    <script type="importmap">
+    {"imports":{
+        "three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+        "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+    }}
+    </script>
+
+    <style>
+        :root {
+            --gold:    #D4AF37;
+            --magenta: #D946A6;
+            --cyan:    #00d2ff;
+            --green:   #00FF41;
+            --bg:      #050505;
+            --bg-card: #0d1520;
+            --bg-input:#0a1628;
+            --border:  rgba(212,175,55,.18);
+            --text:    #f5f5f7;
+            --muted:   #94a3b8;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;}
+
+        /* ── NAV ── */
+        .navbar{position:fixed;top:0;left:0;right:0;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);
+            border-bottom:1px solid var(--border);padding:14px 0;z-index:1000;}
+        .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;
+            justify-content:space-between;padding:0 24px;gap:16px;}
+        .nav-logo{text-decoration:none;flex-shrink:0;}
+        .nav-logo h1{font-size:20px;font-weight:900;letter-spacing:3px;color:var(--gold);}
+        .nav-logo span{font-size:10px;font-weight:700;letter-spacing:4px;color:var(--text);display:block;}
+        .nav-links{display:flex;gap:20px;align-items:center;flex-wrap:wrap;}
+        .nav-links a{color:var(--muted);text-decoration:none;font-size:12px;font-weight:600;
+            text-transform:uppercase;letter-spacing:.8px;transition:color .2s;white-space:nowrap;}
+        .nav-links a:hover{color:var(--gold);}
+        .nav-links a.active{color:var(--text);}
+        .btn-nav-cta{
+            background:linear-gradient(135deg,var(--magenta),#9c27b0);
+            color:#fff !important;padding:9px 20px;border-radius:7px;
+            font-size:12px !important;letter-spacing:.3px !important;
+        }
+        .btn-nav-cta:hover{opacity:.9;}
+
+        /* ── HERO ── */
+        .hero{
+            padding:140px 24px 72px;text-align:center;
+            background:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(217,70,166,.1) 0%,transparent 70%);
+        }
+        .badge{
+            display:inline-flex;align-items:center;gap:8px;
+            background:rgba(217,70,166,.1);border:1px solid rgba(217,70,166,.28);
+            padding:5px 16px;border-radius:20px;font-size:11px;
+            color:var(--magenta);font-weight:700;letter-spacing:.8px;
+            margin-bottom:24px;text-transform:uppercase;
+        }
+        .hero h1{font-size:clamp(2rem,5.5vw,4rem);font-weight:900;line-height:1.08;
+            margin-bottom:18px;letter-spacing:-1.5px;}
+        .hero h1 .hl{background:linear-gradient(135deg,var(--magenta),var(--cyan));
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .hero-sub{font-size:clamp(.95rem,2vw,1.15rem);color:var(--muted);
+            max-width:600px;margin:0 auto 36px;font-weight:400;}
+        .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+        .btn-primary{background:linear-gradient(135deg,var(--magenta),#9c27b0);color:#fff;
+            padding:14px 32px;border-radius:9px;font-weight:700;font-size:15px;
+            text-decoration:none;transition:transform .18s,opacity .18s;display:inline-flex;
+            align-items:center;gap:8px;}
+        .btn-primary:hover{transform:translateY(-2px);opacity:.9;}
+        .btn-outline{border:1px solid rgba(212,175,55,.35);color:var(--gold);
+            padding:14px 28px;border-radius:9px;font-weight:600;font-size:14px;
+            text-decoration:none;transition:border-color .2s,background .2s;display:inline-flex;
+            align-items:center;gap:8px;}
+        .btn-outline:hover{border-color:var(--gold);background:rgba(212,175,55,.06);}
+
+        /* ── SCANNERS ── */
+        .scanners{padding:40px 24px;border-top:1px solid rgba(255,255,255,.05);
+            border-bottom:1px solid rgba(255,255,255,.05);}
+        .scanners-inner{max-width:900px;margin:0 auto;text-align:center;}
+        .scanners p{font-size:11px;color:var(--muted);letter-spacing:2.5px;
+            text-transform:uppercase;margin-bottom:20px;}
+        .scanner-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+        .stag{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);
+            padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text);}
+        .stag i{color:var(--cyan);margin-right:6px;}
+
+        /* ── SECTIONS ── */
+        .sec{padding:72px 24px;}
+        .sec-inner{max-width:1100px;margin:0 auto;}
+        .sec-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+            color:var(--magenta);margin-bottom:10px;}
+        .sec-title{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:900;
+            margin-bottom:40px;letter-spacing:-.5px;}
+
+        /* ── STEPS ── */
+        .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
+        .step{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+            padding:28px 24px;transition:border-color .2s;}
+        .step:hover{border-color:rgba(217,70,166,.35);}
+        .step-n{font-size:44px;font-weight:900;line-height:1;
+            background:linear-gradient(135deg,var(--magenta),var(--cyan));
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px;}
+        .step h3{font-size:16px;font-weight:700;margin-bottom:8px;}
+        .step p{font-size:13px;color:var(--muted);}
+
+        /* ── VENTAJAS ── */
+        .vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;}
+        .ventaja{display:flex;gap:14px;align-items:flex-start;
+            background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:22px;}
+        .vico{width:38px;height:38px;border-radius:9px;
+            background:linear-gradient(135deg,rgba(217,70,166,.18),rgba(0,210,255,.08));
+            display:flex;align-items:center;justify-content:center;flex-shrink:0;
+            font-size:17px;color:var(--cyan);}
+        .ventaja h4{font-size:14px;font-weight:700;margin-bottom:3px;}
+        .ventaja p{font-size:12px;color:var(--muted);}
+
+        /* ── PRECIOS PREVIEW ── */
+        .precios-strip{
+            background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+            padding:36px 32px;display:flex;flex-wrap:wrap;
+            align-items:center;justify-content:space-between;gap:24px;
+        }
+        .precios-strip h3{font-size:1.2rem;font-weight:900;margin-bottom:6px;}
+        .precios-strip p{font-size:13px;color:var(--muted);}
+        .precio-chips{display:flex;flex-wrap:wrap;gap:10px;}
+        .pchip{background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);
+            padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;}
+        .pchip strong{color:var(--gold);}
+
+        /* ── FORMULARIO ── */
+        .form-section{
+            padding:80px 24px;
+            background:radial-gradient(ellipse 70% 50% at 50% 100%,rgba(0,210,255,.05) 0%,transparent 70%);
+        }
+        .form-wrap{max-width:740px;margin:0 auto;
+            background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:48px 40px;}
+        @media(max-width:600px){.form-wrap{padding:28px 18px;}}
+        .form-head{margin-bottom:32px;}
+        .form-head h2{font-size:1.5rem;font-weight:900;margin-bottom:6px;}
+        .form-head p{font-size:13px;color:var(--muted);}
+        .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+        @media(max-width:560px){.frow{grid-template-columns:1fr;}}
+        .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+        .fg label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+        .fg input,.fg select,.fg textarea{
+            background:var(--bg-input);border:1px solid rgba(255,255,255,.09);
+            color:var(--text);padding:11px 13px;border-radius:8px;font-size:14px;
+            font-family:'Inter',sans-serif;transition:border-color .2s;outline:none;width:100%;}
+        .fg input::placeholder,.fg textarea::placeholder{color:#475569;}
+        .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--cyan);}
+        .fg select option{background:#0d1520;}
+        .fg textarea{resize:vertical;min-height:82px;}
+
+        /* servicios visual */
+        .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:14px;}
+        .svc-btn{
+            background:var(--bg-input);border:1px solid rgba(255,255,255,.09);
+            border-radius:9px;padding:12px 8px;text-align:center;cursor:pointer;
+            transition:border-color .18s,background .18s;
+        }
+        .svc-btn:hover{border-color:rgba(0,210,255,.4);}
+        .svc-btn.sel{border-color:var(--cyan);background:rgba(0,210,255,.07);}
+        .svc-btn .ico{font-size:20px;display:block;margin-bottom:4px;}
+        .svc-btn .lbl{font-size:11px;font-weight:700;line-height:1.25;color:var(--text);}
+        .svc-btn .prc{font-size:10px;color:var(--muted);margin-top:2px;}
+        #svcHidden{display:none;}
+
+        /* drop zone */
+        .drop-zone{border:2px dashed rgba(0,210,255,.25);border-radius:12px;
+            padding:32px;text-align:center;cursor:pointer;
+            transition:border-color .2s,background .2s;background:rgba(0,210,255,.02);margin-bottom:12px;}
+        .drop-zone:hover,.drop-zone.drag-over{border-color:var(--cyan);background:rgba(0,210,255,.06);}
+        .drop-zone i{font-size:32px;color:var(--cyan);margin-bottom:10px;display:block;}
+        .drop-zone p{font-size:14px;color:var(--muted);}
+        .drop-zone strong{color:var(--cyan);}
+        .drop-zone small{font-size:11px;color:#475569;display:block;margin-top:4px;}
+        #fileInput{display:none;}
+
+        /* file preview pill */
+        .fpill{display:none;align-items:center;gap:10px;
+            background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.18);
+            border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--green);}
+        .fpill.show{display:flex;}
+        .fpill .fn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .fpill .fs{color:#64748b;white-space:nowrap;font-size:12px;}
+        .fpill .fx{cursor:pointer;color:#ef4444;margin-left:4px;}
+
+        /* STL viewer */
+        .stl-viewer{display:none;margin-bottom:14px;border-radius:12px;overflow:hidden;
+            border:1px solid rgba(0,210,255,.2);position:relative;background:#07101a;}
+        .stl-viewer.show{display:block;}
+        .stl-viewer canvas{display:block;width:100% !important;height:280px !important;}
+        .stl-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+            background:rgba(0,0,0,.65);color:var(--muted);font-size:11px;
+            padding:4px 12px;border-radius:20px;pointer-events:none;white-space:nowrap;}
+        .stl-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
+            letter-spacing:.5px;margin-bottom:6px;}
+
+        /* progreso */
+        .prog{display:none;margin-bottom:14px;}
+        .prog.show{display:block;}
+        .pbar-wrap{background:rgba(255,255,255,.06);border-radius:4px;height:5px;overflow:hidden;}
+        .pbar{height:100%;background:linear-gradient(90deg,var(--magenta),var(--cyan));width:0%;transition:width .3s;}
+        .prog-lbl{font-size:12px;color:var(--muted);margin-top:5px;}
+
+        .btn-submit{width:100%;padding:15px;border:none;border-radius:10px;
+            background:linear-gradient(135deg,var(--magenta),#9c27b0);color:#fff;
+            font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .18s;
+            margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;}
+        .btn-submit:hover:not(:disabled){opacity:.9;transform:translateY(-1px);}
+        .btn-submit:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+        .form-note{font-size:12px;color:#475569;text-align:center;margin-top:10px;}
+
+        /* éxito */
+        .success{display:none;text-align:center;padding:16px;}
+        .success.show{display:block;}
+        .sico{width:68px;height:68px;border-radius:50%;
+            background:rgba(0,255,65,.08);border:2px solid rgba(0,255,65,.25);
+            display:flex;align-items:center;justify-content:center;
+            font-size:30px;color:var(--green);margin:0 auto 18px;}
+        .success h2{font-size:1.35rem;font-weight:900;margin-bottom:8px;}
+        .success p{font-size:14px;color:var(--muted);margin-bottom:22px;}
+        .btn-wa{display:inline-flex;align-items:center;gap:8px;
+            background:#25D366;color:#fff;padding:12px 26px;
+            border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;}
+
+        /* footer */
+        footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;
+            text-align:center;font-size:13px;color:#475569;}
+        footer a{color:var(--gold);text-decoration:none;}
+    </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+            <h1>PRODIGY</h1>
+            <span>Digital Dentistry</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Inicio</a>
+            <a href="index.html#servicios">Servicios</a>
+            <a href="calculadora.html">Precios</a>
+            <a href="#form" class="btn-nav-cta">
+                <i class="fas fa-upload"></i> Enviar escáner
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+    <div class="badge"><i class="fas fa-satellite-dish"></i> Para clínicas con escáner intraoral</div>
+    <h1>
+        Ya tienes el escáner.<br>
+        <span class="hl">Te falta el laboratorio.</span>
+    </h1>
+    <p class="hero-sub">
+        Envíanos tu archivo .stl desde iTero, Medit o Trios.
+        PRODIGY diseña en Exocad y produce la restauración.
+        Entrega en <strong style="color:var(--text)">24–48 horas</strong>.
+    </p>
+    <div class="hero-cta">
+        <a href="#form" class="btn-primary">
+            <i class="fas fa-upload"></i> Enviar mi escáner
+        </a>
+        <a href="calculadora.html" class="btn-outline">
+            <i class="fas fa-calculator"></i> Ver precios
+        </a>
+    </div>
+</section>
+
+<!-- ── SCANNERS ── -->
+<section class="scanners">
+    <div class="scanners-inner">
+        <p>Compatible con tu escáner intraoral</p>
+        <div class="scanner-tags">
+            <div class="stag"><i class="fas fa-check-circle"></i>iTero Element</div>
+            <div class="stag"><i class="fas fa-check-circle"></i>Medit i700 / i900</div>
+            <div class="stag"><i class="fas fa-check-circle"></i>3Shape Trios</div>
+            <div class="stag"><i class="fas fa-check-circle"></i>Cerec Primescan</div>
+            <div class="stag"><i class="fas fa-check-circle"></i>Planmeca</div>
+            <div class="stag"><i class="fas fa-check-circle"></i>.stl / .obj / .ply</div>
+        </div>
+    </div>
+</section>
+
+<!-- ── CÓMO FUNCIONA ── -->
+<section class="sec">
+    <div class="sec-inner">
+        <p class="sec-label">Proceso</p>
+        <h2 class="sec-title">De tu escáner a la boca del paciente. Sin rodeos.</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-n">01</div>
+                <h3>Exporta y sube tu archivo</h3>
+                <p>Desde tu software de escáner exporta el caso como .stl. Lo subes aquí junto con los datos de la restauración. Todo en 3 minutos.</p>
+            </div>
+            <div class="step">
+                <div class="step-n">02</div>
+                <h3>Diseñamos en Exocad 4K</h3>
+                <p>Tu caso entra al rutador PRODIGY. Diseñamos con Exocad y te enviamos una previsualización 3D por WhatsApp para aprobación.</p>
+            </div>
+            <div class="step">
+                <div class="step-n">03</div>
+                <h3>Producción y entrega</h3>
+                <p>Apruebas el diseño, producimos en nuestro fresador Imes-Icore con el material que elijas y coordinamos la entrega.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── PRECIOS ── -->
+<section class="sec" style="padding-top:0">
+    <div class="sec-inner">
+        <p class="sec-label">Tarifas</p>
+        <h2 class="sec-title">Precios directos, sin sorpresas</h2>
+        <div class="precios-strip">
+            <div>
+                <h3>Desde $60.000 COP por unidad</h3>
+                <p>Pagas solo lo que produces. Sin membresías, sin licencias de software.</p>
+            </div>
+            <div class="precio-chips">
+                <div class="pchip">Corona zirconio <strong>desde $180K</strong></div>
+                <div class="pchip">Carilla <strong>desde $220K</strong></div>
+                <div class="pchip">Provisional CAD <strong>desde $90K</strong></div>
+                <div class="pchip">Inlay / Onlay <strong>desde $160K</strong></div>
+                <div class="pchip">Modelo 3D <strong>desde $60K</strong></div>
+                <div class="pchip">Puente 3 pzas <strong>desde $480K</strong></div>
+            </div>
+            <a href="calculadora.html" class="btn-outline" style="flex-shrink:0">
+                <i class="fas fa-calculator"></i> Cotizar en línea
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ── VENTAJAS ── -->
+<section class="sec" style="padding-top:0">
+    <div class="sec-inner">
+        <p class="sec-label">¿Por qué PRODIGY?</p>
+        <h2 class="sec-title">Un laboratorio digital a tu servicio</h2>
+        <div class="vgrid">
+            <div class="ventaja">
+                <div class="vico"><i class="fas fa-bolt"></i></div>
+                <div><h4>Entrega 24–48 h</h4><p>Pedidos antes de las 5 PM arrancan al día siguiente. L–S.</p></div>
+            </div>
+            <div class="ventaja">
+                <div class="vico"><i class="fas fa-eye"></i></div>
+                <div><h4>Previsualización antes de producir</h4><p>Te enviamos el diseño por WA. Apruebas o pides ajuste. Cero sorpresas.</p></div>
+            </div>
+            <div class="ventaja">
+                <div class="vico"><i class="fas fa-gem"></i></div>
+                <div><h4>Zirconio multicapa + e.max</h4><p>Los materiales que exige la odontología estética de alto nivel.</p></div>
+            </div>
+            <div class="ventaja">
+                <div class="vico"><i class="fas fa-microscope"></i></div>
+                <div><h4>Diseño Exocad 4K</h4><p>La misma herramienta que usan los mejores labs del mundo. Adaptación precisa desde tu escáner.</p></div>
+            </div>
+            <div class="ventaja">
+                <div class="vico"><i class="fas fa-file-invoice-dollar"></i></div>
+                <div><h4>Sin costos fijos</h4><p>No pagas membresía ni licencias. Solo por lo que produces.</p></div>
+            </div>
+            <div class="ventaja">
+                <div class="vico"><i class="fas fa-shield-halved"></i></div>
+                <div><h4>Garantía de adaptación</h4><p>Si el diseño necesita ajuste, lo rehacemos sin costo adicional.</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── FORMULARIO ── -->
+<section class="form-section" id="form">
+    <div class="form-wrap">
+
+        <div id="formContainer">
+            <div class="form-head">
+                <h2>Enviar mi escáner</h2>
+                <p>Completa los datos y adjunta el archivo. Te contactamos en menos de 2 horas en horario hábil (L–S 8am–6pm).</p>
+            </div>
+
+            <form id="scannerForm" novalidate>
+
+                <div class="frow">
+                    <div class="fg">
+                        <label>Doctor *</label>
+                        <input type="text" id="doctor" placeholder="Dr. Nombre Apellido" required>
+                    </div>
+                    <div class="fg">
+                        <label>Clínica / consultorio *</label>
+                        <input type="text" id="clinica" placeholder="Clínica Dental X" required>
+                    </div>
+                </div>
+
+                <div class="frow">
+                    <div class="fg">
+                        <label>WhatsApp *</label>
+                        <input type="tel" id="whatsapp" placeholder="+57 300 000 0000" required>
+                    </div>
+                    <div class="fg">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="doctor@clinica.com">
+                    </div>
+                </div>
+
+                <div class="fg">
+                    <label>Marca del escáner *</label>
+                    <select id="escaner_marca" required>
+                        <option value="">— Selecciona tu escáner —</option>
+                        <option>iTero Element</option>
+                        <option>Medit i700</option>
+                        <option>Medit i900</option>
+                        <option>3Shape Trios</option>
+                        <option>Cerec Primescan</option>
+                        <option>Planmeca</option>
+                        <option>Otro</option>
+                    </select>
+                </div>
+
+                <!-- Servicios visual tipo calculadora -->
+                <div class="fg">
+                    <label>Trabajo solicitado *</label>
+                </div>
+                <div class="svc-grid" id="svcGrid">
+                    <div class="svc-btn sel" data-val="Corona unitaria" onclick="selSvc(this)">
+                        <span class="ico">👑</span>
+                        <div class="lbl">Corona unitaria</div>
+                        <div class="prc">desde $180K</div>
+                    </div>
+                    <div class="svc-btn" data-val="Carilla" onclick="selSvc(this)">
+                        <span class="ico">✨</span>
+                        <div class="lbl">Carilla</div>
+                        <div class="prc">desde $220K</div>
+                    </div>
+                    <div class="svc-btn" data-val="Inlay / Onlay" onclick="selSvc(this)">
+                        <span class="ico">🔷</span>
+                        <div class="lbl">Inlay / Onlay</div>
+                        <div class="prc">desde $160K</div>
+                    </div>
+                    <div class="svc-btn" data-val="Puente" onclick="selSvc(this)">
+                        <span class="ico">🌉</span>
+                        <div class="lbl">Puente</div>
+                        <div class="prc">desde $480K</div>
+                    </div>
+                    <div class="svc-btn" data-val="Provisional CAD" onclick="selSvc(this)">
+                        <span class="ico">🏗️</span>
+                        <div class="lbl">Provisional CAD</div>
+                        <div class="prc">desde $90K</div>
+                    </div>
+                    <div class="svc-btn" data-val="Modelo 3D impreso" onclick="selSvc(this)">
+                        <span class="ico">🖨️</span>
+                        <div class="lbl">Modelo 3D</div>
+                        <div class="prc">desde $60K</div>
+                    </div>
+                    <div class="svc-btn" data-val="Otro" onclick="selSvc(this)">
+                        <span class="ico">📋</span>
+                        <div class="lbl">Otro</div>
+                        <div class="prc">describir abajo</div>
+                    </div>
+                </div>
+                <input type="hidden" id="svcHidden" value="Corona unitaria">
+
+                <div class="fg">
+                    <label>Piezas / cantidad</label>
+                    <input type="text" id="piezas" placeholder="Ej: pieza 21 y 22 — carillas. 2 unidades.">
+                </div>
+
+                <div class="fg">
+                    <label>Notas (color, urgencia, instrucciones)</label>
+                    <textarea id="notas" placeholder="Color A2, paciente urgente, nombre del paciente, detalles de oclusión…"></textarea>
+                </div>
+
+                <!-- Drop zone -->
+                <div class="fg"><label>Archivo escáner (.stl, .obj, .ply, .dcm, .zip)</label></div>
+                <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p><strong>Arrastra aquí</strong> o haz clic para seleccionar</p>
+                    <small>STL, OBJ, PLY, DCM, ZIP — máx. 50 MB</small>
+                </div>
+                <input type="file" id="fileInput" accept=".stl,.obj,.ply,.dcm,.zip">
+
+                <div class="fpill" id="fpill">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="fn" id="fname"></span>
+                    <span class="fs" id="fsize"></span>
+                    <i class="fas fa-times fx" onclick="clearFile()" title="Quitar"></i>
+                </div>
+
+                <!-- Visor STL 3D -->
+                <div id="stlViewerWrap" class="stl-viewer">
+                    <canvas id="stlCanvas"></canvas>
+                    <div class="stl-hint"><i class="fas fa-hand-pointer"></i> Arrastra para rotar · Scroll para zoom</div>
+                </div>
+                <p id="stlLabel" class="stl-label" style="display:none;margin-bottom:8px;color:var(--cyan)">
+                    <i class="fas fa-check-circle"></i> Verifica que sea la pieza correcta antes de enviar
+                </p>
+
+                <div class="prog" id="prog">
+                    <div class="pbar-wrap"><div class="pbar" id="pbar"></div></div>
+                    <p class="prog-lbl" id="prog-lbl">Subiendo…</p>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i> Enviar solicitud
+                </button>
+                <p class="form-note">Te contactamos por WhatsApp. Horario hábil: L–S 8am–6pm.</p>
+
+            </form>
+        </div>
+
+        <!-- Pantalla éxito -->
+        <div class="success" id="successScreen">
+            <div class="sico"><i class="fas fa-check"></i></div>
+            <h2>¡Solicitud recibida!</h2>
+            <p id="successMsg">Recibimos tu caso. Te contactamos por WhatsApp para confirmar detalles y enviarte la previsualización del diseño.</p>
+            <a class="btn-wa" id="waLink" href="#" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i> Escribirnos directamente
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <p>
+        &copy; 2025 PRODIGY Digital Dentistry — Bogotá, Colombia —
+        <a href="index.html">Inicio</a> &bull;
+        <a href="calculadora.html">Cotizador</a> &bull;
+        <a href="terminos-y-legal.html">Términos</a>
+    </p>
+</footer>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Visor STL con Three.js (módulo) -->
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+let renderer, scene, camera, controls, animId;
+
+window._initSTLViewer = function(buffer) {
+    const wrap   = document.getElementById('stlViewerWrap');
+    const canvas = document.getElementById('stlCanvas');
+    wrap.classList.add('show');
+    document.getElementById('stlLabel').style.display = 'block';
+
+    // Limpiar render anterior
+    if (renderer) { renderer.dispose(); cancelAnimationFrame(animId); }
+
+    const W = wrap.clientWidth, H = 280;
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(W, H);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x07101a, 1);
+
+    scene  = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 1000);
+
+    // Luces
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const dir = new THREE.DirectionalLight(0xffffff, 1.2);
+    dir.position.set(1, 2, 2);
+    scene.add(dir);
+    const dir2 = new THREE.DirectionalLight(0x00d2ff, 0.4);
+    dir2.position.set(-2, -1, -1);
+    scene.add(dir2);
+
+    // Cargar STL
+    const loader = new STLLoader();
+    const geometry = loader.parse(buffer);
+    geometry.computeBoundingBox();
+    geometry.center();
+
+    const material = new THREE.MeshPhongMaterial({
+        color: 0xc8d8e8, specular: 0x44aacc, shininess: 60,
+        side: THREE.DoubleSide
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    // Ajustar cámara al tamaño del modelo
+    const box   = new THREE.Box3().setFromObject(mesh);
+    const size  = box.getSize(new THREE.Vector3()).length();
+    camera.position.set(0, 0, size * 1.6);
+    camera.near = size / 100;
+    camera.far  = size * 10;
+    camera.updateProjectionMatrix();
+
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+
+    function animate() { animId = requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); }
+    animate();
+};
+
+// Exponer para el script global
+window._stlReady = true;
+</script>
+
+<!-- Lógica general (no módulo) -->
+<script>
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const WA_PRODIGY   = '573212816716';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+/* ── Selección de servicio ── */
+function selSvc(el) {
+    document.querySelectorAll('.svc-btn').forEach(b => b.classList.remove('sel'));
+    el.classList.add('sel');
+    document.getElementById('svcHidden').value = el.dataset.val;
+}
+window.selSvc = selSvc;
+
+/* ── Drag & Drop ── */
+let selectedFile = null;
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) setFile(fileInput.files[0]); });
+
+function setFile(f) {
+    const ext = f.name.split('.').pop().toLowerCase();
+    if (!['stl','obj','ply','dcm','zip'].includes(ext)) {
+        alert('Formato no permitido. Acepta: STL, OBJ, PLY, DCM, ZIP'); return;
+    }
+    if (f.size > 52428800) {
+        alert('El archivo supera 50 MB. Comprime en ZIP o pega el link de descarga en las notas.'); return;
+    }
+    selectedFile = f;
+    document.getElementById('fname').textContent = f.name;
+    document.getElementById('fsize').textContent = (f.size / 1048576).toFixed(1) + ' MB';
+    document.getElementById('fpill').classList.add('show');
+    dropZone.style.display = 'none';
+
+    // Visor STL
+    if (ext === 'stl') {
+        const reader = new FileReader();
+        reader.onload = e => {
+            // Espera a que Three.js esté listo
+            const tryInit = () => {
+                if (window._initSTLViewer) window._initSTLViewer(e.target.result);
+                else setTimeout(tryInit, 100);
+            };
+            tryInit();
+        };
+        reader.readAsArrayBuffer(f);
+    }
+}
+
+function clearFile() {
+    selectedFile = null; fileInput.value = '';
+    document.getElementById('fpill').classList.remove('show');
+    document.getElementById('stlViewerWrap').classList.remove('show');
+    document.getElementById('stlLabel').style.display = 'none';
+    dropZone.style.display = '';
+}
+window.clearFile = clearFile;
+
+/* ── Progreso ── */
+function setProg(pct, lbl) {
+    document.getElementById('prog').classList.add('show');
+    document.getElementById('pbar').style.width = pct + '%';
+    document.getElementById('prog-lbl').textContent = lbl;
+}
+function hideProg() { document.getElementById('prog').classList.remove('show'); }
+
+/* ── Submit ── */
+document.getElementById('scannerForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const doctor   = document.getElementById('doctor').value.trim();
+    const clinica  = document.getElementById('clinica').value.trim();
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const marca    = document.getElementById('escaner_marca').value;
+    const servicio = document.getElementById('svcHidden').value;
+    const piezas   = document.getElementById('piezas').value.trim();
+    const notas    = document.getElementById('notas').value.trim();
+
+    if (!doctor || !clinica || !whatsapp || !marca) {
+        alert('Por favor completa todos los campos obligatorios (*).'); return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando…';
+
+    let archivo_url = null, archivo_nombre = null;
+
+    if (selectedFile) {
+        setProg(15, 'Subiendo archivo…');
+        try {
+            const path = `${Date.now()}_${doctor.replace(/\s+/g,'_')}.${selectedFile.name.split('.').pop()}`;
+            const { data: up, error: upErr } = await sb.storage.from('scanner-uploads').upload(path, selectedFile);
+            if (!upErr) {
+                setProg(65, 'Archivo subido. Guardando solicitud…');
+                archivo_nombre = selectedFile.name;
+                const { data: { publicUrl } } = sb.storage.from('scanner-uploads').getPublicUrl(path);
+                archivo_url = publicUrl || up?.path;
+            }
+        } catch(_) {}
+    }
+
+    setProg(80, 'Guardando solicitud…');
+
+    await sb.from('solicitudes_scanner').insert({
+        doctor, clinica, whatsapp, email: email || null,
+        escaner_marca: marca, servicio, piezas: piezas || null,
+        notas: notas || null, archivo_url, archivo_nombre
+    });
+
+    setProg(100, 'Listo');
+
+    // Notificar a PRODIGY (silencioso)
+    fetch(`${SUPABASE_URL}/functions/v1/notify-wa`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_ANON}`},
+        body:JSON.stringify({
+            tipo:'scanner_nuevo', telefono:WA_PRODIGY,
+            nombre:doctor, caseId:clinica,
+            mensaje:`Nueva solicitud: ${servicio} — ${clinica} — WA: ${whatsapp}`
+        })
+    }).catch(()=>{});
+
+    setTimeout(() => {
+        hideProg();
+        document.getElementById('formContainer').style.display = 'none';
+        const sc = document.getElementById('successScreen');
+        sc.classList.add('show');
+        document.getElementById('successMsg').textContent =
+            `Gracias, ${doctor.split(' ')[0]}. Recibimos tu caso de ${servicio.toLowerCase()}. Te escribimos al ${whatsapp} con la previsualización del diseño.`;
+        document.getElementById('waLink').href =
+            `https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, acabo de enviar mi escáner. Soy ${doctor} de ${clinica}.`)}`;
+        sc.scrollIntoView({ behavior:'smooth', block:'center' });
+    }, 700);
+});
+</script>
+</body>
+</html>

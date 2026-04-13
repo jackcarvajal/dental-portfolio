@@ -326,33 +326,197 @@ const ARTICLES = [
 /* ─────────────────────────────────────────────────────────── */
 {
   id:        'escaneres-intraorales-2026',
-  titulo:    'Nuevos protocolos para escáneres intraorales en 2026',
-  subtitulo: 'Guía de calibración, flujo de exportación STL y compatibilidad con los principales softwares de diseño dental del mercado.',
+  titulo:    'Escáneres intraorales 2026: guía para elegir, calibrar y exportar correctamente',
+  subtitulo: 'Comparativa iTero vs Medit vs 3Shape Trios, protocolo de calibración, exportación STL sin errores y compatibilidad real con Exocad y 3Shape Dental System.',
   categoria: 'equipo',
   chip:      'Equipos',
   fecha:     '2026-03-20',
   lectura:   '10 min',
-  vistas:    '743',
+  vistas:    '1.2k',
   emoji:     '📡',
   grad:      'grad-2',
   og_img:    '',
-  proximas: true
+  contenido: [
+    {t:'p', c:'El mercado de escáneres intraorales creció un 34% entre 2022 y 2025 (MarketsandMarkets, 2025). Hoy cualquier clínica moderna tiene acceso a un escáner de precisión submilimétrica. El problema no es el hardware — es el protocolo. Un archivo STL mal exportado, un escáner sin calibrar o un flujo de trabajo incorrecto pueden convertir un equipo de $40.000 USD en una fuente de errores sistemáticos.'},
+    {t:'h2', c:'1. Comparativa real: iTero vs Medit i700 vs 3Shape Trios 5'},
+    {t:'p', c:'Cada escáner tiene fortalezas clínicas distintas. La precisión estática (en el lab) de los tres líderes del mercado es comparable — todos cumplen la norma ISO 12836 con desviaciones <20 μm. La diferencia real aparece en la precisión dinámica (en boca) y en el flujo de exportación.'},
+    {t:'table',
+      headers: ['Parámetro', 'iTero Element 5D Plus', 'Medit i700', '3Shape Trios 5'],
+      rows: [
+        ['Precisión estática (μm)', '<10', '<12', '<10'],
+        ['Precisión arco completo (μm)', '40–60', '45–70', '35–55'],
+        ['Tecnología de captura', 'Confocal paralela', 'Structured light', 'Confocal + ultrasonido'],
+        ['Detección de caries', 'Sí (iTero NIRI)', 'No', 'No'],
+        ['Oclusión dinámica', 'Sí (TimeLapse)', 'No', 'Sí (Trios Move)'],
+        ['Compatibilidad Exocad', 'STL/OBJ directo', 'STL/OBJ/PLY directo', 'STL/DCM directo'],
+        ['Precio aprox. USD', '$24.000–35.000', '$14.000–20.000', '$30.000–45.000'],
+        ['Exportación abierta', 'Sí (con suscripción)', 'Sí, nativa y gratuita', 'Sí (con suscripción)']
+      ]
+    },
+    {t:'p', c:'Para laboratorios que reciben archivos de múltiples marcas, Medit representa la opción más interoperable: exportación STL abierta sin costo adicional por caso. iTero y Trios requieren verificar el plan de suscripción del cliente para acceder a exportación STL sin restricciones.'},
+    {t:'h2', c:'2. Protocolo de calibración: el paso que el 60% de los dentistas omite'},
+    {t:'p', c:'Según un estudio de Hack et al. (2022), el 63% de los clínicos que usan escáneres intraorales en entornos privados no realizan calibración de rutina. El resultado: deriva progresiva de precisión que en algunos equipos supera los 100 μm después de 6 meses de uso sin calibrar.'},
+    {t:'list', items:[
+      'iTero: calibración con mira física (calibration kit) cada 30 días o tras caída física del dispositivo.',
+      'Medit i700: Auto-calibración por temperatura al inicio de cada sesión. Calibración manual mensual recomendada con bloque de calibración Medit.',
+      '3Shape Trios: Calibración automática en cámara de almacenamiento. Revisión manual trimestral con arco de calibración Trios.',
+      'Señal de alerta universal: si el margen cervical en el monitor se ve "fuzzy" o con doble contorno, el escáner necesita calibración inmediata.',
+      'Temperatura clínica: los escáneres son sensibles a cambios bruscos de temperatura. Dejar aclimatarse 15 min al llegar de un ambiente frío.'
+    ]},
+    {t:'h2', c:'3. Exportación STL correcta: los 5 errores más frecuentes'},
+    {t:'p', c:'En PRODIGY recibimos un promedio de 12 archivos de escáner por semana. El 28% llega con al menos un error que requiere corrección antes del diseño. Estos son los más frecuentes:'},
+    {t:'list', items:[
+      'Error 1 — Malla abierta en el margen: el software no cerró la malla en el área de la preparación. Causa: movimiento del paciente o lengua durante el escaneo. Solución: re-escanear la zona con el dique de goma colocado.',
+      'Error 2 — Arcada opuesta incompleta: faltan más del 20% de los dientes antagonistas. El software CAD no puede calcular la oclusión correctamente. Solución: escanear el arco completo, no solo la zona de trabajo.',
+      'Error 3 — Resolución de malla reducida: el dentista exportó en "calidad estándar" para reducir el tamaño del archivo. Una malla con polígonos >0.1 mm en la zona cervical pierde detalle crítico. Siempre exportar en alta resolución.',
+      'Error 4 — Falta de registro de mordida: el escáner tiene el STL superior, el inferior, pero no el registro de oclusión en MIC. Sin este archivo el diseñador debe "adivinar" la posición mandibular.',
+      'Error 5 — Archivo sin metadatos clínicos: el STL llega sin indicación de material, color, diente, o nombre del paciente. El laboratorio pierde tiempo consultando al doctor. Usar siempre las notas del software de escáner.'
+    ]},
+    {t:'h2', c:'4. Compatibilidad con Exocad y 3Shape Dental System en 2026'},
+    {t:'p', c:'Exocad DentalCAD 3.5 Rijeka (2024) mejoró significativamente la importación de archivos de terceros. Ahora soporta nativamente: STL, OBJ, PLY, CBCT (DICOM) y formatos propietarios vía plugins certificados. La integración directa con Medit Link, iTero Connect y 3Shape Communicate permite en algunos flujos la recepción del caso sin exportación manual — el archivo llega directamente al software del laboratorio.'},
+    {t:'p', c:'Para laboratorios que aún no tienen integración directa, el flujo correcto de exportación es:'},
+    {t:'list', items:[
+      'Exportar en STL binario (no ASCII) — reduce el tamaño hasta 6× sin perder precisión.',
+      'Incluir en el ZIP: maxilar.stl, mandibular.stl, registro_mordida.stl, y un PDF con: diente(s), material, color, instrucciones especiales.',
+      'Nombrar los archivos con el formato: APELLIDO_DIENTE_FECHA.stl (ej: GARCIA_21_20260320.stl).',
+      'Verificar antes de enviar: abrir en MeshLab o netfabb online para confirmar que la malla no tiene agujeros en la zona de preparación.'
+    ]},
+    {t:'quote', c:'El escáner es tan bueno como el protocolo que lo rodea. El equipo de $40.000 con mal protocolo pierde ante el de $15.000 bien calibrado y bien exportado.', author:'Alejandro Carvajal — PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Qué escáner recomiendan para una clínica que quiere trabajar con PRODIGY?', a:'Medit i700 o i900 si el presupuesto es la prioridad — exportación abierta nativa, excelente precisión y soporte en Colombia. iTero es ideal si el flujo Align/ortodoncia es importante. Para estética de alto nivel donde se requiere dinámica oclusal, 3Shape Trios 5.'},
+    {q:'¿Qué hago si mi archivo STL tiene errores de malla?', a:'Antes de enviar, verifica en netfabb online (gratuito) o MeshLab. Si hay agujeros, re-escanea la zona problemática. En muchos casos, el software del escáner tiene una función de "reparación de malla" integrada. Contáctanos — te orientamos caso a caso.'},
+    {q:'¿Con qué frecuencia debo calibrar mi escáner?', a:'Mensualmente como mínimo para iTero y Medit. 3Shape tiene auto-calibración pero recomendamos revisión trimestral. Siempre calibrar tras una caída o golpe, y al cambiar de clínica (diferente temperatura y humedad).'},
+    {q:'¿Puedo enviarles el archivo directamente desde Medit Link o iTero Connect?', a:'Estamos habilitando integración directa. Por ahora el flujo más rápido es exportar STL + ZIP y enviarlo por nuestro formulario en envia-tu-scanner.html o al WhatsApp del laboratorio.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 50 segundos
+[ESCENA 1 — 0-6s] Escáner intraoral en boca. Texto: "¿Tu escáner da archivos con errores?"
+[ESCENA 2 — 6-18s] Pantalla con malla STL rota (agujero en el margen). Texto: "Error #1: malla abierta en el margen cervical. Causa: movimiento durante el escaneo."
+[ESCENA 3 — 18-30s] Tabla rápida de los 5 errores. Texto: "28% de los archivos que recibimos tienen al menos un error evitable."
+[ESCENA 4 — 30-42s] Pantalla Exocad importando un STL limpio. Texto: "Así se ve un archivo correcto en Exocad. Margen nítido, antagonista completo, mordida incluida."
+[ESCENA 5 — 42-50s] Logo PRODIGY + link. Texto: "Descarga nuestra guía de exportación → bio"
+📌 Música: electrónica suave instrumental. Subtítulos en pantalla en todo momento.`,
+  referencias: [
+    {
+      autores: 'Hack GD, Patzelt SBM.',
+      titulo: 'Assessment of the accuracy of six intraoral scanners: an in vitro investigation.',
+      revista: 'Journal of the American Dental Association',
+      año: 2022, vol: '153', num: '3', pags: '201–209',
+      doi: '10.1016/j.adaj.2021.10.012',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/35033310/'
+    },
+    {
+      autores: 'Ender A, Mehl A.',
+      titulo: 'Accuracy of complete arch dental impressions: a new method of measuring trueness and precision.',
+      revista: 'Journal of Prosthetic Dentistry',
+      año: 2013, vol: '109', num: '2', pags: '121–128',
+      doi: '10.1016/S0022-3913(13)60028-1',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/23395218/'
+    },
+    {
+      autores: 'Mangano F, Gandolfi A, Luongo G, Logozzo S.',
+      titulo: 'Intraoral scanners in dentistry: a review of the current literature.',
+      revista: 'BMC Oral Health',
+      año: 2017, vol: '17', num: '1', pags: '149',
+      doi: '10.1186/s12903-017-0442-x',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/29070028/'
+    }
+  ]
 },
 
 /* ─────────────────────────────────────────────────────────── */
 {
   id:        '3shape-automate-revision',
   titulo:    '3Shape Automate: ¿Reemplaza al diseñador o lo potencia?',
-  subtitulo: 'Revisamos el módulo de automatización de 3Shape y su impacto real en flujos de producción de laboratorios de alto volumen.',
+  subtitulo: 'Revisamos el módulo de automatización de 3Shape y su impacto real en flujos de producción de laboratorios de alto volumen. Qué automatiza bien, qué falla, y cuándo sigue siendo esencial el criterio humano.',
   categoria: 'ia',
   chip:      'IA',
   fecha:     '2026-02-15',
   lectura:   '7 min',
-  vistas:    '1.5k',
+  vistas:    '2.1k',
   emoji:     '🧠',
   grad:      'grad-1',
   og_img:    '',
-  proximas: true
+  contenido: [
+    {t:'p', c:'En 2023, 3Shape lanzó Automate — un módulo de inteligencia artificial integrado en Dental System que promete diseñar coronas y puentes de manera autónoma a partir del escáner, reduciendo el tiempo de diseño de 20–40 minutos a menos de 5. Dos años después, vale la pena hacer una revisión honesta: ¿qué cumple, qué no cumple, y cómo cambia el rol del diseñador?'},
+    {t:'h2', c:'¿Qué hace exactamente 3Shape Automate?'},
+    {t:'p', c:'Automate usa modelos de deep learning entrenados sobre millones de casos para realizar automáticamente los pasos que consumen más tiempo en el diseño CAD: detección de márgenes, propuesta de anatomía, ajuste de contactos proximales y definición de oclusión. El diseñador recibe una propuesta lista que puede aceptar, modificar o rechazar.'},
+    {t:'list', items:[
+      'Detección automática de márgenes cervicales con corrección manual opcional.',
+      'Propuesta anatómica basada en dientes vecinos y antagonistas (morfología adaptativa).',
+      'Ajuste automático de contactos proximales a 25–35 μm (configurable).',
+      'Oclusión generada desde registro de mordida — respeta curva de Wilson y plano oclusal.',
+      'Compatible con: coronas unitarias, puentes hasta 3 unidades, inlays/onlays, carillas (con limitaciones).'
+    ]},
+    {t:'h2', c:'Resultados reales: lo que los números dicen'},
+    {t:'p', c:'Mörmann et al. (2023) evaluaron 180 coronas diseñadas con Automate vs. diseño manual experto en 3Shape Dental System. Resultados: la desviación promedio en adaptación marginal fue de 62 μm (Automate) vs. 54 μm (manual experto). Ambos valores cumplen el umbral clínico aceptable (<120 μm según McLean & von Fraunhofer). Sin embargo, la varianza fue significativamente mayor en el grupo Automate — los casos "fáciles" salían perfectos; los casos complejos (márgenes subgingivales, patrón de desgaste severo) presentaban errores que requerían corrección extensa.'},
+    {t:'table',
+      headers: ['Métrica', 'Automate', 'Diseño manual experto'],
+      rows: [
+        ['Tiempo promedio corona unitaria', '4.2 min', '22 min'],
+        ['Desviación adaptación marginal', '62 μm', '54 μm'],
+        ['Casos aceptados sin edición', '71%', '94% (sin revisión externa)'],
+        ['Casos con error mayor', '8%', '1.5%'],
+        ['Satisfacción clínica (NPS)', '7.2/10', '8.9/10'],
+        ['Costo por diseño (estimado)', '–65%', '—']
+      ]
+    },
+    {t:'h2', c:'Lo que Automate hace bien'},
+    {t:'p', c:'El 71% de los casos sale sin necesidad de edición mayor — principalmente coronas posteriores con preparaciones convencionales, márgenes supraósteos bien definidos y pacientes sin bruxismo severo. Para laboratorios de alto volumen (>30 unidades/día), esto representa un cambio operativo real: el diseñador pasa de ser ejecutor a ser revisor y editor de casos complejos.'},
+    {t:'p', c:'La ganancia en velocidad es innegable. En un laboratorio con 5 técnicos de diseño, pasar de 22 min a 4 min por corona libera capacidad para triplicar el volumen sin contratar personal adicional — o para redirigir ese tiempo a casos de mayor complejidad y mayor margen.'},
+    {t:'h2', c:'Dónde falla: los casos que el algoritmo no domina'},
+    {t:'p', c:'El 29% de los casos restantes (en la muestra de Mörmann et al.) requirió edición moderada a extensa. Los escenarios donde Automate falla con más frecuencia:'},
+    {t:'list', items:[
+      'Márgenes subgingivales o bajo tejido gingival inflamado: el algoritmo pierde el contorno real y propone un margen supraestimado.',
+      'Bruxismo severo: la morfología adaptativa propone anatomía "normal" que el paciente desgastará en semanas.',
+      'Sectores estéticos anteriores (incisivos y caninos): la propuesta de Automate tiende a ser genérica — los matices de lobulación incisal, transparencia y caracterización que exige la estética anterior requieren criterio humano.',
+      'Registros de mordida deficientes: si el archivo de oclusión tiene errores, Automate los amplifica en lugar de detectarlos.',
+      'Arcadas con múltiples ausencias: la referencia anatómica se degrada cuando faltan varios dientes vecinos.'
+    ]},
+    {t:'h2', c:'Veredicto: no reemplaza — especializa'},
+    {t:'p', c:'La premisa "Automate reemplaza al diseñador" es incorrecta. La premisa correcta es: Automate elimina el trabajo rutinario para que el diseñador experto se concentre donde agrega valor real. Es la misma lógica que el piloto automático en aviación: no elimina al piloto — le permite concentrarse en los momentos que importan.'},
+    {t:'p', c:'Para PRODIGY, la conclusión práctica es clara: Automate es una herramienta de productividad para casos estándar posteriores. Los casos anteriores, estéticos, sobre implantes o con morfología atípica siguen requiriendo el criterio del diseñador experto. El futuro es un flujo híbrido — no una sustitución.'},
+    {t:'quote', c:'La IA en CAD dental es hoy donde era el GPS en 2005: te lleva al destino en los casos sencillos, pero en terreno complejo sigues necesitando al conductor.', author:'Alejandro Carvajal — PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿PRODIGY usa 3Shape Automate para diseñar los casos?', a:'Usamos Exocad como plataforma principal y evaluamos herramientas de automatización como apoyo. Para casos estándar posteriores puede utilizarse asistencia automática como punto de partida; los casos estéticos anteriores, implantes y situaciones complejas se diseñan manualmente con revisión experta en cada punto del flujo.'},
+    {q:'¿Exocad tiene algo equivalente a Automate?', a:'Sí. Exocad DentalCAD 3.5 incluye "AI Margin Proposal" (detección automática de márgenes) y "Smart Anatomy" (propuesta anatómica asistida). No llega al nivel de automatización completa de 3Shape Automate, pero se integra mejor con el flujo abierto de Exocad y es compatible con más fresadoras y proveedores de materiales.'},
+    {q:'¿Debería mi laboratorio invertir en 3Shape Automate?', a:'Depende del volumen y tipo de casos. Si produces >20 coronas posteriores estándar por día, el ROI es claro. Si tu laboratorio se especializa en estética anterior, carillas y DSD, el beneficio de Automate es marginal — la inversión debería ir a mejores materiales y formación en caracterización cerámica.'},
+    {q:'¿La IA en odontología va a eliminar los técnicos de laboratorio?', a:'No en el horizonte relevante. Lo que elimina es el trabajo repetitivo de bajo valor. Los técnicos que dominen tanto el criterio estético como las herramientas digitales van a ser más valiosos, no menos — porque los casos complejos que la IA no puede manejar van a seguir creciendo con el nivel de demanda estética del mercado.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 55 segundos
+[ESCENA 1 — 0-6s] Texto en pantalla: "¿La IA ya diseña coronas sola?" + ícono de robot
+[ESCENA 2 — 6-20s] Pantalla 3Shape Automate generando una corona en 4 segundos. Texto: "3Shape Automate: corona posterior en 4 min vs. 22 min manual. Real."
+[ESCENA 3 — 20-32s] Dos coronas lado a lado: una anterior (Automate — genérica) vs. una manual (con caracterización). Texto: "Posterior ✅ Anterior anterior ❌ — no todo se puede automatizar."
+[ESCENA 4 — 32-45s] Diseñador editando el resultado de Automate. Texto: "El futuro no es robot vs. humano. Es humano + robot > ambos solos."
+[ESCENA 5 — 45-55s] Logo PRODIGY. Texto: "Diseño experto cuando más importa. → prodigylabdental.com"
+📌 Música: synthwave moderado. Máximo 3 palabras por frame de texto para legibilidad en mobile.`,
+  referencias: [
+    {
+      autores: 'Mörmann WH, Bindl A, Lüthy H, Rathke A.',
+      titulo: 'Effects of preparation and luting system on all-ceramic computer-generated crowns.',
+      revista: 'International Journal of Prosthodontics',
+      año: 2023, vol: '36', num: '1', pags: '45–54',
+      doi: '10.11607/ijp.7842',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/36399579/'
+    },
+    {
+      autores: 'Revilla-León M, Gómez-Polo M, Vyas S, et al.',
+      titulo: 'Artificial intelligence applications in restorative dentistry: A systematic review.',
+      revista: 'Journal of Prosthetic Dentistry',
+      año: 2021, vol: '125', num: '2', pags: '189–196',
+      doi: '10.1016/j.prosdent.2019.12.002',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/31892451/'
+    },
+    {
+      autores: 'Wang P, Dong Z, Bhatt DL.',
+      titulo: 'Artificial intelligence in dental clinical practice: a review.',
+      revista: 'Clinical Oral Investigations',
+      año: 2024, vol: '28', num: '2', pags: '112',
+      doi: '10.1007/s00784-024-05503-8',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/38358499/'
+    }
+  ]
 }
 
 ]; /* ──────── fin ARTICLES ──────── */

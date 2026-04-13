@@ -108,15 +108,15 @@ Evaluadas y aprobadas por Alejandro para implementar cuando haya capacidad.
 Marcar con ✅ cuando se implemente, ❌ si se descarta con razón.
 
 ### Alta prioridad
-- [ ] **Notificación WA automática al doctor cuando avanza el estado** — `notify-wa` Edge Function ya existe en PENDIENTES Bloque 3. Cuando `avanzarCaso()` cambia estado, hacer POST a la función con el doctor_whatsapp.
-- [ ] **Link de aprobación de diseño por WA** — Al guardar `link_diseno`, enviar WA al doctor con el link directo al portal + botón de aprobación. Actualmente solo queda en el portal sin notificación activa.
-- [ ] **Columna `asignado_a` en `pedidos_doctor`** — Permite asignar casos a agentes específicos en el rutador cuando haya equipo. Requiere 1 línea SQL: `ALTER TABLE pedidos_doctor ADD COLUMN asignado_a TEXT;`
+- ✅ **Notificación WA automática al doctor cuando avanza el estado** — `notify-wa` deployed. Falta: META_ACCESS_TOKEN en Supabase Secrets.
+- ✅ **Link de aprobación de diseño por WA** — Implementado en `guardarLinkDiseno()`. Llama a `notify-wa` con `tipo: 'diseno_listo'`.
+- ✅ **Columna `asignado_a` en `pedidos_doctor`** — SQL ejecutado. Input inline en cada tarjeta del rutador → `asignarCaso()`.
 
 ### Media prioridad
-- [ ] **Dashboard de analytics en panel operador** — Pestaña "Métricas" con: casos por semana, tiempo promedio diseño→fresado, % urgentes, ingresos mensuales estimados. Todo calculado client-side desde `pedidos_doctor`.
+- ✅ **Dashboard de analytics en panel operador** — Tab "Métricas" completo: 8 KPIs, pipeline, top doctores, carga por día, calidad de diseño.
 - [ ] **Calendario de entregas** — Vista de semana en el panel operador mostrando casos por `fecha_entrega_estimada`. Identificar días con pico de carga.
-- [ ] **Flujo "Envía tu escáner, diseñamos nosotros"** — Landing page pública donde clínicas con iTero/Medit suben su .stl sin Exocad. Amplía mercado a clínicas sin lab propio.
-- [ ] **Realtime en rutador** — Suscripción Supabase Realtime en `#tab-rutador` para que las tarjetas se muevan solas cuando cambia el estado sin recargar manualmente.
+- ✅ **Flujo "Envía tu escáner, diseñamos nosotros"** — `envia-tu-scanner.html` con visor STL 3D, servicios visuales, formulario → Supabase.
+- ✅ **Realtime en rutador** — `iniciarRealtimeRutador()` con `postgres_changes` en `pedidos_doctor`. Punto verde indicador activo.
 
 ### Baja prioridad / Cuando haya más volumen
 - [ ] **App PWA del mensajero** — `mensajero.html` convertido a PWA instalable (manifest + service worker) para que el repartidor lo use offline.
