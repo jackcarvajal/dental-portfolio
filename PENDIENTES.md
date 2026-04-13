@@ -20,7 +20,7 @@
 | 10 | `sql/migrate-inventario.sql` | Tabla inventario materiales | ✅ Ejecutado |
 | 11 | `sql/migrate-billing.sql` | Tabla facturación | ✅ Ejecutado |
 | 12 | `sql/migrate-compliance.sql` | Tabla compliance / auditoría | ✅ Ejecutado |
-| 13 | `sql/migrate-scanner.sql` | Tabla `solicitudes_scanner` (escáner landing) | ⏳ **Pendiente** — correr en SQL Editor |
+| 13 | `sql/migrate-scanner.sql` | Tabla `solicitudes_scanner` (escáner landing) | ✅ Ejecutado |
 | 14 | `sql/migrate-domicilio.sql` | Tabla `citas_domicilio` (agendamiento a domicilio) | ⏳ **Pendiente** — correr en SQL Editor |
 
 ---
@@ -31,9 +31,9 @@
 |---|--------|---------|--------|
 | 1 | Crear bucket `casos` | Visibilidad: **Private** | ⏳ Pendiente |
 | 2 | Crear bucket `evidencias-entrega` | Visibilidad: **Private** | ⏳ Pendiente |
-| 3 | Crear bucket `scanner-uploads` | Visibilidad: **Private** + política INSERT para anon | ⏳ Pendiente |
-| 4 | Settings → Auth → Site URL | Cambiar a `https://prodigylabdental.com` | ⏳ Pendiente |
-| 5 | Settings → Auth → Redirect URLs | Agregar `https://prodigylabdental.com/**` | ⏳ Pendiente |
+| 3 | Crear bucket `scanner-uploads` | Visibilidad: **Private** + política INSERT para anon | ✅ Listo |
+| 4 | Settings → Auth → Site URL | Cambiar a `https://prodigylabdental.com` | ✅ Listo |
+| 5 | Settings → Auth → Redirect URLs | Agregar `https://prodigylabdental.com/**` | ✅ Listo |
 | 6 | Tabla `push_subscriptions` | `case_id text, endpoint text, p256dh text, auth text, created_at timestamptz` | ⏳ Pendiente |
 
 ---
@@ -112,7 +112,7 @@
 |---|--------|---------|--------|
 | 1 | Search Console | Verificar `prodigylabdental.com` → enviar `sitemap.xml` | ⏳ Pendiente |
 | 2 | Google My Business | Crear perfil con fotos del lab, horario, dirección Bogotá | ⏳ Pendiente |
-| 3 | Analytics GA4 | Crear propiedad → copiar Measurement ID → reemplazar `G-XXXXXXXXXX` en el script que ya está en las páginas públicas | ⏳ Solo necesita el ID |
+| 3 | Analytics GA4 | `G-Z8G2X7ETQ1` activo en index, calculadora, journal, envia-tu-scanner, escaner-domicilio | ✅ Listo |
 
 ---
 
