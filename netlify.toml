@@ -71,8 +71,43 @@
   status = 404
   force  = true
 
-# 2) SITIO PÚBLICO — coming-soon desactivado
-# coming-soon.html y acceso-staff.html se mantienen pero ya no redirigen
+# 2) SITIO BLOQUEADO — acceso por cookie (staff/amigos via /acceso-staff.html)
+
+# Puertas de entrada sin cookie (siempre accesibles)
+[[redirects]]
+  from   = "/acceso-staff.html"
+  to     = "/acceso-staff.html"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from   = "/coming-soon.html"
+  to     = "/coming-soon.html"
+  status = 200
+  force  = true
+
+# Con cookie prodigy_preview → acceso total al sitio
+[[redirects]]
+  from       = "/*"
+  to         = "/:splat"
+  status     = 200
+  conditions = { Cookie = ["prodigy_preview"] }
+
+# Sin cookie → coming-soon
+[[redirects]]
+  from   = "/"
+  to     = "/coming-soon.html"
+  status = 302
+
+[[redirects]]
+  from   = "/index.html"
+  to     = "/coming-soon.html"
+  status = 302
+
+[[redirects]]
+  from   = "/*.html"
+  to     = "/coming-soon.html"
+  status = 302
 
 # 3) Bloquear acceso a paneles internos de app (sin forzar — el auth-guard JS redirige)
 [[redirects]]
