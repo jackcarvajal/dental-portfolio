@@ -240,6 +240,37 @@
             animation: none;
         }
 
+        /* ── DROPDOWN SERVICIOS ── */
+        .nav-dropdown { position: relative; display: flex; align-items: center; }
+        .nav-dd-trigger {
+            color: var(--text-primary); background: none; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.8px; white-space: nowrap; padding: 0;
+            display: inline-flex; align-items: center; gap: 5px;
+            transition: color 0.3s;
+        }
+        .nav-dd-trigger:hover, .nav-dropdown:hover .nav-dd-trigger { color: var(--luxury-gold); }
+        .nav-dd-menu {
+            position: absolute; top: calc(100% + 14px); left: -12px;
+            background: rgba(5,5,5,0.98); backdrop-filter: blur(24px);
+            border: 1px solid rgba(212,175,55,0.22); border-radius: 12px;
+            padding: 6px 0; min-width: 240px;
+            opacity: 0; visibility: hidden; transform: translateY(-6px);
+            transition: opacity .22s, visibility .22s, transform .22s;
+            z-index: 1001;
+        }
+        .nav-dropdown:hover .nav-dd-menu, .nav-dropdown.open .nav-dd-menu {
+            opacity: 1; visibility: visible; transform: translateY(0);
+        }
+        .nav-dd-menu a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 11px 18px; color: #cbd5e1; text-decoration: none;
+            font-size: 12px; font-weight: 700; letter-spacing: 0.6px;
+            text-transform: uppercase; transition: background .2s, color .2s;
+        }
+        .nav-dd-menu a:hover { background: rgba(212,175,55,0.08); color: #D4AF37; }
+        .nav-dd-menu a i { color: #D946A6; width: 14px; text-align: center; }
+
         /* ========================================
            REDES SOCIALES FLOTANTES
            ======================================== */
@@ -1066,26 +1097,33 @@
                 <i class="fas fa-bars" id="hamburger-icon"></i>
             </button>
 
-            <!-- IZQUIERDA — 4 links simétricos -->
+            <!-- IZQUIERDA -->
             <div class="nav-left">
-                <a href="index.html#servicios">SERVICIOS</a>
+                <!-- Dropdown Servicios -->
+                <div class="nav-dropdown" id="nav-dd">
+                    <button class="nav-dd-trigger" id="nav-dd-btn" aria-haspopup="true" aria-expanded="false">
+                        SERVICIOS <i class="fas fa-chevron-down" style="font-size:9px;transition:transform .25s" id="nav-dd-arrow"></i>
+                    </button>
+                    <div class="nav-dd-menu" id="nav-dd-menu">
+                        <a href="flujo-diseno.html"><i class="fas fa-pen-ruler"></i> DISEÑOS CAD</a>
+                        <a href="flujo-fresado.html"><i class="fas fa-cog"></i> CENTRO FRESADO E IMPRESIÓN</a>
+                        <a href="escaner-domicilio.html"><i class="fas fa-mobile-alt"></i> ESCÁNER MÓVIL</a>
+                    </div>
+                </div>
                 <a href="portafolio.html">PORTAFOLIO</a>
-                <a href="envia-tu-scanner.html">ESCÁNER</a>
-                <a href="escaner-domicilio.html">DOMICILIO</a>
+                <a href="envia-tu-scanner.html">ENVÍA TU ESCÁNER</a>
             </div>
 
-            <!-- CENTRO — Logo PRODIGY (eje de simetría) -->
+            <!-- CENTRO — Logo PRODIGY -->
             <a href="index.html" class="nav-logo-box">
                 <h1>PRODIGY</h1>
                 <span>DIGITAL DENTISTRY</span>
             </a>
 
-            <!-- DERECHA — 4 links simétricos + CONTACTAR -->
+            <!-- DERECHA -->
             <div class="nav-right">
-                <a href="journal.html">INSIGHTS</a>
-                <a href="seguimiento-caso.html">SEGUIMIENTO</a>
-                <a href="index.html#workflow-247">CAD</a>
-                <a href="index.html#production">CAM</a>
+                <a href="journal.html">BLOG CIENTÍFICO</a>
+                <a href="seguimiento-caso.html">SIGUE TU CASO</a>
                 <a href="https://wa.me/573212816716" class="nav-contact-btn" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;">
                     <i class="fab fa-whatsapp"></i> CONTACTAR
                 </a>
@@ -2548,6 +2586,24 @@
         window.addEventListener('scroll', () => {
             navbar?.classList.toggle('scrolled', window.scrollY > 10);
         }, { passive: true });
+
+        // 2b. Dropdown SERVICIOS — click para abrir/cerrar
+        const navDd   = document.getElementById('nav-dd');
+        const navDdBtn = document.getElementById('nav-dd-btn');
+        const navDdArrow = document.getElementById('nav-dd-arrow');
+        if (navDdBtn) {
+            navDdBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const open = navDd.classList.toggle('open');
+                navDdBtn.setAttribute('aria-expanded', open);
+                navDdArrow.style.transform = open ? 'rotate(180deg)' : '';
+            });
+            document.addEventListener('click', () => {
+                navDd.classList.remove('open');
+                navDdBtn.setAttribute('aria-expanded', 'false');
+                navDdArrow.style.transform = '';
+            });
+        }
 
         // 3. Dots indicadores para carruseles principales
         const carousels = [
