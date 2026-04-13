@@ -31,7 +31,9 @@
       'color:#cbd5e1;text-decoration:none;font-size:12px;font-weight:700;',
       'letter-spacing:.9px;text-transform:uppercase;white-space:nowrap;transition:color .25s;}',
     '.pnav-left > a:hover,.pnav-right > a:hover{color:#D4AF37;}',
-    '.pnav-left > a.pnav-active,.pnav-right > a.pnav-active{color:#D946A6;}',
+    /* Página activa: verde neón — el usuario sabe exactamente dónde está */
+    '.pnav-left > a.pnav-active,.pnav-right > a.pnav-active{',
+      'color:#00FF41!important;text-shadow:0 0 10px rgba(0,255,65,.5);}',
 
     /* Logo */
     '.pnav-logo{text-decoration:none;text-align:center;display:block;}',
@@ -40,12 +42,15 @@
 
     /* ── DROPDOWN SERVICIOS ── */
     '.pnav-dd{position:relative;display:flex;align-items:center;}',
+    /* SERVICIOS: color de atención — magenta siempre visible, invita a explorar */
     '.pnav-dd-trigger{',
-      'color:#cbd5e1;text-decoration:none;font-size:12px;font-weight:700;',
+      'color:#D946A6;text-decoration:none;font-size:12px;font-weight:800;',
       'letter-spacing:.9px;text-transform:uppercase;white-space:nowrap;',
       'display:inline-flex;align-items:center;gap:5px;cursor:pointer;',
-      'transition:color .25s;background:none;border:none;padding:0;}',
-    '.pnav-dd-trigger:hover,.pnav-dd:hover .pnav-dd-trigger{color:#D4AF37;}',
+      'transition:color .25s,text-shadow .25s;background:none;border:none;padding:0;',
+      'text-shadow:0 0 12px rgba(217,70,166,.35);}',
+    '.pnav-dd-trigger:hover,.pnav-dd:hover .pnav-dd-trigger{',
+      'color:#D4AF37;text-shadow:0 0 12px rgba(212,175,55,.4);}',
     '.pnav-dd-arrow{font-size:9px;transition:transform .25s;}',
     '.pnav-dd:hover .pnav-dd-arrow,.pnav-dd.open .pnav-dd-arrow{transform:rotate(180deg);}',
 
