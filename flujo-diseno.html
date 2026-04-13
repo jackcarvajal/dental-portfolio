@@ -289,7 +289,22 @@
         body.light-theme p, body.light-theme span, body.light-theme li { color:#4a4a4a; }
         body.light-theme .tech-subtitle { color:rgba(0,130,180,.9); }
         body.light-theme .calc-total { background:linear-gradient(135deg,#f0ece0,#e8e2d0); }
+    /* ── PAYPAL ── */
+    #pp-container { margin-top:10px; min-height:50px; }
+    #pp-container.hidden { display:none; }
+    #btn-paypal-init {
+        width:100%;padding:13px;border:none;border-radius:8px;cursor:pointer;
+        font-size:.9rem;font-weight:800;letter-spacing:.4px;
+        background:linear-gradient(135deg,#003087,#009cde);
+        color:#fff;margin-top:10px;
+        display:flex;align-items:center;justify-content:center;gap:8px;
+        transition:opacity .2s,transform .2s;
+    }
+    #btn-paypal-init:hover { opacity:.9;transform:translateY(-1px); }
+    #btn-paypal-init:disabled { opacity:.5;cursor:not-allowed;transform:none; }
     </style>
+    <!-- PayPal JS SDK — Client ID público por diseño de PayPal -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AfJ71Yzfk4hmHF_hj6F9sdUqTLCK9tiImCegiXOTpScB81NhLLDuiKX2u37aY_E4swf8UO8QuC7jvaQr&currency=USD&intent=capture&locale=es_CO" defer></script>
 </head>
 <body>
 
@@ -707,6 +722,24 @@
                 💳 Pagar con Wompi (PSE / Tarjeta)
             </button>
 
+            <!-- ── PAYPAL ── -->
+            <div style="position:relative;margin-top:12px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                    <div style="flex:1;height:1px;background:rgba(255,255,255,.08);"></div>
+                    <span style="font-size:.7rem;color:#64748b;letter-spacing:1px;text-transform:uppercase;">Internacional</span>
+                    <div style="flex:1;height:1px;background:rgba(255,255,255,.08);"></div>
+                </div>
+                <button id="btn-paypal-init" onclick="initPayPal()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.784l-1.175 7.436h3.918l.738-4.667h2.107c4.854 0 7.485-2.538 8.35-6.564z" fill="#009cde"/></svg>
+                    Pagar con PayPal (USD)
+                </button>
+                <div id="pp-container" class="hidden"></div>
+                <p id="pp-info" style="display:none;font-size:.72rem;color:#64748b;text-align:center;margin-top:6px;line-height:1.5;">
+                    Se aplica recargo del 5.4% por procesamiento internacional.<br>
+                    Tasa referencia: 1 USD = 4,200 COP
+                </p>
+            </div>
+
             <!-- CONFIRMACIÓN DE PAGO -->
             <div class="accordion" style="border:1.5px solid rgba(212,175,55,.3);margin-bottom:0;">
                 <div class="accordion-header" onclick="toggleAccordion(this)" style="padding:13px 16px;">
@@ -719,7 +752,8 @@
                             <option value="">¿Por dónde pagaste?</option>
                             <option>Nequi</option><option>Daviplata</option>
                             <option>Nu</option><option>Breb</option>
-                            <option>PSE / Tarjeta</option><option>Otro</option>
+                            <option>PSE / Tarjeta</option>
+                            <option>PayPal</option><option>Otro</option>
                         </select>
                         <input type="text" id="pago_titular" placeholder="Nombre del titular" maxlength="50"
                                style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:.86rem;">
@@ -1317,6 +1351,180 @@
             document.body.classList.add('light-theme');
             setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
         }
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         PAYPAL INTEGRATION
+         Llama a verify-price → crea orden → captura pago → genera pedido
+    ══════════════════════════════════════════════════════════════ -->
+    <script>
+    const TASA_COP_USD = 4200; // Actualizar mensualmente
+
+    /* Valida el formulario antes de mostrar PayPal */
+    function validarFormularioBase() {
+        const nombre   = document.getElementById('nombreCliente')?.value.trim();
+        const wa       = document.getElementById('whatsappCliente')?.value.trim();
+        const ciudad   = document.getElementById('ciudad')?.value.trim();
+        const paciente = document.getElementById('nombrePaciente')?.value.trim();
+        const espec    = document.getElementById('especialidad')?.value;
+        const link     = document.getElementById('linkSTL')?.value.trim();
+        if (!nombre)         { showErr('nombreCliente',  'Nombre requerido'); return false; }
+        if (!wa || wa.length !== 10) { showErr('whatsappCliente','WhatsApp: 10 dígitos'); return false; }
+        if (!ciudad)         { showErr('ciudad',         'Ciudad requerida'); return false; }
+        if (!paciente)       { showErr('nombrePaciente', 'Nombre del paciente requerido'); return false; }
+        if (!espec)          { showErr('especialidad',   'Selecciona especialidad'); return false; }
+        if (!STATE.subtipoId){ alert('Selecciona el tipo de diseño CAD.'); return false; }
+        if (!link)           { showErr('linkSTL',        'Link de archivos requerido'); return false; }
+        return true;
+    }
+
+    async function initPayPal() {
+        if (!validarFormularioBase()) return;
+
+        const btnInit = document.getElementById('btn-paypal-init');
+        const ppCont  = document.getElementById('pp-container');
+        const ppInfo  = document.getElementById('pp-info');
+
+        btnInit.disabled = true;
+        btnInit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando precio…';
+
+        // 1. Verificar precio en servidor
+        let verified;
+        try {
+            const resp = await fetch(
+                'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/verify-price',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + SUPABASE_ANON
+                    },
+                    body: JSON.stringify({ precio_base: calcularTotal(), pasarela: 'paypal' })
+                }
+            );
+            verified = await resp.json();
+            if (!resp.ok) throw new Error(verified.error || 'Error verify-price');
+        } catch (e) {
+            btnInit.disabled = false;
+            btnInit.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.784l-1.175 7.436h3.918l.738-4.667h2.107c4.854 0 7.485-2.538 8.35-6.564z" fill="#009cde"/></svg> Pagar con PayPal (USD)';
+            alert('Error al verificar precio: ' + e.message); return;
+        }
+
+        const totalUSD = verified.total_usd;
+        if (!totalUSD || totalUSD < 0.5) {
+            btnInit.disabled = false;
+            alert('Monto mínimo PayPal: $0.50 USD'); return;
+        }
+
+        // 2. Renderizar botón PayPal
+        ppCont.innerHTML = '';
+        ppCont.classList.remove('hidden');
+        ppInfo.style.display = 'block';
+        btnInit.style.display = 'none';
+
+        if (typeof paypal === 'undefined') {
+            ppCont.innerHTML = '<p style="color:#f87171;font-size:.8rem;text-align:center">PayPal SDK no cargado. Recarga la página.</p>';
+            return;
+        }
+
+        paypal.Buttons({
+            style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'pay', height: 44 },
+
+            createOrder: (data, actions) => actions.order.create({
+                purchase_units: [{
+                    amount: { value: totalUSD.toFixed(2), currency_code: 'USD' },
+                    description: 'PRODIGY CAD: ' + (STATE.subtipoNombre || STATE.categoriaNombre),
+                    custom_id: verified.referencia_pre
+                }]
+            }),
+
+            onApprove: async (data, actions) => {
+                ppCont.innerHTML = '<p style="color:#94a3b8;font-size:.8rem;text-align:center"><i class="fas fa-spinner fa-spin"></i> Procesando pago…</p>';
+                let order;
+                try { order = await actions.order.capture(); }
+                catch (e) {
+                    ppCont.innerHTML = '<p style="color:#f87171;font-size:.8rem;text-align:center">Error al capturar pago PayPal: ' + e.message + '</p>';
+                    return;
+                }
+                // Auto-submit sin WhatsApp (pago ya confirmado)
+                submitOrdenPayPal(order, totalUSD, verified);
+            },
+
+            onCancel: () => {
+                ppCont.classList.add('hidden');
+                ppInfo.style.display = 'none';
+                btnInit.style.display = '';
+                btnInit.disabled = false;
+            },
+
+            onError: (err) => {
+                console.error('[PRODIGY] PayPal error:', err);
+                ppCont.innerHTML = '<p style="color:#f87171;font-size:.8rem;text-align:center">Error PayPal. Intenta con otro método.</p>';
+                setTimeout(() => {
+                    ppCont.classList.add('hidden');
+                    ppInfo.style.display = 'none';
+                    btnInit.style.display = '';
+                    btnInit.disabled = false;
+                }, 3000);
+            }
+        }).render('#pp-container');
+    }
+
+    /* Genera la orden en Supabase con estado Pagado_PayPal, sin WhatsApp modal */
+    function submitOrdenPayPal(paypalOrder, totalUSD, verified) {
+        const nombre   = document.getElementById('nombreCliente').value.trim();
+        const wa       = document.getElementById('whatsappCliente').value.trim();
+        const ciudad   = document.getElementById('ciudad').value.trim();
+        const paciente = document.getElementById('nombrePaciente').value.trim();
+        const link     = document.getElementById('linkSTL').value.trim();
+        const cantidad = parseInt(document.getElementById('cantidad')?.value || '1', 10);
+
+        const _r0 = new Uint8Array(5); crypto.getRandomValues(_r0);
+        const orderId = 'CAD-PP-' + Array.from(_r0).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
+        const payerName = (paypalOrder.payer?.name?.given_name || '') + ' ' + (paypalOrder.payer?.name?.surname || '');
+
+        const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
+        if (_sb) {
+            _sb.from('pedidos').insert([{
+                codigo:                orderId,
+                doctor:                sanitizar(nombre),
+                whatsapp:              wa,
+                servicio:              STATE.subtipoNombre || STATE.categoriaNombre,
+                material:              STATE.categoriaKey,
+                submaterial:           STATE.subtipoId,
+                cantidad:              cantidad,
+                total:                 Math.round(totalUSD * TASA_COP_USD),
+                total_usd:             totalUSD,
+                estado:                'Pagado_PayPal',
+                link_stl:              link,
+                flujo:                 'diseno',
+                terminos_aceptados_at: new Date().toISOString(),
+                paypal_order_id:       paypalOrder.id,
+                paypal_payer:          payerName.trim(),
+                paypal_email:          paypalOrder.payer?.email_address || '',
+                paypal_ref:            verified.referencia_pre,
+                seguro_garantia_activo: false,
+                costo_envio:           0
+            }]).then(({ error: _e }) => {
+                if (_e) console.warn('[PRODIGY] PayPal pedido no guardado:', _e.message);
+            });
+        }
+
+        // Mostrar modal de éxito
+        const totalFmt = '$' + Math.round(totalUSD * TASA_COP_USD).toLocaleString('es-CO') + ' COP (USD ' + totalUSD.toFixed(2) + ')';
+        const elId = document.getElementById('exito-id');
+        const elCli = document.getElementById('exito-cliente');
+        const elTot = document.getElementById('exito-total');
+        if (elId)  elId.textContent  = orderId;
+        if (elCli) elCli.textContent = sanitizar(nombre);
+        if (elTot) elTot.textContent = totalFmt;
+
+        // Reemplazar botones de pago manual por confirmación PayPal
+        const payBtns = document.querySelector('#modal-exito [style*="display:flex;gap:8px"]');
+        if (payBtns) payBtns.innerHTML = '<div style="color:#22c55e;font-weight:700;font-size:.95rem;padding:10px 0"><i class="fas fa-check-circle"></i> Pago PayPal confirmado · ID: ' + paypalOrder.id + '</div>';
+
+        document.getElementById('modal-exito')?.classList.add('active');
+    }
     </script>
 
     <!-- FLOTANTES UX -->
