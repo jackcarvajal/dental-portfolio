@@ -55,7 +55,6 @@ CREATE POLICY "scanner_admin_read" ON storage.objects
     USING (
         bucket_id = 'scanner-uploads'
         AND auth.email() IN (
-            'jacklaejandroc@gmail.com',
             'jackalejandroc@gmail.com',
             'labdentalprodigy@gmail.com'
         )
@@ -67,7 +66,6 @@ CREATE POLICY "scanner_admin_delete" ON storage.objects
     USING (
         bucket_id = 'scanner-uploads'
         AND auth.email() IN (
-            'jacklaejandroc@gmail.com',
             'jackalejandroc@gmail.com',
             'labdentalprodigy@gmail.com'
         )

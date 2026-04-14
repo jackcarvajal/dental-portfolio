@@ -13,7 +13,7 @@
 (function () {
     const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
-    const ADMIN_EMAILS  = ['jacklaejandroc@gmail.com', 'jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com'];
+    const ADMIN_EMAILS  = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com'];
 
     const DEST_MAP = {
         admin:                'panel-interno-operaciones.html',

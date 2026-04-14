@@ -5,7 +5,7 @@
 -- ─────────────────────────────────────────
 -- 1. Ve a: https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/auth/users
 -- 2. Clic en "Add user" → "Create new user"
--- 3. Email: jacklaejandroc@gmail.com
+-- 3. Email: jackalejandroc@gmail.com
 -- 4. Password: elige uno seguro (mínimo 12 chars)
 -- 5. Marca "Auto confirm user"
 -- 6. Clic en "Create user"
@@ -20,7 +20,7 @@
 INSERT INTO perfiles (id, email, rol, nombre_completo, activo)
 VALUES (
     '<USER_UUID>',               -- reemplazar con UUID real
-    'jacklaejandroc@gmail.com',
+    'jackalejandroc@gmail.com',
     'admin',
     'Alejandro Carvajal',
     true
