@@ -3,11 +3,11 @@
 -- Ejecutar en: Supabase > SQL Editor
 -- ============================================================
 
--- 1. Tabla de doctores (si existe)
-ALTER TABLE doctores
+-- 1. Tabla de perfiles de doctores
+ALTER TABLE doctores_perfil
   ADD COLUMN IF NOT EXISTS acepta_marketing boolean DEFAULT false;
 
-COMMENT ON COLUMN doctores.acepta_marketing IS
+COMMENT ON COLUMN doctores_perfil.acepta_marketing IS
   'Consentimiento explícito para mensajes promocionales (Habeas Data Colombia). false = solo mensajes transaccionales.';
 
 -- 2. Tabla de solicitudes de escáner
