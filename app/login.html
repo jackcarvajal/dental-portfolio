@@ -607,26 +607,69 @@
         document.getElementById('success-box').style.display = 'none';
     }
 
+    let loginFailCount = 0;
+
     async function handleLogin(e) {
         e.preventDefault();
         const email = document.getElementById('login-email').value.trim().toLowerCase();
         const pass  = document.getElementById('login-pass').value;
         const btn   = e.target.querySelector('button[type=submit]');
+
+        if (!email || !pass) {
+            showError('Completa correo y contraseña.');
+            return;
+        }
+
         btn.disabled = true;
         btn.textContent = 'Verificando...';
         clearMessages();
 
-        const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> &nbsp;Ingresar al Panel';
+        // Timeout de 8 segundos — si Supabase no responde, avisar
+        let timedOut = false;
+        const timeout = setTimeout(() => {
+            timedOut = true;
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> &nbsp;Ingresar al Panel';
+            showError('Sin respuesta del servidor. Verifica tu conexión e intenta de nuevo.');
+        }, 8000);
 
-        if (error) {
-            showError(error.message === 'Invalid login credentials'
-                ? 'Correo o contraseña incorrectos.'
-                : error.message);
-            return;
+        try {
+            const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+            clearTimeout(timeout);
+            if (timedOut) return;
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> &nbsp;Ingresar al Panel';
+
+            if (error) {
+                loginFailCount++;
+                const msg = (error.message === 'Invalid login credentials' || error.message?.includes('invalid'))
+                    ? 'Correo o contraseña incorrectos.'
+                    : error.message;
+
+                if (loginFailCount >= 3) {
+                    // Tercer fallo → forzar panel de reset
+                    showError(`${msg} — 3 intentos fallidos. Restablece tu contraseña.`);
+                    document.getElementById('reset-panel').style.display = 'block';
+                    document.getElementById('reset-email').value = email;
+                    document.getElementById('reset-email').focus();
+                    loginFailCount = 0;
+                } else {
+                    showError(`${msg} (intento ${loginFailCount}/3)`);
+                }
+                return;
+            }
+
+            loginFailCount = 0;
+            redirectByRole(data.user);
+
+        } catch (ex) {
+            clearTimeout(timeout);
+            if (timedOut) return;
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> &nbsp;Ingresar al Panel';
+            showError('Error inesperado: ' + ex.message);
         }
-        redirectByRole(data.user);
     }
 
     function toggleReset() {
