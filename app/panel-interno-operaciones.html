@@ -868,7 +868,7 @@ async function cargarPedidos() {
     try {
         const { data, error } = await sb
             .from('pedidos')
-            .select('*, clientes(nombre,email)')
+            .select('*')
             .order('created_at', { ascending: false });
 
         if (error) throw error;
