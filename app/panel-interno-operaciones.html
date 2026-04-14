@@ -759,8 +759,12 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
+// XSS guard — escapar siempre datos de usuario/DB antes de innerHTML
+const esc = s => String(s ?? '—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
 // Emails autorizados como admin (fuente de verdad adicional al rol en Supabase)
 const ADMIN_EMAILS = [
+    'jacklaejandroc@gmail.com',
     'jackalejandroc@gmail.com',
     'labdentalprodigy@gmail.com'
 ];
@@ -889,11 +893,11 @@ function renderPedidos(lista) {
 
     document.getElementById('tbody-pedidos').innerHTML = lista.map(p => `
     <tr>
-        <td style="font-family:monospace;color:var(--cyan);">${p.codigo || p.id?.slice(0,8)}</td>
-        <td>${p.tipo_trabajo || '—'}</td>
-        <td>${p.material || '—'}</td>
+        <td style="font-family:monospace;color:var(--cyan);">${esc(p.codigo || p.id?.slice(0,8))}</td>
+        <td>${esc(p.tipo_trabajo)}</td>
+        <td>${esc(p.material)}</td>
         <td style="color:#00FF41;font-weight:700;">${fmtCOP(p.precio_total)}</td>
-        <td style="font-size:0.75rem;color:#94a3b8;">${p.pasarela || '—'}</td>
+        <td style="font-size:0.75rem;color:#94a3b8;">${esc(p.pasarela)}</td>
         <td>
             <select onchange="cambiarEstado('${p.id}',this.value)"
                     style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:6px;padding:4px 8px;font-size:0.72rem;">
@@ -1080,11 +1084,11 @@ async function cargarClientes() {
 
         document.getElementById('tbody-clientes').innerHTML = data.map(c => `
         <tr>
-            <td style="font-weight:700;">${c.nombre || '—'}</td>
-            <td style="font-size:0.78rem;color:#94a3b8;">${c.email}</td>
-            <td>${c.clinica || '—'}</td>
-            <td>${c.ciudad || '—'}</td>
-            <td>${c.pais || 'Colombia'}</td>
+            <td style="font-weight:700;">${esc(c.nombre)}</td>
+            <td style="font-size:0.78rem;color:#94a3b8;">${esc(c.email)}</td>
+            <td>${esc(c.clinica)}</td>
+            <td>${esc(c.ciudad)}</td>
+            <td>${esc(c.pais || 'Colombia')}</td>
             <td style="font-size:0.75rem;">${fmtFecha(c.created_at)}</td>
             <td style="text-align:center;font-weight:700;color:var(--gold);">
                 ${c.pedidos?.[0]?.count ?? 0}
@@ -1335,9 +1339,9 @@ function renderLeads(arr) {
                </a>`
             : '—';
         return `<tr>
-            <td style="font-weight:600;">${l.nombre || '—'}</td>
+            <td style="font-weight:600;">${esc(l.nombre)}</td>
             <td>${waLink}</td>
-            <td style="font-size:0.75rem;color:#94a3b8;" title="${l.recurso_descargado}">${recursoCorto}</td>
+            <td style="font-size:0.75rem;color:#94a3b8;" title="${esc(l.recurso_descargado)}">${esc(recursoCorto)}</td>
             <td style="font-size:0.78rem;color:#64748b;">${fecha}</td>
             <td>${badge}</td>
             <td>
@@ -1594,14 +1598,14 @@ function renderLane(laneId, casos, btnLabel) {
         return `<div class="kcase" id="kc-${c.id}">
             <div class="kcase-top">
                 <div>
-                    <div class="kcase-doc">${c.doctor_nombre||'Doctor'} ${wa}</div>
-                    <div class="kcase-cli">${c.doctor_clinica||''}</div>
+                    <div class="kcase-doc">${esc(c.doctor_nombre||'Doctor')} ${wa}</div>
+                    <div class="kcase-cli">${esc(c.doctor_clinica)}</div>
                 </div>
-                <div style="text-align:right;font-size:.65rem;color:#475569">${c.estado.replace('_',' ')}</div>
+                <div style="text-align:right;font-size:.65rem;color:#475569">${esc(c.estado.replace('_',' '))}</div>
             </div>
-            <div class="kcase-service">${svc}${c.dientes ? ' · dientes '+c.dientes : ''}</div>
+            <div class="kcase-service">${esc(svc)}${c.dientes ? ' · dientes '+esc(c.dientes) : ''}</div>
             <div>
-                <span class="kcase-mat">${mat}</span>
+                <span class="kcase-mat">${esc(mat)}</span>
                 ${c.urgente ? '<span class="kcase-urg">⚡ URGENTE</span>' : ''}
                 ${c.incluye_dsd ? '<span class="kcase-dsd">🎨 DSD</span>' : ''}
             </div>

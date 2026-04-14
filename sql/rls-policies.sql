@@ -46,6 +46,7 @@ CREATE POLICY "casos_select_admin" ON storage.objects
     USING (
         bucket_id = 'casos'
         AND auth.email() IN (
+            'jacklaejandroc@gmail.com',
             'jackalejandroc@gmail.com',
             'labdentalprodigy@gmail.com'
         )
@@ -57,6 +58,7 @@ CREATE POLICY "casos_delete_admin" ON storage.objects
     USING (
         bucket_id = 'casos'
         AND auth.email() IN (
+            'jacklaejandroc@gmail.com',
             'jackalejandroc@gmail.com',
             'labdentalprodigy@gmail.com'
         )
@@ -83,6 +85,7 @@ CREATE POLICY "pedidos_select_admin" ON pedidos
     FOR SELECT TO authenticated
     USING (
         auth.email() IN (
+            'jacklaejandroc@gmail.com',
             'jackalejandroc@gmail.com',
             'labdentalprodigy@gmail.com'
         )
@@ -98,6 +101,7 @@ CREATE POLICY "pedidos_update_admin" ON pedidos
     FOR UPDATE TO authenticated
     USING (
         auth.email() IN (
+            'jacklaejandroc@gmail.com',
             'jackalejandroc@gmail.com',
             'labdentalprodigy@gmail.com'
         )
@@ -116,6 +120,7 @@ CREATE POLICY "pagos_select_admin" ON pagos
     FOR SELECT TO authenticated
     USING (
         auth.email() IN (
+            'jacklaejandroc@gmail.com',
             'jackalejandroc@gmail.com',
             'labdentalprodigy@gmail.com'
         )
