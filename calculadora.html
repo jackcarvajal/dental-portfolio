@@ -450,6 +450,15 @@
         <div class="toggle" id="tog-envio" onclick="toggleOpcion('envio')"></div>
       </div>
 
+      <div class="toggle-row" id="row-internacional" style="display:none;">
+        <div class="toggle-info">
+          Pago Internacional (PayPal)
+          <small>Platform service fee 6.5% · USD</small>
+        </div>
+        <span class="toggle-price" id="precio-intl-fee" style="color:var(--cyan)">+6.5%</span>
+        <div class="toggle" id="tog-internacional" onclick="toggleOpcion('internacional')"></div>
+      </div>
+
     </div>
 
   </div><!-- /left-col -->
@@ -468,7 +477,9 @@
         <div class="breakdown-row" id="bd-urgente-row" style="display:none;"><span>Urgente 24h</span><span>+$40.000</span></div>
         <div class="breakdown-row" id="bd-dsd-row"     style="display:none;"><span>DSD</span><span>+$80.000</span></div>
         <div class="breakdown-row" id="bd-envio-row"   style="display:none;"><span>Envío</span><span>+$20.000</span></div>
+        <div class="breakdown-row" id="bd-intl-row" style="display:none;color:#00d2ff;"><span>Platform fee (6.5%)</span><span id="bd-intl-fee">+$0</span></div>
         <div class="breakdown-row total-row"><span>Total estimado</span><span id="bd-total">$180.000</span></div>
+        <div class="breakdown-row" id="bd-usd-row" style="display:none;font-size:0.75rem;color:#64748b;"><span>Aprox. USD</span><span id="bd-usd">~$0</span></div>
       </div>
 
       <div class="result-note">
@@ -511,6 +522,16 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 let sb;
 document.addEventListener('DOMContentLoaded', () => {
   sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  // Mostrar opción PayPal solo a usuarios fuera de Colombia
+  fetch('https://ipapi.co/json/')
+    .then(r => r.json())
+    .then(d => {
+      if (d.country_code && d.country_code !== 'CO') {
+        document.getElementById('row-internacional').style.display = '';
+        if (d.currency_rate) USD_RATE = d.currency_rate; // usar tasa real si disponible
+      }
+    })
+    .catch(() => {}); // fail silently → toggle permanece oculto
 });
 
 const WA_NUMBER = '573212816716';
@@ -548,7 +569,9 @@ let state = {
   urgente: false,
   dsd: false,
   envio: false,
+  internacional: false,
 };
+let USD_RATE = 4200; // tasa COP→USD de respaldo
 
 /* ── HELPERS ─────────────────────────────────────────── */
 const fmtCOP = (v) => '$' + Number(v).toLocaleString('es-CO');
@@ -575,6 +598,24 @@ function renderResult() {
   document.getElementById('bd-urgente-row').style.display = state.urgente ? '' : 'none';
   document.getElementById('bd-dsd-row').style.display     = state.dsd     ? '' : 'none';
   document.getElementById('bd-envio-row').style.display   = state.envio   ? '' : 'none';
+
+  // PayPal internacional
+  if (state.internacional) {
+    const fee = Math.round(total * 0.065);
+    const totalConFee = total + fee;
+    const usdAmt = (totalConFee / USD_RATE).toFixed(2);
+    document.getElementById('bd-intl-row').style.display = '';
+    document.getElementById('bd-usd-row').style.display  = '';
+    document.getElementById('bd-intl-fee').textContent   = '+' + fmtCOP(fee);
+    document.getElementById('bd-total').textContent      = fmtCOP(totalConFee);
+    document.getElementById('res-total').textContent     = fmtCOP(totalConFee);
+    document.getElementById('bd-usd').textContent        = '~$' + usdAmt + ' USD';
+  } else {
+    document.getElementById('bd-intl-row').style.display = 'none';
+    document.getElementById('bd-usd-row').style.display  = 'none';
+    document.getElementById('bd-total').textContent      = fmtCOP(total);
+    document.getElementById('res-total').textContent     = fmtCOP(total);
+  }
 }
 
 /* ── SELECTORES ──────────────────────────────────────── */

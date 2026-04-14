@@ -525,6 +525,17 @@
                     <p class="prog-lbl" id="prog-lbl">Subiendo…</p>
                 </div>
 
+                <!-- Habeas Data Colombia -->
+                <label style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;cursor:pointer;font-size:12px;color:#94a3b8;line-height:1.4;">
+                    <input type="checkbox" id="checkHabeas" required style="margin-top:2px;accent-color:#D946A6;flex-shrink:0;">
+                    <span>Autorizo el tratamiento de mis datos personales para gestión de pedidos y seguimiento de casos.
+                    <span style="display:block;margin-top:3px;color:#64748b;">Acepto recibir información sobre novedades y promociones (opcional). Puedo darme de baja en cualquier momento sin afectar mis notificaciones de caso. <a href="terminos-y-legal.html" style="color:#00d2ff;text-decoration:none;" target="_blank">Ver política de privacidad.</a></span></span>
+                </label>
+                <label style="display:flex;align-items:center;gap:10px;margin-bottom:18px;cursor:pointer;font-size:12px;color:#64748b;">
+                    <input type="checkbox" id="checkMarketing" style="accent-color:#D4AF37;">
+                    <span>Acepto recibir promociones y novedades del laboratorio (opcional)</span>
+                </label>
+
                 <button type="submit" class="btn-submit" id="submitBtn">
                     <i class="fas fa-paper-plane"></i> Enviar solicitud
                 </button>
@@ -734,7 +745,8 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
     await sb.from('solicitudes_scanner').insert({
         doctor, clinica, whatsapp, email: email || null,
         escaner_marca: marca, servicio, piezas: piezas || null,
-        notas: notas || null, archivo_url, archivo_nombre
+        notas: notas || null, archivo_url, archivo_nombre,
+        acepta_marketing: document.getElementById('checkMarketing').checked
     });
 
     setProg(100, 'Listo');

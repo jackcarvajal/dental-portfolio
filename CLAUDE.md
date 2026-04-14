@@ -47,3 +47,10 @@ Omitir si sesión corta o de solo consultas.
 
 ## 8. BACKLOG
 Las mejoras propuestas viven en PENDIENTES.md. No leer salvo que Alejandro lo indique.
+
+## 9. PRIVACIDAD Y DATOS
+- Todo formulario de captación (leads/registro) requiere checkbox Habeas Data Colombia.
+- Texto legal: "Autorizo tratamiento de mis datos para gestión de pedidos. Acepto recibir novedades y promociones (opcional). Puedo darme de baja sin afectar seguimiento de caso."
+- Separar estrictamente: Transaccionales (seguimiento Kanban → siempre) vs. Promocionales (marketing → requiere acepta_marketing = true).
+- BAJA de marketing no afecta columna de notificaciones operativas.
+- Columna `acepta_marketing boolean default false` en tablas de doctores y solicitudes_scanner.
