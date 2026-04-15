@@ -991,6 +991,18 @@
         #scroll-top-btn { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         #scroll-top-btn.visible { opacity: 1; pointer-events: all; }
 
+        /* SOUND BUTTON */
+        #sound-btn {
+            position: fixed; bottom: 25px; left: 25px; z-index: 998;
+            width: 46px; height: 46px;
+            background: rgba(10,10,10,0.92); border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.25s; color: #D4AF37;
+            font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        #sound-btn:hover { border-color: #D4AF37; background: rgba(212,175,55,0.12); transform: scale(1.1); }
+        #sound-btn.playing { border-color: #00d2ff; color: #00d2ff; box-shadow: 0 0 14px rgba(0,210,255,0.35); }
+
         /* GOOGLE TRANSLATE - ocultar widget nativo, solo mostrar ícono */
         .goog-te-gadget { display: none !important; }
         .goog-te-banner-frame { display: none !important; }
@@ -2809,6 +2821,55 @@
                 });
             }, { passive: true });
         });
+    })();
+    </script>
+
+    <!-- AMBIENT AUDIO -->
+    <audio id="ambient-audio" loop preload="none">
+        <source src="assets/audio/prodigy-ambient.mp3" type="audio/mpeg">
+    </audio>
+    <button id="sound-btn" onclick="toggleSound()" title="Ambient sound" aria-label="Activar/desactivar música ambiente">
+        <i class="fas fa-volume-xmark" aria-hidden="true"></i>
+    </button>
+    <script>
+    (function() {
+        const audio = document.getElementById('ambient-audio');
+        const btn   = document.getElementById('sound-btn');
+        let playing = false;
+
+        window.toggleSound = function() {
+            if (!playing) {
+                audio.volume = 0;
+                audio.play().then(() => {
+                    playing = true;
+                    btn.classList.add('playing');
+                    btn.querySelector('i').className = 'fas fa-volume-high';
+                    btn.title = 'Silenciar';
+                    // Fade in suave
+                    let v = 0;
+                    const fade = setInterval(() => {
+                        v = Math.min(v + 0.04, 0.18);
+                        audio.volume = v;
+                        if (v >= 0.18) clearInterval(fade);
+                    }, 80);
+                }).catch(() => {});
+            } else {
+                // Fade out suave
+                let v = audio.volume;
+                const fade = setInterval(() => {
+                    v = Math.max(v - 0.04, 0);
+                    audio.volume = v;
+                    if (v <= 0) {
+                        clearInterval(fade);
+                        audio.pause();
+                        playing = false;
+                        btn.classList.remove('playing');
+                        btn.querySelector('i').className = 'fas fa-volume-xmark';
+                        btn.title = 'Ambient sound';
+                    }
+                }, 80);
+            }
+        };
     })();
     </script>
 
