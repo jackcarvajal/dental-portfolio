@@ -23,8 +23,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/flujo-impresion.min.css">
     <link rel="stylesheet" href="css/global-nav.min.css">
-    <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AfJ71Yzfk4hmHF_hj6F9sdUqTLCK9tiImCegiXOTpScB81NhLLDuiKX2u37aY_E4swf8UO8QuC7jvaQr&currency=USD&intent=capture&locale=es_CO" defer></script>
 </head>
 <body>
     <script src="js/navbar.js"></script>
@@ -544,17 +542,13 @@
                 💳 Pagar con Wompi (PSE / Tarjeta)
             </button>
 
-            <!-- PAGO INTERNACIONAL -->
-            <div style="border:1px solid rgba(0,210,255,0.25);border-radius:10px;padding:14px;margin-bottom:14px;background:rgba(0,210,255,0.04);">
-                <p style="font-size:.72rem;color:#64748b;text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;">Pago internacional (USD)</p>
-                <button id="btn-ls-init" onclick="initLemonSqueezy()" style="width:100%;padding:11px;background:linear-gradient(135deg,#fbbf24,#d97706);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.85rem;margin-bottom:8px;">
-                    🍋 Pagar con Lemon Squeezy (USD)
-                </button>
-                <button id="btn-paypal-init" onclick="initPayPal()" style="width:100%;padding:11px;background:linear-gradient(135deg,#003087,#009cde);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.85rem;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:4px"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.784l-1.175 7.436h3.918l.738-4.667h2.107c4.854 0 7.485-2.538 8.35-6.564z" fill="#fff"/></svg>
-                    Segunda opción: PayPal (USD)
-                </button>
-                <div id="pp-container" class="hidden" style="margin-top:10px;"></div>
+            <!-- AVISO CLIENTES INTERNACIONALES -->
+            <div style="border:1px solid rgba(251,191,36,0.4);border-radius:10px;padding:14px;margin-bottom:14px;background:rgba(251,191,36,0.06);">
+                <p style="font-size:.8rem;font-weight:700;color:#fbbf24;margin-bottom:6px;">⚠️ Servicio exclusivo para Colombia</p>
+                <p style="font-size:.75rem;color:#94a3b8;margin-bottom:10px;line-height:1.5;">La impresión 3D requiere envío físico nacional. Si estás fuera de Colombia o necesitas coordinar logística especial, escríbenos por WhatsApp.</p>
+                <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20soy%20cliente%20internacional%20y%20necesito%20coordinar%20envío%20para%20impresión%203D." target="_blank" rel="noopener" style="display:block;width:100%;padding:11px;background:linear-gradient(135deg,#166534,#15803d);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.85rem;text-align:center;text-decoration:none;">
+                    <i class="fab fa-whatsapp"></i> Coordinar envío vía WhatsApp
+                </a>
             </div>
 
             <div class="payment-buttons">
@@ -1130,138 +1124,6 @@
         }
     </script>
 
-    <!-- LS + PayPal internacional — impresion -->
-    <script>
-    const TASA_COP_USD = 4200;
-    const LS_STORE_ID   = 'TU_STORE_ID';
-    const LS_VARIANT_ID = 'TU_VARIANT_ID';
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
-    const PLATFORM_FEES = {
-        ls:     { pct: 5.00, fijo: 0.50 },
-        paypal: { pct: 4.40, fijo: 0.49 }
-    };
-    function _calcFeeUSD(totalCOP, p) {
-        const f = PLATFORM_FEES[p];
-        return parseFloat(((totalCOP / TASA_COP_USD) * f.pct / 100 + f.fijo).toFixed(2));
-    }
-    function _validarIMP() {
-        const n = document.getElementById('nombreCliente')?.value.trim();
-        const w = document.getElementById('whatsappCliente')?.value.trim();
-        const c = document.getElementById('ciudad')?.value.trim();
-        const p = document.getElementById('nombrePaciente')?.value.trim();
-        const l = document.getElementById('linkSTL')?.value.trim();
-        if (!n) { alert('Nombre requerido'); return false; }
-        if (!w || w.length !== 10) { alert('WhatsApp: 10 dígitos'); return false; }
-        if (!c) { alert('Ciudad requerida'); return false; }
-        if (!p) { alert('Nombre del paciente requerido'); return false; }
-        if (!STATE.submaterialId) { alert('Selecciona el tipo de impresión.'); return false; }
-        if (!l) { alert('Link de archivos requerido'); return false; }
-        return true;
-    }
-    async function initLemonSqueezy() {
-        if (!_validarIMP()) return;
-        const btn = document.getElementById('btn-ls-init');
-        btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando…';
-        const total = calcularTotal();
-        let verified;
-        try {
-            const r = await fetch('https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/verify-price',
-                { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
-                  body: JSON.stringify({ precio_base: total, pasarela:'ls' }) });
-            verified = await r.json();
-            if (!r.ok) throw new Error(verified.error || 'Error verify-price');
-        } catch(e) {
-            btn.disabled = false; btn.innerHTML = '🍋 Pagar con Lemon Squeezy (USD)';
-            alert('Error al verificar precio: ' + e.message); return;
-        }
-        const totalUSD = parseFloat(((total / TASA_COP_USD) + _calcFeeUSD(total,'ls')).toFixed(2));
-        if (!totalUSD || totalUSD < 0.5) { btn.disabled = false; alert('Monto mínimo: $0.50 USD'); return; }
-        const _r = new Uint8Array(5); crypto.getRandomValues(_r);
-        const orderId = 'IMP-LS-' + Array.from(_r).map(b=>b.toString(16).padStart(2,'0')).join('').toUpperCase();
-        const nombre = document.getElementById('nombreCliente').value.trim();
-        const wa     = document.getElementById('whatsappCliente').value.trim();
-        const link   = document.getElementById('linkSTL').value.trim();
-        const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
-        if (_sb) {
-            await _sb.from('pedidos').insert([{
-                codigo: orderId, doctor: sanitizar(nombre), whatsapp: wa,
-                servicio: STATE.submaterialNombre || STATE.materialTipo,
-                material: STATE.materialTipo, submaterial: STATE.submaterialId,
-                cantidad: 1, total: Math.round(totalUSD * TASA_COP_USD), total_usd: totalUSD,
-                estado: 'Pendiente_LS', link_stl: link, flujo: 'impresion',
-                terminos_aceptados_at: new Date().toISOString(),
-                paypal_ref: verified.referencia_pre, seguro_garantia_activo: false, costo_envio: 0
-            }]);
-        }
-        const centavos = Math.round(totalUSD * 100);
-        const successUrl = encodeURIComponent('https://prodigylabdental.com/app/success.html?pedido=' + orderId);
-        window.location.href = 'https://' + LS_STORE_ID + '.lemonsqueezy.com/buy/' + LS_VARIANT_ID
-            + '?checkout[custom_price]=' + centavos
-            + '&checkout[custom][pedido_id]=' + orderId
-            + '&checkout[success_url]=' + successUrl;
-    }
-    async function initPayPal() {
-        if (!_validarIMP()) return;
-        const btn = document.getElementById('btn-paypal-init');
-        const ppCont = document.getElementById('pp-container');
-        btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando…';
-        const total = calcularTotal();
-        let verified;
-        try {
-            const r = await fetch('https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/verify-price',
-                { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
-                  body: JSON.stringify({ precio_base: total, pasarela:'paypal' }) });
-            verified = await r.json();
-            if (!r.ok) throw new Error(verified.error || 'Error verify-price');
-        } catch(e) {
-            btn.disabled = false; btn.innerHTML = 'Segunda opción: PayPal (USD)';
-            alert('Error al verificar precio: ' + e.message); return;
-        }
-        const totalUSD = verified.total_usd;
-        if (!totalUSD || totalUSD < 0.5) { btn.disabled = false; alert('Monto mínimo: $0.50 USD'); return; }
-        ppCont.innerHTML = ''; ppCont.classList.remove('hidden'); btn.style.display = 'none';
-        if (typeof paypal === 'undefined') {
-            ppCont.innerHTML = '<p style="color:#f87171;font-size:.8rem;text-align:center">PayPal SDK no cargó. Recarga la página.</p>'; return;
-        }
-        paypal.Buttons({
-            style: { layout:'vertical', color:'blue', shape:'rect', label:'pay', height:40 },
-            createOrder: (d,a) => a.order.create({ purchase_units:[{
-                amount:{ value: totalUSD.toFixed(2), currency_code:'USD' },
-                description: 'PRODIGY Impresión: ' + (STATE.submaterialNombre || STATE.materialTipo),
-                custom_id: verified.referencia_pre }] }),
-            onApprove: async (d,a) => {
-                ppCont.innerHTML = '<p style="color:#94a3b8;font-size:.8rem;text-align:center"><i class="fas fa-spinner fa-spin"></i> Procesando…</p>';
-                let order;
-                try { order = await a.order.capture(); } catch(e) {
-                    ppCont.innerHTML = '<p style="color:#f87171;font-size:.8rem;text-align:center">Error PayPal: '+e.message+'</p>'; return;
-                }
-                const _r = new Uint8Array(5); crypto.getRandomValues(_r);
-                const orderId = 'IMP-PP-' + Array.from(_r).map(b=>b.toString(16).padStart(2,'0')).join('').toUpperCase();
-                const nombre  = document.getElementById('nombreCliente').value.trim();
-                const wa      = document.getElementById('whatsappCliente').value.trim();
-                const link    = document.getElementById('linkSTL').value.trim();
-                const payer   = ((order.payer?.name?.given_name||'')+' '+(order.payer?.name?.surname||'')).trim();
-                const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
-                if (_sb) _sb.from('pedidos').insert([{
-                    codigo: orderId, doctor: sanitizar(nombre), whatsapp: wa,
-                    servicio: STATE.submaterialNombre || STATE.materialTipo,
-                    material: STATE.materialTipo, submaterial: STATE.submaterialId,
-                    cantidad: 1, total: Math.round(totalUSD * TASA_COP_USD), total_usd: totalUSD,
-                    estado: 'Pagado_PayPal', link_stl: link, flujo: 'impresion',
-                    terminos_aceptados_at: new Date().toISOString(),
-                    paypal_order_id: order.id, paypal_payer: payer,
-                    paypal_email: order.payer?.email_address || '',
-                    paypal_ref: verified.referencia_pre, seguro_garantia_activo: false, costo_envio: 0
-                }]);
-                document.getElementById('modal-exito')?.classList.add('active');
-            },
-            onCancel: () => { ppCont.classList.add('hidden'); btn.style.display=''; btn.disabled=false; },
-            onError: (e) => { console.error('[PRODIGY] PayPal:', e);
-                ppCont.innerHTML='<p style="color:#f87171;font-size:.8rem;text-align:center">Error PayPal. Intenta con Lemon Squeezy.</p>';
-                setTimeout(()=>{ ppCont.classList.add('hidden'); btn.style.display=''; btn.disabled=false; }, 3000); }
-        }).render('#pp-container');
-    }
-    </script>
     <!-- Google Analytics GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-Z8G2X7ETQ1');</script>
