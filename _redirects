@@ -7,6 +7,9 @@
 /*.md                           /404.html  404
 /*.bat                          /404.html  404
 /MEMORY/*                       /404.html  404
+/scripts/*                      /404.html  404
+/marketing-social.txt           /404.html  404
+/.github/*                      /404.html  404
 
 # ─────────────────────────────────────────────────────────────
 # PÁGINAS INTERNAS / LEGACY — redirigir a login o 404

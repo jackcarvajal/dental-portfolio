@@ -1,0 +1,74 @@
+# ============================================================
+# PRODIGY — Auto-Journal: genera 2 artículos técnicos
+# Cron: martes y jueves a las 9:00 AM (UTC-5 Bogotá = 14:00 UTC)
+# ============================================================
+
+name: ProDigy Auto-Journal
+
+on:
+  schedule:
+    # Martes 14:00 UTC = 9:00 AM Bogotá
+    - cron: '0 14 * * 2'
+    # Jueves 14:00 UTC = 9:00 AM Bogotá
+    - cron: '0 14 * * 4'
+  # Permite ejecución manual desde GitHub Actions
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — genera artículos pero NO hace commit'
+        required: false
+        default: 'false'
+
+jobs:
+  generate-articles:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # 1. Checkout del repositorio
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # 2. Configurar Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3. Generar artículos con Perplexity
+      - name: Generar artículos técnicos
+        env:
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+        run: node scripts/auto-journal.js
+
+      # 4. Verificar si hay cambios
+      - name: Verificar cambios
+        id: check_changes
+        run: |
+          git diff --quiet articles.js marketing-social.txt || echo "changes=true" >> $GITHUB_OUTPUT
+
+      # 5. Commit y push (solo si hay cambios y no es dry run)
+      - name: Commit y push artículos nuevos
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.dry_run != 'true'
+        run: |
+          git config user.name  "ProDigy Bot"
+          git config user.email "bot@prodigydigitaldentistry.com"
+          git add articles.js marketing-social.txt
+          git commit -m "feat(journal): auto-publish $(date +'%Y-%m-%d') — 2 artículos técnicos [skip ci]"
+          git push
+
+      # 6. Resumen del job
+      - name: Resumen
+        run: |
+          echo "## ProDigy Auto-Journal" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Fecha:** $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f marketing-social.txt ]; then
+            echo "**Textos para redes sociales generados:** ✅" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Ver \`marketing-social.txt\` en el repositorio." >> $GITHUB_STEP_SUMMARY
+          fi
