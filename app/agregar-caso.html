@@ -472,10 +472,10 @@
             Si el caso tiene un <strong style="color:var(--text);">archivo HTML exportado desde Exocad o 3Shape</strong>, súbelo aquí. Se publicará como visor 3D del caso en el portafolio.
         </p>
         <div class="upload-zone" id="exocadZone">
-            <input type="file" id="exocadInput" accept=".html,text/html" onchange="handleExocad(this)">
+            <input type="file" id="exocadInput" webkitdirectory mozdirectory directory multiple onchange="handleExocad(this)">
             <div class="upload-icon">🦷</div>
-            <div class="upload-title">Arrastra el archivo .html de Exocad/3Shape</div>
-            <div class="upload-sub">o haz clic para seleccionarlo — solo archivos .html</div>
+            <div class="upload-title">Arrastra la carpeta del visor Exocad/3Shape</div>
+            <div class="upload-sub">Selecciona la carpeta completa que exportó Exocad — sube el HTML y todas las imágenes automáticamente</div>
             <div class="upload-status" id="exocadStatus"></div>
         </div>
     </div>
@@ -512,7 +512,8 @@ ProdigyAuth.require(['admin']).then(session => {
 // =============================================
 let coverFile = null;
 let galleryFiles = [];
-let exocadFile = null;
+let exocadFile = null;      // archivo HTML principal
+let exocadFolder = [];     // todos los archivos de la carpeta Exocad
 
 // =============================================
 // PORTADA
@@ -570,16 +571,32 @@ function handleGallery(input) {
 }
 
 // =============================================
-// EXOCAD HTML
+// EXOCAD — carpeta completa
 // =============================================
 function handleExocad(input) {
-    const file = input.files[0];
-    if (!file) return;
+    const files = Array.from(input.files);
+    if (!files.length) return;
 
-    exocadFile = file;
+    // Buscar el HTML principal: el que está en la raíz de la carpeta (sin subcarpeta)
+    // webkitRelativePath = "nombreCarpeta/archivo.html" → split('/')[1] es el archivo directo
+    const htmlFiles = files.filter(f => {
+        const parts = f.webkitRelativePath.split('/');
+        return parts.length === 2 && f.name.toLowerCase().endsWith('.html');
+    });
+
+    if (!htmlFiles.length) {
+        document.getElementById('exocadStatus').textContent = '⚠️ No se encontró un archivo .html en la raíz de la carpeta';
+        return;
+    }
+
+    exocadFile   = htmlFiles[0];   // HTML principal
+    exocadFolder = files;           // todos los archivos (HTML + imágenes + assets)
+
+    const totalMB = (files.reduce((s, f) => s + f.size, 0) / 1024 / 1024).toFixed(1);
     const zone = document.getElementById('exocadZone');
     zone.classList.add('loaded');
-    document.getElementById('exocadStatus').textContent = '✓ ' + file.name + ' (' + (file.size / 1024 / 1024).toFixed(1) + ' MB)';
+    document.getElementById('exocadStatus').textContent =
+        '✓ ' + exocadFile.name + ' + ' + (files.length - 1) + ' archivo(s) de soporte (' + totalMB + ' MB total)';
 }
 
 // =============================================
@@ -737,17 +754,27 @@ async function publicarCaso() {
             galleryUrls.push(base + gpath);
         }
 
-        // ── Exocad (opcional) ──
+        // ── Exocad (opcional) — sube carpeta completa ──
         let exocadUrl = null;
-        if (exocadFile) {
-            setProgress('Subiendo archivo Exocad...');
-            const exPath = id + '/caso.html';
-            const { error: exErr } = await sb.storage.from(BUCKET).upload(exPath, exocadFile, {
-                contentType: 'text/html',
-                upsert: true
-            });
-            if (exErr) throw new Error('Exocad: ' + exErr.message);
-            exocadUrl = base + exPath;
+        if (exocadFile && exocadFolder.length) {
+            // La carpeta raíz del export, ej. "CasoFullArch/"
+            const folderRoot = exocadFolder[0].webkitRelativePath.split('/')[0];
+            setProgress('Subiendo visor Exocad (0/' + exocadFolder.length + ')...');
+            for (let i = 0; i < exocadFolder.length; i++) {
+                const f = exocadFolder[i];
+                // relativePath dentro de la carpeta: quitar "nombreCarpeta/"
+                const relPath = f.webkitRelativePath.slice(folderRoot.length + 1);
+                const storagePath = id + '/exocad/' + relPath;
+                const { error: exErr } = await sb.storage.from(BUCKET).upload(storagePath, f, {
+                    contentType: f.type || 'application/octet-stream',
+                    upsert: true
+                });
+                if (exErr) throw new Error('Exocad archivo "' + relPath + '": ' + exErr.message);
+                setProgress('Subiendo visor Exocad (' + (i + 1) + '/' + exocadFolder.length + ')...');
+            }
+            // URL del HTML principal
+            const htmlRel = exocadFile.webkitRelativePath.slice(folderRoot.length + 1);
+            exocadUrl = base + id + '/exocad/' + htmlRel;
         }
 
         // ── Insert en tabla ──
@@ -793,7 +820,8 @@ async function publicarCaso() {
 function resetForm() {
     coverFile = null;
     galleryFiles = [];
-    exocadFile = null;
+    exocadFile   = null;
+    exocadFolder = [];
     document.getElementById('caseName').value = '';
     document.getElementById('caseType').value = '';
     document.getElementById('caseDate').value = '';
