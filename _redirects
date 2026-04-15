@@ -1,12 +1,19 @@
 # PRODIGY — Cloudflare Pages redirects
-# Bloquear archivos sensibles (reglas antes de servir estáticos)
+# ─────────────────────────────────────────────────────────────
+# BLOQUEAR archivos sensibles → 404
+# ─────────────────────────────────────────────────────────────
+/sql/*                          /404.html  404
+/supabase/*                     /404.html  404
+/*.md                           /404.html  404
+/*.bat                          /404.html  404
+/MEMORY/*                       /404.html  404
 
-/sql/*                      /404.html  404
-/supabase/*                 /404.html  404
-/*.md                       /404.html  404
-
-# Páginas legacy / internas sin auth — bloquear acceso directo
-/admin-panel.html           /app/login.html  302
-/agregar-caso.html          /app/login.html  302
-/portafolio-v2-ideas.html   /404.html  404
-/enviar-produccion-*.html   /app/login.html  302
+# ─────────────────────────────────────────────────────────────
+# PÁGINAS INTERNAS / LEGACY — redirigir a login o 404
+# ─────────────────────────────────────────────────────────────
+/admin-panel.html               /app/login.html  302
+/agregar-caso.html              /app/login.html  302
+/portafolio-v2-ideas.html       /404.html  404
+/enviar-produccion-drive.html   /app/login.html  302
+/enviar-produccion-wetransfer.html /app/login.html  302
+/acceso-staff.html              /app/login.html  302
