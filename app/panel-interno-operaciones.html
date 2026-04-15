@@ -801,6 +801,7 @@ async function verificarAdmin() {
 
         // Acceso concedido
         currentUser = user;
+        document.body.style.visibility = 'visible';
         document.getElementById('admin-email').textContent = email;
         document.getElementById('auth-overlay').style.display = 'none';
         document.getElementById('sidebar').style.display = 'flex';

@@ -226,13 +226,6 @@
     </div>
 
     <!-- Guión de video -->
-    <div class="video-section" id="video-section">
-      <h2>
-        <i class="fa-brands fa-instagram"></i> Guión Reel
-        <span class="video-badge">Para tus redes</span>
-      </h2>
-      <div class="video-box" id="video-script"></div>
-    </div>
   </main>
 
   <!-- Sidebar -->
@@ -422,13 +415,6 @@ function copiarLink() {
     document.getElementById('refs-list').innerHTML = renderRefs(art.referencias);
   } else {
     document.getElementById('refs-section').style.display = 'none';
-  }
-
-  /* Video script */
-  if (art.video_script) {
-    document.getElementById('video-script').textContent = art.video_script;
-  } else {
-    document.getElementById('video-section').style.display = 'none';
   }
 
   /* Recientes */

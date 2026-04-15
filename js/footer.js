@@ -122,7 +122,7 @@
           '<a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer" title="WhatsApp">' +
             '<i class="fab fa-whatsapp"></i>' +
           '</a>' +
-          '<a href="https://instagram.com/prodigydigitaldentistry" target="_blank" rel="noopener noreferrer" title="Instagram">' +
+          '<a href="https://www.instagram.com/labdentalprodigy/" target="_blank" rel="noopener noreferrer" title="Instagram @labdentalprodigy">' +
             '<i class="fab fa-instagram"></i>' +
           '</a>' +
         '</div>' +
