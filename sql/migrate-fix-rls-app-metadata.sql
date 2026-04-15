@@ -14,9 +14,9 @@
 -- ============================================================
 
 -- ── 1. Helper function: leer rol de app_metadata ─────────────
--- Evita repetir el cast en cada política
-CREATE OR REPLACE FUNCTION auth.role_from_app_meta()
-RETURNS text LANGUAGE sql STABLE AS $$
+-- NOTA: auth schema bloqueado en SQL Editor → usar public
+CREATE OR REPLACE FUNCTION public.role_from_app_meta()
+RETURNS text LANGUAGE sql STABLE SECURITY DEFINER AS $$
     SELECT coalesce(
         auth.jwt() -> 'app_metadata' ->> 'role',
         'client'
@@ -31,19 +31,19 @@ DROP POLICY IF EXISTS "portfolio_admin_delete"  ON portfolio;
 CREATE POLICY "portfolio_admin_insert" ON portfolio FOR INSERT TO authenticated
     WITH CHECK (
         auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
-        OR auth.role_from_app_meta() = 'admin'
+        OR public.role_from_app_meta() = 'admin'
     );
 
 CREATE POLICY "portfolio_admin_update" ON portfolio FOR UPDATE TO authenticated
     USING (
         auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
-        OR auth.role_from_app_meta() = 'admin'
+        OR public.role_from_app_meta() = 'admin'
     );
 
 CREATE POLICY "portfolio_admin_delete" ON portfolio FOR DELETE TO authenticated
     USING (
         auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
-        OR auth.role_from_app_meta() = 'admin'
+        OR public.role_from_app_meta() = 'admin'
     );
 
 -- ── 3. Tabla: inventario ─────────────────────────────────────
@@ -55,17 +55,17 @@ DROP POLICY IF EXISTS "inventario_admin_all"    ON inventario;
 CREATE POLICY "inventario_staff_read" ON inventario FOR SELECT TO authenticated
     USING (
         auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
-        OR auth.role_from_app_meta() IN ('admin','encargado_inventario','operator')
+        OR public.role_from_app_meta() IN ('admin','encargado_inventario','operator')
     );
 
 CREATE POLICY "inventario_staff_write" ON inventario FOR ALL TO authenticated
     USING (
         auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
-        OR auth.role_from_app_meta() IN ('admin','encargado_inventario')
+        OR public.role_from_app_meta() IN ('admin','encargado_inventario')
     )
     WITH CHECK (
         auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
-        OR auth.role_from_app_meta() IN ('admin','encargado_inventario')
+        OR public.role_from_app_meta() IN ('admin','encargado_inventario')
     );
 
 -- ── 4. Tabla: equipo / staff ──────────────────────────────────
@@ -74,11 +74,11 @@ DROP POLICY IF EXISTS "equipo_admin_all" ON equipo;
 CREATE POLICY "equipo_admin_all" ON equipo FOR ALL TO authenticated
     USING (
         auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
-        OR auth.role_from_app_meta() = 'admin'
+        OR public.role_from_app_meta() = 'admin'
     )
     WITH CHECK (
         auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
-        OR auth.role_from_app_meta() = 'admin'
+        OR public.role_from_app_meta() = 'admin'
     );
 
 -- ============================================================

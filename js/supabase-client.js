@@ -31,7 +31,6 @@ async function checkAuthSupabase(destino) {
         try {
             const { data: { session } } = await sb.auth.getSession();
             if (session) {
-                sessionStorage.setItem('prodigy_role', session.user.user_metadata?.role || 'client');
                 sessionStorage.setItem('prodigy_user', session.user.email);
                 window.location.href = destino;
                 return;

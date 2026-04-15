@@ -30,6 +30,7 @@
             align-items: center;
             justify-content: center;
             padding: 24px;
+            visibility: hidden;
         }
         .card {
             background: var(--card);
@@ -147,6 +148,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script>
     (async function init() {
+        // Anti-flash: mostrar página siempre (no requiere auth, es post-pago público)
+        document.body.style.visibility = 'visible';
+
         const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
         const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
         const NOTIFY_WA_URL = `${SUPABASE_URL}/functions/v1/notify-wa`;

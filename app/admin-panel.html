@@ -584,15 +584,8 @@ async function verificarAdmin() {
         await cargarPedidos();
 
     } catch (e) {
-        // Fallback: sessionStorage si Supabase no responde
-        const role = sessionStorage.getItem('prodigy_role');
-        if (role === 'admin') {
-            document.getElementById('auth-overlay').style.display = 'none';
-            document.getElementById('sidebar').style.display = 'flex';
-            document.getElementById('main-content').classList.add('visible');
-        } else {
-            window.location.href = 'login.html';
-        }
+        // Sin fallback de sessionStorage — cualquier fallo → login (previene bypass por DevTools)
+        window.location.href = 'login.html';
     }
 }
 
