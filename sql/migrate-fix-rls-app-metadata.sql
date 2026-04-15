@@ -88,19 +88,6 @@ CREATE POLICY "inv_mov_staff_write" ON inventario_movimientos FOR ALL TO authent
         OR public.role_from_app_meta() IN ('admin','encargado_inventario')
     );
 
--- ── 4. Tabla: equipo / staff ──────────────────────────────────
-DROP POLICY IF EXISTS "equipo_admin_all" ON equipo;
-
-CREATE POLICY "equipo_admin_all" ON equipo FOR ALL TO authenticated
-    USING (
-        auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
-        OR public.role_from_app_meta() = 'admin'
-    )
-    WITH CHECK (
-        auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
-        OR public.role_from_app_meta() = 'admin'
-    );
-
 -- ============================================================
 -- ACCIÓN MANUAL REQUERIDA:
 -- Para cada miembro del equipo (operadores, mensajeros, etc.):
