@@ -325,6 +325,31 @@
 
     <script src="js/navbar.js"></script>
 
+    <!-- BANNER CICLO DE PRODUCCIÓN -->
+    <div id="banner-ciclo" style="background:linear-gradient(90deg,rgba(239,68,68,0.12),rgba(251,191,36,0.08),rgba(239,68,68,0.12));border-bottom:1px solid rgba(239,68,68,0.25);padding:10px 20px;text-align:center;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:800;color:#fbbf24;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block;animation:pulseBanner 1.2s infinite;"></span>
+            CICLO EN PRODUCCIÓN
+        </span>
+        <span style="font-size:0.78rem;color:#e2e8f0;" id="banner-msg">Cerramos recepción de casos hoy a las <strong style="color:#fbbf24;">5:00 PM</strong>. Envía tu orden antes para garantizar tu turno.</span>
+        <button onclick="document.getElementById('banner-ciclo').style.display='none'" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:0.9rem;padding:0 4px;">✕</button>
+    </div>
+    <style>@keyframes pulseBanner{0%,100%{opacity:1}50%{opacity:0.3}}</style>
+    <script>
+    (function(){
+        var corte=new Date();corte.setUTCHours(22,0,0,0);
+        var tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';
+        var isCO=tz.indexOf('Bogota')!==-1||(new Date().getTimezoneOffset()===300);
+        if(!isCO){
+            var h=corte.getHours(),m=corte.getMinutes();
+            var ap=h>=12?'PM':'AM';var h12=h%12||12;
+            var ls=h12+':'+(m<10?'0':'')+m+' '+ap;
+            var el=document.getElementById('banner-msg');
+            if(el)el.innerHTML='Cerramos recepción de casos hoy a las <strong style="color:#fbbf24;">5:00 PM (Colombia)</strong> = <strong style="color:#00d2ff;">'+ls+' tu hora</strong>. Envía tu orden antes para garantizar tu turno.';
+        }
+    })();
+    </script>
+
     <div class="container">
 
         <!-- ═══════════════════════════════

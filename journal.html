@@ -498,21 +498,17 @@
       color: var(--gold);
     }
 
-    /* Carrusel */
+    /* Grid artículos */
     .articles-track {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      gap: 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1148px;
+      margin: 0 auto;
       padding: 4px 24px 20px;
-      scrollbar-width: none;
     }
-    .articles-track::-webkit-scrollbar { display: none; }
 
     .article-card {
-      flex: 0 0 80vw;
-      max-width: 340px;
-      scroll-snap-align: start;
       background: linear-gradient(160deg, #0d1525 0%, #080f1c 100%);
       border: 1px solid var(--border-m);
       border-radius: 20px;
@@ -611,13 +607,8 @@
       gap: 5px;
     }
 
-    /* Desktop — mostrar más columnas */
-    @media (min-width: 769px) {
-      .article-card { flex: 0 0 300px; }
-    }
-    @media (min-width: 1200px) {
-      .articles-track { padding-left: calc((100vw - 1100px)/2); padding-right: calc((100vw - 1100px)/2); }
-      .article-card { flex: 0 0 320px; }
+    @media (max-width: 640px) {
+      .articles-track { grid-template-columns: 1fr; }
     }
 
     /* ── PRÓXIMAMENTE ────────────────────────────────── */
@@ -800,7 +791,7 @@
     <div>
       <div class="section-label">Artículos técnicos</div>
       <h2>Tecnología que transforma clínicas</h2>
-      <div class="section-sub">Desliza para explorar →</div>
+      <div class="section-sub">Filtra por categoría</div>
     </div>
     <div class="filter-tags">
       <button class="tag-btn active" onclick="filterArticles(this,'all')">Todos</button>

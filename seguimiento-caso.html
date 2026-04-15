@@ -51,6 +51,20 @@
     <style>
         @keyframes pulseBanner { 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
     </style>
+    <script>
+    (function(){
+        var corte=new Date();corte.setUTCHours(22,0,0,0);
+        var tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';
+        var isCO=tz.indexOf('Bogota')!==-1||(new Date().getTimezoneOffset()===300);
+        if(!isCO){
+            var h=corte.getHours(),m=corte.getMinutes();
+            var ap=h>=12?'PM':'AM';var h12=h%12||12;
+            var ls=h12+':'+(m<10?'0':'')+m+' '+ap;
+            var el=document.getElementById('banner-msg');
+            if(el)el.innerHTML='Cerramos recepción de casos hoy a las <strong style="color:#fbbf24;">5:00 PM (Colombia)</strong> = <strong style="color:#00d2ff;">'+ls+' tu hora</strong>. Envía tu orden antes para garantizar tu turno.';
+        }
+    })();
+    </script>
 
     <!-- TÍTULO DE PÁGINA -->
     <div style="background:linear-gradient(135deg,rgba(212,175,55,0.06),rgba(142,36,170,0.06));border-bottom:1px solid rgba(212,175,55,0.25);padding:14px 40px;text-align:center;">
