@@ -63,8 +63,8 @@
 
 | # | Acción | Detalle | Estado |
 |---|--------|---------|--------|
-| 1 | Crear bucket `casos` | Visibilidad: **Private** | ⏳ Pendiente |
-| 2 | Crear bucket `evidencias-entrega` | Visibilidad: **Private** | ⏳ Pendiente |
+| 1 | Crear bucket `casos` | Visibilidad: **Private** | ✅ Listo |
+| 2 | Crear bucket `evidencias-entrega` | Visibilidad: **Private** | ✅ Listo |
 | 3 | Crear bucket `scanner-uploads` | Visibilidad: **Private** + política INSERT para anon | ✅ Listo |
 | 4 | Settings → Auth → Site URL | Cambiar a `https://prodigylabdental.com` | ✅ Listo |
 | 5 | Settings → Auth → Redirect URLs | Agregar `https://prodigylabdental.com/**` | ✅ Listo |
@@ -94,7 +94,7 @@
 | `WA_PHONE_ID` | business.facebook.com → WhatsApp Manager → Phone Number ID | ⏳ Pendiente |
 | `META_APP_ID` | developers.facebook.com → tu app → App ID | ⏳ Pendiente |
 | `META_PIXEL_ID` | business.facebook.com → Events Manager → tu pixel | ⏳ Pendiente |
-| `WOMPI_INTEGRITY_SECRET` | Wompi Dashboard → Claves → Integrity Key | ⏳ Pendiente (cuando activen cuenta) |
+| `WOMPI_INTEGRITY_SECRET` | Ya tienes la key — pegar en Supabase Secrets (ver pasos abajo) | 🔴 ACCIÓN INMEDIATA |
 | `PADDLE_API_KEY` | dashboard.paddle.com → Developer → API Keys | ⏳ Pendiente |
 
 ---
