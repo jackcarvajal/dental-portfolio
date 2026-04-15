@@ -681,7 +681,8 @@
 
             <div class="payment-banner">💵 PAGO 100% ANTICIPADO</div>
 
-            <!-- WOMPI / TRANSFERENCIA -->
+            <!-- MÉTODOS COLOMBIA -->
+            <div id="pago-co">
             <div style="background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.2);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
                 <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.82rem;color:#e2e8f0;line-height:1.5;">
                     <input type="checkbox" id="chk-transferencia" onchange="calcularTotal()" style="width:16px;height:16px;accent-color:#D4AF37;flex-shrink:0;margin-top:2px;">
@@ -693,16 +694,15 @@
                     <span class="value" id="calc-wompi" style="color:#f87171;">+$0</span>
                 </div>
             </div>
-
             <div class="payment-buttons">
                 <button class="payment-btn btn-nequi" onclick="showPayModal('nequi')">💙 NEQUI</button>
                 <button class="payment-btn btn-davi"  onclick="showPayModal('davi')">💗 DAVI</button>
                 <button class="payment-btn btn-banco" onclick="showPayModal('banco')">🏦 BRE-B</button>
             </div>
-
             <button onclick="pagarConWompi()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-top:10px;">
                 💳 Pagar con Wompi (PSE / Tarjeta)
             </button>
+            </div><!-- /pago-co -->
 
             <!-- ── INTERNACIONAL: LS (primario) + PayPal (secundario) ── -->
             <div id="ls-intl-section" style="position:relative;margin-top:12px;display:none;">
@@ -1630,6 +1630,19 @@
     <script src="js/supabase-client.js"></script>
     <script src="js/upload-guard.js"></script>
     <script src="js/pagos.js"></script>
+    <script>
+    // Detección geográfica: Colombia → local / Otro país → LS + PayPal
+    (async function() {
+        try {
+            const pais = await detectarPais();
+            const esCO = pais === 'CO';
+            const co   = document.getElementById('pago-co');
+            const intl = document.getElementById('ls-intl-section');
+            if (co)   co.style.display   = esCO ? '' : 'none';
+            if (intl) intl.style.display = esCO ? 'none' : '';
+        } catch(e) { /* fallback: se muestra todo */ }
+    })();
+    </script>
     <script>
     function pagarConWompi() {
         const totalEl = document.getElementById('calc-total');

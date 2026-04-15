@@ -2375,7 +2375,8 @@
                 💵 PAGO 100% ANTICIPADO
             </div>
 
-            <!-- WOMPI / TRANSFERENCIA -->
+            <!-- MÉTODOS COLOMBIA -->
+            <div id="pago-co">
             <div style="background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.2);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
                 <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.82rem;color:#e2e8f0;line-height:1.5;">
                     <input type="checkbox" id="chk-transferencia" onchange="calcularTotal()" style="width:16px;height:16px;accent-color:#D4AF37;flex-shrink:0;margin-top:2px;" checked>
@@ -2386,26 +2387,20 @@
             <button onclick="pagarConWompi()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-bottom:12px;">
                 💳 Pagar con Wompi (PSE / Tarjeta)
             </button>
+            <div class="payment-buttons">
+                <button class="payment-btn btn-nequi" onclick="showPaymentModal('nequi')">💙 NEQUI</button>
+                <button class="payment-btn btn-davi" onclick="showPaymentModal('daviplata')">💗 DAVIPLATA</button>
+                <button class="payment-btn btn-banco" onclick="showPaymentModal('banco')">🏦 BRE-B</button>
+            </div>
+            </div><!-- /pago-co -->
 
             <!-- AVISO CLIENTES INTERNACIONALES -->
-            <div style="border:1px solid rgba(251,191,36,0.4);border-radius:10px;padding:14px;margin-bottom:14px;background:rgba(251,191,36,0.06);">
+            <div id="pago-intl" style="display:none;border:1px solid rgba(251,191,36,0.4);border-radius:10px;padding:14px;margin-bottom:14px;background:rgba(251,191,36,0.06);">
                 <p style="font-size:.8rem;font-weight:700;color:#fbbf24;margin-bottom:6px;">⚠️ Servicio exclusivo para Colombia</p>
-                <p style="font-size:.75rem;color:#94a3b8;margin-bottom:10px;line-height:1.5;">El fresado CAD/CAM requiere envío físico nacional. Si estás fuera de Colombia o necesitas coordinar logística especial, escríbenos por WhatsApp.</p>
+                <p style="font-size:.75rem;color:#94a3b8;margin-bottom:10px;line-height:1.5;">El fresado CAD/CAM requiere envío físico nacional. Si estás fuera de Colombia, coordina con nosotros por WhatsApp.</p>
                 <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20soy%20cliente%20internacional%20y%20necesito%20coordinar%20envío%20para%20fresado." target="_blank" rel="noopener" style="display:block;width:100%;padding:11px;background:linear-gradient(135deg,#166534,#15803d);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.85rem;text-align:center;text-decoration:none;">
                     <i class="fab fa-whatsapp"></i> Coordinar envío vía WhatsApp
                 </a>
-            </div>
-
-            <div class="payment-buttons">
-                <button class="payment-btn btn-nequi" onclick="showPaymentModal('nequi')">
-                    💙 NEQUI
-                </button>
-                <button class="payment-btn btn-davi" onclick="showPaymentModal('daviplata')">
-                    💗 DAVIPLATA
-                </button>
-                <button class="payment-btn btn-banco" onclick="showPaymentModal('banco')">
-                    🏦 BRE-B
-                </button>
             </div>
 
             <!-- CONFIRMACIÓN DE PAGO - ACORDEÓN -->
@@ -4695,6 +4690,19 @@
     <script src="js/supabase-client.js"></script>
     <script src="js/upload-guard.js"></script>
     <script src="js/pagos.js"></script>
+    <script>
+    // Detección geográfica: Colombia → pagos locales / Otro país → WA
+    (async function() {
+        try {
+            const pais = await detectarPais();
+            const esCO = pais === 'CO';
+            const co   = document.getElementById('pago-co');
+            const intl = document.getElementById('pago-intl');
+            if (co)   co.style.display   = esCO ? '' : 'none';
+            if (intl) intl.style.display = esCO ? 'none' : '';
+        } catch(e) { /* fallback: se muestran métodos locales */ }
+    })();
+    </script>
     <script>
         function pagarConWompi() {
             const totalEl = document.getElementById('calc-total');
