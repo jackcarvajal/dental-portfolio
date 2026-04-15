@@ -605,8 +605,23 @@
         return user.user_metadata?.role || 'client';
     }
 
-    function redirectByRole(user) {
+    async function redirectByRole(user) {
         const role = getRole(user);
+        // Admins no necesitan onboarding
+        if (role === 'admin') {
+            window.location.href = DEST_MAP[role];
+            return;
+        }
+        // Verificar perfil completo (whatsapp requerido para operar)
+        const { data: perfil } = await sb
+            .from('doctores_perfil')
+            .select('whatsapp')
+            .eq('id', user.id)
+            .maybeSingle();
+        if (!perfil || !perfil.whatsapp) {
+            window.location.href = 'onboarding.html';
+            return;
+        }
         window.location.href = DEST_MAP[role] || 'client-panel.html';
     }
 

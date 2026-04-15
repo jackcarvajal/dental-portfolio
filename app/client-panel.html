@@ -755,6 +755,10 @@ function selStar(v) {
 
 async function enviarNPS() {
     if (!_npsStar) { toast('Selecciona una calificación', 'error'); return; }
+    // IDOR guard: solo casos cargados para este doctor
+    if (!_pedidos.find(p => p.id === _npsId)) {
+        toast('Caso no válido', 'error'); cerrarNPS(); return;
+    }
     const comentario = document.getElementById('nps-comentario').value.trim();
     const { error } = await sb.from('pedidos').update({
         calificacion: _npsStar,
@@ -911,7 +915,8 @@ const PD_MAT_LABEL2 = {
     'disilicato':'Disilicato e.max','pmma':'PMMA','resina3d':'Resina 3D','digital':'Digital'
 };
 
-let _dapId = null;
+let _dapId      = null;
+let _pedidosDoc = []; // cache de pedidos_doctor — usado para validar _dapId
 
 async function cargarPedidosDoc_cliente(uid) {
     const { data, error } = await sb.from('pedidos_doctor')
@@ -921,6 +926,7 @@ async function cargarPedidosDoc_cliente(uid) {
         .order('created_at', { ascending: false });
 
     if (error || !data?.length) return;
+    _pedidosDoc = data; // guardar para validación IDOR
 
     const card = document.getElementById('card-pedidos-doc');
     card.style.display = 'block';
@@ -961,6 +967,12 @@ async function cargarPedidosDoc_cliente(uid) {
 }
 
 function abrirAprobacion(id, link) {
+    // IDOR guard: solo pedidos_doctor de este doctor
+    if (!_pedidosDoc.find(p => p.id === id)) {
+        toast('Pedido no encontrado', 'error'); return;
+    }
+    // Validar URL antes de inyectar en iframe
+    try { new URL(link); } catch { toast('Link de diseño inválido', 'error'); return; }
     _dapId = id;
     document.getElementById('dap-iframe').src = link;
     document.getElementById('dap-link-ext').href = link;
@@ -988,6 +1000,7 @@ function toggleCambiosModal() {
 
 async function aprobarDiseno() {
     if (!_dapId) return;
+    if (!_pedidosDoc.find(p => p.id === _dapId)) { toast('Pedido no válido', 'error'); return; }
     const { error } = await sb.from('pedidos_doctor')
         .update({ diseno_aprobado: true, estado: 'en_fresado' })
         .eq('id', _dapId);
@@ -999,6 +1012,7 @@ async function aprobarDiseno() {
 }
 
 async function enviarCambios() {
+    if (!_dapId || !_pedidosDoc.find(p => p.id === _dapId)) { toast('Pedido no válido', 'error'); return; }
     const notas = (document.getElementById('dap-notas').value || '').trim();
     if (!notas) { toast('Describe los cambios que necesitas', 'error'); return; }
     const { error } = await sb.from('pedidos_doctor')

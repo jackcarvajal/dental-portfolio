@@ -76,7 +76,7 @@ function calcularConPasarela(precioBaseCOP, pasarela) {
 
     // PayPal: convertir a USD para el SDK
     const totalUSD = pasarela === 'paypal'
-        ? (total / PAGOS_CONFIG.paypal.tasaCOP).toFixed(2)
+        ? (total / TASA_COP_USD).toFixed(2)
         : null;
 
     return { total, recargoAmt, recargo: cfg.recargo, totalUSD, label: cfg.label };

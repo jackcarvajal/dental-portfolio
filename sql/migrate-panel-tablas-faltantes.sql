@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS portfolio (
 );
 ALTER TABLE portfolio ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "anon_read_portfolio" ON portfolio
-    FOR SELECT TO anon USING (activo = true);
+    FOR SELECT TO anon USING (true);
 CREATE POLICY "admin_write_portfolio" ON portfolio
     FOR ALL TO authenticated USING (true) WITH CHECK (true);
 

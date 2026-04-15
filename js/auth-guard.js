@@ -24,11 +24,16 @@
     };
 
     function getRole(user) {
+        // Admin: solo por email — no confiar en user_metadata para admin
         if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
-        const meta = user.user_metadata || {};
-        if (meta.role === 'operator')             return 'operator';
-        if (meta.role === 'mensajero')            return 'mensajero';
-        if (meta.role === 'encargado_inventario') return 'encargado_inventario';
+        // Roles de staff: app_metadata primero (solo editable via service role),
+        // user_metadata como fallback temporal hasta ejecutar migrate-fix-rls-app-metadata.sql
+        const appMeta  = user.app_metadata  || {};
+        const userMeta = user.user_metadata || {};
+        const role = appMeta.role || userMeta.role || 'client';
+        if (role === 'operator')             return 'operator';
+        if (role === 'mensajero')            return 'mensajero';
+        if (role === 'encargado_inventario') return 'encargado_inventario';
         return 'client';
     }
 
@@ -54,10 +59,10 @@
             window.location.href = DEST_MAP[role] || 'login.html';
             return null;
         }
-        window.PRODIGY_SESSION = session;
-        window.PRODIGY_USER    = session.user;
+        // Solo exponer lo mínimo — NO el session completo (contiene access_token)
         window.PRODIGY_ROLE    = role;
         window.PRODIGY_EMAIL   = session.user.email;
+        window.PRODIGY_UID     = session.user.id;
         document.body.style.visibility = 'visible';
         return session;
     }

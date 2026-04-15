@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>PRODIGY — Completa tu perfil</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #050505;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+        }
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(ellipse at 25% 25%, rgba(217,70,166,0.07) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 75%, rgba(212,175,55,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .card {
+            background: linear-gradient(160deg, #0d1525 0%, #080f1c 100%);
+            border-radius: 22px;
+            padding: 40px 36px;
+            width: 100%; max-width: 440px;
+            position: relative; z-index: 1;
+            box-shadow:
+                0 0 0 1.5px rgba(212,175,55,0.4),
+                0 0 0 3px rgba(212,175,55,0.1),
+                0 24px 80px rgba(0,0,0,0.7);
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 10%; right: 10%; height: 2px;
+            background: linear-gradient(90deg, transparent, #D4AF37, #D946A6, #D4AF37, transparent);
+            border-radius: 2px;
+        }
+        @keyframes float {
+            0%,100% { transform: translateY(0) rotate(-2deg); }
+            50%      { transform: translateY(-7px) rotate(2deg); }
+        }
+        .logo { text-align: center; margin-bottom: 28px; }
+        .logo-icon {
+            width: 68px; height: 68px; font-size: 1.9rem;
+            background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 100%);
+            border: 2px solid rgba(212,175,55,0.45);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 12px;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 8px 28px rgba(212,175,55,0.2);
+        }
+        .logo h1 { font-size: 1.3rem; font-weight: 900; letter-spacing: 3px; color: #fff; }
+        .logo p { font-size: 0.74rem; color: #64748b; margin-top: 4px; }
+
+        .section-title {
+            font-size: 0.95rem; font-weight: 700;
+            color: #D4AF37; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-title::after {
+            content: ''; flex: 1; height: 1px;
+            background: linear-gradient(90deg, rgba(212,175,55,0.3), transparent);
+        }
+
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block; font-size: 0.72rem; font-weight: 700;
+            color: #94a3b8; margin-bottom: 5px;
+            text-transform: uppercase; letter-spacing: 0.6px;
+        }
+        .input-wrap { position: relative; }
+        .input-wrap i {
+            position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+            color: #475569; font-size: 0.85rem;
+        }
+        .input-wrap input, .input-wrap select {
+            width: 100%; padding: 11px 14px 11px 36px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 10px; color: #fff; font-size: 0.9rem;
+            outline: none; transition: border-color 0.2s;
+            appearance: none;
+        }
+        .input-wrap input:focus, .input-wrap select:focus {
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
+        }
+        .input-wrap input::placeholder { color: #334155; }
+        .input-wrap select option { background: #0d1525; }
+
+        .wa-row { display: flex; gap: 8px; }
+        .wa-row .prefix-wrap { width: 120px; flex-shrink: 0; }
+        .wa-row .prefix-wrap select { padding-left: 36px; }
+        .wa-row .num-wrap { flex: 1; }
+        .wa-row .num-wrap input { padding-left: 14px; }
+
+        .hint { font-size: 0.68rem; color: #475569; margin-top: 4px; }
+
+        @keyframes shimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position:  200% center; }
+        }
+        .btn-submit {
+            width: 100%; padding: 14px;
+            background: linear-gradient(90deg, #D4AF37 0%, #b8922a 40%, #D946A6 70%, #D4AF37 100%);
+            background-size: 200% auto;
+            color: #050505; border: none; border-radius: 10px;
+            font-size: 0.95rem; font-weight: 900; letter-spacing: 0.3px;
+            cursor: pointer; margin-top: 8px;
+            animation: shimmer 2.8s linear infinite;
+            box-shadow: 0 4px 20px rgba(212,175,55,0.3);
+            transition: opacity 0.2s;
+        }
+        .btn-submit:hover { animation: none; opacity: 0.9; }
+        .btn-submit:disabled { opacity: 0.55; cursor: not-allowed; animation: none; }
+
+        #msg-box {
+            border-radius: 8px; padding: 10px 12px;
+            font-size: 0.82rem; margin-bottom: 14px; display: none;
+        }
+        .msg-ok  { background: rgba(34,197,94,0.1);  border: 1px solid rgba(34,197,94,0.3);  color: #86efac; }
+        .msg-err { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.3);  color: #f87171; }
+
+        .user-chip {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; padding: 10px 14px;
+            margin-bottom: 24px;
+        }
+        .user-chip img {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 1px solid rgba(212,175,55,0.3);
+        }
+        .user-chip .avatar-fallback {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(217,70,166,0.2);
+            border: 1px solid rgba(217,70,166,0.4);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+        }
+        .user-chip .chip-info { flex: 1; min-width: 0; }
+        .user-chip .chip-name { font-size: 0.85rem; font-weight: 700; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-chip .chip-email { font-size: 0.72rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chip-badge { font-size: 0.65rem; background: rgba(0,255,65,0.1); border: 1px solid rgba(0,255,65,0.25); color: #00FF41; padding: 2px 8px; border-radius: 50px; white-space: nowrap; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="logo">
+        <div class="logo-icon">💎</div>
+        <h1>PRODIGY</h1>
+        <p>Completa tu perfil profesional</p>
+    </div>
+
+    <div id="user-chip" class="user-chip" style="display:none;">
+        <div class="avatar-fallback" id="avatar-fallback">👤</div>
+        <div class="chip-info">
+            <div class="chip-name" id="chip-name"></div>
+            <div class="chip-email" id="chip-email"></div>
+        </div>
+        <span class="chip-badge">Google ✓</span>
+    </div>
+
+    <div id="msg-box"></div>
+
+    <div class="section-title"><i class="fas fa-user-stethoscope"></i> Datos del consultorio</div>
+
+    <form id="form-onboarding" onsubmit="guardarPerfil(event)">
+        <div class="form-group">
+            <label>Nombre completo *</label>
+            <div class="input-wrap">
+                <i class="fas fa-user"></i>
+                <input type="text" id="ob-nombre" placeholder="Dr. / Dra. Apellido" required maxlength="80">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>WhatsApp profesional *</label>
+            <div class="wa-row">
+                <div class="prefix-wrap">
+                    <div class="input-wrap">
+                        <i class="fab fa-whatsapp" style="color:#25D366;"></i>
+                        <select id="ob-prefijo">
+                            <option value="+57">🇨🇴 +57</option>
+                            <option value="+52">🇲🇽 +52</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+34">🇪🇸 +34</option>
+                            <option value="+54">🇦🇷 +54</option>
+                            <option value="+56">🇨🇱 +56</option>
+                            <option value="+51">🇵🇪 +51</option>
+                            <option value="+58">🇻🇪 +58</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="num-wrap">
+                    <input type="tel" id="ob-wa" placeholder="3001234567" required maxlength="15"
+                        pattern="[0-9]{7,15}" title="Solo números, sin espacios">
+                </div>
+            </div>
+            <p class="hint">Lo usamos para notificarte el estado de tus casos. Sin spam.</p>
+        </div>
+
+        <div class="form-group">
+            <label>Nombre del consultorio / clínica *</label>
+            <div class="input-wrap">
+                <i class="fas fa-tooth"></i>
+                <input type="text" id="ob-clinica" placeholder="Odontología Estética..." required maxlength="100">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Ciudad *</label>
+            <div class="input-wrap">
+                <i class="fas fa-map-pin"></i>
+                <input type="text" id="ob-ciudad" placeholder="Bogotá, Medellín..." required maxlength="80">
+            </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+                <input type="checkbox" id="ob-habeas" required
+                    style="margin-top:3px;flex-shrink:0;accent-color:#D4AF37;">
+                <span style="font-size:0.72rem;color:#94a3b8;line-height:1.5;">
+                    Autorizo el tratamiento de mis datos personales para la gestión de pedidos y
+                    seguimiento de casos. Puedo solicitar baja sin afectar el seguimiento activo.
+                    <span style="color:#D4AF37;">*</span>
+                </span>
+            </label>
+        </div>
+        <div style="margin-bottom:20px;">
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+                <input type="checkbox" id="ob-marketing"
+                    style="margin-top:3px;flex-shrink:0;accent-color:#D4AF37;">
+                <span style="font-size:0.72rem;color:#64748b;line-height:1.5;">
+                    Acepto recibir novedades y promociones de PRODIGY (opcional).
+                </span>
+            </label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btn-guardar">
+            <i class="fas fa-arrow-right"></i> &nbsp;Entrar a PRODIGY
+        </button>
+    </form>
+</div>
+
+<script>
+    const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+    const ADMIN_EMAILS  = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com'];
+    const DEST_MAP      = { admin: 'panel-interno-operaciones.html', operator: 'operator-panel.html', client: 'client-panel.html' };
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    let currentUser = null;
+
+    function showMsg(text, type) {
+        const el = document.getElementById('msg-box');
+        el.className = type === 'ok' ? 'msg-ok' : 'msg-err';
+        el.style.display = 'block';
+        el.textContent = text;
+    }
+
+    function getRole(user) {
+        if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
+        return user.user_metadata?.role || 'client';
+    }
+
+    // Verificar sesión activa
+    sb.auth.getSession().then(({ data: { session } }) => {
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+        currentUser = session.user;
+
+        // Mostrar chip de usuario
+        const chip = document.getElementById('user-chip');
+        const chipName = document.getElementById('chip-name');
+        const chipEmail = document.getElementById('chip-email');
+        const avatarFallback = document.getElementById('avatar-fallback');
+
+        chipName.textContent  = currentUser.user_metadata?.full_name || currentUser.email || '';
+        chipEmail.textContent = currentUser.email || '';
+
+        const avatarUrl = currentUser.user_metadata?.avatar_url;
+        if (avatarUrl) {
+            const img = document.createElement('img');
+            img.src = avatarUrl;
+            img.alt = '';
+            avatarFallback.replaceWith(img);
+        }
+        chip.style.display = 'flex';
+
+        // Pre-fill nombre desde metadatos Google
+        const nombreMeta = currentUser.user_metadata?.full_name || '';
+        if (nombreMeta) document.getElementById('ob-nombre').value = nombreMeta;
+
+        // Si ya tiene perfil completo → redirigir directo
+        sb.from('doctores_perfil')
+            .select('whatsapp')
+            .eq('id', currentUser.id)
+            .maybeSingle()
+            .then(({ data }) => {
+                if (data && data.whatsapp) {
+                    window.location.href = DEST_MAP[getRole(currentUser)] || 'client-panel.html';
+                }
+            });
+    });
+
+    async function guardarPerfil(e) {
+        e.preventDefault();
+        if (!currentUser) { showMsg('Sesión no encontrada. Recarga.', 'err'); return; }
+
+        const nombre    = document.getElementById('ob-nombre').value.trim();
+        const prefijo   = document.getElementById('ob-prefijo').value;
+        const waNum     = document.getElementById('ob-wa').value.trim().replace(/\D/g, '');
+        const clinica   = document.getElementById('ob-clinica').value.trim();
+        const ciudad    = document.getElementById('ob-ciudad').value.trim();
+        const marketing = document.getElementById('ob-marketing').checked;
+        const btn       = document.getElementById('btn-guardar');
+
+        if (!nombre || !waNum || !clinica || !ciudad) {
+            showMsg('Completa todos los campos obligatorios.', 'err'); return;
+        }
+        if (waNum.length < 7) {
+            showMsg('WhatsApp inválido — mínimo 7 dígitos.', 'err'); return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Guardando...';
+
+        const whatsapp = prefijo + waNum;
+
+        const { error } = await sb.from('doctores_perfil').upsert({
+            id:               currentUser.id,
+            nombre,
+            clinica,
+            municipio:        ciudad,
+            whatsapp,
+            acepta_marketing: marketing,
+        }, { onConflict: 'id' });
+
+        if (error) {
+            showMsg('Error al guardar: ' + error.message, 'err');
+            btn.disabled = false;
+            btn.textContent = 'Entrar a PRODIGY';
+            return;
+        }
+
+        showMsg('¡Perfil guardado! Redirigiendo...', 'ok');
+        setTimeout(() => {
+            window.location.href = DEST_MAP[getRole(currentUser)] || 'client-panel.html';
+        }, 1200);
+    }
+</script>
+</body>
+</html>

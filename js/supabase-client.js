@@ -26,11 +26,6 @@ function getSupabase() {
 ═══════════════════════════════════════ */
 
 async function checkAuthSupabase(destino) {
-    // Fallback sessionStorage (funcional sin Supabase SDK)
-    const role = sessionStorage.getItem('prodigy_role');
-    const user = sessionStorage.getItem('prodigy_user');
-    if (role && user) { window.location.href = destino; return; }
-
     const sb = getSupabase();
     if (sb) {
         try {

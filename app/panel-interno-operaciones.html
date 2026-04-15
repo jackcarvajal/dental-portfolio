@@ -787,8 +787,8 @@ async function verificarAdmin() {
         const role = user.user_metadata?.role;
         const email = user.email;
 
-        // Verificar: rol admin en metadata O email en lista autorizada
-        const esAdmin = role === 'admin' || ADMIN_EMAILS.includes(email);
+        // Verificar: SOLO por email autorizado — user_metadata.role es user-controlled y no confiable
+        const esAdmin = ADMIN_EMAILS.includes(email.toLowerCase());
 
         if (!esAdmin) {
             window.location.href = role === 'operator'
@@ -808,15 +808,8 @@ async function verificarAdmin() {
         await cargarPedidos();
 
     } catch (e) {
-        // Fallback: sessionStorage si Supabase no responde
-        const role = sessionStorage.getItem('prodigy_role');
-        if (role === 'admin') {
-            document.getElementById('auth-overlay').style.display = 'none';
-            document.getElementById('sidebar').style.display = 'flex';
-            document.getElementById('main-content').classList.add('visible');
-        } else {
-            window.location.href = 'login.html';
-        }
+        // Sin fallback de sessionStorage — si Supabase no responde, denegar acceso
+        window.location.href = 'login.html';
     }
 }
 

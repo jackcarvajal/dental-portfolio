@@ -431,6 +431,10 @@ async function notificarCliente(pedidoId, mensaje) {
 }
 
 async function avanzarEstado(pedidoId, nuevoEstado) {
+    // IDOR guard: solo puede operar sobre casos cargados en esta sesión
+    if (!_pedidos.find(p => p.id === pedidoId)) {
+        toast('Caso no encontrado en tu lista', 'err'); return;
+    }
     const updates = { estado_operativo: nuevoEstado };
     if (nuevoEstado === 'EN_PRODUCCION')    updates.timestamp_validacion = new Date().toISOString();
     if (nuevoEstado === 'FRESADO_INICIADO') updates.timestamp_produccion  = new Date().toISOString();
