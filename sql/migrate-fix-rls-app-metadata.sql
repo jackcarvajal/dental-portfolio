@@ -48,17 +48,37 @@ CREATE POLICY "portfolio_admin_delete" ON portfolio FOR DELETE TO authenticated
 
 -- ── 3. Tabla: inventario ─────────────────────────────────────
 -- Reemplaza las políticas existentes que usan user_metadata
-DROP POLICY IF EXISTS "inventario_staff_read"   ON inventario;
-DROP POLICY IF EXISTS "inventario_staff_write"  ON inventario;
-DROP POLICY IF EXISTS "inventario_admin_all"    ON inventario;
+DROP POLICY IF EXISTS "inventario_staff_read"   ON inventario_items;
+DROP POLICY IF EXISTS "inventario_staff_write"  ON inventario_items;
+DROP POLICY IF EXISTS "inventario_admin_all"    ON inventario_items;
 
-CREATE POLICY "inventario_staff_read" ON inventario FOR SELECT TO authenticated
+CREATE POLICY "inventario_staff_read" ON inventario_items FOR SELECT TO authenticated
     USING (
         auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
         OR public.role_from_app_meta() IN ('admin','encargado_inventario','operator')
     );
 
-CREATE POLICY "inventario_staff_write" ON inventario FOR ALL TO authenticated
+CREATE POLICY "inventario_staff_write" ON inventario_items FOR ALL TO authenticated
+    USING (
+        auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR public.role_from_app_meta() IN ('admin','encargado_inventario')
+    )
+    WITH CHECK (
+        auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR public.role_from_app_meta() IN ('admin','encargado_inventario')
+    );
+
+-- ── 3b. Tabla: inventario_movimientos ────────────────────────
+DROP POLICY IF EXISTS "inv_mov_staff_read"  ON inventario_movimientos;
+DROP POLICY IF EXISTS "inv_mov_staff_write" ON inventario_movimientos;
+
+CREATE POLICY "inv_mov_staff_read" ON inventario_movimientos FOR SELECT TO authenticated
+    USING (
+        auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR public.role_from_app_meta() IN ('admin','encargado_inventario','operator')
+    );
+
+CREATE POLICY "inv_mov_staff_write" ON inventario_movimientos FOR ALL TO authenticated
     USING (
         auth.jwt() ->> 'email' IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
         OR public.role_from_app_meta() IN ('admin','encargado_inventario')
