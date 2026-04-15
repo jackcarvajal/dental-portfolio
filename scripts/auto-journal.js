@@ -3,12 +3,11 @@
  * PRODIGY — Auto-Journal Generator
  * ─────────────────────────────────────────────────────────────
  * Motor: Google Gemini 2.0 Flash (gratuito, 1500 req/día)
- * Imágenes: Unsplash API (gratuito, 50 req/hora)
+ * Imágenes: Wikipedia REST API (gratuito, sin key)
  * Social copy: GitHub Actions Artifact (privado)
  *
- * Variables de entorno requeridas (GitHub Secrets):
- *   GEMINI_API_KEY      — Google AI Studio → aistudio.google.com
- *   UNSPLASH_ACCESS_KEY — unsplash.com/developers → New Application
+ * Variable de entorno requerida (GitHub Secret):
+ *   GEMINI_API_KEY — Google AI Studio → aistudio.google.com
  */
 
 'use strict';
@@ -21,7 +20,6 @@ const crypto = require('crypto');
 const ARTICLES_PATH = path.join(__dirname, '..', 'articles.js');
 const SOCIAL_PATH   = path.join(__dirname, '..', 'marketing-social.txt');
 const GEMINI_KEY    = process.env.GEMINI_API_KEY;
-const UNSPLASH_KEY  = process.env.UNSPLASH_ACCESS_KEY;
 
 // ── Temas rotativos — odontología digital real ────────────────────
 const TOPIC_POOL = [
@@ -34,7 +32,7 @@ const TOPIC_POOL = [
     lectura: '7 min',
     titulo_seed: 'Exocad DentalCAD 2025',
     tema_es: 'Novedades de Exocad DentalCAD en 2025: nuevas funciones para diseño de coronas, puentes e implantes, comparativa con versiones anteriores y casos clínicos documentados.',
-    unsplash_query: 'dental CAD software technology',
+    wiki_article: 'CAD/CAM dentistry',
   },
   {
     slug_prefix: 'zirconio',
@@ -45,7 +43,7 @@ const TOPIC_POOL = [
     lectura: '6 min',
     titulo_seed: 'Zirconio translúcido multicapa 2025',
     tema_es: 'Estado del arte del zirconio dental multicapa y translúcido (5Y-PSZ, 4Y-PSZ): propiedades mecánicas, estética, protocolos de cementación adhesiva y estudios clínicos comparativos publicados 2022-2025.',
-    unsplash_query: 'dental crown ceramic laboratory',
+    wiki_article: 'Zirconium dioxide in dentistry',
   },
   {
     slug_prefix: 'scanner-intraoral',
@@ -56,7 +54,7 @@ const TOPIC_POOL = [
     lectura: '6 min',
     titulo_seed: 'Escáneres intraorales 2025',
     tema_es: 'Comparativa de precisión y exactitud de los principales escáneres intraorales en 2025 (iTero Element 7, 3Shape Trios 5, Medit i700, Carestream CS 3800): estudios de trueness y precision publicados en revistas indexadas.',
-    unsplash_query: 'intraoral scanner dental technology',
+    wiki_article: 'Intraoral scanner',
   },
   {
     slug_prefix: 'impresion3d-dental',
@@ -67,7 +65,7 @@ const TOPIC_POOL = [
     lectura: '6 min',
     titulo_seed: 'Impresión 3D dental resinas 2025',
     tema_es: 'Avances en resinas fotopolimerizables para impresión 3D dental en 2025: resinas para provisionales de larga duración, modelos de estudio, guías quirúrgicas y férulas. Precisión clínica y protocolos de post-curado según estudios publicados.',
-    unsplash_query: '3D printing dental laboratory resin',
+    wiki_article: '3D printing in dentistry',
   },
   {
     slug_prefix: 'implantes-digitales',
@@ -78,7 +76,7 @@ const TOPIC_POOL = [
     lectura: '7 min',
     titulo_seed: 'Flujo digital en implantología 2025',
     tema_es: 'Flujo completamente digital en implantología: planificación con CBCT, guías quirúrgicas impresas en 3D, restauraciones implantosoportadas CAD/CAM y seguimiento postoperatorio. Tasas de éxito y precisión según meta-análisis recientes.',
-    unsplash_query: 'dental implant surgery digital',
+    wiki_article: 'Dental implant',
   },
   {
     slug_prefix: 'dsd-sonrisa',
@@ -89,7 +87,7 @@ const TOPIC_POOL = [
     lectura: '5 min',
     titulo_seed: 'Diseño Digital de Sonrisa DSD 2025',
     tema_es: 'Protocolo actualizado de Diseño Digital de Sonrisa (DSD): software disponibles, integración con fotografía facial y escaneo intraoral, mockup digital vs. físico, y evidencia clínica de satisfacción del paciente.',
-    unsplash_query: 'dental smile design aesthetic',
+    wiki_article: 'Cosmetic dentistry',
   },
   {
     slug_prefix: 'ia-diagnostico-dental',
@@ -100,7 +98,7 @@ const TOPIC_POOL = [
     lectura: '6 min',
     titulo_seed: 'Inteligencia Artificial en odontología 2025',
     tema_es: 'Aplicaciones de inteligencia artificial en odontología clínica y de laboratorio en 2025: detección de caries por IA, análisis de márgenes en CAD, predicción de carga oclusal, y herramientas aprobadas por FDA/CE disponibles actualmente.',
-    unsplash_query: 'artificial intelligence medical dental technology',
+    wiki_article: 'Artificial intelligence in healthcare',
   },
   {
     slug_prefix: 'alineadores-digitales',
@@ -111,7 +109,7 @@ const TOPIC_POOL = [
     lectura: '5 min',
     titulo_seed: 'Alineadores transparentes flujo digital 2025',
     tema_es: 'Flujo digital completo para alineadores transparentes en 2025: escáner intraoral, software de planificación (Invisalign ClinCheck, 3Shape Ortho Analyzer, uLab), impresión 3D de modelos y fabricación de alineadores. Comparativa de sistemas y resultados clínicos.',
-    unsplash_query: 'dental aligners orthodontics clear',
+    wiki_article: 'Clear aligners',
   },
 ];
 
@@ -185,33 +183,27 @@ async function callGemini(prompt) {
   return text;
 }
 
-// ── Unsplash API ──────────────────────────────────────────────────
-async function fetchUnsplashImage(query) {
-  if (!UNSPLASH_KEY) {
-    console.warn('⚠️  UNSPLASH_ACCESS_KEY no definida — sin imagen');
-    return null;
-  }
+// ── Wikipedia REST API — imagen principal del artículo ───────────
+async function fetchWikipediaImage(articleTitle) {
   try {
-    const q = encodeURIComponent(query);
+    const title = encodeURIComponent(articleTitle);
     const raw = await httpRequest({
-      hostname: 'api.unsplash.com',
-      path: `/search/photos?query=${q}&per_page=3&orientation=landscape&content_filter=high`,
+      hostname: 'en.wikipedia.org',
+      path: `/w/api.php?action=query&titles=${title}&prop=pageimages&format=json&pithumbsize=1200&pilicense=any`,
       method: 'GET',
-      headers: { 'Authorization': `Client-ID ${UNSPLASH_KEY}` }
+      headers: { 'User-Agent': 'ProDigyJournal/1.0 (prodigylabdental.com)' }
     });
-    const data = JSON.parse(raw);
-    const photo = data.results?.[0];
-    if (!photo) return null;
+    const data  = JSON.parse(raw);
+    const pages = data.query?.pages || {};
+    const page  = Object.values(pages)[0];
+    if (!page?.thumbnail?.source) return null;
     return {
-      url:      photo.urls.regular,        // ~1080px
-      url_full: photo.urls.full,
-      thumb:    photo.urls.small,
-      alt:      photo.alt_description || query,
-      credit:   `${photo.user.name} on Unsplash`,
-      link:     photo.links.html
+      url:    page.thumbnail.source,
+      credit: `Wikipedia — ${articleTitle}`,
+      link:   `https://en.wikipedia.org/wiki/${encodeURIComponent(articleTitle)}`
     };
   } catch (e) {
-    console.warn('⚠️  Unsplash error:', e.message);
+    console.warn('⚠️  Wikipedia imagen error:', e.message);
     return null;
   }
 }
@@ -374,7 +366,7 @@ async function main() {
 
   console.log(`\n🚀 ProDigy Auto-Journal — ${todayISO()}`);
   console.log(`📡 Motor: Google Gemini 2.0 Flash`);
-  console.log(`🖼️  Imágenes: Unsplash${UNSPLASH_KEY ? ' ✓' : ' (sin key)'}\n`);
+  console.log(`🖼️  Imágenes: Wikipedia REST API (sin key)\n`);
 
   const topics = pickTopics();
   const newArticles   = [];
@@ -390,10 +382,10 @@ async function main() {
       console.log(`   ✅ Texto: "${aiData.titulo}"`);
       console.log(`   📚 Referencias: ${aiData.referencias.length}`);
 
-      // 2. Imagen con Unsplash
-      const image = await fetchUnsplashImage(topic.unsplash_query);
+      // 2. Imagen con Wikipedia API (sin key)
+      const image = await fetchWikipediaImage(topic.wiki_article);
       if (image) console.log(`   🖼️  Imagen: ${image.credit}`);
-      else        console.log(`   ⚠️  Sin imagen`);
+      else        console.log(`   ⚠️  Sin imagen (Wikipedia no devolvió portada)`);
 
       // 3. Construir artículo
       const article = buildArticleObject(topic, aiData, image);

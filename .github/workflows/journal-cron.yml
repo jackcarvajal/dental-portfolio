@@ -1,7 +1,7 @@
 # ============================================================
 # PRODIGY — Auto-Journal
 # Motor: Google Gemini 2.0 Flash (gratuito)
-# Imágenes: Unsplash API (gratuito)
+# Imágenes: Wikipedia REST API (gratuito, sin key)
 # Cron: martes y jueves 9:00 AM Bogotá (14:00 UTC)
 # Social copy: GitHub Actions Artifact (privado, solo tú)
 # ============================================================
@@ -31,10 +31,9 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Generar artículos (Gemini + Unsplash)
+      - name: Generar artículos (Gemini + Wikipedia)
         env:
-          GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
-          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/auto-journal.js
 
       - name: Verificar cambios en articles.js
