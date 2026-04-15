@@ -2140,9 +2140,29 @@
         
 
         // =============================================
+        // Detectar país al cargar (caché sessionStorage para checkAuth)
+        (async function() {
+            if (sessionStorage.getItem('prodigy_pais')) return;
+            try {
+                const r = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
+                const d = await r.json();
+                sessionStorage.setItem('prodigy_pais', d.country_code || 'CO');
+            } catch(e) { sessionStorage.setItem('prodigy_pais', 'CO'); }
+        })();
+
         // FILTRO DE ACCESO: redirige a login si no hay sesión
+        // Manufactura física (fresado/impresion) → solo Colombia
         // =============================================
         function checkAuth(destino) {
+            const esFisico = destino.includes('fresado') || destino.includes('impresion');
+            if (esFisico) {
+                const pais = sessionStorage.getItem('prodigy_pais') || 'CO';
+                if (pais !== 'CO') {
+                    const svc = destino.includes('fresado') ? 'fresado%20CAD/CAM' : 'impresión%203D';
+                    window.open('https://wa.me/573212816716?text=Hola%20PRODIGY,%20soy%20cliente%20internacional%20e%20necesito%20información%20sobre%20' + svc + '.', '_blank');
+                    return;
+                }
+            }
             const rol = sessionStorage.getItem('prodigy_role');
             if (rol) {
                 window.location.href = destino;

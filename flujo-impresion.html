@@ -25,6 +25,29 @@
     <link rel="stylesheet" href="css/global-nav.min.css">
 </head>
 <body>
+    <!-- Geo-gate: impresión 3D es solo Colombia. Si internacional → overlay inmediato -->
+    <script>
+    (function() {
+        const pais = sessionStorage.getItem('prodigy_pais');
+        if (pais && pais !== 'CO') { mostrarGeoGate(); return; }
+        if (!pais) {
+            fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) })
+                .then(r => r.json()).then(d => {
+                    const p = d.country_code || 'CO';
+                    sessionStorage.setItem('prodigy_pais', p);
+                    if (p !== 'CO') mostrarGeoGate();
+                }).catch(() => {});
+        }
+        function mostrarGeoGate() {
+            document.body.style.overflow = 'hidden';
+            const el = document.createElement('div');
+            el.id = 'geo-gate';
+            el.style.cssText = 'position:fixed;inset:0;background:#050505;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;';
+            el.innerHTML = '<div style="max-width:420px;text-align:center;"><div style="font-size:2.5rem;margin-bottom:16px;">🌎</div><h2 style="color:#fbbf24;font-family:sans-serif;margin-bottom:12px;">Servicio disponible solo en Colombia</h2><p style="color:#94a3b8;font-size:.9rem;line-height:1.6;margin-bottom:24px;">La impresión 3D requiere entrega física nacional.<br>Para clientes internacionales, coordina por WhatsApp.</p><a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20soy%20cliente%20internacional%20e%20necesito%20información%20sobre%20impresión%203D." style="display:block;padding:14px;background:linear-gradient(135deg,#166534,#15803d);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:.9rem;margin-bottom:12px;font-family:sans-serif;">📲 Coordinar por WhatsApp</a><a href="flujo-diseno.html" style="display:block;padding:12px;background:rgba(217,70,166,0.15);color:#D946A6;border:1px solid rgba(217,70,166,0.4);border-radius:10px;text-decoration:none;font-weight:700;font-size:.85rem;font-family:sans-serif;">Ver Diseño CAD (entrega digital global)</a><br><a href="index.html" style="color:#64748b;font-size:.8rem;font-family:sans-serif;">← Volver al inicio</a></div>';
+            document.body.prepend(el);
+        }
+    })();
+    </script>
     <script src="js/navbar.js"></script>
 
     <div class="container">
