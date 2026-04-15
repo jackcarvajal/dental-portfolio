@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#D946A6">
+  <meta name="description" content="Conoce a PRODIGY Lab Dental — laboratorio dental CAD/CAM de alta precisión en Bogotá. Equipo experto, tecnología XTCERA, calidad boutique.">
+  <meta property="og:title" content="Nosotros — PRODIGY Lab Dental">
+  <meta property="og:description" content="Diseño CAD avanzado y manufactura de alta precisión. Conoce nuestra historia y misión.">
+  <meta property="og:image" content="https://prodigylabdental.com/assets/prodigy-preview.jpg">
+  <meta property="og:url" content="https://prodigylabdental.com/nosotros.html">
+  <link rel="canonical" href="https://prodigylabdental.com/nosotros.html">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <title>Nosotros — PRODIGY Digital Dentistry</title>
+  <style>
+    :root {
+      --gold: #D946A6;
+      --gold2: #D4AF37;
+      --cyan: #00d2ff;
+      --green: #00FF41;
+      --bg: #050505;
+      --bg-card: #0d1520;
+      --bg-card2: #111a27;
+      --border: rgba(217,70,166,0.2);
+      --border2: rgba(0,210,255,0.15);
+      --text: #e2e8f0;
+      --muted: #64748b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* NAV reutilizable */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(5,5,5,0.96); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(212,175,55,0.2);
+      padding: 15px 0; z-index: 1000;
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    .navbar.nav-hidden { transform: translateY(-100%); }
+    .nav-inner {
+      max-width: 1260px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; gap: 24px;
+    }
+    .nav-logo { font-size: 1.2rem; font-weight: 900; color: var(--gold); letter-spacing: 3px; text-decoration: none; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-size: .82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-cta { background: var(--gold); color: #fff !important; padding: 8px 18px; border-radius: 100px; font-weight: 700 !important; }
+    .nav-cta:hover { opacity: .85; }
+    @media(max-width:768px) { .nav-links { display: none; } }
+
+    /* HERO */
+    .hero {
+      min-height: 88vh;
+      display: flex; align-items: center;
+      padding: 120px 24px 80px;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 40%, rgba(217,70,166,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 60%, rgba(0,210,255,0.06) 0%, transparent 60%),
+        var(--bg);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D946A6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(217,70,166,0.12); border: 1px solid var(--border);
+      color: var(--gold); font-size: .75rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+    }
+    .hero-tag .dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 24px; }
+    .hero h1 em { font-style: normal; color: var(--gold); }
+    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 580px; margin-bottom: 40px; line-height: 1.7; }
+    .hero-stats {
+      display: flex; gap: 40px; flex-wrap: wrap;
+    }
+    .stat { }
+    .stat strong { display: block; font-size: 2rem; font-weight: 900; color: var(--text); line-height: 1; }
+    .stat span { font-size: .8rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* SECCIONES */
+    section { padding: 80px 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-tag {
+      font-size: .75rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 12px;
+    }
+    h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; margin-bottom: 16px; }
+    h2.section-title em { font-style: normal; color: var(--gold); }
+    .section-sub { color: var(--muted); font-size: 1rem; max-width: 560px; line-height: 1.7; margin-bottom: 48px; }
+
+    /* HISTORIA — dos columnas */
+    .historia-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    }
+    @media(max-width:768px) { .historia-grid { grid-template-columns: 1fr; } }
+    .historia-img {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+      position: relative; overflow: hidden;
+    }
+    .historia-img::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(217,70,166,0.12) 0%, transparent 70%);
+    }
+    .historia-text h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 16px; }
+    .historia-text p { color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+    .historia-text p strong { color: var(--text); }
+
+    /* DIFERENCIADORES */
+    .dif-section { background: linear-gradient(180deg, #050505 0%, #08101a 50%, #050505 100%); }
+    .dif-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media(max-width:768px) { .dif-grid { grid-template-columns: 1fr; } }
+    .dif-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      transition: border-color .3s, box-shadow .3s, transform .3s;
+      position: relative; overflow: hidden;
+    }
+    .dif-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 0 40px rgba(217,70,166,0.15);
+      transform: translateY(-4px);
+    }
+    .dif-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .dif-card:hover::before { opacity: 1; }
+    .dif-icon {
+      width: 52px; height: 52px;
+      background: rgba(217,70,166,0.12);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      color: var(--gold);
+    }
+    .dif-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+    .dif-card p { color: var(--muted); font-size: .9rem; line-height: 1.7; }
+
+    /* VALORES */
+    .valores-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    @media(max-width:600px) { .valores-grid { grid-template-columns: 1fr; } }
+    .valor-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--bg-card2); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px; padding: 20px;
+    }
+    .valor-item .vi-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .valor-item h4 { font-size: .95rem; font-weight: 700; margin-bottom: 4px; }
+    .valor-item p { color: var(--muted); font-size: .85rem; line-height: 1.6; }
+
+    /* CTA FINAL */
+    .cta-section { text-align: center; }
+    .cta-section h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; margin-bottom: 16px; }
+    .cta-section p { color: var(--muted); margin-bottom: 36px; font-size: 1rem; }
+    .btn-gold {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #D946A6 0%, #a0186e 100%);
+      color: #fff; font-weight: 700; font-size: 1rem;
+      padding: 14px 32px; border-radius: 100px; text-decoration: none;
+      box-shadow: 0 8px 32px rgba(217,70,166,0.35);
+      transition: opacity .2s, transform .2s;
+    }
+    .btn-gold:hover { opacity: .85; transform: translateY(-2px); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid rgba(217,70,166,0.4);
+      color: var(--muted); font-size: .9rem;
+      padding: 12px 28px; border-radius: 100px; text-decoration: none;
+      margin-left: 16px; margin-top: 12px;
+      transition: all .2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* SR animations */
+    .sr { opacity: 0; transform: translateY(32px); transition: opacity .6s ease, transform .6s ease; }
+    .sr.visible { opacity: 1; transform: translateY(0); }
+    @media(prefers-reduced-motion: reduce) { .sr, .sr.visible { transition: none; opacity: 1; transform: none; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">PRODIGY</a>
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/portafolio.html">Portafolio</a>
+      <a href="/nosotros.html" class="active">Nosotros</a>
+      <a href="/soporte.html">Soporte</a>
+      <a href="/contacto.html">Contacto</a>
+      <a href="/calculadora.html" class="nav-cta">Cotizar</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><span class="dot"></span> Bogotá, Colombia</div>
+    <h1>Innovación que<br>se siente en<br><em>cada ajuste</em></h1>
+    <p>Somos un laboratorio dental de precisión especializado en diseño CAD avanzado y manufactura CAM. No producimos volumen — producimos exactitud.</p>
+    <div class="hero-stats">
+      <div class="stat"><strong>CAD/CAM</strong><span>Tecnología</span></div>
+      <div class="stat"><strong>24h</strong><span>Entrega</span></div>
+      <div class="stat"><strong>XTCERA</strong><span>Fresadora</span></div>
+      <div class="stat"><strong>BCN3D</strong><span>Impresión 3D</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORIA -->
+<section>
+  <div class="container">
+    <div class="historia-grid sr">
+      <div class="historia-img">🦷</div>
+      <div class="historia-text">
+        <div class="section-tag">Nuestra historia</div>
+        <h3>Del tallado manual al diseño digital</h3>
+        <p>PRODIGY nace de la experiencia directa en el flujo clínico dental. <strong>Alejandro Cañón</strong>, técnico experto con formación en diseño CAD/CAM, construyó este laboratorio con un objetivo claro: eliminar la brecha entre lo que el doctor necesita y lo que el laboratorio puede producir.</p>
+        <p>Hoy operamos con <strong>diseño digital en Exocad y 3Shape</strong>, fresado en zirconio monolítico y multicapa, impresión 3D de resinas dentales, y un protocolo de control de calidad pieza a pieza.</p>
+        <p>No somos una fábrica. Somos un <strong>servicio boutique</strong> con respaldo tecnológico de primer nivel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIADORES -->
+<section class="dif-section">
+  <div class="container">
+    <div class="section-tag sr">Por qué PRODIGY</div>
+    <h2 class="section-title sr">Tres razones que nos <em>definen</em></h2>
+    <div class="dif-grid">
+      <div class="dif-card sr">
+        <div class="dif-icon"><i class="fas fa-pen-ruler"></i></div>
+        <h3>Diseño CAD de Precisión</h3>
+        <p>Exocad y 3Shape en manos de diseñadores con experiencia clínica real. Cada curva, cada oclusión, cada punto de contacto — diseñados para funcionar, no solo para verse bien.</p>
+      </div>
+      <div class="dif-card sr">
+        <div class="dif-icon"><i class="fas fa-cog"></i></div>
+        <h3>Manufactura XTCERA</h3>
+        <p>Fresadora de 5 ejes con acceso a 15+ tipos de disco: zirconia monolítica 1200MPa, multicapa, ultra-traslúcida 5Y-TZP, PMMA multicapa, titanio grado 5. Tolerancias de ±10µm.</p>
+      </div>
+      <div class="dif-card sr">
+        <div class="dif-icon"><i class="fas fa-headset"></i></div>
+        <h3>Soporte Local Inmediato</h3>
+        <p>Bogotá, zona norte. Comunicación directa por WhatsApp, seguimiento en vivo del estado de tu caso, y recogida de escáner a domicilio disponible en el mismo día.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALORES -->
+<section>
+  <div class="container">
+    <div class="section-tag sr">Cómo trabajamos</div>
+    <h2 class="section-title sr">Principios que no <em>negociamos</em></h2>
+    <p class="section-sub sr">Cada caso que sale de PRODIGY cumple los mismos estándares, sin importar el volumen del pedido.</p>
+    <div class="valores-grid sr">
+      <div class="valor-item">
+        <span class="vi-icon">🎯</span>
+        <div>
+          <h4>Ajuste antes de entrega</h4>
+          <p>Control de calidad pieza a pieza. Si no pasa el checklist interno, no sale.</p>
+        </div>
+      </div>
+      <div class="valor-item">
+        <span class="vi-icon">⚡</span>
+        <div>
+          <h4>Velocidad sin atajos</h4>
+          <p>Entrega en 24h sin sacrificar la calidad del diseño ni de la manufactura.</p>
+        </div>
+      </div>
+      <div class="valor-item">
+        <span class="vi-icon">🔬</span>
+        <div>
+          <h4>Materiales certificados</h4>
+          <p>Zirconia, PMMA, disilicato, resinas 3D — solo proveedores con trazabilidad ISO.</p>
+        </div>
+      </div>
+      <div class="valor-item">
+        <span class="vi-icon">📡</span>
+        <div>
+          <h4>Trazabilidad digital total</h4>
+          <p>Desde el archivo STL hasta el despacho, cada etapa queda registrada en sistema.</p>
+        </div>
+      </div>
+      <div class="valor-item">
+        <span class="vi-icon">🤝</span>
+        <div>
+          <h4>Relación a largo plazo</h4>
+          <p>No buscamos el primer pedido. Buscamos ser el laboratorio de cabecera de tu clínica.</p>
+        </div>
+      </div>
+      <div class="valor-item">
+        <span class="vi-icon">🌎</span>
+        <div>
+          <h4>Diseño global, producción local</h4>
+          <p>Archivos de diseño manejados internacionalmente, manufactura y soporte en Bogotá.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="section-tag sr">Empecemos</div>
+    <h2 class="sr">¿Listo para un laboratorio <em>diferente</em>?</h2>
+    <p class="sr">Envía tu primer caso o agenda una llamada técnica. Sin compromiso.</p>
+    <div class="sr">
+      <a href="/calculadora.html" class="btn-gold"><i class="fas fa-calculator"></i> Cotizar ahora</a>
+      <a href="/contacto.html" class="btn-outline">Hablar con el equipo</a>
+    </div>
+  </div>
+</section>
+
+<script src="js/footer.js"></script>
+<script>
+  // Navbar hide-on-scroll
+  (function(){
+    const nav = document.getElementById('navbar');
+    let lastY = 0, ticking = false;
+    function onScroll() {
+      const y = window.scrollY;
+      if (y > lastY && y > 80) nav.classList.add('nav-hidden');
+      else nav.classList.remove('nav-hidden');
+      lastY = y; ticking = false;
+    }
+    window.addEventListener('scroll', function(){ if(!ticking){ requestAnimationFrame(onScroll); ticking=true; } }, { passive: true });
+  })();
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.sr').forEach(el => obs.observe(el));
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+</script>
+</body>
+</html>

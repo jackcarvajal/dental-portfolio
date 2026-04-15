@@ -17,7 +17,7 @@
     '}',
     '#pfoot-root .pfoot-grid{',
       'display:grid;',
-      'grid-template-columns:1.6fr 1fr 1fr 1fr;',
+      'grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;',
       'gap:40px;',
       'max-width:1260px;margin:0 auto 48px;padding:0 28px;',
     '}',
@@ -91,6 +91,9 @@
     '#pfoot-root .pfoot-copy a{color:#64748b;text-decoration:none;transition:color .2s;}',
     '#pfoot-root .pfoot-copy a:hover{color:#D4AF37;}',
     /* Responsive */
+    '@media(max-width:1100px){',
+      '#pfoot-root .pfoot-grid{grid-template-columns:1fr 1fr 1fr;}',
+    '}',
     '@media(max-width:960px){',
       '#pfoot-root .pfoot-grid{grid-template-columns:1fr 1fr;}',
     '}',
@@ -152,6 +155,18 @@
         '</ul>' +
       '</div>' +
 
+      /* Col 3b — Empresa */
+      '<div class="pfoot-col">' +
+        '<h4>Empresa</h4>' +
+        '<ul>' +
+          '<li><a href="nosotros.html">Nosotros</a></li>' +
+          '<li><a href="soporte.html">Soporte Técnico</a></li>' +
+          '<li><a href="contacto.html">Contacto</a></li>' +
+          '<li><a href="instalar-app.html">Instalar App</a></li>' +
+          '<li><a href="terminos-y-legal.html">Términos y Privacidad</a></li>' +
+        '</ul>' +
+      '</div>' +
+
       /* Col 4 — Portal Profesional */
       '<div class="pfoot-col">' +
         '<h4>Portal Profesional</h4>' +
@@ -160,8 +175,6 @@
           '<li><a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20soporte%20t%C3%A9cnico" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" style="color:#25D366;margin-right:6px"></i>Soporte Técnico</a></li>' +
           '<li><a href="mailto:labdentalprodigy@gmail.com"><i class="far fa-envelope" style="margin-right:6px"></i>labdentalprodigy@gmail.com</a></li>' +
           '<li><a href="tel:+573212816716"><i class="fas fa-phone" style="margin-right:6px"></i>+57 321 281 6716</a></li>' +
-          '<li><a href="terminos-y-legal.html">Términos y Condiciones</a></li>' +
-          '<li><a href="terminos-y-legal.html#privacidad">Política de Privacidad</a></li>' +
         '</ul>' +
       '</div>' +
     '</div>' +

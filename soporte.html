@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#D946A6">
+  <meta name="description" content="Centro de soporte técnico PRODIGY Lab Dental. Guías de escaneo STL, fichas técnicas de materiales, estado de casos y ayuda Exocad.">
+  <meta property="og:title" content="Soporte Técnico — PRODIGY Lab Dental">
+  <meta property="og:url" content="https://prodigylabdental.com/soporte.html">
+  <link rel="canonical" href="https://prodigylabdental.com/soporte.html">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <title>Soporte Técnico — PRODIGY Digital Dentistry</title>
+  <style>
+    :root {
+      --gold: #D946A6;
+      --gold2: #D4AF37;
+      --cyan: #00d2ff;
+      --green: #00FF41;
+      --bg: #050505;
+      --bg-card: #0d1520;
+      --border: rgba(217,70,166,0.2);
+      --border-c: rgba(0,210,255,0.2);
+      --text: #e2e8f0;
+      --muted: #64748b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
+
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(5,5,5,0.96); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(212,175,55,0.2);
+      padding: 15px 0; z-index: 1000;
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    .navbar.nav-hidden { transform: translateY(-100%); }
+    .nav-inner { max-width: 1260px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; gap: 24px; }
+    .nav-logo { font-size: 1.2rem; font-weight: 900; color: var(--gold); letter-spacing: 3px; text-decoration: none; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-size: .82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-cta { background: var(--gold); color: #fff !important; padding: 8px 18px; border-radius: 100px; font-weight: 700 !important; }
+    @media(max-width:768px) { .nav-links { display: none; } }
+
+    /* HERO */
+    .hero {
+      padding: 140px 24px 80px;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(0,210,255,0.08) 0%, transparent 60%), var(--bg);
+      text-align: center;
+    }
+    .hero .tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,210,255,0.1); border: 1px solid var(--border-c);
+      color: var(--cyan); font-size: .75rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 24px;
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; margin-bottom: 16px; }
+    .hero h1 em { font-style: normal; color: var(--cyan); }
+    .hero p { color: var(--muted); max-width: 540px; margin: 0 auto 20px; font-size: 1rem; }
+
+    /* SEARCH BAR decorativa */
+    .search-bar {
+      display: flex; align-items: center; gap: 12px;
+      max-width: 480px; margin: 32px auto 0;
+      background: #0d1520; border: 1px solid var(--border-c);
+      border-radius: 100px; padding: 12px 20px;
+    }
+    .search-bar i { color: var(--cyan); }
+    .search-bar input {
+      flex: 1; background: none; border: none; outline: none;
+      color: var(--text); font-size: .95rem;
+    }
+    .search-bar input::placeholder { color: var(--muted); }
+
+    section { padding: 64px 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-tag { font-size: .75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); margin-bottom: 8px; }
+    h2.st { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin-bottom: 40px; }
+
+    /* CARDS PRINCIPALES */
+    .cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    @media(max-width:768px) { .cards-grid { grid-template-columns: 1fr; } }
+
+    .scard {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px; padding: 32px 28px;
+      text-decoration: none; color: var(--text);
+      display: flex; flex-direction: column; gap: 16px;
+      position: relative; overflow: hidden;
+      transition: border-color .3s, box-shadow .3s, transform .3s;
+    }
+    .scard:hover {
+      border-color: var(--gold);
+      box-shadow: 0 0 48px rgba(217,70,166,0.18), inset 0 0 0 1px rgba(217,70,166,0.1);
+      transform: translateY(-4px);
+    }
+    .scard.cyan:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 48px rgba(0,210,255,0.15), inset 0 0 0 1px rgba(0,210,255,0.08);
+    }
+    .scard::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .scard.cyan::before { background: linear-gradient(90deg, transparent, var(--cyan), transparent); }
+    .scard:hover::before { opacity: 1; }
+
+    .scard-top { display: flex; align-items: flex-start; justify-content: space-between; }
+    .scard-icon {
+      width: 52px; height: 52px;
+      background: rgba(217,70,166,0.12); border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; color: var(--gold); flex-shrink: 0;
+    }
+    .scard.cyan .scard-icon { background: rgba(0,210,255,0.1); border-color: var(--border-c); color: var(--cyan); }
+    .scard-arrow { color: var(--muted); font-size: .85rem; margin-top: 4px; transition: color .3s, transform .3s; }
+    .scard:hover .scard-arrow { color: var(--gold); transform: translateX(4px); }
+    .scard.cyan:hover .scard-arrow { color: var(--cyan); }
+    .scard h3 { font-size: 1.05rem; font-weight: 700; }
+    .scard p { color: var(--muted); font-size: .88rem; line-height: 1.7; flex: 1; }
+    .scard-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .stag {
+      background: rgba(217,70,166,0.1); border: 1px solid rgba(217,70,166,0.2);
+      color: var(--gold); font-size: .7rem; font-weight: 600;
+      padding: 3px 10px; border-radius: 100px; letter-spacing: .5px;
+    }
+    .scard.cyan .stag { background: rgba(0,210,255,0.08); border-color: rgba(0,210,255,0.2); color: var(--cyan); }
+
+    /* CONTACTO RÁPIDO */
+    .quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media(max-width:768px) { .quick-grid { grid-template-columns: 1fr; } }
+    .qcard {
+      background: #0d1520; border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px; padding: 24px 20px;
+      text-decoration: none; color: var(--text);
+      display: flex; align-items: center; gap: 16px;
+      transition: border-color .2s, transform .2s;
+    }
+    .qcard:hover { border-color: rgba(255,255,255,0.15); transform: translateX(4px); }
+    .qcard-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .qcard h4 { font-size: .9rem; font-weight: 700; margin-bottom: 2px; }
+    .qcard p { color: var(--muted); font-size: .8rem; }
+
+    /* SR */
+    .sr { opacity: 0; transform: translateY(28px); transition: opacity .55s ease, transform .55s ease; }
+    .sr.visible { opacity: 1; transform: translateY(0); }
+    @media(prefers-reduced-motion: reduce) { .sr,.sr.visible { transition: none; opacity: 1; transform: none; } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">PRODIGY</a>
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/portafolio.html">Portafolio</a>
+      <a href="/nosotros.html">Nosotros</a>
+      <a href="/soporte.html" class="active">Soporte</a>
+      <a href="/contacto.html">Contacto</a>
+      <a href="/calculadora.html" class="nav-cta">Cotizar</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero sr">
+  <div class="tag"><i class="fas fa-headset"></i> Centro de recursos</div>
+  <h1>Soporte <em>técnico</em><br>para tu clínica</h1>
+  <p>Guías, fichas técnicas, seguimiento de casos y ayuda directa con Exocad. Todo en un solo lugar.</p>
+  <div class="search-bar">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="¿Qué necesitas? — escríbenos por WhatsApp" readonly onclick="window.open('https://wa.me/573212816716','_blank')">
+  </div>
+</div>
+
+<!-- RECURSOS PRINCIPALES -->
+<section>
+  <div class="container">
+    <div class="section-tag sr">Recursos</div>
+    <h2 class="st sr">Herramientas para <span style="color:var(--gold)">tu flujo de trabajo</span></h2>
+    <div class="cards-grid">
+
+      <a href="https://wa.me/573212816716?text=Hola%2C%20necesito%20una%20gu%C3%ADa%20de%20escaneo%20STL" class="scard sr" target="_blank" rel="noopener">
+        <div class="scard-top">
+          <div class="scard-icon"><i class="fas fa-mobile-alt"></i></div>
+          <div class="scard-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <h3>Guías de Escaneo STL</h3>
+        <p>Protocolos de escaneo para intraoral y de escritorio. Parámetros recomendados por tipo de caso: unitario, puente, full-arch y implantes.</p>
+        <div class="scard-tags">
+          <span class="stag">Intraoral</span>
+          <span class="stag">Full-arch</span>
+          <span class="stag">Implantes</span>
+        </div>
+      </a>
+
+      <a href="/catalogo.html" class="scard cyan sr">
+        <div class="scard-top">
+          <div class="scard-icon"><i class="fas fa-flask"></i></div>
+          <div class="scard-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <h3>Fichas Técnicas de Materiales</h3>
+        <p>Especificaciones completas de zirconia monolítica, multicapa, ultra-traslúcida 5Y-TZP, PMMA, disilicato de litio, resinas 3D y titanio grado 5.</p>
+        <div class="scard-tags">
+          <span class="stag">Zirconia</span>
+          <span class="stag">PMMA</span>
+          <span class="stag">e.max</span>
+          <span class="stag">Titanio</span>
+        </div>
+      </a>
+
+      <a href="/seguimiento-caso.html" class="scard cyan sr">
+        <div class="scard-top">
+          <div class="scard-icon"><i class="fas fa-chart-line"></i></div>
+          <div class="scard-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <h3>Estado de Casos en Vivo</h3>
+        <p>Consulta en tiempo real la etapa de producción de tus trabajos: diseño, manufactura, terminado, en camino. Sin necesidad de llamar.</p>
+        <div class="scard-tags">
+          <span class="stag">Tiempo real</span>
+          <span class="stag">Sin login</span>
+        </div>
+      </a>
+
+      <a href="https://wa.me/573212816716?text=Hola%2C%20necesito%20ayuda%20con%20Exocad" class="scard sr" target="_blank" rel="noopener">
+        <div class="scard-top">
+          <div class="scard-icon"><i class="fas fa-cube"></i></div>
+          <div class="scard-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <h3>Ayuda Exocad / 3Shape</h3>
+        <p>Soporte directo para compartir archivos de diseño, visualizar tu caso en el visor 3D integrado, y revisar el proyecto antes de fresar.</p>
+        <div class="scard-tags">
+          <span class="stag">Exocad</span>
+          <span class="stag">3Shape</span>
+          <span class="stag">STL viewer</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO RÁPIDO -->
+<section style="padding-top:0">
+  <div class="container">
+    <div class="section-tag sr">Contacto directo</div>
+    <h2 class="st sr">Respuesta en <span style="color:var(--cyan)">menos de 2 horas</span></h2>
+    <div class="quick-grid sr">
+      <a href="https://wa.me/573212816716" class="qcard" target="_blank" rel="noopener">
+        <span class="qcard-icon" style="color:#25D366"><i class="fab fa-whatsapp"></i></span>
+        <div>
+          <h4>WhatsApp</h4>
+          <p>+57 321 281 6716 · L–S 8am–6pm</p>
+        </div>
+      </a>
+      <a href="mailto:labdentalprodigy@gmail.com" class="qcard">
+        <span class="qcard-icon" style="color:var(--gold)"><i class="fas fa-envelope"></i></span>
+        <div>
+          <h4>Correo Técnico</h4>
+          <p>labdentalprodigy@gmail.com</p>
+        </div>
+      </a>
+      <a href="/envia-tu-scanner.html" class="qcard">
+        <span class="qcard-icon" style="color:var(--cyan)"><i class="fas fa-satellite-dish"></i></span>
+        <div>
+          <h4>Envía tu Escáner</h4>
+          <p>STL, OBJ, PLY — transferencia segura</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script src="js/footer.js"></script>
+<script>
+  (function(){
+    const nav = document.getElementById('navbar');
+    let lastY = 0, ticking = false;
+    function onScroll(){ const y=window.scrollY; if(y>lastY&&y>80) nav.classList.add('nav-hidden'); else nav.classList.remove('nav-hidden'); lastY=y; ticking=false; }
+    window.addEventListener('scroll',function(){ if(!ticking){requestAnimationFrame(onScroll);ticking=true;} },{passive:true});
+  })();
+  const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.08});
+  document.querySelectorAll('.sr').forEach(el=>obs.observe(el));
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+</script>
+</body>
+</html>
