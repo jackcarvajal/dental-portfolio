@@ -5,7 +5,7 @@
 -- ────────────────────────────────────────────────────────────────
 
 CREATE TABLE IF NOT EXISTS citas_domicilio (
-    id                  UUID        PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id                  UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
 
     -- Datos del solicitante
     nombre              TEXT        NOT NULL,

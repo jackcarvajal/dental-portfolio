@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/global-nav.min.css">
-    <script src="js/patients-data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <style>
         :root {
             --gold:    #D4AF37;
@@ -454,6 +454,7 @@
     <div class="cases-grid" id="casesGrid">
         <!-- JS renderiza aquí -->
     </div>
+    <div id="paginador" style="display:none;justify-content:center;align-items:center;gap:12px;padding:32px 16px 0;flex-wrap:wrap"></div>
 </section>
 
 <script src="js/footer.js"></script>
@@ -475,6 +476,9 @@ function getTypeLabel(type) {
 }
 
 let allCases = [];
+let currentPage = 1;
+let filteredCases = [];
+const PAGE_SIZE = 12;
 
 // IntersectionObserver para scroll reveal
 const revealObserver = new IntersectionObserver((entries) => {
@@ -502,27 +506,38 @@ function addTilt(card) {
 }
 
 function renderCases(cases) {
-    const grid   = document.getElementById('casesGrid');
-    const countEl = document.getElementById('countVisible');
-    const plural = document.getElementById('countPlural');
+    filteredCases = cases;
+    renderPage(1);
+}
 
-    // Animación del contador
+function renderPage(page) {
+    currentPage = page;
+    const grid    = document.getElementById('casesGrid');
+    const countEl = document.getElementById('countVisible');
+    const plural  = document.getElementById('countPlural');
+    const paginador = document.getElementById('paginador');
+
     countEl.classList.remove('pop');
     void countEl.offsetWidth;
-    countEl.textContent  = cases.length;
+    countEl.textContent = filteredCases.length;
     countEl.classList.add('pop');
-    plural.textContent = cases.length === 1 ? '' : 's';
+    plural.textContent = filteredCases.length === 1 ? '' : 's';
 
-    if (!cases.length) {
+    if (!filteredCases.length) {
         grid.innerHTML = `
             <div class="empty-state">
                 <div class="empty-icon">🦷</div>
                 <p>No hay casos en esta categoría aún.</p>
             </div>`;
+        paginador.style.display = 'none';
         return;
     }
 
-    grid.innerHTML = cases.map((c, i) => `
+    const totalPages = Math.ceil(filteredCases.length / PAGE_SIZE);
+    const start = (page - 1) * PAGE_SIZE;
+    const slice = filteredCases.slice(start, start + PAGE_SIZE);
+
+    grid.innerHTML = slice.map((c, i) => `
         <a class="case-card" href="patient.html?id=${c.id}&from=catalogo" style="transition-delay:${Math.min(i * 80, 400)}ms">
             <div class="card-img">
                 <img src="${c.coverImage}" alt="${c.name}"
@@ -542,11 +557,35 @@ function renderCases(cases) {
         </a>
     `).join('');
 
-    // Aplicar reveal + tilt a cada tarjeta
     grid.querySelectorAll('.case-card').forEach(card => {
         revealObserver.observe(card);
         addTilt(card);
     });
+
+    // Paginador
+    if (totalPages <= 1) {
+        paginador.style.display = 'none';
+        return;
+    }
+
+    paginador.style.display = 'flex';
+    const btnStyle = (active) =>
+        `style="padding:8px 18px;border-radius:8px;border:1px solid ${active ? '#D946A6' : '#333'};
+         background:${active ? '#D946A6' : 'transparent'};color:${active ? '#fff' : '#aaa'};
+         cursor:pointer;font-size:0.9rem;transition:all .2s"`;
+
+    let html = `<button ${btnStyle(false)} onclick="goPage(${page-1})" ${page===1?'disabled style="opacity:.3;cursor:default"':''}>← Ant</button>`;
+    for (let p = 1; p <= totalPages; p++) {
+        html += `<button ${btnStyle(p===page)} onclick="goPage(${p})">${p}</button>`;
+    }
+    html += `<button ${btnStyle(false)} onclick="goPage(${page+1})" ${page===totalPages?'disabled style="opacity:.3;cursor:default"':''}>Sig →</button>`;
+    paginador.innerHTML = html;
+}
+
+function goPage(p) {
+    if (p < 1 || p > Math.ceil(filteredCases.length / PAGE_SIZE)) return;
+    renderPage(p);
+    window.scrollTo({ top: document.getElementById('casesGrid').offsetTop - 100, behavior: 'smooth' });
 }
 
 function filtrar(type, btn) {
@@ -556,18 +595,50 @@ function filtrar(type, btn) {
     renderCases(filtered);
 }
 
-(function init() {
-    if (typeof PATIENTS_DATA === 'undefined' || !PATIENTS_DATA.length) {
-        document.getElementById('casesGrid').innerHTML =
-            '<div class="empty-state"><div class="empty-icon">⚠️</div><p>No se encontraron casos. Verifica patients-data.js.</p></div>';
+(async function init() {
+    const grid = document.getElementById('casesGrid');
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon" style="font-size:2rem">⏳</div><p>Cargando casos...</p></div>';
+
+    try {
+        const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+        const { data, error } = await sb
+            .from('casos_portafolio')
+            .select('id,name,type,date,description,cover_image,gallery_count')
+            .eq('visible', true)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        // Normalizar a la forma que espera renderCases()
+        allCases = (data || []).map(c => ({
+            id:          c.id,
+            name:        c.name,
+            type:        c.type,
+            date:        c.date,
+            description: c.description,
+            coverImage:  c.cover_image
+                         ? c.cover_image + '?width=400&quality=80'
+                         : c.cover_image,
+            galleryCount:c.gallery_count
+        }));
+
+    } catch(e) {
+        console.error('portafolio:', e);
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>No se pudieron cargar los casos. Intenta de nuevo.</p></div>';
         return;
     }
 
-    allCases = PATIENTS_DATA;
+    if (!allCases.length) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🦷</div><p>Aún no hay casos publicados.</p></div>';
+        return;
+    }
 
-    // Agregar filtros para tipos nuevos que no estén en los botones fijos
-    const existing  = new Set(Array.from(document.querySelectorAll('.filter-btn[data-type]')).map(b => b.dataset.type));
-    const dataTypes = [...new Set(allCases.map(c => c.type).filter(Boolean))];
+    // Filtros dinámicos para tipos nuevos
+    const existing   = new Set(Array.from(document.querySelectorAll('.filter-btn[data-type]')).map(b => b.dataset.type));
+    const dataTypes  = [...new Set(allCases.map(c => c.type).filter(Boolean))];
     const filterWrap = document.getElementById('filterBtns');
 
     dataTypes.forEach(type => {

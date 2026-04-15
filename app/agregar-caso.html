@@ -9,11 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <!-- Auth -->
+    <!-- Auth + Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="../js/auth-guard.js"></script>
-    <!-- JSZip: genera el ZIP en el navegador, sin instalar nada -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -365,7 +363,7 @@
     <div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Información</div></div>
     <div class="step" id="s2"><div class="step-circle">2</div><div class="step-label">Portada</div></div>
     <div class="step" id="s3"><div class="step-circle">3</div><div class="step-label">Galería</div></div>
-    <div class="step" id="s4"><div class="step-circle">4</div><div class="step-label">Descargar</div></div>
+    <div class="step" id="s4"><div class="step-circle">4</div><div class="step-label">Publicar</div></div>
 </div>
 
 <div class="container">
@@ -375,33 +373,21 @@
 
     <!-- SUCCESS -->
     <div class="success-panel" id="successPanel">
-        <h2>✅ ¡ZIP descargado!</h2>
-        <p style="color:var(--muted);margin-bottom:24px;">Sigue estos pasos para publicar el caso en el sitio:</p>
+        <h2>🚀 ¡Caso publicado en línea!</h2>
+        <p style="color:var(--muted);margin-bottom:8px;">El caso ya aparece en el portafolio público. No se requiere ninguna acción adicional.</p>
+        <p id="successCaseId" style="color:#00d2ff;font-size:0.9rem;margin-bottom:24px;font-family:monospace;"></p>
 
-        <ol class="steps-list">
-            <li><div class="step-num">1</div><div>Abre la carpeta de <strong>Descargas</strong> de tu computador y busca el archivo <code style="color:var(--gold);">PRODIGY-caso-patient-XXX.zip</code></div></li>
-            <li><div class="step-num">2</div><div>Clic derecho sobre el ZIP → <strong>"Extraer aquí"</strong>. Verás dos carpetas: <code style="color:var(--gold);">patients/</code> y <code style="color:var(--gold);">js/</code></div></li>
-            <li><div class="step-num">3</div>
-                <div>
-                    Copia esas carpetas <strong>dentro de la carpeta del sitio web</strong> (<code style="color:var(--gold);">dental-portfolio/</code>), reemplazando cuando Windows pregunte:
-                    <div style="background:#0a0a0a;border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:16px 20px;margin-top:14px;font-family:monospace;font-size:0.82rem;line-height:2;color:#94a3b8;">
-                        <span style="color:#D4AF37;">📁 dental-portfolio/</span> &nbsp;&larr; la carpeta del sitio<br>
-                        &nbsp;&nbsp;&nbsp;├── <span style="color:#22c55e;">📁 patients/</span> &nbsp;&larr; <strong style="color:#f5f5f7;">pega aquí</strong> (reemplaza)<br>
-                        &nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color:#22c55e;">📁 patient-XXX/</span> &nbsp;&larr; carpeta nueva del caso<br>
-                        &nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── cover.jpg<br>
-                        &nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── 📁 gallery/<br>
-                        &nbsp;&nbsp;&nbsp;└── <span style="color:#22c55e;">📁 js/</span> &nbsp;&larr; <strong style="color:#f5f5f7;">pega aquí</strong> (reemplaza)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── patients-data.js &nbsp;&larr; archivo actualizado
-                    </div>
-                </div>
-            </li>
-            <li><div class="step-num">4</div><div>Si el sitio está en un <strong>servidor/hosting</strong>: sube esas mismas carpetas por FTP o el administrador de archivos del hosting, en las mismas rutas.</div></li>
-            <li><div class="step-num">5</div><div>Abre el sitio en el navegador → el caso nuevo aparece automáticamente en el portafolio. ✅</div></li>
-        </ol>
-
-        <button onclick="resetForm()" style="margin-top:28px;padding:12px 32px;background:transparent;border:2px solid var(--gold);color:var(--gold);border-radius:8px;font-family:'Inter',sans-serif;font-weight:700;cursor:pointer;font-size:0.95rem;letter-spacing:0.3px;">
-            + Agregar otro caso
-        </button>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+            <a href="../portafolio.html" target="_blank" style="display:inline-block;padding:12px 28px;background:#D4AF37;color:#000;border-radius:8px;font-weight:700;text-decoration:none;font-size:0.95rem;">
+                Ver portafolio →
+            </a>
+            <a href="gestionar-casos.html" style="display:inline-block;padding:12px 28px;background:transparent;border:2px solid #D946A6;color:#D946A6;border-radius:8px;font-weight:700;text-decoration:none;font-size:0.95rem;">
+                ✏️ Gestionar casos
+            </a>
+            <button onclick="resetForm()" style="padding:12px 32px;background:transparent;border:2px solid var(--gold);color:var(--gold);border-radius:8px;font-family:'Inter',sans-serif;font-weight:700;cursor:pointer;font-size:0.95rem;letter-spacing:0.3px;">
+                + Agregar otro caso
+            </button>
+        </div>
     </div>
 
     <!-- PASO 1: INFO -->
@@ -483,7 +469,7 @@
     <div class="card">
         <div class="card-title">🦷 Visor Exocad/3Shape <span style="font-size:0.75rem;font-weight:400;color:var(--muted);margin-left:8px;">— opcional</span></div>
         <p style="color:var(--muted);font-size:0.9rem;margin-bottom:16px;line-height:1.6;">
-            Si el caso tiene un <strong style="color:var(--text);">archivo HTML exportado desde Exocad o 3Shape</strong>, súbelo aquí. Se incluirá en el ZIP como <code style="color:var(--gold);">caso.html</code> dentro de la carpeta del paciente y quedará disponible como visor 3D en el portafolio.
+            Si el caso tiene un <strong style="color:var(--text);">archivo HTML exportado desde Exocad o 3Shape</strong>, súbelo aquí. Se publicará como visor 3D del caso en el portafolio.
         </p>
         <div class="upload-zone" id="exocadZone">
             <input type="file" id="exocadInput" accept=".html,text/html" onchange="handleExocad(this)">
@@ -494,17 +480,18 @@
         </div>
     </div>
 
-    <!-- PASO 4: DESCARGAR -->
+    <!-- PASO 4: PUBLICAR -->
     <div class="card">
-        <div class="card-title">📦 Paso 4 — Generar Paquete</div>
+        <div class="card-title">🚀 Paso 4 — Publicar en Línea</div>
         <p style="color:var(--muted);font-size:0.9rem;margin-bottom:20px;line-height:1.6;">
-            Al hacer clic se descargará un archivo <strong style="color:var(--text);">ZIP</strong> con todas las imágenes ya organizadas en las carpetas correctas y el archivo <code style="color:var(--gold);">patients-data.js</code> actualizado. Solo extrae y reemplaza.
+            Las imágenes se suben a <strong style="color:var(--text);">Supabase Storage</strong> y el caso queda visible en el portafolio público de inmediato. Sin ZIP, sin descargas manuales.
         </p>
         <div class="alert warning" id="alertWarning" style="display:none;">
             ⚠️ Completa el Paso 1 (nombre, tipo, fecha, descripción) y el Paso 2 (portada) para activar este botón.
         </div>
-        <button class="btn-download" id="btnDownload" disabled onclick="generarPaquete()">
-            <span id="btnIcon">📦</span>
+        <div class="alert" id="alertProgress" style="display:none;background:rgba(0,210,255,0.08);border:1px solid rgba(0,210,255,0.3);color:#00d2ff;border-radius:10px;padding:14px 18px;font-size:0.9rem;margin-bottom:16px;"></div>
+        <button class="btn-download" id="btnDownload" disabled onclick="publicarCaso()">
+            <span id="btnIcon">🚀</span>
             <span id="btnText">Completar pasos anteriores primero</span>
         </button>
     </div>
@@ -518,7 +505,6 @@
 ProdigyAuth.require(['admin']).then(session => {
     if (!session) return; // auth-guard ya redirigió a login
     document.body.style.visibility = 'visible';
-    loadExistingCases();
 });
 
 // =============================================
@@ -527,25 +513,6 @@ ProdigyAuth.require(['admin']).then(session => {
 let coverFile = null;
 let galleryFiles = [];
 let exocadFile = null;
-let existingCases = [];
-
-// Cargar casos existentes desde patients-data.js
-function loadExistingCases() {
-    fetch('../js/patients-data.js')
-        .then(r => r.text())
-        .then(code => {
-            try {
-                // Extraer el array PATIENTS_DATA del archivo JS
-                const match = code.match(/const PATIENTS_DATA\s*=\s*(\[[\s\S]*?\]);/);
-                if (match) {
-                    existingCases = JSON.parse(match[1].replace(/:\s*null/g, ':null'));
-                }
-            } catch(e) {
-                existingCases = [];
-            }
-        })
-        .catch(() => { existingCases = []; });
-}
 
 // =============================================
 // PORTADA
@@ -657,8 +624,8 @@ function updateProgress() {
 
     if (step1OK && step2OK) {
         btn.disabled = false;
-        btn.querySelector('#btnIcon').textContent = '📦';
-        btn.querySelector('#btnText').textContent = 'Descargar Paquete ZIP';
+        btn.querySelector('#btnIcon').textContent = '🚀';
+        btn.querySelector('#btnText').textContent = 'Publicar en Línea';
         warn.style.display = 'none';
     } else {
         btn.disabled = true;
@@ -687,115 +654,135 @@ function setStep(n, done) {
 }
 
 // =============================================
-// GENERAR ID AUTOMÁTICO
+// SUPABASE CLIENT
 // =============================================
-function getNextId() {
-    if (!existingCases.length) return 'patient-001';
-    const nums = existingCases
-        .map(c => parseInt((c.id || '').replace(/\D/g, '')) || 0)
-        .filter(n => !isNaN(n));
-    const next = Math.max(...nums) + 1;
-    return 'patient-' + String(next).padStart(3, '0');
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const BUCKET = 'portafolio';
+let _sbClient = null;
+function getSB() {
+    if (_sbClient) return _sbClient;
+    _sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    return _sbClient;
 }
 
 // =============================================
-// GENERAR EL ZIP
+// GENERAR ID AUTOMÁTICO (desde Supabase)
 // =============================================
-async function generarPaquete() {
-    const btn = document.getElementById('btnDownload');
+async function getNextId() {
+    try {
+        const sb = getSB();
+        const { data } = await sb
+            .from('casos_portafolio')
+            .select('id')
+            .order('created_at', { ascending: false })
+            .limit(50);
+        if (!data || !data.length) return 'patient-001';
+        const nums = data
+            .map(c => parseInt((c.id || '').replace(/\D/g, '')) || 0)
+            .filter(n => !isNaN(n));
+        const next = Math.max(...nums) + 1;
+        return 'patient-' + String(next).padStart(3, '0');
+    } catch {
+        return 'patient-' + Date.now();
+    }
+}
+
+// =============================================
+// PUBLICAR CASO EN LÍNEA
+// =============================================
+async function publicarCaso() {
+    const btn      = document.getElementById('btnDownload');
+    const progress = document.getElementById('alertProgress');
     btn.classList.add('loading');
     btn.querySelector('#btnIcon').textContent = '⏳';
-    btn.querySelector('#btnText').textContent = 'Generando paquete...';
+    btn.querySelector('#btnText').textContent = 'Publicando...';
     btn.disabled = true;
+    progress.style.display = 'block';
+
+    const setProgress = (msg) => { progress.textContent = msg; };
 
     try {
-        const name  = document.getElementById('caseName').value.trim();
-        const type  = document.getElementById('caseType').value;
-        const date  = document.getElementById('caseDate').value.trim();
-        const desc  = document.getElementById('caseDescription').value.trim();
-        const drive = document.getElementById('driveLink').value.trim();
-        const id    = getNextId();
+        const sb   = getSB();
+        const name = document.getElementById('caseName').value.trim();
+        const type = document.getElementById('caseType').value;
+        const date = document.getElementById('caseDate').value.trim();
+        const desc = document.getElementById('caseDescription').value.trim();
+        const drive= document.getElementById('driveLink').value.trim();
+        const id   = await getNextId();
+        const base = SUPABASE_URL + '/storage/v1/object/public/' + BUCKET + '/';
 
+        // ── Portada ──
+        setProgress('Subiendo portada...');
         const ext = coverFile.name.split('.').pop().toLowerCase() || 'jpg';
-        const coverName = 'cover.' + ext;
-
-        // Rutas de galería (foto-1.ext, foto-2.ext, ...)
-        const galleryPaths = galleryFiles.map((f, i) => {
-            const gext = f.name.split('.').pop().toLowerCase() || 'jpg';
-            return 'patients/' + id + '/gallery/foto-' + (i + 1) + '.' + gext;
+        const coverPath = id + '/cover.' + ext;
+        const { error: coverErr } = await sb.storage.from(BUCKET).upload(coverPath, coverFile, {
+            contentType: coverFile.type || 'image/jpeg',
+            upsert: true
         });
+        if (coverErr) throw new Error('Portada: ' + coverErr.message);
+        const coverUrl = base + coverPath;
 
-        // Nuevo objeto de caso
-        const newCase = {
+        // ── Galería ──
+        const galleryUrls = [];
+        for (let i = 0; i < galleryFiles.length; i++) {
+            setProgress('Subiendo galería (' + (i + 1) + '/' + galleryFiles.length + ')...');
+            const gext  = galleryFiles[i].name.split('.').pop().toLowerCase() || 'jpg';
+            const gpath = id + '/gallery/foto-' + (i + 1) + '.' + gext;
+            const { error: gErr } = await sb.storage.from(BUCKET).upload(gpath, galleryFiles[i], {
+                contentType: galleryFiles[i].type || 'image/jpeg',
+                upsert: true
+            });
+            if (gErr) throw new Error('Foto ' + (i + 1) + ': ' + gErr.message);
+            galleryUrls.push(base + gpath);
+        }
+
+        // ── Exocad (opcional) ──
+        let exocadUrl = null;
+        if (exocadFile) {
+            setProgress('Subiendo archivo Exocad...');
+            const exPath = id + '/caso.html';
+            const { error: exErr } = await sb.storage.from(BUCKET).upload(exPath, exocadFile, {
+                contentType: 'text/html',
+                upsert: true
+            });
+            if (exErr) throw new Error('Exocad: ' + exErr.message);
+            exocadUrl = base + exPath;
+        }
+
+        // ── Insert en tabla ──
+        setProgress('Guardando en base de datos...');
+        const { error: dbErr } = await sb.from('casos_portafolio').insert({
             id,
             name,
             code: id.toUpperCase(),
             type,
             date,
             description: desc,
-            coverImage: 'patients/' + id + '/' + coverName,
-            exocadFile: exocadFile ? 'patients/' + id + '/caso.html' : null,
-            driveLink: drive || null,
-            gallery: galleryPaths,
-            galleryCount: galleryFiles.length
-        };
+            cover_image:   coverUrl,
+            exocad_file:   exocadUrl,
+            drive_link:    drive || null,
+            gallery:       galleryUrls,
+            gallery_count: galleryFiles.length,
+            visible:       true
+        });
+        if (dbErr) throw new Error('BD: ' + dbErr.message);
 
-        // Array actualizado (existentes + nuevo)
-        const allCases = [...existingCases, newCase];
-
-        // ---- Construir ZIP ----
-        const zip = new JSZip();
-
-        // Carpeta del caso
-        const patientsFolder = zip.folder('patients').folder(id);
-        const galleryFolder  = patientsFolder.folder('gallery');
-
-        // Portada
-        const coverData = await readFileAsArrayBuffer(coverFile);
-        patientsFolder.file(coverName, coverData);
-
-        // Galería
-        for (let i = 0; i < galleryFiles.length; i++) {
-            const gext = galleryFiles[i].name.split('.').pop().toLowerCase() || 'jpg';
-            const gname = 'foto-' + (i + 1) + '.' + gext;
-            const gdata = await readFileAsArrayBuffer(galleryFiles[i]);
-            galleryFolder.file(gname, gdata);
-        }
-
-        // Archivo Exocad (opcional)
-        if (exocadFile) {
-            const exocadData = await readFileAsArrayBuffer(exocadFile);
-            patientsFolder.file('caso.html', exocadData);
-        }
-
-        // patients-data.js actualizado
-        const jsContent = buildPatientsDataJS(allCases);
-        zip.folder('js').file('patients-data.js', jsContent);
-
-        // Descargar
-        const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
-        const url  = URL.createObjectURL(blob);
-        const a    = document.createElement('a');
-        a.href     = url;
-        a.download = 'PRODIGY-caso-' + id + '.zip';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-
-        // Mostrar éxito
+        // ── Éxito ──
+        progress.style.display = 'none';
+        document.getElementById('successCaseId').textContent = 'ID: ' + id + ' · ' + galleryFiles.length + ' foto(s) de galería';
         document.getElementById('successPanel').classList.add('show');
         document.getElementById('successPanel').scrollIntoView({ behavior: 'smooth' });
 
     } catch(err) {
+        progress.style.display = 'none';
         const alertEl = document.getElementById('alertError');
-        alertEl.textContent = '❌ Error al generar el paquete: ' + err.message;
+        alertEl.textContent = '❌ ' + err.message;
         alertEl.classList.add('show');
         console.error(err);
-    } finally {
         btn.classList.remove('loading');
-        btn.querySelector('#btnIcon').textContent = '📦';
-        btn.querySelector('#btnText').textContent = 'Descargar Paquete ZIP';
+        btn.querySelector('#btnIcon').textContent = '🚀';
+        btn.querySelector('#btnText').textContent = 'Publicar en Línea';
         btn.disabled = false;
     }
 }
@@ -803,73 +790,6 @@ async function generarPaquete() {
 // =============================================
 // HELPERS
 // =============================================
-function readFileAsArrayBuffer(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload  = e => resolve(e.target.result);
-        reader.onerror = () => reject(new Error('Error leyendo ' + file.name));
-        reader.readAsArrayBuffer(file);
-    });
-}
-
-function buildPatientsDataJS(cases) {
-    const indent = (str, n) => str.split('\n').map(l => ' '.repeat(n) + l).join('\n');
-
-    const caseStrings = cases.map(c => {
-        const galleryLines = c.gallery.map(g => `            "${g}"`).join(',\n');
-        return `    {
-        id: "${c.id}",
-        name: "${c.name}",
-        code: "${c.code}",
-        type: "${c.type}",
-        date: "${c.date}",
-        description: "${c.description.replace(/"/g, '\\"')}",
-
-        coverImage: "${c.coverImage}",
-        exocadFile: ${c.exocadFile ? `"${c.exocadFile}"` : 'null'},
-        driveLink: ${c.driveLink ? `"${c.driveLink}"` : 'null'},
-
-        gallery: [
-${galleryLines}
-        ],
-        galleryCount: ${c.galleryCount}
-    }`;
-    });
-
-    return `// =============================================
-// PRODIGY - BASE DE DATOS DE CASOS CLÍNICOS
-// Actualizado: ${new Date().toLocaleString('es-CO')}
-// Total de casos: ${cases.length}
-// =============================================
-
-const PATIENTS_DATA = [
-${caseStrings.join(',\n')}
-];
-
-function getPatientById(id) {
-    return PATIENTS_DATA.find(p => p.id === id) || null;
-}
-
-function filterPatientsByType(type) {
-    if (!type) return PATIENTS_DATA;
-    return PATIENTS_DATA.filter(p => p.type === type);
-}
-
-function getAllCaseTypes() {
-    return [...new Set(PATIENTS_DATA.map(p => p.type))];
-}
-
-if (typeof window !== 'undefined') {
-    window.PATIENTS_DATA = PATIENTS_DATA;
-    window.getPatientById = getPatientById;
-    window.filterPatientsByType = filterPatientsByType;
-    window.getAllCaseTypes = getAllCaseTypes;
-}
-
-console.log('✅ PATIENTS_DATA cargado:', PATIENTS_DATA.length, 'casos');
-`;
-}
-
 function resetForm() {
     coverFile = null;
     galleryFiles = [];
@@ -887,6 +807,7 @@ function resetForm() {
     document.getElementById('galleryGrid').innerHTML = '';
     document.getElementById('successPanel').classList.remove('show');
     document.getElementById('alertError').classList.remove('show');
+    document.getElementById('alertProgress').style.display = 'none';
     ['s1','s2','s3','s4'].forEach(id => {
         const el = document.getElementById(id);
         el.classList.remove('done');
