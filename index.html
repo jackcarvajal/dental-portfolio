@@ -1150,17 +1150,17 @@
 
     <!-- REDES SOCIALES FLOTANTES -->
     <div class="social-floating">
-        <a href="https://wa.me/573212816716" class="social-icon social-whatsapp" target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-whatsapp"></i>
+        <a href="https://wa.me/573212816716" class="social-icon social-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp PRODIGY">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i>
         </a>
-        <a href="https://instagram.com/prodigy_dental" class="social-icon social-instagram" target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-instagram"></i>
+        <a href="https://instagram.com/prodigy_dental" class="social-icon social-instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram PRODIGY">
+            <i class="fab fa-instagram" aria-hidden="true"></i>
         </a>
-        <a href="https://facebook.com/prodigy.dental" class="social-icon social-facebook" target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-facebook-f"></i>
+        <a href="https://facebook.com/prodigy.dental" class="social-icon social-facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook PRODIGY">
+            <i class="fab fa-facebook-f" aria-hidden="true"></i>
         </a>
-        <a href="https://linkedin.com/company/prodigy-dental" class="social-icon social-linkedin" target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-linkedin-in"></i>
+        <a href="https://linkedin.com/company/prodigy-dental" class="social-icon social-linkedin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn PRODIGY">
+            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
         </a>
     </div>
 
@@ -1194,6 +1194,7 @@
         <p class="hero-desc">Diseño dental digital de alta precisión para tus necesidades</p>
     </header>
 
+    <main id="main-content">
     <!-- PORTAFOLIO (Fondo Negro) -->
     <section id="servicios" style="background: var(--bg-gray); padding: 45px 0;">
         <div class="container">
@@ -1230,7 +1231,7 @@
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:36px;max-width:780px;margin-left:auto;margin-right:auto;">
               <!-- Caso 1 -->
               <a href="portafolio.html" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid rgba(212,175,55,.12);transition:all .3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(212,175,55,.12)'">
-                <div style="height:200px;overflow:hidden;"><img src="patients/patient-001/cover.jpeg" alt="Rehabilitación Full Arch Superior" style="width:100%;height:100%;object-fit:cover;transition:transform .4s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
+                <div style="height:200px;overflow:hidden;"><img src="patients/patient-001/cover.jpeg" alt="Rehabilitación Full Arch Superior" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .4s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
                 <div style="padding:18px 20px;">
                   <div style="display:inline-block;background:rgba(212,175,55,.12);color:#D4AF37;border:1px solid rgba(212,175,55,.25);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;margin-bottom:10px;">REHABILITACIÓN</div>
                   <h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">Rehabilitación Full Arch Superior</h3>
@@ -1240,7 +1241,7 @@
               </a>
               <!-- Caso 2 -->
               <a href="portafolio.html" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid rgba(0,210,255,.1);transition:all .3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(0,210,255,.35)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(0,210,255,.1)'">
-                <div style="height:200px;overflow:hidden;"><img src="patients/patient-002/C.jpeg" alt="Carillas Superior e Inferior" style="width:100%;height:100%;object-fit:cover;transition:transform .4s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
+                <div style="height:200px;overflow:hidden;"><img src="patients/patient-002/C.jpeg" alt="Carillas Superior e Inferior" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .4s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
                 <div style="padding:18px 20px;">
                   <div style="display:inline-block;background:rgba(0,210,255,.1);color:#00d2ff;border:1px solid rgba(0,210,255,.2);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;margin-bottom:10px;">ESTÉTICA</div>
                   <h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">Carillas Superior e Inferior</h3>
@@ -1930,6 +1931,7 @@
             </div>
         </div>
     </section>
+    </main>
 
     <script src="js/footer.js"></script>
 
@@ -1938,15 +1940,15 @@
          ============================================ -->
     <div class="ux-floaters">
         <!-- Scroll to Top -->
-        <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">
-            <i class="fas fa-arrow-up"></i>
+        <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver arriba">
+            <i class="fas fa-arrow-up" aria-hidden="true"></i>
         </button>
 
         <!-- Modo claro/oscuro -->
-        <button class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro">🌙</button>
+        <button class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro" aria-label="Cambiar tema">🌙</button>
 
         <!-- Google Translate -->
-        <button class="ux-btn" id="translate-btn" onclick="toggleTranslate()" title="Traducir página">
+        <button class="ux-btn" id="translate-btn" onclick="toggleTranslate()" title="Traducir página" aria-label="Traducir página">
             🌐
         </button>
 

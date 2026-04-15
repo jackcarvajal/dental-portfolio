@@ -68,7 +68,7 @@
 | 3 | Crear bucket `scanner-uploads` | Visibilidad: **Private** + política INSERT para anon | ✅ Listo |
 | 4 | Settings → Auth → Site URL | Cambiar a `https://prodigylabdental.com` | ✅ Listo |
 | 5 | Settings → Auth → Redirect URLs | Agregar `https://prodigylabdental.com/**` | ✅ Listo |
-| 6 | Tabla `push_subscriptions` | SQL listo en `sql/migrate-push-subscriptions.sql` | ⏳ **Ejecutar en Supabase** |
+| 6 | Tabla `push_subscriptions` | SQL listo en `sql/migrate-push-subscriptions.sql` | ✅ Ejecutado |
 
 ---
 
@@ -144,8 +144,8 @@
 
 | # | Acción | Detalle | Estado |
 |---|--------|---------|--------|
-| 1 | Search Console | Verificar `prodigylabdental.com` → enviar `sitemap.xml` | ⏳ Pendiente |
-| 2 | Google My Business | Crear perfil con fotos del lab, horario, dirección Bogotá | ⏳ Pendiente |
+| 1 | Search Console | Verificar dominio + sitemap enviado + validación corrección iniciada | ✅ Listo |
+| 2 | Google My Business | Perfil creado y activo — faltan fotos del lab | ⏳ Subir 10-15 fotos |
 | 3 | Analytics GA4 | `G-Z8G2X7ETQ1` activo en index, calculadora, journal, envia-tu-scanner, escaner-domicilio | ✅ Listo |
 
 ---
