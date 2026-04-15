@@ -307,7 +307,7 @@ function buildArticleObject(topic, aiData, image) {
 // ── Leer artículos existentes ─────────────────────────────────────
 function readExistingArticles() {
   const raw = fs.readFileSync(ARTICLES_PATH, 'utf8');
-  const match = raw.match(/const ARTICLES\s*=\s*(\[[\s\S]*?\]);\s*(?:if|\/\/|$)/);
+  const match = raw.match(/const ARTICLES\s*=\s*(\[[\s\S]*?\]);/);
   if (!match) throw new Error('No se encontró ARTICLES en articles.js');
   // eslint-disable-next-line no-new-func
   return Function(`"use strict"; return ${match[1]}`)();
