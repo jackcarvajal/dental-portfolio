@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#D946A6">
+    <link rel="manifest" href="/manifest.json">
     <title>Portafolio de Casos — PRODIGY Digital Dentistry</title>
     <meta name="description" content="Portafolio real de casos clínicos: coronas CAD/CAM, carillas, implantes y rehabilitaciones. Laboratorio dental digital en Bogotá, Colombia.">
     <meta property="og:type" content="website">
@@ -718,5 +720,6 @@ document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') e.
     <!-- Google Analytics GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-Z8G2X7ETQ1');</script>
+    <script>if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>

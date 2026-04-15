@@ -1,0 +1,52 @@
+{
+  "name": "Prodigy Lab Dental",
+  "short_name": "Prodigy",
+  "description": "Laboratorio dental de alta precisión. Zirconia, fresado CAD/CAM, diseño digital.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050505",
+  "theme_color": "#D946A6",
+  "lang": "es",
+  "categories": ["medical", "business"],
+  "icons": [
+    {
+      "src": "/assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/prodigy-preview.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Prodigy Lab Dental – Inicio"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Cotizador",
+      "short_name": "Cotizar",
+      "description": "Calcular precio de trabajo",
+      "url": "/calculadora.html",
+      "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Enviar Scanner",
+      "short_name": "Scanner",
+      "description": "Solicitar recogida de scanner",
+      "url": "/envia-tu-scanner.html",
+      "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

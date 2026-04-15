@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#D946A6">
+  <link rel="manifest" href="/manifest.json">
   <title>Calculadora de Precios Dental CAD/CAM — Coronas, Carillas, Zirconio | ProDigy</title>
   <meta name="description" content="Calcula al instante el precio de tu corona en zirconio, carilla de disilicato, puente CAD/CAM o modelo 3D. Laboratorio dental digital en Bogotá, Colombia. Entrega 24h.">
   <meta name="keywords" content="precio corona zirconio Colombia, costo carilla dental, calculadora laboratorio dental, precio puente dental CAD CAM, cotización laboratorio dental Bogotá">
@@ -720,5 +722,6 @@ renderResult();
 </script>
 </main>
 <script src="js/footer.js"></script>
+<script>if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
