@@ -214,8 +214,7 @@
     </a>
 
     <p class="nav-section">Configuración</p>
-    <a href="agregar-caso.html" class="nav-item"><i class="fas fa-folder-plus"></i> Agregar Caso</a>
-    <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Catálogo</a>
+    <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Materiales</a>
     <a href="../index.html" class="nav-item" target="_blank"><i class="fas fa-globe"></i> Ver Sitio</a>
 
     <div class="sidebar-footer">
@@ -293,7 +292,7 @@
         <div class="page-header">
             <div>
                 <h1>Portafolio <span style="color:var(--gold);">Upload</span></h1>
-                <p>Sube casos exitosos directamente desde aquí. Van a la tabla <code style="color:var(--gold);">portfolio</code> de Supabase.</p>
+                <p>Sube casos exitosos directamente desde aquí. Se publican de inmediato en el portafolio público.</p>
             </div>
         </div>
 
@@ -301,80 +300,90 @@
             <form id="form-portafolio" onsubmit="subirCaso(event)">
                 <div class="form-grid">
 
-                    <!-- Imagen del caso -->
+                    <!-- PORTADA -->
                     <div class="form-group" style="grid-column:1/-1;">
-                        <label>Imagen del caso</label>
+                        <label style="color:var(--gold);font-weight:700;">📷 PORTADA <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">— imagen principal que aparece en la grid del portafolio</span></label>
                         <div class="drop-zone" id="drop-zone" onclick="document.getElementById('img-input').click()"
-                             ondrop="handleDrop(event)" ondragover="event.preventDefault();this.classList.add('drag-over')"
+                             ondrop="handleDropPortada(event)" ondragover="event.preventDefault();this.classList.add('drag-over')"
                              ondragleave="this.classList.remove('drag-over')">
-                            <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:rgba(212,175,55,0.5);"></i>
-                            <p><strong>Clic para seleccionar</strong> o arrastra la imagen aquí</p>
-                            <p style="font-size:0.75rem;margin-top:4px;">JPG, PNG, WebP — máx. 10 MB</p>
-                            <img id="img-preview" class="preview-img" style="display:none;">
+                            <i class="fas fa-image" style="font-size:2rem;color:rgba(212,175,55,0.5);"></i>
+                            <p><strong>Clic para seleccionar</strong> o arrastra la portada aquí</p>
+                            <p style="font-size:0.75rem;margin-top:4px;">1 sola foto · JPG, PNG, WebP</p>
+                            <img id="img-preview" class="preview-img" style="display:none;max-height:180px;object-fit:cover;border-radius:8px;margin-top:10px;">
                         </div>
                         <input type="file" id="img-input" accept="image/*" style="display:none;" onchange="previewImg(this)">
                     </div>
 
+                    <!-- GALERÍA -->
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label style="font-weight:700;">🖼️ GALERÍA <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">— fotos adicionales del caso (opcional, hasta 20)</span></label>
+                        <div class="drop-zone" id="gallery-zone" onclick="document.getElementById('gallery-input').click()"
+                             ondrop="handleDropGaleria(event)" ondragover="event.preventDefault();this.classList.add('drag-over')"
+                             ondragleave="this.classList.remove('drag-over')">
+                            <i class="fas fa-images" style="font-size:2rem;color:rgba(0,210,255,0.4);"></i>
+                            <p><strong>Clic para seleccionar</strong> o arrastra las fotos aquí</p>
+                            <p style="font-size:0.75rem;margin-top:4px;">Puedes seleccionar varias a la vez</p>
+                        </div>
+                        <input type="file" id="gallery-input" accept="image/*" multiple style="display:none;" onchange="previewGaleria(this)">
+                        <div id="gallery-thumbs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;"></div>
+                    </div>
+
+                    <!-- EXOCAD -->
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label style="font-weight:700;">🦷 VISOR EXOCAD <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">— arrastra la carpeta completa exportada por Exocad (opcional)</span></label>
+                        <div class="drop-zone" id="exocad-zone" onclick="document.getElementById('exocad-input').click()"
+                             ondrop="handleDropExocad(event)" ondragover="event.preventDefault();this.classList.add('drag-over')"
+                             ondragleave="this.classList.remove('drag-over')">
+                            <i class="fas fa-cube" style="font-size:2rem;color:rgba(217,70,166,0.4);"></i>
+                            <p><strong>Clic para seleccionar la carpeta</strong> de Exocad/3Shape</p>
+                            <p style="font-size:0.75rem;margin-top:4px;">Sube el HTML + imágenes automáticamente</p>
+                        </div>
+                        <input type="file" id="exocad-input" webkitdirectory mozdirectory directory multiple style="display:none;" onchange="handleExocadPanel(this)">
+                        <div id="exocad-status" style="font-size:0.82rem;color:var(--muted);margin-top:8px;"></div>
+                    </div>
+
                     <div class="form-group">
-                        <label>Título del caso</label>
-                        <input type="text" id="p-titulo" placeholder="Ej: Corona Zirconio E-max 24" required>
+                        <label>Nombre del caso</label>
+                        <input type="text" id="p-titulo" placeholder="Ej: Rehabilitación Full Arch Zirconia" required>
                     </div>
 
                     <div class="form-group">
                         <label>Tipo de trabajo</label>
                         <select id="p-tipo" required>
                             <option value="">Seleccionar…</option>
-                            <option>Diseño CAD</option>
-                            <option>Fresado CAD/CAM</option>
-                            <option>Impresión 3D</option>
-                            <option>Prótesis Completa</option>
-                            <option>Biomodelo</option>
-                            <option>Estructura Metálica</option>
+                            <option value="rehabilitacion">Rehabilitación</option>
+                            <option value="estetica">Estética</option>
+                            <option value="implantes">Implantes</option>
+                            <option value="protesis">Prótesis</option>
+                            <option value="alineadores">Alineadores</option>
+                            <option value="biomodelo">Biomodelo</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Material</label>
-                        <input type="text" id="p-material" placeholder="Ej: Zirconio 3Y, E-max, Resina…">
+                        <input type="text" id="p-material" placeholder="Ej: Zirconia 3Y, E-max, PMMA…">
                     </div>
 
                     <div class="form-group">
-                        <label>Software / Sistema</label>
-                        <input type="text" id="p-software" placeholder="Ej: Exocad, 3Shape, Medit…">
+                        <label>Fecha del caso</label>
+                        <input type="text" id="p-fecha" placeholder="Ej: Enero 2025">
                     </div>
 
                     <div class="form-group" style="grid-column:1/-1;">
                         <label>Descripción técnica</label>
-                        <textarea id="p-descripcion" placeholder="Describe el caso, técnica, resultado…"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Dificultad / Categoría</label>
-                        <select id="p-categoria">
-                            <option value="Estética">Estética</option>
-                            <option value="Rehabilitación">Rehabilitación</option>
-                            <option value="Implantes">Implantes</option>
-                            <option value="Ortopedia">Ortopedia</option>
-                            <option value="Biomodelo">Biomodelo</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Destacado en portafolio</label>
-                        <select id="p-destacado">
-                            <option value="false">No</option>
-                            <option value="true">Sí — mostrar primero</option>
-                        </select>
+                        <textarea id="p-descripcion" placeholder="Técnica, materiales, resultado clínico…" style="min-height:90px;"></textarea>
                     </div>
 
                 </div>
 
-                <div style="margin-top:24px;display:flex;gap:12px;justify-content:flex-end;">
+                <div style="margin-top:24px;display:flex;gap:12px;justify-content:flex-end;align-items:center;">
+                    <div id="p-progress" style="font-size:0.82rem;color:var(--muted);flex:1;display:none;"></div>
                     <button type="button" class="btn-xs btn-gold" onclick="limpiarFormPortafolio()">
                         <i class="fas fa-rotate-left"></i> Limpiar
                     </button>
                     <button type="submit" class="btn-primary" id="btn-subir">
-                        <i class="fas fa-cloud-upload-alt"></i> Publicar en Catálogo
+                        <i class="fas fa-cloud-upload-alt"></i> Publicar en Portafolio
                     </button>
                 </div>
             </form>
@@ -938,10 +947,15 @@ function actualizarKPIs(data) {
 }
 
 /* ══════════════════════════════════════════
-   TAB 2 — PORTAFOLIO
+   TAB 2 — PORTAFOLIO (tabla: casos_portafolio, bucket: portafolio)
 ══════════════════════════════════════════ */
-let imgFile = null;
+const PORT_BUCKET = 'portafolio';
+let imgFile     = null;   // portada
+let galFiles    = [];     // galería
+let exocadMain  = null;   // HTML principal Exocad
+let exocadAll   = [];     // todos los archivos de la carpeta Exocad
 
+/* — Portada — */
 function previewImg(input) {
     imgFile = input.files[0];
     if (!imgFile) return;
@@ -954,53 +968,134 @@ function previewImg(input) {
     reader.readAsDataURL(imgFile);
 }
 
-function handleDrop(e) {
+function handleDropPortada(e) {
     e.preventDefault();
     document.getElementById('drop-zone').classList.remove('drag-over');
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith('image/')) {
-        imgFile = file;
-        const reader = new FileReader();
-        reader.onload = ev => {
-            const img = document.getElementById('img-preview');
-            img.src = ev.target.result;
-            img.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
+        document.getElementById('img-input').files = e.dataTransfer.files;
+        previewImg(document.getElementById('img-input'));
     }
 }
 
+/* — Galería — */
+function previewGaleria(input) {
+    galFiles = Array.from(input.files);
+    const container = document.getElementById('gallery-thumbs');
+    container.innerHTML = galFiles.map((f, i) => {
+        const url = URL.createObjectURL(f);
+        return `<div style="position:relative;">
+            <img src="${url}" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--border);">
+            <span style="position:absolute;top:2px;right:4px;font-size:0.6rem;color:#fff;background:rgba(0,0,0,0.7);border-radius:4px;padding:1px 4px;">${i+1}</span>
+        </div>`;
+    }).join('');
+}
+
+function handleDropGaleria(e) {
+    e.preventDefault();
+    document.getElementById('gallery-zone').classList.remove('drag-over');
+    const dt = new DataTransfer();
+    Array.from(e.dataTransfer.files).forEach(f => { if (f.type.startsWith('image/')) dt.items.add(f); });
+    const input = document.getElementById('gallery-input');
+    input.files = dt.files;
+    previewGaleria(input);
+}
+
+/* — Exocad — */
+function handleExocadPanel(input) {
+    const files = Array.from(input.files);
+    if (!files.length) return;
+    const htmlFiles = files.filter(f => {
+        const parts = f.webkitRelativePath.split('/');
+        return parts.length === 2 && f.name.toLowerCase().endsWith('.html');
+    });
+    if (!htmlFiles.length) {
+        document.getElementById('exocad-status').textContent = '⚠️ No se encontró .html en la raíz de la carpeta';
+        return;
+    }
+    exocadMain = htmlFiles[0];
+    exocadAll  = files;
+    const totalMB = (files.reduce((s, f) => s + f.size, 0) / 1024 / 1024).toFixed(1);
+    document.getElementById('exocad-status').textContent =
+        '✓ ' + exocadMain.name + ' + ' + (files.length - 1) + ' archivos de soporte (' + totalMB + ' MB)';
+}
+
+function handleDropExocad(e) {
+    e.preventDefault();
+    document.getElementById('exocad-zone').classList.remove('drag-over');
+    // webkitdirectory no funciona con drag-drop en todos los browsers — indicar clic
+    toast('Usa el botón para seleccionar la carpeta Exocad', 'error');
+}
+
+/* — Upload principal — */
 async function subirCaso(e) {
     e.preventDefault();
-    if (!imgFile) { toast('Selecciona una imagen primero', 'error'); return; }
+    if (!imgFile) { toast('Selecciona la portada primero', 'error'); return; }
+    const nombre = document.getElementById('p-titulo').value.trim();
+    if (!nombre)  { toast('Escribe el nombre del caso', 'error'); return; }
 
-    const btn = document.getElementById('btn-subir');
+    const btn  = document.getElementById('btn-subir');
+    const prog = document.getElementById('p-progress');
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo…';
+    prog.style.display = 'block';
+
+    const id   = 'caso-' + Date.now();
+    const base = `https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/object/public/${PORT_BUCKET}/`;
 
     try {
-        // 1. Subir imagen al bucket dental-cases/portafolio/
-        const ext      = imgFile.name.split('.').pop();
-        const filename = `portafolio/${Date.now()}.${ext}`;
-        const { error: upErr } = await sb.storage.from('dental-cases').upload(filename, imgFile, { contentType: imgFile.type });
-        if (upErr) throw upErr;
+        // 1. Portada
+        prog.textContent = 'Subiendo portada…';
+        const cExt = imgFile.name.split('.').pop().toLowerCase();
+        const cPath = id + '/cover.' + cExt;
+        const { error: cErr } = await sb.storage.from(PORT_BUCKET).upload(cPath, imgFile, { contentType: imgFile.type, upsert: true });
+        if (cErr) throw new Error('Portada: ' + cErr.message);
+        const coverUrl = base + cPath;
 
-        const { data: { publicUrl } } = sb.storage.from('dental-cases').getPublicUrl(filename);
+        // 2. Galería
+        const galleryUrls = [];
+        for (let i = 0; i < galFiles.length; i++) {
+            prog.textContent = 'Subiendo galería (' + (i+1) + '/' + galFiles.length + ')…';
+            const gExt  = galFiles[i].name.split('.').pop().toLowerCase();
+            const gPath = id + '/gallery/foto-' + (i+1) + '.' + gExt;
+            const { error: gErr } = await sb.storage.from(PORT_BUCKET).upload(gPath, galFiles[i], { contentType: galFiles[i].type, upsert: true });
+            if (gErr) throw new Error('Galería foto ' + (i+1) + ': ' + gErr.message);
+            galleryUrls.push(base + gPath);
+        }
 
-        // 2. Insertar registro en tabla portfolio
-        const { error: dbErr } = await sb.from('portfolio').insert([{
-            titulo:      document.getElementById('p-titulo').value,
-            tipo:        document.getElementById('p-tipo').value,
-            material:    document.getElementById('p-material').value,
-            software:    document.getElementById('p-software').value,
-            descripcion: document.getElementById('p-descripcion').value,
-            categoria:   document.getElementById('p-categoria').value,
-            destacado:   document.getElementById('p-destacado').value === 'true',
-            imagen_url:  publicUrl,
-        }]);
-        if (dbErr) throw dbErr;
+        // 3. Exocad (opcional)
+        let exocadUrl = null;
+        if (exocadMain && exocadAll.length) {
+            const folderRoot = exocadAll[0].webkitRelativePath.split('/')[0];
+            for (let i = 0; i < exocadAll.length; i++) {
+                prog.textContent = 'Subiendo Exocad (' + (i+1) + '/' + exocadAll.length + ')…';
+                const relPath    = exocadAll[i].webkitRelativePath.slice(folderRoot.length + 1);
+                const storagePath = id + '/exocad/' + relPath;
+                const { error: exErr } = await sb.storage.from(PORT_BUCKET).upload(storagePath, exocadAll[i], { contentType: exocadAll[i].type || 'application/octet-stream', upsert: true });
+                if (exErr) throw new Error('Exocad "' + relPath + '": ' + exErr.message);
+            }
+            const htmlRel = exocadMain.webkitRelativePath.slice(folderRoot.length + 1);
+            exocadUrl = base + id + '/exocad/' + htmlRel;
+        }
 
-        toast('✅ Caso publicado en el catálogo', 'success');
+        // 4. Insert en casos_portafolio
+        prog.textContent = 'Guardando en base de datos…';
+        const { error: dbErr } = await sb.from('casos_portafolio').insert({
+            id,
+            name:          nombre,
+            code:          id.toUpperCase(),
+            type:          document.getElementById('p-tipo').value,
+            date:          document.getElementById('p-fecha').value,
+            description:   document.getElementById('p-descripcion').value,
+            cover_image:   coverUrl,
+            exocad_file:   exocadUrl,
+            gallery:       galleryUrls,
+            gallery_count: galleryUrls.length,
+            visible:       true
+        });
+        if (dbErr) throw new Error('BD: ' + dbErr.message);
+
+        toast('✅ Caso publicado en el portafolio', 'success');
         limpiarFormPortafolio();
         cargarPortafolio();
 
@@ -1008,50 +1103,56 @@ async function subirCaso(e) {
         toast('Error: ' + err.message, 'error');
     } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Publicar en Catálogo';
+        btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Publicar en Portafolio';
+        prog.style.display = 'none';
     }
 }
 
 function limpiarFormPortafolio() {
     document.getElementById('form-portafolio').reset();
     document.getElementById('img-preview').style.display = 'none';
-    imgFile = null;
+    document.getElementById('gallery-thumbs').innerHTML = '';
+    document.getElementById('exocad-status').textContent = '';
+    imgFile = null; galFiles = []; exocadMain = null; exocadAll = [];
 }
 
 async function cargarPortafolio() {
     const grid = document.getElementById('portafolio-grid');
     grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>';
-
     try {
-        const { data, error } = await sb.from('portfolio').select('*').order('created_at', { ascending: false });
+        const { data, error } = await sb.from('casos_portafolio').select('*').order('created_at', { ascending: false });
         if (error) throw error;
-
-        if (!data || data.length === 0) {
-            grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><p>Sin casos publicados aún.<br>Usa el formulario de arriba.</p></div>';
+        if (!data || !data.length) {
+            grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><p>Sin casos publicados aún.</p></div>';
             return;
         }
-
         grid.innerHTML = data.map(c => `
         <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-            <img src="${c.imagen_url}" alt="${c.titulo}" style="width:100%;height:130px;object-fit:cover;">
+            <img src="${c.cover_image || ''}" alt="${c.name}" loading="lazy" style="width:100%;height:130px;object-fit:cover;">
             <div style="padding:10px;">
-                <div style="font-weight:700;font-size:0.8rem;margin-bottom:4px;">${c.titulo}</div>
-                <div style="font-size:0.72rem;color:var(--muted);">${c.tipo} · ${c.material || ''}</div>
-                ${c.destacado ? '<span style="color:#D4AF37;font-size:0.65rem;font-weight:700;">⭐ DESTACADO</span>' : ''}
+                <div style="font-weight:700;font-size:0.8rem;margin-bottom:3px;">${c.name}</div>
+                <div style="font-size:0.72rem;color:var(--muted);">${c.type || ''} · ${c.date || ''}</div>
+                <div style="font-size:0.68rem;margin-top:4px;color:${c.visible?'#00FF41':'#f87171'};">${c.visible?'● Visible':'○ Oculto'}</div>
                 <div style="margin-top:8px;display:flex;gap:6px;">
                     <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')"><i class="fas fa-trash"></i></button>
+                    <button class="btn-xs btn-gold" onclick="toggleVisible('${c.id}',${c.visible})">${c.visible?'Ocultar':'Publicar'}</button>
                 </div>
             </div>
         </div>`).join('');
-
     } catch (err) {
         grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;color:#f87171;">${err.message}</div>`;
     }
 }
 
+async function toggleVisible(id, actual) {
+    const { error } = await sb.from('casos_portafolio').update({ visible: !actual }).eq('id', id);
+    if (error) toast('Error: ' + error.message, 'error');
+    else cargarPortafolio();
+}
+
 async function eliminarCaso(id) {
     if (!confirm('¿Eliminar este caso del portafolio?')) return;
-    const { error } = await sb.from('portfolio').delete().eq('id', id);
+    const { error } = await sb.from('casos_portafolio').delete().eq('id', id);
     if (error) toast('Error: ' + error.message, 'error');
     else { toast('Caso eliminado', 'success'); cargarPortafolio(); }
 }
