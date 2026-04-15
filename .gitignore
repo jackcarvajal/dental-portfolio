@@ -44,6 +44,9 @@ temporal/
 node_modules/
 npm-debug.log*
 
+# ---- Auto-generados (privados — ver en GitHub Actions Artifacts) ----
+marketing-social.txt
+
 # ---- Sistema operativo ----
 .DS_Store
 Thumbs.db

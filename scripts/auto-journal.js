@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 /**
  * PRODIGY — Auto-Journal Generator
- * Genera artículos técnicos con Perplexity API y los inserta en articles.js
- * Ejecutado por GitHub Actions cada martes y jueves a las 9:00 AM.
+ * ─────────────────────────────────────────────────────────────
+ * Motor: Google Gemini 2.0 Flash (gratuito, 1500 req/día)
+ * Imágenes: Unsplash API (gratuito, 50 req/hora)
+ * Social copy: GitHub Actions Artifact (privado)
  *
- * Variables de entorno requeridas:
- *   PERPLEXITY_API_KEY  — API Key de Perplexity (en GitHub Secrets)
+ * Variables de entorno requeridas (GitHub Secrets):
+ *   GEMINI_API_KEY      — Google AI Studio → aistudio.google.com
+ *   UNSPLASH_ACCESS_KEY — unsplash.com/developers → New Application
  */
 
 'use strict';
@@ -15,21 +18,23 @@ const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
 
-const ARTICLES_PATH      = path.join(__dirname, '..', 'articles.js');
-const SOCIAL_PATH        = path.join(__dirname, '..', 'marketing-social.txt');
-const API_KEY            = process.env.PERPLEXITY_API_KEY;
-const PERPLEXITY_MODEL   = 'llama-3.1-sonar-large-128k-online';
+const ARTICLES_PATH = path.join(__dirname, '..', 'articles.js');
+const SOCIAL_PATH   = path.join(__dirname, '..', 'marketing-social.txt');
+const GEMINI_KEY    = process.env.GEMINI_API_KEY;
+const UNSPLASH_KEY  = process.env.UNSPLASH_ACCESS_KEY;
 
-// ── Temas rotativos ───────────────────────────────────────────────
+// ── Temas rotativos — odontología digital real ────────────────────
 const TOPIC_POOL = [
   {
     slug_prefix: 'exocad',
-    chip: 'CAD',
+    chip: 'Software CAD',
     emoji: '🖥️',
     grad: 'grad-1',
     categoria: 'software',
-    tema: 'Novedades y trucos avanzados de Exocad 2025 para diseño de coronas y puentes en laboratorio dental. Incluye comparativa con 3Shape Dental System.',
-    lectura: '6 min'
+    lectura: '7 min',
+    titulo_seed: 'Exocad DentalCAD 2025',
+    tema_es: 'Novedades de Exocad DentalCAD en 2025: nuevas funciones para diseño de coronas, puentes e implantes, comparativa con versiones anteriores y casos clínicos documentados.',
+    unsplash_query: 'dental CAD software technology',
   },
   {
     slug_prefix: 'zirconio',
@@ -37,26 +42,32 @@ const TOPIC_POOL = [
     emoji: '💎',
     grad: 'grad-2',
     categoria: 'materiales',
-    tema: 'Innovaciones en zirconio multicapa y translúcido (5Y-PSZ): resistencia, estética y protocolos de cementación. Datos de estudios 2024-2025.',
-    lectura: '5 min'
+    lectura: '6 min',
+    titulo_seed: 'Zirconio translúcido multicapa 2025',
+    tema_es: 'Estado del arte del zirconio dental multicapa y translúcido (5Y-PSZ, 4Y-PSZ): propiedades mecánicas, estética, protocolos de cementación adhesiva y estudios clínicos comparativos publicados 2022-2025.',
+    unsplash_query: 'dental crown ceramic laboratory',
   },
   {
-    slug_prefix: 'impresion3d',
-    chip: 'Fabricación',
-    emoji: '🖨️',
+    slug_prefix: 'scanner-intraoral',
+    chip: 'Escáneres',
+    emoji: '📡',
     grad: 'grad-3',
-    categoria: 'fabricacion',
-    tema: 'Avances en impresión 3D dental 2025: resinas de cuarta generación, precisión de ajuste clínico y casos de uso en provisionales y modelos de estudio.',
-    lectura: '5 min'
+    categoria: 'tecnologia',
+    lectura: '6 min',
+    titulo_seed: 'Escáneres intraorales 2025',
+    tema_es: 'Comparativa de precisión y exactitud de los principales escáneres intraorales en 2025 (iTero Element 7, 3Shape Trios 5, Medit i700, Carestream CS 3800): estudios de trueness y precision publicados en revistas indexadas.',
+    unsplash_query: 'intraoral scanner dental technology',
   },
   {
-    slug_prefix: 'flujo-digital',
-    chip: 'Protocolo',
-    emoji: '📋',
+    slug_prefix: 'impresion3d-dental',
+    chip: 'Impresión 3D',
+    emoji: '🖨️',
     grad: 'grad-4',
-    categoria: 'protocolo',
-    tema: 'Optimización del flujo digital dental completo: escaneo intraoral, diseño CAD y fresado CAM. Tiempos, checkpoints y métricas de calidad en laboratorio.',
-    lectura: '7 min'
+    categoria: 'fabricacion',
+    lectura: '6 min',
+    titulo_seed: 'Impresión 3D dental resinas 2025',
+    tema_es: 'Avances en resinas fotopolimerizables para impresión 3D dental en 2025: resinas para provisionales de larga duración, modelos de estudio, guías quirúrgicas y férulas. Precisión clínica y protocolos de post-curado según estudios publicados.',
+    unsplash_query: '3D printing dental laboratory resin',
   },
   {
     slug_prefix: 'implantes-digitales',
@@ -64,30 +75,47 @@ const TOPIC_POOL = [
     emoji: '🦷',
     grad: 'grad-5',
     categoria: 'implantologia',
-    tema: 'Flujo digital en implantología: planificación con CBCT, guías quirúrgicas impresas y restauraciones sobre implante. Estado del arte 2025.',
-    lectura: '6 min'
+    lectura: '7 min',
+    titulo_seed: 'Flujo digital en implantología 2025',
+    tema_es: 'Flujo completamente digital en implantología: planificación con CBCT, guías quirúrgicas impresas en 3D, restauraciones implantosoportadas CAD/CAM y seguimiento postoperatorio. Tasas de éxito y precisión según meta-análisis recientes.',
+    unsplash_query: 'dental implant surgery digital',
   },
   {
-    slug_prefix: 'estetica-digital',
-    chip: 'Estética',
+    slug_prefix: 'dsd-sonrisa',
+    chip: 'Diseño Sonrisa',
     emoji: '✨',
     grad: 'grad-1',
     categoria: 'estetica',
-    tema: 'Carillas de cerámica en el flujo digital: diseño de sonrisa con DSD, mockups digitales y protocolo de preparación mínimamente invasiva.',
-    lectura: '5 min'
-  }
+    lectura: '5 min',
+    titulo_seed: 'Diseño Digital de Sonrisa DSD 2025',
+    tema_es: 'Protocolo actualizado de Diseño Digital de Sonrisa (DSD): software disponibles, integración con fotografía facial y escaneo intraoral, mockup digital vs. físico, y evidencia clínica de satisfacción del paciente.',
+    unsplash_query: 'dental smile design aesthetic',
+  },
+  {
+    slug_prefix: 'ia-diagnostico-dental',
+    chip: 'Inteligencia Artificial',
+    emoji: '🤖',
+    grad: 'grad-2',
+    categoria: 'innovacion',
+    lectura: '6 min',
+    titulo_seed: 'Inteligencia Artificial en odontología 2025',
+    tema_es: 'Aplicaciones de inteligencia artificial en odontología clínica y de laboratorio en 2025: detección de caries por IA, análisis de márgenes en CAD, predicción de carga oclusal, y herramientas aprobadas por FDA/CE disponibles actualmente.',
+    unsplash_query: 'artificial intelligence medical dental technology',
+  },
+  {
+    slug_prefix: 'alineadores-digitales',
+    chip: 'Ortodoncia Digital',
+    emoji: '📐',
+    grad: 'grad-3',
+    categoria: 'ortodoncia',
+    lectura: '5 min',
+    titulo_seed: 'Alineadores transparentes flujo digital 2025',
+    tema_es: 'Flujo digital completo para alineadores transparentes en 2025: escáner intraoral, software de planificación (Invisalign ClinCheck, 3Shape Ortho Analyzer, uLab), impresión 3D de modelos y fabricación de alineadores. Comparativa de sistemas y resultados clínicos.',
+    unsplash_query: 'dental aligners orthodontics clear',
+  },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────
-function slugify(str) {
-  return str
-    .toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-    .slice(0, 60);
-}
-
 function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -96,117 +124,170 @@ function uid(prefix) {
   return `${prefix}-${todayISO()}-${crypto.randomBytes(2).toString('hex')}`;
 }
 
-function pickTopic() {
-  // Elige el tópico del día basado en día de la semana para evitar repetición
-  const day = new Date().getDay(); // 0=Dom, 2=Mar, 4=Jue
-  return TOPIC_POOL[day % TOPIC_POOL.length];
+function pickTopics() {
+  const day = new Date().getDay();
+  const a = TOPIC_POOL[day % TOPIC_POOL.length];
+  const b = TOPIC_POOL[(day + 2) % TOPIC_POOL.length];
+  return [a, b];
 }
 
-// ── Perplexity API ────────────────────────────────────────────────
-function callPerplexity(prompt) {
+// ── HTTP helper ───────────────────────────────────────────────────
+function httpRequest(options, body) {
   return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      model: PERPLEXITY_MODEL,
-      messages: [
-        {
-          role: 'system',
-          content: `Eres un redactor técnico especializado en odontología digital y tecnología dental de laboratorio.
-Escribes artículos de alta calidad para dentistas y técnicos.
-Siempre incluyes datos, estudios o cifras concretas con referencias.
-Usas terminología técnica precisa pero accesible.
-Responde ÚNICAMENTE con JSON válido. Sin markdown, sin explicaciones adicionales.`
-        },
-        { role: 'user', content: prompt }
-      ],
-      temperature: 0.3,
-      max_tokens: 4000
-    });
-
-    const options = {
-      hostname: 'api.perplexity.ai',
-      path: '/chat/completions',
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${API_KEY}`,
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body)
-      }
-    };
-
     const req = https.request(options, (res) => {
       let data = '';
-      res.on('data', chunk => data += chunk);
+      res.on('data', c => data += c);
       res.on('end', () => {
-        try {
-          const parsed = JSON.parse(data);
-          if (parsed.error) return reject(new Error(parsed.error.message || JSON.stringify(parsed.error)));
-          resolve(parsed.choices[0].message.content);
-        } catch (e) {
-          reject(new Error('Parse error: ' + data.slice(0, 200)));
+        if (res.statusCode >= 400) {
+          return reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 300)}`));
         }
+        resolve(data);
       });
     });
-
     req.on('error', reject);
-    req.write(body);
+    if (body) req.write(body);
     req.end();
   });
 }
 
+// ── Gemini API ────────────────────────────────────────────────────
+async function callGemini(prompt) {
+  const body = JSON.stringify({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: {
+      temperature: 0.2,
+      maxOutputTokens: 8192,
+      responseMimeType: 'application/json'
+    },
+    safetySettings: [
+      { category: 'HARM_CATEGORY_HARASSMENT',        threshold: 'BLOCK_NONE' },
+      { category: 'HARM_CATEGORY_HATE_SPEECH',       threshold: 'BLOCK_NONE' },
+      { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+      { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
+    ]
+  });
+
+  const raw = await httpRequest({
+    hostname: 'generativelanguage.googleapis.com',
+    path: `/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(body)
+    }
+  }, body);
+
+  const parsed = JSON.parse(raw);
+  if (parsed.error) throw new Error(parsed.error.message);
+
+  const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('Gemini: respuesta vacía. ' + JSON.stringify(parsed).slice(0, 200));
+  return text;
+}
+
+// ── Unsplash API ──────────────────────────────────────────────────
+async function fetchUnsplashImage(query) {
+  if (!UNSPLASH_KEY) {
+    console.warn('⚠️  UNSPLASH_ACCESS_KEY no definida — sin imagen');
+    return null;
+  }
+  try {
+    const q = encodeURIComponent(query);
+    const raw = await httpRequest({
+      hostname: 'api.unsplash.com',
+      path: `/search/photos?query=${q}&per_page=3&orientation=landscape&content_filter=high`,
+      method: 'GET',
+      headers: { 'Authorization': `Client-ID ${UNSPLASH_KEY}` }
+    });
+    const data = JSON.parse(raw);
+    const photo = data.results?.[0];
+    if (!photo) return null;
+    return {
+      url:      photo.urls.regular,        // ~1080px
+      url_full: photo.urls.full,
+      thumb:    photo.urls.small,
+      alt:      photo.alt_description || query,
+      credit:   `${photo.user.name} on Unsplash`,
+      link:     photo.links.html
+    };
+  } catch (e) {
+    console.warn('⚠️  Unsplash error:', e.message);
+    return null;
+  }
+}
+
 // ── Prompt de generación ──────────────────────────────────────────
 function buildPrompt(topic) {
-  return `Genera un artículo técnico dental en español para el ProDigy Journal sobre este tema:
-"${topic.tema}"
+  return `Eres un experto en odontología digital con acceso a la literatura científica internacional más reciente (PubMed, Cochrane, JADA, IJOS, Clinical Oral Implants Research, Journal of Prosthodontics, etc.).
 
-Devuelve EXACTAMENTE este JSON (sin texto antes ni después):
+Escribe un artículo técnico riguroso en español sobre:
+"${topic.tema_es}"
+
+REGLAS ABSOLUTAS:
+1. SOLO cita estudios reales y verificables — incluye autores, revista, año, volumen y DOI cuando esté disponible
+2. NUNCA inventes estadísticas, porcentajes o citas — si no tienes certeza de un dato, no lo incluyas
+3. Nivel técnico para odontólogos generales y técnicos dentales especializados
+4. Mínimo 4 secciones temáticas (h2)
+5. Mínimo una tabla comparativa con datos reales
+6. Mínimo 3 referencias bibliográficas reales con DOI
+
+Devuelve EXACTAMENTE este JSON (sin texto antes ni después, sin markdown):
 {
-  "titulo": "Título del artículo (máx 80 chars, en español, sin comillas internas)",
-  "subtitulo": "Bajada descriptiva de 1-2 oraciones que explica el valor del artículo",
+  "titulo": "Título descriptivo y preciso en español (máx 85 chars)",
+  "subtitulo": "Resumen del valor clínico del artículo en 1-2 oraciones",
   "contenido": [
-    {"t": "p", "c": "Párrafo introductorio con contexto clínico relevante..."},
-    {"t": "h2", "c": "Subtítulo de sección 1"},
-    {"t": "p", "c": "Desarrollo técnico con datos concretos..."},
-    {"t": "list", "items": ["Punto técnico 1 con dato", "Punto 2", "Punto 3", "Punto 4", "Punto 5"]},
-    {"t": "h2", "c": "Subtítulo de sección 2"},
-    {"t": "p", "c": "Más contenido técnico..."},
-    {"t": "h2", "c": "Subtítulo de sección 3"},
+    {"t": "p", "c": "Párrafo introductorio con contexto clínico y epidemiológico actual..."},
+    {"t": "h2", "c": "Nombre de sección 1"},
+    {"t": "p", "c": "Desarrollo técnico con datos concretos y verificables..."},
+    {"t": "list", "items": ["Dato técnico verificable 1", "Dato 2", "Dato 3", "Dato 4", "Dato 5"]},
+    {"t": "h2", "c": "Nombre de sección 2"},
+    {"t": "p", "c": "Contenido técnico..."},
+    {"t": "table", "headers": ["Col1", "Col2", "Col3"], "rows": [["val1","val2","val3"],["val4","val5","val6"]]},
+    {"t": "h2", "c": "Nombre de sección 3"},
     {"t": "p", "c": "Contenido..."},
-    {"t": "quote", "c": "Cita técnica relevante de un estudio o experto", "author": "Autor, Institución, Año"},
-    {"t": "h2", "c": "Conclusiones clínicas"}
+    {"t": "h2", "c": "Nombre de sección 4"},
+    {"t": "p", "c": "Contenido..."},
+    {"t": "quote", "c": "Conclusión o cita de estudio relevante", "author": "Apellido et al., Revista, Año"}
   ],
   "referencias": [
-    "Autor A, Autor B. Título del estudio. Revista. Año;vol(n):pp-pp.",
-    "Autor C et al. Otro estudio relevante. Journal. Año;vol:pp."
+    "Apellido A, Apellido B. Título completo del artículo. Nombre Revista. Año;Vol(N):pp-pp. doi:10.XXXX/XXXXX",
+    "Apellido C et al. Título. Revista. Año;Vol:pp. doi:10.XXXX/XXXXX",
+    "Apellido D, Apellido E. Título. Revista. Año;Vol(N):pp-pp. PMID: XXXXXXXX"
   ],
-  "social_instagram": "Texto para Instagram de máx 150 chars con 3 hashtags relevantes",
-  "social_linkedin": "Texto para LinkedIn de 2-3 oraciones profesionales con el insight clave del artículo"
+  "faq": [
+    {"q": "Pregunta clínica frecuente relevante al tema", "a": "Respuesta técnica precisa basada en evidencia"},
+    {"q": "Segunda pregunta clínica práctica", "a": "Respuesta con recomendación aplicable"}
+  ],
+  "social_instagram": "Texto para Instagram máx 150 chars. Dato sorprendente + 3 hashtags relevantes en odontología.",
+  "social_linkedin": "Texto para LinkedIn 2-3 oraciones. Insight técnico clave para profesionales dentales. Sin hashtags."
+}`;
 }
 
-REGLAS:
-- Mínimo 4 secciones h2
-- Mínimo 5 puntos en la lista
-- Mínimo 2 referencias académicas reales (con DOI si es posible)
-- El contenido debe ser técnicamente preciso, no genérico
-- NO incluyas comillas dobles dentro de los valores JSON (usa simples o evítalas)`;
-}
+// ── Parsear y validar respuesta Gemini ────────────────────────────
+function parseGeminiResponse(raw) {
+  let jsonStr = raw.trim();
 
-// ── Leer y parsear articles.js existente ─────────────────────────
-function readExistingArticles() {
-  const raw = fs.readFileSync(ARTICLES_PATH, 'utf8');
-  // Extrae el array entre los primeros [ y el último ]
-  const match = raw.match(/const ARTICLES\s*=\s*(\[[\s\S]*\]);/);
-  if (!match) throw new Error('No se encontró const ARTICLES en articles.js');
-  // eslint-disable-next-line no-new-func
-  return Function(`"use strict"; return ${match[1]}`)();
+  // Eliminar bloques ```json si Gemini los incluye
+  const match = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (match) jsonStr = match[1].trim();
+
+  const data = JSON.parse(jsonStr);
+
+  // Validaciones mínimas
+  if (!data.titulo)    throw new Error('Falta titulo');
+  if (!data.contenido) throw new Error('Falta contenido');
+  if (!Array.isArray(data.referencias) || data.referencias.length < 2)
+    throw new Error('Insuficientes referencias');
+
+  return data;
 }
 
 // ── Construir objeto artículo ─────────────────────────────────────
-function buildArticleObject(topic, aiData) {
-  const id = uid(topic.slug_prefix);
+function buildArticleObject(topic, aiData, image) {
   return {
-    id,
+    id:        uid(topic.slug_prefix),
     titulo:    aiData.titulo,
-    subtitulo: aiData.subtitulo,
+    subtitulo: aiData.subtitulo || '',
     categoria: topic.categoria,
     chip:      topic.chip,
     fecha:     todayISO(),
@@ -214,117 +295,146 @@ function buildArticleObject(topic, aiData) {
     vistas:    '0',
     emoji:     topic.emoji,
     grad:      topic.grad,
-    og_img:    '',
-    contenido: aiData.contenido,
-    faq: [],
+    og_img:    image ? image.url : '',
+    img_credit: image ? image.credit : '',
+    img_link:   image ? image.link : '',
+    contenido:  aiData.contenido,
+    faq:        aiData.faq || [],
     referencias: aiData.referencias || []
   };
 }
 
-// ── Serializar array de artículos → articles.js ───────────────────
+// ── Leer artículos existentes ─────────────────────────────────────
+function readExistingArticles() {
+  const raw = fs.readFileSync(ARTICLES_PATH, 'utf8');
+  const match = raw.match(/const ARTICLES\s*=\s*(\[[\s\S]*?\]);\s*(?:if|\/\/|$)/);
+  if (!match) throw new Error('No se encontró ARTICLES en articles.js');
+  // eslint-disable-next-line no-new-func
+  return Function(`"use strict"; return ${match[1]}`)();
+}
+
+// ── Serializar → articles.js ──────────────────────────────────────
 function serializeArticles(articles) {
-  const header = `/* ============================================================
+  const header =
+`/* ============================================================
    PRODIGY — Base de artículos técnicos
-   Para agregar un artículo: copia un objeto del array ARTICLES
+   Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
    Última actualización automática: ${todayISO()}
    ============================================================ */
 
-const ARTICLES = [\n\n`;
+const ARTICLES = [
 
-  const footer = `\n];\n\nif (typeof module !== 'undefined') module.exports = { ARTICLES };\n`;
+`;
+  const footer = `
+];
 
+if (typeof module !== 'undefined') module.exports = { ARTICLES };
+`;
   const items = articles
-    .map(a => '/* ─────────────────────────────────────────────────────────── */\n' +
-              JSON.stringify(a, null, 2))
+    .map(a =>
+      '/* ─────────────────────────────────────────────────── */\n' +
+      JSON.stringify(a, null, 2)
+    )
     .join(',\n\n');
 
   return header + items + footer;
 }
 
-// ── Generar marketing-social.txt ──────────────────────────────────
-function appendSocialContent(articles, socialDataList) {
-  const sep = '─'.repeat(60);
-  const date = new Date().toLocaleDateString('es-CO', { dateStyle: 'long' });
-  let content = `\n${sep}\nARTÍCULOS GENERADOS — ${date}\n${sep}\n`;
+// ── Social copy (va a GitHub Artifact, no al repo) ────────────────
+function writeSocialFile(newArticles, socialDataList) {
+  const date = new Date().toLocaleDateString('es-CO', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+  const sep = '═'.repeat(60);
 
-  articles.forEach((art, i) => {
-    const social = socialDataList[i] || {};
-    content += `\n📝 ${art.titulo}\n`;
-    content += `🔗 URL: https://prodigydigitaldentistry.com/article.html?id=${art.id}\n`;
-    content += `\n📸 INSTAGRAM:\n${social.social_instagram || '(sin texto)'}\n`;
-    content += `\n💼 LINKEDIN:\n${social.social_linkedin || '(sin texto)'}\n\n`;
+  let content = `${sep}\nPRODIGY AUTO-JOURNAL — ${date}\n${sep}\n`;
+
+  newArticles.forEach((art, i) => {
+    const s = socialDataList[i] || {};
+    const url = `https://prodigylabdental.com/article.html?id=${art.id}`;
+    content += `\n📝 ARTÍCULO: ${art.titulo}\n`;
+    content += `🔗 URL: ${url}\n`;
+    if (art.og_img) content += `🖼️  IMAGEN: ${art.og_img}\n`;
+    content += `\n📸 INSTAGRAM (copia y pega):\n${s.social_instagram || '—'}\n`;
+    content += `\n💼 LINKEDIN (copia y pega):\n${s.social_linkedin || '—'}\n`;
+    content += `\n${'─'.repeat(40)}\n`;
   });
 
-  fs.appendFileSync(SOCIAL_PATH, content, 'utf8');
-  console.log('✅ marketing-social.txt actualizado');
+  fs.writeFileSync(SOCIAL_PATH, content, 'utf8');
+  console.log('✅ marketing-social.txt generado (GitHub Artifact — no se sube al repo)');
 }
 
 // ── Main ──────────────────────────────────────────────────────────
 async function main() {
-  if (!API_KEY) {
-    console.error('❌ PERPLEXITY_API_KEY no está definida');
+  if (!GEMINI_KEY) {
+    console.error('❌ GEMINI_API_KEY no está definida');
     process.exit(1);
   }
 
-  console.log('🚀 ProDigy Auto-Journal iniciado —', todayISO());
+  console.log(`\n🚀 ProDigy Auto-Journal — ${todayISO()}`);
+  console.log(`📡 Motor: Google Gemini 2.0 Flash`);
+  console.log(`🖼️  Imágenes: Unsplash${UNSPLASH_KEY ? ' ✓' : ' (sin key)'}\n`);
 
-  // Generar 2 artículos con temas distintos
-  const topicA = TOPIC_POOL[new Date().getDay() % TOPIC_POOL.length];
-  const topicB = TOPIC_POOL[(new Date().getDay() + 1) % TOPIC_POOL.length];
-  const topics = [topicA, topicB];
-
-  const newArticles = [];
+  const topics = pickTopics();
+  const newArticles   = [];
   const socialDataList = [];
 
   for (const topic of topics) {
-    console.log(`\n📡 Generando artículo: "${topic.tema.slice(0, 60)}..."`);
+    console.log(`\n── Generando: "${topic.titulo_seed}"`);
+
     try {
-      const rawResponse = await callPerplexity(buildPrompt(topic));
+      // 1. Texto con Gemini
+      const raw    = await callGemini(buildPrompt(topic));
+      const aiData = parseGeminiResponse(raw);
+      console.log(`   ✅ Texto: "${aiData.titulo}"`);
+      console.log(`   📚 Referencias: ${aiData.referencias.length}`);
 
-      // Extraer JSON del response (puede venir con ```json ... ```)
-      let jsonStr = rawResponse;
-      const jsonMatch = rawResponse.match(/```(?:json)?\s*([\s\S]*?)```/);
-      if (jsonMatch) jsonStr = jsonMatch[1];
+      // 2. Imagen con Unsplash
+      const image = await fetchUnsplashImage(topic.unsplash_query);
+      if (image) console.log(`   🖼️  Imagen: ${image.credit}`);
+      else        console.log(`   ⚠️  Sin imagen`);
 
-      const aiData = JSON.parse(jsonStr);
-      const article = buildArticleObject(topic, aiData);
+      // 3. Construir artículo
+      const article = buildArticleObject(topic, aiData, image);
       newArticles.push(article);
       socialDataList.push(aiData);
-      console.log(`✅ Artículo generado: ${article.titulo}`);
+
     } catch (err) {
-      console.error(`❌ Error generando artículo (${topic.slug_prefix}):`, err.message);
+      console.error(`   ❌ Error (${topic.slug_prefix}):`, err.message);
     }
   }
 
   if (newArticles.length === 0) {
-    console.error('❌ No se generó ningún artículo. Abortando.');
+    console.error('\n❌ No se generó ningún artículo. Abortando.');
     process.exit(1);
   }
 
-  // Leer artículos existentes y prepend los nuevos
+  // 4. Prepend al articles.js existente
   let existing = [];
   try {
     existing = readExistingArticles();
-    console.log(`📚 Artículos existentes: ${existing.length}`);
-  } catch (err) {
-    console.warn('⚠️  No se pudo leer articles.js existente:', err.message);
+    console.log(`\n📚 Artículos existentes: ${existing.length}`);
+  } catch (e) {
+    console.warn('⚠️  No se pudo leer articles.js:', e.message);
   }
 
-  // Los nuevos van al inicio (más recientes primero)
   const allArticles = [...newArticles, ...existing];
-
-  // Escribir articles.js
   fs.writeFileSync(ARTICLES_PATH, serializeArticles(allArticles), 'utf8');
-  console.log(`\n✅ articles.js actualizado — total: ${allArticles.length} artículos`);
+  console.log(`✅ articles.js → ${allArticles.length} artículos totales`);
 
-  // Escribir marketing-social.txt
-  appendSocialContent(newArticles, socialDataList);
+  // 5. Social copy (Artifact)
+  writeSocialFile(newArticles, socialDataList);
 
-  console.log('\n🎉 Auto-Journal completado.');
+  console.log('\n🎉 Auto-Journal completado.\n');
+  newArticles.forEach(a => {
+    console.log(`   → ${a.titulo}`);
+    console.log(`     ID: ${a.id}`);
+    if (a.og_img) console.log(`     IMG: ${a.og_img.slice(0, 60)}...`);
+  });
 }
 
 main().catch(err => {
-  console.error('Fatal:', err);
+  console.error('\nFatal:', err.message);
   process.exit(1);
 });

@@ -1,74 +1,77 @@
 # ============================================================
-# PRODIGY — Auto-Journal: genera 2 artículos técnicos
-# Cron: martes y jueves a las 9:00 AM (UTC-5 Bogotá = 14:00 UTC)
+# PRODIGY — Auto-Journal
+# Motor: Google Gemini 2.0 Flash (gratuito)
+# Imágenes: Unsplash API (gratuito)
+# Cron: martes y jueves 9:00 AM Bogotá (14:00 UTC)
+# Social copy: GitHub Actions Artifact (privado, solo tú)
 # ============================================================
 
 name: ProDigy Auto-Journal
 
 on:
   schedule:
-    # Martes 14:00 UTC = 9:00 AM Bogotá
-    - cron: '0 14 * * 2'
-    # Jueves 14:00 UTC = 9:00 AM Bogotá
-    - cron: '0 14 * * 4'
-  # Permite ejecución manual desde GitHub Actions
-  workflow_dispatch:
-    inputs:
-      dry_run:
-        description: 'Dry run — genera artículos pero NO hace commit'
-        required: false
-        default: 'false'
+    - cron: '0 14 * * 2'   # Martes 9 AM Bogotá
+    - cron: '0 14 * * 4'   # Jueves 9 AM Bogotá
+  workflow_dispatch:        # Ejecución manual desde GitHub Actions
 
 jobs:
-  generate-articles:
+  generate:
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      # 1. Checkout del repositorio
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      # 2. Configurar Node.js
-      - name: Setup Node.js
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      # 3. Generar artículos con Perplexity
-      - name: Generar artículos técnicos
+      - name: Generar artículos (Gemini + Unsplash)
         env:
-          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+          GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: node scripts/auto-journal.js
 
-      # 4. Verificar si hay cambios
-      - name: Verificar cambios
-        id: check_changes
+      - name: Verificar cambios en articles.js
+        id: changes
         run: |
-          git diff --quiet articles.js marketing-social.txt || echo "changes=true" >> $GITHUB_OUTPUT
+          git diff --quiet articles.js && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
 
-      # 5. Commit y push (solo si hay cambios y no es dry run)
       - name: Commit y push artículos nuevos
-        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.dry_run != 'true'
+        if: steps.changes.outputs.changed == 'true'
         run: |
-          git config user.name  "ProDigy Bot"
-          git config user.email "bot@prodigydigitaldentistry.com"
-          git add articles.js marketing-social.txt
-          git commit -m "feat(journal): auto-publish $(date +'%Y-%m-%d') — 2 artículos técnicos [skip ci]"
+          git config user.name  "ProDigy Journal Bot"
+          git config user.email "bot@prodigylabdental.com"
+          git add articles.js
+          git commit -m "feat(journal): $(date +'%Y-%m-%d') — 2 artículos técnicos auto-generados [skip ci]"
           git push
 
-      # 6. Resumen del job
-      - name: Resumen
+      # Social copy → Artifact privado (solo visible en GitHub Actions)
+      - name: Subir social copy como Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-copy-${{ github.run_id }}
+          path: marketing-social.txt
+          retention-days: 30
+
+      - name: Resumen del job
+        if: always()
         run: |
-          echo "## ProDigy Auto-Journal" >> $GITHUB_STEP_SUMMARY
+          echo "## 📰 ProDigy Auto-Journal" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Fecha:** $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "**Fecha:** $(date +'%d/%m/%Y %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "**Motor:** Google Gemini 2.0 Flash (gratuito)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          if [ -f marketing-social.txt ]; then
-            echo "**Textos para redes sociales generados:** ✅" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Ver \`marketing-social.txt\` en el repositorio." >> $GITHUB_STEP_SUMMARY
+          echo "### Artículos generados" >> $GITHUB_STEP_SUMMARY
+          if [ -f articles.js ]; then
+            grep '"titulo"' articles.js | head -2 | sed 's/.*"titulo": "\(.*\)".*/- \1/' >> $GITHUB_STEP_SUMMARY
           fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Textos para redes sociales" >> $GITHUB_STEP_SUMMARY
+          echo "📎 Ver Artifact **social-copy-${{ github.run_id }}** en esta página." >> $GITHUB_STEP_SUMMARY
