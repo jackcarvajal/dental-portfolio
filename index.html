@@ -80,7 +80,8 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://wa.me">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     <link rel="stylesheet" href="css/global-nav.min.css">
     <style>
         /* ============================================
@@ -100,6 +101,52 @@
             --bg-gray: #111111;
             --bg-card: #1c1c1e;
             --border-gold: rgba(212, 175, 55, 0.2);
+        }
+
+        /* ── MODO CLARO ── */
+        body.light-mode {
+            --bg-dark: #ffffff;
+            --bg-gray: #f5f5f7;
+            --bg-card: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #515154;
+            --border-gold: rgba(212, 175, 55, 0.35);
+            background-color: #ffffff;
+            color: #1d1d1f;
+        }
+
+        body.light-mode .hero {
+            background: radial-gradient(circle at center, #f0e8ff 0%, #f5f5f7 100%);
+        }
+
+        body.light-mode .step-card,
+        body.light-mode .case-card,
+        body.light-mode .service-card {
+            background: #ffffff;
+            border-color: rgba(212,175,55,0.3);
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+
+        body.light-mode .section-header,
+        body.light-mode h2,
+        body.light-mode h3 {
+            color: #1d1d1f;
+        }
+
+        body.light-mode p,
+        body.light-mode .workflow-desc,
+        body.light-mode .step-desc {
+            color: #515154;
+        }
+
+        body.light-mode section[style*="background: #000"],
+        body.light-mode section[style*="background:#000"] {
+            background: #f5f5f7 !important;
+        }
+
+        body.light-mode .navbar {
+            background: rgba(255,255,255,0.9);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
         }
 
         /* ========================================
@@ -1088,8 +1135,6 @@
     gap: 8px;
 }
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <!-- MENÚ MÓVIL DESLIZABLE -->
     <div class="mobile-nav" id="mobile-nav">
         <a href="#servicios">DISEÑOS CAD</a>
@@ -2763,6 +2808,48 @@
                     d.classList.toggle('active', i === idx);
                 });
             }, { passive: true });
+        });
+    })();
+    </script>
+
+    <!-- SCROLL REVEAL — IntersectionObserver nativo, sin librerías -->
+    <script>
+    (function() {
+        const CSS = `
+            .sr { opacity: 0; transform: translateY(36px); transition: opacity .6s ease, transform .6s ease; }
+            .sr.sr-visible { opacity: 1; transform: translateY(0); }
+            @media (prefers-reduced-motion: reduce) { .sr, .sr.sr-visible { transition: none; opacity: 1; transform: none; } }
+        `;
+        const style = document.createElement('style');
+        style.textContent = CSS;
+        document.head.appendChild(style);
+
+        const SECTIONS = [
+            '#servicios',
+            '#portfolio',
+            '#workflow-247',
+            '.canales-envio-persuasive',
+            '#production',
+            '#envia-scanner',
+            '#escaner',
+            '#academy',
+            '#blog'
+        ];
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(el => {
+                if (el.isIntersecting) {
+                    el.target.classList.add('sr-visible');
+                    observer.unobserve(el.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            SECTIONS.forEach(sel => {
+                const el = document.querySelector(sel);
+                if (el) { el.classList.add('sr'); observer.observe(el); }
+            });
         });
     })();
     </script>
