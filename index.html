@@ -1086,6 +1086,60 @@
     z-index: 1000;
     border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     padding: 15px 0;
+    transition: transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s;
+}
+.navbar.nav-hidden { transform: translateY(-100%); }
+.navbar.nav-scrolled { box-shadow: 0 4px 32px rgba(217,70,166,0.15); }
+
+/* CTA flotante — "Haz tu pedido" */
+#cta-pedido {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity .4s ease, transform .4s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none;
+}
+#cta-pedido.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+#cta-pedido a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #D946A6 0%, #a0186e 100%);
+    color: #fff;
+    font-weight: 800;
+    font-size: .95rem;
+    letter-spacing: 1.5px;
+    padding: 14px 32px;
+    border-radius: 100px;
+    text-decoration: none;
+    box-shadow: 0 8px 32px rgba(217,70,166,0.45), 0 2px 8px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.15);
+    white-space: nowrap;
+    transition: box-shadow .2s, transform .2s;
+}
+#cta-pedido a:hover {
+    box-shadow: 0 12px 48px rgba(217,70,166,0.65), 0 2px 8px rgba(0,0,0,0.4);
+    transform: scale(1.04);
+}
+#cta-pedido .pulse-dot {
+    width: 8px; height: 8px;
+    background: #00FF41;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0,255,65,.7);
+    animation: pulse-dot 2s infinite;
+    flex-shrink: 0;
+}
+@keyframes pulse-dot {
+    0%   { box-shadow: 0 0 0 0 rgba(0,255,65,.7); }
+    70%  { box-shadow: 0 0 0 8px rgba(0,255,65,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,255,65,0); }
 }
 .nav-container {
     max-width: 1400px;
@@ -1205,6 +1259,15 @@
             <i class="fas fa-arrow-right-to-bracket"></i> INGRESAR
         </a>
     </nav>
+
+    <!-- CTA FLOTANTE HAZ TU PEDIDO -->
+    <div id="cta-pedido" aria-live="polite">
+        <a href="calculadora.html">
+            <span class="pulse-dot"></span>
+            HAZ TU PEDIDO
+            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </a>
+    </div>
 
     <!-- REDES SOCIALES FLOTANTES -->
     <div class="social-floating">
@@ -2913,6 +2976,35 @@
                 if (el) { el.classList.add('sr'); observer.observe(el); }
             });
         });
+    })();
+    </script>
+    <script>
+    // Navbar hide-on-scroll + CTA flotante
+    (function() {
+        const nav = document.querySelector('.navbar');
+        const cta = document.getElementById('cta-pedido');
+        let lastY = 0;
+        let ticking = false;
+        const HERO_H = 500; // px hasta que aparece el CTA
+
+        function onScroll() {
+            const y = window.scrollY;
+            // navbar: ocultar al bajar, mostrar al subir
+            if (y > lastY && y > 80) {
+                nav.classList.add('nav-hidden');
+            } else {
+                nav.classList.remove('nav-hidden');
+            }
+            nav.classList.toggle('nav-scrolled', y > 10);
+            // CTA: aparece después del hero
+            cta.classList.toggle('visible', y > HERO_H);
+            lastY = y;
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+            if (!ticking) { requestAnimationFrame(onScroll); ticking = true; }
+        }, { passive: true });
     })();
     </script>
     <script>
