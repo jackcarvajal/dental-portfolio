@@ -137,7 +137,12 @@
       script-src 'self' 'unsafe-inline' 'unsafe-eval'
         https://cdnjs.cloudflare.com
         https://cdn.jsdelivr.net
-        https://zgihrwqfyvgyapbwzkvw.supabase.co;
+        https://zgihrwqfyvgyapbwzkvw.supabase.co
+        https://app.lemonsqueezy.com
+        https://www.paypal.com
+        https://www.paypalobjects.com
+        https://www.googletagmanager.com
+        https://www.google-analytics.com;
       style-src 'self' 'unsafe-inline'
         https://cdnjs.cloudflare.com
         https://fonts.googleapis.com;
@@ -146,12 +151,28 @@
         https://fonts.gstatic.com;
       img-src 'self' data: blob:
         https://*.supabase.co
-        https://images.unsplash.com;
+        https://images.unsplash.com
+        https://www.google-analytics.com
+        https://www.googletagmanager.com
+        https://www.paypal.com
+        https://www.paypalobjects.com;
       connect-src 'self'
         https://zgihrwqfyvgyapbwzkvw.supabase.co
         https://*.supabase.co
-        wss://zgihrwqfyvgyapbwzkvw.supabase.co;
-      frame-src https://www.youtube.com;
+        wss://zgihrwqfyvgyapbwzkvw.supabase.co
+        https://ipapi.co
+        https://api.lemonsqueezy.com
+        https://*.lemonsqueezy.com
+        https://api.paypal.com
+        https://*.paypal.com
+        https://www.google-analytics.com
+        https://analytics.google.com
+        https://stats.g.doubleclick.net;
+      frame-src
+        https://www.youtube.com
+        https://*.lemonsqueezy.com
+        https://www.paypal.com
+        https://*.paypal.com;
       object-src 'none';
       base-uri 'self';
     """
