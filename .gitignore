@@ -22,8 +22,8 @@ ESQUEMA_SUPABASE_PRODIGY.sql
 PRODIGY_SCHEMA_SUPABASE.sql
 
 # ---- Panel de administración y carga (proteger antes de producción) ----
-admin-panel.html
-agregar-caso.html
+/admin-panel.html
+/agregar-caso.html
 
 # ---- Archivos temporales y de desarrollo interno ----
 temporal/

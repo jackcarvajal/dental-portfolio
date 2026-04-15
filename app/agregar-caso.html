@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>💎 PRODIGY — Agregar Caso</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="../js/auth-guard.js"></script>
+    <!-- JSZip: genera el ZIP en el navegador, sin instalar nada -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gold: #D4AF37;
+            --magenta: #D946A6;
+            --bg: #050505;
+            --card: #0d1117;
+            --border: rgba(212,175,55,0.2);
+            --text: #f5f5f7;
+            --muted: #94a3b8;
+            --green: #22c55e;
+            --red: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 0 0 60px;
+            visibility: hidden;
+        }
+
+        /* ---- HEADER ---- */
+        .top-bar {
+            background: rgba(0,0,0,0.9);
+            border-bottom: 2px solid var(--gold);
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .top-bar h1 {
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--gold), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .top-bar span { color: var(--muted); font-size: 0.9rem; }
+
+        /* ---- PROGRESS BAR ---- */
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            padding: 30px 40px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+            z-index: 0;
+        }
+        .step.done:not(:last-child)::after { background: var(--green); }
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+        .step.active .step-circle { border-color: var(--gold); color: var(--gold); background: rgba(212,175,55,0.1); }
+        .step.done .step-circle { border-color: var(--green); background: var(--green); color: #000; }
+        .step-label { font-size: 0.7rem; color: var(--muted); margin-top: 6px; text-align: center; white-space: nowrap; }
+        .step.active .step-label { color: var(--gold); }
+        .step.done .step-label { color: var(--green); }
+
+        /* ---- CONTAINER ---- */
+        .container {
+            max-width: 800px;
+            margin: 30px auto 0;
+            padding: 0 20px;
+        }
+
+        /* ---- CARD ---- */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ---- FORM ---- */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-row.full { grid-template-columns: 1fr; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-group label span { color: var(--red); margin-left: 2px; }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: rgba(0,0,0,0.5);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            padding: 12px 14px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
+        }
+        .form-group input.valid { border-color: var(--green); }
+        .form-group input.invalid { border-color: var(--red); }
+        .form-group select option { background: #0d1117; }
+        .form-group textarea { min-height: 90px; resize: vertical; }
+        .field-hint { font-size: 0.75rem; color: var(--muted); }
+
+        /* ---- UPLOAD ZONES ---- */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .upload-zone:hover, .upload-zone.drag-over {
+            border-color: var(--gold);
+            background: rgba(212,175,55,0.05);
+        }
+        .upload-zone.loaded {
+            border-color: var(--green);
+            border-style: solid;
+            background: rgba(34,197,94,0.05);
+        }
+        .upload-zone input[type=file] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .upload-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .upload-title { font-weight: 700; margin-bottom: 4px; }
+        .upload-sub { font-size: 0.8rem; color: var(--muted); }
+        .upload-status {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--green);
+            display: none;
+        }
+        .upload-zone.loaded .upload-status { display: block; }
+
+        /* ---- COVER PREVIEW ---- */
+        .cover-preview {
+            margin-top: 16px;
+            display: none;
+        }
+        .cover-preview img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--green);
+        }
+
+        /* ---- GALLERY GRID ---- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .gallery-thumb {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--green);
+        }
+        .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-thumb .thumb-num {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.7);
+            color: var(--gold);
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        /* ---- BTN PRINCIPAL ---- */
+        .btn-download {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--gold), var(--magenta));
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-download:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(212,175,55,0.4);
+        }
+        .btn-download:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ---- LOADING STATE ---- */
+        .btn-download.loading { opacity: 0.7; cursor: wait; }
+
+        /* ---- SUCCESS PANEL ---- */
+        .success-panel {
+            display: none;
+            background: rgba(34,197,94,0.08);
+            border: 2px solid var(--green);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .success-panel.show { display: block; }
+        .success-panel h2 { color: var(--green); font-size: 1.5rem; margin-bottom: 16px; }
+        .steps-list {
+            text-align: left;
+            max-width: 500px;
+            margin: 20px auto 0;
+        }
+        .steps-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .steps-list li:last-child { border-bottom: none; }
+        .step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--green);
+            color: #000;
+            font-weight: 900;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* ---- ERROR / WARNING ---- */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .alert.show { display: block; }
+        .alert.error { background: rgba(239,68,68,0.12); border: 1px solid var(--red); color: #fca5a5; }
+        .alert.warning { background: rgba(251,191,36,0.1); border: 1px solid #fbbf24; color: #fde68a; }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 600px) {
+            .top-bar { padding: 16px 20px; }
+            .container { padding: 0 14px; }
+            .card { padding: 20px; }
+            .form-row { grid-template-columns: 1fr; }
+            .progress-bar { padding: 20px 14px 0; }
+            .step-label { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <h1>💎 PRODIGY</h1>
+    <span>Panel de Carga de Casos</span>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-bar">
+    <div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Información</div></div>
+    <div class="step" id="s2"><div class="step-circle">2</div><div class="step-label">Portada</div></div>
+    <div class="step" id="s3"><div class="step-circle">3</div><div class="step-label">Galería</div></div>
+    <div class="step" id="s4"><div class="step-circle">4</div><div class="step-label">Descargar</div></div>
+</div>
+
+<div class="container">
+
+    <!-- ALERT -->
+    <div class="alert error" id="alertError"></div>
+
+    <!-- SUCCESS -->
+    <div class="success-panel" id="successPanel">
+        <h2>✅ ¡ZIP descargado!</h2>
+        <p style="color:var(--muted);margin-bottom:24px;">Sigue estos pasos para publicar el caso en el sitio:</p>
+
+        <ol class="steps-list">
+            <li><div class="step-num">1</div><div>Abre la carpeta de <strong>Descargas</strong> de tu computador y busca el archivo <code style="color:var(--gold);">PRODIGY-caso-patient-XXX.zip</code></div></li>
+            <li><div class="step-num">2</div><div>Clic derecho sobre el ZIP → <strong>"Extraer aquí"</strong>. Verás dos carpetas: <code style="color:var(--gold);">patients/</code> y <code style="color:var(--gold);">js/</code></div></li>
+            <li><div class="step-num">3</div>
+                <div>
+                    Copia esas carpetas <strong>dentro de la carpeta del sitio web</strong> (<code style="color:var(--gold);">dental-portfolio/</code>), reemplazando cuando Windows pregunte:
+                    <div style="background:#0a0a0a;border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:16px 20px;margin-top:14px;font-family:monospace;font-size:0.82rem;line-height:2;color:#94a3b8;">
+                        <span style="color:#D4AF37;">📁 dental-portfolio/</span> &nbsp;&larr; la carpeta del sitio<br>
+                        &nbsp;&nbsp;&nbsp;├── <span style="color:#22c55e;">📁 patients/</span> &nbsp;&larr; <strong style="color:#f5f5f7;">pega aquí</strong> (reemplaza)<br>
+                        &nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color:#22c55e;">📁 patient-XXX/</span> &nbsp;&larr; carpeta nueva del caso<br>
+                        &nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── cover.jpg<br>
+                        &nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── 📁 gallery/<br>
+                        &nbsp;&nbsp;&nbsp;└── <span style="color:#22c55e;">📁 js/</span> &nbsp;&larr; <strong style="color:#f5f5f7;">pega aquí</strong> (reemplaza)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── patients-data.js &nbsp;&larr; archivo actualizado
+                    </div>
+                </div>
+            </li>
+            <li><div class="step-num">4</div><div>Si el sitio está en un <strong>servidor/hosting</strong>: sube esas mismas carpetas por FTP o el administrador de archivos del hosting, en las mismas rutas.</div></li>
+            <li><div class="step-num">5</div><div>Abre el sitio en el navegador → el caso nuevo aparece automáticamente en el portafolio. ✅</div></li>
+        </ol>
+
+        <button onclick="resetForm()" style="margin-top:28px;padding:12px 32px;background:transparent;border:2px solid var(--gold);color:var(--gold);border-radius:8px;font-family:'Inter',sans-serif;font-weight:700;cursor:pointer;font-size:0.95rem;letter-spacing:0.3px;">
+            + Agregar otro caso
+        </button>
+    </div>
+
+    <!-- PASO 1: INFO -->
+    <div class="card">
+        <div class="card-title">📝 Paso 1 — Información del Caso</div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nombre del caso <span>*</span></label>
+                <input type="text" id="caseName" placeholder="Ej: Rehabilitación Full Arch Superior" oninput="updateProgress()">
+            </div>
+            <div class="form-group">
+                <label>Tipo de tratamiento <span>*</span></label>
+                <select id="caseType" onchange="updateProgress()">
+                    <option value="">— Selecciona —</option>
+                    <option value="rehabilitacion">🔬 Rehabilitación</option>
+                    <option value="implantes">⚙️ Implantes</option>
+                    <option value="estetica">✨ Estética</option>
+                    <option value="coronas">👑 Coronas</option>
+                    <option value="carillas">💎 Carillas</option>
+                    <option value="ferulas">🛡️ Férulas</option>
+                    <option value="ortodoncia">📐 Ortodoncia</option>
+                    <option value="diseño">🎨 Diseño CAD</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Fecha <span>*</span></label>
+                <input type="text" id="caseDate" placeholder="Ej: Marzo 2025" oninput="updateProgress()">
+            </div>
+            <div class="form-group">
+                <label>Link Google Drive <span style="color:var(--muted);font-weight:400;">(opcional)</span></label>
+                <input type="url" id="driveLink" placeholder="https://drive.google.com/...">
+            </div>
+        </div>
+
+        <div class="form-row full">
+            <div class="form-group">
+                <label>Descripción breve <span>*</span></label>
+                <textarea id="caseDescription" placeholder="Describe el caso: materiales, cantidad de unidades, técnica utilizada..." oninput="updateProgress()"></textarea>
+                <span class="field-hint">Aparece como subtítulo en la tarjeta del portafolio.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASO 2: PORTADA -->
+    <div class="card">
+        <div class="card-title">🖼️ Paso 2 — Imagen de Portada</div>
+
+        <div class="upload-zone" id="coverZone">
+            <input type="file" id="coverInput" accept="image/jpeg,image/jpg,image/png,image/webp" onchange="handleCover(this)">
+            <div class="upload-icon">📷</div>
+            <div class="upload-title">Arrastra la foto principal aquí</div>
+            <div class="upload-sub">o haz clic para buscarla — JPG, PNG o WEBP</div>
+            <div class="upload-status" id="coverStatus"></div>
+        </div>
+        <div class="cover-preview" id="coverPreview">
+            <img id="coverImg" src="" alt="Portada">
+        </div>
+    </div>
+
+    <!-- PASO 3: GALERÍA -->
+    <div class="card">
+        <div class="card-title">📸 Paso 3 — Galería de Imágenes</div>
+
+        <div class="upload-zone" id="galleryZone">
+            <input type="file" id="galleryInput" accept="image/jpeg,image/jpg,image/png,image/webp" multiple onchange="handleGallery(this)">
+            <div class="upload-icon">🗂️</div>
+            <div class="upload-title">Arrastra todas las fotos de la galería</div>
+            <div class="upload-sub">o haz clic para seleccionarlas — puedes seleccionar varias a la vez</div>
+            <div class="upload-status" id="galleryStatus"></div>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+
+    <!-- PASO 3.5: EXOCAD HTML (OPCIONAL) -->
+    <div class="card">
+        <div class="card-title">🦷 Visor Exocad/3Shape <span style="font-size:0.75rem;font-weight:400;color:var(--muted);margin-left:8px;">— opcional</span></div>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:16px;line-height:1.6;">
+            Si el caso tiene un <strong style="color:var(--text);">archivo HTML exportado desde Exocad o 3Shape</strong>, súbelo aquí. Se incluirá en el ZIP como <code style="color:var(--gold);">caso.html</code> dentro de la carpeta del paciente y quedará disponible como visor 3D en el portafolio.
+        </p>
+        <div class="upload-zone" id="exocadZone">
+            <input type="file" id="exocadInput" accept=".html,text/html" onchange="handleExocad(this)">
+            <div class="upload-icon">🦷</div>
+            <div class="upload-title">Arrastra el archivo .html de Exocad/3Shape</div>
+            <div class="upload-sub">o haz clic para seleccionarlo — solo archivos .html</div>
+            <div class="upload-status" id="exocadStatus"></div>
+        </div>
+    </div>
+
+    <!-- PASO 4: DESCARGAR -->
+    <div class="card">
+        <div class="card-title">📦 Paso 4 — Generar Paquete</div>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:20px;line-height:1.6;">
+            Al hacer clic se descargará un archivo <strong style="color:var(--text);">ZIP</strong> con todas las imágenes ya organizadas en las carpetas correctas y el archivo <code style="color:var(--gold);">patients-data.js</code> actualizado. Solo extrae y reemplaza.
+        </p>
+        <div class="alert warning" id="alertWarning" style="display:none;">
+            ⚠️ Completa el Paso 1 (nombre, tipo, fecha, descripción) y el Paso 2 (portada) para activar este botón.
+        </div>
+        <button class="btn-download" id="btnDownload" disabled onclick="generarPaquete()">
+            <span id="btnIcon">📦</span>
+            <span id="btnText">Completar pasos anteriores primero</span>
+        </button>
+    </div>
+
+</div>
+
+<script>
+// =============================================
+// AUTH
+// =============================================
+ProdigyAuth.require(['admin']).then(session => {
+    if (!session) return; // auth-guard ya redirigió a login
+    document.body.style.visibility = 'visible';
+    loadExistingCases();
+});
+
+// =============================================
+// ESTADO GLOBAL
+// =============================================
+let coverFile = null;
+let galleryFiles = [];
+let exocadFile = null;
+let existingCases = [];
+
+// Cargar casos existentes desde patients-data.js
+function loadExistingCases() {
+    fetch('../js/patients-data.js')
+        .then(r => r.text())
+        .then(code => {
+            try {
+                // Extraer el array PATIENTS_DATA del archivo JS
+                const match = code.match(/const PATIENTS_DATA\s*=\s*(\[[\s\S]*?\]);/);
+                if (match) {
+                    existingCases = JSON.parse(match[1].replace(/:\s*null/g, ':null'));
+                }
+            } catch(e) {
+                existingCases = [];
+            }
+        })
+        .catch(() => { existingCases = []; });
+}
+
+// =============================================
+// PORTADA
+// =============================================
+function handleCover(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    coverFile = file;
+    const zone = document.getElementById('coverZone');
+    zone.classList.add('loaded');
+    document.getElementById('coverStatus').textContent = '✓ ' + file.name;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('coverImg').src = e.target.result;
+        const preview = document.getElementById('coverPreview');
+        preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+    updateProgress();
+}
+
+// =============================================
+// GALERÍA
+// =============================================
+function handleGallery(input) {
+    galleryFiles = Array.from(input.files);
+    if (!galleryFiles.length) return;
+
+    document.getElementById('galleryZone').classList.add('loaded');
+    document.getElementById('galleryStatus').textContent =
+        '✓ ' + galleryFiles.length + ' imagen' + (galleryFiles.length !== 1 ? 'es' : '') + ' seleccionada' + (galleryFiles.length !== 1 ? 's' : '');
+
+    const grid = document.getElementById('galleryGrid');
+    grid.innerHTML = '';
+
+    galleryFiles.forEach((file, i) => {
+        const thumb = document.createElement('div');
+        thumb.className = 'gallery-thumb';
+        const img = document.createElement('img');
+        const num = document.createElement('div');
+        num.className = 'thumb-num';
+        num.textContent = 'foto-' + (i + 1);
+        thumb.appendChild(img);
+        thumb.appendChild(num);
+        grid.appendChild(thumb);
+
+        const reader = new FileReader();
+        reader.onload = e => { img.src = e.target.result; };
+        reader.readAsDataURL(file);
+    });
+
+    updateProgress();
+}
+
+// =============================================
+// EXOCAD HTML
+// =============================================
+function handleExocad(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    exocadFile = file;
+    const zone = document.getElementById('exocadZone');
+    zone.classList.add('loaded');
+    document.getElementById('exocadStatus').textContent = '✓ ' + file.name + ' (' + (file.size / 1024 / 1024).toFixed(1) + ' MB)';
+}
+
+// =============================================
+// DRAG & DROP
+// =============================================
+['coverZone', 'galleryZone', 'exocadZone'].forEach(id => {
+    const zone = document.getElementById(id);
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        const input = zone.querySelector('input[type=file]');
+        const dt = new DataTransfer();
+        Array.from(e.dataTransfer.files).forEach(f => dt.items.add(f));
+        input.files = dt.files;
+        input.dispatchEvent(new Event('change'));
+    });
+});
+
+// =============================================
+// PROGRESO Y VALIDACIÓN
+// =============================================
+function updateProgress() {
+    const name  = document.getElementById('caseName').value.trim();
+    const type  = document.getElementById('caseType').value;
+    const date  = document.getElementById('caseDate').value.trim();
+    const desc  = document.getElementById('caseDescription').value.trim();
+
+    const step1OK = name && type && date && desc;
+    const step2OK = coverFile !== null;
+    const step3OK = galleryFiles.length > 0;
+
+    // Progress circles
+    setStep(1, step1OK);
+    setStep(2, step2OK);
+    setStep(3, step3OK);
+    setStep(4, step1OK && step2OK);
+
+    const btn = document.getElementById('btnDownload');
+    const warn = document.getElementById('alertWarning');
+
+    if (step1OK && step2OK) {
+        btn.disabled = false;
+        btn.querySelector('#btnIcon').textContent = '📦';
+        btn.querySelector('#btnText').textContent = 'Descargar Paquete ZIP';
+        warn.style.display = 'none';
+    } else {
+        btn.disabled = true;
+        btn.querySelector('#btnText').textContent = 'Completar pasos anteriores primero';
+        warn.style.display = 'block';
+        let msg = '⚠️ Faltan: ';
+        const falta = [];
+        if (!name) falta.push('nombre del caso');
+        if (!type) falta.push('tipo de tratamiento');
+        if (!date) falta.push('fecha');
+        if (!desc) falta.push('descripción');
+        if (!step2OK) falta.push('imagen de portada');
+        warn.textContent = msg + falta.join(', ') + '.';
+    }
+}
+
+function setStep(n, done) {
+    const el = document.getElementById('s' + n);
+    if (done) {
+        el.classList.add('done');
+        el.classList.remove('active');
+        el.querySelector('.step-circle').textContent = '✓';
+    } else {
+        el.classList.remove('done');
+    }
+}
+
+// =============================================
+// GENERAR ID AUTOMÁTICO
+// =============================================
+function getNextId() {
+    if (!existingCases.length) return 'patient-001';
+    const nums = existingCases
+        .map(c => parseInt((c.id || '').replace(/\D/g, '')) || 0)
+        .filter(n => !isNaN(n));
+    const next = Math.max(...nums) + 1;
+    return 'patient-' + String(next).padStart(3, '0');
+}
+
+// =============================================
+// GENERAR EL ZIP
+// =============================================
+async function generarPaquete() {
+    const btn = document.getElementById('btnDownload');
+    btn.classList.add('loading');
+    btn.querySelector('#btnIcon').textContent = '⏳';
+    btn.querySelector('#btnText').textContent = 'Generando paquete...';
+    btn.disabled = true;
+
+    try {
+        const name  = document.getElementById('caseName').value.trim();
+        const type  = document.getElementById('caseType').value;
+        const date  = document.getElementById('caseDate').value.trim();
+        const desc  = document.getElementById('caseDescription').value.trim();
+        const drive = document.getElementById('driveLink').value.trim();
+        const id    = getNextId();
+
+        const ext = coverFile.name.split('.').pop().toLowerCase() || 'jpg';
+        const coverName = 'cover.' + ext;
+
+        // Rutas de galería (foto-1.ext, foto-2.ext, ...)
+        const galleryPaths = galleryFiles.map((f, i) => {
+            const gext = f.name.split('.').pop().toLowerCase() || 'jpg';
+            return 'patients/' + id + '/gallery/foto-' + (i + 1) + '.' + gext;
+        });
+
+        // Nuevo objeto de caso
+        const newCase = {
+            id,
+            name,
+            code: id.toUpperCase(),
+            type,
+            date,
+            description: desc,
+            coverImage: 'patients/' + id + '/' + coverName,
+            exocadFile: exocadFile ? 'patients/' + id + '/caso.html' : null,
+            driveLink: drive || null,
+            gallery: galleryPaths,
+            galleryCount: galleryFiles.length
+        };
+
+        // Array actualizado (existentes + nuevo)
+        const allCases = [...existingCases, newCase];
+
+        // ---- Construir ZIP ----
+        const zip = new JSZip();
+
+        // Carpeta del caso
+        const patientsFolder = zip.folder('patients').folder(id);
+        const galleryFolder  = patientsFolder.folder('gallery');
+
+        // Portada
+        const coverData = await readFileAsArrayBuffer(coverFile);
+        patientsFolder.file(coverName, coverData);
+
+        // Galería
+        for (let i = 0; i < galleryFiles.length; i++) {
+            const gext = galleryFiles[i].name.split('.').pop().toLowerCase() || 'jpg';
+            const gname = 'foto-' + (i + 1) + '.' + gext;
+            const gdata = await readFileAsArrayBuffer(galleryFiles[i]);
+            galleryFolder.file(gname, gdata);
+        }
+
+        // Archivo Exocad (opcional)
+        if (exocadFile) {
+            const exocadData = await readFileAsArrayBuffer(exocadFile);
+            patientsFolder.file('caso.html', exocadData);
+        }
+
+        // patients-data.js actualizado
+        const jsContent = buildPatientsDataJS(allCases);
+        zip.folder('js').file('patients-data.js', jsContent);
+
+        // Descargar
+        const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = 'PRODIGY-caso-' + id + '.zip';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Mostrar éxito
+        document.getElementById('successPanel').classList.add('show');
+        document.getElementById('successPanel').scrollIntoView({ behavior: 'smooth' });
+
+    } catch(err) {
+        const alertEl = document.getElementById('alertError');
+        alertEl.textContent = '❌ Error al generar el paquete: ' + err.message;
+        alertEl.classList.add('show');
+        console.error(err);
+    } finally {
+        btn.classList.remove('loading');
+        btn.querySelector('#btnIcon').textContent = '📦';
+        btn.querySelector('#btnText').textContent = 'Descargar Paquete ZIP';
+        btn.disabled = false;
+    }
+}
+
+// =============================================
+// HELPERS
+// =============================================
+function readFileAsArrayBuffer(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload  = e => resolve(e.target.result);
+        reader.onerror = () => reject(new Error('Error leyendo ' + file.name));
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+function buildPatientsDataJS(cases) {
+    const indent = (str, n) => str.split('\n').map(l => ' '.repeat(n) + l).join('\n');
+
+    const caseStrings = cases.map(c => {
+        const galleryLines = c.gallery.map(g => `            "${g}"`).join(',\n');
+        return `    {
+        id: "${c.id}",
+        name: "${c.name}",
+        code: "${c.code}",
+        type: "${c.type}",
+        date: "${c.date}",
+        description: "${c.description.replace(/"/g, '\\"')}",
+
+        coverImage: "${c.coverImage}",
+        exocadFile: ${c.exocadFile ? `"${c.exocadFile}"` : 'null'},
+        driveLink: ${c.driveLink ? `"${c.driveLink}"` : 'null'},
+
+        gallery: [
+${galleryLines}
+        ],
+        galleryCount: ${c.galleryCount}
+    }`;
+    });
+
+    return `// =============================================
+// PRODIGY - BASE DE DATOS DE CASOS CLÍNICOS
+// Actualizado: ${new Date().toLocaleString('es-CO')}
+// Total de casos: ${cases.length}
+// =============================================
+
+const PATIENTS_DATA = [
+${caseStrings.join(',\n')}
+];
+
+function getPatientById(id) {
+    return PATIENTS_DATA.find(p => p.id === id) || null;
+}
+
+function filterPatientsByType(type) {
+    if (!type) return PATIENTS_DATA;
+    return PATIENTS_DATA.filter(p => p.type === type);
+}
+
+function getAllCaseTypes() {
+    return [...new Set(PATIENTS_DATA.map(p => p.type))];
+}
+
+if (typeof window !== 'undefined') {
+    window.PATIENTS_DATA = PATIENTS_DATA;
+    window.getPatientById = getPatientById;
+    window.filterPatientsByType = filterPatientsByType;
+    window.getAllCaseTypes = getAllCaseTypes;
+}
+
+console.log('✅ PATIENTS_DATA cargado:', PATIENTS_DATA.length, 'casos');
+`;
+}
+
+function resetForm() {
+    coverFile = null;
+    galleryFiles = [];
+    exocadFile = null;
+    document.getElementById('caseName').value = '';
+    document.getElementById('caseType').value = '';
+    document.getElementById('caseDate').value = '';
+    document.getElementById('driveLink').value = '';
+    document.getElementById('caseDescription').value = '';
+    document.getElementById('coverZone').classList.remove('loaded');
+    document.getElementById('galleryZone').classList.remove('loaded');
+    document.getElementById('exocadZone').classList.remove('loaded');
+    document.getElementById('exocadStatus').textContent = '';
+    document.getElementById('coverPreview').style.display = 'none';
+    document.getElementById('galleryGrid').innerHTML = '';
+    document.getElementById('successPanel').classList.remove('show');
+    document.getElementById('alertError').classList.remove('show');
+    ['s1','s2','s3','s4'].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('done');
+        el.querySelector('.step-circle').textContent = id.replace('s','');
+    });
+    document.getElementById('s1').classList.add('active');
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
