@@ -20,7 +20,7 @@
 
 const PAGOS_CONFIG = {
     wompi: {
-        publicKey: 'pub_prod_toFqXMM5Ko9rn6Htt6kiEma7jh19zuN0',
+        publicKey: 'pub_prod_toFqXM5Ko9rn6Htt6kiEma7jHj9zuA0',
         modoEspera: false,          // ✅ Producción activa
         recargo:   0.03,
         label:     'PSE / Nequi / Tarjeta — Wompi (Colombia)',
