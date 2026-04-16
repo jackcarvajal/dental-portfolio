@@ -1076,74 +1076,95 @@
 <body style="padding-top: 52px;">
 <style>
 /* ── TOPBAR ── */
+/* ── TOPBAR ── barra superior con mini-login inline ── */
 #nav-topbar {
     position: fixed;
     top: 0; left: 0; right: 0;
-    height: 44px;
-    background: rgba(5,5,5,0.98);
-    border-bottom: 1px solid rgba(217,70,166,0.25);
+    height: 52px;
+    background: #0a0a0e;
+    border-bottom: 1px solid rgba(217,70,166,0.35);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 32px;
+    justify-content: center;
+    padding: 0 24px;
     z-index: 1001;
+    gap: 8px;
+}
+/* Grupo de inputs + botones centrado */
+#tb-form {
+    display: flex; align-items: center; gap: 8px;
+}
+.tb-input-wrap {
+    position: relative; display: flex; align-items: center;
+}
+.tb-input-wrap i {
+    position: absolute; left: 11px;
+    color: #64748b; font-size: 13px; pointer-events: none;
+}
+.tb-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    color: #e2e8f0;
     font-size: 13px;
+    height: 34px;
+    padding: 0 12px 0 34px;
+    width: 190px;
+    outline: none;
+    transition: border-color .2s, background .2s;
 }
-.topbar-left {
-    display: flex; align-items: center; gap: 28px;
+.tb-input::placeholder { color: #475569; }
+.tb-input:focus {
+    border-color: rgba(217,70,166,0.55);
+    background: rgba(217,70,166,0.06);
 }
-.topbar-left a {
-    color: #94a3b8; text-decoration: none;
-    display: flex; align-items: center; gap: 7px;
-    font-size: 13px; font-weight: 500;
-    transition: color .2s;
+.tb-sep {
+    width: 1px; height: 26px;
+    background: rgba(255,255,255,0.1);
+    margin: 0 4px;
 }
-.topbar-left a:hover { color: #e2e8f0; }
-.topbar-left i { font-size: 12px; color: #D946A6; }
-.topbar-right { display: flex; align-items: center; gap: 10px; }
-.tb-register {
-    color: #94a3b8 !important;
-    text-decoration: none;
-    font-size: 12px !important;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px;
-    transition: all .2s;
+.tb-acceso {
+    height: 34px;
+    padding: 0 20px;
+    background: #e2e8f0;
+    color: #0a0a0e;
+    font-size: 12px; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
+    border: none; border-radius: 6px; cursor: pointer;
+    transition: background .2s;
+    white-space: nowrap;
 }
-.tb-register:hover { border-color: rgba(255,255,255,0.3); color: #fff !important; }
-.tb-login-btn {
-    display: inline-flex; align-items: center; gap: 7px;
-    background: linear-gradient(135deg, #D946A6 0%, #a0186e 100%);
-    color: #fff !important;
-    font-size: 12px !important;
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 7px 18px;
-    border-radius: 6px;
-    box-shadow: 0 2px 12px rgba(217,70,166,0.4);
-    transition: opacity .2s, box-shadow .2s;
+.tb-acceso:hover { background: #fff; }
+.tb-registro {
+    height: 34px;
+    padding: 0 20px;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 6px; cursor: pointer;
+    transition: border-color .2s, color .2s;
+    white-space: nowrap; text-decoration: none;
+    display: inline-flex; align-items: center;
 }
-.tb-login-btn:hover { opacity: .85; box-shadow: 0 4px 20px rgba(217,70,166,0.6); }
-.tb-login-btn i { font-size: 11px; }
+.tb-registro:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+/* Ocultar form en móvil, mostrar solo botón acceso */
 @media(max-width:768px) {
-    .topbar-left .tb-email { display: none; }
-    #nav-topbar { padding: 0 16px; }
-    .tb-register { display: none; }
+    #tb-form .tb-input-wrap { display: none; }
+    #tb-form .tb-sep { display: none; }
+    .tb-acceso { width: auto; }
+    #nav-topbar { justify-content: center; gap: 8px; }
 }
 @media(max-width:480px) {
-    #nav-topbar { height: 40px; }
-    .topbar-left { gap: 16px; }
+    #nav-topbar { height: 46px; }
+    .tb-acceso, .tb-registro { padding: 0 14px; font-size: 11px; }
 }
 
 /* ── NAVBAR PRINCIPAL ── siempre debajo del topbar */
 .navbar {
     position: fixed;
-    top: 44px;
+    top: 52px;
     left: 0; right: 0; width: 100%;
     background: rgba(8,8,12,0.97);
     backdrop-filter: blur(24px);
@@ -1288,14 +1309,19 @@
 </style>
     <!-- TOPBAR: contacto rápido + login -->
     <div id="nav-topbar">
-        <div class="topbar-left">
-            <a href="tel:+573212816716"><i class="fas fa-phone-alt"></i> +57 321 281 6716</a>
-            <a href="mailto:labdentalprodigy@gmail.com" class="tb-email"><i class="fas fa-envelope"></i> labdentalprodigy@gmail.com</a>
-        </div>
-        <div class="topbar-right">
-            <a href="app/login.html?mode=register" class="tb-register">REGISTRARSE</a>
-            <a href="app/login.html" class="tb-login-btn"><i class="fas fa-key"></i> INGRESAR</a>
-        </div>
+        <form id="tb-form" onsubmit="tbLogin(event)">
+            <div class="tb-input-wrap">
+                <i class="far fa-user"></i>
+                <input id="tb-email" type="email" class="tb-input" placeholder="Correo electrónico" autocomplete="email">
+            </div>
+            <div class="tb-input-wrap">
+                <i class="fas fa-lock"></i>
+                <input id="tb-pass" type="password" class="tb-input" placeholder="Contraseña" autocomplete="current-password">
+            </div>
+            <div class="tb-sep"></div>
+            <button type="submit" class="tb-acceso">ACCESO</button>
+            <a href="app/login.html?mode=register" class="tb-registro">REGISTRO</a>
+        </form>
     </div>
 
     <!-- MENÚ MÓVIL DESLIZABLE -->
@@ -3095,6 +3121,24 @@
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js').catch(() => {});
         });
+    }
+    </script>
+    <script>
+    /* ── Mini-login del topbar ── */
+    function tbLogin(e) {
+        e.preventDefault();
+        var email = document.getElementById('tb-email').value.trim();
+        var pass  = document.getElementById('tb-pass').value;
+        if (!email || !pass) {
+            /* Si campos vacíos → ir a login */
+            window.location.href = 'app/login.html';
+            return;
+        }
+        /* Redirigir a login con email precodificado para que lo tome */
+        var url = 'app/login.html?email=' + encodeURIComponent(email);
+        sessionStorage.setItem('tb_email', email);
+        sessionStorage.setItem('tb_pass', pass);
+        window.location.href = url;
     }
     </script>
 </body>
