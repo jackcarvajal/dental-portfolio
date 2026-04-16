@@ -372,7 +372,7 @@
             align-items: center;
             text-align: center;
             background: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%);
-            padding: 160px 20px 60px;
+            padding: 170px 20px 60px;
             gap: 20px;
         }
 
@@ -1079,45 +1079,83 @@
 #nav-topbar {
     position: fixed;
     top: 0; left: 0; right: 0;
-    height: 36px;
-    background: #000;
-    border-bottom: 1px solid rgba(212,175,55,0.12);
+    height: 44px;
+    background: rgba(5,5,5,0.98);
+    border-bottom: 1px solid rgba(217,70,166,0.25);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 24px;
+    padding: 0 32px;
     z-index: 1001;
-    font-size: 12px;
+    font-size: 13px;
 }
-.topbar-left { display: flex; align-items: center; gap: 20px; color: #64748b; }
-.topbar-left a { color: #94a3b8; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color .2s; }
-.topbar-left a:hover { color: #D4AF37; }
-.topbar-left i { font-size: 11px; color: #D946A6; }
-.topbar-right { display: flex; align-items: center; gap: 16px; }
-.topbar-right a { color: #94a3b8; text-decoration: none; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; transition: color .2s; }
-.topbar-right a:hover { color: #f5f5f7; }
-.topbar-right .tb-login { color: #D946A6; }
-.topbar-right .tb-sep { color: #334155; }
-@media(max-width:640px) {
+.topbar-left {
+    display: flex; align-items: center; gap: 28px;
+}
+.topbar-left a {
+    color: #94a3b8; text-decoration: none;
+    display: flex; align-items: center; gap: 7px;
+    font-size: 13px; font-weight: 500;
+    transition: color .2s;
+}
+.topbar-left a:hover { color: #e2e8f0; }
+.topbar-left i { font-size: 12px; color: #D946A6; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.tb-register {
+    color: #94a3b8 !important;
+    text-decoration: none;
+    font-size: 12px !important;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    transition: all .2s;
+}
+.tb-register:hover { border-color: rgba(255,255,255,0.3); color: #fff !important; }
+.tb-login-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: linear-gradient(135deg, #D946A6 0%, #a0186e 100%);
+    color: #fff !important;
+    font-size: 12px !important;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 7px 18px;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px rgba(217,70,166,0.4);
+    transition: opacity .2s, box-shadow .2s;
+}
+.tb-login-btn:hover { opacity: .85; box-shadow: 0 4px 20px rgba(217,70,166,0.6); }
+.tb-login-btn i { font-size: 11px; }
+@media(max-width:768px) {
     .topbar-left .tb-email { display: none; }
     #nav-topbar { padding: 0 16px; }
+    .tb-register { display: none; }
+}
+@media(max-width:480px) {
+    #nav-topbar { height: 40px; }
+    .topbar-left { gap: 16px; }
 }
 
-/* ── NAVBAR PRINCIPAL ── siempre visible, siempre debajo del topbar */
+/* ── NAVBAR PRINCIPAL ── siempre debajo del topbar */
 .navbar {
     position: fixed;
-    top: 36px;
-    left: 0;
-    right: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(20px);
+    top: 44px;
+    left: 0; right: 0; width: 100%;
+    background: rgba(8,8,12,0.97);
+    backdrop-filter: blur(24px);
     z-index: 1000;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-    padding: 15px 0;
+    border-bottom: 1px solid rgba(212,175,55,0.2);
+    padding: 18px 0;
     transition: box-shadow .3s;
 }
-.navbar.nav-scrolled { box-shadow: 0 4px 32px rgba(217,70,166,0.15); }
+.navbar.nav-scrolled {
+    box-shadow: 0 4px 40px rgba(217,70,166,0.18);
+    border-bottom-color: rgba(217,70,166,0.35);
+}
 
 /* CTA flotante — "Haz tu pedido" */
 #cta-pedido {
@@ -1183,16 +1221,16 @@
 .nav-left { justify-content: flex-start; }
 .nav-right { justify-content: flex-end; }
 .nav-left a, .nav-right a {
-    color: #f5f5f7;
+    color: #cbd5e1;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 13.5px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.7px;
+    letter-spacing: 0.8px;
     white-space: nowrap;
-    transition: color 0.3s;
+    transition: color 0.25s;
 }
-.nav-left a:hover, .nav-right a:hover { color: #D4AF37; }
+.nav-left a:hover, .nav-right a:hover { color: #fff; }
 /* LEY DE ORO: logo SIEMPRE centrado sin importar qué */
 .nav-logo-box {
     position: absolute;
@@ -1248,16 +1286,15 @@
     color: #fff !important;
 }
 </style>
-    <!-- TOPBAR: contacto rápido + login (desaparece en 5s o al bajar) -->
+    <!-- TOPBAR: contacto rápido + login -->
     <div id="nav-topbar">
         <div class="topbar-left">
-            <a href="tel:+573212816716"><i class="fas fa-phone"></i> +57 321 281 6716</a>
+            <a href="tel:+573212816716"><i class="fas fa-phone-alt"></i> +57 321 281 6716</a>
             <a href="mailto:labdentalprodigy@gmail.com" class="tb-email"><i class="fas fa-envelope"></i> labdentalprodigy@gmail.com</a>
         </div>
         <div class="topbar-right">
-            <a href="app/login.html" class="tb-login"><i class="fas fa-key"></i> INGRESAR</a>
-            <span class="tb-sep">|</span>
-            <a href="app/login.html?mode=register">REGISTRARSE</a>
+            <a href="app/login.html?mode=register" class="tb-register">REGISTRARSE</a>
+            <a href="app/login.html" class="tb-login-btn"><i class="fas fa-key"></i> INGRESAR</a>
         </div>
     </div>
 
