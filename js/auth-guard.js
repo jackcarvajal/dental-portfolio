@@ -24,16 +24,15 @@
     };
 
     function getRole(user) {
-        // Admin: solo por email — no confiar en user_metadata para admin
+        // Admin: SOLO por email hardcodeado — inmutable desde el cliente
         if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
-        // Roles de staff: app_metadata primero (solo editable via service role),
-        // user_metadata como fallback temporal hasta ejecutar migrate-fix-rls-app-metadata.sql
-        const appMeta  = user.app_metadata  || {};
-        const userMeta = user.user_metadata || {};
-        const role = appMeta.role || userMeta.role || 'client';
-        if (role === 'operator')             return 'operator';
-        if (role === 'mensajero')            return 'mensajero';
-        if (role === 'encargado_inventario') return 'encargado_inventario';
+        // Staff roles: SOLO app_metadata (editable únicamente via service_role / admin)
+        // user_metadata es user-controlled y NO se usa para autorización de staff
+        const appRole = (user.app_metadata || {}).role || '';
+        if (appRole === 'operator')             return 'operator';
+        if (appRole === 'mensajero')            return 'mensajero';
+        if (appRole === 'encargado_inventario') return 'encargado_inventario';
+        // Cualquier otro usuario autenticado = cliente
         return 'client';
     }
 

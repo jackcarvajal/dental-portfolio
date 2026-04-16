@@ -602,7 +602,10 @@
 
     function getRole(user) {
         if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
-        return user.user_metadata?.role || 'client';
+        // Solo app_metadata para staff — user_metadata no es confiable para autorización
+        const appRole = (user.app_metadata || {}).role || '';
+        if (appRole === 'operator' || appRole === 'mensajero' || appRole === 'encargado_inventario') return appRole;
+        return 'client';
     }
 
     async function redirectByRole(user) {
