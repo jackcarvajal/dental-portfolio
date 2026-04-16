@@ -20,3 +20,12 @@
 /enviar-produccion-drive.html   /app/login.html  302
 /enviar-produccion-wetransfer.html /app/login.html  302
 /acceso-staff.html              /app/login.html  302
+
+# ─────────────────────────────────────────────────────────────
+# MODO MANTENIMIENTO
+# Para ACTIVAR:  descomenta las 2 líneas con /*
+# Para APAGAR:   vuelve a comentarlas (agrega # al inicio)
+# Acceso staff durante mantenimiento: /app/login.html directo
+# ─────────────────────────────────────────────────────────────
+# /app/*    /app/:splat  200
+# /*        /mantenimiento.html  302

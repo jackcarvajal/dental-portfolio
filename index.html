@@ -2595,57 +2595,9 @@
     </script>
 
     <!-- ══════════════════════════════════════════════
-         MOBILE PREVIEW (solo visible en desktop)
-         Botón flotante esquina inferior izquierda
+         MOBILE PREVIEW — inyectado por JS solo si ?staff=1
+         El HTML NO existe en el DOM para usuarios públicos
     ══════════════════════════════════════════════ -->
-    <div id="mp-btn" title="Vista previa móvil [STAFF]" onclick="toggleMP()" style="
-        position:fixed; bottom:24px; left:20px; z-index:99999;
-        width:44px; height:44px; border-radius:50%;
-        background:rgba(10,10,10,0.92); border:1.5px solid rgba(212,175,55,0.5);
-        display:none; align-items:center; justify-content:center;
-        cursor:pointer; font-size:1.2rem; box-shadow:0 4px 16px rgba(0,0,0,0.5);
-        transition:all 0.2s; user-select:none;">📱</div>
-
-    <!-- OVERLAY -->
-    <div id="mp-overlay" style="
-        display:none; position:fixed; inset:0; z-index:99998;
-        background:rgba(0,0,0,0.88); align-items:center; justify-content:center; gap:16px; flex-wrap:wrap;">
-
-        <!-- Controles de dispositivo -->
-        <div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:2;">
-            <button onclick="setDevice(390,844,'iPhone 14')"  class="mp-dev-btn" id="mp-iphone14">iPhone 14</button>
-            <button onclick="setDevice(360,780,'Samsung S23')" class="mp-dev-btn" id="mp-samsung">Samsung S23</button>
-            <button onclick="setDevice(414,896,'iPhone 11')"  class="mp-dev-btn" id="mp-iphone11">iPhone 11</button>
-            <button onclick="toggleMP()" style="
-                padding:6px 14px; border-radius:20px; border:1px solid rgba(239,68,68,0.5);
-                background:rgba(239,68,68,0.12); color:#f87171; font-size:0.75rem;
-                font-weight:700; cursor:pointer;">✕ Cerrar</button>
-        </div>
-
-        <!-- Marco del teléfono -->
-        <div id="mp-phone" style="
-            background:#111; border-radius:44px; border:3px solid #2a2a2a;
-            padding:22px 10px 18px; box-shadow:0 0 0 1px #333, 0 30px 80px rgba(0,0,0,0.8);
-            position:relative; margin-top:52px;">
-            <!-- Notch / dynamic island -->
-            <div style="width:88px;height:10px;background:#1a1a1a;border-radius:5px;margin:0 auto 10px;border:1px solid #2a2a2a;"></div>
-            <!-- Screen -->
-            <div style="position:relative; border-radius:22px; overflow:hidden; border:1px solid #222;">
-                <iframe id="mp-frame" src="" scrolling="yes" style="
-                    display:block; border:none; border-radius:22px;
-                    width:390px; height:844px;"></iframe>
-            </div>
-            <!-- Barra inferior -->
-            <div style="width:100px;height:5px;background:#2a2a2a;border-radius:3px;margin:10px auto 0;"></div>
-        </div>
-
-        <!-- Label de dispositivo -->
-        <div id="mp-label" style="
-            position:absolute; bottom:16px; left:50%; transform:translateX(-50%);
-            font-size:0.72rem; color:rgba(255,255,255,0.4); letter-spacing:1px;
-            font-family:monospace;">iPhone 14 · 390×844</div>
-    </div>
-
     <style>
     .mp-dev-btn {
         padding:6px 14px; border-radius:20px; border:1px solid rgba(212,175,55,0.35);
@@ -2655,19 +2607,50 @@
     .mp-dev-btn:hover, .mp-dev-btn.active {
         background:rgba(212,175,55,0.2); border-color:rgba(212,175,55,0.7);
     }
-    /* Solo visible en desktop */
-    /* #mp-btn oculto siempre — solo JS lo muestra si ?staff=1 */
-    #mp-btn { display:none !important; }
-    @media (max-width: 1024px) { #mp-btn { display:none !important; } }
     </style>
 
     <script>
-    /* Mostrar herramienta móvil solo si ?staff=1 */
+    /* Mobile Preview — solo staff. Inyecta HTML solo si ?staff=1 */
     (function(){
-        if(new URLSearchParams(location.search).get('staff') === '1') {
-            var btn = document.getElementById('mp-btn');
-            if(btn) btn.style.display = 'flex';
-        }
+        if(new URLSearchParams(location.search).get('staff') !== '1') return;
+
+        // Botón flotante
+        var btn = document.createElement('div');
+        btn.id = 'mp-btn';
+        btn.title = 'Vista previa móvil [STAFF]';
+        btn.innerHTML = '📱';
+        btn.setAttribute('style',
+            'position:fixed;bottom:24px;left:20px;z-index:99999;' +
+            'width:44px;height:44px;border-radius:50%;' +
+            'background:rgba(10,10,10,0.92);border:1.5px solid rgba(212,175,55,0.5);' +
+            'display:flex;align-items:center;justify-content:center;' +
+            'cursor:pointer;font-size:1.2rem;box-shadow:0 4px 16px rgba(0,0,0,0.5);' +
+            'transition:all 0.2s;user-select:none;');
+        btn.onclick = function(){ window.toggleMP(); };
+        document.body.appendChild(btn);
+
+        // Overlay
+        var ov = document.createElement('div');
+        ov.id = 'mp-overlay';
+        ov.setAttribute('style',
+            'display:none;position:fixed;inset:0;z-index:99998;' +
+            'background:rgba(0,0,0,0.88);align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;');
+        ov.innerHTML =
+            '<div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:2;">' +
+                '<button onclick="setDevice(390,844,\'iPhone 14\')" class="mp-dev-btn" id="mp-iphone14">iPhone 14</button>' +
+                '<button onclick="setDevice(360,780,\'Samsung S23\')" class="mp-dev-btn" id="mp-samsung">Samsung S23</button>' +
+                '<button onclick="setDevice(414,896,\'iPhone 11\')" class="mp-dev-btn" id="mp-iphone11">iPhone 11</button>' +
+                '<button onclick="toggleMP()" style="padding:6px 14px;border-radius:20px;border:1px solid rgba(239,68,68,0.5);background:rgba(239,68,68,0.12);color:#f87171;font-size:0.75rem;font-weight:700;cursor:pointer;">✕ Cerrar</button>' +
+            '</div>' +
+            '<div id="mp-phone" style="background:#111;border-radius:44px;border:3px solid #2a2a2a;padding:22px 10px 18px;box-shadow:0 0 0 1px #333,0 30px 80px rgba(0,0,0,0.8);position:relative;margin-top:52px;">' +
+                '<div style="width:88px;height:10px;background:#1a1a1a;border-radius:5px;margin:0 auto 10px;border:1px solid #2a2a2a;"></div>' +
+                '<div style="position:relative;border-radius:22px;overflow:hidden;border:1px solid #222;">' +
+                    '<iframe id="mp-frame" src="" scrolling="yes" style="display:block;border:none;border-radius:22px;width:390px;height:844px;"></iframe>' +
+                '</div>' +
+                '<div style="width:100px;height:5px;background:#2a2a2a;border-radius:3px;margin:10px auto 0;"></div>' +
+            '</div>' +
+            '<div id="mp-label" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:0.72rem;color:rgba(255,255,255,0.4);letter-spacing:1px;font-family:monospace;">iPhone 14 · 390×844</div>';
+        document.body.appendChild(ov);
     })();
     (function(){
         let _loaded = false;
