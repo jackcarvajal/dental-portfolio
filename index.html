@@ -372,7 +372,7 @@
             align-items: center;
             text-align: center;
             background: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%);
-            padding: 120px 20px 60px;
+            padding: 160px 20px 60px;
             gap: 20px;
         }
 
@@ -1088,12 +1088,6 @@
     padding: 0 24px;
     z-index: 1001;
     font-size: 12px;
-    transition: transform .4s cubic-bezier(.4,0,.2,1), opacity .4s;
-}
-#nav-topbar.hidden {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
 }
 .topbar-left { display: flex; align-items: center; gap: 20px; color: #64748b; }
 .topbar-left a { color: #94a3b8; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color .2s; }
@@ -1109,10 +1103,10 @@
     #nav-topbar { padding: 0 16px; }
 }
 
-/* ── NAVBAR PRINCIPAL ── (siempre visible, nunca se oculta) */
+/* ── NAVBAR PRINCIPAL ── siempre visible, siempre debajo del topbar */
 .navbar {
     position: fixed;
-    top: 36px; /* debajo del topbar */
+    top: 36px;
     left: 0;
     right: 0;
     width: 100%;
@@ -1121,9 +1115,8 @@
     z-index: 1000;
     border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     padding: 15px 0;
-    transition: top .4s cubic-bezier(.4,0,.2,1), box-shadow .3s;
+    transition: box-shadow .3s;
 }
-.navbar.topbar-gone { top: 0; }
 .navbar.nav-scrolled { box-shadow: 0 4px 32px rgba(217,70,166,0.15); }
 
 /* CTA flotante — "Haz tu pedido" */
@@ -1186,7 +1179,7 @@
     position: relative;
     gap: 16px;
 }
-.nav-left, .nav-right { display: flex; gap: 20px; flex-wrap: nowrap; align-items: center; }
+.nav-left, .nav-right { display: flex; gap: 20px; flex-wrap: nowrap; align-items: center; flex: 1; }
 .nav-left { justify-content: flex-start; }
 .nav-right { justify-content: flex-end; }
 .nav-left a, .nav-right a {
@@ -3041,31 +3034,16 @@
     })();
     </script>
     <script>
-    // Topbar: desaparece en 5s O al primer scroll
+    // CTA flotante aparece después del hero
     (function() {
-        const topbar = document.getElementById('nav-topbar');
+        const cta = document.getElementById('cta-pedido');
         const navbar = document.querySelector('.navbar');
-        const cta    = document.getElementById('cta-pedido');
-        let gone = false;
         const HERO_H = 500;
-
-        function hideTopbar() {
-            if (gone) return;
-            gone = true;
-            topbar.classList.add('hidden');
-            navbar.classList.add('topbar-gone');
-        }
-
-        // Auto-ocultar a los 5 segundos
-        setTimeout(hideTopbar, 5000);
-
-        // Ocultar al primer scroll significativo
         let ticking = false;
         window.addEventListener('scroll', function() {
             if (!ticking) {
                 requestAnimationFrame(function() {
                     const y = window.scrollY;
-                    if (y > 60) hideTopbar();
                     navbar.classList.toggle('nav-scrolled', y > 10);
                     cta.classList.toggle('visible', y > HERO_H);
                     ticking = false;
