@@ -81,8 +81,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://wa.me">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/global-nav.min.css">
     <style>
         /* ============================================
@@ -149,6 +148,59 @@
             background: rgba(255,255,255,0.9);
             border-bottom: 1px solid rgba(0,0,0,0.08);
         }
+
+        /* ── Modo claro: texto blanco → oscuro ── */
+        body.light-mode .nav-left a,
+        body.light-mode .nav-right a,
+        body.light-mode .nav-logo { color: #1d1d1f !important; }
+        body.light-mode .nav-cta-main { color: #fff !important; }
+
+        body.light-mode .hero-title,
+        body.light-mode .hero-subtitle,
+        body.light-mode .hero-desc { color: #1d1d1f !important; }
+
+        body.light-mode .section-label,
+        body.light-mode .section-title { color: #1d1d1f !important; }
+
+        body.light-mode .step-number,
+        body.light-mode .step-title,
+        body.light-mode .step-desc { color: #333 !important; }
+
+        body.light-mode .service-title,
+        body.light-mode .service-desc { color: #1d1d1f !important; }
+
+        body.light-mode .case-title,
+        body.light-mode .case-desc,
+        body.light-mode .case-meta { color: #333 !important; }
+
+        body.light-mode [style*="color:#fff"],
+        body.light-mode [style*="color: #fff"],
+        body.light-mode [style*="color:white"],
+        body.light-mode [style*="color: white"] { color: #1d1d1f !important; }
+
+        body.light-mode [style*="color:#94a3b8"],
+        body.light-mode [style*="color:#64748b"],
+        body.light-mode [style*="color:#cbd5e1"],
+        body.light-mode [style*="color:#e2e8f0"] { color: #515154 !important; }
+
+        body.light-mode .ux-btn {
+            background: rgba(255,255,255,0.92) !important;
+            border-color: rgba(212,175,55,0.5) !important;
+            color: #D946A6 !important;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12) !important;
+        }
+        body.light-mode #nav-topbar {
+            background: rgba(245,245,247,0.98) !important;
+            border-bottom-color: rgba(0,0,0,0.1) !important;
+        }
+        body.light-mode .tb-input {
+            background: rgba(0,0,0,0.05) !important;
+            border-color: rgba(0,0,0,0.15) !important;
+            color: #1d1d1f !important;
+        }
+        body.light-mode .tb-input::placeholder { color: #94a3b8 !important; }
+        body.light-mode .tb-registro { color: #333 !important; border-color: rgba(0,0,0,0.2) !important; }
+        body.light-mode .tb-acceso { background: #1d1d1f !important; color: #fff !important; }
 
         /* ========================================
            RESET Y BASE
@@ -2604,6 +2656,8 @@
         background:rgba(212,175,55,0.2); border-color:rgba(212,175,55,0.7);
     }
     /* Solo visible en desktop */
+    /* #mp-btn oculto siempre — solo JS lo muestra si ?staff=1 */
+    #mp-btn { display:none !important; }
     @media (max-width: 1024px) { #mp-btn { display:none !important; } }
     </style>
 
