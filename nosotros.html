@@ -4,16 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#D946A6">
-  <meta name="description" content="Conoce a PRODIGY Lab Dental — laboratorio dental CAD/CAM de alta precisión en Bogotá. Equipo experto, tecnología XTCERA, calidad boutique.">
-  <meta property="og:title" content="Nosotros — PRODIGY Lab Dental">
-  <meta property="og:description" content="Diseño CAD avanzado y manufactura de alta precisión. Conoce nuestra historia y misión.">
+  <meta name="description" content="PRODIGY Lab Dental — Laboratorio CAD/CAM de precisión en Bogotá. Conoce nuestra historia, diferenciadores y contáctanos directamente.">
+  <meta property="og:title" content="Nosotros & Contacto — PRODIGY Lab Dental">
+  <meta property="og:description" content="Diseño CAD avanzado y manufactura de alta precisión. Somos el laboratorio boutique de Bogotá.">
   <meta property="og:image" content="https://prodigylabdental.com/assets/prodigy-preview.jpg">
   <meta property="og:url" content="https://prodigylabdental.com/nosotros.html">
   <link rel="canonical" href="https://prodigylabdental.com/nosotros.html">
   <link rel="manifest" href="/manifest.json">
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
-  <title>Nosotros — PRODIGY Digital Dentistry</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <title>Nosotros & Contacto — PRODIGY Digital Dentistry</title>
   <style>
     :root {
       --gold: #D946A6;
@@ -23,6 +22,7 @@
       --bg: #050505;
       --bg-card: #0d1520;
       --bg-card2: #111a27;
+      --bg-input: #0a111a;
       --border: rgba(217,70,166,0.2);
       --border2: rgba(0,210,255,0.15);
       --text: #e2e8f0;
@@ -30,40 +30,58 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      line-height: 1.6;
-    }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; padding-top: 96px; }
 
-    /* NAV reutilizable */
-    .navbar {
-      position: fixed; top: 0; left: 0; right: 0;
-      background: rgba(5,5,5,0.96); backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(212,175,55,0.2);
-      padding: 15px 0; z-index: 1000;
-      transition: transform .35s cubic-bezier(.4,0,.2,1);
-    }
-    .navbar.nav-hidden { transform: translateY(-100%); }
-    .nav-inner {
-      max-width: 1260px; margin: 0 auto;
+    /* ── TOPBAR ── */
+    #topbar {
+      position: fixed; top: 0; left: 0; right: 0; height: 44px;
+      background: #0a0a0e; border-bottom: 1px solid rgba(217,70,166,0.3);
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 24px; gap: 24px;
+      padding: 0 28px; z-index: 1001; font-size: 12px;
     }
-    .nav-logo { font-size: 1.2rem; font-weight: 900; color: var(--gold); letter-spacing: 3px; text-decoration: none; }
-    .nav-links { display: flex; gap: 24px; align-items: center; }
-    .nav-links a { color: #94a3b8; text-decoration: none; font-size: .82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: color .2s; }
+    .tb-left { display: flex; align-items: center; gap: 20px; }
+    .tb-left a { color: #64748b; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color .2s; }
+    .tb-left a:hover { color: #94a3b8; }
+    .tb-left i { color: var(--gold); font-size: 11px; }
+    .tb-right { display: flex; align-items: center; gap: 8px; }
+    .tb-btn-in {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: linear-gradient(135deg, #D946A6, #a0186e);
+      color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 1px;
+      text-transform: uppercase; text-decoration: none;
+      padding: 6px 14px; border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(217,70,166,0.35);
+    }
+    .tb-btn-reg {
+      color: #64748b; font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; text-decoration: none;
+      padding: 5px 12px; border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all .2s;
+    }
+    .tb-btn-reg:hover { border-color: rgba(255,255,255,0.3); color: #e2e8f0; }
+    @media(max-width:768px) { .tb-left { display: none; } #topbar { justify-content: flex-end; } }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: fixed; top: 44px; left: 0; right: 0;
+      background: rgba(8,8,12,0.97); backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(212,175,55,0.2);
+      padding: 14px 0; z-index: 1000;
+      transition: box-shadow .3s;
+    }
+    .nav-inner { max-width: 1260px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; gap: 24px; }
+    .nav-logo { font-size: 1.15rem; font-weight: 900; color: var(--gold2); letter-spacing: 3px; text-decoration: none; }
+    .nav-links { display: flex; gap: 22px; align-items: center; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-size: .8rem; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; transition: color .2s; }
     .nav-links a:hover, .nav-links a.active { color: var(--text); }
-    .nav-cta { background: var(--gold); color: #fff !important; padding: 8px 18px; border-radius: 100px; font-weight: 700 !important; }
-    .nav-cta:hover { opacity: .85; }
+    .nav-cta { background: linear-gradient(135deg,#D946A6,#a0186e); color: #fff !important; padding: 8px 18px; border-radius: 100px; font-weight: 700 !important; box-shadow: 0 4px 16px rgba(217,70,166,0.3); }
     @media(max-width:768px) { .nav-links { display: none; } }
 
-    /* HERO */
+    /* ── HERO ── */
     .hero {
-      min-height: 88vh;
-      display: flex; align-items: center;
-      padding: 120px 24px 80px;
+      min-height: 85vh; display: flex; align-items: center;
+      padding: 80px 24px 80px;
       background:
         radial-gradient(ellipse 80% 60% at 20% 40%, rgba(217,70,166,0.12) 0%, transparent 60%),
         radial-gradient(ellipse 60% 80% at 80% 60%, rgba(0,210,255,0.06) 0%, transparent 60%),
@@ -71,61 +89,38 @@
       position: relative; overflow: hidden;
     }
     .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D946A6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23D946A6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       pointer-events: none;
     }
     .hero-inner { max-width: 760px; position: relative; }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(217,70,166,0.12); border: 1px solid var(--border);
-      color: var(--gold); font-size: .75rem; font-weight: 700;
-      letter-spacing: 2px; text-transform: uppercase;
-      padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
-    }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(217,70,166,0.12); border: 1px solid var(--border); color: var(--gold); font-size: .72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 28px; }
     .hero-tag .dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: blink 2s infinite; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
     .hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 24px; }
     .hero h1 em { font-style: normal; color: var(--gold); }
-    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 580px; margin-bottom: 40px; line-height: 1.7; }
-    .hero-stats {
-      display: flex; gap: 40px; flex-wrap: wrap;
-    }
-    .stat { }
-    .stat strong { display: block; font-size: 2rem; font-weight: 900; color: var(--text); line-height: 1; }
-    .stat span { font-size: .8rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+    .hero p { font-size: 1.05rem; color: var(--muted); max-width: 560px; margin-bottom: 40px; line-height: 1.7; }
+    .hero-stats { display: flex; gap: 36px; flex-wrap: wrap; }
+    .stat strong { display: block; font-size: 1.9rem; font-weight: 900; color: var(--text); line-height: 1; }
+    .stat span { font-size: .75rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
 
-    /* SECCIONES */
+    /* ── SECTIONS ── */
     section { padding: 80px 24px; }
     .container { max-width: 1100px; margin: 0 auto; }
-    .section-tag {
-      font-size: .75rem; font-weight: 700; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--cyan); margin-bottom: 12px;
-    }
+    .section-tag { font-size: .72rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
     h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; margin-bottom: 16px; }
     h2.section-title em { font-style: normal; color: var(--gold); }
     .section-sub { color: var(--muted); font-size: 1rem; max-width: 560px; line-height: 1.7; margin-bottom: 48px; }
 
-    /* HISTORIA — dos columnas */
-    .historia-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
-    }
+    /* HISTORIA */
+    .historia-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
     @media(max-width:768px) { .historia-grid { grid-template-columns: 1fr; } }
     .historia-img {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      aspect-ratio: 4/3;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 5rem;
-      position: relative; overflow: hidden;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+      aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; position: relative; overflow: hidden;
     }
-    .historia-img::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at center, rgba(217,70,166,0.12) 0%, transparent 70%);
-    }
+    .historia-img::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(217,70,166,0.12) 0%, transparent 70%); }
     .historia-text h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 16px; }
     .historia-text p { color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
     .historia-text p strong { color: var(--text); }
@@ -135,82 +130,105 @@
     .dif-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
     @media(max-width:768px) { .dif-grid { grid-template-columns: 1fr; } }
     .dif-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px 28px;
-      transition: border-color .3s, box-shadow .3s, transform .3s;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 32px 28px; transition: border-color .3s, box-shadow .3s, transform .3s;
       position: relative; overflow: hidden;
     }
-    .dif-card:hover {
-      border-color: var(--gold);
-      box-shadow: 0 0 40px rgba(217,70,166,0.15);
-      transform: translateY(-4px);
-    }
-    .dif-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      opacity: 0; transition: opacity .3s;
-    }
+    .dif-card:hover { border-color: var(--gold); box-shadow: 0 0 40px rgba(217,70,166,0.15); transform: translateY(-4px); }
+    .dif-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0; transition: opacity .3s; }
     .dif-card:hover::before { opacity: 1; }
-    .dif-icon {
-      width: 52px; height: 52px;
-      background: rgba(217,70,166,0.12);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 20px;
-      color: var(--gold);
-    }
+    .dif-icon { width: 52px; height: 52px; background: rgba(217,70,166,0.12); border: 1px solid var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 20px; color: var(--gold); }
     .dif-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
     .dif-card p { color: var(--muted); font-size: .9rem; line-height: 1.7; }
 
     /* VALORES */
     .valores-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
     @media(max-width:600px) { .valores-grid { grid-template-columns: 1fr; } }
-    .valor-item {
-      display: flex; gap: 16px; align-items: flex-start;
-      background: var(--bg-card2); border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 12px; padding: 20px;
-    }
+    .valor-item { display: flex; gap: 16px; align-items: flex-start; background: var(--bg-card2); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; }
     .valor-item .vi-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
     .valor-item h4 { font-size: .95rem; font-weight: 700; margin-bottom: 4px; }
     .valor-item p { color: var(--muted); font-size: .85rem; line-height: 1.6; }
 
-    /* CTA FINAL */
-    .cta-section { text-align: center; }
-    .cta-section h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; margin-bottom: 16px; }
-    .cta-section p { color: var(--muted); margin-bottom: 36px; font-size: 1rem; }
-    .btn-gold {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: linear-gradient(135deg, #D946A6 0%, #a0186e 100%);
-      color: #fff; font-weight: 700; font-size: 1rem;
-      padding: 14px 32px; border-radius: 100px; text-decoration: none;
-      box-shadow: 0 8px 32px rgba(217,70,166,0.35);
-      transition: opacity .2s, transform .2s;
-    }
-    .btn-gold:hover { opacity: .85; transform: translateY(-2px); }
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: 10px;
-      border: 1px solid rgba(217,70,166,0.4);
-      color: var(--muted); font-size: .9rem;
-      padding: 12px 28px; border-radius: 100px; text-decoration: none;
-      margin-left: 16px; margin-top: 12px;
-      transition: all .2s;
-    }
-    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    /* CONTACTO SECTION */
+    .contacto-section { background: linear-gradient(180deg, var(--bg) 0%, #06101a 50%, var(--bg) 100%); }
+    .contacto-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; }
+    @media(max-width:820px) { .contacto-grid { grid-template-columns: 1fr; } }
 
-    /* SR animations */
+    /* Info col */
+    .left-col h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; }
+    .left-col .sub { color: var(--muted); font-size: .9rem; margin-bottom: 32px; line-height: 1.6; }
+    .info-block { margin-bottom: 28px; }
+    .info-block h3 { font-size: .72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
+    .contact-link { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; text-decoration: none; color: var(--text); margin-bottom: 10px; transition: border-color .2s, transform .2s; }
+    .contact-link:hover { border-color: rgba(255,255,255,0.15); transform: translateX(4px); }
+    .cl-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .cl-wa { background: rgba(37,211,102,0.12); color: #25D366; }
+    .cl-mail { background: rgba(217,70,166,0.12); color: var(--gold); }
+    .cl-phone { background: rgba(0,210,255,0.1); color: var(--cyan); }
+    .cl-text h4 { font-size: .9rem; font-weight: 700; margin-bottom: 1px; }
+    .cl-text p { color: var(--muted); font-size: .8rem; }
+    .location-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-top: 8px; }
+    .location-card h3 { font-size: .72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold2); margin-bottom: 12px; }
+    .location-card p { color: var(--muted); font-size: .88rem; line-height: 1.7; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,255,65,0.1); border: 1px solid rgba(0,255,65,0.2); color: #00FF41; font-size: .72rem; font-weight: 700; padding: 4px 12px; border-radius: 100px; margin-top: 12px; letter-spacing: 1px; }
+    .badge-dot { width: 6px; height: 6px; background: #00FF41; border-radius: 50%; animation: blink 2s infinite; }
+    .horario { margin-top: 12px; }
+    .horario .row { display: flex; justify-content: space-between; font-size: .82rem; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .horario .row:last-child { border: none; }
+    .horario .day { color: var(--muted); }
+    .horario .hour { color: var(--text); font-weight: 600; }
+
+    /* Formulario */
+    .form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; }
+    @media(max-width:480px) { .form-card { padding: 24px 20px; } }
+    .form-card h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
+    .form-card .sub { color: var(--muted); font-size: .88rem; margin-bottom: 28px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: .76rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: var(--bg-input); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: var(--text); font-size: .9rem; font-family: inherit; padding: 12px 16px; outline: none; transition: border-color .2s, box-shadow .2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(217,70,166,0.5); box-shadow: 0 0 0 3px rgba(217,70,166,0.1); }
+    .form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2364748b' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 20px; }
+    .form-group select option { background: #0d1520; }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media(max-width:480px) { .form-row { grid-template-columns: 1fr; } }
+    .habeas { font-size: .78rem; color: var(--muted); padding: 14px 16px; background: rgba(0,210,255,0.04); border: 1px solid var(--border2); border-radius: 10px; margin-bottom: 20px; line-height: 1.6; }
+    .habeas label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+    .habeas input[type=checkbox] { margin-top: 2px; accent-color: var(--gold); flex-shrink: 0; }
+    .btn-submit { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg,#D946A6 0%,#a0186e 100%); color: #fff; font-weight: 800; font-size: 1rem; letter-spacing: .5px; padding: 15px; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 6px 24px rgba(217,70,166,0.35); transition: opacity .2s, transform .2s; }
+    .btn-submit:hover { opacity: .85; transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .form-alt { text-align: center; margin-top: 16px; font-size: .82rem; color: var(--muted); }
+    .form-alt a { color: var(--gold); text-decoration: none; }
+    #form-success { display: none; text-align: center; padding: 32px 0; }
+    #form-success .check { font-size: 3rem; margin-bottom: 16px; }
+    #form-success h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+    #form-success p { color: var(--muted); font-size: .9rem; }
+
+    /* SR */
     .sr { opacity: 0; transform: translateY(32px); transition: opacity .6s ease, transform .6s ease; }
     .sr.visible { opacity: 1; transform: translateY(0); }
     @media(prefers-reduced-motion: reduce) { .sr, .sr.visible { transition: none; opacity: 1; transform: none; } }
+
+    /* DIVIDER */
+    .section-divider { border: none; border-top: 1px solid rgba(255,255,255,0.05); max-width: 1100px; margin: 0 auto; }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="tb-left">
+    <a href="tel:+573212816716"><i class="fas fa-phone-alt"></i> +57 321 281 6716</a>
+    <a href="mailto:labdentalprodigy@gmail.com"><i class="fas fa-envelope"></i> labdentalprodigy@gmail.com</a>
+  </div>
+  <div class="tb-right">
+    <a href="/app/login.html?mode=register" class="tb-btn-reg">Registro</a>
+    <a href="/app/login.html" class="tb-btn-in"><i class="fas fa-key"></i> Acceso</a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
     <a href="/" class="nav-logo">PRODIGY</a>
@@ -219,7 +237,7 @@
       <a href="/portafolio.html">Portafolio</a>
       <a href="/nosotros.html" class="active">Nosotros</a>
       <a href="/soporte.html">Soporte</a>
-      <a href="/contacto.html">Contacto</a>
+      <a href="/nosotros.html#contacto">Contacto</a>
       <a href="/calculadora.html" class="nav-cta">Cotizar</a>
     </div>
   </div>
@@ -256,6 +274,8 @@
   </div>
 </section>
 
+<hr class="section-divider">
+
 <!-- DIFERENCIADORES -->
 <section class="dif-section">
   <div class="container">
@@ -290,59 +310,123 @@
     <div class="valores-grid sr">
       <div class="valor-item">
         <span class="vi-icon">🎯</span>
-        <div>
-          <h4>Ajuste antes de entrega</h4>
-          <p>Control de calidad pieza a pieza. Si no pasa el checklist interno, no sale.</p>
-        </div>
+        <div><h4>Ajuste antes de entrega</h4><p>Control de calidad pieza a pieza. Si no pasa el checklist interno, no sale.</p></div>
       </div>
       <div class="valor-item">
         <span class="vi-icon">⚡</span>
-        <div>
-          <h4>Velocidad sin atajos</h4>
-          <p>Entrega en 24h sin sacrificar la calidad del diseño ni de la manufactura.</p>
-        </div>
+        <div><h4>Velocidad sin atajos</h4><p>Entrega en 24h sin sacrificar la calidad del diseño ni de la manufactura.</p></div>
       </div>
       <div class="valor-item">
         <span class="vi-icon">🔬</span>
-        <div>
-          <h4>Materiales certificados</h4>
-          <p>Zirconia, PMMA, disilicato, resinas 3D — solo proveedores con trazabilidad ISO.</p>
-        </div>
+        <div><h4>Materiales certificados</h4><p>Zirconia, PMMA, disilicato, resinas 3D — solo proveedores con trazabilidad ISO.</p></div>
       </div>
       <div class="valor-item">
         <span class="vi-icon">📡</span>
-        <div>
-          <h4>Trazabilidad digital total</h4>
-          <p>Desde el archivo STL hasta el despacho, cada etapa queda registrada en sistema.</p>
-        </div>
+        <div><h4>Trazabilidad digital total</h4><p>Desde el archivo STL hasta el despacho, cada etapa queda registrada en sistema.</p></div>
       </div>
       <div class="valor-item">
         <span class="vi-icon">🤝</span>
-        <div>
-          <h4>Relación a largo plazo</h4>
-          <p>No buscamos el primer pedido. Buscamos ser el laboratorio de cabecera de tu clínica.</p>
-        </div>
+        <div><h4>Relación a largo plazo</h4><p>No buscamos el primer pedido. Buscamos ser el laboratorio de cabecera de tu clínica.</p></div>
       </div>
       <div class="valor-item">
         <span class="vi-icon">🌎</span>
-        <div>
-          <h4>Diseño global, producción local</h4>
-          <p>Archivos de diseño manejados internacionalmente, manufactura y soporte en Bogotá.</p>
-        </div>
+        <div><h4>Diseño global, producción local</h4><p>Archivos de diseño manejados internacionalmente, manufactura y soporte en Bogotá.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section">
+<hr class="section-divider">
+
+<!-- CONTACTO -->
+<section class="contacto-section" id="contacto">
   <div class="container">
-    <div class="section-tag sr">Empecemos</div>
-    <h2 class="sr">¿Listo para un laboratorio <em>diferente</em>?</h2>
-    <p class="sr">Envía tu primer caso o agenda una llamada técnica. Sin compromiso.</p>
-    <div class="sr">
-      <a href="/calculadora.html" class="btn-gold"><i class="fas fa-calculator"></i> Cotizar ahora</a>
-      <a href="/contacto.html" class="btn-outline">Hablar con el equipo</a>
+    <div class="section-tag sr">Hablemos</div>
+    <h2 class="section-title sr">Inicia tu <em>consulta técnica</em></h2>
+    <p class="section-sub sr">Respuesta en menos de 2 horas en horario hábil. Sin formularios eternos, sin robots.</p>
+
+    <div class="contacto-grid">
+      <!-- Info -->
+      <div class="left-col sr">
+        <div class="info-block">
+          <h3>Canales directos</h3>
+          <a href="https://wa.me/573212816716" class="contact-link" target="_blank" rel="noopener">
+            <div class="cl-icon cl-wa"><i class="fab fa-whatsapp"></i></div>
+            <div class="cl-text"><h4>WhatsApp</h4><p>+57 321 281 6716</p></div>
+          </a>
+          <a href="mailto:labdentalprodigy@gmail.com" class="contact-link">
+            <div class="cl-icon cl-mail"><i class="fas fa-envelope"></i></div>
+            <div class="cl-text"><h4>Correo electrónico</h4><p>labdentalprodigy@gmail.com</p></div>
+          </a>
+          <a href="tel:+573212816716" class="contact-link">
+            <div class="cl-icon cl-phone"><i class="fas fa-phone"></i></div>
+            <div class="cl-text"><h4>Teléfono</h4><p>+57 321 281 6716</p></div>
+          </a>
+        </div>
+        <div class="location-card">
+          <h3>Ubicación y horarios</h3>
+          <p>Bogotá, Colombia · Zona Norte<br>Atendemos de lunes a sábado.<br>Recogida de escáner disponible en la misma jornada.</p>
+          <div class="badge"><span class="badge-dot"></span> Operando ahora</div>
+          <div class="horario">
+            <div class="row"><span class="day">Lunes – Viernes</span><span class="hour">8:00 am – 6:00 pm</span></div>
+            <div class="row"><span class="day">Sábado</span><span class="hour">8:00 am – 1:00 pm</span></div>
+            <div class="row"><span class="day">Domingo</span><span class="hour">Cerrado</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario -->
+      <div class="form-card sr">
+        <h2>Envíanos tu consulta</h2>
+        <p class="sub">Cuéntanos qué necesitas. Te responderemos en menos de 2 horas.</p>
+        <form id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Dr. García" required>
+            </div>
+            <div class="form-group">
+              <label for="clinica">Clínica / Consultorio</label>
+              <input type="text" id="clinica" name="clinica" placeholder="Clínica Oral S.A.S.">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" name="email" placeholder="doctor@clinica.com" required>
+          </div>
+          <div class="form-group">
+            <label for="tipo">Tipo de requerimiento</label>
+            <select id="tipo" name="tipo" required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="cotizacion">Cotización de caso</option>
+              <option value="soporte_tecnico">Soporte técnico</option>
+              <option value="exocad">Ayuda con Exocad / 3Shape</option>
+              <option value="escaner">Recogida de escáner</option>
+              <option value="materiales">Consulta sobre materiales</option>
+              <option value="otro">Otro requerimiento</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos el detalle del caso, material deseado, fecha de entrega o cualquier duda técnica…" required></textarea>
+          </div>
+          <div class="habeas">
+            <label>
+              <input type="checkbox" id="habeas" required>
+              <span>Autorizo el tratamiento de mis datos para gestión de pedidos. Acepto recibir novedades y promociones (opcional). Puedo darme de baja sin afectar el seguimiento de mi caso. — <a href="/terminos-y-legal.html#privacidad" target="_blank" style="color:var(--gold)">Política de privacidad</a></span>
+            </label>
+          </div>
+          <button type="submit" class="btn-submit" id="submit-btn">
+            <i class="fas fa-paper-plane"></i> Iniciar consulta técnica
+          </button>
+        </form>
+        <div id="form-success">
+          <div class="check">✅</div>
+          <h3>¡Mensaje recibido!</h3>
+          <p>Te responderemos en menos de 2 horas al correo indicado.<br>También puedes escribirnos directo por <a href="https://wa.me/573212816716" target="_blank" style="color:var(--gold)">WhatsApp</a>.</p>
+        </div>
+        <p class="form-alt">¿Prefieres ir directo? <a href="https://wa.me/573212816716" target="_blank">Escríbenos por WhatsApp</a></p>
+      </div>
     </div>
   </div>
 </section>
@@ -361,11 +445,38 @@
     }
     window.addEventListener('scroll', function(){ if(!ticking){ requestAnimationFrame(onScroll); ticking=true; } }, { passive: true });
   })();
+
   // Scroll reveal
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.08 });
   document.querySelectorAll('.sr').forEach(el => obs.observe(el));
+
+  // Formulario → WhatsApp
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const nombre  = document.getElementById('nombre').value.trim();
+    const clinica = document.getElementById('clinica').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const tipo    = document.getElementById('tipo').value;
+    const mensaje = document.getElementById('mensaje').value.trim();
+    const habeas  = document.getElementById('habeas').checked;
+    if (!nombre || !email || !tipo || !mensaje || !habeas) {
+      alert('Por favor completa todos los campos requeridos y acepta la política de privacidad.');
+      return;
+    }
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando…';
+    const tipoLabel = { cotizacion:'Cotización de caso', soporte_tecnico:'Soporte técnico', exocad:'Ayuda Exocad/3Shape', escaner:'Recogida de escáner', materiales:'Consulta materiales', otro:'Otro requerimiento' }[tipo] || tipo;
+    const texto = `Hola PRODIGY, nueva consulta desde el sitio web:\n\n*Nombre:* ${nombre}\n*Clínica:* ${clinica||'N/A'}\n*Email:* ${email}\n*Tipo:* ${tipoLabel}\n*Mensaje:* ${mensaje}`;
+    setTimeout(() => {
+      window.open('https://wa.me/573212816716?text=' + encodeURIComponent(texto), '_blank');
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    }, 800);
+  });
+
   if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
 </body>

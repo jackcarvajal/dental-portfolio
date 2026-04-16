@@ -161,7 +161,7 @@
         '<ul>' +
           '<li><a href="nosotros.html">Nosotros</a></li>' +
           '<li><a href="soporte.html">Soporte Técnico</a></li>' +
-          '<li><a href="contacto.html">Contacto</a></li>' +
+          '<li><a href="nosotros.html#contacto">Contacto</a></li>' +
           '<li><a href="instalar-app.html">Instalar App</a></li>' +
           '<li><a href="terminos-y-legal.html">Términos y Privacidad</a></li>' +
         '</ul>' +
