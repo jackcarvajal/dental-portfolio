@@ -20,6 +20,15 @@ Permiso total: bash, leer, escribir, crear, eliminar. Confirma solo si: eliminas
 - Hábil: L-S, 8am-6pm. Corte: 5pm. Post-corte → arranca día siguiente 8am.
 - Sin domingos. STATE.tiempo solo dentro de horario hábil.
 
+## 3b. PÁGINAS NUEVAS (mandamiento de oro)
+Toda página HTML nueva pública DEBE incluir:
+- `<nav class="navbar">` con el mismo encabezado doble (topbar + navbar principal) de index.html
+- `<script src="js/footer.js"></script>` antes de `</body>`
+- `<meta name="theme-color" content="#D946A6">` y `<link rel="manifest" href="/manifest.json">`
+- `<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>`
+- Link rel="canonical" y meta description
+- ACTUALIZAR footer.js y sitemap.xml si la página es pública e indexable
+
 ## 4. SEGURIDAD
 - `/app/*.html` (excepto login/reset): requieren `<meta name="robots" content="noindex,nofollow">` y `<script src="../js/auth-guard.js">` antes de cualquier JS de negocio.
 - `/patient.html`, `/patients/*`: noindex. Sin auth, acceso por link.
