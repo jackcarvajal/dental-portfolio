@@ -27,5 +27,6 @@
 # Para APAGAR:   vuelve a comentarlas (agrega # al inicio)
 # Acceso staff durante mantenimiento: /app/login.html directo
 # ─────────────────────────────────────────────────────────────
+/mantenimiento.html   /mantenimiento.html   200
 /app/*                /app/:splat           200
 /*                    /mantenimiento.html   302
