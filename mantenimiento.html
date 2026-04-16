@@ -6,18 +6,17 @@
   <meta name="robots" content="noindex,nofollow">
   <title>PRODIGY — Lanzamiento Próximo</title>
   <meta name="theme-color" content="#050505">
-  <meta name="description" content="PRODIGY Digital Dentistry — portal en construcción. Laboratorio dental de alta precisión en Bogotá, Colombia.">
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --gold: #D4AF37;
       --magenta: #D946A6;
       --cyan: #00d2ff;
       --bg: #050505;
       --card: rgba(255,255,255,0.04);
+      --border: rgba(212,175,55,0.15);
     }
 
     body {
@@ -28,242 +27,242 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 40px 20px 60px;
+      padding: 48px 20px 72px;
       overflow-x: hidden;
     }
 
-    /* ── Fondo animado ── */
+    /* ── Fondo ── */
     .bg-glow {
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background:
-        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(217,70,166,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 45% at 85% 80%, rgba(0,210,255,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 10% 15%, rgba(217,70,166,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 45% at 90% 85%, rgba(0,210,255,0.05) 0%, transparent 60%),
         radial-gradient(ellipse 40% 30% at 50% 50%, rgba(212,175,55,0.03) 0%, transparent 60%);
     }
     .grid-lines {
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background-image:
-        linear-gradient(rgba(212,175,55,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(212,175,55,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
+        linear-gradient(rgba(212,175,55,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,175,55,0.025) 1px, transparent 1px);
+      background-size: 64px 64px;
     }
 
-    /* ── Layout ── */
+    /* ── Wrap ── */
     .wrap {
       position: relative; z-index: 1;
-      max-width: 720px; width: 100%;
+      max-width: 760px; width: 100%;
       display: flex; flex-direction: column; align-items: center;
-      gap: 0;
     }
 
-    /* ── Badge estado ── */
-    .status-badge {
+    /* ── Badge ── */
+    .badge {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(217,70,166,0.1);
-      border: 1px solid rgba(217,70,166,0.3);
-      border-radius: 99px;
-      padding: 6px 16px;
-      font-size: 0.72rem; font-weight: 700;
-      color: #f0abdc; letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 32px;
+      background: rgba(217,70,166,0.08);
+      border: 1px solid rgba(217,70,166,0.25);
+      border-radius: 99px; padding: 6px 18px;
+      font-size: 0.7rem; font-weight: 700;
+      color: #f0abdc; letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 36px;
     }
-    .status-dot {
+    .badge-dot {
       width: 7px; height: 7px; border-radius: 50%;
       background: #D946A6;
-      box-shadow: 0 0 8px rgba(217,70,166,0.8);
+      box-shadow: 0 0 8px rgba(217,70,166,0.9);
       animation: blink 1.8s ease-in-out infinite;
     }
-    @keyframes blink {
-      0%,100% { opacity: 1; } 50% { opacity: 0.3; }
-    }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.25;} }
 
     /* ── Logo ── */
     .logo {
-      font-size: clamp(2.2rem, 6vw, 3.4rem);
-      font-weight: 900; letter-spacing: 8px;
-      color: var(--gold);
-      text-transform: uppercase;
-      line-height: 1;
-      margin-bottom: 6px;
+      font-size: clamp(2.4rem, 7vw, 3.8rem);
+      font-weight: 900; letter-spacing: 8px; color: var(--gold);
+      margin-bottom: 6px; line-height: 1;
     }
     .tagline {
-      font-size: 0.68rem; letter-spacing: 5px;
-      color: #475569; text-transform: uppercase;
-      margin-bottom: 36px;
+      font-size: 0.67rem; letter-spacing: 5px; color: #475569;
+      text-transform: uppercase; margin-bottom: 40px;
     }
 
     /* ── Headline ── */
     h1 {
-      font-size: clamp(1.5rem, 4vw, 2.2rem);
-      font-weight: 800; line-height: 1.25;
-      text-align: center; color: #f1f5f9;
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      font-weight: 800; line-height: 1.2; text-align: center; color: #f1f5f9;
       margin-bottom: 16px;
     }
-    h1 span { color: var(--magenta); }
+    h1 em { font-style: normal; color: var(--magenta); }
 
     .sub {
-      font-size: 1rem; color: #64748b; line-height: 1.7;
-      text-align: center; max-width: 520px;
-      margin-bottom: 40px;
+      font-size: 1rem; color: #64748b; line-height: 1.75;
+      text-align: center; max-width: 540px; margin-bottom: 44px;
     }
 
-    /* ── Pills servicios ── */
-    .pills {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      justify-content: center;
-      margin-bottom: 44px;
-    }
+    /* ── Pills ── */
+    .pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 52px; }
     .pill {
       display: inline-flex; align-items: center; gap: 7px;
-      background: var(--card);
-      border: 1px solid rgba(212,175,55,0.2);
-      border-radius: 99px;
-      padding: 8px 18px;
-      font-size: 0.8rem; color: #94a3b8; font-weight: 600;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 99px; padding: 8px 18px;
+      font-size: 0.78rem; color: #94a3b8; font-weight: 600;
     }
-    .pill i { color: var(--gold); font-size: 0.85rem; }
+    .pill i { color: var(--gold); }
 
     /* ── Separador ── */
     .sep {
       width: 100%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.2), transparent);
-      margin: 4px 0 40px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.18), transparent);
+      margin-bottom: 52px;
     }
 
-    /* ── Sección reserva ── */
-    .reserva-box {
-      width: 100%;
-      background: var(--card);
-      border: 1px solid rgba(212,175,55,0.15);
+    /* ── Sección título ── */
+    .section-label {
+      font-size: 0.65rem; font-weight: 800; letter-spacing: 3px;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 10px; text-align: center;
+    }
+    .section-title {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 800; color: #f1f5f9;
+      text-align: center; margin-bottom: 8px;
+    }
+    .section-sub {
+      font-size: 0.88rem; color: #64748b; text-align: center;
+      line-height: 1.65; max-width: 520px; margin: 0 auto 40px;
+    }
+
+    /* ── Flujo Full Lab ── */
+    .flujo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: rgba(212,175,55,0.08);
+      border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 32px 28px;
-      margin-bottom: 32px;
-    }
-    .reserva-box h2 {
-      font-size: 1.1rem; font-weight: 800; color: #f1f5f9;
-      margin-bottom: 6px;
-    }
-    .reserva-box p {
-      font-size: 0.85rem; color: #64748b; margin-bottom: 20px; line-height: 1.6;
-    }
-
-    /* ── CTAs principales ── */
-    .ctas {
-      display: flex; flex-direction: column; gap: 12px;
-      width: 100%; margin-bottom: 32px;
-    }
-    .btn-wa {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      background: rgba(37,211,102,0.1);
-      border: 1.5px solid rgba(37,211,102,0.4);
-      color: #4ade80; padding: 15px 24px;
-      border-radius: 10px; font-size: 1rem; font-weight: 800;
-      text-decoration: none; letter-spacing: .5px;
-      transition: background .2s, transform .15s;
-    }
-    .btn-wa:hover { background: rgba(37,211,102,0.18); transform: translateY(-1px); }
-    .btn-wa i { font-size: 1.2rem; color: #25D366; }
-
-    .btn-row {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    }
-    .btn-outline {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--card);
-      border: 1px solid rgba(212,175,55,0.25);
-      color: #94a3b8; padding: 12px 18px;
-      border-radius: 10px; font-size: 0.85rem; font-weight: 700;
-      text-decoration: none;
-      transition: border-color .2s, color .2s;
-    }
-    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
-    .btn-outline i { font-size: 1rem; }
-
-    /* ── PayPal anticipo ── */
-    .paypal-section {
+      overflow: hidden;
       width: 100%;
-      background: rgba(0, 48, 135, 0.08);
-      border: 1px solid rgba(0, 97, 255, 0.2);
-      border-radius: 16px;
-      padding: 24px 28px;
-      margin-bottom: 32px;
+      margin-bottom: 52px;
     }
-    .paypal-section h3 {
-      font-size: 0.95rem; font-weight: 800; color: #93c5fd;
-      margin-bottom: 6px;
-      display: flex; align-items: center; gap: 8px;
+
+    .flujo-step {
+      background: #070b12;
+      padding: 26px 22px;
+      display: flex; flex-direction: column; gap: 10px;
+      position: relative;
     }
-    .paypal-section p {
-      font-size: 0.82rem; color: #64748b; margin-bottom: 16px; line-height: 1.6;
+    .flujo-step::after {
+      content: '';
+      position: absolute; right: -1px; top: 20%; bottom: 20%;
+      width: 1px; background: rgba(212,175,55,0.1);
     }
-    .paypal-montos {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
-      margin-bottom: 16px;
+    .flujo-step:last-child::after { display: none; }
+
+    .step-num {
+      font-size: 0.65rem; font-weight: 900; letter-spacing: 2px;
+      color: rgba(212,175,55,0.4); text-transform: uppercase;
     }
-    .monto-btn {
-      background: rgba(0,97,255,0.08);
-      border: 1.5px solid rgba(0,97,255,0.2);
-      border-radius: 8px; padding: 10px 8px;
-      color: #93c5fd; font-size: 0.85rem; font-weight: 700;
-      cursor: pointer; transition: all .2s; text-align: center;
+    .step-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem;
     }
-    .monto-btn.active,
-    .monto-btn:hover {
-      border-color: #60a5fa; background: rgba(0,97,255,0.15); color: #bfdbfe;
+    .step-name {
+      font-size: 0.92rem; font-weight: 800; color: #f1f5f9;
+      line-height: 1.3;
     }
-    #paypal-container { min-height: 48px; }
-    .paypal-note {
-      font-size: 0.7rem; color: #334155; text-align: center; margin-top: 10px;
+    .step-desc {
+      font-size: 0.78rem; color: #64748b; line-height: 1.55;
     }
+    .step-tag {
+      display: inline-block;
+      background: rgba(212,175,55,0.07);
+      border: 1px solid rgba(212,175,55,0.2);
+      border-radius: 4px; padding: 3px 9px;
+      font-size: 0.66rem; color: #D4AF37; font-weight: 700;
+      letter-spacing: .5px; margin-top: 4px;
+      align-self: flex-start;
+    }
+
+    /* ── Connector arrow (desktop only) ── */
+    @media (min-width: 640px) {
+      .flujo-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+
+    /* ── Servicios cards ── */
+    .servicios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px; width: 100%; margin-bottom: 52px;
+    }
+    .serv-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px 20px;
+      display: flex; flex-direction: column; gap: 10px;
+      transition: border-color .25s;
+    }
+    .serv-card:hover { border-color: rgba(212,175,55,0.4); }
+    .serv-icon {
+      width: 46px; height: 46px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .serv-name { font-size: 0.95rem; font-weight: 800; color: #f1f5f9; }
+    .serv-desc { font-size: 0.78rem; color: #64748b; line-height: 1.6; }
+    .serv-detail { font-size: 0.72rem; color: #475569; }
 
     /* ── Progress ── */
-    .progress-section { width: 100%; margin-bottom: 36px; }
-    .progress-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 8px;
-    }
-    .progress-label { font-size: 0.75rem; color: #64748b; letter-spacing: 1px; text-transform: uppercase; }
-    .progress-pct { font-size: 0.75rem; color: var(--gold); font-weight: 700; }
-    .progress-track {
-      background: rgba(255,255,255,0.06); border-radius: 99px; height: 5px;
-      overflow: hidden;
-    }
+    .progress-wrap { width: 100%; margin-bottom: 44px; }
+    .progress-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .progress-lbl { font-size: 0.72rem; color: #475569; letter-spacing: 1px; text-transform: uppercase; }
+    .progress-pct { font-size: 0.72rem; color: var(--gold); font-weight: 700; }
+    .progress-track { background: rgba(255,255,255,0.05); border-radius: 99px; height: 5px; overflow: hidden; }
     .progress-fill {
       height: 100%; border-radius: 99px;
       background: linear-gradient(90deg, var(--magenta), var(--gold));
-      width: 0; animation: fillBar 2.5s ease-out 0.3s forwards;
+      width: 0; animation: fill 2.5s ease-out .4s forwards;
     }
-    @keyframes fillBar { to { width: 75%; } }
+    @keyframes fill { to { width: 75%; } }
+
+    /* ── CTAs ── */
+    .ctas { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-bottom: 40px; }
+    .btn-wa {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: rgba(37,211,102,0.1); border: 1.5px solid rgba(37,211,102,0.4);
+      color: #4ade80; padding: 16px 24px; border-radius: 10px;
+      font-size: 1rem; font-weight: 800; text-decoration: none;
+      letter-spacing: .3px; transition: background .2s, transform .15s;
+    }
+    .btn-wa:hover { background: rgba(37,211,102,0.18); transform: translateY(-1px); }
+    .btn-wa .fa-whatsapp { color: #25D366; font-size: 1.2rem; }
+
+    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-outline {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--card); border: 1px solid rgba(212,175,55,0.2);
+      color: #94a3b8; padding: 13px 18px; border-radius: 10px;
+      font-size: 0.85rem; font-weight: 700; text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
 
     /* ── Social ── */
-    .social {
-      display: flex; gap: 12px; justify-content: center; margin-bottom: 28px;
-    }
+    .social { display: flex; gap: 12px; justify-content: center; margin-bottom: 36px; }
     .social a {
       display: inline-flex; align-items: center; justify-content: center;
       width: 42px; height: 42px; border-radius: 50%;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #64748b; font-size: 1.05rem;
-      text-decoration: none; transition: all .25s;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      color: #475569; font-size: 1.05rem; text-decoration: none;
+      transition: all .25s;
     }
-    .social a:hover { background: rgba(212,175,55,0.12); color: var(--gold); border-color: rgba(212,175,55,0.3); }
+    .social a:hover { background: rgba(212,175,55,0.1); color: var(--gold); border-color: rgba(212,175,55,0.3); }
 
-    /* ── Footer note ── */
-    .foot-note {
-      font-size: 0.68rem; color: #1e293b; text-align: center;
-      letter-spacing: .5px;
-    }
-    .foot-note a { color: #334155; text-decoration: none; }
-    .foot-note a:hover { color: #475569; }
+    /* ── Footer ── */
+    .foot { font-size: 0.67rem; color: #1e293b; text-align: center; }
+    .foot a { color: #334155; text-decoration: none; }
+    .foot a:hover { color: #64748b; }
 
-    /* ── Responsive ── */
     @media (max-width: 480px) {
-      .paypal-montos { grid-template-columns: 1fr 1fr; }
       .btn-row { grid-template-columns: 1fr; }
-      .reserva-box, .paypal-section { padding: 20px 16px; }
+      .flujo-step { padding: 20px 16px; }
     }
   </style>
 </head>
@@ -273,88 +272,152 @@
 
   <div class="wrap">
 
-    <!-- Badge -->
-    <div class="status-badge">
-      <span class="status-dot"></span>
-      Construcción activa
-    </div>
+    <div class="badge"><span class="badge-dot"></span>Portal en construcción</div>
 
-    <!-- Logo -->
     <div class="logo">PRODIGY</div>
     <div class="tagline">Digital Dental Excellence · Bogotá, Colombia</div>
 
-    <!-- Headline -->
-    <h1>Algo <span>extraordinario</span><br>viene en camino</h1>
+    <h1>Algo <em>extraordinario</em><br>viene en camino</h1>
     <p class="sub">
-      Estamos construyendo el portal más avanzado de laboratorio dental en Colombia.<
-      Diseño CAD, fresado en zirconio, impresión 3D y escáner a domicilio — todo en línea.
+      Estamos construyendo el portal más completo de laboratorio dental digital en Colombia.
+      Diseño CAD global, fresado de precisión, impresión 3D y escáner a domicilio — todo conectado en un solo flujo.
     </p>
 
-    <!-- Pills -->
     <div class="pills">
       <div class="pill"><i class="fas fa-cube"></i> Fresado Zirconio</div>
       <div class="pill"><i class="fas fa-print"></i> Impresión 3D</div>
       <div class="pill"><i class="fas fa-drafting-compass"></i> Diseño CAD</div>
       <div class="pill"><i class="fas fa-mobile-alt"></i> Escáner Móvil</div>
+      <div class="pill"><i class="fas fa-flask"></i> Full Lab</div>
     </div>
 
-    <!-- Progress -->
-    <div class="progress-section">
-      <div class="progress-header">
-        <span class="progress-label">Progreso de lanzamiento</span>
+    <!-- Progreso -->
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-lbl">Lanzamiento</span>
         <span class="progress-pct">75%</span>
       </div>
-      <div class="progress-track">
-        <div class="progress-fill"></div>
-      </div>
+      <div class="progress-track"><div class="progress-fill"></div></div>
     </div>
 
     <div class="sep"></div>
 
-    <!-- CTAs principales -->
-    <div class="ctas">
-      <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20vi%20que%20el%20portal%20est%C3%A1%20en%20construcci%C3%B3n.%20Quiero%20hacer%20un%20pedido." class="btn-wa" target="_blank" rel="noopener">
-        <i class="fab fa-whatsapp"></i>
-        Hacer pedido por WhatsApp — Ya operamos
+    <!-- ── FLUJO FULL LAB ── -->
+    <div class="section-label">Flujo completo</div>
+    <div class="section-title">De la impresión al terminado</div>
+    <p class="section-sub">
+      Un caso dental completo en un solo proveedor: desde el escaneo en clínica hasta la restauración lista para cementar.
+    </p>
+
+    <div class="flujo-grid">
+
+      <div class="flujo-step">
+        <span class="step-num">Paso 01</span>
+        <div class="step-icon" style="background:rgba(0,210,255,0.08);color:#00d2ff;">
+          <i class="fas fa-mobile-alt"></i>
+        </div>
+        <div class="step-name">Escáner</div>
+        <p class="step-desc">Escáner intraoral en tu clínica o nuestro técnico va a domicilio con equipo portátil.</p>
+        <span class="step-tag">STL · OBJ · PLY</span>
+      </div>
+
+      <div class="flujo-step">
+        <span class="step-num">Paso 02</span>
+        <div class="step-icon" style="background:rgba(217,70,166,0.08);color:#D946A6;">
+          <i class="fas fa-drafting-compass"></i>
+        </div>
+        <div class="step-name">Diseño CAD</div>
+        <p class="step-desc">Diseño digital de la restauración en Exocad o 3Shape con ajuste oclusal y estética personalizada.</p>
+        <span class="step-tag">Exocad · 3Shape</span>
+      </div>
+
+      <div class="flujo-step">
+        <span class="step-num">Paso 03</span>
+        <div class="step-icon" style="background:rgba(212,175,55,0.08);color:#D4AF37;">
+          <i class="fas fa-cog"></i>
+        </div>
+        <div class="step-name">CAM & Fresado</div>
+        <p class="step-desc">Fresado de alta precisión en zirconio XTCERA, PMMA, e.max CAD, Ti Grado 5 o resina compuesta.</p>
+        <span class="step-tag">Zirconio · PMMA · e.max</span>
+      </div>
+
+      <div class="flujo-step">
+        <span class="step-num">Paso 04</span>
+        <div class="step-icon" style="background:rgba(139,92,246,0.08);color:#a78bfa;">
+          <i class="fas fa-fire"></i>
+        </div>
+        <div class="step-name">Sinterizado & Glaze</div>
+        <p class="step-desc">Cocción en horno de sinterización, caracterización con pigmentos, glaze y pulido final de alta estética.</p>
+        <span class="step-tag">Characterization · Glaze</span>
+      </div>
+
+      <div class="flujo-step">
+        <span class="step-num">Paso 05</span>
+        <div class="step-icon" style="background:rgba(74,222,128,0.08);color:#4ade80;">
+          <i class="fas fa-box-open"></i>
+        </div>
+        <div class="step-name">Entrega</div>
+        <p class="step-desc">Restauración entregada en 24–72 h con ajuste verificado, empaque premium y reporte digital del caso.</p>
+        <span class="step-tag">24–72 h · Domicilio</span>
+      </div>
+
+    </div>
+
+    <!-- ── SERVICIOS INDIVIDUALES ── -->
+    <div class="section-label">También por separado</div>
+    <div class="section-title">Elige solo lo que necesitas</div>
+    <p class="section-sub">
+      No tienes que tomar el flujo completo. Si ya tienes el escáner, el CAD o la pieza fresada, entramos en el punto que necesites.
+    </p>
+
+    <div class="servicios-grid">
+
+      <div class="serv-card">
+        <div class="serv-icon" style="background:rgba(0,210,255,0.07);color:#00d2ff;"><i class="fas fa-cube"></i></div>
+        <div class="serv-name">Solo Fresado</div>
+        <p class="serv-desc">Envías el archivo STL diseñado y nosotros fresamos en el material que elijas.</p>
+        <span class="serv-detail">Zirconio · PMMA · e.max · Ti · Resina</span>
+      </div>
+
+      <div class="serv-card">
+        <div class="serv-icon" style="background:rgba(217,70,166,0.07);color:#D946A6;"><i class="fas fa-drafting-compass"></i></div>
+        <div class="serv-name">Solo Diseño CAD</div>
+        <p class="serv-desc">Envías el escáner (STL/OBJ/Exocad) y recibas el archivo de diseño listo para fresar en cualquier centro.</p>
+        <span class="serv-detail">Global · Digital · 48 h</span>
+      </div>
+
+      <div class="serv-card">
+        <div class="serv-icon" style="background:rgba(212,175,55,0.07);color:#D4AF37;"><i class="fas fa-print"></i></div>
+        <div class="serv-name">Impresión 3D</div>
+        <p class="serv-desc">Modelos de estudio, guías quirúrgicas, provisionales y férulas en resinas de alta resolución.</p>
+        <span class="serv-detail">BCN3D · Resinas biocompatibles</span>
+      </div>
+
+      <div class="serv-card">
+        <div class="serv-icon" style="background:rgba(74,222,128,0.07);color:#4ade80;"><i class="fas fa-mobile-alt"></i></div>
+        <div class="serv-name">Escáner a Domicilio</div>
+        <p class="serv-desc">Nuestro técnico va a tu clínica con escáner portátil — sin que envíes impresiones físicas.</p>
+        <span class="serv-detail">Bogotá · Agenda por WhatsApp</span>
+      </div>
+
+    </div>
+
+    <div class="sep"></div>
+
+    <!-- ── CTAs ── -->
+    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20vi%20su%20portal%20en%20construcci%C3%B3n.%20Quiero%20hacer%20un%20pedido." class="btn-wa" target="_blank" rel="noopener">
+      <i class="fab fa-whatsapp"></i>
+      Hacer pedido — Ya estamos operando al 100%
+    </a>
+    <div class="btn-row" style="width:100%;margin-top:12px;margin-bottom:40px;">
+      <a href="mailto:labdentalprodigy@gmail.com" class="btn-outline">
+        <i class="far fa-envelope" style="color:var(--gold);"></i> Email
       </a>
-      <div class="btn-row">
-        <a href="mailto:labdentalprodigy@gmail.com" class="btn-outline">
-          <i class="far fa-envelope" style="color:#D4AF37;"></i> Email
-        </a>
-        <a href="https://www.instagram.com/labdentalprodigy/" target="_blank" rel="noopener" class="btn-outline">
-          <i class="fab fa-instagram" style="color:#e1306c;"></i> Instagram
-        </a>
-      </div>
+      <a href="https://www.instagram.com/labdentalprodigy/" target="_blank" rel="noopener" class="btn-outline">
+        <i class="fab fa-instagram" style="color:#e1306c;"></i> Instagram
+      </a>
     </div>
 
-    <!-- Reserva con PayPal -->
-    <div class="paypal-section">
-      <h3><i class="fab fa-paypal"></i> Reserva tu caso con anticipo</h3>
-      <p>
-        ¿Ya tienes un caso listo? Paga el anticipo ahora y lo agendamos de inmediato.
-        Selecciona el monto y completa con PayPal (tarjeta internacional o saldo PayPal).
-      </p>
-
-      <div class="paypal-montos">
-        <button class="monto-btn active" data-usd="30" onclick="seleccionarMonto(this, 30)">
-          US$30<br><span style="font-size:.68rem;opacity:.6;">Anticipo básico</span>
-        </button>
-        <button class="monto-btn" data-usd="50" onclick="seleccionarMonto(this, 50)">
-          US$50<br><span style="font-size:.68rem;opacity:.6;">Anticipo estándar</span>
-        </button>
-        <button class="monto-btn" data-usd="100" onclick="seleccionarMonto(this, 100)">
-          US$100<br><span style="font-size:.68rem;opacity:.6;">Caso completo</span>
-        </button>
-      </div>
-
-      <div id="paypal-container"></div>
-      <p class="paypal-note">
-        <i class="fas fa-lock" style="color:#334155;"></i>
-        Pago seguro · El saldo se aplica al total de tu pedido · Reembolso disponible
-      </p>
-    </div>
-
-    <!-- Social -->
     <div class="social">
       <a href="https://wa.me/573212816716" target="_blank" rel="noopener" title="WhatsApp">
         <i class="fab fa-whatsapp" style="color:#25D366;"></i>
@@ -367,86 +430,15 @@
       </a>
     </div>
 
-    <!-- Footer -->
-    <div class="foot-note">
+    <div class="foot">
       © 2026 PRODIGY Digital Dentistry · Bogotá, Colombia
       &nbsp;·&nbsp;
       <a href="app/login.html" id="staff-link" style="display:none;">Portal staff →</a>
     </div>
 
-  </div><!-- /wrap -->
-
-  <!-- PayPal SDK (live) -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AfJ71Yzfk4hmHF_hj6F9sdUqTLCK9tilmCegiXOTpScB81NhLLDuiKX2u37aY_E4swf8UO8QuC7jvaG&currency=USD&intent=capture&disable-funding=credit" defer></script>
+  </div>
 
   <script>
-    var _montoUSD = 30;
-    var _paypalRendered = false;
-
-    function seleccionarMonto(btn, usd) {
-      document.querySelectorAll('.monto-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      _montoUSD = usd;
-      _paypalRendered = false;
-      renderPayPal();
-    }
-
-    function renderPayPal() {
-      if (_paypalRendered) return;
-      var container = document.getElementById('paypal-container');
-      container.innerHTML = '';
-      if (!window.paypal) {
-        container.innerHTML = '<p style="font-size:.78rem;color:#f87171;text-align:center;padding:12px;">Cargando PayPal…</p>';
-        setTimeout(renderPayPal, 800);
-        return;
-      }
-      _paypalRendered = true;
-      window.paypal.Buttons({
-        style: { layout: 'horizontal', color: 'blue', shape: 'rect', label: 'pay', height: 44 },
-        createOrder: function(data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              description: 'PRODIGY — Anticipo de caso dental',
-              amount: { value: _montoUSD.toFixed(2), currency_code: 'USD' }
-            }]
-          });
-        },
-        onApprove: function(data, actions) {
-          return actions.order.capture().then(function(details) {
-            var nombre = (details.payer && details.payer.name && details.payer.name.given_name) || 'Doctor';
-            var ref = details.id || 'PP-' + Date.now();
-            // Confirmar por WhatsApp automáticamente
-            var msg = encodeURIComponent(
-              'Hola PRODIGY, acabo de pagar el anticipo por PayPal.\n' +
-              'Referencia: ' + ref + '\n' +
-              'Monto: US$' + _montoUSD + '\n' +
-              'Por favor confirmen la agenda de mi caso.'
-            );
-            document.getElementById('paypal-container').innerHTML =
-              '<div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:10px;padding:16px;text-align:center;">' +
-              '<div style="font-size:1.4rem;margin-bottom:8px;">✅</div>' +
-              '<div style="font-size:.9rem;font-weight:800;color:#4ade80;margin-bottom:4px;">¡Pago recibido, ' + nombre + '!</div>' +
-              '<div style="font-size:.75rem;color:#64748b;margin-bottom:12px;">Ref: ' + ref + '</div>' +
-              '<a href="https://wa.me/573212816716?text=' + msg + '" target="_blank" ' +
-              'style="display:inline-flex;align-items:center;gap:8px;background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.4);color:#4ade80;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:.85rem;font-weight:700;">' +
-              '<i class="fab fa-whatsapp"></i> Confirmar por WhatsApp</a>' +
-              '</div>';
-          });
-        },
-        onError: function(err) {
-          console.error('PayPal:', err);
-          document.getElementById('paypal-container').innerHTML =
-            '<p style="font-size:.78rem;color:#f87171;text-align:center;padding:10px;">Error al procesar. <a href="https://wa.me/573212816716" style="color:#D4AF37;" target="_blank">Contáctanos por WhatsApp.</a></p>';
-        }
-      }).render('#paypal-container');
-    }
-
-    // Renderizar PayPal cuando el SDK cargue
-    window.addEventListener('load', function() {
-      setTimeout(renderPayPal, 400);
-    });
-
-    // Staff bypass: ?bypass=1 muestra enlace al portal
     if (new URLSearchParams(location.search).get('bypass') === '1') {
       document.getElementById('staff-link').style.display = 'inline';
     }
