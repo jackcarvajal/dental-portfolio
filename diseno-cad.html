@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#D946A6">
+  <meta name="description" content="Diseño CAD dental desde cualquier país. Envía tu escáner STL y recibe tu diseño en 24–48 h. Desde $12 USD. Exocad · 3Shape · Sin contratos.">
+  <meta property="og:title" content="Diseño CAD Digital Global — PRODIGY Lab Dental">
+  <meta property="og:description" content="Tu escáner STL diseñado en 24 h. Desde $12 USD. Sin contratos ni exclusividad.">
+  <meta property="og:url" content="https://prodigylabdental.com/diseno-cad.html">
+  <link rel="canonical" href="https://prodigylabdental.com/diseno-cad.html">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <title>Diseño CAD Digital — PRODIGY Lab Dental</title>
+  <style>
+    :root {
+      --gold:  #D946A6;
+      --gold2: #D4AF37;
+      --cyan:  #00d2ff;
+      --green: #00FF41;
+      --bg:    #050505;
+      --card:  #0d1520;
+      --text:  #e2e8f0;
+      --muted: #64748b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    section     { padding: 80px 0; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 88vh; display: flex; align-items: center;
+      padding: 60px 24px 80px;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 40%, rgba(217,70,166,0.13) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 85% 60%, rgba(0,210,255,0.06) 0%, transparent 60%),
+        var(--bg);
+    }
+    .hero-inner  { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+    .hero-tag    {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(217,70,166,0.1); border: 1px solid rgba(217,70,166,0.3);
+      color: var(--gold); font-size: .7rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+    }
+    .hero-tag .dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .hero h1 { font-size: clamp(2.2rem, 5.5vw, 3.8rem); font-weight: 900; line-height: 1.08; margin-bottom: 22px; }
+    .hero h1 em { font-style: normal; color: var(--gold); }
+    .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 580px; margin-bottom: 20px; line-height: 1.75; }
+    .fmt-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 38px; }
+    .fmt-tag {
+      font-size: .72rem; font-weight: 700; letter-spacing: 1px;
+      color: #94a3b8; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09); border-radius: 5px; padding: 4px 10px;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg,#D946A6,#a0186e);
+      color: #fff; font-size: .98rem; font-weight: 800; text-decoration: none;
+      padding: 14px 26px; border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(217,70,166,0.4); transition: transform .2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.35);
+      color: #86efac; font-size: .92rem; font-weight: 700; text-decoration: none;
+      padding: 13px 22px; border-radius: 12px; transition: all .2s;
+    }
+    .btn-wa:hover { background: rgba(37,211,102,0.18); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--muted); font-size: .86rem; font-weight: 600; text-decoration: none;
+      padding: 11px 16px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08); transition: all .2s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      background: rgba(10,14,20,0.8);
+      border-top: 1px solid rgba(212,175,55,0.12);
+      border-bottom: 1px solid rgba(212,175,55,0.12);
+      padding: 20px 24px;
+    }
+    .trust-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; align-items: center; }
+    .ti { display: flex; align-items: center; gap: 10px; }
+    .ti strong { color: var(--gold2); font-size: 1.3rem; font-weight: 900; }
+    .ti span   { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; }
+    .t-sep     { width: 1px; height: 28px; background: rgba(255,255,255,0.07); }
+    @media(max-width:560px) { .t-sep { display: none; } }
+
+    /* ── SECTION LABELS ── */
+    .eyebrow   { font-size: .7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); margin-bottom: 10px; }
+    h2.sech2   { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; margin-bottom: 14px; }
+    h2.sech2 em { font-style: normal; color: var(--gold); }
+    .sec-lead  { color: var(--muted); font-size: .98rem; max-width: 540px; line-height: 1.75; margin-bottom: 52px; }
+
+    /* ── STEPS ── */
+    .dark-section { background: linear-gradient(180deg, #050505 0%, #080f1a 50%, #050505 100%); }
+    .steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+    @media(max-width:720px) { .steps-grid { grid-template-columns: 1fr; } }
+    .step-card {
+      background: var(--card); border: 1px solid rgba(212,175,55,0.12);
+      border-radius: 16px; padding: 30px 26px; position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .step-card:hover { border-color: rgba(212,175,55,0.3); transform: translateY(-4px); }
+    .step-card::before { content: attr(data-n); position: absolute; top: -14px; right: 16px; font-size: 5rem; font-weight: 900; color: rgba(212,175,55,0.05); line-height: 1; pointer-events: none; }
+    .step-ico { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 18px; }
+    .step-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 9px; }
+    .step-card p  { color: var(--muted); font-size: .87rem; line-height: 1.65; }
+    .step-tag { display: inline-block; margin-top: 14px; font-size: .68rem; font-weight: 700; letter-spacing: 1px; color: var(--cyan); background: rgba(0,210,255,0.07); border: 1px solid rgba(0,210,255,0.2); border-radius: 4px; padding: 3px 9px; text-transform: uppercase; }
+
+    /* ── PRICING ── */
+    .price-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    @media(max-width:860px)  { .price-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:480px)  { .price-grid { grid-template-columns: 1fr; } }
+    .price-card {
+      background: var(--card); border: 1px solid rgba(212,175,55,0.13);
+      border-radius: 16px; padding: 26px 20px;
+      display: flex; flex-direction: column; gap: 8px;
+      transition: border-color .2s, transform .2s; position: relative;
+    }
+    .price-card:hover { border-color: rgba(212,175,55,0.32); transform: translateY(-3px); }
+    .price-card.feat  { border-color: rgba(217,70,166,0.45); background: linear-gradient(160deg,rgba(217,70,166,0.07) 0%,var(--card) 60%); }
+    .feat-badge       { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,#D946A6,#a0186e); color: #fff; font-size: .62rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 12px; border-radius: 100px; white-space: nowrap; }
+    .p-ico  { font-size: 1.5rem; }
+    .p-lbl  { font-size: .72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .p-name { font-size: .97rem; font-weight: 800; }
+    .p-val  { font-size: 1.9rem; font-weight: 900; color: var(--gold2); line-height: 1; margin: 6px 0 3px; }
+    .p-val small { font-size: .95rem; font-weight: 600; color: var(--muted); }
+    .p-desc { font-size: .8rem; color: var(--muted); line-height: 1.55; }
+    .p-inc  { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+    .p-inc li { font-size: .78rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 7px; }
+    .p-inc li i { color: var(--green); font-size: .62rem; margin-top: 4px; flex-shrink: 0; }
+    .price-note { margin-top: 22px; text-align: center; font-size: .78rem; color: #475569; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 18px; }
+
+    /* ── REVIEWS ── */
+    .reviews-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    @media(max-width:720px) { .reviews-grid { grid-template-columns: 1fr; } }
+    .rev-card { background: var(--card); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 24px; }
+    .rev-card p { font-size: .88rem; color: #cbd5e1; line-height: 1.7; font-style: italic; margin-bottom: 14px; }
+    .rev-author { font-size: .76rem; font-weight: 700; color: var(--gold2); }
+    .rev-role   { font-size: .7rem; color: var(--muted); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
+    .faq-item { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; overflow: hidden; }
+    .faq-q { width: 100%; background: none; border: none; cursor: pointer; text-align: left; padding: 17px 20px; color: var(--text); font-size: .93rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; gap: 14px; font-family: inherit; }
+    .faq-q i { color: var(--muted); font-size: .72rem; transition: transform .25s; flex-shrink: 0; }
+    .faq-q.open i { transform: rotate(180deg); color: var(--gold); }
+    .faq-a { display: none; padding: 0 20px 16px; color: var(--muted); font-size: .87rem; line-height: 1.7; }
+    .faq-a.open { display: block; }
+
+    /* ── FINAL CTA ── */
+    .final-cta { text-align: center; padding: 96px 24px; background: radial-gradient(ellipse 80% 50% at 50% 50%, rgba(217,70,166,0.09) 0%, transparent 70%); }
+    .final-cta h2 { font-size: clamp(1.7rem, 5vw, 2.9rem); font-weight: 900; margin-bottom: 14px; }
+    .final-cta h2 em { font-style: normal; color: var(--gold); }
+    .final-cta p { color: var(--muted); font-size: .98rem; margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .final-btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  </style>
+</head>
+<body>
+<script>
+  window._headerConfig = { showLang: true };
+  window._i18nExtra = {
+    'nav.home':'',      // header.js no usa i18n — keys vacíos para no sobreescribir
+    /* CTAs */
+    'cad.cta.upload':   { es:'Subir STL ahora',       en:'Upload STL now' },
+    'cad.cta.wa':       { es:'Cotizar por WhatsApp',  en:'Quote via WhatsApp' },
+    'cad.cta.register': { es:'Crear cuenta gratis',   en:'Create free account' },
+    'cad.cta.wa_href':  {
+      es:'https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20un%20dise%C3%B1o%20CAD.%20Tengo%20un%20STL%20listo.',
+      en:'https://wa.me/573212816716?text=Hello%20PRODIGY%2C%20I%20want%20to%20quote%20a%20CAD%20design.%20I%20have%20an%20STL%20ready.'
+    },
+    /* HERO */
+    'cad.hero.tag': { es:'Diseño CAD · Global · 24–48 h', en:'CAD Design · Global · 24–48 h' },
+    'cad.hero.h1':  { es:'Tu próxima restauración,<br>diseñada en <em>menos de 24 h</em>', en:'Your next restoration,<br>designed in <em>under 24 h</em>' },
+    'cad.hero.sub': { es:'Envíanos tu escáner STL y nuestro equipo diseña la restauración en Exocad. Recibes el archivo listo para fresar en tu propio centro. Sin contratos. Sin exclusividad.', en:"Send us your STL scan and our team designs the restoration in Exocad. You receive the file ready to mill in your own center. No contracts. No exclusivity." },
+    /* TRUST */
+    'cad.t.cases':    { es:'casos/año',      en:'cases/year' },
+    'cad.t.delivery': { es:'entrega máx.',   en:'max. delivery' },
+    'cad.t.countries':{ es:'países',         en:'countries' },
+    'cad.t.from':     { es:'desde',          en:'starting from' },
+    /* HOW */
+    'cad.how.ey':    { es:'Cómo funciona',                   en:'How it works' },
+    'cad.how.h2':    { es:'Tres pasos. <em>Un archivo.</em>', en:'Three steps. <em>One file.</em>' },
+    'cad.how.sub':   { es:'Sin instalaciones de tu parte. Solo envía el escáner y recibe el diseño.', en:"No installations on your end. Just send the scan and receive the design." },
+    'cad.s1.h':      { es:'Envía tu escáner',    en:'Send your scan' },
+    'cad.s1.p':      { es:'Sube el STL por el portal o compártelo por WhatsApp. Aceptamos STL, OBJ, PLY, Exocad y 3Shape.', en:'Upload the STL via the portal or share via WhatsApp. We accept STL, OBJ, PLY, Exocad and 3Shape.' },
+    'cad.s1.tag':    { es:'Portal · WhatsApp · WeTransfer', en:'Portal · WhatsApp · WeTransfer' },
+    'cad.s2.h':      { es:'Diseñamos en Exocad',  en:'We design in Exocad' },
+    'cad.s2.p':      { es:'Modelado con ajuste oclusal, márgenes y contactos proximales. Vista previa antes de entrega.', en:'Modeling with occlusal adjustment, margins and proximal contacts. Preview before delivery.' },
+    'cad.s2.tag':    { es:'Exocad · 3Shape · Medit', en:'Exocad · 3Shape · Medit' },
+    'cad.s3.h':      { es:'Recibes el archivo',    en:'You receive the file' },
+    'cad.s3.p':      { es:'STL listo para fresar, compatible con cualquier fresadora industrial. Revisiones incluidas.', en:'STL ready to mill, compatible with any industrial milling machine. Revisions included.' },
+    'cad.s3.tag':    { es:'24–48 h · Revisiones incluidas', en:'24–48 h · Revisions included' },
+    /* PRICING */
+    'cad.pr.ey':     { es:'Precios',  en:'Pricing' },
+    'cad.pr.h2':     { es:'Claros. <em>Sin sorpresas.</em>', en:'Clear. <em>No surprises.</em>' },
+    'cad.pr.sub':    { es:'En USD. Sin suscripción ni mínimos. Pagas solo por lo que diseñas.', en:'In USD. No subscription or minimums. You pay only for what you design.' },
+    'cad.p1.name':   { es:'Modelo Diagnóstico',  en:'Diagnostic Model' },
+    'cad.p1.desc':   { es:'Modelo de estudio para análisis oclusal o guías quirúrgicas.', en:'Study model for occlusal analysis or surgical guides.' },
+    'cad.p2.name':   { es:'Incrustación',         en:'Inlay / Onlay' },
+    'cad.p2.desc':   { es:'Inlays, onlays y overlays con ajuste oclusal preciso.', en:'Inlays, onlays and overlays with precise occlusal adjustment.' },
+    'cad.p3.name':   { es:'Corona Completa',       en:'Full Crown' },
+    'cad.p3.badge':  { es:'Más solicitado',         en:'Most popular' },
+    'cad.p3.desc':   { es:'Corona posterior o anterior, implanto-soportada o sobre muñón.', en:'Posterior or anterior crown, implant or tooth-supported.' },
+    'cad.p4.name':   { es:'Rehabilitación',         en:'Rehabilitation' },
+    'cad.p4.val':    { es:'Cotizar',                en:'Quote' },
+    'cad.p4.desc':   { es:'Full Arch, híbridos, carillas totales y casos complejos.', en:'Full Arch, hybrids, full veneers and complex cases.' },
+    'cad.p_stl':     { es:'Archivo STL incluido',   en:'STL file included' },
+    'cad.p_24h':     { es:'Entrega en 24 h',         en:'Delivery in 24 h' },
+    'cad.p_48h':     { es:'Entrega en 48 h',         en:'Delivery in 48 h' },
+    'cad.p_prev':    { es:'Vista previa incluida',   en:'Preview included' },
+    'cad.p_rev':     { es:'Revisión incluida',       en:'Revision included' },
+    'cad.p_ori':     { es:'Orientación técnica',     en:'Technical guidance' },
+    'cad.p_quot':    { es:'Cotización sin compromiso', en:'No-commitment quote' },
+    'cad.pr.note':   { es:'<strong>Pagos:</strong> Transferencia · Wompi · PayPal · Western Union. Precios sin IVA para clientes locales.', en:'<strong>Payment:</strong> Bank transfer · PayPal · Western Union. Prices exclude local taxes.' },
+    /* REVIEWS */
+    'cad.rv.ey':     { es:'Lo que dicen', en:'What they say' },
+    'cad.rv.h2':     { es:'Resultados que <em>hablan solos</em>', en:'Results that <em>speak for themselves</em>' },
+    'cad.r1.txt':    { es:'"Envié el STL el lunes y al día siguiente tenía el diseño listo para fresar. La calidad superó mis expectativas."', en:'"I sent the STL on Monday and the next day I had the design ready to mill. Quality exceeded my expectations."' },
+    'cad.r1.who':    { es:'Dr. Marcelo V. · Prostodoncista, Buenos Aires', en:'Dr. Marcelo V. · Prosthodontist, Buenos Aires' },
+    'cad.r2.txt':    { es:'"Precios claros, entregas a tiempo, y siempre incluyen vista previa del diseño. Trabajo con ellos hace un año."', en:'"Clear prices, on-time deliveries, and always include a design preview. Been working with them for a year."' },
+    'cad.r2.who':    { es:'Dra. Carla M. · Laboratorio dental, Ciudad de México', en:'Dr. Carla M. · Dental Lab, Mexico City' },
+    'cad.r3.txt':    { es:'"Archivos perfectamente compatibles con nuestra fresadora Roland. Muy profesionales y rápidos."', en:'"Files perfectly compatible with our Roland milling machine. Very professional and fast."' },
+    'cad.r3.who':    { es:'Th. Dupont · Laboratorio dental, Lyon, Francia', en:'Th. Dupont · Dental Lab, Lyon, France' },
+    /* FAQ */
+    'cad.faq.ey':    { es:'Preguntas frecuentes', en:'FAQ' },
+    'cad.faq.h2':    { es:'Resolvemos tus <em>dudas</em>', en:'We answer your <em>questions</em>' },
+    'cad.q1':        { es:'¿Necesito cuenta para cotizar?', en:'Do I need an account to get a quote?' },
+    'cad.a1':        { es:'No. Puedes escribirnos por WhatsApp sin registro. La cuenta es útil para seguimiento en vivo y notificaciones automáticas.', en:"No. You can write to us via WhatsApp without signing up. An account is useful for live tracking and automatic notifications." },
+    'cad.q2':        { es:'¿Qué formatos aceptan?', en:'What formats do you accept?' },
+    'cad.a2':        { es:'STL, OBJ, PLY, proyectos Exocad (.constructioninfo) y 3Shape (.3oxz/.3ox). Si tienes otro, consúltanos.', en:'STL, OBJ, PLY, Exocad projects (.constructioninfo) and 3Shape (.3oxz/.3ox). Other formats — just ask.' },
+    'cad.q3':        { es:'¿Puedo ver el diseño antes de recibirlo?', en:'Can I see the design before receiving it?' },
+    'cad.a3':        { es:'Sí. Enviamos capturas del diseño antes de la entrega final. Si algo no te convence, ajustamos sin costo adicional.', en:"Yes. We send design screenshots before final delivery. If something doesn't work for you, we adjust at no extra cost." },
+    'cad.q4':        { es:'¿El STL es compatible con mi fresadora?', en:'Is the STL compatible with my milling machine?' },
+    'cad.a4':        { es:'Entregamos STL estándar, compatible con Roland, Zirkonzahn, VHF, Straumann, Amann Girrbach y cualquier fresadora con archivos abiertos.', en:'We deliver standard STL, compatible with Roland, Zirkonzahn, VHF, Straumann, Amann Girrbach and any open-format milling machine.' },
+    'cad.q5':        { es:'¿Trabajan con clientes fuera de Colombia?', en:'Do you work with clients outside Colombia?' },
+    'cad.a5':        { es:'Sí. El servicio CAD es 100 % digital. Trabajamos con laboratorios y clínicas en más de 20 países. Entrega por descarga o email.', en:'Yes. CAD is 100% digital. We work with labs and clinics in over 20 countries. Delivery via download or email.' },
+    /* FINAL CTA */
+    'cad.fin.h2':    { es:'Tu primer diseño en <em>menos de 24 horas</em>', en:'Your first design in <em>under 24 hours</em>' },
+    'cad.fin.sub':   { es:'Sin contratos. Sin exclusividad. Solo calidad que habla por sí sola.', en:'No contracts. No exclusivity. Just quality that speaks for itself.' }
+  };
+</script>
+<script src="js/header.js"></script>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><span class="dot"></span><span data-i18n="cad.hero.tag">Diseño CAD · Global · 24–48 h</span></div>
+    <h1 data-i18n="cad.hero.h1">Tu próxima restauración,<br>diseñada en <em>menos de 24 h</em></h1>
+    <p class="hero-sub" data-i18n="cad.hero.sub">Envíanos tu escáner STL y nuestro equipo diseña la restauración en Exocad. Recibes el archivo listo para fresar en tu propio centro. Sin contratos. Sin exclusividad.</p>
+    <div class="fmt-row">
+      <span class="fmt-tag">STL</span><span class="fmt-tag">OBJ</span><span class="fmt-tag">PLY</span>
+      <span class="fmt-tag">Exocad</span><span class="fmt-tag">3Shape</span>
+    </div>
+    <div class="cta-row">
+      <a href="/flujo-diseno.html" class="btn-primary">
+        <i class="fas fa-upload"></i><span data-i18n="cad.cta.upload">Subir STL ahora</span>
+      </a>
+      <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20un%20dise%C3%B1o%20CAD."
+         class="btn-wa" target="_blank" rel="noopener" data-i18n-href="cad.cta.wa_href">
+        <i class="fab fa-whatsapp"></i><span data-i18n="cad.cta.wa">Cotizar por WhatsApp</span>
+      </a>
+      <a href="/app/login.html?mode=register" class="btn-ghost">
+        <i class="fas fa-user-plus"></i><span data-i18n="cad.cta.register">Crear cuenta gratis</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── TRUST BAR ── -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="ti"><strong>300+</strong><span data-i18n="cad.t.cases">casos/año</span></div>
+    <div class="t-sep"></div>
+    <div class="ti"><strong>48 h</strong><span data-i18n="cad.t.delivery">entrega máx.</span></div>
+    <div class="t-sep"></div>
+    <div class="ti"><strong>Exocad + 3Shape</strong><span>Software</span></div>
+    <div class="t-sep"></div>
+    <div class="ti"><strong>20+</strong><span data-i18n="cad.t.countries">países</span></div>
+    <div class="t-sep"></div>
+    <div class="ti"><strong>$12 USD</strong><span data-i18n="cad.t.from">desde</span></div>
+  </div>
+</div>
+
+<!-- ── CÓMO FUNCIONA ── -->
+<section class="dark-section">
+  <div class="container">
+    <div class="eyebrow" data-i18n="cad.how.ey">Cómo funciona</div>
+    <h2 class="sech2" data-i18n="cad.how.h2">Tres pasos. <em>Un archivo.</em></h2>
+    <p class="sec-lead" data-i18n="cad.how.sub">Sin instalaciones de tu parte. Solo envía el escáner y recibe el diseño.</p>
+    <div class="steps-grid">
+      <div class="step-card" data-n="01">
+        <div class="step-ico" style="background:rgba(0,210,255,0.09)"><i class="fas fa-upload" style="color:#00d2ff"></i></div>
+        <h3 data-i18n="cad.s1.h">Envía tu escáner</h3>
+        <p data-i18n="cad.s1.p">Sube el STL por el portal o compártelo por WhatsApp. Aceptamos STL, OBJ, PLY, Exocad y 3Shape.</p>
+        <span class="step-tag" data-i18n="cad.s1.tag">Portal · WhatsApp · WeTransfer</span>
+      </div>
+      <div class="step-card" data-n="02">
+        <div class="step-ico" style="background:rgba(217,70,166,0.09)"><i class="fas fa-drafting-compass" style="color:#D946A6"></i></div>
+        <h3 data-i18n="cad.s2.h">Diseñamos en Exocad</h3>
+        <p data-i18n="cad.s2.p">Modelado con ajuste oclusal, márgenes y contactos proximales. Vista previa antes de entrega.</p>
+        <span class="step-tag" data-i18n="cad.s2.tag">Exocad · 3Shape · Medit</span>
+      </div>
+      <div class="step-card" data-n="03">
+        <div class="step-ico" style="background:rgba(0,255,65,0.08)"><i class="fas fa-file-download" style="color:#4ade80"></i></div>
+        <h3 data-i18n="cad.s3.h">Recibes el archivo</h3>
+        <p data-i18n="cad.s3.p">STL listo para fresar, compatible con cualquier fresadora industrial. Revisiones incluidas.</p>
+        <span class="step-tag" data-i18n="cad.s3.tag">24–48 h · Revisiones incluidas</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRECIOS ── -->
+<section>
+  <div class="container">
+    <div class="eyebrow" data-i18n="cad.pr.ey">Precios</div>
+    <h2 class="sech2" data-i18n="cad.pr.h2">Claros. <em>Sin sorpresas.</em></h2>
+    <p class="sec-lead" data-i18n="cad.pr.sub">En USD. Sin suscripción ni mínimos. Pagas solo por lo que diseñas.</p>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="p-ico">🦷</div>
+        <div class="p-lbl">Modelo</div>
+        <div class="p-name" data-i18n="cad.p1.name">Modelo Diagnóstico</div>
+        <div class="p-val">$12 <small>USD</small></div>
+        <div class="p-desc" data-i18n="cad.p1.desc">Modelo de estudio para análisis oclusal o guías quirúrgicas.</div>
+        <ul class="p-inc">
+          <li><i class="fas fa-check"></i><span data-i18n="cad.p_stl">Archivo STL incluido</span></li>
+          <li><i class="fas fa-check"></i><span data-i18n="cad.p_24h">Entrega en 24 h</span></li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="p-ico">💎</div>
+        <div class="p-lbl">Inlay / Onlay</div>
+        <div class="p-name" data-i18n="cad.p2.name">Incrustación</div>
+        <div class="p-val">$16–$20 <small>USD</small></div>
+        <div class="p-desc" data-i18n="cad.p2.desc">Inlays, onlays y overlays con ajuste oclusal preciso.</div>
+        <ul class="p-inc">
+          <li><i class="fas fa-check"></i><span data-i18n="cad.p_prev">Vista previa incluida</span></li>
+          <li><i class="fas fa-check"></i><span data-i18n="cad.p_rev">Revisión incluida</span></li>
+        </ul>
+      </div>
+      <div class="price-card feat">
+        <div class="feat-badge" data-i18n="cad.p3.badge">Más solicitado</div>
+        <div class="p-ico">👑</div>
+        <div class="p-lbl">Corona unitaria</div>
+        <div class="p-name" data-i18n="cad.p3.name">Corona Completa</div>
+        <div class="p-val">$28 <small>USD</small></div>
+        <div class="p-desc" data-i18n="cad.p3.desc">Corona posterior o anterior, implanto-soportada o sobre muñón.</div>
+        <ul class="p-inc">
+          <li><i class="fas fa-check"></i><span data-i18n="cad.p_prev">Vista previa incluida</span></li>
+          <li><i class="fas fa-check"></i><span data-i18n="cad.p_rev">Revisión incluida</span></li>
+          <li><i class="fas fa-check"></i><span data-i18n="cad.p_48h">Entrega en 48 h</span></li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="p-ico">🏗️</div>
+        <div class="p-lbl">Full Arch / Complejo</div>
+        <div class="p-name" data-i18n="cad.p4.name">Rehabilitación</div>
+        <div class="p-val" style="font-size:1.4rem" data-i18n="cad.p4.val">Cotizar</div>
+        <div class="p-desc" data-i18n="cad.p4.desc">Full Arch, híbridos, carillas totales y casos complejos.</div>
+        <ul class="p-inc">
+          <li><i class="fas fa-check"></i><span data-i18n="cad.p_ori">Orientación técnica</span></li>
+          <li><i class="fas fa-check"></i><span data-i18n="cad.p_quot">Cotización sin compromiso</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="price-note" data-i18n="cad.pr.note"><strong>Pagos:</strong> Transferencia · Wompi · PayPal · Western Union. Precios sin IVA para clientes locales.</p>
+  </div>
+</section>
+
+<!-- ── TESTIMONIOS ── -->
+<section class="dark-section">
+  <div class="container">
+    <div class="eyebrow" data-i18n="cad.rv.ey">Lo que dicen</div>
+    <h2 class="sech2" style="margin-bottom:44px" data-i18n="cad.rv.h2">Resultados que <em>hablan solos</em></h2>
+    <div class="reviews-grid">
+      <div class="rev-card">
+        <p data-i18n="cad.r1.txt">"Envié el STL el lunes y al día siguiente tenía el diseño listo para fresar. La calidad superó mis expectativas."</p>
+        <div class="rev-author" data-i18n="cad.r1.who">Dr. Marcelo V. · Prostodoncista, Buenos Aires</div>
+      </div>
+      <div class="rev-card">
+        <p data-i18n="cad.r2.txt">"Precios claros, entregas a tiempo, y siempre incluyen vista previa del diseño. Trabajo con ellos hace un año."</p>
+        <div class="rev-author" data-i18n="cad.r2.who">Dra. Carla M. · Laboratorio dental, Ciudad de México</div>
+      </div>
+      <div class="rev-card">
+        <p data-i18n="cad.r3.txt">"Archivos perfectamente compatibles con nuestra fresadora Roland. Muy profesionales y rápidos."</p>
+        <div class="rev-author" data-i18n="cad.r3.who">Th. Dupont · Laboratorio dental, Lyon, Francia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section>
+  <div class="container">
+    <div class="eyebrow" data-i18n="cad.faq.ey">Preguntas frecuentes</div>
+    <h2 class="sech2" style="margin-bottom:36px" data-i18n="cad.faq.h2">Resolvemos tus <em>dudas</em></h2>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-q" onclick="faq(this)"><span data-i18n="cad.q1">¿Necesito cuenta para cotizar?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a1">No. Puedes escribirnos por WhatsApp sin registro. La cuenta es útil para seguimiento en vivo y notificaciones automáticas.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faq(this)"><span data-i18n="cad.q2">¿Qué formatos aceptan?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a2">STL, OBJ, PLY, proyectos Exocad (.constructioninfo) y 3Shape (.3oxz/.3ox). Si tienes otro, consúltanos.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faq(this)"><span data-i18n="cad.q3">¿Puedo ver el diseño antes de recibirlo?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a3">Sí. Enviamos capturas del diseño antes de la entrega final. Si algo no convence, ajustamos sin costo adicional.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faq(this)"><span data-i18n="cad.q4">¿El STL es compatible con mi fresadora?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a4">Entregamos STL estándar, compatible con Roland, Zirkonzahn, VHF, Straumann, Amann Girrbach y cualquier fresadora con archivos abiertos.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faq(this)"><span data-i18n="cad.q5">¿Trabajan con clientes fuera de Colombia?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a5">Sí. El servicio CAD es 100 % digital. Trabajamos con laboratorios y clínicas en más de 20 países. Entrega por descarga o email.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<div class="final-cta">
+  <h2 data-i18n="cad.fin.h2">Tu primer diseño en <em>menos de 24 horas</em></h2>
+  <p data-i18n="cad.fin.sub">Sin contratos. Sin exclusividad. Solo calidad que habla por sí sola.</p>
+  <div class="final-btns">
+    <a href="/flujo-diseno.html" class="btn-primary"><i class="fas fa-upload"></i><span data-i18n="cad.cta.upload">Subir STL ahora</span></a>
+    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20un%20dise%C3%B1o%20CAD." class="btn-wa" target="_blank" rel="noopener" data-i18n-href="cad.cta.wa_href"><i class="fab fa-whatsapp"></i><span data-i18n="cad.cta.wa">Cotizar por WhatsApp</span></a>
+  </div>
+</div>
+
+<script>
+  function faq(btn) {
+    var a = btn.nextElementSibling, open = a.classList.contains('open');
+    document.querySelectorAll('.faq-a,.faq-q').forEach(function(e){ e.classList.remove('open'); });
+    if (!open) { a.classList.add('open'); btn.classList.add('open'); }
+  }
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
+</script>
+<script src="js/i18n.js"></script>
+<script src="js/footer.js"></script>
+</body>
+</html>

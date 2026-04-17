@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#D946A6">
+  <meta name="description" content="Fresado y producción CAM dental en Bogotá. Zirconio, PMMA, e.max, Titanio. Entrega en 24–72 h. Cotiza por WhatsApp.">
+  <meta property="og:title" content="Fresado CAM Dental Bogotá — PRODIGY Lab Dental">
+  <meta property="og:description" content="Producción CAM de alta precisión: zirconio, PMMA, e.max, titanio. 24–72 h. Bogotá, Colombia.">
+  <meta property="og:url" content="https://prodigylabdental.com/fresado-cam.html">
+  <link rel="canonical" href="https://prodigylabdental.com/fresado-cam.html">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <title>Fresado & Producción CAM — PRODIGY Lab Dental Bogotá</title>
+  <style>
+    :root {
+      --gold:  #D946A6;
+      --gold2: #D4AF37;
+      --cyan:  #00d2ff;
+      --green: #00FF41;
+      --bg:    #050505;
+      --card:  #0d1520;
+      --text:  #e2e8f0;
+      --muted: #64748b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    section     { padding: 80px 0; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 88vh; display: flex; align-items: center;
+      padding: 60px 24px 80px;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 40%, rgba(217,70,166,0.13) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 70% at 85% 60%, rgba(212,175,55,0.07) 0%, transparent 60%),
+        var(--bg);
+    }
+    .hero-inner { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(217,70,166,0.1); border: 1px solid rgba(217,70,166,0.3);
+      color: var(--gold); font-size: .7rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+    }
+    .hero-tag .dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .hero h1 { font-size: clamp(2.2rem, 5.5vw, 3.8rem); font-weight: 900; line-height: 1.08; margin-bottom: 22px; }
+    .hero h1 em { font-style: normal; color: var(--gold); }
+    .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 580px; margin-bottom: 32px; line-height: 1.75; }
+    .mat-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 38px; }
+    .mat-tag {
+      font-size: .74rem; font-weight: 700; letter-spacing: 1px;
+      color: var(--gold2); background: rgba(212,175,55,0.07);
+      border: 1px solid rgba(212,175,55,0.2); border-radius: 6px; padding: 5px 12px;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: linear-gradient(135deg,#1db954,#128040);
+      color: #fff; font-size: 1rem; font-weight: 800; text-decoration: none;
+      padding: 15px 28px; border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(37,211,102,0.4); transition: transform .2s;
+    }
+    .btn-wa:hover { transform: translateY(-2px); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--muted); font-size: .9rem; font-weight: 600; text-decoration: none;
+      padding: 13px 18px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1); transition: all .2s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.22); }
+
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      background: rgba(10,14,20,0.8);
+      border-top: 1px solid rgba(212,175,55,0.12);
+      border-bottom: 1px solid rgba(212,175,55,0.12);
+      padding: 20px 24px;
+    }
+    .trust-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; align-items: center; }
+    .ti { display: flex; align-items: center; gap: 10px; }
+    .ti strong { color: var(--gold2); font-size: 1.3rem; font-weight: 900; }
+    .ti span   { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; }
+    .t-sep     { width: 1px; height: 28px; background: rgba(255,255,255,0.07); }
+    @media(max-width:560px) { .t-sep { display: none; } }
+
+    /* ── SECTION LABELS ── */
+    .eyebrow  { font-size: .7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); margin-bottom: 10px; }
+    h2.sech2  { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; margin-bottom: 14px; }
+    h2.sech2 em { font-style: normal; color: var(--gold); }
+    .sec-lead { color: var(--muted); font-size: .98rem; max-width: 540px; line-height: 1.75; margin-bottom: 52px; }
+
+    /* ── DARK BG ── */
+    .dark-section { background: linear-gradient(180deg,#050505 0%,#080f1a 50%,#050505 100%); }
+
+    /* ── MATERIALES ── */
+    .mat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
+    @media(max-width:860px) { .mat-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:480px) { .mat-grid { grid-template-columns: 1fr; } }
+    .mat-card {
+      background: var(--card); border: 1px solid rgba(212,175,55,0.12);
+      border-radius: 16px; padding: 28px 22px;
+      display: flex; flex-direction: column; gap: 10px;
+      transition: border-color .25s, transform .25s;
+    }
+    .mat-card:hover { border-color: rgba(212,175,55,0.32); transform: translateY(-4px); }
+    .mat-card .ico  { font-size: 1.8rem; }
+    .mat-card h3    { font-size: 1rem; font-weight: 800; }
+    .mat-card p     { font-size: .84rem; color: var(--muted); line-height: 1.6; }
+    .mat-card .usos { font-size: .71rem; color: var(--gold2); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .mat-card .ent  { font-size: .68rem; font-weight: 700; letter-spacing: 1px; color: var(--gold2); background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2); border-radius: 4px; padding: 3px 9px; text-transform: uppercase; align-self: flex-start; }
+
+    /* ── CASOS ── */
+    .casos-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    @media(max-width:720px) { .casos-grid { grid-template-columns: 1fr; } }
+    .caso-card { background: var(--card); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 26px 22px; position: relative; }
+    .caso-n { position: absolute; top: 16px; right: 18px; font-size: .63rem; font-weight: 700; letter-spacing: 1.5px; color: var(--cyan); background: rgba(0,210,255,0.08); border: 1px solid rgba(0,210,255,0.2); border-radius: 4px; padding: 2px 8px; text-transform: uppercase; }
+    .caso-card h3 { font-size: .98rem; font-weight: 800; margin-bottom: 10px; padding-right: 72px; }
+    .caso-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .caso-card li { font-size: .83rem; color: var(--muted); display: flex; gap: 8px; }
+    .caso-card li i { color: var(--green); font-size: .62rem; margin-top: 4px; flex-shrink: 0; }
+    .caso-pie { margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-size: .78rem; color: var(--muted); }
+    .caso-pie strong { color: var(--gold2); }
+
+    /* ── PROCESO ── */
+    .proc-row { display: grid; grid-template-columns: repeat(5,1fr); }
+    @media(max-width:860px) { .proc-row { grid-template-columns: 1fr; } }
+    .proc-step { padding: 30px 18px; text-align: center; border-right: 1px solid rgba(255,255,255,0.05); position: relative; }
+    .proc-step:last-child { border-right: none; }
+    @media(max-width:860px) { .proc-step { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); } }
+    .proc-num { width: 38px; height: 38px; border-radius: 50%; background: rgba(217,70,166,0.1); border: 1px solid rgba(217,70,166,0.3); color: var(--gold); font-size: .82rem; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .proc-step h3 { font-size: .88rem; font-weight: 800; margin-bottom: 7px; }
+    .proc-step p  { font-size: .78rem; color: var(--muted); line-height: 1.55; }
+
+    /* ── ZONA ── */
+    .zona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    @media(max-width:720px) { .zona-grid { grid-template-columns: 1fr; } }
+    .zona-visual { background: var(--card); border: 1px solid rgba(217,70,166,0.15); border-radius: 20px; padding: 48px 32px; text-align: center; font-size: 3.5rem; }
+    .zona-visual p    { font-size: 1.1rem; font-weight: 800; margin-top: 14px; color: var(--gold); }
+    .zona-visual small{ font-size: .78rem; color: var(--muted); display: block; margin-top: 5px; }
+    .zona-info h3 { font-size: 1.45rem; font-weight: 800; margin-bottom: 14px; }
+    .zona-info p  { color: var(--muted); line-height: 1.8; margin-bottom: 14px; font-size: .95rem; }
+    .zona-chips   { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+    .chip { font-size: .73rem; font-weight: 700; color: var(--gold2); background: rgba(212,175,55,0.07); border: 1px solid rgba(212,175,55,0.2); border-radius: 100px; padding: 5px 14px; }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
+    .faq-item { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; overflow: hidden; }
+    .faq-q { width: 100%; background: none; border: none; cursor: pointer; text-align: left; padding: 17px 20px; color: var(--text); font-size: .93rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; gap: 14px; font-family: inherit; }
+    .faq-q i { color: var(--muted); font-size: .72rem; transition: transform .25s; flex-shrink: 0; }
+    .faq-q.open i { transform: rotate(180deg); color: var(--gold); }
+    .faq-a { display: none; padding: 0 20px 16px; color: var(--muted); font-size: .87rem; line-height: 1.7; }
+    .faq-a.open { display: block; }
+
+    /* ── FINAL CTA ── */
+    .final-cta { text-align: center; padding: 96px 24px; background: radial-gradient(ellipse 80% 50% at 50% 50%, rgba(217,70,166,0.09) 0%, transparent 70%); }
+    .final-cta h2 { font-size: clamp(1.7rem, 5vw, 2.9rem); font-weight: 900; margin-bottom: 14px; }
+    .final-cta h2 em { font-style: normal; color: var(--gold); }
+    .final-cta p { color: var(--muted); font-size: .98rem; margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+    /* ── WA FLOTANTE ── */
+    .sticky-wa { position: fixed; bottom: 22px; right: 22px; z-index: 500; }
+    .sticky-wa a { display: inline-flex; align-items: center; gap: 9px; background: #25D366; color: #fff; font-size: .85rem; font-weight: 800; text-decoration: none; padding: 12px 20px; border-radius: 100px; box-shadow: 0 5px 20px rgba(37,211,102,0.5); transition: transform .2s; }
+    .sticky-wa a:hover { transform: scale(1.04); }
+    @media(max-width:480px) { .sticky-wa a span { display: none; } .sticky-wa a { padding: 14px; border-radius: 50%; } }
+  </style>
+</head>
+<body>
+<script>window._headerConfig = {};</script>
+<script src="js/header.js"></script>
+
+<!-- WA FLOTANTE -->
+<div class="sticky-wa">
+  <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20un%20trabajo%20de%20fresado." target="_blank" rel="noopener">
+    <i class="fab fa-whatsapp"></i><span>Cotizar fresado</span>
+  </a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><span class="dot"></span>Producción CAM · Bogotá, Colombia · 24–72 h</div>
+    <h1>Tu restauración fresada<br>con <em>precisión industrial</em></h1>
+    <p class="hero-sub">Fresado de alta precisión en zirconio, PMMA, e.max y titanio. Laboratorio CAM en Bogotá con entrega en 24–72 horas. Envía el diseño o el escáner — nosotros producimos.</p>
+    <div class="mat-tags">
+      <span class="mat-tag">Zirconio</span>
+      <span class="mat-tag">PMMA</span>
+      <span class="mat-tag">e.max / Disilicato</span>
+      <span class="mat-tag">Titanio</span>
+      <span class="mat-tag">Cera / Resina</span>
+    </div>
+    <div class="cta-row">
+      <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20fresado%20de%20una%20restauraci%C3%B3n.%20%C2%BFMe%20pueden%20ayudar%3F"
+         class="btn-wa" target="_blank" rel="noopener">
+        <i class="fab fa-whatsapp"></i>Cotizar por WhatsApp
+      </a>
+      <a href="/flujo-diseno.html" class="btn-ghost">
+        <i class="fas fa-upload"></i>Subir escáner STL
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── TRUST BAR ── -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="ti"><strong>300+</strong><span>piezas/año</span></div>
+    <div class="t-sep"></div>
+    <div class="ti"><strong>24 h</strong><span>entrega urgente</span></div>
+    <div class="t-sep"></div>
+    <div class="ti"><strong>72 h</strong><span>entrega estándar</span></div>
+    <div class="t-sep"></div>
+    <div class="ti"><strong>4</strong><span>materiales principales</span></div>
+    <div class="t-sep"></div>
+    <div class="ti"><strong>Bogotá</strong><span>+ envíos nacionales</span></div>
+  </div>
+</div>
+
+<!-- ── MATERIALES ── -->
+<section class="dark-section">
+  <div class="container">
+    <div class="eyebrow">Materiales disponibles</div>
+    <h2 class="sech2">Fresamos lo que <em>necesitas</em></h2>
+    <p class="sec-lead">Los materiales más demandados del mercado dental colombiano. Si necesitas otro, pregúntanos.</p>
+    <div class="mat-grid">
+      <div class="mat-card">
+        <div class="ico">⬜</div>
+        <h3>Zirconio</h3>
+        <p>Alta resistencia. Ideal para coronas posteriores, puentes y estructuras sobre implantes. Monolítico, multicapa y alta traslucidez.</p>
+        <div class="usos">Coronas · Puentes · Implantes</div>
+        <span class="ent">Entrega: 48–72 h</span>
+      </div>
+      <div class="mat-card">
+        <div class="ico">🟤</div>
+        <h3>PMMA</h3>
+        <p>Provisionales de larga duración y modelos de trabajo. Excelente relación costo-precisión para restauraciones transitorias.</p>
+        <div class="usos">Provisionales · Modelos · Guías</div>
+        <span class="ent">Entrega: 24 h</span>
+      </div>
+      <div class="mat-card">
+        <div class="ico">💠</div>
+        <h3>e.max / Disilicato</h3>
+        <p>Estética superior para sectores anteriores y premolares. Traslucidez natural y alta resistencia a la fractura. Acabado glaseable.</p>
+        <div class="usos">Carillas · Inlays · Coronas anteriores</div>
+        <span class="ent">Entrega: 48–72 h</span>
+      </div>
+      <div class="mat-card">
+        <div class="ico">⚙️</div>
+        <h3>Titanio / Cera</h3>
+        <p>Bases y mesostructuras de titanio para implantes. Cera para colado y protocolos de fundición convencional.</p>
+        <div class="usos">Implantes · Barras · Mesostructuras</div>
+        <span class="ent">Entrega: 48–72 h</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CASOS TÍPICOS ── -->
+<section>
+  <div class="container">
+    <div class="eyebrow">Casos más solicitados</div>
+    <h2 class="sech2">¿Qué tipo de trabajo <em>produces aquí?</em></h2>
+    <p class="sec-lead">Desde una corona simple hasta un Full Arch completo — manejamos toda la producción CAM.</p>
+    <div class="casos-grid">
+      <div class="caso-card">
+        <span class="caso-n">Frecuente</span>
+        <h3>Corona unitaria posterior</h3>
+        <ul>
+          <li><i class="fas fa-check"></i>Zirconio monolítico o multicapa</li>
+          <li><i class="fas fa-check"></i>Ajuste oclusal verificado</li>
+          <li><i class="fas fa-check"></i>Lista para cementar</li>
+          <li><i class="fas fa-check"></i>Envío a clínica o retiro en lab</li>
+        </ul>
+        <div class="caso-pie">Cotización por WhatsApp · <strong>Entrega 48 h</strong></div>
+      </div>
+      <div class="caso-card">
+        <span class="caso-n">Popular</span>
+        <h3>Provisional en PMMA</h3>
+        <ul>
+          <li><i class="fas fa-check"></i>Temporal unitario o plural</li>
+          <li><i class="fas fa-check"></i>Anatomía natural fresada</li>
+          <li><i class="fas fa-check"></i>Alta resistencia al desgaste</li>
+          <li><i class="fas fa-check"></i>Entrega más rápida del mercado</li>
+        </ul>
+        <div class="caso-pie">Cotización por WhatsApp · <strong>Entrega 24 h</strong></div>
+      </div>
+      <div class="caso-card">
+        <span class="caso-n">Especializado</span>
+        <h3>Full Arch sobre implantes</h3>
+        <ul>
+          <li><i class="fas fa-check"></i>Protocolo digital completo</li>
+          <li><i class="fas fa-check"></i>Barra o estructura zirconio</li>
+          <li><i class="fas fa-check"></i>Compatible multi-sistema</li>
+          <li><i class="fas fa-check"></i>Diseño + fresado integrado</li>
+        </ul>
+        <div class="caso-pie">Cotización personalizada · <strong>Entrega a acordar</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESO ── -->
+<section class="dark-section">
+  <div class="container">
+    <div class="eyebrow">Proceso de producción</div>
+    <h2 class="sech2">Del escáner a la <em>pieza terminada</em></h2>
+    <p class="sec-lead" style="margin-bottom:44px">Sin intermediarios. Sin retrasos. Un equipo, un flujo, un resultado.</p>
+    <div class="proc-row">
+      <div class="proc-step">
+        <div class="proc-num">01</div>
+        <div style="font-size:1.4rem;margin-bottom:10px"><i class="fas fa-mobile-alt" style="color:#00d2ff"></i></div>
+        <h3>Escáner</h3>
+        <p>STL, Exocad o 3Shape. Por portal o WhatsApp.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">02</div>
+        <div style="font-size:1.4rem;margin-bottom:10px"><i class="fas fa-drafting-compass" style="color:#D946A6"></i></div>
+        <h3>Diseño CAD</h3>
+        <p>Modelado con ajuste oclusal y márgenes.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">03</div>
+        <div style="font-size:1.4rem;margin-bottom:10px"><i class="fas fa-cog" style="color:#D4AF37"></i></div>
+        <h3>Fresado CAM</h3>
+        <p>Producción en el material indicado.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">04</div>
+        <div style="font-size:1.4rem;margin-bottom:10px"><i class="fas fa-fire" style="color:#fb923c"></i></div>
+        <h3>Sinterizado</h3>
+        <p>Cocción, glaze y caracterización cromática.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">05</div>
+        <div style="font-size:1.4rem;margin-bottom:10px"><i class="fas fa-box-open" style="color:#4ade80"></i></div>
+        <h3>Entrega</h3>
+        <p>Lista para cementar. Retiro o envío a clínica.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ZONA DE COBERTURA ── -->
+<section>
+  <div class="container">
+    <div class="zona-grid">
+      <div class="zona-visual">
+        🇨🇴
+        <p>Sede Bogotá</p>
+        <small>+ Envíos nacionales</small>
+      </div>
+      <div class="zona-info">
+        <div class="eyebrow">Zona de cobertura</div>
+        <h3>Producimos en Bogotá.<br>Entregamos en toda Colombia.</h3>
+        <p>Nuestro laboratorio está en Bogotá. Para clínicas en la ciudad, ofrecemos retiro y entrega directa. Para el resto del país, despachamos por mensajería con embalaje especializado.</p>
+        <p>Para el <strong>servicio de diseño CAD</strong> (solo archivo digital), trabajamos con laboratorios y clínicas en cualquier país — entrega 100% digital.</p>
+        <div class="zona-chips">
+          <span class="chip">Bogotá · Retiro directo</span>
+          <span class="chip">Medellín · Cali · Barranquilla</span>
+          <span class="chip">Todo Colombia · Envío</span>
+          <span class="chip">CAD Digital · Global</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="dark-section">
+  <div class="container">
+    <div class="eyebrow">Preguntas frecuentes</div>
+    <h2 class="sech2" style="margin-bottom:36px">Lo que más nos <em>preguntan</em></h2>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-q" onclick="faq(this)">¿Qué necesito enviar para pedir fresado?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Puedes enviarnos el STL del diseño final o el escáner intraoral. Si solo tienes el escáner, nosotros diseñamos y fresamos en el mismo flujo. Escríbenos por WhatsApp con los detalles del caso.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faq(this)">¿Cuánto tiempo tarda una corona en zirconio?<i class="fas fa-chevron-down"></i></button><div class="faq-a">El tiempo estándar es 48–72 horas desde que recibimos el diseño aprobado. Para urgencias en 24 h, consúltanos disponibilidad. El tiempo incluye fresado, sinterizado y glaze.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faq(this)">¿Hacen envíos fuera de Bogotá?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Sí. Despachamos a toda Colombia por Servientrega, TCC o mensajería según la urgencia. El embalaje es especializado para restauraciones dentales. El costo de envío se acuerda por caso.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faq(this)">¿Puedo traer el caso directamente al laboratorio?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Sí. Recibimos casos en nuestra sede en Bogotá. También coordinamos recogida con mensajero para alto volumen. Escríbenos para coordinar.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faq(this)">¿Qué sistemas de implantes manejan?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Nobel Biocare, Straumann, MIS, Osstem, BioHorizons, Zimmer y los sistemas más comunes del mercado colombiano. Si tienes un sistema específico, consúltanos antes de hacer el caso.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<div class="final-cta">
+  <h2>Tu caso empieza con <em>un mensaje</em></h2>
+  <p>Describe el trabajo y te cotizamos el mismo día. Sin formularios complicados.</p>
+  <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20una%20restauraci%C3%B3n.%20%C2%BFMe%20pueden%20ayudar%3F"
+     class="btn-wa" target="_blank" rel="noopener">
+    <i class="fab fa-whatsapp"></i>Escribir por WhatsApp ahora
+  </a>
+</div>
+
+<script>
+  function faq(btn) {
+    var a = btn.nextElementSibling, open = a.classList.contains('open');
+    document.querySelectorAll('.faq-a,.faq-q').forEach(function(e){ e.classList.remove('open'); });
+    if (!open) { a.classList.add('open'); btn.classList.add('open'); }
+  }
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
+</script>
+<script src="js/footer.js"></script>
+</body>
+</html>

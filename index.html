@@ -461,8 +461,35 @@
     }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- ── Language switcher ── -->
+  <style>
+    .lang-switcher {
+      position: fixed; top: 16px; right: 16px; z-index: 999;
+      display: flex; gap: 2px;
+      background: rgba(13,21,32,0.85);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 8px; padding: 4px;
+      backdrop-filter: blur(8px);
+    }
+    .lang-switcher button {
+      background: none; border: none; cursor: pointer;
+      color: #64748b; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.5px; padding: 5px 9px; border-radius: 5px;
+      transition: all .2s; font-family: inherit;
+    }
+    .lang-switcher button.active { background: rgba(212,175,55,0.18); color: #D4AF37; }
+    .lang-switcher button:hover:not(.active) { color: #94a3b8; }
+  </style>
 </head>
 <body>
+
+  <!-- Language toggle -->
+  <div class="lang-switcher">
+    <button data-lang-btn="es" onclick="i18n.set('es')">ES</button>
+    <button data-lang-btn="en" onclick="i18n.set('en')">EN</button>
+    <button data-lang-btn="pt" onclick="i18n.set('pt')">PT</button>
+  </div>
 
   <div class="bg-glow"></div>
 
@@ -471,14 +498,14 @@
     <!-- ── HERO ── -->
     <span class="diamond">💎</span>
     <h1>PRODIGY</h1>
-    <p class="subtitle">Digital Dental Excellence &nbsp;·&nbsp; Bogotá, Colombia</p>
+    <p class="subtitle" data-i18n="hero.subtitle">Digital Dental Excellence &nbsp;·&nbsp; Bogotá, Colombia</p>
 
     <div class="card">
       <div class="status-line">
-        <span class="status-dot"></span>Preparando algo extraordinario
+        <span class="status-dot"></span><span data-i18n="status.preparing">Preparando algo extraordinario</span>
       </div>
 
-      <p class="main-text">
+      <p class="main-text" data-i18n="hero.main_text">
         Nuestro portal está en <strong>construcción final</strong>.<br>
         Estaremos en línea muy pronto.
       </p>
@@ -486,21 +513,21 @@
       <div class="divider"></div>
 
       <div class="services">
-        <span class="service-tag">Fresado CAD/CAM</span>
-        <span class="service-tag">Diseño Exocad</span>
-        <span class="service-tag">Impresión 3D</span>
-        <span class="service-tag">Zirconio</span>
-        <span class="service-tag">Disilicato</span>
-        <span class="service-tag">Escáner Móvil</span>
+        <span class="service-tag" data-i18n="tag.milling">Fresado CAD/CAM</span>
+        <span class="service-tag" data-i18n="tag.design">Diseño Exocad</span>
+        <span class="service-tag" data-i18n="tag.print3d">Impresión 3D</span>
+        <span class="service-tag" data-i18n="tag.zirconia">Zirconio</span>
+        <span class="service-tag" data-i18n="tag.disilicate">Disilicato</span>
+        <span class="service-tag" data-i18n="tag.scanner">Escáner Móvil</span>
       </div>
 
       <div class="divider"></div>
 
-      <p class="sub-text">¿Necesitas cotizar o tienes un caso urgente?<br>Escríbenos directamente, respondemos el mismo día.</p>
+      <p class="sub-text" data-i18n="hero.sub_text">¿Necesitas cotizar o tienes un caso urgente?<br>Escríbenos directamente, respondemos el mismo día.</p>
 
-      <a class="cta-wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20una%20cotización" target="_blank" rel="noopener noreferrer">
+      <a class="cta-wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20una%20cotización" target="_blank" rel="noopener noreferrer" data-i18n-href="hero.cta_wa.href">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Contactar por WhatsApp
+        <span data-i18n="hero.cta_wa">Contactar por WhatsApp</span>
       </a>
     </div>
 
@@ -508,26 +535,26 @@
     <div class="stats-row">
       <div class="stat-card">
         <span class="stat-num">300+</span>
-        <span class="stat-label">Casos fresados<br>por año</span>
+        <span class="stat-label" data-i18n="stat.casos_label">Casos fresados<br>por año</span>
       </div>
       <div class="stat-card">
         <span class="stat-num">2h</span>
-        <span class="stat-label">Respuesta<br>promedio</span>
+        <span class="stat-label" data-i18n="stat.resp_label">Respuesta<br>promedio</span>
       </div>
       <div class="stat-card">
         <span class="stat-num">5</span>
-        <span class="stat-label">Años en<br>CAD/CAM digital</span>
+        <span class="stat-label" data-i18n="stat.years_label">Años en<br>CAD/CAM digital</span>
       </div>
       <div class="stat-card">
         <span class="stat-num">100%</span>
-        <span class="stat-label">Casos revisados<br>antes de salir</span>
+        <span class="stat-label" data-i18n="stat.quality_label">Casos revisados<br>antes de salir</span>
       </div>
     </div>
 
     <!-- ── PERSUASIÓN ── -->
     <div class="lab-section">
 
-      <p class="lab-intro">
+      <p class="lab-intro" data-i18n="lab.intro">
         Somos un laboratorio dental de alta precisión con sede en Bogotá.<br>
         Trabajamos con clínicas y doctores en Colombia y el exterior —<br>
         <strong>no necesitas tener el caso completo para contactarnos.</strong>
@@ -540,8 +567,8 @@
             <i class="fas fa-globe"></i>
           </div>
           <div>
-            <div class="lab-card-title">Diseño CAD desde cualquier país</div>
-            <p class="lab-card-desc">
+            <div class="lab-card-title" data-i18n="lab.card1.title">Diseño CAD desde cualquier país</div>
+            <p class="lab-card-desc" data-i18n="lab.card1.desc">
               Si ya tienes el escáner en STL, OBJ o Exocad, nosotros diseñamos la restauración y te entregamos el archivo listo para fresar en tu propio centro.
               <strong>Sin importar dónde estés.</strong>
             </p>
@@ -553,8 +580,8 @@
             <i class="fas fa-clock"></i>
           </div>
           <div>
-            <div class="lab-card-title">Respuesta en menos de 2 horas</div>
-            <p class="lab-card-desc">
+            <div class="lab-card-title" data-i18n="lab.card2.title">Respuesta en menos de 2 horas</div>
+            <p class="lab-card-desc" data-i18n="lab.card2.desc">
               Cotizamos tu caso el mismo día. Cada hora que pasa es una restauración que no avanza.
               <strong>Un mensaje es suficiente para arrancar.</strong>
             </p>
@@ -566,8 +593,8 @@
             <i class="fas fa-microscope"></i>
           </div>
           <div>
-            <div class="lab-card-title">Control de calidad en cada pieza</div>
-            <p class="lab-card-desc">
+            <div class="lab-card-title" data-i18n="lab.card3.title">Control de calidad en cada pieza</div>
+            <p class="lab-card-desc" data-i18n="lab.card3.desc">
               Cada restauración pasa por verificación dimensional antes de salir del laboratorio.
               <strong>Trabajamos con estándares de precisión que hablan por sí solos.</strong>
             </p>
@@ -577,42 +604,42 @@
       </div>
 
       <div class="lab-cta-box">
-        <span class="lab-cta-label">¿Solo necesitas el diseño? Empieza aquí</span>
+        <span class="lab-cta-label" data-i18n="lab.cta_label">¿Solo necesitas el diseño? Empieza aquí</span>
         <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20tengo%20un%20esc%C3%A1ner%20listo%20y%20necesito%20el%20dise%C3%B1o%20CAD.%20%C2%BFPueden%20cotizarme%3F"
-           class="lab-cta-btn" target="_blank" rel="noopener">
-          <i class="fab fa-whatsapp"></i> Enviar mi escáner ahora
+           class="lab-cta-btn" target="_blank" rel="noopener" data-i18n-href="lab.cta_btn.href">
+          <i class="fab fa-whatsapp"></i> <span data-i18n="lab.cta_btn">Enviar mi escáner ahora</span>
         </a>
-        <span class="lab-cta-note">Formatos aceptados: STL · OBJ · PLY · Exocad · 3Shape</span>
+        <span class="lab-cta-note" data-i18n="lab.cta_note">Formatos aceptados: STL · OBJ · PLY · Exocad · 3Shape</span>
       </div>
 
     </div>
 
     <!-- ── PSICOLOGÍA / IMPACTO ── -->
     <div class="psych-section">
-      <div class="psych-badge">Por qué los mejores doctores nos eligen</div>
-      <h2 class="psych-headline">
+      <div class="psych-badge" data-i18n="psych.badge">Por qué los mejores doctores nos eligen</div>
+      <h2 class="psych-headline" data-i18n="psych.headline">
         Tu reputación clínica<br>
         empieza en el <span>laboratorio</span>
       </h2>
-      <p class="psych-body">
+      <p class="psych-body" data-i18n="psych.body1">
         Cada pieza que no ajusta es un paciente que no regresa. Sabemos lo que se siente cuando el retrabajo aparece en el peor momento — y precisamente por eso trabajamos cada caso como si la reputación en juego fuera la nuestra.
         <strong>Porque en parte, lo es.</strong>
       </p>
-      <p class="psych-body" style="margin-bottom:36px;">
+      <p class="psych-body" style="margin-bottom:36px;" data-i18n="psych.body2">
         Desde casos simples de diseño hasta flujos completos de Full Arch, rehabilitaciones totales e híbridos sobre implantes — PRODIGY tiene la tecnología y el equipo para que tú solo te preocupes por el paciente. <strong>Nosotros nos encargamos del resto.</strong>
       </p>
       <div class="psych-proof">
-        <span class="psych-proof-item"><i class="fas fa-check-circle"></i> Sin contratos de exclusividad</span>
-        <span class="psych-proof-item"><i class="fas fa-check-circle"></i> Envíos a toda Colombia</span>
-        <span class="psych-proof-item"><i class="fas fa-check-circle"></i> Archivos digitales al exterior</span>
-        <span class="psych-proof-item"><i class="fas fa-check-circle"></i> Orientación técnica de caso</span>
+        <span class="psych-proof-item"><i class="fas fa-check-circle"></i> <span data-i18n="psych.proof1">Sin contratos de exclusividad</span></span>
+        <span class="psych-proof-item"><i class="fas fa-check-circle"></i> <span data-i18n="psych.proof2">Envíos a toda Colombia</span></span>
+        <span class="psych-proof-item"><i class="fas fa-check-circle"></i> <span data-i18n="psych.proof3">Archivos digitales al exterior</span></span>
+        <span class="psych-proof-item"><i class="fas fa-check-circle"></i> <span data-i18n="psych.proof4">Orientación técnica de caso</span></span>
       </div>
     </div>
 
     <!-- ── PROGRESO ── -->
     <div class="progress-section">
       <div class="progress-top">
-        <span class="progress-lbl">Progreso de lanzamiento</span>
+        <span class="progress-lbl" data-i18n="progress.label">Progreso de lanzamiento</span>
         <span class="progress-pct">75%</span>
       </div>
       <div class="progress-track"><div class="progress-fill"></div></div>
@@ -621,8 +648,8 @@
     <div class="sep"></div>
 
     <!-- ── FLUJO FULL LAB ── -->
-    <div class="sec-label">Flujo completo</div>
-    <div class="sec-title">Del escáner al terminado — en un solo proveedor</div>
+    <div class="sec-label" data-i18n="flujo.sec_label">Flujo completo</div>
+    <div class="sec-title" data-i18n="flujo.sec_title">Del escáner al terminado — en un solo proveedor</div>
 
     <div class="flujo-wrap">
     <div class="flujo-row">
@@ -631,8 +658,8 @@
         <div class="step-ico" style="background:rgba(0,210,255,0.09);">
           <i class="fas fa-mobile-alt" style="color:#00d2ff;"></i>
         </div>
-        <div class="step-name">Escáner</div>
-        <p class="step-desc">Intraoral en clínica o a domicilio</p>
+        <div class="step-name" data-i18n="flujo.step1.name">Escáner</div>
+        <p class="step-desc" data-i18n="flujo.step1.desc">Intraoral en clínica o a domicilio</p>
         <span class="step-tag">STL · OBJ</span>
       </div>
 
@@ -641,8 +668,8 @@
         <div class="step-ico" style="background:rgba(217,70,166,0.09);">
           <i class="fas fa-drafting-compass" style="color:#D946A6;"></i>
         </div>
-        <div class="step-name">Diseño CAD</div>
-        <p class="step-desc">Modelado digital y ajuste oclusal</p>
+        <div class="step-name" data-i18n="flujo.step2.name">Diseño CAD</div>
+        <p class="step-desc" data-i18n="flujo.step2.desc">Modelado digital y ajuste oclusal</p>
         <span class="step-tag">Exocad · 3Shape</span>
       </div>
 
@@ -651,8 +678,8 @@
         <div class="step-ico" style="background:rgba(212,175,55,0.09);">
           <i class="fas fa-cog" style="color:#D4AF37;"></i>
         </div>
-        <div class="step-name">CAM & Fresado</div>
-        <p class="step-desc">Zirconio, PMMA, e.max o titanio</p>
+        <div class="step-name" data-i18n="flujo.step3.name">CAM & Fresado</div>
+        <p class="step-desc" data-i18n="flujo.step3.desc">Zirconio, PMMA, e.max o titanio</p>
         <span class="step-tag">XTCERA · e.max</span>
       </div>
 
@@ -661,8 +688,8 @@
         <div class="step-ico" style="background:rgba(251,146,60,0.09);">
           <i class="fas fa-fire" style="color:#fb923c;"></i>
         </div>
-        <div class="step-name">Sinterizado</div>
-        <p class="step-desc">Cocción, glaze y caracterización</p>
+        <div class="step-name" data-i18n="flujo.step4.name">Sinterizado</div>
+        <p class="step-desc" data-i18n="flujo.step4.desc">Cocción, glaze y caracterización</p>
         <span class="step-tag">Glaze · Color</span>
       </div>
 
@@ -671,25 +698,25 @@
         <div class="step-ico" style="background:rgba(74,222,128,0.09);">
           <i class="fas fa-box-open" style="color:#4ade80;"></i>
         </div>
-        <div class="step-name">Entrega</div>
-        <p class="step-desc">Lista para cementar en 24–72 h</p>
+        <div class="step-name" data-i18n="flujo.step5.name">Entrega</div>
+        <p class="step-desc" data-i18n="flujo.step5.desc">Lista para cementar en 24–72 h</p>
         <span class="step-tag">24–72 h</span>
       </div>
     </div>
-    <p class="flujo-hint">desliza para ver más &nbsp;›</p>
+    <p class="flujo-hint" data-i18n="flujo.hint">desliza para ver más &nbsp;›</p>
     </div>
 
     <!-- ── SERVICIOS ── -->
-    <div class="sec-label">También por separado</div>
-    <div class="sec-title">Solo lo que necesitas</div>
+    <div class="sec-label" data-i18n="serv.sec_label">También por separado</div>
+    <div class="sec-title" data-i18n="serv.sec_title">Solo lo que necesitas</div>
 
     <div class="serv-grid">
       <div class="serv-card">
         <div class="serv-ico" style="background:rgba(0,210,255,0.08);">
           <i class="fas fa-cube" style="color:#00d2ff;"></i>
         </div>
-        <div class="serv-name">Solo Fresado</div>
-        <p class="serv-desc">Envías el STL, nosotros fresamos con máxima precisión</p>
+        <div class="serv-name" data-i18n="serv.mill.name">Solo Fresado</div>
+        <p class="serv-desc" data-i18n="serv.mill.desc">Envías el STL, nosotros fresamos con máxima precisión</p>
         <span class="serv-mat">Zirconio · PMMA · e.max · Ti</span>
       </div>
 
@@ -697,9 +724,9 @@
         <div class="serv-ico" style="background:rgba(217,70,166,0.08);">
           <i class="fas fa-drafting-compass" style="color:#D946A6;"></i>
         </div>
-        <div class="serv-name">Solo CAD</div>
-        <p class="serv-desc">Diseño digital listo para fresar en tu centro</p>
-        <span class="serv-badge">Internacional</span>
+        <div class="serv-name" data-i18n="serv.cad.name">Solo CAD</div>
+        <p class="serv-desc" data-i18n="serv.cad.desc">Diseño digital listo para fresar en tu centro</p>
+        <span class="serv-badge" data-i18n="badge.intl">Internacional</span>
         <span class="serv-mat">Global · 48 h</span>
       </div>
 
@@ -707,8 +734,8 @@
         <div class="serv-ico" style="background:rgba(212,175,55,0.08);">
           <i class="fas fa-print" style="color:#D4AF37;"></i>
         </div>
-        <div class="serv-name">Impresión 3D</div>
-        <p class="serv-desc">Modelos diagnósticos, guías quirúrgicas y provisionales</p>
+        <div class="serv-name" data-i18n="serv.print3d.name">Impresión 3D</div>
+        <p class="serv-desc" data-i18n="serv.print3d.desc">Modelos diagnósticos, guías quirúrgicas y provisionales</p>
         <span class="serv-mat">BCN3D · Alta resolución</span>
       </div>
 
@@ -716,8 +743,8 @@
         <div class="serv-ico" style="background:rgba(74,222,128,0.08);">
           <i class="fas fa-mobile-alt" style="color:#4ade80;"></i>
         </div>
-        <div class="serv-name">Escáner en Clínica</div>
-        <p class="serv-desc">Llevamos el equipo a tu consultorio en Bogotá</p>
+        <div class="serv-name" data-i18n="serv.scan_c.name">Escáner en Clínica</div>
+        <p class="serv-desc" data-i18n="serv.scan_c.desc">Llevamos el equipo a tu consultorio en Bogotá</p>
         <span class="serv-mat">Sin impresiones físicas</span>
       </div>
 
@@ -725,27 +752,27 @@
         <div class="serv-ico" style="background:rgba(251,146,60,0.08);">
           <i class="fas fa-map-marker-alt" style="color:#fb923c;"></i>
         </div>
-        <div class="serv-name">Escáner a Domicilio</div>
-        <p class="serv-desc">Escaneo en la ubicación del paciente — ideal para tercera edad o casos especiales</p>
-        <span class="serv-mat">Bogotá y alrededores</span>
+        <div class="serv-name" data-i18n="serv.scan_h.name">Escáner a Domicilio</div>
+        <p class="serv-desc" data-i18n="serv.scan_h.desc">Escaneo en la ubicación del paciente — ideal para tercera edad o casos especiales</p>
+        <span class="serv-mat" data-i18n="serv.scan_h.mat">Bogotá y alrededores</span>
       </div>
 
       <div class="serv-card">
         <div class="serv-ico" style="background:rgba(139,92,246,0.08);">
           <i class="fas fa-graduation-cap" style="color:#a78bfa;"></i>
         </div>
-        <div class="serv-name">Cursos Digitales</div>
-        <p class="serv-desc">Aprende Exocad, flujo CAD/CAM y gestión de casos digitales desde cero</p>
-        <span class="serv-badge">Próximamente</span>
-        <span class="serv-mat">Online · A tu ritmo</span>
+        <div class="serv-name" data-i18n="serv.courses.name">Cursos Digitales</div>
+        <p class="serv-desc" data-i18n="serv.courses.desc">Aprende Exocad, flujo CAD/CAM y gestión de casos digitales desde cero</p>
+        <span class="serv-badge" data-i18n="badge.soon">Próximamente</span>
+        <span class="serv-mat" data-i18n="serv.courses.mat">Online · A tu ritmo</span>
       </div>
 
       <div class="serv-card">
         <div class="serv-ico" style="background:rgba(217,70,166,0.08);">
           <i class="fas fa-layer-group" style="color:#D946A6;"></i>
         </div>
-        <div class="serv-name">Flujos Complejos</div>
-        <p class="serv-desc">Full Arch, carillas totales, híbridos sobre implantes y rehabilitaciones completas — a tu alcance</p>
+        <div class="serv-name" data-i18n="serv.complex.name">Flujos Complejos</div>
+        <p class="serv-desc" data-i18n="serv.complex.desc">Full Arch, carillas totales, híbridos sobre implantes y rehabilitaciones completas — a tu alcance</p>
         <span class="serv-mat">CAD · CAM · Terminado</span>
       </div>
 
@@ -753,9 +780,9 @@
         <div class="serv-ico" style="background:rgba(0,210,255,0.08);">
           <i class="fas fa-comments" style="color:#00d2ff;"></i>
         </div>
-        <div class="serv-name">Asesoría de Caso</div>
-        <p class="serv-desc">¿No sabes por dónde empezar? Te orientamos sobre flujo, materiales y pasos a seguir</p>
-        <span class="serv-mat">WhatsApp · Mismo día</span>
+        <div class="serv-name" data-i18n="serv.advisory.name">Asesoría de Caso</div>
+        <p class="serv-desc" data-i18n="serv.advisory.desc">¿No sabes por dónde empezar? Te orientamos sobre flujo, materiales y pasos a seguir</p>
+        <span class="serv-mat" data-i18n="serv.advisory.mat">WhatsApp · Mismo día</span>
       </div>
     </div>
 
@@ -772,7 +799,7 @@
       </a>
     </div>
 
-    <p class="footer-text">
+    <p class="footer-text" data-i18n="footer.text">
       prodigylabdental.com &nbsp;·&nbsp; Laboratorio dental de precisión
       &nbsp;·&nbsp;
       <a href="app/login.html" id="staff-link" style="display:none;">staff →</a>
@@ -781,6 +808,7 @@
 
   </div>
 
+  <script src="js/i18n.js"></script>
   <script>
     if (new URLSearchParams(location.search).get('bypass') === '1') {
       document.getElementById('staff-link').style.display = 'inline';
