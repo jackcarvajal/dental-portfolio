@@ -333,11 +333,30 @@
     }
 
     /* ── Flujo Full Lab ── */
+    .flujo-wrap {
+      position: relative; width: 100%; margin-bottom: 64px;
+    }
+    .flujo-wrap::after {
+      content: '';
+      display: none;
+      position: absolute; top: 0; right: 0;
+      width: 60px; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(5,5,5,0.85));
+      border-radius: 0 18px 18px 0;
+      pointer-events: none; z-index: 3;
+    }
+    .flujo-hint {
+      display: none;
+      text-align: center; margin-top: 10px;
+      font-size: 0.72rem; color: rgba(212,175,55,0.6);
+      letter-spacing: 1px;
+      animation: hintPulse 2s ease-in-out infinite;
+    }
+    @keyframes hintPulse { 0%,100%{opacity:.5;} 50%{opacity:1;} }
     .flujo-row {
       display: flex; width: 100%;
       border: 1px solid rgba(212,175,55,0.18);
       border-radius: 18px; overflow: hidden;
-      margin-bottom: 64px;
     }
     .flujo-step {
       flex: 1; background: #070b12;
@@ -431,6 +450,8 @@
     @media (max-width: 640px) {
       .flujo-row { overflow-x: auto; }
       .flujo-step { min-width: 130px; }
+      .flujo-wrap::after { display: block; }
+      .flujo-hint { display: block; }
       .psych-section { padding: 36px 24px; }
       .card { padding: 2rem 1.5rem; }
     }
@@ -603,6 +624,7 @@
     <div class="sec-label">Flujo completo</div>
     <div class="sec-title">Del escáner al terminado — en un solo proveedor</div>
 
+    <div class="flujo-wrap">
     <div class="flujo-row">
       <div class="flujo-step">
         <span class="step-num">01</span>
@@ -653,6 +675,8 @@
         <p class="step-desc">Lista para cementar en 24–72 h</p>
         <span class="step-tag">24–72 h</span>
       </div>
+    </div>
+    <p class="flujo-hint">desliza para ver más &nbsp;›</p>
     </div>
 
     <!-- ── SERVICIOS ── -->
