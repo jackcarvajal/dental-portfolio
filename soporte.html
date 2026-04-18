@@ -36,10 +36,11 @@
     .hero p { color: var(--muted); max-width: 540px; margin: 0 auto 32px; font-size: 1rem; }
     /* Botón abrir chat */
     .hero-chat-btn {
-      display: inline-flex; align-items: center; gap: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; max-width: 540px;
       background: linear-gradient(135deg, #00d2ff 0%, #0080aa 100%);
-      color: #fff; font-weight: 800; font-size: .95rem; letter-spacing: .5px;
-      padding: 14px 28px; border-radius: 100px; border: none; cursor: pointer;
+      color: #fff; font-weight: 800; font-size: 1rem; letter-spacing: .5px;
+      padding: 18px 28px; border-radius: 14px; border: none; cursor: pointer;
       box-shadow: 0 8px 32px rgba(0,210,255,0.35);
       transition: opacity .2s, transform .2s; text-decoration: none;
     }

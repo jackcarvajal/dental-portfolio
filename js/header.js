@@ -80,7 +80,7 @@
 
     '.pnav2-c{max-width:1400px;margin:0 auto;display:flex;align-items:center;',
     'justify-content:space-between;padding:0 24px;position:relative;gap:16px;}',
-    '.pnav2-left,.pnav2-right{display:flex;gap:20px;flex-wrap:nowrap;align-items:center;flex:1;}',
+    '.pnav2-left,.pnav2-right{display:flex;gap:14px;flex-wrap:nowrap;align-items:center;flex:1;}',
     '.pnav2-left{justify-content:flex-start;}',
     '.pnav2-right{justify-content:flex-end;}',
     '.pnav2-left>a,.pnav2-right>a{color:#cbd5e1;text-decoration:none;font-size:13.5px;',
@@ -401,7 +401,6 @@
           '</div>' +
           '<a href="/portafolio.html"' + ac('/portafolio.html') + '>PORTAFOLIO</a>' +
           '<a href="/envia-tu-scanner.html"' + ac('/envia-tu-scanner.html') + '>ENVÍA TU ESCÁNER</a>' +
-          '<a href="/nosotros.html"' + ac('/nosotros.html') + '>NOSOTROS</a>' +
         '</div>' +
 
         /* Logo centrado */
@@ -412,6 +411,7 @@
 
         /* Derecha */
         '<div class="pnav2-right">' +
+          '<a href="/nosotros.html"' + ac('/nosotros.html') + '>NOSOTROS</a>' +
           '<a href="/journal.html"' + ac('/journal.html') + '>BLOG</a>' +
           '<a href="/seguimiento-caso.html"' + ac('/seguimiento-caso.html') + '>SIGUE TU CASO</a>' +
           '<div class="pnav2-dd" id="pnav2-dd-sop">' +
