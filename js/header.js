@@ -79,19 +79,19 @@
     'border-bottom-color:rgba(217,70,166,0.35);}',
 
     '.pnav2-c{max-width:1400px;margin:0 auto;display:flex;align-items:center;',
-    'justify-content:space-between;padding:0 24px;position:relative;gap:16px;}',
+    'padding:0 24px;gap:0;}',
     '.pnav2-left,.pnav2-right{display:flex;gap:14px;flex-wrap:nowrap;align-items:center;flex:1;}',
-    '.pnav2-left{justify-content:flex-start;}',
-    '.pnav2-right{justify-content:flex-end;}',
+    '.pnav2-left{justify-content:flex-end;}',
+    '.pnav2-right{justify-content:flex-start;}',
     '.pnav2-left>a,.pnav2-right>a{color:#cbd5e1;text-decoration:none;font-size:13.5px;',
     'font-weight:700;text-transform:uppercase;letter-spacing:.8px;white-space:nowrap;',
     'transition:color .25s;}',
     '.pnav2-left>a:hover,.pnav2-right>a:hover{color:#fff;}',
     '.pnav2-left>a.pnav2-active,.pnav2-right>a.pnav2-active{color:#00FF41!important;}',
 
-    /* Logo centrado */
-    '.pnav2-logo{position:absolute;left:50%;transform:translateX(-50%);',
-    'text-decoration:none;text-align:center;z-index:1;pointer-events:auto;}',
+    /* Logo centrado — flex real, no absoluto */
+    '.pnav2-logo{flex-shrink:0;padding:0 20px;',
+    'text-decoration:none;text-align:center;pointer-events:auto;}',
     '.pnav2-logo strong{display:block;font-size:24px;font-weight:900;',
     'letter-spacing:3px;color:#D4AF37;line-height:1.1;}',
     '.pnav2-logo em{display:block;font-style:normal;font-size:9px;font-weight:700;',
