@@ -131,14 +131,14 @@
     'box-shadow:0 4px 20px rgba(217,70,166,0.4);font-family:inherit;',
     'transition:box-shadow .2s,transform .2s;}',
     '.pnav2-ped-btn:hover{box-shadow:0 6px 28px rgba(217,70,166,0.6);transform:translateY(-1px);}',
-    '.pnav2-ped-drop{position:absolute;top:calc(100% + 10px);right:0;',
+    '.pnav2-ped-drop{position:absolute;top:calc(100% + 4px);right:0;',
     'background:rgba(8,8,12,0.98);backdrop-filter:blur(20px);',
     'border:1px solid rgba(217,70,166,0.3);border-radius:14px;',
-    'padding:8px;min-width:210px;z-index:2000;',
+    'padding:8px;min-width:260px;z-index:2000;',
     'box-shadow:0 16px 48px rgba(0,0,0,0.6);',
     'opacity:0;pointer-events:none;transform:translateY(8px);',
     'transition:opacity .2s,transform .2s;}',
-    '.pnav2-ped-drop.open{opacity:1;pointer-events:auto;transform:translateY(0);}',
+    '.pnav2-ped-drop.open,.pnav2-ped-wrap:hover .pnav2-ped-drop{opacity:1;pointer-events:auto;transform:translateY(0);}',
     '.pnav2-ped-card{display:flex;align-items:center;gap:12px;',
     'padding:12px 14px;border-radius:10px;text-decoration:none;',
     'color:#e2e8f0;transition:background .15s;}',
@@ -179,7 +179,7 @@
     'transition:opacity .4s ease,transform .4s cubic-bezier(.34,1.56,.64,1);',
     'pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:12px;}',
     '#pcta-pedido.visible{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;}',
-    '#pcta-menu{display:flex;gap:10px;opacity:0;transform:translateY(16px);pointer-events:none;',
+    '#pcta-menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;opacity:0;transform:translateY(16px);pointer-events:none;',
     'transition:opacity .3s ease,transform .3s cubic-bezier(.34,1.56,.64,1);}',
     '#pcta-menu.open{opacity:1;transform:translateY(0);pointer-events:auto;}',
     '.pcta-card{display:flex;flex-direction:column;align-items:center;gap:8px;',
@@ -193,9 +193,15 @@
     '.pcta-card-cad{border-color:rgba(0,210,255,0.35);}',
     '.pcta-card-cad i{color:#00d2ff;}',
     '.pcta-card-cad:hover{border-color:rgba(0,210,255,0.8);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 0 20px rgba(0,210,255,0.3);}',
-    '.pcta-card-lab{border-color:rgba(212,175,55,0.35);}',
-    '.pcta-card-lab i{color:#D4AF37;}',
-    '.pcta-card-lab:hover{border-color:rgba(212,175,55,0.8);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 0 20px rgba(212,175,55,0.3);}',
+    '.pcta-card-cam{border-color:rgba(212,175,55,0.35);}',
+    '.pcta-card-cam i{color:#D4AF37;}',
+    '.pcta-card-cam:hover{border-color:rgba(212,175,55,0.8);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 0 20px rgba(212,175,55,0.3);}',
+    '.pcta-card-lab{border-color:rgba(217,70,166,0.35);}',
+    '.pcta-card-lab i{color:#D946A6;}',
+    '.pcta-card-lab:hover{border-color:rgba(217,70,166,0.8);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 0 20px rgba(217,70,166,0.3);}',
+    '.pcta-card-scan{border-color:rgba(0,255,65,0.35);}',
+    '.pcta-card-scan i{color:#00FF41;}',
+    '.pcta-card-scan:hover{border-color:rgba(0,255,65,0.8);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 0 20px rgba(0,255,65,0.3);}',
     '.pcta-card-title{font-size:11px;font-weight:900;letter-spacing:1px;',
     'text-transform:uppercase;color:#e2e8f0;line-height:1.2;}',
     '.pcta-card-sub{font-size:9px;font-weight:600;letter-spacing:.5px;',
@@ -238,7 +244,7 @@
     '.pnav2-dd-menu.r{left:auto;right:0;}',
 
     /* CHATBOT GLOBAL — bubble flotante */
-    '#pg-chat-bubble{position:fixed;bottom:28px;right:28px;z-index:9000;',
+    '#pg-chat-bubble{position:fixed;bottom:28px;left:28px;right:auto;z-index:9000;',
     'width:64px;height:64px;border-radius:50%;',
     'background:linear-gradient(135deg,#00d2ff 0%,#006699 100%);',
     'border:2px solid rgba(0,210,255,0.55);cursor:pointer;',
@@ -256,7 +262,7 @@
     'border:2px solid #050505;animation:_ppulse 2s infinite;}',
 
     /* Chat window */
-    '#pg-chat-window{position:fixed;bottom:102px;right:28px;z-index:9000;',
+    '#pg-chat-window{position:fixed;bottom:102px;left:28px;right:auto;z-index:9000;',
     'width:360px;max-height:540px;background:#0a0f18;',
     'border:1px solid rgba(0,210,255,0.28);border-radius:20px;',
     'display:flex;flex-direction:column;',
@@ -264,7 +270,7 @@
     'transform:scale(0.92) translateY(20px);opacity:0;pointer-events:none;',
     'transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .25s ease;}',
     '#pg-chat-window.open{transform:scale(1) translateY(0);opacity:1;pointer-events:auto;}',
-    '@media(max-width:420px){#pg-chat-window{width:calc(100vw - 24px);right:12px;bottom:88px;}}',
+    '@media(max-width:420px){#pg-chat-window{width:calc(100vw - 24px);left:12px;right:auto;bottom:88px;}}',
     '.pg-chat-header{display:flex;align-items:center;gap:12px;',
     'padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;}',
     '.pg-chat-avatar{width:38px;height:38px;border-radius:50%;',
@@ -433,11 +439,19 @@
             '<div class="pnav2-ped-drop" id="pnav2-ped-drop">' +
               '<a href="/diseno-cad.html" class="pnav2-ped-card">' +
                 '<i class="fas fa-drafting-compass" style="color:#00d2ff;font-size:1.2rem;"></i>' +
-                '<div><strong>Diseño CAD</strong><span>Solo el archivo STL</span></div>' +
+                '<div><strong>Diseño CAD</strong><span>Exocad · 3Shape · archivo STL</span></div>' +
+              '</a>' +
+              '<a href="/fresado-cam.html" class="pnav2-ped-card">' +
+                '<i class="fas fa-cog" style="color:#D4AF37;font-size:1.2rem;"></i>' +
+                '<div><strong>Fabricación CAM</strong><span>Zirconia · Disilicato · PMMA</span></div>' +
               '</a>' +
               '<a href="/flujo-lab.html" class="pnav2-ped-card">' +
-                '<i class="fas fa-layer-group" style="color:#D4AF37;font-size:1.2rem;"></i>' +
-                '<div><strong>Flujo Lab Full</strong><span>Modelo → acabado final</span></div>' +
+                '<i class="fas fa-layer-group" style="color:#D946A6;font-size:1.2rem;"></i>' +
+                '<div><strong>Flujo Lab Full</strong><span>Modelo → diseño → acabado final</span></div>' +
+              '</a>' +
+              '<a href="/escaner-domicilio.html" class="pnav2-ped-card">' +
+                '<i class="fas fa-mobile-alt" style="color:#00FF41;font-size:1.2rem;"></i>' +
+                '<div><strong>Escáner a Domicilio</strong><span>Norte Bogotá · 2h hábiles</span></div>' +
               '</a>' +
             '</div>' +
           '</div>' +
@@ -476,12 +490,22 @@
           '<a href="/diseno-cad.html" class="pcta-card pcta-card-cad">' +
             '<i class="fas fa-drafting-compass"></i>' +
             '<span class="pcta-card-title">Diseño CAD</span>' +
-            '<span class="pcta-card-sub">Solo el archivo STL</span>' +
+            '<span class="pcta-card-sub">Exocad · STL</span>' +
+          '</a>' +
+          '<a href="/fresado-cam.html" class="pcta-card pcta-card-cam">' +
+            '<i class="fas fa-cog"></i>' +
+            '<span class="pcta-card-title">Fabricación CAM</span>' +
+            '<span class="pcta-card-sub">Zirconia · PMMA</span>' +
           '</a>' +
           '<a href="/flujo-lab.html" class="pcta-card pcta-card-lab">' +
             '<i class="fas fa-layer-group"></i>' +
             '<span class="pcta-card-title">Flujo Lab Full</span>' +
-            '<span class="pcta-card-sub">Modelo → acabado final</span>' +
+            '<span class="pcta-card-sub">Completo → entrega</span>' +
+          '</a>' +
+          '<a href="/escaner-domicilio.html" class="pcta-card pcta-card-scan">' +
+            '<i class="fas fa-mobile-alt"></i>' +
+            '<span class="pcta-card-title">Escáner</span>' +
+            '<span class="pcta-card-sub">Norte Bogotá</span>' +
           '</a>' +
         '</div>' +
         '<button id="pcta-btn" onclick="_phdrCtaToggle(this)" aria-expanded="false">' +
