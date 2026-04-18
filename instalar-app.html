@@ -7,6 +7,7 @@
   <meta name="description" content="Instala la app de Prodigy Lab Dental en tu celular o computador. Acceso rápido a tu seguimiento de caso, cotizador y portafolio.">
   <link rel="manifest" href="/manifest.json">
   <link rel="canonical" href="https://prodigylabdental.com/instalar-app.html">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <title>Instala la App — PRODIGY Lab Dental</title>
   <style>
     :root {
@@ -27,21 +28,6 @@
       min-height: 100vh;
     }
 
-    /* NAV */
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 24px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(5,5,5,0.95);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    nav .brand { font-weight: 700; font-size: 1.1rem; color: var(--gold); letter-spacing: 2px; text-decoration: none; }
-    nav a.back { color: var(--muted); text-decoration: none; font-size: .9rem; display: flex; align-items: center; gap: 6px; }
-    nav a.back:hover { color: var(--text); }
 
     /* HERO */
     .hero {
@@ -224,11 +210,7 @@
   </style>
 </head>
 <body>
-
-<nav>
-  <a class="brand" href="/">PRODIGY</a>
-  <a class="back" href="/">← Volver al inicio</a>
-</nav>
+<script src="js/header.js"></script>
 
 <!-- HERO -->
 <section class="hero">
@@ -408,11 +390,11 @@
 <!-- CTA -->
 <div class="cta-block">
   <h3>¿Ya la instalaste?</h3>
-  <p>Entra a tu cotizador o consulta el estado de tu caso desde la app.</p>
-  <a href="/calculadora.html" class="btn-primary">
-    Abrir cotizador →
+  <p>Sigue el estado de tu caso en tiempo real o envía tu pedido directamente desde aquí.</p>
+  <a href="/seguimiento-caso.html" class="btn-primary">
+    Sigue tu caso →
   </a><br>
-  <a href="/" class="btn-secondary">Ver el sitio web</a>
+  <a href="/flujo-lab.html" class="btn-secondary">Envía tu pedido</a>
 </div>
 
 <footer>
@@ -429,5 +411,6 @@ function show(id) {
 }
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 </script>
+<script src="js/footer.js"></script>
 </body>
 </html>

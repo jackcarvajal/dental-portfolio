@@ -22,17 +22,25 @@ Permiso total: bash, leer, escribir, crear, eliminar. Confirma solo si: eliminas
 
 ## 3b. PÁGINAS NUEVAS (mandamiento de oro)
 Toda página HTML nueva pública DEBE incluir:
-- `<nav class="navbar">` con el mismo encabezado doble (topbar + navbar principal) de index.html
+- `<script src="js/header.js"></script>` como PRIMER elemento dentro de `<body>` (inyecta topbar + navbar)
 - `<script src="js/footer.js"></script>` antes de `</body>`
 - `<meta name="theme-color" content="#D946A6">` y `<link rel="manifest" href="/manifest.json">`
 - `<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>`
 - Link rel="canonical" y meta description
 - ACTUALIZAR footer.js y sitemap.xml si la página es pública e indexable
+- NUNCA duplicar topbar/navbar inline en el CSS/HTML — header.js es la única fuente de verdad
+
+## 3c. LEY DEL 50/50 (mandamiento de pago)
+Toda página de cotización o pedido de lab DEBE mostrar:
+- "50% abono para inicio de labores · 50% saldo contra entrega antes del despacho"
+- El resumen de cotización calcula y muestra el abono automáticamente
+- El mensaje de WhatsApp incluye: Total, Abono requerido (50%), Saldo contra entrega (50%)
+- TODOS los precios en COP (pesos colombianos). Sin USD.
 
 ## 4. SEGURIDAD
 - `/app/*.html` (excepto login/reset): requieren `<meta name="robots" content="noindex,nofollow">` y `<script src="../js/auth-guard.js">` antes de cualquier JS de negocio.
 - `/patient.html`, `/patients/*`: noindex. Sin auth, acceso por link.
-- `/sql/*`, `/supabase/*`: bloqueados en netlify.toml.
+- `/sql/*`, `/supabase/*`: bloqueados en `_redirects` (Cloudflare Pages).
 
 ## 5. COLORES (referencia rápida)
 `--gold-primary:#D946A6` `--gold-hover:#D4AF37` `--accent-cyan:#00d2ff` `--bg-darker:#050505` `--bg-card:#1a2332` `--neon-green:#00FF41`
