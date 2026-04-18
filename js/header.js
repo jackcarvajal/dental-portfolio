@@ -18,6 +18,15 @@
   var noCta      = !!cfg.noCta;   // suprimir CTA flotante (ej: portal.html ya tiene el suyo)
   var activePath = cfg.activePath || window.location.pathname;
 
+  /* Auto-inject Font Awesome si la página no lo carga ya */
+  if (!document.querySelector('link[href*="font-awesome"]') && !document.querySelector('link[href*="fontawesome"]')) {
+    var _faLink = document.createElement('link');
+    _faLink.rel = 'stylesheet';
+    _faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
+    _faLink.crossOrigin = 'anonymous';
+    document.head.appendChild(_faLink);
+  }
+
   /* ── CSS ────────────────────────────────────────────────── */
   var css = [
     /* Body offset */
@@ -411,7 +420,6 @@
 
         /* Derecha */
         '<div class="pnav2-right">' +
-          '<a href="/nosotros.html"' + ac('/nosotros.html') + '>NOSOTROS</a>' +
           '<a href="/journal.html"' + ac('/journal.html') + '>BLOG</a>' +
           '<a href="/seguimiento-caso.html"' + ac('/seguimiento-caso.html') + '>SIGUE TU CASO</a>' +
           '<div class="pnav2-dd" id="pnav2-dd-sop">' +
@@ -432,6 +440,7 @@
           '<button class="pnav2-ia-btn" id="pnav2-ia-btn" onclick="_phdrToggleIA()" aria-label="Asistente IA">' +
             '<i class="fas fa-robot"></i>' +
           '</button>' +
+          '<a href="/nosotros.html"' + ac('/nosotros.html') + '>NOSOTROS</a>' +
           '<div class="pnav2-ped-wrap" id="pnav2-ped-wrap">' +
             '<button class="pnav2-ped-btn" onmouseenter="_phdrPedHover(true)" onmouseleave="_phdrPedHover(false)">' +
               'HAZ TU PEDIDO <i class="fas fa-chevron-down" style="font-size:9px;margin-left:4px;transition:transform .2s;" id="pnav2-ped-arrow"></i>' +
