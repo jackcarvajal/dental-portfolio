@@ -1110,7 +1110,7 @@
         }
 
         // ── ENVIAR WHATSAPP ───────────────────────────────────────────────────
-        function enviarWhatsApp() {
+        async function enviarWhatsApp() {
             const btn = document.getElementById('btn-wa');
             if (btn && btn.dataset.sending === '1') return;
 
@@ -1120,7 +1120,19 @@
             }
             localStorage.setItem('prodigy_cad_wts', Date.now().toString());
 
-            if (btn) { btn.dataset.sending='1'; btn.disabled=true; btn.textContent='⏳ Generando orden...'; }
+            if (btn) { btn.dataset.sending='1'; btn.disabled=true; btn.textContent='⏳ Subiendo archivos...'; }
+
+            // Subir archivos de diseño a Supabase Storage
+            if (window.FlujoUploader && window.ProdigyMultiViewer && window.ProdigyMultiViewer.getFiles().length > 0) {
+                try {
+                    const urls = await FlujoUploader.upload(STATE.ordenId, (n, total) => {
+                        if (btn) btn.textContent = `⏳ Subiendo archivo ${n+1}/${total}...`;
+                    });
+                    if (urls.length > 0) STATE.linkSTL = urls.join(' | ');
+                } catch(e) { console.warn('[PRODIGY] Upload error:', e); }
+            }
+
+            if (btn) btn.textContent = '⏳ Generando orden...';
             cerrarModal('modal-confirm');
 
             const cantidad   = parseInt(document.getElementById('cantidad').value,10) || 1;
@@ -1592,5 +1604,6 @@
     <script src="js/footer.js"></script>
     <script src="js/stl-multi-viewer.js"></script>
     <script>ProdigyMultiViewer.init('pmv-diseno');</script>
+    <script src="js/flujo-uploader.js"></script>
 </body>
 </html>

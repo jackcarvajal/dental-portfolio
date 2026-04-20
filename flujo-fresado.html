@@ -3942,7 +3942,7 @@
             document.getElementById('modal-confirmation').classList.add('active');
         }
 
-        function sendToWhatsApp() {
+        async function sendToWhatsApp() {
             const btn = document.getElementById('btn-whatsapp-confirm');
             if (btn && btn.dataset.sending === '1') return;
 
@@ -3955,7 +3955,19 @@
             }
             localStorage.setItem('prodigy_wts', Date.now().toString());
 
-            if (btn) { btn.dataset.sending = '1'; btn.disabled = true; btn.textContent = '⏳ Generando Orden...'; }
+            if (btn) { btn.dataset.sending = '1'; btn.disabled = true; btn.textContent = '⏳ Subiendo archivos...'; }
+
+            // Subir archivos STL/producción a Supabase Storage
+            if (window.FlujoUploader && window.ProdigyMultiViewer && window.ProdigyMultiViewer.getFiles().length > 0) {
+                try {
+                    const urls = await FlujoUploader.upload(STATE.ordenId, (n, total) => {
+                        if (btn) btn.textContent = `⏳ Subiendo archivo ${n+1}/${total}...`;
+                    });
+                    if (urls.length > 0) STATE.linkSTL = urls.join(' | ');
+                } catch(e) { console.warn('[PRODIGY] Upload error:', e); }
+            }
+
+            if (btn) { btn.textContent = '⏳ Generando Orden...'; }
             setTimeout(() => {
                 if (btn) { btn.dataset.sending = '0'; btn.disabled = false; btn.textContent = '🚀 CONFIRMAR Y ABRIR WHATSAPP'; }
             }, 3000);
@@ -4667,5 +4679,6 @@
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-Z8G2X7ETQ1');</script>
     <script src="js/stl-multi-viewer.js"></script>
     <script>ProdigyMultiViewer.init('pmv-fresado');</script>
+    <script src="js/flujo-uploader.js"></script>
 </body>
 </html>
