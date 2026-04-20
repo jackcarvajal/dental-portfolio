@@ -45,11 +45,11 @@
      * Si el rol no coincide → redirige al panel correcto.
      * neededRole: 'admin' | 'operator' | 'client' | null (cualquier rol)
      */
-    async function require(neededRole) {
+    async function require(neededRole, loginUrl) {
         const sb = getSb();
         const { data: { session } } = await sb.auth.getSession();
         if (!session) {
-            window.location.href = 'login.html';
+            window.location.href = loginUrl || 'login.html';
             return null;
         }
         const role = getRole(session.user);

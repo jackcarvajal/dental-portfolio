@@ -23,6 +23,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/flujo-impresion.min.css">
     <link rel="stylesheet" href="css/global-nav.min.css">
+    <style>body{visibility:hidden}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/auth-guard.js"></script>
+<script>ProdigyAuth.require('client','/app/login.html?redirect='+encodeURIComponent(location.pathname));</script>
 </head>
 <body>
     <!-- Geo-gate: impresión 3D es solo Colombia. Si internacional → overlay inmediato -->
@@ -365,74 +369,9 @@
 
                         <!-- ── BLOQUE 1: ARCHIVOS STL ─────────────────── -->
                         <div style="background:rgba(0,97,255,0.04); border:1px solid rgba(0,97,255,0.2); border-radius:12px; padding:20px 18px; margin-bottom:18px;">
-                        <p style="margin:0 0 14px; font-size:0.78rem; font-weight:800; color:#4d9fff; text-transform:uppercase; letter-spacing:1.5px; display:flex; align-items:center; gap:7px;"><i class="fas fa-file-code"></i> Archivos STL / Diseño</p>
-
-                        <!-- ⚠️ BANNER SOP NOMENCLATURA -->
-                        <div style="background:linear-gradient(135deg,rgba(239,68,68,0.12),rgba(212,175,55,0.08)); border:1.5px solid rgba(239,68,68,0.55); border-radius:10px; padding:14px 16px; margin-bottom:18px; display:flex; gap:12px; align-items:flex-start;">
-                            <i class="fas fa-triangle-exclamation" style="color:#ef4444; font-size:1.4rem; margin-top:2px; flex-shrink:0;"></i>
-                            <div>
-                                <p style="margin:0 0 5px; font-size:0.88rem; font-weight:900; color:#ef4444; text-transform:uppercase; letter-spacing:0.5px;">⚠️ Nombra tus archivos antes de subir</p>
-                                <p style="margin:0; font-size:0.82rem; color:#e2e8f0; line-height:1.6;">Usa el nombre del paciente en el archivo o comprímelos en un <strong style="color:#D4AF37;">.ZIP</strong> con su nombre.<br>
-                                <span style="color:#94a3b8;">Ejemplo: </span><code style="background:rgba(255,255,255,0.08); color:#fbbf24; padding:2px 7px; border-radius:4px; font-size:0.8rem;">JuanLopez_MaxilarSup.stl</code> &nbsp;o&nbsp; <code style="background:rgba(255,255,255,0.08); color:#fbbf24; padding:2px 7px; border-radius:4px; font-size:0.8rem;">JuanLopez_Caso.zip</code><br>
-                                <span style="color:#64748b; font-size:0.78rem;">Sin nombre → no podemos asignar el caso correctamente.</span></p>
-                            </div>
-                        </div>
-
-                        <!-- BOTÓN DROPBOX PRIMARIO -->
-                        <div style="margin-bottom: 22px;">
-                            <a href="https://www.dropbox.com/request/zAQNVD0AyQyfUgOshArY" target="_blank" rel="noopener"
-                               onclick="document.getElementById('linkSTL').value='https://www.dropbox.com/request/zAQNVD0AyQyfUgOshArY'; document.getElementById('linkSTL').style.borderColor='#0061ff'; document.getElementById('link-feedback').innerHTML='<i class=\'fas fa-circle-check\' style=\'color:#0061ff\'></i> Archivos en camino al Buzón PRODIGY'; document.getElementById('link-feedback').style.color='#0061ff';"
-                               style="display:flex; align-items:center; justify-content:center; gap:12px; width:100%; padding:18px 20px; background:linear-gradient(135deg,#0061ff,#0041aa); color:#fff; text-decoration:none; border-radius:12px; font-size:1rem; font-weight:800; letter-spacing:0.3px; box-shadow:0 6px 24px rgba(0,97,255,0.4); transition:all 0.25s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 32px rgba(0,97,255,0.55)'" onmouseout="this.style.transform='';this.style.boxShadow='0 6px 24px rgba(0,97,255,0.4)'">
-                                <svg width="28" height="24" viewBox="0 0 528 444" fill="white"><path d="M264 18L132 101l132 83 132-83zM0 184l132 83 132-83-132-83zm396-83l-132 83 132 83 132-83zM132 285l132 83 132-83-132-83zm132 101l132-83-132-83-132 83z"/></svg>
-                                📤 Subir al Buzón PRODIGY (Recomendado)
-                            </a>
-                            <p style="text-align:center; margin:8px 0 0; color:#888; font-size:0.78rem;">Rápido, seguro y sin crear cuentas. Los archivos llegan directo a nosotros.</p>
-                        </div>
-
-                        <!-- SEPARADOR OTRAS OPCIONES -->
-                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
-                            <div style="flex:1; height:1px; background:rgba(255,255,255,0.1);"></div>
-                            <span style="color:#666; font-size:0.78rem; font-weight:600; white-space:nowrap;">O usa otra plataforma</span>
-                            <div style="flex:1; height:1px; background:rgba(255,255,255,0.1);"></div>
-                        </div>
-
-                        <!-- BANNER INSTRUCCIONES -->
-                        <div style="background: rgba(0,210,255,0.06); border: 1px solid rgba(0,210,255,0.25); border-radius: 10px; padding: 16px 18px; margin-bottom: 20px;">
-                            <strong style="display: flex; align-items: center; gap: 8px; color: var(--accent-cyan); margin-bottom: 10px; font-size:0.9rem;">
-                                <i class="fas fa-circle-info"></i> Si prefieres Drive o WeTransfer:
-                            </strong>
-                            <ol style="margin: 0; padding-left: 18px; color: #ccc; font-size: 0.85rem; line-height: 1.8;">
-                                <li>Sube tus archivos a <strong style="color:#fff;">Google Drive</strong> o <strong style="color:#fff;">WeTransfer</strong></li>
-                                <li>En Drive: clic derecho → <em>Compartir</em> → <em>"Cualquier persona con el enlace"</em></li>
-                                <li>Copia el enlace y pégalo abajo (<kbd style="background:#333;padding:1px 5px;border-radius:3px;font-size:0.8rem;">Ctrl+V</kbd>)</li>
-                            </ol>
-                            <p style="margin: 10px 0 0; font-size:0.78rem; color:#f87171; font-weight:600;">
-                                <i class="fas fa-triangle-exclamation"></i> Enlace privado = el tiempo de entrega NO inicia hasta que lo hagamos público.
-                            </p>
-                        </div>
-
-                        <!-- CAMPO LINK STL -->
-                        <div class="form-group">
-                            <label>Link STL/Diseño (Público) *</label>
-                            <input type="url" id="linkSTL"
-                                placeholder="📋 Pega aquí el enlace — solo Drive o WeTransfer"
-                                autocomplete="off"
-                                onkeydown="if(event.key!=='Tab'&&event.key!=='Backspace'&&event.key!=='Delete'&&!(event.ctrlKey||event.metaKey)){event.preventDefault();}"
-                                onpaste="setTimeout(()=>{ const v=this.value; const ok=v.includes('drive.google.com')||v.includes('wetransfer.com')||v.includes('we.tl')||v.includes('dropbox.com'); const fb=document.getElementById('link-feedback'); if(v.length>5){ STATE.link=v; if(ok){ this.style.borderColor='#10b981'; fb.innerHTML='<i class=\'fas fa-circle-check\' style=\'color:#10b981\'></i> Enlace válido'; fb.style.color='#10b981'; }else{ this.style.borderColor='#f87171'; fb.innerHTML='<i class=\'fas fa-triangle-exclamation\' style=\'color:#f87171\'></i> Solo se aceptan Drive o WeTransfer'; fb.style.color='#f87171'; } }else{ this.style.borderColor=''; fb.innerHTML=''; } },150);"
-                                style="width:100%;padding:12px;background:var(--bg-dark);border:1px solid var(--border-subtle);border-radius:8px;color:#fff;transition:border-color 0.3s;">
-                            <div id="link-feedback" style="margin-top:6px;font-size:0.82rem;min-height:18px;"></div>
-                        </div>
-
-                        <!-- LINKS RÁPIDOS CON BRANDING -->
-                        <div style="display:flex; gap:10px; margin: 5px 0 20px;">
-                            <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; background:rgba(66,133,244,0.1); border:1px solid rgba(66,133,244,0.4); border-radius:8px; color:#4285f4; text-decoration:none; font-size:0.85rem; font-weight:700; transition:background 0.2s;" onmouseover="this.style.background='rgba(66,133,244,0.2)'" onmouseout="this.style.background='rgba(66,133,244,0.1)'">
-                                <i class="fab fa-google-drive"></i> Google Drive
-                            </a>
-                            <a href="https://wetransfer.com" target="_blank" rel="noopener noreferrer" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; background:rgba(0,189,165,0.1); border:1px solid rgba(0,189,165,0.4); border-radius:8px; color:#00bda5; text-decoration:none; font-size:0.85rem; font-weight:700; transition:background 0.2s;" onmouseover="this.style.background='rgba(0,189,165,0.2)'" onmouseout="this.style.background='rgba(0,189,165,0.1)'">
-                                <i class="fas fa-cloud-arrow-up"></i> WeTransfer
-                            </a>
-                        </div>
-
+                        <p style="margin:0 0 6px; font-size:0.78rem; font-weight:800; color:#4d9fff; text-transform:uppercase; letter-spacing:1.5px; display:flex; align-items:center; gap:7px;"><i class="fas fa-cube"></i> Archivos de Producción</p>
+                        <p style="margin:0 0 14px; font-size:0.76rem; color:#64748b;">STL · OBJ · PLY · DICOM · 3Shape · ZIP — visualiza cada archivo antes de enviar</p>
+                        <div id="pmv-impresion"></div>
                         </div><!-- /bloque archivos STL -->
 
                         <!-- ── BLOQUE 2: COMPROBANTE DE PAGO ─────────── -->
@@ -1144,5 +1083,7 @@
     <!-- Google Analytics GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-Z8G2X7ETQ1');</script>
+    <script src="js/stl-multi-viewer.js"></script>
+    <script>ProdigyMultiViewer.init('pmv-impresion');</script>
 </body>
 </html>

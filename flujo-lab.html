@@ -272,7 +272,11 @@
       .cat-tabs { gap: 4px; }
       .cat-tab { font-size: .65rem; padding: 5px 10px; }
     }
+  body{visibility:hidden}
   </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/auth-guard.js"></script>
+<script>ProdigyAuth.require('client','/app/login.html?redirect='+encodeURIComponent(location.pathname));</script>
 </head>
 <body>
 <script>window._headerConfig = {};</script>
@@ -310,13 +314,7 @@
 
     <!-- Panel Digital -->
     <div id="panel-digital" style="margin-top:20px;">
-      <div class="dropzone" id="dropzone">
-        <input type="file" id="file-input" multiple accept=".stl,.obj,.ply,.dcm,.zip,.3oxz,.3ox" onchange="handleFiles(this.files)">
-        <i class="fas fa-upload"></i>
-        <h3>Arrastra los archivos aquí</h3>
-        <p>STL, OBJ, PLY, DICOM (.dcm), 3Shape (.3oxz), Exocad (.zip)<br>Máx. 200 MB por archivo</p>
-      </div>
-      <div id="file-list" class="file-list"></div>
+      <div id="pmv-lab"></div>
       <p class="nota" style="margin-top:10px;"><i class="fas fa-lock"></i>Los archivos se suben cifrados por SSL. Eliminados a los 90 días salvo que los guardes en tu cuenta.</p>
     </div>
 
@@ -808,5 +806,7 @@ buildVita();
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
 </script>
+<script src="js/stl-multi-viewer.js"></script>
+<script>ProdigyMultiViewer.init('pmv-lab');</script>
 </body>
 </html>

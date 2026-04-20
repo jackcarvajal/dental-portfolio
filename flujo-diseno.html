@@ -316,10 +316,14 @@
         font-size:.7rem;color:#64748b;text-align:center;
         margin-top:6px;line-height:1.5;
     }
+    body{visibility:hidden}
     </style>
     <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
     <!-- PayPal JS SDK — Client ID público por diseño de PayPal -->
     <script src="https://www.paypal.com/sdk/js?client-id=AfJ71Yzfk4hmHF_hj6F9sdUqTLCK9tiImCegiXOTpScB81NhLLDuiKX2u37aY_E4swf8UO8QuC7jvaQr&currency=USD&intent=capture&locale=es_CO" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/auth-guard.js"></script>
+<script>ProdigyAuth.require('client','/app/login.html?redirect='+encodeURIComponent(location.pathname));</script>
 </head>
 <body>
 
@@ -534,29 +538,10 @@
                     <div class="accordion-inner">
                         <p style="font-size:.84rem;color:var(--text-secondary);margin-bottom:14px;">Confirma los archivos que vas a enviar. Los 3 primeros son obligatorios.</p>
 
-                        <!-- VISOR STL 3D (previsualización local, opcional) -->
+                        <!-- VISOR STL 3D MULTI-ARCHIVO -->
                         <div id="stl-viewer-section">
-                            <h3><i class="fas fa-cube" style="margin-right:6px;"></i>Visor 3D — Previsualización STL <span style="font-size:.7rem;opacity:.5;font-weight:400;text-transform:none;">(opcional · no sube archivos)</span></h3>
-                            <div id="stl-canvas-container"
-                                 ondragover="event.preventDefault();this.style.borderColor='var(--accent-cad)'"
-                                 ondragleave="this.style.borderColor='rgba(0,210,255,.25)'"
-                                 ondrop="handleStlDrop(event)">
-                                <div class="stl-drop-hint" id="stl-drop-hint">
-                                    <i class="fas fa-file-import"></i>
-                                    <p>Arrastra un archivo <strong>.STL</strong> aquí para previsualizarlo</p>
-                                    <p style="font-size:.7rem;opacity:.55;">Solo visualización local — no se sube al servidor</p>
-                                </div>
-                            </div>
-                            <div class="stl-controls">
-                                <button class="stl-btn" onclick="prodigyViewer&&prodigyViewer.resetCamera()"><i class="fas fa-compress-arrows-alt"></i> Reset</button>
-                                <button class="stl-btn" onclick="prodigyViewer&&prodigyViewer.toggleWireframe()"><i class="fas fa-border-none"></i> Wireframe</button>
-                                <button class="stl-btn" onclick="prodigyViewer&&prodigyViewer.clearViewer()"><i class="fas fa-trash-alt"></i> Limpiar</button>
-                                <label class="stl-btn" style="cursor:pointer;">
-                                    <i class="fas fa-folder-open"></i> Abrir STL
-                                    <input type="file" accept=".stl" style="display:none" onchange="prodigyViewer&&prodigyViewer.loadFile(this.files[0])">
-                                </label>
-                                <span id="stl-filename"></span>
-                            </div>
+                            <h3><i class="fas fa-cube" style="margin-right:6px;"></i>Archivos de Diseño <span style="font-size:.7rem;opacity:.5;font-weight:400;text-transform:none;">STL · OBJ · PLY · DICOM · 3Shape · ZIP</span></h3>
+                            <div id="pmv-diseno" style="margin-top:10px;"></div>
                         </div>
 
                         <div class="checklist-matrix">
@@ -841,84 +826,7 @@
         </div>
     </div>
 
-    <!-- ═══════════════════════════════
-         THREE.JS — VISOR STL
-    ═══════════════════════════════ -->
-    <script type="module">
-        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
-        import { STLLoader }     from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/STLLoader.js';
-        import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/controls/OrbitControls.js';
-
-        const container = document.getElementById('stl-canvas-container');
-        const hint      = document.getElementById('stl-drop-hint');
-        const fnEl      = document.getElementById('stl-filename');
-
-        const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setClearColor(0x020810, 1);
-        container.appendChild(renderer.domElement);
-
-        const scene  = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(40, 2, 0.1, 2000);
-        camera.position.set(0, 0, 150);
-
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-
-        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-        const d1 = new THREE.DirectionalLight(0xffffff, 1.2); d1.position.set(1,2,3); scene.add(d1);
-        const d2 = new THREE.DirectionalLight(0x00d2ff, 0.4); d2.position.set(-2,-1,1); scene.add(d2);
-
-        let mesh = null, wireMode = false;
-
-        function resize() {
-            const w = container.clientWidth, h = container.clientHeight;
-            renderer.setSize(w, h, false);
-            camera.aspect = w / h;
-            camera.updateProjectionMatrix();
-        }
-        new ResizeObserver(resize).observe(container);
-        resize();
-
-        (function animate() { requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); })();
-
-        function loadFile(file) {
-            if (!file) return;
-            // Agente 1: validación de tipo antes de cargar
-            if (window.validateUpload) {
-                const check = validateUpload(file, 'CAD');
-                if (!check.valid) { showUploadError(check.error); return; }
-            }
-            fnEl.textContent = '📄 ' + file.name;
-            const reader = new FileReader();
-            reader.onload = e => {
-                const geo = new STLLoader().parse(e.target.result);
-                geo.computeVertexNormals();
-                geo.center();
-                if (mesh) { scene.remove(mesh); mesh.geometry.dispose(); }
-                const box  = new THREE.Box3().setFromBufferAttribute(geo.attributes.position);
-                const size = box.getSize(new THREE.Vector3()).length();
-                camera.position.set(0, 0, size * 1.4);
-                controls.target.set(0,0,0); controls.update();
-                const mat = new THREE.MeshStandardMaterial({ color:0xD4AF37, metalness:.25, roughness:.55, side:THREE.DoubleSide });
-                mesh = new THREE.Mesh(geo, mat);
-                scene.add(mesh);
-                hint.style.display = 'none';
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        function resetCamera() {
-            if (!mesh) return;
-            const size = new THREE.Box3().setFromObject(mesh).getSize(new THREE.Vector3()).length();
-            camera.position.set(0, 0, size * 1.4);
-            controls.target.set(0,0,0); controls.update();
-        }
-        function toggleWireframe() { if (mesh) { wireMode = !wireMode; mesh.material.wireframe = wireMode; } }
-        function clearViewer()     { if (mesh) { scene.remove(mesh); mesh.geometry.dispose(); mesh = null; } hint.style.display='flex'; fnEl.textContent=''; }
-
-        window.prodigyViewer = { loadFile, resetCamera, toggleWireframe, clearViewer };
-    </script>
+    <!-- stl-multi-viewer se inicializa al final del body -->
 
     <!-- ═══════════════════════════════
          LÓGICA PRINCIPAL
@@ -1682,5 +1590,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-Z8G2X7ETQ1');</script>
     <script src="js/footer.js"></script>
+    <script src="js/stl-multi-viewer.js"></script>
+    <script>ProdigyMultiViewer.init('pmv-diseno');</script>
 </body>
 </html>

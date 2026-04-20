@@ -615,6 +615,16 @@
             window.location.href = DEST_MAP[role];
             return;
         }
+        // Si viene con ?redirect= y es cliente, ir directo al destino
+        if (role === 'client') {
+            const params = new URLSearchParams(window.location.search);
+            const redir  = params.get('redirect');
+            // Solo permitir rutas internas (no http externo)
+            if (redir && redir.startsWith('/') && !redir.startsWith('//')) {
+                window.location.href = redir;
+                return;
+            }
+        }
         // Verificar perfil completo (whatsapp requerido para operar)
         const { data: perfil } = await sb
             .from('doctores_perfil')
