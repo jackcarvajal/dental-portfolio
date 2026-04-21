@@ -16,11 +16,11 @@
     const ADMIN_EMAILS  = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com'];
 
     const DEST_MAP = {
-        admin:                'panel-interno-operaciones.html',
-        operator:             'operator-panel.html',
-        mensajero:            'mensajero.html',
-        encargado_inventario: 'inventario.html',
-        client:               'client-panel.html'
+        admin:                '/app/panel-interno-operaciones.html',
+        operator:             '/app/operator-panel.html',
+        mensajero:            '/app/mensajero.html',
+        encargado_inventario: '/app/inventario.html',
+        client:               '/app/client-panel.html'
     };
 
     function getRole(user) {
