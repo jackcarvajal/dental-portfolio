@@ -760,7 +760,16 @@ async function generarOrden() {
 
   if (!doctor) { alert('Por favor ingresa el nombre del doctor o clínica.'); document.getElementById('rx-doctor').focus(); return; }
 
-  // Construir resumen
+  var btn = document.getElementById('btn-generar');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Generando orden...'; }
+
+  // ID único y nonce de seguimiento
+  var _rb = new Uint8Array(5); crypto.getRandomValues(_rb);
+  var ordenId = 'LAB-' + Array.from(_rb).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('').toUpperCase();
+  var _rn = new Uint8Array(8); crypto.getRandomValues(_rn);
+  var nonce = Array.from(_rn).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('').toUpperCase();
+
+  // Construir resumen de trabajos
   var lines = [];
   Object.keys(cart).forEach(function(id) {
     var c = cart[id];
@@ -769,47 +778,85 @@ async function generarOrden() {
 
   var total = 0;
   Object.keys(cart).forEach(function(id){ total += cart[id].price * cart[id].qty; });
+  var abono = Math.round(total * 0.5);
 
   var hasQuote = Object.keys(cart).some(function(id){ return cart[id].price === 0; });
-
   var viaActual = document.getElementById('panel-digital').style.display !== 'none' ? 'Digital' : 'Físico';
-  var archivos = selectedFiles.length ? selectedFiles.map(function(f){ return f.name; }).join(', ') : 'Ninguno';
 
+  // Subir archivos del multi-viewer a Supabase
+  var linkSTL = '';
+  if (window.FlujoUploader && window.ProdigyMultiViewer) {
+    var _vf = window.ProdigyMultiViewer.getFiles();
+    if (_vf && _vf.length > 0) {
+      try {
+        if (btn) btn.textContent = '⏳ Subiendo archivos...';
+        var _urls = await window.FlujoUploader.upload(ordenId);
+        if (_urls && _urls.length > 0) linkSTL = _urls.join(', ');
+      } catch(_ue) { /* continuar sin URLs */ }
+    }
+  }
+
+  // Mensaje WhatsApp
   var msg = '🦷 *ORDEN DE TRABAJO — PRODIGY Lab*\n\n' +
-    '👨‍⚕️ *Doctor:* ' + (doctor || '—') + '\n' +
+    '📋 *ID Orden:* ' + ordenId + '\n' +
+    '👨‍⚕️ *Doctor / Clínica:* ' + doctor + '\n' +
+    (tel ? '📱 *Contacto:* ' + tel + '\n' : '') +
     '🏥 *Paciente:* ' + (paciente || '—') + '\n' +
     '📅 *Entrega requerida:* ' + (fecha || '—') + '\n' +
     '🎨 *Color:* ' + (color || '—') + '\n' +
     (antagonista ? '🦷 *Antagonista:* ' + antagonista + '\n' : '') +
     (oclusion ? '⚙️ *Oclusión:* ' + oclusion + '\n' : '') +
     '\n📦 *Vía de envío:* ' + viaActual + '\n' +
-    (selectedFiles.length ? '📎 *Archivos:* ' + archivos + '\n' : '') +
+    (linkSTL ? '📎 *Archivos digitales:* ' + linkSTL + '\n' : '') +
     '\n🔧 *Trabajos solicitados:*\n' + (lines.length ? lines.join('\n') : '(sin trabajos seleccionados)') + '\n\n' +
-    '💰 *Total estimado: ' + fmtCOP(total) + '*' +
-    '\n💳 *Abono para iniciar (50%): ' + fmtCOP(Math.round(total * 0.5)) + '*' +
-    '\n💳 *Saldo contra entrega (50%): ' + fmtCOP(Math.round(total * 0.5)) + '*' +
-    (hasQuote ? '\n⚠️ Algunos ítems requieren cotización manual.' : '') +
-    (obs ? '\n\n📝 *Observaciones:*\n' + obs : '') +
-    '\n\n_Generado desde ProDigy Portal_';
+    '💵 *Total estimado: ' + fmtCOP(total) + '*\n' +
+    '💳 *Abono para inicio de producción (50%): ' + fmtCOP(abono) + '*\n' +
+    '💳 *Saldo antes del despacho (50%): ' + fmtCOP(abono) + '*\n' +
+    '⚠️ *Política de entrega: el caso no sale del laboratorio sin liquidación del 100% del saldo.*\n' +
+    (hasQuote ? '\n📌 Algunos ítems requieren cotización manual.\n' : '') +
+    (obs ? '\n📝 *Observaciones:*\n' + obs + '\n' : '') +
+    '\n🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso.html?id=' + ordenId + '&key=' + nonce +
+    '\n\n🤝 *¡Gracias por confiar en PRODIGY Lab Dental!*\n' +
+    'Su caso está en las mejores manos. Trabajamos con precisión, calidad y compromiso en cada detalle.\n' +
+    '_Esperamos seguir siendo su aliado en sus próximos trabajos._ 💎\n' +
+    '_Equipo PRODIGY · Bogotá, Colombia_';
 
-  // Subir archivos del multi-viewer a Supabase (si los hay)
-  var archivosUpload = '';
-  if (window.FlujoUploader && window.ProdigyMultiViewer) {
-    var _vf = window.ProdigyMultiViewer.getFiles();
-    if (_vf && _vf.length > 0) {
-      try {
-        var ordenIdLab = 'LAB-' + Date.now().toString(36).toUpperCase();
-        var _urls = await window.FlujoUploader.upload(ordenIdLab);
-        if (_urls && _urls.length > 0) archivosUpload = _urls.join(', ');
-      } catch(_ue) { /* continuar sin URLs */ }
+  // Guardar en Supabase (no-blocking)
+  try {
+    var _sb = window.ProdigyAuth ? window.ProdigyAuth.getSb() : null;
+    if (_sb) {
+      _sb.from('pedidos').insert([{
+        codigo:    ordenId,
+        doctor:    doctor,
+        whatsapp:  tel || null,
+        servicio:  lines.length ? lines.map(function(l){ return l.split(' — ')[0]; }).join(', ') : 'Lab Full',
+        material:  'lab',
+        cantidad:  Object.keys(cart).reduce(function(s,id){ return s + cart[id].qty; }, 0) || 1,
+        total:     total,
+        estado:    'Borrador',
+        fecha_entrega: fecha || null,
+        link_stl:  linkSTL || null,
+        nonce:     nonce,
+        flujo:     'lab',
+        terminos_aceptados_at: new Date().toISOString(),
+        user_agent: navigator.userAgent.slice(0, 250)
+      }]).then(function(r){ if (r.error) console.warn('[PRODIGY] Pedido lab no guardado:', r.error.message); });
     }
-  }
-  if (archivosUpload) {
-    msg += '\n\n📁 *Archivos digitales (Supabase):*\n' + archivosUpload;
+  } catch(_e) { /* silencioso */ }
+
+  if (btn) { btn.disabled = false; btn.innerHTML = '<span class="pulse"></span><i class="fas fa-file-alt"></i> Generar Orden de Trabajo'; }
+
+  // Mostrar modal de éxito
+  var mEl = document.getElementById('modal-exito-lab');
+  if (mEl) {
+    document.getElementById('lab-exito-id').textContent    = ordenId;
+    document.getElementById('lab-exito-doc').textContent   = doctor;
+    document.getElementById('lab-exito-total').textContent = fmtCOP(total);
+    document.getElementById('lab-exito-abono').textContent = fmtCOP(abono);
+    mEl.classList.add('active');
   }
 
-  var wa = 'https://wa.me/573212816716?text=' + encodeURIComponent(msg);
-  window.open(wa, '_blank', 'noopener');
+  window.open('https://wa.me/573212816716?text=' + encodeURIComponent(msg), '_blank', 'noopener');
 }
 
 function ctaWhatsApp() {
@@ -825,5 +872,43 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').cat
 <script src="js/stl-multi-viewer.js"></script>
 <script>ProdigyMultiViewer.init('pmv-lab');</script>
 <script src="js/flujo-uploader.js"></script>
+
+<!-- MODAL ÉXITO LAB -->
+<div id="modal-exito-lab" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:9000;justify-content:center;align-items:center;">
+  <div style="background:linear-gradient(145deg,#0a0a0a,#111827);border:1px solid rgba(217,70,166,0.4);border-radius:18px;padding:36px 28px;text-align:center;max-width:460px;width:90%;position:relative;">
+    <div style="font-size:3rem;margin-bottom:12px;">✅</div>
+    <h2 style="color:#D946A6;margin-bottom:6px;font-size:1.3rem;">¡Orden Generada!</h2>
+    <p style="color:#64748b;font-size:.85rem;margin-bottom:20px;">Tu orden fue enviada por WhatsApp. Guarda el ID para seguimiento.</p>
+    <div style="background:rgba(217,70,166,0.06);border:1px solid rgba(217,70,166,0.2);border-radius:10px;padding:14px 16px;text-align:left;font-size:.85rem;margin-bottom:20px;">
+      <p style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+        <strong style="color:#D946A6;">ID Orden:</strong>
+        <span id="lab-exito-id" style="font-family:monospace;font-size:.9rem;">—</span>
+        <button onclick="navigator.clipboard.writeText(document.getElementById('lab-exito-id').textContent);this.textContent='✓ Copiado';setTimeout(()=>this.textContent='📋 Copiar',2000);" style="background:rgba(0,210,255,.12);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.72rem;cursor:pointer;">📋 Copiar</button>
+      </p>
+      <p style="margin-bottom:4px;"><strong style="color:#D946A6;">Doctor:</strong> <span id="lab-exito-doc">—</span></p>
+      <p style="margin-bottom:4px;"><strong style="color:#D4AF37;">Total estimado:</strong> <span id="lab-exito-total">—</span></p>
+      <p style="margin-bottom:0;"><strong style="color:#00d2ff;">Abono para iniciar (50%):</strong> <span id="lab-exito-abono">—</span></p>
+    </div>
+    <div style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:10px 14px;font-size:.78rem;color:#fca5a5;margin-bottom:20px;text-align:left;">
+      ⚠️ <strong>Política de despacho:</strong> El caso no sale del laboratorio sin liquidación del 100% del saldo.
+    </div>
+    <button onclick="document.getElementById('modal-exito-lab').classList.remove('active');document.getElementById('modal-exito-lab').style.display='none';" style="width:100%;padding:13px;background:linear-gradient(135deg,#D946A6,#a0186e);border:none;border-radius:10px;color:#fff;font-weight:800;font-size:.95rem;cursor:pointer;letter-spacing:.5px;">Entendido</button>
+  </div>
+</div>
+<script>
+document.getElementById('modal-exito-lab').style.display='flex';
+document.getElementById('modal-exito-lab').style.display='none';
+document.getElementById('modal-exito-lab').classList.remove('active');
+// Mostrar flex cuando se añade clase active
+(function(){
+  var obs=new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      if(m.target.classList.contains('active')) m.target.style.display='flex';
+      else m.target.style.display='none';
+    });
+  });
+  obs.observe(document.getElementById('modal-exito-lab'),{attributes:true,attributeFilter:['class']});
+})();
+</script>
 </body>
 </html>

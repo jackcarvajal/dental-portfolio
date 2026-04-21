@@ -388,9 +388,31 @@
                                 <span class="tooltip-error" id="error-nombreCliente" style="display:none"></span>
                             </div>
                             <div class="form-group">
+                                <label>País / Country *</label>
+                                <select id="indicativo" onchange="actualizarIndicativo(this)">
+                                    <option value="+57" data-lang="es" selected>🇨🇴 Colombia (+57)</option>
+                                    <option value="+1" data-lang="en">🇺🇸 USA / Canada (+1)</option>
+                                    <option value="+52" data-lang="es">🇲🇽 México (+52)</option>
+                                    <option value="+51" data-lang="es">🇵🇪 Perú (+51)</option>
+                                    <option value="+56" data-lang="es">🇨🇱 Chile (+56)</option>
+                                    <option value="+54" data-lang="es">🇦🇷 Argentina (+54)</option>
+                                    <option value="+593" data-lang="es">🇪🇨 Ecuador (+593)</option>
+                                    <option value="+58" data-lang="es">🇻🇪 Venezuela (+58)</option>
+                                    <option value="+34" data-lang="es">🇪🇸 España (+34)</option>
+                                    <option value="+44" data-lang="en">🇬🇧 UK (+44)</option>
+                                    <option value="+49" data-lang="de">🇩🇪 Germany (+49)</option>
+                                    <option value="+33" data-lang="fr">🇫🇷 France (+33)</option>
+                                    <option value="+55" data-lang="pt">🇧🇷 Brasil (+55)</option>
+                                    <option value="+other" data-lang="en">🌍 Otro / Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>WhatsApp *</label>
-                                <input type="tel" id="whatsappCliente" placeholder="3001234567" maxlength="10"
-                                       oninput="this.value=this.value.replace(/\D/g,'')">
+                                <div style="display:flex;gap:6px;align-items:center;">
+                                    <span id="indicativo-badge" style="background:rgba(217,70,166,0.1);border:1px solid rgba(217,70,166,0.3);border-radius:8px;padding:10px 10px;font-size:.85rem;font-weight:700;color:#D946A6;white-space:nowrap;">+57</span>
+                                    <input type="tel" id="whatsappCliente" placeholder="3001234567" maxlength="15"
+                                           oninput="this.value=this.value.replace(/\D/g,'')" style="flex:1;">
+                                </div>
                                 <span class="tooltip-error" id="error-whatsappCliente" style="display:none"></span>
                             </div>
                             <div class="form-group">
@@ -888,6 +910,24 @@
         function fmtCLP(n)  { return '$' + Math.round(n).toLocaleString('es-CO') + ' COP'; }
         function sanitizar(txt) { const d=document.createElement('div'); d.textContent=String(txt||''); return d.innerHTML; }
 
+        function actualizarIndicativo(sel) {
+            const badge = document.getElementById('indicativo-badge');
+            const waInput = document.getElementById('whatsappCliente');
+            const val = sel.value.replace('+other','');
+            if (badge) badge.textContent = val || '+?';
+            // Colombia: 10 dígitos; otros: hasta 15
+            if (waInput) {
+                if (sel.value === '+57') {
+                    waInput.maxLength = 10;
+                    waInput.placeholder = '3001234567';
+                } else {
+                    waInput.maxLength = 15;
+                    waInput.placeholder = '9876543210';
+                }
+                waInput.value = '';
+            }
+        }
+
         function showErr(id, msg) {
             const el = document.getElementById(id);
             if (!el) return;
@@ -1063,8 +1103,15 @@
             const pTitular = document.getElementById('pago_titular').value.trim();
             const link     = document.getElementById('linkSTL').value.trim();
 
+            const indSel   = document.getElementById('indicativo');
+            const indicativo = indSel ? indSel.value : '+57';
+            const lang       = indSel ? (indSel.options[indSel.selectedIndex].dataset.lang || 'es') : 'es';
+            const esLocal    = indicativo === '+57';
+            const waFull     = indicativo.replace('+other','') + wa;
+
             if (!nombre)         { showErr('nombreCliente',  'Nombre requerido'); return; }
-            if (wa.length !== 10){ showErr('whatsappCliente','WhatsApp: 10 dígitos'); return; }
+            if (esLocal && wa.length !== 10) { showErr('whatsappCliente','WhatsApp Colombia: 10 dígitos'); return; }
+            if (!esLocal && wa.length < 6)   { showErr('whatsappCliente','WhatsApp: mínimo 6 dígitos'); return; }
             if (!ciudad)         { showErr('ciudad',         'Ciudad requerida'); return; }
             if (!paciente)       { showErr('nombrePaciente', 'Nombre del paciente requerido'); return; }
             if (!espec)          { showErr('especialidad',   'Selecciona especialidad'); return; }
@@ -1079,7 +1126,7 @@
 
             STATE.ordenId        = orderId;
             STATE.nombreCliente  = sanitizar(nombre);
-            STATE.whatsappCliente = wa;
+            STATE.whatsappCliente = waFull;
             STATE.nombrePaciente = sanitizar(paciente);
             STATE.linkSTL        = link;
             STATE.total          = total;
@@ -1138,27 +1185,36 @@
             const cantidad   = parseInt(document.getElementById('cantidad').value,10) || 1;
             const slotNombre = { '48h':'📅 Estándar 48h hábiles', '72h':'📅 Complejo 72h hábiles' }[STATE.slot] || '📅 Estándar';
 
-            let msg = `*💎 ORDEN DE DISEÑO CAD - PRODIGY*\n\n`;
-            msg += `📋 *ID Orden:* ${STATE.ordenId}\n`;
-            msg += `👤 *Profesional:* ${STATE.nombreCliente}\n`;
-            msg += `📱 *WhatsApp:* ${STATE.whatsappCliente}\n`;
-            msg += `🏙️ *Ciudad:* ${sanitizar(document.getElementById('ciudad').value)}\n`;
-            msg += `🆔 *Paciente:* ${STATE.nombrePaciente.toUpperCase()}\n`;
-            msg += `🎓 *Especialidad:* ${sanitizar(document.getElementById('especialidad').value)}\n\n`;
-            msg += `🖥️ *Categoría:* ${STATE.categoriaNombre}\n`;
-            msg += `📐 *Diseño:* ${STATE.subtipoNombre}\n`;
-            msg += `🔢 *Cantidad:* ${cantidad} unidades\n`;
-            msg += `⏱️ *Entrega:* ${slotNombre}\n`;
-            if (STATE.express) msg += `⚡ *Express 24h:* SÍ (+$20.000)\n`;
-            if (STATE.envioUsb) msg += `💾 *Entrega USB:* SÍ (+$15.000)\n`;
-            msg += `\n💰 *CONFIRMACIÓN DE PAGO*\n`;
-            msg += `• Medio: ${STATE.pagoMetodo}\n`;
-            msg += `• Titular: ${STATE.pagoTitular}\n`;
+            const _esIntl = !esLocal;
+            let msg = _esIntl
+                ? `*💎 CAD DESIGN ORDER - PRODIGY Lab*\n\n`
+                : `*💎 ORDEN DE DISEÑO CAD - PRODIGY*\n\n`;
+            msg += `📋 ${_esIntl ? '*Order ID:*' : '*ID Orden:*'} ${STATE.ordenId}\n`;
+            msg += `👤 ${_esIntl ? '*Professional:*' : '*Profesional:*'} ${STATE.nombreCliente}\n`;
+            msg += `📱 *WhatsApp:* ${waFull}\n`;
+            if (_esIntl) msg += `🌍 *Country:* ${indSel ? indSel.options[indSel.selectedIndex].text : ''}\n`;
+            msg += `🏙️ ${_esIntl ? '*City:*' : '*Ciudad:*'} ${sanitizar(document.getElementById('ciudad').value)}\n`;
+            msg += `🆔 ${_esIntl ? '*Patient:*' : '*Paciente:*'} ${STATE.nombrePaciente.toUpperCase()}\n`;
+            msg += `🎓 ${_esIntl ? '*Specialty:*' : '*Especialidad:*'} ${sanitizar(document.getElementById('especialidad').value)}\n\n`;
+            msg += `🖥️ ${_esIntl ? '*Category:*' : '*Categoría:*'} ${STATE.categoriaNombre}\n`;
+            msg += `📐 ${_esIntl ? '*Design:*' : '*Diseño:*'} ${STATE.subtipoNombre}\n`;
+            msg += `🔢 ${_esIntl ? '*Qty:*' : '*Cantidad:*'} ${cantidad} ${_esIntl ? 'units' : 'unidades'}\n`;
+            msg += `⏱️ ${_esIntl ? '*Delivery:*' : '*Entrega:*'} ${slotNombre}\n`;
+            if (STATE.express) msg += `⚡ *Express 24h:* ${_esIntl ? 'YES' : 'SÍ'} (+$20.000)\n`;
+            if (STATE.envioUsb) msg += `💾 ${_esIntl ? '*USB Delivery:*' : '*Entrega USB:*'} ${_esIntl ? 'YES' : 'SÍ'} (+$15.000)\n`;
+            msg += `\n💰 ${_esIntl ? '*PAYMENT CONFIRMATION*' : '*CONFIRMACIÓN DE PAGO*'}\n`;
+            msg += `• ${_esIntl ? 'Method' : 'Medio'}: ${STATE.pagoMetodo}\n`;
+            msg += `• ${_esIntl ? 'Holder' : 'Titular'}: ${STATE.pagoTitular}\n`;
             if (STATE.pagoRef) msg += `• Ref: ${STATE.pagoRef}\n`;
-            msg += `\n💵 *TOTAL: ${STATE.total}*\n\n`;
-            msg += `📎 *Archivos:* ${STATE.linkSTL}\n`;
-            if (STATE.observaciones) msg += `📝 *Indicaciones:* ${STATE.observaciones}\n`;
-            msg += `\n_✅ Acepto los términos y condiciones PRODIGY · Diseño CAD_`;
+            msg += `\n💵 *${_esIntl ? 'TOTAL' : 'TOTAL'}: ${STATE.total}*\n\n`;
+            msg += `📎 ${_esIntl ? '*Files:*' : '*Archivos:*'} ${STATE.linkSTL}\n`;
+            if (STATE.observaciones) msg += `📝 ${_esIntl ? '*Notes:*' : '*Indicaciones:*'} ${STATE.observaciones}\n`;
+            msg += _esIntl
+                ? `\n_✅ I accept PRODIGY's terms and conditions · CAD Design_`
+                : `\n_✅ Acepto los términos y condiciones PRODIGY · Diseño CAD_`;
+            msg += _esIntl
+                ? `\n\n🤝 *Thank you for trusting PRODIGY Lab Dental!*\nYour case is in the best hands. We work with precision, quality and commitment in every detail.\n_We hope to continue as your laboratory partner in your next projects._ 💎\n_PRODIGY Team · Bogotá, Colombia_`
+                : `\n\n🤝 *¡Gracias por confiar en PRODIGY Lab Dental!*\nSu caso está en las mejores manos. Trabajamos con precisión, calidad y compromiso en cada detalle.\n_Esperamos seguir siendo su aliado en sus próximos trabajos._ 💎\n_Equipo PRODIGY · Bogotá, Colombia_`;
 
             // ── Guardar en Supabase ───────────────────────────────────────────
             const _r1 = new Uint8Array(8); crypto.getRandomValues(_r1);

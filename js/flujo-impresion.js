@@ -2236,6 +2236,7 @@
                 texto += `• Email factura: ${STATE.billingEmail}\n\n`;
             }
             texto += `_✅ Acepto los términos y condiciones de PRODIGY (Malla STL verificada)_`;
+            texto += `\n\n🤝 *¡Gracias por confiar en PRODIGY Lab Dental!*\nSu caso está en las mejores manos. Trabajamos con precisión, calidad y compromiso en cada detalle.\n_Esperamos seguir siendo su aliado en sus próximos trabajos._ 💎\n_Equipo PRODIGY · Bogotá, Colombia_`;
             
             // TODO: Migración futura a WhatsApp Business API
             // En lugar de window.open, enviar datos a endpoint:
