@@ -20,7 +20,8 @@
     const STL_CDN     = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/STLLoader.js';
     const ORBIT_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/controls/OrbitControls.js';
     const MAX_MB      = 250;
-    const ACCEPT_EXTS = '.stl,.obj,.ply,.dcm,.zip,.3oxz,.3ox,.stlb,.stla';
+    const ACCEPT_EXTS = '.stl,.obj,.ply,.dcm,.zip,.3oxz,.3ox,.stlb,.stla,.jpg,.jpeg,.png,.webp,.tiff,.tif,.bmp,.gif';
+    const IMG_EXTS    = new Set(['jpg','jpeg','png','webp','tiff','tif','bmp','gif']);
 
     const EXT_META = {
         stl:  { icon: 'fa-cube',        label: 'STL',       color: '#00d2ff' },
@@ -30,6 +31,14 @@
         zip:  { icon: 'fa-file-zipper', label: 'ZIP',       color: '#fbbf24' },
         '3oxz':{ icon:'fa-tooth',       label: '3Shape',    color: '#f472b6' },
         '3ox': { icon:'fa-tooth',       label: '3Shape',    color: '#f472b6' },
+        jpg:  { icon: 'fa-image',       label: 'JPG',       color: '#fb923c' },
+        jpeg: { icon: 'fa-image',       label: 'JPG',       color: '#fb923c' },
+        png:  { icon: 'fa-image',       label: 'PNG',       color: '#4ade80' },
+        webp: { icon: 'fa-image',       label: 'WEBP',      color: '#a3e635' },
+        tiff: { icon: 'fa-image',       label: 'TIFF',      color: '#94a3b8' },
+        tif:  { icon: 'fa-image',       label: 'TIFF',      color: '#94a3b8' },
+        bmp:  { icon: 'fa-image',       label: 'BMP',       color: '#94a3b8' },
+        gif:  { icon: 'fa-image',       label: 'GIF',       color: '#c084fc' },
     };
 
     /* ── STATE ─────────────────────────────────────────── */
@@ -359,6 +368,30 @@
         return card;
     }
 
+    /* ── TARJETA IMAGEN (preview nativo) ───────────────── */
+    function buildImageCard(fObj) {
+        const meta = EXT_META[fObj.ext] || { label: fObj.ext.toUpperCase(), color: '#fb923c' };
+        const card = document.createElement('div');
+        card.className = 'pmv-card';
+        card.id = 'pmv-card-' + fObj.id;
+        const url = URL.createObjectURL(fObj.file);
+        card.innerHTML = `
+<div class="pmv-canvas-wrap" style="cursor:zoom-in;" onclick="window.open('${url}','_blank')">
+    <img src="${url}" alt="${fObj.name}"
+         style="width:100%;height:100%;object-fit:cover;display:block;"
+         onload="this.style.opacity=1" style="opacity:0;transition:opacity .3s">
+    <span style="position:absolute;top:6px;right:6px;background:${meta.color}22;color:${meta.color};
+          border:1px solid ${meta.color}44;font-size:.6rem;font-weight:800;padding:2px 7px;
+          border-radius:10px;letter-spacing:1px;">${meta.label}</span>
+</div>
+<div class="pmv-card-foot">
+    <span class="pmv-fname" title="${fObj.name}">${fObj.name}</span>
+    <span class="pmv-fsize">${fObj.sizeMb} MB</span>
+    <button class="pmv-del" onclick="ProdigyMultiViewer._remove('${fObj.id}')" title="Quitar"><i class="fas fa-times"></i></button>
+</div>`;
+        return card;
+    }
+
     /* ── AGREGAR ARCHIVOS ──────────────────────────────── */
     function addFiles(fileList) {
         const grid = document.getElementById('pmv-grid-' + containerId);
@@ -378,14 +411,14 @@
             const fObj  = { id, file: f, name: f.name, ext, sizeMb };
             files.push(fObj);
 
-            const card = (ext === 'stl' || ext === 'stla' || ext === 'stlb')
-                ? buildSTLCard(fObj)
-                : buildIconCard(fObj);
+            const isSTL = ext === 'stl' || ext === 'stla' || ext === 'stlb';
+            const isImg = IMG_EXTS.has(ext);
+            const card  = isSTL ? buildSTLCard(fObj)
+                        : isImg ? buildImageCard(fObj)
+                        : buildIconCard(fObj);
             grid.appendChild(card);
 
-            if (ext === 'stl' || ext === 'stla' || ext === 'stlb') {
-                mountSTLViewer(fObj);
-            }
+            if (isSTL) mountSTLViewer(fObj);
         });
 
         updateDropzone();

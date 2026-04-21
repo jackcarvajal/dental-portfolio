@@ -118,8 +118,10 @@
             display: grid;
             grid-template-columns: 1fr 380px;
             gap: 30px;
-            padding-top: 80px;
+            padding-top: 0;
         }
+        /* Ocultar nav interno — reemplazado por header.js global */
+        .hamburger-menu, .theme-toggle { display: none !important; }
 
         header {
             grid-column: 1 / -1;
