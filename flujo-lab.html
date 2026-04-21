@@ -580,9 +580,10 @@ function setVia(via) {
   document.getElementById('btn-analog').className  = 'via-btn' + (via === 'analog'  ? ' active-analog'  : '');
 }
 
-/* ───────────── DROPZONE ───────────── */
+/* ───────────── DROPZONE (guardado defensivo — elemento puede no existir) ───── */
 (function() {
   var dz = document.getElementById('dropzone');
+  if (!dz) return;
   dz.addEventListener('dragover',  function(e){ e.preventDefault(); dz.classList.add('over'); });
   dz.addEventListener('dragleave', function(){ dz.classList.remove('over'); });
   dz.addEventListener('drop', function(e){ e.preventDefault(); dz.classList.remove('over'); handleFiles(e.dataTransfer.files); });
@@ -602,6 +603,7 @@ function removeFile(name) {
 }
 function renderFileList() {
   var el = document.getElementById('file-list');
+  if (!el) return;
   if (!selectedFiles.length) { el.innerHTML = ''; return; }
   el.innerHTML = selectedFiles.map(function(f) {
     var ext = f.name.split('.').pop().toUpperCase();

@@ -18,7 +18,7 @@
             --text:#f5f5f7; --muted:#94a3b8;
             --green:#22c55e; --red:#ef4444;
         }
-        body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; padding:0 0 60px; }
+        body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; padding:0 0 60px; visibility:hidden; }
 
         header {
             background:linear-gradient(135deg,#0d1117,#1a2332);
@@ -351,7 +351,12 @@ document.getElementById('modalOverlay').addEventListener('click', function(e) {
     if (e.target === this) cerrarModal();
 });
 
-cargar();
+// ── Auth guard ─────────────────────────────────────────
+(async function() {
+    const session = await ProdigyAuth.require('admin');
+    if (!session) return;
+    cargar();
+})();
 </script>
 </body>
 </html>

@@ -561,11 +561,12 @@ async function verificarAdmin() {
         }
 
         const user = session.user;
-        const role = user.user_metadata?.role;
+        // app_metadata es solo editable vía service_role — NO por el cliente
+        const role = (user.app_metadata || {}).role;
         const email = user.email;
 
-        // Verificar: rol admin en metadata O email en lista autorizada
-        const esAdmin = role === 'admin' || ADMIN_EMAILS.includes(email);
+        // Verificar: email en lista autorizada O app_metadata.role === 'admin'
+        const esAdmin = ADMIN_EMAILS.includes(email) || role === 'admin';
 
         if (!esAdmin) {
             window.location.href = role === 'operator'
