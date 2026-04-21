@@ -748,7 +748,7 @@ function selVita(btn, shade) {
 }
 
 /* ───────────── GENERAR ORDEN ───────────── */
-function generarOrden() {
+async function generarOrden() {
   var doctor   = (document.getElementById('rx-doctor').value || '').trim();
   var paciente = (document.getElementById('rx-paciente').value || '').trim();
   var tel      = (document.getElementById('rx-tel').value || '').trim();
@@ -791,6 +791,22 @@ function generarOrden() {
     (hasQuote ? '\n⚠️ Algunos ítems requieren cotización manual.' : '') +
     (obs ? '\n\n📝 *Observaciones:*\n' + obs : '') +
     '\n\n_Generado desde ProDigy Portal_';
+
+  // Subir archivos del multi-viewer a Supabase (si los hay)
+  var archivosUpload = '';
+  if (window.FlujoUploader && window.ProdigyMultiViewer) {
+    var _vf = window.ProdigyMultiViewer.getFiles();
+    if (_vf && _vf.length > 0) {
+      try {
+        var ordenIdLab = 'LAB-' + Date.now().toString(36).toUpperCase();
+        var _urls = await window.FlujoUploader.upload(ordenIdLab);
+        if (_urls && _urls.length > 0) archivosUpload = _urls.join(', ');
+      } catch(_ue) { /* continuar sin URLs */ }
+    }
+  }
+  if (archivosUpload) {
+    msg += '\n\n📁 *Archivos digitales (Supabase):*\n' + archivosUpload;
+  }
 
   var wa = 'https://wa.me/573212816716?text=' + encodeURIComponent(msg);
   window.open(wa, '_blank', 'noopener');

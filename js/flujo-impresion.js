@@ -2023,19 +2023,22 @@
                 return;
             }
 
-            if (!linkSTL) {
-                showError(document.getElementById('linkSTL'), 'Link STL requerido');
+            const hasViewerFiles = window.ProdigyMultiViewer && window.ProdigyMultiViewer.getFiles().length > 0;
+            if (!linkSTL && !hasViewerFiles) {
+                showError(document.getElementById('linkSTL'), 'Adjunta archivos o pega un link de Drive/WeTransfer/Dropbox');
                 return;
             }
-            
-            // Validar que el enlace sea de WeTransfer o Google Drive
-            const esWeTransfer = linkSTL.toLowerCase().includes('wetransfer.com') || linkSTL.toLowerCase().includes('we.tl');
-            const esDrive     = linkSTL.toLowerCase().includes('drive.google.com');
-            const esDropbox   = linkSTL.toLowerCase().includes('dropbox.com');
 
-            if (!esWeTransfer && !esDrive && !esDropbox) {
-                showError(document.getElementById('linkSTL'), 'Acepta enlaces de Buzón PRODIGY (Dropbox), Google Drive o WeTransfer');
-                return;
+            if (linkSTL) {
+                // Validar que el enlace sea de WeTransfer, Google Drive o Dropbox
+                const esWeTransfer = linkSTL.toLowerCase().includes('wetransfer.com') || linkSTL.toLowerCase().includes('we.tl');
+                const esDrive     = linkSTL.toLowerCase().includes('drive.google.com');
+                const esDropbox   = linkSTL.toLowerCase().includes('dropbox.com');
+
+                if (!esWeTransfer && !esDrive && !esDropbox) {
+                    showError(document.getElementById('linkSTL'), 'Acepta enlaces de Buzón PRODIGY (Dropbox), Google Drive o WeTransfer');
+                    return;
+                }
             }
 
             // Validar cantidad mínima
@@ -2114,7 +2117,7 @@
             document.getElementById('modal-confirmation').classList.add('active');
         }
 
-        function sendToWhatsApp() {
+        async function sendToWhatsApp() {
             const btn = document.getElementById('btn-whatsapp-confirm');
             if (btn && btn.dataset.sending === '1') return;
 
@@ -2133,6 +2136,17 @@
             }, 3000);
 
             closeModal('modal-confirmation');
+
+            // Subir archivos del multi-viewer a Supabase (si los hay)
+            if (window.FlujoUploader && window.ProdigyMultiViewer) {
+                const _vf = window.ProdigyMultiViewer.getFiles();
+                if (_vf && _vf.length > 0) {
+                    try {
+                        const _urls = await window.FlujoUploader.upload(STATE.ordenId);
+                        if (_urls && _urls.length > 0) STATE.linkSTL = _urls.join(', ');
+                    } catch(_ue) { /* continuar con link manual */ }
+                }
+            }
 
             // Construir mensaje de WhatsApp con datos de pago
             let texto = `*🖨️ ORDEN DE IMPRESIÓN 3D - PRODIGY*\n\n`;
