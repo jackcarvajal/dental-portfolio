@@ -668,7 +668,7 @@
       'SERVICIOS: Diseño CAD (Exocad, 3Shape), Fresado XTCERA 5 ejes (zirconia 1200MPa, multicapa 5Y-TZP, PMMA, titanio ±10µm), Impresión 3D BCN3D, Escáner a domicilio zona norte Bogotá.\n' +
       'TIEMPOS: 24h hábiles estándar · 48h alta estética · 4-8h diseño solo.\n' +
       'FORMATOS: STL, OBJ, PLY, Exocad constructionfile, 3Shape Communicate, DICOM.\n' +
-      'CONTACTO: WhatsApp +57 321 281 6716 · labdentalprodigy@gmail.com\n' +
+      'CONTACTO: WhatsApp +57 321 281 6716 · gerencia@prodigylabdental.com\n' +
       'HORARIO: L-V 8am-6pm · Sáb 8am-1pm · Dom cerrado.\n\n' +
       'Responde en español, técnico pero accesible para odontólogos. Máx 3-4 párrafos. ' +
       'Para cotizaciones específicas, invita a WhatsApp. No inventes datos — di "confirma con el equipo técnico vía WhatsApp". ' +

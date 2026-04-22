@@ -173,7 +173,7 @@
         '<a href="app/login.html" class="pfoot-cta"><i class="fas fa-key"></i> Acceso Doctores</a>' +
         '<ul>' +
           '<li><a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20soporte%20t%C3%A9cnico" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" style="color:#25D366;margin-right:6px"></i>Soporte Técnico</a></li>' +
-          '<li><a href="mailto:labdentalprodigy@gmail.com"><i class="far fa-envelope" style="margin-right:6px"></i>labdentalprodigy@gmail.com</a></li>' +
+          '<li><a href="mailto:gerencia@prodigylabdental.com"><i class="far fa-envelope" style="margin-right:6px"></i>gerencia@prodigylabdental.com</a></li>' +
           '<li><a href="tel:+573212816716"><i class="fas fa-phone" style="margin-right:6px"></i>+57 321 281 6716</a></li>' +
         '</ul>' +
       '</div>' +
