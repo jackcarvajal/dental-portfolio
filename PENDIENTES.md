@@ -102,15 +102,57 @@
 ## 🟡 BLOQUE 5 — PLATAFORMAS EXTERNAS
 
 ### Meta / WhatsApp Business API ← **Prioridad alta**
-| Acción | Detalle | Estado |
-|--------|---------|--------|
-| Crear App en Meta Developers | developers.facebook.com → tipo Business | ⏳ Pendiente |
-| Agregar producto WhatsApp | App → Add Product → WhatsApp | ⏳ Pendiente |
-| Obtener Phone Number ID | WhatsApp Manager → número 3212816716 | ⏳ Pendiente |
-| Crear System User + token | business.facebook.com → Settings → System Users | ⏳ Pendiente |
-| Verificar dominio | prodigylabdental.com → Meta Business → Brand Safety | ⏳ Pendiente |
 
-> Una vez completado: `notify-wa` activa notificaciones WA reales al doctor al avanzar estado.
+**Paso 1 — Verificar dominio (Meta Business Suite)**
+1. business.facebook.com → Configuración → Brand Safety → Dominios
+2. "Agregar dominio" → `prodigylabdental.com`
+3. Elegir método DNS: copiar el TXT record → pegarlo en Cloudflare DNS de tu dominio
+4. Volver a Meta → "Verificar"
+
+**Paso 2 — Crear App en Meta Developers**
+1. developers.facebook.com → My Apps → Create App
+2. Tipo: **Business** → nombre: "PRODIGY Notificaciones"
+3. Asociar a tu Business Manager
+
+**Paso 3 — Agregar producto WhatsApp + obtener Phone Number ID**
+1. Dentro de la app → Add Product → WhatsApp → Set Up
+2. WhatsApp → Getting Started → seleccionar número **3212816716**
+3. Copiar el **Phone Number ID** (formato: `12345678901234`)
+
+**Paso 4 — Crear System User + token permanente**
+1. business.facebook.com → Configuración → Usuarios del sistema → Agregar
+2. Nombre: "PRODIGY Server" | Rol: **Admin**
+3. Asignar activo: tu App (full control)
+4. Generar token → permisos requeridos:
+   - `whatsapp_business_messaging`
+   - `whatsapp_business_management`
+   - `ads_management` (para CAPI)
+5. **Nunca expira** → copiar y guardar el token
+
+**Paso 5 — Obtener Pixel ID**
+1. business.facebook.com → Events Manager → Píxeles
+2. Si no tienes uno: Conectar fuentes de datos → Web → Meta Pixel
+3. Copiar el **Pixel ID** (número de 15-16 dígitos)
+
+**Paso 6 — Guardar los 4 secretos en Supabase**
+1. supabase.com → tu proyecto → Settings → Edge Functions → Secrets
+2. Agregar uno a uno:
+   - `META_ACCESS_TOKEN` = token del paso 4
+   - `WA_PHONE_ID` = Phone Number ID del paso 3
+   - `META_APP_ID` = App ID de la app (developers.facebook.com → tu app → Basic Settings)
+   - `META_PIXEL_ID` = Pixel ID del paso 5
+3. Las Edge Functions `notify-wa` y `meta-capi` ya están deployed — al agregar los secrets, activan automáticamente.
+
+| Paso | Acción | Estado |
+|------|--------|--------|
+| 1 | Verificar dominio en Meta Business | ⏳ Pendiente |
+| 2 | Crear App tipo Business en Meta Developers | ⏳ Pendiente |
+| 3 | Agregar WhatsApp → obtener Phone Number ID para 3212816716 | ⏳ Pendiente |
+| 4 | Crear System User Admin → token permanente (4 permisos) | ⏳ Pendiente |
+| 5 | Obtener Pixel ID de Events Manager | ⏳ Pendiente |
+| 6 | Agregar 4 secrets en Supabase Edge Functions | ⏳ Pendiente |
+
+> Una vez completado: `notify-wa` activa notificaciones WA reales al doctor al avanzar estado. `meta-capi` registra eventos Purchase/Lead server-side.
 
 ### PayPal
 | Acción | Estado |
@@ -153,6 +195,16 @@
 
 ---
 
+## 🔴 BLOQUE 10 — HOMEPAGE (acción inmediata)
+
+| # | Item | Detalle | Estado |
+|---|------|---------|--------|
+| 1 | `index.html` es la página coming-soon original | Tiene `noindex` pero está en el sitemap. Título dice "Próximamente en línea". Sin header.js, footer.js, og:, twitter:card, preconnect. La homepage real de PRODIGY aún no está construida. | 🔴 Decisión Alejandro |
+
+> Opciones: A) Construir homepage real (reemplazar index.html con landing completa) — recomendado para SEO. B) Mantener coming-soon y removerla del sitemap. C) Redirigir `/` → `portafolio.html` o `nosotros.html` mientras se construye.
+
+---
+
 ## 🔴 BLOQUE 9 — DECISIONES PENDIENTES (requieren confirmación Alejandro)
 
 | # | Item | Qué decidir | Impacto |
@@ -172,6 +224,23 @@
 | 2 | Fotos Google My Business | ⏳ 10–15 fotos del lab, fresadora, casos terminados |
 | 3 | Video Reels x 6 | ⏳ Scripts en cada artículo — grabar y publicar |
 | 4 | Email `casos@prodigylabdental.com` | ⏳ Crear en tu proveedor de dominio |
+
+---
+
+## ✅ COMPLETADO sesión 2026-04-22 (continuación)
+
+| Qué | Dónde |
+|-----|-------|
+| **PENDIENTES.md BLOQUE 5** — Meta/WA paso a paso detallado (6 pasos con URLs exactas) | `PENDIENTES.md` |
+| **portal.html** — noindex,nofollow agregado (página huérfana, canonical incorrecto apuntaba a homepage) | `portal.html` |
+| **article.html** — preconnect cdnjs + noscript fallback → journal.html / WA | `article.html` |
+| **seguimiento-caso.html** — XSS fix: id de URL params inyectado sin escapar en innerHTML → DOM textContent | `seguimiento-caso.html` línea ~518 |
+| **fresado-cam.html** — noscript fallback | `fresado-cam.html` |
+| **diseno-cad.html** — noscript fallback | `diseno-cad.html` |
+| **soporte.html** — noscript fallback | `soporte.html` |
+| **envia-tu-scanner.html** — noscript fallback | `envia-tu-scanner.html` |
+| **escaner-domicilio.html** — noscript fallback | `escaner-domicilio.html` |
+| **BLOQUE 10** — Detectado: index.html es coming-soon con noindex pero en sitemap | `PENDIENTES.md` |
 
 ---
 

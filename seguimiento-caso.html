@@ -515,10 +515,11 @@
                 banner.innerHTML = `
                     <div style="font-size:2rem;margin-bottom:6px;">✅</div>
                     <div style="font-size:1.05rem;font-weight:700;color:#00FF41;margin-bottom:4px;">¡Pago Confirmado!</div>
-                    <div style="font-size:.9rem;color:#e2e8f0;">Su caso <strong style="color:#D4AF37;">${id}</strong> ha sido enviado a producción.</div>
+                    <div style="font-size:.9rem;color:#e2e8f0;">Su caso <strong id="banner-case-id" style="color:#D4AF37;"></strong> ha sido enviado a producción.</div>
                     <div style="font-size:.78rem;color:#94a3b8;margin-top:6px;">Recibirá actualizaciones por WhatsApp.</div>
                     <button onclick="this.parentElement.remove()" style="margin-top:12px;padding:6px 18px;background:rgba(0,255,65,.12);border:1px solid #00FF41;border-radius:20px;color:#00FF41;cursor:pointer;font-size:.8rem;">Cerrar</button>
                 `;
+                banner.querySelector('#banner-case-id').textContent = id;
                 document.body.appendChild(banner);
                 setTimeout(() => banner?.remove(), 12000);
             }
