@@ -2,14 +2,6 @@
 User-agent: *
 Allow: /
 
-# Indexar explícitamente las páginas clave de SEO
-Allow: /index.html
-Allow: /journal.html
-Allow: /calculadora.html
-Allow: /seguimiento-caso.html
-Allow: /flujo-fresado.html
-Allow: /flujo-impresion.html
-
 # Paneles internos y archivos privados — NO indexar
 Disallow: /app/
 Disallow: /patients/
@@ -24,20 +16,38 @@ Disallow: /enviar-produccion-wetransfer.html
 Disallow: /flujo-diseno.html
 Disallow: /*.bat$
 
-# Bots de IA — permitir (para ser citados en ChatGPT, Perplexity, etc.)
+# Bots de IA — permitir páginas públicas con contenido indexable
 User-agent: GPTBot
 Allow: /journal.html
 Allow: /calculadora.html
-Allow: /index.html
+Allow: /nosotros.html
+Allow: /portafolio.html
+Allow: /catalogo.html
+Allow: /diseno-cad.html
+Allow: /fresado-cam.html
+Allow: /escaner-domicilio.html
+Allow: /envia-tu-scanner.html
 
 User-agent: PerplexityBot
 Allow: /journal.html
 Allow: /calculadora.html
-Allow: /index.html
+Allow: /nosotros.html
+Allow: /portafolio.html
+Allow: /catalogo.html
+Allow: /diseno-cad.html
+Allow: /fresado-cam.html
+Allow: /escaner-domicilio.html
+Allow: /envia-tu-scanner.html
 
 User-agent: anthropic-ai
 Allow: /journal.html
 Allow: /calculadora.html
-Allow: /index.html
+Allow: /nosotros.html
+Allow: /portafolio.html
+Allow: /catalogo.html
+Allow: /diseno-cad.html
+Allow: /fresado-cam.html
+Allow: /escaner-domicilio.html
+Allow: /envia-tu-scanner.html
 
 Sitemap: https://prodigylabdental.com/sitemap.xml
