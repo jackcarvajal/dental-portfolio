@@ -760,7 +760,7 @@ async function generarOrden() {
   var antagonista = document.getElementById('rx-antagonista').value;
   var oclusion    = document.getElementById('rx-oclusion').value;
 
-  if (!doctor) { alert('Por favor ingresa el nombre del doctor o clínica.'); document.getElementById('rx-doctor').focus(); return; }
+  if (!doctor) { const fd=document.getElementById('rx-doctor'); fd.style.outline='2px solid #f87171'; fd.focus(); setTimeout(()=>fd.style.outline='',2500); return; }
 
   var btn = document.getElementById('btn-generar');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Generando orden...'; }
@@ -842,7 +842,7 @@ async function generarOrden() {
         flujo:     'lab',
         terminos_aceptados_at: new Date().toISOString(),
         user_agent: navigator.userAgent.slice(0, 250)
-      }]).then(function(r){ if (r.error) console.warn('[PRODIGY] Pedido lab no guardado:', r.error.message); });
+      }]);
     }
   } catch(_e) { /* silencioso */ }
 

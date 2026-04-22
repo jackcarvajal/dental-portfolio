@@ -1115,9 +1115,9 @@
             if (!ciudad)         { showErr('ciudad',         'Ciudad requerida'); return; }
             if (!paciente)       { showErr('nombrePaciente', 'Nombre del paciente requerido'); return; }
             if (!espec)          { showErr('especialidad',   'Selecciona especialidad'); return; }
-            if (!STATE.subtipoId){ document.getElementById('acc-diseno').classList.add('active'); alert('Selecciona el tipo de diseño CAD.'); return; }
+            if (!STATE.subtipoId){ document.getElementById('acc-diseno').classList.add('active'); fdToast('Selecciona el tipo de diseño CAD.'); return; }
             if (!link)           { showErr('linkSTL',        'Link de archivos requerido'); return; }
-            if (!pMetodo || !pTitular) { alert('Completa el método de pago y nombre del titular en el resumen.'); return; }
+            if (!pMetodo || !pTitular) { fdToast('Completa el método de pago y nombre del titular en el resumen.'); return; }
 
             const _r0 = new Uint8Array(5); crypto.getRandomValues(_r0);
             const orderId  = 'CAD-' + Array.from(_r0).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
@@ -1163,7 +1163,7 @@
 
             const rls = localStorage.getItem('prodigy_cad_wts');
             if (rls && (Date.now() - parseInt(rls)) < 90000) {
-                alert('Espera un momento antes de generar otro pedido.'); return;
+                fdToast('Espera un momento antes de generar otro pedido.'); return;
             }
             localStorage.setItem('prodigy_cad_wts', Date.now().toString());
 
@@ -1254,7 +1254,7 @@
                 document.getElementById('exito-total').textContent   = STATE.total;
                 document.getElementById('modal-exito').classList.add('active');
             } catch(e) {
-                alert('No se pudo abrir WhatsApp. Verifica que esté instalado e intenta de nuevo.');
+                fdToast('No se pudo abrir WhatsApp. Verifica que esté instalado e intenta de nuevo.');
             }
 
             setTimeout(() => {
@@ -1425,7 +1425,7 @@
         if (!ciudad)         { showErr('ciudad',         'Ciudad requerida'); return false; }
         if (!paciente)       { showErr('nombrePaciente', 'Nombre del paciente requerido'); return false; }
         if (!espec)          { showErr('especialidad',   'Selecciona especialidad'); return false; }
-        if (!STATE.subtipoId){ alert('Selecciona el tipo de diseño CAD.'); return false; }
+        if (!STATE.subtipoId){ fdToast('Selecciona el tipo de diseño CAD.'); return false; }
         if (!link)           { showErr('linkSTL',        'Link de archivos requerido'); return false; }
         return true;
     }
@@ -1456,7 +1456,7 @@
         } catch (e) {
             btnInit.disabled = false;
             btnInit.innerHTML = '🍋 Pagar con Lemon Squeezy (USD)';
-            alert('Error al verificar precio: ' + e.message); return;
+            fdToast('Error al verificar precio. Intenta de nuevo.'); return;
         }
 
         // total_usd = precio base USD + tarifa de plataforma dinámica
@@ -1464,7 +1464,7 @@
         const totalUSD = parseFloat((baseUSD + calcFeeUSD(calcularTotal(), 'ls')).toFixed(2));
         if (!totalUSD || totalUSD < 0.5) {
             btnInit.disabled = false;
-            alert('Monto mínimo: $0.50 USD'); return;
+            fdToast('Monto mínimo: $0.50 USD'); return;
         }
 
         // 2. Crear pre-orden en Supabase
@@ -1536,11 +1536,11 @@
         } catch (e) {
             btnInit.disabled = false;
             btnInit.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.784l-1.175 7.436h3.918l.738-4.667h2.107c4.854 0 7.485-2.538 8.35-6.564z" fill="#009cde"/></svg> Segunda opción: PayPal';
-            alert('Error al verificar precio: ' + e.message); return;
+            fdToast('Error al verificar precio. Intenta de nuevo.'); return;
         }
 
         const totalUSD = verified.total_usd;
-        if (!totalUSD || totalUSD < 0.5) { btnInit.disabled = false; alert('Monto mínimo: $0.50 USD'); return; }
+        if (!totalUSD || totalUSD < 0.5) { btnInit.disabled = false; fdToast('Monto mínimo: $0.50 USD'); return; }
 
         ppCont.innerHTML = '';
         ppCont.classList.remove('hidden');
@@ -1648,7 +1648,7 @@
     function pagarConWompi() {
         const totalEl = document.getElementById('calc-total');
         const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;
-        if (!monto) { alert('Selecciona un servicio para calcular el total.'); return; }
+        if (!monto) { fdToast('Selecciona un servicio para calcular el total.'); return; }
         const _r3 = new Uint8Array(5); crypto.getRandomValues(_r3);
         const ref = 'PRD-DIS-' + Array.from(_r3).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
         abrirCheckoutWompi({ monto, referencia: ref, descripcion: 'PRODIGY — Diseño CAD' });
@@ -1661,5 +1661,10 @@
     <script src="js/stl-multi-viewer.js"></script>
     <script>ProdigyMultiViewer.init('pmv-diseno');</script>
     <script src="js/flujo-uploader.js"></script>
+<div id="fd-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;padding:13px 24px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:340px;text-align:center;"></div>
+<script>
+let _fdToastT;
+function fdToast(msg){const el=document.getElementById('fd-toast');el.textContent=msg;el.style.opacity='1';clearTimeout(_fdToastT);_fdToastT=setTimeout(()=>{el.style.opacity='0';},3600);}
+</script>
 </body>
 </html>

@@ -986,13 +986,11 @@
         // FUNCIÓN PRINCIPAL
         // =============================================
         async function initPatientPage() {
-            console.log('🚀 Iniciando página de paciente...');
 
             const params = new URLSearchParams(window.location.search);
             const patientId = params.get('id');
             currentPatientId = patientId;
 
-            console.log('🎯 ID solicitado:', patientId);
 
             let paciente = null;
 
@@ -1019,20 +1017,17 @@
                         gallery:     Array.isArray(data.gallery) ? data.gallery : [],
                         driveLink:   data.drive_link || ''
                     };
-                    console.log('✅ Caso cargado desde Supabase:', paciente.name);
                 }
             } catch (e) {
-                console.warn('⚠️ Supabase no disponible, usando fallback estático:', e.message);
             }
 
             // 2) Fallback: array estático legacy (patient-001, patient-002…)
             if (!paciente) {
                 paciente = PATIENTS_DATA.find(p => p.id === patientId) || null;
-                if (paciente) console.log('✅ Caso cargado desde datos estáticos:', paciente.name);
+                // fallback estático cargado
             }
 
             if (!paciente) {
-                console.error('❌ Caso no encontrado en Supabase ni en datos estáticos');
                 renderError(patientId);
                 return;
             }
@@ -1111,7 +1106,6 @@
             if (paciente.exocadFile && paciente.exocadFile.trim() !== '') {
                 // Aplicar sanitizePath para manejar espacios
                 const path = sanitizePath(paciente.exocadFile);
-                console.log('📂 Cargando visor:', path);
                 
                 container.innerHTML = `<iframe src="${path}" title="Visor 3D Exocad"></iframe>`;
             } else {
@@ -1141,7 +1135,6 @@
                 return;
             }
 
-            console.log(`📷 Cargando ${paciente.gallery.length} imágenes...`);
             
             // Aplicar sanitizePath a todas las rutas para manejar espacios
             imageGallery = paciente.gallery.map(sanitizePath);
@@ -1158,7 +1151,6 @@
                 
                 // Manejo de errores de carga
                 img.onerror = function() {
-                    console.warn(`⚠️ Error al cargar: ${imgPath}`);
                     item.innerHTML = `
                         <div class="gallery-placeholder">
                             <i class="fas fa-image"></i>
@@ -1169,7 +1161,6 @@
                 };
                 
                 img.onload = function() {
-                    console.log(`✅ Imagen ${index + 1} cargada`);
                 };
                 
                 item.appendChild(img);
@@ -1194,26 +1185,22 @@
             currentImageIndex = index;
             updateLightboxImage();
             document.getElementById('lightbox').classList.add('active');
-            console.log(`🖼️ Lightbox abierto - Imagen ${index + 1}`);
         }
 
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
-            console.log('❌ Lightbox cerrado');
         }
 
         function nextImage() {
             if (imageGallery.length === 0) return;
             currentImageIndex = (currentImageIndex + 1) % imageGallery.length;
             updateLightboxImage();
-            console.log(`➡️ Siguiente imagen: ${currentImageIndex + 1}`);
         }
 
         function prevImage() {
             if (imageGallery.length === 0) return;
             currentImageIndex = (currentImageIndex - 1 + imageGallery.length) % imageGallery.length;
             updateLightboxImage();
-            console.log(`⬅️ Imagen anterior: ${currentImageIndex + 1}`);
         }
 
         function updateLightboxImage() {
@@ -1237,7 +1224,6 @@
         function initFeedbackModule() {
             // Verificar que tenemos un ID de paciente
             if (!currentPatientId) {
-                console.error('❌ No hay ID de paciente para feedback');
                 return;
             }
 
@@ -1255,13 +1241,10 @@
                     const savedBtn = document.querySelector(`[data-reaction="${savedReaction}"]`);
                     if (savedBtn) {
                         savedBtn.classList.add('active');
-                        console.log('✅ Reacción cargada:', savedReaction);
                     }
                 } else {
-                    console.log('ℹ️ No hay reacción guardada previamente');
                 }
             } catch (error) {
-                console.error('❌ Error al cargar reacción:', error);
             }
             
             // Manejar clicks en reacciones
@@ -1278,12 +1261,8 @@
                         
                         // Guardar en localStorage
                         localStorage.setItem(storageKeyReaction, reaction);
-                        console.log('💾 Reacción guardada:', reaction);
                         
-                    } catch (error) {
-                        console.error('❌ Error al guardar reacción:', error);
-                        alert('No se pudo guardar la reacción. Verifica los permisos del navegador.');
-                    }
+                    } catch (_) { /* localStorage no disponible — fallo silencioso */ }
                 });
             });
 
@@ -1472,7 +1451,6 @@
             });
 
             initComments();
-            console.log('✅ Módulo de comentarios Supabase inicializado');
         }
 
         // =============================================
@@ -1484,7 +1462,6 @@
             initPatientPage();
         }
         
-        console.log('✅ Sistema de visualización de pacientes cargado');
     </script>
     
 </body>

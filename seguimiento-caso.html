@@ -401,7 +401,7 @@
                         .from('dental-cases')
                         .createSignedUrl(ruta, 3600);
                     if (error || !data?.signedUrl) {
-                        alert('No se pudo generar el enlace de descarga. Contacta soporte.');
+                        segToast('No se pudo generar el enlace de descarga. Contacta soporte.', 'err');
                         return;
                     }
                     const a = document.createElement('a');
@@ -414,7 +414,7 @@
                 }
             } else {
                 // Reporte / factura — pendiente generación real
-                alert('Documento en preparación. Lo recibirás por WhatsApp o correo cuando esté listo.');
+                segToast('Documento en preparación. Lo recibirás por WhatsApp o correo cuando esté listo.', 'ok');
             }
         }
 
@@ -571,7 +571,12 @@
     </a>
     <style>
         @keyframes waPop { from{ transform:scale(0.5);opacity:0; } to{ transform:scale(1);opacity:1; } }
+        #seg-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.15);color:#e2e8f0;padding:12px 22px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px;text-align:center;}
+        #seg-toast.show{opacity:1;}
+        #seg-toast.err{border-color:rgba(248,113,113,0.5);color:#fca5a5;}
+        #seg-toast.ok{border-color:rgba(0,255,65,0.4);color:#86efac;}
     </style>
+<div id="seg-toast"></div>
 
     <div class="ux-floaters">
         <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba"><i class="fas fa-arrow-up"></i></button>
@@ -581,6 +586,13 @@
 
 
 <script>
+function segToast(msg, tipo) {
+    const el = document.getElementById('seg-toast');
+    el.textContent = msg;
+    el.className = 'show' + (tipo ? ' ' + tipo : '');
+    clearTimeout(segToast._t);
+    segToast._t = setTimeout(() => { el.className = ''; }, 3800);
+}
 /* ── Service Worker + Web Push — Agente de Comunicaciones ── */
 (function registrarSW() {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
@@ -600,12 +612,12 @@
  */
 async function suscribirNotificaciones(caseId) {
     if (!window._swReg) {
-        alert('Tu navegador no soporta notificaciones push.');
+        segToast('Tu navegador no soporta notificaciones push.', 'err');
         return;
     }
     const permiso = await Notification.requestPermission();
     if (permiso !== 'granted') {
-        alert('Activa los permisos de notificación en tu navegador para recibir alertas de tu pedido.');
+        segToast('Activa los permisos de notificación en tu navegador para recibir alertas de tu pedido.', 'err');
         return;
     }
     // VAPID public key — generar con: supabase functions invoke generate-vapid-keys

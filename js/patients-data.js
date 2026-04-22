@@ -78,4 +78,3 @@ if (typeof window !== 'undefined') {
 }
 
 // Log de verificación
-console.log('✅ PATIENTS_DATA cargado:', PATIENTS_DATA.length, 'casos');

@@ -2431,7 +2431,6 @@
             
             // Agregar evento de click para redirigir a página de detalle
             card.addEventListener('click', function() {
-                console.log(`🔗 Navegando a: patient.html?id=${patient.id}`);
                 window.location.href = `patient.html?id=${patient.id}`;
             });
             
@@ -2451,8 +2450,6 @@
         // MANEJO DE ERRORES DE IMAGEN (MEJORADO)
         // =============================================
         function handleImageError(img, patientId) {
-            console.warn(`⚠️ Error al cargar imagen para: ${patientId}`);
-            console.log(`📸 Ruta fallida: ${img.src}`);
             
             // Ocultar la imagen original
             img.style.display = 'none';
@@ -2478,7 +2475,6 @@
                 placeholder.innerHTML = '💎<br><span style="font-size: 1rem; letter-spacing: 2px;">PRODIGY</span>';
                 wrapper.appendChild(placeholder);
                 
-                console.log(`✅ Placeholder aplicado para: ${patientId}`);
             }
         }
         
