@@ -69,6 +69,7 @@
 | 4 | Settings → Auth → Site URL | Cambiar a `https://prodigylabdental.com` | ✅ Listo |
 | 5 | Settings → Auth → Redirect URLs | Agregar `https://prodigylabdental.com/**` | ✅ Listo |
 | 6 | Tabla `push_subscriptions` | SQL listo en `sql/migrate-push-subscriptions.sql` | ✅ Ejecutado |
+| 7 | Columna `citas_domicilio.acepta_marketing` | SQL listo en `sql/patch-citas-domicilio-marketing.sql` | 🔴 Ejecutar |
 
 ---
 
@@ -224,6 +225,27 @@
 | 2 | Fotos Google My Business | ⏳ 10–15 fotos del lab, fresadora, casos terminados |
 | 3 | Video Reels x 6 | ⏳ Scripts en cada artículo — grabar y publicar |
 | 4 | Email `casos@prodigylabdental.com` | ⏳ Crear en tu proveedor de dominio |
+
+---
+
+## ✅ COMPLETADO sesión 2026-04-22 (auditoría completa)
+
+| Qué | Dónde |
+|-----|-------|
+| **SQL patch** citas_domicilio.acepta_marketing | `sql/patch-citas-domicilio-marketing.sql` — ejecutar en Supabase |
+| **_headers** sw.js → no-store; articles.js → 1 día; generativelanguage eliminado CSP | `_headers` |
+| **patient.html** — GA4 G-Z8G2X7ETQ1 (página pública sin tracking) | `patient.html` |
+| **journal.html** — preconnect cdnjs + noscript | `journal.html` |
+| **seguimiento-caso.html** — XSS: id URL param sin escapar en banner Wompi → textContent | `seguimiento-caso.html` línea ~518 |
+| **reset-password.html** — showMsg usa DOM API (error.message de Supabase sin escapar) | `app/reset-password.html` |
+| **admin-panel.html** — err.message sin escapar en catch → textContent | `app/admin-panel.html` |
+| **inventario.html** — error.message sin escapar en tbody → createElement/textContent | `app/inventario.html` |
+| **sitemap.xml** — lastmod actualizado: journal, escaner-domicilio, envia-tu-scanner → 2026-04-22 | `sitemap.xml` |
+| **Audit completa** todas las páginas app/ — auth-guard ✅, noindex ✅, roles correctos ✅ | todas `app/*.html` |
+| **Audit sw.js** — páginas app/ en NEVER_CACHE ✅, PRECACHE solo públicas ✅ | `sw.js` |
+| **Audit auth-guard.js** — admin por email hardcoded, staff por app_metadata ✅ | `js/auth-guard.js` |
+| **Audit CSP completa** — dominios correctos, generativelanguage eliminado | `_headers` |
+| **Audit redirect** login.html — open redirect protegido con `startsWith('/')` y `!startsWith('//')` ✅ | `app/login.html` |
 
 ---
 
