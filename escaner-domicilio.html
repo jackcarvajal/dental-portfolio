@@ -532,7 +532,7 @@
                 </div>
 
                 <!-- Checkbox disclaimer -->
-                <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:20px;
+                <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;
                     background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);
                     border-radius:8px;padding:14px;">
                     <input type="checkbox" id="acepta_politica" style="margin-top:3px;flex-shrink:0;
@@ -544,6 +544,27 @@
                         el anticipo no es reembolsable si cancelo con menos de 24 horas de antelación,
                         la hora de llegada tiene una ventana de ±45 minutos, y en caso de no-show
                         se cobra la visita completa.
+                    </label>
+                </div>
+                <!-- Habeas Data Colombia — Ley 1581/2012 -->
+                <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;
+                    background:rgba(0,210,255,.04);border:1px solid rgba(0,210,255,.12);
+                    border-radius:8px;padding:14px;">
+                    <input type="checkbox" id="acepta_habeas" style="margin-top:3px;flex-shrink:0;
+                        accent-color:var(--cyan);width:16px;height:16px;" required>
+                    <label for="acepta_habeas" style="font-size:12px;color:var(--muted);cursor:pointer;
+                        text-transform:none;letter-spacing:0;">
+                        Autorizo el tratamiento de mis datos personales para la gestión de esta cita y seguimiento del servicio.
+                        Puedo solicitar su eliminación en cualquier momento sin afectar la prestación del servicio.
+                        (<a href="/terminos-y-legal.html" target="_blank" rel="noopener" style="color:var(--cyan)">Política de privacidad</a>)
+                    </label>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:20px;">
+                    <input type="checkbox" id="acepta_marketing_dom" style="margin-top:3px;flex-shrink:0;
+                        accent-color:#D4AF37;width:16px;height:16px;">
+                    <label for="acepta_marketing_dom" style="font-size:12px;color:var(--muted);cursor:pointer;
+                        text-transform:none;letter-spacing:0;">
+                        Acepto recibir novedades y promociones de PRODIGY Lab (opcional).
                     </label>
                 </div>
 
@@ -725,13 +746,18 @@ document.getElementById('agendaForm').addEventListener('submit', async e => {
     const franja    = document.getElementById('franja_hidden').value;
     const piezas    = document.getElementById('num_piezas').value;
     const notas     = document.getElementById('notas').value.trim();
-    const acepta    = document.getElementById('acepta_politica').checked;
+    const acepta         = document.getElementById('acepta_politica').checked;
+    const aceptaHabeas   = document.getElementById('acepta_habeas').checked;
+    const aceptaMarketing = document.getElementById('acepta_marketing_dom').checked;
 
     if (!nombre || !whatsapp || !zona || !servicio || !direccion || !fecha) {
         pubToast('Por favor completa todos los campos obligatorios (*)'); return;
     }
     if (!acepta) {
         pubToast('Debes aceptar las políticas del servicio para continuar.'); return;
+    }
+    if (!aceptaHabeas) {
+        pubToast('Debes autorizar el tratamiento de datos personales para continuar.'); return;
     }
 
     const btn = document.getElementById('btnSolicitar');
@@ -747,7 +773,8 @@ document.getElementById('agendaForm').addEventListener('submit', async e => {
         fecha_cita: fecha, franja_horaria: franja,
         num_piezas: piezas ? parseInt(piezas) : null,
         notas: notas || null,
-        anticipo_solicitado: anticipo.monto
+        anticipo_solicitado: anticipo.monto,
+        acepta_marketing:    aceptaMarketing
     });
 
     if (error) console.warn('Insert error:', error);
