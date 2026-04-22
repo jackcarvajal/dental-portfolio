@@ -2185,7 +2185,12 @@
             texto += `• Titular: ${STATE.pagoTitular}\n`;
             texto += `• Ref: ${STATE.pagoReferencia || 'No proporcionada'}\n\n`;
             
-            texto += `💵 *TOTAL: ${STATE.total}*\n\n`;
+            texto += `💵 *TOTAL: ${STATE.total}*\n`;
+            const _totalNumI = parseInt(String(STATE.total).replace(/\D/g,'')) || 0;
+            const _abonoI = '$' + Math.round(_totalNumI * 0.5).toLocaleString('es-CO');
+            texto += `💳 *Abono para inicio de producción (50%): ${_abonoI}*\n`;
+            texto += `💳 *Saldo antes del despacho (50%): ${_abonoI}*\n`;
+            texto += `⚠️ *El caso no sale del laboratorio sin liquidación total del saldo.*\n\n`;
             texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n`;
 
             // Nonce de seguridad para tracking

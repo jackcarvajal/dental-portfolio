@@ -1206,7 +1206,15 @@
             msg += `• ${_esIntl ? 'Method' : 'Medio'}: ${STATE.pagoMetodo}\n`;
             msg += `• ${_esIntl ? 'Holder' : 'Titular'}: ${STATE.pagoTitular}\n`;
             if (STATE.pagoRef) msg += `• Ref: ${STATE.pagoRef}\n`;
-            msg += `\n💵 *${_esIntl ? 'TOTAL' : 'TOTAL'}: ${STATE.total}*\n\n`;
+            msg += `\n💵 *${_esIntl ? 'TOTAL' : 'TOTAL'}: ${STATE.total}*\n`;
+            const _totalNumD = parseInt(String(STATE.total).replace(/\D/g,'')) || 0;
+            const _abonoD = '$' + Math.round(_totalNumD * 0.5).toLocaleString('es-CO');
+            if (!_esIntl) {
+                msg += `💳 *Abono para inicio de producción (50%): ${_abonoD}*\n`;
+                msg += `💳 *Saldo antes del despacho (50%): ${_abonoD}*\n`;
+                msg += `⚠️ *El caso no sale del laboratorio sin liquidación total del saldo.*\n`;
+            }
+            msg += `\n`;
             msg += `📎 ${_esIntl ? '*Files:*' : '*Archivos:*'} ${STATE.linkSTL}\n`;
             if (STATE.observaciones) msg += `📝 ${_esIntl ? '*Notes:*' : '*Indicaciones:*'} ${STATE.observaciones}\n`;
             msg += _esIntl
