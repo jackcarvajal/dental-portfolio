@@ -61,21 +61,9 @@
                 <h3 style="color:#FFD700;margin-bottom:25px;"><i class="fas fa-search"></i> Buscar Caso</h3>
                 
                 <div>
-                    <label style="color:rgba(248,250,252,0.9);font-weight:600;display:block;margin-bottom:8px;">Buscar por Número de Orden</label>
-                    <input type="text" id="searchOrden" placeholder="PRD-2026-XXXX" style="width:100%;padding:15px;background:rgba(10,14,26,0.6);border:2px solid rgba(255,215,0,0.3);border-radius:12px;color:white;font-size:1rem;margin-bottom:20px;">
-                    
-                    <div style="text-align:center;color:rgba(248,250,252,0.6);font-weight:600;margin:20px 0;">- O -</div>
-                    
-                    <div class="seg-input-row">
-                        <div>
-                            <label style="color:rgba(248,250,252,0.9);font-weight:600;display:block;margin-bottom:8px;">Nombre del Paciente</label>
-                            <input type="text" id="searchNombre" placeholder="María López" style="width:100%;padding:15px;background:rgba(10,14,26,0.6);border:2px solid rgba(255,215,0,0.3);border-radius:12px;color:white;">
-                        </div>
-                        <div>
-                            <label style="color:rgba(248,250,252,0.9);font-weight:600;display:block;margin-bottom:8px;">Teléfono</label>
-                            <input type="tel" id="searchTelefono" placeholder="3001234567" style="width:100%;padding:15px;background:rgba(10,14,26,0.6);border:2px solid rgba(255,215,0,0.3);border-radius:12px;color:white;">
-                        </div>
-                    </div>
+                    <label style="color:rgba(248,250,252,0.9);font-weight:600;display:block;margin-bottom:8px;">Número de Orden</label>
+                    <input type="text" id="searchOrden" placeholder="PROD-2026-XXXX" style="width:100%;padding:15px;background:rgba(10,14,26,0.6);border:2px solid rgba(255,215,0,0.3);border-radius:12px;color:white;font-size:1rem;margin-bottom:12px;">
+                    <p style="color:rgba(248,250,252,0.45);font-size:0.8rem;margin:0 0 20px;">El número de orden llega en el mensaje de WhatsApp de confirmación.</p>
                 </div>
                 
                 <button onclick="buscarCasoConSpinner()" style="width:100%;padding:15px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:50px;font-size:1.1rem;font-weight:700;cursor:pointer;">
