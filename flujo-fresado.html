@@ -4002,12 +4002,7 @@
             texto += `• Titular: ${STATE.pagoTitular}\n`;
             texto += `• Ref: ${STATE.pagoReferencia || 'No proporcionada'}\n\n`;
             
-            texto += `💵 *TOTAL: ${STATE.total}*\n`;
-            const _totalNumF = parseInt(String(STATE.total).replace(/\D/g,'')) || 0;
-            const _abonoF = '$' + Math.round(_totalNumF * 0.5).toLocaleString('es-CO');
-            texto += `💳 *Abono para inicio de producción (50%): ${_abonoF}*\n`;
-            texto += `💳 *Saldo antes del despacho (50%): ${_abonoF}*\n`;
-            texto += `⚠️ *El caso no sale del laboratorio sin liquidación total del saldo.*\n\n`;
+            texto += `💵 *TOTAL: ${STATE.total}* (pago 100% al confirmar)\n\n`;
             texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n`;
 
             const _nonce = btoa(STATE.ordenId + ':' + Date.now().toString(36)).replace(/[+/=]/g, c => c==='+' ? '-' : c==='/' ? '_' : '');
