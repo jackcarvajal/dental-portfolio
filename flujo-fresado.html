@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="theme-color" content="#D946A6">
+    <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="description" content="Calculadora de fresado CAD/CAM — Zirconio, PMMA, CrCo, PEEK. Cotiza y confirma tu pedido dental en línea. PRODIGY, Bogotá, Colombia.">
@@ -4683,5 +4684,6 @@
     <script src="js/stl-multi-viewer.js"></script>
     <script>ProdigyMultiViewer.init('pmv-fresado');</script>
     <script src="js/flujo-uploader.js"></script>
+    <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>

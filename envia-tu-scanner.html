@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#D946A6">
+    <link rel="manifest" href="/manifest.json">
     <meta name="description" content="¿Tu clínica tiene iTero, Medit o 3Shape Trios y no tienes laboratorio propio? Envíanos el archivo y PRODIGY diseña y produce tu restauración. Entrega 24–48 h. Bogotá, Colombia.">
     <meta name="keywords" content="laboratorio dental iTero Colombia, enviar escaner intraoral, Medit i700 diseño CAD, 3Shape Trios sin lab, laboratorio CAD CAM Bogotá, corona zirconio desde escaner">
     <meta property="og:title" content="¿Tienes escáner intraoral? Nosotros diseñamos y producimos | PRODIGY">
@@ -786,5 +788,6 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
     }, 700);
 });
 </script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>

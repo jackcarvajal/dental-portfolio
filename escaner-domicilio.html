@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#D946A6">
+    <link rel="manifest" href="/manifest.json">
     <meta name="description" content="Escaneo intraoral a domicilio en el norte de Bogotá. PRODIGY va a tu clínica con el mejor escáner del mercado. Archivo STL listo en 2 horas hábiles. Descuentos para laboratorio.">
     <meta name="keywords" content="escáner intraoral domicilio Bogotá, escaneo dental a domicilio norte Bogotá, 3Shape Trios domicilio, laboratorio digital a domicilio Colombia, iTero domicilio Bogotá">
     <meta property="og:title" content="Escaneo intraoral a domicilio — Norte de Bogotá | PRODIGY">
@@ -777,5 +779,6 @@ document.getElementById('agendaForm').addEventListener('submit', async e => {
     }, 600);
 });
 </script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
