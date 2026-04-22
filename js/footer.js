@@ -135,10 +135,10 @@
       '<div class="pfoot-col">' +
         '<h4>Manufactura (Colombia)</h4>' +
         '<ul>' +
-          '<li><a href="flujo-fresado.html">Fresado Zirconio &amp; PMMA</a></li>' +
+          '<li><a href="fresado-cam.html">Fresado CAM — Servicios</a></li>' +
+          '<li><a href="flujo-fresado.html">Pedir Fresado</a></li>' +
           '<li><a href="flujo-impresion.html">Impresión 3D Dental</a></li>' +
           '<li><a href="catalogo.html">Catálogo de Materiales</a></li>' +
-          '<li><a href="portafolio.html">Portafolio de Casos</a></li>' +
           '<li><a href="escaner-domicilio.html">Escáner Móvil a Domicilio</a></li>' +
         '</ul>' +
       '</div>' +
@@ -147,10 +147,10 @@
       '<div class="pfoot-col">' +
         '<h4>Ecosistema Digital</h4>' +
         '<ul>' +
-          '<li><a href="flujo-diseno.html">Diseño CAD (Global)</a></li>' +
+          '<li><a href="diseno-cad.html">Diseño CAD — Servicios</a></li>' +
+          '<li><a href="flujo-diseno.html">Pedir Diseño CAD</a></li>' +
           '<li><a href="envia-tu-scanner.html">Envía tu Escáner</a></li>' +
           '<li><a href="journal.html">ProDigy Journal</a></li>' +
-          '<li><a href="calculadora.html">Cotizador de Casos</a></li>' +
           '<li><a href="seguimiento-caso.html">Seguimiento en Vivo</a></li>' +
         '</ul>' +
       '</div>' +

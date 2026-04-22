@@ -1,18 +1,24 @@
-// Prodigy Lab Dental — Service Worker v1.0
-const CACHE = 'prodigy-v1';
+// Prodigy Lab Dental — Service Worker v2.0
+const CACHE = 'prodigy-v2';
 
 // Assets estáticos que siempre cacheamos en install
 const PRECACHE = [
   '/',
-  '/index.html',
   '/portafolio.html',
   '/calculadora.html',
   '/catalogo.html',
+  '/journal.html',
+  '/nosotros.html',
+  '/soporte.html',
+  '/seguimiento-caso.html',
   '/envia-tu-scanner.html',
-  '/patient.html',
+  '/escaner-domicilio.html',
+  '/diseno-cad.html',
+  '/fresado-cam.html',
   '/manifest.json',
   '/assets/prodigy-preview.jpg',
-  '/assets/prodigy-preview.svg'
+  '/assets/icons/icon-192.png',
+  '/assets/icons/icon-512.png'
 ];
 
 // Rutas que NUNCA cacheamos (siempre network)
