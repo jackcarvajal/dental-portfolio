@@ -4671,7 +4671,7 @@
         function pagarConWompi() {
             const totalEl = document.getElementById('calc-total');
             const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;
-            if (!monto) { alert('Selecciona un material y proceso para calcular el total.'); return; }
+            if (!monto) { frsToast('Selecciona un material y proceso para calcular el total.'); return; }
             const _r2 = new Uint8Array(5); crypto.getRandomValues(_r2);
             const ref = 'PRD-FRS-' + Array.from(_r2).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
             abrirCheckoutWompi({ monto, referencia: ref, descripcion: 'PRODIGY — Fresado CAD/CAM' });
@@ -4685,5 +4685,7 @@
     <script>ProdigyMultiViewer.init('pmv-fresado');</script>
     <script src="js/flujo-uploader.js"></script>
     <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<div id="frs-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;padding:13px 24px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:340px;text-align:center;"></div>
+<script>let _frsT;function frsToast(m){const e=document.getElementById('frs-toast');e.textContent=m;e.style.opacity='1';clearTimeout(_frsT);_frsT=setTimeout(()=>{e.style.opacity='0';},3600);}</script>
 </body>
 </html>

@@ -1072,14 +1072,17 @@
     })();
     </script>
     <script>
+        let _impT;
+        function impToast(m){const e=document.getElementById('imp-toast');e.textContent=m;e.style.opacity='1';clearTimeout(_impT);_impT=setTimeout(()=>{e.style.opacity='0';},3600);}
         function pagarConWompi() {
             const totalEl = document.getElementById('calc-total');
             const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;
-            if (!monto) { alert('Selecciona un servicio para calcular el total.'); return; }
+            if (!monto) { impToast('Selecciona un servicio para calcular el total.'); return; }
             const ref = 'PRD-IMP-' + Math.random().toString(36).substr(2, 8).toUpperCase();
             abrirCheckoutWompi({ monto, referencia: ref, descripcion: 'PRODIGY — Impresión 3D' });
         }
     </script>
+<div id="imp-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;padding:13px 24px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:340px;text-align:center;"></div>
 
     <!-- Google Analytics GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
