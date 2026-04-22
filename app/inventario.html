@@ -700,7 +700,7 @@ async function cargarMovimientos() {
 
     const { data, error } = await q;
     const tbody = document.getElementById('mov-tbody');
-    if (error) { tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:20px">${error.message}</td></tr>`; return; }
+    if (error) { const td = document.createElement('td'); td.colSpan = 7; td.style.cssText = 'color:var(--red);padding:20px'; td.textContent = error.message; const tr = document.createElement('tr'); tr.appendChild(td); tbody.innerHTML = ''; tbody.appendChild(tr); return; }
     if (!data?.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--txt3)">Sin movimientos</td></tr>'; return; }
 
     tbody.innerHTML = data.map(m => `

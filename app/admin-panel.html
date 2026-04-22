@@ -846,7 +846,12 @@ async function cargarPortafolio() {
         </div>`).join('');
 
     } catch (err) {
-        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;color:#f87171;">${err.message}</div>`;
+        grid.textContent = '';
+        const errDiv = document.createElement('div');
+        errDiv.style.cssText = 'grid-column:1/-1;color:#f87171';
+        errDiv.className = 'empty-state';
+        errDiv.textContent = err.message;
+        grid.appendChild(errDiv);
     }
 }
 
