@@ -68,7 +68,7 @@ const PAGOS_CONFIG = {
         label:               'Transferencia Lulo Bank / Bre-B',
         icono:               '🏦',
         umbralPrioritario:   400000,
-        instrucciones:       'Transfiere a: <strong>Alejandro Cañón</strong> · Lulo Bank / BRE-B cédula <strong>1019051396</strong> — o a <strong>Jessica Mendez</strong> · BRE-B / Nequi / Daviplata <strong>322 877 4481</strong>. Sube el comprobante aquí para confirmar tu pedido.',
+        instrucciones:       'Transfiere a <strong>Jessica Mendez</strong> · Nequi / Daviplata / BRE-B <strong>322 877 4481</strong>. Sube el comprobante aquí para confirmar tu pedido.',
         paises:              ['CO']
     }
 };

@@ -14,6 +14,9 @@ Disallow: /agregar-caso.html
 Disallow: /enviar-produccion-drive.html
 Disallow: /enviar-produccion-wetransfer.html
 Disallow: /flujo-diseno.html
+Disallow: /flujo-fresado.html
+Disallow: /flujo-impresion.html
+Disallow: /flujo-lab.html
 Disallow: /*.bat$
 
 # Bots de IA — permitir páginas públicas con contenido indexable
@@ -27,6 +30,8 @@ Allow: /diseno-cad.html
 Allow: /fresado-cam.html
 Allow: /escaner-domicilio.html
 Allow: /envia-tu-scanner.html
+Allow: /soporte.html
+Allow: /instalar-app.html
 
 User-agent: PerplexityBot
 Allow: /journal.html
@@ -38,6 +43,8 @@ Allow: /diseno-cad.html
 Allow: /fresado-cam.html
 Allow: /escaner-domicilio.html
 Allow: /envia-tu-scanner.html
+Allow: /soporte.html
+Allow: /instalar-app.html
 
 User-agent: anthropic-ai
 Allow: /journal.html
@@ -49,5 +56,7 @@ Allow: /diseno-cad.html
 Allow: /fresado-cam.html
 Allow: /escaner-domicilio.html
 Allow: /envia-tu-scanner.html
+Allow: /soporte.html
+Allow: /instalar-app.html
 
 Sitemap: https://prodigylabdental.com/sitemap.xml
