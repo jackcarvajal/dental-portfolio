@@ -10,6 +10,14 @@
 /scripts/*                      /404.html  404
 /marketing-social.txt           /404.html  404
 /.github/*                      /404.html  404
+/js/supabase-mock.js            /404.html  404
+/SESIONES.md                    /404.html  404
+/PENDIENTES.md                  /404.html  404
+/PRODIGY_LOG.md                 /404.html  404
+/CLAUDE.md                      /404.html  404
+/.env                           /404.html  404
+/.env.*                         /404.html  404
+/*.log                          /404.html  404
 
 # ─────────────────────────────────────────────────────────────
 # PÁGINAS INTERNAS / LEGACY — redirigir a login o 404

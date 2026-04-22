@@ -396,6 +396,22 @@
   }, { threshold: 0.08 });
   document.querySelectorAll('.sr').forEach(el => obs.observe(el));
 
+
+  // Supabase lead capture (fire-and-forget)
+  const _NS_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+  const _NS_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+  function _nsSaveLead(nombre, clinica, email, tipoLabel, mensaje) {
+    try {
+      const sb = window.supabase && window.supabase.createClient(_NS_URL, _NS_ANON);
+      if (!sb) return;
+      sb.from('leads_doctores').insert({
+        nombre: nombre + (clinica ? ' — ' + clinica : ''),
+        whatsapp: email,
+        recurso_descargado: 'Contacto web nosotros.html: ' + tipoLabel + ' — ' + mensaje.substring(0, 120)
+      }).then(() => {}).catch(() => {}); // silencioso — no bloquea el flujo
+    } catch (_) {}
+  }
+
   // Formulario → WhatsApp
   document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -414,6 +430,7 @@
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando…';
     const tipoLabel = { cotizacion:'Cotización de caso', soporte_tecnico:'Soporte técnico', exocad:'Ayuda Exocad/3Shape', escaner:'Recogida de escáner', materiales:'Consulta materiales', otro:'Otro requerimiento' }[tipo] || tipo;
     const texto = `Hola PRODIGY, nueva consulta desde el sitio web:\n\n*Nombre:* ${nombre}\n*Clínica:* ${clinica||'N/A'}\n*Email:* ${email}\n*Tipo:* ${tipoLabel}\n*Mensaje:* ${mensaje}`;
+    _nsSaveLead(nombre, clinica, email, tipoLabel, mensaje);
     setTimeout(() => {
       window.open('https://wa.me/573212816716?text=' + encodeURIComponent(texto), '_blank');
       document.getElementById('contact-form').style.display = 'none';
@@ -423,6 +440,7 @@
 
   if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <div id="_pub-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;padding:12px 22px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px;text-align:center;"></div>
 <script>let _pubT;function pubToast(m){const e=document.getElementById('_pub-toast');e.textContent=m;e.style.opacity='1';clearTimeout(_pubT);_pubT=setTimeout(()=>{e.style.opacity='0';},3800);}</script>
 </body>
