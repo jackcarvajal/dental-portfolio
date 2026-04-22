@@ -299,6 +299,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 let _pedidos = [];
 let _userId  = null;
 let _timerInterval = null;
+const escH = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 // Estados operativos por columna
 const PENDIENTES = ['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE'];
@@ -377,17 +378,17 @@ function cardHTML(p, col) {
         ? `<button class="btn-xs btn-cyan"  onclick="avanzarEstado('${p.id}','DISENO_FINALIZADO')">Diseño OK</button>
            <button class="btn-xs btn-gold"  onclick="avanzarEstado('${p.id}','FRESADO_INICIADO')">Fresado</button>
            <button class="btn-xs btn-yellow" onclick="abrirQA('${p.id}','${p.codigo||''}')">QA</button>`
-        : `<span style="font-size:.68rem;color:var(--green)">✓ ${p.estado_operativo}</span>`;
+        : `<span style="font-size:.68rem;color:var(--green)">✓ ${escH(p.estado_operativo)}</span>`;
 
     return `
     <div class="caso-card" style="${urgente ? 'border-color:rgba(239,68,68,.4)' : alerta ? 'border-color:rgba(251,191,36,.3)' : ''}">
         ${timerLabel ? `<div class="card-timer ${timerClass}">${timerLabel}</div>` : ''}
-        <div class="caso-id">#${p.codigo || p.id.slice(0,8)} ${urgente ? '<span class="urgente-dot"></span>' : ''}</div>
-        <div class="caso-nombre">${p.nombre_paciente || 'Sin nombre'}</div>
+        <div class="caso-id">#${escH(p.codigo) || p.id.slice(0,8)} ${urgente ? '<span class="urgente-dot"></span>' : ''}</div>
+        <div class="caso-nombre">${escH(p.nombre_paciente) || 'Sin nombre'}</div>
         <div class="caso-meta">
-            ${p.servicio || '—'}<br>
-            ${p.material ? 'Material: ' + p.material : ''}
-            ${p.color_vita ? ' · Color: ' + p.color_vita : ''}
+            ${escH(p.servicio) || '—'}<br>
+            ${p.material ? 'Material: ' + escH(p.material) : ''}
+            ${p.color_vita ? ' · Color: ' + escH(p.color_vita) : ''}
         </div>
         <div class="caso-actions">${actions}</div>
     </div>`;

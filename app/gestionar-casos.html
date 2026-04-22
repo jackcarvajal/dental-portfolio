@@ -197,6 +197,7 @@
 const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const escH = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 let todosCasos = [];
 let filtroActivo = 'todos';
@@ -252,13 +253,13 @@ function renderGrid() {
         <div class="caso-card ${c.visible ? '' : 'oculto'}" id="card-${c.id}">
             ${thumb}
             <div class="caso-body">
-                <div class="caso-name">${c.name}</div>
+                <div class="caso-name">${escH(c.name)}</div>
                 <div class="caso-meta">
-                    <span class="badge">${c.code || '—'}</span>
-                    <span class="badge">${c.type || '—'}</span>
+                    <span class="badge">${escH(c.code) || '—'}</span>
+                    <span class="badge">${escH(c.type) || '—'}</span>
                     ${estadoBadge}
                 </div>
-                <div class="caso-desc">${c.description || ''}</div>
+                <div class="caso-desc">${escH(c.description)}</div>
             </div>
             <div class="caso-actions">
                 <button class="btn-action btn-ver" onclick="window.open('../patient.html?id=${c.id}','_blank')">👁 Ver</button>

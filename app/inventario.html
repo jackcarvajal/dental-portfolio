@@ -385,6 +385,7 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
 const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const escH = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 let _items    = [];
 let _scanner  = null;
@@ -460,10 +461,10 @@ function renderStock() {
         return `
         <div class="stock-card">
             <div class="sem ${semClass}"></div>
-            <div class="cat-badge">${it.categoria}</div>
-            <div class="item-name">${it.nombre}</div>
+            <div class="cat-badge">${escH(it.categoria)}</div>
+            <div class="item-name">${escH(it.nombre)}</div>
             <div class="item-stock" style="color:${semColor}">${it.stock_actual}</div>
-            <div class="item-unit">${it.unidad_medida}</div>
+            <div class="item-unit">${escH(it.unidad_medida)}</div>
             <div class="item-min">Mínimo: ${it.stock_minimo}</div>
             <div class="item-cost">Costo prom: $${(it.costo_promedio||0).toLocaleString('es-CO')}</div>
             ${it.kill_switch ? '<div class="kill-badge">KILL SWITCH ON</div>' : ''}

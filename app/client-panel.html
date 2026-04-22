@@ -705,6 +705,7 @@ async function loadByToken(token) {
 
 /* ── MODO AUTH (sesión Supabase) ────────────────────────────── */
 async function loadByAuth(session) {
+    try {
     const email = session.user.email;
     const { data: pedidos, error } = await sb.from('pedidos')
         .select('*')
@@ -740,6 +741,9 @@ async function loadByAuth(session) {
     renderTablas(_pedidos);
     suscribirRealtime();
     cargarPedidosDoc_cliente(session.user.id);
+    } catch (e) {
+        document.getElementById('tabla-historial').innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>Error al cargar datos. Recarga la página.</div>`;
+    }
 }
 
 /* ── NPS ────────────────────────────────────────────────────── */

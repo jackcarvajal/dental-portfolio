@@ -806,7 +806,6 @@ async function publicarCaso() {
         const alertEl = document.getElementById('alertError');
         alertEl.textContent = '❌ ' + err.message;
         alertEl.classList.add('show');
-        console.error(err);
         btn.classList.remove('loading');
         btn.querySelector('#btnIcon').textContent = '🚀';
         btn.querySelector('#btnText').textContent = 'Publicar en Línea';

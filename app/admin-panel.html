@@ -644,6 +644,7 @@ async function cargarPedidos() {
         todosLosPedidos = data || [];
         renderPedidos(todosLosPedidos);
         actualizarKPIs(todosLosPedidos);
+        cargarBadgeIncidencias();
 
     } catch (e) {
         document.getElementById('tbody-pedidos').innerHTML =
@@ -1345,7 +1346,6 @@ async function cargarBadgeIncidencias() {
    INIT
 ══════════════════════════════════════════ */
 verificarAdmin();
-setTimeout(cargarBadgeIncidencias, 2000);
 </script>
 </body>
 </html>
