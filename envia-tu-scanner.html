@@ -675,10 +675,10 @@ fileInput.addEventListener('change', () => { if (fileInput.files[0]) setFile(fil
 function setFile(f) {
     const ext = f.name.split('.').pop().toLowerCase();
     if (!['stl','obj','ply','dcm','zip'].includes(ext)) {
-        alert('Formato no permitido. Acepta: STL, OBJ, PLY, DCM, ZIP'); return;
+        pubToast('Formato no permitido. Acepta: STL, OBJ, PLY, DCM, ZIP'); return;
     }
     if (f.size > 52428800) {
-        alert('El archivo supera 50 MB. Comprime en ZIP o pega el link de descarga en las notas.'); return;
+        pubToast('El archivo supera 50 MB. Comprime en ZIP o pega el link de descarga en las notas.'); return;
     }
     selectedFile = f;
     document.getElementById('fname').textContent = f.name;
@@ -731,7 +731,7 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
     const notas    = document.getElementById('notas').value.trim();
 
     if (!doctor || !clinica || !whatsapp || !marca) {
-        alert('Por favor completa todos los campos obligatorios (*).'); return;
+        pubToast('Por favor completa todos los campos obligatorios (*)'); return;
     }
 
     const btn = document.getElementById('submitBtn');
@@ -790,5 +790,7 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
 });
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<div id="_pub-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;padding:12px 22px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px;text-align:center;"></div>
+<script>let _pubT;function pubToast(m){const e=document.getElementById('_pub-toast');e.textContent=m;e.style.opacity='1';clearTimeout(_pubT);_pubT=setTimeout(()=>{e.style.opacity='0';},3800);}</script>
 </body>
 </html>

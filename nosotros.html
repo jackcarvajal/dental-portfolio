@@ -403,7 +403,7 @@
     const mensaje = document.getElementById('mensaje').value.trim();
     const habeas  = document.getElementById('habeas').checked;
     if (!nombre || !email || !tipo || !mensaje || !habeas) {
-      alert('Por favor completa todos los campos requeridos y acepta la política de privacidad.');
+      pubToast('Por favor completa todos los campos requeridos y acepta la política de privacidad.');
       return;
     }
     const btn = document.getElementById('submit-btn');
@@ -420,5 +420,7 @@
 
   if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
+<div id="_pub-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;padding:12px 22px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px;text-align:center;"></div>
+<script>let _pubT;function pubToast(m){const e=document.getElementById('_pub-toast');e.textContent=m;e.style.opacity='1';clearTimeout(_pubT);_pubT=setTimeout(()=>{e.style.opacity='0';},3800);}</script>
 </body>
 </html>

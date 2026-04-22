@@ -103,7 +103,7 @@ async function mostrarQR(containerId, pedido) {
 /* ── Imprimir etiqueta 50×25 mm en Xprinter 365B ── */
 function imprimirEtiqueta(containerId) {
     const etiqueta = document.getElementById(containerId)?.querySelector('.qr-etiqueta');
-    if (!etiqueta) { alert('Etiqueta no encontrada. Genera el QR primero.'); return; }
+    if (!etiqueta) { _pgToast('Etiqueta no encontrada. Genera el QR primero.'); return; }
 
     const win = window.open('', '_blank', 'width=400,height=300');
     win.document.write(`<!DOCTYPE html>

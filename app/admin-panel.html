@@ -1322,7 +1322,7 @@ async function cargarTorre() {
 async function resolverIncidencia(incId) {
     const res = prompt('Nota de resolución (opcional):') ?? '';
     const { error } = await sb.from('logs_incidencias').update({ resuelta: true, resolucion: res || 'Resuelta por admin' }).eq('id', incId);
-    if (error) { alert('Error: ' + error.message); return; }
+    if (error) { toast('Error: ' + error.message, 'error'); return; }
     cargarTorre();
 }
 

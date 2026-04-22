@@ -542,13 +542,13 @@ init();
 <script>
 async function enviarPanicoFab() {
     const desc = document.getElementById('pfab-desc').value.trim();
-    if (!desc) { alert('Describe el problema'); return; }
+    if (!desc) { toast('Describe el problema', 'error'); return; }
     const sbP = window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634');
     const { data: { session } } = await sbP.auth.getSession();
     await sbP.from('logs_incidencias').insert({ emisor_id: session?.user?.id, tipo: document.getElementById('pfab-tipo').value, descripcion: desc, severidad: document.getElementById('pfab-sev').value });
     document.getElementById('modal-panico-fab').classList.remove('open');
     document.getElementById('pfab-desc').value = '';
-    alert('Incidencia reportada. El admin fue notificado.');
+    toast('Incidencia reportada. El admin fue notificado.', 'ok');
 }
 </script>
 </body>

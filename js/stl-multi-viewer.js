@@ -403,7 +403,7 @@
             // Tamaño
             const sizeMb = +(f.size / 1024 / 1024).toFixed(1);
             if (sizeMb > MAX_MB) {
-                alert(`"${f.name}" supera el límite de ${MAX_MB} MB`);
+                _pgToast(`"${f.name}" supera el límite de ${MAX_MB} MB`);
                 return;
             }
             const ext   = f.name.split('.').pop().toLowerCase();

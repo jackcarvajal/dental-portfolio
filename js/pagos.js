@@ -18,6 +18,20 @@
  *   Transferencia: +0%  (prioridad si total > $400.000 COP)
  */
 
+function _pgToast(msg) {
+    let el = document.getElementById('_pg-toast');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = '_pg-toast';
+        el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(248,113,113,0.5);color:#fca5a5;padding:13px 24px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:340px;text-align:center;';
+        document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.style.opacity = '1';
+    clearTimeout(_pgToast._t);
+    _pgToast._t = setTimeout(() => { el.style.opacity = '0'; }, 4000);
+}
+
 const PAGOS_CONFIG = {
     wompi: {
         publicKey: 'pub_prod_toFqXM5Ko9rn6Htt6kiEma7jHj9zuA0',
@@ -292,7 +306,7 @@ async function abrirCheckoutPayPal({ montoUSD, referencia, descripcion, containe
     try {
         await cargarSDKPayPal();
     } catch {
-        alert('No se pudo conectar con PayPal. Intenta con transferencia internacional o contáctanos.');
+        _pgToast('No se pudo conectar con PayPal. Intenta con transferencia o contáctanos.');
         return;
     }
     const container = document.getElementById(containerId || 'paypal-button-container');
@@ -313,7 +327,7 @@ async function abrirCheckoutPayPal({ montoUSD, referencia, descripcion, containe
         }),
         onError: (err) => {
             console.error('PayPal error:', err);
-            alert('Pago PayPal no completado. Intenta de nuevo.');
+            _pgToast('Pago PayPal no completado. Intenta de nuevo.');
         }
     }).render(`#${containerId || 'paypal-button-container'}`);
 }
@@ -364,7 +378,7 @@ async function abrirCheckoutPaddle({ montoUSD, referencia, email, containerId, o
     try {
         await cargarSDKPaddle();
     } catch {
-        alert('No se pudo conectar con Paddle. Intenta con PayPal.');
+        _pgToast('No se pudo conectar con Paddle. Intenta con PayPal.');
         return;
     }
 
