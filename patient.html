@@ -1104,10 +1104,11 @@
             const container = document.getElementById('viewer-container');
             
             if (paciente.exocadFile && paciente.exocadFile.trim() !== '') {
-                // Aplicar sanitizePath para manejar espacios
-                const path = sanitizePath(paciente.exocadFile);
-                
-                container.innerHTML = `<iframe src="${path}" title="Visor 3D Exocad"></iframe>`;
+                const iframe = document.createElement('iframe');
+                iframe.src = sanitizePath(paciente.exocadFile);
+                iframe.title = 'Visor 3D Exocad';
+                container.innerHTML = '';
+                container.appendChild(iframe);
             } else {
                 container.innerHTML = `
                     <div class="no-viewer">

@@ -1,6 +1,6 @@
 # PRODIGY — PENDIENTES MAESTRO
 > Fuente única de verdad. Ordenados por bloque. Actualizar al completar.
-> Última revisión: 2026-04-15
+> Última revisión: 2026-04-22
 
 ---
 
@@ -144,9 +144,23 @@
 
 | # | Acción | Detalle | Estado |
 |---|--------|---------|--------|
-| 1 | Search Console | Verificar dominio + sitemap enviado + validación corrección iniciada | ✅ Listo |
+| 1 | Search Console | Sitemap actualizado 2026-04-22 — **re-enviar** `https://prodigylabdental.com/sitemap.xml` | 🔴 Re-enviar |
 | 2 | Google My Business | Perfil creado y activo — faltan fotos del lab | ⏳ Subir 10-15 fotos |
-| 3 | Analytics GA4 | `G-Z8G2X7ETQ1` activo en index, calculadora, journal, envia-tu-scanner, escaner-domicilio | ✅ Listo |
+| 3 | Analytics GA4 | `G-Z8G2X7ETQ1` activo en todas las páginas públicas | ✅ Listo |
+| 4 | PageSpeed Insights | Medir LCP/CLS en nosotros, portafolio, calculadora post-deploy | ⏳ Manual |
+| 5 | GA4 Real Time | Abrir analytics.google.com → Real Time y navegar el sitio para confirmar hits | ⏳ Manual |
+| 6 | `assets/prodigy-preview.jpg` | Verificar que el archivo existe en Cloudflare Pages (og:image de todas las páginas apunta ahí) | ⏳ Manual |
+
+---
+
+## 🔴 BLOQUE 9 — DECISIONES PENDIENTES (requieren confirmación Alejandro)
+
+| # | Item | Qué decidir | Impacto |
+|---|------|-------------|---------|
+| 1 | `portal.html` | ¿Es página pública o legacy? Opciones: A) agregar `noindex` (recomendado si no se usa activamente), B) agregar al sitemap + linkear desde nav | SEO — está indexable pero sin links entrantes |
+| 2 | `fresado-cam.html` CTA secundario | El botón "Pedir fresado" apunta a `/flujo-diseno.html` — ¿debería ser `/flujo-fresado.html`? | UX del flujo de pedido |
+| 3 | `buscar_pedido_publico` RPC | Verificar en Supabase Dashboard → Database → Functions que la función SOLO retorna campos públicos (estado, timeline, parámetros técnicos) y NO incluye email, teléfono, datos personales del doctor | Privacidad de datos |
+| 4 | GDPR clientes internacionales | `diseno-cad.html` ofrece servicio mundial. Clientes EU activan GDPR — ¿agregar aviso específico para UE? | Cumplimiento legal |
 
 ---
 
@@ -158,6 +172,41 @@
 | 2 | Fotos Google My Business | ⏳ 10–15 fotos del lab, fresadora, casos terminados |
 | 3 | Video Reels x 6 | ⏳ Scripts en cada artículo — grabar y publicar |
 | 4 | Email `casos@prodigylabdental.com` | ⏳ Crear en tu proveedor de dominio |
+
+---
+
+## ✅ COMPLETADO sesiones 2026-04-21 / 2026-04-22
+
+| Qué | Dónde |
+|-----|-------|
+| **SEO/Launch nosotros.html** — BreadcrumbList, title≤60ch, desc≤160ch, og:image | `nosotros.html` |
+| **Lead capture nosotros.html** — Supabase fire-and-forget antes de abrir WA | `nosotros.html` + Supabase CDN |
+| **WCAG nosotros.html** — sr-only heading, aria-label WA btn, H3→H2 historia | `nosotros.html` |
+| **portafolio.html** — sr-only H2, CollectionPage schema, aria-labels botones | `portafolio.html` |
+| **terminos-y-legal.html** — política 50/50, sub-procesadores (Supabase/GA4/CF), BreadcrumbList, Titular Alejandro eliminado | `terminos-y-legal.html` |
+| **js/pagos.js** — instrucciones transferencia solo a Jessica 322 877 4481 | `js/pagos.js` |
+| **js/footer.js** — aria-labels redes, cookie consent banner (SIC Circular 002/2015) | `js/footer.js` |
+| **js/supabase-mock.js** — passwords sanitizados → REDACTED | `js/supabase-mock.js` |
+| **_redirects** — 8 nuevos bloques (supabase-mock, SESIONES, PENDIENTES, CLAUDE, .env, .log, flujos privados) | `_redirects` |
+| **_headers** — api.qrserver.com en img-src (QR Nequi), Cross-Origin-Opener-Policy | `_headers` |
+| **sitemap.xml** — removidos flujo-*, agregados nosotros/catalogo/soporte/instalar-app, lastmod al día | `sitemap.xml` |
+| **flujo-fresado/impresion/lab.html** — noindex,nofollow agregado | 3 archivos |
+| **catalogo.html** — GA4, BreadcrumbList, sr-only H2 WCAG | `catalogo.html` |
+| **soporte.html** — FAQPage JSON-LD (5 Q&A), BreadcrumbList | `soporte.html` |
+| **envia-tu-scanner.html** — HowTo JSON-LD (4 pasos), BreadcrumbList | `envia-tu-scanner.html` |
+| **escaner-domicilio.html** — HowTo JSON-LD (4 pasos), BreadcrumbList | `escaner-domicilio.html` |
+| **diseno-cad / fresado-cam** — Service schema, BreadcrumbList, preconnect cdnjs | 2 archivos |
+| **instalar-app.html** — BreadcrumbList, SoftwareApplication schema, H3→H2 fix | `instalar-app.html` |
+| **journal.html** — BreadcrumbList, título 62ch→47ch | `journal.html` |
+| **calculadora.html** — BreadcrumbList, sr-only H2 WCAG | `calculadora.html` |
+| **seguimiento-caso.html** — twitter:card, preconnect Google Fonts | `seguimiento-caso.html` |
+| **nosotros.html** — preconnect cdnjs/jsdelivr/supabase, openingHoursSpecification L-S 8-18h | `nosotros.html` |
+| **manifest.json** — campo `id: "/"` (PWA Identity estándar Chrome 2024) | `manifest.json` |
+| **sw.js** — prodigy-v2→v3 (PRECACHE sincronizado), instalar-app + terminos agregados | `sw.js` |
+| **robots.txt** — flujo-fresado/impresion/lab Disallow; soporte+instalar-app a GPTBot/Perplexity/Anthropic | `robots.txt` |
+| **número personal 3219581949** — eliminado de todos los archivos | búsqueda global |
+| **noopener noreferrer** — agregado en todos los target=_blank de páginas públicas | múltiples |
+| **10 páginas públicas** — preconnect cdnjs; Google Fonts con display=swap verificado | batch |
 
 ---
 
