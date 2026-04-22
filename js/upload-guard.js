@@ -105,7 +105,44 @@ function showUploadError(message) {
     setTimeout(() => { if (toast.style.opacity === '0') toast.style.display = 'none'; }, 4900);
 }
 
+// Magic-bytes signatures that must never appear in uploaded files
+const BLOCKED_SIGNATURES = [
+    { sig: [0x4D,0x5A],             label: 'ejecutable Windows (EXE/DLL)' },
+    { sig: [0x50,0x4B,0x03,0x04],   label: 'archivo ZIP' },
+    { sig: [0x50,0x4B,0x05,0x06],   label: 'archivo ZIP vacío' },
+    { sig: [0x7F,0x45,0x4C,0x46],   label: 'ejecutable Linux (ELF)' },
+    { sig: [0x23,0x21],             label: 'script de shell (#!)' },
+    { sig: [0xCA,0xFE,0xBA,0xBE],   label: 'ejecutable macOS (Mach-O)' },
+    { sig: [0xCF,0xFA,0xED,0xFE],   label: 'ejecutable macOS (Mach-O 64)' },
+    { sig: [0xCE,0xFA,0xED,0xFE],   label: 'ejecutable macOS (Mach-O 32)' },
+];
+
+/**
+ * Lee los primeros 8 bytes del archivo y verifica que no sean un ejecutable/script.
+ * Complementa validateUpload() — esta función es ASYNC y debe awaitearse.
+ * @param {File} file
+ * @returns {Promise<{ safe: boolean, error?: string }>}
+ */
+function validateMagicBytes(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const buf   = new Uint8Array(e.target.result);
+            for (const { sig, label } of BLOCKED_SIGNATURES) {
+                if (sig.every((b, i) => buf[i] === b)) {
+                    resolve({ safe: false, error: `⛔ Archivo bloqueado: firma de ${label} detectada.` });
+                    return;
+                }
+            }
+            resolve({ safe: true });
+        };
+        reader.onerror = () => resolve({ safe: false, error: '❌ No se pudo leer el archivo.' });
+        reader.readAsArrayBuffer(file.slice(0, 8));
+    });
+}
+
 window.validateUpload     = validateUpload;
+window.validateMagicBytes = validateMagicBytes;
 window.filtrarPIIOperador = filtrarPIIOperador;
 window.showUploadError    = showUploadError;
 window.UPLOAD_RULES       = UPLOAD_RULES;

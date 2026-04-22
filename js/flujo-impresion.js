@@ -1813,7 +1813,7 @@
             return '$' + Math.round(amount).toLocaleString('es-CO') + ' COP';
         }
 
-        function handleFileUpload(input, fromDrop) {
+        async function handleFileUpload(input, fromDrop) {
             // Si viene de drag & drop, sincronizar el input real
             if (fromDrop && input.files) {
                 const dt = new DataTransfer();
@@ -1822,6 +1822,13 @@
             }
             const file = (fromDrop ? input.files[0] : document.getElementById('comprobante').files[0]);
             if (!file) return;
+
+            if (window.validateUpload) {
+                const ext = validateUpload(file, 'COMPROBANTE');
+                if (!ext.valid) { showUploadError(ext.error); return; }
+                const mb = await validateMagicBytes(file);
+                if (!mb.safe) { showUploadError(mb.error); return; }
+            }
 
             const placeholder = document.getElementById('comprobante-placeholder');
             const preview    = document.getElementById('comprobante-preview');

@@ -3660,7 +3660,7 @@
             return '$' + Math.round(amount).toLocaleString('es-CO') + ' COP';
         }
 
-        function handleFileUpload(input, fromDrop) {
+        async function handleFileUpload(input, fromDrop) {
             if (fromDrop && input.files) {
                 const dt = new DataTransfer();
                 if (input.files[0]) dt.items.add(input.files[0]);
@@ -3668,6 +3668,12 @@
             }
             const file = (fromDrop ? input.files[0] : document.getElementById('comprobante').files[0]);
             if (!file) return;
+
+            const ext = validateUpload(file, 'COMPROBANTE');
+            if (!ext.valid) { showUploadError(ext.error); return; }
+            const mb = await validateMagicBytes(file);
+            if (!mb.safe) { showUploadError(mb.error); return; }
+
             const placeholder = document.getElementById('comprobante-placeholder');
             const preview    = document.getElementById('comprobante-preview');
             const previewImg = document.getElementById('preview-img');
