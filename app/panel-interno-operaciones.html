@@ -1130,8 +1130,8 @@ async function cargarPortafolio() {
         <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
             <img src="${c.cover_image || ''}" alt="${c.name}" loading="lazy" style="width:100%;height:130px;object-fit:cover;">
             <div style="padding:10px;">
-                <div style="font-weight:700;font-size:0.8rem;margin-bottom:3px;">${c.name}</div>
-                <div style="font-size:0.72rem;color:var(--muted);">${c.type || ''} · ${c.date || ''}</div>
+                <div style="font-weight:700;font-size:0.8rem;margin-bottom:3px;">${esc(c.name)}</div>
+                <div style="font-size:0.72rem;color:var(--muted);">${esc(c.type)} · ${esc(c.date)}</div>
                 <div style="font-size:0.68rem;margin-top:4px;color:${c.visible?'#00FF41':'#f87171'};">${c.visible?'● Visible':'○ Oculto'}</div>
                 <div style="margin-top:8px;display:flex;gap:6px;">
                     <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')"><i class="fas fa-trash"></i></button>
@@ -1140,7 +1140,7 @@ async function cargarPortafolio() {
             </div>
         </div>`).join('');
     } catch (err) {
-        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;color:#f87171;">${err.message}</div>`;
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;color:#f87171;">${esc(err.message)}</div>`;
     }
 }
 
@@ -1330,8 +1330,8 @@ function renderEquipo(lista) {
     }
     tbody.innerHTML = lista.map(a => `
         <tr style="opacity:${a.activo ? 1 : 0.45};">
-            <td><strong>${a.nombre}</strong></td>
-            <td style="color:#94a3b8;font-size:0.82rem;">${a.email}</td>
+            <td><strong>${esc(a.nombre)}</strong></td>
+            <td style="color:#94a3b8;font-size:0.82rem;">${esc(a.email)}</td>
             <td><span style="background:${ROL_COLORS[a.rol]}22;color:${ROL_COLORS[a.rol]};border:1px solid ${ROL_COLORS[a.rol]}55;border-radius:20px;padding:3px 10px;font-size:0.72rem;font-weight:700;">${ROL_LABELS[a.rol] || a.rol}</span></td>
             <td><span style="color:${a.activo ? '#00FF41' : '#f87171'};font-size:0.8rem;font-weight:700;">${a.activo ? '● Activo' : '○ Inactivo'}</span></td>
             <td style="color:#64748b;font-size:0.78rem;">${new Date(a.created_at).toLocaleDateString('es-CO')}</td>
@@ -1361,13 +1361,13 @@ async function resetearContrasena(email) {
     const { error } = await sb.auth.resetPasswordForEmail(email, {
         redirectTo: window.location.origin + '/app/reset-password.html'
     });
-    toast(error ? 'Error al enviar: ' + error.message : `Link de reset enviado a ${email}`, !error);
+    toast(error ? 'Error al enviar: ' + error.message : `Link de reset enviado a ${email}`, error ? 'error' : 'ok');
 }
 
 async function toggleActivo(id, actual) {
     const { error } = await sb.from('perfiles').update({ activo: !actual }).eq('id', id);
-    if (error) { toast('Error: ' + error.message, false); return; }
-    toast(actual ? 'Agente desactivado' : 'Agente activado', true);
+    if (error) { toast('Error: ' + error.message, 'error'); return; }
+    toast(actual ? 'Agente desactivado' : 'Agente activado', 'ok');
     cargarEquipo();
 }
 
@@ -1526,9 +1526,9 @@ function renderPedidosDoc(arr) {
         const wa = p.doctor_whatsapp
             ? `<a href="https://wa.me/57${p.doctor_whatsapp.replace(/\D/g,'').replace(/^57/,'')}" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-size:.75rem;"><i class="fab fa-whatsapp"></i></a>` : '';
         return `<tr>
-            <td><strong style="font-size:.85rem">${p.doctor_nombre||'—'}</strong><br><span style="font-size:.72rem;color:#64748b">${p.doctor_clinica||''}</span>${wa?'&nbsp;'+wa:''}</td>
-            <td style="font-size:.82rem">${p.tipo_servicio||'—'}</td>
-            <td style="font-size:.8rem;color:#94a3b8">${PDD_MAT[p.material]||p.material}</td>
+            <td><strong style="font-size:.85rem">${esc(p.doctor_nombre)||'—'}</strong><br><span style="font-size:.72rem;color:#64748b">${esc(p.doctor_clinica)}</span>${wa?'&nbsp;'+wa:''}</td>
+            <td style="font-size:.82rem">${esc(p.tipo_servicio)||'—'}</td>
+            <td style="font-size:.8rem;color:#94a3b8">${esc(PDD_MAT[p.material]||p.material)}</td>
             <td style="text-align:center">${p.unidades}</td>
             <td style="font-size:.8rem">${extras||'—'}</td>
             <td style="color:#D4AF37;font-weight:700;font-size:.82rem">${precio}</td>
@@ -1550,7 +1550,7 @@ async function cambiarEstadoDoc(id, nuevoEstado) {
     const { error } = await sb.from('pedidos_doctor')
         .update({ estado: nuevoEstado })
         .eq('id', id);
-    if (error) alert('Error actualizando estado: ' + error.message);
+    if (error) toast('Error actualizando estado: ' + error.message, 'error');
     // No recarga completa — el select ya actualizó la UI visualmente
 }
 

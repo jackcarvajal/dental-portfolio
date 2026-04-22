@@ -300,7 +300,7 @@
     // ── Cargar catálogo ───────────────────────────────────────
     async function cargarCatalogo() {
         const { data, error } = await supabase.from('catalogo').select('*');
-        if (error) { document.getElementById('tabla-body').innerHTML = `<tr><td colspan="7" style="color:#ef4444;padding:20px;text-align:center;">${error.message}</td></tr>`; return; }
+        if (error) { document.getElementById('tabla-body').innerHTML = `<tr><td colspan="7" style="color:#ef4444;padding:20px;text-align:center;">${error.message.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</td></tr>`; return; }
         allItems = data;
         renderTabla(data);
     }
