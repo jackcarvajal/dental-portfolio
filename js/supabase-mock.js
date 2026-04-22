@@ -193,11 +193,11 @@ class MockQueryBuilder {
 //  AUTH MOCK — imita supabase.auth
 // ══════════════════════════════════════════════════════════════════
 const DEMO_CREDENTIALS = {
-    'demo@prodigy.co':       { password: 'prodigy2025', rol: 'client',   id: 'usr_demo' },
-    'alejandro@prodigy.co':  { password: 'admin2025',   rol: 'admin',    id: 'adm_1'   },
-    'carlos@prodigy.co':     { password: 'cad2025',     rol: 'operator', id: 'op_carlos' },
-    'pedro@prodigy.co':      { password: 'cam2025',     rol: 'operator', id: 'op_pedro'  },
-};
+    'demo@prodigy.co':       { password: 'DEMO_PW_REDACTED', rol: 'client',   id: 'usr_demo' },
+    'alejandro@prodigy.co':  { password: 'ADMIN_PW_REDACTED', rol: 'admin',    id: 'adm_1'   },
+    'carlos@prodigy.co':     { password: 'OP_PW_REDACTED',   rol: 'operator', id: 'op_carlos' },
+    'pedro@prodigy.co':      { password: 'OP_PW_REDACTED',   rol: 'operator', id: 'op_pedro'  },
+}; // Passwords redactados — usar credenciales reales de Supabase en producción
 
 const authMock = {
     _session: null,
