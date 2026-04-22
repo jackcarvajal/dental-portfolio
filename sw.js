@@ -15,6 +15,8 @@ const PRECACHE = [
   '/escaner-domicilio.html',
   '/diseno-cad.html',
   '/fresado-cam.html',
+  '/terminos-y-legal.html',
+  '/instalar-app.html',
   '/manifest.json',
   '/assets/prodigy-preview.jpg',
   '/assets/icons/icon-192.png',

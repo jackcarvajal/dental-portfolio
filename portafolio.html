@@ -420,6 +420,7 @@
             .cases-grid { grid-template-columns: 1fr; gap: 18px; }
             .filters-section { top: 56px; }
         }
+    .sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
     </style>
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"CollectionPage","name":"Portafolio Clínico — PRODIGY Lab Dental","description":"Casos reales de rehabilitación, estética e implantes. Diseño digital con Exocad y fresado en zirconio. Bogotá, Colombia.","url":"https://prodigylabdental.com/portafolio.html","provider":{"@type":"Organization","name":"PRODIGY Digital Dentistry","url":"https://prodigylabdental.com"}}
@@ -471,6 +472,7 @@
 <!-- GRID -->
 <!-- ============================================================ -->
 <section class="grid-section">
+    <h2 class="sr-only">Casos clínicos del laboratorio</h2>
     <div class="cases-grid" id="casesGrid">
         <!-- JS renderiza aquí -->
     </div>
@@ -720,9 +722,9 @@ document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') e.
 </script>
 <!-- FLOTANTES UX -->
 <div class="ux-floaters">
-    <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba"><i class="fas fa-arrow-up"></i></button>
-    <button class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro">🌙</button>
-    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte." class="ux-btn" target="_blank" rel="noopener" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);"><i class="fab fa-whatsapp" style="color:#25D366;"></i></a>
+    <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></button>
+    <button class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro" aria-label="Cambiar modo claro/oscuro">🌙</button>
+    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte." class="ux-btn" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);"><i class="fab fa-whatsapp" aria-hidden="true" style="color:#25D366;"></i></a>
 </div>
     <!-- Google Analytics GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>

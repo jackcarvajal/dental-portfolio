@@ -122,10 +122,10 @@
         '<p class="pfoot-desc">Especialistas en diseño CAD avanzado y manufactura de alta precisión para clínicas y laboratorios dentales.</p>' +
         '<div class="pfoot-geo"><span class="pfoot-geo-dot"></span>Sede Central: Bogotá, Colombia</div>' +
         '<div class="pfoot-social">' +
-          '<a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer" title="WhatsApp">' +
+          '<a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp PRODIGY Lab">' +
             '<i class="fab fa-whatsapp"></i>' +
           '</a>' +
-          '<a href="https://www.instagram.com/labdentalprodigy/" target="_blank" rel="noopener noreferrer" title="Instagram @labdentalprodigy">' +
+          '<a href="https://www.instagram.com/labdentalprodigy/" target="_blank" rel="noopener noreferrer" title="Instagram @labdentalprodigy" aria-label="Instagram @labdentalprodigy">' +
             '<i class="fab fa-instagram"></i>' +
           '</a>' +
         '</div>' +
