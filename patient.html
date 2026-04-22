@@ -1044,7 +1044,7 @@
                 <div class="error-message">
                     <i class="fas fa-exclamation-triangle"></i>
                     <h2>Caso No Encontrado</h2>
-                    <p>No se encontró información para el ID: <strong>${patientId || 'N/A'}</strong></p>
+                    <p>No se encontró información para el ID: <strong>${escapeHtml(patientId || 'N/A')}</strong></p>
                 </div>
             `;
         }
@@ -1057,20 +1057,20 @@
             
             contentDiv.innerHTML = `
                 <div class="patient-header">
-                    <h1>${paciente.name}</h1>
-                    <p>${paciente.description || 'Sin descripción'}</p>
+                    <h1>${escapeHtml(paciente.name)}</h1>
+                    <p>${escapeHtml(paciente.description || 'Sin descripción')}</p>
                     <div class="patient-meta">
                         <div class="meta-item">
                             <i class="fas fa-hashtag"></i>
-                            <strong>Código:</strong> ${paciente.code || 'N/A'}
+                            <strong>Código:</strong> ${escapeHtml(paciente.code || 'N/A')}
                         </div>
                         <div class="meta-item">
                             <i class="fas fa-calendar"></i>
-                            <strong>Fecha:</strong> ${paciente.date || 'N/A'}
+                            <strong>Fecha:</strong> ${escapeHtml(paciente.date || 'N/A')}
                         </div>
                         <div class="meta-item">
                             <i class="fas fa-tag"></i>
-                            <strong>Tipo:</strong> ${paciente.type || 'N/A'}
+                            <strong>Tipo:</strong> ${escapeHtml(paciente.type || 'N/A')}
                         </div>
                     </div>
                 </div>

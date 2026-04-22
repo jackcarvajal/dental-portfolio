@@ -639,7 +639,6 @@ async function suscribirNotificaciones(caseId) {
                 created_at:   new Date().toISOString(),
             });
         }
-        console.log('Push activo para caso', caseId);
     } catch (e) {
         console.error('Error suscripción push:', e);
     }

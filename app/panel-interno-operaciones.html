@@ -215,7 +215,7 @@
 
     <p class="nav-section">Configuración</p>
     <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Materiales</a>
-    <a href="../index.html" class="nav-item" target="_blank"><i class="fas fa-globe"></i> Ver Sitio</a>
+    <a href="../index.html" class="nav-item" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Ver Sitio</a>
 
     <div class="sidebar-footer">
         <a href="#" class="nav-item" onclick="cerrarSesion()">
@@ -912,7 +912,7 @@ function renderPedidos(lista) {
         </td>
         <td style="font-size:0.75rem;">${fmtFecha(p.created_at)}</td>
         <td>
-            ${p.stl_url ? `<a href="${p.stl_url}" target="_blank" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
+            ${p.stl_url ? `<a href="${p.stl_url}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
         </td>
     </tr>`).join('');
 }
@@ -1431,7 +1431,7 @@ function renderLeads(arr) {
             ? l.recurso_descargado.substring(0, 30) + '…'
             : (l.recurso_descargado || '—');
         const waLink = l.whatsapp
-            ? `<a href="https://wa.me/${l.whatsapp.replace(/\D/g,'')}" target="_blank" style="color:var(--gold);text-decoration:none;">
+            ? `<a href="https://wa.me/${l.whatsapp.replace(/\D/g,'')}" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none;">
                  <i class="fab fa-whatsapp"></i> ${l.whatsapp}
                </a>`
             : '—';

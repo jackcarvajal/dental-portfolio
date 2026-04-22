@@ -750,11 +750,11 @@
         _pgChatHistory.push({ role: 'model', parts: [{ text: reply }] });
         _pgAppendMsg('bot', reply);
       } else {
-        _pgAppendMsg('bot', 'Hubo un problema. Escríbenos por <a href="https://wa.me/573212816716" target="_blank">WhatsApp</a>.');
+        _pgAppendMsg('bot', 'Hubo un problema. Escríbenos por <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">WhatsApp</a>.');
       }
     } catch (err) {
       if (typing) typing.classList.remove('visible');
-      _pgAppendMsg('bot', 'Error de conexión. <a href="https://wa.me/573212816716" target="_blank">WhatsApp +57 321 281 6716</a>.');
+      _pgAppendMsg('bot', 'Error de conexión. <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">WhatsApp +57 321 281 6716</a>.');
     }
     if (sendBtn) sendBtn.disabled = false;
     if (input) input.focus();
