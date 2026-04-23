@@ -226,6 +226,17 @@
 
 ---
 
+## ✅ COMPLETADO sesión 2026-04-23 (continuación — auditoría WCAG + UX)
+
+| Qué | Dónde |
+|-----|-------|
+| **WCAG global** — `#64748b`, `#475569`, `#334155` → `#94a3b8` (7.6:1 AAA) en 31 HTML + 5 JS | batch |
+| **ux-floaters** — scroll-top + theme + WA añadidos en: index, fresado-cam, article, instalar-app, flujo-lab | 5 archivos |
+| **auth-guard.js** — añadido a `app/onboarding.html` (faltaba per CLAUDE.md §4) | `app/onboarding.html` |
+| **theme-color** — `<meta name="theme-color">` añadido a `index.html` (faltaba per CLAUDE.md §3b) | `index.html` |
+
+---
+
 ## ✅ COMPLETADO sesión 2026-04-23
 
 | Qué | Dónde |
