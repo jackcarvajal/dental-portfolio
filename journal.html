@@ -780,11 +780,11 @@
         <form id="leadForm" onsubmit="submitLead(event)">
           <div class="form-field">
             <i class="fa-solid fa-user-doctor"></i>
-            <input type="text" id="leadNombre" placeholder="Dr. / Dra. Nombre completo" required maxlength="120">
+            <input type="text" id="leadNombre" placeholder="Dr. / Dra. Nombre completo" autocomplete="name" required maxlength="120">
           </div>
           <div class="form-field">
             <i class="fa-brands fa-whatsapp"></i>
-            <input type="tel" id="leadWA" placeholder="WhatsApp con código de país (+57...)" required maxlength="20">
+            <input type="tel" id="leadWA" placeholder="WhatsApp con código de país (+57...)" autocomplete="tel" required maxlength="20">
           </div>
           <div class="habeas-wrap">
             <label class="habeas-label">
@@ -934,7 +934,7 @@
     <h3>Próximas publicaciones</h3>
     <p>Deja tu WhatsApp y te avisamos cuando publiquemos nuevos artículos técnicos.</p>
     <div class="notify-form">
-      <input type="tel" id="notifyWA" placeholder="WhatsApp (+57...)">
+      <input type="tel" id="notifyWA" placeholder="WhatsApp (+57...)" autocomplete="tel">
       <button class="btn-notify" onclick="subscribeNotify()">
         <i class="fa-brands fa-whatsapp"></i> Avisar
       </button>
