@@ -29,7 +29,7 @@
         .sidebar-logo h1 { font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; color: var(--gold); }
         .sidebar-logo p  { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
         .role-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; padding: 3px 10px; font-size: 0.65rem; font-weight: 700; color: var(--gold); margin-top: 8px; }
-        .nav-section { font-size: 0.62rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 1.5px; padding: 16px 12px 6px; }
+        .nav-section { font-size: 0.62rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px; padding: 16px 12px 6px; }
         .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #94a3b8; text-decoration: none; transition: all 0.2s; }
         .nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
         .nav-item.active { background: rgba(212,175,55,0.1); color: var(--gold); border: 1px solid rgba(212,175,55,0.25); }
@@ -58,7 +58,7 @@
             background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
             color: #fff; outline: none; min-width: 200px; margin-left: auto;
         }
-        .search-input::placeholder { color: #475569; }
+        .search-input::placeholder { color: #94a3b8; }
         .search-input:focus { border-color: rgba(212,175,55,0.4); }
 
         /* ── TABLA CATÁLOGO ──────────────────────────────────────── */
@@ -319,7 +319,7 @@
             const hasPending = pendingChanges.has(item.id);
             return `
             <tr id="row-${item.id}">
-                <td><code style="font-size:0.7rem;color:#475569;">${item.id}</code></td>
+                <td><code style="font-size:0.7rem;color:#94a3b8;">${item.id}</code></td>
                 <td><span class="cat-badge" style="background:${cc.bg};color:${cc.color};">${cc.label}</span></td>
                 <td style="max-width:280px;">${item.nombre}<br><span style="font-size:0.72rem;color:var(--muted);">${item.descripcion || ''}</span></td>
                 <td>
@@ -334,7 +334,7 @@
                     </div>
                 </td>
                 <td style="text-align:center;">
-                    ${item.fast_ready ? '<i class="fas fa-bolt" style="color:#fbbf24;" title="Fast Ready"></i>' : '<span style="color:#475569;">—</span>'}
+                    ${item.fast_ready ? '<i class="fas fa-bolt" style="color:#fbbf24;" title="Fast Ready"></i>' : '<span style="color:#94a3b8;">—</span>'}
                 </td>
                 <td>
                     <div class="toggle-wrap">
@@ -357,7 +357,7 @@
         const tbody = document.getElementById('extras-body');
         tbody.innerHTML = data.map(item => `
             <tr id="extra-row-${item.id}">
-                <td><code style="font-size:0.7rem;color:#475569;">${item.id}</code></td>
+                <td><code style="font-size:0.7rem;color:#94a3b8;">${item.id}</code></td>
                 <td>${item.nombre}</td>
                 <td><span style="font-size:0.72rem;color:#94a3b8;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:10px;">${item.tipo}</span></td>
                 <td>

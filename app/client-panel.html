@@ -161,7 +161,7 @@
         .dap-btn-aprobar { flex:1; padding:12px; background:linear-gradient(135deg,#00FF41,#00cc33); color:#000; border:none; border-radius:10px; font-weight:900; font-size:.88rem; cursor:pointer; min-width:200px; }
         .dap-btn-cambios { padding:12px 18px; background:rgba(212,175,55,.1); border:1px solid rgba(212,175,55,.3); color:#D4AF37; border-radius:10px; font-weight:700; font-size:.82rem; cursor:pointer; }
         .dap-btn-enviar { display:none; padding:12px 18px; background:rgba(217,70,166,.12); border:1px solid rgba(217,70,166,.3); color:var(--gold); border-radius:10px; font-weight:700; font-size:.82rem; cursor:pointer; }
-        .dap-ext { text-align:center; font-size:.63rem; color:#334155; padding:0 20px 12px; flex-shrink:0; }
+        .dap-ext { text-align:center; font-size:.63rem; color:#94a3b8; padding:0 20px 12px; flex-shrink:0; }
 
         /* ── MODAL NUEVO PEDIDO ONLINE ── */
         .pd-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:900;
@@ -960,7 +960,7 @@ async function cargarPedidosDoc_cliente(uid) {
             <div class="pd-online-svc">
                 ${escH(svc)}${p.dientes ? ' · piezas ' + escH(p.dientes) : ''}
                 <small>${escH(mat)} · ${p.unidades} ud${p.unidades>1?'s':''}${p.urgente?' · ⚡ Urgente':''}${p.incluye_dsd?' · 🎨 DSD':''}</small>
-                <small style="color:#475569">${fecha}</small>
+                <small style="color:#94a3b8">${fecha}</small>
             </div>
             <span class="pd-online-est ${escH(p.estado)}">${estLabel}</span>
             ${necesitaAprobacion

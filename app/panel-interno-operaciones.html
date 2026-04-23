@@ -34,7 +34,7 @@
         .sidebar-user { font-size:0.72rem; color:#cbd5e1; margin-top:6px; word-break:break-all; }
         .role-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); border-radius:20px; padding:3px 10px; font-size:0.65rem; font-weight:700; color:var(--gold); margin-top:8px; }
 
-        .nav-section { font-size:0.62rem; font-weight:800; color:#475569; text-transform:uppercase; letter-spacing:1.5px; padding:16px 12px 6px; }
+        .nav-section { font-size:0.62rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:1.5px; padding:16px 12px 6px; }
         .nav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600; color:#94a3b8; text-decoration:none; transition:all 0.2s; border:1px solid transparent; }
         .nav-item:hover { background:rgba(255,255,255,0.04); color:#fff; }
         .nav-item.active { background:rgba(212,175,55,0.1); color:var(--gold); border-color:rgba(212,175,55,0.25); }
@@ -158,11 +158,11 @@
         .kcase-urg { font-size:0.62rem; font-weight:700; padding:1px 7px; border-radius:10px; background:rgba(239,68,68,0.15); color:#f87171; }
         .kcase-dsd { font-size:0.62rem; font-weight:700; padding:1px 7px; border-radius:10px; background:rgba(217,70,166,0.12); color:#D946A6; }
         .kcase-footer { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
-        .kcase-date { font-size:0.65rem; color:#475569; }
+        .kcase-date { font-size:0.65rem; color:#94a3b8; }
         .kcase-btn { padding:3px 10px; border-radius:6px; font-size:0.65rem; font-weight:700; border:1px solid; cursor:pointer; background:transparent; color:#D4AF37; border-color:rgba(212,175,55,0.35); transition:all 0.15s; }
         .kcase-btn:hover { background:rgba(212,175,55,0.1); }
         .kcase-wa { color:#25D366; font-size:0.7rem; text-decoration:none; margin-left:6px; }
-        .lane-empty { text-align:center; padding:28px 12px; color:#334155; font-size:0.78rem; }
+        .lane-empty { text-align:center; padding:28px 12px; color:#94a3b8; font-size:0.78rem; }
         .lane-empty i { display:block; font-size:1.4rem; margin-bottom:8px; }
         .rut-reload { padding:6px 14px; background:transparent; border:1px solid var(--border); color:var(--muted); border-radius:8px; font-size:0.72rem; cursor:pointer; }
         .rut-reload:hover { color:#fff; border-color:rgba(255,255,255,0.2); }
@@ -638,7 +638,7 @@
         <button id="btn-crear-agente" onclick="crearAgente()" style="width:100%;padding:13px;background:linear-gradient(90deg,#D946A6,#D4AF37,#D946A6);background-size:200% auto;color:#fff;border:none;border-radius:10px;font-weight:900;font-size:0.92rem;cursor:pointer;animation:btnShimmer 2.5s linear infinite;">
             <i class="fas fa-user-plus"></i> &nbsp;Crear Agente y Enviar Invitación
         </button>
-        <p style="font-size:0.68rem;color:#475569;text-align:center;margin-top:10px;">
+        <p style="font-size:0.68rem;color:#94a3b8;text-align:center;margin-top:10px;">
             <i class="fas fa-envelope" style="color:#D4AF37;"></i>
             El agente recibirá el link de activación en su correo. Válido por 1 hora.
         </p>
@@ -655,7 +655,7 @@
                 <p>Cola automática por tipo de trabajo — diseño / fresado / impresión 3D</p>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
-                <span style="font-size:.65rem;color:#334155;display:flex;align-items:center;gap:5px;">
+                <span style="font-size:.65rem;color:#94a3b8;display:flex;align-items:center;gap:5px;">
                     <span style="width:7px;height:7px;border-radius:50%;background:#00FF41;animation:blink-rt 2s ease-in-out infinite;display:inline-block;box-shadow:0 0 6px #00FF41"></span>
                     Realtime activo
                 </span>
@@ -707,7 +707,7 @@
             </div>
         </div>
 
-        <p style="margin-top:20px;font-size:0.72rem;color:#334155;text-align:center">
+        <p style="margin-top:20px;font-size:0.72rem;color:#94a3b8;text-align:center">
             Casos terminados (Listo / Enviado) → ver en <a href="#" onclick="switchTab('pedidos-doc',null)" style="color:var(--gold)">Pedidos Doctores</a>
         </p>
     </div><!-- /tab-rutador -->
@@ -1698,7 +1698,7 @@ function renderLane(laneId, casos, btnLabel) {
                     <div class="kcase-doc">${esc(c.doctor_nombre||'Doctor')} ${wa}</div>
                     <div class="kcase-cli">${esc(c.doctor_clinica)}</div>
                 </div>
-                <div style="text-align:right;font-size:.65rem;color:#475569">${esc(c.estado.replace('_',' '))}</div>
+                <div style="text-align:right;font-size:.65rem;color:#94a3b8">${esc(c.estado.replace('_',' '))}</div>
             </div>
             <div class="kcase-service">${esc(svc)}${c.dientes ? ' · dientes '+esc(c.dientes) : ''}</div>
             <div>
@@ -1707,7 +1707,7 @@ function renderLane(laneId, casos, btnLabel) {
                 ${c.incluye_dsd ? '<span class="kcase-dsd">🎨 DSD</span>' : ''}
             </div>
             <div style="margin:6px 0;display:flex;align-items:center;gap:6px;">
-                <span style="font-size:.6rem;color:#475569;white-space:nowrap">Asignado:</span>
+                <span style="font-size:.6rem;color:#94a3b8;white-space:nowrap">Asignado:</span>
                 <input id="asi-${c.id}" type="text"
                     value="${(c.asignado_a||'').replace(/"/g,'&quot;')}"
                     placeholder="— sin asignar"
@@ -1827,7 +1827,7 @@ verificarAdmin();
 ══════════════════════════════════════════ */
 
 async function cargarMetricas() {
-    document.getElementById('met-kpis').innerHTML      = '<div style="color:#475569;font-size:.8rem">Cargando…</div>';
+    document.getElementById('met-kpis').innerHTML      = '<div style="color:#94a3b8;font-size:.8rem">Cargando…</div>';
     document.getElementById('met-pipeline').innerHTML  = '';
     document.getElementById('met-topdoc').innerHTML    = '';
     document.getElementById('met-dias').innerHTML      = '';
@@ -1888,12 +1888,12 @@ async function cargarMetricas() {
         <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;">
             <i class="fas ${k.icon}" style="color:${k.color};font-size:1.1rem;margin-bottom:8px;display:block"></i>
             <div style="font-size:1.3rem;font-weight:900;color:${k.color};margin-bottom:4px">${k.value}</div>
-            <div style="font-size:.65rem;color:#475569;text-transform:uppercase;letter-spacing:.08em">${k.label}</div>
+            <div style="font-size:.65rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em">${k.label}</div>
         </div>`).join('');
 
     // ── Pipeline ──
     const ESTADOS = [
-        { key:'recibido',         label:'Recibido',      color:'#475569' },
+        { key:'recibido',         label:'Recibido',      color:'#94a3b8' },
         { key:'en_diseno',        label:'En Diseño',     color:'#D946A6' },
         { key:'en_fresado',       label:'En Fresado',    color:'#D4AF37' },
         { key:'impresion_3d',     label:'Impresión 3D',  color:'#00d2ff' },
@@ -1935,7 +1935,7 @@ async function cargarMetricas() {
                 <div style="width:${Math.round(n/maxDoc*100)}%;background:linear-gradient(90deg,#D946A6,#D4AF37);height:5px;border-radius:4px;"></div>
             </div>
         </div>`;
-    }).join('') : '<p style="color:#334155;font-size:.75rem">Sin datos aún</p>';
+    }).join('') : '<p style="color:#94a3b8;font-size:.75rem">Sin datos aún</p>';
 
     // ── Carga por día ──
     const DIAS = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
@@ -1944,9 +1944,9 @@ async function cargarMetricas() {
     const maxDia = Math.max(...porDia, 1);
     document.getElementById('met-dias').innerHTML = DIAS.map((d,i) => `
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <span style="font-size:.68rem;color:#475569;width:28px">${d}</span>
+            <span style="font-size:.68rem;color:#94a3b8;width:28px">${d}</span>
             <div style="flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:8px;">
-                <div style="width:${Math.round(porDia[i]/maxDia*100)}%;background:${i===0||i===6?'#334155':'#00d2ff'};height:8px;border-radius:4px;"></div>
+                <div style="width:${Math.round(porDia[i]/maxDia*100)}%;background:${i===0||i===6?'#94a3b8':'#00d2ff'};height:8px;border-radius:4px;"></div>
             </div>
             <span style="font-size:.68rem;color:#94a3b8;width:20px;text-align:right">${porDia[i]}</span>
         </div>`).join('');
@@ -1966,7 +1966,7 @@ async function cargarMetricas() {
             <div style="background:rgba(255,255,255,.05);border-radius:4px;height:6px;">
                 <div style="width:${Math.round(n/maxSvc*100)}%;background:${colorsSvc[i%colorsSvc.length]};height:6px;border-radius:4px;"></div>
             </div>
-        </div>`).join('') : '<p style="color:#334155;font-size:.75rem">Sin datos aún</p>';
+        </div>`).join('') : '<p style="color:#94a3b8;font-size:.75rem">Sin datos aún</p>';
 
     // ── Calidad ──
     const conCambios = conLink.filter(p => p.notas_cambios && p.notas_cambios.trim());
@@ -1980,7 +1980,7 @@ async function cargarMetricas() {
         <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px;">
             <div style="font-size:1.4rem;font-weight:900;color:${m.color};margin-bottom:4px">${m.value}</div>
             <div style="font-size:.75rem;color:#cbd5e1;font-weight:700">${m.label}</div>
-            <div style="font-size:.65rem;color:#475569;margin-top:3px">${m.desc}</div>
+            <div style="font-size:.65rem;color:#94a3b8;margin-top:3px">${m.desc}</div>
         </div>`).join('');
 }
 </script>

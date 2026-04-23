@@ -37,7 +37,7 @@
         .sidebar-user { font-size:0.72rem; color:#cbd5e1; margin-top:6px; word-break:break-all; }
         .role-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); border-radius:20px; padding:3px 10px; font-size:0.65rem; font-weight:700; color:var(--gold); margin-top:8px; }
 
-        .nav-section { font-size:0.62rem; font-weight:800; color:#475569; text-transform:uppercase; letter-spacing:1.5px; padding:16px 12px 6px; }
+        .nav-section { font-size:0.62rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:1.5px; padding:16px 12px 6px; }
         .nav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600; color:#94a3b8; text-decoration:none; transition:all 0.2s; border:1px solid transparent; }
         .nav-item:hover { background:rgba(255,255,255,0.04); color:#fff; }
         .nav-item.active { background:rgba(212,175,55,0.1); color:var(--gold); border-color:rgba(212,175,55,0.25); }
@@ -994,7 +994,7 @@ async function cargarDespachos() {
                     : '—'}</td>
             <td>${tieneEvidencia
                 ? `<button onclick='verEvidencia(${JSON.stringify(d)})' class="btn-xs btn-gold"><i class="fas fa-eye"></i> Ver</button>`
-                : `<span style="font-size:.72rem;color:#475569;">${escHtml(d.novedades || '—')}</span>`}
+                : `<span style="font-size:.72rem;color:#94a3b8;">${escHtml(d.novedades || '—')}</span>`}
             </td>
         </tr>`;}).join('');
     }

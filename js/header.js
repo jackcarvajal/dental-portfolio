@@ -46,7 +46,7 @@
     'border-radius:6px;color:#e2e8f0;font-size:13px;height:34px;',
     'padding:0 12px 0 34px;width:190px;outline:none;',
     'transition:border-color .2s,background .2s;font-family:inherit;}',
-    '.tb-input::placeholder{color:#475569;}',
+    '.tb-input::placeholder{color:#94a3b8;}',
     '.tb-input:focus{border-color:rgba(217,70,166,0.55);background:rgba(217,70,166,0.06);}',
     '.tb-sep{width:1px;height:26px;background:rgba(255,255,255,0.1);margin:0 4px;}',
     '.tb-acceso{height:34px;padding:0 20px;background:#e2e8f0;color:#0a0a0e;',

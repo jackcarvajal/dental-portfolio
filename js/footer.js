@@ -86,7 +86,7 @@
       'text-align:center;',
       'border-top:1px solid rgba(255,255,255,.06);',
       'max-width:1260px;margin:0 auto;padding:22px 28px 0;',
-      'color:#475569;font-size:12px;',
+      'color:#94a3b8;font-size:12px;',
     '}',
     '#pfoot-root .pfoot-copy a{color:#94a3b8;text-decoration:none;transition:color .2s;}',
     '#pfoot-root .pfoot-copy a:hover{color:#D4AF37;}',
