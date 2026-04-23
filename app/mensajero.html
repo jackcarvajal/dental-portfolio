@@ -356,7 +356,7 @@ async function cargarRuta(){
                 <div class="info-row"><i class="fas fa-user info-icon"></i><span class="info-val">${escH(nombre)}</span></div>
                 <div class="info-row"><i class="fas fa-location-dot info-icon"></i>
                     <span class="info-val">${escH(dir)}<br>
-                    <a href="${mapsUrl}" target="_blank" rel="noopener" class="maps-link"><i class="fas fa-map"></i> Abrir en Maps</a></span></div>
+                    <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="maps-link"><i class="fas fa-map"></i> Abrir en Maps</a></span></div>
                 <div class="info-row"><i class="fas fa-clock info-icon"></i><span class="info-val" style="color:#fbbf24">ETA: ${eta}</span></div>
                 ${d.novedades?`<div class="info-row"><i class="fas fa-exclamation-triangle info-icon" style="color:#f87171"></i><span class="info-val" style="color:#f87171">${escH(d.novedades)}</span></div>`:''}
             </div>
