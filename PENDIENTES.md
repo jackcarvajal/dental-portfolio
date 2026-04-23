@@ -196,13 +196,11 @@
 
 ---
 
-## 🔴 BLOQUE 10 — HOMEPAGE (acción inmediata)
+## ✅ BLOQUE 10 — HOMEPAGE (resuelto 2026-04-23)
 
 | # | Item | Detalle | Estado |
 |---|------|---------|--------|
-| 1 | `index.html` es la página coming-soon original | Tiene `noindex` pero está en el sitemap. Título dice "Próximamente en línea". Sin header.js, footer.js, og:, twitter:card, preconnect. La homepage real de PRODIGY aún no está construida. | 🔴 Decisión Alejandro |
-
-> Opciones: A) Construir homepage real (reemplazar index.html con landing completa) — recomendado para SEO. B) Mantener coming-soon y removerla del sitemap. C) Redirigir `/` → `portafolio.html` o `nosotros.html` mientras se construye.
+| 1 | `index.html` convertido a homepage real | Removido `noindex`. Añadido: title SEO, canonical, og:, twitter:, manifest, GA4, header.js, footer.js, SW. Texto "coming-soon" eliminado. Progress bar 75% eliminado. | ✅ Listo |
 
 ---
 
@@ -211,7 +209,7 @@
 | # | Item | Qué decidir | Impacto |
 |---|------|-------------|---------|
 | 1 | `portal.html` | ¿Es página pública o legacy? Opciones: A) agregar `noindex` (recomendado si no se usa activamente), B) agregar al sitemap + linkear desde nav | SEO — está indexable pero sin links entrantes |
-| 2 | `fresado-cam.html` CTA secundario | El botón "Pedir fresado" apunta a `/flujo-diseno.html` — ¿debería ser `/flujo-fresado.html`? | UX del flujo de pedido |
+| 2 | ~~`fresado-cam.html` CTA secundario~~ | ✅ Resuelto 2026-04-23 — CTA corregido a `/flujo-fresado.html` | ✅ Listo |
 | 3 | `buscar_pedido_publico` RPC | Verificar en Supabase Dashboard → Database → Functions que la función SOLO retorna campos públicos (estado, timeline, parámetros técnicos) y NO incluye email, teléfono, datos personales del doctor | Privacidad de datos |
 | 4 | GDPR clientes internacionales | `diseno-cad.html` ofrece servicio mundial. Clientes EU activan GDPR — ¿agregar aviso específico para UE? | Cumplimiento legal |
 
@@ -225,6 +223,20 @@
 | 2 | Fotos Google My Business | ⏳ 10–15 fotos del lab, fresadora, casos terminados |
 | 3 | Video Reels x 6 | ⏳ Scripts en cada artículo — grabar y publicar |
 | 4 | Email `casos@prodigylabdental.com` | ⏳ Crear en tu proveedor de dominio |
+
+---
+
+## ✅ COMPLETADO sesión 2026-04-23
+
+| Qué | Dónde |
+|-----|-------|
+| **index.html homepage** — removido `noindex`, title/og/twitter/canonical/manifest/GA4/header.js/footer.js/SW, texto coming-soon → homepage real | `index.html` |
+| **nosotros.html** — tech strip XTCERA/Exocad/BCN3D/±10µm, historia-img 4-cuadrantes lab, contraste WCAG fix `#64748b→#8b99a8` en dif-card/valor-item | `nosotros.html` |
+| **fresado-cam.html** — proceso CAD/CAM con flechas `›` conectoras + timing por paso, CTA corregido flujo-diseno→flujo-fresado | `fresado-cam.html` |
+| **portafolio.html** — sección testimonios 3 doctores con CSS completo | `portafolio.html` |
+| **Security audit** — `noopener noreferrer` en todos los `target="_blank"` públicos (article, escaner-domicilio, envia-tu-scanner, diseno-cad, fresado-cam, journal, soporte, seguimiento-caso) | 8 archivos |
+| **sitemap.xml** — lastmod actualizado: index (/), nosotros, fresado-cam, portafolio → 2026-04-23 | `sitemap.xml` |
+| **article.html** — DOI/PubMed links `rel="noopener noreferrer"` | `article.html` |
 
 ---
 

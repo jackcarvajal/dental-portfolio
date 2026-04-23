@@ -314,8 +314,8 @@ function renderFAQ(faqs) {
 
 function renderRefs(refs) {
   return refs.map(r => {
-    const doi = r.doi ? `<a href="https://doi.org/${r.doi}" target="_blank" rel="noopener">DOI: ${r.doi}</a>` : '';
-    const pm  = r.pubmed ? `<a href="${r.pubmed}" target="_blank" rel="noopener">PubMed</a>` : '';
+    const doi = r.doi ? `<a href="https://doi.org/${r.doi}" target="_blank" rel="noopener noreferrer">DOI: ${r.doi}</a>` : '';
+    const pm  = r.pubmed ? `<a href="${r.pubmed}" target="_blank" rel="noopener noreferrer">PubMed</a>` : '';
     const links = [doi, pm].filter(Boolean).join(' · ');
     return `<div class="ref-item">
       <strong>${r.autores}</strong>
@@ -444,6 +444,6 @@ function showNotFound() {
 </script>
 <script src="js/footer.js"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
-<noscript><p style="text-align:center;padding:2rem">Este artículo requiere JavaScript. <a href="/journal.html">Ver todos los artículos</a> o <a href="https://wa.me/573212816716" rel="noopener">contáctanos por WhatsApp</a>.</p></noscript>
+<noscript><p style="text-align:center;padding:2rem">Este artículo requiere JavaScript. <a href="/journal.html">Ver todos los artículos</a> o <a href="https://wa.me/573212816716" rel="noopener noreferrer">contáctanos por WhatsApp</a>.</p></noscript>
 </body>
 </html>
