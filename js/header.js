@@ -703,6 +703,10 @@
     window._phdrSendMsg();
   };
 
+  function _pgEscHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
   function _pgAppendMsg(role, text) {
     var wrap = document.getElementById('pg-chat-msgs');
     if (!wrap) return;
@@ -713,7 +717,7 @@
     av.textContent = role === 'user' ? '👤' : '🤖';
     var bbl = document.createElement('div');
     bbl.className = 'pg-msg-bbl';
-    bbl.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    bbl.innerHTML = _pgEscHtml(text).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
     div.appendChild(av);
     div.appendChild(bbl);
     wrap.appendChild(div);
