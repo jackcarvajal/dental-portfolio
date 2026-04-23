@@ -381,3 +381,9 @@
 | Audit JSON-LD: todas las páginas públicas tienen structured data | 2026-04-23 |
 | Audit broken links: ningún link interno roto | 2026-04-23 |
 | PENDIENTE MANUAL: ejecutar migrate-privacy.sql en Supabase para que acepta_marketing funcione | Alejandro → Supabase SQL Editor |
+| Botones corregidos — destinos erróneos que apuntaban a flujo-*.html (auth) desde páginas públicas | 2026-04-23 |
+| article.html, envia-tu-scanner (2×), escaner-domicilio → /calculadora.html | 2026-04-23 |
+| instalar-app.html "Envía tu pedido" → /envia-tu-scanner.html (antes flujo-lab, requería auth) | 2026-04-23 |
+| terminos-y-legal "Volver al Cotizador": href index.html → /calculadora.html, movido a left:24px | 2026-04-23 |
+| soporte.html: fa-satellite-dish → fa-upload en tarjeta "Envía tu Escáner" | 2026-04-23 |
+| ux-floaters (scroll-top + theme + WA) añadidos a 8 páginas públicas que los faltaban | 2026-04-23 |
