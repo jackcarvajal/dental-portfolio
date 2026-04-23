@@ -364,3 +364,8 @@
 | noindex en todas las páginas /app/ | auditado 2026-04-09 |
 | auth-guard.js en todas las páginas /app/ protegidas | auditado 2026-04-09 |
 | GA4 placeholder en páginas públicas | listo — solo falta el ID real |
+| `rel="noopener noreferrer"` auditado en TODAS las páginas públicas + flujos + portal | 2026-04-23 |
+| WCAG AA `--muted` corregido a `#94a3b8` (7.6:1) en 6 páginas públicas | 2026-04-23 |
+| `rel="noopener noreferrer"` en header.js WA link | `js/header.js` 2026-04-23 |
+| Audit XSS: sin innerHTML con input usuario, sin eval() en JS público | 2026-04-23 |
+| CSP, _headers, _redirects — estructuralmente correctos | 2026-04-23 |
