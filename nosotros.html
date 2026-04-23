@@ -110,7 +110,7 @@
     .dif-card:hover::before { opacity: 1; }
     .dif-icon { width: 52px; height: 52px; background: rgba(217,70,166,0.12); border: 1px solid var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 20px; color: var(--gold); }
     .dif-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
-    .dif-card p { color: var(--muted); font-size: .9rem; line-height: 1.7; }
+    .dif-card p { color: #8b99a8; font-size: .9rem; line-height: 1.7; }
 
     /* VALORES */
     .valores-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
@@ -118,7 +118,7 @@
     .valor-item { display: flex; gap: 16px; align-items: flex-start; background: var(--bg-card2); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; }
     .valor-item .vi-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
     .valor-item h4 { font-size: .95rem; font-weight: 700; margin-bottom: 4px; }
-    .valor-item p { color: var(--muted); font-size: .85rem; line-height: 1.6; }
+    .valor-item p { color: #8b99a8; font-size: .85rem; line-height: 1.6; }
 
     /* CONTACTO SECTION */
     .contacto-section { background: linear-gradient(180deg, var(--bg) 0%, #06101a 50%, var(--bg) 100%); }
@@ -205,11 +205,54 @@
   </div>
 </section>
 
+<!-- TECH STRIP -->
+<div style="background:rgba(8,12,20,0.9);border-top:1px solid rgba(212,175,55,0.1);border-bottom:1px solid rgba(212,175,55,0.1);padding:18px 24px;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:24px;justify-content:center;align-items:center;">
+    <div style="display:flex;align-items:center;gap:8px"><span style="color:#D4AF37;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase">Software</span><span style="color:rgba(255,255,255,0.12);margin:0 4px">|</span><span style="color:#e2e8f0;font-size:.82rem;font-weight:700">Exocad · 3Shape</span></div>
+    <div style="width:1px;height:22px;background:rgba(255,255,255,0.07)"></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="color:#D4AF37;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase">Fresadora</span><span style="color:rgba(255,255,255,0.12);margin:0 4px">|</span><span style="color:#e2e8f0;font-size:.82rem;font-weight:700">XTCERA 5 ejes</span></div>
+    <div style="width:1px;height:22px;background:rgba(255,255,255,0.07)"></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="color:#D4AF37;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase">Impresión 3D</span><span style="color:rgba(255,255,255,0.12);margin:0 4px">|</span><span style="color:#e2e8f0;font-size:.82rem;font-weight:700">BCN3D · Resinas dentales</span></div>
+    <div style="width:1px;height:22px;background:rgba(255,255,255,0.07)"></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="color:#D4AF37;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase">Tolerancia</span><span style="color:rgba(255,255,255,0.12);margin:0 4px">|</span><span style="color:#00FF41;font-size:.82rem;font-weight:700">±10 µm</span></div>
+    <div style="width:1px;height:22px;background:rgba(255,255,255,0.07)"></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="color:#D4AF37;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase">Materiales</span><span style="color:rgba(255,255,255,0.12);margin:0 4px">|</span><span style="color:#e2e8f0;font-size:.82rem;font-weight:700">Zirconio · PMMA · e.max · Ti</span></div>
+  </div>
+</div>
+
 <!-- HISTORIA -->
 <section>
   <div class="container">
     <div class="historia-grid sr">
-      <div class="historia-img">🦷</div>
+      <div class="historia-img" style="flex-direction:column;gap:0;background:linear-gradient(135deg,#0a111a,#111a27);position:relative;overflow:hidden;">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(217,70,166,0.15) 0%,transparent 60%)"></div>
+        <div style="position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:28px;width:100%;">
+          <div style="background:rgba(217,70,166,0.08);border:1px solid rgba(217,70,166,0.2);border-radius:12px;padding:16px;text-align:center;">
+            <div style="font-size:1.6rem;margin-bottom:6px">⚙️</div>
+            <div style="font-size:.7rem;font-weight:700;color:#D946A6;letter-spacing:1px;text-transform:uppercase">Fresado</div>
+            <div style="font-size:.75rem;color:#8b99a8;margin-top:3px">XTCERA 5 ejes</div>
+          </div>
+          <div style="background:rgba(0,210,255,0.07);border:1px solid rgba(0,210,255,0.15);border-radius:12px;padding:16px;text-align:center;">
+            <div style="font-size:1.6rem;margin-bottom:6px">🖥️</div>
+            <div style="font-size:.7rem;font-weight:700;color:#00d2ff;letter-spacing:1px;text-transform:uppercase">Diseño CAD</div>
+            <div style="font-size:.75rem;color:#8b99a8;margin-top:3px">Exocad · 3Shape</div>
+          </div>
+          <div style="background:rgba(0,255,65,0.06);border:1px solid rgba(0,255,65,0.15);border-radius:12px;padding:16px;text-align:center;">
+            <div style="font-size:1.6rem;margin-bottom:6px">🖨️</div>
+            <div style="font-size:.7rem;font-weight:700;color:#00FF41;letter-spacing:1px;text-transform:uppercase">Impresión 3D</div>
+            <div style="font-size:.75rem;color:#8b99a8;margin-top:3px">BCN3D · Dental</div>
+          </div>
+          <div style="background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.18);border-radius:12px;padding:16px;text-align:center;">
+            <div style="font-size:1.6rem;margin-bottom:6px">🔬</div>
+            <div style="font-size:.7rem;font-weight:700;color:#D4AF37;letter-spacing:1px;text-transform:uppercase">Control QC</div>
+            <div style="font-size:.75rem;color:#8b99a8;margin-top:3px">Pieza a pieza</div>
+          </div>
+        </div>
+        <div style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.05);width:100%;padding:12px 28px;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span style="width:7px;height:7px;background:#00FF41;border-radius:50%;animation:blink 2s infinite;display:inline-block"></span>
+          <span style="font-size:.72rem;font-weight:700;color:#8b99a8;letter-spacing:1px;text-transform:uppercase">Laboratorio operando</span>
+        </div>
+      </div>
       <div class="historia-text">
         <div class="section-tag">Nuestra historia</div>
         <h2>Del tallado manual al diseño digital</h2>

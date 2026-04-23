@@ -139,14 +139,39 @@
     .caso-pie strong { color: var(--gold2); }
 
     /* ── PROCESO ── */
-    .proc-row { display: grid; grid-template-columns: repeat(5,1fr); }
-    @media(max-width:860px) { .proc-row { grid-template-columns: 1fr; } }
-    .proc-step { padding: 30px 18px; text-align: center; border-right: 1px solid rgba(255,255,255,0.05); position: relative; }
-    .proc-step:last-child { border-right: none; }
-    @media(max-width:860px) { .proc-step { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); } }
-    .proc-num { width: 38px; height: 38px; border-radius: 50%; background: rgba(217,70,166,0.1); border: 1px solid rgba(217,70,166,0.3); color: var(--gold); font-size: .82rem; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
-    .proc-step h3 { font-size: .88rem; font-weight: 800; margin-bottom: 7px; }
-    .proc-step p  { font-size: .78rem; color: var(--muted); line-height: 1.55; }
+    .proc-wrap { display: flex; align-items: flex-start; justify-content: center; gap: 0; }
+    @media(max-width:860px) { .proc-wrap { flex-direction: column; align-items: stretch; gap: 0; } }
+    .proc-step {
+      flex: 1; padding: 32px 14px 28px; text-align: center;
+      background: var(--card); border: 1px solid rgba(255,255,255,0.06); border-right: none;
+      position: relative; transition: border-color .25s;
+    }
+    .proc-step:first-child { border-radius: 14px 0 0 14px; }
+    .proc-step:last-child  { border-radius: 0 14px 14px 0; border-right: 1px solid rgba(255,255,255,0.06); }
+    .proc-step:hover { border-color: rgba(217,70,166,0.22); z-index: 1; }
+    @media(max-width:860px) {
+      .proc-step { border-right: 1px solid rgba(255,255,255,0.06); border-bottom: none; border-radius: 0; }
+      .proc-step:first-child { border-radius: 14px 14px 0 0; }
+      .proc-step:last-child  { border-radius: 0 0 14px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    }
+    /* arrow connector */
+    .proc-step:not(:last-child)::after {
+      content: '›'; position: absolute; right: -14px; top: 50%; transform: translateY(-50%);
+      color: rgba(217,70,166,0.5); font-size: 1.4rem; font-weight: 900; z-index: 2; line-height: 1;
+    }
+    @media(max-width:860px) {
+      .proc-step:not(:last-child)::after { content: '›'; right: auto; top: auto; bottom: -14px; left: 50%; transform: translateX(-50%) rotate(90deg); }
+    }
+    .proc-num {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(217,70,166,0.12); border: 1.5px solid rgba(217,70,166,0.4);
+      color: var(--gold); font-size: .78rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;
+    }
+    .proc-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .proc-step h3 { font-size: .86rem; font-weight: 800; margin-bottom: 6px; }
+    .proc-step p  { font-size: .75rem; color: #8b99a8; line-height: 1.55; }
+    .proc-time { display: inline-block; margin-top: 10px; font-size: .64rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: rgba(0,210,255,0.08); border: 1px solid rgba(0,210,255,0.18); color: #00d2ff; border-radius: 4px; padding: 3px 9px; }
 
     /* ── ZONA ── */
     .zona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
@@ -215,7 +240,7 @@
          class="btn-wa" target="_blank" rel="noopener noreferrer">
         <i class="fab fa-whatsapp"></i>Cotizar por WhatsApp
       </a>
-      <a href="/flujo-diseno.html" class="btn-ghost">
+      <a href="/flujo-fresado.html" class="btn-ghost">
         <i class="fas fa-upload"></i>Subir escáner STL
       </a>
     </div>
@@ -326,36 +351,41 @@
     <div class="eyebrow">Proceso de producción</div>
     <h2 class="sech2">Del escáner a la <em>pieza terminada</em></h2>
     <p class="sec-lead" style="margin-bottom:44px">Sin intermediarios. Sin retrasos. Un equipo, un flujo, un resultado.</p>
-    <div class="proc-row">
+    <div class="proc-wrap">
       <div class="proc-step">
         <div class="proc-num">01</div>
-        <div style="font-size:1.4rem;margin-bottom:10px"><i class="fas fa-mobile-alt" style="color:#00d2ff"></i></div>
+        <div class="proc-icon"><i class="fas fa-mobile-alt" style="color:#00d2ff"></i></div>
         <h3>Escáner</h3>
         <p>STL, Exocad o 3Shape. Por portal o WhatsApp.</p>
+        <span class="proc-time">Día 0</span>
       </div>
       <div class="proc-step">
         <div class="proc-num">02</div>
-        <div style="font-size:1.4rem;margin-bottom:10px"><i class="fas fa-drafting-compass" style="color:#D946A6"></i></div>
+        <div class="proc-icon"><i class="fas fa-drafting-compass" style="color:#D946A6"></i></div>
         <h3>Diseño CAD</h3>
-        <p>Modelado con ajuste oclusal y márgenes.</p>
+        <p>Modelado con ajuste oclusal, márgenes y anatomía.</p>
+        <span class="proc-time">+2–4 h</span>
       </div>
       <div class="proc-step">
         <div class="proc-num">03</div>
-        <div style="font-size:1.4rem;margin-bottom:10px"><i class="fas fa-cog" style="color:#D4AF37"></i></div>
+        <div class="proc-icon"><i class="fas fa-cog" style="color:#D4AF37"></i></div>
         <h3>Fresado CAM</h3>
-        <p>Producción en el material indicado.</p>
+        <p>Producción XTCERA 5 ejes en el material indicado.</p>
+        <span class="proc-time">+2–3 h</span>
       </div>
       <div class="proc-step">
         <div class="proc-num">04</div>
-        <div style="font-size:1.4rem;margin-bottom:10px"><i class="fas fa-fire" style="color:#fb923c"></i></div>
+        <div class="proc-icon"><i class="fas fa-fire" style="color:#fb923c"></i></div>
         <h3>Sinterizado</h3>
         <p>Cocción, glaze y caracterización cromática.</p>
+        <span class="proc-time">+8–12 h</span>
       </div>
       <div class="proc-step">
         <div class="proc-num">05</div>
-        <div style="font-size:1.4rem;margin-bottom:10px"><i class="fas fa-box-open" style="color:#4ade80"></i></div>
+        <div class="proc-icon"><i class="fas fa-box-open" style="color:#4ade80"></i></div>
         <h3>Entrega</h3>
-        <p>Lista para cementar. Retiro o envío a clínica.</p>
+        <p>Pieza inspeccionada. Retiro en lab o envío a clínica.</p>
+        <span class="proc-time">24–72 h total</span>
       </div>
     </div>
   </div>
