@@ -369,3 +369,15 @@
 | `rel="noopener noreferrer"` en header.js WA link | `js/header.js` 2026-04-23 |
 | Audit XSS: sin innerHTML con input usuario, sin eval() en JS público | 2026-04-23 |
 | CSP, _headers, _redirects — estructuralmente correctos | 2026-04-23 |
+| `rel="noopener noreferrer"` en /app/ (admin-panel, client-panel, mensajero) | 2026-04-23 |
+| Habeas Data Colombia en journal.html (leadForm + notifyForm) con acepta_marketing | 2026-04-23 |
+| Habeas Data Colombia en calculadora.html (formCotizar) con acepta_marketing | 2026-04-23 |
+| sw.js v4: article.html + articles.js en PRECACHE (offline support) | 2026-04-23 |
+| robots.txt: article.html en Allow para GPTBot/PerplexityBot/anthropic-ai | 2026-04-23 |
+| fresado-cam.html meta description ampliada a 138 chars (WCAG SEO) | 2026-04-23 |
+| flujo-diseno.html: aria-label en modal close button | 2026-04-23 |
+| flujo-fresado.html: loading="lazy" en QR Nequi | 2026-04-23 |
+| Audit open redirects, prototype pollution, .env exposure — todo limpio | 2026-04-23 |
+| Audit JSON-LD: todas las páginas públicas tienen structured data | 2026-04-23 |
+| Audit broken links: ningún link interno roto | 2026-04-23 |
+| PENDIENTE MANUAL: ejecutar migrate-privacy.sql en Supabase para que acepta_marketing funcione | Alejandro → Supabase SQL Editor |
