@@ -226,7 +226,20 @@
 
 ---
 
-## ✅ COMPLETADO sesión 2026-04-23 (continuación — auditoría WCAG + UX)
+## ✅ COMPLETADO sesión 2026-04-23 (round 3 — auditoría profunda)
+
+| Qué | Dónde |
+|-----|-------|
+| **XSS fix** — `header.js` chat widget: `bbl.innerHTML` con user input sin escapar → añadida `_pgEscHtml()` | `js/header.js` línea 706 |
+| **Typo brand** — "ProDigy" → "PRODIGY" en 11 archivos HTML/JS | batch global |
+| **GA4** — añadido a `flujo-lab.html` (única página sin tracking) | `flujo-lab.html` |
+| **noscript** — fallbacks añadidos en index, instalar-app, flujo-lab | 3 archivos |
+| **preconnect** — fonts.googleapis.com + gstatic en index.html; cdnjs + supabase en flujo-lab | 2 archivos |
+| **autocomplete** — name/tel/email/org en calculadora, envia-tu-scanner, escaner-domicilio, flujo-diseno, journal | 5 archivos |
+| **sitemap** — lastmod artículos actualizado a 2026-04-23 | `sitemap.xml` |
+| **title SEO** — index.html 64→51 chars | `index.html` |
+
+## ✅ COMPLETADO sesión 2026-04-23 (round 2 — auditoría WCAG + UX)
 
 | Qué | Dónde |
 |-----|-------|
