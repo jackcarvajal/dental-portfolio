@@ -483,7 +483,7 @@
       '<a href="javascript:void(0)" onclick="_phdrToggleIA();document.getElementById(\'pnav2-mob\').classList.remove(\'open\');document.getElementById(\'pnav2-ham-ico\').className=\'fas fa-bars\';document.body.style.overflow=\'\';" style="color:#00FF41;">' +
         '<i class="fas fa-robot" style="margin-right:8px"></i>HABLAR CON IA' +
       '</a>' +
-      '<a href="https://wa.me/573212816716" target="_blank" rel="noopener" style="color:#25D366;">' +
+      '<a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer" style="color:#25D366;">' +
         '<i class="fab fa-whatsapp" style="margin-right:8px"></i>CONTACTAR' +
       '</a>' +
       '<a href="/app/login.html" style="color:#D946A6;font-weight:900;">' +
