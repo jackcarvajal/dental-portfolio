@@ -18,7 +18,7 @@
         :root {
             --bg: #050505; --sidebar: #0d0a00; --card: #14100a;
             --gold: #D4AF37; --gold2: #D946A6; --cyan: #00d2ff;
-            --text: #fff; --muted: #64748b; --border: rgba(212,175,55,0.15);
+            --text: #fff; --muted: #94a3b8; --border: rgba(212,175,55,0.15);
         }
         body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; visibility: hidden; }
         body.ready { visibility: visible; }
@@ -402,7 +402,7 @@
                     <tr><th>Código</th><th>Cliente</th><th>Dirección</th><th>Total</th><th>Mensajero</th><th>Acción</th></tr>
                 </thead>
                 <tbody id="tbody-sin-asignar">
-                    <tr><td colspan="6" style="text-align:center;padding:24px;color:#64748b;">Cargando...</td></tr>
+                    <tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Cargando...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -417,7 +417,7 @@
                     <tr><th>Código</th><th>Cliente</th><th>Mensajero</th><th>Estado</th><th>Entrega Est.</th><th>Evidencia</th></tr>
                 </thead>
                 <tbody id="tbody-en-ruta">
-                    <tr><td colspan="6" style="text-align:center;padding:24px;color:#64748b;">Cargando...</td></tr>
+                    <tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Cargando...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -461,7 +461,7 @@
                     <tr><th>Urgencia</th><th>Código</th><th>Paciente</th><th>Servicio</th><th>Estado op.</th><th>Tiempo</th><th>Acción</th></tr>
                 </thead>
                 <tbody id="tbody-urgentes">
-                    <tr><td colspan="7" style="text-align:center;padding:24px;color:#64748b">Cargando...</td></tr>
+                    <tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">Cargando...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -476,7 +476,7 @@
                     <tr><th>Severidad</th><th>Tipo</th><th>Descripción</th><th>Pedido</th><th>Hace</th><th>Acción</th></tr>
                 </thead>
                 <tbody id="tbody-incidencias">
-                    <tr><td colspan="6" style="text-align:center;padding:24px;color:#64748b">Cargando...</td></tr>
+                    <tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8">Cargando...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -487,36 +487,36 @@
         <div style="background:#0d1828;border-radius:16px;padding:24px;max-width:560px;width:100%;border:1px solid rgba(212,175,55,.3);max-height:90vh;overflow-y:auto;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
                 <h3 style="color:var(--gold);font-size:.95rem;"><i class="fas fa-shield-check"></i> Evidencia de Entrega — <span id="ev-codigo"></span></h3>
-                <button onclick="cerrarEvidencia()" style="background:none;border:none;color:#64748b;font-size:1.1rem;cursor:pointer;">✕</button>
+                <button onclick="cerrarEvidencia()" style="background:none;border:none;color:#94a3b8;font-size:1.1rem;cursor:pointer;">✕</button>
             </div>
 
             <!-- GPS -->
             <div style="margin-bottom:16px;">
-                <p style="font-size:.72rem;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;"><i class="fas fa-location-dot"></i> GPS de Entrega</p>
+                <p style="font-size:.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;"><i class="fas fa-location-dot"></i> GPS de Entrega</p>
                 <div id="ev-mapa" style="border-radius:10px;overflow:hidden;height:180px;background:#1a2332;display:flex;align-items:center;justify-content:center;">
-                    <span id="ev-gps-txt" style="font-size:.78rem;color:#64748b;">Sin coordenadas GPS</span>
+                    <span id="ev-gps-txt" style="font-size:.78rem;color:#94a3b8;">Sin coordenadas GPS</span>
                 </div>
             </div>
 
             <!-- Foto + Firma -->
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
                 <div>
-                    <p style="font-size:.72rem;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;"><i class="fas fa-camera"></i> Foto</p>
+                    <p style="font-size:.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;"><i class="fas fa-camera"></i> Foto</p>
                     <a id="ev-foto-link" href="#" target="_blank" rel="noopener noreferrer">
                         <img id="ev-foto" style="width:100%;height:120px;object-fit:cover;border-radius:10px;border:1px solid rgba(255,255,255,.08);" alt="Foto entrega">
                     </a>
-                    <p id="ev-foto-none" style="font-size:.75rem;color:#64748b;display:none;">Sin foto</p>
+                    <p id="ev-foto-none" style="font-size:.75rem;color:#94a3b8;display:none;">Sin foto</p>
                 </div>
                 <div>
-                    <p style="font-size:.72rem;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;"><i class="fas fa-signature"></i> Firma</p>
+                    <p style="font-size:.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;"><i class="fas fa-signature"></i> Firma</p>
                     <a id="ev-firma-link" href="#" target="_blank" rel="noopener noreferrer">
                         <img id="ev-firma" style="width:100%;height:120px;object-fit:contain;border-radius:10px;background:#fff;border:1px solid rgba(255,255,255,.08);" alt="Firma cliente">
                     </a>
-                    <p id="ev-firma-none" style="font-size:.75rem;color:#64748b;display:none;">Sin firma</p>
+                    <p id="ev-firma-none" style="font-size:.75rem;color:#94a3b8;display:none;">Sin firma</p>
                 </div>
             </div>
 
-            <p id="ev-fecha" style="font-size:.75rem;color:#64748b;text-align:center;"></p>
+            <p id="ev-fecha" style="font-size:.75rem;color:#94a3b8;text-align:center;"></p>
         </div>
     </div>
 
@@ -948,7 +948,7 @@ async function cargarDespachos() {
     if (!tbodySin) return;
 
     if (!sinAsignar.length) {
-        tbodySin.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#64748b;">Sin pedidos listos para despachar</td></tr>';
+        tbodySin.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Sin pedidos listos para despachar</td></tr>';
     } else {
         const opsMens = _mensajerosList.map(m => `<option value="${escHtml(m.id)}">${escHtml(m.nombre)}${m.zona_preferencial ? ' — ' + escHtml(m.zona_preferencial) : ''}</option>`).join('');
         tbodySin.innerHTML = sinAsignar.map(p => `
@@ -976,7 +976,7 @@ async function cargarDespachos() {
     if (!tbodyRuta) return;
 
     if (!(enRuta || []).length) {
-        tbodyRuta.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#64748b;">Sin actividad hoy</td></tr>';
+        tbodyRuta.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Sin actividad hoy</td></tr>';
     } else {
         const estadoColor = { PROGRAMADO:'#fbbf24', EN_REPARTO:'#00d2ff', ENTREGADO:'#00FF41', NO_ENTREGADO:'#f87171' };
         tbodyRuta.innerHTML = (enRuta || []).map(d => {
@@ -1278,7 +1278,7 @@ async function cargarTorre() {
     const rows = (pedidos || []).map(p => {
         const mins = (ahora - new Date(p.created_at).getTime()) / 60000;
         const esPend = ['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE'].includes(p.estado_operativo);
-        let urgencia = 'OK', color = '#64748b';
+        let urgencia = 'OK', color = '#94a3b8';
         if (esPend && mins > 40) { urgencia = 'CRITICO'; color = '#ef4444'; criticos++; }
         else if (esPend && mins > 25) { urgencia = 'ALERTA';  color = '#fbbf24'; alertas++; }
         return `<tr>
@@ -1304,7 +1304,7 @@ async function cargarTorre() {
 
     document.getElementById('tbody-urgentes').innerHTML = rows.length
         ? rows.join('')
-        : '<tr><td colspan="7" style="text-align:center;padding:24px;color:#64748b">Sin urgencias activas</td></tr>';
+        : '<tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">Sin urgencias activas</td></tr>';
 
     const incRows = (incs || []).map(inc => {
         const mins = Math.floor((ahora - new Date(inc.created_at).getTime()) / 60000);
@@ -1321,7 +1321,7 @@ async function cargarTorre() {
 
     document.getElementById('tbody-incidencias').innerHTML = incRows.length
         ? incRows.join('')
-        : '<tr><td colspan="6" style="text-align:center;padding:24px;color:#64748b">Sin incidencias abiertas</td></tr>';
+        : '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8">Sin incidencias abiertas</td></tr>';
 }
 
 async function resolverIncidencia(incId) {

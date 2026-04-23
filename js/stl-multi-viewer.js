@@ -79,7 +79,7 @@
 }
 .pmv-drop-ico { font-size: 2.2rem; color: #00d2ff; margin-bottom: 10px; display: block; }
 .pmv-drop-title { color: #fff; font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
-.pmv-drop-sub { color: #64748b; font-size: 0.78rem; line-height: 1.5; }
+.pmv-drop-sub { color: #94a3b8; font-size: 0.78rem; line-height: 1.5; }
 .pmv-drop-sub span { color: #94a3b8; }
 
 /* GRID DE TARJETAS */
@@ -154,7 +154,7 @@
 }
 .pmv-fsize {
     font-size: 0.66rem;
-    color: #64748b;
+    color: #94a3b8;
     flex-shrink: 0;
 }
 .pmv-del {

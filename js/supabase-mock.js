@@ -384,6 +384,6 @@ export async function crearPedido(pedido) {
 if (typeof window !== 'undefined') {
     console.info(
         '%c[PRODIGY Mock] supabase-mock.js activo\n%cReemplazar con cliente real cuando tengas SUPABASE_URL + SUPABASE_ANON_KEY',
-        'color:#D946A6;font-weight:900;', 'color:#64748b;'
+        'color:#D946A6;font-weight:900;', 'color:#94a3b8;'
     );
 }

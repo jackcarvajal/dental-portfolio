@@ -8,6 +8,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="../js/auth-guard.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -61,7 +62,7 @@
             box-shadow: 0 8px 28px rgba(212,175,55,0.2);
         }
         .logo h1 { font-size: 1.3rem; font-weight: 900; letter-spacing: 3px; color: #fff; }
-        .logo p { font-size: 0.74rem; color: #64748b; margin-top: 4px; }
+        .logo p { font-size: 0.74rem; color: #94a3b8; margin-top: 4px; }
 
         .section-title {
             font-size: 0.95rem; font-weight: 700;
@@ -152,7 +153,7 @@
         }
         .user-chip .chip-info { flex: 1; min-width: 0; }
         .user-chip .chip-name { font-size: 0.85rem; font-weight: 700; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .user-chip .chip-email { font-size: 0.72rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-chip .chip-email { font-size: 0.72rem; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .chip-badge { font-size: 0.65rem; background: rgba(0,255,65,0.1); border: 1px solid rgba(0,255,65,0.25); color: #00FF41; padding: 2px 8px; border-radius: 50px; white-space: nowrap; }
     </style>
 </head>
@@ -243,7 +244,7 @@
             <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
                 <input type="checkbox" id="ob-marketing"
                     style="margin-top:3px;flex-shrink:0;accent-color:#D4AF37;">
-                <span style="font-size:0.72rem;color:#64748b;line-height:1.5;">
+                <span style="font-size:0.72rem;color:#94a3b8;line-height:1.5;">
                     Acepto recibir novedades y promociones de PRODIGY (opcional).
                 </span>
             </label>

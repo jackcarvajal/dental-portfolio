@@ -15,7 +15,7 @@
         :root {
             --bg: #050505; --sidebar: #0d0a00; --card: #14100a;
             --gold: #D4AF37; --gold2: #D946A6; --cyan: #00d2ff;
-            --text: #fff; --muted: #64748b; --border: rgba(212,175,55,0.15);
+            --text: #fff; --muted: #94a3b8; --border: rgba(212,175,55,0.15);
         }
         body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; visibility: hidden; }
         body.ready { visibility: visible; }
@@ -152,7 +152,7 @@
         .kcase:hover { transform:translateY(-2px); border-color:rgba(212,175,55,0.2); }
         .kcase-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
         .kcase-doc { font-size:0.8rem; font-weight:700; }
-        .kcase-cli { font-size:0.68rem; color:#64748b; }
+        .kcase-cli { font-size:0.68rem; color:#94a3b8; }
         .kcase-service { font-size:0.75rem; color:#cbd5e1; margin-bottom:8px; }
         .kcase-mat { display:inline-block; font-size:0.62rem; font-weight:700; padding:1px 7px; border-radius:10px; background:rgba(212,175,55,0.1); color:#D4AF37; margin-right:4px; }
         .kcase-urg { font-size:0.62rem; font-weight:700; padding:1px 7px; border-radius:10px; background:rgba(239,68,68,0.15); color:#f87171; }
@@ -602,9 +602,9 @@
 <!-- ═══ MODAL CREAR AGENTE ═══ -->
 <div id="modal-agente" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:5000;align-items:center;justify-content:center;">
     <div style="background:#0d1525;border:1px solid rgba(217,70,166,0.4);border-radius:18px;padding:32px;width:100%;max-width:480px;position:relative;box-shadow:0 0 0 1px rgba(212,175,55,0.15),0 24px 60px rgba(0,0,0,0.7);">
-        <button onclick="cerrarModalAgente()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#64748b;font-size:1.1rem;cursor:pointer;"><i class="fas fa-xmark"></i></button>
+        <button onclick="cerrarModalAgente()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#94a3b8;font-size:1.1rem;cursor:pointer;"><i class="fas fa-xmark"></i></button>
         <h2 style="font-size:1.1rem;font-weight:900;margin-bottom:4px;color:#fff;">Nuevo Agente</h2>
-        <p style="font-size:0.76rem;color:#64748b;margin-bottom:22px;">El agente recibirá un correo para establecer su contraseña.</p>
+        <p style="font-size:0.76rem;color:#94a3b8;margin-bottom:22px;">El agente recibirá un correo para establecer su contraseña.</p>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
             <div>
@@ -1219,7 +1219,7 @@ const ROL_LABELS = {
 };
 const ROL_COLORS = {
     admin:'#D4AF37', operator:'#00d2ff', mensajero:'#25D366',
-    taller:'#D946A6', inventario:'#F59E0B', client:'#64748b'
+    taller:'#D946A6', inventario:'#F59E0B', client:'#94a3b8'
 };
 
 let _equipoData = [];
@@ -1334,7 +1334,7 @@ function renderEquipo(lista) {
             <td style="color:#94a3b8;font-size:0.82rem;">${esc(a.email)}</td>
             <td><span style="background:${ROL_COLORS[a.rol]}22;color:${ROL_COLORS[a.rol]};border:1px solid ${ROL_COLORS[a.rol]}55;border-radius:20px;padding:3px 10px;font-size:0.72rem;font-weight:700;">${ROL_LABELS[a.rol] || a.rol}</span></td>
             <td><span style="color:${a.activo ? '#00FF41' : '#f87171'};font-size:0.8rem;font-weight:700;">${a.activo ? '● Activo' : '○ Inactivo'}</span></td>
-            <td style="color:#64748b;font-size:0.78rem;">${new Date(a.created_at).toLocaleDateString('es-CO')}</td>
+            <td style="color:#94a3b8;font-size:0.78rem;">${new Date(a.created_at).toLocaleDateString('es-CO')}</td>
             <td>
                 <div style="display:flex;gap:6px;flex-wrap:wrap;">
                     <button onclick="resetearContrasena('${a.email}')" title="Enviar link reset" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.35);color:#D4AF37;border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
@@ -1419,7 +1419,7 @@ function filtrarLeads() {
 function renderLeads(arr) {
     const tbody = document.getElementById('tbody-leads');
     if (!arr.length) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b;padding:28px;">Sin leads aún</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:28px;">Sin leads aún</td></tr>';
         return;
     }
     tbody.innerHTML = arr.map(l => {
@@ -1439,7 +1439,7 @@ function renderLeads(arr) {
             <td style="font-weight:600;">${esc(l.nombre)}</td>
             <td>${waLink}</td>
             <td style="font-size:0.75rem;color:#94a3b8;" title="${esc(l.recurso_descargado)}">${esc(recursoCorto)}</td>
-            <td style="font-size:0.78rem;color:#64748b;">${fecha}</td>
+            <td style="font-size:0.78rem;color:#94a3b8;">${fecha}</td>
             <td>${badge}</td>
             <td>
                 <button onclick="toggleContactado('${l.id}', ${l.contactado})"
@@ -1512,7 +1512,7 @@ const PDD_MAT = {'zirconio-mono':'Zirc.3Y','zirconio-multi':'Zirc.5Y','disilicat
 function renderPedidosDoc(arr) {
     const tbody = document.getElementById('tbody-pdd');
     if (!arr.length) {
-        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:30px;color:#64748b;">Sin pedidos en este filtro.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:30px;color:#94a3b8;">Sin pedidos en este filtro.</td></tr>';
         return;
     }
     tbody.innerHTML = arr.map(p => {
@@ -1526,7 +1526,7 @@ function renderPedidosDoc(arr) {
         const wa = p.doctor_whatsapp
             ? `<a href="https://wa.me/57${p.doctor_whatsapp.replace(/\D/g,'').replace(/^57/,'')}" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-size:.75rem;"><i class="fab fa-whatsapp"></i></a>` : '';
         return `<tr>
-            <td><strong style="font-size:.85rem">${esc(p.doctor_nombre)||'—'}</strong><br><span style="font-size:.72rem;color:#64748b">${esc(p.doctor_clinica)}</span>${wa?'&nbsp;'+wa:''}</td>
+            <td><strong style="font-size:.85rem">${esc(p.doctor_nombre)||'—'}</strong><br><span style="font-size:.72rem;color:#94a3b8">${esc(p.doctor_clinica)}</span>${wa?'&nbsp;'+wa:''}</td>
             <td style="font-size:.82rem">${esc(p.tipo_servicio)||'—'}</td>
             <td style="font-size:.8rem;color:#94a3b8">${esc(PDD_MAT[p.material]||p.material)}</td>
             <td style="text-align:center">${p.unidades}</td>
@@ -1538,7 +1538,7 @@ function renderPedidosDoc(arr) {
                     ${estadoOpts}
                 </select>
             </td>
-            <td style="color:#64748b;font-size:.78rem">${fecha}</td>
+            <td style="color:#94a3b8;font-size:.78rem">${fecha}</td>
             <td>
                 ${p.link_archivo ? `<a href="${p.link_archivo}" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);font-size:.75rem;"><i class="fas fa-link"></i> STL</a>` : '—'}
             </td>
@@ -1948,7 +1948,7 @@ async function cargarMetricas() {
             <div style="flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:8px;">
                 <div style="width:${Math.round(porDia[i]/maxDia*100)}%;background:${i===0||i===6?'#334155':'#00d2ff'};height:8px;border-radius:4px;"></div>
             </div>
-            <span style="font-size:.68rem;color:#64748b;width:20px;text-align:right">${porDia[i]}</span>
+            <span style="font-size:.68rem;color:#94a3b8;width:20px;text-align:right">${porDia[i]}</span>
         </div>`).join('');
 
     // ── Por servicio ──

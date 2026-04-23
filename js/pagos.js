@@ -518,7 +518,7 @@ async function inicializarPasarelas(containerId, precioBase, onSelect) {
             <div id="paypal-button-container"></div>
             <div id="paddle-checkout-container" style="display:none;min-height:420px;"></div>
 
-            <p style="font-size:.72rem;color:#64748b;margin-top:8px;text-align:center;">
+            <p style="font-size:.72rem;color:#94a3b8;margin-top:8px;text-align:center;">
                 PayPal: Visa / Mastercard / saldo PayPal. Paddle: Apple Pay, Google Pay, tarjeta.
             </p>
         </div>`;
