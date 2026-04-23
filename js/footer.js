@@ -150,7 +150,7 @@
           '<li><a href="diseno-cad.html">Diseño CAD — Servicios</a></li>' +
           '<li><a href="flujo-diseno.html">Pedir Diseño CAD</a></li>' +
           '<li><a href="envia-tu-scanner.html">Envía tu Escáner</a></li>' +
-          '<li><a href="journal.html">ProDigy Journal</a></li>' +
+          '<li><a href="journal.html">PRODIGY Journal</a></li>' +
           '<li><a href="seguimiento-caso.html">Seguimiento en Vivo</a></li>' +
         '</ul>' +
       '</div>' +

@@ -35,7 +35,7 @@ self.addEventListener('activate', (event) => {
 
 /* ── Push: mostrar notificación al cliente ── */
 self.addEventListener('push', (event) => {
-    let payload = { title: 'ProDigy', body: 'Actualización en tu pedido.', data: {} };
+    let payload = { title: 'PRODIGY', body: 'Actualización en tu pedido.', data: {} };
 
     try {
         payload = event.data ? { ...payload, ...event.data.json() } : payload;

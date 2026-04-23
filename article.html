@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#D946A6">
   <link rel="manifest" href="/manifest.json">
-  <title id="meta-title">Artículo | ProDigy Lab Dental</title>
+  <title id="meta-title">Artículo | PRODIGY Lab Dental</title>
   <meta id="meta-desc" name="description" content="">
   <meta id="og-title" property="og:title" content="">
   <meta id="og-desc" property="og:description" content="">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="ProDigy Lab Dental">
+  <meta property="og:site_name" content="PRODIGY Lab Dental">
   <meta id="og-url" property="og:url" content="">
   <meta id="og-image" property="og:image" content="https://prodigylabdental.com/assets/prodigy-preview.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -347,7 +347,7 @@ function buildSchema(art) {
         'datePublished': art.fecha,
         'dateModified': art.fecha,
         'author': {'@type':'Person','name':'Alejandro Carvajal','jobTitle':'Experto CAD/CAM Dental'},
-        'publisher': {'@type':'Organization','name':'ProDigy Lab Dental','url':'https://prodigylabdental.com'},
+        'publisher': {'@type':'Organization','name':'PRODIGY Lab Dental','url':'https://prodigylabdental.com'},
         'mainEntityOfPage': `https://prodigylabdental.com/article.html?id=${art.id}`,
         'keywords': art.chip + ', CAD/CAM dental, odontología digital, laboratorio dental Colombia'
       },
@@ -380,8 +380,8 @@ function copiarLink() {
   const canonicalUrl = url;
 
   /* Meta tags */
-  document.title = art.titulo + ' | ProDigy Lab Dental';
-  document.getElementById('meta-title').textContent = art.titulo + ' | ProDigy Lab Dental';
+  document.title = art.titulo + ' | PRODIGY Lab Dental';
+  document.getElementById('meta-title').textContent = art.titulo + ' | PRODIGY Lab Dental';
   document.getElementById('meta-desc').content = art.subtitulo;
   document.getElementById('og-title').content = art.titulo;
   document.getElementById('og-desc').content = art.subtitulo;
@@ -432,7 +432,7 @@ function copiarLink() {
   document.getElementById('recientes').innerHTML = renderRecientes(getRecientes(id));
 
   /* Share */
-  const shareText = encodeURIComponent('📖 ' + art.titulo + ' — ProDigy Lab Dental\n' + canonicalUrl);
+  const shareText = encodeURIComponent('📖 ' + art.titulo + ' — PRODIGY Lab Dental\n' + canonicalUrl);
   document.getElementById('share-wa').href = `https://wa.me/?text=${shareText}`;
   document.getElementById('share-li').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`;
 })();

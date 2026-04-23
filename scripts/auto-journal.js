@@ -191,7 +191,7 @@ async function fetchWikipediaImage(articleTitle) {
       hostname: 'en.wikipedia.org',
       path: `/w/api.php?action=query&titles=${title}&prop=pageimages&format=json&pithumbsize=1200&pilicense=any`,
       method: 'GET',
-      headers: { 'User-Agent': 'ProDigyJournal/1.0 (prodigylabdental.com)' }
+      headers: { 'User-Agent': 'PRODIGYJournal/1.0 (prodigylabdental.com)' }
     });
     const data  = JSON.parse(raw);
     const pages = data.query?.pages || {};
@@ -364,7 +364,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`\n🚀 ProDigy Auto-Journal — ${todayISO()}`);
+  console.log(`\n🚀 PRODIGY Auto-Journal — ${todayISO()}`);
   console.log(`📡 Motor: Google Gemini 2.0 Flash`);
   console.log(`🖼️  Imágenes: Wikipedia REST API (sin key)\n`);
 
