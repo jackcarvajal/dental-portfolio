@@ -1,5 +1,5 @@
 // Prodigy Lab Dental — Service Worker v2.0
-const CACHE = 'prodigy-v3';
+const CACHE = 'prodigy-v4';
 
 // Assets estáticos que siempre cacheamos en install
 const PRECACHE = [
@@ -8,6 +8,8 @@ const PRECACHE = [
   '/calculadora.html',
   '/catalogo.html',
   '/journal.html',
+  '/article.html',
+  '/articles.js',
   '/nosotros.html',
   '/soporte.html',
   '/seguimiento-caso.html',

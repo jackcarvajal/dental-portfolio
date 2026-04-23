@@ -22,6 +22,7 @@ Disallow: /*.bat$
 # Bots de IA — permitir páginas públicas con contenido indexable
 User-agent: GPTBot
 Allow: /journal.html
+Allow: /article.html
 Allow: /calculadora.html
 Allow: /nosotros.html
 Allow: /portafolio.html
@@ -35,6 +36,7 @@ Allow: /instalar-app.html
 
 User-agent: PerplexityBot
 Allow: /journal.html
+Allow: /article.html
 Allow: /calculadora.html
 Allow: /nosotros.html
 Allow: /portafolio.html
@@ -48,6 +50,7 @@ Allow: /instalar-app.html
 
 User-agent: anthropic-ai
 Allow: /journal.html
+Allow: /article.html
 Allow: /calculadora.html
 Allow: /nosotros.html
 Allow: /portafolio.html

@@ -452,6 +452,9 @@
       text-align: center;
       margin-top: 10px;
     }
+    .habeas-wrap { margin: 10px 0 4px; }
+    .habeas-label { display: flex; align-items: flex-start; gap: 8px; font-size: 0.72rem; color: var(--muted); line-height: 1.45; cursor: pointer; }
+    .habeas-label input[type="checkbox"] { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; accent-color: var(--gold-primary); cursor: pointer; }
 
     /* ── ARTÍCULOS ───────────────────────────────────── */
     .articles-section {
@@ -783,6 +786,18 @@
             <i class="fa-brands fa-whatsapp"></i>
             <input type="tel" id="leadWA" placeholder="WhatsApp con código de país (+57...)" required maxlength="20">
           </div>
+          <div class="habeas-wrap">
+            <label class="habeas-label">
+              <input type="checkbox" id="leadHabeas" required>
+              Autorizo el tratamiento de mis datos personales para gestión de pedidos y contacto de PRODIGY Lab Dental. Puedo solicitar baja en cualquier momento.
+            </label>
+          </div>
+          <div class="habeas-wrap">
+            <label class="habeas-label">
+              <input type="checkbox" id="leadMarketing">
+              Acepto recibir novedades, artículos y promociones de PRODIGY (opcional).
+            </label>
+          </div>
           <button type="submit" class="btn-descargar" id="btnDescargar">
             <i class="fa-solid fa-download"></i>
             Descargar Guía Gratuita
@@ -924,6 +939,12 @@
         <i class="fa-brands fa-whatsapp"></i> Avisar
       </button>
     </div>
+    <div style="margin-top:10px;">
+      <label class="habeas-label" style="justify-content:center;">
+        <input type="checkbox" id="notifyHabeas" style="width:13px;height:13px;flex-shrink:0;accent-color:#D946A6;cursor:pointer;">
+        <span>Autorizo uso de mi número para notificaciones de PRODIGY. <a href="/terminos-y-legal.html#privacidad" style="color:#D946A6">Ver política</a></span>
+      </label>
+    </div>
     <div class="form-msg" id="notifyMsg" style="margin-top:12px;font-size:0.82rem;text-align:center;min-height:20px;"></div>
   </div>
 </section>
@@ -946,8 +967,9 @@
     e.preventDefault();
     const btn  = document.getElementById('btnDescargar');
     const msg  = document.getElementById('formMsg');
-    const nombre = document.getElementById('leadNombre').value.trim();
-    const wa     = document.getElementById('leadWA').value.trim();
+    const nombre   = document.getElementById('leadNombre').value.trim();
+    const wa       = document.getElementById('leadWA').value.trim();
+    const marketing = document.getElementById('leadMarketing').checked;
 
     btn.classList.add('loading');
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registrando...';
@@ -956,7 +978,8 @@
     const { error } = await sb.from('leads_doctores').insert({
       nombre,
       whatsapp: wa,
-      recurso_descargado: 'Guía Clínica 2026: Zirconio Multicapa vs Disilicato'
+      recurso_descargado: 'Guía Clínica 2026: Zirconio Multicapa vs Disilicato',
+      acepta_marketing: marketing
     });
 
     btn.classList.remove('loading');
@@ -1000,12 +1023,15 @@
   async function subscribeNotify() {
     const wa  = document.getElementById('notifyWA').value.trim();
     const msg = document.getElementById('notifyMsg');
+    const habeas = document.getElementById('notifyHabeas').checked;
     if (!wa) { msg.className = 'err'; msg.textContent = 'Ingresa tu WhatsApp.'; return; }
+    if (!habeas) { msg.className = 'err'; msg.textContent = 'Acepta el uso de tus datos para continuar.'; return; }
 
     const { error } = await sb.from('leads_doctores').insert({
       nombre: 'Suscriptor Journal',
       whatsapp: wa,
-      recurso_descargado: 'Notificacion Journal'
+      recurso_descargado: 'Notificacion Journal',
+      acepta_marketing: false
     });
 
     if (error) { msg.className = 'err'; msg.textContent = 'Error. Intenta de nuevo.'; return; }

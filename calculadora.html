@@ -273,6 +273,9 @@
       margin-bottom: 14px; margin-top: 4px;
     }
     .field { margin-bottom: 12px; }
+    .habeas-wrap { margin: 8px 0 4px; }
+    .habeas-label { display: flex; align-items: flex-start; gap: 8px; font-size: 0.71rem; color: var(--muted); line-height: 1.45; cursor: pointer; }
+    .habeas-label input[type="checkbox"] { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; accent-color: #D946A6; cursor: pointer; }
     .field input {
       width: 100%;
       background: rgba(255,255,255,0.05);
@@ -509,6 +512,18 @@
         <div class="field">
           <input type="tel" id="cot-wa" placeholder="WhatsApp (+57...)" required maxlength="20">
         </div>
+        <div class="habeas-wrap">
+          <label class="habeas-label">
+            <input type="checkbox" id="cotHabeas" required>
+            Autorizo el tratamiento de mis datos personales para gestión de cotizaciones y contacto de PRODIGY Lab Dental.
+          </label>
+        </div>
+        <div class="habeas-wrap">
+          <label class="habeas-label">
+            <input type="checkbox" id="cotMarketing">
+            Acepto recibir novedades y promociones de PRODIGY (opcional).
+          </label>
+        </div>
         <button type="submit" class="btn-cotizar" id="btnCotizar">
           <i class="fa-solid fa-paper-plane"></i> Solicitar cotización exacta
         </button>
@@ -670,8 +685,9 @@ function toggleOpcion(key) {
 /* ── ENVIAR COTIZACIÓN ────────────────────────────────── */
 async function enviarCotizacion(e) {
   e.preventDefault();
-  const nombre = document.getElementById('cot-nombre').value.trim();
-  const wa     = document.getElementById('cot-wa').value.trim();
+  const nombre    = document.getElementById('cot-nombre').value.trim();
+  const wa        = document.getElementById('cot-wa').value.trim();
+  const marketing = document.getElementById('cotMarketing').checked;
   const btn    = document.getElementById('btnCotizar');
   const msg    = document.getElementById('cotMsg');
   const { total, srv } = calcTotal();
@@ -683,6 +699,7 @@ async function enviarCotizacion(e) {
     nombre,
     whatsapp: wa,
     recurso_descargado: `Calculadora: ${srv.label} · ${MAT_LABEL[state.material]} · ${state.qty}u · ${fmtCOP(total)} COP`,
+    acepta_marketing: marketing
   });
 
   if (error) {
