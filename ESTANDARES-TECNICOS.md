@@ -1,6 +1,7 @@
 # PRODIGY — Estándares Técnicos Definitivos
-> Resultado de auditoría autónoma completa (rounds 1–13, Abr 2026).
+> Resultado de auditoría autónoma completa (rounds 1–14, Abr 2026).
 > Aplicar TODO esto al crear páginas nuevas o implementaciones nuevas.
+> **Actualizar este archivo cada vez que se implemente un nuevo patrón.**
 > Última actualización: 2026-04-24
 
 ---
@@ -545,4 +546,172 @@ node -e "const fs=require('fs');const c=fs.readFileSync('archivo.html','utf8');c
 
 # 5. Sin .html en URLs absolutas (canonical, og:url, JSON-LD)
 grep "prodigylabdental.com.*\.html" archivo.html
+
+# 6. RLS SQL — políticas con TO authenticated
+grep "FOR ALL USING (true)" *.sql | grep -v "TO authenticated"
+
+# 7. Storage buckets — todos tienen política INSERT
+node -e "const fs=require('fs');const inCode=new Set();const withP=new Set();fs.readdirSync('.').filter(f=>f.endsWith('.html')||f.endsWith('.js')).forEach(f=>{(fs.readFileSync(f,'utf8').match(/storage\.from\('([^']+)'\)/g)||[]).forEach(m=>{inCode.add(m.match(/'([^']+)'/)[1])})});fs.readdirSync('sql').filter(f=>f.endsWith('.sql')).forEach(f=>{(fs.readFileSync('sql/'+f,'utf8').match(/bucket_id\s*=\s*'([^']+)'/g)||[]).forEach(m=>{withP.add(m.match(/'([^']+)'/)[1])})});const missing=[...inCode].filter(b=>!withP.has(b));console.log('Buckets sin políticas:',missing.length?missing:'NINGUNO ✅')"
+
+# 8. Sin .html en links internos
+node -e "const fs=require('fs');const slugs=['nosotros','soporte','catalogo','portafolio','calculadora','journal','diseno-cad','fresado-cam','envia-tu-scanner','escaner-domicilio','instalar-app','terminos-y-legal','seguimiento-caso','article','patient'];let ok=true;fs.readdirSync('.').filter(f=>f.endsWith('.html')&&!f.includes('ESTANDARES')).forEach(f=>{const c=fs.readFileSync(f,'utf8');c.split('\n').forEach((l,i)=>{if(l.trim().startsWith('//')||l.trim().startsWith('#'))return;slugs.forEach(s=>{if(l.includes(s+'.html')&&!l.includes('js/')&&!l.includes('recurso_descargado')&&!l.includes('article.html lo')){console.log(f+':'+(i+1),l.trim().slice(0,70));ok=false;}})})});if(ok)console.log('✅ Sin .html en links internos')"
+```
+
+---
+
+## 16. CLEAN URLs — IMPLEMENTACIÓN COMPLETA
+
+### 16a. Archivos a actualizar al crear página nueva
+
+| Archivo | Qué hacer |
+|---|---|
+| `_redirects` | `  /mi-pagina   /mi-pagina.html   200` |
+| `sitemap.xml` | URL sin `.html` + `<lastmod>` |
+| `sw.js` PRECACHE | `'/mi-pagina'` (sin .html) |
+| `robots.txt` | `Disallow: /mi-pagina` si es noindex |
+| HTML canonical | `https://prodigylabdental.com/mi-pagina` |
+| HTML og:url | `https://prodigylabdental.com/mi-pagina` |
+| JSON-LD url/item | `https://prodigylabdental.com/mi-pagina` |
+| Links internos | `href="mi-pagina"` (sin .html) |
+| manifest.json shortcuts | `"url": "/mi-pagina"` si aplica |
+
+### 16b. Redirect de .html → clean (Cloudflare Dashboard)
+
+Los archivos estáticos tienen precedencia sobre `_redirects`, por eso NO funciona poner `nosotros.html → /nosotros` en `_redirects`. Hacerlo en Cloudflare Dashboard:
+
+**Cloudflare Dashboard → Rules → Redirect Rules → Create Rule:**
+- Nombre: "Remove .html extension"
+- When: `URI Path ends with ".html" AND URI Path does not contain "/app/"`
+- Then: Dynamic Redirect 301
+- URL: `concat(slice(http.request.uri.path, 0, len(http.request.uri.path) - 5), http.request.uri.query)`
+
+### 16c. Páginas de redirección simples (como contacto.html)
+
+Para una URL antigua que debe redirigir a otra:
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="canonical" href="https://prodigylabdental.com/nosotros#contacto">
+  <meta http-equiv="refresh" content="0;url=/nosotros#contacto">
+  <script>window.location.replace('/nosotros#contacto');</script>
+  <title>Redirigiendo...</title>
+</head>
+<body>
+  <p>Redirigiendo… <a href="/nosotros#contacto">Haz clic aquí si no eres redirigido.</a></p>
+</body>
+</html>
+```
+
+Y en `_redirects`: `/contacto   /nosotros#contacto   301`
+
+---
+
+## 17. PWA — INSTALL PROMPT NATIVO
+
+En `instalar-app.html` o cualquier página con CTA de instalación:
+
+```javascript
+// Capturar el evento antes de que Chrome lo descarte
+let _deferredInstall = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  _deferredInstall = e;
+  document.getElementById('pwa-install-btn').style.display = 'inline-flex';
+});
+window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn) { btn.textContent = '✅ App instalada'; btn.disabled = true; }
+  _deferredInstall = null;
+});
+window.triggerInstall = function() {
+  if (!_deferredInstall) return;
+  _deferredInstall.prompt();
+  _deferredInstall.userChoice.then(r => {
+    if (r.outcome === 'accepted') { /* opcional: analytics */ }
+    _deferredInstall = null;
+  });
+};
+```
+
+```html
+<!-- Botón oculto por defecto — aparece solo si el browser lo permite -->
+<button id="pwa-install-btn" onclick="triggerInstall()" style="display:none;">
+  <i class="fas fa-download"></i> Instalar en este dispositivo
+</button>
+```
+
+**Condiciones para que aparezca:** HTTPS, manifest.json válido, SW registrado, usuario no ha instalado ya, Chrome/Edge en Android o Desktop.
+
+---
+
+## 18. NUEVO STORAGE BUCKET — CHECKLIST
+
+Al crear un bucket nuevo en Supabase:
+
+1. **SQL:** ejecutar en SQL Editor:
+
+```sql
+-- Crear bucket
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES ('mi-bucket', 'mi-bucket', false, LIMITE_EN_BYTES, ARRAY['image/jpeg','image/png'])
+ON CONFLICT (id) DO UPDATE SET public=false;
+
+-- Políticas (ver sección 3g)
+CREATE POLICY "upload" ON storage.objects FOR INSERT TO authenticated
+  WITH CHECK (bucket_id = 'mi-bucket' AND (storage.foldername(name))[1] = auth.uid()::text);
+CREATE POLICY "read" ON storage.objects FOR SELECT TO anon, authenticated
+  USING (bucket_id = 'mi-bucket');
+CREATE POLICY "delete" ON storage.objects FOR DELETE TO authenticated
+  USING (bucket_id = 'mi-bucket' AND auth.email() IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com'));
+```
+
+2. **JavaScript:** validar antes de upload:
+
+```javascript
+if (window.validateUpload) {
+  const r = validateUpload(file, 'FOTO_SALIDA'); // ajustar tipo
+  if (!r.valid) { showUploadError(r.error); return; }
+}
+if (window.validateMagicBytes) {
+  const mb = await validateMagicBytes(file);
+  if (!mb.safe) { showUploadError(mb.error); return; }
+}
+const { error } = await sb.storage.from('mi-bucket').upload(path, file, { upsert: true });
+```
+
+3. **CSP:** si el bucket es público (getPublicUrl), añadir `https://*.supabase.co` a `img-src` en `_headers` (ya está).
+
+---
+
+## 19. MANTENIMIENTO DE ESTE ARCHIVO
+
+**Regla:** Cada vez que se implemente un patrón nuevo que deba repetirse, documentarlo aquí ANTES de hacer commit.
+
+Plantilla rápida para añadir una sección nueva:
+
+```markdown
+## XX. NOMBRE DEL PATRÓN
+
+Descripción breve de cuándo usarlo.
+
+### Implementación
+
+\`\`\`html/js/sql
+código de referencia
+\`\`\`
+
+### Notas
+- Qué no hacer
+- Casos edge
+```
+
+**Cuándo actualizar:**
+- Al añadir un nuevo helper de seguridad (escH, csvCell, etc.)
+- Al implementar nueva integración (pago, notificación, analytics)
+- Al descubrir un bug de seguridad y su fix
+- Al cambiar un patrón existente por una versión mejorada
+- Al crear un nuevo tipo de página (flujo, landing, app page)
 ```
