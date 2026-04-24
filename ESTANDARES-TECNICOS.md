@@ -394,6 +394,17 @@ color: #334155;   /* 2.0:1  — FALLA */
 <link rel="preconnect" href="https://unpkg.com">
 ```
 
+### 7a-2. Preconnect para páginas APP (internas)
+
+```html
+<!-- Toda página app/ DEBE tener estas 3 líneas antes de cargar CDNs: -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+<!-- Si también usa unpkg (inventario, mensajero, taller): -->
+<link rel="preconnect" href="https://unpkg.com">
+```
+
 ### 7b. Scripts duplicados — PROHIBIDO
 
 ```html
