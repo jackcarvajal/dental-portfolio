@@ -226,6 +226,18 @@
 
 ---
 
+## ✅ COMPLETADO sesión 2026-04-24 (round 6 — auditoría de app pages + accesibilidad + validaciones)
+
+| Qué | Dónde |
+|-----|-------|
+| **Security** — `webhook-handler`: falla hard si `WOMPI_INTEGRITY_SECRET` no configurado (antes lo saltaba) | `supabase/functions/webhook-handler/index.ts` |
+| **XSS fix** — `panel-interno-operaciones.html`: `l.whatsapp` (leads) en innerHTML sin escH; `stl_url` sin validar https; `cover_image` sin escH en img src | `app/panel-interno-operaciones.html` |
+| **XSS fix** — `gestionar-casos.html`: `cover_image` sin `startsWith('https://')` ni escH | `app/gestionar-casos.html` |
+| **a11y** — aria-label añadido a botones ux-floaters (scroll-top, theme-toggle, translate) en 3 páginas flujo | flujo-diseno, flujo-fresado, flujo-impresion |
+| **Audit limpio** — eval(), open redirect, console.log sensible, target=_blank sin noopener, alt faltantes, 50/50 compliance: 0 issues | todas las páginas |
+| **Audit limpio** — sitemap.xml: todos los URLs apuntan a páginas existentes; articles.js: 6 artículos completos sin campos faltantes | ✓ |
+| **Audit limpio** — manifest.json válido, sw.js PRECACHE sin broken links, Edge Functions send-push/verify-price/wompi-signature CORS correcto | ✓ |
+
 ## ✅ COMPLETADO sesión 2026-04-24 (round 5 — GA4 fix completo + cache-busting + auditoría final)
 
 | Qué | Dónde |
