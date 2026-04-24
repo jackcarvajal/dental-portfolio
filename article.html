@@ -349,7 +349,7 @@ function buildSchema(art) {
         'dateModified': art.fecha,
         'author': {'@type':'Person','name':'Alejandro Carvajal','jobTitle':'Experto CAD/CAM Dental'},
         'publisher': {'@type':'Organization','name':'PRODIGY Lab Dental','url':'https://prodigylabdental.com'},
-        'mainEntityOfPage': `https://prodigylabdental.com/article.html?id=${art.id}`,
+        'mainEntityOfPage': `https://prodigylabdental.com/article?id=${art.id}`,
         'keywords': art.chip + ', CAD/CAM dental, odontología digital, laboratorio dental Colombia'
       },
       ...(art.faq && art.faq.length ? [{
@@ -377,7 +377,7 @@ function copiarLink() {
   const art = getArticle(id);
   if (!art || art.proximas) { showNotFound(); return; }
 
-  const url = `https://prodigylabdental.com/article.html?id=${id}`;
+  const url = `https://prodigylabdental.com/article?id=${id}`;
   const canonicalUrl = url;
 
   /* Meta tags */

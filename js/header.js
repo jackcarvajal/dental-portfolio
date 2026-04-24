@@ -394,22 +394,22 @@
               'SERVICIOS <i class="fas fa-chevron-down pnav2-dd-arrow"></i>' +
             '</button>' +
             '<div class="pnav2-dd-menu">' +
-              '<a href="/diseno-cad.html">' +
+              '<a href="/diseno-cad">' +
                 '<i class="fas fa-drafting-compass"></i>' +
                 '<span>DISEÑO CAD<span class="dd-sub">Exocad · 3Shape · Archivo STL</span></span>' +
               '</a>' +
-              '<a href="/fresado-cam.html">' +
+              '<a href="/fresado-cam">' +
                 '<i class="fas fa-cog"></i>' +
                 '<span>FRESADO & IMPRESIÓN<span class="dd-sub">Zirconio · Disilicato · Resina</span></span>' +
               '</a>' +
-              '<a href="/escaner-domicilio.html">' +
+              '<a href="/escaner-domicilio">' +
                 '<i class="fas fa-mobile-alt"></i>' +
                 '<span>ESCÁNER A DOMICILIO<span class="dd-sub">Norte Bogotá · 2 h hábiles</span></span>' +
               '</a>' +
             '</div>' +
           '</div>' +
-          '<a href="/portafolio.html"' + ac('/portafolio.html') + '>PORTAFOLIO</a>' +
-          '<a href="/envia-tu-scanner.html"' + ac('/envia-tu-scanner.html') + '>ENVÍA TU ESCÁNER</a>' +
+          '<a href="/portafolio"' + ac('/portafolio') + '>PORTAFOLIO</a>' +
+          '<a href="/envia-tu-scanner"' + ac('/envia-tu-scanner') + '>ENVÍA TU ESCÁNER</a>' +
         '</div>' +
 
         /* Logo centrado */
@@ -420,14 +420,14 @@
 
         /* Derecha */
         '<div class="pnav2-right">' +
-          '<a href="/journal.html"' + ac('/journal.html') + '>BLOG</a>' +
-          '<a href="/seguimiento-caso.html"' + ac('/seguimiento-caso.html') + '>SIGUE TU CASO</a>' +
+          '<a href="/journal"' + ac('/journal') + '>BLOG</a>' +
+          '<a href="/seguimiento-caso"' + ac('/seguimiento-caso') + '>SIGUE TU CASO</a>' +
           '<div class="pnav2-dd" id="pnav2-dd-sop">' +
             '<button class="pnav2-dd-btn" aria-haspopup="true" aria-expanded="false">' +
               'SOPORTE <i class="fas fa-chevron-down pnav2-dd-arrow"></i>' +
             '</button>' +
             '<div class="pnav2-dd-menu r">' +
-              '<a href="/soporte.html">' +
+              '<a href="/soporte">' +
                 '<i class="fas fa-headset"></i>' +
                 '<span>Centro de Soporte<span class="dd-sub">FAQs · guías · materiales</span></span>' +
               '</a>' +
@@ -440,17 +440,17 @@
           '<button class="pnav2-ia-btn" id="pnav2-ia-btn" onclick="_phdrToggleIA()" aria-label="Asistente IA">' +
             '<i class="fas fa-robot"></i>' +
           '</button>' +
-          '<a href="/nosotros.html"' + ac('/nosotros.html') + '>NOSOTROS</a>' +
+          '<a href="/nosotros"' + ac('/nosotros') + '>NOSOTROS</a>' +
           '<div class="pnav2-ped-wrap" id="pnav2-ped-wrap">' +
             '<button class="pnav2-ped-btn" onmouseenter="_phdrPedHover(true)" onmouseleave="_phdrPedHover(false)">' +
               'HAZ TU PEDIDO <i class="fas fa-chevron-down" style="font-size:9px;margin-left:4px;transition:transform .2s;" id="pnav2-ped-arrow"></i>' +
             '</button>' +
             '<div class="pnav2-ped-drop" id="pnav2-ped-drop">' +
-              '<a href="/diseno-cad.html" class="pnav2-ped-card">' +
+              '<a href="/diseno-cad" class="pnav2-ped-card">' +
                 '<i class="fas fa-drafting-compass" style="color:#00d2ff;font-size:1.2rem;"></i>' +
                 '<div><strong>Diseño CAD</strong><span>Exocad · 3Shape · archivo STL</span></div>' +
               '</a>' +
-              '<a href="/fresado-cam.html" class="pnav2-ped-card">' +
+              '<a href="/fresado-cam" class="pnav2-ped-card">' +
                 '<i class="fas fa-cog" style="color:#D4AF37;font-size:1.2rem;"></i>' +
                 '<div><strong>Fabricación CAM</strong><span>Zirconia · Disilicato · PMMA</span></div>' +
               '</a>' +
@@ -458,7 +458,7 @@
                 '<i class="fas fa-layer-group" style="color:#D946A6;font-size:1.2rem;"></i>' +
                 '<div><strong>Flujo Lab Full</strong><span>Modelo → diseño → acabado final</span></div>' +
               '</a>' +
-              '<a href="/escaner-domicilio.html" class="pnav2-ped-card">' +
+              '<a href="/escaner-domicilio" class="pnav2-ped-card">' +
                 '<i class="fas fa-mobile-alt" style="color:#00FF41;font-size:1.2rem;"></i>' +
                 '<div><strong>Escáner a Domicilio</strong><span>Norte Bogotá · 2h hábiles</span></div>' +
               '</a>' +
@@ -471,15 +471,15 @@
 
     /* MOBILE NAV */
     '<div class="pnav2-mob" id="pnav2-mob">' +
-      '<a href="/diseno-cad.html"><i class="fas fa-drafting-compass" style="margin-right:8px"></i>DISEÑO CAD</a>' +
-      '<a href="/fresado-cam.html"><i class="fas fa-cog" style="margin-right:8px"></i>FRESADO & IMPRESIÓN</a>' +
-      '<a href="/escaner-domicilio.html"><i class="fas fa-mobile-alt" style="margin-right:8px"></i>ESCÁNER A DOMICILIO</a>' +
-      '<a href="/portafolio.html">PORTAFOLIO</a>' +
-      '<a href="/envia-tu-scanner.html">ENVÍA TU ESCÁNER</a>' +
-      '<a href="/nosotros.html">NOSOTROS</a>' +
-      '<a href="/journal.html">BLOG</a>' +
-      '<a href="/seguimiento-caso.html">SIGUE TU CASO</a>' +
-      '<a href="/soporte.html">SOPORTE</a>' +
+      '<a href="/diseno-cad"><i class="fas fa-drafting-compass" style="margin-right:8px"></i>DISEÑO CAD</a>' +
+      '<a href="/fresado-cam"><i class="fas fa-cog" style="margin-right:8px"></i>FRESADO & IMPRESIÓN</a>' +
+      '<a href="/escaner-domicilio"><i class="fas fa-mobile-alt" style="margin-right:8px"></i>ESCÁNER A DOMICILIO</a>' +
+      '<a href="/portafolio">PORTAFOLIO</a>' +
+      '<a href="/envia-tu-scanner">ENVÍA TU ESCÁNER</a>' +
+      '<a href="/nosotros">NOSOTROS</a>' +
+      '<a href="/journal">BLOG</a>' +
+      '<a href="/seguimiento-caso">SIGUE TU CASO</a>' +
+      '<a href="/soporte">SOPORTE</a>' +
       '<a href="javascript:void(0)" onclick="_phdrToggleIA();document.getElementById(\'pnav2-mob\').classList.remove(\'open\');document.getElementById(\'pnav2-ham-ico\').className=\'fas fa-bars\';document.body.style.overflow=\'\';" style="color:#00FF41;">' +
         '<i class="fas fa-robot" style="margin-right:8px"></i>HABLAR CON IA' +
       '</a>' +
@@ -496,12 +496,12 @@
       '<div id="pcta-pedido">' +
         '<div id="pcta-label" style="display:none;">¿Qué necesitas?</div>' +
         '<div id="pcta-menu">' +
-          '<a href="/diseno-cad.html" class="pcta-card pcta-card-cad">' +
+          '<a href="/diseno-cad" class="pcta-card pcta-card-cad">' +
             '<i class="fas fa-drafting-compass"></i>' +
             '<span class="pcta-card-title">Diseño CAD</span>' +
             '<span class="pcta-card-sub">Exocad · STL</span>' +
           '</a>' +
-          '<a href="/fresado-cam.html" class="pcta-card pcta-card-cam">' +
+          '<a href="/fresado-cam" class="pcta-card pcta-card-cam">' +
             '<i class="fas fa-cog"></i>' +
             '<span class="pcta-card-title">Fabricación CAM</span>' +
             '<span class="pcta-card-sub">Zirconia · PMMA</span>' +
@@ -511,7 +511,7 @@
             '<span class="pcta-card-title">Flujo Lab Full</span>' +
             '<span class="pcta-card-sub">Completo → entrega</span>' +
           '</a>' +
-          '<a href="/escaner-domicilio.html" class="pcta-card pcta-card-scan">' +
+          '<a href="/escaner-domicilio" class="pcta-card pcta-card-scan">' +
             '<i class="fas fa-mobile-alt"></i>' +
             '<span class="pcta-card-title">Escáner</span>' +
             '<span class="pcta-card-sub">Norte Bogotá</span>' +
