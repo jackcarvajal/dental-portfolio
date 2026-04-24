@@ -706,12 +706,12 @@ async function cargarMovimientos() {
     tbody.innerHTML = data.map(m => `
         <tr>
             <td>${new Date(m.created_at).toLocaleString('es-CO',{dateStyle:'short',timeStyle:'short'})}</td>
-            <td>${m.inventario_items?.nombre || '-'}</td>
-            <td><span class="badge badge-${m.tipo.toLowerCase()}">${m.tipo}</span></td>
-            <td>${m.cantidad} ${m.inventario_items?.unidad_medida || ''}</td>
-            <td>${m.costo_unitario ? '$' + m.costo_unitario.toLocaleString('es-CO') : '-'}</td>
-            <td>${m.pedidos?.codigo || '-'}</td>
-            <td>${m.notas || '-'}</td>
+            <td>${escH(m.inventario_items?.nombre || '-')}</td>
+            <td><span class="badge badge-${escH(m.tipo.toLowerCase())}">${escH(m.tipo)}</span></td>
+            <td>${Number(m.cantidad)} ${escH(m.inventario_items?.unidad_medida || '')}</td>
+            <td>${m.costo_unitario ? '$' + Number(m.costo_unitario).toLocaleString('es-CO') : '-'}</td>
+            <td>${escH(m.pedidos?.codigo || '-')}</td>
+            <td>${escH(m.notas || '-')}</td>
         </tr>`).join('');
 }
 
@@ -770,11 +770,11 @@ async function cargarRotacion() {
         const esRapido = it.rotacion > mediana * 1.5;
         return `
         <tr>
-            <td>${it.nombre}</td>
-            <td>${it.categoria}</td>
-            <td>${it.entradas}</td>
-            <td>${it.salidas}</td>
-            <td>${it.rotacion}x</td>
+            <td>${escH(it.nombre)}</td>
+            <td>${escH(it.categoria)}</td>
+            <td>${Number(it.entradas)}</td>
+            <td>${Number(it.salidas)}</td>
+            <td>${Number(it.rotacion)}x</td>
             <td class="${esLento ? 'kpi-slow' : esRapido ? 'kpi-fast' : ''}">
                 ${esLento ? 'LENTO — No pedir aún' : esRapido ? 'ALTA ROTACION' : 'Normal'}
             </td>
