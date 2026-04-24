@@ -135,11 +135,11 @@
       '<div class="pfoot-col">' +
         '<h4>Manufactura (Colombia)</h4>' +
         '<ul>' +
-          '<li><a href="fresado-cam.html">Fresado CAM — Servicios</a></li>' +
+          '<li><a href="fresado-cam">Fresado CAM — Servicios</a></li>' +
           '<li><a href="flujo-fresado.html">Pedir Fresado</a></li>' +
           '<li><a href="flujo-impresion.html">Impresión 3D Dental</a></li>' +
-          '<li><a href="catalogo.html">Catálogo de Materiales</a></li>' +
-          '<li><a href="escaner-domicilio.html">Escáner Móvil a Domicilio</a></li>' +
+          '<li><a href="catalogo">Catálogo de Materiales</a></li>' +
+          '<li><a href="escaner-domicilio">Escáner Móvil a Domicilio</a></li>' +
         '</ul>' +
       '</div>' +
 
@@ -147,11 +147,11 @@
       '<div class="pfoot-col">' +
         '<h4>Ecosistema Digital</h4>' +
         '<ul>' +
-          '<li><a href="diseno-cad.html">Diseño CAD — Servicios</a></li>' +
+          '<li><a href="diseno-cad">Diseño CAD — Servicios</a></li>' +
           '<li><a href="flujo-diseno.html">Pedir Diseño CAD</a></li>' +
-          '<li><a href="envia-tu-scanner.html">Envía tu Escáner</a></li>' +
-          '<li><a href="journal.html">PRODIGY Journal</a></li>' +
-          '<li><a href="seguimiento-caso.html">Seguimiento en Vivo</a></li>' +
+          '<li><a href="envia-tu-scanner">Envía tu Escáner</a></li>' +
+          '<li><a href="journal">PRODIGY Journal</a></li>' +
+          '<li><a href="seguimiento-caso">Seguimiento en Vivo</a></li>' +
         '</ul>' +
       '</div>' +
 
@@ -159,11 +159,11 @@
       '<div class="pfoot-col">' +
         '<h4>Empresa</h4>' +
         '<ul>' +
-          '<li><a href="nosotros.html">Nosotros</a></li>' +
-          '<li><a href="soporte.html">Soporte Técnico</a></li>' +
-          '<li><a href="nosotros.html#contacto">Contacto</a></li>' +
-          '<li><a href="instalar-app.html">Instalar App</a></li>' +
-          '<li><a href="terminos-y-legal.html">Términos y Privacidad</a></li>' +
+          '<li><a href="nosotros">Nosotros</a></li>' +
+          '<li><a href="soporte">Soporte Técnico</a></li>' +
+          '<li><a href="nosotros#contacto">Contacto</a></li>' +
+          '<li><a href="instalar-app">Instalar App</a></li>' +
+          '<li><a href="terminos-y-legal">Términos y Privacidad</a></li>' +
         '</ul>' +
       '</div>' +
 
@@ -181,7 +181,7 @@
 
     '<div class="pfoot-copy">' +
       '<p>© 2026 PRODIGY Digital Dentistry · Bogotá, Colombia · Todos los derechos reservados · ' +
-        '<a href="terminos-y-legal.html">Términos</a> · ' +
+        '<a href="terminos-y-legal">Términos</a> · ' +
         '<a href="terminos-y-legal.html#privacidad">Privacidad</a>' +
       '</p>' +
     '</div>';

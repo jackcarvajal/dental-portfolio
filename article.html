@@ -195,7 +195,7 @@
   <div class="code">404</div>
   <h2 style="margin-bottom:10px;">Artículo no encontrado</h2>
   <p style="color:var(--muted);margin-bottom:24px;">Este artículo puede haber sido movido o aún no existe.</p>
-  <a href="journal.html" style="color:var(--magenta);text-decoration:none;font-weight:700;">← Ver todos los artículos</a>
+  <a href="journal" style="color:var(--magenta);text-decoration:none;font-weight:700;">← Ver todos los artículos</a>
 </div>
 
 <!-- ARTICLE CONTENT -->
@@ -205,7 +205,7 @@
     <nav class="breadcrumb" aria-label="breadcrumb">
       <a href="index.html">Inicio</a>
       <span>›</span>
-      <a href="journal.html">Insights</a>
+      <a href="journal">Insights</a>
       <span>›</span>
       <span id="bc-title">Artículo</span>
     </nav>
@@ -328,7 +328,7 @@ function renderRefs(refs) {
 
 function renderRecientes(recientes) {
   return recientes.map(a => `
-    <a class="rec-item" href="article.html?id=${a.id}">
+    <a class="rec-item" href="article?id=${a.id}">
       <div class="rec-thumb ${a.grad}">${a.emoji}</div>
       <div class="rec-body">
         <h4>${a.titulo}</h4>
@@ -445,7 +445,7 @@ function showNotFound() {
 </script>
 <script src="js/footer.js?v=20260424"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
-<noscript><p style="text-align:center;padding:2rem">Este artículo requiere JavaScript. <a href="/journal.html">Ver todos los artículos</a> o <a href="https://wa.me/573212816716" rel="noopener noreferrer">contáctanos por WhatsApp</a>.</p></noscript>
+<noscript><p style="text-align:center;padding:2rem">Este artículo requiere JavaScript. <a href="/journal">Ver todos los artículos</a> o <a href="https://wa.me/573212816716" rel="noopener noreferrer">contáctanos por WhatsApp</a>.</p></noscript>
 <div class="ux-floaters">
     <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'});" title="Volver arriba" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></button>
     <button class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro" aria-label="Cambiar modo claro/oscuro">🌙</button>

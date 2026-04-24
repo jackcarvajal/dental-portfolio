@@ -20,6 +20,33 @@
 /*.log                          /404.html  404
 
 # ─────────────────────────────────────────────────────────────
+# CLEAN URLs — /nosotros sirve nosotros.html sin .html en la URL
+# (200 = rewrite interno; el browser ve la URL limpia)
+# Para el redirect inverso .html → /clean, configura
+# Cloudflare Redirect Rules en el dashboard (los archivos
+# estáticos tienen precedencia sobre _redirects).
+# ─────────────────────────────────────────────────────────────
+/nosotros               /nosotros.html              200
+/soporte                /soporte.html               200
+/catalogo               /catalogo.html              200
+/portafolio             /portafolio.html            200
+/calculadora            /calculadora.html           200
+/journal                /journal.html               200
+/article                /article.html               200
+/diseno-cad             /diseno-cad.html            200
+/fresado-cad            /fresado-cam.html           200
+/fresado-cam            /fresado-cam.html           200
+/envia-tu-scanner       /envia-tu-scanner.html      200
+/escaner-domicilio      /escaner-domicilio.html     200
+/instalar-app           /instalar-app.html          200
+/terminos-y-legal       /terminos-y-legal.html      200
+/terminos               /terminos-y-legal.html      200
+/privacidad             /terminos-y-legal.html      200
+/seguimiento-caso       /seguimiento-caso.html      200
+/seguimiento            /seguimiento-caso.html      200
+/patient                /patient.html               200
+
+# ─────────────────────────────────────────────────────────────
 # PÁGINAS INTERNAS / LEGACY — redirigir a login o 404
 # ─────────────────────────────────────────────────────────────
 /admin-panel.html               /app/login.html  302
