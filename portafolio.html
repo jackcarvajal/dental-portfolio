@@ -650,7 +650,7 @@ function renderPage(page) {
     const slice = filteredCases.slice(start, start + PAGE_SIZE);
 
     grid.innerHTML = slice.map((c, i) => `
-        <a class="case-card" href="patient.html?id=${encodeURIComponent(c.id)}&from=catalogo" style="transition-delay:${Math.min(i * 80, 400)}ms">
+        <a class="case-card" href="patient?id=${encodeURIComponent(c.id)}&from=catalogo" style="transition-delay:${Math.min(i * 80, 400)}ms">
             <div class="card-img">
                 <img src="${escH(c.coverImage)}" alt="${escH(c.name)}"
                      loading="${i < 6 ? 'eager' : 'lazy'}"
