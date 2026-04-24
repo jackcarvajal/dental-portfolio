@@ -224,7 +224,7 @@
     <a href="../flujo-diseno.html" class="nav-item"><i class="fas fa-pen-nib"></i> Diseño CAD</a>
     <a href="../flujo-fresado.html" class="nav-item"><i class="fas fa-gear"></i> Fresado</a>
     <a href="../flujo-impresion.html" class="nav-item"><i class="fas fa-print"></i> Impresión 3D</a>
-    <a href="../seguimiento-caso.html" class="nav-item"><i class="fas fa-search"></i> Seguimiento</a>
+    <a href="../seguimiento-caso" class="nav-item"><i class="fas fa-search"></i> Seguimiento</a>
     <div class="sidebar-footer">
         <a href="#" class="nav-item" id="btn-logout"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
     </div>
@@ -629,7 +629,7 @@ function renderTablas(pedidos) {
                     <td style="font-size:.75rem;">${escH(p.tipo_trabajo || p.material || '—')}</td>
                     <td>${renderProgress(p)}</td>
                     <td>
-                        <a href="../seguimiento-caso.html?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold" style="margin-right:4px;">Ver</a>
+                        <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold" style="margin-right:4px;">Ver</a>
                         ${puedeSTL ? `<a href="${escH(p.stl_url)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</a>` : ''}
                     </td>
                 </tr>`;
@@ -655,7 +655,7 @@ function renderTablas(pedidos) {
                 <td style="color:#00FF41;font-weight:700;">${fmtCOP(p.precio_total)}</td>
                 <td>${estadoBadge(p.estado)}</td>
                 <td style="display:flex;gap:5px;flex-wrap:wrap;">
-                    <a href="../seguimiento-caso.html?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold">Ver</a>
+                    <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold">Ver</a>
                     ${puedeSTL ? `<a href="${escH(p.stl_url)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</a>` : ''}
                     ${esEntregado && !yaCalif ? `<button onclick="abrirNPS('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#D4AF37;border-color:rgba(212,175,55,0.3);">⭐ Calificar</button>` : ''}
                     ${yaCalif ? `<span style="font-size:.7rem;color:#D4AF37;">${'★'.repeat(p.calificacion)}</span>` : ''}

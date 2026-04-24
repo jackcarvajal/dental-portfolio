@@ -17,7 +17,7 @@ self.addEventListener('install', (event) => {
     self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache =>
-            cache.addAll(['/seguimiento-caso.html'])
+            cache.addAll(['/seguimiento-caso'])
         ).catch(() => {})
     );
 });
@@ -74,8 +74,8 @@ self.addEventListener('notificationclick', (event) => {
         : tag === 'nuevo-despacho'
             ? '/app/mensajero.html'
             : data.caseId
-                ? `/seguimiento-caso.html?pedido=${data.caseId}`
-                : '/seguimiento-caso.html';
+                ? `/seguimiento-caso?pedido=${data.caseId}`
+                : '/seguimiento-caso';
 
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then(winClients => {

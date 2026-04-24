@@ -139,7 +139,7 @@
             No se pudo enviar la notificación automática. Te contactaremos en breve.
         </div>
 
-        <a id="btn-track" href="/seguimiento-caso.html" class="btn-seguimiento">
+        <a id="btn-track" href="/seguimiento-caso" class="btn-seguimiento">
             Ver Seguimiento del Caso
         </a>
         <a href="/" class="btn-home">Volver al inicio</a>
@@ -165,7 +165,7 @@
             badge.textContent = 'Caso #' + caseId;
             badge.style.display = 'inline-block';
             document.getElementById('btn-track').href =
-                `/seguimiento-caso.html?pedido=${encodeURIComponent(caseId)}`;
+                `/seguimiento-caso?pedido=${encodeURIComponent(caseId)}`;
         }
 
         if (!caseId) return;
