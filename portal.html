@@ -2402,6 +2402,8 @@
             });
         });
         
+        function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
         // =============================================
         // FUNCIÓN PARA CREAR TARJETA DE PACIENTE
         // =============================================
@@ -2418,16 +2420,16 @@
             // Construir HTML de la tarjeta
             card.innerHTML = `
                 <div class="image-wrapper">
-                    <img src="${patient.coverImage}" 
-                         alt="${patient.name}" 
+                    <img src="${escH(patient.coverImage)}"
+                         alt="${escH(patient.name)}"
                          loading="${loadingStrategy}"
-                         onerror="handleImageError(this, '${patient.id}')">
+                         onerror="handleImageError(this, '${escH(patient.id)}')">
                     <div class="watermark">© PRODIGY</div>
                 </div>
                 <div class="card-info">
-                    <h3>${patient.name}</h3>
-                    <p>${patient.description || 'Caso clínico de alta complejidad'}</p>
-                    <span class="card-date">${patient.date || 'Fecha no especificada'}</span>
+                    <h3>${escH(patient.name)}</h3>
+                    <p>${escH(patient.description || 'Caso clínico de alta complejidad')}</p>
+                    <span class="card-date">${escH(patient.date || 'Fecha no especificada')}</span>
                 </div>
             `;
             

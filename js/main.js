@@ -5,6 +5,8 @@
 (function() {
     'use strict';
 
+    function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
     // ===== SEGURIDAD: noopener noreferrer en todos los enlaces externos =====
     function initExternalLinkSecurity() {
         document.querySelectorAll('a[target="_blank"]').forEach(function(a) {
@@ -100,16 +102,16 @@
 
         card.innerHTML = `
             <div class="image-wrapper">
-                <img src="${patient.coverImage}" 
-                     alt="${patient.name}" 
+                <img src="${escH(patient.coverImage)}"
+                     alt="${escH(patient.name)}"
                      loading="${loadingStrategy}"
                      onerror="handleImageError(this)">
                 <div class="watermark">© PRODIGY</div>
             </div>
             <div class="card-info">
-                <h3>${patient.name}</h3>
-                <p>${patient.description || 'Caso clínico de alta complejidad'}</p>
-                <span class="card-date">${patient.date || 'Fecha no especificada'}</span>
+                <h3>${escH(patient.name)}</h3>
+                <p>${escH(patient.description || 'Caso clínico de alta complejidad')}</p>
+                <span class="card-date">${escH(patient.date || 'Fecha no especificada')}</span>
             </div>
         `;
 
