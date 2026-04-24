@@ -117,7 +117,7 @@
 
         // Eventos de navegación
         const navigateToPatient = () => {
-            window.location.href = `patient.html?id=${patient.id}`;
+            window.location.href = `patient?id=${patient.id}`;
         };
 
         card.addEventListener('click', navigateToPatient);

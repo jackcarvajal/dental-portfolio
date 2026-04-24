@@ -171,14 +171,14 @@
               '<i class="fas fa-cog"></i>' +
               '<span>CENTRO FRESADO E IMPRESIÓN<span class="dd-sub">Zirconio · Disilicato · Resina</span></span>' +
             '</a>' +
-            '<a href="escaner-domicilio.html" role="menuitem">' +
+            '<a href="escaner-domicilio" role="menuitem">' +
               '<i class="fas fa-mobile-alt"></i>' +
               '<span>ESCÁNER MÓVIL<span class="dd-sub">Norte Bogotá · A domicilio</span></span>' +
             '</a>' +
           '</div>' +
         '</div>' +
-        '<a href="portafolio.html">PORTAFOLIO</a>' +
-        '<a href="envia-tu-scanner.html">ENVÍA TU ESCÁNER</a>' +
+        '<a href="portafolio">PORTAFOLIO</a>' +
+        '<a href="envia-tu-scanner">ENVÍA TU ESCÁNER</a>' +
       '</div>' +
 
       /* ── CENTRO — logo ── */
@@ -206,9 +206,9 @@
     '<div class="pnav-ov" id="pnav-ov">' +
       '<a href="flujo-diseno.html"><i class="fas fa-pen-ruler" style="margin-right:6px"></i> DISEÑOS CAD</a>' +
       '<a href="flujo-fresado.html"><i class="fas fa-cog" style="margin-right:6px"></i> CENTRO FRESADO E IMPRESIÓN</a>' +
-      '<a href="escaner-domicilio.html"><i class="fas fa-mobile-alt" style="margin-right:6px"></i> ESCÁNER MÓVIL</a>' +
-      '<a href="portafolio.html">PORTAFOLIO</a>' +
-      '<a href="envia-tu-scanner.html">ENVÍA TU ESCÁNER</a>' +
+      '<a href="escaner-domicilio"><i class="fas fa-mobile-alt" style="margin-right:6px"></i> ESCÁNER MÓVIL</a>' +
+      '<a href="portafolio">PORTAFOLIO</a>' +
+      '<a href="envia-tu-scanner">ENVÍA TU ESCÁNER</a>' +
       '<a href="journal">BLOG CIENTÍFICO</a>' +
       '<a href="seguimiento-caso">SIGUE TU CASO</a>' +
       '<a href="https://wa.me/573212816716" class="ov-wa" target="_blank" rel="noopener noreferrer">' +
