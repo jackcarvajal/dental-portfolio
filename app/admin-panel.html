@@ -834,10 +834,10 @@ async function cargarPortafolio() {
 
         grid.innerHTML = data.map(c => `
         <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-            <img src="${c.imagen_url}" alt="${c.titulo}" style="width:100%;height:130px;object-fit:cover;">
+            <img src="${escHtml(c.imagen_url)}" alt="${escHtml(c.titulo)}" style="width:100%;height:130px;object-fit:cover;">
             <div style="padding:10px;">
-                <div style="font-weight:700;font-size:0.8rem;margin-bottom:4px;">${c.titulo}</div>
-                <div style="font-size:0.72rem;color:var(--muted);">${c.tipo} · ${c.material || ''}</div>
+                <div style="font-weight:700;font-size:0.8rem;margin-bottom:4px;">${escHtml(c.titulo)}</div>
+                <div style="font-size:0.72rem;color:var(--muted);">${escHtml(c.tipo)} · ${escHtml(c.material || '')}</div>
                 ${c.destacado ? '<span style="color:#D4AF37;font-size:0.65rem;font-weight:700;">⭐ DESTACADO</span>' : ''}
                 <div style="margin-top:8px;display:flex;gap:6px;">
                     <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')"><i class="fas fa-trash"></i></button>

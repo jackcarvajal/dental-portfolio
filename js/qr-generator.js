@@ -96,7 +96,7 @@ async function mostrarQR(containerId, pedido) {
                 </a>
             </div>`;
     } catch (e) {
-        container.innerHTML = `<span style="color:#f87171;">Error generando QR: ${e.message}</span>`;
+        container.innerHTML = `<span style="color:#f87171;">Error generando QR: ${String(e.message||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>`;
     }
 }
 
