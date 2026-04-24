@@ -1,0 +1,548 @@
+# PRODIGY — Estándares Técnicos Definitivos
+> Resultado de auditoría autónoma completa (rounds 1–13, Abr 2026).
+> Aplicar TODO esto al crear páginas nuevas o implementaciones nuevas.
+> Última actualización: 2026-04-24
+
+---
+
+## 1. CHECKLIST PÁGINA PÚBLICA NUEVA
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#D946A6">          <!-- OBLIGATORIO -->
+  <link rel="manifest" href="/manifest.json">           <!-- OBLIGATORIO -->
+  <title>Título max 60 chars — PRODIGY Lab Dental</title>
+  <meta name="description" content="...">              <!-- max 160 chars -->
+  <meta property="og:title" content="...">
+  <meta property="og:description" content="...">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://prodigylabdental.com/SLUG-LIMPIO">   <!-- sin .html -->
+  <meta property="og:image" content="https://prodigylabdental.com/assets/prodigy-preview.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://prodigylabdental.com/SLUG-LIMPIO">        <!-- sin .html -->
+
+  <!-- preconnect para CDNs que usa esta página -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <!-- si usa Google Fonts: -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- si usa Supabase: -->
+  <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <!-- si usa jsdelivr: -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <!-- GA4 Consent Mode v2 — SIEMPRE antes del script async de GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+  gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
+  gtag('js',new Date());gtag('config','G-Z8G2X7ETQ1',{anonymize_ip:true});</script>
+
+  <!-- JSON-LD estructurado (opcional pero recomendado) -->
+  <script type="application/ld+json">{ ... }</script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/global-nav.min.css">
+</head>
+<body>
+  <!-- PRIMER elemento: header compartido -->
+  <script src="js/header.js?v=20260424"></script>
+
+  <!-- CONTENIDO de la página aquí -->
+
+  <!-- noscript fallback OBLIGATORIO -->
+  <noscript><p style="text-align:center;padding:2rem;color:#94a3b8">Esta página requiere JavaScript.
+  <a href="https://wa.me/573212816716" style="color:#D946A6">Contáctanos por WhatsApp</a>.</p></noscript>
+
+  <!-- UX Floaters: scroll-top + theme + WhatsApp -->
+  <div class="ux-floaters">
+    <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+      title="Volver arriba" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></button>
+    <button class="ux-btn" id="theme-btn" onclick="toggleTheme()"
+      title="Modo claro/oscuro" aria-label="Cambiar modo claro/oscuro">🌙</button>
+    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20soporte."
+      class="ux-btn" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp"
+      style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);">
+      <i class="fab fa-whatsapp" aria-hidden="true" style="color:#25D366;"></i></a>
+  </div>
+  <script>(function(){function t(){var l=document.body.classList.toggle('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent=l?'☀️':'🌙';localStorage.setItem('theme',l?'light':'dark');}window.toggleTheme=t;if(localStorage.getItem('theme')==='light'){document.body.classList.add('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent='☀️';}window.addEventListener('scroll',function(){var s=document.getElementById('scroll-top-btn');if(s)s.classList.toggle('visible',window.scrollY>400);});})();</script>
+
+  <!-- Footer compartido — ÚLTIMO antes de </body> -->
+  <script src="js/footer.js?v=20260424"></script>
+
+  <!-- Service Worker -->
+  <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>
+```
+
+### Tareas adicionales al crear página pública
+1. **`_redirects`**: añadir `  /SLUG-LIMPIO   /pagina.html   200`
+2. **`sitemap.xml`**: añadir entrada con URL limpia y `<lastmod>YYYY-MM-DD</lastmod>`
+3. **`sw.js` PRECACHE**: añadir `'/SLUG-LIMPIO'` al array (usar clean URL, NO .html)
+4. **`js/header.js`**: añadir link de nav si la página va en el menú
+5. **`js/footer.js`**: añadir link si la página va en el footer
+6. **`robots.txt`**: si es noindex, añadir `Disallow: /SLUG-LIMPIO`
+
+---
+
+## 2. CHECKLIST PÁGINA APP (interna, autenticada)
+
+```html
+<head>
+  <meta name="robots" content="noindex, nofollow">  <!-- OBLIGATORIO -->
+  <!-- NO incluir GA4 en páginas de app -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="../js/auth-guard.js"></script>        <!-- DESPUÉS de supabase.js -->
+</head>
+<body style="visibility:hidden">                     <!-- ocultar hasta auth -->
+<script>ProdigyAuth.require('ROLE','/app/login.html?redirect='+encodeURIComponent(location.pathname));</script>
+```
+
+- NO incluir `header.js` ni `footer.js` — las páginas app tienen su propio layout
+- NO incluir GA4
+- SÍ incluir `<meta name="viewport">` y `<meta charset="UTF-8">`
+- SÍ incluir `<html lang="es">`
+
+---
+
+## 3. SEGURIDAD — REGLAS ABSOLUTAS
+
+### 3a. XSS — Escapado de datos en innerHTML
+
+**SIEMPRE** escapar antes de insertar en `innerHTML`:
+
+```javascript
+// Función estándar — copiar en cada archivo que la necesite
+function escH(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// USO:
+el.innerHTML = `<span>${escH(datoDeSuabase)}</span>`;   // ✅ CORRECTO
+el.innerHTML = `<span>${datoDeSuabase}</span>`;           // ❌ INCORRECTO
+```
+
+**Alternativa segura cuando solo hay texto:** usar `el.textContent = valor` (no interpreta HTML).
+
+### 3b. URLs en atributos href/src/iframe.src
+
+```javascript
+// href con URL externa del usuario o BD:
+const safe = url.startsWith('https://') ? url : null;
+if (safe) el.href = escH(safe);
+
+// iframe.src con URL externa:
+try {
+  const u = new URL(link);
+  if (u.protocol !== 'https:') throw new Error();  // ← CRÍTICO: new URL() acepta javascript:
+  iframe.src = link;
+} catch { toast('URL inválida', 'error'); return; }
+
+// YouTube iframe (solo en articles.js):
+const ytId = /^[\w-]{5,20}$/.test(b.youtube||'') ? b.youtube : '';
+```
+
+### 3c. Uploads de archivos — OBLIGATORIO
+
+```javascript
+// Siempre antes de sb.storage.from().upload():
+if (window.validateUpload) {
+  const r = validateUpload(file, 'CAD'); // o 'COMPROBANTE' o 'FOTO_SALIDA'
+  if (!r.valid) { showUploadError(r.error); return; }
+}
+if (window.validateMagicBytes) {
+  const mb = await validateMagicBytes(file);
+  if (!mb.safe) { showUploadError(mb.error); return; }
+}
+```
+
+Tipos disponibles en `upload-guard.js`: `'CAD'` (STL/OBJ/PLY), `'COMPROBANTE'` (JPG/PNG/PDF), `'FOTO_SALIDA'` (imágenes).
+
+### 3d. CSV exports — Prevenir formula injection
+
+```javascript
+function csvCell(v) {
+  const s = String(v ?? '');
+  const safe = /^[=+\-@]/.test(s) ? "'" + s : s;  // prefijo apostrophe si empieza con =+-@
+  return /[",\n\r]/.test(safe) ? '"' + safe.replace(/"/g,'""') + '"' : safe;
+}
+// USO: rows.map(r => r.map(csvCell).join(','))
+```
+
+### 3e. Edge Functions (Supabase/Deno)
+
+```typescript
+// CORS — NUNCA usar "*", siempre el dominio explícito:
+const CORS = {
+  "Access-Control-Allow-Origin": "https://prodigylabdental.com",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+// Secrets — fallar HARD si no están configurados:
+const SECRET = Deno.env.get("MI_SECRET");
+if (!SECRET) return new Response("Secret no configurado", { status: 500 });
+```
+
+### 3f. RLS en SQL (Supabase)
+
+```sql
+-- NUNCA esto (anon puede leer):
+CREATE POLICY "admin_all" ON mi_tabla FOR ALL USING (true);
+
+-- SIEMPRE especificar TO:
+CREATE POLICY "admin_all" ON mi_tabla FOR ALL TO authenticated USING (true);
+
+-- INSERT público (formularios de captación):
+CREATE POLICY "public_insert" ON mi_tabla
+  FOR INSERT TO anon, authenticated WITH CHECK (true);
+```
+
+### 3g. Storage Buckets — Políticas obligatorias
+
+Cada bucket necesita 3 políticas SQL:
+
+```sql
+-- Upload: solo el dueño (authenticated)
+CREATE POLICY "upload" ON storage.objects
+  FOR INSERT TO authenticated
+  WITH CHECK (bucket_id = 'mi-bucket' AND (storage.foldername(name))[1] = auth.uid()::text);
+
+-- Lectura: pública si el bucket es público, o solo admin si privado
+CREATE POLICY "read" ON storage.objects
+  FOR SELECT TO anon, authenticated USING (bucket_id = 'mi-bucket');
+
+-- Eliminación: solo admin
+CREATE POLICY "delete" ON storage.objects
+  FOR DELETE TO authenticated
+  USING (bucket_id = 'mi-bucket' AND auth.email() IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com'));
+```
+
+---
+
+## 4. PRIVACIDAD / GDPR
+
+### 4a. GA4 Consent Mode v2 — OBLIGATORIO en toda página con GA4
+
+```html
+<!-- Este bloque COMPLETO, en este orden exacto: -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+  gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
+  gtag('js',new Date());
+  gtag('config','G-Z8G2X7ETQ1',{anonymize_ip:true});
+</script>
+```
+
+El botón "Aceptar" y "Rechazar" ya están en `footer.js` — llaman a `gtag('consent','update',...)` automáticamente.
+
+### 4b. Formularios de captación — Habeas Data Colombia
+
+```html
+<!-- Obligatorio en CUALQUIER formulario que capture datos personales: -->
+<label style="display:flex;gap:8px;align-items:flex-start;font-size:.8rem;color:#94a3b8;">
+  <input type="checkbox" required name="habeas_data">
+  <span>Autorizo el tratamiento de mis datos para gestión de pedidos.
+  Acepto recibir novedades y promociones (opcional).
+  Puedo darme de baja sin afectar seguimiento de caso.</span>
+</label>
+<!-- Marketing opcional (separado del transaccional): -->
+<label>
+  <input type="checkbox" name="acepta_marketing">
+  Acepto recibir novedades y promociones
+</label>
+```
+
+### 4c. Ley 50/50 (flujos de pago)
+
+Toda página de cotización o pedido DEBE mostrar y calcular:
+- "50% abono para inicio de labores · 50% saldo contra entrega"
+- El resumen de cotización muestra el abono automáticamente
+- El mensaje de WhatsApp incluye: Total, Abono (50%), Saldo (50%)
+
+---
+
+## 5. URLs LIMPIAS (sin .html)
+
+### 5a. Al crear página nueva
+
+1. El archivo puede llamarse `mi-pagina.html` en disco
+2. Añadir en `_redirects`:
+   ```
+   /mi-pagina   /mi-pagina.html   200
+   ```
+3. Canonical y og:url → `https://prodigylabdental.com/mi-pagina`
+4. Sitemap → `https://prodigylabdental.com/mi-pagina`
+5. Links internos → `href="mi-pagina"` (sin .html)
+6. `sw.js` PRECACHE → `'/mi-pagina'` (sin .html)
+7. robots.txt si aplica → `Disallow: /mi-pagina`
+8. En Cloudflare Dashboard → Redirect Rules: `/mi-pagina.html` → 301 → `/mi-pagina`
+
+### 5b. Links internos — regla general
+
+```html
+<!-- ✅ CORRECTO -->
+<a href="nosotros">Nosotros</a>
+<a href="/nosotros">Nosotros</a>
+
+<!-- ❌ INCORRECTO -->
+<a href="nosotros.html">Nosotros</a>
+<a href="/nosotros.html">Nosotros</a>
+
+<!-- EXCEPCIÓN: flujos internos (noindex) pueden seguir con .html: -->
+<a href="flujo-fresado.html">Pedir Fresado</a>  <!-- OK — es página de pedido autenticado -->
+<a href="app/login.html">Login</a>              <!-- OK — app pages no tienen clean URL -->
+```
+
+---
+
+## 6. ACCESIBILIDAD (WCAG AA)
+
+### 6a. Imágenes
+
+```html
+<!-- Imagen informativa: -->
+<img src="..." alt="Descripción clara del contenido">
+
+<!-- Imagen decorativa: -->
+<img src="..." alt="">
+
+<!-- Imagen de preview (JS-generated): -->
+<img class="foto-thumb" src="${url}" alt="">
+```
+
+### 6b. Botones icon-only — SIEMPRE con aria-label
+
+```html
+<button onclick="..." title="Volver arriba" aria-label="Volver arriba">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Botón cerrar modal: -->
+<button onclick="cerrar()" aria-label="Cerrar">✕</button>
+```
+
+### 6c. Selects sin label visible
+
+```html
+<!-- Dentro de innerHTML dinámico — añadir aria-label: -->
+`<select aria-label="Estado del pedido" onchange="cambiarEstado('${id}',this.value)">`
+```
+
+### 6d. Inputs — autocomplete obligatorio
+
+```html
+<input type="text"     name="nombre"   autocomplete="name">
+<input type="email"    name="email"    autocomplete="email">
+<input type="tel"      name="tel"      autocomplete="tel"        inputmode="tel">
+<input type="text"     name="clinica"  autocomplete="organization">
+<input type="text"     name="ciudad"   autocomplete="address-level2">
+<input type="password" name="pass"     autocomplete="current-password" spellcheck="false">
+<input type="password" name="newpass"  autocomplete="new-password"     spellcheck="false">
+```
+
+### 6e. WCAG contraste (textos sobre fondo oscuro)
+
+```css
+/* ✅ CORRECTO — contraste AAA (7.6:1) sobre #0d1520 */
+color: #94a3b8;
+
+/* ❌ INCORRECTO — contraste insuficiente */
+color: #64748b;   /* 3.76:1 — FALLA */
+color: #475569;   /* 2.5:1  — FALLA */
+color: #334155;   /* 2.0:1  — FALLA */
+```
+
+---
+
+## 7. PERFORMANCE
+
+### 7a. Preconnect para CDNs
+
+```html
+<!-- Google Fonts (si la página los usa): -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Supabase (si la página hace queries): -->
+<link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+
+<!-- jsDelivr (si la página carga Supabase JS): -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+<!-- cdnjs (Font Awesome — en todas): -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+<!-- unpkg (QR scanner — en inventario/mensajero/taller): -->
+<link rel="preconnect" href="https://unpkg.com">
+```
+
+### 7b. Scripts duplicados — PROHIBIDO
+
+```html
+<!-- Si la página ya cargó supabase.js para auth-guard, NO cargarlo de nuevo: -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/..."></script>
+<script src="../js/auth-guard.js"></script>
+<!-- ❌ NO repetir: <script src="...supabase.js"></script> más abajo -->
+```
+
+### 7c. Cache-busting en header.js y footer.js
+
+```html
+<!-- Siempre con versión — actualizar la fecha cuando modifiques header.js o footer.js: -->
+<script src="js/header.js?v=20260424"></script>
+<script src="js/footer.js?v=20260424"></script>
+```
+
+---
+
+## 8. SEO — Structured Data
+
+### 8a. Breadcrumb (todas las páginas con contenido)
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},
+    {"@type":"ListItem","position":2,"name":"Nombre Página","item":"https://prodigylabdental.com/SLUG-LIMPIO"}
+  ]
+}
+```
+
+### 8b. Reglas de títulos
+
+- Máximo **60 caracteres**
+- Formato: `Título Descriptivo — PRODIGY Lab Dental`
+- Incluir keyword principal al inicio
+
+### 8c. URLs absolutas en JSON-LD — SIEMPRE clean (sin .html)
+
+```json
+{ "url": "https://prodigylabdental.com/nosotros" }
+```
+
+---
+
+## 9. COLORES OFICIALES
+
+```css
+--gold-primary:  #D946A6;   /* Magenta PRODIGY — botones, acentos principales */
+--gold-hover:    #D4AF37;   /* Dorado — hover states, decoración */
+--accent-cyan:   #00d2ff;   /* Cyan — elementos digitales/tech */
+--bg-darker:     #050505;   /* Fondo principal */
+--bg-card:       #0d1525;   /* Fondo de tarjetas */
+--neon-green:    #00FF41;   /* Verde — estados activos/conectado */
+--text-muted:    #94a3b8;   /* Texto secundario — WCAG AAA ✅ */
+--text-body:     #e2e8f0;   /* Texto principal */
+```
+
+---
+
+## 10. BRAND — REGLAS ABSOLUTAS
+
+- **PRODIGY** → SIEMPRE en mayúsculas. Nunca "ProDigy", "Prodigy", "prodigy"
+- **PRODIGY Lab Dental** → nombre completo para og:site_name y JSON-LD
+- **PRODIGY Digital Dentistry** → para taglines y descripciones largas
+- Logo en CSS/código: `letter-spacing: 3px; font-weight: 900;`
+
+---
+
+## 11. CSP (_headers) — DOMINIOS APROBADOS
+
+Si necesitas cargar un recurso de un dominio nuevo, añadirlo a `_headers` en la directiva correcta:
+
+| Tipo de recurso | Directiva CSP |
+|---|---|
+| Scripts JS externos | `script-src` |
+| Iframes (YouTube, PDFs, mapas) | `frame-src` |
+| APIs fetch/XHR | `connect-src` |
+| Imágenes de CDN | `img-src` |
+| Fuentes tipográficas | `font-src` |
+| CSS externo | `style-src` |
+
+Dominios ya aprobados: cdnjs, jsdelivr, unpkg, supabase, paypal, lemonsqueezy, googletagmanager, google-analytics, youtube, openstreetmap, paddle, drive.google, docs.google.
+
+---
+
+## 12. PÁGINAS DE FLUJO (pedidos, órdenes)
+
+Las páginas `flujo-*.html` y `flujo-lab.html` son **noindex** (autenticadas):
+- NO van en sitemap
+- NO tienen clean URL en `_redirects`
+- SÍ tienen auth-guard y `<meta name="robots" content="noindex,nofollow">`
+- SÍ cargan `upload-guard.js` y `js/pagos.js`
+- SÍ tienen Ley 50/50
+
+---
+
+## 13. EDGE FUNCTIONS NUEVAS
+
+Checklist al crear una Edge Function nueva:
+
+```typescript
+// 1. CORS restringido
+const CORS = { "Access-Control-Allow-Origin": "https://prodigylabdental.com", ... };
+
+// 2. Secrets → fallar hard si no configurados
+const SECRET = Deno.env.get("MI_SECRET");
+if (!SECRET) return new Response("Secret no configurado", { status: 500 });
+
+// 3. Validar método HTTP
+if (req.method !== "POST") return json({ error: "Método no permitido" }, 405);
+
+// 4. Parsear body con try/catch
+let body; try { body = await req.json(); } catch { return json({ error: "JSON inválido" }, 400); }
+
+// 5. No concatenar strings en queries SQL — usar parámetros siempre
+```
+
+---
+
+## 14. SQL — NUEVAS TABLAS
+
+Checklist para cada tabla nueva:
+
+```sql
+-- 1. RLS activado
+ALTER TABLE mi_tabla ENABLE ROW LEVEL SECURITY;
+
+-- 2. Política de INSERT (si pública):
+CREATE POLICY "public_insert" ON mi_tabla
+  FOR INSERT TO anon, authenticated WITH CHECK (true);
+
+-- 3. Política de SELECT (NUNCA sin TO):
+CREATE POLICY "admin_read" ON mi_tabla
+  FOR ALL TO authenticated USING (true);  -- ← TO authenticated OBLIGATORIO
+
+-- 4. Índices en columnas de búsqueda frecuente
+CREATE INDEX IF NOT EXISTS idx_tabla_campo ON mi_tabla(campo);
+```
+
+---
+
+## 15. VERIFICACIÓN RÁPIDA AL TERMINAR UNA TAREA
+
+```bash
+# 1. Sin colores de bajo contraste
+grep -rn "color:#64748b\|color:#475569\|color:#334155" *.html
+
+# 2. Sin innerHTML con datos sin escapar  
+grep -n "innerHTML.*\${" archivo.html | grep -v "escH\|esc(\|escHtml"
+
+# 3. Sin target=_blank sin noopener
+grep -n 'target="_blank"' archivo.html | grep -v "noopener"
+
+# 4. JSON-LD válido
+node -e "const fs=require('fs');const c=fs.readFileSync('archivo.html','utf8');const m=c.match(/<script type=\"application\/ld\+json\">([\s\S]*?)<\/script>/g)||[];m.forEach(s=>{try{JSON.parse(s.replace(/<\/?script[^>]*>/g,''))}catch(e){console.log('INVALID JSON-LD:',e.message)}})"
+
+# 5. Sin .html en URLs absolutas (canonical, og:url, JSON-LD)
+grep "prodigylabdental.com.*\.html" archivo.html
+```
