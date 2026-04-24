@@ -234,6 +234,18 @@ sql/patch-rls-authenticated-only.sql → mensajeros/despachos/creditos_cliente: 
 
 ---
 
+## ✅ COMPLETADO sesión 2026-04-24 (round 12 — CSV injection + validaciones finales)
+
+| Qué | Dónde |
+|-----|-------|
+| **CSV Injection** — `exportarDIAN()`: campos sin quoting RFC4180 ni prevención de `=+-@` → añadida `csvCell()` | `app/admin-panel.html` |
+| **CSV Injection** — `exportarCSV()` de catálogo de precios: mismo problema | `app/admin-precios.html` |
+| **security** — `agregar-caso.html`: `drive_link` se guardaba sin validar protocolo https:// | `app/agregar-caso.html` |
+| **flujo-uploader.js** — `validateMagicBytes()` añadida antes de cada upload | `js/flujo-uploader.js` |
+| **Audit limpio** — `success.html`, `mensajero.html`, `taller.html`, `patients-data.js`, `translations.js`: sin issues | ✓ |
+| **Audit limpio** — edge functions `meta-capi`, `migrate-seguimiento-rpc-v2.sql`: correctos | ✓ |
+| **Audit limpio** — `prompt()` results van a Supabase via `.update()`, nunca a innerHTML | ✓ |
+
 ## ✅ COMPLETADO sesión 2026-04-24 (round 11 — últimas mejoras autónomas)
 
 | Qué | Dónde |
