@@ -18,7 +18,7 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 
 const CORS = {
-    "Access-Control-Allow-Origin":  "*",
+    "Access-Control-Allow-Origin":  "https://prodigylabdental.com",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Content-Type":                 "application/json",
@@ -41,10 +41,10 @@ function buildmensaje(tipo: string, ctx: Record<string, string>): string {
             return `⏳ ${ctx.nombre}, tu diseño #${ctx.caseId} está esperando tu visto bueno para entrar al ciclo de producción/descarga hoy. ¿Alguna duda?`;
 
         case 'alerta_alejandro':
-            return `🔔 [ProDigy] Venta cerrada — Caso #${ctx.caseId} aprobado por ${ctx.nombre}. Monto: ${ctx.moneda || 'COP'} ${ctx.monto || 'N/A'}. Tipo: ${ctx.tipo_trabajo || 'Diseño CAD'}.`;
+            return `🔔 [PRODIGY] Venta cerrada — Caso #${ctx.caseId} aprobado por ${ctx.nombre}. Monto: ${ctx.moneda || 'COP'} ${ctx.monto || 'N/A'}. Tipo: ${ctx.tipo_trabajo || 'Diseño CAD'}.`;
 
         default:
-            return `ProDigy: Actualización en tu pedido #${ctx.caseId}.`;
+            return `PRODIGY: Actualización en tu pedido #${ctx.caseId}.`;
     }
 }
 
