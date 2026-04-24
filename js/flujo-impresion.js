@@ -2198,7 +2198,7 @@
             // Nonce de seguridad para tracking
             const _nonce = btoa(STATE.ordenId + ':' + Date.now().toString(36)).replace(/[+/=]/g, c => c==='+' ? '-' : c==='/' ? '_' : '');
             STATE.nonce = _nonce;
-            texto += `🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso.html?id=${STATE.ordenId}&key=${_nonce}\n\n`;
+            texto += `🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso?id=${STATE.ordenId}&key=${_nonce}\n\n`;
 
             // Persistir en Supabase (no-blocking — si falla, WA sigue igual)
             try {

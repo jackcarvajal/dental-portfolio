@@ -142,7 +142,7 @@ async function abrirCheckoutWompi({ monto, referencia, email, descripcion, onSuc
         'currency':        'COP',
         'amount-in-cents': String(centavos),
         'reference':       referencia,
-        'redirect-url':    `${window.location.origin}/seguimiento-caso.html?pedido=${referencia}&pago=ok`
+        'redirect-url':    `${window.location.origin}/seguimiento-caso?pedido=${referencia}&pago=ok`
     });
     if (email)       params.set('customer-email', email);
     if (descripcion) params.set('checkout[name]', descripcion);
