@@ -411,10 +411,14 @@
 <div class="cta-block">
   <h2>¿Ya la instalaste?</h2>
   <p>Sigue el estado de tu caso en tiempo real o envía tu pedido directamente desde aquí.</p>
-  <a href="/seguimiento-caso.html" class="btn-primary">
+  <!-- Botón de instalación nativo (aparece solo cuando el browser lo permite) -->
+  <button id="pwa-install-btn" onclick="triggerInstall()" style="display:none;margin-bottom:12px;padding:14px 32px;background:linear-gradient(135deg,#D946A6,#B82F8B);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;align-items:center;gap:8px;">
+    <i class="fas fa-download"></i> Instalar en este dispositivo
+  </button>
+  <a href="/seguimiento-caso" class="btn-primary">
     Sigue tu caso →
   </a><br>
-  <a href="/envia-tu-scanner.html" class="btn-secondary">Envía tu pedido</a>
+  <a href="/envia-tu-scanner" class="btn-secondary">Envía tu pedido</a>
 </div>
 
 <footer>
@@ -430,6 +434,31 @@ function show(id) {
   event.currentTarget.classList.add('active');
 }
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+
+// PWA Install prompt — capturar y mostrar botón nativo cuando disponible
+let _deferredInstall = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  _deferredInstall = e;
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn) btn.style.display = 'inline-flex';
+});
+window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn) { btn.textContent = '✅ App instalada'; btn.disabled = true; }
+  _deferredInstall = null;
+});
+window.triggerInstall = function() {
+  if (!_deferredInstall) return;
+  _deferredInstall.prompt();
+  _deferredInstall.userChoice.then(r => {
+    if (r.outcome === 'accepted') {
+      const btn = document.getElementById('pwa-install-btn');
+      if (btn) { btn.textContent = '✅ Instalando...'; btn.disabled = true; }
+    }
+    _deferredInstall = null;
+  });
+};
 </script>
 <script src="js/footer.js?v=20260424"></script>
 <noscript><p style="text-align:center;padding:2rem">Activa JavaScript o <a href="https://wa.me/573212816716" rel="noopener noreferrer">escríbenos por WhatsApp</a> para instalar la app.</p></noscript>
