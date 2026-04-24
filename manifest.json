@@ -51,21 +51,21 @@
       "name": "Cotizador",
       "short_name": "Cotizar",
       "description": "Calcular precio de trabajo",
-      "url": "/calculadora.html",
+      "url": "/calculadora",
       "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Enviar Scanner",
       "short_name": "Scanner",
       "description": "Solicitar recogida de escáner STL",
-      "url": "/envia-tu-scanner.html",
+      "url": "/envia-tu-scanner",
       "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Seguimiento",
       "short_name": "Seguir",
       "description": "Rastrear estado de pedido",
-      "url": "/seguimiento-caso.html",
+      "url": "/seguimiento-caso",
       "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }]
     }
   ]
