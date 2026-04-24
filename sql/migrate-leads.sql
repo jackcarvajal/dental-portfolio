@@ -20,10 +20,10 @@ DROP POLICY IF EXISTS "public_insert_leads" ON leads_doctores;
 CREATE POLICY "public_insert_leads" ON leads_doctores
     FOR INSERT TO anon, authenticated WITH CHECK (true);
 
--- Admin puede leer y actualizar
+-- Solo usuarios autenticados pueden leer y actualizar (anon solo puede INSERT)
 DROP POLICY IF EXISTS "admin_read_leads" ON leads_doctores;
 CREATE POLICY "admin_read_leads" ON leads_doctores
-    FOR ALL USING (true);
+    FOR ALL TO authenticated USING (true);
 
 CREATE INDEX IF NOT EXISTS idx_leads_fecha      ON leads_doctores(fecha_descarga DESC);
 CREATE INDEX IF NOT EXISTS idx_leads_whatsapp   ON leads_doctores(whatsapp);
