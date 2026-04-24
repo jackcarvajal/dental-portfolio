@@ -1283,10 +1283,10 @@ async function cargarTorre() {
         else if (esPend && mins > 25) { urgencia = 'ALERTA';  color = '#fbbf24'; alertas++; }
         return `<tr>
             <td><span style="font-size:.72rem;font-weight:800;color:${color}">${urgencia}</span></td>
-            <td style="font-family:monospace;font-size:.78rem">${p.codigo || p.id.slice(0,8)}</td>
-            <td>${p.nombre_paciente || '—'}</td>
-            <td style="font-size:.78rem">${p.servicio || '—'}</td>
-            <td><span style="font-size:.7rem;color:#94a3b8">${p.estado_operativo || '—'}</span></td>
+            <td style="font-family:monospace;font-size:.78rem">${escHtml(p.codigo || p.id.slice(0,8))}</td>
+            <td>${escHtml(p.nombre_paciente || '—')}</td>
+            <td style="font-size:.78rem">${escHtml(p.servicio || '—')}</td>
+            <td><span style="font-size:.7rem;color:#94a3b8">${escHtml(p.estado_operativo || '—')}</span></td>
             <td style="color:${color};font-weight:700">${Math.floor(mins)} min</td>
             <td><button onclick="resolverUrgente('${p.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#fff;font-size:.72rem;cursor:pointer">Gestionar</button></td>
         </tr>`;
@@ -1310,10 +1310,10 @@ async function cargarTorre() {
         const mins = Math.floor((ahora - new Date(inc.created_at).getTime()) / 60000);
         const timeLabel = mins < 60 ? `${mins} min` : `${Math.floor(mins/60)}h ${mins%60}m`;
         return `<tr>
-            <td><span style="font-size:.7rem;font-weight:800;color:${SEV_COLOR[inc.severidad]}">${inc.severidad}</span></td>
-            <td style="font-size:.78rem">${inc.tipo}</td>
-            <td style="font-size:.78rem;max-width:220px">${(inc.descripcion||'').slice(0,80)}</td>
-            <td style="font-family:monospace;font-size:.72rem">${inc.pedidos?.codigo || '—'}</td>
+            <td><span style="font-size:.7rem;font-weight:800;color:${SEV_COLOR[inc.severidad]}">${escHtml(inc.severidad)}</span></td>
+            <td style="font-size:.78rem">${escHtml(inc.tipo)}</td>
+            <td style="font-size:.78rem;max-width:220px">${escHtml((inc.descripcion||'').slice(0,80))}</td>
+            <td style="font-family:monospace;font-size:.72rem">${escHtml(inc.pedidos?.codigo || '—')}</td>
             <td style="color:#94a3b8;font-size:.78rem">${timeLabel}</td>
             <td><button onclick="resolverIncidencia('${inc.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid rgba(0,255,65,.3);background:transparent;color:#00FF41;font-size:.72rem;cursor:pointer">Resolver</button></td>
         </tr>`;
