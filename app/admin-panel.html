@@ -667,7 +667,7 @@ function renderPedidos(lista) {
         <td style="color:#00FF41;font-weight:700;">${fmtCOP(p.precio_total)}</td>
         <td style="font-size:0.75rem;color:#94a3b8;">${escHtml(p.pasarela || '—')}</td>
         <td>
-            <select onchange="cambiarEstado('${escHtml(p.id)}',this.value)"
+            <select aria-label="Estado del pedido" onchange="cambiarEstado('${escHtml(p.id)}',this.value)"
                     style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:6px;padding:4px 8px;font-size:0.72rem;">
                 ${['Pendiente','Pagado','En Producción','Despachado'].map(e =>
                     `<option ${p.estado===e?'selected':''}>${e}</option>`).join('')}

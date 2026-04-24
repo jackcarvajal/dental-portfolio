@@ -904,7 +904,7 @@ function renderPedidos(lista) {
         <td style="color:#00FF41;font-weight:700;">${fmtCOP(p.precio_total)}</td>
         <td style="font-size:0.75rem;color:#94a3b8;">${esc(p.pasarela)}</td>
         <td>
-            <select onchange="cambiarEstado('${p.id}',this.value)"
+            <select aria-label="Estado del pedido" onchange="cambiarEstado('${p.id}',this.value)"
                     style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:6px;padding:4px 8px;font-size:0.72rem;">
                 ${['Pendiente','Pagado','En Producción','Despachado'].map(e =>
                     `<option ${p.estado===e?'selected':''}>${e}</option>`).join('')}
@@ -1343,7 +1343,7 @@ function renderEquipo(lista) {
                     <button onclick="toggleActivo('${a.id}', ${a.activo})" title="${a.activo ? 'Desactivar' : 'Activar'}" style="background:${a.activo ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)'};border:1px solid ${a.activo ? 'rgba(239,68,68,0.35)' : 'rgba(34,197,94,0.35)'};color:${a.activo ? '#f87171' : '#86efac'};border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
                         <i class="fas fa-${a.activo ? 'ban' : 'check'}"></i> ${a.activo ? 'Desactivar' : 'Activar'}
                     </button>
-                    <select onchange="cambiarRol('${a.id}', this.value)" style="background:#0d1525;border:1px solid rgba(255,255,255,0.1);color:#94a3b8;border-radius:6px;padding:4px 6px;font-size:0.72rem;cursor:pointer;">
+                    <select aria-label="Cambiar rol" onchange="cambiarRol('${a.id}', this.value)" style="background:#0d1525;border:1px solid rgba(255,255,255,0.1);color:#94a3b8;border-radius:6px;padding:4px 6px;font-size:0.72rem;cursor:pointer;">
                         <option value="">Cambiar rol...</option>
                         <option value="operator">Operador</option>
                         <option value="mensajero">Mensajero</option>
@@ -1533,7 +1533,7 @@ function renderPedidosDoc(arr) {
             <td style="font-size:.8rem">${extras||'—'}</td>
             <td style="color:#D4AF37;font-weight:700;font-size:.82rem">${precio}</td>
             <td>
-                <select onchange="cambiarEstadoDoc('${p.id}',this.value)"
+                <select aria-label="Estado del diseño" onchange="cambiarEstadoDoc('${p.id}',this.value)"
                     style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:4px 8px;border-radius:6px;font-size:.75rem;">
                     ${estadoOpts}
                 </select>
