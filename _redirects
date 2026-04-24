@@ -45,6 +45,7 @@
 /seguimiento-caso       /seguimiento-caso.html      200
 /seguimiento            /seguimiento-caso.html      200
 /patient                /patient.html               200
+/contacto               /nosotros#contacto          301
 
 # ─────────────────────────────────────────────────────────────
 # PÁGINAS INTERNAS / LEGACY — redirigir a login o 404
