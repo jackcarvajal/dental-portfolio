@@ -4,11 +4,14 @@
 
 ---
 
-## 🚨 SQL CRÍTICO — EJECUTAR YA (fuga de datos PII activa)
+## 🚨 SQL CRÍTICO — EJECUTAR EN SUPABASE (orden importa)
 
 ```
-sql/patch-rls-leads-fix.sql          → leads_doctores: anon podía leer todos los leads
-sql/patch-rls-authenticated-only.sql → mensajeros/despachos/creditos_cliente: misma fuga
+1. sql/patch-rls-leads-fix.sql              → leads_doctores: anon leía todos los leads (PII)
+2. sql/patch-rls-authenticated-only.sql     → mensajeros/despachos/creditos_cliente: misma fuga
+3. sql/migrate-storage-pedidos-archivos.sql → bucket pedidos-archivos: anon podía subir archivos
+4. sql/patch-storage-evidencias.sql         → bucket evidencias-entrega: sin políticas
+5. sql/patch-storage-buckets-pendientes.sql → dental-cases + portafolio: sin políticas
 ```
 **Pasos:** Supabase Dashboard → SQL Editor → pegar contenido de cada archivo → Run
 
