@@ -226,6 +226,23 @@
 
 ---
 
+## ✅ COMPLETADO sesión 2026-04-23 (round 4 — seguridad + privacidad + perf)
+
+| Qué | Dónde |
+|-----|-------|
+| **XSS fix** — `portafolio.html`: datos Supabase (`c.name`, `c.description`, `c.date`) sin escapar en `grid.innerHTML` → añadida `escH()` | `portafolio.html` |
+| **YouTube ID validation** — `article.html` iframe src con `b.youtube` sin validar → regex `/^[\w-]{5,20}$/` | `article.html` línea 301 |
+| **PubMed URL validation** — `article.html` `r.pubmed` directo en `href` → validación `startsWith('https://')` | `article.html` línea 318 |
+| **DOI encoding** — `article.html` DOI sin `encodeURIComponent` en href | `article.html` línea 317 |
+| **autocomplete** — name/tel/address-level2 en flujo-fresado y flujo-impresion | 2 archivos |
+| **Cookie banner** — añadido botón "Rechazar" + GA4 Consent Mode update en `footer.js` | `js/footer.js` |
+| **GA4 Consent Mode v2** — `gtag('consent','default',{analytics_storage:'denied',...})` + `anonymize_ip:true` en las 15 páginas públicas con GA4 | batch 15 archivos |
+| **noscript** — fallbacks añadidos en nosotros, catalogo, terminos-y-legal, flujo-fresado, flujo-impresion, flujo-diseno, patient | 7 archivos |
+| **preconnect** — jsdelivr + supabase en calculadora; supabase en envia-tu-scanner y escaner-domicilio | 3 archivos |
+| **CORS Edge Functions** — `*` → `https://prodigylabdental.com` en `notify-wa` y `meta-capi` (riesgo: abuso de WA Business) | 2 edge functions |
+| **Typo brand** — "ProDigy" → "PRODIGY" en `notify-wa/index.ts` | edge function |
+| **sitemap** — lastmod → 2026-04-23 para 10 páginas modificadas | `sitemap.xml` |
+
 ## ✅ COMPLETADO sesión 2026-04-23 (round 3 — auditoría profunda)
 
 | Qué | Dónde |
