@@ -282,6 +282,7 @@
     const pendingChanges = new Map(); // id → nuevoPrecio
 
     function formatCOP(n) { return '$' + Number(n).toLocaleString('es-CO'); }
+    const escH = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
     const CAT_COLORS = {
         resina_modelo:        { label:'Modelos',      bg:'rgba(0,210,255,0.1)',    color:'#00d2ff' },
@@ -321,7 +322,7 @@
             <tr id="row-${item.id}">
                 <td><code style="font-size:0.7rem;color:#94a3b8;">${item.id}</code></td>
                 <td><span class="cat-badge" style="background:${cc.bg};color:${cc.color};">${cc.label}</span></td>
-                <td style="max-width:280px;">${item.nombre}<br><span style="font-size:0.72rem;color:var(--muted);">${item.descripcion || ''}</span></td>
+                <td style="max-width:280px;">${escH(item.nombre)}<br><span style="font-size:0.72rem;color:var(--muted);">${escH(item.descripcion || '')}</span></td>
                 <td>
                     <div class="precio-cell">
                         <input type="number" class="precio-input ${hasPending ? 'changed' : ''}"
@@ -358,8 +359,8 @@
         tbody.innerHTML = data.map(item => `
             <tr id="extra-row-${item.id}">
                 <td><code style="font-size:0.7rem;color:#94a3b8;">${item.id}</code></td>
-                <td>${item.nombre}</td>
-                <td><span style="font-size:0.72rem;color:#94a3b8;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:10px;">${item.tipo}</span></td>
+                <td>${escH(item.nombre)}</td>
+                <td><span style="font-size:0.72rem;color:#94a3b8;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:10px;">${escH(item.tipo)}</span></td>
                 <td>
                     <div class="precio-cell">
                         <input type="number" class="precio-input" id="extra-precio-${item.id}"
