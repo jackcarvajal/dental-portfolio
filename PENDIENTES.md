@@ -1,8 +1,16 @@
 # PRODIGY — PENDIENTES MAESTRO
 > Fuente única de verdad. Ordenados por bloque. Actualizar al completar.
-> Última revisión: 2026-04-22
+> Última revisión: 2026-04-24
 
 ---
+
+## 🚨 SQL CRÍTICO — EJECUTAR YA (fuga de datos PII activa)
+
+```
+sql/patch-rls-leads-fix.sql          → leads_doctores: anon podía leer todos los leads
+sql/patch-rls-authenticated-only.sql → mensajeros/despachos/creditos_cliente: misma fuga
+```
+**Pasos:** Supabase Dashboard → SQL Editor → pegar contenido de cada archivo → Run
 
 ---
 
