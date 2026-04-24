@@ -55,11 +55,12 @@ async function handleWompi(sb: any, payload: any) {
   const txStatus  = String(evento?.status ?? "");
   const monto     = Number(evento?.amount_in_cents ?? 0);
 
-  if (integrity) {
-    const expected = await sha256hex(`${txId}${txStatus}${monto}${integrity}`);
-    if (expected !== checksum) {
-      return new Response("firma inválida", { status: 401 });
-    }
+  if (!integrity) {
+    return new Response("WOMPI_INTEGRITY_SECRET no configurado", { status: 500 });
+  }
+  const expected = await sha256hex(`${txId}${txStatus}${monto}${integrity}`);
+  if (expected !== checksum) {
+    return new Response("firma inválida", { status: 401 });
   }
 
   const referencia = String(evento?.reference ?? "");
