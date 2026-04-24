@@ -226,6 +226,18 @@
 
 ---
 
+## ✅ COMPLETADO sesión 2026-04-24 (round 7 — XSS profundo en JS + app pages restantes)
+
+| Qué | Dónde |
+|-----|-------|
+| **XSS crítico** — `stl-multi-viewer.js`: `fObj.name` (nombre de archivo del usuario) sin escH en `title`, `alt` y texto en `innerHTML` | `js/stl-multi-viewer.js` |
+| **XSS fix** — `inventario.html`: `m.notas`, `m.tipo`, `m.nombre`, `m.categoria` en tablas sin escH | `app/inventario.html` |
+| **XSS fix** — `admin-precios.html`: `item.nombre`, `item.descripcion`, `item.tipo` en innerHTML sin escH | `app/admin-precios.html` |
+| **autocomplete** — 6 campos de registro + reset en `login.html`; 4 campos en `onboarding.html` | 2 archivos |
+| **Audit limpio** — `mensajero.html`, `supabase-client.js`, `auth-guard.js`, `agregar-caso.html`, `reset-password.html`: 0 issues | ✓ |
+| **Audit limpio** — WhatsApp message construction: todos usan `encodeURIComponent`; STL upload: solo admin, bajo riesgo | ✓ |
+| **Scan completo app/** — todos los archivos con innerHTML tienen función de escape activa | ✓ |
+
 ## ✅ COMPLETADO sesión 2026-04-24 (round 6 — auditoría de app pages + accesibilidad + validaciones)
 
 | Qué | Dónde |
