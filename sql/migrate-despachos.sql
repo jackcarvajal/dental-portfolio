@@ -20,7 +20,7 @@ ALTER TABLE mensajeros ENABLE ROW LEVEL SECURITY;
 -- Admin lee y escribe todo
 DROP POLICY IF EXISTS "admin_all_mensajeros" ON mensajeros;
 CREATE POLICY "admin_all_mensajeros" ON mensajeros
-    FOR ALL USING (true) WITH CHECK (true);   -- RLS real vía service_role en Edge Functions
+    FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 CREATE INDEX IF NOT EXISTS idx_mensajeros_activo  ON mensajeros(activo);
 CREATE INDEX IF NOT EXISTS idx_mensajeros_user_id ON mensajeros(user_id);
@@ -46,7 +46,7 @@ ALTER TABLE despachos ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "admin_all_despachos" ON despachos;
 CREATE POLICY "admin_all_despachos" ON despachos
-    FOR ALL USING (true) WITH CHECK (true);
+    FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- Mensajero solo ve sus propios despachos
 DROP POLICY IF EXISTS "mensajero_own_despachos" ON despachos;

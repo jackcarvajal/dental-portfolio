@@ -63,7 +63,7 @@ ALTER TABLE creditos_cliente ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "admin_all_creditos" ON creditos_cliente;
 CREATE POLICY "admin_all_creditos" ON creditos_cliente
-    FOR ALL USING (true) WITH CHECK (true);
+    FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 CREATE INDEX IF NOT EXISTS idx_creditos_whatsapp ON creditos_cliente(whatsapp);
 
