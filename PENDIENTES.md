@@ -226,6 +226,19 @@
 
 ---
 
+## ✅ COMPLETADO sesión 2026-04-24 (round 5 — GA4 fix completo + cache-busting + auditoría final)
+
+| Qué | Dónde |
+|-----|-------|
+| **GA4 Consent Mode fix** — 6 páginas con formato multi-línea/comillas dobles quedaron sin consent default en el batch anterior → aplicado manualmente | calculadora, envia-tu-scanner, escaner-domicilio, flujo-lab, journal, portal |
+| **Cache-busting** — `?v=20260424` en `header.js` y `footer.js` en 20 páginas públicas (evita que usuarios con `immutable` cache vean versiones viejas) | batch 20 archivos |
+| **SW cache bump** — `prodigy-v4` → `prodigy-v5` para invalidar HTML sin Consent Mode en clientes con SW | `sw.js` |
+| **CORS Edge Functions** — ya corregido sesión anterior | ✓ |
+| **Audit links rotos** — todos los links del footer.js, header.js y sw.js precache verificados → 0 broken | 3 archivos auditados |
+| **Audit Habeas Data** — todos los formularios públicos tienen checkbox/texto legal | ✓ |
+| **manifest.json** — completo y válido | ✓ |
+| **App pages** — admin-panel, client-panel, operator-panel, taller: todos usan escHtml/escH en innerHTML con datos Supabase | ✓ |
+
 ## ✅ COMPLETADO sesión 2026-04-23 (round 4 — seguridad + privacidad + perf)
 
 | Qué | Dónde |
