@@ -490,7 +490,7 @@
                 &nbsp;Ingresa tu correo registrado y te enviamos un enlace seguro para restablecer tu contraseña.
             </p>
             <div style="display:flex;gap:8px;">
-                <input type="email" id="reset-email" placeholder="correo@empresa.com"
+                <input type="email" id="reset-email" placeholder="correo@empresa.com" autocomplete="email"
                     style="flex:1;padding:9px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:0.85rem;outline:none;">
                 <button onclick="handleReset()" id="reset-btn"
                     style="padding:9px 16px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;border:none;border-radius:8px;font-weight:800;font-size:0.78rem;cursor:pointer;white-space:nowrap;">
@@ -526,21 +526,21 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Nombre</label>
-                    <input type="text" id="reg-nombre" placeholder="Dr. Juan López" required>
+                    <input type="text" id="reg-nombre" autocomplete="given-name" placeholder="Dr. Juan López" required>
                 </div>
                 <div class="form-group">
                     <label>Apellido</label>
-                    <input type="text" id="reg-apellido" placeholder="López" required>
+                    <input type="text" id="reg-apellido" autocomplete="family-name" placeholder="López" required>
                 </div>
             </div>
             <div class="form-group">
                 <label>Nombre de la Clínica / Consultorio</label>
-                <input type="text" id="reg-clinica" placeholder="Clínica Dental del Norte" required>
+                <input type="text" id="reg-clinica" autocomplete="organization" placeholder="Clínica Dental del Norte" required>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label>Ciudad</label>
-                    <input type="text" id="reg-ciudad" placeholder="Bogotá" required>
+                    <input type="text" id="reg-ciudad" autocomplete="address-level2" placeholder="Bogotá" required>
                 </div>
                 <div class="form-group">
                     <label>Especialidad</label>
@@ -563,11 +563,11 @@
             </div>
             <div class="form-group">
                 <label>Contraseña</label>
-                <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" required minlength="8">
+                <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="new-password">
             </div>
             <div class="form-group">
                 <label>Teléfono / WhatsApp (opcional)</label>
-                <input type="tel" id="reg-tel" placeholder="+57 300 000 0000">
+                <input type="tel" id="reg-tel" placeholder="+57 300 000 0000" autocomplete="tel">
             </div>
             <button type="submit" class="btn-submit" style="background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;">
                 <i class="fas fa-user-plus"></i> &nbsp;Crear Cuenta Profesional

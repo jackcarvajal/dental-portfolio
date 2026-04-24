@@ -183,7 +183,7 @@
             <label>Nombre completo *</label>
             <div class="input-wrap">
                 <i class="fas fa-user"></i>
-                <input type="text" id="ob-nombre" placeholder="Dr. / Dra. Apellido" required maxlength="80">
+                <input type="text" id="ob-nombre" autocomplete="name" placeholder="Dr. / Dra. Apellido" required maxlength="80">
             </div>
         </div>
 
@@ -206,7 +206,7 @@
                     </div>
                 </div>
                 <div class="num-wrap">
-                    <input type="tel" id="ob-wa" placeholder="3001234567" required maxlength="15"
+                    <input type="tel" id="ob-wa" autocomplete="tel" placeholder="3001234567" required maxlength="15"
                         pattern="[0-9]{7,15}" title="Solo números, sin espacios">
                 </div>
             </div>
@@ -217,7 +217,7 @@
             <label>Nombre del consultorio / clínica *</label>
             <div class="input-wrap">
                 <i class="fas fa-tooth"></i>
-                <input type="text" id="ob-clinica" placeholder="Odontología Estética..." required maxlength="100">
+                <input type="text" id="ob-clinica" autocomplete="organization" placeholder="Odontología Estética..." required maxlength="100">
             </div>
         </div>
 
@@ -225,7 +225,7 @@
             <label>Ciudad *</label>
             <div class="input-wrap">
                 <i class="fas fa-map-pin"></i>
-                <input type="text" id="ob-ciudad" placeholder="Bogotá, Medellín..." required maxlength="80">
+                <input type="text" id="ob-ciudad" autocomplete="address-level2" placeholder="Bogotá, Medellín..." required maxlength="80">
             </div>
         </div>
 
