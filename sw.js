@@ -1,24 +1,25 @@
 // Prodigy Lab Dental — Service Worker v2.0
-const CACHE = 'prodigy-v5';
+const CACHE = 'prodigy-v6';
 
 // Assets estáticos que siempre cacheamos en install
+// Usar clean URLs (sin .html) para que coincidan con lo que navega el usuario
 const PRECACHE = [
   '/',
-  '/portafolio.html',
-  '/calculadora.html',
-  '/catalogo.html',
-  '/journal.html',
-  '/article.html',
+  '/portafolio',
+  '/calculadora',
+  '/catalogo',
+  '/journal',
+  '/article',
   '/articles.js',
-  '/nosotros.html',
-  '/soporte.html',
-  '/seguimiento-caso.html',
-  '/envia-tu-scanner.html',
-  '/escaner-domicilio.html',
-  '/diseno-cad.html',
-  '/fresado-cam.html',
-  '/terminos-y-legal.html',
-  '/instalar-app.html',
+  '/nosotros',
+  '/soporte',
+  '/seguimiento-caso',
+  '/envia-tu-scanner',
+  '/escaner-domicilio',
+  '/diseno-cad',
+  '/fresado-cam',
+  '/terminos-y-legal',
+  '/instalar-app',
   '/manifest.json',
   '/assets/prodigy-preview.jpg',
   '/assets/icons/icon-192.png',
