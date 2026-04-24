@@ -52,6 +52,15 @@
 
             if (onProgress) onProgress(i, files.length);
 
+            // Validar magic bytes antes de subir (evita ejecutables renombrados)
+            if (window.validateMagicBytes) {
+                const mbCheck = await window.validateMagicBytes(f);
+                if (!mbCheck.safe) {
+                    console.warn('[FlujoUploader] Archivo bloqueado por magic bytes:', f.name, mbCheck.error);
+                    continue;
+                }
+            }
+
             const { error } = await sb.storage
                 .from(BUCKET)
                 .upload(path, f, {
