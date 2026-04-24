@@ -4,6 +4,12 @@
 > **Actualizar este archivo cada vez que se implemente un nuevo patrón.**
 > Última actualización: 2026-04-24
 
+## ESTADO ACTUAL DEL PROYECTO (2026-04-24 — round 16)
+- ✅ Todas las páginas `app/` tienen `<meta name="theme-color" content="#D946A6">`
+- ✅ Todas las páginas `app/` tienen preconnect para cdnjs/jsdelivr/supabase
+- ✅ `beforeinstallprompt` PWA en `instalar-app.html` y `success.html`
+- ✅ `.claude/settings.json` actualizado con patrones `node << *`, `sed -i *`, `grep -*` para reducir prompts
+
 ## ESTADO ACTUAL DEL PROYECTO (2026-04-24)
 - ✅ **CERO** `.html` en URLs navegables — verificado con scan global de todo el proyecto
 - ✅ **CERO** XSS con datos de Supabase/usuario sin escapar (escH aplicado en todos los innerHTML)
