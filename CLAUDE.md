@@ -1,5 +1,8 @@
 # REGLAS MAESTRAS - PROYECTO PRODIGY
 
+> **Ver también: `ESTANDARES-TECNICOS.md`** — estándares técnicos completos resultado de auditoría autónoma
+> (seguridad XSS, Consent Mode GA4, clean URLs, accesibilidad, checklist página nueva, etc.)
+
 ## 0. PERMISOS
 Permiso total: bash, leer, escribir, crear, eliminar. Confirma solo si: eliminas sin backup, cambios >200 líneas, instalas dependencias.
 
