@@ -240,7 +240,7 @@ function renderGrid() {
     }
 
     grid.innerHTML = lista.map(c => {
-        const thumb = c.cover_image ? `<img class="caso-img" src="${c.cover_image}?width=400&quality=70" alt="${c.name}" onerror="this.style.display='none'">` :
+        const thumb = c.cover_image?.startsWith('https://') ? `<img class="caso-img" src="${escH(c.cover_image)}?width=400&quality=70" alt="${escH(c.name)}" onerror="this.style.display='none'">` :
                       `<div class="caso-img-placeholder">🦷</div>`;
         const estadoBadge = c.visible
             ? `<span class="badge visible">● Publicado</span>`
