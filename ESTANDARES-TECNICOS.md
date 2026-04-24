@@ -1,8 +1,18 @@
 # PRODIGY — Estándares Técnicos Definitivos
-> Resultado de auditoría autónoma completa (rounds 1–14, Abr 2026).
+> Resultado de auditoría autónoma completa (rounds 1–15, Abr 2026).
 > Aplicar TODO esto al crear páginas nuevas o implementaciones nuevas.
 > **Actualizar este archivo cada vez que se implemente un nuevo patrón.**
 > Última actualización: 2026-04-24
+
+## ESTADO ACTUAL DEL PROYECTO (2026-04-24)
+- ✅ **CERO** `.html` en URLs navegables — verificado con scan global de todo el proyecto
+- ✅ **CERO** XSS con datos de Supabase/usuario sin escapar (escH aplicado en todos los innerHTML)
+- ✅ **CERO** buckets de Storage sin políticas RLS
+- ✅ **CERO** tablas de BD con RLS sin `TO authenticated`
+- ✅ GA4 Consent Mode v2 en 21 páginas públicas
+- ✅ Cookie banner con botón Rechazar funcional
+- ✅ PWA install prompt en instalar-app.html
+- ⚠️ **PENDIENTE (requiere Alejandro):** ejecutar 5 patches SQL en Supabase (ver PENDIENTES.md)
 
 ---
 
