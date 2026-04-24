@@ -234,6 +234,20 @@ sql/patch-rls-authenticated-only.sql → mensajeros/despachos/creditos_cliente: 
 
 ---
 
+## ✅ COMPLETADO sesión 2026-04-24 (round 9 — RLS SQL audit + a11y final)
+
+| Qué | Dónde |
+|-----|-------|
+| **🚨 RLS CRÍTICO** — `leads_doctores`: política `admin_read_leads` sin `TO authenticated` → anon podía SELECT todos los leads (PII) | `sql/patch-rls-leads-fix.sql` |
+| **🚨 RLS CRÍTICO** — `mensajeros`, `despachos`, `creditos_cliente`: mismo bug → rutas GPS, contactos internos expuestos | `sql/patch-rls-authenticated-only.sql` |
+| **RLS audit completo** — 27 tablas verificadas; 0 policies sin restricción tras los patches | todos los *.sql |
+| **SQL injection audit** — todas las funciones SECURITY DEFINER usan queries parametrizadas, 0 concatenación de strings | ✓ |
+| **a11y** — `alt=""` en foto-thumbs decorativos de operator-panel; `aria-label="Cerrar"` en 5 botones ✕/× sin etiqueta | 3 app pages |
+| **autocomplete** — `new-password` en reset-password.html; `name/tel` en flujo-lab.html | 2 páginas |
+| **perf** — carga doble de `supabase.js` eliminada en flujo-fresado, flujo-impresion, flujo-diseno | 3 páginas |
+| **Scan JSON-LD** — 24 páginas, 0 errores de JSON inválido | ✓ |
+| **Scan metadata** — todas las páginas tienen description, canonical, lang, OG | ✓ |
+
 ## ✅ COMPLETADO sesión 2026-04-24 (round 8 — scan XSS global completo + perf)
 
 | Qué | Dónde |
