@@ -12,6 +12,7 @@
     <!-- Auth + Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="../js/auth-guard.js"></script>
+    <script src="../js/upload-guard.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -730,6 +731,16 @@ async function publicarCaso() {
         if (driveRaw && !drive) { throw new Error('El link de Drive debe comenzar con https://'); }
         const id   = await getNextId();
         const base = SUPABASE_URL + '/storage/v1/object/public/' + BUCKET + '/';
+
+        // ── Validación magic bytes ──
+        if (window.validateMagicBytes) {
+            const mbCover = await validateMagicBytes(coverFile);
+            if (!mbCover.safe) throw new Error('Portada: ' + mbCover.error);
+            for (const gf of galleryFiles) {
+                const mbG = await validateMagicBytes(gf);
+                if (!mbG.safe) throw new Error('Galería "' + gf.name + '": ' + mbG.error);
+            }
+        }
 
         // ── Portada ──
         setProgress('Subiendo portada...');
