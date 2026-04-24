@@ -206,7 +206,7 @@ body.ready { visibility: visible; }
 <!-- Modal: Reportar Incidencia -->
 <div class="modal-overlay" id="modal-panico">
     <div class="modal-box">
-        <button class="modal-close" onclick="cerrarModal('modal-panico')">✕</button>
+        <button class="modal-close" onclick="cerrarModal('modal-panico')" aria-label="Cerrar">✕</button>
         <div class="modal-title" style="color:var(--red)">REPORTAR INCIDENCIA</div>
         <div class="modal-sub">El administrador recibirá una alerta push inmediata.</div>
         <input type="hidden" id="inc-pedido-id">
@@ -251,7 +251,7 @@ body.ready { visibility: visible; }
 <!-- Modal: QA Checklist + finalizar -->
 <div class="modal-overlay" id="modal-qa">
     <div class="modal-box">
-        <button class="modal-close" onclick="cerrarModal('modal-qa')">✕</button>
+        <button class="modal-close" onclick="cerrarModal('modal-qa')" aria-label="Cerrar">✕</button>
         <div class="modal-title">Control de Calidad — QA</div>
         <div class="modal-sub" id="qa-caso-sub">Caso #—</div>
         <div class="qa-list">
@@ -477,7 +477,7 @@ function agregarFotosEmpaque(event) {
         _fotosEmpaque.push({ file, previewUrl: url });
         const wrap = document.createElement('div');
         wrap.className = 'foto-thumb-wrap';
-        wrap.innerHTML = `<img class="foto-thumb" src="${url}"><button class="foto-thumb-del" onclick="eliminarFotoEmpaque(${idx})">✕</button>`;
+        wrap.innerHTML = `<img class="foto-thumb" src="${url}" alt=""><button class="foto-thumb-del" onclick="eliminarFotoEmpaque(${idx})" aria-label="Quitar foto">✕</button>`;
         previews.appendChild(wrap);
     });
     event.target.value = '';
@@ -491,7 +491,7 @@ function eliminarFotoEmpaque(idx) {
     _fotosEmpaque.forEach((f, i) => {
         const wrap = document.createElement('div');
         wrap.className = 'foto-thumb-wrap';
-        wrap.innerHTML = `<img class="foto-thumb" src="${f.previewUrl}"><button class="foto-thumb-del" onclick="eliminarFotoEmpaque(${i})">✕</button>`;
+        wrap.innerHTML = `<img class="foto-thumb" src="${f.previewUrl}" alt=""><button class="foto-thumb-del" onclick="eliminarFotoEmpaque(${i})" aria-label="Quitar foto">✕</button>`;
         previews.appendChild(wrap);
     });
 }

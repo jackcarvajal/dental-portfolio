@@ -343,7 +343,7 @@
     <div class="dap-box">
         <div class="dap-head">
             <h3>Revisar Diseño <span style="color:var(--cyan)">— Aprobación requerida</span></h3>
-            <button class="dap-close" onclick="cerrarAprobacion()">✕</button>
+            <button class="dap-close" onclick="cerrarAprobacion()" aria-label="Cerrar">✕</button>
         </div>
         <div class="dap-iframe-wrap">
             <iframe id="dap-iframe" src="" allowfullscreen></iframe>
@@ -395,7 +395,7 @@
   <div class="pd-modal">
     <div class="pd-head">
       <h2><i class="fas fa-plus-circle" style="color:var(--magenta);margin-right:8px"></i>Nuevo Pedido</h2>
-      <button class="pd-close" onclick="pdCerrar()">×</button>
+      <button class="pd-close" onclick="pdCerrar()" aria-label="Cerrar">×</button>
     </div>
     <div class="pd-body">
       <div class="pd-msg" id="pd-msg"></div>
