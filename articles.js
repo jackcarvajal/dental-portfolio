@@ -387,7 +387,7 @@ const ARTICLES = [
     {q:'¿Qué escáner recomiendan para una clínica que quiere trabajar con PRODIGY?', a:'Medit i700 o i900 si el presupuesto es la prioridad — exportación abierta nativa, excelente precisión y soporte en Colombia. iTero es ideal si el flujo Align/ortodoncia es importante. Para estética de alto nivel donde se requiere dinámica oclusal, 3Shape Trios 5.'},
     {q:'¿Qué hago si mi archivo STL tiene errores de malla?', a:'Antes de enviar, verifica en netfabb online (gratuito) o MeshLab. Si hay agujeros, re-escanea la zona problemática. En muchos casos, el software del escáner tiene una función de "reparación de malla" integrada. Contáctanos — te orientamos caso a caso.'},
     {q:'¿Con qué frecuencia debo calibrar mi escáner?', a:'Mensualmente como mínimo para iTero y Medit. 3Shape tiene auto-calibración pero recomendamos revisión trimestral. Siempre calibrar tras una caída o golpe, y al cambiar de clínica (diferente temperatura y humedad).'},
-    {q:'¿Puedo enviarles el archivo directamente desde Medit Link o iTero Connect?', a:'Estamos habilitando integración directa. Por ahora el flujo más rápido es exportar STL + ZIP y enviarlo por nuestro formulario en envia-tu-scanner.html o al WhatsApp del laboratorio.'}
+    {q:'¿Puedo enviarles el archivo directamente desde Medit Link o iTero Connect?', a:'Estamos habilitando integración directa. Por ahora el flujo más rápido es exportar STL + ZIP y enviarlo por nuestro formulario en envia-tu-scanner o al WhatsApp del laboratorio.'}
   ],
   video_script: `🎬 GUIÓN REEL — 50 segundos
 [ESCENA 1 — 0-6s] Escáner intraoral en boca. Texto: "¿Tu escáner da archivos con errores?"
