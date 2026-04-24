@@ -135,17 +135,17 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                             <div class="form-group">
                                 <label>Nombre Cliente *</label>
-                                <input type="text" id="nombreCliente" placeholder="Dr. Juan Pérez">
+                                <input type="text" id="nombreCliente" placeholder="Dr. Juan Pérez" autocomplete="name">
                                 <span class="error-tooltip" id="error-nombreCliente"></span>
                             </div>
                             <div class="form-group">
                                 <label>WhatsApp Cliente *</label>
-                                <input type="tel" id="whatsappCliente" placeholder="3001234567" maxlength="10" oninput="validatePhone(this)">
+                                <input type="tel" id="whatsappCliente" placeholder="3001234567" maxlength="10" oninput="validatePhone(this)" autocomplete="tel">
                                 <span class="error-tooltip" id="error-whatsappCliente"></span>
                             </div>
                             <div class="form-group">
                                 <label>Ciudad *</label>
-                                <input type="text" id="ciudad" placeholder="Bogotá">
+                                <input type="text" id="ciudad" placeholder="Bogotá" autocomplete="address-level2">
                                 <span class="error-tooltip" id="error-ciudad"></span>
                             </div>
                         </div>

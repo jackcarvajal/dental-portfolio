@@ -613,6 +613,10 @@ function addTilt(card) {
     });
 }
 
+function escH(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
 function renderCases(cases) {
     filteredCases = cases;
     renderPage(1);
@@ -646,19 +650,19 @@ function renderPage(page) {
     const slice = filteredCases.slice(start, start + PAGE_SIZE);
 
     grid.innerHTML = slice.map((c, i) => `
-        <a class="case-card" href="patient.html?id=${c.id}&from=catalogo" style="transition-delay:${Math.min(i * 80, 400)}ms">
+        <a class="case-card" href="patient.html?id=${encodeURIComponent(c.id)}&from=catalogo" style="transition-delay:${Math.min(i * 80, 400)}ms">
             <div class="card-img">
-                <img src="${c.coverImage}" alt="${c.name}"
+                <img src="${escH(c.coverImage)}" alt="${escH(c.name)}"
                      loading="${i < 6 ? 'eager' : 'lazy'}"
                      onerror="this.parentElement.style.background='#0a0a0a'">
                 <div class="card-watermark"><span>© PRODIGY</span></div>
-                <div class="card-type-badge">${getTypeLabel(c.type)}</div>
+                <div class="card-type-badge">${escH(getTypeLabel(c.type))}</div>
             </div>
             <div class="card-body">
-                <h3>${c.name}</h3>
-                <p>${c.description || 'Caso clínico de diseño dental digital.'}</p>
+                <h3>${escH(c.name)}</h3>
+                <p>${escH(c.description) || 'Caso clínico de diseño dental digital.'}</p>
                 <div class="card-meta">
-                    <span class="card-date">${c.date || ''}</span>
+                    <span class="card-date">${escH(c.date)}</span>
                     <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
                 </div>
             </div>

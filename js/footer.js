@@ -188,15 +188,28 @@
 
   document.body.appendChild(footer);
 
-  // ── Cookie consent (SIC Circular 002/2015 + GA4) ──────────────
-  if (!localStorage.getItem('prodigy_cookies_ok')) {
+  // ── Cookie consent (SIC Circular 002/2015 + GDPR + GA4 Consent Mode v2) ──
+  var _pgConsentVal = localStorage.getItem('prodigy_cookies_ok');
+
+  // Aplicar consent state al cargar si ya hay decisión previa
+  if (_pgConsentVal === '1' && window.gtag) {
+    window.gtag('consent', 'update', { analytics_storage: 'granted', ad_storage: 'denied' });
+  } else if (_pgConsentVal === '0' && window.gtag) {
+    window.gtag('consent', 'update', { analytics_storage: 'denied', ad_storage: 'denied' });
+  }
+
+  if (!_pgConsentVal) {
     var cb = document.createElement('div');
     cb.id = 'pfoot-cookie-banner';
     cb.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#0d1520;border-top:1px solid rgba(212,175,55,.3);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:inherit;font-size:.82rem;color:#94a3b8;';
     cb.innerHTML = '<span>Usamos <strong style="color:#e2e8f0">cookies analíticas</strong> (Google Analytics) para mejorar el servicio. No compartimos datos personales con terceros. ' +
       '<a href="/terminos-y-legal.html#privacidad" style="color:#D946A6">Ver política de privacidad</a></span>' +
-      '<button onclick="localStorage.setItem(\'prodigy_cookies_ok\',\'1\');document.getElementById(\'pfoot-cookie-banner\').remove();" ' +
-      'style="background:#D946A6;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-weight:700;cursor:pointer;font-size:.82rem;white-space:nowrap;">Aceptar</button>';
+      '<div style="display:flex;gap:8px;flex-shrink:0;">' +
+        '<button onclick="localStorage.setItem(\'prodigy_cookies_ok\',\'0\');if(window.gtag)window.gtag(\'consent\',\'update\',{analytics_storage:\'denied\',ad_storage:\'denied\'});document.getElementById(\'pfoot-cookie-banner\').remove();" ' +
+        'style="background:transparent;color:#94a3b8;border:1px solid #334155;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;font-size:.82rem;white-space:nowrap;">Rechazar</button>' +
+        '<button onclick="localStorage.setItem(\'prodigy_cookies_ok\',\'1\');if(window.gtag)window.gtag(\'consent\',\'update\',{analytics_storage:\'granted\',ad_storage:\'denied\'});document.getElementById(\'pfoot-cookie-banner\').remove();" ' +
+        'style="background:#D946A6;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-weight:700;cursor:pointer;font-size:.82rem;white-space:nowrap;">Aceptar</button>' +
+      '</div>';
     document.body.appendChild(cb);
   }
 })();
