@@ -344,7 +344,7 @@ function writeSocialFile(newArticles, socialDataList) {
 
   newArticles.forEach((art, i) => {
     const s = socialDataList[i] || {};
-    const url = `https://prodigylabdental.com/article.html?id=${art.id}`;
+    const url = `https://prodigylabdental.com/article?id=${art.id}`;
     content += `\n📝 ARTÍCULO: ${art.titulo}\n`;
     content += `🔗 URL: ${url}\n`;
     if (art.og_img) content += `🖼️  IMAGEN: ${art.og_img}\n`;
