@@ -226,6 +226,18 @@
 
 ---
 
+## ✅ COMPLETADO sesión 2026-04-24 (round 8 — scan XSS global completo + perf)
+
+| Qué | Dónde |
+|-----|-------|
+| **XSS** — `flujo-lab.html`: `f.name` (nombre archivo) sin escH en innerHTML + onclick attr | `flujo-lab.html` |
+| **XSS** — `main.js` y `portal.html`: `patient.name/coverImage/description` sin escH en innerHTML | `js/main.js`, `portal.html` |
+| **XSS** — `admin-panel.html`: `c.titulo`, `c.imagen_url`, `c.tipo`, `c.material` del portafolio interno sin escHtml | `app/admin-panel.html` |
+| **XSS** — `qr-generator.js`: `e.message` sin escapar en innerHTML de error | `js/qr-generator.js` |
+| **perf** — carga doble de `supabase.js` eliminada en 3 flujos (ya cargado para auth-guard) | flujo-fresado, flujo-impresion, flujo-diseno |
+| **Scan global final** — `innerHTML + template literal` sin escaping: 0 issues con datos de usuario o Supabase | ✓ codebase completo |
+| **Residual aceptado** — `article.html` (articles.js estático admin), `flujo-impresion.js` (colores VITA hardcoded): riesgo admin-a-sí-mismo, sin usuario externo | documentado |
+
 ## ✅ COMPLETADO sesión 2026-04-24 (round 7 — XSS profundo en JS + app pages restantes)
 
 | Qué | Dónde |
