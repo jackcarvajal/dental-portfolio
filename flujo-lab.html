@@ -600,6 +600,7 @@ function handleFiles(files) {
   }
   renderFileList();
 }
+function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function removeFile(name) {
   selectedFiles = selectedFiles.filter(function(f){ return f.name !== name; });
   renderFileList();
@@ -612,9 +613,9 @@ function renderFileList() {
     var ext = f.name.split('.').pop().toUpperCase();
     return '<div class="file-item">' +
       '<i class="fas fa-file-code"></i>' +
-      '<span class="fname">' + f.name + '</span>' +
-      '<span class="fsize">' + (f.size/1024/1024).toFixed(1) + ' MB · ' + ext + '</span>' +
-      '<i class="fas fa-times fdel" title="Quitar" onclick="removeFile(\'' + f.name.replace(/'/g,"\\'") + '\')"></i>' +
+      '<span class="fname">' + escH(f.name) + '</span>' +
+      '<span class="fsize">' + (f.size/1024/1024).toFixed(1) + ' MB · ' + escH(ext) + '</span>' +
+      '<i class="fas fa-times fdel" title="Quitar" onclick="removeFile(\'' + escH(f.name) + '\')"></i>' +
     '</div>';
   }).join('');
 }
