@@ -725,7 +725,9 @@ async function publicarCaso() {
         const type = document.getElementById('caseType').value;
         const date = document.getElementById('caseDate').value.trim();
         const desc = document.getElementById('caseDescription').value.trim();
-        const drive= document.getElementById('driveLink').value.trim();
+        const driveRaw = document.getElementById('driveLink').value.trim();
+        const drive = driveRaw && (driveRaw.startsWith('https://') || driveRaw.startsWith('http://')) ? driveRaw : (driveRaw ? null : null);
+        if (driveRaw && !drive) { throw new Error('El link de Drive debe comenzar con https://'); }
         const id   = await getNextId();
         const base = SUPABASE_URL + '/storage/v1/object/public/' + BUCKET + '/';
 
