@@ -234,6 +234,20 @@ sql/patch-rls-authenticated-only.sql → mensajeros/despachos/creditos_cliente: 
 
 ---
 
+## ✅ COMPLETADO sesión 2026-04-24 (round 11 — últimas mejoras autónomas)
+
+| Qué | Dónde |
+|-----|-------|
+| **security** — `flujo-uploader.js`: añadida validación `validateMagicBytes()` antes de cada upload a Supabase | `js/flujo-uploader.js` |
+| **security** — `admin-panel.html` sección torre: `urgentes` e `incidencias` sin escHtml (severidad, tipo, descripcion, codigo) | `app/admin-panel.html` |
+| **ux** — `inputmode="tel"` en 12 inputs `type="tel"` para teclado numérico correcto en iOS | 11 archivos |
+| **ux** — `spellcheck="false"` en campos de contraseña (fix: bug roto del regex multi-línea corregido) | login.html, reset-password.html |
+| **a11y** — `aria-label` en 4 selects inline sin etiqueta (cambiar estado pedido, estado diseño, rol) | admin-panel, panel-interno |
+| **a11y** — `alt=""` en 4 imágenes decorativas (preview-img, upload-preview, foto-galería) | 3 app pages |
+| **Audit** — `gestionar-casos.html` modal edición: usa `.value =` (DOM property, safe). Sin issues | ✓ |
+| **Audit** — subscripciones realtime Supabase: cleanup correcto en client-panel y panel-interno | ✓ |
+| **Audit** — `novalidate` en formularios: intencional (todos tienen validación JS custom) | ✓ |
+
 ## ✅ COMPLETADO sesión 2026-04-24 (round 10 — CSP completo + XSS residual + upload-guard audit)
 
 | Qué | Dónde |
