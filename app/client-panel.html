@@ -984,8 +984,8 @@ function abrirAprobacion(id, link) {
     if (!_pedidosDoc.find(p => p.id === id)) {
         toast('Pedido no encontrado', 'error'); return;
     }
-    // Validar URL antes de inyectar en iframe
-    try { new URL(link); } catch { toast('Link de diseño inválido', 'error'); return; }
+    // Validar URL antes de inyectar en iframe (new URL acepta javascript: — verificar https explícitamente)
+    try { const u = new URL(link); if (u.protocol !== 'https:') throw new Error(); } catch { toast('Link de diseño inválido', 'error'); return; }
     _dapId = id;
     document.getElementById('dap-iframe').src = link;
     document.getElementById('dap-link-ext').href = link;
