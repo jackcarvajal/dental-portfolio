@@ -23,6 +23,10 @@
     const ACCEPT_EXTS = '.stl,.obj,.ply,.dcm,.zip,.3oxz,.3ox,.stlb,.stla,.jpg,.jpeg,.png,.webp,.tiff,.tif,.bmp,.gif';
     const IMG_EXTS    = new Set(['jpg','jpeg','png','webp','tiff','tif','bmp','gif']);
 
+    function escH(s) {
+        return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     const EXT_META = {
         stl:  { icon: 'fa-cube',        label: 'STL',       color: '#00d2ff' },
         obj:  { icon: 'fa-object-group',label: 'OBJ',       color: '#a78bfa' },
@@ -233,7 +237,7 @@
     <button class="pmv-stl-btn" onclick="ProdigyMultiViewer._wire('${id}')"><i class="fas fa-border-none"></i> Wire</button>
 </div>
 <div class="pmv-card-foot">
-    <span class="pmv-fname" title="${fObj.name}">${fObj.name}</span>
+    <span class="pmv-fname" title="${escH(fObj.name)}">${escH(fObj.name)}</span>
     <span class="pmv-fsize">${fObj.sizeMb} MB</span>
     <button class="pmv-del" onclick="ProdigyMultiViewer._remove('${id}')" title="Quitar"><i class="fas fa-times"></i></button>
 </div>`;
@@ -361,7 +365,7 @@
     <span class="pmv-icon-badge" style="background:${meta.color}22;color:${meta.color};border:1px solid ${meta.color}44">${meta.label}</span>
 </div>
 <div class="pmv-card-foot">
-    <span class="pmv-fname" title="${fObj.name}">${fObj.name}</span>
+    <span class="pmv-fname" title="${escH(fObj.name)}">${escH(fObj.name)}</span>
     <span class="pmv-fsize">${fObj.sizeMb} MB</span>
     <button class="pmv-del" onclick="ProdigyMultiViewer._remove('${fObj.id}')" title="Quitar"><i class="fas fa-times"></i></button>
 </div>`;
@@ -377,7 +381,7 @@
         const url = URL.createObjectURL(fObj.file);
         card.innerHTML = `
 <div class="pmv-canvas-wrap" style="cursor:zoom-in;" onclick="window.open('${url}','_blank')">
-    <img src="${url}" alt="${fObj.name}"
+    <img src="${url}" alt="${escH(fObj.name)}"
          style="width:100%;height:100%;object-fit:cover;display:block;"
          onload="this.style.opacity=1" style="opacity:0;transition:opacity .3s">
     <span style="position:absolute;top:6px;right:6px;background:${meta.color}22;color:${meta.color};
@@ -385,7 +389,7 @@
           border-radius:10px;letter-spacing:1px;">${meta.label}</span>
 </div>
 <div class="pmv-card-foot">
-    <span class="pmv-fname" title="${fObj.name}">${fObj.name}</span>
+    <span class="pmv-fname" title="${escH(fObj.name)}">${escH(fObj.name)}</span>
     <span class="pmv-fsize">${fObj.sizeMb} MB</span>
     <button class="pmv-del" onclick="ProdigyMultiViewer._remove('${fObj.id}')" title="Quitar"><i class="fas fa-times"></i></button>
 </div>`;
