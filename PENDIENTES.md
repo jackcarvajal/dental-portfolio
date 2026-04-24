@@ -234,6 +234,19 @@ sql/patch-rls-authenticated-only.sql → mensajeros/despachos/creditos_cliente: 
 
 ---
 
+## ✅ COMPLETADO sesión 2026-04-24 (round 10 — CSP completo + XSS residual + upload-guard audit)
+
+| Qué | Dónde |
+|-----|-------|
+| **CSP** — `frame-src`: añadido openstreetmap.org (mapa GPS), supabase.co+drive.google (iframe diseños), paddle.com | `_headers` |
+| **CSP** — `script-src`: añadido unpkg.com y cdn.paddle.com (QR scanner y Paddle SDK) | `_headers` |
+| **CSP** — `connect-src`: añadido paddle.com y checkout.wompi.co | `_headers` |
+| **security** — `abrirAprobacion()` en client-panel: `new URL()` acepta `javascript:` → añadido check `protocol==='https:'` | `app/client-panel.html` |
+| **XSS** — panel-interno-operaciones: `esc(nom)` en métricas top-doctor, `link_archivo` validar https, `esc(a.rol)` fallback, `esc(error.message)` | `app/panel-interno-operaciones.html` |
+| **Audit** — `upload-guard.js`: excelente — whitelist de extensiones + magic bytes (primeros 8 bytes) + filtrarPII | ✓ ningún cambio necesario |
+| **Audit** — SQL completo: 27 tablas × RLS ✓, funciones SECURITY DEFINER sin GRANTs anon peligrosos | ✓ |
+| **perf** — preconnect unpkg.com en inventario, mensajero y taller | 3 app pages |
+
 ## ✅ COMPLETADO sesión 2026-04-24 (round 9 — RLS SQL audit + a11y final)
 
 | Qué | Dónde |
