@@ -490,10 +490,11 @@
     }
 
     // ── Export CSV ────────────────────────────────────────────
+    function csvCell(v) { const s=String(v??''); const safe=/^[=+\-@]/.test(s)?"'"+s:s; return /[",\n\r]/.test(safe)?'"'+safe.replace(/"/g,'""')+'"':safe; }
     window.exportarCSV = () => {
         const rows = [['id','categoria','nombre','precio','activo','fast_ready']];
-        allItems.forEach(i => rows.push([i.id, i.categoria, `"${i.nombre}"`, i.precio, i.activo, i.fast_ready]));
-        const blob = new Blob([rows.map(r => r.join(',')).join('\n')], { type: 'text/csv' });
+        allItems.forEach(i => rows.push([i.id, i.categoria, i.nombre, i.precio, i.activo, i.fast_ready]));
+        const blob = new Blob([rows.map(r => r.map(csvCell).join(',')).join('\n')], { type: 'text/csv' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = 'prodigy-catalogo-' + new Date().toISOString().slice(0,10) + '.csv';
