@@ -1332,7 +1332,7 @@ function renderEquipo(lista) {
         <tr style="opacity:${a.activo ? 1 : 0.45};">
             <td><strong>${esc(a.nombre)}</strong></td>
             <td style="color:#94a3b8;font-size:0.82rem;">${esc(a.email)}</td>
-            <td><span style="background:${ROL_COLORS[a.rol]}22;color:${ROL_COLORS[a.rol]};border:1px solid ${ROL_COLORS[a.rol]}55;border-radius:20px;padding:3px 10px;font-size:0.72rem;font-weight:700;">${ROL_LABELS[a.rol] || a.rol}</span></td>
+            <td><span style="background:${ROL_COLORS[a.rol]}22;color:${ROL_COLORS[a.rol]};border:1px solid ${ROL_COLORS[a.rol]}55;border-radius:20px;padding:3px 10px;font-size:0.72rem;font-weight:700;">${ROL_LABELS[a.rol] || esc(a.rol)}</span></td>
             <td><span style="color:${a.activo ? '#00FF41' : '#f87171'};font-size:0.8rem;font-weight:700;">${a.activo ? '● Activo' : '○ Inactivo'}</span></td>
             <td style="color:#94a3b8;font-size:0.78rem;">${new Date(a.created_at).toLocaleDateString('es-CO')}</td>
             <td>
@@ -1540,7 +1540,7 @@ function renderPedidosDoc(arr) {
             </td>
             <td style="color:#94a3b8;font-size:.78rem">${fecha}</td>
             <td>
-                ${p.link_archivo ? `<a href="${p.link_archivo}" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);font-size:.75rem;"><i class="fas fa-link"></i> STL</a>` : '—'}
+                ${p.link_archivo?.startsWith('https://') ? `<a href="${esc(p.link_archivo)}" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);font-size:.75rem;"><i class="fas fa-link"></i> STL</a>` : '—'}
             </td>
         </tr>`;
     }).join('');
@@ -1597,7 +1597,7 @@ async function cargarRutador() {
     if (error) {
         ['rut-diseno','rut-fresado','rut-impresion','rut-qa'].forEach(id => {
             document.getElementById(id).innerHTML =
-                `<div class="lane-empty" style="color:#ef4444">Error: ${error.message}</div>`;
+                `<div class="lane-empty" style="color:#ef4444">Error: ${esc(error.message)}</div>`;
         });
         return;
     }
@@ -1928,7 +1928,7 @@ async function cargarMetricas() {
         const medals = ['🥇','🥈','🥉'];
         return `<div style="margin-bottom:10px;">
             <div style="display:flex;justify-content:space-between;font-size:.72rem;margin-bottom:4px;">
-                <span style="color:#cbd5e1">${medals[i]||'·'} ${nom}</span>
+                <span style="color:#cbd5e1">${medals[i]||'·'} ${esc(nom)}</span>
                 <span style="color:#D4AF37;font-weight:700">${n} casos</span>
             </div>
             <div style="background:rgba(255,255,255,.05);border-radius:4px;height:5px;">
