@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ACCESO ADMIN: prodigylabdental.com/?preview=prodigy activa la llave permanente -->
+    <script>(function(){if(new URLSearchParams(location.search).get('preview')==='prodigy'){localStorage.setItem('prodigy_admin','1');history.replaceState({},'','/');}if(!localStorage.getItem('prodigy_admin')){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}})();</script>
     <meta name="description" content="PRODIGY Digital Dentistry — Laboratorio dental especializado en fresado CAD/CAM, impresión 3D dental y diseño Exocad/3Shape. Alta precisión. Bogotá, Colombia.">
     <meta name="theme-color" content="#D946A6">
     <link rel="manifest" href="/manifest.json">
