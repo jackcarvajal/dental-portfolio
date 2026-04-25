@@ -717,7 +717,9 @@
     av.textContent = role === 'user' ? '👤' : '🤖';
     var bbl = document.createElement('div');
     bbl.className = 'pg-msg-bbl';
-    bbl.innerHTML = _pgEscHtml(text).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    // Usuarios: escapar HTML para prevenir XSS. Bot/fallback: confiar en el contenido interno.
+    var safe = role === 'user' ? _pgEscHtml(text) : text;
+    bbl.innerHTML = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
     div.appendChild(av);
     div.appendChild(bbl);
     wrap.appendChild(div);
