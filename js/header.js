@@ -656,7 +656,7 @@
   /* ── CHATBOT GLOBAL (Gemini 2.0) ─────────────────────────── */
   var _pgChatOpen    = false;
   var _pgChatHistory = [];
-  var _pgGKey = 'AIzaSyAQ.Ab8RN6KXBlWZNuFvmXS8Shgy96fO_ZszWghk2czHRMbpVZWPOw';
+  var _pgGKey = 'AIzaSyDlHhOnOLmG-bYk3VzCfyS-FXJOO0llbYg';
   var _pgGUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + _pgGKey;
 
   function _pgBuildPrompt() {
@@ -750,6 +750,7 @@
         })
       });
       var data = await res.json();
+      if (!res.ok) console.error('[PRODIGY BOT] HTTP', res.status, JSON.stringify(data));
       if (typing) typing.classList.remove('visible');
       if (data.candidates && data.candidates[0]) {
         var reply = data.candidates[0].content.parts[0].text;
