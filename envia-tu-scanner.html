@@ -580,6 +580,7 @@
     </div>
 </section>
 
+<script src="js/upload-guard.js"></script>
 <script src="js/footer.js?v=20260424"></script>
 
 <!-- Supabase -->
@@ -750,6 +751,11 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
     let archivo_url = null, archivo_nombre = null;
 
     if (selectedFile) {
+        // Validar magic bytes antes de subir
+        if (window.validateMagicBytes) {
+            const mb = await validateMagicBytes(selectedFile);
+            if (!mb.safe) { pubToast('Archivo bloqueado: ' + mb.error); btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Solicitud'; hideProg(); return; }
+        }
         setProg(15, 'Subiendo archivo…');
         try {
             const path = `${Date.now()}_${doctor.replace(/\s+/g,'_')}.${selectedFile.name.split('.').pop()}`;
