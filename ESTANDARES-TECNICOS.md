@@ -638,7 +638,18 @@ node -e "const fs=require('fs');const slugs=['nosotros','soporte','catalogo','po
 
 ## 16. CLEAN URLs — IMPLEMENTACIÓN COMPLETA
 
-### 16a. Archivos a actualizar al crear página nueva
+### 16a. IMPORTANTE — Cloudflare Pages sirve clean URLs nativamente
+
+**No se necesitan rewrites en `_redirects` para clean URLs.** Cloudflare Pages automáticamente sirve:
+- `/nosotros` → desde `nosotros.html`
+- `/journal` → desde `journal.html`
+- etc.
+
+Los rewrites `200` en `_redirects` **causan redirect loops** porque Cloudflare los procesa doblemente. **No agregar rewrites 200 para páginas HTML.**
+
+Los links internos `href="nosotros"` (sin .html) funcionan directamente.
+
+### 16b. Archivos a actualizar al crear página nueva
 
 | Archivo | Qué hacer |
 |---|---|

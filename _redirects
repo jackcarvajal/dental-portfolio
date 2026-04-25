@@ -20,10 +20,10 @@
 /*.log                          /404.html  404
 
 # ─────────────────────────────────────────────────────────────
-# CLEAN URLs — DESHABILITADO temporalmente (causaba loop con
-# Cloudflare Redirect Rules del dashboard).
-# ACTIVAR con "Pretty URLs" en Cloudflare Pages Settings:
-#   Pages → tu proyecto → Settings → General → Pretty URLs → ON
+# CLEAN URLs — NO NECESITAN CONFIGURACIÓN
+# Cloudflare Pages sirve /journal desde journal.html NATIVAMENTE.
+# Los 200 rewrites causaban loop porque Cloudflare los procesaba
+# doblemente. Los links href="journal" (sin .html) ya funcionan.
 # ─────────────────────────────────────────────────────────────
 # /nosotros               /nosotros.html              200
 # /soporte                /soporte.html               200
