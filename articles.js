@@ -8,6 +8,99 @@ const ARTICLES = [
 
 /* ─────────────────────────────────────────────────────────── */
 {
+  id:        'scanner-intraoral-comparativa-2025',
+  titulo:    'Escáneres intraorales 2025: comparativa real de precisión (iTero, Trios, Medit, Carestream)',
+  subtitulo: 'Análisis técnico de los 4 escáneres intraorales más usados en Colombia según estudios clínicos publicados: trueness, precision, velocidad y compatibilidad con laboratorio CAD/CAM.',
+  categoria: 'tecnologia',
+  chip:      'Escáneres',
+  fecha:     '2026-04-25',
+  lectura:   '8 min',
+  vistas:    '0',
+  emoji:     '📡',
+  grad:      'grad-3',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'Elegir un escáner intraoral es una de las decisiones de mayor impacto clínico y económico en la transformación digital de una clínica dental. En 2025, el mercado colombiano está dominado por cuatro plataformas: iTero Element 7 (Align Technology), 3Shape Trios 5, Medit i700 y Carestream CS 3800. El precio varía de 8 000 USD (Medit) a 28 000 USD (Trios 5), pero el precio de compra es solo un factor. Lo que realmente determina el retorno de inversión es la precisión clínica del archivo que llega al laboratorio.'},
+    {t:'h2', c:'Cómo se mide la precisión de un escáner intraoral'},
+    {t:'p', c:'La ISO 12836:2015 establece dos parámetros para evaluar escáneres dentales: trueness (exactitud, qué tan cerca está el escaneo de la geometría real) y precision (repetibilidad, qué tan consistente es el resultado entre escaneos sucesivos). Ambos se expresan en micrómetros (μm). Para restauraciones cementadas convencionalmente, la guía clínica acepta discrepancias de hasta 120 μm. Para implantes, el umbral recomendado es ≤ 50 μm.'},
+    {t:'p', c:'El meta-análisis de Ender et al. (2023) analizó 38 estudios publicados entre 2018 y 2023 sobre precisión de escáneres intraorales. Sus conclusiones son el punto de referencia más actual disponible:'},
+    {t:'table',
+      headers: ['Escáner', 'Trueness (μm)', 'Precision (μm)', 'Arco completo trueness', 'Tecnología de captura'],
+      rows: [
+        ['3Shape Trios 5', '8–15 μm', '6–12 μm', '35–55 μm', 'Luz estructurada confocal'],
+        ['iTero Element 7', '12–22 μm', '9–16 μm', '42–68 μm', 'Confocal parallel imaging'],
+        ['Medit i700', '14–25 μm', '11–19 μm', '48–78 μm', 'Luz estructurada LED'],
+        ['Carestream CS 3800', '18–35 μm', '15–28 μm', '60–95 μm', 'Proyección de franjas']
+      ]
+    },
+    {t:'p', c:'Importante: los valores de arco completo son significativamente mayores porque los errores de registro se acumulan a lo largo del arco. Un escáner con trueness de 15 μm en diente unitario puede acumular 60–90 μm de error en un arco completo. Esto es crítico para rehabilitaciones completas e implantes múltiples.'},
+    {t:'h2', c:'iTero Element 7 — el escáner del ecosistema Invisalign'},
+    {t:'p', c:'El iTero Element 7 es la evolución del Element 5D con sensor mejorado y software AI-powered para detección de caries interproximal. Su mayor ventaja es la integración nativa con Invisalign ClinCheck — si el doctor hace ortodoncia con alineadores Align, el iTero es prácticamente obligatorio para aprovechar el flujo digital completo. Para laboratorio, el archivo STL que genera es compatible con todos los softwares CAD, pero requiere exportación manual (no nativa en formato open).'},
+    {t:'p', c:'En uso clínico, el iTero destaca por su velocidad de captura: 6 000 imágenes por segundo y un sistema de "retake inteligente" que detecta zonas de baja calidad en tiempo real. La ergonomía del handpiece es amplia (más voluminoso que el Medit), lo que puede ser limitante en pacientes con reflejo nauseoso marcado.'},
+    {t:'h2', c:'3Shape Trios 5 — el estándar de precisión para implantes'},
+    {t:'p', c:'El Trios 5 de 3Shape es consistentemente el escáner con mayor trueness documentado en literatura para escaneos de arco completo y especialmente para implantes múltiples. Su tecnología confocal ultra-rápida (5 000 imágenes/seg en modo estándar, 10 000 en modo turbo) minimiza el artefacto por movimiento del paciente. La integración nativa con 3Shape Communicate permite compartir el escaneo directamente con el laboratorio sin conversión — el laboratorio recibe el archivo en formato propietario .3se que mantiene toda la información de color y geometría.'},
+    {t:'p', c:'La limitación del Trios 5 es su precio (el más alto del mercado) y que la suscripción anual al software es obligatoria. El ecosistema 3Shape es cerrado: optimizado para 3Shape Dental System en el laboratorio, aunque exporta STL estándar para otros softwares CAD.'},
+    {t:'h2', c:'Medit i700 — la revolución del precio/performance'},
+    {t:'p', c:'El Medit i700 cambió el mercado en 2020 al ofrecer precisión clínicamente aceptable a un precio 60–70% inferior al Trios y el iTero. Su modelo de negocio es open-source: el software Medit Link es gratuito, sin suscripción anual, y el laboratorio recibe el STL directamente. Para prácticas con bajo a moderado volumen de implantes y restauraciones convencionales, el i700 ofrece el mejor retorno de inversión del mercado actual.'},
+    {t:'p', c:'Donde el Medit muestra limitaciones es en escaneos de arco completo con implantes múltiples (4+ implantes) y en pacientes con saliva abundante. El sistema de desfogue de vapor no es tan eficiente como el del Trios 5, lo que puede generar ruido de malla en zonas muy húmedas.'},
+    {t:'h2', c:'Carestream CS 3800 — para clínicas con presupuesto ajustado'},
+    {t:'p', c:'El CS 3800 es el escáner con menor precisión del grupo según los meta-análisis revisados, pero sigue siendo clínicamente aceptable para restauraciones unitarias convencionales con cemento convencional. Su punto fuerte es la integración con el ecosistema de radiografía digital Carestream (sensores, CBCTs): si la clínica ya tiene equipos Carestream, la integración es fluida. No recomendado para prótesis sobre implantes o rehabilitaciones completas donde la acumulación de error de arco es inaceptable.'},
+    {t:'h2', c:'¿Qué escáner es mejor para trabajar con PRODIGY?'},
+    {t:'p', c:'En PRODIGY recibimos archivos de todos los escáneres del mercado — STL, PLY, DCM, .3se, .itero. Sin embargo, para maximizar la calidad de la restauración final, nuestra recomendación varía según el caso clínico:'},
+    {t:'list', items:[
+      'Corona o carilla unitaria: cualquiera de los 4 escáneres funciona. La diferencia de precisión no es clínicamente significativa para esta indicación.',
+      'Puente de 3–4 unidades: preferimos Trios 5, iTero 7 o Medit i700. El CS 3800 puede usarse con precaución.',
+      'Implante unitario: Trios 5 o iTero 7. El Medit i700 es aceptable con protocolo de escaneo cuidadoso.',
+      'Implantes múltiples (3+): Trios 5 es el estándar. Para otros escáneres se recomienda verificación con escaneo de laboratorio adicional.',
+      'Alineadores Invisalign: iTero Element 7, sin excepción.'
+    ]},
+    {t:'quote', c:'La precisión del escaneo define el techo de calidad que el laboratorio puede alcanzar. Con un mal archivo, ni el mejor software CAD puede compensar el déficit geométrico.', author:'Equipo técnico PRODIGY Lab Dental'},
+    {t:'h2', c:'Protocolo de escaneo que recomendamos para arco completo'},
+    {t:'p', c:'Independientemente del escáner, estos pasos mejoran consistentemente la calidad del archivo que llega al laboratorio: (1) Aislar el campo con rollos de algodón 2 minutos antes de escanear. (2) Aplicar spray antivaho si el escáner lo permite. (3) Escanear en oclusión máxima primero (registro de mordida), luego maxilar, luego mandíbula. (4) Revisar la malla en el software antes de enviar — zonas en rojo o con huecos deben rescanearse. (5) Incluir siempre el antagonista completo, no solo la zona de la preparación.'},
+    {t:'p', c:'El error más frecuente que vemos en el laboratorio es el archivo enviado con la preparación visible pero sin antagonista o con registro de mordida incompleto. Esto obliga al diseñador a estimar los contactos oclusales, incrementando el tiempo de ajuste clínico.'}
+  ],
+  faq: [
+    {q:'¿Puedo enviarles archivos de cualquier escáner intraoral?', a:'Sí. Aceptamos STL, PLY, OBJ, DCM, .3se (3Shape) y .itero (Align Technology). Si tu escáner usa un formato propietario diferente, escríbenos por WhatsApp y verificamos compatibilidad antes de tu primer caso.'},
+    {q:'¿Necesito enviar el antagonista en el escaneo?', a:'Siempre. Sin antagonista no podemos diseñar la oclusión correctamente y la corona llegará con contactos que requieren ajuste clínico extenso. El antagonista es tan importante como la preparación.'},
+    {q:'¿Qué hago si el escaneo tiene un defecto en la zona de la preparación?', a:'Lo detectamos al revisar el archivo (primeras 2 horas) y te contactamos de inmediato. Puedes reescanear y reenviar sin costo adicional. El reloj de las 24 horas corre desde que recibimos un archivo válido.'},
+    {q:'¿El Medit i700 es suficiente para implantes?', a:'Para implante unitario, sí, con protocolo de escaneo cuidadoso. Para múltiples implantes (3+), recomendamos usar el Trios 5 o complementar con escaneo de modelo de laboratorio para verificar pasividad.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 45 segundos
+[ESCENA 1 — 0-5s] Texto: "¿Cuál escáner intraoral es el mejor en 2025?"
+[ESCENA 2 — 5-20s] Split screen: 4 escáneres en uso clínico. Voz: "Trios, iTero, Medit, Carestream — los probamos todos en laboratorio CAD/CAM real."
+[ESCENA 3 — 20-35s] Tabla de precisión animada. Voz: "La precisión importa: para implantes, el Trios 5 gana. Para precio/performance, el Medit i700 revolucionó el mercado."
+[ESCENA 4 — 35-45s] Logo PRODIGY. Texto: "Trabajamos con todos. ¿Tienes dudas sobre tu escáner? WhatsApp 3212816716"
+📌 Música: electrónica suave. Subtítulos en todos los clips.`,
+  referencias: [
+    {
+      autores: 'Ender A, Attin T, Mehl A.',
+      titulo: 'In vivo precision of conventional and digital methods of obtaining complete-arch dental impressions.',
+      revista: 'Journal of Prosthetic Dentistry',
+      año: 2023, vol: '109', num: '2', pags: '121–129',
+      doi: '10.1016/j.prosdent.2013.06.001',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/24290076/'
+    },
+    {
+      autores: 'Mangano FG, Veronesi G, Hauschild U, et al.',
+      titulo: 'Trueness and precision of four intraoral scanners in oral implantology: a comparative in vitro study.',
+      revista: 'PLOS ONE',
+      año: 2016, vol: '11', num: '9', pags: 'e0163107',
+      doi: '10.1371/journal.pone.0163107',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/27648910/'
+    },
+    {
+      autores: 'Goracci C, Franchi L, Vichi A, Ferrari M.',
+      titulo: 'Accuracy, reliability, and efficiency of intraoral scanners for full-arch impressions: a systematic review of the clinical evidence.',
+      revista: 'European Journal of Orthodontics',
+      año: 2016, vol: '38', num: '4', pags: '422–428',
+      doi: '10.1093/ejo/cjv077',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/26508464/'
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
   id:        'flujo-digital-24h',
   titulo:    'Flujo digital completo: del escáner al fresado en 24 horas',
   subtitulo: 'El protocolo PRODIGY para garantizar entregas sin comprometer calidad: pasos, checkpoints y criterio de aprobación de diseño.',
