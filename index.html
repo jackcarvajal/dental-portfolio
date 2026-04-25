@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ACCESO ADMIN: prodigylabdental.com/?preview=prodigy activa la llave permanente -->
-    <script>(function(){if(new URLSearchParams(location.search).get('preview')==='prodigy'){localStorage.setItem('prodigy_admin','1');history.replaceState({},'','/');}if(!localStorage.getItem('prodigy_admin')){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}})();</script>
+    <!-- ACCESO ADMIN: visita prodigylabdental.com/?preview=prodigy UNA SOLA VEZ -->
+    <!-- La cookie dura 30 días — no necesitas repetirlo aunque cierres el browser -->
+    <script>
+    (function(){
+      function tieneCookie(){return document.cookie.split(';').some(function(c){return c.trim().startsWith('pg_admin=1');});}
+      function setCookie(){var d=new Date();d.setDate(d.getDate()+30);document.cookie='pg_admin=1;expires='+d.toUTCString()+';path=/;SameSite=Lax';}
+      if(new URLSearchParams(location.search).get('preview')==='prodigy'){setCookie();history.replaceState({},'','/');}
+      if(!tieneCookie()){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}
+    })();
+    </script>
     <meta name="description" content="PRODIGY Digital Dentistry — Laboratorio dental especializado en fresado CAD/CAM, impresión 3D dental y diseño Exocad/3Shape. Alta precisión. Bogotá, Colombia.">
     <meta name="theme-color" content="#D946A6">
     <link rel="manifest" href="/manifest.json">
