@@ -9,8 +9,8 @@
  */
 
 const CACHE_NAME  = 'prodigy-cache-v1';
-const PUSH_ICON   = '/favicon.ico';
-const PUSH_BADGE  = '/favicon.ico';
+const PUSH_ICON   = '/assets/icons/icon-192.png';
+const PUSH_BADGE  = '/assets/icons/icon-192.png';
 
 /* ── Instalación: pre-cachear assets críticos ── */
 self.addEventListener('install', (event) => {
