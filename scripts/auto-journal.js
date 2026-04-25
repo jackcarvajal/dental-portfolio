@@ -290,7 +290,20 @@ function buildArticleObject(topic, aiData, image) {
     og_img:    image ? image.url : '',
     img_credit: image ? image.credit : '',
     img_link:   image ? image.link : '',
-    contenido:  aiData.contenido,
+    autor:      'Alejandro Carvajal',
+    instagram:  'jackcarvajal',
+    contenido:  image
+      ? (() => {
+          // Inserta imagen de Wikipedia después del primer párrafo
+          const c = [...(aiData.contenido || [])];
+          const firstP = c.findIndex(b => b.t === 'p');
+          const imgBlock = { t:'img', src: image.url, alt: topic.titulo_seed,
+            caption: `${image.credit} · Wikimedia Commons (CC BY-SA)` };
+          if (firstP >= 0) c.splice(firstP + 1, 0, imgBlock);
+          else c.unshift(imgBlock);
+          return c;
+        })()
+      : aiData.contenido,
     faq:        aiData.faq || [],
     referencias: aiData.referencias || []
   };
