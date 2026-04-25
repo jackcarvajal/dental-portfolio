@@ -1,5 +1,5 @@
 // Prodigy Lab Dental — Service Worker v2.0
-const CACHE = 'prodigy-v6';
+const CACHE = 'prodigy-v7';
 
 // Assets estáticos que siempre cacheamos en install
 // Usar clean URLs (sin .html) para que coincidan con lo que navega el usuario
