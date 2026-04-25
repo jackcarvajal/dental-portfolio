@@ -163,11 +163,11 @@
             'SERVICIOS <i class="fas fa-chevron-down pnav-dd-arrow"></i>' +
           '</button>' +
           '<div class="pnav-dd-menu" role="menu">' +
-            '<a href="flujo-diseno.html" role="menuitem">' +
+            '<a href="flujo-diseno" role="menuitem">' +
               '<i class="fas fa-pen-ruler"></i>' +
               '<span>DISEÑOS CAD<span class="dd-sub">Exocad · 3Shape · Archivo STL</span></span>' +
             '</a>' +
-            '<a href="flujo-fresado.html" role="menuitem">' +
+            '<a href="flujo-fresado" role="menuitem">' +
               '<i class="fas fa-cog"></i>' +
               '<span>CENTRO FRESADO E IMPRESIÓN<span class="dd-sub">Zirconio · Disilicato · Resina</span></span>' +
             '</a>' +
@@ -204,8 +204,8 @@
 
     /* ── OVERLAY MÓVIL ── */
     '<div class="pnav-ov" id="pnav-ov">' +
-      '<a href="flujo-diseno.html"><i class="fas fa-pen-ruler" style="margin-right:6px"></i> DISEÑOS CAD</a>' +
-      '<a href="flujo-fresado.html"><i class="fas fa-cog" style="margin-right:6px"></i> CENTRO FRESADO E IMPRESIÓN</a>' +
+      '<a href="flujo-diseno"><i class="fas fa-pen-ruler" style="margin-right:6px"></i> DISEÑOS CAD</a>' +
+      '<a href="flujo-fresado"><i class="fas fa-cog" style="margin-right:6px"></i> CENTRO FRESADO E IMPRESIÓN</a>' +
       '<a href="escaner-domicilio"><i class="fas fa-mobile-alt" style="margin-right:6px"></i> ESCÁNER MÓVIL</a>' +
       '<a href="portafolio">PORTAFOLIO</a>' +
       '<a href="envia-tu-scanner">ENVÍA TU ESCÁNER</a>' +

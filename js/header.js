@@ -454,7 +454,7 @@
                 '<i class="fas fa-cog" style="color:#D4AF37;font-size:1.2rem;"></i>' +
                 '<div><strong>Fabricación CAM</strong><span>Zirconia · Disilicato · PMMA</span></div>' +
               '</a>' +
-              '<a href="/flujo-lab.html" class="pnav2-ped-card">' +
+              '<a href="/flujo-lab" class="pnav2-ped-card">' +
                 '<i class="fas fa-layer-group" style="color:#D946A6;font-size:1.2rem;"></i>' +
                 '<div><strong>Flujo Lab Full</strong><span>Modelo → diseño → acabado final</span></div>' +
               '</a>' +
@@ -506,7 +506,7 @@
             '<span class="pcta-card-title">Fabricación CAM</span>' +
             '<span class="pcta-card-sub">Zirconia · PMMA</span>' +
           '</a>' +
-          '<a href="/flujo-lab.html" class="pcta-card pcta-card-lab">' +
+          '<a href="/flujo-lab" class="pcta-card pcta-card-lab">' +
             '<i class="fas fa-layer-group"></i>' +
             '<span class="pcta-card-title">Flujo Lab Full</span>' +
             '<span class="pcta-card-sub">Completo → entrega</span>' +

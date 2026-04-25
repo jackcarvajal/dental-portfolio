@@ -45,6 +45,10 @@
 /seguimiento-caso       /seguimiento-caso.html      200
 /seguimiento            /seguimiento-caso.html      200
 /patient                /patient.html               200
+/flujo-diseno           /flujo-diseno.html          200
+/flujo-fresado          /flujo-fresado.html         200
+/flujo-impresion        /flujo-impresion.html       200
+/flujo-lab              /flujo-lab.html             200
 /contacto               /nosotros#contacto          301
 
 # ─────────────────────────────────────────────────────────────

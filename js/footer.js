@@ -136,8 +136,8 @@
         '<h4>Manufactura (Colombia)</h4>' +
         '<ul>' +
           '<li><a href="fresado-cam">Fresado CAM — Servicios</a></li>' +
-          '<li><a href="flujo-fresado.html">Pedir Fresado</a></li>' +
-          '<li><a href="flujo-impresion.html">Impresión 3D Dental</a></li>' +
+          '<li><a href="flujo-fresado">Pedir Fresado</a></li>' +
+          '<li><a href="flujo-impresion">Impresión 3D Dental</a></li>' +
           '<li><a href="catalogo">Catálogo de Materiales</a></li>' +
           '<li><a href="escaner-domicilio">Escáner Móvil a Domicilio</a></li>' +
         '</ul>' +
@@ -148,7 +148,7 @@
         '<h4>Ecosistema Digital</h4>' +
         '<ul>' +
           '<li><a href="diseno-cad">Diseño CAD — Servicios</a></li>' +
-          '<li><a href="flujo-diseno.html">Pedir Diseño CAD</a></li>' +
+          '<li><a href="flujo-diseno">Pedir Diseño CAD</a></li>' +
           '<li><a href="envia-tu-scanner">Envía tu Escáner</a></li>' +
           '<li><a href="journal">PRODIGY Journal</a></li>' +
           '<li><a href="seguimiento-caso">Seguimiento en Vivo</a></li>' +
