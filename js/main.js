@@ -59,10 +59,7 @@
         const portfolioGrid = document.querySelector('.portfolio-grid');
         
         // Validar que existe el contenedor
-        if (!portfolioGrid) {
-            console.error('❌ No se encontró el contenedor .portfolio-grid');
-            return;
-        }
+        if (!portfolioGrid) return;
 
         // Validar que existen datos
         if (typeof PATIENTS_DATA === 'undefined' || !PATIENTS_DATA || PATIENTS_DATA.length === 0) {
