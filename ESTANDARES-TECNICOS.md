@@ -4,6 +4,20 @@
 > **Actualizar este archivo cada vez que se implemente un nuevo patrón.**
 > Última actualización: 2026-04-24
 
+## ESTADO ACTUAL DEL PROYECTO (2026-04-24 — round 19)
+- ✅ **CERO** referencias locales rotas (assets, scripts, imágenes) — verificado con scanner
+- ✅ `favicon.ico` / `logo-prodigy.png` (no existían) → SVG inline en mensajero, index, mantenimiento
+- ✅ `portal.html` cargaba `patients-data.js` y `main.js` desde ruta incorrecta → corregido a `js/`
+- ✅ `app/sw.js` push icon usaba `/favicon.ico` (no existe) → `/assets/icons/icon-192.png`
+- ✅ `agregar-caso.html` valida magic bytes también en archivos de carpeta Exocad
+
+## REGLA: Al agregar scripts en HTML
+```html
+<!-- Rutas de scripts JS: usar prefijo js/ explícitamente, no relativo -->
+<script src="js/mi-script.js"></script>       <!-- ✅ -->
+<script src="mi-script.js"></script>          <!-- ❌ si el archivo está en js/ -->
+```
+
 ## ESTADO ACTUAL DEL PROYECTO (2026-04-24 — round 18 — ESTADO FINAL)
 - ✅ **CERO .html** en URLs navegables — verificado con scan global de TODO el proyecto
 - ✅ Todas las páginas públicas y app/ tienen favicon, theme-color, manifest
