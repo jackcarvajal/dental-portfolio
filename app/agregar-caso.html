@@ -772,6 +772,13 @@ async function publicarCaso() {
         // ── Exocad (opcional) — sube carpeta completa ──
         let exocadUrl = null;
         if (exocadFile && exocadFolder.length) {
+            // Validar magic bytes de archivos Exocad (evitar ejecutables)
+            if (window.validateMagicBytes) {
+                for (const ef of exocadFolder) {
+                    const mb = await validateMagicBytes(ef);
+                    if (!mb.safe) throw new Error('Archivo Exocad bloqueado "' + ef.name + '": ' + mb.error);
+                }
+            }
             // La carpeta raíz del export, ej. "CasoFullArch/"
             const folderRoot = exocadFolder[0].webkitRelativePath.split('/')[0];
             setProgress('Subiendo visor Exocad (0/' + exocadFolder.length + ')...');
