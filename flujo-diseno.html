@@ -324,7 +324,7 @@
     <script src="https://www.paypal.com/sdk/js?client-id=AfJ71Yzfk4hmHF_hj6F9sdUqTLCK9tiImCegiXOTpScB81NhLLDuiKX2u37aY_E4swf8UO8QuC7jvaQr&currency=USD&intent=capture&locale=es_CO" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/auth-guard.js"></script>
-<script>ProdigyAuth.require('client','/app/login.html?redirect='+encodeURIComponent(location.pathname));</script>
+<script>ProdigyAuth.require(['client','admin'],'/app/login.html?redirect='+encodeURIComponent(location.pathname));</script>
 </head>
 <body>
 
