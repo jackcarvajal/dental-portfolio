@@ -1,10 +1,9 @@
 // Prodigy Lab Dental — Service Worker v2.0
-const CACHE = 'prodigy-v7';
+const CACHE = 'prodigy-v8';
 
 // Assets estáticos que siempre cacheamos en install
-// Usar clean URLs (sin .html) para que coincidan con lo que navega el usuario
 const PRECACHE = [
-  '/',
+  // '/' — NO cachear el home: tiene el bypass de preview que debe ejecutarse siempre
   '/portafolio',
   '/calculadora',
   '/catalogo',
@@ -28,6 +27,7 @@ const PRECACHE = [
 
 // Rutas que NUNCA cacheamos (siempre network)
 const NEVER_CACHE = [
+  '/',                     // Homepage: tiene bypass, debe ser siempre fresco
   '/app/',
   '/sql/',
   '/supabase/',
