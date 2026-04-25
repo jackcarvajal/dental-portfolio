@@ -4,6 +4,22 @@
 > **Actualizar este archivo cada vez que se implemente un nuevo patrón.**
 > Última actualización: 2026-04-24
 
+## ESTADO ACTUAL DEL PROYECTO (2026-04-24 — round 20 — BUGS CRÍTICOS)
+- ✅ **SW v7** — invalida cache con mantenimiento.html servido desde SW anterior
+- ✅ **CSP `connect-src`** — añadido `generativelanguage.googleapis.com` (bot IA bloqueado por CSP) y `accounts.google.com` + `*.googleapis.com` (Google OAuth bloqueado)
+- ✅ **CSP `frame-src`** — añadido `accounts.google.com` para Google Sign-In popup
+- ✅ **0 referencias locales rotas** — favicon.ico, logo-prodigy.png, patients-data.js, main.js
+- ✅ **app/sw.js** — icono push `/favicon.ico` → `/assets/icons/icon-192.png`
+- ⚠️ **Para Alejandro**: Hard refresh `Ctrl+Shift+R` para forzar nuevo SW inmediatamente
+
+## REGLA: Nuevas APIs externas en el bot o funciones
+```
+# Agregar siempre a _headers connect-src cuando se añada una API fetch nueva:
+# generativelanguage.googleapis.com — Gemini AI (bot)
+# accounts.google.com — Google OAuth
+# *.googleapis.com — Google APIs en general
+```
+
 ## ESTADO ACTUAL DEL PROYECTO (2026-04-24 — round 19)
 - ✅ **CERO** referencias locales rotas (assets, scripts, imágenes) — verificado con scanner
 - ✅ `favicon.ico` / `logo-prodigy.png` (no existían) → SVG inline en mensajero, index, mantenimiento
