@@ -4,6 +4,14 @@
 > **Actualizar este archivo cada vez que se implemente un nuevo patrón.**
 > Última actualización: 2026-04-24
 
+## ESTADO ACTUAL DEL PROYECTO (2026-04-24 — round 18 — ESTADO FINAL)
+- ✅ **CERO .html** en URLs navegables — verificado con scan global de TODO el proyecto
+- ✅ Todas las páginas públicas y app/ tienen favicon, theme-color, manifest
+- ✅ `patient.html` tiene SW registration, favicon, theme-color y manifest
+- ✅ Flujos internos (flujo-diseno/fresado/impresion/lab) tienen clean URLs en `_redirects`
+- ✅ `upload-guard.js` + `validateMagicBytes` en TODOS los puntos de upload
+- ✅ Favicon 💎 en todas las páginas (incluyendo contacto.html y flujo-lab.html)
+
 ## ESTADO ACTUAL DEL PROYECTO (2026-04-24 — round 17)
 - ✅ Todas las páginas `app/` tienen `<meta name="theme-color" content="#D946A6">`
 - ✅ Todas las páginas `app/` tienen `<link rel="manifest" href="/manifest.json">`
