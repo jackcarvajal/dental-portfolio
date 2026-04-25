@@ -202,7 +202,7 @@
       pt: 'prodigylabdental.com &nbsp;·&nbsp; Laboratório dental de precisão'
     },
 
-    /* ── DISEÑO CAD (diseno-cad.html) ─────────────────────── */
+    /* ── DISEÑO CAD (diseno-cad) ─────────────────────── */
     'cad.hero.tag': {
       es: 'Diseño CAD · Global · 24–48 h',
       en: 'CAD Design · Global · 24–48 h',
