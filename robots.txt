@@ -9,6 +9,11 @@ Disallow: /temporal/
 Disallow: /sql/
 Disallow: /supabase/
 Disallow: /patient
+Disallow: /patient.html
+Disallow: /portal
+Disallow: /portal.html
+Disallow: /mantenimiento
+Disallow: /contacto
 Disallow: /admin-panel.html
 Disallow: /agregar-caso.html
 Disallow: /enviar-produccion-drive.html
