@@ -31,6 +31,7 @@ const NEVER_CACHE = [
   '/app/',
   '/sql/',
   '/supabase/',
+  '/mantenimiento',        // Nunca cachear la página de mantenimiento
   'supabase.co',
   'googleapis.com',
   'google-analytics.com',
