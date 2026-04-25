@@ -50,47 +50,253 @@
 <noscript><div style="text-align:center;padding:40px 20px;background:#0d1520;color:#94a3b8;font-family:sans-serif;">El seguimiento de caso requiere JavaScript. Actívalo o <a href="https://wa.me/573212816716" style="color:#D946A6;">consulta tu caso por WhatsApp</a>.</div></noscript>
 <script src="js/header.js?v=20260425"></script>
 
-    <!-- TÍTULO DE PÁGINA -->
-    <div style="background:linear-gradient(135deg,rgba(212,175,55,0.06),rgba(142,36,170,0.06));border-bottom:1px solid rgba(212,175,55,0.25);padding:14px 40px;text-align:center;">
-        <span style="font-size:0.75rem;font-weight:700;color:rgba(212,175,55,0.6);text-transform:uppercase;letter-spacing:3px;">PRODIGY DIGITAL DENTISTRY</span>
-        <h2 style="font-size:1.4rem;font-weight:800;color:#D4AF37;text-transform:uppercase;letter-spacing:2px;margin:4px 0 0;">📦 Seguimiento de Pedidos de Producción</h2>
-    </div>
+    <style>
+      @keyframes spinSeg { to { transform:rotate(360deg); } }
+      @keyframes blink2  { 0%,100%{opacity:1} 50%{opacity:.3} }
+      .seg-step-arrow { display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#334155; }
+      @media(max-width:640px){ .seg-step-arrow{ display:none; } }
+    </style>
 
-    <div style="max-width:1100px;margin:40px auto;padding:40px 20px;">
-        
-        <!-- ÁREA DE BÚSQUEDA -->
-        <div style="background:linear-gradient(135deg,rgba(142,36,170,0.2),rgba(30,40,66,0.5));padding:60px 40px;border-radius:20px;margin-bottom:40px;">
-            <div style="text-align:center;margin-bottom:40px;">
-                <div style="font-size:4rem;margin-bottom:20px;">🔍</div>
-                <h1 style="font-size:2.5rem;background:linear-gradient(135deg,#FFD700,#8E24AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px;">
-                    Seguimiento de Tu Caso
-                </h1>
-                <p style="color:rgba(248,250,252,0.8);font-size:1.1rem;">Consulta el estado en tiempo real</p>
+    <!-- ═══ HERO ═══════════════════════════════════════════════════════════ -->
+    <section style="background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(217,70,166,0.14) 0%,transparent 70%);padding:60px 20px 0;text-align:center;position:relative;overflow:hidden;">
+      <div style="max-width:760px;margin:0 auto;position:relative;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(217,70,166,0.12);border:1px solid rgba(217,70,166,0.3);border-radius:100px;padding:6px 18px;font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#D946A6;margin-bottom:24px;">
+          <span style="width:6px;height:6px;background:#00FF41;border-radius:50%;display:inline-block;animation:blink2 2s infinite;"></span>
+          Sistema activo · Actualización en tiempo real
+        </div>
+        <h1 style="font-size:clamp(2rem,5vw,3.4rem);font-weight:900;line-height:1.1;color:#f8fafc;margin-bottom:18px;">
+          Sigue Tu Caso<br>
+          <span style="background:linear-gradient(135deg,#D946A6,#00d2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">en Tiempo Real</span>
+        </h1>
+        <p style="color:#94a3b8;font-size:1.05rem;max-width:540px;margin:0 auto 28px;line-height:1.7;">
+          El único laboratorio CAD/CAM en Colombia con trazabilidad completa de pedidos — del escáner a la entrega, cada paso visible desde tu celular o computador.
+        </p>
+        <!-- Trust badges -->
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:52px;">
+          <span style="display:inline-flex;align-items:center;gap:7px;background:rgba(0,255,65,0.07);border:1px solid rgba(0,255,65,0.2);border-radius:100px;padding:7px 16px;font-size:.78rem;color:#e2e8f0;"><i class="fas fa-shield-alt" style="color:#00FF41;"></i> Ley 1581 · Habeas Data</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;background:rgba(0,210,255,0.07);border:1px solid rgba(0,210,255,0.2);border-radius:100px;padding:7px 16px;font-size:.78rem;color:#e2e8f0;"><i class="fas fa-lock" style="color:#00d2ff;"></i> Cifrado TLS · Datos encriptados</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;background:rgba(217,70,166,0.08);border:1px solid rgba(217,70,166,0.25);border-radius:100px;padding:7px 16px;font-size:.78rem;color:#e2e8f0;"><i class="fas fa-medal" style="color:#D946A6;"></i> #1 en precisión CAD/CAM Colombia</span>
+        </div>
+      </div>
+    </section>
+
+    <div style="max-width:1100px;margin:0 auto;padding:0 20px 60px;">
+
+      <!-- ═══ BENEFICIOS ══════════════════════════════════════════════════ -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:48px;">
+        <div style="background:rgba(0,210,255,0.05);border:1px solid rgba(0,210,255,0.18);border-radius:16px;padding:24px;">
+          <div style="font-size:1.7rem;margin-bottom:10px;">⚡</div>
+          <h3 style="color:#00d2ff;font-size:.9rem;font-weight:700;margin-bottom:7px;">Estado en tiempo real</h3>
+          <p style="color:#64748b;font-size:.8rem;line-height:1.6;margin:0;">Cada movimiento de tu caso en producción se refleja al instante — sin llamadas, sin esperas.</p>
+        </div>
+        <div style="background:rgba(217,70,166,0.05);border:1px solid rgba(217,70,166,0.18);border-radius:16px;padding:24px;">
+          <div style="font-size:1.7rem;margin-bottom:10px;">🎨</div>
+          <h3 style="color:#D946A6;font-size:.9rem;font-weight:700;margin-bottom:7px;">Visor 3D Exocad</h3>
+          <p style="color:#64748b;font-size:.8rem;line-height:1.6;margin:0;">Ve el diseño de tu prótesis en 3D interactivo antes de que entre a fresado. Exclusivo PRODIGY.</p>
+        </div>
+        <div style="background:rgba(0,255,65,0.04);border:1px solid rgba(0,255,65,0.16);border-radius:16px;padding:24px;">
+          <div style="font-size:1.7rem;margin-bottom:10px;">📲</div>
+          <h3 style="color:#00FF41;font-size:.9rem;font-weight:700;margin-bottom:7px;">Notificación WhatsApp</h3>
+          <p style="color:#64748b;font-size:.8rem;line-height:1.6;margin:0;">Recibe aviso automático cuando tu caso pase a producción y cuando esté listo para entrega.</p>
+        </div>
+        <div style="background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.18);border-radius:16px;padding:24px;">
+          <div style="font-size:1.7rem;margin-bottom:10px;">📥</div>
+          <h3 style="color:#D4AF37;font-size:.9rem;font-weight:700;margin-bottom:7px;">Descarga de archivos</h3>
+          <p style="color:#64748b;font-size:.8rem;line-height:1.6;margin:0;">STL final, reporte de diseño y especificaciones de fabricación disponibles para descarga directa.</p>
+        </div>
+      </div>
+
+      <!-- ═══ CÓMO FUNCIONA ════════════════════════════════════════════════ -->
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:36px 40px;margin-bottom:40px;">
+        <h2 style="text-align:center;font-size:1rem;font-weight:800;color:#94a3b8;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;">Cómo funciona</h2>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:16px;align-items:start;">
+          <div style="text-align:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#D946A6,#8E24AA);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-weight:900;font-size:1.1rem;color:#fff;">1</div>
+            <h4 style="color:#e2e8f0;font-size:.88rem;font-weight:700;margin-bottom:6px;">Ingresa tu N.° de orden</h4>
+            <p style="color:#475569;font-size:.76rem;line-height:1.5;margin:0;">Formato <strong style="color:#94a3b8;">PROD-2026-XXXX</strong>. Lo recibes por WhatsApp al crear tu pedido.</p>
+          </div>
+          <div class="seg-step-arrow">→</div>
+          <div style="text-align:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#00d2ff,#0284c7);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-weight:900;font-size:1.1rem;color:#fff;">2</div>
+            <h4 style="color:#e2e8f0;font-size:.88rem;font-weight:700;margin-bottom:6px;">Ve el estado en vivo</h4>
+            <p style="color:#475569;font-size:.76rem;line-height:1.5;margin:0;">Recepción → Diseño CAD → Fresado/Impresión → Control de Calidad → Listo.</p>
+          </div>
+          <div class="seg-step-arrow">→</div>
+          <div style="text-align:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#00FF41,#16a34a);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-weight:900;font-size:1.1rem;color:#fff;">3</div>
+            <h4 style="color:#e2e8f0;font-size:.88rem;font-weight:700;margin-bottom:6px;">Descarga o recoge tu caso</h4>
+            <p style="color:#475569;font-size:.76rem;line-height:1.5;margin:0;">STL aprobado y reporte disponibles aquí. Aviso por WhatsApp cuando esté listo para entrega.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ ÁREA DE BÚSQUEDA ════════════════════════════════════════════ -->
+      <div style="background:linear-gradient(135deg,rgba(142,36,170,0.18),rgba(30,40,66,0.55));padding:48px 40px;border-radius:20px;margin-bottom:40px;border:1px solid rgba(255,215,0,0.1);">
+        <div style="text-align:center;margin-bottom:32px;">
+          <div style="font-size:2.8rem;margin-bottom:10px;">🔍</div>
+          <h2 style="font-size:1.5rem;font-weight:900;color:#FFD700;margin-bottom:8px;">Busca Tu Caso</h2>
+          <p style="color:rgba(248,250,252,0.5);font-size:.88rem;margin:0;">Número de orden del WhatsApp de confirmación</p>
+        </div>
+        <div style="background:rgba(10,14,26,0.55);border:2px solid rgba(255,215,0,0.25);border-radius:18px;padding:36px;max-width:560px;margin:0 auto;">
+          <label style="color:rgba(248,250,252,0.85);font-weight:600;display:block;margin-bottom:8px;font-size:.88rem;">Número de Orden</label>
+          <input type="text" id="searchOrden" placeholder="PROD-2026-XXXX" autocomplete="off"
+            style="width:100%;padding:15px;background:rgba(10,14,26,0.7);border:2px solid rgba(255,215,0,0.28);border-radius:12px;color:white;font-size:1rem;margin-bottom:8px;box-sizing:border-box;outline:none;"
+            onkeydown="if(event.key==='Enter') buscarCasoConSpinner()">
+          <p style="color:rgba(248,250,252,0.35);font-size:.76rem;margin:0 0 20px;">Lo recibes por WhatsApp cuando creas tu pedido.</p>
+          <button onclick="buscarCasoConSpinner()"
+            style="width:100%;padding:16px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:50px;font-size:1.05rem;font-weight:700;cursor:pointer;letter-spacing:.5px;">
+            <i class="fas fa-search"></i> Buscar Caso
+          </button>
+          <div id="search-spinner" style="display:none;text-align:center;padding:24px 0;">
+            <div style="width:44px;height:44px;border:4px solid rgba(255,215,0,0.15);border-top-color:#FFD700;border-radius:50%;animation:spinSeg 0.9s linear infinite;margin:0 auto 12px;"></div>
+            <p style="color:rgba(248,250,252,0.7);font-size:.9rem;font-weight:700;">Consultando estado del caso…</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ TECNOLOGÍA + PRIVACIDAD ══════════════════════════════════════ -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:48px;">
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:28px;">
+          <h3 style="color:#e2e8f0;font-size:.9rem;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px;"><i class="fas fa-microchip" style="color:#00d2ff;"></i> Tecnología que nos respalda</h3>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:.8rem;"><span style="color:#64748b;">Base de datos</span><span style="color:#e2e8f0;font-weight:600;">Supabase PostgreSQL</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:.8rem;"><span style="color:#64748b;">Diseño CAD</span><span style="color:#e2e8f0;font-weight:600;">Exocad · 3Shape</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:.8rem;"><span style="color:#64748b;">Fresadora</span><span style="color:#e2e8f0;font-weight:600;">XTCERA 5 ejes ±10µm</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:.8rem;"><span style="color:#64748b;">Impresión 3D</span><span style="color:#e2e8f0;font-weight:600;">BCN3D Sigma</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:.8rem;"><span style="color:#64748b;">Hosting</span><span style="color:#e2e8f0;font-weight:600;">Cloudflare Pages · CDN global</span></div>
+          </div>
+        </div>
+        <div style="background:rgba(0,255,65,0.03);border:1px solid rgba(0,255,65,0.14);border-radius:16px;padding:28px;">
+          <h3 style="color:#e2e8f0;font-size:.9rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><i class="fas fa-user-shield" style="color:#00FF41;"></i> Privacidad y tratamiento de datos</h3>
+          <p style="color:#64748b;font-size:.78rem;line-height:1.65;margin:0 0 12px;">Tus datos de pedido se usan exclusivamente para el seguimiento y gestión de producción. <strong style="color:#94a3b8;">No compartimos información con terceros.</strong></p>
+          <p style="color:#64748b;font-size:.78rem;line-height:1.65;margin:0 0 12px;">Cumplimos la <strong style="color:#94a3b8;">Ley 1581 de 2012</strong> (Habeas Data Colombia). Puedes solicitar eliminación de tus datos en cualquier momento escribiendo a <strong style="color:#94a3b8;">gerencia@prodigylabdental.com</strong>.</p>
+          <p style="color:#64748b;font-size:.78rem;line-height:1.65;margin:0;">Todos los archivos STL y datos clínicos se transmiten y almacenan con <strong style="color:#94a3b8;">cifrado TLS 1.3</strong> y acceso restringido por rol.</p>
+        </div>
+      </div>
+
+      <!-- ═══ RESULTADO ════════════════════════════════════════════════════ -->
+        <div id="resultado" style="display:none;background:linear-gradient(135deg,rgba(30,40,66,0.5),rgba(142,36,170,0.1));padding:40px;border-radius:20px;border:2px solid rgba(255,215,0,0.3);">
+
+            <!-- ENCABEZADO -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;flex-wrap:wrap;gap:20px;">
+                <div>
+                    <h2 style="color:#FFD700;margin-bottom:5px;">Caso de: <span id="nombrePacienteDisplay"></span></h2>
+                    <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;">Orden: <span id="ordenDisplay" style="color:#8E24AA;font-weight:700;"></span></p>
+                    <p style="color:rgba(248,250,252,0.6);font-size:0.85rem;margin-top:5px;">
+                        <i class="fas fa-shield-alt"></i> Datos protegidos por Ley 1581 (Habeas Data)
+                    </p>
+                </div>
+                <div id="estadoBadge" style="padding:12px 25px;border-radius:25px;font-weight:700;font-size:1.1rem;"></div>
             </div>
 
-            <div style="background:rgba(30,40,66,0.7);border:2px solid rgba(255,215,0,0.3);border-radius:20px;padding:40px;">
-                <h3 style="color:#FFD700;margin-bottom:25px;"><i class="fas fa-search"></i> Buscar Caso</h3>
-                
-                <div>
-                    <label style="color:rgba(248,250,252,0.9);font-weight:600;display:block;margin-bottom:8px;">Número de Orden</label>
-                    <input type="text" id="searchOrden" placeholder="PROD-2026-XXXX" style="width:100%;padding:15px;background:rgba(10,14,26,0.6);border:2px solid rgba(255,215,0,0.3);border-radius:12px;color:white;font-size:1rem;margin-bottom:12px;">
-                    <p style="color:rgba(248,250,252,0.45);font-size:0.8rem;margin:0 0 20px;">El número de orden llega en el mensaje de WhatsApp de confirmación.</p>
-                </div>
-                
-                <button onclick="buscarCasoConSpinner()" style="width:100%;padding:15px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:50px;font-size:1.1rem;font-weight:700;cursor:pointer;">
-                    <i class="fas fa-search"></i> Buscar Caso
-                </button>
+            <!-- BARRA DE PROGRESO -->
+            <div style="background:rgba(10,14,26,0.4);border:2px solid rgba(142,36,170,0.3);border-radius:15px;padding:30px;margin-bottom:30px;">
+                <h3 style="color:#8E24AA;margin-bottom:20px;"><i class="fas fa-tasks"></i> Estado de Producción</h3>
 
-                <!-- Spinner búsqueda (Agente 4) -->
-                <div id="search-spinner" style="display:none;text-align:center;padding:24px 0;">
-                    <div style="width:44px;height:44px;border:4px solid rgba(255,215,0,0.15);border-top-color:#FFD700;border-radius:50%;animation:spinSeg 0.9s linear infinite;margin:0 auto 12px;"></div>
-                    <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;font-weight:700;">🚀 Procesando archivos de ingeniería...<br><span style="font-size:0.78rem;color:#94a3b8;font-weight:400;">No cierres esta ventana para asegurar la integridad del diseño</span></p>
+                <div style="position:relative;background:rgba(10,14,26,0.6);height:8px;border-radius:10px;margin:30px 0;overflow:hidden;">
+                    <div id="barraProgreso" style="height:100%;background:linear-gradient(90deg,#8E24AA,#FFD700);border-radius:10px;transition:width 0.5s;width:0%;"></div>
                 </div>
-                <style>@keyframes spinSeg{ to{ transform:rotate(360deg); } }</style>
+
+                <div style="display:flex;justify-content:space-between;margin-top:40px;" id="pasos">
+                    <div class="paso" data-estado="Recibido" style="flex:1;text-align:center;">
+                        <div style="width:50px;height:50px;border-radius:50%;background:rgba(10,14,26,0.8);border:3px solid rgba(142,36,170,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:1.5rem;">📥</div>
+                        <p style="color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;">Recibido</p>
+                    </div>
+                    <div class="paso" data-estado="En Diseño" style="flex:1;text-align:center;">
+                        <div style="width:50px;height:50px;border-radius:50%;background:rgba(10,14,26,0.8);border:3px solid rgba(142,36,170,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:1.5rem;">🎨</div>
+                        <p style="color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;">En Diseño</p>
+                    </div>
+                    <div class="paso" data-estado="En Impresión/Fresado" style="flex:1;text-align:center;">
+                        <div style="width:50px;height:50px;border-radius:50%;background:rgba(10,14,26,0.8);border:3px solid rgba(142,36,170,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:1.5rem;">🖨️</div>
+                        <p style="color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;">En Producción</p>
+                    </div>
+                    <div class="paso" data-estado="Control de Calidad" style="flex:1;text-align:center;">
+                        <div style="width:50px;height:50px;border-radius:50%;background:rgba(10,14,26,0.8);border:3px solid rgba(142,36,170,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:1.5rem;">✓</div>
+                        <p style="color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;">Control de Calidad</p>
+                    </div>
+                    <div class="paso" data-estado="Listo para Entrega" style="flex:1;text-align:center;">
+                        <div style="width:50px;height:50px;border-radius:50%;background:rgba(10,14,26,0.8);border:3px solid rgba(142,36,170,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:1.5rem;">🎉</div>
+                        <p style="color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;">Listo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETALLES -->
+            <div style="background:rgba(10,14,26,0.4);border:2px solid rgba(255,215,0,0.3);border-radius:15px;padding:30px;margin-bottom:30px;">
+                <h3 style="color:#FFD700;margin-bottom:25px;"><i class="fas fa-info-circle"></i> Detalles del Caso</h3>
+                <div id="detalles" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;"></div>
+            </div>
+
+            <!-- VISOR EXOCAD PRO + TABLA DE PARÁMETROS (Agente 4) -->
+            <div id="visor-exocad-bloque" style="display:none;margin-bottom:30px;">
+                <div style="background:rgba(10,14,26,0.4);border:2px solid rgba(0,210,255,0.2);border-radius:15px;padding:28px;">
+                    <h3 style="color:#00d2ff;margin-bottom:18px;"><i class="fas fa-cube"></i> Visor de Diseño Exocad</h3>
+                    <!-- Tabla de parámetros -->
+                    <div id="tabla-parametros" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;"></div>
+                    <!-- iFrame visor -->
+                    <div style="position:relative;width:100%;padding-top:56.25%;border-radius:10px;overflow:hidden;border:1px solid rgba(0,210,255,0.2);background:#050505;">
+                        <iframe id="exocad-iframe"
+                            src=""
+                            style="position:absolute;inset:0;width:100%;height:100%;border:none;"
+                            allow="fullscreen"
+                            loading="lazy"
+                            title="Visor Exocad">
+                        </iframe>
+                        <div id="exocad-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(10,14,26,0.9);">
+                            <i class="fas fa-cube" style="font-size:2.5rem;color:#00d2ff;opacity:0.5;"></i>
+                            <p style="color:#94a3b8;font-size:0.82rem;text-align:center;">Visor disponible cuando el diseñador<br>suba el archivo HTML de Exocad</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ZONA DE DESCARGAS (solo si está listo) -->
+            <div id="zonaDescargas" style="display:none;background:rgba(76,175,80,0.1);border:2px solid rgba(76,175,80,0.3);border-radius:15px;padding:30px;margin-bottom:30px;">
+                <h3 style="color:#4CAF50;margin-bottom:25px;"><i class="fas fa-download"></i> Archivos Disponibles</h3>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;">
+                    <div style="background:rgba(10,14,26,0.6);border:2px solid rgba(76,175,80,0.3);border-radius:15px;padding:25px;text-align:center;">
+                        <i class="fas fa-cube" style="font-size:2.5rem;color:#4CAF50;margin-bottom:15px;"></i>
+                        <h4 style="color:#4CAF50;margin-bottom:10px;">STL Final</h4>
+                        <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;margin-bottom:15px;">Archivo de diseño</p>
+                        <a id="btn-download-stl" href="#" onclick="descargar('stl',null); return false;" style="display:inline-block;padding:12px 25px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;text-decoration:none;border-radius:50px;font-weight:700;">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                    <div style="background:rgba(10,14,26,0.6);border:2px solid rgba(76,175,80,0.3);border-radius:15px;padding:25px;text-align:center;">
+                        <i class="fas fa-file-pdf" style="font-size:2.5rem;color:#4CAF50;margin-bottom:15px;"></i>
+                        <h4 style="color:#4CAF50;margin-bottom:10px;">Reporte de Diseño</h4>
+                        <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;margin-bottom:15px;">Especificaciones</p>
+                        <a href="#" onclick="descargar('reporte'); return false;" style="display:inline-block;padding:12px 25px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;text-decoration:none;border-radius:50px;font-weight:700;">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                    <div style="background:rgba(10,14,26,0.6);border:2px solid rgba(76,175,80,0.3);border-radius:15px;padding:25px;text-align:center;">
+                        <i class="fas fa-receipt" style="font-size:2.5rem;color:#4CAF50;margin-bottom:15px;"></i>
+                        <h4 style="color:#4CAF50;margin-bottom:10px;">Factura</h4>
+                        <p style="color:rgba(248,250,252,0.7);font-size:0.9rem;margin-bottom:15px;">Comprobante</p>
+                        <a href="#" onclick="descargar('factura'); return false;" style="display:inline-block;padding:12px 25px;background:linear-gradient(135deg,#4CAF50,#2E7D32);color:white;text-decoration:none;border-radius:50px;font-weight:700;">
+                            <i class="fas fa-download"></i> Descargar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTÓN WHATSAPP -->
+            <div style="text-align:center;">
+                <a href="#" onclick="activarNotificaciones(); return false;" style="display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#25D366,#128C7E);color:white;text-decoration:none;border-radius:50px;font-weight:700;font-size:1.1rem;">
+                    <i class="fab fa-whatsapp"></i> Recibir Aviso de Avance por WhatsApp
+                </a>
             </div>
         </div>
 
-        <!-- RESULTADO -->
+        <!-- NO ENCONTRADO -->
+        <div id="noEncontrado" style="display:none;text-align:center;padding:60px 40px;background:rgba(244,67,54,0.1);border:2px solid rgba(244,67,54,0.3);border-radius:20px;">
+            <div style="font-size:4rem;margin-bottom:20px;">❌</div>
+            <h3 style="color:#F44336;margin-bottom:15px;">Caso No Encontrado</h3>
+            <p style="color:rgba(248,250,252,0.8);margin-bottom:25px;">Verifica el número de orden o datos del paciente</p>
+            <button onclick="location.reload()" style="padding:12px 30px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:30px;font-weight:700;cursor:pointer;">Buscar Otro Caso</button>
+        </div>
+    </div>
         <div id="resultado" style="display:none;background:linear-gradient(135deg,rgba(30,40,66,0.5),rgba(142,36,170,0.1));padding:40px;border-radius:20px;border:2px solid rgba(255,215,0,0.3);">
             
             <!-- ENCABEZADO -->
