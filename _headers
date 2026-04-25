@@ -22,8 +22,40 @@
 /images/*
   Cache-Control: public, max-age=2592000
 
-# HTML siempre fresco
+# HTML siempre fresco (aplica a .html files y clean URLs que Cloudflare Pages sirve)
 /*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Clean URLs — también deben ser frescas (Cloudflare Pages las sirve nativamente)
+/nosotros
+  Cache-Control: public, max-age=0, must-revalidate
+/soporte
+  Cache-Control: public, max-age=0, must-revalidate
+/catalogo
+  Cache-Control: public, max-age=0, must-revalidate
+/portafolio
+  Cache-Control: public, max-age=0, must-revalidate
+/calculadora
+  Cache-Control: public, max-age=0, must-revalidate
+/journal
+  Cache-Control: public, max-age=0, must-revalidate
+/article
+  Cache-Control: public, max-age=0, must-revalidate
+/diseno-cad
+  Cache-Control: public, max-age=0, must-revalidate
+/fresado-cam
+  Cache-Control: public, max-age=0, must-revalidate
+/envia-tu-scanner
+  Cache-Control: public, max-age=0, must-revalidate
+/escaner-domicilio
+  Cache-Control: public, max-age=0, must-revalidate
+/instalar-app
+  Cache-Control: public, max-age=0, must-revalidate
+/terminos-y-legal
+  Cache-Control: public, max-age=0, must-revalidate
+/seguimiento-caso
+  Cache-Control: public, max-age=0, must-revalidate
+/patient
   Cache-Control: public, max-age=0, must-revalidate
 
 # Service worker — siempre revalidar (navegadores lo limitan a 24h de todas formas)
