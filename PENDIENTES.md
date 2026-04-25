@@ -4,6 +4,20 @@
 
 ---
 
+## 🚨 ACCIÓN INMEDIATA — ALEJANDRO
+
+### Paso 1: Hard refresh del navegador (30 segundos)
+> `Ctrl+Shift+R` (Windows) o `Cmd+Shift+R` (Mac) en Chrome
+> Esto activa el nuevo Service Worker v7 que corrige la página de mantenimiento
+
+### Paso 2: Probar en incógnito
+> `Ctrl+Shift+N` → navegar a `prodigylabdental.com`
+> En incógnito no hay cache del SW anterior — deberías ver la homepage real
+
+### Paso 3: SQL crítico en Supabase (fuga PII activa)
+
+---
+
 ## 🚨 SQL CRÍTICO — EJECUTAR EN SUPABASE (orden importa)
 
 ```
