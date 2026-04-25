@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a0a">
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="PRODIGY — Cotizador de Diseño CAD Digital. Prótesis fija, implantología, guías quirúrgicas, diseño de sonrisa. Bogotá, Colombia.">
@@ -1668,5 +1669,6 @@
 let _fdToastT;
 function fdToast(msg){const el=document.getElementById('fd-toast');el.textContent=msg;el.style.opacity='1';clearTimeout(_fdToastT);_fdToastT=setTimeout(()=>{el.style.opacity='0';},3600);}
 </script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
