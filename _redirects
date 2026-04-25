@@ -1,8 +1,7 @@
 # PRODIGY — Cloudflare Pages redirects
 # ─────────────────────────────────────────────────────────────
-# MODO MANTENIMIENTO ACTIVO — público ve mantenimiento
-# Para DESACTIVAR: borrar la línea siguiente y hacer push
-/*  /mantenimiento.html  200
+# MODO MANTENIMIENTO: controlado por bypass en index.html (JavaScript)
+# El public ve /mantenimiento si no tiene la llave prodigy_admin en localStorage
 # ─────────────────────────────────────────────────────────────
 # BLOQUEAR archivos sensibles → 404
 # ─────────────────────────────────────────────────────────────
