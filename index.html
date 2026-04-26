@@ -13,7 +13,7 @@
       if(!tieneCookie()){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}
     })();
     </script>
-    <meta name="description" content="PRODIGY Digital Dentistry — Laboratorio dental especializado en fresado CAD/CAM, impresión 3D dental y diseño Exocad/3Shape. Alta precisión. Bogotá, Colombia.">
+    <meta name="description" content="PRODIGY Digital Dentistry — Laboratorio dental CAD/CAM en Bogotá. Fresado zirconio, impresión 3D y diseño Exocad/3Shape. Entregas 24h. Alta precisión.">
     <meta name="theme-color" content="#D946A6">
     <link rel="manifest" href="/manifest.json">
         <meta name="keywords" content="Diseño dental 3D, Exocad, 3Shape, Fresado Zirconio, Impresión 3D dental, Laboratorio dental Colombia, CAD CAM dental, coronas dentales">
@@ -1055,17 +1055,8 @@
         #scroll-top-btn { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         #scroll-top-btn.visible { opacity: 1; pointer-events: all; }
 
-        /* SOUND BUTTON — subido para no tapar el bot bubble (bottom:28px left:28px) */
-        #sound-btn {
-            position: fixed; bottom: 88px; left: 28px; z-index: 998;
-            width: 46px; height: 46px;
-            background: rgba(10,10,10,0.92); border: 1px solid rgba(212,175,55,0.35);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.25s; color: #D4AF37;
-            font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        }
-        #sound-btn:hover { border-color: #D4AF37; background: rgba(212,175,55,0.12); transform: scale(1.1); }
-        #sound-btn.playing { border-color: #00d2ff; color: #00d2ff; box-shadow: 0 0 14px rgba(0,210,255,0.35); }
+        /* SOUND BUTTON — eliminado (sin archivo de audio) */
+        #sound-btn { display: none !important; }
 
         /* GOOGLE TRANSLATE - ocultar widget nativo, solo mostrar ícono */
         .goog-te-gadget { display: none !important; }
@@ -1136,9 +1127,9 @@
       gtag('js', new Date());
       gtag('config', 'G-Z8G2X7ETQ1',{anonymize_ip:true});
     </script>
-  <link rel="alternate" hreflang="es" href="https://prodigylabdental.com//">
-  <link rel="alternate" hreflang="en" href="https://prodigylabdental.com//?lang=en">
-  <link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com//">
+  <link rel="alternate" hreflang="es" href="https://prodigylabdental.com/">
+  <link rel="alternate" hreflang="en" href="https://prodigylabdental.com/?lang=en">
+  <link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com/">
 </head>
 <body>
 <script>window._headerConfig = { noCta: true };</script>
@@ -1731,7 +1722,7 @@
                     PEDIR MI CASO AHORA
                     <i class="fas fa-arrow-right"></i>
                 </button>
-                <a href="#" onclick="checkAuth('calculadora');return false;" style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:10px 22px;border-radius:999px;border:1px solid rgba(212,175,55,0.4);color:#D4AF37;font-size:0.82rem;font-weight:700;text-decoration:none;transition:all 0.2s;letter-spacing:0.5px;" onmouseover="this.style.background='rgba(212,175,55,0.1)'" onmouseout="this.style.background='transparent'">
+                <a href="/calculadora" onclick="checkAuth('calculadora');return false;" style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:10px 22px;border-radius:999px;border:1px solid rgba(212,175,55,0.4);color:#D4AF37;font-size:0.82rem;font-weight:700;text-decoration:none;transition:all 0.2s;letter-spacing:0.5px;" onmouseover="this.style.background='rgba(212,175,55,0.1)'" onmouseout="this.style.background='transparent'">
                     <i class="fas fa-calculator"></i> Calcular precio estimado
                 </a>
                 <p class="cta-urgencia">
