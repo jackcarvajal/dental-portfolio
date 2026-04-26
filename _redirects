@@ -55,6 +55,7 @@
 # /flujo-impresion        /flujo-impresion.html       200
 # /flujo-lab              /flujo-lab.html             200
 /contacto               /nosotros.html#contacto     301
+/guia-tecnica           /guia-tecnica.html          200
 
 # ─────────────────────────────────────────────────────────────
 # PÁGINAS INTERNAS / LEGACY — redirigir a login o 404

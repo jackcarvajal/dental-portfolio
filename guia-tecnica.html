@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#D946A6">
+  <link rel="manifest" href="/manifest.json">
+  <title>Guía Técnica de Envío — PRODIGY Lab Dental</title>
+  <meta name="description" content="Cómo exportar archivos STL correctamente desde Exocad, 3Shape y escáneres intraorales para enviar a PRODIGY Lab Dental. Guía técnica paso a paso.">
+  <link rel="canonical" href="https://prodigylabdental.com/guia-tecnica">
+  <meta property="og:title" content="Guía Técnica — Cómo enviar casos a PRODIGY">
+  <meta property="og:description" content="Exportación STL desde Exocad, 3Shape, iTero y Medit. Parámetros correctos para obtener el mejor resultado clínico.">
+  <meta property="og:url" content="https://prodigylabdental.com/guia-tecnica">
+  <meta property="og:image" content="https://prodigylabdental.com/assets/prodigy-preview.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"HowTo","name":"Cómo enviar casos a PRODIGY Lab Dental","description":"Guía para exportar archivos STL correctamente desde Exocad, 3Shape y escáneres intraorales","totalTime":"PT10M","supply":[{"@type":"HowToSupply","name":"Escáner intraoral o software CAD"},{"@type":"HowToSupply","name":"Archivo STL del caso clínico"}],"step":[{"@type":"HowToStep","name":"Exportar STL desde tu software","text":"Abre el caso en Exocad o 3Shape y exporta en formato STL con resolución mínima 0.05mm"},{"@type":"HowToStep","name":"Verificar el archivo","text":"El archivo debe tener la preparación completa y el antagonista en la misma exportación o archivo separado"},{"@type":"HowToStep","name":"Enviar a PRODIGY","text":"Sube el archivo en la sección Envía tu Escáner o envíalo por WhatsApp al +573212816716"}]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Guía Técnica","item":"https://prodigylabdental.com/guia-tecnica"}]}
+  </script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --gold:#D946A6;--gold2:#D4AF37;--cyan:#00d2ff;--green:#00FF41;
+      --bg:#050505;--card:#0d1520;--text:#e2e8f0;--muted:#94a3b8;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;line-height:1.6;overflow-x:hidden}
+    .container{max-width:900px;margin:0 auto;padding:0 24px}
+    section{padding:64px 0}
+
+    /* HERO */
+    .hero{text-align:center;padding:80px 24px 56px;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(217,70,166,0.1) 0%,transparent 65%);}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,210,255,0.1);border:1px solid rgba(0,210,255,0.3);color:var(--cyan);font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:100px;margin-bottom:24px;}
+    .hero h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;margin-bottom:16px;}
+    .hero h1 em{font-style:normal;color:var(--gold);}
+    .hero p{color:var(--muted);font-size:1.05rem;max-width:560px;margin:0 auto;line-height:1.7;}
+
+    /* STEP CARDS */
+    .step{display:flex;gap:24px;align-items:flex-start;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:28px;margin-bottom:16px;transition:border-color .3s;}
+    .step:hover{border-color:rgba(217,70,166,0.3);}
+    .step-num{flex-shrink:0;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#a0186e);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;color:#fff;}
+    .step-body h3{font-size:1.05rem;font-weight:700;margin-bottom:8px;}
+    .step-body p{color:var(--muted);font-size:.95rem;line-height:1.65;}
+    .step-body .tip{margin-top:12px;background:rgba(0,210,255,0.06);border:1px solid rgba(0,210,255,0.18);border-radius:10px;padding:12px 16px;font-size:.88rem;color:var(--cyan);}
+    .step-body .warn{margin-top:12px;background:rgba(244,67,54,0.06);border:1px solid rgba(244,67,54,0.2);border-radius:10px;padding:12px 16px;font-size:.88rem;color:#F44336;}
+    .step-body code{background:rgba(255,255,255,0.06);border-radius:5px;padding:2px 8px;font-family:monospace;font-size:.88rem;}
+
+    /* SOFTWARE TABS */
+    .sw-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+    .sw-tab{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:8px 18px;cursor:pointer;font-size:.88rem;font-weight:600;color:var(--muted);transition:all .2s;}
+    .sw-tab.active,.sw-tab:hover{border-color:var(--gold);color:var(--gold);background:rgba(217,70,166,0.1);}
+    .sw-panel{display:none;}.sw-panel.active{display:block;}
+
+    /* PARAMS TABLE */
+    .params-table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:16px;}
+    .params-table th{background:rgba(217,70,166,0.1);color:var(--text);font-weight:700;padding:11px 16px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.07);}
+    .params-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--muted);}
+    .params-table td:first-child{color:var(--text);font-weight:600;}
+    .ok{color:var(--green);font-weight:700;}
+    .bad{color:#F44336;font-weight:700;}
+
+    /* FORMAT PILLS */
+    .fmt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:16px;}
+    .fmt-card{background:rgba(0,210,255,0.05);border:1px solid rgba(0,210,255,0.18);border-radius:12px;padding:16px;text-align:center;}
+    .fmt-card .ext{font-size:1.2rem;font-weight:900;color:var(--cyan);display:block;margin-bottom:4px;}
+    .fmt-card small{font-size:.78rem;color:var(--muted);}
+
+    /* CHECKLIST */
+    .checklist{list-style:none;display:flex;flex-direction:column;gap:10px;}
+    .checklist li{display:flex;align-items:flex-start;gap:12px;font-size:.95rem;}
+    .checklist li::before{content:"✅";flex-shrink:0;}
+    .checklist li.bad::before{content:"❌";}
+
+    /* CTA */
+    .cta-box{background:linear-gradient(135deg,rgba(217,70,166,0.12),rgba(0,210,255,0.06));border:1px solid rgba(217,70,166,0.3);border-radius:20px;padding:40px;text-align:center;}
+    .cta-box h2{font-size:1.5rem;font-weight:900;margin-bottom:12px;}
+    .cta-box p{color:var(--muted);font-size:1rem;max-width:440px;margin:0 auto 28px;}
+    .btn-primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--gold),#a0186e);color:#fff;font-weight:800;font-size:1rem;text-decoration:none;padding:15px 32px;border-radius:50px;box-shadow:0 4px 20px rgba(217,70,166,.4);transition:transform .2s;}
+    .btn-primary:hover{transform:translateY(-2px);}
+    .btn-wa{display:inline-flex;align-items:center;gap:10px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.3);color:#25D366;font-weight:700;font-size:1rem;text-decoration:none;padding:14px 28px;border-radius:50px;margin-left:12px;transition:all .2s;}
+    .btn-wa:hover{background:rgba(37,211,102,0.18);}
+
+    @media(max-width:640px){.step{flex-direction:column;}.btn-wa{margin:12px 0 0;display:flex;}}
+  </style>
+</head>
+<body>
+<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
+<script src="js/header.js?v=20260426"></script>
+
+<main id="main-content">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><i class="fas fa-book-open"></i> Guía técnica oficial</div>
+  <h1>Cómo enviar tu caso<br><em>perfectamente a PRODIGY</em></h1>
+  <p>Aprende a exportar archivos desde Exocad, 3Shape, iTero, Medit y cualquier escáner intraoral para que tu restauración llegue exacta — sin correcciones ni demoras.</p>
+</section>
+
+<div class="container">
+
+  <!-- FORMATOS ACEPTADOS -->
+  <section>
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;">Compatibilidad</div>
+    <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin-bottom:8px;">Formatos que aceptamos</h2>
+    <p style="color:var(--muted);font-size:1rem;margin-bottom:24px;">Trabajamos con todos los formatos estándar del mercado dental digital.</p>
+    <div class="fmt-grid">
+      <div class="fmt-card"><span class="ext">STL</span><small>Universal — todos los escáneres</small></div>
+      <div class="fmt-card"><span class="ext">PLY</span><small>3Shape Trios — con color</small></div>
+      <div class="fmt-card"><span class="ext">OBJ</span><small>Alternativa a STL</small></div>
+      <div class="fmt-card" style="border-color:rgba(217,70,166,0.3);background:rgba(217,70,166,0.06);">
+        <span class="ext" style="color:var(--gold);">.3se</span><small>3Shape nativo</small>
+      </div>
+      <div class="fmt-card" style="border-color:rgba(212,175,55,0.3);background:rgba(212,175,55,0.06);">
+        <span class="ext" style="color:var(--gold2);">.itero</span><small>Align Technology</small>
+      </div>
+      <div class="fmt-card"><span class="ext">DCM</span><small>DICOM / CBCT</small></div>
+    </div>
+  </section>
+
+  <!-- PASOS GENERALES -->
+  <section>
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;">Proceso</div>
+    <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin-bottom:32px;">Pasos para un caso perfecto</h2>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Escanea la preparación con el antagonista</h3>
+        <p>El antagonista es obligatorio — sin él no podemos diseñar los contactos oclusales correctamente. Escanea también el registro de mordida en máxima intercuspidación.</p>
+        <div class="tip"><i class="fas fa-lightbulb"></i> <strong>Tip:</strong> Aísla el campo con rollos de algodón 2 minutos antes de escanear para reducir saliva y mejorar la malla.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Verifica la calidad de la malla antes de exportar</h3>
+        <p>Revisa en el software que la zona cervical de la preparación esté completa — sin huecos ni zonas en rojo. Esa zona define el margen de la restauración.</p>
+        <div class="warn"><i class="fas fa-exclamation-triangle"></i> El <strong>23% de los casos</strong> que recibimos tienen defectos en el margen cervical. Esto genera un retraso de 2-4 horas mientras te contactamos para reescanear.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Exporta con los parámetros correctos</h3>
+        <p>Cada software tiene su menú de exportación. Los parámetros clave son la resolución de la malla y el formato. Ve a la sección de tu software abajo.</p>
+        <div class="tip">Resolución mínima requerida: <code>0.05 mm</code> en zona cervical. Resolución recomendada: <code>0.02–0.05 mm</code>.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Envía el archivo con la prescripción del caso</h3>
+        <p>Incluye: material deseado (zirconia monocapa / multicapa / e.max / PMMA), color VITA, número de piezas, fecha de entrega requerida.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUÍA POR SOFTWARE -->
+  <section>
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;">Por software</div>
+    <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin-bottom:24px;">Exportación por escáner / software</h2>
+
+    <div class="sw-tabs">
+      <div class="sw-tab active" onclick="showSw('exocad')">Exocad</div>
+      <div class="sw-tab" onclick="showSw('3shape')">3Shape</div>
+      <div class="sw-tab" onclick="showSw('medit')">Medit i700</div>
+      <div class="sw-tab" onclick="showSw('itero')">iTero</div>
+      <div class="sw-tab" onclick="showSw('cerec')">Cerec</div>
+    </div>
+
+    <div id="sw-exocad" class="sw-panel active">
+      <div class="step" style="margin-bottom:0;">
+        <div class="step-body" style="width:100%;">
+          <h3>Exportar desde Exocad DentalCAD</h3>
+          <p style="margin-bottom:16px;">Exocad permite exportar el escáner directamente como STL desde el menú de apertura de caso.</p>
+          <ol style="color:var(--muted);font-size:.95rem;padding-left:20px;display:flex;flex-direction:column;gap:8px;">
+            <li>Archivo → <strong>Exportar modelo</strong> → Seleccionar: <code>STL (ASCII)</code> o <code>STL (Binary)</code></li>
+            <li>Resolución: <code>0.05 mm</code> o mejor</li>
+            <li>Exportar el <strong>maxilar superior, inferior y registro de mordida</strong> por separado</li>
+            <li>Alternativamente: enviar el <code>.constructionfile</code> completo — preferimos esto</li>
+          </ol>
+          <table class="params-table">
+            <thead><tr><th>Parámetro</th><th>Valor correcto</th><th>¿Por qué?</th></tr></thead>
+            <tbody>
+              <tr><td>Formato</td><td class="ok">STL Binary o .constructionfile</td><td>Menor tamaño, misma calidad</td></tr>
+              <tr><td>Resolución</td><td class="ok">0.02–0.05 mm</td><td>Margen cervical preciso</td></tr>
+              <tr><td>STL ASCII</td><td class="bad">Evitar si el archivo supera 50 MB</td><td>ASCII es 6x más pesado</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="sw-3shape" class="sw-panel">
+      <div class="step" style="margin-bottom:0;">
+        <div class="step-body" style="width:100%;">
+          <h3>Exportar desde 3Shape Trios</h3>
+          <ol style="color:var(--muted);font-size:.95rem;padding-left:20px;display:flex;flex-direction:column;gap:8px;">
+            <li>Desde <strong>3Shape Communicate</strong>: compartir directamente a PRODIGY (solicítanos el enlace de conexión)</li>
+            <li>Exportación manual: Trios → <strong>Export</strong> → <code>STL</code> o <code>PLY</code> (con color)</li>
+            <li>PLY es preferible para casos estéticos — conserva la información de textura del esmalte</li>
+          </ol>
+          <div class="tip">Opción recomendada: usar <strong>3Shape Communicate</strong> → el archivo llega directamente a nuestro sistema sin perder metadatos.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sw-medit" class="sw-panel">
+      <div class="step" style="margin-bottom:0;">
+        <div class="step-body" style="width:100%;">
+          <h3>Exportar desde Medit i700</h3>
+          <ol style="color:var(--muted);font-size:.95rem;padding-left:20px;display:flex;flex-direction:column;gap:8px;">
+            <li>Medit Link → seleccionar el caso → <strong>Export</strong></li>
+            <li>Formato: <code>STL</code> — seleccionar <strong>arcada superior, inferior y mordida</strong></li>
+            <li>Calidad: seleccionar <strong>High</strong> o <strong>Ultra</strong></li>
+            <li>También puedes compartir directo desde Medit Link → Add Collaborator</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div id="sw-itero" class="sw-panel">
+      <div class="step" style="margin-bottom:0;">
+        <div class="step-body" style="width:100%;">
+          <h3>Exportar desde iTero Element</h3>
+          <ol style="color:var(--muted);font-size:.95rem;padding-left:20px;display:flex;flex-direction:column;gap:8px;">
+            <li>Portal iTero → seleccionar scan → <strong>Export STL</strong></li>
+            <li>El formato nativo <code>.itero</code> también es aceptado — nos lo envías directamente</li>
+            <li>Resolución: la exportación nativa iTero ya viene optimizada</li>
+          </ol>
+          <div class="warn">⚠ Si usas Invisalign ClinCheck, el STL exportado puede tener restricciones de Align Technology. Para casos restauradores usa la exportación STL estándar.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sw-cerec" class="sw-panel">
+      <div class="step" style="margin-bottom:0;">
+        <div class="step-body" style="width:100%;">
+          <h3>Exportar desde Cerec (Dentsply Sirona)</h3>
+          <ol style="color:var(--muted);font-size:.95rem;padding-left:20px;display:flex;flex-direction:column;gap:8px;">
+            <li>Cerec SW → caso → <strong>File → Export → STL</strong></li>
+            <li>Exportar el bloque de datos completo: preparación + antagonista + mordida</li>
+            <li>Resolución estándar de Cerec es suficiente (0.05 mm pre-configurado)</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECKLIST FINAL -->
+  <section>
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;">Antes de enviar</div>
+    <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin-bottom:24px;">Checklist del caso perfecto</h2>
+    <div style="background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:28px;">
+      <ul class="checklist">
+        <li>Archivo STL incluye la preparación completa (sin zonas rojas ni huecos)</li>
+        <li>Antagonista incluido (arcada opuesta completa)</li>
+        <li>Registro de mordida en máxima intercuspidación</li>
+        <li>Indicación del material: zirconia monocapa / multicapa / disilicato / PMMA</li>
+        <li>Color VITA especificado (ej: A2, B1, A3.5)</li>
+        <li>Número de piezas y pieza(s) a restaurar</li>
+        <li>Fecha de entrega requerida</li>
+        <li class="bad">NO enviar archivos sin antagonista</li>
+        <li class="bad">NO enviar STL con resolución < 0.1 mm en zona cervical</li>
+        <li class="bad">NO comprimir en ZIP si no es necesario (aumenta tiempo de revisión)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="cta-box">
+      <h2>¿Listo para enviar tu caso?</h2>
+      <p>Sube tu archivo STL directamente desde nuestra plataforma o escríbenos por WhatsApp con los detalles del caso.</p>
+      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;">
+        <a href="/envia-tu-scanner" class="btn-primary"><i class="fas fa-upload"></i> Subir archivo ahora</a>
+        <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20enviar%20un%20caso" target="_blank" rel="noopener noreferrer" class="btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<script src="js/footer.js?v=20260426"></script>
+<script>
+function showSw(id) {
+  document.querySelectorAll('.sw-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.sw-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('sw-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
+</script>
+</body>
+</html>
