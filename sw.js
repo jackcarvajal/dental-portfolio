@@ -1,5 +1,5 @@
-// Prodigy Lab Dental — Service Worker v2.0
-const CACHE = 'prodigy-v9';
+// Prodigy Lab Dental — Service Worker v3.0 (Stale-While-Revalidate)
+const CACHE = 'prodigy-v10';
 
 // Assets estáticos que siempre cacheamos en install
 const PRECACHE = [
@@ -19,19 +19,21 @@ const PRECACHE = [
   '/fresado-cam',
   '/terminos-y-legal',
   '/instalar-app',
+  '/guia-tecnica',
+  '/calidad',
   '/manifest.json',
   '/assets/prodigy-preview.jpg',
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png'
 ];
 
-// Rutas que NUNCA cacheamos (siempre network)
+// Rutas que NUNCA cacheamos (siempre network-only)
 const NEVER_CACHE = [
   '/',                     // Homepage: tiene bypass, debe ser siempre fresco
   '/app/',
   '/sql/',
   '/supabase/',
-  '/mantenimiento',        // Nunca cachear la página de mantenimiento
+  '/mantenimiento',
   'supabase.co',
   'googleapis.com',
   'google-analytics.com',
@@ -60,7 +62,7 @@ self.addEventListener('activate', e => {
   );
 });
 
-// --- FETCH: Network-first para HTML, Cache-first para assets ---
+// --- FETCH: Stale-While-Revalidate para HTML, Cache-first+SWR para assets ---
 self.addEventListener('fetch', e => {
   const { request } = e;
   const url = request.url;
@@ -68,30 +70,44 @@ self.addEventListener('fetch', e => {
   // Skip non-GET y rutas privadas
   if (request.method !== 'GET' || shouldSkip(url)) return;
 
-  // Estrategia: Network-first para HTML (contenido fresco)
-  if (request.headers.get('accept') && request.headers.get('accept').includes('text/html')) {
+  const isHTML = request.headers.get('accept') && request.headers.get('accept').includes('text/html');
+
+  if (isHTML) {
+    // Estrategia HTML: Stale-While-Revalidate
+    // → Sirve desde caché inmediatamente (TTI < 0.8s)
+    // → Actualiza caché en background silenciosamente
     e.respondWith(
-      fetch(request)
-        .then(res => {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(request, clone));
-          return res;
+      caches.open(CACHE).then(cache =>
+        cache.match(request).then(cached => {
+          const networkFetch = fetch(request).then(res => {
+            if (res && res.status === 200) {
+              cache.put(request, res.clone());
+            }
+            return res;
+          }).catch(() => null);
+
+          // Si hay caché: devolver inmediatamente + revalidar en fondo
+          // Si no hay caché: esperar red (primera visita)
+          return cached || networkFetch.then(res => res || cache.match('/index.html'));
         })
-        .catch(() => caches.match(request).then(r => r || caches.match('/index.html')))
+      )
     );
     return;
   }
 
-  // Estrategia: Cache-first para JS/CSS/fonts/imágenes
+  // Estrategia assets (JS/CSS/fonts/imágenes): Cache-first + revalidación silenciosa
   e.respondWith(
-    caches.match(request).then(cached => {
-      if (cached) return cached;
-      return fetch(request).then(res => {
-        if (!res || res.status !== 200 || res.type === 'opaque') return res;
-        const clone = res.clone();
-        caches.open(CACHE).then(c => c.put(request, clone));
-        return res;
-      });
-    })
+    caches.open(CACHE).then(cache =>
+      cache.match(request).then(cached => {
+        const networkFetch = fetch(request).then(res => {
+          if (res && res.status === 200 && res.type !== 'opaque') {
+            cache.put(request, res.clone());
+          }
+          return res;
+        }).catch(() => null);
+
+        return cached || networkFetch;
+      })
+    )
   );
 });

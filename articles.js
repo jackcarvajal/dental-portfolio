@@ -881,3 +881,11 @@ function getArticle(id) {
 function getRecientes(excludeId, limit = 3) {
   return ARTICLES.filter(a => a.id !== excludeId && !a.proximas).slice(0, limit);
 }
+
+/* Artículos relacionados: misma categoría primero, luego otros */
+function getRelacionados(currentArt, limit = 4) {
+  if (!currentArt) return [];
+  const samecat = ARTICLES.filter(a => a.id !== currentArt.id && !a.proximas && a.categoria === currentArt.categoria);
+  const others  = ARTICLES.filter(a => a.id !== currentArt.id && !a.proximas && a.categoria !== currentArt.categoria);
+  return [...samecat, ...others].slice(0, limit);
+}
