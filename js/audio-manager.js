@@ -293,6 +293,7 @@
         if (btn) btn.classList.add('playing');
         if (ico) ico.className = 'fas fa-volume-high';
         if (btn) btn.title = 'Silenciar música';
+        if (window.ProdigyAnalytics) ProdigyAnalytics.trackAudioToggle('on');
         master.gain.cancelScheduledValues(ctx.currentTime);
         master.gain.setValueAtTime(0, ctx.currentTime);
         master.gain.linearRampToValueAtTime(MAX_GAIN, ctx.currentTime + 3);

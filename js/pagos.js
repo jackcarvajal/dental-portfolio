@@ -113,6 +113,7 @@ function pasarelaPrioritaria(precioBaseCOP) {
  * @param {object} opts - { monto, referencia, email, descripcion, onSuccess }
  */
 async function abrirCheckoutWompi({ monto, referencia, email, descripcion, onSuccess }) {
+    if (window.ProdigyAnalytics) ProdigyAnalytics.trackPaymentIntent('wompi', monto, referencia);
     if (PAGOS_CONFIG.wompi.modoEspera) {
         const msg = 'El pago con PSE/Tarjeta estará disponible en 24–48 h.\n\nUsa Transferencia o contacta por WhatsApp.';
         if (confirm(msg + '\n\n¿Abrir WhatsApp ahora?')) {
@@ -158,6 +159,7 @@ async function abrirCheckoutWompi({ monto, referencia, email, descripcion, onSuc
         const timer = setInterval(() => {
             if (popup.closed) {
                 clearInterval(timer);
+                if (window.ProdigyAnalytics) ProdigyAnalytics.markPaymentSuccess('wompi', referencia);
                 if (onSuccess) onSuccess({ referencia });
             }
         }, 800);
@@ -303,6 +305,7 @@ function cargarSDKPayPal() {
  * @param {object} opts - { montoUSD, referencia, descripcion, containerId, onSuccess }
  */
 async function abrirCheckoutPayPal({ montoUSD, referencia, descripcion, containerId, onSuccess }) {
+    if (window.ProdigyAnalytics) ProdigyAnalytics.trackPaymentIntent('paypal', montoUSD, referencia);
     try {
         await cargarSDKPayPal();
     } catch {
@@ -363,6 +366,7 @@ function cargarSDKPaddle() {
  * @param {object} opts - { montoUSD, referencia, email, containerId, onSuccess }
  */
 async function abrirCheckoutPaddle({ montoUSD, referencia, email, containerId, onSuccess }) {
+    if (window.ProdigyAnalytics) ProdigyAnalytics.trackPaymentIntent('paddle', montoUSD, referencia);
     const cfg = PAGOS_CONFIG.paddle;
 
     if (cfg.modoEspera || !cfg.priceId) {
