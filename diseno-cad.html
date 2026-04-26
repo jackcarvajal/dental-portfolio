@@ -119,7 +119,8 @@
     /* ── STEPS ── */
     .dark-section { background: linear-gradient(180deg, #050505 0%, #080f1a 50%, #050505 100%); }
     .steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
-    @media(max-width:720px) { .steps-grid { grid-template-columns: 1fr; } }
+    @media(max-width:860px) { .steps-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:540px) { .steps-grid { grid-template-columns: 1fr; } }
     .step-card {
       background: var(--card); border: 1px solid rgba(212,175,55,0.12);
       border-radius: 16px; padding: 30px 26px; position: relative; overflow: hidden;
@@ -158,7 +159,8 @@
 
     /* ── REVIEWS ── */
     .reviews-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
-    @media(max-width:720px) { .reviews-grid { grid-template-columns: 1fr; } }
+    @media(max-width:860px) { .reviews-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:540px) { .reviews-grid { grid-template-columns: 1fr; } }
     .rev-card { background: var(--card); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 24px; }
     .rev-card p { font-size: 1rem; color: #cbd5e1; line-height: 1.7; font-style: italic; margin-bottom: 14px; }
     .rev-author { font-size: .9rem; font-weight: 700; color: var(--gold2); }
