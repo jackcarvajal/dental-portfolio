@@ -1,75 +1,186 @@
 {
   "proyecto": "PRODIGY Lab Dental",
-  "version": "2026-04-25",
+  "version": "2026-04-26",
   "nota": "ARCHIVO DE PROTECCIÓN — No eliminar ni renombrar archivos marcados como críticos sin autorización de Alejandro",
-
   "archivos_criticos": {
     "descripcion": "PROHIBIDO eliminar, renombrar o modificar masivamente sin autorización explícita",
     "lista": [
-      { "archivo": "index.html",           "rol": "Homepage real",                          "estado": "activo" },
-      { "archivo": "mantenimiento.html",   "rol": "Página de contención pública",           "estado": "activo" },
-      { "archivo": "sw.js",                "rol": "Service Worker principal (precache)",    "estado": "activo" },
-      { "archivo": "_redirects",           "rol": "Reglas de routing Cloudflare Pages",    "estado": "activo" },
-      { "archivo": "_headers",             "rol": "CSP y cache headers",                   "estado": "activo" },
-      { "archivo": "manifest.json",        "rol": "PWA manifest",                          "estado": "activo" },
-      { "archivo": "sitemap.xml",          "rol": "SEO sitemap",                           "estado": "activo" },
-      { "archivo": "robots.txt",           "rol": "Directivas de crawlers",                "estado": "activo" },
-      { "archivo": "js/header.js",         "rol": "Navbar + bot IA (inyectado en body)",   "estado": "activo" },
-      { "archivo": "js/footer.js",         "rol": "Footer + cookie consent",               "estado": "activo" },
-      { "archivo": "js/auth-guard.js",     "rol": "Autenticación de páginas protegidas",   "estado": "activo" },
-      { "archivo": "js/upload-guard.js",   "rol": "Validación de archivos STL/imágenes",   "estado": "activo" },
-      { "archivo": "js/pagos.js",          "rol": "Lógica Wompi/PayPal/Paddle",            "estado": "activo" },
-      { "archivo": "js/flujo-uploader.js", "rol": "Upload de STL a Supabase Storage",      "estado": "activo" },
-      { "archivo": "css/global-nav.min.css","rol": "Estilos del navbar/footer/ux-floaters","estado": "activo" },
-      { "archivo": "app/sw.js",            "rol": "SW de push notifications (mensajero)",  "estado": "activo" }
+      {
+        "archivo": "index.html",
+        "rol": "Homepage real",
+        "estado": "activo"
+      },
+      {
+        "archivo": "mantenimiento.html",
+        "rol": "Página de contención pública",
+        "estado": "activo"
+      },
+      {
+        "archivo": "sw.js",
+        "rol": "Service Worker principal (precache)",
+        "estado": "activo"
+      },
+      {
+        "archivo": "_redirects",
+        "rol": "Reglas de routing Cloudflare Pages",
+        "estado": "activo"
+      },
+      {
+        "archivo": "_headers",
+        "rol": "CSP y cache headers",
+        "estado": "activo"
+      },
+      {
+        "archivo": "manifest.json",
+        "rol": "PWA manifest",
+        "estado": "activo"
+      },
+      {
+        "archivo": "sitemap.xml",
+        "rol": "SEO sitemap",
+        "estado": "activo"
+      },
+      {
+        "archivo": "robots.txt",
+        "rol": "Directivas de crawlers",
+        "estado": "activo"
+      },
+      {
+        "archivo": "js/header.js",
+        "rol": "Navbar + bot IA (inyectado en body)",
+        "estado": "activo"
+      },
+      {
+        "archivo": "js/footer.js",
+        "rol": "Footer + cookie consent",
+        "estado": "activo"
+      },
+      {
+        "archivo": "js/auth-guard.js",
+        "rol": "Autenticación de páginas protegidas",
+        "estado": "activo"
+      },
+      {
+        "archivo": "js/upload-guard.js",
+        "rol": "Validación de archivos STL/imágenes",
+        "estado": "activo"
+      },
+      {
+        "archivo": "js/pagos.js",
+        "rol": "Lógica Wompi/PayPal/Paddle",
+        "estado": "activo"
+      },
+      {
+        "archivo": "js/flujo-uploader.js",
+        "rol": "Upload de STL a Supabase Storage",
+        "estado": "activo"
+      },
+      {
+        "archivo": "css/global-nav.min.css",
+        "rol": "Estilos del navbar/footer/ux-floaters",
+        "estado": "activo"
+      },
+      {
+        "archivo": "app/sw.js",
+        "rol": "SW de push notifications (mensajero)",
+        "estado": "activo"
+      },
+      {
+        "archivo": "js/prodigy-utils.js",
+        "rol": "SSoT: fmtCOP, ErrorBoundary, AbandonedCart, Skeleton",
+        "estado": "activo"
+      },
+      {
+        "archivo": "js/prodigy-analytics.js",
+        "rol": "Analytics Bridge: 7 eventos de inteligencia comercial",
+        "estado": "activo"
+      },
+      {
+        "archivo": "js/audio-manager.js",
+        "rol": "Sistema de audio procedural — drone + ritmo + feedback UI",
+        "estado": "activo"
+      }
     ]
   },
-
   "paginas_flujo": {
     "descripcion": "Páginas de pedidos — requieren auth de doctor para operar",
     "lista": [
-      { "archivo": "flujo-diseno.html",    "acceso": "auth-guard (client)",  "ruta_clean": "/flujo-diseno" },
-      { "archivo": "flujo-fresado.html",   "acceso": "auth-guard (client)",  "ruta_clean": "/flujo-fresado" },
-      { "archivo": "flujo-impresion.html", "acceso": "auth-guard (client)",  "ruta_clean": "/flujo-impresion" },
-      { "archivo": "flujo-lab.html",       "acceso": "auth-guard (client)",  "ruta_clean": "/flujo-lab" }
+      {
+        "archivo": "flujo-diseno.html",
+        "acceso": "auth-guard (client)",
+        "ruta_clean": "/flujo-diseno"
+      },
+      {
+        "archivo": "flujo-fresado.html",
+        "acceso": "auth-guard (client)",
+        "ruta_clean": "/flujo-fresado"
+      },
+      {
+        "archivo": "flujo-impresion.html",
+        "acceso": "auth-guard (client)",
+        "ruta_clean": "/flujo-impresion"
+      },
+      {
+        "archivo": "flujo-lab.html",
+        "acceso": "auth-guard (client)",
+        "ruta_clean": "/flujo-lab"
+      }
     ]
   },
-
   "paginas_publicas": {
     "descripcion": "Páginas sin auth — visibles para todos (cuando NO hay modo mantenimiento)",
     "lista": [
-      "index.html", "nosotros.html", "soporte.html", "catalogo.html",
-      "portafolio.html", "calculadora.html", "journal.html", "article.html",
-      "diseno-cad.html", "fresado-cam.html", "envia-tu-scanner.html",
-      "escaner-domicilio.html", "instalar-app.html", "terminos-y-legal.html",
-      "seguimiento-caso.html", "patient.html", "404.html"
+      "index.html",
+      "nosotros.html",
+      "soporte.html",
+      "catalogo.html",
+      "portafolio.html",
+      "calculadora.html",
+      "journal.html",
+      "article.html",
+      "diseno-cad.html",
+      "fresado-cam.html",
+      "envia-tu-scanner.html",
+      "escaner-domicilio.html",
+      "instalar-app.html",
+      "terminos-y-legal.html",
+      "seguimiento-caso.html",
+      "patient.html",
+      "404.html",
+      "guia-tecnica.html",
+      "calidad.html"
     ]
   },
-
   "paginas_app": {
     "descripcion": "Dashboard interno — requieren auth Supabase",
     "lista": [
-      "app/login.html", "app/client-panel.html", "app/admin-panel.html",
-      "app/operator-panel.html", "app/panel-interno-operaciones.html",
-      "app/agregar-caso.html", "app/gestionar-casos.html", "app/inventario.html",
-      "app/mensajero.html", "app/taller.html", "app/onboarding.html",
-      "app/reset-password.html", "app/success.html", "app/admin-precios.html"
+      "app/login.html",
+      "app/client-panel.html",
+      "app/admin-panel.html",
+      "app/operator-panel.html",
+      "app/panel-interno-operaciones.html",
+      "app/agregar-caso.html",
+      "app/gestionar-casos.html",
+      "app/inventario.html",
+      "app/mensajero.html",
+      "app/taller.html",
+      "app/onboarding.html",
+      "app/reset-password.html",
+      "app/success.html",
+      "app/admin-precios.html"
     ]
   },
-
   "bypass_admin": {
     "url": "https://prodigylabdental.com/?preview=prodigy",
     "descripcion": "URL para que Alejandro acceda a la web real durante construcción",
     "como_funciona": "Guarda prodigy_preview=1 en localStorage. Una vez activado, persiste hasta que el browser limpia datos del sitio.",
     "como_desactivar": "Abrir consola del browser → localStorage.removeItem('prodigy_preview') → recargar"
   },
-
   "modo_mantenimiento": {
     "como_activar": "El homepage redirige automáticamente si prodigy_preview NO está en localStorage",
     "pagina": "mantenimiento.html",
     "nota": "Las subpáginas como /nosotros, /catalogo etc. NO redirigen — solo el homepage"
   },
-
   "sql_pendientes": {
     "descripcion": "EJECUTAR en Supabase SQL Editor — fuga PII activa",
     "archivos": [
@@ -77,7 +188,27 @@
       "sql/patch-rls-authenticated-only.sql",
       "sql/migrate-storage-pedidos-archivos.sql",
       "sql/patch-storage-evidencias.sql",
-      "sql/patch-storage-buckets-pendientes.sql"
+      "sql/patch-storage-buckets-pendientes.sql",
+      "sql/migrate-analytics-events.sql"
     ]
+  },
+  "analytics_bridge": {
+    "descripcion": "Sistema de inteligencia comercial — captura 7 tipos de eventos",
+    "eventos": [
+      "payment_intent",
+      "checkout_abandoned",
+      "calculator_engagement",
+      "file_validation_success",
+      "audio_interaction",
+      "article_read_complete",
+      "payment_success"
+    ],
+    "tabla_supabase": "analytics_events",
+    "vistas": [
+      "v_checkout_abandoned",
+      "v_calculator_trends",
+      "v_article_completions"
+    ],
+    "archivo": "js/prodigy-analytics.js"
   }
 }

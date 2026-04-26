@@ -124,19 +124,28 @@ async function abrirCheckoutWompi({ monto, referencia, email, descripcion, onSuc
     }
     const centavos = Math.round(monto * 100);
 
-    // Obtener firma SHA-256 desde Edge Function (el secreto nunca sale del servidor)
+    // Obtener firma SHA-256 con timeout de 10s + ErrorBoundary
     let signature = '';
     try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
         const sigRes = await fetch(WOMPI_SIGNATURE_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ referencia, monto_en_centavos: centavos, moneda: 'COP' })
+            body: JSON.stringify({ referencia, monto_en_centavos: centavos, moneda: 'COP' }),
+            signal: controller.signal
         });
+        clearTimeout(timeout);
         if (sigRes.ok) {
             const sigData = await sigRes.json();
             signature = sigData.signature ?? '';
         }
-    } catch (_e) { /* sin firma — Wompi igual procesa, solo sin validación extra */ }
+    } catch (_e) {
+        if (_e.name === 'AbortError') {
+            if (window.ProdigyUtils) ProdigyUtils.ErrorBoundary.showToast('Conexión lenta — continuando sin firma de seguridad', 'warn');
+        }
+        /* Wompi procesa sin firma — solo sin validación extra */
+    }
 
     const params = new URLSearchParams({
         'public-key':      PAGOS_CONFIG.wompi.publicKey,

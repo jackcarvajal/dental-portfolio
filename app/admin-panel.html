@@ -180,6 +180,7 @@
         <span id="badge-incidencias" style="display:none;background:var(--red,#ef4444);color:#fff;border-radius:10px;padding:1px 6px;font-size:.62rem;margin-left:auto"></span>
     </a>
 
+    <a href="#" class="nav-item" onclick="mostrarTab('analytics')"><i class="fas fa-chart-line" style="color:#F44336;"></i> Radar de Ventas</a>
     <p class="nav-section">Configuración</p>
     <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Catálogo</a>
     <a href="/" class="nav-item" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Ver Sitio</a>
@@ -530,6 +531,70 @@
         </div>
     </div>
 
+    <!-- ═══════════ TAB ANALYTICS / RADAR DE VENTAS ═══════════ -->
+    <div id="tab-analytics" class="tab-panel">
+        <div class="page-header">
+            <div>
+                <h1>Radar de Ventas <span style="color:#F44336;">/ Inteligencia Comercial</span></h1>
+                <p>Carritos abandonados · Materiales más cotizados · Artículos más leídos</p>
+            </div>
+            <button class="btn-primary" onclick="cargarAnalytics()">
+                <i class="fas fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+
+        <!-- KPIs Analytics -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:28px;">
+            <div style="background:var(--card);border:1px solid rgba(244,67,54,.3);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:2rem;font-weight:900;color:#F44336;" id="kpi-abandonados">—</div>
+                <div style="font-size:.78rem;color:#94a3b8;margin-top:4px;">Carritos abandonados (7 días)</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:2rem;font-weight:900;color:var(--gold);" id="kpi-cotizaciones">—</div>
+                <div style="font-size:.78rem;color:#94a3b8;margin-top:4px;">Eventos calculadora (30 días)</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(0,210,255,.3);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:2rem;font-weight:900;color:var(--cyan);" id="kpi-articulos">—</div>
+                <div style="font-size:.78rem;color:#94a3b8;margin-top:4px;">Artículos leídos completos</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(0,255,65,.2);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:2rem;font-weight:900;color:#00FF41;" id="kpi-stl-validos">—</div>
+                <div style="font-size:.78rem;color:#94a3b8;margin-top:4px;">STL válidos subidos (leads)</div>
+            </div>
+        </div>
+
+        <!-- Carritos Abandonados -->
+        <div class="section-card" style="margin-bottom:20px;">
+            <div class="section-header" style="background:rgba(244,67,54,.05);">
+                <h2 style="color:#F44336;"><i class="fas fa-cart-shopping"></i> Carritos Abandonados — Acción Requerida</h2>
+            </div>
+            <div id="lista-abandonados" style="padding:16px;">
+                <div style="text-align:center;color:#94a3b8;padding:32px;font-size:.9rem;">Cargando...</div>
+            </div>
+        </div>
+
+        <!-- Tendencias Calculadora -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+            <div class="section-card">
+                <div class="section-header"><h2><i class="fas fa-chart-bar"></i> Materiales más cotizados</h2></div>
+                <div id="tabla-materiales" style="padding:16px;"></div>
+            </div>
+            <div class="section-card">
+                <div class="section-header"><h2><i class="fas fa-book-open"></i> Artículos más leídos</h2></div>
+                <div id="tabla-articulos" style="padding:16px;"></div>
+            </div>
+        </div>
+
+        <!-- Eventos recientes locales (si Supabase no tiene datos aún) -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2><i class="fas fa-history"></i> Eventos locales recientes</h2>
+                <span style="font-size:.75rem;color:#94a3b8;">(Guardados en este browser)</span>
+            </div>
+            <div id="eventos-locales" style="padding:16px;max-height:280px;overflow-y:auto;"></div>
+        </div>
+    </div>
+
 </main>
 
 <div id="toast"></div>
@@ -605,6 +670,116 @@ async function cerrarSesion() {
     await sb.auth.signOut();
     sessionStorage.clear();
     window.location.href = 'login.html';
+}
+
+/* ══════════════════════════════════════════
+   ANALYTICS — Radar de Ventas
+══════════════════════════════════════════ */
+async function cargarAnalytics() {
+    // 1. Carritos abandonados desde Supabase
+    try {
+        const { data: abandonados } = await sb
+            .from('analytics_events')
+            .select('session_id,props,ts')
+            .eq('event', 'checkout_abandoned')
+            .gte('ts', new Date(Date.now() - 7 * 86400000).toISOString())
+            .order('ts', { ascending: false })
+            .limit(20);
+
+        const listEl = document.getElementById('lista-abandonados');
+        document.getElementById('kpi-abandonados').textContent = abandonados ? abandonados.length : '—';
+
+        if (abandonados && abandonados.length > 0) {
+            listEl.innerHTML = abandonados.map(function(a) {
+                var p = a.props || {};
+                var monto = p.monto ? ('$' + Math.round(p.monto).toLocaleString('es-CO') + ' COP') : '—';
+                var ref = p.referencia || p.referencia || '—';
+                var pasarela = (p.pasarela || 'desconocida').toUpperCase();
+                var fecha = new Date(a.ts).toLocaleString('es-CO', { dateStyle:'short', timeStyle:'short' });
+                var waMsg = encodeURIComponent('Hola Doctor, soy Alejandro de PRODIGY. Vi que estaba cotizando un caso por ' + monto + ' (Ref: ' + ref + '). ¿Puedo ayudarte a completar el pedido?');
+                return '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:8px;">' +
+                    '<div>' +
+                    '<div style="font-size:.88rem;font-weight:700;color:#e2e8f0;">' + monto + ' <span style="color:#94a3b8;font-weight:400;">vía</span> ' + pasarela + '</div>' +
+                    '<div style="font-size:.75rem;color:#64748b;">' + fecha + ' · Ref: ' + ref + '</div>' +
+                    '</div>' +
+                    '<a href="https://wa.me/573212816716?text=' + waMsg + '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25D366;padding:7px 14px;border-radius:100px;text-decoration:none;font-size:.82rem;font-weight:700;flex-shrink:0;">' +
+                    '<i class="fab fa-whatsapp"></i> Recuperar</a>' +
+                    '</div>';
+            }).join('');
+        } else {
+            listEl.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:32px;font-size:.9rem;">✅ Sin carritos abandonados en los últimos 7 días</div>';
+        }
+    } catch(e) { console.warn('Analytics abandonados:', e.message); }
+
+    // 2. Tendencias calculadora
+    try {
+        const { data: trends } = await sb
+            .from('analytics_events')
+            .select('props')
+            .eq('event', 'calculator_engagement')
+            .gte('ts', new Date(Date.now() - 30 * 86400000).toISOString());
+
+        document.getElementById('kpi-cotizaciones').textContent = trends ? trends.length : '0';
+
+        if (trends && trends.length > 0) {
+            var counts = {};
+            trends.forEach(function(t) {
+                var v = (t.props && t.props.valor) ? t.props.valor : 'unknown';
+                counts[v] = (counts[v] || 0) + 1;
+            });
+            var sorted = Object.entries(counts).sort(function(a,b){ return b[1]-a[1]; }).slice(0, 8);
+            document.getElementById('tabla-materiales').innerHTML =
+                sorted.map(function(e) {
+                    return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.88rem;">' +
+                        '<span style="color:#e2e8f0;">' + e[0] + '</span>' +
+                        '<span style="color:#D4AF37;font-weight:700;">' + e[1] + ' veces</span></div>';
+                }).join('');
+        }
+    } catch(e) { console.warn('Analytics trends:', e.message); }
+
+    // 3. Artículos más leídos
+    try {
+        const { data: arts } = await sb
+            .from('analytics_events')
+            .select('props')
+            .eq('event', 'article_read_complete')
+            .gte('ts', new Date(Date.now() - 30 * 86400000).toISOString());
+
+        document.getElementById('kpi-articulos').textContent = arts ? arts.length : '0';
+
+        if (arts && arts.length > 0) {
+            var artCounts = {};
+            arts.forEach(function(a) { var id = a.props && a.props.article_id || '?'; artCounts[id] = (artCounts[id] || 0) + 1; });
+            var artSorted = Object.entries(artCounts).sort(function(a,b){ return b[1]-a[1]; }).slice(0, 6);
+            document.getElementById('tabla-articulos').innerHTML =
+                artSorted.map(function(e) {
+                    return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;">' +
+                        '<span style="color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;" title="' + e[0] + '">' + e[0].replace(/-/g,' ') + '</span>' +
+                        '<span style="color:#00d2ff;font-weight:700;flex-shrink:0;margin-left:8px;">' + e[1] + '</span></div>';
+                }).join('');
+        }
+    } catch(e) { console.warn('Analytics artículos:', e.message); }
+
+    // 4. STL válidos (leads calificados)
+    try {
+        const { data: stls } = await sb
+            .from('analytics_events')
+            .select('id')
+            .eq('event', 'file_validation_success')
+            .gte('ts', new Date(Date.now() - 30 * 86400000).toISOString());
+        document.getElementById('kpi-stl-validos').textContent = stls ? stls.length : '0';
+    } catch(e) {}
+
+    // 5. Eventos locales (del browser actual)
+    var localEvts = JSON.parse(localStorage.getItem('pg_events') || '[]').reverse().slice(0, 30);
+    document.getElementById('eventos-locales').innerHTML = localEvts.length > 0
+        ? localEvts.map(function(e) {
+            return '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:.8rem;">' +
+                '<span style="color:#e2e8f0;font-weight:600;">' + e.event + '</span>' +
+                '<span style="color:#64748b;">' + new Date(e.ts).toLocaleTimeString('es-CO') + ' · ' + e.page + '</span>' +
+                '</div>';
+          }).join('')
+        : '<div style="color:#94a3b8;text-align:center;padding:24px;font-size:.88rem;">Sin eventos locales aún — navega la web con la sesión activa</div>';
 }
 
 /* ══════════════════════════════════════════
