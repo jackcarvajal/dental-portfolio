@@ -56,8 +56,36 @@
     <style>
       @keyframes spinSeg { to { transform:rotate(360deg); } }
       @keyframes blink2  { 0%,100%{opacity:1} 50%{opacity:.3} }
+      @keyframes modalIn { from{opacity:0;transform:translateY(-20px) scale(.96)} to{opacity:1;transform:translateY(0) scale(1)} }
       .seg-step-arrow { display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#334155; }
       @media(max-width:640px){ .seg-step-arrow{ display:none; } }
+
+      /* Modal "Caso No Encontrado" */
+      #modal-no-encontrado {
+        display:none;position:fixed;inset:0;z-index:99999;
+        background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);
+        align-items:center;justify-content:center;padding:20px;
+      }
+      #modal-no-encontrado.open { display:flex; }
+      #modal-no-encontrado .modal-box {
+        background:linear-gradient(135deg,#1a0808,#1f0f0f);
+        border:2px solid rgba(244,67,54,0.4);border-radius:24px;
+        padding:48px 40px;text-align:center;max-width:440px;width:100%;
+        animation:modalIn .3s ease;position:relative;
+      }
+      #modal-no-encontrado .modal-x {
+        position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.06);
+        border:1px solid rgba(255,255,255,0.1);border-radius:50%;width:36px;height:36px;
+        display:flex;align-items:center;justify-content:center;cursor:pointer;
+        color:#94a3b8;font-size:1rem;transition:all .2s;
+      }
+      #modal-no-encontrado .modal-x:hover{background:rgba(244,67,54,0.15);color:#F44336;border-color:rgba(244,67,54,0.4);}
+      #modal-no-encontrado .modal-icon{font-size:3.5rem;margin-bottom:16px;}
+      #modal-no-encontrado h3{color:#F44336;font-size:1.4rem;font-weight:800;margin-bottom:10px;}
+      #modal-no-encontrado p{color:#94a3b8;font-size:1rem;margin-bottom:24px;line-height:1.6;}
+      #modal-no-encontrado .modal-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+      #modal-no-encontrado .btn-retry{padding:13px 28px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:50px;font-weight:700;cursor:pointer;font-size:1rem;}
+      #modal-no-encontrado .btn-wa{padding:13px 24px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;border-radius:50px;font-weight:700;cursor:pointer;font-size:1rem;text-decoration:none;display:inline-flex;align-items:center;gap:8px;}
     </style>
 
     <!-- ═══ HERO + BUSCADOR (above the fold) ═════════════════════════════ -->
@@ -438,6 +466,25 @@
             'Cancelado':          'Recibido'
         };
 
+        /* ── MODAL: Caso No Encontrado ── */
+        function abrirModalNoEncontrado() {
+            var m = document.getElementById('modal-no-encontrado');
+            if (m) { m.classList.add('open'); document.body.style.overflow='hidden'; }
+        }
+        function cerrarModalNoEncontrado() {
+            var m = document.getElementById('modal-no-encontrado');
+            if (m) { m.classList.remove('open'); document.body.style.overflow=''; }
+            // Limpiar input para nueva búsqueda
+            var inp = document.getElementById('searchOrden');
+            if (inp) { inp.value=''; inp.focus(); }
+        }
+        // Cerrar con Escape
+        document.addEventListener('keydown', function(e){ if(e.key==='Escape') cerrarModalNoEncontrado(); });
+        // Cerrar al click fuera del box
+        document.getElementById('modal-no-encontrado')?.addEventListener('click', function(e){
+            if(e.target === this) cerrarModalNoEncontrado();
+        });
+
         /* Búsqueda con spinner */
         async function buscarCasoConSpinner() {
             const spinner = document.getElementById('search-spinner');
@@ -456,7 +503,7 @@
             const orden = document.getElementById('searchOrden').value.trim().toUpperCase();
             if (!orden) {
                 document.getElementById('resultado').style.display = 'none';
-                document.getElementById('noEncontrado').style.display = 'block';
+                abrirModalNoEncontrado();
                 return;
             }
             // Leer nonce del URL (presente cuando viene desde link de WhatsApp)
@@ -470,12 +517,12 @@
                 mostrarCaso(data);
             } catch(_) {
                 document.getElementById('resultado').style.display = 'none';
-                document.getElementById('noEncontrado').style.display = 'block';
+                abrirModalNoEncontrado();
             }
         }
 
         function mostrarCaso(caso) {
-            document.getElementById('noEncontrado').style.display = 'none';
+            cerrarModalNoEncontrado();
             document.getElementById('resultado').style.display = 'block';
 
             document.getElementById('nombrePacienteDisplay').textContent = 'Caso Registrado';
@@ -695,6 +742,24 @@
             observer.observe(zona);
         }
     </script>
+    <!-- MODAL: Caso No Encontrado -->
+    <div id="modal-no-encontrado" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+      <div class="modal-box">
+        <button class="modal-x" onclick="cerrarModalNoEncontrado()" aria-label="Cerrar">✕</button>
+        <div class="modal-icon">❌</div>
+        <h3 id="modal-titulo">Caso No Encontrado</h3>
+        <p>No encontramos un caso con ese número de orden.<br>Verifica que sea el código exacto que te enviamos por WhatsApp (ej: <strong style="color:#FFD700">PROD-2026-0042</strong>).</p>
+        <div class="modal-btns">
+          <button class="btn-retry" onclick="cerrarModalNoEncontrado()">
+            🔍 Intentar de nuevo
+          </button>
+          <a class="btn-wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20no%20encuentro%20mi%20caso%20en%20el%20seguimiento" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i> Pedir ayuda
+          </a>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
     <script>
         // Auto-fill desde ?id=&key= (link WhatsApp) o ?pedido=&pago=ok (redirect Wompi)
