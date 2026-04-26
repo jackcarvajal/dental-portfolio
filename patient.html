@@ -1157,7 +1157,9 @@
                 
                 const img = document.createElement('img');
                 img.src = path;
-                img.alt = `Imagen ${index + 1}`;
+                img.alt = `Imagen ${index + 1} — ${paciente.name || 'Caso clínico PRODIGY'}`;
+                img.loading = index < 4 ? 'eager' : 'lazy';
+                img.decoding = 'async';
                 
                 // Manejo de errores de carga
                 img.onerror = function() {

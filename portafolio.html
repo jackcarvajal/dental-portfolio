@@ -656,7 +656,7 @@ function renderPage(page) {
         <a class="case-card" href="patient?id=${encodeURIComponent(c.id)}&from=catalogo" style="transition-delay:${Math.min(i * 80, 400)}ms">
             <div class="card-img">
                 <img src="${escH(c.coverImage)}" alt="${escH(c.name)}"
-                     loading="${i < 6 ? 'eager' : 'lazy'}"
+                     loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async"
                      onerror="this.parentElement.style.background='#0a0a0a'">
                 <div class="card-watermark"><span>© PRODIGY</span></div>
                 <div class="card-type-badge">${escH(getTypeLabel(c.type))}</div>

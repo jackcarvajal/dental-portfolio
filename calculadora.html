@@ -278,18 +278,22 @@
     }
     .field input::placeholder { color: var(--muted); }
     .field input:focus { border-color: rgba(212,175,55,0.5); }
+    @keyframes ctaPulse {
+      0%,100% { box-shadow: 0 4px 20px rgba(0,255,65,0.35); }
+      50%     { box-shadow: 0 4px 32px rgba(0,255,65,0.7), 0 0 0 6px rgba(0,255,65,0.12); }
+    }
     .btn-cotizar {
       width: 100%;
-      background: linear-gradient(135deg, var(--magenta) 0%, #B82F8B 100%);
-      background-size: 200% auto;
-      color: #fff; font-weight: 800; font-size: 0.95rem;
-      border: none; border-radius: 12px; padding: 14px;
+      background: linear-gradient(135deg, #00c934 0%, #00FF41 100%);
+      color: #000; font-weight: 900; font-size: 1rem;
+      border: none; border-radius: 12px; padding: 16px;
       cursor: pointer; transition: all 0.2s;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      box-shadow: 0 4px 20px rgba(217,70,166,0.35);
+      box-shadow: 0 4px 20px rgba(0,255,65,0.35);
+      animation: ctaPulse 5s ease-in-out infinite;
     }
-    .btn-cotizar:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(217,70,166,0.5); }
-    .btn-cotizar:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-cotizar:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,255,65,0.6); animation: none; }
+    .btn-cotizar:disabled { opacity: 0.6; cursor: not-allowed; transform: none; animation: none; }
     .btn-wa {
       width: 100%; margin-top: 10px;
       background: rgba(37,211,102,0.1);

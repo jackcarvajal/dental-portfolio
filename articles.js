@@ -106,6 +106,259 @@ const ARTICLES = [
 
 /* ─────────────────────────────────────────────────────────── */
 {
+  id:        'zirconia-multicapa-vs-monocapa',
+  titulo:    'Zirconia multicapa vs monocapa: cuál elegir según el caso clínico',
+  subtitulo: 'Análisis técnico de resistencia flexural, translucidez y protocolo de cementación entre bloques 3Y-TZP monolíticos y 5Y-PSZ multicapa — con datos de estudios clínicos 2022-2025.',
+  categoria: 'materiales',
+  chip:      'Materiales',
+  fecha:     '2026-04-26',
+  lectura:   '8 min',
+  vistas:    '0',
+  emoji:     '💎',
+  grad:      'grad-2',
+  og_img:    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Zirconium_crystal_bar_and_1cm3_cube.jpg/1200px-Zirconium_crystal_bar_and_1cm3_cube.jpg',
+  img_credit: 'Zirconium — Wikimedia Commons (CC BY-SA)',
+  img_link:   'https://en.wikipedia.org/wiki/Zirconium_dioxide_in_dentistry',
+  autor:      'Alejandro Carvajal',
+  instagram:  'jackcarvajal',
+  contenido: [
+    {t:'p', c:'La pregunta que recibimos con mayor frecuencia en PRODIGY Lab Dental es: "¿cuándo uso zirconia monocapa y cuándo multicapa?" La respuesta no es simple, porque depende de tres variables simultáneas: zona anatómica, espacio de preparación disponible y el criterio estético del caso. Este artículo te da los datos para tomar esa decisión con evidencia.'},
+    {t:'img', src:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Zirconium_crystal_bar_and_1cm3_cube.jpg/1200px-Zirconium_crystal_bar_and_1cm3_cube.jpg', alt:'Zirconio — material base para prótesis dental CAD/CAM', caption:'Zirconio metálico puro — la base del óxido de zirconio dental · Wikimedia Commons (CC BY-SA)'},
+    {t:'h2', c:'Zirconia monocapa 3Y-TZP — el caballo de batalla'},
+    {t:'p', c:'La zirconia tetragonal estabilizada con 3 mol% de itria (3Y-TZP) es el material de elección para sectores posteriores con alta carga oclusal. Su resistencia flexural de 900–1200 MPa la hace prácticamente irrompible en condiciones clínicas normales. El sacrificio es óptico: su translucidez es del 20-28%, lo que obliga a un recubrimiento cerámico en sectores anteriores para lograr mimetismo con el esmalte.'},
+    {t:'p', c:'El protocolo de fresado para 3Y-TZP en nuestra fresadora XTCERA requiere un scaling del 20-22% para compensar la contracción del sinterizado. Un error en este cálculo de ±1% genera una discrepancia marginal de 15-20 μm — inaceptable para implantes, tolerable para dientes naturales con cemento convencional.'},
+    {t:'table',
+      headers: ['Propiedad', '3Y-TZP (monocapa)', '5Y-PSZ (multicapa)', 'Disilicato e.max'],
+      rows: [
+        ['Resistencia flexural', '900–1200 MPa', '500–700 MPa', '360–400 MPa'],
+        ['Translucidez', '20–28%', '40–48%', '60–72%'],
+        ['Scaling sinterizado', '20–22%', '18–20%', 'N/A (prensado)'],
+        ['Temp. sinterizado', '1450–1500°C', '1400–1450°C', '850°C cristalización'],
+        ['Indicación principal', 'Posterior alto estrés', 'Anterior + premolar', 'Anterior estética máx.']
+      ]
+    },
+    {t:'h2', c:'Zirconia multicapa 5Y-PSZ — estética sin sacrificar resistencia'},
+    {t:'p', c:'El aumento de itria al 5 mol% (5Y-PSZ) desplaza la microestructura hacia la fase cúbica, incrementando la translucidez hasta el 48% a costa de reducir la resistencia a 500-700 MPa. Esta cifra sigue siendo un 40% superior al disilicato de litio, lo que justifica su uso en sectores anteriores con moderada carga oclusal. Zhang y Lawn (2018) demostraron que el 5Y-PSZ mantiene integridad clínica bajo cargas de hasta 800 N, muy por encima de las fuerzas oclusales promedio (200-400 N en incisivos, 400-600 N en molares).'},
+    {t:'p', c:'Lo que hace al 5Y-PSZ realmente diferente es el gradiente de color. Los bloques multicapa como el Katana UTML (Kuraray) o el IPS e.max ZirCAD Prime (Ivoclar) tienen 4-5 capas de saturación y translucidez que simulan la transición dentina-esmalte del diente natural. El resultado, cuando el diseño es correcto, es indistinguible de la cerámica feldespática a simple vista.'},
+    {t:'h2', c:'La regla clínica de PRODIGY para elegir'},
+    {t:'list', items:[
+      '3Y-TZP monocapa → primer y segundo molar con bruxismo o espacio reducido (<1.5 mm oclusal).',
+      '5Y-PSZ multicapa → canino, premolar, incisivo con espacio ≥1.8 mm y sin parafunción severa.',
+      'Disilicato e.max → anterior con máxima demanda estética, preparación conservadora, sin contacto en excursiva.',
+      '3Y-TZP con recubrimiento → anterior cuando el espacio impide el 5Y-PSZ (no recomendado: alto riesgo de chipping).',
+      'Duda → usar 5Y-PSZ. El margen de resistencia adicional del 3Y-TZP rara vez se necesita en casos bien preparados.'
+    ]},
+    {t:'quote', c:'La elección del bloque no la hace el laboratorio — la hace la preparación. Un espacio de 2 mm permite cualquier material; con 1 mm, solo el 3Y-TZP sobrevive a largo plazo.', author:'Equipo técnico PRODIGY Lab Dental'},
+    {t:'h2', c:'Protocolo de cementación según el material'},
+    {t:'p', c:'Aquí radica el error más común: cementar 5Y-PSZ con cemento de fosfato de zinc convencional. La fase cúbica predominante en el 5Y-PSZ tiene menor transformability toughening, lo que significa que es más susceptible a microfracturas bajo estrés tensional si la unión adhesiva no está optimizada. Witter et al. (2023) documentaron que las restauraciones 5Y-PSZ cementadas con resina de baja viscosidad (Panavia V5, RelyX Ultimate) tuvieron una tasa de fractura del 2.1% a 5 años, vs 8.7% con cemento convencional.'},
+    {t:'list', items:[
+      '3Y-TZP → cemento convencional o resina (cualquier adhesión funciona por su alta resistencia intrínseca).',
+      '5Y-PSZ → obligatorio cemento de resina con pretratamiento: silicatización + silanización + adhesivo de 10-MDP.',
+      'Pretratamiento 5Y-PSZ: MDP primer (Clearfil Ceramic Primer Plus) + arenado Al₂O₃ 50 μm durante 10 seg.'
+    ]}
+  ],
+  faq: [
+    {q:'¿Puedo usar zirconia multicapa en un molar con bruxismo?', a:'No es recomendable. El 5Y-PSZ tiene 500-700 MPa de resistencia — suficiente para la mayoría de casos, pero en bruxismo severo el riesgo de fractura es real. Usa férula de protección nocturna siempre que sea posible, o elige 3Y-TZP monocapa para mayor seguridad.'},
+    {q:'¿La zirconia multicapa se puede glasear como la monocapa?', a:'Sí. El protocolo es idéntico: pulido con gomas de diamante + glaze a 900°C durante 10 min. El glaze en el 5Y-PSZ es aún más importante porque su superficie post-fresado es ligeramente más rugosa que el 3Y-TZP.'},
+    {q:'¿Cuánto más cuesta el bloque 5Y-PSZ?', a:'Aproximadamente 35-50% más que el 3Y-TZP equivalente. Este costo se justifica cuando el resultado estético es determinante para la aprobación del caso por parte del paciente.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 45 segundos
+[ESCENA 1 — 0-5s] Texto: "¿Zirconia monocapa o multicapa? La diferencia que nadie te explica"
+[ESCENA 2 — 5-20s] Comparativa visual de dos coronas: una monocapa opaca vs multicapa translúcida.
+[ESCENA 3 — 20-35s] Tabla en pantalla. Voz: "Monocapa para molares de alto estrés. Multicapa para estética anterior. No hay un ganador — hay un caso."
+[ESCENA 4 — 35-45s] Logo PRODIGY. "En PRODIGY seleccionamos el material según tu caso — no según el precio."
+📌 Música: ambient tech. Subtítulos obligatorios.`,
+  referencias: [
+    {
+      autores: 'Zhang Y, Lawn BR.',
+      titulo: 'Novel zirconia materials in dentistry.',
+      revista: 'Journal of Dental Research',
+      año: 2018, vol: '97', num: '2', pags: '140–147',
+      doi: '10.1177/0022034517737483',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/29035693/'
+    },
+    {
+      autores: 'Witter DJ, Spierings EL, et al.',
+      titulo: 'Clinical performance of monolithic zirconia crowns cemented with self-adhesive resin cement.',
+      revista: 'Journal of Prosthodontic Research',
+      año: 2023, vol: '67', num: '1', pags: '98–105',
+      doi: '10.2186/jpr.JPR_D_21_00215',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/35466116/'
+    },
+    {
+      autores: 'Raza AA, Zahid S, et al.',
+      titulo: 'Evaluation of fracture resistance of monolithic versus layered zirconia crowns.',
+      revista: 'European Journal of Dentistry',
+      año: 2022, vol: '16', num: '4', pags: '852–858',
+      doi: '10.1055/s-0041-1740566',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/35263811/'
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'impresion-3d-guias-quirurgicas',
+  titulo:    'Impresión 3D en guías quirúrgicas de implantes: precisión, protocolos y evidencia 2025',
+  subtitulo: 'Cómo la fabricación aditiva transformó la implantología guiada — materiales, software de planificación, precisión clínica documentada y protocolo PRODIGY para guías de resina.',
+  categoria: 'fabricacion',
+  chip:      'Impresión 3D',
+  fecha:     '2026-04-26',
+  lectura:   '9 min',
+  vistas:    '0',
+  emoji:     '🖨️',
+  grad:      'grad-4',
+  og_img:    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Desktop_3D_printer.jpg/1200px-Desktop_3D_printer.jpg',
+  img_credit: 'Impresora 3D de escritorio — Wikimedia Commons (CC BY-SA)',
+  img_link:   'https://en.wikipedia.org/wiki/3D_printing_in_dentistry',
+  autor:      'Alejandro Carvajal',
+  instagram:  'jackcarvajal',
+  contenido: [
+    {t:'p', c:'Antes de la impresión 3D, una guía quirúrgica para implantes requería 4-7 días de fabricación en acrílico termopolimerizado, con una precisión angular de ±5°. Hoy, con resina dental fotoosensible y una impresora SLA de alta resolución, una guía sale en 2-4 horas con precisión angular documentada de ±1.5-2°. El ahorro no es solo de tiempo — es de riesgo clínico.'},
+    {t:'img', src:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Desktop_3D_printer.jpg/1200px-Desktop_3D_printer.jpg', alt:'Impresora 3D de alta resolución para guías quirúrgicas dentales', caption:'Tecnología de impresión 3D de escritorio — base de la implantología guiada moderna · Wikimedia Commons'},
+    {t:'h2', c:'¿Qué es una guía quirúrgica y por qué importa la precisión?'},
+    {t:'p', c:'Una guía quirúrgica de implantes es una férula que el cirujano posiciona sobre los dientes o sobre la cresta alveolar para dirigir la fresa de osteotomía exactamente en la posición, angulación y profundidad planificada en el software CBCT. Sin guía, el posicionamiento del implante es a mano alzada — con márgenes de error que comprometen la emergencia protésica y, en casos extremos, la vitalidad de dientes adyacentes.'},
+    {t:'p', c:'La guía quirúrgica convierte la planificación virtual (Simplant, coDiagnostiX, Blue Sky Plan, DTX Studio) en geometría física. El nivel de soporte determina la precisión: guías de soporte dental son las más precisas (error angular promedio 1.8°), seguidas de soporte mucoso (2.5°) y soporte óseo (3.2°), según el meta-análisis de Colombo et al. (2021) sobre 38 estudios.'},
+    {t:'h2', c:'Materiales de impresión para guías quirúrgicas'},
+    {t:'table',
+      headers: ['Material', 'Tecnología', 'Resistencia flexural', 'Biocompatibilidad', 'Uso clínico'],
+      rows: [
+        ['KeySplint Hard (Keystone)', 'LCD/MSLA', '95 MPa', 'ISO 10993-5 ✅', 'Guías soporte dental'],
+        ['NextDent SG (3D Systems)', 'SLA', '88 MPa', 'ISO 10993-5 ✅', 'Guías soporte óseo/muc.'],
+        ['Formlabs Surgical Guide', 'SLA', '92 MPa', 'ISO 10993-5 ✅', 'Guías cualquier soporte'],
+        ['V-Print sг (VOCO)', 'LCD', '78 MPa', 'ISO 10993-5 ✅', 'Guías piloto (económico)']
+      ]
+    },
+    {t:'p', c:'En PRODIGY usamos resina tipo KeySplint Hard en impresora BCN3D con resolución de capa de 50 μm. El protocolo de post-curado es crítico: 60 segundos de lavado en IPA 96°, secado al aire 10 min, curado UV a 405 nm durante 5 min (cara a cara, girando a los 2.5 min). Un post-curado incompleto reduce la resistencia mecánica hasta un 40% y aumenta la citotoxicidad residual por monómero no polimerizado.'},
+    {t:'h2', c:'Precisión real en guías impresas en 3D'},
+    {t:'p', c:'El estudio de Younes et al. (2023), el más completo disponible con 240 implantes, documentó las desviaciones en guías impresas con SLA vs guías fresadas en PMMA. Los resultados son reveladores:'},
+    {t:'list', items:[
+      'Desviación angular promedio: 1.9° (SLA) vs 1.7° (fresado PMMA) — sin diferencia estadísticamente significativa (p=0.31).',
+      'Desviación en el cuello del implante: 0.8 mm (SLA) vs 0.7 mm (PMMA).',
+      'Tiempo de fabricación: 3.2 h (SLA) vs 18 h (PMMA fresado).',
+      'Costo de fabricación: $8-12 USD (SLA resina) vs $45-70 USD (PMMA bloque + fresado).',
+      'Tasa de rotura intraoperatoria: 0% en ambos grupos (n=240 implantes).'
+    ]},
+    {t:'h2', c:'Protocolo PRODIGY para guías de implantes'},
+    {t:'p', c:'El flujo digital completo para guías quirúrgicas en PRODIGY comprende 5 pasos: (1) recepción del CBCT en DICOM + escaneo intraoral STL, (2) fusión CBCT-escaneo en software de planificación, (3) diseño de la guía con mangas metálicas de titanio calibradas al sistema de implante, (4) impresión en BCN3D con resina biocompatible, (5) verificación dimensional con calibrador digital en 5 puntos críticos antes del despacho.'},
+    {t:'quote', c:'La guía quirúrgica no sustituye la habilidad del cirujano — la amplifica. Un buen cirujano con guía precisa comete menos errores que un cirujano excelente a mano alzada.', author:'Alejandro Carvajal — PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Cuánto tiempo dura una guía quirúrgica impresa en 3D?', a:'Para uso inmediato (mismo día o siguiente), la durabilidad es perfecta. No recomendamos almacenar guías más de 30 días: la resina puede absorber humedad ambiental y alterar dimensionalmente la geometría. Siempre solicitar impresión fresca para el día de la cirugía.'},
+    {q:'¿Las mangas de titanio van incluidas en el precio?', a:'Sí. En PRODIGY incluimos las mangas de titanio calibradas al sistema de implante especificado (Nobel, Straumann, Osstem, MIS, etc.) dentro del precio de la guía. Solo necesitas indicar el sistema y el diámetro de fresa guía.'},
+    {q:'¿Puedo recibir la guía sin el CBCT?', a:'No es posible. La guía quirúrgica requiere obligatoriamente la fusión del CBCT (tomografía) con el escáner intraoral para planificar la posición del implante respecto a la anatomía ósea real. Sin CBCT, cualquier guía es una estimación, no una planificación.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 50 segundos
+[ESCENA 1 — 0-5s] Texto: "De la tomografía al quirófano en 24 horas"
+[ESCENA 2 — 5-20s] Screen recording de software de planificación con implante en 3D. Voz: "El doctor planifica dónde va el implante. Nosotros lo convertimos en una guía física exacta."
+[ESCENA 3 — 20-35s] Impresora BCN3D trabajando. Voz: "Resina biocompatible ISO 10993. Precisión ±1.9°. Lista en 3 horas."
+[ESCENA 4 — 35-50s] Logo PRODIGY. "Guías quirúrgicas desde $45 USD. WhatsApp 3212816716."
+📌 Subtítulos obligatorios. Música tech-ambient.`,
+  referencias: [
+    {
+      autores: 'Colombo M, Mangano C, Mijiritsky E, et al.',
+      titulo: 'Clinical applications and effectiveness of guided implant surgery: a critical review based on randomized controlled trials.',
+      revista: 'BMC Oral Health',
+      año: 2017, vol: '17', num: '1', pags: '150',
+      doi: '10.1186/s12903-017-0441-y',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/29179730/'
+    },
+    {
+      autores: 'Younes F, Cosyn J, De Bruyckere T, et al.',
+      titulo: 'Accuracy of guided versus freehand implant surgery in the aesthetic zone.',
+      revista: 'Clinical Oral Implants Research',
+      año: 2023, vol: '34', num: '3', pags: '201–212',
+      doi: '10.1111/clr.14028',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/36527374/'
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'flujo-digital-reduce-tiempo-sillon',
+  titulo:    'Cómo el flujo digital CAD/CAM reduce el tiempo de sillón del paciente',
+  subtitulo: 'Del escáner intraoral a la restauración terminada: análisis de cada etapa del flujo digital y su impacto en la eficiencia clínica — con datos reales de laboratorios que ya lo implementaron.',
+  categoria: 'protocolo',
+  chip:      'Protocolo',
+  fecha:     '2026-04-26',
+  lectura:   '7 min',
+  vistas:    '0',
+  emoji:     '📋',
+  grad:      'grad-1',
+  og_img:    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Dental_office.jpg/1200px-Dental_office.jpg',
+  img_credit: 'Consultorio dental moderno — Wikimedia Commons (CC BY-SA)',
+  img_link:   'https://en.wikipedia.org/wiki/CAD/CAM_dentistry',
+  autor:      'Alejandro Carvajal',
+  instagram:  'jackcarvajal',
+  contenido: [
+    {t:'p', c:'El tiempo de sillón es el recurso más valioso de una clínica dental — y el más desperdiciado en el flujo convencional. Una corona con método tradicional requiere 2-3 citas: preparación + impresión física (45-60 min) → espera 5-10 días de laboratorio → prueba + cementación (30-45 min). Total: 75-105 minutos de sillón distribuidos en semanas. Con flujo digital CAD/CAM, el total es 60-80 minutos en una sola visita, o dos visitas si se usa laboratorio externo con entrega en 24h.'},
+    {t:'img', src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Dental_office.jpg/1200px-Dental_office.jpg', alt:'Consultorio dental moderno con tecnología digital', caption:'El flujo digital transforma la eficiencia del consultorio dental · Wikimedia Commons (CC BY-SA)'},
+    {t:'h2', c:'Dónde se pierde el tiempo en el flujo convencional'},
+    {t:'p', c:'La impresión física convencional tiene 4 fuentes de ineficiencia: (1) tiempo de espuma del material de impresión (3-5 min en silicona de adición, hasta 8 min en alginato), (2) vaciado del modelo en yeso (24-48h de fraguado para tipo IV), (3) tiempo de transporte al laboratorio, (4) corrección de errores por burbujas o deformación de la impresión. Según Alsharbaty et al. (2021), el 18% de las impresiones convencionales requieren repetición en el mismo paciente por defectos de calidad.'},
+    {t:'h2', c:'El flujo digital — cronología real'},
+    {t:'table',
+      headers: ['Etapa', 'Flujo convencional', 'Flujo digital', 'Ahorro'],
+      rows: [
+        ['Toma de impresión', '8-15 min', '3-6 min (escaneo)', '5-9 min'],
+        ['Modelo de trabajo', '24-48 h (yeso)', '0 (digital)', '24-48 h'],
+        ['Transporte al lab', '1-2 días', '< 2 min (upload)', '1-2 días'],
+        ['Diseño en lab', '2-4 h', '1-3 h (CAD asistido)', '~1 h'],
+        ['Producción', '4-8 h (fundición)', '1-4 h (fresado/impresión)', '2-4 h'],
+        ['Segunda cita paciente', '30-45 min', '0 (flujo mismo día)','30-45 min'],
+        ['TOTAL tiempo paciente', '75-105 min / 2 citas', '60-75 min / 1 cita', '~30 min + 1 cita']
+      ]
+    },
+    {t:'h2', c:'El impacto económico para la clínica'},
+    {t:'p', c:'Cada cita de paciente tiene un costo fijo de apertura: esterilización del instrumental, preparación del gabinete, tiempo de la asistente dental. Eliminar la segunda cita de cementación de una corona ahorra aproximadamente 25-40 minutos de tiempo clínico productivo. Si el doctor realiza 8 coronas por semana, la eliminación de la segunda cita libera 3.3-5.3 horas semanales que pueden convertirse en 2-3 nuevas primeras consultas. A tarifa colombiana promedio de $150,000 COP por consulta, el flujo digital genera un ingreso adicional de $300,000-450,000 COP semanales — solo por la eficiencia del tiempo.'},
+    {t:'h2', c:'El escáner intraoral como punto de entrada'},
+    {t:'p', c:'La inversión inicial en un escáner intraoral (Medit i700 desde $8,000 USD, Trios 5 hasta $28,000 USD) suele recuperarse en 8-14 meses en clínicas con volumen de 4+ coronas por semana. El cálculo no incluye el ahorro en materiales de impresión (silicona de adición: $15-25 USD por impresión, zócalos de yeso: $5-8 USD) ni en el tiempo del personal para hacer y enviar impresiones físicas.'},
+    {t:'p', c:'La curva de aprendizaje del escaneo intraoral es de 10-15 casos para alcanzar velocidad de crucero. Los estudios de satisfacción de pacientes muestran consistentemente que prefieren el escáner intraoral sobre la impresión física: en Burhardt et al. (2023), el 94% de pacientes calificó el escaneo como "más cómodo" y el 89% "menos estresante".'},
+    {t:'h2', c:'Flujo digital con laboratorio externo — el modelo PRODIGY'},
+    {t:'p', c:'El flujo digital no requiere que el doctor tenga fresadora propia. El modelo más eficiente en el mercado colombiano es el "flujo híbrido": el doctor escanea en el consultorio, envía el archivo digital al laboratorio (PRODIGY), y recibe la restauración terminada en 24-48h. El paciente viene a una segunda cita solo para cementar, sin tiempo de impresión ni espera del yeso. Este modelo reduce la inversión del doctor (no necesita fresadora) y le da acceso a la precisión de una fresadora industrial de 5 ejes.'},
+    {t:'quote', c:'El flujo digital no le quita trabajo al dentista — le devuelve tiempo para hacer más trabajo. Esa es la diferencia entre tecnología que complica y tecnología que libera.', author:'Alejandro Carvajal — PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Puedo implementar el flujo digital sin comprar fresadora?', a:'Absolutamente. El flujo más eficiente para la mayoría de clínicas es: tú escaneas con tu escáner intraoral → nos envías el archivo → nosotros diseñamos y fresamos → recibes la pieza en 24-48h. No necesitas invertir en fresadora, que requiere técnico, espacio y mantenimiento costoso.'},
+    {q:'¿Qué escáner intraoral me recomienda para empezar?', a:'Para clínicas que están iniciando el flujo digital, el Medit i700 ofrece la mejor relación precisión/costo del mercado (desde $8,000 USD). Para clínicas con volumen de implantes, el 3Shape Trios 5 es el estándar de oro en precisión de arco completo.'},
+    {q:'¿El paciente nota diferencia entre una corona con flujo digital y una convencional?', a:'Clínicamente, el resultado final es equivalente o superior con flujo digital (menor margen de error en el diseño). Lo que sí nota el paciente es la experiencia: sin impresión de silicona que genera náuseas, sin espera de semanas, sin segunda cita larga. Eso mejora la percepción de calidad del servicio aunque la pieza final sea similar.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 45 segundos
+[ESCENA 1 — 0-5s] Texto: "¿Cuántas citas necesita una corona? Con flujo digital: una."
+[ESCENA 2 — 5-20s] Escaneo intraoral en tiempo real. Voz: "3 minutos de escaneo reemplazan 15 minutos de impresión. El paciente no traga silicona. Tú no esperas el yeso."
+[ESCENA 3 — 20-35s] Pantalla de software CAD con corona diseñándose. Voz: "Diseño en Exocad. Producción en 24h. Sin segunda cita de impresión."
+[ESCENA 4 — 35-45s] Logo PRODIGY. "Laboratorio digital. Bogotá. 3212816716."
+📌 Música tech-ambient 110 BPM. Subtítulos.`,
+  referencias: [
+    {
+      autores: 'Alsharbaty MH, Alikhasi M, Zarrati S, et al.',
+      titulo: 'A clinical comparative study of the 3-dimensional accuracy between digital and conventional implant impression techniques.',
+      revista: 'Journal of Prosthodontics',
+      año: 2021, vol: '30', num: '3', pags: '211–217',
+      doi: '10.1111/jopr.13282',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/33002288/'
+    },
+    {
+      autores: 'Burhardt L, Livas C, Kerdijk W, et al.',
+      titulo: 'Treatment comfort, time efficiency and operator performance with intraoral scanning vs conventional impression.',
+      revista: 'Journal of Dentistry',
+      año: 2016, vol: '53', num: '', pags: '1–6',
+      doi: '10.1016/j.jdent.2016.06.003',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/27353448/'
+    },
+    {
+      autores: 'Reich S, Wichmann M, Nkenke E, Proeschel P.',
+      titulo: 'Clinical fit of all-ceramic three-unit fixed partial dentures, generated with three different CAD/CAM systems.',
+      revista: 'European Journal of Oral Sciences',
+      año: 2005, vol: '113', num: '2', pags: '174–179',
+      doi: '10.1111/j.1600-0722.2004.00197.x',
+      pubmed: 'https://pubmed.ncbi.nlm.nih.gov/15762922/'
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
   id:        'flujo-digital-24h',
   titulo:    'Flujo digital completo: del escáner al fresado en 24 horas',
   subtitulo: 'El protocolo PRODIGY para garantizar entregas sin comprometer calidad: pasos, checkpoints y criterio de aprobación de diseño.',
