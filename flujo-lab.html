@@ -658,7 +658,7 @@ function buildGrids() {
           '<button class="qty-btn" onclick="changeQty(\'' + item.id + '\',1)">+</button>' +
           '<span class="work-subtotal" id="sub-' + item.id + '">—</span>' +
         '</div>' :
-        '<button style="margin-top:6px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.25);color:#D4AF37;font-size:.72rem;font-weight:700;padding:5px 12px;border-radius:7px;cursor:pointer;" onclick="ctaWhatsApp()"><i class="fas fa-whatsapp"></i> Cotizar por WhatsApp</button>') +
+        '<button style="margin-top:6px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.25);color:#D4AF37;font-size:.9rem;font-weight:700;padding:5px 12px;border-radius:7px;cursor:pointer;" onclick="ctaWhatsApp()"><i class="fas fa-whatsapp"></i> Cotizar por WhatsApp</button>') +
       '</div>';
     }).join('');
   });
@@ -891,7 +891,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').cat
       <p style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
         <strong style="color:#D946A6;">ID Orden:</strong>
         <span id="lab-exito-id" style="font-family:monospace;font-size:.9rem;">—</span>
-        <button onclick="navigator.clipboard.writeText(document.getElementById('lab-exito-id').textContent);this.textContent='✓ Copiado';setTimeout(()=>this.textContent='📋 Copiar',2000);" style="background:rgba(0,210,255,.12);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.72rem;cursor:pointer;">📋 Copiar</button>
+        <button onclick="navigator.clipboard.writeText(document.getElementById('lab-exito-id').textContent);this.textContent='✓ Copiado';setTimeout(()=>this.textContent='📋 Copiar',2000);" style="background:rgba(0,210,255,.12);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.9rem;cursor:pointer;">📋 Copiar</button>
       </p>
       <p style="margin-bottom:4px;"><strong style="color:#D946A6;">Doctor:</strong> <span id="lab-exito-doc">—</span></p>
       <p style="margin-bottom:4px;"><strong style="color:#D4AF37;">Total estimado:</strong> <span id="lab-exito-total">—</span></p>
