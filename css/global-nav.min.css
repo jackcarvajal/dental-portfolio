@@ -39,4 +39,24 @@ body.light-mode [style*="border:2px solid rgba(255"]{border-color:rgba(0,0,0,0.1
 /* Neon sutil en títulos de sección para visibilidad en light mode */
 body.light-mode h2.section-header{text-shadow:0 0 1px rgba(217,70,166,0.15)!important}
 body.light-mode .step-card h3{text-shadow:none!important}
-body.light-mode .muted,body.light-mode [class*="muted"]{color:#374151!important}#theme-btn{font-size:1rem}h1{font-size:clamp(1.6rem,5vw,3rem)}h2{font-size:clamp(1.2rem,3.5vw,2.2rem)}.hero,section{padding:clamp(2rem,5vw,4rem) clamp(1rem,5%,5%)}@media (max-width:768px){.grid-container,.calculadora-grid,.container[style*="grid"]{grid-template-columns:1fr !important}img{max-width:100%;height:auto}}
+body.light-mode .muted,body.light-mode [class*="muted"]{color:#374151!important}
+/* ── LIGHT MODE: colores que no pasan 4.5:1 sobre blanco ── */
+body.light-mode [style*="color:#D4AF37"],body.light-mode [style*="color: #D4AF37"],body.light-mode [style*="color:var(--gold)"],body.light-mode [class*="gold"]{color:#b5810a!important}
+body.light-mode [style*="color:#00d2ff"],body.light-mode [style*="color: #00d2ff"],body.light-mode [style*="color:var(--cyan)"]{color:#0369a1!important}
+body.light-mode [style*="color:#00FF41"],body.light-mode [style*="color: #00FF41"],body.light-mode [style*="color:var(--green)"]{color:#15803d!important}
+body.light-mode [style*="color:#D946A6"],body.light-mode [style*="color: #D946A6"],body.light-mode [style*="color:var(--magenta)"]{color:#9d174d!important}
+body.light-mode a{color:#1d4ed8!important}
+body.light-mode a:hover{color:#1e40af!important}
+body.light-mode table th{background:rgba(0,0,0,0.06)!important;color:#0f172a!important}
+body.light-mode table td{color:#1e293b!important;border-color:rgba(0,0,0,0.08)!important}
+body.light-mode .article-body,body.light-mode .article-body p,body.light-mode .article-body li{color:#1e293b!important}
+body.light-mode .article-body h2{color:#0f172a!important;border-left-color:#9d174d!important}
+body.light-mode blockquote{background:rgba(0,0,0,0.04)!important;border-left-color:#9d174d!important}
+body.light-mode blockquote p{color:#1e293b!important}
+body.light-mode .ref-item{background:#f1f5f9!important;border-color:rgba(0,0,0,0.08)!important}
+body.light-mode .ref-item strong{color:#0f172a!important}
+body.light-mode .ref-item a{color:#1d4ed8!important}
+body.light-mode details{background:#f8fafc!important;border-color:rgba(0,0,0,0.08)!important}
+body.light-mode summary{color:#0f172a!important}
+body.light-mode details p{color:#374151!important}
+#theme-btn{font-size:1rem}h1{font-size:clamp(1.6rem,5vw,3rem)}h2{font-size:clamp(1.2rem,3.5vw,2.2rem)}.hero,section{padding:clamp(2rem,5vw,4rem) clamp(1rem,5%,5%)}@media (max-width:768px){.grid-container,.calculadora-grid,.container[style*="grid"]{grid-template-columns:1fr !important}img{max-width:100%;height:auto}}

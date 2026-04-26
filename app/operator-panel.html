@@ -61,8 +61,10 @@ body.ready { visibility: visible; }
 .k-count { background: rgba(255,255,255,.08); border-radius: 10px; padding: 2px 8px; font-size: .65rem; }
 
 /* ── Caso card ── */
-.caso-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); border-radius: 10px; padding: 14px; margin-bottom: 10px; transition: .2s; position: relative; }
+.caso-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); border-radius: 10px; padding: 14px; margin-bottom: 10px; transition: .2s; position: relative; cursor: grab; }
 .caso-card:hover { background: rgba(255,255,255,.05); }
+.caso-card.dragging { opacity: .4; cursor: grabbing; }
+.k-drop-zone.drag-over { background: rgba(0,210,255,.06); outline: 2px dashed rgba(0,210,255,.4); outline-offset: -3px; border-radius: 10px; }
 .caso-id { font-size: .68rem; color: var(--cyan); font-family: monospace; margin-bottom: 3px; }
 .caso-nombre { font-size: .88rem; font-weight: 700; margin-bottom: 5px; }
 .caso-meta { font-size: .72rem; color: var(--muted); line-height: 1.7; }
@@ -185,19 +187,19 @@ body.ready { visibility: visible; }
             <div class="k-hdr" style="color:var(--yellow)">
                 Pendientes / Validar <span class="k-count" id="cnt-pend">0</span>
             </div>
-            <div id="col-pend"><div class="loader"><div class="spinner"></div></div></div>
+            <div id="col-pend" class="k-drop-zone" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'pend')"><div class="loader"><div class="spinner"></div></div></div>
         </div>
         <div class="k-col">
             <div class="k-hdr" style="color:var(--cyan)">
                 En Producción <span class="k-count" id="cnt-prod">0</span>
             </div>
-            <div id="col-prod"><div class="loader"><div class="spinner"></div></div></div>
+            <div id="col-prod" class="k-drop-zone" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'prod')"><div class="loader"><div class="spinner"></div></div></div>
         </div>
         <div class="k-col">
             <div class="k-hdr" style="color:var(--green)">
                 QA / Completados <span class="k-count" id="cnt-done">0</span>
             </div>
-            <div id="col-done"><div class="loader"><div class="spinner"></div></div></div>
+            <div id="col-done" class="k-drop-zone" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'done')"><div class="loader"><div class="spinner"></div></div></div>
         </div>
     </div>
 
@@ -388,9 +390,14 @@ function cardHTML(p, col) {
         : `<span style="font-size:.68rem;color:var(--green)">✓ ${escH(p.estado_operativo)}</span>`;
 
     return `
-    <div class="caso-card" style="${urgente ? 'border-color:rgba(239,68,68,.4)' : alerta ? 'border-color:rgba(251,191,36,.3)' : ''}">
+    <div class="caso-card" draggable="true"
+         data-id="${p.id}" data-col="${col}"
+         style="${urgente ? 'border-color:rgba(239,68,68,.4)' : alerta ? 'border-color:rgba(251,191,36,.3)' : ''}"
+         ondragstart="_kdragStart(event)" ontouchstart="_ktouchStart(event)" ontouchmove="_ktouchMove(event)" ontouchend="_ktouchEnd(event)">
         ${timerLabel ? `<div class="card-timer ${timerClass}">${timerLabel}</div>` : ''}
-        <div class="caso-id">#${escH(p.codigo) || p.id.slice(0,8)} ${urgente ? '<span class="urgente-dot"></span>' : ''}</div>
+        <div class="caso-id">#${escH(p.codigo) || p.id.slice(0,8)} ${urgente ? '<span class="urgente-dot"></span>' : ''}
+            <span style="float:right;color:#475569;font-size:.72rem;cursor:grab;" title="Arrastra para mover">⠿⠿</span>
+        </div>
         <div class="caso-nombre">${escH(p.nombre_paciente) || 'Sin nombre'}</div>
         <div class="caso-meta">
             ${escH(p.servicio) || '—'}<br>
@@ -449,6 +456,28 @@ async function avanzarEstado(pedidoId, nuevoEstado) {
 
     const { error } = await sb.from('pedidos').update(updates).eq('id', pedidoId);
     if (error) { toast('Error: ' + error.message, 'err'); return; }
+
+    // Auto-deducción de inventario al iniciar producción
+    if (nuevoEstado === 'EN_PRODUCCION') {
+        const pedido = _pedidos.find(p => p.id === pedidoId);
+        if (pedido && pedido.material) {
+            // Buscar ítem en inventario por nombre de material (fuzzy)
+            const matKey = pedido.material.toLowerCase();
+            const { data: items } = await sb.from('inventario_items')
+                .select('id, nombre, stock_actual, stock_minimo')
+                .ilike('nombre', '%' + matKey.split(' ')[0] + '%')
+                .eq('activo', true)
+                .limit(1);
+            if (items && items.length > 0) {
+                const item = items[0];
+                const nuevoStock = Math.max(0, item.stock_actual - 1);
+                await sb.from('inventario_items').update({ stock_actual: nuevoStock }).eq('id', item.id);
+                if (nuevoStock <= item.stock_minimo) {
+                    toast(`⚠️ Stock bajo: ${item.nombre} → ${nuevoStock} unidades`, 'err');
+                }
+            }
+        }
+    }
 
     // Notificaciones en los 3 hitos clave
     if (nuevoEstado === 'EN_PRODUCCION')
@@ -642,6 +671,83 @@ function toast(msg, type = 'ok') {
     el.className = `show ${type}`;
     clearTimeout(el._t);
     el._t = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+/* ── KANBAN DRAG & DROP + TOUCH ──────────────────────────────── */
+// Estado destino por columna (escoge el primero de cada grupo)
+const _COL_STATE = {
+    pend: 'PENDIENTE',
+    prod: 'EN_PRODUCCION',
+    done: 'DISENO_FINALIZADO'
+};
+
+let _dragId = null;
+let _touchCard = null, _touchClone = null, _touchOriginCol = null;
+
+function _kdragStart(e) {
+    _dragId = e.currentTarget.dataset.id;
+    setTimeout(() => e.currentTarget.classList.add('dragging'), 0);
+    e.dataTransfer.effectAllowed = 'move';
+}
+function _kdragOver(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+}
+function _kdragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+}
+async function _kdrop(e, targetCol) {
+    e.currentTarget.classList.remove('drag-over');
+    document.querySelectorAll('.caso-card.dragging').forEach(c => c.classList.remove('dragging'));
+    if (!_dragId) return;
+    const card = document.querySelector(`.caso-card[data-id="${_dragId}"]`);
+    const originCol = card ? card.dataset.col : null;
+    if (originCol === targetCol) { _dragId = null; return; }
+    await _doMove(_dragId, targetCol);
+    _dragId = null;
+}
+
+// Touch support (mobile)
+function _ktouchStart(e) {
+    const card = e.currentTarget;
+    _touchCard = card;
+    _touchOriginCol = card.dataset.col;
+    _touchClone = card.cloneNode(true);
+    _touchClone.style.cssText = 'position:fixed;opacity:.75;pointer-events:none;z-index:9999;width:' + card.offsetWidth + 'px;';
+    document.body.appendChild(_touchClone);
+    card.classList.add('dragging');
+}
+function _ktouchMove(e) {
+    if (!_touchClone) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    _touchClone.style.left = (t.clientX - _touchClone.offsetWidth / 2) + 'px';
+    _touchClone.style.top  = (t.clientY - 20) + 'px';
+    // Highlight drop zone under finger
+    document.querySelectorAll('.k-drop-zone').forEach(z => z.classList.remove('drag-over'));
+    const el = document.elementFromPoint(t.clientX, t.clientY);
+    const zone = el ? el.closest('.k-drop-zone') : null;
+    if (zone) zone.classList.add('drag-over');
+}
+async function _ktouchEnd(e) {
+    if (!_touchClone || !_touchCard) return;
+    document.querySelectorAll('.k-drop-zone.drag-over').forEach(z => z.classList.remove('drag-over'));
+    _touchCard.classList.remove('dragging');
+    document.body.removeChild(_touchClone);
+    const t = e.changedTouches[0];
+    const el = document.elementFromPoint(t.clientX, t.clientY);
+    const zone = el ? el.closest('.k-drop-zone') : null;
+    _touchClone = null;
+    if (!zone) { _touchCard = null; return; }
+    const targetCol = zone.id.replace('col-', '');
+    if (targetCol !== _touchOriginCol) await _doMove(_touchCard.dataset.id, targetCol);
+    _touchCard = null;
+}
+
+async function _doMove(pedidoId, targetCol) {
+    const nuevoEstado = _COL_STATE[targetCol];
+    if (!nuevoEstado) return;
+    await avanzarEstado(pedidoId, nuevoEstado);
 }
 </script>
 </body>

@@ -243,7 +243,10 @@
         <div class="section-card">
             <div class="section-header">
                 <h2><i class="fas fa-table-list" style="color:var(--gold);margin-right:8px;"></i>Casos</h2>
-                <button onclick="exportarDIAN()" style="background:rgba(0,210,255,.1);border:1px solid #00d2ff;color:#00d2ff;padding:6px 14px;border-radius:8px;font-size:.8rem;cursor:pointer;margin-left:auto;">📥 Exportar DIAN</button>
+                <div style="display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;">
+                    <button onclick="exportarVentasMes()" style="background:rgba(74,222,128,.1);border:1px solid #4ade80;color:#4ade80;padding:6px 14px;border-radius:8px;font-size:.8rem;cursor:pointer;">📊 Ventas del Mes</button>
+                    <button onclick="exportarDIAN()" style="background:rgba(0,210,255,.1);border:1px solid #00d2ff;color:#00d2ff;padding:6px 14px;border-radius:8px;font-size:.8rem;cursor:pointer;">📥 Exportar DIAN</button>
+                </div>
             </div>
             <table>
                 <thead>
@@ -970,6 +973,49 @@ function csvCell(v) {
     // Envolver en comillas si contiene coma, comilla o salto de línea
     if (/[",\n\r]/.test(safe)) return '"' + safe.replace(/"/g, '""') + '"';
     return safe;
+}
+
+function exportarVentasMes() {
+    const ahora   = new Date();
+    const año     = ahora.getFullYear();
+    const mes     = ahora.getMonth(); // 0-indexed
+    const inicioMes = new Date(año, mes, 1);
+    const pedidosMes = (todosLosPedidos || []).filter(p => {
+        const f = new Date(p.created_at || p.fecha);
+        return f >= inicioMes;
+    });
+    if (!pedidosMes.length) { toast('No hay pedidos este mes aún.', 'info'); return; }
+
+    const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const nomMes = MESES[mes];
+
+    const headers = ['Código','Fecha','Cliente','Email','Servicio','Material','Cantidad','Total COP','Pasarela Pago','Estado','Factura'];
+    const rows = pedidosMes.map(p => [
+        p.codigo || p.id?.slice(0,8) || '',
+        p.created_at ? new Date(p.created_at).toLocaleDateString('es-CO') : '',
+        p.nombre_doctor || p.clientes?.nombre || '',
+        p.email || p.clientes?.email || '',
+        p.tipo_trabajo || p.servicio || '',
+        p.material || '',
+        p.cantidad || 1,
+        p.precio_total || '',
+        p.pasarela || '',
+        p.estado || '',
+        p.requiere_factura ? 'Sí' : 'No'
+    ]);
+
+    // Resumen al final
+    const totalIngresos = pedidosMes.reduce((s, p) => s + (parseFloat(p.precio_total) || 0), 0);
+    rows.push([]);
+    rows.push(['', '', '', '', '', '', 'TOTAL MES', totalIngresos, '', pedidosMes.length + ' pedidos', '']);
+
+    const csv = [headers, ...rows].map(r => r.map(csvCell).join(',')).join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `PRODIGY_Ventas_${nomMes}_${año}.csv`;
+    a.click();
+    toast(`Exportados ${pedidosMes.length} pedidos de ${nomMes} ${año}`, 'success');
 }
 
 function exportarDIAN() {
