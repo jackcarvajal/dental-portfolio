@@ -10,7 +10,10 @@
       function tieneCookie(){return document.cookie.split(';').some(function(c){return c.trim().startsWith('pg_admin=1');});}
       function setCookie(){var d=new Date();d.setDate(d.getDate()+30);document.cookie='pg_admin=1;expires='+d.toUTCString()+';path=/;SameSite=Lax';}
       if(new URLSearchParams(location.search).get('preview')==='prodigy'){setCookie();history.replaceState({},'','/');}
-      if(!tieneCookie()){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}
+      // Excluir bots, Lighthouse y crawlers del modo mantenimiento
+      var _ua = navigator.userAgent||'';
+      var _esBot = /lighthouse|googlebot|bingbot|slurp|duckduck|baiduspider|facebookexternalhit|twitterbot|rogerbot|linkedinbot|embedly|quora|showyoubot|outbrain|pinterest|vkshare|facebot|google.*preview/i.test(_ua);
+      if(!tieneCookie() && !_esBot){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}
     })();
     </script>
     <meta name="description" content="PRODIGY Digital Dentistry — Laboratorio dental CAD/CAM en Bogotá. Fresado zirconio, impresión 3D y diseño Exocad/3Shape. Entregas 24h. Alta precisión.">
@@ -84,6 +87,12 @@
       ],
       "sameAs": []
     }
+    </script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebSite","url":"https://prodigylabdental.com","name":"PRODIGY Lab Dental","description":"Laboratorio dental CAD/CAM en Bogotá","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://prodigylabdental.com/seguimiento-caso?id={search_term_string}"},"query-input":"required name=search_term_string"}}
+    </script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Cuánto tiempo tarda una corona de zirconio en PRODIGY?","acceptedAnswer":{"@type":"Answer","text":"El tiempo estándar es 24 horas hábiles desde que recibimos el escáner aprobado. Casos con alta estética o multicapa requieren 48h."}},{"@type":"Question","name":"¿Qué formatos de escáner intraoral aceptan?","acceptedAnswer":{"@type":"Answer","text":"Aceptamos STL, PLY, OBJ, archivos Exocad (.constructionfile), proyectos 3Shape Communicate y DICOM para tomografías."}},{"@type":"Question","name":"¿Trabajan con laboratorios fuera de Colombia?","acceptedAnswer":{"@type":"Answer","text":"Sí. Ofrecemos diseño CAD como servicio de exportación global. El laboratorio envía el STL y nosotros entregamos el diseño final en 24h."}},{"@type":"Question","name":"¿Cuánto cuesta una corona de zirconio en PRODIGY?","acceptedAnswer":{"@type":"Answer","text":"Los precios varían según el tipo de zirconio y la complejidad del caso. Usa nuestra calculadora en prodigylabdental.com/calculadora para un estimado al instante."}}]}
     </script>
     <!-- Performance: preconnect a recursos externos críticos -->
       <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin>
@@ -1055,8 +1064,17 @@
         #scroll-top-btn { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         #scroll-top-btn.visible { opacity: 1; pointer-events: all; }
 
-        /* SOUND BUTTON — eliminado (sin archivo de audio) */
-        #sound-btn { display: none !important; }
+        /* SOUND BUTTON */
+        #sound-btn {
+            position: fixed; bottom: 88px; left: 28px; z-index: 998;
+            width: 46px; height: 46px;
+            background: rgba(10,10,10,0.92); border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.25s; color: #D4AF37;
+            font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        #sound-btn:hover { border-color: #D4AF37; background: rgba(212,175,55,0.12); transform: scale(1.1); }
+        #sound-btn.playing { border-color: #00d2ff; color: #00d2ff; box-shadow: 0 0 14px rgba(0,210,255,0.35); }
 
         /* GOOGLE TRANSLATE - ocultar widget nativo, solo mostrar ícono */
         .goog-te-gadget { display: none !important; }
@@ -1584,7 +1602,7 @@
               <a href="portafolio" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid rgba(212,175,55,.12);transition:all .3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(212,175,55,.12)'">
                 <div style="height:200px;overflow:hidden;"><img src="patients/patient-001/cover.jpeg" alt="Rehabilitación Full Arch Superior" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .4s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
                 <div style="padding:18px 20px;">
-                  <div style="display:inline-block;background:rgba(212,175,55,.12);color:#D4AF37;border:1px solid rgba(212,175,55,.25);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;margin-bottom:10px;">REHABILITACIÓN</div>
+                  <div style="display:inline-block;background:rgba(212,175,55,.12);color:#D4AF37;border:1px solid rgba(212,175,55,.25);border-radius:20px;padding:6px 12px;font-size:.78rem;font-weight:800;margin-bottom:10px;">REHABILITACIÓN</div>
                   <h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">Rehabilitación Full Arch Superior</h3>
                   <p style="color:#94a3b8;font-size:.82rem;line-height:1.5;">Rehabilitación completa de arcada superior con 14 unidades cerámicas sobre implantes.</p>
                   <div style="margin-top:14px;color:#D946A6;font-size:.8rem;font-weight:700;">Ver caso completo →</div>
@@ -1594,7 +1612,7 @@
               <a href="portafolio" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid rgba(0,210,255,.1);transition:all .3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(0,210,255,.35)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(0,210,255,.1)'">
                 <div style="height:200px;overflow:hidden;"><img src="patients/patient-002/C.jpeg" alt="Carillas Superior e Inferior" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .4s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
                 <div style="padding:18px 20px;">
-                  <div style="display:inline-block;background:rgba(0,210,255,.1);color:#00d2ff;border:1px solid rgba(0,210,255,.2);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;margin-bottom:10px;">ESTÉTICA</div>
+                  <div style="display:inline-block;background:rgba(0,210,255,.1);color:#00d2ff;border:1px solid rgba(0,210,255,.2);border-radius:20px;padding:6px 12px;font-size:.78rem;font-weight:800;margin-bottom:10px;">ESTÉTICA</div>
                   <h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">Carillas Superior e Inferior</h3>
                   <p style="color:#94a3b8;font-size:.82rem;line-height:1.5;">Carillas estéticas completas superior e inferior.</p>
                   <div style="margin-top:14px;color:#00d2ff;font-size:.8rem;font-weight:700;">Ver caso completo →</div>
@@ -3111,50 +3129,63 @@
     })();
     </script>
 
-    <!-- AMBIENT AUDIO -->
-    <audio id="ambient-audio" loop preload="none">
-        <source src="assets/audio/prodigy-ambient.mp3" type="audio/mpeg">
-    </audio>
-    <button id="sound-btn" onclick="toggleSound()" title="Ambient sound" aria-label="Activar/desactivar música ambiente">
+    <!-- AMBIENT SOUND — Web Audio API (sin archivo externo) -->
+    <button id="sound-btn" onclick="toggleSound()" title="Música ambiente" aria-label="Activar/desactivar música ambiente">
         <i class="fas fa-volume-xmark" aria-hidden="true"></i>
     </button>
     <script>
     (function() {
-        const audio = document.getElementById('ambient-audio');
-        const btn   = document.getElementById('sound-btn');
-        let playing = false;
+        var ctx = null, masterGain = null, playing = false;
+
+        function buildAmbient() {
+            ctx = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = ctx.createGain();
+            masterGain.gain.value = 0;
+            masterGain.connect(ctx.destination);
+
+            // Drone ambient: capas de tonos sinusoidales con LFO suave
+            [[55,0.12],[110,0.08],[165,0.05],[220,0.04],[330,0.03]].forEach(function(p) {
+                var osc = ctx.createOscillator();
+                var gain = ctx.createGain();
+                var lfo = ctx.createOscillator();
+                var lfoGain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = p[0];
+                gain.gain.value = p[1];
+                lfo.type = 'sine';
+                lfo.frequency.value = 0.07 + Math.random() * 0.05;
+                lfoGain.gain.value = p[0] * 0.003;
+                lfo.connect(lfoGain);
+                lfoGain.connect(osc.frequency);
+                osc.connect(gain);
+                gain.connect(masterGain);
+                lfo.start();
+                osc.start();
+            });
+        }
 
         window.toggleSound = function() {
+            var btn = document.getElementById('sound-btn');
+            var ico = btn.querySelector('i');
+            if (!ctx) buildAmbient();
             if (!playing) {
-                audio.volume = 0;
-                audio.play().then(() => {
-                    playing = true;
-                    btn.classList.add('playing');
-                    btn.querySelector('i').className = 'fas fa-volume-high';
-                    btn.title = 'Silenciar';
-                    // Fade in suave
-                    let v = 0;
-                    const fade = setInterval(() => {
-                        v = Math.min(v + 0.04, 0.18);
-                        audio.volume = v;
-                        if (v >= 0.18) clearInterval(fade);
-                    }, 80);
-                }).catch(() => {});
+                if (ctx.state === 'suspended') ctx.resume();
+                playing = true;
+                btn.classList.add('playing');
+                ico.className = 'fas fa-volume-high';
+                btn.title = 'Silenciar música';
+                masterGain.gain.cancelScheduledValues(ctx.currentTime);
+                masterGain.gain.setValueAtTime(0, ctx.currentTime);
+                masterGain.gain.linearRampToValueAtTime(1, ctx.currentTime + 3);
             } else {
-                // Fade out suave
-                let v = audio.volume;
-                const fade = setInterval(() => {
-                    v = Math.max(v - 0.04, 0);
-                    audio.volume = v;
-                    if (v <= 0) {
-                        clearInterval(fade);
-                        audio.pause();
-                        playing = false;
-                        btn.classList.remove('playing');
-                        btn.querySelector('i').className = 'fas fa-volume-xmark';
-                        btn.title = 'Ambient sound';
-                    }
-                }, 80);
+                playing = false;
+                btn.classList.remove('playing');
+                ico.className = 'fas fa-volume-xmark';
+                btn.title = 'Música ambiente';
+                masterGain.gain.cancelScheduledValues(ctx.currentTime);
+                masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+                masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 2);
+                setTimeout(function() { if (ctx) ctx.suspend(); }, 2200);
             }
         };
     })();
