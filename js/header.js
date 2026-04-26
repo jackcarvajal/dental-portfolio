@@ -30,10 +30,10 @@
   /* ── CSS ────────────────────────────────────────────────── */
   var css = [
     /* Body offset */
-    'body{padding-top:108px!important;}',
+    'body{padding-top:114px!important;}',
 
     /* TOPBAR */
-    '#nav-topbar{position:fixed;top:0;left:0;right:0;height:52px;',
+    '#nav-topbar{position:fixed;top:0;left:0;right:0;height:56px;',
     'background:#0a0a0e;border-bottom:1px solid rgba(217,70,166,0.35);',
     'display:flex;align-items:center;justify-content:center;',
     'padding:0 24px;z-index:1001;gap:8px;',
@@ -43,18 +43,18 @@
     '.tb-input-wrap{position:relative;display:flex;align-items:center;}',
     '.tb-input-wrap i{position:absolute;left:11px;color:#94a3b8;font-size:13px;pointer-events:none;}',
     '.tb-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);',
-    'border-radius:6px;color:#e2e8f0;font-size:13px;height:34px;',
+    'border-radius:6px;color:#e2e8f0;font-size:13px;height:44px;',
     'padding:0 12px 0 34px;width:190px;outline:none;',
     'transition:border-color .2s,background .2s;font-family:inherit;}',
     '.tb-input::placeholder{color:#94a3b8;}',
     '.tb-input:focus{border-color:rgba(217,70,166,0.55);background:rgba(217,70,166,0.06);}',
     '.tb-sep{width:1px;height:26px;background:rgba(255,255,255,0.1);margin:0 4px;}',
-    '.tb-acceso{height:34px;padding:0 20px;background:#e2e8f0;color:#0a0a0e;',
+    '.tb-acceso{height:44px;padding:0 20px;background:#e2e8f0;color:#0a0a0e;',
     'font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;',
     'border:none;border-radius:6px;cursor:pointer;transition:background .2s;',
     'white-space:nowrap;font-family:inherit;}',
     '.tb-acceso:hover{background:#fff;}',
-    '.tb-registro{height:34px;padding:0 20px;background:transparent;color:#94a3b8;',
+    '.tb-registro{height:44px;padding:0 20px;background:transparent;color:#94a3b8;',
     'font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;',
     'border:1px solid rgba(255,255,255,0.18);border-radius:6px;cursor:pointer;',
     'transition:border-color .2s,color .2s;white-space:nowrap;text-decoration:none;',
@@ -75,10 +75,10 @@
     '#nav-topbar{justify-content:center;gap:8px;}}',
     '@media(max-width:480px){',
     '#nav-topbar{height:46px;}',
-    '.tb-acceso,.tb-registro{padding:0 14px;font-size:11px;}}',
+    '.tb-acceso,.tb-registro{padding:0 14px;font-size:13px;}}',
 
     /* NAVBAR */
-    '#pheader-v2{position:fixed;top:52px;left:0;right:0;width:100%;',
+    '#pheader-v2{position:fixed;top:56px;left:0;right:0;width:100%;',
     'background:rgba(8,8,12,0.97);backdrop-filter:blur(24px);',
     'border-bottom:1px solid rgba(212,175,55,0.2);',
     'padding:18px 0;z-index:1000;',
@@ -103,7 +103,7 @@
     'text-decoration:none;text-align:center;pointer-events:auto;}',
     '.pnav2-logo strong{display:block;font-size:24px;font-weight:900;',
     'letter-spacing:3px;color:#D4AF37;line-height:1.1;}',
-    '.pnav2-logo em{display:block;font-style:normal;font-size:9px;font-weight:700;',
+    '.pnav2-logo em{display:block;font-style:normal;font-size:11px;font-weight:700;',
     'letter-spacing:4px;color:#f5f5f7;text-transform:uppercase;}',
 
     /* Dropdown SERVICIOS */
@@ -113,7 +113,7 @@
     'display:inline-flex;align-items:center;gap:5px;cursor:pointer;',
     'transition:color .25s;background:none;border:none;padding:0;font-family:inherit;}',
     '.pnav2-dd-btn:hover{color:#D4AF37;}',
-    '.pnav2-dd-arrow{font-size:9px;transition:transform .25s;}',
+    '.pnav2-dd-arrow{font-size:11px;transition:transform .25s;}',
     '.pnav2-dd:hover .pnav2-dd-arrow,.pnav2-dd.open .pnav2-dd-arrow{transform:rotate(180deg);}',
     '.pnav2-dd-menu{position:absolute;top:calc(100% + 12px);left:0;',
     'background:rgba(5,5,5,0.98);backdrop-filter:blur(24px);',
@@ -128,7 +128,7 @@
     'transition:background .2s,color .2s;}',
     '.pnav2-dd-menu a:hover{background:rgba(212,175,55,0.08);color:#D4AF37;}',
     '.pnav2-dd-menu a i{color:#D946A6;width:16px;text-align:center;flex-shrink:0;}',
-    '.pnav2-dd-menu a span.dd-sub{display:block;font-size:10px;font-weight:400;',
+    '.pnav2-dd-menu a span.dd-sub{display:block;font-size:12px;font-weight:400;',
     'letter-spacing:.3px;color:rgba(203,213,225,.5);text-transform:none;margin-top:2px;}',
 
     /* HAZ TU PEDIDO */
