@@ -10,12 +10,14 @@
       function tieneCookie(){return document.cookie.split(';').some(function(c){return c.trim().startsWith('pg_admin=1');});}
       function setCookie(){var d=new Date();d.setDate(d.getDate()+30);document.cookie='pg_admin=1;expires='+d.toUTCString()+';path=/;SameSite=Lax';}
       if(new URLSearchParams(location.search).get('preview')==='prodigy'){setCookie();history.replaceState({},'','/');}
-      // Excluir bots, Lighthouse y crawlers del modo mantenimiento
-      var _ua = navigator.userAgent||'';
-      var _esBot = /lighthouse|googlebot|bingbot|slurp|duckduck|baiduspider|facebookexternalhit|twitterbot|rogerbot|linkedinbot|embedly|quora|showyoubot|outbrain|pinterest|vkshare|facebot|google.*preview/i.test(_ua);
-      if(!tieneCookie() && !_esBot){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}
+      // Excluir bots, Lighthouse, PageSpeed y crawlers del modo mantenimiento
+      var _ua = (navigator.userAgent||'').toLowerCase();
+      var _esBot = /lighthouse|chrome-lighthouse|pagespeed|googlebot|adsbot|mediapartners|bingbot|yandex|duckduck|slurp|baiduspider|facebookexternalhit|twitterbot|linkedinbot|bot|crawl|spider|headless|prerender/i.test(_ua);
+      var _esAutomatizado = (navigator.webdriver === true);
+      if(!tieneCookie() && !_esBot && !_esAutomatizado){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}
     })();
     </script>
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="description" content="PRODIGY Digital Dentistry — Laboratorio dental CAD/CAM en Bogotá. Fresado zirconio, impresión 3D y diseño Exocad/3Shape. Entregas 24h. Alta precisión.">
     <meta name="theme-color" content="#D946A6">
     <link rel="manifest" href="/manifest.json">
