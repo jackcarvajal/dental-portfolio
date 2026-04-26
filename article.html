@@ -47,7 +47,7 @@
     /* ── HERO ── */
     .hero{margin-bottom:32px;}
     .hero-chip{display:inline-block;padding:4px 12px;border-radius:20px;
-      font-size:.72rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+      font-size:.88rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
       margin-bottom:14px;}
     .chip-ia{background:rgba(0,210,255,.12);color:var(--cyan);border:1px solid rgba(0,210,255,.25);}
     .chip-material{background:rgba(212,175,55,.12);color:var(--gold);border:1px solid rgba(212,175,55,.25);}
@@ -108,7 +108,7 @@
       margin-bottom:10px;font-size:.82rem;color:var(--text3);
       border:1px solid rgba(255,255,255,.05);}
     .ref-item strong{color:var(--text2);display:block;margin-bottom:4px;}
-    .ref-item a{color:var(--cyan);text-decoration:none;font-size:.78rem;}
+    .ref-item a{color:var(--cyan);text-decoration:none;font-size:.9rem;}
     .ref-item a:hover{text-decoration:underline;}
 
     /* ── VIDEO SCRIPT ── */
@@ -137,7 +137,7 @@
     .rec-body{flex:1;}
     .rec-body h4{font-size:.8rem;font-weight:700;color:var(--text);
       line-height:1.3;margin-bottom:3px;}
-    .rec-body span{font-size:.72rem;color:var(--muted);}
+    .rec-body span{font-size:.88rem;color:var(--muted);}
     .cta-wa{display:flex;align-items:center;justify-content:center;gap:8px;
       padding:13px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.25);
       border-radius:var(--radius);color:#25D366;text-decoration:none;
@@ -150,14 +150,14 @@
     .cta-calc:hover{opacity:.9;}
     .share-row{display:flex;gap:8px;flex-wrap:wrap;}
     .share-btn{flex:1;min-width:80px;padding:9px;border:none;border-radius:10px;
-      cursor:pointer;font-size:.78rem;font-weight:700;display:flex;
+      cursor:pointer;font-size:.9rem;font-weight:700;display:flex;
       align-items:center;justify-content:center;gap:6px;text-decoration:none;}
     .share-wa{background:rgba(37,211,102,.1);color:#25D366;border:1px solid rgba(37,211,102,.25);}
     .share-li{background:rgba(0,119,181,.1);color:#0077B5;border:1px solid rgba(0,119,181,.25);}
     .share-cp{background:rgba(255,255,255,.05);color:var(--text3);border:1px solid rgba(255,255,255,.1);}
 
     /* ── BREADCRUMB ── */
-    .breadcrumb{display:flex;align-items:center;gap:6px;font-size:.78rem;
+    .breadcrumb{display:flex;align-items:center;gap:6px;font-size:.9rem;
       color:var(--muted);margin-bottom:24px;flex-wrap:wrap;}
     .breadcrumb a{color:var(--muted);text-decoration:none;}
     .breadcrumb a:hover{color:var(--text);}
@@ -281,7 +281,7 @@ function renderContent(bloques) {
     if (b.t === 'p')  return `<p>${b.c}</p>`;
     if (b.t === 'quote') return `<blockquote><p>"${b.c}"</p><cite>— ${b.author}</cite></blockquote>`;
     if (b.t === 'list') return `<ul>${b.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
-    if (b.t === 'img')  return `<figure style="margin:20px 0"><img src="${b.src}" alt="${b.alt||''}" style="width:100%;border-radius:10px"><figcaption style="text-align:center;font-size:.78rem;color:var(--muted);margin-top:6px">${b.caption||''}</figcaption></figure>`;
+    if (b.t === 'img')  return `<figure style="margin:20px 0"><img src="${b.src}" alt="${b.alt||''}" style="width:100%;border-radius:10px"><figcaption style="text-align:center;font-size:.9rem;color:var(--muted);margin-top:6px">${b.caption||''}</figcaption></figure>`;
     if (b.t === 'video') { const ytId = /^[\w-]{5,20}$/.test(b.youtube||'') ? b.youtube : ''; return ytId ? `<div style="margin:24px 0;border-radius:12px;overflow:hidden;aspect-ratio:16/9"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/${ytId}" title="${b.title||''}" frameborder="0" allowfullscreen></iframe></div>` : ''; }
     if (b.t === 'table') return `<div class="table-wrap"><table><thead><tr>${b.headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${b.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     return '';
@@ -409,7 +409,7 @@ function copiarLink() {
     coverImg.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
     coverImg.onerror = function(){ coverWrap.style.display='none'; };
     const caption = document.createElement('figcaption');
-    caption.style.cssText = 'text-align:center;font-size:.72rem;color:#475569;padding:6px 0 0;';
+    caption.style.cssText = 'text-align:center;font-size:.85rem;color:#94a3b8;padding:6px 0 0;';
     caption.textContent = art.img_credit || '';
     coverWrap.appendChild(coverImg);
     const figWrap = document.createElement('div');
