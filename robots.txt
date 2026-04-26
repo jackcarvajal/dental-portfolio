@@ -68,3 +68,21 @@ Allow: /soporte
 Allow: /instalar-app
 
 Sitemap: https://prodigylabdental.com/sitemap.xml
+
+Sitemap: https://prodigylabdental.com/sitemap-images.xml
+
+User-agent: ClaudeBot
+Allow: /journal
+Allow: /article
+Allow: /calculadora
+Allow: /nosotros
+Allow: /portafolio
+Allow: /catalogo
+Allow: /diseno-cad
+Allow: /fresado-cam
+
+User-agent: Googlebot-Image
+Allow: /assets/
+Allow: /patients/
+Allow: /assets/prodigy-preview.jpg
+Disallow: /app/

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://prodigylabdental.com/portafolio</loc>
+    <image:image>
+      <image:loc>https://prodigylabdental.com/patients/patient-001/cover.jpeg</image:loc>
+      <image:title>Rehabilitación Full Arch Superior — PRODIGY Lab Dental</image:title>
+      <image:caption>Rehabilitación completa de arcada superior con 14 unidades cerámicas sobre implantes. Zirconio multicapa 5Y-PSZ.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://prodigylabdental.com/patients/patient-002/C.jpeg</image:loc>
+      <image:title>Carillas Estéticas Superior e Inferior — PRODIGY Lab Dental</image:title>
+      <image:caption>Carillas de disilicato de litio e.max en sector anterior superior e inferior. Diseño CAD Exocad.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://prodigylabdental.com/assets/prodigy-preview.jpg</image:loc>
+      <image:title>PRODIGY Lab Dental — Laboratorio CAD/CAM Bogotá</image:title>
+      <image:caption>Laboratorio dental de alta precisión en Bogotá. Diseño CAD/CAM, fresado zirconio, impresión 3D dental.</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://prodigylabdental.com/diseno-cad</loc>
+    <image:image>
+      <image:loc>https://prodigylabdental.com/assets/prodigy-preview.jpg</image:loc>
+      <image:title>Diseño CAD Dental — Exocad y 3Shape — PRODIGY</image:title>
+      <image:caption>Diseño digital de coronas, carillas y puentes en Exocad y 3Shape. Servicio global. Entrega 24h en STL.</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://prodigylabdental.com/fresado-cam</loc>
+    <image:image>
+      <image:loc>https://prodigylabdental.com/assets/prodigy-preview.jpg</image:loc>
+      <image:title>Fresado CAM Dental Zirconio — PRODIGY Lab Bogotá</image:title>
+      <image:caption>Fresado de zirconio multicapa, PMMA, disilicato de litio y titanio en fresadora XTCERA 5 ejes. Precisión ±10 μm.</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://prodigylabdental.com/journal</loc>
+    <image:image>
+      <image:loc>https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg</image:loc>
+      <image:title>Escáner Intraoral Cerec — Odontología Digital</image:title>
+      <image:caption>Artículos técnicos sobre escáneres intraorales, CAD/CAM dental y materiales. PRODIGY Insights.</image:caption>
+    </image:image>
+  </url>
+
+</urlset>

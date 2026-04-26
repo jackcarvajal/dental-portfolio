@@ -2,15 +2,19 @@
   "id": "/",
   "name": "PRODIGY Lab Dental",
   "short_name": "PRODIGY",
-  "description": "Laboratorio dental CAD/CAM de alta precisión. Zirconia, fresado, impresión 3D y diseño digital.",
-  "start_url": "/",
+  "description": "Laboratorio dental CAD/CAM de alta precisión en Bogotá. Diseño Exocad/3Shape, fresado zirconio multicapa, impresión 3D dental. Entregas 24h.",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "orientation": "portrait-primary",
   "background_color": "#050505",
   "theme_color": "#D946A6",
   "lang": "es",
-  "categories": ["medical", "business"],
+  "dir": "ltr",
+  "categories": ["medical", "business", "productivity"],
+  "iarc_rating_id": "",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/assets/icons/icon-192.png",
@@ -44,8 +48,17 @@
       "type": "image/jpeg",
       "form_factor": "wide",
       "label": "PRODIGY Lab Dental – Inicio"
+    },
+    {
+      "src": "/assets/prodigy-preview.jpg",
+      "sizes": "390x844",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "PRODIGY – Vista móvil"
     }
   ],
+  "related_applications": [],
+  "edge_side_panel": { "preferred_width": 400 },
   "shortcuts": [
     {
       "name": "Cotizador",
