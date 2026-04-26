@@ -20,6 +20,9 @@
   <meta name="twitter:image" content="https://prodigylabdental.com/assets/prodigy-preview.jpg">
   <link rel="canonical" href="https://prodigylabdental.com/calculadora">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
   <script type="application/ld+json">
   {
@@ -65,7 +68,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
     }
@@ -88,8 +91,8 @@
     .hero-badge {
       display: inline-flex; align-items: center; gap: 7px;
       background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3);
-      border-radius: 999px; padding: 5px 14px;
-      font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase;
+      border-radius: 999px; padding: 10px 14px; min-height: 44px;
+      font-size: .9rem; letter-spacing: 1.5px; text-transform: uppercase;
       color: var(--gold); margin-bottom: 18px;
     }
     .hero h1 { font-size: clamp(1.8rem,6vw,3rem); font-weight: 900; line-height: 1.1; margin-bottom: 12px; }
@@ -150,7 +153,7 @@
       box-shadow: 0 0 12px rgba(212,175,55,0.15);
     }
     .servicio-btn .icon { font-size: 1.5rem; margin-bottom: 6px; display: block; }
-    .servicio-btn .label { font-size: 0.75rem; font-weight: 700; line-height: 1.2; }
+    .servicio-btn .label { font-size: .95rem; font-weight: 700; line-height: 1.2; }
     .servicio-btn .precio { font-size: 0.68rem; color: var(--muted); margin-top: 3px; }
 
     /* MATERIAL CHIPS */
@@ -160,8 +163,8 @@
     .mat-chip {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 999px; padding: 6px 14px;
-      font-size: 0.78rem; cursor: pointer;
+      border-radius: 999px; padding: 10px 14px; min-height: 44px;
+      font-size: 1rem; cursor: pointer;
       transition: all 0.2s; color: #cbd5e1;
       display: flex; align-items: center; gap: 6px;
     }
@@ -181,7 +184,7 @@
     }
     .qty-btn:hover { background: rgba(212,175,55,0.2); }
     .qty-num { font-size: 1.6rem; font-weight: 900; min-width: 40px; text-align: center; }
-    .qty-label { font-size: 0.8rem; color: var(--muted); }
+    .qty-label { font-size: 1rem; color: var(--muted); }
 
     /* OPCIONES EXTRA */
     .toggle-row {
@@ -189,9 +192,9 @@
       padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
     }
     .toggle-row:last-child { border-bottom: none; }
-    .toggle-info { font-size: 0.85rem; }
-    .toggle-info small { display: block; font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
-    .toggle-price { font-size: 0.8rem; color: var(--gold); font-weight: 700; margin-right: 12px; }
+    .toggle-info { font-size: 1rem; }
+    .toggle-info small { display: block; font-size: .9rem; color: var(--muted); margin-top: 2px; }
+    .toggle-price { font-size: 1rem; color: var(--gold); font-weight: 700; margin-right: 12px; }
     .toggle {
       position: relative; width: 42px; height: 24px;
       background: rgba(255,255,255,0.1); border-radius: 999px;
@@ -224,21 +227,21 @@
     }
     .result-label { font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase;
                     color: var(--muted); margin-bottom: 6px; }
-    .result-servicio { font-size: 0.88rem; font-weight: 700; color: var(--gold); margin-bottom: 16px; min-height: 20px; }
+    .result-servicio { font-size: 1rem; font-weight: 700; color: var(--gold); margin-bottom: 16px; min-height: 20px; }
     .result-total {
       font-size: clamp(2rem,5vw,3rem); font-weight: 900;
       background: linear-gradient(90deg, var(--gold), #e8c050);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       margin-bottom: 4px; line-height: 1;
     }
-    .result-unit { font-size: 0.75rem; color: var(--muted); margin-bottom: 20px; }
+    .result-unit { font-size: .95rem; color: var(--muted); margin-bottom: 20px; }
     .result-breakdown {
       border-top: 1px solid rgba(255,255,255,0.06);
       padding-top: 16px; margin-bottom: 20px;
     }
     .breakdown-row {
       display: flex; justify-content: space-between;
-      font-size: 0.8rem; padding: 5px 0;
+      font-size: 1rem; padding: 5px 0;
       color: #94a3b8;
     }
     .breakdown-row.total-row {
@@ -248,14 +251,14 @@
     }
     .result-note {
       background: rgba(0,255,65,0.06); border: 1px solid rgba(0,255,65,0.15);
-      border-radius: 10px; padding: 10px 14px; font-size: 0.75rem;
+      border-radius: 10px; padding: 10px 14px; font-size: .95rem;
       color: #94a3b8; line-height: 1.5; margin-bottom: 20px;
     }
     .result-note strong { color: var(--green); }
 
     /* FORM LEAD */
     .lead-section-title {
-      font-size: 0.78rem; font-weight: 700; color: var(--muted);
+      font-size: 1rem; font-weight: 700; color: var(--muted);
       text-transform: uppercase; letter-spacing: 0.5px;
       margin-bottom: 14px; margin-top: 4px;
     }
@@ -268,7 +271,7 @@
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 10px; padding: 11px 14px;
-      color: var(--text); font-size: 0.88rem; outline: none;
+      color: var(--text); font-size: 1rem; outline: none;
       transition: border-color 0.2s;
     }
     .field input::placeholder { color: var(--muted); }
@@ -289,13 +292,13 @@
       width: 100%; margin-top: 10px;
       background: rgba(37,211,102,0.1);
       border: 1px solid rgba(37,211,102,0.35);
-      color: #25D366; font-weight: 700; font-size: 0.88rem;
+      color: #25D366; font-weight: 700; font-size: 1rem;
       border-radius: 12px; padding: 12px;
       cursor: pointer; transition: all 0.2s;
       display: flex; align-items: center; justify-content: center; gap: 8px;
     }
     .btn-wa:hover { background: rgba(37,211,102,0.18); }
-    .form-msg { font-size: 0.8rem; text-align: center; min-height: 18px; margin-top: 8px; }
+    .form-msg { font-size: 1rem; text-align: center; min-height: 18px; margin-top: 8px; }
     .form-msg.ok  { color: var(--green); }
     .form-msg.err { color: #f87171; }
 
@@ -315,7 +318,7 @@
     /* TOAST */
     #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
              background: #0d1525; border: 1px solid var(--border-m); color: #fff;
-             padding: 12px 22px; border-radius: 12px; font-size: 0.85rem;
+             padding: 12px 22px; border-radius: 12px; font-size: 1rem;
              box-shadow: 0 8px 30px rgba(0,0,0,0.5);
              transition: transform 0.35s cubic-bezier(.34,1.56,.64,1); z-index: 999;
              white-space: nowrap; }
