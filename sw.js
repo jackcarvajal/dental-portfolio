@@ -1,4 +1,4 @@
-// Prodigy Lab Dental — Service Worker v3.0 (Stale-While-Revalidate)
+// Prodigy Lab Dental — Service Worker v3.1 (SWR + Push Notifications)
 const CACHE = 'prodigy-v10';
 
 // Assets estáticos que siempre cacheamos en install
@@ -109,5 +109,39 @@ self.addEventListener('fetch', e => {
         return cached || networkFetch;
       })
     )
+  );
+});
+
+// --- PUSH: mostrar notificación cuando el servidor la dispara ---
+self.addEventListener('push', e => {
+  let data = { title: '🦷 PRODIGY Lab', body: 'Tu caso está listo.', tag: 'caso', url: '/seguimiento-caso' };
+  try { data = Object.assign(data, e.data.json()); } catch(_) {}
+
+  e.waitUntil(
+    self.registration.showNotification(data.title, {
+      body:    data.body,
+      icon:    '/assets/icons/icon-192.png',
+      badge:   '/assets/icons/icon-192.png',
+      tag:     data.tag || 'caso',
+      data:    { url: data.url || '/seguimiento-caso' },
+      vibrate: [200, 100, 200],
+      actions: [
+        { action: 'ver', title: '📦 Ver seguimiento' },
+        { action: 'cerrar', title: 'Cerrar' }
+      ]
+    })
+  );
+});
+
+// --- NOTIFICATIONCLICK: abrir seguimiento-caso ---
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  if (e.action === 'cerrar') return;
+  const url = (e.notification.data && e.notification.data.url) || '/seguimiento-caso';
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cs => {
+      const match = cs.find(c => c.url.includes('seguimiento-caso') || c.url.includes(url));
+      return match ? match.focus() : clients.openWindow(url);
+    })
   );
 });

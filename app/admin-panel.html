@@ -375,16 +375,32 @@
             </button>
         </div>
 
+        <!-- CLV KPI Banner -->
+        <div style="display:flex;gap:14px;margin-bottom:18px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:180px;background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(212,175,55,.04));border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:14px 18px;">
+                <div style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">⭐ CLV Acumulado</div>
+                <div id="kpi-clv-total" style="font-size:1.5rem;font-weight:900;color:var(--gold);">—</div>
+                <div style="font-size:.72rem;color:#64748b;margin-top:2px;">suma total de todos los doctores</div>
+            </div>
+            <div style="flex:2;min-width:280px;background:rgba(30,41,59,.6);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+                <span style="font-size:1.8rem;">⭐</span>
+                <div>
+                    <div style="font-size:.82rem;font-weight:700;color:#e2e8f0;">Top 10 Clientes = prioridad absoluta</div>
+                    <div style="font-size:.75rem;color:#64748b;margin-top:2px;">Ordenados por valor acumulado (CLV). Los marcados con ⭐ generan el mayor ingreso — atención VIP garantizada.</div>
+                </div>
+            </div>
+        </div>
+
         <div class="section-card">
             <div class="section-header">
-                <h2><i class="fas fa-users" style="color:var(--gold);margin-right:8px;"></i>Doctores registrados</h2>
+                <h2><i class="fas fa-users" style="color:var(--gold);margin-right:8px;"></i>Doctores registrados · Ranking CLV</h2>
             </div>
             <table>
                 <thead>
-                    <tr><th>Cliente</th><th>Email</th><th>Clínica</th><th>Ciudad</th><th>País</th><th>Registro</th><th>Pedidos</th></tr>
+                    <tr><th></th><th>Cliente</th><th>Email</th><th>Clínica</th><th>Ciudad</th><th>Pedidos</th><th style="color:var(--gold);">💰 CLV Total</th><th>Registro</th></tr>
                 </thead>
                 <tbody id="tbody-clientes">
-                    <tr class="loading-row"><td colspan="7"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+                    <tr class="loading-row"><td colspan="8"><div class="spinner" style="margin:0 auto;"></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -895,9 +911,56 @@ function renderPedidos(lista) {
 }
 
 async function cambiarEstado(pedidoId, nuevoEstado) {
+    if (nuevoEstado === 'Despachado') {
+        // Modal para capturar número de guía antes de guardar
+        const guia = prompt('📦 Ingresa el número de guía de la transportadora\n(deja vacío para guardar sin guía):');
+        const updateData = { estado: nuevoEstado };
+        if (guia && guia.trim()) updateData.numero_guia = guia.trim();
+
+        const { error } = await sb.from('pedidos').update(updateData).eq('id', pedidoId);
+        if (error) { toast('Error al actualizar: ' + error.message, 'error'); return; }
+        toast('Estado actualizado → Despachado' + (guia ? ` · Guía: ${guia}` : ''), 'success');
+
+        // Disparar notificación push al cliente
+        enviarPushDespachado(pedidoId, guia ? guia.trim() : null);
+        return;
+    }
     const { error } = await sb.from('pedidos').update({ estado: nuevoEstado }).eq('id', pedidoId);
     if (error) toast('Error al actualizar: ' + error.message, 'error');
     else toast('Estado actualizado → ' + nuevoEstado, 'success');
+}
+
+async function enviarPushDespachado(pedidoId, numeroGuia) {
+    try {
+        // Buscar suscripción push del cliente por pedido_id (case_id)
+        const { data: subs } = await sb
+            .from('push_subscriptions')
+            .select('*')
+            .eq('case_id', pedidoId)
+            .limit(3);
+
+        if (!subs || subs.length === 0) return; // Doctor no activó notificaciones
+
+        // Llamar Edge Function de Supabase para enviar el push
+        // (La Edge Function requiere VAPID keys configuradas — ver PENDIENTES.md)
+        const payload = {
+            subscriptions: subs,
+            notification: {
+                title: '🦷 Tu pedido PRODIGY está en camino',
+                body: numeroGuia
+                    ? `Tu restauración fue despachada. Guía de envío: ${numeroGuia}`
+                    : 'Tu restauración fue despachada. ¡Estará pronto en tu clínica!',
+                url:  '/seguimiento-caso',
+                tag:  'despacho-' + pedidoId
+            }
+        };
+
+        await sb.functions.invoke('send-push-notification', { body: payload });
+        toast('🔔 Notificación push enviada al doctor', 'success');
+    } catch (e) {
+        // No bloquear el flujo si el push falla
+        console.warn('Push notification error:', e.message);
+    }
 }
 
 function csvCell(v) {
@@ -1089,39 +1152,70 @@ async function eliminarCaso(id) {
 ══════════════════════════════════════════ */
 async function cargarClientes() {
     document.getElementById('tbody-clientes').innerHTML =
-        '<tr class="loading-row"><td colspan="7"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
+        '<tr class="loading-row"><td colspan="8"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
 
     try {
-        // Clientes con conteo de pedidos
+        // Clientes con todos sus pedidos (para calcular CLV)
         const { data, error } = await sb
             .from('clientes')
-            .select('*, pedidos(count)')
+            .select('id, nombre, email, clinica, ciudad, pais, created_at, pedidos(precio_total, estado)')
             .order('created_at', { ascending: false });
 
         if (error) throw error;
 
         if (!data || data.length === 0) {
             document.getElementById('tbody-clientes').innerHTML =
-                '<tr><td colspan="7" class="empty-state"><i class="fas fa-users"></i><br>Sin clientes registrados aún</td></tr>';
+                '<tr><td colspan="8" class="empty-state"><i class="fas fa-users"></i><br>Sin clientes registrados aún</td></tr>';
             return;
         }
 
-        document.getElementById('tbody-clientes').innerHTML = data.map(c => `
-        <tr>
-            <td style="font-weight:700;">${escHtml(c.nombre || '—')}</td>
-            <td style="font-size:0.78rem;color:#94a3b8;">${escHtml(c.email)}</td>
-            <td>${escHtml(c.clinica || '—')}</td>
-            <td>${escHtml(c.ciudad || '—')}</td>
-            <td>${escHtml(c.pais || 'Colombia')}</td>
-            <td style="font-size:0.75rem;">${fmtFecha(c.created_at)}</td>
-            <td style="text-align:center;font-weight:700;color:var(--gold);">
-                ${Number(c.pedidos?.[0]?.count ?? 0)}
-            </td>
-        </tr>`).join('');
+        // Calcular CLV (suma de pedidos no cancelados)
+        const clientesCLV = data.map(c => {
+            const pedidos = c.pedidos || [];
+            const clv = pedidos
+                .filter(p => p.estado !== 'Cancelado')
+                .reduce((s, p) => s + (parseFloat(p.precio_total) || 0), 0);
+            return { ...c, _clv: clv, _numPedidos: pedidos.length };
+        });
+
+        // Ordenar por CLV para determinar Top 10
+        const rankingCLV = [...clientesCLV].sort((a, b) => b._clv - a._clv);
+        const top10Ids = new Set(rankingCLV.slice(0, 10).filter(c => c._clv > 0).map(c => c.id));
+
+        // Re-ordenar: top10 primero, luego resto por fecha
+        const ordenados = [
+            ...rankingCLV.filter(c => top10Ids.has(c.id)),
+            ...rankingCLV.filter(c => !top10Ids.has(c.id))
+        ];
+
+        // KPI: CLV total acumulado
+        const clvTotal = rankingCLV.reduce((s, c) => s + c._clv, 0);
+        const kpiClvEl = document.getElementById('kpi-clv-total');
+        if (kpiClvEl) kpiClvEl.textContent = fmtCOP(clvTotal);
+
+        document.getElementById('tbody-clientes').innerHTML = ordenados.map((c, idx) => {
+            const esTop10 = top10Ids.has(c.id);
+            const rank = rankingCLV.findIndex(r => r.id === c.id) + 1;
+            const rankBadge = esTop10
+                ? `<span title="Top ${rank} cliente por CLV" style="font-size:1.1rem;line-height:1;">⭐</span>`
+                : `<span style="font-size:.72rem;color:#475569;">#${rank}</span>`;
+            const clvColor = esTop10 ? 'var(--gold)' : (c._clv > 0 ? '#4ade80' : '#475569');
+            const rowBg = esTop10 ? 'background:linear-gradient(90deg,rgba(212,175,55,.06),transparent);border-left:3px solid rgba(212,175,55,.5);' : '';
+            return `<tr style="${rowBg}">
+                <td style="text-align:center;width:40px;">${rankBadge}</td>
+                <td style="font-weight:${esTop10?'800':'700'};color:${esTop10?'var(--gold)':'inherit'};">${escHtml(c.nombre || '—')}</td>
+                <td style="font-size:0.78rem;color:#94a3b8;">${escHtml(c.email)}</td>
+                <td>${escHtml(c.clinica || '—')}</td>
+                <td>${escHtml(c.ciudad || '—')}</td>
+                <td style="text-align:center;font-weight:700;color:var(--cyan);">${c._numPedidos}</td>
+                <td style="font-weight:800;color:${clvColor};">${c._clv > 0 ? fmtCOP(c._clv) : '—'}</td>
+                <td style="font-size:0.75rem;">${fmtFecha(c.created_at)}</td>
+            </tr>`;
+        }).join('');
 
     } catch (err) {
         document.getElementById('tbody-clientes').innerHTML =
-            `<tr><td colspan="7" style="text-align:center;color:#f87171;padding:24px;">${err.message}</td></tr>`;
+            `<tr><td colspan="8" style="text-align:center;color:#f87171;padding:24px;">${escHtml(err.message)}</td></tr>`;
     }
 }
 

@@ -368,6 +368,10 @@
         '<button type="submit" class="tb-acceso">ACCESO</button>' +
         '<a href="/app/login.html?mode=register" class="tb-registro">REGISTRO</a>' +
       '</form>' +
+      '<div id="urgencia-widget" style="display:none;align-items:center;gap:6px;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.3);border-radius:100px;padding:4px 12px 4px 8px;font-size:.72rem;font-weight:700;color:#e2e8f0;margin-left:8px;white-space:nowrap;cursor:pointer;text-decoration:none;" onclick="window.location.href=\'/calculadora\'">' +
+        '<span style="font-size:.88rem;">⚡</span>' +
+        '<span id="urgencia-text">Cargando…</span>' +
+      '</div>' +
       langHtml +
     '</div>';
 
@@ -574,6 +578,82 @@
     if (nav) nav.classList.toggle('nav-scrolled', window.scrollY > 20);
     if (cta) cta.classList.toggle('visible', window.scrollY > 200);
   }, { passive: true });
+
+  /* ── WIDGET DE URGENCIA — Horario hábil L-S 8am-5pm (corte) ─ */
+  (function initUrgencia() {
+    var widget = document.getElementById('urgencia-widget');
+    var label  = document.getElementById('urgencia-text');
+    if (!widget || !label) return;
+
+    // Retorna próximo día hábil (L-S, skip domingo)
+    function siguienteDiaHabil(d) {
+      var sig = new Date(d);
+      sig.setDate(sig.getDate() + 1);
+      if (sig.getDay() === 0) sig.setDate(sig.getDate() + 1); // salta domingo
+      return sig;
+    }
+
+    // Formatea fecha legible "lunes 28 abr"
+    var DIAS  = ['dom','lun','mar','mié','jue','vie','sáb'];
+    var MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    function fmtDia(d) { return DIAS[d.getDay()] + ' ' + d.getDate() + ' ' + MESES[d.getMonth()]; }
+
+    function tick() {
+      var ahora = new Date();
+      var dia   = ahora.getDay();   // 0=dom … 6=sáb
+      var hora  = ahora.getHours();
+      var min   = ahora.getMinutes();
+      var seg   = ahora.getSeconds();
+
+      // Fuera de horario hábil: dom, o ≥17h (corte 5pm), o antes de 8am
+      var esDomingo   = dia === 0;
+      var antesDeApertura = hora < 8;
+      var despuesDeCorte  = hora >= 17;
+      var enHorario       = !esDomingo && !antesDeApertura && !despuesDeCorte;
+
+      widget.style.display = 'flex';
+
+      if (enHorario) {
+        // Tiempo restante hasta las 17:00
+        var corteSeg = (17 - hora) * 3600 - min * 60 - seg;
+        var hh = Math.floor(corteSeg / 3600);
+        var mm = Math.floor((corteSeg % 3600) / 60);
+        var ss = corteSeg % 60;
+        var countdown = (hh > 0 ? hh + 'h ' : '') +
+                        (mm > 0 || hh > 0 ? mm + 'min ' : '') +
+                        ss + 's';
+
+        // "pasado mañana" = 2 días hábiles desde hoy
+        var entrega1 = siguienteDiaHabil(ahora);       // mañana (o lunes si sábado)
+        var entrega2 = siguienteDiaHabil(entrega1);    // pasado mañana hábil
+        label.textContent = '⏳ Pide en ' + countdown + ' y recibe el ' + fmtDia(entrega2);
+        widget.style.borderColor = 'rgba(217,70,166,.5)';
+        widget.style.background  = 'rgba(217,70,166,.14)';
+      } else {
+        // Fuera de horario: mostrar próxima apertura
+        var apertura = new Date(ahora);
+        apertura.setSeconds(0); apertura.setMinutes(0);
+        if (esDomingo) {
+          apertura.setDate(apertura.getDate() + 1); apertura.setHours(8);
+        } else if (antesDeApertura) {
+          apertura.setHours(8);
+        } else {
+          // después de corte → siguiente día hábil 8am
+          apertura = siguienteDiaHabil(ahora);
+          apertura.setHours(8); apertura.setMinutes(0); apertura.setSeconds(0);
+        }
+        var diffSeg = Math.max(0, Math.floor((apertura - ahora) / 1000));
+        var dhh = Math.floor(diffSeg / 3600);
+        var dmm = Math.floor((diffSeg % 3600) / 60);
+        label.textContent = '🌙 Próximo despacho en ' + dhh + 'h ' + dmm + 'min · ' + fmtDia(apertura);
+        widget.style.borderColor = 'rgba(148,163,184,.25)';
+        widget.style.background  = 'rgba(30,41,59,.4)';
+      }
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  })();
 
   /* Hamburger */
   document.getElementById('pnav2-ham').addEventListener('click', function () {

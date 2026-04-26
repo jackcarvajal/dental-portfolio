@@ -626,6 +626,31 @@
                     <div style="font-size:1rem;font-weight:700;color:#e2e8f0;">${_escH(p.value)}</div>
                 </div>`).join('');
 
+            // Insertar banner de push y número de guía dinámicamente antes de zonaDescargas
+            const zonaDesc = document.getElementById('zonaDescargas');
+            if (zonaDesc) {
+                // Banner notificaciones push
+                if ('PushManager' in window && Notification.permission !== 'granted') {
+                    const pb = document.createElement('div');
+                    pb.style.cssText = 'display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(217,70,166,.12),rgba(0,210,255,.06));border:1px solid rgba(217,70,166,.35);border-radius:14px;padding:14px 18px;margin-bottom:20px;flex-wrap:wrap;';
+                    pb.innerHTML = '<span style="font-size:1.6rem;">🔔</span>' +
+                        '<div style="flex:1;min-width:180px;"><div style="font-size:.88rem;font-weight:700;color:#e2e8f0;">Recibe una notificación cuando tu caso esté despachado</div>' +
+                        '<div style="font-size:.75rem;color:#94a3b8;margin-top:2px;">Te avisamos en tu celular — sin necesidad de entrar a esta página.</div></div>' +
+                        '<button id="push-activate-btn" style="background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;padding:9px 18px;border-radius:100px;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;"><i class="fas fa-bell"></i> Activar notificación</button>';
+                    zonaDesc.before(pb);
+                    document.getElementById('push-activate-btn').onclick = () => suscribirNotificaciones(caso.id || caso.numeroOrden);
+                }
+                // Número de guía
+                if (caso.numero_guia) {
+                    const gr = document.createElement('div');
+                    gr.style.cssText = 'background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;';
+                    gr.innerHTML = '<div style="font-size:.75rem;font-weight:700;color:#4ade80;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;"><i class="fas fa-truck-fast"></i> Número de guía de envío</div>' +
+                        '<div style="font-size:1.3rem;font-weight:900;color:#e2e8f0;letter-spacing:.04em;">' + _escH(caso.numero_guia) + '</div>' +
+                        '<div style="font-size:.75rem;color:#64748b;margin-top:4px;">Úsalo para rastrear tu pedido en la transportadora.</div>';
+                    zonaDesc.before(gr);
+                }
+            }
+
             // Agente 4: WhatsApp flotante con ID del caso
             const waBtn = document.getElementById('wa-flotante-caso');
             if (waBtn) {
@@ -873,7 +898,7 @@ function segToast(msg, tipo) {
 (function registrarSW() {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
 
-    navigator.serviceWorker.register('/app/sw.js', { scope: '/' })
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
         .then(reg => {
             // Guardar registro para suscripción futura
             window._swReg = reg;
