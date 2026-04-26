@@ -23,7 +23,7 @@
     --border: rgba(0,255,65,.12);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--txt); font-family: 'Segoe UI', sans-serif; display: flex; min-height: 100vh; visibility: hidden; }
+body { overflow-x: hidden; background: var(--bg); color: var(--txt); font-family: 'Segoe UI', sans-serif; display: flex; min-height: 100vh; visibility: hidden; }
 body.ready { visibility: visible; }
 
 /* ── Sidebar ── */
@@ -150,6 +150,7 @@ body.ready { visibility: visible; }
 </style>
 </head>
 <body>
+<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 
 <aside class="sidebar">
     <div class="logo">

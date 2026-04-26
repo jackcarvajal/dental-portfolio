@@ -26,12 +26,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/flujo-impresion.min.css">
     <link rel="stylesheet" href="css/global-nav.min.css">
-    <style>body{visibility:hidden}.hamburger-menu,.theme-toggle{display:none!important}</style>
+    <style>body{ overflow-x: hidden;visibility:hidden}.hamburger-menu,.theme-toggle{display:none!important}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/auth-guard.js"></script>
 <script>ProdigyAuth.require(['client','admin'],'/app/login.html?redirect='+encodeURIComponent(location.pathname));</script>
 </head>
 <body>
+<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
     <!-- Geo-gate: impresión 3D es solo Colombia. Si internacional → overlay inmediato -->
     <script>
     (function() {
