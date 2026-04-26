@@ -26,8 +26,9 @@
     <link rel="stylesheet" href="css/global-nav.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
         /* ---- Seguimiento: layout responsive ---- */
         .seg-input-row {
             display: grid;
@@ -60,7 +61,7 @@
     <!-- ═══ HERO + BUSCADOR (above the fold) ═════════════════════════════ -->
     <section style="background:radial-gradient(ellipse 100% 60% at 50% 0%,rgba(217,70,166,0.12) 0%,transparent 65%);padding:48px 20px 52px;text-align:center;">
       <div style="max-width:580px;margin:0 auto;">
-        <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(217,70,166,0.1);border:1px solid rgba(217,70,166,0.28);border-radius:100px;padding:5px 16px;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#D946A6;margin-bottom:18px;">
+        <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(217,70,166,0.1);border:1px solid rgba(217,70,166,0.28);border-radius:100px;padding:5px 16px;font-size:.95rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#D946A6;margin-bottom:18px;">
           <span style="width:6px;height:6px;background:#00FF41;border-radius:50%;display:inline-block;animation:blink2 2s infinite;"></span>
           Sistema activo · Tiempo real
         </div>
@@ -68,34 +69,34 @@
           Seguimiento de Tu Caso<br>
           <span style="background:linear-gradient(135deg,#D946A6,#00d2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">PRODIGY Lab Dental</span>
         </h1>
-        <p style="color:#64748b;font-size:.95rem;margin:0 auto 28px;line-height:1.6;">
+        <p style="color:#94a3b8;font-size:.95rem;margin:0 auto 28px;line-height:1.6;">
           Ingresa tu número de orden y ve en qué etapa está tu prótesis — del diseño CAD al despacho.
         </p>
 
         <!-- BUSCADOR CENTRAL -->
         <div style="background:rgba(10,14,26,0.7);border:2px solid rgba(255,215,0,0.3);border-radius:20px;padding:28px 32px;text-align:left;">
-          <label style="color:rgba(248,250,252,0.8);font-weight:700;display:block;margin-bottom:8px;font-size:.85rem;letter-spacing:.5px;">NÚMERO DE ORDEN</label>
+          <label style="color:rgba(248,250,252,0.8);font-weight:700;display:block;margin-bottom:8px;font-size:1rem;letter-spacing:.5px;">NÚMERO DE ORDEN</label>
           <input type="text" id="searchOrden" placeholder="PROD-2026-XXXX" autocomplete="off"
             style="width:100%;padding:14px 18px;background:rgba(5,5,5,0.6);border:2px solid rgba(255,215,0,0.22);border-radius:12px;color:white;font-size:1.05rem;margin-bottom:6px;box-sizing:border-box;outline:none;letter-spacing:1px;"
             onkeydown="if(event.key==='Enter') buscarCasoConSpinner()">
-          <p style="color:#475569;font-size:.74rem;margin:0 0 18px;">Lo recibes por WhatsApp cuando creas tu pedido (ej: PROD-2026-0042).</p>
+          <p style="color:#94a3b8;font-size:1rem;margin:0 0 18px;">Lo recibes por WhatsApp cuando creas tu pedido (ej: PROD-2026-0042).</p>
           <button onclick="buscarCasoConSpinner()"
             style="width:100%;padding:15px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:50px;font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:8px;">
             <i class="fas fa-search"></i> Buscar Mi Caso
           </button>
           <div id="search-spinner" style="display:none;text-align:center;padding:20px 0 4px;">
             <div style="width:38px;height:38px;border:3px solid rgba(255,215,0,0.15);border-top-color:#FFD700;border-radius:50%;animation:spinSeg 0.9s linear infinite;margin:0 auto 10px;"></div>
-            <p style="color:rgba(248,250,252,0.6);font-size:.85rem;">Consultando estado…</p>
+            <p style="color:rgba(248,250,252,0.6);font-size:1rem;">Consultando estado…</p>
           </div>
         </div>
 
         <!-- Trust mini-badges -->
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px;">
-          <span style="font-size:.72rem;color:#475569;display:flex;align-items:center;gap:5px;"><i class="fas fa-shield-alt" style="color:#00FF41;font-size:.65rem;"></i> Ley 1581 Habeas Data</span>
+          <span style="font-size:1rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><i class="fas fa-shield-alt" style="color:#00FF41;font-size:.65rem;"></i> Ley 1581 Habeas Data</span>
           <span style="color:#334155;">·</span>
-          <span style="font-size:.72rem;color:#475569;display:flex;align-items:center;gap:5px;"><i class="fas fa-lock" style="color:#00d2ff;font-size:.65rem;"></i> Cifrado TLS</span>
+          <span style="font-size:1rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><i class="fas fa-lock" style="color:#00d2ff;font-size:.65rem;"></i> Cifrado TLS</span>
           <span style="color:#334155;">·</span>
-          <span style="font-size:.72rem;color:#475569;display:flex;align-items:center;gap:5px;"><i class="fas fa-medal" style="color:#D946A6;font-size:.65rem;"></i> #1 CAD/CAM Colombia</span>
+          <span style="font-size:1rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><i class="fas fa-medal" style="color:#D946A6;font-size:.65rem;"></i> #1 CAD/CAM Colombia</span>
         </div>
       </div>
     </section>
@@ -106,46 +107,46 @@
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:40px;">
         <div style="background:rgba(0,210,255,0.05);border:1px solid rgba(0,210,255,0.15);border-radius:14px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">⚡</div>
-          <h3 style="color:#00d2ff;font-size:.85rem;font-weight:700;margin-bottom:5px;">Estado en tiempo real</h3>
-          <p style="color:#64748b;font-size:.77rem;line-height:1.55;margin:0;">Sin llamadas. Cada avance se refleja al instante.</p>
+          <h3 style="color:#00d2ff;font-size:1rem;font-weight:700;margin-bottom:5px;">Estado en tiempo real</h3>
+          <p style="color:#94a3b8;font-size:.92rem;line-height:1.55;margin:0;">Sin llamadas. Cada avance se refleja al instante.</p>
         </div>
         <div style="background:rgba(217,70,166,0.05);border:1px solid rgba(217,70,166,0.15);border-radius:14px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">🎨</div>
-          <h3 style="color:#D946A6;font-size:.85rem;font-weight:700;margin-bottom:5px;">Visor 3D Exocad</h3>
-          <p style="color:#64748b;font-size:.77rem;line-height:1.55;margin:0;">Ve tu prótesis en 3D interactivo antes del fresado.</p>
+          <h3 style="color:#D946A6;font-size:1rem;font-weight:700;margin-bottom:5px;">Visor 3D Exocad</h3>
+          <p style="color:#94a3b8;font-size:.92rem;line-height:1.55;margin:0;">Ve tu prótesis en 3D interactivo antes del fresado.</p>
         </div>
         <div style="background:rgba(0,255,65,0.04);border:1px solid rgba(0,255,65,0.13);border-radius:14px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">📲</div>
-          <h3 style="color:#00FF41;font-size:.85rem;font-weight:700;margin-bottom:5px;">Aviso WhatsApp</h3>
-          <p style="color:#64748b;font-size:.77rem;line-height:1.55;margin:0;">Notificación automática cuando esté listo para entrega.</p>
+          <h3 style="color:#00FF41;font-size:1rem;font-weight:700;margin-bottom:5px;">Aviso WhatsApp</h3>
+          <p style="color:#94a3b8;font-size:.92rem;line-height:1.55;margin:0;">Notificación automática cuando esté listo para entrega.</p>
         </div>
         <div style="background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.15);border-radius:14px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">📥</div>
-          <h3 style="color:#D4AF37;font-size:.85rem;font-weight:700;margin-bottom:5px;">Descarga archivos</h3>
-          <p style="color:#64748b;font-size:.77rem;line-height:1.55;margin:0;">STL final y reporte de diseño disponibles aquí.</p>
+          <h3 style="color:#D4AF37;font-size:1rem;font-weight:700;margin-bottom:5px;">Descarga archivos</h3>
+          <p style="color:#94a3b8;font-size:.92rem;line-height:1.55;margin:0;">STL final y reporte de diseño disponibles aquí.</p>
         </div>
       </div>
 
       <!-- ═══ CÓMO FUNCIONA ════════════════════════════════════════════════ -->
       <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px 32px;margin-bottom:36px;">
-        <h2 style="text-align:center;font-size:.85rem;font-weight:800;color:#475569;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;">Cómo funciona</h2>
+        <h2 style="text-align:center;font-size:1rem;font-weight:800;color:#94a3b8;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;">Cómo funciona</h2>
         <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:start;">
           <div style="text-align:center;">
             <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#D946A6,#8E24AA);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-weight:900;color:#fff;">1</div>
-            <h4 style="color:#e2e8f0;font-size:.82rem;font-weight:700;margin-bottom:4px;">Ingresa tu N.° de orden</h4>
-            <p style="color:#475569;font-size:.72rem;line-height:1.5;margin:0;">Formato <strong style="color:#64748b;">PROD-2026-XXXX</strong> del WhatsApp.</p>
+            <h4 style="color:#e2e8f0;font-size:.95rem;font-weight:700;margin-bottom:4px;">Ingresa tu N.° de orden</h4>
+            <p style="color:#94a3b8;font-size:1rem;line-height:1.5;margin:0;">Formato <strong style="color:#94a3b8;">PROD-2026-XXXX</strong> del WhatsApp.</p>
           </div>
           <div class="seg-step-arrow">→</div>
           <div style="text-align:center;">
             <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#00d2ff,#0284c7);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-weight:900;color:#fff;">2</div>
-            <h4 style="color:#e2e8f0;font-size:.82rem;font-weight:700;margin-bottom:4px;">Ve el estado en vivo</h4>
-            <p style="color:#475569;font-size:.72rem;line-height:1.5;margin:0;">Diseño → Producción → Calidad → Listo.</p>
+            <h4 style="color:#e2e8f0;font-size:.95rem;font-weight:700;margin-bottom:4px;">Ve el estado en vivo</h4>
+            <p style="color:#94a3b8;font-size:1rem;line-height:1.5;margin:0;">Diseño → Producción → Calidad → Listo.</p>
           </div>
           <div class="seg-step-arrow">→</div>
           <div style="text-align:center;">
             <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#00FF41,#16a34a);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-weight:900;color:#fff;">3</div>
-            <h4 style="color:#e2e8f0;font-size:.82rem;font-weight:700;margin-bottom:4px;">Recibe o descarga</h4>
-            <p style="color:#475569;font-size:.72rem;line-height:1.5;margin:0;">WhatsApp + descarga STL y reporte aquí.</p>
+            <h4 style="color:#e2e8f0;font-size:.95rem;font-weight:700;margin-bottom:4px;">Recibe o descarga</h4>
+            <p style="color:#94a3b8;font-size:1rem;line-height:1.5;margin:0;">WhatsApp + descarga STL y reporte aquí.</p>
           </div>
         </div>
       </div>
@@ -153,18 +154,18 @@
       <!-- ═══ TECNOLOGÍA + PRIVACIDAD ══════════════════════════════════════ -->
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:40px;">
         <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;">
-          <h3 style="color:#e2e8f0;font-size:.85rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px;"><i class="fas fa-microchip" style="color:#00d2ff;"></i> Tecnología</h3>
+          <h3 style="color:#e2e8f0;font-size:1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px;"><i class="fas fa-microchip" style="color:#00d2ff;"></i> Tecnología</h3>
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:#64748b;">Base de datos</span><span style="color:#94a3b8;font-weight:600;">Supabase PostgreSQL</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:#64748b;">Diseño CAD</span><span style="color:#94a3b8;font-weight:600;">Exocad · 3Shape</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:#64748b;">Fresadora</span><span style="color:#94a3b8;font-weight:600;">XTCERA 5 ejes ±10µm</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:#64748b;">Impresión 3D</span><span style="color:#94a3b8;font-weight:600;">BCN3D Sigma</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.9rem;"><span style="color:#94a3b8;">Base de datos</span><span style="color:#94a3b8;font-weight:600;">Supabase PostgreSQL</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.9rem;"><span style="color:#94a3b8;">Diseño CAD</span><span style="color:#94a3b8;font-weight:600;">Exocad · 3Shape</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.9rem;"><span style="color:#94a3b8;">Fresadora</span><span style="color:#94a3b8;font-weight:600;">XTCERA 5 ejes ±10µm</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.9rem;"><span style="color:#94a3b8;">Impresión 3D</span><span style="color:#94a3b8;font-weight:600;">BCN3D Sigma</span></div>
           </div>
         </div>
         <div style="background:rgba(0,255,65,0.03);border:1px solid rgba(0,255,65,0.1);border-radius:14px;padding:24px;">
-          <h3 style="color:#e2e8f0;font-size:.85rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px;"><i class="fas fa-user-shield" style="color:#00FF41;"></i> Privacidad</h3>
-          <p style="color:#64748b;font-size:.75rem;line-height:1.6;margin:0 0 8px;">Datos usados exclusivamente para gestión de tu pedido. <strong style="color:#94a3b8;">Sin compartir con terceros.</strong></p>
-          <p style="color:#64748b;font-size:.75rem;line-height:1.6;margin:0;">Cumplimos <strong style="color:#94a3b8;">Ley 1581</strong> (Habeas Data Colombia). Solicita eliminación: <strong style="color:#94a3b8;">gerencia@prodigylabdental.com</strong></p>
+          <h3 style="color:#e2e8f0;font-size:1rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px;"><i class="fas fa-user-shield" style="color:#00FF41;"></i> Privacidad</h3>
+          <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;margin:0 0 8px;">Datos usados exclusivamente para gestión de tu pedido. <strong style="color:#94a3b8;">Sin compartir con terceros.</strong></p>
+          <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;margin:0;">Cumplimos <strong style="color:#94a3b8;">Ley 1581</strong> (Habeas Data Colombia). Solicita eliminación: <strong style="color:#94a3b8;">gerencia@prodigylabdental.com</strong></p>
         </div>
       </div>
 
@@ -716,7 +717,7 @@
                     <div style="font-size:2rem;margin-bottom:6px;">✅</div>
                     <div style="font-size:1.05rem;font-weight:700;color:#00FF41;margin-bottom:4px;">¡Pago Confirmado!</div>
                     <div style="font-size:.9rem;color:#e2e8f0;">Su caso <strong id="banner-case-id" style="color:#D4AF37;"></strong> ha sido enviado a producción.</div>
-                    <div style="font-size:.78rem;color:#94a3b8;margin-top:6px;">Recibirá actualizaciones por WhatsApp.</div>
+                    <div style="font-size:.9rem;color:#94a3b8;margin-top:6px;">Recibirá actualizaciones por WhatsApp.</div>
                     <button onclick="this.parentElement.remove()" style="margin-top:12px;padding:6px 18px;background:rgba(0,255,65,.12);border:1px solid #00FF41;border-radius:20px;color:#00FF41;cursor:pointer;font-size:.8rem;">Cerrar</button>
                 `;
                 banner.querySelector('#banner-case-id').textContent = id;
