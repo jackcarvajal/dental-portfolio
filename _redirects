@@ -59,6 +59,8 @@
 # ─────────────────────────────────────────────────────────────
 # PÁGINAS INTERNAS / LEGACY — redirigir a login o 404
 # ─────────────────────────────────────────────────────────────
+/portal                         /               301
+/portal.html                    /               301
 /admin-panel.html               /app/login.html  302
 /agregar-caso.html              /app/login.html  302
 /portafolio-v2-ideas.html       /404.html  404
