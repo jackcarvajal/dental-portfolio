@@ -654,6 +654,7 @@ function selServicio(btn) {
     state.qty = 1;
     document.getElementById('qtyNum').textContent = 1;
   }
+  if (window.ProdigyAudio) ProdigyAudio.ping();
   renderResult();
 }
 
@@ -661,6 +662,7 @@ function selMaterial(btn) {
   document.querySelectorAll('.mat-chip').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   state.material = btn.dataset.mat;
+  if (window.ProdigyAudio) ProdigyAudio.click();
   renderResult();
 }
 
@@ -728,6 +730,7 @@ function abrirWA() {
     `• Total estimado: ${fmtCOP(calcTotal().total)} COP\n\n` +
     `¿Me pueden confirmar precio final y tiempo de entrega?`
   );
+  if (window.ProdigyAudio) ProdigyAudio.success();
   window.open(`https://wa.me/${WA_NUMBER}?text=${texto}`, '_blank');
 }
 
@@ -742,6 +745,7 @@ function showToast(text, type = 'ok') {
 renderResult();
 </script>
 </main>
+<script src="js/audio-manager.js" defer></script>
 <script src="js/footer.js?v=20260425"></script>
 <script>if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
     <div class="ux-floaters">

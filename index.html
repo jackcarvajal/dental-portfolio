@@ -3132,67 +3132,11 @@
     })();
     </script>
 
-    <!-- AMBIENT SOUND — Web Audio API (sin archivo externo) -->
-    <button id="sound-btn" onclick="toggleSound()" title="Música ambiente" aria-label="Activar/desactivar música ambiente">
+    <!-- AUDIO SYSTEM — ProdigyAudio Manager -->
+    <script src="js/audio-manager.js" defer></script>
+    <button id="sound-btn" onclick="ProdigyAudio.toggleAmbient()" title="Música ambiente" aria-label="Activar/desactivar música ambiente">
         <i class="fas fa-volume-xmark" aria-hidden="true"></i>
     </button>
-    <script>
-    (function() {
-        var ctx = null, masterGain = null, playing = false;
-
-        function buildAmbient() {
-            ctx = new (window.AudioContext || window.webkitAudioContext)();
-            masterGain = ctx.createGain();
-            masterGain.gain.value = 0;
-            masterGain.connect(ctx.destination);
-
-            // Drone ambient: capas de tonos sinusoidales con LFO suave
-            [[55,0.12],[110,0.08],[165,0.05],[220,0.04],[330,0.03]].forEach(function(p) {
-                var osc = ctx.createOscillator();
-                var gain = ctx.createGain();
-                var lfo = ctx.createOscillator();
-                var lfoGain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.value = p[0];
-                gain.gain.value = p[1];
-                lfo.type = 'sine';
-                lfo.frequency.value = 0.07 + Math.random() * 0.05;
-                lfoGain.gain.value = p[0] * 0.003;
-                lfo.connect(lfoGain);
-                lfoGain.connect(osc.frequency);
-                osc.connect(gain);
-                gain.connect(masterGain);
-                lfo.start();
-                osc.start();
-            });
-        }
-
-        window.toggleSound = function() {
-            var btn = document.getElementById('sound-btn');
-            var ico = btn.querySelector('i');
-            if (!ctx) buildAmbient();
-            if (!playing) {
-                if (ctx.state === 'suspended') ctx.resume();
-                playing = true;
-                btn.classList.add('playing');
-                ico.className = 'fas fa-volume-high';
-                btn.title = 'Silenciar música';
-                masterGain.gain.cancelScheduledValues(ctx.currentTime);
-                masterGain.gain.setValueAtTime(0, ctx.currentTime);
-                masterGain.gain.linearRampToValueAtTime(1, ctx.currentTime + 3);
-            } else {
-                playing = false;
-                btn.classList.remove('playing');
-                ico.className = 'fas fa-volume-xmark';
-                btn.title = 'Música ambiente';
-                masterGain.gain.cancelScheduledValues(ctx.currentTime);
-                masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-                masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 2);
-                setTimeout(function() { if (ctx) ctx.suspend(); }, 2200);
-            }
-        };
-    })();
-    </script>
 
     <!-- SCROLL REVEAL — IntersectionObserver nativo, sin librerías -->
     <script>
