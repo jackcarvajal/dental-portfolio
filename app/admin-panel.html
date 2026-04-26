@@ -690,16 +690,28 @@ async function cargarAnalytics() {
         document.getElementById('kpi-abandonados').textContent = abandonados ? abandonados.length : '—';
 
         if (abandonados && abandonados.length > 0) {
-            listEl.innerHTML = abandonados.map(function(a) {
+            // Alerta visual si hay carrito alto valor (> $500.000 COP)
+            var altosValores = abandonados.filter(function(a){ return (a.props && a.props.monto > 500000); });
+            if (altosValores.length > 0) {
+                listEl.innerHTML = '<div style="background:rgba(244,67,54,.1);border:1px solid rgba(244,67,54,.35);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">' +
+                    '<span style="font-size:1.4rem;">🚨</span>' +
+                    '<div><strong style="color:#F44336;">' + altosValores.length + ' carrito(s) de ALTO VALOR abandonados</strong>' +
+                    '<div style="font-size:.82rem;color:#94a3b8;margin-top:2px;">Montos > $500.000 COP — prioridad de recuperación</div></div>' +
+                    '</div>';
+            } else { listEl.innerHTML = ''; }
+
+            listEl.innerHTML += abandonados.map(function(a) {
                 var p = a.props || {};
-                var monto = p.monto ? ('$' + Math.round(p.monto).toLocaleString('es-CO') + ' COP') : '—';
-                var ref = p.referencia || p.referencia || '—';
+                var montoNum = parseFloat(p.monto) || 0;
+                var monto = montoNum ? ('$' + Math.round(montoNum).toLocaleString('es-CO') + ' COP') : '—';
+                var ref = p.referencia || '—';
                 var pasarela = (p.pasarela || 'desconocida').toUpperCase();
                 var fecha = new Date(a.ts).toLocaleString('es-CO', { dateStyle:'short', timeStyle:'short' });
-                var waMsg = encodeURIComponent('Hola Doctor, soy Alejandro de PRODIGY. Vi que estaba cotizando un caso por ' + monto + ' (Ref: ' + ref + '). ¿Puedo ayudarte a completar el pedido?');
-                return '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:8px;">' +
+                var esAltoValor = montoNum > 500000;
+                var waMsg = encodeURIComponent('Hola Doctor, soy Alejandro de PRODIGY. Vi que estaba procesando un pago de ' + monto + ' (Ref: ' + ref + '). ¿Tuve algún problema técnico o puedo ayudarte a completar el pedido? 🦷');
+                return '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:8px;' + (esAltoValor ? 'background:rgba(244,67,54,.04);border-radius:8px;padding:12px;' : '') + '">' +
                     '<div>' +
-                    '<div style="font-size:.88rem;font-weight:700;color:#e2e8f0;">' + monto + ' <span style="color:#94a3b8;font-weight:400;">vía</span> ' + pasarela + '</div>' +
+                    '<div style="font-size:.88rem;font-weight:700;color:' + (esAltoValor ? '#F44336' : '#e2e8f0') + ';">' + (esAltoValor ? '🚨 ' : '') + monto + ' <span style="color:#94a3b8;font-weight:400;">vía</span> ' + pasarela + '</div>' +
                     '<div style="font-size:.75rem;color:#64748b;">' + fecha + ' · Ref: ' + ref + '</div>' +
                     '</div>' +
                     '<a href="https://wa.me/573212816716?text=' + waMsg + '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25D366;padding:7px 14px;border-radius:100px;text-decoration:none;font-size:.82rem;font-weight:700;flex-shrink:0;">' +

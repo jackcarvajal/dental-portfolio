@@ -53,6 +53,16 @@ window.ProdigyAnalytics = (function() {
     _sendToSupabase(payload);
   }
 
+  function _sendToSupabaseBeacon(payload) {
+    // navigator.sendBeacon → funciona en beforeunload, no necesita respuesta
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+      navigator.sendBeacon(SB_URL + '/rest/v1/analytics_events?apikey=' + SB_ANON, blob);
+    } else {
+      _sendToSupabase(payload);
+    }
+  }
+
   function _sendToSupabase(payload) {
     fetch(SB_URL + '/rest/v1/analytics_events', {
       method:  'POST',
@@ -83,12 +93,13 @@ window.ProdigyAnalytics = (function() {
     localStorage.setItem(_intentKey, JSON.stringify(intent));
     track('payment_intent', { pasarela: pasarela, monto: monto, referencia: referencia });
 
-    // Abandonamiento: si cierra sin completar → alerta a dashboard
+    // Abandonamiento: sendBeacon en beforeunload (funciona al cerrar tab)
     window.addEventListener('beforeunload', function() {
       var d = JSON.parse(localStorage.getItem(_intentKey) || '{}');
       if (d && !d.completed) {
-        track('checkout_abandoned', { pasarela: d.pasarela, monto: d.monto, referencia: d.referencia });
-        // Guardar en lista de abandonamientos para seguimiento manual
+        var payload = { event:'checkout_abandoned', session_id:_sid, page:window.location.pathname, ts:new Date().toISOString(), props:{ pasarela:d.pasarela, monto:d.monto, referencia:d.referencia } };
+        _sendToSupabaseBeacon(payload); // Beacon: garantiza envío en cierre de tab
+        // Guardar en localStorage también
         var list = JSON.parse(localStorage.getItem('pg_abandonments') || '[]');
         list.push(d);
         if (list.length > 30) list = list.slice(-30);

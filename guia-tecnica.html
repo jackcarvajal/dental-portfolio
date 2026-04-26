@@ -299,6 +299,7 @@
   <div style="font-size:.95rem;font-weight:700;color:#e2e8f0;margin-bottom:6px;">¿Dudas con tu exportación?</div>
   <div style="font-size:.82rem;color:#94a3b8;margin-bottom:14px;line-height:1.5;">Agenda una videollamada técnica de 5 min con nuestro equipo — sin costo.</div>
   <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quisiera%20una%20videollamada%20técnica%20de%205%20min%20para%20revisar%20mi%20exportación%20de%20archivos" target="_blank" rel="noopener noreferrer"
+     onclick="if(window.ProdigyAnalytics) ProdigyAnalytics.track('lead_qualified',{source:'guia-tecnica',tipo:'videollamada'})"
      style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-weight:700;font-size:.9rem;padding:11px 18px;border-radius:50px;text-decoration:none;">
     <i class="fab fa-whatsapp"></i> Agendar videollamada
   </a>
@@ -311,6 +312,7 @@ setTimeout(function() {
 }, 30000);
 </script>
 
+<script src="js/prodigy-analytics.js" defer></script>
 <script src="js/footer.js?v=20260426"></script>
 <script>
 function showSw(id) {
