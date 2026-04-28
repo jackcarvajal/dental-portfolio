@@ -163,6 +163,7 @@ window.ProdigyAnalytics = (function() {
       ext: fileName.split('.').pop().toLowerCase()
     });
     if (window.ProdigyUtils) ProdigyUtils.audioFeedbackForFile(fileSizeMB * 1024 * 1024);
+    if (window.ProdigyConversions) ProdigyConversions.trackSTLUpload(fileName, fileSizeMB);
   }
 
   /* ── AUDIO INTERACTION ──────────────────────────────────── */

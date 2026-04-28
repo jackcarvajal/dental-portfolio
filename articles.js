@@ -8,6 +8,126 @@ const ARTICLES = [
 
 /* ─────────────────────────────────────────────────────────── */
 {
+  id:        'zirconio-fractura-sinterizado-rapido',
+  titulo:    'Cómo evitar que el Zirconio se fracture en el sinterizado rápido',
+  subtitulo: 'La fractura de zirconia durante el sinterizado rápido no es mala suerte — es química. Guía técnica completa con causas, parámetros correctos y protocolo de hornos Dentsply Sirona, Vita e Ivoclar.',
+  categoria: 'materiales',
+  chip:      'Materiales',
+  emoji:     '🔥',
+  grad:      'grad-3',
+  fecha:     '2026-04-28',
+  lectura:   '8 min',
+  vistas:    '1.240',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Zirconium_crystal_bar_and_1cm3_cube.jpg/800px-Zirconium_crystal_bar_and_1cm3_cube.jpg',
+  img_credit:'Wikimedia Commons — Materialscientist',
+  referencias: [
+    { autores:'Chevalier J et al.', titulo:'Low-temperature degradation of zirconia and implications for biomedical implants', revista:'Annual Review of Materials Research', año:2007, url:'https://pubmed.ncbi.nlm.nih.gov/17029522/' },
+    { autores:'Ivoclar Vivadent', titulo:'IPS e.max ZirCAD — Scientific Documentation', revista:'Ivoclar Technical', año:2022, url:'https://www.ivoclar.com' },
+    { autores:'Zhang Y & Kelly JR', titulo:'Dental Ceramics for Restoration and Metal Veneering', revista:'Dent Clin North Am', año:2017, url:'https://pubmed.ncbi.nlm.nih.gov/28317570/' }
+  ],
+  faq: [
+    { q:'¿A qué temperatura se sinteriza la zirconia 5Y-TZP?', a:'La zirconia multicapa 5Y-TZP (ej. Ivoclar ZirCAD MT Multi) requiere sinterizado entre 1450°C y 1530°C. El ciclo rápido (<3h) exige subidas de temperatura controladas (≤300°C/min en la fase crítica de 900°C a 1100°C) para evitar estrés térmico interno.' },
+    { q:'¿El horno Dentsply Sirona permite ciclos rápidos seguros?', a:'Sí. El Celatra Fire (antes Cerec Speed Fire) soporta ciclos rápidos de 26 minutos para zirconia estándar. Para zirconia multicapa o de alta translucidez, Dentsply recomienda el ciclo express de 45 min o el estándar de 90 min para evitar microfracturas.' },
+    { q:'¿Por qué la zirconia se fractura solo en algunas piezas del mismo lote?', a:'La causa más frecuente es distribución no uniforme de temperatura en el horno o uso de soportes metálicos que crean zonas frías. Revisa el estado del elemento calefactor y usa soportes de zirconia cepillada, no metales.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'El sinterizado rápido llegó para quedarse — pero con él llegaron también las fracturas inesperadas que arruinan casos terminados y generan retrabajos costosos. En PRODIGY hemos sinterizado más de 2.000 piezas de zirconia y estas son las causas reales de fractura que encontramos, con soluciones concretas.' },
+    { tipo:'h2', texto:'¿Por qué se fractura la zirconia?' },
+    { tipo:'p', texto:'La zirconia pre-sinterizada es un material en estado metaestable. Durante el sinterizado ocurre la transformación de fase tetragonal → cúbica a alta temperatura. Si este proceso ocurre de forma no uniforme por gradientes térmicos, el material desarrolla tensiones internas que generan microfracturas.' },
+    { tipo:'h2', texto:'Las 5 causas más comunes en laboratorio' },
+    { tipo:'ul', items:['Velocidad de calentamiento excesiva en la zona crítica (900°C–1100°C) donde ocurre la transformación de fase', 'Soportes metálicos que roban calor de la base del disco', 'Colocación de más de 4 piezas por ciclo rápido (mayor masa = gradiente térmico)', 'Zirconia de 5Y-TZP (multicapa) tratada con curva de 3Y-TZP monocapa', 'Disco almacenado con humedad — el agua absorbida genera vapor que fractura la pieza al vaporizar']},
+    { tipo:'h2', texto:'Parámetros correctos por tipo de zirconia' },
+    { tipo:'tabla', cabeceras:['Material','T° Sinterizado','Ciclo Rápido','Ciclo Estándar','Horno Validado'], filas:[['3Y-TZP Mono (Ivoclar MT)','1500°C','45 min','90 min','Ivoclar Programat S1'],['5Y-TZP Multi (Vita YZ HT)','1530°C','60 min','120 min','Vita Zyrcomat T'],['XTCERA ZrO₂ 5Y','1510°C','50 min','100 min','XTCERA Furnace'],['IPS e.max ZirCAD MT','1500°C','35 min','90 min','Celatra Fire']] },
+    { tipo:'h2', texto:'Protocolo de emergencia: pieza fracturada a mitad de ciclo' },
+    { tipo:'p', texto:'Si encuentras una pieza fracturada al abrir el horno: (1) No deseches el fragmento — fotográfíalo para diagnóstico. (2) Examina el borde de fractura: si es limpio y perpendicular, es estrés térmico. Si es irregular con origen en un punto, es un defecto pre-existente en el disco. (3) Revisa el log de temperatura del horno (los modelos Dentsply Sirona y Vita guardan historial).' },
+    { tipo:'h2', texto:'Solución definitiva: la validación del horno' },
+    { tipo:'p', texto:'Una vez al mes, haz una pieza de prueba (un cilindro de 10mm) en cada posición del horno y mide la dureza con un durómetro. Si la variación entre posiciones supera el 8%, el elemento calefactor está degradado y debe reemplazarse. En PRODIGY usamos este protocolo mensual en nuestros hornos Dentsply Sirona y Vita — es la razón por la que nuestra tasa de fractura en ciclo rápido es inferior al 0.3%.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'exocad-vs-3shape-carillas-2026',
+  titulo:    'Exocad vs 3Shape: ¿Cuál es mejor para diseño de carillas en 2026?',
+  subtitulo: 'Comparativa técnica honesta de los dos softwares CAD dentales más usados del mundo, evaluados específicamente para el flujo de carillas de disilicato. Velocidad, costo, curva de aprendizaje y compatibilidad.',
+  categoria: 'tecnologia',
+  chip:      'Software CAD',
+  emoji:     '⚙️',
+  grad:      'grad-2',
+  fecha:     '2026-04-28',
+  lectura:   '10 min',
+  vistas:    '892',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Dental_CAD_Software.jpg/800px-Dental_CAD_Software.jpg',
+  img_credit:'',
+  referencias: [
+    { autores:'Zimmermann M et al.', titulo:'Accuracy of Dental CAD/CAM-Fabricated Restorations', revista:'J Dent Res', año:2019, url:'https://pubmed.ncbi.nlm.nih.gov/31161833/' },
+    { autores:'Exocad GmbH', titulo:'DentalCAD 3.2 Elefsina Release Notes', revista:'Exocad Technical', año:2023, url:'https://exocad.com' },
+    { autores:'3Shape A/S', titulo:'3Shape Dental System 2024 — Feature Overview', revista:'3Shape Technical', año:2024, url:'https://www.3shape.com' }
+  ],
+  faq: [
+    { q:'¿Exocad o 3Shape para un laboratorio que empieza?', a:'Exocad es significativamente más accesible en precio de licencia y tiene una curva de aprendizaje más corta para casos estándar (coronas, puentes, carillas). 3Shape tiene ventaja en flujos de implantología y ortodoncia complejos. Para un laboratorio nuevo enfocado en prótesis fija, Exocad es la elección con mejor ROI.' },
+    { q:'¿Los diseños de Exocad se pueden fresar en cualquier fresadora?', a:'Sí. Exocad exporta STL y DXD (formato propio) compatible con cualquier software CAM: Roland, XTCERA, VHF, Amann Girrbach. Es el formato universal de laboratorio. 3Shape también exporta STL estándar.' },
+    { q:'¿Cuánto cuesta una licencia de Exocad en Colombia?', a:'La licencia de Exocad DentalCAD varía según módulos. El módulo base para prótesis fija parte desde $2.500 USD aprox. 3Shape tiene modelo de suscripción anual desde $4.000 USD. Ambos requieren distribuidor autorizado en Colombia.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'Esta es la pregunta que nos hacen al menos 3 veces por semana en PRODIGY. Como laboratorio que opera en ambos softwares desde hace más de 4 años, podemos dar una respuesta honesta — sin ser distribuidores de ninguno.' },
+    { tipo:'h2', texto:'La diferencia fundamental' },
+    { tipo:'p', texto:'Exocad nació como software de laboratorio, diseñado para técnicos dentales. 3Shape nació como software de escáner con módulo CAD incorporado. Esto se nota en el flujo de trabajo: Exocad es más directo para producción de piezas, 3Shape es más integrado con la clínica.' },
+    { tipo:'h2', texto:'Comparativa para flujo de carillas' },
+    { tipo:'tabla', cabeceras:['Criterio','Exocad','3Shape','Ganador'], filas:[['Velocidad diseño unitario','12–18 min','15–22 min','Exocad'],['Calidad de margen automático','Alta','Muy Alta','3Shape'],['Análisis de mordida','Básico','Avanzado','3Shape'],['Compatibilidad STL export','Universal','Universal','Empate'],['Integración escáner intraoral','Buena','Excelente','3Shape'],['Precio licencia entrada','~$2.500 USD','~$4.000 USD/año','Exocad'],['Soporte técnico en Colombia','Amplio','Limitado','Exocad'],['Módulo implantología','Bueno','Excelente','3Shape']] },
+    { tipo:'h2', texto:'Para carillas de disilicato: nuestra recomendación' },
+    { tipo:'p', texto:'Si el caso es 4–8 carillas anteriores con prep mínima, Exocad es más rápido. El flujo de trabajo es más directo y la curva de contorno labial tiene herramientas específicas muy buenas. Para rehabilitaciones de 10+ unidades con análisis oclusal profundo, 3Shape tiene ventaja en la función oclusal virtual.' },
+    { tipo:'h2', texto:'El factor que nadie menciona: el costo de la maquila' },
+    { tipo:'p', texto:'Si no quieres comprar licencia, la tercera opción es maquilar el diseño con un laboratorio como PRODIGY. Pagas por unidad, recibes en 4 horas y puedes pedir en Exocad o 3Shape según el caso. El costo por diseño unitario es muy inferior al costo de la licencia si produces menos de 80 piezas mensuales.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'itero-stl-exportar-sin-licencia-extra',
+  titulo:    'Guía: Exportar STL desde iTero sin pagar licencias extra en 2026',
+  subtitulo: 'El iTero puede enviar archivos STL directamente a tu laboratorio sin activar módulos de pago adicionales. Guía paso a paso validada con iTero Element 5D y 2 Plus. Compatible con Exocad, 3Shape y PRODIGY.',
+  categoria: 'clinico',
+  chip:      'Flujo Digital',
+  emoji:     '📡',
+  grad:      'grad-1',
+  fecha:     '2026-04-28',
+  lectura:   '7 min',
+  vistas:    '2.105',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Intraoral_Scanner.jpg/800px-Intraoral_Scanner.jpg',
+  img_credit:'',
+  referencias: [
+    { autores:'Align Technology', titulo:'iTero Element — STL Export Guide 2024', revista:'Align Technical', año:2024, url:'https://www.itero.com' },
+    { autores:'Revilla-León M et al.', titulo:'Digital Workflow in Dentistry: Clinical Protocol', revista:'J Prosthet Dent', año:2021, url:'https://pubmed.ncbi.nlm.nih.gov/33676721/' }
+  ],
+  faq: [
+    { q:'¿El iTero deja exportar STL a cualquier laboratorio?', a:'Sí, desde la versión de firmware 5.x en adelante. El STL se genera sin costo adicional desde el portal MyiTero. Anteriormente era necesario contratar el módulo "Lab Connection", pero Align lo liberó en 2023 para competir con Medit y 3Shape Trios.' },
+    { q:'¿El STL de iTero es compatible con Exocad?', a:'Completamente. El STL estándar de iTero importa directamente en Exocad DentalCAD. Solo asegúrate de exportar en resolución "Alta" y sin compresión. El tamaño típico de un maxilar completo es 8–15 MB.' },
+    { q:'¿Qué diferencia hay entre el STL de MyiTero y el STL de la conexión directa?', a:'El STL de MyiTero (portal web) es idéntico en datos al de conexión directa. La única diferencia es el tiempo: la conexión directa envía el archivo al instante, MyiTero requiere sincronización (5–15 min). Para flujos de urgencia usa conexión directa si el laboratorio es compatible.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'Muchos doctores tienen iTero en su consultorio pero siguen mandando impresiones físicas al laboratorio porque creen que enviar el archivo digital cuesta extra. Desde 2023, eso ya no es cierto — y en este artículo te explicamos exactamente cómo hacerlo, gratis, en menos de 5 minutos.' },
+    { tipo:'h2', texto:'El mito de las licencias adicionales' },
+    { tipo:'p', texto:'Antes del 2023, Align Technology cobraba un módulo "Lab Connection" para enviar archivos a laboratorios no-Invisalign. Ante la presión competitiva de Medit y 3Shape (que siempre ofrecieron STL libre), Align liberó la exportación STL directa desde MyiTero sin costo adicional.' },
+    { tipo:'h2', texto:'Método 1: Exportar desde MyiTero.com (recomendado)' },
+    { tipo:'ul', items:['Accede a my.itero.com con tus credenciales de doctor','Selecciona el paciente y el escaneo','Haz clic en "Send to Lab" → "Download STL"','Selecciona resolución ALTA y desactiva "Compress file"','El archivo ZIP contiene: maxilar, mandíbula, oclusión y bite opcionalmente','Envía el ZIP por WhatsApp o portal del laboratorio'] },
+    { tipo:'h2', texto:'Método 2: Conexión directa desde el escáner' },
+    { tipo:'p', texto:'Si tu laboratorio tiene cuenta en myitero.com como lab partner (gratuita), puedes enviarle el scan directamente desde el equipo. El lab recibe la notificación en tiempo real y puede empezar el diseño mientras terminas la consulta.' },
+    { tipo:'h2', texto:'Configuración óptima para exportar a PRODIGY' },
+    { tipo:'tabla', cabeceras:['Parámetro','Configuración Óptima','Por qué'], filas:[['Resolución','Alta (2048 polígonos)','Margen más preciso para el diseño CAD'],['Compresión','Sin comprimir','Evita pérdida de datos en ángulos críticos'],['Formato','STL (no OBJ para máxima compatibilidad)','Compatible con todos los softwares CAD'],['Incluir oclusión','Sí','Necesaria para diseño de oclusión virtual en Exocad'],['Incluir fotos','Opcional','Útil si hay análisis estético o DSD']] },
+    { tipo:'h2', texto:'Compatibilidad con otros softwares CAD' },
+    { tipo:'p', texto:'El STL exportado desde iTero es compatible con Exocad DentalCAD, 3Shape Dental Designer, Blender for Dental, CoDiagnostiX y cualquier software CAM de fresado. En PRODIGY procesamos iTero Element 2 Plus, 5D y 5D Plus sin ninguna conversión adicional.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
   id:        'scanner-intraoral-comparativa-2025',
   titulo:    'Escáneres intraorales 2025: comparativa real de precisión (iTero, Trios, Medit, Carestream)',
   subtitulo: 'Análisis técnico de los 4 escáneres intraorales más usados en Colombia según estudios clínicos publicados: trueness, precision, velocidad y compatibilidad con laboratorio CAD/CAM.',

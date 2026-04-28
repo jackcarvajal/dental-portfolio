@@ -195,6 +195,15 @@
 
   document.body.appendChild(footer);
 
+  // ── UTM Tracker + Conversions (carga diferida para no bloquear render) ──
+  function _loadScript(src) {
+    var s = document.createElement('script');
+    s.src = src; s.defer = true;
+    document.body.appendChild(s);
+  }
+  _loadScript('/js/utm-tracker.js');
+  _loadScript('/js/conversions.js');
+
   // ── Cookie consent (SIC Circular 002/2015 + GDPR + GA4 Consent Mode v2) ──
   var _pgConsentVal = localStorage.getItem('prodigy_cookies_ok');
 
