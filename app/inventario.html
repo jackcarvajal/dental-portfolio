@@ -343,7 +343,12 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
                 <label>Categoría</label>
                 <select id="ni-cat">
                     <option>Disco</option><option>Resina</option>
-                    <option>Fresa</option><option>Consumible</option><option>Otro</option>
+                    <option>Fresa</option><option>Consumible</option>
+                    <option>Implante — Análogo</option>
+                    <option>Implante — Pilar</option>
+                    <option>Implante — Tornillo</option>
+                    <option>Implante — Cicatrizal</option>
+                    <option>Otro</option>
                 </select>
             </div>
             <div class="form-group">
@@ -353,6 +358,33 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
             <div class="form-group">
                 <label>Stock mínimo (alarma)</label>
                 <input type="number" id="ni-minimo" min="0" value="3">
+            </div>
+            <div class="form-group">
+                <label>Marca / Fabricante</label>
+                <select id="ni-marca">
+                    <option value="">— Sin especificar —</option>
+                    <optgroup label="Discos CAD/CAM">
+                        <option>Ivoclar ZirCAD</option><option>Vita Enamic</option>
+                        <option>Vita Suprinity</option><option>XTCERA</option><option>Renfert</option>
+                    </optgroup>
+                    <optgroup label="Implantes">
+                        <option>Straumann</option><option>Nobel Biocare</option>
+                        <option>BioHorizons</option><option>Zimmer Biomet</option>
+                        <option>MIS Implants</option><option>Neodent</option>
+                    </optgroup>
+                    <optgroup label="Impresión 3D">
+                        <option>NextDent</option><option>SprintRay</option>
+                        <option>Anycubic</option><option>Phrozen</option><option>Creality</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>N° de lote inicial (trazabilidad)</label>
+                <input type="text" id="ni-lote" placeholder="Ej: IVL-2026-084A">
+            </div>
+            <div class="form-group form-full" id="ni-implante-wrap" style="display:none;">
+                <label>Sistema de implante (referencia interna)</label>
+                <input type="text" id="ni-ref-implante" placeholder="Ej: Straumann BLX Ø3.75 L10">
             </div>
         </div>
         <div class="modal-footer">
@@ -468,10 +500,13 @@ function renderStock() {
             <div class="sem ${semClass}"></div>
             <div class="cat-badge">${escH(it.categoria)}</div>
             <div class="item-name">${escH(it.nombre)}</div>
+            ${it.marca ? `<div style="font-size:.7rem;color:#64748b;margin-bottom:2px;">${escH(it.marca)}</div>` : ''}
+            ${it.referencia_implante ? `<div style="font-size:.7rem;color:#94a3b8;font-family:monospace;">${escH(it.referencia_implante)}</div>` : ''}
             <div class="item-stock" style="color:${semColor}">${it.stock_actual}</div>
             <div class="item-unit">${escH(it.unidad_medida)}</div>
             <div class="item-min">Mínimo: ${it.stock_minimo}</div>
             <div class="item-cost">Costo prom: $${(it.costo_promedio||0).toLocaleString('es-CO')}</div>
+            ${it.numero_lote_inicial ? `<div style="font-size:.68rem;color:#475569;margin-top:2px;">Lote: ${escH(it.numero_lote_inicial)}</div>` : ''}
             ${it.kill_switch ? '<div class="kill-badge">KILL SWITCH ON</div>' : ''}
             <div class="stock-card-actions">
                 <button class="btn btn-outline btn-sm" onclick="abrirAjuste('${it.id}',${it.stock_actual})">Ajustar</button>
@@ -500,18 +535,38 @@ function cerrarModal(id = 'modal-item') { document.getElementById(id).classList.
 async function guardarItem() {
     const nombre = document.getElementById('ni-nombre').value.trim();
     if (!nombre) { toast('Escribe el nombre del ítem', 'err'); return; }
-    const { error } = await sb.from('inventario_items').insert({
+    const cat   = document.getElementById('ni-cat').value;
+    const marca = document.getElementById('ni-marca').value.trim();
+    const lote  = document.getElementById('ni-lote').value.trim();
+    const refImpl = document.getElementById('ni-ref-implante').value.trim();
+
+    const payload = {
         nombre,
-        categoria:     document.getElementById('ni-cat').value,
+        categoria:     cat,
         unidad_medida: document.getElementById('ni-unidad').value.trim() || 'unidad',
         stock_minimo:  parseInt(document.getElementById('ni-minimo').value) || 3,
-    });
+    };
+    if (marca) payload.marca = marca;
+    if (lote)  payload.numero_lote_inicial = lote;
+    if (refImpl && cat.startsWith('Implante')) payload.referencia_implante = refImpl;
+
+    const { error } = await sb.from('inventario_items').insert(payload);
     if (error) { toast('Error al crear ítem: ' + error.message, 'err'); return; }
-    toast('Ítem creado', 'ok');
+    toast('Ítem creado ✓', 'ok');
     cerrarModal();
     await cargarItems();
-    ['ni-nombre','ni-unidad'].forEach(id => document.getElementById(id).value = '');
+    ['ni-nombre','ni-unidad','ni-lote','ni-ref-implante'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('ni-marca').value = '';
 }
+
+// Mostrar campo referencia implante si categoría es implante
+document.addEventListener('DOMContentLoaded', function() {
+    var niCat = document.getElementById('ni-cat');
+    if (niCat) niCat.addEventListener('change', function() {
+        var wrap = document.getElementById('ni-implante-wrap');
+        if (wrap) wrap.style.display = this.value.startsWith('Implante') ? 'block' : 'none';
+    });
+});
 
 // ── Ajuste de stock ───────────────────────────────────────────────
 function abrirAjuste(id, stock) {
@@ -741,10 +796,11 @@ async function cargarRotacion() {
     });
 
     // KPI cards
-    const stockTotal = items.reduce((a,i) => a + i.stock_actual, 0);
-    const criticos   = items.filter(i => i.stock_actual <= i.stock_minimo && i.stock_actual > 0).length;
-    const agotados   = items.filter(i => i.stock_actual === 0).length;
-    const valorTotal = items.reduce((a,i) => a + (i.stock_actual * (i.costo_promedio||0)), 0);
+    const stockTotal    = items.reduce((a,i) => a + i.stock_actual, 0);
+    const criticos      = items.filter(i => i.stock_actual <= i.stock_minimo && i.stock_actual > 0).length;
+    const agotados      = items.filter(i => i.stock_actual === 0).length;
+    const valorTotal    = items.reduce((a,i) => a + (i.stock_actual * (i.costo_promedio||0)), 0);
+    const implAgotados  = items.filter(i => i.categoria && i.categoria.startsWith('Implante') && i.stock_actual === 0);
 
     document.getElementById('kpi-grid').innerHTML = `
         <div class="kpi-card">
@@ -758,6 +814,15 @@ async function cargarRotacion() {
             <div class="kpi-row"><span class="kpi-name">Agotados (ROJO)</span><span class="kpi-val" style="color:var(--red)">${agotados}</span></div>
             <div class="kpi-row"><span class="kpi-name">Críticos (AMARILLO)</span><span class="kpi-val" style="color:var(--yellow)">${criticos}</span></div>
             <div class="kpi-row"><span class="kpi-name">OK (VERDE)</span><span class="kpi-val" style="color:var(--green)">${items.length - criticos - agotados}</span></div>
+        </div>
+        <div class="kpi-card" style="${implAgotados.length ? 'border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.04);' : ''}">
+            <h4>🦷 Implantes</h4>
+            ${implAgotados.length
+                ? `<div style="font-size:.75rem;font-weight:700;color:#f87171;margin-bottom:8px;">⚠️ ${implAgotados.length} ítem(s) AGOTADO(S)</div>
+                   ${implAgotados.slice(0,3).map(i => `<div style="font-size:.72rem;color:#94a3b8;margin-bottom:2px;">• ${escH(i.nombre)} ${i.marca ? '('+escH(i.marca)+')' : ''}</div>`).join('')}`
+                : `<div style="font-size:.78rem;color:var(--green);">✓ Stock de implantes OK</div>`
+            }
+            <div class="kpi-row" style="margin-top:8px;"><span class="kpi-name">Marcas: Straumann · Nobel · BioHorizons</span></div>
         </div>
         <div class="kpi-card">
             <h4>Actividad 30 días</h4>

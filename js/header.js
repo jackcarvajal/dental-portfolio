@@ -408,12 +408,12 @@
               '</a>' +
               '<a href="/escaner-domicilio">' +
                 '<i class="fas fa-mobile-alt"></i>' +
-                '<span>ESCÁNER A DOMICILIO<span class="dd-sub">Norte Bogotá · 2 h hábiles</span></span>' +
+                '<span>ESCANEOS A DOMICILIO<span class="dd-sub">Norte Bogotá · 2 h hábiles</span></span>' +
               '</a>' +
             '</div>' +
           '</div>' +
           '<a href="/portafolio"' + ac('/portafolio') + '>PORTAFOLIO</a>' +
-          '<a href="/envia-tu-scanner"' + ac('/envia-tu-scanner') + '>ENVÍA TU ESCÁNER</a>' +
+          '<a href="/envia-tu-scanner"' + ac('/envia-tu-scanner') + '>ENVÍA TU ESCANEO</a>' +
         '</div>' +
 
         /* Logo centrado */
@@ -464,7 +464,7 @@
               '</a>' +
               '<a href="/escaner-domicilio" class="pnav2-ped-card">' +
                 '<i class="fas fa-mobile-alt" style="color:#00FF41;font-size:1.2rem;"></i>' +
-                '<div><strong>Escáner a Domicilio</strong><span>Norte Bogotá · 2h hábiles</span></div>' +
+                '<div><strong>Escaneos a Domicilio</strong><span>Norte Bogotá · 2h hábiles</span></div>' +
               '</a>' +
             '</div>' +
           '</div>' +
@@ -477,9 +477,9 @@
     '<div class="pnav2-mob" id="pnav2-mob">' +
       '<a href="/diseno-cad"><i class="fas fa-drafting-compass" style="margin-right:8px"></i>DISEÑO CAD</a>' +
       '<a href="/fresado-cam"><i class="fas fa-cog" style="margin-right:8px"></i>FRESADO & IMPRESIÓN</a>' +
-      '<a href="/escaner-domicilio"><i class="fas fa-mobile-alt" style="margin-right:8px"></i>ESCÁNER A DOMICILIO</a>' +
+      '<a href="/escaner-domicilio"><i class="fas fa-mobile-alt" style="margin-right:8px"></i>ESCANEOS A DOMICILIO</a>' +
       '<a href="/portafolio">PORTAFOLIO</a>' +
-      '<a href="/envia-tu-scanner">ENVÍA TU ESCÁNER</a>' +
+      '<a href="/envia-tu-scanner">ENVÍA TU ESCANEO</a>' +
       '<a href="/nosotros">NOSOTROS</a>' +
       '<a href="/journal">BLOG</a>' +
       '<a href="/seguimiento-caso">SIGUE TU CASO</a>' +
@@ -745,7 +745,7 @@
     return 'Eres el asistente técnico oficial de PRODIGY Lab Dental, laboratorio CAD/CAM en Bogotá, Colombia.\n\n' +
       'PÁGINA ACTUAL DEL USUARIO: ' + title + ' (' + path + ')\n' +
       'Responde de forma contextual a la página que el usuario está visitando.\n\n' +
-      'SERVICIOS: Diseño CAD (Exocad, 3Shape), Fresado XTCERA 5 ejes (zirconia 1200MPa, multicapa 5Y-TZP, PMMA, titanio ±10µm), Impresión 3D BCN3D, Escáner a domicilio zona norte Bogotá.\n' +
+      'SERVICIOS: Diseño CAD (Exocad, 3Shape, Blender for Dental, CoDiagnostiX, 3Shape Ortho Analyzer), Fresado 5 ejes Amann Girrbach + XTCERA + VHF (zirconia Ivoclar/Vita 1200MPa, multicapa 5Y-TZP, PMMA, titanio ±10µm), Impresión 3D resina biocompatible NextDent/SprintRay/Anycubic/Phrozen, Escaneos a domicilio zona norte Bogotá, hornos sinterizado Dentsply Sirona + Vita + Ivoclar.\n' +
       'TIEMPOS: 24h hábiles estándar · 48h alta estética · 4-8h diseño solo.\n' +
       'FORMATOS: STL, OBJ, PLY, Exocad constructionfile, 3Shape Communicate, DICOM.\n' +
       'CONTACTO: WhatsApp +57 321 281 6716 · gerencia@prodigylabdental.com\n' +

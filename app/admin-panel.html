@@ -884,6 +884,29 @@ async function cargarPedidos() {
     }
 }
 
+/* ── TRACKING INTERNACIONAL ──────────────────────────────────────── */
+function _renderTrackingBtn(guia, pais) {
+    // Detectar transportadora por prefijo de guía o por país
+    const g = guia.toUpperCase();
+    let carrier = 'local', url = '', label = '';
+
+    if (/^[0-9]{12}$/.test(g) || g.startsWith('1Z'))         { carrier='fedex';  label='FedEx'; }
+    else if (/^J/.test(g) || g.startsWith('JD'))             { carrier='dhl';    label='DHL'; }
+    else if (g.startsWith('1Z') || g.length === 18)          { carrier='ups';    label='UPS'; }
+    else if (pais === 'MX')                                  { carrier='fedex';  label='FedEx MX'; }
+    else if (pais === 'CO' || pais === '')                   { carrier='inter';  label='Interrapidísimo'; }
+
+    if (carrier === 'dhl')   url = 'https://www.dhl.com/co-es/home/tracking.html?tracking-id=' + encodeURIComponent(guia);
+    else if (carrier === 'fedex') url = 'https://www.fedex.com/fedextrack/?trknbr=' + encodeURIComponent(guia);
+    else if (carrier === 'ups')   url = 'https://www.ups.com/track?tracknum=' + encodeURIComponent(guia);
+    else url = 'https://www.interrapidisimo.com/rastreo/?guia=' + encodeURIComponent(guia);
+
+    const icon = carrier === 'dhl' ? '🟡' : carrier === 'fedex' ? '🟣' : carrier === 'ups' ? '🟤' : '📦';
+    return `<a href="${escHtml(url)}" target="_blank" rel="noopener noreferrer"
+        style="display:inline-flex;align-items:center;gap:4px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:#4ade80;padding:3px 8px;border-radius:5px;text-decoration:none;font-size:.7rem;font-weight:700;margin-top:3px;"
+        title="Rastrear envío ${escHtml(guia)}">${icon} ${escHtml(label || 'Rastrear')}</a>`;
+}
+
 function renderPedidos(lista) {
     if (!lista || lista.length === 0) {
         document.getElementById('tbody-pedidos').innerHTML =
@@ -908,7 +931,8 @@ function renderPedidos(lista) {
         <td style="font-size:0.75rem;">${fmtFecha(p.created_at)}</td>
         <td>
             ${p.stl_url && p.stl_url.startsWith('https://') ? `<a href="${escHtml(p.stl_url)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
-        <button onclick="generarFicha('${escHtml(p.id)}')" class="btn-xs" style="color:#00d2ff;border:1px solid rgba(0,210,255,0.35);background:transparent;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:.7rem;font-weight:700;" title="Ficha técnica PDF"><i class="fas fa-file-pdf"></i> Ficha</button>
+            <button onclick="generarFicha('${escHtml(p.id)}')" class="btn-xs" style="color:#00d2ff;border:1px solid rgba(0,210,255,0.35);background:transparent;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:.7rem;font-weight:700;" title="Ficha técnica PDF"><i class="fas fa-file-pdf"></i> Ficha</button>
+            ${p.numero_guia ? _renderTrackingBtn(p.numero_guia, p.pais || 'CO') : ''}
         </td>
     </tr>`).join('');
 }
@@ -916,7 +940,14 @@ function renderPedidos(lista) {
 async function cambiarEstado(pedidoId, nuevoEstado) {
     if (nuevoEstado === 'Despachado') {
         // Modal para capturar número de guía antes de guardar
-        const guia = prompt('📦 Ingresa el número de guía de la transportadora\n(deja vacío para guardar sin guía):');
+        const pedido = (todosLosPedidos || []).find(p => p.id === pedidoId);
+        const esIntl = pedido && pedido.pais && pedido.pais !== 'CO';
+        const guia = prompt(
+            (esIntl ? '✈️ ENVÍO INTERNACIONAL — ' : '📦 ') +
+            'Ingresa el número de guía de la transportadora\n' +
+            (esIntl ? '(DHL, FedEx, UPS para México/Internacional)\n' : '(Interrapidísimo, TCC, Servientrega)\n') +
+            'Deja vacío para guardar sin guía:'
+        );
         const updateData = { estado: nuevoEstado };
         if (guia && guia.trim()) updateData.numero_guia = guia.trim();
 

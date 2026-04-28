@@ -119,7 +119,8 @@
       '<div class="pfoot-col pfoot-brand">' +
         '<div class="pfoot-logo">PRODIGY</div>' +
         '<div class="pfoot-tagline">Digital Dental Excellence</div>' +
-        '<p class="pfoot-desc">Especialistas en diseño CAD avanzado y manufactura de alta precisión para clínicas y laboratorios dentales.</p>' +
+        '<p class="pfoot-desc">Especialistas en diseño CAD avanzado y manufactura de alta precisión para clínicas y laboratorios dentales de Colombia y México.</p>' +
+        '<div style="font-size:.72rem;font-style:italic;color:#94a3b8;margin:6px 0 10px;line-height:1.5;">🌎 Made in Colombia for the world<br>Con tecnología 🇩🇪 Alemana · 🇨🇳 China<br>y manos expertas de 🇨🇴 Colombia · 🇲🇽 México</div>' +
         '<div class="pfoot-geo"><span class="pfoot-geo-dot"></span>Sede Central: Bogotá, Colombia</div>' +
         '<div class="pfoot-social">' +
           '<a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp PRODIGY Lab">' +
@@ -139,7 +140,7 @@
           '<li><a href="flujo-fresado">Pedir Fresado</a></li>' +
           '<li><a href="flujo-impresion">Impresión 3D Dental</a></li>' +
           '<li><a href="catalogo">Catálogo de Materiales</a></li>' +
-          '<li><a href="escaner-domicilio">Escáner Móvil a Domicilio</a></li>' +
+          '<li><a href="escaner-domicilio">Escaneos a Domicilio</a></li>' +
         '</ul>' +
       '</div>' +
 
@@ -149,7 +150,7 @@
         '<ul>' +
           '<li><a href="diseno-cad">Diseño CAD — Servicios</a></li>' +
           '<li><a href="flujo-diseno">Pedir Diseño CAD</a></li>' +
-          '<li><a href="envia-tu-scanner">Envía tu Escáner</a></li>' +
+          '<li><a href="envia-tu-scanner">Envía tu Escaneo</a></li>' +
           '<li><a href="journal">PRODIGY Journal</a></li>' +
           '<li><a href="seguimiento-caso">Seguimiento en Vivo</a></li>' +
         '</ul>' +
@@ -183,6 +184,12 @@
       '<p>© 2026 PRODIGY Digital Dentistry · Bogotá, Colombia · Todos los derechos reservados · ' +
         '<a href="terminos-y-legal">Términos</a> · ' +
         '<a href="terminos-y-legal#privacidad">Privacidad</a>' +
+      '</p>' +
+      '<p style="font-size:.68rem;color:#475569;margin-top:8px;line-height:1.6;">' +
+        'Las marcas registradas Exocad®, 3Shape®, Ivoclar®, Vita®, Amann Girrbach®, Dentsply Sirona®, Renfert®, ' +
+        'Shining 3D®, NextDent®, SprintRay®, Anycubic®, Phrozen®, Creality®, Straumann®, Nobel Biocare®, BioHorizons®, ' +
+        'XTCERA®, VHF®, CoDiagnostiX® y Blender® son propiedad de sus respectivos dueños y se mencionan exclusivamente ' +
+        'con fines informativos sobre la compatibilidad de nuestros flujos de trabajo.' +
       '</p>' +
     '</div>';
 
