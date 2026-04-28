@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#D946A6">
+<link rel="manifest" href="/manifest.json">
 <title>Diseño CAD Dental Remoto — Desde Cualquier País | PRODIGY</title>
 <meta name="description" content="Maquila tu diseño CAD dental desde cualquier parte del mundo. Coronas, carillas, puentes, guías quirúrgicas. Entrega en 4h hábiles. Compatibles con todos los escáneres. Sin contratos.">
 <meta name="robots" content="index,follow">
@@ -27,13 +28,8 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;overflow-x:hidden;line-height:1.6}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(217,70,166,.1) 0%,transparent 55%),radial-gradient(ellipse at 70% 80%,rgba(0,210,255,.06) 0%,transparent 50%);pointer-events:none;z-index:0}
 
-/* HEADER */
-.hdr{position:fixed;top:0;left:0;right:0;z-index:99;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(5,5,5,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
-.hdr-logo{text-decoration:none;font-weight:900;font-size:1.1rem;letter-spacing:2px;color:var(--gold)}
-.hdr-wa{background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.4);color:#25D366;padding:8px 16px;border-radius:100px;text-decoration:none;font-size:.78rem;font-weight:800}
-
 /* URGENCIA */
-#urgencia-bar{position:sticky;top:0;z-index:100;background:rgba(217,70,166,.95);padding:9px 20px;text-align:center;font-size:.8rem;font-weight:700;display:none}
+#urgencia-bar{position:sticky;top:114px;z-index:90;background:rgba(217,70,166,.95);padding:9px 20px;text-align:center;font-size:.8rem;font-weight:700;display:none}
 
 /* HERO */
 .hero{position:relative;z-index:1;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:88px 24px 48px;text-align:center}
@@ -101,13 +97,9 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
 </style>
 </head>
 <body>
+<script src="js/header.js"></script>
 
 <div id="urgencia-bar"></div>
-
-<header class="hdr">
-  <a href="/" class="hdr-logo">PRODIGY</a>
-  <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20un%20diseño%20CAD%20dental." target="_blank" rel="noopener noreferrer" class="hdr-wa">💬 WhatsApp</a>
-</header>
 
 <main>
 
@@ -146,45 +138,25 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
   </div>
 </section>
 
-<!-- PORTAFOLIO -->
+<!-- PORTAFOLIO: casos reales desde Supabase -->
 <section class="sec" style="background:rgba(13,21,37,.5);">
   <div class="sec-inner">
-    <div class="sec-tag" style="color:var(--gold);">⭐ Qué diseñamos</div>
-    <h2>Cualquier tipo de restauración</h2>
-    <p class="sec-desc">Usamos varios softwares CAD profesionales y somos compatibles con todos los escáneres intraorales y archivos de diseño. Cotiza en WhatsApp — nosotros te decimos cómo enviar el archivo.</p>
-    <div class="pf-grid">
-      <div class="pf-card" onclick="selPortafolio('corona')">
-        <div class="pf-thumb" style="background:linear-gradient(135deg,#1a0a2e,#0d1525);">👑</div>
-        <div class="pf-body"><div class="pf-tipo" style="color:var(--gold);">Prótesis fija</div><div class="pf-name">Corona unitaria</div></div>
-      </div>
-      <div class="pf-card" onclick="selPortafolio('puente')">
-        <div class="pf-thumb" style="background:linear-gradient(135deg,#001a1f,#0d1525);">🌉</div>
-        <div class="pf-body"><div class="pf-tipo" style="color:var(--cyan);">Prótesis fija</div><div class="pf-name">Puente múltiple</div></div>
-      </div>
-      <div class="pf-card" onclick="selPortafolio('carilla')">
-        <div class="pf-thumb" style="background:linear-gradient(135deg,#1a0a12,#0d1525);">💎</div>
-        <div class="pf-body"><div class="pf-tipo" style="color:var(--mg);">Estética</div><div class="pf-name">Carillas · Veneers</div></div>
-      </div>
-      <div class="pf-card" onclick="selPortafolio('guia')">
-        <div class="pf-thumb" style="background:linear-gradient(135deg,#001a10,#0d1525);">🦴</div>
-        <div class="pf-body"><div class="pf-tipo" style="color:#4ade80;">Cirugía</div><div class="pf-name">Guía quirúrgica</div></div>
-      </div>
-      <div class="pf-card" onclick="selPortafolio('implante')">
-        <div class="pf-thumb" style="background:linear-gradient(135deg,#1a1200,#0d1525);">🔩</div>
-        <div class="pf-body"><div class="pf-tipo" style="color:var(--gold);">Implantología</div><div class="pf-name">Sobre implante</div></div>
-      </div>
-      <div class="pf-card" onclick="selPortafolio('full')">
-        <div class="pf-thumb" style="background:linear-gradient(135deg,#10001a,#0d1525);">🎭</div>
-        <div class="pf-body"><div class="pf-tipo" style="color:#c084fc;">Rehabilitación</div><div class="pf-name">Sonrisa completa</div></div>
-      </div>
-      <div class="pf-card" onclick="selPortafolio('prov')">
-        <div class="pf-thumb" style="background:linear-gradient(135deg,#001218,#0d1525);">🦷</div>
-        <div class="pf-body"><div class="pf-tipo" style="color:var(--cyan);">Provisional</div><div class="pf-name">PMMA · Urgencia</div></div>
-      </div>
-      <div class="pf-card" onclick="selPortafolio('modelo')">
-        <div class="pf-thumb" style="background:linear-gradient(135deg,#0a1a00,#0d1525);">📐</div>
-        <div class="pf-body"><div class="pf-tipo" style="color:#4ade80;">Modelos</div><div class="pf-name">Modelo 3D · Estudio</div></div>
-      </div>
+    <div class="sec-tag" style="color:var(--gold);">⭐ Casos reales</div>
+    <h2>Mira nuestro trabajo</h2>
+    <p class="sec-desc">Usamos varios softwares CAD profesionales. Somos compatibles con todos los escáneres y archivos. Cotiza por WhatsApp — te decimos cómo enviarnos el archivo.</p>
+
+    <!-- Grid de casos: se llena desde Supabase. Mientras carga muestra placeholders. -->
+    <div id="pf-preview" class="pf-grid">
+      <div class="pf-card pf-skeleton"><div class="pf-thumb" style="background:#0d1525;"></div><div class="pf-body"><div style="height:10px;background:#1e2d44;border-radius:4px;margin-bottom:6px;width:50%;"></div><div style="height:13px;background:#1e2d44;border-radius:4px;width:80%;"></div></div></div>
+      <div class="pf-card pf-skeleton"><div class="pf-thumb" style="background:#0d1525;"></div><div class="pf-body"><div style="height:10px;background:#1e2d44;border-radius:4px;margin-bottom:6px;width:50%;"></div><div style="height:13px;background:#1e2d44;border-radius:4px;width:80%;"></div></div></div>
+      <div class="pf-card pf-skeleton"><div class="pf-thumb" style="background:#0d1525;"></div><div class="pf-body"><div style="height:10px;background:#1e2d44;border-radius:4px;margin-bottom:6px;width:50%;"></div><div style="height:13px;background:#1e2d44;border-radius:4px;width:80%;"></div></div></div>
+      <div class="pf-card pf-skeleton"><div class="pf-thumb" style="background:#0d1525;"></div><div class="pf-body"><div style="height:10px;background:#1e2d44;border-radius:4px;margin-bottom:6px;width:50%;"></div><div style="height:13px;background:#1e2d44;border-radius:4px;width:80%;"></div></div></div>
+    </div>
+
+    <div style="text-align:center;margin-top:24px;">
+      <a href="/portafolio" style="display:inline-flex;align-items:center;gap:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:var(--gold);padding:12px 24px;border-radius:100px;text-decoration:none;font-size:.88rem;font-weight:700;transition:.2s;" onmouseover="this.style.background='rgba(212,175,55,.18)'" onmouseout="this.style.background='rgba(212,175,55,.1)'">
+        Ver todos los casos →
+      </a>
     </div>
   </div>
 </section>
@@ -324,6 +296,63 @@ function selPortafolio(tipo) {
   document.head.appendChild(t);
 });
 </script>
+
+<!-- Carga casos reales del portafolio desde Supabase (máx 4) -->
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var SB_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+  var SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+
+  // Esperar a que supabase.js cargue
+  var tries = 0;
+  function initPF() {
+    if (!window.supabase && tries++ < 20) { setTimeout(initPF, 200); return; }
+    if (!window.supabase) return;
+    var sb = window.supabase.createClient(SB_URL, SB_ANON);
+    sb.from('casos_portafolio')
+      .select('id,name,type,description,cover_image')
+      .eq('visible', true)
+      .order('created_at', { ascending: false })
+      .limit(4)
+      .then(function(res) {
+        var casos = res.data || [];
+        var grid = document.getElementById('pf-preview');
+        if (!grid) return;
+
+        if (!casos.length) {
+          // Sin casos aún: muestra tipos de trabajo como placeholder
+          grid.innerHTML = [
+            ['👑','Coronas y puentes','Prótesis fija','var(--gold)','corona'],
+            ['💎','Carillas · Veneers','Estética dental','var(--mg)','carilla'],
+            ['🦴','Guías quirúrgicas','Implantología','#4ade80','guia'],
+            ['🎭','Sonrisa completa','Rehabilitación total','#c084fc','full']
+          ].map(function(c) {
+            return '<div class="pf-card" onclick="selPortafolio(\'' + c[4] + '\')" style="cursor:pointer;">' +
+              '<div class="pf-thumb" style="background:linear-gradient(135deg,#0d1525,#050505);font-size:2.6rem;display:flex;align-items:center;justify-content:center;height:100px;">' + c[0] + '</div>' +
+              '<div class="pf-body"><div class="pf-tipo" style="color:' + c[3] + ';">' + c[2] + '</div><div class="pf-name">' + c[1] + '</div></div></div>';
+          }).join('');
+          return;
+        }
+
+        function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+        grid.innerHTML = casos.map(function(c) {
+          var img = c.cover_image ? c.cover_image + '?width=400&quality=75' : '';
+          var thumb = img
+            ? '<img src="' + esc(img) + '" alt="' + esc(c.name) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">'
+            : '<div style="font-size:2.5rem;display:flex;align-items:center;justify-content:center;height:100%;background:#0d1525;">🦷</div>';
+          return '<a href="/portafolio" style="text-decoration:none;" class="pf-card">' +
+            '<div class="pf-thumb" style="height:110px;overflow:hidden;">' + thumb + '</div>' +
+            '<div class="pf-body"><div class="pf-tipo" style="color:var(--gold);">' + esc(c.type || 'Caso clínico') + '</div>' +
+            '<div class="pf-name">' + esc(c.name) + '</div></div></a>';
+        }).join('');
+      }).catch(function() {});
+  }
+  initPF();
+});
+</script>
+
+<script src="js/footer.js?v=20260428"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});</script>
 </body>
 </html>
