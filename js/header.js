@@ -736,8 +736,9 @@
   /* ── CHATBOT GLOBAL (Gemini 2.0) ─────────────────────────── */
   var _pgChatOpen    = false;
   var _pgChatHistory = [];
-  var _pgGKey = 'AIzaSyDlHhOnOLmG-bYk3VzCfyS-FXJOO0llbYg';
-  var _pgGUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + _pgGKey;
+  // Clave movida a Cloudflare Pages Environment Variables (GEMINI_API_KEY)
+  // El bot llama al proxy /api/gemini — la clave nunca sale al cliente
+  var _pgGUrl = '/api/gemini';
 
   function _pgBuildPrompt() {
     var title = document.title || 'PRODIGY Lab Dental';

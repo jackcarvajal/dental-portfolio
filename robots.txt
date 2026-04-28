@@ -1,8 +1,55 @@
-# robots.txt - PRODIGY Digital Dentistry
+# robots.txt — PRODIGY Digital Dentistry
+# Última actualización: 2026-04-28
+
+# ── GOOGLEBOT: acceso completo a páginas públicas ──────────────────────
+# AdsBot-Google DEBE poder rastrear (necesario para Google Ads Quality Score)
+User-agent: Googlebot
+Allow: /
+Disallow: /app/
+Disallow: /patients/
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /temporal/
+Disallow: /mantenimiento
+Disallow: /patient.html
+Disallow: /portal.html
+Disallow: /flujo-diseno
+Disallow: /flujo-fresado
+Disallow: /flujo-impresion
+Disallow: /flujo-lab
+
+User-agent: Googlebot-Image
+Allow: /assets/
+Allow: /assets/prodigy-preview.jpg
+Disallow: /app/
+Disallow: /patients/
+
+# AdsBot — crítico para Google Ads (Quality Score de landing pages)
+User-agent: AdsBot-Google
+Allow: /
+Disallow: /app/
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+Disallow: /app/
+
+# ── BINGBOT / MICROSOFT ───────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+Disallow: /app/
+Disallow: /patients/
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /temporal/
+Disallow: /mantenimiento
+Disallow: /flujo-diseno
+Disallow: /flujo-fresado
+Disallow: /flujo-impresion
+Disallow: /flujo-lab
+
+# ── REGLA GLOBAL (aplica a todo lo no listado arriba) ─────────────────
 User-agent: *
 Allow: /
-
-# Paneles internos y archivos privados — NO indexar
 Disallow: /app/
 Disallow: /patients/
 Disallow: /temporal/
@@ -16,61 +63,16 @@ Disallow: /mantenimiento
 Disallow: /contacto
 Disallow: /admin-panel.html
 Disallow: /agregar-caso.html
-Disallow: /enviar-produccion-drive.html
-Disallow: /enviar-produccion-wetransfer.html
 Disallow: /flujo-diseno
 Disallow: /flujo-fresado
 Disallow: /flujo-impresion
 Disallow: /flujo-lab
 Disallow: /*.bat$
 
-# Bots de IA — permitir páginas públicas con contenido indexable
+# ── BOTS DE IA — solo contenido público ──────────────────────────────
 User-agent: GPTBot
-Allow: /journal
-Allow: /article
-Allow: /calculadora
-Allow: /nosotros
-Allow: /portafolio
-Allow: /catalogo
-Allow: /diseno-cad
-Allow: /fresado-cam
-Allow: /escaner-domicilio
-Allow: /envia-tu-scanner
-Allow: /soporte
-Allow: /instalar-app
-
 User-agent: PerplexityBot
-Allow: /journal
-Allow: /article
-Allow: /calculadora
-Allow: /nosotros
-Allow: /portafolio
-Allow: /catalogo
-Allow: /diseno-cad
-Allow: /fresado-cam
-Allow: /escaner-domicilio
-Allow: /envia-tu-scanner
-Allow: /soporte
-Allow: /instalar-app
-
 User-agent: anthropic-ai
-Allow: /journal
-Allow: /article
-Allow: /calculadora
-Allow: /nosotros
-Allow: /portafolio
-Allow: /catalogo
-Allow: /diseno-cad
-Allow: /fresado-cam
-Allow: /escaner-domicilio
-Allow: /envia-tu-scanner
-Allow: /soporte
-Allow: /instalar-app
-
-Sitemap: https://prodigylabdental.com/sitemap.xml
-
-Sitemap: https://prodigylabdental.com/sitemap-images.xml
-
 User-agent: ClaudeBot
 Allow: /journal
 Allow: /article
@@ -80,9 +82,13 @@ Allow: /portafolio
 Allow: /catalogo
 Allow: /diseno-cad
 Allow: /fresado-cam
+Allow: /escaner-domicilio
+Allow: /envia-tu-scanner
+Allow: /soporte
+Allow: /instalar-app
+Allow: /calidad
+Allow: /guia-tecnica
+Disallow: /
 
-User-agent: Googlebot-Image
-Allow: /assets/
-Allow: /patients/
-Allow: /assets/prodigy-preview.jpg
-Disallow: /app/
+Sitemap: https://prodigylabdental.com/sitemap.xml
+Sitemap: https://prodigylabdental.com/sitemap-images.xml
