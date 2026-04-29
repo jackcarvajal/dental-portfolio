@@ -644,11 +644,20 @@
             <button class="tab-button active" onclick="openTab(event, 'terminos')">
                 <i class="fas fa-file-contract"></i> Términos Generales
             </button>
+            <button class="tab-button" onclick="openTab(event, 'pol-diseno-remoto')">
+                <i class="fas fa-mouse-pointer"></i> Diseño Remoto
+            </button>
+            <button class="tab-button" onclick="openTab(event, 'pol-fresado')">
+                <i class="fas fa-cog"></i> Fresado e Impresión 3D
+            </button>
+            <button class="tab-button" onclick="openTab(event, 'pol-lab-full')">
+                <i class="fas fa-flask"></i> Laboratorio Full
+            </button>
             <button class="tab-button" onclick="openTab(event, 'diseno')">
-                <i class="fas fa-palette"></i> Políticas de Diseño
+                <i class="fas fa-palette"></i> Garantía Diseño
             </button>
             <button class="tab-button" onclick="openTab(event, 'fresado')">
-                <i class="fas fa-cog"></i> Garantía Fresado
+                <i class="fas fa-shield-alt"></i> Garantía Fresado
             </button>
             <button class="tab-button" onclick="openTab(event, 'legal')">
                 <i class="fas fa-flag"></i> Legal Colombia
@@ -797,7 +806,120 @@
             
         </div>
         
-        <!-- POLÍTICAS DE DISEÑO -->
+        <!-- ══ POLÍTICA: DISEÑO REMOTO CAD ══════════════════════════════════ -->
+        <div id="pol-diseno-remoto" class="tab-content">
+            <details open>
+                <summary><i class="fas fa-mouse-pointer"></i> Política de Servicio — Diseño CAD Remoto</summary>
+                <div class="details-content">
+                    <h3><i class="fas fa-info-circle"></i> Descripción del Servicio</h3>
+                    <p>El servicio de Diseño CAD Remoto consiste en la elaboración digital de restauraciones dentales (coronas, puentes, carillas, guías quirúrgicas, provisionales, modelos y rehabilitaciones completas) a partir del archivo de escaneo suministrado por el profesional odontólogo.</p>
+
+                    <h3><i class="fas fa-credit-card"></i> Política de Pagos — Diseño Remoto</h3>
+                    <ul>
+                        <li><strong>Cliente nuevo</strong> (sin pedidos anteriores): <strong>100% del total</strong> debe abonarse antes de iniciar el diseño.</li>
+                        <li><strong>Cliente existente</strong>: <strong>50% abono</strong> al confirmar el pedido · <strong>50% saldo</strong> antes de la entrega del archivo final.</li>
+                        <li>El monto pagado no es reembolsable una vez iniciado el diseño, salvo error atribuible exclusivamente a PRODIGY.</li>
+                    </ul>
+
+                    <h3><i class="fas fa-clock"></i> Tiempos de Entrega</h3>
+                    <ul>
+                        <li><strong>Desde 15 minutos*</strong> para restauraciones simples de unidad única recibidas en horario hábil (L-S 8:00am–5:00pm, hora Colombia) con archivo de buena calidad.</li>
+                        <li>Rehabilitaciones completas, guías quirúrgicas y múltiples unidades: <strong>2 a 24 horas hábiles</strong>.</li>
+                        <li>El tiempo comienza a contar desde la confirmación del pago del abono.</li>
+                        <li>*Sujeto a complejidad del caso y disponibilidad del equipo.</li>
+                    </ul>
+
+                    <h3><i class="fas fa-redo"></i> Revisiones</h3>
+                    <p>Cada diseño incluye hasta <strong>2 revisiones gratuitas</strong> antes de la aprobación final. Revisiones adicionales tienen un costo equivalente al 20% del valor del diseño.</p>
+
+                    <h3><i class="fas fa-times-circle"></i> Limitaciones de Responsabilidad</h3>
+                    <p>PRODIGY no garantiza el ajuste clínico si el archivo de entrada (escaneo, STL) contiene artefactos, bordes incompletos o errores de origen. La calidad del diseño está directamente ligada a la calidad del archivo enviado.</p>
+
+                    <h3><i class="fas fa-file-alt"></i> Formatos Aceptados</h3>
+                    <p>STL, OBJ, PLY, archivos nativos Exocad (.constructioninfo), 3Shape (.3oxz/.3ox), iTero, Medit, Trios, Carestream. Si tienes otro formato, consúltanos antes de enviar.</p>
+                </div>
+            </details>
+        </div>
+
+        <!-- ══ POLÍTICA: FRESADO E IMPRESIÓN 3D ══════════════════════════════ -->
+        <div id="pol-fresado" class="tab-content">
+            <details open>
+                <summary><i class="fas fa-cog"></i> Política de Servicio — Fresado e Impresión 3D</summary>
+                <div class="details-content">
+                    <h3><i class="fas fa-info-circle"></i> Descripción del Servicio</h3>
+                    <p>El servicio de Fresado e Impresión 3D comprende la producción física de restauraciones dentales a partir de bloques CAD/CAM o resinas biocompatibles. Incluye: coronas, puentes, carillas, provisionales PMMA, guías quirúrgicas en resina, modelos de trabajo y estructuras sobre implante.</p>
+
+                    <h3><i class="fas fa-credit-card"></i> Política de Pagos — Fresado e Impresión</h3>
+                    <ul>
+                        <li><strong>Cliente nuevo</strong>: <strong>100% anticipado</strong> antes de iniciar la producción.</li>
+                        <li><strong>Cliente existente</strong>: <strong>50% abono</strong> al confirmar · <strong>50% saldo</strong> antes del despacho.</li>
+                        <li>Para pedidos de alto volumen (más de 10 unidades) se negocia escalonamiento de pago previa aprobación del equipo comercial.</li>
+                    </ul>
+
+                    <h3><i class="fas fa-clock"></i> Tiempos de Producción</h3>
+                    <ul>
+                        <li><strong>Corona unitaria zirconia monolítica</strong>: 24–48 horas hábiles desde aprobación del diseño.</li>
+                        <li><strong>Puente de 3 piezas</strong>: 48–72 horas hábiles.</li>
+                        <li><strong>Provisional PMMA urgente</strong>: desde 4 horas hábiles (disponibilidad sujeta a carga de trabajo).</li>
+                        <li><strong>Impresión 3D resina</strong> (modelo, guía quirúrgica): 24–48 horas hábiles.</li>
+                        <li>Los tiempos no incluyen el transporte/mensajería.</li>
+                    </ul>
+
+                    <h3><i class="fas fa-tools"></i> Materiales y Equipos</h3>
+                    <p>Fresado en máquinas Amann Girrbach, XTCERA 5 ejes y VHF Dental. Materiales: Ivoclar ZirCAD, Vita Enamic, Vita Suprinity, PMMA grado dental. Impresión 3D con NextDent, SprintRay y Anycubic (resinas biocompatibles Clase IIa). Hornos de sinterizado Dentsply Sirona, Vita e Ivoclar.</p>
+
+                    <h3><i class="fas fa-shield-alt"></i> Garantía de Producción</h3>
+                    <ul>
+                        <li>PRODIGY garantiza que la pieza producida corresponde al diseño aprobado con tolerancia ±20 µm.</li>
+                        <li>Si la pieza no coincide con el diseño aprobado: reposición sin costo en 24h.</li>
+                        <li>No se cubre reposición por error en el diseño aprobado por el odontólogo, ni por desgaste post-cementación.</li>
+                    </ul>
+
+                    <h3><i class="fas fa-shipping-fast"></i> Envíos</h3>
+                    <p>Envío a domicilio en Bogotá mediante mensajero PRODIGY. A nivel nacional e internacional por Interrapidísimo (Colombia), DHL o FedEx. Los costos de envío se informan al cotizar.</p>
+                </div>
+            </details>
+        </div>
+
+        <!-- ══ POLÍTICA: LABORATORIO FULL ════════════════════════════════════ -->
+        <div id="pol-lab-full" class="tab-content">
+            <details open>
+                <summary><i class="fas fa-flask"></i> Política de Servicio — Laboratorio Completo (Full)</summary>
+                <div class="details-content">
+                    <h3><i class="fas fa-info-circle"></i> Descripción del Servicio</h3>
+                    <p>El servicio de Laboratorio Completo (Full) cubre el flujo integral desde el escaneo o impresión hasta la entrega de la restauración terminada y lista para cementar. Incluye: recepción del caso, diseño CAD, fresado o impresión, terminado, control de calidad y despacho.</p>
+
+                    <h3><i class="fas fa-credit-card"></i> Política de Pagos — Laboratorio Full</h3>
+                    <ul>
+                        <li><strong>Cliente nuevo</strong>: <strong>100% anticipado</strong> antes de iniciar cualquier fase de producción.</li>
+                        <li><strong>Cliente existente con historial de buen pago</strong>: <strong>50% abono</strong> al confirmar · <strong>50% saldo</strong> antes del despacho.</li>
+                        <li>Para proyectos de más de 10 unidades o planes de trabajo continuos (maquila mensual), se pueden negociar condiciones de crédito 30 días previa evaluación.</li>
+                    </ul>
+
+                    <h3><i class="fas fa-clipboard-list"></i> Flujo del Proceso</h3>
+                    <ol style="padding-left:20px;line-height:2;">
+                        <li>Recepción del caso (escáner o impresión física).</li>
+                        <li>Revisión técnica y cotización en máx. 30 minutos.</li>
+                        <li>Confirmación de pago del abono.</li>
+                        <li>Diseño CAD con envío de vista previa para aprobación.</li>
+                        <li>Fresado o impresión 3D.</li>
+                        <li>Control de calidad (fotografía y ficha técnica).</li>
+                        <li>Despacho o entrega y cobro del saldo.</li>
+                    </ol>
+
+                    <h3><i class="fas fa-user-md"></i> Casos de Implantología</h3>
+                    <p>Para trabajos sobre implantes (pilares personalizados, barras, supraestructuras), PRODIGY requiere la referencia exacta del sistema de implante (marca, plataforma, conexión). Se trabaja con las principales marcas del mercado: Straumann, Nobel Biocare, BioHorizons, Zimmer Biomet, MIS Implants y Neodent, entre otras.</p>
+
+                    <h3><i class="fas fa-tachometer-alt"></i> Trazabilidad de Materiales</h3>
+                    <p>Cada restauración entregada lleva un número de lote del material utilizado (disco, resina o bloque). Este dato queda registrado en el sistema para garantía y rastreabilidad del caso.</p>
+
+                    <h3><i class="fas fa-exclamation-triangle"></i> Responsabilidad del Profesional</h3>
+                    <p>El profesional odontólogo es responsable de la prescripción clínica, la indicación del material y la correcta preparación del diente o implante. PRODIGY no asume responsabilidad clínica ante el paciente final. La relación es exclusivamente B2B (laboratorio ↔ profesional).</p>
+                </div>
+            </details>
+        </div>
+
+        <!-- POLÍTICAS DE DISEÑO (pestaña original, renombrada a Garantía Diseño) -->
         <div id="diseno" class="tab-content">
             
             <details>

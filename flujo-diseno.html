@@ -738,15 +738,25 @@
             </button>
             </div><!-- /pago-co -->
 
-            <!-- ── INTERNACIONAL: LS (primario) + PayPal (secundario) ── -->
+            <!-- ── ABONO / TOTAL SEGÚN TIPO DE CLIENTE ── -->
+            <div id="stripe-policy-banner" style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.25);border-radius:10px;padding:12px 14px;margin:10px 0;font-size:.8rem;color:#e2e8f0;display:none;">
+              <div id="stripe-policy-text">Verificando tipo de cliente…</div>
+            </div>
+
+            <!-- ── INTERNACIONAL: Stripe (primario) + LS + PayPal ── -->
             <div id="ls-intl-section" style="position:relative;margin-top:12px;display:none;">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
                     <div style="flex:1;height:1px;background:rgba(255,255,255,.08);"></div>
                     <span style="font-size:.7rem;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;">Pago Internacional · USD</span>
                     <div style="flex:1;height:1px;background:rgba(255,255,255,.08);"></div>
                 </div>
-                <button id="btn-ls-init" onclick="initLemonSqueezy()">
-                    🍋 Pagar con tarjeta · Lemon Squeezy
+                <!-- STRIPE: botón primario -->
+                <button id="btn-stripe-init" onclick="initStripe()" style="width:100%;padding:13px;background:linear-gradient(135deg,#635bff,#4f46e5);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M13.479 9.883c-2.529-.706-3.349-1.119-3.349-1.958 0-.705.643-1.155 1.737-1.155 1.962 0 3.762.77 5.027 1.604l.758-4.63C16.133 2.884 14.364 2 12.148 2 8.337 2 5.5 4.176 5.5 7.666c0 3.107 2.132 4.614 5.607 5.578 2.375.647 3.036 1.15 3.036 1.983 0 .823-.741 1.244-1.96 1.244-1.843 0-4.022-.784-5.607-1.84L5.82 19.07C7.47 20.211 9.67 21 12.175 21c4.012 0 6.825-2.06 6.825-5.715 0-3.2-2.145-4.716-5.521-5.402z"/></svg>
+                  💳 Pagar con tarjeta · Stripe
+                </button>
+                <button id="btn-ls-init" onclick="initLemonSqueezy()" style="width:100%;padding:11px;background:rgba(255,217,90,.1);border:1px solid rgba(255,217,90,.3);color:#ffd95a;border-radius:8px;font-weight:700;cursor:pointer;font-size:.85rem;margin-bottom:4px;">
+                    🍋 Segunda opción: Lemon Squeezy
                 </button>
                 <p class="intl-fee-note" id="ls-fee-note">
                     <span id="ls-fee-label">Servicio de pago global</span> · <span id="ls-fee-pct">5.0%</span> + <span id="ls-fee-fijo">$0.50</span> USD incluidos
@@ -1430,6 +1440,126 @@
         if (!STATE.subtipoId){ fdToast('Selecciona el tipo de diseño CAD.'); return false; }
         if (!link)           { showErr('linkSTL',        'Link de archivos requerido'); return false; }
         return true;
+    }
+
+    /* ── DETECCIÓN CLIENTE NUEVO / EXISTENTE ─────────────────────────────
+       Nuevo:     nunca ha pedido → paga 100%
+       Existente: ya tiene pedidos → paga 50% abono
+    ─────────────────────────────────────────────────────────────────── */
+    var _esClienteNuevo = null; // null = no verificado aún
+
+    async function detectarTipoCliente() {
+        if (_esClienteNuevo !== null) return _esClienteNuevo;
+        try {
+            const sb   = getSupabase();
+            const user = (await sb.auth.getUser())?.data?.user;
+            if (!user) { _esClienteNuevo = true; return true; } // sin sesión = nuevo
+            const { count } = await sb
+                .from('pedidos')
+                .select('*', { count: 'exact', head: true })
+                .eq('doctor_uid', user.id)
+                .neq('estado', 'Cancelado');
+            _esClienteNuevo = (count === 0);
+        } catch { _esClienteNuevo = true; }
+        return _esClienteNuevo;
+    }
+
+    async function mostrarPoliticaPago() {
+        const banner = document.getElementById('stripe-policy-banner');
+        const text   = document.getElementById('stripe-policy-text');
+        if (!banner || !text) return;
+        banner.style.display = 'block';
+        const esNuevo = await detectarTipoCliente();
+        const total   = calcularTotal();
+        const cobrar  = esNuevo ? total : Math.round(total * 0.5);
+        const fmtCobrar = fmtCLP(cobrar);
+        if (esNuevo) {
+            text.innerHTML = '🆕 <strong>Cliente nuevo</strong> — se requiere <strong style="color:#fbbf24;">pago completo: ' + fmtCobrar + '</strong> para iniciar.';
+            const pb = document.querySelector('.payment-banner');
+            if (pb) pb.textContent = '💵 PAGO 100% — CLIENTE NUEVO';
+        } else {
+            text.innerHTML = '✅ <strong>Cliente existente</strong> — pagas <strong style="color:#4ade80;">abono 50%: ' + fmtCobrar + '</strong> hoy · saldo 50% contra entrega.';
+            const pb = document.querySelector('.payment-banner');
+            if (pb) pb.textContent = '💚 ABONO 50% · SALDO 50% CONTRA ENTREGA';
+        }
+    }
+
+    /* Llamar cuando se active la sección internacional */
+    document.addEventListener('DOMContentLoaded', function() {
+        const intlSec = document.getElementById('ls-intl-section');
+        if (intlSec) {
+            new MutationObserver(function(mutations) {
+                mutations.forEach(function(m) {
+                    if (m.attributeName === 'style' && intlSec.style.display !== 'none') {
+                        mostrarPoliticaPago();
+                    }
+                });
+            }).observe(intlSec, { attributes: true });
+        }
+    });
+
+    /* ── STRIPE CHECKOUT ─────────────────────────────────────────────── */
+    async function initStripe() {
+        if (!validarFormularioBase()) return;
+
+        const btn = document.getElementById('btn-stripe-init');
+        btn.disabled = true;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="white" style="animation:spin .8s linear infinite"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-14a6 6 0 0 0-6 6h2a4 4 0 0 1 4-4V6z"/></svg> Procesando…';
+
+        const esNuevo  = await detectarTipoCliente();
+        const total    = calcularTotal();
+        const nombre   = document.getElementById('nombreCliente').value.trim();
+        const wa       = document.getElementById('whatsappCliente').value.trim();
+        const email    = document.getElementById('emailCliente')?.value.trim() || '';
+        const cantidad = parseInt(document.getElementById('cantidad')?.value || '1', 10);
+
+        // Crear orden previa en Supabase
+        const _r0 = new Uint8Array(5); crypto.getRandomValues(_r0);
+        const orderId = 'CAD-STR-' + Array.from(_r0).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
+        const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
+        if (_sb) {
+            await _sb.from('pedidos').insert([{
+                codigo:                orderId,
+                doctor:                sanitizar(nombre),
+                whatsapp:              wa,
+                servicio:              STATE.subtipoNombre || STATE.categoriaNombre,
+                material:              STATE.categoriaKey,
+                submaterial:           STATE.subtipoId,
+                cantidad:              cantidad,
+                precio_total:          total,
+                estado:                'Pendiente_Stripe',
+                link_stl:              document.getElementById('linkSTL')?.value.trim() || '',
+                flujo:                 'diseno',
+                terminos_aceptados_at: new Date().toISOString()
+            }]).then(function(r) { if (r.error) console.warn('[PRODIGY] Stripe pre-orden:', r.error.message); });
+        }
+
+        try {
+            const res = await fetch('/api/stripe-checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    amount_cop:       total,
+                    description:      (STATE.subtipoNombre || STATE.categoriaNombre) + ' · ' + cantidad + ' u.',
+                    pedido_id:        orderId,
+                    doctor_email:     email,
+                    es_nuevo_cliente: esNuevo,
+                    success_url:      'https://prodigylabdental.com/app/success.html?pedido=' + orderId + '&session_id={CHECKOUT_SESSION_ID}',
+                    cancel_url:       window.location.href
+                })
+            });
+            const data = await res.json();
+            if (data.url) {
+                if (window.ProdigyAnalytics) ProdigyAnalytics.trackPaymentIntent('stripe', total, orderId);
+                window.location.href = data.url;
+            } else {
+                throw new Error(data.error || 'Sin URL de pago');
+            }
+        } catch (e) {
+            btn.disabled = false;
+            btn.innerHTML = '💳 Pagar con tarjeta · Stripe';
+            fdToast('Error al iniciar pago: ' + e.message);
+        }
     }
 
     async function initLemonSqueezy() {
