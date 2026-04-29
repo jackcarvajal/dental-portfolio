@@ -951,7 +951,8 @@
                 const chip = document.createElement('div');
                 chip.className = 'subtipo-chip';
                 chip.id = 'sub-' + id;
-                chip.innerHTML = `<div class="chip-name">${sub.nombre}</div><div class="chip-price">${fmtCLP(sub.precio)}</div>`;
+                const escN = String(sub.nombre||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                chip.innerHTML = `<div class="chip-name">${escN}</div><div class="chip-price">${fmtCLP(sub.precio)}</div>`;
                 chip.onclick = () => selectSubtipo(id, sub.nombre, sub.precio);
                 grid.appendChild(chip);
             });
