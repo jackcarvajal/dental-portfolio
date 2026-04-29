@@ -21,6 +21,7 @@ const PRECACHE = [
   '/instalar-app',
   '/guia-tecnica',
   '/calidad',
+  '/diseno-remoto',
   '/manifest.json',
   '/assets/prodigy-preview.jpg',
   '/assets/icons/icon-192.png',
