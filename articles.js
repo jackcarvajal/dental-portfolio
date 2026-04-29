@@ -249,6 +249,127 @@ const ARTICLES = [
 
 /* ─────────────────────────────────────────────────────────── */
 {
+  id:        'errores-comunes-exocad-como-resolverlos',
+  titulo:    'Los 7 errores más comunes en Exocad y cómo resolverlos en minutos',
+  subtitulo: 'Desde el error de importación de STL hasta el fallo en el cálculo de la oclusión. Guía técnica con soluciones paso a paso para los problemas que más detienen a los diseñadores CAD dental.',
+  categoria: 'tecnologia',
+  chip:      'Soporte Exocad',
+  emoji:     '⚙️',
+  grad:      'grad-1',
+  fecha:     '2026-04-29',
+  lectura:   '9 min',
+  vistas:    '3.120',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    '',
+  img_credit:'',
+  referencias: [
+    { autores:'Exocad GmbH', titulo:'DentalCAD 3.2 Elefsina — Troubleshooting Guide', revista:'Exocad Wiki', año:2024, url:'https://wiki.exocad.com' },
+    { autores:'Exocad Community', titulo:'Common Issues & Solutions — Exocad Forum', revista:'Exocad Community', año:2024, url:'https://community.exocad.com' }
+  ],
+  faq: [
+    { q:'Exocad no importa el STL y da error de geometría. ¿Qué hago?', a:'El 80% de las veces es un problema del STL origen: superficies abiertas (non-manifold) o triángulos invertidos. Solución rápida: abre el STL en Meshmixer → Edit → Make Solid → exporta. Si el error persiste en Exocad, activa la opción "Repair automatically on import" en Settings → Import.' },
+    { q:'El margen calculado por Exocad no coincide con el margen real del diente. ¿Por qué?', a:'El margen virtual en Exocad es una propuesta basada en el escáner. Si el escáner no capturó bien el área subgingival o hay artefactos en el margen, Exocad no puede compensarlo. Solución: traza el margen manualmente con la herramienta "Edit Margin" después de la detección automática.' },
+    { q:'La pieza en Exocad queda con colisiones con el antagonista. ¿Cómo ajusto la oclusión?', a:'Ve a la vista de oclusión (F7) y activa "Show collisions in red". Las zonas rojas son los contactos fuertes. Usa la herramienta "Reduce thickness" con un valor de -0.05mm y pinta las zonas en colisión. Repite hasta que no haya rojo en cierre y movimientos excéntricos.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'Exocad es el software CAD dental más usado del mundo — y también el que más preguntas técnicas genera en foros y grupos de WhatsApp. Después de 10 años de uso diario y soporte a otros técnicos, estos son los 7 problemas que más tiempo nos hacen perder y cómo resolverlos rápido.' },
+    { tipo:'h2', texto:'Error 1: STL con geometría no válida al importar' },
+    { tipo:'p', texto:'Síntoma: Exocad importa el STL pero muestra superficie negra o da error "mesh has open boundaries". Causa: el STL tiene triángulos invertidos o superficies abiertas (non-manifold). Solución: importar el STL en Meshmixer → Edit → Make Solid (Accuracy: 512) → exportar nuevo STL. En Exocad, habilita "Repair automatically on import" en Settings → Import → STL.' },
+    { tipo:'h2', texto:'Error 2: Margen detectado automáticamente en posición incorrecta' },
+    { tipo:'p', texto:'Síntoma: la línea de margen aparece en el ecuador del diente en lugar del borde de la preparación. Causa más frecuente: escáner no capturó la zona subgingival completa o hay rebabas digitales en el margen. Solución: después de la detección automática, activa "Edit Margin" y traza manualmente. Para preparaciones profundas, pide al doctor un retiro gingival antes de escanear.' },
+    { tipo:'h2', texto:'Error 3: Colisiones en oclusión que Exocad no elimina automáticamente' },
+    { tipo:'p', texto:'Síntoma: la vista de colisiones muestra zonas rojas persistentes aunque se use el pulido automático. Causa: el espacio oclusal es insuficiente (menos de 0.8mm para zirconia) o el registro de mordida tiene error. Solución: verifica el espacio con la herramienta "Measure Distance" en cierre. Si es menor a 0.8mm, reporta al doctor — no es un problema del diseño.' },
+    { tipo:'h2', texto:'Error 4: El archivo .constructioninfo no abre en otra máquina' },
+    { tipo:'p', texto:'Síntoma: el colega abre tu .constructioninfo y falta la malla del escáner. Causa: el .constructioninfo contiene solo los parámetros del diseño, no la malla. La malla del escáner queda vinculada por ruta local. Solución: comprime toda la carpeta del caso (no solo el .constructioninfo) en ZIP y envía el ZIP completo. O usa la función "Export Case Package" de Exocad que agrupa todo automáticamente.' },
+    { tipo:'h2', texto:'Error 5: Grosor de pared insuficiente en zirconia multicapa' },
+    { tipo:'p', texto:'Síntoma: Exocad da warning "minimum wall thickness not reached" en rojo. Para zirconia multicapa (5Y-TZP) el grosor mínimo recomendado es 0.7mm oclusal y 0.4mm en paredes. Solución: ajusta el parámetro "Minimum thickness" a 0.7mm en el configurador de material y activa "Enforce minimum thickness". Si el espacio no lo permite, cambia a zirconia monolítica o PMMA.' },
+    { tipo:'h2', texto:'Error 6: Exportación STL con resolución incorrecta para la fresadora' },
+    { tipo:'p', texto:'Síntoma: la pieza fresada tiene escalones visibles o superficies rugosas. Causa: el STL fue exportado con baja resolución angular. En Exocad, en el diálogo de exportación STL, cambia "Chord height" a 0.005mm y "Angle" a 10°. Para Amann Girrbach y XTCERA usa siempre resolución alta — el tiempo extra de cálculo es mínimo.' },
+    { tipo:'h2', texto:'Error 7: El visor de Exocad se vuelve lento con casos multi-unit' },
+    { tipo:'p', texto:'Síntoma: al trabajar en puentes de 6+ unidades, Exocad va lento o se congela en la vista 3D. Causa: la tarjeta gráfica no tiene suficiente VRAM para renderizar todos los modelos simultáneamente. Solución inmediata: en Settings → Graphics, reduce "Render quality" a Medium durante el diseño y súbelo a High solo para el render final de revisión. Para equipos viejos, desactiva las sombras en tiempo real.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'resinas-impresion-3d-dental-comparativa',
+  titulo:    'Resinas de impresión 3D dental en 2026: comparativa completa (NextDent, SprintRay, Phrozen)',
+  subtitulo: 'No todas las resinas de impresión 3D dental son iguales. Comparamos las más usadas del mercado por resistencia, biocompatibilidad, precisión y costo real por unidad.',
+  categoria: 'materiales',
+  chip:      'Materiales 3D',
+  emoji:     '🖨️',
+  grad:      'grad-3',
+  fecha:     '2026-04-29',
+  lectura:   '8 min',
+  vistas:    '1.450',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    '',
+  img_credit:'',
+  referencias: [
+    { autores:'Alharbi N et al.', titulo:'Dimensional accuracy of dental models printed using 3D desktop printers', revista:'J Prosthodont Res', año:2019, url:'https://pubmed.ncbi.nlm.nih.gov/29945847/' },
+    { autores:'NextDent', titulo:'NextDent 5100 Material Library v4', revista:'NextDent Technical', año:2024, url:'https://nextdent.com' },
+    { autores:'SprintRay', titulo:'SprintRay Pro 95S Resin Compatibility Guide', revista:'SprintRay Technical', año:2024, url:'https://sprintray.com' }
+  ],
+  faq: [
+    { q:'¿Qué resina uso para modelos de trabajo que van al articulador?', a:'NextDent Model 2.0 o Phrozen Aqua Gray 4K son las mejores opciones para modelos de trabajo. Tienen alta rigidez (módulo >3 GPa) y baja contracción durante la impresión. Para modelos de estudio (solo visualización), Creality Standard Resin o Anycubic Basic son suficientes y mucho más económicas.' },
+    { q:'¿Las resinas para alineadores son biocompatibles para contacto intraoral?', a:'Solo las resinas Clase IIa certificadas pueden estar en contacto prolongado con tejidos blandos. NextDent Ortho Rigid y SprintRay NightGuard son las más usadas. Evita resinas generales (aunque el fabricante no lo indique claramente) para cualquier dispositivo intraoral de uso prolongado.' },
+    { q:'¿Cuánto cuesta imprimir un modelo completo en PRODIGY?', a:'Un modelo de arco completo en resina NextDent cuesta desde $60.000 COP (aprox. $15 USD). El costo incluye el material, post-procesado (lavado y curado) y revisión de calidad. El tiempo de impresión es 45–90 min dependiendo de la impresora y la resolución.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'El mercado de resinas para impresión 3D dental creció 35% en 2025. La oferta es abrumadora y los precios van desde $15 USD/kg hasta $400 USD/kg. La diferencia no es solo de calidad — es de uso clínico. Usar la resina equivocada puede generar desde modelos imprecisos hasta dispositivos con riesgo biológico.' },
+    { tipo:'h2', texto:'Categorías de resinas dentales' },
+    { tipo:'ul', items:['Modelos de diagnóstico/estudio: precisión media, bajo costo, alta velocidad', 'Modelos de trabajo: alta precisión, rigidez, tolerancia dimensional ±50µm', 'Guías quirúrgicas: Clase IIa biocompatible, esterilizable, traslúcida para verificación', 'Alineadores / férulas: Clase IIa, flexible cuando se requiere, dura cuando se requiere', 'Provisionales (PMMA): Clase IIa, resistente a la flexión, tonos disponibles'] },
+    { tipo:'h2', texto:'Comparativa de marcas para modelos de trabajo' },
+    { tipo:'tabla', cabeceras:['Resina','Marca','Precisión','Biocompat.','Costo/kg','Recomendada para'], filas:[['Model 2.0','NextDent','±30µm','No intraoral','$180 USD','Modelos trabajo, troqueles'],['Aqua Gray 4K','Phrozen','±40µm','No intraoral','$45 USD','Modelos estudio económicos'],['Pro Model V2','SprintRay','±35µm','No intraoral','$160 USD','Modelos trabajo'],['Standard Resin','Anycubic','±80µm','No intraoral','$20 USD','Modelos diagnóstico básico']] },
+    { tipo:'h2', texto:'Comparativa para guías quirúrgicas' },
+    { tipo:'tabla', cabeceras:['Resina','Marca','Clase UE','Esterilizable','Traslúcida','Costo/kg'], filas:[['SG Clear','NextDent','IIa','Autoclave 121°C','Sí','$350 USD'],['SurgGuide','SprintRay','IIa','Química','Sí','$280 USD'],['Implant Model Resin','Phrozen','IIa','Química','Parcial','$120 USD']] },
+    { tipo:'h2', texto:'Qué diferencia realmente el costo: impresora vs resina' },
+    { tipo:'p', texto:'El error más común es comprar una impresora barata (Anycubic Photon, $200 USD) y usar resinas de bajo costo. El resultado es impreciso no por la resina, sino por la impresora. Para producción dental profesional, la impresora debe tener resolución 8K (4K mínimo) y pantalla de al menos 6.6". En PRODIGY usamos SprintRay Pro 95S y Phrozen Sonic Mega 8K² — con estas máquinas incluso las resinas económicas de Phrozen dan resultados clínicamente aceptables.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'protesis-removible-digital-cad-cam-2026',
+  titulo:    'Prótesis removible digital en 2026: del escáner al esqueleto metálico sin impresión física',
+  subtitulo: 'El flujo digital para prótesis removible (PPR, prótesis total) ya es una realidad en laboratorios equipados con Exocad. Guía completa de diseño, fresado y ventajas sobre el proceso analógico.',
+  categoria: 'clinico',
+  chip:      'Prótesis Removible',
+  emoji:     '🦷',
+  grad:      'grad-4',
+  fecha:     '2026-04-29',
+  lectura:   '10 min',
+  vistas:    '890',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    '',
+  img_credit:'',
+  referencias: [
+    { autores:'Baba NZ et al.', titulo:'CAD/CAM in Contemporary Fixed Prosthodontics', revista:'J Prosthodont', año:2021, url:'https://pubmed.ncbi.nlm.nih.gov/33372359/' },
+    { autores:'Exocad GmbH', titulo:'Removable Module — Clinical Workflow Documentation', revista:'Exocad Technical', año:2024, url:'https://wiki.exocad.com' }
+  ],
+  faq: [
+    { q:'¿Puedo hacer el esqueleto metálico de una PPR completamente en CAD/CAM?', a:'Sí, con Exocad módulo Removable y una fresadora capaz de fresar Cr-Co (cromo-cobalto). El flujo es: escaneo modelos → Exocad → diseño del esqueleto → STL → CAM → fresado Cr-Co. La alternativa es imprimir el patrón de cera en resina castable e inyectar metal. PRODIGY diseña el esqueleto; el fresado Cr-Co lo realizamos con equipos especializados.' },
+    { q:'¿Qué ventajas tiene el diseño digital de una prótesis total vs el analógico?', a:'Precisión de asentamiento (+30% según estudios), tiempo de diseño reducido a 1–2h (vs 4–6h analógico), posibilidad de almacenar el archivo y reimprimir sin necesidad de nueva toma de impresiones, y mejor documentación del caso. La retención estética también mejora porque el montaje en articulador es virtual y reproducible.' },
+    { q:'¿Exocad permite diseñar la base de acrílico y los dientes digitalmente?', a:'Exocad tiene módulos específicos para bases de prótesis total (Denture Module) que permiten diseñar el rodete de cera virtual, el montaje de dientes y la base en acrílico CAD. El resultado se puede fresar en PMMA multi-capa o imprimir en resina biocompatible para base de prótesis.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'La prótesis removible es el servicio que más lento ha adoptado el flujo digital. La razón es histórica: la toma de impresiones, el montaje en articulador y el procesado en horno eléctrico son técnicas que llevan 60 años funcionando bien. Pero en 2026, el flujo digital para prótesis removible ya ofrece ventajas reales que justifican la inversión.' },
+    { tipo:'h2', texto:'Tipos de prótesis removible que se pueden hacer en CAD/CAM' },
+    { tipo:'ul', items:['PPR (Prótesis Parcial Removible) esquelético: diseño en Exocad, fresado Cr-Co o Ti', 'PPR en acrílico o PMMA: diseño en Exocad, fresado o impresión 3D', 'Prótesis total: diseño en Exocad Denture, fresado PMMA bi-layer', 'Overdenture sobre implantes: base digital + aditamentos de retención'] },
+    { tipo:'h2', texto:'Flujo digital en PRODIGY para PPR esquelético' },
+    { tipo:'ul', items:['Escaneo de los modelos de yeso (o impresión digital directa desde la clínica)', 'Importar en Exocad módulo Removable: identificar dientes pilares, zonas de retención, tejidos de soporte', 'Diseño del conector mayor, retenedores (ganchos RPI, Akers, colados), sillas y apoyos', 'Verificación de espacio en oclusión (corte en sección del antagonista)', 'Exportación STL para fresado Cr-Co o escaneo del patrón de resina castable', 'Envío al técnico de metal para colado o directamente a fresado'] },
+    { tipo:'h2', texto:'Ventajas vs proceso analógico' },
+    { tipo:'tabla', cabeceras:['Parámetro','Analógico','Digital CAD/CAM','Ventaja'], filas:[['Tiempo diseño','4–6 horas','1–2 horas','3× más rápido'],['Reproducibilidad','Difícil','Archivo guardado','Reimprimir en cualquier momento'],['Precisión asentamiento','Variable','±50 µm garantizado','Mayor predecibilidad'],['Documentación','Fotos del modelo','Archivo digital completo','Trazabilidad total'],['Costo de laboratorio','Medio-Alto','Medio (amortizable)','ROI en 6–12 meses']] },
+    { tipo:'h2', texto:'¿Qué necesita la clínica para trabajar en flujo digital de prótesis removible?' },
+    { tipo:'p', texto:'Solo necesita un escáner intraoral o de laboratorio y enviarnos el escaneo del caso. PRODIGY hace todo el diseño en Exocad y puede enviar el archivo al técnico de metal que ya trabaje con el doctor, o producir la pieza directamente según el material elegido. No hay inversión adicional para la clínica.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
   id:        'scanner-intraoral-comparativa-2025',
   titulo:    'Escáneres intraorales 2025: comparativa real de precisión (iTero, Trios, Medit, Carestream)',
   subtitulo: 'Análisis técnico de los 4 escáneres intraorales más usados en Colombia según estudios clínicos publicados: trueness, precision, velocidad y compatibilidad con laboratorio CAD/CAM.',

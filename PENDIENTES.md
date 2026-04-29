@@ -1,6 +1,27 @@
 # PRODIGY — PENDIENTES MAESTRO
 > Fuente única de verdad. Ordenados por bloque. Actualizar al completar.
-> Última revisión: 2026-04-24
+> Última revisión: 2026-04-29
+
+---
+
+## 🆕 NUEVAS ACCIONES MANUALES (2026-04-29) — ALEJANDRO
+
+| # | Acción | Cómo | Estado |
+|---|--------|------|--------|
+| 1 | **GEMINI_API_KEY en Cloudflare** | Pages → dental-portfolio → Settings → Env vars → GEMINI_API_KEY | 🔴 URGENTE — bot roto sin esto |
+| 2 | **STRIPE_SECRET_KEY en Cloudflare** | Pages → dental-portfolio → Settings → Env vars → STRIPE_SECRET_KEY | 🔴 URGENTE — pagos rotos |
+| 3 | **SQL migrate-lead-sources.sql** | Supabase SQL Editor → pegar contenido → Run | ⏳ |
+| 4 | **SQL migrate-inventario-implantes.sql** | Supabase SQL Editor | ⏳ |
+| 5 | **SQL migrate-push-notifications.sql** | Supabase SQL Editor | ⏳ |
+| 6 | **META_PIXEL_ID** en conversions.js línea 13 | Reemplazar TU_PIXEL_ID cuando tengas campaña Meta | ⏳ |
+| 7 | **Google Ads ID** en conversions.js línea 12 | Reemplazar AW-XXXXXXXXX cuando tengas cuenta | ⏳ |
+
+### Páginas nuevas desplegadas (no requieren acción)
+- `/diseno-remoto` — landing anuncios CAD con psicología de ventas
+- `/en/global-design` — landing inglés con precios USD
+- `/soporte-tecnico` — funnel XTCERA + Alistar Sensa
+- `/alejandro` — marca personal (noindex, en pausa)
+- `/soporte` — soporte general (existente)
 
 ---
 

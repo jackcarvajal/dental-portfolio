@@ -44,13 +44,6 @@
   </url>
 
   <url>
-    <loc>https://prodigylabdental.com/alejandro</loc>
-    <lastmod>2026-04-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
     <loc>https://prodigylabdental.com/soporte-tecnico</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
@@ -204,4 +197,59 @@
     <priority>0.5</priority>
   </url>
 
+
+  <url>
+    <loc>https://prodigylabdental.com/article?id=implantes-digitales-flujo-cad-cam-2026</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prodigylabdental.com/article?id=ortodoncia-digital-setup-alineadores-exocad-2026</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prodigylabdental.com/article?id=full-arch-rehabilitacion-digital-protocolo-prodigy</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prodigylabdental.com/article?id=zirconio-fractura-sinterizado-rapido</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prodigylabdental.com/article?id=exocad-vs-3shape-carillas-2026</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prodigylabdental.com/article?id=itero-stl-exportar-sin-licencia-extra</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prodigylabdental.com/article?id=errores-comunes-exocad-como-resolverlos</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prodigylabdental.com/article?id=resinas-impresion-3d-dental-comparativa</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prodigylabdental.com/article?id=protesis-removible-digital-cad-cam-2026</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
