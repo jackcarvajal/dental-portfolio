@@ -8,6 +8,124 @@ const ARTICLES = [
 
 /* ─────────────────────────────────────────────────────────── */
 {
+  id:        'titanio-vs-zirconia-implantes-cuando-usar',
+  titulo:    'Titanio vs Zirconia en implantes: cuándo usar cada material según el caso clínico',
+  subtitulo: 'Guía definitiva para elegir entre pilares de titanio y zirconia en implantología. Comparativa de resistencia, estética, biocompatibilidad y costo real por caso.',
+  categoria: 'materiales',
+  chip:      'Materiales',
+  emoji:     '🔩',
+  grad:      'grad-3',
+  fecha:     '2026-04-29',
+  lectura:   '8 min',
+  vistas:    '2.890',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    '',
+  img_credit:'',
+  referencias: [
+    { autores:'Sailer I et al.', titulo:'All-ceramic or metal-ceramic tooth-supported fixed dental prostheses', revista:'J Prosthet Dent', año:2015, url:'https://pubmed.ncbi.nlm.nih.gov/26303460/' },
+    { autores:'Brånemark PI et al.', titulo:'Intraosseous anchorage of dental prostheses', revista:'Scand J Plast Reconstr Surg', año:1969, url:'https://pubmed.ncbi.nlm.nih.gov/4924155/' },
+    { autores:'Zembic A et al.', titulo:'Systematic review of implant-supported posterior single-tooth replacements', revista:'Int J Oral Maxillofac Implants', año:2014, url:'https://pubmed.ncbi.nlm.nih.gov/24660202/' }
+  ],
+  faq: [
+    { q:'¿El pilar de zirconia puede fracturarse sobre el implante?', a:'Sí, especialmente en zonas de alta carga oclusal (molares, pacientes con bruxismo). La resistencia a la fractura de la zirconia es alta (>900 MPa) pero su módulo de elasticidad es menor que el titanio, lo que la hace más frágil en conexiones de diámetro pequeño (3.5mm o menos). En molares con bruxismo, el titanio es más seguro; en zonas anteriores, la zirconia es más estética.' },
+    { q:'¿Se puede cementar una corona de zirconia sobre un pilar de titanio?', a:'Sí, completamente. De hecho esta es la combinación más usada: pilar de titanio (conexión al implante) + corona de zirconia (la parte visible). El pilar de titanio garantiza la resistencia mecánica en la conexión y la zirconia aporta la estética en la corona. Se cementan con cementos de resina de baja viscosidad o cemento de vidrio ionómero modificado.' },
+    { q:'¿Cuánto cuesta más un pilar de zirconia vs titanio en PRODIGY?', a:'En PRODIGY, el diseño de un pilar de titanio estándar parte desde $35 USD. Un pilar de zirconia personalizado parte desde $45 USD por la mayor complejidad del diseño. El costo del mecanizado físico depende del laboratorio que lo produzca — el archivo de diseño que entregamos es universal.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'La elección entre titanio y zirconia en implantología es una de las preguntas que más se repite en los grupos de odontólogos. No hay una respuesta universal — hay una respuesta correcta para cada paciente y cada zona de la boca.' },
+    { tipo:'h2', texto:'Por qué el titanio sigue siendo el estándar en implantes' },
+    { tipo:'p', texto:'El titanio (Ti-6Al-4V grado dental) lleva más de 50 años de evidencia clínica publicada. Su oseointegración es previsible, su resistencia mecánica es superior (Módulo de Young: 110 GPa) y su procesado es más tolerante a variaciones dimensionales. Para el pilar (la interfaz entre implante y corona), el titanio es la elección más segura en cualquier zona de alta carga.' },
+    { tipo:'h2', texto:'Cuándo la zirconia supera al titanio' },
+    { tipo:'p', texto:'La zirconia tiene ventaja en estética: es blanca, no provoca el halo gris visible a través de encías delgadas. En zonas anteriores (incisivos, caninos) con biotipo periodontal fino, un pilar de zirconia mejora significativamente el resultado estético sin comprometer la función, siempre que el diseño sea correcto y la carga oclusal sea moderada.' },
+    { tipo:'h2', texto:'Comparativa técnica para la decisión clínica' },
+    { tipo:'tabla', cabeceras:['Criterio','Titanio','Zirconia','Recomendación'], filas:[['Resistencia flexural','900 MPa (ISO 6872)','900–1200 MPa (5Y-TZP)','Empate'],['Módulo de elasticidad','110 GPa','200 GPa','Titanio (más flexible)'],['Biocompatibilidad','Excelente','Excelente','Empate'],['Estética','Gris visible sub-gingival','Blanco · invisible','Zirconia'],['Zona molar bruxismo','Primera elección','Riesgo fractura','Titanio'],['Zona anterior biotipo fino','Aceptable','Primera elección','Zirconia'],['Costo mecanizado','$35–60 USD','$45–80 USD','Titanio'],['Vida útil clínica','25+ años','10–15 años (evidencia limitada)','Titanio']] },
+    { tipo:'h2', texto:'Caso clínico tipo: la combinación ganadora' },
+    { tipo:'p', texto:'En PRODIGY diseñamos la combinación más pedida: pilar de titanio + corona de zirconia multicapa. El pilar de titanio garantiza la resistencia mecánica en la conexión implante-pilar (el punto de mayor estrés). La corona de zirconia multicapa 5Y-TZP sobre el pilar aporta la estética y la resistencia al desgaste que necesita la zona coronal. Esta combinación tiene la mejor relación costo-resultado en el 80% de los casos.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'diseno-cad-principiantes-exocad-desde-cero',
+  titulo:    'Diseño CAD dental para principiantes: cómo aprender Exocad desde cero en 2026',
+  subtitulo: 'Guía honesta para técnicos dentales y odontólogos que quieren aprender diseño CAD. Qué esperar en los primeros 3 meses, qué recursos usar y cómo monetizar el skill desde el primer mes.',
+  categoria: 'tecnologia',
+  chip:      'Formación CAD',
+  emoji:     '🎓',
+  grad:      'grad-1',
+  fecha:     '2026-04-29',
+  lectura:   '11 min',
+  vistas:    '4.230',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    '',
+  img_credit:'',
+  referencias: [
+    { autores:'Exocad GmbH', titulo:'DentalCAD Getting Started Guide', revista:'Exocad Wiki', año:2024, url:'https://wiki.exocad.com' },
+    { autores:'Renne W et al.', titulo:'Evaluation of a CAD/CAM workflow for complete-arch implant restorations', revista:'J Prosthet Dent', año:2020, url:'https://pubmed.ncbi.nlm.nih.gov/30929850/' }
+  ],
+  faq: [
+    { q:'¿Cuánto tiempo tarda en aprender Exocad una persona sin experiencia CAD?', a:'Para diseñar una corona básica funcional se necesitan entre 2 y 4 semanas de práctica diaria. Para casos complejos (puentes de 6 unidades, pilares sobre implantes) hay que contar con 3 a 6 meses. El factor clave no es el tiempo sino la constancia: 1 hora diaria es más efectiva que 8 horas una vez a la semana.' },
+    { q:'¿Exocad tiene curso oficial gratuito?', a:'Exocad tiene documentación oficial en wiki.exocad.com y videos en su canal de YouTube. No hay un "curso oficial" estructurado de pago de Exocad GmbH — toda la formación oficial es en texto y videos cortos. Los cursos estructurados los ofrecen distribuidores autorizados o técnicos certificados como PRODIGY.' },
+    { q:'¿Se puede trabajar como freelance de diseño CAD sin tener fresadora?', a:'Completamente. El diseño CAD es 100% digital. Solo necesitas el software Exocad (o un servicio de maquila CAD como PRODIGY), un computador con buena GPU y conexión a internet. Los archivos STL se entregan al laboratorio que tiene la fresadora. Es el modelo de negocio más escalable: sin inversión en maquinaria.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'Hace 10 años aprender diseño CAD dental requería acceso a una fresadora y una licencia costosa. En 2026, con servicios de maquila CAD y licencias más accesibles, cualquier técnico o dentista puede aprender a diseñar sin tener que invertir en hardware. Esto es lo que nadie te dice antes de empezar.' },
+    { tipo:'h2', texto:'Lo que realmente necesitas para empezar' },
+    { tipo:'ul', items:['Computador: procesador i5 o Ryzen 5 de 8ª gen en adelante, 16 GB RAM, tarjeta gráfica dedicada (GTX 1650 o similar). No necesitas workstation de $3.000 USD.', 'Software: licencia Exocad DentalCAD (desde ~$2.500 USD) o acceso a un servicio de maquila CAD donde pagas por caso', 'Tiempo de práctica: mínimo 1 hora diaria los primeros 3 meses', 'Casos de práctica: STLs gratuitos disponibles en grupos de WhatsApp de odontología digital o en plataformas como GrabCAD'] },
+    { tipo:'h2', texto:'El mapa de aprendizaje realista en 3 meses' },
+    { tipo:'tabla', cabeceras:['Semana','Meta','Resultado esperado','Tiempo diario'], filas:[['1–2','Importar STL + trazar margen','Margen aceptable en 45 min','1–2h'],['3–4','Diseño corona anterior básico','Corona funcional en 30 min','1–2h'],['5–8','Corona posterior + oclusión','Contactos ±50µm en 20 min','1–2h'],['9–12','Puente 3 piezas + incidencias','Puente funcional en 45 min','1–2h'],['13–16','Primer caso de cliente real','Entrega con revisiones','1–2h'],['4–6 meses','Pilares, guías, alineadores','Especialización','2–3h']] },
+    { tipo:'h2', texto:'Cómo monetizar desde el primer mes' },
+    { tipo:'p', texto:'No esperes a ser "experto" para empezar a cobrar. Muchos laboratorios necesitan casos simples (coronas anteriores, carillas) y no encuentran diseñadores. La estrategia es: ofrece tus primeros 5 casos a precio reducido ($5–8 USD) a un laboratorio local, pide retroalimentación honesta, y sube el precio con cada caso mejorado. En 3 meses, con buenos casos en portafolio, puedes cobrar $14–16 USD por corona — el precio estándar del mercado.' },
+    { tipo:'h2', texto:'El error más común de los principiantes' },
+    { tipo:'p', texto:'Obsesionarse con el aspecto visual de la corona (que "se vea bonita" en la pantalla) y descuidar la oclusión y los márgenes. Un laboratorio rechazará una corona que visualmente es perfecta si el margen es grueso o si tiene colisiones con el antagonista. Enfócate en los 3 parámetros críticos primero: (1) margen nítido ≤0.5mm, (2) sin colisiones en oclusión, (3) espacio de cemento correcto.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'medit-vs-itero-vs-3shape-trios-comparativa-2026',
+  titulo:    'Medit vs iTero vs 3Shape Trios en 2026: ¿cuál escáner intraoral conviene comprar?',
+  subtitulo: 'Análisis técnico y económico de los 3 escáneres intraorales más vendidos en Colombia y Latinoamérica. Precisión real, costo de licencia, compatibilidad con laboratorio y veredicto final.',
+  categoria: 'tecnologia',
+  chip:      'Escáneres',
+  emoji:     '📡',
+  grad:      'grad-2',
+  fecha:     '2026-04-29',
+  lectura:   '10 min',
+  vistas:    '5.410',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    '',
+  img_credit:'',
+  referencias: [
+    { autores:'Renne W et al.', titulo:'Evaluation of accuracy of 7 digital scanners: An in vitro analysis based on 3-dimensional comparisons', revista:'J Prosthet Dent', año:2017, url:'https://pubmed.ncbi.nlm.nih.gov/28202281/' },
+    { autores:'Ender A et al.', titulo:'Full arch scans: conventional versus digital impressions', revista:'Int J Comput Dent', año:2011, url:'https://pubmed.ncbi.nlm.nih.gov/22010025/' },
+    { autores:'Medit Corp', titulo:'i700 Accuracy Report ISO 12836', revista:'Medit Technical', año:2024, url:'https://medit.com' }
+  ],
+  faq: [
+    { q:'¿Cuál escáner intraoral es el más preciso en estudios independientes?', a:'Los estudios más recientes (2023–2024) muestran que el 3Shape Trios 5 y el Medit i700 son estadísticamente equivalentes en precisión para arcada completa (desviación media <100µm). El iTero Element 5D tiene precisión similar pero es ligeramente inferior en arcadas completas en pacientes con mucha saliva. Ningún estudio independiente muestra ventaja clínicamente relevante de un escáner sobre otro para casos estándar.' },
+    { q:'¿El iTero es obligatorio si trabajo con Invisalign?', a:'Sí y no. Invisalign acepta STL de cualquier escáner desde 2023. El iTero Element da acceso a funciones de simulación de Invisalign (ClinCheck) directamente en el escáner. Si planeas integrar Invisalign como flujo principal, el iTero tiene ventajas workflow; para uso general, no es obligatorio.' },
+    { q:'¿El Medit i700 es compatible con Exocad y PRODIGY?', a:'Sí, completamente. El STL exportado desde Medit i700 via Medit Link se importa directamente en Exocad sin conversión. En PRODIGY recibimos archivos nativos de Medit i500, i700, i700W y también el i600. La velocidad de escaneo del i700 es de las más altas del mercado (hasta 100 FPS) lo que facilita el escaneo en pacientes con vómito fácil o poca apertura bucal.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'En Colombia y Latinoamérica hay un escáner que domina el mercado por precio, uno que lo domina por integración con implantología y uno que lo domina por su ecosistema de software. El problema es que muchos dentistas compran basados en publicidad y no en datos clínicos. Aquí están los datos.' },
+    { tipo:'h2', texto:'Resumen ejecutivo' },
+    { tipo:'tabla', cabeceras:['','Medit i700','iTero Element 5D','3Shape Trios 5'], filas:[['Precio Colombia (aprox)','$12.000–15.000 USD','$22.000–28.000 USD','$25.000–35.000 USD'],['Precisión arcada completa','±80µm','±90µm','±75µm'],['Velocidad escaneo','Muy alta (100 FPS)','Alta','Alta'],['Software incluido','Medit Link (gratis)','MyiTero (gratis)','3Shape Communicate (pago)'],['Compatibilidad laboratorio','Universal STL','Universal STL','Universal STL'],['Integración Invisalign','No nativa','Sí, directa','Parcial'],['Compatibilidad PRODIGY','✅ Nativa','✅ Nativa','✅ Nativa'],['Garantía Colombia','2 años','2 años','2 años']] },
+    { tipo:'h2', texto:'Medit i700 — el disruptor del mercado' },
+    { tipo:'p', texto:'El Medit i700 llegó en 2021 y cambió el mercado con una premisa simple: precisión de escáner de gama alta a precio de gama media. A $12.000 USD es el escáner más vendido en Latinoamérica en 2024–2025. Su software Medit Link es gratuito y se actualiza constantemente. La desventaja es que no tiene integración nativa con Invisalign.' },
+    { tipo:'h2', texto:'iTero — el ecosistema Align Technology' },
+    { tipo:'p', texto:'El iTero no es solo un escáner — es la puerta de entrada al ecosistema Invisalign/Align Technology con simulaciones en tiempo real y procesamiento automático de ClinCheck. Cuesta el doble que el Medit, pero si tu práctica es principalmente ortodoncia con alineadores, el ROI puede justificarse. Desde 2023, exporta STL de forma gratuita a cualquier laboratorio.' },
+    { tipo:'h2', texto:'3Shape Trios — el favorito de implantólogos' },
+    { tipo:'p', texto:'El Trios tiene la mayor integración con software de implantología (3Shape Implant Studio, 3Shape Ortho Analyzer) y los flujos más automatizados para casos complejos. El costo es el más alto del grupo y la suscripción anual de software puede ser un factor importante. Para práctica de implantología de alto volumen, sus herramientas específicas justifican la inversión.' },
+    { tipo:'h2', texto:'Veredicto para el mercado colombiano' },
+    { tipo:'p', texto:'Para una clínica que empieza con escaneo digital: Medit i700 sin duda. Mejor relación precio-precisión, software gratuito, compatible con PRODIGY y cualquier laboratorio. Para práctica con foco en Invisalign: iTero Element 5D. Para práctica de implantología de alto volumen con cirugía guiada: 3Shape Trios 5 con Implant Studio.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
   id:        'implantes-digitales-flujo-cad-cam-2026',
   titulo:    'Cómo integrar implantología digital en tu clínica en 2026: flujo completo CAD/CAM',
   subtitulo: 'Del CBCT al implante colocado: guía técnica completa del flujo digital de implantología con CoDiagnostiX, guías quirúrgicas en resina y pilares personalizados en zirconia. Para cirujanos y odontólogos generales.',

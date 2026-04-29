@@ -149,6 +149,7 @@
         '<h4>Ecosistema Digital</h4>' +
         '<ul>' +
           '<li><a href="diseno-cad">Diseño CAD — Servicios</a></li>' +
+          '<li><a href="diseno-remoto">🌍 Diseño CAD Remoto</a></li>' +
           '<li><a href="flujo-diseno">Pedir Diseño CAD</a></li>' +
           '<li><a href="envia-tu-scanner">Envía tu Escaneo</a></li>' +
           '<li><a href="alejandro">🎨 Alejandro Carvajal CAD·CAM</a></li>' +
