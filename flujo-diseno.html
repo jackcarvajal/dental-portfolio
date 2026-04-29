@@ -291,36 +291,13 @@
         body.light-theme .tech-subtitle { color:rgba(0,130,180,.9); }
         body.light-theme .calc-total { background:linear-gradient(135deg,#f0ece0,#e8e2d0); }
     /* ── LEMON SQUEEZY + PAYPAL ── */
-    #btn-ls-init {
-        width:100%;padding:13px;border:none;border-radius:8px;cursor:pointer;
-        font-size:.9rem;font-weight:800;letter-spacing:.4px;
-        background:linear-gradient(135deg,#E7B008,#f0c430);
-        color:#1a1a1a;margin-top:10px;
-        display:flex;align-items:center;justify-content:center;gap:8px;
-        transition:opacity .2s,transform .2s;
-    }
-    #btn-ls-init:hover { opacity:.9;transform:translateY(-1px); }
-    #btn-ls-init:disabled { opacity:.5;cursor:not-allowed;transform:none; }
-    #btn-paypal-init {
-        width:100%;padding:11px;border:none;border-radius:8px;cursor:pointer;
-        font-size:.85rem;font-weight:700;letter-spacing:.3px;
-        background:rgba(0,48,135,0.15);border:1px solid rgba(0,156,222,0.35);
-        color:#009cde;margin-top:8px;
-        display:flex;align-items:center;justify-content:center;gap:8px;
-        transition:opacity .2s,transform .2s;
-    }
-    #btn-paypal-init:hover { opacity:.85;transform:translateY(-1px); }
-    #btn-paypal-init:disabled { opacity:.5;cursor:not-allowed;transform:none; }
-    #pp-container { margin-top:10px; min-height:50px; }
-    #pp-container.hidden { display:none; }
     .intl-fee-note {
         font-size:.7rem;color:#94a3b8;text-align:center;
         margin-top:6px;line-height:1.5;
     }
     body{ overflow-x: hidden;visibility:hidden}.hamburger-menu,.theme-toggle{display:none!important}
     </style>
-    <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
-    <!-- PayPal JS SDK — Client ID público por diseño de PayPal -->
+        <!-- PayPal JS SDK — Client ID público por diseño de PayPal -->
     <script src="https://www.paypal.com/sdk/js?client-id=AfJ71Yzfk4hmHF_hj6F9sdUqTLCK9tiImCegiXOTpScB81NhLLDuiKX2u37aY_E4swf8UO8QuC7jvaQr&currency=USD&intent=capture&locale=es_CO" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/auth-guard.js"></script>
@@ -743,32 +720,18 @@
               <div id="stripe-policy-text">Verificando tipo de cliente…</div>
             </div>
 
-            <!-- ── INTERNACIONAL: Stripe (primario) + LS + PayPal ── -->
+            <!-- ── INTERNACIONAL: Stripe ── -->
             <div id="ls-intl-section" style="position:relative;margin-top:12px;display:none;">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
                     <div style="flex:1;height:1px;background:rgba(255,255,255,.08);"></div>
-                    <span style="font-size:.7rem;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;">Pago Internacional · USD</span>
+                    <span style="font-size:.7rem;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;">Pago Internacional · Tarjeta</span>
                     <div style="flex:1;height:1px;background:rgba(255,255,255,.08);"></div>
                 </div>
-                <!-- STRIPE: botón primario -->
-                <button id="btn-stripe-init" onclick="initStripe()" style="width:100%;padding:13px;background:linear-gradient(135deg,#635bff,#4f46e5);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;">
+                <button id="btn-stripe-init" onclick="initStripe()" style="width:100%;padding:13px;background:linear-gradient(135deg,#635bff,#4f46e5);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;gap:8px;">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M13.479 9.883c-2.529-.706-3.349-1.119-3.349-1.958 0-.705.643-1.155 1.737-1.155 1.962 0 3.762.77 5.027 1.604l.758-4.63C16.133 2.884 14.364 2 12.148 2 8.337 2 5.5 4.176 5.5 7.666c0 3.107 2.132 4.614 5.607 5.578 2.375.647 3.036 1.15 3.036 1.983 0 .823-.741 1.244-1.96 1.244-1.843 0-4.022-.784-5.607-1.84L5.82 19.07C7.47 20.211 9.67 21 12.175 21c4.012 0 6.825-2.06 6.825-5.715 0-3.2-2.145-4.716-5.521-5.402z"/></svg>
                   💳 Pagar con tarjeta · Stripe
                 </button>
-                <button id="btn-ls-init" onclick="initLemonSqueezy()" style="width:100%;padding:11px;background:rgba(255,217,90,.1);border:1px solid rgba(255,217,90,.3);color:#ffd95a;border-radius:8px;font-weight:700;cursor:pointer;font-size:.85rem;margin-bottom:4px;">
-                    🍋 Segunda opción: Lemon Squeezy
-                </button>
-                <p class="intl-fee-note" id="ls-fee-note">
-                    <span id="ls-fee-label">Servicio de pago global</span> · <span id="ls-fee-pct">5.0%</span> + <span id="ls-fee-fijo">$0.50</span> USD incluidos
-                </p>
-                <button id="btn-paypal-init" onclick="initPayPal()">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.784l-1.175 7.436h3.918l.738-4.667h2.107c4.854 0 7.485-2.538 8.35-6.564z" fill="#009cde"/></svg>
-                    Segunda opción: PayPal
-                </button>
-                <p class="intl-fee-note" id="pp-fee-note">
-                    <span id="pp-fee-label">Procesamiento PayPal</span> · <span id="pp-fee-pct">4.4%</span> + <span id="pp-fee-fijo">$0.49</span> USD incluidos
-                </p>
-                <div id="pp-container" class="hidden"></div>
+                <p style="font-size:.72rem;color:#94a3b8;text-align:center;margin-top:6px;">Visa, Mastercard, American Express · Pago seguro SSL</p>
             </div>
 
             <!-- CONFIRMACIÓN DE PAGO -->
@@ -784,7 +747,7 @@
                             <option>Nequi</option><option>Daviplata</option>
                             <option>Nu</option><option>Breb</option>
                             <option>PSE / Tarjeta</option>
-                            <option>Lemon Squeezy</option><option>PayPal</option><option>Otro</option>
+                            <option>PayPal</option><option>Otro</option>
                         </select>
                         <input type="text" id="pago_titular" placeholder="Nombre del titular" maxlength="50" autocomplete="name"
                                style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:.86rem;">
@@ -1402,383 +1365,13 @@
         }
     </script>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         LEMON SQUEEZY INTEGRATION
-         Llama a verify-price → crea pre-orden → abre checkout LS → redirige a success.html
-         PENDIENTE: completar TU_STORE_ID y TU_VARIANT_ID tras crear producto en LS dashboard
-    ══════════════════════════════════════════════════════════════ -->
+    
+    <!-- Stripe único método de pago internacional -->
     <script>
     const TASA_COP_USD = 4200; // Actualizar mensualmente
-    const LS_STORE_ID   = 'TU_STORE_ID';   // ← reemplazar: app.lemonsqueezy.com → Settings → Store
-    const LS_VARIANT_ID = 'TU_VARIANT_ID'; // ← reemplazar: Products → tu producto → Variant ID
-
-    // Tasas con valores por defecto; se sobreescriben en tiempo real desde Supabase
-    const PLATFORM_FEES = {
-        ls:     { pct: 5.00, fijo: 0.50, nombre: 'Servicio de pago global' },
-        paypal: { pct: 4.40, fijo: 0.49, nombre: 'Procesamiento PayPal'    }
-    };
-
-    function calcFeeUSD(totalCOP, plataforma) {
-        const f = PLATFORM_FEES[plataforma];
-        const baseUSD = totalCOP / TASA_COP_USD;
-        return parseFloat(((baseUSD * f.pct / 100) + f.fijo).toFixed(2));
-    }
-
-    /* Valida el formulario antes del checkout */
-    function validarFormularioBase() {
-        const nombre   = document.getElementById('nombreCliente')?.value.trim();
-        const wa       = document.getElementById('whatsappCliente')?.value.trim();
-        const ciudad   = document.getElementById('ciudad')?.value.trim();
-        const paciente = document.getElementById('nombrePaciente')?.value.trim();
-        const espec    = document.getElementById('especialidad')?.value;
-        const link     = document.getElementById('linkSTL')?.value.trim();
-        if (!nombre)         { showErr('nombreCliente',  'Nombre requerido'); return false; }
-        if (!wa || wa.length !== 10) { showErr('whatsappCliente','WhatsApp: 10 dígitos'); return false; }
-        if (!ciudad)         { showErr('ciudad',         'Ciudad requerida'); return false; }
-        if (!paciente)       { showErr('nombrePaciente', 'Nombre del paciente requerido'); return false; }
-        if (!espec)          { showErr('especialidad',   'Selecciona especialidad'); return false; }
-        if (!STATE.subtipoId){ fdToast('Selecciona el tipo de diseño CAD.'); return false; }
-        if (!link)           { showErr('linkSTL',        'Link de archivos requerido'); return false; }
-        return true;
-    }
-
-    /* ── DETECCIÓN CLIENTE NUEVO / EXISTENTE ─────────────────────────────
-       Nuevo:     nunca ha pedido → paga 100%
-       Existente: ya tiene pedidos → paga 50% abono
-    ─────────────────────────────────────────────────────────────────── */
-    var _esClienteNuevo = null; // null = no verificado aún
-
-    async function detectarTipoCliente() {
-        if (_esClienteNuevo !== null) return _esClienteNuevo;
-        try {
-            const sb   = getSupabase();
-            const user = (await sb.auth.getUser())?.data?.user;
-            if (!user) { _esClienteNuevo = true; return true; } // sin sesión = nuevo
-            const { count } = await sb
-                .from('pedidos')
-                .select('*', { count: 'exact', head: true })
-                .eq('doctor_uid', user.id)
-                .neq('estado', 'Cancelado');
-            _esClienteNuevo = (count === 0);
-        } catch { _esClienteNuevo = true; }
-        return _esClienteNuevo;
-    }
-
-    async function mostrarPoliticaPago() {
-        const banner = document.getElementById('stripe-policy-banner');
-        const text   = document.getElementById('stripe-policy-text');
-        if (!banner || !text) return;
-        banner.style.display = 'block';
-        const esNuevo = await detectarTipoCliente();
-        const total   = calcularTotal();
-        const cobrar  = esNuevo ? total : Math.round(total * 0.5);
-        const fmtCobrar = fmtCLP(cobrar);
-        if (esNuevo) {
-            text.innerHTML = '🆕 <strong>Cliente nuevo</strong> — se requiere <strong style="color:#fbbf24;">pago completo: ' + fmtCobrar + '</strong> para iniciar.';
-            const pb = document.querySelector('.payment-banner');
-            if (pb) pb.textContent = '💵 PAGO 100% — CLIENTE NUEVO';
-        } else {
-            text.innerHTML = '✅ <strong>Cliente existente</strong> — pagas <strong style="color:#4ade80;">abono 50%: ' + fmtCobrar + '</strong> hoy · saldo 50% contra entrega.';
-            const pb = document.querySelector('.payment-banner');
-            if (pb) pb.textContent = '💚 ABONO 50% · SALDO 50% CONTRA ENTREGA';
-        }
-    }
-
-    /* Llamar cuando se active la sección internacional */
-    document.addEventListener('DOMContentLoaded', function() {
-        const intlSec = document.getElementById('ls-intl-section');
-        if (intlSec) {
-            new MutationObserver(function(mutations) {
-                mutations.forEach(function(m) {
-                    if (m.attributeName === 'style' && intlSec.style.display !== 'none') {
-                        mostrarPoliticaPago();
-                    }
-                });
-            }).observe(intlSec, { attributes: true });
-        }
-    });
-
-    /* ── STRIPE CHECKOUT ─────────────────────────────────────────────── */
-    async function initStripe() {
-        if (!validarFormularioBase()) return;
-
-        const btn = document.getElementById('btn-stripe-init');
-        btn.disabled = true;
-        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="white" style="animation:spin .8s linear infinite"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-14a6 6 0 0 0-6 6h2a4 4 0 0 1 4-4V6z"/></svg> Procesando…';
-
-        const esNuevo  = await detectarTipoCliente();
-        const total    = calcularTotal();
-        const nombre   = document.getElementById('nombreCliente').value.trim();
-        const wa       = document.getElementById('whatsappCliente').value.trim();
-        const email    = document.getElementById('emailCliente')?.value.trim() || '';
-        const cantidad = parseInt(document.getElementById('cantidad')?.value || '1', 10);
-
-        // Crear orden previa en Supabase
-        const _r0 = new Uint8Array(5); crypto.getRandomValues(_r0);
-        const orderId = 'CAD-STR-' + Array.from(_r0).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
-        const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
-        if (_sb) {
-            await _sb.from('pedidos').insert([{
-                codigo:                orderId,
-                doctor:                sanitizar(nombre),
-                whatsapp:              wa,
-                servicio:              STATE.subtipoNombre || STATE.categoriaNombre,
-                material:              STATE.categoriaKey,
-                submaterial:           STATE.subtipoId,
-                cantidad:              cantidad,
-                precio_total:          total,
-                estado:                'Pendiente_Stripe',
-                link_stl:              document.getElementById('linkSTL')?.value.trim() || '',
-                flujo:                 'diseno',
-                terminos_aceptados_at: new Date().toISOString()
-            }]).then(function(r) { if (r.error) console.warn('[PRODIGY] Stripe pre-orden:', r.error.message); });
-        }
-
-        try {
-            const res = await fetch('/api/stripe-checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    amount_cop:       total,
-                    description:      (STATE.subtipoNombre || STATE.categoriaNombre) + ' · ' + cantidad + ' u.',
-                    pedido_id:        orderId,
-                    doctor_email:     email,
-                    es_nuevo_cliente: esNuevo,
-                    success_url:      'https://prodigylabdental.com/app/success.html?pedido=' + orderId + '&session_id={CHECKOUT_SESSION_ID}',
-                    cancel_url:       window.location.href
-                })
-            });
-            const data = await res.json();
-            if (data.url) {
-                if (window.ProdigyAnalytics) ProdigyAnalytics.trackPaymentIntent('stripe', total, orderId);
-                window.location.href = data.url;
-            } else {
-                throw new Error(data.error || 'Sin URL de pago');
-            }
-        } catch (e) {
-            btn.disabled = false;
-            btn.innerHTML = '💳 Pagar con tarjeta · Stripe';
-            fdToast('Error al iniciar pago: ' + e.message);
-        }
-    }
-
-    async function initLemonSqueezy() {
-        if (!validarFormularioBase()) return;
-
-        const btnInit = document.getElementById('btn-ls-init');
-        btnInit.disabled = true;
-        btnInit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando precio…';
-
-        // 1. Verificar precio en servidor
-        let verified;
-        try {
-            const resp = await fetch(
-                'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/verify-price',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + SUPABASE_ANON
-                    },
-                    body: JSON.stringify({ precio_base: calcularTotal(), pasarela: 'ls' })
-                }
-            );
-            verified = await resp.json();
-            if (!resp.ok) throw new Error(verified.error || 'Error verify-price');
-        } catch (e) {
-            btnInit.disabled = false;
-            btnInit.innerHTML = '🍋 Pagar con Lemon Squeezy (USD)';
-            fdToast('Error al verificar precio. Intenta de nuevo.'); return;
-        }
-
-        // total_usd = precio base USD + tarifa de plataforma dinámica
-        const baseUSD  = (calcularTotal() / TASA_COP_USD);
-        const totalUSD = parseFloat((baseUSD + calcFeeUSD(calcularTotal(), 'ls')).toFixed(2));
-        if (!totalUSD || totalUSD < 0.5) {
-            btnInit.disabled = false;
-            fdToast('Monto mínimo: $0.50 USD'); return;
-        }
-
-        // 2. Crear pre-orden en Supabase
-        const _r0 = new Uint8Array(5); crypto.getRandomValues(_r0);
-        const orderId  = 'CAD-LS-' + Array.from(_r0).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
-        const nombre   = document.getElementById('nombreCliente').value.trim();
-        const wa       = document.getElementById('whatsappCliente').value.trim();
-        const link     = document.getElementById('linkSTL').value.trim();
-        const cantidad = parseInt(document.getElementById('cantidad')?.value || '1', 10);
-
-        const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
-        if (_sb) {
-            const { error: _e } = await _sb.from('pedidos').insert([{
-                codigo:                orderId,
-                doctor:                sanitizar(nombre),
-                whatsapp:              wa,
-                servicio:              STATE.subtipoNombre || STATE.categoriaNombre,
-                material:              STATE.categoriaKey,
-                submaterial:           STATE.subtipoId,
-                cantidad:              cantidad,
-                total:                 Math.round(totalUSD * TASA_COP_USD),
-                total_usd:             totalUSD,
-                estado:                'Pendiente_LS',
-                link_stl:              link,
-                flujo:                 'diseno',
-                terminos_aceptados_at: new Date().toISOString(),
-                paypal_ref:            verified.referencia_pre,
-                seguro_garantia_activo: false,
-                costo_envio:           0
-            }]);
-            if (_e) console.warn('[PRODIGY] LS pre-orden no guardada:', _e.message);
-        }
-
-        // 3. Redirigir a Lemon Squeezy checkout con precio dinámico
-        const centavos  = Math.round(totalUSD * 100);
-        const successUrl = encodeURIComponent(
-            'https://prodigylabdental.com/app/success.html?pedido=' + orderId
-        );
-        const lsUrl = 'https://' + LS_STORE_ID + '.lemonsqueezy.com/buy/' + LS_VARIANT_ID
-            + '?checkout[custom_price]=' + centavos
-            + '&checkout[custom][pedido_id]=' + orderId
-            + '&checkout[success_url]=' + successUrl;
-
-        window.location.href = lsUrl;
-    }
-
-    /* ── PAYPAL (segunda opción internacional) ──────────────────────────── */
-    async function initPayPal() {
-        if (!validarFormularioBase()) return;
-
-        const btnInit = document.getElementById('btn-paypal-init');
-        const ppCont  = document.getElementById('pp-container');
-
-        btnInit.disabled = true;
-        btnInit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando…';
-
-        let verified;
-        try {
-            const resp = await fetch(
-                'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/verify-price',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON },
-                    body: JSON.stringify({ precio_base: calcularTotal(), pasarela: 'paypal' })
-                }
-            );
-            verified = await resp.json();
-            if (!resp.ok) throw new Error(verified.error || 'Error verify-price');
-        } catch (e) {
-            btnInit.disabled = false;
-            btnInit.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.784l-1.175 7.436h3.918l.738-4.667h2.107c4.854 0 7.485-2.538 8.35-6.564z" fill="#009cde"/></svg> Segunda opción: PayPal';
-            fdToast('Error al verificar precio. Intenta de nuevo.'); return;
-        }
-
-        const totalUSD = verified.total_usd;
-        if (!totalUSD || totalUSD < 0.5) { btnInit.disabled = false; fdToast('Monto mínimo: $0.50 USD'); return; }
-
-        ppCont.innerHTML = '';
-        ppCont.classList.remove('hidden');
-        btnInit.style.display = 'none';
-
-        if (typeof paypal === 'undefined') {
-            ppCont.innerHTML = '<p style="color:#f87171;font-size:.8rem;text-align:center">PayPal SDK no cargó. Recarga la página.</p>';
-            return;
-        }
-
-        paypal.Buttons({
-            style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'pay', height: 40 },
-            createOrder: (data, actions) => actions.order.create({
-                purchase_units: [{ amount: { value: totalUSD.toFixed(2), currency_code: 'USD' },
-                    description: 'PRODIGY CAD: ' + (STATE.subtipoNombre || STATE.categoriaNombre),
-                    custom_id: verified.referencia_pre }]
-            }),
-            onApprove: async (data, actions) => {
-                ppCont.innerHTML = '<p style="color:#94a3b8;font-size:.8rem;text-align:center"><i class="fas fa-spinner fa-spin"></i> Procesando…</p>';
-                let order;
-                try { order = await actions.order.capture(); }
-                catch (e) { ppCont.innerHTML = '<p style="color:#f87171;font-size:.8rem;text-align:center">Error PayPal: ' + e.message + '</p>'; return; }
-                submitOrdenPayPal(order, totalUSD, verified);
-            },
-            onCancel: () => {
-                ppCont.classList.add('hidden');
-                btnInit.style.display = '';
-                btnInit.disabled = false;
-            },
-            onError: (err) => {
-                console.error('[PRODIGY] PayPal error:', err);
-                ppCont.innerHTML = '<p style="color:#f87171;font-size:.8rem;text-align:center">Error PayPal. Intenta con Lemon Squeezy.</p>';
-                setTimeout(() => { ppCont.classList.add('hidden'); btnInit.style.display = ''; btnInit.disabled = false; }, 3000);
-            }
-        }).render('#pp-container');
-    }
-
-    function submitOrdenPayPal(paypalOrder, totalUSD, verified) {
-        const nombre   = document.getElementById('nombreCliente').value.trim();
-        const wa       = document.getElementById('whatsappCliente').value.trim();
-        const link     = document.getElementById('linkSTL').value.trim();
-        const cantidad = parseInt(document.getElementById('cantidad')?.value || '1', 10);
-        const _r0 = new Uint8Array(5); crypto.getRandomValues(_r0);
-        const orderId   = 'CAD-PP-' + Array.from(_r0).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
-        const payerName = (paypalOrder.payer?.name?.given_name || '') + ' ' + (paypalOrder.payer?.name?.surname || '');
-        const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
-        if (_sb) {
-            _sb.from('pedidos').insert([{
-                codigo: orderId, doctor: sanitizar(nombre), whatsapp: wa,
-                servicio: STATE.subtipoNombre || STATE.categoriaNombre,
-                material: STATE.categoriaKey, submaterial: STATE.subtipoId,
-                cantidad, total: Math.round(totalUSD * TASA_COP_USD), total_usd: totalUSD,
-                estado: 'Pagado_PayPal', link_stl: link, flujo: 'diseno',
-                terminos_aceptados_at: new Date().toISOString(),
-                paypal_order_id: paypalOrder.id, paypal_payer: payerName.trim(),
-                paypal_email: paypalOrder.payer?.email_address || '',
-                paypal_ref: verified.referencia_pre,
-                seguro_garantia_activo: false, costo_envio: 0
-            }]).then(({ error: _e }) => { if (_e) console.warn('[PRODIGY] PP pedido:', _e.message); });
-        }
-        const elId = document.getElementById('exito-id');
-        const elCli = document.getElementById('exito-cliente');
-        const elTot = document.getElementById('exito-total');
-        if (elId)  elId.textContent  = orderId;
-        if (elCli) elCli.textContent = sanitizar(nombre);
-        if (elTot) elTot.textContent = '$' + Math.round(totalUSD * TASA_COP_USD).toLocaleString('es-CO') + ' COP (USD ' + totalUSD.toFixed(2) + ')';
-        const payBtns = document.querySelector('#modal-exito [style*="display:flex;gap:8px"]');
-        if (payBtns) payBtns.textContent = '✓ Pago PayPal confirmado · ID: ' + paypalOrder.id;
-        document.getElementById('modal-exito')?.classList.add('active');
-    }
     </script>
 
-    <!-- FLOTANTES UX -->
-
-    <noscript><p style="text-align:center;padding:2rem;color:#94a3b8">Esta página requiere JavaScript. <a href="https://wa.me/573212816716" style="color:#D946A6">Contáctanos por WhatsApp</a>.</p></noscript>
-
-    <div class="ux-floaters">
-        <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver arriba">
-            <i class="fas fa-arrow-up"></i>
-        </button>
-        <button class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro" aria-label="Modo claro/oscuro">🌙</button>
-        <button class="ux-btn" onclick="toggleTranslate()" title="Traducir página" aria-label="Traducir página">🌐</button>
-        <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte%20r%C3%A1pido." class="ux-btn" target="_blank" rel="noopener noreferrer" title="Soporte WhatsApp" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);">
-            <i class="fab fa-whatsapp" style="color:#25D366;"></i>
-        </a>
-    </div>
-    <div id="google_translate_element" style="position:fixed;bottom:90px;right:80px;z-index:9999;display:none;background:rgba(0,0,0,0.92);border:1px solid rgba(212,175,55,0.3);border-radius:12px;padding:10px 14px;"></div>
-
-
-    <script src="js/supabase-client.js"></script>
-    <script src="js/upload-guard.js"></script>
-    <script src="js/pagos.js"></script>
-    <script>
-    // Detección geográfica: Colombia → local / Otro país → LS + PayPal
-    (async function() {
-        try {
-            const pais = await detectarPais();
-            const esCO = pais === 'CO';
-            const co   = document.getElementById('pago-co');
-            const intl = document.getElementById('ls-intl-section');
-            if (co)   co.style.display   = esCO ? '' : 'none';
-            if (intl) intl.style.display = esCO ? 'none' : '';
-        } catch(e) { /* fallback: se muestra todo */ }
-    })();
-    </script>
-    <script>
+        <script>
     function pagarConWompi() {
         const totalEl = document.getElementById('calc-total');
         const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;

@@ -22,6 +22,7 @@ const PRECACHE = [
   '/guia-tecnica',
   '/calidad',
   '/diseno-remoto',
+  '/en/global-design',
   '/manifest.json',
   '/assets/prodigy-preview.jpg',
   '/assets/icons/icon-192.png',
