@@ -774,6 +774,119 @@ const { error } = await sb.storage.from('mi-bucket').upload(path, file, { upsert
 
 ---
 
+## 20. STRIPE CHECKOUT — PATRÓN DE PAGO
+
+### Cuándo usar
+Toda página de flujo de pedido que cobre dinero. Reemplaza Lemon Squeezy (dado de baja 2026-04-29).
+
+### Regla de cobro
+- **Cliente nuevo** (0 pedidos en Supabase): 100% upfront
+- **Cliente existente**: 50% abono al iniciar · 50% contra entrega
+
+### Implementación frontend
+
+```javascript
+// 1. Detectar tipo de cliente
+async function detectarTipoCliente() {
+    const sb = getSupabase();
+    const user = (await sb.auth.getUser())?.data?.user;
+    if (!user) return true; // sin sesión = nuevo
+    const { count } = await sb.from('pedidos')
+        .select('*', { count:'exact', head:true })
+        .eq('doctor_uid', user.id).neq('estado','Cancelado');
+    return count === 0;
+}
+
+// 2. Llamar al proxy Cloudflare Function
+const res = await fetch('/api/stripe-checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        amount_cop:       total,       // monto total del pedido en COP
+        description:      'Servicio · X unidades',
+        pedido_id:        orderId,
+        doctor_email:     email,
+        es_nuevo_cliente: esNuevo,     // boolean
+        success_url:      'https://prodigylabdental.com/app/success.html?pedido=' + orderId + '&session_id={CHECKOUT_SESSION_ID}',
+        cancel_url:       window.location.href
+    })
+});
+const { url } = await res.json();
+if (url) window.location.href = url;
+```
+
+### Cloudflare Function: /functions/api/stripe-checkout.js
+- Lee `STRIPE_SECRET_KEY` de env vars (nunca en código)
+- Aplica cobrar_pct: nuevo → 1.0, existente → 0.5
+- Crea Stripe Checkout Session en COP
+- CORS restringido a prodigylabdental.com
+
+### Variable de entorno requerida
+```
+Cloudflare Pages → Settings → Environment variables:
+STRIPE_SECRET_KEY = sk_live_...  (Production)
+STRIPE_SECRET_KEY = sk_test_...  (Preview)
+```
+
+### CSP requerido en _headers
+```
+script-src: https://js.stripe.com
+connect-src: https://api.stripe.com
+frame-src:   https://hooks.stripe.com
+```
+
+### NUNCA
+- Poner sk_live_ en código fuente
+- Usar Lemon Squeezy (cuenta denegada 2026-04-29)
+
+---
+
+## 21. GEO-DETECCIÓN — js/geo-detect.js
+
+### Cuándo usar
+Landing pages que sirven a Colombia y mercado internacional (diseno-remoto, alejandro, en/global-design).
+
+### Qué hace
+- Detecta país por IP via ipapi.co (gratis hasta 1000 req/día)
+- Persiste en sessionStorage (no repite la llamada)
+- Expone `window.ProdigyGeo.get()` → `{ pais, moneda, esColombia, esMexico, esLatam, esEuropa }`
+- Muestra banner bilingüe a visitantes fuera de Colombia → /en/global-design
+- Aplica precios `data-price-cop` / `data-price-usd` automáticamente
+
+### Cargado automáticamente
+`footer.js` inyecta `_loadScript('/js/geo-detect.js')` en todas las páginas.
+
+### Uso manual en código
+```javascript
+window.ProdigyGeo.onReady(function(geo) {
+    if (!geo.esColombia) {
+        // mostrar precios en USD, botón inglés, etc.
+    }
+});
+```
+
+---
+
+## 22. MARCA PERSONAL — /alejandro
+
+### Patrón de página personal/portfolio (diferente de página de empresa)
+- Paleta: near-black `#080808` + dorado cálido `#c9a96e` (NO usar colores PRODIGY)
+- Tipografía: Playfair Display (serif) para nombre + Inter para cuerpo
+- Sin header.js branding PRODIGY visible — header.js se carga pero la página tiene identidad propia
+- i18n con objeto `T = { es:{...}, en:{...} }` y `setLang()` sin librerías externas
+- Chatbot Exocad: usa `/api/gemini` con system prompt especializado en Exocad Wiki
+- Portafolio: misma tabla Supabase `casos_portafolio`, misma query
+- WhatsApp: número personal del diseñador (NO número PRODIGY)
+
+### Subdominio independiente
+```
+Cloudflare DNS → CNAME alejandro → dental-portfolio.pages.dev
+Cloudflare Pages → Custom domains → alejandro.prodigylabdental.com
+```
+Próximo paso: dominio propio `alejandrocarvajal.dental` (~$15/año Namecheap).
+
+---
+
 ## 19. MANTENIMIENTO DE ESTE ARCHIVO
 
 **Regla:** Cada vez que se implemente un patrón nuevo que deba repetirse, documentarlo aquí ANTES de hacer commit.

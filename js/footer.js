@@ -151,6 +151,8 @@
           '<li><a href="diseno-cad">Diseño CAD — Servicios</a></li>' +
           '<li><a href="flujo-diseno">Pedir Diseño CAD</a></li>' +
           '<li><a href="envia-tu-scanner">Envía tu Escaneo</a></li>' +
+          '<li><a href="alejandro">🎨 Alejandro Carvajal CAD·CAM</a></li>' +
+          '<li><a href="soporte-tecnico">Soporte XTCERA & Alistar</a></li>' +
           '<li><a href="journal">PRODIGY Journal</a></li>' +
           '<li><a href="seguimiento-caso">Seguimiento en Vivo</a></li>' +
         '</ul>' +
