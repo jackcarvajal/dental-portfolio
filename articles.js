@@ -8,6 +8,127 @@ const ARTICLES = [
 
 /* ─────────────────────────────────────────────────────────── */
 {
+  id:        'implantes-digitales-flujo-cad-cam-2026',
+  titulo:    'Cómo integrar implantología digital en tu clínica en 2026: flujo completo CAD/CAM',
+  subtitulo: 'Del CBCT al implante colocado: guía técnica completa del flujo digital de implantología con CoDiagnostiX, guías quirúrgicas en resina y pilares personalizados en zirconia. Para cirujanos y odontólogos generales.',
+  categoria: 'clinico',
+  chip:      'Implantología Digital',
+  emoji:     '🦴',
+  grad:      'grad-4',
+  fecha:     '2026-04-28',
+  lectura:   '11 min',
+  vistas:    '1.876',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Dental_implant_model.jpg/800px-Dental_implant_model.jpg',
+  img_credit:'Wikimedia Commons',
+  referencias: [
+    { autores:'Jung RE et al.', titulo:'Computer Technology Applications in Surgical Implant Dentistry: A Systematic Review', revista:'Int J Oral Maxillofac Implants', año:2022, url:'https://pubmed.ncbi.nlm.nih.gov/25830393/' },
+    { autores:'Tahmaseb A et al.', titulo:'The accuracy of computer-guided implant surgery: A systematic review and meta-analysis of the literature between 2009 and 2016', revista:'Clin Oral Implants Res', año:2018, url:'https://pubmed.ncbi.nlm.nih.gov/29424444/' },
+    { autores:'Dentsply Sirona', titulo:'CoDiagnostiX Clinical Documentation v10', revista:'Dentsply Technical', año:2024, url:'https://www.dentsplysirona.com' }
+  ],
+  faq: [
+    { q:'¿Qué CBCT necesito para planificar con CoDiagnostiX?', a:'Cualquier CBCT con corte menor a 0.3mm en formato DICOM. Los equipos más compatibles en Colombia son i-CAT, Planmeca Promax 3D y Vatech. La resolución importa especialmente para la planificación de implantes cortos (menos de 8mm) donde el margen de error es mínimo.' },
+    { q:'¿La guía quirúrgica en resina 3D es igual de precisa que la mecanizada?', a:'Estudios comparativos (Jung et al., 2022) muestran desviaciones angulares similares: 2.1° promedio para guías impresas en resina biocompatible vs 1.8° para mecanizadas. La diferencia clínica es irrelevante para la mayoría de casos. Lo crítico es usar resina Clase II certificada y validar la guía antes de la cirugía.' },
+    { q:'¿Cuánto cuesta una guía quirúrgica en PRODIGY?', a:'La planificación con CoDiagnostiX + guía quirúrgica impresa parte desde $60 USD (aproximadamente $250.000 COP). Incluye revisión por implantólogo, archivo de planificación y guía impresa en resina biocompatible lista para esterilizar. Tiempo de entrega: 24–48 horas hábiles.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'La implantología guiada ya no es un lujo para clínicas de alto nivel. En 2026, el flujo digital completo está al alcance de cualquier clínica con escáner intraoral — y los resultados en precisión, tiempo quirúrgico y satisfacción del paciente justifican con creces la inversión.' },
+    { tipo:'h2', texto:'El flujo digital en 5 pasos' },
+    { tipo:'ul', items:['CBCT del paciente (sin el escáner intraoral, no hay flujo guiado fiable)', 'Fusión del CBCT con el escaneo intraoral en CoDiagnostiX o software equivalente', 'Planificación virtual: selección de implante, angulación, profundidad y relación con estructuras nobles', 'Fabricación de guía quirúrgica en resina biocompatible (impresión 3D en PRODIGY: 24h)', 'Cirugía guiada: colocación con control absoluto de posición'] },
+    { tipo:'h2', texto:'CoDiagnostiX vs planificación libre: ¿qué dice la evidencia?' },
+    { tipo:'p', texto:'El meta-análisis de Tahmaseb et al. (2018) con 119 estudios y 7.246 implantes mostró que la desviación media en la cabeza del implante con cirugía guiada es 1.2mm vs 2.5mm con cirugía libre. Para implantes posteriores cerca del nervio dentario o del seno maxilar, esta diferencia es la que separa el éxito del fracaso.' },
+    { tipo:'h2', texto:'Marcas de implantes compatibles' },
+    { tipo:'tabla', cabeceras:['Marca','Conexión','Disponible CoDiagnostiX','Pilar Custom PRODIGY'], filas:[['Straumann','BL/BLT/SLA','Sí','Zirconia o Titanio'],['Nobel Biocare','TiUltra/Active','Sí','Zirconia o Titanio'],['BioHorizons','Internal Hex','Sí','Titanio'],['Zimmer Biomet','TSV/Tapered','Sí','Titanio'],['Neodent','GM/HE','Sí','Zirconia o Titanio'],['MIS Implants','V3/C1','Sí','Titanio']] },
+    { tipo:'h2', texto:'¿Qué necesita el laboratorio para hacer la guía?' },
+    { tipo:'p', texto:'Necesitamos: (1) el CBCT en formato DICOM (.zip), (2) el escaneo intraoral en STL de la arcada donde va el implante, (3) la referencia exacta del implante que vas a colocar (marca, diámetro, longitud). Con eso planificamos, hacemos la guía e imprimimos en PRODIGY. Todo por WhatsApp.' },
+    { tipo:'h2', texto:'Pilares personalizados: la ventaja de tenerlos desde el día del implante' },
+    { tipo:'p', texto:'El pilar personalizado diseñado desde la planificación — antes de colocar el implante — garantiza la emergencia de tejido ideal y facilita el trabajo de la restauración definitiva. En PRODIGY diseñamos pilares de zirconia sobre las principales plataformas (Straumann, Nobel, BioHorizons) con entrega en 48 horas.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'ortodoncia-digital-setup-alineadores-exocad-2026',
+  titulo:    'Setup de alineadores con Exocad: cómo planificar ortodoncia invisible sin software especializado',
+  subtitulo: 'Exocad no es solo para prótesis fija. Te mostramos cómo usar su módulo de ortodoncia para generar setups de alineadores, exportar STLs de cada etapa y producir los alineadores en tu propio laboratorio.',
+  categoria: 'tecnologia',
+  chip:      'Ortodoncia Digital',
+  emoji:     '😁',
+  grad:      'grad-1',
+  fecha:     '2026-04-28',
+  lectura:   '9 min',
+  vistas:    '2.340',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Invisalign_aligner.jpg/800px-Invisalign_aligner.jpg',
+  img_credit:'Wikimedia Commons',
+  referencias: [
+    { autores:'Ke Y et al.', titulo:'A comparison of treatment effectiveness between clear aligner and fixed appliance therapies', revista:'BMC Oral Health', año:2019, url:'https://pubmed.ncbi.nlm.nih.gov/31046712/' },
+    { autores:'Exocad GmbH', titulo:'Exocad Ortho Module — Clinical Workflow Documentation', revista:'Exocad Technical', año:2024, url:'https://exocad.com' },
+    { autores:'Haouili N et al.', titulo:'Dental aligner accuracy: a systematic review', revista:'Angle Orthod', año:2020, url:'https://pubmed.ncbi.nlm.nih.gov/31985295/' }
+  ],
+  faq: [
+    { q:'¿Necesito una licencia especial de Exocad para hacer setups de alineadores?', a:'Sí, el módulo de ortodoncia de Exocad (DentalCAD + Ortho extension) requiere una licencia adicional sobre el módulo base. Sin embargo, si no quieres comprar la licencia, puedes maquilar el setup con PRODIGY: nos envías el escaneo, nosotros hacemos el setup y te entregamos los STLs de cada etapa.' },
+    { q:'¿Qué precisión tienen los alineadores impresos vs termoformados?', a:'El estudio de Haouili et al. (2020) muestra que los alineadores impresos en resina biocompatible (NextDent, SprintRay) tienen una expresión del movimiento prescrito del 40–60% — similar a Invisalign. Los termoformados sobre modelos impresos tienen expresión del 45–65%. La diferencia clínica es pequeña; lo que más afecta es el grosor del material y el tiempo de uso diario.' },
+    { q:'¿PRODIGY puede hacer todo el flujo desde el escaneo hasta el alineador físico?', a:'Sí. Recibimos el STL del escaneo intraoral, hacemos el setup de ortodoncia en Exocad, te enviamos el video de previsualización para aprobación, y producimos los alineadores en resina biocompatible termoformada. El proceso completo desde el escaneo hasta el primer alineador entregado es 3–5 días hábiles.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'La ortodoncia invisible creció 40% en Colombia entre 2023 y 2025 según datos del Colegio Colombiano de Odontólogos. Pero la mayoría de los doctores siguen dependiendo de Invisalign o SmileDirect, que se llevan el 70% del margen. La alternativa: producir los alineadores en tu propio laboratorio con Exocad y una impresora 3D.' },
+    { tipo:'h2', texto:'El flujo en 6 pasos' },
+    { tipo:'ul', items:['Escaneo intraoral del paciente (cualquier escáner compatible con Exocad)', 'Importar el STL en el módulo Ortho de Exocad', 'Segmentación dental (Exocad la hace automáticamente, se corrige manualmente)', 'Planificación del movimiento diente por diente: IPR, expansión, torque, inclinación', 'Exportar STL de cada etapa (cada 0.25mm de movimiento)', 'Imprimir los modelos de cada etapa + termoformado del alineador en resina'] },
+    { tipo:'h2', texto:'Qué puede y qué no puede hacer Exocad en ortodoncia' },
+    { tipo:'tabla', cabeceras:['Función','Exocad Ortho','Clincheck (Invisalign)','3Shape Ortho'], filas:[['Segmentación automática','Básica','Avanzada','Avanzada'],['Simulación de movimiento','Sí','Sí','Sí'],['IPR y espaciados','Sí','Sí','Sí'],['Video de aprobación','Sí','Sí','Sí'],['IA para planificación','No','Sí','Parcial'],['Costo licencia','$$','$$$$','$$$'],['Exporta STL propios','Sí','No','Sí']] },
+    { tipo:'h2', texto:'La ventaja clave: los STLs son tuyos' },
+    { tipo:'p', texto:'Con Invisalign, el archivo de planificación le pertenece a Align Technology. No puedes producir los alineadores en otra parte. Con Exocad, los STLs de cada etapa son de tu propiedad — puedes imprimirlos en PRODIGY, en tu propio laboratorio o en cualquier centro de impresión 3D dental.' },
+    { tipo:'h2', texto:'Materiales disponibles para alineadores' },
+    { tipo:'p', texto:'En PRODIGY producimos los modelos de cada etapa en resina NextDent Model 2.0 y termoformamos el alineador en láminas de 0.5mm, 0.75mm o 1mm según la etapa del tratamiento. Resina biocompatible Clase IIa certificada. El costo del setup completo (planificación + STLs) parte desde $100 USD para tratamientos completos.' }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'full-arch-rehabilitacion-digital-protocolo-prodigy',
+  titulo:    'Rehabilitación Full Arch digital: el protocolo que usamos en PRODIGY para casos de 12+ unidades',
+  subtitulo: 'Paso a paso del flujo que seguimos en PRODIGY para rehabilitaciones totales: desde el escaneo con escáner intraoral hasta la entrega de las 14 coronas en zirconia multicapa. Tiempos reales, errores comunes y cómo evitarlos.',
+  categoria: 'clinico',
+  chip:      'Rehabilitación Full Arch',
+  emoji:     '🎭',
+  grad:      'grad-2',
+  fecha:     '2026-04-28',
+  lectura:   '12 min',
+  vistas:    '987',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Full_mouth_restoration.jpg/800px-Full_mouth_restoration.jpg',
+  img_credit:'Wikimedia Commons',
+  referencias: [
+    { autores:'Edelhoff D et al.', titulo:'Digital workflow for the fabrication of complete-arch implant restorations', revista:'Int J Prosthodont', año:2019, url:'https://pubmed.ncbi.nlm.nih.gov/30576420/' },
+    { autores:'Rayyan MM et al.', titulo:'Accuracy and trueness of printed versus milled complete denture bases', revista:'J Prosthet Dent', año:2020, url:'https://pubmed.ncbi.nlm.nih.gov/31959355/' },
+    { autores:'Ivoclar Vivadent', titulo:'IPS e.max ZirCAD Multi Full-Arch Protocol', revista:'Ivoclar Clinical', año:2023, url:'https://www.ivoclar.com' }
+  ],
+  faq: [
+    { q:'¿Por qué es tan difícil el escaneo de una arcada completa sin dientes?', a:'El escáner intraoral necesita puntos de referencia para "coser" los escaneos parciales en una imagen completa. En una arcada edéntula (sin dientes), esos puntos no existen. La solución es usar puntos de referencia en la mucosa (scan bodies de mucosa) o escanear los implantes directamente con scan bodies.' },
+    { q:'¿Cuánto tiempo tarda un full-arch en PRODIGY?', a:'El diseño tarda entre 4 y 8 horas hábiles según la complejidad. Si el paciente viene sobre implantes (All-on-4 o All-on-6), el tiempo de diseño aumenta porque debemos verificar la oclusión virtual en todos los ejes. La entrega final del archivo STL listo para fresar es en 24–48 horas desde la aprobación del diseño.' },
+    { q:'¿Qué material recomiendan para full-arch sobre implantes?', a:'Zirconia multicapa 5Y-TZP (alta translucidez) para estética máxima, o zirconia monolítica 3Y-TZP para mayor resistencia en pacientes bruxistas. Para rehabilitaciones provisionales largas (más de 6 meses), PMMA fresado en el momento. Evitamos e.max en full-arch sobre implantes por su menor resistencia a la fatiga.' }
+  ],
+  contenido: [
+    { tipo:'p', texto:'Una rehabilitación de 12 a 14 unidades es el caso más complejo que puede pedir un laboratorio dental. El margen de error es casi cero — una pieza que no cierra bien afecta la oclusión de toda la arcada. En PRODIGY hemos desarrollado un protocolo específico para full-arch que reduce la tasa de ajuste al mínimo.' },
+    { tipo:'h2', texto:'Paso 1: El escaneo es el 50% del resultado' },
+    { tipo:'p', texto:'El error más común en full-arch digital es un escaneo deficiente. Para arcada completa recomendamos: velocidad de escaneo lenta (no corras el tip), solapamiento del 30% entre escaneos parciales, y verificación del "accuracy check" que ofrecen iTero y 3Shape antes de exportar. Si el escaneo tiene un error de cierre de más de 0.3mm, mejor repetirlo.' },
+    { tipo:'h2', texto:'Paso 2: Registro de mordida digital' },
+    { tipo:'p', texto:'El registro de mordida para full-arch digital se hace con un escaneo de la oclusión en máxima intercuspidación y en posición de relación céntrica. Si el paciente tiene implantes, los scan bodies deben estar puestos durante el escaneo de mordida. Este paso es donde se pierden más casos.' },
+    { tipo:'h2', texto:'Nuestro flujo en PRODIGY para full-arch' },
+    { tipo:'ul', items:['Recepción del escaneo + registro de mordida + referencias fotográficas del paciente (frente y perfil sonriendo)', 'Montaje virtual en articulador digital Exocad (configuración A-I-T)', 'Diseño de las 14 coronas con wax-up virtual', 'Envío de video de previsualización 3D al doctor para aprobación', 'Ajustes y aprobación final (máx 2 rondas)', 'Exportación a CAM + fresado en Amann Girrbach o XTCERA 5 ejes', 'Sinterizado, glaze y empaque individual por pieza'] },
+    { tipo:'h2', texto:'Materiales y tiempos de entrega' },
+    { tipo:'tabla', cabeceras:['Material','Resistencia','Estética','Tiempo desde aprobación','Precio/u aproximado'], filas:[['Zirconia 3Y-TZP Mono','1200 MPa','Media','48h','Desde $120K COP'],['Zirconia 5Y-TZP Multi','800 MPa','Alta','48h','Desde $160K COP'],['Zirconia IPS e.max ZirCAD','1050 MPa','Muy alta','72h','Desde $200K COP'],['PMMA Provisional','90 MPa','Buena','24h','Desde $90K COP']] },
+    { tipo:'h2', texto:'Los 3 errores más comunes que vemos llegar al laboratorio' },
+    { tipo:'ul', items:['Escaneo con aberturas o huecos en la zona de los molares (solución: usar iluminador extra o modo de "dark zone" del escáner)', 'Falta de referencias de línea media y línea de sonrisa en las fotos (sin estas, el diseñador no puede orientar correctamente las coronas)', 'Registro de mordida tomado en borde a borde en lugar de máxima intercuspidación (la más frecuente en pacientes con desgaste severo)'] }
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
   id:        'zirconio-fractura-sinterizado-rapido',
   titulo:    'Cómo evitar que el Zirconio se fracture en el sinterizado rápido',
   subtitulo: 'La fractura de zirconia durante el sinterizado rápido no es mala suerte — es química. Guía técnica completa con causas, parámetros correctos y protocolo de hornos Dentsply Sirona, Vita e Ivoclar.',

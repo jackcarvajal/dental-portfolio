@@ -55,6 +55,9 @@
 # /flujo-impresion        /flujo-impresion.html       200
 # /flujo-lab              /flujo-lab.html             200
 /contacto               /nosotros.html#contacto     301
+/soporte-tecnico        /soporte-tecnico.html       200
+/soporte-xtcera         /soporte-tecnico.html       301
+/soporte-alistar        /soporte-tecnico.html       301
 /guia-tecnica           /guia-tecnica.html          200
 /diseno-remoto          /diseno-remoto.html         200
 
