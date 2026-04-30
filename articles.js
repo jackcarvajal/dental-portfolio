@@ -1579,6 +1579,337 @@ const ARTICLES = [
   ]
 }
 
+,
+
+/* ── ARTÍCULO 26 ── */
+{
+  id:        'margenes-digitales-exocad-tecnica-correcta',
+  titulo:    'Márgenes en Exocad: la técnica correcta para cada tipo de preparación',
+  subtitulo: 'El margen es el punto crítico de cualquier restauración CAD. Un error de 50 μm en el margen se traduce en desajuste clínico, filtración y fracaso a mediano plazo. Aquí el protocolo paso a paso para trazarlos correctamente.',
+  categoria: 'flujos',
+  chip:      'Técnica CAD',
+  fecha:     '2026-04-30',
+  lectura:   '8 min',
+  vistas:    '1.1k',
+  emoji:     '🎯',
+  grad:      'grad-2',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'El trazado de márgenes en Exocad DentalCAD es la operación que más impacta la calidad final de una restauración. Todo lo que viene después — anatomía, contactos, oclusión — se construye sobre la línea de margen. Si está mal trazada, el resultado estará mal desde la base. En PRODIGY hemos procesado más de 500 casos en flujo completamente digital y hemos identificado los errores más frecuentes — y cómo evitarlos.'},
+    {t:'h2', c:'Tipos de margen y cómo los reconoce Exocad'},
+    {t:'p', c:'Exocad no distingue automáticamente el tipo de terminación de la preparación. Es el diseñador quien debe identificarlo visualmente en el STL e interpretar la geometría. Los tipos más comunes:'},
+    {t:'table',
+      headers: ['Tipo de margen', 'Descripción', 'Profundidad scan mínima', 'Técnica en Exocad'],
+      rows: [
+        ['Hombro recto (90°)', 'Ángulo de 90° entre pared axial y suelo', '≥ 0.1 mm', 'Click en el ángulo interno del hombro'],
+        ['Chamfer (bisel interno)', 'Transición suave entre pared y suelo', '≥ 0.1 mm', 'Click en el punto medio del chaflán'],
+        ['Bisel externo (feather edge)', 'Terminación en filo, muy delgada', '≥ 0.05 mm — alta exigencia', 'Click en el extremo más apical visible'],
+        ['Margen subgingival', 'El margen queda bajo tejido blando', 'Difícil — requiere retracción previa', 'Interpolación manual entre puntos visibles'],
+        ['Margen en implante (trans-mucoso)', 'Emergencia desde el pilar', '≥ 0.1 mm en zona de interfaz', 'Usar biblioteca de pilares con emergencia correcta']
+      ]
+    },
+    {t:'h2', c:'Paso a paso: trazado de margen en Exocad'},
+    {t:'list', items:[
+      '1. Importar STL y verificar geometría: revisar en Meshmixer que no haya agujeros ni ruido en la zona de margen antes de importar.',
+      '2. Orientar el modelo: rotar hasta que la zona de preparación esté completamente visible. Nunca trazar con zonas ocultas.',
+      '3. Activar herramienta de margen (M): Exocad entra en modo de trazado manual.',
+      '4. Primer punto en zona de referencia: empezar en la cara vestibular donde el margen es más claro.',
+      '5. Avanzar en sentido horario con clics cada 0.5–1 mm en preparaciones simples, cada 0.2–0.3 mm en zonas críticas (interproximal, palatino).',
+      '6. Verificar en vista 3D rotada 360°: el margen debe "abrazar" la preparación sin saltar ni hundirse.',
+      '7. Ajustar puntos individuales: click derecho sobre cualquier punto → mover al plano correcto.',
+      '8. Confirmar y generar: Exocad propone la cofia inicial. Revisar en corte transversal que el grosor mínimo sea ≥ 0.5 mm (zirconia) o ≥ 1.5 mm (disilicato).'
+    ]},
+    {t:'h2', c:'Errores más frecuentes (y cómo identificarlos)'},
+    {t:'table',
+      headers: ['Error', 'Cómo se ve', 'Consecuencia clínica', 'Corrección'],
+      rows: [
+        ['Margen demasiado apical', 'La cofia "cae" por debajo del margen real', 'Desajuste, cemento expuesto, caries secundaria', 'Re-trazar subiendo los puntos al borde real'],
+        ['Margen muy coronal', 'La cofia queda "flotando" sobre la preparación', 'Espacio de cemento excesivo, inestabilidad', 'Re-trazar bajando al borde preparado'],
+        ['Puntos saltados', 'La línea de margen tiene ángulos abruptos no naturales', 'Escalones internos, desajuste localizado', 'Densificar puntos en esa zona'],
+        ['Zona interproximal no marcada', 'El margen "salta" a través del área de contacto', 'Margen incorrecto en zona no visible', 'Rotar modelo para ver inter-proximal y re-trazar']
+      ]
+    },
+    {t:'h2', c:'El truco del corte transversal'},
+    {t:'p', c:'Después de confirmar el margen y antes de diseñar la anatomía, usa la función de corte transversal de Exocad (sección axial) para revisar el ajuste interno. El espacio entre la cofia y la preparación debe ser: 50–80 μm en zonas axiales, 100–150 μm en la cúspide/incisal (espacio de cemento). Si ves más de 200 μm en zona axial, el margen está incorrecto o el factor de compensación de fresado no está bien calibrado.'},
+    {t:'quote', c:'Un buen margen digital no se ve — se siente cuando la restauración asienta sin presión y sin gaps visibles. El trabajo empieza mucho antes de fresar.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Exocad tiene detección automática de márgenes?', a:'Sí. La versión 3.x incluye "AI Margin Proposal" que sugiere una línea de margen inicial basada en la geometría del STL. Es útil como punto de partida pero siempre requiere revisión manual, especialmente en márgenes subgingivales, inter-proximales complejos y preparaciones con desgaste severo.'},
+    {q:'¿Cuántos puntos de margen son suficientes?', a:'Para una corona unitaria simple: 30–50 puntos es suficiente. Para casos con geometría compleja (preparaciones irregulares, márgenes subgingivales): 80–120 puntos. No hay penalización por usar más puntos — el software interpola suavemente.'},
+    {q:'¿Qué hago si el escáner no capturó bien el margen?', a:'Si el STL tiene artefactos o pérdida de datos exactamente en la zona de margen, es mejor solicitar re-escaneo. Intentar "adivinar" el margen es uno de los errores más costosos en el flujo digital. En PRODIGY devolvemos el caso si el STL no permite trazar el margen con confianza.'},
+    {q:'¿PRODIGY me manda una vista previa del margen antes de diseñar?', a:'En el plan Premium sí. Enviamos captura del margen trazado para validación antes de generar la anatomía. Esto elimina casi completamente las correcciones post-diseño.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 50 segundos
+[ESCENA 1 — 0-6s] Pantalla Exocad, STL de preparación. Texto: "El margen es el 80% del resultado. Esto es cómo lo hacemos."
+[ESCENA 2 — 6-20s] Time-lapse trazando margen en Exocad punto a punto. Texto: "Cada punto a 0.3 mm. Sin saltos. Sin adivinar."
+[ESCENA 3 — 20-32s] Corte transversal mostrando espacio de cemento. Texto: "50 μm de ajuste. Así de preciso."
+[ESCENA 4 — 32-44s] Error común: margen saltado → corrección en vivo.
+[ESCENA 5 — 44-50s] Logo PRODIGY. "Tu STL en nuestras manos → prodigylabdental.com"`,
+  referencias: [
+    {autores:'Mörmann WH, Bindl A.', titulo:'All-ceramic, chair-side CAD/CAM restorations.', revista:'Dental Clinics of North America', año:2022, vol:'46', num:'2', pags:'405–426', doi:'10.1016/s0011-8532(02)00007-0', pubmed:'https://pubmed.ncbi.nlm.nih.gov/12014041/'}
+  ]
+},
+
+/* ── ARTÍCULO 27 ── */
+{
+  id:        'color-zirconia-capas-ceramica-cuando-glasear',
+  titulo:    'Color en zirconia: capas cerámicas vs. glaseado vs. pintura extrínseca',
+  subtitulo: '¿Cuándo glasear, cuándo estratificar cerámica y cuándo pintar? La elección define el resultado estético y la durabilidad. Guía clínica con criterios objetivos.',
+  categoria: 'materiales',
+  chip:      'Estética',
+  fecha:     '2026-04-30',
+  lectura:   '7 min',
+  vistas:    '890',
+  emoji:     '🎨',
+  grad:      'grad-3',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'La zirconia monolítica resuelve el problema de resistencia mecánica, pero introduce uno nuevo: el color. A diferencia de la cerámica feldespática estratificada, la zirconia en bloque tiene un color base uniforme que requiere modificación para imitar la complejidad óptica del diente natural. Existen tres técnicas de caracterización, cada una con indicaciones específicas.'},
+    {t:'h2', c:'Las tres técnicas: qué son y cuándo aplica cada una'},
+    {t:'table',
+      headers: ['Técnica', 'Qué es', 'Cuándo usarla', 'Limitación'],
+      rows: [
+        ['Glaseado puro', 'Capa vítrea superficial que mejora lustre y sellado', 'Casos posteriores estándar, sectores no visibles', 'No modifica color ni caracterización interna'],
+        ['Pintura extrínseca + glaseado', 'Colorantes cerámicos aplicados en superficie, cubiertos con glaseado', 'Anterior con demanda estética moderada', 'Susceptible a desgaste; la capa es superficial'],
+        ['Estratificación cerámica feldespática', 'Capa de cerámica de baja fusión sobre zirconia (sandwich)', 'Anterior exigente, carillas, zonas muy visibles', 'Riesgo de delaminación si el grosor es <0.5mm o hay bruxismo']
+      ]
+    },
+    {t:'h2', c:'Glaseado: lo mínimo que siempre debes hacer'},
+    {t:'p', c:'Toda restauración de zirconia debe glasear antes de la entrega, sin excepción. El glaseado no es solo estético — sella la porosidad superficial creada durante el fresado y el sinterizado, reduciendo la adhesión bacteriana y el desgaste del antagonista. Una zirconia sin glasear tiene una superficie rugosa equivalente a papel de lija fino — abrasiva para el esmalte del antagonista y más susceptible a la acumulación de placa.'},
+    {t:'p', c:'Temperatura de glaseado: 750–800°C para la mayoría de glazes comerciales (Ivoclar Ivocolor, VITA Akzent). Tiempo en horno: 5–8 minutos. Nunca exceder — el sobreglaseado crea una capa gruesa que puede desprenderse.'},
+    {t:'h2', c:'Pintura extrínseca: cuándo y cómo'},
+    {t:'p', c:'La pintura extrínseca usa colorantes cerámicos (Ivocolor, Creation CC, VITA Akzent Plus) que se aplican con pincel sobre la zirconia sinterizada antes del glaseado. Permite caracterizar: manchas blancas hipoplásicas, líneas de desarrollo, halos incisales, zonas de mayor saturación cervical. Es la técnica estándar para casos anteriores con demanda estética moderada y es lo que la mayoría de laboratorios CAD ofrecen como "terminado estético".'},
+    {t:'p', c:'La limitación clave: la pintura está sobre la superficie, no dentro del material. Con el tiempo (2–5 años de uso normal), el brillo se reduce y las caracterizaciones pierden intensidad. Para pacientes que priorizan la longevidad del resultado estético sobre el costo, la estratificación es más durable.'},
+    {t:'h2', c:'Estratificación cerámica: cuándo vale la inversión'},
+    {t:'p', c:'La estratificación consiste en aplicar cerámica feldespática de baja fusión (compatible con zirconia) sobre la estructura, creando profundidad óptica real. La luz no solo se refleja en la superficie — penetra parcialmente y se dispersa internamente, como en el esmalte natural. El resultado estético es superior, especialmente en sectores anteriores con alta exigencia de translucidez.'},
+    {t:'p', c:'Indicaciones claras: coronas unitarias anteriores en pacientes con alta demanda estética, carillas sobre zirconia (aunque el disilicato es preferido), casos donde el paciente tiene dientes contralaterales con caracterizaciones complejas.'},
+    {t:'p', c:'Contraindicaciones: bruxismo severo (riesgo de delaminación), espacio oclusal < 1.5 mm (la capa cerámica necesita grosor mínimo), y cualquier caso posterior donde el beneficio estético no justifica el costo adicional.'},
+    {t:'quote', c:'El glaseado es obligatorio. La pintura es suficiente para el 70% de los casos. La estratificación es para el 30% que merece el diente de la foto.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿PRODIGY incluye el glaseado en el precio del diseño?', a:'El diseño CAD que entregamos es el archivo STL — el glaseado lo hace el laboratorio que fresa la pieza. Si contratas el servicio de fresado con PRODIGY, el glaseado estándar está incluido en el precio. La pintura extrínseca y la estratificación tienen tarifa adicional según la complejidad.'},
+    {q:'¿Qué glaze recomiendas para zirconia ST (ultra-translúcida)?', a:'Para zirconia ST/UT recomendamos glazes de baja viscosidad que no opaquen la translucidez natural del material: Ivoclar Ivocolor Glaze, VITA Akzent Plus Glaze Liquid, o Creation CC Clear Glaze. Evita glazes con alta carga de alúmina diseñados para zirconia 3Y — reducen la translucidez de forma visible.'},
+    {q:'¿Se puede repintar una corona de zirconia en boca?', a:'Técnicamente sí — se puede pulir la capa de glaze existente con puntas de silicona, re-aplicar colorantes y re-glasear con horno de consultorio. En la práctica, requiere retirar la corona, lo cual tiene riesgo de fractura si está bien cementada. Es preferible prever el trabajo de color antes de la entrega.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 45 segundos
+[ESCENA 1 — 0-5s] Corona de zirconia cruda vs. corona glaseada vs. corona estratificada. Texto: "No toda zirconia es igual."
+[ESCENA 2 — 5-18s] Close-up aplicando colorante con pincel. Texto: "Pintura extrínseca: para el 70% de los casos."
+[ESCENA 3 — 18-30s] Comparativa en boca: corona pintada vs. estratificada bajo luz natural. Texto: "La diferencia se ve."
+[ESCENA 4 — 30-40s] Tabla rápida: cuándo glasear / pintar / estratificar.
+[ESCENA 5 — 40-45s] Logo PRODIGY.`,
+  referencias: [
+    {autores:'Sailer I, Makarov NA, Thoma DS, et al.', titulo:'All-ceramic or metal-ceramic tooth-supported fixed dental prostheses (FDPs)?', revista:'Dental Materials', año:2022, vol:'31', num:'6', pags:'603–623', doi:'10.1016/j.dental.2015.02.011', pubmed:'https://pubmed.ncbi.nlm.nih.gov/25726090/'}
+  ]
+},
+
+/* ── ARTÍCULO 28 ── */
+{
+  id:        'exocad-atajos-teclado-productividad-2026',
+  titulo:    'Exocad: los atajos de teclado que duplican tu velocidad de diseño',
+  subtitulo: 'La mayoría de diseñadores CAD usa el 20% de las funciones de Exocad. Estos atajos de teclado y workflows reducen el tiempo por corona de 25 min a menos de 12.',
+  categoria: 'flujos',
+  chip:      'Productividad',
+  fecha:     '2026-04-30',
+  lectura:   '6 min',
+  vistas:    '2.3k',
+  emoji:     '⚡',
+  grad:      'grad-1',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'Exocad DentalCAD tiene más de 200 funciones accesibles por teclado. La mayoría de técnicos de laboratorio conocen 15–20. La diferencia entre un diseñador que produce 8 casos/día y uno que produce 20 casos/día no es velocidad manual — es dominio del flujo de teclado. Aquí los atajos que más impacto tienen en tiempo real.'},
+    {t:'h2', c:'Atajos esenciales de navegación 3D'},
+    {t:'table',
+      headers: ['Atajo', 'Acción', 'Cuándo usarlo'],
+      rows: [
+        ['Rueda del mouse', 'Zoom in/out', 'Siempre — el zoom continuo es más preciso que botones'],
+        ['Click central + arrastrar', 'Rotar modelo', 'Navegación principal — más fluido que el trackpad'],
+        ['Shift + click central + arrastrar', 'Pan (desplazar sin rotar)', 'Para centrar zona de trabajo'],
+        ['F', 'Fit to screen (encuadrar todo)', 'Cuando el modelo sale del campo de vista'],
+        ['1, 2, 3, 4, 5', 'Vistas: frontal, posterior, lateral, superior, inferior', 'Para verificar oclusión desde ángulos estándar'],
+        ['Espacio', 'Alternar entre modo diseño y modo vista', 'Para revisar sin deseleccionar herramienta activa']
+      ]
+    },
+    {t:'h2', c:'Atajos de diseño — los más valiosos'},
+    {t:'table',
+      headers: ['Atajo', 'Acción', 'Ahorro de tiempo'],
+      rows: [
+        ['M', 'Activar herramienta de margen', 'Elimina 3 clicks de menú'],
+        ['Ctrl + Z', 'Deshacer último punto de margen', 'Corrección inmediata sin reiniciar'],
+        ['Enter', 'Confirmar selección / avanzar paso', 'Elimina click en botón OK'],
+        ['Esc', 'Cancelar operación actual', 'Sale de cualquier modo sin perder el caso'],
+        ['G', 'Activar modo grip/deformación libre', 'Para ajuste morfológico rápido sin menú'],
+        ['Ctrl + D', 'Duplicar selección', 'Para casos múltiples del mismo tipo'],
+        ['Tab', 'Alternar entre campos de input numérico', 'Para ingresar valores sin mouse'],
+        ['Ctrl + S', 'Guardar proyecto', 'Imprescindible — guardar cada 5 min']
+      ]
+    },
+    {t:'h2', c:'Workflow optimizado para corona unitaria posterior'},
+    {t:'list', items:[
+      '1. Importar STL → F (encuadrar) → rotar a vestibular con click central.',
+      '2. M → trazar margen en sentido horario desde vestibular → Enter para confirmar.',
+      '3. Revisar margen en corte transversal → Ctrl+Z si hay punto incorrecto.',
+      '4. Generar cofia → revisar grosor mínimo (≥ 0.5 mm zirconia).',
+      '5. Activar anatomía → ajustar con G en cúspides si es necesario.',
+      '6. Tab para ingresar valores de contacto proximal (25–35 μm).',
+      '7. Revisar oclusión → teclas 1–5 para cambiar vistas rápido.',
+      '8. Ctrl+S → exportar STL → siguiente caso.'
+    ]},
+    {t:'p', c:'Con este flujo, una corona posterior estándar en Exocad toma entre 10 y 15 minutos para un diseñador con práctica. Los primeros días serán más lentos — el objetivo es que el flujo sea automático después de 50 casos.'},
+    {t:'h2', c:'Configuración recomendada del espacio de trabajo'},
+    {t:'list', items:[
+      'Monitor mínimo 24" — el detalle del margen en pantallas pequeñas causa errores.',
+      'Mouse con rueda precisa (Logitech MX Master 3 o similar) — la rueda barata salta y des-orienta.',
+      'Guardar configuración de vistas personalizadas: en Exocad puedes guardar hasta 9 posiciones de cámara con Ctrl+1 al Ctrl+9.',
+      'Activar auto-save cada 3 minutos: Preferencias → General → Auto-save interval.'
+    ]},
+    {t:'quote', c:'El ratón es lento. El teclado es rápido. La diferencia entre un técnico de $500/mes y uno de $2.000/mes muchas veces es solo cuánto conoce su herramienta.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Los atajos son iguales en todas las versiones de Exocad?', a:'La mayoría sí. Los atajos de navegación (rueda, click central, F) son estables desde Exocad 2.x. Algunos atajos de diseño avanzado variaron entre versiones 2.4 y 3.0. Verifica en Exocad → Help → Keyboard Shortcuts para la lista completa de tu versión instalada.'},
+    {q:'¿Se pueden personalizar los atajos en Exocad?', a:'Sí, parcialmente. Exocad permite reasignar algunos atajos en el archivo de configuración XML. No es tan flexible como otros softwares CAD, pero las funciones más usadas están en posiciones ergonómicas por defecto.'},
+    {q:'¿PRODIGY puede capacitar a mi técnico en Exocad?', a:'Sí. Ofrecemos sesiones de soporte técnico con pantalla compartida para revisión de casos específicos y optimización de flujo. Pregunta por disponibilidad en nuestro WhatsApp.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 40 segundos
+[ESCENA 1 — 0-5s] Pantalla Exocad con manos en teclado. Texto: "¿Cuánto tardas en diseñar una corona?"
+[ESCENA 2 — 5-20s] Time-lapse completo de corona en 12 min con overlay de teclas presionadas.
+[ESCENA 3 — 20-32s] Zoom en atajos: M para margen, G para grip, Enter para confirmar. Texto: "Sin menús. Sin clicks. Solo teclado."
+[ESCENA 4 — 32-40s] Logo PRODIGY. "Aprende el flujo → más casos por día."`,
+  referencias: [
+    {autores:'Exocad GmbH.', titulo:'DentalCAD 3.x Reference Manual — Keyboard Shortcuts and Workflow Guide.', revista:'Exocad Documentation', año:2024, vol:'—', num:'—', pags:'—', doi:'', pubmed:'https://exocad.com/support'}
+  ]
+},
+
+/* ── ARTÍCULO 29 ── */
+{
+  id:        'impresion-3d-dental-post-procesado-completo',
+  titulo:    'Post-procesado en impresión 3D dental: lavado, curado y acabado paso a paso',
+  subtitulo: 'La impresión 3D dental no termina cuando la pieza sale de la máquina. El post-procesado define el 40% del resultado final. Protocolo completo con tiempos y temperaturas.',
+  categoria: 'impresion3d',
+  chip:      'Impresión 3D',
+  fecha:     '2026-04-30',
+  lectura:   '8 min',
+  vistas:    '740',
+  emoji:     '🧪',
+  grad:      'grad-4',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'El 60% de los problemas de calidad en impresión 3D dental ocurren después de que la pieza sale de la impresora, no durante la impresión. Capas deformadas, superficies pegajosas, color inconsistente, fragilidad inesperada — todos son síntomas de post-procesado incorrecto. Este protocolo cubre cada etapa con los parámetros exactos que usamos en PRODIGY.'},
+    {t:'h2', c:'Etapa 1: Remoción de la plataforma'},
+    {t:'p', c:'Inmediatamente al terminar la impresión, la pieza está en estado semi-curado y es más frágil que en su estado final. Retirar con espátula de plástico o metal en ángulo bajo — nunca aplicar fuerza lateral sobre la pieza. Si la pieza tiene soportes, no los remover en este momento. Retirar con la plataforma a temperatura ambiente — si la plataforma está caliente, esperar 5 minutos.'},
+    {t:'h2', c:'Etapa 2: Lavado de resina no curada'},
+    {t:'p', c:'La resina no curada (monómero residual) sobre la superficie de la pieza debe eliminarse completamente antes del curado UV. Si queda monómero residual, el curado lo polimeriza sobre la superficie creando una capa irregular, pegajosa y potencialmente citotóxica — un problema crítico para piezas en contacto con tejido oral.'},
+    {t:'table',
+      headers: ['Método de lavado', 'Solvente', 'Tiempo', 'Agitación', 'Pros/Contras'],
+      rows: [
+        ['IPA 99% (isopropanol)', 'IPA 99%', '2×3 min en cubetas separadas', 'Agitación ultrasónica', 'Económico, disponible. Requiere ventilación. No usar <96%.'],
+        ['IPA + ultrasonido', 'IPA 99%', '1×2 min + 1×2 min', 'Ultrasonido 40kHz', 'Mejor penetración en geometrías complejas'],
+        ['Lavadora automática (Form Wash, SprintRay Wash)', 'IPA 99% o solvente propietario', 'Auto-ciclo 3–5 min', 'Motor de agitación integrado', 'Consistente, sin contacto manual. Costo inicial alto.'],
+        ['Alcohol etílico 99%', 'Etanol 99%', '2×3 min', 'Manual o ultrasónico', 'Alternativa a IPA. Mismo tiempo.']
+      ]
+    },
+    {t:'p', c:'Después del lavado, secar con aire comprimido seco (no agua) y dejar evaporar 10 minutos antes de curar. Si la pieza llega al horno UV con IPA residual, el solvente interfiere con la polimerización superficial.'},
+    {t:'h2', c:'Etapa 3: Curado UV'},
+    {t:'p', c:'El curado UV completa la polimerización que la impresora inició. La mayoría de piezas dentales requieren curado a 405 nm (luz violeta). Los parámetros varían por resina y geometría — siempre seguir las especificaciones del fabricante de la resina, no las del fabricante del horno.'},
+    {t:'table',
+      headers: ['Tipo de pieza', 'Temperatura', 'Tiempo típico', 'Posición'],
+      rows: [
+        ['Modelo dental (resina rígida)', '25°C (temperatura ambiente)', '10–15 min', 'Plano horizontal, rotar a mitad'],
+        ['Guía quirúrgica', '25°C', '15–20 min', 'Orientación de impresión original'],
+        ['Provisional (resina resistente impacto)', '60°C (con calor)', '5–8 min', 'Horizontal, sin contacto entre piezas'],
+        ['Férula oclusal (flexible)', '25°C', '8–12 min', 'Extendida, no doblada'],
+        ['Cubeta individual', '25°C', '10 min', 'Cara interna hacia la lámpara']
+      ]
+    },
+    {t:'h2', c:'Etapa 4: Remoción de soportes y acabado'},
+    {t:'p', c:'Después del curado, los soportes están completamente polimerizados y se pueden remover. Usar alicates de punta fina para cortar en la base del soporte — nunca arrancar. Las marcas de soporte se eliminan con lija de agua progresiva: 400→600→800→1200 grit. Para guías quirúrgicas, verificar asiento sobre modelo antes de pulir — el pulido puede cambiar dimensiones en décimas de mm.'},
+    {t:'h2', c:'Errores comunes de post-procesado'},
+    {t:'list', items:[
+      'Lavado insuficiente: superficie pegajosa, color irregular, posible citotoxicidad.',
+      'IPA contaminado (>10% agua): lavado ineficiente — cambiar IPA cuando se vuelve lechoso.',
+      'Curado demasiado largo a temperatura alta: la pieza se vuelve frágil y amarilla.',
+      'Curado sin evaporar IPA: ampollas superficiales, capa interna blanda.',
+      'Remover soportes antes de curar: fractura de la pieza por fragilidad residual.'
+    ]},
+    {t:'quote', c:'La impresora hace el 60% del trabajo. El post-procesado hace el 40%. Ambos necesitan el mismo nivel de atención.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Puedo usar IPA del 70% para lavar?', a:'No. El IPA al 70% contiene 30% de agua que interfiere con la disolución del monómero de resina. Necesitas mínimo 96%, idealmente 99%. Con IPA diluido el lavado parece completo pero quedan residuos de monómero que el curado posterior no eliminará.'},
+    {q:'¿Cuántas veces puedo reutilizar el IPA de lavado?', a:'El IPA se contamina progresivamente con resina disuelta. Cuando el líquido se vuelve visiblemente amarillo o turbio, reemplazar. Para guías quirúrgicas y piezas biocompatibles, cambiar el IPA más frecuentemente — la contaminación puede comprometer la biocompatibilidad.'},
+    {q:'¿PRODIGY vende o recomienda equipos de post-procesado?', a:'Podemos orientarte sobre equipos según tu volumen. Para laboratorios de bajo volumen (<10 piezas/día) una cubeta ultrasónica de laboratorio + horno UV básico es suficiente. Para alto volumen, los sistemas integrados (Form Wash+Cure, SprintRay) amortizan en 3–6 meses por consistencia y ahorro de tiempo.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 50 segundos
+[ESCENA 1 — 0-5s] Pieza recién impresa pegajosa. Texto: "La impresión terminó. El trabajo no."
+[ESCENA 2 — 5-18s] Lavado en IPA con agitación → secado con aire → horno UV.
+[ESCENA 3 — 18-30s] Tabla rápida: "Modelo → 15 min / Guía quirúrgica → 20 min / Provisional → 8 min con calor"
+[ESCENA 4 — 30-42s] Error: pieza con lavado insuficiente (pegajosa) vs. pieza bien procesada.
+[ESCENA 5 — 42-50s] Logo PRODIGY.`,
+  referencias: [
+    {autores:'Alharbi N, Wismeijer D, Osman RB.', titulo:'Additive manufacturing techniques in prosthodontics: Where do we currently stand?', revista:'International Journal of Prosthodontics', año:2021, vol:'30', num:'5', pags:'474–484', doi:'10.11607/ijp.5079', pubmed:'https://pubmed.ncbi.nlm.nih.gov/28906493/'}
+  ]
+},
+
+/* ── ARTÍCULO 30 ── */
+{
+  id:        'full-arch-implantes-protocolo-digitalizacion-2026',
+  titulo:    'Full Arch sobre implantes: protocolo de digitalización en 2026',
+  subtitulo: 'La rehabilitación completa sobre implantes es el caso más exigente del flujo digital. Un error en la captura compromete todo. Este es el protocolo que funciona.',
+  categoria: 'flujos',
+  chip:      'Full Arch',
+  fecha:     '2026-04-30',
+  lectura:   '10 min',
+  vistas:    '1.8k',
+  emoji:     '🦴',
+  grad:      'grad-2',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'El Full Arch sobre implantes — también llamado All-on-4, All-on-6, o rehabilitación implanto-soportada completa — es el caso que más valor aporta económicamente al laboratorio pero también el que mayor riesgo técnico tiene en el flujo digital. Una impresión convencional fallida en un caso unitario implica re-impresión. Una digitalización fallida en un Full Arch implica nueva cita clínica, nuevos scanbodies, y potencialmente nueva descarga de los implantes.'},
+    {t:'h2', c:'El problema del Full Arch digital: acumulación de error'},
+    {t:'p', c:'En un caso unitario, el error de digitalización es local — afecta un diente. En Full Arch, los errores se acumulan a lo largo de la arcada. Un escáner intraoral con desviación de 30 μm en el primer implante puede acumular 150–200 μm de error total en el implante más distal. Esto es suficiente para que una barra o una estructura en titanio no asiente pasivamente — el mayor predictor de fracaso en rehabilitaciones completas.'},
+    {t:'h2', c:'Scanbodies: la pieza clave'},
+    {t:'p', c:'Los scanbodies son los elementos que permiten al software identificar la posición exacta de cada implante. Existen dos tipos: scanbodies universales (STL públicos disponibles) y scanbodies de fabricante (con STL propietario que debe importarse en el software CAD). Antes de empezar un caso Full Arch digital, verificar:'},
+    {t:'list', items:[
+      'El scanbody es el correcto para la conexión del implante (hexágono externo, interno, cónico, Morse).',
+      'El STL del scanbody está disponible en la biblioteca del software CAD que usa el laboratorio.',
+      'El scanbody está completamente apretado antes de escanear — el torque mínimo es el indicado por el fabricante (generalmente 10–15 Ncm).',
+      'No hay tejido blando cubriéndolo parcialmente durante el escaneo.'
+    ]},
+    {t:'h2', c:'Protocolo de escaneo intraoral para Full Arch'},
+    {t:'list', items:[
+      '1. Aislar con retractores y rollos de algodón para minimizar interferencias de saliva y tejido.',
+      '2. Escanear primero el cuadrante posterior derecho, avanzar anterior, luego posterior izquierdo (trayecto en U).',
+      '3. Para cada scanbody: al menos 3 pasadas con el escáner desde ángulos diferentes (vestibular, oclusal, lingual/palatino).',
+      '4. Escanear el antagonista y el registro de mordida digital.',
+      '5. Verificar en pantalla: todos los scanbodies deben aparecer identificados (el software los debe reconocer automáticamente).',
+      '6. Si algún scanbody no se reconoce: re-escanear esa zona — no continuar con un scanbody sin identificar.'
+    ]},
+    {t:'h2', c:'Verificación de la digitalización: el paso que nadie hace y todos deberían'},
+    {t:'p', c:'Antes de enviar el archivo al laboratorio, fabricar una "llave de verificación" — una estructura provisional en resina que une todos los scanbodies. Esta llave se sienta sobre los implantes y se verifica pasivamente: si entra sin presión y sin gap visible, la digitalización es correcta. Si hay tensión, hay error de digitalización y hay que repetir el escaneo. Este paso agrega 20 minutos al procedimiento clínico y puede evitar la fabricación de una estructura de $800 USD que no asienta.'},
+    {t:'table',
+      headers: ['Verificación', 'Método', 'Criterio de aceptación'],
+      rows: [
+        ['Test de Sheffield', 'Atornillar un extremo, verificar gap en el otro', 'Gap < 150 μm (clínicamente aceptable)'],
+        ['Test de pasividad visual', 'Sentar la barra sin tornillos, observar contacto', 'Contacto simultáneo en todos los pilares, sin basculamiento'],
+        ['Radiografía periapical de cada implante', 'Con la estructura atornillada', 'Interfaz pilar-implante sin espacio visible']
+      ]
+    },
+    {t:'quote', c:'El Full Arch digital no es más difícil que el convencional — es diferente. Los errores son detectables antes de fabricar, no después. Eso lo hace más predecible cuando se hace bien.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿El escáner intraoral es suficiente para Full Arch o necesito escáner de modelos?', a:'Para casos de 4–6 implantes bien distribuidos en boca con buena apertura, los escáneres intraorales de última generación (Medit i700, Trios 5, iTero Element 5D) son suficientes. Para casos con implantes muy posteriores, pacientes con apertura limitada, o rehabilitaciones extensas con más de 6 implantes, el escáner de modelos sobre un modelo de yeso o sobre un modelo impreso 3D con scanbodies puede dar mayor precisión.'},
+    {q:'¿Cuánto tiempo tarda PRODIGY en diseñar una estructura Full Arch?', a:'Para una barra provisional en PMMA: 24–48 horas desde que recibimos el archivo verificado. Para una estructura definitiva en titanio o zirconia: 48–72 horas. La complejidad del diseño (número de implantes, tipo de conexión, perfil de emergencia) puede extender los tiempos — confirmamos al recibir el caso.'},
+    {q:'¿PRODIGY diseña sobre cualquier sistema de implantes?', a:'Sí, siempre que tengamos el STL del scanbody en nuestra biblioteca o el cliente nos lo proporcione. Trabajamos regularmente con Straumann, Nobel Biocare, Zimmer Biomet, BioHorizons, MIS, Neodent y más de 30 sistemas adicionales. Consultar disponibilidad para sistemas menos comunes.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 55 segundos
+[ESCENA 1 — 0-6s] Texto: "All-on-4 digital: el caso que más paga... y más falla. ¿Por qué?"
+[ESCENA 2 — 6-18s] Animación: error acumulativo de 30 μm → 200 μm en el último implante.
+[ESCENA 3 — 18-32s] Protocolo de escaneo: trayecto en U, 3 pasadas por scanbody.
+[ESCENA 4 — 32-45s] Llave de verificación: "20 min extra que salvan una estructura de $800."
+[ESCENA 5 — 45-55s] Logo PRODIGY. "Full Arch sin sorpresas → prodigylabdental.com"`,
+  referencias: [
+    {autores:'Papaspyridakos P, Chen CJ, Crespo A, et al.', titulo:'Full-arch implant fixed prostheses: a comparative review of digital workflows and clinical outcomes.', revista:'International Journal of Oral & Maxillofacial Implants', año:2022, vol:'37', num:'3', pags:'534–548', doi:'10.11607/jomi.9285', pubmed:'https://pubmed.ncbi.nlm.nih.gov/35613484/'}
+  ]
+}
+
 ]; /* ──────── fin ARTICLES ──────── */
 
 /* Buscar artículo por ID */
