@@ -399,9 +399,17 @@
               'SERVICIOS <i class="fas fa-chevron-down pnav2-dd-arrow"></i>' +
             '</button>' +
             '<div class="pnav2-dd-menu">' +
+              '<a href="/diseno-remoto" style="background:rgba(217,70,166,.08);border-left:2px solid #D946A6;">' +
+                '<i class="fas fa-globe" style="color:#D946A6"></i>' +
+                '<span>DISEÑO CAD REMOTO<span class="dd-sub">🌍 Internacional · desde $14 USD · 24h</span></span>' +
+              '</a>' +
+              '<a href="/calculadora-diseno">' +
+                '<i class="fas fa-calculator"></i>' +
+                '<span>COTIZADOR DISEÑO<span class="dd-sub">Precio instantáneo · USD &amp; COP</span></span>' +
+              '</a>' +
               '<a href="/diseno-cad">' +
                 '<i class="fas fa-drafting-compass"></i>' +
-                '<span>DISEÑO CAD<span class="dd-sub">Exocad · 3Shape · Archivo STL</span></span>' +
+                '<span>DISEÑO CAD — INFO<span class="dd-sub">Exocad · 3Shape · Archivo STL</span></span>' +
               '</a>' +
               '<a href="/fresado-cam">' +
                 '<i class="fas fa-cog"></i>' +
