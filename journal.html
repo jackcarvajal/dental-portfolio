@@ -529,10 +529,13 @@
       letter-spacing: 1px;
       text-transform: uppercase;
     }
-    .chip.cat-ia       { color: var(--cyan); border-color: rgba(0,210,255,0.3); }
-    .chip.cat-material { color: var(--gold-text); border-color: rgba(212,175,55,0.3); }
-    .chip.cat-equipo   { color: var(--gold); border-color: rgba(217,70,166,0.3); }
-    .chip.cat-protocolo{ color: var(--green); border-color: rgba(0,255,65,0.3); }
+    .chip.cat-ia        { color: var(--cyan); border-color: rgba(0,210,255,0.3); }
+    .chip.cat-material  { color: var(--gold-text); border-color: rgba(212,175,55,0.3); }
+    .chip.cat-materiales{ color: var(--gold-text); border-color: rgba(212,175,55,0.3); }
+    .chip.cat-equipo    { color: var(--gold); border-color: rgba(217,70,166,0.3); }
+    .chip.cat-protocolo { color: var(--green); border-color: rgba(0,255,65,0.3); }
+    .chip.cat-flujos    { color: #a78bfa; border-color: rgba(167,139,250,0.3); }
+    .chip.cat-impresion3d{ color: #fb923c; border-color: rgba(251,146,60,0.3); }
     .card-body {
       padding: 20px;
       flex: 1;
@@ -790,114 +793,64 @@
       <div class="section-sub">Filtra por categoría</div>
     </div>
     <div class="filter-tags">
-      <button class="tag-btn active" onclick="filterArticles(this,'all')" data-i18n="journal.filter.all">Todos</button>
-      <button class="tag-btn" onclick="filterArticles(this,'ia')" data-i18n="journal.filter.ia">IA</button>
-      <button class="tag-btn" onclick="filterArticles(this,'material')" data-i18n="journal.filter.material">Materiales</button>
-      <button class="tag-btn" onclick="filterArticles(this,'equipo')" data-i18n="journal.filter.equipo">Equipos</button>
-      <button class="tag-btn" onclick="filterArticles(this,'protocolo')" data-i18n="journal.filter.protocolo">Protocolos</button>
+      <button class="tag-btn active" onclick="filterArticles(this,'all')">Todos</button>
+      <button class="tag-btn" onclick="filterArticles(this,'ia')">IA</button>
+      <button class="tag-btn" onclick="filterArticles(this,'materiales')">Materiales</button>
+      <button class="tag-btn" onclick="filterArticles(this,'flujos')">Flujos CAD</button>
+      <button class="tag-btn" onclick="filterArticles(this,'impresion3d')">Impresión 3D</button>
+      <button class="tag-btn" onclick="filterArticles(this,'equipo')">Equipos</button>
     </div>
   </div>
 
   <div class="articles-track" id="articlesTrack">
-
-    <a class="article-card" href="article?id=ia-exocad-cad-cam" data-cat="ia">
-      <div class="card-thumb">
-        <div class="card-thumb-bg grad-1">🤖</div>
-        <span class="chip cat-ia">IA</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Abr 2026</span><span><i class="fa-regular fa-clock"></i> 6 min</span></div>
-        <h3>IA en Exocad: Reduciendo tiempos de diseño hasta un 40%</h3>
-        <p>Cómo los módulos de inteligencia artificial en Exocad 2024 automatizan la propuesta de anatomía oclusal y reducen correcciones.</p>
-      </div>
-      <div class="card-footer">
-        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
-        <span class="card-time"><i class="fa-solid fa-eye"></i> 1.2k</span>
-      </div>
-    </a>
-
-    <a class="article-card" href="article?id=resinas-3d-vs-pmma" data-cat="material">
-      <div class="card-thumb">
-        <div class="card-thumb-bg grad-3">🦷</div>
-        <span class="chip cat-material">Materiales</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Mar 2026</span><span><i class="fa-regular fa-clock"></i> 8 min</span></div>
-        <h3>Resinas 3D vs PMMA Fresado: Comparativa técnica real</h3>
-        <p>Análisis de resistencia flexural, acabado superficial y costo por unidad entre materiales impresos y fresados en uso clínico.</p>
-      </div>
-      <div class="card-footer">
-        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
-        <span class="card-time"><i class="fa-solid fa-eye"></i> 987</span>
-      </div>
-    </a>
-
-    <a class="article-card" href="article?id=escaneres-intraorales-2026" data-cat="equipo">
-      <div class="card-thumb">
-        <div class="card-thumb-bg grad-2">📡</div>
-        <span class="chip cat-equipo">Equipos</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Mar 2026</span><span><i class="fa-regular fa-clock"></i> 10 min</span></div>
-        <h3>Nuevos protocolos para escáneres intraorales en 2026</h3>
-        <p>Guía de calibración, flujo de exportación STL y compatibilidad con los principales softwares de diseño dental del mercado.</p>
-      </div>
-      <div class="card-footer">
-        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
-        <span class="card-time"><i class="fa-solid fa-eye"></i> 743</span>
-      </div>
-    </a>
-
-    <a class="article-card" href="article?id=3shape-automate-revision" data-cat="ia">
-      <div class="card-thumb">
-        <div class="card-thumb-bg grad-1">🧠</div>
-        <span class="chip cat-ia">IA</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Feb 2026</span><span><i class="fa-regular fa-clock"></i> 7 min</span></div>
-        <h3>3Shape Automate: ¿Reemplaza al diseñador o lo potencia?</h3>
-        <p>Revisamos el módulo de automatización de 3Shape y su impacto real en flujos de producción de laboratorios de alto volumen.</p>
-      </div>
-      <div class="card-footer">
-        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
-        <span class="card-time"><i class="fa-solid fa-eye"></i> 1.5k</span>
-      </div>
-    </a>
-
-    <a class="article-card" href="article?id=zirconio-ultratranslucido-5ypzs" data-cat="material">
-      <div class="card-thumb">
-        <div class="card-thumb-bg grad-3">💎</div>
-        <span class="chip cat-material">Materiales</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Feb 2026</span><span><i class="fa-regular fa-clock"></i> 9 min</span></div>
-        <h3>Zirconio Multicapa Ultra-Translúcido: el nuevo estándar anterior</h3>
-        <p>Evaluación clínica de los nuevos bloques 5Y-PSZ con gradiente de translucidez y su impacto en la estética del sector anterior.</p>
-      </div>
-      <div class="card-footer">
-        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
-        <span class="card-time"><i class="fa-solid fa-eye"></i> 2.1k</span>
-      </div>
-    </a>
-
-    <a class="article-card" href="article?id=flujo-digital-24h" data-cat="protocolo">
-      <div class="card-thumb">
-        <div class="card-thumb-bg grad-4">📋</div>
-        <span class="chip cat-protocolo">Protocolo</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span><i class="fa-regular fa-calendar"></i> Ene 2026</span><span><i class="fa-regular fa-clock"></i> 5 min</span></div>
-        <h3>Flujo digital completo: del escáner al fresado en 24 horas</h3>
-        <p>El protocolo PRODIGY para garantizar entregas en 24h sin comprometer calidad. Pasos, checkpoints y criterio de aprobación de diseño.</p>
-      </div>
-      <div class="card-footer">
-        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
-        <span class="card-time"><i class="fa-solid fa-eye"></i> 3.4k</span>
-      </div>
-    </a>
-
+    <!-- Generado dinámicamente por articles.js -->
   </div>
 </section>
+
+<script src="articles.js"></script>
+<script>
+(function(){
+  var track = document.getElementById('articlesTrack');
+  if(!track || typeof ARTICLES === 'undefined') return;
+
+  var CAT_LABEL = { ia:'IA', materiales:'Materiales', material:'Materiales', flujos:'Flujo CAD', impresion3d:'Impresión 3D', equipo:'Equipos', protocolo:'Protocolo' };
+
+  function renderAll(arts){
+    track.innerHTML = arts.map(function(a){
+      var cat = (a.categoria || 'flujos').toLowerCase();
+      var label = CAT_LABEL[cat] || a.chip || cat;
+      var fechaObj = new Date(a.fecha || '2026-01-01');
+      var mes = fechaObj.toLocaleDateString('es', {month:'short', year:'numeric'});
+      var subtitulo = (a.subtitulo || '').substring(0, 120) + (a.subtitulo && a.subtitulo.length > 120 ? '…' : '');
+      return '<a class="article-card" href="article?id='+a.id+'" data-cat="'+cat+'">' +
+        '<div class="card-thumb">' +
+          '<div class="card-thumb-bg '+(a.grad||'grad-1')+'">'+(a.emoji||'📄')+'</div>' +
+          '<span class="chip cat-'+cat+'">'+label+'</span>' +
+        '</div>' +
+        '<div class="card-body">' +
+          '<div class="card-meta"><span><i class="fa-regular fa-calendar"></i> '+mes+'</span><span><i class="fa-regular fa-clock"></i> '+(a.lectura||'5 min')+'</span></div>' +
+          '<h3>'+a.titulo+'</h3>' +
+          '<p>'+subtitulo+'</p>' +
+        '</div>' +
+        '<div class="card-footer">' +
+          '<span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>' +
+          '<span class="card-time"><i class="fa-solid fa-eye"></i> '+(a.vistas||'—')+'</span>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+  }
+
+  renderAll(ARTICLES);
+
+  window.filterArticles = function(btn, cat){
+    document.querySelectorAll('.tag-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    var filtered = cat === 'all' ? ARTICLES : ARTICLES.filter(function(a){ return a.categoria === cat; });
+    renderAll(filtered);
+    document.getElementById('articlesTrack').scrollTo({left:0, behavior:'smooth'});
+  };
+})();
+</script>
 
 <!-- PRÓXIMAMENTE / NOTIFICACIÓN -->
 <section class="coming-section">
