@@ -126,15 +126,15 @@
         .btn-outline:hover{border-color:var(--gold);background:rgba(212,175,55,.06);}
 
         /* ── SCANNERS ── */
-        .scanners{padding:40px 24px;border-top:1px solid rgba(255,255,255,.05);
-            border-bottom:1px solid rgba(255,255,255,.05);}
-        .scanners-inner{max-width:900px;margin:0 auto;text-align:center;}
-        .scanners p{font-size:1rem;color:var(--muted);letter-spacing:1.5px;
-            text-transform:uppercase;margin-bottom:20px;}
-        .scanner-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
-        .stag{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);
-            padding:9px 18px;border-radius:8px;font-size:1rem;font-weight:600;color:var(--text);}
-        .stag i{color:var(--cyan);margin-right:6px;}
+        .scanners{padding:32px 0;border-top:1px solid rgba(255,255,255,.05);
+            border-bottom:1px solid rgba(255,255,255,.05);overflow:hidden;}
+        .scanners-label{text-align:center;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:18px;}
+        .sc-track{display:flex;gap:20px;animation:scScroll 24s linear infinite;width:max-content;}
+        .sc-track:hover{animation-play-state:paused;}
+        .stag{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);padding:10px 18px;border-radius:9px;font-size:.82rem;font-weight:700;color:var(--text);white-space:nowrap;transition:border-color .2s;}
+        .stag:hover{border-color:rgba(0,210,255,.4);}
+        .stag i{color:var(--cyan);font-size:.75rem;}
+        @keyframes scScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
         /* ── SECTIONS ── */
         .sec{padding:72px 24px;}
@@ -316,22 +316,37 @@
 
 <!-- ── SCANNERS ── -->
 <section class="scanners">
-    <div class="scanners-inner">
-        <p>Compatible con cualquier escáner intraoral del mercado</p>
-        <div class="scanner-tags">
-            <div class="stag"><i class="fas fa-check-circle"></i>3Shape Trios 5</div>
-            <div class="stag"><i class="fas fa-check-circle"></i>iTero Element Flex 2</div>
-            <div class="stag"><i class="fas fa-check-circle"></i>Medit i700 / i900</div>
-            <div class="stag"><i class="fas fa-check-circle"></i>Cerec Primescan AC</div>
-            <div class="stag"><i class="fas fa-check-circle"></i>Planmeca Emerald</div>
-            <div class="stag"><i class="fas fa-check-circle"></i>Carestream CS 3800</div>
-            <div class="stag"><i class="fas fa-check-circle"></i>Dentsply Sirona Omnicam</div>
-            <div class="stag"><i class="fas fa-check-circle"></i>Owandy IOS</div>
-            <div class="stag"><i class="fas fa-check-circle"></i>Condor Scan</div>
-            <div class="stag"><i class="fas fa-check-circle"></i>Shining3D Aoralscan</div>
-            <div class="stag"><i class="fas fa-check-circle"></i>.stl / .obj / .ply</div>
+    <div class="scanners-label">✓ Compatible con todos los escáneres del mercado</div>
+    <div style="position:relative;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(to right,var(--bg),transparent);z-index:2;pointer-events:none;"></div>
+        <div style="position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(to left,var(--bg),transparent);z-index:2;pointer-events:none;"></div>
+        <div style="overflow:hidden;">
+            <div class="sc-track">
+                <div class="stag"><i class="fas fa-check-circle"></i>3Shape Trios 5</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>iTero Element</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Medit i700 / i900</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Primescan AC</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Planmeca Emerald</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Carestream CS 3800</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Dentsply Omnicam</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Shining3D Aoralscan</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Vatech EzScan</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Condor Scan</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>STL · OBJ · PLY · Exocad</div>
+                <!-- duplicado loop -->
+                <div class="stag"><i class="fas fa-check-circle"></i>3Shape Trios 5</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>iTero Element</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Medit i700 / i900</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Primescan AC</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Planmeca Emerald</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Carestream CS 3800</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Dentsply Omnicam</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Shining3D Aoralscan</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Vatech EzScan</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>Condor Scan</div>
+                <div class="stag"><i class="fas fa-check-circle"></i>STL · OBJ · PLY · Exocad</div>
+            </div>
         </div>
-        <p style="margin-top:18px;font-size:0.82rem;color:rgba(255,255,255,0.55);font-style:italic;">Lo que tengas, lo usamos. Lo recibimos y lo trabajamos con excelencia.</p>
     </div>
 </section>
 

@@ -163,10 +163,14 @@
     .reviews-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
     @media(max-width:860px) { .reviews-grid { grid-template-columns: repeat(2,1fr); } }
     @media(max-width:540px) { .reviews-grid { grid-template-columns: 1fr; } }
-    .rev-card { background: var(--card); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 24px; }
-    .rev-card p { font-size: 1rem; color: #cbd5e1; line-height: 1.7; font-style: italic; margin-bottom: 14px; }
-    .rev-author { font-size: .9rem; font-weight: 700; color: var(--gold2); }
-    .rev-role   { font-size: .7rem; color: var(--muted); }
+    .rev-card { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px; transition: border-color .3s, transform .3s; }
+    .rev-card:hover { border-color: rgba(212,175,55,.3); transform: translateY(-3px); }
+    .rev-stars { color: #D4AF37; font-size: .85rem; margin-bottom: 12px; letter-spacing: 2px; }
+    .rev-card p { font-size: .9rem; color: #cbd5e1; line-height: 1.75; font-style: italic; margin-bottom: 16px; }
+    .rev-footer { display: flex; align-items: center; gap: 10px; }
+    .rev-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .82rem; flex-shrink: 0; }
+    .rev-author { font-size: .82rem; font-weight: 700; color: #e2e8f0; }
+    .rev-role   { font-size: .7rem; color: var(--muted); margin-top: 2px; }
 
     /* ── FAQ ── */
     .faq-list { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
@@ -446,16 +450,37 @@
     <h2 class="sech2" style="margin-bottom:44px" data-i18n="cad.rv.h2">Resultados que <em>hablan solos</em></h2>
     <div class="reviews-grid">
       <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
         <p data-i18n="cad.r1.txt">"Envié el STL el lunes y al día siguiente tenía el diseño listo para fresar. La calidad superó mis expectativas."</p>
-        <div class="rev-author" data-i18n="cad.r1.who">Dr. Marcelo V. · Prostodoncista, Buenos Aires</div>
+        <div class="rev-footer">
+          <div class="rev-avatar" style="background:linear-gradient(135deg,#D4AF37,#b8860b);">MV</div>
+          <div>
+            <div class="rev-author" data-i18n="cad.r1.who">Dr. Marcelo V.</div>
+            <div class="rev-role">Prostodoncista · Buenos Aires 🇦🇷</div>
+          </div>
+        </div>
       </div>
       <div class="rev-card">
+        <div class="rev-stars" style="color:#D946A6;">★★★★★</div>
         <p data-i18n="cad.r2.txt">"Precios claros, entregas a tiempo, y siempre incluyen vista previa del diseño. Trabajo con ellos hace un año."</p>
-        <div class="rev-author" data-i18n="cad.r2.who">Dra. Carla M. · Laboratorio dental, Ciudad de México</div>
+        <div class="rev-footer">
+          <div class="rev-avatar" style="background:linear-gradient(135deg,#D946A6,#9333ea);">CM</div>
+          <div>
+            <div class="rev-author" data-i18n="cad.r2.who">Dra. Carla M.</div>
+            <div class="rev-role">Laboratorio dental · Ciudad de México 🇲🇽</div>
+          </div>
+        </div>
       </div>
       <div class="rev-card">
+        <div class="rev-stars" style="color:#00d2ff;">★★★★★</div>
         <p data-i18n="cad.r3.txt">"Archivos perfectamente compatibles con nuestra fresadora Roland. Muy profesionales y rápidos."</p>
-        <div class="rev-author" data-i18n="cad.r3.who">Th. Dupont · Laboratorio dental, Lyon, Francia</div>
+        <div class="rev-footer">
+          <div class="rev-avatar" style="background:linear-gradient(135deg,#00d2ff,#0080aa);">TD</div>
+          <div>
+            <div class="rev-author" data-i18n="cad.r3.who">Th. Dupont</div>
+            <div class="rev-role">Laboratorio dental · Lyon, Francia 🇫🇷</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -126,6 +126,41 @@
   </div>
 </div>
 
+<!-- Stats animados -->
+<div id="calc-stats" style="display:flex;justify-content:center;flex-wrap:wrap;gap:0;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07);padding:14px 24px;">
+  <div style="flex:1;min-width:100px;text-align:center;padding:8px 16px;border-right:1px solid rgba(255,255,255,.07);">
+    <div style="font-size:1.3rem;font-weight:900;color:#D4AF37;"><span class="cds" data-target="500" data-prefix="+">500</span></div>
+    <div style="font-size:.66rem;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">casos/año</div>
+  </div>
+  <div style="flex:1;min-width:100px;text-align:center;padding:8px 16px;border-right:1px solid rgba(255,255,255,.07);">
+    <div style="font-size:1.3rem;font-weight:900;color:#D946A6;"><span class="cds" data-target="24" data-suffix="h">24h</span></div>
+    <div style="font-size:.66rem;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">entrega</div>
+  </div>
+  <div style="flex:1;min-width:100px;text-align:center;padding:8px 16px;border-right:1px solid rgba(255,255,255,.07);">
+    <div style="font-size:1.3rem;font-weight:900;color:#00d2ff;"><span class="cds" data-target="20" data-suffix="+">20+</span></div>
+    <div style="font-size:.66rem;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">países</div>
+  </div>
+  <div style="flex:1;min-width:100px;text-align:center;padding:8px 16px;">
+    <div style="font-size:1.3rem;font-weight:900;color:#4ade80;">$14 USD</div>
+    <div style="font-size:.66rem;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">desde / corona</div>
+  </div>
+</div>
+
+<!-- Carrusel escáneres -->
+<div style="padding:16px 0;background:#000;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.05);">
+  <style>.cd-sc{display:flex;gap:16px;animation:cdScroll 22s linear infinite;width:max-content;}.cd-sc:hover{animation-play-state:paused;}.cd-sb{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 14px;white-space:nowrap;font-size:.76rem;font-weight:700;color:#64748b;}.cd-sb span{width:5px;height:5px;border-radius:50%;background:#00FF41;display:inline-block;flex-shrink:0;}@keyframes cdScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}</style>
+  <div style="position:relative;">
+    <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,#000,transparent);z-index:2;pointer-events:none;"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,#000,transparent);z-index:2;pointer-events:none;"></div>
+    <div style="overflow:hidden;">
+      <div class="cd-sc">
+        <div class="cd-sb"><span></span>iTero Element</div><div class="cd-sb"><span></span>Medit i700</div><div class="cd-sb"><span></span>3Shape Trios</div><div class="cd-sb"><span></span>Primescan</div><div class="cd-sb"><span></span>CS 3600</div><div class="cd-sb"><span></span>Shining 3D</div><div class="cd-sb"><span></span>Planmeca</div><div class="cd-sb"><span></span>Exocad CAD</div><div class="cd-sb"><span></span>3Shape DS</div><div class="cd-sb"><span></span>STL · OBJ · PLY</div>
+        <div class="cd-sb"><span></span>iTero Element</div><div class="cd-sb"><span></span>Medit i700</div><div class="cd-sb"><span></span>3Shape Trios</div><div class="cd-sb"><span></span>Primescan</div><div class="cd-sb"><span></span>CS 3600</div><div class="cd-sb"><span></span>Shining 3D</div><div class="cd-sb"><span></span>Planmeca</div><div class="cd-sb"><span></span>Exocad CAD</div><div class="cd-sb"><span></span>3Shape DS</div><div class="cd-sb"><span></span>STL · OBJ · PLY</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="calc-wrap">
   <div>
     <div class="calc-card">
@@ -379,6 +414,7 @@ window.addEventListener('scroll', () => { document.getElementById('scroll-top-bt
 
 render();
 </script>
+<script>(function(){var ns=document.querySelectorAll('.cds');if(!ns.length)return;var done=false;function go(){if(done)return;done=true;ns.forEach(function(el){var t=parseInt(el.dataset.target,10),p=el.dataset.prefix||'',s=el.dataset.suffix||'',t0=performance.now();function tick(now){var r=Math.min((now-t0)/1200,1),e=1-Math.pow(1-r,3);el.textContent=p+Math.round(e*t)+s;if(r<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);});}var bar=document.getElementById('calc-stats');if(!bar){go();return;}new IntersectionObserver(function(e){if(e[0].isIntersecting){go();}},{threshold:0.4}).observe(bar);})();</script>
 <script src="js/footer.js"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
