@@ -129,6 +129,9 @@
           '<a href="https://www.instagram.com/labdentalprodigy/" target="_blank" rel="noopener noreferrer" title="Instagram @labdentalprodigy" aria-label="Instagram @labdentalprodigy">' +
             '<i class="fab fa-instagram"></i>' +
           '</a>' +
+          '<a href="https://www.facebook.com/profile.php?id=61575383924264" target="_blank" rel="noopener noreferrer" title="Facebook ProDigy Lab Dental" aria-label="Facebook ProDigy Lab Dental">' +
+            '<i class="fab fa-facebook"></i>' +
+          '</a>' +
         '</div>' +
       '</div>' +
 
