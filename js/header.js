@@ -14,7 +14,7 @@
   if (document.getElementById('nav-topbar') || document.getElementById('pheader-v2')) return;
 
   var cfg        = window._headerConfig || {};
-  var showLang   = !!cfg.showLang;
+  var showLang   = true; // siempre visible en todas las páginas
   var noCta      = !!cfg.noCta;   // suprimir CTA flotante (ej: portal.html ya tiene el suyo)
   var activePath = cfg.activePath || window.location.pathname;
 
@@ -891,5 +891,13 @@
     sessionStorage.setItem('tb_pass', pass);
     window.location.href = '/app/login.html?email=' + encodeURIComponent(email);
   };
+
+  /* Cargar i18n.js en todas las páginas si aún no está */
+  if (!window.i18n) {
+    var _i18nS = document.createElement('script');
+    _i18nS.src = '/js/i18n.js';
+    _i18nS.defer = true;
+    document.head.appendChild(_i18nS);
+  }
 
 })();
