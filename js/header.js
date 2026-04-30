@@ -280,6 +280,7 @@
     'transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .25s ease;}',
     '#pg-chat-window.open{transform:scale(1) translateY(0);opacity:1;pointer-events:auto;}',
     '@media(max-width:420px){#pg-chat-window{width:calc(100vw - 24px);left:12px;right:auto;bottom:88px;}}',
+    '@media(max-width:768px){#pg-chat-bubble{display:none!important;}}',
     '.pg-chat-header{display:flex;align-items:center;gap:12px;',
     'padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;}',
     '.pg-chat-avatar{width:38px;height:38px;border-radius:50%;',

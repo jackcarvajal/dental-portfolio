@@ -1,21 +1,19 @@
 /**
- * PRODIGY — AudioManager v1.0
- * Sistema de audio procedural completo — Web Audio API, sin archivos externos.
- * Tres capas: Drone Ambient / Ritmo Workflow / Feedback UI
+ * PRODIGY — AudioManager v2.0
+ * Música upbeat energética — Re mayor, 128 BPM, síntesis procedural.
+ * Sin archivos externos. Web Audio API puro.
  */
 (function(window) {
   'use strict';
 
   var ctx = null;
   var master = null;
-  var droneNodes = [];
-  var rhythmNodes = [];
+  var allNodes = [];
+  var timers = [];
   var ambientActive = false;
-  var rhythmActive = false;
   var initialized = false;
-  var MAX_GAIN = 0.15; // Límite de seguridad: nunca aturde
+  var MAX_GAIN = 0.18;
 
-  /* ── INIT ─────────────────────────────────────────────────────────── */
   function init() {
     if (initialized) return;
     ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -29,197 +27,271 @@
     if (ctx && ctx.state === 'suspended') ctx.resume();
   }
 
-  /* ── REVERB SINTÉTICO (delay network, sin archivo) ────────────────── */
-  function buildReverb() {
-    var convolver = ctx.createConvolver();
+  /* ── REVERB corto (sala pequeña) ─────────────────────────────────── */
+  function buildReverb(decaySec) {
+    decaySec = decaySec || 0.6;
     var rate = ctx.sampleRate;
-    var len  = rate * 2.5; // 2.5 segundos de cola
+    var len  = rate * decaySec;
     var buf  = ctx.createBuffer(2, len, rate);
     for (var ch = 0; ch < 2; ch++) {
-      var data = buf.getChannelData(ch);
-      for (var i = 0; i < len; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.5);
-      }
+      var d = buf.getChannelData(ch);
+      for (var i = 0; i < len; i++)
+        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
     }
-    convolver.buffer = buf;
-    var reverbGain = ctx.createGain();
-    reverbGain.gain.value = 0.18;
-    convolver.connect(reverbGain);
-    reverbGain.connect(master);
-    return convolver;
+    var conv = ctx.createConvolver();
+    conv.buffer = buf;
+    var g = ctx.createGain();
+    g.gain.value = 0.12;
+    conv.connect(g);
+    g.connect(master);
+    return conv;
   }
 
-  /* ── DRONE AMBIENT ─────────────────────────────────────────────────── */
-  function buildDrone() {
-    var reverb = buildReverb();
-    var droneGain = ctx.createGain();
-    droneGain.gain.value = 0.55;
-    droneGain.connect(master);
-    droneGain.connect(reverb);
+  /* ── PAD DE ACORDES (Re mayor → Sol → La → Re) ───────────────────── */
+  function buildPad() {
+    var reverb = buildReverb(1.2);
+    var padGain = ctx.createGain();
+    padGain.gain.value = 0;
+    padGain.connect(master);
+    padGain.connect(reverb);
 
-    // Serie armónica en La (A1=55Hz): drone profundo y cálido
-    var harmonics = [
-      { freq: 55,  gain: 0.18 },
-      { freq: 110, gain: 0.12 },
-      { freq: 165, gain: 0.07 },
-      { freq: 220, gain: 0.05 },
-      { freq: 330, gain: 0.03 },
-      { freq: 440, gain: 0.02 }
+    // Progresión D - G - A - D en voicing de 3 notas
+    var chords = [
+      [293.66, 369.99, 440.00],   // D4  F#4  A4
+      [196.00, 246.94, 293.66],   // G3  B3   D4
+      [220.00, 277.18, 329.63],   // A3  C#4  E4
+      [293.66, 369.99, 440.00]    // D4  F#4  A4
     ];
 
-    harmonics.forEach(function(h, idx) {
-      var osc     = ctx.createOscillator();
-      var oscGain = ctx.createGain();
-      var lfo     = ctx.createOscillator();
-      var lfoGain = ctx.createGain();
+    var BPM = 128;
+    var bar = (60 / BPM) * 4;  // duración de 1 compás (1.875s)
+    var chordIdx = 0;
 
-      // Oscilador principal
-      osc.type = idx < 2 ? 'sine' : 'sine';
-      osc.frequency.value = h.freq;
-      oscGain.gain.value  = h.gain;
+    function playChord() {
+      if (!ambientActive) return;
+      var c = chords[chordIdx % chords.length];
+      var now = ctx.currentTime;
 
-      // LFO de "respiración" — ciclo lento de 8-18 segundos
-      lfo.type = 'sine';
-      lfo.frequency.value = 0.05 + idx * 0.008;
-      lfoGain.gain.value  = h.freq * 0.004;
+      c.forEach(function(freq, i) {
+        var osc  = ctx.createOscillator();
+        var g    = ctx.createGain();
+        // Dos osciladores ligeramente desafinados para coro
+        var osc2 = ctx.createOscillator();
+        var g2   = ctx.createGain();
 
-      // Conectar
-      lfo.connect(lfoGain);
-      lfoGain.connect(osc.frequency); // modula la frecuencia suavemente
-      osc.connect(oscGain);
-      oscGain.connect(droneGain);
+        osc.type  = 'triangle';
+        osc2.type = 'triangle';
+        osc.frequency.value  = freq;
+        osc2.frequency.value = freq * 1.004; // +4 cents detune = efecto coro
 
-      // Filtro pasa-bajos para suavizar los armónicos altos
-      if (h.freq > 200) {
-        var lpf = ctx.createBiquadFilter();
-        lpf.type = 'lowpass';
-        lpf.frequency.value = h.freq * 2.5;
-        lpf.Q.value = 0.5;
-        osc.disconnect(oscGain);
-        osc.connect(lpf);
-        lpf.connect(oscGain);
-      }
+        g.gain.setValueAtTime(0, now);
+        g.gain.linearRampToValueAtTime(0.06 - i * 0.01, now + 0.15);
+        g.gain.setValueAtTime(0.06 - i * 0.01, now + bar - 0.25);
+        g.gain.linearRampToValueAtTime(0, now + bar);
 
-      lfo.start();
-      osc.start();
-      droneNodes.push(osc, lfo);
-    });
+        g2.gain.value = 0.04;
+
+        osc.connect(g);   g.connect(padGain);
+        osc2.connect(g2); g2.connect(padGain);
+        osc.start(now);   osc2.start(now);
+        osc.stop(now + bar + 0.1);
+        osc2.stop(now + bar + 0.1);
+        allNodes.push(osc, osc2);
+      });
+
+      chordIdx++;
+      var t = timers.length;
+      timers[t] = setTimeout(playChord, bar * 1000 - 20);
+    }
+
+    // Fade in del pad
+    var n = ctx.currentTime;
+    padGain.gain.setValueAtTime(0, n);
+    padGain.gain.linearRampToValueAtTime(0.55, n + 2.5);
+
+    playChord();
   }
 
-  /* ── RITMO WORKFLOW (kick + pluck a 110 BPM) ──────────────────────── */
+  /* ── ARPEGGIO LEAD ────────────────────────────────────────────────── */
+  function buildArpeggio() {
+    var arpGain = ctx.createGain();
+    arpGain.gain.value = 0;
+    arpGain.connect(master);
+
+    var BPM = 128;
+    var beat = 60 / BPM;          // 0.469s
+    var eighth = beat / 2;         // 0.234s — semicorchea
+
+    // Arpeggio en Re mayor: D4 F# A B D5 A F# D4 (8 notas)
+    var notes = [293.66, 369.99, 440.00, 493.88, 587.33, 440.00, 369.99, 293.66];
+
+    var idx = 0;
+    function playNote() {
+      if (!ambientActive) return;
+      var freq = notes[idx % notes.length];
+      var now  = ctx.currentTime;
+
+      var osc  = ctx.createOscillator();
+      var env  = ctx.createGain();
+      var lpf  = ctx.createBiquadFilter();
+      lpf.type = 'lowpass';
+      lpf.frequency.value = 3200;
+      lpf.Q.value = 0.7;
+
+      osc.type = 'sawtooth';
+      osc.frequency.value = freq;
+      env.gain.setValueAtTime(0.10, now);
+      env.gain.exponentialRampToValueAtTime(0.001, now + eighth * 0.85);
+
+      osc.connect(lpf); lpf.connect(env); env.connect(arpGain);
+      osc.start(now); osc.stop(now + eighth);
+      allNodes.push(osc);
+
+      idx++;
+      var t = timers.length;
+      timers[t] = setTimeout(playNote, eighth * 1000 - 5);
+    }
+
+    // Arranca tras 1s para dejar que el pad entre primero
+    var t0 = timers.length;
+    timers[t0] = setTimeout(function() {
+      if (!ambientActive) return;
+      var n = ctx.currentTime;
+      arpGain.gain.setValueAtTime(0, n);
+      arpGain.gain.linearRampToValueAtTime(0.5, n + 1);
+      playNote();
+    }, 1000);
+  }
+
+  /* ── RITMO: kick + snare + hi-hat a 128 BPM ──────────────────────── */
   function buildRhythm() {
-    var BPM      = 110;
-    var interval = (60 / BPM); // 0.545s por beat
-    var rGain    = ctx.createGain();
+    var BPM   = 128;
+    var beat  = 60 / BPM;
+    var rGain = ctx.createGain();
     rGain.gain.value = 0;
     rGain.connect(master);
 
-    // Fade in del ritmo
     var now = ctx.currentTime;
     rGain.gain.setValueAtTime(0, now);
-    rGain.gain.linearRampToValueAtTime(0.12, now + 3);
+    rGain.gain.linearRampToValueAtTime(0.9, now + 1.5);
 
-    // Kick procedural: sweep de frecuencia 100→30Hz
-    function scheduleKick(when) {
-      var kick = ctx.createOscillator();
-      var kGain = ctx.createGain();
-      kick.type = 'sine';
-      kick.frequency.setValueAtTime(100, when);
-      kick.frequency.exponentialRampToValueAtTime(30, when + 0.12);
-      kGain.gain.setValueAtTime(0.4, when);
-      kGain.gain.exponentialRampToValueAtTime(0.001, when + 0.25);
-      kick.connect(kGain);
-      kGain.connect(rGain);
-      kick.start(when);
-      kick.stop(when + 0.3);
+    // Kick: sweep 120→35Hz, punch rápido
+    function kick(when) {
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(160, when);
+      o.frequency.exponentialRampToValueAtTime(35, when + 0.1);
+      g.gain.setValueAtTime(0.6, when);
+      g.gain.exponentialRampToValueAtTime(0.001, when + 0.22);
+      o.connect(g); g.connect(rGain);
+      o.start(when); o.stop(when + 0.25);
     }
 
-    // Pluck digital: tono corto estilo sintetizador
-    function schedulePluck(when, freq) {
-      var pluck = ctx.createOscillator();
-      var pGain = ctx.createGain();
-      pluck.type = 'triangle';
-      pluck.frequency.value = freq;
-      pGain.gain.setValueAtTime(0.15, when);
-      pGain.gain.exponentialRampToValueAtTime(0.001, when + 0.18);
-      pluck.connect(pGain);
-      pGain.connect(rGain);
-      pluck.start(when);
-      pluck.stop(when + 0.22);
+    // Snare: ruido blanco filtrado + tono
+    function snare(when) {
+      var buf = ctx.createBuffer(1, ctx.sampleRate * 0.15, ctx.sampleRate);
+      var d   = buf.getChannelData(0);
+      for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      var src = ctx.createBufferSource();
+      src.buffer = buf;
+      var hpf = ctx.createBiquadFilter();
+      hpf.type = 'highpass'; hpf.frequency.value = 1800;
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0.35, when);
+      g.gain.exponentialRampToValueAtTime(0.001, when + 0.18);
+      src.connect(hpf); hpf.connect(g); g.connect(rGain);
+      src.start(when); src.stop(when + 0.2);
+      // Tono del snare
+      var ot = ctx.createOscillator();
+      var gt = ctx.createGain();
+      ot.type = 'triangle'; ot.frequency.value = 200;
+      gt.gain.setValueAtTime(0.15, when);
+      gt.gain.exponentialRampToValueAtTime(0.001, when + 0.1);
+      ot.connect(gt); gt.connect(rGain);
+      ot.start(when); ot.stop(when + 0.12);
     }
 
-    // Patrón: kick en 1 y 3, pluck en 2 y 4
-    var bars = 0;
+    // Hi-hat cerrado: ruido + highpass corto
+    function hihat(when, vol) {
+      vol = vol || 0.12;
+      var buf = ctx.createBuffer(1, ctx.sampleRate * 0.04, ctx.sampleRate);
+      var d   = buf.getChannelData(0);
+      for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      var src = ctx.createBufferSource();
+      src.buffer = buf;
+      var hpf = ctx.createBiquadFilter();
+      hpf.type = 'highpass'; hpf.frequency.value = 7000;
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(vol, when);
+      g.gain.exponentialRampToValueAtTime(0.001, when + 0.05);
+      src.connect(hpf); hpf.connect(g); g.connect(rGain);
+      src.start(when); src.stop(when + 0.06);
+    }
+
+    // Patrón 1 compás: kick en 1 y 3, snare en 2 y 4, hi-hat en corcheas
     function loop() {
-      if (!rhythmActive) return;
+      if (!ambientActive) return;
       var t = ctx.currentTime;
-      scheduleKick(t);
-      schedulePluck(t + interval, 440);       // beat 2: La4
-      scheduleKick(t + interval * 2);
-      schedulePluck(t + interval * 3, 330);   // beat 4: Mi4
-      bars++;
-      rhythmNodes._timer = setTimeout(loop, interval * 4 * 1000 - 20);
+      kick(t);
+      hihat(t, 0.10);
+
+      hihat(t + beat * 0.5, 0.08);
+
+      snare(t + beat);
+      hihat(t + beat, 0.12);
+
+      hihat(t + beat * 1.5, 0.08);
+
+      kick(t + beat * 2);
+      hihat(t + beat * 2, 0.10);
+
+      hihat(t + beat * 2.5, 0.08);
+
+      snare(t + beat * 3);
+      hihat(t + beat * 3, 0.12);
+
+      hihat(t + beat * 3.5, 0.08);
+
+      var ti = timers.length;
+      timers[ti] = setTimeout(loop, beat * 4 * 1000 - 15);
     }
 
-    rhythmNodes._gain = rGain;
-    rhythmActive = true;
-    loop();
+    // Arranca tras 0.5s
+    var t1 = timers.length;
+    timers[t1] = setTimeout(loop, 500);
   }
 
-  function stopRhythm() {
-    rhythmActive = false;
-    clearTimeout(rhythmNodes._timer);
-    if (rhythmNodes._gain) {
-      var now = ctx.currentTime;
-      rhythmNodes._gain.gain.cancelScheduledValues(now);
-      rhythmNodes._gain.gain.setValueAtTime(rhythmNodes._gain.gain.value, now);
-      rhythmNodes._gain.gain.linearRampToValueAtTime(0, now + 1.5);
-    }
-  }
-
-  /* ── FEEDBACK UI ───────────────────────────────────────────────────── */
+  /* ── FEEDBACK UI (sin cambios) ────────────────────────────────────── */
   function playFeedback(type) {
     if (!ctx) init();
     resume();
     var now = ctx.currentTime;
-
     var sounds = {
-      // Selección confirmada — tono limpio ascendente
       ping: function() {
         [880, 1100].forEach(function(f, i) {
-          var o = ctx.createOscillator();
-          var g = ctx.createGain();
-          o.type = 'sine';
-          o.frequency.value = f;
+          var o = ctx.createOscillator(); var g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = f;
           g.gain.setValueAtTime(0, now + i * 0.06);
           g.gain.linearRampToValueAtTime(0.08, now + i * 0.06 + 0.02);
           g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.25);
           o.connect(g); g.connect(ctx.destination);
-          o.start(now + i * 0.06);
-          o.stop(now + i * 0.06 + 0.3);
+          o.start(now + i * 0.06); o.stop(now + i * 0.06 + 0.3);
         });
       },
-
-      // Pago exitoso — joya cayendo en cristal (arpeggio ascendente)
       success: function() {
         [523, 659, 784, 1047].forEach(function(f, i) {
-          var o = ctx.createOscillator();
-          var g = ctx.createGain();
-          o.type = 'sine';
-          o.frequency.value = f;
+          var o = ctx.createOscillator(); var g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = f;
           g.gain.setValueAtTime(0, now + i * 0.1);
           g.gain.linearRampToValueAtTime(0.1, now + i * 0.1 + 0.03);
           g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.5);
           o.connect(g); g.connect(ctx.destination);
-          o.start(now + i * 0.1);
-          o.stop(now + i * 0.1 + 0.6);
+          o.start(now + i * 0.1); o.stop(now + i * 0.1 + 0.6);
         });
       },
-
-      // Error — tono grave descendente
       error: function() {
-        var o = ctx.createOscillator();
-        var g = ctx.createGain();
+        var o = ctx.createOscillator(); var g = ctx.createGain();
         o.type = 'sawtooth';
         o.frequency.setValueAtTime(280, now);
         o.frequency.exponentialRampToValueAtTime(100, now + 0.4);
@@ -230,57 +302,47 @@
         o.connect(lpf); lpf.connect(g); g.connect(ctx.destination);
         o.start(now); o.stop(now + 0.5);
       },
-
-      // Click digital — tick rápido de UI
       click: function() {
-        var o = ctx.createOscillator();
-        var g = ctx.createGain();
+        var o = ctx.createOscillator(); var g = ctx.createGain();
         o.type = 'sine'; o.frequency.value = 1200;
         g.gain.setValueAtTime(0.05, now);
         g.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
         o.connect(g); g.connect(ctx.destination);
         o.start(now); o.stop(now + 0.05);
       },
-
-      // Swish — transición entre secciones
-      swish: function() {
-        var buf = ctx.createBuffer(1, ctx.sampleRate * 0.15, ctx.sampleRate);
-        var d   = buf.getChannelData(0);
-        for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
-        var src = ctx.createBufferSource();
-        src.buffer = buf;
-        var bpf = ctx.createBiquadFilter();
-        bpf.type = 'bandpass'; bpf.frequency.value = 4000; bpf.Q.value = 0.8;
-        var g = ctx.createGain();
-        g.gain.setValueAtTime(0.06, now);
-        g.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-        src.connect(bpf); bpf.connect(g); g.connect(ctx.destination);
-        src.start(now); src.stop(now + 0.18);
-      },
-
-      // Upload — "carga" tecnológica
       upload: function() {
         [330, 440, 550, 660].forEach(function(f, i) {
-          var o = ctx.createOscillator();
-          var g = ctx.createGain();
+          var o = ctx.createOscillator(); var g = ctx.createGain();
           o.type = 'triangle'; o.frequency.value = f;
           g.gain.setValueAtTime(0, now + i * 0.04);
           g.gain.linearRampToValueAtTime(0.06, now + i * 0.04 + 0.02);
           g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.12);
           o.connect(g); g.connect(ctx.destination);
-          o.start(now + i * 0.04);
-          o.stop(now + i * 0.04 + 0.15);
+          o.start(now + i * 0.04); o.stop(now + i * 0.04 + 0.15);
         });
       }
     };
-
     if (sounds[type]) sounds[type]();
   }
 
-  /* ── API PÚBLICA ───────────────────────────────────────────────────── */
-  var AM = {
+  /* ── STOP TODO ────────────────────────────────────────────────────── */
+  function stopAll() {
+    ambientActive = false;
+    timers.forEach(function(t) { clearTimeout(t); });
+    timers = [];
+    allNodes.forEach(function(n) { try { n.stop(); } catch(e) {} });
+    allNodes = [];
+    if (master && ctx) {
+      var t = ctx.currentTime;
+      master.gain.cancelScheduledValues(t);
+      master.gain.setValueAtTime(master.gain.value, t);
+      master.gain.linearRampToValueAtTime(0, t + 1.2);
+      setTimeout(function() { if (ctx) ctx.suspend(); }, 1400);
+    }
+  }
 
-    // Activar/desactivar drone ambient (botón del home)
+  /* ── API PÚBLICA ──────────────────────────────────────────────────── */
+  var AM = {
     toggleAmbient: function() {
       if (!ctx) init();
       resume();
@@ -288,59 +350,46 @@
       var ico = btn ? btn.querySelector('i') : null;
 
       if (!ambientActive) {
-        buildDrone();
         ambientActive = true;
         if (btn) btn.classList.add('playing');
         if (ico) ico.className = 'fas fa-volume-high';
         if (btn) btn.title = 'Silenciar música';
-        if (window.ProdigyAnalytics) ProdigyAnalytics.trackAudioToggle('on');
         master.gain.cancelScheduledValues(ctx.currentTime);
         master.gain.setValueAtTime(0, ctx.currentTime);
-        master.gain.linearRampToValueAtTime(MAX_GAIN, ctx.currentTime + 3);
+        master.gain.linearRampToValueAtTime(MAX_GAIN, ctx.currentTime + 2);
+        buildPad();
+        buildArpeggio();
+        buildRhythm();
+        if (window.ProdigyAnalytics) ProdigyAnalytics.trackAudioToggle('on');
       } else {
         if (btn) btn.classList.remove('playing');
         if (ico) ico.className = 'fas fa-volume-xmark';
         if (btn) btn.title = 'Música ambiente';
-        var t = ctx.currentTime;
-        master.gain.cancelScheduledValues(t);
-        master.gain.setValueAtTime(master.gain.value, t);
-        master.gain.linearRampToValueAtTime(0, t + 2);
-        setTimeout(function() {
-          droneNodes.forEach(function(n) { try { n.stop(); } catch(e) {} });
-          droneNodes = [];
-          ambientActive = false;
-          if (ctx) ctx.suspend();
-        }, 2200);
+        stopAll();
+        if (window.ProdigyAnalytics) ProdigyAnalytics.trackAudioToggle('off');
       }
     },
 
-    // Activar ritmo en páginas de flujo/calculadora
     startWorkflow: function() {
       if (!ctx) init();
       resume();
       if (!ambientActive) {
-        buildDrone();
         ambientActive = true;
         master.gain.setValueAtTime(0, ctx.currentTime);
-        master.gain.linearRampToValueAtTime(MAX_GAIN * 0.7, ctx.currentTime + 2);
+        master.gain.linearRampToValueAtTime(MAX_GAIN * 0.6, ctx.currentTime + 1.5);
+        buildPad();
+        buildRhythm();
       }
-      if (!rhythmActive) buildRhythm();
     },
+    stopWorkflow: function() { stopAll(); },
 
-    stopWorkflow: function() {
-      stopRhythm();
-    },
-
-    // Sonidos de feedback UI
-    ping:    function() { if (!ctx) init(); resume(); playFeedback('ping');    },
-    success: function() { if (!ctx) init(); resume(); playFeedback('success'); },
-    error:   function() { if (!ctx) init(); resume(); playFeedback('error');   },
-    click:   function() { if (!ctx) init(); resume(); playFeedback('click');   },
-    swish:   function() { if (!ctx) init(); resume(); playFeedback('swish');   },
-    upload:  function() { if (!ctx) init(); resume(); playFeedback('upload');  }
+    ping:    function() { playFeedback('ping');    },
+    success: function() { playFeedback('success'); },
+    error:   function() { playFeedback('error');   },
+    click:   function() { playFeedback('click');   },
+    upload:  function() { playFeedback('upload');  }
   };
 
-  // Resume en primer toque (política de autoplay Chrome/Safari)
   document.addEventListener('click', function _first() {
     if (ctx) resume();
     document.removeEventListener('click', _first);
