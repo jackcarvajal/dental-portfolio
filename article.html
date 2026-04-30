@@ -427,24 +427,46 @@ function copiarLink() {
       <strong>Alejandro Carvajal</strong>
     </a>`;
 
-  /* Cover image */
-  if (art.og_img) {
+  /* Cover image — prioridad: og_img específico → fallback por categoría → placeholder Exocad */
+  const CAT_IMGS = {
+    ia:          { src:'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&w=800&q=75', credit:'Unsplash — IA & tecnología dental' },
+    materiales:  { src:'https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=75', credit:'Unsplash — Laboratorio dental' },
+    impresion3d: { src:'https://images.unsplash.com/photo-1631695428240-fb4ba2de2cfc?auto=format&fit=crop&w=800&q=75', credit:'Unsplash — Impresión 3D' },
+    equipo:      { src:'https://images.unsplash.com/photo-1588776814546-daab30f310ce?auto=format&fit=crop&w=800&q=75', credit:'Unsplash — Equipos dentales' },
+    flujos:      { src:'https://images.unsplash.com/photo-1606811841689-23dfddce3e58?auto=format&fit=crop&w=800&q=75', credit:'Unsplash — Flujo digital dental' }
+  };
+  /* Artículos con captura de Exocad pendiente */
+  const EXOCAD_PENDING = ['ia-exocad-cad-cam','3shape-automate-revision','margenes-digitales-exocad-tecnica-correcta','exocad-atajos-teclado-productividad-2026','occlusion-digital-articulador-virtual-exocad','workflow-carillas-emax-exocad-protocolo-completo','diseno-cad-principiantes-exocad-desde-cero','errores-comunes-exocad-como-resolverlos','exocad-vs-3shape-carillas-2026','full-arch-rehabilitacion-digital-protocolo-prodigy','flujo-100-digital-sin-yeso-cad-cam','abutments-cad-titanio-zirconia-cuando-cada-uno'];
+
+  const imgSrc    = art.og_img || (CAT_IMGS[art.categoria] && !EXOCAD_PENDING.includes(art.id) ? CAT_IMGS[art.categoria].src : null);
+  const imgCredit = art.img_credit || (CAT_IMGS[art.categoria] && !EXOCAD_PENDING.includes(art.id) ? CAT_IMGS[art.categoria].credit : null);
+
+  if (imgSrc) {
     const coverWrap = document.createElement('figure');
-    coverWrap.style.cssText = 'margin:28px 0 8px;border-radius:14px;overflow:hidden;max-height:420px;display:flex;align-items:center;justify-content:center;background:#0d1520;';
+    coverWrap.style.cssText = 'margin:28px 0 4px;border-radius:14px;overflow:hidden;max-height:400px;display:flex;align-items:center;justify-content:center;background:#0d1520;';
     const coverImg = document.createElement('img');
-    coverImg.src = art.og_img;
+    coverImg.src = imgSrc;
     coverImg.alt = art.titulo;
+    coverImg.loading = 'lazy';
     coverImg.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-    coverImg.onerror = function(){ coverWrap.style.display='none'; };
-    const caption = document.createElement('figcaption');
-    caption.style.cssText = 'text-align:center;font-size:1rem;color:#94a3b8;padding:6px 0 0;';
-    caption.textContent = art.img_credit || '';
-    coverWrap.appendChild(coverImg);
+    coverImg.onerror = function(){ coverWrap.parentElement && coverWrap.parentElement.remove(); };
     const figWrap = document.createElement('div');
     figWrap.style.cssText = 'margin:28px 0 8px;';
+    coverWrap.appendChild(coverImg);
     figWrap.appendChild(coverWrap);
-    if (art.img_credit) figWrap.appendChild(caption);
+    if (imgCredit) {
+      const cap = document.createElement('p');
+      cap.style.cssText = 'text-align:center;font-size:.72rem;color:#475569;margin-top:6px;font-style:italic;';
+      cap.textContent = '📷 ' + imgCredit;
+      figWrap.appendChild(cap);
+    }
     document.getElementById('article-body').before(figWrap);
+  } else if (EXOCAD_PENDING.includes(art.id)) {
+    /* Placeholder para artículos con screenshot de Exocad pendiente */
+    const ph = document.createElement('div');
+    ph.style.cssText = 'margin:28px 0 8px;border-radius:14px;border:1px dashed rgba(212,175,55,.3);background:linear-gradient(135deg,rgba(212,175,55,.05),rgba(0,210,255,.04));padding:32px;text-align:center;';
+    ph.innerHTML = '<div style="font-size:2rem;margin-bottom:8px;">🖥️</div><div style="font-size:.8rem;font-weight:700;color:#D4AF37;margin-bottom:4px;">Captura de Exocad pendiente</div><div style="font-size:.72rem;color:#475569;">Imagen del flujo real en Exocad — próximamente</div>';
+    document.getElementById('article-body').before(ph);
   }
 
   /* Body */
