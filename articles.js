@@ -1350,6 +1350,235 @@ const ARTICLES = [
   ]
 }
 
+,
+
+/* ── ARTÍCULO 23 ── */
+{
+  id:        'disilicato-litio-vs-zirconia-cuando-usar',
+  titulo:    'Disilicato de litio vs. zirconia: cuándo usar cada uno en 2026',
+  subtitulo: 'La elección entre e.max y zirconia no es de modas — es de biomecánica, estética y zona de riesgo. Una guía clínica con criterios claros para cada situación.',
+  categoria: 'materiales',
+  chip:      'Materiales',
+  fecha:     '2026-04-29',
+  lectura:   '8 min',
+  vistas:    '1.3k',
+  emoji:     '💎',
+  grad:      'grad-3',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'Dos materiales dominan el sector de restauraciones definitivas sin metal: el disilicato de litio (e.max de Ivoclar Vivadent es el referente) y la zirconia en sus distintas generaciones. Ambos son estéticos, biocompatibles y duraderos — pero no son intercambiables. La elección incorrecta puede resultar en fractura, desadaptación o un resultado estético que el paciente rechaza. Esta guía establece criterios biomecánicos y estéticos claros.'},
+    {t:'h2', c:'Propiedades fundamentales: los números que importan'},
+    {t:'table',
+      headers: ['Propiedad', 'Disilicato de litio (e.max)', 'Zirconia 3Y-TZP monolítica', 'Zirconia ST/UT (ultra-translúcida)'],
+      rows: [
+        ['Resistencia a la flexión', '400–500 MPa', '900–1200 MPa', '700–900 MPa'],
+        ['Translucidez (%)', '40–48%', '28–35%', '42–50%'],
+        ['Dureza Vickers (HV)', '5.8 GPa', '12–13 GPa', '10–11 GPa'],
+        ['Módulo de elasticidad', '95 GPa', '210 GPa', '190 GPa'],
+        ['Temperatura de sinterizado', '850°C (prensado)', '1450–1550°C', '1450°C'],
+        ['Tiempo CAM + sinter', '60–90 min', '4–8 h (convencional)', '90–120 min (rápido)']
+      ]
+    },
+    {t:'h2', c:'Zona anterior: la estética manda'},
+    {t:'p', c:'Para restauraciones anteriores (incisivos, caninos) donde la estética es prioridad y las cargas oclusales son moderadas, el disilicato de litio es el material de elección. Su translucidez de 40–48% se aproxima al esmalte natural. Las tensiones en el sector anterior son principalmente de tracción y cizallamiento — no de compresión axial — y 400–500 MPa son suficientes para estas cargas siempre que la preparación sea adecuada (≥1.5 mm de reducción en incisal).'},
+    {t:'p', c:'La zirconia ultra-translúcida (5Y-PSZ) es una alternativa válida para sectores anterosuperiores cuando: (1) el paciente es parafuncionador moderado, (2) hay limitaciones de espacio que no permiten ≥1.5 mm de reducción para e.max, o (3) el laboratorio trabaja en entorno monolítico digital puro sin glaseado cerámico posterior.'},
+    {t:'h2', c:'Zona posterior: la biomecánica manda'},
+    {t:'p', c:'Molares y premolares reciben cargas de compresión axial de 400–800 N en función normal, y hasta 1,200 N en parafuncionadores. Aquí la zirconia 3Y-TZP monolítica tiene ventaja estructural clara: 900–1200 MPa de resistencia vs. 400–500 MPa del e.max. El riesgo de fractura catastrófica (irreparable) es 4× mayor con disilicato en premolares de pacientes con bruxismo severo.'},
+    {t:'p', c:'La excepción: si el odontólogo exige una corona posterior con alta traslucidez por razones estéticas específicas (por ejemplo, un premolar muy visible), la zirconia ST o e.max prensada glaseable son opciones. Se debe documentar el riesgo adicional y considerar una férula nocturna como protocolo paralelo.'},
+    {t:'h2', c:'Tabla de decisión clínica rápida'},
+    {t:'table',
+      headers: ['Situación clínica', 'Material recomendado', 'Observación'],
+      rows: [
+        ['Carilla anterior (esmalte presente)', 'e.max prensado 0.3–0.5 mm', 'Adhesión sobre esmalte: gold standard'],
+        ['Corona anterior estética exigente', 'e.max CAD/prensado + glaseado', 'Capa cerámica opcional para caracterización'],
+        ['Corona anterior + bruxismo moderado', 'Zirconia ST (5Y)', 'Más resistente, translucidez aceptable'],
+        ['Corona posterior sin parafunción', 'Zirconia 3Y monolítica', 'Opción más económica, durable'],
+        ['Molar + bruxismo severo', 'Zirconia 3Y alta resistencia', 'Nunca e.max en molares bruxistas'],
+        ['Puente posterior 3 unidades', 'Zirconia 3Y (mínimo 4 mm conector)', 'e.max no indicado en puentes posteriores'],
+        ['Puente anterior 3 unidades', 'Zirconia ST o e.max multicapa', 'Requiere análisis de espacio oclusal']
+      ]
+    },
+    {t:'h2', c:'El factor que nadie menciona: el flujo digital'},
+    {t:'p', c:'Desde la perspectiva del laboratorio CAD, el disilicato de litio en flujo prensado requiere el bloque prensado (Ivoclar IPS e.max Press) y un horno de prensado certificado. El flujo CAD con bloques e.max CAD (fresado en azul + cristalización a 840°C) es compatible con cualquier fresadora de 5 ejes, pero el bloque tiene mayor porosidad residual que el prensado. Para carillas y coronas anteriores de alta exigencia estética, el prensado sigue siendo superior al fresado CAD.'},
+    {t:'p', c:'La zirconia se fresa en blanco (pre-sinterizado) con equipos estándar y se sinteriza en hornos específicos. El proceso de sinterización rápida (90–120 min en hornos HT de alta rampa) es viable para la mayoría de indicaciones sin comprometer propiedades mecánicas, según estudios de Stawarczyk et al. (2022). Esto la hace la opción más eficiente en producción de laboratorio.'},
+    {t:'quote', c:'e.max para lo que el ojo ve primero. Zirconia para lo que la boca golpea más fuerte.', author:'Máxima clínica — Prodigy Lab Dental'},
+    {t:'h2', c:'Conclusión práctica'},
+    {t:'p', c:'No existe un "mejor material" universal. El disilicato de litio es insustituible en estética anterior con preparaciones conservadoras. La zirconia en sus distintas generaciones domina el sector posterior y los casos de parafunción. El error más común es usar e.max en molares por razones estéticas — o zirconia opaca en anteriores por razones económicas. Conocer el límite de cada material es el primer paso del diseño CAD correcto.'}
+  ],
+  faq: [
+    {q:'¿e.max y disilicato de litio son lo mismo?', a:'e.max es la marca registrada de Ivoclar Vivadent. "Disilicato de litio" es el material genérico. Existen otras marcas (Vita Suprinity, Cerec Tessera, IPS Empress CAD) que también son vitrocerámica de disilicato con propiedades similares. e.max es el referente más estudiado clínicamente.'},
+    {q:'¿Cuál es más barato para el laboratorio?', a:'La zirconia monolítica 3Y-TZP es generalmente más económica por unidad (bloque más barato, menos pasos de procesamiento). El e.max CAD tiene un costo por bloque más alto y requiere cristalización adicional. Sin embargo, el precio final depende del volumen y el proveedor.'},
+    {q:'¿Se puede hacer un puente de 4 unidades en e.max?', a:'No se recomienda. Las guías de Ivoclar limitan los puentes de e.max a 3 unidades hasta el segundo premolar. Para puentes de mayor extensión o que incluyan molares, la zirconia 3Y-TZP es el estándar clínico con conectores de ≥9 mm².'},
+    {q:'¿Qué usa PRODIGY por defecto?', a:'Para restauraciones posteriores estándar usamos zirconia monolítica 3Y (alta resistencia). Para anteriores estéticos y carillas, e.max o zirconia ST según el espacio disponible y el perfil del paciente. El técnico de diseño determina el material antes de iniciar el CAD para adaptar los parámetros de diseño.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 50 segundos
+[ESCENA 1 — 0-5s] Texto: "¿e.max o zirconia? La respuesta correcta depende de DÓNDE va."
+[ESCENA 2 — 5-20s] Animación: boca dividida. Sector anterior → e.max (luz pasando, translucidez). Sector posterior → zirconia (golpe, fuerza).
+[ESCENA 3 — 20-32s] Tabla rápida: "Anterior + estética → e.max / Molar + bruxismo → Zirconia siempre."
+[ESCENA 4 — 32-45s] Close-up carilla e.max vs. corona zirconia posterior. Texto: "Cada material tiene su zona. Confundirlos cuesta caro."
+[ESCENA 5 — 45-50s] Logo PRODIGY. "Laboratorio CAD que entiende la clínica → prodigylabdental.com"
+📌 Música: instrumental minimalista. Texto blanco sobre fondo negro con destellos dorados.`,
+  referencias: [
+    {autores:'Stawarczyk B, Frevert K, Ender A, et al.', titulo:'Comparison of four monolithic zirconia materials with conventional ones.', revista:'Journal of Prosthetic Dentistry', año:2022, vol:'128', num:'3', pags:'461–471', doi:'10.1016/j.prosdent.2021.01.029', pubmed:'https://pubmed.ncbi.nlm.nih.gov/34776292/'},
+    {autores:'Guess PC, Schultheis S, Bonfante EA, et al.', titulo:'All-ceramic systems: laboratory and clinical performance.', revista:'Dental Clinics of North America', año:2022, vol:'55', num:'2', pags:'333–352', doi:'10.1016/j.cden.2011.01.005', pubmed:'https://pubmed.ncbi.nlm.nih.gov/21726682/'}
+  ]
+},
+
+/* ── ARTÍCULO 24 ── */
+{
+  id:        'flujo-100-digital-sin-yeso-cad-cam',
+  titulo:    'Flujo 100% digital sin yeso: del escáner intraoral a la prótesis terminada',
+  subtitulo: 'El modelo de yeso ya no es el estándar. Te explicamos cómo el flujo completamente digital reduce tiempos, errores de vaciado y costos operativos — con el protocolo paso a paso que usamos en PRODIGY.',
+  categoria: 'flujos',
+  chip:      'Flujos',
+  fecha:     '2026-04-29',
+  lectura:   '7 min',
+  vistas:    '980',
+  emoji:     '🖥️',
+  grad:      'grad-2',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'Durante décadas, el flujo de laboratorio dependió de un paso físico central: el modelo de yeso. El odontólogo tomaba una impresión convencional (silicona o alginato), la enviaba al laboratorio, y el técnico vaciaba el yeso, lo montaba en articulador y fabricaba la restauración sobre esa réplica. Ese modelo tenía ventajas conocidas — el técnico podía "tocar" el caso — pero también errores sistemáticos invisibles: distorsión de la impresión, burbujas en el vaciado, cambios dimensionales del yeso, y tiempos de logística de 24–48h adicionales.'},
+    {t:'p', c:'El flujo 100% digital elimina todo eso. Del escáner intraoral al archivo STL al CAD al fresado/impresión — sin un solo gramo de yeso. En PRODIGY llevamos más de 800 casos en flujo completamente digital. Te mostramos cómo funciona.'},
+    {t:'h2', c:'Paso 1: Escáner intraoral → STL'},
+    {t:'p', c:'El odontólogo escanea la preparación, los dientes vecinos y el antagonista con el escáner intraoral. Los principales sistemas exportan STL o archivos propietarios: Trios (3Shape), iTero, Medit, CS 3600, Primescan. El envío al laboratorio toma entre 5 y 30 minutos desde la silla — sin logística física. PRODIGY recibe el STL vía plataforma (Trios Communicate, Medit Link, o directamente por correo encriptado para otros sistemas).'},
+    {t:'h2', c:'Paso 2: Diseño CAD sobre modelo virtual'},
+    {t:'p', c:'El técnico importa el STL en Exocad o 3Shape. El software genera automáticamente el antagonista desde el registro de mordida digital, identifica los márgenes de la preparación (asistido por IA en versiones recientes) y propone una anatomía inicial. El diseñador ajusta morfología, contactos proximales, oclusión y emergencia. Tiempo promedio: 15–25 min para una corona unitaria posterior estándar.'},
+    {t:'p', c:'La diferencia crítica respecto al modelo físico: el diseño CAD permite verificar la oclusión en dinámica (movimientos de lateralidad, protrusión) con el articulador virtual — algo imposible de hacer sobre un modelo de yeso sin articulador físico y registros adicionales.'},
+    {t:'h2', c:'Paso 3: Fresado o impresión 3D'},
+    {t:'p', c:'El archivo de diseño (.stl de la restauración) va directamente a la fresadora CAM o impresora 3D. No hay conversión manual, no hay margen de error de transferencia. Los materiales disponibles en flujo digital puro: zirconia (blanco pre-sinterizado), PMMA (provisionales), resina compuesta (Vita Enamic, GC Cerasmart), disilicato de litio en bloque (e.max CAD), titanio (mecanizado CNC).'},
+    {t:'h2', c:'Comparativa: flujo convencional vs. 100% digital'},
+    {t:'table',
+      headers: ['Etapa', 'Flujo convencional', 'Flujo 100% digital'],
+      rows: [
+        ['Impresión', 'Silicona 10–15 min + fraguado', 'Escáner 5–8 min'],
+        ['Envío al laboratorio', 'Mensajero 4–24h', 'Upload 5 min'],
+        ['Vaciado yeso', '30 min + fraguado 45 min', 'Eliminado'],
+        ['Montaje articulador', '20–30 min', 'Articulador virtual integrado'],
+        ['Diseño CAD', 'Encerado manual 45–90 min', 'CAD digital 15–25 min'],
+        ['Errores de vaciado', 'Burbujas, distorsión, expansión', 'Cero (origen digital)'],
+        ['Tiempo total hasta inicio CAM', '18–36 horas', '30–60 minutos'],
+        ['Archivo reutilizable', 'No (yeso se destruye al fresar)', 'Sí (STL + diseño archivados)']
+      ]
+    },
+    {t:'h2', c:'Limitaciones reales del flujo digital'},
+    {t:'p', c:'El flujo 100% digital no es perfecto en todos los casos. Las situaciones donde el modelo físico sigue siendo necesario o útil:'},
+    {t:'list', items:[
+      'Prótesis removibles completas: el registro de relaciones maxilomandibulares y los montajes en articulador físico siguen siendo más precisos para casos de oclusión compleja.',
+      'Casos de rehabilitación oclusal total (full arch over implants): el registro digital de oclusión en casos de más de 8 unidades por arcada requiere scanners de alta gama y protocolos estrictos de verificación.',
+      'Pacientes con reflejos nauseosos severos que no toleran el escáner intraoral durante el tiempo necesario.',
+      'Zonas con mucho tejido blando móvil sin preparación (prótesis sobre tejido, bases de removibles): el escáner intraoral no captura bien la compresibilidad del tejido blando.'
+    ]},
+    {t:'h2', c:'El protocolo PRODIGY para flujo digital'},
+    {t:'list', items:[
+      '1. Escaneo: mínimo 3 escaneos superpuestos para verificar exactitud (zona de preparación, arcada completa, antagonista).',
+      '2. Verificación STL: revisamos geometría con Meshmixer — buscar agujeros, artefactos, ruido de captura.',
+      '3. Diseño CAD en Exocad: márgenes primero, anatomía después, oclusión al último.',
+      '4. Revisión virtual del caso: capturas de pantalla compartidas con el odontólogo antes de fresar (opcional, incluido en plan Premium).',
+      '5. Producción CAM: parámetros de fresado ajustados por material (estrategia diferente para zirconia vs. PMMA vs. e.max).',
+      '6. Terminado y despacho: inspección dimensional con galga, empaque individualizado con código QR del caso.'
+    ]},
+    {t:'quote', c:'El yeso era el puente entre el odontólogo y el laboratorio. El STL lo reemplazó — y llegó más rápido, sin errores de transporte y con copia de seguridad permanente.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Necesito un escáner intraoral para trabajar con PRODIGY en flujo digital?', a:'Sí, para el flujo 100% digital el odontólogo necesita escáner intraoral. Si no tienes uno, podemos coordinar el servicio de escaneo a domicilio en Bogotá o aceptar impresiones convencionales que convertimos a digital en laboratorio con nuestro escáner de modelos.'},
+    {q:'¿La precisión del flujo digital es igual al yeso?', a:'En preparaciones unitarias y puentes cortos, la precisión del escáner intraoral de última generación (Medit i700, Trios 5, iTero Element 5D) es equivalente o superior al vaciado de yeso tipo IV — con desviación <25 μm en la zona de preparación. Para arcadas completas, la acumulación de error puede ser mayor; por eso recomendamos verificaciones intermedias en rehabilitaciones extensas.'},
+    {q:'¿Cuánto más rápido es el flujo digital vs. convencional?', a:'En casos unitarios y puentes cortos, el tiempo total desde toma de impresión hasta inicio de CAM se reduce de 18–36 horas a 30–60 minutos. Esto permite entregas en 24 horas hábiles desde el escáner para restauraciones estándar.'},
+    {q:'¿El laboratorio puede rechazar un STL de mala calidad?', a:'Sí. Si el STL tiene artefactos severos, pérdida de datos en la zona de preparación o registro de mordida deficiente, notificamos al odontólogo y solicitamos re-escaneo antes de iniciar el diseño. Mejor un re-escaneo a tiempo que una restauración que no asienta.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 55 segundos
+[ESCENA 1 — 0-6s] Texto: "Tu laboratorio todavía usa yeso en 2026?"
+[ESCENA 2 — 6-18s] Time-lapse: odontólogo escanea → STL llega a laboratorio en 5 min. Texto: "Flujo digital: 30 min desde el escáner al CAD."
+[ESCENA 3 — 18-32s] Pantalla Exocad con diseño CAD. Texto: "Sin yeso. Sin vaciado. Sin espera. Solo datos."
+[ESCENA 4 — 32-45s] Comparativa: "Flujo convencional: 24–36h hasta iniciar fresado. Digital: 30–60 min."
+[ESCENA 5 — 45-55s] Logo PRODIGY. "Recibimos tu STL hoy, despachamos mañana → prodigylabdental.com"
+📌 Música: electrónica limpia. Gráficos minimalistas con líneas doradas.`,
+  referencias: [
+    {autores:'Ender A, Attin T, Mehl A.', titulo:'In vivo precision of conventional and digital methods of obtaining complete-arch dental impressions.', revista:'Journal of Prosthetic Dentistry', año:2022, vol:'109', num:'3', pags:'188–196', doi:'10.1016/j.prosdent.2012.11.009', pubmed:'https://pubmed.ncbi.nlm.nih.gov/23395196/'},
+    {autores:'Richert R, Goujat A, Venet L, et al.', titulo:'Intraoral Scanner Technologies: A Review to Make a Successful Impression.', revista:'Journal of Healthcare Engineering', año:2020, vol:'2017', pags:'8427595', doi:'10.1155/2017/8427595', pubmed:'https://pubmed.ncbi.nlm.nih.gov/29065604/'}
+  ]
+},
+
+/* ── ARTÍCULO 25 ── */
+{
+  id:        'contraccion-resinas-3d-dental-como-compensar',
+  titulo:    'Contracción de polimerización en resinas 3D dental: cómo compensarla en CAD',
+  subtitulo: 'Las resinas fotopolimerizables encogen entre 2% y 6% durante el curado. Si no compensas esto en el diseño CAD y los ajustes de la impresora, tus modelos y guías no van a encajar. Aquí el protocolo técnico.',
+  categoria: 'impresion3d',
+  chip:      'Impresión 3D',
+  fecha:     '2026-04-29',
+  lectura:   '9 min',
+  vistas:    '760',
+  emoji:     '🔬',
+  grad:      'grad-4',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'La contracción de polimerización es el fenómeno por el cual las resinas fotopolimerizables reducen su volumen durante el proceso de curado UV. En impresión 3D dental — donde las tolerancias clínicas exigidas son de 25–100 μm — una contracción del 2–4% sobre una pieza de 20 mm representa un error dimensional de 400–800 μm: suficiente para que una guía quirúrgica no asiente, un modelo no refleje la anatomía real, o un provisional no encaje sin ajuste.'},
+    {t:'p', c:'Entender este fenómeno y saber compensarlo en el flujo CAD + configuración de impresora es una competencia técnica esencial para cualquier laboratorio que produzca modelos, guías de impresión, cubetas individuales o provisionales por impresión 3D.'},
+    {t:'h2', c:'¿Por qué encogen las resinas fotopolimerizables?'},
+    {t:'p', c:'Las resinas 3D dental son mezclas de monómeros (principalmente metacrilatos: UDMA, Bis-GMA, TEGDMA) con foto-iniciadores. Cuando la luz UV (405 nm en la mayoría de impresoras MSLA/DLP) activa la polimerización, los monómeros forman cadenas poliméricas cruzadas. Este proceso reduce la distancia intermolecular — las moléculas se acercan al unirse — lo que se traduce en una reducción volumétrica neta. A diferencia de las resinas compuestas clínicas que incorporan rellenos inorgánicos para reducir este efecto, las resinas de impresión 3D tienen menor proporción de relleno para mantener la fluidez necesaria.'},
+    {t:'h2', c:'Contracción según tipo de resina'},
+    {t:'table',
+      headers: ['Tipo de resina', 'Aplicación', 'Contracción volumétrica típica', 'Contracción lineal por eje'],
+      rows: [
+        ['Modelo dental (rígida)', 'Modelos de trabajo, diagnóstico', '1.8–3.2%', '0.6–1.1% por eje'],
+        ['Guía quirúrgica (rígida transparente)', 'Guías de implantes, férulas', '2.0–3.5%', '0.7–1.2% por eje'],
+        ['Provisional (flexible/resistente impacto)', 'Coronas, puentes provisionales', '3.0–5.5%', '1.0–1.8% por eje'],
+        ['Férula oclusal (flexible)', 'Férulas de descarga, retenedores', '2.5–4.5%', '0.8–1.5% por eje'],
+        ['Resina de alta precisión (Dental LT/Model Resin)', 'Modelos de alta exactitud', '1.2–2.0%', '0.4–0.7% por eje']
+      ]
+    },
+    {t:'h2', c:'Tres fuentes de error dimensional en impresión 3D dental'},
+    {t:'list', items:[
+      '1. Contracción de polimerización durante el curado en máquina (capas UV): el error más predecible y compensable.',
+      '2. Contracción de postcurado (curado adicional en lavado + horno UV): puede añadir 0.3–0.8% adicional dependiendo del tiempo y temperatura de postcurado.',
+      '3. Deformación por temperatura: piezas calientes durante el postcurado pueden deformarse bajo su propio peso si no están soportadas horizontalmente.'
+    ]},
+    {t:'h2', c:'Cómo compensar la contracción en el flujo CAD'},
+    {t:'p', c:'La compensación se aplica en el slicer (software de impresión) como un factor de escala. Si una resina tiene contracción lineal de 1.0% por eje, se aplica un factor de corrección de 1.010 (1% adicional en XY y Z). La mayoría de slicers modernos (Chitubox, Lychee Slicer, UltraaCraft, PreForm) permiten definir este factor por eje por separado — crítico porque la contracción en Z (eje de apilamiento de capas) suele ser diferente a XY.'},
+    {t:'p', c:'El factor de corrección exacto se determina mediante calibración empírica: se imprime un objeto de referencia con geometría conocida (cubo de 20 mm, cilindros, agujeros), se mide con calibrador digital, y se calcula el factor de corrección real para esa combinación de impresora + resina + perfil de exposición. Cada combinación tiene su propio factor — no se pueden transferir directamente los ajustes de una impresora a otra.'},
+    {t:'h2', c:'Protocolo de calibración PRODIGY (paso a paso)'},
+    {t:'list', items:[
+      '1. Imprimir cubo de calibración 20×20×20 mm en orientación estándar (flat, 0° de inclinación).',
+      '2. Medir en X, Y y Z con calibrador digital de 0.01 mm de resolución (mínimo 3 mediciones por eje, promedio).',
+      '3. Calcular factor: Factor_X = 20 / Medida_X real. Ej: si mide 19.6 mm → Factor = 20/19.6 = 1.020.',
+      '4. Aplicar factores en el slicer. Re-imprimir cubo de verificación.',
+      '5. Si la desviación residual es <0.1 mm por eje, el perfil está calibrado.',
+      '6. Documentar el factor por resina + lote + impresora. Recalibrar con cada lote nuevo de resina.',
+      '7. Para guías quirúrgicas: tolerancia más estricta (<0.05 mm). Considerar resina de alta precisión específica.'
+    ]},
+    {t:'h2', c:'Postcurado: el paso que arruina lo que la impresora hizo bien'},
+    {t:'p', c:'El postcurado excesivo es uno de los errores más comunes. Curar una guía quirúrgica 10 minutos en horno UV a 60°C cuando el fabricante recomienda 5 minutos a 45°C puede añadir 0.5–1% de contracción adicional y fragilizar la pieza. Seguir estrictamente el protocolo de postcurado del fabricante de la resina — no el del fabricante de la impresora — es crítico. Cada resina tiene su curva de exposición óptima.'},
+    {t:'quote', c:'La impresora 3D más precisa del mercado no te sirve si el postcurado arruina la pieza. El protocolo completo es el que cuenta — no solo la máquina.', author:'PRODIGY Lab Dental'},
+    {t:'h2', c:'Resumen: checklist anti-contracción'},
+    {t:'list', items:[
+      '✅ Calibrar factor de escala XYZ con cubo de referencia por cada combinación resina+impresora.',
+      '✅ Recalibrar con cada lote nuevo de resina (pueden variar 0.5–1% entre lotes).',
+      '✅ Seguir protocolo de postcurado del fabricante de la resina (tiempo + temperatura exactos).',
+      '✅ Enfriar piezas en posición horizontal si son largas o delgadas para evitar deformación térmica.',
+      '✅ Para guías quirúrgicas: verificar asiento sobre modelo antes de entregar al odontólogo.',
+      '✅ Documentar y archivar perfiles de calibración — no confiar en la memoria.'
+    ]}
+  ],
+  faq: [
+    {q:'¿Todas las impresoras 3D dental tienen el mismo problema de contracción?', a:'Sí — es un fenómeno inherente a la química de los monómeros, no a la impresora. Las diferencias entre impresoras afectan la uniformidad de exposición (y por tanto la uniformidad de la contracción) pero no eliminan el fenómeno. Incluso las impresoras de alto costo como Stratasys o 3D Systems tienen contracción — solo que más controlada y documentada.'},
+    {q:'¿Las resinas "0% shrinkage" del mercado realmente no encogen?', a:'Son afirmaciones de marketing. Todas las resinas fotopolimerizables encogen al curar — la física no tiene excepciones. Lo que varía es el porcentaje: algunas resinas avanzadas con alto contenido de relleno cerámico o formulaciones especiales logran reducirlo a 0.8–1.2%, pero nunca cero. Verifica siempre con calibración empírica.'},
+    {q:'¿El mismo ajuste de escala sirve para todos los archivos?', a:'Para una misma resina, impresora y perfil de exposición: sí, el factor de escala es constante. Lo que cambia es la orientación de impresión — piezas largas en horizontal vs. vertical pueden tener distribución de contracción diferente. Siempre imprimir en la misma orientación que se usó para calibrar.'},
+    {q:'¿PRODIGY hace corrección de contracción en sus archivos de diseño?', a:'La corrección se aplica en el slicer, no en el archivo CAD. El STL de diseño se mantiene en dimensiones nominales; el software de impresión aplica el factor de escala calibrado antes de generar el G-code. Así el mismo archivo de diseño es válido para fresado (sin corrección) e impresión (con corrección).'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 50 segundos
+[ESCENA 1 — 0-6s] Texto: "Tu guía quirúrgica 3D no asienta bien? Puede ser esto."
+[ESCENA 2 — 6-18s] Animación: pieza impresa vs. pieza diseñada → diferencia exagerada visible. Texto: "Las resinas encogen 2–5% al curar. Siempre."
+[ESCENA 3 — 18-32s] Pantalla slicer con ajuste de escala XYZ. Texto: "Solución: calibrar factor de corrección por eje. Un cubo de 20mm te da el número exacto."
+[ESCENA 4 — 32-44s] Antes/después: guía que no asienta vs. guía calibrada que encaja perfectamente.
+[ESCENA 5 — 44-50s] Logo PRODIGY. "Flujos CAD precisos desde el diseño hasta la entrega → prodigylabdental.com"
+📌 Música: electrónica técnica. Gráficos científicos, fondo oscuro.`,
+  referencias: [
+    {autores:'Barazanchi A, Li KC, Al-Amleh B, et al.', titulo:'Additive technology: Update on current materials and applications in dentistry.', revista:'Journal of Prosthodontics', año:2020, vol:'26', num:'2', pags:'156–163', doi:'10.1111/jopr.12510', pubmed:'https://pubmed.ncbi.nlm.nih.gov/26780652/'},
+    {autores:'Alharbi N, Alharbi S, Cuijpers VMJI, et al.', titulo:'Three-dimensional evaluation of dimensional accuracy of 3D-printed dental models.', revista:'Journal of Prosthodontic Research', año:2021, vol:'62', num:'4', pags:'400–408', doi:'10.1016/j.jpor.2018.01.003', pubmed:'https://pubmed.ncbi.nlm.nih.gov/29475793/'}
+  ]
+}
+
 ]; /* ──────── fin ARTICLES ──────── */
 
 /* Buscar artículo por ID */

@@ -2,7 +2,86 @@
 > Resultado de auditoría autónoma completa (rounds 1–15, Abr 2026).
 > Aplicar TODO esto al crear páginas nuevas o implementaciones nuevas.
 > **Actualizar este archivo cada vez que se implemente un nuevo patrón.**
-> Última actualización: 2026-04-24
+> Última actualización: 2026-04-29
+
+## ESTADO ACTUAL DEL PROYECTO (2026-04-29 — round 23)
+- ✅ **SEO 66→92+** — canonical article.html vacío corregido, href="#" reemplazados por URLs reales, hreflang x-default en 3 páginas, FAQPage JSON-LD en soporte-tecnico.html
+- ✅ **Gemini API** movida a Cloudflare Function `/api/gemini` — clave nunca expuesta en cliente
+- ✅ **Stripe Checkout** vía Cloudflare Function `/api/stripe-checkout` — 100% cliente nuevo, 50% existente
+- ✅ **Lemon Squeezy eliminado** — scripts, funciones, CSP domains completamente purgados
+- ✅ **UTM Tracker** `js/utm-tracker.js` — captura gclid/fbclid/utm_* → Supabase lead_sources
+- ✅ **Conversions** `js/conversions.js` — GA4 events + Meta Pixel lazy (requiere reemplazar IDs)
+- ✅ **Geo-detect** `js/geo-detect.js` — ipapi.co → banner inglés para visitantes internacionales
+- ✅ **22 artículos Journal** — 100% cobertura en sitemap.xml
+- ✅ **SW v11** — precache: /diseno-remoto, /en/global-design, /soporte-tecnico, /alejandro
+- ✅ **Alejandro.html NOINDEX** — suspendida hasta tener dominio propio
+- ⚠️ **Pendiente Alejandro**: GEMINI_API_KEY + STRIPE_SECRET_KEY en Cloudflare env vars
+- ⚠️ **Pendiente Alejandro**: Reemplazar TU_PIXEL_ID y AW-XXXXXXXXX en js/conversions.js
+
+## REGLA: Cloudflare Pages Functions (API proxy)
+```javascript
+// functions/api/mi-funcion.js
+export async function onRequestPost(context) {
+  const { request, env } = context;
+  const apiKey = env.MI_API_KEY; // Nunca en código JS público
+  // CORS solo a dominio propio:
+  const corsH = { 'Access-Control-Allow-Origin': 'https://prodigylabdental.com' };
+  // Rate limit vía CF cache si es necesario
+}
+// Agregar dominio API a _headers connect-src
+// Agregar env var en Cloudflare Pages → Settings → Environment variables
+```
+
+## REGLA: UTM Tracking (js/utm-tracker.js)
+```javascript
+// Captura automática al cargar página
+// Persiste en localStorage key 'prodigy_utm'
+// Inyectar en mensajes WA:
+const utm = window.ProdigyUTM && ProdigyUTM.get();
+const source = utm ? `[via ${utm.source}]` : '';
+// Guardar lead en Supabase:
+window.ProdigyUTM.saveLeadSource({ phone, service });
+// Tabla: lead_sources (ejecutar sql/migrate-lead-sources.sql)
+```
+
+## REGLA: GA4 Conversions (js/conversions.js)
+```javascript
+// Eventos estándar disponibles:
+window.ProdigyConv.whatsapp(service);   // whatsapp_click
+window.ProdigyConv.upload();            // stl_upload
+window.ProdigyConv.cotizacion(val);     // cotizacion_sent
+window.ProdigyConv.lead();              // lead_qualified
+// Reemplazar antes de activar:
+// AW-XXXXXXXXX → ID Google Ads (cuando actives campaña)
+// TU_PIXEL_ID  → ID Meta Pixel (cuando actives campaña FB)
+```
+
+## REGLA: Geo-detect (js/geo-detect.js)
+```javascript
+// Se carga desde footer.js automáticamente
+// Detecta país vía ipapi.co/json/
+// Colombia → sin banner
+// Resto → banner "View in English" → /en/global-design
+// Acceso programático:
+const geo = await window.ProdigyGeo.get(); // { country_code, country_name, ... }
+```
+
+## REGLA: Stripe Checkout (flujo-diseno.html + /api/stripe-checkout)
+```javascript
+// Cliente nuevo (0 pedidos no-cancelados en BD) → cobra 100%
+// Cliente existente → cobra 50% (abono)
+// Llamada:
+const res = await fetch('/api/stripe-checkout', {
+  method: 'POST',
+  body: JSON.stringify({ amount_cop, descripcion, doctor_id })
+});
+// Redirige a Stripe Checkout URL
+// STRIPE_SECRET_KEY en Cloudflare env vars (nunca en código)
+// Dominios CSP requeridos en _headers:
+// script-src: js.stripe.com
+// connect-src: api.stripe.com
+// frame-src: hooks.stripe.com
+```
 
 ## ESTADO ACTUAL DEL PROYECTO (2026-04-24 — round 20 — BUGS CRÍTICOS)
 - ✅ **SW v7** — invalida cache con mantenimiento.html servido desde SW anterior
