@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -481,14 +481,14 @@
 <main id="main-content">
 <section class="page-hero">
     <h1 class="hero-title">
-        <span class="line-gold">PORTAFOLIO</span>
-        <span class="line-sub">DISEÑOS DENTALES · CAD/CAM</span>
+        <span class="line-gold" data-i18n="port.hero.tag">PORTAFOLIO</span>
+        <span class="line-sub" data-i18n="port.hero.sub1">DISEÑOS DENTALES · CAD/CAM</span>
     </h1>
-    <p class="hero-desc">
+    <p class="hero-desc" data-i18n="port.hero.desc">
         Casos reales de rehabilitación, estética y prótesis. Cada trabajo refleja precisión técnica y excelencia clínica.
     </p>
     <a href="/" class="hero-back">
-        <i class="fas fa-arrow-left"></i> Volver al inicio
+        <i class="fas fa-arrow-left"></i> <span data-i18n="port.hero.back">Volver al inicio</span>
     </a>
 </section>
 
@@ -497,12 +497,12 @@
 <!-- ============================================================ -->
 <div class="filters-section">
     <div class="filters" id="filterBtns">
-        <button class="filter-btn active" data-type="todos" onclick="filtrar('todos', this)">Todos</button>
-        <button class="filter-btn" data-type="rehabilitacion" onclick="filtrar('rehabilitacion', this)">Rehabilitación</button>
-        <button class="filter-btn" data-type="estetica" onclick="filtrar('estetica', this)">Estética</button>
-        <button class="filter-btn" data-type="implantes" onclick="filtrar('implantes', this)">Implantes</button>
-        <button class="filter-btn" data-type="protesis" onclick="filtrar('protesis', this)">Prótesis</button>
-        <button class="filter-btn" data-type="alineadores" onclick="filtrar('alineadores', this)">Alineadores</button>
+        <button class="filter-btn active" data-type="todos" onclick="filtrar('todos', this)" data-i18n="port.filter.all">Todos</button>
+        <button class="filter-btn" data-type="rehabilitacion" onclick="filtrar('rehabilitacion', this)" data-i18n="port.filter.rehab">Rehabilitación</button>
+        <button class="filter-btn" data-type="estetica" onclick="filtrar('estetica', this)" data-i18n="port.filter.estetica">Estética</button>
+        <button class="filter-btn" data-type="implantes" onclick="filtrar('implantes', this)" data-i18n="port.filter.implantes">Implantes</button>
+        <button class="filter-btn" data-type="protesis" onclick="filtrar('protesis', this)" data-i18n="port.filter.protesis">Prótesis</button>
+        <button class="filter-btn" data-type="alineadores" onclick="filtrar('alineadores', this)" data-i18n="port.filter.alineadores">Alineadores</button>
     </div>
 </div>
 
@@ -821,8 +821,8 @@ document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') e.
     <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte." class="ux-btn" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);"><i class="fab fa-whatsapp" aria-hidden="true" style="color:#25D366;"></i></a>
 </div>
     <!-- Google Analytics GA4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});gtag('js',new Date());gtag('config','G-Z8G2X7ETQ1',{anonymize_ip:true});</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});gtag('js',new Date());gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});</script>
     <script>if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>

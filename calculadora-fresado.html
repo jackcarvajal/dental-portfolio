@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotizador Fresado CAD/CAM — Zirconio, Disilicato, PMMA | PRODIGY Lab Dental</title>
+  <meta name="description" content="Cotiza tu corona de zirconio, disilicato de litio, puente CAD/CAM o provisional PMMA. Fresado de alta precisión en Bogotá. Entrega 24h en Colombia.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://prodigylabdental.com/calculadora-fresado">
+  <meta property="og:title" content="Cotizador Fresado CAD/CAM — PRODIGY Lab Dental">
+  <meta property="og:description" content="Calcula el costo de tu restauración fresada: zirconio, disilicato, PMMA, titanio. Entregas 24h en Colombia.">
+  <meta property="og:url" content="https://prodigylabdental.com/calculadora-fresado">
+  <meta name="theme-color" content="#D946A6">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    :root{--gold:#D4AF37;--magenta:#D946A6;--cyan:#00d2ff;--bg:#050505;--card:#0d1520;--muted:#94a3b8;--border:rgba(255,255,255,.08);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);color:#e2e8f0;font-family:system-ui,-apple-system,sans-serif;min-height:100vh;}
+    a{color:inherit;text-decoration:none;}
+
+    .page-hero{background:linear-gradient(135deg,rgba(212,175,55,.08) 0%,rgba(0,210,255,.05) 100%);border-bottom:1px solid var(--border);padding:48px 24px 36px;text-align:center;}
+    .page-hero .badge{display:inline-block;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);color:var(--gold);font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 14px;border-radius:100px;margin-bottom:16px;}
+    .page-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;line-height:1.2;margin-bottom:12px;}
+    .page-hero h1 em{color:var(--gold);font-style:normal;}
+    .page-hero p{color:var(--muted);font-size:.95rem;max-width:520px;margin:0 auto 20px;}
+    .breadcrumb{font-size:.75rem;color:var(--muted);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+    .breadcrumb a:hover{color:var(--gold);}
+
+    .calc-wrap{max-width:1100px;margin:0 auto;padding:36px 20px 80px;display:grid;grid-template-columns:1fr 380px;gap:28px;}
+    @media(max-width:860px){.calc-wrap{grid-template-columns:1fr;}}
+
+    .calc-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px;}
+    .card-title{font-size:.8rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+    .card-title i{color:var(--gold);}
+
+    /* Servicios grid */
+    .srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+    @media(max-width:480px){.srv-grid{grid-template-columns:repeat(2,1fr);}}
+    .srv-btn{background:rgba(255,255,255,.04);border:1.5px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .2s;color:#e2e8f0;font-family:inherit;}
+    .srv-btn:hover{border-color:rgba(212,175,55,.4);background:rgba(212,175,55,.06);}
+    .srv-btn.selected{border-color:var(--gold);background:rgba(212,175,55,.1);color:#fff;}
+    .srv-btn .ico{font-size:1.5rem;margin-bottom:6px;}
+    .srv-btn .lbl{font-size:.78rem;font-weight:700;line-height:1.3;}
+    .srv-btn .prc{font-size:.68rem;color:var(--muted);margin-top:3px;}
+    .srv-btn.selected .prc{color:var(--gold);}
+
+    /* Materiales */
+    .mat-grid{display:flex;flex-wrap:wrap;gap:8px;}
+    .mat-chip{background:rgba(255,255,255,.04);border:1.5px solid var(--border);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:.8rem;font-weight:600;color:var(--muted);transition:all .2s;display:flex;align-items:center;gap:7px;font-family:inherit;}
+    .mat-chip:hover{border-color:rgba(212,175,55,.4);}
+    .mat-chip.selected{border-color:var(--gold);background:rgba(212,175,55,.1);color:#fff;}
+    .mat-chip .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+    /* Cantidad */
+    .qty-row{display:flex;align-items:center;gap:16px;}
+    .qty-btn{width:40px;height:40px;border-radius:8px;border:1.5px solid var(--border);background:rgba(255,255,255,.05);color:#e2e8f0;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:inherit;}
+    .qty-btn:hover{border-color:var(--gold);color:var(--gold);}
+    .qty-num{font-size:1.8rem;font-weight:900;color:#fff;min-width:40px;text-align:center;}
+    .qty-lbl{font-size:.8rem;color:var(--muted);}
+
+    /* Extras toggles */
+    .tog-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+    .tog-row:last-child{border-bottom:none;}
+    .tog-info{flex:1;}
+    .tog-info .lbl{font-size:.85rem;font-weight:600;color:#e2e8f0;}
+    .tog-info small{display:block;font-size:.72rem;color:var(--muted);margin-top:2px;}
+    .tog-price{font-size:.8rem;font-weight:700;color:var(--cyan);min-width:52px;text-align:right;}
+    .tog{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,.1);cursor:pointer;position:relative;transition:background .25s;flex-shrink:0;}
+    .tog::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .25s;}
+    .tog.on{background:var(--magenta);}
+    .tog.on::after{transform:translateX(20px);}
+
+    /* Resultado */
+    .res-card{background:linear-gradient(135deg,rgba(212,175,55,.08) 0%,rgba(217,70,166,.06) 100%);border:1.5px solid rgba(212,175,55,.3);border-radius:16px;padding:24px;position:sticky;top:20px;}
+    .res-label{font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+    .res-srv{font-size:.85rem;color:#cbd5e1;margin-bottom:20px;}
+    .res-total{font-size:2.6rem;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;}
+    .res-sub{font-size:.72rem;color:var(--muted);margin-bottom:20px;}
+    .res-bd{background:rgba(0,0,0,.3);border-radius:10px;padding:14px;margin-bottom:20px;}
+    .res-bd-row{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);padding:3px 0;}
+    .res-bd-row.total{color:#fff;font-weight:700;font-size:.9rem;border-top:1px solid var(--border);padding-top:8px;margin-top:4px;}
+    .abono-row{display:flex;justify-content:space-between;font-size:.82rem;padding:8px 14px;background:rgba(212,175,55,.08);border-radius:8px;margin-bottom:16px;color:#e2e8f0;}
+    .abono-row strong{color:var(--gold);}
+    .btn-wa{width:100%;padding:16px;border-radius:12px;border:none;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-size:1rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.5px;transition:all .25s;margin-bottom:10px;font-family:inherit;}
+    .btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.4);}
+    .btn-cot{width:100%;padding:13px;border-radius:12px;border:1.5px solid var(--magenta);background:transparent;color:var(--magenta);font-size:.9rem;font-weight:700;cursor:pointer;transition:all .25s;font-family:inherit;}
+    .btn-cot:hover{background:rgba(217,70,166,.1);}
+    .trust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+    .trust-chip{font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:5px;}
+    .trust-chip i{color:var(--gold);}
+    .law50{font-size:.68rem;color:var(--muted);text-align:center;margin-top:12px;line-height:1.5;padding:8px;background:rgba(212,175,55,.05);border-radius:8px;border:1px solid rgba(212,175,55,.1);}
+    .law50 strong{color:var(--gold);}
+
+    /* Habeas Data */
+    .habeas-wrap{margin:14px 0 0;font-size:.72rem;color:var(--muted);}
+    .habeas-wrap label{display:flex;align-items:flex-start;gap:8px;cursor:pointer;line-height:1.5;}
+    .habeas-wrap input{margin-top:2px;flex-shrink:0;accent-color:var(--magenta);}
+
+    /* UX floaters */
+    .ux-floaters{position:fixed;bottom:28px;right:24px;z-index:900;display:flex;flex-direction:column;gap:10px;}
+    .ux-btn{width:42px;height:42px;border-radius:50%;background:rgba(13,21,32,.92);border:1px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;transition:all .25s;}
+    .ux-btn:hover{border-color:var(--gold);color:var(--gold);}
+    #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a2332;border:1px solid var(--border);color:#e2e8f0;padding:10px 20px;border-radius:8px;font-size:.85rem;opacity:0;transition:all .3s;pointer-events:none;z-index:9999;white-space:nowrap;}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  </style>
+</head>
+<body>
+<script src="js/header.js"></script>
+
+<div class="page-hero">
+  <div class="badge"><i class="fas fa-cog"></i> Fresado CAD/CAM · Colombia</div>
+  <h1>Cotiza tu <em>fresado</em> en tiempo real</h1>
+  <p>Zirconio · Disilicato de Litio · PMMA · Titanio. Entregas en 24 horas hábiles desde Bogotá.</p>
+  <div class="breadcrumb">
+    <a href="/">Inicio</a><span>›</span>
+    <a href="/fresado-cam">Fresado CAD/CAM</a><span>›</span>
+    <span>Cotizador</span>
+  </div>
+</div>
+
+<div class="calc-wrap">
+  <!-- IZQUIERDA -->
+  <div>
+    <!-- Tipo de pieza -->
+    <div class="calc-card">
+      <div class="card-title"><i class="fas fa-tooth"></i> Tipo de restauración</div>
+      <div class="srv-grid" id="srvGrid">
+        <button class="srv-btn selected" data-key="corona-mono" onclick="selSrv(this)">
+          <div class="ico">👑</div>
+          <div class="lbl">Corona Monolítica</div>
+          <div class="prc">Desde $180K</div>
+        </button>
+        <button class="srv-btn" data-key="corona-multi" onclick="selSrv(this)">
+          <div class="ico">✨</div>
+          <div class="lbl">Corona Multicapa</div>
+          <div class="prc">Desde $220K</div>
+        </button>
+        <button class="srv-btn" data-key="carilla" onclick="selSrv(this)">
+          <div class="ico">💎</div>
+          <div class="lbl">Carilla / Lámina</div>
+          <div class="prc">Desde $220K</div>
+        </button>
+        <button class="srv-btn" data-key="inlay" onclick="selSrv(this)">
+          <div class="ico">🔷</div>
+          <div class="lbl">Inlay / Onlay</div>
+          <div class="prc">Desde $160K</div>
+        </button>
+        <button class="srv-btn" data-key="puente" onclick="selSrv(this)">
+          <div class="ico">🌉</div>
+          <div class="lbl">Puente 3 pzas</div>
+          <div class="prc">Desde $480K</div>
+        </button>
+        <button class="srv-btn" data-key="abutment" onclick="selSrv(this)">
+          <div class="ico">🔩</div>
+          <div class="lbl">Abutment / Pilar</div>
+          <div class="prc">Desde $280K</div>
+        </button>
+        <button class="srv-btn" data-key="provisional" onclick="selSrv(this)">
+          <div class="ico">🏗️</div>
+          <div class="lbl">Provisional PMMA</div>
+          <div class="prc">Desde $90K</div>
+        </button>
+        <button class="srv-btn" data-key="barra" onclick="selSrv(this)">
+          <div class="ico">📐</div>
+          <div class="lbl">Barra sobre Implantes</div>
+          <div class="prc">Cotizar</div>
+        </button>
+        <button class="srv-btn" data-key="protesis-total" onclick="selSrv(this)">
+          <div class="ico">🦷</div>
+          <div class="lbl">Prótesis Total CAD</div>
+          <div class="prc">Desde $350K</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Material -->
+    <div class="calc-card">
+      <div class="card-title"><i class="fas fa-gem"></i> Material de fresado</div>
+      <div class="mat-grid" id="matGrid">
+        <button class="mat-chip selected" data-mat="zirconio-mono" onclick="selMat(this)">
+          <span class="dot" style="background:#a78bfa;"></span> Zirconio 3Y Monolítico
+        </button>
+        <button class="mat-chip" data-mat="zirconio-multi" onclick="selMat(this)">
+          <span class="dot" style="background:#c4b5fd;"></span> Zirconio Multicapa
+        </button>
+        <button class="mat-chip" data-mat="zirconio-ut" onclick="selMat(this)">
+          <span class="dot" style="background:#e9d5ff;"></span> Zirconio 5Y Ultra-T
+        </button>
+        <button class="mat-chip" data-mat="disilicato" onclick="selMat(this)">
+          <span class="dot" style="background:#f9a8d4;"></span> Disilicato (e.max CAD)
+        </button>
+        <button class="mat-chip" data-mat="pmma" onclick="selMat(this)">
+          <span class="dot" style="background:#7dd3fc;"></span> PMMA Fresado
+        </button>
+        <button class="mat-chip" data-mat="titanio" onclick="selMat(this)">
+          <span class="dot" style="background:#d1d5db;"></span> Titanio CNC
+        </button>
+      </div>
+    </div>
+
+    <!-- Cantidad -->
+    <div class="calc-card">
+      <div class="card-title"><i class="fas fa-hashtag"></i> Cantidad de unidades</div>
+      <div class="qty-row">
+        <button class="qty-btn" onclick="chgQty(-1)">−</button>
+        <div class="qty-num" id="qtyNum">1</div>
+        <div class="qty-lbl">unidad(es)</div>
+        <button class="qty-btn" onclick="chgQty(1)">+</button>
+      </div>
+    </div>
+
+    <!-- Extras -->
+    <div class="calc-card">
+      <div class="card-title"><i class="fas fa-plus-circle"></i> Opciones adicionales</div>
+      <div class="tog-row">
+        <div class="tog-info">
+          <div class="lbl">Entrega urgente 24h</div>
+          <small>Materiales en stock — L-S 8am-5pm</small>
+        </div>
+        <span class="tog-price">+$40K</span>
+        <div class="tog" id="tog-urgente" onclick="togOp('urgente', this)"></div>
+      </div>
+      <div class="tog-row">
+        <div class="tog-info">
+          <div class="lbl">Glaze y caracterización</div>
+          <small>Aplicación de glaze cerámico estético</small>
+        </div>
+        <span class="tog-price">+$30K</span>
+        <div class="tog" id="tog-glaze" onclick="togOp('glaze', this)"></div>
+      </div>
+      <div class="tog-row">
+        <div class="tog-info">
+          <div class="lbl">Envío a domicilio</div>
+          <small>Mensajero PRODIGY — zona metropolitana Bogotá</small>
+        </div>
+        <span class="tog-price">+$20K</span>
+        <div class="tog" id="tog-envio" onclick="togOp('envio', this)"></div>
+      </div>
+    </div>
+
+    <!-- Habeas Data -->
+    <div class="habeas-wrap">
+      <label>
+        <input type="checkbox" id="chkHabeas" required>
+        Autorizo a PRODIGY el tratamiento de mis datos personales para gestión de cotización, de conformidad con la Ley 1581 de 2012 (Colombia).
+      </label>
+      <label style="margin-top:8px;">
+        <input type="checkbox" id="chkMarketing">
+        Acepto recibir novedades y promociones de PRODIGY (opcional).
+      </label>
+    </div>
+  </div>
+
+  <!-- DERECHA — Resultado -->
+  <div>
+    <div class="res-card">
+      <div class="res-label">Estimado de precio</div>
+      <div class="res-srv" id="resSrv">Corona Monolítica · Zirconio 3Y</div>
+      <div class="res-total" id="resTotal">$180.000</div>
+      <div class="res-sub">COP · precio de referencia · IVA no incluido</div>
+
+      <div class="res-bd">
+        <div class="res-bd-row"><span>Precio unitario</span><span id="bdUnit">$180.000</span></div>
+        <div class="res-bd-row"><span>Cantidad</span><span id="bdQty">× 1</span></div>
+        <div class="res-bd-row"><span>Extras</span><span id="bdExtras">$0</span></div>
+        <div class="res-bd-row total"><span>Total estimado</span><span id="bdTotal">$180.000</span></div>
+      </div>
+
+      <div class="abono-row">
+        <span>Abono para inicio (50%)</span>
+        <strong id="bdAbono">$90.000</strong>
+      </div>
+      <div class="abono-row" style="margin-bottom:20px;">
+        <span>Saldo contra entrega (50%)</span>
+        <strong id="bdSaldo">$90.000</strong>
+      </div>
+
+      <button class="btn-wa" onclick="abrirWA()">
+        <i class="fab fa-whatsapp"></i> Confirmar por WhatsApp
+      </button>
+      <button class="btn-cot" onclick="abrirFlujo()">
+        <i class="fas fa-paper-plane"></i> Pedir fresado online
+      </button>
+
+      <div class="trust-row">
+        <div class="trust-chip"><i class="fas fa-shield-halved"></i> Sin compromiso</div>
+        <div class="trust-chip"><i class="fas fa-clock"></i> Respuesta &lt;2h</div>
+        <div class="trust-chip"><i class="fas fa-rotate"></i> Revisión incluida</div>
+      </div>
+      <div class="law50"><strong>Ley 50/50:</strong> 50% abono al confirmar · 50% saldo contra entrega antes del despacho.</div>
+    </div>
+  </div>
+</div>
+
+<div class="ux-floaters">
+  <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Subir" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></button>
+  <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20fresado" class="ux-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style="background:rgba(37,211,102,.12);border-color:rgba(37,211,102,.4);"><i class="fab fa-whatsapp" style="color:#25D366;"></i></a>
+</div>
+<div id="toast"></div>
+
+<script>
+const PRECIOS = {
+  'corona-mono':   { base:180000, lbl:'Corona Monolítica',       fixedQty:false },
+  'corona-multi':  { base:220000, lbl:'Corona Multicapa',        fixedQty:false },
+  'carilla':       { base:220000, lbl:'Carilla / Lámina',        fixedQty:false },
+  'inlay':         { base:160000, lbl:'Inlay / Onlay',           fixedQty:false },
+  'puente':        { base:480000, lbl:'Puente 3 piezas',         fixedQty:true  },
+  'abutment':      { base:280000, lbl:'Abutment / Pilar',        fixedQty:false },
+  'provisional':   { base: 90000, lbl:'Provisional PMMA',        fixedQty:false },
+  'barra':         { base:     0, lbl:'Barra sobre Implantes',   fixedQty:true  },
+  'protesis-total':{ base:350000, lbl:'Prótesis Total CAD',      fixedQty:true  },
+};
+const MAT_DELTA = {
+  'zirconio-mono': 0,
+  'zirconio-multi':40000,
+  'zirconio-ut':   60000,
+  'disilicato':    60000,
+  'pmma':         -20000,
+  'titanio':      170000,
+};
+const MAT_LBL = {
+  'zirconio-mono': 'Zirconio 3Y Monolítico',
+  'zirconio-multi':'Zirconio Multicapa',
+  'zirconio-ut':   'Zirconio 5Y Ultra-T',
+  'disilicato':    'Disilicato (e.max CAD)',
+  'pmma':          'PMMA Fresado',
+  'titanio':       'Titanio CNC',
+};
+const EXTRAS = { urgente:40000, glaze:30000, envio:20000 };
+
+let ST = { srv:'corona-mono', mat:'zirconio-mono', qty:1, urgente:false, glaze:false, envio:false };
+
+const fmt = v => '$' + Number(Math.round(v)).toLocaleString('es-CO');
+
+function calcTotal() {
+  const p = PRECIOS[ST.srv];
+  const qty = p.fixedQty ? 1 : ST.qty;
+  let unit = (p.base + (MAT_DELTA[ST.mat]||0));
+  if (unit < 0) unit = 0;
+  let extras = 0;
+  if (ST.urgente) extras += EXTRAS.urgente;
+  if (ST.glaze)   extras += EXTRAS.glaze;
+  if (ST.envio)   extras += EXTRAS.envio;
+  const total = unit * qty + extras;
+  return { unit, qty, extras, total, p };
+}
+
+function render() {
+  const { unit, qty, extras, total, p } = calcTotal();
+  const cotizar = total === 0;
+  document.getElementById('resSrv').textContent = p.lbl + ' · ' + MAT_LBL[ST.mat];
+  document.getElementById('resTotal').textContent = cotizar ? 'Cotizar' : fmt(total);
+  document.getElementById('bdUnit').textContent   = cotizar ? '—' : fmt(unit);
+  document.getElementById('bdQty').textContent    = '× ' + qty;
+  document.getElementById('bdExtras').textContent = extras > 0 ? fmt(extras) : '$0';
+  document.getElementById('bdTotal').textContent  = cotizar ? '—' : fmt(total);
+  document.getElementById('bdAbono').textContent  = cotizar ? '—' : fmt(total * 0.5);
+  document.getElementById('bdSaldo').textContent  = cotizar ? '—' : fmt(total * 0.5);
+}
+
+function selSrv(btn) {
+  document.querySelectorAll('.srv-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  ST.srv = btn.dataset.key;
+  render();
+}
+function selMat(btn) {
+  document.querySelectorAll('.mat-chip').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  ST.mat = btn.dataset.mat;
+  render();
+}
+function chgQty(d) {
+  ST.qty = Math.max(1, Math.min(20, ST.qty + d));
+  document.getElementById('qtyNum').textContent = ST.qty;
+  render();
+}
+function togOp(key, el) {
+  ST[key] = !ST[key];
+  el.classList.toggle('on', ST[key]);
+  render();
+}
+
+function abrirWA() {
+  if (!document.getElementById('chkHabeas').checked) {
+    toast('Acepta el tratamiento de datos para continuar'); return;
+  }
+  const { unit, qty, extras, total, p } = calcTotal();
+  const srv = p.lbl + ' · ' + MAT_LBL[ST.mat];
+  const cotizar = total === 0;
+  let msg;
+  if (cotizar) {
+    msg = `Hola PRODIGY, necesito cotizar *${srv}* — ¿me pueden dar precio?`;
+  } else {
+    const abono = Math.round(total * 0.5);
+    const saldo  = total - abono;
+    msg = `Hola PRODIGY, quiero confirmar mi pedido de fresado:\n\n` +
+      `🦷 *Servicio:* ${srv}\n` +
+      `📦 *Cantidad:* ${qty} unidad(es)\n` +
+      (ST.urgente ? `⚡ Entrega urgente 24h\n` : '') +
+      (ST.glaze   ? `✨ Glaze y caracterización\n` : '') +
+      (ST.envio   ? `🚚 Envío a domicilio\n` : '') +
+      `\n💰 *Total:* ${fmt(total)} COP\n` +
+      `💵 *Abono (50%):* ${fmt(abono)} COP\n` +
+      `💵 *Saldo contra entrega:* ${fmt(saldo)} COP\n\n` +
+      `¿Me confirman disponibilidad y tiempo de entrega?`;
+  }
+  window.open('https://wa.me/573212816716?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
+}
+
+function abrirFlujo() {
+  window.location.href = '/flujo-fresado';
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('scroll-top-btn').style.opacity = window.scrollY > 200 ? '1' : '0';
+});
+
+render();
+</script>
+<script src="js/footer.js"></script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>

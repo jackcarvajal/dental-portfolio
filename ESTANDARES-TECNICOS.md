@@ -1,4 +1,4 @@
-# PRODIGY — Estándares Técnicos Definitivos
+﻿# PRODIGY — Estándares Técnicos Definitivos
 > Resultado de auditoría autónoma completa (rounds 1–15, Abr 2026).
 > Aplicar TODO esto al crear páginas nuevas o implementaciones nuevas.
 > **Actualizar este archivo cada vez que se implemente un nuevo patrón.**
@@ -182,10 +182,10 @@ if (window.validateMagicBytes) {
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
   <!-- GA4 Consent Mode v2 — SIEMPRE antes del script async de GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
   gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
-  gtag('js',new Date());gtag('config','G-Z8G2X7ETQ1',{anonymize_ip:true});</script>
+  gtag('js',new Date());gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});</script>
 
   <!-- JSON-LD estructurado (opcional pero recomendado) -->
   <script type="application/ld+json">{ ... }</script>
@@ -377,12 +377,12 @@ CREATE POLICY "delete" ON storage.objects
 
 ```html
 <!-- Este bloque COMPLETO, en este orden exacto: -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>
 <script>
   window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
   gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
   gtag('js',new Date());
-  gtag('config','G-Z8G2X7ETQ1',{anonymize_ip:true});
+  gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});
 </script>
 ```
 

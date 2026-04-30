@@ -532,6 +532,402 @@
       es: 'Sin contratos. Sin exclusividad. Solo calidad que habla por sí sola.',
       en: 'No contracts. No exclusivity. Just quality that speaks for itself.',
       pt: 'Sem contratos. Sem exclusividade. Só qualidade que fala por si só.'
+    },
+
+    /* ── INDEX ────────────────────────────── */
+    'index.hero.subtitle': {
+      es: 'LUXURY CAD/CAM',
+      en: 'LUXURY CAD/CAM',
+      pt: 'LUXURY CAD/CAM'
+    },
+    'index.hero.desc': {
+      es: 'Diseño dental digital de alta precisión para tus necesidades',
+      en: 'High-precision digital dental design for your needs',
+      pt: 'Design dental digital de alta precisão para suas necessidades'
+    },
+    'index.srv.title': {
+      es: 'Servicios de Diseño CAD/CAM',
+      en: 'CAD/CAM Design Services',
+      pt: 'Serviços de Design CAD/CAM'
+    },
+    'index.port.title': {
+      es: 'PORTAFOLIO DE DISEÑOS',
+      en: 'DESIGN PORTFOLIO',
+      pt: 'PORTFÓLIO DE DESIGNS'
+    },
+    'index.port.sub': {
+      es: 'Casos reales diseñados en Exocad y 3Shape — zirconio, disilicato, PMMA y resina 3D',
+      en: 'Real cases designed in Exocad and 3Shape — zirconia, disilicate, PMMA and 3D resin',
+      pt: 'Casos reais projetados em Exocad e 3Shape — zircônia, dissilicato, PMMA e resina 3D'
+    },
+    'index.port.cta': {
+      es: 'Ver Portafolio Completo',
+      en: 'View Full Portfolio',
+      pt: 'Ver Portfólio Completo'
+    },
+    'index.remote.title': {
+      es: 'Diseño Remoto 24/7',
+      en: 'Remote Design 24/7',
+      pt: 'Design Remoto 24/7'
+    },
+    'index.remote.sub': {
+      es: 'Servicio profesional de diseño dental digital. Tú escaneas, nosotros diseñamos. Entrega en 24-48 horas con calidad garantizada.',
+      en: 'Professional digital dental design service. You scan, we design. Delivery in 24–48 hours with guaranteed quality.',
+      pt: 'Serviço profissional de design dental digital. Você escaneia, nós projetamos. Entrega em 24–48 horas com qualidade garantida.'
+    },
+
+    /* ── NOSOTROS ─────────────────────────── */
+    'nosotros.hero.tag': {
+      es: 'Bogotá, Colombia',
+      en: 'Bogotá, Colombia',
+      pt: 'Bogotá, Colômbia'
+    },
+    'nosotros.hero.h1': {
+      es: 'Innovación que<br>se siente en<br><em>cada ajuste</em>',
+      en: 'Innovation you feel<br>in <em>every fit</em>',
+      pt: 'Inovação que se sente<br>em <em>cada ajuste</em>'
+    },
+    'nosotros.hero.sub': {
+      es: 'Somos un laboratorio dental de precisión especializado en diseño CAD avanzado y manufactura CAM. No producimos volumen — producimos exactitud.',
+      en: 'We are a precision dental laboratory specialized in advanced CAD design and CAM manufacturing. We don\'t produce volume — we produce accuracy.',
+      pt: 'Somos um laboratório dental de precisão especializado em design CAD avançado e manufatura CAM. Não produzimos volume — produzimos exatidão.'
+    },
+    'nosotros.historia.tag': {
+      es: 'Nuestra historia',
+      en: 'Our story',
+      pt: 'Nossa história'
+    },
+    'nosotros.porque.tag': {
+      es: 'Por qué PRODIGY',
+      en: 'Why PRODIGY',
+      pt: 'Por que PRODIGY'
+    },
+    'nosotros.porque.h2': {
+      es: 'Tres razones que nos <em>definen</em>',
+      en: 'Three reasons that <em>define us</em>',
+      pt: 'Três razões que nos <em>definem</em>'
+    },
+    'nosotros.como.tag': {
+      es: 'Cómo trabajamos',
+      en: 'How we work',
+      pt: 'Como trabalhamos'
+    },
+    'nosotros.contact.tag': {
+      es: 'Hablemos',
+      en: 'Let\'s talk',
+      pt: 'Vamos conversar'
+    },
+    'nosotros.contact.title': {
+      es: 'Inicia tu <em>consulta técnica</em>',
+      en: 'Start your <em>technical consultation</em>',
+      pt: 'Inicie sua <em>consulta técnica</em>'
+    },
+    'nosotros.wa.btn': {
+      es: 'Escríbenos por WhatsApp',
+      en: 'Message us on WhatsApp',
+      pt: 'Escreva-nos pelo WhatsApp'
+    },
+
+    /* ── PORTAFOLIO ───────────────────────── */
+    'port.hero.tag': {
+      es: 'PORTAFOLIO',
+      en: 'PORTFOLIO',
+      pt: 'PORTFÓLIO'
+    },
+    'port.hero.sub1': {
+      es: 'DISEÑOS DENTALES · CAD/CAM',
+      en: 'DENTAL DESIGNS · CAD/CAM',
+      pt: 'DESIGNS DENTAIS · CAD/CAM'
+    },
+    'port.hero.desc': {
+      es: 'Casos reales de rehabilitación, estética y prótesis. Cada trabajo refleja precisión técnica y excelencia clínica.',
+      en: 'Real rehabilitation, esthetic and prosthetic cases. Every piece reflects technical precision and clinical excellence.',
+      pt: 'Casos reais de reabilitação, estética e prótese. Cada trabalho reflete precisão técnica e excelência clínica.'
+    },
+    'port.hero.back': {
+      es: 'Volver al inicio',
+      en: 'Back to home',
+      pt: 'Voltar ao início'
+    },
+    'port.filter.all': {
+      es: 'Todos',
+      en: 'All',
+      pt: 'Todos'
+    },
+    'port.filter.rehab': {
+      es: 'Rehabilitación',
+      en: 'Rehabilitation',
+      pt: 'Reabilitação'
+    },
+    'port.filter.estetica': {
+      es: 'Estética',
+      en: 'Esthetics',
+      pt: 'Estética'
+    },
+    'port.filter.implantes': {
+      es: 'Implantes',
+      en: 'Implants',
+      pt: 'Implantes'
+    },
+    'port.filter.protesis': {
+      es: 'Prótesis',
+      en: 'Prosthetics',
+      pt: 'Prótese'
+    },
+    'port.filter.alineadores': {
+      es: 'Alineadores',
+      en: 'Aligners',
+      pt: 'Alinhadores'
+    },
+
+    /* ── JOURNAL ──────────────────────────── */
+    'journal.hero.badge': {
+      es: 'Publicaciones técnicas verificadas',
+      en: 'Verified technical publications',
+      pt: 'Publicações técnicas verificadas'
+    },
+    'journal.hero.h1': {
+      es: 'PRODIGY<br><span class="grad">Insights</span>',
+      en: 'PRODIGY<br><span class="grad">Insights</span>',
+      pt: 'PRODIGY<br><span class="grad">Insights</span>'
+    },
+    'journal.hero.p1': {
+      es: 'Artículos técnicos escritos por el equipo de PRODIGY Lab Dental.<br>Comparativas de escáneres, protocolos CAD/CAM, selección de materiales y casos clínicos reales —<br>para que tu clínica tome decisiones informadas, no basadas en marketing.',
+      en: 'Technical articles written by the PRODIGY Lab Dental team.<br>Scanner comparisons, CAD/CAM protocols, material selection and real clinical cases —<br>so your clinic makes informed decisions, not marketing-driven ones.',
+      pt: 'Artigos técnicos escritos pela equipe do PRODIGY Lab Dental.<br>Comparações de escâneres, protocolos CAD/CAM, seleção de materiais e casos clínicos reais —<br>para que sua clínica tome decisões informadas, não baseadas em marketing.'
+    },
+    'journal.hero.p2': {
+      es: 'Tiempo de lectura: 5–15 min · Actualizado mensualmente · Sin paywalls',
+      en: 'Reading time: 5–15 min · Updated monthly · No paywalls',
+      pt: 'Tempo de leitura: 5–15 min · Atualizado mensalmente · Sem paywalls'
+    },
+    'journal.hero.stat1': {
+      es: 'Doctores suscritos',
+      en: 'Subscribed doctors',
+      pt: 'Médicos inscritos'
+    },
+    'journal.hero.stat2': {
+      es: 'Casos entregados a tiempo',
+      en: 'Cases delivered on time',
+      pt: 'Casos entregues no prazo'
+    },
+    'journal.hero.stat3': {
+      es: 'Años en digital',
+      en: 'Years in digital',
+      pt: 'Anos no digital'
+    },
+    'journal.articles.tag': {
+      es: 'Artículos técnicos',
+      en: 'Technical articles',
+      pt: 'Artigos técnicos'
+    },
+    'journal.filter.all': {
+      es: 'Todos',
+      en: 'All',
+      pt: 'Todos'
+    },
+    'journal.filter.ia': {
+      es: 'IA',
+      en: 'AI',
+      pt: 'IA'
+    },
+    'journal.filter.material': {
+      es: 'Materiales',
+      en: 'Materials',
+      pt: 'Materiais'
+    },
+    'journal.filter.equipo': {
+      es: 'Equipos',
+      en: 'Equipment',
+      pt: 'Equipamentos'
+    },
+    'journal.filter.protocolo': {
+      es: 'Protocolos',
+      en: 'Protocols',
+      pt: 'Protocolos'
+    },
+    'journal.read': {
+      es: 'Leer artículo',
+      en: 'Read article',
+      pt: 'Ler artigo'
+    },
+
+    /* ── SOPORTE ──────────────────────────── */
+    'soporte.hero.tag': {
+      es: 'IA + Soporte humano',
+      en: 'AI + Human support',
+      pt: 'IA + Suporte humano'
+    },
+    'soporte.hero.h1': {
+      es: 'Centro de soporte <em>técnico</em>',
+      en: 'Technical <em>support center</em>',
+      pt: 'Central de suporte <em>técnico</em>'
+    },
+    'soporte.hero.sub': {
+      es: 'Guías de escaneo, fichas de materiales, seguimiento de casos y un asistente IA entrenado en odontología digital. Respuesta inmediata, 24/7.',
+      en: 'Scanning guides, material sheets, case tracking and an AI assistant trained in digital dentistry. Immediate response, 24/7.',
+      pt: 'Guias de escaneamento, fichas de materiais, acompanhamento de casos e um assistente IA treinado em odontologia digital. Resposta imediata, 24/7.'
+    },
+    'soporte.hero.btn': {
+      es: 'Hablar con el Asistente IA',
+      en: 'Chat with AI Assistant',
+      pt: 'Falar com o Assistente IA'
+    },
+    'soporte.recursos.tag': {
+      es: 'Recursos técnicos',
+      en: 'Technical resources',
+      pt: 'Recursos técnicos'
+    },
+    'soporte.recursos.h2': {
+      es: 'Herramientas para <span style="color:var(--gold)">tu flujo de trabajo</span>',
+      en: 'Tools for <span style="color:var(--gold)">your workflow</span>',
+      pt: 'Ferramentas para <span style="color:var(--gold)">seu fluxo de trabalho</span>'
+    },
+    'soporte.faq.tag': {
+      es: 'Preguntas frecuentes',
+      en: 'Frequently asked questions',
+      pt: 'Perguntas frequentes'
+    },
+    'soporte.contact.tag': {
+      es: 'Contacto directo',
+      en: 'Direct contact',
+      pt: 'Contato direto'
+    },
+    'soporte.wa.btn': {
+      es: 'Soporte por WhatsApp',
+      en: 'WhatsApp Support',
+      pt: 'Suporte pelo WhatsApp'
+    },
+
+    /* ── FRESADO-CAM ──────────────────────── */
+    'milling.hero.tag': {
+      es: 'Producción CAM · Bogotá, Colombia · 24–72 h',
+      en: 'CAM Production · Bogotá, Colombia · 24–72 h',
+      pt: 'Produção CAM · Bogotá, Colômbia · 24–72 h'
+    },
+    'milling.hero.h1': {
+      es: 'Tu restauración fresada<br>con <em>precisión industrial</em>',
+      en: 'Your restoration milled<br>with <em>industrial precision</em>',
+      pt: 'Sua restauração fresada<br>com <em>precisão industrial</em>'
+    },
+    'milling.hero.sub': {
+      es: 'Fresado de alta precisión en zirconio, PMMA, e.max y titanio. Laboratorio CAM en Bogotá con entrega en 24–72 horas. Envía el diseño o el escáner — nosotros producimos.',
+      en: 'High-precision milling in zirconia, PMMA, e.max and titanium. CAM lab in Bogotá with 24–72 h delivery. Send the design or the scan — we produce.',
+      pt: 'Fresagem de alta precisão em zircônia, PMMA, e.max e titânio. Laboratório CAM em Bogotá com entrega em 24–72 h. Envie o design ou o escâner — nós produzimos.'
+    },
+    'milling.cta.wa': {
+      es: 'Cotizar por WhatsApp',
+      en: 'Quote via WhatsApp',
+      pt: 'Cotar por WhatsApp'
+    },
+    'milling.cta.stl': {
+      es: 'Subir escáner STL',
+      en: 'Upload STL scan',
+      pt: 'Enviar escâner STL'
+    },
+    'milling.mat.eyebrow': {
+      es: 'Materiales disponibles',
+      en: 'Available materials',
+      pt: 'Materiais disponíveis'
+    },
+    'milling.mat.h2': {
+      es: 'Fresamos lo que <em>necesitas</em>',
+      en: 'We mill what <em>you need</em>',
+      pt: 'Fresamos o que <em>você precisa</em>'
+    },
+
+    /* ── CALCULADORA ──────────────────────── */
+    'calc.hero.badge': {
+      es: 'Calculadora de caso',
+      en: 'Case calculator',
+      pt: 'Calculadora de caso'
+    },
+    'calc.hero.h1': {
+      es: '¿Cuánto cuesta<br>tu <em>restauración</em>?',
+      en: 'How much does<br>your <em>restoration</em> cost?',
+      pt: 'Quanto custa<br>a sua <em>restauração</em>?'
+    },
+    'calc.hero.sub': {
+      es: 'Selecciona el servicio, material y cantidad para obtener un estimado al instante. Sin sorpresas.',
+      en: 'Select the service, material and quantity to get an instant estimate. No surprises.',
+      pt: 'Selecione o serviço, material e quantidade para obter uma estimativa instantânea. Sem surpresas.'
+    },
+    'calc.srv.title': {
+      es: 'Tipo de restauración',
+      en: 'Restoration type',
+      pt: 'Tipo de restauração'
+    },
+    'calc.mat.title': {
+      es: 'Material',
+      en: 'Material',
+      pt: 'Material'
+    },
+    'calc.qty.title': {
+      es: 'Cantidad de unidades',
+      en: 'Number of units',
+      pt: 'Quantidade de unidades'
+    },
+    'calc.extras.title': {
+      es: 'Opciones adicionales',
+      en: 'Additional options',
+      pt: 'Opções adicionais'
+    },
+    'calc.cta.lead': {
+      es: 'Recibe cotización exacta por WhatsApp',
+      en: 'Receive exact quote via WhatsApp',
+      pt: 'Receba cotação exata pelo WhatsApp'
+    },
+    'calc.cta.wa': {
+      es: 'Enviar caso por WhatsApp',
+      en: 'Send case via WhatsApp',
+      pt: 'Enviar caso pelo WhatsApp'
+    },
+    'calc.cta.cot': {
+      es: 'Solicitar cotización exacta',
+      en: 'Request exact quote',
+      pt: 'Solicitar cotação exata'
+    },
+
+    /* ── ENVIA-TU-SCANNER ─────────────────── */
+    'scan.hero.badge': {
+      es: 'Para clínicas con escáner intraoral',
+      en: 'For clinics with intraoral scanner',
+      pt: 'Para clínicas com escâner intraoral'
+    },
+    'scan.hero.h1.line1': {
+      es: 'Ya tienes el escáner.',
+      en: 'You already have the scanner.',
+      pt: 'Você já tem o escâner.'
+    },
+    'scan.hero.h1.line2': {
+      es: 'Te falta el laboratorio.',
+      en: 'You\'re missing the lab.',
+      pt: 'Falta o laboratório.'
+    },
+    'scan.hero.sub': {
+      es: 'Envíanos tu archivo .stl desde iTero, Medit o Trios. PRODIGY diseña en Exocad y produce la restauración. Entrega en 24–48 horas.',
+      en: 'Send us your .stl file from iTero, Medit or Trios. PRODIGY designs in Exocad and produces the restoration. Delivery in 24–48 hours.',
+      pt: 'Envie-nos seu arquivo .stl do iTero, Medit ou Trios. PRODIGY projeta no Exocad e produz a restauração. Entrega em 24–48 horas.'
+    },
+    'scan.cta.upload': {
+      es: 'Enviar mi escáner',
+      en: 'Send my scan',
+      pt: 'Enviar meu escâner'
+    },
+    'scan.cta.prices': {
+      es: 'Ver precios',
+      en: 'View pricing',
+      pt: 'Ver preços'
+    },
+    'scan.how.label': {
+      es: 'Proceso',
+      en: 'Process',
+      pt: 'Processo'
+    },
+    'scan.how.title': {
+      es: 'De tu escáner a la boca del paciente. Sin rodeos.',
+      en: 'From your scan to the patient\'s mouth. No detours.',
+      pt: 'Do seu escâner à boca do paciente. Sem rodeios.'
     }
   };
 

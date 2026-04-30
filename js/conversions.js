@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PRODIGY Conversion Tracking v1.0
  * ────────────────────────────────────────────────────────────────────
  * Trackea conversiones para Google Ads + GA4 + Meta Pixel
@@ -18,7 +18,7 @@
 window.ProdigyConversions = (function () {
 
   /* ── CONFIG — completar con IDs reales ─────────────────────── */
-  var GA4_ID     = 'G-Z8G2X7ETQ1';
+  var GA4_ID     = 'G-3N0ZZE5V10';
   var GADS_ID    = 'AW-XXXXXXXXX';   // ← Alejandro: reemplazar con ID real de Google Ads
   var META_PIXEL = 'TU_PIXEL_ID';    // ← Alejandro: reemplazar con Pixel ID de Meta Business
 

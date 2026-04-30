@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -331,14 +331,14 @@
     #toast.show { transform: translateX(-50%) translateY(0); }
     #toast.ok   { border-color: rgba(0,255,65,0.4); }
   </style>
-    <!-- Google Analytics GA4 — reemplazar G-Z8G2X7ETQ1 con el Measurement ID real -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
+    <!-- Google Analytics GA4 — reemplazar G-3N0ZZE5V10 con el Measurement ID real -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
       gtag('js', new Date());
-      gtag('config', 'G-Z8G2X7ETQ1',{anonymize_ip:true});
+      gtag('config', 'G-3N0ZZE5V10',{anonymize_ip:true});
     </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Calculadora","item":"https://prodigylabdental.com/calculadora"}]}
@@ -354,9 +354,9 @@
 
 <main id="main-content">
 <section class="hero">
-  <div class="hero-badge"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Calculadora de caso</div>
-  <h1>¿Cuánto cuesta<br>tu <em>restauración</em>?</h1>
-  <p>Selecciona el servicio, material y cantidad para obtener un estimado al instante. Sin sorpresas.</p>
+  <div class="hero-badge"><i class="fa-solid fa-calculator" aria-hidden="true"></i> <span data-i18n="calc.hero.badge">Calculadora de caso</span></div>
+  <h1 data-i18n="calc.hero.h1">¿Cuánto cuesta<br>tu <em>restauración</em>?</h1>
+  <p data-i18n="calc.hero.sub">Selecciona el servicio, material y cantidad para obtener un estimado al instante. Sin sorpresas.</p>
 </section>
 
 <div class="calc-wrap">
@@ -367,7 +367,7 @@
 
     <!-- SERVICIOS -->
     <div class="calc-card">
-      <div class="card-title"><i class="fa-solid fa-tooth"></i> Tipo de restauración</div>
+      <div class="card-title"><i class="fa-solid fa-tooth"></i> <span data-i18n="calc.srv.title">Tipo de restauración</span></div>
       <div class="servicio-grid" id="servicioGrid">
 
         <button class="servicio-btn selected" data-key="corona" onclick="selServicio(this)">
@@ -406,7 +406,7 @@
 
     <!-- MATERIAL -->
     <div class="calc-card">
-      <div class="card-title"><i class="fa-solid fa-gem"></i> Material</div>
+      <div class="card-title"><i class="fa-solid fa-gem"></i> <span data-i18n="calc.mat.title">Material</span></div>
       <div class="material-grid" id="materialGrid">
         <button class="mat-chip selected" data-mat="zirconio-mono" onclick="selMaterial(this)">
           <span class="dot" style="background:#a78bfa;"></span> Zirconio Monolítico
@@ -428,7 +428,7 @@
 
     <!-- CANTIDAD -->
     <div class="calc-card">
-      <div class="card-title"><i class="fa-solid fa-hashtag"></i> Cantidad de unidades</div>
+      <div class="card-title"><i class="fa-solid fa-hashtag"></i> <span data-i18n="calc.qty.title">Cantidad de unidades</span></div>
       <div class="qty-row">
         <button class="qty-btn" onclick="cambiarQty(-1)">−</button>
         <div class="qty-num" id="qtyNum">1</div>
@@ -439,7 +439,7 @@
 
     <!-- EXTRAS -->
     <div class="calc-card">
-      <div class="card-title"><i class="fa-solid fa-plus-circle"></i> Opciones adicionales</div>
+      <div class="card-title"><i class="fa-solid fa-plus-circle"></i> <span data-i18n="calc.extras.title">Opciones adicionales</span></div>
 
       <div class="toggle-row">
         <div class="toggle-info">
@@ -470,8 +470,8 @@
 
       <div class="toggle-row" id="row-internacional" style="display:none;">
         <div class="toggle-info">
-          Pago Internacional (Lemon Squeezy)
-          <small>Platform service fee 6.5% · USD</small>
+          Pago Internacional (Stripe / PayPal)
+          <small>Platform service fee 3.5% · USD via Stripe</small>
         </div>
         <span class="toggle-price" id="precio-intl-fee" style="color:var(--cyan)">+6.5%</span>
         <div class="toggle" id="tog-internacional" onclick="toggleOpcion('internacional')"></div>
@@ -534,7 +534,7 @@
       </div>
 
       <!-- FORM LEAD -->
-      <div class="lead-section-title">Recibe cotización exacta por WhatsApp</div>
+      <div class="lead-section-title" data-i18n="calc.cta.lead">Recibe cotización exacta por WhatsApp</div>
       <form id="formCotizar" method="post" onsubmit="enviarCotizacion(event)">
         <div class="field">
           <input type="text" id="cot-nombre" placeholder="Dr. / Dra. Nombre" autocomplete="name" required maxlength="100">

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotizador Diseño CAD Dental — Exocad, 3Shape, Global | PRODIGY Lab</title>
+  <meta name="description" content="Calcula el precio de tu diseño CAD dental: corona, carilla, inlay, puente, Full Arch o guía quirúrgica. Servicio internacional en USD. Entrega STL en 24–48h.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://prodigylabdental.com/calculadora-diseno">
+  <link rel="alternate" hreflang="es" href="https://prodigylabdental.com/calculadora-diseno">
+  <link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com/calculadora-diseno">
+  <meta property="og:title" content="Cotizador Diseño CAD — PRODIGY Lab Dental">
+  <meta property="og:description" content="Diseño CAD en Exocad/3Shape. Corona, puente, Full Arch, guías quirúrgicas. STL en 24–48h. Precios en USD o COP.">
+  <meta property="og:url" content="https://prodigylabdental.com/calculadora-diseno">
+  <meta name="theme-color" content="#D946A6">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{--gold:#D4AF37;--magenta:#D946A6;--cyan:#00d2ff;--bg:#050505;--card:#0d1520;--muted:#94a3b8;--border:rgba(255,255,255,.08);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);color:#e2e8f0;font-family:system-ui,-apple-system,sans-serif;min-height:100vh;}
+    a{color:inherit;text-decoration:none;}
+
+    .page-hero{background:linear-gradient(135deg,rgba(217,70,166,.08) 0%,rgba(0,210,255,.05) 100%);border-bottom:1px solid var(--border);padding:48px 24px 36px;text-align:center;}
+    .page-hero .badge{display:inline-block;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.3);color:var(--magenta);font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 14px;border-radius:100px;margin-bottom:16px;}
+    .page-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;line-height:1.2;margin-bottom:12px;}
+    .page-hero h1 em{color:var(--magenta);font-style:normal;}
+    .page-hero p{color:var(--muted);font-size:.95rem;max-width:540px;margin:0 auto 14px;}
+    .intl-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:8px;}
+    .intl-chip{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:100px;font-size:.7rem;padding:3px 10px;color:var(--muted);}
+    .breadcrumb{font-size:.75rem;color:var(--muted);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
+    .breadcrumb a:hover{color:var(--magenta);}
+
+    /* Moneda toggle */
+    .currency-toggle{display:flex;gap:0;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;overflow:hidden;width:fit-content;margin:0 auto 8px;}
+    .cur-btn{padding:8px 20px;font-size:.8rem;font-weight:700;cursor:pointer;border:none;background:none;color:var(--muted);font-family:inherit;transition:all .2s;}
+    .cur-btn.active{background:rgba(217,70,166,.2);color:var(--magenta);}
+
+    .calc-wrap{max-width:1100px;margin:0 auto;padding:36px 20px 80px;display:grid;grid-template-columns:1fr 380px;gap:28px;}
+    @media(max-width:860px){.calc-wrap{grid-template-columns:1fr;}}
+
+    .calc-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px;}
+    .card-title{font-size:.8rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+    .card-title i{color:var(--magenta);}
+
+    .srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+    @media(max-width:480px){.srv-grid{grid-template-columns:repeat(2,1fr);}}
+    .srv-btn{background:rgba(255,255,255,.04);border:1.5px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .2s;color:#e2e8f0;font-family:inherit;}
+    .srv-btn:hover{border-color:rgba(217,70,166,.4);background:rgba(217,70,166,.05);}
+    .srv-btn.selected{border-color:var(--magenta);background:rgba(217,70,166,.1);color:#fff;}
+    .srv-btn .ico{font-size:1.5rem;margin-bottom:6px;}
+    .srv-btn .lbl{font-size:.78rem;font-weight:700;line-height:1.3;}
+    .srv-btn .prc{font-size:.68rem;color:var(--muted);margin-top:3px;}
+    .srv-btn.selected .prc{color:var(--magenta);}
+    .srv-btn .time{font-size:.62rem;color:var(--muted);margin-top:2px;}
+
+    .qty-row{display:flex;align-items:center;gap:16px;}
+    .qty-btn{width:40px;height:40px;border-radius:8px;border:1.5px solid var(--border);background:rgba(255,255,255,.05);color:#e2e8f0;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:inherit;}
+    .qty-btn:hover{border-color:var(--magenta);color:var(--magenta);}
+    .qty-num{font-size:1.8rem;font-weight:900;color:#fff;min-width:40px;text-align:center;}
+    .qty-lbl{font-size:.8rem;color:var(--muted);}
+
+    .tog-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+    .tog-row:last-child{border-bottom:none;}
+    .tog-info{flex:1;}
+    .tog-info .lbl{font-size:.85rem;font-weight:600;color:#e2e8f0;}
+    .tog-info small{display:block;font-size:.72rem;color:var(--muted);margin-top:2px;}
+    .tog-price{font-size:.8rem;font-weight:700;color:var(--magenta);min-width:60px;text-align:right;}
+    .tog{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,.1);cursor:pointer;position:relative;transition:background .25s;flex-shrink:0;}
+    .tog::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .25s;}
+    .tog.on{background:var(--magenta);}
+    .tog.on::after{transform:translateX(20px);}
+
+    .res-card{background:linear-gradient(135deg,rgba(217,70,166,.08) 0%,rgba(0,210,255,.05) 100%);border:1.5px solid rgba(217,70,166,.3);border-radius:16px;padding:24px;position:sticky;top:20px;}
+    .res-label{font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+    .res-srv{font-size:.85rem;color:#cbd5e1;margin-bottom:20px;}
+    .res-total{font-size:2.6rem;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;}
+    .res-sub{font-size:.72rem;color:var(--muted);margin-bottom:20px;}
+    .res-bd{background:rgba(0,0,0,.3);border-radius:10px;padding:14px;margin-bottom:20px;}
+    .res-bd-row{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);padding:3px 0;}
+    .res-bd-row.total{color:#fff;font-weight:700;font-size:.9rem;border-top:1px solid var(--border);padding-top:8px;margin-top:4px;}
+    .intl-note{font-size:.75rem;color:var(--muted);background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.15);border-radius:8px;padding:10px;margin-bottom:16px;line-height:1.5;}
+    .intl-note strong{color:var(--cyan);}
+    .btn-wa{width:100%;padding:16px;border-radius:12px;border:none;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-size:1rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.5px;transition:all .25s;margin-bottom:10px;font-family:inherit;}
+    .btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.4);}
+    .btn-upload{width:100%;padding:13px;border-radius:12px;border:1.5px solid var(--magenta);background:transparent;color:var(--magenta);font-size:.9rem;font-weight:700;cursor:pointer;transition:all .25s;font-family:inherit;}
+    .btn-upload:hover{background:rgba(217,70,166,.1);}
+    .trust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+    .trust-chip{font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:5px;}
+    .trust-chip i{color:var(--magenta);}
+    .formats-note{font-size:.68rem;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5;}
+    .habeas-wrap{margin:14px 0 0;font-size:.72rem;color:var(--muted);}
+    .habeas-wrap label{display:flex;align-items:flex-start;gap:8px;cursor:pointer;line-height:1.5;}
+    .habeas-wrap input{margin-top:2px;flex-shrink:0;accent-color:var(--magenta);}
+    .ux-floaters{position:fixed;bottom:28px;right:24px;z-index:900;display:flex;flex-direction:column;gap:10px;}
+    .ux-btn{width:42px;height:42px;border-radius:50%;background:rgba(13,21,32,.92);border:1px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;transition:all .25s;}
+    .ux-btn:hover{border-color:var(--magenta);color:var(--magenta);}
+    #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a2332;border:1px solid var(--border);color:#e2e8f0;padding:10px 20px;border-radius:8px;font-size:.85rem;opacity:0;transition:all .3s;pointer-events:none;z-index:9999;white-space:nowrap;}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  </style>
+</head>
+<body>
+<script src="js/header.js"></script>
+
+<div class="page-hero">
+  <div class="badge"><i class="fas fa-drafting-compass"></i> Diseño CAD · Exocad &amp; 3Shape · Global</div>
+  <h1>Cotiza tu <em>diseño CAD</em> al instante</h1>
+  <p>Corona, carilla, puente, Full Arch, guía quirúrgica o setup de alineadores. STL listo para fresar en tu centro. Sin contratos.</p>
+  <div class="intl-chips">
+    <span class="intl-chip">🇨🇴 Colombia</span>
+    <span class="intl-chip">🇲🇽 México</span>
+    <span class="intl-chip">🇦🇷 Argentina</span>
+    <span class="intl-chip">🇧🇷 Brasil</span>
+    <span class="intl-chip">🇪🇸 España</span>
+    <span class="intl-chip">🌍 +20 países</span>
+  </div>
+  <div class="currency-toggle">
+    <button class="cur-btn" id="btnCOP" onclick="setCur('COP')">COP $</button>
+    <button class="cur-btn active" id="btnUSD" onclick="setCur('USD')">USD $</button>
+  </div>
+  <div class="breadcrumb">
+    <a href="/">Inicio</a><span>›</span>
+    <a href="/diseno-cad">Diseño CAD</a><span>›</span>
+    <span>Cotizador</span>
+  </div>
+</div>
+
+<div class="calc-wrap">
+  <div>
+    <div class="calc-card">
+      <div class="card-title"><i class="fas fa-drafting-compass"></i> Tipo de diseño</div>
+      <div class="srv-grid" id="srvGrid">
+        <button class="srv-btn selected" data-key="corona" onclick="selSrv(this)">
+          <div class="ico">👑</div>
+          <div class="lbl">Corona / Inlay</div>
+          <div class="prc" id="p-corona">$14 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
+        <button class="srv-btn" data-key="carilla" onclick="selSrv(this)">
+          <div class="ico">💎</div>
+          <div class="lbl">Carilla / Lámina</div>
+          <div class="prc" id="p-carilla">$16 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
+        <button class="srv-btn" data-key="puente" onclick="selSrv(this)">
+          <div class="ico">🌉</div>
+          <div class="lbl">Puente 3 pzas</div>
+          <div class="prc" id="p-puente">$32 USD</div>
+          <div class="time">⏱ 24–48h</div>
+        </button>
+        <button class="srv-btn" data-key="abutment" onclick="selSrv(this)">
+          <div class="ico">🔩</div>
+          <div class="lbl">Abutment CAD</div>
+          <div class="prc" id="p-abutment">$35 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
+        <button class="srv-btn" data-key="guia" onclick="selSrv(this)">
+          <div class="ico">🎯</div>
+          <div class="lbl">Guía Quirúrgica</div>
+          <div class="prc" id="p-guia">$60 USD</div>
+          <div class="time">⏱ 48h</div>
+        </button>
+        <button class="srv-btn" data-key="fullarch" onclick="selSrv(this)">
+          <div class="ico">🦷</div>
+          <div class="lbl">Full Arch Rehab</div>
+          <div class="prc" id="p-fullarch">Cotizar</div>
+          <div class="time">⏱ 48–72h</div>
+        </button>
+        <button class="srv-btn" data-key="alineadores" onclick="selSrv(this)">
+          <div class="ico">📐</div>
+          <div class="lbl">Setup Alineadores</div>
+          <div class="prc" id="p-alineadores">$100 USD</div>
+          <div class="time">⏱ 48–72h</div>
+        </button>
+        <button class="srv-btn" data-key="provisional" onclick="selSrv(this)">
+          <div class="ico">🏗️</div>
+          <div class="lbl">Provisional CAD</div>
+          <div class="prc" id="p-provisional">$12 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
+        <button class="srv-btn" data-key="dsd" onclick="selSrv(this)">
+          <div class="ico">🖥️</div>
+          <div class="lbl">DSD / Smile Design</div>
+          <div class="prc" id="p-dsd">$80 USD</div>
+          <div class="time">⏱ 48h</div>
+        </button>
+      </div>
+    </div>
+
+    <div class="calc-card">
+      <div class="card-title"><i class="fas fa-hashtag"></i> Cantidad de diseños</div>
+      <div class="qty-row">
+        <button class="qty-btn" onclick="chgQty(-1)">−</button>
+        <div class="qty-num" id="qtyNum">1</div>
+        <div class="qty-lbl">diseño(s)</div>
+        <button class="qty-btn" onclick="chgQty(1)">+</button>
+      </div>
+    </div>
+
+    <div class="calc-card">
+      <div class="card-title"><i class="fas fa-plus-circle"></i> Opciones adicionales</div>
+      <div class="tog-row">
+        <div class="tog-info">
+          <div class="lbl">Entrega urgente (misma sesión)</div>
+          <small>Diseño en menos de 8h hábiles desde recepción del STL</small>
+        </div>
+        <span class="tog-price" id="tp-urgente">+$8 USD</span>
+        <div class="tog" onclick="togOp('urgente', this)"></div>
+      </div>
+      <div class="tog-row">
+        <div class="tog-info">
+          <div class="lbl">Vista previa antes de entrega</div>
+          <small>Capturas del diseño para aprobación — sin costo adicional</small>
+        </div>
+        <span class="tog-price" style="color:var(--cyan)">Incluida</span>
+        <div class="tog on" style="pointer-events:none;opacity:.6;"></div>
+      </div>
+      <div class="tog-row">
+        <div class="tog-info">
+          <div class="lbl">Revisión adicional</div>
+          <small>Segunda ronda de modificaciones post-aprobación</small>
+        </div>
+        <span class="tog-price" id="tp-revision">+$5 USD</span>
+        <div class="tog" onclick="togOp('revision', this)"></div>
+      </div>
+    </div>
+
+    <div class="habeas-wrap">
+      <label>
+        <input type="checkbox" id="chkHabeas" required>
+        Autorizo a PRODIGY el tratamiento de mis datos personales para gestión de cotización, de conformidad con la Ley 1581 de 2012 y normativas aplicables en mi país.
+      </label>
+    </div>
+  </div>
+
+  <div>
+    <div class="res-card">
+      <div class="res-label">Estimado de precio</div>
+      <div class="res-srv" id="resSrv">Corona / Inlay</div>
+      <div class="res-total" id="resTotal">$14 USD</div>
+      <div class="res-sub" id="resSub">USD · precio de referencia por diseño</div>
+
+      <div class="res-bd">
+        <div class="res-bd-row"><span>Precio por diseño</span><span id="bdUnit">$14 USD</span></div>
+        <div class="res-bd-row"><span>Cantidad</span><span id="bdQty">× 1</span></div>
+        <div class="res-bd-row"><span>Extras</span><span id="bdExtras">$0</span></div>
+        <div class="res-bd-row total"><span>Total estimado</span><span id="bdTotal">$14 USD</span></div>
+      </div>
+
+      <div class="intl-note">
+        <strong>Pagos internacionales:</strong> PayPal · Stripe · Western Union · Transferencia bancaria Colombia. Sin contratos ni mínimos.
+      </div>
+
+      <button class="btn-wa" onclick="abrirWA()">
+        <i class="fab fa-whatsapp"></i> Cotizar por WhatsApp
+      </button>
+      <button class="btn-upload" onclick="window.location.href='/envia-tu-scanner'">
+        <i class="fas fa-upload"></i> Subir mi STL ahora
+      </button>
+
+      <div class="trust-row">
+        <div class="trust-chip"><i class="fas fa-shield-halved"></i> Sin contratos</div>
+        <div class="trust-chip"><i class="fas fa-clock"></i> Respuesta &lt;2h</div>
+        <div class="trust-chip"><i class="fas fa-rotate"></i> Revisión incluida</div>
+        <div class="trust-chip"><i class="fas fa-globe"></i> +20 países</div>
+      </div>
+      <div class="formats-note">Formatos aceptados: STL · OBJ · PLY · Exocad (.constructioninfo) · 3Shape (.3oxz)</div>
+    </div>
+  </div>
+</div>
+
+<div class="ux-floaters">
+  <button class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></button>
+  <a href="https://wa.me/573212816716?text=Hello%20PRODIGY%2C%20I%20need%20a%20CAD%20design%20quote" class="ux-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style="background:rgba(37,211,102,.12);border-color:rgba(37,211,102,.4);"><i class="fab fa-whatsapp" style="color:#25D366;"></i></a>
+</div>
+<div id="toast"></div>
+
+<script>
+// Precios en USD y COP (COP = USD × 4000 aprox)
+const USD_COP = 4000;
+const PRECIOS_USD = {
+  corona:      { base:14,  lbl:'Corona / Inlay',        fixedQty:false, time:'24h'    },
+  carilla:     { base:16,  lbl:'Carilla / Lámina',      fixedQty:false, time:'24h'    },
+  puente:      { base:32,  lbl:'Puente 3 piezas',       fixedQty:true,  time:'24–48h' },
+  abutment:    { base:35,  lbl:'Abutment CAD',          fixedQty:false, time:'24h'    },
+  guia:        { base:60,  lbl:'Guía Quirúrgica',       fixedQty:false, time:'48h'    },
+  fullarch:    { base:0,   lbl:'Full Arch Rehab',       fixedQty:true,  time:'48–72h' },
+  alineadores: { base:100, lbl:'Setup Alineadores',     fixedQty:true,  time:'48–72h' },
+  provisional: { base:12,  lbl:'Provisional CAD',       fixedQty:false, time:'24h'    },
+  dsd:         { base:80,  lbl:'DSD / Smile Design',    fixedQty:true,  time:'48h'    },
+};
+const EXTRAS_USD = { urgente:8, revision:5 };
+let cur = 'USD';
+let ST  = { srv:'corona', qty:1, urgente:false, revision:false };
+
+function fmtVal(v) {
+  if (cur === 'USD') return v === 0 ? 'Cotizar' : '$' + v + ' USD';
+  const cop = Math.round(v * USD_COP);
+  return v === 0 ? 'Cotizar' : '$' + cop.toLocaleString('es-CO') + ' COP';
+}
+
+function calc() {
+  const p = PRECIOS_USD[ST.srv];
+  const qty = p.fixedQty ? 1 : ST.qty;
+  const unit = p.base;
+  let extras = 0;
+  if (ST.urgente)  extras += EXTRAS_USD.urgente;
+  if (ST.revision) extras += EXTRAS_USD.revision;
+  const total = unit === 0 ? 0 : unit * qty + extras;
+  return { unit, qty, extras, total, p };
+}
+
+function render() {
+  const { unit, qty, extras, total, p } = calc();
+  const cotizar = total === 0;
+  document.getElementById('resSrv').textContent   = p.lbl;
+  document.getElementById('resTotal').textContent = cotizar ? 'Cotizar' : fmtVal(total);
+  document.getElementById('resSub').textContent   = cur === 'USD' ? 'USD · precio de referencia por diseño' : 'COP · precio de referencia por diseño';
+  document.getElementById('bdUnit').textContent   = cotizar ? '—' : fmtVal(unit);
+  document.getElementById('bdQty').textContent    = '× ' + qty;
+  document.getElementById('bdExtras').textContent = extras > 0 ? fmtVal(extras) : '$0';
+  document.getElementById('bdTotal').textContent  = cotizar ? '—' : fmtVal(total);
+  document.getElementById('tp-urgente').textContent  = cur === 'USD' ? '+$8 USD' : '+$' + (8*USD_COP).toLocaleString('es-CO');
+  document.getElementById('tp-revision').textContent = cur === 'USD' ? '+$5 USD' : '+$' + (5*USD_COP).toLocaleString('es-CO');
+  // Actualizar precios en botones de servicio
+  Object.keys(PRECIOS_USD).forEach(function(key) {
+    const el = document.getElementById('p-' + key);
+    if (el) el.textContent = PRECIOS_USD[key].base === 0 ? 'Cotizar' : fmtVal(PRECIOS_USD[key].base);
+  });
+}
+
+function setCur(c) {
+  cur = c;
+  document.getElementById('btnUSD').classList.toggle('active', c === 'USD');
+  document.getElementById('btnCOP').classList.toggle('active', c === 'COP');
+  render();
+}
+
+function selSrv(btn) {
+  document.querySelectorAll('.srv-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  ST.srv = btn.dataset.key;
+  render();
+}
+
+function chgQty(d) {
+  ST.qty = Math.max(1, Math.min(20, ST.qty + d));
+  document.getElementById('qtyNum').textContent = ST.qty;
+  render();
+}
+
+function togOp(k, el) {
+  ST[k] = !ST[k];
+  el.classList.toggle('on', ST[k]);
+  render();
+}
+
+function abrirWA() {
+  const { unit, qty, extras, total, p } = calc();
+  const cotizar = total === 0;
+  let msg;
+  if (cotizar) {
+    msg = `Hello PRODIGY / Hola PRODIGY,\n\nNecesito cotizar: *${p.lbl}*\n¿Pueden enviarme el precio y tiempo de entrega?`;
+  } else {
+    msg = `Hola PRODIGY, quiero cotizar un diseño CAD:\n\n` +
+      `✏️ *Tipo:* ${p.lbl}\n` +
+      `📦 *Cantidad:* ${qty}\n` +
+      `⏱ *Entrega:* ${p.time}\n` +
+      (ST.urgente  ? `⚡ Urgente\n` : '') +
+      `\n💰 *Estimado:* ${fmtVal(total)}\n\n` +
+      `Tengo el archivo STL listo. ¿Me confirman disponibilidad?`;
+  }
+  window.open('https://wa.me/573212816716?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
+}
+
+function toast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+window.addEventListener('scroll', () => { document.getElementById('scroll-top-btn').style.opacity = window.scrollY > 200 ? '1' : '0'; });
+
+render();
+</script>
+<script src="js/footer.js"></script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>

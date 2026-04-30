@@ -1,4 +1,4 @@
-# PRODIGY — PENDIENTES MAESTRO
+﻿# PRODIGY — PENDIENTES MAESTRO
 > Fuente única de verdad. Ordenados por bloque. Actualizar al completar.
 > Última revisión: 2026-04-29
 
@@ -8,7 +8,7 @@
 
 | # | Acción | Cómo | Estado |
 |---|--------|------|--------|
-| 1 | **GEMINI_API_KEY en Cloudflare** | Pages → dental-portfolio → Settings → Env vars → GEMINI_API_KEY | 🔴 URGENTE — bot roto sin esto |
+| 1 | **GEMINI_API_KEY en Cloudflare** | Pages → dental-portfolio → Settings → Env vars → GEMINI_API_KEY | ✅ Listo |
 | 2 | **STRIPE_SECRET_KEY en Cloudflare** | Pages → dental-portfolio → Settings → Env vars → STRIPE_SECRET_KEY | 🔴 URGENTE — pagos rotos |
 | 3 | **SQL migrate-lead-sources.sql** | Supabase SQL Editor → pegar contenido → Run | ⏳ |
 | 4 | **SQL migrate-inventario-implantes.sql** | Supabase SQL Editor | ⏳ |
@@ -235,7 +235,7 @@
 |---|--------|---------|--------|
 | 1 | Search Console | Sitemap actualizado 2026-04-22 — **re-enviar** `https://prodigylabdental.com/sitemap.xml` | 🔴 Re-enviar |
 | 2 | Google My Business | Perfil creado y activo — faltan fotos del lab | ⏳ Subir 10-15 fotos |
-| 3 | Analytics GA4 | `G-Z8G2X7ETQ1` activo en todas las páginas públicas | ✅ Listo |
+| 3 | Analytics GA4 | `G-3N0ZZE5V10` activo en todas las páginas públicas | ✅ Listo |
 | 4 | PageSpeed Insights | Medir LCP/CLS en nosotros, portafolio, calculadora post-deploy | ⏳ Manual |
 | 5 | GA4 Real Time | Abrir analytics.google.com → Real Time y navegar el sitio para confirmar hits | ⏳ Manual |
 | 6 | `assets/prodigy-preview.jpg` | Verificar que el archivo existe en Cloudflare Pages (og:image de todas las páginas apunta ahí) | ⏳ Manual |
@@ -254,7 +254,7 @@
 
 | # | Item | Qué decidir | Impacto |
 |---|------|-------------|---------|
-| 1 | `portal.html` | ¿Es página pública o legacy? Opciones: A) agregar `noindex` (recomendado si no se usa activamente), B) agregar al sitemap + linkear desde nav | SEO — está indexable pero sin links entrantes |
+| 1 | ~~`portal.html`~~ | ✅ Resuelto — archivo no existe en el proyecto, nada que hacer | ✅ Listo |
 | 2 | ~~`fresado-cam.html` CTA secundario~~ | ✅ Resuelto 2026-04-23 — CTA corregido a `/flujo-fresado.html` | ✅ Listo |
 | 3 | `buscar_pedido_publico` RPC | Verificar en Supabase Dashboard → Database → Functions que la función SOLO retorna campos públicos (estado, timeline, parámetros técnicos) y NO incluye email, teléfono, datos personales del doctor | Privacidad de datos |
 | 4 | GDPR clientes internacionales | `diseno-cad.html` ofrece servicio mundial. Clientes EU activan GDPR — ¿agregar aviso específico para UE? | Cumplimiento legal |
@@ -435,7 +435,7 @@
 |-----|-------|
 | **SQL patch** citas_domicilio.acepta_marketing | `sql/patch-citas-domicilio-marketing.sql` — ejecutar en Supabase |
 | **_headers** sw.js → no-store; articles.js → 1 día; generativelanguage eliminado CSP | `_headers` |
-| **patient.html** — GA4 G-Z8G2X7ETQ1 (página pública sin tracking) | `patient.html` |
+| **patient.html** — GA4 G-3N0ZZE5V10 (página pública sin tracking) | `patient.html` |
 | **journal.html** — preconnect cdnjs + noscript | `journal.html` |
 | **seguimiento-caso.html** — XSS: id URL param sin escapar en banner Wompi → textContent | `seguimiento-caso.html` línea ~518 |
 | **reset-password.html** — showMsg usa DOM API (error.message de Supabase sin escapar) | `app/reset-password.html` |

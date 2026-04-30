@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -677,14 +677,14 @@
     .toast.ok  { border-color: rgba(0,255,65,0.4); }
     .toast.err { border-color: rgba(248,113,113,0.4); }
   </style>
-    <!-- Google Analytics GA4 — reemplazar G-Z8G2X7ETQ1 con el Measurement ID real -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8G2X7ETQ1"></script>
+    <!-- Google Analytics GA4 — reemplazar G-3N0ZZE5V10 con el Measurement ID real -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
       gtag('js', new Date());
-      gtag('config', 'G-Z8G2X7ETQ1',{anonymize_ip:true});
+      gtag('config', 'G-3N0ZZE5V10',{anonymize_ip:true});
     </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Journal","item":"https://prodigylabdental.com/journal"}]}
@@ -701,29 +701,29 @@
 <section class="hero">
   <div class="hero-badge">
     <span class="dot"></span>
-    Publicaciones técnicas verificadas
+    <span data-i18n="journal.hero.badge">Publicaciones técnicas verificadas</span>
   </div>
   <h1>PRODIGY<br><span class="grad">Insights</span></h1>
-  <p style="max-width:600px;margin:0 auto 8px;font-size:1.05rem;line-height:1.7;color:var(--muted)">
+  <p style="max-width:600px;margin:0 auto 8px;font-size:1.05rem;line-height:1.7;color:var(--muted)" data-i18n="journal.hero.p1">
     Artículos técnicos escritos por el equipo de PRODIGY Lab Dental.<br>
     Comparativas de escáneres, protocolos CAD/CAM, selección de materiales y casos clínicos reales —
     para que tu clínica tome decisiones informadas, no basadas en marketing.
   </p>
-  <p style="font-size:.85rem;color:var(--border-m);margin-bottom:0">
+  <p style="font-size:.85rem;color:var(--border-m);margin-bottom:0" data-i18n="journal.hero.p2">
     Tiempo de lectura: 5–15 min · Actualizado mensualmente · Sin paywalls
   </p>
   <div class="hero-stats">
     <div class="hero-stat">
       <strong>200+</strong>
-      <span>Doctores suscritos</span>
+      <span data-i18n="journal.hero.stat1">Doctores suscritos</span>
     </div>
     <div class="hero-stat">
       <strong>98%</strong>
-      <span>Casos entregados a tiempo</span>
+      <span data-i18n="journal.hero.stat2">Casos entregados a tiempo</span>
     </div>
     <div class="hero-stat">
       <strong>5+</strong>
-      <span>Años en digital</span>
+      <span data-i18n="journal.hero.stat3">Años en digital</span>
     </div>
   </div>
 </section>
@@ -785,16 +785,16 @@
 <section class="articles-section">
   <div class="section-header">
     <div>
-      <div class="section-label">Artículos técnicos</div>
+      <div class="section-label" data-i18n="journal.articles.tag">Artículos técnicos</div>
       <h2>Tecnología que transforma clínicas</h2>
       <div class="section-sub">Filtra por categoría</div>
     </div>
     <div class="filter-tags">
-      <button class="tag-btn active" onclick="filterArticles(this,'all')">Todos</button>
-      <button class="tag-btn" onclick="filterArticles(this,'ia')">IA</button>
-      <button class="tag-btn" onclick="filterArticles(this,'material')">Materiales</button>
-      <button class="tag-btn" onclick="filterArticles(this,'equipo')">Equipos</button>
-      <button class="tag-btn" onclick="filterArticles(this,'protocolo')">Protocolos</button>
+      <button class="tag-btn active" onclick="filterArticles(this,'all')" data-i18n="journal.filter.all">Todos</button>
+      <button class="tag-btn" onclick="filterArticles(this,'ia')" data-i18n="journal.filter.ia">IA</button>
+      <button class="tag-btn" onclick="filterArticles(this,'material')" data-i18n="journal.filter.material">Materiales</button>
+      <button class="tag-btn" onclick="filterArticles(this,'equipo')" data-i18n="journal.filter.equipo">Equipos</button>
+      <button class="tag-btn" onclick="filterArticles(this,'protocolo')" data-i18n="journal.filter.protocolo">Protocolos</button>
     </div>
   </div>
 
@@ -811,7 +811,7 @@
         <p>Cómo los módulos de inteligencia artificial en Exocad 2024 automatizan la propuesta de anatomía oclusal y reducen correcciones.</p>
       </div>
       <div class="card-footer">
-        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
         <span class="card-time"><i class="fa-solid fa-eye"></i> 1.2k</span>
       </div>
     </a>
@@ -827,7 +827,7 @@
         <p>Análisis de resistencia flexural, acabado superficial y costo por unidad entre materiales impresos y fresados en uso clínico.</p>
       </div>
       <div class="card-footer">
-        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
         <span class="card-time"><i class="fa-solid fa-eye"></i> 987</span>
       </div>
     </a>
@@ -843,7 +843,7 @@
         <p>Guía de calibración, flujo de exportación STL y compatibilidad con los principales softwares de diseño dental del mercado.</p>
       </div>
       <div class="card-footer">
-        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
         <span class="card-time"><i class="fa-solid fa-eye"></i> 743</span>
       </div>
     </a>
@@ -859,7 +859,7 @@
         <p>Revisamos el módulo de automatización de 3Shape y su impacto real en flujos de producción de laboratorios de alto volumen.</p>
       </div>
       <div class="card-footer">
-        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
         <span class="card-time"><i class="fa-solid fa-eye"></i> 1.5k</span>
       </div>
     </a>
@@ -875,7 +875,7 @@
         <p>Evaluación clínica de los nuevos bloques 5Y-PSZ con gradiente de translucidez y su impacto en la estética del sector anterior.</p>
       </div>
       <div class="card-footer">
-        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
         <span class="card-time"><i class="fa-solid fa-eye"></i> 2.1k</span>
       </div>
     </a>
@@ -891,7 +891,7 @@
         <p>El protocolo PRODIGY para garantizar entregas en 24h sin comprometer calidad. Pasos, checkpoints y criterio de aprobación de diseño.</p>
       </div>
       <div class="card-footer">
-        <span class="read-more">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="read-more"><span data-i18n="journal.read">Leer artículo</span> <i class="fa-solid fa-arrow-right"></i></span>
         <span class="card-time"><i class="fa-solid fa-eye"></i> 3.4k</span>
       </div>
     </a>
