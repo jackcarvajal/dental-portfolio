@@ -2324,85 +2324,136 @@
     </main>
 
     <!-- ═══ ECOSISTEMA TECNOLÓGICO ═══════════════════════════════════════ -->
-    <section id="tech-ecosystem" style="padding:72px 0;background:linear-gradient(180deg,#050505 0%,#080d18 60%,#050505 100%);">
-      <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
-        <div style="text-align:center;margin-bottom:52px;">
-          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.25);border-radius:100px;padding:5px 18px;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#00d2ff;margin-bottom:16px;">⚙️ Ecosistema Tecnológico</div>
-          <h2 style="font-size:clamp(1.5rem,3.5vw,2.4rem);font-weight:900;color:#f8fafc;margin-bottom:10px;">Software · Hardware · Materiales</h2>
-          <p style="color:#94a3b8;font-size:.95rem;max-width:560px;margin:0 auto;">Flujos digitales completos con las marcas más precisas del mundo — <span style="color:#00d2ff;">operados en Colombia y México.</span></p>
-        </div>
+    <section id="tech-ecosystem" style="padding:72px 0;background:linear-gradient(180deg,#050505 0%,#080d18 60%,#050505 100%);overflow:hidden;">
+      <div style="text-align:center;margin-bottom:48px;padding:0 24px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.25);border-radius:100px;padding:5px 18px;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#00d2ff;margin-bottom:16px;">⚙️ Ecosistema Tecnológico</div>
+        <h2 style="font-size:clamp(1.5rem,3.5vw,2.4rem);font-weight:900;color:#f8fafc;margin-bottom:10px;">Software · Hardware · Materiales</h2>
+        <p style="color:#94a3b8;font-size:.95rem;max-width:560px;margin:0 auto;">Las marcas más precisas del mundo — <span style="color:#00d2ff;">operadas desde Colombia y México.</span></p>
+      </div>
 
-        <div style="margin-bottom:32px;">
-          <div style="font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#D4AF37;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><span style="width:24px;height:2px;background:currentColor;display:inline-block;"></span>Software Suite CAD/CAM</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <div class="_tp _tp-s">Exocad</div><div class="_tp _tp-s">3Shape Dental Designer</div>
-            <div class="_tp _tp-s">3Shape Ortho Analyzer</div><div class="_tp _tp-s">Blender for Dental</div>
-            <div class="_tp _tp-s">CoDiagnostiX</div><div class="_tp _tp-s">Medit Link</div>
-            <div class="_tp _tp-s">Rhinoceros 3D</div>
-          </div>
-        </div>
+      <style>
+        .eco-row{position:relative;margin-bottom:16px;}
+        .eco-track{display:flex;gap:12px;width:max-content;}
+        .eco-track.row1{animation:ecoScroll1 35s linear infinite;}
+        .eco-track.row2{animation:ecoScroll2 28s linear infinite;}
+        .eco-track.row3{animation:ecoScroll1 40s linear infinite;}
+        .eco-track:hover{animation-play-state:paused;}
+        @keyframes ecoScroll1{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        @keyframes ecoScroll2{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+        .eco-fade-l{position:absolute;left:0;top:0;bottom:0;width:120px;background:linear-gradient(to right,#050505,transparent);z-index:2;pointer-events:none;}
+        .eco-fade-r{position:absolute;right:0;top:0;bottom:0;width:120px;background:linear-gradient(to left,#050505,transparent);z-index:2;pointer-events:none;}
+        .eco-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 20px;border-radius:14px;white-space:nowrap;min-width:140px;cursor:default;transition:transform .2s,box-shadow .2s;border:1px solid transparent;}
+        .eco-card:hover{transform:translateY(-3px);}
+        .eco-card .eco-flag{font-size:1.1rem;line-height:1;}
+        .eco-card .eco-name{font-size:.78rem;font-weight:800;letter-spacing:.02em;}
+        .eco-card .eco-cat{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;opacity:.6;}
+        /* Brand colors */
+        .eco-exocad{background:rgba(0,94,168,.15);border-color:rgba(0,94,168,.35);color:#4da6ff;}
+        .eco-3shape{background:rgba(0,48,135,.15);border-color:rgba(0,48,135,.4);color:#6b9fff;}
+        .eco-blender{background:rgba(232,125,13,.12);border-color:rgba(232,125,13,.3);color:#f97316;}
+        .eco-medit{background:rgba(0,61,165,.12);border-color:rgba(0,61,165,.3);color:#60a5fa;}
+        .eco-codiagnostix{background:rgba(0,102,179,.12);border-color:rgba(0,102,179,.3);color:#38bdf8;}
+        .eco-rhino{background:rgba(100,116,139,.12);border-color:rgba(100,116,139,.3);color:#94a3b8;}
+        .eco-amann{background:rgba(200,168,85,.12);border-color:rgba(200,168,85,.3);color:#D4AF37;}
+        .eco-xtcera{background:rgba(204,0,0,.12);border-color:rgba(204,0,0,.3);color:#f87171;}
+        .eco-vhf{background:rgba(0,51,102,.15);border-color:rgba(0,102,204,.3);color:#60a5fa;}
+        .eco-shining{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:#93c5fd;}
+        .eco-nextdent{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#34d399;}
+        .eco-sprintray{background:rgba(107,33,168,.15);border-color:rgba(107,33,168,.3);color:#c084fc;}
+        .eco-anycubic{background:rgba(30,30,30,.6);border-color:rgba(255,255,255,.12);color:#e2e8f0;}
+        .eco-phrozen{background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.3);color:#fb923c;}
+        .eco-creality{background:rgba(220,38,38,.1);border-color:rgba(220,38,38,.3);color:#fca5a5;}
+        .eco-ivoclar{background:rgba(227,24,55,.1);border-color:rgba(227,24,55,.3);color:#f87171;}
+        .eco-vita{background:rgba(0,48,135,.12);border-color:rgba(0,48,135,.3);color:#93c5fd;}
+        .eco-renfert{background:rgba(204,0,0,.1);border-color:rgba(204,0,0,.25);color:#fca5a5;}
+        .eco-dentsply{background:rgba(0,95,168,.12);border-color:rgba(0,95,168,.3);color:#7dd3fc;}
+      </style>
 
-        <div style="margin-bottom:32px;">
-          <div style="font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#D946A6;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><span style="width:24px;height:2px;background:currentColor;display:inline-block;"></span>Hardware Fresado 🇩🇪</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <div class="_tp _tp-h">★ Amann Girrbach</div><div class="_tp _tp-h">XTCERA 5 ejes</div>
-            <div class="_tp _tp-h">VHF Dental</div><div class="_tp _tp-h">Shining 3D 🇨🇳</div>
-          </div>
-        </div>
-
-        <div style="margin-bottom:32px;">
-          <div style="font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#00d2ff;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><span style="width:24px;height:2px;background:currentColor;display:inline-block;"></span>Impresión 3D Resina Biocompatible — cero filamento</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <div class="_tp _tp-p">NextDent</div><div class="_tp _tp-p">SprintRay</div>
-            <div class="_tp _tp-p">Anycubic Dental</div><div class="_tp _tp-p">Phrozen</div>
-            <div class="_tp _tp-p">Creality HALOT</div>
-          </div>
-        </div>
-
-        <div style="margin-bottom:48px;">
-          <div style="font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#4ade80;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><span style="width:24px;height:2px;background:currentColor;display:inline-block;"></span>Materiales & Hornos Certificados</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <div class="_tp _tp-m">Ivoclar ZirCAD 🇨🇭</div><div class="_tp _tp-m">Vita Enamic 🇩🇪</div>
-            <div class="_tp _tp-m">Vita Suprinity</div><div class="_tp _tp-m">Renfert</div>
-            <div class="_tp _tp-m">Horno Dentsply Sirona</div><div class="_tp _tp-m">Vita Furnace</div>
-          </div>
-        </div>
-
-        <!-- Partners + sello binacional -->
-        <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:40px;">
-          <div style="text-align:center;font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#475569;margin-bottom:22px;">Software y hardware certificado por marcas líderes mundiales</div>
-          <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:36px;">
-            <div class="_pb">🇩🇪 Amann Girrbach</div><div class="_pb">🇨🇭 Ivoclar</div>
-            <div class="_pb">🇩🇰 3Shape</div><div class="_pb">🇩🇪 Exocad</div>
-            <div class="_pb">🇩🇪 Vita</div><div class="_pb">🇺🇸 Dentsply Sirona</div>
-            <div class="_pb">🇨🇳 Shining 3D</div><div class="_pb">🇺🇸 NextDent</div>
-            <div class="_pb">🇺🇸 SprintRay</div><div class="_pb">🇨🇳 XTCERA</div>
-            <div class="_pb">🇨🇳 VHF Dental</div><div class="_pb">🇩🇪 Renfert</div>
-          </div>
-
-          <div style="background:linear-gradient(135deg,rgba(217,70,166,.08),rgba(0,210,255,.05));border:1px solid rgba(217,70,166,.2);border-radius:16px;padding:28px 32px;text-align:center;max-width:680px;margin:0 auto;">
-            <div style="font-size:2rem;margin-bottom:10px;">🇨🇴 · 🇲🇽 · 🇩🇪 · 🇨🇳</div>
-            <div style="font-size:1.05rem;font-weight:800;color:#f8fafc;margin-bottom:8px;">Made in Colombia for the world</div>
-            <div style="font-size:.88rem;color:#94a3b8;line-height:1.7;">Con tecnología <strong style="color:#e2e8f0;">Alemana</strong> y <strong style="color:#e2e8f0;">China</strong>, operado con las manos expertas de <strong style="color:#e2e8f0;">Colombia</strong> y <strong style="color:#e2e8f0;">México</strong>.<br>Entregas a toda Latinoamérica y Estados Unidos.</div>
+      <!-- Fila 1: Software CAD/CAM → izquierda -->
+      <div class="eco-row">
+        <div class="eco-fade-l"></div><div class="eco-fade-r"></div>
+        <div style="overflow:hidden;">
+          <div class="eco-track row1">
+            <div class="eco-card eco-exocad"><span class="eco-flag">🇩🇪</span><span class="eco-name">Exocad</span><span class="eco-cat">Software CAD</span></div>
+            <div class="eco-card eco-3shape"><span class="eco-flag">🇩🇰</span><span class="eco-name">3Shape Designer</span><span class="eco-cat">Software CAD</span></div>
+            <div class="eco-card eco-3shape"><span class="eco-flag">🇩🇰</span><span class="eco-name">3Shape Ortho</span><span class="eco-cat">Ortodoncia digital</span></div>
+            <div class="eco-card eco-blender"><span class="eco-flag">🇺🇸</span><span class="eco-name">Blender Dental</span><span class="eco-cat">Modelado 3D</span></div>
+            <div class="eco-card eco-codiagnostix"><span class="eco-flag">🇨🇭</span><span class="eco-name">CoDiagnostiX</span><span class="eco-cat">Implantología</span></div>
+            <div class="eco-card eco-medit"><span class="eco-flag">🇰🇷</span><span class="eco-name">Medit Link</span><span class="eco-cat">Gestión digital</span></div>
+            <div class="eco-card eco-rhino"><span class="eco-flag">🇺🇸</span><span class="eco-name">Rhinoceros 3D</span><span class="eco-cat">CAD avanzado</span></div>
+            <!-- duplicado -->
+            <div class="eco-card eco-exocad"><span class="eco-flag">🇩🇪</span><span class="eco-name">Exocad</span><span class="eco-cat">Software CAD</span></div>
+            <div class="eco-card eco-3shape"><span class="eco-flag">🇩🇰</span><span class="eco-name">3Shape Designer</span><span class="eco-cat">Software CAD</span></div>
+            <div class="eco-card eco-3shape"><span class="eco-flag">🇩🇰</span><span class="eco-name">3Shape Ortho</span><span class="eco-cat">Ortodoncia digital</span></div>
+            <div class="eco-card eco-blender"><span class="eco-flag">🇺🇸</span><span class="eco-name">Blender Dental</span><span class="eco-cat">Modelado 3D</span></div>
+            <div class="eco-card eco-codiagnostix"><span class="eco-flag">🇨🇭</span><span class="eco-name">CoDiagnostiX</span><span class="eco-cat">Implantología</span></div>
+            <div class="eco-card eco-medit"><span class="eco-flag">🇰🇷</span><span class="eco-name">Medit Link</span><span class="eco-cat">Gestión digital</span></div>
+            <div class="eco-card eco-rhino"><span class="eco-flag">🇺🇸</span><span class="eco-name">Rhinoceros 3D</span><span class="eco-cat">CAD avanzado</span></div>
           </div>
         </div>
       </div>
-    </section>
 
-    <style>
-      ._tp{display:inline-flex;align-items:center;padding:7px 14px;border-radius:100px;font-size:.78rem;font-weight:700;letter-spacing:.03em;white-space:nowrap;transition:transform .2s,box-shadow .2s;cursor:default;}
-      ._tp:hover{transform:translateY(-2px);}
-      ._tp-s{background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.22);color:#D4AF37;}
-      ._tp-s:hover{box-shadow:0 4px 14px rgba(212,175,55,.2);}
-      ._tp-h{background:rgba(217,70,166,.08);border:1px solid rgba(217,70,166,.22);color:#D946A6;}
-      ._tp-h:hover{box-shadow:0 4px 14px rgba(217,70,166,.2);}
-      ._tp-p{background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.22);color:#00d2ff;}
-      ._tp-p:hover{box-shadow:0 4px 14px rgba(0,210,255,.18);}
-      ._tp-m{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.22);color:#4ade80;}
-      ._tp-m:hover{box-shadow:0 4px 14px rgba(74,222,128,.14);}
-      ._pb{padding:9px 16px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);font-size:.78rem;font-weight:700;color:#64748b;filter:grayscale(1);transition:filter .25s,color .25s,border-color .25s,background .25s;cursor:default;}
-      ._pb:hover{filter:grayscale(0);color:#e2e8f0;border-color:rgba(212,175,55,.3);background:rgba(212,175,55,.06);}
-    </style>
+      <!-- Fila 2: Hardware Fresado → derecha -->
+      <div class="eco-row">
+        <div class="eco-fade-l"></div><div class="eco-fade-r"></div>
+        <div style="overflow:hidden;">
+          <div class="eco-track row2">
+            <div class="eco-card eco-amann"><span class="eco-flag">🇩🇪</span><span class="eco-name">Amann Girrbach</span><span class="eco-cat">Fresadora premium</span></div>
+            <div class="eco-card eco-xtcera"><span class="eco-flag">🇨🇳</span><span class="eco-name">XTCERA 5 ejes</span><span class="eco-cat">Fresado CAM</span></div>
+            <div class="eco-card eco-vhf"><span class="eco-flag">🇩🇪</span><span class="eco-name">VHF Dental</span><span class="eco-cat">Fresado CAM</span></div>
+            <div class="eco-card eco-shining"><span class="eco-flag">🇨🇳</span><span class="eco-name">Shining 3D</span><span class="eco-cat">Escáner + CAM</span></div>
+            <div class="eco-card eco-nextdent"><span class="eco-flag">🇳🇱</span><span class="eco-name">NextDent</span><span class="eco-cat">Resinas biocompat.</span></div>
+            <div class="eco-card eco-sprintray"><span class="eco-flag">🇺🇸</span><span class="eco-name">SprintRay</span><span class="eco-cat">Impresora dental</span></div>
+            <div class="eco-card eco-anycubic"><span class="eco-flag">🇨🇳</span><span class="eco-name">Anycubic Dental</span><span class="eco-cat">Impresora resina</span></div>
+            <div class="eco-card eco-phrozen"><span class="eco-flag">🇹🇼</span><span class="eco-name">Phrozen</span><span class="eco-cat">Impresora resina</span></div>
+            <div class="eco-card eco-creality"><span class="eco-flag">🇨🇳</span><span class="eco-name">Creality HALOT</span><span class="eco-cat">Impresora resina</span></div>
+            <!-- duplicado -->
+            <div class="eco-card eco-amann"><span class="eco-flag">🇩🇪</span><span class="eco-name">Amann Girrbach</span><span class="eco-cat">Fresadora premium</span></div>
+            <div class="eco-card eco-xtcera"><span class="eco-flag">🇨🇳</span><span class="eco-name">XTCERA 5 ejes</span><span class="eco-cat">Fresado CAM</span></div>
+            <div class="eco-card eco-vhf"><span class="eco-flag">🇩🇪</span><span class="eco-name">VHF Dental</span><span class="eco-cat">Fresado CAM</span></div>
+            <div class="eco-card eco-shining"><span class="eco-flag">🇨🇳</span><span class="eco-name">Shining 3D</span><span class="eco-cat">Escáner + CAM</span></div>
+            <div class="eco-card eco-nextdent"><span class="eco-flag">🇳🇱</span><span class="eco-name">NextDent</span><span class="eco-cat">Resinas biocompat.</span></div>
+            <div class="eco-card eco-sprintray"><span class="eco-flag">🇺🇸</span><span class="eco-name">SprintRay</span><span class="eco-cat">Impresora dental</span></div>
+            <div class="eco-card eco-anycubic"><span class="eco-flag">🇨🇳</span><span class="eco-name">Anycubic Dental</span><span class="eco-cat">Impresora resina</span></div>
+            <div class="eco-card eco-phrozen"><span class="eco-flag">🇹🇼</span><span class="eco-name">Phrozen</span><span class="eco-cat">Impresora resina</span></div>
+            <div class="eco-card eco-creality"><span class="eco-flag">🇨🇳</span><span class="eco-name">Creality HALOT</span><span class="eco-cat">Impresora resina</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fila 3: Materiales → izquierda lento -->
+      <div class="eco-row">
+        <div class="eco-fade-l"></div><div class="eco-fade-r"></div>
+        <div style="overflow:hidden;">
+          <div class="eco-track row3">
+            <div class="eco-card eco-ivoclar"><span class="eco-flag">🇨🇭</span><span class="eco-name">Ivoclar ZirCAD</span><span class="eco-cat">Zirconia premium</span></div>
+            <div class="eco-card eco-vita"><span class="eco-flag">🇩🇪</span><span class="eco-name">Vita Enamic</span><span class="eco-cat">Cerámica híbrida</span></div>
+            <div class="eco-card eco-vita"><span class="eco-flag">🇩🇪</span><span class="eco-name">Vita Suprinity</span><span class="eco-cat">Vitrocerámica</span></div>
+            <div class="eco-card eco-renfert"><span class="eco-flag">🇩🇪</span><span class="eco-name">Renfert</span><span class="eco-cat">Hornos & equipos</span></div>
+            <div class="eco-card eco-dentsply"><span class="eco-flag">🇺🇸</span><span class="eco-name">Dentsply Sirona</span><span class="eco-cat">Horno sinterizado</span></div>
+            <div class="eco-card eco-vita"><span class="eco-flag">🇩🇪</span><span class="eco-name">Vita Furnace</span><span class="eco-cat">Horno cerámica</span></div>
+            <div class="eco-card eco-ivoclar"><span class="eco-flag">🇨🇭</span><span class="eco-name">Ivoclar e.max</span><span class="eco-cat">Disilicato litio</span></div>
+            <!-- duplicado -->
+            <div class="eco-card eco-ivoclar"><span class="eco-flag">🇨🇭</span><span class="eco-name">Ivoclar ZirCAD</span><span class="eco-cat">Zirconia premium</span></div>
+            <div class="eco-card eco-vita"><span class="eco-flag">🇩🇪</span><span class="eco-name">Vita Enamic</span><span class="eco-cat">Cerámica híbrida</span></div>
+            <div class="eco-card eco-vita"><span class="eco-flag">🇩🇪</span><span class="eco-name">Vita Suprinity</span><span class="eco-cat">Vitrocerámica</span></div>
+            <div class="eco-card eco-renfert"><span class="eco-flag">🇩🇪</span><span class="eco-name">Renfert</span><span class="eco-cat">Hornos & equipos</span></div>
+            <div class="eco-card eco-dentsply"><span class="eco-flag">🇺🇸</span><span class="eco-name">Dentsply Sirona</span><span class="eco-cat">Horno sinterizado</span></div>
+            <div class="eco-card eco-vita"><span class="eco-flag">🇩🇪</span><span class="eco-name">Vita Furnace</span><span class="eco-cat">Horno cerámica</span></div>
+            <div class="eco-card eco-ivoclar"><span class="eco-flag">🇨🇭</span><span class="eco-name">Ivoclar e.max</span><span class="eco-cat">Disilicato litio</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sello binacional -->
+      <div style="text-align:center;margin-top:48px;padding:0 24px;">
+        <div style="background:linear-gradient(135deg,rgba(217,70,166,.08),rgba(0,210,255,.05));border:1px solid rgba(217,70,166,.2);border-radius:16px;padding:28px 32px;max-width:620px;margin:0 auto;">
+          <div style="font-size:2rem;margin-bottom:10px;">🇨🇴 · 🇲🇽 · 🇩🇪 · 🇨🇳</div>
+          <div style="font-size:1rem;font-weight:800;color:#f8fafc;margin-bottom:8px;">Made in Colombia for the world</div>
+          <div style="font-size:.85rem;color:#94a3b8;line-height:1.7;">Tecnología <strong style="color:#e2e8f0;">Alemana</strong> y <strong style="color:#e2e8f0;">China</strong> · Manos expertas de <strong style="color:#e2e8f0;">Colombia</strong> y <strong style="color:#e2e8f0;">México</strong><br>Entregas a toda Latinoamérica · Estados Unidos · Europa</div>
+        </div>
+      </div>
+    </section>
 
     <script src="js/prodigy-analytics.js" defer></script>
 <script src="js/footer.js?v=20260425"></script>
