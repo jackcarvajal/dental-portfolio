@@ -1,6 +1,34 @@
 ﻿# PRODIGY — PENDIENTES MAESTRO
 > Fuente única de verdad. Ordenados por bloque. Actualizar al completar.
-> Última revisión: 2026-04-29
+> Última revisión: 2026-04-30
+
+---
+
+## 🎨 CONTENIDO VISUAL — PENDIENTE ALEJANDRO (para mejorar páginas)
+
+> Cuando tengas este contenido, avísame y lo implemento en 30 min cada item.
+
+| # | Contenido | Dónde va | Impacto |
+|---|-----------|----------|---------|
+| 1 | **5–10 capturas de pantalla de Exocad** diseñando casos reales | Portafolio, diseno-remoto, diseno-cad | 🔴 Alto |
+| 2 | **Video 30–60 seg grabado con OBS**: STL → Exocad → diseño terminado | diseno-remoto hero, diseno-cad | 🔴 Alto |
+| 3 | **Foto tuya trabajando** en PC con Exocad abierto | nosotros.html, diseno-cad | 🟡 Medio |
+| 4 | **Antes/después**: STL crudo del escáner vs. diseño terminado | diseno-remoto, diseno-cad | 🟡 Medio |
+| 5 | **3 testimonios reales** de doctores con nombre y foto | diseno-remoto, diseno-cad | 🟡 Medio |
+| 6 | **Logo oficial PRODIGY** en vector (SVG) | header, footer, og:image | 🟢 Deseable |
+| 7 | **Foto del laboratorio/taller** | nosotros.html | 🟢 Deseable |
+
+## 📱 TIKTOK @prodigylabdental — PENDIENTE ALEJANDRO
+
+| # | Acción | Detalle |
+|---|--------|---------|
+| 1 | Completar perfil TikTok | Bio, link a /diseno-remoto, foto perfil |
+| 2 | Grabar video #1 | "¿Cómo envías tu STL a PRODIGY?" — 30 seg con OBS |
+| 3 | Grabar video #2 | Time-lapse diseño corona en Exocad — 45 seg |
+| 4 | Grabar video #3 | "¿Cuánto cuesta diseño CAD?" — muestra calculadora |
+| 5 | Cambiar a Cuenta Creador | Settings → Manage account → Switch to Creator |
+| 6 | Conectar Instagram @labdentalprodigy | Settings → Linked accounts |
+| 7 | Crear cuenta publicitaria en Meta Business | Para poder lanzar Meta Ads |
 
 ---
 

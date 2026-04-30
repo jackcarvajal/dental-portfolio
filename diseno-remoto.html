@@ -125,10 +125,10 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
     <h1>Tu laboratorio CAD<br><em>a 15 minutos de distancia*</em></h1>
     <p class="sub">Diseñamos tus coronas, carillas, guías quirúrgicas y rehabilitaciones mientras tú atiendes pacientes. Desde 15 min*. Compatible con cualquier escáner. Sin contratos, sin exclusividad.</p>
 
-    <!-- PROOF BAR: una sola fila -->
-    <div style="display:flex;justify-content:center;gap:0;flex-wrap:wrap;margin-bottom:28px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 8px;">
+    <!-- PROOF BAR animada -->
+    <div id="stats-bar" style="display:flex;justify-content:center;gap:0;flex-wrap:wrap;margin-bottom:28px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 8px;">
       <div style="flex:1;min-width:90px;text-align:center;padding:0 12px;border-right:1px solid rgba(255,255,255,.08);">
-        <div style="font-size:1.4rem;font-weight:900;color:var(--gold);">+500</div>
+        <div style="font-size:1.4rem;font-weight:900;color:var(--gold);"><span class="stat-num" data-target="500" data-prefix="+">0</span></div>
         <div style="font-size:.68rem;color:var(--muted);margin-top:2px;">casos diseñados</div>
       </div>
       <div style="flex:1;min-width:90px;text-align:center;padding:0 12px;border-right:1px solid rgba(255,255,255,.08);">
@@ -136,12 +136,12 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
         <div style="font-size:.68rem;color:var(--muted);margin-top:2px;">diseños simples*</div>
       </div>
       <div style="flex:1;min-width:90px;text-align:center;padding:0 12px;border-right:1px solid rgba(255,255,255,.08);">
-        <div style="font-size:1.4rem;font-weight:900;color:#4ade80;">100%</div>
-        <div style="font-size:.68rem;color:var(--muted);margin-top:2px;">compatible escáneres</div>
+        <div style="font-size:1.4rem;font-weight:900;color:#4ade80;"><span class="stat-num" data-target="20" data-suffix="+">0</span></div>
+        <div style="font-size:.68rem;color:var(--muted);margin-top:2px;">países servidos</div>
       </div>
       <div style="flex:1;min-width:90px;text-align:center;padding:0 12px;">
-        <div style="font-size:1.4rem;font-weight:900;color:var(--mg);">🌍</div>
-        <div style="font-size:.68rem;color:var(--muted);margin-top:2px;">servicio mundial</div>
+        <div style="font-size:1.4rem;font-weight:900;color:var(--mg);"><span class="stat-num" data-target="14" data-prefix="$" data-suffix=" USD">0</span></div>
+        <div style="font-size:.68rem;color:var(--muted);margin-top:2px;">desde por corona</div>
       </div>
     </div>
 
@@ -264,21 +264,89 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
   </div>
 </section>
 
-<!-- TESTIMONIOS (barra de confianza) -->
-<section style="padding:40px 24px;background:linear-gradient(135deg,rgba(217,70,166,.06),rgba(0,210,255,.04));border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);">
+<!-- TESTIMONIOS mejorados -->
+<section style="padding:48px 24px;background:linear-gradient(135deg,rgba(217,70,166,.06),rgba(0,210,255,.04));border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);">
   <div style="max-width:960px;margin:0 auto;">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
-      <div style="padding:20px;">
-        <div style="font-size:.95rem;color:#e2e8f0;line-height:1.7;margin-bottom:10px;font-style:italic;">"Los provisionales en PMMA llegan al día siguiente. Para mis pacientes de implantes eso marca la diferencia."</div>
-        <div style="font-size:.78rem;color:var(--mg);font-weight:700;">Dr. Mauricio T. · Bogotá</div>
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:8px;">⭐ Lo que dicen nuestros clientes</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
+      <div style="background:rgba(13,21,37,.8);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;">
+        <div style="display:flex;gap:4px;margin-bottom:12px;">★★★★★</div>
+        <p style="font-size:.88rem;color:#e2e8f0;line-height:1.7;margin-bottom:16px;font-style:italic;">"Los provisionales en PMMA llegan al día siguiente. Para mis pacientes de implantes eso marca la diferencia."</p>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--mg),#9333ea);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem;flex-shrink:0;">MT</div>
+          <div>
+            <div style="font-size:.8rem;font-weight:700;color:#e2e8f0;">Dr. Mauricio T.</div>
+            <div style="font-size:.7rem;color:var(--muted);">Implantólogo · Bogotá, Colombia</div>
+          </div>
+        </div>
       </div>
-      <div style="padding:20px;border-left:1px solid rgba(255,255,255,.08);">
-        <div style="font-size:.95rem;color:#e2e8f0;line-height:1.7;margin-bottom:10px;font-style:italic;">"Envío el STL a las 7am y cuando llega mi primer paciente el diseño ya está en mi bandeja. Increíble."</div>
-        <div style="font-size:.78rem;color:var(--cyan);font-weight:700;">Dra. Carolina V. · Medellín</div>
+      <div style="background:rgba(13,21,37,.8);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;">
+        <div style="display:flex;gap:4px;margin-bottom:12px;color:var(--cyan);">★★★★★</div>
+        <p style="font-size:.88rem;color:#e2e8f0;line-height:1.7;margin-bottom:16px;font-style:italic;">"Envío el STL a las 7am y cuando llega mi primer paciente el diseño ya está en mi bandeja. Increíble."</p>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),#0080aa);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem;flex-shrink:0;">CV</div>
+          <div>
+            <div style="font-size:.8rem;font-weight:700;color:#e2e8f0;">Dra. Carolina V.</div>
+            <div style="font-size:.7rem;color:var(--muted);">Odontóloga restauradora · Medellín</div>
+          </div>
+        </div>
       </div>
-      <div style="padding:20px;border-left:1px solid rgba(255,255,255,.08);">
-        <div style="font-size:.95rem;color:#e2e8f0;line-height:1.7;margin-bottom:10px;font-style:italic;">"Trabajo con ellos desde México. El archivo llega en horas y mi fresadora Amann lo produce sin problema."</div>
-        <div style="font-size:.78rem;color:#4ade80;font-weight:700;">Dr. Javier M. · Ciudad de México</div>
+      <div style="background:rgba(13,21,37,.8);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;">
+        <div style="display:flex;gap:4px;margin-bottom:12px;color:#4ade80;">★★★★★</div>
+        <p style="font-size:.88rem;color:#e2e8f0;line-height:1.7;margin-bottom:16px;font-style:italic;">"Trabajo con ellos desde México. El archivo llega en horas y mi fresadora Amann lo produce sin problema."</p>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#4ade80,#166534);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem;flex-shrink:0;">JM</div>
+          <div>
+            <div style="font-size:.8rem;font-weight:700;color:#e2e8f0;">Dr. Javier M.</div>
+            <div style="font-size:.7rem;color:var(--muted);">Director Lab · Ciudad de México 🇲🇽</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESCÁNERES COMPATIBLES — carrusel CSS -->
+<section style="padding:32px 24px;background:#000;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.06);">
+  <div style="text-align:center;margin-bottom:20px;">
+    <span style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);">Compatible con todos los escáneres del mercado</span>
+  </div>
+  <style>
+    .scanner-track{display:flex;gap:32px;animation:scrollBrands 22s linear infinite;width:max-content;}
+    .scanner-track:hover{animation-play-state:paused;}
+    .scanner-brand{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 20px;white-space:nowrap;font-size:.82rem;font-weight:700;color:#94a3b8;transition:all .2s;cursor:default;}
+    .scanner-brand:hover{border-color:rgba(217,70,166,.4);color:#e2e8f0;}
+    .scanner-brand .dot{width:6px;height:6px;border-radius:50%;background:#00FF41;flex-shrink:0;}
+    @keyframes scrollBrands{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  </style>
+  <div style="position:relative;">
+    <div style="position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(to right,#000,transparent);z-index:2;pointer-events:none;"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(to left,#000,transparent);z-index:2;pointer-events:none;"></div>
+    <div style="display:flex;gap:32px;overflow:hidden;">
+      <div class="scanner-track">
+        <div class="scanner-brand"><span class="dot"></span>iTero Element</div>
+        <div class="scanner-brand"><span class="dot"></span>Medit i700</div>
+        <div class="scanner-brand"><span class="dot"></span>3Shape Trios</div>
+        <div class="scanner-brand"><span class="dot"></span>Primescan</div>
+        <div class="scanner-brand"><span class="dot"></span>CS 3600</div>
+        <div class="scanner-brand"><span class="dot"></span>Shining 3D Aoralscan</div>
+        <div class="scanner-brand"><span class="dot"></span>Planmeca Emerald</div>
+        <div class="scanner-brand"><span class="dot"></span>Vatech EzScan</div>
+        <div class="scanner-brand"><span class="dot"></span>Exocad DentalCAD</div>
+        <div class="scanner-brand"><span class="dot"></span>3Shape Dental System</div>
+        <!-- duplicado para loop infinito -->
+        <div class="scanner-brand"><span class="dot"></span>iTero Element</div>
+        <div class="scanner-brand"><span class="dot"></span>Medit i700</div>
+        <div class="scanner-brand"><span class="dot"></span>3Shape Trios</div>
+        <div class="scanner-brand"><span class="dot"></span>Primescan</div>
+        <div class="scanner-brand"><span class="dot"></span>CS 3600</div>
+        <div class="scanner-brand"><span class="dot"></span>Shining 3D Aoralscan</div>
+        <div class="scanner-brand"><span class="dot"></span>Planmeca Emerald</div>
+        <div class="scanner-brand"><span class="dot"></span>Vatech EzScan</div>
+        <div class="scanner-brand"><span class="dot"></span>Exocad DentalCAD</div>
+        <div class="scanner-brand"><span class="dot"></span>3Shape Dental System</div>
       </div>
     </div>
   </div>
@@ -561,6 +629,38 @@ function selPortafolio(tipo) {
 </div>
 <script>(function(){function t(){var l=document.body.classList.toggle('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent=l?'☀️':'🌙';localStorage.setItem('theme',l?'light':'dark');}window.toggleTheme=t;if(localStorage.getItem('theme')==='light'){document.body.classList.add('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent='☀️';}window.addEventListener('scroll',function(){var s=document.getElementById('scroll-top-btn');if(s)s.classList.toggle('visible',window.scrollY>400);});})();</script>
 
+<!-- Count-up animado para stats -->
+<script>
+(function(){
+  var nums = document.querySelectorAll('.stat-num');
+  if(!nums.length) return;
+  var done = false;
+  function countUp(){
+    if(done) return; done = true;
+    nums.forEach(function(el){
+      var target = parseInt(el.dataset.target,10);
+      var prefix = el.dataset.prefix||'';
+      var suffix = el.dataset.suffix||'';
+      var start = 0;
+      var dur = 1400;
+      var t0 = performance.now();
+      function tick(now){
+        var p = Math.min((now-t0)/dur,1);
+        var ease = 1-Math.pow(1-p,3);
+        el.textContent = prefix + Math.round(ease*target) + suffix;
+        if(p<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+  var bar = document.getElementById('stats-bar');
+  if(!bar){countUp();return;}
+  var obs = new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){ countUp(); obs.disconnect(); }
+  },{threshold:0.4});
+  obs.observe(bar);
+})();
+</script>
 <script src="js/footer.js?v=20260428"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});</script>
 </body>

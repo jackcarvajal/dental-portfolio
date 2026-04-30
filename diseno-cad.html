@@ -309,19 +309,48 @@
 </section>
 
 <!-- ── TRUST BAR ── -->
-<div class="trust-bar">
+<div class="trust-bar" id="stats-bar-cad">
   <div class="trust-inner">
-    <div class="ti"><strong>300+</strong><span data-i18n="cad.t.cases">casos/año</span></div>
+    <div class="ti"><strong><span class="cad-stat" data-target="500" data-prefix="+">500</span></strong><span data-i18n="cad.t.cases">casos diseñados</span></div>
     <div class="t-sep"></div>
-    <div class="ti"><strong>48 h</strong><span data-i18n="cad.t.delivery">entrega máx.</span></div>
+    <div class="ti"><strong>24–48 h</strong><span data-i18n="cad.t.delivery">entrega</span></div>
     <div class="t-sep"></div>
-    <div class="ti"><strong>Exocad + 3Shape</strong><span>Software</span></div>
+    <div class="ti"><strong>Exocad · 3Shape</strong><span>Software</span></div>
     <div class="t-sep"></div>
-    <div class="ti"><strong>20+</strong><span data-i18n="cad.t.countries">países</span></div>
+    <div class="ti"><strong><span class="cad-stat" data-target="20" data-suffix="+">20</span></strong><span data-i18n="cad.t.countries">países</span></div>
     <div class="t-sep"></div>
-    <div class="ti"><strong>$12 USD</strong><span data-i18n="cad.t.from">desde</span></div>
+    <div class="ti"><strong>$14 USD</strong><span data-i18n="cad.t.from">desde / corona</span></div>
   </div>
 </div>
+
+<!-- Carrusel escáneres compatibles -->
+<div style="padding:20px 24px;background:#000;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.05);">
+  <div style="text-align:center;margin-bottom:14px;"><span style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#475569;">✓ Compatible con todos los escáneres</span></div>
+  <style>.cad-scanner-track{display:flex;gap:24px;animation:scrollBrandsCad 20s linear infinite;width:max-content;}.cad-scanner-track:hover{animation-play-state:paused;}.cad-sbrand{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 16px;white-space:nowrap;font-size:.76rem;font-weight:700;color:#64748b;}.cad-sbrand .g{width:5px;height:5px;border-radius:50%;background:#00FF41;flex-shrink:0;}@keyframes scrollBrandsCad{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}</style>
+  <div style="position:relative;">
+    <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,#000,transparent);z-index:2;pointer-events:none;"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,#000,transparent);z-index:2;pointer-events:none;"></div>
+    <div style="overflow:hidden;">
+      <div class="cad-scanner-track">
+        <div class="cad-sbrand"><span class="g"></span>iTero</div><div class="cad-sbrand"><span class="g"></span>Medit i700</div><div class="cad-sbrand"><span class="g"></span>3Shape Trios</div><div class="cad-sbrand"><span class="g"></span>Primescan</div><div class="cad-sbrand"><span class="g"></span>CS 3600</div><div class="cad-sbrand"><span class="g"></span>Shining 3D</div><div class="cad-sbrand"><span class="g"></span>Planmeca</div><div class="cad-sbrand"><span class="g"></span>Vatech EzScan</div><div class="cad-sbrand"><span class="g"></span>Exocad</div><div class="cad-sbrand"><span class="g"></span>3Shape DS</div>
+        <div class="cad-sbrand"><span class="g"></span>iTero</div><div class="cad-sbrand"><span class="g"></span>Medit i700</div><div class="cad-sbrand"><span class="g"></span>3Shape Trios</div><div class="cad-sbrand"><span class="g"></span>Primescan</div><div class="cad-sbrand"><span class="g"></span>CS 3600</div><div class="cad-sbrand"><span class="g"></span>Shining 3D</div><div class="cad-sbrand"><span class="g"></span>Planmeca</div><div class="cad-sbrand"><span class="g"></span>Vatech EzScan</div><div class="cad-sbrand"><span class="g"></span>Exocad</div><div class="cad-sbrand"><span class="g"></span>3Shape DS</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var nums=document.querySelectorAll('.cad-stat');
+  if(!nums.length)return;
+  var done=false;
+  function go(){if(done)return;done=true;nums.forEach(function(el){var t=parseInt(el.dataset.target,10),p=el.dataset.prefix||'',s=el.dataset.suffix||'',t0=performance.now();function tick(now){var r=Math.min((now-t0)/1200,1),e=1-Math.pow(1-r,3);el.textContent=p+Math.round(e*t)+s;if(r<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);});}
+  var bar=document.getElementById('stats-bar-cad');
+  if(!bar){go();return;}
+  var obs=new IntersectionObserver(function(e){if(e[0].isIntersecting){go();obs.disconnect();}},{threshold:0.4});
+  obs.observe(bar);
+})();
+</script>
 
 <!-- ── CÓMO FUNCIONA ── -->
 <section class="dark-section">
