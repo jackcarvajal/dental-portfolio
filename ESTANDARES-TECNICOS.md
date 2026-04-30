@@ -2,7 +2,72 @@
 > Resultado de auditoría autónoma completa (rounds 1–15, Abr 2026).
 > Aplicar TODO esto al crear páginas nuevas o implementaciones nuevas.
 > **Actualizar este archivo cada vez que se implemente un nuevo patrón.**
-> Última actualización: 2026-04-29
+> Última actualización: 2026-04-30
+
+## ESTADO ACTUAL DEL PROYECTO (2026-04-30 — round 24)
+- ✅ **Modo mantenimiento restaurado** — bypass `/?preview=prodigy` → cookie `pg_admin=1` 30 días en index.html
+- ✅ **GA4 nuevo** `G-3N0ZZE5V10` — propiedad PRODIGY Lab Dental, reemplazó "Arte con globos" en 27 archivos
+- ✅ **Meta Pixel** `1254573606759925` — activo en conversions.js
+- ✅ **GA4 → Google Ads vinculado** — cuenta 642-237-3684
+- ✅ **Flujo diseño CAD sin barreras** — diseno-cad, index, envia-tu-scanner apuntan a envia-tu-scanner (sin login)
+- ✅ **Carruseles animados** en diseno-remoto, diseno-cad, envia-tu-scanner, calculadora-diseno
+- ✅ **Stats count-up** con IntersectionObserver en diseno-remoto, diseno-cad, calculadora-diseno
+- ✅ **Testimonios con avatares** en diseno-remoto y diseno-cad
+- ✅ **30 artículos Journal** — sitemap 100% cobertura
+- ⚠️ **Pendiente Alejandro**: Stripe (via Wise Business) + cuenta publicitaria Meta
+
+## REGLA: Modo mantenimiento con bypass admin
+```html
+<!-- En index.html, PRIMER script en <head> -->
+<script>
+(function(){
+  function tieneCookie(){return document.cookie.split(';').some(function(c){return c.trim().startsWith('pg_admin=1');});}
+  function setCookie(){var d=new Date();d.setDate(d.getDate()+30);document.cookie='pg_admin=1;expires='+d.toUTCString()+';path=/;SameSite=Lax';}
+  if(new URLSearchParams(location.search).get('preview')==='prodigy'){setCookie();history.replaceState({},'','/');}
+  if(!tieneCookie()){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}
+})();
+</script>
+<!-- Acceso: visitar /?preview=prodigy UNA SOLA VEZ → cookie 30 días -->
+<!-- Solo aplica a index.html — resto de páginas son accesibles directamente -->
+```
+
+## REGLA: Stats animados con count-up (IntersectionObserver)
+```html
+<!-- En HTML: data-target, data-prefix, data-suffix -->
+<span class="stat-num" data-target="500" data-prefix="+" data-suffix="">0</span>
+
+<!-- JS al final del body: -->
+<script>
+(function(){
+  var nums=document.querySelectorAll('.stat-num');
+  var done=false;
+  function go(){if(done)return;done=true;nums.forEach(function(el){
+    var t=parseInt(el.dataset.target),p=el.dataset.prefix||'',s=el.dataset.suffix||'',t0=performance.now();
+    function tick(now){var r=Math.min((now-t0)/1400,1),e=1-Math.pow(1-r,3);el.textContent=p+Math.round(e*t)+s;if(r<1)requestAnimationFrame(tick);}
+    requestAnimationFrame(tick);
+  });}
+  var bar=document.getElementById('stats-bar');
+  if(!bar){go();return;}
+  new IntersectionObserver(function(e){if(e[0].isIntersecting){go();}},{threshold:0.4}).observe(bar);
+})();
+</script>
+```
+
+## REGLA: Carrusel infinito CSS (sin JS)
+```html
+<style>
+  .sc-track{display:flex;gap:20px;animation:scScroll 24s linear infinite;width:max-content;}
+  .sc-track:hover{animation-play-state:paused;}
+  @keyframes scScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+</style>
+<!-- IMPORTANTE: duplicar todos los items para loop continuo -->
+<div class="sc-track">
+  <div>Item 1</div><div>Item 2</div>...
+  <!-- duplicado: -->
+  <div>Item 1</div><div>Item 2</div>...
+</div>
+<!-- Fade lateral: position:absolute gradient overlay a izquierda y derecha -->
+```
 
 ## ESTADO ACTUAL DEL PROYECTO (2026-04-29 — round 23)
 - ✅ **SEO 66→92+** — canonical article.html vacío corregido, href="#" reemplazados por URLs reales, hreflang x-default en 3 páginas, FAQPage JSON-LD en soporte-tecnico.html
