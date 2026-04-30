@@ -107,9 +107,9 @@
       pt: 'Só precisa do design? Comece aqui'
     },
     'lab.cta_btn': {
-      es: 'Enviar mi escáner ahora',
-      en: 'Send my scan now',
-      pt: 'Enviar meu escâner agora'
+      es: 'Enviar mis archivos STL ahora',
+      en: 'Send my STL files now',
+      pt: 'Enviar meus arquivos STL agora'
     },
     'lab.cta_btn.href': {
       es: 'https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20tengo%20un%20escáner%20listo%20y%20necesito%20el%20diseño%20CAD.%20¿Pueden%20cotizarme%3F',
@@ -274,9 +274,9 @@
       pt: 'Sem instalações da sua parte. Basta enviar o scanner e receber o design.'
     },
     'cad.s1.h': {
-      es: 'Envía tu escáner',
-      en: 'Send your scan',
-      pt: 'Envie seu scanner'
+      es: 'Envía tus archivos STL',
+      en: 'Send your STL files',
+      pt: 'Envie seus arquivos STL'
     },
     'cad.s1.p': {
       es: 'Sube el STL por el portal o compártelo por WhatsApp. Aceptamos STL, OBJ, PLY, Exocad y 3Shape.',
@@ -910,9 +910,9 @@
       pt: 'Envie-nos seu arquivo .stl do iTero, Medit ou Trios. PRODIGY projeta no Exocad e produz a restauração. Entrega em 24–48 horas.'
     },
     'scan.cta.upload': {
-      es: 'Enviar mi escáner',
-      en: 'Send my scan',
-      pt: 'Enviar meu escâner'
+      es: 'Enviar mis archivos para diseño',
+      en: 'Send my files for design',
+      pt: 'Enviar meus arquivos para design'
     },
     'scan.cta.prices': {
       es: 'Ver precios',

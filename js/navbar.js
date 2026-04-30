@@ -178,7 +178,7 @@
           '</div>' +
         '</div>' +
         '<a href="portafolio">PORTAFOLIO</a>' +
-        '<a href="envia-tu-scanner">ENVÍA TU ESCÁNER</a>' +
+        '<a href="envia-tu-scanner">ENVÍA TU ESCANEO</a>' +
       '</div>' +
 
       /* ── CENTRO — logo ── */
@@ -208,7 +208,7 @@
       '<a href="flujo-fresado"><i class="fas fa-cog" style="margin-right:6px"></i> CENTRO FRESADO E IMPRESIÓN</a>' +
       '<a href="escaner-domicilio"><i class="fas fa-mobile-alt" style="margin-right:6px"></i> ESCÁNER MÓVIL</a>' +
       '<a href="portafolio">PORTAFOLIO</a>' +
-      '<a href="envia-tu-scanner">ENVÍA TU ESCÁNER</a>' +
+      '<a href="envia-tu-scanner">ENVÍA TU ESCANEO</a>' +
       '<a href="journal">BLOG CIENTÍFICO</a>' +
       '<a href="seguimiento-caso">SIGUE TU CASO</a>' +
       '<a href="https://wa.me/573212816716" class="ov-wa" target="_blank" rel="noopener noreferrer">' +
