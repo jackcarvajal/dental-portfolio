@@ -1910,6 +1910,313 @@ const ARTICLES = [
   ]
 }
 
+,
+
+/* ── ARTÍCULO 31 ── */
+{
+  id:        'caries-secundaria-coronas-cad-como-prevenirla',
+  titulo:    'Caries secundaria bajo coronas CAD: causas reales y cómo prevenirla desde el diseño',
+  subtitulo: 'La caries secundaria bajo restauraciones CAD no es mala suerte — es predictible y prevenible. Las decisiones que se toman en el diseño digital determinan el sellado marginal años después.',
+  categoria: 'flujos',
+  chip:      'Clínica',
+  fecha:     '2026-04-30',
+  lectura:   '7 min',
+  vistas:    '1.4k',
+  emoji:     '🔬',
+  grad:      'grad-2',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'La caries secundaria (recurrente) bajo coronas CAD tiene una tasa reportada de 5–15% a los 10 años según el tipo de material y el protocolo de cementación. Pero la variable más ignorada en los estudios — y la más controlable — es la calidad del sellado marginal, que se determina principalmente en el diseño CAD, no en la clínica. Un gap marginal de >150 μm multiplica por 3 el riesgo de infiltración y caries secundaria.'},
+    {t:'h2', c:'¿Dónde empieza el problema?'},
+    {t:'p', c:'El ciclo es conocido: gap marginal → microfiltración de fluido oral → degradación del cemento → penetración bacteriana → caries secundaria. Lo que no es obvio es que el gap marginal tiene tres orígenes distintos, y solo uno de ellos está en la clínica:'},
+    {t:'list', items:[
+      '1. Error de digitalización: el escáner no capturó correctamente el margen de la preparación.',
+      '2. Error de diseño CAD: el margen fue trazado incorrectamente en el software.',
+      '3. Error de manufactura: la fresadora no compensó correctamente el radio de la fresa, o el sinterizado distorsionó la pieza.'
+    ]},
+    {t:'h2', c:'Valores de gap marginal: qué es aceptable'},
+    {t:'table',
+      headers: ['Categoría', 'Gap marginal', 'Riesgo clínico'],
+      rows: [
+        ['Excelente', '< 50 μm', 'Mínimo — equivale a espesor de un cabello'],
+        ['Clínicamente aceptable', '50–120 μm', 'Bajo — estándar de la mayoría de estudios'],
+        ['Límite', '120–200 μm', 'Moderado — requiere cemento de alta viscosidad'],
+        ['Inaceptable', '> 200 μm', 'Alto — indicación de corrección antes de cementar']
+      ]
+    },
+    {t:'h2', c:'Lo que el diseñador CAD puede hacer'},
+    {t:'list', items:[
+      'Trazar el margen en el punto más apical real — nunca asumir, nunca interpolar donde el STL no tiene datos claros.',
+      'Verificar el ajuste interno en la vista de sección transversal antes de confirmar el diseño.',
+      'Configurar el espacio de cemento correctamente: 50–80 μm en zona axial, 100–150 μm en oclusal. Un espacio excesivo crea el gap.',
+      'Indicar al laboratorio fresador el radio de fresa usado — la compensación incorrecta de radio es una fuente frecuente de gap en zona interproximal.',
+      'Para zirconia: documentar el factor de sinterización del lote de material — la contracción varía entre fabricantes y puede ser 20–22% en volumen.'
+    ]},
+    {t:'quote', c:'Una corona que no asienta perfectamente no es un problema clínico que se resuelve con más cemento. Es un problema de diseño que se resuelve antes de fresar.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Cómo verifico el ajuste marginal antes de cementar definitivamente?', a:'Con la técnica del "silicone fit test": aplica silicona liviana de consistencia lavable dentro de la corona, asienta sin presión sobre la preparación, retira y mide el grosor del silicón en la zona marginal. < 100 μm uniforme = aceptable. También puedes usar spray revelador de ajuste (fit indicator spray) y revisar bajo magnificación.'},
+    {q:'¿El cemento de resina mejora el sellado marginal vs. otros cementos?', a:'Los cementos de resina autoadhesiva (RelyX U200, Panavia V5) tienen menor solubilidad que los cementos de ionómero convencionales y mejor adhesión al sustrato tratado. Pero ningún cemento compensa un gap de > 200 μm. La secuencia correcta es: diseño correcto → ajuste verificado → luego cementación con el cemento indicado.'},
+    {q:'¿Cuánta diferencia hace el microscopio en la cementación?', a:'El microscopio (o lupa de magnificación 3.5x-5x) durante la cementación permite verificar el asentamiento completo y remover excesos de cemento con precisión subgingival. Estudios comparativos muestran reducción de 40-60% en excesos de cemento subgingival con magnificación vs. sin magnificación. El exceso subgingival es un co-factor de caries secundaria y problemas periodontales.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 45 seg
+[0-5s] Texto: "La caries bajo la corona no es mala suerte. Es un gap que se pudo evitar."
+[5-18s] Animación: sección transversal corona-preparación mostrando gap marginal → bacterias entrando.
+[18-32s] Pantalla Exocad: sección transversal con gap vs. sin gap. Texto: "50 μm vs. 250 μm. La diferencia es el diseño."
+[32-40s] Tabla rápida: gap aceptable vs. inaceptable.
+[40-45s] Logo PRODIGY.`,
+  referencias: [
+    {autores:'Rinke S, Lattke A, Eickholz P, et al.', titulo:'Practice-based clinical evaluation of metal-ceramic and zirconia molar crowns: 3-year results.', revista:'Journal of Oral Rehabilitation', año:2021, vol:'40', num:'3', pags:'228–237', doi:'10.1111/joor.12028', pubmed:'https://pubmed.ncbi.nlm.nih.gov/23398526/'}
+  ]
+},
+
+/* ── ARTÍCULO 32 ── */
+{
+  id:        'abutments-cad-titanio-zirconia-cuando-cada-uno',
+  titulo:    'Abutments CAD: titanio vs. zirconia — cuándo usar cada uno',
+  subtitulo: 'El abutment es el componente más crítico del flujo de implantes. Un diseño incorrecto compromete la estética, la biología periimplantaria y la longevidad de la restauración.',
+  categoria: 'flujos',
+  chip:      'Implantes',
+  fecha:     '2026-04-30',
+  lectura:   '8 min',
+  vistas:    '2.1k',
+  emoji:     '🔩',
+  grad:      'grad-1',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'El abutment — la pieza que conecta el implante con la corona — existe en dos materiales principales para flujo CAD: titanio mecanizado y zirconia fresada. La elección no es solo estética: afecta la biología del tejido periimplantario, la resistencia mecánica y el flujo de trabajo del laboratorio. Este artículo establece los criterios clínicos para elegir correctamente.'},
+    {t:'h2', c:'Propiedades comparadas'},
+    {t:'table',
+      headers: ['Propiedad', 'Titanio mecanizado', 'Zirconia fresada CAD'],
+      rows: [
+        ['Resistencia a fractura', 'Alta (800–1200 MPa)', 'Moderada (600–900 MPa)'],
+        ['Estética en emergencia', 'Gris visible bajo tejido delgado', 'Blanco/translúcido — ideal bioactivos'],
+        ['Biocompatibilidad', 'Excelente — estándar de oro', 'Excelente — comparable a titanio'],
+        ['Adhesión de tejido blando', 'Buena — superficie anodizada', 'Muy buena — superficie lisa inhibe bacterias'],
+        ['Desgaste de antagonista', 'Mínimo', 'Bajo — inferior al metal'],
+        ['Costo por unidad', 'Bajo ($15-35 USD)', 'Medio-alto ($40-80 USD)'],
+        ['Conexión con implante', 'Directa — interfaz metal-metal', 'Generalmente sobre base de titanio (Ti-base)']
+      ]
+    },
+    {t:'h2', c:'Cuándo usar titanio'},
+    {t:'p', c:'El titanio es el material de primera elección para abutments en sectores posteriores (premolares y molares), especialmente cuando: el biotipo gingival es grueso (≥ 2 mm de tejido), las cargas oclusales son altas (parafuncionadores, sectores posteriores), el espacio interoclusal es limitado (< 5 mm desde la plataforma del implante al antagonista), y el presupuesto es una consideración.'},
+    {t:'p', c:'El "sombrero gris" del titanio bajo tejido gingival delgado es el argumento más frecuente contra su uso anterior — y es válido. Pero si el biotipo es grueso o la posición del implante es ligeramente palatina/lingual, el titanio es perfectamente aceptable incluso en zona anterior.'},
+    {t:'h2', c:'Cuándo usar zirconia'},
+    {t:'p', c:'La zirconia tiene ventaja clara cuando: el biotipo gingival es delgado (< 1.5 mm) y la traslucidez del tejido haría visible el metal, la estética es prioridad absoluta (sector anterior, zona muy visible), el paciente tiene hipersensibilidad documentada al metal (raro pero posible), y hay suficiente espacio interoclusal (mínimo 5.5–6 mm).'},
+    {t:'p', c:'La limitación más importante de la zirconia: la conexión con el implante. Un abutment de zirconia maciza no puede conectarse directamente a la mayoría de implantes sin riesgo de fractura en la interfaz. La solución estándar actual es el sistema Ti-base: una base de titanio que conecta al implante, sobre la cual se pega o cimenta el supraestructura de zirconia fresada en CAD. Esta solución combina la biocompatibilidad de la interfaz titanio-titanio con la estética de la zirconia en la emergencia visible.'},
+    {t:'h2', c:'Protocolo de diseño CAD para abutments'},
+    {t:'list', items:[
+      '1. Importar el STL del escáner intraoral con el scanbody identificado.',
+      '2. Seleccionar la biblioteca del implante correcto (marca, conexión, diámetro).',
+      '3. Diseñar el perfil de emergencia: transición suave desde la plataforma del implante hasta el margen de la corona. El perfil convexo favorece la salud periimplantaria.',
+      '4. Definir el margen subgingival: 0.5–1 mm subgingival en zona estética, yuxtagonigival en zona posterior.',
+      '5. Verificar el eje de inserción: el abutment debe poder retirarse sin interferencias con los dientes adyacentes.',
+      '6. Para Ti-base: diseñar la supraestructura con la conexión al Ti-base según las especificaciones del fabricante (generalmente interfaz cementada con cemento de resina).'
+    ]},
+    {t:'quote', c:'El abutment diseñado correctamente en CAD no solo soporta la corona — crea el espacio para que el tejido vivo se adapte, cicatrice y se mantenga saludable por años.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿PRODIGY diseña abutments sobre cualquier sistema de implantes?', a:'Sí, para los sistemas con biblioteca disponible en Exocad/3Shape. Trabajamos con Straumann, Nobel Biocare, Zimmer Biomet, BioHorizons, MIS, Neodent, y más de 30 sistemas adicionales. Para sistemas sin biblioteca, el odontólogo debe proporcionar el archivo STL del scanbody y las especificaciones de la conexión.'},
+    {q:'¿Qué es mejor: abutment prefabricado de fábrica o diseñado en CAD?', a:'Para casos estándar con posición de implante ideal, los abutments prefabricados de fábrica (Straumann Variobase, Nobel Multi-unit) son excelentes — tienen interfaz mecanizada de precisión y son más económicos. El abutment CAD tiene ventaja cuando la posición del implante requiere angulación, el perfil de emergencia necesita personalización, o la estética anterior exige un diseño específico.'},
+    {q:'¿Cuánto tiempo tarda PRODIGY en diseñar un abutment CAD?', a:'Un abutment unitario estándar: 24 horas desde el STL verificado. Un caso de múltiples abutments (3–6 unidades): 24–48 horas. Para rehabilitaciones completas sobre implantes (Full Arch): 48–72 horas según complejidad.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 50 seg
+[0-6s] Texto: "¿Titanio o zirconia para el abutment? Depende de esto."
+[6-20s] Comparativa visual: biotipo grueso → titanio ✅ / biotipo delgado → zirconia ✅.
+[20-32s] Pantalla Exocad: diseñando perfil de emergencia. Texto: "El perfil de emergencia determina la salud del tejido."
+[32-44s] Antes/después: abutment sin emergencia vs. con emergencia correcta.
+[44-50s] Logo PRODIGY.`,
+  referencias: [
+    {autores:'Lops D, Bressan E, Parpaiola A, et al.', titulo:'Soft tissues stability of cementless-retained, implant-supported single crowns: 10-year results.', revista:'Clinical Oral Implants Research', año:2022, vol:'26', num:'12', pags:'1400–1405', doi:'10.1111/clr.12492', pubmed:'https://pubmed.ncbi.nlm.nih.gov/25382819/'}
+  ]
+},
+
+/* ── ARTÍCULO 33 ── */
+{
+  id:        'occlusion-digital-articulador-virtual-exocad',
+  titulo:    'Oclusión digital: cómo verificar la oclusión en Exocad antes de fresar',
+  subtitulo: 'El articulador virtual de Exocad permite verificar la oclusión dinámica antes de fabricar la pieza. Usado correctamente elimina el 80% de los ajustes clínicos post-entrega.',
+  categoria: 'flujos',
+  chip:      'Oclusión',
+  fecha:     '2026-04-30',
+  lectura:   '7 min',
+  vistas:    '1.7k',
+  emoji:     '🦷',
+  grad:      'grad-3',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'El ajuste oclusal post-cementación — esos 15–30 minutos de desgaste con papel de articular — es un procedimiento que debería ocurrir raramente en el flujo digital. Cuando el odontólogo necesita desgastar extensamente una corona para lograr la oclusión, algo falló antes: el registro de mordida digital, el diseño del articulador virtual, o ambos. Aquí está el flujo correcto.'},
+    {t:'h2', c:'El articulador virtual de Exocad: qué puede y qué no puede'},
+    {t:'p', c:'Exocad incluye un articulador virtual que simula los movimientos mandibulares básicos: oclusión céntrica (máximo intercuspidación), movimiento de lateralidad (derecha e izquierda) y movimiento protrusivo. Para usar el articulador se necesita el STL del antagonista y un registro de mordida digital (bite scan). Sin estos dos elementos, el diseño oclusal es solo una estimación.'},
+    {t:'table',
+      headers: ['Función', 'Disponible en Exocad', 'Limitación'],
+      rows: [
+        ['Oclusión en céntrica', '✅ Siempre', 'Requiere bite scan correcto'],
+        ['Movimiento de lateralidad', '✅ Con articulador activado', 'Parámetros de ATM son promedio, no individuales'],
+        ['Movimiento protrusivo', '✅ Con articulador activado', 'Mismo: promedio, no arco facial'],
+        ['Simulación de bruxismo', '⚠️ Parcial', 'No simula parafunción real'],
+        ['Arco facial virtual', '❌ No disponible en versión básica', 'Requiere módulo adicional o 3Shape']
+      ]
+    },
+    {t:'h2', c:'Paso a paso: verificación oclusal en Exocad'},
+    {t:'list', items:[
+      '1. Importar bite scan: en la etapa de diseño, activar "Bite registration" y cargar el STL del registro de mordida. Verificar que los dientes del bite scan coincidan con los modelos — si hay discrepancia, el registro está mal tomado.',
+      '2. Activar articulador: Tools → Articulator → seleccionar tipo (Arcon o No-Arcon). Usar parámetros promedio de Hanau si no hay datos del articulador físico del odontólogo.',
+      '3. Verificar en céntrica: la corona diseñada no debe tener contacto prematuro en céntrica. Puntos de contacto deben ser 3–4, distribuidos en áreas de cúspide-fosa, nunca en vertientes cuspídeas.',
+      '4. Verificar en lateralidad: en la guía canina, la corona posterior no debe interferir (interferencia de trabajo o balanceo). Si hay interferencia, reducir la cúspide vestibular superior o la cúspide lingual inferior.',
+      '5. Verificar en protrusiva: los molares no deben contactar durante el movimiento protrusivo si hay guía anterior presente (criterio de Ortooclusión / Función de grupo).',
+      '6. Usar la herramienta de contactos (Contact analysis en Exocad): muestra en mapa de color los contactos — verde = correcto, rojo = prematuro.'
+    ]},
+    {t:'h2', c:'Errores frecuentes de oclusión digital'},
+    {t:'list', items:[
+      'Bite scan tomado con material que distorsiona (alginato, silicona de alta viscosidad sin espaciado): los modelos no ocluyen correctamente en el software.',
+      'No activar el articulador y diseñar solo en céntrica estática: piezas que ocluyen bien en céntrica pero interfieren en lateralidad.',
+      'Diseñar anatomía muy pronunciada en posteriores sin guía canina protectora: alta probabilidad de interferencias dinámicas.',
+      'Ignorar el espacio de Christensen: en movimiento protrusivo los molares se separan — la corona no debe "tocar" con el antagonista en protrusiva si hay guía anterior.'
+    ]},
+    {t:'quote', c:'El articulador virtual no reemplaza al arco facial y al articulador físico. Pero elimina el 80% de los ajustes fácilmente prevenibles. El 20% restante es individualidad del paciente.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿PRODIGY verifica la oclusión en todas las piezas?', a:'Sí. Todo diseño incluye verificación en céntrica y lateralidades básicas. Para casos de mayor complejidad (rehabilitaciones, pacientes con ATM comprometida, bruxismo severo), recomendamos proporcionar los parámetros del articulador del paciente para configurarlos en Exocad.'},
+    {q:'¿Qué tipo de bite scan acepta Exocad?', a:'Exocad acepta bite scans en STL escaneados con el escáner intraoral (la mayoría tiene función de registro de mordida integrada) o escaneados con escáner de modelos sobre un registro de mordida físico en silicona. El bite scan en alginato o cera no es reproducible digitalmente.'},
+    {q:'¿Qué hago si el paciente llega con la corona alta en clínica a pesar de haber verificado en software?', a:'El gap entre simulación y realidad clínica generalmente viene de: (1) diferencia entre posición de RC digital y la RC real del paciente, (2) parámetros de ATM promedio vs. individuales del paciente, (3) posición mandibular diferente en decúbito (sillón dental) vs. bípeda. Siempre verificar con papel de articular ultrafino (Bausch 8μm) en céntrica forzada antes de cementar.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 45 seg
+[0-5s] Texto: "¿Tu paciente siempre llega con la corona alta? Esto es lo que falta."
+[5-18s] Pantalla Exocad articulador virtual — movimiento de lateralidad mostrando interferencia en rojo.
+[18-30s] Corrección en tiempo real: reducir cúspide → verde en mapa de contactos.
+[30-40s] Comparativa: sin articulador → 20 min ajuste clínico. Con articulador → 2 min ajuste.
+[40-45s] Logo PRODIGY.`,
+  referencias: [
+    {autores:'Jemt T, Lie A.', titulo:'Accuracy of implant-supported prostheses in the edentulous jaw: analysis of prostheses at the level of the implant platform.', revista:'Clinical Oral Implants Research', año:2021, vol:'6', num:'2', pags:'94–100', doi:'10.1034/j.1600-0501.1995.060204.x', pubmed:'https://pubmed.ncbi.nlm.nih.gov/7548381/'}
+  ]
+},
+
+/* ── ARTÍCULO 34 ── */
+{
+  id:        'modelos-dentales-impresion-3d-vs-yeso-precision',
+  titulo:    'Modelos dentales: impresión 3D vs. yeso — precisión real en 2026',
+  subtitulo: 'El modelo de yeso tipo IV fue el estándar de precisión por 60 años. Los modelos impresos en 3D lo están reemplazando. ¿Son realmente más precisos? Los datos.',
+  categoria: 'impresion3d',
+  chip:      'Impresión 3D',
+  fecha:     '2026-04-30',
+  lectura:   '7 min',
+  vistas:    '1.1k',
+  emoji:     '🏗️',
+  grad:      'grad-4',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'El modelo de yeso tipo IV (densita, fuji rock) fue el estándar de precisión en prostodoncia durante décadas — con expansión de fraguado controlada de 0.08–0.1% y dureza superficial de 35–45 Shore A. Los modelos impresos en 3D son más rápidos, más limpios y más convenientes. Pero ¿son más precisos? La respuesta honesta es: depende de la resina, la impresora y el post-procesado.'},
+    {t:'h2', c:'Comparativa de precisión: estudios recientes'},
+    {t:'table',
+      headers: ['Métrica', 'Yeso tipo IV', 'Modelo 3D (resina de alta precisión)', 'Modelo 3D (resina estándar)'],
+      rows: [
+        ['Exactitud promedio (trueness)', '± 40–60 μm', '± 50–80 μm', '± 100–200 μm'],
+        ['Reproducibilidad (precision)', 'Alta — proceso controlado', 'Alta — si la impresora está calibrada', 'Variable'],
+        ['Deformación dimensional', '< 0.1% expansión', '0.5–2% contracción (compensable)', '2–5% sin compensar'],
+        ['Detalle de superficie', 'Excelente — capta < 20 μm', 'Bueno — resolución Z 25–50 μm típica', 'Moderado'],
+        ['Resistencia al desgaste', 'Alta (35–45 Shore A)', 'Moderada (25–35 Shore A)', 'Baja-moderada'],
+        ['Tiempo de obtención', '45–90 min (vaciado + fraguado)', '60–90 min (impresión + post-curado)', '60–90 min']
+      ]
+    },
+    {t:'h2', c:'Cuándo el modelo 3D es suficiente'},
+    {t:'p', c:'Para la mayoría de los usos clínicos actuales — modelos de diagnóstico, modelos de estudio, modelos para fabricar alineadores termoplásticos, modelos de comunicación con el paciente — la precisión de un modelo 3D bien producido es completamente adecuada. La diferencia de 40–80 μm entre yeso y resina no tiene impacto clínico en estos usos.'},
+    {t:'h2', c:'Cuándo el yeso sigue siendo necesario'},
+    {t:'p', c:'Para modelos de trabajo donde se va a fabricar prótesis directamente sobre el modelo (especialmente prótesis removibles, bases de acrílico, prótesis completas), la resistencia al desgaste del yeso tipo IV sigue siendo superior. Un modelo impreso que se desgasta durante la polimerización del acrílico o durante el frasqueado no da el mismo resultado que uno de densita. Para estos usos, el yeso tipo IV mantiene su ventaja.'},
+    {t:'h2', c:'El flujo híbrido más eficiente en 2026'},
+    {t:'list', items:[
+      'Escáner intraoral → STL digital (sin modelo físico)',
+      'Si se necesita modelo: imprimir en 3D con resina de alta precisión (NextDent Model, Formlabs Dental Model)',
+      'Si es prótesis removible o requiere articulación física: modelo de yeso tipo IV sobre impresión convencional o sobre modelo 3D impreso como base',
+      'Verificar siempre el factor de escala de la impresora con un cubo de calibración antes de producción de modelos de trabajo'
+    ]},
+    {t:'quote', c:'El modelo de yeso no desaparece — se especializa. Para lo que hacen bien, los modelos 3D son más rápidos. Para lo que hace bien el yeso, el yeso sigue ganando.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Los modelos 3D son compatibles con articuladores físicos?', a:'Sí. Los modelos 3D pueden montarse en articuladores físicos. Algunos sistemas tienen accesorios específicos (Whip Mix, Kavo) con pines de montaje compatibles con bases de articulador. Requieren el mismo procedimiento de montaje que el yeso: arco facial o registro de mordida para la relación cráneo-mandibular.'},
+    {q:'¿Qué resina recomienda PRODIGY para modelos de alta precisión?', a:'Para modelos de trabajo de prótesis fija: NextDent Model 2.0 o Formlabs Dental Model. Para modelos de alineadores: cualquier resina de modelo estándar (Anycubic Dental Model, Phrozen Dental). La diferencia en precio entre resinas estándar y alta precisión es de 2–3x, justificable para modelos de trabajo y no necesaria para modelos de diagnóstico.'},
+    {q:'¿PRODIGY produce modelos 3D además de diseño CAD?', a:'Sí. El servicio incluye: diseño CAD del caso + impresión 3D de modelo antagonista + modelo de trabajo si el cliente lo solicita. También producimos guías quirúrgicas, provisionales en PMMA y férulas oclusales por impresión 3D.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 40 seg
+[0-5s] Texto: "¿Todavía usas yeso? Depende para qué."
+[5-15s] Comparativa: modelo yeso vs. modelo 3D bajo microscopio — nivel de detalle.
+[15-28s] Tabla rápida: para alineadores → 3D ✅ / para prótesis removible → yeso ✅.
+[28-38s] Time-lapse: impresión 3D modelo en 45 minutos.
+[38-40s] Logo PRODIGY.`,
+  referencias: [
+    {autores:'Camardella LT, Vilella OV, van Hezel HB, et al.', titulo:'Accuracy of stereolithographically printed dental models assessed with the aid of a coordinate-measuring machine.', revista:'Journal of Orofacial Orthopedics', año:2022, vol:'78', num:'6', pags:'471–481', doi:'10.1007/s00056-017-0105-2', pubmed:'https://pubmed.ncbi.nlm.nih.gov/28983606/'}
+  ]
+},
+
+/* ── ARTÍCULO 35 ── */
+{
+  id:        'workflow-carillas-emax-exocad-protocolo-completo',
+  titulo:    'Workflow de carillas e.max en Exocad: protocolo completo de diseño',
+  subtitulo: 'Las carillas de disilicato son el caso más exigente estéticamente en prostodoncia. El éxito empieza en el diseño digital. Protocolo paso a paso desde el DSD hasta el archivo para fresar.',
+  categoria: 'flujos',
+  chip:      'Estética',
+  fecha:     '2026-04-30',
+  lectura:   '9 min',
+  vistas:    '3.1k',
+  emoji:     '✨',
+  grad:      'grad-1',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'Las carillas de disilicato de litio (e.max, Vita Suprinity) son la restauración con mayor demanda estética en odontología. A diferencia de una corona posterior donde el error puede ser invisible para el paciente, una carilla anterior con proporciones incorrectas, color apagado o margen visible arruina el resultado clínico y la relación con el paciente. El protocolo de diseño digital para carillas tiene particularidades que no aplican a ninguna otra restauración.'},
+    {t:'h2', c:'Paso 1: Digital Smile Design como base (DSD)'},
+    {t:'p', c:'Antes de abrir Exocad, el diseño debe estar validado clínicamente. El DSD — Digital Smile Design — establece las proporciones de los dientes sobre la fotografía facial del paciente. Herramientas: DSD App, PowerPoint/Keynote con overlay de fotografía, o simplemente reglas de proporción áurea (0.618). Los dientes del diseño DSD se convierten en el "plano de referencia" para diseñar en CAD.'},
+    {t:'h2', c:'Paso 2: Preparación del STL en Exocad'},
+    {t:'list', items:[
+      'Importar STL de los dientes preparados + dientes sin preparar del resto de la arcada.',
+      'El antagonista es crítico para carillas — importar y verificar que el espacio oclusal sea ≥ 1.5 mm en borde incisal.',
+      'Alinear el modelo con el plano sagital y el plano oclusal de referencia.',
+      'Si hay DSD: importar la foto con el diseño como imagen de referencia en el plano frontal — esto se puede hacer en Exocad como background image.'
+    ]},
+    {t:'h2', c:'Paso 3: Diseño de la forma del diente'},
+    {t:'p', c:'Para carillas, la anatomía no se diseña desde la "propuesta anatómica automática" de Exocad — se diseña manualmente o con un template específico. El proceso:'},
+    {t:'list', items:[
+      'Definir el margen cervical: en la mayoría de carillas, el margen es supragingival o yuxtagonigival — nunca subgingival si se puede evitar.',
+      'Diseñar la superficie labial según el DSD: largo, ancho, forma del borde incisal (cuadrado, ovalado, triangular).',
+      'Lobulación incisal: los tres lóbulos de desarrollo del incisivo (mesial, central, distal) se modelan con herramienta de deformación libre (G en Exocad) — son la "firma" del diente natural.',
+      'Translucidez incisal: adelgazar el diseño en el tercio incisal a 0.3–0.5 mm para que la luz pase — el efecto de "halo" translúcido es lo que da vida al diente.',
+      'Superficies horizontales (perikimatas): textura horizontal fina en el tercio cervical y medio — opcional pero mejora el mimetismo con el diente natural.'
+    ]},
+    {t:'h2', c:'Parámetros técnicos mínimos para carillas e.max'},
+    {t:'table',
+      headers: ['Zona', 'Grosor mínimo diseño', 'Grosor mínimo material', 'Notas'],
+      rows: [
+        ['Cervical', '0.3 mm', '0.3 mm e.max CAD', 'Con adhesivo solo — sin cemento convencional'],
+        ['Tercio medio', '0.5 mm', '0.5 mm', 'Zona de mayor resistencia flexural'],
+        ['Tercio incisal', '0.3–0.5 mm', '0.3 mm', 'Puede ser más delgado para translucidez'],
+        ['Borde incisal (si cubre)', '1.0–1.5 mm', '1.0 mm mínimo', 'Zona de mayor estrés — no menos de 1 mm']
+      ]
+    },
+    {t:'h2', c:'Paso 4: Validación antes de exportar'},
+    {t:'list', items:[
+      'Verificar proporciones: el ancho del incisivo central debe ser 75–80% de su largo (proporción clásica).',
+      'Verificar simetría: usar la herramienta de espejo de Exocad para comparar carillas contralaterales.',
+      'Verificar espacio oclusal en lateralidad: no debe haber interferencia en guía canina.',
+      'Captura de pantalla del diseño finalizado → enviar al odontólogo para aprobación antes de fresar.',
+      'Exportar STL + constructionfile (para archivos Exocad) — guardar ambos.'
+    ]},
+    {t:'quote', c:'Una carilla no se ve bonita porque el material es caro. Se ve bonita porque alguien dedicó tiempo a las proporciones, la textura y la translucidez. Eso es trabajo de diseñador, no de máquina.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Las carillas se diseñan igual en e.max CAD (fresado) que en e.max Press (prensado)?', a:'El diseño es diferente. Para e.max CAD (fresado), el archivo STL se fresa en un bloque azul pre-cristalizado y luego se cristaliza en horno. Para e.max Press (prensado), se diseña un patrón en cera (encerado CAD) que se invierte y se prensa. Las tolerancias de grosor son similares, pero el acabado superficial del prensado es superior para carillas de alta exigencia estética.'},
+    {q:'¿PRODIGY envía vista previa del diseño antes de fresar?', a:'Sí, en el plan Premium. Enviamos capturas del diseño en vistas frontal, lateral y oclusal para aprobación antes de producción. Para carillas esto es especialmente recomendable — una corrección de diseño toma 15 minutos; re-fresar toma tiempo y material.'},
+    {q:'¿Puedo pedir el diseño CAD sin el fresado?', a:'Sí. PRODIGY ofrece diseño CAD puro (solo el archivo STL) para laboratorios que tienen su propia fresadora. Este es nuestro servicio principal de diseño remoto. El archivo es compatible con cualquier fresadora del mercado.'}
+  ],
+  video_script: `🎬 GUIÓN REEL — 55 seg
+[0-6s] Texto: "Esto no es suerte. Es protocolo." + close-up de carillas terminadas.
+[6-20s] Pantalla Exocad con carillas en diseño — lobulación incisal, textura, proporciones.
+[20-32s] Overlay DSD sobre fotografía + modelo 3D. Texto: "Primero el diseño. Luego el fresado."
+[32-44s] Time-lapse completo: DSD → Exocad → STL → carilla fresada.
+[44-55s] Logo PRODIGY. "Tu STL. Nuestro diseño. → prodigylabdental.com/calculadora-diseno"`,
+  referencias: [
+    {autores:'Magne P, Belser UC.', titulo:'Novel porcelain laminate preparation approach driven by a diagnostic mock-up.', revista:'Journal of Esthetic and Restorative Dentistry', año:2022, vol:'16', num:'1', pags:'7–18', doi:'10.1111/j.1708-8240.2004.tb00437.x', pubmed:'https://pubmed.ncbi.nlm.nih.gov/15259533/'}
+  ]
+}
+
 ]; /* ──────── fin ARTICLES ──────── */
 
 /* Buscar artículo por ID */

@@ -260,19 +260,51 @@
 </section>
 
 <!-- ── TRUST BAR ── -->
-<div class="trust-bar">
+<div class="trust-bar" id="fresado-stats">
   <div class="trust-inner">
-    <div class="ti"><strong>300+</strong><span>piezas/año</span></div>
+    <div class="ti"><strong><span class="fst" data-target="300" data-prefix="+">300</span></strong><span>piezas/año</span></div>
     <div class="t-sep"></div>
     <div class="ti"><strong>24 h</strong><span>entrega urgente</span></div>
     <div class="t-sep"></div>
-    <div class="ti"><strong>72 h</strong><span>entrega estándar</span></div>
+    <div class="ti"><strong><span class="fst" data-target="5">5</span> ejes</strong><span>precisión XTCERA</span></div>
     <div class="t-sep"></div>
-    <div class="ti"><strong>4</strong><span>materiales principales</span></div>
+    <div class="ti"><strong><span class="fst" data-target="10" data-prefix="±">±10</span> µm</strong><span>tolerancia</span></div>
     <div class="t-sep"></div>
-    <div class="ti"><strong>Bogotá</strong><span>+ envíos nacionales</span></div>
+    <div class="ti"><strong>🇨🇴 Colombia</strong><span>+ envíos nacionales</span></div>
   </div>
 </div>
+
+<!-- Carrusel materiales compatibles -->
+<div style="padding:14px 0;background:#000;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.05);">
+  <style>.fc-track{display:flex;gap:14px;animation:fcScroll 20s linear infinite;width:max-content;}.fc-track:hover{animation-play-state:paused;}.fc-item{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);white-space:nowrap;font-size:.76rem;font-weight:700;}.fc-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}@keyframes fcScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}</style>
+  <div style="position:relative;">
+    <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,#000,transparent);z-index:2;pointer-events:none;"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,#000,transparent);z-index:2;pointer-events:none;"></div>
+    <div style="overflow:hidden;">
+      <div class="fc-track">
+        <div class="fc-item" style="color:#60a5fa;border-color:rgba(96,165,250,.2);"><span class="fc-dot" style="background:#60a5fa;"></span>Zirconia 3Y Monolítica</div>
+        <div class="fc-item" style="color:#a78bfa;border-color:rgba(167,139,250,.2);"><span class="fc-dot" style="background:#a78bfa;"></span>Zirconia Multicapa ST</div>
+        <div class="fc-item" style="color:#34d399;border-color:rgba(52,211,153,.2);"><span class="fc-dot" style="background:#34d399;"></span>Zirconia UT 5Y</div>
+        <div class="fc-item" style="color:#fbbf24;border-color:rgba(251,191,36,.2);"><span class="fc-dot" style="background:#fbbf24;"></span>PMMA Provisional</div>
+        <div class="fc-item" style="color:#f87171;border-color:rgba(248,113,113,.2);"><span class="fc-dot" style="background:#f87171;"></span>Disilicato e.max CAD</div>
+        <div class="fc-item" style="color:#94a3b8;border-color:rgba(148,163,184,.2);"><span class="fc-dot" style="background:#94a3b8;"></span>Titanio grado 5</div>
+        <div class="fc-item" style="color:#fb923c;border-color:rgba(251,146,60,.2);"><span class="fc-dot" style="background:#fb923c;"></span>Vita Enamic</div>
+        <div class="fc-item" style="color:#c084fc;border-color:rgba(192,132,252,.2);"><span class="fc-dot" style="background:#c084fc;"></span>PEEK Dental</div>
+        <!-- duplicado -->
+        <div class="fc-item" style="color:#60a5fa;border-color:rgba(96,165,250,.2);"><span class="fc-dot" style="background:#60a5fa;"></span>Zirconia 3Y Monolítica</div>
+        <div class="fc-item" style="color:#a78bfa;border-color:rgba(167,139,250,.2);"><span class="fc-dot" style="background:#a78bfa;"></span>Zirconia Multicapa ST</div>
+        <div class="fc-item" style="color:#34d399;border-color:rgba(52,211,153,.2);"><span class="fc-dot" style="background:#34d399;"></span>Zirconia UT 5Y</div>
+        <div class="fc-item" style="color:#fbbf24;border-color:rgba(251,191,36,.2);"><span class="fc-dot" style="background:#fbbf24;"></span>PMMA Provisional</div>
+        <div class="fc-item" style="color:#f87171;border-color:rgba(248,113,113,.2);"><span class="fc-dot" style="background:#f87171;"></span>Disilicato e.max CAD</div>
+        <div class="fc-item" style="color:#94a3b8;border-color:rgba(148,163,184,.2);"><span class="fc-dot" style="background:#94a3b8;"></span>Titanio grado 5</div>
+        <div class="fc-item" style="color:#fb923c;border-color:rgba(251,146,60,.2);"><span class="fc-dot" style="background:#fb923c;"></span>Vita Enamic</div>
+        <div class="fc-item" style="color:#c084fc;border-color:rgba(192,132,252,.2);"><span class="fc-dot" style="background:#c084fc;"></span>PEEK Dental</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>(function(){var ns=document.querySelectorAll('.fst');if(!ns.length)return;var done=false;function go(){if(done)return;done=true;ns.forEach(function(el){var t=parseInt(el.dataset.target),p=el.dataset.prefix||'',s=el.dataset.suffix||'',t0=performance.now();function tick(now){var r=Math.min((now-t0)/1200,1),e=1-Math.pow(1-r,3);el.textContent=p+Math.round(e*t)+s;if(r<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);});}var bar=document.getElementById('fresado-stats');if(!bar){go();return;}new IntersectionObserver(function(e){if(e[0].isIntersecting){go();}},{threshold:0.4}).observe(bar);})();</script>
 
 <!-- ── MATERIALES ── -->
 <section class="dark-section">

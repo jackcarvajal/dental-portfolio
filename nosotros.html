@@ -205,27 +205,46 @@
     <div class="hero-tag"><span class="dot"></span> <span data-i18n="nosotros.hero.tag">Bogotá, Colombia</span></div>
     <h1 data-i18n="nosotros.hero.h1">Innovación que<br>se siente en<br><em>cada ajuste</em></h1>
     <p data-i18n="nosotros.hero.sub">Somos un laboratorio dental de precisión especializado en diseño CAD avanzado y manufactura CAM. No producimos volumen — producimos exactitud.</p>
-    <div class="hero-stats">
-      <div class="stat"><strong>CAD/CAM</strong><span>Tecnología</span></div>
-      <div class="stat"><strong>24h</strong><span>Entrega</span></div>
-      <div class="stat"><strong>XTCERA</strong><span>Fresadora</span></div>
-      <div class="stat"><strong>BCN3D</strong><span>Impresión 3D</span></div>
+    <div class="hero-stats" id="nosotros-stats">
+      <div class="stat"><strong><span class="ns" data-target="500" data-prefix="+">500</span></strong><span>casos diseñados</span></div>
+      <div class="stat"><strong>24h</strong><span>entrega estándar</span></div>
+      <div class="stat"><strong><span class="ns" data-target="20" data-suffix="+">20</span></strong><span>países servidos</span></div>
+      <div class="stat"><strong><span class="ns" data-target="30" data-prefix="">30</span></strong><span>artículos Journal</span></div>
     </div>
   </div>
 </section>
 
-<!-- TECH STRIP -->
-<div style="background:rgba(8,12,20,0.9);border-top:1px solid rgba(212,175,55,0.1);border-bottom:1px solid rgba(212,175,55,0.1);padding:18px 24px;">
-  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:24px;justify-content:center;align-items:center;">
-    <div style="display:flex;align-items:center;gap:8px"><span style="color:#D4AF37;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase">Software</span><span style="color:rgba(255,255,255,0.12);margin:0 4px">|</span><span style="color:#e2e8f0;font-size:.82rem;font-weight:700">Exocad · 3Shape</span></div>
-    <div style="width:1px;height:22px;background:rgba(255,255,255,0.07)"></div>
-    <div style="display:flex;align-items:center;gap:8px"><span style="color:#D4AF37;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase">Fresadora</span><span style="color:rgba(255,255,255,0.12);margin:0 4px">|</span><span style="color:#e2e8f0;font-size:.82rem;font-weight:700">XTCERA 5 ejes</span></div>
-    <div style="width:1px;height:22px;background:rgba(255,255,255,0.07)"></div>
-    <div style="display:flex;align-items:center;gap:8px"><span style="color:#D4AF37;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase">Impresión 3D</span><span style="color:rgba(255,255,255,0.12);margin:0 4px">|</span><span style="color:#e2e8f0;font-size:.82rem;font-weight:700">BCN3D · Resinas dentales</span></div>
-    <div style="width:1px;height:22px;background:rgba(255,255,255,0.07)"></div>
-    <div style="display:flex;align-items:center;gap:8px"><span style="color:#D4AF37;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase">Tolerancia</span><span style="color:rgba(255,255,255,0.12);margin:0 4px">|</span><span style="color:#00FF41;font-size:.82rem;font-weight:700">±10 µm</span></div>
-    <div style="width:1px;height:22px;background:rgba(255,255,255,0.07)"></div>
-    <div style="display:flex;align-items:center;gap:8px"><span style="color:#D4AF37;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase">Materiales</span><span style="color:rgba(255,255,255,0.12);margin:0 4px">|</span><span style="color:#e2e8f0;font-size:.82rem;font-weight:700">Zirconio · PMMA · e.max · Ti</span></div>
+<!-- TECH STRIP — carrusel animado -->
+<div style="background:rgba(8,12,20,0.9);border-top:1px solid rgba(212,175,55,0.1);border-bottom:1px solid rgba(212,175,55,0.1);padding:14px 0;overflow:hidden;">
+  <style>
+    .nos-track{display:flex;gap:0;animation:nosScroll 25s linear infinite;width:max-content;}
+    .nos-track:hover{animation-play-state:paused;}
+    .nos-item{display:flex;align-items:center;gap:10px;padding:0 28px;border-right:1px solid rgba(255,255,255,.07);}
+    .nos-item .ni-label{color:#D4AF37;font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+    .nos-item .ni-val{color:#e2e8f0;font-size:.82rem;font-weight:700;}
+    .nos-item .ni-val.green{color:#00FF41;}
+    @keyframes nosScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  </style>
+  <div style="position:relative;">
+    <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,rgba(8,12,20,.9),transparent);z-index:2;pointer-events:none;"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,rgba(8,12,20,.9),transparent);z-index:2;pointer-events:none;"></div>
+    <div class="nos-track">
+      <div class="nos-item"><span class="ni-label">Software</span><span class="ni-val">Exocad 🇩🇪 · 3Shape 🇩🇰</span></div>
+      <div class="nos-item"><span class="ni-label">Fresadora</span><span class="ni-val">XTCERA 5 ejes 🇨🇳 · Amann Girrbach 🇩🇪</span></div>
+      <div class="nos-item"><span class="ni-label">Impresión 3D</span><span class="ni-val">NextDent 🇳🇱 · SprintRay 🇺🇸</span></div>
+      <div class="nos-item"><span class="ni-label">Tolerancia</span><span class="ni-val green">± 10 µm</span></div>
+      <div class="nos-item"><span class="ni-label">Materiales</span><span class="ni-val">Ivoclar 🇨🇭 · Vita 🇩🇪 · Renfert 🇩🇪</span></div>
+      <div class="nos-item"><span class="ni-label">Entrega</span><span class="ni-val">24–48h · Colombia y mundo</span></div>
+      <div class="nos-item"><span class="ni-label">Cobertura</span><span class="ni-val">🇨🇴 🇲🇽 🇦🇷 🇧🇷 🇪🇸 🇺🇸 🇫🇷 +14 países</span></div>
+      <!-- duplicado -->
+      <div class="nos-item"><span class="ni-label">Software</span><span class="ni-val">Exocad 🇩🇪 · 3Shape 🇩🇰</span></div>
+      <div class="nos-item"><span class="ni-label">Fresadora</span><span class="ni-val">XTCERA 5 ejes 🇨🇳 · Amann Girrbach 🇩🇪</span></div>
+      <div class="nos-item"><span class="ni-label">Impresión 3D</span><span class="ni-val">NextDent 🇳🇱 · SprintRay 🇺🇸</span></div>
+      <div class="nos-item"><span class="ni-label">Tolerancia</span><span class="ni-val green">± 10 µm</span></div>
+      <div class="nos-item"><span class="ni-label">Materiales</span><span class="ni-val">Ivoclar 🇨🇭 · Vita 🇩🇪 · Renfert 🇩🇪</span></div>
+      <div class="nos-item"><span class="ni-label">Entrega</span><span class="ni-val">24–48h · Colombia y mundo</span></div>
+      <div class="nos-item"><span class="ni-label">Cobertura</span><span class="ni-val">🇨🇴 🇲🇽 🇦🇷 🇧🇷 🇪🇸 🇺🇸 🇫🇷 +14 países</span></div>
+    </div>
   </div>
 </div>
 
@@ -576,6 +595,7 @@
   </div>
 </section>
 
+<script>(function(){var ns=document.querySelectorAll('.ns');if(!ns.length)return;var done=false;function go(){if(done)return;done=true;ns.forEach(function(el){var t=parseInt(el.dataset.target),p=el.dataset.prefix||'',s=el.dataset.suffix||'',t0=performance.now();function tick(now){var r=Math.min((now-t0)/1200,1),e=1-Math.pow(1-r,3);el.textContent=p+Math.round(e*t)+s;if(r<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);});}var bar=document.getElementById('nosotros-stats');if(!bar){go();return;}new IntersectionObserver(function(e){if(e[0].isIntersecting){go();}},{threshold:0.4}).observe(bar);})();</script>
 <script src="js/footer.js?v=20260425"></script>
 <script>
   // Navbar hide-on-scroll
