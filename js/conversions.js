@@ -20,7 +20,7 @@ window.ProdigyConversions = (function () {
   /* ── CONFIG — completar con IDs reales ─────────────────────── */
   var GA4_ID     = 'G-3N0ZZE5V10';
   var GADS_ID    = 'AW-XXXXXXXXX';   // ← Alejandro: reemplazar con ID real de Google Ads
-  var META_PIXEL = 'TU_PIXEL_ID';    // ← Alejandro: reemplazar con Pixel ID de Meta Business
+  var META_PIXEL = '1254573606759925';
 
   /* ── META PIXEL (cargar si hay consentimiento) ─────────────── */
   function _loadMetaPixel() {
