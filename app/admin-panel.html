@@ -306,12 +306,33 @@
 
                     <div class="form-group">
                         <label>Material</label>
-                        <input type="text" id="p-material" placeholder="Ej: Zirconio 3Y, E-max, Resina…">
+                        <select id="p-material">
+                            <option value="">— Sin especificar —</option>
+                            <option>Zirconia 3Y Monolítica</option>
+                            <option>Zirconia Multicapa ST</option>
+                            <option>Zirconia UT 5Y</option>
+                            <option>Disilicato e.max CAD</option>
+                            <option>Disilicato e.max Press</option>
+                            <option>PMMA Provisional</option>
+                            <option>Titanio Grado 5</option>
+                            <option>Resina 3D Dental</option>
+                            <option>Vita Enamic</option>
+                            <option>PEEK Dental</option>
+                            <option>Múltiples materiales</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Software / Sistema</label>
-                        <input type="text" id="p-software" placeholder="Ej: Exocad, 3Shape, Medit…">
+                        <label>Software CAD</label>
+                        <select id="p-software">
+                            <option value="">— Sin especificar —</option>
+                            <option>Exocad DentalCAD</option>
+                            <option>3Shape Dental System</option>
+                            <option>3Shape Ortho Analyzer</option>
+                            <option>Blender for Dental</option>
+                            <option>CoDiagnostiX</option>
+                            <option>Rhinoceros 3D</option>
+                        </select>
                     </div>
 
                     <div class="form-group" style="grid-column:1/-1;">
@@ -336,6 +357,35 @@
                             <option value="false">No</option>
                             <option value="true">Sí — mostrar primero</option>
                         </select>
+                    </div>
+
+                </div>
+
+                    <!-- Galería adicional -->
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label><i class="fas fa-images" style="color:#00d2ff;margin-right:6px;"></i>GALERÍA — Fotos adicionales del caso <span style="color:#475569;font-weight:400;">(opcional, hasta 10)</span></label>
+                        <div class="drop-zone" onclick="document.getElementById('gallery-input').click()"
+                             ondrop="handleGalleryDrop(event)" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')"
+                             style="min-height:80px;">
+                            <i class="fas fa-photo-film" style="font-size:1.5rem;color:rgba(0,210,255,0.5);"></i>
+                            <p><strong>Clic para seleccionar</strong> o arrastra las fotos aquí</p>
+                            <p style="font-size:.72rem;">Puedes seleccionar varias a la vez · JPG, PNG, WebP</p>
+                        </div>
+                        <input type="file" id="gallery-input" accept="image/*" multiple style="display:none;" onchange="previewGallery(this)">
+                        <div id="gallery-preview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
+                    </div>
+
+                    <!-- Visor Exocad — solo HTML -->
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label><i class="fas fa-cube" style="color:#D946A6;margin-right:6px;"></i>VISOR EXOCAD — Archivo HTML exportado <span style="color:#475569;font-weight:400;">(opcional)</span></label>
+                        <div class="drop-zone" onclick="document.getElementById('exocad-html-input').click()"
+                             ondrop="handleExocadDrop(event)" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')"
+                             style="min-height:70px;">
+                            <i class="fas fa-file-code" style="font-size:1.5rem;color:rgba(217,70,166,0.5);"></i>
+                            <p id="exocad-filename"><strong>Clic para seleccionar</strong> el archivo HTML de Exocad</p>
+                            <p style="font-size:.72rem;">Solo el archivo .html — no la carpeta completa</p>
+                        </div>
+                        <input type="file" id="exocad-html-input" accept=".html,.htm" style="display:none;" onchange="selectExocadHtml(this)">
                     </div>
 
                 </div>
@@ -1104,6 +1154,8 @@ function actualizarKPIs(data) {
    TAB 2 — PORTAFOLIO
 ══════════════════════════════════════════ */
 let imgFile = null;
+let galleryFiles = [];
+let exocadHtmlFile = null;
 
 function previewImg(input) {
     imgFile = input.files[0];
@@ -1133,6 +1185,46 @@ function handleDrop(e) {
     }
 }
 
+function previewGallery(input) {
+    const files = Array.from(input.files).slice(0, 10);
+    galleryFiles = [...galleryFiles, ...files].slice(0, 10);
+    renderGalleryPreview();
+}
+function handleGalleryDrop(e) {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')).slice(0, 10);
+    galleryFiles = [...galleryFiles, ...files].slice(0, 10);
+    renderGalleryPreview();
+}
+function renderGalleryPreview() {
+    const wrap = document.getElementById('gallery-preview');
+    wrap.innerHTML = galleryFiles.map((f, i) =>
+        `<div style="position:relative;width:70px;height:70px;">
+          <img src="${URL.createObjectURL(f)}" style="width:70px;height:70px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,.1);">
+          <button type="button" onclick="removeGalleryFile(${i})" style="position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:#ef4444;border:none;color:#fff;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>`
+    ).join('');
+}
+function removeGalleryFile(idx) {
+    galleryFiles.splice(idx, 1);
+    renderGalleryPreview();
+}
+
+function selectExocadHtml(input) {
+    exocadHtmlFile = input.files[0];
+    if (exocadHtmlFile) {
+        document.getElementById('exocad-filename').innerHTML = `<strong style="color:#D946A6;"><i class="fas fa-check-circle"></i> ${escHtml(exocadHtmlFile.name)}</strong>`;
+    }
+}
+function handleExocadDrop(e) {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && (file.name.endsWith('.html') || file.name.endsWith('.htm'))) {
+        exocadHtmlFile = file;
+        document.getElementById('exocad-filename').innerHTML = `<strong style="color:#D946A6;"><i class="fas fa-check-circle"></i> ${escHtml(file.name)}</strong>`;
+    }
+}
+
 async function subirCaso(e) {
     e.preventDefault();
     if (!imgFile) { toast('Selecciona una imagen primero', 'error'); return; }
@@ -1150,21 +1242,46 @@ async function subirCaso(e) {
 
         const { data: { publicUrl } } = sb.storage.from('dental-cases').getPublicUrl(filename);
 
-        // 2. Insertar registro en tabla casos_portafolio
+        // 2. Subir fotos de galería (opcional)
+        const galleryUrls = [];
+        for (let i = 0; i < galleryFiles.length; i++) {
+            const gf = galleryFiles[i];
+            const gname = `portafolio/gallery_${Date.now()}_${i}.${gf.name.split('.').pop()}`;
+            const { error: ge } = await sb.storage.from('dental-cases').upload(gname, gf, { contentType: gf.type });
+            if (!ge) {
+                const { data: { publicUrl: gUrl } } = sb.storage.from('dental-cases').getPublicUrl(gname);
+                galleryUrls.push(gUrl);
+            }
+        }
+
+        // 3. Subir HTML de Exocad (opcional)
+        let exocadUrl = null;
+        if (exocadHtmlFile) {
+            const hname = `portafolio/exocad_${Date.now()}.html`;
+            const { error: he } = await sb.storage.from('dental-cases').upload(hname, exocadHtmlFile, { contentType: 'text/html' });
+            if (!he) {
+                const { data: { publicUrl: hUrl } } = sb.storage.from('dental-cases').getPublicUrl(hname);
+                exocadUrl = hUrl;
+            }
+        }
+
+        // 4. Insertar registro en tabla casos_portafolio
         const now = new Date();
         const fechaStr = now.toLocaleDateString('es', {month:'long', year:'numeric'});
         const { error: dbErr } = await sb.from('casos_portafolio').insert([{
             name:          document.getElementById('p-titulo').value,
             type:          document.getElementById('p-categoria').value || document.getElementById('p-tipo').value,
-            date:          document.getElementById('p-fecha') ? document.getElementById('p-fecha').value : fechaStr,
+            date:          fechaStr,
             description:   document.getElementById('p-descripcion').value,
             cover_image:   publicUrl,
-            gallery_count: 0,
+            gallery_images: galleryUrls.length ? galleryUrls : null,
+            exocad_html:   exocadUrl,
+            gallery_count: galleryUrls.length,
             visible:       true,
         }]);
         if (dbErr) throw dbErr;
 
-        toast('✅ Caso publicado en el catálogo', 'success');
+        toast('✅ Caso publicado' + (galleryUrls.length ? ` con ${galleryUrls.length} fotos` : ''), 'success');
         limpiarFormPortafolio();
         cargarPortafolio();
 
@@ -1179,7 +1296,11 @@ async function subirCaso(e) {
 function limpiarFormPortafolio() {
     document.getElementById('form-portafolio').reset();
     document.getElementById('img-preview').style.display = 'none';
+    document.getElementById('gallery-preview').innerHTML = '';
+    document.getElementById('exocad-filename').innerHTML = '<strong>Clic para seleccionar</strong> el archivo HTML de Exocad';
     imgFile = null;
+    galleryFiles = [];
+    exocadHtmlFile = null;
 }
 
 async function cargarPortafolio() {
