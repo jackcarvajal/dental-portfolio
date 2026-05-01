@@ -49,7 +49,7 @@
 # /privacidad             /terminos-y-legal.html      200
 # /seguimiento-caso       /seguimiento-caso.html      200
 # /seguimiento            /seguimiento-caso.html      200
-/caso                    /caso.html                  200
+# /caso                   /caso.html                  200  ← no necesario, Cloudflare sirve automático
 # /patient                /patient.html               200
 # /flujo-diseno           /flujo-diseno.html          200
 # /flujo-fresado          /flujo-fresado.html         200
