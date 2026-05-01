@@ -726,7 +726,13 @@ function filtrar(type, btn) {
             .select('id,titulo,tipo,categoria,material,descripcion,imagen_url,destacado,created_at')
             .order('created_at', { ascending: false });
 
-        if (error) throw error;
+        if (error) {
+            console.error('Supabase error:', JSON.stringify(error));
+            grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Error: ' + (error.message || error.code || 'desconocido') + '</p></div>';
+            return;
+        }
+
+        console.log('Portfolio data:', data ? data.length + ' casos' : 'null');
 
         // Normalizar a la forma que espera renderCases()
         allCases = (data || []).map(c => ({
