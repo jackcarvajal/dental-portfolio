@@ -157,23 +157,29 @@ function toEmbed(url) {
   return null;
 }
 
+/* ── VERIFICAR URL EXISTE ── */
+async function urlOk(url) {
+  try {
+    const r = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    return r.ok;
+  } catch(e) { return false; }
+}
+
 /* ── RENDER ── */
-function render(c) {
+async function render(c) {
   document.getElementById('topbar-name').textContent = c.name || 'Caso clínico';
   document.title = (c.name || 'Caso') + ' — PRODIGY Lab Dental';
   gallery = Array.isArray(c.gallery) ? c.gallery : [];
 
-  /* Visor: Exocad > Video > cover img como fallback */
-  let visorHTML = '';
-  const hasExocad = c.exocad_file && c.exocad_file.trim();
-  const hasDrive  = c.drive_link  && c.drive_link.trim();
+  /* Verificar si exocad_file realmente existe */
+  const rawExocad = c.exocad_file && c.exocad_file.trim();
+  const hasExocad = rawExocad ? await urlOk(rawExocad) : false;
+  const hasDrive  = c.drive_link && c.drive_link.trim();
 
+  /* Visor: Exocad verificado > Video > cover img como fallback */
+  let visorHTML = '';
   if (hasExocad) {
-    visorHTML = `<div class="viewer-wrap">
-      <iframe src="${c.exocad_file}" title="Visor 3D Exocad" allowfullscreen
-        onerror="this.parentElement.innerHTML='<div class=viewer-empty><i class=fas fa-cube></i><p>Visor no disponible</p></div>'">
-      </iframe>
-    </div>`;
+    visorHTML = `<div class="viewer-wrap"><iframe src="${c.exocad_file}" title="Visor 3D Exocad" allowfullscreen></iframe></div>`;
   } else if (hasDrive) {
     const embed = toEmbed(c.drive_link);
     if (embed) {
@@ -305,7 +311,7 @@ async function publicarNota(casoId) {
       data = r2.data; error = r2.error;
     }
     if (error || !data) throw new Error('Caso no encontrado');
-    render(data);
+    await render(data);
   } catch(e) {
     document.getElementById('caso-root').innerHTML = `
       <div class="error-box">
