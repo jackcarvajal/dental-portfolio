@@ -1107,17 +1107,42 @@
         }
 
         // =============================================
+        // =============================================
+        // CONVERTIR URL DE VIDEO A EMBED
+        // =============================================
+        function toEmbedUrl(url) {
+            if (!url) return null;
+            // YouTube
+            const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            if (ytMatch) return 'https://www.youtube.com/embed/' + ytMatch[1];
+            // Google Drive
+            const gdMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+            if (gdMatch) return 'https://drive.google.com/file/d/' + gdMatch[1] + '/preview';
+            // TikTok — no embed nativo, mostrar link
+            if (url.includes('tiktok.com')) return null;
+            // URL directa de video
+            return url;
+        }
+
         // CARGAR VISOR EXOCAD (NO MODIFICAR encodeURI)
         // =============================================
         function loadViewer(paciente) {
             const container = document.getElementById('viewer-container');
-            
+
             if (paciente.exocadFile && paciente.exocadFile.trim() !== '') {
                 const iframe = document.createElement('iframe');
                 iframe.src = sanitizePath(paciente.exocadFile);
                 iframe.title = 'Visor 3D Exocad';
                 container.innerHTML = '';
                 container.appendChild(iframe);
+            } else if (paciente.driveLink) {
+                const embedUrl = toEmbedUrl(paciente.driveLink);
+                if (embedUrl) {
+                    container.innerHTML = `
+                        <iframe src="${embedUrl}" title="Video del caso" style="width:100%;height:100%;border:none;" allowfullscreen allow="autoplay"></iframe>`;
+                } else {
+                    container.innerHTML = `<div class="no-viewer"><i class="fas fa-play-circle"></i><h3>Ver Video</h3><p><a href="${paciente.driveLink}" target="_blank" rel="noopener noreferrer" style="color:#D4AF37;">Abrir video →</a></p></div>`;
+                }
             } else {
                 container.innerHTML = `
                     <div class="no-viewer">

@@ -394,6 +394,12 @@
                         <textarea id="p-descripcion" placeholder="Técnica, materiales, resultado clínico…" style="min-height:90px;"></textarea>
                     </div>
 
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label><i class="fas fa-play-circle" style="color:#D946A6;margin-right:6px;"></i>Video del caso <span style="color:#475569;font-weight:400;">(opcional — YouTube o Google Drive)</span></label>
+                        <input type="url" id="p-video" placeholder="https://youtube.com/watch?v=... o https://drive.google.com/file/d/...">
+                        <p style="font-size:.68rem;color:#475569;margin-top:4px;">Pega el link de YouTube, TikTok o Google Drive. Se muestra como reproductor en el caso.</p>
+                    </div>
+
                 </div>
 
                 <div style="margin-top:24px;display:flex;gap:12px;justify-content:flex-end;align-items:center;">
@@ -1077,17 +1083,12 @@ async function subirCaso(e) {
 
         // 3. Exocad (opcional)
         let exocadUrl = null;
-        if (exocadMain && exocadAll.length) {
-            const folderRoot = exocadAll[0].webkitRelativePath.split('/')[0];
-            for (let i = 0; i < exocadAll.length; i++) {
-                prog.textContent = 'Subiendo Exocad (' + (i+1) + '/' + exocadAll.length + ')…';
-                const relPath    = exocadAll[i].webkitRelativePath.slice(folderRoot.length + 1);
-                const storagePath = id + '/exocad/' + relPath;
-                const { error: exErr } = await sb.storage.from(PORT_BUCKET).upload(storagePath, exocadAll[i], { contentType: exocadAll[i].type || 'application/octet-stream', upsert: true });
-                if (exErr) throw new Error('Exocad "' + relPath + '": ' + exErr.message);
-            }
-            const htmlRel = exocadMain.webkitRelativePath.slice(folderRoot.length + 1);
-            exocadUrl = base + id + '/exocad/' + htmlRel;
+        if (exocadMain) {
+            prog.textContent = 'Subiendo visor Exocad…';
+            const storagePath = id + '/exocad/caso.html';
+            const { error: exErr } = await sb.storage.from(PORT_BUCKET).upload(storagePath, exocadMain, { contentType: 'text/html', upsert: true });
+            if (exErr) throw new Error('Exocad: ' + exErr.message);
+            exocadUrl = base + storagePath;
         }
 
         // 4. Insert en casos_portafolio
@@ -1103,6 +1104,7 @@ async function subirCaso(e) {
             exocad_file:   exocadUrl,
             gallery:       galleryUrls,
             gallery_count: galleryUrls.length,
+            drive_link:    document.getElementById('p-video').value.trim() || null,
             visible:       true
         });
         if (dbErr) throw new Error('BD: ' + dbErr.message);
