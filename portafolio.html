@@ -723,27 +723,28 @@ function filtrar(type, btn) {
 
         const { data, error } = await sb
             .from('portfolio')
-            .select('id,titulo,tipo,categoria,material,descripcion,imagen_url,destacado,created_at')
+            .select('*')
             .order('created_at', { ascending: false });
 
         if (error) {
             console.error('Supabase error:', JSON.stringify(error));
-            grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Error: ' + (error.message || error.code || 'desconocido') + '</p></div>';
+            grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Error BD: ' + (error.message || error.code || JSON.stringify(error)) + '</p></div>';
             return;
         }
 
-        console.log('Portfolio data:', data ? data.length + ' casos' : 'null');
+        if (!data || data.length === 0) {
+            grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🦷</div><p>Aún no hay casos publicados.</p></div>';
+            return;
+        }
 
-        // Normalizar a la forma que espera renderCases()
-        allCases = (data || []).map(c => ({
+        // Normalizar — acepta cualquier estructura de la tabla
+        allCases = data.map(c => ({
             id:          c.id,
-            name:        c.titulo,
-            type:        c.categoria || c.tipo,
+            name:        c.titulo || c.name || 'Sin título',
+            type:        c.categoria || c.tipo || c.type || 'general',
             date:        c.created_at ? new Date(c.created_at).toLocaleDateString('es', {month:'short', year:'numeric'}) : '',
-            description: c.descripcion,
-            coverImage:  c.imagen_url
-                         ? c.imagen_url + '?width=400&quality=80'
-                         : c.imagen_url,
+            description: c.descripcion || c.description || '',
+            coverImage:  c.imagen_url || c.cover_image || c.image_url || '',
             galleryCount: 0
         }));
 
