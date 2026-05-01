@@ -994,53 +994,57 @@
         // =============================================
         // FUNCIÓN PRINCIPAL
         // =============================================
-        async function initPatientPage() {
+        function normalizarCaso(data) {
+            return {
+                id:          data.id,
+                name:        data.name        || data.titulo || '',
+                code:        data.code        || data.id,
+                type:        data.type        || data.tipo   || '',
+                date:        data.date        || data.fecha  || '',
+                description: data.description || data.descripcion || '',
+                coverImage:  data.cover_image || data.imagen_url  || '',
+                exocadFile:  data.exocad_file || '',
+                gallery:     Array.isArray(data.gallery) ? data.gallery : [],
+                driveLink:   data.drive_link  || ''
+            };
+        }
 
-            const params = new URLSearchParams(window.location.search);
+        async function initPatientPage() {
+            const params    = new URLSearchParams(window.location.search);
             const patientId = params.get('id');
             currentPatientId = patientId;
 
-
             let paciente = null;
 
-            // 1) Buscar en Supabase (casos publicados desde el admin)
-            try {
-                const { data, error } = await sb
-                    .from('casos_portafolio')
-                    .select('*')
-                    .eq('id', patientId)
-                    .eq('visible', true)
-                    .maybeSingle();
+            // 1) Fallback estático legacy (patient-001, patient-002…)
+            paciente = PATIENTS_DATA.find(p => p.id === patientId) || null;
 
-                if (!error && data) {
-                    // Normalizar campos al formato que usa renderPatient()
-                    paciente = {
-                        id:          data.id,
-                        name:        data.name,
-                        code:        data.code,
-                        type:        data.type,
-                        date:        data.date,
-                        description: data.description,
-                        coverImage:  data.cover_image,
-                        exocadFile:  data.exocad_file || '',
-                        gallery:     Array.isArray(data.gallery) ? data.gallery : [],
-                        driveLink:   data.drive_link || ''
-                    };
-                }
-            } catch (e) {
+            // 2) Intentar Supabase — busca por id O por code (sin filtro visible)
+            if (window.supabase) {
+                try {
+                    // Buscar por id exacto primero
+                    let { data, error } = await sb
+                        .from('casos_portafolio')
+                        .select('*')
+                        .eq('id', patientId)
+                        .maybeSingle();
+
+                    // Si no encuentra por id, buscar por code
+                    if (!data && !error) {
+                        const res2 = await sb
+                            .from('casos_portafolio')
+                            .select('*')
+                            .eq('code', patientId)
+                            .maybeSingle();
+                        data  = res2.data;
+                        error = res2.error;
+                    }
+
+                    if (!error && data) paciente = normalizarCaso(data);
+                } catch (e) { /* continúa con fallback */ }
             }
 
-            // 2) Fallback: array estático legacy (patient-001, patient-002…)
-            if (!paciente) {
-                paciente = PATIENTS_DATA.find(p => p.id === patientId) || null;
-                // fallback estático cargado
-            }
-
-            if (!paciente) {
-                renderError(patientId);
-                return;
-            }
-
+            if (!paciente) { renderError(patientId); return; }
             renderPatient(paciente);
             initFeedbackModule();
         }
@@ -1138,8 +1142,9 @@
             } else if (paciente.driveLink) {
                 const embedUrl = toEmbedUrl(paciente.driveLink);
                 if (embedUrl) {
-                    container.innerHTML = `
-                        <iframe src="${embedUrl}" title="Video del caso" style="width:100%;height:100%;border:none;" allowfullscreen allow="autoplay"></iframe>`;
+                    container.innerHTML = `<iframe src="${embedUrl}" title="Video del caso" style="width:100%;height:100%;border:none;" allowfullscreen allow="autoplay"></iframe>`;
+                } else if (/\.(mp4|webm|ogg)(\?|$)/i.test(paciente.driveLink)) {
+                    container.innerHTML = `<video controls style="width:100%;height:100%;background:#000;" preload="metadata"><source src="${paciente.driveLink}" type="video/mp4">Tu navegador no soporta video HTML5.</video>`;
                 } else {
                     container.innerHTML = `<div class="no-viewer"><i class="fas fa-play-circle"></i><h3>Ver Video</h3><p><a href="${paciente.driveLink}" target="_blank" rel="noopener noreferrer" style="color:#D4AF37;">Abrir video →</a></p></div>`;
                 }

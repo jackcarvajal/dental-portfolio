@@ -395,9 +395,16 @@
                     </div>
 
                     <div class="form-group" style="grid-column:1/-1;">
-                        <label><i class="fas fa-play-circle" style="color:#D946A6;margin-right:6px;"></i>Video del caso <span style="color:#475569;font-weight:400;">(opcional — YouTube o Google Drive)</span></label>
-                        <input type="url" id="p-video" placeholder="https://youtube.com/watch?v=... o https://drive.google.com/file/d/...">
-                        <p style="font-size:.68rem;color:#475569;margin-top:4px;">Pega el link de YouTube, TikTok o Google Drive. Se muestra como reproductor en el caso.</p>
+                        <label><i class="fas fa-play-circle" style="color:#D946A6;margin-right:6px;"></i>Video del caso <span style="color:#475569;font-weight:400;">(opcional)</span></label>
+                        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                            <label for="p-video-file" style="display:inline-flex;align-items:center;gap:6px;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.3);color:#D946A6;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.78rem;white-space:nowrap;">
+                                <i class="fas fa-video"></i> Subir video MP4
+                            </label>
+                            <span id="video-filename" style="font-size:.78rem;color:#94a3b8;">— o pega URL:</span>
+                            <input type="url" id="p-video" placeholder="https://youtube.com/watch?v=..." style="flex:1;min-width:200px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px;color:#f8fafc;font-size:.78rem;">
+                        </div>
+                        <input type="file" id="p-video-file" accept="video/*" style="display:none;" onchange="selectVideoFile(this)">
+                        <p style="font-size:.65rem;color:#475569;margin-top:4px;">MP4 propio o URL de YouTube / Google Drive</p>
                     </div>
 
                 </div>
@@ -1034,6 +1041,17 @@ function handleDropGaleria(e) {
     previewGaleria(input);
 }
 
+let videoFile = null;
+function selectVideoFile(input) {
+    videoFile = input.files[0];
+    if (videoFile) {
+        const mb = (videoFile.size/1024/1024).toFixed(1);
+        document.getElementById('video-filename').innerHTML =
+            '<strong style="color:#D946A6"><i class="fas fa-check-circle"></i> ' + videoFile.name + '</strong> (' + mb + ' MB)';
+        document.getElementById('p-video').value = '';
+    }
+}
+
 /* — Exocad — solo archivo HTML — */
 function handleExocadPanel(input) {
     const f = input.files[0];
@@ -1091,6 +1109,16 @@ async function subirCaso(e) {
             exocadUrl = base + storagePath;
         }
 
+        // 3b. Video propio (opcional)
+        let videoUrl = null;
+        if (videoFile) {
+            prog.textContent = 'Subiendo video…';
+            const vExt = videoFile.name.split('.').pop().toLowerCase();
+            const vPath = id + '/video/caso.' + vExt;
+            const { error: vErr } = await sb.storage.from(PORT_BUCKET).upload(vPath, videoFile, { contentType: videoFile.type, upsert: true });
+            if (!vErr) videoUrl = base + vPath;
+        }
+
         // 4. Insert en casos_portafolio
         prog.textContent = 'Guardando en base de datos…';
         const { error: dbErr } = await sb.from('casos_portafolio').insert({
@@ -1104,7 +1132,7 @@ async function subirCaso(e) {
             exocad_file:   exocadUrl,
             gallery:       galleryUrls,
             gallery_count: galleryUrls.length,
-            drive_link:    document.getElementById('p-video').value.trim() || null,
+            drive_link:    videoUrl || document.getElementById('p-video').value.trim() || null,
             visible:       true
         });
         if (dbErr) throw new Error('BD: ' + dbErr.message);
