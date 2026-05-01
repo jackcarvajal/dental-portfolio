@@ -1150,16 +1150,17 @@ async function subirCaso(e) {
 
         const { data: { publicUrl } } = sb.storage.from('dental-cases').getPublicUrl(filename);
 
-        // 2. Insertar registro en tabla portfolio
-        const { error: dbErr } = await sb.from('portfolio').insert([{
-            titulo:      document.getElementById('p-titulo').value,
-            tipo:        document.getElementById('p-tipo').value,
-            material:    document.getElementById('p-material').value,
-            software:    document.getElementById('p-software').value,
-            descripcion: document.getElementById('p-descripcion').value,
-            categoria:   document.getElementById('p-categoria').value,
-            destacado:   document.getElementById('p-destacado').value === 'true',
-            imagen_url:  publicUrl,
+        // 2. Insertar registro en tabla casos_portafolio
+        const now = new Date();
+        const fechaStr = now.toLocaleDateString('es', {month:'long', year:'numeric'});
+        const { error: dbErr } = await sb.from('casos_portafolio').insert([{
+            name:          document.getElementById('p-titulo').value,
+            type:          document.getElementById('p-categoria').value || document.getElementById('p-tipo').value,
+            date:          document.getElementById('p-fecha') ? document.getElementById('p-fecha').value : fechaStr,
+            description:   document.getElementById('p-descripcion').value,
+            cover_image:   publicUrl,
+            gallery_count: 0,
+            visible:       true,
         }]);
         if (dbErr) throw dbErr;
 
@@ -1186,7 +1187,7 @@ async function cargarPortafolio() {
     grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>';
 
     try {
-        const { data, error } = await sb.from('portfolio').select('*').order('created_at', { ascending: false });
+        const { data, error } = await sb.from('casos_portafolio').select('*').order('created_at', { ascending: false });
         if (error) throw error;
 
         if (!data || data.length === 0) {
@@ -1196,11 +1197,11 @@ async function cargarPortafolio() {
 
         grid.innerHTML = data.map(c => `
         <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-            <img src="${escHtml(c.imagen_url)}" alt="${escHtml(c.titulo)}" style="width:100%;height:130px;object-fit:cover;">
+            <img src="${escHtml(c.cover_image)}" alt="${escHtml(c.name)}" style="width:100%;height:130px;object-fit:cover;">
             <div style="padding:10px;">
-                <div style="font-weight:700;font-size:0.8rem;margin-bottom:4px;">${escHtml(c.titulo)}</div>
-                <div style="font-size:0.72rem;color:var(--muted);">${escHtml(c.tipo)} · ${escHtml(c.material || '')}</div>
-                ${c.destacado ? '<span style="color:#D4AF37;font-size:0.65rem;font-weight:700;">⭐ DESTACADO</span>' : ''}
+                <div style="font-weight:700;font-size:0.8rem;margin-bottom:4px;">${escHtml(c.name)}</div>
+                <div style="font-size:0.72rem;color:var(--muted);">${escHtml(c.type || '')} · ${escHtml(c.date || '')}</div>
+                ${c.visible ? '<span style="color:#4ade80;font-size:0.65rem;font-weight:700;">● Visible</span>' : '<span style="color:#64748b;font-size:0.65rem;">○ Oculto</span>'}
                 <div style="margin-top:8px;display:flex;gap:6px;">
                     <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')"><i class="fas fa-trash"></i></button>
                 </div>
@@ -1219,7 +1220,7 @@ async function cargarPortafolio() {
 
 async function eliminarCaso(id) {
     if (!confirm('¿Eliminar este caso del portafolio?')) return;
-    const { error } = await sb.from('portfolio').delete().eq('id', id);
+    const { error } = await sb.from('casos_portafolio').delete().eq('id', id);
     if (error) toast('Error: ' + error.message, 'error');
     else { toast('Caso eliminado', 'success'); cargarPortafolio(); }
 }

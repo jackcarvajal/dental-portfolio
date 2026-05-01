@@ -722,30 +722,23 @@ function filtrar(type, btn) {
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
         const { data, error } = await sb
-            .from('portfolio')
-            .select('*')
+            .from('casos_portafolio')
+            .select('id,name,type,date,description,cover_image,gallery_count')
+            .eq('visible', true)
             .order('created_at', { ascending: false });
 
-        if (error) {
-            console.error('Supabase error:', JSON.stringify(error));
-            grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Error BD: ' + (error.message || error.code || JSON.stringify(error)) + '</p></div>';
-            return;
-        }
+        if (error) throw error;
 
-        if (!data || data.length === 0) {
-            grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🦷</div><p>Aún no hay casos publicados.</p></div>';
-            return;
-        }
-
-        // Normalizar — acepta cualquier estructura de la tabla
-        allCases = data.map(c => ({
+        allCases = (data || []).map(c => ({
             id:          c.id,
-            name:        c.titulo || c.name || 'Sin título',
-            type:        c.categoria || c.tipo || c.type || 'general',
-            date:        c.created_at ? new Date(c.created_at).toLocaleDateString('es', {month:'short', year:'numeric'}) : '',
-            description: c.descripcion || c.description || '',
-            coverImage:  c.imagen_url || c.cover_image || c.image_url || '',
-            galleryCount: 0
+            name:        c.name,
+            type:        c.type,
+            date:        c.date,
+            description: c.description,
+            coverImage:  c.cover_image
+                         ? c.cover_image + '?width=400&quality=80'
+                         : c.cover_image,
+            galleryCount: c.gallery_count
         }));
 
     } catch(e) {
