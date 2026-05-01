@@ -999,15 +999,23 @@ function handleDropPortada(e) {
 
 /* — Galería — */
 function previewGaleria(input) {
-    galFiles = Array.from(input.files);
+    galFiles = [...galFiles, ...Array.from(input.files)];
+    renderGalThumb();
+}
+function renderGalThumb() {
     const container = document.getElementById('gallery-thumbs');
     container.innerHTML = galFiles.map((f, i) => {
         const url = URL.createObjectURL(f);
-        return `<div style="position:relative;">
+        return `<div style="position:relative;display:inline-block;">
             <img src="${url}" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--border);">
-            <span style="position:absolute;top:2px;right:4px;font-size:0.6rem;color:#fff;background:rgba(0,0,0,0.7);border-radius:4px;padding:1px 4px;">${i+1}</span>
+            <span style="position:absolute;top:2px;left:4px;font-size:0.6rem;color:#fff;background:rgba(0,0,0,0.7);border-radius:4px;padding:1px 4px;">${i+1}</span>
+            <button type="button" onclick="removeGalFile(${i})" style="position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:#ef4444;border:none;color:#fff;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">✕</button>
         </div>`;
     }).join('');
+}
+function removeGalFile(idx) {
+    galFiles.splice(idx, 1);
+    renderGalThumb();
 }
 
 function handleDropGaleria(e) {
@@ -1124,22 +1132,26 @@ async function cargarPortafolio() {
     const grid = document.getElementById('portafolio-grid');
     grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>';
     try {
-        const { data, error } = await sb.from('casos_portafolio').select('*').order('created_at', { ascending: false });
+        const { data, error } = await sb.from('casos_portafolio').select('*').order('sort_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false });
         if (error) throw error;
         if (!data || !data.length) {
             grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><p>Sin casos publicados aún.</p></div>';
             return;
         }
-        grid.innerHTML = data.map(c => `
+        window._casosData = data;
+        grid.innerHTML = data.map((c, idx) => `
         <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
             <img src="${esc(c.cover_image || '')}" alt="${esc(c.name)}" loading="lazy" style="width:100%;height:130px;object-fit:cover;">
             <div style="padding:10px;">
                 <div style="font-weight:700;font-size:0.8rem;margin-bottom:3px;">${esc(c.name)}</div>
-                <div style="font-size:0.72rem;color:var(--muted);">${esc(c.type)} · ${esc(c.date)}</div>
+                <div style="font-size:0.72rem;color:var(--muted);">${esc(c.type||'')} · ${esc(c.date||'')}</div>
                 <div style="font-size:0.68rem;margin-top:4px;color:${c.visible?'#00FF41':'#f87171'};">${c.visible?'● Visible':'○ Oculto'}</div>
-                <div style="margin-top:8px;display:flex;gap:6px;">
-                    <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')"><i class="fas fa-trash"></i></button>
-                    <button class="btn-xs btn-gold" onclick="toggleVisible('${c.id}',${c.visible})">${c.visible?'Ocultar':'Publicar'}</button>
+                <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap;">
+                    <button class="btn-xs btn-gold" onclick="abrirEditar('${c.id}')" title="Editar"><i class="fas fa-pen"></i></button>
+                    <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')" title="Eliminar"><i class="fas fa-trash"></i></button>
+                    <button class="btn-xs" style="background:rgba(255,255,255,.08);border:1px solid var(--border);color:#94a3b8;" onclick="toggleVisible('${c.id}',${c.visible})" title="${c.visible?'Ocultar':'Publicar'}">${c.visible?'Ocultar':'Publicar'}</button>
+                    <button class="btn-xs" style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:#94a3b8;" onclick="moverCaso('${c.id}',-1)" ${idx===0?'disabled':''} title="Subir">↑</button>
+                    <button class="btn-xs" style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:#94a3b8;" onclick="moverCaso('${c.id}',1)" ${idx===data.length-1?'disabled':''} title="Bajar">↓</button>
                 </div>
             </div>
         </div>`).join('');
@@ -1159,6 +1171,87 @@ async function eliminarCaso(id) {
     const { error } = await sb.from('casos_portafolio').delete().eq('id', id);
     if (error) toast('Error: ' + error.message, 'error');
     else { toast('Caso eliminado', 'success'); cargarPortafolio(); }
+}
+
+/* — Reordenar con campo sort_order — */
+async function moverCaso(id, dir) {
+    const casos = window._casosData || [];
+    const idx = casos.findIndex(c => c.id === id);
+    if (idx < 0) return;
+    const swap = idx + dir;
+    if (swap < 0 || swap >= casos.length) return;
+    const updates = [
+        { id: casos[idx].id,   sort_order: swap },
+        { id: casos[swap].id,  sort_order: idx  }
+    ];
+    for (const u of updates) {
+        await sb.from('casos_portafolio').update({ sort_order: u.sort_order }).eq('id', u.id);
+    }
+    cargarPortafolio();
+}
+
+/* — Modal de edición — */
+function abrirEditar(id) {
+    const c = (window._casosData || []).find(x => x.id === id);
+    if (!c) return;
+    const mat = ['','Zirconia 3Y Monolítica','Zirconia Multicapa ST','Zirconia UT 5Y','Disilicato e.max CAD','Disilicato e.max Press','PMMA Provisional','Titanio Grado 5','Resina 3D Dental','Vita Enamic','PEEK Dental','Múltiples materiales'];
+    const matOpts = mat.map(m => `<option value="${m}" ${c.material===m?'selected':''}>${m||'— Sin especificar —'}</option>`).join('');
+    const tipos = ['rehabilitacion','estetica','implantes','protesis','alineadores','biomodelo'];
+    const tipoOpts = tipos.map(t => `<option value="${t}" ${c.type===t?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('');
+
+    const modal = document.createElement('div');
+    modal.id = 'edit-modal';
+    modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:20px;';
+    modal.innerHTML = `
+    <div style="background:#0d1525;border:1px solid rgba(212,175,55,.3);border-radius:16px;padding:28px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h3 style="color:#D4AF37;font-size:1rem;font-weight:800;"><i class="fas fa-pen"></i> Editar caso</h3>
+            <button onclick="document.getElementById('edit-modal').remove()" style="background:none;border:none;color:#94a3b8;font-size:1.2rem;cursor:pointer;">✕</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div style="grid-column:1/-1;">
+                <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">NOMBRE DEL CASO</label>
+                <input id="e-nombre" value="${esc(c.name||'')}" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;">
+            </div>
+            <div>
+                <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">TIPO</label>
+                <select id="e-tipo" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;">${tipoOpts}</select>
+            </div>
+            <div>
+                <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">MATERIAL</label>
+                <select id="e-material" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;">${matOpts}</select>
+            </div>
+            <div>
+                <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">FECHA</label>
+                <input id="e-fecha" value="${esc(c.date||'')}" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;">
+            </div>
+            <div style="grid-column:1/-1;">
+                <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">DESCRIPCIÓN</label>
+                <textarea id="e-desc" rows="3" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;resize:vertical;">${esc(c.description||'')}</textarea>
+            </div>
+            <div style="grid-column:1/-1;display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
+                <button onclick="document.getElementById('edit-modal').remove()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+                <button onclick="guardarEdicion('${id}')" style="background:#D4AF37;border:none;color:#000;padding:10px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>`;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+}
+
+async function guardarEdicion(id) {
+    const updates = {
+        name:        document.getElementById('e-nombre').value,
+        type:        document.getElementById('e-tipo').value,
+        material:    document.getElementById('e-material').value,
+        date:        document.getElementById('e-fecha').value,
+        description: document.getElementById('e-desc').value,
+    };
+    const { error } = await sb.from('casos_portafolio').update(updates).eq('id', id);
+    if (error) { toast('Error: ' + error.message, 'error'); return; }
+    document.getElementById('edit-modal').remove();
+    toast('✅ Caso actualizado', 'success');
+    cargarPortafolio();
 }
 
 /* ══════════════════════════════════════════

@@ -725,6 +725,7 @@ function filtrar(type, btn) {
             .from('casos_portafolio')
             .select('id,name,type,date,description,cover_image,gallery_count')
             .eq('visible', true)
+            .order('sort_order', { ascending: true, nullsFirst: false })
             .order('created_at', { ascending: false });
 
         if (error) throw error;
