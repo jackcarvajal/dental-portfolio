@@ -1259,6 +1259,19 @@ function abrirEditar(id) {
                 <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">DESCRIPCIÓN</label>
                 <textarea id="e-desc" rows="3" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;resize:vertical;">${esc(c.description||'')}</textarea>
             </div>
+
+            <!-- Actualizar Exocad HTML -->
+            <div style="grid-column:1/-1;background:rgba(217,70,166,.06);border:1px dashed rgba(217,70,166,.3);border-radius:10px;padding:14px;">
+                <div style="font-size:.72rem;font-weight:700;color:#D946A6;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;"><i class="fas fa-cube" style="margin-right:5px;"></i>Actualizar Visor Exocad HTML</div>
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                    <label for="e-exocad-file" style="display:inline-flex;align-items:center;gap:6px;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.4);color:#D946A6;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.76rem;white-space:nowrap;">
+                        <i class="fas fa-file-code"></i> Seleccionar .html
+                    </label>
+                    <span id="e-exocad-name" style="font-size:.76rem;color:#64748b;">${c.exocad_file ? '✅ Ya tiene visor — puedes reemplazarlo' : '⚠️ Sin visor — selecciona el archivo'}</span>
+                </div>
+                <input type="file" id="e-exocad-file" style="display:none;" onchange="this.nextElementSibling.textContent=this.files[0]?'📎 '+this.files[0].name:''; document.getElementById('e-exocad-name').innerHTML='<strong style=color:#D946A6>'+this.files[0].name+'</strong>';">
+            </div>
+
             <div style="grid-column:1/-1;display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
                 <button onclick="document.getElementById('edit-modal').remove()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
                 <button onclick="guardarEdicion('${id}')" style="background:#D4AF37;border:none;color:#000;padding:10px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;"><i class="fas fa-save"></i> Guardar</button>
@@ -1277,6 +1290,18 @@ async function guardarEdicion(id) {
         date:        document.getElementById('e-fecha').value,
         description: document.getElementById('e-desc').value,
     };
+
+    // Subir nuevo exocad HTML si se seleccionó
+    const exocadInput = document.getElementById('e-exocad-file');
+    if (exocadInput && exocadInput.files[0]) {
+        const f = exocadInput.files[0];
+        const path = id + '/exocad/caso.html';
+        const base = `https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/object/public/${PORT_BUCKET}/`;
+        const { error: upErr } = await sb.storage.from(PORT_BUCKET).upload(path, f, { contentType: 'text/html', upsert: true });
+        if (upErr) { toast('Error subiendo Exocad: ' + upErr.message, 'error'); return; }
+        updates.exocad_file = base + path;
+    }
+
     const { error } = await sb.from('casos_portafolio').update(updates).eq('id', id);
     if (error) { toast('Error: ' + error.message, 'error'); return; }
     document.getElementById('edit-modal').remove();
