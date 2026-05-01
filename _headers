@@ -13,6 +13,11 @@
   X-Permitted-Cross-Domain-Policies: none
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://zgihrwqfyvgyapbwzkvw.supabase.co https://www.paypal.com https://www.paypalobjects.com https://www.googletagmanager.com https://www.google-analytics.com https://unpkg.com https://cdn.paddle.com https://static.cloudflareinsights.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://lh3.googleusercontent.com https://www.google-analytics.com https://www.googletagmanager.com https://www.paypalobjects.com https://api.qrserver.com https://upload.wikimedia.org https://*.wikimedia.org; connect-src 'self' https://zgihrwqfyvgyapbwzkvw.supabase.co https://*.supabase.co wss://zgihrwqfyvgyapbwzkvw.supabase.co https://ipapi.co https://api.paypal.com https://*.paypal.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://cdn.jsdelivr.net https://*.paddle.com https://checkout.wompi.co https://accounts.google.com https://*.googleapis.com https://api.stripe.com; worker-src blob: 'self'; frame-src https://www.youtube.com https://www.paypal.com https://*.paypal.com https://www.openstreetmap.org https://*.supabase.co https://drive.google.com https://docs.google.com https://*.paddle.com https://accounts.google.com https://hooks.stripe.com; object-src 'none'; base-uri 'self';
 
+# App pages — nunca cachear (siempre versión fresca)
+/app/*.html
+  Cache-Control: no-store, no-cache, must-revalidate
+  Pragma: no-cache
+
 # Cache agresivo — assets inmutables
 /js/*
   Cache-Control: public, max-age=31536000, immutable
