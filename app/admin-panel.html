@@ -1274,8 +1274,8 @@ async function subirCaso(e) {
             date:          fechaStr,
             description:   document.getElementById('p-descripcion').value,
             cover_image:   publicUrl,
-            gallery_images: galleryUrls.length ? galleryUrls : null,
-            exocad_html:   exocadUrl,
+            gallery:       galleryUrls.length ? galleryUrls : [],
+            exocad_file:   exocadUrl,
             gallery_count: galleryUrls.length,
             visible:       true,
         }]);
