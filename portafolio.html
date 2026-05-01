@@ -722,9 +722,8 @@ function filtrar(type, btn) {
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
         const { data, error } = await sb
-            .from('casos_portafolio')
-            .select('id,name,type,date,description,cover_image,gallery_count')
-            .eq('visible', true)
+            .from('portfolio')
+            .select('id,titulo,tipo,categoria,material,descripcion,imagen_url,destacado,created_at')
             .order('created_at', { ascending: false });
 
         if (error) throw error;
@@ -732,14 +731,14 @@ function filtrar(type, btn) {
         // Normalizar a la forma que espera renderCases()
         allCases = (data || []).map(c => ({
             id:          c.id,
-            name:        c.name,
-            type:        c.type,
-            date:        c.date,
-            description: c.description,
-            coverImage:  c.cover_image
-                         ? c.cover_image + '?width=400&quality=80'
-                         : c.cover_image,
-            galleryCount:c.gallery_count
+            name:        c.titulo,
+            type:        c.categoria || c.tipo,
+            date:        c.created_at ? new Date(c.created_at).toLocaleDateString('es', {month:'short', year:'numeric'}) : '',
+            description: c.descripcion,
+            coverImage:  c.imagen_url
+                         ? c.imagen_url + '?width=400&quality=80'
+                         : c.imagen_url,
+            galleryCount: 0
         }));
 
     } catch(e) {
