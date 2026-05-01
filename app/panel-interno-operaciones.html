@@ -335,18 +335,17 @@
                         <div id="gallery-thumbs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;"></div>
                     </div>
 
-                    <!-- EXOCAD -->
+                    <!-- EXOCAD — solo el archivo HTML -->
                     <div class="form-group" style="grid-column:1/-1;">
-                        <label style="font-weight:700;">🦷 VISOR EXOCAD <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">— arrastra la carpeta completa exportada por Exocad (opcional)</span></label>
-                        <div class="drop-zone" id="exocad-zone" onclick="document.getElementById('exocad-input').click()"
-                             ondrop="handleDropExocad(event)" ondragover="event.preventDefault();this.classList.add('drag-over')"
-                             ondragleave="this.classList.remove('drag-over')">
-                            <i class="fas fa-cube" style="font-size:2rem;color:rgba(217,70,166,0.4);"></i>
-                            <p><strong>Clic para seleccionar la carpeta</strong> de Exocad/3Shape</p>
-                            <p style="font-size:0.75rem;margin-top:4px;">Sube el HTML + imágenes automáticamente</p>
+                        <label style="font-weight:700;"><i class="fas fa-cube" style="color:#D946A6;margin-right:6px;"></i>VISOR EXOCAD <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">(opcional)</span></label>
+                        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(217,70,166,.06);border:1px dashed rgba(217,70,166,.3);border-radius:10px;">
+                            <label for="exocad-input" style="display:inline-flex;align-items:center;gap:8px;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.4);color:#D946A6;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;white-space:nowrap;">
+                                <i class="fas fa-file-code"></i> Seleccionar archivo HTML
+                            </label>
+                            <span id="exocad-status" style="font-size:.82rem;color:#94a3b8;">Ningún archivo seleccionado</span>
                         </div>
-                        <input type="file" id="exocad-input" webkitdirectory mozdirectory directory multiple style="display:none;" onchange="handleExocadPanel(this)">
-                        <div id="exocad-status" style="font-size:0.82rem;color:var(--muted);margin-top:8px;"></div>
+                        <input type="file" id="exocad-input" style="display:none;" onchange="handleExocadPanel(this)">
+                        <p style="font-size:.68rem;color:#475569;margin-top:4px;">Selecciona el archivo <strong>exocad.html</strong> exportado desde Exocad</p>
                     </div>
 
                     <div class="form-group">
@@ -369,7 +368,20 @@
 
                     <div class="form-group">
                         <label>Material</label>
-                        <input type="text" id="p-material" placeholder="Ej: Zirconia 3Y, E-max, PMMA…">
+                        <select id="p-material">
+                            <option value="">— Sin especificar —</option>
+                            <option>Zirconia 3Y Monolítica</option>
+                            <option>Zirconia Multicapa ST</option>
+                            <option>Zirconia UT 5Y</option>
+                            <option>Disilicato e.max CAD</option>
+                            <option>Disilicato e.max Press</option>
+                            <option>PMMA Provisional</option>
+                            <option>Titanio Grado 5</option>
+                            <option>Resina 3D Dental</option>
+                            <option>Vita Enamic</option>
+                            <option>PEEK Dental</option>
+                            <option>Múltiples materiales</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -1008,30 +1020,15 @@ function handleDropGaleria(e) {
     previewGaleria(input);
 }
 
-/* — Exocad — */
+/* — Exocad — solo archivo HTML — */
 function handleExocadPanel(input) {
-    const files = Array.from(input.files);
-    if (!files.length) return;
-    const htmlFiles = files.filter(f => {
-        const parts = f.webkitRelativePath.split('/');
-        return parts.length === 2 && f.name.toLowerCase().endsWith('.html');
-    });
-    if (!htmlFiles.length) {
-        document.getElementById('exocad-status').textContent = '⚠️ No se encontró .html en la raíz de la carpeta';
-        return;
-    }
-    exocadMain = htmlFiles[0];
-    exocadAll  = files;
-    const totalMB = (files.reduce((s, f) => s + f.size, 0) / 1024 / 1024).toFixed(1);
-    document.getElementById('exocad-status').textContent =
-        '✓ ' + exocadMain.name + ' + ' + (files.length - 1) + ' archivos de soporte (' + totalMB + ' MB)';
-}
-
-function handleDropExocad(e) {
-    e.preventDefault();
-    document.getElementById('exocad-zone').classList.remove('drag-over');
-    // webkitdirectory no funciona con drag-drop en todos los browsers — indicar clic
-    toast('Usa el botón para seleccionar la carpeta Exocad', 'error');
+    const f = input.files[0];
+    if (!f) return;
+    exocadMain = f;
+    exocadAll  = [f];
+    const sizeMB = (f.size / 1024 / 1024).toFixed(1);
+    document.getElementById('exocad-status').innerHTML =
+        '<strong style="color:#D946A6"><i class="fas fa-check-circle"></i> ' + f.name + '</strong> (' + sizeMB + ' MB)';
 }
 
 /* — Upload principal — */
