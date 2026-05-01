@@ -363,7 +363,7 @@
 
                     <!-- Galería adicional -->
                     <div class="form-group" style="grid-column:1/-1;">
-                        <label><i class="fas fa-images" style="color:#00d2ff;margin-right:6px;"></i>GALERÍA — Fotos adicionales del caso <span style="color:#475569;font-weight:400;">(opcional, hasta 10)</span></label>
+                        <label><i class="fas fa-images" style="color:#00d2ff;margin-right:6px;"></i>GALERÍA — Fotos adicionales del caso <span style="color:#475569;font-weight:400;">(opcional)</span></label>
                         <div class="drop-zone" onclick="document.getElementById('gallery-input').click()"
                              ondrop="handleGalleryDrop(event)" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')"
                              style="min-height:80px;">
@@ -1186,14 +1186,14 @@ function handleDrop(e) {
 }
 
 function previewGallery(input) {
-    const files = Array.from(input.files).slice(0, 10);
-    galleryFiles = [...galleryFiles, ...files].slice(0, 10);
+    const files = Array.from(input.files);
+    galleryFiles = [...galleryFiles, ...files];
     renderGalleryPreview();
 }
 function handleGalleryDrop(e) {
     e.preventDefault();
-    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')).slice(0, 10);
-    galleryFiles = [...galleryFiles, ...files].slice(0, 10);
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    galleryFiles = [...galleryFiles, ...files];
     renderGalleryPreview();
 }
 function renderGalleryPreview() {
