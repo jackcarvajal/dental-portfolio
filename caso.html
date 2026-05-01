@@ -3,13 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>Caso Clínico — PRODIGY Lab Dental</title>
 <meta name="theme-color" content="#D946A6">
 <link rel="manifest" href="/manifest.json">
+<meta name="robots" content="noindex,nofollow">
+<title>Caso Clínico — PRODIGY Lab Dental</title>
+<meta name="description" content="Caso clínico de diseño CAD dental — PRODIGY Lab Dental. Visor 3D Exocad, galería de imágenes y feedback clínico.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PRODIGY Lab Dental">
+<meta property="og:title" content="Caso Clínico — PRODIGY Lab Dental">
+<meta property="og:image" content="https://prodigylabdental.com/assets/prodigy-preview.jpg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+<!-- GA4 Consent Mode v2 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});gtag('js',new Date());gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});</script>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -19,12 +30,6 @@
 }
 body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh;}
 a{color:inherit;text-decoration:none;}
-
-/* NAV TOP */
-.top-bar{background:rgba(5,5,5,.95);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;}
-.top-bar a{color:var(--gold);font-size:.82rem;font-weight:700;display:flex;align-items:center;gap:6px;transition:opacity .2s;}
-.top-bar a:hover{opacity:.7;}
-.top-bar .caso-name{color:var(--muted);font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
 /* HERO DEL CASO */
 .caso-hero{padding:40px 24px 0;max-width:1200px;margin:0 auto;}
@@ -97,11 +102,13 @@ a{color:inherit;text-decoration:none;}
 </style>
 </head>
 <body>
+<script src="js/header.js"></script>
 
-<!-- TOP BAR -->
-<div class="top-bar">
-  <a href="portafolio"><i class="fas fa-arrow-left"></i> Portafolio</a>
-  <span class="caso-name" id="topbar-name">Cargando caso…</span>
+<!-- BREADCRUMB -->
+<div style="background:rgba(5,5,5,.9);border-bottom:1px solid rgba(255,255,255,.06);padding:10px 24px;font-size:.78rem;color:#64748b;">
+  <a href="portafolio" style="color:var(--gold);font-weight:700;text-decoration:none;"><i class="fas fa-arrow-left" style="margin-right:5px;"></i>Portafolio</a>
+  <span style="margin:0 8px;">›</span>
+  <span id="topbar-name">Cargando…</span>
 </div>
 
 <!-- CONTENIDO DINÁMICO -->
@@ -324,6 +331,20 @@ async function publicarNota(casoId) {
 })();
 </script>
 
+<!-- UX FLOATERS -->
+<div class="ux-floaters" style="position:fixed;bottom:24px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:500;">
+  <button id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver arriba"
+    style="display:none;width:44px;height:44px;border-radius:50%;background:rgba(13,21,37,.9);border:1px solid rgba(212,175,55,.3);color:#D4AF37;font-size:.9rem;cursor:pointer;transition:all .2s;">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20tengo%20una%20consulta%20sobre%20un%20caso." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
+    style="width:44px;height:44px;border-radius:50%;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.4);color:#25D366;font-size:.9rem;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+</div>
+<script>window.addEventListener('scroll',function(){var b=document.getElementById('scroll-top-btn');if(b)b.style.display=window.scrollY>400?'flex':'none';});</script>
+
+<script src="js/footer.js"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
