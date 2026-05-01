@@ -238,28 +238,111 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
   </div>
 </section>
 
-<!-- CÓMO FUNCIONA: 3 pasos en fila -->
-<section class="sec" style="background:rgba(13,21,37,.4);">
-  <div class="sec-inner">
-    <div class="sec-tag" style="color:var(--mg);">📋 El proceso</div>
-    <h2 style="text-align:center;margin-bottom:32px;">De escáner a diseño en 3 pasos</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;position:relative;">
-      <div style="padding:24px;text-align:center;position:relative;">
-        <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--mg),#9333ea);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;margin:0 auto 14px;">1</div>
-        <h3 style="font-size:.92rem;font-weight:800;margin-bottom:8px;">Envías el archivo</h3>
-        <p style="font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:10px;">WhatsApp, portal web o correo. Si no sabes cómo exportar, te explicamos en minutos.</p>
-        <div class="chips" style="justify-content:center;"><span class="chip">STL</span><span class="chip">iTero</span><span class="chip">Medit</span><span class="chip">3Shape</span><span class="chip">+más</span></div>
+<!-- DIAGRAMA DE FLUJO tipo Vulcan -->
+<section class="sec" style="background:rgba(8,13,24,.95);padding:56px 0;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 24px;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(217,70,166,.1);border:1px solid rgba(217,70,166,.3);border-radius:100px;padding:4px 16px;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mg);margin-bottom:14px;"><i class="fas fa-route"></i> Flujo de trabajo</div>
+      <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin-bottom:8px;">Diseño CAD Remoto — Flujo completo</h2>
+      <p style="color:var(--muted);font-size:.88rem;">Del escáner en tu clínica al archivo listo para fresar. 100% digital, 0% logística.</p>
+    </div>
+
+    <style>
+      .vflow{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:8px;}
+      .vflow-step{flex:1;min-width:160px;position:relative;display:flex;flex-direction:column;}
+      .vflow-box{background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.3);border-right:none;padding:22px 16px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;flex:1;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%);}
+      .vflow-step:last-child .vflow-box{clip-path:none;border-right:1px solid rgba(217,70,166,.3);border-radius:0 12px 12px 0;}
+      .vflow-step:first-child .vflow-box{border-radius:12px 0 0 12px;}
+      .vflow-icon{width:48px;height:48px;border-radius:50%;background:rgba(217,70,166,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#D946A6;flex-shrink:0;}
+      .vflow-day{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#D946A6;margin-bottom:2px;}
+      .vflow-title{font-size:.82rem;font-weight:800;color:#f8fafc;line-height:1.3;}
+      .vflow-sub{font-size:.68rem;color:#64748b;line-height:1.4;}
+      @media(max-width:700px){.vflow{flex-direction:column;}.vflow-box{clip-path:none!important;border-right:1px solid rgba(217,70,166,.3)!important;border-bottom:none;border-radius:0!important;}.vflow-step:first-child .vflow-box{border-radius:12px 12px 0 0!important;}.vflow-step:last-child .vflow-box{border-radius:0 0 12px 12px!important;border-bottom:1px solid rgba(217,70,166,.3)!important;}}
+    </style>
+
+    <div class="vflow">
+      <div class="vflow-step">
+        <div class="vflow-box">
+          <div class="vflow-icon"><i class="fas fa-satellite-dish"></i></div>
+          <div>
+            <div class="vflow-day">Paso 1 · Min 0</div>
+            <div class="vflow-title">Escaneas en tu clínica</div>
+            <div class="vflow-sub">iTero · Medit · Trios · cualquier escáner</div>
+          </div>
+        </div>
       </div>
-      <div style="padding:24px;text-align:center;border-left:1px dashed rgba(255,255,255,.1);border-right:1px dashed rgba(255,255,255,.1);">
-        <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--mg),#9333ea);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;margin:0 auto 14px;">2</div>
-        <h3 style="font-size:.92rem;font-weight:800;margin-bottom:8px;">Confirmamos y diseñamos</h3>
-        <p style="font-size:.8rem;color:var(--muted);line-height:1.6;">Cotización exacta en minutos. 50% para iniciar · 50% contra entrega. Entrega desde 15 min* según complejidad.</p>
+      <div class="vflow-step">
+        <div class="vflow-box">
+          <div class="vflow-icon"><i class="fas fa-upload"></i></div>
+          <div>
+            <div class="vflow-day">Paso 2 · Min 5</div>
+            <div class="vflow-title">Envías el STL a PRODIGY</div>
+            <div class="vflow-sub">WhatsApp · Portal · WeTransfer</div>
+          </div>
+        </div>
       </div>
-      <div style="padding:24px;text-align:center;">
-        <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--mg),#9333ea);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;margin:0 auto 14px;">3</div>
-        <h3 style="font-size:.92rem;font-weight:800;margin-bottom:8px;">Fresas y listo</h3>
-        <p style="font-size:.8rem;color:var(--muted);line-height:1.6;">STL universal compatible con cualquier fresadora. Si también quieres que frescamos, lo hacemos con Amann Girrbach y XTCERA 5 ejes.</p>
+      <div class="vflow-step">
+        <div class="vflow-box">
+          <div class="vflow-icon"><i class="fas fa-drafting-compass"></i></div>
+          <div>
+            <div class="vflow-day">Paso 3 · Horas 1–6</div>
+            <div class="vflow-title">Diseñamos en Exocad</div>
+            <div class="vflow-sub">Márgenes · Anatomía · Oclusión</div>
+          </div>
+        </div>
       </div>
+      <div class="vflow-step">
+        <div class="vflow-box">
+          <div class="vflow-icon"><i class="fas fa-check-circle"></i></div>
+          <div>
+            <div class="vflow-day">Paso 4 · Hora 6</div>
+            <div class="vflow-title">Control de calidad</div>
+            <div class="vflow-sub">Vista previa · Ajustes sin costo</div>
+          </div>
+        </div>
+      </div>
+      <div class="vflow-step">
+        <div class="vflow-box">
+          <div class="vflow-icon"><i class="fas fa-download"></i></div>
+          <div>
+            <div class="vflow-day">Paso 5 · ≤ 24h</div>
+            <div class="vflow-title">Recibes tu STL listo</div>
+            <div class="vflow-sub">Compatible con toda fresadora del mercado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid de servicios tipo Vulcan -->
+    <div style="margin-top:48px;">
+      <h3 style="text-align:center;font-size:1.1rem;font-weight:800;margin-bottom:28px;color:#f8fafc;">Tipos de diseño disponibles</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+        <div style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(217,70,166,.5)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(217,70,166,.2)'">
+          <div style="height:100px;background:linear-gradient(135deg,rgba(217,70,166,.15),rgba(147,51,234,.1));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">👑</div>
+          <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Coronas &amp; Inlays</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $14 USD · 24h</div></div>
+        </div>
+        <div style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(217,70,166,.5)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(217,70,166,.2)'">
+          <div style="height:100px;background:linear-gradient(135deg,rgba(0,210,255,.12),rgba(0,128,170,.08));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">💎</div>
+          <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Carillas &amp; Láminas</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $16 USD · 24h</div></div>
+        </div>
+        <div style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(217,70,166,.5)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(217,70,166,.2)'">
+          <div style="height:100px;background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(180,130,20,.08));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🌉</div>
+          <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Puentes CAD</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $32 USD · 24–48h</div></div>
+        </div>
+        <div style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(217,70,166,.5)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(217,70,166,.2)'">
+          <div style="height:100px;background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(16,185,129,.06));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎯</div>
+          <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Guías Quirúrgicas</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $60 USD · 48h</div></div>
+        </div>
+        <div style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(217,70,166,.5)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(217,70,166,.2)'">
+          <div style="height:100px;background:linear-gradient(135deg,rgba(192,132,252,.1),rgba(124,58,237,.06));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🔩</div>
+          <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Abutments CAD</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $35 USD · 24h</div></div>
+        </div>
+        <div style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(217,70,166,.5)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(217,70,166,.2)'">
+          <div style="height:100px;background:linear-gradient(135deg,rgba(251,146,60,.1),rgba(234,88,12,.06));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎭</div>
+          <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Full Arch / DSD</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $180 USD · 48–72h</div></div>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:16px;font-size:.72rem;color:#475569;">¿No ves tu caso? <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20tengo%20un%20caso%20especial" target="_blank" rel="noopener noreferrer" style="color:var(--mg);text-decoration:none;font-weight:700;">Escríbenos →</a> lo hacemos.</p>
     </div>
   </div>
 </section>

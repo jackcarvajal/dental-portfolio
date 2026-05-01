@@ -541,7 +541,7 @@
       pt: 'LUXURY CAD/CAM'
     },
     'index.hero.desc': {
-      es: 'Diseño dental digital de alta precisión para tus necesidades',
+      es: 'Diseño y trabajo dental digital de alta precisión para tus necesidades',
       en: 'High-precision digital dental design for your needs',
       pt: 'Design dental digital de alta precisão para suas necessidades'
     },

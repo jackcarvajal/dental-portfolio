@@ -389,47 +389,103 @@
   </div>
 </section>
 
-<!-- ── PROCESO ── -->
-<section class="dark-section">
+<!-- ── PROCESO — Diagrama tipo Vulcan ── -->
+<section class="dark-section" style="padding:60px 0;">
   <div class="container">
     <div class="eyebrow">Proceso de producción</div>
     <h2 class="sech2">Del escáner a la <em>pieza terminada</em></h2>
-    <p class="sec-lead" style="margin-bottom:44px">Sin intermediarios. Sin retrasos. Un equipo, un flujo, un resultado.</p>
-    <div class="proc-wrap">
-      <div class="proc-step">
-        <div class="proc-num">01</div>
-        <div class="proc-icon"><i class="fas fa-mobile-alt" style="color:#00d2ff"></i></div>
-        <h3>Escáner</h3>
-        <p>STL, Exocad o 3Shape. Por portal o WhatsApp.</p>
-        <span class="proc-time">Día 0</span>
+    <p class="sec-lead" style="margin-bottom:40px;">Sin intermediarios. Un equipo, un flujo, un resultado.</p>
+
+    <style>
+      .mflow{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:8px;margin-bottom:40px;}
+      .mflow-step{flex:1;min-width:140px;}
+      .mflow-box{height:100%;background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(180,130,20,.06));border:1px solid rgba(212,175,55,.25);border-right:none;padding:20px 14px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,0 100%);}
+      .mflow-step:last-child .mflow-box{clip-path:none;border-right:1px solid rgba(212,175,55,.25);border-radius:0 12px 12px 0;}
+      .mflow-step:first-child .mflow-box{border-radius:12px 0 0 12px;}
+      .mflow-icon{width:44px;height:44px;border-radius:50%;background:rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#D4AF37;flex-shrink:0;margin-bottom:4px;}
+      .mflow-time{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#D4AF37;}
+      .mflow-title{font-size:.78rem;font-weight:800;color:#f8fafc;line-height:1.3;}
+      .mflow-sub{font-size:.64rem;color:#64748b;line-height:1.4;}
+      @media(max-width:700px){.mflow{flex-direction:column;}.mflow-box{clip-path:none!important;border-right:1px solid rgba(212,175,55,.25)!important;border-bottom:none;border-radius:0!important;}.mflow-step:first-child .mflow-box{border-radius:12px 12px 0 0!important;}.mflow-step:last-child .mflow-box{border-radius:0 0 12px 12px!important;border-bottom:1px solid rgba(212,175,55,.25)!important;}}
+    </style>
+
+    <div class="mflow">
+      <div class="mflow-step">
+        <div class="mflow-box">
+          <div class="mflow-icon"><i class="fas fa-upload"></i></div>
+          <div class="mflow-time">Día 1</div>
+          <div class="mflow-title">Envías el escáner</div>
+          <div class="mflow-sub">STL · Exocad · WhatsApp · Portal</div>
+        </div>
       </div>
-      <div class="proc-step">
-        <div class="proc-num">02</div>
-        <div class="proc-icon"><i class="fas fa-drafting-compass" style="color:#D946A6"></i></div>
-        <h3>Diseño CAD</h3>
-        <p>Modelado con ajuste oclusal, márgenes y anatomía.</p>
-        <span class="proc-time">+2–4 h</span>
+      <div class="mflow-step">
+        <div class="mflow-box">
+          <div class="mflow-icon"><i class="fas fa-drafting-compass"></i></div>
+          <div class="mflow-time">Día 1 · +2–4h</div>
+          <div class="mflow-title">Diseño CAD</div>
+          <div class="mflow-sub">Exocad · márgenes · oclusión · anatomía</div>
+        </div>
       </div>
-      <div class="proc-step">
-        <div class="proc-num">03</div>
-        <div class="proc-icon"><i class="fas fa-cog" style="color:#D4AF37"></i></div>
-        <h3>Fresado CAM</h3>
-        <p>Producción XTCERA 5 ejes en el material indicado.</p>
-        <span class="proc-time">+2–3 h</span>
+      <div class="mflow-step">
+        <div class="mflow-box">
+          <div class="mflow-icon"><i class="fas fa-cog"></i></div>
+          <div class="mflow-time">Día 1–2 · +2–3h</div>
+          <div class="mflow-title">Fresado CAM</div>
+          <div class="mflow-sub">XTCERA 5 ejes · Amann Girrbach</div>
+        </div>
       </div>
-      <div class="proc-step">
-        <div class="proc-num">04</div>
-        <div class="proc-icon"><i class="fas fa-fire" style="color:#fb923c"></i></div>
-        <h3>Sinterizado</h3>
-        <p>Cocción, glaze y caracterización cromática.</p>
-        <span class="proc-time">+8–12 h</span>
+      <div class="mflow-step">
+        <div class="mflow-box">
+          <div class="mflow-icon"><i class="fas fa-fire"></i></div>
+          <div class="mflow-time">Día 2 · +8–12h</div>
+          <div class="mflow-title">Sinterizado &amp; Glaze</div>
+          <div class="mflow-sub">Horno Vita · caracterización cromática</div>
+        </div>
       </div>
-      <div class="proc-step">
-        <div class="proc-num">05</div>
-        <div class="proc-icon"><i class="fas fa-box-open" style="color:#4ade80"></i></div>
-        <h3>Entrega</h3>
-        <p>Pieza inspeccionada. Retiro en lab o envío a clínica.</p>
-        <span class="proc-time">24–72 h total</span>
+      <div class="mflow-step">
+        <div class="mflow-box">
+          <div class="mflow-icon"><i class="fas fa-shield-alt"></i></div>
+          <div class="mflow-time">Día 2</div>
+          <div class="mflow-title">Control de calidad</div>
+          <div class="mflow-sub">Galga · ajuste · revisión dimensional</div>
+        </div>
+      </div>
+      <div class="mflow-step">
+        <div class="mflow-box" style="clip-path:none;border-right:1px solid rgba(212,175,55,.25);border-radius:0 12px 12px 0;">
+          <div class="mflow-icon" style="background:rgba(74,222,128,.2);color:#4ade80;"><i class="fas fa-box-open"></i></div>
+          <div class="mflow-time" style="color:#4ade80;">24–72h total</div>
+          <div class="mflow-title">Entrega</div>
+          <div class="mflow-sub">Retiro Bogotá · envío Colombia</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid productos tipo Vulcan -->
+    <h3 style="text-align:center;font-size:1rem;font-weight:800;margin-bottom:22px;color:#e2e8f0;">Restauraciones disponibles</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+      <div style="background:rgba(13,21,37,.9);border:1px solid rgba(212,175,55,.18);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-3px)';this.style.borderColor='rgba(212,175,55,.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(212,175,55,.18)'">
+        <div style="height:90px;background:linear-gradient(135deg,rgba(96,165,250,.15),rgba(37,99,235,.08));display:flex;align-items:center;justify-content:center;font-size:2.4rem;">👑</div>
+        <div style="padding:12px;text-align:center;"><div style="font-size:.8rem;font-weight:800;color:#f8fafc;">Corona Zirconia</div><div style="font-size:.65rem;color:#64748b;margin-top:2px;">3Y · Multicapa · UT</div></div>
+      </div>
+      <div style="background:rgba(13,21,37,.9);border:1px solid rgba(212,175,55,.18);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-3px)';this.style.borderColor='rgba(212,175,55,.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(212,175,55,.18)'">
+        <div style="height:90px;background:linear-gradient(135deg,rgba(248,113,113,.12),rgba(239,68,68,.06));display:flex;align-items:center;justify-content:center;font-size:2.4rem;">💎</div>
+        <div style="padding:12px;text-align:center;"><div style="font-size:.8rem;font-weight:800;color:#f8fafc;">Disilicato e.max</div><div style="font-size:.65rem;color:#64748b;margin-top:2px;">Carillas · Coronas anteriores</div></div>
+      </div>
+      <div style="background:rgba(13,21,37,.9);border:1px solid rgba(212,175,55,.18);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-3px)';this.style.borderColor='rgba(212,175,55,.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(212,175,55,.18)'">
+        <div style="height:90px;background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(217,119,6,.06));display:flex;align-items:center;justify-content:center;font-size:2.4rem;">🦷</div>
+        <div style="padding:12px;text-align:center;"><div style="font-size:.8rem;font-weight:800;color:#f8fafc;">Provisional PMMA</div><div style="font-size:.65rem;color:#64748b;margin-top:2px;">Urgente · 24h · CAD/CAM</div></div>
+      </div>
+      <div style="background:rgba(13,21,37,.9);border:1px solid rgba(212,175,55,.18);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-3px)';this.style.borderColor='rgba(212,175,55,.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(212,175,55,.18)'">
+        <div style="height:90px;background:linear-gradient(135deg,rgba(148,163,184,.12),rgba(100,116,139,.06));display:flex;align-items:center;justify-content:center;font-size:2.4rem;">🔩</div>
+        <div style="padding:12px;text-align:center;"><div style="font-size:.8rem;font-weight:800;color:#f8fafc;">Abutment Titanio</div><div style="font-size:.65rem;color:#64748b;margin-top:2px;">Ti Grado 5 · CNC</div></div>
+      </div>
+      <div style="background:rgba(13,21,37,.9);border:1px solid rgba(212,175,55,.18);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-3px)';this.style.borderColor='rgba(212,175,55,.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(212,175,55,.18)'">
+        <div style="height:90px;background:linear-gradient(135deg,rgba(167,139,250,.12),rgba(124,58,237,.06));display:flex;align-items:center;justify-content:center;font-size:2.4rem;">🌉</div>
+        <div style="padding:12px;text-align:center;"><div style="font-size:.8rem;font-weight:800;color:#f8fafc;">Puente 3–4 pzas</div><div style="font-size:.65rem;color:#64748b;margin-top:2px;">Zirconia · PMMA</div></div>
+      </div>
+      <div style="background:rgba(13,21,37,.9);border:1px solid rgba(212,175,55,.18);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default;" onmouseover="this.style.transform='translateY(-3px)';this.style.borderColor='rgba(212,175,55,.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(212,175,55,.18)'">
+        <div style="height:90px;background:linear-gradient(135deg,rgba(251,146,60,.12),rgba(234,88,12,.06));display:flex;align-items:center;justify-content:center;font-size:2.4rem;">🎭</div>
+        <div style="padding:12px;text-align:center;"><div style="font-size:.8rem;font-weight:800;color:#f8fafc;">Barra Full Arch</div><div style="font-size:.65rem;color:#64748b;margin-top:2px;">Titanio · Zirconia · All-on-4</div></div>
       </div>
     </div>
   </div>
