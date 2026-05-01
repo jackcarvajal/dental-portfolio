@@ -385,7 +385,7 @@
                             <p id="exocad-filename"><strong>Clic para seleccionar</strong> el archivo HTML de Exocad</p>
                             <p style="font-size:.72rem;">Solo el archivo .html — no la carpeta completa</p>
                         </div>
-                        <input type="file" id="exocad-html-input" accept=".html,.htm" style="display:none;" onchange="selectExocadHtml(this)">
+                        <input type="file" id="exocad-html-input" style="display:none;" onchange="selectExocadHtml(this)">
                     </div>
 
                 </div>
@@ -1211,10 +1211,10 @@ function removeGalleryFile(idx) {
 }
 
 function selectExocadHtml(input) {
-    exocadHtmlFile = input.files[0];
-    if (exocadHtmlFile) {
-        document.getElementById('exocad-filename').innerHTML = `<strong style="color:#D946A6;"><i class="fas fa-check-circle"></i> ${escHtml(exocadHtmlFile.name)}</strong>`;
-    }
+    const f = input.files[0];
+    if (!f) return;
+    exocadHtmlFile = f;
+    document.getElementById('exocad-filename').innerHTML = `<strong style="color:#D946A6;"><i class="fas fa-check-circle"></i> ${escHtml(f.name)}</strong>`;
 }
 function handleExocadDrop(e) {
     e.preventDefault();
