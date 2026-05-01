@@ -161,62 +161,80 @@ function toEmbed(url) {
 function render(c) {
   document.getElementById('topbar-name').textContent = c.name || 'Caso clínico';
   document.title = (c.name || 'Caso') + ' — PRODIGY Lab Dental';
-
   gallery = Array.isArray(c.gallery) ? c.gallery : [];
 
-  /* Visor: Exocad > Video > vacío */
-  let viewerHTML = '';
-  if (c.exocad_file) {
-    viewerHTML = `<div class="viewer-wrap"><iframe src="${c.exocad_file}" title="Visor 3D Exocad" allowfullscreen></iframe></div>`;
-  } else if (c.drive_link) {
+  /* Visor: Exocad > Video > cover img como fallback */
+  let visorHTML = '';
+  const hasExocad = c.exocad_file && c.exocad_file.trim();
+  const hasDrive  = c.drive_link  && c.drive_link.trim();
+
+  if (hasExocad) {
+    visorHTML = `<div class="viewer-wrap">
+      <iframe src="${c.exocad_file}" title="Visor 3D Exocad" allowfullscreen
+        onerror="this.parentElement.innerHTML='<div class=viewer-empty><i class=fas fa-cube></i><p>Visor no disponible</p></div>'">
+      </iframe>
+    </div>`;
+  } else if (hasDrive) {
     const embed = toEmbed(c.drive_link);
     if (embed) {
-      viewerHTML = `<div class="viewer-wrap"><iframe src="${embed}" title="Video" allowfullscreen allow="autoplay"></iframe></div>`;
-    } else if (/\.(mp4|webm|ogg)(\?|$)/i.test(c.drive_link)) {
-      viewerHTML = `<div class="viewer-wrap"><video controls preload="metadata"><source src="${c.drive_link}" type="video/mp4"></video></div>`;
+      visorHTML = `<div class="viewer-wrap"><iframe src="${embed}" title="Video" allowfullscreen allow="autoplay"></iframe></div>`;
+    } else if (/\.(mp4|webm)(\?|$)/i.test(c.drive_link)) {
+      visorHTML = `<div class="viewer-wrap"><video controls preload="metadata" style="width:100%;height:100%;background:#000;"><source src="${c.drive_link}"></video></div>`;
     }
   }
-  if (!viewerHTML) {
-    viewerHTML = `<div class="viewer-wrap"><div class="viewer-empty"><i class="fas fa-cube"></i><p>Sin visor 3D ni video para este caso</p></div></div>`;
+  /* Si no hay visor ni video pero hay cover: mostrar cover grande */
+  if (!visorHTML && c.cover_image) {
+    visorHTML = `<div class="viewer-wrap" style="aspect-ratio:unset;min-height:320px;">
+      <img src="${c.cover_image}" alt="${c.name}" style="width:100%;height:100%;object-fit:contain;background:#0a0f1a;">
+    </div>`;
+  }
+  if (!visorHTML) {
+    visorHTML = `<div class="viewer-wrap"><div class="viewer-empty"><i class="fas fa-cube"></i><p>Sin visor 3D ni video</p></div></div>`;
   }
 
+  /* Cover pequeña debajo del título (solo si HAY visor) */
+  const coverThumb = (hasExocad || hasDrive) && c.cover_image
+    ? `<img src="${c.cover_image}" alt="Portada" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);flex-shrink:0;">`
+    : '';
+
   /* Galería */
-  let galleryHTML = '';
-  if (gallery.length > 0) {
-    galleryHTML = `
+  const galHTML = gallery.length > 0 ? `
     <div class="section">
       <div class="section-title"><i class="fas fa-images"></i> Galería de Imágenes</div>
       <div class="gallery-grid">
-        ${gallery.map((url,i) => `<div class="gallery-item" onclick="openLB(${i})"><img src="${url}" alt="Foto ${i+1}" loading="lazy"></div>`).join('')}
+        ${gallery.map((u,i) => `<div class="gallery-item" onclick="openLB(${i})"><img src="${u}" alt="Foto ${i+1}" loading="lazy"></div>`).join('')}
       </div>
-    </div>`;
-  }
+    </div>` : '';
 
   document.getElementById('caso-root').innerHTML = `
     <div class="caso-hero">
-      <div class="caso-meta">
-        ${c.code ? `<span class="meta-tag"><i class="fas fa-hashtag"></i>${c.code}</span>` : ''}
-        ${c.date ? `<span class="meta-tag"><i class="fas fa-calendar"></i>${c.date}</span>` : ''}
-        ${c.type ? `<span class="meta-tag"><i class="fas fa-tag"></i>${c.type}</span>` : ''}
-        ${c.material ? `<span class="meta-tag"><i class="fas fa-flask"></i>${c.material}</span>` : ''}
+      <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;">
+          <div class="caso-meta">
+            ${c.code   ? `<span class="meta-tag"><i class="fas fa-hashtag"></i>${c.code}</span>` : ''}
+            ${c.date   ? `<span class="meta-tag"><i class="fas fa-calendar"></i>${c.date}</span>` : ''}
+            ${c.type   ? `<span class="meta-tag"><i class="fas fa-tag"></i>${c.type}</span>` : ''}
+            ${c.material ? `<span class="meta-tag"><i class="fas fa-flask"></i>${c.material}</span>` : ''}
+          </div>
+          <h1 class="caso-title">${c.name || 'Caso clínico'}</h1>
+          ${c.description ? `<p class="caso-desc">${c.description}</p>` : ''}
+        </div>
+        ${coverThumb}
       </div>
-      <h1 class="caso-title">${c.name || 'Caso clínico'}</h1>
-      ${c.description ? `<p class="caso-desc">${c.description}</p>` : ''}
-      ${c.cover_image ? `<img class="cover-img" src="${c.cover_image}" alt="${c.name}">` : ''}
     </div>
 
     <div class="section">
-      <div class="section-title"><i class="fas fa-cube"></i> Visor 3D / Video</div>
-      ${viewerHTML}
+      <div class="section-title"><i class="fas fa-cube"></i> ${hasExocad ? 'Visor 3D Exocad' : hasDrive ? 'Video del caso' : 'Imagen del caso'}</div>
+      ${visorHTML}
     </div>
 
-    ${galleryHTML}
+    ${galHTML}
 
     <div class="section" style="padding-bottom:60px;">
       <div class="section-title"><i class="fas fa-comment-medical"></i> Feedback Clínico</div>
       <div class="feedback-box">
         <div class="feedback-title">💬 ¿Qué te pareció este diseño?</div>
-        <div class="reaction-grid" id="reactions">
+        <div class="reaction-grid">
           <button class="reaction-btn" onclick="selReaction(this,'Aprobado')"><span class="emoji">👍</span><span>Aprobado</span></button>
           <button class="reaction-btn" onclick="selReaction(this,'Me Encanta')"><span class="emoji">🤍</span><span>Me Encanta</span></button>
           <button class="reaction-btn" onclick="selReaction(this,'Impecable')"><span class="emoji">🔥</span><span>Impecable</span></button>
