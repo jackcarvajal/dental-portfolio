@@ -186,7 +186,7 @@ async function render(c) {
   /* Visor: Exocad verificado > Video > cover img como fallback */
   let visorHTML = '';
   if (hasExocad) {
-    visorHTML = `<div class="viewer-wrap"><iframe src="${c.exocad_file}" title="Visor 3D Exocad" allowfullscreen></iframe></div>`;
+    visorHTML = `<div class="viewer-wrap"><iframe id="exocad-frame" title="Visor 3D Exocad" allowfullscreen></iframe></div>`;
   } else if (hasDrive) {
     const embed = toEmbed(c.drive_link);
     if (embed) {
@@ -254,6 +254,18 @@ async function render(c) {
     </div>`;
 
   cargarNotas(c.id);
+  if (hasExocad) loadExocadBlob(c.exocad_file);
+}
+
+async function loadExocadBlob(url) {
+  try {
+    const resp = await fetch(url);
+    const html = await resp.text();
+    const blob = new Blob([html], { type: 'text/html' });
+    const blobUrl = URL.createObjectURL(blob);
+    const frame = document.getElementById('exocad-frame');
+    if (frame) frame.src = blobUrl;
+  } catch(e) { console.error('Exocad load error:', e); }
 }
 
 /* ── REACCIONES ── */
