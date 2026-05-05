@@ -2362,14 +2362,15 @@
         .eco-section-label{text-align:center;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
         .eco-grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
         @media(max-width:600px){.eco-grid-3{grid-template-columns:repeat(3,1fr);}}
-        /* Tarjeta rediseñada: icono arriba → bandera → nombre → país → categoría */
-        .eco-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:16px 18px;border-radius:16px;white-space:nowrap;min-width:130px;cursor:default;transition:transform .25s,box-shadow .25s;border:1px solid transparent;text-align:center;}
-        .eco-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
-        .eco-icon{font-size:1.3rem;margin-bottom:4px;line-height:1;}
-        .eco-flag{font-size:.95rem;line-height:1;}
-        .eco-name{font-size:.76rem;font-weight:900;letter-spacing:.02em;margin-top:2px;}
-        .eco-country{font-size:.58rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;opacity:.5;margin-top:1px;}
-        .eco-cat{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.4;margin-top:2px;border-top:1px solid rgba(255,255,255,.07);padding-top:4px;width:100%;}
+        /* Tarjeta horizontal: icono + nombre + categoría en una línea */
+        .eco-card{display:flex;flex-direction:row;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;cursor:default;transition:transform .2s,box-shadow .2s;border:1px solid transparent;}
+        .eco-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+        .eco-icon{font-size:1.1rem;line-height:1;flex-shrink:0;}
+        .eco-flag{display:none;}
+        .eco-texts{display:flex;flex-direction:column;gap:1px;min-width:0;}
+        .eco-name{font-size:.78rem;font-weight:900;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        .eco-country{display:none;}
+        .eco-cat{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;opacity:.5;white-space:nowrap;}
         /* Brand colors */
         .eco-exocad{background:rgba(0,94,168,.15);border-color:rgba(0,94,168,.3);color:#4da6ff;}
         .eco-3shape{background:rgba(0,48,135,.15);border-color:rgba(0,48,135,.35);color:#6b9fff;}
@@ -2402,13 +2403,13 @@
       <div class="eco-section">
         <div class="eco-section-label" style="color:#D4AF37;"><i class="fas fa-drafting-compass"></i> Software CAD/CAM</div>
         <div class="eco-grid-3">
-          <div class="eco-card eco-exocad"><i class="fas fa-drafting-compass eco-icon"></i><span class="eco-flag">🇩🇪</span><span class="eco-name">Exocad</span><span class="eco-country">Alemania</span><span class="eco-cat">Software CAD</span></div>
-          <div class="eco-card eco-3shape"><i class="fas fa-tooth eco-icon"></i><span class="eco-flag">🇩🇰</span><span class="eco-name">3Shape Designer</span><span class="eco-country">Dinamarca</span><span class="eco-cat">Software CAD</span></div>
-          <div class="eco-card eco-3shape"><i class="fas fa-align-left eco-icon"></i><span class="eco-flag">🇩🇰</span><span class="eco-name">3Shape Ortho</span><span class="eco-country">Dinamarca</span><span class="eco-cat">Ortodoncia digital</span></div>
-          <div class="eco-card eco-blender"><i class="fas fa-cube eco-icon"></i><span class="eco-flag">🇺🇸</span><span class="eco-name">Blender Dental</span><span class="eco-country">EE. UU.</span><span class="eco-cat">Modelado 3D</span></div>
-          <div class="eco-card eco-codiagnostix"><i class="fas fa-bullseye eco-icon"></i><span class="eco-flag">🇨🇭</span><span class="eco-name">CoDiagnostiX</span><span class="eco-country">Suiza</span><span class="eco-cat">Implantología</span></div>
-          <div class="eco-card eco-medit"><i class="fas fa-satellite-dish eco-icon"></i><span class="eco-flag">🇰🇷</span><span class="eco-name">Medit Link</span><span class="eco-country">Corea del Sur</span><span class="eco-cat">Gestión digital</span></div>
-          <div class="eco-card eco-rhino"><i class="fas fa-vector-square eco-icon"></i><span class="eco-flag">🇺🇸</span><span class="eco-name">Rhinoceros 3D</span><span class="eco-country">EE. UU.</span><span class="eco-cat">CAD avanzado</span></div>
+          <div class="eco-card eco-exocad"><i class="fas fa-drafting-compass eco-icon"></i><div class="eco-texts"><span class="eco-name">Exocad</span><span class="eco-cat">Software CAD</span></div></div>
+          <div class="eco-card eco-3shape"><i class="fas fa-tooth eco-icon"></i><div class="eco-texts"><span class="eco-name">3Shape Designer</span><span class="eco-cat">Software CAD</span></div></div>
+          <div class="eco-card eco-3shape"><i class="fas fa-align-left eco-icon"></i><div class="eco-texts"><span class="eco-name">3Shape Ortho</span><span class="eco-cat">Ortodoncia digital</span></div></div>
+          <div class="eco-card eco-blender"><i class="fas fa-cube eco-icon"></i><div class="eco-texts"><span class="eco-name">Blender Dental</span><span class="eco-cat">Modelado 3D</span></div></div>
+          <div class="eco-card eco-codiagnostix"><i class="fas fa-bullseye eco-icon"></i><div class="eco-texts"><span class="eco-name">CoDiagnostiX</span><span class="eco-cat">Implantología</span></div></div>
+          <div class="eco-card eco-medit"><i class="fas fa-satellite-dish eco-icon"></i><div class="eco-texts"><span class="eco-name">Medit Link</span><span class="eco-cat">Gestión digital</span></div></div>
+          <div class="eco-card eco-rhino"><i class="fas fa-vector-square eco-icon"></i><div class="eco-texts"><span class="eco-name">Rhinoceros 3D</span><span class="eco-cat">CAD avanzado</span></div></div>
         </div>
       </div>
 
@@ -2416,15 +2417,15 @@
       <div class="eco-section">
         <div class="eco-section-label" style="color:#D946A6;"><i class="fas fa-cog"></i> Hardware Fresado &amp; Impresión 3D</div>
         <div class="eco-grid-3">
-          <div class="eco-card eco-amann"><i class="fas fa-cog eco-icon"></i><span class="eco-flag">🇩🇪</span><span class="eco-name">Amann Girrbach</span><span class="eco-country">Alemania</span><span class="eco-cat">Fresadora premium</span></div>
-          <div class="eco-card eco-xtcera"><i class="fas fa-industry eco-icon"></i><span class="eco-flag">🇨🇳</span><span class="eco-name">XTCERA 5 ejes</span><span class="eco-country">China</span><span class="eco-cat">Fresado CAM</span></div>
-          <div class="eco-card eco-vhf"><i class="fas fa-cogs eco-icon"></i><span class="eco-flag">🇩🇪</span><span class="eco-name">VHF Dental</span><span class="eco-country">Alemania</span><span class="eco-cat">Fresado CAM</span></div>
-          <div class="eco-card eco-shining"><i class="fas fa-satellite-dish eco-icon"></i><span class="eco-flag">🇨🇳</span><span class="eco-name">Shining 3D</span><span class="eco-country">China</span><span class="eco-cat">Escáner + CAM</span></div>
-          <div class="eco-card eco-nextdent"><i class="fas fa-print eco-icon"></i><span class="eco-flag">🇳🇱</span><span class="eco-name">NextDent</span><span class="eco-country">Países Bajos</span><span class="eco-cat">Resinas biocompat.</span></div>
-          <div class="eco-card eco-sprintray"><i class="fas fa-layer-group eco-icon"></i><span class="eco-flag">🇺🇸</span><span class="eco-name">SprintRay</span><span class="eco-country">EE. UU.</span><span class="eco-cat">Impresora dental</span></div>
-          <div class="eco-card eco-anycubic"><i class="fas fa-cube eco-icon"></i><span class="eco-flag">🇨🇳</span><span class="eco-name">Anycubic Dental</span><span class="eco-country">China</span><span class="eco-cat">Impresora resina</span></div>
-          <div class="eco-card eco-phrozen"><i class="fas fa-film eco-icon"></i><span class="eco-flag">🇹🇼</span><span class="eco-name">Phrozen</span><span class="eco-country">Taiwán</span><span class="eco-cat">Impresora resina</span></div>
-          <div class="eco-card eco-creality"><i class="fas fa-box eco-icon"></i><span class="eco-flag">🇨🇳</span><span class="eco-name">Creality HALOT</span><span class="eco-country">China</span><span class="eco-cat">Impresora resina</span></div>
+          <div class="eco-card eco-amann"><i class="fas fa-cog eco-icon"></i><div class="eco-texts"><span class="eco-name">Amann Girrbach</span><span class="eco-cat">Fresadora premium</span></div></div>
+          <div class="eco-card eco-xtcera"><i class="fas fa-industry eco-icon"></i><div class="eco-texts"><span class="eco-name">XTCERA 5 ejes</span><span class="eco-cat">Fresado CAM</span></div></div>
+          <div class="eco-card eco-vhf"><i class="fas fa-cogs eco-icon"></i><div class="eco-texts"><span class="eco-name">VHF Dental</span><span class="eco-cat">Fresado CAM</span></div></div>
+          <div class="eco-card eco-shining"><i class="fas fa-satellite-dish eco-icon"></i><div class="eco-texts"><span class="eco-name">Shining 3D</span><span class="eco-cat">Escáner + CAM</span></div></div>
+          <div class="eco-card eco-nextdent"><i class="fas fa-print eco-icon"></i><div class="eco-texts"><span class="eco-name">NextDent</span><span class="eco-cat">Resinas biocompat.</span></div></div>
+          <div class="eco-card eco-sprintray"><i class="fas fa-layer-group eco-icon"></i><div class="eco-texts"><span class="eco-name">SprintRay</span><span class="eco-cat">Impresora dental</span></div></div>
+          <div class="eco-card eco-anycubic"><i class="fas fa-cube eco-icon"></i><div class="eco-texts"><span class="eco-name">Anycubic Dental</span><span class="eco-cat">Impresora resina</span></div></div>
+          <div class="eco-card eco-phrozen"><i class="fas fa-film eco-icon"></i><div class="eco-texts"><span class="eco-name">Phrozen</span><span class="eco-cat">Impresora resina</span></div></div>
+          <div class="eco-card eco-creality"><i class="fas fa-box eco-icon"></i><div class="eco-texts"><span class="eco-name">Creality HALOT</span><span class="eco-cat">Impresora resina</span></div></div>
         </div>
       </div>
 
@@ -2432,13 +2433,13 @@
       <div class="eco-section">
         <div class="eco-section-label" style="color:#4ade80;"><i class="fas fa-flask"></i> Materiales &amp; Hornos Certificados</div>
         <div class="eco-grid-3">
-          <div class="eco-card eco-ivoclar"><i class="fas fa-gem eco-icon"></i><span class="eco-flag">🇨🇭</span><span class="eco-name">Ivoclar ZirCAD</span><span class="eco-country">Suiza</span><span class="eco-cat">Zirconia premium</span></div>
-          <div class="eco-card eco-ivoclar"><i class="fas fa-gem eco-icon"></i><span class="eco-flag">🇨🇭</span><span class="eco-name">Ivoclar e.max</span><span class="eco-country">Suiza</span><span class="eco-cat">Disilicato litio</span></div>
-          <div class="eco-card eco-vita"><i class="fas fa-circle eco-icon"></i><span class="eco-flag">🇩🇪</span><span class="eco-name">Vita Enamic</span><span class="eco-country">Alemania</span><span class="eco-cat">Cerámica híbrida</span></div>
-          <div class="eco-card eco-vita"><i class="fas fa-circle eco-icon"></i><span class="eco-flag">🇩🇪</span><span class="eco-name">Vita Suprinity</span><span class="eco-country">Alemania</span><span class="eco-cat">Vitrocerámica</span></div>
-          <div class="eco-card eco-vita"><i class="fas fa-fire-alt eco-icon"></i><span class="eco-flag">🇩🇪</span><span class="eco-name">Vita Furnace</span><span class="eco-country">Alemania</span><span class="eco-cat">Horno cerámica</span></div>
-          <div class="eco-card eco-renfert"><i class="fas fa-fire eco-icon"></i><span class="eco-flag">🇩🇪</span><span class="eco-name">Renfert</span><span class="eco-country">Alemania</span><span class="eco-cat">Hornos &amp; equipos</span></div>
-          <div class="eco-card eco-dentsply"><i class="fas fa-temperature-high eco-icon"></i><span class="eco-flag">🇺🇸</span><span class="eco-name">Dentsply Sirona</span><span class="eco-country">EE. UU.</span><span class="eco-cat">Horno sinterizado</span></div>
+          <div class="eco-card eco-ivoclar"><i class="fas fa-gem eco-icon"></i><div class="eco-texts"><span class="eco-name">Ivoclar ZirCAD</span><span class="eco-cat">Zirconia premium</span></div></div>
+          <div class="eco-card eco-ivoclar"><i class="fas fa-gem eco-icon"></i><div class="eco-texts"><span class="eco-name">Ivoclar e.max</span><span class="eco-cat">Disilicato litio</span></div></div>
+          <div class="eco-card eco-vita"><i class="fas fa-circle eco-icon"></i><div class="eco-texts"><span class="eco-name">Vita Enamic</span><span class="eco-cat">Cerámica híbrida</span></div></div>
+          <div class="eco-card eco-vita"><i class="fas fa-circle eco-icon"></i><div class="eco-texts"><span class="eco-name">Vita Suprinity</span><span class="eco-cat">Vitrocerámica</span></div></div>
+          <div class="eco-card eco-vita"><i class="fas fa-fire-alt eco-icon"></i><div class="eco-texts"><span class="eco-name">Vita Furnace</span><span class="eco-cat">Horno cerámica</span></div></div>
+          <div class="eco-card eco-renfert"><i class="fas fa-fire eco-icon"></i><div class="eco-texts"><span class="eco-name">Renfert</span><span class="eco-cat">Hornos &amp; equipos</span></div></div>
+          <div class="eco-card eco-dentsply"><i class="fas fa-temperature-high eco-icon"></i><div class="eco-texts"><span class="eco-name">Dentsply Sirona</span><span class="eco-cat">Horno sinterizado</span></div></div>
         </div>
       </div>
 
