@@ -132,33 +132,35 @@
           '<a href="https://www.facebook.com/profile.php?id=61575383924264" target="_blank" rel="noopener noreferrer" title="Facebook ProDigy Lab Dental" aria-label="Facebook ProDigy Lab Dental">' +
             '<i class="fab fa-facebook"></i>' +
           '</a>' +
+          '<a href="https://www.tiktok.com/@prodigylabdental" target="_blank" rel="noopener noreferrer" title="TikTok @prodigylabdental" aria-label="TikTok @prodigylabdental">' +
+            '<i class="fab fa-tiktok"></i>' +
+          '</a>' +
         '</div>' +
       '</div>' +
 
-      /* Col 2 — Manufactura Colombia */
+      /* Col 2 — Servicios */
       '<div class="pfoot-col">' +
-        '<h4>Manufactura (Colombia)</h4>' +
+        '<h4>Servicios</h4>' +
         '<ul>' +
-          '<li><a href="fresado-cam">Fresado CAM — Servicios</a></li>' +
-          '<li><a href="flujo-fresado">Pedir Fresado</a></li>' +
-          '<li><a href="flujo-impresion">Impresión 3D Dental</a></li>' +
-          '<li><a href="catalogo">Catálogo de Materiales</a></li>' +
+          '<li><a href="diseno-cad">Diseño CAD — Exocad · 3Shape</a></li>' +
+          '<li><a href="diseno-remoto">🌍 Diseño CAD Remoto</a></li>' +
+          '<li><a href="fresado-cam">Fresado & Manufactura CAM</a></li>' +
           '<li><a href="escaner-domicilio">Escaneos a Domicilio</a></li>' +
+          '<li><a href="catalogo">Catálogo de Materiales</a></li>' +
+          '<li><a href="calculadora">Cotizador de Precios</a></li>' +
         '</ul>' +
       '</div>' +
 
-      /* Col 3 — Ecosistema Digital */
+      /* Col 3 — Portafolio y Recursos */
       '<div class="pfoot-col">' +
-        '<h4>Ecosistema Digital</h4>' +
+        '<h4>Portafolio y Recursos</h4>' +
         '<ul>' +
-          '<li><a href="diseno-cad">Diseño CAD — Servicios</a></li>' +
-          '<li><a href="diseno-remoto">🌍 Diseño CAD Remoto</a></li>' +
-          '<li><a href="flujo-diseno">Pedir Diseño CAD</a></li>' +
+          '<li><a href="portafolio">Portafolio de Casos</a></li>' +
+          '<li><a href="journal">PRODIGY Journal — Blog</a></li>' +
+          '<li><a href="guia-tecnica">Guía Técnica de Materiales</a></li>' +
           '<li><a href="envia-tu-scanner">Envía tu Escaneo</a></li>' +
-          '<li><a href="guia-tecnica">📐 Guía Técnica de Materiales</a></li>' +
-          '<li><a href="soporte-tecnico">Soporte XTCERA & Alistar</a></li>' +
-          '<li><a href="journal">PRODIGY Journal</a></li>' +
           '<li><a href="seguimiento-caso">Seguimiento en Vivo</a></li>' +
+          '<li><a href="soporte-tecnico">Soporte XTCERA & Alistar</a></li>' +
         '</ul>' +
       '</div>' +
 
@@ -166,10 +168,10 @@
       '<div class="pfoot-col">' +
         '<h4>Empresa</h4>' +
         '<ul>' +
-          '<li><a href="nosotros">Nosotros</a></li>' +
-          '<li><a href="soporte">Soporte Técnico</a></li>' +
+          '<li><a href="nosotros">Nosotros · Equipo</a></li>' +
           '<li><a href="nosotros#contacto">Contacto</a></li>' +
-          '<li><a href="instalar-app">Instalar App</a></li>' +
+          '<li><a href="soporte">Centro de Soporte</a></li>' +
+          '<li><a href="instalar-app">Instalar App Móvil</a></li>' +
           '<li><a href="terminos-y-legal">Términos y Privacidad</a></li>' +
         '</ul>' +
       '</div>' +
