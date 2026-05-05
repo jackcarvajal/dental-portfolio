@@ -2365,27 +2365,30 @@
 
         /* ── ÍCONOS ANIMADOS POR TIPO ── */
         /* Software: rotación suave */
-        @keyframes ecoSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-        .eco-exocad .eco-icon,.eco-3shape .eco-icon,.eco-rhino .eco-icon{animation:ecoSpin 8s linear infinite;}
-        /* Máquinas: pulso mecánico */
-        @keyframes ecoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
-        .eco-amann .eco-icon,.eco-xtcera .eco-icon,.eco-vhf .eco-icon{animation:ecoPulse 1.8s ease-in-out infinite;}
-        /* Impresoras: movimiento vertical (cabezal bajando) */
-        @keyframes ecoDrop{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
-        .eco-nextdent .eco-icon,.eco-sprintray .eco-icon,.eco-anycubic .eco-icon,.eco-phrozen .eco-icon,.eco-creality .eco-icon{animation:ecoDrop 1.4s ease-in-out infinite;}
-        /* Materiales preciosos: destello */
-        @keyframes ecoShine{0%,100%{opacity:1;filter:brightness(1)}50%{opacity:.7;filter:brightness(1.6)}}
-        .eco-ivoclar .eco-icon,.eco-zirconia .eco-icon,.eco-amber .eco-icon{animation:ecoShine 2.2s ease-in-out infinite;}
-        /* PMMA/Resina: flotación */
-        @keyframes ecoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-        .eco-pmma .eco-icon,.eco-resina .eco-icon,.eco-titanio .eco-icon{animation:ecoFloat 2s ease-in-out infinite;}
-        /* Hornos: parpadeo calor */
-        @keyframes ecoFire{0%,100%{opacity:1;transform:scale(1)}33%{opacity:.6;transform:scale(1.1)}66%{opacity:.9;transform:scale(.95)}}
-        .eco-renfert .eco-icon,.eco-dentsply .eco-icon{animation:ecoFire 1.2s ease-in-out infinite;}
-        /* IA/Scanner: orbit */
-        @keyframes ecoOrbit{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.1)}100%{transform:rotate(360deg) scale(1)}}
-        .eco-medit .eco-icon,.eco-shining .eco-icon,.eco-codiagnostix .eco-icon{animation:ecoOrbit 3s linear infinite;}
-        /* Pausar animación si el usuario prefiere menos movimiento */
+        /* Software CAD — rotación continua */
+        @keyframes ecoSpin{to{transform:rotate(360deg)}}
+        .eco-exocad .eco-icon,.eco-3shape .eco-icon,.eco-rhino .eco-icon{animation:ecoSpin 3s linear infinite;}
+        /* Máquinas — pulso mecánico rápido */
+        @keyframes ecoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.35) rotate(15deg)}}
+        .eco-amann .eco-icon,.eco-xtcera .eco-icon,.eco-vhf .eco-icon{animation:ecoPulse 0.9s ease-in-out infinite;}
+        /* Impresoras — cabezal bajando */
+        @keyframes ecoDrop{0%,100%{transform:translateY(-3px)}50%{transform:translateY(5px)}}
+        .eco-nextdent .eco-icon,.eco-sprintray .eco-icon,.eco-anycubic .eco-icon,.eco-phrozen .eco-icon,.eco-creality .eco-icon{animation:ecoDrop 1s ease-in-out infinite;}
+        /* Materiales preciosos — destello dorado */
+        @keyframes ecoShine{0%,100%{opacity:1;filter:brightness(1) drop-shadow(0 0 0px currentColor)}50%{opacity:.8;filter:brightness(2) drop-shadow(0 0 6px currentColor)}}
+        .eco-ivoclar .eco-icon,.eco-zirconia .eco-icon,.eco-amber .eco-icon{animation:ecoShine 1.5s ease-in-out infinite;}
+        /* PMMA/Resina — flotación */
+        @keyframes ecoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+        .eco-pmma .eco-icon,.eco-resina .eco-icon,.eco-titanio .eco-icon{animation:ecoFloat 1.4s ease-in-out infinite;}
+        /* Hornos — parpadeo calor */
+        @keyframes ecoFire{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(2.2) drop-shadow(0 0 4px #f97316);transform:scale(1.25)}}
+        .eco-renfert .eco-icon,.eco-dentsply .eco-icon{animation:ecoFire 0.8s ease-in-out infinite;}
+        /* Escáneres — órbita rápida */
+        @keyframes ecoOrbit{to{transform:rotate(360deg)}}
+        .eco-medit .eco-icon,.eco-shining .eco-icon,.eco-codiagnostix .eco-icon{animation:ecoOrbit 2s linear infinite;}
+        /* Blender/Modelado — rebote */
+        @keyframes ecoBounce{0%,100%{transform:scale(1)}40%{transform:scale(1.3) rotate(-10deg)}70%{transform:scale(.9) rotate(5deg)}}
+        .eco-blender .eco-icon{animation:ecoBounce 1.2s ease-in-out infinite;}
         @media(prefers-reduced-motion:reduce){.eco-icon{animation:none!important;}}
         /* Tarjeta horizontal: icono + nombre + categoría en una línea */
         .eco-card{display:flex;flex-direction:row;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;cursor:default;transition:transform .2s,box-shadow .2s;border:1px solid transparent;}
