@@ -610,6 +610,27 @@
     document.getElementById('banner-cotizar').style.display =
         (params.get('msg') === 'cotizar' || params.get('msg') === 'sesion') ? 'flex' : 'none';
 
+    // Pre-llenar formulario si viene del mini-login del topbar
+    const tbEmail = sessionStorage.getItem('tb_email');
+    const tbPass  = sessionStorage.getItem('tb_pass');
+    if (tbEmail) {
+        const eField = document.getElementById('login-email');
+        const pField = document.getElementById('login-pass');
+        if (eField) eField.value = tbEmail;
+        if (pField && tbPass) pField.value = tbPass;
+        sessionStorage.removeItem('tb_email');
+        sessionStorage.removeItem('tb_pass');
+        // Auto-submit si ambos campos tienen valor
+        if (tbEmail && tbPass && eField && pField) {
+            setTimeout(function() { document.getElementById('btn-login') && document.getElementById('btn-login').click(); }, 300);
+        }
+    }
+
+    // Abrir tab registro si viene con ?mode=register
+    if (params.get('mode') === 'register') {
+        setTimeout(function() { typeof switchMain === 'function' && switchMain('register'); }, 100);
+    }
+
     function getRole(user) {
         if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
         // Solo app_metadata para staff — user_metadata no es confiable para autorización

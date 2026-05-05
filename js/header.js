@@ -413,7 +413,7 @@
               '</a>' +
               '<a href="/fresado-cam">' +
                 '<i class="fas fa-cog"></i>' +
-                '<span>FRESADO & IMPRESIÓN<span class="dd-sub">Zirconio · Disilicato · Resina</span></span>' +
+                '<span>FRESADO &amp; IMPRESIÓN<span class="dd-sub">Zirconio · Disilicato · Resina</span></span>' +
               '</a>' +
               '<a href="/escaner-domicilio">' +
                 '<i class="fas fa-mobile-alt"></i>' +
@@ -485,7 +485,7 @@
     /* MOBILE NAV */
     '<div class="pnav2-mob" id="pnav2-mob">' +
       '<a href="/diseno-cad"><i class="fas fa-drafting-compass" style="margin-right:8px"></i>DISEÑO CAD</a>' +
-      '<a href="/fresado-cam"><i class="fas fa-cog" style="margin-right:8px"></i>FRESADO & IMPRESIÓN</a>' +
+      '<a href="/fresado-cam"><i class="fas fa-cog" style="margin-right:8px"></i>FRESADO &amp; IMPRESIÓN</a>' +
       '<a href="/escaner-domicilio"><i class="fas fa-mobile-alt" style="margin-right:8px"></i>ESCANEOS A DOMICILIO</a>' +
       '<a href="/portafolio">PORTAFOLIO</a>' +
       '<a href="/envia-tu-scanner">ENVÍA TU ESCANEO</a>' +
