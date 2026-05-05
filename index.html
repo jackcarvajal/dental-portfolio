@@ -1598,27 +1598,11 @@
         <div class="container">
             <h2 class="section-header" data-i18n="index.port.title">PORTAFOLIO DE DISEÑOS</h2>
             <p class="section-subtitle" data-i18n="index.port.sub">Casos reales diseñados en Exocad y 3Shape — zirconio, disilicato, PMMA y resina 3D</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:36px;max-width:780px;margin-left:auto;margin-right:auto;">
-              <!-- Caso 1 -->
-              <a href="portafolio" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid rgba(212,175,55,.12);transition:all .3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(212,175,55,.12)'">
-                <div style="height:200px;overflow:hidden;"><img src="patients/patient-001/cover.jpeg" alt="Rehabilitación Full Arch Superior" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .4s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
-                <div style="padding:18px 20px;">
-                  <div style="display:inline-block;background:rgba(212,175,55,.12);color:#D4AF37;border:1px solid rgba(212,175,55,.25);border-radius:20px;padding:6px 12px;font-size:.88rem;font-weight:800;margin-bottom:10px;">REHABILITACIÓN</div>
-                  <h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">Rehabilitación Full Arch Superior</h3>
-                  <p style="color:#94a3b8;font-size:.82rem;line-height:1.5;">Rehabilitación completa de arcada superior con 14 unidades cerámicas sobre implantes.</p>
-                  <div style="margin-top:14px;color:#D946A6;font-size:.8rem;font-weight:700;">Ver caso completo →</div>
-                </div>
-              </a>
-              <!-- Caso 2 -->
-              <a href="portafolio" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid rgba(0,210,255,.1);transition:all .3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(0,210,255,.35)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(0,210,255,.1)'">
-                <div style="height:200px;overflow:hidden;"><img src="patients/patient-002/C.jpeg" alt="Carillas Superior e Inferior" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .4s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
-                <div style="padding:18px 20px;">
-                  <div style="display:inline-block;background:rgba(0,210,255,.1);color:#00d2ff;border:1px solid rgba(0,210,255,.2);border-radius:20px;padding:6px 12px;font-size:.88rem;font-weight:800;margin-bottom:10px;">ESTÉTICA</div>
-                  <h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">Carillas Superior e Inferior</h3>
-                  <p style="color:#94a3b8;font-size:.82rem;line-height:1.5;">Carillas estéticas completas superior e inferior.</p>
-                  <div style="margin-top:14px;color:#00d2ff;font-size:.8rem;font-weight:700;">Ver caso completo →</div>
-                </div>
-              </a>
+            <div id="idx-port-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:36px;max-width:780px;margin-left:auto;margin-right:auto;">
+              <!-- JS carga desde Supabase -->
+              <div style="grid-column:1/-1;text-align:center;padding:40px;color:#475569;font-size:.9rem;">
+                <i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;color:#D4AF37;display:block;margin-bottom:12px;"></i>Cargando casos…
+              </div>
             </div>
             <div style="text-align:center;margin-top:40px;">
                 <a href="portafolio" style="display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;text-decoration:none;border-radius:50px;font-weight:800;font-size:1rem;letter-spacing:0.5px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
@@ -1627,6 +1611,47 @@
             </div>
         </div>
     </section>
+    <script>
+    (function loadPortIndex() {
+      var SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+      var SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+      var TYPE_COLOR = { rehabilitacion:'#D4AF37', estetica:'#D946A6', implantes:'#00d2ff', protesis:'#a78bfa', alineadores:'#4ade80', default:'#D4AF37' };
+      var FALLBACK = [
+        { id:'patient-001', name:'Rehabilitación Full Arch Superior', type:'rehabilitacion', description:'Rehabilitación completa de arcada superior con 14 unidades cerámicas sobre implantes.', coverImage:'patients/patient-001/cover.jpeg', isLocal:true },
+        { id:'patient-002', name:'Carillas Superior e Inferior', type:'estetica', description:'Carillas estéticas completas superior e inferior.', coverImage:'patients/patient-002/C.jpeg', isLocal:true }
+      ];
+      function renderCards(cases) {
+        var grid = document.getElementById('idx-port-grid');
+        if (!grid) return;
+        grid.innerHTML = cases.map(function(c, i) {
+          var col = TYPE_COLOR[c.type] || TYPE_COLOR.default;
+          var href = c.isLocal ? 'portafolio' : ('caso?id=' + encodeURIComponent(c.id));
+          var bdr = i === 0 ? 'rgba(212,175,55,.12)' : 'rgba(0,210,255,.1)';
+          var hbdr = i === 0 ? 'rgba(217,70,166,.4)' : 'rgba(0,210,255,.35)';
+          return '<a href="' + href + '" oncontextmenu="return false;" draggable="false" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid ' + bdr + ';transition:all .3s;" onmouseover="this.style.transform=\'translateY(-6px)\';this.style.borderColor=\'' + hbdr + '\'" onmouseout="this.style.transform=\'none\';this.style.borderColor=\'' + bdr + '\'">' +
+            '<div style="height:200px;overflow:hidden;">' +
+              (c.coverImage ? '<img src="' + c.coverImage + (c.isLocal ? '' : '?width=400&quality=75') + '" alt="' + c.name + '" loading="lazy" oncontextmenu="return false;" draggable="false" style="width:100%;height:100%;object-fit:cover;pointer-events:none;transition:transform .4s;"></div>' : '<div style="height:200px;background:#0a0f1a;display:flex;align-items:center;justify-content:center;"><i class="fas fa-tooth" style="font-size:3rem;color:rgba(212,175,55,.2);"></i></div>') +
+            '<div style="padding:18px 20px;">' +
+              '<div style="display:inline-block;background:rgba(212,175,55,.1);color:' + col + ';border:1px solid ' + col.replace(')',', .25)').replace('rgb','rgba') + ';border-radius:20px;padding:5px 12px;font-size:.8rem;font-weight:800;margin-bottom:10px;text-transform:uppercase;">' + (c.type || 'Caso') + '</div>' +
+              '<h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">' + c.name + '</h3>' +
+              '<p style="color:#94a3b8;font-size:.82rem;line-height:1.5;">' + (c.description || '') + '</p>' +
+              '<div style="margin-top:14px;color:' + col + ';font-size:.8rem;font-weight:700;">Ver caso completo →</div>' +
+            '</div></a>';
+        }).join('');
+      }
+      fetch(SURL + '/rest/v1/casos_portafolio?select=id,name,type,description,cover_image&visible=eq.true&order=sort_order.asc.nullslast,created_at.desc&limit=2', {
+        headers: { 'apikey': SKEY, 'Authorization': 'Bearer ' + SKEY }
+      }).then(function(r) { return r.json(); }).then(function(data) {
+        if (data && data.length > 0) {
+          renderCards(data.map(function(c) {
+            return { id:c.id, name:c.name, type:c.type, description:c.description, coverImage:c.cover_image ? c.cover_image + '?width=400&quality=75' : null };
+          }));
+        } else {
+          renderCards(FALLBACK);
+        }
+      }).catch(function() { renderCards(FALLBACK); });
+    })();
+    </script>
 
     <section id="workflow-247" style="background: var(--bg-dark); padding: 45px 0;">
         <div class="container">
@@ -2497,7 +2522,6 @@
     <div id="google_translate_element" style="position:fixed;bottom:90px;right:80px;z-index:9999;display:none;background:rgba(0,0,0,0.92);border:1px solid rgba(212,175,55,0.3);border-radius:12px;padding:10px 14px;"></div>
 
     <!-- SCRIPTS -->
-    <script src="js/patients-data.js" defer></script>
     <script src="js/main.js" defer></script>
     
     <!-- SCRIPT DE RENDERIZADO DINÁMICO "A PRUEBA DE FALLOS" -->
