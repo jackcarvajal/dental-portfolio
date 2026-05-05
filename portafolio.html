@@ -175,7 +175,7 @@
         .filters-section {
             background: rgba(0,0,0,0.6);
             border-bottom: 1px solid var(--border);
-            padding: 24px 20px;
+            padding: 16px 20px;
             position: sticky;
             top: 62px;
             z-index: 90;
@@ -190,6 +190,25 @@
             max-width: 900px;
             margin: 0 auto;
         }
+
+        .filter-label {
+            font-size: .68rem;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            justify-content: center;
+        }
+
+        .filter-row + .filter-row { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.05); }
+
+        .filter-btn.mat { font-size: .78rem; padding: 5px 14px; border-color: rgba(0,210,255,.2); }
+        .filter-btn.mat:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,210,255,.05); }
+        .filter-btn.mat.active { background: rgba(0,210,255,.15); border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 10px rgba(0,210,255,.2); }
 
         .filter-btn {
             padding: 8px 22px;
@@ -496,13 +515,28 @@
 <!-- FILTROS (sticky) -->
 <!-- ============================================================ -->
 <div class="filters-section">
-    <div class="filters" id="filterBtns">
-        <button class="filter-btn active" data-type="todos" onclick="filtrar('todos', this)" data-i18n="port.filter.all">Todos</button>
-        <button class="filter-btn" data-type="rehabilitacion" onclick="filtrar('rehabilitacion', this)" data-i18n="port.filter.rehab">Rehabilitación</button>
-        <button class="filter-btn" data-type="estetica" onclick="filtrar('estetica', this)" data-i18n="port.filter.estetica">Estética</button>
-        <button class="filter-btn" data-type="implantes" onclick="filtrar('implantes', this)" data-i18n="port.filter.implantes">Implantes</button>
-        <button class="filter-btn" data-type="protesis" onclick="filtrar('protesis', this)" data-i18n="port.filter.protesis">Prótesis</button>
-        <button class="filter-btn" data-type="alineadores" onclick="filtrar('alineadores', this)" data-i18n="port.filter.alineadores">Alineadores</button>
+    <div class="filter-row">
+        <div class="filter-label"><i class="fas fa-tag"></i> Por tipo</div>
+        <div class="filters" id="filterBtns">
+            <button class="filter-btn active" data-type="todos" onclick="filtrar('todos', this)">Todos</button>
+            <button class="filter-btn" data-type="rehabilitacion" onclick="filtrar('rehabilitacion', this)">Rehabilitación</button>
+            <button class="filter-btn" data-type="estetica" onclick="filtrar('estetica', this)">Estética</button>
+            <button class="filter-btn" data-type="implantes" onclick="filtrar('implantes', this)">Implantes</button>
+            <button class="filter-btn" data-type="protesis" onclick="filtrar('protesis', this)">Prótesis</button>
+            <button class="filter-btn" data-type="alineadores" onclick="filtrar('alineadores', this)">Alineadores</button>
+        </div>
+    </div>
+    <div class="filter-row">
+        <div class="filter-label"><i class="fas fa-flask"></i> Por material</div>
+        <div class="filters" id="filterMats">
+            <button class="filter-btn mat active" data-mat="todos" onclick="filtrarMat('todos', this)">Todos</button>
+            <button class="filter-btn mat" data-mat="Zirconia Monolítica" onclick="filtrarMat('Zirconia Monolítica', this)">Zirconia Monolítica</button>
+            <button class="filter-btn mat" data-mat="Zirconia Multicapa" onclick="filtrarMat('Zirconia Multicapa', this)">Zirconia Multicapa</button>
+            <button class="filter-btn mat" data-mat="Disilicato de Litio" onclick="filtrarMat('Disilicato de Litio', this)">Disilicato</button>
+            <button class="filter-btn mat" data-mat="PMMA" onclick="filtrarMat('PMMA', this)">PMMA</button>
+            <button class="filter-btn mat" data-mat="Resina 3D" onclick="filtrarMat('Resina 3D', this)">Resina 3D</button>
+            <button class="filter-btn mat" data-mat="Guía Quirúrgica" onclick="filtrarMat('Guía Quirúrgica', this)">Guía Quirúrgica</button>
+        </div>
     </div>
 </div>
 
@@ -606,6 +640,8 @@ let allCases = [];
 let currentPage = 1;
 let filteredCases = [];
 const PAGE_SIZE = 12;
+let activeType = 'todos';
+let activeMat  = 'todos';
 
 // IntersectionObserver para scroll reveal
 const revealObserver = new IntersectionObserver((entries) => {
@@ -682,6 +718,7 @@ function renderPage(page) {
                 <p>${escH(c.description) || 'Caso clínico de diseño dental digital.'}</p>
                 <div class="card-meta">
                     <span class="card-date">${escH(c.date)}</span>
+                    ${c.material ? `<span style="font-size:.68rem;color:var(--cyan);background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.2);padding:2px 8px;border-radius:100px;white-space:nowrap;">${escH(c.material)}</span>` : ''}
                     <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
                 </div>
             </div>
@@ -719,11 +756,25 @@ function goPage(p) {
     window.scrollTo({ top: document.getElementById('casesGrid').offsetTop - 100, behavior: 'smooth' });
 }
 
+function applyFilters() {
+    let result = allCases;
+    if (activeType !== 'todos') result = result.filter(c => c.type === activeType);
+    if (activeMat  !== 'todos') result = result.filter(c => c.material === activeMat);
+    renderCases(result);
+}
+
 function filtrar(type, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#filterBtns .filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const filtered = type === 'todos' ? allCases : allCases.filter(c => c.type === type);
-    renderCases(filtered);
+    activeType = type;
+    applyFilters();
+}
+
+function filtrarMat(mat, btn) {
+    document.querySelectorAll('#filterMats .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeMat = mat;
+    applyFilters();
 }
 
 (async function init() {
@@ -737,7 +788,7 @@ function filtrar(type, btn) {
 
         const { data, error } = await sb
             .from('casos_portafolio')
-            .select('id,name,type,date,description,cover_image,gallery_count')
+            .select('id,name,type,date,description,cover_image,gallery_count,material')
             .eq('visible', true)
             .order('sort_order', { ascending: true, nullsFirst: false })
             .order('created_at', { ascending: false });
@@ -750,6 +801,7 @@ function filtrar(type, btn) {
             type:        c.type,
             date:        c.date,
             description: c.description,
+            material:    c.material || '',
             coverImage:  c.cover_image
                          ? c.cover_image + '?width=400&quality=80'
                          : c.cover_image,

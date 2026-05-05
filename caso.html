@@ -287,6 +287,35 @@ async function render(c) {
 
   cargarNotas(c.id);
   if (hasExocad) loadExocadBlob(c.exocad_file);
+  cargarRelacionados(c.id, c.type);
+}
+
+async function cargarRelacionados(casoId, tipo) {
+  if (!tipo) return;
+  try {
+    const { data } = await sb.from('casos_portafolio')
+      .select('id,name,type,cover_image,date')
+      .eq('visible', true)
+      .eq('type', tipo)
+      .neq('id', casoId)
+      .limit(3);
+    if (!data || !data.length) return;
+    document.getElementById('relacionados-wrap').innerHTML = `
+      <div class="section" style="padding-bottom:0;">
+        <div class="section-title"><i class="fas fa-layer-group"></i> Casos Relacionados</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;">
+          ${data.map(r => `
+            <a href="caso?id=${encodeURIComponent(r.id)}" style="display:block;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:var(--card);text-decoration:none;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(212,175,55,.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(255,255,255,.08)'">
+              ${r.cover_image ? `<img src="${r.cover_image}?width=400&quality=75" alt="${r.name}" style="width:100%;height:140px;object-fit:cover;display:block;">` : `<div style="width:100%;height:140px;background:#0a0f1a;display:flex;align-items:center;justify-content:center;"><i class="fas fa-tooth" style="font-size:2rem;color:rgba(212,175,55,.2);"></i></div>`}
+              <div style="padding:14px 16px;">
+                <div style="font-size:.75rem;color:var(--gold);font-weight:700;margin-bottom:4px;">${r.type || ''}</div>
+                <div style="font-size:.9rem;font-weight:700;color:var(--text);">${r.name}</div>
+                <div style="font-size:.72rem;color:var(--muted);margin-top:4px;">${r.date || ''}</div>
+              </div>
+            </a>`).join('')}
+        </div>
+      </div>`;
+  } catch(e) {}
 }
 
 async function loadExocadBlob(url) {
@@ -434,6 +463,26 @@ async function fijarNota(notaId, casoId, fijar) {
   </a>
 </div>
 <script>window.addEventListener('scroll',function(){var b=document.getElementById('scroll-top-btn');if(b)b.style.display=window.scrollY>400?'flex':'none';});</script>
+
+<!-- CASOS RELACIONADOS -->
+<div id="relacionados-wrap"></div>
+
+<!-- CTA -->
+<div style="max-width:1200px;margin:40px auto 0;padding:0 24px;">
+  <div style="background:linear-gradient(135deg,rgba(217,70,166,.12),rgba(0,210,255,.08));border:1px solid rgba(217,70,166,.3);border-radius:20px;padding:36px 32px;text-align:center;">
+    <div style="font-size:1.8rem;margin-bottom:12px;">🦷</div>
+    <h3 style="font-size:1.3rem;font-weight:900;color:#f8fafc;margin-bottom:8px;">¿Tienes un caso similar?</h3>
+    <p style="color:#94a3b8;font-size:.92rem;margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto;">Envíanos tu escaneo STL y recibe tu diseño digital en menos de 24 horas. Zirconia, disilicato, alineadores y más.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="/envia-tu-scanner" style="background:#D946A6;color:#fff;border:none;border-radius:50px;padding:13px 28px;font-weight:800;font-size:.9rem;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:opacity .2s;">
+        <i class="fas fa-upload"></i> Enviar mi STL
+      </a>
+      <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20tengo%20un%20caso%20similar%20y%20quiero%20cotizar." target="_blank" rel="noopener noreferrer" style="background:rgba(37,211,102,.12);color:#25D366;border:1px solid rgba(37,211,102,.35);border-radius:50px;padding:13px 28px;font-weight:800;font-size:.9rem;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+        <i class="fab fa-whatsapp"></i> Cotizar por WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
 
 <!-- AVISO LEGAL DE PORTAFOLIO -->
 <div style="max-width:1200px;margin:48px auto 0;padding:24px 24px 40px;border-top:1px solid rgba(255,255,255,.06);">
