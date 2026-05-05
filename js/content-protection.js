@@ -8,10 +8,10 @@
 
   /* ── 1. DESHABILITAR CLIC DERECHO en contenido protegido ── */
   document.addEventListener('contextmenu', function (e) {
-    const protected = e.target.closest(
+    var protectedEl = e.target.closest(
       '.gallery-item, .viewer-wrap, #lightbox, .lightbox, .card-img, .case-card .card-img, video, iframe'
     );
-    if (protected) {
+    if (protectedEl) {
       e.preventDefault();
       showProtectionToast();
       return false;
