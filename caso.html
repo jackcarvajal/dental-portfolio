@@ -74,6 +74,14 @@ a{color:inherit;text-decoration:none;}
 .lb-prev:hover,.lb-next:hover{background:var(--gold);color:#000;transform:translateY(-50%) scale(1.1);}
 .lb-counter{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);border:2px solid var(--gold);color:var(--gold);font-size:.88rem;font-weight:800;padding:8px 24px;border-radius:100px;letter-spacing:.05em;}
 
+/* NOTA PINNED */
+.nota-item.pinned{background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(255,102,0,.08));border:2px solid var(--gold);box-shadow:0 0 18px rgba(212,175,55,.18);}
+.pin-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold);color:#000;font-size:.68rem;font-weight:900;padding:3px 10px;border-radius:100px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;}
+.nota-admin{display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);}
+.btn-admin{background:none;border:1px solid rgba(255,255,255,.15);border-radius:8px;color:var(--muted);font-size:.72rem;padding:4px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;}
+.btn-admin:hover{border-color:var(--gold);color:var(--gold);}
+.btn-admin.del:hover{border-color:#f87171;color:#f87171;}
+
 /* FEEDBACK */
 .feedback-box{background:#111;border:2px solid rgba(212,175,55,.3);border-radius:24px;padding:48px 40px;}
 .feedback-title{font-size:1.6rem;font-weight:900;color:var(--gold);margin-bottom:8px;text-align:center;text-transform:uppercase;letter-spacing:2px;}
@@ -287,6 +295,21 @@ async function loadExocadBlob(url) {
   } catch(e) { console.error('Exocad load error:', e); }
 }
 
+/* ── ADMIN ── */
+const ADMIN_EMAILS = ['jackalejandroc@gmail.com','labdentalprodigy@gmail.com'];
+let isAdmin = false;
+
+/* ── FILTRO DE PALABRAS ── */
+const PALABRAS_PROHIBIDAS = [
+  'mierda','puta','puto','culo','coño','verga','hijueputa','hp','marica','gonorrea',
+  'idiota','estupido','estúpido','imbecil','imbécil','pendejo','cabron','cabrón',
+  'joder','concha','chinga','fuck','shit','ass','bitch','bastard','cunt'
+];
+function filtrarTexto(texto) {
+  const lower = texto.toLowerCase();
+  return PALABRAS_PROHIBIDAS.some(p => lower.includes(p));
+}
+
 /* ── REACCIONES ── */
 let reaccionSel = '';
 function selReaction(btn, label) {
@@ -295,32 +318,56 @@ function selReaction(btn, label) {
   reaccionSel = label;
 }
 
-/* ── NOTAS ── */
+/* ── COMENTARIOS ── */
 async function cargarNotas(casoId) {
   const lista = document.getElementById('notas-list');
   if (!lista) return;
   try {
-    const { data } = await sb.from('feedback_casos').select('*').eq('caso_id', casoId).order('created_at', { ascending: false });
+    const { data } = await sb.from('feedback_casos')
+      .select('*')
+      .eq('caso_id', casoId)
+      .neq('deleted', true)
+      .order('pinned', { ascending: false })
+      .order('created_at', { ascending: false });
+
     if (!data || !data.length) {
       lista.innerHTML = '<div class="notas-empty"><i class="fas fa-comment-slash" style="display:block;font-size:1.5rem;margin-bottom:8px;"></i>Sé el primero en comentar este caso.</div>';
       return;
     }
     lista.innerHTML = data.map(n => `
-      <div class="nota-item">
+      <div class="nota-item${n.pinned ? ' pinned' : ''}" id="nota-${n.id}">
+        ${n.pinned ? '<div class="pin-badge"><i class="fas fa-thumbtack"></i> Destacado por PRODIGY</div>' : ''}
         ${n.reaction ? `<div class="nota-reaction">${n.reaction}</div>` : ''}
-        <div class="nota-text">${n.nota || ''}</div>
+        <div class="nota-text">${escHtml(n.nota || '')}</div>
         <div class="nota-date">${n.created_at ? new Date(n.created_at).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'}) : ''}</div>
+        ${isAdmin ? `
+        <div class="nota-admin">
+          <button class="btn-admin" onclick="fijarNota('${n.id}','${casoId}',${!n.pinned})">
+            <i class="fas fa-thumbtack"></i>${n.pinned ? 'Quitar destaque' : 'Destacar'}
+          </button>
+          <button class="btn-admin del" onclick="eliminarNota('${n.id}','${casoId}')">
+            <i class="fas fa-trash"></i> Eliminar
+          </button>
+        </div>` : ''}
       </div>`).join('');
   } catch(e) {
-    lista.innerHTML = '<div class="notas-empty">Error cargando notas.</div>';
+    lista.innerHTML = '<div class="notas-empty">Error cargando comentarios.</div>';
   }
+}
+
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 async function publicarNota(casoId) {
   const texto = document.getElementById('nota-text').value.trim();
-  if (!texto && !reaccionSel) { alert('Escribe una nota o selecciona una reacción'); return; }
+  if (!texto && !reaccionSel) { alert('Escribe un comentario o selecciona una reacción.'); return; }
+  if (texto && filtrarTexto(texto)) {
+    alert('Tu comentario contiene lenguaje inapropiado. Por favor usa un tono profesional.');
+    return;
+  }
   try {
-    await sb.from('feedback_casos').insert({ caso_id: casoId, reaction: reaccionSel, nota: texto });
+    await sb.from('feedback_casos').insert({ caso_id: casoId, reaction: reaccionSel, nota: texto, pinned: false, deleted: false });
     document.getElementById('nota-text').value = '';
     reaccionSel = '';
     document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('active'));
@@ -328,15 +375,32 @@ async function publicarNota(casoId) {
   } catch(e) { alert('Error al publicar: ' + e.message); }
 }
 
+async function eliminarNota(notaId, casoId) {
+  if (!isAdmin) return;
+  if (!confirm('¿Eliminar este comentario?')) return;
+  await sb.from('feedback_casos').update({ deleted: true }).eq('id', notaId);
+  cargarNotas(casoId);
+}
+
+async function fijarNota(notaId, casoId, fijar) {
+  if (!isAdmin) return;
+  await sb.from('feedback_casos').update({ pinned: fijar }).eq('id', notaId);
+  cargarNotas(casoId);
+}
+
 /* ── INIT ── */
 (async function() {
   const id = new URLSearchParams(location.search).get('id');
   if (!id) { document.getElementById('caso-root').innerHTML = '<div class="error-box"><i class="fas fa-exclamation-triangle"></i><h2>Sin ID</h2><p>No se especificó ningún caso.</p></div>'; return; }
 
+  /* Verificar si es admin */
   try {
-    // Buscar por id
+    const { data: { session } } = await sb.auth.getSession();
+    if (session && ADMIN_EMAILS.includes(session.user.email)) isAdmin = true;
+  } catch(e) {}
+
+  try {
     let { data, error } = await sb.from('casos_portafolio').select('*').eq('id', id).maybeSingle();
-    // Fallback: buscar por code
     if (!data && !error) {
       const r2 = await sb.from('casos_portafolio').select('*').eq('code', id).maybeSingle();
       data = r2.data; error = r2.error;
