@@ -252,14 +252,14 @@ async function render(c) {
     <div class="section" style="padding-bottom:60px;">
       <div class="section-title"><i class="fas fa-comment-medical"></i> Feedback Clínico</div>
       <div class="feedback-box">
-        <div class="feedback-title">💬 Feedback Clínico</div>
-        <p class="feedback-subtitle">Tu opinión ayuda a mejorar cada diseño. Selecciona una reacción y/o escribe tu nota.</p>
+        <div class="feedback-title">💬 Comentarios de la Comunidad</div>
+        <p class="feedback-subtitle">¿Qué te parece este trabajo? Ayúdanos a ser los mejores — tu perspectiva clínica impulsa nuestra excelencia.</p>
         <div class="feedback-rules">
-          <strong>📋 Reglas de comentario:</strong><br>
-          · Sé específico: menciona pieza, zona u observación clínica concreta.<br>
-          · Usa terminología dental correcta (oclusión, emergencia, contorno, etc.).<br>
-          · Si solicitas cambio, descríbelo con detalle para que pueda ejecutarse en Exocad.<br>
-          · Comentarios de aprobación final activan el flujo de producción.
+          <strong>📋 Normas de la comunidad:</strong><br>
+          · Comparte tu opinión técnica sobre el diseño: anatomía, estética, proporción, material.<br>
+          · Sé respetuoso y usa lenguaje profesional — comentarios ofensivos serán eliminados.<br>
+          · Este es un portafolio de casos terminados, no un canal de solicitudes de cambio.<br>
+          · Tu comentario puede destacarse como reseña de experto si el equipo lo aprueba.
         </div>
         <div class="reaction-grid">
           <button class="reaction-btn" onclick="selReaction(this,'Aprobado')"><span class="emoji">👍</span><span>Aprobado</span></button>
@@ -268,8 +268,8 @@ async function render(c) {
           <button class="reaction-btn" onclick="selReaction(this,'Anatomía Top')"><span class="emoji">🦷</span><span>Anatomía Top</span></button>
           <button class="reaction-btn" onclick="selReaction(this,'Perfección')"><span class="emoji">💎</span><span>Perfección</span></button>
         </div>
-        <textarea class="nota-area" id="nota-text" placeholder="Nota clínica: ajustes en oclusión, cambios de color, contorno de emergencia, reducción interproximal…"></textarea>
-        <button class="btn-publicar" onclick="publicarNota('${c.id}')"><i class="fas fa-paper-plane"></i> Publicar nota</button>
+        <textarea class="nota-area" id="nota-text" placeholder="Escribe tu opinión técnica: proporción, anatomía, estética, material… Comentarios respetuosos y en español."></textarea>
+        <button class="btn-publicar" onclick="publicarNota('${c.id}')"><i class="fas fa-paper-plane"></i> Publicar comentario</button>
         <div class="notas-list" id="notas-list"></div>
       </div>
     </div>`;
@@ -302,7 +302,7 @@ async function cargarNotas(casoId) {
   try {
     const { data } = await sb.from('feedback_casos').select('*').eq('caso_id', casoId).order('created_at', { ascending: false });
     if (!data || !data.length) {
-      lista.innerHTML = '<div class="notas-empty"><i class="fas fa-comment-slash" style="display:block;font-size:1.5rem;margin-bottom:8px;"></i>Aún no hay notas clínicas para este caso.</div>';
+      lista.innerHTML = '<div class="notas-empty"><i class="fas fa-comment-slash" style="display:block;font-size:1.5rem;margin-bottom:8px;"></i>Sé el primero en comentar este caso.</div>';
       return;
     }
     lista.innerHTML = data.map(n => `
