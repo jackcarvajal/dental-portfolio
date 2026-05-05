@@ -214,6 +214,24 @@
   _loadScript('/js/conversions.js');
   _loadScript('/js/geo-detect.js');
   _loadScript('/js/content-protection.js');
+  /* GSAP + ScrollTrigger + animaciones PRODIGY */
+  function _loadGSAP() {
+    var g = document.createElement('script');
+    g.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js';
+    g.onload = function () {
+      var st = document.createElement('script');
+      st.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js';
+      st.onload = function () { _loadScript('/js/animations.js'); };
+      document.body.appendChild(st);
+    };
+    document.body.appendChild(g);
+  }
+  /* Cargar GSAP solo cuando el browser esté idle */
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(_loadGSAP, { timeout: 2000 });
+  } else {
+    setTimeout(_loadGSAP, 800);
+  }
 
   // ── Cookie consent (SIC Circular 002/2015 + GDPR + GA4 Consent Mode v2) ──
   var _pgConsentVal = localStorage.getItem('prodigy_cookies_ok');
