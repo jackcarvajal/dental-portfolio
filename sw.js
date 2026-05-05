@@ -24,7 +24,6 @@ const PRECACHE = [
   '/diseno-remoto',
   '/en/global-design',
   '/soporte-tecnico',
-  '/alejandro',
   '/manifest.json',
   '/assets/prodigy-preview.jpg',
   '/assets/icons/icon-192.png',
