@@ -260,6 +260,18 @@ async function render(c) {
 
     ${galHTML}
 
+    ${c.pdf_url ? `
+    <div class="section">
+      <div class="section-title"><i class="fas fa-file-pdf"></i> Documento PDF</div>
+      <div style="border-radius:14px;overflow:hidden;border:2px solid rgba(0,210,255,.3);background:#0a0f1a;box-shadow:0 0 24px rgba(0,210,255,.12);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(0,210,255,.06);border-bottom:1px solid rgba(0,210,255,.15);">
+          <span style="font-size:.78rem;color:#00d2ff;font-weight:700;"><i class="fas fa-file-pdf" style="margin-right:6px;"></i>Documento adjunto</span>
+          <a href="${c.pdf_url}" target="_blank" rel="noopener noreferrer" style="font-size:.75rem;color:#00d2ff;text-decoration:none;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 12px;border-radius:6px;display:inline-flex;align-items:center;gap:5px;"><i class="fas fa-external-link-alt"></i> Abrir en nueva pestaña</a>
+        </div>
+        <iframe src="${c.pdf_url}" style="width:100%;height:680px;border:none;display:block;" title="Documento PDF del caso"></iframe>
+      </div>
+    </div>` : ''}
+
     <div class="section" style="padding-bottom:60px;">
       <div class="section-title"><i class="fas fa-comment-medical"></i> Feedback Clínico</div>
       <div class="feedback-box">
@@ -432,7 +444,7 @@ async function fijarNota(notaId, casoId, fijar) {
   } catch(e) {}
 
   try {
-    let { data, error } = await sb.from('casos_portafolio').select('*').eq('id', id).maybeSingle();
+    let { data, error } = await sb.from('casos_portafolio').select('*,pdf_url').eq('id', id).maybeSingle();
     if (!data && !error) {
       const r2 = await sb.from('casos_portafolio').select('*').eq('code', id).maybeSingle();
       data = r2.data; error = r2.error;

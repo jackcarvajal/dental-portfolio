@@ -407,6 +407,18 @@
                         <p style="font-size:.65rem;color:#475569;margin-top:4px;">MP4 propio o URL de YouTube / Google Drive</p>
                     </div>
 
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label><i class="fas fa-file-pdf" style="color:#00d2ff;margin-right:6px;"></i>Documento PDF <span style="color:#475569;font-weight:400;">(opcional — plan de tratamiento, reporte, ficha técnica)</span></label>
+                        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                            <label for="p-pdf-file" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.3);color:#00d2ff;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.78rem;white-space:nowrap;">
+                                <i class="fas fa-file-pdf"></i> Seleccionar PDF
+                            </label>
+                            <span id="pdf-filename" style="font-size:.78rem;color:#94a3b8;">Ningún archivo seleccionado</span>
+                        </div>
+                        <input type="file" id="p-pdf-file" accept="application/pdf" style="display:none;" onchange="selectPdfFile(this)">
+                        <p style="font-size:.65rem;color:#475569;margin-top:4px;">Se mostrará como visor inline en la página del caso. Máx. 20 MB.</p>
+                    </div>
+
                 </div>
 
                 <div style="margin-top:24px;display:flex;gap:12px;justify-content:flex-end;align-items:center;">
@@ -1042,6 +1054,16 @@ function handleDropGaleria(e) {
 }
 
 let videoFile = null;
+let pdfFile   = null;
+
+function selectPdfFile(input) {
+    pdfFile = input.files[0];
+    if (pdfFile) {
+        const mb = (pdfFile.size/1024/1024).toFixed(1);
+        document.getElementById('pdf-filename').innerHTML =
+            '<strong style="color:#00d2ff"><i class="fas fa-check-circle"></i> ' + pdfFile.name + '</strong> (' + mb + ' MB)';
+    }
+}
 function selectVideoFile(input) {
     videoFile = input.files[0];
     if (videoFile) {
@@ -1119,6 +1141,14 @@ async function subirCaso(e) {
             if (!vErr) videoUrl = base + vPath;
         }
 
+        let pdfUrl = null;
+        if (pdfFile) {
+            prog.textContent = 'Subiendo PDF…';
+            const pPath = id + '/pdf/documento.pdf';
+            const { error: pErr } = await sb.storage.from(PORT_BUCKET).upload(pPath, pdfFile, { contentType: 'application/pdf', upsert: true });
+            if (!pErr) pdfUrl = base + pPath;
+        }
+
         // 4. Insert en casos_portafolio
         prog.textContent = 'Guardando en base de datos…';
         const { error: dbErr } = await sb.from('casos_portafolio').insert({
@@ -1133,6 +1163,7 @@ async function subirCaso(e) {
             gallery:       galleryUrls,
             gallery_count: galleryUrls.length,
             drive_link:    videoUrl || document.getElementById('p-video').value.trim() || null,
+            pdf_url:       pdfUrl || null,
             visible:       true
         });
         if (dbErr) throw new Error('BD: ' + dbErr.message);
@@ -1272,6 +1303,18 @@ function abrirEditar(id) {
                 <input type="file" id="e-exocad-file" style="display:none;" onchange="this.nextElementSibling.textContent=this.files[0]?'📎 '+this.files[0].name:''; document.getElementById('e-exocad-name').innerHTML='<strong style=color:#D946A6>'+this.files[0].name+'</strong>';">
             </div>
 
+            <!-- Actualizar PDF -->
+            <div style="grid-column:1/-1;background:rgba(0,210,255,.04);border:1px dashed rgba(0,210,255,.25);border-radius:10px;padding:14px;">
+                <div style="font-size:.72rem;font-weight:700;color:#00d2ff;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;"><i class="fas fa-file-pdf" style="margin-right:5px;"></i>Documento PDF (plan, reporte, ficha)</div>
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                    <label for="e-pdf-file" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.35);color:#00d2ff;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.76rem;white-space:nowrap;">
+                        <i class="fas fa-file-pdf"></i> Seleccionar PDF
+                    </label>
+                    <span id="e-pdf-name" style="font-size:.76rem;color:#64748b;">${c.pdf_url ? '✅ Ya tiene PDF — puedes reemplazarlo' : 'Sin PDF adjunto'}</span>
+                </div>
+                <input type="file" id="e-pdf-file" accept="application/pdf" style="display:none;" onchange="document.getElementById('e-pdf-name').innerHTML='<strong style=color:#00d2ff>'+this.files[0].name+'</strong>';">
+            </div>
+
             <div style="grid-column:1/-1;display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
                 <button onclick="document.getElementById('edit-modal').remove()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
                 <button onclick="guardarEdicion('${id}')" style="background:#D4AF37;border:none;color:#000;padding:10px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;"><i class="fas fa-save"></i> Guardar</button>
@@ -1291,15 +1334,26 @@ async function guardarEdicion(id) {
         description: document.getElementById('e-desc').value,
     };
 
+    const base = `https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/object/public/${PORT_BUCKET}/`;
+
     // Subir nuevo exocad HTML si se seleccionó
     const exocadInput = document.getElementById('e-exocad-file');
     if (exocadInput && exocadInput.files[0]) {
         const f = exocadInput.files[0];
         const path = id + '/exocad/caso.html';
-        const base = `https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/object/public/${PORT_BUCKET}/`;
         const { error: upErr } = await sb.storage.from(PORT_BUCKET).upload(path, f, { contentType: 'text/html', upsert: true });
         if (upErr) { toast('Error subiendo Exocad: ' + upErr.message, 'error'); return; }
         updates.exocad_file = base + path;
+    }
+
+    // Subir PDF si se seleccionó
+    const pdfInput = document.getElementById('e-pdf-file');
+    if (pdfInput && pdfInput.files[0]) {
+        const f = pdfInput.files[0];
+        const path = id + '/pdf/documento.pdf';
+        const { error: pErr } = await sb.storage.from(PORT_BUCKET).upload(path, f, { contentType: 'application/pdf', upsert: true });
+        if (pErr) { toast('Error subiendo PDF: ' + pErr.message, 'error'); return; }
+        updates.pdf_url = base + path;
     }
 
     const { error } = await sb.from('casos_portafolio').update(updates).eq('id', id);
