@@ -794,11 +794,13 @@
     </div>
     <div class="filter-tags">
       <button class="tag-btn active" onclick="filterArticles(this,'all')">Todos</button>
-      <button class="tag-btn" onclick="filterArticles(this,'ia')">IA</button>
-      <button class="tag-btn" onclick="filterArticles(this,'materiales')">Materiales</button>
       <button class="tag-btn" onclick="filterArticles(this,'flujos')">Flujos CAD</button>
+      <button class="tag-btn" onclick="filterArticles(this,'tecnologia')">Tecnología</button>
+      <button class="tag-btn" onclick="filterArticles(this,'materiales')">Materiales</button>
+      <button class="tag-btn" onclick="filterArticles(this,'clinico')">Clínico</button>
       <button class="tag-btn" onclick="filterArticles(this,'impresion3d')">Impresión 3D</button>
-      <button class="tag-btn" onclick="filterArticles(this,'equipo')">Equipos</button>
+      <button class="tag-btn" onclick="filterArticles(this,'ia')">IA</button>
+      <button class="tag-btn" onclick="filterArticles(this,'protocolo')">Protocolo</button>
     </div>
   </div>
 
@@ -845,7 +847,12 @@
   window.filterArticles = function(btn, cat){
     document.querySelectorAll('.tag-btn').forEach(function(b){ b.classList.remove('active'); });
     btn.classList.add('active');
-    var filtered = cat === 'all' ? ARTICLES : ARTICLES.filter(function(a){ return a.categoria === cat; });
+    /* materiales agrupa 'materiales' + 'material'; fabricacion agrupa 'fabricacion' */
+    var ALIAS = { materiales: ['materiales','material'], protocolo: ['protocolo','fabricacion'] };
+    var filtered = cat === 'all' ? ARTICLES : ARTICLES.filter(function(a){
+      var cats = ALIAS[cat] || [cat];
+      return cats.indexOf(a.categoria) !== -1;
+    });
     renderAll(filtered);
     document.getElementById('articlesTrack').scrollTo({left:0, behavior:'smooth'});
   };
