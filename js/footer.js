@@ -35,7 +35,8 @@
       'color:#94a3b8;text-decoration:none;',
       'transition:color .25s,padding-left .2s;',
     '}',
-    '#pfoot-root .pfoot-col a:hover{color:#D4AF37;padding-left:4px;}',
+    '#pfoot-root .pfoot-col ul li a:hover{color:#D4AF37;padding-left:4px;}',
+    '#pfoot-root .pfoot-col a:not(ul li a):hover{color:#D4AF37;}',
     /* Brand col */
     '#pfoot-root .pfoot-brand .pfoot-logo{',
       'font-size:22px;font-weight:900;letter-spacing:3px;',
