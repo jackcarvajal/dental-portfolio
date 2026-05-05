@@ -212,6 +212,7 @@
   _loadScript('/js/utm-tracker.js');
   _loadScript('/js/conversions.js');
   _loadScript('/js/geo-detect.js');
+  _loadScript('/js/content-protection.js');
 
   // ── Cookie consent (SIC Circular 002/2015 + GDPR + GA4 Consent Mode v2) ──
   var _pgConsentVal = localStorage.getItem('prodigy_cookies_ok');

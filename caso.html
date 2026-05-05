@@ -208,13 +208,13 @@ async function render(c) {
   /* Visor: Exocad verificado > Video > cover img como fallback */
   let visorHTML = '';
   if (hasExocad) {
-    visorHTML = `<div class="viewer-wrap"><iframe id="exocad-frame" title="Visor 3D Exocad" allowfullscreen></iframe></div>`;
+    visorHTML = `<div class="viewer-wrap"><iframe id="exocad-frame" title="Visor 3D Exocad" allowfullscreen oncontextmenu="return false;"></iframe></div>`;
   } else if (hasDrive) {
     const embed = toEmbed(c.drive_link);
     if (embed) {
       visorHTML = `<div class="viewer-wrap"><iframe src="${embed}" title="Video" allowfullscreen allow="autoplay"></iframe></div>`;
     } else if (/\.(mp4|webm)(\?|$)/i.test(c.drive_link)) {
-      visorHTML = `<div class="viewer-wrap"><video controls preload="metadata" style="width:100%;height:100%;background:#000;"><source src="${c.drive_link}"></video></div>`;
+      visorHTML = `<div class="viewer-wrap"><video controls controlsList="nodownload nofullscreen" oncontextmenu="return false;" preload="metadata" style="width:100%;height:100%;background:#000;"><source src="${c.drive_link}"></video></div>`;
     }
   }
   /* Si no hay visor ni video: no mostrar sección de visor */
@@ -263,12 +263,15 @@ async function render(c) {
     ${c.pdf_url ? `
     <div class="section">
       <div class="section-title"><i class="fas fa-file-pdf"></i> Documento PDF</div>
-      <div style="border-radius:14px;overflow:hidden;border:2px solid rgba(0,210,255,.3);background:#0a0f1a;box-shadow:0 0 24px rgba(0,210,255,.12);">
+      <div class="pdf-wrap" style="border-radius:14px;overflow:hidden;border:2px solid rgba(0,210,255,.3);background:#0a0f1a;box-shadow:0 0 24px rgba(0,210,255,.12);position:relative;">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(0,210,255,.06);border-bottom:1px solid rgba(0,210,255,.15);">
-          <span style="font-size:.78rem;color:#00d2ff;font-weight:700;"><i class="fas fa-file-pdf" style="margin-right:6px;"></i>Documento adjunto</span>
-          <a href="${c.pdf_url}" target="_blank" rel="noopener noreferrer" style="font-size:.75rem;color:#00d2ff;text-decoration:none;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 12px;border-radius:6px;display:inline-flex;align-items:center;gap:5px;"><i class="fas fa-external-link-alt"></i> Abrir en nueva pestaña</a>
+          <span style="font-size:.78rem;color:#00d2ff;font-weight:700;"><i class="fas fa-file-pdf" style="margin-right:6px;"></i>Documento adjunto · <span style="color:#475569;font-weight:400;">Solo lectura</span></span>
+          <span style="font-size:.72rem;color:#475569;"><i class="fas fa-lock" style="margin-right:4px;"></i>Descarga restringida</span>
         </div>
-        <iframe src="${c.pdf_url}" style="width:100%;height:680px;border:none;display:block;" title="Documento PDF del caso"></iframe>
+        <div style="position:relative;">
+          <iframe src="${c.pdf_url}#toolbar=0&navpanes=0&scrollbar=1&view=FitH" style="width:100%;height:680px;border:none;display:block;" title="Documento PDF" oncontextmenu="return false;"></iframe>
+          <div class="pdf-overlay" oncontextmenu="return false;" style="position:absolute;top:0;right:0;width:52px;height:100%;z-index:10;background:transparent;cursor:default;"></div>
+        </div>
       </div>
     </div>` : ''}
 

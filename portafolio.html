@@ -709,6 +709,7 @@ function renderPage(page) {
             <div class="card-img">
                 <img src="${escH(c.coverImage)}" alt="${escH(c.name)}"
                      loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async"
+                     oncontextmenu="return false;" draggable="false"
                      onerror="this.parentElement.style.background='#0a0a0a'">
                 <div class="card-watermark"><span>© PRODIGY</span></div>
                 <div class="card-type-badge">${escH(getTypeLabel(c.type))}</div>
