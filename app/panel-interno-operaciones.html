@@ -309,7 +309,7 @@
 
                     <!-- PORTADA -->
                     <div class="form-group" style="grid-column:1/-1;">
-                        <label style="color:var(--gold);font-weight:700;">📷 PORTADA <span style="color:#f87171;font-size:.75rem;font-weight:700;">* obligatorio</span> <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">— imagen principal del portafolio</span></label>
+                        <label style="color:var(--gold);font-weight:700;">📷 PORTADA <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">(opcional) — imagen principal del portafolio</span></label>
                         <div class="drop-zone" id="drop-zone" onclick="document.getElementById('img-input').click()"
                              ondrop="handleDropPortada(event)" ondragover="event.preventDefault();this.classList.add('drag-over')"
                              ondragleave="this.classList.remove('drag-over')">
@@ -337,7 +337,7 @@
 
                     <!-- EXOCAD — solo el archivo HTML -->
                     <div class="form-group" style="grid-column:1/-1;">
-                        <label style="font-weight:700;"><i class="fas fa-cube" style="color:#D946A6;margin-right:6px;"></i>VISOR EXOCAD <span style="color:#f87171;font-size:.75rem;font-weight:700;">* obligatorio</span></label>
+                        <label style="font-weight:700;"><i class="fas fa-cube" style="color:#D946A6;margin-right:6px;"></i>VISOR EXOCAD <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">(opcional)</span></label>
                         <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(217,70,166,.06);border:1px dashed rgba(217,70,166,.3);border-radius:10px;">
                             <label for="exocad-input" style="display:inline-flex;align-items:center;gap:8px;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.4);color:#D946A6;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;white-space:nowrap;">
                                 <i class="fas fa-file-code"></i> Seleccionar archivo HTML
@@ -349,7 +349,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Nombre del caso <span style="color:#f87171;font-size:.75rem;font-weight:700;">* obligatorio</span></label>
+                        <label>Nombre del caso <span style="color:#f87171;font-size:.72rem;font-weight:700;">*</span></label>
                         <input type="text" id="p-titulo" placeholder="Ej: Rehabilitación Full Arch Zirconia" required>
                     </div>
 
@@ -1089,9 +1089,7 @@ function handleExocadPanel(input) {
 async function subirCaso(e) {
     e.preventDefault();
     const nombre = document.getElementById('p-titulo').value.trim();
-    if (!nombre)  { toast('⚠️ El nombre del caso es obligatorio', 'error'); return; }
-    if (!imgFile) { toast('⚠️ La portada (foto) es obligatoria', 'error'); return; }
-    if (!exocadMain) { toast('⚠️ El visor HTML de Exocad es obligatorio', 'error'); return; }
+    if (!nombre) { toast('⚠️ El nombre del caso es obligatorio', 'error'); return; }
 
     const btn  = document.getElementById('btn-subir');
     const prog = document.getElementById('p-progress');
@@ -1103,13 +1101,16 @@ async function subirCaso(e) {
     const base = `https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/object/public/${PORT_BUCKET}/`;
 
     try {
-        // 1. Portada
-        prog.textContent = 'Subiendo portada…';
-        const cExt = imgFile.name.split('.').pop().toLowerCase();
-        const cPath = id + '/cover.' + cExt;
-        const { error: cErr } = await sb.storage.from(PORT_BUCKET).upload(cPath, imgFile, { contentType: imgFile.type, upsert: true });
-        if (cErr) throw new Error('Portada: ' + cErr.message);
-        const coverUrl = base + cPath;
+        // 1. Portada (opcional)
+        let coverUrl = null;
+        if (imgFile) {
+            prog.textContent = 'Subiendo portada…';
+            const cExt = imgFile.name.split('.').pop().toLowerCase();
+            const cPath = id + '/cover.' + cExt;
+            const { error: cErr } = await sb.storage.from(PORT_BUCKET).upload(cPath, imgFile, { contentType: imgFile.type, upsert: true });
+            if (cErr) throw new Error('Portada: ' + cErr.message);
+            coverUrl = base + cPath;
+        }
 
         // 2. Galería
         const galleryUrls = [];
