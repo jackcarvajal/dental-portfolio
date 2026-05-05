@@ -1,7 +1,7 @@
 /**
- * PRODIGY — Animations Engine v1.0
- * GSAP + ScrollTrigger + CSS keyframes
- * Carga diferida: se ejecuta cuando GSAP ya está disponible
+ * PRODIGY — Animations Engine v2.0
+ * GSAP ScrollTrigger — solo entradas al scroll, sin loops ni distracciones.
+ * Principio: las animaciones deben GUIAR la atención, no robarla.
  */
 (function () {
   'use strict';
@@ -10,173 +10,89 @@
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
-    /* ── CONFIGURACIÓN GLOBAL ── */
-    gsap.defaults({ ease: 'power2.out', duration: 0.7 });
+    /* Configuración conservadora */
+    gsap.defaults({ ease: 'power2.out', duration: 0.6 });
 
-    /* ── UTILIDAD: ¿elemento existe? ── */
-    function q(sel) { return document.querySelectorAll(sel); }
-
-    /* ══════════════════════════════════════════════════════
-       1. HERO PRINCIPAL (index.html)
-    ══════════════════════════════════════════════════════ */
-    var heroTitle = document.querySelector('.section-header');
-    if (heroTitle && heroTitle.closest('#hero, section')) {
-      gsap.from('.section-header', { y: 40, opacity: 0, duration: 1, delay: 0.2 });
-      gsap.from('.section-subtitle', { y: 30, opacity: 0, duration: 0.9, delay: 0.4 });
+    /* ── Utilidad ── */
+    function reveal(selector, extra) {
+      var els = document.querySelectorAll(selector);
+      if (!els.length) return;
+      els.forEach(function (el) {
+        gsap.from(el, Object.assign({
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+          y: 22, opacity: 0
+        }, extra || {}));
+      });
     }
 
-    /* ══════════════════════════════════════════════════════
-       2. ECO-CARDS — entrada al scroll en stagger
-    ══════════════════════════════════════════════════════ */
-    var ecoSections = q('.eco-section');
-    ecoSections.forEach(function (section) {
-      var cards = section.querySelectorAll('.eco-card');
-      if (!cards.length) return;
-      gsap.from(cards, {
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 82%',
-          toggleActions: 'play none none none'
-        },
-        y: 28,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.055,
-        ease: 'power3.out'
-      });
-    });
+    /* ── SECCIONES genéricas ── */
+    reveal('section h2.section-header', { y: 30, duration: 0.7 });
+    reveal('section .section-subtitle', { y: 20, delay: 0.1 });
 
-    /* ══════════════════════════════════════════════════════
-       3. PORTAFOLIO INDEX — cards en stagger
-    ══════════════════════════════════════════════════════ */
+    /* ── PORTAFOLIO index — stagger cuando JS inserta las tarjetas ── */
     var portGrid = document.getElementById('idx-port-grid');
     if (portGrid) {
-      var observer = new MutationObserver(function () {
+      new MutationObserver(function (_, obs) {
         var cards = portGrid.querySelectorAll('a');
         if (!cards.length) return;
+        obs.disconnect();
         gsap.from(cards, {
           scrollTrigger: { trigger: portGrid, start: 'top 85%' },
-          y: 40,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.12,
-          ease: 'back.out(1.4)'
+          y: 32, opacity: 0, duration: 0.55, stagger: 0.1, ease: 'power2.out'
         });
-        observer.disconnect();
-      });
-      observer.observe(portGrid, { childList: true, subtree: true });
+      }).observe(portGrid, { childList: true });
     }
 
-    /* ══════════════════════════════════════════════════════
-       4. PORTAFOLIO PAGE — case-cards stagger
-    ══════════════════════════════════════════════════════ */
+    /* ── PORTAFOLIO página — stagger cuando JS inserta las tarjetas ── */
     var casesGrid = document.getElementById('casesGrid');
     if (casesGrid) {
-      new MutationObserver(function () {
+      new MutationObserver(function (_, obs) {
         var cards = casesGrid.querySelectorAll('.case-card');
         if (!cards.length) return;
-        gsap.from(cards, {
-          y: 36,
-          opacity: 0,
-          duration: 0.55,
-          stagger: 0.07,
-          ease: 'power2.out'
-        });
+        obs.disconnect();
+        gsap.from(cards, { y: 28, opacity: 0, duration: 0.5, stagger: 0.07 });
       }).observe(casesGrid, { childList: true });
     }
 
-    /* ══════════════════════════════════════════════════════
-       5. FLUJO DE PASOS — entrada secuencial (diseno-remoto, fresado-cam)
-    ══════════════════════════════════════════════════════ */
+    /* ── FLUJOS DE PASOS (diseno-remoto, fresado-cam) ── */
     ['.vflow-step', '.mflow-step', '.proc-step'].forEach(function (sel) {
-      var steps = q(sel);
+      var steps = document.querySelectorAll(sel);
       if (!steps.length) return;
       gsap.from(steps, {
-        scrollTrigger: {
-          trigger: steps[0].parentElement,
-          start: 'top 80%'
-        },
-        x: -30,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: 'power2.out'
+        scrollTrigger: { trigger: steps[0].closest('section, div'), start: 'top 80%' },
+        x: -20, opacity: 0, duration: 0.45, stagger: 0.08
       });
     });
 
-    /* ══════════════════════════════════════════════════════
-       6. SECCIONES GENÉRICAS — cualquier .section-card, .dark-section
-    ══════════════════════════════════════════════════════ */
-    q('.section-card, .dark-section, [data-anim="fade"]').forEach(function (el) {
-      gsap.from(el, {
-        scrollTrigger: { trigger: el, start: 'top 88%' },
-        y: 24,
-        opacity: 0,
-        duration: 0.6
-      });
+    /* ── CASO.HTML ── */
+    ['.caso-hero-card', '.viewer-wrap', '.gallery-grid', '.feedback-box'].forEach(function (sel) {
+      reveal(sel, { y: 18, duration: 0.5 });
     });
-
-    /* ══════════════════════════════════════════════════════
-       7. CASO.HTML — secciones del caso
-    ══════════════════════════════════════════════════════ */
-    q('.caso-hero-card, .viewer-wrap, .gallery-grid, .feedback-box').forEach(function (el) {
-      gsap.from(el, {
-        scrollTrigger: { trigger: el, start: 'top 90%' },
-        y: 20,
-        opacity: 0,
-        duration: 0.65,
-        ease: 'power2.out'
+    var galItems = document.querySelectorAll('.gallery-item');
+    if (galItems.length) {
+      gsap.from(galItems, {
+        scrollTrigger: { trigger: galItems[0].closest('.gallery-grid'), start: 'top 88%' },
+        scale: 0.92, opacity: 0, duration: 0.4, stagger: 0.05, ease: 'back.out(1.2)'
       });
-    });
-
-    q('.gallery-item').forEach(function (el, i) {
-      gsap.from(el, {
-        scrollTrigger: { trigger: el, start: 'top 92%' },
-        scale: 0.9,
-        opacity: 0,
-        duration: 0.4,
-        delay: i * 0.04,
-        ease: 'back.out(1.3)'
-      });
-    });
-
-    /* ══════════════════════════════════════════════════════
-       8. STATS COUNT-UP (IntersectionObserver ya existe,
-          solo añadimos el efecto de escala con GSAP)
-    ══════════════════════════════════════════════════════ */
-    q('[data-stat], .stat-number, .count-num').forEach(function (el) {
-      gsap.from(el, {
-        scrollTrigger: { trigger: el, start: 'top 85%' },
-        scale: 0.6,
-        opacity: 0,
-        duration: 0.5,
-        ease: 'back.out(2)'
-      });
-    });
-
-    /* ══════════════════════════════════════════════════════
-       9. HOVER MAGNÉTICO en tarjetas (eco-card + case-card)
-    ══════════════════════════════════════════════════════ */
-    q('.eco-card').forEach(function (card) {
-      card.addEventListener('mouseenter', function (e) {
-        gsap.to(card, { scale: 1.04, duration: 0.25, ease: 'power1.out' });
-      });
-      card.addEventListener('mouseleave', function () {
-        gsap.to(card, { scale: 1, duration: 0.3, ease: 'power2.out' });
-      });
-    });
-
-  } /* fin initGSAP */
-
-  /* Esperar a que GSAP cargue (se inyecta vía footer.js async) */
-  var _tries = 0;
-  var _check = setInterval(function () {
-    _tries++;
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-      clearInterval(_check);
-      initGSAP();
     }
-    if (_tries > 30) clearInterval(_check); /* max 3 seg */
+
+    /* ── STATS ── */
+    reveal('[data-stat], .stat-number, .count-num', { scale: 0.8, duration: 0.5, ease: 'back.out(1.4)' });
+
+    /* ── ECO-SECTION labels ── */
+    reveal('.eco-section-label', { y: 12, duration: 0.4 });
+
+  }
+
+  /* Esperar GSAP (se carga async vía footer) */
+  var _t = 0;
+  var _i = setInterval(function () {
+    if (++_t > 40) return clearInterval(_i);
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      clearInterval(_i);
+      /* Pequeño delay para no bloquear el paint inicial */
+      setTimeout(initGSAP, 150);
+    }
   }, 100);
 
 })();
