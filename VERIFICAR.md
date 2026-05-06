@@ -6,7 +6,9 @@
 ## ANTES DE VERIFICAR (siempre)
 1. Espera ~2 min a que Cloudflare despliegue
 2. Abre **ventana incógnito** (`Ctrl+Shift+N`)
-3. Navega a la URL indicada
+3. Ve primero a: `prodigylabdental.com/?preview=prodigy`
+   → Esto activa el bypass de mantenimiento para esa sesión incógnito
+4. Ahora navega a la URL que te indiqué
 
 ---
 
