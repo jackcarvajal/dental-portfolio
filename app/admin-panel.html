@@ -535,6 +535,9 @@
             </div>
         </div>
 
+        <!-- Dashboard por departamento -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:24px;" id="torre-depts"></div>
+
         <!-- Tabla pedidos urgentes -->
         <div class="section-card" style="margin-bottom:24px;">
             <div class="section-header">
@@ -1778,12 +1781,43 @@ async function notificarMensajero(mensajeroId, codigo) {
 const SEV_COLOR = { CRITICA: '#ef4444', ALTA: '#f97316', MEDIA: '#fbbf24', BAJA: '#94a3b8' };
 
 async function cargarTorre() {
-    // Pedidos urgentes
+    // Pedidos urgentes + flujo para desglose por departamento
     const { data: pedidos } = await sb.from('pedidos')
-        .select('id, codigo, nombre_paciente, servicio, estado_operativo, created_at')
+        .select('id, codigo, nombre_paciente, servicio, estado_operativo, created_at, flujo')
         .not('estado_operativo', 'in', '("ENTREGADO","CANCELADO","QA_APROBADO")')
         .order('created_at', { ascending: true })
-        .limit(50);
+        .limit(200);
+
+    /* Desglose por departamento */
+    const deptCfg = {
+      diseno:    {label:'Diseño CAD',   color:'#00d2ff', icon:'fa-drafting-compass', flujos:['diseno']},
+      fresado:   {label:'Fresado/Lab',  color:'#D4AF37', icon:'fa-cog',              flujos:['fresado','lab']},
+      impresion: {label:'Impresión 3D', color:'#fb923c', icon:'fa-print',            flujos:['impresion']},
+      taller:    {label:'Taller',       color:'#a78bfa', icon:'fa-tools',            flujos:['taller']}
+    };
+    const activos   = ['VALIDACION_PENDIENTE','EN_PRODUCCION','EN_DISENO','DISENO_FINALIZADO','FRESADO_INICIADO','REVISION_CLIENTE'];
+    const deptHtml = Object.entries(deptCfg).map(([k,c]) => {
+      const all  = (pedidos||[]).filter(p => c.flujos.includes(p.flujo));
+      const act  = all.filter(p => activos.includes(p.estado_operativo));
+      const pend = all.filter(p => p.estado_operativo === 'VALIDACION_PENDIENTE');
+      const done = all.filter(p => ['QA_APROBADO','ENTREGADO','DISENO_APROBADO'].includes(p.estado_operativo));
+      return `<div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-left:3px solid ${c.color};border-radius:12px;padding:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <i class="fas ${c.icon}" style="color:${c.color};font-size:1rem;"></i>
+          <span style="font-size:.82rem;font-weight:800;">${c.label}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;">
+          <div><div style="font-size:1.4rem;font-weight:900;color:#fbbf24;">${pend.length}</div><div style="font-size:.62rem;color:#64748b;">Pendiente</div></div>
+          <div><div style="font-size:1.4rem;font-weight:900;color:${c.color};">${act.length}</div><div style="font-size:.62rem;color:#64748b;">Activos</div></div>
+          <div><div style="font-size:1.4rem;font-weight:900;color:#00FF41;">${done.length}</div><div style="font-size:.62rem;color:#64748b;">Hoy listos</div></div>
+        </div>
+        <div style="margin-top:10px;">
+          <a href="operario.html" target="_blank" style="font-size:.72rem;color:${c.color};text-decoration:none;font-weight:700;">Ver panel →</a>
+        </div>
+      </div>`;
+    }).join('');
+    const deptsEl = document.getElementById('torre-depts');
+    if (deptsEl) deptsEl.innerHTML = deptHtml;
 
     // Incidencias abiertas
     const { data: incs } = await sb.from('logs_incidencias')

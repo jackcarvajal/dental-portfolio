@@ -385,6 +385,37 @@ async function avanzar(id, nuevoEstado, dept) {
 
   const { error } = await sb.from('pedidos').update(updates).eq('id', id);
   if (error) { toast('Error: '+error.message,'err'); return; }
+
+  /* Notificaciones automáticas por hito */
+  try {
+    const { data: p } = await sb.from('pedidos').select('codigo,email,servicio').eq('id',id).single();
+    const pushUrl = SB_URL+'/functions/v1/send-push';
+    const heads   = {'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON};
+
+    if (nuevoEstado === 'REVISION_CLIENTE' && p?.email) {
+      await fetch(pushUrl,{method:'POST',headers:heads,
+        body:JSON.stringify({email:p.email, titulo:'👁 Diseño listo para revisión',
+          cuerpo:`Caso ${p.codigo} — Tu diseño está listo. Por favor revisa y aprueba.`})});
+    }
+    if (nuevoEstado === 'DISENO_APROBADO' && p?.email) {
+      /* Notificar al doctor */
+      await fetch(pushUrl,{method:'POST',headers:heads,
+        body:JSON.stringify({email:p.email, titulo:'✅ Diseño aprobado — En producción',
+          cuerpo:`Caso ${p.codigo} aprobado. Pasamos a producción.`})});
+      /* Insertar log de transición para que el equipo de fresado lo vea */
+      await sb.from('logs_incidencias').insert({
+        pedido_id: id, tipo:'TRANSICION', severidad:'INFO',
+        descripcion: `Diseño aprobado → pasa a fresado/producción (Caso ${p?.codigo})`,
+        resuelta: true
+      });
+    }
+    if (nuevoEstado === 'QA_APROBADO' && p?.email) {
+      await fetch(pushUrl,{method:'POST',headers:heads,
+        body:JSON.stringify({email:p.email, titulo:'🎉 Caso listo para despacho',
+          cuerpo:`Caso ${p.codigo} superó QA. Listo para envío.`})});
+    }
+  } catch(_) { /* notificaciones no bloquean el flujo */ }
+
   toast('Actualizado ✓','ok');
   await recargar();
 }
