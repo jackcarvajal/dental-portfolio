@@ -779,7 +779,8 @@ document.getElementById('agendaForm').addEventListener('submit', async e => {
         num_piezas: piezas ? parseInt(piezas) : null,
         notas: notas || null,
         anticipo_solicitado: anticipo.monto,
-        acepta_marketing:    aceptaMarketing
+        acepta_marketing:    aceptaMarketing,
+        acepta_habeas:       aceptaHabeas
     });
 
     if (error) console.warn('Insert error:', error);

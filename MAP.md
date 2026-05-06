@@ -45,7 +45,7 @@
 ### sw.js
 | Item | Valor |
 |------|-------|
-| Cache version | `prodigy-v14` (línea 2) |
+| Cache version | `prodigy-v15` (línea 2) |
 | PRECACHE array | línea 5–31 |
 | NEVER_CACHE array | línea 34–44 |
 
@@ -181,7 +181,7 @@
 ```
 SUPABASE_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co'
 PORT_BUCKET  = 'portafolio'
-SW_VERSION   = 'prodigy-v14'
+SW_VERSION   = 'prodigy-v15'
 FOOTER_VER   = 'v=20260505'
 ADMIN_EMAILS = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com']
 ```

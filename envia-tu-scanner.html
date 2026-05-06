@@ -807,7 +807,8 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         doctor, clinica, whatsapp, email: email || null,
         escaner_marca: marca, servicio, piezas: piezas || null,
         notas: notas || null, archivo_url, archivo_nombre,
-        acepta_marketing: document.getElementById('checkMarketing').checked
+        acepta_marketing: document.getElementById('checkMarketing').checked,
+        acepta_habeas:    document.getElementById('checkHabeas').checked
     });
 
     setProg(100, 'Listo');

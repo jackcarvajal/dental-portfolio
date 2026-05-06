@@ -2192,7 +2192,12 @@
             texto += `• Titular: ${STATE.pagoTitular}\n`;
             texto += `• Ref: ${STATE.pagoReferencia || 'No proporcionada'}\n\n`;
             
-            texto += `💵 *TOTAL: ${STATE.total}* (pago 100% al confirmar)\n\n`;
+            const _totalNum = typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : (STATE.total || 0);
+            const _abono = Math.round(_totalNum * 0.5).toLocaleString('es-CO');
+            const _saldo = Math.round(_totalNum - Math.round(_totalNum * 0.5)).toLocaleString('es-CO');
+            texto += `💵 *TOTAL: ${STATE.total}*\n`;
+            texto += `💳 *Abono inicio (50%): $${_abono} COP*\n`;
+            texto += `✅ *Saldo contra entrega (50%): $${_saldo} COP*\n\n`;
             texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n`;
 
             // Nonce de seguridad para tracking
