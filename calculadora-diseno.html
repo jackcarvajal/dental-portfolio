@@ -401,16 +401,12 @@ function abrirWA() {
   if (cotizar) {
     msg = `Hola PRODIGY,\n\nNecesito cotizar: *${p.lbl}*\n¿Me pueden dar precio y tiempo de entrega?`;
   } else {
-    const abono = Math.round(total * 0.5);
-    const saldo  = total - abono;
-    msg = `Hola PRODIGY, quiero confirmar un diseño CAD:\n\n` +
+    msg = `Hola PRODIGY, quiero cotizar un diseño CAD:\n\n` +
       `✏️ *Tipo:* ${p.lbl}\n` +
       `📦 *Cantidad:* ${qty}\n` +
       `⏱ *Entrega:* ${p.time}\n` +
       (ST.urgente ? `⚡ Urgente\n` : '') +
-      `\n💰 *Total estimado:* ${fmtVal(total)}\n` +
-      `💳 *Abono (50%):* ${fmtVal(abono)}\n` +
-      `✅ *Saldo contra entrega:* ${fmtVal(saldo)}\n\n` +
+      `\n💰 *Total estimado:* ${fmtVal(total)} (pago 100% al confirmar)\n\n` +
       `Tengo el STL listo. ¿Confirman disponibilidad?`;
   }
   window.open('https://wa.me/573212816716?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
