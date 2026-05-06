@@ -31,12 +31,7 @@
     if (c && e.shiftKey && ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
       e.preventDefault(); return false;
     }
-    // PrintScreen — no se puede bloquear el evento real del SO, pero sí limpiar el portapapeles
-    if (e.key === 'PrintScreen') {
-      setTimeout(() => {
-        try { navigator.clipboard.writeText('© PRODIGY Lab Dental — Contenido protegido'); } catch (err) {}
-      }, 300);
-    }
+    // PrintScreen — el SO maneja esto, no se puede bloquear desde el browser
   });
 
   /* ── 3. BLOQUEAR ARRASTRE DE IMÁGENES ── */
@@ -110,16 +105,6 @@
     setTimeout(addLightboxOverlay, 100);
   });
 
-  /* ── 8. DETECTAR DEVTOOLS ABIERTO (método resize) ── */
-  var devThreshold = 160;
-  setInterval(function () {
-    if (
-      window.outerWidth - window.innerWidth > devThreshold ||
-      window.outerHeight - window.innerHeight > devThreshold
-    ) {
-      /* DevTools detectado — no bloqueamos el sitio, solo limpiamos el portapapeles */
-      try { navigator.clipboard.writeText(''); } catch (e) {}
-    }
-  }, 1500);
+  /* DevTools detection eliminado — causaba popup de permisos de portapapeles */
 
 })();
