@@ -574,6 +574,40 @@ var PRECIOS = {
 
 var VITA_SHADES = ['A1','A2','A3','A3.5','A4','B1','B2','B3','B4','C1','C2','C3','C4','D2','D3','D4','BL1','BL2','BL3','BL4'];
 
+/* ── SYNC PRECIOS DESDE SUPABASE (admin-precios → catalogo) ── */
+async function inicializarCatalogo() {
+    var sb = (typeof getSupabase === 'function') ? getSupabase() : null;
+    if (!sb) return;
+    try {
+        var res = await sb.from('catalogo').select('id,precio,activo').eq('flujo', 'lab');
+        if (!res.data || !res.data.length) return;
+        var mapa = {};
+        res.data.forEach(function(r){ mapa[r.id] = r; });
+        /* Recorrer todos los items de PRECIOS y actualizar precio/visibilidad */
+        Object.keys(PRECIOS).forEach(function(cat) {
+            PRECIOS[cat] = PRECIOS[cat].map(function(item) {
+                var row = mapa[item.id];
+                if (!row) return item;
+                return Object.assign({}, item, {
+                    price:     row.precio,
+                    _inactivo: row.activo === false
+                });
+            }).filter(function(item){ return !item._inactivo; });
+        });
+        /* Reconstruir UI si ya hay items en el carrito */
+        Object.keys(cart).forEach(function(id) {
+            var found = null;
+            Object.values(PRECIOS).forEach(function(arr){
+                arr.forEach(function(p){ if (p.id === id) found = p; });
+            });
+            if (found && cart[id]) cart[id].price = found.price;
+        });
+        updateCart();
+    } catch (e) {
+        console.warn('[PRODIGY Lab] Usando precios estáticos:', e.message);
+    }
+}
+
 /* ───────────── ESTADO ───────────── */
 var cart = {};          // { itemId: { name, price, qty, variant } }
 var selectedFiles = []; // { name, size, file }
@@ -875,6 +909,7 @@ function ctaWhatsApp() {
 
 /* ───────────── INIT ───────────── */
 buildGrids();
+inicializarCatalogo(); /* sync precios y visibilidad desde admin-precios → Supabase */
 buildVita();
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});

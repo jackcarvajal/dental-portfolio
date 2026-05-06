@@ -870,6 +870,47 @@
                 }
             }
         };
+        /* MATERIAL_DATA_MUT: versión mutable que puede ser parcheada desde Supabase */
+        const MATERIAL_DATA_MUT = JSON.parse(JSON.stringify(MATERIAL_DATA));
+
+        /* ── SYNC PRECIOS DESDE SUPABASE (admin-precios → catalogo + config_precios) ── */
+        async function inicializarCatalogo() {
+            const sb = (typeof getSupabase === 'function') ? getSupabase() : null;
+            if (!sb) return;
+            try {
+                /* Precios de servicios */
+                const { data: items } = await sb
+                    .from('catalogo').select('id,precio,activo').eq('flujo', 'diseno');
+                if (items && items.length) {
+                    const mapa = Object.fromEntries(items.map(i => [i.id, i]));
+                    for (const cat of Object.values(MATERIAL_DATA_MUT)) {
+                        for (const [sid, sub] of Object.entries(cat.subtipos)) {
+                            const row = mapa[sid];
+                            if (row) {
+                                sub.precio = row.precio;
+                                sub._inactivo = row.activo === false;
+                            }
+                        }
+                    }
+                }
+                /* Extras (express, envío) */
+                const { data: extras } = await sb
+                    .from('config_precios').select('id,precio').eq('flujo', 'diseno');
+                if (extras && extras.length) {
+                    const extMap = Object.fromEntries(extras.map(e => [e.id, e.precio]));
+                    window._fd_expressAmt = extMap['express_diseno'] ?? 20000;
+                    window._fd_envioAmt   = extMap['envio_usb']      ?? 15000;
+                }
+                /* Recalcular si ya hay subtipo seleccionado */
+                if (STATE.subtipoId && MATERIAL_DATA_MUT[STATE.categoriaKey]) {
+                    const sub = MATERIAL_DATA_MUT[STATE.categoriaKey].subtipos[STATE.subtipoId];
+                    if (sub) { STATE.subtipoPrecio = sub.precio; calcularTotal(); }
+                }
+            } catch (e) {
+                console.warn('[PRODIGY Diseño] Usando precios estáticos:', e.message);
+            }
+        }
+
         Object.freeze(MATERIAL_DATA);
 
         // ── STATE CAD ─────────────────────────────────────────────────────────
@@ -992,8 +1033,8 @@
             const envioVal      = document.getElementById('envio').value;
             const transferencia = document.getElementById('chk-transferencia') ? document.getElementById('chk-transferencia').checked : true;
             const subtotal      = (STATE.subtipoPrecio || 0) * cantidad;
-            const expressAmt    = express ? 20000 : 0;
-            const envioAmt      = envioVal === 'usb' ? 15000 : 0;
+            const expressAmt    = express ? (window._fd_expressAmt ?? 20000) : 0;
+            const envioAmt      = envioVal === 'usb' ? (window._fd_envioAmt ?? 15000) : 0;
             const base          = subtotal + expressAmt + envioAmt;
             const wompiAmt      = transferencia ? 0 : Math.round(base * 0.03);
             const total         = base + wompiAmt;
@@ -1271,6 +1312,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             calcularTotal();
+            inicializarCatalogo(); /* sync precios desde admin-precios → Supabase */
 
             // ── TASAS DE PLATAFORMA EN TIEMPO REAL desde Supabase ────────────────
             fetch('https://zgihrwqfyvgyapbwzkvw.supabase.co/rest/v1/config_plataformas?activo=eq.true&select=clave,nombre,porcentaje,fijo_usd', {
