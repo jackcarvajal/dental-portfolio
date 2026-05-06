@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a00"/>
+      <stop offset="100%" style="stop-color:#141400"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+    <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(212,175,55,0.05)" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <!-- Checklist items -->
+  <rect x="420" y="170" width="360" height="55" rx="10" fill="rgba(212,175,55,0.08)" stroke="rgba(212,175,55,0.2)" stroke-width="1"/>
+  <circle cx="455" cy="197" r="14" fill="rgba(212,175,55,0.3)" stroke="rgba(212,175,55,0.6)" stroke-width="2"/>
+  <polyline points="447,197 453,204 465,190" fill="none" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="480" y="184" width="180" height="10" rx="5" fill="rgba(212,175,55,0.25)"/>
+  <rect x="480" y="200" width="120" height="8" rx="4" fill="rgba(212,175,55,0.12)"/>
+
+  <rect x="420" y="240" width="360" height="55" rx="10" fill="rgba(212,175,55,0.08)" stroke="rgba(212,175,55,0.2)" stroke-width="1"/>
+  <circle cx="455" cy="267" r="14" fill="rgba(212,175,55,0.3)" stroke="rgba(212,175,55,0.6)" stroke-width="2"/>
+  <polyline points="447,267 453,274 465,260" fill="none" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="480" y="254" width="150" height="10" rx="5" fill="rgba(212,175,55,0.25)"/>
+  <rect x="480" y="270" width="200" height="8" rx="4" fill="rgba(212,175,55,0.12)"/>
+
+  <rect x="420" y="310" width="360" height="55" rx="10" fill="rgba(212,175,55,0.12)" stroke="rgba(212,175,55,0.35)" stroke-width="2"/>
+  <circle cx="455" cy="337" r="14" fill="rgba(212,175,55,0.5)" stroke="#D4AF37" stroke-width="2"/>
+  <polyline points="447,337 453,344 465,330" fill="none" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="480" y="324" width="200" height="10" rx="5" fill="rgba(212,175,55,0.4)"/>
+  <rect x="480" y="340" width="140" height="8" rx="4" fill="rgba(212,175,55,0.2)"/>
+
+  <rect x="420" y="380" width="360" height="55" rx="10" fill="rgba(212,175,55,0.05)" stroke="rgba(212,175,55,0.12)" stroke-width="1"/>
+  <circle cx="455" cy="407" r="14" fill="none" stroke="rgba(212,175,55,0.3)" stroke-width="2"/>
+  <rect x="480" y="394" width="160" height="10" rx="5" fill="rgba(212,175,55,0.12)"/>
+  <rect x="480" y="410" width="220" height="8" rx="4" fill="rgba(212,175,55,0.07)"/>
+  <!-- Glow -->
+  <circle cx="600" cy="315" r="150" fill="rgba(212,175,55,0.03)"/>
+  <!-- Label -->
+  <rect x="80" y="60" width="165" height="40" rx="20" fill="rgba(212,175,55,0.1)" stroke="rgba(212,175,55,0.3)" stroke-width="1"/>
+  <text x="162" y="86" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#D4AF37" text-anchor="middle" letter-spacing="2">PROTOCOLO</text>
+  <line x1="80" y1="580" x2="200" y2="580" stroke="rgba(212,175,55,0.4)" stroke-width="2"/>
+  <text x="80" y="600" font-family="system-ui,sans-serif" font-size="14" fill="rgba(212,175,55,0.5)" letter-spacing="3">PRODIGY LAB DENTAL</text>
+</svg>

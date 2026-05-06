@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e1a"/>
+      <stop offset="100%" style="stop-color:#1a1200"/>
+    </linearGradient>
+    <linearGradient id="gem" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#F4C430;stop-opacity:0.6"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <!-- Grid pattern -->
+  <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+    <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(212,175,55,0.06)" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <!-- Decorative gem shape -->
+  <polygon points="600,80 760,200 760,400 600,520 440,400 440,200" fill="none" stroke="rgba(212,175,55,0.15)" stroke-width="2"/>
+  <polygon points="600,140 720,230 720,380 600,460 480,380 480,230" fill="none" stroke="rgba(212,175,55,0.1)" stroke-width="1"/>
+  <!-- Glow orb -->
+  <circle cx="600" cy="300" r="180" fill="rgba(212,175,55,0.04)"/>
+  <circle cx="600" cy="300" r="100" fill="rgba(212,175,55,0.06)"/>
+  <!-- Diamond icon center -->
+  <polygon points="600,200 660,300 600,400 540,300" fill="none" stroke="url(#gem)" stroke-width="3" filter="url(#glow)"/>
+  <polygon points="600,220 645,300 600,380 555,300" fill="rgba(212,175,55,0.12)"/>
+  <!-- Category label -->
+  <rect x="80" y="60" width="200" height="40" rx="20" fill="rgba(212,175,55,0.12)" stroke="rgba(212,175,55,0.3)" stroke-width="1"/>
+  <text x="180" y="86" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#D4AF37" text-anchor="middle" letter-spacing="2">MATERIALES</text>
+  <!-- Corner accent -->
+  <line x1="80" y1="580" x2="200" y2="580" stroke="rgba(212,175,55,0.4)" stroke-width="2"/>
+  <text x="80" y="600" font-family="system-ui,sans-serif" font-size="14" fill="rgba(212,175,55,0.5)" letter-spacing="3">PRODIGY LAB DENTAL</text>
+  <!-- Right accent dots -->
+  <circle cx="1050" cy="150" r="80" fill="rgba(212,175,55,0.04)" stroke="rgba(212,175,55,0.08)" stroke-width="1"/>
+  <circle cx="1050" cy="150" r="50" fill="rgba(212,175,55,0.06)"/>
+  <circle cx="150" cy="480" r="60" fill="rgba(212,175,55,0.04)"/>
+</svg>

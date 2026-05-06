@@ -2236,3 +2236,25 @@ function getRelacionados(currentArt, limit = 4) {
   const others  = ARTICLES.filter(a => a.id !== currentArt.id && !a.proximas && a.categoria !== currentArt.categoria);
   return [...samecat, ...others].slice(0, limit);
 }
+
+/* ── COVER AUTOMÁTICO POR CATEGORÍA ──────────────────────────
+   Si og_img está vacío, retorna el SVG de portada de la categoría.
+   Usar: getArticleCover(article)
+   ─────────────────────────────────────────────────────────── */
+const CATEGORY_COVERS = {
+  materiales:  '/assets/journal/cover-materiales.svg',
+  material:    '/assets/journal/cover-materiales.svg',
+  tecnologia:  '/assets/journal/cover-tecnologia.svg',
+  flujos:      '/assets/journal/cover-flujos.svg',
+  fabricacion: '/assets/journal/cover-flujos.svg',
+  clinico:     '/assets/journal/cover-clinico.svg',
+  impresion3d: '/assets/journal/cover-impresion3d.svg',
+  ia:          '/assets/journal/cover-ia.svg',
+  protocolo:   '/assets/journal/cover-protocolo.svg',
+  equipo:      '/assets/journal/cover-equipo.svg',
+};
+
+function getArticleCover(article) {
+  if (article && article.og_img && article.og_img.trim()) return article.og_img;
+  return CATEGORY_COVERS[article && article.categoria] || '/assets/journal/cover-tecnologia.svg';
+}

@@ -826,7 +826,9 @@
       var subtitulo = (a.subtitulo || '').substring(0, 120) + (a.subtitulo && a.subtitulo.length > 120 ? '…' : '');
       return '<a class="article-card" href="article?id='+a.id+'" data-cat="'+cat+'">' +
         '<div class="card-thumb">' +
-          '<div class="card-thumb-bg '+(a.grad||'grad-1')+'">'+(a.emoji||'📄')+'</div>' +
+          (typeof getArticleCover === 'function' && getArticleCover(a)
+            ? '<img src="'+getArticleCover(a)+'" alt="'+a.titulo+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">'
+            : '<div class="card-thumb-bg '+(a.grad||'grad-1')+'">'+(a.emoji||'📄')+'</div>') +
           '<span class="chip cat-'+cat+'">'+label+'</span>' +
         '</div>' +
         '<div class="card-body">' +

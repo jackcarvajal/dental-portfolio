@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0500"/>
+      <stop offset="100%" style="stop-color:#1a0e00"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(251,146,60,0.07)" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <!-- 3D printer layers animation-like stacked rects -->
+  <rect x="480" y="420" width="240" height="16" rx="4" fill="rgba(251,146,60,0.35)" stroke="rgba(251,146,60,0.5)" stroke-width="1"/>
+  <rect x="490" y="400" width="220" height="14" rx="4" fill="rgba(251,146,60,0.30)" stroke="rgba(251,146,60,0.45)" stroke-width="1"/>
+  <rect x="500" y="382" width="200" height="12" rx="4" fill="rgba(251,146,60,0.26)" stroke="rgba(251,146,60,0.40)" stroke-width="1"/>
+  <rect x="510" y="366" width="180" height="11" rx="4" fill="rgba(251,146,60,0.22)" stroke="rgba(251,146,60,0.35)" stroke-width="1"/>
+  <rect x="520" y="351" width="160" height="10" rx="4" fill="rgba(251,146,60,0.18)" stroke="rgba(251,146,60,0.30)" stroke-width="1"/>
+  <rect x="530" y="338" width="140" height="9" rx="4" fill="rgba(251,146,60,0.14)" stroke="rgba(251,146,60,0.25)" stroke-width="1"/>
+  <rect x="540" y="326" width="120" height="8" rx="4" fill="rgba(251,146,60,0.10)" stroke="rgba(251,146,60,0.20)" stroke-width="1"/>
+  <rect x="550" y="315" width="100" height="7" rx="4" fill="rgba(251,146,60,0.08)" stroke="rgba(251,146,60,0.15)" stroke-width="1"/>
+  <!-- Nozzle -->
+  <line x1="600" y1="200" x2="600" y2="310" stroke="rgba(251,146,60,0.4)" stroke-width="3"/>
+  <circle cx="600" cy="310" r="8" fill="rgba(251,146,60,0.6)" stroke="rgba(251,146,60,0.8)" stroke-width="2"/>
+  <rect x="560" y="185" width="80" height="20" rx="4" fill="rgba(251,146,60,0.15)" stroke="rgba(251,146,60,0.3)" stroke-width="1"/>
+  <!-- Glow -->
+  <circle cx="600" cy="390" r="120" fill="rgba(251,146,60,0.05)"/>
+  <!-- Label -->
+  <rect x="80" y="60" width="210" height="40" rx="20" fill="rgba(251,146,60,0.1)" stroke="rgba(251,146,60,0.3)" stroke-width="1"/>
+  <text x="185" y="86" font-family="system-ui,sans-serif" font-size="15" font-weight="700" fill="#fb923c" text-anchor="middle" letter-spacing="2">IMPRESIÓN 3D</text>
+  <line x1="80" y1="580" x2="200" y2="580" stroke="rgba(251,146,60,0.4)" stroke-width="2"/>
+  <text x="80" y="600" font-family="system-ui,sans-serif" font-size="14" fill="rgba(251,146,60,0.5)" letter-spacing="3">PRODIGY LAB DENTAL</text>
+</svg>

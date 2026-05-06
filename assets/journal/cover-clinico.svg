@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#000e1a"/>
+      <stop offset="100%" style="stop-color:#001524"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <pattern id="dots" width="30" height="30" patternUnits="userSpaceOnUse">
+    <circle cx="15" cy="15" r="1" fill="rgba(96,165,250,0.1)"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <!-- Tooth outline SVG path -->
+  <g transform="translate(520, 130)" opacity="0.25" stroke="rgba(96,165,250,0.6)" fill="none" stroke-width="3">
+    <path d="M80,0 C110,0 140,20 140,60 C140,90 130,110 120,140 C110,170 105,200 100,230 C95,260 90,280 80,280 C70,280 65,260 60,230 C55,200 50,170 40,140 C30,110 20,90 20,60 C20,20 50,0 80,0 Z"/>
+    <path d="M80,30 C95,30 115,42 115,65 C115,80 110,95 100,115" stroke-width="2" opacity="0.5"/>
+  </g>
+  <!-- Outer circles -->
+  <circle cx="600" cy="315" r="200" fill="none" stroke="rgba(96,165,250,0.08)" stroke-width="1"/>
+  <circle cx="600" cy="315" r="150" fill="none" stroke="rgba(96,165,250,0.06)" stroke-width="1"/>
+  <circle cx="600" cy="315" r="100" fill="rgba(96,165,250,0.05)" stroke="rgba(96,165,250,0.12)" stroke-width="1"/>
+  <!-- Cross medical -->
+  <rect x="580" y="250" width="40" height="130" rx="8" fill="rgba(96,165,250,0.15)" stroke="rgba(96,165,250,0.3)" stroke-width="1"/>
+  <rect x="535" y="295" width="130" height="40" rx="8" fill="rgba(96,165,250,0.15)" stroke="rgba(96,165,250,0.3)" stroke-width="1"/>
+  <!-- Label -->
+  <rect x="80" y="60" width="155" height="40" rx="20" fill="rgba(96,165,250,0.1)" stroke="rgba(96,165,250,0.3)" stroke-width="1"/>
+  <text x="157" y="86" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#60a5fa" text-anchor="middle" letter-spacing="2">CLÍNICO</text>
+  <line x1="80" y1="580" x2="200" y2="580" stroke="rgba(96,165,250,0.4)" stroke-width="2"/>
+  <text x="80" y="600" font-family="system-ui,sans-serif" font-size="14" fill="rgba(96,165,250,0.5)" letter-spacing="3">PRODIGY LAB DENTAL</text>
+</svg>

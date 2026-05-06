@@ -400,6 +400,9 @@ function copiarLink() {
   document.getElementById('og-title').content = art.titulo;
   document.getElementById('og-desc').content = art.subtitulo;
   document.getElementById('og-url').content   = canonicalUrl;
+  if (typeof getArticleCover === 'function') {
+    document.getElementById('og-image').content = 'https://prodigylabdental.com' + getArticleCover(art);
+  }
   document.getElementById('canonical').href    = canonicalUrl;
   document.getElementById('tw-title').content  = art.titulo;
   document.getElementById('tw-desc').content   = art.subtitulo;
