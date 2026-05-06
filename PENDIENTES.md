@@ -6,7 +6,6 @@
 
 ## 🔴 URGENTE — ALEJANDRO (bloquean funcionalidades activas)
 
-| 0 | **SQL: acepta_habeas en formularios** | Supabase SQL Editor | `sql/patch-acepta-habeas.sql` — sin esto los forms de envia-tu-scanner y escaner-domicilio fallan |
 
 | # | Acción | Dónde | Detalle |
 |---|--------|-------|---------|
