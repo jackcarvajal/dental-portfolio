@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" width="280" height="80" role="img" aria-label="PRODIGY Digital Dentistry">
+  <defs>
+    <linearGradient id="gem-g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37"/>
+      <stop offset="50%" style="stop-color:#D946A6"/>
+      <stop offset="100%" style="stop-color:#00d2ff"/>
+    </linearGradient>
+    <linearGradient id="text-g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#D4AF37"/>
+      <stop offset="100%" style="stop-color:#f0cc5a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Gema / diamante -->
+  <g transform="translate(8, 8)">
+    <!-- Cara superior izquierda -->
+    <polygon points="32,4 16,20 32,20" fill="url(#gem-g)" opacity="0.9"/>
+    <!-- Cara superior derecha -->
+    <polygon points="32,4 48,20 32,20" fill="#D4AF37" opacity="0.75"/>
+    <!-- Cara inferior izquierda -->
+    <polygon points="16,20 32,20 22,40" fill="#D946A6" opacity="0.85"/>
+    <!-- Cara inferior derecha -->
+    <polygon points="48,20 32,20 42,40" fill="url(#gem-g)" opacity="0.7"/>
+    <!-- Cara inferior centro -->
+    <polygon points="22,40 32,20 42,40" fill="#D4AF37" opacity="0.95"/>
+    <!-- Borde superior -->
+    <polyline points="16,20 32,4 48,20" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+  </g>
+
+  <!-- Wordmark PRODIGY -->
+  <text x="74" y="44"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="28"
+    font-weight="900"
+    letter-spacing="3"
+    fill="url(#text-g)">PRODIGY</text>
+
+  <!-- Tagline -->
+  <text x="75" y="60"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="10"
+    font-weight="600"
+    letter-spacing="4"
+    fill="#64748b">DIGITAL DENTISTRY</text>
+
+  <!-- Línea decorativa bajo tagline -->
+  <line x1="75" y1="65" x2="265" y2="65" stroke="url(#gem-g)" stroke-width="1" opacity="0.4"/>
+</svg>
