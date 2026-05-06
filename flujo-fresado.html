@@ -3582,7 +3582,7 @@
 
             if(STATE.proceso==='cristalizado'&&STATE.materialTipo==='disi'){const cc=Math.max(1,parseInt(document.getElementById('cant-cristal')?.value||1,10));adicionales+=cc*CONFIG.precios_extras.cristalizado;}
             if(STATE.proceso==='glaze'&&STATE.materialTipo==='disi'){const cgd=Math.max(0,parseInt(document.getElementById('cant-glaze')?.value||0,10));adicionales+=cgd*CONFIG.precios_extras.glaze;}
-            if(STATE.proceso==='pulido'){const cp=Math.max(1,parseInt(document.getElementById('cant-pulido-pmma')?.value||1,10));if(STATE.submaterialId==='p_clear'){adicionales+=CONFIG.precos_extras?.pulido_clear*cp||CONFIG.precios_extras.pulido_clear*cp;}else{adicionales+=CONFIG.precios_extras.pulido_pmma*cp;}}
+            if(STATE.proceso==='pulido'){const cp=Math.max(1,parseInt(document.getElementById('cant-pulido-pmma')?.value||1,10));if(STATE.submaterialId==='p_clear'){adicionales+=CONFIG.precios_extras?.pulido_clear*cp||CONFIG.precios_extras.pulido_clear*cp;}else{adicionales+=CONFIG.precios_extras.pulido_pmma*cp;}}
 
 
 
