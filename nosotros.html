@@ -626,9 +626,9 @@
       const sb = window.supabase && window.supabase.createClient(_NS_URL, _NS_ANON);
       if (!sb) return;
       sb.from('leads_doctores').insert({
-        nombre: nombre + (clinica ? ' — ' + clinica : ''),
-        whatsapp: email,
-        recurso_descargado: 'Contacto web nosotros.html: ' + tipoLabel + ' — ' + mensaje.substring(0, 120)
+        nombre:               nombre + (clinica ? ' — ' + clinica : ''),
+        email:                email,
+        recurso_descargado:   'Contacto web nosotros.html: ' + tipoLabel + ' — ' + mensaje.substring(0, 120)
       }).then(() => {}).catch(() => {}); // silencioso — no bloquea el flujo
     } catch (_) {}
   }

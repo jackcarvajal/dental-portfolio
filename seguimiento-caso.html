@@ -640,6 +640,15 @@
                     zonaDesc.before(pb);
                     document.getElementById('push-activate-btn').onclick = () => suscribirNotificaciones(caso.id || caso.numeroOrden);
                 }
+                // Compartir caso
+                const shareUrl = window.location.origin + '/seguimiento-caso?codigo=' + encodeURIComponent(caso.codigo);
+                const shareDiv = document.createElement('div');
+                shareDiv.style.cssText = 'display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;';
+                shareDiv.innerHTML = '<span style="font-size:.78rem;color:#64748b;font-weight:600;">Compartir:</span>' +
+                  '<a href="https://wa.me/?text=' + encodeURIComponent('Seguimiento de mi caso PRODIGY: ' + shareUrl) + '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);border-radius:50px;color:#25D366;font-size:.75rem;font-weight:700;text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp</a>' +
+                  '<button onclick="navigator.clipboard.writeText(\'' + shareUrl + '\').then(function(){this.textContent=\'✓ Copiado\';setTimeout(function(){document.getElementById(\'btn-copy-link\').textContent=\'🔗 Copiar link\'},2000)}.bind(this))" id="btn-copy-link" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:50px;color:#94a3b8;padding:6px 14px;font-size:.75rem;cursor:pointer;font-weight:700;">🔗 Copiar link</button>';
+                zonaDesc.before(shareDiv);
+
                 // Número de guía
                 if (caso.numero_guia) {
                     const gr = document.createElement('div');
