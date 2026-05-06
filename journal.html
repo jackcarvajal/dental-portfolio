@@ -844,6 +844,19 @@
     }).join('');
   }
 
+  /* Agregar contador a cada botón de filtro */
+  var ALIAS = { materiales: ['materiales','material'], protocolo: ['protocolo','fabricacion'] };
+  document.querySelectorAll('.tag-btn[onclick]').forEach(function(btn) {
+    var match = btn.getAttribute('onclick').match(/filterArticles\(this,'([^']+)'\)/);
+    if (!match) return;
+    var cat = match[1];
+    var count = cat === 'all' ? ARTICLES.length : ARTICLES.filter(function(a){
+      var cats = ALIAS[cat] || [cat];
+      return cats.indexOf(a.categoria) !== -1;
+    }).length;
+    if (count > 0) btn.innerHTML += ' <span style="font-size:.65em;opacity:.6;font-weight:600;">('+count+')</span>';
+  });
+
   renderAll(ARTICLES);
 
   window.filterArticles = function(btn, cat){

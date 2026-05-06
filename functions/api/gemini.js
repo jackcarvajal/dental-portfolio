@@ -58,23 +58,40 @@ export async function onRequestPost(context) {
     }));
   }
 
-  // Forward a Gemini
-  const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-  let geminiRes;
-  try {
-    geminiRes = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-  } catch (e) {
-    return new Response(JSON.stringify({ error: 'Error de conexión con IA' }), { status: 502, headers: corsHeaders(origin) });
+  // Modelos en orden de preferencia (fallback automático)
+  const MODELS = [
+    'gemini-2.0-flash',
+    'gemini-2.0-flash-lite',
+    'gemini-1.5-flash',
+    'gemini-1.5-flash-8b'
+  ];
+
+  let lastError = null;
+  for (const model of MODELS) {
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    let geminiRes;
+    try {
+      geminiRes = await fetch(geminiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+    } catch (e) {
+      lastError = `Red: ${e.message}`;
+      continue;
+    }
+    const data = await geminiRes.json();
+    if (geminiRes.ok && data.candidates) {
+      return new Response(JSON.stringify(data), {
+        status: 200,
+        headers: { ...corsHeaders(origin), 'Content-Type': 'application/json', 'X-Model-Used': model }
+      });
+    }
+    lastError = data.error?.message || `HTTP ${geminiRes.status}`;
   }
 
-  const data = await geminiRes.json();
-  return new Response(JSON.stringify(data), {
-    status: geminiRes.status,
-    headers: { ...corsHeaders(origin), 'Content-Type': 'application/json' }
+  return new Response(JSON.stringify({ error: lastError || 'Todos los modelos fallaron' }), {
+    status: 502, headers: corsHeaders(origin)
   });
 }
 

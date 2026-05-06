@@ -861,18 +861,22 @@
         })
       });
       var data = await res.json();
-      if (!res.ok) console.error('[PRODIGY BOT] HTTP', res.status, JSON.stringify(data));
+      if (!res.ok) console.warn('[PRODIGY BOT] Error API:', res.status, data.error || data);
       if (typing) typing.classList.remove('visible');
-      if (data.candidates && data.candidates[0]) {
+      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
         var reply = data.candidates[0].content.parts[0].text;
         _pgChatHistory.push({ role: 'model', parts: [{ text: reply }] });
         _pgAppendMsg('bot', reply);
+      } else if (data.error && data.error.includes && data.error.includes('solicitudes')) {
+        _pgAppendMsg('bot', 'Muchas consultas seguidas — espera un momento e intenta de nuevo.');
       } else {
-        _pgAppendMsg('bot', 'Hubo un problema. Escríbenos por <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">WhatsApp</a>.');
+        console.warn('[PRODIGY BOT] Sin candidatos:', JSON.stringify(data));
+        _pgAppendMsg('bot', 'Un momento, estoy teniendo dificultades. Puedes escribirnos por <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">WhatsApp</a> y te respondemos enseguida.');
       }
     } catch (err) {
+      console.warn('[PRODIGY BOT] catch:', err.message);
       if (typing) typing.classList.remove('visible');
-      _pgAppendMsg('bot', 'Error de conexión. <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">WhatsApp +57 321 281 6716</a>.');
+      _pgAppendMsg('bot', 'Sin conexión ahora mismo. <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">WhatsApp +57 321 281 6716</a> — respondemos en minutos.');
     }
     if (sendBtn) sendBtn.disabled = false;
     if (input) input.focus();
