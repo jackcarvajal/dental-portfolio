@@ -93,6 +93,4 @@
 
 | # | Tarea | Notas |
 |---|-------|-------|
-| 1 | Verificar RPC `buscar_pedido_publico` solo retorna campos públicos | Supabase → Database → Functions |
-| 2 | GDPR aviso específico para clientes UE en `diseno-cad.html` | `diseno-remoto.html` ofrece servicio mundial |
-| 3 | Precios calculadoras sincronizados con Supabase `admin-precios` | Hoy hardcodeados — cambio arquitectural |
+| 1 | Precios calculadoras sincronizados con Supabase `admin-precios` | Hoy hardcodeados — cambio arquitectural grande, requiere decisión |

@@ -762,11 +762,11 @@ function selPortafolio(tipo) {
   function renderCasos(casos) {
     if (!grid) return;
     grid.innerHTML = casos.map(function(c, i) {
-      var img = c.cover_image ? c.cover_image + '?width=600&quality=80' : '';
+      var img = c.cover_image ? c.cover_image : '';
       var imgHTML = img
         ? '<img src="' + esc(img) + '" alt="' + esc(c.name) + '" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async" style="width:100%;height:100%;object-fit:cover;transition:transform .5s ease;" onerror="this.parentElement.innerHTML=\'<div style=\\\"display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;background:#080808;\\\">🦷</div>\'">'
         : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3.5rem;background:#080808;">🦷</div>';
-      return '<a href="/portafolio" style="text-decoration:none;display:block;background:#0d1525;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.08);transition:transform .35s,border-color .35s,box-shadow .35s;color:inherit;" ' +
+      return '<a href="/caso?id='+encodeURIComponent(c.id)+'" style="text-decoration:none;display:block;background:#0d1525;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.08);transition:transform .35s,border-color .35s,box-shadow .35s;color:inherit;" ' +
         'onmouseover="this.style.transform=\'translateY(-8px)\';this.style.borderColor=\'#D4AF37\';this.style.boxShadow=\'0 20px 50px rgba(212,175,55,.2)\'" ' +
         'onmouseout="this.style.transform=\'\';this.style.borderColor=\'rgba(255,255,255,.08)\';this.style.boxShadow=\'\'">' +
         '<div style="position:relative;width:100%;height:220px;overflow:hidden;background:#080808;">' +
