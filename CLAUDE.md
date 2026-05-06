@@ -1,5 +1,4 @@
 # REGLAS MAESTRAS - PROYECTO PRODIGY
-> Estándares técnicos completos: `ESTANDARES-TECNICOS.md`
 
 ## 0. PERMISOS
 Total: bash, leer, escribir, crear, eliminar. Confirma solo si: eliminas sin backup, cambios >200 líneas, instalas dependencias.
@@ -13,29 +12,29 @@ Total: bash, leer, escribir, crear, eliminar. Confirma solo si: eliminas sin bac
 - Usuario: Alejandro Carvajal. Idioma: Español estricto.
 - Stack: Vanilla JS, HTML5, CSS3. Rutas relativas siempre.
 - INTOCABLE: `calcularTotal()`, `STATE`, `calcularFechaEntrega()`. Sin variables paralelas para precios.
+- APIs externas: claves en Cloudflare Env Vars. Frontend llama solo a `/api/función`.
 
-## 3. HORARIOS
-L-S 8am-6pm. Corte 5pm → arranca día siguiente 8am. Sin domingos.
-
-## 3b. PÁGINAS NUEVAS
+## 3. PÁGINAS NUEVAS (checklist obligatorio)
 Toda página pública DEBE tener:
 - `<script src="js/header.js"></script>` — PRIMER elemento de `<body>`
-- `<script src="js/footer.js"></script>` — antes de `</body>`
+- `<script src="js/footer.js?v=20260505"></script>` — antes de `</body>`
 - `<meta name="theme-color" content="#D946A6">` + `<link rel="manifest" href="/manifest.json">`
 - SW: `if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{})`
 - canonical + meta description
-- Actualizar footer.js y sitemap.xml si es indexable
+- Actualizar sitemap.xml si es indexable
 
-## 3c. LEY 50/50
+## 3b. LEY 50/50
 Cotizaciones: "50% abono inicio · 50% saldo contra entrega". Precios en COP. WA incluye: Total, Abono, Saldo.
 
 ## 4. SEGURIDAD
 - `/app/*.html` (excl. login/reset): `noindex,nofollow` + `auth-guard.js` antes de JS de negocio.
-- `/patient.html`, `/patients/*`: noindex.
+- `/patient.html`: noindex.
 - `/sql/*`, `/supabase/*`: bloqueados en `_redirects`.
+- XSS: siempre `escH()` o `textContent` para datos de Supabase en innerHTML.
 
-## 5. COLORES
-`#D946A6` gold · `#D4AF37` hover · `#00d2ff` cyan · `#050505` bg · `#1a2332` card · `#00FF41` neon
+## 5. DISEÑO
+Colores: `#D946A6` magenta · `#D4AF37` gold · `#00d2ff` cyan · `#050505` bg · `#1a2332` card · `#00FF41` neon
+Animaciones: solo en idle (requestIdleCallback). Sin loops en eco-cards. Solo fade+scroll con GSAP.
 
 ## 6. REPORTE (al terminar tarea)
 ```
@@ -43,12 +42,12 @@ CAMBIOS: [archivo] → [qué] (línea X)
 VERIFICADO: [grep] → [resultado]
 PENDIENTE: [acción] → solo si hay algo
 ```
-Al final de sesión: indicar `/clear` (todo commiteado) o `/compact` (trabajo en vuelo).
+Al final de sesión: `/clear` (todo commiteado) o `/compact` (trabajo en vuelo).
 
-## 7. BACKLOG
-Mejoras propuestas en PENDIENTES.md. No leer salvo que Alejandro lo indique.
-
-## 8. PRIVACIDAD
+## 7. PRIVACIDAD
 - Formularios: checkbox Habeas Data Colombia obligatorio.
 - Separar: Transaccionales (siempre) vs. Promocionales (`acepta_marketing = true`).
-- Columna `acepta_marketing boolean default false` en doctores y solicitudes_scanner.
+
+## 8. HOJA DE RUTA ACTIVA
+Ver `PENDIENTES.md` — solo tareas ⏳/🔴/🟡. Completadas ya eliminadas.
+Bloques en orden: 0-SQL urgente → 1-Home → 2-Portafolio → 3-Servicios → 4-Flujos → 5-Soporte → 6-Empresa → 7-Portal → 8-SEO.
