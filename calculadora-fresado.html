@@ -269,13 +269,9 @@
         <div class="res-bd-row total"><span>Total estimado</span><span id="bdTotal">$180.000</span></div>
       </div>
 
-      <div class="abono-row">
-        <span>Abono para inicio (50%)</span>
-        <strong id="bdAbono">$90.000</strong>
-      </div>
       <div class="abono-row" style="margin-bottom:20px;">
-        <span>Saldo contra entrega (50%)</span>
-        <strong id="bdSaldo">$90.000</strong>
+        <span>Pago al confirmar (100%)</span>
+        <strong id="bdTotal2" style="color:var(--gold);">$180.000</strong>
       </div>
 
       <button class="btn-wa" onclick="abrirWA()">
@@ -290,7 +286,7 @@
         <div class="trust-chip"><i class="fas fa-clock"></i> Respuesta &lt;2h</div>
         <div class="trust-chip"><i class="fas fa-rotate"></i> Revisión incluida</div>
       </div>
-      <div class="law50"><strong>Ley 50/50:</strong> 50% abono al confirmar · 50% saldo contra entrega antes del despacho.</div>
+      <div class="law50"><strong>Pago:</strong> 100% al confirmar el pedido por WhatsApp.</div>
     </div>
   </div>
 </div>
@@ -357,8 +353,8 @@ function render() {
   document.getElementById('bdQty').textContent    = '× ' + qty;
   document.getElementById('bdExtras').textContent = extras > 0 ? fmt(extras) : '$0';
   document.getElementById('bdTotal').textContent  = cotizar ? '—' : fmt(total);
-  document.getElementById('bdAbono').textContent  = cotizar ? '—' : fmt(total * 0.5);
-  document.getElementById('bdSaldo').textContent  = cotizar ? '—' : fmt(total * 0.5);
+  var bd2 = document.getElementById('bdTotal2');
+  if (bd2) bd2.textContent = cotizar ? 'Cotizar' : fmt(total);
 }
 
 function selSrv(btn) {
@@ -395,17 +391,13 @@ function abrirWA() {
   if (cotizar) {
     msg = `Hola PRODIGY, necesito cotizar *${srv}* — ¿me pueden dar precio?`;
   } else {
-    const abono = Math.round(total * 0.5);
-    const saldo  = total - abono;
     msg = `Hola PRODIGY, quiero confirmar mi pedido de fresado:\n\n` +
       `🦷 *Servicio:* ${srv}\n` +
       `📦 *Cantidad:* ${qty} unidad(es)\n` +
       (ST.urgente ? `⚡ Entrega urgente 24h\n` : '') +
       (ST.glaze   ? `✨ Glaze y caracterización\n` : '') +
       (ST.envio   ? `🚚 Envío a domicilio\n` : '') +
-      `\n💰 *Total:* ${fmt(total)} COP\n` +
-      `💵 *Abono (50%):* ${fmt(abono)} COP\n` +
-      `💵 *Saldo contra entrega:* ${fmt(saldo)} COP\n\n` +
+      `\n💰 *Total:* ${fmt(total)} COP (pago 100% al confirmar)\n\n` +
       `¿Me confirman disponibilidad y tiempo de entrega?`;
   }
   window.open('https://wa.me/573212816716?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
