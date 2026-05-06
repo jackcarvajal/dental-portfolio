@@ -653,7 +653,7 @@ async function guardarEntrada() {
         item_id: itemId, lote_id: loteId, tipo: 'ENTRADA',
         cantidad, costo_unitario: costo,
         factura_url: facturaUrl, notas: notas || null,
-        usuario_id: window.PRODIGY_UID,
+        usuario_id: window.PRODIGY_UID || null,
     });
     if (error) { toast('Error: ' + error.message, 'err'); return; }
     toast('Entrada registrada', 'ok');
@@ -694,7 +694,7 @@ async function guardarSalida() {
         costo_unitario: it?.costo_promedio || 0,
         pedido_id: pedidoId,
         notas: notas || null,
-        usuario_id: window.PRODIGY_UID,
+        usuario_id: window.PRODIGY_UID || null,
     });
     if (error) { toast('Error: ' + error.message, 'err'); return; }
     toast('Salida registrada', 'ok');
