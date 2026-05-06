@@ -219,6 +219,9 @@
     <a href="#" class="nav-item" onclick="switchTab('metricas',this)">
         <i class="fas fa-chart-line"></i> Métricas
     </a>
+    <a href="#" class="nav-item" onclick="switchTab('staff',this)">
+        <i class="fas fa-users-cog" style="color:#a78bfa;"></i> Operarios / Roles
+    </a>
 
     <p class="nav-section">Configuración</p>
     <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Materiales</a>
@@ -527,6 +530,26 @@
                     <tr class="loading-row"><td colspan="6"><div class="spinner" style="margin:0 auto;"></div></td></tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <!-- ═══════════ TAB STAFF / ROLES ═══════════ -->
+    <div id="tab-staff" class="tab-panel">
+        <div class="page-header">
+            <div>
+                <h1>Operarios <span style="color:var(--gold);">/ Roles</span></h1>
+                <p>Asigna departamentos a cada operario. Los cambios aplican en su próximo inicio de sesión.</p>
+            </div>
+            <button class="btn-primary" onclick="cargarStaff()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+        </div>
+        <div class="section-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+                <h2 style="font-size:.95rem;font-weight:800;color:var(--gold);"><i class="fas fa-users-cog" style="margin-right:8px;color:var(--magenta);"></i>Staff registrado</h2>
+                <button class="btn-xs btn-gold" onclick="abrirModalNuevoStaff()"><i class="fas fa-plus"></i> Agregar operario</button>
+            </div>
+            <div id="staff-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;">
+                <p style="color:var(--muted);font-size:.85rem;grid-column:1/-1;">Cargando…</p>
+            </div>
         </div>
     </div>
 
@@ -872,6 +895,85 @@ async function verificarAdmin() {
         // Sin fallback de sessionStorage — si Supabase no responde, denegar acceso
         window.location.href = 'login.html';
     }
+}
+
+/* ══════════════════════════════════════════
+   TAB STAFF — Gestión de operarios y roles
+══════════════════════════════════════════ */
+const DEPT_CONFIG = {
+  diseno:    { label:'Diseño CAD',        color:'#00d2ff', icon:'fa-drafting-compass' },
+  fresado:   { label:'Fresado / Lab',     color:'#D4AF37', icon:'fa-cog'              },
+  impresion: { label:'Impresión 3D',      color:'#fb923c', icon:'fa-print'            },
+  taller:    { label:'Taller',            color:'#a78bfa', icon:'fa-tools'            },
+  mensajeria:{ label:'Mensajería',        color:'#25D366', icon:'fa-motorcycle'       }
+};
+
+async function cargarStaff() {
+  const grid = document.getElementById('staff-grid');
+  if (!grid) return;
+  grid.innerHTML = '<p style="color:var(--muted);font-size:.85rem;grid-column:1/-1;">Cargando…</p>';
+  const { data, error } = await sb.from('staff_departamentos').select('*').order('created_at');
+  if (error) { grid.innerHTML = `<p style="color:#f87171;">Error: ${error.message}</p>`; return; }
+  if (!data || !data.length) {
+    grid.innerHTML = '<p style="color:var(--muted);font-size:.85rem;grid-column:1/-1;">Sin operarios registrados. Agrega uno con el botón de arriba.</p>';
+    return;
+  }
+  grid.innerHTML = data.map(s => `
+    <div style="background:var(--card-bg);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div>
+          <div style="font-size:.9rem;font-weight:800;">${escH(s.nombre||'Sin nombre')}</div>
+          <div style="font-size:.72rem;color:var(--muted);">${escH(s.email)}</div>
+        </div>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.75rem;color:${s.activo?'#00FF41':'#f87171'};">
+          <input type="checkbox" ${s.activo?'checked':''} onchange="toggleStaffActivo('${s.id}',this.checked)" style="accent-color:#00FF41;">
+          ${s.activo?'Activo':'Inactivo'}
+        </label>
+      </div>
+      <div style="font-size:.72rem;color:var(--muted);margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Departamentos:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        ${Object.entries(DEPT_CONFIG).map(([key,cfg]) => {
+          const tiene = (s.departamentos||[]).includes(key);
+          return `<label style="display:flex;align-items:center;gap:5px;cursor:pointer;padding:4px 10px;border-radius:20px;border:1px solid ${tiene?cfg.color:'rgba(255,255,255,.1)'};background:${tiene?cfg.color+'18':'transparent'};font-size:.72rem;font-weight:700;color:${tiene?cfg.color:'#64748b'};">
+            <input type="checkbox" ${tiene?'checked':''} style="display:none;" onchange="toggleDept('${s.id}','${key}',this.checked,'${escH(s.email)}')">
+            <i class="fas ${cfg.icon}" style="font-size:.65rem;"></i> ${cfg.label}
+          </label>`;
+        }).join('')}
+      </div>
+    </div>`).join('');
+}
+
+async function toggleStaffActivo(id, activo) {
+  const { error } = await sb.from('staff_departamentos').update({activo, updated_at: new Date().toISOString()}).eq('id', id);
+  if (error) toast('Error: '+error.message,'error');
+  else toast(activo ? 'Operario activado ✅' : 'Operario desactivado','success');
+}
+
+async function toggleDept(id, dept, agregar, email) {
+  const { data: row } = await sb.from('staff_departamentos').select('departamentos').eq('id',id).single();
+  let depts = row?.departamentos || [];
+  if (agregar) { if (!depts.includes(dept)) depts.push(dept); }
+  else         { depts = depts.filter(d => d !== dept); }
+  const { error } = await sb.from('staff_departamentos')
+    .update({departamentos: depts, updated_at: new Date().toISOString()}).eq('id', id);
+  if (error) { toast('Error: '+error.message,'error'); return; }
+  toast(`${email} — ${agregar?'agregado a':'removido de'} ${DEPT_CONFIG[dept]?.label||dept}`,'success');
+}
+
+function abrirModalNuevoStaff() {
+  const email  = prompt('Email del operario (debe estar registrado en el sistema):');
+  if (!email || !email.includes('@')) return;
+  const nombre = prompt('Nombre del operario:') || email;
+  sb.auth.admin ? toast('Busca el user_id en Supabase Auth y agrégalo manualmente','warning')
+  : sb.from('staff_departamentos').insert({
+      email: email.trim().toLowerCase(),
+      nombre: nombre.trim(),
+      departamentos: [],
+      activo: true
+    }).then(({error}) => {
+      if (error) toast('Error: '+error.message,'error');
+      else { toast('Operario agregado ✅','success'); cargarStaff(); }
+    });
 }
 
 async function cerrarSesion() {

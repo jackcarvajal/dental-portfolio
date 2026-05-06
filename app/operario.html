@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#D946A6">
+<link rel="manifest" href="/manifest.json">
+<meta name="robots" content="noindex, nofollow">
+<title>PRODIGY — Panel Operario</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+<link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../js/auth-guard.js"></script>
+<style>
+:root {
+  --bg:#050505; --card:#0a0f1a; --txt:#fff; --muted:#94a3b8;
+  --border:rgba(255,255,255,.08);
+  --dis:#00d2ff; --frs:#D4AF37; --imp:#fb923c; --tal:#a78bfa; --men:#25D366;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',sans-serif;min-height:100vh;visibility:hidden;}
+body.ready{visibility:visible;}
+
+/* Header */
+.top-bar{background:#050e1a;border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;}
+.top-bar h1{font-size:1rem;font-weight:900;letter-spacing:2px;color:#D946A6;}
+.top-bar p{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.dept-tabs{display:flex;gap:8px;flex-wrap:wrap;}
+.dept-tab{padding:6px 16px;border-radius:50px;font-size:.75rem;font-weight:700;border:1px solid;cursor:pointer;transition:.2s;background:transparent;}
+.dept-tab.active{color:#000!important;}
+.dept-tab[data-dept="diseno"]{color:var(--dis);border-color:rgba(0,210,255,.3);}
+.dept-tab[data-dept="diseno"].active{background:var(--dis);border-color:var(--dis);}
+.dept-tab[data-dept="fresado"]{color:var(--frs);border-color:rgba(212,175,55,.3);}
+.dept-tab[data-dept="fresado"].active{background:var(--frs);border-color:var(--frs);}
+.dept-tab[data-dept="impresion"]{color:var(--imp);border-color:rgba(251,146,60,.3);}
+.dept-tab[data-dept="impresion"].active{background:var(--imp);border-color:var(--imp);}
+.dept-tab[data-dept="taller"]{color:var(--tal);border-color:rgba(167,139,250,.3);}
+.dept-tab[data-dept="taller"].active{background:var(--tal);border-color:var(--tal);}
+
+/* Main */
+.main{padding:20px 24px;max-width:1400px;margin:0 auto;}
+.dept-panel{display:none;}
+.dept-panel.active{display:block;}
+
+/* Timer */
+.timer-bar{border-radius:10px;padding:10px 16px;margin-bottom:18px;display:none;align-items:center;gap:12px;font-size:.82rem;flex-wrap:wrap;}
+.timer-bar.visible{display:flex;}
+.timer-bar.alerta{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);color:#fbbf24;}
+.timer-bar.critico{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;}
+
+/* Kanban */
+.kanban{display:grid;gap:14px;}
+.kanban.cols-3{grid-template-columns:repeat(3,1fr);}
+.kanban.cols-4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:1100px){.kanban.cols-4,.kanban.cols-3{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.kanban.cols-4,.kanban.cols-3{grid-template-columns:1fr;}}
+.k-col{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.k-hdr{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;}
+.k-count{background:rgba(255,255,255,.08);border-radius:10px;padding:2px 8px;font-size:.65rem;}
+
+/* Cards */
+.caso-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px;margin-bottom:10px;transition:.2s;}
+.caso-card:hover{background:rgba(255,255,255,.05);}
+.caso-id{font-size:.68rem;color:var(--muted);font-family:monospace;margin-bottom:3px;}
+.caso-nombre{font-size:.88rem;font-weight:700;margin-bottom:5px;}
+.caso-meta{font-size:.72rem;color:var(--muted);line-height:1.7;}
+.caso-actions{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap;}
+.card-badge{font-size:.65rem;font-weight:800;padding:2px 8px;border-radius:6px;display:inline-block;margin-bottom:6px;}
+.card-timer{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:6px;margin-bottom:6px;display:inline-block;}
+.timer-ok{background:rgba(0,255,65,.1);color:#00FF41;}
+.timer-alerta{background:rgba(251,191,36,.1);color:#fbbf24;}
+.timer-critico{background:rgba(239,68,68,.15);color:#ef4444;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* Botones */
+.btn{padding:5px 11px;border-radius:6px;font-size:.68rem;font-weight:700;border:1px solid;cursor:pointer;background:transparent;display:inline-flex;align-items:center;gap:4px;color:inherit;transition:.15s;white-space:nowrap;}
+.btn-dis{color:var(--dis);border-color:rgba(0,210,255,.3);}  .btn-dis:hover{background:rgba(0,210,255,.1);}
+.btn-frs{color:var(--frs);border-color:rgba(212,175,55,.3);}  .btn-frs:hover{background:rgba(212,175,55,.1);}
+.btn-imp{color:var(--imp);border-color:rgba(251,146,60,.3);}  .btn-imp:hover{background:rgba(251,146,60,.1);}
+.btn-grn{color:#00FF41;border-color:rgba(0,255,65,.3);}       .btn-grn:hover{background:rgba(0,255,65,.1);}
+.btn-red{color:#ef4444;border-color:rgba(239,68,68,.3);}      .btn-red:hover{background:rgba(239,68,68,.1);}
+.btn-ylw{color:#fbbf24;border-color:rgba(251,191,36,.3);}     .btn-ylw:hover{background:rgba(251,191,36,.1);}
+
+/* Modal QA */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:999;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-ov.open{display:flex;}
+.modal{background:#0a1525;border:1px solid rgba(217,70,166,.35);border-radius:16px;padding:28px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
+.modal h3{font-size:.95rem;font-weight:800;color:#D946A6;margin-bottom:4px;}
+.modal p{font-size:.75rem;color:var(--muted);margin-bottom:18px;}
+.qa-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.qa-row:last-of-type{border-bottom:none;}
+.qa-row label{font-size:.82rem;cursor:pointer;}
+.qa-row input[type=checkbox]{width:15px;height:15px;flex-shrink:0;margin-top:2px;accent-color:#D946A6;}
+.qa-link,.qa-notes{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px;color:#e2e8f0;font-family:inherit;font-size:.82rem;margin-top:12px;}
+.qa-notes{resize:vertical;min-height:70px;}
+.qa-link:focus,.qa-notes:focus{outline:none;border-color:#D946A6;}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;}
+
+/* Toast */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0d1520;border:1px solid var(--border);color:#e2e8f0;padding:10px 22px;border-radius:8px;font-size:.82rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999;}
+#toast.show{opacity:1;} #toast.ok{border-color:#00FF41;color:#00FF41;} #toast.err{border-color:#ef4444;color:#ef4444;}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div>
+    <h1>⚙️ PRODIGY — Panel Operario</h1>
+    <p id="hdr-user">Cargando…</p>
+  </div>
+  <div class="dept-tabs" id="dept-tabs"></div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button class="btn btn-grn" onclick="recargar()"><i class="fas fa-rotate-right"></i></button>
+    <button class="btn btn-red" onclick="ProdigyAuth.signOut()" style="font-size:.68rem;">Salir</button>
+  </div>
+</div>
+
+<div class="main" id="main-content">
+  <p style="color:var(--muted);padding:40px;text-align:center;"><i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;display:block;margin-bottom:12px;"></i>Cargando departamentos…</p>
+</div>
+
+<!-- Modal QA -->
+<div class="modal-ov" id="modal-qa">
+  <div class="modal">
+    <h3 id="qa-titulo"><i class="fas fa-check-double" style="margin-right:8px;"></i>Control de Calidad</h3>
+    <p id="qa-sub">Caso #—</p>
+    <div id="qa-checks"></div>
+    <div id="qa-link-wrap" style="display:none;">
+      <label style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-top:14px;margin-bottom:4px;">Link de entrega (Drive / WeTransfer)</label>
+      <input type="url" id="qa-link" class="qa-link" placeholder="https://drive.google.com/…">
+    </div>
+    <textarea id="qa-notes" class="qa-notes" placeholder="Notas para el doctor o para producción…"></textarea>
+    <input type="hidden" id="qa-id">
+    <input type="hidden" id="qa-dept">
+    <div class="modal-btns">
+      <button class="btn btn-red"  onclick="cerrarQA()">Cancelar</button>
+      <button class="btn btn-ylw"  id="qa-btn-cambios"  onclick="submitQA('cambios')">🔄 Cambios</button>
+      <button class="btn btn-grn"  id="qa-btn-aprobar"  onclick="submitQA('aprobar')">✅ Aprobar</button>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+const SB_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const sb = window.supabase.createClient(SB_URL, SB_ANON);
+const esc = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+/* ── Config por departamento ── */
+const DEPTS = {
+  diseno: {
+    label:'Diseño CAD', icon:'fas fa-drafting-compass', color:'#00d2ff',
+    flujos:['diseno'],
+    cols:[
+      {id:'pend',  label:'Por validar',   color:'#fbbf24', estados:['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE','CAMBIOS_SOLICITADOS']},
+      {id:'work',  label:'Diseñando',     color:'#00d2ff', estados:['EN_DISENO']},
+      {id:'rev',   label:'En revisión',   color:'#D4AF37', estados:['REVISION_CLIENTE']},
+      {id:'done',  label:'Aprobado',      color:'#00FF41', estados:['DISENO_APROBADO','ENTREGADO']}
+    ],
+    timerHrs:{alerta:18, critico:22},
+    qa:['Márgenes y troncocónico (mín. 6°)','Oclusión estática y dinámica OK','Anatomía: cúspides y forma correcta','Contactos proximales correctos','STL sin errores de malla','Espesor mínimo por material','Visor Exocad HTML adjunto'],
+    acciones: {
+      pend: p => `<button class="btn btn-dis" onclick="avanzar('${p.id}','EN_DISENO','diseno')"><i class="fas fa-play"></i> Iniciar</button>
+                  <button class="btn btn-red" onclick="avanzar('${p.id}','INCIDENCIA_CLIENTE','diseno')"><i class="fas fa-exclamation"></i> Incidencia</button>`,
+      work: p => `<button class="btn btn-ylw" onclick="avanzar('${p.id}','REVISION_CLIENTE','diseno')"><i class="fas fa-eye"></i> Enviar revisión</button>
+                  <button class="btn btn-dis" onclick="abrirQA('${p.id}','${esc(p.codigo)||''}','diseno')"><i class="fas fa-check-double"></i> QA</button>`,
+      rev:  p => `<button class="btn btn-grn" onclick="abrirQA('${p.id}','${esc(p.codigo)||''}','diseno')"><i class="fas fa-check"></i> Aprobar</button>
+                  <button class="btn btn-ylw" onclick="avanzar('${p.id}','CAMBIOS_SOLICITADOS','diseno')"><i class="fas fa-redo"></i> Cambios</button>`,
+      done: p => p.link_diseno ? `<a href="${esc(p.link_diseno)}" target="_blank" rel="noopener noreferrer" class="btn btn-dis"><i class="fas fa-external-link-alt"></i> Ver diseño</a>` : ''
+    }
+  },
+  fresado: {
+    label:'Fresado / Lab', icon:'fas fa-cog', color:'#D4AF37',
+    flujos:['fresado','lab'],
+    cols:[
+      {id:'pend', label:'Validar',      color:'#fbbf24', estados:['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE','DISENO_FINALIZADO']},
+      {id:'prod', label:'Producción',   color:'#D4AF37', estados:['EN_PRODUCCION','FRESADO_INICIADO']},
+      {id:'done', label:'Completado',   color:'#00FF41', estados:['QA_APROBADO','POR_DESPACHAR','EN_REPARTO','ENTREGADO']}
+    ],
+    timerHrs:{alerta:36, critico:48},
+    qa:['Color VITA verificado con el pedido','Dimensiones dentro de tolerancia ±0.1mm','Superficie sin porosidades ni grietas','Glaze uniforme aplicado','Empaque protegido correctamente'],
+    acciones: {
+      pend: p => `<button class="btn btn-frs" onclick="avanzar('${p.id}','EN_PRODUCCION','fresado')"><i class="fas fa-play"></i> Iniciar</button>
+                  <button class="btn btn-red" onclick="avanzar('${p.id}','INCIDENCIA_CLIENTE','fresado')"><i class="fas fa-exclamation"></i> Incidencia</button>`,
+      prod: p => `<button class="btn btn-grn" onclick="abrirQA('${p.id}','${esc(p.codigo)||''}','fresado')"><i class="fas fa-check-double"></i> QA Final</button>
+                  <button class="btn btn-frs" onclick="avanzar('${p.id}','FRESADO_INICIADO','fresado')"><i class="fas fa-cog fa-spin"></i> Fresando</button>`,
+      done: _ => ''
+    }
+  },
+  impresion: {
+    label:'Impresión 3D', icon:'fas fa-print', color:'#fb923c',
+    flujos:['impresion'],
+    cols:[
+      {id:'pend', label:'Por imprimir',  color:'#fbbf24', estados:['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE']},
+      {id:'prod', label:'Imprimiendo',   color:'#fb923c', estados:['EN_PRODUCCION']},
+      {id:'post', label:'Post-proceso',  color:'#D946A6', estados:['DISENO_FINALIZADO','FRESADO_INICIADO']},
+      {id:'done', label:'Completado',    color:'#00FF41', estados:['QA_APROBADO','POR_DESPACHAR','EN_REPARTO','ENTREGADO']}
+    ],
+    timerHrs:{alerta:20, critico:28},
+    qa:['Archivo STL validado sin errores','Soportes removidos completamente','Post-curado UV completo (mínimo 20 min)','Biocompatibilidad: color y superficie OK','Dimensiones verificadas'],
+    acciones: {
+      pend: p => `<button class="btn btn-imp" onclick="avanzar('${p.id}','EN_PRODUCCION','impresion')"><i class="fas fa-play"></i> Imprimir</button>
+                  <button class="btn btn-red" onclick="avanzar('${p.id}','INCIDENCIA_CLIENTE','impresion')"><i class="fas fa-exclamation"></i> Incidencia</button>`,
+      prod: p => `<button class="btn btn-ylw" onclick="avanzar('${p.id}','FRESADO_INICIADO','impresion')"><i class="fas fa-flask"></i> Post-proceso</button>`,
+      post: p => `<button class="btn btn-grn" onclick="abrirQA('${p.id}','${esc(p.codigo)||''}','impresion')"><i class="fas fa-check-double"></i> QA Final</button>`,
+      done: _ => ''
+    }
+  },
+  taller: {
+    label:'Taller / Mantenimiento', icon:'fas fa-tools', color:'#a78bfa',
+    flujos:['taller'],
+    cols:[
+      {id:'pend', label:'Pendiente',     color:'#fbbf24', estados:['VALIDACION_PENDIENTE']},
+      {id:'prod', label:'En proceso',    color:'#a78bfa', estados:['EN_PRODUCCION']},
+      {id:'done', label:'Resuelto',      color:'#00FF41', estados:['QA_APROBADO','ENTREGADO']}
+    ],
+    timerHrs:{alerta:4, critico:8},
+    qa:['Equipo funciona correctamente','Limpieza completada','Registro en bitácora'],
+    acciones: {
+      pend: p => `<button class="btn" style="color:var(--tal);border-color:rgba(167,139,250,.3)" onclick="avanzar('${p.id}','EN_PRODUCCION','taller')"><i class="fas fa-wrench"></i> Atender</button>`,
+      prod: p => `<button class="btn btn-grn" onclick="abrirQA('${p.id}','${esc(p.codigo)||''}','taller')"><i class="fas fa-check"></i> Cerrar</button>`,
+      done: _ => ''
+    }
+  }
+};
+
+/* ── Estado global ── */
+let _myDepts = [];
+let _activeDept = null;
+let _casos = {};   // { dept: [] }
+let _userId = null;
+
+/* ── Init ── */
+(async function init() {
+  const session = await ProdigyAuth.require(['admin','operator','encargado_inventario','diseno','fresado','impresion','taller','mensajero']);
+  if (!session) return;
+  _userId = session.user.id;
+  document.getElementById('hdr-user').textContent = session.user.email;
+
+  /* Leer departamentos asignados */
+  const { data: staff } = await sb.from('staff_departamentos')
+    .select('departamentos,nombre,activo')
+    .eq('user_id', _userId)
+    .single();
+
+  /* Admin ve todos los departamentos */
+  const role = session.user.app_metadata?.role;
+  if (role === 'admin' || role === 'superadmin') {
+    _myDepts = ['diseno','fresado','impresion','taller'];
+  } else if (staff && staff.activo && staff.departamentos?.length) {
+    _myDepts = staff.departamentos;
+  } else {
+    document.getElementById('main-content').innerHTML =
+      '<div style="text-align:center;padding:60px;color:#94a3b8;"><i class="fas fa-lock" style="font-size:2rem;display:block;margin-bottom:12px;color:#ef4444;"></i>No tienes departamentos asignados.<br>Contacta al administrador.</div>';
+    document.body.classList.add('ready');
+    return;
+  }
+
+  if (staff?.nombre) {
+    document.getElementById('hdr-user').textContent = staff.nombre + ' · ' + session.user.email;
+  }
+
+  buildTabs();
+  document.body.classList.add('ready');
+  await recargar();
+  setInterval(recargar, 60000);
+
+  /* Realtime */
+  sb.channel('operario-casos')
+    .on('postgres_changes',{event:'*',schema:'public',table:'pedidos'},() => recargar())
+    .subscribe();
+})();
+
+/* ── Construir tabs ── */
+function buildTabs() {
+  const container = document.getElementById('dept-tabs');
+  _myDepts.forEach((d,i) => {
+    const cfg = DEPTS[d]; if (!cfg) return;
+    const btn = document.createElement('button');
+    btn.className = 'dept-tab' + (i===0?' active':'');
+    btn.dataset.dept = d;
+    btn.innerHTML = `<i class="${cfg.icon}" style="margin-right:5px;"></i>${cfg.label}`;
+    btn.style.color = cfg.color;
+    btn.onclick = () => switchDept(d);
+    container.appendChild(btn);
+  });
+  if (_myDepts.length) switchDept(_myDepts[0]);
+}
+
+function switchDept(dept) {
+  _activeDept = dept;
+  document.querySelectorAll('.dept-tab').forEach(t => t.classList.toggle('active', t.dataset.dept===dept));
+  renderDept(dept);
+}
+
+/* ── Cargar casos ── */
+async function recargar() {
+  for (const dept of _myDepts) {
+    const cfg = DEPTS[dept];
+    const { data } = await sb.from('pedidos')
+      .select('id,codigo,nombre_paciente,servicio,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,observaciones')
+      .in('flujo', cfg.flujos)
+      .not('estado','in','("cancelado","CANCELADO")')
+      .order('created_at',{ascending:false})
+      .limit(80);
+    _casos[dept] = (data||[]).map(p => ({
+      ...p, estado_operativo: p.estado_operativo||'VALIDACION_PENDIENTE'
+    }));
+  }
+  if (_activeDept) renderDept(_activeDept);
+}
+
+/* ── Render departamento ── */
+function renderDept(dept) {
+  const cfg  = DEPTS[dept];
+  const list = _casos[dept] || [];
+  const main = document.getElementById('main-content');
+
+  /* Timer */
+  const timerHtml = timerHTML(dept, list, cfg);
+
+  /* Columnas */
+  const colsHtml = cfg.cols.map(col => {
+    const items = list.filter(p => col.estados.includes(p.estado_operativo));
+    const cards = items.length
+      ? items.map(p => cardHTML(p, col.id, dept)).join('')
+      : `<p style="color:var(--muted);font-size:.8rem;padding:8px;">Sin casos</p>`;
+    return `<div class="k-col">
+      <div class="k-hdr" style="color:${col.color};">
+        <span>${col.label}</span>
+        <span class="k-count">${items.length}</span>
+      </div>
+      ${cards}
+    </div>`;
+  }).join('');
+
+  const numCols = cfg.cols.length === 4 ? 'cols-4' : 'cols-3';
+  main.innerHTML = timerHtml + `<div class="kanban ${numCols}">${colsHtml}</div>`;
+}
+
+function timerHTML(dept, list, cfg) {
+  const {alerta, critico} = cfg.timerHrs;
+  const max = list.reduce((m, p) => {
+    const h = (Date.now() - new Date(p.created_at).getTime()) / 3600000;
+    return Math.max(m, h);
+  }, 0);
+  if (max > critico) return `<div class="timer-bar critico visible"><i class="fas fa-exclamation-triangle"></i>CRÍTICO: caso con ${Math.floor(max)}h — entrega en riesgo.</div>`;
+  if (max > alerta)  return `<div class="timer-bar alerta  visible"><i class="fas fa-clock"></i>ALERTA: caso con ${Math.floor(max)}h en proceso.</div>`;
+  return '';
+}
+
+/* ── Card HTML ── */
+function cardHTML(p, colId, dept) {
+  const cfg  = DEPTS[dept];
+  const hrs  = (Date.now() - new Date(p.created_at).getTime()) / 3600000;
+  const tc   = hrs > cfg.timerHrs.critico ? 'timer-critico' : hrs > cfg.timerHrs.alerta ? 'timer-alerta' : 'timer-ok';
+  const tl   = `${Math.floor(hrs)}h ${Math.floor((hrs%1)*60)}m`;
+  const fromDesign = p.estado_operativo === 'DISENO_FINALIZADO' && dept !== 'diseno';
+  const actions = (cfg.acciones[colId]?.(p)) || '';
+
+  return `<div class="caso-card" style="${hrs > cfg.timerHrs.critico ? 'border-color:rgba(239,68,68,.4);' : ''}">
+    ${fromDesign ? `<div class="card-badge" style="background:rgba(0,210,255,.1);color:#00d2ff;border:1px solid rgba(0,210,255,.25);">✏️ Viene de Diseño</div>` : ''}
+    <div class="card-timer ${tc}"><i class="fas fa-clock" style="margin-right:3px;"></i>${tl}</div>
+    <div class="caso-id">#${esc(p.codigo)||p.id.slice(0,8)}</div>
+    <div class="caso-nombre">${esc(p.nombre_paciente)||'Sin nombre'}</div>
+    <div class="caso-meta">
+      ${esc(p.servicio)||'—'}
+      ${p.material?'<br>'+esc(p.material):''}
+      ${p.color_vita?'<br>Color: '+esc(p.color_vita):''}
+      ${p.observaciones?'<br><span style="color:#D4AF37;">📝 '+esc(p.observaciones.slice(0,60))+'</span>':''}
+    </div>
+    <div class="caso-actions">${actions}</div>
+  </div>`;
+}
+
+/* ── Avanzar estado ── */
+async function avanzar(id, nuevoEstado, dept) {
+  const updates = { estado_operativo: nuevoEstado };
+  if (nuevoEstado === 'EN_PRODUCCION')    updates.timestamp_validacion = new Date().toISOString();
+  if (nuevoEstado === 'FRESADO_INICIADO') updates.timestamp_produccion  = new Date().toISOString();
+  if (nuevoEstado === 'DISENO_APROBADO')  updates.estado = 'DISENO_FINALIZADO';
+
+  const { error } = await sb.from('pedidos').update(updates).eq('id', id);
+  if (error) { toast('Error: '+error.message,'err'); return; }
+  toast('Actualizado ✓','ok');
+  await recargar();
+}
+
+/* ── QA ── */
+function abrirQA(id, codigo, dept) {
+  const cfg = DEPTS[dept];
+  document.getElementById('qa-id').value   = id;
+  document.getElementById('qa-dept').value = dept;
+  document.getElementById('qa-sub').textContent = 'Caso #'+codigo+' — '+cfg.label;
+  document.getElementById('qa-titulo').innerHTML = `<i class="fas fa-check-double" style="margin-right:8px;color:${cfg.color}"></i>QA ${cfg.label}`;
+  document.getElementById('qa-link').value  = '';
+  document.getElementById('qa-notes').value = '';
+  document.getElementById('qa-link-wrap').style.display = dept === 'diseno' ? 'block' : 'none';
+
+  const checksDiv = document.getElementById('qa-checks');
+  checksDiv.innerHTML = cfg.qa.map((q,i) =>
+    `<div class="qa-row"><input type="checkbox" id="qc${i}"><label for="qc${i}">${q}</label></div>`
+  ).join('');
+
+  /* Mostrar/ocultar botón Cambios según el departamento */
+  document.getElementById('qa-btn-cambios').style.display = dept === 'diseno' ? 'inline-flex' : 'none';
+  document.getElementById('modal-qa').classList.add('open');
+}
+
+function cerrarQA() { document.getElementById('modal-qa').classList.remove('open'); }
+document.getElementById('modal-qa').addEventListener('click', e => { if(e.target===document.getElementById('modal-qa')) cerrarQA(); });
+
+async function submitQA(accion) {
+  const id   = document.getElementById('qa-id').value;
+  const dept = document.getElementById('qa-dept').value;
+  const cfg  = DEPTS[dept];
+  const link  = document.getElementById('qa-link').value.trim();
+  const notes = document.getElementById('qa-notes').value.trim();
+
+  if (accion === 'aprobar') {
+    const checks = cfg.qa.map((_,i) => document.getElementById('qc'+i)?.checked);
+    if (checks.some(c => !c)) { toast('Completa todos los checks antes de aprobar','err'); return; }
+  }
+
+  const nuevoEstado = accion === 'aprobar'
+    ? (dept === 'diseno' ? 'DISENO_APROBADO' : 'QA_APROBADO')
+    : 'CAMBIOS_SOLICITADOS';
+
+  const updates = { estado_operativo: nuevoEstado };
+  if (link)  updates.link_diseno   = link;
+  if (notes) updates.observaciones = notes;
+  if (nuevoEstado === 'DISENO_APROBADO') updates.estado = 'DISENO_FINALIZADO';
+  if (nuevoEstado === 'QA_APROBADO')     updates.estado = 'QA_APROBADO';
+
+  const { error } = await sb.from('pedidos').update(updates).eq('id', id);
+  if (error) { toast('Error: '+error.message,'err'); return; }
+  cerrarQA();
+  toast(accion==='aprobar' ? '✅ Aprobado' : '🔄 Cambios marcados','ok');
+  await recargar();
+}
+
+/* ── Toast ── */
+let _tt;
+function toast(msg, t='ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'show '+t;
+  clearTimeout(_tt); _tt = setTimeout(() => el.className='', 3000);
+}
+</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>
