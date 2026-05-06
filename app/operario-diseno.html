@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#00d2ff">
+<link rel="manifest" href="/manifest.json">
+<meta name="robots" content="noindex, nofollow">
+<title>PRODIGY — Operario Diseño CAD</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✏️</text></svg>">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../js/auth-guard.js"></script>
+<style>
+:root {
+  --bg:#050505; --card:#050e1a; --cyan:#00d2ff; --gold:#D4AF37;
+  --green:#00FF41; --red:#ef4444; --yellow:#fbbf24; --pink:#D946A6;
+  --txt:#ffffff; --muted:#94a3b8; --border:rgba(0,210,255,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{overflow-x:hidden;background:var(--bg);color:var(--txt);font-family:'Segoe UI',sans-serif;display:flex;min-height:100vh;visibility:hidden;}
+body.ready{visibility:visible;}
+
+/* Sidebar */
+.sidebar{width:220px;min-height:100vh;background:#03080f;border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
+.logo{text-align:center;padding:10px 0 20px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.logo h1{font-size:1.05rem;font-weight:900;letter-spacing:2px;color:var(--cyan);}
+.logo p{font-size:.62rem;color:var(--muted);margin-top:2px;}
+.role-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.2);border-radius:20px;padding:3px 10px;font-size:.62rem;font-weight:700;color:var(--cyan);margin-top:6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:600;color:var(--muted);text-decoration:none;transition:.2s;}
+.nav-item:hover{background:rgba(255,255,255,.04);color:#fff;}
+.nav-item.active{background:rgba(0,210,255,.07);color:var(--cyan);}
+.sidebar-footer{margin-top:auto;padding-top:16px;border-top:1px solid var(--border);}
+
+/* Main */
+.main{flex:1;padding:28px;overflow-y:auto;}
+.page-header{margin-bottom:22px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.page-header h1{font-size:1.5rem;font-weight:900;}
+.page-header p{color:var(--muted);font-size:.84rem;margin-top:3px;}
+
+/* Timer */
+.timer-bar{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);border-radius:10px;padding:10px 16px;margin-bottom:20px;display:none;align-items:center;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--yellow);}
+.timer-bar.visible{display:flex;}
+.timer-bar.critico{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--red);}
+
+/* Kanban 4 columnas */
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+@media(max-width:1300px){.kanban{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:700px){.kanban{grid-template-columns:1fr;}}
+.k-col{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.k-hdr{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;}
+.k-count{background:rgba(255,255,255,.08);border-radius:10px;padding:2px 8px;font-size:.65rem;}
+
+/* Caso card */
+.caso-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px;margin-bottom:10px;transition:.2s;cursor:grab;}
+.caso-card:hover{background:rgba(255,255,255,.05);}
+.caso-id{font-size:.68rem;color:var(--cyan);font-family:monospace;margin-bottom:3px;}
+.caso-nombre{font-size:.88rem;font-weight:700;margin-bottom:5px;}
+.caso-meta{font-size:.72rem;color:var(--muted);line-height:1.7;}
+.caso-actions{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap;}
+.card-timer{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:6px;margin-bottom:6px;display:inline-block;}
+.card-timer.ok{background:rgba(0,255,65,.1);color:var(--green);}
+.card-timer.alerta{background:rgba(251,191,36,.1);color:var(--yellow);}
+.card-timer.critico{background:rgba(239,68,68,.15);color:var(--red);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+
+/* Botones */
+.btn-xs{padding:5px 10px;border-radius:6px;font-size:.68rem;font-weight:700;border:1px solid;cursor:pointer;background:transparent;display:inline-flex;align-items:center;gap:4px;color:inherit;transition:.15s;white-space:nowrap;}
+.btn-cyan{color:var(--cyan);border-color:rgba(0,210,255,.3);}
+.btn-cyan:hover{background:rgba(0,210,255,.1);}
+.btn-green{color:var(--green);border-color:rgba(0,255,65,.3);}
+.btn-green:hover{background:rgba(0,255,65,.1);}
+.btn-gold{color:var(--gold);border-color:rgba(212,175,55,.3);}
+.btn-gold:hover{background:rgba(212,175,55,.1);}
+.btn-yellow{color:var(--yellow);border-color:rgba(251,191,36,.3);}
+.btn-yellow:hover{background:rgba(251,191,36,.1);}
+.btn-red{color:var(--red);border-color:rgba(239,68,68,.3);}
+.btn-red:hover{background:rgba(239,68,68,.1);}
+.urgente-dot{width:7px;height:7px;background:var(--red);border-radius:50%;display:inline-block;animation:pulse 1.2s infinite;}
+
+/* Ficha de puesto */
+.ficha-section{margin-top:28px;}
+.ficha-section h2{font-size:.95rem;font-weight:800;color:var(--cyan);margin-bottom:14px;}
+.ficha-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.ficha-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.ficha-card h4{font-size:.78rem;font-weight:700;color:var(--gold);margin-bottom:10px;}
+.ficha-item{display:flex;align-items:center;gap:8px;font-size:.78rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.ficha-item:last-child{border-bottom:none;}
+.ficha-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-ok{background:var(--green);}
+.dot-warn{background:var(--yellow);}
+.dot-muted{background:rgba(148,163,184,.3);}
+
+/* Modal QA */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#0a1828;border:1px solid rgba(0,210,255,.3);border-radius:16px;padding:28px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;}
+.modal-title{font-size:1rem;font-weight:800;color:var(--cyan);margin-bottom:4px;}
+.modal-sub{font-size:.75rem;color:var(--muted);margin-bottom:20px;}
+.qa-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.qa-item:last-of-type{border-bottom:none;}
+.qa-item label{font-size:.82rem;color:#e2e8f0;cursor:pointer;line-height:1.4;}
+.qa-item input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:var(--cyan);}
+.qa-notas{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px;color:#e2e8f0;font-family:inherit;font-size:.82rem;resize:vertical;min-height:80px;margin:14px 0;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;}
+
+/* Upload link diseño */
+.link-box{background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.2);border-radius:10px;padding:14px;margin-top:20px;}
+.link-box label{font-size:.75rem;font-weight:700;color:var(--cyan);display:block;margin-bottom:8px;}
+.link-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px;color:#e2e8f0;font-size:.82rem;font-family:inherit;}
+.link-input:focus{outline:none;border-color:var(--cyan);}
+
+/* Toast */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0d1520;border:1px solid var(--border);color:#e2e8f0;padding:10px 22px;border-radius:8px;font-size:.82rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999;}
+#toast.show{opacity:1;}
+#toast.ok{border-color:var(--green);color:var(--green);}
+#toast.err{border-color:var(--red);color:var(--red);}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="logo">
+    <h1>PRODIGY</h1>
+    <p>Operario Diseño CAD</p>
+    <div class="role-badge"><i class="fas fa-drafting-compass" style="font-size:.6rem;"></i> Diseño</div>
+  </div>
+  <a href="#" class="nav-item active"><i class="fas fa-columns" style="width:16px;"></i> Mis casos</a>
+  <a href="panel-interno-operaciones.html" class="nav-item"><i class="fas fa-layer-group" style="width:16px;"></i> Panel completo</a>
+  <a href="/seguimiento-caso" target="_blank" class="nav-item"><i class="fas fa-search" style="width:16px;"></i> Seguimiento</a>
+  <div class="sidebar-footer">
+    <div id="hdr-sub" style="font-size:.68rem;color:var(--muted);line-height:1.6;margin-bottom:10px;"></div>
+    <button class="btn-xs btn-cyan" style="width:100%;justify-content:center;" onclick="cargarCasos()">
+      <i class="fas fa-rotate-right"></i> Actualizar
+    </button>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="page-header">
+    <div>
+      <h1 style="color:var(--cyan);">✏️ Diseño CAD</h1>
+      <p>Casos asignados al flujo de diseño digital — Exocad · 3Shape · Blender</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <span id="realtime-dot" style="width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 6px rgba(0,255,65,.7);display:inline-block;" title="Realtime activo"></span>
+      <span style="font-size:.72rem;color:var(--muted);">Actualización en tiempo real</span>
+    </div>
+  </div>
+
+  <!-- Timer alerta -->
+  <div class="timer-bar" id="timer-alerta">
+    <i class="fas fa-clock"></i>
+    <span id="timer-msg">Alerta de tiempo</span>
+  </div>
+
+  <!-- Kanban 4 columnas -->
+  <div class="kanban">
+    <div class="k-col">
+      <div class="k-hdr" style="color:var(--yellow);">
+        <span><i class="fas fa-inbox" style="margin-right:6px;"></i>Por validar</span>
+        <span class="k-count" id="cnt-pend">0</span>
+      </div>
+      <div class="k-drop-zone" id="col-pend"></div>
+    </div>
+    <div class="k-col">
+      <div class="k-hdr" style="color:var(--cyan);">
+        <span><i class="fas fa-drafting-compass" style="margin-right:6px;"></i>Diseñando</span>
+        <span class="k-count" id="cnt-diseno">0</span>
+      </div>
+      <div class="k-drop-zone" id="col-diseno"></div>
+    </div>
+    <div class="k-col">
+      <div class="k-hdr" style="color:var(--gold);">
+        <span><i class="fas fa-eye" style="margin-right:6px;"></i>En revisión</span>
+        <span class="k-count" id="cnt-rev">0</span>
+      </div>
+      <div class="k-drop-zone" id="col-rev"></div>
+    </div>
+    <div class="k-col">
+      <div class="k-hdr" style="color:var(--green);">
+        <span><i class="fas fa-check-circle" style="margin-right:6px;"></i>Aprobado / Entregado</span>
+        <span class="k-count" id="cnt-done">0</span>
+      </div>
+      <div class="k-drop-zone" id="col-done"></div>
+    </div>
+  </div>
+
+  <!-- Ficha de puesto -->
+  <div class="ficha-section">
+    <h2><i class="fas fa-clipboard-list" style="margin-right:8px;"></i>Ficha del puesto — Diseño CAD</h2>
+    <div class="ficha-grid">
+      <div class="ficha-card">
+        <h4><i class="fas fa-clock" style="margin-right:6px;"></i>Tiempos objetivo</h4>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>Corona / Inlay: <strong style="margin-left:auto;color:var(--green);">≤ 24h</strong></div>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>Carilla / Puente: <strong style="margin-left:auto;color:var(--green);">≤ 24h</strong></div>
+        <div class="ficha-item"><div class="ficha-dot dot-warn"></div>Guía Quirúrgica: <strong style="margin-left:auto;color:var(--yellow);">≤ 48h</strong></div>
+        <div class="ficha-item"><div class="ficha-dot dot-warn"></div>Full Arch / All-on-4: <strong style="margin-left:auto;color:var(--yellow);">≤ 48–72h</strong></div>
+      </div>
+      <div class="ficha-card">
+        <h4><i class="fas fa-tools" style="margin-right:6px;"></i>Software disponible</h4>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>Exocad DentalCAD</div>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>3Shape Dental Designer</div>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>CoDiagnostiX (implantes)</div>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>Blender for Dental</div>
+      </div>
+      <div class="ficha-card">
+        <h4><i class="fas fa-check-double" style="margin-right:6px;"></i>Checklist antes de entregar</h4>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>Márgenes y troncocónico verificados</div>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>Oclusión estática y dinámica OK</div>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>Anatomía y proporciones correctas</div>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>STL exportado sin errores de malla</div>
+        <div class="ficha-item"><div class="ficha-dot dot-ok"></div>Visor Exocad adjunto (si aplica)</div>
+      </div>
+      <div class="ficha-card">
+        <h4><i class="fas fa-exclamation-triangle" style="margin-right:6px;"></i>Incidencias frecuentes</h4>
+        <div class="ficha-item"><div class="ficha-dot dot-warn"></div>STL con huecos / malla rota</div>
+        <div class="ficha-item"><div class="ficha-dot dot-warn"></div>Márgenes no marcados en escáner</div>
+        <div class="ficha-item"><div class="ficha-dot dot-warn"></div>Antagonista faltante</div>
+        <div class="ficha-item"><div class="ficha-dot dot-warn"></div>Indicaciones incompletas del doctor</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal QA Diseño -->
+<div class="modal-overlay" id="modal-qa">
+  <div class="modal">
+    <div class="modal-title"><i class="fas fa-search-plus" style="margin-right:8px;"></i>Control de Calidad — Diseño CAD</div>
+    <div class="modal-sub" id="qa-caso-sub">Caso #—</div>
+
+    <div class="qa-item"><input type="checkbox" id="qa1"><label for="qa1">Márgenes trazados y troncocónico correcto (mín. 6°)</label></div>
+    <div class="qa-item"><input type="checkbox" id="qa2"><label for="qa2">Oclusión estática verificada en articulador virtual</label></div>
+    <div class="qa-item"><input type="checkbox" id="qa3"><label for="qa3">Anatomía: cúspides, fisuras y forma general aprobada</label></div>
+    <div class="qa-item"><input type="checkbox" id="qa4"><label for="qa4">Puntos de contacto proximal correctos</label></div>
+    <div class="qa-item"><input type="checkbox" id="qa5"><label for="qa5">STL exportado sin errores de malla (0 triángulos invertidos)</label></div>
+    <div class="qa-item"><input type="checkbox" id="qa6"><label for="qa6">Espesor mínimo verificado según material indicado</label></div>
+    <div class="qa-item"><input type="checkbox" id="qa7"><label for="qa7">Visor Exocad HTML adjunto (si aplica)</label></div>
+
+    <!-- Link de entrega -->
+    <div class="link-box">
+      <label><i class="fas fa-link" style="margin-right:5px;"></i>Link de entrega (Drive / WeTransfer / URL STL)</label>
+      <input type="url" id="qa-link" class="link-input" placeholder="https://drive.google.com/...">
+    </div>
+
+    <textarea class="qa-notas" id="qa-notas" placeholder="Notas técnicas para el doctor o para el equipo de producción…"></textarea>
+    <input type="hidden" id="qa-pedido-id">
+
+    <div class="modal-actions">
+      <button class="btn-xs btn-red" onclick="cerrarQA()">Cancelar</button>
+      <button class="btn-xs btn-gold" onclick="guardarQA('CAMBIOS_SOLICITADOS')"><i class="fas fa-redo"></i> Requiere cambios</button>
+      <button class="btn-xs btn-green" onclick="guardarQA('DISENO_APROBADO')"><i class="fas fa-check"></i> Aprobar y entregar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const PUSH_URL = SUPABASE_URL + '/functions/v1/send-push';
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const escH = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+/* ── Estados por columna ── */
+const ST_PEND   = ['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE','CAMBIOS_SOLICITADOS'];
+const ST_DISENO = ['EN_DISENO'];
+const ST_REV    = ['REVISION_CLIENTE'];
+const ST_DONE   = ['DISENO_APROBADO','ENTREGADO','QA_APROBADO'];
+
+let _casos = [];
+let _userId = null;
+
+/* ── Init ── */
+(async function init() {
+  const session = await ProdigyAuth.require(['admin','operator','encargado_inventario']);
+  if (!session) return;
+  _userId = session.user.id;
+  document.body.classList.add('ready');
+  document.getElementById('hdr-sub').textContent =
+    session.user.email + '\n' + new Date().toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'});
+  await cargarCasos();
+  setInterval(cargarCasos, 60000); // auto-refresh cada 60s
+  /* Realtime */
+  sb.channel('diseno-casos')
+    .on('postgres_changes',{event:'*',schema:'public',table:'pedidos'},() => cargarCasos())
+    .subscribe();
+})();
+
+/* ── Cargar casos de diseño ── */
+async function cargarCasos() {
+  const { data, error } = await sb.from('pedidos')
+    .select('id,codigo,nombre_paciente,servicio,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,observaciones')
+    .eq('flujo','diseno')
+    .not('estado','in','("cancelado","CANCELADO")')
+    .order('created_at',{ascending:false})
+    .limit(80);
+
+  if (error) { toast('Error: ' + error.message, 'err'); return; }
+  _casos = (data||[]).map(p => ({
+    ...p, estado_operativo: p.estado_operativo || 'VALIDACION_PENDIENTE'
+  }));
+  renderKanban();
+  actualizarTimer();
+}
+
+/* ── Render Kanban ── */
+function renderKanban() {
+  const pend   = _casos.filter(p => ST_PEND.includes(p.estado_operativo));
+  const diseno = _casos.filter(p => ST_DISENO.includes(p.estado_operativo));
+  const rev    = _casos.filter(p => ST_REV.includes(p.estado_operativo));
+  const done   = _casos.filter(p => ST_DONE.includes(p.estado_operativo));
+
+  document.getElementById('cnt-pend').textContent   = pend.length;
+  document.getElementById('cnt-diseno').textContent = diseno.length;
+  document.getElementById('cnt-rev').textContent    = rev.length;
+  document.getElementById('cnt-done').textContent   = done.length;
+
+  const empty = '<p style="color:var(--muted);font-size:.8rem;padding:10px;">Sin casos</p>';
+  document.getElementById('col-pend').innerHTML   = pend.length   ? pend.map(p=>cardHTML(p,'pend')).join('')   : empty;
+  document.getElementById('col-diseno').innerHTML = diseno.length ? diseno.map(p=>cardHTML(p,'diseno')).join('') : empty;
+  document.getElementById('col-rev').innerHTML    = rev.length    ? rev.map(p=>cardHTML(p,'rev')).join('')    : empty;
+  document.getElementById('col-done').innerHTML   = done.length   ? done.map(p=>cardHTML(p,'done')).join('')   : empty;
+}
+
+function cardHTML(p, col) {
+  const hrs    = (Date.now() - new Date(p.created_at).getTime()) / 3600000;
+  const critico = hrs > 22;
+  const alerta  = hrs > 18 && !critico;
+  const tc = critico ? 'critico' : alerta ? 'alerta' : 'ok';
+  const tl = `${Math.floor(hrs)}h ${Math.floor((hrs%1)*60)}min`;
+
+  /* Etiqueta de estado_operativo */
+  const stateLabel = {
+    VALIDACION_PENDIENTE:'Por validar', INCIDENCIA_CLIENTE:'Incidencia',
+    CAMBIOS_SOLICITADOS:'Cambios pedidos', EN_DISENO:'Diseñando',
+    REVISION_CLIENTE:'En revisión', DISENO_APROBADO:'Aprobado',
+    ENTREGADO:'Entregado', QA_APROBADO:'QA OK'
+  }[p.estado_operativo] || p.estado_operativo;
+
+  let actions = '';
+  if (col === 'pend') {
+    actions = `<button class="btn-xs btn-cyan"   onclick="avanzar('${p.id}','EN_DISENO')"><i class="fas fa-play"></i> Iniciar diseño</button>
+               <button class="btn-xs btn-red"    onclick="avanzar('${p.id}','INCIDENCIA_CLIENTE')"><i class="fas fa-exclamation"></i> Incidencia</button>`;
+  } else if (col === 'diseno') {
+    actions = `<button class="btn-xs btn-gold"   onclick="avanzar('${p.id}','REVISION_CLIENTE')"><i class="fas fa-eye"></i> Enviar revisión</button>
+               <button class="btn-xs btn-cyan"   onclick="abrirQA('${p.id}','${escH(p.codigo)||''}')"><i class="fas fa-check-double"></i> QA</button>`;
+  } else if (col === 'rev') {
+    actions = `<button class="btn-xs btn-green"  onclick="abrirQA('${p.id}','${escH(p.codigo)||''}')"><i class="fas fa-check"></i> Aprobar</button>
+               <button class="btn-xs btn-yellow" onclick="avanzar('${p.id}','CAMBIOS_SOLICITADOS')"><i class="fas fa-redo"></i> Cambios</button>`;
+  } else {
+    actions = p.link_diseno
+      ? `<a href="${escH(p.link_diseno)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-cyan"><i class="fas fa-external-link-alt"></i> Ver diseño</a>`
+      : `<span style="font-size:.68rem;color:var(--green)">✓ ${escH(stateLabel)}</span>`;
+  }
+
+  return `<div class="caso-card" style="${critico?'border-color:rgba(239,68,68,.4)':alerta?'border-color:rgba(251,191,36,.3)':''}">
+    <div class="card-timer ${tc}"><i class="fas fa-clock" style="margin-right:4px;"></i>${tl}</div>
+    <div class="caso-id">#${escH(p.codigo)||p.id.slice(0,8)} ${critico?'<span class="urgente-dot"></span>':''}</div>
+    <div class="caso-nombre">${escH(p.nombre_paciente)||'Sin nombre'}</div>
+    <div class="caso-meta">
+      ${escH(p.servicio)||'—'}
+      ${p.material?'<br>Material: '+escH(p.material):''}
+      ${p.color_vita?'<br>Color: '+escH(p.color_vita):''}
+      ${p.observaciones?'<br><span style="color:var(--gold)">📝 '+escH(p.observaciones.slice(0,60))+'</span>':''}
+    </div>
+    <div class="caso-actions">${actions}</div>
+  </div>`;
+}
+
+/* ── Timer global ── */
+function actualizarTimer() {
+  const critico = _casos.some(p =>
+    (ST_PEND.includes(p.estado_operativo) || ST_DISENO.includes(p.estado_operativo)) &&
+    (Date.now() - new Date(p.created_at).getTime()) / 3600000 > 22);
+  const alerta = _casos.some(p =>
+    (ST_PEND.includes(p.estado_operativo) || ST_DISENO.includes(p.estado_operativo)) &&
+    (Date.now() - new Date(p.created_at).getTime()) / 3600000 > 18);
+  const bar = document.getElementById('timer-alerta');
+  const msg = document.getElementById('timer-msg');
+  bar.className = 'timer-bar';
+  if (critico) {
+    bar.classList.add('visible','critico');
+    msg.textContent = 'CRÍTICO: Caso(s) con más de 22h sin completar. Entrega en riesgo.';
+  } else if (alerta) {
+    bar.classList.add('visible');
+    msg.textContent = 'ALERTA: Caso(s) con más de 18 horas. Prioriza antes de las 24h.';
+  }
+}
+
+/* ── Avanzar estado ── */
+async function avanzar(id, nuevoEstado) {
+  if (!_casos.find(p => p.id === id)) { toast('Caso no encontrado','err'); return; }
+  const updates = { estado_operativo: nuevoEstado };
+  if (nuevoEstado === 'EN_DISENO')         updates.timestamp_validacion = new Date().toISOString();
+  if (nuevoEstado === 'REVISION_CLIENTE')  updates.timestamp_produccion  = new Date().toISOString();
+  if (nuevoEstado === 'DISENO_APROBADO')   updates.estado = 'DISENO_FINALIZADO';
+
+  const { error } = await sb.from('pedidos').update(updates).eq('id', id);
+  if (error) { toast('Error: ' + error.message, 'err'); return; }
+
+  /* Notificar al doctor cuando va a revisión */
+  if (nuevoEstado === 'REVISION_CLIENTE') {
+    try {
+      const { data: p } = await sb.from('pedidos').select('email,codigo').eq('id',id).single();
+      if (p?.email) await fetch(PUSH_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
+        body: JSON.stringify({email:p.email,titulo:'Diseño listo para revisión',cuerpo:`Caso ${p.codigo} — Por favor revise y apruebe el diseño.`})
+      });
+    } catch(_) {}
+  }
+  if (nuevoEstado === 'DISENO_APROBADO') {
+    try {
+      const { data: p } = await sb.from('pedidos').select('email,codigo').eq('id',id).single();
+      if (p?.email) await fetch(PUSH_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
+        body: JSON.stringify({email:p.email,titulo:'Diseño aprobado — En producción',cuerpo:`Caso ${p.codigo} aprobado. Pasamos a producción.`})
+      });
+    } catch(_) {}
+  }
+
+  toast(stateLabels[nuevoEstado] || nuevoEstado, 'ok');
+  await cargarCasos();
+}
+
+const stateLabels = {
+  EN_DISENO:'Diseño iniciado ✏️', REVISION_CLIENTE:'Enviado a revisión 👁',
+  CAMBIOS_SOLICITADOS:'Cambios marcados 🔄', DISENO_APROBADO:'Aprobado ✅',
+  INCIDENCIA_CLIENTE:'Incidencia reportada ⚠️'
+};
+
+/* ── QA ── */
+function abrirQA(id, codigo) {
+  document.getElementById('qa-pedido-id').value = id;
+  document.getElementById('qa-caso-sub').textContent = 'Caso #' + codigo;
+  document.getElementById('qa-notas').value = '';
+  document.getElementById('qa-link').value = '';
+  ['qa1','qa2','qa3','qa4','qa5','qa6','qa7'].forEach(i => {
+    document.getElementById(i).checked = false;
+  });
+  document.getElementById('modal-qa').classList.add('open');
+}
+
+function cerrarQA() {
+  document.getElementById('modal-qa').classList.remove('open');
+}
+
+async function guardarQA(resultado) {
+  const id    = document.getElementById('qa-pedido-id').value;
+  const link  = document.getElementById('qa-link').value.trim();
+  const notas = document.getElementById('qa-notas').value.trim();
+  const checks = ['qa1','qa2','qa3','qa4','qa5','qa6','qa7'];
+
+  if (resultado === 'DISENO_APROBADO') {
+    const incompleto = checks.some(i => !document.getElementById(i).checked);
+    if (incompleto) { toast('Completa todos los checks de QA antes de aprobar','err'); return; }
+  }
+
+  const updates = { estado_operativo: resultado };
+  if (link)  updates.link_diseno   = link;
+  if (notas) updates.observaciones = notas;
+  if (resultado === 'DISENO_APROBADO') updates.estado = 'DISENO_FINALIZADO';
+
+  const { error } = await sb.from('pedidos').update(updates).eq('id', id);
+  if (error) { toast('Error: ' + error.message,'err'); return; }
+
+  cerrarQA();
+  toast(resultado === 'DISENO_APROBADO' ? 'Diseño aprobado y entregado ✅' : 'Cambios marcados — vuelve a diseño 🔄', 'ok');
+  await cargarCasos();
+}
+
+/* Cerrar modal al click fuera */
+document.getElementById('modal-qa').addEventListener('click', function(e) {
+  if (e.target === this) cerrarQA();
+});
+
+/* ── Toast ── */
+let _toastT;
+function toast(msg, tipo='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + tipo;
+  clearTimeout(_toastT);
+  _toastT = setTimeout(() => { t.className=''; }, 3000);
+}
+</script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>

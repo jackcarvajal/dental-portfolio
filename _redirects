@@ -70,6 +70,7 @@
 /portal                         /               301
 /portal.html                    /               301
 /admin-panel.html               /app/login.html  302
+/operario-diseno               /app/operario-diseno.html    200
 /agregar-caso.html              /app/login.html  302
 /portafolio-v2-ideas.html       /404.html  404
 /enviar-produccion-drive.html   /app/login.html  302
