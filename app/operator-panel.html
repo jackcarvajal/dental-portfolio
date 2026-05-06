@@ -331,8 +331,9 @@ const COMPLETADOS = ['QA_APROBADO','POR_DESPACHAR','EN_REPARTO','ENTREGADO'];
 // ── Cargar pedidos ────────────────────────────────────────────────
 async function cargarPedidos() {
     const { data, error } = await sb.from('pedidos')
-        .select('id, codigo, nombre_paciente, servicio, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material')
+        .select('id, codigo, nombre_paciente, servicio, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo')
         .not('estado', 'in', '("cancelado","CANCELADO")')
+        .in('flujo', ['fresado','lab','impresion',''])   /* Excluir flujo=diseno — tiene su propio panel */
         .order('created_at', { ascending: false })
         .limit(100);
 
@@ -372,6 +373,7 @@ function renderKanban() {
 }
 
 function cardHTML(p, col) {
+    const desdeDiseno = p.estado_operativo === 'DISENO_FINALIZADO';
     const mins   = (Date.now() - new Date(p.created_at).getTime()) / 60000;
     const urgente = col === 'pend' && mins > 40;
     const alerta  = col === 'pend' && mins > 25 && !urgente;
@@ -392,8 +394,9 @@ function cardHTML(p, col) {
     return `
     <div class="caso-card" draggable="true"
          data-id="${p.id}" data-col="${col}"
-         style="${urgente ? 'border-color:rgba(239,68,68,.4)' : alerta ? 'border-color:rgba(251,191,36,.3)' : ''}"
+         style="${urgente ? 'border-color:rgba(239,68,68,.4)' : alerta ? 'border-color:rgba(251,191,36,.3)' : desdeDiseno ? 'border-color:rgba(0,210,255,.4)' : ''}"
          ondragstart="_kdragStart(event)" ontouchstart="_ktouchStart(event)" ontouchmove="_ktouchMove(event)" ontouchend="_ktouchEnd(event)">
+        ${desdeDiseno ? '<div style="font-size:.65rem;font-weight:800;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:2px 8px;display:inline-block;margin-bottom:6px;">✏️ Viene de Diseño CAD</div>' : ''}
         ${timerLabel ? `<div class="card-timer ${timerClass}">${timerLabel}</div>` : ''}
         <div class="caso-id">#${escH(p.codigo) || p.id.slice(0,8)} ${urgente ? '<span class="urgente-dot"></span>' : ''}
             <span style="float:right;color:#475569;font-size:.72rem;cursor:grab;" title="Arrastra para mover">⠿⠿</span>

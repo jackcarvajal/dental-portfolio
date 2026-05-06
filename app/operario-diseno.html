@@ -278,7 +278,7 @@ let _userId = null;
 
 /* ── Init ── */
 (async function init() {
-  const session = await ProdigyAuth.require(['admin','operator','encargado_inventario']);
+  const session = await ProdigyAuth.require(['admin','operator','encargado_inventario','diseno']);
   if (!session) return;
   _userId = session.user.id;
   document.body.classList.add('ready');
