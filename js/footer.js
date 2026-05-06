@@ -244,17 +244,65 @@
   }
 
   if (!_pgConsentVal) {
-    var cb = document.createElement('div');
-    cb.id = 'pfoot-cookie-banner';
-    cb.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#0d1520;border-top:1px solid rgba(212,175,55,.3);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:inherit;font-size:.82rem;color:#94a3b8;';
-    cb.innerHTML = '<span>Usamos <strong style="color:#e2e8f0">cookies analíticas</strong> (Google Analytics) para mejorar el servicio. No compartimos datos personales con terceros. ' +
-      '<a href="/terminos-y-legal#privacidad" style="color:#D946A6">Ver política de privacidad</a></span>' +
-      '<div style="display:flex;gap:8px;flex-shrink:0;">' +
-        '<button onclick="localStorage.setItem(\'prodigy_cookies_ok\',\'0\');if(window.gtag)window.gtag(\'consent\',\'update\',{analytics_storage:\'denied\',ad_storage:\'denied\'});document.getElementById(\'pfoot-cookie-banner\').remove();" ' +
-        'style="background:transparent;color:#94a3b8;border:1px solid #334155;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;font-size:.82rem;white-space:nowrap;">Rechazar</button>' +
-        '<button onclick="localStorage.setItem(\'prodigy_cookies_ok\',\'1\');if(window.gtag)window.gtag(\'consent\',\'update\',{analytics_storage:\'granted\',ad_storage:\'denied\'});document.getElementById(\'pfoot-cookie-banner\').remove();" ' +
-        'style="background:#D946A6;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-weight:700;cursor:pointer;font-size:.82rem;white-space:nowrap;">Aceptar</button>' +
-      '</div>';
-    document.body.appendChild(cb);
+    function _pgAccept() {
+      localStorage.setItem('prodigy_cookies_ok','1');
+      if(window.gtag) window.gtag('consent','update',{analytics_storage:'granted',ad_storage:'denied'});
+      var b = document.getElementById('pfoot-cookie-banner');
+      if(b){ b.style.transform='translateY(100%)'; setTimeout(function(){ b.remove(); }, 300); }
+    }
+    function _pgReject() {
+      localStorage.setItem('prodigy_cookies_ok','0');
+      if(window.gtag) window.gtag('consent','update',{analytics_storage:'denied',ad_storage:'denied'});
+      var b = document.getElementById('pfoot-cookie-banner');
+      if(b){ b.style.transform='translateY(100%)'; setTimeout(function(){ b.remove(); }, 300); }
+    }
+
+    /* Mostrar después de 3 seg — el usuario ya vio valor antes de que aparezca */
+    setTimeout(function() {
+      var cb = document.createElement('div');
+      cb.id = 'pfoot-cookie-banner';
+      cb.style.cssText = [
+        'position:fixed;bottom:0;left:0;right:0;z-index:99999;',
+        'background:linear-gradient(135deg,#0d1520,#0a1018);',
+        'border-top:2px solid rgba(212,175,55,.35);',
+        'padding:16px 28px;font-family:inherit;',
+        'transform:translateY(100%);transition:transform .4s ease;',
+        'box-shadow:0 -8px 32px rgba(0,0,0,.5);'
+      ].join('');
+
+      cb.innerHTML =
+        '<div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">' +
+          /* Ícono */
+          '<div style="font-size:1.6rem;flex-shrink:0;">📊</div>' +
+          /* Texto principal */
+          '<div style="flex:1;min-width:220px;">' +
+            '<div style="font-size:.88rem;font-weight:800;color:#f8fafc;margin-bottom:3px;">Ayúdanos a mejorar PRODIGY para ti</div>' +
+            '<div style="font-size:.76rem;color:#64748b;line-height:1.5;">' +
+              'Usamos Google Analytics para entender qué contenido es más útil. ' +
+              '<strong style="color:#94a3b8;">Sin anuncios. Sin vender tus datos.</strong> ' +
+              '<a href="/terminos-y-legal#privacidad" style="color:rgba(217,70,166,.8);text-decoration:none;">Política de privacidad →</a>' +
+            '</div>' +
+          '</div>' +
+          /* Botones */
+          '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:flex-end;">' +
+            '<button onclick="_pgAccept()" ' +
+              'style="background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;border:none;border-radius:50px;' +
+              'padding:10px 28px;font-weight:900;font-size:.82rem;cursor:pointer;white-space:nowrap;' +
+              'box-shadow:0 4px 14px rgba(217,70,166,.35);transition:opacity .2s;" ' +
+              'onmouseover="this.style.opacity=\'.88\'" onmouseout="this.style.opacity=\'1\'">' +
+              '✓ Sí, mejorar la experiencia' +
+            '</button>' +
+            '<button onclick="_pgReject()" ' +
+              'style="background:transparent;color:#475569;border:none;padding:2px 8px;' +
+              'font-size:.7rem;cursor:pointer;text-decoration:underline;white-space:nowrap;">' +
+              'No por ahora' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+
+      document.body.appendChild(cb);
+      /* Slide up con animación */
+      requestAnimationFrame(function(){ cb.style.transform = 'translateY(0)'; });
+    }, 3000);
   }
 })();
