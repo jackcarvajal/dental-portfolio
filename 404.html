@@ -87,19 +87,31 @@
   <div class="diamond">💎</div>
   <div class="code">404</div>
   <h1>Esta página no existe</h1>
-  <p>Puede que el enlace esté roto o la página fue movida. Vuelve al inicio o contáctanos.</p>
+  <p>El enlace puede estar roto o la página fue movida.<br>¿A dónde querías ir?</p>
   <div class="links">
     <a href="/" class="link-btn link-primary">
-      <i class="fa-solid fa-house"></i> Ir al inicio
+      <i class="fa-solid fa-house"></i> Inicio
+    </a>
+    <a href="portafolio" class="link-btn link-secondary">
+      <i class="fa-solid fa-images"></i> Portafolio
     </a>
     <a href="calculadora" class="link-btn link-secondary">
-      <i class="fa-solid fa-calculator"></i> Calcular caso
+      <i class="fa-solid fa-calculator"></i> Cotizador
+    </a>
+    <a href="journal" class="link-btn link-secondary">
+      <i class="fa-solid fa-book-open"></i> Blog
     </a>
     <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20encontré%20un%20enlace%20roto%20en%20la%20web." target="_blank" rel="noopener noreferrer" class="link-btn link-wa">
-      <i class="fa-brands fa-whatsapp"></i> Reportar error
+      <i class="fa-brands fa-whatsapp"></i> Reportar
     </a>
   </div>
+  <p style="margin-top:28px;font-size:.75rem;color:#334155;">Volviendo al inicio en <span id="cd">10</span>s…
+    <a href="/" style="color:var(--magenta);text-decoration:none;margin-left:6px;">Ir ahora →</a>
+  </p>
   <footer>© 2026 PRODIGY Digital Dentistry</footer>
+  <script>
+    var n=10;var t=setInterval(function(){n--;document.getElementById('cd').textContent=n;if(n<=0){clearInterval(t);window.location.href='/';}},1000);
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
   <script src="js/footer.js?v=20260505"></script>
 </body>
