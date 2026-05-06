@@ -48,6 +48,7 @@ Al final de sesión: `/clear` (todo commiteado) o `/compact` (trabajo en vuelo).
 - Formularios: checkbox Habeas Data Colombia obligatorio.
 - Separar: Transaccionales (siempre) vs. Promocionales (`acepta_marketing = true`).
 
-## 8. HOJA DE RUTA ACTIVA
-Ver `PENDIENTES.md` — solo tareas ⏳/🔴/🟡. Completadas ya eliminadas.
-Bloques en orden: 0-SQL urgente → 1-Home → 2-Portafolio → 3-Servicios → 4-Flujos → 5-Soporte → 6-Empresa → 7-Portal → 8-SEO.
+## 8. REFERENCIAS RÁPIDAS
+- `MAP.md` — líneas exactas de funciones críticas. Leer antes de editar archivos grandes.
+- `PENDIENTES.md` — solo tareas ⏳/🔴/🟡. Orden: 0-SQL → 1-Home → 2-Portafolio → 3-Servicios → 4-Flujos → 5-Soporte → 6-Empresa → 7-Portal → 8-SEO.
+- `VERIFICAR.md` — protocolo que sigue Alejandro para reportar resultados.
