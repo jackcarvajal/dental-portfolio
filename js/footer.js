@@ -233,6 +233,37 @@
     setTimeout(_loadGSAP, 800);
   }
 
+  // ── GDPR — aviso adicional para visitantes de la Unión Europea ──
+  if (window.ProdigyGeo && window.ProdigyGeo.onReady) {
+    window.ProdigyGeo.onReady(function(geo) {
+      if (!geo.esEuropa) return;
+      if (localStorage.getItem('prodigy_gdpr_ok')) return;
+      var gd = document.createElement('div');
+      gd.id = 'pfoot-gdpr-banner';
+      gd.style.cssText = 'position:fixed;top:120px;right:20px;z-index:99998;max-width:300px;' +
+        'background:#0d1520;border:1px solid rgba(0,210,255,.3);border-radius:14px;' +
+        'padding:16px 18px;font-family:inherit;font-size:.76rem;color:#94a3b8;' +
+        'box-shadow:0 8px 32px rgba(0,0,0,.5);transform:translateX(320px);transition:transform .4s ease;';
+      gd.innerHTML =
+        '<div style="font-size:.82rem;font-weight:800;color:#00d2ff;margin-bottom:8px;">🇪🇺 Aviso para usuarios de la UE</div>' +
+        '<p style="line-height:1.6;margin-bottom:12px;">' +
+          'Bajo el <strong style="color:#e2e8f0;">RGPD (GDPR)</strong> tienes derecho a acceder, rectificar y eliminar tus datos. ' +
+          'PRODIGY no comparte datos personales con terceros ni usa cookies de publicidad. ' +
+          'Solo usamos analytics anónimo (Google Analytics) con tu consentimiento.' +
+        '</p>' +
+        '<div style="display:flex;gap:8px;">' +
+          '<a href="/terminos-y-legal#privacidad" style="flex:1;text-align:center;padding:7px;border:1px solid rgba(0,210,255,.3);' +
+            'border-radius:8px;color:#00d2ff;text-decoration:none;font-size:.72rem;font-weight:700;">Ver política</a>' +
+          '<button onclick="localStorage.setItem(\'prodigy_gdpr_ok\',\'1\');var b=document.getElementById(\'pfoot-gdpr-banner\');' +
+            'b.style.transform=\'translateX(320px)\';setTimeout(function(){b.remove()},400);" ' +
+            'style="flex:1;background:rgba(0,210,255,.12);border:1px solid rgba(0,210,255,.3);border-radius:8px;' +
+            'color:#00d2ff;cursor:pointer;font-size:.72rem;font-weight:700;padding:7px;">Entendido</button>' +
+        '</div>';
+      document.body.appendChild(gd);
+      setTimeout(function(){ gd.style.transform = 'translateX(0)'; }, 500);
+    });
+  }
+
   // ── Cookie consent (SIC Circular 002/2015 + GDPR + GA4 Consent Mode v2) ──
   var _pgConsentVal = localStorage.getItem('prodigy_cookies_ok');
 
@@ -262,43 +293,38 @@
       var cb = document.createElement('div');
       cb.id = 'pfoot-cookie-banner';
       cb.style.cssText = [
-        'position:fixed;bottom:0;left:0;right:0;z-index:99999;',
+        'position:fixed;bottom:24px;left:24px;z-index:99999;',
         'background:linear-gradient(135deg,#0d1520,#0a1018);',
-        'border-top:2px solid rgba(212,175,55,.35);',
-        'padding:16px 28px;font-family:inherit;',
-        'transform:translateY(100%);transition:transform .4s ease;',
-        'box-shadow:0 -8px 32px rgba(0,0,0,.5);'
+        'border:1px solid rgba(212,175,55,.35);border-radius:16px;',
+        'padding:16px 18px;font-family:inherit;width:300px;',
+        'transform:translateY(20px);opacity:0;transition:transform .4s ease,opacity .4s ease;',
+        'box-shadow:0 8px 32px rgba(0,0,0,.6);'
       ].join('');
 
       cb.innerHTML =
-        '<div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">' +
-          /* Ícono */
-          '<div style="font-size:1.6rem;flex-shrink:0;">📊</div>' +
-          /* Texto principal */
-          '<div style="flex:1;min-width:220px;">' +
-            '<div style="font-size:.88rem;font-weight:800;color:#f8fafc;margin-bottom:3px;">Ayúdanos a mejorar PRODIGY para ti</div>' +
-            '<div style="font-size:.76rem;color:#64748b;line-height:1.5;">' +
-              'Usamos Google Analytics para entender qué contenido es más útil. ' +
-              '<strong style="color:#94a3b8;">Sin anuncios. Sin vender tus datos.</strong> ' +
-              '<a href="/terminos-y-legal#privacidad" style="color:rgba(217,70,166,.8);text-decoration:none;">Política de privacidad →</a>' +
+        '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">' +
+          '<div style="font-size:1.4rem;flex-shrink:0;line-height:1;">📊</div>' +
+          '<div>' +
+            '<div style="font-size:.84rem;font-weight:800;color:#f8fafc;margin-bottom:4px;">Ayúdanos a mejorar</div>' +
+            '<div style="font-size:.72rem;color:#64748b;line-height:1.5;">' +
+              'Analytics anónimo para ver qué te es útil. ' +
+              '<strong style="color:#94a3b8;">Sin anuncios.</strong> ' +
+              '<a href="/terminos-y-legal#privacidad" style="color:rgba(217,70,166,.8);text-decoration:none;">Ver política →</a>' +
             '</div>' +
           '</div>' +
-          /* Botones */
-          '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:flex-end;">' +
-            '<button onclick="_pgAccept()" ' +
-              'style="background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;border:none;border-radius:50px;' +
-              'padding:10px 28px;font-weight:900;font-size:.82rem;cursor:pointer;white-space:nowrap;' +
-              'box-shadow:0 4px 14px rgba(217,70,166,.35);transition:opacity .2s;" ' +
-              'onmouseover="this.style.opacity=\'.88\'" onmouseout="this.style.opacity=\'1\'">' +
-              '✓ Sí, mejorar la experiencia' +
-            '</button>' +
-            '<button onclick="_pgReject()" ' +
-              'style="background:transparent;color:#475569;border:none;padding:2px 8px;' +
-              'font-size:.7rem;cursor:pointer;text-decoration:underline;white-space:nowrap;">' +
-              'No por ahora' +
-            '</button>' +
-          '</div>' +
-        '</div>';
+        '</div>' +
+        '<button onclick="_pgAccept()" ' +
+          'style="width:100%;background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;border:none;border-radius:50px;' +
+          'padding:9px 0;font-weight:900;font-size:.8rem;cursor:pointer;margin-bottom:6px;' +
+          'box-shadow:0 4px 14px rgba(217,70,166,.3);transition:opacity .2s;" ' +
+          'onmouseover="this.style.opacity=\'.85\'" onmouseout="this.style.opacity=\'1\'">' +
+          '✓ Sí, mejorar la experiencia' +
+        '</button>' +
+        '<button onclick="_pgReject()" ' +
+          'style="width:100%;background:transparent;color:#475569;border:none;padding:4px;' +
+          'font-size:.7rem;cursor:pointer;text-decoration:underline;">' +
+          'No por ahora' +
+        '</button>';
 
       document.body.appendChild(cb);
       /* Slide up con animación */
