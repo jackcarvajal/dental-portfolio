@@ -10,18 +10,7 @@
 |---|--------|-------|---------|
 | 1 | **STRIPE_SECRET_KEY** en Cloudflare | Pages → Settings → Env vars | Pagos rotos sin esto |
 | 2 | **WOMPI_INTEGRITY_SECRET** en Supabase Secrets | Dashboard → Edge Functions → Secrets | Webhook de pago falla |
-| 3 | **SQL: citas_domicilio.acepta_marketing** | Supabase SQL Editor | `sql/patch-citas-domicilio-marketing.sql` |
-| 4 | **Subir casos al portafolio** | `/app/panel-interno-operaciones.html` | Mínimo 5 casos con portada + galería |
-
----
-
-## 🟡 SUPABASE — SQL pendiente
-
-| # | Archivo | Qué hace |
-|---|---------|---------|
-| 1 | `sql/migrate-lead-sources.sql` | Fuentes de leads (UTM tracking) |
-| 2 | `sql/migrate-inventario-implantes.sql` | Inventario de implantes |
-| 3 | `sql/migrate-push-notifications.sql` | Tabla Web Push subscriptions |
+| 3 | **Subir casos al portafolio** | `/app/panel-interno-operaciones.html` | Mínimo 5 casos con portada + galería |
 
 ---
 
