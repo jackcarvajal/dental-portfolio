@@ -2,13 +2,29 @@
  * PRODIGY — Header Maestro v2
  * Inyecta topbar (mini-login) + navbar completo + CTA flotante en todas las páginas.
  * Uso: primer <script> dentro de <body>
- *
- * Config opcional (definir ANTES de cargar):
- *   window._headerConfig = {
- *     showLang : true,        // toggle ES·EN·PT
- *     activePath: '/foo.html' // forzar link activo
- *   }
  */
+
+/* ── MANTENIMIENTO GLOBAL ──────────────────────────────────────────
+   Bloquea acceso a todas las páginas públicas si no hay cookie pg_admin=1.
+   Para activar bypass: visita /?preview=prodigy (cookie 30 días).
+   Excluye: /mantenimiento, /app/*, /404
+──────────────────────────────────────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+  var skip = path.startsWith('/mantenimiento') ||
+             path.startsWith('/app/') ||
+             path.startsWith('/404') ||
+             path.startsWith('/en/global-design'); // landing intl siempre visible
+  if (skip) return;
+  var hasCookie = document.cookie.split(';').some(function(c){
+    return c.trim().startsWith('pg_admin=1');
+  });
+  if (!hasCookie) {
+    document.documentElement.style.visibility = 'hidden';
+    window.location.replace('/mantenimiento');
+  }
+})();
+
 (function () {
   'use strict';
   if (document.getElementById('nav-topbar') || document.getElementById('pheader-v2')) return;
