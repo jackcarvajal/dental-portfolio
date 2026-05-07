@@ -120,12 +120,12 @@
         <button class="srv-btn selected" data-key="modelo-dx" onclick="selSrv(this)">
           <div class="ico">🦷</div>
           <div class="lbl">Modelo Diagnóstico</div>
-          <div class="prc">Desde $60K</div>
+          <div class="prc">Desde $20K</div>
         </button>
         <button class="srv-btn" data-key="modelo-full" onclick="selSrv(this)">
           <div class="ico">🦷🦷</div>
           <div class="lbl">Modelo Full Arch</div>
-          <div class="prc">Desde $90K</div>
+          <div class="prc">Desde $80K</div>
         </button>
         <button class="srv-btn" data-key="guia-qx" onclick="selSrv(this)">
           <div class="ico">🎯</div>
@@ -240,8 +240,9 @@
     <div class="res-card">
       <div class="res-label">Estimado de precio</div>
       <div class="res-srv" id="resSrv">Modelo Diagnóstico · Resina Modelo</div>
-      <div class="res-total" id="resTotal">$60.000</div>
+      <div class="res-total" id="resTotal">$20.000</div>
       <div class="res-sub">COP · precio de referencia · por pieza</div>
+      <div style="background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);border-radius:8px;padding:8px 12px;font-size:.72rem;color:#94a3b8;margin-bottom:12px;line-height:1.5;">⚠️ Precios varían según tipo, material y cantidad. Aplican restricciones por tipo de trabajo. Cotización exacta por WhatsApp.</div>
       <div class="res-bd">
         <div class="res-bd-row"><span>Precio unitario</span><span id="bdUnit">$60.000</span></div>
         <div class="res-bd-row"><span>Cantidad</span><span id="bdQty">× 1</span></div>
@@ -280,8 +281,8 @@
 
 <script>
 const PRECIOS = {
-  'modelo-dx':          { base:60000,  lbl:'Modelo Diagnóstico',      fixedQty:false },
-  'modelo-full':        { base:90000,  lbl:'Modelo Full Arch',         fixedQty:true  },
+  'modelo-dx':          { base:20000,  lbl:'Modelo Diagnóstico',      fixedQty:false },
+  'modelo-full':        { base:80000,  lbl:'Modelo Full Arch',         fixedQty:true  },
   'guia-qx':            { base:130000, lbl:'Guía Quirúrgica',          fixedQty:false },
   'provisional-corona': { base:80000,  lbl:'Provisional Corona',       fixedQty:false },
   'provisional-puente': { base:160000, lbl:'Provisional Puente',       fixedQty:true  },

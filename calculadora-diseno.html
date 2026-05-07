@@ -220,6 +220,12 @@
           <div class="prc" id="p-dsd">$80 USD</div>
           <div class="time">⏱ 48h</div>
         </button>
+        <button class="srv-btn" data-key="modelo" onclick="selSrv(this)">
+          <div class="ico">🦷</div>
+          <div class="lbl">Modelo 3D Diagnóstico</div>
+          <div class="prc" id="p-modelo">$5 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
       </div>
     </div>
 
@@ -324,6 +330,7 @@ const PRECIOS_USD = {
   alineadores: { base:100, lbl:'Setup Alineadores',     fixedQty:true,  time:'48–72h' },
   provisional: { base:12,  lbl:'Provisional CAD',       fixedQty:false, time:'24h'    },
   dsd:         { base:80,  lbl:'DSD / Smile Design',    fixedQty:true,  time:'48h'    },
+  modelo:      { base:5,   lbl:'Modelo 3D Diagnóstico', fixedQty:false, time:'24h'    },
 };
 const EXTRAS_USD = { urgente:8, revision:5 };
 let cur = 'USD';
