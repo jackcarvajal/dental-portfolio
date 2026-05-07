@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>PRODIGY — Mapa del Sitio Web</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #030810; font-family: system-ui, sans-serif; overflow-x: auto; }
+  #wrap { padding: 32px; min-width: 1500px; }
+  h1 { color: #D4AF37; font-size: 1.1rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; text-align: center; margin-bottom: 6px; }
+  .sub { color: #475569; font-size: .72rem; text-align: center; margin-bottom: 28px; letter-spacing: 1px; }
+  svg { display: block; margin: 0 auto; }
+
+  /* Legend */
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 28px; }
+  .leg { display: flex; align-items: center; gap: 6px; font-size: .68rem; color: #94a3b8; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <h1>PRODIGY Lab Dental — Mapa Completo del Sitio</h1>
+  <p class="sub">Arquitectura de páginas · Flujos de conversión · Conexiones backend · Mayo 2026</p>
+  <svg id="diagram" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div class="legend" id="legend"></div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   DATOS
+══════════════════════════════════════════════ */
+const NW = 168, NH = 54; // default node width/height
+
+const TYPES = {
+  traffic: { fill:'rgba(255,107,53,.18)', stroke:'#ff6b35', label:'Tráfico / Ads' },
+  landing: { fill:'rgba(217,70,166,.18)', stroke:'#D946A6', label:'Landing Pages' },
+  service: { fill:'rgba(100,116,139,.18)', stroke:'#64748b', label:'Páginas Servicio' },
+  calc:    { fill:'rgba(212,175,55,.18)',  stroke:'#D4AF37', label:'Calculadoras' },
+  key:     { fill:'rgba(0,210,255,.22)',   stroke:'#00d2ff', label:'Punto Clave (sin login)' },
+  wa:      { fill:'rgba(37,211,102,.18)',  stroke:'#25D366', label:'WhatsApp / Externo' },
+  auth:    { fill:'rgba(124,58,237,.18)',  stroke:'#7c3aed', label:'Auth / Login' },
+  flow:    { fill:'rgba(147,51,234,.15)',  stroke:'#9333ea', label:'Flujos (login req.)' },
+  db:      { fill:'rgba(2,132,199,.18)',   stroke:'#0ea5e9', label:'Base de Datos' },
+  ext:     { fill:'rgba(5,150,105,.18)',   stroke:'#10b981', label:'Servicios Externos' },
+  admin:   { fill:'rgba(220,38,38,.18)',   stroke:'#ef4444', label:'Admin / Operarios' },
+  action:  { fill:'rgba(0,210,255,.12)',   stroke:'#38bdf8', label:'Tracking / Resultados' },
+  seo:     { fill:'rgba(71,85,105,.18)',   stroke:'#64748b', label:'SEO / Contenido' },
+};
+
+// id, x(center), y(center), emoji, title, sub, type, w(optional)
+const NODES = [
+  // ── ROW 1: TRÁFICO (y=75)
+  { id:'gads',    x:160,  y:75,  e:'🔍', t:'Google Ads',       s:'Búsqueda pagada',      tp:'traffic' },
+  { id:'meta',    x:400,  y:75,  e:'📱', t:'Meta Ads',          s:'Facebook · Instagram', tp:'traffic' },
+  { id:'seo',     x:650,  y:75,  e:'🌐', t:'SEO Orgánico',      s:'Google · Bing',        tp:'traffic' },
+  { id:'direct',  x:900,  y:75,  e:'🔗', t:'Directo / Referido',s:'URL · email · WA',     tp:'traffic' },
+  { id:'social',  x:1160, y:75,  e:'📸', t:'Social Orgánico',   s:'IG · FB · TikTok',     tp:'traffic' },
+
+  // ── ROW 2: LANDINGS (y=210)
+  { id:'remote',  x:180,  y:210, e:'🌍', t:'diseno-remoto',     s:'Landing Diseño CAD Remoto', tp:'landing' },
+  { id:'index',   x:680,  y:210, e:'🏠', t:'index',             s:'Homepage principal',    tp:'landing' },
+  { id:'global',  x:1180, y:210, e:'🇺🇸', t:'en/global-design', s:'Landing Internacional USD', tp:'landing' },
+
+  // ── ROW 3: PÁGINAS SERVICIO (y=350)
+  { id:'dcad',    x:160,  y:350, e:'📐', t:'diseno-cad',        s:'Servicio Diseño — Info',tp:'service' },
+  { id:'fcam',    x:530,  y:350, e:'⚙️', t:'fresado-cam',       s:'Servicio Fresado — Info',tp:'service' },
+  { id:'portaf',  x:840,  y:350, e:'🖼️', t:'portafolio',        s:'Casos reales',          tp:'service' },
+  { id:'escdom',  x:1100, y:350, e:'📍', t:'escaner-domicilio', s:'Escaneos Bogotá',        tp:'service' },
+  { id:'journal', x:1350, y:350, e:'📰', t:'journal',           s:'25 artículos SEO',       tp:'seo' },
+
+  // ── ROW 4: CALCULADORAS (y=490)
+  { id:'calcd',   x:160,  y:490, e:'💎', t:'calc-diseno',       s:'USD · COP · Global',    tp:'calc' },
+  { id:'calcg',   x:450,  y:490, e:'🧮', t:'calculadora',       s:'General COP',            tp:'calc' },
+  { id:'calcf',   x:740,  y:490, e:'🔩', t:'calc-fresado',      s:'Fresado COP · 🇨🇴 CO',  tp:'calc' },
+  { id:'calci',   x:1030, y:490, e:'🖨️', t:'calc-impresion',   s:'Impresión COP · 🇨🇴 CO',tp:'calc' },
+
+  // ── ROW 5: PUNTO CLAVE (y=635)
+  { id:'scanner', x:500,  y:635, e:'📤', t:'envia-tu-scanner',  s:'✅ SIN LOGIN — Sube STL + datos del caso', tp:'key', w:280 },
+  { id:'wa',      x:1150, y:635, e:'💬', t:'WhatsApp',          s:'+57 321 281 6716',       tp:'wa' },
+
+  // ── ROW 6: AUTH + FLUJOS (y=790)
+  { id:'login',   x:130,  y:790, e:'🔑', t:'app/login',         s:'Login · Registro',       tp:'auth' },
+  { id:'fdesign', x:390,  y:790, e:'✏️', t:'flujo-diseno',      s:'🔒 Login · 🌍 Global',  tp:'flow' },
+  { id:'ffres',   x:640,  y:790, e:'⚙️', t:'flujo-fresado',     s:'🔒 Login · 🇨🇴 CO solo',tp:'flow' },
+  { id:'fimp',    x:890,  y:790, e:'🖨️', t:'flujo-impresion',  s:'🔒 Login · 🇨🇴 CO solo',tp:'flow' },
+  { id:'flab',    x:1150, y:790, e:'🏭', t:'flujo-lab',         s:'🔒 Login · Full Lab',    tp:'flow' },
+
+  // ── ROW 7: BACKEND (y=940)
+  { id:'stripe',  x:160,  y:940, e:'💳', t:'Stripe',            s:'/api/stripe-checkout',   tp:'ext' },
+  { id:'supa',    x:580,  y:940, e:'🗄️', t:'Supabase',          s:'BD · Storage · Auth · Realtime', tp:'db', w:260 },
+  { id:'gemini',  x:980,  y:940, e:'🤖', t:'Gemini AI',         s:'/api/gemini · CF Function',tp:'ext' },
+  { id:'ga4',     x:1210, y:940, e:'📈', t:'GA4 + Meta Pixel',  s:'G-3N0ZZE5V10 · 1254573606759925', tp:'ext' },
+
+  // ── ROW 8: ADMIN / TRACKING (y=1090)
+  { id:'admin',   x:160,  y:1090,e:'👑', t:'admin-panel',       s:'🔒 Solo admin',          tp:'admin' },
+  { id:'operario',x:430,  y:1090,e:'🔧', t:'operario',          s:'🔒 Solo operario',       tp:'admin' },
+  { id:'torre',   x:700,  y:1090,e:'🗼', t:'torre-control',     s:'🔒 Panel interno ops',   tp:'admin' },
+  { id:'segui',   x:970,  y:1090,e:'📊', t:'seguimiento-caso',  s:'✅ Sin login · Con código',tp:'action'},
+  { id:'revision',x:1230, y:1090,e:'✅', t:'revision-diseno',   s:'🔒 Aprobación CAD',      tp:'admin' },
+
+  // ── ROW 9: SEO / SOPORTE (y=1240)
+  { id:'soporte', x:200,  y:1240,e:'💬', t:'soporte',           s:'Centro de ayuda',        tp:'seo' },
+  { id:'stec',    x:470,  y:1240,e:'🛠️', t:'soporte-tecnico',  s:'XTCERA · Alistar Sensa', tp:'seo' },
+  { id:'catalogo',x:740,  y:1240,e:'📦', t:'catalogo',          s:'Materiales + precios',   tp:'seo' },
+  { id:'nosotros',x:1000, y:1240,e:'🏢', t:'nosotros',          s:'Empresa · Contacto',     tp:'seo' },
+  { id:'legal',   x:1250, y:1240,e:'📋', t:'terminos-y-legal',  s:'Términos · Privacidad',  tp:'seo' },
+];
+
+// [from_id, to_id, color_hex, label(opt)]
+const EDGES = [
+  // Tráfico → Landings
+  ['gads',    'remote',   '#ff6b35', 'ads diseño'],
+  ['gads',    'global',   '#ff6b35', 'ads intl'],
+  ['meta',    'remote',   '#ff6b35', 'ads'],
+  ['seo',     'index',    '#ff6b35', 'orgánico'],
+  ['seo',     'journal',  '#ff6b35', 'blog'],
+  ['direct',  'index',    '#ff6b35'],
+  ['social',  'index',    '#ff6b35'],
+
+  // Landings → Acciones
+  ['remote',  'calcd',    '#D946A6', 'ver precios'],
+  ['remote',  'scanner',  '#D946A6', 'subir STL'],
+  ['remote',  'wa',       '#25D366', 'WhatsApp'],
+  ['index',   'remote',   '#D946A6', 'diseño remoto'],
+  ['index',   'calcd',    '#D946A6', 'cotizador'],
+  ['index',   'scanner',  '#D946A6', 'enviar caso'],
+  ['index',   'flab',     '#9333ea', 'lab full'],
+  ['global',  'scanner',  '#D946A6', 'subir STL'],
+  ['global',  'wa',       '#25D366', 'WhatsApp'],
+
+  // Servicio → Acción
+  ['dcad',    'scanner',  '#64748b', 'subir STL'],
+  ['dcad',    'calcd',    '#D4AF37', 'cotizar'],
+  ['fcam',    'calcf',    '#D4AF37', 'calcular'],
+  ['fcam',    'wa',       '#25D366', 'WhatsApp'],
+
+  // Calculadoras → Conversión
+  ['calcd',   'scanner',  '#D4AF37', 'subir STL'],
+  ['calcd',   'wa',       '#25D366', 'WhatsApp'],
+  ['calcg',   'calcd',    '#D4AF37', 'diseño intl'],
+  ['calcf',   'ffres',    '#9333ea', 'pedir fresado'],
+  ['calci',   'fimp',     '#9333ea', 'pedir impresión'],
+
+  // Scanner (CLAVE)
+  ['scanner', 'supa',     '#00d2ff', 'guarda caso'],
+  ['scanner', 'wa',       '#25D366', 'confirmación'],
+  ['scanner', 'segui',    '#00d2ff', 'link tracking'],
+
+  // Auth
+  ['fdesign', 'login',    '#7c3aed', 'no auth'],
+  ['ffres',   'login',    '#7c3aed', 'no auth'],
+  ['fimp',    'login',    '#7c3aed', 'no auth'],
+  ['flab',    'login',    '#7c3aed', 'no auth'],
+  ['login',   'fdesign',  '#7c3aed', 'auth ok'],
+  ['login',   'ffres',    '#7c3aed'],
+  ['login',   'fimp',     '#7c3aed'],
+  ['login',   'flab',     '#7c3aed'],
+
+  // Flujos → Backend
+  ['fdesign', 'supa',     '#0ea5e9', 'insert pedido'],
+  ['ffres',   'supa',     '#0ea5e9'],
+  ['fimp',    'supa',     '#0ea5e9'],
+  ['flab',    'supa',     '#0ea5e9'],
+  ['fdesign', 'wa',       '#25D366', 'confirma'],
+  ['fdesign', 'stripe',   '#10b981', 'pago intl'],
+
+  // Backend → Admin/Tracking
+  ['supa',    'admin',    '#0ea5e9', 'pedidos RT'],
+  ['supa',    'operario', '#0ea5e9'],
+  ['supa',    'segui',    '#0ea5e9', 'estado'],
+
+  // Admin interno
+  ['admin',   'torre',    '#ef4444'],
+  ['admin',   'revision', '#ef4444'],
+  ['operario','torre',    '#ef4444'],
+
+  // Soporte
+  ['soporte', 'stec',     '#64748b'],
+  ['soporte', 'wa',       '#25D366'],
+  ['stec',    'wa',       '#25D366'],
+];
+
+/* ══════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════ */
+const SVG_W = 1460, SVG_H = 1340;
+const svg = document.getElementById('diagram');
+svg.setAttribute('width', SVG_W);
+svg.setAttribute('height', SVG_H);
+svg.setAttribute('viewBox', `0 0 ${SVG_W} ${SVG_H}`);
+
+function el(tag, attrs={}, parent=svg) {
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [k,v] of Object.entries(attrs)) e.setAttribute(k, v);
+  parent.appendChild(e);
+  return e;
+}
+function text(content, x, y, attrs={}, parent=svg) {
+  const e = el('text', { x, y, 'text-anchor':'middle', 'dominant-baseline':'middle', ...attrs }, parent);
+  e.textContent = content;
+  return e;
+}
+
+// Background
+el('rect', { width:SVG_W, height:SVG_H, fill:'#030810' });
+
+// Grid background sections
+const SECTIONS = [
+  { y:28,   h:96,  label:'FUENTES DE TRÁFICO',          fill:'rgba(255,107,53,.04)',  stroke:'rgba(255,107,53,.15)' },
+  { y:156,  h:96,  label:'LANDING PAGES PRINCIPALES',   fill:'rgba(217,70,166,.04)',  stroke:'rgba(217,70,166,.2)' },
+  { y:296,  h:96,  label:'PÁGINAS DE SERVICIO E INFO',  fill:'rgba(100,116,139,.04)', stroke:'rgba(100,116,139,.12)' },
+  { y:438,  h:96,  label:'CALCULADORAS (sin login)',     fill:'rgba(212,175,55,.04)',  stroke:'rgba(212,175,55,.2)' },
+  { y:580,  h:106, label:'★ PUNTO DE CONVERSIÓN CLAVE', fill:'rgba(0,210,255,.05)',   stroke:'rgba(0,210,255,.3)', bold:true },
+  { y:730,  h:106, label:'AUTH · FLUJOS DE PEDIDO (login requerido)', fill:'rgba(124,58,237,.04)', stroke:'rgba(124,58,237,.18)' },
+  { y:880,  h:106, label:'BACKEND · SERVICIOS EXTERNOS', fill:'rgba(2,132,199,.04)',  stroke:'rgba(2,132,199,.18)' },
+  { y:1030, h:106, label:'PANEL ADMIN · OPERARIOS · TRACKING', fill:'rgba(220,38,38,.04)', stroke:'rgba(220,38,38,.18)' },
+  { y:1178, h:100, label:'CONTENIDO SEO · SOPORTE',     fill:'rgba(71,85,105,.04)',   stroke:'rgba(71,85,105,.14)' },
+];
+
+SECTIONS.forEach(s => {
+  el('rect', { x:18, y:s.y, width:SVG_W-36, height:s.h, rx:10, fill:s.fill, stroke:s.stroke, 'stroke-width':1 });
+  text(s.label, SVG_W/2, s.y+13, {
+    'font-size':'9', 'font-weight':'800', 'letter-spacing':'2',
+    fill: s.bold ? 'rgba(0,210,255,.9)' : 'rgba(255,255,255,.18)',
+    'font-family':'system-ui'
+  });
+});
+
+// Build node map for quick lookup
+const nodeMap = {};
+NODES.forEach(n => { nodeMap[n.id] = n; });
+
+// ── DEFS (arrow markers)
+const defs = el('defs');
+function makeMarker(id, color) {
+  const m = el('marker', { id, markerWidth:7, markerHeight:7, refX:5, refY:3, orient:'auto' }, defs);
+  el('path', { d:'M0,0 L0,6 L7,3 z', fill:color }, m);
+}
+// Unique arrow colors
+const arrowColors = [...new Set(EDGES.map(e => e[2]))];
+arrowColors.forEach(c => makeMarker('arr_' + c.replace('#',''), c));
+
+// ── DRAW EDGES (below nodes)
+function getPort(n, side) {
+  const w = n.w || NW, h = NH;
+  const cx = n.x, cy = n.y;
+  if (side === 'bottom') return [cx, cy + h/2];
+  if (side === 'top')    return [cx, cy - h/2];
+  if (side === 'left')   return [cx - w/2, cy];
+  if (side === 'right')  return [cx + w/2, cy];
+}
+
+EDGES.forEach(([fid, tid, color, label]) => {
+  const fn = nodeMap[fid], tn = nodeMap[tid];
+  if (!fn || !tn) return;
+
+  const [fx, fy] = getPort(fn, 'bottom');
+  const [tx, ty] = getPort(tn, 'top');
+  const mid_y = (fy + ty) / 2;
+
+  const cid = 'arr_' + color.replace('#','');
+  el('path', {
+    d: `M${fx},${fy} C${fx},${mid_y} ${tx},${mid_y} ${tx},${ty+6}`,
+    fill:'none', stroke:color, 'stroke-width':'1.4',
+    'stroke-opacity':'.45',
+    'marker-end': `url(#${cid})`
+  });
+
+  // Edge label (only if provided)
+  if (label) {
+    const lx = (fx + tx) / 2;
+    const ly = (fy + ty) / 2;
+    const bg = el('rect', {
+      x: lx - 28, y: ly - 8, width: 56, height: 14, rx: 3,
+      fill:'rgba(3,8,16,.85)'
+    });
+    text(label, lx, ly, {
+      'font-size':'8', fill: color, 'font-weight':'700',
+      'font-family':'system-ui', 'letter-spacing':'.3'
+    });
+  }
+});
+
+// ── DRAW NODES (above edges)
+NODES.forEach(n => {
+  const w = n.w || NW, h = NH;
+  const tp = TYPES[n.tp] || TYPES.service;
+  const rx = n.x - w/2, ry = n.y - h/2;
+  const g = el('g');
+
+  // Shadow
+  el('rect', { x:rx+2, y:ry+2, width:w, height:h, rx:8, fill:'rgba(0,0,0,.5)' }, g);
+  // Main box
+  el('rect', { x:rx, y:ry, width:w, height:h, rx:8, fill:tp.fill, stroke:tp.stroke, 'stroke-width':'1.5' }, g);
+
+  // Emoji + title
+  const titleLine = n.e + ' ' + n.t;
+  text(titleLine, n.x, n.y - 9, {
+    'font-size':'11', 'font-weight':'800', fill:'#f8fafc',
+    'font-family':'system-ui'
+  }, g);
+
+  // Subtitle
+  text(n.s, n.x, n.y + 10, {
+    'font-size':'8.5', fill:'rgba(148,163,184,.85)',
+    'font-family':'system-ui'
+  }, g);
+
+  // KEY node: glow border
+  if (n.tp === 'key') {
+    el('rect', { x:rx-2, y:ry-2, width:w+4, height:h+4, rx:10,
+      fill:'none', stroke:'rgba(0,210,255,.3)', 'stroke-width':'2',
+      'stroke-dasharray':'4 3'
+    }, g);
+  }
+
+  svg.appendChild(g);
+});
+
+// ── LEGEND
+const legend = document.getElementById('legend');
+const shown = ['traffic','landing','calc','key','wa','auth','flow','db','ext','admin','action','seo'];
+shown.forEach(k => {
+  const tp = TYPES[k];
+  const d = document.createElement('div');
+  d.className = 'leg';
+  d.innerHTML = `<div class="leg-dot" style="background:${tp.stroke}"></div><span>${tp.label}</span>`;
+  legend.appendChild(d);
+});
+</script>
+</body>
+</html>
