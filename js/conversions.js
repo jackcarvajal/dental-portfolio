@@ -121,15 +121,81 @@ window.ProdigyConversions = (function () {
     }
   });
 
+  /* ── AUTO-TRACKING EMBUDO DE FORMULARIO ─────────────────────
+     Mide abandono: quién llegó → quién empezó → quién completó
+  ────────────────────────────────────────────────────────────── */
+  var _formStarted = false;
+  var _fileSelected = false;
+
+  // 1. form_start — primer campo tocado en páginas de conversión
+  document.addEventListener('focusin', function(e) {
+    if (_formStarted) return;
+    var tag = e.target.tagName;
+    if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') return;
+    var page = window.location.pathname;
+    if (!page.match(/envia-tu-scanner|flujo-diseno|flujo-fresado|flujo-impresion|flujo-lab/)) return;
+    _formStarted = true;
+    _sendGA4('form_start', {
+      event_category: 'funnel',
+      event_label: page,
+      page_title: document.title
+    });
+    _sendMeta('InitiateCheckout', { content_name: 'form_start' });
+  });
+
+  // 2. file_selected — archivo elegido antes de enviarlo
+  document.addEventListener('change', function(e) {
+    if (e.target.type !== 'file') return;
+    if (_fileSelected) return;
+    _fileSelected = true;
+    var files = e.target.files;
+    var name = files && files[0] ? files[0].name : 'desconocido';
+    _sendGA4('file_selected', {
+      event_category: 'funnel',
+      event_label: name,
+      file_type: name.split('.').pop().toLowerCase()
+    });
+    _sendMeta('AddToCart', { content_name: 'file_selected', content_ids: [name] });
+  });
+
+  // 3. calculator_interacted — usuario hizo click en servicio de calculadora
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('[onclick*="selSrv"], .srv-btn, [data-key]');
+    if (!btn) return;
+    var key = btn.dataset.key || btn.getAttribute('onclick') || '';
+    _sendGA4('calculator_interacted', {
+      event_category: 'engagement',
+      event_label: key,
+      page_title: document.title
+    });
+  });
+
+  // 4. form_abandoned — salió con formulario iniciado pero sin completar
+  window.addEventListener('beforeunload', function() {
+    if (!_formStarted) return;
+    var submitted = sessionStorage.getItem('prodigy_form_ok');
+    if (submitted) return;
+    _sendGA4('form_abandoned', {
+      event_category: 'funnel',
+      event_label: window.location.pathname,
+      transport_type: 'beacon'
+    });
+  });
+
   /* ── CARGAR META PIXEL CUANDO HAY CONSENTIMIENTO ────────────── */
   if (localStorage.getItem('prodigy_cookies_ok') === '1') _loadMetaPixel();
   document.addEventListener('prodigy_consent_granted', _loadMetaPixel);
+
+  function trackFormSubmitOk() {
+    sessionStorage.setItem('prodigy_form_ok', '1');
+  }
 
   return {
     trackWhatsAppClick:   trackWhatsAppClick,
     trackSTLUpload:       trackSTLUpload,
     trackCotizacionSent:  trackCotizacionSent,
-    trackLeadQualified:   trackLeadQualified
+    trackLeadQualified:   trackLeadQualified,
+    trackFormSubmitOk:    trackFormSubmitOk
   };
 
 })();

@@ -834,6 +834,10 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         document.getElementById('waLink').href =
             `https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, acabo de enviar mi escáner. Soy ${doctor} de ${clinica}.`)}`;
         sc.scrollIntoView({ behavior:'smooth', block:'center' });
+        if (window.ProdigyConversions) {
+          ProdigyConversions.trackSTLUpload(servicio, 0);
+          ProdigyConversions.trackFormSubmitOk();
+        }
     }, 700);
 });
 </script>
