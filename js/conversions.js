@@ -116,9 +116,25 @@ window.ProdigyConversions = (function () {
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a');
     if (!a) return;
-    if (a.href && (a.href.includes('wa.me') || a.href.includes('whatsapp.com'))) {
-      trackWhatsAppClick(a.dataset.source || document.title);
-    }
+    if (!a.href || (!a.href.includes('wa.me') && !a.href.includes('whatsapp.com'))) return;
+
+    // Detectar contexto del botón para saber DESDE QUÉ parte de la página
+    var page   = window.location.pathname.replace(/\//g,'') || 'home';
+    var label  = a.dataset.source
+              || a.getAttribute('aria-label')
+              || a.closest('[data-section]')?.dataset.section
+              || a.closest('section')?.querySelector('h2,h3')?.textContent?.trim()?.slice(0,30)
+              || a.textContent?.trim()?.slice(0,30)
+              || 'boton';
+
+    trackWhatsAppClick(page + ' | ' + label);
+
+    // Guardar último click WA en localStorage para correlacionar con visitas futuras
+    try {
+      localStorage.setItem('prodigy_last_wa', JSON.stringify({
+        page: page, label: label, ts: Date.now()
+      }));
+    } catch(e) {}
   });
 
   /* ── AUTO-TRACKING EMBUDO DE FORMULARIO ─────────────────────

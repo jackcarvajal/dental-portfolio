@@ -25,6 +25,23 @@
   }
 })();
 
+/* ── MICROSOFT CLARITY — mapas de calor + grabaciones de sesión ────
+   Gratis, sin límites. Cuenta en clarity.microsoft.com → nuevo proyecto
+   → copia el ID (ej: "abc123xyz") y reemplaza CLARITY_ID abajo.
+   Alejandro: agrega tu ID real para activar.
+─────────────────────────────────────────────────────────────────────── */
+(function(){
+  var CLARITY_ID = 'CLARITY_ID'; // ← reemplazar con tu ID de clarity.microsoft.com
+  if (CLARITY_ID === 'CLARITY_ID') return; // no cargar hasta tener ID real
+  if (document.getElementById('prodigy-clarity')) return;
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.id='prodigy-clarity';
+    t.src='https://www.clarity.ms/tag/'+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window,document,'clarity','script',CLARITY_ID);
+})();
+
 /* ── GA4 GLOBAL — inyecta en todas las páginas públicas ─────────────
    Se inyecta aquí para no tener que tocarlo en cada HTML individualmente.
    Respeta Consent Mode v2: analytics_storage denied hasta que el usuario acepte cookies.
