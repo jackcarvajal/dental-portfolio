@@ -25,6 +25,25 @@
   }
 })();
 
+/* ── GA4 GLOBAL — inyecta en todas las páginas públicas ─────────────
+   Se inyecta aquí para no tener que tocarlo en cada HTML individualmente.
+   Respeta Consent Mode v2: analytics_storage denied hasta que el usuario acepte cookies.
+─────────────────────────────────────────────────────────────────────── */
+(function(){
+  if (document.getElementById('prodigy-ga4-script')) return;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag = window.gtag || gtag;
+  gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
+  gtag('js', new Date());
+  gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});
+  var s = document.createElement('script');
+  s.id  = 'prodigy-ga4-script';
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10';
+  document.head.appendChild(s);
+})();
+
 (function () {
   'use strict';
   if (document.getElementById('nav-topbar') || document.getElementById('pheader-v2')) return;
