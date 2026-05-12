@@ -31,8 +31,7 @@
    Alejandro: agrega tu ID real para activar.
 ─────────────────────────────────────────────────────────────────────── */
 (function(){
-  var CLARITY_ID = 'CLARITY_ID'; // ← reemplazar con tu ID de clarity.microsoft.com
-  if (CLARITY_ID === 'CLARITY_ID') return; // no cargar hasta tener ID real
+  var CLARITY_ID = 'wo8ivp56qd';
   if (document.getElementById('prodigy-clarity')) return;
   (function(c,l,a,r,i,t,y){
     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
