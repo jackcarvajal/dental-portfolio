@@ -226,6 +226,84 @@
           <div class="prc" id="p-modelo">$5 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
+        <button class="srv-btn" data-key="endocrown" onclick="selSrv(this)">
+          <div class="ico">🦠</div>
+          <div class="lbl">Endocrown</div>
+          <div class="prc" id="p-endocrown">$18 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
+        <button class="srv-btn" data-key="onlay" onclick="selSrv(this)">
+          <div class="ico">🧩</div>
+          <div class="lbl">Onlay / Overlay</div>
+          <div class="prc" id="p-onlay">$16 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
+        <button class="srv-btn" data-key="maryland" onclick="selSrv(this)">
+          <div class="ico">🔗</div>
+          <div class="lbl">Maryland Bridge</div>
+          <div class="prc" id="p-maryland">$40 USD</div>
+          <div class="time">⏱ 24–48h</div>
+        </button>
+        <button class="srv-btn" data-key="mockup" onclick="selSrv(this)">
+          <div class="ico">🎨</div>
+          <div class="lbl">Mock-up / Encerado</div>
+          <div class="prc" id="p-mockup">$50 USD</div>
+          <div class="time">⏱ 48h</div>
+        </button>
+        <button class="srv-btn" data-key="guia_compleja" onclick="selSrv(this)">
+          <div class="ico">🔬</div>
+          <div class="lbl">Guía Compleja 4+</div>
+          <div class="prc" id="p-guia_compleja">$90 USD</div>
+          <div class="time">⏱ 48h</div>
+        </button>
+        <button class="srv-btn" data-key="guia_apilable" onclick="selSrv(this)">
+          <div class="ico">📚</div>
+          <div class="lbl">Guía Apilable</div>
+          <div class="prc" id="p-guia_apilable">$80 USD</div>
+          <div class="time">⏱ 48h</div>
+        </button>
+        <button class="srv-btn" data-key="guia_reduccion" onclick="selSrv(this)">
+          <div class="ico">🪛</div>
+          <div class="lbl">Guía Reducción Ósea</div>
+          <div class="prc" id="p-guia_reduccion">$70 USD</div>
+          <div class="time">⏱ 48h</div>
+        </button>
+        <button class="srv-btn" data-key="barra_implante" onclick="selSrv(this)">
+          <div class="ico">⚙️</div>
+          <div class="lbl">Barra s/ Implantes</div>
+          <div class="prc" id="p-barra_implante">$150 USD</div>
+          <div class="time">⏱ 48–72h</div>
+        </button>
+        <button class="srv-btn" data-key="supra" onclick="selSrv(this)">
+          <div class="ico">🔩</div>
+          <div class="lbl">Supraestructura</div>
+          <div class="prc" id="p-supra">$45 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
+        <button class="srv-btn" data-key="retenedor" onclick="selSrv(this)">
+          <div class="ico">😁</div>
+          <div class="lbl">Retenedor Hawley/Essix</div>
+          <div class="prc" id="p-retenedor">$18 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
+        <button class="srv-btn" data-key="ferula" onclick="selSrv(this)">
+          <div class="ico">🛡️</div>
+          <div class="lbl">Férula Michigan</div>
+          <div class="prc" id="p-ferula">$35 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
+        <button class="srv-btn" data-key="guia_desgaste" onclick="selSrv(this)">
+          <div class="ico">⚖️</div>
+          <div class="lbl">Guía de Desgaste</div>
+          <div class="prc" id="p-guia_desgaste">$25 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
+        <button class="srv-btn" data-key="plano_mordida" onclick="selSrv(this)">
+          <div class="ico">📏</div>
+          <div class="lbl">Plano de Mordida</div>
+          <div class="prc" id="p-plano_mordida">$25 USD</div>
+          <div class="time">⏱ 24h</div>
+        </button>
       </div>
     </div>
 
@@ -330,7 +408,20 @@ const PRECIOS_USD = {
   alineadores: { base:100, lbl:'Setup Alineadores',     fixedQty:true,  time:'48–72h' },
   provisional: { base:12,  lbl:'Provisional CAD',       fixedQty:false, time:'24h'    },
   dsd:         { base:80,  lbl:'DSD / Smile Design',    fixedQty:true,  time:'48h'    },
-  modelo:      { base:5,   lbl:'Modelo 3D Diagnóstico', fixedQty:false, time:'24h'    },
+  modelo:      { base:5,   lbl:'Modelo 3D Diagnóstico',  fixedQty:false, time:'24h'    },
+  endocrown:   { base:18,  lbl:'Endocrown',              fixedQty:false, time:'24h'    },
+  onlay:       { base:16,  lbl:'Onlay / Overlay',        fixedQty:false, time:'24h'    },
+  maryland:    { base:40,  lbl:'Maryland Bridge',        fixedQty:true,  time:'24–48h' },
+  mockup:      { base:50,  lbl:'Mock-up / Encerado',     fixedQty:true,  time:'48h'    },
+  guia_compleja:  { base:90,  lbl:'Guía Quirúrgica Compleja 4+', fixedQty:false, time:'48h' },
+  guia_apilable:  { base:80,  lbl:'Guía Apilable (por nivel)',   fixedQty:false, time:'48h' },
+  guia_reduccion: { base:70,  lbl:'Guía Reducción Ósea',         fixedQty:false, time:'48h' },
+  barra_implante: { base:150, lbl:'Barra sobre Implantes',       fixedQty:true,  time:'48–72h' },
+  supra:       { base:45,  lbl:'Supraestructura Atornillada', fixedQty:false, time:'24h' },
+  retenedor:   { base:18,  lbl:'Retenedor Hawley/Essix',    fixedQty:false, time:'24h'    },
+  ferula:      { base:35,  lbl:'Férula Michigan',           fixedQty:true,  time:'24h'    },
+  guia_desgaste: { base:25, lbl:'Guía de Desgaste',         fixedQty:false, time:'24h'    },
+  plano_mordida: { base:25, lbl:'Plano de Mordida',         fixedQty:false, time:'24h'    },
 };
 const EXTRAS_USD = { urgente:8, revision:5 };
 let cur = 'USD';
