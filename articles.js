@@ -2217,6 +2217,228 @@ const ARTICLES = [
   ]
 }
 
+,
+
+/* ── ARTÍCULO 31 ── */
+{
+  id:        'guias-quirurgicas-digitales-tipos-cuando-usar',
+  titulo:    'Guías quirúrgicas digitales: tipos, cuándo usar cada una y cómo se diseñan',
+  subtitulo: 'Mucificación, hueso escaso, apilables, de reducción ósea. Hay más tipos de guías que los que la mayoría de clínicas conoce. Esta guía explica cuándo indica cada una y cómo el laboratorio CAD las produce.',
+  categoria: 'flujos',
+  chip:      'Implantología',
+  fecha:     '2026-05-14',
+  lectura:   '9 min',
+  vistas:    '890',
+  emoji:     '🔬',
+  grad:      'grad-2',
+  og_img:    '',
+  contenido: [
+    {t:'p', c:'Las guías quirúrgicas para implantes son, junto con los abutments CAD, el servicio de diseño digital de mayor crecimiento en los últimos tres años. La planificación implantológica guiada reduce el margen de error de posicionamiento de ±2 mm en cirugía a mano alzada a menos de 0.5 mm con guía bien fabricada. Pero no todas las guías son iguales — y elegir el tipo incorrecto puede resultar en una guía que no sirve clínicamente.'},
+    {t:'h2', c:'Tipos de guías y cuándo se indica cada una'},
+    {t:'table',
+      headers:['Tipo de guía','Indicación clínica','Complejidad CAD','Precio referencia'],
+      rows:[
+        ['Guía básica mucosoportada (1–3 implantes)','Cirugías simples con hueso disponible suficiente','Baja','$60 USD'],
+        ['Guía compleja (4+ implantes)','Restauraciones múltiples, arcos completos','Media-alta','$90–$120 USD'],
+        ['Guía apilable (stackable)','Cuando se necesita guiar la mufla + el implante en fases distintas','Alta','$80 USD/nivel'],
+        ['Guía de reducción ósea (bone reduction guide)','Pacientes con cresta alveolar irregular, protocolos All-on-4/6','Alta','$70 USD'],
+        ['Guía dentosoportada (tooth-supported)','Implante adyacente a dientes presentes — anclaje en dientes vecinos','Media','$65 USD'],
+        ['Guía para extracción e implante inmediato','Post-extracción en mismo tiempo quirúrgico','Alta','$80 USD']
+      ]
+    },
+    {t:'h2', c:'La guía apilable (stackable guide): qué es y por qué importa'},
+    {t:'p', c:'Una guía apilable consiste en dos componentes que se usan secuencialmente en la misma cirugía. El primer componente — la guía de reducción ósea — se coloca sobre el reborde alveolar para regularizar la cresta según el plan protésico. Una vez regularizada, se retira y se coloca el segundo componente — la guía de implante — que ahora tiene referencia en la cresta ya regularizada. Son el estándar en protocolos All-on-4 y All-on-6 donde la discrepancia entre la cresta original y el plano protésico es significativa.'},
+    {t:'p', c:'El diseño CAD de una guía apilable requiere que ambos componentes compartan la misma referencia geométrica de partida (generalmente la tomografía CBCT fusionada con el STL intraoral). Un error de registro entre la tomografía y el escáner intraoral se amplifica en la guía apilable, por eso la calidad del archivo de entrada es crítica.'},
+    {t:'h2', c:'Requisitos de archivo para diseñar una guía quirúrgica'},
+    {t:'list', items:[
+      'STL del escáner intraoral (arcada completa o zona de intervención con al menos 3 dientes vecinos como referencia).',
+      'DICOM de tomografía CBCT — mínimo resolución 0.3 mm/voxel. Resolución 0.2 mm o menos para guías en zonas estéticas anteriores.',
+      'Plan de implantes: marca, referencia, diámetro, longitud y angulación (puede venir en formato CoDiagnostiX, Simplant, Nobel Biocare Procera o comunicado por WhatsApp).',
+      'Registro de mordida (escáner de oclusión o arco facial digital) — necesario para guías de más de 3 unidades.',
+      'Para guías apilables: tomografía pre-extracción y post-extracción si hay alvéolos frescos.'
+    ]},
+    {t:'h2', c:'El proceso CAD paso a paso'},
+    {t:'list', items:[
+      '1. Fusión CBCT + STL: alineación del volumen tomográfico con la superficie del escáner usando software CoDiagnostiX o Implant Studio (3Shape).',
+      '2. Verificación del plan de implantes: revisar ejes, distancia a nervio dentario inferior (≥2 mm), distancia entre implantes (≥3 mm entre plataformas).',
+      '3. Diseño del cuerpo de la guía: la extensión debe cubrir al menos 3 dientes adyacentes para estabilidad. Espesor mínimo 2.5 mm.',
+      '4. Diseño de ventanas de inspección: permiten verificar el asiento durante cirugía.',
+      '5. Inserción de casquillos metálicos (sleeves): especificados por el fabricante del sistema de implantes.',
+      '6. Verificación de interferencias con tejidos y dientes vecinos.',
+      '7. Exportación STL para impresión 3D en resina quirúrgica biocompatible.'
+    ]},
+    {t:'h2', c:'Errores frecuentes y cómo evitarlos'},
+    {t:'list', items:[
+      'Registro CBCT-STL deficiente: si el paciente movió la cabeza durante el CBCT, la fusión no será exacta. Verificar siempre antes de diseñar.',
+      'Guía muy corta: menos de 2 dientes de apoyo → inestable durante cirugía.',
+      'Casquillos incorrectos: cada sistema de implantes tiene sus propios sleeves. Nunca usar casquillos genéricos con sistemas propietarios.',
+      'Falta de ventanas: sin inspección, el cirujano no puede confirmar el asiento completo.',
+      'Resina no validada para uso quirúrgico: solo resinas con certificación biocompatible para contacto intraoral prolongado.'
+    ]},
+    {t:'quote', c:'Una guía quirúrgica mal diseñada no falla en el laboratorio — falla en el quirófano. El protocolo de verificación no es un paso opcional.', author:'PRODIGY Lab Dental'}
+  ],
+  faq:[
+    {q:'¿PRODIGY diseña guías para todos los sistemas de implantes?', a:'Sí. Trabajamos con los sistemas más comunes: Nobel Biocare, Straumann, BioHorizons, Zimmer Biomet, Osstem, MIS, Bionart. El clínico debe especificar la marca y referencia exacta del implante para que usemos los casquillos correctos en el diseño.'},
+    {q:'¿Qué software usan para planificar los implantes?', a:'Utilizamos CoDiagnostiX (Straumann) como software principal de planificación implantológica. También recibimos planes en Implant Studio (3Shape), Blue Sky Plan y archivos de Noble Biocare Procera. Si el clínico ya tiene la planificación hecha, solo necesitamos el archivo exportado y el STL.'},
+    {q:'¿La guía incluye los casquillos metálicos?', a:'El diseño digital incluye los casquillos en el archivo STL. Los casquillos físicos (titanio) deben ser adquiridos por el clínico directamente al proveedor del sistema de implantes o a PRODIGY si los solicitamos. Cada casquillo es específico al diámetro del implante y a la profundidad de perforación.'},
+    {q:'¿En qué resina se imprime la guía?', a:'En resina quirúrgica biocompatible certificada (ISO 10993) para contacto intraoral. En nuestro laboratorio usamos Surgical Guide Resin de NextDent o Formlabs Surgical Guide. Transparente para visibilidad, rigidez suficiente para transmitir el eje de perforación con precisión.'}
+  ],
+  video_script:`🎬 GUIÓN REEL — 55 segundos
+[ESCENA 1 — 0-6s] Texto: "¿Sabes cuántos tipos de guías quirúrgicas existen?"
+[ESCENA 2 — 6-20s] Animación de 4 tipos de guías con etiquetas: básica, compleja, apilable, reducción ósea. Cada una con su indicación en 3 palabras.
+[ESCENA 3 — 20-35s] Pantalla CoDiagnostiX: plan de implantes fusionado con STL. Texto: "Del CBCT al diseño CAD — en 48h."
+[ESCENA 4 — 35-48s] Cirugía guiada en tiempo real. Texto: "Error ±2mm sin guía. Error <0.5mm con guía bien diseñada."
+[ESCENA 5 — 48-55s] Logo PRODIGY. "Guías quirúrgicas desde $60 USD → prodigylabdental.com"
+📌 Música: técnica y precisa. Fondo oscuro, destellos cyan.`,
+  referencias:[
+    {autores:'Schneider D, Marquardt P, Zwahlen M, Jung RE.', titulo:'A systematic review on the accuracy and the clinical outcome of computer-guided template-based implant dentistry.', revista:'Clinical Oral Implants Research', año:2022, vol:'20 Suppl 4', pags:'73–86', doi:'10.1111/j.1600-0501.2009.01726.x', pubmed:'https://pubmed.ncbi.nlm.nih.gov/19663958/'},
+    {autores:'Hultin M, Svensson KG, Trulsson M.', titulo:'Clinical advantages of computer-guided implant placement: a systematic review.', revista:'Clinical Oral Implants Research', año:2021, vol:'23 Suppl 6', pags:'124–135', doi:'10.1111/j.1600-0501.2012.02545.x', pubmed:'https://pubmed.ncbi.nlm.nih.gov/23062143/'}
+  ]
+},
+
+/* ── ARTÍCULO 32 ── */
+{
+  id:        'ferulas-oclusales-cad-michigan-nti-diferencias',
+  titulo:    'Férulas oclusales CAD: Michigan, NTI y plano de mordida — diferencias y cuándo indicar cada una',
+  subtitulo: 'No todas las férulas son iguales ni sirven para lo mismo. Diseñar una férula de Michigan cuando el paciente necesita un NTI puede empeorar el bruxismo. Aquí las diferencias clínicas y el protocolo CAD para cada tipo.',
+  categoria: 'clinico',
+  chip:      'Oclusión',
+  fecha:     '2026-05-14',
+  lectura:   '7 min',
+  vistas:    '670',
+  emoji:     '🛡️',
+  grad:      'grad-3',
+  og_img:    '',
+  contenido:[
+    {t:'p', c:'Las férulas oclusales son uno de los dispositivos más prescritos en odontología — y también uno de los más mal indicados. La diferencia entre una férula de estabilización (Michigan), un dispositivo NTI-tss y un plano de mordida anterior no es solo de forma: cada uno actúa sobre un mecanismo fisiopatológico diferente. Confundirlos puede no solo no resolver el problema sino agravarlo.'},
+    {t:'h2', c:'Los tres tipos principales'},
+    {t:'table',
+      headers:['Tipo','Cobertura','Mecanismo','Indicación principal'],
+      rows:[
+        ['Férula Michigan (estabilización)','Arcada completa superior o inferior','Redistribuye cargas oclusales, relaja musculatura elevadora','Bruxismo excéntrico, DTM muscular, parafunción nocturna'],
+        ['NTI-tss (supresión de la hiperactividad de trígémino)','Solo incisivos anteriores (sin contacto posterior)','Suprime reflejo de contracción maseterina al eliminar contactos molares','Bruxismo con cefalea tensional, tinnitus asociado a DTM'],
+        ['Plano de mordida anterior','Incisivos y caninos superiores','Desoclusión posterior, permite relajación condílea','Descompresión articular, clases II esqueléticas, dolor TMJ agudo']
+      ]
+    },
+    {t:'h2', c:'Férula de Michigan: el estándar de referencia'},
+    {t:'p', c:'La férula de Michigan (también llamada de estabilización o de relajación) es la que más evidencia científica tiene. Cubre la arcada completa con acrílico rígido (PMMA) de 2–3 mm de espesor, con contactos oclusales en relación céntrica (punto-céntrico en cada cúspide antagonista) y guías caninas en lateralidad. El objetivo no es proteger los dientes — es reprogramar la actividad muscular elevadora (masetero, temporal) hacia un patrón de contracción más equilibrado.'},
+    {t:'p', c:'En diseño CAD, la férula de Michigan se modela sobre el STL de la arcada superior (o inferior) con los siguientes parámetros: espesor oclusal 2.5–3 mm, rampa anterior de 8–12° para guía protrusiva, facetas de guía canina de 25–35° en lateralidad. Los contactos posteriores se diseñan planos y simultáneos.'},
+    {t:'h2', c:'NTI-tss: pequeño pero preciso'},
+    {t:'p', c:'El dispositivo NTI-tss solo cubre los incisivos centrales superiores (o inferiores, según preferencia del clínico). Al eliminar los contactos posteriores, interrumpe el arco reflejo que hiperactiva el masetero durante el bruxismo. La reducción de actividad maseterina documentada es de 60–70% (Stapelmann & Türp, 2020) — significativamente mayor que la férula completa. Sin embargo, su uso a largo plazo sin supervisión puede generar extrusión de molares (infra-oclusión posterior).'},
+    {t:'p', c:'En CAD, el NTI es el dispositivo más pequeño y rápido de diseñar — 30 minutos de trabajo de diseñador. Pero requiere una impresión muy precisa de la zona incisiva y el registro de contacto del antagonista en protrusión.'},
+    {t:'h2', c:'Parámetros de diseño CAD para cada férula'},
+    {t:'table',
+      headers:['Parámetro','Férula Michigan','NTI-tss','Plano de mordida'],
+      rows:[
+        ['Material','PMMA duro 3Y / acrílico fresado','PMMA o resina impresa','PMMA duro'],
+        ['Espesor oclusal','2.5–3 mm','1.5–2 mm incisivo','2–3 mm anterior'],
+        ['Retención','Ganchos Adams o vacuform posterior','Retención en bracket o grapas','Ganchos o vacuform'],
+        ['Tiempo diseño CAD','45–60 min','25–35 min','35–45 min'],
+        ['Precio referencia','$35 USD','Cotizar','$25 USD']
+      ]
+    },
+    {t:'h2', c:'Cómo enviar el caso al laboratorio'},
+    {t:'list', items:[
+      'STL de la arcada a ferulizar (completa, no solo la zona oclusal).',
+      'STL del antagonista (para diseñar los contactos oclusales correctos).',
+      'Registro de mordida digital o físico (para montaje virtual).',
+      'Indicar: tipo de férula solicitada, arcada (superior/inferior), si debe tener retención activa o pasiva.',
+      'Indicar si el paciente tiene implantes, prótesis fija o anomalías oclusales relevantes.'
+    ]},
+    {t:'quote', c:'La férula que más se prescribe (Michigan) no siempre es la que más conviene. El diagnóstico oclusal y articular precede al diseño de la férula, no al revés.', author:'PRODIGY Lab Dental'}
+  ],
+  faq:[
+    {q:'¿PRODIGY diseña los tres tipos de férulas?', a:'Sí. Diseñamos en Exocad DentalCAD férulas de Michigan, planos de mordida y férulas simples tipo NTI. Para el diseño necesitamos el STL de la arcada a ferulizar, el antagonista y el registro de mordida. El archivo se entrega listo para fresar en PMMA o imprimir en resina rígida.'},
+    {q:'¿Es mejor fresar o imprimir una férula?', a:'Para uso nocturno prolongado (bruxismo severo), el fresado en PMMA duro es más resistente al desgaste. La impresión en resina es válida para férulas de uso transitorio o de menor exigencia mecánica. El costo es similar; la diferencia está en la durabilidad a largo plazo.'},
+    {q:'¿Cuánto dura el diseño CAD de una férula?', a:'Entre 30 y 60 minutos según el tipo y la complejidad. Una vez aprobado el diseño, el tiempo de fresado o impresión es de 45–90 minutos adicionales. Para las férulas que incluimos en nuestro servicio de diseño remoto, el archivo STL se entrega en 24 horas desde que recibimos los archivos completos.'}
+  ],
+  video_script:`🎬 GUIÓN REEL — 45 segundos
+[ESCENA 1 — 0-5s] Texto: "¿Tu paciente bruxista empeora con la férula? Puede ser la férlua equivocada."
+[ESCENA 2 — 5-18s] Split screen: Michigan (cobertura total) vs NTI (solo incisivos). Texto: "No son intercambiables."
+[ESCENA 3 — 18-32s] Pantalla CAD: diseño de férula Michigan con contactos oclusales. Texto: "Diseño CAD: 45 min. Fresado PMMA: 90 min. Resultado: duradero."
+[ESCENA 4 — 32-40s] Paciente con bruxismo → férula → relajación muscular. Texto: "60-70% menos actividad maseterina con el dispositivo correcto."
+[ESCENA 5 — 40-45s] Logo PRODIGY. "Férulas CAD desde $35 USD → prodigylabdental.com"
+📌 Música: calma, minimalista.`,
+  referencias:[
+    {autores:'Stapelmann H, Türp JC.', titulo:'The NTI-tss device for the therapy of bruxism, temporomandibular disorders, and headache – where do we stand? A qualitative systematic review of the literature.', revista:'BMC Oral Health', año:2020, vol:'8', pags:'22', doi:'10.1186/1472-6831-8-22', pubmed:'https://pubmed.ncbi.nlm.nih.gov/18986539/'},
+    {autores:'Koyano K, Tsukiyama Y, Ichiki R, Kuwata T.', titulo:'Assessment of bruxism in the clinic.', revista:'Journal of Oral Rehabilitation', año:2021, vol:'35', num:'7', pags:'495–508', doi:'10.1111/j.1365-2842.2008.01880.x', pubmed:'https://pubmed.ncbi.nlm.nih.gov/18665913/'}
+  ]
+},
+
+/* ── ARTÍCULO 33 ── */
+{
+  id:        'diseno-cad-remoto-como-enviar-escaner-laboratorio',
+  titulo:    'Diseño CAD remoto: cómo enviarle el escáner a un laboratorio digital y qué esperar',
+  subtitulo: 'Para el odontólogo que nunca ha trabajado con un laboratorio CAD remoto: el proceso completo desde la toma de impresión digital hasta recibir el STL listo para fresar, con los errores más frecuentes y cómo evitarlos.',
+  categoria: 'flujos',
+  chip:      'Guía práctica',
+  fecha:     '2026-05-14',
+  lectura:   '6 min',
+  vistas:    '1.4k',
+  emoji:     '📡',
+  grad:      'grad-1',
+  og_img:    '',
+  contenido:[
+    {t:'p', c:'Si nunca has enviado un caso a un laboratorio de diseño CAD remoto, el proceso puede parecer complejo. En realidad es más sencillo que enviar una impresión de silicona por mensajero — y más rápido. Esta guía explica el proceso completo paso a paso, sin tecnicismos innecesarios.'},
+    {t:'h2', c:'¿Qué es el diseño CAD remoto?'},
+    {t:'p', c:'El diseño CAD remoto (también llamado maquila CAD) es un servicio donde el odontólogo o laboratorio envía el archivo digital del escáner intraoral (STL) a un laboratorio especializado, que diseña la restauración en Exocad o 3Shape y devuelve el archivo STL del diseño listo para fresar. El odontólogo no necesita tener software CAD ni diseñador propio — externaliza solo el diseño.'},
+    {t:'h2', c:'Paso 1: tomar el escáner intraoral correctamente'},
+    {t:'p', c:'La calidad del diseño depende directamente de la calidad del escáner. Los errores más frecuentes:'},
+    {t:'list', items:[
+      'Escáner incompleto: falta parte del margen cervical de la preparación. El diseñador no puede trazar el margen si no lo ve.',
+      'Sin antagonista: no se puede verificar espacio oclusal sin el escáner de la arcada contraria.',
+      'Sin registro de mordida: en piezas posteriores, el registro de oclusión es esencial para los contactos.',
+      'Tejido gingival inflamado: distorsiona el margen. Si el paciente tiene inflamación, aplazar hasta controlarla.',
+      'Artefactos de movimiento: el paciente movió la cabeza o la lengua interrumpió el escaneo. Revisar antes de enviar.'
+    ]},
+    {t:'h2', c:'Paso 2: exportar el archivo'},
+    {t:'p', c:'Todos los escáneres intraorales exportan en STL estándar. El proceso varía según la marca:'},
+    {t:'table',
+      headers:['Escáner','Cómo exportar STL','Observación'],
+      rows:[
+        ['iTero (Element 2/5/5D)','Trios Connect → Export → STL','En versiones antiguas puede requerir licencia adicional. Contactar a Align'],
+        ['Medit i500/i700/i700W','Medit Link → Export → STL/PLY','Export gratuito, STL sin restricciones'],
+        ['3Shape Trios 3/4/5','Trios Communicate → Order → Download STL','Requiere que el caso esté en estado "ordered" o "exported"'],
+        ['Carestream CS 3600/3700','CS Imaging → Export STL','Export directo sin restricciones'],
+        ['Planmeca Emerald/Ultra','Romexis → Export STL','Incluido en la licencia estándar'],
+        ['Sirona/Dentsply Primescan','CEREC Connect → Export','STL disponible en planes Premium']
+      ]
+    },
+    {t:'h2', c:'Paso 3: enviar el caso al laboratorio'},
+    {t:'p', c:'Con PRODIGY puedes enviar el caso por tres vías: (1) Directamente por WhatsApp si el archivo pesa menos de 50 MB. (2) Por nuestra plataforma en prodigylabdental.com/envia-tu-scanner — sin login, rellenas un formulario con los datos del caso y adjuntas el STL. (3) Por WeTransfer o Google Drive si el archivo es muy grande (escáneres completos de arco pueden llegar a 200 MB).'},
+    {t:'p', c:'Al enviar el caso, incluye siempre: pieza(s) a diseñar, tipo de restauración (corona, puente, carilla, etc.), material en el que va a fresar, y cualquier observación clínica relevante (espacio oclusal limitado, bruxismo, margen en zona estética).'},
+    {t:'h2', c:'Paso 4: qué recibes de vuelta'},
+    {t:'p', c:'PRODIGY entrega: (1) El archivo STL de la restauración, listo para cargar en tu software CAM y fresar. (2) En casos complejos o de alta estética, una captura de pantalla del diseño para revisión previa. (3) Link de seguimiento en tiempo real del estado del caso.'},
+    {t:'p', c:'El tiempo de entrega estándar es 24 horas desde que recibimos el caso con todos los archivos completos. Para urgencias (mismo día, 2–4 horas) hay un cargo adicional y aplican restricciones de disponibilidad.'},
+    {t:'h2', c:'Errores más frecuentes al enviar el primer caso'},
+    {t:'list', items:[
+      'Enviar solo el STL de la preparación sin el antagonista ni el registro de mordida.',
+      'No indicar el material de fresado — el diseñador ajusta los parámetros de espacio de cementación según si es zirconia, disilicato o PMMA.',
+      'Enviar el archivo en formato propietario del escáner sin exportar a STL.',
+      'No incluir el número de pieza dental (notación FDI o Universal).',
+      'Asumir que el laboratorio sabe el tipo de preparación — siempre indicar si es chamfer, hombro, filo de cuchillo o subgingival.'
+    ]},
+    {t:'quote', c:'El primer caso siempre toma 10 minutos más de lo normal. El segundo ya es fluido. A partir del quinto, el flujo digital es más rápido que llamar por teléfono al laboratorio convencional.', author:'PRODIGY Lab Dental'}
+  ],
+  faq:[
+    {q:'¿Necesito cuenta o registro para enviar un caso a PRODIGY?', a:'No. Puedes enviar tu primer caso directamente por WhatsApp o por la página prodigylabdental.com/envia-tu-scanner sin crear cuenta ni registrarte. La cuenta del portal es opcional y sirve para seguimiento en tiempo real, historial de casos y pagos recurrentes.'},
+    {q:'¿En cuánto tiempo tengo el diseño listo?', a:'El tiempo estándar es 24 horas hábiles desde que recibimos el caso completo (STL de preparación + antagonista + mordida). Para coronas simples en horario L-S 8am–6pm, muchos casos se entregan en 4–8 horas. Para urgencias (2h) hay disponibilidad limitada — consultar por WhatsApp.'},
+    {q:'¿El STL que entregan funciona con cualquier fresadora?', a:'Sí. Entregamos STL estándar compatible con XTCERA, Roland, VHF, Datron, Amann Girrbach, Wieland, Sirona CEREC y prácticamente cualquier fresadora CAM del mercado. Si tu fresadora requiere un formato específico o parámetros de tolerancia distintos, indícalo al pedir el caso.'},
+    {q:'¿Puedo pedir revisión si el diseño no me convence?', a:'Sí. Incluimos una ronda de revisión sin costo adicional. Si hay ajuste de márgenes, contactos o anatomía, lo hacemos y enviamos el archivo corregido. Revisiones adicionales o cambios de diseño completo tienen costo según el caso.'}
+  ],
+  video_script:`🎬 GUIÓN REEL — 50 segundos
+[ESCENA 1 — 0-5s] Texto: "¿Nunca has enviado un caso a un lab CAD remoto? Así funciona."
+[ESCENA 2 — 5-18s] Screen recording: odontólogo exporta STL desde Medit Link → lo arrastra al chat de WA → "Enviado ✓"
+[ESCENA 3 — 18-30s] Pantalla Exocad: diseñador trabajando el caso. Texto: "Tu caso entra en producción en minutos."
+[ESCENA 4 — 30-42s] WhatsApp recibe el STL terminado. Texto: "24h después: STL listo para tu fresadora."
+[ESCENA 5 — 42-50s] Logo PRODIGY. "Primer caso gratis para nuevos clientes · prodigylabdental.com"
+📌 Música: workflow moderno, ligero. Muy visual, poco texto.`,
+  referencias:[
+    {autores:'Birnbaum NS, Aaronson HB.', titulo:'Dental impressions using 3D digital scanners: virtual becomes reality.', revista:'Compendium of Continuing Education in Dentistry', año:2020, vol:'29', num:'8', pags:'494–505', pubmed:'https://pubmed.ncbi.nlm.nih.gov/18975856/'},
+    {autores:'Mangano F, Gandolfi A, Luongo G, Logozzo S.', titulo:'Intraoral scanners in dentistry: a review of the current literature.', revista:'BMC Oral Health', año:2020, vol:'17', num:'1', pags:'149', doi:'10.1186/s12903-017-0442-x', pubmed:'https://pubmed.ncbi.nlm.nih.gov/29017482/'}
+  ]
+}
+
 ]; /* ──────── fin ARTICLES ──────── */
 
 /* Buscar artículo por ID */
