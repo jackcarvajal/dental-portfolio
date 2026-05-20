@@ -441,9 +441,9 @@ function escHtml(t) {
 async function publicarNota(casoId) {
   const texto = document.getElementById('nota-text').value.trim();
   if (!texto && !reaccionSel) { alert('Escribe un comentario o selecciona una reacción.'); return; }
-  if (texto && filtrarTexto(texto)) {
-    alert('Tu comentario contiene lenguaje inapropiado. Por favor usa un tono profesional.');
-    return;
+  if (texto) {
+    const v = typeof validarTextoPublico === 'function' ? validarTextoPublico(texto) : { ok: !filtrarTexto(texto), error: 'Lenguaje inapropiado.' };
+    if (!v.ok) { alert(v.error); return; }
   }
   try {
     await sb.from('feedback_casos').insert({ caso_id: casoId, reaction: reaccionSel, nota: texto, pinned: false, deleted: false });
@@ -546,6 +546,7 @@ async function fijarNota(notaId, casoId, fijar) {
   </p>
 </div>
 
+<script src="js/content-guard.js"></script>
 <script src="js/footer.js?v=20260505"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>

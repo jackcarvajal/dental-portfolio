@@ -318,7 +318,8 @@ let _userId = null;
 /* ── Cargar casos de diseño ── */
 async function cargarCasos() {
   const { data, error } = await sb.from('pedidos')
-    .select('id,codigo,nombre_paciente,servicio,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,observaciones,revisiones_usadas,whatsapp,stl_ruta')
+    // Operario NO ve: email real, whatsapp del cliente, nombre completo — solo código interno
+    .select('id,codigo,servicio,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,observaciones,revisiones_usadas,stl_ruta,operario_codigo')
     .eq('flujo','diseno')
     .not('estado','in','("cancelado","CANCELADO")')
     .order('created_at',{ascending:false})
@@ -386,7 +387,7 @@ function cardHTML(p, col) {
   return `<div class="caso-card" style="${critico?'border-color:rgba(239,68,68,.4)':alerta?'border-color:rgba(251,191,36,.3)':''}">
     <div class="card-timer ${tc}"><i class="fas fa-clock" style="margin-right:4px;"></i>${tl}</div>
     <div class="caso-id">#${escH(p.codigo)||p.id.slice(0,8)} ${critico?'<span class="urgente-dot"></span>':''}</div>
-    <div class="caso-nombre">${escH(p.nombre_paciente)||'Sin nombre'}</div>
+    <div class="caso-nombre">Caso ${escH(p.codigo||p.id?.slice(0,8)||'—')}</div>
     <div class="caso-meta">
       ${escH(p.servicio)||'—'}
       ${p.material?'<br>Material: '+escH(p.material):''}
