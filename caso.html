@@ -201,39 +201,51 @@ async function render(c) {
   document.title = (c.name || 'Caso') + ' — PRODIGY Lab Dental';
   gallery = Array.isArray(c.gallery) ? c.gallery : [];
 
-  /* Verificar si exocad_file realmente existe */
+  /* ── VISOR 1 ── */
   const rawExocad = c.exocad_file && c.exocad_file.trim();
   const hasExocad = rawExocad ? await urlOk(rawExocad) : false;
   const hasDrive  = c.drive_link && c.drive_link.trim();
-
-  /* Visor: Exocad verificado > Video > cover img como fallback */
   let visorHTML = '';
   if (hasExocad) {
     visorHTML = `<div class="viewer-wrap"><iframe id="exocad-frame" title="Visor 3D Exocad" allowfullscreen oncontextmenu="return false;"></iframe></div>`;
   } else if (hasDrive) {
     const embed = toEmbed(c.drive_link);
-    if (embed) {
-      visorHTML = `<div class="viewer-wrap"><iframe src="${embed}" title="Video" allowfullscreen allow="autoplay"></iframe></div>`;
-    } else if (/\.(mp4|webm)(\?|$)/i.test(c.drive_link)) {
-      visorHTML = `<div class="viewer-wrap"><video controls controlsList="nodownload nofullscreen" oncontextmenu="return false;" preload="metadata" style="width:100%;height:100%;background:#000;"><source src="${c.drive_link}"></video></div>`;
-    }
+    if (embed) visorHTML = `<div class="viewer-wrap"><iframe src="${embed}" title="Video" allowfullscreen allow="autoplay"></iframe></div>`;
+    else if (/\.(mp4|webm)(\?|$)/i.test(c.drive_link)) visorHTML = `<div class="viewer-wrap"><video controls controlsList="nodownload nofullscreen" oncontextmenu="return false;" preload="metadata" style="width:100%;height:100%;background:#000;"><source src="${c.drive_link}"></video></div>`;
   }
-  /* Si no hay visor ni video: no mostrar sección de visor */
   if (!visorHTML) visorHTML = null;
 
-  /* Cover pequeña junto al título (siempre que exista) */
-  const coverThumb = c.cover_image
-    ? `<img src="${c.cover_image}" alt="Portada" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);flex-shrink:0;">`
-    : '';
+  /* ── VISOR 2 (opcional) ── */
+  const rawExocad2 = c.exocad_file_2 && c.exocad_file_2.trim();
+  const hasExocad2 = rawExocad2 ? await urlOk(rawExocad2) : false;
+  let visor2HTML = null;
+  if (hasExocad2) {
+    visor2HTML = `<div class="viewer-wrap"><iframe id="exocad-frame-2" title="Visor 3D — ${c.label_2||'Diseño 2'}" allowfullscreen oncontextmenu="return false;"></iframe></div>`;
+  }
 
-  /* Galería */
+  /* ── GALERÍAS ── */
+  const label1 = c.label_1 || 'Diseño 1';
+  const label2 = c.label_2 || 'Diseño 2';
+  const gal2   = Array.isArray(c.gallery_2) ? c.gallery_2 : [];
   const galHTML = gallery.length > 0 ? `
     <div class="section">
-      <div class="section-title"><i class="fas fa-images"></i> Galería de Imágenes</div>
+      <div class="section-title"><i class="fas fa-images"></i> Galería ${visor2HTML ? '— '+label1 : 'de Imágenes'}</div>
       <div class="gallery-grid">
         ${gallery.map((u,i) => `<div class="gallery-item" onclick="openLB(${i})"><img src="${u}" alt="Foto ${i+1}" loading="lazy"><div class="gallery-wm"><span>© PRODIGY</span></div><span class="gallery-num">${i+1}</span></div>`).join('')}
       </div>
     </div>` : '';
+  const gal2HTML = gal2.length > 0 ? `
+    <div class="section">
+      <div class="section-title"><i class="fas fa-images"></i> Galería — ${label2}</div>
+      <div class="gallery-grid">
+        ${gal2.map((u,i) => `<div class="gallery-item" onclick="openLBPool(${i})"><img src="${u}" alt="Foto ${i+1}" loading="lazy"><div class="gallery-wm"><span>© PRODIGY</span></div><span class="gallery-num">${i+1}</span></div>`).join('')}
+      </div>
+    </div>` : '';
+
+  /* Cover pequeña */
+  const coverThumb = c.cover_image
+    ? `<img src="${c.cover_image}" alt="Portada" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);flex-shrink:0;">`
+    : '';
 
   document.getElementById('caso-root').innerHTML = `
     <div class="caso-hero">
@@ -255,11 +267,17 @@ async function render(c) {
     </div>
 
     ${visorHTML ? `<div class="section">
-      <div class="section-title"><i class="fas fa-cube"></i> ${hasExocad ? 'Visor 3D Exocad' : 'Video del caso'}</div>
+      <div class="section-title"><i class="fas fa-cube"></i> ${hasExocad ? (visor2HTML ? label1+' — Visor 3D' : 'Visor 3D Exocad') : 'Video del caso'}</div>
       ${visorHTML}
     </div>` : ''}
 
+    ${visor2HTML ? `<div class="section">
+      <div class="section-title"><i class="fas fa-cube"></i> ${label2} — Visor 3D</div>
+      ${visor2HTML}
+    </div>` : ''}
+
     ${galHTML}
+    ${gal2HTML}
 
     ${c.pdf_url ? `
     <div class="section">
@@ -302,8 +320,12 @@ async function render(c) {
     </div>`;
 
   cargarNotas(c.id);
-  if (hasExocad) loadExocadBlob(c.exocad_file);
+  if (hasExocad) loadExocadBlob(c.exocad_file, 'exocad-frame');
+  if (hasExocad2) loadExocadBlob(c.exocad_file_2, 'exocad-frame-2');
   cargarRelacionados(c.id, c.type);
+  // Lightbox pool para galería 2
+  window._gallery2 = gal2;
+
 }
 
 async function cargarRelacionados(casoId, tipo) {
@@ -334,11 +356,20 @@ async function cargarRelacionados(casoId, tipo) {
   } catch(e) {}
 }
 
-async function loadExocadBlob(url) {
+function openLBPool(idx) {
+  const pool = window._gallery2 || [];
+  lbIndex = idx; gallery = pool; // temp swap para lightbox
+  document.getElementById('lb-img').src = pool[idx];
+  document.getElementById('lb-counter').textContent = (idx+1) + ' / ' + pool.length;
+  document.getElementById('lightbox').classList.add('active');
+}
+
+async function loadExocadBlob(url, frameId) {
+  const fId = frameId || 'exocad-frame';
   try {
     const resp = await fetch(url);
     const html = await resp.text();
-    const frame = document.getElementById('exocad-frame');
+    const frame = document.getElementById(fId);
     if (frame) frame.srcdoc = html;
   } catch(e) { console.error('Exocad load error:', e); }
 }
