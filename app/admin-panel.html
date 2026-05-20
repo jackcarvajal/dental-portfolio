@@ -392,6 +392,28 @@
                         <p style="font-size:.68rem;color:#475569;margin-top:4px;">Exporta desde Exocad → Archivo → Exportar como HTML → selecciona ese archivo aquí</p>
                     </div>
 
+                    <!-- SEGUNDO VISOR HTML (opcional) -->
+                    <div style="margin-top:16px;padding:14px;background:rgba(0,210,255,.04);border:1px dashed rgba(0,210,255,.2);border-radius:10px;">
+                      <div style="font-size:.72rem;font-weight:800;color:#00d2ff;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px"><i class="fas fa-plus-circle"></i> Segundo visor HTML (opcional — Full Arch, Antes/Después)</div>
+                      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+                        <div>
+                          <label style="font-size:.72rem;color:#94a3b8;display:block;margin-bottom:4px">Etiqueta Visor 1</label>
+                          <input type="text" id="p-label1" placeholder="Ej: Arcada Superior" style="width:100%;background:#0d1525;border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#fff;padding:8px 12px;font-size:.82rem;outline:none;">
+                        </div>
+                        <div>
+                          <label style="font-size:.72rem;color:#94a3b8;display:block;margin-bottom:4px">Etiqueta Visor 2</label>
+                          <input type="text" id="p-label2" placeholder="Ej: Arcada Inferior" style="width:100%;background:#0d1525;border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#fff;padding:8px 12px;font-size:.82rem;outline:none;">
+                        </div>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(0,210,255,.06);border:1px dashed rgba(0,210,255,.2);border-radius:8px;">
+                        <label for="exocad-html-input-2" style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,210,255,.12);border:1px solid rgba(0,210,255,.35);color:#00d2ff;padding:8px 14px;border-radius:7px;cursor:pointer;font-weight:700;font-size:.78rem;white-space:nowrap;">
+                          <i class="fas fa-file-code"></i> HTML Visor 2
+                        </label>
+                        <span id="exocad-filename-2" style="font-size:.78rem;color:#94a3b8;">Ningún archivo seleccionado</span>
+                      </div>
+                      <input type="file" id="exocad-html-input-2" style="display:none;" onchange="selectExocadHtml2(this)">
+                    </div>
+
                 </div>
 
                 <div style="margin-top:24px;display:flex;gap:12px;justify-content:flex-end;">
@@ -1163,6 +1185,13 @@ function actualizarKPIs(data) {
 let imgFile = null;
 let galleryFiles = [];
 let exocadHtmlFile = null;
+let exocadHtmlFile2 = null;
+function selectExocadHtml2(input) {
+  const f = input.files[0];
+  if (!f) return;
+  exocadHtmlFile2 = f;
+  document.getElementById('exocad-filename-2').textContent = f.name;
+}
 
 function previewImg(input) {
     imgFile = input.files[0];
@@ -1272,6 +1301,19 @@ async function subirCaso(e) {
             }
         }
 
+        // Subir segundo HTML si existe
+        let exocadUrl2 = null;
+        if (exocadHtmlFile2) {
+            const hname2 = `portafolio/exocad2_${Date.now()}.html`;
+            const { error: he2 } = await sb.storage.from('dental-cases').upload(hname2, exocadHtmlFile2, { contentType: 'text/html' });
+            if (!he2) {
+                const { data: { publicUrl: hUrl2 } } = sb.storage.from('dental-cases').getPublicUrl(hname2);
+                exocadUrl2 = hUrl2;
+            }
+        }
+        const label1 = document.getElementById('p-label1')?.value || 'Diseño 1';
+        const label2 = document.getElementById('p-label2')?.value || 'Diseño 2';
+
         // 4. Insertar registro en tabla casos_portafolio
         const now = new Date();
         const fechaStr = now.toLocaleDateString('es', {month:'long', year:'numeric'});
@@ -1283,6 +1325,9 @@ async function subirCaso(e) {
             cover_image:   publicUrl,
             gallery:       galleryUrls.length ? galleryUrls : [],
             exocad_file:   exocadUrl,
+            exocad_file_2: exocadUrl2,
+            label_1:       label1,
+            label_2:       label2,
             gallery_count: galleryUrls.length,
             visible:       true,
         }]);
@@ -1308,6 +1353,11 @@ function limpiarFormPortafolio() {
     imgFile = null;
     galleryFiles = [];
     exocadHtmlFile = null;
+    exocadHtmlFile2 = null;
+    const fn2 = document.getElementById('exocad-filename-2');
+    if(fn2) fn2.textContent = 'Ningún archivo seleccionado';
+    const l1 = document.getElementById('p-label1'); if(l1) l1.value='';
+    const l2 = document.getElementById('p-label2'); if(l2) l2.value='';
 }
 
 async function cargarPortafolio() {
