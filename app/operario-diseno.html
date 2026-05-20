@@ -242,12 +242,35 @@ body.ready{visibility:visible;}
 
     <!-- Link de entrega -->
     <div class="link-box">
-      <label><i class="fas fa-link" style="margin-right:5px;"></i>Link de entrega (Drive / WeTransfer / URL STL)</label>
+      <label><i class="fas fa-link" style="margin-right:5px;"></i>Link HTML visor (Drive / Exocad / WeTransfer)</label>
       <input type="url" id="qa-link" class="link-input" placeholder="https://drive.google.com/...">
+    </div>
+
+    <!-- Upload STL -->
+    <div class="link-box" style="margin-top:12px;background:rgba(0,255,65,.04);border-color:rgba(0,255,65,.2);">
+      <label style="color:var(--green);"><i class="fas fa-cube" style="margin-right:5px;"></i>Upload STL (privado en Storage)</label>
+      <input type="file" id="qa-stl-file" accept=".stl,.obj" style="color:#e2e8f0;font-size:.8rem;width:100%;">
+      <small id="qa-stl-status" style="color:var(--muted);font-size:.7rem;">Se sube a: dental-cases/{pedido_id}/v{revision}.stl</small>
     </div>
 
     <textarea class="qa-notas" id="qa-notas" placeholder="Notas técnicas para el doctor o para el equipo de producción…"></textarea>
     <input type="hidden" id="qa-pedido-id">
+    <input type="hidden" id="qa-codigo">
+    <input type="hidden" id="qa-wa-cliente">
+    <input type="hidden" id="qa-revisiones">
+
+    <!-- Historial revisiones -->
+    <div id="qa-historial" style="margin-bottom:12px;"></div>
+
+    <!-- Notificaciones WA -->
+    <div style="background:rgba(37,211,102,.05);border:1px solid rgba(37,211,102,.15);border-radius:8px;padding:10px 12px;margin-bottom:12px;">
+      <div style="font-size:.68rem;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Notificar al cliente</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.3);" onclick="notifWA('pago')"><i class="fab fa-whatsapp"></i> Pago OK</button>
+        <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.3);" onclick="notifWA('diseno')"><i class="fab fa-whatsapp"></i> Diseño listo</button>
+        <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.3);" onclick="notifWA('entrega')"><i class="fab fa-whatsapp"></i> Entregado</button>
+      </div>
+    </div>
 
     <div class="modal-actions">
       <button class="btn-xs btn-red" onclick="cerrarQA()">Cancelar</button>
@@ -295,7 +318,7 @@ let _userId = null;
 /* ── Cargar casos de diseño ── */
 async function cargarCasos() {
   const { data, error } = await sb.from('pedidos')
-    .select('id,codigo,nombre_paciente,servicio,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,observaciones')
+    .select('id,codigo,nombre_paciente,servicio,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,observaciones,revisiones_usadas,whatsapp,stl_ruta')
     .eq('flujo','diseno')
     .not('estado','in','("cancelado","CANCELADO")')
     .order('created_at',{ascending:false})
@@ -438,13 +461,21 @@ const stateLabels = {
 
 /* ── QA ── */
 function abrirQA(id, codigo) {
-  document.getElementById('qa-pedido-id').value = id;
+  const caso = _casos.find(p => p.id === id) || {};
+  document.getElementById('qa-pedido-id').value    = id;
+  document.getElementById('qa-codigo').value       = codigo;
+  document.getElementById('qa-wa-cliente').value   = caso.whatsapp || '';
+  document.getElementById('qa-revisiones').value   = caso.revisiones_usadas || 0;
   document.getElementById('qa-caso-sub').textContent = 'Caso #' + codigo;
-  document.getElementById('qa-notas').value = '';
-  document.getElementById('qa-link').value = '';
+  document.getElementById('qa-notas').value   = '';
+  document.getElementById('qa-link').value    = caso.link_diseno || '';
+  document.getElementById('qa-stl-status').textContent = `Se sube a: dental-cases/${id}/v${(caso.revisiones_usadas||0)+1}.stl`;
   ['qa1','qa2','qa3','qa4','qa5','qa6','qa7'].forEach(i => {
     document.getElementById(i).checked = false;
   });
+  const fileInput = document.getElementById('qa-stl-file');
+  if (fileInput) fileInput.value = '';
+  cargarHistorialQA(id);
   document.getElementById('modal-qa').classList.add('open');
 }
 
@@ -452,21 +483,62 @@ function cerrarQA() {
   document.getElementById('modal-qa').classList.remove('open');
 }
 
+async function cargarHistorialQA(pedidoId) {
+  const { data } = await sb.from('diseno_revisiones')
+    .select('*').eq('pedido_id', pedidoId).order('revision_num', { ascending: false });
+  const el = document.getElementById('qa-historial');
+  if (!data || !data.length) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div style="font-size:.68rem;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Historial revisiones</div>` +
+    data.map(r => `<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:6px;padding:7px 10px;margin-bottom:5px;font-size:.74rem;">
+      <span style="color:var(--cyan);font-weight:700;">Rev ${r.revision_num}</span>
+      ${r.link_html?`<a href="${r.link_html}" target="_blank" rel="noopener noreferrer" style="color:var(--gold);margin-left:8px;"><i class="fas fa-external-link-alt"></i> Visor</a>`:''}
+      ${r.stl_ruta?`<span style="color:var(--green);margin-left:8px;"><i class="fas fa-cube"></i> STL</span>`:''}
+      ${r.notas_cliente?`<span style="color:var(--yellow);margin-left:8px;font-size:.68rem;"><i class="fas fa-comment"></i> ${r.notas_cliente.slice(0,40)}</span>`:''}
+    </div>`).join('');
+}
+
 async function guardarQA(resultado) {
-  const id    = document.getElementById('qa-pedido-id').value;
-  const link  = document.getElementById('qa-link').value.trim();
-  const notas = document.getElementById('qa-notas').value.trim();
-  const checks = ['qa1','qa2','qa3','qa4','qa5','qa6','qa7'];
+  const id       = document.getElementById('qa-pedido-id').value;
+  const codigo   = document.getElementById('qa-codigo').value;
+  const link     = document.getElementById('qa-link').value.trim();
+  const notas    = document.getElementById('qa-notas').value.trim();
+  const stlFile  = document.getElementById('qa-stl-file')?.files[0];
+  const revActual= parseInt(document.getElementById('qa-revisiones').value)||0;
+  const revision = revActual + 1;
+  const checks   = ['qa1','qa2','qa3','qa4','qa5','qa6','qa7'];
 
   if (resultado === 'DISENO_APROBADO') {
     const incompleto = checks.some(i => !document.getElementById(i).checked);
     if (incompleto) { toast('Completa todos los checks de QA antes de aprobar','err'); return; }
   }
 
-  const updates = { estado_operativo: resultado };
-  if (link)  updates.link_diseno   = link;
-  if (notas) updates.observaciones = notas;
-  if (resultado === 'DISENO_APROBADO') updates.estado = 'DISENO_FINALIZADO';
+  let stlRuta = null;
+
+  // Upload STL si se seleccionó
+  if (stlFile) {
+    const stlPath = `${id}/v${revision}.stl`;
+    const { error: upErr } = await sb.storage.from('dental-cases').upload(stlPath, stlFile, { upsert: true });
+    if (upErr) { toast('Error subiendo STL: ' + upErr.message, 'err'); return; }
+    stlRuta = stlPath;
+    document.getElementById('qa-stl-status').textContent = `✅ Subido: ${stlPath}`;
+  }
+
+  // Insertar en diseno_revisiones si hay link o STL
+  if (link || stlRuta) {
+    const revData = { pedido_id: id, revision_num: revision, link_html: link || null };
+    if (stlRuta) revData.stl_ruta = stlRuta;
+    if (notas)   revData.notas_cliente = notas;
+    await sb.from('diseno_revisiones').insert(revData);
+  }
+
+  const updates = { estado_operativo: resultado, revisiones_usadas: revision };
+  if (link)    updates.link_diseno   = link;
+  if (notas)   updates.observaciones = notas;
+  if (stlRuta) updates.stl_ruta      = stlRuta;
+  if (resultado === 'DISENO_APROBADO') {
+    updates.estado       = 'DISENO_FINALIZADO';
+    updates.stl_liberado = true;
+  }
 
   const { error } = await sb.from('pedidos').update(updates).eq('id', id);
   if (error) { toast('Error: ' + error.message,'err'); return; }
@@ -474,6 +546,19 @@ async function guardarQA(resultado) {
   cerrarQA();
   toast(resultado === 'DISENO_APROBADO' ? 'Diseño aprobado y entregado ✅' : 'Cambios marcados — vuelve a diseño 🔄', 'ok');
   await cargarCasos();
+}
+
+/* ── NOTIFICACIONES WA (PRODIGY) ── */
+function notifWA(tipo) {
+  const wa     = document.getElementById('qa-wa-cliente').value.replace(/\D/g,'');
+  const codigo = document.getElementById('qa-codigo').value;
+  if (!wa) { toast('Cliente sin WhatsApp en el pedido','err'); return; }
+  const msgs = {
+    pago:   `✅ Pago confirmado · Caso #${codigo}. Iniciamos tu diseño en PRODIGY Lab.`,
+    diseno: `🎨 Tu diseño está listo para revisar · Caso #${codigo}. Visita: https://prodigylabdental.com/seguimiento-caso?id=${codigo}`,
+    entrega:`📦 Diseño aprobado y entregado · Caso #${codigo}. Descarga tu STL desde el portal de seguimiento.`
+  };
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msgs[tipo]||'')}`, '_blank');
 }
 
 /* Cerrar modal al click fuera */
