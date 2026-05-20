@@ -949,17 +949,68 @@
   });
 
   /* Mini-login topbar */
+  var _SURL_PG = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+  var _SKEY_PG = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+  var _ADMIN_PG = 'jackalejandroc@gmail.com';
+
+  /* ── DETECTAR SESIÓN ACTIVA ── */
+  (function checkSessionPG(){
+    var stored = localStorage.getItem('sb-zgihrwqfyvgyapbwzkvw-auth-token');
+    if(!stored) return;
+    var tok = '';
+    try { tok = JSON.parse(stored)?.access_token||''; } catch(e){}
+    if(!tok) return;
+    fetch(_SURL_PG+'/auth/v1/user',{headers:{'apikey':_SKEY_PG,'Authorization':'Bearer '+tok}})
+      .then(function(r){return r.ok?r.json():null;})
+      .then(function(u){
+        if(!u||!u.email) return;
+        var tb = document.getElementById('nav-topbar');
+        if(!tb) return;
+        var isAdmin = u.email===_ADMIN_PG || u.email==='labdentalprodigy@gmail.com';
+        var panelUrl = isAdmin ? '/app/panel-interno-operaciones' : '/app/client-panel';
+        tb.innerHTML =
+          '<div style="display:flex;align-items:center;gap:12px;padding:0 16px;height:100%">'+
+            '<span style="font-size:.75rem;color:#94a3b8"><i class="fas fa-user-circle" style="color:#D4AF37;margin-right:5px"></i>'+(isAdmin?'Admin':'Dr.')+' · '+u.email.split('@')[0]+'</span>'+
+            '<a href="'+panelUrl+'" style="background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);color:#D4AF37;padding:5px 14px;border-radius:6px;font-size:.72rem;font-weight:800;text-decoration:none"><i class="fas fa-th-large" style="margin-right:4px"></i>Mi Panel</a>'+
+            '<button onclick="_phdrLogoutPG()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:5px 12px;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer"><i class="fas fa-sign-out-alt" style="margin-right:4px"></i>Salir</button>'+
+          '</div>';
+      }).catch(function(){});
+  })();
+
+  window._phdrLogoutPG = function(){
+    localStorage.removeItem('sb-zgihrwqfyvgyapbwzkvw-auth-token');
+    window.location.reload();
+  };
+
   window._phdrLogin = function (e) {
     e.preventDefault();
     var email = document.getElementById('tb-email').value.trim();
     var pass  = document.getElementById('tb-pass').value;
-    if (!email || !pass) {
+    if (!email || !pass) { window.location.href='/app/login.html'; return; }
+    var btn = document.querySelector('.tb-acceso');
+    if(btn){btn.textContent='...';btn.disabled=true;}
+    fetch(_SURL_PG+'/auth/v1/token?grant_type=password',{
+      method:'POST',
+      headers:{'apikey':_SKEY_PG,'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,password:pass})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(btn){btn.textContent='ACCESO';btn.disabled=false;}
+      if(d.access_token){
+        localStorage.setItem('sb-zgihrwqfyvgyapbwzkvw-auth-token',JSON.stringify({
+          access_token:d.access_token, refresh_token:d.refresh_token||'', user:d.user
+        }));
+        var isAdmin = d.user&&(d.user.email===_ADMIN_PG||d.user.email==='labdentalprodigy@gmail.com');
+        window.location.href = isAdmin ? '/app/panel-interno-operaciones' : '/app/client-panel';
+      } else {
+        sessionStorage.setItem('tb_email', email);
+        sessionStorage.setItem('tb_pass', pass);
+        window.location.href = '/app/login.html?email='+encodeURIComponent(email);
+      }
+    }).catch(function(){
+      if(btn){btn.textContent='ACCESO';btn.disabled=false;}
+      sessionStorage.setItem('tb_email', email);
       window.location.href = '/app/login.html';
-      return;
-    }
-    sessionStorage.setItem('tb_email', email);
-    sessionStorage.setItem('tb_pass', pass);
-    window.location.href = '/app/login.html?email=' + encodeURIComponent(email);
+    });
   };
 
   /* Cargar i18n.js en todas las páginas si aún no está */
