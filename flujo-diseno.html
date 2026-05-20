@@ -486,6 +486,7 @@
                             <h4 id="subtipo-titulo"></h4>
                             <div class="subtipo-grid" id="subtipo-grid"></div>
                         </div>
+                        <div id="protocolo-servicio-pg"></div>
 
                         <!-- EXPRESS -->
                         <div style="margin-top:20px;padding:15px;background:var(--bg-dark);border:1px solid rgba(239,68,68,.2);border-radius:var(--radius-md);">
@@ -1005,6 +1006,18 @@
         }
 
         // ── SELECCIÓN SUBTIPO ─────────────────────────────────────────────────
+        /* ── PROTOCOLOS CLÍNICOS ── */
+        const PG_PROTOCOLOS = {
+            guia_1_2:'guia_quirurgica', guia_3_4:'guia_quirurgica',
+            guia_5_mas:'guia_quirurgica', guia_reduccion:'guia_quirurgica',
+            setup_orto:'alineadores'
+        };
+        const PG_PROTOCOLO_HTML = {
+            guia_quirurgica:`<div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:18px;margin:16px 0;"><div style="font-size:.72rem;font-weight:800;letter-spacing:1px;color:#00d2ff;text-transform:uppercase;margin-bottom:14px">📋 Protocolo — Guía Quirúrgica</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><div style="background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.15);border-radius:9px;padding:14px;font-size:.76rem;color:#e2e8f0;line-height:1.9"><strong style="color:#00FF41">🦷 Dentosoportada</strong><br><strong style="color:#00d2ff">DICOM:</strong> TAC maxilar · Sin contacto oclusal · Sep. cortes 0.5mm · Res. 150μ<br><strong style="color:#00d2ff">STL:</strong> Escaneo intraoral 2 maxilares (PLY o STL)</div><div style="background:rgba(217,70,166,.04);border:1px solid rgba(217,70,166,.15);border-radius:9px;padding:14px;font-size:.76rem;color:#e2e8f0;line-height:1.9"><strong style="color:#D946A6">🦴 Mucosoportada — 2 TAC:</strong><br><strong>TAC 1</strong> con prótesis + marcadores (min. 4 vest + 4 pal) · 0.5mm · 150μ<br><strong>TAC 2</strong> solo la prótesis marcada<br><span style="color:#fbbf24;font-size:.7rem">⚠️ Marcadores: resina fotocurada Ø3mm o gutapercha</span></div></div></div>`,
+            alineadores:`<div style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:18px;margin:16px 0;"><div style="font-size:.72rem;font-weight:800;letter-spacing:1px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px">📋 Protocolo — Setup Alineadores</div><div style="font-size:.78rem;color:#e2e8f0;line-height:1.9;margin-bottom:12px">✅ STL 2 maxilares &nbsp;✅ Fotos: frontal · oclusal · lateral &nbsp;✅ Rx panorámica y perfil &nbsp;✅ Indicaciones ortodoncista &nbsp;✅ Decisión IPR y attachments</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:.72rem"><div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.15);border-radius:8px;padding:10px"><strong style="color:#00d2ff">Valoración</strong><br>Vigencia 3–4 meses</div><div style="background:rgba(217,70,166,.06);border:1px solid rgba(217,70,166,.15);border-radius:8px;padding:10px"><strong style="color:#D946A6">Replaneación</strong><br>+$80.000–$160.000 COP</div><div style="background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.12);border-radius:8px;padding:10px"><strong style="color:#00FF41">Refinamiento</strong><br>Gratis &lt;6 meses · +$160K después</div></div></div>`
+        };
+        function mostrarProtocoloPG(id){const t=PG_PROTOCOLOS[id];const c=document.getElementById('protocolo-servicio-pg');if(c)c.innerHTML=t&&PG_PROTOCOLO_HTML[t]?PG_PROTOCOLO_HTML[t]:'';}
+
         function selectSubtipo(id, nombre, precio) {
             document.querySelectorAll('.subtipo-chip').forEach(c => c.classList.remove('selected'));
             const el = document.getElementById('sub-' + id);
@@ -1012,9 +1025,9 @@
             STATE.subtipoId     = id;
             STATE.subtipoNombre = nombre;
             STATE.subtipoPrecio = precio;
-            // Anticipo para guías quirúrgicas
             const cat = MATERIAL_DATA[STATE.categoriaKey];
             STATE.antipicoAmt = (cat && cat.subtipos[id] && cat.subtipos[id].anticipo) || 0;
+            mostrarProtocoloPG(id);
             calcularTotal();
         }
 
