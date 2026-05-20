@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Recibo Técnico — PRODIGY Digital Dentistry</title>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/auth-guard.js"></script>
+<style>
+/* ── SCREEN ── */
+:root{--gold:#D4AF37;--mg:#D946A6;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--card:#0d1520;--text:#e2e8f0;--muted:#94a3b8;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;min-height:100vh;padding:40px 24px;}
+.no-print{display:block;}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;gap:16px;flex-wrap:wrap;}
+.topbar h1{font-size:1rem;font-weight:900;color:var(--gold);letter-spacing:2px;}
+.btn-pdf{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:linear-gradient(135deg,var(--mg),#9333ea);color:#fff;border:none;border-radius:8px;font-weight:800;font-size:.88rem;cursor:pointer;}
+.btn-pdf:hover{opacity:.88;}
+
+.recibo{background:#fff;color:#1a1a2e;max-width:780px;margin:0 auto;border-radius:12px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.5);}
+
+/* HEADER */
+.rec-header{background:linear-gradient(135deg,#0f0a00,#1a1200);color:#fff;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.rec-logo h2{font-size:1.2rem;font-weight:900;letter-spacing:2px;color:#D4AF37;margin-bottom:2px;}
+.rec-logo p{font-size:.72rem;color:#94a3b8;}
+.rec-meta{text-align:right;}
+.rec-meta .rec-num{font-size:1.1rem;font-weight:900;color:#D4AF37;font-family:monospace;}
+.rec-meta .rec-tipo{font-size:.62rem;font-weight:700;letter-spacing:2px;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;}
+
+/* SECCIONES */
+.rec-body{padding:28px 32px;}
+.rec-section{margin-bottom:24px;}
+.rec-section-title{font-size:.62rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#0f0a00,#1a1200);padding:7px 14px;border-radius:6px;margin-bottom:12px;display:inline-block;}
+.rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;}
+.rec-field{margin-bottom:4px;}
+.rec-field .lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:2px;}
+.rec-field .val{font-size:.88rem;font-weight:600;color:#1a1a2e;}
+
+/* TIMELINE */
+.timeline{list-style:none;padding-left:0;}
+.tl-item{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.06);}
+.tl-item:last-child{border-bottom:none;}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:#D4AF37;flex-shrink:0;margin-top:5px;}
+.tl-dot.aprobado{background:#00c851;}
+.tl-dot.entregado{background:#00c851;}
+.tl-dot.pago{background:#00d2ff;}
+.tl-fecha{font-size:.72rem;color:#94a3b8;min-width:140px;flex-shrink:0;}
+.tl-desc{font-size:.82rem;color:#1a1a2e;font-weight:500;}
+
+/* PAGO */
+.pago-box{background:#f8fafb;border:2px solid #e2e8f0;border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.pago-total{font-size:1.6rem;font-weight:900;color:#1a1a2e;}
+.pago-total span{font-size:.72rem;color:#94a3b8;display:block;font-weight:500;margin-bottom:2px;}
+.pago-estado{padding:6px 16px;border-radius:20px;font-size:.75rem;font-weight:800;}
+.pago-estado.confirmado{background:#e8fdf0;color:#00873d;border:1px solid #00c851;}
+.pago-estado.pendiente{background:#fef9e7;color:#b7791f;border:1px solid #f6e05e;}
+.pago-estado.subido{background:#e8f4ff;color:#1a7acc;border:1px solid #63b3ed;}
+
+/* FOOTER */
+.rec-footer{background:#f8fafb;border-top:2px solid #e2e8f0;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.rec-footer p{font-size:.72rem;color:#94a3b8;}
+.rec-footer .legal{font-size:.65rem;color:#cbd5e1;max-width:400px;line-height:1.6;}
+
+/* SPINNER / ERROR */
+.loader{text-align:center;padding:60px;color:var(--muted);font-size:.9rem;}
+.loader i{font-size:2rem;display:block;margin-bottom:12px;animation:spin .8s linear infinite;color:var(--gold);}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{text-align:center;padding:60px;color:#f87171;}
+.error-box i{font-size:2.5rem;display:block;margin-bottom:12px;}
+
+/* ── PRINT ── */
+@media print{
+  body{background:#fff;padding:0;}
+  .no-print{display:none!important;}
+  .recibo{box-shadow:none;border-radius:0;max-width:100%;}
+  .rec-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .rec-section-title{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .pago-estado{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @page{margin:15mm;}
+}
+</style>
+</head>
+<body>
+
+<div class="no-print topbar">
+  <h1>💎 PRODIGY Digital Dentistry — Recibo Técnico</h1>
+  <button class="btn-pdf" onclick="window.print()"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+</div>
+
+<div id="recibo-wrap">
+  <div class="loader"><i class="fas fa-circle-notch"></i>Cargando datos del caso…</div>
+</div>
+
+<script>
+const SUPA_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPA_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+function escH(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmtFecha(ts,opts){if(!ts)return'—';return new Date(ts).toLocaleDateString('es',opts||{day:'2-digit',month:'short',year:'numeric'});}
+function fmtFechaHora(ts){if(!ts)return'—';return new Date(ts).toLocaleDateString('es',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+
+function pagoEstadoBadge(estado){
+  const map={pago_confirmado:'confirmado',Pagado:'confirmado',pendiente:'pendiente',pago_subido:'subido'};
+  const lbl={pago_confirmado:'✅ Pagado',Pagado:'✅ Pagado',pendiente:'⏳ Pendiente',pago_subido:'⏳ En revisión'};
+  const cls=map[estado]||'pendiente';
+  return`<span class="pago-estado ${cls}">${lbl[estado]||estado}</span>`;
+}
+
+function fmtCOP(n){if(!n&&n!==0)return'—';return new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n);}
+
+function buildTimeline(pedido, revisiones){
+  const items=[];
+  if(pedido.created_at) items.push({ts:pedido.created_at,desc:'Caso recibido',cls:''});
+  const pagado=pedido.estado==='Pagado'||pedido.pago_estado==='pago_confirmado'||pedido.pago_estado==='Pagado';
+  if(pagado&&pedido.updated_at) items.push({ts:pedido.updated_at,desc:'Pago confirmado',cls:'pago'});
+  (revisiones||[]).forEach(r=>{
+    if(r.creado_en) items.push({ts:r.creado_en,desc:`Diseño enviado (Rev ${r.revision_num})`,cls:''});
+    if(r.notas_cliente) items.push({ts:r.creado_en,desc:`Cambios solicitados: "${escH(r.notas_cliente)}"`,cls:''});
+  });
+  if(pedido.diseno_aprobado&&pedido.updated_at) items.push({ts:pedido.updated_at,desc:'Diseño APROBADO',cls:'aprobado'});
+  const entregado=(pedido.estado||'').toLowerCase().includes('entregado')||(pedido.estado||'').toLowerCase().includes('despachado');
+  if(entregado&&pedido.updated_at) items.push({ts:pedido.updated_at,desc:'Caso entregado',cls:'entregado'});
+  items.sort((a,b)=>new Date(a.ts)-new Date(b.ts));
+  if(!items.length) return '<p style="color:#94a3b8;font-size:.82rem;">Sin eventos registrados.</p>';
+  return`<ul class="timeline">${items.map(i=>`<li class="tl-item"><div class="tl-dot ${escH(i.cls)}"></div><span class="tl-fecha">${fmtFechaHora(i.ts)}</span><span class="tl-desc">${i.desc}</span></li>`).join('')}</ul>`;
+}
+
+function render(pedido, revisiones){
+  const rev=revisiones||[];
+  const codigo=pedido.codigo||pedido.id?.slice(0,8)||'—';
+  const docGen=fmtFecha(new Date().toISOString());
+  const aprobFecha=pedido.diseno_aprobado?fmtFechaHora(pedido.updated_at):'—';
+  const total=pedido.total_cop||pedido.total;
+
+  document.getElementById('recibo-wrap').innerHTML=`
+  <div class="recibo">
+    <div class="rec-header">
+      <div class="rec-logo">
+        <h2>💎 PRODIGY Digital Dentistry</h2>
+        <p>prodigy.pages.dev · 3212816716 · Medellín, Colombia</p>
+      </div>
+      <div class="rec-meta">
+        <div class="rec-tipo">Recibo Técnico</div>
+        <div class="rec-num">#${escH(codigo)}</div>
+      </div>
+    </div>
+
+    <div class="rec-body">
+
+      <div class="rec-section">
+        <div class="rec-section-title"><i class="fas fa-folder-open" style="margin-right:6px"></i>Datos del Caso</div>
+        <div class="rec-grid">
+          <div class="rec-field"><div class="lbl">Código</div><div class="val" style="font-family:monospace">${escH(codigo)}</div></div>
+          <div class="rec-field"><div class="lbl">Fecha recepción</div><div class="val">${fmtFecha(pedido.created_at)}</div></div>
+          <div class="rec-field"><div class="lbl">Cliente / Doctor</div><div class="val">${escH(pedido.doctor||pedido.nombre||pedido.nombre_doctor||'—')}</div></div>
+          <div class="rec-field"><div class="lbl">Clínica</div><div class="val">${escH(pedido.clinica||'—')}</div></div>
+        </div>
+      </div>
+
+      <div class="rec-section">
+        <div class="rec-section-title"><i class="fas fa-drafting-compass" style="margin-right:6px"></i>Servicio Realizado</div>
+        <div class="rec-grid">
+          <div class="rec-field"><div class="lbl">Tipo de servicio</div><div class="val">${escH(pedido.servicio||pedido.categoria||pedido.tipo_trabajo||'—')}</div></div>
+          <div class="rec-field"><div class="lbl">Material</div><div class="val">${escH(pedido.material||'—')}</div></div>
+          ${pedido.piezas?`<div class="rec-field"><div class="lbl">Piezas</div><div class="val">${escH(String(pedido.piezas))}</div></div>`:''}
+          ${pedido.revisiones_usadas!=null?`<div class="rec-field"><div class="lbl">Revisiones usadas</div><div class="val">${escH(String(pedido.revisiones_usadas))} / 2</div></div>`:''}
+          <div class="rec-field"><div class="lbl">Estado</div><div class="val">${escH(pedido.estado||'—')}</div></div>
+          ${aprobFecha!=='—'?`<div class="rec-field"><div class="lbl">Fecha aprobación</div><div class="val">${escH(aprobFecha)}</div></div>`:''}
+        </div>
+      </div>
+
+      <div class="rec-section">
+        <div class="rec-section-title"><i class="fas fa-timeline" style="margin-right:6px"></i>Timeline del Caso</div>
+        ${buildTimeline(pedido,rev)}
+      </div>
+
+      <div class="rec-section">
+        <div class="rec-section-title"><i class="fas fa-credit-card" style="margin-right:6px"></i>Pago</div>
+        <div class="pago-box">
+          <div class="pago-total"><span>Total</span>${total?fmtCOP(total):'—'}</div>
+          <div>
+            <div style="font-size:.72rem;color:#94a3b8;margin-bottom:4px;">Método: Nequi / Bancolombia / Daviplata</div>
+            ${pagoEstadoBadge(pedido.pago_estado||pedido.estado||'pendiente')}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rec-footer">
+      <p>Documento generado: ${escH(docGen)}</p>
+      <p class="legal">© ${new Date().getFullYear()} PRODIGY Digital Dentistry · WhatsApp +57 321 281 6716 · Medellín, Colombia · Documento de trazabilidad técnica y contable.</p>
+    </div>
+  </div>`;
+}
+
+(async function init(){
+  const session = await ProdigyAuth.require(['client','admin','operator'],'/app/login');
+  if(!session) return;
+
+  const params=new URLSearchParams(location.search);
+  const id=params.get('id');
+  if(!id){
+    document.getElementById('recibo-wrap').innerHTML=`<div class="error-box"><i class="fas fa-exclamation-triangle"></i>No se especificó un ID de caso. Usa ?id=CODIGO en la URL.</div>`;
+    return;
+  }
+
+  try{
+    let{data,error}=await sb.from('pedidos').select('*').or(`id.eq.${id},codigo.eq.${id}`).maybeSingle();
+    if(!data){
+      const r2=await sb.from('pedidos').select('*').eq('codigo',id).maybeSingle();
+      if(!r2.data){
+        document.getElementById('recibo-wrap').innerHTML=`<div class="error-box"><i class="fas fa-exclamation-triangle"></i>Caso no encontrado: ${escH(id)}</div>`;
+        return;
+      }
+      data=r2.data;
+    }
+
+    let revisiones=[];
+    try{
+      const{data:revs}=await sb.from('diseno_revisiones').select('*').eq('pedido_id',data.id).order('revision_num',{ascending:true});
+      revisiones=revs||[];
+    }catch(e){}
+
+    render(data,revisiones);
+  }catch(e){
+    document.getElementById('recibo-wrap').innerHTML=`<div class="error-box"><i class="fas fa-exclamation-triangle"></i>Error: ${escH(String(e.message||e))}</div>`;
+  }
+})();
+</script>
+</body>
+</html>

@@ -222,6 +222,10 @@
     <a href="#" class="nav-item" onclick="switchTab('staff',this)">
         <i class="fas fa-users-cog" style="color:#a78bfa;"></i> Operarios / Roles
     </a>
+    <a href="#" class="nav-item" onclick="switchTab('fabricacion',this)" id="nav-fab">
+        <i class="fas fa-industry" style="color:#fb923c;"></i> Fabricación
+        <span id="fab-badge" style="display:none;background:#fb923c;color:#000;font-size:.65rem;font-weight:900;padding:1px 6px;border-radius:100px;margin-left:4px;">0</span>
+    </a>
 
     <p class="nav-section">Configuración</p>
     <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Materiales</a>
@@ -783,6 +787,63 @@
         </p>
     </div><!-- /tab-rutador -->
 
+    <!-- ══ TAB FABRICACIÓN ══════════════════════════════════ -->
+    <div id="tab-fabricacion" class="tab-panel" style="display:none;">
+      <div class="page-header">
+        <div>
+          <h1>Fabricación <span style="color:#fb923c">Solicitudes</span></h1>
+          <p>Cotizar, confirmar pagos y enrutar casos al área de producción</p>
+        </div>
+        <button class="rut-reload" onclick="cargarFabricacion()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+      </div>
+
+      <!-- PENDIENTES DE COTIZAR -->
+      <div style="margin-bottom:28px;">
+        <h3 style="font-size:.85rem;font-weight:800;color:#fb923c;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+          <i class="fas fa-file-invoice-dollar"></i> Pendientes de cotizar
+        </h3>
+        <div id="fab-pendientes"><p style="color:var(--muted);font-size:.82rem;">Cargando…</p></div>
+      </div>
+
+      <!-- COTIZACIONES ENVIADAS (esperando pago doctor) -->
+      <div style="margin-bottom:28px;">
+        <h3 style="font-size:.85rem;font-weight:800;color:#fbbf24;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+          <i class="fas fa-hourglass-half"></i> Cotizaciones enviadas — esperando pago
+        </h3>
+        <div id="fab-cotizadas"><p style="color:var(--muted);font-size:.82rem;">Cargando…</p></div>
+      </div>
+
+      <!-- PAGO RECIBIDO — ENRUTAR -->
+      <div style="margin-bottom:28px;">
+        <h3 style="font-size:.85rem;font-weight:800;color:#00FF41;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+          <i class="fas fa-check-circle"></i> Pago confirmado — enrutar a producción
+        </h3>
+        <div id="fab-pagados"><p style="color:var(--muted);font-size:.82rem;">Cargando…</p></div>
+      </div>
+    </div><!-- /tab-fabricacion -->
+
+    <!-- Modal cotizar fabricación -->
+    <div id="modal-cotizar" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9000;align-items:center;justify-content:center;padding:20px;">
+      <div style="background:#0a1525;border:1px solid rgba(251,146,60,.3);border-radius:18px;padding:28px;width:100%;max-width:480px;">
+        <h3 style="font-size:1rem;font-weight:800;color:#fb923c;margin-bottom:6px;"><i class="fas fa-calculator" style="margin-right:8px;"></i>Establecer cotización</h3>
+        <p id="cotizar-sub" style="font-size:.78rem;color:var(--muted);margin-bottom:16px;"></p>
+        <label style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;">Monto de fabricación (COP)</label>
+        <input type="number" id="cotizar-monto" min="0" step="1000"
+          style="width:100%;background:#0f1c2e;border:1px solid rgba(255,255,255,.12);border-radius:9px;color:#fff;font-size:1.1rem;font-weight:700;padding:12px 16px;margin-bottom:12px;"
+          placeholder="Ej: 180000">
+        <label style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;">Nota para el cliente (opcional)</label>
+        <textarea id="cotizar-nota" rows="3"
+          style="width:100%;background:#0f1c2e;border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;font-size:.83rem;padding:11px;resize:vertical;font-family:inherit;margin-bottom:12px;"
+          placeholder="Ej: Incluye fresado en zirconia HT + glaseado, tiempo estimado 3 días hábiles…"></textarea>
+        <input type="hidden" id="cotizar-id">
+        <input type="hidden" id="cotizar-tipo">
+        <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+          <button onclick="cerrarModalCotizar()" style="padding:9px 18px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--muted);font-size:.82rem;cursor:pointer;">Cancelar</button>
+          <button onclick="enviarCotizacion()" style="padding:9px 18px;border-radius:8px;background:#fb923c;color:#000;font-size:.82rem;font-weight:800;border:none;cursor:pointer;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar cotización al cliente</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ TAB MÉTRICAS ══════════════════════════════════ -->
     <div id="tab-metricas" class="tab-panel" style="display:none">
         <div class="page-header">
@@ -1002,6 +1063,7 @@ function switchTab(tab, el) {
     if (tab === 'pedidos-doc')  cargarPedidosDoc();
     if (tab === 'rutador')      cargarRutador();
     if (tab === 'metricas')     cargarMetricas();
+    if (tab === 'fabricacion')  cargarFabricacion();
 }
 
 /* ══════════════════════════════════════════
@@ -1061,8 +1123,12 @@ function renderPedidos(lista) {
             </select>
         </td>
         <td style="font-size:0.75rem;">${fmtFecha(p.created_at)}</td>
-        <td>
+        <td style="white-space:nowrap;">
             ${p.stl_url?.startsWith('https://') ? `<a href="${esc(p.stl_url)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
+            <a href="../recibo-caso?id=${esc(p.codigo||p.id)}" target="_blank" class="btn-xs btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
+            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Pago confirmado" onclick="prodigyNotifPago(${JSON.stringify(p)})"><i class="fab fa-whatsapp"></i> Pago</button>
+            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Diseño listo" onclick="prodigyNotifDiseno(${JSON.stringify(p)})"><i class="fab fa-whatsapp"></i> Diseño</button>
+            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Entregado" onclick="prodigyNotifEntrega(${JSON.stringify(p)})"><i class="fab fa-whatsapp"></i> Entrega</button>
         </td>
     </tr>`).join('');
 }
@@ -1071,6 +1137,36 @@ async function cambiarEstado(pedidoId, nuevoEstado) {
     const { error } = await sb.from('pedidos').update({ estado: nuevoEstado }).eq('id', pedidoId);
     if (error) toast('Error al actualizar: ' + error.message, 'error');
     else toast('Estado actualizado → ' + nuevoEstado, 'success');
+}
+
+/* ── NOTIFICACIONES WA — PRODIGY ── */
+function getWAPedido(p){ const wa=(p.doctor_whatsapp||p.whatsapp||'').replace(/\D/g,''); return wa.length>=10?wa:null; }
+
+function prodigyNotifPago(p){
+    const wa=getWAPedido(p);
+    if(!wa){ toast('El pedido no tiene WA del cliente','error'); return; }
+    const cod=p.codigo||p.id?.slice(0,8)||'';
+    const msg=`✅ *Pago confirmado* — Caso #${cod}\n\nHola Doctor, recibimos tu pago. Ya iniciamos la producción de tu caso.\n\n_PRODIGY Digital Dentistry_`;
+    window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function prodigyNotifDiseno(p){
+    const wa=getWAPedido(p);
+    if(!wa){ toast('Sin WA del cliente','error'); return; }
+    const cod=p.codigo||p.id?.slice(0,8)||'';
+    const msg=`🎨 *Diseño listo para revisar* — Caso #${cod}\n\nTu diseño está disponible en el portal. Por favor revísalo y aprueba o solicita cambios (hasta 2 revisiones sin costo).\n\n👉 https://prodigy.pages.dev/app/client-panel\n\n_PRODIGY Digital Dentistry_`;
+    window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function prodigyNotifEntrega(p){
+    const wa=getWAPedido(p);
+    if(!wa){ toast('Sin WA del cliente','error'); return; }
+    const cod=p.codigo||p.id?.slice(0,8)||'';
+    const msg=`📦 *Caso entregado* — #${cod}\n\nTu pedido está listo y ha sido despachado. Pronto lo recibirás.\n\n👉 https://prodigy.pages.dev/app/client-panel\n\n_PRODIGY Digital Dentistry_`;
+    window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function prodigyNotifCambios(p){
+    const cod=p.codigo||p.id?.slice(0,8)||'';
+    const msg=`✏️ *Cambios solicitados* — Caso #${cod}\n\nEl cliente solicitó cambios en el diseño. Revisión ${(p.revisiones_usadas||0)+1}/2.\n\nNotas: ${p.notas_cambios||'—'}`;
+    window.open(`https://wa.me/573212816716?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
 function filtrarPedidos(estado) {
@@ -2296,6 +2392,196 @@ async function cargarMetricas() {
             <div style="font-size:.75rem;color:#cbd5e1;font-weight:700">${m.label}</div>
             <div style="font-size:.65rem;color:#94a3b8;margin-top:3px">${m.desc}</div>
         </div>`).join('');
+}
+
+/* ══════════════════════════════════════════════════════════
+   TAB FABRICACIÓN — Cotizaciones y enrutamiento
+══════════════════════════════════════════════════════════ */
+const SB_URL_FAB  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SB_ANON_FAB = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const sbFab = window.supabase?.createClient(SB_URL_FAB, SB_ANON_FAB) || supabase;
+const fmtCOPFab = v => Number(v||0).toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0});
+const fmtFab   = d => d ? new Date(d).toLocaleDateString('es-CO',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
+const escF = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const TIPO_LBL = {fresado:'Fresado / Lab', impresion:'Impresión 3D', fresado_internacional:'Fresado Internacional', impresion_internacional:'Impresión Internacional'};
+
+async function cargarFabricacion() {
+  const { data: todos } = await sbFab.from('pedidos')
+    .select('id,codigo,nombre_paciente,servicio,email,fabricacion_solicitada,fabricacion_pagada,fabricacion_tipo,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_at,cotizacion_fab_nota,pais,stl_urls,html_diseno_url,departamento_actual')
+    .eq('fabricacion_solicitada', true)
+    .order('created_at', {ascending: false})
+    .limit(100);
+
+  if (!todos) return;
+
+  const pendientes  = todos.filter(p => !p.cotizacion_fab_estado || p.cotizacion_fab_estado === 'pendiente_cotizacion');
+  const cotizadas   = todos.filter(p => p.cotizacion_fab_estado === 'cotizacion_enviada');
+  const porConfirmar= todos.filter(p => p.cotizacion_fab_estado === 'pago_confirmado' && !p.fabricacion_pagada);
+
+  /* Badge en nav */
+  const total = pendientes.length + porConfirmar.length;
+  const badge = document.getElementById('fab-badge');
+  if (badge) { badge.textContent = total; badge.style.display = total > 0 ? 'inline' : 'none'; }
+
+  const tarjeta = (p, modo) => {
+    const esIntl = (p.pais && p.pais !== 'CO') || (p.fabricacion_tipo||'').includes('internacional');
+    const tipoLbl = TIPO_LBL[p.fabricacion_tipo] || p.fabricacion_tipo || 'Fabricación';
+    const stlCount = (p.stl_urls||[]).length;
+    return `<div style="background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px;margin-bottom:10px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <div>
+          <div style="font-size:.7rem;color:#fb923c;font-weight:800;text-transform:uppercase;margin-bottom:3px;">${escF(tipoLbl)}${esIntl?'  🌎 Internacional':''}</div>
+          <div style="font-size:.9rem;font-weight:700;">#${escF(p.codigo||p.id.slice(0,8))} — ${escF(p.nombre_paciente||'Sin nombre')}</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:2px;">${escF(p.servicio||'—')} · ${escF(p.email||'sin email')}</div>
+        </div>
+        <div style="text-align:right;">
+          ${stlCount ? `<span style="font-size:.7rem;background:rgba(0,210,255,.1);color:#00d2ff;border-radius:6px;padding:2px 8px;">${stlCount} STL</span>` : ''}
+          ${p.html_diseno_url ? `<a href="${location.origin}/revision-diseno?id=${escF(p.id)}" target="_blank" style="display:inline-block;margin-left:4px;font-size:.7rem;color:var(--gold);">Ver diseño</a>` : ''}
+        </div>
+      </div>
+      ${modo === 'cotizar' ? `
+        <button onclick="abrirModalCotizar('${escF(p.id)}','${escF(p.codigo||'')}','${escF(p.fabricacion_tipo||'')}')"
+          style="padding:8px 16px;border-radius:8px;background:#fb923c;color:#000;font-size:.78rem;font-weight:800;border:none;cursor:pointer;">
+          <i class="fas fa-calculator" style="margin-right:5px;"></i>Establecer cotización
+        </button>` : ''}
+      ${modo === 'cotizada' ? `
+        <div style="font-size:.82rem;color:#fbbf24;margin-bottom:8px;">
+          Cotización enviada: <strong>${fmtCOPFab(p.cotizacion_fab_monto)}</strong> · ${fmtFab(p.cotizacion_fab_at)}
+        </div>
+        ${p.cotizacion_fab_nota ? `<div style="font-size:.75rem;color:var(--muted);margin-bottom:8px;">${escF(p.cotizacion_fab_nota)}</div>` : ''}
+        <button onclick="marcarPagoRecibido('${escF(p.id)}','${escF(p.fabricacion_tipo||'')}')"
+          style="padding:7px 14px;border-radius:8px;background:rgba(0,255,65,.1);color:#00FF41;border:1px solid rgba(0,255,65,.3);font-size:.75rem;cursor:pointer;">
+          <i class="fas fa-check-circle"></i> Confirmar pago recibido
+        </button>` : ''}
+      ${modo === 'pagar' ? `
+        <div style="font-size:.82rem;color:#00FF41;margin-bottom:8px;">
+          ✅ Pago confirmado por el cliente · <strong>${fmtCOPFab(p.cotizacion_fab_monto)}</strong>
+        </div>
+        <button onclick="enrutarAFabricacion('${escF(p.id)}','${escF(p.fabricacion_tipo||'')}')"
+          style="padding:8px 16px;border-radius:8px;background:#D946A6;color:#fff;font-size:.78rem;font-weight:800;border:none;cursor:pointer;">
+          <i class="fas fa-arrow-right"></i> Enrutar a producción → ${escF(TIPO_LBL[p.fabricacion_tipo]||'Fabricación')}
+        </button>` : ''}
+    </div>`;
+  };
+
+  document.getElementById('fab-pendientes').innerHTML = pendientes.length
+    ? pendientes.map(p => tarjeta(p,'cotizar')).join('')
+    : '<p style="color:var(--muted);font-size:.82rem;padding:8px 0;">Sin solicitudes pendientes.</p>';
+
+  document.getElementById('fab-cotizadas').innerHTML = cotizadas.length
+    ? cotizadas.map(p => tarjeta(p,'cotizada')).join('')
+    : '<p style="color:var(--muted);font-size:.82rem;padding:8px 0;">Sin cotizaciones en espera de pago.</p>';
+
+  document.getElementById('fab-pagados').innerHTML = porConfirmar.length
+    ? porConfirmar.map(p => tarjeta(p,'pagar')).join('')
+    : '<p style="color:var(--muted);font-size:.82rem;padding:8px 0;">Sin pagos pendientes de enrutar.</p>';
+}
+
+/* ── Modal cotizar ── */
+function abrirModalCotizar(id, codigo, tipo) {
+  document.getElementById('cotizar-id').value   = id;
+  document.getElementById('cotizar-tipo').value = tipo;
+  document.getElementById('cotizar-sub').textContent = `Caso #${codigo} — ${TIPO_LBL[tipo]||tipo}`;
+  document.getElementById('cotizar-monto').value = '';
+  document.getElementById('cotizar-nota').value  = '';
+  document.getElementById('modal-cotizar').style.display = 'flex';
+}
+function cerrarModalCotizar() { document.getElementById('modal-cotizar').style.display = 'none'; }
+
+async function enviarCotizacion() {
+  const id    = document.getElementById('cotizar-id').value;
+  const monto = parseInt(document.getElementById('cotizar-monto').value, 10);
+  const nota  = document.getElementById('cotizar-nota').value.trim();
+  if (!monto || monto < 1000) { alert('Ingresa un monto válido.'); return; }
+
+  const btn = document.querySelector('#modal-cotizar button:last-child');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+
+  const ts = new Date().toISOString();
+  const { error } = await sbFab.from('pedidos').update({
+    cotizacion_fab_monto:  monto,
+    cotizacion_fab_estado: 'cotizacion_enviada',
+    cotizacion_fab_at:     ts,
+    cotizacion_fab_nota:   nota || null
+  }).eq('id', id);
+
+  if (error) { alert('Error: '+error.message); btn.disabled=false; btn.textContent='Enviar cotización al cliente'; return; }
+
+  /* Registrar en historial */
+  await sbFab.from('historial_diseno').insert({
+    pedido_id: id, tipo:'FAB_COTIZACION', actor:'operario',
+    descripcion: `Cotización de fabricación enviada: ${fmtCOPFab(monto)}${nota?' — '+nota:''}`,
+    metadata: { monto, tipo: document.getElementById('cotizar-tipo').value }
+  }).catch(()=>{});
+
+  /* Notificar al doctor */
+  try {
+    const { data: p } = await sbFab.from('pedidos').select('codigo,email').eq('id',id).single();
+    if (p?.email) {
+      const link = location.origin+'/revision-diseno?id='+id;
+      await fetch(SB_URL_FAB+'/functions/v1/send-push',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON_FAB},
+        body:JSON.stringify({email:p.email,
+          titulo:'💰 Cotización lista — Caso '+p.codigo,
+          cuerpo:`Tu cotización de fabricación es ${fmtCOPFab(monto)}. Revísala y confirma el pago en: ${link}`})
+      });
+    }
+  } catch(_) {}
+
+  cerrarModalCotizar();
+  alert(`Cotización enviada: ${fmtCOPFab(monto)}`);
+  cargarFabricacion();
+}
+
+/* ── Confirmar pago recibido (admin verifica) ── */
+async function marcarPagoRecibido(id, tipo) {
+  if (!confirm('¿Confirmas que recibiste el pago de fabricación?')) return;
+  const { error } = await sbFab.from('pedidos').update({
+    cotizacion_fab_estado: 'pago_confirmado'
+  }).eq('id', id);
+  if (error) { alert('Error: '+error.message); return; }
+  alert('Pago marcado. Ahora enruta el caso a producción.');
+  cargarFabricacion();
+}
+
+/* ── Enrutar a fabricación (handoff) ── */
+async function enrutarAFabricacion(id, tipo) {
+  const tipoBase  = tipo.replace('_internacional','');
+  const lbl = TIPO_LBL[tipo] || tipo;
+  if (!confirm(`¿Enrutar este caso a ${lbl}?\n\nEl operario de esa área verá el caso con los STL listos.`)) return;
+
+  const updates = {
+    fabricacion_pagada:    true,
+    departamento_actual:   tipoBase,
+    cotizacion_fab_estado: 'pago_confirmado'
+  };
+  /* Solo actualizar flujo si la columna existe — si falla, ignorar */
+  const { error } = await sbFab.from('pedidos').update(updates).eq('id', id);
+  if (error) { alert('Error: '+error.message); return; }
+
+  /* Historial */
+  await sbFab.from('historial_diseno').insert({
+    pedido_id: id, tipo:'FAB_CONFIRMADA', actor:'operario',
+    descripcion:`Pago confirmado y caso enrutado a ${lbl}. STL disponibles en el panel de ${lbl}.`
+  }).catch(()=>{});
+
+  /* Notificar al doctor */
+  try {
+    const { data: p } = await sbFab.from('pedidos').select('codigo,email').eq('id',id).single();
+    if (p?.email) {
+      await fetch(SB_URL_FAB+'/functions/v1/send-push',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON_FAB},
+        body:JSON.stringify({email:p.email,
+          titulo:'🏭 Pago confirmado — En fabricación',
+          cuerpo:`Tu pago fue recibido. El caso ${p.codigo} está en producción con el equipo de ${lbl}. Te notificamos cada avance.`})
+      });
+    }
+  } catch(_) {}
+
+  alert(`Caso enrutado a ${lbl} ✓`);
+  cargarFabricacion();
 }
 </script>
 </body>
