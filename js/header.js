@@ -10,11 +10,18 @@
    Excluye: /mantenimiento, /app/*, /404
 ──────────────────────────────────────────────────────────────────── */
 (function(){
+  // Activar bypass con ?preview=prodigy → cookie 30 días
+  if (new URLSearchParams(location.search).get('preview') === 'prodigy') {
+    var exp = new Date(Date.now() + 30*24*60*60*1000).toUTCString();
+    document.cookie = 'pg_admin=1; path=/; expires=' + exp;
+    window.location.replace(location.pathname); // quita el param de la URL
+    return;
+  }
   var path = window.location.pathname;
   var skip = path.startsWith('/mantenimiento') ||
              path.startsWith('/app/') ||
              path.startsWith('/404') ||
-             path.startsWith('/en/global-design'); // landing intl siempre visible
+             path.startsWith('/en/global-design');
   if (skip) return;
   var hasCookie = document.cookie.split(';').some(function(c){
     return c.trim().startsWith('pg_admin=1');
