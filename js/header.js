@@ -512,8 +512,8 @@
             '<i class="fas fa-robot"></i>' +
           '</button>' +
           '<a href="/nosotros"' + ac('/nosotros') + '>NOSOTROS</a>' +
-          '<div class="pnav2-ped-wrap" id="pnav2-ped-wrap">' +
-            '<button class="pnav2-ped-btn" onmouseenter="_phdrPedHover(true)" onmouseleave="_phdrPedHover(false)">' +
+          '<div class="pnav2-ped-wrap" id="pnav2-ped-wrap" onmouseenter="_phdrPedHover(true)" onmouseleave="_phdrPedHover(false)">' +
+            '<button class="pnav2-ped-btn">' +
               'HAZ TU PEDIDO <i class="fas fa-chevron-down" style="font-size:9px;margin-left:4px;transition:transform .2s;" id="pnav2-ped-arrow"></i>' +
             '</button>' +
             '<div class="pnav2-ped-drop" id="pnav2-ped-drop">' +
