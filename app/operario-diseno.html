@@ -135,6 +135,7 @@ body.ready{visibility:visible;}
     <button class="btn-xs btn-cyan" style="width:100%;justify-content:center;" onclick="cargarCasos()">
       <i class="fas fa-rotate-right"></i> Actualizar
     </button>
+    <a href="/" class="nav-item" style="margin-top:8px;"><i class="fas fa-home"></i> Página principal</a>
   </div>
 </div>
 
@@ -148,6 +149,30 @@ body.ready{visibility:visible;}
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
       <span id="realtime-dot" style="width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 6px rgba(0,255,65,.7);display:inline-block;" title="Realtime activo"></span>
       <span style="font-size:.72rem;color:var(--muted);">Actualización en tiempo real</span>
+    </div>
+  </div>
+
+  <!-- KPIs semana -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:18px;" id="kpis-semana">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);"></div>
+      <div style="font-size:1.6rem;font-weight:900;color:var(--cyan);" id="kpi-nuevos">—</div>
+      <div style="font-size:.68rem;color:var(--muted);margin-top:3px;">Nuevos esta semana</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--yellow);"></div>
+      <div style="font-size:1.6rem;font-weight:900;color:var(--yellow);" id="kpi-proceso">—</div>
+      <div style="font-size:.68rem;color:var(--muted);margin-top:3px;">En proceso</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);"></div>
+      <div style="font-size:1.6rem;font-weight:900;color:var(--green);" id="kpi-completados">—</div>
+      <div style="font-size:.68rem;color:var(--muted);margin-top:3px;">Completados</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--pink);"></div>
+      <div style="font-size:1.6rem;font-weight:900;color:var(--pink);" id="kpi-pago-sub">—</div>
+      <div style="font-size:.68rem;color:var(--muted);margin-top:3px;">⚡ Comprobantes pendientes</div>
     </div>
   </div>
 
@@ -318,8 +343,9 @@ let _userId = null;
 /* ── Cargar casos de diseño ── */
 async function cargarCasos() {
   const { data, error } = await sb.from('pedidos')
-    // Operario NO ve: email real, whatsapp del cliente, nombre completo — solo código interno
-    .select('id,codigo,servicio,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,observaciones,revisiones_usadas,stl_ruta,operario_codigo')
+    // Operario NO ve: nombre_paciente, email, whatsapp real del cliente — solo código interno
+    // wa_op: número enmascarado solo para notificaciones internas de operario
+    .select('id,codigo,servicio,material,color_vita,estado,estado_operativo,pago_estado,created_at,flujo,link_diseno,observaciones,revisiones_usadas,stl_ruta,operario_codigo,whatsapp')
     .eq('flujo','diseno')
     .not('estado','in','("cancelado","CANCELADO")')
     .order('created_at',{ascending:false})
@@ -344,6 +370,14 @@ function renderKanban() {
   document.getElementById('cnt-diseno').textContent = diseno.length;
   document.getElementById('cnt-rev').textContent    = rev.length;
   document.getElementById('cnt-done').textContent   = done.length;
+
+  /* KPIs semana */
+  const semana = new Date(Date.now() - 7*24*60*60*1000).toISOString();
+  const semCasos = _casos.filter(p => p.created_at >= semana);
+  document.getElementById('kpi-nuevos').textContent     = semCasos.length;
+  document.getElementById('kpi-proceso').textContent    = (pend.length + diseno.length);
+  document.getElementById('kpi-completados').textContent= done.filter(p => p.created_at >= semana).length;
+  document.getElementById('kpi-pago-sub').textContent   = _casos.filter(p => p.pago_estado === 'pago_subido').length;
 
   const empty = '<p style="color:var(--muted);font-size:.8rem;padding:10px;">Sin casos</p>';
   document.getElementById('col-pend').innerHTML   = pend.length   ? pend.map(p=>cardHTML(p,'pend')).join('')   : empty;
