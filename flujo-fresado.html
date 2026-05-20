@@ -4039,6 +4039,7 @@
                         link_stl:         STATE.linkSTL,
                         nonce:            _nonce,
                         flujo:            'fresado',
+                        negocio:          'prodigy',
                         requiere_factura:       STATE.billingReq  || false,
                         billing_tipo:           STATE.billingTipo  || null,
                         billing_nit:            STATE.billingNit   || null,
@@ -4047,7 +4048,8 @@
                         terminos_aceptados_at:  new Date().toISOString(),
                         user_agent:             navigator.userAgent.slice(0, 250),
                         seguro_garantia_activo: document.getElementById('seguro-garantia')?.checked || false,
-                        costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0
+                        costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0,
+                        pedido_diseno_id:       _disenoPedidoId || null
                     }]).then(({ error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido fresado no guardado:', _e.message);
                     });
@@ -4228,10 +4230,13 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             inicializarCatalogo();
-
             limitarExtras();
             updateTimeline();
             document.querySelector('.accordion').classList.add('active');
+
+            /* ── Pre-fill desde diseño aprobado ─────────────────────────────────── */
+            const _fromDiseno = new URLSearchParams(location.search).get('from_diseno');
+            if (_fromDiseno) prefillDesdeDiseno(_fromDiseno);
             
             // BLINDAJE: No decimales ni negativos
             document.querySelectorAll('input[type="number"]').forEach((input) => {
@@ -4689,6 +4694,69 @@
             const _r2 = new Uint8Array(5); crypto.getRandomValues(_r2);
             const ref = 'PRD-FRS-' + Array.from(_r2).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
             abrirCheckoutWompi({ monto, referencia: ref, descripcion: 'PRODIGY — Fresado CAD/CAM' });
+        }
+
+        /* ── Pre-fill desde diseño aprobado ───────────────────────────────────
+           Si el URL trae ?from_diseno=UUID, cargamos el pedido de diseño y
+           pre-llenamos el formulario. El STL count se muestra como referencia
+           anti-fraude para que el doctor no pida menos unidades de las reales.
+        ─────────────────────────────────────────────────────────────────────── */
+        let _disenoPedidoId = null;
+
+        async function prefillDesdeDiseno(id) {
+            _disenoPedidoId = id;
+            try {
+                const SBU = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+                const SBA = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+                const resp = await fetch(`${SBU}/rest/v1/pedidos?id=eq.${id}&select=codigo,nombre_paciente,servicio,stl_urls,material,color_vita,email`,
+                    { headers: { apikey: SBA, Authorization: 'Bearer '+SBA } });
+                const rows = await resp.json();
+                const p = rows?.[0];
+                if (!p) return;
+
+                /* Pre-llenar nombre del paciente */
+                const npEl = document.getElementById('nombrePaciente');
+                if (npEl && p.nombre_paciente) {
+                    npEl.value = p.nombre_paciente;
+                    npEl.dispatchEvent(new Event('input'));
+                }
+
+                /* Pre-llenar cantidad basada en conteo de STL como guía */
+                const stlCount = (p.stl_urls || []).length;
+                const cantEl = document.getElementById('cantidad');
+                if (cantEl && stlCount > 0) {
+                    cantEl.value = stlCount;
+                    cantEl.dispatchEvent(new Event('input'));
+                    calcularTotal();
+                }
+
+                /* Mostrar banner informativo con datos del diseño */
+                const banner = document.createElement('div');
+                banner.id = 'diseno-link-banner';
+                banner.style.cssText = `
+                    position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:999;
+                    background:linear-gradient(135deg,rgba(0,210,255,.12),rgba(212,175,55,.1));
+                    border:1px solid rgba(0,210,255,.35);border-radius:12px;
+                    padding:12px 18px;max-width:560px;width:calc(100% - 32px);
+                    display:flex;align-items:flex-start;gap:10px;font-size:.83rem;
+                    box-shadow:0 4px 20px rgba(0,0,0,.4);`;
+                banner.innerHTML = `
+                    <i class="fas fa-link" style="color:#00d2ff;margin-top:2px;flex-shrink:0;"></i>
+                    <div>
+                        <strong style="color:#00d2ff;">Fabricación vinculada al diseño #${p.codigo||id.slice(0,8)}</strong>
+                        <span style="color:rgba(255,255,255,.6);"> · ${p.nombre_paciente||'Paciente'}</span>
+                        ${stlCount ? `<br><span style="color:#fbbf24;font-size:.76rem;">
+                            <i class="fas fa-cube" style="margin-right:3px;"></i>
+                            El diseño contiene <strong>${stlCount} archivo${stlCount===1?'':'s'} STL</strong>
+                            — verifica que la cantidad coincida con las unidades a fresar.
+                        </span>` : ''}
+                    </div>
+                    <button onclick="this.parentElement.remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:1rem;flex-shrink:0;padding:0 4px;">✕</button>`;
+                document.body.appendChild(banner);
+                /* Auto-ocultar después de 20 s */
+                setTimeout(() => banner?.remove(), 20000);
+
+            } catch(e) { console.warn('[PRODIGY] prefillDesdeDiseno error:', e); }
         }
     </script>
 
