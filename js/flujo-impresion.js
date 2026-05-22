@@ -365,9 +365,24 @@
                     <button type="button" onclick="document.getElementById('modal-guia-ferulas').style.display='flex'" style="width: 100%; margin-bottom: 15px; background: rgba(0, 210, 255, 0.1); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
                         <i class="fa-solid fa-file-medical"></i> Ver Guía Clínica: Férulas y Guías
                     </button>
+                    <div id="anillas-disclaimer" style="margin-bottom:16px;padding:14px 16px;background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.28);border-radius:10px;font-size:.82rem;color:#cbd5e1;line-height:1.65;">
+                      <div style="font-weight:800;color:#D4AF37;margin-bottom:8px;">💍 Anillas para guía quirúrgica</div>
+                      Las anillas de precisión son <strong>suministradas por el cliente</strong> o podemos gestionar la solicitud al distribuidor.<br>
+                      <em style="color:#94a3b8;font-size:.78rem;">Si PRODIGY gestiona: disponibilidad y tiempos dependen de la casa comercial. No garantizamos stock ni plazos.</em>
+                      <div style="margin-top:12px;display:flex;gap:18px;flex-wrap:wrap;">
+                        <label style="cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600;">
+                          <input type="radio" name="anillas_opcion" value="cliente" checked style="accent-color:#D4AF37;width:16px;height:16px;">
+                          Envío mis anillas
+                        </label>
+                        <label style="cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600;">
+                          <input type="radio" name="anillas_opcion" value="prodigy" style="accent-color:#D4AF37;width:16px;height:16px;">
+                          Solicito que las gestionen <span style="color:#94a3b8;font-weight:400;">(sin garantía de tiempo)</span>
+                        </label>
+                      </div>
+                    </div>
                 `;
             }
-            
+
             if (tipo === 'resina_definitiva') {
                 html += `
                     <button type="button" onclick="document.getElementById('modal-guia-definitivas').style.display='flex'" style="width: 100%; margin-bottom: 15px; background: rgba(0, 210, 255, 0.1); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
@@ -2193,6 +2208,16 @@
             texto += `• Ref: ${STATE.pagoReferencia || 'No proporcionada'}\n\n`;
             
             texto += `💵 *TOTAL: ${STATE.total}* (pago 100% al confirmar)\n\n`;
+
+            // Anillas (solo para guías quirúrgicas)
+            const _anillasR = document.querySelector('input[name="anillas_opcion"]:checked');
+            if (_anillasR) {
+                const _anillasVal = _anillasR.value === 'prodigy'
+                    ? '⚠ PRODIGY gestiona solicitud (sin garantía de tiempo/disponibilidad)'
+                    : '✅ Cliente envía sus anillas';
+                texto += `💍 *Anillas:* ${_anillasVal}\n\n`;
+            }
+
             texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n`;
 
             // Nonce de seguridad para tracking
