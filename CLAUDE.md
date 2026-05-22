@@ -68,6 +68,32 @@ fetch(SURL+'/auth/v1/token?grant_type=password', {method:'POST',...})
 // ❌ Incorrecto: window.supabase.createClient() — falla en páginas sin SDK cargado
 ```
 
+### Multiidioma ES/EN (para páginas con tráfico internacional)
+- Agregar botones `.lang-btn` con `onclick="setLang('es'|'en')"`
+- Poner `id="lang-[elemento]"` en los textos traducibles
+- En el JS: objeto `LANG = { es:{...}, en:{...} }` con textos técnicos reales
+- Auto-detect con `geo-detect.js`: si `_geoCountry !== 'CO'` → mostrar EN
+- `hreflang` en `<head>`: es, en, x-default
+- **NO usar traductores automáticos** — terminología clínica real (CBCT, surgical guide, implant planning, guided surgery, viability assessment, STL file delivery)
+
+### og:image — cómo crearla
+- Archivo HTML en `/assets/og-[slug].html` con layout 1200×630px
+- Colores del proyecto, texto en inglés técnico para internacionales
+- Capturar con puppeteer o manualmente con browser screenshot tool
+- La imagen final va en `/assets/og-[slug].jpg`
+
+### Precios duales (COP local / USD internacional)
+- Tabla `catalogo` en Supabase: columna `precio` (COP) + `precio_usd` (USD)
+- En flujo-diseno.html Alejandro: sync usa `precio_usd` como prioridad
+- En landing pages: toggle `.toggle-btn` COP/USD con función `setMoneda(m,btn)`
+- Ratio actual: 1 USD ≈ 4.000 COP (ajustar según TRM)
+- Local Colombia +20% sobre convenio CDR · Internacional +80% sobre convenio CDR
+
+### Protocolo CDR — Guías Quirúrgicas (parámetros exactos)
+**Dentosoportada:** CBCT maxilar completo · separador de carrillo · sin contacto oclusal · cortes 0.5mm · resolución 150 micras · escáner intraoral ambos maxilares (.PLY o .STL)
+**Mucosoportada:** 2 CBCT · paciente sentado · con contacto oclusal sin morder estabilizador · marcadores mín. 4 vestibular + 4 palatino ≈3mm (gutapercha o resina fotocurada) · prótesis con rebase si no asienta
+**Esterilización guía:** Solo glutaraldehído + enjuague · NO autoclave · NO agua caliente · probar 24h antes de cirugía
+
 ## 3b. LEY 50/50
 Cotizaciones: "50% abono inicio · 50% saldo contra entrega". Precios en COP. WA incluye: Total, Abono, Saldo.
 
