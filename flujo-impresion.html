@@ -895,8 +895,35 @@
 
                 <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; border-left: 3px solid #10b981;">
                     <strong style="font-size: 1.1rem; color: #f3f4f6;">2. Guía Quirúrgica de Alta Precisión</strong>
-                    <p style="color:#9ca3af; margin-top:6px;">Plantilla transparente de precisión micrométrica para cirugía de implantes guiada. Permite flapless surgery exacta y mínimamente invasiva. Material estable, biocompatible Clase IIa. Diseñada digitalmente sobre planificación CBCT + software de implantología.</p>
-                    <span style="display:inline-block; margin-top:6px; background:rgba(16,185,129,0.1); color:#10b981; padding:3px 10px; border-radius:20px; font-size:0.78rem; font-weight:700;">$85.000</span>
+                    <p style="color:#9ca3af; margin-top:6px;">Plantilla transparente de precisión micrométrica para cirugía de implantes guiada. Permite flapless surgery exacta y mínimamente invasiva. Material estable, biocompatible Clase IIa. Diseñada digitalmente sobre planificación CBCT + software de implantología (CoDiagnostiX).</p>
+
+                    <!-- PRECIOS CDR -->
+                    <div style="margin-top:12px; background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-radius:8px; padding:12px;">
+                        <div style="font-size:.75rem; font-weight:800; color:#10b981; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;"><i class="fas fa-tags" style="margin-right:5px;"></i>Precios — Diseño + Guía Impresa</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:.82rem;">
+                            <div style="color:#e2e8f0;">Guía 1 implante</div><div style="color:#10b981; font-weight:700; text-align:right;">$180.000</div>
+                            <div style="color:#e2e8f0;">Implante adicional</div><div style="color:#10b981; font-weight:700; text-align:right;">$60.000 c/u</div>
+                            <div style="color:#e2e8f0;">Guía sobredentadura (2 impl.)</div><div style="color:#10b981; font-weight:700; text-align:right;">$384.000</div>
+                            <div style="color:#e2e8f0;">Guía híbrida (4 impl.)</div><div style="color:#10b981; font-weight:700; text-align:right;">$456.000</div>
+                            <div style="color:#e2e8f0;">Planificación Full Arch</div><div style="color:#10b981; font-weight:700; text-align:right;">$480.000</div>
+                            <div style="color:#e2e8f0;">Provisional PMMA con guía</div><div style="color:#10b981; font-weight:700; text-align:right;">$216.000</div>
+                        </div>
+                    </div>
+
+                    <!-- PROTOCOLO ARCHIVOS DICOM -->
+                    <div style="margin-top:12px; background:rgba(0,210,255,0.05); border:1px solid rgba(0,210,255,0.2); border-radius:8px; padding:12px;">
+                        <div style="font-size:.75rem; font-weight:800; color:#00d2ff; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;"><i class="fas fa-file-medical" style="margin-right:5px;"></i>Archivos requeridos</div>
+                        <ul style="font-size:.8rem; color:#94a3b8; margin:0; padding-left:16px; line-height:1.8;">
+                            <li><strong style="color:#e2e8f0;">CBCT / DICOM</strong> — tomografía del maxilar/mandíbula a operar</li>
+                            <li><strong style="color:#e2e8f0;">STL del escáner intraoral</strong> — arcada antagonista y a operar</li>
+                            <li><strong style="color:#e2e8f0;">Para edéntulo total:</strong> prótesis con marcadores radiopacos + 2 CBCT (ver protocolo doble tomografía)</li>
+                            <li><strong style="color:#e2e8f0;">Casa comercial</strong> del implante + referencia exacta (ej: Neodent GM 4.3×11.5mm)</li>
+                            <li><strong style="color:#e2e8f0;">Zona a operar</strong> — número(s) de diente(s)</li>
+                        </ul>
+                        <div style="margin-top:8px; font-size:.75rem; color:#64748b; border-top:1px solid rgba(255,255,255,.06); padding-top:8px;">
+                            ⏱ Tiempo: 24–48h preplan · Aprobación del doctor · 24h guía final · Impresión 24h adicional
+                        </div>
+                    </div>
                 </div>
 
                 <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; border-left: 3px solid rgba(16,185,129,0.4);">
@@ -1099,5 +1126,37 @@
     <script>ProdigyMultiViewer.init('pmv-impresion');</script>
     <script src="js/flujo-uploader.js"></script>
     <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+    <script>
+    /* Pre-fill desde diseño aprobado: ?from_diseno=UUID */
+    let _disenoPedidoId = null;
+    (async function() {
+        const _fd = new URLSearchParams(location.search).get('from_diseno');
+        if (!_fd) return;
+        _disenoPedidoId = _fd;
+        try {
+            const SBU='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+            const SBA='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+            const r = await fetch(`${SBU}/rest/v1/pedidos?id=eq.${_fd}&select=codigo,nombre_paciente,stl_urls`,
+                {headers:{apikey:SBA,Authorization:'Bearer '+SBA}});
+            const p = (await r.json())?.[0];
+            if (!p) return;
+            const npEl = document.getElementById('nombrePaciente');
+            if (npEl && p.nombre_paciente) { npEl.value = p.nombre_paciente; }
+            const stlCount = (p.stl_urls||[]).length;
+            if (stlCount > 0) {
+                const cEl = document.getElementById('cantidad');
+                if (cEl) { cEl.value = stlCount; cEl.dispatchEvent(new Event('input')); calcularTotal(); }
+            }
+            const b = document.createElement('div');
+            b.style.cssText='position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:999;background:linear-gradient(135deg,rgba(0,210,255,.12),rgba(212,175,55,.1));border:1px solid rgba(0,210,255,.35);border-radius:12px;padding:12px 18px;max-width:560px;width:calc(100% - 32px);display:flex;align-items:flex-start;gap:10px;font-size:.83rem;box-shadow:0 4px 20px rgba(0,0,0,.4);color:#e2e8f0;';
+            b.innerHTML=`<i class="fas fa-link" style="color:#00d2ff;margin-top:2px;flex-shrink:0;"></i>
+                <div><strong style="color:#00d2ff;">Fabricación vinculada al diseño #${p.codigo||_fd.slice(0,8)}</strong>
+                ${stlCount?`<br><span style="color:#fbbf24;font-size:.76rem;"><i class="fas fa-cube" style="margin-right:3px;"></i>El diseño tiene <strong>${stlCount} STL</strong> — verifica que la cantidad coincida.</span>`:''}
+                </div><button onclick="this.parentElement.remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:1rem;padding:0 4px;">✕</button>`;
+            document.body.appendChild(b);
+            setTimeout(()=>b?.remove(),20000);
+        } catch(e){}
+    })();
+    </script>
 </body>
 </html>
