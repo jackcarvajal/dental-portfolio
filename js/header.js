@@ -477,6 +477,10 @@
                 '<i class="fas fa-mobile-alt"></i>' +
                 '<span>ESCANEOS A DOMICILIO<span class="dd-sub">Norte Bogotá · 2 h hábiles</span></span>' +
               '</a>' +
+              '<a href="/guias-quirurgicas" style="background:rgba(0,210,255,.06);border-left:2px solid #00d2ff;">' +
+                '<i class="fas fa-crosshairs" style="color:#00d2ff"></i>' +
+                '<span>CIRUGÍA GUIADA<span class="dd-sub">🎯 Planificación + guía impresa · desde $180.000</span></span>' +
+              '</a>' +
             '</div>' +
           '</div>' +
           '<a href="/portafolio"' + ac('/portafolio') + '>PORTAFOLIO</a>' +
