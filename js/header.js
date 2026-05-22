@@ -395,6 +395,13 @@
     'flex-shrink:0;transition:opacity .2s;font-family:inherit;}',
     '#pg-chat-send:hover{opacity:.85;}',
     '#pg-chat-send:disabled{opacity:.4;cursor:not-allowed;}',
+
+    /* THEME TOGGLE BTN */
+    '.pnav2-theme-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);',
+    'color:#e2e8f0;width:38px;height:38px;border-radius:8px;cursor:pointer;',
+    'display:flex;align-items:center;justify-content:center;font-size:1rem;',
+    'flex-shrink:0;transition:all .2s;font-family:inherit;}',
+    '.pnav2-theme-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);}',
   ].join('');
 
   var st = document.createElement('style');
@@ -512,6 +519,7 @@
               '</a>' +
             '</div>' +
           '</div>' +
+          '<button class="pnav2-theme-btn" id="pnav2-theme-btn" onclick="_phdrToggleTheme()" aria-label="Cambiar tema" title="Modo claro / oscuro">🌙</button>' +
           '<button class="pnav2-ia-btn" id="pnav2-ia-btn" onclick="_phdrToggleIA()" aria-label="Asistente IA">' +
             '<i class="fas fa-robot"></i>' +
           '</button>' +
@@ -563,6 +571,9 @@
       '</a>' +
       '<a href="/app/login.html" style="color:#D946A6;font-weight:900;">' +
         '<i class="fas fa-key" style="margin-right:8px"></i>INGRESAR' +
+      '</a>' +
+      '<a href="javascript:void(0)" onclick="_phdrToggleTheme();document.getElementById(\'pnav2-mob\').classList.remove(\'open\');document.getElementById(\'pnav2-ham-ico\').className=\'fas fa-bars\';document.body.style.overflow=\'\';" id="pnav2-theme-mob" style="color:#94a3b8;">' +
+        '<i class="fas fa-moon" style="margin-right:8px" id="pnav2-theme-ico"></i>MODO CLARO' +
       '</a>' +
     '</div>' +
 
@@ -1009,5 +1020,64 @@
     _i18nS.defer = true;
     document.head.appendChild(_i18nS);
   }
+
+  /* ── THEME TOGGLE ── */
+  var _LIGHT_VARS = {
+    '--bg':'#f0f4f8','--card':'#ffffff','--muted':'#475569',
+    '--border':'rgba(0,0,0,0.1)','--txt':'#0f172a',
+    '--bg-darker':'#eef2f7','--bg-dark':'#f5f7fa','--bg-card':'#ffffff',
+    '--bg-card-hover':'#f8fafc','--text-primary':'#0f172a',
+    '--text-secondary':'#374151','--text-tertiary':'#6b7280',
+    '--text-muted':'#9ca3af','--border-subtle':'rgba(0,0,0,0.08)',
+    '--border-color':'rgba(0,0,0,0.12)',
+    '--neon':'#16a34a',
+    '--accent-neon':'#16a34a',
+    '--cyan':'#0284c7','--accent-cyan':'#0284c7',
+    '--mg':'#be185d','--accent-mg':'#be185d',
+    '--gold':'#b45309','--accent-gold':'#b45309',
+    '--surface':'rgba(0,0,0,0.04)',
+    '--overlay':'rgba(0,0,0,0.06)'
+  };
+
+  function _phdrApplyTheme(t) {
+    var root = document.documentElement;
+    var btn  = document.getElementById('pnav2-theme-btn');
+    var mob  = document.getElementById('pnav2-theme-mob');
+    var ico  = document.getElementById('pnav2-theme-ico');
+    if (t === 'light') {
+      Object.keys(_LIGHT_VARS).forEach(function(k){ root.style.setProperty(k, _LIGHT_VARS[k]); });
+      document.body.classList.add('light-mode');
+      if (btn) btn.textContent = '☀️';
+      if (mob) mob.style.color = '#b45309';
+      if (ico) { ico.className = 'fas fa-sun'; ico.parentElement.lastChild.textContent = 'MODO OSCURO'; }
+    } else {
+      Object.keys(_LIGHT_VARS).forEach(function(k){ root.style.removeProperty(k); });
+      document.body.classList.remove('light-mode');
+      if (btn) btn.textContent = '🌙';
+      if (mob) mob.style.color = '#94a3b8';
+      if (ico) { ico.className = 'fas fa-moon'; ico.parentElement.lastChild.textContent = 'MODO CLARO'; }
+    }
+    localStorage.setItem('pg_theme', t);
+  }
+
+  window._phdrToggleTheme = function() {
+    _phdrApplyTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light');
+  };
+
+  /* Restaurar preferencia guardada */
+  (function(){
+    var saved = localStorage.getItem('pg_theme');
+    if (saved === 'light') {
+      var root = document.documentElement;
+      Object.keys(_LIGHT_VARS).forEach(function(k){ root.style.setProperty(k, _LIGHT_VARS[k]); });
+      document.body.classList.add('light-mode');
+      document.addEventListener('DOMContentLoaded', function(){
+        var btn = document.getElementById('pnav2-theme-btn');
+        var ico = document.getElementById('pnav2-theme-ico');
+        if (btn) btn.textContent = '☀️';
+        if (ico) { ico.className = 'fas fa-sun'; ico.parentElement.lastChild.textContent = 'MODO OSCURO'; }
+      });
+    }
+  })();
 
 })();
