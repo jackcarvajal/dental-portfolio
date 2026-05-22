@@ -186,29 +186,65 @@ section{padding:80px 24px;}
 <!-- ARCHIVOS REQUERIDOS -->
 <section>
   <div class="container">
-    <div class="section-label">Protocolo</div>
-    <h2 class="section-title">¿Qué necesitas enviar?</h2>
-    <p class="section-sub">Todo sale de tu software de tomografía y escáner. Te guiamos si es tu primera guía digital.</p>
-    <div class="archivos-grid">
-      <div class="archivo-item">
-        <div class="archivo-icon" style="background:rgba(0,210,255,.1);color:var(--cyan);"><i class="fas fa-x-ray"></i></div>
-        <div><h4 style="font-size:.88rem;font-weight:700;margin-bottom:4px;">CBCT / DICOM</h4><p style="font-size:.78rem;color:var(--muted);line-height:1.5;">Tomografía del maxilar/mandíbula. Vóxel ≤ 0.3mm. Exportar como ZIP o carpeta DICOM.</p></div>
+    <div class="section-label" style="text-align:center">Protocolo técnico CDR</div>
+    <h2 class="section-title" style="text-align:center">¿Qué necesitas enviar?</h2>
+    <p class="section-sub" style="text-align:center;margin-left:auto;margin-right:auto;">Dos tipos de guía, dos protocolos distintos. Identifica cuál aplica a tu paciente.</p>
+
+    <div style="background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.2);border-radius:16px;padding:28px;margin-bottom:20px;">
+      <h3 style="text-align:center;font-size:1.1rem;font-weight:900;color:var(--gold);margin-bottom:16px;text-transform:uppercase;letter-spacing:1px;">🦷 Guía Dentosoportada</h3>
+      <div class="archivos-grid">
+        <div class="archivo-item">
+          <div class="archivo-icon" style="background:rgba(0,210,255,.1);color:var(--cyan);"><i class="fas fa-x-ray"></i></div>
+          <div><h4 style="font-size:.85rem;font-weight:700;margin-bottom:4px;">CBCT completo (DICOM)</h4><p style="font-size:.75rem;color:var(--muted);line-height:1.5;">Con separador de carrillo · <strong>Sin contacto oclusal</strong> · Cortes: <strong>0.5mm</strong> · Resolución: <strong>150 micras</strong></p></div>
+        </div>
+        <div class="archivo-item">
+          <div class="archivo-icon" style="background:rgba(0,255,65,.08);color:var(--neon);"><i class="fas fa-cube"></i></div>
+          <div><h4 style="font-size:.85rem;font-weight:700;margin-bottom:4px;">Escáner intraoral ambos maxilares</h4><p style="font-size:.75rem;color:var(--muted);line-height:1.5;">Arcada a operar + antagonista · Formato <strong>.PLY o .STL</strong> · 3Shape, Medit, iTero</p></div>
+        </div>
+        <div class="archivo-item">
+          <div class="archivo-icon" style="background:rgba(212,175,55,.1);color:var(--gold);"><i class="fas fa-tooth"></i></div>
+          <div><h4 style="font-size:.85rem;font-weight:700;margin-bottom:4px;">Casa comercial del implante</h4><p style="font-size:.75rem;color:var(--muted);line-height:1.5;">Marca + diámetro + longitud exacta. Ej: <em>Neodent GM 4.3×11.5mm</em></p></div>
+        </div>
+        <div class="archivo-item">
+          <div class="archivo-icon" style="background:rgba(217,70,166,.1);color:var(--mg);"><i class="fas fa-map-marker-alt"></i></div>
+          <div><h4 style="font-size:.85rem;font-weight:700;margin-bottom:4px;">Zona + datos clínicos</h4><p style="font-size:.75rem;color:var(--muted);line-height:1.5;">Número FDI · Flapless o con colgajo · Densidad ósea · Notas relevantes</p></div>
+        </div>
       </div>
-      <div class="archivo-item">
-        <div class="archivo-icon" style="background:rgba(0,255,65,.08);color:var(--neon);"><i class="fas fa-cube"></i></div>
-        <div><h4 style="font-size:.88rem;font-weight:700;margin-bottom:4px;">STL escáner intraoral</h4><p style="font-size:.78rem;color:var(--muted);line-height:1.5;">Arcada a operar + antagonista. Formatos: .STL, .PLY. Compatible con 3Shape, Medit, iTero.</p></div>
+    </div>
+
+    <div style="background:rgba(217,70,166,.05);border:1px solid rgba(217,70,166,.2);border-radius:16px;padding:28px;">
+      <h3 style="text-align:center;font-size:1.1rem;font-weight:900;color:var(--mg);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">👄 Guía Mucosoportada — Edéntulo Total</h3>
+      <p style="text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:18px;">Requiere <strong>2 CBCT</strong> y preparación especial de la prótesis.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div style="background:rgba(0,0,0,.2);border-radius:10px;padding:14px;">
+          <div style="font-size:.7rem;font-weight:800;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">📷 CBCT 1 — Con prótesis en boca</div>
+          <ul style="font-size:.75rem;color:var(--muted);padding-left:14px;line-height:2;">
+            <li>Paciente <strong>sentado</strong></li><li>Con separador de carrillo</li>
+            <li><strong>Con contacto oclusal</strong> sin morder estabilizador</li>
+            <li>Cortes <strong>0.5mm · 150 micras</strong> · DICOM</li>
+          </ul>
+        </div>
+        <div style="background:rgba(0,0,0,.2);border-radius:10px;padding:14px;">
+          <div style="font-size:.7rem;font-weight:800;color:var(--mg);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">📷 CBCT 2 — Prótesis sola</div>
+          <ul style="font-size:.75rem;color:var(--muted);padding-left:14px;line-height:2;">
+            <li>Prótesis marcada en posicionador</li>
+            <li>Apoyada sobre dientes del posicionador</li>
+            <li>Parámetros de exposición <strong>bajos</strong></li>
+          </ul>
+        </div>
       </div>
-      <div class="archivo-item">
-        <div class="archivo-icon" style="background:rgba(212,175,55,.1);color:var(--gold);"><i class="fas fa-tooth"></i></div>
-        <div><h4 style="font-size:.88rem;font-weight:700;margin-bottom:4px;">Referencia del implante</h4><p style="font-size:.78rem;color:var(--muted);line-height:1.5;">Marca + diámetro + longitud. Ej: "Neodent GM 4.3×11.5mm". Si aún no decides, planificamos y adaptas después.</p></div>
+      <div style="background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.15);border-radius:10px;padding:14px;font-size:.75rem;color:var(--muted);">
+        <strong style="color:var(--gold);">⚙️ Preparación prótesis:</strong> Mín. 4 marcadores vestibular + 4 palatino · Diámetro ~3mm c/u · Gutapercha endodóntica o resina fotocurada · Prótesis debe asentar perfecto en mucosa (rebase si es necesario)
       </div>
-      <div class="archivo-item">
-        <div class="archivo-icon" style="background:rgba(217,70,166,.1);color:var(--mg);"><i class="fas fa-map-marker-alt"></i></div>
-        <div><h4 style="font-size:.88rem;font-weight:700;margin-bottom:4px;">Zona a operar</h4><p style="font-size:.78rem;color:var(--muted);line-height:1.5;">Número de diente(s) FDI. Indica flapless o con colgajo. Densidad ósea si la conoces.</p></div>
-      </div>
-      <div class="archivo-item" style="grid-column:1/-1;border-color:rgba(212,175,55,.2);">
-        <div class="archivo-icon" style="background:rgba(212,175,55,.1);color:var(--gold);"><i class="fas fa-teeth-open"></i></div>
-        <div><h4 style="font-size:.88rem;font-weight:700;margin-bottom:4px;">Edéntulo total — doble tomografía</h4><p style="font-size:.78rem;color:var(--muted);line-height:1.5;">Prótesis con 10 marcadores radiopacos (6 vestibulares + 4 palatinos en resina o gutapercha) → CBCT 1: prótesis en boca. CBCT 2: prótesis sola apoyada en los dientes. Protocolo completo disponible al solicitar.</p></div>
+    </div>
+
+    <div style="margin-top:16px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:16px;">
+      <div style="font-size:.72rem;font-weight:800;color:#f87171;text-align:center;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">⚠️ Uso y esterilización de la guía</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px;font-size:.75rem;color:var(--muted);">
+        <div>✓ Almacenar <strong style="color:#e2e8f0;">20–25°C</strong> libre de humedad</div>
+        <div>✓ Solo <strong style="color:#e2e8f0;">glutaraldehído</strong> + enjuague abundante</div>
+        <div>✗ <strong style="color:#f87171;">NO autoclave · NO agua caliente</strong></div>
+        <div>✓ Probar en boca <strong style="color:#e2e8f0;">24h antes</strong> de cirugía</div>
       </div>
     </div>
   </div>
