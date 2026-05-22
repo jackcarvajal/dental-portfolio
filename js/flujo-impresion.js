@@ -38,7 +38,7 @@
             ],
             'resina_ferulas_guias': [
                 { id: 'ferula_descarga',   nom: 'Férula Miorrelajante / Descarga Rígida',  subtitulo: 'Bruxismo / Splint', precio: 75000, fastReady: true, icon: '🛡️', info: '<strong>Biocompatibilidad Clase IIa</strong> - Alta resistencia al desgaste, totalmente cristalina. No esterilizar en autoclave > 121°C.' },
-                { id: 'ferula_quirurgica', nom: 'Guía Quirúrgica de Alta Precisión',        subtitulo: 'Implantes / Cirugía', precio: 85000, fastReady: true, icon: '🎯', info: '<strong>Precisión Micrométrica</strong> - Transparente, biocompatible Clase IIa. Diseñada sobre planificación digital de implantes (CBCT).' },
+                { id: 'ferula_quirurgica', nom: 'Guía Quirúrgica de Alta Precisión',        subtitulo: 'Implantes / Cirugía', precio: 0, cotizar: true, icon: '🎯', info: '<strong>Precisión Micrométrica</strong> - Transparente, biocompatible Clase IIa. Solo producimos el archivo recibido — el ajuste y resultado final dependen del diseño original.' },
                 { id: 'ferula_cubeta',     nom: 'Cubeta Individual de Impresión',           subtitulo: 'Impresión Definitiva', precio: 45000, fastReady: true, icon: '🥄', info: '<strong>Ajuste Anatómico Perfecto</strong> - Diseñada sobre modelo primario. Reduce gasto de silicona y mejora fidelidad en casos complejos.' }
             ]
         };
@@ -609,6 +609,27 @@
                 html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px;">';
 
                 subMats.forEach(sub => {
+                    if (sub.cotizar) {
+                        html += `
+                        <div style="grid-column:1/-1;padding:18px 16px;background:rgba(212,175,55,.06);border:2px solid rgba(212,175,55,.3);border-radius:8px;">
+                          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                            <span style="font-size:1.5rem;">${sub.icon||'🎯'}</span>
+                            <div>
+                              <div style="font-weight:700;font-size:1rem;text-transform:uppercase;">${sub.nom}</div>
+                              ${sub.subtitulo?`<div style="font-size:.78rem;color:#aaa;font-style:italic;">${sub.subtitulo}</div>`:''}
+                            </div>
+                          </div>
+                          <p style="font-size:.75rem;color:#94a3b8;line-height:1.6;margin:0 0 6px;">${sub.info||''}</p>
+                          <div style="font-size:.72rem;color:#fbbf24;background:rgba(251,191,36,.07);border-left:3px solid #fbbf24;border-radius:0 6px 6px 0;padding:8px 12px;margin:10px 0;">
+                            ⚠ <strong>Disclaimer:</strong> Solo producimos el archivo recibido tal como viene. El ajuste oclusal, la precisión del implante y el resultado final dependen del diseño original. PRODIGY no se hace responsable por errores en el archivo de origen.
+                          </div>
+                          <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20impresión%20de%20guía%20quirúrgica.%20Ya%20tengo%20el%20archivo%20STL%20diseñado." target="_blank" rel="noopener noreferrer"
+                             style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-weight:700;font-size:.82rem;padding:9px 18px;border-radius:8px;text-decoration:none;margin-top:4px;">
+                            <i class="fab fa-whatsapp"></i> Cotizar por WhatsApp
+                          </a>
+                        </div>`;
+                        return;
+                    }
                     html += `
                         <div onclick="selectSubMaterial('${sub.id}', '${sub.nom}', ${sub.precio})"
                              data-id="${sub.id}"
