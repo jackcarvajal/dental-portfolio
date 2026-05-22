@@ -697,26 +697,11 @@
         // "pasado mañana" = 2 días hábiles desde hoy
         var entrega1 = siguienteDiaHabil(ahora);       // mañana (o lunes si sábado)
         var entrega2 = siguienteDiaHabil(entrega1);    // pasado mañana hábil
-        label.textContent = '⏳ Pide en ' + countdown + ' y recibe el ' + fmtDia(entrega2);
+        label.textContent = '⚡ Diseño 24h · Fabricación 24–48h · Envío ' + fmtDia(entrega2);
         widget.style.borderColor = 'rgba(217,70,166,.5)';
         widget.style.background  = 'rgba(217,70,166,.14)';
       } else {
-        // Fuera de horario: mostrar próxima apertura
-        var apertura = new Date(ahora);
-        apertura.setSeconds(0); apertura.setMinutes(0);
-        if (esDomingo) {
-          apertura.setDate(apertura.getDate() + 1); apertura.setHours(8);
-        } else if (antesDeApertura) {
-          apertura.setHours(8);
-        } else {
-          // después de corte → siguiente día hábil 8am
-          apertura = siguienteDiaHabil(ahora);
-          apertura.setHours(8); apertura.setMinutes(0); apertura.setSeconds(0);
-        }
-        var diffSeg = Math.max(0, Math.floor((apertura - ahora) / 1000));
-        var dhh = Math.floor(diffSeg / 3600);
-        var dmm = Math.floor((diffSeg % 3600) / 60);
-        label.textContent = '🌙 Próximo despacho en ' + dhh + 'h ' + dmm + 'min · ' + fmtDia(apertura);
+        label.textContent = '🦷 Diseño 24h · Fabricación 24–48h · Lun–Sáb';
         widget.style.borderColor = 'rgba(148,163,184,.25)';
         widget.style.background  = 'rgba(30,41,59,.4)';
       }

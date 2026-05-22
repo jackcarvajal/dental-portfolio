@@ -759,10 +759,17 @@ async function verificarAdmin() {
         await cargarPedidos();
 
     } catch (e) {
-        // Sin fallback de sessionStorage — cualquier fallo → login (previene bypass por DevTools)
+        console.error('verificarAdmin error:', e.message);
         window.location.href = 'login.html';
     }
 }
+
+/* Fallback: si en 8s el body sigue invisible (error de red/auth), redirige a login */
+setTimeout(function(){
+    if(document.body.style.visibility === 'hidden' || getComputedStyle(document.body).visibility === 'hidden'){
+        window.location.href = 'login.html?msg=timeout';
+    }
+}, 8000);
 
 async function cerrarSesion() {
     await sb.auth.signOut();
