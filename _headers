@@ -74,6 +74,20 @@
   Cache-Control: public, max-age=0, must-revalidate
 /patient
   Cache-Control: public, max-age=0, must-revalidate
+/guias-quirurgicas
+  Cache-Control: public, max-age=0, must-revalidate
+/calculadora-diseno
+  Cache-Control: public, max-age=0, must-revalidate
+/calculadora-fresado
+  Cache-Control: public, max-age=0, must-revalidate
+/calculadora-impresion
+  Cache-Control: public, max-age=0, must-revalidate
+/guia-tecnica
+  Cache-Control: public, max-age=0, must-revalidate
+/diseno-remoto
+  Cache-Control: public, max-age=0, must-revalidate
+/nosotros
+  Cache-Control: public, max-age=0, must-revalidate
 
 # Service worker — siempre revalidar (navegadores lo limitan a 24h de todas formas)
 /sw.js

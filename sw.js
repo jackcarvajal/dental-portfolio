@@ -1,9 +1,10 @@
 // Prodigy Lab Dental — Service Worker v3.2 (SWR + Push Notifications)
-const CACHE = 'prodigy-v16';
+const CACHE = 'prodigy-v17';
 
 // Assets estáticos que siempre cacheamos en install
 const PRECACHE = [
   // '/' — NO cachear el home: tiene el bypass de preview que debe ejecutarse siempre
+  '/offline.html',
   '/portafolio',
   '/calculadora',
   '/catalogo',
@@ -22,10 +23,12 @@ const PRECACHE = [
   '/guia-tecnica',
   '/calidad',
   '/diseno-remoto',
+  '/guias-quirurgicas',
   '/en/global-design',
   '/soporte-tecnico',
   '/manifest.json',
   '/assets/prodigy-preview.jpg',
+  '/assets/og-guias-quirurgicas.jpg',
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png'
 ];
@@ -91,7 +94,7 @@ self.addEventListener('fetch', e => {
 
           // Si hay caché: devolver inmediatamente + revalidar en fondo
           // Si no hay caché: esperar red (primera visita)
-          return cached || networkFetch.then(res => res || cache.match('/index.html'));
+          return cached || networkFetch.then(res => res || cache.match('/offline.html'));
         })
       )
     );
