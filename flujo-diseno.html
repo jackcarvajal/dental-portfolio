@@ -930,7 +930,16 @@ window.submitOrden     = window.submitOrden      || function(){};
                     guia_reborde:   { nombre: "Regularización de reborde — solo diseño",   precio: 216000, anticipo: 85000 },
                     planif_unit:    { nombre: "Planeación preliminar — Implante unitario",  precio: 192000 },
                     planif_fullarch:{ nombre: "Planeación preliminar — Full Arch",         precio: 480000, anticipo: 85000 },
-                    sonrisa_3d:     { nombre: "Diseño de Sonrisa 3D (Mockup)",             precio: 150000 }
+                    sonrisa_3d:     { nombre: "Diseño de Sonrisa 3D (Mockup)",             precio: 150000 },
+                    /* ── COMBO: diseño + guía impresa (CDR sin convenio) ── */
+                    guia_1_impresa:        { nombre: "Guía 1 implante — diseño + impresa",        precio: 380000, anticipo: 190000, combo: true },
+                    guia_2_impresa:        { nombre: "Guía 2 implantes — diseño + impresa",       precio: 470000, anticipo: 235000, combo: true },
+                    guia_3_impresa:        { nombre: "Guía 3 implantes — diseño + impresa",       precio: 560000, anticipo: 280000, combo: true },
+                    guia_4_impresa:        { nombre: "Guía 4 implantes — diseño + impresa",       precio: 650000, anticipo: 325000, combo: true },
+                    guia_5_impresa:        { nombre: "Guía 5 implantes — diseño + impresa",       precio: 740000, anticipo: 370000, combo: true },
+                    guia_sobredent_impresa:{ nombre: "Guía Sobredentadura — diseño + impresa",    precio: 500000, anticipo: 250000, combo: true },
+                    guia_hibrida_impresa:  { nombre: "Guía Híbrida 4 impl. — diseño + impresa",  precio: 780000, anticipo: 390000, combo: true },
+                    guia_reborde_impresa:  { nombre: "Regularización reborde — diseño + impresa", precio: 310000, anticipo: 155000, combo: true }
                 }
             }
         };
@@ -1080,6 +1089,9 @@ window.submitOrden     = window.submitOrden      || function(){};
             guia_4:'guia_quirurgica', guia_5:'guia_quirurgica', guia_6mas:'guia_quirurgica',
             guia_sobredent:'guia_quirurgica', guia_hibrida:'guia_quirurgica', guia_reborde:'guia_quirurgica',
             planif_unit:'guia_quirurgica', planif_fullarch:'guia_quirurgica',
+            guia_1_impresa:'guia_quirurgica', guia_2_impresa:'guia_quirurgica', guia_3_impresa:'guia_quirurgica',
+            guia_4_impresa:'guia_quirurgica', guia_5_impresa:'guia_quirurgica',
+            guia_sobredent_impresa:'guia_quirurgica', guia_hibrida_impresa:'guia_quirurgica', guia_reborde_impresa:'guia_quirurgica',
             setup_orto:'alineadores'
         };
         const PG_PROTOCOLO_HTML = {
@@ -1090,7 +1102,7 @@ window.submitOrden     = window.submitOrden      || function(){};
            Guías quirúrgicas y Setup alineadores.
            El costo de viabilidad se cobra aunque el caso no se ejecute. ── */
         const VIABILIDAD_COSTO_COP = 85000;
-        const FLUJO_2_ETAPAS = ['guia_1','guia_2','guia_3','guia_4','guia_5','guia_6mas','guia_sobredent','guia_hibrida','guia_reborde','planif_unit','planif_fullarch','setup_orto'];
+        const FLUJO_2_ETAPAS = ['guia_1','guia_2','guia_3','guia_4','guia_5','guia_6mas','guia_sobredent','guia_hibrida','guia_reborde','planif_unit','planif_fullarch','guia_1_impresa','guia_2_impresa','guia_3_impresa','guia_4_impresa','guia_5_impresa','guia_sobredent_impresa','guia_hibrida_impresa','guia_reborde_impresa','setup_orto'];
 
         function getBannerEtapas(subtipoId, precioTotal) {
             if (!FLUJO_2_ETAPAS.includes(subtipoId)) return '';
@@ -1612,11 +1624,14 @@ window.submitOrden     = window.submitOrden      || function(){};
             msg += `📎 ${_esIntl ? '*Files:*' : '*Archivos:*'} ${STATE.linkSTL}\n`;
             if (STATE.observaciones) msg += `📝 ${_esIntl ? '*Notes:*' : '*Indicaciones:*'} ${STATE.observaciones}\n`;
 
-            // Disclaimer guía quirúrgica solo diseño
+            // Nota guía quirúrgica — diferencia combo vs solo diseño
             if (STATE.categoriaKey === 'cad_quirurgica') {
-                msg += _esIntl
-                    ? `\n⚠ *DESIGN ONLY — STL delivery*\nGuide fit and outcome depend on the client's manufacturing process. PRODIGY does not guarantee results from external printing equipment.\n💍 *Rings/Sleeves:* Supplied by client or sourced by PRODIGY subject to distributor availability — cost paid by client, no timeline guarantee.\n`
-                    : `\n⚠ *SOLO DISEÑO — Entrega STL*\nEl ajuste y resultado depende del proceso de manufactura del laboratorio del cliente. PRODIGY no garantiza resultados en equipos de impresión externos.\n💍 *Anillas:* Suministradas por el cliente o gestionadas por PRODIGY sujeto a disponibilidad de la casa comercial — costo a cargo del cliente, sin garantía de tiempos.\n`;
+                const _subInfo2 = MATERIAL_DATA_MUT['cad_quirurgica']?.subtipos?.[STATE.subtipoId] || {};
+                if (_subInfo2.combo) {
+                    msg += `\n🖨️ *COMBO: DISEÑO + GUÍA IMPRESA*\nIncluye planificación digital + impresión resina Clase IIa. Anillas Neodent por defecto — otras casas: el cliente envía las anillas o PRODIGY gestiona sujeto a disponibilidad (sin garantía de tiempos). Pines no incluidos.\n`;
+                } else {
+                    msg += `\n⚠ *SOLO DISEÑO — Entrega STL*\nEl ajuste y resultado depende del proceso de manufactura del laboratorio del cliente. PRODIGY no garantiza resultados en equipos externos.\n💍 *Anillas:* Suministradas por el cliente o gestionadas por PRODIGY sujeto a disponibilidad — costo a cargo del cliente, sin garantía de tiempos.\n`;
+                }
             }
             msg += _esIntl
                 ? `\n_✅ I accept PRODIGY's terms and conditions · CAD Design_`
@@ -1631,6 +1646,8 @@ window.submitOrden     = window.submitOrden      || function(){};
             try {
                 const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
                 if (_sb) {
+                    const _subData = MATERIAL_DATA_MUT[STATE.categoriaKey]?.subtipos?.[STATE.subtipoId] || {};
+                    const _esCombo = !!_subData.combo;
                     _sb.from('pedidos').insert([{
                         codigo:                STATE.ordenId,
                         doctor:                STATE.nombreCliente,
@@ -1650,7 +1667,9 @@ window.submitOrden     = window.submitOrden      || function(){};
                         terminos_aceptados_at: new Date().toISOString(),
                         user_agent:            navigator.userAgent.slice(0, 250),
                         seguro_garantia_activo: false,
-                        costo_envio:           0
+                        costo_envio:           0,
+                        servicios_pagados:     _esCombo ? ['diseno','impresion'] : ['diseno'],
+                        pais:                  'CO'
                     }]).then(({ error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido diseño no guardado:', _e.message);
                     });
