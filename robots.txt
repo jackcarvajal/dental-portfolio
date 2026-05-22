@@ -1,8 +1,15 @@
-# robots.txt — PRODIGY Digital Dentistry
-# MODO MANTENIMIENTO — bloquear todo el sitio temporalmente
+# robots.txt — PRODIGY Lab Dental
+# prodigylabdental.com
 
 User-agent: *
-Disallow: /
+Allow: /
 
-# No indexar nada hasta el lanzamiento oficial
-# Actualizar cuando el sitio esté listo para el público
+# Bloquear rutas privadas y admin
+Disallow: /app/
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /.git/
+Disallow: /MEMORY/
+Disallow: /scripts/
+
+Sitemap: https://prodigylabdental.com/sitemap.xml
