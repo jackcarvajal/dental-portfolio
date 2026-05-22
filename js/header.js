@@ -479,7 +479,7 @@
               '</a>' +
               '<a href="/guias-quirurgicas" style="background:rgba(0,210,255,.06);border-left:2px solid #00d2ff;">' +
                 '<i class="fas fa-crosshairs" style="color:#00d2ff"></i>' +
-                '<span>CIRUGÍA GUIADA<span class="dd-sub">🎯 Planificación + guía impresa · desde $180.000</span></span>' +
+                '<span>CIRUGÍA GUIADA<span class="dd-sub">🎯 Planificación digital · guía impresa · desde 4h · $180.000</span></span>' +
               '</a>' +
             '</div>' +
           '</div>' +

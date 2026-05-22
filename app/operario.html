@@ -121,6 +121,53 @@ body.ready{visibility:visible;}
   <p style="color:var(--muted);padding:40px;text-align:center;"><i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;display:block;margin-bottom:12px;"></i>Cargando departamentos…</p>
 </div>
 
+<!-- Modal Subir Diseño -->
+<div class="modal-ov" id="modal-subir">
+  <div class="modal" style="max-width:520px;">
+    <h3><i class="fas fa-upload" style="margin-right:8px;"></i>Subir archivos de diseño</h3>
+    <p id="subir-sub">Caso #—</p>
+    <div style="display:grid;gap:12px;">
+      <div>
+        <label style="font-size:.72rem;font-weight:700;color:#D946A6;display:block;margin-bottom:5px;">
+          <i class="fas fa-file-code" style="margin-right:4px;"></i>Visor HTML Exocad <span style="color:#ef4444;">*</span>
+        </label>
+        <input type="file" id="up-html" accept=".html,.htm" class="qa-link" style="cursor:pointer;">
+      </div>
+      <div>
+        <label style="font-size:.72rem;font-weight:700;color:var(--dis);display:block;margin-bottom:5px;">
+          <i class="fas fa-cube" style="margin-right:4px;"></i>Archivos STL (puedes seleccionar varios)
+        </label>
+        <input type="file" id="up-stl" accept=".stl,.zip" multiple class="qa-link" style="cursor:pointer;">
+      </div>
+      <div>
+        <label style="font-size:.72rem;font-weight:700;color:var(--frs);display:block;margin-bottom:5px;">
+          <i class="fas fa-file-archive" style="margin-right:4px;"></i>Construinfo / Parámetros de construcción
+        </label>
+        <input type="file" id="up-cinfo" accept=".zip,.pdf,.xlsx,.csv,.xml,.constructioninfo" class="qa-link" style="cursor:pointer;">
+      </div>
+      <div>
+        <label style="font-size:.72rem;font-weight:700;color:#00FF41;display:block;margin-bottom:5px;">
+          <i class="fas fa-images" style="margin-right:4px;"></i>Fotos del diseño (capturas / renders)
+        </label>
+        <input type="file" id="up-fotos" accept="image/*" multiple class="qa-link" style="cursor:pointer;">
+      </div>
+    </div>
+    <div id="up-progress" style="display:none;margin-top:14px;">
+      <div style="background:rgba(255,255,255,.06);border-radius:6px;height:6px;overflow:hidden;">
+        <div id="up-bar" style="height:100%;background:#D946A6;width:0%;transition:width .3s;border-radius:6px;"></div>
+      </div>
+      <p id="up-status" style="font-size:.72rem;color:var(--muted);margin-top:6px;text-align:center;"></p>
+    </div>
+    <input type="hidden" id="subir-id">
+    <div class="modal-btns">
+      <button class="btn btn-red" onclick="cerrarSubirDiseno()">Cancelar</button>
+      <button class="btn btn-ylw" id="btn-subir-ok" onclick="ejecutarSubida()">
+        <i class="fas fa-upload"></i> Subir y enviar al doctor
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal QA -->
 <div class="modal-ov" id="modal-qa">
   <div class="modal">
@@ -165,11 +212,22 @@ const DEPTS = {
     acciones: {
       pend: p => `<button class="btn btn-dis" onclick="avanzar('${p.id}','EN_DISENO','diseno')"><i class="fas fa-play"></i> Iniciar</button>
                   <button class="btn btn-red" onclick="avanzar('${p.id}','INCIDENCIA_CLIENTE','diseno')"><i class="fas fa-exclamation"></i> Incidencia</button>`,
-      work: p => `<button class="btn btn-ylw" onclick="avanzar('${p.id}','REVISION_CLIENTE','diseno')"><i class="fas fa-eye"></i> Enviar revisión</button>
-                  <button class="btn btn-dis" onclick="abrirQA('${p.id}','${esc(p.codigo)||''}','diseno')"><i class="fas fa-check-double"></i> QA</button>`,
-      rev:  p => `<button class="btn btn-grn" onclick="abrirQA('${p.id}','${esc(p.codigo)||''}','diseno')"><i class="fas fa-check"></i> Aprobar</button>
-                  <button class="btn btn-ylw" onclick="avanzar('${p.id}','CAMBIOS_SOLICITADOS','diseno')"><i class="fas fa-redo"></i> Cambios</button>`,
-      done: p => p.link_diseno ? `<a href="${esc(p.link_diseno)}" target="_blank" rel="noopener noreferrer" class="btn btn-dis"><i class="fas fa-external-link-alt"></i> Ver diseño</a>` : ''
+      work: p => `<button class="btn btn-ylw" onclick="abrirSubirDiseno('${p.id}','${esc(p.codigo)||''}')"><i class="fas fa-upload"></i> Subir diseño</button>
+                  ${p.html_diseno_url ? `<button class="btn btn-dis" onclick="copiarLinkRevision('${p.id}')"><i class="fas fa-link"></i> Link Dr.</button>` : ''}`,
+      rev:  p => `<button class="btn btn-dis" onclick="copiarLinkRevision('${p.id}')"><i class="fas fa-link"></i> Copiar link Dr.</button>
+                  <button class="btn btn-ylw" onclick="avanzar('${p.id}','CAMBIOS_SOLICITADOS','diseno')"><i class="fas fa-redo"></i> Cambios manuales</button>
+                  ${(p.cambios_count||0)>0?`<span style="font-size:.67rem;color:#D946A6;display:block;width:100%;margin-top:2px;">⚠️ ${p.cambios_count}/2 cambios</span>`:''}`,
+      done: p => {
+        const sigsServs = (p.servicios_pagados||[]).filter(s => s !== 'diseno' && s !== p.departamento_actual);
+        const sigBtns = sigsServs.map(d => {
+          const lbl   = d==='fresado'?'Fresado/Lab':d==='impresion'?'Impresión':d;
+          const cls   = d==='fresado'?'btn-frs':'btn-imp';
+          return `<button class="btn ${cls}" onclick="enviarASiguiente('${p.id}','${d}')"><i class="fas fa-arrow-right"></i> → ${lbl}</button>`;
+        }).join('');
+        return `${p.html_diseno_url?`<button class="btn btn-dis" onclick="copiarLinkRevision('${p.id}')"><i class="fas fa-link"></i> Link Dr.</button>`:''}
+          ${p.link_diseno?`<a href="${esc(p.link_diseno)}" target="_blank" rel="noopener noreferrer" class="btn btn-grn"><i class="fas fa-external-link-alt"></i> Ver entrega</a>`:''}
+          ${sigBtns}`;
+      }
     }
   },
   fresado: {
@@ -301,7 +359,7 @@ async function recargar() {
   for (const dept of _myDepts) {
     const cfg = DEPTS[dept];
     const { data } = await sb.from('pedidos')
-      .select('id,codigo,nombre_paciente,servicio,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,observaciones')
+      .select('id,codigo,nombre_paciente,servicio,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,observaciones,html_diseno_url,stl_urls,construinfo_url,cambios_count,fabricacion_solicitada,fabricacion_pagada,servicios_pagados,departamento_actual,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_nota,pais')
       .in('flujo', cfg.flujos)
       .not('estado','in','("cancelado","CANCELADO")')
       .order('created_at',{ascending:false})
@@ -310,6 +368,19 @@ async function recargar() {
       ...p, estado_operativo: p.estado_operativo||'VALIDACION_PENDIENTE'
     }));
   }
+  /* Comprobantes pendientes por dept de fabricación */
+  for (const dept of ['fresado','impresion']) {
+    if (!_myDepts.includes(dept)) continue;
+    const tiposFab = dept === 'fresado' ? ['fresado','fresado_internacional','lab'] : ['impresion','impresion_internacional'];
+    const { data: comp } = await sb.from('pedidos')
+      .select('id,codigo,nombre_paciente,servicio,cotizacion_fab_monto,cotizacion_fab_nota,html_diseno_url')
+      .eq('cotizacion_fab_estado','pago_enviado')
+      .eq('fabricacion_pagada', false)
+      .in('fabricacion_tipo', tiposFab)
+      .limit(20);
+    _casos['_comp_'+dept] = comp || [];
+  }
+
   if (_activeDept) renderDept(_activeDept);
 }
 
@@ -338,7 +409,32 @@ function renderDept(dept) {
   }).join('');
 
   const numCols = cfg.cols.length === 4 ? 'cols-4' : 'cols-3';
-  main.innerHTML = timerHtml + `<div class="kanban ${numCols}">${colsHtml}</div>`;
+
+  /* Sección comprobantes pendientes para fresado/impresion */
+  let compHtml = '';
+  if (dept !== 'diseno' && dept !== 'taller') {
+    const pendComp = (_casos['_comp_'+dept] || []);
+    if (pendComp.length) {
+      const fmtCOP = v => Number(v||0).toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0});
+      compHtml = `<div style="background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.25);border-radius:12px;padding:14px 18px;margin-bottom:16px;">
+        <div style="font-size:.72rem;font-weight:800;color:#fbbf24;margin-bottom:10px;text-transform:uppercase;letter-spacing:.8px;">
+          <i class="fas fa-receipt" style="margin-right:6px;"></i>Comprobantes pendientes de verificación (${pendComp.length})
+        </div>
+        ${pendComp.map(p => `<div style="background:rgba(0,0,0,.2);border-radius:9px;padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:160px;">
+            <div style="font-size:.78rem;font-weight:700;">#${esc(p.codigo||p.id.slice(0,8))} — ${esc(p.nombre_paciente||'')}</div>
+            <div style="font-size:.7rem;color:var(--muted);">${esc(p.cotizacion_fab_nota||p.servicio||'—')} · <strong style="color:#fbbf24;">${fmtCOP(p.cotizacion_fab_monto)}</strong></div>
+          </div>
+          ${p.html_diseno_url?`<a href="${location.origin}/revision-diseno?id=${esc(p.id)}" target="_blank" class="btn btn-dis" style="font-size:.65rem;padding:4px 9px;"><i class="fas fa-cube"></i> Ver diseño</a>`:''}
+          <button class="btn btn-grn" style="font-size:.68rem;padding:5px 11px;" onclick="verificarPagoComp('${esc(p.id)}','${dept}')">
+            <i class="fas fa-check"></i> Confirmar pago recibido
+          </button>
+        </div>`).join('')}
+      </div>`;
+    }
+  }
+
+  main.innerHTML = timerHtml + compHtml + `<div class="kanban ${numCols}">${colsHtml}</div>`;
 }
 
 function timerHTML(dept, list, cfg) {
@@ -363,6 +459,8 @@ function cardHTML(p, colId, dept) {
 
   return `<div class="caso-card" style="${hrs > cfg.timerHrs.critico ? 'border-color:rgba(239,68,68,.4);' : ''}">
     ${fromDesign ? `<div class="card-badge" style="background:rgba(0,210,255,.1);color:#00d2ff;border:1px solid rgba(0,210,255,.25);">✏️ Viene de Diseño</div>` : ''}
+    ${p.fabricacion_solicitada && !p.fabricacion_pagada ? `<div class="card-badge" style="background:rgba(251,146,60,.1);color:#fb923c;border:1px solid rgba(251,146,60,.3);">⚙️ Fabricación solicitada — verificar pago</div>` : ''}
+    ${p.fabricacion_pagada ? `<div class="card-badge" style="background:rgba(0,255,65,.1);color:#00FF41;border:1px solid rgba(0,255,65,.25);">✅ Fabricación confirmada</div>` : ''}
     <div class="card-timer ${tc}"><i class="fas fa-clock" style="margin-right:3px;"></i>${tl}</div>
     <div class="caso-id">#${esc(p.codigo)||p.id.slice(0,8)}</div>
     <div class="caso-nombre">${esc(p.nombre_paciente)||'Sin nombre'}</div>
@@ -373,6 +471,13 @@ function cardHTML(p, colId, dept) {
       ${p.observaciones?'<br><span style="color:#D4AF37;">📝 '+esc(p.observaciones.slice(0,60))+'</span>':''}
     </div>
     <div class="caso-actions">${actions}</div>
+    ${p.html_diseno_url && dept !== 'diseno' ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <a href="${location.origin}/revision-diseno?id=${esc(p.id)}" target="_blank" class="btn btn-dis" style="font-size:.65rem;padding:4px 9px;">
+        <i class="fas fa-cube"></i> Ver diseño aprobado
+      </a>
+      ${(p.stl_urls||[]).length ? `<span style="font-size:.64rem;color:var(--muted);">${p.stl_urls.length} STL</span>` : ''}
+      ${p.construinfo_url ? `<span style="font-size:.64rem;color:var(--muted);">+ construinfo</span>` : ''}
+    </div>` : ''}
   </div>`;
 }
 
@@ -392,16 +497,22 @@ async function avanzar(id, nuevoEstado, dept) {
     const pushUrl = SB_URL+'/functions/v1/send-push';
     const heads   = {'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON};
 
+    if (nuevoEstado === 'EN_DISENO' && p?.email) {
+      await fetch(pushUrl,{method:'POST',headers:heads,
+        body:JSON.stringify({email:p.email, titulo:'📋 Caso recibido en diseño',
+          cuerpo:`Hola, recibimos tu caso ${p.codigo}. Nuestro equipo de diseño CAD está trabajando en él. Te notificamos cuando esté listo para revisión.`})});
+    }
     if (nuevoEstado === 'REVISION_CLIENTE' && p?.email) {
       await fetch(pushUrl,{method:'POST',headers:heads,
         body:JSON.stringify({email:p.email, titulo:'👁 Diseño listo para revisión',
-          cuerpo:`Caso ${p.codigo} — Tu diseño está listo. Por favor revisa y aprueba.`})});
+          cuerpo:`Caso ${p.codigo} — Tu diseño está listo. Entra a revisarlo y aprobarlo.`})});
     }
     if (nuevoEstado === 'DISENO_APROBADO' && p?.email) {
-      /* Notificar al doctor */
+      /* Notificar al doctor — listo para descarga */
+      const linkRevision = location.origin+'/revision-diseno?id='+id;
       await fetch(pushUrl,{method:'POST',headers:heads,
-        body:JSON.stringify({email:p.email, titulo:'✅ Diseño aprobado — En producción',
-          cuerpo:`Caso ${p.codigo} aprobado. Pasamos a producción.`})});
+        body:JSON.stringify({email:p.email, titulo:'⬇️ Diseño aprobado — Listo para descarga',
+          cuerpo:`Caso ${p.codigo}: tus archivos STL y de construcción ya están disponibles. Descárgalos en: ${linkRevision}`})});
       /* Insertar log de transición para que el equipo de fresado lo vea */
       await sb.from('logs_incidencias').insert({
         pedido_id: id, tipo:'TRANSICION', severidad:'INFO',
@@ -471,6 +582,215 @@ async function submitQA(accion) {
   cerrarQA();
   toast(accion==='aprobar' ? '✅ Aprobado' : '🔄 Cambios marcados','ok');
   await recargar();
+}
+
+/* ── Subir Diseño ── */
+function abrirSubirDiseno(id, codigo) {
+  document.getElementById('subir-id').value = id;
+  document.getElementById('subir-sub').textContent = 'Caso #'+(codigo||id.slice(0,8));
+  ['up-html','up-stl','up-cinfo','up-fotos'].forEach(k => { document.getElementById(k).value=''; });
+  document.getElementById('up-progress').style.display = 'none';
+  document.getElementById('up-bar').style.width = '0%';
+  document.getElementById('btn-subir-ok').disabled = false;
+  document.getElementById('btn-subir-ok').innerHTML = '<i class="fas fa-upload"></i> Subir y enviar al doctor';
+  document.getElementById('modal-subir').classList.add('open');
+}
+function cerrarSubirDiseno(force) {
+  const tieneArchivos = document.getElementById('up-html')?.files?.length ||
+                        document.getElementById('up-stl')?.files?.length ||
+                        document.getElementById('up-cinfo')?.files?.length ||
+                        document.getElementById('up-fotos')?.files?.length;
+  if (!force && tieneArchivos && !confirm('¿Descartar los archivos seleccionados?')) return;
+  document.getElementById('modal-subir').classList.remove('open');
+}
+document.getElementById('modal-subir').addEventListener('click', e => { if(e.target===document.getElementById('modal-subir')) cerrarSubirDiseno(); });
+
+async function ejecutarSubida() {
+  const id      = document.getElementById('subir-id').value;
+  const htmlF   = document.getElementById('up-html').files[0];
+  const stlFs   = [...document.getElementById('up-stl').files];
+  const cinfoF  = document.getElementById('up-cinfo').files[0];
+  const fotoFs  = [...document.getElementById('up-fotos').files];
+
+  if (!htmlF) { toast('El visor HTML es obligatorio','err'); return; }
+
+  const btn = document.getElementById('btn-subir-ok');
+  btn.disabled = true;
+  const progWrap = document.getElementById('up-progress');
+  const bar  = document.getElementById('up-bar');
+  const stat = document.getElementById('up-status');
+  progWrap.style.display = 'block';
+
+  const BUCKET = 'diseno-archivos';
+  const base   = `${id}/`;
+  const total  = 1 + stlFs.length + (cinfoF?1:0) + fotoFs.length;
+  let done = 0;
+
+  const updBar = msg => {
+    done++;
+    bar.style.width = Math.round((done/total)*100)+'%';
+    stat.textContent = msg;
+  };
+
+  async function upload(path, file) {
+    const { error } = await sb.storage.from(BUCKET).upload(path, file, {upsert:true});
+    if (error) throw new Error('Error subiendo '+path+': '+error.message);
+    return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+  }
+
+  try {
+    stat.textContent = 'Subiendo HTML…';
+    const htmlUrl = await upload(base+'diseno.html', htmlF);
+    updBar('HTML OK');
+
+    const stlUrls = [];
+    for (const f of stlFs) {
+      stat.textContent = 'Subiendo STL '+f.name+'…';
+      const u = await upload(base+'stl/'+f.name, f);
+      stlUrls.push(u);
+      updBar('STL OK: '+f.name);
+    }
+
+    let cinfoUrl = null;
+    if (cinfoF) {
+      stat.textContent = 'Subiendo construinfo…';
+      cinfoUrl = await upload(base+'construinfo/'+cinfoF.name, cinfoF);
+      updBar('Construinfo OK');
+    }
+
+    const fotoUrls = [];
+    for (const f of fotoFs) {
+      stat.textContent = 'Subiendo foto '+f.name+'…';
+      const u = await upload(base+'fotos/'+f.name, f);
+      fotoUrls.push(u);
+      updBar('Foto OK');
+    }
+
+    stat.textContent = 'Actualizando caso…';
+    const updates = {
+      html_diseno_url:   htmlUrl,
+      stl_urls:          stlUrls,
+      fotos_diseno_urls: fotoUrls,
+      estado_operativo:  'REVISION_CLIENTE'
+    };
+    if (cinfoUrl) updates.construinfo_url = cinfoUrl;
+
+    const { error: updErr } = await sb.from('pedidos').update(updates).eq('id', id);
+    if (updErr) throw new Error(updErr.message);
+
+    /* Registrar en historial */
+    await sb.from('historial_diseno').insert({
+      pedido_id: id, tipo:'SUBIDA_DISENO', actor:'operario',
+      descripcion:`Diseño subido: HTML visor${stlUrls.length?' + '+stlUrls.length+' STL':''}${cinfoUrl?' + construinfo':''}${fotoUrls.length?' + '+fotoUrls.length+' foto(s)':''}`,
+      fotos_urls: fotoUrls,
+      metadata:{ html: htmlUrl, stl_count: stlUrls.length, tiene_construinfo: !!cinfoUrl }
+    }).catch(()=>{});
+
+    /* Notificar al doctor */
+    try {
+      const { data: p } = await sb.from('pedidos').select('codigo,email').eq('id',id).single();
+      if (p?.email) {
+        const link = location.origin+'/revision-diseno?id='+id;
+        await fetch(SB_URL+'/functions/v1/send-push',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON},
+          body:JSON.stringify({email:p.email,
+            titulo:'👁 Diseño listo — Caso '+p.codigo,
+            cuerpo:'Tu diseño está listo para revisión. Haz clic para ver y aprobar: '+link})
+        });
+      }
+    } catch(_) {}
+
+    cerrarSubirDiseno();
+    toast('Diseño subido ✓ — Link enviado al doctor','ok');
+    await recargar();
+  } catch(e) {
+    toast('Error: '+e.message,'err');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-upload"></i> Subir y enviar al doctor';
+  }
+}
+
+/* ── Enviar a siguiente departamento (handoff) ── */
+async function enviarASiguiente(id, dept) {
+  const LABELS = {fresado:'Fresado / Lab', impresion:'Impresión 3D', taller:'Taller'};
+  const lbl = LABELS[dept] || dept;
+  if (!confirm(`¿Enviar este caso al equipo de ${lbl}?\n\nAparecerá en su panel con los archivos STL y de construcción disponibles.`)) return;
+
+  const flujoDestino = dept === 'fresado' ? 'fresado' : dept === 'impresion' ? 'impresion' : dept;
+  const { error } = await sb.from('pedidos').update({
+    flujo:              flujoDestino,
+    departamento_actual: dept,
+    estado_operativo:  'VALIDACION_PENDIENTE'
+  }).eq('id', id);
+  if (error) { toast('Error: '+error.message,'err'); return; }
+
+  /* Historial */
+  await sb.from('historial_diseno').insert({
+    pedido_id: id, tipo:'TRANSICION', actor:'operario',
+    descripcion:`Diseño aprobado — caso enviado a ${lbl}. Archivos STL y construinfo disponibles en el panel.`
+  }).catch(()=>{});
+
+  /* Notificar al doctor */
+  try {
+    const { data: p } = await sb.from('pedidos').select('codigo,email').eq('id',id).single();
+    if (p?.email) {
+      await fetch(SB_URL+'/functions/v1/send-push',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON},
+        body:JSON.stringify({email:p.email,
+          titulo:`🏭 Caso ${p.codigo} en fabricación`,
+          cuerpo:`Tu diseño fue aprobado y el caso está en proceso con el equipo de ${lbl}. Te notificaremos cada avance.`})
+      });
+    }
+  } catch(_) {}
+
+  toast(`Caso enviado a ${lbl} ✓`,'ok');
+  await recargar();
+}
+
+/* ── Verificar comprobante de pago (operario de fabricación) ── */
+async function verificarPagoComp(id, dept) {
+  const LABELS = {fresado:'Fresado / Lab', impresion:'Impresión 3D'};
+  if (!confirm(`¿Confirmas que recibiste el pago?\n\nEl caso pasará a tu cola de ${LABELS[dept]||dept}.`)) return;
+
+  const { error } = await sb.from('pedidos').update({
+    fabricacion_pagada:    true,
+    cotizacion_fab_estado: 'confirmado',
+    departamento_actual:   dept,
+    estado_operativo:      'VALIDACION_PENDIENTE'
+  }).eq('id', id);
+  if (error) { toast('Error: '+error.message,'err'); return; }
+
+  /* Historial */
+  await sb.from('historial_diseno').insert({
+    pedido_id:id, tipo:'FAB_CONFIRMADA', actor:'operario',
+    descripcion:`Pago verificado por operario de ${LABELS[dept]||dept}. Caso ingresa a cola de producción.`
+  }).catch(()=>{});
+
+  /* Notificar al doctor */
+  try {
+    const { data: p } = await sb.from('pedidos').select('codigo,email').eq('id',id).single();
+    if (p?.email) {
+      await fetch(SB_URL+'/functions/v1/send-push',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON},
+        body:JSON.stringify({email:p.email,
+          titulo:'🏭 Pago confirmado — En fabricación',
+          cuerpo:`Tu pago fue verificado. El caso ${p.codigo} está en producción con el equipo de ${LABELS[dept]||dept}. Te notificamos cada avance.`})
+      });
+    }
+  } catch(_) {}
+
+  toast('Pago confirmado — caso en cola ✓','ok');
+  await recargar();
+}
+
+function copiarLinkRevision(id) {
+  const link = location.origin+'/revision-diseno?id='+id;
+  navigator.clipboard.writeText(link).then(() => toast('Link copiado ✓','ok')).catch(() => {
+    prompt('Copia este link para el doctor:', link);
+  });
 }
 
 /* ── Toast ── */

@@ -2229,7 +2229,8 @@
                         terminos_aceptados_at:  new Date().toISOString(),
                         user_agent:             navigator.userAgent.slice(0, 250),
                         seguro_garantia_activo: document.getElementById('seguro-garantia')?.checked || false,
-                        costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0
+                        costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0,
+                        pedido_diseno_id:       (typeof _disenoPedidoId !== 'undefined' ? _disenoPedidoId : null)
                     }]).then(({ error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido no guardado en BD:', _e.message);
                     });

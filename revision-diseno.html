@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#D946A6">
+<meta name="robots" content="noindex,nofollow">
+<title>Revisión de Diseño — PRODIGY Lab Dental</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#050505;--card:#0d1520;--gold:#D4AF37;--mg:#D946A6;--cyan:#00d2ff;--neon:#00FF41;
+  --text:#f8fafc;--muted:#94a3b8;--border:rgba(255,255,255,.08);}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+
+/* TOP BAR */
+.topbar{background:#050e1a;border-bottom:1px solid var(--border);padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  position:sticky;top:0;z-index:100;}
+.topbar-brand{font-size:.95rem;font-weight:900;letter-spacing:2px;color:var(--mg);}
+.topbar-brand span{color:var(--gold);}
+.topbar-sub{font-size:.72rem;color:var(--muted);margin-top:2px;}
+
+/* LAYOUT */
+.wrap{max-width:1200px;margin:0 auto;padding:28px 20px 80px;}
+
+/* CASE HEADER */
+.case-header{background:linear-gradient(135deg,rgba(212,175,55,.1),rgba(0,210,255,.06));
+  border:1px solid rgba(212,175,55,.3);border-radius:20px;padding:26px 30px;margin-bottom:20px;}
+.case-codigo{font-size:.72rem;font-weight:800;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.case-nombre{font-size:clamp(1.4rem,3vw,2rem);font-weight:900;color:var(--text);margin-bottom:10px;}
+.case-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:100px;
+  padding:5px 15px;font-size:.75rem;color:var(--muted);}
+.pill i{color:var(--gold);margin-right:5px;}
+.pill.ok{background:rgba(0,255,65,.08);border-color:rgba(0,255,65,.3);color:var(--neon);}
+
+/* BANNERS */
+.banner{border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;
+  gap:12px;font-size:.85rem;line-height:1.6;}
+.banner i{font-size:1.1rem;flex-shrink:0;margin-top:2px;}
+.b-rev{background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.3);color:#fde68a;}
+.b-ok{background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.3);color:#4ade80;}
+.b-cambio{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.3);color:#fb923c;}
+.b-wait{background:rgba(148,163,184,.05);border:1px solid rgba(148,163,184,.15);color:var(--muted);}
+.b-warn{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.2);color:#fca5a5;}
+
+/* CHANGES COUNTER */
+.cambios-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:13px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.cambios-label{font-size:.78rem;color:var(--muted);}
+.cambios-dots{display:flex;gap:7px;}
+.c-dot{width:20px;height:20px;border-radius:50%;border:2px solid;transition:.3s;display:flex;align-items:center;justify-content:center;font-size:.5rem;}
+.c-dot.avail{border-color:rgba(0,255,65,.5);background:transparent;}
+.c-dot.used{background:var(--mg);border-color:var(--mg);}
+.cambios-txt{font-size:.78rem;font-weight:700;}
+.ct-ok{color:var(--neon);}
+.ct-warn{color:#fbbf24;}
+.ct-over{color:var(--mg);}
+
+/* SECTION */
+.sec{max-width:1200px;margin:0 auto;padding:0 0 32px;}
+.sec-title{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:700;color:var(--gold);
+  margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(212,175,55,.2);}
+.sec-title i{color:var(--mg);}
+
+/* VIEWER — igual que portafolio */
+.viewer-wrap{border-radius:16px;overflow:hidden;border:2px solid var(--gold);background:#000;
+  height:600px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 30px rgba(212,175,55,.35),0 0 60px rgba(212,175,55,.12),inset 0 0 30px rgba(0,0,0,.6);}
+.viewer-wrap iframe,.viewer-wrap video{width:100%;height:100%;border:none;}
+.viewer-empty{text-align:center;color:var(--muted);padding:40px;}
+.viewer-empty i{font-size:3rem;color:rgba(212,175,55,.3);display:block;margin-bottom:14px;}
+
+/* GALLERY — igual que portafolio */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;}
+.gallery-item{position:relative;height:200px;border-radius:14px;overflow:hidden;cursor:pointer;
+  border:2px solid rgba(212,175,55,.2);transition:all .3s;background:var(--card);}
+.gallery-item:hover{transform:scale(1.04);border-color:var(--gold);box-shadow:0 10px 30px rgba(212,175,55,.3);}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.gallery-num{position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.75);color:var(--gold);
+  font-size:.8rem;font-weight:800;padding:3px 10px;border-radius:100px;border:1px solid rgba(212,175,55,.4);}
+.gallery-wm{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+.gallery-wm span{color:rgba(255,215,0,.06);font-size:1.1rem;font-weight:900;transform:rotate(-35deg);white-space:nowrap;}
+@media(max-width:600px){
+  .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));}
+  .actions-row{flex-direction:column;}.btn{justify-content:center;}
+  .modal-box{max-width:calc(100vw - 32px);padding:20px 18px;}
+  .viewer-wrap{height:340px;}
+  .lb-prev{left:4px;width:44px;height:44px;font-size:1.1rem;}
+  .lb-next{right:4px;width:44px;height:44px;font-size:1.1rem;}
+}
+
+/* LIGHTBOX — igual que portafolio */
+.lightbox{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.96);display:none;
+  align-items:center;justify-content:center;}
+.lightbox.active{display:flex;}
+.lightbox img{max-width:90%;max-height:85vh;object-fit:contain;border-radius:10px;
+  border:3px solid var(--gold);box-shadow:0 0 50px rgba(212,175,55,.4),0 0 100px rgba(212,175,55,.15);}
+.lb-close{position:fixed;top:20px;right:24px;font-size:1.5rem;cursor:pointer;color:var(--gold);
+  background:rgba(0,0,0,.7);border:2px solid var(--gold);width:50px;height:50px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;z-index:10000;transition:all .3s;}
+.lb-close:hover{transform:scale(1.1) rotate(90deg);background:rgba(212,175,55,.2);}
+.lb-prev,.lb-next{position:fixed;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.7);
+  border:2px solid var(--gold);color:var(--gold);font-size:1.4rem;width:60px;height:60px;
+  cursor:pointer;border-radius:50%;z-index:10000;transition:all .3s;display:flex;align-items:center;justify-content:center;}
+.lb-prev{left:16px;}.lb-next{right:16px;}
+.lb-prev:hover,.lb-next:hover{background:var(--gold);color:#000;transform:translateY(-50%) scale(1.1);}
+.lb-counter{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);
+  border:2px solid var(--gold);color:var(--gold);font-size:.88rem;font-weight:800;padding:8px 24px;
+  border-radius:100px;letter-spacing:.05em;}
+
+/* ACTIONS PANEL */
+.actions-panel{background:var(--card);border:1px solid rgba(212,175,55,.2);border-radius:16px;
+  padding:22px 26px;margin-bottom:24px;}
+.actions-panel h3{font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:5px;}
+.actions-panel p{font-size:.82rem;color:var(--muted);margin-bottom:16px;line-height:1.6;}
+.actions-row{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* NOTE FORM */
+.note-form{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:11px;padding:16px;margin-top:12px;}
+.note-form textarea{width:100%;background:#0f1c2e;border:1px solid rgba(255,255,255,.08);border-radius:8px;
+  color:var(--text);font-size:.85rem;padding:11px;resize:vertical;min-height:80px;font-family:inherit;margin-bottom:10px;}
+.note-form textarea:focus{outline:none;border-color:rgba(212,175,55,.4);}
+
+/* NEXT STEPS (fabricación) */
+.next-panel{background:linear-gradient(135deg,rgba(0,210,255,.06),rgba(212,175,55,.06));
+  border:1px solid rgba(0,210,255,.2);border-radius:16px;padding:22px 26px;margin-bottom:24px;}
+.next-panel h3{font-size:.95rem;font-weight:800;color:var(--cyan);margin-bottom:6px;}
+.next-panel p{font-size:.82rem;color:var(--muted);margin-bottom:16px;line-height:1.6;}
+.fab-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:580px){.fab-opts{grid-template-columns:1fr;}}
+.fab-opt{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;
+  padding:16px;cursor:pointer;transition:.2s;text-align:center;}
+.fab-opt:hover{border-color:var(--gold);background:rgba(212,175,55,.06);}
+.fab-opt i{font-size:1.6rem;display:block;margin-bottom:7px;}
+.fab-opt strong{font-size:.85rem;font-weight:800;display:block;margin-bottom:4px;}
+.fab-opt span{font-size:.75rem;color:var(--muted);}
+
+/* DOWNLOADS */
+.dl-panel{background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.2);border-radius:16px;
+  padding:20px 24px;margin-bottom:24px;}
+.dl-locked{background:rgba(148,163,184,.04);border:1px solid rgba(148,163,184,.1);border-radius:14px;
+  padding:20px 24px;margin-bottom:24px;text-align:center;color:var(--muted);}
+.dl-locked i{font-size:2rem;display:block;margin-bottom:8px;opacity:.3;}
+.dl-item{display:flex;align-items:center;gap:10px;padding:11px 14px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;margin-bottom:8px;}
+.dl-item:last-child{margin-bottom:0;}
+.dl-item i{color:var(--neon);flex-shrink:0;}
+.dl-name{flex:1;font-size:.82rem;word-break:break-all;}
+.dl-ext{font-size:.68rem;color:var(--muted);background:rgba(255,255,255,.06);padding:2px 7px;border-radius:4px;text-transform:uppercase;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:9px;
+  font-size:.83rem;font-weight:700;border:1px solid;cursor:pointer;transition:.2s;background:transparent;}
+.btn:hover{transform:translateY(-1px);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.btn-gold{color:var(--gold);border-color:rgba(212,175,55,.4);}
+.btn-gold:hover{background:rgba(212,175,55,.1);}
+.btn-mg{background:var(--mg);color:#fff;border-color:var(--mg);}
+.btn-mg:hover{background:#c4389a;}
+.btn-grn{color:var(--neon);border-color:rgba(0,255,65,.35);}
+.btn-grn:hover{background:rgba(0,255,65,.08);}
+.btn-dis{color:var(--cyan);border-color:rgba(0,210,255,.35);}
+.btn-dis:hover{background:rgba(0,210,255,.08);}
+.btn-red{color:#ef4444;border-color:rgba(239,68,68,.35);}
+.btn-red:hover{background:rgba(239,68,68,.08);}
+.btn-sm{padding:7px 13px;font-size:.75rem;}
+.btn-wa{background:#25D366;color:#fff;border-color:#25D366;}
+.btn-wa:hover{background:#1da851;}
+
+/* HISTORIAL TIMELINE */
+.timeline{position:relative;padding-left:28px;}
+.timeline::before{content:'';position:absolute;left:9px;top:0;bottom:0;width:2px;background:var(--border);}
+.tl-item{position:relative;margin-bottom:16px;}
+.tl-dot{position:absolute;left:-23px;top:8px;width:16px;height:16px;border-radius:50%;border:2px solid;
+  background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.48rem;}
+.tl-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 16px;}
+.tl-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px;}
+.tl-tipo{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;}
+.tl-actor{font-size:.7rem;color:var(--muted);}
+.tl-fecha{font-size:.67rem;color:var(--muted);margin-left:auto;}
+.tl-desc{font-size:.83rem;color:var(--text);line-height:1.6;}
+.tl-fotos{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.tl-foto{width:60px;height:60px;border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,.08);cursor:pointer;}
+.tl-foto img{width:100%;height:100%;object-fit:cover;}
+.tl-meta{font-size:.71rem;color:var(--muted);margin-top:4px;}
+
+/* REPORT */
+.report-panel{background:var(--card);border:1px solid rgba(212,175,55,.2);border-radius:16px;padding:22px 26px;margin-bottom:24px;}
+.report-table{width:100%;border-collapse:collapse;font-size:.83rem;margin-top:10px;}
+.report-table th{text-align:left;color:var(--muted);font-size:.7rem;text-transform:uppercase;
+  letter-spacing:.8px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.06);}
+.report-table td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+.report-table tr:last-child td{border-bottom:none;}
+
+/* MODALES */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:1001;display:none;
+  align-items:center;justify-content:center;padding:16px;}
+.modal-ov.open{display:flex;}
+.modal-box{background:#0a1626;border:1px solid rgba(212,175,55,.25);border-radius:18px;
+  padding:28px 26px;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;}
+.modal-box h3{font-size:1.1rem;font-weight:800;color:var(--gold);margin-bottom:7px;}
+.modal-sub{font-size:.82rem;color:var(--muted);margin-bottom:16px;line-height:1.6;}
+.modal-lbl{font-size:.72rem;font-weight:700;color:var(--mg);display:block;margin:12px 0 5px;}
+.modal-input{width:100%;background:#0f1c2e;border:1px solid rgba(255,255,255,.1);border-radius:9px;
+  color:var(--text);font-size:.85rem;padding:11px 14px;resize:vertical;font-family:inherit;}
+.modal-input:focus{outline:none;border-color:rgba(212,175,55,.4);}
+textarea.modal-input{min-height:100px;}
+.modal-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:18px;}
+.disc-list{list-style:none;margin:12px 0;}
+.disc-list li{font-size:.82rem;color:var(--muted);padding:7px 0;
+  border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:9px;line-height:1.55;}
+.disc-list li:last-child{border-bottom:none;}
+.disc-list li i{color:var(--gold);flex-shrink:0;margin-top:2px;}
+.up-prog{display:none;margin-top:10px;}
+.up-track{background:rgba(255,255,255,.06);border-radius:5px;height:5px;overflow:hidden;}
+.up-bar{height:100%;background:var(--mg);width:0%;transition:width .3s;border-radius:5px;}
+.up-stat{font-size:.71rem;color:var(--muted);text-align:center;margin-top:4px;}
+
+/* PAYMENT MODAL */
+.pago-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.pago-tab{padding:7px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:transparent;
+  color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;transition:.2s;}
+.pago-tab.active{background:rgba(212,175,55,.15);border-color:rgba(212,175,55,.4);color:var(--gold);}
+.pago-panel{display:none;}.pago-panel.active{display:block;}
+.pago-info{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;
+  padding:14px 16px;margin-bottom:14px;}
+.pago-info .row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);font-size:.82rem;}
+.pago-info .row:last-child{border-bottom:none;}
+.pago-info .lbl{color:var(--muted);}
+.pago-info .val{font-weight:700;color:var(--text);}
+.pago-info .val.copy{cursor:pointer;color:var(--gold);text-decoration:underline dotted;}
+.precio-box{background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(0,255,65,.06));
+  border:1px solid rgba(212,175,60,.3);border-radius:12px;padding:16px 20px;margin-bottom:14px;text-align:center;}
+.precio-box .label{font-size:.72rem;color:var(--muted);margin-bottom:4px;}
+.precio-box .monto{font-size:2rem;font-weight:900;color:var(--gold);}
+.precio-box .desc{font-size:.75rem;color:var(--muted);margin-top:4px;}
+.svc-sel{width:100%;background:#0f1c2e;border:1px solid rgba(255,255,255,.1);border-radius:9px;
+  color:var(--text);font-size:.85rem;padding:10px 14px;margin-bottom:14px;cursor:pointer;}
+.svc-sel:focus{outline:none;border-color:rgba(212,175,55,.4);}
+.drop-zone{border:2px dashed rgba(212,175,55,.3);border-radius:10px;padding:20px;text-align:center;
+  cursor:pointer;transition:.2s;margin-bottom:10px;}
+.drop-zone:hover,.drop-zone.over{border-color:var(--gold);background:rgba(212,175,55,.06);}
+.drop-zone i{font-size:1.8rem;color:rgba(212,175,55,.4);display:block;margin-bottom:8px;}
+.drop-zone p{font-size:.8rem;color:var(--muted);}
+.preview-img{width:60px;height:60px;border-radius:7px;object-fit:cover;border:1px solid rgba(255,255,255,.1);}
+/* PRINT */
+@media print{
+  .topbar,.actions-panel,.next-panel,.modal-ov,.lightbox,.btn,.dl-locked,.no-print{display:none!important;}
+  body{background:#fff;color:#000;}
+  .case-header,.tl-card,.report-panel,.dl-panel,.banner{border:1px solid #ccc;background:#fff;}
+  .banner{color:#444;}
+  .sec-title,.case-codigo,.tl-tipo{color:#555;}
+  .case-nombre,.tl-desc{color:#111;}
+  .timeline::before{background:#ddd;}
+  .tl-dot{background:#fff;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-brand">⚙ PRODIGY <span>Lab Dental</span></div>
+    <div class="topbar-sub">Portal de revisión de diseño CAD</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;" class="no-print">
+    <button class="btn btn-gold btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Informe PDF</button>
+    <a href="/" style="font-size:.75rem;color:var(--muted);padding:6px;"><i class="fas fa-home"></i></a>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="loading" style="text-align:center;padding:80px 24px;color:var(--muted);">
+    <i class="fas fa-circle-notch fa-spin" style="font-size:2rem;display:block;margin-bottom:12px;color:var(--gold);"></i>
+    Cargando caso…
+  </div>
+  <div id="content" style="display:none;"></div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-close" onclick="closeLb()" role="button" aria-label="Cerrar galería"><i class="fas fa-times"></i></div>
+  <div class="lb-prev" onclick="lbNav(-1)" role="button" aria-label="Imagen anterior"><i class="fas fa-chevron-left"></i></div>
+  <img id="lb-img" src="" alt="Imagen de diseño">
+  <div class="lb-next" onclick="lbNav(1)" role="button" aria-label="Imagen siguiente"><i class="fas fa-chevron-right"></i></div>
+  <div class="lb-counter" id="lb-counter" aria-live="polite"></div>
+</div>
+
+<!-- Modal: Solicitar cambio -->
+<div class="modal-ov" id="modal-cambio">
+  <div class="modal-box">
+    <h3><i class="fas fa-pencil-alt" style="margin-right:8px;color:var(--mg);"></i>Solicitar cambio</h3>
+    <p id="cambio-costo-msg" class="modal-sub"></p>
+    <label class="modal-lbl"><i class="fas fa-comment-alt" style="margin-right:4px;"></i>Descripción del cambio <span style="color:#ef4444;">*</span></label>
+    <textarea class="modal-input" id="cambio-texto" placeholder="Ej: Aumentar grosor mesial, ajustar punto de contacto distal, modificar cúspide palatina…"></textarea>
+    <label class="modal-lbl"><i class="fas fa-camera" style="margin-right:4px;"></i>Fotos de referencia (opcional)</label>
+    <input type="file" id="cambio-fotos" accept="image/*" multiple class="modal-input" style="cursor:pointer;padding:9px;">
+    <div class="up-prog" id="cambio-prog">
+      <div class="up-track"><div class="up-bar" id="cambio-bar"></div></div>
+      <div class="up-stat" id="cambio-stat"></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-gold" onclick="cerrarCambio()"><i class="fas fa-times"></i> Cancelar</button>
+      <button class="btn btn-mg" id="btn-cambio-ok" onclick="enviarCambio()"><i class="fas fa-paper-plane"></i> Enviar solicitud</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Disclaimer aprobación -->
+<div class="modal-ov" id="modal-disc">
+  <div class="modal-box">
+    <h3><i class="fas fa-file-signature" style="margin-right:8px;color:var(--gold);"></i>Confirmar aprobación</h3>
+    <p class="modal-sub">Lee con atención antes de confirmar:</p>
+    <ul class="disc-list">
+      <li><i class="fas fa-check-circle"></i><span>Confirmas haber revisado el diseño CAD y estar conforme con el resultado.</span></li>
+      <li><i class="fas fa-check-circle"></i><span>Esta aprobación <strong style="color:var(--text);">autoriza a PRODIGY a proceder con la fabricación</strong> del caso.</span></li>
+      <li><i class="fas fa-check-circle"></i><span>La fabricación se realizará exactamente según el diseño aprobado. No nos responsabilizamos por diferencias si se solicitan cambios posteriores.</span></li>
+      <li><i class="fas fa-exclamation-triangle" style="color:#fbbf24;"></i><span>Tus <strong style="color:var(--text);">2 cambios incluidos</strong> aplican antes de esta descarga. Cualquier cambio posterior tiene costo de nuevo diseño.</span></li>
+      <li><i class="fas fa-clock" style="color:#fb923c;"></i><span>Te recomendamos <strong style="color:var(--text);">descargar y guardar tus archivos</strong>. Por capacidad de plataforma, se conservan por tiempo limitado.</span></li>
+    </ul>
+    <div class="modal-btns">
+      <button class="btn btn-gold" onclick="cerrarDisc()"><i class="fas fa-arrow-left"></i> Volver a revisar</button>
+      <button class="btn btn-mg" id="btn-aprobar-ok" onclick="confirmarAprobacion()"><i class="fas fa-signature"></i> Confirmar y aprobar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Pago de fabricación -->
+<div class="modal-ov" id="modal-pago">
+  <div class="modal-box" style="max-width:580px;">
+    <h3><i class="fas fa-industry" style="margin-right:8px;color:var(--gold);"></i>Solicitar fabricación</h3>
+    <p id="pago-tipo-lbl" class="modal-sub"></p>
+
+    <!-- Selector de servicio con precio automático -->
+    <label class="modal-lbl"><i class="fas fa-list" style="margin-right:4px;"></i>Selecciona el servicio</label>
+    <select class="svc-sel" id="pago-svc" onchange="onSvcChange()">
+      <option value="">Cargando servicios…</option>
+    </select>
+
+    <!-- Precio automático desde catálogo -->
+    <div class="precio-box" id="precio-box" style="display:none;">
+      <div class="label">Valor del servicio</div>
+      <div class="monto" id="precio-monto">—</div>
+      <div class="desc" id="precio-desc"></div>
+    </div>
+
+    <!-- Tabs de métodos de pago -->
+    <label class="modal-lbl"><i class="fas fa-credit-card" style="margin-right:4px;"></i>Método de pago</label>
+    <div class="pago-tabs">
+      <button class="pago-tab active" onclick="switchPago('nequi',this)">📱 Nequi</button>
+      <button class="pago-tab" onclick="switchPago('daviplata',this)">💙 Daviplata</button>
+      <button class="pago-tab" onclick="switchPago('transferencia',this)">🏦 Transferencia</button>
+      <button class="pago-tab" onclick="switchPago('efectivo',this)">💵 Efectivo/Otro</button>
+    </div>
+
+    <div class="pago-panel active" id="pago-nequi">
+      <div class="pago-info">
+        <div class="row"><span class="lbl">Número Nequi</span>
+          <span class="val copy" onclick="copiarTexto(PAGOS.nequi.num,this)">${'<span id=\\'nq-num\\'>'+''+'</span>'}</span></div>
+        <div class="row"><span class="lbl">Titular</span><span class="val" id="nq-tit"></span></div>
+      </div>
+    </div>
+    <div class="pago-panel" id="pago-daviplata">
+      <div class="pago-info">
+        <div class="row"><span class="lbl">Número Daviplata</span>
+          <span class="val copy" onclick="copiarTexto(PAGOS.daviplata.num,this)" id="dp-num"></span></div>
+        <div class="row"><span class="lbl">Titular</span><span class="val" id="dp-tit"></span></div>
+      </div>
+    </div>
+    <div class="pago-panel" id="pago-transferencia">
+      <div class="pago-info">
+        <div class="row"><span class="lbl">Banco</span><span class="val" id="tr-banco"></span></div>
+        <div class="row"><span class="lbl">Tipo</span><span class="val" id="tr-tipo"></span></div>
+        <div class="row"><span class="lbl">Número de cuenta</span>
+          <span class="val copy" onclick="copiarTexto(PAGOS.transferencia.num,this)" id="tr-num"></span></div>
+        <div class="row"><span class="lbl">Titular</span><span class="val" id="tr-tit"></span></div>
+        <div class="row"><span class="lbl">NIT / Cédula</span><span class="val" id="tr-nit"></span></div>
+      </div>
+    </div>
+    <div class="pago-panel" id="pago-efectivo">
+      <div class="pago-info" style="font-size:.82rem;color:var(--muted);line-height:1.6;">
+        <p><i class="fas fa-info-circle" style="color:var(--gold);margin-right:6px;"></i>
+        Para pago en efectivo u otro método, contáctanos directamente por WhatsApp para coordinar.</p>
+        <a class="btn btn-wa btn-sm" id="wa-efectivo" href="#" target="_blank" rel="noopener noreferrer" style="margin-top:10px;display:inline-flex;">
+          <i class="fab fa-whatsapp"></i> Coordinar pago por WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <!-- Subir comprobante -->
+    <label class="modal-lbl" style="margin-top:14px;"><i class="fas fa-receipt" style="margin-right:4px;"></i>Adjunta tu comprobante de pago <span style="color:#ef4444;">*</span></label>
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('comp-file').click()">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <p>Toca para subir la foto o captura del comprobante</p>
+      <p style="font-size:.7rem;margin-top:4px;">JPG, PNG, PDF — máx 10 MB</p>
+    </div>
+    <input type="file" id="comp-file" accept="image/*,.pdf" style="display:none;" onchange="onComprobanteSelected(this)">
+    <div id="comp-preview" style="display:none;display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+      <img class="preview-img" id="comp-img" src="" alt="">
+      <span id="comp-name" style="font-size:.78rem;color:var(--muted);"></span>
+      <button onclick="quitarComprobante()" style="margin-left:auto;background:none;border:none;color:#ef4444;cursor:pointer;font-size:.9rem;">✕</button>
+    </div>
+
+    <div class="up-prog" id="pago-prog">
+      <div class="up-track"><div class="up-bar" id="pago-bar"></div></div>
+      <div class="up-stat" id="pago-stat"></div>
+    </div>
+
+    <div class="modal-btns">
+      <button class="btn btn-gold" onclick="cerrarPago()"><i class="fas fa-times"></i> Cancelar</button>
+      <button class="btn btn-mg" id="btn-pago-ok" onclick="enviarComprobante()" disabled>
+        <i class="fas fa-paper-plane"></i> Enviar comprobante y solicitar
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SB_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const sb  = window.supabase.createClient(SB_URL, SB_ANON);
+const esc = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmt = d => d ? new Date(d).toLocaleString('es',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+const WA_NUM = '573000000000'; // ← Reemplazar con número WA real de PRODIGY
+
+/* ── DATOS DE PAGO — actualizar con información real ── */
+const PAGOS = {
+  nequi:       { num: '300 000 0000', titular: 'PRODIGY Lab Dental SAS' },
+  daviplata:   { num: '300 000 0000', titular: 'PRODIGY Lab Dental SAS' },
+  transferencia: {
+    banco:    'Bancolombia',
+    tipo:     'Cuenta de Ahorros',
+    num:      '000-000000-00',
+    titular:  'PRODIGY Lab Dental SAS',
+    nit:      'XX.XXX.XXX-X'
+  }
+};
+
+let _p = null;
+let _hist = [];
+let lbImgs = [], lbIdx = 0;
+let _esInternacional = false;
+const PID = new URLSearchParams(location.search).get('id');
+
+/* ─── DETECCIÓN DE PAÍS ─── */
+async function detectarPais() {
+  /* 1. Si el pedido ya tiene país guardado, usarlo */
+  if (_p.pais && _p.pais !== 'CO') { _esInternacional = true; return; }
+  if (_p.pais === 'CO')            { _esInternacional = false; return; }
+
+  /* 2. Detectar por IP con timeout de 3 s */
+  try {
+    const ctrl = new AbortController();
+    const tid  = setTimeout(() => ctrl.abort(), 3000);
+    const resp = await fetch('https://api.country.is/', { signal: ctrl.signal });
+    clearTimeout(tid);
+    const geo  = await resp.json();
+    _esInternacional = !!(geo.country && geo.country !== 'CO');
+
+    /* Guardar en el pedido para próximas visitas (best-effort) */
+    if (geo.country) {
+      sb.from('pedidos').update({ pais: geo.country }).eq('id', PID).then(() => {});
+    }
+  } catch(_) {
+    _esInternacional = false; /* por defecto Colombia si falla la detección */
+  }
+}
+
+/* ─── INIT ─── */
+(async function init() {
+  if (!PID) { showErr('Enlace inválido.'); return; }
+  const { data, error } = await sb.from('pedidos')
+    .select('id,codigo,nombre_paciente,servicio,material,color_vita,flujo,estado_operativo,html_diseno_url,stl_urls,construinfo_url,fotos_diseno_urls,cambios_count,diseno_aprobado_at,diseno_disclaimer,fabricacion_solicitada,fabricacion_pagada,fabricacion_tipo,servicios_pagados,departamento_actual,pais,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_nota')
+    .eq('id', PID).single();
+  if (error || !data || !data.html_diseno_url) {
+    showErr('El enlace no es válido o el diseño aún no está disponible. Espera la notificación del equipo.');
+    return;
+  }
+  _p = data;
+  const { data: hist } = await sb.from('historial_diseno').select('*').eq('pedido_id',PID).order('created_at',{ascending:true});
+  _hist = hist || [];
+  await detectarPais();
+  renderPage();
+})();
+
+function showErr(msg) {
+  document.getElementById('loading').innerHTML = `
+    <i class="fas fa-exclamation-circle" style="font-size:2rem;display:block;margin-bottom:10px;color:#ef4444;"></i>
+    <p style="font-size:.9rem;color:#94a3b8;max-width:400px;margin:0 auto;">${msg}</p>
+    <a href="/" style="display:inline-block;margin-top:16px;color:var(--gold);font-size:.82rem;">← Inicio</a>`;
+}
+
+/* ─── RENDER ─── */
+function renderPage() {
+  const p = _p;
+  const isAprobado = !!p.diseno_disclaimer;
+  const isCambios  = p.estado_operativo === 'CAMBIOS_SOLICITADOS';
+  const isRevision = p.estado_operativo === 'REVISION_CLIENTE';
+  const yaDescargo = _hist.some(h => h.tipo === 'DESCARGA');
+  const cc = p.cambios_count || 0;
+  /* ¿Incluye fabricación en servicios_pagados? */
+  const svcs = p.servicios_pagados || [p.flujo || 'diseno'];
+  const tieneFab = svcs.some(s => ['fresado','impresion','lab'].includes(s));
+  const soloDiseno = !tieneFab;
+  const labsFab = svcs.filter(s => s !== 'diseno'); // ['fresado'] | ['impresion'] | ['fresado','impresion']
+
+  /* Banner */
+  let banner = '';
+  if (isAprobado) {
+    banner = `<div class="banner b-ok"><i class="fas fa-check-circle"></i>
+      <div><strong>Diseño aprobado${p.diseno_aprobado_at ? ' — '+fmt(p.diseno_aprobado_at):''}</strong>. Los archivos están listos para descarga.</div></div>`;
+  } else if (isCambios) {
+    banner = `<div class="banner b-cambio"><i class="fas fa-cog fa-spin"></i>
+      <div><strong>Cambio en proceso.</strong> Nuestro equipo está trabajando en tu solicitud. Te notificaremos cuando esté listo.</div></div>`;
+  } else if (isRevision) {
+    banner = `<div class="banner b-rev"><i class="fas fa-eye"></i>
+      <div><strong>Diseño listo para revisión.</strong> Revisa el visor 3D y las imágenes. Aprueba cuando estés conforme o solicita ajustes.</div></div>`;
+  } else {
+    banner = `<div class="banner b-wait"><i class="fas fa-hourglass-half"></i>
+      <div><strong>En preparación.</strong> El equipo terminará el diseño pronto y recibirás una notificación.</div></div>`;
+  }
+
+  /* Aviso expiración */
+  const expBanner = `<div class="banner b-warn no-print">
+    <i class="fas fa-clock"></i>
+    <div><strong>Guarda tus archivos.</strong> Por capacidad de almacenamiento, los archivos se conservan por tiempo limitado tras la entrega. Descarga y guarda tu copia una vez aprobado.</div>
+  </div>`;
+
+  /* Contador cambios (solo en etapa de revisión, antes de aprobar) */
+  let cambiosWrap = '';
+  if (!isAprobado && !isCambios) {
+    const restantes = Math.max(0, 2 - cc);
+    const d0 = cc >= 1 ? 'used' : 'avail';
+    const d1 = cc >= 2 ? 'used' : 'avail';
+    const txtCls = restantes === 0 ? 'ct-over' : restantes === 1 ? 'ct-warn' : 'ct-ok';
+    const txtMsg = restantes === 0
+      ? 'Tus 2 cambios incluidos ya fueron usados — cambios adicionales tienen costo'
+      : `${restantes} cambio${restantes===1?'':'s'} incluido${restantes===1?'':'s'} restante${restantes===1?'':'s'}`;
+    cambiosWrap = `<div class="cambios-wrap no-print">
+      <span class="cambios-label"><i class="fas fa-redo" style="margin-right:5px;color:var(--gold);"></i>Cambios de diseño</span>
+      <div class="cambios-dots">
+        <div class="c-dot ${d0}" title="Cambio 1${cc>=1?' (usado)':' (disponible)'}"></div>
+        <div class="c-dot ${d1}" title="Cambio 2${cc>=2?' (usado)':' (disponible)'}"></div>
+      </div>
+      <span class="cambios-txt ${txtCls}">${txtMsg}</span>
+    </div>`;
+  }
+
+  /* Panel acciones */
+  let actionsHtml = '';
+  if (isRevision) {
+    const costMsg = cc >= 2
+      ? '⚠️ Tus 2 cambios incluidos están usados. Esta solicitud tendrá costo equivalente a un nuevo diseño. El equipo te contactará antes de proceder.'
+      : 'Incluimos hasta 2 cambios antes de descargar. A partir del 3.º, cada cambio tiene costo de nuevo diseño.';
+    actionsHtml = `<div class="actions-panel no-print">
+      <h3><i class="fas fa-tasks" style="color:var(--gold);margin-right:7px;"></i>¿Cómo se ve el diseño?</h3>
+      <p>Tómate el tiempo necesario. Si algo no está bien, solicita el ajuste con detalle. Cuando estés conforme, aprueba para que iniciemos la fabricación.</p>
+      <div class="actions-row">
+        <button class="btn btn-gold" onclick="abrirCambio()"><i class="fas fa-pencil-alt"></i> Solicitar cambio</button>
+        <button class="btn btn-mg"   onclick="abrirDisc()"><i class="fas fa-check-circle"></i> Aprobar diseño</button>
+      </div>
+    </div>`;
+  } else if (isCambios) {
+    /* FIX: estado CAMBIOS_SOLICITADOS — antes no tenía UI y el doctor quedaba sin opciones */
+    actionsHtml = `<div class="actions-panel no-print">
+      <h3><i class="fas fa-cog fa-spin" style="color:#fb923c;margin-right:7px;"></i>Cambio en proceso</h3>
+      <p>Nuestro equipo está trabajando en tu solicitud. En cuanto esté listo recibirás una notificación para que lo revises nuevamente.</p>
+      <div class="actions-row">
+        <button class="btn btn-gold" onclick="location.reload()"><i class="fas fa-sync-alt"></i> Actualizar estado</button>
+      </div>
+      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:10px;">¿Necesitas agregar algo más sobre tu solicitud?</p>
+        <div class="note-form">
+          <textarea id="nota-txt" placeholder="Comentarios adicionales para el equipo de diseño…"></textarea>
+          <input type="file" id="nota-fotos" accept="image/*" multiple style="font-size:.75rem;color:var(--muted);cursor:pointer;width:100%;margin-bottom:8px;">
+          <div class="up-prog" id="nota-prog"><div class="up-track"><div class="up-bar" id="nota-bar"></div></div><div class="up-stat" id="nota-stat"></div></div>
+          <button class="btn btn-gold btn-sm" onclick="enviarNota()"><i class="fas fa-paper-plane"></i> Enviar nota</button>
+        </div>
+      </div>
+    </div>`;
+  } else if (isAprobado) {
+    actionsHtml = `<div class="actions-panel no-print">
+      <h3><i class="fas fa-comment-dots" style="color:var(--gold);margin-right:7px;"></i>Notas adicionales</h3>
+      <p>Deja comentarios o fotos de referencia para el equipo si lo necesitas.</p>
+      <div class="note-form">
+        <textarea id="nota-txt" placeholder="Comentarios, referencias de color, notas para el laboratorio…"></textarea>
+        <input type="file" id="nota-fotos" accept="image/*" multiple style="font-size:.75rem;color:var(--muted);cursor:pointer;width:100%;margin-bottom:8px;">
+        <div class="up-prog" id="nota-prog"><div class="up-track"><div class="up-bar" id="nota-bar"></div></div><div class="up-stat" id="nota-stat"></div></div>
+        <button class="btn btn-gold btn-sm" onclick="enviarNota()"><i class="fas fa-paper-plane"></i> Enviar nota</button>
+      </div>
+    </div>`;
+  }
+
+  /* "¿Qué sigue?" — lógica según servicios_pagados */
+  let nextHtml = '';
+  if (isAprobado) {
+    const FAB_LBL = {fresado:'Fresado / Lab', impresion:'Impresión 3D', lab:'Fresado / Lab'};
+
+    if (tieneFab) {
+      /* CASO: cliente pagó diseño + fabricación */
+      if (p.fabricacion_pagada) {
+        /* Admin confirmó el pago → en producción */
+        const deptName = labsFab.map(d => FAB_LBL[d]||d).join(' y ');
+        nextHtml = `<div class="next-panel">
+          <h3><i class="fas fa-industry" style="margin-right:7px;color:var(--neon);"></i>En fabricación — ${deptName}</h3>
+          <p>Tu caso está en proceso de fabricación. El equipo de <strong style="color:var(--text);">${deptName}</strong> tiene los archivos y está trabajando. Te notificaremos cada avance.</p>
+        </div>`;
+      } else {
+        /* Fabricación incluida, pendiente confirmación de pago por admin */
+        const deptName = labsFab.map(d => FAB_LBL[d]||d).join(' y ');
+        nextHtml = `<div class="next-panel">
+          <h3><i class="fas fa-hourglass-half" style="margin-right:7px;color:#fbbf24;"></i>Fabricación incluida — verificando</h3>
+          <p>Tu servicio incluye <strong style="color:var(--text);">${deptName}</strong>. El equipo está confirmando el pago y asignando el caso. Recibirás una notificación en cuanto inicie producción.</p>
+          <p style="font-size:.78rem;margin-top:8px;">¿Tienes alguna duda? Escríbenos.</p>
+          <a class="btn btn-wa btn-sm" href="https://wa.me/${WA_NUM}?text=${encodeURIComponent('Hola, mi caso '+(p.codigo||'')+' fue aprobado en diseño y está pendiente de iniciar fabricación')}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;margin-top:8px;">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+        </div>`;
+      }
+    } else {
+      /* CASO: cliente pagó solo diseño */
+      if (p.fabricacion_pagada) {
+        /* Admin ya enrutó — en producción */
+        nextHtml = `<div class="next-panel">
+          <h3><i class="fas fa-industry" style="margin-right:7px;color:var(--neon);"></i>Caso en producción</h3>
+          <p>Tu pago fue confirmado y el caso está en proceso de fabricación. Te notificaremos cada avance del equipo de producción.</p>
+        </div>`;
+
+      } else if (p.cotizacion_fab_estado === 'cotizacion_enviada' && p.cotizacion_fab_monto) {
+        /* Cotización disponible — doctor debe confirmar pago */
+        const waMsg = encodeURIComponent(`Hola PRODIGY, quiero pagar la fabricación del caso ${p.codigo||''}. Monto: ${Number(p.cotizacion_fab_monto).toLocaleString('es-CO')} COP.`);
+        nextHtml = `<div class="next-panel" style="border-color:rgba(0,255,65,.3);background:rgba(0,255,65,.04);">
+          <h3><i class="fas fa-file-invoice-dollar" style="margin-right:7px;color:var(--neon);"></i>Cotización lista</h3>
+          <div style="background:rgba(0,255,65,.08);border:1px solid rgba(0,255,65,.2);border-radius:12px;padding:18px 20px;margin-bottom:14px;">
+            <div style="font-size:.72rem;color:var(--muted);margin-bottom:4px;">Valor de fabricación</div>
+            <div style="font-size:1.8rem;font-weight:900;color:var(--neon);">${Number(p.cotizacion_fab_monto).toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0})}</div>
+            ${p.cotizacion_fab_nota ? `<div style="font-size:.8rem;color:var(--muted);margin-top:8px;line-height:1.6;">${esc(p.cotizacion_fab_nota)}</div>` : ''}
+          </div>
+          <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px;">
+            Realiza el pago por transferencia, Nequi o el método que prefieras y confirma aquí. El equipo de PRODIGY verificará y tu caso pasará a producción.
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-grn" onclick="confirmarPagoDoctor()">
+              <i class="fas fa-check-circle"></i> Ya realicé el pago
+            </button>
+            <a class="btn btn-wa" href="https://wa.me/${WA_NUM}?text=${waMsg}" target="_blank" rel="noopener noreferrer">
+              <i class="fab fa-whatsapp"></i> Pagar / consultar por WhatsApp
+            </a>
+          </div>
+        </div>`;
+
+      } else if (p.cotizacion_fab_estado === 'pago_confirmado') {
+        /* Doctor confirmó, admin pendiente de verificar */
+        nextHtml = `<div class="next-panel">
+          <h3><i class="fas fa-hourglass-half" style="margin-right:7px;color:#fbbf24;"></i>Pago en verificación</h3>
+          <p>Indicaste que realizaste el pago. Nuestro equipo lo está verificando. En cuanto esté confirmado tu caso pasará a producción y recibirás una notificación.</p>
+        </div>`;
+
+      } else if (p.fabricacion_solicitada) {
+        /* Solicitó, pendiente de cotización por admin */
+        nextHtml = `<div class="next-panel">
+          <h3><i class="fas fa-hourglass-half" style="margin-right:7px;color:#fbbf24;"></i>${_esInternacional ? 'Solicitud especial — pendiente' : 'Fabricación solicitada — pendiente de cotización'}</h3>
+          <p>Recibimos tu solicitud. El equipo está preparando la cotización${_esInternacional ? ' y evaluando opciones de envío' : ''}. Te notificaremos cuando esté lista.</p>
+          <a class="btn btn-wa btn-sm" href="https://wa.me/${WA_NUM}?text=${encodeURIComponent('Hola, soy el doctor del caso '+(p.codigo||'')+', solicité fabricación y quiero saber el estado')}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;margin-top:10px;">
+            <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
+          </a>
+        </div>`;
+
+      } else if (_esInternacional) {
+        /* ── CLIENTE INTERNACIONAL: solo diseño disponible, fabricación = solicitud privada ── */
+        nextHtml = `<div class="next-panel no-print">
+          <h3><i class="fas fa-globe-americas" style="margin-right:7px;color:var(--cyan);"></i>Tu diseño está listo para descargar</h3>
+          <p style="margin-bottom:14px;">
+            Para clientes fuera de Colombia ofrecemos <strong style="color:var(--text);">servicio de diseño CAD</strong> y entrega de archivos STL.<br>
+            Los servicios de fabricación (fresado, impresión 3D, laboratorio) están disponibles de forma presencial o con <strong style="color:var(--text);">envío internacional</strong> bajo solicitud especial.
+          </p>
+          <div class="fab-opts" style="margin-bottom:14px;">
+            <div class="fab-opt" onclick="solicitarFabricacionInternacional('fresado')">
+              <i class="fas fa-cog" style="color:var(--gold);"></i>
+              <strong>Fresado / Laboratorio</strong>
+              <span>Solicitud especial + envío internacional</span>
+            </div>
+            <div class="fab-opt" onclick="solicitarFabricacionInternacional('impresion')">
+              <i class="fas fa-print" style="color:#fb923c;"></i>
+              <strong>Impresión 3D</strong>
+              <span>Solicitud especial + envío internacional</span>
+            </div>
+          </div>
+          <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:10px;padding:12px 16px;font-size:.82rem;color:var(--muted);margin-bottom:12px;">
+            <i class="fas fa-info-circle" style="color:var(--cyan);margin-right:6px;"></i>
+            Al solicitar fabricación internacional, un asesor de PRODIGY te contactará para coordinar costos de fabricación, empaque y envío a tu país.
+          </div>
+          <a class="btn btn-wa" href="https://wa.me/${WA_NUM}?text=${encodeURIComponent('Hola, soy cliente internacional. Mi caso es '+(p.codigo||p.id.slice(0,8))+'. El diseño fue aprobado y quiero consultar opciones de fabricación + envío internacional.')}" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i> Hablar con un asesor por WhatsApp
+          </a>
+        </div>`;
+
+      } else {
+        /* ── CLIENTE COLOMBIA: opciones de fabricación locales ── */
+        nextHtml = `<div class="next-panel no-print">
+          <h3><i class="fas fa-question-circle" style="margin-right:7px;"></i>¿Qué sigue con tu caso?</h3>
+          <p>Tu diseño fue aprobado. ¿Deseas que PRODIGY también realice la fabricación?</p>
+          <div class="fab-opts">
+            <div class="fab-opt" onclick="solicitarFabricacion('fresado')">
+              <i class="fas fa-cog" style="color:var(--gold);"></i>
+              <strong>Fresado / Laboratorio</strong>
+              <span>Zirconia, disilicato, PMMA y más</span>
+            </div>
+            <div class="fab-opt" onclick="solicitarFabricacion('impresion')">
+              <i class="fas fa-print" style="color:#fb923c;"></i>
+              <strong>Impresión 3D</strong>
+              <span>Guías quirúrgicas, modelos, alineadores</span>
+            </div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <span style="font-size:.78rem;color:var(--muted);">¿Ya pagaste fabricación?</span>
+            <button class="btn btn-gold btn-sm" onclick="confirmarPagoFabricacion()"><i class="fas fa-check"></i> Confirmar pago</button>
+            <a class="btn btn-wa btn-sm" href="https://wa.me/${WA_NUM}?text=${encodeURIComponent('Hola, tengo el caso '+(p.codigo||p.id.slice(0,8))+' aprobado y quiero agregar fabricación')}" target="_blank" rel="noopener noreferrer">
+              <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+          </div>
+        </div>`;
+      }
+    }
+  }
+
+  /* Galería — igual que portafolio */
+  const fotos = p.fotos_diseno_urls || [];
+  lbImgs = fotos;
+  const fotosHtml = fotos.length ? `<div class="sec">
+    <div class="sec-title"><i class="fas fa-images"></i>Imágenes del diseño</div>
+    <div class="gallery-grid">
+      ${fotos.map((u,i) => `<div class="gallery-item" onclick="openLb(${i})">
+        <img src="${esc(u)}" loading="lazy" alt="Vista ${i+1}">
+        <div class="gallery-num">${i+1} / ${fotos.length}</div>
+        <div class="gallery-wm"><span>PRODIGY Lab Dental</span></div>
+      </div>`).join('')}
+    </div>
+  </div>` : '';
+
+  /* Downloads */
+  const stlFiles = p.stl_urls || [];
+  let dlHtml = '';
+  if (isAprobado) {
+    const dlItems = [
+      ...stlFiles.map((u,i) => `<div class="dl-item">
+        <i class="fas fa-cube"></i><span class="dl-name">Archivo STL ${i+1}</span>
+        <span class="dl-ext">STL</span>
+        <a href="${esc(u)}" download onclick="onDownload('STL ${i+1}')" class="btn btn-dis btn-sm" style="margin-left:auto;">
+          <i class="fas fa-download"></i> Descargar
+        </a></div>`),
+      p.construinfo_url ? `<div class="dl-item">
+        <i class="fas fa-file-archive"></i><span class="dl-name">Parámetros de construcción</span>
+        <span class="dl-ext">ZIP</span>
+        <a href="${esc(p.construinfo_url)}" download onclick="onDownload('Construinfo')" class="btn btn-dis btn-sm" style="margin-left:auto;">
+          <i class="fas fa-download"></i> Descargar
+        </a></div>` : ''
+    ].filter(Boolean).join('');
+
+    if (dlItems) {
+      dlHtml = `<div class="sec"><div class="dl-panel">
+        <div class="sec-title"><i class="fas fa-folder-open"></i>Archivos de fabricación</div>
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;">
+          <i class="fas fa-info-circle" style="color:#fbbf24;margin-right:4px;"></i>
+          Descarga y guarda tu copia. Estos son los archivos oficiales del caso aprobado.
+        </p>${dlItems}
+      </div></div>`;
+    }
+  } else {
+    dlHtml = `<div class="sec"><div class="dl-locked">
+      <i class="fas fa-lock"></i>
+      <p style="font-size:.85rem;">Los archivos STL y de construcción se desbloquean cuando apruebes el diseño.</p>
+    </div></div>`;
+  }
+
+  /* Historial */
+  const histHtml = buildHistorial();
+
+  /* Informe final */
+  const reportHtml = isAprobado ? buildReport() : '';
+
+  document.getElementById('content').innerHTML = `
+    <div class="case-header">
+      <div class="case-codigo"><i class="fas fa-hashtag" style="margin-right:3px;"></i>${esc(p.codigo||p.id.slice(0,8))}</div>
+      <div class="case-nombre">${esc(p.nombre_paciente||'Paciente')}</div>
+      <div class="case-pills">
+        ${p.servicio   ? `<span class="pill"><i class="fas fa-tooth"></i>${esc(p.servicio)}</span>` : ''}
+        ${p.material   ? `<span class="pill"><i class="fas fa-layer-group"></i>${esc(p.material)}</span>` : ''}
+        ${p.color_vita ? `<span class="pill"><i class="fas fa-palette"></i>Color ${esc(p.color_vita)}</span>` : ''}
+        ${isAprobado   ? `<span class="pill ok"><i class="fas fa-check-circle"></i>Aprobado</span>` : ''}
+        ${_esInternacional ? `<span class="pill" style="background:rgba(0,210,255,.08);border-color:rgba(0,210,255,.25);color:var(--cyan);"><i class="fas fa-globe-americas"></i>Internacional — ${esc(p.pais||'')}</span>` : ''}
+      </div>
+    </div>
+    ${banner}
+    ${expBanner}
+    ${cambiosWrap}
+    ${actionsHtml}
+    ${nextHtml}
+    <div class="sec">
+      <div class="sec-title"><i class="fas fa-cube"></i>Visor de diseño 3D</div>
+      <div class="viewer-wrap" id="viewer-wrap">
+        <div class="viewer-empty"><i class="fas fa-circle-notch fa-spin"></i><p style="margin-top:10px;">Cargando visor…</p></div>
+      </div>
+    </div>
+    ${fotosHtml}
+    ${dlHtml}
+    <div class="sec">
+      <div class="sec-title"><i class="fas fa-history"></i>Historial del caso</div>
+      <div id="historial-wrap">${histHtml}</div>
+    </div>
+    ${reportHtml}
+  `;
+
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+  loadVisor(p.html_diseno_url);
+
+  /* Registrar descarga disponible */
+  if (isAprobado && stlFiles.length && !_hist.some(h=>h.tipo==='DESCARGA_DISPONIBLE')) {
+    logH('DESCARGA_DISPONIBLE','sistema','Archivos listos para descarga tras aprobación.');
+  }
+}
+
+/* ─── VISOR ─── */
+async function loadVisor(url) {
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('HTTP '+resp.status);
+    const html = await resp.text();
+    const wrap = document.getElementById('viewer-wrap');
+    const iframe = document.createElement('iframe');
+    iframe.sandbox = 'allow-scripts allow-same-origin';
+    iframe.style.cssText = 'width:100%;height:100%;border:none;';
+    wrap.innerHTML = '';
+    wrap.appendChild(iframe);
+    iframe.srcdoc = html;
+  } catch(_) {
+    const wrap = document.getElementById('viewer-wrap');
+    if (wrap) wrap.innerHTML = `<div class="viewer-empty"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i><p style="margin-top:10px;">Error al cargar el visor.</p></div>`;
+  }
+}
+
+/* ─── LIGHTBOX ─── */
+function openLb(idx) {
+  lbIdx = idx;
+  document.getElementById('lb-img').src = lbImgs[lbIdx];
+  document.getElementById('lb-counter').textContent = `${lbIdx+1} / ${lbImgs.length}`;
+  document.getElementById('lightbox').classList.add('active');
+}
+function lbNav(dir) {
+  lbIdx = (lbIdx + dir + lbImgs.length) % lbImgs.length;
+  document.getElementById('lb-img').src = lbImgs[lbIdx];
+  document.getElementById('lb-counter').textContent = `${lbIdx+1} / ${lbImgs.length}`;
+}
+function closeLb() { document.getElementById('lightbox').classList.remove('active'); }
+document.getElementById('lightbox').addEventListener('click', e => { if(e.target.id==='lightbox') closeLb(); });
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('active')) return;
+  if (e.key==='ArrowLeft') lbNav(-1);
+  if (e.key==='ArrowRight') lbNav(1);
+  if (e.key==='Escape') closeLb();
+});
+
+/* ─── HISTORIAL ─── */
+const TIPO_CFG = {
+  SUBIDA_DISENO:       {ic:'fas fa-upload',      col:'#00d2ff', label:'Diseño subido'},
+  CAMBIO_SOLICITADO:   {ic:'fas fa-pencil-alt',  col:'#D946A6', label:'Cambio solicitado'},
+  APROBACION:          {ic:'fas fa-check-circle',col:'#00FF41', label:'Aprobado'},
+  DESCARGA_DISPONIBLE: {ic:'fas fa-unlock',       col:'#D4AF37', label:'Archivos disponibles'},
+  DESCARGA:            {ic:'fas fa-download',    col:'#D4AF37', label:'Descargado'},
+  NOTA_DOCTOR:         {ic:'fas fa-comment',     col:'#D4AF37', label:'Nota del doctor'},
+  NOTA_OPERARIO:       {ic:'fas fa-comment-dots',col:'#00d2ff', label:'Nota del equipo'},
+  FAB_SOLICITADA:      {ic:'fas fa-cog',            col:'#fb923c', label:'Fabricación solicitada'},
+  FAB_COTIZACION:      {ic:'fas fa-file-invoice',   col:'#fbbf24', label:'Cotización enviada'},
+  FAB_PAGO_DOCTOR:     {ic:'fas fa-hand-holding-usd',col:'#4ade80',label:'Pago confirmado por cliente'},
+  FAB_CONFIRMADA:      {ic:'fas fa-check-double',   col:'#00FF41', label:'Fabricación confirmada'},
+};
+const ACTOR_LBL = {operario:'Equipo PRODIGY', doctor:'Doctor / Cliente', sistema:'Sistema'};
+
+function buildHistorial() {
+  if (!_hist.length) return `<p style="color:var(--muted);font-size:.83rem;padding:8px;">Sin eventos registrados aún.</p>`;
+  return `<div class="timeline">${_hist.map(h => {
+    const cfg = TIPO_CFG[h.tipo] || {ic:'fas fa-circle',col:'var(--muted)',label:h.tipo};
+    const fotos = (h.fotos_urls||[]).map((u,i)=>
+      `<div class="tl-foto" onclick="openLbExtra('${esc(u)}')"><img src="${esc(u)}" loading="lazy"></div>`).join('');
+    return `<div class="tl-item">
+      <div class="tl-dot" style="border-color:${cfg.col};color:${cfg.col};"><i class="${cfg.ic}" style="font-size:.55rem;"></i></div>
+      <div class="tl-card">
+        <div class="tl-head">
+          <span class="tl-tipo" style="color:${cfg.col};">${cfg.label}</span>
+          <span class="tl-actor">· ${ACTOR_LBL[h.actor]||h.actor}</span>
+          <span class="tl-fecha">${fmt(h.created_at)}</span>
+        </div>
+        ${h.descripcion?`<div class="tl-desc">${esc(h.descripcion)}</div>`:''}
+        ${fotos?`<div class="tl-fotos">${fotos}</div>`:''}
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+let _lbExtra = [];
+function openLbExtra(url) {
+  _lbExtra = [url]; lbImgs = _lbExtra; lbIdx = 0;
+  openLb(0);
+}
+
+/* ─── INFORME ─── */
+function buildReport() {
+  const p = _p;
+  const cambios  = _hist.filter(h=>h.tipo==='CAMBIO_SOLICITADO').length;
+  const uploaded = _hist.find(h=>h.tipo==='SUBIDA_DISENO');
+  const aprobado = _hist.find(h=>h.tipo==='APROBACION');
+  return `<div class="sec">
+    <div class="report-panel">
+      <div class="sec-title"><i class="fas fa-file-alt"></i>Informe final del caso</div>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;">Documentación oficial del proceso de diseño y aprobación.</p>
+      <table class="report-table">
+        <tr><th>Campo</th><th>Detalle</th></tr>
+        <tr><td style="color:var(--muted);">Código</td><td>${esc(p.codigo||p.id.slice(0,8))}</td></tr>
+        <tr><td style="color:var(--muted);">Paciente</td><td>${esc(p.nombre_paciente||'—')}</td></tr>
+        <tr><td style="color:var(--muted);">Servicio</td><td>${esc(p.servicio||'—')}</td></tr>
+        <tr><td style="color:var(--muted);">Material</td><td>${esc(p.material||'—')}</td></tr>
+        <tr><td style="color:var(--muted);">Color VITA</td><td>${esc(p.color_vita||'—')}</td></tr>
+        <tr><td style="color:var(--muted);">Diseño enviado</td><td>${uploaded?fmt(uploaded.created_at):'—'}</td></tr>
+        <tr><td style="color:var(--muted);">Cambios solicitados</td><td>${cambios} (${cambios<=2?'incluido en servicio':'excedió cambios incluidos'})</td></tr>
+        <tr><td style="color:var(--muted);">Fecha aprobación</td><td>${aprobado?fmt(aprobado.created_at):fmt(p.diseno_aprobado_at)}</td></tr>
+        <tr><td style="color:var(--muted);">Total eventos</td><td>${_hist.length}</td></tr>
+      </table>
+      <p style="font-size:.72rem;color:var(--muted);margin-top:14px;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;border-left:3px solid var(--gold);">
+        Este informe certifica que el diseño fue revisado y aprobado por el cliente con pleno conocimiento de las condiciones de servicio de PRODIGY Lab Dental.
+      </p>
+      <div class="modal-btns" style="justify-content:flex-start;margin-top:14px;" class="no-print">
+        <button class="btn btn-gold btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Imprimir / PDF</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ─── LOG HISTORIAL ─── */
+async function logH(tipo, actor, desc, fotos=[], meta=null) {
+  try {
+    const e = {pedido_id:PID, tipo, actor, descripcion:desc, fotos_urls:fotos};
+    if (meta) e.metadata = meta;
+    await sb.from('historial_diseno').insert(e);
+  } catch(_) {}
+}
+
+/* ─── DESCARGA ─── */
+function onDownload(nombre) {
+  logH('DESCARGA','doctor','Descargado: '+nombre);
+  /* Notificar al equipo registrando en logs_incidencias para que el operario lo vea */
+  sb.from('logs_incidencias').insert({
+    pedido_id: PID, tipo:'INFO', severidad:'INFO',
+    descripcion:`Doctor descargó archivos: ${nombre} — Caso ${_p?.codigo||''}`,
+    resuelta: true
+  }).catch(()=>{});
+}
+
+/* ─── SUBIR FOTOS (helper) ─── */
+async function uploadFotos(files, prefix, barEl, statEl) {
+  const urls = []; const total = files.length; let done = 0, errors = 0;
+  for (const f of files) {
+    statEl.textContent = `Subiendo ${f.name}…`;
+    const path = `${PID}/${prefix}/${Date.now()}_${f.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+    const { error } = await sb.storage.from('diseno-archivos').upload(path, f, {upsert:true});
+    if (!error) {
+      urls.push(sb.storage.from('diseno-archivos').getPublicUrl(path).data.publicUrl);
+    } else {
+      errors++;
+      console.warn('[PRODIGY] Error subiendo foto:', f.name, error.message);
+    }
+    done++;
+    barEl.style.width = Math.round((done/total)*100)+'%';
+  }
+  /* FIX: antes reportaba siempre "N fotos cargadas" aunque hubiera errores */
+  statEl.textContent = errors > 0
+    ? `${urls.length} cargada${urls.length===1?'':'s'}, ${errors} no se pudo${errors===1?'':'n'} subir`
+    : `${urls.length} foto${urls.length===1?'':'s'} cargada${urls.length===1?'':'s'}`;
+  return urls;
+}
+
+/* ─── CAMBIO ─── */
+function abrirCambio() {
+  const cc = _p.cambios_count || 0;
+  document.getElementById('cambio-costo-msg').innerHTML = cc >= 2
+    ? '<strong style="color:#fbbf24;">⚠️ Tus 2 cambios incluidos ya fueron usados.</strong> Esta solicitud tiene costo equivalente a un nuevo diseño. El equipo te contactará para confirmar antes de proceder.'
+    : `Incluimos 2 cambios antes de descargar. <strong style="color:var(--text);">Tienes ${2-cc} restante${2-cc===1?'':'s'} sin costo.</strong>`;
+  document.getElementById('cambio-texto').value = '';
+  document.getElementById('cambio-fotos').value = '';
+  document.getElementById('cambio-prog').style.display = 'none';
+  document.getElementById('cambio-bar').style.width = '0%';
+  document.getElementById('btn-cambio-ok').disabled = false;
+  document.getElementById('btn-cambio-ok').innerHTML = '<i class="fas fa-paper-plane"></i> Enviar solicitud';
+  document.getElementById('modal-cambio').classList.add('open');
+}
+function cerrarCambio() { document.getElementById('modal-cambio').classList.remove('open'); }
+
+async function enviarCambio() {
+  const texto = document.getElementById('cambio-texto').value.trim();
+  if (!texto) { alert('Describe el cambio que necesitas.'); return; }
+  const btn = document.getElementById('btn-cambio-ok');
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Enviando…';
+  const progEl = document.getElementById('cambio-prog');
+  const barEl  = document.getElementById('cambio-bar');
+  const statEl = document.getElementById('cambio-stat');
+  progEl.style.display = 'block';
+
+  const fotoFiles = [...document.getElementById('cambio-fotos').files];
+  let fotoUrls = [];
+  if (fotoFiles.length) fotoUrls = await uploadFotos(fotoFiles,'cambios',barEl,statEl);
+  barEl.style.width = '100%'; statEl.textContent = 'Guardando…';
+
+  const nuevoCount = (_p.cambios_count||0) + 1;
+  const { error } = await sb.from('pedidos').update({
+    estado_operativo:'CAMBIOS_SOLICITADOS', cambios_count:nuevoCount, observaciones:texto
+  }).eq('id', PID);
+  if (error) { btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar solicitud'; alert('Error. Intenta de nuevo.'); return; }
+  await logH('CAMBIO_SOLICITADO','doctor',texto,fotoUrls,{num:nuevoCount,paga_extra:nuevoCount>2});
+  cerrarCambio(); location.reload();
+}
+
+/* ─── APROBACIÓN ─── */
+function abrirDisc() { document.getElementById('modal-disc').classList.add('open'); }
+function cerrarDisc() { document.getElementById('modal-disc').classList.remove('open'); }
+
+async function confirmarAprobacion() {
+  const btn = document.getElementById('btn-aprobar-ok');
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Procesando…';
+  const ts = new Date().toISOString();
+  const { error } = await sb.from('pedidos').update({
+    estado_operativo:'DISENO_APROBADO', diseno_disclaimer:true,
+    diseno_aprobado_at:ts, diseno_aprobado_por:'doctor'
+  }).eq('id', PID);
+  if (error) { btn.disabled=false; btn.innerHTML='<i class="fas fa-signature"></i> Confirmar y aprobar'; alert('Error. Intenta de nuevo.'); return; }
+  await logH('APROBACION','doctor','Diseño aprobado. Cliente autoriza fabricación y acepta condiciones.',[],{aprobado_at:ts});
+  cerrarDisc(); location.reload();
+}
+
+/* ─── FABRICACIÓN ─── */
+/* ─── FABRICACIÓN INTERNACIONAL ─── */
+/* ─── CONFIRMACIÓN DE PAGO POR EL DOCTOR ─── */
+async function confirmarPagoDoctor() {
+  if (!confirm('¿Confirmas que ya realizaste el pago de fabricación?\n\nNuestro equipo lo verificará y te notificará la confirmación.')) return;
+
+  const { error } = await sb.from('pedidos').update({
+    cotizacion_fab_estado: 'pago_confirmado'
+  }).eq('id', PID);
+
+  if (error) { alert('Error al registrar. Contáctanos por WhatsApp.'); return; }
+
+  await logH('FAB_PAGO_DOCTOR','doctor',
+    `Doctor indica haber realizado el pago de fabricación. Monto declarado: ${Number(_p.cotizacion_fab_monto||0).toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0})}`,
+    [], { monto: _p.cotizacion_fab_monto });
+
+  /* Alertar al equipo via logs_incidencias */
+  sb.from('logs_incidencias').insert({
+    pedido_id: PID, tipo:'INFO', severidad:'INFO',
+    descripcion:`💰 Doctor confirma pago de fabricación — Caso ${_p?.codigo||''} — Verificar y enrutar a producción`,
+    resuelta: false
+  }).catch(()=>{});
+
+  location.reload();
+}
+
+async function solicitarFabricacionInternacional(tipo) {
+  const LABELS = { fresado:'Fresado / Laboratorio', impresion:'Impresión 3D' };
+  const lbl = LABELS[tipo] || tipo;
+  const paisNombre = _p.pais || 'tu país';
+
+  if (!confirm(`¿Confirmas que quieres solicitar ${lbl} con envío internacional?\n\nUn asesor de PRODIGY te contactará para confirmar costos y coordinar el envío a ${paisNombre}.`)) return;
+
+  await sb.from('pedidos').update({
+    fabricacion_solicitada: true,
+    fabricacion_tipo: tipo + '_internacional'
+  }).eq('id', PID);
+
+  await logH('FAB_SOLICITADA','doctor',
+    `Solicitud especial de fabricación internacional: ${lbl} — País: ${paisNombre}`,
+    [], { tipo, pais: paisNombre, es_internacional: true });
+
+  sb.from('logs_incidencias').insert({
+    pedido_id: PID, tipo:'INFO', severidad:'INFO',
+    descripcion:`🌎 SOLICITUD INTERNACIONAL: Doctor solicita ${lbl} con envío a ${paisNombre} — Caso ${_p?.codigo||''}. Requiere cotización y coordinación de envío.`,
+    resuelta: false
+  }).catch(()=>{});
+
+  /* Abrir WhatsApp automáticamente */
+  const waMsg = encodeURIComponent(
+    `Hola PRODIGY, soy doctor/odontólogo en ${paisNombre}.\n` +
+    `Mi caso #${_p?.codigo||PID.slice(0,8)} fue aprobado en diseño y quiero solicitar fabricación (${lbl}) con envío internacional.\n` +
+    `Por favor indíquenme costos y opciones de envío. ¡Gracias!`
+  );
+  window.open(`https://wa.me/${WA_NUM}?text=${waMsg}`, '_blank');
+
+  location.reload();
+}
+
+/* solicitarFabricacion → redirige al flujo de fabricación con el pedido de diseño pre-vinculado */
+function solicitarFabricacion(tipo) {
+  const dest = tipo === 'impresion' ? '/flujo-impresion' : '/flujo-fresado';
+  window.location.href = `${dest}?from_diseno=${PID}`;
+}
+
+/* abrirModalPago: carga catálogo + abre modal */
+async function abrirModalPago(tipo) {
+  _pagoTipo = tipo;
+  _compFile = null;
+  const LABELS = { fresado:'Fresado / Laboratorio', impresion:'Impresión 3D' };
+  document.getElementById('pago-tipo-lbl').textContent = `Servicio: ${LABELS[tipo]||tipo}`;
+  document.getElementById('precio-box').style.display = 'none';
+  document.getElementById('btn-pago-ok').disabled = true;
+  document.getElementById('comp-preview').style.display = 'none';
+  document.getElementById('pago-prog').style.display = 'none';
+  document.getElementById('pago-bar').style.width = '0%';
+  document.getElementById('comp-file').value = '';
+
+  /* Llenar datos de pago */
+  document.getElementById('nq-num').textContent  = PAGOS.nequi.num;
+  document.getElementById('nq-tit').textContent  = PAGOS.nequi.titular;
+  document.getElementById('dp-num').textContent  = PAGOS.daviplata.num;
+  document.getElementById('dp-tit').textContent  = PAGOS.daviplata.titular;
+  document.getElementById('tr-banco').textContent= PAGOS.transferencia.banco;
+  document.getElementById('tr-tipo').textContent = PAGOS.transferencia.tipo;
+  document.getElementById('tr-num').textContent  = PAGOS.transferencia.num;
+  document.getElementById('tr-tit').textContent  = PAGOS.transferencia.titular;
+  document.getElementById('tr-nit').textContent  = PAGOS.transferencia.nit;
+  document.getElementById('wa-efectivo').href = `https://wa.me/${WA_NUM}?text=${encodeURIComponent('Hola, quiero coordinar el pago de fabricación del caso '+(_p?.codigo||PID.slice(0,8)))}`;
+
+  /* Cargar servicios desde catálogo */
+  const svcSel = document.getElementById('pago-svc');
+  svcSel.innerHTML = '<option value="">Cargando servicios…</option>';
+  try {
+    const flujoQuery = tipo === 'fresado' ? ['fresado','lab'] : ['impresion'];
+    const { data: svcs } = await sb.from('catalogo')
+      .select('id,nombre,precio_base,descripcion')
+      .in('flujo', flujoQuery)
+      .eq('activo', true)
+      .order('nombre');
+    _pagoSvcs = svcs || [];
+    svcSel.innerHTML = '<option value="">— Selecciona el servicio —</option>' +
+      _pagoSvcs.map(s => {
+        const p = Number(s.precio_base||0).toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0});
+        return `<option value="${s.id}" data-precio="${s.precio_base||0}" data-desc="${esc(s.descripcion||s.nombre||'')}">${esc(s.nombre)} — ${p}</option>`;
+      }).join('');
+    if (!_pagoSvcs.length) svcSel.innerHTML = '<option value="">Sin servicios disponibles — contacta al equipo</option>';
+    /* Auto-seleccionar si coincide con el servicio del pedido */
+    const match = _pagoSvcs.find(s => s.nombre?.toLowerCase().includes((_p.servicio||'').toLowerCase().slice(0,6)));
+    if (match) { svcSel.value = match.id; onSvcChange(); }
+  } catch(e) {
+    svcSel.innerHTML = '<option value="">Error — recarga la página</option>';
+  }
+
+  switchPago('nequi', document.querySelector('#modal-pago .pago-tab'));
+  document.getElementById('modal-pago').classList.add('open');
+}
+
+function onSvcChange() {
+  const opt = document.getElementById('pago-svc').selectedOptions[0];
+  const box = document.getElementById('precio-box');
+  if (!opt?.value) { box.style.display='none'; return; }
+  const precio = Number(opt.dataset.precio||0);
+  document.getElementById('precio-monto').textContent = precio.toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0});
+  document.getElementById('precio-desc').textContent  = opt.dataset.desc || '';
+  box.style.display = 'block';
+  document.getElementById('btn-pago-ok').disabled = !_compFile;
+}
+
+function switchPago(id, btn) {
+  document.querySelectorAll('#modal-pago .pago-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#modal-pago .pago-panel').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('pago-'+id).classList.add('active');
+}
+
+function onComprobanteSelected(input) {
+  const f = input.files[0];
+  if (!f) return;
+  if (f.size > 10*1024*1024) { alert('El archivo supera 10 MB. Comprime e intenta de nuevo.'); return; }
+  _compFile = f;
+  const prev = document.getElementById('comp-preview');
+  prev.style.display = 'flex';
+  document.getElementById('comp-name').textContent = f.name;
+  if (f.type.startsWith('image/')) {
+    const r = new FileReader();
+    r.onload = e => { document.getElementById('comp-img').src = e.target.result; document.getElementById('comp-img').style.display='block'; };
+    r.readAsDataURL(f);
+  } else {
+    document.getElementById('comp-img').style.display = 'none';
+  }
+  document.getElementById('btn-pago-ok').disabled = !document.getElementById('pago-svc').value;
+}
+
+function quitarComprobante() {
+  _compFile = null;
+  document.getElementById('comp-file').value = '';
+  document.getElementById('comp-preview').style.display = 'none';
+  document.getElementById('btn-pago-ok').disabled = true;
+}
+
+function copiarTexto(txt, el) {
+  navigator.clipboard.writeText(txt)
+    .then(() => { const o=el.textContent; el.textContent='✓ Copiado'; setTimeout(()=>el.textContent=o,1500); })
+    .catch(() => prompt('Copia:', txt));
+}
+
+function cerrarPago() { document.getElementById('modal-pago').classList.remove('open'); }
+
+async function enviarComprobante() {
+  if (!_compFile) { alert('Adjunta el comprobante de pago.'); return; }
+  const svcOpt = document.getElementById('pago-svc').selectedOptions[0];
+  if (!svcOpt?.value) { alert('Selecciona el servicio.'); return; }
+
+  const btn = document.getElementById('btn-pago-ok');
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Enviando…';
+  const barEl=document.getElementById('pago-bar'), statEl=document.getElementById('pago-stat');
+  document.getElementById('pago-prog').style.display = 'block';
+  statEl.textContent = 'Subiendo comprobante…';
+
+  /* Upload comprobante */
+  const fname = _compFile.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  const path  = `${PID}/comprobante/${Date.now()}_${fname}`;
+  const { error: upErr } = await sb.storage.from('diseno-archivos').upload(path, _compFile, {upsert:true});
+  if (upErr) { alert('Error al subir: '+upErr.message); btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar comprobante y solicitar'; return; }
+  barEl.style.width = '60%';
+  const compUrl = sb.storage.from('diseno-archivos').getPublicUrl(path).data.publicUrl;
+  const monto   = Number(svcOpt.dataset.precio||0);
+  const svcNom  = svcOpt.text.split('—')[0].trim();
+  statEl.textContent = 'Registrando…';
+
+  /* Actualizar pedido */
+  await sb.from('pedidos').update({
+    fabricacion_solicitada: true,
+    fabricacion_tipo:       _pagoTipo,
+    cotizacion_fab_monto:   monto,
+    cotizacion_fab_estado:  'pago_enviado',
+    cotizacion_fab_nota:    svcNom
+  }).eq('id', PID);
+
+  barEl.style.width = '80%';
+
+  /* Log historial con foto del comprobante */
+  await logH('FAB_PAGO_DOCTOR','doctor',
+    `${svcNom} — ${monto.toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0})} — Comprobante adjunto`,
+    [compUrl], {tipo:_pagoTipo, monto, svc:svcNom});
+
+  /* Alerta equipo */
+  sb.from('logs_incidencias').insert({
+    pedido_id:PID, tipo:'INFO', severidad:'INFO',
+    descripcion:`💰 VERIFICAR PAGO: ${svcNom} ${monto.toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0})} — Caso ${_p?.codigo||''} — Ver comprobante: ${compUrl}`,
+    resuelta:false
+  }).catch(()=>{});
+
+  barEl.style.width = '100%'; statEl.textContent = '¡Enviado!';
+  cerrarPago();
+  location.reload();
+}
+
+async function confirmarPagoFabricacion() {
+  if (!confirm('¿Confirmas que ya realizaste el pago de fabricación?\n\nEl equipo verificará y te notificará la confirmación.')) return;
+  await sb.from('pedidos').update({fabricacion_solicitada:true}).eq('id',PID);
+  await logH('FAB_SOLICITADA','doctor','Cliente indica haber realizado pago de fabricación. Pendiente verificación.');
+  sb.from('logs_incidencias').insert({
+    pedido_id:PID, tipo:'INFO', severidad:'INFO',
+    descripcion:`Doctor confirma pago de fabricación — Verificar — Caso ${_p?.codigo||''}`,resuelta:false
+  }).catch(()=>{});
+  location.reload();
+}
+
+/* ─── NOTA POST-APROBACIÓN ─── */
+async function enviarNota() {
+  const texto = document.getElementById('nota-txt').value.trim();
+  const fotoFiles = [...document.getElementById('nota-fotos').files];
+  if (!texto && !fotoFiles.length) { alert('Agrega texto o al menos una foto.'); return; }
+  const btn = document.querySelector('.note-form .btn');
+  btn.disabled=true; btn.innerHTML='<i class="fas fa-circle-notch fa-spin"></i> Enviando…';
+  const progEl=document.getElementById('nota-prog'),barEl=document.getElementById('nota-bar'),statEl=document.getElementById('nota-stat');
+  progEl.style.display='block';
+  let fotoUrls = [];
+  if (fotoFiles.length) fotoUrls = await uploadFotos(fotoFiles,'notas',barEl,statEl);
+  barEl.style.width='100%'; statEl.textContent='Guardando…';
+  await logH('NOTA_DOCTOR','doctor',texto||'(fotos adjuntadas)',fotoUrls);
+  const { data:hist } = await sb.from('historial_diseno').select('*').eq('pedido_id',PID).order('created_at',{ascending:true});
+  _hist = hist || [];
+  document.getElementById('nota-txt').value='';
+  document.getElementById('nota-fotos').value='';
+  btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar nota';
+  progEl.style.display='none'; barEl.style.width='0%';
+  document.getElementById('historial-wrap').innerHTML = buildHistorial();
+}
+</script>
+</body>
+</html>
