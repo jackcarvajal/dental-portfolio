@@ -919,10 +919,18 @@ window.submitOrden     = window.submitOrden      || function(){};
             cad_quirurgica: {
                 nombre: "Planificación Quirúrgica",
                 subtipos: {
-                    guia_1_2:   { nombre: "Guía Quirúrgica 1–2 implantes",  precio: 90000,  anticipo: 70000 },
-                    guia_3_4:   { nombre: "Guía Quirúrgica 3–4 implantes",  precio: 150000, anticipo: 70000 },
-                    guia_5_mas: { nombre: "Guía Quirúrgica 5+ implantes",   precio: 220000, anticipo: 70000 },
-                    sonrisa_3d: { nombre: "Diseño de Sonrisa 3D (Mockup)",  precio: 150000 }
+                    guia_1:         { nombre: "Guía Quirúrgica — 1 implante",        precio: 150000, anticipo: 85000 },
+                    guia_2:         { nombre: "Guía Quirúrgica — 2 implantes",       precio: 200000, anticipo: 85000 },
+                    guia_3:         { nombre: "Guía Quirúrgica — 3 implantes",       precio: 250000, anticipo: 85000 },
+                    guia_4:         { nombre: "Guía Quirúrgica — 4 implantes",       precio: 300000, anticipo: 85000 },
+                    guia_5:         { nombre: "Guía Quirúrgica — 5 implantes",       precio: 350000, anticipo: 85000 },
+                    guia_6mas:      { nombre: "Guía Quirúrgica — 6+ implantes",      precio: 400000, anticipo: 85000 },
+                    guia_sobredent: { nombre: "Guía Sobredentadura (2 impl.) — solo diseño", precio: 200000, anticipo: 85000 },
+                    guia_hibrida:   { nombre: "Guía Híbrida 4 impl. — solo diseño", precio: 300000, anticipo: 85000 },
+                    guia_reborde:   { nombre: "Regularización de reborde — solo diseño", precio: 180000, anticipo: 85000 },
+                    planif_unit:    { nombre: "Planeación preliminar — Implante unitario", precio: 160000 },
+                    planif_fullarch:{ nombre: "Planeación preliminar — Full Arch",   precio: 400000, anticipo: 85000 },
+                    sonrisa_3d:     { nombre: "Diseño de Sonrisa 3D (Mockup)",       precio: 150000 }
                 }
             }
         };
@@ -1068,8 +1076,10 @@ window.submitOrden     = window.submitOrden      || function(){};
         // ── SELECCIÓN SUBTIPO ─────────────────────────────────────────────────
         /* ── PROTOCOLOS CLÍNICOS ── */
         const PG_PROTOCOLOS = {
-            guia_1_2:'guia_quirurgica', guia_3_4:'guia_quirurgica',
-            guia_5_mas:'guia_quirurgica', guia_reduccion:'guia_quirurgica',
+            guia_1:'guia_quirurgica', guia_2:'guia_quirurgica', guia_3:'guia_quirurgica',
+            guia_4:'guia_quirurgica', guia_5:'guia_quirurgica', guia_6mas:'guia_quirurgica',
+            guia_sobredent:'guia_quirurgica', guia_hibrida:'guia_quirurgica', guia_reborde:'guia_quirurgica',
+            planif_unit:'guia_quirurgica', planif_fullarch:'guia_quirurgica',
             setup_orto:'alineadores'
         };
         const PG_PROTOCOLO_HTML = {
@@ -1079,8 +1089,8 @@ window.submitOrden     = window.submitOrden      || function(){};
         /* ── FLUJO DE 2 ETAPAS: Viabilidad → Diseño ──
            Guías quirúrgicas y Setup alineadores.
            El costo de viabilidad se cobra aunque el caso no se ejecute. ── */
-        const VIABILIDAD_COSTO_COP = 120000;
-        const FLUJO_2_ETAPAS = ['guia_1_2','guia_3_4','guia_5_mas','guia_reduccion','setup_orto'];
+        const VIABILIDAD_COSTO_COP = 85000;
+        const FLUJO_2_ETAPAS = ['guia_1','guia_2','guia_3','guia_4','guia_5','guia_6mas','guia_sobredent','guia_hibrida','guia_reborde','planif_unit','planif_fullarch','setup_orto'];
 
         function getBannerEtapas(subtipoId, precioTotal) {
             if (!FLUJO_2_ETAPAS.includes(subtipoId)) return '';
