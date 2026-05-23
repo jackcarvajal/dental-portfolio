@@ -4,6 +4,40 @@
  * Uso: primer <script> dentro de <body>
  */
 
+/* ── COOKIE BANNER — GDPR / Ley 1581 Colombia ─────────────────────────────
+   Se muestra una vez por sesión. El usuario acepta o rechaza analytics.
+   Si acepta: GA4 se activa. Si rechaza: analytics_storage permanece denied.
+──────────────────────────────────────────────────────────────────────────── */
+(function(){
+  if (localStorage.getItem('pg_cookies_decision')) return;
+  var skip = ['/mantenimiento','/app/','/offline'];
+  if (skip.some(function(p){ return window.location.pathname.startsWith(p); })) return;
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var b = document.createElement('div');
+    b.id = 'pg-cookie-banner';
+    b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99998;background:#0a0f1a;border-top:1px solid rgba(212,175,55,.25);padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between;font-family:-apple-system,sans-serif;font-size:.78rem;color:#94a3b8;';
+    b.innerHTML =
+      '<span style="flex:1;min-width:220px;line-height:1.6;"><strong style="color:#e2e8f0;">🍪 Cookies</strong> — Usamos cookies de analytics para mejorar el servicio. ' +
+      '<a href="/terminos-y-legal#privacidad" style="color:#D4AF37;text-decoration:none;">Política de privacidad</a> · ' +
+      'Ley 1581/2012 Colombia.</span>' +
+      '<div style="display:flex;gap:8px;flex-shrink:0;">' +
+        '<button id="pg-ck-accept" style="padding:8px 18px;background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.78rem;">Aceptar</button>' +
+        '<button id="pg-ck-reject" style="padding:8px 18px;background:transparent;border:1px solid rgba(255,255,255,.15);color:#94a3b8;border-radius:8px;cursor:pointer;font-size:.78rem;">Solo esenciales</button>' +
+      '</div>';
+    document.body.appendChild(b);
+
+    function dismiss(accept) {
+      localStorage.setItem('pg_cookies_decision', accept ? 'accepted' : 'rejected');
+      if (accept && window.gtag) window.gtag('consent','update',{analytics_storage:'granted',ad_storage:'granted'});
+      b.style.transition = 'opacity .3s'; b.style.opacity = '0';
+      setTimeout(function(){ b.remove(); }, 300);
+    }
+    document.getElementById('pg-ck-accept').onclick = function(){ dismiss(true); };
+    document.getElementById('pg-ck-reject').onclick = function(){ dismiss(false); };
+  });
+})();
+
 /* ── MANTENIMIENTO GLOBAL ──────────────────────────────────────────
    Bloquea acceso a todas las páginas públicas si no hay cookie pg_admin=1.
    Para activar bypass: visita /?preview=prodigy (cookie 30 días).
