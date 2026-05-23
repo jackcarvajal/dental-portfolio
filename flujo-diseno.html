@@ -643,13 +643,20 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <span style="margin-left:4px;background:#0061ff;color:#fff;font-size:.65rem;padding:2px 7px;border-radius:20px;">RECOMENDADO</span>
                         </a>
 
-                        <!-- LINK MANUAL -->
-                        <div class="form-group">
-                            <label>O pega el enlace de Drive / WeTransfer / Dropbox *</label>
+                        <!-- LINK EXTERNO OPCIONAL -->
+                        <div class="form-group" style="margin-top:6px">
+                            <label style="display:flex;align-items:center;gap:8px">
+                                Enlace externo — Drive / WeTransfer
+                                <span style="font-size:.65rem;font-weight:800;letter-spacing:.08em;background:rgba(212,175,55,.12);color:#D4AF37;border:1px solid rgba(212,175,55,.3);padding:2px 8px;border-radius:20px;">OPCIONAL</span>
+                            </label>
                             <input type="url" id="linkSTL"
                                    placeholder="https://drive.google.com/... o https://we.tl/..."
                                    oninput="validarLink(this)">
                             <div class="link-feedback" id="link-feedback"></div>
+                            <div style="margin-top:8px;padding:9px 12px;background:rgba(255,149,0,.06);border:1px solid rgba(255,149,0,.2);border-radius:8px;font-size:.72rem;color:#ff9500;display:flex;align-items:flex-start;gap:7px;line-height:1.5">
+                                <i class="fas fa-shield-halved" style="flex-shrink:0;margin-top:1px"></i>
+                                <span><strong>Aviso de privacidad:</strong> Los archivos enviados mediante Drive o WeTransfer son procesados en servidores de terceros fuera del control de PRODIGY. Para mayor privacidad y trazabilidad, usa la <strong>carga directa</strong> en el visor de arriba — los archivos quedan en nuestra base de datos.</span>
+                            </div>
                         </div>
 
                         <!-- SOFTWARE DISEÑO -->
@@ -878,6 +885,29 @@ window.submitOrden     = window.submitOrden      || function(){};
                 <button class="payment-btn btn-banco" onclick="showPayModal('banco');cerrarModal('modal-exito')">🏦 BRE-B</button>
             </div>
             <button class="pay-copy" style="width:100%;padding:11px;" onclick="cerrarModal('modal-exito');location.reload();">+ Nueva Orden CAD</button>
+        </div>
+    </div>
+
+    <!-- Modal Archivos Faltantes -->
+    <div class="modal" id="modal-archivos-warn">
+        <div class="modal-content" style="max-width:460px;">
+            <button class="modal-close-x" onclick="cerrarModal('modal-archivos-warn')" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+            <div style="text-align:center;margin-bottom:16px;">
+                <div style="font-size:2.4rem;margin-bottom:6px">⚠️</div>
+                <h3 style="color:#ff9500">Archivos Requeridos Pendientes</h3>
+            </div>
+            <div style="background:rgba(255,149,0,.08);border:1px solid rgba(255,149,0,.3);border-radius:10px;padding:14px;margin-bottom:14px;">
+                <p style="font-size:.83rem;color:#e2e8f0;margin-bottom:8px;">Los siguientes archivos son <strong style="color:#ff9500">obligatorios</strong> para este tipo de caso:</p>
+                <ul id="archivos-faltantes-list" style="padding-left:18px;font-size:.83rem;color:#ff9500;line-height:1.9;"></ul>
+            </div>
+            <p style="font-size:.8rem;color:#94a3b8;margin-bottom:14px;line-height:1.6">¿No tienes todos los archivos en este momento? Escríbenos por WhatsApp y te indicamos si el caso puede avanzar sin ellos.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-cancel" onclick="cerrarModal('modal-archivos-warn')"><i class="fas fa-arrow-left" style="margin-right:6px"></i>Volver y completar</button>
+                <button class="modal-btn" id="btn-wa-archivos" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;flex:2"
+                    onclick="cerrarModal('modal-archivos-warn');window.open(window._archivosFaltantesWAUrl,'_blank')">
+                    <i class="fab fa-whatsapp" style="margin-right:6px"></i>Consultar por WhatsApp
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1378,14 +1408,12 @@ window.submitOrden     = window.submitOrden      || function(){};
             const requeridos = ARCHIVOS_REQUERIDOS[subtipoId].filter(a => a.req);
             const faltantes = requeridos.filter(a => !window._archivosSubidos[a.id]);
             if (faltantes.length > 0) {
-                const nombres = faltantes.map(a => a.label).join(', ');
-                const irWA = confirm(
-                    `Faltan archivos obligatorios:\n\n${nombres}\n\n¿Quieres consultar por WhatsApp si puedes enviar el caso sin ellos?\n\n(Cancelar para volver y subir los archivos)`
-                );
-                if (irWA) {
-                    const msg = encodeURIComponent(`Hola PRODIGY, quiero enviar un caso de ${STATE.subtipoNombre} pero me faltan: ${nombres}. ¿Podemos continuar?`);
-                    window.open(`https://wa.me/573212816716?text=${msg}`, '_blank');
-                }
+                const nombres = faltantes.map(a => a.label);
+                const ul = document.getElementById('archivos-faltantes-list');
+                if (ul) ul.innerHTML = nombres.map(n=>`<li>${n}</li>`).join('');
+                const msg = encodeURIComponent(`Hola PRODIGY, quiero enviar un caso de ${STATE.subtipoNombre||'diseño CAD'} pero me faltan: ${nombres.join(', ')}. ¿Podemos continuar?`);
+                window._archivosFaltantesWAUrl = `https://wa.me/573212816716?text=${msg}`;
+                document.getElementById('modal-archivos-warn').classList.add('active');
                 return false;
             }
             return true;
@@ -1502,8 +1530,11 @@ window.submitOrden     = window.submitOrden      || function(){};
         function validarChecks() {
             const req = ['chk-sup','chk-inf','chk-mordida','chk-poli1','chk-poli2','chk-poli3'];
             const ok  = req.every(id => { const e=document.getElementById(id); return e&&e.checked; });
-            const link = document.getElementById('linkSTL').value.trim().length > 5;
-            document.getElementById('btn-submit').disabled = !(ok && link);
+            // Link externo es opcional si hay archivos subidos directamente
+            const hasLink  = document.getElementById('linkSTL').value.trim().length > 5;
+            const hasFiles = Object.values(window._archivosSubidos || {}).some(Boolean);
+            const hasPMV   = window.ProdigyMultiViewer && window.ProdigyMultiViewer.getFiles().length > 0;
+            document.getElementById('btn-submit').disabled = !(ok && (hasLink || hasFiles || hasPMV));
         }
 
         // ── SUBMIT ────────────────────────────────────────────────────────────
@@ -1850,10 +1881,23 @@ window.submitOrden     = window.submitOrden      || function(){};
     <script src="js/stl-multi-viewer.js"></script>
     <script>ProdigyMultiViewer.init('pmv-diseno');</script>
     <script src="js/flujo-uploader.js"></script>
-<div id="fd-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;padding:13px 24px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:340px;text-align:center;"></div>
+<div id="fd-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:13px 22px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;opacity:0;transition:all .35s;pointer-events:none;max-width:400px;text-align:left;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);backdrop-filter:blur(8px);"></div>
 <script>
 let _fdToastT;
-function fdToast(msg){const el=document.getElementById('fd-toast');el.textContent=msg;el.style.opacity='1';clearTimeout(_fdToastT);_fdToastT=setTimeout(()=>{el.style.opacity='0';},3600);}
+const _FDT={
+  success:{i:'fa-circle-check',c:'#00FF41',b:'rgba(0,255,65,.15)',br:'rgba(0,255,65,.4)'},
+  error:  {i:'fa-circle-xmark',c:'#ff3b30',b:'rgba(255,59,48,.15)',br:'rgba(255,59,48,.4)'},
+  warning:{i:'fa-triangle-exclamation',c:'#ff9500',b:'rgba(255,149,0,.12)',br:'rgba(255,149,0,.4)'},
+  info:   {i:'fa-circle-info',c:'#00d2ff',b:'rgba(0,210,255,.12)',br:'rgba(0,210,255,.4)'},
+};
+function fdToast(msg, type){
+  const el=document.getElementById('fd-toast');
+  const t=_FDT[type]||{i:'fa-circle-info',c:'#D4AF37',b:'rgba(212,175,55,.12)',br:'rgba(212,175,55,.35)'};
+  el.innerHTML=`<i class="fas ${t.i}" style="color:${t.c};flex-shrink:0;font-size:1.1rem"></i><span style="color:#e2e8f0">${msg}</span>`;
+  el.style.cssText+='opacity:1;background:'+t.b+';border:1px solid '+t.br+';';
+  clearTimeout(_fdToastT);
+  _fdToastT=setTimeout(()=>{el.style.opacity='0';},4000);
+}
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
