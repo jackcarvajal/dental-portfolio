@@ -315,14 +315,14 @@
         '</div>' +
         '<button onclick="_pgAccept()" ' +
           'style="width:100%;background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;border:none;border-radius:50px;' +
-          'padding:9px 0;font-weight:900;font-size:.8rem;cursor:pointer;margin-bottom:6px;' +
+          'padding:12px 0;font-weight:900;font-size:.8rem;cursor:pointer;margin-bottom:6px;min-height:44px;' +
           'box-shadow:0 4px 14px rgba(217,70,166,.3);transition:opacity .2s;" ' +
           'onmouseover="this.style.opacity=\'.85\'" onmouseout="this.style.opacity=\'1\'">' +
           '✓ Sí, mejorar la experiencia' +
         '</button>' +
         '<button onclick="_pgReject()" ' +
-          'style="width:100%;background:transparent;color:#475569;border:none;padding:4px;' +
-          'font-size:.7rem;cursor:pointer;text-decoration:underline;">' +
+          'style="width:100%;background:transparent;color:#475569;border:none;padding:10px;' +
+          'font-size:.7rem;cursor:pointer;text-decoration:underline;min-height:44px;">' +
           'No por ahora' +
         '</button>';
 
