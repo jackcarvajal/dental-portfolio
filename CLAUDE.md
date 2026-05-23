@@ -119,6 +119,41 @@ Al final de sesión: `/clear` (todo commiteado) o `/compact` (trabajo en vuelo).
 - Formularios: checkbox Habeas Data Colombia obligatorio.
 - Separar: Transaccionales (siempre) vs. Promocionales (`acepta_marketing = true`).
 
+## 8b. AUDITORÍA WEB APP / E-COMMERCE (checklist adicional)
+
+### 404.html — obligatorio en AMBOS proyectos
+```html
+<!-- Patrón mínimo — copiar de 404.html PRODIGY -->
+<meta name="robots" content="noindex">
+<!-- CTA principal + auto-redirect 10s + skip link + SW register -->
+```
+
+### Schema.org — tipos por contexto
+| Página | Tipo obligatorio |
+|---|---|
+| Home personal | `Person` + `Service` |
+| Servicio/landing | `Service` + `BreadcrumbList` |
+| Página con FAQ accordion | + `FAQPage` (mainEntity con Q/A) |
+| Contacto/soporte | `ContactPage` |
+| Cotizador/calculator | `Service` + `BreadcrumbList` |
+
+Regla: **siempre que exista un `<details>`/acordeón de FAQ visible → agregar FAQPage schema**. Google lo muestra como rich result en SERP.
+
+### hreflang — en páginas con tráfico internacional
+```html
+<link rel="alternate" hreflang="es" href="https://[dominio]/[slug]">
+<link rel="alternate" hreflang="en" href="https://[dominio]/[slug]?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://[dominio]/[slug]">
+```
+Obligatorio en: index, servicios principales, calculadoras, portafolio.
+
+### dns-prefetch — fallback para preconnect
+```html
+<!-- Después de cada preconnect, agregar su dns-prefetch equivalente -->
+<link rel="preconnect" href="https://dominio.com">
+<link rel="dns-prefetch" href="https://dominio.com">
+```
+
 ## 8. REFERENCIAS RÁPIDAS
 - `MAP.md` — líneas exactas de funciones críticas. Leer antes de editar archivos grandes.
 - `PENDIENTES.md` — solo tareas ⏳/🔴/🟡. Orden: 0-SQL → 1-Home → 2-Portafolio → 3-Servicios → 4-Flujos → 5-Soporte → 6-Empresa → 7-Portal → 8-SEO.
