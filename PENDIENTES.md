@@ -1,5 +1,5 @@
-# PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-05-05
+﻿# PRODIGY — PENDIENTES MAESTRO
+> Solo tareas activas. Última revisión: 2026-05-23
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
 
 ---
@@ -9,9 +9,10 @@
 
 | # | Acción | Dónde | Detalle |
 |---|--------|-------|---------|
-| 1 | **STRIPE_SECRET_KEY** en Cloudflare | Pages → Settings → Env vars | Pagos rotos sin esto |
-| 2 | **WOMPI_INTEGRITY_SECRET** en Supabase Secrets | Dashboard → Edge Functions → Secrets | Webhook de pago falla |
-| 3 | **Subir casos al portafolio** | `/app/panel-interno-operaciones.html` | Mínimo 5 casos con portada + galería |
+| 1 | **WOMPI_INTEGRITY_SECRET** en Supabase Secrets | Dashboard → Edge Functions → Secrets | Webhook de pago falla |
+| 2 | **Subir casos al portafolio** | `/app/panel-interno-operaciones.html` | Mínimo 5 casos con portada + galería |
+
+> Stripe: en espera — activar cuando esté listo, no bloquea operación actual.
 
 ---
 
