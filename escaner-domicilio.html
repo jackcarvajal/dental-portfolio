@@ -284,6 +284,7 @@
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <script src="js/header.js?v=20260425"></script>
+<main id="main-content">
 
 <!-- ── HERO ── -->
 <section class="hero">
@@ -690,6 +691,7 @@
     </div>
 </section>
 
+</main>
 <script src="js/footer.js?v=20260522"></script>
 
 <!-- Supabase -->
@@ -836,3 +838,4 @@ document.getElementById('agendaForm').addEventListener('submit', async e => {
     <script>(function(){function t(){var l=document.body.classList.toggle('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent=l?'☀️':'🌙';localStorage.setItem('theme',l?'light':'dark');}window.toggleTheme=t;if(localStorage.getItem('theme')==='light'){document.body.classList.add('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent='☀️';}window.addEventListener('scroll',function(){var s=document.getElementById('scroll-top-btn');if(s)s.classList.toggle('visible',window.scrollY>400);});})();</script>
 </body>
 </html>
+
