@@ -326,7 +326,7 @@
         }
 
         tbody.innerHTML = items.map(item => {
-            const cc  = CAT_COLORS[item.categoria] || { label: item.categoria, bg:'rgba(255,255,255,0.06)', color:'#94a3b8' };
+            const cc  = CAT_COLORS[item.categoria] || { label: escH(item.categoria), bg:'rgba(255,255,255,0.06)', color:'#94a3b8' };
             const hasPending = pendingChanges.has(item.id);
             return `
             <tr id="row-${item.id}">
