@@ -1004,7 +1004,7 @@
         var panelUrl = isAdmin ? '/app/panel-interno-operaciones' : '/app/client-panel';
         tb.innerHTML =
           '<div style="display:flex;align-items:center;gap:12px;padding:0 16px;height:100%">'+
-            '<span style="font-size:.75rem;color:#94a3b8"><i class="fas fa-user-circle" style="color:#D4AF37;margin-right:5px"></i>'+(isAdmin?'Admin':'Dr.')+' · '+u.email.split('@')[0]+'</span>'+
+            '<span style="font-size:.75rem;color:#94a3b8"><i class="fas fa-user-circle" style="color:#D4AF37;margin-right:5px"></i>'+(isAdmin?'Admin':'Dr.')+' · '+_pgEscHtml(u.email.split('@')[0])+'</span>'+
             '<a href="'+panelUrl+'" style="background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);color:#D4AF37;padding:5px 14px;border-radius:6px;font-size:.72rem;font-weight:800;text-decoration:none"><i class="fas fa-th-large" style="margin-right:4px"></i>Mi Panel</a>'+
             '<button onclick="_phdrLogoutPG()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:5px 12px;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer"><i class="fas fa-sign-out-alt" style="margin-right:4px"></i>Salir</button>'+
           '</div>';
