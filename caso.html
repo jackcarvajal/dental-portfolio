@@ -355,11 +355,11 @@ async function cargarRelacionados(casoId, tipo) {
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;">
           ${data.map(r => `
             <a href="caso?id=${encodeURIComponent(r.id)}" style="display:block;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:var(--card);text-decoration:none;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(212,175,55,.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(255,255,255,.08)'">
-              ${r.cover_image ? `<img src="${r.cover_image}?width=400&quality=75" alt="${r.name}" loading="lazy" decoding="async" style="width:100%;height:140px;object-fit:cover;display:block;">` : `<div style="width:100%;height:140px;background:#0a0f1a;display:flex;align-items:center;justify-content:center;"><i class="fas fa-tooth" style="font-size:2rem;color:rgba(212,175,55,.2);"></i></div>`}
+              ${r.cover_image ? `<img src="${encodeURI(r.cover_image)}?width=400&quality=75" alt="${escHtml(r.name)}" loading="lazy" decoding="async" style="width:100%;height:140px;object-fit:cover;display:block;">` : `<div style="width:100%;height:140px;background:#0a0f1a;display:flex;align-items:center;justify-content:center;"><i class="fas fa-tooth" style="font-size:2rem;color:rgba(212,175,55,.2);"></i></div>`}
               <div style="padding:14px 16px;">
-                <div style="font-size:.75rem;color:var(--gold);font-weight:700;margin-bottom:4px;">${r.type || ''}</div>
-                <div style="font-size:.9rem;font-weight:700;color:var(--text);">${r.name}</div>
-                <div style="font-size:.72rem;color:var(--muted);margin-top:4px;">${r.date || ''}</div>
+                <div style="font-size:.75rem;color:var(--gold);font-weight:700;margin-bottom:4px;">${escHtml(r.type || '')}</div>
+                <div style="font-size:.9rem;font-weight:700;color:var(--text);">${escHtml(r.name)}</div>
+                <div style="font-size:.72rem;color:var(--muted);margin-top:4px;">${escHtml(r.date || '')}</div>
               </div>
             </a>`).join('')}
         </div>
