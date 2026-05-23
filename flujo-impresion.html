@@ -377,6 +377,21 @@
                         <p style="margin:0 0 6px; font-size:0.78rem; font-weight:800; color:#4d9fff; text-transform:uppercase; letter-spacing:1.5px; display:flex; align-items:center; gap:7px;"><i class="fas fa-cube"></i> Archivos de Producción</p>
                         <p style="margin:0 0 14px; font-size:0.76rem; color:#94a3b8;">STL · OBJ · PLY · DICOM · 3Shape · ZIP — visualiza cada archivo antes de enviar</p>
                         <div id="pmv-impresion"></div>
+
+                        <!-- ENLACE EXTERNO OPCIONAL -->
+                        <div class="form-group" style="margin-top:14px">
+                            <label style="display:flex;align-items:center;gap:8px">
+                                Enlace externo — Drive / WeTransfer
+                                <span style="font-size:.65rem;font-weight:800;letter-spacing:.08em;background:rgba(212,175,55,.12);color:#D4AF37;border:1px solid rgba(212,175,55,.3);padding:2px 8px;border-radius:20px;">OPCIONAL</span>
+                            </label>
+                            <input type="url" id="linkSTL"
+                                   placeholder="https://drive.google.com/... o https://we.tl/..."
+                                   style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#e2e8f0;font-size:.88rem;font-family:inherit;outline:none;transition:border-color .2s;box-sizing:border-box">
+                            <div style="margin-top:8px;padding:9px 12px;background:rgba(255,149,0,.06);border:1px solid rgba(255,149,0,.2);border-radius:8px;font-size:.72rem;color:#ff9500;display:flex;align-items:flex-start;gap:7px;line-height:1.5">
+                                <i class="fas fa-shield-halved" style="flex-shrink:0;margin-top:1px"></i>
+                                <span><strong>Aviso de privacidad:</strong> Los archivos enviados mediante Drive o WeTransfer son procesados en servidores de terceros fuera del control de PRODIGY. Para mayor privacidad y trazabilidad, usa la <strong>carga directa</strong> en el visor de arriba — los archivos quedan en nuestra base de datos.</span>
+                            </div>
+                        </div>
                         </div><!-- /bloque archivos STL -->
 
                         <!-- ── BLOQUE 2: COMPROBANTE DE PAGO ─────────── -->
@@ -1109,17 +1124,18 @@
     })();
     </script>
     <script>
+        const _IMT={success:{i:'fa-circle-check',c:'#00FF41',b:'rgba(0,255,65,.15)',br:'rgba(0,255,65,.4)'},error:{i:'fa-circle-xmark',c:'#ff3b30',b:'rgba(255,59,48,.15)',br:'rgba(255,59,48,.4)'},warning:{i:'fa-triangle-exclamation',c:'#ff9500',b:'rgba(255,149,0,.12)',br:'rgba(255,149,0,.4)'},info:{i:'fa-circle-info',c:'#00d2ff',b:'rgba(0,210,255,.12)',br:'rgba(0,210,255,.4)'}};
         let _impT;
-        function impToast(m){const e=document.getElementById('imp-toast');e.textContent=m;e.style.opacity='1';clearTimeout(_impT);_impT=setTimeout(()=>{e.style.opacity='0';},3600);}
+        function impToast(msg,type){const el=document.getElementById('imp-toast');const t=_IMT[type]||{i:'fa-circle-info',c:'#D4AF37',b:'rgba(212,175,55,.12)',br:'rgba(212,175,55,.35)'};el.innerHTML=`<i class="fas ${t.i}" style="color:${t.c};flex-shrink:0;font-size:1.1rem"></i><span style="color:#e2e8f0">${msg}</span>`;el.style.cssText+='opacity:1;background:'+t.b+';border:1px solid '+t.br+';';clearTimeout(_impT);_impT=setTimeout(()=>{el.style.opacity='0';},4000);}
         function pagarConWompi() {
             const totalEl = document.getElementById('calc-total');
             const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;
-            if (!monto) { impToast('Selecciona un servicio para calcular el total.'); return; }
+            if (!monto) { impToast('Selecciona un servicio para calcular el total.','info'); return; }
             const ref = 'PRD-IMP-' + Math.random().toString(36).substr(2, 8).toUpperCase();
             abrirCheckoutWompi({ monto, referencia: ref, descripcion: 'PRODIGY — Impresión 3D' });
         }
     </script>
-<div id="imp-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;padding:13px 24px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:340px;text-align:center;"></div>
+<div id="imp-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:13px 20px;border-radius:12px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:360px;box-shadow:0 4px 24px rgba(0,0,0,.4)"></div>
 
     <!-- Google Analytics GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>

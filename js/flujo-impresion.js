@@ -2138,7 +2138,7 @@
             STATE.whatsappCliente = whatsappCliente;
             STATE.nombrePaciente = nombrePaciente;
             STATE.origen = origen;
-            STATE.linkSTL = linkSTL;
+            STATE.linkSTL = linkSTL || 'Carga directa PRODIGY';
             STATE.cantidad = cantidad;
             STATE.total = total;
             STATE.timeSlotName = timeSlotNames[STATE.timeSlot];
