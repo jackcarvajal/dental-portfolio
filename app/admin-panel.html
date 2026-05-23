@@ -809,8 +809,8 @@ async function cargarAnalytics() {
                 var p = a.props || {};
                 var montoNum = parseFloat(p.monto) || 0;
                 var monto = montoNum ? ('$' + Math.round(montoNum).toLocaleString('es-CO') + ' COP') : '—';
-                var ref = p.referencia || '—';
-                var pasarela = (p.pasarela || 'desconocida').toUpperCase();
+                var ref = escHtml(p.referencia || '—');
+                var pasarela = escHtml((p.pasarela || 'desconocida').toUpperCase());
                 var fecha = new Date(a.ts).toLocaleString('es-CO', { dateStyle:'short', timeStyle:'short' });
                 var esAltoValor = montoNum > 500000;
                 var descuento5 = montoNum ? Math.round(montoNum * 0.05) : 0;
@@ -864,7 +864,7 @@ async function cargarAnalytics() {
             document.getElementById('tabla-materiales').innerHTML =
                 sorted.map(function(e) {
                     return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.88rem;">' +
-                        '<span style="color:#e2e8f0;">' + e[0] + '</span>' +
+                        '<span style="color:#e2e8f0;">' + escHtml(e[0]) + '</span>' +
                         '<span style="color:#D4AF37;font-weight:700;">' + e[1] + ' veces</span></div>';
                 }).join('');
         }
@@ -887,7 +887,7 @@ async function cargarAnalytics() {
             document.getElementById('tabla-articulos').innerHTML =
                 artSorted.map(function(e) {
                     return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;">' +
-                        '<span style="color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;" title="' + e[0] + '">' + e[0].replace(/-/g,' ') + '</span>' +
+                        '<span style="color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;" title="' + escHtml(e[0]) + '">' + escHtml(e[0]).replace(/-/g,' ') + '</span>' +
                         '<span style="color:#00d2ff;font-weight:700;flex-shrink:0;margin-left:8px;">' + e[1] + '</span></div>';
                 }).join('');
         }
@@ -908,8 +908,8 @@ async function cargarAnalytics() {
     document.getElementById('eventos-locales').innerHTML = localEvts.length > 0
         ? localEvts.map(function(e) {
             return '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:.8rem;">' +
-                '<span style="color:#e2e8f0;font-weight:600;">' + e.event + '</span>' +
-                '<span style="color:#64748b;">' + new Date(e.ts).toLocaleTimeString('es-CO') + ' · ' + e.page + '</span>' +
+                '<span style="color:#e2e8f0;font-weight:600;">' + escHtml(e.event) + '</span>' +
+                '<span style="color:#64748b;">' + new Date(e.ts).toLocaleTimeString('es-CO') + ' · ' + escHtml(e.page) + '</span>' +
                 '</div>';
           }).join('')
         : '<div style="color:#94a3b8;text-align:center;padding:24px;font-size:.88rem;">Sin eventos locales aún — navega la web con la sesión activa</div>';
@@ -966,7 +966,7 @@ async function cargarPedidos() {
 
     } catch (e) {
         document.getElementById('tbody-pedidos').innerHTML =
-            `<tr><td colspan="8" style="text-align:center;color:#f87171;padding:24px;">${e.message}</td></tr>`;
+            `<tr><td colspan="8" style="text-align:center;color:#f87171;padding:24px;">${escHtml(e.message)}</td></tr>`;
     }
 }
 

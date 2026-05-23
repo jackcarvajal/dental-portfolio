@@ -763,7 +763,7 @@
 <body oncontextmenu="return false;">
 <script src="js/header.js"></script>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
-
+<main id="main-content">
     <div class="container">
         <!-- BOTÓN DE REGRESO (destino dinámico: catálogo o inicio) -->
         <a id="back-btn" href="index.html#portfolio" class="back-btn">
@@ -1146,9 +1146,9 @@
                 if (embedUrl) {
                     container.innerHTML = `<iframe src="${embedUrl}" title="Video del caso" style="width:100%;height:100%;border:none;" allowfullscreen allow="autoplay"></iframe>`;
                 } else if (/\.(mp4|webm|ogg)(\?|$)/i.test(paciente.driveLink)) {
-                    container.innerHTML = `<video controls style="width:100%;height:100%;background:#000;" preload="metadata"><source src="${paciente.driveLink}" type="video/mp4">Tu navegador no soporta video HTML5.</video>`;
-                } else {
-                    container.innerHTML = `<div class="no-viewer"><i class="fas fa-play-circle"></i><h3>Ver Video</h3><p><a href="${paciente.driveLink}" target="_blank" rel="noopener noreferrer" style="color:#D4AF37;">Abrir video →</a></p></div>`;
+                    container.innerHTML = `<video controls style="width:100%;height:100%;background:#000;" preload="metadata"><source src="${escapeHtml(sanitizePath(paciente.driveLink))}" type="video/mp4">Tu navegador no soporta video HTML5.</video>`;
+                } else if (/^https?:\/\//.test(paciente.driveLink)) {
+                    container.innerHTML = `<div class="no-viewer"><i class="fas fa-play-circle"></i><h3>Ver Video</h3><p><a href="${escapeHtml(paciente.driveLink)}" target="_blank" rel="noopener noreferrer" style="color:#D4AF37;">Abrir video →</a></p></div>`;
                 }
             } else {
                 container.innerHTML = `
@@ -1508,6 +1508,7 @@
         
     </script>
     <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</main>
     <script src="js/footer.js?v=20260522"></script>
     <noscript><p style="text-align:center;padding:2rem;color:#94a3b8">Esta página requiere JavaScript. <a href="https://wa.me/573212816716" style="color:#D946A6">Contáctanos por WhatsApp</a>.</p></noscript>
 

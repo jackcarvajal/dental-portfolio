@@ -264,6 +264,7 @@ textarea.modal-input{min-height:100px;}
 </style>
 </head>
 <body>
+<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 
 <div class="topbar">
   <div>
@@ -276,6 +277,7 @@ textarea.modal-input{min-height:100px;}
   </div>
 </div>
 
+<main id="main-content">
 <div class="wrap">
   <div id="loading" style="text-align:center;padding:80px 24px;color:var(--muted);">
     <i class="fas fa-circle-notch fa-spin" style="font-size:2rem;display:block;margin-bottom:12px;color:var(--gold);"></i>
@@ -887,7 +889,7 @@ const ACTOR_LBL = {operario:'Equipo PRODIGY', doctor:'Doctor / Cliente', sistema
 function buildHistorial() {
   if (!_hist.length) return `<p style="color:var(--muted);font-size:.83rem;padding:8px;">Sin eventos registrados aún.</p>`;
   return `<div class="timeline">${_hist.map(h => {
-    const cfg = TIPO_CFG[h.tipo] || {ic:'fas fa-circle',col:'var(--muted)',label:h.tipo};
+    const cfg = TIPO_CFG[h.tipo] || {ic:'fas fa-circle',col:'var(--muted)',label:esc(h.tipo)};
     const fotos = (h.fotos_urls||[]).map((u,i)=>
       `<div class="tl-foto" onclick="openLbExtra('${esc(u)}')"><img src="${esc(u)}" loading="lazy"></div>`).join('');
     return `<div class="tl-item">
@@ -895,7 +897,7 @@ function buildHistorial() {
       <div class="tl-card">
         <div class="tl-head">
           <span class="tl-tipo" style="color:${cfg.col};">${cfg.label}</span>
-          <span class="tl-actor">· ${ACTOR_LBL[h.actor]||h.actor}</span>
+          <span class="tl-actor">· ${ACTOR_LBL[h.actor]||esc(h.actor)}</span>
           <span class="tl-fecha">${fmt(h.created_at)}</span>
         </div>
         ${h.descripcion?`<div class="tl-desc">${esc(h.descripcion)}</div>`:''}
@@ -1295,5 +1297,6 @@ async function enviarNota() {
   document.getElementById('historial-wrap').innerHTML = buildHistorial();
 }
 </script>
+</main>
 </body>
 </html>

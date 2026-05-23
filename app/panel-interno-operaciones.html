@@ -975,7 +975,7 @@ async function cargarStaff() {
   if (!grid) return;
   grid.innerHTML = '<p style="color:var(--muted);font-size:.85rem;grid-column:1/-1;">Cargando…</p>';
   const { data, error } = await sb.from('staff_departamentos').select('*').order('created_at');
-  if (error) { grid.innerHTML = `<p style="color:#f87171;">Error: ${error.message}</p>`; return; }
+  if (error) { grid.innerHTML = `<p style="color:#f87171;">Error: ${esc(error.message)}</p>`; return; }
   if (!data || !data.length) {
     grid.innerHTML = '<p style="color:var(--muted);font-size:.85rem;grid-column:1/-1;">Sin operarios registrados. Agrega uno con el botón de arriba.</p>';
     return;
@@ -984,8 +984,8 @@ async function cargarStaff() {
     <div style="background:var(--card-bg);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
         <div>
-          <div style="font-size:.9rem;font-weight:800;">${escH(s.nombre||'Sin nombre')}</div>
-          <div style="font-size:.72rem;color:var(--muted);">${escH(s.email)}</div>
+          <div style="font-size:.9rem;font-weight:800;">${esc(s.nombre||'Sin nombre')}</div>
+          <div style="font-size:.72rem;color:var(--muted);">${esc(s.email)}</div>
         </div>
         <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.75rem;color:${s.activo?'#00FF41':'#f87171'};">
           <input type="checkbox" ${s.activo?'checked':''} onchange="toggleStaffActivo('${s.id}',this.checked)" style="accent-color:#00FF41;">
@@ -997,7 +997,7 @@ async function cargarStaff() {
         ${Object.entries(DEPT_CONFIG).map(([key,cfg]) => {
           const tiene = (s.departamentos||[]).includes(key);
           return `<label style="display:flex;align-items:center;gap:5px;cursor:pointer;padding:4px 10px;border-radius:20px;border:1px solid ${tiene?cfg.color:'rgba(255,255,255,.1)'};background:${tiene?cfg.color+'18':'transparent'};font-size:.72rem;font-weight:700;color:${tiene?cfg.color:'#64748b'};">
-            <input type="checkbox" ${tiene?'checked':''} style="display:none;" onchange="toggleDept('${s.id}','${key}',this.checked,'${escH(s.email)}')">
+            <input type="checkbox" ${tiene?'checked':''} style="display:none;" onchange="toggleDept('${s.id}','${key}',this.checked,'${esc(s.email)}')">
             <i class="fas ${cfg.icon}" style="font-size:.65rem;"></i> ${cfg.label}
           </label>`;
         }).join('')}
@@ -1098,7 +1098,7 @@ async function cargarPedidos() {
 
     } catch (e) {
         document.getElementById('tbody-pedidos').innerHTML =
-            `<tr><td colspan="8" style="text-align:center;color:#f87171;padding:24px;">${e.message}</td></tr>`;
+            `<tr><td colspan="8" style="text-align:center;color:#f87171;padding:24px;">${esc(e.message)}</td></tr>`;
     }
 }
 
@@ -1605,7 +1605,7 @@ async function cargarClientes() {
 
     } catch (err) {
         document.getElementById('tbody-clientes').innerHTML =
-            `<tr><td colspan="7" style="text-align:center;color:#f87171;padding:24px;">${err.message}</td></tr>`;
+            `<tr><td colspan="7" style="text-align:center;color:#f87171;padding:24px;">${esc(err.message)}</td></tr>`;
     }
 }
 
@@ -1713,7 +1713,7 @@ async function cargarEquipo() {
 
     if (error) {
         document.getElementById('tbody-equipo').innerHTML =
-            `<tr><td colspan="6" style="text-align:center;color:#f87171;padding:20px;">${error.message}</td></tr>`;
+            `<tr><td colspan="6" style="text-align:center;color:#f87171;padding:20px;">${esc(error.message)}</td></tr>`;
         return;
     }
 
@@ -1805,7 +1805,7 @@ async function cargarLeads() {
 
     if (error) {
         document.getElementById('tbody-leads').innerHTML =
-            `<tr><td colspan="6" style="text-align:center;color:#f87171;padding:24px;">Error: ${error.message}</td></tr>`;
+            `<tr><td colspan="6" style="text-align:center;color:#f87171;padding:24px;">Error: ${esc(error.message)}</td></tr>`;
         return;
     }
     _leadsData = data || [];
@@ -1889,7 +1889,7 @@ async function cargarPedidosDoc() {
 
     if (error) {
         document.getElementById('tbody-pdd').innerHTML =
-            `<tr><td colspan="9" style="color:#ef4444;text-align:center;padding:20px">Error: ${error.message}</td></tr>`;
+            `<tr><td colspan="9" style="color:#ef4444;text-align:center;padding:20px">Error: ${esc(error.message)}</td></tr>`;
         return;
     }
     _pedidosDoc = data || [];
@@ -2371,7 +2371,7 @@ async function cargarMetricas() {
     document.getElementById('met-servicios').innerHTML = topSvc.length ? topSvc.map(([s,n],i) => `
         <div style="margin-bottom:10px;">
             <div style="display:flex;justify-content:space-between;font-size:.72rem;margin-bottom:4px;">
-                <span style="color:#cbd5e1">${s}</span>
+                <span style="color:#cbd5e1">${esc(s)}</span>
                 <span style="font-weight:700;color:${colorsSvc[i%colorsSvc.length]}">${n}</span>
             </div>
             <div style="background:rgba(255,255,255,.05);border-radius:4px;height:6px;">

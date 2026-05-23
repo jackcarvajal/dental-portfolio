@@ -813,11 +813,11 @@ async function cargarBibliotecas(userId) {
             <div style="display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid rgba(255,255,255,.04);flex-wrap:wrap">
                 <div style="flex:1;min-width:180px">
                     <div style="font-size:.85rem;font-weight:700;color:var(--text)">${escH(b.nombre)}</div>
-                    <div style="font-size:.72rem;color:var(--muted);margin-top:2px">${TIPO_LABELS[b.tipo]||b.tipo}${b.notas?` · ${escH(b.notas)}`:''}</div>
+                    <div style="font-size:.72rem;color:var(--muted);margin-top:2px">${TIPO_LABELS[b.tipo]||escH(b.tipo)}${b.notas?` · ${escH(b.notas)}`:''}</div>
                 </div>
                 <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
-                    ${b.archivo_url?`<a href="${escH(b.archivo_url)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-cyan"><i class="fas fa-download"></i> Descargar</a>`:''}
-                    ${b.link_externo?`<a href="${escH(b.link_externo)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-external-link-alt"></i> Abrir link</a>`:''}
+                    ${b.archivo_url&&/^https?:\/\//.test(b.archivo_url)?`<a href="${escH(b.archivo_url)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-cyan"><i class="fas fa-download"></i> Descargar</a>`:''}
+                    ${b.link_externo&&/^https?:\/\//.test(b.link_externo)?`<a href="${escH(b.link_externo)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-external-link-alt"></i> Abrir link</a>`:''}
                     <button onclick="eliminarBiblioteca('${escH(b.id)}')" class="btn-sm" style="color:#f87171;border-color:rgba(248,113,113,.3)"><i class="fas fa-trash"></i></button>
                 </div>
             </div>`).join('');
@@ -1138,7 +1138,7 @@ async function cargarPedidosDoc_cliente(uid) {
                 <small>${escH(mat)} · ${p.unidades} ud${p.unidades>1?'s':''}${p.urgente?' · ⚡ Urgente':''}${p.incluye_dsd?' · 🎨 DSD':''}</small>
                 <small style="color:#94a3b8">${fecha}</small>
             </div>
-            <span class="pd-online-est ${escH(p.estado)}">${estLbl}</span>
+            <span class="pd-online-est ${escH(p.estado)}">${escH(estLbl)}</span>
             ${necesitaAprobacion
                 ?`<button class="btn-revisar" onclick="abrirAprobacion('${escH(p.id)}','${escH(p.link_diseno)}')"><i class="fas fa-eye"></i> Revisar y Aprobar</button>`
                 :yaAprobado?`<span style="font-size:.7rem;color:var(--neon);font-weight:700"><i class="fas fa-check-circle"></i> Aprobado</span>`:''}

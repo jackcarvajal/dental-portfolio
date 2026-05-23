@@ -2048,7 +2048,7 @@
             <p class="system-desc">Sistema avanzado de órdenes CAM · Cálculo inteligente en tiempo real</p>
         </header>
 
-        <main>
+        <div class="form-content-wrap">
             <div class="accordion active">
                 <div class="accordion-header" onclick="toggleAccordion(this)">
                     <h2>👤 1. DATOS DEL CLIENTE</h2>
@@ -2331,7 +2331,7 @@
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
 
         <aside class="calculator">
             <h3>💰 RESUMEN</h3>
@@ -4760,8 +4760,8 @@
                 banner.innerHTML = `
                     <i class="fas fa-link" style="color:#00d2ff;margin-top:2px;flex-shrink:0;"></i>
                     <div>
-                        <strong style="color:#00d2ff;">Fabricación vinculada al diseño #${p.codigo||id.slice(0,8)}</strong>
-                        <span style="color:rgba(255,255,255,.6);"> · ${p.nombre_paciente||'Paciente'}</span>
+                        <strong style="color:#00d2ff;">Fabricación vinculada al diseño #${sanitizar(p.codigo||id.slice(0,8))}</strong>
+                        <span style="color:rgba(255,255,255,.6);"> · ${sanitizar(p.nombre_paciente||'Paciente')}</span>
                         ${stlCount ? `<br><span style="color:#fbbf24;font-size:.76rem;">
                             <i class="fas fa-cube" style="margin-right:3px;"></i>
                             El diseño contiene <strong>${stlCount} archivo${stlCount===1?'':'s'} STL</strong>
