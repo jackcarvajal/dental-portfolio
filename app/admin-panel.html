@@ -484,7 +484,7 @@
                     <tr><th></th><th>Cliente</th><th>Email</th><th>Clínica</th><th>Ciudad</th><th>Pedidos</th><th style="color:var(--gold);">💰 CLV Total</th><th>Registro</th><th>WA</th></tr>
                 </thead>
                 <tbody id="tbody-clientes">
-                    <tr class="loading-row"><td colspan="8"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+                    <tr class="loading-row"><td colspan="9"><div class="spinner" style="margin:0 auto;"></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -1880,10 +1880,10 @@ async function cargarTorre() {
 
     /* Desglose por departamento */
     const deptCfg = {
-      diseno:    {label:'Diseño CAD',   color:'#00d2ff', icon:'fa-drafting-compass', flujos:['diseno']},
-      fresado:   {label:'Fresado/Lab',  color:'#D4AF37', icon:'fa-cog',              flujos:['fresado','lab']},
-      impresion: {label:'Impresión 3D', color:'#fb923c', icon:'fa-print',            flujos:['impresion']},
-      taller:    {label:'Taller',       color:'#a78bfa', icon:'fa-tools',            flujos:['taller']}
+      diseno:    {label:'Diseño CAD',   color:'#00d2ff', icon:'fa-drafting-compass', flujos:['diseno'],           panel:'operario-diseno.html'},
+      fresado:   {label:'Fresado/Lab',  color:'#D4AF37', icon:'fa-cog',              flujos:['fresado','lab'],    panel:'operator-panel.html'},
+      impresion: {label:'Impresión 3D', color:'#fb923c', icon:'fa-print',            flujos:['impresion'],        panel:'operator-panel.html'},
+      taller:    {label:'Taller',       color:'#a78bfa', icon:'fa-tools',            flujos:['taller'],           panel:'taller.html'}
     };
     const activos   = ['VALIDACION_PENDIENTE','EN_PRODUCCION','EN_DISENO','DISENO_FINALIZADO','FRESADO_INICIADO','REVISION_CLIENTE'];
     const deptHtml = Object.entries(deptCfg).map(([k,c]) => {
@@ -1902,7 +1902,7 @@ async function cargarTorre() {
           <div><div style="font-size:1.4rem;font-weight:900;color:#00FF41;">${done.length}</div><div style="font-size:.62rem;color:#64748b;">Hoy listos</div></div>
         </div>
         <div style="margin-top:10px;">
-          <a href="operario.html" target="_blank" style="font-size:.72rem;color:${c.color};text-decoration:none;font-weight:700;">Ver panel →</a>
+          <a href="${c.panel}" target="_blank" style="font-size:.72rem;color:${c.color};text-decoration:none;font-weight:700;">Ver panel →</a>
         </div>
       </div>`;
     }).join('');
