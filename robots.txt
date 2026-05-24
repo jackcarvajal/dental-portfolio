@@ -1,15 +1,61 @@
 # robots.txt — PRODIGY Lab Dental
 # prodigylabdental.com
 
+# ── Buscadores y crawlers generales ──────────────────────────────
 User-agent: *
 Allow: /
 
-# Bloquear rutas privadas y admin
+# Rutas privadas — portal interno y datos sensibles
 Disallow: /app/
 Disallow: /sql/
 Disallow: /supabase/
 Disallow: /.git/
 Disallow: /MEMORY/
 Disallow: /scripts/
+Disallow: /caso.html
+Disallow: /recibo-caso.html
+Disallow: /revision-diseno.html
+Disallow: /patient.html
+Disallow: /offline.html
+
+# ── Bots IA con motor de búsqueda — PERMITIR ─────────────────────
+# Aparecer en ChatGPT Search
+User-agent: GPTBot
+Allow: /
+
+# Aparecer en ChatGPT browsing y Bing Copilot
+User-agent: OAI-SearchBot
+Allow: /
+
+# Aparecer en Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# Aparecer en Google AI Overviews (Gemini en Google)
+User-agent: Google-Extended
+Allow: /
+
+# ── Bots solo de entrenamiento — BLOQUEAR ────────────────────────
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+# Crawlers de agencias SEO (no aportan tráfico)
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
 
 Sitemap: https://prodigylabdental.com/sitemap.xml
