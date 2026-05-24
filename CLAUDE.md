@@ -154,6 +154,77 @@ Obligatorio en: index, servicios principales, calculadoras, portafolio.
 <link rel="dns-prefetch" href="https://dominio.com">
 ```
 
+## 9. SISTEMA DE ARTÍCULOS — ESTÁNDAR CIENTÍFICO OBLIGATORIO
+
+### Regla absoluta
+**JAMÁS inventar, alucinar ni parafrasear sin cita verificable.**
+Cada afirmación clínica o estadística DEBE tener referencia real con DOI verificable en PubMed/ScienceDirect.
+Temperatura Gemini: 0.15 (mínima alucinación).
+
+### Journals aceptados (únicos válidos como fuente)
+| Journal | Especialidad | Base de datos |
+|---|---|---|
+| Periodontology 2000 | Periodoncia, implantología | PubMed / ScienceDirect |
+| Journal of Dental Research (JDR) | Investigación multidisciplinaria | PubMed / ScienceDirect |
+| Journal of Clinical Periodontology | Periodoncia clínica, implantes | PubMed / ScienceDirect |
+| Journal of Dentistry | Materiales, odontología digital | ScienceDirect |
+| Dental Materials | Resinas, cerámicas, metales | ScienceDirect |
+| Journal of Prosthetic Dentistry (JPD) | Rehabilitación oral, prótesis | ScienceDirect |
+| Am. Journal of Orthodontics (AJODO) | Ortodoncia | ScienceDirect |
+| Journal of Endodontics | Endodoncia, pulpa dental | ScienceDirect |
+| Clinical Oral Implants Research (COIR) | Implantología | PubMed / ScienceDirect |
+| International Journal of Oral Surgery (IJOS) | Cirugía oral | PubMed |
+| JADA (J. American Dental Association) | Práctica clínica general | jada.ada.org |
+| Cochrane Oral Health | Revisiones sistemáticas | cochrane.org |
+| SciELO Odontología | Estudios en español/portugués | scielo.org |
+
+### Plataformas para buscar DOIs reales
+- **PubMed / NCBI** — pubmed.ncbi.nlm.nih.gov (biomédico más grande del mundo)
+- **ScienceDirect (Elsevier)** — sciencedirect.com (JDR, Dental Materials, JPD, etc.)
+- **JADA** — jada.ada.org (American Dental Association)
+- **SciELO** — scielo.org (estudios en español/portugués)
+
+### Fuentes NO permitidas
+- Wikipedia (solo para datos generales no clínicos)
+- Blogs, sitios comerciales de laboratorios o fabricantes
+- GPT/Gemini sin cita verificable
+- Artículos sin DOI o de revistas no indexadas
+
+### Reglas de construcción del artículo
+1. Mínimo 5 secciones (h2)
+2. Mínimo 4 referencias con DOI real — verificadas antes de incluir
+3. Tablas de comparación DEBEN tener columna "Fuente/DOI"
+4. Estadísticas numéricas (ej: "92% de supervivencia") → cita obligatoria
+5. El prompt a Gemini debe listar los journals explícitamente y prohibir inventar DOIs
+
+### Cómo se generan los artículos (pipeline actual)
+
+**PRODIGY** (`dental-portfolio/scripts/auto-journal.js`):
+- Trigger: GitHub Actions, martes y jueves 9 AM Bogotá (14:00 UTC)
+- Motor: Gemini 2.0 Flash via `GEMINI_API_KEY` (secret GitHub)
+- Salida: prepende objeto a `articles.js` → array `ARTICLES`
+- Auto-actualiza: `sitemap.xml` con nueva URL
+- Social copy: `marketing-social.txt` → GitHub Artifact (privado, 30 días)
+
+**Alejandro CAD/CAM** (`alejandro-carvajal-site/scripts/gen-articulo-ac.js`):
+- Trigger: GitHub Actions, lunes y miércoles 9 AM Bogotá (14:00 UTC)
+- Motor: Gemini 2.0 Flash via `GEMINI_API_KEY` (secret GitHub)
+- Salida: prepende objeto a `articles-ac.js` → array `ARTICLES_AC`
+- Auto-actualiza: `sitemap.xml` con nueva URL
+- Social copy: `marketing-social-ac.txt` → GitHub Artifact (privado, 30 días)
+
+### Formato de bloque de contenido (ambos proyectos)
+`article.html` / `renderContent()` acepta AMBOS formatos (legacy y nuevo):
+```javascript
+// Legacy (manual): { tipo, texto, cabeceras, filas }
+// Nuevo (auto-journal): { t, c, headers, rows }
+// renderContent() normaliza: tp = b.t || b.tipo; txt = b.c ?? b.texto
+```
+
+### Variables de entorno requeridas
+- **Cloudflare Pages** (ambos sitios): `GEMINI_API_KEY` → para el chatbot bot en producción
+- **GitHub Secrets** (ambos repos): `GEMINI_API_KEY` → para el cron de artículos
+
 ## 8. REFERENCIAS RÁPIDAS
 - `MAP.md` — líneas exactas de funciones críticas. Leer antes de editar archivos grandes.
 - `PENDIENTES.md` — solo tareas ⏳/🔴/🟡. Orden: 0-SQL → 1-Home → 2-Portafolio → 3-Servicios → 4-Flujos → 5-Soporte → 6-Empresa → 7-Portal → 8-SEO.
