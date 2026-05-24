@@ -1395,7 +1395,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                 });
                 if (!res.ok) throw new Error('Upload error');
                 window._archivosSubidos[id] = path;
-                if (estado) { estado.innerHTML = `<span style="color:#00FF41"><i class="fas fa-check-circle"></i> ${file.name.length>20?file.name.slice(0,20)+'…':file.name}</span>`; }
+                if (estado) { const _fn=String(file.name||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); estado.innerHTML = `<span style="color:#00FF41"><i class="fas fa-check-circle"></i> ${_fn.length>20?_fn.slice(0,20)+'…':_fn}</span>`; }
                 if (lbl) { lbl.style.background = 'rgba(0,255,65,.1)'; lbl.style.borderColor = 'rgba(0,255,65,.3)'; lbl.style.color = '#00FF41'; }
                 validarChecks();
             } catch(e) {
