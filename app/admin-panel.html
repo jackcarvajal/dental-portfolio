@@ -477,7 +477,7 @@
             </div>
             <table>
                 <thead>
-                    <tr><th></th><th>Cliente</th><th>Email</th><th>Clínica</th><th>Ciudad</th><th>Pedidos</th><th style="color:var(--gold);">💰 CLV Total</th><th>Registro</th></tr>
+                    <tr><th></th><th>Cliente</th><th>Email</th><th>Clínica</th><th>Ciudad</th><th>Pedidos</th><th style="color:var(--gold);">💰 CLV Total</th><th>Registro</th><th>WA</th></tr>
                 </thead>
                 <tbody id="tbody-clientes">
                     <tr class="loading-row"><td colspan="8"><div class="spinner" style="margin:0 auto;"></div></td></tr>
@@ -933,6 +933,7 @@ function switchTab(tab, el) {
     if (tab === 'clientes')   cargarClientes();
     if (tab === 'despachos')  cargarDespachos();
     if (tab === 'torre')      cargarTorre();
+    if (tab === 'analytics')  cargarAnalytics();
 }
 
 /* ══════════════════════════════════════════
@@ -1389,6 +1390,7 @@ async function cargarPortafolio() {
                 <div style="font-size:0.72rem;color:var(--muted);">${escHtml(c.type || '')} · ${escHtml(c.date || '')}</div>
                 ${c.visible ? '<span style="color:#4ade80;font-size:0.65rem;font-weight:700;">● Visible</span>' : '<span style="color:#64748b;font-size:0.65rem;">○ Oculto</span>'}
                 <div style="margin-top:8px;display:flex;gap:6px;">
+                    <button class="btn-xs" style="background:${c.visible ? 'rgba(100,116,139,.15)' : 'rgba(74,222,128,.12)'};color:${c.visible ? '#64748b' : '#4ade80'};border:1px solid ${c.visible ? '#334155' : 'rgba(74,222,128,.3)'};" onclick="toggleVisibleCaso('${c.id}',${!c.visible})" title="${c.visible ? 'Ocultar del portafolio' : 'Publicar en portafolio'}"><i class="fas fa-eye${c.visible ? '-slash' : ''}"></i></button>
                     <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
@@ -1411,25 +1413,31 @@ async function eliminarCaso(id) {
     else { toast('Caso eliminado', 'success'); cargarPortafolio(); }
 }
 
+async function toggleVisibleCaso(id, nuevoVisible) {
+    const { error } = await sb.from('casos_portafolio').update({ visible: nuevoVisible }).eq('id', id);
+    if (error) toast('Error: ' + error.message, 'error');
+    else { toast(nuevoVisible ? 'Caso publicado' : 'Caso ocultado', 'success'); cargarPortafolio(); }
+}
+
 /* ══════════════════════════════════════════
    TAB 3 — CLIENTES
 ══════════════════════════════════════════ */
 async function cargarClientes() {
     document.getElementById('tbody-clientes').innerHTML =
-        '<tr class="loading-row"><td colspan="8"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
+        '<tr class="loading-row"><td colspan="9"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
 
     try {
         // Clientes con todos sus pedidos (para calcular CLV)
         const { data, error } = await sb
             .from('clientes')
-            .select('id, nombre, email, clinica, ciudad, pais, created_at, pedidos(precio_total, estado)')
+            .select('id, nombre, email, telefono, clinica, ciudad, pais, created_at, pedidos(precio_total, estado)')
             .order('created_at', { ascending: false });
 
         if (error) throw error;
 
         if (!data || data.length === 0) {
             document.getElementById('tbody-clientes').innerHTML =
-                '<tr><td colspan="8" class="empty-state"><i class="fas fa-users"></i><br>Sin clientes registrados aún</td></tr>';
+                '<tr><td colspan="9" class="empty-state"><i class="fas fa-users"></i><br>Sin clientes registrados aún</td></tr>';
             return;
         }
 
@@ -1465,6 +1473,11 @@ async function cargarClientes() {
                 : `<span style="font-size:.72rem;color:#475569;">#${rank}</span>`;
             const clvColor = esTop10 ? 'var(--gold)' : (c._clv > 0 ? '#4ade80' : '#475569');
             const rowBg = esTop10 ? 'background:linear-gradient(90deg,rgba(212,175,55,.06),transparent);border-left:3px solid rgba(212,175,55,.5);' : '';
+            const waNum = (c.telefono || '').replace(/\D/g, '');
+            const waLink = waNum
+                ? `<a href="https://wa.me/${waNum.startsWith('57') ? waNum : '57' + waNum}" target="_blank" rel="noopener"
+                       style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:rgba(37,211,102,.12);color:#25d366;border:1px solid rgba(37,211,102,.25);font-size:.8rem;" title="WhatsApp ${escHtml(c.nombre || '')}"><i class="fab fa-whatsapp"></i></a>`
+                : `<span style="color:#334155;font-size:.72rem;">—</span>`;
             return `<tr style="${rowBg}">
                 <td style="text-align:center;width:40px;">${rankBadge}</td>
                 <td style="font-weight:${esTop10?'800':'700'};color:${esTop10?'var(--gold)':'inherit'};">${escHtml(c.nombre || '—')}</td>
@@ -1474,12 +1487,13 @@ async function cargarClientes() {
                 <td style="text-align:center;font-weight:700;color:var(--cyan);">${c._numPedidos}</td>
                 <td style="font-weight:800;color:${clvColor};">${c._clv > 0 ? fmtCOP(c._clv) : '—'}</td>
                 <td style="font-size:0.75rem;">${fmtFecha(c.created_at)}</td>
+                <td style="text-align:center;">${waLink}</td>
             </tr>`;
         }).join('');
 
     } catch (err) {
         document.getElementById('tbody-clientes').innerHTML =
-            `<tr><td colspan="8" style="text-align:center;color:#f87171;padding:24px;">${escHtml(err.message)}</td></tr>`;
+            `<tr><td colspan="9" style="text-align:center;color:#f87171;padding:24px;">${escHtml(err.message)}</td></tr>`;
     }
 }
 

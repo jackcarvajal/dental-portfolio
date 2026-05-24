@@ -189,28 +189,28 @@ body.ready{visibility:visible;}
         <span><i class="fas fa-inbox" style="margin-right:6px;"></i>Por validar</span>
         <span class="k-count" id="cnt-pend">0</span>
       </div>
-      <div class="k-drop-zone" id="col-pend"></div>
+      <div class="k-drop-zone" id="col-pend" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'pend')"></div>
     </div>
     <div class="k-col">
       <div class="k-hdr" style="color:var(--cyan);">
         <span><i class="fas fa-drafting-compass" style="margin-right:6px;"></i>Diseñando</span>
         <span class="k-count" id="cnt-diseno">0</span>
       </div>
-      <div class="k-drop-zone" id="col-diseno"></div>
+      <div class="k-drop-zone" id="col-diseno" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'diseno')"></div>
     </div>
     <div class="k-col">
       <div class="k-hdr" style="color:var(--gold);">
         <span><i class="fas fa-eye" style="margin-right:6px;"></i>En revisión</span>
         <span class="k-count" id="cnt-rev">0</span>
       </div>
-      <div class="k-drop-zone" id="col-rev"></div>
+      <div class="k-drop-zone" id="col-rev" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'rev')"></div>
     </div>
     <div class="k-col">
       <div class="k-hdr" style="color:var(--green);">
         <span><i class="fas fa-check-circle" style="margin-right:6px;"></i>Aprobado / Entregado</span>
         <span class="k-count" id="cnt-done">0</span>
       </div>
-      <div class="k-drop-zone" id="col-done"></div>
+      <div class="k-drop-zone" id="col-done" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'done')"></div>
     </div>
   </div>
 
@@ -418,9 +418,13 @@ function cardHTML(p, col) {
       : `<span style="font-size:.68rem;color:var(--green)">✓ ${escH(stateLabel)}</span>`;
   }
 
-  return `<div class="caso-card" style="${critico?'border-color:rgba(239,68,68,.4)':alerta?'border-color:rgba(251,191,36,.3)':''}">
+  return `<div class="caso-card" draggable="true" data-id="${p.id}" data-col="${col}"
+    style="${critico?'border-color:rgba(239,68,68,.4)':alerta?'border-color:rgba(251,191,36,.3)':''}"
+    ondragstart="_kdragStart(event)" ontouchstart="_ktouchStart(event)" ontouchmove="_ktouchMove(event)" ontouchend="_ktouchEnd(event)">
     <div class="card-timer ${tc}"><i class="fas fa-clock" style="margin-right:4px;"></i>${tl}</div>
-    <div class="caso-id">#${escH(p.codigo)||p.id.slice(0,8)} ${critico?'<span class="urgente-dot"></span>':''}</div>
+    <div class="caso-id">#${escH(p.codigo)||p.id.slice(0,8)} ${critico?'<span class="urgente-dot"></span>':''}
+      <span style="float:right;color:#475569;font-size:.72rem;cursor:grab;" title="Arrastra para mover">⠿⠿</span>
+    </div>
     <div class="caso-nombre">Caso ${escH(p.codigo||p.id?.slice(0,8)||'—')}</div>
     <div class="caso-meta">
       ${escH(p.servicio)||'—'}
@@ -595,6 +599,73 @@ function notifWA(tipo) {
     entrega:`📦 Diseño aprobado y entregado · Caso #${codigo}. Descarga tu STL desde el portal de seguimiento.`
   };
   window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msgs[tipo]||'')}`, '_blank');
+}
+
+/* ── KANBAN DRAG & DROP + TOUCH ── */
+const _COL_STATE = {
+  pend:   'VALIDACION_PENDIENTE',
+  diseno: 'EN_DISENO',
+  rev:    'REVISION_CLIENTE',
+  done:   'DISENO_APROBADO'
+};
+let _dragId = null;
+let _touchCard = null, _touchClone = null, _touchOriginCol = null;
+
+function _kdragStart(e) {
+  _dragId = e.currentTarget.dataset.id;
+  setTimeout(() => e.currentTarget.classList.add('dragging'), 0);
+  e.dataTransfer.effectAllowed = 'move';
+}
+function _kdragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+function _kdragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+async function _kdrop(e, targetCol) {
+  e.currentTarget.classList.remove('drag-over');
+  document.querySelectorAll('.caso-card.dragging').forEach(c => c.classList.remove('dragging'));
+  if (!_dragId) return;
+  const card = document.querySelector(`.caso-card[data-id="${_dragId}"]`);
+  const originCol = card ? card.dataset.col : null;
+  if (originCol === targetCol) { _dragId = null; return; }
+  await avanzar(_dragId, _COL_STATE[targetCol]);
+  _dragId = null;
+}
+function _ktouchStart(e) {
+  const card = e.currentTarget;
+  _touchCard = card;
+  _touchOriginCol = card.dataset.col;
+  _touchClone = card.cloneNode(true);
+  _touchClone.style.cssText = 'position:fixed;opacity:.75;pointer-events:none;z-index:9999;width:' + card.offsetWidth + 'px;';
+  document.body.appendChild(_touchClone);
+  card.classList.add('dragging');
+}
+function _ktouchMove(e) {
+  if (!_touchClone) return;
+  e.preventDefault();
+  const t = e.touches[0];
+  _touchClone.style.left = (t.clientX - _touchClone.offsetWidth / 2) + 'px';
+  _touchClone.style.top  = (t.clientY - 20) + 'px';
+  document.querySelectorAll('.k-drop-zone').forEach(z => z.classList.remove('drag-over'));
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  const zone = el ? el.closest('.k-drop-zone') : null;
+  if (zone) zone.classList.add('drag-over');
+}
+async function _ktouchEnd(e) {
+  if (!_touchClone || !_touchCard) return;
+  document.querySelectorAll('.k-drop-zone.drag-over').forEach(z => z.classList.remove('drag-over'));
+  _touchCard.classList.remove('dragging');
+  document.body.removeChild(_touchClone);
+  const t = e.changedTouches[0];
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  const zone = el ? el.closest('.k-drop-zone') : null;
+  _touchClone = null;
+  if (!zone) { _touchCard = null; return; }
+  const targetCol = zone.id.replace('col-', '');
+  if (targetCol !== _touchOriginCol) await avanzar(_touchCard.dataset.id, _COL_STATE[targetCol]);
+  _touchCard = null;
 }
 
 /* Cerrar modal al click fuera */
