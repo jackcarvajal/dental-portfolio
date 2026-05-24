@@ -78,7 +78,7 @@
 
 ---
 
-## ✅ COMPLETADO ESTA SESIÓN (2026-05-24)
+## ✅ COMPLETADO (2026-05-24)
 - Bot IA PRODIGY y Alejandro: manejo 4 casos de error + system prompt precios USD
 - SEO: noindex→index,follow en 9 páginas públicas (7 PRODIGY + 2 Alejandro)
 - robots.txt ambos: bots IA (ChatGPT/Perplexity/Gemini permitidos, CCBot/ClaudeBot bloqueados)
@@ -89,3 +89,7 @@
 - CLAUDE.md Alejandro: creado desde cero con todas las reglas
 - hreflang EN agregado a portafolio.html
 - temperature auto-journal PRODIGY: 0.2→0.15
+- nosotros.html PRODIGY: secciones Fundador + Arsenal técnico + Trayectoria 2014–2026 agregadas
+- nosotros.html: Lighthouse SEO score actualizado 63→95 (fix noindex ya aplicado)
+- diseno-cad.html + catalogo.html + fresado-cam.html: robots index,follow agregado
+- sitemap.xml PRODIGY: nosotros lastmod → 2026-05-24
