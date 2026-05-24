@@ -1,18 +1,19 @@
-﻿# PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-05-23
+# PRODIGY — PENDIENTES MAESTRO
+> Solo tareas activas. Última revisión: 2026-05-24
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
 
 ---
 
-## 🔴 URGENTE — ALEJANDRO (bloquean funcionalidades activas)
-
+## 🔴 URGENTE — Bloquean funcionalidades activas
 
 | # | Acción | Dónde | Detalle |
 |---|--------|-------|---------|
-| 1 | **WOMPI_INTEGRITY_SECRET** en Supabase Secrets | Dashboard → Edge Functions → Secrets | Webhook de pago falla |
-| 2 | **Subir casos al portafolio** | `/app/panel-interno-operaciones.html` | Mínimo 5 casos con portada + galería |
-
-> Stripe: en espera — activar cuando esté listo, no bloquea operación actual.
+| 1 | `GEMINI_API_KEY` en Cloudflare Pages — **PRODIGY** | Pages → Settings → Environment Variables → Add | Sin esto el chatbot IA no responde |
+| 2 | `GEMINI_API_KEY` en Cloudflare Pages — **Alejandro** | Pages → Settings → Environment Variables → Add | Sin esto el chatbot IA no responde |
+| 3 | `GEMINI_API_KEY` en GitHub Secrets — **repo Alejandro** | Repo → Settings → Secrets and variables → Actions | Sin esto el cron de artículos no corre |
+| 4 | `WOMPI_INTEGRITY_SECRET` en Supabase Secrets | Dashboard → Edge Functions → Secrets | Webhook de pago falla |
+| 5 | **Redesplegar ambos sitios** en Cloudflare tras agregar env vars | Cloudflare → Deployments → Retry deployment | Para activar bot + SEO fixes |
+| 6 | **Subir casos al portafolio** | `/app/panel-interno-operaciones.html` | Mínimo 5 casos con portada + galería |
 
 ---
 
@@ -37,7 +38,6 @@
 | **Meta/WA** | Crear App tipo Business → agregar WhatsApp → obtener Phone ID | ⏳ |
 | **Stripe** | Crear cuenta Wise Business → obtener datos bancarios USD → abrir Stripe | ⏳ |
 | **Wompi** | Activar cuenta producción → clave `pub_prod_*` | ⏳ |
-| **Paddle** | Crear producto → copiar `pri_...` en `js/pagos.js` | ⏳ |
 | **PayPal** | Whitelist `https://prodigylabdental.com` en Return URLs | ⏳ |
 
 ---
@@ -46,14 +46,15 @@
 
 | # | Acción | Estado |
 |---|--------|--------|
-| 1 | Search Console → re-enviar `sitemap.xml` | ⏳ |
+| 1 | Search Console → re-enviar `sitemap.xml` (ambos sitios) | ⏳ |
 | 2 | Google My Business → subir 10-15 fotos del lab | ⏳ |
 | 3 | GA4 Real Time → verificar que llegan hits | ⏳ |
 | 4 | Google Ads ID → reemplazar `AW-XXXXXXXXX` en `js/conversions.js` línea 12 | ⏳ |
+| 5 | DNS Cloudflare → SPF + DKIM + DMARC (ver `PENDIENTES-DNS-EMAIL.md`) | ⏳ |
 
 ---
 
-## 🎨 CONTENIDO VISUAL — ALEJANDRO
+## 🎨 CONTENIDO VISUAL — TUYO
 
 | # | Contenido | Dónde | Impacto |
 |---|-----------|-------|---------|
@@ -61,9 +62,7 @@
 | 2 | Video 30-60 seg OBS: STL → diseño | diseno-remoto hero | 🔴 |
 | 3 | Foto tuya en PC con Exocad | nosotros.html, diseno-cad | 🟡 |
 | 4 | Antes/después: STL crudo vs. diseño | diseno-remoto, diseno-cad | 🟡 |
-| 5 | Logo PRODIGY en SVG oficial | header, footer, og:image | 🟡 |
-| 6 | Foto del laboratorio/taller | nosotros.html | 🟢 |
-| 7 | Email `casos@prodigylabdental.com` | crear en proveedor de dominio | 🟢 |
+| 5 | Foto del laboratorio/taller | nosotros.html | 🟢 |
 
 ---
 
@@ -73,15 +72,20 @@
 |---|--------|
 | 1 | Completar perfil: bio + link `/diseno-remoto` + foto |
 | 2 | Cambiar a Cuenta Creador: Settings → Manage account |
-| 3 | Conectar Instagram @labdentalprodigy |
-| 4 | Grabar video #1: "¿Cómo envías tu STL?" — 30 seg OBS |
-| 5 | Grabar video #2: time-lapse diseño Exocad — 45 seg |
-| 6 | Grabar video #3: "¿Cuánto cuesta diseño CAD?" — muestra calculadora |
+| 3 | Grabar video #1: "¿Cómo envías tu STL?" — 30 seg OBS |
+| 4 | Grabar video #2: time-lapse diseño Exocad — 45 seg |
+| 5 | Grabar video #3: "¿Cuánto cuesta diseño CAD?" — muestra calculadora |
 
 ---
 
-## 🔍 PENDIENTES TÉCNICOS (Claude)
-
-| # | Tarea | Notas |
-|---|-------|-------|
-| 1 | Auditoría WCAG completa — revisar restantes páginas Alejandro con `<main>` | En progreso |
+## ✅ COMPLETADO ESTA SESIÓN (2026-05-24)
+- Bot IA PRODIGY y Alejandro: manejo 4 casos de error + system prompt precios USD
+- SEO: noindex→index,follow en 9 páginas públicas (7 PRODIGY + 2 Alejandro)
+- robots.txt ambos: bots IA (ChatGPT/Perplexity/Gemini permitidos, CCBot/ClaudeBot bloqueados)
+- articles.js: pool 28 temas unificados + pick aleatorio sin repetición reciente
+- WCAG: `<main id="main-content">` verificado en todas las páginas públicas de ambos proyectos
+- MAP.md: versiones actualizadas (SW v22, footer v20260522, líneas articles.js reales)
+- CLAUDE.md PRODIGY: sección bot IA + sección artículos científicos con journals
+- CLAUDE.md Alejandro: creado desde cero con todas las reglas
+- hreflang EN agregado a portafolio.html
+- temperature auto-journal PRODIGY: 0.2→0.15

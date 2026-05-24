@@ -1,6 +1,6 @@
 # MAP — PRODIGY Arquitectura de Referencia
 > Para uso interno de Claude. Actualizar cuando cambie una función crítica.
-> Última actualización: 2026-05-05
+> Última actualización: 2026-05-24
 
 ---
 
@@ -45,7 +45,7 @@
 ### sw.js
 | Item | Valor |
 |------|-------|
-| Cache version | `prodigy-v15` (línea 2) |
+| Cache version | `prodigy-v22` (línea 2) |
 | PRECACHE array | línea 5–31 |
 | NEVER_CACHE array | línea 34–44 |
 
@@ -101,12 +101,12 @@
 ### articles.js
 | Item | Valor |
 |------|-------|
-| Total artículos | 35 |
+| Total artículos | ~40+ (crece con auto-journal) |
 | `ARTICLES` array | línea 7 |
-| `getArticle(id)` | línea 2223 |
-| `getRelacionados()` | línea 2233 |
-| `CATEGORY_COVERS` | línea 2244 |
-| `getArticleCover()` | línea 2257 |
+| `getArticle(id)` | línea 2568 |
+| `getRelacionados()` | línea 2578 |
+| `CATEGORY_COVERS` | línea 2589 |
+| `getArticleCover()` | línea 2602 |
 | Covers SVG | `assets/journal/cover-{cat}.svg` |
 
 ---
@@ -181,7 +181,7 @@
 ```
 SUPABASE_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co'
 PORT_BUCKET  = 'portafolio'
-SW_VERSION   = 'prodigy-v15'
-FOOTER_VER   = 'v=20260505'
+SW_VERSION   = 'prodigy-v22'
+FOOTER_VER   = 'v=20260522'
 ADMIN_EMAILS = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com']
 ```
