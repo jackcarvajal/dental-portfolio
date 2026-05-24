@@ -2439,6 +2439,129 @@ const ARTICLES = [
   ]
 }
 
+,
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'escaner-intraoral-domicilio-bogota',
+  titulo:    'Escáner intraoral a domicilio en Bogotá: cómo funciona y qué esperar',
+  subtitulo: 'Si tu clínica no tiene escáner, PRODIGY va a tu consultorio. Qué escáneres usamos, qué zonas cubrimos, cuánto tarda y qué pasa con el archivo STL después.',
+  categoria: 'tecnologia',
+  chip:      'Escáner Bogotá',
+  emoji:     '📡',
+  grad:      'grad-2',
+  fecha:     '2026-05-23',
+  lectura:   '6 min',
+  vistas:    '—',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    '',
+  contenido: [
+    {tipo:'p', texto:'No tener escáner intraoral no debería impedir que tu clínica trabaje con flujo digital. PRODIGY ofrece servicio de escáner a domicilio en Bogotá: vamos a tu consultorio, escaneamos al paciente, y dejamos el archivo STL listo para diseño CAD en menos de 2 horas hábiles.'},
+    {tipo:'h2', texto:'¿Qué escáner usamos?'},
+    {tipo:'p', texto:'Trabajamos con el 3Shape Trios 5, uno de los escáneres de mayor precisión del mercado (±20 µm). Es inalámbrico, rápido y cómodo para el paciente. El archivo se exporta en STL estándar compatible con cualquier software CAD y cualquier fresadora del mercado.'},
+    {tipo:'h2', texto:'Zonas que cubrimos en Bogotá'},
+    {tipo:'tabla', cabeceras:['Zona','Barrios','Tiempo de llegada'], filas:[['Norte Bogotá','Usaquén, Santa Bárbara, Cedritos, Unicentro, Toberin','30–45 min'],['Centro Bogotá','Chapinero, Cabrera, Quinta Camacho','45–60 min'],['Occidente','Fontibón, Engativá, Suba (consultar disponibilidad)','60+ min (previa agenda)']]},
+    {tipo:'h2', texto:'¿Cómo agendar?'},
+    {tipo:'p', texto:'El proceso es: (1) Escríbenos por WhatsApp con la pieza(s) a escanear y la fecha ideal. (2) Confirmamos disponibilidad y te damos la ventana horaria. (3) El técnico llega con el escáner, escanea al paciente en 5–15 minutos según el caso. (4) Enviamos el STL y arrancamos el diseño CAD en paralelo. Tiempo total desde el escaneo hasta recibir el diseño: 24 horas.'},
+    {tipo:'h2', texto:'¿Qué casos aplican para escáner a domicilio?'},
+    {tipo:'ul', items:['Coronas y carillas unitarias o múltiples','Puentes de hasta 6 unidades','Modelos de estudio para planificación de tratamiento','Escáner base para alineadores o férulas oclusales','Pre-evaluación para guías quirúrgicas de implantes (requiere también CBCT)']},
+    {tipo:'h2', texto:'Costo del servicio'},
+    {tipo:'p', texto:'El costo del escaneo a domicilio en Bogotá es de $60.000 COP por visita (sin límite de piezas en esa sesión). Si el diseño se encarga a PRODIGY, el costo del escaneo se descuenta del valor total del diseño. Es decir, si pides el escaneo + diseño CAD de una corona, pagas diseño + diferencia del escaneo.'},
+    {tipo:'quote', texto:'En PRODIGY creemos que el flujo digital no debe ser un privilegio solo para clínicas con escáner. Llevamos la tecnología a donde esté el paciente.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿El servicio de escáner a domicilio está disponible los fines de semana?', a:'Sí, con agenda previa. Los sábados hasta las 2 PM. Los domingos solo en casos de urgencia y según disponibilidad — consultar por WhatsApp con al menos 48 horas de anticipación.'},
+    {q:'¿Puedo usar el STL para enviarlo a cualquier laboratorio o fresadora?', a:'Sí. El STL que entregamos es estándar, no tiene DRM ni restricciones de uso. Lo puedes cargar en cualquier software CAD, enviarlo a cualquier laboratorio o fresarlo en cualquier fresadora del mercado.'},
+    {q:'¿El escáner a domicilio sirve para hacer modelos de estudio?', a:'Sí. Muchos odontólogos usan el servicio para digitalizar modelos de yeso existentes o para tomar el escáner de diagnóstico del paciente antes del tratamiento. El archivo STL sirve tanto para diseño de restauraciones como para planificación digital.'},
+    {q:'¿Qué pasa si el paciente no puede abrir la boca correctamente?', a:'Los escáneres intraorales requieren apertura mínima de 35–40 mm. Si el paciente tiene limitación de apertura severa, el escaneo puede ser difícil o imposible en algunas zonas posteriores. En esos casos lo evaluamos en el momento y ajustamos el alcance del escaneo. No cobramos si el escaneo no puede realizarse por causa del paciente.'}
+  ],
+  referencias: [
+    {autores:'Mangano F et al.', titulo:'Intraoral scanners in dentistry: a review of the current literature', revista:'BMC Oral Health', año:2020, url:'https://pubmed.ncbi.nlm.nih.gov/29017482/'},
+    {autores:'Ting-Shu S, Jian S.', titulo:'Intraoral digital impressions — a review.', revista:'J Prosthodont', año:2015, url:'https://pubmed.ncbi.nlm.nih.gov/25833826/'}
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'fresado-dental-colombia-como-elegir-laboratorio',
+  titulo:    'Fresado dental en Colombia: materiales, tiempos y cómo elegir el laboratorio correcto',
+  subtitulo: 'Guía para odontólogos y técnicos dentales que quieren enviar casos a maquila CAM en Colombia. Qué preguntar, qué materiales exigir y qué red logística cubre el envío nacional.',
+  categoria: 'materiales',
+  chip:      'Fresado CAM',
+  emoji:     '⚙️',
+  grad:      'grad-3',
+  fecha:     '2026-05-23',
+  lectura:   '7 min',
+  vistas:    '—',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    '',
+  contenido: [
+    {tipo:'p', texto:'El fresado dental CAM en Colombia ha crecido significativamente desde 2022. Hoy existen laboratorios digitales en Bogotá, Medellín, Cali y Barranquilla con equipos de primera línea. Pero no todos los laboratorios son iguales — estos son los criterios para elegir bien.'},
+    {tipo:'h2', texto:'¿Qué materiales debe ofrecer un laboratorio de fresado serio?'},
+    {tipo:'tabla', cabeceras:['Material','Aplicación principal','Precio mínimo referencial (Colombia)'], filas:[['Zirconia 3Y-TZP','Coronas posteriores de alta resistencia','$180.000–$250.000 COP/unidad'],['Zirconia 5Y-TZP multicapa','Coronas estéticas anteriores','$220.000–$350.000 COP/unidad'],['Disilicato de litio (e.max)','Carillas, coronas anteriores','$250.000–$400.000 COP/unidad'],['PMMA (acrílico mecanizado)','Provisionales, dentaduras','$80.000–$150.000 COP/unidad'],['Titanio CNC','Pilares de implante, estructuras','$300.000–$600.000 COP/unidad'],['Resina 3D (fotopolimerizable)','Biomodelos, guías, modelos de trabajo','$20.000–$60.000 COP/unidad']]},
+    {tipo:'h2', texto:'Preguntas clave antes de enviar tu primer caso'},
+    {tipo:'ul', items:['¿Qué fresadora tienen? (Imes-Icore, Roland DWX, VHF, Amann Girrbach, Datron)', '¿Con qué software CAM trabajan? (Millbox, HyperDent, Dental Wings CAM, 3Shape CAM)', '¿Cuál es la tolerancia dimensional garantizada? (±10–20 µm es estándar de calidad)', '¿El material tiene certificado CE o FDA? (fundamental para casos en boca)', '¿Cómo entregan el trabajo: pick-up en Bogotá, servio de mensajería 24h, correo certificado?', '¿Tienen protocolo de trazabilidad del lote de material?']},
+    {tipo:'h2', texto:'Envío nacional: logística real en Colombia'},
+    {tipo:'p', texto:'Para laboratorios y clínicas fuera de Bogotá, PRODIGY coordina envíos a través de Servientrega, TCC y Coordinadora con embalaje especializado para restauraciones dentales. El tiempo de tránsito promedio es: Bogotá-Medellín 1 día, Bogotá-Cali 1–2 días, Bogotá-Barranquilla/Cartagena 2–3 días. Para ciudades intermedias, TCC cubre la red más amplia con entrega puerta a puerta.'},
+    {tipo:'h2', texto:'¿Qué hace diferente a un laboratorio CAM de calidad en Colombia?'},
+    {tipo:'ul', items:['Calibración documentada de fresadoras cada 3–6 meses','Uso de fresas certificadas (no economicas sin respaldo)', 'Control de sinterización con curvas de temperatura trazables (para zirconia)', 'Protocolo de color: certificación dental VITA o IPS equivalente', 'Atención al diseño: revisión del STL antes de fresar (no fresar "a ciegas")', 'Garantía de refabricación si el ajuste tiene error de laboratorio documentado']},
+    {tipo:'quote', texto:'La diferencia entre una corona que sienta perfectamente y una que requiere desgaste extenso generalmente no está en el diseño — está en la calibración de la fresadora y la calidad del material.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Puedo enviar el diseño STL que yo mismo hice en Exocad para que PRODIGY lo frese?', a:'Sí. Si tienes Exocad propio y haces el diseño, PRODIGY puede fresar el archivo STL que nos envíes. El servicio de fresado independiente del diseño tiene precio diferente al paquete diseño+fresado. Envíanos el STL con las especificaciones del material y la fresadora verificará los parámetros de tolerancia.'},
+    {q:'¿Cuánto tiempo tarda el fresado una vez que aprueban el diseño?', a:'El fresado en PRODIGY toma 2–4 horas para casos simples (corona unitaria en zirconia). La sinterización de zirconia agrega 6–8 horas según el ciclo. Tiempo total diseño + fresado + sinterización + despacho: 24–48 horas desde que se aprueba el diseño.'},
+    {q:'¿Hay un mínimo de piezas para enviar a PRODIGY desde otra ciudad?', a:'No hay mínimo para casos de diseño CAD (se envían archivos digitales). Para fresado, en envíos físicos recomendamos agrupar mínimo 2–3 unidades para optimizar el costo de mensajería. Para clínicas con volumen regular, coordinamos recolecciones semanales con Servientrega.'}
+  ],
+  referencias: [
+    {autores:'Miyazaki T et al.', titulo:'A review of dental CAD/CAM: current status and future perspectives from 20 years of experience', revista:'Dent Mater J', año:2009, url:'https://pubmed.ncbi.nlm.nih.gov/19280967/'},
+    {autores:'Rekow ED.', titulo:'Digital dentistry: the new state of the art — is it disruptive or destructive?', revista:'Dent Mater', año:2020, url:'https://pubmed.ncbi.nlm.nih.gov/31677867/'}
+  ]
+},
+
+/* ─────────────────────────────────────────────────────────── */
+{
+  id:        'impresion-3d-dental-colombia-resinas-biomodelos',
+  titulo:    'Impresión 3D dental en Colombia: tipos de resina, biomodelos y guías quirúrgicas desde $20.000 COP',
+  subtitulo: 'Todo lo que necesitas saber sobre impresión 3D dental en Colombia: qué resinas usar, cómo encargar biomodelos, qué son las guías quirúrgicas impresas y cuánto cuestan realmente.',
+  categoria: 'tecnologia',
+  chip:      'Impresión 3D',
+  emoji:     '🖨️',
+  grad:      'grad-1',
+  fecha:     '2026-05-23',
+  lectura:   '8 min',
+  vistas:    '—',
+  autor:     'Alejandro Carvajal',
+  instagram: 'jackcarvajal',
+  og_img:    '',
+  contenido: [
+    {tipo:'p', texto:'La impresión 3D dental en Colombia ya no es exclusiva de laboratorios universitarios o grandes clínicas. En 2026, laboratorios como PRODIGY ofrecen servicio de impresión 3D dental con resinas certificadas y tiempos de entrega de 24–48 horas, con envío a todo el país.'},
+    {tipo:'h2', texto:'¿Qué se puede imprimir en 3D para odontología?'},
+    {tipo:'tabla', cabeceras:['Aplicación','Resina recomendada','Clase CE/FDA','Precio referencial en PRODIGY'], filas:[['Biomodelo de estudio','Resina modelo (fotopolimerizable)','Clase I','$20.000 COP/arco'],['Modelo de trabajo para prótesis','Resina modelo de alta precisión','Clase I','$35.000 COP/arco'],['Provisional CAD (provisional de resina)','Resina bis-acril grado dental','Clase IIa','$90.000–$150.000 COP/corona'],['Guía quirúrgica para implantes','Resina biocompatible Clase IIa','Clase IIa','Cotizar según tipo'],['Férula oclusal vacuoformada base','Resina dura tipo Clear','Clase I','$80.000–$120.000 COP'],['Cubeta individual','Resina de cubeta','Clase I','$30.000 COP']]},
+    {tipo:'h2', texto:'Biomodelos dentales: el caso de uso más frecuente'},
+    {tipo:'p', texto:'Un biomodelo dental es una réplica tridimensional impresa en resina del escáner intraoral o del CBCT del paciente. Sus usos más comunes son: diagnóstico y presentación de plan de tratamiento al paciente, montaje en articulador virtual, fabricación de cubetas individuales, y como referencia para el técnico dental durante la confección de prótesis removible. En PRODIGY producimos biomodelos de arco completo desde $20.000 COP con precisión ±100 µm.'},
+    {tipo:'h2', texto:'Guías quirúrgicas impresas: qué son y cuándo usarlas'},
+    {tipo:'p', texto:'Una guía quirúrgica para implantes es un dispositivo de resina biocompatible (Clase IIa) que guía mecánicamente la posición, angulación y profundidad de la fresa de osteotomía durante la cirugía de implante. Hay tres tipos principales:'},
+    {tipo:'ul', items:['Dentosoportada: se apoya en dientes remanentes. Mayor precisión, menor costo de fabricación. Requiere CBCT + escáner intraoral.','Mucosoportada: se apoya en el reborde mucoso. Para pacientes edéntulos. Requiere doble CBCT con marcadores radiopacos.','Implantoesoportada: para cirugías en implantes existentes. La menos frecuente, requiere planificación especial.']},
+    {tipo:'h2', texto:'Software de planificación de guías quirúrgicas'},
+    {tipo:'p', texto:'En PRODIGY trabajamos con CoDiagnostiX (la referencia clínica en implantología guiada), Exoplan (módulo de Exocad para guías) y BlueSkyPlan (gratuito y compatible con la mayoría de sistemas de implantes). El archivo STL de la guía se imprime en resina Formlabs Surgical Guide (aprobada para uso intraoral) o materiales equivalentes.'},
+    {tipo:'h2', texto:'Post-procesado: el paso que muchos laboratorios omiten'},
+    {tipo:'p', texto:'La impresión 3D dental requiere post-procesado correcto para garantizar precisión y biocompatibilidad: lavado con IPA al 99% (Formlabs Form Wash o similar), curado con luz UV calibrada (60 seg mínimo), eliminación de soportes con herramientas de precisión, y verificación dimensional con comparación STL origen vs. pieza final. Sin post-procesado correcto, la pieza puede tener contracción, residuos de resina sin curar (tóxicos en boca) o deformación dimensional.'},
+    {tipo:'quote', texto:'Una guía quirúrgica impresa correctamente puede reducir el tiempo de cirugía de implante en un 40% y el error de posicionamiento a menos de 1 mm en eje vertical. Pero una guía impresa sin control de calidad es peor que no usar guía.', author:'PRODIGY Lab Dental'}
+  ],
+  faq: [
+    {q:'¿Las resinas 3D que usan están aprobadas para uso en boca?', a:'Sí. Para aplicaciones intraorales (provisionales, guías quirúrgicas, férulas) usamos exclusivamente resinas con certificación CE Clase IIa o equivalente FDA aprobado. Para biomodelos de uso extrabucal (diagnóstico, montaje) usamos resinas Clase I sin restricción de biocompatibilidad intraoral.'},
+    {q:'¿Cuánto tiempo dura una guía quirúrgica impresa?', a:'La vida útil de una guía quirúrgica es para una sola cirugía. No se recomienda reutilizarla ni esterilizarla en autoclave (la resina puede deformarse con el calor). El protocolo correcto de esterilización es glutaraldehído frío o dióxido de cloro, seguido de enjuague con suero fisiológico estéril. La guía se entrega junto con el informe de planificación digital.'},
+    {q:'¿Pueden imprimir un modelo a partir de un archivo STL que yo les envíe?', a:'Sí. Si tienes el archivo STL del modelo (de escáner intraoral, CBCT o escáner de mesa), enviánoslo y lo imprimimos. No necesitas ordenar el diseño — el servicio de impresión puede ser independiente. El único requisito es que el STL esté cerrado (sin huecos de malla) y en escala 1:1.'},
+    {q:'¿Envían biomodelos e impresiones 3D a todo Colombia?', a:'Sí. Enviamos por Servientrega, TCC o Coordinadora con embalaje específico para proteger piezas impresas. El embalaje incluye espuma de alta densidad y caja rígida. Tiempo de tránsito: 1–3 días dependiendo de la ciudad. Consultá por WhatsApp para coordinar el despacho y calcular el costo de envío.'}
+  ],
+  referencias: [
+    {autores:'Dawood A, Marti BM, Sauret-Jackson V, Darwood A.', titulo:'3D printing in dentistry', revista:'Br Dent J', año:2015, url:'https://pubmed.ncbi.nlm.nih.gov/26657435/'},
+    {autores:'Van Noort R.', titulo:'The future of dental devices is digital', revista:'Dent Mater', año:2012, url:'https://pubmed.ncbi.nlm.nih.gov/22177416/'}
+  ]
+}
+
 ]; /* ──────── fin ARTICLES ──────── */
 
 /* Buscar artículo por ID */
