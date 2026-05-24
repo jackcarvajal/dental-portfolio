@@ -84,4 +84,4 @@
 
 | # | Tarea | Notas |
 |---|-------|-------|
-| 1 | Precios calculadoras sincronizados con Supabase `admin-precios` | Hoy hardcodeados — cambio arquitectural grande, requiere decisión |
+| 1 | Auditoría WCAG completa — revisar restantes páginas Alejandro con `<main>` | En progreso |
