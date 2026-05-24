@@ -154,7 +154,77 @@ Obligatorio en: index, servicios principales, calculadoras, portafolio.
 <link rel="dns-prefetch" href="https://dominio.com">
 ```
 
-## 9. SISTEMA DE ARTÍCULOS — ESTÁNDAR CIENTÍFICO OBLIGATORIO
+## 9. BOT IA (CHATBOT GEMINI) — ARQUITECTURA Y REGLAS
+
+### Arquitectura del bot
+```
+Usuario → header.js (_phdrSendMsg) → fetch POST /api/gemini
+                                          ↓
+                               Cloudflare Pages Function
+                               (functions/api/gemini.js)
+                                          ↓
+                               Gemini 2.0 Flash API (Google)
+                               GEMINI_API_KEY en Cloudflare Env Vars
+                               (nunca expuesta al cliente)
+                                          ↓
+                               Fallback chain: gemini-2.0-flash
+                               → gemini-2.0-flash-lite
+                               → gemini-1.5-flash → gemini-1.5-flash-8b
+```
+
+### Archivos clave del bot
+| Archivo | Rol |
+|---|---|
+| `js/header.js` | UI del chat + lógica cliente + system prompt |
+| `functions/api/gemini.js` | Proxy Cloudflare — guarda la API key |
+| Cloudflare Env Vars | `GEMINI_API_KEY` — JAMÁS en código fuente |
+
+### System prompt del bot — función `_pgBuildPrompt()` (línea ~844 header.js)
+El prompt se construye dinámicamente incluyendo:
+- Título y path de la página actual (contexto por página)
+- Lista de servicios PRODIGY (CAD, fresado, 3D, alineadores, guías)
+- Precios y tiempos de entrega
+- Instrucción de idioma (ES/EN según cliente)
+- Regla: no inventar datos → invitar a WhatsApp 573212816716
+
+### Manejo de errores (3 casos — implementado)
+```javascript
+// Caso 1: Rate limit (429)
+data.error.includes('solicitudes') || data.error.includes('429')
+→ "Muchas consultas seguidas — espera un momento e intenta de nuevo."
+
+// Caso 2: API key no configurada en Cloudflare
+data.error.includes('configurado')
+→ "El asistente está temporalmente fuera de línea. WhatsApp..."
+
+// Caso 3: Cualquier otro error
+→ Muestra detail + invita a WhatsApp
+→ console.warn('[PRODIGY BOT] Sin candidatos:', JSON.stringify(data))
+
+// Caso 4 (catch): Sin conexión de red
+→ "Sin conexión ahora mismo. WhatsApp..."
+```
+
+### Rate limit en el proxy
+- 5 req/min por IP (Cloudflare Cache API)
+- CORS: solo dominio propio + *.pages.dev
+
+### Causa más común del bot "roto"
+`GEMINI_API_KEY` no configurada en Cloudflare Pages → Settings → Environment Variables.
+El proxy devuelve `{error: 'Bot no configurado'}` → el JS muestra el mensaje de WhatsApp.
+**Solución:** agregar la variable y redesplegar (Cloudflare → Deployments → Retry).
+
+### Checklist de verificación del bot
+- [ ] `GEMINI_API_KEY` configurada en Cloudflare Env Vars (ambos sitios)
+- [ ] `functions/api/gemini.js` existe en el repo
+- [ ] `_pgBuildPrompt()` tiene WA correcto: 573212816716 (PRODIGY) / 573219581949 (Alejandro)
+- [ ] Manejo de 4 casos de error en `_phdrSendMsg`
+- [ ] Rate limit 5 req/min activo en el proxy
+- [ ] CORS restringe a dominio propio
+- [ ] Historial de conversación: `_pgChatHistory` con rol `user`/`model` (no `assistant`)
+- [ ] `system_instruction` enviada en cada request (no en contents[0])
+
+## 10. SISTEMA DE ARTÍCULOS — ESTÁNDAR CIENTÍFICO OBLIGATORIO (ARTÍCULOS IA)
 
 ### Regla absoluta
 **JAMÁS inventar, alucinar ni parafrasear sin cita verificable.**
