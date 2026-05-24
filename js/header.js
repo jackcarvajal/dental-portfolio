@@ -959,11 +959,14 @@
         var reply = data.candidates[0].content.parts[0].text;
         _pgChatHistory.push({ role: 'model', parts: [{ text: reply }] });
         _pgAppendMsg('bot', reply);
-      } else if (data.error && data.error.includes && data.error.includes('solicitudes')) {
+      } else if (data.error && data.error.includes && (data.error.includes('solicitudes') || data.error.includes('429'))) {
         _pgAppendMsg('bot', 'Muchas consultas seguidas — espera un momento e intenta de nuevo.');
+      } else if (data.error && data.error.includes && data.error.includes('configurado')) {
+        _pgAppendMsg('bot', 'El asistente está temporalmente fuera de línea. Escríbenos por <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">WhatsApp +57 321 281 6716</a> — respondemos en minutos.');
       } else {
+        var errDetail = data.error ? (' (' + String(data.error).slice(0,60) + ')') : '';
         console.warn('[PRODIGY BOT] Sin candidatos:', JSON.stringify(data));
-        _pgAppendMsg('bot', 'Un momento, estoy teniendo dificultades. Puedes escribirnos por <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">WhatsApp</a> y te respondemos enseguida.');
+        _pgAppendMsg('bot', 'No pude procesar tu consulta ahora mismo' + errDetail + '. Escríbenos por <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">WhatsApp</a> y te respondemos enseguida.');
       }
     } catch (err) {
       console.warn('[PRODIGY BOT] catch:', err.message);
