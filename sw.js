@@ -1,5 +1,5 @@
 // Prodigy Lab Dental — Service Worker v3.5 (SWR + Push Notifications)
-const CACHE = 'prodigy-v21';
+const CACHE = 'prodigy-v22';
 
 // Assets estáticos que siempre cacheamos en install
 const PRECACHE = [
