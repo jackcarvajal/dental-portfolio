@@ -269,11 +269,10 @@ window.toggleFastGlobal = async (el) => {
 
 const EXTRA_LABELS = {
     express_diseno: { label: 'Express 24h — Diseño CAD', desc: 'Cargo adicional cuando el cliente elige entrega express en el flujo de diseño' },
-    envio_usb:      { label: 'Envío USB / Courier',       desc: 'Costo de envío físico del USB con archivos de diseño al cliente' },
 };
 
 async function cargarExtras() {
-    const { data, error } = await sb.from('config_precios').select('*').neq('id', 'fast_global_enabled');
+    const { data, error } = await sb.from('config_precios').select('*').neq('id', 'fast_global_enabled').neq('id', 'envio_usb');
     const container = document.getElementById('extras-container');
     if (error || !data || !data.length) {
         container.innerHTML = '<div class="config-row"><div style="color:var(--muted);font-size:0.82rem;">Sin extras configurados</div></div>';

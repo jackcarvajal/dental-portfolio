@@ -517,8 +517,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <div class="form-group">
                                 <label>Entrega de archivos finales</label>
                                 <select id="envio" onchange="calcularTotal()">
-                                    <option value="">Digital — Drive / Email (sin costo adicional)</option>
-                                    <option value="usb">USB física a domicilio — +$15.000</option>
+                                    <option value="">Digital — Drive / WeTransfer / Email (sin costo)</option>
                                 </select>
                             </div>
                         </div>
@@ -738,10 +737,6 @@ window.submitOrden     = window.submitOrden      || function(){};
             <div class="calc-line hidden" id="line-express">
                 <span class="label">Express 24h:</span>
                 <span class="value" id="calc-express">+$20.000</span>
-            </div>
-            <div class="calc-line hidden" id="line-envio">
-                <span class="label">Envío USB:</span>
-                <span class="value" id="calc-envio">+$15.000</span>
             </div>
             <div class="calc-line hidden" id="line-anticipo" style="border-top:1px solid rgba(217,70,166,.3);padding-top:6px;margin-top:4px;">
                 <span class="label" style="color:#D946A6;">Anticipo ahora:</span>
@@ -1006,7 +1001,6 @@ window.submitOrden     = window.submitOrden      || function(){};
                 if (extras && extras.length) {
                     const extMap = Object.fromEntries(extras.map(e => [e.id, e.precio]));
                     window._fd_expressAmt = extMap['express_diseno'] ?? 20000;
-                    window._fd_envioAmt   = extMap['envio_usb']      ?? 15000;
                 }
                 /* Si fast_global_enabled = 0, ocultar opción express */
                 const fastEnabled = fastRow ? (fastRow.precio !== 0) : true;
@@ -1029,7 +1023,7 @@ window.submitOrden     = window.submitOrden      || function(){};
         let STATE = {
             categoriaKey:null, categoriaNombre:null,
             subtipoId:null, subtipoNombre:null, subtipoPrecio:0,
-            slot:null, express:false, envioUsb:false,
+            slot:null, express:false,
             ordenId:null, nombreCliente:null, whatsappCliente:null,
             nombrePaciente:null, total:'$0', linkSTL:null,
             pagoMetodo:null, pagoTitular:null, pagoRef:null, observaciones:''
@@ -1462,17 +1456,14 @@ window.submitOrden     = window.submitOrden      || function(){};
         function calcularTotal() {
             const cantidad      = Math.max(1, parseInt(document.getElementById('cantidad').value, 10) || 1);
             const express       = document.getElementById('express-cad').checked;
-            const envioVal      = document.getElementById('envio').value;
             const transferencia = document.getElementById('chk-transferencia') ? document.getElementById('chk-transferencia').checked : true;
             const subtotal      = (STATE.subtipoPrecio || 0) * cantidad;
             const expressAmt    = express ? (window._fd_expressAmt ?? 20000) : 0;
-            const envioAmt      = envioVal === 'usb' ? (window._fd_envioAmt ?? 15000) : 0;
-            const base          = subtotal + expressAmt + envioAmt;
+            const base          = subtotal + expressAmt;
             const wompiAmt      = transferencia ? 0 : Math.round(base * 0.03);
             const total         = base + wompiAmt;
 
             STATE.express  = express;
-            STATE.envioUsb = envioVal === 'usb';
 
             document.getElementById('calc-categoria').textContent = STATE.categoriaNombre || '-';
             document.getElementById('calc-servicio').textContent  = STATE.subtipoNombre   || '-';
@@ -1483,11 +1474,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                 ? document.getElementById('line-express').classList.remove('hidden')
                 : document.getElementById('line-express').classList.add('hidden');
 
-            envioAmt > 0
-                ? document.getElementById('line-envio').classList.remove('hidden')
-                : document.getElementById('line-envio').classList.add('hidden');
-
-            const lineWompi = document.getElementById('line-wompi');
+const lineWompi = document.getElementById('line-wompi');
             if (lineWompi) {
                 if (wompiAmt > 0) {
                     lineWompi.classList.remove('hidden');
@@ -1655,7 +1642,6 @@ window.submitOrden     = window.submitOrden      || function(){};
             msg += `🔢 ${_esIntl ? '*Qty:*' : '*Cantidad:*'} ${cantidad} ${_esIntl ? 'units' : 'unidades'}\n`;
             msg += `⏱️ ${_esIntl ? '*Delivery:*' : '*Entrega:*'} ${slotNombre}\n`;
             if (STATE.express) msg += `⚡ *Express 24h:* ${_esIntl ? 'YES' : 'SÍ'} (+$20.000)\n`;
-            if (STATE.envioUsb) msg += `💾 ${_esIntl ? '*USB Delivery:*' : '*Entrega USB:*'} ${_esIntl ? 'YES' : 'SÍ'} (+$15.000)\n`;
             msg += `\n💰 ${_esIntl ? '*PAYMENT CONFIRMATION*' : '*CONFIRMACIÓN DE PAGO*'}\n`;
             msg += `• ${_esIntl ? 'Method' : 'Medio'}: ${STATE.pagoMetodo}\n`;
             msg += `• ${_esIntl ? 'Holder' : 'Titular'}: ${STATE.pagoTitular}\n`;
