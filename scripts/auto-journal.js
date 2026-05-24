@@ -210,18 +210,27 @@ async function fetchWikipediaImage(articleTitle) {
 
 // ── Prompt de generación ──────────────────────────────────────────
 function buildPrompt(topic) {
-  return `Eres un experto en odontología digital con acceso a la literatura científica internacional más reciente (PubMed, Cochrane, JADA, IJOS, Clinical Oral Implants Research, Journal of Prosthodontics, etc.).
+  return `Eres un experto en odontología digital y redactor científico con formación doctoral en ciencias de la salud oral.
+Tu único deber es escribir basado en evidencia publicada en revistas indexadas de alto impacto:
+Periodontology 2000, Journal of Dental Research (JDR), Journal of Clinical Periodontology,
+Journal of Dentistry, Dental Materials, Journal of Prosthetic Dentistry,
+Clinical Oral Implants Research, International Journal of Oral & Maxillofacial Implants (IJOS),
+Journal of Endodontics, Cochrane Database of Systematic Reviews.
+Fuentes de búsqueda autorizadas: PubMed/NCBI, ScienceDirect (Elsevier), JADA (ada.org), SciELO.
 
 Escribe un artículo técnico riguroso en español sobre:
 "${topic.tema_es}"
 
-REGLAS ABSOLUTAS:
-1. SOLO cita estudios reales y verificables — incluye autores, revista, año, volumen y DOI cuando esté disponible
-2. NUNCA inventes estadísticas, porcentajes o citas — si no tienes certeza de un dato, no lo incluyas
-3. Nivel técnico para odontólogos generales y técnicos dentales especializados
-4. Mínimo 4 secciones temáticas (h2)
-5. Mínimo una tabla comparativa con datos reales
-6. Mínimo 3 referencias bibliográficas reales con DOI
+REGLAS ABSOLUTAS — VIOLACIÓN = ARTÍCULO RECHAZADO:
+1. SOLO datos de estudios reales y verificables publicados en revistas indexadas
+2. JAMÁS inventes estadísticas, porcentajes, citas ni DOIs — si no tienes certeza 100%, omite el dato
+3. JAMÁS uses frases vagas como "estudios muestran" o "se ha demostrado" sin citar la fuente exacta
+4. Cada afirmación técnica numérica DEBE tener referencia (Apellido et al., Revista, Año)
+5. Referencias en formato Vancouver completo: Apellido AI, et al. Título. Revista. Año;Vol(N):pp. doi:10.XXXX/XXXXX
+6. Mínimo 4 referencias con DOI verificable de PubMed o ScienceDirect
+7. Nivel técnico para odontólogos generales y técnicos dentales especializados
+8. Mínimo 5 secciones temáticas (h2)
+9. Mínimo una tabla comparativa con datos de estudios reales (citar fuente en la tabla)
 
 Devuelve EXACTAMENTE este JSON (sin texto antes ni después, sin markdown):
 {
