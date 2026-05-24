@@ -333,10 +333,27 @@ window.guardarExtra = async (id) => {
     }
 };
 
+// ── Upsert defaults para filas que aún no existen en config_precios ────
+const DEFAULTS_CONFIG = [
+    { id:'urgente_calc',   nombre:'Express Calculadora',      tipo:'precio_extra', precio:40000, flujo:'calculadora' },
+    { id:'dsd_calc',       nombre:'DSD Calculadora',          tipo:'precio_extra', precio:80000, flujo:'calculadora' },
+    { id:'envio_calc',     nombre:'Envío Físico Calculadora', tipo:'precio_extra', precio:20000, flujo:'calculadora' },
+    { id:'express_diseno', nombre:'Express 24h Diseño CAD',   tipo:'precio_extra', precio:50000, flujo:'diseno'      },
+];
+
+async function initDefaultRows() {
+    const { data: existing } = await sb.from('config_precios').select('id');
+    const existingIds = new Set((existing||[]).map(r => r.id));
+    const toInsert = DEFAULTS_CONFIG.filter(r => !existingIds.has(r.id));
+    if (toInsert.length) {
+        await sb.from('config_precios').insert(toInsert);
+    }
+}
+
 // ── Init ────────────────────────────────────────────────────────
 async function init() {
     await ProdigyAuth.require(['admin']);
-    await Promise.all([cargarFastGlobal(), cargarExtras()]);
+    await Promise.all([cargarFastGlobal(), initDefaultRows().then(() => cargarExtras())]);
 }
 
 init();
