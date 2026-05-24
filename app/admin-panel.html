@@ -236,7 +236,11 @@
             </div>
         </div>
 
-        <!-- Filtro estado -->
+        <!-- Búsqueda + Filtro estado -->
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+            <input type="search" id="busq-pedidos" placeholder="Buscar por código, doctor, material..." oninput="filtrarPedidos(_filtroEstado)"
+                style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:#fff;font-size:.82rem;outline:none;">
+        </div>
         <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
             <button class="btn-xs btn-gold" onclick="filtrarPedidos('todos')" id="f-todos" style="background:rgba(212,175,55,0.1);">Todos</button>
             <button class="btn-xs btn-gold" onclick="filtrarPedidos('Pendiente')" id="f-Pendiente">Pendiente</button>
@@ -1165,14 +1169,28 @@ function exportarDIAN() {
     toast(`Exportados ${conFactura.length} pedidos con factura.`, 'success');
 }
 
+let _filtroEstado = 'todos';
 function filtrarPedidos(estado) {
+    _filtroEstado = estado;
     document.querySelectorAll('[id^="f-"]').forEach(b => b.style.background = '');
     const btn = document.getElementById('f-' + estado);
     if (btn) btn.style.background = 'rgba(212,175,55,0.15)';
 
-    const filtrado = estado === 'todos'
+    const busq = (document.getElementById('busq-pedidos')?.value || '').toLowerCase().trim();
+    let filtrado = estado === 'todos'
         ? todosLosPedidos
         : todosLosPedidos.filter(p => p.estado === estado);
+
+    if (busq) {
+        filtrado = filtrado.filter(p => {
+            const docNombre = (p.clientes?.nombre || p.nombre_doctor || '').toLowerCase();
+            return (p.codigo || '').toLowerCase().includes(busq)
+                || docNombre.includes(busq)
+                || (p.material || '').toLowerCase().includes(busq)
+                || (p.servicio || '').toLowerCase().includes(busq)
+                || (p.nombre_paciente || '').toLowerCase().includes(busq);
+        });
+    }
     renderPedidos(filtrado);
 }
 
