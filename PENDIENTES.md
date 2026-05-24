@@ -99,3 +99,8 @@
 - **sitemap.xml PRODIGY**: flujo-lab, flujo-fresado, flujo-impresion agregados
 - **Alejandro**: hreflang EN en soporte, envia-tu-scanner, cursos, flujo-diseno; robots+author en portafolio
 - **sitemap.xml Alejandro**: flujo-diseno agregado
+- **Panel admin PRODIGY**: fix analytics tab, toggle visible/oculto portafolio, WA clientes, busqueda pedidos, links torre control, colspan clientes
+- **operario-diseno.html**: kanban drag & drop + touch implementado (4 columnas)
+- **MAP.md PRODIGY**: entradas admin-panel.html y operario-diseno.html agregadas
+- **SEO autónomo lote 4**: author en index, article, calculadora, soporte-tecnico, en/global-design PRODIGY; hreflang EN catalogo + soporte-tecnico
+- **Alejandro SEO lote 2**: author en index, article, cursos, envia-tu-scanner, flujo-diseno, soporte; hreflang EN sobre-mi
