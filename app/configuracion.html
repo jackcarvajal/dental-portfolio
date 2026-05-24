@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#D946A6">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="robots" content="noindex, nofollow">
+    <title>PRODIGY — Configuración</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+    <link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="../js/auth-guard.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #050505; --sidebar: #0d0a00; --card: #14100a;
+            --gold: #D4AF37; --gold2: #D946A6; --cyan: #00d2ff; --green: #00FF41;
+            --text: #fff; --muted: #94a3b8; --border: rgba(212,175,55,0.15);
+        }
+        body { overflow-x: hidden; background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; visibility: hidden; }
+
+        .sidebar { width: 240px; min-height: 100vh; background: var(--sidebar); border-right: 1px solid var(--border); padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+        .sidebar-logo { text-align: center; padding: 12px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+        .sidebar-logo h1 { font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; color: var(--gold); }
+        .sidebar-logo p  { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+        .role-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; padding: 3px 10px; font-size: 0.65rem; font-weight: 700; color: var(--gold); margin-top: 8px; }
+        .nav-section { font-size: 0.62rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px; padding: 16px 12px 6px; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #94a3b8; text-decoration: none; transition: all 0.2s; }
+        .nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
+        .nav-item.active { background: rgba(212,175,55,0.1); color: var(--gold); border: 1px solid rgba(212,175,55,0.25); }
+        .nav-item i { width: 16px; text-align: center; }
+        .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
+
+        .main { flex: 1; padding: 32px; overflow-y: auto; }
+        .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+        .page-header h1 { font-size: 1.5rem; font-weight: 900; color: #fff; }
+        .page-header p  { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+        /* Secciones */
+        .section-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+            overflow: hidden; margin-bottom: 24px;
+        }
+        .section-header {
+            padding: 18px 24px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+        }
+        .section-title { font-size: 0.95rem; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
+        .section-sub   { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+
+        /* Filas de config */
+        .config-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; border-bottom: 1px solid rgba(255,255,255,0.04); gap: 16px; flex-wrap: wrap;
+        }
+        .config-row:last-child { border-bottom: none; }
+        .config-label  { font-size: 0.87rem; font-weight: 700; color: var(--text); }
+        .config-desc   { font-size: 0.75rem; color: var(--muted); margin-top: 3px; }
+        .config-right  { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
+        /* Toggle global */
+        .toggle-big {
+            width: 52px; height: 28px; border-radius: 14px; background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15); cursor: pointer; position: relative;
+            transition: background 0.25s, border-color 0.25s; flex-shrink: 0;
+        }
+        .toggle-big::after {
+            content: ''; position: absolute; width: 20px; height: 20px;
+            background: #fff; border-radius: 50%; top: 3px; left: 4px; transition: left 0.2s;
+        }
+        .toggle-big.on { background: rgba(0,255,65,0.3); border-color: rgba(0,255,65,0.5); }
+        .toggle-big.on::after { left: 28px; }
+        .toggle-status { font-size: 0.75rem; font-weight: 700; min-width: 56px; text-align: center; }
+        .toggle-status.on  { color: var(--green); }
+        .toggle-status.off { color: #ef4444; }
+
+        /* Input precio */
+        .precio-wrap { display: flex; align-items: center; gap: 10px; }
+        .precio-input {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px; padding: 8px 12px; color: var(--text);
+            font-size: 0.88rem; font-weight: 700; font-family: inherit; width: 130px;
+            transition: border-color 0.2s;
+        }
+        .precio-input:focus { outline: none; border-color: var(--gold); }
+        .precio-input.changed { border-color: rgba(251,191,36,0.7); background: rgba(251,191,36,0.06); }
+        .precio-input.saved   { border-color: rgba(0,255,65,0.5); }
+        .precio-fmt { font-size: 0.75rem; color: var(--muted); min-width: 100px; }
+        .btn-save {
+            padding: 8px 16px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.35);
+            color: var(--gold); border-radius: 8px; font-size: 0.78rem; font-weight: 800;
+            cursor: pointer; transition: all 0.2s; display: none;
+        }
+        .btn-save.visible { display: inline-flex; align-items: center; gap: 6px; }
+        .btn-save:hover { background: rgba(212,175,55,0.2); }
+
+        /* Toast */
+        #toast {
+            position: fixed; bottom: 28px; right: 28px;
+            background: #111; border: 1px solid rgba(0,255,65,0.4); border-radius: 10px;
+            padding: 12px 20px; font-size: 0.82rem; color: var(--green);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: none; align-items: center; gap: 10px; z-index: 9999;
+        }
+
+        /* Badge info */
+        .info-badge {
+            display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px;
+            border-radius: 20px; font-size: 0.65rem; font-weight: 700;
+        }
+        .info-badge.sync { background: rgba(0,210,255,0.1); color: var(--cyan); border: 1px solid rgba(0,210,255,0.2); }
+        .info-badge.warn { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+
+        @media(max-width:768px){ .sidebar{ display:none; } }
+    </style>
+</head>
+<body>
+<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <h1>PRODIGY</h1>
+        <p>Digital Dentistry</p>
+        <div class="role-badge"><i class="fas fa-crown"></i> Admin</div>
+    </div>
+    <p class="nav-section">Operaciones</p>
+    <a href="admin-panel.html"  class="nav-item"><i class="fas fa-chart-line"></i> Dashboard</a>
+    <p class="nav-section">Configuración</p>
+    <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Catálogo</a>
+    <a href="configuracion.html" class="nav-item active"><i class="fas fa-sliders"></i> Variables del Sistema</a>
+    <div style="font-size:.62rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px 4px;">Paneles operarios</div>
+    <a href="operario-diseno.html" class="nav-item"><i class="fas fa-drafting-compass" style="color:#00d2ff;"></i> Diseño CAD</a>
+    <a href="operator-panel.html" class="nav-item"><i class="fas fa-cog" style="color:#D4AF37;"></i> Fresado / Lab</a>
+    <a href="taller.html" class="nav-item"><i class="fas fa-tools" style="color:#D946A6;"></i> Taller</a>
+    <a href="/" class="nav-item" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Ver Sitio</a>
+    <div class="sidebar-footer">
+        <a href="#" class="nav-item" onclick="ProdigyAuth.signOut()"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
+    </div>
+</aside>
+
+<main class="main" id="main-content">
+    <div class="page-header">
+        <div>
+            <h1><i class="fas fa-sliders" style="color:var(--cyan);margin-right:10px;font-size:1.2rem;"></i>Variables del Sistema</h1>
+            <p>Controla el comportamiento de la plataforma sin tocar código. Los cambios aplican de inmediato.</p>
+        </div>
+    </div>
+
+    <!-- ═══ INTERRUPTORES GLOBALES ═══ -->
+    <div class="section-card">
+        <div class="section-header">
+            <div>
+                <div class="section-title"><i class="fas fa-power-off" style="color:var(--green);"></i> Interruptores Globales</div>
+                <div class="section-sub">Activan o desactivan funcionalidades en todos los flujos de pedido</div>
+            </div>
+            <span class="info-badge sync"><i class="fas fa-sync-alt"></i> Tiempo real</span>
+        </div>
+
+        <!-- Fast Global -->
+        <div class="config-row" id="row-fast-global">
+            <div>
+                <div class="config-label"><i class="fas fa-bolt" style="color:#fbbf24;margin-right:6px;"></i>Fast Delivery Global</div>
+                <div class="config-desc">Muestra u oculta la opción "Entrega Express 24h" en todos los formularios de pedido. Cuando está APAGADO, el cliente NO ve ni puede elegir express.</div>
+            </div>
+            <div class="config-right">
+                <span class="toggle-status off" id="fast-status">APAGADO</span>
+                <div class="toggle-big" id="toggle-fast" onclick="toggleFastGlobal(this)" title="Activar/desactivar fast delivery"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ PRECIOS ADICIONALES ═══ -->
+    <div class="section-card">
+        <div class="section-header">
+            <div>
+                <div class="section-title"><i class="fas fa-receipt" style="color:var(--gold);"></i> Precios de Servicios Adicionales</div>
+                <div class="section-sub">Tabla <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#94a3b8;">config_precios</code> · Se reflejan en los flujos de pedido</div>
+            </div>
+            <span class="info-badge warn"><i class="fas fa-triangle-exclamation"></i> Los precios del catálogo principal se gestionan en <a href="admin-precios.html" style="color:#fbbf24;">Precios y Catálogo</a></span>
+        </div>
+
+        <div id="extras-container">
+            <div class="config-row">
+                <div style="color:var(--muted);font-size:0.82rem;padding:8px 0;">Cargando precios...</div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<div id="toast" role="status" aria-live="polite">
+    <i class="fas fa-check-circle"></i>
+    <span id="toast-msg">Guardado</span>
+</div>
+
+<script>
+const sb = ProdigyAuth.getSb();
+let toastTimer;
+
+function showToast(msg) {
+    document.getElementById('toast-msg').textContent = msg;
+    const t = document.getElementById('toast');
+    t.style.display = 'flex';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+function formatCOP(n) {
+    return '$' + Math.round(n).toLocaleString('es-CO') + ' COP';
+}
+
+// ── Fast Global Toggle ──────────────────────────────────────────
+
+async function cargarFastGlobal() {
+    const { data } = await sb.from('config_precios').select('precio').eq('id', 'fast_global_enabled').maybeSingle();
+    // Si no existe la fila, asumir activo (1) para no romper flujos existentes
+    const enabled = data ? (data.precio !== 0) : true;
+    setFastUI(enabled);
+}
+
+function setFastUI(enabled) {
+    const toggle = document.getElementById('toggle-fast');
+    const status = document.getElementById('fast-status');
+    if (enabled) {
+        toggle.classList.add('on');
+        status.textContent = 'ACTIVO';
+        status.className = 'toggle-status on';
+    } else {
+        toggle.classList.remove('on');
+        status.textContent = 'APAGADO';
+        status.className = 'toggle-status off';
+    }
+}
+
+window.toggleFastGlobal = async (el) => {
+    el.classList.toggle('on');
+    const enabled = el.classList.contains('on');
+    setFastUI(enabled);
+    const { error } = await sb.from('config_precios').upsert({
+        id: 'fast_global_enabled',
+        nombre: 'Fast Delivery Global',
+        tipo: 'config_bool',
+        precio: enabled ? 1 : 0,
+        flujo: 'global'
+    }, { onConflict: 'id' });
+    if (error) {
+        showToast('Error al guardar: ' + error.message);
+        // Revertir
+        el.classList.toggle('on');
+        setFastUI(!enabled);
+    } else {
+        showToast(enabled ? 'Fast Delivery: ACTIVO en todos los flujos' : 'Fast Delivery: DESACTIVADO en todos los flujos');
+    }
+};
+
+// ── Extras (config_precios flujo=diseno) ───────────────────────
+
+const EXTRA_LABELS = {
+    express_diseno: { label: 'Express 24h — Diseño CAD', desc: 'Cargo adicional cuando el cliente elige entrega express en el flujo de diseño' },
+    envio_usb:      { label: 'Envío USB / Courier',       desc: 'Costo de envío físico del USB con archivos de diseño al cliente' },
+};
+
+async function cargarExtras() {
+    const { data, error } = await sb.from('config_precios').select('*').neq('id', 'fast_global_enabled');
+    const container = document.getElementById('extras-container');
+    if (error || !data || !data.length) {
+        container.innerHTML = '<div class="config-row"><div style="color:var(--muted);font-size:0.82rem;">Sin extras configurados</div></div>';
+        return;
+    }
+    container.innerHTML = data.map(item => {
+        const meta = EXTRA_LABELS[item.id] || { label: escH(item.id), desc: escH(item.nombre || '') };
+        return `
+        <div class="config-row" id="extra-row-${item.id}">
+            <div>
+                <div class="config-label">${meta.label}</div>
+                <div class="config-desc">${meta.desc}<br><code style="font-size:.7rem;color:#64748b;">${escH(item.id)}</code> · flujo: <code style="font-size:.7rem;color:#64748b;">${escH(item.flujo||'—')}</code></div>
+            </div>
+            <div class="config-right">
+                <div class="precio-wrap">
+                    <input type="number" class="precio-input" id="precio-${item.id}"
+                           value="${item.precio}" min="0" step="1000"
+                           onchange="onExtraChange('${item.id}', this)"
+                           oninput="onExtraChange('${item.id}', this)">
+                    <span class="precio-fmt" id="fmt-${item.id}">${formatCOP(item.precio)}</span>
+                </div>
+                <button class="btn-save" id="btn-${item.id}" onclick="guardarExtra('${item.id}')">
+                    <i class="fas fa-check"></i> Guardar
+                </button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function escH(str) {
+    return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+window.onExtraChange = (id, input) => {
+    const btn = document.getElementById('btn-' + id);
+    const fmt = document.getElementById('fmt-' + id);
+    btn?.classList.add('visible');
+    input.classList.add('changed');
+    const v = parseInt(input.value);
+    if (!isNaN(v)) fmt.textContent = formatCOP(v);
+};
+
+window.guardarExtra = async (id) => {
+    const input = document.getElementById('precio-' + id);
+    const nuevo = parseInt(input.value);
+    if (isNaN(nuevo) || nuevo < 0) { showToast('Valor inválido'); return; }
+    const { error } = await sb.from('config_precios').update({ precio: nuevo }).eq('id', id);
+    if (!error) {
+        input.classList.remove('changed');
+        input.classList.add('saved');
+        document.getElementById('btn-' + id)?.classList.remove('visible');
+        showToast('Guardado: ' + formatCOP(nuevo));
+    } else {
+        showToast('Error: ' + error.message);
+    }
+};
+
+// ── Init ────────────────────────────────────────────────────────
+async function init() {
+    await ProdigyAuth.require(['admin']);
+    await Promise.all([cargarFastGlobal(), cargarExtras()]);
+}
+
+init();
+</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>

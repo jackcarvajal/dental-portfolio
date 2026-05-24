@@ -998,14 +998,21 @@ window.submitOrden     = window.submitOrden      || function(){};
                         }
                     }
                 }
-                /* Extras (express, envío) */
-                const { data: extras } = await sb
-                    .from('config_precios').select('id,precio').eq('flujo', 'diseno');
+                /* Extras (express, envío) + fast_global_enabled */
+                const [{ data: extras }, { data: fastRow }] = await Promise.all([
+                    sb.from('config_precios').select('id,precio').eq('flujo', 'diseno'),
+                    sb.from('config_precios').select('precio').eq('id', 'fast_global_enabled').maybeSingle()
+                ]);
                 if (extras && extras.length) {
                     const extMap = Object.fromEntries(extras.map(e => [e.id, e.precio]));
                     window._fd_expressAmt = extMap['express_diseno'] ?? 20000;
                     window._fd_envioAmt   = extMap['envio_usb']      ?? 15000;
                 }
+                /* Si fast_global_enabled = 0, ocultar opción express */
+                const fastEnabled = fastRow ? (fastRow.precio !== 0) : true;
+                const expressSec = document.getElementById('express-cad')?.closest('div[style*="rgba(239,68,68"]');
+                if (expressSec) expressSec.style.display = fastEnabled ? '' : 'none';
+                if (!fastEnabled) { const cb = document.getElementById('express-cad'); if (cb) { cb.checked = false; } }
                 /* Recalcular si ya hay subtipo seleccionado */
                 if (STATE.subtipoId && MATERIAL_DATA_MUT[STATE.categoriaKey]) {
                     const sub = MATERIAL_DATA_MUT[STATE.categoriaKey].subtipos[STATE.subtipoId];
