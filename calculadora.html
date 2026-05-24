@@ -812,8 +812,44 @@ function showToast(text, type = 'ok') {
   setTimeout(() => t.className = '', 3500);
 }
 
-// Init
+// Init — precios hardcodeados como fallback; Supabase los sobreescribe si están disponibles
 renderResult();
+
+(async function syncPrecios() {
+  try {
+    if (!sb) return;
+    const { data } = await sb.from('catalogo').select('id,precio,activo').in('id',
+      ['corona','carilla','inlay','puente','provisional','modelo']
+    );
+    if (!data || !data.length) return;
+    let cambio = false;
+    data.forEach(row => {
+      if (row.activo !== false && PRECIOS[row.id] && row.precio > 0) {
+        PRECIOS[row.id].base = row.precio;
+        cambio = true;
+      }
+    });
+    // Leer extras de config_precios
+    const { data: extras } = await sb.from('config_precios')
+      .select('id,precio').in('id',['urgente_calc','dsd_calc','envio_calc']);
+    if (extras) {
+      extras.forEach(r => {
+        if (r.id === 'urgente_calc' && r.precio > 0) EXTRAS.urgente = r.precio;
+        if (r.id === 'dsd_calc'     && r.precio > 0) EXTRAS.dsd     = r.precio;
+        if (r.id === 'envio_calc'   && r.precio > 0) EXTRAS.envio   = r.precio;
+      });
+    }
+    if (cambio) {
+      renderResult();
+      // Actualizar labels de precios en botones de servicio
+      document.querySelectorAll('.servicio-btn[data-key]').forEach(btn => {
+        const key = btn.dataset.key;
+        const pEl = btn.querySelector('.precio');
+        if (pEl && PRECIOS[key]) pEl.textContent = 'Desde ' + fmtCOP(PRECIOS[key].base);
+      });
+    }
+  } catch(e) { /* fail silently — precios hardcodeados siguen funcionando */ }
+})();
 </script>
 </main>
 <script src="js/audio-manager.js" defer></script>

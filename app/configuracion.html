@@ -268,7 +268,10 @@ window.toggleFastGlobal = async (el) => {
 // ── Extras (config_precios flujo=diseno) ───────────────────────
 
 const EXTRA_LABELS = {
-    express_diseno: { label: 'Express 24h — Diseño CAD', desc: 'Cargo adicional cuando el cliente elige entrega express en el flujo de diseño' },
+    express_diseno:  { label: 'Express 24h — Diseño CAD',    desc: 'Cargo adicional cuando el cliente elige entrega express en el flujo de diseño' },
+    urgente_calc:    { label: 'Express — Calculadora',        desc: 'Cargo express mostrado en /calculadora (COP)' },
+    dsd_calc:        { label: 'Diseño DSD — Calculadora',     desc: 'Cargo adicional DSD/Smile Design en /calculadora (COP)' },
+    envio_calc:      { label: 'Envío físico — Calculadora',   desc: 'Cargo envío físico en /calculadora (COP)' },
 };
 
 async function cargarExtras() {
