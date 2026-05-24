@@ -93,3 +93,9 @@
 - nosotros.html: Lighthouse SEO score actualizado 63→95 (fix noindex ya aplicado)
 - diseno-cad.html + catalogo.html + fresado-cam.html: robots index,follow agregado
 - sitemap.xml PRODIGY: nosotros lastmod → 2026-05-24
+- **SEO autónomo lote 1**: escaner-domicilio robots + hreflang EN en guias-quirurgicas + calculadora-diseno
+- **SEO autónomo lote 2**: hreflang EN + author en calidad, guia-tecnica, instalar-app, soporte, nosotros, portafolio, calculadora-fresado, calculadora-impresion
+- **SEO autónomo lote 3**: hreflang EN en flujo-lab, flujo-fresado, flujo-impresion, article
+- **sitemap.xml PRODIGY**: flujo-lab, flujo-fresado, flujo-impresion agregados
+- **Alejandro**: hreflang EN en soporte, envia-tu-scanner, cursos, flujo-diseno; robots+author en portafolio
+- **sitemap.xml Alejandro**: flujo-diseno agregado
