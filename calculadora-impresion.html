@@ -363,6 +363,35 @@ function toast(msg) { const t=document.getElementById('toast'); t.textContent=ms
 window.addEventListener('scroll', () => { document.getElementById('scroll-top-btn').style.opacity = window.scrollY > 200 ? '1' : '0'; });
 
 render();
+
+(async function syncPreciosImpresion() {
+  try {
+    const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+    const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+    const r = await fetch(`${SURL}/rest/v1/catalogo?categoria=eq.impresion3d&select=id,precio,activo`, {
+      headers: { 'apikey': SKEY, 'Authorization': 'Bearer ' + SKEY }
+    });
+    if (!r.ok) return;
+    const rows = await r.json();
+    let cambio = false;
+    rows.forEach(function(row) {
+      if (row.activo !== false && PRECIOS[row.id] && row.precio > 0) {
+        PRECIOS[row.id].base = row.precio; cambio = true;
+      }
+    });
+    const re = await fetch(`${SURL}/rest/v1/config_precios?id=in.(urgente_calc,envio_calc)&select=id,precio`, {
+      headers: { 'apikey': SKEY, 'Authorization': 'Bearer ' + SKEY }
+    });
+    if (re.ok) {
+      const ex = await re.json();
+      ex.forEach(function(row) {
+        if (row.id === 'urgente_calc' && row.precio > 0) EXTRAS.urgente = row.precio;
+        if (row.id === 'envio_calc'   && row.precio > 0) EXTRAS.envio   = row.precio;
+      });
+    }
+    if (cambio) render();
+  } catch(e) { /* fail silently */ }
+})();
 </script>
 </main>
 <script src="js/footer.js?v=20260522"></script>
