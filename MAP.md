@@ -113,6 +113,34 @@
 
 ## PORTAL /app/
 
+### app/admin-panel.html
+| Función / Sección | Línea aprox. |
+|-------------------|--------------|
+| `switchTab()` — navegación tabs | 922 |
+| `cargarPedidos()` — tab Pedidos | 952 |
+| `filtrarPedidos()` — filtro estado + búsqueda texto | 1172 |
+| `cargarPortafolio()` — grid portafolio | ~1340 |
+| `toggleVisibleCaso()` — publicar/ocultar | ~1416 |
+| `cargarClientes()` — ranking CLV + WA | 1425 |
+| `cargarDespachos()` — gestión flota | 1535 |
+| `cargarTorre()` — torre de control + incidencias | 1873 |
+| `cargarAnalytics()` — Radar de Ventas | 788 |
+| `generarFichaPDF()` — jsPDF + QR | ~1700 |
+| ADMIN_EMAILS constante | ~50 |
+
+### app/operario-diseno.html
+| Función / Sección | Línea aprox. |
+|-------------------|--------------|
+| `cargarCasos()` — carga kanban diseño | 344 |
+| `renderKanban()` — render 4 columnas | 363 |
+| `cardHTML()` — tarjeta con drag | 389 |
+| `avanzar()` — cambio de estado | 456 |
+| `abrirQA()` — modal QA 7 ítems | 500 |
+| `enviarQA()` — aprobar/rechazar diseño | ~555 |
+| `notifWA()` — WA notifications | 591 |
+| `_COL_STATE` / drag & drop | 605 |
+| Realtime channel 'diseno-casos' | 338 |
+
 ### app/panel-interno-operaciones.html
 | Función / Sección | Línea |
 |-------------------|-------|
