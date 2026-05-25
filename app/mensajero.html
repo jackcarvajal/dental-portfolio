@@ -371,7 +371,7 @@ async function cargarRuta(){
                     : `<button class="btn-action btn-confirmar" onclick="abrirModalConfirmar('${escH(d.id)}','${escH(p.id||'')}','${escH(codigo)}','${escH(nombre)}')">
                         <i class="fas fa-check"></i> Confirmar Entrega</button>`
                 }
-                <button class="btn-action btn-novedad" onclick="abrirModalNovedad('${escH(d.id)}')"><i class="fas fa-flag"></i></button>
+                <button class="btn-action btn-novedad" onclick="abrirModalNovedad('${escH(d.id)}')" aria-label="Reportar novedad"><i class="fas fa-flag"></i></button>
             </div>
         </div>`;
     }).join('');

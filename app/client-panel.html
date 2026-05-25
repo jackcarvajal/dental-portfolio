@@ -831,7 +831,7 @@ async function cargarBibliotecas(userId) {
                 <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
                     ${b.archivo_url&&/^https?:\/\//.test(b.archivo_url)?`<a href="${escH(b.archivo_url)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-cyan"><i class="fas fa-download"></i> Descargar</a>`:''}
                     ${b.link_externo&&/^https?:\/\//.test(b.link_externo)?`<a href="${escH(b.link_externo)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-external-link-alt"></i> Abrir link</a>`:''}
-                    <button onclick="eliminarBiblioteca('${escH(b.id)}')" class="btn-sm" style="color:#f87171;border-color:rgba(248,113,113,.3)"><i class="fas fa-trash"></i></button>
+                    <button onclick="eliminarBiblioteca('${escH(b.id)}')" class="btn-sm" aria-label="Eliminar biblioteca" style="color:#f87171;border-color:rgba(248,113,113,.3)"><i class="fas fa-trash"></i></button>
                 </div>
             </div>`).join('');
     } catch(e) {

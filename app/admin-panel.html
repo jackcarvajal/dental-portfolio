@@ -436,7 +436,7 @@
         <div class="section-card" style="margin-top:24px;">
             <div class="section-header">
                 <h2><i class="fas fa-images" style="color:var(--gold);margin-right:8px;"></i>Casos publicados</h2>
-                <button class="btn-xs btn-gold" onclick="cargarPortafolio()"><i class="fas fa-rotate-right"></i></button>
+                <button class="btn-xs btn-gold" onclick="cargarPortafolio()" aria-label="Actualizar portafolio"><i class="fas fa-rotate-right"></i></button>
             </div>
             <div id="portafolio-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:20px;">
                 <div class="empty-state" style="grid-column:1/-1;">
@@ -1503,7 +1503,7 @@ async function cargarPortafolio() {
                 ${c.visible ? '<span style="color:#4ade80;font-size:0.65rem;font-weight:700;">● Visible</span>' : '<span style="color:#64748b;font-size:0.65rem;">○ Oculto</span>'}
                 <div style="margin-top:8px;display:flex;gap:6px;">
                     <button class="btn-xs" style="background:${c.visible ? 'rgba(100,116,139,.15)' : 'rgba(74,222,128,.12)'};color:${c.visible ? '#64748b' : '#4ade80'};border:1px solid ${c.visible ? '#334155' : 'rgba(74,222,128,.3)'};" onclick="toggleVisibleCaso('${c.id}',${!c.visible})" title="${c.visible ? 'Ocultar del portafolio' : 'Publicar en portafolio'}"><i class="fas fa-eye${c.visible ? '-slash' : ''}"></i></button>
-                    <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')"><i class="fas fa-trash"></i></button>
+                    <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')" aria-label="Eliminar caso"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
         </div>`).join('');
