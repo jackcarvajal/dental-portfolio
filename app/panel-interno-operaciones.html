@@ -724,6 +724,49 @@
 
 <div id="toast"></div>
 
+<!-- Modal: confirmar acción de fabricación -->
+<div id="modal-fab-confirm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0a1525;border:1px solid rgba(212,175,55,.3);border-radius:14px;padding:24px;max-width:400px;width:100%;text-align:center;">
+    <div id="modal-fab-confirm-icon" style="font-size:2rem;margin-bottom:10px;"></div>
+    <div id="modal-fab-confirm-title" style="font-size:.95rem;font-weight:800;color:var(--gold,#D4AF37);margin-bottom:8px;"></div>
+    <div id="modal-fab-confirm-body" style="font-size:.8rem;color:#94a3b8;margin-bottom:20px;"></div>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button onclick="cerrarModalFabConfirm()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button id="modal-fab-confirm-btn" onclick="ejecutarFabConfirm()" style="background:var(--gold,#D4AF37);color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: agregar nuevo operario -->
+<div id="modal-nuevo-staff" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0a1525;border:1px solid rgba(0,210,255,.25);border-radius:14px;padding:24px;max-width:400px;width:100%;">
+    <div style="font-size:.95rem;font-weight:800;color:var(--cyan,#00d2ff);margin-bottom:16px;"><i class="fas fa-user-plus" style="margin-right:6px;"></i>Nuevo operario</div>
+    <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Email (debe estar en Supabase Auth)</label>
+    <input id="staff-email" type="email" placeholder="correo@ejemplo.com"
+      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.85rem;outline:none;margin-bottom:12px;">
+    <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Nombre</label>
+    <input id="staff-nombre" type="text" placeholder="Nombre del operario"
+      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.85rem;outline:none;margin-bottom:18px;">
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button onclick="cerrarModalNuevoStaff()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button onclick="confirmarNuevoStaff()" style="background:var(--cyan,#00d2ff);color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: confirmar eliminar caso portafolio -->
+<div id="modal-del-caso" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0a1525;border:1px solid rgba(239,68,68,.35);border-radius:14px;padding:24px;max-width:360px;width:100%;text-align:center;">
+    <div style="font-size:2rem;margin-bottom:10px;">🗑️</div>
+    <div style="font-size:.9rem;font-weight:800;color:#ef4444;margin-bottom:8px;">Eliminar caso</div>
+    <div style="font-size:.78rem;color:#94a3b8;margin-bottom:20px;">Esta acción no se puede deshacer.</div>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button onclick="cerrarModalDelCaso()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button onclick="confirmarDelCaso()" style="background:#ef4444;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
     <!-- ══ TAB RUTADOR ══════════════════════════════════ -->
     <div id="tab-rutador" class="tab-panel">
         <div class="page-header">
@@ -1023,21 +1066,7 @@ async function toggleDept(id, dept, agregar, email) {
   toast(`${email} — ${agregar?'agregado a':'removido de'} ${DEPT_CONFIG[dept]?.label||dept}`,'success');
 }
 
-function abrirModalNuevoStaff() {
-  const email  = prompt('Email del operario (debe estar registrado en el sistema):');
-  if (!email || !email.includes('@')) return;
-  const nombre = prompt('Nombre del operario:') || email;
-  sb.auth.admin ? toast('Busca el user_id en Supabase Auth y agrégalo manualmente','warning')
-  : sb.from('staff_departamentos').insert({
-      email: email.trim().toLowerCase(),
-      nombre: nombre.trim(),
-      departamentos: [],
-      activo: true
-    }).then(({error}) => {
-      if (error) toast('Error: '+error.message,'error');
-      else { toast('Operario agregado ✅','success'); cargarStaff(); }
-    });
-}
+// abrirModalNuevoStaff — definida abajo junto a los modales sin prompt()
 
 async function cerrarSesion() {
     await sb.auth.signOut();
@@ -1433,12 +1462,7 @@ async function toggleVisible(id, actual) {
     else cargarPortafolio();
 }
 
-async function eliminarCaso(id) {
-    if (!confirm('¿Eliminar este caso del portafolio?')) return;
-    const { error } = await sb.from('casos_portafolio').delete().eq('id', id);
-    if (error) toast('Error: ' + error.message, 'error');
-    else { toast('Caso eliminado', 'success'); cargarPortafolio(); }
-}
+function eliminarCaso(id) { eliminarCasoConfirm(id); }
 
 /* — Reordenar con campo sort_order — */
 async function moverCaso(id, dir) {
@@ -2494,7 +2518,7 @@ async function enviarCotizacion() {
   const id    = document.getElementById('cotizar-id').value;
   const monto = parseInt(document.getElementById('cotizar-monto').value, 10);
   const nota  = document.getElementById('cotizar-nota').value.trim();
-  if (!monto || monto < 1000) { alert('Ingresa un monto válido.'); return; }
+  if (!monto || monto < 1000) { toast('Ingresa un monto válido (mín $1.000)', 'error'); return; }
 
   const btn = document.querySelector('#modal-cotizar button:last-child');
   btn.disabled = true; btn.textContent = 'Enviando…';
@@ -2507,7 +2531,7 @@ async function enviarCotizacion() {
     cotizacion_fab_nota:   nota || null
   }).eq('id', id);
 
-  if (error) { alert('Error: '+error.message); btn.disabled=false; btn.textContent='Enviar cotización al cliente'; return; }
+  if (error) { toast('Error: '+error.message, 'error'); btn.disabled=false; btn.textContent='Enviar cotización al cliente'; return; }
 
   /* Registrar en historial */
   await sbFab.from('historial_diseno').insert({
@@ -2532,26 +2556,35 @@ async function enviarCotizacion() {
   } catch(_) {}
 
   cerrarModalCotizar();
-  alert(`Cotización enviada: ${fmtCOPFab(monto)}`);
+  toast(`Cotización enviada: ${fmtCOPFab(monto)}`, 'success');
   cargarFabricacion();
 }
 
 /* ── Confirmar pago recibido (admin verifica) ── */
 async function marcarPagoRecibido(id, tipo) {
-  if (!confirm('¿Confirmas que recibiste el pago de fabricación?')) return;
-  const { error } = await sbFab.from('pedidos').update({
-    cotizacion_fab_estado: 'pago_confirmado'
-  }).eq('id', id);
-  if (error) { alert('Error: '+error.message); return; }
-  alert('Pago marcado. Ahora enruta el caso a producción.');
-  cargarFabricacion();
+  abrirModalFabConfirm('💰', 'Confirmar pago recibido',
+    '¿Confirmas que recibiste el pago de fabricación? Esta acción no se puede deshacer.',
+    'Sí, recibí el pago',
+    async () => {
+      const { error } = await sbFab.from('pedidos').update({ cotizacion_fab_estado: 'pago_confirmado' }).eq('id', id);
+      if (error) { toast('Error: ' + error.message, 'error'); return; }
+      toast('Pago marcado. Ahora enruta el caso a producción.', 'success');
+      cargarFabricacion();
+    }
+  );
 }
 
 /* ── Enrutar a fabricación (handoff) ── */
 async function enrutarAFabricacion(id, tipo) {
   const tipoBase  = tipo.replace('_internacional','');
   const lbl = TIPO_LBL[tipo] || tipo;
-  if (!confirm(`¿Enrutar este caso a ${lbl}?\n\nEl operario de esa área verá el caso con los STL listos.`)) return;
+  abrirModalFabConfirm('🏭', `Enrutar a ${lbl}`,
+    `El operario de esa área verá el caso con los STL listos. ¿Confirmas el enrutamiento?`,
+    'Sí, enrutar',
+    async () => { await _doEnrutar(id, tipo, tipoBase, lbl); }
+  );
+}
+async function _doEnrutar(id, tipo, tipoBase, lbl) {
 
   const updates = {
     fabricacion_pagada:    true,
@@ -2560,7 +2593,7 @@ async function enrutarAFabricacion(id, tipo) {
   };
   /* Solo actualizar flujo si la columna existe — si falla, ignorar */
   const { error } = await sbFab.from('pedidos').update(updates).eq('id', id);
-  if (error) { alert('Error: '+error.message); return; }
+  if (error) { toast('Error: ' + error.message, 'error'); return; }
 
   /* Historial */
   await sbFab.from('historial_diseno').insert({
@@ -2582,9 +2615,70 @@ async function enrutarAFabricacion(id, tipo) {
     }
   } catch(_) {}
 
-  alert(`Caso enrutado a ${lbl} ✓`);
+  toast(`Caso enrutado a ${lbl} ✓`, 'success');
   cargarFabricacion();
 }
+
+/* ── Modales sin confirm/prompt ───────────────────────────────── */
+let _fabConfirmCb = null;
+
+function abrirModalFabConfirm(icon, title, body, btnLabel, cb) {
+  _fabConfirmCb = cb;
+  document.getElementById('modal-fab-confirm-icon').textContent  = icon;
+  document.getElementById('modal-fab-confirm-title').textContent = title;
+  document.getElementById('modal-fab-confirm-body').textContent  = body;
+  document.getElementById('modal-fab-confirm-btn').textContent   = btnLabel;
+  document.getElementById('modal-fab-confirm').style.display     = 'flex';
+}
+function cerrarModalFabConfirm() {
+  document.getElementById('modal-fab-confirm').style.display = 'none';
+  _fabConfirmCb = null;
+}
+function ejecutarFabConfirm() {
+  const cb = _fabConfirmCb;
+  cerrarModalFabConfirm();
+  if (cb) cb();
+}
+
+function abrirModalNuevoStaff() {
+  document.getElementById('staff-email').value  = '';
+  document.getElementById('staff-nombre').value = '';
+  document.getElementById('modal-nuevo-staff').style.display = 'flex';
+  document.getElementById('staff-email').focus();
+}
+function cerrarModalNuevoStaff() {
+  document.getElementById('modal-nuevo-staff').style.display = 'none';
+}
+function confirmarNuevoStaff() {
+  const email  = document.getElementById('staff-email').value.trim().toLowerCase();
+  const nombre = document.getElementById('staff-nombre').value.trim() || email;
+  if (!email || !email.includes('@')) { toast('Email inválido', 'error'); return; }
+  cerrarModalNuevoStaff();
+  sb.from('staff_departamentos').insert({ email, nombre, departamentos: [], activo: true })
+    .then(({ error }) => {
+      if (error) toast('Error: ' + error.message, 'error');
+      else { toast('Operario agregado ✅', 'success'); cargarStaff(); }
+    });
+}
+
+let _delCasoId = null;
+function eliminarCasoConfirm(id) {
+  _delCasoId = id;
+  document.getElementById('modal-del-caso').style.display = 'flex';
+}
+function cerrarModalDelCaso() {
+  document.getElementById('modal-del-caso').style.display = 'none';
+  _delCasoId = null;
+}
+async function confirmarDelCaso() {
+  if (!_delCasoId) return;
+  const id = _delCasoId;
+  cerrarModalDelCaso();
+  const { error } = await sb.from('casos_portafolio').delete().eq('id', id);
+  if (error) toast('Error: ' + error.message, 'error');
+  else { toast('Caso eliminado', 'success'); cargarPortafolio(); }
+}
+/* ── fin modales ──────────────────────────────────────────────── */
 </script>
 </body>
 </html>
