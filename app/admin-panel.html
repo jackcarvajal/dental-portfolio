@@ -259,10 +259,10 @@
             </div>
             <table>
                 <thead>
-                    <tr><th>Código</th><th>Tipo</th><th>Material</th><th>Total</th><th>Pasarela</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr>
+                    <tr><th>Código</th><th>Doctor</th><th>Tipo</th><th>Material</th><th>Total</th><th>Pasarela</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr>
                 </thead>
                 <tbody id="tbody-pedidos">
-                    <tr class="loading-row"><td colspan="8"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+                    <tr class="loading-row"><td colspan="9"><div class="spinner" style="margin:0 auto;"></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -700,6 +700,35 @@
 
 </main>
 
+<!-- Modal: Número de guía al despachar -->
+<div id="modal-despacho" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0d1828;border:1px solid rgba(212,175,55,.3);border-radius:14px;padding:24px;max-width:420px;width:100%;">
+    <div style="font-size:.95rem;font-weight:800;color:var(--gold);margin-bottom:6px;"><i class="fas fa-truck-fast" style="margin-right:6px;"></i>Registrar Despacho</div>
+    <div id="modal-desp-sub" style="font-size:.78rem;color:#94a3b8;margin-bottom:16px;"></div>
+    <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:6px;">Número de guía (opcional)</label>
+    <input id="modal-desp-guia" type="text" placeholder="Ej: 12345678901234, JD0012345..."
+      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.85rem;outline:none;margin-bottom:18px;">
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button onclick="cerrarModalDespacho()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button onclick="confirmarDespacho()" style="background:var(--gold);color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Despachar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Resolver incidencia -->
+<div id="modal-resolver" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0d1828;border:1px solid rgba(0,255,65,.25);border-radius:14px;padding:24px;max-width:420px;width:100%;">
+    <div style="font-size:.95rem;font-weight:800;color:#00FF41;margin-bottom:6px;"><i class="fas fa-check-circle" style="margin-right:6px;"></i>Resolver Incidencia</div>
+    <div style="font-size:.78rem;color:#94a3b8;margin-bottom:14px;">Deja una nota de resolución para el registro.</div>
+    <textarea id="modal-resolver-nota" rows="3" placeholder="Descripción de cómo se resolvió..."
+      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.82rem;resize:vertical;outline:none;margin-bottom:16px;"></textarea>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button onclick="cerrarModalResolver()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button onclick="confirmarResolverIncidencia()" style="background:#00FF41;color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Resolver</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -923,6 +952,8 @@ async function cargarAnalytics() {
 /* ══════════════════════════════════════════
    TABS
 ══════════════════════════════════════════ */
+let _torreRefreshTimer = null;
+
 function switchTab(tab, el) {
     // Sidebar
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
@@ -932,7 +963,13 @@ function switchTab(tab, el) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('tab-' + tab).classList.add('active');
 
-    // Cargar datos al abrir tab por primera vez
+    // Auto-refresh Torre de Control cada 60s; limpiar al salir
+    clearInterval(_torreRefreshTimer);
+    if (tab === 'torre') {
+        _torreRefreshTimer = setInterval(cargarTorre, 60_000);
+    }
+
+    // Cargar datos al abrir tab
     if (tab === 'portafolio') cargarPortafolio();
     if (tab === 'clientes')   cargarClientes();
     if (tab === 'despachos')  cargarDespachos();
@@ -955,7 +992,7 @@ const BADGE = {
 
 async function cargarPedidos() {
     document.getElementById('tbody-pedidos').innerHTML =
-        '<tr class="loading-row"><td colspan="8"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
+        '<tr class="loading-row"><td colspan="9"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
 
     try {
         const { data, error } = await sb
@@ -972,7 +1009,7 @@ async function cargarPedidos() {
 
     } catch (e) {
         document.getElementById('tbody-pedidos').innerHTML =
-            `<tr><td colspan="8" style="text-align:center;color:#f87171;padding:24px;">${escHtml(e.message)}</td></tr>`;
+            `<tr><td colspan="9" style="text-align:center;color:#f87171;padding:24px;">${escHtml(e.message)}</td></tr>`;
     }
 }
 
@@ -1002,13 +1039,15 @@ function _renderTrackingBtn(guia, pais) {
 function renderPedidos(lista) {
     if (!lista || lista.length === 0) {
         document.getElementById('tbody-pedidos').innerHTML =
-            '<tr><td colspan="8" class="empty-state"><i class="fas fa-inbox"></i><br>Sin pedidos aún</td></tr>';
+            '<tr><td colspan="9" class="empty-state"><i class="fas fa-inbox"></i><br>Sin pedidos aún</td></tr>';
         return;
     }
 
     document.getElementById('tbody-pedidos').innerHTML = lista.map(p => `
     <tr>
         <td style="font-family:monospace;color:var(--cyan);">${escHtml(p.codigo || p.id?.slice(0,8))}</td>
+        <td style="font-size:.78rem;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escHtml(p.clientes?.nombre || p.nombre_doctor || '')}">
+            ${escHtml(p.clientes?.nombre || p.nombre_doctor || '—')}</td>
         <td>${escHtml(p.tipo_trabajo || '—')}</td>
         <td>${escHtml(p.material || '—')}</td>
         <td style="color:#00FF41;font-weight:700;">${fmtCOP(p.precio_total)}</td>
@@ -1029,26 +1068,68 @@ function renderPedidos(lista) {
     </tr>`).join('');
 }
 
+/* ── Modales sin prompt() ─────────────────────────────────────── */
+let _despachoPendiente = null;
+
+function abrirModalDespacho(pedidoId, esIntl) {
+    _despachoPendiente = { pedidoId, esIntl };
+    document.getElementById('modal-desp-guia').value = '';
+    document.getElementById('modal-desp-sub').textContent = esIntl
+        ? '✈️ Envío internacional — ingresa guía DHL, FedEx o UPS'
+        : '📦 Envío local — ingresa guía Interrapidísimo, TCC o Servientrega';
+    const m = document.getElementById('modal-despacho');
+    m.style.display = 'flex';
+    document.getElementById('modal-desp-guia').focus();
+}
+function cerrarModalDespacho() {
+    document.getElementById('modal-despacho').style.display = 'none';
+    _despachoPendiente = null;
+}
+async function confirmarDespacho() {
+    if (!_despachoPendiente) return;
+    const { pedidoId } = _despachoPendiente;
+    const guia = document.getElementById('modal-desp-guia').value.trim();
+    cerrarModalDespacho();
+    const updateData = { estado: 'Despachado' };
+    if (guia) updateData.numero_guia = guia;
+    const { error } = await sb.from('pedidos').update(updateData).eq('id', pedidoId);
+    if (error) { toast('Error al actualizar: ' + error.message, 'error'); return; }
+    toast('Estado actualizado → Despachado' + (guia ? ' · Guía: ' + guia : ''), 'success');
+    enviarPushDespachado(pedidoId, guia || null);
+    cargarPedidos();
+}
+
+let _resolverPendienteId = null;
+
+function abrirModalResolver(incId) {
+    _resolverPendienteId = incId;
+    document.getElementById('modal-resolver-nota').value = '';
+    document.getElementById('modal-resolver').style.display = 'flex';
+    document.getElementById('modal-resolver-nota').focus();
+}
+function cerrarModalResolver() {
+    document.getElementById('modal-resolver').style.display = 'none';
+    _resolverPendienteId = null;
+}
+async function confirmarResolverIncidencia() {
+    if (!_resolverPendienteId) return;
+    const nota = document.getElementById('modal-resolver-nota').value.trim();
+    const incId = _resolverPendienteId;
+    cerrarModalResolver();
+    const { error } = await sb.from('logs_incidencias')
+        .update({ resuelta: true, resolucion: nota || 'Resuelta por admin' })
+        .eq('id', incId);
+    if (error) { toast('Error: ' + error.message, 'error'); return; }
+    toast('Incidencia resuelta', 'success');
+    cargarTorre();
+}
+/* ── fin modales ──────────────────────────────────────────────── */
+
 async function cambiarEstado(pedidoId, nuevoEstado) {
     if (nuevoEstado === 'Despachado') {
-        // Modal para capturar número de guía antes de guardar
         const pedido = (todosLosPedidos || []).find(p => p.id === pedidoId);
         const esIntl = pedido && pedido.pais && pedido.pais !== 'CO';
-        const guia = prompt(
-            (esIntl ? '✈️ ENVÍO INTERNACIONAL — ' : '📦 ') +
-            'Ingresa el número de guía de la transportadora\n' +
-            (esIntl ? '(DHL, FedEx, UPS para México/Internacional)\n' : '(Interrapidísimo, TCC, Servientrega)\n') +
-            'Deja vacío para guardar sin guía:'
-        );
-        const updateData = { estado: nuevoEstado };
-        if (guia && guia.trim()) updateData.numero_guia = guia.trim();
-
-        const { error } = await sb.from('pedidos').update(updateData).eq('id', pedidoId);
-        if (error) { toast('Error al actualizar: ' + error.message, 'error'); return; }
-        toast('Estado actualizado → Despachado' + (guia ? ` · Guía: ${guia}` : ''), 'success');
-
-        // Disparar notificación push al cliente
-        enviarPushDespachado(pedidoId, guia ? guia.trim() : null);
+        abrirModalDespacho(pedidoId, esIntl);
         return;
     }
     const { error } = await sb.from('pedidos').update({ estado: nuevoEstado }).eq('id', pedidoId);
@@ -1967,11 +2048,8 @@ async function cargarTorre() {
         : '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8">Sin incidencias abiertas</td></tr>';
 }
 
-async function resolverIncidencia(incId) {
-    const res = prompt('Nota de resolución (opcional):') ?? '';
-    const { error } = await sb.from('logs_incidencias').update({ resuelta: true, resolucion: res || 'Resuelta por admin' }).eq('id', incId);
-    if (error) { toast('Error: ' + error.message, 'error'); return; }
-    cargarTorre();
+function resolverIncidencia(incId) {
+    abrirModalResolver(incId);
 }
 
 function resolverUrgente(pedidoId) {
