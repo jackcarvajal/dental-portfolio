@@ -196,6 +196,19 @@
 
 <div id="toast"></div>
 
+<!-- Modal: confirmar eliminar caso -->
+<div id="modal-del-gc" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0a1525;border:1px solid rgba(239,68,68,.35);border-radius:14px;padding:24px;max-width:360px;width:100%;text-align:center;">
+    <div style="font-size:2rem;margin-bottom:10px;">🗑️</div>
+    <div style="font-size:.9rem;font-weight:800;color:#ef4444;margin-bottom:8px;">Eliminar caso</div>
+    <div style="font-size:.78rem;color:#94a3b8;margin-bottom:20px;">Esta acción no se puede deshacer.</div>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button onclick="cerrarDelGc()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button onclick="confirmarDelGc()" style="background:#ef4444;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
@@ -298,12 +311,21 @@ async function toggleVisible(id, nuevoEstado) {
 }
 
 // ── Eliminar ───────────────────────────────────────────
-async function eliminarCaso(id) {
-    if (!confirm('¿Eliminar este caso definitivamente? Esta acción no se puede deshacer.')) return;
-
+let _delGcId = null;
+function eliminarCaso(id) {
+    _delGcId = id;
+    document.getElementById('modal-del-gc').style.display = 'flex';
+}
+function cerrarDelGc() {
+    document.getElementById('modal-del-gc').style.display = 'none';
+    _delGcId = null;
+}
+async function confirmarDelGc() {
+    if (!_delGcId) return;
+    const id = _delGcId;
+    cerrarDelGc();
     const { error } = await sb.from('casos_portafolio').delete().eq('id', id);
     if (error) { toast('Error al eliminar', 'err'); return; }
-
     todosCasos = todosCasos.filter(c => c.id !== id);
     document.getElementById('totalCount').textContent = todosCasos.length;
     toast('🗑 Caso eliminado');

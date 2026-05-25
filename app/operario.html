@@ -190,6 +190,19 @@ body.ready{visibility:visible;}
 </div>
 <div id="toast"></div>
 
+<!-- Modal: confirmar acción operario (genérico) -->
+<div id="modal-op-confirm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0a1525;border:1px solid rgba(212,175,55,.3);border-radius:14px;padding:24px;max-width:400px;width:100%;text-align:center;">
+    <div id="modal-op-icon" style="font-size:2rem;margin-bottom:10px;"></div>
+    <div id="modal-op-title" style="font-size:.95rem;font-weight:800;color:#D4AF37;margin-bottom:8px;"></div>
+    <div id="modal-op-body" style="font-size:.8rem;color:#94a3b8;margin-bottom:20px;"></div>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button onclick="cerrarModalOpConfirm()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button id="modal-op-btn" onclick="ejecutarOpConfirm()" style="background:#D4AF37;color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"></button>
+    </div>
+  </div>
+</div>
+
 <script>
 const SB_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
@@ -600,7 +613,12 @@ function cerrarSubirDiseno(force) {
                         document.getElementById('up-stl')?.files?.length ||
                         document.getElementById('up-cinfo')?.files?.length ||
                         document.getElementById('up-fotos')?.files?.length;
-  if (!force && tieneArchivos && !confirm('¿Descartar los archivos seleccionados?')) return;
+  if (!force && tieneArchivos) {
+    abrirModalOpConfirm('🗑️', 'Descartar archivos',
+      '¿Seguro que quieres cerrar? Se perderán los archivos seleccionados.',
+      'Descartar', () => cerrarSubirDiseno(true));
+    return;
+  }
   document.getElementById('modal-subir').classList.remove('open');
 }
 document.getElementById('modal-subir').addEventListener('click', e => { if(e.target===document.getElementById('modal-subir')) cerrarSubirDiseno(); });
@@ -715,8 +733,13 @@ async function ejecutarSubida() {
 async function enviarASiguiente(id, dept) {
   const LABELS = {fresado:'Fresado / Lab', impresion:'Impresión 3D', taller:'Taller'};
   const lbl = LABELS[dept] || dept;
-  if (!confirm(`¿Enviar este caso al equipo de ${lbl}?\n\nAparecerá en su panel con los archivos STL y de construcción disponibles.`)) return;
-
+  abrirModalOpConfirm('🏭', `Enviar a ${lbl}`,
+    'El caso aparecerá en su panel con los archivos STL y de construcción disponibles.',
+    'Sí, enviar',
+    async () => { await _doEnviarASiguiente(id, dept, lbl); }
+  );
+}
+async function _doEnviarASiguiente(id, dept, lbl) {
   const flujoDestino = dept === 'fresado' ? 'fresado' : dept === 'impresion' ? 'impresion' : dept;
   const { error } = await sb.from('pedidos').update({
     flujo:              flujoDestino,
@@ -752,8 +775,14 @@ async function enviarASiguiente(id, dept) {
 /* ── Verificar comprobante de pago (operario de fabricación) ── */
 async function verificarPagoComp(id, dept) {
   const LABELS = {fresado:'Fresado / Lab', impresion:'Impresión 3D'};
-  if (!confirm(`¿Confirmas que recibiste el pago?\n\nEl caso pasará a tu cola de ${LABELS[dept]||dept}.`)) return;
-
+  const lbl = LABELS[dept] || dept;
+  abrirModalOpConfirm('💰', 'Confirmar pago recibido',
+    `El caso pasará a tu cola de ${lbl} una vez confirmado.`,
+    'Sí, recibí el pago',
+    async () => { await _doVerificarPago(id, dept, lbl); }
+  );
+}
+async function _doVerificarPago(id, dept, lbl) {
   const { error } = await sb.from('pedidos').update({
     fabricacion_pagada:    true,
     cotizacion_fab_estado: 'confirmado',
@@ -765,7 +794,7 @@ async function verificarPagoComp(id, dept) {
   /* Historial */
   await sb.from('historial_diseno').insert({
     pedido_id:id, tipo:'FAB_CONFIRMADA', actor:'operario',
-    descripcion:`Pago verificado por operario de ${LABELS[dept]||dept}. Caso ingresa a cola de producción.`
+    descripcion:`Pago verificado por operario de ${lbl}. Caso ingresa a cola de producción.`
   }).catch(()=>{});
 
   /* Notificar al doctor */
@@ -777,7 +806,7 @@ async function verificarPagoComp(id, dept) {
         headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON},
         body:JSON.stringify({email:p.email,
           titulo:'🏭 Pago confirmado — En fabricación',
-          cuerpo:`Tu pago fue verificado. El caso ${p.codigo} está en producción con el equipo de ${LABELS[dept]||dept}. Te notificamos cada avance.`})
+          cuerpo:`Tu pago fue verificado. El caso ${p.codigo} está en producción con el equipo de ${lbl}. Te notificamos cada avance.`})
       });
     }
   } catch(_) {}
@@ -789,8 +818,28 @@ async function verificarPagoComp(id, dept) {
 function copiarLinkRevision(id) {
   const link = location.origin+'/revision-diseno?id='+id;
   navigator.clipboard.writeText(link).then(() => toast('Link copiado ✓','ok')).catch(() => {
-    prompt('Copia este link para el doctor:', link);
+    toast('No se pudo copiar automáticamente. Link: ' + link, 'err');
   });
+}
+
+/* ── Modal genérico confirm ── */
+let _opConfirmCb = null;
+function abrirModalOpConfirm(icon, title, body, btnLabel, cb) {
+  _opConfirmCb = cb;
+  document.getElementById('modal-op-icon').textContent  = icon;
+  document.getElementById('modal-op-title').textContent = title;
+  document.getElementById('modal-op-body').textContent  = body;
+  document.getElementById('modal-op-btn').textContent   = btnLabel;
+  document.getElementById('modal-op-confirm').style.display = 'flex';
+}
+function cerrarModalOpConfirm() {
+  document.getElementById('modal-op-confirm').style.display = 'none';
+  _opConfirmCb = null;
+}
+function ejecutarOpConfirm() {
+  const cb = _opConfirmCb;
+  cerrarModalOpConfirm();
+  if (cb) cb();
 }
 
 /* ── Toast ── */

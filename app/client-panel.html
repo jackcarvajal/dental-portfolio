@@ -448,6 +448,19 @@
 
 <div id="toast"></div>
 
+<!-- Modal: confirmar eliminar biblioteca -->
+<div id="modal-del-bib" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0d1828;border:1px solid rgba(239,68,68,.35);border-radius:14px;padding:24px;max-width:360px;width:100%;text-align:center;">
+    <div style="font-size:2rem;margin-bottom:10px;">🗑️</div>
+    <div style="font-size:.9rem;font-weight:800;color:#ef4444;margin-bottom:8px;">Eliminar biblioteca</div>
+    <div style="font-size:.78rem;color:#94a3b8;margin-bottom:20px;">Esta acción no se puede deshacer.</div>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button onclick="cerrarDelBib()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button onclick="confirmarDelBib()" style="background:#ef4444;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL NUEVO PEDIDO ONLINE -->
 <div class="pd-overlay" id="pd-overlay" onclick="pdCerrarSiOverlay(event)">
   <div class="pd-modal">
@@ -869,8 +882,19 @@ async function guardarBiblioteca() {
     cargarBibliotecas(window.PRD_UID);
 }
 
-async function eliminarBiblioteca(id) {
-    if (!confirm('¿Eliminar esta biblioteca?')) return;
+let _delBibId = null;
+function eliminarBiblioteca(id) {
+    _delBibId = id;
+    document.getElementById('modal-del-bib').style.display = 'flex';
+}
+function cerrarDelBib() {
+    document.getElementById('modal-del-bib').style.display = 'none';
+    _delBibId = null;
+}
+async function confirmarDelBib() {
+    if (!_delBibId) return;
+    const id = _delBibId;
+    cerrarDelBib();
     await sb.from('bibliotecas_cliente').delete().eq('id', id).eq('user_id', window.PRD_UID);
     toast('Eliminada', 'ok');
     cargarBibliotecas(window.PRD_UID);
