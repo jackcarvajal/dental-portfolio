@@ -715,6 +715,19 @@
   </div>
 </div>
 
+<!-- Modal: Confirmar eliminación portafolio -->
+<div id="modal-confirm-del" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:700;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0d1828;border:1px solid rgba(239,68,68,.35);border-radius:14px;padding:24px;max-width:380px;width:100%;text-align:center;">
+    <div style="font-size:2rem;margin-bottom:10px;">🗑️</div>
+    <div style="font-size:.95rem;font-weight:800;color:#ef4444;margin-bottom:8px;">Eliminar caso</div>
+    <div style="font-size:.8rem;color:#94a3b8;margin-bottom:20px;">Esta acción no se puede deshacer. ¿Confirmas?</div>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button onclick="cerrarModalConfirmDel()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button onclick="confirmarEliminarCaso()" style="background:#ef4444;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal: Resolver incidencia -->
 <div id="modal-resolver" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#0d1828;border:1px solid rgba(0,255,65,.25);border-radius:14px;padding:24px;max-width:420px;width:100%;">
@@ -1505,8 +1518,20 @@ async function cargarPortafolio() {
     }
 }
 
-async function eliminarCaso(id) {
-    if (!confirm('¿Eliminar este caso del portafolio?')) return;
+let _delCasoPendiente = null;
+
+function eliminarCaso(id) {
+    _delCasoPendiente = id;
+    document.getElementById('modal-confirm-del').style.display = 'flex';
+}
+function cerrarModalConfirmDel() {
+    document.getElementById('modal-confirm-del').style.display = 'none';
+    _delCasoPendiente = null;
+}
+async function confirmarEliminarCaso() {
+    if (!_delCasoPendiente) return;
+    const id = _delCasoPendiente;
+    cerrarModalConfirmDel();
     const { error } = await sb.from('casos_portafolio').delete().eq('id', id);
     if (error) toast('Error: ' + error.message, 'error');
     else { toast('Caso eliminado', 'success'); cargarPortafolio(); }
