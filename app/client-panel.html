@@ -1320,6 +1320,9 @@ document.getElementById('btn-logout').addEventListener('click', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof mostrarBotonPush === 'function') mostrarBotonPush('push-container');
 });
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') cerrarDelBib();
+});
 </script>
 </body>
 </html>

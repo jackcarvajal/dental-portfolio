@@ -218,6 +218,10 @@ const escH = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 let todosCasos = [];
 let filtroActivo = 'todos';
 
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') cerrarDelGc();
+});
+
 // ── Toast ──────────────────────────────────────────────
 function toast(msg, tipo = 'ok') {
     const el = document.getElementById('toast');

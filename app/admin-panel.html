@@ -2097,6 +2097,12 @@ async function cargarBadgeIncidencias() {
    INIT
 ══════════════════════════════════════════ */
 verificarAdmin();
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const closers = [cerrarModalDespacho, cerrarModalResolver, cerrarModalConfirmDel];
+  closers.forEach(fn => { try { fn(); } catch(_) {} });
+});
 </script>
 </body>
 </html>

@@ -842,6 +842,10 @@ function ejecutarOpConfirm() {
   if (cb) cb();
 }
 
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') cerrarModalOpConfirm();
+});
+
 /* ── Toast ── */
 let _tt;
 function toast(msg, t='ok') {

@@ -2679,6 +2679,11 @@ async function confirmarDelCaso() {
   else { toast('Caso eliminado', 'success'); cargarPortafolio(); }
 }
 /* ── fin modales ──────────────────────────────────────────────── */
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  [cerrarModalFabConfirm, cerrarModalNuevoStaff, cerrarModalDelCaso].forEach(fn => { try { fn(); } catch(_) {} });
+});
 </script>
 </body>
 </html>
