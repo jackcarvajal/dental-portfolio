@@ -198,6 +198,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://prodigylabdental.com/contacto</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://prodigylabdental.com/flujo-diseno</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://prodigylabdental.com/mapa-sitio</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://prodigylabdental.com/instalar-app</loc>
     <lastmod>2026-05-23</lastmod>
     <changefreq>yearly</changefreq>
