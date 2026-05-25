@@ -116,16 +116,21 @@
 ### app/admin-panel.html
 | Función / Sección | Línea aprox. |
 |-------------------|--------------|
-| `switchTab()` — navegación tabs | 922 |
-| `cargarPedidos()` — tab Pedidos | 952 |
-| `filtrarPedidos()` — filtro estado + búsqueda texto | 1172 |
-| `cargarPortafolio()` — grid portafolio | ~1340 |
-| `toggleVisibleCaso()` — publicar/ocultar | ~1416 |
-| `cargarClientes()` — ranking CLV + WA | 1425 |
-| `cargarDespachos()` — gestión flota | 1535 |
-| `cargarTorre()` — torre de control + incidencias | 1873 |
-| `cargarAnalytics()` — Radar de Ventas | 788 |
-| `generarFichaPDF()` — jsPDF + QR | ~1700 |
+| `switchTab()` — navegación tabs + auto-refresh Torre | 972 |
+| `cargarPedidos()` — tab Pedidos | 1000 |
+| `filtrarPedidos()` — filtro estado + búsqueda texto | 1220 |
+| `cambiarEstado()` — abre modal-despacho si Despachado | 1120 |
+| `abrirModalDespacho/cerrar/confirmar` — guía sin prompt | 1084 |
+| `resolverIncidencia()` — abre modal-resolver | 2043 |
+| `abrirModalResolver/cerrar/confirmarResolverIncidencia` | 1100 |
+| `eliminarCaso()` — abre modal-confirm-del | 1540 |
+| `cargarPortafolio()` — grid portafolio | ~1390 |
+| `toggleVisibleCaso()` — publicar/ocultar | ~1465 |
+| `cargarClientes()` — ranking CLV + WA | 1475 |
+| `cargarDespachos()` — gestión flota | 1585 |
+| `cargarTorre()` — torre de control + incidencias | 1925 |
+| `cargarAnalytics()` — Radar de Ventas | 830 |
+| `generarFichaPDF()` — jsPDF + QR | ~1750 |
 | ADMIN_EMAILS constante | ~50 |
 
 ### app/operario-diseno.html
@@ -150,6 +155,11 @@
 | `cargarPortafolio()` — carga grid admin | 1194 |
 | Modal edición HTML | 647 |
 | `guardarEdicion()` | 1330 |
+| `abrirModalFabConfirm()` — modal genérico confirm callback | ~2644 |
+| `marcarPagoRecibido()` — usa modal-fab-confirm | ~2583 |
+| `enrutarAFabricacion()` / `_doEnrutar()` — usa modal-fab-confirm | ~2596 |
+| `abrirModalNuevoStaff()` — modal-nuevo-staff sin prompt | ~2660 |
+| `eliminarCasoConfirm()` / `confirmarDelCaso()` — modal-del-caso | ~2685 |
 
 ### app/login.html
 | Función | Línea |
