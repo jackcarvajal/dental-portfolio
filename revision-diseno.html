@@ -892,7 +892,7 @@ function buildHistorial() {
   return `<div class="timeline">${_hist.map(h => {
     const cfg = TIPO_CFG[h.tipo] || {ic:'fas fa-circle',col:'var(--muted)',label:esc(h.tipo)};
     const fotos = (h.fotos_urls||[]).map((u,i)=>
-      `<div class="tl-foto" onclick="openLbExtra('${esc(u)}')"><img src="${esc(u)}" loading="lazy"></div>`).join('');
+      `<div class="tl-foto" onclick="openLbExtra('${esc(u)}')"><img src="${esc(u)}" alt="Foto de referencia ${i+1}" loading="lazy"></div>`).join('');
     return `<div class="tl-item">
       <div class="tl-dot" style="border-color:${cfg.col};color:${cfg.col};"><i class="${cfg.ic}" style="font-size:.55rem;"></i></div>
       <div class="tl-card">
