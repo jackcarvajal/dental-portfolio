@@ -181,6 +181,7 @@
     </a>
 
     <a href="#" class="nav-item" onclick="switchTab('analytics',this)"><i class="fas fa-chart-line" style="color:#F44336;"></i> Radar de Ventas</a>
+    <a href="#" class="nav-item" onclick="switchTab('metricas',this);cargarMetricas()"><i class="fas fa-chart-bar" style="color:#00d2ff;"></i> Métricas Operativas</a>
     <p class="nav-section">Configuración</p>
     <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Catálogo</a>
     <a href="configuracion.html" class="nav-item"><i class="fas fa-sliders"></i> Variables del Sistema</a>
@@ -700,6 +701,102 @@
         </div>
     </div>
 
+    <!-- ═══════════ TAB MÉTRICAS OPERATIVAS ═══════════ -->
+    <div id="tab-metricas" class="tab-panel">
+        <div class="page-header">
+            <div>
+                <h1>Métricas Operativas</h1>
+                <p>Ingresos · Embudo de casos · Tiempos de entrega · Top servicios y clientes</p>
+            </div>
+            <button class="btn-primary" onclick="cargarMetricas()">
+                <i class="fas fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+
+        <!-- Selector de período -->
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:22px;flex-wrap:wrap;">
+            <label style="font-size:.78rem;color:#94a3b8;">Período:</label>
+            <select id="met-periodo" onchange="cargarMetricas()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:7px 14px;font-size:.82rem;cursor:pointer;">
+                <option value="mes">Este mes</option>
+                <option value="trimestre">Este trimestre</option>
+                <option value="año">Este año</option>
+                <option value="todo">Todo el tiempo</option>
+            </select>
+        </div>
+
+        <!-- KPIs de ingresos -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:28px;">
+            <div style="background:var(--card);border:1px solid rgba(0,255,65,.25);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:.7rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Facturado período</div>
+                <div style="font-size:1.9rem;font-weight:900;color:#00FF41;" id="met-facturado">—</div>
+                <div style="font-size:.7rem;color:#94a3b8;margin-top:2px;" id="met-facturado-casos">— casos</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:.7rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Cobrado</div>
+                <div style="font-size:1.9rem;font-weight:900;color:var(--gold);" id="met-cobrado">—</div>
+                <div style="font-size:.7rem;color:#94a3b8;margin-top:2px;" id="met-cobrado-pct">—% cobrado</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:.7rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Por cobrar</div>
+                <div style="font-size:1.9rem;font-weight:900;color:#ef4444;" id="met-por-cobrar">—</div>
+                <div style="font-size:.7rem;color:#94a3b8;margin-top:2px;" id="met-por-cobrar-casos">— casos pendientes</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(217,70,166,.3);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:.7rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Ticket promedio</div>
+                <div style="font-size:1.9rem;font-weight:900;color:var(--magenta);" id="met-ticket">—</div>
+                <div style="font-size:.7rem;color:#94a3b8;margin-top:2px;">por caso</div>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
+
+            <!-- Embudo por estado -->
+            <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;">
+                <div style="font-size:.82rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">
+                    <i class="fas fa-filter" style="color:var(--cyan);margin-right:6px;"></i>Embudo de casos
+                </div>
+                <div id="met-embudo" style="display:flex;flex-direction:column;gap:8px;">
+                    <div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Cargando...</div>
+                </div>
+            </div>
+
+            <!-- Tiempo promedio de entrega -->
+            <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;">
+                <div style="font-size:.82rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">
+                    <i class="fas fa-clock" style="color:var(--gold);margin-right:6px;"></i>Tiempos operativos
+                </div>
+                <div id="met-tiempos" style="display:flex;flex-direction:column;gap:10px;">
+                    <div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Cargando...</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+
+            <!-- Top servicios -->
+            <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;">
+                <div style="font-size:.82rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">
+                    <i class="fas fa-trophy" style="color:var(--gold);margin-right:6px;"></i>Top servicios por ingreso
+                </div>
+                <div id="met-top-servicios">
+                    <div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Cargando...</div>
+                </div>
+            </div>
+
+            <!-- Top clientes -->
+            <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;">
+                <div style="font-size:.82rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">
+                    <i class="fas fa-star" style="color:var(--magenta);margin-right:6px;"></i>Top clientes por volumen
+                </div>
+                <div id="met-top-clientes">
+                    <div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Cargando...</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </main>
 
 <!-- Modal: Número de guía al despachar -->
@@ -962,6 +1059,164 @@ async function cargarAnalytics() {
                 '</div>';
           }).join('')
         : '<div style="color:#94a3b8;text-align:center;padding:24px;font-size:.88rem;">Sin eventos locales aún — navega la web con la sesión activa</div>';
+}
+
+/* ══════════════════════════════════════════
+   MÉTRICAS OPERATIVAS
+══════════════════════════════════════════ */
+async function cargarMetricas() {
+    const periodo = document.getElementById('met-periodo')?.value || 'mes';
+    const now = new Date();
+    let desde;
+    if (periodo === 'mes') {
+        desde = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+    } else if (periodo === 'trimestre') {
+        const q = Math.floor(now.getMonth() / 3);
+        desde = new Date(now.getFullYear(), q * 3, 1).toISOString();
+    } else if (periodo === 'año') {
+        desde = new Date(now.getFullYear(), 0, 1).toISOString();
+    } else {
+        desde = '2020-01-01T00:00:00Z';
+    }
+
+    try {
+        const { data: pedidos } = await sb.from('pedidos')
+            .select('id,estado,estado_operativo,pago_estado,precio_total,created_at,fecha_entrega_estimada,servicio,nombre_doctor,timestamp_validacion')
+            .gte('created_at', desde)
+            .not('estado','in','("cancelado","CANCELADO")');
+
+        if (!pedidos || pedidos.length === 0) {
+            ['met-facturado','met-cobrado','met-por-cobrar','met-ticket'].forEach(id => {
+                document.getElementById(id).textContent = '$0';
+            });
+            document.getElementById('met-embudo').innerHTML = '<div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:16px;">Sin datos en el período</div>';
+            return;
+        }
+
+        const fmtCOP = v => '$' + Math.round(v).toLocaleString('es-CO');
+
+        // KPIs de ingresos
+        const totalFact  = pedidos.reduce((s, p) => s + (Number(p.precio_total) || 0), 0);
+        const cobrados   = pedidos.filter(p => p.pago_estado === 'pagado');
+        const totalCob   = cobrados.reduce((s, p) => s + (Number(p.precio_total) || 0), 0);
+        const porCobrar  = pedidos.filter(p => p.pago_estado !== 'pagado');
+        const totalPC    = porCobrar.reduce((s, p) => s + (Number(p.precio_total) || 0), 0);
+        const ticket     = pedidos.length > 0 ? totalFact / pedidos.length : 0;
+        const pctCob     = totalFact > 0 ? Math.round(totalCob / totalFact * 100) : 0;
+
+        document.getElementById('met-facturado').textContent = fmtCOP(totalFact);
+        document.getElementById('met-facturado-casos').textContent = pedidos.length + ' casos';
+        document.getElementById('met-cobrado').textContent = fmtCOP(totalCob);
+        document.getElementById('met-cobrado-pct').textContent = pctCob + '% cobrado';
+        document.getElementById('met-por-cobrar').textContent = fmtCOP(totalPC);
+        document.getElementById('met-por-cobrar-casos').textContent = porCobrar.length + ' casos pendientes';
+        document.getElementById('met-ticket').textContent = fmtCOP(ticket);
+
+        // Embudo por estado_operativo
+        const ESTADOS_ORD = [
+            ['VALIDACION_PENDIENTE','Validación'],['EN_PRODUCCION','Producción'],
+            ['FRESADO_INICIADO','Fresado'],['QA_APROBADO','QA Aprobado'],
+            ['LISTO_DESPACHAR','Listo despacho'],['EN_REPARTO','En reparto'],
+            ['ENTREGADO','Entregado'],
+        ];
+        const countEstado = {};
+        pedidos.forEach(p => { const e = p.estado_operativo || p.estado || '—'; countEstado[e] = (countEstado[e] || 0) + 1; });
+        const maxE = Math.max(...Object.values(countEstado), 1);
+
+        const COLORES_E = {
+            VALIDACION_PENDIENTE:'#94a3b8', EN_PRODUCCION:'#00d2ff',
+            FRESADO_INICIADO:'#D4AF37', QA_APROBADO:'#00FF41',
+            LISTO_DESPACHAR:'#D946A6', EN_REPARTO:'#f97316', ENTREGADO:'#22c55e',
+        };
+        document.getElementById('met-embudo').innerHTML = ESTADOS_ORD.map(([k, label]) => {
+            const n = countEstado[k] || 0;
+            const pct = Math.round(n / maxE * 100);
+            const col = COLORES_E[k] || '#94a3b8';
+            return `<div>
+                <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:3px;">
+                    <span style="color:#e2e8f0;">${label}</span>
+                    <span style="color:${col};font-weight:700;">${n}</span>
+                </div>
+                <div style="background:rgba(255,255,255,.06);border-radius:4px;height:6px;">
+                    <div style="background:${col};width:${pct}%;height:100%;border-radius:4px;transition:width .4s;"></div>
+                </div>
+            </div>`;
+        }).join('');
+
+        // Tiempos operativos (desde created_at hasta ENTREGADO)
+        const entregados = pedidos.filter(p => (p.estado_operativo === 'ENTREGADO' || p.estado === 'ENTREGADO') && p.created_at);
+        let tiempoHTML = '';
+        if (entregados.length > 0) {
+            const dias = entregados.map(p => {
+                const ref = p.timestamp_validacion || p.created_at;
+                return (new Date(p.fecha_entrega_estimada || Date.now()) - new Date(ref)) / 86400000;
+            }).filter(d => d > 0);
+            const prom = dias.length > 0 ? (dias.reduce((a,b) => a+b,0) / dias.length).toFixed(1) : '—';
+            const min  = dias.length > 0 ? Math.min(...dias).toFixed(0) : '—';
+            const max  = dias.length > 0 ? Math.max(...dias).toFixed(0) : '—';
+
+            tiempoHTML = [
+                ['Promedio entrega', prom + ' días', '#00d2ff'],
+                ['Más rápido', min + ' días', '#00FF41'],
+                ['Más lento', max + ' días', '#ef4444'],
+                ['Casos entregados', entregados.length, '#D4AF37'],
+            ].map(([l, v, c]) => `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+                <span style="color:#94a3b8;font-size:.82rem;">${l}</span>
+                <span style="color:${c};font-weight:800;font-size:.9rem;">${v}</span>
+            </div>`).join('');
+        } else {
+            tiempoHTML = '<div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">No hay casos entregados en el período</div>';
+        }
+        document.getElementById('met-tiempos').innerHTML = tiempoHTML;
+
+        // Top servicios por ingreso
+        const porServicio = {};
+        pedidos.forEach(p => {
+            const k = p.servicio || 'Sin servicio';
+            if (!porServicio[k]) porServicio[k] = { total: 0, n: 0 };
+            porServicio[k].total += Number(p.precio_total) || 0;
+            porServicio[k].n++;
+        });
+        const topSrv = Object.entries(porServicio).sort((a,b) => b[1].total - a[1].total).slice(0,8);
+        const maxSrv = topSrv[0]?.[1].total || 1;
+        document.getElementById('met-top-servicios').innerHTML = topSrv.map(([srv, d]) => {
+            const pct = Math.round(d.total / maxSrv * 100);
+            return `<div style="margin-bottom:10px;">
+                <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:3px;">
+                    <span style="color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;">${escHtml(srv)}</span>
+                    <span style="color:var(--gold);font-weight:700;">${fmtCOP(d.total)}</span>
+                </div>
+                <div style="background:rgba(255,255,255,.06);border-radius:4px;height:5px;">
+                    <div style="background:var(--gold);width:${pct}%;height:100%;border-radius:4px;"></div>
+                </div>
+                <div style="font-size:.7rem;color:#64748b;margin-top:2px;">${d.n} casos</div>
+            </div>`;
+        }).join('') || '<div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Sin datos</div>';
+
+        // Top clientes por volumen
+        const porCliente = {};
+        pedidos.forEach(p => {
+            const k = p.nombre_doctor || 'Desconocido';
+            if (!porCliente[k]) porCliente[k] = { total: 0, n: 0 };
+            porCliente[k].total += Number(p.precio_total) || 0;
+            porCliente[k].n++;
+        });
+        const topCli = Object.entries(porCliente).sort((a,b) => b[1].n - a[1].n).slice(0,8);
+        document.getElementById('met-top-clientes').innerHTML = topCli.map(([cli, d], i) => {
+            const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}.`;
+            return `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="font-size:.85rem;">${medal}</span>
+                    <span style="color:#e2e8f0;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px;">${escHtml(cli)}</span>
+                </div>
+                <div style="text-align:right;">
+                    <div style="color:var(--magenta);font-weight:800;font-size:.85rem;">${d.n} casos</div>
+                    <div style="color:#94a3b8;font-size:.7rem;">${fmtCOP(d.total)}</div>
+                </div>
+            </div>`;
+        }).join('') || '<div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Sin datos</div>';
+
+    } catch(e) { console.error('Métricas:', e.message); }
 }
 
 /* ══════════════════════════════════════════

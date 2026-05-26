@@ -376,7 +376,7 @@ const COMPLETADOS = ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO
 // ── Cargar pedidos ────────────────────────────────────────────────
 async function cargarPedidos() {
     const { data, error } = await sb.from('pedidos')
-        .select('id, codigo, nombre_paciente, servicio, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo, pago_estado, precio_total')
+        .select('id, codigo, nombre_paciente, nombre_doctor, servicio, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo, pago_estado, precio_total, whatsapp, pais, fecha_entrega_estimada')
         .not('estado', 'in', '("cancelado","CANCELADO")')
         .in('flujo', ['fresado','lab','impresion',''])   /* Excluir flujo=diseno — tiene su propio panel */
         .order('created_at', { ascending: false })
@@ -480,6 +480,27 @@ function actualizarTimers() {
 }
 
 // ── Avanzar estado ────────────────────────────────────────────────
+async function notificarWA(pedido, nuevoEstado) {
+    try {
+        const res  = await fetch('/api/notify-wa', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nuevo_estado:   nuevoEstado,
+                codigo:         pedido.codigo,
+                nombre_doctor:  pedido.nombre_doctor || pedido.doctor,
+                whatsapp:       pedido.whatsapp,
+                pais:           pedido.pais,
+                servicio:       pedido.servicio,
+                fecha_entrega:  pedido.fecha_entrega_estimada,
+                recibo_url:     `https://prodigylabdental.com/recibo-caso?id=${pedido.codigo || pedido.id}`,
+            }),
+        });
+        const data = await res.json();
+        if (data.wa_url) window.open(data.wa_url, '_blank');
+    } catch (_) { /* WA no crítico */ }
+}
+
 async function notificarCliente(pedidoId, mensaje) {
     try {
         // Obtener email del doctor para push personalizada
@@ -527,11 +548,20 @@ async function avanzarEstado(pedidoId, nuevoEstado) {
         }
     }
 
-    // Notificaciones en los 3 hitos clave
+    // Push interno
     if (nuevoEstado === 'EN_PRODUCCION')
         notificarCliente(pedidoId, 'Su caso superó la validación técnica y ha entrado a producción.');
     if (nuevoEstado === 'EN_REPARTO')
         notificarCliente(pedidoId, 'Control de calidad superado. Nuestro mensajero va en camino.');
+
+    // WA automático al doctor en hitos clave
+    const _WA_HITOS = ['EN_PRODUCCION','FRESADO_INICIADO','QA_APROBADO','LISTO_DESPACHAR','EN_REPARTO','ENTREGADO'];
+    if (_WA_HITOS.includes(nuevoEstado)) {
+        const _p = _pedidos.find(p => p.id === pedidoId);
+        if (_p?.whatsapp) {
+            notificarWA(_p, nuevoEstado);
+        }
+    }
 
     toast('Estado actualizado: ' + nuevoEstado, 'ok');
     await cargarPedidos();
