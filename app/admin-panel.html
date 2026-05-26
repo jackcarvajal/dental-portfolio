@@ -1331,7 +1331,7 @@ function renderPedidos(lista) {
         </td>
         <td style="font-size:0.75rem;">${fmtFecha(p.created_at)}</td>
         <td>
-            ${p.stl_url && p.stl_url.startsWith('https://') ? `<a href="${escHtml(p.stl_url)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
+            ${p.stl_ruta && p.stl_ruta.startsWith('https://') ? `<a href="${escHtml(p.stl_ruta)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
             <button onclick="generarFicha('${escHtml(p.id)}')" class="btn-xs" style="color:#00d2ff;border:1px solid rgba(0,210,255,0.35);background:transparent;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:.7rem;font-weight:700;" title="Ficha técnica PDF"><i class="fas fa-file-pdf"></i> Ficha</button>
             ${p.numero_guia ? _renderTrackingBtn(p.numero_guia, p.pais || 'CO') : ''}
         </td>

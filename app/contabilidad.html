@@ -592,6 +592,7 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const PUSH_URL      = 'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/send-push';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 const escH   = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const _factMap = {};
 const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '—';
 const fmtFecha = ts => ts ? new Date(ts).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'}) : '—';
 
@@ -950,6 +951,7 @@ async function cargarFacturasPendientes() {
         tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-check-circle" style="color:var(--green)"></i><p>Sin facturas pendientes de emitir</p></div></td></tr>';
         return;
     }
+    rows.forEach(p => { _factMap[p.id] = p; });
     tbody.innerHTML = rows.map(p => {
         const razon = escH(p.billing_razon || '—');
         const nit   = escH(p.billing_nit   || '—');
@@ -967,7 +969,7 @@ async function cargarFacturasPendientes() {
                     <button class="btn-xs btn-gold" onclick="emitirFactura('${escH(p.id)}',this)">
                         <i class="fas fa-paper-plane"></i> Emitir
                     </button>
-                    <button class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN('${escH(p.id)}','${escH(p.codigo||'')}','${escH(p.billing_razon||'')}','${escH(p.billing_nit||'')}','${escH(p.billing_tipo||'CC')}','${escH(p.billing_email||'')}','${escH(p.servicio||'')}','${escH(p.precio_total||'0')}')">
+                    <button class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN(_factMap['${escH(p.id)}'])">
                         <i class="fas fa-pen"></i> Manual
                     </button>
                 </div>
@@ -1095,6 +1097,7 @@ async function cargarFacturasError() {
         tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><i class="fas fa-check" style="color:var(--green)"></i><p>Sin errores de facturación</p></div></td></tr>';
         return;
     }
+    rows.forEach(p => { _factMap[p.id] = p; });
     tbody.innerHTML = rows.map(p => `<tr>
         <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
         <td style="font-size:.82rem;">${escH(p.billing_razon || '—')}</td>
@@ -1104,7 +1107,7 @@ async function cargarFacturasError() {
                 <button class="btn-xs btn-gold" onclick="reintentarFactura('${escH(p.id)}',this)">
                     <i class="fas fa-redo"></i> Reintentar
                 </button>
-                <button class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN('${escH(p.id)}','${escH(p.codigo||'')}','${escH(p.billing_razon||'')}','${escH(p.billing_nit||'')}','${escH(p.billing_tipo||'CC')}','${escH(p.billing_email||'')}','${escH(p.servicio||'')}','${escH(p.precio_total||'0')}')">
+                <button class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN(_factMap['${escH(p.id)}'])">
                     <i class="fas fa-pen"></i> Manual
                 </button>
             </div>
@@ -1122,14 +1125,15 @@ async function reintentarFactura(pedidoId, btn) {
 }
 
 /* ── Factura Manual DIAN ─────────────────────────────────────────── */
-function abrirManualDIAN(id, codigo, razon, nit, tipo, email, servicio, total) {
-    document.getElementById('mdian-pedido-id').value = id;
-    document.getElementById('mdian-codigo').textContent   = '#' + (codigo || id.slice(0,8));
-    document.getElementById('mdian-razon').textContent    = razon || '—';
-    document.getElementById('mdian-nit').textContent      = tipo + ' ' + nit;
-    document.getElementById('mdian-email').textContent    = email || '—';
-    document.getElementById('mdian-servicio').textContent = servicio || '—';
-    document.getElementById('mdian-total').textContent    = fmtCOP(total);
+function abrirManualDIAN(p) {
+    if (!p) return;
+    document.getElementById('mdian-pedido-id').value = p.id;
+    document.getElementById('mdian-codigo').textContent   = '#' + (p.codigo || p.id.slice(0,8));
+    document.getElementById('mdian-razon').textContent    = p.billing_razon || '—';
+    document.getElementById('mdian-nit').textContent      = (p.billing_tipo || '') + ' ' + (p.billing_nit || '—');
+    document.getElementById('mdian-email').textContent    = p.billing_email || '—';
+    document.getElementById('mdian-servicio').textContent = p.servicio || '—';
+    document.getElementById('mdian-total').textContent    = fmtCOP(p.precio_total);
     document.getElementById('mdian-numero').value = '';
     document.getElementById('mdian-cufe').value   = '';
     document.getElementById('modal-manual-dian').style.display = 'flex';

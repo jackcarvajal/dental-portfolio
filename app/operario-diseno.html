@@ -449,6 +449,7 @@ function cardHTML(p, col) {
       <span style="float:right;color:#475569;font-size:.72rem;cursor:grab;" title="Arrastra para mover">⠿⠿</span>
     </div>
     <div class="caso-nombre">Caso ${escH(p.codigo||p.id?.slice(0,8)||'—')}</div>
+    ${p.nombre_doctor?`<div style="font-size:.72rem;font-weight:700;color:var(--cyan);margin:2px 0;">Dr. ${escH(p.nombre_doctor)}</div>`:''}
     <div class="caso-meta">
       ${escH(p.servicio)||'—'}
       ${p.material?'<br>Material: '+escH(p.material):''}

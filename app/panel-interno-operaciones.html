@@ -1155,7 +1155,7 @@ function renderPedidos(lista) {
         </td>
         <td style="font-size:0.75rem;">${fmtFecha(p.created_at)}</td>
         <td style="white-space:nowrap;">
-            ${p.stl_url?.startsWith('https://') ? `<a href="${esc(p.stl_url)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
+            ${p.stl_ruta?.startsWith('https://') ? `<a href="${esc(p.stl_ruta)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
             <a href="../recibo-caso?id=${esc(p.codigo||p.id)}" target="_blank" class="btn-xs btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
             <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Pago confirmado" onclick="prodigyNotifPago(${JSON.stringify(p)})"><i class="fab fa-whatsapp"></i> Pago</button>
             <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Diseño listo" onclick="prodigyNotifDiseno(${JSON.stringify(p)})"><i class="fab fa-whatsapp"></i> Diseño</button>
