@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#D946A6">
+<link rel="manifest" href="/manifest.json">
+<meta name="robots" content="noindex, nofollow">
+<title>PRODIGY — Contabilidad</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../js/auth-guard.js"></script>
+<style>
+:root {
+    --bg:    #050505; --card:  #0a1020;
+    --gold:  #D4AF37; --cyan:  #00d2ff;
+    --green: #00FF41; --red:   #ef4444;
+    --pink:  #D946A6; --yellow:#fbbf24;
+    --txt:   #ffffff; --muted: #94a3b8;
+    --border:rgba(212,175,55,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{overflow-x:hidden;background:var(--bg);color:var(--txt);font-family:'Segoe UI',sans-serif;display:flex;min-height:100vh;visibility:hidden;}
+body.ready{visibility:visible;}
+
+/* Sidebar */
+.sidebar{width:220px;min-height:100vh;background:#0a0800;border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
+.sidebar-logo{font-size:1.1rem;font-weight:900;color:var(--gold);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:.82rem;transition:.15s;}
+.nav-item:hover,.nav-item.active{background:rgba(212,175,55,.1);color:var(--gold);}
+.nav-item i{width:16px;text-align:center;}
+.sidebar-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--border);font-size:.72rem;color:var(--muted);}
+.sidebar-foot span{display:block;font-weight:600;color:#fff;font-size:.78rem;margin-bottom:2px;}
+
+/* Main */
+.main{flex:1;padding:28px;overflow-y:auto;}
+.page-title{font-size:1.3rem;font-weight:900;color:var(--gold);margin-bottom:6px;}
+.page-sub{font-size:.8rem;color:var(--muted);margin-bottom:24px;}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:28px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+.kpi-num{font-size:1.5rem;font-weight:900;margin-bottom:4px;}
+.kpi-lbl{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+
+/* Tabs */
+.tab-bar{display:flex;gap:6px;margin-bottom:22px;border-bottom:1px solid var(--border);padding-bottom:0;}
+.tab-btn{padding:8px 18px;border:none;background:none;color:var(--muted);cursor:pointer;font-size:.82rem;font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:6px;transition:.15s;}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.badge{background:var(--gold);color:#000;border-radius:100px;font-size:.65rem;font-weight:800;padding:1px 6px;}
+
+/* Tabla */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.82rem;}
+thead th{padding:10px 14px;text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;}
+tbody tr{border-bottom:1px solid rgba(255,255,255,.04);}
+tbody tr:hover{background:rgba(255,255,255,.02);}
+tbody td{padding:11px 14px;vertical-align:middle;}
+.td-mono{font-family:monospace;color:var(--cyan);}
+.td-monto{font-weight:700;color:var(--gold);}
+.td-abono{color:var(--green);}
+.td-saldo-pend{color:var(--yellow);}
+
+/* Badges de estado */
+.badge-pend  {background:rgba(251,191,36,.12);color:var(--yellow);padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:700;}
+.badge-subido{background:rgba(0,210,255,.12);color:var(--cyan);padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:700;}
+.badge-ok    {background:rgba(0,255,65,.1);color:var(--green);padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:700;}
+.badge-ce    {background:rgba(251,191,36,.12);color:var(--yellow);padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:700;}
+
+/* Botones */
+.btn-xs{padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:700;cursor:pointer;border:none;}
+.btn-confirm{background:linear-gradient(135deg,var(--gold),#b8941d);color:#000;}
+.btn-confirm:hover{opacity:.88;}
+.btn-ver{background:rgba(0,210,255,.12);color:var(--cyan);border:1px solid rgba(0,210,255,.2);}
+.btn-ver:hover{background:rgba(0,210,255,.2);}
+.btn-recibo{background:rgba(212,175,55,.1);color:var(--gold);border:1px solid rgba(212,175,55,.2);}
+.btn-recibo:hover{background:rgba(212,175,55,.2);}
+
+/* Modal comprobante */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:900;align-items:center;justify-content:center;padding:20px;}
+.modal-box{background:#0d0d1a;border:1px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:520px;display:flex;flex-direction:column;gap:16px;}
+.modal-title{font-size:1rem;font-weight:800;color:var(--gold);}
+.modal-caso-info{background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:12px 14px;}
+.modal-caso-info .mci-codigo{font-family:monospace;color:var(--cyan);font-size:.8rem;font-weight:700;}
+.modal-caso-info .mci-nombre{font-size:.92rem;font-weight:700;margin:3px 0;}
+.modal-caso-info .mci-total{color:var(--gold);font-weight:700;}
+.modal-caso-info .mci-abono{font-size:.78rem;color:var(--muted);margin-top:2px;}
+.comp-img{width:100%;max-height:320px;object-fit:contain;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:#111;}
+.comp-pdf-link{display:flex;align-items:center;gap:8px;padding:12px 16px;background:rgba(0,210,255,.07);border:1px solid rgba(0,210,255,.2);border-radius:10px;color:var(--cyan);text-decoration:none;font-size:.84rem;font-weight:600;}
+.comp-pdf-link:hover{background:rgba(0,210,255,.14);}
+.comp-missing{padding:20px;text-align:center;color:var(--muted);font-size:.84rem;font-style:italic;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:.75rem;color:var(--muted);font-weight:600;}
+.form-group textarea{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:9px 14px;color:#fff;font-size:.84rem;outline:none;font-family:inherit;resize:vertical;min-height:60px;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;}
+.btn-outline{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:var(--muted);padding:9px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:600;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#b8941d);border:none;color:#000;padding:9px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.84rem;}
+.btn-gold:disabled{opacity:.45;cursor:not-allowed;}
+.btn-red{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:var(--red);padding:9px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:600;}
+
+/* Filtros */
+.filtros{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
+.filtros input,.filtros select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:7px 12px;color:#fff;font-size:.8rem;outline:none;}
+.filtros label{font-size:.76rem;color:var(--muted);}
+
+/* Totales */
+.total-bar{display:flex;gap:20px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.15);border-radius:10px;padding:12px 18px;margin-bottom:16px;flex-wrap:wrap;}
+.total-item .t-lbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.total-item .t-val{font-size:1rem;font-weight:900;color:var(--gold);}
+
+/* Toast */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;color:#fff;padding:11px 22px;border-radius:10px;font-size:.83rem;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s;z-index:9999;white-space:nowrap;}
+#toast.show{opacity:1;}
+#toast.ok {border-left:4px solid var(--green);}
+#toast.err{border-left:4px solid var(--red);}
+#toast.warn{border-left:4px solid var(--yellow);}
+
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty-state i{font-size:2.2rem;display:block;margin-bottom:10px;}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin>
+</head>
+<body>
+
+<nav class="sidebar">
+    <div class="sidebar-logo">💰 Contabilidad</div>
+    <a href="admin-panel.html"               class="nav-item"><i class="fas fa-chart-line"></i> Admin</a>
+    <a href="contabilidad.html"              class="nav-item active"><i class="fas fa-coins"></i> Contabilidad</a>
+    <a href="calidad.html"                   class="nav-item"><i class="fas fa-shield-check"></i> Calidad</a>
+    <a href="panel-interno-operaciones.html" class="nav-item"><i class="fas fa-briefcase"></i> Gestión Casos</a>
+    <div class="sidebar-foot">
+        <span id="sb-nombre">—</span>
+        <a href="../login.html" style="color:var(--muted);text-decoration:none;font-size:.72rem;">Cerrar sesión</a>
+    </div>
+</nav>
+
+<main class="main">
+    <div class="page-title">Contabilidad &amp; Pagos</div>
+    <div class="page-sub">Confirmar abonos, controlar saldos contra entrega y ver historial de ingresos</div>
+
+    <!-- KPIs -->
+    <div class="kpis">
+        <div class="kpi">
+            <div class="kpi-num" id="kpi-por-confirmar" style="color:var(--yellow)">—</div>
+            <div class="kpi-lbl">Por confirmar</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-num" id="kpi-cobrado-hoy" style="color:var(--green)">—</div>
+            <div class="kpi-lbl">Cobrado hoy</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-num" id="kpi-cobrado-mes" style="color:var(--gold)">—</div>
+            <div class="kpi-lbl">Cobrado este mes</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-num" id="kpi-saldos-pend" style="color:var(--yellow)">—</div>
+            <div class="kpi-lbl">Saldos x cobrar</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('confirmar',this)">
+            <i class="fas fa-clock"></i> Por confirmar
+            <span class="badge" id="badge-conf">0</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('historial',this)">
+            <i class="fas fa-history"></i> Historial
+        </button>
+        <button class="tab-btn" onclick="switchTab('saldos',this)">
+            <i class="fas fa-hand-holding-dollar"></i> Saldos entrega
+            <span class="badge" id="badge-sald" style="background:var(--yellow);color:#000;">0</span>
+        </button>
+    </div>
+
+    <!-- TAB: Por confirmar -->
+    <div id="tab-confirmar" class="tab-panel active">
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Doctor / Cliente</th>
+                        <th>Servicio</th>
+                        <th>Total</th>
+                        <th>Abono (50%)</th>
+                        <th>Estado</th>
+                        <th>Comprobante</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-confirmar">
+                    <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted);">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB: Historial -->
+    <div id="tab-historial" class="tab-panel">
+        <div class="filtros">
+            <label>Desde</label>
+            <input type="date" id="fil-desde">
+            <label>Hasta</label>
+            <input type="date" id="fil-hasta">
+            <button class="btn-xs btn-ver" onclick="cargarHistorial()"><i class="fas fa-search"></i> Filtrar</button>
+        </div>
+        <div class="total-bar" id="total-bar-hist" style="display:none;">
+            <div class="total-item"><div class="t-lbl">Total cobrado</div><div class="t-val" id="tot-cobrado">—</div></div>
+            <div class="total-item"><div class="t-lbl">Casos confirmados</div><div class="t-val" id="tot-casos">—</div></div>
+            <div class="total-item"><div class="t-lbl">Ticket promedio</div><div class="t-val" id="tot-ticket">—</div></div>
+        </div>
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Doctor / Cliente</th>
+                        <th>Servicio</th>
+                        <th>Total</th>
+                        <th>Abono</th>
+                        <th>Saldo</th>
+                        <th>Modalidad cobro</th>
+                        <th>Recibo</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-historial">
+                    <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted);">Selecciona un rango de fechas</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB: Saldos contra entrega -->
+    <div id="tab-saldos" class="tab-panel">
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Doctor / Cliente</th>
+                        <th>Servicio</th>
+                        <th>Saldo a cobrar</th>
+                        <th>Estado entrega</th>
+                        <th>Nota mensajero</th>
+                        <th>Comprobante saldo</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-saldos">
+                    <tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted);">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- Modal: Ver comprobante + confirmar -->
+<div id="modal-comp" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-comp-title">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-comp-title">🧾 Comprobante de Pago</div>
+    <input type="hidden" id="comp-pedido-id">
+
+    <div class="modal-caso-info">
+        <div class="mci-codigo" id="comp-codigo">—</div>
+        <div class="mci-nombre" id="comp-nombre">—</div>
+        <div class="mci-total"  id="comp-total">—</div>
+        <div class="mci-abono"  id="comp-abono">Abono esperado: —</div>
+    </div>
+
+    <div id="comp-viewer">
+        <div class="comp-missing"><i class="fas fa-receipt"></i>Sin comprobante adjunto</div>
+    </div>
+
+    <div class="form-group">
+        <label>Nota de confirmación (opcional)</label>
+        <textarea id="comp-nota" placeholder="Ej: Verificado Nequi 3212816716 · Ref #12345"></textarea>
+    </div>
+
+    <div class="modal-actions">
+        <button class="btn-red" onclick="rechazarPago()"><i class="fas fa-times" style="margin-right:5px;"></i>Rechazar</button>
+        <button class="btn-outline" onclick="cerrarModalComp()">Cerrar</button>
+        <button class="btn-gold" id="btn-confirmar-pago" onclick="confirmarPago()">
+            <i class="fas fa-check" style="margin-right:6px;"></i>Confirmar pago
+        </button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const PUSH_URL      = 'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/send-push';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const escH   = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '—';
+const fmtFecha = ts => ts ? new Date(ts).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+
+let _userId  = null;
+let _pedidos = [];
+
+/* ── Auth ─────────────────────────────────────────────────────────── */
+(async () => {
+    const session = await ProdigyAuth.require(['admin','contabilidad']);
+    _userId = session.user.id;
+    const meta = session.user.user_metadata || {};
+    document.getElementById('sb-nombre').textContent = meta.nombre || session.user.email?.split('@')[0] || 'Usuario';
+    document.body.classList.add('ready');
+
+    // Fechas default para historial: inicio del mes actual
+    const hoy   = new Date();
+    const ini   = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    document.getElementById('fil-desde').value = ini.toISOString().slice(0,10);
+    document.getElementById('fil-hasta').value = hoy.toISOString().slice(0,10);
+
+    await Promise.all([cargarPorConfirmar(), cargarSaldos(), cargarHistorial()]);
+    initRealtime();
+})();
+
+/* ── Tabs ─────────────────────────────────────────────────────────── */
+function switchTab(id, el) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('tab-' + id).classList.add('active');
+}
+
+/* ── Por confirmar (pago_subido) ───────────────────────────────────── */
+async function cargarPorConfirmar() {
+    const { data } = await sb.from('pedidos')
+        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,precio_total,pago_estado,comprobante_pago_url,created_at,email,whatsapp')
+        .eq('pago_estado', 'pago_subido')
+        .order('created_at', { ascending: false });
+
+    const rows = data || [];
+    document.getElementById('badge-conf').textContent = rows.length;
+    document.getElementById('kpi-por-confirmar').textContent = rows.length;
+
+    const tbody = document.getElementById('tbody-confirmar');
+    if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fas fa-check-circle" style="color:var(--green)"></i><p>Sin comprobantes pendientes</p></div></td></tr>';
+        return;
+    }
+    tbody.innerHTML = rows.map(p => {
+        const nombre = escH(p.nombre_cliente || p.nombre_doctor || '—');
+        const abono  = p.precio_total ? Math.round(p.precio_total / 2) : null;
+        return `<tr>
+            <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
+            <td>${nombre}</td>
+            <td style="font-size:.78rem;">${escH(p.servicio || '—')}</td>
+            <td class="td-monto">${fmtCOP(p.precio_total)}</td>
+            <td class="td-abono">${abono ? fmtCOP(abono) : '—'}</td>
+            <td><span class="badge-subido">⏳ Comprobante enviado</span></td>
+            <td>${p.comprobante_pago_url
+                ? `<button class="btn-xs btn-ver" onclick="verComprobante('${escH(p.id)}')"><i class="fas fa-eye"></i> Ver</button>`
+                : '<span style="font-size:.72rem;color:var(--muted);">Sin archivo</span>'
+            }</td>
+            <td><button class="btn-xs btn-confirm" onclick="abrirModalComp('${escH(p.id)}')">
+                <i class="fas fa-check"></i> Confirmar
+            </button></td>
+        </tr>`;
+    }).join('');
+}
+
+/* ── Saldos contra entrega ─────────────────────────────────────────── */
+async function cargarSaldos() {
+    const { data } = await sb.from('pedidos')
+        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,saldo_pendiente_monto,estado_operativo,nota_calidad,comprobante_saldo_url,pago_estado')
+        .gt('saldo_pendiente_monto', 0)
+        .order('created_at', { ascending: false });
+
+    const rows = data || [];
+    const pendientes = rows.filter(p => !['ENTREGADO'].includes(p.estado_operativo));
+    document.getElementById('badge-sald').textContent   = pendientes.length;
+    document.getElementById('kpi-saldos-pend').textContent = rows.reduce((s, p) => s + (Number(p.saldo_pendiente_monto) || 0), 0)
+        ? fmtCOP(rows.reduce((s, p) => s + (Number(p.saldo_pendiente_monto) || 0), 0)) : '—';
+
+    const tbody = document.getElementById('tbody-saldos');
+    if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="fas fa-hand-holding-dollar"></i><p>Sin saldos pendientes</p></div></td></tr>';
+        return;
+    }
+    tbody.innerHTML = rows.map(p => {
+        const nombre    = escH(p.nombre_cliente || p.nombre_doctor || '—');
+        const entregado = p.estado_operativo === 'ENTREGADO';
+        const saldoCell = entregado
+            ? `<span style="text-decoration:line-through;color:var(--muted);">${fmtCOP(p.saldo_pendiente_monto)}</span> <span class="badge-ok">Cobrado</span>`
+            : `<span class="td-saldo-pend" style="font-weight:700;">${fmtCOP(p.saldo_pendiente_monto)}</span>`;
+        return `<tr>
+            <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
+            <td>${nombre}</td>
+            <td style="font-size:.78rem;">${escH(p.servicio || '—')}</td>
+            <td>${saldoCell}</td>
+            <td><span class="${entregado ? 'badge-ok' : 'badge-ce'}">${escH(p.estado_operativo || '—')}</span></td>
+            <td style="font-size:.76rem;color:var(--muted);max-width:180px;">${escH(p.nota_calidad || '—')}</td>
+            <td>${p.comprobante_saldo_url
+                ? `<a href="${escH(p.comprobante_saldo_url)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-ver"><i class="fas fa-receipt"></i> Ver</a>`
+                : '<span style="font-size:.72rem;color:var(--muted);">Sin comprobante</span>'
+            }</td>
+        </tr>`;
+    }).join('');
+}
+
+/* ── Historial ─────────────────────────────────────────────────────── */
+async function cargarHistorial() {
+    const desde  = document.getElementById('fil-desde').value;
+    const hasta  = document.getElementById('fil-hasta').value;
+    if (!desde || !hasta) return;
+
+    const desdeISO = new Date(desde + 'T00:00:00').toISOString();
+    const hastaISO = new Date(hasta + 'T23:59:59').toISOString();
+
+    const { data } = await sb.from('pedidos')
+        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,precio_total,saldo_pendiente_monto,modalidad_cobro,pago_estado,updated_at')
+        .eq('pago_estado', 'pago_confirmado')
+        .gte('updated_at', desdeISO)
+        .lte('updated_at', hastaISO)
+        .order('updated_at', { ascending: false });
+
+    const rows = data || [];
+    const totalCobrado  = rows.reduce((s, p) => s + (Number(p.precio_total) || 0), 0);
+    const ticketProm    = rows.length ? Math.round(totalCobrado / rows.length) : 0;
+
+    // KPIs del mes (si el filtro cubre el mes actual)
+    const hoy = new Date();
+    const esHoy = desde === hoy.toISOString().slice(0,10);
+    const esMes = desde === new Date(hoy.getFullYear(), hoy.getMonth(), 1).toISOString().slice(0,10);
+    if (esMes || esHoy) {
+        document.getElementById('kpi-cobrado-mes').textContent = fmtCOP(totalCobrado) || '—';
+    }
+
+    // Total bar
+    const bar = document.getElementById('total-bar-hist');
+    bar.style.display = rows.length ? 'flex' : 'none';
+    document.getElementById('tot-cobrado').textContent = fmtCOP(totalCobrado);
+    document.getElementById('tot-casos').textContent   = rows.length;
+    document.getElementById('tot-ticket').textContent  = fmtCOP(ticketProm);
+
+    const MODAL_LABELS = { completo:'Pago completo', contra_entrega:'Cobrado en entrega', credito:'Crédito' };
+    const tbody = document.getElementById('tbody-historial');
+    if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fas fa-inbox"></i><p>Sin pagos confirmados en ese período</p></div></td></tr>';
+        return;
+    }
+    tbody.innerHTML = rows.map(p => {
+        const nombre = escH(p.nombre_cliente || p.nombre_doctor || '—');
+        const abono  = p.precio_total ? fmtCOP(Math.round(p.precio_total / 2)) : '—';
+        const saldo  = p.saldo_pendiente_monto ? fmtCOP(p.saldo_pendiente_monto) : fmtCOP(Math.round((p.precio_total||0) / 2));
+        return `<tr>
+            <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
+            <td>${nombre}</td>
+            <td style="font-size:.78rem;">${escH(p.servicio || '—')}</td>
+            <td class="td-monto">${fmtCOP(p.precio_total)}</td>
+            <td class="td-abono">${abono}</td>
+            <td class="td-saldo-pend">${saldo}</td>
+            <td style="font-size:.76rem;">${escH(MODAL_LABELS[p.modalidad_cobro] || p.modalidad_cobro || '—')}</td>
+            <td><a href="/recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-recibo"><i class="fas fa-file-invoice"></i> Recibo</a></td>
+        </tr>`;
+    }).join('');
+
+    // KPI cobrado hoy
+    const hoyStr = hoy.toISOString().slice(0,10);
+    const cobradoHoy = rows
+        .filter(p => p.updated_at?.slice(0,10) === hoyStr)
+        .reduce((s,p) => s + (Number(p.precio_total)||0), 0);
+    document.getElementById('kpi-cobrado-hoy').textContent = fmtCOP(cobradoHoy) || '$0';
+}
+
+/* ── Modal comprobante ─────────────────────────────────────────────── */
+async function abrirModalComp(pedidoId) {
+    const { data: p } = await sb.from('pedidos')
+        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,precio_total,comprobante_pago_url,email,whatsapp')
+        .eq('id', pedidoId).single();
+    if (!p) return;
+
+    document.getElementById('comp-pedido-id').value    = pedidoId;
+    document.getElementById('comp-codigo').textContent  = `Caso #${p.codigo || pedidoId.slice(0,8)}`;
+    document.getElementById('comp-nombre').textContent  = p.nombre_cliente || p.nombre_doctor || '—';
+    document.getElementById('comp-total').textContent   = fmtCOP(p.precio_total);
+    document.getElementById('comp-abono').textContent   = p.precio_total
+        ? `Abono esperado: ${fmtCOP(Math.round(p.precio_total / 2))}`
+        : 'Sin precio registrado';
+    document.getElementById('comp-nota').value = '';
+    document.getElementById('btn-confirmar-pago').disabled = false;
+
+    // Viewer del comprobante
+    const viewer = document.getElementById('comp-viewer');
+    if (p.comprobante_pago_url) {
+        const url = p.comprobante_pago_url;
+        viewer.innerHTML = url.endsWith('.pdf') || url.includes('application/pdf')
+            ? `<a href="${escH(url)}" target="_blank" rel="noopener noreferrer" class="comp-pdf-link"><i class="fas fa-file-pdf"></i> Abrir comprobante PDF</a>`
+            : `<img src="${escH(url)}" class="comp-img" alt="Comprobante de pago" onclick="window.open('${escH(url)}','_blank')">`;
+    } else {
+        viewer.innerHTML = '<div class="comp-missing"><i class="fas fa-exclamation-triangle" style="color:var(--yellow)"></i><br>El cliente no adjuntó comprobante. Verificar manualmente.</div>';
+    }
+
+    document.getElementById('modal-comp').style.display = 'flex';
+}
+
+function cerrarModalComp() {
+    document.getElementById('modal-comp').style.display = 'none';
+}
+
+function verComprobante(pedidoId) { abrirModalComp(pedidoId); }
+
+async function confirmarPago() {
+    const pedidoId = document.getElementById('comp-pedido-id').value;
+    const nota     = document.getElementById('comp-nota').value.trim();
+    const btn      = document.getElementById('btn-confirmar-pago');
+    btn.disabled   = true;
+
+    const { error } = await sb.from('pedidos').update({
+        pago_estado:             'pago_confirmado',
+        nota_confirmacion_pago:  nota || null,
+        timestamp_pago_confirmado: new Date().toISOString(),
+        pago_confirmado_por:     _userId,
+    }).eq('id', pedidoId);
+
+    if (error) { toast('Error: ' + error.message, 'err'); btn.disabled = false; return; }
+
+    // Notificar al doctor
+    const { data: p } = await sb.from('pedidos').select('email,codigo,whatsapp,precio_total').eq('id', pedidoId).single();
+    const wa = (p?.whatsapp || '').replace(/\D/g,'');
+    if (wa) {
+        const reciboUrl = `https://prodigylabdental.com/recibo-caso?id=${p?.codigo || pedidoId}`;
+        const txt = encodeURIComponent(
+            `✅ *Pago confirmado* — Caso #${p?.codigo || ''}\n\n` +
+            `Hola Doctor, confirmamos recibo de tu abono por *${fmtCOP(Math.round((p?.precio_total||0)/2))}*.\n\n` +
+            `Tu recibo: ${reciboUrl}\n\n_PRODIGY Lab Dental_`
+        );
+        window.open(`https://wa.me/${wa}?text=${txt}`, '_blank');
+    }
+
+    toast(`✅ Pago confirmado — Caso #${p?.codigo || ''}`, 'ok');
+    cerrarModalComp();
+    await Promise.all([cargarPorConfirmar(), cargarHistorial()]);
+}
+
+async function rechazarPago() {
+    const pedidoId = document.getElementById('comp-pedido-id').value;
+    const nota     = document.getElementById('comp-nota').value.trim();
+
+    const { error } = await sb.from('pedidos').update({
+        pago_estado: 'pendiente',
+        nota_confirmacion_pago: nota ? `RECHAZADO: ${nota}` : 'Comprobante rechazado',
+    }).eq('id', pedidoId);
+
+    if (error) { toast('Error: ' + error.message, 'err'); return; }
+
+    const { data: p } = await sb.from('pedidos').select('codigo,whatsapp').eq('id', pedidoId).single();
+    const wa = (p?.whatsapp || '').replace(/\D/g,'');
+    if (wa) {
+        const txt = encodeURIComponent(
+            `⚠️ Comprobante de pago — Caso #${p?.codigo || ''}\n\nHola Doctor, no pudimos verificar tu comprobante de pago. Por favor envíalo nuevamente o comunícate al 3212816716.\n\n_PRODIGY Lab Dental_`
+        );
+        window.open(`https://wa.me/${wa}?text=${txt}`, '_blank');
+    }
+
+    toast('Comprobante rechazado — doctor notificado', 'warn');
+    cerrarModalComp();
+    await cargarPorConfirmar();
+}
+
+/* ── Realtime ─────────────────────────────────────────────────────── */
+function initRealtime() {
+    sb.channel('contabilidad-pagos')
+        .on('postgres_changes', {
+            event: 'UPDATE', schema: 'public', table: 'pedidos',
+            filter: 'pago_estado=eq.pago_subido',
+        }, payload => {
+            toast(`💳 Nuevo comprobante — Caso #${payload.new?.codigo || ''}`, 'ok');
+            cargarPorConfirmar();
+        }).subscribe();
+}
+
+/* ── Toast ────────────────────────────────────────────────────────── */
+function toast(msg, type = 'ok') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = `show ${type}`;
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { el.className = ''; }, 3200);
+}
+
+/* ── Escape ───────────────────────────────────────────────────────── */
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') cerrarModalComp();
+});
+</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>
