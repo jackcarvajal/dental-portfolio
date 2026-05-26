@@ -442,12 +442,27 @@ function abrirModalCalidad(pedidoId) {
     document.getElementById('cal-precio').textContent     = fmtCOP(p.precio_total);
     // Info de pago
     const abono = p.precio_total ? Math.round(p.precio_total / 2) : 0;
+    const PAGO_LABELS = {
+        pago_confirmado: '✅ Abono confirmado — cobrar saldo en entrega',
+        pago_subido:     '⏳ Comprobante enviado — pendiente de verificar',
+        pendiente:       '🔴 Sin comprobante de abono — verificar con admin',
+        contra_entrega:  '📦 Cobrar saldo contra entrega',
+        credito_autorizado: '🤝 Crédito autorizado',
+    };
+    const pagoLabel = PAGO_LABELS[p.pago_estado] || `Estado: ${p.pago_estado || 'desconocido'}`;
     document.getElementById('cal-pago-estado').textContent = p.precio_total
-        ? `Total: ${fmtCOP(p.precio_total)} · Abono: ${fmtCOP(abono)} · Saldo: ${fmtCOP(abono)}`
-        : 'Sin precio registrado — confirmar con admin';
+        ? `Total: ${fmtCOP(p.precio_total)} · Abono: ${fmtCOP(abono)} · Saldo: ${fmtCOP(abono)} — ${pagoLabel}`
+        : `Sin precio — ${pagoLabel}`;
 
-    // Modalidad de pago guardada previamente o default 50/50
-    const mod = p.modalidad_cobro || 'contra_entrega';
+    // Modalidad: respetar valor guardado; si no hay, inferir del pago_estado
+    let mod = p.modalidad_cobro;
+    if (!mod) {
+        // pago_confirmado = abono recibido → falta saldo → contra entrega
+        // si el precio es 0 o no hay precio, asumir crédito
+        mod = p.pago_estado === 'pago_confirmado' ? 'contra_entrega'
+            : p.pago_estado === 'credito_autorizado' ? 'credito'
+            : 'contra_entrega';
+    }
     document.querySelector(`input[name="modalidad_cobro"][value="${mod}"]`).checked = true;
     document.getElementById('cal-saldo-monto').value = p.saldo_pendiente_monto || abono || '';
     _comprobanteFile = null;
