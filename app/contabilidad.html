@@ -467,6 +467,81 @@ tbody td{padding:11px 14px;vertical-align:middle;}
   </div>
 </div>
 
+<!-- Modal: Factura Manual DIAN -->
+<div id="modal-manual-dian" class="modal-overlay" role="dialog" aria-modal="true" style="display:none;">
+  <div class="modal-box" style="max-width:520px;">
+    <div class="modal-title">🖊️ Factura Manual — Portal DIAN</div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:-6px;margin-bottom:16px;">Usa estos datos para crear la factura directamente en el portal gratuito de la DIAN. Luego registra el número aquí.</div>
+
+    <!-- Datos para copiar -->
+    <div style="background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.15);border-radius:10px;padding:14px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div>
+        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Razón social / Nombre</div>
+        <div id="mdian-razon" style="font-size:.85rem;font-weight:700;color:var(--text);"></div>
+      </div>
+      <div>
+        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Documento</div>
+        <div id="mdian-nit" style="font-size:.85rem;font-weight:700;color:var(--text);"></div>
+      </div>
+      <div>
+        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Email</div>
+        <div id="mdian-email" style="font-size:.82rem;color:var(--cyan);"></div>
+      </div>
+      <div>
+        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Servicio</div>
+        <div id="mdian-servicio" style="font-size:.82rem;color:var(--text);"></div>
+      </div>
+      <div>
+        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Total (sin IVA — exento Art.476)</div>
+        <div id="mdian-total" style="font-size:1.1rem;font-weight:900;color:var(--green);"></div>
+      </div>
+      <div>
+        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Caso</div>
+        <div id="mdian-codigo" style="font-size:.85rem;font-weight:700;color:var(--gold);"></div>
+      </div>
+    </div>
+
+    <!-- Link DIAN -->
+    <a href="https://catalogo-vpfe.dian.gov.co/User/Login" target="_blank" rel="noopener noreferrer"
+       style="display:flex;align-items:center;gap:10px;background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.2);border-radius:8px;padding:12px 16px;text-decoration:none;margin-bottom:16px;">
+      <i class="fas fa-external-link-alt" style="color:var(--green);font-size:1.1rem;"></i>
+      <div>
+        <div style="font-size:.82rem;font-weight:800;color:var(--green);">Abrir Portal DIAN — Facturador Gratuito</div>
+        <div style="font-size:.7rem;color:var(--muted);">catalogo-vpfe.dian.gov.co · Inicia sesión con tu RUT y contraseña</div>
+      </div>
+    </a>
+
+    <!-- Pasos rápidos -->
+    <div style="background:rgba(255,255,255,.03);border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:.75rem;color:var(--muted);line-height:1.8;">
+      <div style="font-weight:800;color:var(--text);margin-bottom:6px;">Pasos en el portal DIAN:</div>
+      1. Facturación electrónica → Crear factura de venta<br>
+      2. Cliente: pegar datos de arriba (documento + nombre + email)<br>
+      3. Ítem: descripción del servicio · IVA 0% exento (Art. 476 ET)<br>
+      4. Enviar → copiar el <strong style="color:var(--gold);">Número de factura</strong> y el <strong style="color:var(--gold);">CUFE</strong>
+    </div>
+
+    <!-- Registrar número manual -->
+    <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:14px;">
+      <div style="font-size:.75rem;font-weight:800;color:var(--text);margin-bottom:10px;">Registrar factura emitida en el sistema:</div>
+      <input type="hidden" id="mdian-pedido-id">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div>
+          <label style="font-size:.68rem;color:var(--muted);display:block;margin-bottom:4px;">Número de factura</label>
+          <input id="mdian-numero" type="text" placeholder="Ej: FE-0001" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:8px 10px;color:var(--text);font-size:.83rem;outline:none;">
+        </div>
+        <div>
+          <label style="font-size:.68rem;color:var(--muted);display:block;margin-bottom:4px;">CUFE (opcional)</label>
+          <input id="mdian-cufe" type="text" placeholder="Código único DIAN" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:8px 10px;color:var(--text);font-size:.83rem;outline:none;">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="cerrarManualDIAN()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--muted);padding:8px 16px;border-radius:7px;font-size:.8rem;cursor:pointer;">Cerrar</button>
+        <button onclick="registrarFacturaManual()" style="background:var(--green);color:#000;border:none;padding:8px 18px;border-radius:7px;font-weight:800;font-size:.8rem;cursor:pointer;"><i class="fas fa-check"></i> Registrar en sistema</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal: Tipo IVA antes de emitir factura -->
 <div id="modal-iva" class="modal-overlay" role="dialog" aria-modal="true" style="display:none;">
   <div class="modal-box" style="max-width:420px;">
@@ -888,9 +963,14 @@ async function cargarFacturasPendientes() {
             <td class="td-monto">${fmtCOP(p.precio_total)}</td>
             <td style="font-size:.74rem;color:var(--muted);">${escH(p.billing_email || '—')}</td>
             <td>
-                <button class="btn-xs btn-gold" onclick="emitirFactura('${escH(p.id)}',this)">
-                    <i class="fas fa-paper-plane"></i> Emitir
-                </button>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                    <button class="btn-xs btn-gold" onclick="emitirFactura('${escH(p.id)}',this)">
+                        <i class="fas fa-paper-plane"></i> Emitir
+                    </button>
+                    <button class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN('${escH(p.id)}','${escH(p.codigo||'')}','${escH(p.billing_razon||'')}','${escH(p.billing_nit||'')}','${escH(p.billing_tipo||'CC')}','${escH(p.billing_email||'')}','${escH(p.servicio||'')}','${escH(p.precio_total||'0')}')">
+                        <i class="fas fa-pen"></i> Manual
+                    </button>
+                </div>
             </td>
         </tr>`;
     }).join('');
@@ -1004,7 +1084,7 @@ async function cargarFacturasEmitidas() {
 
 async function cargarFacturasError() {
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,billing_razon,factura_error')
+        .select('id,codigo,billing_razon,billing_nit,billing_tipo,billing_email,servicio,precio_total,factura_error')
         .eq('requiere_factura', true)
         .eq('factura_estado', 'error')
         .order('created_at', { ascending: false });
@@ -1020,21 +1100,68 @@ async function cargarFacturasError() {
         <td style="font-size:.82rem;">${escH(p.billing_razon || '—')}</td>
         <td style="font-size:.74rem;color:var(--red);max-width:260px;">${escH(p.factura_error || 'Error desconocido')}</td>
         <td>
-            <button class="btn-xs btn-gold" onclick="reintentarFactura('${escH(p.id)}',this)">
-                <i class="fas fa-redo"></i> Reintentar
-            </button>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button class="btn-xs btn-gold" onclick="reintentarFactura('${escH(p.id)}',this)">
+                    <i class="fas fa-redo"></i> Reintentar
+                </button>
+                <button class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN('${escH(p.id)}','${escH(p.codigo||'')}','${escH(p.billing_razon||'')}','${escH(p.billing_nit||'')}','${escH(p.billing_tipo||'CC')}','${escH(p.billing_email||'')}','${escH(p.servicio||'')}','${escH(p.precio_total||'0')}')">
+                    <i class="fas fa-pen"></i> Manual
+                </button>
+            </div>
         </td>
     </tr>`).join('');
 }
 
 async function reintentarFactura(pedidoId, btn) {
-    // Marcar como pendiente para que aparezca en el tab de por emitir
     await sb.from('pedidos').update({ factura_estado: 'pendiente', factura_error: null }).eq('id', pedidoId);
     toast('Marcado como pendiente — ve al tab "Por emitir"', 'ok');
     await cargarFacturasError();
     await cargarFacturasPendientes();
     document.getElementById('badge-fact').textContent =
         parseInt(document.getElementById('badge-fact').textContent || '0') + 1;
+}
+
+/* ── Factura Manual DIAN ─────────────────────────────────────────── */
+function abrirManualDIAN(id, codigo, razon, nit, tipo, email, servicio, total) {
+    document.getElementById('mdian-pedido-id').value = id;
+    document.getElementById('mdian-codigo').textContent   = '#' + (codigo || id.slice(0,8));
+    document.getElementById('mdian-razon').textContent    = razon || '—';
+    document.getElementById('mdian-nit').textContent      = tipo + ' ' + nit;
+    document.getElementById('mdian-email').textContent    = email || '—';
+    document.getElementById('mdian-servicio').textContent = servicio || '—';
+    document.getElementById('mdian-total').textContent    = fmtCOP(total);
+    document.getElementById('mdian-numero').value = '';
+    document.getElementById('mdian-cufe').value   = '';
+    document.getElementById('modal-manual-dian').style.display = 'flex';
+}
+
+function cerrarManualDIAN() {
+    document.getElementById('modal-manual-dian').style.display = 'none';
+}
+
+async function registrarFacturaManual() {
+    const pedidoId = document.getElementById('mdian-pedido-id').value;
+    const numero   = document.getElementById('mdian-numero').value.trim();
+    const cufe     = document.getElementById('mdian-cufe').value.trim();
+    if (!numero) { toast('Ingresa el número de factura', 'err'); return; }
+
+    const { error } = await sb.from('pedidos').update({
+        factura_estado:     'emitida',
+        factura_numero:     numero,
+        factura_cufe:       cufe || null,
+        factura_emitida_at: new Date().toISOString(),
+        factura_error:      null,
+    }).eq('id', pedidoId);
+
+    if (error) { toast('Error: ' + error.message, 'err'); return; }
+
+    cerrarManualDIAN();
+    toast('✅ Factura manual registrada — ' + numero, 'ok');
+    await cargarFacturasPendientes();
+    await cargarFacturasEmitidas();
+    const badge = document.getElementById('badge-fact');
+    const n = parseInt(badge.textContent || '1') - 1;
+    badge.textContent = Math.max(0, n);
 }
 
 /* ── Pedidos ──────────────────────────────────────────────────────── */
