@@ -889,7 +889,7 @@ async function emitirFactura(pedidoId, btn) {
         await cargarFacturasPendientes();
 
     } catch(e) {
-        toast('Error de conexión con /api/factura', 'err');
+        toast('Error de conexión — verifica FACTUS_CLIENT_ID en Cloudflare', 'err');
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-redo"></i> Reintentar';
     }

@@ -1,19 +1,28 @@
 /**
- * Cloudflare Pages Function — Proxy de Facturación Electrónica DIAN via Alegra
- * POST /api/factura  → emite la factura electrónica y devuelve número + CUFE + PDF
- * GET  /api/factura?id=<alegra_invoice_id> → obtiene estado actual y PDF
+ * Cloudflare Pages Function — Proxy Facturación Electrónica DIAN via Factus
+ * (Factus es gratuito hasta 50 facturas/mes — factus.com.co)
+ *
+ * POST /api/factura  → emite factura electrónica, devuelve número + CUFE + PDF
+ * GET  /api/factura?id=<factus_bill_id> → consulta estado y PDF
  *
  * Variables de entorno requeridas (Cloudflare Pages → Settings → Environment Variables):
- *   ALEGRA_EMAIL  = correo@empresa.com    (usuario de Alegra)
- *   ALEGRA_TOKEN  = tu_api_token_de_alegra
- *   SUPABASE_URL  = https://xxx.supabase.co
- *   SUPABASE_SERVICE_KEY = service_role_key (para actualizar pedidos sin RLS)
+ *   FACTUS_CLIENT_ID      = tu_client_id_de_factus
+ *   FACTUS_CLIENT_SECRET  = tu_client_secret_de_factus
+ *   FACTUS_NUMBERING_ID   = id del rango de numeración configurado en Factus (número entero)
+ *   SUPABASE_URL          = https://xxx.supabase.co
+ *   SUPABASE_SERVICE_KEY  = service_role_key
  *
- * Nota IVA: Prótesis y dispositivos dentales están exentos de IVA en Colombia
- * (Art. 476 ET). Si tu servicio tiene IVA, agrega el id del impuesto en ALEGRA_TAX_ID.
+ * Cómo obtener credenciales Factus:
+ *   1. Crear cuenta en factus.com.co
+ *   2. Configurar empresa (NIT, actividad económica, resolución DIAN)
+ *   3. Ir a Configuración → API → Generar credenciales
+ *   4. Ir a Configuración → Numeración → copiar el ID del rango activo
+ *
+ * IVA: prótesis y dispositivos dentales exentos (Art. 476 ET).
+ * Tribute ID 22 = Exento IVA en Factus.
  */
 
-const ALEGRA_BASE = 'https://app.alegra.com/api/r1';
+const FACTUS_BASE = 'https://api.factus.com.co';
 
 function corsHeaders(origin) {
   const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
@@ -26,37 +35,58 @@ function corsHeaders(origin) {
   };
 }
 
-function alegraAuth(email, token) {
-  return 'Basic ' + btoa(`${email}:${token}`);
+/* ── OAuth2: obtener access_token de Factus ────────────────────────── */
+async function getFactusToken(clientId, clientSecret) {
+  const res = await fetch(`${FACTUS_BASE}/oauth/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type:    'client_credentials',
+      client_id:     clientId,
+      client_secret: clientSecret,
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error('Factus auth failed: ' + err.slice(0, 200));
+  }
+  const data = await res.json();
+  return data.access_token;
 }
 
-/* ── GET: estado de una factura ya emitida ─────────────────────────── */
+/* ── GET: estado / PDF de una factura ya emitida ───────────────────── */
 export async function onRequestGet(context) {
   const { request, env } = context;
   const origin = request.headers.get('Origin') || '';
   const cors   = corsHeaders(origin);
 
-  if (!env.ALEGRA_EMAIL || !env.ALEGRA_TOKEN) {
+  if (!env.FACTUS_CLIENT_ID || !env.FACTUS_CLIENT_SECRET) {
     return new Response(JSON.stringify({ error: 'Facturación no configurada' }), { status: 503, headers: cors });
   }
 
-  const url     = new URL(request.url);
-  const invoiceId = url.searchParams.get('id');
-  if (!invoiceId) {
-    return new Response(JSON.stringify({ error: 'Falta id de factura' }), { status: 400, headers: cors });
+  const billId = new URL(request.url).searchParams.get('id');
+  if (!billId) {
+    return new Response(JSON.stringify({ error: 'Falta id' }), { status: 400, headers: cors });
   }
 
-  const res = await fetch(`${ALEGRA_BASE}/invoices/${invoiceId}`, {
-    headers: { Authorization: alegraAuth(env.ALEGRA_EMAIL, env.ALEGRA_TOKEN) },
-  });
-  const data = await res.json();
+  try {
+    const token = await getFactusToken(env.FACTUS_CLIENT_ID, env.FACTUS_CLIENT_SECRET);
+    const res   = await fetch(`${FACTUS_BASE}/v1/bills/${billId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    const bill = data.data || data;
 
-  return new Response(JSON.stringify({
-    numero:  data.numberTemplate?.number || data.number || null,
-    cufe:    data.stamp?.cufe || data.stamp?.cude || null,
-    pdf:     data.pdf || null,
-    status:  data.status || null,
-  }), { status: res.ok ? 200 : 502, headers: cors });
+    return new Response(JSON.stringify({
+      numero: bill.number || bill.bill_number || null,
+      cufe:   bill.cufe   || bill.cude        || null,
+      pdf:    bill.pdf_url || bill.download_url || null,
+      status: bill.status || null,
+    }), { status: res.ok ? 200 : 502, headers: cors });
+
+  } catch (e) {
+    return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: cors });
+  }
 }
 
 /* ── POST: emitir factura nueva ────────────────────────────────────── */
@@ -65,8 +95,10 @@ export async function onRequestPost(context) {
   const origin = request.headers.get('Origin') || '';
   const cors   = corsHeaders(origin);
 
-  if (!env.ALEGRA_EMAIL || !env.ALEGRA_TOKEN) {
-    return new Response(JSON.stringify({ error: 'Facturación no configurada. Agrega ALEGRA_EMAIL y ALEGRA_TOKEN en Cloudflare.' }), { status: 503, headers: cors });
+  if (!env.FACTUS_CLIENT_ID || !env.FACTUS_CLIENT_SECRET) {
+    return new Response(JSON.stringify({
+      error: 'Facturación no configurada. Agrega FACTUS_CLIENT_ID y FACTUS_CLIENT_SECRET en Cloudflare.'
+    }), { status: 503, headers: cors });
   }
 
   let body;
@@ -74,121 +106,142 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: cors });
   }
 
-  const {
-    pedido_id,
-    codigo,
-    servicio,
-    precio_total,
-    billing_tipo,
-    billing_nit,
-    billing_razon,
-    billing_email,
-  } = body;
+  const { pedido_id, codigo, servicio, precio_total, billing_tipo, billing_nit, billing_razon, billing_email } = body;
 
-  // Validación mínima
   if (!pedido_id || !precio_total || !billing_nit || !billing_razon || !billing_email) {
-    return new Response(JSON.stringify({ error: 'Faltan campos obligatorios: pedido_id, precio_total, billing_nit, billing_razon, billing_email' }), { status: 400, headers: cors });
+    return new Response(JSON.stringify({
+      error: 'Faltan campos: pedido_id, precio_total, billing_nit, billing_razon, billing_email'
+    }), { status: 400, headers: cors });
   }
 
-  // Construir número de documento para Alegra
-  const nitLimpio = billing_nit.replace(/\D/g, '');
-  const dvMatch   = billing_nit.match(/[-\s](\d)$/);
-  const dv        = dvMatch ? dvMatch[1] : null;
+  // Limpiar NIT y extraer dígito verificador
+  const nitBase  = billing_nit.replace(/[^0-9]/g, '').slice(0, 15);
+  const dvMatch  = billing_nit.match(/[-\s]?(\d)$/);
+  const dv       = dvMatch ? dvMatch[1] : calcularDV(nitBase);
 
-  // Tipo de id DIAN: NIT → 31, CC → 13, CE → 22, Pasaporte → 41
-  const TIPO_MAP = { NIT: '31', CC: '13', CE: '22', PA: '41' };
-  const idType   = TIPO_MAP[billing_tipo] || '31';
+  // Tipo de documento DIAN: NIT=31, CC=13, CE=22
+  const TIPO_DIAN = { NIT: '31', CC: '13', CE: '22' };
+  const tipoDoc   = TIPO_DIAN[billing_tipo] || '31';
+
+  // Organización legal: 1=Persona Natural, 2=Persona Jurídica
+  const esJuridica = billing_tipo === 'NIT';
+
+  // Tribute ID cliente: 21=Responsable IVA, 22=No responsable IVA
+  // Para la mayoría de dentistas/clínicas pequeñas: No responsable (22)
+  const tributeCliente = esJuridica ? '21' : '22';
 
   const today = new Date().toISOString().slice(0, 10);
 
   const invoicePayload = {
-    date:    today,
-    dueDate: today,
-    client: {
-      name:           billing_razon,
-      identification: nitLimpio,
-      identificationObject: {
-        type: idType,
-        ...(dv !== null ? { dv } : {}),
-      },
-      email: billing_email,
+    numbering_range_id: Number(env.FACTUS_NUMBERING_ID || 1),
+    reference_code:     `PRODIGY-${codigo || pedido_id.slice(0, 8)}`,
+    observation:        `Caso #${codigo || pedido_id.slice(0, 8)} — PRODIGY Lab Dental`,
+    payment_method_code: '10', // 10=Efectivo/transferencia, 49=Otro
+    due_date:           today,
+    customer: {
+      identification:       nitBase,
+      dv:                   dv,
+      company:              esJuridica ? billing_razon : null,
+      trade_name:           billing_razon,
+      names:                esJuridica ? null : billing_razon.split(' ')[0] || billing_razon,
+      surnames:             esJuridica ? null : billing_razon.split(' ').slice(1).join(' ') || null,
+      address:              'Colombia',
+      email:                billing_email,
+      phone:                '',
+      legal_organization_id: esJuridica ? '2' : '1',
+      tribute_id:           tributeCliente,
+      identification_document_id: tipoDoc,
     },
     items: [
       {
-        name:        `Servicio PRODIGY Lab Dental`,
-        description: `Caso #${codigo || pedido_id.slice(0, 8)} — ${servicio || 'Servicio dental'}`,
-        quantity:    1,
-        price:       Number(precio_total),
-        tax:         [], // Exento IVA Art. 476 ET — ajustar si aplica
+        code_reference:   `SRV-${(codigo || pedido_id.slice(0, 8)).replace(/[^A-Z0-9]/gi, '')}`,
+        name:             `${servicio || 'Servicio dental'} — PRODIGY Lab Dental`,
+        quantity:         1,
+        discount_rate:    0,
+        price:            Number(precio_total),
+        tax_rate:         '0.00', // Exento IVA Art. 476 ET
+        unit_measure_id:  70,     // 70 = Unidad de servicio en DIAN
+        standard_code_id: 1,      // 1 = Estándar UNSPSC
+        is_excluded:      1,      // 1 = Excluido de IVA
+        tribute_id:       22,     // 22 = IVA Exento
+        withholding_taxes: [],
       },
     ],
-    currency:      { code: 'COP', exchangeRate: 1 },
-    paymentMethod: 'cash',
-    anotation:     `PRODIGY Lab Dental · Caso #${codigo || pedido_id.slice(0, 8)}`,
   };
 
-  // Emitir en Alegra
-  const alegraRes = await fetch(`${ALEGRA_BASE}/invoices`, {
-    method:  'POST',
-    headers: {
-      Authorization:  alegraAuth(env.ALEGRA_EMAIL, env.ALEGRA_TOKEN),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(invoicePayload),
-  });
+  try {
+    const token = await getFactusToken(env.FACTUS_CLIENT_ID, env.FACTUS_CLIENT_SECRET);
 
-  const invoice = await alegraRes.json();
-
-  if (!alegraRes.ok) {
-    const errMsg = invoice?.message || invoice?.error || JSON.stringify(invoice).slice(0, 200);
-    // Actualizar Supabase con el error
-    await patchPedido(env, pedido_id, {
-      factura_estado: 'error',
-      factura_error:  errMsg,
+    const factusRes = await fetch(`${FACTUS_BASE}/v1/bills/validate`, {
+      method:  'POST',
+      headers: {
+        Authorization:  `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Accept:         'application/json',
+      },
+      body: JSON.stringify(invoicePayload),
     });
-    return new Response(JSON.stringify({ error: 'Error Alegra: ' + errMsg }), { status: 502, headers: cors });
+
+    const result = await factusRes.json();
+
+    if (!factusRes.ok) {
+      const errMsg = result?.message || result?.error || JSON.stringify(result).slice(0, 300);
+      await patchPedido(env, pedido_id, { factura_estado: 'error', factura_error: errMsg });
+      return new Response(JSON.stringify({ error: 'Error Factus: ' + errMsg }), { status: 502, headers: cors });
+    }
+
+    const bill    = result.data || result;
+    const numero  = bill.number  || bill.bill_number || null;
+    const cufe    = bill.cufe    || bill.cude        || null;
+    const pdfUrl  = bill.pdf_url || bill.download_url || null;
+    const factusId = String(bill.id || '');
+
+    await patchPedido(env, pedido_id, {
+      factura_estado:     'emitida',
+      factura_alegra_id:  factusId, // columna reutilizada para id del proveedor
+      factura_numero:     numero,
+      factura_cufe:       cufe,
+      factura_pdf_url:    pdfUrl,
+      factura_emitida_at: new Date().toISOString(),
+      factura_error:      null,
+    });
+
+    return new Response(JSON.stringify({ ok: true, alegra_id: factusId, numero, cufe, pdf: pdfUrl }), {
+      status: 200,
+      headers: cors,
+    });
+
+  } catch (e) {
+    await patchPedido(env, pedido_id, { factura_estado: 'error', factura_error: e.message });
+    return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: cors });
   }
-
-  const numero  = invoice.numberTemplate?.number || invoice.number || null;
-  const cufe    = invoice.stamp?.cufe || invoice.stamp?.cude || null;
-  const pdfUrl  = invoice.pdf || null;
-  const alegraId = String(invoice.id || '');
-
-  // Actualizar Supabase con los datos de la factura emitida
-  await patchPedido(env, pedido_id, {
-    factura_estado:     'emitida',
-    factura_alegra_id:  alegraId,
-    factura_numero:     numero,
-    factura_cufe:       cufe,
-    factura_pdf_url:    pdfUrl,
-    factura_emitida_at: new Date().toISOString(),
-    factura_error:      null,
-  });
-
-  return new Response(JSON.stringify({
-    ok:       true,
-    alegra_id: alegraId,
-    numero,
-    cufe,
-    pdf: pdfUrl,
-  }), { status: 200, headers: cors });
 }
 
-/* ── Patch Supabase via REST API (service role, sin RLS) ───────────── */
+/* ── Patch Supabase ────────────────────────────────────────────────── */
 async function patchPedido(env, pedidoId, fields) {
   if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return;
   try {
     await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${pedidoId}`, {
       method:  'PATCH',
       headers: {
-        apikey:        env.SUPABASE_SERVICE_KEY,
-        Authorization: 'Bearer ' + env.SUPABASE_SERVICE_KEY,
+        apikey:         env.SUPABASE_SERVICE_KEY,
+        Authorization:  'Bearer ' + env.SUPABASE_SERVICE_KEY,
         'Content-Type': 'application/json',
-        Prefer:        'return=minimal',
+        Prefer:         'return=minimal',
       },
       body: JSON.stringify(fields),
     });
-  } catch { /* silencioso — el front actualiza el estado igualmente */ }
+  } catch { /* silencioso */ }
+}
+
+/* ── DV calculator DIAN ────────────────────────────────────────────── */
+function calcularDV(nit) {
+  const primos  = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
+  const digits  = String(nit).replace(/\D/g, '').split('').reverse();
+  let sum = 0;
+  for (let i = 0; i < digits.length && i < primos.length; i++) sum += parseInt(digits[i]) * primos[i];
+  const rem = sum % 11;
+  return String(rem <= 1 ? rem : 11 - rem);
 }
 
 export async function onRequestOptions(context) {
