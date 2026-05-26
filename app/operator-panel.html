@@ -299,6 +299,51 @@ body.ready { visibility: visible; }
 
 <div id="toast"></div>
 
+<!-- Modal: Selección de máquina al iniciar producción -->
+<div id="modal-maquina" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0a1525;border:1px solid rgba(0,210,255,.3);border-radius:14px;padding:24px;max-width:440px;width:100%;">
+    <div style="font-size:.95rem;font-weight:800;color:#00d2ff;margin-bottom:4px;"><i class="fas fa-gear" style="margin-right:6px;"></i>Asignar máquina y material</div>
+    <div id="modal-maq-codigo" style="font-size:.75rem;color:#94a3b8;margin-bottom:16px;"></div>
+    <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Máquina a usar</label>
+    <select id="maq-equipo" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 14px;color:#fff;font-size:.84rem;outline:none;margin-bottom:12px;">
+      <option value="">— Selecciona máquina —</option>
+      <option value="FRESADORA-01">🔩 Fresadora 01</option>
+      <option value="FRESADORA-02">🔩 Fresadora 02</option>
+      <option value="IMPRESORA-3D-01">🖨️ Impresora 3D — 01</option>
+      <option value="IMPRESORA-3D-02">🖨️ Impresora 3D — 02</option>
+      <option value="HORNO-SINTER-01">🔥 Horno Sinterizado 01</option>
+      <option value="ESCANER-LAB-01">📡 Escáner Lab 01</option>
+      <option value="MANUAL">🤲 Proceso manual (sin máquina)</option>
+    </select>
+    <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Material a consumir</label>
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <select id="maq-item" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 14px;color:#fff;font-size:.84rem;outline:none;">
+        <option value="">— Sin consumo registrado —</option>
+      </select>
+      <input id="maq-cantidad" type="number" min="1" max="99" value="1" style="width:70px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 10px;color:#fff;font-size:.84rem;outline:none;text-align:center;">
+    </div>
+    <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Nota (opcional)</label>
+    <input id="maq-nota" type="text" placeholder="Ej: Bloque zirconia A2 parcial..." style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 14px;color:#fff;font-size:.84rem;outline:none;margin-bottom:18px;">
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button onclick="cerrarModalMaquina()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button onclick="confirmarInicioProduccion()" style="background:#00d2ff;color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"><i class="fas fa-play" style="margin-right:6px;"></i>Iniciar producción</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Handoff a siguiente departamento (QA aprobado) -->
+<div id="modal-handoff-qa" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0a1525;border:1px solid rgba(0,255,65,.3);border-radius:14px;padding:24px;max-width:400px;width:100%;text-align:center;">
+    <div style="font-size:2.5rem;margin-bottom:8px;">✅</div>
+    <div style="font-size:.95rem;font-weight:800;color:#00FF41;margin-bottom:6px;">QA Aprobado</div>
+    <div id="modal-qa-handoff-sub" style="font-size:.8rem;color:#94a3b8;margin-bottom:20px;"></div>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button onclick="cerrarModalHandoffQA()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cerrar</button>
+      <button onclick="irADespachos()" style="background:#00FF41;color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"><i class="fas fa-motorcycle" style="margin-right:6px;"></i>Ver despachos</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
@@ -752,6 +797,197 @@ async function _doMove(pedidoId, targetCol) {
     if (!nuevoEstado) return;
     await avanzarEstado(pedidoId, nuevoEstado);
 }
+
+/* ══════════════════════════════════════════
+   AUTOMATIZACIÓN DE FLUJO — MÁQUINA + MATERIAL
+══════════════════════════════════════════ */
+
+let _produccionPendiente = null; // { pedidoId }
+
+/* Intercepta avanzarEstado para EN_PRODUCCION — abre modal de máquina */
+const _avanzarEstadoOrig = avanzarEstado;
+avanzarEstado = async function(pedidoId, nuevoEstado) {
+    if (nuevoEstado === 'EN_PRODUCCION') {
+        const p = _pedidos.find(x => x.id === pedidoId);
+        _produccionPendiente = { pedidoId };
+        document.getElementById('modal-maq-codigo').textContent =
+            `Caso #${p?.codigo || pedidoId.slice(0,8)} — ${p?.servicio || ''} · ${p?.material || ''}`;
+        // Pre-seleccionar máquina según flujo
+        const flujo = p?.flujo || '';
+        const sel = document.getElementById('maq-equipo');
+        if (flujo === 'fresado') sel.value = 'FRESADORA-01';
+        else if (flujo === 'impresion') sel.value = 'IMPRESORA-3D-01';
+        else sel.value = '';
+        // Cargar items de inventario en select
+        await _cargarItemsSelect();
+        // Pre-seleccionar material por nombre
+        _preseleccionarMaterial(p?.material || '');
+        document.getElementById('modal-maquina').style.display = 'flex';
+        return;
+    }
+    await _avanzarEstadoOrig(pedidoId, nuevoEstado);
+};
+
+async function _cargarItemsSelect() {
+    const sel = document.getElementById('maq-item');
+    if (sel.options.length > 1) return; // ya cargado
+    const { data } = await sb.from('inventario_items')
+        .select('id,nombre,stock_actual,unidad_medida')
+        .eq('activo', true).order('nombre');
+    (data || []).forEach(it => {
+        const o = document.createElement('option');
+        o.value = it.id;
+        o.textContent = `${it.nombre} (stock: ${it.stock_actual} ${it.unidad_medida || 'u'})`;
+        sel.appendChild(o);
+    });
+}
+
+function _preseleccionarMaterial(materialNombre) {
+    if (!materialNombre) return;
+    const key = materialNombre.toLowerCase().split(' ')[0];
+    const sel = document.getElementById('maq-item');
+    for (const opt of sel.options) {
+        if (opt.textContent.toLowerCase().includes(key)) { sel.value = opt.value; break; }
+    }
+}
+
+function cerrarModalMaquina() {
+    document.getElementById('modal-maquina').style.display = 'none';
+    _produccionPendiente = null;
+}
+
+async function confirmarInicioProduccion() {
+    if (!_produccionPendiente) return;
+    const { pedidoId } = _produccionPendiente;
+    const equipo   = document.getElementById('maq-equipo').value;
+    const itemId   = document.getElementById('maq-item').value;
+    const cantidad = parseInt(document.getElementById('maq-cantidad').value) || 1;
+    const nota     = document.getElementById('maq-nota').value.trim();
+    if (!equipo) { toast('Selecciona una máquina', 'err'); return; }
+
+    cerrarModalMaquina();
+    const btn = document.querySelector('#modal-maquina button:last-child');
+
+    // 1. Avanzar estado real
+    await _avanzarEstadoOrig(pedidoId, 'EN_PRODUCCION');
+
+    // 2. Registrar uso de máquina en equipo_mantenimiento
+    await sb.from('equipo_mantenimiento').insert({
+        equipo_id:    equipo,
+        accion:       'USO_PRODUCCION',
+        tecnico:      _userId,
+        notas:        `Caso ${pedidoId}${nota ? ' — ' + nota : ''}`,
+        duracion_min: 0,
+    }).catch(() => {});
+
+    // 3. Consumir material del inventario si se seleccionó
+    if (itemId) {
+        const { data: it } = await sb.from('inventario_items')
+            .select('stock_actual,nombre,stock_minimo').eq('id', itemId).single();
+        if (it) {
+            const nuevoStock = Math.max(0, it.stock_actual - cantidad);
+            await sb.from('inventario_items').update({ stock_actual: nuevoStock }).eq('id', itemId);
+            await sb.from('inventario_movimientos').insert({
+                item_id:   itemId,
+                tipo:      'SALIDA',
+                cantidad:  cantidad,
+                pedido_id: pedidoId,
+                notas:     `Consumo automático inicio producción — máquina ${equipo}`,
+            }).catch(() => {});
+            if (nuevoStock <= it.stock_minimo) {
+                // Crear alerta de stock bajo en Torre de Control
+                await sb.from('logs_incidencias').insert({
+                    tipo:        'STOCK_CRITICO',
+                    descripcion: `Stock bajo: ${it.nombre} — ${nuevoStock} unidades restantes`,
+                    severidad:   'ALTA',
+                    pedido_id:   pedidoId,
+                    emisor_id:   _userId,
+                }).catch(() => {});
+                toast(`⚠️ Stock bajo: ${it.nombre} → ${nuevoStock} u.`, 'err');
+            } else {
+                toast(`Producción iniciada · Máquina: ${equipo} · Material descontado`, 'ok');
+            }
+        }
+    } else {
+        toast(`Producción iniciada · Máquina: ${equipo}`, 'ok');
+    }
+}
+
+/* ── Handoff QA → admin notificado ── */
+function cerrarModalHandoffQA() {
+    document.getElementById('modal-handoff-qa').style.display = 'none';
+}
+function irADespachos() {
+    cerrarModalHandoffQA();
+    window.location.href = '/app/admin-panel.html';
+}
+
+/* Sobreescribir aprobarQA para disparar handoff automático */
+const _aprobarQAOrig = aprobarQA;
+aprobarQA = async function() {
+    await _aprobarQAOrig();
+    // aprobarQA ya hizo el update — buscar el pedido recién aprobado
+    const pedidoId = document.getElementById('qa-pedido-id').value;
+    const p = _pedidos.find(x => x.id === pedidoId);
+
+    // Notificar al admin vía push
+    try {
+        await fetch(ADMIN_PUSH_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
+            body: JSON.stringify({
+                titulo: `📦 Listo para despacho — Caso ${p?.codigo || ''}`,
+                cuerpo:  `${p?.servicio || 'Caso'} pasó QA. Asigna mensajero desde el panel admin.`,
+                url:     '/app/admin-panel.html',
+            }),
+        });
+    } catch {}
+
+    // Registrar en Torre de Control como handoff
+    await sb.from('logs_incidencias').insert({
+        tipo:        'HANDOFF',
+        descripcion: `Caso #${p?.codigo || pedidoId.slice(0,8)} aprobó QA — listo para despacho`,
+        severidad:   'BAJA',
+        pedido_id:   pedidoId,
+        emisor_id:   _userId,
+    }).catch(() => {});
+
+    // Mostrar modal de éxito con acceso rápido a despachos
+    document.getElementById('modal-qa-handoff-sub').textContent =
+        `Caso #${p?.codigo || ''} — ${p?.servicio || ''} · Admin fue notificado para programar el despacho.`;
+    document.getElementById('modal-handoff-qa').style.display = 'flex';
+};
+
+/* ══════════════════════════════════════════
+   REALTIME — casos nuevos aparecen solos
+══════════════════════════════════════════ */
+(function initRealtime() {
+    sb.channel('op-panel-pedidos')
+        .on('postgres_changes', {
+            event:  '*',
+            schema: 'public',
+            table:  'pedidos',
+            filter: `flujo=in.(fresado,lab,impresion,)`,
+        }, payload => {
+            if (['INSERT','UPDATE'].includes(payload.eventType)) {
+                const p = payload.new;
+                // Si es un caso nuevo o que acaba de cambiar de flujo desde diseño
+                const esProd = ['fresado','lab','impresion',''].includes(p.flujo || '');
+                if (esProd && !_pedidos.find(x => x.id === p.id)) {
+                    toast(`📥 Nuevo caso en cola: #${p.codigo || ''}`, 'ok');
+                }
+                cargarPedidos();
+            }
+        })
+        .subscribe();
+})();
+
+/* Escape cierra modales de automatización */
+document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    cerrarModalMaquina();
+    cerrarModalHandoffQA();
+});
 </script>
 </body>
 </html>

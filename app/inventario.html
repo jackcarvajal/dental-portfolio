@@ -163,6 +163,7 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
 <!-- Tabs -->
 <div class="tabs">
     <div class="tab active" onclick="showTab('stock',this)">Stock</div>
+    <div class="tab" onclick="showTab('solicitudes',this)">Solicitudes <span id="badge-sol" style="display:none;background:#ef4444;color:#fff;border-radius:10px;padding:1px 7px;font-size:.62rem;margin-left:4px;font-weight:800;"></span></div>
     <div class="tab" onclick="showTab('entrada',this)">Entrada de Material</div>
     <div class="tab" onclick="showTab('salida',this)">Salida Rápida</div>
     <div class="tab" onclick="showTab('movimientos',this)">Historial</div>
@@ -170,6 +171,20 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
 </div>
 
 <div class="main">
+
+    <!-- SOLICITUDES DE PRODUCCIÓN -->
+    <div class="section" id="sec-solicitudes">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div>
+                <div style="font-size:1rem;font-weight:800;color:var(--gold);">Solicitudes de material en producción</div>
+                <div style="font-size:.78rem;color:var(--txt3);margin-top:2px;">Casos activos que necesitan material entregado. Haz clic en "Entregar" para registrar la salida y notificar al operario.</div>
+            </div>
+            <button class="btn btn-primary" onclick="cargarSolicitudes()" style="white-space:nowrap;"><i class="fas fa-rotate-right"></i> Actualizar</button>
+        </div>
+        <div id="tbl-solicitudes">
+            <p style="color:var(--txt3);font-size:.84rem;text-align:center;padding:32px;">Cargando solicitudes…</p>
+        </div>
+    </div>
 
     <!-- STOCK -->
     <div class="section active" id="sec-stock">
@@ -416,6 +431,30 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
     </div>
 </div>
 
+<!-- Modal: Entrega de material para solicitud de producción -->
+<div id="modal-entrega-sol" class="modal-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="ent-sol-title">
+    <div class="modal-box">
+        <h3 id="ent-sol-title">📦 Entregar Material</h3>
+        <p id="ent-sol-codigo" style="color:var(--cyan);font-weight:600;margin-bottom:1rem;"></p>
+        <div class="form-group">
+            <label>Material</label>
+            <select id="ent-sol-item" class="form-control"><option value="">Seleccionar...</option></select>
+        </div>
+        <div class="form-group">
+            <label>Cantidad a entregar</label>
+            <input id="ent-sol-cant" type="number" min="1" value="1" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Nota (opcional)</label>
+            <input id="ent-sol-nota" type="text" class="form-control" placeholder="Ej: Color A2, lote 2024-B">
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="cerrarEntregaMaterial()">Cancelar</button>
+            <button class="btn btn-primary" onclick="confirmarEntregaMaterial()">Confirmar entrega</button>
+        </div>
+    </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -437,6 +476,7 @@ let _facturaFile = null;
     document.getElementById('hdr-user').textContent =
         `${session.user.email}  ·  ${window.PRODIGY_ROLE}`;
     await cargarItems();
+    await contarSolicitudesPendientes();
 })();
 
 // ── Tabs ──────────────────────────────────────────────────────────
@@ -445,8 +485,9 @@ function showTab(id, el) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     el.classList.add('active');
     document.getElementById('sec-' + id).classList.add('active');
-    if (id === 'movimientos') cargarMovimientos();
-    if (id === 'rotacion')    cargarRotacion();
+    if (id === 'movimientos')  cargarMovimientos();
+    if (id === 'rotacion')     cargarRotacion();
+    if (id === 'solicitudes')  cargarSolicitudes();
 }
 
 // ── Cargar items ──────────────────────────────────────────────────
@@ -459,7 +500,7 @@ async function cargarItems() {
 }
 
 function populateSelects() {
-    ['ent-item','sal-item','mov-item-fil'].forEach(id => {
+    ['ent-item','sal-item','mov-item-fil','ent-sol-item'].forEach(id => {
         const sel = document.getElementById(id);
         const val = sel.value;
         sel.innerHTML = id === 'mov-item-fil'
@@ -852,6 +893,173 @@ async function cargarRotacion() {
         </tr>`;
     }).join('');
 }
+
+/* ══════════════════════════════════════════
+   SOLICITUDES DE PRODUCCIÓN
+══════════════════════════════════════════ */
+
+async function contarSolicitudesPendientes() {
+    const { count } = await sb.from('pedidos')
+        .select('id', { count: 'exact', head: true })
+        .in('estado_operativo', ['EN_PRODUCCION', 'FRESADO_INICIADO'])
+        .not('estado', 'in', '("cancelado","terminado","ENTREGADO")');
+    const badge = document.getElementById('badge-sol');
+    if (count > 0) { badge.textContent = count; badge.style.display = 'inline'; }
+    else badge.style.display = 'none';
+}
+
+async function cargarSolicitudes() {
+    const wrap = document.getElementById('tbl-solicitudes');
+    wrap.innerHTML = '<p style="color:var(--txt3);text-align:center;padding:24px;">Cargando…</p>';
+
+    const { data: pedidos, error } = await sb.from('pedidos')
+        .select('id,codigo,nombre_paciente,servicio,material,flujo,estado_operativo,departamento_actual,created_at,timestamp_produccion')
+        .in('estado_operativo', ['EN_PRODUCCION','FRESADO_INICIADO','VALIDACION_PENDIENTE'])
+        .in('flujo', ['fresado','lab','impresion'])
+        .not('estado', 'in', '("cancelado","terminado")')
+        .order('created_at', { ascending: true })
+        .limit(80);
+
+    if (error) { wrap.innerHTML = `<p style="color:#f87171;text-align:center;padding:24px;">Error: ${error.message}</p>`; return; }
+    if (!pedidos || !pedidos.length) {
+        wrap.innerHTML = '<p style="color:var(--txt3);text-align:center;padding:40px;"><i class="fas fa-check-circle" style="color:#00FF41;font-size:1.5rem;display:block;margin-bottom:8px;"></i>Sin solicitudes pendientes</p>';
+        document.getElementById('badge-sol').style.display = 'none';
+        return;
+    }
+
+    // Cargar movimientos recientes para saber qué pedidos ya tienen material entregado hoy
+    const ids = pedidos.map(p => p.id);
+    const { data: movs } = await sb.from('inventario_movimientos')
+        .select('pedido_id')
+        .in('pedido_id', ids)
+        .eq('tipo', 'SALIDA');
+    const conMaterial = new Set((movs || []).map(m => m.pedido_id));
+
+    const DEPT_ICON = { fresado:'🔩', lab:'🧪', impresion:'🖨️', '':'📦' };
+    const EST_COLOR = { EN_PRODUCCION:'#00d2ff', FRESADO_INICIADO:'#D4AF37', VALIDACION_PENDIENTE:'#f97316' };
+
+    wrap.innerHTML = `
+    <table style="width:100%;border-collapse:collapse;font-size:.84rem;">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border);text-align:left;">
+          <th style="padding:10px 8px;color:var(--txt3);font-weight:600;">Caso</th>
+          <th style="padding:10px 8px;color:var(--txt3);font-weight:600;">Servicio / Material</th>
+          <th style="padding:10px 8px;color:var(--txt3);font-weight:600;">Dpto</th>
+          <th style="padding:10px 8px;color:var(--txt3);font-weight:600;">Estado</th>
+          <th style="padding:10px 8px;color:var(--txt3);font-weight:600;">Material entregado</th>
+          <th style="padding:10px 8px;color:var(--txt3);font-weight:600;">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${pedidos.map(p => {
+            const ya = conMaterial.has(p.id);
+            const mins = p.timestamp_produccion
+                ? Math.floor((Date.now() - new Date(p.timestamp_produccion).getTime()) / 60000)
+                : null;
+            return `<tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:10px 8px;font-family:monospace;font-weight:700;">#${escH(p.codigo || p.id.slice(0,8))}</td>
+              <td style="padding:10px 8px;">
+                <div style="font-weight:600;">${escH(p.servicio || '—')}</div>
+                <div style="font-size:.75rem;color:var(--txt3);">${escH(p.material || 'Sin especificar')}</div>
+              </td>
+              <td style="padding:10px 8px;font-size:1.1rem;" title="${escH(p.flujo || '')}">${DEPT_ICON[p.flujo || ''] || '📦'}</td>
+              <td style="padding:10px 8px;">
+                <span style="color:${EST_COLOR[p.estado_operativo] || '#94a3b8'};font-size:.75rem;font-weight:700;">${escH(p.estado_operativo)}</span>
+                ${mins !== null ? `<div style="font-size:.7rem;color:${mins > 120 ? '#ef4444' : '#94a3b8'};">${mins}min en producción</div>` : ''}
+              </td>
+              <td style="padding:10px 8px;">
+                ${ya
+                  ? '<span style="color:#00FF41;font-size:.78rem;font-weight:700;">✓ Entregado</span>'
+                  : '<span style="color:#f97316;font-size:.78rem;">⏳ Pendiente</span>'}
+              </td>
+              <td style="padding:10px 8px;">
+                <button onclick="abrirEntregaMaterial('${escH(p.id)}','${escH(p.codigo||'')}','${escH(p.material||'')}','${escH(p.flujo||'')}')"
+                  style="padding:5px 12px;border-radius:6px;border:1px solid rgba(0,210,255,.35);background:transparent;color:#00d2ff;font-size:.75rem;cursor:pointer;font-weight:700;">
+                  📦 Entregar
+                </button>
+              </td>
+            </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+
+    // Actualizar badge
+    const pend = pedidos.filter(p => !conMaterial.has(p.id)).length;
+    const badge = document.getElementById('badge-sol');
+    if (pend > 0) { badge.textContent = pend; badge.style.display = 'inline'; }
+    else badge.style.display = 'none';
+}
+
+/* ── Modal entrega de material ── */
+let _entregaPedido = null;
+
+function abrirEntregaMaterial(pedidoId, codigo, materialNombre, flujo) {
+    _entregaPedido = { pedidoId, codigo };
+    document.getElementById('ent-sol-codigo').textContent = `Caso #${codigo} · ${materialNombre}`;
+    // Pre-seleccionar material
+    const sel = document.getElementById('ent-sol-item');
+    if (materialNombre) {
+        const key = materialNombre.toLowerCase().split(' ')[0];
+        for (const opt of sel.options) {
+            if (opt.textContent.toLowerCase().includes(key)) { sel.value = opt.value; break; }
+        }
+    }
+    document.getElementById('ent-sol-cant').value = 1;
+    document.getElementById('ent-sol-nota').value = '';
+    document.getElementById('modal-entrega-sol').style.display = 'flex';
+    document.getElementById('ent-sol-item').focus();
+}
+
+function cerrarEntregaMaterial() {
+    document.getElementById('modal-entrega-sol').style.display = 'none';
+    _entregaPedido = null;
+}
+
+async function confirmarEntregaMaterial() {
+    if (!_entregaPedido) return;
+    const { pedidoId, codigo } = _entregaPedido;
+    const itemId   = document.getElementById('ent-sol-item').value;
+    const cantidad = parseInt(document.getElementById('ent-sol-cant').value) || 1;
+    const nota     = document.getElementById('ent-sol-nota').value.trim();
+    if (!itemId) { toast('Selecciona el material a entregar', 'err'); return; }
+
+    cerrarEntregaMaterial();
+
+    // Obtener stock actual
+    const { data: it } = await sb.from('inventario_items')
+        .select('stock_actual,nombre,stock_minimo,unidad_medida').eq('id', itemId).single();
+    if (!it) { toast('Ítem no encontrado', 'err'); return; }
+
+    const nuevoStock = Math.max(0, it.stock_actual - cantidad);
+    await sb.from('inventario_items').update({ stock_actual: nuevoStock }).eq('id', itemId);
+    await sb.from('inventario_movimientos').insert({
+        item_id:   itemId,
+        tipo:      'SALIDA',
+        cantidad,
+        pedido_id: pedidoId,
+        notas:     `Entrega manual a producción — Caso #${codigo}${nota ? ' — ' + nota : ''}`,
+    });
+
+    if (nuevoStock <= it.stock_minimo) {
+        await sb.from('logs_incidencias').insert({
+            tipo:        'STOCK_CRITICO',
+            descripcion: `Stock bajo: ${it.nombre} → ${nuevoStock} ${it.unidad_medida || 'u'} restantes`,
+            severidad:   'ALTA',
+            pedido_id:   pedidoId,
+        }).catch(() => {});
+        toast(`⚠️ ${it.nombre}: stock bajo (${nuevoStock} ${it.unidad_medida || 'u'})`, 'err');
+    } else {
+        toast(`✓ Entregado: ${cantidad} ${it.unidad_medida || 'u'} de ${it.nombre}`, 'ok');
+    }
+
+    await cargarItems();
+    await cargarSolicitudes();
+}
+
+/* Escape cierra modal entrega */
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') cerrarEntregaMaterial();
+});
 
 // ── Toast ─────────────────────────────────────────────────────────
 function toast(msg, type = 'ok') {

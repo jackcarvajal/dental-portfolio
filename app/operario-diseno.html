@@ -307,6 +307,29 @@ body.ready{visibility:visible;}
 
 <div id="toast"></div>
 
+<!-- Modal: Handoff diseño → producción -->
+<div id="modal-handoff-diseno" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0a1525;border:1px solid rgba(212,175,55,.3);border-radius:16px;padding:28px;max-width:460px;width:100%;">
+    <div style="font-size:.95rem;font-weight:800;color:#D4AF37;margin-bottom:4px;"><i class="fas fa-arrow-right-to-bracket" style="margin-right:8px;"></i>Diseño aprobado — Enviar a producción</div>
+    <div id="modal-hd-codigo" style="font-size:.75rem;color:#94a3b8;margin-bottom:20px;"></div>
+    <div style="display:grid;gap:10px;margin-bottom:20px;">
+      <button class="hd-dept-btn" onclick="confirmarHandoff('fresado')" style="background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.3);border-radius:10px;padding:14px 18px;color:#00d2ff;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
+        <i class="fas fa-gear" style="margin-right:10px;"></i>Fresado / Lab — XTCERA · Dental Wings
+      </button>
+      <button class="hd-dept-btn" onclick="confirmarHandoff('impresion')" style="background:rgba(217,70,166,.08);border:1px solid rgba(217,70,166,.3);border-radius:10px;padding:14px 18px;color:#D946A6;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
+        <i class="fas fa-print" style="margin-right:10px;"></i>Impresión 3D — Biomodelos · Guías · Alineadores
+      </button>
+      <button class="hd-dept-btn" onclick="confirmarHandoff('lab')" style="background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:14px 18px;color:#D4AF37;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
+        <i class="fas fa-flask" style="margin-right:10px;"></i>Laboratorio convencional — Prótesis · Acrílico
+      </button>
+      <button class="hd-dept-btn" onclick="confirmarHandoff('entrega_digital')" style="background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.25);border-radius:10px;padding:14px 18px;color:#00FF41;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
+        <i class="fas fa-cloud-arrow-up" style="margin-right:10px;"></i>Solo archivo digital — Entrega STL directo al doctor
+      </button>
+    </div>
+    <button onclick="cerrarHandoffDiseno()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;width:100%;">Cancelar</button>
+  </div>
+</div>
+
 <script>
 const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
@@ -584,9 +607,105 @@ async function guardarQA(resultado) {
   if (error) { toast('Error: ' + error.message,'err'); return; }
 
   cerrarQA();
-  toast(resultado === 'DISENO_APROBADO' ? 'Diseño aprobado y entregado ✅' : 'Cambios marcados — vuelve a diseño 🔄', 'ok');
+
+  if (resultado === 'DISENO_APROBADO') {
+    // Abrir modal de handoff para que el operario elija el departamento destino
+    const caso = _casos.find(p => p.id === id) || {};
+    _handoffPendiente = { id, codigo, caso };
+    document.getElementById('modal-hd-codigo').textContent =
+      `Caso #${codigo} — ${caso.servicio || ''} · ${caso.material || ''}`;
+    // Preselección visual según servicio
+    const svc = (caso.servicio || '').toLowerCase();
+    document.querySelectorAll('.hd-dept-btn').forEach(b => b.style.outline = '');
+    if (svc.includes('fresa') || svc.includes('corona') || svc.includes('puente') || svc.includes('zirconia')) {
+      document.querySelector('[onclick*="fresado"]').style.outline = '2px solid #00d2ff';
+    } else if (svc.includes('impres') || svc.includes('guia') || svc.includes('alineador')) {
+      document.querySelector('[onclick*="impresion"]').style.outline = '2px solid #D946A6';
+    }
+    document.getElementById('modal-handoff-diseno').style.display = 'flex';
+  } else {
+    toast('Cambios marcados — vuelve a diseño 🔄', 'ok');
+  }
   await cargarCasos();
 }
+
+/* ── Handoff diseño → siguiente departamento ── */
+let _handoffPendiente = null;
+
+function cerrarHandoffDiseno() {
+  document.getElementById('modal-handoff-diseno').style.display = 'none';
+  _handoffPendiente = null;
+}
+
+async function confirmarHandoff(dept) {
+  if (!_handoffPendiente) return;
+  const { id, codigo, caso } = _handoffPendiente;
+  cerrarHandoffDiseno();
+
+  const DEPT_LABEL = {
+    fresado:          'Fresado / Lab',
+    impresion:        'Impresión 3D',
+    lab:              'Laboratorio',
+    entrega_digital:  'Entrega Digital',
+  };
+  const lbl = DEPT_LABEL[dept] || dept;
+
+  // Actualizar flujo y departamento_actual en la BD
+  const updates = { flujo: dept, departamento_actual: dept };
+  if (dept === 'entrega_digital') {
+    updates.estado_operativo = 'ENTREGADO';
+    updates.estado = 'terminado';
+  }
+  const { error } = await sb.from('pedidos').update(updates).eq('id', id);
+  if (error) { toast('Error en handoff: ' + error.message, 'err'); return; }
+
+  // Registrar en historial
+  await sb.from('historial_diseno').insert({
+    pedido_id:   id,
+    tipo:        'HANDOFF_DISENO',
+    actor:       'operario-diseno',
+    descripcion: `Diseño aprobado — caso enviado a ${lbl}. STL disponible en el panel de ${lbl}.`,
+  }).catch(() => {});
+
+  // Notificar al operario de producción vía push interna
+  if (dept !== 'entrega_digital') {
+    try {
+      await fetch(PUSH_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON },
+        body: JSON.stringify({
+          titulo: `📥 Nuevo caso para ${lbl} — #${codigo}`,
+          cuerpo:  `${caso.servicio || 'Caso'} · ${caso.material || ''} · Diseño aprobado y listo para producción.`,
+          url:     '/app/operator-panel.html',
+        }),
+      });
+    } catch (_) {}
+  }
+
+  // Notificar al doctor
+  if (caso.email || caso.whatsapp) {
+    try {
+      await fetch(PUSH_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON },
+        body: JSON.stringify({
+          email:  caso.email || undefined,
+          titulo: dept === 'entrega_digital' ? `📦 STL entregado — Caso #${codigo}` : `🏭 En producción — Caso #${codigo}`,
+          cuerpo:  dept === 'entrega_digital'
+            ? 'Tu diseño fue aprobado. El archivo STL está disponible en tu portal.'
+            : `Tu diseño fue aprobado y pasó al equipo de ${lbl}. Te notificamos cada avance.`,
+        }),
+      });
+    } catch (_) {}
+  }
+
+  toast(`✅ Caso enviado a ${lbl} — operario notificado`, 'ok');
+  await cargarCasos();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') cerrarHandoffDiseno();
+});
 
 /* ── NOTIFICACIONES WA (PRODIGY) ── */
 function notifWA(tipo) {
