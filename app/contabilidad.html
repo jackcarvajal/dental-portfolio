@@ -182,6 +182,10 @@ tbody td{padding:11px 14px;vertical-align:middle;}
         <button class="tab-btn" onclick="switchTab('suministros',this)">
             <i class="fas fa-boxes-stacked"></i> Suministros
         </button>
+        <button class="tab-btn" onclick="switchTab('facturas',this)">
+            <i class="fas fa-file-invoice"></i> Facturas DIAN
+            <span class="badge" id="badge-fact" style="background:var(--pink);color:#fff;">0</span>
+        </button>
     </div>
 
     <!-- TAB: Por confirmar -->
@@ -263,6 +267,84 @@ tbody td{padding:11px 14px;vertical-align:middle;}
             </table>
         </div>
     </div>
+    <!-- TAB: Facturas DIAN -->
+    <div id="tab-facturas" class="tab-panel">
+        <!-- Sub-tabs -->
+        <div style="display:flex;gap:6px;margin-bottom:18px;">
+            <button id="ftab-pend" onclick="switchFTab('pendientes')" style="padding:6px 16px;border-radius:20px;border:1px solid var(--pink);background:rgba(217,70,166,.15);color:var(--pink);font-size:.78rem;font-weight:700;cursor:pointer;">⏳ Por emitir</button>
+            <button id="ftab-emit" onclick="switchFTab('emitidas')" style="padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:none;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;">✅ Emitidas</button>
+            <button id="ftab-err"  onclick="switchFTab('errores')"  style="padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:none;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;">⚠ Errores</button>
+        </div>
+
+        <!-- Por emitir -->
+        <div id="fpanel-pendientes">
+            <p style="font-size:.76rem;color:var(--muted);margin-bottom:12px;">Casos con pago confirmado que solicitaron factura electrónica DIAN. Haz clic en <strong style="color:var(--gold)">Emitir</strong> para enviarla a Alegra y DIAN.</p>
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Razón Social / NIT</th>
+                            <th>Servicio</th>
+                            <th>Total</th>
+                            <th>Email factura</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-fact-pend">
+                        <tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted);">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Emitidas -->
+        <div id="fpanel-emitidas" style="display:none;">
+            <div class="filtros">
+                <label>Desde</label><input type="date" id="fact-desde">
+                <label>Hasta</label><input type="date" id="fact-hasta">
+                <button class="btn-xs btn-ver" onclick="cargarFacturasEmitidas()"><i class="fas fa-search"></i> Filtrar</button>
+            </div>
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código caso</th>
+                            <th>Razón Social</th>
+                            <th>Nro. factura</th>
+                            <th>CUFE</th>
+                            <th>Fecha emisión</th>
+                            <th>Total</th>
+                            <th>PDF / DIAN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-fact-emit">
+                        <tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted);">Selecciona rango de fechas</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Errores -->
+        <div id="fpanel-errores" style="display:none;">
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Razón Social</th>
+                            <th>Error</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-fact-err">
+                        <tr><td colspan="4" style="text-align:center;padding:30px;color:var(--muted);">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <!-- TAB: Pedidos -->
     <div id="tab-pedidos" class="tab-panel">
         <div class="filtros">
@@ -418,8 +500,10 @@ let _pedidos = [];
     document.getElementById('ped-hasta').value  = hoyStr;
     document.getElementById('sum-desde').value  = iniStr;
     document.getElementById('sum-hasta').value  = hoyStr;
+    document.getElementById('fact-desde').value = iniStr;
+    document.getElementById('fact-hasta').value = hoyStr;
 
-    await Promise.all([cargarPorConfirmar(), cargarSaldos(), cargarHistorial(), cargarPedidos(), cargarSuministros()]);
+    await Promise.all([cargarPorConfirmar(), cargarSaldos(), cargarHistorial(), cargarPedidos(), cargarSuministros(), cargarFacturasPendientes()]);
     initRealtime();
 })();
 
@@ -615,11 +699,18 @@ async function confirmarPago() {
     const btn      = document.getElementById('btn-confirmar-pago');
     btn.disabled   = true;
 
+    // Verificar si requiere factura para activar el flujo DIAN
+    const { data: pCheck } = await sb.from('pedidos')
+        .select('requiere_factura,factura_estado')
+        .eq('id', pedidoId).single();
+    const activarFactura = pCheck?.requiere_factura && pCheck?.factura_estado === 'no_requerida';
+
     const { error } = await sb.from('pedidos').update({
         pago_estado:             'pago_confirmado',
         nota_confirmacion_pago:  nota || null,
         timestamp_pago_confirmado: new Date().toISOString(),
         pago_confirmado_por:     _userId,
+        ...(activarFactura ? { factura_estado: 'pendiente' } : {}),
     }).eq('id', pedidoId);
 
     if (error) { toast('Error: ' + error.message, 'err'); btn.disabled = false; return; }
@@ -637,9 +728,13 @@ async function confirmarPago() {
         window.open(`https://wa.me/${wa}?text=${txt}`, '_blank');
     }
 
-    toast(`✅ Pago confirmado — Caso #${p?.codigo || ''}`, 'ok');
+    if (activarFactura) {
+        toast(`✅ Pago confirmado — Factura DIAN marcada como pendiente`, 'ok');
+    } else {
+        toast(`✅ Pago confirmado — Caso #${p?.codigo || ''}`, 'ok');
+    }
     cerrarModalComp();
-    await Promise.all([cargarPorConfirmar(), cargarHistorial()]);
+    await Promise.all([cargarPorConfirmar(), cargarHistorial(), cargarFacturasPendientes()]);
 }
 
 async function rechazarPago() {
@@ -665,6 +760,199 @@ async function rechazarPago() {
     toast('Comprobante rechazado — doctor notificado', 'warn');
     cerrarModalComp();
     await cargarPorConfirmar();
+}
+
+/* ── Facturas DIAN ────────────────────────────────────────────────── */
+function switchFTab(nombre) {
+    ['pendientes','emitidas','errores'].forEach(n => {
+        document.getElementById('fpanel-' + n).style.display = n === nombre ? 'block' : 'none';
+        const btn = document.getElementById('ftab-' + (n === 'pendientes' ? 'pend' : n === 'emitidas' ? 'emit' : 'err'));
+        if (btn) {
+            if (n === nombre) {
+                btn.style.background = 'rgba(217,70,166,.15)';
+                btn.style.color      = 'var(--pink)';
+                btn.style.borderColor = 'var(--pink)';
+            } else {
+                btn.style.background  = 'none';
+                btn.style.color       = 'var(--muted)';
+                btn.style.borderColor = 'rgba(255,255,255,.15)';
+            }
+        }
+    });
+    if (nombre === 'emitidas') cargarFacturasEmitidas();
+    if (nombre === 'errores')  cargarFacturasError();
+}
+
+async function cargarFacturasPendientes() {
+    const { data } = await sb.from('pedidos')
+        .select('id,codigo,servicio,precio_total,billing_tipo,billing_nit,billing_razon,billing_email,pago_estado,factura_estado,factura_error')
+        .eq('requiere_factura', true)
+        .eq('factura_estado', 'pendiente')
+        .order('created_at', { ascending: false });
+
+    const rows = data || [];
+    document.getElementById('badge-fact').textContent = rows.length;
+
+    const tbody = document.getElementById('tbody-fact-pend');
+    if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-check-circle" style="color:var(--green)"></i><p>Sin facturas pendientes de emitir</p></div></td></tr>';
+        return;
+    }
+    tbody.innerHTML = rows.map(p => {
+        const razon = escH(p.billing_razon || '—');
+        const nit   = escH(p.billing_nit   || '—');
+        return `<tr>
+            <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
+            <td>
+                <div style="font-weight:700;font-size:.82rem;">${razon}</div>
+                <div style="font-size:.72rem;color:var(--muted);">${escH(p.billing_tipo||'')} ${nit}</div>
+            </td>
+            <td style="font-size:.78rem;">${escH(p.servicio || '—')}</td>
+            <td class="td-monto">${fmtCOP(p.precio_total)}</td>
+            <td style="font-size:.74rem;color:var(--muted);">${escH(p.billing_email || '—')}</td>
+            <td>
+                <button class="btn-xs btn-gold" onclick="emitirFactura('${escH(p.id)}',this)">
+                    <i class="fas fa-paper-plane"></i> Emitir
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+async function emitirFactura(pedidoId, btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Emitiendo…';
+
+    const { data: p } = await sb.from('pedidos')
+        .select('id,codigo,servicio,precio_total,billing_tipo,billing_nit,billing_razon,billing_email')
+        .eq('id', pedidoId).single();
+
+    if (!p) { toast('Caso no encontrado', 'err'); btn.disabled = false; return; }
+
+    try {
+        const res  = await fetch('/api/factura', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                pedido_id:     p.id,
+                codigo:        p.codigo,
+                servicio:      p.servicio,
+                precio_total:  p.precio_total,
+                billing_tipo:  p.billing_tipo,
+                billing_nit:   p.billing_nit,
+                billing_razon: p.billing_razon,
+                billing_email: p.billing_email,
+            }),
+        });
+        const data = await res.json();
+
+        if (!res.ok || data.error) {
+            toast('Error al emitir: ' + (data.error || 'Sin respuesta'), 'err');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-redo"></i> Reintentar';
+            return;
+        }
+
+        // Actualizar UI local (la función también lo parchea en Supabase via service key)
+        await sb.from('pedidos').update({
+            factura_estado:     'emitida',
+            factura_alegra_id:  data.alegra_id,
+            factura_numero:     data.numero,
+            factura_cufe:       data.cufe,
+            factura_pdf_url:    data.pdf,
+            factura_emitida_at: new Date().toISOString(),
+            factura_error:      null,
+        }).eq('id', pedidoId);
+
+        toast(`✅ Factura #${data.numero || ''} emitida — CUFE recibido`, 'ok');
+
+        // Abrir PDF si está disponible
+        if (data.pdf) window.open(data.pdf, '_blank');
+
+        await cargarFacturasPendientes();
+
+    } catch(e) {
+        toast('Error de conexión con /api/factura', 'err');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-redo"></i> Reintentar';
+    }
+}
+
+async function cargarFacturasEmitidas() {
+    const desde = document.getElementById('fact-desde')?.value;
+    const hasta = document.getElementById('fact-hasta')?.value;
+
+    let q = sb.from('pedidos')
+        .select('id,codigo,billing_razon,billing_nit,factura_numero,factura_cufe,factura_pdf_url,factura_emitida_at,precio_total')
+        .eq('factura_estado', 'emitida')
+        .order('factura_emitida_at', { ascending: false })
+        .limit(200);
+
+    if (desde) q = q.gte('factura_emitida_at', new Date(desde + 'T00:00:00').toISOString());
+    if (hasta) q = q.lte('factura_emitida_at', new Date(hasta + 'T23:59:59').toISOString());
+
+    const { data } = await q;
+    const rows = data || [];
+
+    const tbody = document.getElementById('tbody-fact-emit');
+    if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="fas fa-file-invoice"></i><p>Sin facturas emitidas en ese período</p></div></td></tr>';
+        return;
+    }
+    tbody.innerHTML = rows.map(p => {
+        const cufe = p.factura_cufe || '—';
+        const cufeShort = cufe.length > 20 ? cufe.slice(0,20) + '…' : cufe;
+        return `<tr>
+            <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
+            <td>
+                <div style="font-size:.82rem;font-weight:700;">${escH(p.billing_razon || '—')}</div>
+                <div style="font-size:.72rem;color:var(--muted);">${escH(p.billing_nit || '')}</div>
+            </td>
+            <td class="td-mono" style="color:var(--green);">${escH(p.factura_numero || '—')}</td>
+            <td title="${escH(cufe)}" style="font-size:.7rem;color:var(--muted);cursor:help;max-width:160px;overflow:hidden;text-overflow:ellipsis;">${escH(cufeShort)}</td>
+            <td style="font-size:.74rem;color:var(--muted);">${fmtFecha(p.factura_emitida_at)}</td>
+            <td class="td-monto">${fmtCOP(p.precio_total)}</td>
+            <td>${p.factura_pdf_url
+                ? `<a href="${escH(p.factura_pdf_url)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-ver"><i class="fas fa-file-pdf"></i> PDF</a>`
+                : '<span style="font-size:.72rem;color:var(--muted);">Sin PDF</span>'
+            }</td>
+        </tr>`;
+    }).join('');
+}
+
+async function cargarFacturasError() {
+    const { data } = await sb.from('pedidos')
+        .select('id,codigo,billing_razon,factura_error')
+        .eq('requiere_factura', true)
+        .eq('factura_estado', 'error')
+        .order('created_at', { ascending: false });
+
+    const rows = data || [];
+    const tbody = document.getElementById('tbody-fact-err');
+    if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><i class="fas fa-check" style="color:var(--green)"></i><p>Sin errores de facturación</p></div></td></tr>';
+        return;
+    }
+    tbody.innerHTML = rows.map(p => `<tr>
+        <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
+        <td style="font-size:.82rem;">${escH(p.billing_razon || '—')}</td>
+        <td style="font-size:.74rem;color:var(--red);max-width:260px;">${escH(p.factura_error || 'Error desconocido')}</td>
+        <td>
+            <button class="btn-xs btn-gold" onclick="reintentarFactura('${escH(p.id)}',this)">
+                <i class="fas fa-redo"></i> Reintentar
+            </button>
+        </td>
+    </tr>`).join('');
+}
+
+async function reintentarFactura(pedidoId, btn) {
+    // Marcar como pendiente para que aparezca en el tab de por emitir
+    await sb.from('pedidos').update({ factura_estado: 'pendiente', factura_error: null }).eq('id', pedidoId);
+    toast('Marcado como pendiente — ve al tab "Por emitir"', 'ok');
+    await cargarFacturasError();
+    await cargarFacturasPendientes();
+    document.getElementById('badge-fact').textContent =
+        parseInt(document.getElementById('badge-fact').textContent || '0') + 1;
 }
 
 /* ── Pedidos ──────────────────────────────────────────────────────── */
