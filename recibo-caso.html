@@ -188,6 +188,28 @@ function render(pedido, revisiones){
             ${pagoEstadoBadge(pedido.pago_estado||pedido.estado||'pendiente')}
           </div>
         </div>
+        ${total ? `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+          <div style="background:#f1f5f9;border-radius:8px;padding:10px 14px;">
+            <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-bottom:3px;">Abono (50%)</div>
+            <div style="font-size:.92rem;font-weight:700;color:#1a1a2e;">${fmtCOP(Math.round(total/2))}</div>
+            <div style="font-size:.65rem;color:#64748b;margin-top:2px;">Pagado al inicio</div>
+          </div>
+          <div style="background:${(pedido.pago_estado==='pago_confirmado'||pedido.pago_estado==='Pagado')?'#e8fdf0':'#fef9e7'};border-radius:8px;padding:10px 14px;">
+            <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-bottom:3px;">Saldo (50%)</div>
+            <div style="font-size:.92rem;font-weight:700;color:#1a1a2e;">${fmtCOP(pedido.saldo_pendiente_monto ?? Math.round(total/2))}</div>
+            <div style="font-size:.65rem;color:${(pedido.pago_estado==='pago_confirmado'||pedido.pago_estado==='Pagado')?'#00873d':'#b7791f'};margin-top:2px;font-weight:700;">
+              ${(pedido.pago_estado==='pago_confirmado'||pedido.pago_estado==='Pagado') ? '✅ Pagado' : '⏳ Contra entrega'}
+            </div>
+          </div>
+        </div>
+        ${pedido.comprobante_abono_url||pedido.comprobante_saldo_url ? `
+        <div style="margin-top:10px;font-size:.72rem;color:#64748b;">
+          Comprobantes registrados:
+          ${pedido.comprobante_abono_url?`<a href="${escH(pedido.comprobante_abono_url)}" target="_blank" rel="noopener noreferrer" style="color:#1a7acc;margin-left:8px;">📎 Abono</a>`:''}
+          ${pedido.comprobante_saldo_url?`<a href="${escH(pedido.comprobante_saldo_url)}" target="_blank" rel="noopener noreferrer" style="color:#1a7acc;margin-left:8px;">📎 Saldo</a>`:''}
+        </div>` : ''}
+        ` : ''}
       </div>
 
     </div>

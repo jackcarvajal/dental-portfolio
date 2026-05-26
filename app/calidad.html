@@ -215,6 +215,64 @@ body.ready { visibility: visible; }
         </div>
     </div>
 
+    <!-- ── PAGO ────────────────────────────────────────────────── -->
+    <div style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:12px;padding:14px 16px;">
+        <div style="font-size:.76rem;font-weight:700;color:var(--gold);margin-bottom:10px;">💰 Validación de Pago</div>
+
+        <!-- Modalidad -->
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+            <label style="flex:1;min-width:140px;cursor:pointer;">
+                <input type="radio" name="modalidad_cobro" id="pago-completo" value="completo" onchange="onModalidadPago()" style="accent-color:var(--green);">
+                <span style="font-size:.8rem;margin-left:6px;">✅ Pago completo recibido</span>
+            </label>
+            <label style="flex:1;min-width:160px;cursor:pointer;">
+                <input type="radio" name="modalidad_cobro" id="pago-contra-entrega" value="contra_entrega" onchange="onModalidadPago()" style="accent-color:var(--yellow);" checked>
+                <span style="font-size:.8rem;margin-left:6px;">📦 Cobrar saldo en entrega</span>
+            </label>
+            <label style="flex:1;min-width:120px;cursor:pointer;">
+                <input type="radio" name="modalidad_cobro" id="pago-credito" value="credito" onchange="onModalidadPago()" style="accent-color:var(--cyan);">
+                <span style="font-size:.8rem;margin-left:6px;">🤝 Crédito autorizado</span>
+            </label>
+        </div>
+
+        <!-- Saldo a cobrar (visible cuando contra_entrega) -->
+        <div id="cal-saldo-wrap" style="margin-bottom:10px;">
+            <div style="font-size:.74rem;color:var(--muted);margin-bottom:4px;">Monto a cobrar en entrega</div>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <input id="cal-saldo-monto" type="number" min="0" step="1000"
+                    style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.3);border-radius:8px;padding:8px 12px;color:#fff;font-size:.9rem;outline:none;"
+                    placeholder="0" oninput="onSaldoInput()">
+                <span style="font-size:.75rem;color:var(--muted);">COP</span>
+            </div>
+            <div id="cal-saldo-auto-badge" style="font-size:.72rem;color:var(--yellow);margin-top:4px;display:none;">
+                ⚡ Calculado automáticamente como 50% del total
+            </div>
+        </div>
+
+        <!-- Comprobante de abono (visible cuando completo) -->
+        <div id="cal-comprobante-wrap" style="display:none;">
+            <div style="font-size:.74rem;color:var(--muted);margin-bottom:6px;">Comprobante de pago completo</div>
+            <div class="upload-zone" onclick="document.getElementById('cal-comp-input').click()" style="border-color:rgba(0,255,65,.3);">
+                <i class="fas fa-receipt" style="font-size:1.2rem;color:var(--green);"></i>
+                <div class="upload-zone-txt">Captura o selecciona el comprobante (foto/PDF)</div>
+            </div>
+            <input type="file" id="cal-comp-input" accept="image/*,application/pdf" capture="environment" style="display:none" onchange="agregarComprobante(event)">
+            <div id="cal-comp-preview" style="margin-top:8px;font-size:.76rem;color:var(--green);display:none;">
+                <i class="fas fa-check-circle"></i> <span id="cal-comp-nombre"></span>
+            </div>
+        </div>
+
+        <div id="cal-credito-nota" style="display:none;font-size:.74rem;color:var(--cyan);padding:8px 10px;background:rgba(0,210,255,.07);border-radius:8px;">
+            ℹ️ Crédito autorizado — confirma con administración antes de despachar. El mensajero no cobra en entrega.
+        </div>
+    </div>
+
+    <!-- Banner de saldo para mensajero (se genera automático) -->
+    <div id="cal-banner-saldo" style="display:none;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:10px;padding:12px 14px;">
+        <div style="font-size:.78rem;font-weight:800;color:var(--yellow);">⚠️ Instrucción para el mensajero</div>
+        <div id="cal-banner-txt" style="font-size:.82rem;margin-top:4px;color:#fff;font-weight:600;"></div>
+    </div>
+
     <!-- Checklist obligatorio -->
     <div class="form-group">
         <label>✅ Checklist de despacho</label>
@@ -232,8 +290,8 @@ body.ready { visibility: visible; }
                 <label for="chk3">Factura / remisión incluida en el paquete</label>
             </div>
             <div class="check-item">
-                <input type="checkbox" id="chk4">
-                <label for="chk4">Pago verificado (abono recibido o crédito autorizado)</label>
+                <input type="checkbox" id="chk4" id="chk4-pago">
+                <label for="chk4">Pago verificado según modalidad seleccionada arriba</label>
             </div>
             <div class="check-item">
                 <input type="checkbox" id="chk5">
@@ -244,8 +302,8 @@ body.ready { visibility: visible; }
 
     <!-- Nota para el mensajero -->
     <div class="form-group">
-        <label>📝 Nota para el mensajero (opcional)</label>
-        <textarea id="cal-nota-mensajero" placeholder="Ej: Frágil — lado arriba. Entregar solo al doctor. Cobrar saldo $80.000."></textarea>
+        <label>📝 Nota para el mensajero</label>
+        <textarea id="cal-nota-mensajero" placeholder="Ej: Frágil — lado arriba. Entregar solo al doctor."></textarea>
     </div>
 
     <div class="modal-actions">
@@ -274,8 +332,9 @@ const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency
 
 let _userId   = null;
 let _pedidos  = [];
-let _mediaFiles = []; // { file, objectURL, tipo }
+let _mediaFiles   = []; // { file, objectURL, tipo }
 let _activePedido = null;
+let _comprobanteFile = null; // comprobante de pago completo
 
 /* ── Auth ─────────────────────────────────────────────────────────── */
 (async () => {
@@ -300,7 +359,7 @@ function switchTab(id, el) {
 async function cargarCasos() {
     const { data, error } = await sb
         .from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,estado_operativo,precio_total,fotos_empaque,nota_calidad,flujo,created_at,timestamp_qa')
+        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,estado_operativo,precio_total,pago_estado,modalidad_cobro,saldo_pendiente_monto,comprobante_abono_url,fotos_empaque,nota_calidad,flujo,whatsapp,created_at,timestamp_qa')
         .in('estado_operativo', ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO'])
         .order('timestamp_qa', { ascending: false, nullsFirst: false });
 
@@ -381,10 +440,20 @@ function abrirModalCalidad(pedidoId) {
     document.getElementById('cal-codigo').textContent     = `Caso #${p.codigo || pedidoId.slice(0,8)}`;
     document.getElementById('cal-nombre').textContent     = p.nombre_cliente || p.nombre_doctor || '—';
     document.getElementById('cal-precio').textContent     = fmtCOP(p.precio_total);
+    // Info de pago
+    const abono = p.precio_total ? Math.round(p.precio_total / 2) : 0;
     document.getElementById('cal-pago-estado').textContent = p.precio_total
-        ? `Total: ${fmtCOP(p.precio_total)} — verificar abono y saldo contra el admin`
+        ? `Total: ${fmtCOP(p.precio_total)} · Abono: ${fmtCOP(abono)} · Saldo: ${fmtCOP(abono)}`
         : 'Sin precio registrado — confirmar con admin';
-    document.getElementById('cal-nota-mensajero').value   = '';
+
+    // Modalidad de pago guardada previamente o default 50/50
+    const mod = p.modalidad_cobro || 'contra_entrega';
+    document.querySelector(`input[name="modalidad_cobro"][value="${mod}"]`).checked = true;
+    document.getElementById('cal-saldo-monto').value = p.saldo_pendiente_monto || abono || '';
+    _comprobanteFile = null;
+    document.getElementById('cal-comp-preview').style.display = 'none';
+    onModalidadPago();
+    document.getElementById('cal-nota-mensajero').value = p.nota_calidad || '';
 
     // Fotos del operario
     const fotos = Array.isArray(p.fotos_empaque) ? p.fotos_empaque : [];
@@ -406,6 +475,66 @@ function cerrarModalCalidad() {
     document.getElementById('modal-calidad').style.display = 'none';
     _activePedido = null;
     _mediaFiles   = [];
+}
+
+/* ── Lógica de pago ───────────────────────────────────────────────── */
+function onModalidadPago() {
+    const mod  = document.querySelector('input[name="modalidad_cobro"]:checked')?.value || 'contra_entrega';
+    const isContraEnt = mod === 'contra_entrega';
+    const isCompleto  = mod === 'completo';
+    const isCredito   = mod === 'credito';
+
+    document.getElementById('cal-saldo-wrap').style.display      = isContraEnt ? 'block' : 'none';
+    document.getElementById('cal-comprobante-wrap').style.display = isCompleto  ? 'block' : 'none';
+    document.getElementById('cal-credito-nota').style.display    = isCredito   ? 'block' : 'none';
+
+    if (isContraEnt) {
+        const p = _activePedido;
+        if (p?.precio_total && !document.getElementById('cal-saldo-monto').value) {
+            document.getElementById('cal-saldo-monto').value = Math.round(p.precio_total / 2);
+            document.getElementById('cal-saldo-auto-badge').style.display = 'block';
+        }
+    }
+    actualizarBannerSaldo();
+}
+
+function onSaldoInput() {
+    document.getElementById('cal-saldo-auto-badge').style.display = 'none';
+    actualizarBannerSaldo();
+}
+
+function actualizarBannerSaldo() {
+    const mod    = document.querySelector('input[name="modalidad_cobro"]:checked')?.value || 'contra_entrega';
+    const banner = document.getElementById('cal-banner-saldo');
+    const banTxt = document.getElementById('cal-banner-txt');
+    if (mod === 'contra_entrega') {
+        const monto = parseInt(document.getElementById('cal-saldo-monto').value) || 0;
+        if (monto > 0) {
+            const p = _activePedido;
+            const fmtMonto = new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(monto);
+            banTxt.textContent = `COBRAR SALDO ${fmtMonto} al Dr. ${p?.nombre_cliente || p?.nombre_doctor || ''} contra entrega del caso #${p?.codigo || ''}`;
+            banner.style.display = 'block';
+            // Auto-fill nota mensajero
+            document.getElementById('cal-nota-mensajero').value =
+                `COBRAR SALDO ${fmtMonto} contra entrega. Solo entregar al recibir el pago.`;
+        } else {
+            banner.style.display = 'none';
+        }
+    } else {
+        banner.style.display = 'none';
+        if (mod === 'credito') {
+            document.getElementById('cal-nota-mensajero').value = 'Crédito autorizado — NO cobrar en entrega.';
+        }
+    }
+}
+
+function agregarComprobante(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    _comprobanteFile = file;
+    document.getElementById('cal-comp-nombre').textContent = file.name;
+    document.getElementById('cal-comp-preview').style.display = 'block';
+    event.target.value = '';
 }
 
 /* ── Subir media ──────────────────────────────────────────────────── */
@@ -442,14 +571,16 @@ async function confirmarCalidad() {
     const media = _mediaFiles.filter(Boolean);
     if (!media.length) { toast('Agrega al menos 1 foto del empaque final', 'err'); return; }
 
-    const pedidoId = document.getElementById('cal-pedido-id').value;
-    const nota     = document.getElementById('cal-nota-mensajero').value.trim();
-    const bar      = document.getElementById('cal-upload-bar');
-    const msg      = document.getElementById('cal-upload-msg');
-    const btn      = document.getElementById('btn-cal-confirm');
+    const pedidoId    = document.getElementById('cal-pedido-id').value;
+    const nota        = document.getElementById('cal-nota-mensajero').value.trim();
+    const modalidad   = document.querySelector('input[name="modalidad_cobro"]:checked')?.value || 'contra_entrega';
+    const saldoMonto  = modalidad === 'contra_entrega' ? (parseInt(document.getElementById('cal-saldo-monto').value) || 0) : 0;
+    const bar         = document.getElementById('cal-upload-bar');
+    const msg         = document.getElementById('cal-upload-msg');
+    const btn         = document.getElementById('btn-cal-confirm');
     bar.classList.add('show'); btn.disabled = true;
 
-    // Subir archivos a Supabase Storage
+    // Subir media de empaque
     const paths = [];
     for (let i = 0; i < media.length; i++) {
         const { file, tipo } = media[i];
@@ -465,38 +596,71 @@ async function confirmarCalidad() {
         }
     }
 
+    // Subir comprobante de pago si lo hay
+    let comprobanteUrl = null;
+    if (_comprobanteFile) {
+        msg.textContent = 'Subiendo comprobante de pago...';
+        const ext  = _comprobanteFile.type === 'application/pdf' ? 'pdf' : 'jpg';
+        const path = `${pedidoId}/comprobante_${Date.now()}.${ext}`;
+        const { error: eCp } = await sb.storage
+            .from('evidencias-entrega')
+            .upload(path, _comprobanteFile, { contentType: _comprobanteFile.type, upsert: true });
+        if (!eCp) {
+            const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
+            comprobanteUrl = publicUrl;
+        }
+    }
+
     msg.textContent = 'Guardando estado...';
 
-    // Actualizar pedido
+    // Construir update según modalidad
+    const pagoUpdate = modalidad === 'completo'
+        ? { pago_estado: 'pago_confirmado', saldo_pendiente_monto: 0, comprobante_abono_url: comprobanteUrl }
+        : modalidad === 'credito'
+            ? { pago_estado: 'credito_autorizado', saldo_pendiente_monto: 0 }
+            : { pago_estado: 'contra_entrega', saldo_pendiente_monto: saldoMonto };
+
     const { error } = await sb.from('pedidos').update({
-        estado_operativo:      'LISTO_DESPACHAR',
-        nota_calidad:          nota || null,
-        fotos_calidad:         paths,
-        timestamp_calidad:     new Date().toISOString(),
-        calidad_user_id:       _userId,
+        estado_operativo:  'LISTO_DESPACHAR',
+        nota_calidad:      nota || null,
+        fotos_calidad:     paths,
+        timestamp_calidad: new Date().toISOString(),
+        calidad_user_id:   _userId,
+        modalidad_cobro:   modalidad,
+        ...pagoUpdate,
     }).eq('id', pedidoId);
 
     bar.classList.remove('show'); btn.disabled = false;
 
     if (error) { toast('Error: ' + error.message, 'err'); return; }
 
-    // Notificar admin y mensajeros
     const p = _activePedido;
+
+    // Si pagó completo → enviar link de recibo por WA
+    if (modalidad === 'completo' && p?.whatsapp) {
+        const wa  = String(p.whatsapp).replace(/\D/g, '');
+        const url = `https://prodigylabdental.com/recibo-caso?id=${p.codigo || pedidoId}`;
+        const txt = encodeURIComponent(
+            `✅ *Pago confirmado* — Caso #${p.codigo || ''}\n\nHola Doctor, confirmamos recibo de pago completo por *${new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(p.precio_total)}*.\n\nTu recibo: ${url}\n\n_PRODIGY Lab Dental_`
+        );
+        window.open(`https://wa.me/${wa || '573212816716'}?text=${txt}`, '_blank');
+    }
+
+    // Notificar admin
     await Promise.allSettled([
         fetch(PUSH_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
             body: JSON.stringify({
-                titulo:  `🚀 Listo para asignar — Caso #${p?.codigo || ''}`,
-                cuerpo:  `${p?.servicio || 'Caso'} pasó calidad. Asigna mensajero desde Despachos.`,
+                titulo:  `🚀 Listo para despacho — Caso #${p?.codigo || ''}` + (saldoMonto ? ` · Cobrar $${(saldoMonto/1000).toFixed(0)}k` : ''),
+                cuerpo:  `${p?.servicio || 'Caso'} pasó calidad. Modalidad: ${modalidad === 'contra_entrega' ? 'Cobrar saldo en entrega' : modalidad}`,
                 url:     '/app/admin-panel.html',
                 rol:     'admin',
             }),
         }),
-        // Log en torre de control
         sb.from('logs_incidencias').insert({
             tipo:        'HANDOFF',
-            descripcion: `Caso #${p?.codigo || pedidoId.slice(0,8)} confirmado por calidad — listo para mensajero`,
+            descripcion: `Caso #${p?.codigo || pedidoId.slice(0,8)} confirmado por calidad — ${modalidad === 'contra_entrega' ? `cobrar saldo $${saldoMonto}` : modalidad}`,
             severidad:   'BAJA',
             pedido_id:   pedidoId,
             emisor_id:   _userId,

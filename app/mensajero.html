@@ -159,6 +159,20 @@
             <p style="font-size:.68rem;color:var(--muted);margin-top:4px;">El cliente firma directamente en la pantalla.</p>
         </div>
 
+        <!-- Cobro de saldo (condicional) -->
+        <div id="saldo-cobro-section" class="modal-section" style="display:none;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);border-radius:10px;padding:12px 14px;">
+            <div class="modal-label" style="color:#fbbf24;"><i class="fas fa-hand-holding-dollar"></i> Cobrar saldo en entrega</div>
+            <div style="font-size:1.1rem;font-weight:900;color:#fff;margin:6px 0;" id="saldo-cobro-monto">—</div>
+            <div style="font-size:.74rem;color:#94a3b8;margin-bottom:10px;">Recibe el pago del doctor y sube el comprobante.</div>
+            <label style="display:inline-flex;align-items:center;gap:8px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.8rem;color:#fbbf24;">
+                <i class="fas fa-receipt"></i> Capturar comprobante
+                <input type="file" id="comp-saldo-input" accept="image/*" capture="environment" style="display:none" onchange="previewCompSaldo(event)">
+            </label>
+            <div id="comp-saldo-preview" style="display:none;margin-top:8px;font-size:.76rem;color:#00FF41;">
+                <i class="fas fa-check-circle"></i> <span id="comp-saldo-nombre"></span>
+            </div>
+        </div>
+
         <!-- Foto de entrega -->
         <div class="modal-section">
             <div class="modal-label"><i class="fas fa-camera"></i> Foto de Entrega (opcional)</div>
@@ -208,6 +222,8 @@ let _signaturePad      = null;
 let _activeDespId      = null;
 let _activePedidoId    = null;
 let _activeCodigo      = '';
+let _activeSaldo       = 0;
+let _activeWA          = '';
 let _novedadDespachoId = null;
 let _qrScanner         = null;
 let _qrActivo          = false;
@@ -312,7 +328,7 @@ function resaltarPedido(codigo){
 /* ── CARGAR RUTA ───────────────────────────────────────── */
 async function cargarRuta(){
     let query = sb.from('despachos')
-        .select('id,estado,fecha_entrega_estimada,novedades,pedidos(id,codigo,nombre_cliente,nombre_doctor,whatsapp,direccion)')
+        .select('id,estado,fecha_entrega_estimada,novedades,pedidos(id,codigo,nombre_cliente,nombre_doctor,whatsapp,direccion,precio_total,saldo_pendiente_monto,nota_calidad,modalidad_cobro,pago_estado)')
         .in('estado',['PROGRAMADO','EN_REPARTO'])
         .order('created_at',{ ascending:true });
     if(_mensajeroId) query=query.eq('mensajero_id',_mensajeroId);
@@ -340,16 +356,24 @@ async function cargarRuta(){
         return;
     }
 
+    const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '—';
     lista.innerHTML=(desp||[]).map(d=>{
-        const p      = d.pedidos||{};
-        const codigo = p.codigo||d.id.slice(0,8);
-        const nombre = p.nombre_cliente||p.nombre_doctor||'—';
-        const dir    = p.direccion||'—';
-        const mapsUrl= p.direccion?`https://maps.google.com/?q=${encodeURIComponent(p.direccion)}`:'#';
-        const eta    = d.fecha_entrega_estimada
+        const p       = d.pedidos||{};
+        const codigo  = p.codigo||d.id.slice(0,8);
+        const nombre  = p.nombre_cliente||p.nombre_doctor||'—';
+        const dir     = p.direccion||'—';
+        const mapsUrl = p.direccion?`https://maps.google.com/?q=${encodeURIComponent(p.direccion)}`:'#';
+        const eta     = d.fecha_entrega_estimada
             ? new Date(d.fecha_entrega_estimada).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})
             : '—';
-        const enRuta = d.estado==='EN_REPARTO';
+        const enRuta  = d.estado==='EN_REPARTO';
+        const saldo   = Number(p.saldo_pendiente_monto) || 0;
+        const saldoBanner = saldo > 0
+            ? `<div style="background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.4);border-radius:8px;padding:9px 12px;margin-top:8px;">
+                <div style="font-size:.72rem;font-weight:800;color:#fbbf24;">💰 COBRAR SALDO EN ENTREGA</div>
+                <div style="font-size:1rem;font-weight:900;color:#fff;">${fmtCOP(saldo)}</div>
+               </div>`
+            : (p.nota_calidad ? `<div style="background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:.76rem;color:#00d2ff;">📝 ${escH(p.nota_calidad)}</div>` : '');
         return `
         <div class="despacho-card estado-${d.estado}" data-codigo="${escH(codigo)}" id="card-${escH(d.id)}">
             <div class="card-header">
@@ -363,13 +387,14 @@ async function cargarRuta(){
                     <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="maps-link"><i class="fas fa-map"></i> Abrir en Maps</a></span></div>
                 <div class="info-row"><i class="fas fa-clock info-icon"></i><span class="info-val" style="color:#fbbf24">ETA: ${eta}</span></div>
                 ${d.novedades?`<div class="info-row"><i class="fas fa-exclamation-triangle info-icon" style="color:#f87171"></i><span class="info-val" style="color:#f87171">${escH(d.novedades)}</span></div>`:''}
+                ${saldoBanner}
             </div>
             <div class="card-actions">
                 ${!enRuta
                     ? `<button class="btn-action btn-iniciar" onclick="iniciarEntrega('${escH(d.id)}','${escH(p.id||'')}','${escH(nombre)}','${escH(dir)}','${escH(p.whatsapp||'')}','${escH(codigo)}')">
                         <i class="fas fa-play"></i> Iniciar</button>`
-                    : `<button class="btn-action btn-confirmar" onclick="abrirModalConfirmar('${escH(d.id)}','${escH(p.id||'')}','${escH(codigo)}','${escH(nombre)}')">
-                        <i class="fas fa-check"></i> Confirmar Entrega</button>`
+                    : `<button class="btn-action btn-confirmar" onclick="abrirModalConfirmar('${escH(d.id)}','${escH(p.id||'')}','${escH(codigo)}','${escH(nombre)}','${saldo}','${escH(p.whatsapp||'')}')">
+                        <i class="fas fa-check"></i> Confirmar Entrega${saldo?' 💰':''}</button>`
                 }
                 <button class="btn-action btn-novedad" onclick="abrirModalNovedad('${escH(d.id)}')" aria-label="Reportar novedad"><i class="fas fa-flag"></i></button>
             </div>
@@ -397,16 +422,33 @@ async function iniciarEntrega(despId, pedidoId, nombreCliente, direccion, waClie
 }
 
 /* ── MODAL CONFIRMAR ────────────────────────────────────── */
-function abrirModalConfirmar(despId, pedidoId, codigo, nombre){
-    _activeDespId   = despId;
-    _activePedidoId = pedidoId;
-    _activeCodigo   = codigo;
+function abrirModalConfirmar(despId, pedidoId, codigo, nombre, saldoMonto = 0, waCliente = ''){
+    _activeDespId    = despId;
+    _activePedidoId  = pedidoId;
+    _activeCodigo    = codigo;
+    _activeSaldo     = Number(saldoMonto) || 0;
+    _activeWA        = waCliente;
     document.getElementById('modal-pedido-info').textContent = `Pedido: ${codigo} — ${nombre}`;
     if(_signaturePad) _signaturePad.clear();
     document.getElementById('foto-preview').style.display='none';
     document.getElementById('foto-input').value='';
     document.getElementById('upload-progress').classList.remove('show');
     document.getElementById('btn-confirmar-final').disabled=false;
+
+    // Sección de cobro de saldo
+    const saldoSection = document.getElementById('saldo-cobro-section');
+    if (saldoSection) {
+        if (_activeSaldo > 0) {
+            const fmtCOP = n => new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n);
+            document.getElementById('saldo-cobro-monto').textContent = fmtCOP(_activeSaldo);
+            saldoSection.style.display = 'block';
+            document.getElementById('comp-saldo-preview').style.display='none';
+            document.getElementById('comp-saldo-input').value='';
+        } else {
+            saldoSection.style.display = 'none';
+        }
+    }
+
     document.getElementById('modal-confirmar').style.display='flex';
 }
 function cerrarModalConfirmar(){
@@ -414,6 +456,12 @@ function cerrarModalConfirmar(){
     _activeDespId=null; _activePedidoId=null;
 }
 function limpiarFirma(){ _signaturePad?.clear(); }
+function previewCompSaldo(e){
+    const file = e.target.files[0];
+    if (!file) return;
+    document.getElementById('comp-saldo-nombre').textContent = file.name;
+    document.getElementById('comp-saldo-preview').style.display = 'block';
+}
 function previewFoto(e){
     const file = e.target.files[0];
     if(!file) return;
@@ -486,16 +534,49 @@ async function procesarConfirmacion(){
 
     if(eD){ toast('Error guardando: '+eD.message,'error'); btnFinal.disabled=false; prog.classList.remove('show'); return; }
     if(_activePedidoId) {
-        await sb.from('pedidos').update({ estado:'ENTREGADO', estado_operativo:'ENTREGADO' }).eq('id',_activePedidoId);
-        // Notificación al doctor — hito 3/3
+        // Subir comprobante del saldo cobrado si existe
+        let compSaldoUrl = null;
+        const compFile = document.getElementById('comp-saldo-input')?.files[0];
+        if (compFile && _activeSaldo > 0) {
+            document.getElementById('upload-msg').textContent = 'Subiendo comprobante de pago...';
+            const ext  = compFile.type === 'application/pdf' ? 'pdf' : 'jpg';
+            const path = `${_activeDespId}/comprobante_saldo_${Date.now()}.${ext}`;
+            const { error: eCp } = await sb.storage.from('evidencias-entrega').upload(path, compFile, { contentType: compFile.type, upsert: true });
+            if (!eCp) {
+                const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
+                compSaldoUrl = publicUrl;
+            }
+        }
+
+        const pedUpdate = {
+            estado: 'ENTREGADO',
+            estado_operativo: 'ENTREGADO',
+            ...(compSaldoUrl ? { comprobante_saldo_url: compSaldoUrl, pago_estado: 'pago_confirmado', saldo_pendiente_monto: 0 } : {}),
+        };
+        await sb.from('pedidos').update(pedUpdate).eq('id', _activePedidoId);
+
+        // Notificación al doctor + recibo WA
         try {
-            const { data:ped } = await sb.from('pedidos').select('email,codigo').eq('id',_activePedidoId).single();
+            const { data:ped } = await sb.from('pedidos').select('email,codigo,whatsapp,precio_total').eq('id',_activePedidoId).single();
             if (ped?.email) {
                 await fetch(`${SUPABASE_URL}/functions/v1/send-push`, {
                     method:'POST',
                     headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_ANON}`},
-                    body: JSON.stringify({ email: ped.email, titulo:`Caso ${ped.codigo}`, cuerpo:'Caso entregado con éxito. La evidencia fotográfica está en su portal.' })
+                    body: JSON.stringify({ email: ped.email, titulo:`Caso ${ped.codigo} entregado`, cuerpo:'Caso entregado con éxito. Tu recibo está disponible en el portal.' })
                 });
+            }
+            // WA con link al recibo
+            const waNum = (ped?.whatsapp || _activeWA || '').replace(/\D/g,'');
+            if (waNum) {
+                const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '';
+                const totalStr = ped?.precio_total ? fmtCOP(ped.precio_total) : '';
+                const reciboUrl = `https://prodigylabdental.com/recibo-caso?id=${ped?.codigo || _activePedidoId}`;
+                const txt = encodeURIComponent(
+                    `✅ *Caso entregado* — #${ped?.codigo || _activeCodigo}\n\n` +
+                    (totalStr ? `Total pagado: *${totalStr}*\n` : '') +
+                    `\nConsulta tu recibo aquí: ${reciboUrl}\n\n_PRODIGY Lab Dental_`
+                );
+                window.open(`https://wa.me/${waNum}?text=${txt}`, '_blank');
             }
         } catch(_){}
     }
