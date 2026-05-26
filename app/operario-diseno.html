@@ -368,7 +368,7 @@ async function cargarCasos() {
   const { data, error } = await sb.from('pedidos')
     // Operario NO ve: nombre_paciente, email, whatsapp real del cliente — solo código interno
     // wa_op: número enmascarado solo para notificaciones internas de operario
-    .select('id,codigo,servicio,material,color_vita,estado,estado_operativo,pago_estado,created_at,flujo,link_diseno,observaciones,revisiones_usadas,stl_ruta,operario_codigo,whatsapp')
+    .select('id,codigo,servicio,material,color_vita,estado,estado_operativo,pago_estado,precio_total,created_at,flujo,link_diseno,observaciones,revisiones_usadas,stl_ruta,operario_codigo,whatsapp')
     .eq('flujo','diseno')
     .not('estado','in','("cancelado","CANCELADO")')
     .order('created_at',{ascending:false})
@@ -481,7 +481,23 @@ function actualizarTimer() {
 
 /* ── Avanzar estado ── */
 async function avanzar(id, nuevoEstado) {
-  if (!_casos.find(p => p.id === id)) { toast('Caso no encontrado','err'); return; }
+  const caso = _casos.find(p => p.id === id);
+  if (!caso) { toast('Caso no encontrado','err'); return; }
+
+  // Bloquear inicio de diseño si no hay abono confirmado
+  if (nuevoEstado === 'EN_DISENO') {
+    const pagoOk = ['pago_confirmado','pago_subido','credito_autorizado'].includes(caso.pago_estado);
+    if (!pagoOk) {
+      const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '50%';
+      const abono  = caso.precio_total ? fmtCOP(Math.round(caso.precio_total / 2)) : '50%';
+      toast(`⛔ Pago pendiente — Se requiere abono (${abono}) para iniciar el diseño`, 'err');
+      return;
+    }
+    if (caso.pago_estado === 'pago_subido') {
+      toast('⚠️ Comprobante recibido pero no verificado aún. Confirma con admin si puedes continuar.', 'warn');
+    }
+  }
+
   const updates = { estado_operativo: nuevoEstado };
   if (nuevoEstado === 'EN_DISENO')         updates.timestamp_validacion = new Date().toISOString();
   if (nuevoEstado === 'REVISION_CLIENTE')  updates.timestamp_produccion  = new Date().toISOString();
