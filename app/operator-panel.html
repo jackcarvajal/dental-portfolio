@@ -358,7 +358,7 @@ const escH = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 // Estados operativos por columna
 const PENDIENTES = ['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE'];
 const PRODUCCION = ['EN_PRODUCCION','DISENO_FINALIZADO','FRESADO_INICIADO'];
-const COMPLETADOS = ['QA_APROBADO','POR_DESPACHAR','EN_REPARTO','ENTREGADO'];
+const COMPLETADOS = ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO','ENTREGADO'];
 
 // ── Init ──────────────────────────────────────────────────────────
 (async function init() {
@@ -930,31 +930,38 @@ aprobarQA = async function() {
     const pedidoId = document.getElementById('qa-pedido-id').value;
     const p = _pedidos.find(x => x.id === pedidoId);
 
-    // Notificar al admin vía push
-    try {
-        await fetch(ADMIN_PUSH_URL, {
+    // Notificar al área de calidad y al admin
+    const pushBody = {
+        titulo: `📦 Caso listo para empacar — #${p?.codigo || ''}`,
+        cuerpo:  `${p?.servicio || 'Caso'} aprobó QA técnico. Confirmar empaque y despacho.`,
+        url:     '/app/calidad.html',
+        rol:     'calidad',
+    };
+    await Promise.allSettled([
+        fetch(ADMIN_PUSH_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
-            body: JSON.stringify({
-                titulo: `📦 Listo para despacho — Caso ${p?.codigo || ''}`,
-                cuerpo:  `${p?.servicio || 'Caso'} pasó QA. Asigna mensajero desde el panel admin.`,
-                url:     '/app/admin-panel.html',
-            }),
-        });
-    } catch {}
+            body: JSON.stringify(pushBody),
+        }),
+        fetch(ADMIN_PUSH_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
+            body: JSON.stringify({ ...pushBody, titulo: `📦 QA aprobado — Caso #${p?.codigo || ''}`, url: '/app/admin-panel.html', rol: 'admin' }),
+        }),
+    ]);
 
     // Registrar en Torre de Control como handoff
     await sb.from('logs_incidencias').insert({
         tipo:        'HANDOFF',
-        descripcion: `Caso #${p?.codigo || pedidoId.slice(0,8)} aprobó QA — listo para despacho`,
+        descripcion: `Caso #${p?.codigo || pedidoId.slice(0,8)} aprobó QA — en espera de calidad/empaque`,
         severidad:   'BAJA',
         pedido_id:   pedidoId,
         emisor_id:   _userId,
     }).catch(() => {});
 
-    // Mostrar modal de éxito con acceso rápido a despachos
+    // Mostrar modal de éxito con acceso rápido a calidad
     document.getElementById('modal-qa-handoff-sub').textContent =
-        `Caso #${p?.codigo || ''} — ${p?.servicio || ''} · Admin fue notificado para programar el despacho.`;
+        `Caso #${p?.codigo || ''} — ${p?.servicio || ''} · Área de calidad fue notificada para empaque y despacho.`;
     document.getElementById('modal-handoff-qa').style.display = 'flex';
 };
 

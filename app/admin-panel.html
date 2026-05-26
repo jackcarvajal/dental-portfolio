@@ -187,7 +187,8 @@
     <div style="font-size:.62rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px 4px;">Paneles operarios</div>
     <a href="operario-diseno.html" class="nav-item"><i class="fas fa-drafting-compass" style="color:#00d2ff;"></i> Diseño CAD</a>
     <a href="operator-panel.html" class="nav-item"><i class="fas fa-cog" style="color:#D4AF37;"></i> Fresado / Lab</a>
-    <a href="taller.html" class="nav-item"><i class="fas fa-tools" style="color:#D946A6;"></i> Taller</a>
+    <a href="taller.html"   class="nav-item"><i class="fas fa-tools"         style="color:#D946A6;"></i> Taller</a>
+    <a href="calidad.html" class="nav-item"><i class="fas fa-shield-check"  style="color:#D946A6;"></i> Calidad &amp; Despacho</a>
     <a href="/" class="nav-item" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Ver Sitio</a>
 
     <div class="sidebar-footer">
@@ -1646,7 +1647,7 @@ async function cargarDespachos() {
     // 2. Pedidos TERMINADO sin despacho asignado
     const { data: pedSinAsignar } = await sb
         .from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,direccion,precio_total')
+        .select('id,codigo,nombre_cliente,nombre_doctor,direccion,precio_total,estado_operativo')
         .eq('estado', 'TERMINADO')
         .not('id', 'in', `(SELECT pedido_id FROM despachos WHERE estado != 'NO_ENTREGADO')`);
 
@@ -1669,17 +1670,22 @@ async function cargarDespachos() {
         tbodySin.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Sin pedidos listos para despachar</td></tr>';
     } else {
         const opsMens = _mensajerosList.map(m => `<option value="${escHtml(m.id)}">${escHtml(m.nombre)}${m.zona_preferencial ? ' — ' + escHtml(m.zona_preferencial) : ''}</option>`).join('');
-        tbodySin.innerHTML = sinAsignar.map(p => `
+        tbodySin.innerHTML = sinAsignar.map(p => {
+            const calOk = p.estado_operativo === 'LISTO_DESPACHAR';
+            const calBadge = calOk
+                ? '<span style="font-size:.65rem;background:rgba(0,255,65,.12);color:#00FF41;padding:2px 7px;border-radius:20px;font-weight:700;">✓ Calidad OK</span>'
+                : '<span style="font-size:.65rem;background:rgba(251,191,36,.1);color:#fbbf24;padding:2px 7px;border-radius:20px;font-weight:700;">⏳ Sin calidad</span>';
+            return `
         <tr>
             <td style="font-family:monospace;color:var(--cyan);">${escHtml(p.codigo || p.id?.slice(0,8))}</td>
-            <td>${escHtml(p.nombre_cliente || p.nombre_doctor || '—')}</td>
+            <td>${escHtml(p.nombre_cliente || p.nombre_doctor || '—')}<br>${calBadge}</td>
             <td style="font-size:.75rem;max-width:160px;">${escHtml(p.direccion || '—')}</td>
             <td style="color:#00FF41;">${fmtCOP(p.precio_total)}</td>
             <td><select id="sel-mens-${escHtml(p.id)}" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:6px;padding:4px 8px;font-size:.75rem;min-width:140px;">
                 <option value="">— Seleccionar —</option>${opsMens}
             </select></td>
             <td><button onclick="asignarDespacho('${escHtml(p.id)}','${escHtml(p.codigo || '')}')" class="btn-xs btn-gold"><i class="fas fa-motorcycle"></i> Asignar</button></td>
-        </tr>`).join('');
+        </tr>`;}).join('');
     }
 
     // 3. Todos los despachos del día (activos + entregados)

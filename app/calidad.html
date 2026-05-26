@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#D946A6">
+<link rel="manifest" href="/manifest.json">
+<meta name="robots" content="noindex, nofollow">
+<title>PRODIGY — Control de Calidad & Despacho</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../js/auth-guard.js"></script>
+<style>
+:root {
+    --bg:     #050505; --card:   #0a1020;
+    --green:  #00FF41; --cyan:   #00d2ff;
+    --gold:   #D4AF37; --red:    #ef4444;
+    --yellow: #fbbf24; --pink:   #D946A6;
+    --txt:    #ffffff; --muted:  #94a3b8;
+    --border: rgba(217,70,166,.15);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { overflow-x: hidden; background: var(--bg); color: var(--txt); font-family: 'Segoe UI', sans-serif; display: flex; min-height: 100vh; visibility: hidden; }
+body.ready { visibility: visible; }
+
+/* ── Sidebar ── */
+.sidebar { width: 220px; min-height: 100vh; background: #080514; border-right: 1px solid var(--border); padding: 20px 14px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+.sidebar-logo { font-size: 1.1rem; font-weight: 900; color: var(--pink); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; color: var(--muted); text-decoration: none; font-size: .82rem; transition: .15s; }
+.nav-item:hover, .nav-item.active { background: rgba(217,70,166,.12); color: var(--pink); }
+.nav-item i { width: 16px; text-align: center; }
+.sidebar-foot { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); font-size: .72rem; color: var(--muted); }
+.sidebar-foot span { display: block; font-weight: 600; color: #fff; font-size: .78rem; margin-bottom: 2px; }
+
+/* ── Main ── */
+.main { flex: 1; padding: 28px; overflow-y: auto; }
+.page-title { font-size: 1.3rem; font-weight: 900; color: var(--pink); margin-bottom: 6px; }
+.page-sub { font-size: .8rem; color: var(--muted); margin-bottom: 24px; }
+
+/* ── Tabs ── */
+.tab-bar { display: flex; gap: 6px; margin-bottom: 22px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+.tab-btn { padding: 8px 18px; border: none; background: none; color: var(--muted); cursor: pointer; font-size: .82rem; font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -1px; display: flex; align-items: center; gap: 6px; transition: .15s; }
+.tab-btn.active { color: var(--pink); border-bottom-color: var(--pink); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.badge { background: var(--pink); color: #fff; border-radius: 100px; font-size: .65rem; font-weight: 800; padding: 1px 6px; }
+
+/* ── Cards ── */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.case-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.case-card-head { display: flex; justify-content: space-between; align-items: flex-start; }
+.case-codigo { font-family: monospace; font-size: .85rem; color: var(--cyan); font-weight: 700; }
+.case-estado { font-size: .68rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
+.est-qa      { background: rgba(251,191,36,.12); color: var(--yellow); }
+.est-listo   { background: rgba(0,255,65,.12);   color: var(--green); }
+.est-desp    { background: rgba(0,210,255,.12);  color: var(--cyan); }
+.case-nombre { font-size: .9rem; font-weight: 700; }
+.case-serv   { font-size: .75rem; color: var(--muted); margin-top: 2px; }
+.case-precio { font-size: .88rem; font-weight: 700; color: var(--gold); }
+.case-meta   { display: flex; gap: 10px; flex-wrap: wrap; }
+.meta-tag    { font-size: .7rem; color: var(--muted); background: rgba(255,255,255,.05); padding: 3px 8px; border-radius: 6px; }
+.fotos-mini  { display: flex; gap: 6px; flex-wrap: wrap; }
+.fotos-mini img { width: 52px; height: 52px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,.1); cursor: pointer; }
+.fotos-mini .no-foto { font-size: .72rem; color: var(--muted); font-style: italic; }
+.case-card .btn-primary { width: 100%; padding: 10px; background: linear-gradient(135deg,var(--pink),#a21caf); border: none; color: #fff; border-radius: 8px; font-weight: 700; font-size: .84rem; cursor: pointer; }
+.case-card .btn-primary:hover { opacity: .88; }
+.case-card .btn-done { width: 100%; padding: 9px; background: rgba(0,255,65,.08); border: 1px solid rgba(0,255,65,.2); color: var(--green); border-radius: 8px; font-weight: 600; font-size: .82rem; cursor: default; }
+
+/* ── Modal overlay ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 900; align-items: flex-start; justify-content: center; padding: 20px; overflow-y: auto; }
+.modal-box { background: #0d0d1a; border: 1px solid var(--border); border-radius: 16px; padding: 28px; width: 100%; max-width: 540px; margin: auto; display: flex; flex-direction: column; gap: 16px; }
+.modal-title { font-size: 1rem; font-weight: 800; color: var(--pink); }
+.modal-case-info { background: rgba(217,70,166,.06); border: 1px solid rgba(217,70,166,.2); border-radius: 10px; padding: 12px 14px; }
+.modal-case-info .mci-codigo { font-family: monospace; color: var(--cyan); font-size: .8rem; font-weight: 700; }
+.modal-case-info .mci-nombre { font-size: .95rem; font-weight: 700; margin: 2px 0; }
+.modal-case-info .mci-precio { font-size: .88rem; color: var(--gold); font-weight: 600; }
+.modal-case-info .mci-pago   { font-size: .72rem; margin-top: 4px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: .76rem; color: var(--muted); font-weight: 600; }
+.form-group input, .form-group textarea, .form-group select {
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 8px; padding: 9px 14px; color: #fff; font-size: .84rem; outline: none;
+    font-family: inherit;
+}
+.form-group textarea { resize: vertical; min-height: 70px; }
+
+/* ── Checklist ── */
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+.check-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(255,255,255,.03); border-radius: 8px; cursor: pointer; }
+.check-item input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--pink); flex-shrink: 0; cursor: pointer; }
+.check-item label { font-size: .82rem; cursor: pointer; }
+
+/* ── Upload de fotos/video ── */
+.upload-zone { border: 1.5px dashed rgba(217,70,166,.35); border-radius: 10px; padding: 18px; text-align: center; cursor: pointer; transition: .2s; }
+.upload-zone:hover { border-color: var(--pink); background: rgba(217,70,166,.04); }
+.upload-zone-txt { font-size: .8rem; color: var(--muted); margin-top: 6px; }
+.upload-previews { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.preview-item { position: relative; }
+.preview-item img, .preview-item video { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,.1); }
+.preview-item .del-btn { position: absolute; top: -5px; right: -5px; background: var(--red); color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: .6rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.upload-bar { display: none; align-items: center; gap: 8px; font-size: .76rem; color: var(--muted); margin-top: 8px; }
+.upload-bar.show { display: flex; }
+.spinner { width: 14px; height: 14px; border: 2px solid rgba(217,70,166,.3); border-top-color: var(--pink); border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Fotos QA (del operario) ── */
+.fotos-qa-label { font-size: .74rem; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+.fotos-qa-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+.fotos-qa-grid img { width: 62px; height: 62px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 1px solid rgba(255,255,255,.1); }
+
+/* ── Modal actions ── */
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; }
+.btn-outline { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.15); color: var(--muted); padding: 9px 18px; border-radius: 8px; cursor: pointer; font-size: .82rem; font-weight: 600; }
+.btn-confirm { background: linear-gradient(135deg,var(--pink),#a21caf); border: none; color: #fff; padding: 9px 22px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: .84rem; }
+.btn-confirm:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ── Toast ── */
+#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a2332; color: #fff; padding: 11px 22px; border-radius: 10px; font-size: .83rem; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .25s; z-index: 9999; white-space: nowrap; }
+#toast.show { opacity: 1; }
+#toast.ok  { border-left: 4px solid var(--green); }
+#toast.err { border-left: 4px solid var(--red); }
+#toast.warn { border-left: 4px solid var(--yellow); }
+
+/* ── Empty state ── */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+.empty-state i { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+.empty-state p { font-size: .85rem; }
+
+/* ── Imagen lightbox ── */
+#lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 9990; align-items: center; justify-content: center; cursor: pointer; }
+#lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin>
+</head>
+<body>
+
+<nav class="sidebar">
+    <div class="sidebar-logo">📦 Calidad</div>
+    <a href="admin-panel.html"            class="nav-item"><i class="fas fa-chart-line"></i> Admin</a>
+    <a href="operator-panel.html"         class="nav-item"><i class="fas fa-gears"></i> Producción</a>
+    <a href="calidad.html"                class="nav-item active"><i class="fas fa-shield-check"></i> Calidad &amp; Despacho</a>
+    <a href="mensajero.html"              class="nav-item"><i class="fas fa-motorcycle"></i> Mensajero</a>
+    <a href="panel-interno-operaciones.html" class="nav-item"><i class="fas fa-briefcase"></i> Gestión Casos</a>
+    <div class="sidebar-foot">
+        <span id="sb-nombre">—</span>
+        <a href="../login.html" style="color:var(--muted);text-decoration:none;font-size:.72rem;">Cerrar sesión</a>
+    </div>
+</nav>
+
+<main class="main">
+    <div class="page-title">Control de Calidad &amp; Empaque</div>
+    <div class="page-sub">Casos listos del operario — verifica empaque, factura y despacha al mensajero</div>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('pendientes',this)">
+            <i class="fas fa-box-open"></i> Por empacar
+            <span class="badge" id="badge-pend">0</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('confirmados',this)">
+            <i class="fas fa-check-double"></i> Confirmados
+            <span class="badge" id="badge-conf">0</span>
+        </button>
+    </div>
+
+    <div id="tab-pendientes" class="tab-panel active">
+        <div class="cards-grid" id="grid-pendientes">
+            <div class="empty-state"><i class="fas fa-box-open"></i><p>Cargando...</p></div>
+        </div>
+    </div>
+
+    <div id="tab-confirmados" class="tab-panel">
+        <div class="cards-grid" id="grid-confirmados">
+            <div class="empty-state"><i class="fas fa-check-double"></i><p>Cargando...</p></div>
+        </div>
+    </div>
+</main>
+
+<!-- ── Modal: Confirmar empaque y despacho ────────────────────────── -->
+<div id="modal-calidad" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-cal-title">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-cal-title">📦 Confirmar Empaque &amp; Despacho</div>
+    <input type="hidden" id="cal-pedido-id">
+
+    <!-- Info del caso -->
+    <div class="modal-case-info">
+        <div class="mci-codigo" id="cal-codigo">—</div>
+        <div class="mci-nombre" id="cal-nombre">—</div>
+        <div class="mci-precio" id="cal-precio">—</div>
+        <div class="mci-pago"   id="cal-pago-estado">—</div>
+    </div>
+
+    <!-- Fotos del operario (QA) -->
+    <div>
+        <div class="fotos-qa-label">📷 Fotos del operario (QA interno)</div>
+        <div class="fotos-qa-grid" id="cal-fotos-qa">
+            <span style="font-size:.74rem;color:var(--muted);font-style:italic;">Sin fotos del operario</span>
+        </div>
+    </div>
+
+    <!-- Fotos/video nuevos del área de calidad -->
+    <div class="form-group">
+        <label>📸 Fotos / video del empaque final <span style="color:var(--red)">*</span></label>
+        <div class="upload-zone" onclick="document.getElementById('cal-media-input').click()">
+            <i class="fas fa-camera" style="font-size:1.4rem;color:var(--pink);"></i>
+            <div class="upload-zone-txt">Toca para agregar foto o video del paquete sellado</div>
+        </div>
+        <input type="file" id="cal-media-input" accept="image/*,video/mp4,video/quicktime" capture="environment" multiple style="display:none" onchange="agregarMediaCalidad(event)">
+        <div class="upload-previews" id="cal-previews"></div>
+        <div class="upload-bar" id="cal-upload-bar">
+            <div class="spinner"></div>
+            <span id="cal-upload-msg">Subiendo archivos...</span>
+        </div>
+    </div>
+
+    <!-- Checklist obligatorio -->
+    <div class="form-group">
+        <label>✅ Checklist de despacho</label>
+        <div class="checklist">
+            <div class="check-item">
+                <input type="checkbox" id="chk1">
+                <label for="chk1">Empaque físico correcto y sellado</label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="chk2">
+                <label for="chk2">Etiqueta con código del caso visible</label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="chk3">
+                <label for="chk3">Factura / remisión incluida en el paquete</label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="chk4">
+                <label for="chk4">Pago verificado (abono recibido o crédito autorizado)</label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="chk5">
+                <label for="chk5">Caso revisado físicamente contra el pedido</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nota para el mensajero -->
+    <div class="form-group">
+        <label>📝 Nota para el mensajero (opcional)</label>
+        <textarea id="cal-nota-mensajero" placeholder="Ej: Frágil — lado arriba. Entregar solo al doctor. Cobrar saldo $80.000."></textarea>
+    </div>
+
+    <div class="modal-actions">
+        <button class="btn-outline" onclick="cerrarModalCalidad()">Cancelar</button>
+        <button class="btn-confirm" id="btn-cal-confirm" onclick="confirmarCalidad()">
+            <i class="fas fa-rocket" style="margin-right:6px;"></i>Confirmar — listo para despacho
+        </button>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="this.style.display='none'">
+    <img id="lightbox-img" src="" alt="Vista ampliada">
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const PUSH_URL      = 'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/send-push';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const escH = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '—';
+
+let _userId   = null;
+let _pedidos  = [];
+let _mediaFiles = []; // { file, objectURL, tipo }
+let _activePedido = null;
+
+/* ── Auth ─────────────────────────────────────────────────────────── */
+(async () => {
+    const session = await ProdigyAuth.require(['admin','calidad']);
+    _userId = session.user.id;
+    const meta = session.user.user_metadata || {};
+    document.getElementById('sb-nombre').textContent = meta.nombre || session.user.email?.split('@')[0] || 'Usuario';
+    document.body.classList.add('ready');
+    await cargarCasos();
+    initRealtime();
+})();
+
+/* ── Tabs ─────────────────────────────────────────────────────────── */
+function switchTab(id, el) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('tab-' + id).classList.add('active');
+}
+
+/* ── Cargar casos ─────────────────────────────────────────────────── */
+async function cargarCasos() {
+    const { data, error } = await sb
+        .from('pedidos')
+        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,estado_operativo,precio_total,fotos_empaque,nota_calidad,flujo,created_at,timestamp_qa')
+        .in('estado_operativo', ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO'])
+        .order('timestamp_qa', { ascending: false, nullsFirst: false });
+
+    if (error) { toast('Error cargando casos: ' + error.message, 'err'); return; }
+    _pedidos = data || [];
+    renderCasos();
+}
+
+function renderCasos() {
+    const pendientes  = _pedidos.filter(p => p.estado_operativo === 'QA_APROBADO');
+    const confirmados = _pedidos.filter(p => ['LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO'].includes(p.estado_operativo));
+
+    document.getElementById('badge-pend').textContent = pendientes.length;
+    document.getElementById('badge-conf').textContent = confirmados.length;
+
+    const gridP = document.getElementById('grid-pendientes');
+    const gridC = document.getElementById('grid-confirmados');
+
+    if (!pendientes.length) {
+        gridP.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>Sin casos listos del operario. ¡Todo al día!</p></div>';
+    } else {
+        gridP.innerHTML = pendientes.map(p => renderCard(p, false)).join('');
+    }
+
+    if (!confirmados.length) {
+        gridC.innerHTML = '<div class="empty-state"><i class="fas fa-check-double"></i><p>Sin casos confirmados hoy.</p></div>';
+    } else {
+        gridC.innerHTML = confirmados.map(p => renderCard(p, true)).join('');
+    }
+}
+
+function renderCard(p, done) {
+    const nombre    = p.nombre_cliente || p.nombre_doctor || '—';
+    const fotos     = Array.isArray(p.fotos_empaque) ? p.fotos_empaque : [];
+    const fotosHtml = fotos.length
+        ? fotos.map(u => `<img src="${escH(u)}" loading="lazy" onclick="abrirLightbox('${escH(u)}')" alt="Foto empaque">`).join('')
+        : '<span class="no-foto">Sin fotos del operario</span>';
+
+    const estLabel = {
+        QA_APROBADO:     ['est-qa', 'QA Aprobado'],
+        LISTO_DESPACHAR: ['est-listo', 'Listo para despacho'],
+        POR_DESPACHAR:   ['est-desp', 'Asignado — por despachar'],
+        EN_REPARTO:      ['est-desp', 'En reparto'],
+    }[p.estado_operativo] || ['est-qa', p.estado_operativo];
+
+    const accion = done
+        ? `<div class="btn-done"><i class="fas fa-check" style="margin-right:6px;"></i>Confirmado${p.nota_calidad ? ' — ' + escH(p.nota_calidad.slice(0,40)) : ''}</div>`
+        : `<button class="btn-primary" onclick="abrirModalCalidad('${escH(p.id)}')"><i class="fas fa-shield-check" style="margin-right:6px;"></i>Confirmar empaque &amp; despacho</button>`;
+
+    return `
+    <div class="case-card">
+        <div class="case-card-head">
+            <span class="case-codigo">#${escH(p.codigo || p.id?.slice(0,8))}</span>
+            <span class="case-estado ${estLabel[0]}">${estLabel[1]}</span>
+        </div>
+        <div>
+            <div class="case-nombre">${escH(nombre)}</div>
+            <div class="case-serv">${escH(p.servicio || '—')}</div>
+        </div>
+        <div class="case-meta">
+            <span class="meta-tag">${escH(p.flujo || 'producción')}</span>
+            ${p.timestamp_qa ? `<span class="meta-tag">QA: ${new Date(p.timestamp_qa).toLocaleDateString('es-CO')}</span>` : ''}
+        </div>
+        <div class="case-precio">${fmtCOP(p.precio_total)}</div>
+        <div class="fotos-mini">${fotosHtml}</div>
+        ${accion}
+    </div>`;
+}
+
+/* ── Modal calidad ────────────────────────────────────────────────── */
+function abrirModalCalidad(pedidoId) {
+    const p = _pedidos.find(x => x.id === pedidoId);
+    if (!p) return;
+    _activePedido = p;
+    _mediaFiles   = [];
+
+    document.getElementById('cal-pedido-id').value        = pedidoId;
+    document.getElementById('cal-codigo').textContent     = `Caso #${p.codigo || pedidoId.slice(0,8)}`;
+    document.getElementById('cal-nombre').textContent     = p.nombre_cliente || p.nombre_doctor || '—';
+    document.getElementById('cal-precio').textContent     = fmtCOP(p.precio_total);
+    document.getElementById('cal-pago-estado').textContent = p.precio_total
+        ? `Total: ${fmtCOP(p.precio_total)} — verificar abono y saldo contra el admin`
+        : 'Sin precio registrado — confirmar con admin';
+    document.getElementById('cal-nota-mensajero').value   = '';
+
+    // Fotos del operario
+    const fotos = Array.isArray(p.fotos_empaque) ? p.fotos_empaque : [];
+    const fGrid  = document.getElementById('cal-fotos-qa');
+    fGrid.innerHTML = fotos.length
+        ? fotos.map(u => `<img src="${escH(u)}" loading="lazy" onclick="abrirLightbox('${escH(u)}')" alt="Foto QA operario">`).join('')
+        : '<span style="font-size:.74rem;color:var(--muted);font-style:italic;">El operario no subió fotos</span>';
+
+    // Reset checklist y previews
+    ['chk1','chk2','chk3','chk4','chk5'].forEach(id => { document.getElementById(id).checked = false; });
+    document.getElementById('cal-previews').innerHTML = '';
+    document.getElementById('cal-upload-bar').classList.remove('show');
+    document.getElementById('btn-cal-confirm').disabled = false;
+
+    document.getElementById('modal-calidad').style.display = 'flex';
+}
+
+function cerrarModalCalidad() {
+    document.getElementById('modal-calidad').style.display = 'none';
+    _activePedido = null;
+    _mediaFiles   = [];
+}
+
+/* ── Subir media ──────────────────────────────────────────────────── */
+function agregarMediaCalidad(event) {
+    const files = Array.from(event.target.files);
+    const previews = document.getElementById('cal-previews');
+    files.forEach(file => {
+        const url = URL.createObjectURL(file);
+        const tipo = file.type.startsWith('video') ? 'video' : 'img';
+        const idx  = _mediaFiles.length;
+        _mediaFiles.push({ file, objectURL: url, tipo });
+        const wrapper = document.createElement('div');
+        wrapper.className = 'preview-item';
+        wrapper.id = `prev-${idx}`;
+        wrapper.innerHTML = tipo === 'video'
+            ? `<video src="${url}" width="70" height="70" style="border-radius:8px;object-fit:cover;" muted></video>`
+            : `<img src="${url}" alt="Foto calidad">`;
+        const del = document.createElement('button');
+        del.className = 'del-btn';
+        del.innerHTML = '×';
+        del.setAttribute('aria-label', 'Eliminar');
+        del.onclick = () => { _mediaFiles.splice(idx, 1, null); wrapper.remove(); };
+        wrapper.appendChild(del);
+        previews.appendChild(wrapper);
+    });
+    event.target.value = '';
+}
+
+/* ── Confirmar ────────────────────────────────────────────────────── */
+async function confirmarCalidad() {
+    const checks = ['chk1','chk2','chk3','chk4','chk5'].every(id => document.getElementById(id).checked);
+    if (!checks) { toast('Completa todos los ítems del checklist', 'err'); return; }
+
+    const media = _mediaFiles.filter(Boolean);
+    if (!media.length) { toast('Agrega al menos 1 foto del empaque final', 'err'); return; }
+
+    const pedidoId = document.getElementById('cal-pedido-id').value;
+    const nota     = document.getElementById('cal-nota-mensajero').value.trim();
+    const bar      = document.getElementById('cal-upload-bar');
+    const msg      = document.getElementById('cal-upload-msg');
+    const btn      = document.getElementById('btn-cal-confirm');
+    bar.classList.add('show'); btn.disabled = true;
+
+    // Subir archivos a Supabase Storage
+    const paths = [];
+    for (let i = 0; i < media.length; i++) {
+        const { file, tipo } = media[i];
+        const ext  = tipo === 'video' ? 'mp4' : 'jpg';
+        const path = `${pedidoId}/calidad_${Date.now()}_${i}.${ext}`;
+        msg.textContent = `Subiendo ${tipo === 'video' ? 'video' : 'foto'} ${i+1} de ${media.length}...`;
+        const { error: eUp } = await sb.storage
+            .from('evidencias-entrega')
+            .upload(path, file, { contentType: file.type, upsert: true });
+        if (!eUp) {
+            const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
+            paths.push(publicUrl);
+        }
+    }
+
+    msg.textContent = 'Guardando estado...';
+
+    // Actualizar pedido
+    const { error } = await sb.from('pedidos').update({
+        estado_operativo:      'LISTO_DESPACHAR',
+        nota_calidad:          nota || null,
+        fotos_calidad:         paths,
+        timestamp_calidad:     new Date().toISOString(),
+        calidad_user_id:       _userId,
+    }).eq('id', pedidoId);
+
+    bar.classList.remove('show'); btn.disabled = false;
+
+    if (error) { toast('Error: ' + error.message, 'err'); return; }
+
+    // Notificar admin y mensajeros
+    const p = _activePedido;
+    await Promise.allSettled([
+        fetch(PUSH_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
+            body: JSON.stringify({
+                titulo:  `🚀 Listo para asignar — Caso #${p?.codigo || ''}`,
+                cuerpo:  `${p?.servicio || 'Caso'} pasó calidad. Asigna mensajero desde Despachos.`,
+                url:     '/app/admin-panel.html',
+                rol:     'admin',
+            }),
+        }),
+        // Log en torre de control
+        sb.from('logs_incidencias').insert({
+            tipo:        'HANDOFF',
+            descripcion: `Caso #${p?.codigo || pedidoId.slice(0,8)} confirmado por calidad — listo para mensajero`,
+            severidad:   'BAJA',
+            pedido_id:   pedidoId,
+            emisor_id:   _userId,
+        }),
+    ]);
+
+    toast(`✅ Caso #${p?.codigo || ''} listo para despacho — admin notificado`, 'ok');
+    cerrarModalCalidad();
+    await cargarCasos();
+}
+
+/* ── Lightbox ────────────────────────────────────────────────────── */
+function abrirLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').style.display = 'flex';
+}
+
+/* ── Toast ───────────────────────────────────────────────────────── */
+function toast(msg, type = 'ok') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = `show ${type}`;
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { el.className = ''; }, 3200);
+}
+
+/* ── Realtime ────────────────────────────────────────────────────── */
+function initRealtime() {
+    sb.channel('calidad-pedidos')
+        .on('postgres_changes', {
+            event:  'UPDATE',
+            schema: 'public',
+            table:  'pedidos',
+            filter: `estado_operativo=in.(QA_APROBADO,LISTO_DESPACHAR,POR_DESPACHAR)`,
+        }, payload => {
+            const p = payload.new;
+            if (p.estado_operativo === 'QA_APROBADO' && !_pedidos.find(x => x.id === p.id)) {
+                toast(`📥 Nuevo caso listo: #${p.codigo || ''}`, 'ok');
+            }
+            cargarCasos();
+        }).subscribe();
+}
+
+/* ── Escape ──────────────────────────────────────────────────────── */
+document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    cerrarModalCalidad();
+    document.getElementById('lightbox').style.display = 'none';
+});
+</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>
