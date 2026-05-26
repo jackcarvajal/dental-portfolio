@@ -277,11 +277,54 @@ function render(pedido, revisiones){
         ` : ''}
       </div>
 
+      ${pedido.factura_pdf_url || pedido.factura_numero ? `
+      <div class="rec-section">
+        <div class="rec-section-title" style="background:linear-gradient(135deg,#0a3d0a,#0d5c0d);">
+          <i class="fas fa-file-certificate" style="margin-right:6px"></i>
+          ${_isIntl ? 'Official DIAN Electronic Invoice' : 'Factura Electrónica DIAN'}
+        </div>
+        <div style="background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div>
+            ${pedido.factura_numero ? `<div style="font-size:.72rem;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">${_isIntl?'Invoice #':'Factura #'}${escH(pedido.factura_numero)}</div>` : ''}
+            ${pedido.factura_cufe  ? `<div style="font-size:.62rem;color:#64748b;word-break:break-all;max-width:380px;"><strong>CUFE:</strong> ${escH(pedido.factura_cufe)}</div>` : ''}
+            <div style="font-size:.65rem;color:#64748b;margin-top:4px;">
+              ${_isIntl
+                ? 'Electronically issued and validated by DIAN (Colombian Tax Authority).'
+                : 'Emitida y validada electrónicamente ante la DIAN — Resolución de numeración activa.'}
+            </div>
+          </div>
+          ${pedido.factura_pdf_url ? `
+          <a href="${escH(pedido.factura_pdf_url)}" target="_blank" rel="noopener noreferrer"
+             style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:#16a34a;color:#fff;border-radius:8px;font-weight:700;font-size:.8rem;text-decoration:none;white-space:nowrap;">
+            <i class="fas fa-file-pdf"></i> ${_isIntl ? 'Download Invoice PDF' : 'Descargar Factura PDF'}
+          </a>` : '<span style="font-size:.72rem;color:#94a3b8;">PDF en proceso…</span>'}
+        </div>
+      </div>` : (pedido.requiere_factura ? `
+      <div class="rec-section">
+        <div style="background:#fefce8;border:1.5px solid #fde047;border-radius:10px;padding:14px 18px;">
+          <div style="font-size:.72rem;font-weight:700;color:#a16207;margin-bottom:3px;">
+            ⏳ ${_isIntl ? 'Invoice pending' : 'Factura electrónica pendiente'}
+          </div>
+          <div style="font-size:.68rem;color:#64748b;">
+            ${_isIntl
+              ? 'Your electronic invoice is being processed. It will be available here once issued (max. 24 business hours).'
+              : 'Tu factura electrónica está siendo procesada. Estará disponible aquí una vez emitida (máx. 24h hábiles).'}
+          </div>
+        </div>
+      </div>` : '')}
+
     </div>
 
     <div class="rec-footer">
       <p>${escH(L.lDoc)}: ${escH(docGen)}</p>
-      <p class="legal">${escH(L.lLegal)}</p>
+      <div>
+        <p class="legal">${escH(L.lLegal)}</p>
+        ${!_isIntl ? `<p class="legal" style="margin-top:4px;color:#94a3b8;">
+          ⚠ Este documento es un comprobante de trazabilidad interna. El documento con validez tributaria ante la DIAN es la factura electrónica con CUFE, emitida por PRODIGY Lab Dental cuando es solicitada por el cliente.
+        </p>` : `<p class="legal" style="margin-top:4px;color:#94a3b8;">
+          ⚠ This document is an internal tracking receipt. The legally valid tax document is the DIAN-certified electronic invoice (with CUFE), issued upon client request.
+        </p>`}
+      </div>
     </div>
   </div>`;
 }
@@ -298,7 +341,7 @@ function render(pedido, revisiones){
   }
 
   try{
-    let{data,error}=await sb.from('pedidos').select('*').or(`id.eq.${id},codigo.eq.${id}`).maybeSingle();
+    let{data,error}=await sb.from('pedidos').select('*,factura_pdf_url,factura_numero,factura_cufe,requiere_factura,factura_estado,pais,precio_usd,precio_total').or(`id.eq.${id},codigo.eq.${id}`).maybeSingle();
     if(!data){
       const r2=await sb.from('pedidos').select('*').eq('codigo',id).maybeSingle();
       if(!r2.data){

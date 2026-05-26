@@ -467,6 +467,48 @@ tbody td{padding:11px 14px;vertical-align:middle;}
   </div>
 </div>
 
+<!-- Modal: Tipo IVA antes de emitir factura -->
+<div id="modal-iva" class="modal-overlay" role="dialog" aria-modal="true" style="display:none;">
+  <div class="modal-box" style="max-width:420px;">
+    <input type="hidden" id="iva-pedido-id">
+    <div class="modal-title">🧾 Tipo de IVA — Factura DIAN</div>
+    <div style="font-size:.8rem;color:var(--muted);margin-top:-8px;">Verifica con tu contador antes de emitir.</div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+      <label style="display:flex;align-items:flex-start;gap:12px;padding:14px;background:rgba(0,255,65,.06);border:1.5px solid rgba(0,255,65,.2);border-radius:10px;cursor:pointer;">
+        <input type="radio" name="iva-tipo" id="iva-exento" value="0" style="margin-top:2px;accent-color:var(--green);" checked>
+        <div>
+          <div style="font-weight:700;color:var(--green);font-size:.84rem;">Exento de IVA (0%)</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:3px;">
+            Prótesis, guías quirúrgicas, modelos, alineadores, dispositivos dentales físicos.<br>
+            <strong style="color:#fff;">Art. 476 ET — La mayoría de servicios PRODIGY.</strong>
+          </div>
+        </div>
+      </label>
+
+      <label style="display:flex;align-items:flex-start;gap:12px;padding:14px;background:rgba(251,191,36,.06);border:1.5px solid rgba(251,191,36,.2);border-radius:10px;cursor:pointer;">
+        <input type="radio" name="iva-tipo" id="iva-gravado" value="19" style="margin-top:2px;accent-color:var(--yellow);">
+        <div>
+          <div style="font-weight:700;color:var(--yellow);font-size:.84rem;">Gravado con IVA (19%)</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:3px;">
+            Cursos, asesorías, consultoría, software, licencias digitales.<br>
+            <strong style="color:#fff;">Solo para servicios no médicos/dentales.</strong>
+          </div>
+        </div>
+      </label>
+    </div>
+
+    <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 14px;font-size:.72rem;color:#fca5a5;line-height:1.6;">
+      ⚠ Emitir con IVA incorrecto genera una nota crédito y re-emisión ante la DIAN. Confirma con tu contador.
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-outline" id="btn-iva-cancel">Cancelar</button>
+      <button class="btn-gold" id="btn-iva-ok"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Emitir factura</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -779,6 +821,24 @@ async function rechazarPago() {
     await cargarPorConfirmar();
 }
 
+/* ── Modal confirmación IVA ───────────────────────────────────────── */
+function confirmarIVA(pedidoId) {
+    return new Promise(resolve => {
+        document.getElementById('iva-pedido-id').value = pedidoId;
+        document.getElementById('iva-exento').checked  = true; // default exento
+        document.getElementById('modal-iva').style.display = 'flex';
+        document.getElementById('btn-iva-ok').onclick = () => {
+            const rate = document.getElementById('iva-exento').checked ? 0 : 19;
+            document.getElementById('modal-iva').style.display = 'none';
+            resolve(rate);
+        };
+        document.getElementById('btn-iva-cancel').onclick = () => {
+            document.getElementById('modal-iva').style.display = 'none';
+            resolve(null);
+        };
+    });
+}
+
 /* ── Facturas DIAN ────────────────────────────────────────────────── */
 function switchFTab(nombre) {
     ['pendientes','emitidas','errores'].forEach(n => {
@@ -837,6 +897,10 @@ async function cargarFacturasPendientes() {
 }
 
 async function emitirFactura(pedidoId, btn) {
+    // Seleccionar tipo de IVA antes de emitir
+    const ivaOk = await confirmarIVA(pedidoId);
+    if (ivaOk === null) return; // usuario canceló
+
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Emitiendo…';
 
@@ -859,6 +923,7 @@ async function emitirFactura(pedidoId, btn) {
                 billing_nit:   p.billing_nit,
                 billing_razon: p.billing_razon,
                 billing_email: p.billing_email,
+                iva_rate:      ivaOk, // 0 = exento, 19 = gravado
             }),
         });
         const data = await res.json();
@@ -1112,7 +1177,10 @@ function toast(msg, type = 'ok') {
 
 /* ── Escape ───────────────────────────────────────────────────────── */
 document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') cerrarModalComp();
+    if (e.key === 'Escape') {
+        cerrarModalComp();
+        document.getElementById('modal-iva').style.display = 'none';
+    }
 });
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>

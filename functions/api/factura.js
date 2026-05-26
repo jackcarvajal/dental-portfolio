@@ -106,7 +106,7 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: cors });
   }
 
-  const { pedido_id, codigo, servicio, precio_total, billing_tipo, billing_nit, billing_razon, billing_email } = body;
+  const { pedido_id, codigo, servicio, precio_total, billing_tipo, billing_nit, billing_razon, billing_email, iva_rate } = body;
 
   if (!pedido_id || !precio_total || !billing_nit || !billing_razon || !billing_email) {
     return new Response(JSON.stringify({
@@ -126,8 +126,17 @@ export async function onRequestPost(context) {
   // Organización legal: 1=Persona Natural, 2=Persona Jurídica
   const esJuridica = billing_tipo === 'NIT';
 
+  // iva_rate: 0 = exento (Art. 476 ET), 19 = gravado
+  const ivaRate     = Number(iva_rate ?? 0);
+  const esExento    = ivaRate === 0;
+  const taxRate     = esExento ? '0.00' : '19.00';
+  const isExcluded  = esExento ? 1 : 0;
+  // tribute_id ítem: 22 = Exento, 1 = IVA gravado
+  const tributeItem = esExento ? 22 : 1;
+  // Precio base: si es gravado, el total incluye IVA → base = total / 1.19
+  const precioBase  = esExento ? Number(precio_total) : Math.round(Number(precio_total) / 1.19);
+
   // Tribute ID cliente: 21=Responsable IVA, 22=No responsable IVA
-  // Para la mayoría de dentistas/clínicas pequeñas: No responsable (22)
   const tributeCliente = esJuridica ? '21' : '22';
 
   const today = new Date().toISOString().slice(0, 10);
@@ -158,12 +167,12 @@ export async function onRequestPost(context) {
         name:             `${servicio || 'Servicio dental'} — PRODIGY Lab Dental`,
         quantity:         1,
         discount_rate:    0,
-        price:            Number(precio_total),
-        tax_rate:         '0.00', // Exento IVA Art. 476 ET
-        unit_measure_id:  70,     // 70 = Unidad de servicio en DIAN
-        standard_code_id: 1,      // 1 = Estándar UNSPSC
-        is_excluded:      1,      // 1 = Excluido de IVA
-        tribute_id:       22,     // 22 = IVA Exento
+        price:            precioBase,
+        tax_rate:         taxRate,        // '0.00' exento | '19.00' gravado
+        unit_measure_id:  70,             // 70 = Unidad de servicio DIAN
+        standard_code_id: 1,              // 1 = Estándar UNSPSC
+        is_excluded:      isExcluded,     // 1 = Exento Art.476 ET | 0 = Gravado
+        tribute_id:       tributeItem,    // 22 = Exento | 1 = IVA
         withholding_taxes: [],
       },
     ],
