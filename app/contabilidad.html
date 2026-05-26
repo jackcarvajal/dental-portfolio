@@ -699,11 +699,12 @@ async function confirmarPago() {
     const btn      = document.getElementById('btn-confirmar-pago');
     btn.disabled   = true;
 
-    // Verificar si requiere factura para activar el flujo DIAN
+    // Verificar si requiere factura o si es cliente internacional
     const { data: pCheck } = await sb.from('pedidos')
-        .select('requiere_factura,factura_estado')
+        .select('requiere_factura,factura_estado,pais,codigo,whatsapp')
         .eq('id', pedidoId).single();
-    const activarFactura = pCheck?.requiere_factura && pCheck?.factura_estado === 'no_requerida';
+    const esIntl         = pCheck?.pais && pCheck.pais !== 'CO';
+    const activarFactura = !esIntl && pCheck?.requiere_factura && pCheck?.factura_estado === 'no_requerida';
 
     const { error } = await sb.from('pedidos').update({
         pago_estado:             'pago_confirmado',
@@ -734,6 +735,22 @@ async function confirmarPago() {
         toast(`✅ Pago confirmado — Caso #${p?.codigo || ''}`, 'ok');
     }
     cerrarModalComp();
+
+    // Cliente internacional → ofrecer enviar link del recibo (invoice en inglés)
+    if (esIntl) {
+        const codigoRecibo = pCheck?.codigo || pedidoId;
+        const wa = (pCheck?.whatsapp || p?.whatsapp || '').replace(/\D/g,'');
+        const reciboUrl = `https://prodigylabdental.com/recibo-caso?id=${codigoRecibo}&lang=en`;
+        if (wa && confirm(`🌍 International client detected.\n\nSend invoice link via WhatsApp?\n${reciboUrl}`)) {
+            const txt = encodeURIComponent(
+                `✅ *Payment confirmed* — Case #${codigoRecibo}\n\n` +
+                `Hello Doctor, we confirm receipt of your payment.\n\n` +
+                `📄 Your technical invoice:\n${reciboUrl}\n\n_PRODIGY Lab Dental_`
+            );
+            window.open(`https://wa.me/${wa}?text=${txt}`, '_blank');
+        }
+    }
+
     await Promise.all([cargarPorConfirmar(), cargarHistorial(), cargarFacturasPendientes()]);
 }
 

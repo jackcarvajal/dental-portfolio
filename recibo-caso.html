@@ -112,6 +112,10 @@ function pagoEstadoBadge(estado){
 }
 
 function fmtCOP(n){if(!n&&n!==0)return'—';return new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n);}
+function fmtUSD(n){if(!n&&n!==0)return'—';return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2}).format(n);}
+const TRM = 4200; // COP por USD — ajustar según TRM
+function copToUsd(cop){return cop ? Math.round((cop/TRM)*100)/100 : 0;}
+let _isIntl = false; // se activa si pais !== 'CO'
 
 function buildTimeline(pedido, revisiones){
   const items=[];
@@ -135,79 +139,140 @@ function render(pedido, revisiones){
   const codigo=pedido.codigo||pedido.id?.slice(0,8)||'—';
   const docGen=fmtFecha(new Date().toISOString());
   const aprobFecha=pedido.diseno_aprobado?fmtFechaHora(pedido.updated_at):'—';
-  const total=pedido.total_cop||pedido.total;
+  const total=pedido.total_cop||pedido.total||pedido.precio_total;
+
+  // Modo internacional: pais != CO o ?lang=en en URL
+  _isIntl = (pedido.pais && pedido.pais !== 'CO') || new URLSearchParams(location.search).get('lang') === 'en';
+  const L = _isIntl ? {
+    title:'PRODIGY Digital Dentistry — Technical Invoice',
+    tipo:'Technical Invoice',
+    sCaso:'Case Data',
+    sServicio:'Service Performed',
+    sTimeline:'Case Timeline',
+    sPago:'Payment',
+    lCodigo:'Case #',lFecha:'Received',lCliente:'Client / Doctor',lClinica:'Clinic',
+    lServicio:'Service Type',lMaterial:'Material',lPiezas:'Units',lRevs:'Revisions',lEstado:'Status',lAprobFecha:'Approval Date',
+    lTotal:'Total',lMetodo:'Method: Wire transfer / PayPal / Wise / Stripe',
+    lAbono:'Deposit (50%)',lAbonoPaid:'Paid at start',
+    lSaldo:'Balance (50%)',lSaldoPaid:'✅ Paid',lSaldoPend:'⏳ Due on delivery',
+    lComprobantes:'Payment records:',lAbonoCmp:'Deposit receipt',lSaldoCmp:'Balance receipt',
+    lDoc:'Document generated',lLegal:`© ${new Date().getFullYear()} PRODIGY Digital Dentistry · WhatsApp +57 321 281 6716 · Medellín, Colombia · Technical service document.`,
+    estadoMap:{pago_confirmado:'✅ Paid',pendiente:'⏳ Pending',pago_subido:'⏳ Under review'},
+    estadoCls:{pago_confirmado:'confirmado',pendiente:'pendiente',pago_subido:'subido'},
+  } : {
+    title:'PRODIGY Digital Dentistry — Recibo Técnico',
+    tipo:'Recibo Técnico',
+    sCaso:'Datos del Caso',
+    sServicio:'Servicio Realizado',
+    sTimeline:'Timeline del Caso',
+    sPago:'Pago',
+    lCodigo:'Código',lFecha:'Fecha recepción',lCliente:'Cliente / Doctor',lClinica:'Clínica',
+    lServicio:'Tipo de servicio',lMaterial:'Material',lPiezas:'Piezas',lRevs:'Revisiones usadas',lEstado:'Estado',lAprobFecha:'Fecha aprobación',
+    lTotal:'Total',lMetodo:'Método: Nequi / Bancolombia / Daviplata',
+    lAbono:'Abono (50%)',lAbonoPaid:'Pagado al inicio',
+    lSaldo:'Saldo (50%)',lSaldoPaid:'✅ Pagado',lSaldoPend:'⏳ Contra entrega',
+    lComprobantes:'Comprobantes registrados:',lAbonoCmp:'Abono',lSaldoCmp:'Saldo',
+    lDoc:'Documento generado',lLegal:`© ${new Date().getFullYear()} PRODIGY Digital Dentistry · WhatsApp +57 321 281 6716 · Medellín, Colombia · Documento de trazabilidad técnica y contable.`,
+    estadoMap:{pago_confirmado:'✅ Pagado',pendiente:'⏳ Pendiente',pago_subido:'⏳ En revisión'},
+    estadoCls:{pago_confirmado:'confirmado',pendiente:'pendiente',pago_subido:'subido'},
+  };
+
+  // Precio: USD para internacionales, COP para locales
+  const totalUsd = pedido.precio_usd || (total ? copToUsd(total) : null);
+  const fmtTotal = _isIntl
+    ? (totalUsd ? fmtUSD(totalUsd) : (total ? fmtCOP(total)+' COP' : '—'))
+    : (total ? fmtCOP(total) : '—');
+  const fmtAbono = _isIntl
+    ? (totalUsd ? fmtUSD(Math.round(totalUsd/2*100)/100) : fmtCOP(Math.round((total||0)/2)))
+    : fmtCOP(Math.round((total||0)/2));
+  const saldoMonto = pedido.saldo_pendiente_monto ?? Math.round((total||0)/2);
+  const fmtSaldo = _isIntl
+    ? (totalUsd ? fmtUSD(Math.round(totalUsd/2*100)/100) : fmtCOP(saldoMonto))
+    : fmtCOP(saldoMonto);
+
+  const pagado=(pedido.pago_estado==='pago_confirmado'||pedido.pago_estado==='Pagado');
+  const estadoCls=L.estadoCls[pedido.pago_estado||'pendiente']||'pendiente';
+  const estadoLbl=L.estadoMap[pedido.pago_estado||'pendiente']||pedido.pago_estado||'—';
+
+  document.title = L.title;
+  document.querySelector('.topbar h1').textContent = '💎 ' + L.title;
 
   document.getElementById('recibo-wrap').innerHTML=`
   <div class="recibo">
     <div class="rec-header">
       <div class="rec-logo">
         <h2>💎 PRODIGY Digital Dentistry</h2>
-        <p>prodigy.pages.dev · 3212816716 · Medellín, Colombia</p>
+        <p>prodigylabdental.com · +57 321 281 6716 · Medellín, Colombia</p>
       </div>
       <div class="rec-meta">
-        <div class="rec-tipo">Recibo Técnico</div>
+        <div class="rec-tipo">${escH(L.tipo)}</div>
         <div class="rec-num">#${escH(codigo)}</div>
+        ${_isIntl ? `<div style="font-size:.58rem;color:#94a3b8;margin-top:3px;letter-spacing:1px;">NIT 900.XXX.XXX-X</div>` : ''}
       </div>
     </div>
 
     <div class="rec-body">
 
       <div class="rec-section">
-        <div class="rec-section-title"><i class="fas fa-folder-open" style="margin-right:6px"></i>Datos del Caso</div>
+        <div class="rec-section-title"><i class="fas fa-folder-open" style="margin-right:6px"></i>${escH(L.sCaso)}</div>
         <div class="rec-grid">
-          <div class="rec-field"><div class="lbl">Código</div><div class="val" style="font-family:monospace">${escH(codigo)}</div></div>
-          <div class="rec-field"><div class="lbl">Fecha recepción</div><div class="val">${fmtFecha(pedido.created_at)}</div></div>
-          <div class="rec-field"><div class="lbl">Cliente / Doctor</div><div class="val">${escH(pedido.doctor||pedido.nombre||pedido.nombre_doctor||'—')}</div></div>
-          <div class="rec-field"><div class="lbl">Clínica</div><div class="val">${escH(pedido.clinica||'—')}</div></div>
+          <div class="rec-field"><div class="lbl">${escH(L.lCodigo)}</div><div class="val" style="font-family:monospace">${escH(codigo)}</div></div>
+          <div class="rec-field"><div class="lbl">${escH(L.lFecha)}</div><div class="val">${fmtFecha(pedido.created_at)}</div></div>
+          <div class="rec-field"><div class="lbl">${escH(L.lCliente)}</div><div class="val">${escH(pedido.doctor||pedido.nombre||pedido.nombre_doctor||'—')}</div></div>
+          <div class="rec-field"><div class="lbl">${escH(L.lClinica)}</div><div class="val">${escH(pedido.clinica||'—')}</div></div>
         </div>
       </div>
 
       <div class="rec-section">
-        <div class="rec-section-title"><i class="fas fa-drafting-compass" style="margin-right:6px"></i>Servicio Realizado</div>
+        <div class="rec-section-title"><i class="fas fa-drafting-compass" style="margin-right:6px"></i>${escH(L.sServicio)}</div>
         <div class="rec-grid">
-          <div class="rec-field"><div class="lbl">Tipo de servicio</div><div class="val">${escH(pedido.servicio||pedido.categoria||pedido.tipo_trabajo||'—')}</div></div>
-          <div class="rec-field"><div class="lbl">Material</div><div class="val">${escH(pedido.material||'—')}</div></div>
-          ${pedido.piezas?`<div class="rec-field"><div class="lbl">Piezas</div><div class="val">${escH(String(pedido.piezas))}</div></div>`:''}
-          ${pedido.revisiones_usadas!=null?`<div class="rec-field"><div class="lbl">Revisiones usadas</div><div class="val">${escH(String(pedido.revisiones_usadas))} / 2</div></div>`:''}
-          <div class="rec-field"><div class="lbl">Estado</div><div class="val">${escH(pedido.estado||'—')}</div></div>
-          ${aprobFecha!=='—'?`<div class="rec-field"><div class="lbl">Fecha aprobación</div><div class="val">${escH(aprobFecha)}</div></div>`:''}
+          <div class="rec-field"><div class="lbl">${escH(L.lServicio)}</div><div class="val">${escH(pedido.servicio||pedido.categoria||pedido.tipo_trabajo||'—')}</div></div>
+          <div class="rec-field"><div class="lbl">${escH(L.lMaterial)}</div><div class="val">${escH(pedido.material||'—')}</div></div>
+          ${pedido.piezas?`<div class="rec-field"><div class="lbl">${escH(L.lPiezas)}</div><div class="val">${escH(String(pedido.piezas))}</div></div>`:''}
+          ${pedido.revisiones_usadas!=null?`<div class="rec-field"><div class="lbl">${escH(L.lRevs)}</div><div class="val">${escH(String(pedido.revisiones_usadas))} / 2</div></div>`:''}
+          <div class="rec-field"><div class="lbl">${escH(L.lEstado)}</div><div class="val">${escH(pedido.estado||pedido.estado_operativo||'—')}</div></div>
+          ${aprobFecha!=='—'?`<div class="rec-field"><div class="lbl">${escH(L.lAprobFecha)}</div><div class="val">${escH(aprobFecha)}</div></div>`:''}
         </div>
       </div>
 
       <div class="rec-section">
-        <div class="rec-section-title"><i class="fas fa-timeline" style="margin-right:6px"></i>Timeline del Caso</div>
+        <div class="rec-section-title"><i class="fas fa-timeline" style="margin-right:6px"></i>${escH(L.sTimeline)}</div>
         ${buildTimeline(pedido,rev)}
       </div>
 
       <div class="rec-section">
-        <div class="rec-section-title"><i class="fas fa-credit-card" style="margin-right:6px"></i>Pago</div>
+        <div class="rec-section-title"><i class="fas fa-credit-card" style="margin-right:6px"></i>${escH(L.sPago)}</div>
         <div class="pago-box">
-          <div class="pago-total"><span>Total</span>${total?fmtCOP(total):'—'}</div>
+          <div class="pago-total">
+            <span>${escH(L.lTotal)}</span>
+            ${fmtTotal}
+            ${_isIntl && total ? `<span style="font-size:.62rem;color:#94a3b8;font-weight:400;">(≈ ${fmtCOP(total)} COP ref.)</span>` : ''}
+          </div>
           <div>
-            <div style="font-size:.72rem;color:#94a3b8;margin-bottom:4px;">Método: Nequi / Bancolombia / Daviplata</div>
-            ${pagoEstadoBadge(pedido.pago_estado||pedido.estado||'pendiente')}
+            <div style="font-size:.72rem;color:#94a3b8;margin-bottom:4px;">${escH(L.lMetodo)}</div>
+            <span class="pago-estado ${estadoCls}">${estadoLbl}</span>
           </div>
         </div>
         ${total ? `
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
           <div style="background:#f1f5f9;border-radius:8px;padding:10px 14px;">
-            <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-bottom:3px;">Abono (50%)</div>
-            <div style="font-size:.92rem;font-weight:700;color:#1a1a2e;">${fmtCOP(Math.round(total/2))}</div>
-            <div style="font-size:.65rem;color:#64748b;margin-top:2px;">Pagado al inicio</div>
+            <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-bottom:3px;">${escH(L.lAbono)}</div>
+            <div style="font-size:.92rem;font-weight:700;color:#1a1a2e;">${fmtAbono}</div>
+            <div style="font-size:.65rem;color:#64748b;margin-top:2px;">${escH(L.lAbonoPaid)}</div>
           </div>
-          <div style="background:${(pedido.pago_estado==='pago_confirmado'||pedido.pago_estado==='Pagado')?'#e8fdf0':'#fef9e7'};border-radius:8px;padding:10px 14px;">
-            <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-bottom:3px;">Saldo (50%)</div>
-            <div style="font-size:.92rem;font-weight:700;color:#1a1a2e;">${fmtCOP(pedido.saldo_pendiente_monto ?? Math.round(total/2))}</div>
-            <div style="font-size:.65rem;color:${(pedido.pago_estado==='pago_confirmado'||pedido.pago_estado==='Pagado')?'#00873d':'#b7791f'};margin-top:2px;font-weight:700;">
-              ${(pedido.pago_estado==='pago_confirmado'||pedido.pago_estado==='Pagado') ? '✅ Pagado' : '⏳ Contra entrega'}
+          <div style="background:${pagado?'#e8fdf0':'#fef9e7'};border-radius:8px;padding:10px 14px;">
+            <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-bottom:3px;">${escH(L.lSaldo)}</div>
+            <div style="font-size:.92rem;font-weight:700;color:#1a1a2e;">${fmtSaldo}</div>
+            <div style="font-size:.65rem;color:${pagado?'#00873d':'#b7791f'};margin-top:2px;font-weight:700;">
+              ${pagado ? escH(L.lSaldoPaid) : escH(L.lSaldoPend)}
             </div>
           </div>
         </div>
         ${pedido.comprobante_abono_url||pedido.comprobante_saldo_url ? `
         <div style="margin-top:10px;font-size:.72rem;color:#64748b;">
-          Comprobantes registrados:
-          ${pedido.comprobante_abono_url?`<a href="${escH(pedido.comprobante_abono_url)}" target="_blank" rel="noopener noreferrer" style="color:#1a7acc;margin-left:8px;">📎 Abono</a>`:''}
-          ${pedido.comprobante_saldo_url?`<a href="${escH(pedido.comprobante_saldo_url)}" target="_blank" rel="noopener noreferrer" style="color:#1a7acc;margin-left:8px;">📎 Saldo</a>`:''}
+          ${escH(L.lComprobantes)}
+          ${pedido.comprobante_abono_url?`<a href="${escH(pedido.comprobante_abono_url)}" target="_blank" rel="noopener noreferrer" style="color:#1a7acc;margin-left:8px;">📎 ${escH(L.lAbonoCmp)}</a>`:''}
+          ${pedido.comprobante_saldo_url?`<a href="${escH(pedido.comprobante_saldo_url)}" target="_blank" rel="noopener noreferrer" style="color:#1a7acc;margin-left:8px;">📎 ${escH(L.lSaldoCmp)}</a>`:''}
         </div>` : ''}
         ` : ''}
       </div>
@@ -215,8 +280,8 @@ function render(pedido, revisiones){
     </div>
 
     <div class="rec-footer">
-      <p>Documento generado: ${escH(docGen)}</p>
-      <p class="legal">© ${new Date().getFullYear()} PRODIGY Digital Dentistry · WhatsApp +57 321 281 6716 · Medellín, Colombia · Documento de trazabilidad técnica y contable.</p>
+      <p>${escH(L.lDoc)}: ${escH(docGen)}</p>
+      <p class="legal">${escH(L.lLegal)}</p>
     </div>
   </div>`;
 }

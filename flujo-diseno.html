@@ -823,8 +823,16 @@ window.submitOrden     = window.submitOrden      || function(){};
                 </div>
             </div>
 
+            <!-- Nota invoice para clientes internacionales (oculta por defecto) -->
+            <div id="nota-invoice-intl" style="display:none;margin-top:12px;padding:14px 16px;background:rgba(0,210,255,.06);border:1.5px solid rgba(0,210,255,.2);border-radius:10px;">
+                <div style="font-size:.8rem;font-weight:800;color:#00d2ff;margin-bottom:6px;">🌍 International Invoice</div>
+                <p style="font-size:.78rem;color:#94a3b8;line-height:1.6;margin:0;">
+                    A <strong style="color:#fff;">Technical Invoice</strong> in English and USD will be automatically generated for your case and sent via the tracking link. No DIAN registration required for international clients.
+                </p>
+            </div>
+
             <!-- FACTURACIÓN ELECTRÓNICA DIAN -->
-            <div class="accordion" style="margin-top:12px;border:1.5px solid rgba(0,210,255,.25);">
+            <div id="accordion-dian-d" class="accordion" style="margin-top:12px;border:1.5px solid rgba(0,210,255,.25);">
                 <div class="accordion-header" onclick="toggleAccordion(this)" style="padding:12px 16px;">
                     <h2 style="font-size:.85rem;"><i class="fas fa-file-invoice" style="color:#00d2ff;"></i>&nbsp; FACTURA ELECTRÓNICA (OPCIONAL)</h2>
                     <span class="accordion-icon" style="font-size:.9rem;">▼</span>
@@ -1082,6 +1090,16 @@ window.submitOrden     = window.submitOrden      || function(){};
                     waInput.placeholder = '9876543210';
                 }
                 waInput.value = '';
+            }
+            // Ocultar DIAN para internacionales — mostrar nota de invoice automático
+            const esColombia = sel.value === '+57';
+            const accordionDian = document.getElementById('accordion-dian-d');
+            const notaIntl     = document.getElementById('nota-invoice-intl');
+            if (accordionDian) accordionDian.style.display = esColombia ? '' : 'none';
+            if (notaIntl)      notaIntl.style.display      = esColombia ? 'none' : '';
+            if (!esColombia) {
+                const chk = document.getElementById('chk-factura-d');
+                if (chk) { chk.checked = false; toggleBillingSectionD(); }
             }
         }
 
