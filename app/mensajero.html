@@ -219,6 +219,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 let _mensajeroId       = null;
 let _signaturePad      = null;
+const _dMap            = {}; // cache despachos para evitar onclick con strings
 let _activeDespId      = null;
 let _activePedidoId    = null;
 let _activeCodigo      = '';
@@ -357,6 +358,7 @@ async function cargarRuta(){
     }
 
     const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '—';
+    ;(desp||[]).forEach(d => { _dMap[d.id] = d; });
     lista.innerHTML=(desp||[]).map(d=>{
         const p       = d.pedidos||{};
         const codigo  = p.codigo||d.id.slice(0,8);
@@ -391,9 +393,9 @@ async function cargarRuta(){
             </div>
             <div class="card-actions">
                 ${!enRuta
-                    ? `<button class="btn-action btn-iniciar" onclick="iniciarEntrega('${escH(d.id)}','${escH(p.id||'')}','${escH(nombre)}','${escH(dir)}','${escH(p.whatsapp||'')}','${escH(codigo)}')">
+                    ? `<button class="btn-action btn-iniciar" onclick="iniciarEntrega(_dMap['${escH(d.id)}'])">
                         <i class="fas fa-play"></i> Iniciar</button>`
-                    : `<button class="btn-action btn-confirmar" onclick="abrirModalConfirmar('${escH(d.id)}','${escH(p.id||'')}','${escH(codigo)}','${escH(nombre)}','${saldo}','${escH(p.whatsapp||'')}')">
+                    : `<button class="btn-action btn-confirmar" onclick="abrirModalConfirmar(_dMap['${escH(d.id)}'])">
                         <i class="fas fa-check"></i> Confirmar Entrega${saldo?' 💰':''}</button>`
                 }
                 <button class="btn-action btn-novedad" onclick="abrirModalNovedad('${escH(d.id)}')" aria-label="Reportar novedad"><i class="fas fa-flag"></i></button>
@@ -403,7 +405,16 @@ async function cargarRuta(){
 }
 
 /* ── INICIAR ENTREGA ────────────────────────────────────── */
-async function iniciarEntrega(despId, pedidoId, nombreCliente, direccion, waCliente, codigo){
+async function iniciarEntrega(d){
+    if (!d) return;
+    const p = d.pedidos || {};
+    const despId = d.id;
+    const pedidoId = p.id || '';
+    const nombreCliente = p.nombre_cliente || p.nombre_doctor || '—';
+    const direccion = p.direccion || '—';
+    const waCliente = p.whatsapp || '';
+    const codigo = p.codigo || d.id.slice(0,8);
+
     const { error } = await sb.from('despachos').update({ estado:'EN_REPARTO' }).eq('id',despId);
     if(error){ toast('Error: '+error.message,'error'); return; }
     if(pedidoId) await sb.from('pedidos').update({ estado:'EN_REPARTO' }).eq('id',pedidoId);
@@ -422,7 +433,16 @@ async function iniciarEntrega(despId, pedidoId, nombreCliente, direccion, waClie
 }
 
 /* ── MODAL CONFIRMAR ────────────────────────────────────── */
-function abrirModalConfirmar(despId, pedidoId, codigo, nombre, saldoMonto = 0, waCliente = ''){
+function abrirModalConfirmar(d){
+    if (!d) return;
+    const p = d.pedidos || {};
+    const despId = d.id;
+    const pedidoId = p.id || '';
+    const codigo = p.codigo || d.id.slice(0,8);
+    const nombre = p.nombre_cliente || p.nombre_doctor || '—';
+    const saldoMonto = p.saldo_pendiente_monto || 0;
+    const waCliente = p.whatsapp || '';
+
     _activeDespId    = despId;
     _activePedidoId  = pedidoId;
     _activeCodigo    = codigo;

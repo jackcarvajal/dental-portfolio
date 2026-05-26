@@ -477,6 +477,17 @@ let _facturaFile = null;
         `${session.user.email}  ·  ${window.PRODIGY_ROLE}`;
     await cargarItems();
     await contarSolicitudesPendientes();
+
+    // Realtime — actualiza stock cuando otro operario modifica
+    sb.channel('inventario-items')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'inventario_items' }, () => {
+            cargarItems();
+            contarSolicitudesPendientes();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'movimientos_inventario' }, () => {
+            contarSolicitudesPendientes();
+        })
+        .subscribe();
 })();
 
 // ── Tabs ──────────────────────────────────────────────────────────
