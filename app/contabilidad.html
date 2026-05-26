@@ -176,6 +176,12 @@ tbody td{padding:11px 14px;vertical-align:middle;}
             <i class="fas fa-hand-holding-dollar"></i> Saldos entrega
             <span class="badge" id="badge-sald" style="background:var(--yellow);color:#000;">0</span>
         </button>
+        <button class="tab-btn" onclick="switchTab('pedidos',this)">
+            <i class="fas fa-briefcase"></i> Pedidos
+        </button>
+        <button class="tab-btn" onclick="switchTab('suministros',this)">
+            <i class="fas fa-boxes-stacked"></i> Suministros
+        </button>
     </div>
 
     <!-- TAB: Por confirmar -->
@@ -257,6 +263,94 @@ tbody td{padding:11px 14px;vertical-align:middle;}
             </table>
         </div>
     </div>
+    <!-- TAB: Pedidos -->
+    <div id="tab-pedidos" class="tab-panel">
+        <div class="filtros">
+            <label>Desde</label>
+            <input type="date" id="ped-desde">
+            <label>Hasta</label>
+            <input type="date" id="ped-hasta">
+            <select id="ped-estado">
+                <option value="">Todos los estados</option>
+                <option value="VALIDACION_PENDIENTE">Validación pendiente</option>
+                <option value="EN_PRODUCCION">En producción</option>
+                <option value="FRESADO_INICIADO">Fresado</option>
+                <option value="QA_APROBADO">QA aprobado</option>
+                <option value="LISTO_DESPACHAR">Listo para despachar</option>
+                <option value="POR_DESPACHAR">Por despachar</option>
+                <option value="EN_REPARTO">En reparto</option>
+                <option value="ENTREGADO">Entregado</option>
+            </select>
+            <button class="btn-xs btn-ver" onclick="cargarPedidos()"><i class="fas fa-search"></i> Filtrar</button>
+        </div>
+        <div class="total-bar" id="total-bar-ped" style="display:none;">
+            <div class="total-item"><div class="t-lbl">Casos en período</div><div class="t-val" id="ped-tot-casos">—</div></div>
+            <div class="total-item"><div class="t-lbl">Facturado total</div><div class="t-val" id="ped-tot-fact">—</div></div>
+            <div class="total-item"><div class="t-lbl">Cobrado (confirmado)</div><div class="t-val" id="ped-tot-cobrado" style="color:var(--green)">—</div></div>
+            <div class="total-item"><div class="t-lbl">Por cobrar</div><div class="t-val" id="ped-tot-pend" style="color:var(--yellow)">—</div></div>
+        </div>
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Doctor / Cliente</th>
+                        <th>Servicio</th>
+                        <th>Estado operativo</th>
+                        <th>Total</th>
+                        <th>Pago</th>
+                        <th>Saldo pendiente</th>
+                        <th>Fecha creación</th>
+                        <th>Recibo</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-pedidos">
+                    <tr><td colspan="9" style="text-align:center;padding:30px;color:var(--muted);">Selecciona un rango de fechas</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB: Suministros -->
+    <div id="tab-suministros" class="tab-panel">
+        <div class="filtros">
+            <label>Desde</label>
+            <input type="date" id="sum-desde">
+            <label>Hasta</label>
+            <input type="date" id="sum-hasta">
+            <select id="sum-tipo">
+                <option value="">Todos los movimientos</option>
+                <option value="ENTRADA">Entradas (compras)</option>
+                <option value="SALIDA">Salidas (consumo)</option>
+                <option value="AJUSTE">Ajustes</option>
+            </select>
+            <button class="btn-xs btn-ver" onclick="cargarSuministros()"><i class="fas fa-search"></i> Filtrar</button>
+        </div>
+        <div class="total-bar" id="total-bar-sum" style="display:none;">
+            <div class="total-item"><div class="t-lbl">Compras (ENTRADAs)</div><div class="t-val" id="sum-tot-entradas" style="color:var(--cyan)">—</div></div>
+            <div class="total-item"><div class="t-lbl">Consumo (SALIDAs)</div><div class="t-val" id="sum-tot-salidas" style="color:var(--yellow)">—</div></div>
+            <div class="total-item"><div class="t-lbl">Movimientos</div><div class="t-val" id="sum-tot-movs">—</div></div>
+        </div>
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Ítem</th>
+                        <th>Tipo</th>
+                        <th>Cantidad</th>
+                        <th>Costo unitario</th>
+                        <th>Costo total</th>
+                        <th>Caso vinculado</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-suministros">
+                    <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted);">Selecciona un rango de fechas</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </main>
 
 <!-- Modal: Ver comprobante + confirmar -->
@@ -316,10 +410,16 @@ let _pedidos = [];
     // Fechas default para historial: inicio del mes actual
     const hoy   = new Date();
     const ini   = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-    document.getElementById('fil-desde').value = ini.toISOString().slice(0,10);
-    document.getElementById('fil-hasta').value = hoy.toISOString().slice(0,10);
+    const iniStr = ini.toISOString().slice(0,10);
+    const hoyStr = hoy.toISOString().slice(0,10);
+    document.getElementById('fil-desde').value  = iniStr;
+    document.getElementById('fil-hasta').value  = hoyStr;
+    document.getElementById('ped-desde').value  = iniStr;
+    document.getElementById('ped-hasta').value  = hoyStr;
+    document.getElementById('sum-desde').value  = iniStr;
+    document.getElementById('sum-hasta').value  = hoyStr;
 
-    await Promise.all([cargarPorConfirmar(), cargarSaldos(), cargarHistorial()]);
+    await Promise.all([cargarPorConfirmar(), cargarSaldos(), cargarHistorial(), cargarPedidos(), cargarSuministros()]);
     initRealtime();
 })();
 
@@ -565,6 +665,123 @@ async function rechazarPago() {
     toast('Comprobante rechazado — doctor notificado', 'warn');
     cerrarModalComp();
     await cargarPorConfirmar();
+}
+
+/* ── Pedidos ──────────────────────────────────────────────────────── */
+async function cargarPedidos() {
+    const desde  = document.getElementById('ped-desde').value;
+    const hasta  = document.getElementById('ped-hasta').value;
+    if (!desde || !hasta) return;
+    const estado = document.getElementById('ped-estado').value;
+
+    const desdeISO = new Date(desde + 'T00:00:00').toISOString();
+    const hastaISO = new Date(hasta + 'T23:59:59').toISOString();
+
+    let q = sb.from('pedidos')
+        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,estado_operativo,precio_total,pago_estado,saldo_pendiente_monto,modalidad_cobro,created_at')
+        .gte('created_at', desdeISO)
+        .lte('created_at', hastaISO)
+        .order('created_at', { ascending: false });
+    if (estado) q = q.eq('estado_operativo', estado);
+
+    const { data } = await q;
+    const rows = data || [];
+
+    const totFact   = rows.reduce((s, p) => s + (Number(p.precio_total) || 0), 0);
+    const totCobr   = rows.filter(p => p.pago_estado === 'pago_confirmado').reduce((s, p) => s + (Number(p.precio_total) || 0), 0);
+    const totPend   = rows.filter(p => p.pago_estado !== 'pago_confirmado').reduce((s, p) => s + (Number(p.precio_total) || 0), 0);
+
+    const bar = document.getElementById('total-bar-ped');
+    bar.style.display = rows.length ? 'flex' : 'none';
+    document.getElementById('ped-tot-casos').textContent   = rows.length;
+    document.getElementById('ped-tot-fact').textContent    = fmtCOP(totFact);
+    document.getElementById('ped-tot-cobrado').textContent = fmtCOP(totCobr);
+    document.getElementById('ped-tot-pend').textContent    = fmtCOP(totPend);
+
+    const PAGO_LABELS = { pago_confirmado:'✅ Confirmado', pago_subido:'⏳ Subido', pendiente:'🔴 Pendiente', credito_autorizado:'🤝 Crédito' };
+    const ESTADO_COLORS = {
+        ENTREGADO:'var(--green)', EN_REPARTO:'var(--cyan)', POR_DESPACHAR:'var(--cyan)',
+        LISTO_DESPACHAR:'var(--cyan)', QA_APROBADO:'var(--gold)',
+        FRESADO_INICIADO:'var(--muted)', EN_PRODUCCION:'var(--muted)', VALIDACION_PENDIENTE:'var(--red)',
+    };
+
+    const tbody = document.getElementById('tbody-pedidos');
+    if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><i class="fas fa-briefcase"></i><p>Sin casos en ese período</p></div></td></tr>';
+        return;
+    }
+    tbody.innerHTML = rows.map(p => {
+        const nombre = escH(p.nombre_cliente || p.nombre_doctor || '—');
+        const color  = ESTADO_COLORS[p.estado_operativo] || 'var(--muted)';
+        const saldo  = Number(p.saldo_pendiente_monto) || 0;
+        return `<tr>
+            <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
+            <td>${nombre}</td>
+            <td style="font-size:.78rem;">${escH(p.servicio || '—')}</td>
+            <td><span style="font-size:.72rem;color:${color};font-weight:700;">${escH(p.estado_operativo || '—')}</span></td>
+            <td class="td-monto">${fmtCOP(p.precio_total)}</td>
+            <td style="font-size:.76rem;">${escH(PAGO_LABELS[p.pago_estado] || p.pago_estado || '—')}</td>
+            <td class="td-saldo-pend">${saldo > 0 ? fmtCOP(saldo) : '<span style="color:var(--muted)">—</span>'}</td>
+            <td style="font-size:.74rem;color:var(--muted);">${fmtFecha(p.created_at)}</td>
+            <td><a href="/recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-recibo"><i class="fas fa-file-invoice"></i></a></td>
+        </tr>`;
+    }).join('');
+}
+
+/* ── Suministros ──────────────────────────────────────────────────── */
+async function cargarSuministros() {
+    const desde = document.getElementById('sum-desde').value;
+    const hasta = document.getElementById('sum-hasta').value;
+    if (!desde || !hasta) return;
+    const tipo  = document.getElementById('sum-tipo').value;
+
+    const desdeISO = new Date(desde + 'T00:00:00').toISOString();
+    const hastaISO = new Date(hasta + 'T23:59:59').toISOString();
+
+    let q = sb.from('inventario_movimientos')
+        .select('id,tipo,cantidad,costo_unitario,notas,created_at,inventario_items(nombre,unidad_medida),pedidos(codigo)')
+        .gte('created_at', desdeISO)
+        .lte('created_at', hastaISO)
+        .order('created_at', { ascending: false })
+        .limit(500);
+    if (tipo) q = q.eq('tipo', tipo);
+
+    const { data } = await q;
+    const rows = data || [];
+
+    const entradas = rows.filter(r => r.tipo === 'ENTRADA').reduce((s, r) => s + (Number(r.costo_unitario) || 0) * (Number(r.cantidad) || 0), 0);
+    const salidas  = rows.filter(r => r.tipo === 'SALIDA').reduce((s, r) => s + (Number(r.costo_unitario) || 0) * (Number(r.cantidad) || 0), 0);
+
+    const bar = document.getElementById('total-bar-sum');
+    bar.style.display = rows.length ? 'flex' : 'none';
+    document.getElementById('sum-tot-entradas').textContent = entradas ? fmtCOP(entradas) : '$0';
+    document.getElementById('sum-tot-salidas').textContent  = salidas  ? fmtCOP(salidas)  : '$0';
+    document.getElementById('sum-tot-movs').textContent     = rows.length;
+
+    const TIPO_COLORS = { ENTRADA:'var(--green)', SALIDA:'var(--yellow)', AJUSTE:'var(--muted)' };
+    const tbody = document.getElementById('tbody-suministros');
+    if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fas fa-boxes-stacked"></i><p>Sin movimientos en ese período</p></div></td></tr>';
+        return;
+    }
+    tbody.innerHTML = rows.map(r => {
+        const itemNombre = escH(r.inventario_items?.nombre || '—');
+        const unidad     = escH(r.inventario_items?.unidad_medida || '');
+        const costoUnit  = Number(r.costo_unitario) || 0;
+        const costoTotal = costoUnit * (Number(r.cantidad) || 0);
+        const color      = TIPO_COLORS[r.tipo] || 'var(--muted)';
+        const casoCod    = r.pedidos?.codigo ? `#${escH(r.pedidos.codigo)}` : '—';
+        return `<tr>
+            <td style="font-size:.74rem;color:var(--muted);">${fmtFecha(r.created_at)}</td>
+            <td>${itemNombre}</td>
+            <td><span style="font-size:.72rem;font-weight:700;color:${color};">${escH(r.tipo)}</span></td>
+            <td style="font-size:.8rem;">${escH(String(r.cantidad))} ${unidad}</td>
+            <td class="td-monto">${costoUnit ? fmtCOP(costoUnit) : '—'}</td>
+            <td class="td-monto">${costoTotal ? fmtCOP(costoTotal) : '—'}</td>
+            <td class="td-mono" style="font-size:.76rem;">${casoCod}</td>
+            <td style="font-size:.74rem;color:var(--muted);max-width:180px;">${escH(r.notas || '—')}</td>
+        </tr>`;
+    }).join('');
 }
 
 /* ── Realtime ─────────────────────────────────────────────────────── */
