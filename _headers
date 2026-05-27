@@ -108,6 +108,10 @@
   Cache-Control: public, max-age=0, must-revalidate
 /404
   Cache-Control: public, max-age=0, must-revalidate
+/mapa-sitio
+  Cache-Control: public, max-age=0, must-revalidate
+/contacto
+  Cache-Control: public, max-age=0, must-revalidate
 
 # Service worker — siempre revalidar (navegadores lo limitan a 24h de todas formas)
 /sw.js
