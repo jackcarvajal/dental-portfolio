@@ -936,7 +936,7 @@ async function cargarSolicitudes() {
         .order('created_at', { ascending: true })
         .limit(80);
 
-    if (error) { wrap.innerHTML = `<p style="color:#f87171;text-align:center;padding:24px;">Error: ${error.message}</p>`; return; }
+    if (error) { wrap.innerHTML = `<p style="color:#f87171;text-align:center;padding:24px;">Error: ${String(error.message||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`; return; }
     if (!pedidos || !pedidos.length) {
         wrap.innerHTML = '<p style="color:var(--txt3);text-align:center;padding:40px;"><i class="fas fa-check-circle" style="color:#00FF41;font-size:1.5rem;display:block;margin-bottom:8px;"></i>Sin solicitudes pendientes</p>';
         document.getElementById('badge-sol').style.display = 'none';
