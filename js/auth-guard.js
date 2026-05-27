@@ -20,6 +20,12 @@
         operator:             '/app/operator-panel.html',
         mensajero:            '/app/mensajero.html',
         encargado_inventario: '/app/inventario.html',
+        calidad:              '/app/calidad.html',
+        contabilidad:         '/app/contabilidad.html',
+        diseno:               '/app/operario-diseno.html',
+        taller:               '/app/taller.html',
+        fresado:              '/app/operario.html',
+        impresion:            '/app/operario.html',
         client:               '/app/client-panel.html'
     };
 
@@ -32,6 +38,12 @@
         if (appRole === 'operator')             return 'operator';
         if (appRole === 'mensajero')            return 'mensajero';
         if (appRole === 'encargado_inventario') return 'encargado_inventario';
+        if (appRole === 'calidad')              return 'calidad';
+        if (appRole === 'contabilidad')         return 'contabilidad';
+        if (appRole === 'diseno')               return 'diseno';
+        if (appRole === 'taller')               return 'taller';
+        if (appRole === 'fresado')              return 'fresado';
+        if (appRole === 'impresion')            return 'impresion';
         // Cualquier otro usuario autenticado = cliente
         return 'client';
     }
