@@ -233,31 +233,31 @@ async function render(c) {
   const hasExocad2 = rawExocad2 ? await urlOk(rawExocad2) : false;
   let visor2HTML = null;
   if (hasExocad2) {
-    visor2HTML = `<div class="viewer-wrap"><iframe id="exocad-frame-2" title="Visor 3D — ${c.label_2||'Diseño 2'}" allowfullscreen oncontextmenu="return false;"></iframe></div>`;
+    visor2HTML = `<div class="viewer-wrap"><iframe id="exocad-frame-2" title="Visor 3D — ${escHtml(c.label_2||'Diseño 2')}" allowfullscreen oncontextmenu="return false;"></iframe></div>`;
   }
 
   /* ── GALERÍAS ── */
-  const label1 = c.label_1 || 'Diseño 1';
-  const label2 = c.label_2 || 'Diseño 2';
+  const label1 = escHtml(c.label_1 || 'Diseño 1');
+  const label2 = escHtml(c.label_2 || 'Diseño 2');
   const gal2   = Array.isArray(c.gallery_2) ? c.gallery_2 : [];
   const galHTML = gallery.length > 0 ? `
     <div class="section">
       <div class="section-title"><i class="fas fa-images"></i> Galería ${visor2HTML ? '— '+label1 : 'de Imágenes'}</div>
       <div class="gallery-grid">
-        ${gallery.map((u,i) => `<div class="gallery-item" onclick="openLB(${i})"><img src="${u}" alt="Foto ${i+1}" loading="lazy"><div class="gallery-wm"><span>© PRODIGY</span></div><span class="gallery-num">${i+1}</span></div>`).join('')}
+        ${gallery.map((u,i) => `<div class="gallery-item" onclick="openLB(${i})"><img src="${encodeURI(u)}" alt="Foto ${i+1}" loading="lazy"><div class="gallery-wm"><span>© PRODIGY</span></div><span class="gallery-num">${i+1}</span></div>`).join('')}
       </div>
     </div>` : '';
   const gal2HTML = gal2.length > 0 ? `
     <div class="section">
       <div class="section-title"><i class="fas fa-images"></i> Galería — ${label2}</div>
       <div class="gallery-grid">
-        ${gal2.map((u,i) => `<div class="gallery-item" onclick="openLBPool(${i})"><img src="${u}" alt="Foto ${i+1}" loading="lazy"><div class="gallery-wm"><span>© PRODIGY</span></div><span class="gallery-num">${i+1}</span></div>`).join('')}
+        ${gal2.map((u,i) => `<div class="gallery-item" onclick="openLBPool(${i})"><img src="${encodeURI(u)}" alt="Foto ${i+1}" loading="lazy"><div class="gallery-wm"><span>© PRODIGY</span></div><span class="gallery-num">${i+1}</span></div>`).join('')}
       </div>
     </div>` : '';
 
   /* Cover pequeña */
   const coverThumb = c.cover_image
-    ? `<img src="${c.cover_image}" alt="Portada" loading="lazy" decoding="async" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);flex-shrink:0;">`
+    ? `<img src="${encodeURI(c.cover_image)}" alt="Portada" loading="lazy" decoding="async" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);flex-shrink:0;">`
     : '';
 
   document.getElementById('caso-root').innerHTML = `
@@ -266,13 +266,13 @@ async function render(c) {
         <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
           <div style="flex:1;min-width:200px;">
             <div class="caso-meta">
-              ${c.code     ? `<span class="meta-tag"><i class="fas fa-hashtag"></i>${c.code}</span>` : ''}
-              ${c.date     ? `<span class="meta-tag"><i class="fas fa-calendar"></i>${c.date}</span>` : ''}
-              ${c.type     ? `<span class="meta-tag"><i class="fas fa-tag"></i>${c.type}</span>` : ''}
-              ${c.material ? `<span class="meta-tag"><i class="fas fa-flask"></i>${c.material}</span>` : ''}
+              ${c.code     ? `<span class="meta-tag"><i class="fas fa-hashtag"></i>${escHtml(c.code)}</span>` : ''}
+              ${c.date     ? `<span class="meta-tag"><i class="fas fa-calendar"></i>${escHtml(c.date)}</span>` : ''}
+              ${c.type     ? `<span class="meta-tag"><i class="fas fa-tag"></i>${escHtml(c.type)}</span>` : ''}
+              ${c.material ? `<span class="meta-tag"><i class="fas fa-flask"></i>${escHtml(c.material)}</span>` : ''}
             </div>
-            <h1 class="caso-title">${c.name || 'Caso clínico'}</h1>
-            ${c.description ? `<p class="caso-desc">${c.description}</p>` : ''}
+            <h1 class="caso-title">${escHtml(c.name || 'Caso clínico')}</h1>
+            ${c.description ? `<p class="caso-desc">${escHtml(c.description)}</p>` : ''}
           </div>
           ${coverThumb}
         </div>
