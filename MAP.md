@@ -1,6 +1,6 @@
 # MAP — PRODIGY Arquitectura de Referencia
 > Para uso interno de Claude. Actualizar cuando cambie una función crítica.
-> Última actualización: 2026-05-26
+> Última actualización: 2026-05-27
 
 ---
 
@@ -96,7 +96,7 @@
 ### journal.html
 | Sección | Línea |
 |---------|-------|
-| Filter buttons (8 categorías) | 795 |
+| Filter buttons (12 categorías) | 795 |
 | `renderAll()` — render tarjetas | 820 |
 | `filterArticles()` con alias | 847 |
 

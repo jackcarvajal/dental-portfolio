@@ -69,7 +69,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Artículos generados" >> $GITHUB_STEP_SUMMARY
           if [ -f articles.js ]; then
-            grep '"titulo"' articles.js | head -2 | sed 's/.*"titulo": "\(.*\)".*/- \1/' >> $GITHUB_STEP_SUMMARY
+            grep "titulo:" articles.js | head -2 | sed "s/.*titulo:.*['\"]\\(.*\\)['\"].*/- \\1/" >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Textos para redes sociales" >> $GITHUB_STEP_SUMMARY
