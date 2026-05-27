@@ -46,6 +46,8 @@
 # Clean URLs — también deben ser frescas (Cloudflare Pages las sirve nativamente)
 /nosotros
   Cache-Control: public, max-age=0, must-revalidate
+/nosotros
+  Cache-Control: public, max-age=0, must-revalidate
 /soporte
   Cache-Control: public, max-age=0, must-revalidate
 /soporte-tecnico

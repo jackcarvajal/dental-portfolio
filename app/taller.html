@@ -430,7 +430,7 @@ async function cargarHistorial() {
         .limit(200);
 
     if (error) {
-        document.getElementById('hist-container').innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>${error.message.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div>`;
+        document.getElementById('hist-container').innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>${error.message.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
         return;
     }
     _historialAll = data || [];
