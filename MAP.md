@@ -9,20 +9,22 @@
 ### js/header.js
 | Función / Sección | Línea |
 |-------------------|-------|
-| Topbar HTML | 357 |
-| Navbar HTML | 386 |
-| Mobile nav HTML | 486 |
-| `initUrgencia()` — widget horario | 592 |
-| `_phdrCtaToggle()` — botón HAZ TU PEDIDO | 725 |
-| `_phdrToggleIA()` — abrir/cerrar chatbot | 789 |
-| `_phdrLogin()` — mini-login topbar | 890 |
+| Topbar HTML `topbarHtml =` | 456 |
+| Navbar HTML `navHtml =` | 485 |
+| `document.body.insertAdjacentHTML` — inyección DOM | 684 |
+| `initUrgencia()` — widget horario | 699 |
+| `_phdrCtaToggle()` — botón HAZ TU PEDIDO | 817 |
+| `_pgBuildPrompt()` — system prompt chatbot | 844 |
+| `_phdrToggleIA()` — abrir/cerrar chatbot | 881 |
+| `_phdrLogin()` — mini-login topbar | 1022 |
 
 ### js/footer.js
 | Función / Sección | Línea |
 |-------------------|-------|
-| Footer HTML completo | 116 |
-| `_loadScript()` + carga GSAP/protección | 208 |
-| Cookie consent banner | 227 |
+| Footer HTML completo (`footer.innerHTML =`) | 116 |
+| `_loadScript()` — lazy loader | 208 |
+| Carga utm-tracker, conversions, geo-detect, content-protection | 213–216 |
+| Cookie consent banner (SIC/GDPR) | 267 |
 
 ### js/auth-guard.js
 | Función / Sección | Línea |
