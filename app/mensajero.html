@@ -248,7 +248,8 @@ async function init(){
 
     const role = ProdigyAuth.getRole(session.user);
     if(role !== 'mensajero' && role !== 'admin'){
-        window.location.href='login.html'; return;
+        const DEST_MAP = { operator:'/app/operator-panel.html', encargado_inventario:'/app/inventario.html', calidad:'/app/calidad.html', contabilidad:'/app/contabilidad.html', diseno:'/app/operario-diseno.html', taller:'/app/taller.html', client:'/app/client-panel.html' };
+        window.location.href = DEST_MAP[role] || 'login.html'; return;
     }
 
     document.getElementById('user-label').textContent = session.user.email;

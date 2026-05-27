@@ -282,7 +282,7 @@ function toast(msg, tipo = '') {
 
 /* ── AUTH ──────────────────────────────────────────────────── */
 async function init() {
-    const session = await ProdigyAuth.require('admin');
+    const session = await ProdigyAuth.require(['admin','taller']);
     if (!session) return;
     _userEmail = session.user.email;
     document.getElementById('user-label').textContent = _userEmail;
