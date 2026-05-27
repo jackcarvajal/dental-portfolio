@@ -46,7 +46,7 @@ jobs:
         run: |
           git config user.name  "ProDigy Journal Bot"
           git config user.email "bot@prodigylabdental.com"
-          git add articles.js
+          git add articles.js sitemap.xml
           git commit -m "feat(journal): $(date +'%Y-%m-%d') — 2 artículos técnicos auto-generados [skip ci]"
           git push
 

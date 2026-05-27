@@ -667,12 +667,30 @@ async function main() {
   // 5. Social copy (Artifact)
   writeSocialFile(newArticles, socialDataList);
 
+  // 6. Actualizar sitemap.xml con los nuevos artículos
+  updateSitemap(newArticles);
+
   console.log('\n🎉 Auto-Journal completado.\n');
   newArticles.forEach(a => {
     console.log(`   → ${a.titulo}`);
     console.log(`     ID: ${a.id}`);
     if (a.og_img) console.log(`     IMG: ${a.og_img.slice(0, 60)}...`);
   });
+}
+
+function updateSitemap(articles) {
+  const sitemapPath = path.join(__dirname, '..', 'sitemap.xml');
+  try {
+    let xml = fs.readFileSync(sitemapPath, 'utf8');
+    for (const a of articles) {
+      const entry = `  <url>\n    <loc>https://prodigylabdental.com/article?id=${a.id}</loc>\n    <lastmod>${todayISO()}</lastmod>\n    <changefreq>yearly</changefreq>\n    <priority>0.8</priority>\n  </url>`;
+      xml = xml.replace('</urlset>', entry + '\n\n</urlset>');
+    }
+    fs.writeFileSync(sitemapPath, xml, 'utf8');
+    console.log(`✅ sitemap.xml actualizado con ${articles.length} artículo(s)`);
+  } catch (e) {
+    console.warn('⚠️  No se pudo actualizar sitemap.xml:', e.message);
+  }
 }
 
 main().catch(err => {
