@@ -37,6 +37,11 @@ Toda página pública DEBE tener en `<head>`:
 <meta property="og:url" content="https://prodigylabdental.com/[slug]">
 <meta property="og:image" content="https://prodigylabdental.com/assets/og-[slug].jpg">
 <meta property="og:locale" content="es_CO">
+<!-- Geo local SEO — Bogotá, Colombia -->
+<meta name="geo.region" content="CO-DC">
+<meta name="geo.placename" content="Bogotá">
+<meta name="geo.position" content="4.710989;-74.072090">
+<meta name="ICBM" content="4.710989, -74.072090">
 <!-- Schema.org (copiar y ajustar) -->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"[Nombre servicio]","description":"[Descripción]","provider":{"@type":"LocalBusiness","name":"PRODIGY Lab Dental","telephone":"+573212816716","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"}},"areaServed":"Colombia","offers":{"@type":"Offer","priceCurrency":"COP","price":"[precio_base]"}}</script>
 ```
