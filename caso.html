@@ -327,7 +327,7 @@ async function render(c) {
           <button class="reaction-btn" onclick="selReaction(this,'Perfección')"><span class="emoji">💎</span><span>Perfección</span></button>
         </div>
         <textarea class="nota-area" id="nota-text" placeholder="Escribe tu opinión técnica: proporción, anatomía, estética, material… Comentarios respetuosos y en español."></textarea>
-        <button class="btn-publicar" onclick="publicarNota('${c.id}')"><i class="fas fa-paper-plane"></i> Publicar comentario</button>
+        <button class="btn-publicar" onclick="publicarNota('${escHtml(String(c.id||''))}')"><i class="fas fa-paper-plane"></i> Publicar comentario</button>
         <div class="notas-list" id="notas-list"></div>
       </div>
     </div>`;
@@ -434,10 +434,10 @@ async function cargarNotas(casoId) {
         <div class="nota-date">${n.created_at ? new Date(n.created_at).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'}) : ''}</div>
         ${isAdmin ? `
         <div class="nota-admin">
-          <button class="btn-admin" onclick="fijarNota('${n.id}','${casoId}',${!n.pinned})">
+          <button class="btn-admin" onclick="fijarNota('${escHtml(String(n.id||''))}','${escHtml(String(casoId||''))}',${!n.pinned})">
             <i class="fas fa-thumbtack"></i>${n.pinned ? 'Quitar destaque' : 'Destacar'}
           </button>
-          <button class="btn-admin del" onclick="eliminarNota('${n.id}','${casoId}')">
+          <button class="btn-admin del" onclick="eliminarNota('${escHtml(String(n.id||''))}','${escHtml(String(casoId||''))}')">
             <i class="fas fa-trash"></i> Eliminar
           </button>
         </div>` : ''}
