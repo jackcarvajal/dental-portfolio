@@ -5,6 +5,7 @@
  */
 
 const QR_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+function _qrEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 /* ── Asegurar que QRCode.js esté cargado ── */
 function _cargarQRLib() {
@@ -62,14 +63,14 @@ async function generarQRBase64(pedido) {
 function _htmlEtiqueta(pedido, qrDataUrl) {
     const fecha = new Date(pedido.created_at || Date.now()).toLocaleDateString('es-CO');
     return `
-    <div class="qr-etiqueta" data-pedido="${pedido.id}">
-        <img src="${qrDataUrl}" alt="QR ${pedido.codigo}" class="qr-img">
+    <div class="qr-etiqueta" data-pedido="${_qrEscH(String(pedido.id||''))}">
+        <img src="${qrDataUrl}" alt="QR ${_qrEscH(pedido.codigo)}" class="qr-img">
         <div class="qr-datos">
-            <div class="qr-codigo">${pedido.codigo || 'PRD-?'}</div>
-            <div class="qr-linea">${pedido.tipo_trabajo || ''}</div>
-            <div class="qr-linea">${pedido.material || ''}</div>
-            <div class="qr-linea">${pedido.pieza || ''}</div>
-            <div class="qr-fecha">${fecha}</div>
+            <div class="qr-codigo">${_qrEscH(pedido.codigo || 'PRD-?')}</div>
+            <div class="qr-linea">${_qrEscH(pedido.tipo_trabajo || '')}</div>
+            <div class="qr-linea">${_qrEscH(pedido.material || '')}</div>
+            <div class="qr-linea">${_qrEscH(pedido.pieza || '')}</div>
+            <div class="qr-fecha">${_qrEscH(fecha)}</div>
         </div>
     </div>`;
 }
