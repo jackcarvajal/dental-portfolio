@@ -7,500 +7,403 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/guias-quirurgicas</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/calculadora</loc>
     <lastmod>2026-05-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/journal</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/portafolio</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/calidad</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/diseno-remoto</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/soporte-tecnico</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/en/global-design</loc>
     <lastmod>2026-05-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/guia-tecnica</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-  <!-- ArtÃ­culos del journal -->
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=zirconia-multicapa-vs-monocapa</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=impresion-3d-guias-quirurgicas</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=flujo-digital-reduce-tiempo-sillon</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=scanner-intraoral-comparativa-2025</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=flujo-digital-24h</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=zirconio-ultratranslucido-5ypzs</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=ia-exocad-cad-cam</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=resinas-3d-vs-pmma</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/terminos-y-legal</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
-  <!-- Servicios especiales -->
-  <url>
+<url>
     <loc>https://prodigylabdental.com/escaner-domicilio</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <!-- Landing escÃ¡ner intraoral -->
-  <url>
+<url>
     <loc>https://prodigylabdental.com/envia-tu-scanner</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <!-- ArtÃ­culos journal â€” nuevos -->
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=escaneres-intraorales-2026</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=3shape-automate-revision</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/diseno-cad</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/fresado-cam</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <!-- PÃ¡ginas institucionales -->
-  <url>
+<url>
     <loc>https://prodigylabdental.com/nosotros</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/catalogo</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/soporte</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/flujo-diseno</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/mapa-sitio</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/instalar-app</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/flujo-lab</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/flujo-fresado</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/flujo-impresion</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=implantes-digitales-flujo-cad-cam-2026</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=ortodoncia-digital-setup-alineadores-exocad-2026</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=full-arch-rehabilitacion-digital-protocolo-prodigy</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=zirconio-fractura-sinterizado-rapido</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=exocad-vs-3shape-carillas-2026</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=itero-stl-exportar-sin-licencia-extra</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=errores-comunes-exocad-como-resolverlos</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=resinas-impresion-3d-dental-comparativa</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=protesis-removible-digital-cad-cam-2026</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=titanio-vs-zirconia-implantes-cuando-usar</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=diseno-cad-principiantes-exocad-desde-cero</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=medit-vs-itero-vs-3shape-trios-comparativa-2026</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=guias-quirurgicas-digitales-tipos-cuando-usar</loc>
     <lastmod>2026-05-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=ferulas-oclusales-cad-michigan-nti-diferencias</loc>
     <lastmod>2026-05-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=diseno-cad-remoto-como-enviar-escaner-laboratorio</loc>
     <lastmod>2026-05-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/calculadora-diseno</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/calculadora-fresado</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/calculadora-impresion</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=escaner-intraoral-domicilio-bogota</loc>
     <lastmod>2026-05-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=fresado-dental-colombia-como-elegir-laboratorio</loc>
     <lastmod>2026-05-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=impresion-3d-dental-colombia-resinas-biomodelos</loc>
     <lastmod>2026-05-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=disilicato-litio-vs-zirconia-cuando-usar</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=flujo-100-digital-sin-yeso-cad-cam</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=contraccion-resinas-3d-dental-como-compensar</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=margenes-digitales-exocad-tecnica-correcta</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=color-zirconia-capas-ceramica-cuando-glasear</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=exocad-atajos-teclado-productividad-2026</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=impresion-3d-dental-post-procesado-completo</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=full-arch-implantes-protocolo-digitalizacion-2026</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=caries-secundaria-coronas-cad-como-prevenirla</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=abutments-cad-titanio-zirconia-cuando-cada-uno</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=occlusion-digital-articulador-virtual-exocad</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=modelos-dentales-impresion-3d-vs-yeso-precision</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=workflow-carillas-emax-exocad-protocolo-completo</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=flujo-100-digital-sin-yeso-cad-cam</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=contraccion-resinas-3d-dental-como-compensar</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=margenes-digitales-exocad-tecnica-correcta</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=color-zirconia-capas-ceramica-cuando-glasear</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=exocad-atajos-teclado-productividad-2026</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=impresion-3d-dental-post-procesado-completo</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=full-arch-implantes-protocolo-digitalizacion-2026</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=caries-secundaria-coronas-cad-como-prevenirla</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=abutments-cad-titanio-zirconia-cuando-cada-uno</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=occlusion-digital-articulador-virtual-exocad</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prodigylabdental.com/article?id=modelos-dentales-impresion-3d-vs-yeso-precision</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
+<url>
     <loc>https://prodigylabdental.com/article?id=workflow-carillas-emax-exocad-protocolo-completo</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>yearly</changefreq>
