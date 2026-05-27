@@ -2685,5 +2685,6 @@ document.addEventListener('keydown', e => {
   [cerrarModalFabConfirm, cerrarModalNuevoStaff, cerrarModalDelCaso].forEach(fn => { try { fn(); } catch(_) {} });
 });
 </script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>

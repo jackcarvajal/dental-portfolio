@@ -903,6 +903,14 @@ async function verificarAdmin() {
 
         // Cargar datos iniciales
         await cargarPedidos();
+        cargarBadgeIncidencias();
+
+        sb.channel('admin-pedidos-live')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'pedidos' }, () => { cargarPedidos(); })
+            .subscribe();
+        sb.channel('admin-incidencias-live')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'logs_incidencias' }, () => { cargarBadgeIncidencias(); })
+            .subscribe();
 
     } catch (e) {
         console.error('verificarAdmin error:', e.message);
@@ -2366,5 +2374,6 @@ document.addEventListener('keydown', e => {
   closers.forEach(fn => { try { fn(); } catch(_) {} });
 });
 </script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>

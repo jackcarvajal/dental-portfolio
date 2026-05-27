@@ -386,7 +386,11 @@ document.getElementById('modalOverlay').addEventListener('click', function(e) {
     const session = await ProdigyAuth.require('admin');
     if (!session) return;
     cargar();
+    sb.channel('admin-casos-portafolio')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'casos_portafolio' }, () => { cargar(); })
+        .subscribe();
 })();
 </script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
