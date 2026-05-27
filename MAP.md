@@ -113,7 +113,7 @@
 ### articles.js
 | Item | Valor |
 |------|-------|
-| Total artículos | ~40+ (crece con auto-journal) |
+| Total artículos | 41 (crece con auto-journal — martes+jueves) |
 | `ARTICLES` array | línea 7 |
 | `getArticle(id)` | línea 2568 |
 | `getRelacionados()` | línea 2578 |
@@ -200,9 +200,22 @@
 | HSTS, X-Frame, nosniff | ~30 |
 
 ### sitemap.xml
-- 57 URLs indexadas
-- Incluye: todas las páginas públicas + 35 artículos + 2 calculadoras
-- Excluye: /app/*, /flujo-*, /patient, /caso
+- 68 URLs indexadas
+- Incluye: todas las páginas públicas + 41 artículos + 3 calculadoras
+- Excluye: /app/*, /patient, /caso
+
+### scripts/auto-journal.js — Pipeline artículos IA
+| Item | Valor |
+|------|-------|
+| `TOPIC_POOL` | 34 temas (línea 26) |
+| `pickTopics()` | Aleatorio, evita últimos 6 slugs |
+| `buildPrompt()` | Prompt científico con journals indexados |
+| `callGemini()` | temperature: 0.15, gemini-2.0-flash |
+| Salida | prepende 2 objetos a `articles.js` |
+| Sitemap | auto-actualiza `sitemap.xml` |
+| Cron | Martes + jueves 14:00 UTC (9 AM Bogotá) |
+| Secret requerido | `GEMINI_API_KEY` en GitHub Secrets |
+| Artifact | `marketing-social.txt` (30 días) |
 
 ---
 
