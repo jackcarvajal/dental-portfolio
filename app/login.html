@@ -846,5 +846,6 @@
         showSuccess(`¡Bienvenido, ${nombre}! Revisa tu correo ${email} para confirmar tu cuenta. El equipo PRODIGY activará tu acceso en breve.`);
     }
 </script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
