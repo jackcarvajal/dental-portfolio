@@ -22,7 +22,7 @@ Toda página pública DEBE tener en `<head>`:
 <title>[Servicio] — PRODIGY Lab Dental | [keyword principal]</title>
 <meta name="description" content="[150-160 chars con keyword + CTA]">
 <meta name="keywords" content="[keyword1, keyword2, ...]">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <meta name="author" content="PRODIGY Lab Dental">
 <link rel="canonical" href="https://prodigylabdental.com/[slug]">
 <!-- hreflang — OBLIGATORIO en servicios, calculadoras y portafolio -->
