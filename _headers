@@ -48,6 +48,8 @@
   Cache-Control: public, max-age=0, must-revalidate
 /soporte
   Cache-Control: public, max-age=0, must-revalidate
+/soporte-tecnico
+  Cache-Control: public, max-age=0, must-revalidate
 /catalogo
   Cache-Control: public, max-age=0, must-revalidate
 /portafolio
@@ -58,6 +60,8 @@
   Cache-Control: public, max-age=0, must-revalidate
 /article
   Cache-Control: public, max-age=0, must-revalidate
+/caso
+  Cache-Control: no-store, no-cache, must-revalidate
 /diseno-cad
   Cache-Control: public, max-age=0, must-revalidate
 /fresado-cam
@@ -71,7 +75,9 @@
 /terminos-y-legal
   Cache-Control: public, max-age=0, must-revalidate
 /seguimiento-caso
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: no-store, no-cache, must-revalidate
+/recibo-caso
+  Cache-Control: no-store, no-cache, must-revalidate
 /patient
   Cache-Control: public, max-age=0, must-revalidate
 /guias-quirurgicas
@@ -86,7 +92,21 @@
   Cache-Control: public, max-age=0, must-revalidate
 /diseno-remoto
   Cache-Control: public, max-age=0, must-revalidate
-/nosotros
+/calidad
+  Cache-Control: public, max-age=0, must-revalidate
+/revision-diseno
+  Cache-Control: no-store, no-cache, must-revalidate
+/flujo-diseno
+  Cache-Control: no-store, no-cache, must-revalidate
+/flujo-fresado
+  Cache-Control: no-store, no-cache, must-revalidate
+/flujo-impresion
+  Cache-Control: no-store, no-cache, must-revalidate
+/flujo-lab
+  Cache-Control: no-store, no-cache, must-revalidate
+/en/global-design
+  Cache-Control: public, max-age=0, must-revalidate
+/404
   Cache-Control: public, max-age=0, must-revalidate
 
 # Service worker — siempre revalidar (navegadores lo limitan a 24h de todas formas)
