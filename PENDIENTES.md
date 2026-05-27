@@ -1,5 +1,5 @@
 # PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-05-26
+> Solo tareas activas. Última revisión: 2026-05-27
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
 
 ---
@@ -114,3 +114,5 @@
 - **CORS fix**: send-email.js y send-push.js Alejandro: wildcard '*' → dominio propio
 - **auto-journal PRODIGY**: updateSitemap() añadida + git add sitemap.xml en journal-cron.yml
 - **_headers PRODIGY**: Cache-Control para sitemap.xml añadido
+- **Security lote 2026-05-26**: panel-interno-operaciones (app_metadata fix), onboarding (user_metadata fix), stripe-checkout JWT auth, caso.html XSS fix (ambos), flujo-lab Habeas Data, gemini.js CORS, sitemap noindex cleanup
+- **Security lote 2026-05-27**: index.html XSS (coverImage/name/type/desc), article.html escaping (lectura/vistas/fecha), journal.html vistas, blog.html vistas (Alejandro); CORS OPTIONS handlers (notify-wa, factura, stripe-checkout); preconnect cdnjs en 8 páginas PRODIGY + 2 Alejandro; _headers PRODIGY clean URLs + dedup nosotros
