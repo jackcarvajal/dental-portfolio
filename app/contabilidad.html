@@ -993,9 +993,10 @@ async function emitirFactura(pedidoId, btn) {
     if (!p) { toast('Caso no encontrado', 'err'); btn.disabled = false; return; }
 
     try {
+        const { data: { session: _facSess } } = await sb.auth.getSession();
         const res  = await fetch('/api/factura', {
             method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${_facSess?.access_token || ''}` },
             body: JSON.stringify({
                 pedido_id:     p.id,
                 codigo:        p.codigo,

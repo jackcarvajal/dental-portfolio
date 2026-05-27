@@ -89,11 +89,31 @@ export async function onRequestGet(context) {
   }
 }
 
+/* ── Verificar que el llamador es admin via JWT de Supabase ──────────── */
+async function verificarAdmin(request, env) {
+  const authHeader = request.headers.get('Authorization') || '';
+  const token = authHeader.replace('Bearer ', '').trim();
+  if (!token || !env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return false;
+  try {
+    const res = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'apikey': env.SUPABASE_SERVICE_KEY }
+    });
+    if (!res.ok) return false;
+    const user = await res.json();
+    const ADMIN_EMAILS = ['jackalejandroc@gmail.com', 'prodigylab@gmail.com'];
+    return ADMIN_EMAILS.includes(user.email) || user.app_metadata?.role === 'admin';
+  } catch { return false; }
+}
+
 /* ── POST: emitir factura nueva ────────────────────────────────────── */
 export async function onRequestPost(context) {
   const { request, env } = context;
   const origin = request.headers.get('Origin') || '';
   const cors   = corsHeaders(origin);
+
+  if (!(await verificarAdmin(request, env))) {
+    return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 403, headers: cors });
+  }
 
   if (!env.FACTUS_CLIENT_ID || !env.FACTUS_CLIENT_SECRET) {
     return new Response(JSON.stringify({
