@@ -17,6 +17,7 @@ Disallow: /recibo-caso.html
 Disallow: /revision-diseno.html
 Disallow: /patient.html
 Disallow: /offline.html
+Disallow: /patients/
 
 # ── Bots IA con motor de búsqueda — PERMITIR ─────────────────────
 # Aparecer en ChatGPT Search
