@@ -444,9 +444,9 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
   document.getElementById('article-title').textContent = art.titulo;
   document.getElementById('article-sub').textContent   = art.subtitulo;
   document.getElementById('article-meta').innerHTML = `
-    <span><i class="fa-regular fa-calendar"></i> ${fechaLegible(art.fecha)}</span>
-    <span><i class="fa-regular fa-clock"></i> ${art.lectura} lectura</span>
-    <span><i class="fa-solid fa-eye"></i> ${art.vistas} vistas</span>
+    <span><i class="fa-regular fa-calendar"></i> ${_aEscH(fechaLegible(art.fecha))}</span>
+    <span><i class="fa-regular fa-clock"></i> ${_aEscH(art.lectura)} lectura</span>
+    <span><i class="fa-solid fa-eye"></i> ${_aEscH(String(art.vistas||0))} vistas</span>
     <a href="https://instagram.com/jackcarvajal" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:5px;color:inherit;text-decoration:none;background:linear-gradient(135deg,rgba(217,70,166,0.15),rgba(255,140,0,0.1));border:1px solid rgba(217,70,166,0.3);border-radius:100px;padding:2px 10px;font-size:.8rem;transition:opacity .2s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
       <i class="fa-brands fa-instagram" style="color:#D946A6;"></i>
       <strong>Alejandro Carvajal</strong>

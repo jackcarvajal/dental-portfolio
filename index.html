@@ -1628,6 +1628,7 @@
         { id:'patient-001', name:'Rehabilitación Full Arch Superior', type:'rehabilitacion', description:'Rehabilitación completa de arcada superior con 14 unidades cerámicas sobre implantes.', coverImage:'patients/patient-001/cover.jpeg', isLocal:true },
         { id:'patient-002', name:'Carillas Superior e Inferior', type:'estetica', description:'Carillas estéticas completas superior e inferior.', coverImage:'patients/patient-002/C.jpeg', isLocal:true }
       ];
+      function _iEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
       function renderCards(cases) {
         var grid = document.getElementById('idx-port-grid');
         if (!grid) return;
@@ -1638,11 +1639,11 @@
           var hbdr = i === 0 ? 'rgba(217,70,166,.4)' : 'rgba(0,210,255,.35)';
           return '<a href="' + href + '" oncontextmenu="return false;" draggable="false" style="text-decoration:none;display:block;background:#0d1525;border-radius:18px;overflow:hidden;border:1px solid ' + bdr + ';transition:all .3s;" onmouseover="this.style.transform=\'translateY(-6px)\';this.style.borderColor=\'' + hbdr + '\'" onmouseout="this.style.transform=\'none\';this.style.borderColor=\'' + bdr + '\'">' +
             '<div style="height:200px;overflow:hidden;">' +
-              (c.coverImage ? '<img src="' + c.coverImage + '" alt="' + c.name + '" loading="lazy" oncontextmenu="return false;" draggable="false" onerror="this.style.display=\'none\'" style="width:100%;height:100%;object-fit:cover;pointer-events:none;transition:transform .4s;"></div>' : '<div style="height:200px;background:#0a0f1a;display:flex;align-items:center;justify-content:center;"><i class="fas fa-tooth" style="font-size:3rem;color:rgba(212,175,55,.2);"></i></div>') +
+              (c.coverImage ? '<img src="' + encodeURI(c.coverImage) + '" alt="' + _iEscH(c.name) + '" loading="lazy" oncontextmenu="return false;" draggable="false" onerror="this.style.display=\'none\'" style="width:100%;height:100%;object-fit:cover;pointer-events:none;transition:transform .4s;"></div>' : '<div style="height:200px;background:#0a0f1a;display:flex;align-items:center;justify-content:center;"><i class="fas fa-tooth" style="font-size:3rem;color:rgba(212,175,55,.2);"></i></div>') +
             '<div style="padding:18px 20px;">' +
-              '<div style="display:inline-block;background:rgba(212,175,55,.1);color:' + col + ';border:1px solid ' + col.replace(')',', .25)').replace('rgb','rgba') + ';border-radius:20px;padding:5px 12px;font-size:.8rem;font-weight:800;margin-bottom:10px;text-transform:uppercase;">' + (c.type || 'Caso') + '</div>' +
-              '<h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">' + c.name + '</h3>' +
-              '<p style="color:#94a3b8;font-size:.82rem;line-height:1.5;">' + (c.description || '') + '</p>' +
+              '<div style="display:inline-block;background:rgba(212,175,55,.1);color:' + col + ';border:1px solid ' + col.replace(')',', .25)').replace('rgb','rgba') + ';border-radius:20px;padding:5px 12px;font-size:.8rem;font-weight:800;margin-bottom:10px;text-transform:uppercase;">' + _iEscH(c.type || 'Caso') + '</div>' +
+              '<h3 style="color:#fff;font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3;">' + _iEscH(c.name) + '</h3>' +
+              '<p style="color:#94a3b8;font-size:.82rem;line-height:1.5;">' + _iEscH(c.description || '') + '</p>' +
               '<div style="margin-top:14px;color:' + col + ';font-size:.8rem;font-weight:700;">Ver caso completo →</div>' +
             '</div></a>';
         }).join('');

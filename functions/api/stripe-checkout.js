@@ -103,14 +103,18 @@ export async function onRequestPost(context) {
   }
 }
 
+function _corsHeaders(origin) {
+  const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
+  const ok = allowed.includes(origin) || (origin||'').includes('.pages.dev') || (origin||'').includes('localhost');
+  return {
+    'Access-Control-Allow-Origin':  ok ? origin : 'https://prodigylabdental.com',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Content-Type': 'application/json',
+  };
+}
+
 export async function onRequestOptions(context) {
   const origin = context.request.headers.get('Origin') || '';
-  return new Response(null, {
-    status: 204,
-    headers: {
-      'Access-Control-Allow-Origin': origin,
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-    }
-  });
+  return new Response(null, { status: 204, headers: _corsHeaders(origin) });
 }
