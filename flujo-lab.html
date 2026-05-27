@@ -511,6 +511,14 @@
       <strong>¿Cómo funciona el cobro?</strong><br>
       Esta cotización es un estimado en COP. Al recibir el caso, el técnico confirma el precio final. Trabajos complejos (Full Arch, barras sobre implantes) requieren presupuesto manual.<br><strong>Política de pago: 50% abono para inicio de labores · 50% saldo contra entrega antes del despacho.</strong> Esta política garantiza la reserva de materiales y prioridad de producción para su caso.
     </div>
+    <!-- Habeas Data Colombia — Ley 1581/2012 -->
+    <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:12px 14px;margin-bottom:16px;">
+      <input type="checkbox" id="checkHabeas" required style="margin-top:3px;accent-color:#D946A6;flex-shrink:0;width:16px;height:16px;cursor:pointer;">
+      <label for="checkHabeas" style="font-size:.8rem;color:#94a3b8;cursor:pointer;line-height:1.4;">
+        Autorizo el tratamiento de mis datos personales (nombre, teléfono, correo) conforme a la <strong style="color:#e2e8f0;">Ley 1581/2012</strong> (Habeas Data) de Colombia para la gestión de esta orden de trabajo.
+        (<a href="/terminos-y-legal" target="_blank" rel="noopener noreferrer" style="color:#00d2ff;">Política de privacidad</a>)
+      </label>
+    </div>
     <button class="btn-generar" id="btn-generar" onclick="generarOrden()">
       <span class="pulse"></span>
       <i class="fas fa-file-alt"></i>
@@ -811,6 +819,7 @@ async function generarOrden() {
   var oclusion    = document.getElementById('rx-oclusion').value;
 
   if (!doctor) { const fd=document.getElementById('rx-doctor'); fd.style.outline='2px solid #f87171'; fd.focus(); setTimeout(()=>fd.style.outline='',2500); return; }
+  if (!document.getElementById('checkHabeas').checked) { alert('Debes aceptar la política de privacidad (Habeas Data) para continuar.'); return; }
 
   var btn = document.getElementById('btn-generar');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Generando orden...'; }
