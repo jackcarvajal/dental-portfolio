@@ -805,13 +805,17 @@
     </div>
     <div class="filter-tags">
       <button class="tag-btn active" onclick="filterArticles(this,'all')">Todos</button>
-      <button class="tag-btn" onclick="filterArticles(this,'flujos')">Flujos CAD</button>
-      <button class="tag-btn" onclick="filterArticles(this,'tecnologia')">Tecnología</button>
       <button class="tag-btn" onclick="filterArticles(this,'materiales')">Materiales</button>
-      <button class="tag-btn" onclick="filterArticles(this,'clinico')">Clínico</button>
-      <button class="tag-btn" onclick="filterArticles(this,'impresion3d')">Impresión 3D</button>
+      <button class="tag-btn" onclick="filterArticles(this,'implantologia')">Implantología</button>
+      <button class="tag-btn" onclick="filterArticles(this,'fabricacion')">Fabricación 3D</button>
+      <button class="tag-btn" onclick="filterArticles(this,'maquinaria')">Equipos Lab</button>
+      <button class="tag-btn" onclick="filterArticles(this,'software')">Software CAD</button>
+      <button class="tag-btn" onclick="filterArticles(this,'tecnologia')">Tecnología</button>
+      <button class="tag-btn" onclick="filterArticles(this,'clinica')">Clínica</button>
+      <button class="tag-btn" onclick="filterArticles(this,'estetica')">Estética</button>
+      <button class="tag-btn" onclick="filterArticles(this,'ortodoncia')">Ortodoncia</button>
+      <button class="tag-btn" onclick="filterArticles(this,'flujos')">Flujos CAD</button>
       <button class="tag-btn" onclick="filterArticles(this,'ia')">IA</button>
-      <button class="tag-btn" onclick="filterArticles(this,'protocolo')">Protocolo</button>
     </div>
   </div>
 
@@ -826,7 +830,13 @@
   var track = document.getElementById('articlesTrack');
   if(!track || typeof ARTICLES === 'undefined') return;
 
-  var CAT_LABEL = { ia:'IA', materiales:'Materiales', material:'Materiales', flujos:'Flujo CAD', impresion3d:'Impresión 3D', equipo:'Equipos', protocolo:'Protocolo' };
+  var CAT_LABEL = {
+    ia:'IA', materiales:'Materiales', material:'Materiales', flujos:'Flujo CAD',
+    impresion3d:'Impresión 3D', fabricacion:'Fabricación 3D', equipo:'Equipos',
+    maquinaria:'Equipos Lab', protocolo:'Protocolo', software:'Software CAD',
+    implantologia:'Implantología', tecnologia:'Tecnología', clinica:'Clínica',
+    estetica:'Estética', ortodoncia:'Ortodoncia', innovacion:'IA & Innovación'
+  };
 
   function _jEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
   function renderAll(arts){
@@ -875,7 +885,7 @@
     document.querySelectorAll('.tag-btn').forEach(function(b){ b.classList.remove('active'); });
     btn.classList.add('active');
     /* materiales agrupa 'materiales' + 'material'; fabricacion agrupa 'fabricacion' */
-    var ALIAS = { materiales: ['materiales','material'], protocolo: ['protocolo','fabricacion'] };
+    var ALIAS = { materiales: ['materiales','material'] };
     var filtered = cat === 'all' ? ARTICLES : ARTICLES.filter(function(a){
       var cats = ALIAS[cat] || [cat];
       return cats.indexOf(a.categoria) !== -1;
