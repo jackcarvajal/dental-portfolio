@@ -32,6 +32,8 @@ function _pgToast(msg) {
     _pgToast._t = setTimeout(() => { el.style.opacity = '0'; }, 4000);
 }
 
+function _pgEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
 const PAGOS_CONFIG = {
     wompi: {
         publicKey: 'pub_prod_toFqXM5Ko9rn6Htt6kiEma7jHj9zuA0',
@@ -501,7 +503,7 @@ async function inicializarPasarelas(containerId, precioBase, onSelect) {
         container.innerHTML = `
         <div style="background:rgba(0,97,255,0.06);border:1px solid rgba(0,97,255,0.25);border-radius:12px;padding:14px;margin:12px 0;">
             <div style="font-size:.75rem;color:#60a5fa;font-weight:700;margin-bottom:8px;">
-                🌎 PAGO INTERNACIONAL — ${pais}
+                🌎 PAGO INTERNACIONAL — ${_pgEscH(pais)}
             </div>
             <div style="font-size:.82rem;color:#e2e8f0;margin-bottom:4px;">
                 Precio base:
