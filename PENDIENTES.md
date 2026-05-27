@@ -50,8 +50,10 @@
 | 1 | Search Console → re-enviar `sitemap.xml` (ambos sitios) | ⏳ |
 | 2 | Google My Business → subir 10-15 fotos del lab | ⏳ |
 | 3 | GA4 Real Time → verificar que llegan hits | ⏳ |
-| 4 | Google Ads ID → reemplazar `AW-XXXXXXXXX` en `js/conversions.js` línea 12 | ⏳ |
+| 4 | Google Ads ID → reemplazar `AW-XXXXXXXXX` en `js/conversions.js` línea 22 | ⏳ |
 | 5 | DNS Cloudflare → SPF + DKIM + DMARC (ver `PENDIENTES-DNS-EMAIL.md`) | ⏳ |
+| 6 | **OG images Alejandro** → capturar JPG desde HTML: `assets/og-home.html`, `og-calculadora-diseno.html`, `og-diseno-remoto.html` → guardar como `.jpg` 1200×630 | ⏳ |
+| 7 | **OG images PRODIGY** → 19 páginas usan `prodigy-preview.jpg` compartido. Crear imágenes dedicadas por servicio (CAD, fresado, calculadoras) para mejor CTR en redes | ⏳ |
 
 ---
 
@@ -123,3 +125,4 @@
 - **Schemas + Security + Perf 2026-05-27e**: Service+BreadcrumbList en 4 flujos PRODIGY (flujo-lab/fresado/impresion/diseno) + flujo-diseno Alejandro; XSS completar escaping `>` en admin-precios+taller.html; /nosotros clean URL _headers PRODIGY; `functions/api/gemini.js` creado para Alejandro (chatbot era 502 sin este archivo); preconnect Supabase en 5 páginas PRODIGY (diseno-cad, calidad, fresado-cam, guias-quirurgicas, flujo-diseno); auto-journal Alejandro: scripts/gen-articulo-ac.js + .github/workflows/journal-cron-ac.yml (lunes+miércoles 9AM, 13 tópicos CAD dental)
 - **Audit lote 2026-05-27f**: XSS audit final — onclick + innerHTML — LIMPIOS en ambos proyectos; _headers PRODIGY: dedup /nosotros; journal-cron.yml PRODIGY + journal-cron-ac.yml Alejandro: fix grep titulo (JS single-quote format); MAP.md PRODIGY: lastmod + 12 categorías journal; filtros blog.html + journal.html corregidos; sw.js + blog.html + caso.html XSS (ambos) commiteados
 - **SEO lote 2026-05-27g**: geo.region+placename+position+ICBM en 18 páginas PRODIGY + 11 páginas Alejandro (local SEO Bogotá CO-DC); sitemap lastmod 2026-05-27 en 13 páginas PRODIGY + 8 páginas Alejandro; 13 artículos faltantes agregados a sitemap.xml PRODIGY; 9 artículos fantasma eliminados de sitemap Alejandro (soft 404 — no existen en articles-ac.js); OG/Twitter/keywords completados en flujo-diseno/flujo-lab/mapa-sitio PRODIGY
+- **SEO lote 2026-05-27h**: twitter:title+description en 5 páginas PRODIGY (calculadora-fresado/diseno/impresion, calidad, guia-tecnica) + 4 Alejandro (calculadora-diseno, cursos, index, soporte); títulos >75chars → ≤72 en 5 PRODIGY + 4 Alejandro; descriptions >165chars → ≤160 en 6 PRODIGY + 6 Alejandro; schema WebSite en mapa-sitio.html PRODIGY; keywords en terminos-y-legal (ambos proyectos); audit completo: hreflang ✓, BreadcrumbList ✓, FAQPage ✓, SW ✓, CORS ✓, auth-guard ✓, robots.txt ✓, manifest.json ✓
