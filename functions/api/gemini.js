@@ -96,8 +96,10 @@ export async function onRequestPost(context) {
 }
 
 function corsHeaders(origin) {
+  const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
+  const ok = allowed.includes(origin) || (origin||'').includes('.pages.dev') || (origin||'').includes('localhost');
   return {
-    'Access-Control-Allow-Origin': origin || 'https://prodigylabdental.com',
+    'Access-Control-Allow-Origin': ok ? origin : 'https://prodigylabdental.com',
     'Access-Control-Allow-Methods': 'POST',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'application/json'
