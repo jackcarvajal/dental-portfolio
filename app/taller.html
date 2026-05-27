@@ -491,6 +491,11 @@ function cerrarFoto() {
 document.getElementById('modal-foto').addEventListener('click', (e) => {
     if (e.target === document.getElementById('modal-foto')) cerrarFoto();
 });
+document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    cerrarFoto();
+    document.getElementById('modal-panico-fab').classList.remove('open');
+});
 
 init();
 </script>

@@ -376,10 +376,11 @@ async function guardarEdicion() {
     renderGrid();
 }
 
-// Cerrar modal al hacer clic fuera
+// Cerrar modal al hacer clic fuera o con Escape
 document.getElementById('modalOverlay').addEventListener('click', function(e) {
     if (e.target === this) cerrarModal();
 });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
 
 // ── Auth guard ─────────────────────────────────────────
 (async function() {
