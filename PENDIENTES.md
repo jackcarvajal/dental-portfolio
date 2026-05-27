@@ -1,5 +1,5 @@
 # PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-05-24
+> Solo tareas activas. Última revisión: 2026-05-26
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
 
 ---
@@ -104,3 +104,13 @@
 - **MAP.md PRODIGY**: entradas admin-panel.html y operario-diseno.html agregadas
 - **SEO autónomo lote 4**: author en index, article, calculadora, soporte-tecnico, en/global-design PRODIGY; hreflang EN catalogo + soporte-tecnico
 - **Alejandro SEO lote 2**: author en index, article, cursos, envia-tu-scanner, flujo-diseno, soporte; hreflang EN sobre-mi
+- **SW registration**: todas las páginas .html de ambos proyectos (incl. app/ panels, public pages, en/)
+- **Escape key handlers**: todos los modales en operator-panel, calidad, inventario, operario-diseno, operario, gestionar-casos, taller, client-panel, admin-panel, mensajero, contabilidad, taller; Alejandro: admin-panel, client-panel
+- **Realtime Supabase**: admin-panel (pedidos + logs_incidencias), gestionar-casos (casos_portafolio); Alejandro: admin-panel (solicitudes_scanner)
+- **auth-guard.js PRODIGY**: 6 roles faltantes añadidos (calidad, contabilidad, diseno, taller, fresado, impresion) en getRole() y DEST_MAP
+- **taller.html**: auth ampliado a ['admin','taller'] para que operarios accedan
+- **mensajero.html**: fix redirect — ya no redirige siempre a login.html sino al panel correcto según rol
+- **factura.js**: JWT admin verification añadida + Auth header en contabilidad.html
+- **CORS fix**: send-email.js y send-push.js Alejandro: wildcard '*' → dominio propio
+- **auto-journal PRODIGY**: updateSitemap() añadida + git add sitemap.xml en journal-cron.yml
+- **_headers PRODIGY**: Cache-Control para sitemap.xml añadido

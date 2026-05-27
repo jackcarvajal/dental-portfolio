@@ -973,16 +973,25 @@ async function verificarAdmin() {
         }
 
         const user = session.user;
-        const role = user.user_metadata?.role;
         const email = user.email;
 
         // Verificar: SOLO por email autorizado — user_metadata.role es user-controlled y no confiable
         const esAdmin = ADMIN_EMAILS.includes(email.toLowerCase());
 
         if (!esAdmin) {
-            window.location.href = role === 'operator'
-                ? 'operator-panel.html'
-                : 'client-panel.html';
+            const DEST_MAP = {
+                operator:             'operator-panel.html',
+                mensajero:            'mensajero.html',
+                encargado_inventario: 'inventario.html',
+                calidad:              'calidad.html',
+                contabilidad:         'contabilidad.html',
+                diseno:               'operario-diseno.html',
+                taller:               'taller.html',
+                fresado:              'operario.html',
+                impresion:            'operario.html',
+            };
+            const staffRole = (user.app_metadata || {}).role || '';
+            window.location.href = DEST_MAP[staffRole] || 'client-panel.html';
             return;
         }
 

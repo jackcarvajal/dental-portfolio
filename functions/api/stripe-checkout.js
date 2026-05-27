@@ -27,6 +27,21 @@ export async function onRequestPost(context) {
     'Content-Type': 'application/json'
   };
 
+  // Verificar sesión Supabase — solo usuarios autenticados
+  if (env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
+    const authHeader = request.headers.get('Authorization') || '';
+    const token = authHeader.replace('Bearer ', '').trim();
+    if (!token) {
+      return new Response(JSON.stringify({ error: 'Sesión requerida' }), { status: 401, headers: corsH });
+    }
+    const userRes = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'apikey': env.SUPABASE_SERVICE_KEY }
+    });
+    if (!userRes.ok) {
+      return new Response(JSON.stringify({ error: 'Sesión inválida' }), { status: 401, headers: corsH });
+    }
+  }
+
   const sk = env.STRIPE_SECRET_KEY;
   if (!sk) return new Response(JSON.stringify({ error: 'Stripe no configurado' }), { status: 503, headers: corsH });
 

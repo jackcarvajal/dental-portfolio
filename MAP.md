@@ -1,6 +1,6 @@
 # MAP — PRODIGY Arquitectura de Referencia
 > Para uso interno de Claude. Actualizar cuando cambie una función crítica.
-> Última actualización: 2026-05-24
+> Última actualización: 2026-05-26
 
 ---
 
@@ -23,6 +23,16 @@
 | Footer HTML completo | 116 |
 | `_loadScript()` + carga GSAP/protección | 208 |
 | Cookie consent banner | 227 |
+
+### js/auth-guard.js
+| Función / Sección | Línea |
+|-------------------|-------|
+| `SUPABASE_URL` / `SUPABASE_ANON` | 14–15 |
+| `ADMIN_EMAILS` (hardcoded) | 16 |
+| `DEST_MAP` — roles → panel URLs | 18–30 |
+| `getRole(user)` — admin por email, staff por app_metadata | 32–49 |
+| `require(neededRole, loginUrl)` — verifica sesión y rol | 60–79 |
+| `signOut()` | 81–84 |
 
 ### js/animations.js
 | Función / Sección | Línea |
