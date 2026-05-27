@@ -14,6 +14,7 @@
 | 4 | `WOMPI_INTEGRITY_SECRET` en Supabase Secrets | Dashboard → Edge Functions → Secrets | Webhook de pago falla |
 | 5 | **Redesplegar ambos sitios** en Cloudflare tras agregar env vars | Cloudflare → Deployments → Retry deployment | Para activar bot + SEO fixes |
 | 6 | **Subir casos al portafolio** | `/app/panel-interno-operaciones.html` | Mínimo 5 casos con portada + galería |
+| 7 | **Ejecutar `patch-supabase-public-grants-2026.sql`** | Supabase Dashboard → SQL Editor | **Antes del 30-oct-2026** — sin esto las tablas nuevas no responden via API (cambio discusión #45329) |
 
 ---
 

@@ -25,6 +25,11 @@ Toda página pública DEBE tener en `<head>`:
 <meta name="robots" content="index, follow">
 <meta name="author" content="PRODIGY Lab Dental">
 <link rel="canonical" href="https://prodigylabdental.com/[slug]">
+<!-- hreflang — OBLIGATORIO en servicios, calculadoras y portafolio -->
+<link rel="alternate" hreflang="es" href="https://prodigylabdental.com/[slug]">
+<link rel="alternate" hreflang="en" href="https://prodigylabdental.com/[slug]?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com/[slug]">
+<!-- Si existe página EN dedicada: hreflang="en" → /en/[slug-en] en lugar de ?lang=en -->
 <!-- OG básico -->
 <meta property="og:title" content="[Título página]">
 <meta property="og:description" content="[Descripción corta]">
@@ -46,8 +51,11 @@ En `<body>`:
 
 **Después de crear la página:**
 - Agregar URL a `sitemap.xml` con `<lastmod>` actual y `<priority>0.8-0.9`
+- Agregar clean URL a `_headers` con `Cache-Control: public, max-age=0, must-revalidate`
 - Crear imagen OG: 1200×630px en `/assets/og-[slug].jpg`
 - Agregar link en menú si es servicio principal
+- Si hay acordeón `<details>/<summary>` → agregar `FAQPage` schema (ver sección 8b)
+- Si hay formulario con datos personales → verificar checkbox Habeas Data (Ley 1581/2012)
 
 ### Secciones con colores alternantes (patrón obligatorio)
 ```css
@@ -98,10 +106,78 @@ fetch(SURL+'/auth/v1/token?grant_type=password', {method:'POST',...})
 Cotizaciones: "50% abono inicio · 50% saldo contra entrega". Precios en COP. WA incluye: Total, Abono, Saldo.
 
 ## 4. SEGURIDAD
+
+### 4a. Reglas generales
 - `/app/*.html` (excl. login/reset): `noindex,nofollow` + `auth-guard.js` antes de JS de negocio.
 - `/patient.html`: noindex.
 - `/sql/*`, `/supabase/*`: bloqueados en `_redirects`.
-- XSS: siempre `escH()` o `textContent` para datos de Supabase en innerHTML.
+- XSS: siempre `escH()` o `textContent` para datos de Supabase/API externa en innerHTML.
+- Auth: SOLO `app_metadata.role` para roles staff. `user_metadata` es user-controlled — NUNCA para autorización.
+- Admin: lista hardcodeada de emails en `auth-guard.js` y edge functions. NUNCA desde DB.
+
+### 4b. XSS — Patrón de escape por contexto
+Cada archivo define su propia función local. Nombres estándar en uso:
+```javascript
+// Función local (definir al inicio del script si el archivo usa Supabase data en innerHTML)
+function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+// Variantes existentes: _escH, escHtml, escapeHtml, _pgEscH, _qrEscH, esc() — mismo patrón
+```
+**Aplica a:** campos Supabase, respuestas de API externa (ipapi.co, etc.), `file.name`, `error.message`
+
+### 4c. CORS — Edge functions (Cloudflare Pages Functions)
+```javascript
+// ✅ Correcto: validar origin contra allowlist
+const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
+const ok = allowed.includes(origin) || origin.includes('.pages.dev');
+return { 'Access-Control-Allow-Origin': ok ? origin : allowed[0] };
+// ❌ Incorrecto: echo ciego del origin
+return { 'Access-Control-Allow-Origin': origin }; // sin validar
+```
+Siempre incluir `onRequestOptions` para manejar preflight OPTIONS.
+
+### 4d. Supabase — GRANT explícitos (cambio oct 2026)
+**Desde el 30 de octubre de 2026**, las tablas nuevas en el schema `public` NO se exponen
+a la API (PostgREST/supabase-js) sin un GRANT explícito. RLS sigue siendo la capa de seguridad real.
+
+**Parche para tablas existentes + futuras:** `sql/patch-supabase-public-grants-2026.sql`
+(ejecutar en Supabase Dashboard → SQL Editor antes del 30-oct-2026)
+
+**Patrón obligatorio para nuevas tablas:**
+```sql
+CREATE TABLE IF NOT EXISTS public.nueva_tabla (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  ...
+);
+-- Habilitar RLS
+ALTER TABLE public.nueva_tabla ENABLE ROW LEVEL SECURITY;
+-- GRANT explícito (requerido desde oct 2026)
+GRANT ALL ON TABLE public.nueva_tabla TO anon, authenticated;
+-- Políticas RLS específicas...
+CREATE POLICY "nombre_policy" ON public.nueva_tabla FOR SELECT TO authenticated USING (...);
+```
+
+### 4e. Preconnect / dns-prefetch (performance + privacidad)
+Cada CDN externo usada por la página debe tener:
+```html
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+```
+CDNs usados en este proyecto:
+- `https://cdnjs.cloudflare.com` — Font Awesome
+- `https://cdn.jsdelivr.net` — Supabase SDK, Three.js
+- `https://unpkg.com` — Leaflet (mensajero, taller, inventario)
+- `https://zgihrwqfyvgyapbwzkvw.supabase.co` — Supabase API
+- `https://fonts.googleapis.com` + `https://fonts.gstatic.com` — Google Fonts
+
+### 4f. Font Awesome — versión y carga
+- Versión fija: **6.5.1** en toda la plataforma
+- `header.js` auto-inyecta FA si la página no lo carga (usa 6.5.1)
+- Para páginas con íconos críticos above-the-fold → link síncrono en `<head>`
+- Para paneles/app → patrón preload lazy:
+```html
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+```
 
 ## 5. DISEÑO
 Colores: `#D946A6` magenta · `#D4AF37` gold · `#00d2ff` cyan · `#050505` bg · `#1a2332` card · `#00FF41` neon
