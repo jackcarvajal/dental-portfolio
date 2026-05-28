@@ -214,7 +214,7 @@
       pt: 'Sua próxima restauração,<br>projetada em <em>menos de 24 h</em>'
     },
     'cad.hero.sub': {
-      es: 'Envíanos tu escáner STL y nuestro equipo diseña la restauración en Exocad. Recibes el archivo listo para fresar en tu propio centro. Sin contratos. Sin exclusividad.',
+      es: 'Envíanos el archivo STL de tu escaneo y nuestro equipo diseña la restauración en Exocad. Recibes el archivo listo para fresar en tu propio centro. Sin contratos. Sin exclusividad.',
       en: 'Send us your STL scan and our team designs the restoration in Exocad. You receive the file ready to mill at your own center. No contracts. No exclusivity.',
       pt: 'Envie-nos o seu scanner STL e nossa equipe projeta a restauração no Exocad. Você recebe o arquivo pronto para fresagem no seu próprio centro. Sem contratos. Sem exclusividade.'
     },
@@ -269,7 +269,7 @@
       pt: 'Três passos. <em>Um arquivo.</em>'
     },
     'cad.how.sub': {
-      es: 'Sin instalaciones de tu parte. Solo envía el escáner y recibe el diseño.',
+      es: 'Sin instalaciones de tu parte. Solo envía el archivo de escaneo y recibe el diseño.',
       en: 'No setup on your end. Just send the scan and receive the design.',
       pt: 'Sem instalações da sua parte. Basta enviar o scanner e receber o design.'
     },
@@ -811,7 +811,7 @@
       pt: 'Sua restauração fresada<br>com <em>precisão industrial</em>'
     },
     'milling.hero.sub': {
-      es: 'Fresado de alta precisión en zirconio, PMMA, e.max y titanio. Laboratorio CAM en Bogotá con entrega en 24–72 horas. Envía el diseño o el escáner — nosotros producimos.',
+      es: 'Fresado de alta precisión en zirconio, PMMA, e.max y titanio. Laboratorio CAM en Bogotá con entrega en 24–72 horas. Envía el diseño o el archivo de escaneo — nosotros producimos.',
       en: 'High-precision milling in zirconia, PMMA, e.max and titanium. CAM lab in Bogotá with 24–72 h delivery. Send the design or the scan — we produce.',
       pt: 'Fresagem de alta precisão em zircônia, PMMA, e.max e titânio. Laboratório CAM em Bogotá com entrega em 24–72 h. Envie o design ou o escâner — nós produzimos.'
     },
@@ -821,9 +821,9 @@
       pt: 'Cotar por WhatsApp'
     },
     'milling.cta.stl': {
-      es: 'Subir escáner STL',
-      en: 'Upload STL scan',
-      pt: 'Enviar escâner STL'
+      es: 'Subir archivo STL',
+      en: 'Upload STL file',
+      pt: 'Enviar arquivo STL'
     },
     'milling.mat.eyebrow': {
       es: 'Materiales disponibles',
