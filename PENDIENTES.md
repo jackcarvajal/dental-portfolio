@@ -106,6 +106,18 @@
 - **Scan masivo**: toast functions → todas usan textContent (no innerHTML) en ambos proyectos ✓
 - **Scan masivo**: geo.region, keywords, viewport, canonical, noindex app/, og:type — 100% completo ambos proyectos ✓
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 12+)
+- **Fix copy (usuario)**: 'Archivo escáner' → 'Archivos de escaneo' en label de envia-tu-scanner (ambos)
+- **Fix copy**: 6 textos en PRODIGY que confundían 'escáner' (dispositivo) con 'escaneo' (archivos): i18n.js, diseno-cad.html, fresado-cam.html, mantenimiento.html
+- **Fix copy Alejandro**: sobre-mi.html + envia-tu-scanner.html noscript
+- **a11y**: scope='col' en <th> de 5 tablas PRODIGY (guias-quirurgicas, guia-tecnica, calidad, article, revision-diseno) + 2 Alejandro (guias-quirurgicas, article)
+- **a11y**: label[for] en flujo-lab (8 inputs) + escaner-domicilio (10) + envia-tu-scanner PRODIGY (9) + Alejandro (6)
+- **a11y**: role=search + label[for=searchOrden] en seguimiento-caso (ambos)
+- **ux**: alert() → toast no bloqueante en caso.html (ambos), flujo-lab, revision-diseno
+- **ux**: enterkeyhint=search en seguimiento-caso, enterkeyhint=send en nosotros textarea
+- **perf**: meta color-scheme=dark en 56 PRODIGY + 25 Alejandro (previene flash blanco)
+- **Alerta añadida**: auto-journal PRODIGY sin correr desde 2026-04-29 — necesita GEMINI_API_KEY en GitHub Secrets PRODIGY repo
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 9)
 - **Cache**: sw.js → no-cache en _headers PRODIGY (estaba bajo /js/* immutable — SW nunca se actualizaría); articles.js → must-revalidate (se actualiza martes+jueves)
 - **A11y lightbox**: img.alt dinámico en openLB/moveLB/openLBPool — caso.html (ambos) + revision-diseno.html PRODIGY
