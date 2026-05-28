@@ -2005,7 +2005,8 @@ const _FDT={
 function fdToast(msg, type){
   const el=document.getElementById('fd-toast');
   const t=_FDT[type]||{i:'fa-circle-info',c:'#D4AF37',b:'rgba(212,175,55,.12)',br:'rgba(212,175,55,.35)'};
-  el.innerHTML=`<i class="fas ${t.i}" style="color:${t.c};flex-shrink:0;font-size:1.1rem"></i><span style="color:#e2e8f0">${msg}</span>`;
+  const _escFD=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  el.innerHTML=`<i class="fas ${t.i}" style="color:${t.c};flex-shrink:0;font-size:1.1rem"></i><span style="color:#e2e8f0">${_escFD(msg)}</span>`;
   el.style.cssText+='opacity:1;background:'+t.b+';border:1px solid '+t.br+';';
   clearTimeout(_fdToastT);
   _fdToastT=setTimeout(()=>{el.style.opacity='0';},4000);
