@@ -429,7 +429,7 @@ async function cargarNotas(casoId) {
     lista.innerHTML = data.map(n => `
       <div class="nota-item${n.pinned ? ' pinned' : ''}" id="nota-${n.id}">
         ${n.pinned ? '<div class="pin-badge"><i class="fas fa-thumbtack"></i> Destacado por PRODIGY</div>' : ''}
-        ${n.reaction ? `<div class="nota-reaction">${n.reaction}</div>` : ''}
+        ${n.reaction ? `<div class="nota-reaction">${escHtml(String(n.reaction))}</div>` : ''}
         <div class="nota-text">${escHtml(n.nota || '')}</div>
         <div class="nota-date">${n.created_at ? new Date(n.created_at).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'}) : ''}</div>
         ${isAdmin ? `
