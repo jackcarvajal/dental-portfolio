@@ -81,6 +81,19 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-27 — ronda 4)
+- **SEO**: desc >160 en Alejandro terminos-y-legal (163→148); title 73 + desc 232 en en/remote-design → dentro de límites
+- **Security**: `renderContent()` en article.html ambos proyectos — sanitiza img.src (bloquea javascript:), escapa alt/caption/cite/title con _artEscAttr()
+- **Audit completo final**: article.html Alejandro _bEscH ✓; blog.html _bEscH ✓; caso.html Alejandro escHtml ✓; agregar-caso.html sin datos DB ✓; admin-precios.html escH ✓; calidad.html app/ escH ✓; flujo-diseno.html fdToast literales ✓; flujo-lab.html escH file.name ✓; revision-diseno.html esc() ✓; patient.html escapeHtml ✓
+- **Title/Desc audit batch**: todos los HTML PRODIGY y Alejandro dentro de ≤72/≤160 ✓
+- **Canonicals audit**: solo recibo-caso y revision-diseno sin canonical — ambas noindex ✓
+- **robots.txt**: ambos proyectos bloquean /app/ /sql/ /supabase/ .git ✓; ClaudeBot/CCBot/SemrushBot/AhrefsBot bloqueados; GPTBot/Perplexity/Google-Extended permitidos ✓
+- **edge functions Gemini**: CORS allowlist + rate limit + temperatura 0.15 verificados en ambos ✓
+- **auth-guard.js**: usa app_metadata en ambos ✓; onboarding.html app_metadata.role ✓
+- **Sitemap lastmod**: fechas correctas; articles usan fecha de creación del artículo (correcto)
+- **_redirects**: /sql/ /supabase/ → 404 en ambos ✓
+- **robots.txt hardcoded secrets scan**: sin API keys expuestas (GEMINI solo en Cloudflare/GitHub) ✓
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-27 — ronda 3)
 - **SW PRODIGY v23**: flujo-diseno/fresado/impresion/lab agregados al PRECACHE; MAP.md actualizado
 - **SW Alejandro v12**: /en/remote-design agregado al PRECACHE
