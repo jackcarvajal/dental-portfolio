@@ -81,6 +81,18 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 6)
+- **Security**: `_safeUrl()` en `caso.html` PRODIGY — valida `https://` en video src y pdf_url iframe
+- **Security**: `_safeUrl()` en `caso.html` Alejandro — valida `https://` en video src de drive_link
+- **Security**: `patient.html` PRODIGY — `toEmbedUrl()` devuelve null si URL no es `https://`; exocadFile validado antes de `iframe.src`
+- **Security**: `app/admin-panel.html` Alejandro — 3 `href` con datos DB sin validar → `^https?://` check en comprobante_url (×2) y link_html
+- **Audit completo app PRODIGY**: operario.html (cfg local ✓); operator-panel.html (blob URL ✓); client-panel.html (escH + https check ✓); configuracion.html (IDs staff ✓); agregar-caso.html (sin data ✓); inventario.html (escH ✓); success.html (textContent ✓)
+- **Audit completo JS**: header.js ambos — escape HTML antes de markdown en chat ✓; qr-generator.js _qrEscH ✓; geo-detect.js country_code solo en comparaciones ✓; callmebot.js key PENDIENTE ✓
+- **Audit edge functions**: notify-wa.js CORS allowlist ✓; factura.js CORS ✓; send-email.js CORS ✓; send-push.js CORS ✓; stripe-checkout (pendiente audit)
+- **Audit flujos**: flujo-diseno.html file.name escapado en ambos proyectos ✓
+- **Audit recibos**: recibo-caso.html ambos proyectos escH ✓; buildTimeline() Alejandro escH ✓
+- **Audit catálogo**: catalogo.html renderiza config local (sin Supabase) ✓
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-27 — ronda 5)
 - **OG images Alejandro completo**: `og-home.jpg`, `og-calculadora-diseno.jpg`, `og-diseno-remoto.jpg` — inexistentes. Reemplazadas por `og-guias-quirurgicas.jpg` (placeholder) en **13 archivos** (index, calculadora-diseno, diseno-remoto, flujo-diseno, article, en/remote-design, terminos-y-legal, sobre-mi, portafolio, envia-tu-scanner, soporte, blog, cursos, seguimiento-caso)
 - **flujo-diseno.html Alejandro**: desc 92→149 chars + fix OG image
