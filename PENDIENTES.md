@@ -81,6 +81,21 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 10+)
+- **Fix bug**: stl-multi-viewer.js (ambos) — _pgToast indefinida → fallback fdToast/alert; escH(f.name)
+- **Fix XSS toast**: fdToast/frsToast/impToast — escH en ${msg} de innerHTML (flujo-diseno/fresado/impresion PRODIGY + flujo-diseno Alejandro)
+- **Fix XSS badge**: badgeEstado + badgePago escH fallback — admin-panel.html Alejandro
+- **Fix XSS badge**: pagoEstadoBadge escH fallback — recibo-caso.html (ambos)
+- **Fix XSS**: taller.html PRODIGY — inline replace → escH(error.message)
+- **Fix XSS**: admin-precios.html PRODIGY — escH(error.message)
+- **Cache fix**: eliminar regla articles.js max-age=86400 duplicada (sobrescribía must-revalidate) en _headers PRODIGY
+- **Cache fix**: eliminar regla sw.js no-cache duplicada (la no-store ya existía y ganaba) en _headers PRODIGY
+- **Perf**: Inter font asíncrona en index.html PRODIGY + preconnect Google Fonts
+- **SQL**: patch-supabase-public-grants-2026.sql marcado como ejecutado ✓
+- **Scan masivo**: 17 matches innerHTML analizados — solo 2 reales (admin-precios, taller), resto hardcoded/pre-escaped/blob
+- **Scan masivo**: toast functions → todas usan textContent (no innerHTML) en ambos proyectos ✓
+- **Scan masivo**: geo.region, keywords, viewport, canonical, noindex app/, og:type — 100% completo ambos proyectos ✓
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 9)
 - **Cache**: sw.js → no-cache en _headers PRODIGY (estaba bajo /js/* immutable — SW nunca se actualizaría); articles.js → must-revalidate (se actualiza martes+jueves)
 - **A11y lightbox**: img.alt dinámico en openLB/moveLB/openLBPool — caso.html (ambos) + revision-diseno.html PRODIGY
