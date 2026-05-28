@@ -862,7 +862,7 @@ function toast(msg, tipo='ok') {
 <style>#modal-preview-op.open{display:flex!important;}</style>
 <script>
 function previsualizarDiseno(link, pedidoId) {
-  try { new URL(link); } catch { toast('Link inválido','err'); return; }
+  try { const u = new URL(link); if (u.protocol !== 'https:') throw new Error(); } catch { toast('Link inválido','err'); return; }
   document.getElementById('preview-iframe-op').src = link;
   const modal = document.getElementById('modal-preview-op');
   modal.classList.add('open');
