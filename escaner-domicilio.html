@@ -470,29 +470,29 @@
             <form id="agendaForm" novalidate>
                 <div class="frow">
                     <div class="fg">
-                        <label>Doctor / responsable *</label>
+                        <label for="nombre">Doctor / responsable *</label>
                         <input type="text" id="nombre" placeholder="Dr. Nombre Apellido" autocomplete="name" required>
                     </div>
                     <div class="fg">
-                        <label>Clínica / consultorio</label>
+                        <label for="clinica">Clínica / consultorio</label>
                         <input type="text" id="clinica" placeholder="Clínica Dental X" autocomplete="organization">
                     </div>
                 </div>
 
                 <div class="frow">
                     <div class="fg">
-                        <label>WhatsApp *</label>
+                        <label for="whatsapp">WhatsApp *</label>
                         <input type="tel" inputmode="tel" id="whatsapp" placeholder="+57 300 000 0000" autocomplete="tel" required>
                     </div>
                     <div class="fg">
-                        <label>Email</label>
+                        <label for="email">Email</label>
                         <input type="email" id="email" placeholder="doctor@clinica.com" autocomplete="email">
                     </div>
                 </div>
 
                 <div class="frow">
                     <div class="fg">
-                        <label>Zona *</label>
+                        <label for="zona">Zona *</label>
                         <select id="zona" required>
                             <option value="">— Selecciona tu zona —</option>
                             <option value="usaquen">Usaquén (Chicó, Cedritos, Santa Bárbara…)</option>
@@ -504,7 +504,7 @@
                         </select>
                     </div>
                     <div class="fg">
-                        <label>Servicio *</label>
+                        <label for="servicio">Servicio *</label>
                         <select id="servicio" required>
                             <option value="">— Tipo de escaneo —</option>
                             <option value="arco_completo">Arco completo (1 paciente)</option>
@@ -516,22 +516,22 @@
                 </div>
 
                 <div class="fg">
-                    <label>Dirección exacta *</label>
+                    <label for="direccion">Dirección exacta *</label>
                     <input type="text" id="direccion" placeholder="Calle 90 autocomplete="street-address" # 15-32, Consultorio 304, Bogotá" required>
                 </div>
 
                 <div class="fg">
-                    <label>Referencia / acceso</label>
+                    <label for="referencia">Referencia / acceso</label>
                     <input type="text" id="referencia" autocomplete="street-address" placeholder="Edificio frente al parque, piso 3, intercomunicador 304">
                 </div>
 
                 <div class="frow">
                     <div class="fg">
-                        <label>Fecha deseada *</label>
+                        <label for="fecha_cita">Fecha deseada *</label>
                         <input type="date" id="fecha_cita" autocomplete="off" required>
                     </div>
                     <div class="fg">
-                        <label>Número de pacientes</label>
+                        <label for="num_piezas">Número de pacientes</label>
                         <input type="number" id="num_piezas" autocomplete="off" min="1" max="10" placeholder="Ej: 2">
                     </div>
                 </div>
@@ -553,7 +553,7 @@
                 <input type="hidden" id="franja_hidden" value="manana">
 
                 <div class="fg">
-                    <label>Notas adicionales</label>
+                    <label for="notas">Notas adicionales</label>
                     <textarea id="notas" placeholder="Tipo de restauración, número de dientes, nombre del paciente, instrucciones especiales…"></textarea>
                 </div>
 
