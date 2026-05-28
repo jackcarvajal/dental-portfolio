@@ -46,6 +46,21 @@ export async function onRequestPost(context) {
   const origin = request.headers.get('Origin') || '';
   const cors   = corsHeaders(origin);
 
+  // Rate limit: 20 req / 5 min por IP
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const cache = caches.default;
+  const rlKey = new Request('https://rl.internal/notify-wa_' + ip);
+  const rlHit = await cache.match(rlKey);
+  if (rlHit) {
+    const count = parseInt(await rlHit.text(), 10) || 0;
+    if (count >= 20) {
+      return new Response(JSON.stringify({ error: 'Demasiadas solicitudes.' }), { status: 429, headers: cors });
+    }
+    await cache.put(rlKey, new Response(String(count + 1), { headers: { 'Cache-Control': 'max-age=300' } }));
+  } else {
+    await cache.put(rlKey, new Response('1', { headers: { 'Cache-Control': 'max-age=300' } }));
+  }
+
   let body;
   try { body = await request.json(); } catch {
     return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: cors });
@@ -75,7 +90,8 @@ export async function onRequestPost(context) {
   const fecha = fecha_entrega
     ? new Date(fecha_entrega).toLocaleDateString(esIntl ? 'en-US' : 'es-CO', { day: '2-digit', month: 'short', year: 'numeric' })
     : (esIntl ? 'To be confirmed' : 'A confirmar');
-  const recibo = recibo_url || `https://prodigylabdental.com/recibo-caso?id=${cod}${esIntl ? '&lang=en' : ''}`;
+  const _ownRecibo = /^https:\/\/(www\.)?prodigylabdental\.com\//;
+  const recibo = (recibo_url && _ownRecibo.test(recibo_url)) ? recibo_url : `https://prodigylabdental.com/recibo-caso?id=${cod}${esIntl ? '&lang=en' : ''}`;
 
   const mensaje = fn({ cod, dr, srv, fecha, recibo });
   const waUrl   = `https://wa.me/${wa}?text=${encodeURIComponent(mensaje)}`;

@@ -426,8 +426,14 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
   document.getElementById('og-desc').content = art.subtitulo;
   document.getElementById('og-url').content   = canonicalUrl;
   if (typeof getArticleCover === 'function') {
-    document.getElementById('og-image').content = 'https://prodigylabdental.com' + getArticleCover(art);
+    const _cover = 'https://prodigylabdental.com' + getArticleCover(art);
+    document.getElementById('og-image').content = _cover;
+    document.getElementById('tw-image').content = _cover;
   }
+  const _ogImgAlt = document.querySelector('meta[property="og:image:alt"]');
+  if (_ogImgAlt) _ogImgAlt.content = art.titulo + ' — PRODIGY Lab Dental';
+  const _twImgAlt = document.querySelector('meta[name="twitter:image:alt"]');
+  if (_twImgAlt) _twImgAlt.content = art.titulo + ' — PRODIGY Lab Dental';
   document.getElementById('canonical').href    = canonicalUrl;
   document.getElementById('meta-kw').content   = art.chip + ', CAD/CAM dental, odontología digital, laboratorio dental Colombia';
   document.getElementById('tw-title').content  = art.titulo;
