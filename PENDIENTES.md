@@ -81,6 +81,13 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-27 — ronda 2)
+- **Security**: JSON.stringify(p) en onclick → _pioMap en panel-interno-operaciones (3 botones WA + cierre map)
+- **Security**: JSON.stringify(d) en onclick → _admEviMap en admin-panel PRODIGY (botón verEvidencia logística)
+- **XSS audit completo app/**: flujo-impresion.js sin riesgo (showProdigyAlert literales; colores hardcoded); gestionar-casos ya escH correcto; seguimiento-caso Alejandro ya _escH correcto
+- **Schema**: Person schema agregado a sobre-mi.html Alejandro (BreadcrumbList ya existía)
+- **Verificado**: journal.html PRODIGY tiene BreadcrumbList ✓; index.html Alejandro tiene Person+Service+BreadcrumbList ✓; admin-panel Alejandro JSON.stringify limpio (_pMap ya existía) ✓
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-27)
 - **SEO descs/titles lote k**: desc ≤160 en 4 PRODIGY (soporte-tecnico, index, calculadora-fresado, terminos-y-legal) + 2 Alejandro (index, portafolio); title ≤72 calculadora-fresado PRODIGY; desc ≤160 en/global-design (254→163)
 - **Security lote k**: XSS escH revision_num en PRODIGY client-panel + operario-diseno; XSS escH revision_num + lead_source + p.estado en Alejandro admin/client-panel; escH p.codigo en operator-panel onclick; esc(lbl/d) en operario servicios_pagados; app_metadata.role en supabase-client.js loginSupabase (era user_metadata)
