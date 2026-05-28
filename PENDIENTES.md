@@ -81,6 +81,16 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-27 — ronda 5)
+- **OG images Alejandro completo**: `og-home.jpg`, `og-calculadora-diseno.jpg`, `og-diseno-remoto.jpg` — inexistentes. Reemplazadas por `og-guias-quirurgicas.jpg` (placeholder) en **13 archivos** (index, calculadora-diseno, diseno-remoto, flujo-diseno, article, en/remote-design, terminos-y-legal, sobre-mi, portafolio, envia-tu-scanner, soporte, blog, cursos, seguimiento-caso)
+- **flujo-diseno.html Alejandro**: desc 92→149 chars + fix OG image
+- **Security audit final**: caso.html Alejandro usa escHtml() en todos los campos Supabase ✓; seguimiento-caso PRODIGY usa _escH() en numero_guia ✓; gestionar-casos PRODIGY usa escH() ✓; contabilidad PRODIGY usa escH() ✓; upload-guard.js magic bytes + allowlist ✓
+- **JSON.stringify scan final**: limpio en ambos proyectos (admin-panel PRODIGY comment line, exocad.html archivo generado inmenso — skipeado)
+- **Edge functions**: notify-wa.js CORS allowlist ✓; factura.js CORS allowlist ✓; Alejandro send-email/send-push/stripe-checkout — pendiente audit
+- **auth-guard.js Alejandro**: usa email hardcodeado (ADMIN_EMAILS) — correcto per CLAUDE.md ✓
+- **_headers**: ambos proyectos tienen todos clean URLs + security headers ✓
+- **Schema audit final**: todos los `<details>` FAQ tienen FAQPage ✓; cursos.html tiene Service+BreadcrumbList ✓; soporte.html ContactPage+BreadcrumbList ✓
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-27 — ronda 4)
 - **SEO**: desc >160 en Alejandro terminos-y-legal (163→148); title 73 + desc 232 en en/remote-design → dentro de límites
 - **Security**: `renderContent()` en article.html ambos proyectos — sanitiza img.src (bloquea javascript:), escapa alt/caption/cite/title con _artEscAttr()
