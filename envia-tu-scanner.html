@@ -514,7 +514,7 @@
 
                 <!-- Servicios visual tipo calculadora -->
                 <div class="fg">
-                    <label>Trabajo solicitado *</label>
+                    <label for="svcHidden">Trabajo solicitado *</label>
                 </div>
                 <div class="svc-grid" id="svcGrid">
                     <div class="svc-btn sel" data-val="Corona unitaria" onclick="selSvc(this)">
@@ -556,17 +556,17 @@
                 <input type="hidden" id="svcHidden" value="Corona unitaria">
 
                 <div class="fg">
-                    <label>Piezas / cantidad</label>
+                    <label for="piezas">Piezas / cantidad</label>
                     <input type="text" id="piezas" autocomplete="off" placeholder="Ej: pieza 21 y 22 — carillas. 2 unidades.">
                 </div>
 
                 <div class="fg">
-                    <label>Notas (color, urgencia, instrucciones)</label>
+                    <label for="notas">Notas (color, urgencia, instrucciones)</label>
                     <textarea id="notas" autocomplete="off" placeholder="Color A2, paciente urgente, nombre del paciente, detalles de oclusión…"></textarea>
                 </div>
 
                 <!-- Drop zone -->
-                <div class="fg"><label>Archivo escáner (.stl, .obj, .ply, .dcm, .zip)</label></div>
+                <div class="fg"><label for="fileInput">Archivo escáner (.stl, .obj, .ply, .dcm, .zip)</label></div>
                 <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
                     <i class="fas fa-cloud-upload-alt"></i>
                     <p><strong>Arrastra aquí</strong> o haz clic para seleccionar</p>
