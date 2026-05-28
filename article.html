@@ -300,6 +300,11 @@ function fechaLegible(iso) {
   return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;
 }
 
+// Sanitiza URLs de imágenes — solo permite https:// y rutas relativas
+function _artSafeUrl(u) { const s = String(u||''); return /^https?:\/\//i.test(s) ? s : ''; }
+// Escapa atributos HTML (alt, caption, cite)
+function _artEscAttr(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
 function renderContent(bloques) {
   return bloques.map(b => {
     // Normalizar: soporta formato nuevo {t,c} y legado {tipo,texto}
@@ -310,10 +315,10 @@ function renderContent(bloques) {
     if (tp === 'h2')    return `<h2>${txt}</h2>`;
     if (tp === 'h3')    return `<h3>${txt}</h3>`;
     if (tp === 'p')     return `<p>${txt}</p>`;
-    if (tp === 'quote') return `<blockquote><p>"${txt}"</p><cite>— ${b.author||b.autor||''}</cite></blockquote>`;
+    if (tp === 'quote') return `<blockquote><p>"${txt}"</p><cite>— ${_artEscAttr(b.author||b.autor||'')}</cite></blockquote>`;
     if (tp === 'list' || tp === 'ul') return `<ul>${(b.items||[]).map(i=>`<li>${i}</li>`).join('')}</ul>`;
-    if (tp === 'img')   return `<figure style="margin:20px 0"><img src="${b.src}" alt="${b.alt||''}" loading="lazy" style="width:100%;border-radius:10px"><figcaption style="text-align:center;font-size:.9rem;color:var(--muted);margin-top:6px">${b.caption||''}</figcaption></figure>`;
-    if (tp === 'video') { const ytId = /^[\w-]{5,20}$/.test(b.youtube||'') ? b.youtube : ''; return ytId ? `<div style="margin:24px 0;border-radius:12px;overflow:hidden;aspect-ratio:16/9"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/${ytId}" title="${b.title||b.titulo||''}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>` : ''; }
+    if (tp === 'img') { const src = _artSafeUrl(b.src); return src ? `<figure style="margin:20px 0"><img src="${src}" alt="${_artEscAttr(b.alt||'')}" loading="lazy" style="width:100%;border-radius:10px"><figcaption style="text-align:center;font-size:.9rem;color:var(--muted);margin-top:6px">${_artEscAttr(b.caption||'')}</figcaption></figure>` : ''; }
+    if (tp === 'video') { const ytId = /^[\w-]{5,20}$/.test(b.youtube||'') ? b.youtube : ''; return ytId ? `<div style="margin:24px 0;border-radius:12px;overflow:hidden;aspect-ratio:16/9"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/${ytId}" title="${_artEscAttr(b.title||b.titulo||'')}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>` : ''; }
     if (tp === 'table' || tp === 'tabla') return `<div class="table-wrap"><table><thead><tr>${hdrs.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     return '';
   }).join('');
