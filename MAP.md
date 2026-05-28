@@ -1,6 +1,6 @@
 # MAP — PRODIGY Arquitectura de Referencia
 > Para uso interno de Claude. Actualizar cuando cambie una función crítica.
-> Última actualización: 2026-05-27
+> Última actualización: 2026-05-28
 
 ---
 
@@ -86,13 +86,14 @@
 ### caso.html
 | Función | Línea |
 |---------|-------|
-| `render()` — renderiza caso completo | 199 |
-| `cargarRelacionados()` | 309 |
-| `loadExocadBlob()` — visor Exocad | 337 |
-| `cargarNotas()` — carga comentarios | 370 |
-| `publicarNota()` — enviar comentario | 410 |
-| `eliminarNota()` — admin delete | ~395 |
-| `fijarNota()` — admin pin | ~402 |
+| `_safeUrl()` — valida https:// en media | 195 |
+| `render()` — renderiza caso completo | ~202 |
+| `cargarRelacionados()` | ~312 |
+| `loadExocadBlob()` — visor Exocad | ~340 |
+| `cargarNotas()` — carga comentarios | ~373 |
+| `publicarNota()` — enviar comentario | ~413 |
+| `eliminarNota()` — admin delete | ~398 |
+| `fijarNota()` — admin pin | ~405 |
 | Lightbox HTML | 142 |
 
 ### journal.html
