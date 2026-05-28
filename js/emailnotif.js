@@ -32,17 +32,17 @@ function htmlEmailProdigy(titulo, contenido, codigo) {
 <div class="wrap">
   <div class="hdr">
     <h1>💎 PRODIGY LAB</h1>
-    <p>Digital Dentistry · prodigylabdental.pages.dev</p>
+    <p>Digital Dentistry · prodigylabdental.com</p>
   </div>
   <div class="body">
     ${contenido}
     ${codigo ? `<div class="code">${codigo}</div>` : ''}
-    <a href="https://prodigylabdental.pages.dev/app/client-panel" class="btn">Ver mi portal →</a>
+    <a href="https://prodigylabdental.com/app/client-panel" class="btn">Ver mi portal →</a>
   </div>
   <div class="ftr">
     © ${new Date().getFullYear()} PRODIGY Digital Dentistry &nbsp;·&nbsp;
     prodigylabdental@gmail.com &nbsp;·&nbsp; +57 321 281 6716<br>
-    <a href="https://prodigylabdental.pages.dev/app/client-panel">Portal del cliente</a>
+    <a href="https://prodigylabdental.com/app/client-panel">Portal del cliente</a>
     &nbsp;·&nbsp;
     <a href="https://wa.me/573212816716">WhatsApp</a>
   </div>
