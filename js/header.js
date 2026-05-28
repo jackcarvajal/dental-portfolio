@@ -920,9 +920,9 @@
     av.textContent = role === 'user' ? '👤' : '🤖';
     var bbl = document.createElement('div');
     bbl.className = 'pg-msg-bbl';
-    // Usuarios: escapar HTML para prevenir XSS. Bot/fallback: confiar en el contenido interno.
-    var safe = role === 'user' ? _pgEscHtml(text) : text;
-    bbl.innerHTML = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    // Siempre escapar HTML primero; luego aplicar markdown mínimo (bold, saltos)
+    var safe = _pgEscHtml(text).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    bbl.innerHTML = safe;
     div.appendChild(av);
     div.appendChild(bbl);
     wrap.appendChild(div);
