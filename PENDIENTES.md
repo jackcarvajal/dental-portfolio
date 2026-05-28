@@ -81,6 +81,15 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 9)
+- **Cache**: sw.js → no-cache en _headers PRODIGY (estaba bajo /js/* immutable — SW nunca se actualizaría); articles.js → must-revalidate (se actualiza martes+jueves)
+- **A11y lightbox**: img.alt dinámico en openLB/moveLB/openLBPool — caso.html (ambos) + revision-diseno.html PRODIGY
+- **SEO desc**: article.html PRODIGY 127→156; article.html Alejandro 115→154; mapa-sitio.html 113→158; flujo-diseno.html 132→151; flujo-fresado.html 132→155; en/global-design.html 161→150 (reducir 1 sobre límite)
+- **SEO local**: geo.region+placename+position+ICBM en article.html (ambos) + calculadora.html PRODIGY; sitemap lastmod calculadora → 2026-05-28
+- **SEO social**: og:image:width=1200 + og:image:height=630 en 15 páginas Alejandro (imagen conocida = 1200×630)
+- **Schema fix**: article.html PRODIGY — author Organization→PRODIGY Lab Dental (no "Alejandro Carvajal")
+- **Audits OK**: todas las app/ con noindex ✓; target="_blank" con noopener ✓; console.log sin datos sensibles ✓; API keys no hardcodeadas ✓; auto-journal manejo errores ✓; workflows GHA seguro y mínimo permisos ✓; manifests PWA completos ✓; sitemap.xml 1h cache ✓; FAQPage en todos los <details> ✓; títulos ≤72 y desc ≥140 en todas las páginas indexadas ✓
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 8)
 - **Security edge functions**: stripe-checkout ambos proyectos — open redirect en success_url/cancel_url → validado contra dominio propio; amount_cop coercionado + cap 50M; description truncada 250 chars
 - **Security edge functions**: send-email Alejandro — rate limit 5/10min + regex email validation
