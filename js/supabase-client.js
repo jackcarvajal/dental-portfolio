@@ -46,7 +46,7 @@ async function loginSupabase(email, password) {
     if (!sb) throw new Error('Supabase SDK no cargado');
     const { data, error } = await sb.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    sessionStorage.setItem('prodigy_role', data.user.user_metadata?.role || 'client');
+    sessionStorage.setItem('prodigy_role', data.user.app_metadata?.role || 'client');
     sessionStorage.setItem('prodigy_user', data.user.email);
     return data;
 }
