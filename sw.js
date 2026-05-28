@@ -29,6 +29,7 @@ const PRECACHE = [
   '/guias-quirurgicas',
   '/en/global-design',
   '/soporte-tecnico',
+  '/mapa-sitio',
   '/manifest.json',
   '/assets/prodigy-preview.jpg',
   '/assets/og-guias-quirurgicas.jpg',
