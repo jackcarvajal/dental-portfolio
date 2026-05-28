@@ -81,6 +81,16 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 7)
+- **SEO PRODIGY**: desc mejoradas en 8 páginas indexadas (123-140 → 146-156 chars): envia-tu-scanner, fresado-cam, diseno-cad, guias-quirurgicas, nosotros, portafolio, catalogo, diseno-remoto
+- **SEO Alejandro**: desc mejoradas en 4 páginas (128-136 → 148-159 chars): diseno-remoto, guias-quirurgicas, soporte, envia-tu-scanner
+- **Security**: `_safeUrl()` en `caso.html` PRODIGY — valida https:// en video y pdf_url iframe; Alejandro video src
+- **Security**: `patient.html` PRODIGY — `toEmbedUrl()` solo https://; exocadFile validado
+- **Security**: admin-panel Alejandro — 3 hrefs con datos DB → `^https?://` check
+- **Security**: `mis-casos.html` Alejandro — `link_diseno` en href validado con `^https?://`
+- **MAP.md**: caso.html líneas actualizadas + fecha 2026-05-28
+- **Audit completo**: workflows GHA ✓; scripts auto-journal temperatura 0.15 + DOI ✓; robots.txt ✓; _redirects ✓; _headers ✓; skip links 50/57 ✓; app mis-casos/client-panel/configuracion Alejandro limpios
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 6)
 - **Security**: `_safeUrl()` en `caso.html` PRODIGY — valida `https://` en video src y pdf_url iframe
 - **Security**: `_safeUrl()` en `caso.html` Alejandro — valida `https://` en video src de drive_link
