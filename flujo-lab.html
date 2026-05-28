@@ -842,7 +842,7 @@ async function generarOrden() {
   var oclusion    = document.getElementById('rx-oclusion').value;
 
   if (!doctor) { const fd=document.getElementById('rx-doctor'); fd.style.outline='2px solid #f87171'; fd.focus(); setTimeout(()=>fd.style.outline='',2500); return; }
-  if (!document.getElementById('checkHabeas').checked) { alert('Debes aceptar la política de privacidad (Habeas Data) para continuar.'); return; }
+  if (!document.getElementById('checkHabeas').checked) { const hb=document.getElementById('checkHabeas'); hb.scrollIntoView({behavior:'smooth',block:'center'}); hb.style.outline='2px solid #f87171'; setTimeout(()=>hb.style.outline='',2500); return; }
 
   var btn = document.getElementById('btn-generar');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Generando orden...'; }

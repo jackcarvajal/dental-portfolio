@@ -456,6 +456,8 @@ let _hist = [];
 let lbImgs = [], lbIdx = 0;
 let _esInternacional = false;
 const PID = new URLSearchParams(location.search).get('id');
+let _rdToastT;
+function _rdToast(msg,ok){let el=document.getElementById('_rd-toast');if(!el){el=document.createElement('div');el.id='_rd-toast';el.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;font-size:.82rem;font-weight:700;z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s;max-width:320px;text-align:center;';document.body.appendChild(el);}el.textContent=msg;el.style.background=ok?'rgba(0,255,65,.15)':'rgba(239,68,68,.15)';el.style.border=ok?'1px solid rgba(0,255,65,.4)':'1px solid rgba(239,68,68,.4)';el.style.color=ok?'#00FF41':'#f87171';el.style.opacity='1';clearTimeout(_rdToastT);_rdToastT=setTimeout(()=>{el.style.opacity='0';},4000);}
 
 /* ─── DETECCIÓN DE PAÍS ─── */
 async function detectarPais() {
@@ -1016,7 +1018,7 @@ function cerrarCambio() { document.getElementById('modal-cambio').classList.remo
 
 async function enviarCambio() {
   const texto = document.getElementById('cambio-texto').value.trim();
-  if (!texto) { alert('Describe el cambio que necesitas.'); return; }
+  if (!texto) { _rdToast('Describe el cambio que necesitas.', false); return; }
   const btn = document.getElementById('btn-cambio-ok');
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Enviando…';
   const progEl = document.getElementById('cambio-prog');
@@ -1033,7 +1035,7 @@ async function enviarCambio() {
   const { error } = await sb.from('pedidos').update({
     estado_operativo:'CAMBIOS_SOLICITADOS', cambios_count:nuevoCount, observaciones:texto
   }).eq('id', PID);
-  if (error) { btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar solicitud'; alert('Error. Intenta de nuevo.'); return; }
+  if (error) { btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar solicitud'; _rdToast('Error al enviar. Intenta de nuevo.', false); return; }
   await logH('CAMBIO_SOLICITADO','doctor',texto,fotoUrls,{num:nuevoCount,paga_extra:nuevoCount>2});
   cerrarCambio(); location.reload();
 }
