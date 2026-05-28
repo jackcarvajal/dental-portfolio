@@ -1145,7 +1145,7 @@
     <script>
         const _IMT={success:{i:'fa-circle-check',c:'#00FF41',b:'rgba(0,255,65,.15)',br:'rgba(0,255,65,.4)'},error:{i:'fa-circle-xmark',c:'#ff3b30',b:'rgba(255,59,48,.15)',br:'rgba(255,59,48,.4)'},warning:{i:'fa-triangle-exclamation',c:'#ff9500',b:'rgba(255,149,0,.12)',br:'rgba(255,149,0,.4)'},info:{i:'fa-circle-info',c:'#00d2ff',b:'rgba(0,210,255,.12)',br:'rgba(0,210,255,.4)'}};
         let _impT;
-        function impToast(msg,type){const el=document.getElementById('imp-toast');const t=_IMT[type]||{i:'fa-circle-info',c:'#D4AF37',b:'rgba(212,175,55,.12)',br:'rgba(212,175,55,.35)'};el.innerHTML=`<i class="fas ${t.i}" style="color:${t.c};flex-shrink:0;font-size:1.1rem"></i><span style="color:#e2e8f0">${msg}</span>`;el.style.cssText+='opacity:1;background:'+t.b+';border:1px solid '+t.br+';';clearTimeout(_impT);_impT=setTimeout(()=>{el.style.opacity='0';},4000);}
+        function impToast(msg,type){const el=document.getElementById('imp-toast');const t=_IMT[type]||{i:'fa-circle-info',c:'#D4AF37',b:'rgba(212,175,55,.12)',br:'rgba(212,175,55,.35)'};const _escIMP=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');el.innerHTML=`<i class="fas ${t.i}" style="color:${t.c};flex-shrink:0;font-size:1.1rem"></i><span style="color:#e2e8f0">${_escIMP(msg)}</span>`;el.style.cssText+='opacity:1;background:'+t.b+';border:1px solid '+t.br+';';clearTimeout(_impT);_impT=setTimeout(()=>{el.style.opacity='0';},4000);}
         function pagarConWompi() {
             const totalEl = document.getElementById('calc-total');
             const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;
