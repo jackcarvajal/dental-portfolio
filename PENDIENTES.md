@@ -92,13 +92,15 @@
 - **Security app pages**: client-panel PRODIGY — verRevisionPD() protocol check https: antes de iframe.src
 - **Security app pages**: client-panel Alejandro — verRevision() protocol check https: antes de iframe.src
 - **Security app pages**: operario-diseno PRODIGY — previsualizarDiseno() protocol check https:
+- **Security app pages**: admin-panel Alejandro — preview-iframe.src protocol check https:
+- **Security public pages**: seguimiento-caso.html (ambos) — exocad_link → https: check antes de iframe.src
 - **Security gallery**: caso.html (ambos) — gallery + gal2 filtradas con /^https?:\/\// antes del lightbox
 - **Security gallery**: revision-diseno.html PRODIGY — fotos_diseno_urls filtradas
+- **Security patients/**: noindex,nofollow en patient-001/exocad.html + patient-002/caso.html
 - **SEO a11y**: og:image:alt + twitter:image:alt en 31 páginas PRODIGY + 16 páginas Alejandro (batch)
 - **SEO feat**: article.html ambos — og:image:alt y twitter:image:alt actualizados dinámicamente con titulo del artículo; tw-image sincronizado con cover
 - **CSP**: media-src 'self' blob: *.supabase.co drive.google.com en _headers ambos proyectos
-- **resumen-semanal.js PRODIGY**: audit completo — auth x-cron-secret ✓, no CORS requerido ✓, Callmebot check ✓
-- **Habeas Data**: todos los formularios públicos con datos personales verificados — todos cumplidos
+- **Audits OK**: resumen-semanal.js ✓; 404.html (ambos) con todos los requisitos ✓; _redirects (ambos) completos ✓; postMessage solo en libs ✓; document.write: ninguno ✓; eval solo en DentalWebGL ✓; localStorage en innerHTML: ninguno ✓; URLSearchParams en innerHTML: ninguno ✓; Habeas Data: todos los formularios públicos cumplidos ✓
 
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 7)
 - **SEO PRODIGY**: desc mejoradas en 8 páginas indexadas (123-140 → 146-156 chars): envia-tu-scanner, fresado-cam, diseno-cad, guias-quirurgicas, nosotros, portafolio, catalogo, diseno-remoto
