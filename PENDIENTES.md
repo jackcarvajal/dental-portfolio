@@ -81,6 +81,15 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 11)
+- **Fix dominio**: callmebot.js (6 refs), webpush.js (7 refs), emailnotif.js (3 refs), client-panel.html (1 ref) — prodigydentallab→prodigylabdental
+- **Fix schema**: BreadcrumbList duplicado eliminado en diseno-cad.html + diseno-remoto.html
+- **Security(sw)**: notificationclick data.url validado contra dominio propio en ambos sw.js
+- **Security(sw)**: webpush.js URL fallback correcto (prodigydentallab→prodigylabdental.com)
+- **SEO**: hreflang es/en/x-default en article.html Alejandro (faltaba)
+- **Audits**: utm-tracker.js, geo-detect.js, content-protection.js, content-guard.js, prodigy-analytics.js — todos limpios ✓
+- **Scan masivo flujo-diseno.html Alejandro**: limpio ✓ (2 matches = ya corregidos)
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 10+)
 - **Fix bug**: stl-multi-viewer.js (ambos) — _pgToast indefinida → fallback fdToast/alert; escH(f.name)
 - **Fix XSS toast**: fdToast/frsToast/impToast — escH en ${msg} de innerHTML (flujo-diseno/fresado/impresion PRODIGY + flujo-diseno Alejandro)
