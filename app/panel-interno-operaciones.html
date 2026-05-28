@@ -962,6 +962,7 @@ const ADMIN_EMAILS = [
 ══════════════════════════════════════════ */
 let currentUser = null;
 let todosLosPedidos = [];
+const _pioMap = {}; // mapa id→pedido para onclick seguro
 
 async function verificarAdmin() {
     try {
@@ -1148,7 +1149,9 @@ function renderPedidos(lista) {
         return;
     }
 
-    document.getElementById('tbody-pedidos').innerHTML = lista.map(p => `
+    document.getElementById('tbody-pedidos').innerHTML = lista.map(p => {
+        _pioMap[p.id] = p;
+        return `
     <tr>
         <td style="font-family:monospace;color:var(--cyan);">${esc(p.codigo || p.id?.slice(0,8))}</td>
         <td>${esc(p.tipo_trabajo)}</td>
@@ -1166,11 +1169,12 @@ function renderPedidos(lista) {
         <td style="white-space:nowrap;">
             ${p.stl_ruta?.startsWith('https://') ? `<a href="${esc(p.stl_ruta)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
             <a href="../recibo-caso?id=${esc(p.codigo||p.id)}" target="_blank" class="btn-xs btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
-            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Pago confirmado" onclick="prodigyNotifPago(${JSON.stringify(p)})"><i class="fab fa-whatsapp"></i> Pago</button>
-            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Diseño listo" onclick="prodigyNotifDiseno(${JSON.stringify(p)})"><i class="fab fa-whatsapp"></i> Diseño</button>
-            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Entregado" onclick="prodigyNotifEntrega(${JSON.stringify(p)})"><i class="fab fa-whatsapp"></i> Entrega</button>
+            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Pago confirmado" onclick="prodigyNotifPago(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Pago</button>
+            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Diseño listo" onclick="prodigyNotifDiseno(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Diseño</button>
+            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Entregado" onclick="prodigyNotifEntrega(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Entrega</button>
         </td>
-    </tr>`).join('');
+    </tr>`;
+}).join('');
 }
 
 async function cambiarEstado(pedidoId, nuevoEstado) {
