@@ -598,7 +598,7 @@ async function cargarHistorialQA(pedidoId) {
   if (!data || !data.length) { el.innerHTML = ''; return; }
   el.innerHTML = `<div style="font-size:.68rem;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Historial revisiones</div>` +
     data.map(r => `<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:6px;padding:7px 10px;margin-bottom:5px;font-size:.74rem;">
-      <span style="color:var(--cyan);font-weight:700;">Rev ${r.revision_num}</span>
+      <span style="color:var(--cyan);font-weight:700;">Rev ${escH(String(r.revision_num??''))}</span>
       ${r.link_html && /^https?:\/\//.test(r.link_html)?`<a href="${escH(r.link_html)}" target="_blank" rel="noopener noreferrer" style="color:var(--gold);margin-left:8px;"><i class="fas fa-external-link-alt"></i> Visor</a>`:''}
       ${r.stl_ruta?`<span style="color:var(--green);margin-left:8px;"><i class="fas fa-cube"></i> STL</span>`:''}
       ${r.notas_cliente?`<span style="color:var(--yellow);margin-left:8px;font-size:.68rem;"><i class="fas fa-comment"></i> ${escH(r.notas_cliente.slice(0,40))}</span>`:''}
