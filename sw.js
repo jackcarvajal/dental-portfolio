@@ -151,7 +151,9 @@ self.addEventListener('push', e => {
 self.addEventListener('notificationclick', e => {
   e.notification.close();
   if (e.action === 'cerrar') return;
-  const url = (e.notification.data && e.notification.data.url) || '/seguimiento-caso';
+  const rawUrl = (e.notification.data && e.notification.data.url) || '/seguimiento-caso';
+  // Solo abrir URLs del mismo dominio o rutas relativas
+  const url = /^https?:\/\/prodigylabdental\.com\//.test(rawUrl) || rawUrl.startsWith('/') ? rawUrl : '/seguimiento-caso';
   e.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cs => {
       const match = cs.find(c => c.url.includes('seguimiento-caso') || c.url.includes(url));
