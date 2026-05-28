@@ -190,6 +190,9 @@ document.addEventListener('keydown', e => {
   if(e.key==='ArrowRight') moveLB(1);
 });
 
+/* ── URL SEGURA (solo https://) ── */
+function _safeUrl(u) { const s = String(u||''); return /^https:\/\//i.test(s) ? s : ''; }
+
 /* ── VIDEO EMBED ── */
 function toEmbed(url) {
   if (!url) return null;
@@ -224,7 +227,7 @@ async function render(c) {
   } else if (hasDrive) {
     const embed = toEmbed(c.drive_link);
     if (embed) visorHTML = `<div class="viewer-wrap"><iframe src="${embed}" title="Video" allowfullscreen allow="autoplay"></iframe></div>`;
-    else if (/\.(mp4|webm)(\?|$)/i.test(c.drive_link)) visorHTML = `<div class="viewer-wrap"><video controls controlsList="nodownload nofullscreen" oncontextmenu="return false;" preload="metadata" style="width:100%;height:100%;background:#000;"><source src="${c.drive_link}"></video></div>`;
+    else if (/\.(mp4|webm)(\?|$)/i.test(c.drive_link)) { const vs = _safeUrl(c.drive_link); if (vs) visorHTML = `<div class="viewer-wrap"><video controls controlsList="nodownload nofullscreen" oncontextmenu="return false;" preload="metadata" style="width:100%;height:100%;background:#000;"><source src="${vs}"></video></div>`; }
   }
   if (!visorHTML) visorHTML = null;
 
@@ -301,7 +304,7 @@ async function render(c) {
           <span style="font-size:.72rem;color:#475569;"><i class="fas fa-lock" style="margin-right:4px;"></i>Descarga restringida</span>
         </div>
         <div style="position:relative;">
-          <iframe src="${c.pdf_url}#toolbar=0&navpanes=0&scrollbar=1&view=FitH" style="width:100%;height:680px;border:none;display:block;" title="Documento PDF" oncontextmenu="return false;"></iframe>
+          <iframe src="${_safeUrl(c.pdf_url)}#toolbar=0&navpanes=0&scrollbar=1&view=FitH" style="width:100%;height:680px;border:none;display:block;" title="Documento PDF" oncontextmenu="return false;"></iframe>
           <div class="pdf-overlay" oncontextmenu="return false;" style="position:absolute;top:0;right:0;width:52px;height:100%;z-index:10;background:transparent;cursor:default;"></div>
         </div>
       </div>
