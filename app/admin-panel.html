@@ -1902,6 +1902,7 @@ function toast(msg, tipo = '') {
    TAB 4 — DESPACHOS
 ══════════════════════════════════════════ */
 let _mensajerosList = [];
+const _admEviMap = {}; // mapa id→despacho para onclick seguro (evita JSON.stringify en atributo)
 
 async function cargarDespachos() {
     // 1. Cargar mensajeros activos para el dropdown
@@ -1968,6 +1969,7 @@ async function cargarDespachos() {
     } else {
         const estadoColor = { PROGRAMADO:'#fbbf24', EN_REPARTO:'#00d2ff', ENTREGADO:'#00FF41', NO_ENTREGADO:'#f87171' };
         tbodyRuta.innerHTML = (enRuta || []).map(d => {
+            _admEviMap[d.id] = d;
             const tieneEvidencia = d.firma_url || d.foto_url || d.lat_entrega;
             return `
         <tr>
@@ -1981,7 +1983,7 @@ async function cargarDespachos() {
                     ? 'Est. '+new Date(d.fecha_entrega_estimada).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})
                     : '—'}</td>
             <td>${tieneEvidencia
-                ? `<button onclick='verEvidencia(${JSON.stringify(d)})' class="btn-xs btn-gold"><i class="fas fa-eye"></i> Ver</button>`
+                ? `<button onclick="verEvidencia(_admEviMap['${d.id}'])" class="btn-xs btn-gold"><i class="fas fa-eye"></i> Ver</button>`
                 : `<span style="font-size:.72rem;color:#94a3b8;">${escHtml(d.novedades || '—')}</span>`}
             </td>
         </tr>`;}).join('');
