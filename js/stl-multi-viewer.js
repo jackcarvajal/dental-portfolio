@@ -407,7 +407,8 @@
             // Tamaño
             const sizeMb = +(f.size / 1024 / 1024).toFixed(1);
             if (sizeMb > MAX_MB) {
-                _pgToast(`"${f.name}" supera el límite de ${MAX_MB} MB`);
+                const _showMsg = typeof fdToast === 'function' ? fdToast : typeof prodigyAlert === 'function' ? prodigyAlert : (m) => alert(m);
+                _showMsg(`"${escH(f.name)}" supera el límite de ${MAX_MB} MB`);
                 return;
             }
             const ext   = f.name.split('.').pop().toLowerCase();
