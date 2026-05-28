@@ -404,7 +404,7 @@ function renderCard(p, done) {
         LISTO_DESPACHAR: ['est-listo', 'Listo para despacho'],
         POR_DESPACHAR:   ['est-desp', 'Asignado — por despachar'],
         EN_REPARTO:      ['est-desp', 'En reparto'],
-    }[p.estado_operativo] || ['est-qa', p.estado_operativo];
+    }[p.estado_operativo] || ['est-qa', escH(String(p.estado_operativo||''))];
 
     const accion = done
         ? `<div class="btn-done"><i class="fas fa-check" style="margin-right:6px;"></i>Confirmado${p.nota_calidad ? ' — ' + escH(p.nota_calidad.slice(0,40)) : ''}</div>`
