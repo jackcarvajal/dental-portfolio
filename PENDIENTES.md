@@ -11,6 +11,7 @@
 | 1 | `GEMINI_API_KEY` en Cloudflare Pages — **PRODIGY** | Pages → Settings → Environment Variables → Add | Sin esto el chatbot IA no responde |
 | 2 | `GEMINI_API_KEY` en Cloudflare Pages — **Alejandro** | Pages → Settings → Environment Variables → Add | Sin esto el chatbot IA no responde |
 | 3 | `GEMINI_API_KEY` en GitHub Secrets — **repo Alejandro** | Repo → Settings → Secrets and variables → Actions | Sin esto el cron de artículos no corre |
+| 3b | `GEMINI_API_KEY` en GitHub Secrets — **repo PRODIGY** | Repo → Settings → Secrets and variables → Actions | El último artículo es 2026-04-29 — cron inactivo hace ~1 mes |
 | 4 | `WOMPI_INTEGRITY_SECRET` en Supabase Secrets | Dashboard → Edge Functions → Secrets | Webhook de pago falla |
 | 5 | **Redesplegar ambos sitios** en Cloudflare tras agregar env vars | Cloudflare → Deployments → Retry deployment | Para activar bot + SEO fixes |
 | 6 | **Subir casos al portafolio** | `/app/panel-interno-operaciones.html` | Mínimo 5 casos con portada + galería |
