@@ -64,6 +64,10 @@ export async function onRequestGet(context) {
     return new Response(JSON.stringify({ error: 'Facturación no configurada' }), { status: 503, headers: cors });
   }
 
+  if (!(await verificarAdmin(request, env))) {
+    return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 403, headers: cors });
+  }
+
   const billId = new URL(request.url).searchParams.get('id');
   if (!billId) {
     return new Response(JSON.stringify({ error: 'Falta id' }), { status: 400, headers: cors });

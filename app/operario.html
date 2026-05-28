@@ -240,7 +240,7 @@ const DEPTS = {
           return `<button class="btn ${cls}" onclick="enviarASiguiente('${p.id}','${esc(d)}')"><i class="fas fa-arrow-right"></i> → ${esc(lbl)}</button>`;
         }).join('');
         return `${p.html_diseno_url?`<button class="btn btn-dis" onclick="copiarLinkRevision('${p.id}')"><i class="fas fa-link"></i> Link Dr.</button>`:''}
-          ${p.link_diseno?`<a href="${esc(p.link_diseno)}" target="_blank" rel="noopener noreferrer" class="btn btn-grn"><i class="fas fa-external-link-alt"></i> Ver entrega</a>`:''}
+          ${p.link_diseno&&/^https?:\/\//.test(p.link_diseno)?`<a href="${esc(p.link_diseno)}" target="_blank" rel="noopener noreferrer" class="btn btn-grn"><i class="fas fa-external-link-alt"></i> Ver entrega</a>`:''}
           ${sigBtns}`;
       }
     }

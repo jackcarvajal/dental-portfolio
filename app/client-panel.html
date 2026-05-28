@@ -1180,7 +1180,7 @@ async function cargarPedidosDoc_cliente(uid) {
 }
 
 function verRevisionPD(link, num) {
-    try { new URL(link); } catch { return; }
+    try { const u = new URL(link); if (u.protocol !== 'https:') throw new Error(); } catch { return; }
     document.getElementById('rev-pd-iframe').src = link;
     document.getElementById('rev-pd-num').textContent = 'Revisión ' + num + ' — Vista anterior';
     document.getElementById('modal-rev-pd').classList.add('open');

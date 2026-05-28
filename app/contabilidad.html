@@ -701,7 +701,7 @@ async function cargarSaldos() {
             <td>${saldoCell}</td>
             <td><span class="${entregado ? 'badge-ok' : 'badge-ce'}">${escH(p.estado_operativo || '—')}</span></td>
             <td style="font-size:.76rem;color:var(--muted);max-width:180px;">${escH(p.nota_calidad || '—')}</td>
-            <td>${p.comprobante_saldo_url
+            <td>${p.comprobante_saldo_url && /^https?:\/\//.test(p.comprobante_saldo_url)
                 ? `<a href="${escH(p.comprobante_saldo_url)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-ver"><i class="fas fa-receipt"></i> Ver</a>`
                 : '<span style="font-size:.72rem;color:var(--muted);">Sin comprobante</span>'
             }</td>
@@ -794,10 +794,10 @@ async function abrirModalComp(pedidoId) {
     // Viewer del comprobante
     const viewer = document.getElementById('comp-viewer');
     if (p.comprobante_pago_url) {
-        const url = p.comprobante_pago_url;
-        viewer.innerHTML = url.endsWith('.pdf') || url.includes('application/pdf')
+        const url = /^https?:\/\//.test(p.comprobante_pago_url) ? p.comprobante_pago_url : '';
+        viewer.innerHTML = url && (url.endsWith('.pdf') || url.includes('application/pdf'))
             ? `<a href="${escH(url)}" target="_blank" rel="noopener noreferrer" class="comp-pdf-link"><i class="fas fa-file-pdf"></i> Abrir comprobante PDF</a>`
-            : `<img src="${escH(url)}" class="comp-img" alt="Comprobante de pago" onclick="window.open('${escH(url)}','_blank')">`;
+            : url ? `<img src="${escH(url)}" class="comp-img" alt="Comprobante de pago" data-url="${escH(url)}" onclick="if(this.dataset.url)window.open(this.dataset.url,'_blank')">` : '<div class="comp-missing">URL de comprobante inválida.</div>';
     } else {
         viewer.innerHTML = '<div class="comp-missing"><i class="fas fa-exclamation-triangle" style="color:var(--yellow)"></i><br>El cliente no adjuntó comprobante. Verificar manualmente.</div>';
     }
@@ -1077,7 +1077,7 @@ async function cargarFacturasEmitidas() {
             <td title="${escH(cufe)}" style="font-size:.7rem;color:var(--muted);cursor:help;max-width:160px;overflow:hidden;text-overflow:ellipsis;">${escH(cufeShort)}</td>
             <td style="font-size:.74rem;color:var(--muted);">${fmtFecha(p.factura_emitida_at)}</td>
             <td class="td-monto">${fmtCOP(p.precio_total)}</td>
-            <td>${p.factura_pdf_url
+            <td>${p.factura_pdf_url && /^https?:\/\//.test(p.factura_pdf_url)
                 ? `<a href="${escH(p.factura_pdf_url)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-ver"><i class="fas fa-file-pdf"></i> PDF</a>`
                 : '<span style="font-size:.72rem;color:var(--muted);">Sin PDF</span>'
             }</td>
