@@ -81,6 +81,18 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-27 — ronda 3)
+- **SW PRODIGY v23**: flujo-diseno/fresado/impresion/lab agregados al PRECACHE; MAP.md actualizado
+- **SW Alejandro v12**: /en/remote-design agregado al PRECACHE
+- **Security audit completo**: contabilidad/inventario/taller/mensajero/mis-casos Alejandro/configuracion — todos usan escH() correctamente; patient.html usa escapeHtml(); revision-diseno.html usa esc(); seguimiento-caso PRODIGY usa _escH()
+- **JSON.stringify en onclick audit**: solo admin-panel PRODIGY tenía uno residual (_admEviMap aplicado); Alejandro limpio (_pMap ya existía)
+- **FAQPage audit**: todos los `<details>` en ambos proyectos tienen FAQPage schema ✓
+- **Canonicals**: solo recibo-caso/revision-diseno sin canonical, ambas noindex ✓
+- **_redirects**: /sql/ y /supabase/ bloqueados con 404 en ambos proyectos ✓
+- **Edge functions Gemini**: CORS allowlist + rate limit 5 req/min en ambos ✓; temperatura 0.15 en auto-journal ambos ✓
+- **auth-guard.js**: usa app_metadata (no user_metadata) en ambos ✓; onboarding.html correcto
+- **Preconnects**: todas las páginas de flujo/calculadoras tienen CDN hints correctos; catalogo.html solo usa CDNs que ya tiene preconnect
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-27 — ronda 2)
 - **Security**: JSON.stringify(p) en onclick → _pioMap en panel-interno-operaciones (3 botones WA + cierre map)
 - **Security**: JSON.stringify(d) en onclick → _admEviMap en admin-panel PRODIGY (botón verEvidencia logística)
