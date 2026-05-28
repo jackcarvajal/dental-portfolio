@@ -1,12 +1,12 @@
-/**
+﻿/**
  * Email automático via Resend (10,000/mes gratis)
  * Llama a /api/send-email (Cloudflare Function)
  *
  * ACTIVACIÓN:
  * 1. resend.com → crear cuenta → API Keys → crear key
- * 2. Cloudflare Dashboard → prodigydentallab → Settings → Environment Variables
+ * 2. Cloudflare Dashboard → prodigylabdental → Settings → Environment Variables
  *    → Agregar: RESEND_API_KEY = re_xxxxxxxxx
- *    → Agregar: FROM_EMAIL = PRODIGY Lab <notificaciones@prodigydentallab.com>
+ *    → Agregar: FROM_EMAIL = PRODIGY Lab <notificaciones@prodigylabdental.com>
  */
 
 function htmlEmailProdigy(titulo, contenido, codigo) {
@@ -32,17 +32,17 @@ function htmlEmailProdigy(titulo, contenido, codigo) {
 <div class="wrap">
   <div class="hdr">
     <h1>💎 PRODIGY LAB</h1>
-    <p>Digital Dentistry · prodigydentallab.pages.dev</p>
+    <p>Digital Dentistry · prodigylabdental.pages.dev</p>
   </div>
   <div class="body">
     ${contenido}
     ${codigo ? `<div class="code">${codigo}</div>` : ''}
-    <a href="https://prodigydentallab.pages.dev/app/client-panel" class="btn">Ver mi portal →</a>
+    <a href="https://prodigylabdental.pages.dev/app/client-panel" class="btn">Ver mi portal →</a>
   </div>
   <div class="ftr">
     © ${new Date().getFullYear()} PRODIGY Digital Dentistry &nbsp;·&nbsp;
-    prodigydentallab@gmail.com &nbsp;·&nbsp; +57 321 281 6716<br>
-    <a href="https://prodigydentallab.pages.dev/app/client-panel">Portal del cliente</a>
+    prodigylabdental@gmail.com &nbsp;·&nbsp; +57 321 281 6716<br>
+    <a href="https://prodigylabdental.pages.dev/app/client-panel">Portal del cliente</a>
     &nbsp;·&nbsp;
     <a href="https://wa.me/573212816716">WhatsApp</a>
   </div>

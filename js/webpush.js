@@ -1,10 +1,10 @@
-/**
+﻿/**
  * Web Push via OneSignal — 10,000 usuarios gratis
  * Notificaciones nativas en iPhone (Safari 16.4+), Android, Chrome, Firefox
  *
  * ACTIVACIÓN (5 min):
- * 1. onesignal.com → crear cuenta → New App → "prodigydentallab"
- * 2. Platform: Web → Site URL: https://prodigydentallab.pages.dev
+ * 1. onesignal.com → crear cuenta → New App → "prodigylabdental"
+ * 2. Platform: Web → Site URL: https://prodigylabdental.pages.dev
  * 3. Copiar App ID (ej: "abc123-def456-...")
  * 4. Reemplazar ONESIGNAL_APP_ID abajo
  */
