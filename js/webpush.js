@@ -99,7 +99,7 @@ async function pushAlCliente(externalUserId, titulo, mensaje, url) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         externalUserId, titulo, mensaje,
-        url: url || 'https://prodigydentallab.pages.dev/app/client-panel'
+        url: url || 'https://prodigylabdental.com/app/client-panel'
       })
     });
     return res.ok;
