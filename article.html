@@ -324,7 +324,7 @@ function renderContent(bloques) {
     if (tp === 'list' || tp === 'ul') return `<ul>${(b.items||[]).map(i=>`<li>${i}</li>`).join('')}</ul>`;
     if (tp === 'img') { const src = _artSafeUrl(b.src); return src ? `<figure style="margin:20px 0"><img src="${src}" alt="${_artEscAttr(b.alt||'')}" loading="lazy" style="width:100%;border-radius:10px"><figcaption style="text-align:center;font-size:.9rem;color:var(--muted);margin-top:6px">${_artEscAttr(b.caption||'')}</figcaption></figure>` : ''; }
     if (tp === 'video') { const ytId = /^[\w-]{5,20}$/.test(b.youtube||'') ? b.youtube : ''; return ytId ? `<div style="margin:24px 0;border-radius:12px;overflow:hidden;aspect-ratio:16/9"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/${ytId}" title="${_artEscAttr(b.title||b.titulo||'')}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>` : ''; }
-    if (tp === 'table' || tp === 'tabla') return `<div class="table-wrap"><table><thead><tr>${hdrs.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    if (tp === 'table' || tp === 'tabla') return `<div class="table-wrap"><table><thead><tr>${hdrs.map(h=>`<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     return '';
   }).join('');
 }

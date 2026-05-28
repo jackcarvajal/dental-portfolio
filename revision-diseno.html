@@ -936,7 +936,7 @@ function buildReport() {
       <div class="sec-title"><i class="fas fa-file-alt"></i>Informe final del caso</div>
       <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;">Documentación oficial del proceso de diseño y aprobación.</p>
       <table class="report-table">
-        <tr><th>Campo</th><th>Detalle</th></tr>
+        <tr><th scope="col">Campo</th><th scope="col">Detalle</th></tr>
         <tr><td style="color:var(--muted);">Código</td><td>${esc(p.codigo||p.id.slice(0,8))}</td></tr>
         <tr><td style="color:var(--muted);">Paciente</td><td>${esc(p.nombre_paciente||'—')}</td></tr>
         <tr><td style="color:var(--muted);">Servicio</td><td>${esc(p.servicio||'—')}</td></tr>
