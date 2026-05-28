@@ -174,14 +174,18 @@ let lbIndex = 0;
 /* ── LIGHTBOX ── */
 function openLB(idx) {
   lbIndex = idx;
-  document.getElementById('lb-img').src = gallery[idx];
+  const el = document.getElementById('lb-img');
+  el.src = gallery[idx];
+  el.alt = 'Imagen ' + (idx+1) + ' de ' + gallery.length;
   document.getElementById('lb-counter').textContent = (idx+1) + ' / ' + gallery.length;
   document.getElementById('lightbox').classList.add('active');
 }
 function closeLB() { document.getElementById('lightbox').classList.remove('active'); }
 function moveLB(dir) {
   lbIndex = (lbIndex + dir + gallery.length) % gallery.length;
-  document.getElementById('lb-img').src = gallery[lbIndex];
+  const el = document.getElementById('lb-img');
+  el.src = gallery[lbIndex];
+  el.alt = 'Imagen ' + (lbIndex+1) + ' de ' + gallery.length;
   document.getElementById('lb-counter').textContent = (lbIndex+1) + ' / ' + gallery.length;
 }
 document.getElementById('lightbox').addEventListener('click', e => { if(e.target===e.currentTarget) closeLB(); });
@@ -377,7 +381,9 @@ async function cargarRelacionados(casoId, tipo) {
 function openLBPool(idx) {
   const pool = window._gallery2 || [];
   lbIndex = idx; gallery = pool; // temp swap para lightbox
-  document.getElementById('lb-img').src = pool[idx];
+  const _lbEl = document.getElementById('lb-img');
+  _lbEl.src = pool[idx];
+  _lbEl.alt = 'Imagen ' + (idx+1) + ' de ' + pool.length;
   document.getElementById('lb-counter').textContent = (idx+1) + ' / ' + pool.length;
   document.getElementById('lightbox').classList.add('active');
 }
