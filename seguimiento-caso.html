@@ -619,7 +619,7 @@
             const placeholder = document.getElementById('exocad-placeholder');
             visorBloque.style.display = 'block';
 
-            if (exocadLink) {
+            if (exocadLink && /^https:\/\//.test(exocadLink)) {
                 iframe.src = exocadLink;
                 placeholder.style.display = 'none';
             } else {
