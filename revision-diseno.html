@@ -857,13 +857,17 @@ async function loadVisor(url) {
 /* ─── LIGHTBOX ─── */
 function openLb(idx) {
   lbIdx = idx;
-  document.getElementById('lb-img').src = lbImgs[lbIdx];
+  const el = document.getElementById('lb-img');
+  el.src = lbImgs[lbIdx];
+  el.alt = `Imagen ${lbIdx+1} de ${lbImgs.length}`;
   document.getElementById('lb-counter').textContent = `${lbIdx+1} / ${lbImgs.length}`;
   document.getElementById('lightbox').classList.add('active');
 }
 function lbNav(dir) {
   lbIdx = (lbIdx + dir + lbImgs.length) % lbImgs.length;
-  document.getElementById('lb-img').src = lbImgs[lbIdx];
+  const el = document.getElementById('lb-img');
+  el.src = lbImgs[lbIdx];
+  el.alt = `Imagen ${lbIdx+1} de ${lbImgs.length}`;
   document.getElementById('lb-counter').textContent = `${lbIdx+1} / ${lbImgs.length}`;
 }
 function closeLb() { document.getElementById('lightbox').classList.remove('active'); }
