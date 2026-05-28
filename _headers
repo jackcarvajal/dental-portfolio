@@ -125,9 +125,6 @@
 /sw.js
   Cache-Control: no-store
 
-# Datos de artículos — 1 día (contenido estático pero actualizable)
-/articles.js
-  Cache-Control: public, max-age=86400
 
 # Sitemap — revalidar cada hora (se actualiza con auto-journal)
 /sitemap.xml
