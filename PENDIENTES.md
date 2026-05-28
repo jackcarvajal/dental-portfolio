@@ -81,6 +81,25 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 8)
+- **Security edge functions**: stripe-checkout ambos proyectos — open redirect en success_url/cancel_url → validado contra dominio propio; amount_cop coercionado + cap 50M; description truncada 250 chars
+- **Security edge functions**: send-email Alejandro — rate limit 5/10min + regex email validation
+- **Security edge functions**: send-push Alejandro — rate limit 10/10min + URL domain validation + try/catch + length caps
+- **Security edge functions**: notify-wa PRODIGY — rate limit 20/5min + recibo_url validado contra dominio propio
+- **Security edge functions**: factura PRODIGY — verificarAdmin() aplicado también al GET endpoint
+- **Security app pages**: contabilidad.html PRODIGY — 3 hrefs con datos DB → ^https?:// (comprobante_pago_url viewer, comprobante_saldo_url, factura_pdf_url); onclick img usa dataset.url (evita JS string injection)
+- **Security app pages**: operario.html PRODIGY — link_diseno href → ^https?://
+- **Security app pages**: client-panel PRODIGY — verRevisionPD() protocol check https: antes de iframe.src
+- **Security app pages**: client-panel Alejandro — verRevision() protocol check https: antes de iframe.src
+- **Security app pages**: operario-diseno PRODIGY — previsualizarDiseno() protocol check https:
+- **Security gallery**: caso.html (ambos) — gallery + gal2 filtradas con /^https?:\/\// antes del lightbox
+- **Security gallery**: revision-diseno.html PRODIGY — fotos_diseno_urls filtradas
+- **SEO a11y**: og:image:alt + twitter:image:alt en 31 páginas PRODIGY + 16 páginas Alejandro (batch)
+- **SEO feat**: article.html ambos — og:image:alt y twitter:image:alt actualizados dinámicamente con titulo del artículo; tw-image sincronizado con cover
+- **CSP**: media-src 'self' blob: *.supabase.co drive.google.com en _headers ambos proyectos
+- **resumen-semanal.js PRODIGY**: audit completo — auth x-cron-secret ✓, no CORS requerido ✓, Callmebot check ✓
+- **Habeas Data**: todos los formularios públicos con datos personales verificados — todos cumplidos
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 7)
 - **SEO PRODIGY**: desc mejoradas en 8 páginas indexadas (123-140 → 146-156 chars): envia-tu-scanner, fresado-cam, diseno-cad, guias-quirurgicas, nosotros, portafolio, catalogo, diseno-remoto
 - **SEO Alejandro**: desc mejoradas en 4 páginas (128-136 → 148-159 chars): diseno-remoto, guias-quirurgicas, soporte, envia-tu-scanner
