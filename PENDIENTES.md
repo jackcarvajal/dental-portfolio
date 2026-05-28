@@ -81,6 +81,13 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-27)
+- **SEO descs/titles lote k**: desc ≤160 en 4 PRODIGY (soporte-tecnico, index, calculadora-fresado, terminos-y-legal) + 2 Alejandro (index, portafolio); title ≤72 calculadora-fresado PRODIGY; desc ≤160 en/global-design (254→163)
+- **Security lote k**: XSS escH revision_num en PRODIGY client-panel + operario-diseno; XSS escH revision_num + lead_source + p.estado en Alejandro admin/client-panel; escH p.codigo en operator-panel onclick; esc(lbl/d) en operario servicios_pagados; app_metadata.role en supabase-client.js loginSupabase (era user_metadata)
+- **SW**: /mapa-sitio agregado al precache PRODIGY
+- **Schemas**: BreadcrumbList en contacto.html PRODIGY (skip — página redirect noindex); nosotros/terminos/portafolio/catalogo verificados — todos tienen schemas correctos
+- **Audit completo**: gestionar-casos, contabilidad, inventario, taller, mensajero, operario, operator-panel, revision-diseno, seguimiento-caso, flujo-diseno ambos proyectos — XSS limpio (excepto fixes aplicados arriba)
+
 ## ✅ COMPLETADO (2026-05-24)
 - Bot IA PRODIGY y Alejandro: manejo 4 casos de error + system prompt precios USD
 - SEO: noindex→index,follow en 9 páginas públicas (7 PRODIGY + 2 Alejandro)
