@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Callmebot — Notificaciones automáticas a WhatsApp PRODIGY
  * Documentación: https://www.callmebot.com/blog/free-api-whatsapp-messages/
  *
@@ -40,7 +40,7 @@ function notif_nuevoPedido(doctor, servicio, material, unidades, precio) {
     `🦷 Servicio: ${servicio} / ${material}\n` +
     `🔢 Unidades: ${unidades}\n` +
     `💰 Estimado: ${precio}\n` +
-    `👉 Admin: prodigydentallab.pages.dev/app/panel-interno-operaciones`
+    `👉 Admin: prodigylabdental.com/app/panel-interno-operaciones`
   );
 }
 
@@ -51,7 +51,7 @@ function notif_pagoSubido(codigo, doctor, total) {
     `👨‍⚕️ Doctor: ${doctor}\n` +
     `💰 Total: ${total}\n` +
     `✅ Acción: Verificar y confirmar pago\n` +
-    `👉 Admin: prodigydentallab.pages.dev/app/panel-interno-operaciones`
+    `👉 Admin: prodigylabdental.com/app/panel-interno-operaciones`
   );
 }
 
@@ -61,7 +61,7 @@ function notif_disenoAprobado(codigo, doctor) {
     `✅ *DISEÑO APROBADO* — ${codigo}\n` +
     `👨‍⚕️ Doctor: ${doctor}\n` +
     `📦 Acción: Proceder a fresado/producción\n` +
-    `👉 Admin: prodigydentallab.pages.dev/app/panel-interno-operaciones`
+    `👉 Admin: prodigylabdental.com/app/panel-interno-operaciones`
   );
 }
 
@@ -72,7 +72,7 @@ function notif_cambiosSolicitados(codigo, doctor, notas, revision) {
     `👨‍⚕️ Doctor: ${doctor}\n` +
     `📝 Notas: ${notas}\n` +
     `⏱ Responder en ${revision >= 2 ? '1h' : '15 min'}\n` +
-    `👉 Admin: prodigydentallab.pages.dev/app/panel-interno-operaciones`
+    `👉 Admin: prodigylabdental.com/app/panel-interno-operaciones`
   );
 }
 
@@ -82,7 +82,7 @@ function notif_fotosSubidas(codigo, doctor, numFotos) {
     `📸 *FOTOS DE FEEDBACK* — ${codigo}\n` +
     `👨‍⚕️ Doctor: ${doctor}\n` +
     `🖼 ${numFotos} foto(s) subida(s) para revisión\n` +
-    `👉 Admin: prodigydentallab.pages.dev/app/panel-interno-operaciones`
+    `👉 Admin: prodigylabdental.com/app/panel-interno-operaciones`
   );
 }
 
@@ -92,6 +92,6 @@ function notif_slaVencido(codigo, servicio, minutos) {
     `🚨 *SLA VENCIDO* — ${codigo}\n` +
     `🦷 Servicio: ${servicio}\n` +
     `⏰ Han pasado ${minutos} minutos sin respuesta\n` +
-    `👉 Admin: prodigydentallab.pages.dev/app/panel-interno-operaciones`
+    `👉 Admin: prodigylabdental.com/app/panel-interno-operaciones`
   );
 }
