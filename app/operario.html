@@ -237,7 +237,7 @@ const DEPTS = {
         const sigBtns = sigsServs.map(d => {
           const lbl   = d==='fresado'?'Fresado/Lab':d==='impresion'?'Impresión':d;
           const cls   = d==='fresado'?'btn-frs':'btn-imp';
-          return `<button class="btn ${cls}" onclick="enviarASiguiente('${p.id}','${d}')"><i class="fas fa-arrow-right"></i> → ${lbl}</button>`;
+          return `<button class="btn ${cls}" onclick="enviarASiguiente('${p.id}','${esc(d)}')"><i class="fas fa-arrow-right"></i> → ${esc(lbl)}</button>`;
         }).join('');
         return `${p.html_diseno_url?`<button class="btn btn-dis" onclick="copiarLinkRevision('${p.id}')"><i class="fas fa-link"></i> Link Dr.</button>`:''}
           ${p.link_diseno?`<a href="${esc(p.link_diseno)}" target="_blank" rel="noopener noreferrer" class="btn btn-grn"><i class="fas fa-external-link-alt"></i> Ver entrega</a>`:''}

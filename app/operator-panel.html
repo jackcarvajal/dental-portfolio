@@ -433,7 +433,7 @@ function cardHTML(p, col) {
         : col === 'prod'
         ? `<button class="btn-xs btn-cyan"  onclick="avanzarEstado('${p.id}','DISENO_FINALIZADO')">Diseño OK</button>
            <button class="btn-xs btn-gold"  onclick="avanzarEstado('${p.id}','FRESADO_INICIADO')">Fresado</button>
-           <button class="btn-xs btn-yellow" onclick="abrirQA('${p.id}','${p.codigo||''}')">QA</button>`
+           <button class="btn-xs btn-yellow" onclick="abrirQA('${p.id}','${escH(p.codigo||'')}')">QA</button>`
         : `<span style="font-size:.68rem;color:var(--green)">✓ ${escH(p.estado_operativo)}</span>`;
 
     return `
