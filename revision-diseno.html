@@ -739,7 +739,7 @@ function renderPage() {
   }
 
   /* Galería — igual que portafolio */
-  const fotos = p.fotos_diseno_urls || [];
+  const fotos = (p.fotos_diseno_urls || []).filter(u => /^https?:\/\//.test(u));
   lbImgs = fotos;
   const fotosHtml = fotos.length ? `<div class="sec">
     <div class="sec-title"><i class="fas fa-images"></i>Imágenes del diseño</div>

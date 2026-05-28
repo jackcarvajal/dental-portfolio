@@ -217,7 +217,7 @@ async function urlOk(url) {
 async function render(c) {
   document.getElementById('topbar-name').textContent = c.name || 'Caso clínico';
   document.title = (c.name || 'Caso') + ' — PRODIGY Lab Dental';
-  gallery = Array.isArray(c.gallery) ? c.gallery : [];
+  gallery = (Array.isArray(c.gallery) ? c.gallery : []).filter(u => /^https?:\/\//.test(u));
 
   /* ── VISOR 1 ── */
   const rawExocad = c.exocad_file && c.exocad_file.trim();
@@ -244,7 +244,7 @@ async function render(c) {
   /* ── GALERÍAS ── */
   const label1 = escHtml(c.label_1 || 'Diseño 1');
   const label2 = escHtml(c.label_2 || 'Diseño 2');
-  const gal2   = Array.isArray(c.gallery_2) ? c.gallery_2 : [];
+  const gal2   = (Array.isArray(c.gallery_2) ? c.gallery_2 : []).filter(u => /^https?:\/\//.test(u));
   const galHTML = gallery.length > 0 ? `
     <div class="section">
       <div class="section-title"><i class="fas fa-images"></i> Galería ${visor2HTML ? '— '+label1 : 'de Imágenes'}</div>
