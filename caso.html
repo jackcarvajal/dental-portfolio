@@ -168,6 +168,19 @@ a{color:inherit;text-decoration:none;}
 const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+let _casoToastT;
+function _casoToast(msg, ok) {
+  let el = document.getElementById('_caso-toast');
+  if (!el) { el = document.createElement('div'); el.id = '_caso-toast'; el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;font-size:.82rem;font-weight:700;z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s;font-family:inherit;max-width:320px;text-align:center;'; document.body.appendChild(el); }
+  const _escT = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  el.textContent = msg;
+  el.style.background = ok ? 'rgba(0,255,65,.15)' : 'rgba(239,68,68,.15)';
+  el.style.border = ok ? '1px solid rgba(0,255,65,.4)' : '1px solid rgba(239,68,68,.4)';
+  el.style.color = ok ? '#00FF41' : '#f87171';
+  el.style.opacity = '1';
+  clearTimeout(_casoToastT);
+  _casoToastT = setTimeout(() => { el.style.opacity = '0'; }, 4000);
+}
 
 let gallery = [];
 let lbIndex = 0;
@@ -465,10 +478,10 @@ function escHtml(t) {
 
 async function publicarNota(casoId) {
   const texto = document.getElementById('nota-text').value.trim();
-  if (!texto && !reaccionSel) { alert('Escribe un comentario o selecciona una reacción.'); return; }
+  if (!texto && !reaccionSel) { _casoToast('Escribe un comentario o selecciona una reacción.', false); return; }
   if (texto) {
     const v = typeof validarTextoPublico === 'function' ? validarTextoPublico(texto) : { ok: !filtrarTexto(texto), error: 'Lenguaje inapropiado.' };
-    if (!v.ok) { alert(v.error); return; }
+    if (!v.ok) { _casoToast(v.error, false); return; }
   }
   try {
     await sb.from('feedback_casos').insert({ caso_id: casoId, reaction: reaccionSel, nota: texto, pinned: false, deleted: false });
@@ -476,7 +489,7 @@ async function publicarNota(casoId) {
     reaccionSel = '';
     document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('active'));
     cargarNotas(casoId);
-  } catch(e) { alert('Error al publicar: ' + e.message); }
+  } catch(e) { _casoToast('Error al publicar. Intenta de nuevo.', false); }
 }
 
 async function eliminarNota(notaId, casoId) {
