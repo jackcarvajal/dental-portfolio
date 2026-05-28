@@ -50,11 +50,19 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: corsH });
   }
 
-  const { amount_cop, description, pedido_id, doctor_email, es_nuevo_cliente, success_url, cancel_url } = body;
+  const { amount_cop: raw_amount, description: raw_desc, pedido_id, doctor_email, es_nuevo_cliente, success_url: raw_surl, cancel_url: raw_curl } = body;
 
-  if (!amount_cop || amount_cop < 1000) {
+  const amount_cop = Math.round(Number(raw_amount) || 0);
+  if (!amount_cop || amount_cop < 1000 || amount_cop > 50_000_000) {
     return new Response(JSON.stringify({ error: 'Monto inválido' }), { status: 400, headers: corsH });
   }
+
+  const description = String(raw_desc || '').slice(0, 250);
+
+  // Validar URLs de retorno — solo dominio propio (defensa contra open redirect)
+  const _ownDomain = /^https:\/\/(www\.)?prodigylabdental\.com\//;
+  const success_url = raw_surl && _ownDomain.test(raw_surl) ? raw_surl : 'https://prodigylabdental.com/app/success.html?session_id={CHECKOUT_SESSION_ID}';
+  const cancel_url  = raw_curl && _ownDomain.test(raw_curl)  ? raw_curl  : 'https://prodigylabdental.com/flujo-diseno';
 
   // Regla de cobro: cliente nuevo → 100%, cliente existente → 50%
   const cobrar_pct  = es_nuevo_cliente ? 1.0 : 0.5;
@@ -84,8 +92,8 @@ export async function onRequestPost(context) {
         'metadata[monto_total_cop]':    String(amount_cop),
         'metadata[cobrado_pct]':        String(cobrar_pct * 100) + '%',
         'metadata[es_nuevo_cliente]':   es_nuevo_cliente ? 'si' : 'no',
-        'success_url': success_url || 'https://prodigylabdental.com/app/success.html?session_id={CHECKOUT_SESSION_ID}',
-        'cancel_url':  cancel_url  || 'https://prodigylabdental.com/flujo-diseno'
+        'success_url': success_url,
+        'cancel_url':  cancel_url
       })
     });
 
