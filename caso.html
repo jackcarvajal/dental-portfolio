@@ -71,7 +71,7 @@ a{color:inherit;text-decoration:none;}
 
 /* GALERÍA */
 .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;}
-.gallery-item{position:relative;height:200px;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid rgba(212,175,55,.2);transition:all .3s;background:var(--card);}
+.gallery-item{position:relative;height:200px;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid rgba(212,175,55,.2);transition:all .3s;background:var(--card);display:block;padding:0;text-align:left;}
 .gallery-item:hover{transform:scale(1.04);border-color:var(--gold);box-shadow:0 10px 30px rgba(212,175,55,.3);}
 .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
 .gallery-num{position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.75);color:var(--gold);font-size:.8rem;font-weight:800;padding:3px 10px;border-radius:100px;border:1px solid rgba(212,175,55,.4);}
@@ -272,14 +272,14 @@ async function render(c) {
     <div class="section">
       <div class="section-title"><i class="fas fa-images"></i> Galería ${visor2HTML ? '— '+label1 : 'de Imágenes'}</div>
       <div class="gallery-grid">
-        ${gallery.map((u,i) => `<div class="gallery-item" onclick="openLB(${i})"><img src="${encodeURI(u)}" alt="Foto ${i+1}" loading="lazy"><div class="gallery-wm"><span>© PRODIGY</span></div><span class="gallery-num">${i+1}</span></div>`).join('')}
+        ${gallery.map((u,i) => `<button type="button" class="gallery-item" onclick="openLB(${i})" aria-label="Ver foto ${i+1} en pantalla completa"><img src="${encodeURI(u)}" alt="Foto ${i+1}" loading="lazy"><div class="gallery-wm"><span>© PRODIGY</span></div><span class="gallery-num">${i+1}</span></button>`).join('')}
       </div>
     </div>` : '';
   const gal2HTML = gal2.length > 0 ? `
     <div class="section">
       <div class="section-title"><i class="fas fa-images"></i> Galería — ${label2}</div>
       <div class="gallery-grid">
-        ${gal2.map((u,i) => `<div class="gallery-item" onclick="openLBPool(${i})"><img src="${encodeURI(u)}" alt="Foto ${i+1}" loading="lazy"><div class="gallery-wm"><span>© PRODIGY</span></div><span class="gallery-num">${i+1}</span></div>`).join('')}
+        ${gal2.map((u,i) => `<button type="button" class="gallery-item" onclick="openLBPool(${i})" aria-label="Ver foto ${i+1} en pantalla completa"><img src="${encodeURI(u)}" alt="Foto ${i+1}" loading="lazy"><div class="gallery-wm"><span>© PRODIGY</span></div><span class="gallery-num">${i+1}</span></button>`).join('')}
       </div>
     </div>` : '';
 

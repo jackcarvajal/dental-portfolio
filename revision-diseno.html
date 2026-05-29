@@ -85,7 +85,7 @@ a{color:inherit;text-decoration:none;}
 /* GALLERY — igual que portafolio */
 .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;}
 .gallery-item{position:relative;height:200px;border-radius:14px;overflow:hidden;cursor:pointer;
-  border:2px solid rgba(212,175,55,.2);transition:all .3s;background:var(--card);}
+  border:2px solid rgba(212,175,55,.2);transition:all .3s;background:var(--card);display:block;padding:0;text-align:left;}
 .gallery-item:hover{transform:scale(1.04);border-color:var(--gold);box-shadow:0 10px 30px rgba(212,175,55,.3);}
 .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
 .gallery-num{position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.75);color:var(--gold);
@@ -748,11 +748,11 @@ function renderPage() {
   const fotosHtml = fotos.length ? `<div class="sec">
     <div class="sec-title"><i class="fas fa-images"></i>Imágenes del diseño</div>
     <div class="gallery-grid">
-      ${fotos.map((u,i) => `<div class="gallery-item" onclick="openLb(${i})">
+      ${fotos.map((u,i) => `<button type="button" class="gallery-item" onclick="openLb(${i})" aria-label="Ver imagen ${i+1} de ${fotos.length} en pantalla completa">
         <img src="${esc(u)}" loading="lazy" alt="Vista ${i+1}">
         <div class="gallery-num">${i+1} / ${fotos.length}</div>
         <div class="gallery-wm"><span>PRODIGY Lab Dental</span></div>
-      </div>`).join('')}
+      </button>`).join('')}
     </div>
   </div>` : '';
 
