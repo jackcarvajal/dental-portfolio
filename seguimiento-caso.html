@@ -736,7 +736,7 @@
         function activarNotificaciones() {
             const orden = document.getElementById('ordenDisplay').textContent;
             const msg = `Hola, quiero recibir notificaciones de mi caso ${orden} por WhatsApp`;
-            window.open(`https://wa.me/573212816716?text=${encodeURIComponent(msg)}`, '_blank');
+            window.open(`https://wa.me/573212816716?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
         }
 
         // ── LEAD SCORING ─────────────────────────────────────────────────────────

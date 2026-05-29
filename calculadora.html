@@ -821,7 +821,7 @@ function abrirWA() {
     `¿Me pueden confirmar precio final y tiempo de entrega?`
   );
   if (window.ProdigyAudio) ProdigyAudio.success();
-  window.open(`https://wa.me/${WA_NUMBER}?text=${texto}`, '_blank');
+  window.open(`https://wa.me/${WA_NUMBER}?text=${texto}`, '_blank', 'noopener,noreferrer');
 }
 
 function showToast(text, type = 'ok') {

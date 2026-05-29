@@ -870,7 +870,7 @@
     const texto = `Hola PRODIGY, nueva consulta desde el sitio web:\n\n*Nombre:* ${nombre}\n*Clínica:* ${clinica||'N/A'}\n*Email:* ${email}\n*Tipo:* ${tipoLabel}\n*Mensaje:* ${mensaje}`;
     _nsSaveLead(nombre, clinica, email, tipoLabel, mensaje);
     setTimeout(() => {
-      window.open('https://wa.me/573212816716?text=' + encodeURIComponent(texto), '_blank');
+      window.open('https://wa.me/573212816716?text=' + encodeURIComponent(texto), '_blank', 'noopener,noreferrer');
       document.getElementById('contact-form').style.display = 'none';
       document.getElementById('form-success').style.display = 'block';
     }, 800);

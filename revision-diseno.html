@@ -1112,7 +1112,7 @@ async function solicitarFabricacionInternacional(tipo) {
     `Mi caso #${_p?.codigo||PID.slice(0,8)} fue aprobado en diseño y quiero solicitar fabricación (${lbl}) con envío internacional.\n` +
     `Por favor indíquenme costos y opciones de envío. ¡Gracias!`
   );
-  window.open(`https://wa.me/${WA_NUM}?text=${waMsg}`, '_blank');
+  window.open(`https://wa.me/${WA_NUM}?text=${waMsg}`, '_blank', 'noopener,noreferrer');
 
   location.reload();
 }

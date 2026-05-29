@@ -977,7 +977,7 @@ window.submitOrden     = window.submitOrden      || function(){};
             <div class="modal-buttons">
                 <button type="button" class="modal-btn modal-btn-cancel" onclick="cerrarModal('modal-archivos-warn')"><i class="fas fa-arrow-left" style="margin-right:6px"></i>Volver y completar</button>
                 <button type="button" class="modal-btn" id="btn-wa-archivos" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;flex:2"
-                    onclick="cerrarModal('modal-archivos-warn');window.open(window._archivosFaltantesWAUrl,'_blank')">
+                    onclick="cerrarModal('modal-archivos-warn');window.open(window._archivosFaltantesWAUrl, '_blank', 'noopener,noreferrer')">
                     <i class="fab fa-whatsapp" style="margin-right:6px"></i>Consultar por WhatsApp
                 </button>
             </div>
@@ -1837,7 +1837,7 @@ const lineWompi = document.getElementById('line-wompi');
             msg += `\n🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso?id=${STATE.ordenId}&key=${_nonce}\n`;
 
             try {
-                window.open(`https://wa.me/573212816716?text=${encodeURIComponent(msg)}`, '_blank');
+                window.open(`https://wa.me/573212816716?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
                 document.getElementById('exito-id').textContent      = STATE.ordenId;
                 document.getElementById('exito-cliente').textContent = STATE.nombreCliente;
                 document.getElementById('exito-total').textContent   = STATE.total;
