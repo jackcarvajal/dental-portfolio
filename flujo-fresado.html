@@ -3109,9 +3109,11 @@
             document.querySelectorAll('#proceso-content .process-grid .process-card').forEach(card => {
                 if (!card.closest('#solo-sinter-options')) {
                     card.classList.remove('selected');
+                    card.setAttribute('aria-pressed','false');
                 }
             });
             event.currentTarget.classList.add('selected');
+            event.currentTarget.setAttribute('aria-pressed','true');
             STATE.proceso = proc;
 
             // Mostrar/ocultar opciones de solo sinterizado

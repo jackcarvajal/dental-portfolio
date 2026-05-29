@@ -436,6 +436,7 @@
     'display:flex;align-items:center;justify-content:center;font-size:1rem;',
     'flex-shrink:0;transition:all .2s;font-family:inherit;}',
     '.pnav2-theme-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);}',
+    ':focus-visible{outline:2px solid #D946A6;outline-offset:2px;border-radius:3px;}',
   ].join('');
 
   var st = document.createElement('style');
