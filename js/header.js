@@ -1122,4 +1122,13 @@
     }
   })();
 
+  // Marcar íconos FA decorativos como aria-hidden
+  document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('i.fas,i.fab,i.far,i.fal,i.fad').forEach(function(ic){
+      if (!ic.hasAttribute('aria-hidden') && !ic.hasAttribute('aria-label') && !ic.hasAttribute('role')){
+        ic.setAttribute('aria-hidden','true');
+      }
+    });
+  });
+
 })();
