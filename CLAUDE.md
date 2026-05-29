@@ -36,7 +36,19 @@ Toda página pública DEBE tener en `<head>`:
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://prodigylabdental.com/[slug]">
 <meta property="og:image" content="https://prodigylabdental.com/assets/og-[slug].jpg">
+<meta property="og:image:alt" content="[Descripción de la imagen]">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="es_CO">
+<meta property="og:locale:alternate" content="en_US">  <!-- si la página tiene hreflang EN -->
+<!-- Twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="[Título]">
+<meta name="twitter:description" content="[Descripción]">
+<meta name="twitter:image" content="https://prodigylabdental.com/assets/og-[slug].jpg">
+<meta name="twitter:image:alt" content="[Descripción de la imagen]">
+<!-- UX/Accesibilidad -->
+<meta name="color-scheme" content="dark">
 <!-- Geo local SEO — Bogotá, Colombia -->
 <meta name="geo.region" content="CO-DC">
 <meta name="geo.placename" content="Bogotá">
@@ -48,9 +60,9 @@ Toda página pública DEBE tener en `<head>`:
 
 En `<body>`:
 ```html
-<script src="js/header.js"></script>  <!-- PRIMER elemento -->
+<script src="js/header.js?v=20260528"></script>  <!-- PRIMER elemento -->
 <!-- contenido -->
-<script src="js/footer.js?v=20260522"></script>  <!-- antes de </body> -->
+<script src="js/footer.js?v=20260528"></script>  <!-- antes de </body> -->
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 ```
 
@@ -61,6 +73,13 @@ En `<body>`:
 - Agregar link en menú si es servicio principal
 - Si hay acordeón `<details>/<summary>` → agregar `FAQPage` schema (ver sección 8b)
 - Si hay formulario con datos personales → verificar checkbox Habeas Data (Ley 1581/2012)
+- Si hay tablas `<th>` → agregar `scope="col"` o `scope="row"`
+- Si hay campos de formulario con hints/notas → conectar con `aria-describedby="hint-id"`
+- Si hay contenido dinámico (JS renderiza) → `aria-live="polite"` en el contenedor
+- Si usa `window.open()` o `iframe.src` desde DB → validar `^https://` antes
+- Si hay arrays de imágenes desde Supabase → `.filter(u => /^https?:\/\//.test(u))`
+- Agregar `noscript` fallback con WA si la página requiere JS crítico
+- Scripts JS locales: agregar `?v=YYYYMMDD` en todos los `<script src="js/...">>`
 
 ### Secciones con colores alternantes (patrón obligatorio)
 ```css
@@ -174,6 +193,24 @@ CDNs usados en este proyecto:
 - `https://zgihrwqfyvgyapbwzkvw.supabase.co` — Supabase API
 - `https://fonts.googleapis.com` + `https://fonts.gstatic.com` — Google Fonts
 
+### 4f2. Accesibilidad obligatoria en header.js
+El `header.js` de ambos proyectos ya implementa (NO repetir, solo verificar):
+- `<nav aria-label="Navegación principal">` en nav desktop
+- `<button aria-expanded="false" aria-controls="pnav2-mob">` en hamburguesa + actualización dinámica
+- `<div id="pnav2-mob" role="navigation" aria-label="Menú móvil">` en menú móvil
+- `<button aria-expanded="false" aria-controls="pg-chat-window">` en botón chatbot
+- `<div id="pg-chat-window" role="dialog" aria-label="...">` en ventana chatbot
+- `<textarea aria-label="Escribe tu mensaje al asistente">` en input chat
+
+Para otros botones/modales que crees:
+```javascript
+// Patrón obligatorio: actualizar aria-expanded al abrir/cerrar
+btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+btn.setAttribute('aria-label', open ? 'Cerrar X' : 'Abrir X');
+// El contenedor del modal debe tener:
+// role="dialog" aria-label="Nombre del diálogo" aria-modal="true"
+```
+
 ### 4f. Font Awesome — versión y carga
 - Versión fija: **6.5.1** en toda la plataforma
 - `header.js` auto-inyecta FA si la página no lo carga (usa 6.5.1)
@@ -184,9 +221,117 @@ CDNs usados en este proyecto:
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 ```
 
+## 4g. Seguridad adicional — hallazgos audit 2026-05-28
+
+### Open redirect en edge functions (stripe-checkout, send-push)
+```javascript
+// ❌ Peligroso: success_url/cancel_url sin validar
+const url = body.success_url; // atacante puede redirigir a phishing
+
+// ✅ Correcto: validar contra dominio propio
+const _own = /^https:\/\/(www\.)?prodigylabdental\.com\//;
+const success_url = raw && _own.test(raw) ? raw : 'https://prodigylabdental.com/default';
+```
+
+### URL validation en iframe.src y gallery arrays (javascript: protocol)
+```javascript
+// ✅ Siempre validar antes de asignar src a iframe/video/img desde DB
+try { const u = new URL(link); if (u.protocol !== 'https:') throw new Error(); }
+catch { return; } // bloquea javascript:, http:, data:
+iframe.src = link;
+
+// ✅ Filtrar arrays de galería de Supabase
+gallery = (Array.isArray(c.gallery) ? c.gallery : []).filter(u => /^https?:\/\//.test(u));
+```
+
+### Badge/toast functions con innerHTML — SIEMPRE escapar el msg
+```javascript
+// ❌ Peligroso: msg de Supabase sin escapar
+el.innerHTML = `<span>${msg}</span>`;
+
+// ✅ Correcto: escH local antes de innerHTML
+const _esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+el.innerHTML = `<span>${_esc(msg)}</span>`;
+```
+
+### Rate limiting en edge functions (patrón Cloudflare Cache API)
+```javascript
+// Aplicar a: send-email, send-push, notify-wa, gemini
+const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+const rlKey = new Request('https://rl.internal/func-name_' + ip);
+const hit = await caches.default.match(rlKey);
+if (hit) {
+  const count = parseInt(await hit.text(), 10) || 0;
+  if (count >= 5) return new Response(JSON.stringify({error:'Demasiadas solicitudes.'}),{status:429});
+  await caches.default.put(rlKey, new Response(String(count+1),{headers:{'Cache-Control':'max-age=60'}}));
+} else {
+  await caches.default.put(rlKey, new Response('1',{headers:{'Cache-Control':'max-age=60'}}));
+}
+```
+
+### CSP obligatorio en _headers — directivas críticas 2026
+```
+Content-Security-Policy: ...
+  media-src 'self' blob: https://*.supabase.co https://drive.google.com;
+  upgrade-insecure-requests;
+  object-src 'none';
+  base-uri 'self';
+```
+- `media-src`: necesario para `<video>/<audio>` con fuentes externas (sin él se bloquean)
+- `upgrade-insecure-requests`: convierte automáticamente HTTP→HTTPS en recursos
+
+### SW notificationclick — validar data.url
+```javascript
+// ❌ Peligroso: url de push notification sin validar
+clients.openWindow(e.notification.data.url);
+
+// ✅ Correcto: solo dominio propio o rutas relativas
+const rawUrl = e.notification.data?.url || '/';
+const url = /^https?:\/\/prodigylabdental\.com\//.test(rawUrl) || rawUrl.startsWith('/')
+  ? rawUrl : '/seguimiento-caso';
+clients.openWindow(url);
+```
+
+## 4h. Cache-busters — regla obligatoria
+
+**Todos los scripts JS locales deben tener `?v=AAAAMMDD`** — los assets en `/js/*` se cachean 1 año (`immutable`). Sin versión, los usuarios ven código viejo indefinidamente.
+
+```html
+<!-- ✅ Correcto -->
+<script src="js/header.js?v=20260528"></script>
+<script src="js/footer.js?v=20260528"></script>
+<script src="js/auth-guard.js?v=20260528"></script>
+
+<!-- Footer lazy scripts también deben tener versión -->
+_loadScript('/js/utm-tracker.js?v=20260528');
+_loadScript('/js/conversions.js?v=20260528');
+```
+
+**Cuándo actualizar:** cada vez que se modifica el JS. Convención: fecha del cambio `YYYYMMDD`.
+
 ## 5. DISEÑO
 Colores: `#D946A6` magenta · `#D4AF37` gold · `#00d2ff` cyan · `#050505` bg · `#1a2332` card · `#00FF41` neon
 Animaciones: solo en idle (requestIdleCallback). Sin loops en eco-cards. Solo fade+scroll con GSAP.
+
+### Regla OBLIGATORIA — prefers-reduced-motion
+Toda página con `animation: X infinite` DEBE incluir al final del `<style>`:
+```css
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
+```
+**Por qué:** usuarios con trastornos vestibulares pueden sufrir malestar con animaciones continuas. WCAG 2.1 SC 2.3.3.
+
+### Regla OBLIGATORIA — color-scheme
+Todas las páginas dark DEBEN tener:
+```html
+<meta name="color-scheme" content="dark">
+```
+**Por qué:** evita el flash de fondo blanco antes de que el CSS cargue.
 
 ## 6. REPORTE (al terminar tarea)
 ```
@@ -195,6 +340,33 @@ VERIFICADO: [grep] → [resultado]
 PENDIENTE: [acción] → solo si hay algo
 ```
 Al final de sesión: `/clear` (todo commiteado) o `/compact` (trabajo en vuelo).
+
+## 6b. ROBOTS.TXT — bots a bloquear (lista actualizada 2026-05-28)
+```
+# Bots de extracción/entrenamiento sin búsqueda — BLOQUEAR
+User-agent: ClaudeBot
+User-agent: CCBot
+User-agent: Bytespider
+User-agent: FacebookBot
+User-agent: Applebot-Extended    # Apple AI training (nuevo 2025)
+User-agent: Diffbot              # Extracción comercial de datos
+Disallow: /
+
+# Crawlers de agencias SEO — BLOQUEAR (no aportan tráfico)
+User-agent: MJ12bot
+User-agent: AhrefsBot
+User-agent: SemrushBot
+Disallow: /
+
+# Rutas a bloquear SIEMPRE
+Disallow: /app/
+Disallow: /api/          # Edge functions no deben indexarse
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /.git/
+Disallow: /MEMORY/
+Disallow: /scripts/
+```
 
 ## 7. PRIVACIDAD
 - Formularios: checkbox Habeas Data Colombia obligatorio.
