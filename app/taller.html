@@ -251,7 +251,7 @@
     <div class="card">
         <div class="card-title"><i class="fas fa-history"></i> Historial de Equipos</div>
         <div class="hist-filter">
-            <input type="text" id="hist-filter-input" placeholder="Filtrar por ID equipo..." oninput="filtrarHistorial(this.value)">
+            <input type="search" id="hist-filter-input" placeholder="Filtrar por ID equipo..." oninput="filtrarHistorial(this.value)" enterkeyhint="search" aria-label="Filtrar historial por ID de equipo">
             <button type="button" class="btn-sm" onclick="cargarHistorial()"><i class="fas fa-refresh"></i> Actualizar</button>
         </div>
         <div id="hist-container" aria-live="polite" aria-label="Historial de trabajos del taller">

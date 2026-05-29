@@ -206,7 +206,7 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
                 <option>Disco</option><option>Resina</option>
                 <option>Fresa</option><option>Consumible</option><option>Otro</option>
             </select>
-            <input type="text" id="fil-q" placeholder="Buscar item..." oninput="renderStock()">
+            <input type="search" id="fil-q" placeholder="Buscar item..." oninput="renderStock()" enterkeyhint="search" aria-label="Buscar ítem en inventario">
             <label style="display:flex;align-items:center;gap:6px;font-size:.84rem;color:var(--txt3);cursor:pointer;">
                 <input type="checkbox" id="fil-criticos" onchange="renderStock()"> Solo críticos
             </label>
