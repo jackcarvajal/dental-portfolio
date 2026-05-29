@@ -487,7 +487,7 @@
       '<div class="pnav2-c">' +
 
         /* Hamburger */
-        '<button class="pnav2-ham" id="pnav2-ham" aria-label="Abrir menú">' +
+        '<button class="pnav2-ham" id="pnav2-ham" aria-label="Abrir menú" aria-expanded="false" aria-controls="pnav2-mob">' +
           '<i class="fas fa-bars" id="pnav2-ham-ico"></i>' +
         '</button>' +
 
@@ -762,6 +762,8 @@
     var ico = document.getElementById('pnav2-ham-ico');
     var open = mob.classList.toggle('open');
     ico.className = open ? 'fas fa-times' : 'fas fa-bars';
+    this.setAttribute('aria-expanded', open ? 'true' : 'false');
+    this.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
     document.body.style.overflow = open ? 'hidden' : '';
   });
   document.querySelectorAll('.pnav2-mob a').forEach(function (a) {
