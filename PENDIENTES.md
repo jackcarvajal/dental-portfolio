@@ -106,6 +106,19 @@
 - **Scan masivo**: toast functions → todas usan textContent (no innerHTML) en ambos proyectos ✓
 - **Scan masivo**: geo.region, keywords, viewport, canonical, noindex app/, og:type — 100% completo ambos proyectos ✓
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 14)
+- **Cache-busters**: footer.js?v=20260528 en 33 PRODIGY + 12 Alejandro
+- **Cache-busters**: header.js?v=20260528 en 22 PRODIGY + 7 Alejandro
+- **Cache-busters**: auth-guard.js?v=20260528 en 16 app/ PRODIGY + 4 Alejandro
+- **Cache-busters**: scripts lazy footer.js (utm-tracker/conversions/geo-detect) → v=20260528
+- **CSP**: upgrade-insecure-requests en ambos _headers — previene mixed-content
+- **CSP**: upload.wikimedia.org en img-src Alejandro — imágenes del auto-journal
+- **SEO**: WebSite schema + SearchAction en index.html Alejandro
+- **SEO**: robots.txt Disallow /api/ en ambos proyectos
+- **SEO**: robots.txt bloquear Applebot-Extended + Diffbot (nuevos bots 2025-2026)
+- **Perf**: preconnect googletagmanager.com en 5 PRODIGY + 5 Alejandro
+- **MAP.md**: FOOTER_VER actualizado a v=20260528
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 13)
 - **a11y**: prefers-reduced-motion global en 19+1 páginas PRODIGY + 16+1 Alejandro — cubre todas las animaciones infinitas
 - **a11y**: aria-current='page' en link activo de navegación — header.js (ambos)
