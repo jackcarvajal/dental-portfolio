@@ -2698,7 +2698,7 @@ async function confirmarDelCaso() {
 
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  [cerrarModalFabConfirm, cerrarModalNuevoStaff, cerrarModalDelCaso, cerrarModalAgente].forEach(fn => { try { fn(); } catch(_) {} });
+  [cerrarModalFabConfirm, cerrarModalNuevoStaff, cerrarModalDelCaso, cerrarModalAgente, cerrarModalCotizar].forEach(fn => { try { fn(); } catch(_) {} });
 });
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
