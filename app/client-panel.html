@@ -737,6 +737,13 @@ async function descargarSTL(pedidoId, stlRuta) {
 async function subirFotos(pedidoId) {
     const input = document.getElementById('fotos-' + pedidoId);
     if (!input || !input.files.length) { toast('Selecciona al menos una foto', 'error'); return; }
+    // Validar magic bytes de todas las fotos
+    if (window.validateMagicBytes) {
+        for (const file of Array.from(input.files)) {
+            const mbr = await validateMagicBytes(file);
+            if (!mbr.safe) { toast(mbr.error || 'Archivo no permitido: '+file.name, 'error'); return; }
+        }
+    }
     toast('Subiendo fotos…');
     const urls = [];
     for (const file of Array.from(input.files)) {
@@ -788,6 +795,11 @@ async function subirComprobante(pedidoId) {
     const input = document.getElementById('comp-' + pedidoId);
     if (!input || !input.files.length) { toast('Selecciona un archivo primero', 'error'); return; }
     const file = input.files[0];
+    if (!file.type.startsWith('image/') && file.type !== 'application/pdf') { toast('Solo imágenes o PDF como comprobante', 'error'); return; }
+    if (window.validateMagicBytes) {
+        const mbr = await validateMagicBytes(file);
+        if (!mbr.safe) { toast(mbr.error || 'Archivo no permitido', 'error'); return; }
+    }
     const ext  = file.name.split('.').pop() || 'jpg';
     const path = `comprobantes/${pedidoId}/${Date.now()}_comp.${ext}`;
     toast('Subiendo comprobante…');

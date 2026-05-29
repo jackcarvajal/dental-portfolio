@@ -638,6 +638,15 @@ async function ejecutarSubida() {
 
   if (!htmlF) { toast('El visor HTML es obligatorio','err'); return; }
 
+  // Validar magic bytes de STL, construinfo y fotos
+  if (window.validateMagicBytes) {
+    const filesToCheck = [...stlFs, ...(cinfoF?[cinfoF]:[]), ...fotoFs];
+    for (const f of filesToCheck) {
+      const mbr = await validateMagicBytes(f);
+      if (!mbr.safe) { toast(mbr.error || 'Archivo no válido: '+f.name, 'err'); return; }
+    }
+  }
+
   const btn = document.getElementById('btn-subir-ok');
   btn.disabled = true;
   const progWrap = document.getElementById('up-progress');
