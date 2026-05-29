@@ -475,7 +475,7 @@
       <div class="pd-msg" id="pd-msg"></div>
       <div class="pd-row">
         <div class="pd-fg">
-          <label>Tipo de servicio *</label>
+          <label for="pd-tipo">Tipo de servicio *</label>
           <select id="pd-tipo" onchange="pdActualizarMat()">
             <option value="">— Selecciona —</option>
             <option value="corona">👑 Corona unitaria</option>
@@ -488,7 +488,7 @@
           </select>
         </div>
         <div class="pd-fg">
-          <label>Material *</label>
+          <label for="pd-material">Material *</label>
           <select id="pd-material" onchange="pdCalc()">
             <option value="">— Elige servicio primero —</option>
           </select>
@@ -1286,7 +1286,7 @@ document.getElementById('btn-logout').addEventListener('click', (e) => {
       <input id="bib-nombre" type="text" placeholder="Ej: Nobel Biocare RP 4.3, Straumann Roxolid" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 14px;font-size:.88rem;outline:none">
     </div>
     <div style="margin-bottom:14px">
-      <label style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Tipo *</label>
+      <label for="bib-tipo" style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Tipo *</label>
       <select id="bib-tipo" style="width:100%;background:#0d1525;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 14px;font-size:.88rem;outline:none">
         <option value="implantes">🔩 Biblioteca de implantes</option>
         <option value="pilares">🪛 Pilares personalizados</option>

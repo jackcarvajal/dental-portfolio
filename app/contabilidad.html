@@ -351,11 +351,11 @@ tbody td{padding:11px 14px;vertical-align:middle;}
     <!-- TAB: Pedidos -->
     <div id="tab-pedidos" class="tab-panel">
         <div class="filtros">
-            <label>Desde</label>
+            <label for="ped-desde">Desde</label>
             <input type="date" id="ped-desde">
-            <label>Hasta</label>
+            <label for="ped-hasta">Hasta</label>
             <input type="date" id="ped-hasta">
-            <select id="ped-estado">
+            <select id="ped-estado" aria-label="Filtrar por estado">
                 <option value="">Todos los estados</option>
                 <option value="VALIDACION_PENDIENTE">Validación pendiente</option>
                 <option value="EN_PRODUCCION">En producción</option>
@@ -399,11 +399,11 @@ tbody td{padding:11px 14px;vertical-align:middle;}
     <!-- TAB: Suministros -->
     <div id="tab-suministros" class="tab-panel">
         <div class="filtros">
-            <label>Desde</label>
+            <label for="sum-desde">Desde</label>
             <input type="date" id="sum-desde">
-            <label>Hasta</label>
+            <label for="sum-hasta">Hasta</label>
             <input type="date" id="sum-hasta">
-            <select id="sum-tipo">
+            <select id="sum-tipo" aria-label="Filtrar por tipo de movimiento">
                 <option value="">Todos los movimientos</option>
                 <option value="ENTRADA">Entradas (compras)</option>
                 <option value="SALIDA">Salidas (consumo)</option>
