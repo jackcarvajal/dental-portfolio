@@ -507,22 +507,22 @@ window.submitOrden     = window.submitOrden      || function(){};
 
                         <!-- CATEGORÍAS -->
                         <div class="categoria-grid">
-                            <div class="categoria-card" id="cat-cad_fija" onclick="selectCategoria('cad_fija')">
+                            <button type="button" class="categoria-card" id="cat-cad_fija" onclick="selectCategoria('cad_fija')" aria-pressed="false">
                                 <span class="cat-icon">👑</span>
                                 <h3>Prótesis Fija</h3>
                                 <p>Coronas, carillas, puentes, encerados digitales</p>
                             </div>
-                            <div class="categoria-card" id="cat-cad_implantes" onclick="selectCategoria('cad_implantes')">
+                            <button type="button" class="categoria-card" id="cat-cad_implantes" onclick="selectCategoria('cad_implantes')" aria-pressed="false">
                                 <span class="cat-icon">🔩</span>
                                 <h3>Implantología</h3>
                                 <p>Coronas atornilladas, pilares, barras, All-on-4</p>
                             </div>
-                            <div class="categoria-card" id="cat-cad_removible" onclick="selectCategoria('cad_removible')">
+                            <button type="button" class="categoria-card" id="cat-cad_removible" onclick="selectCategoria('cad_removible')" aria-pressed="false">
                                 <span class="cat-icon">📐</span>
                                 <h3>Removibles / Ortodoncia</h3>
                                 <p>Férulas, esqueletos PPR, cubetas, alineadores</p>
                             </div>
-                            <div class="categoria-card" id="cat-cad_quirurgica" onclick="selectCategoria('cad_quirurgica')">
+                            <button type="button" class="categoria-card" id="cat-cad_quirurgica" onclick="selectCategoria('cad_quirurgica')" aria-pressed="false">
                                 <span class="cat-icon">🩺</span>
                                 <h3>Planificación Quirúrgica</h3>
                                 <p>Guías quirúrgicas, diseño de sonrisa 3D</p>
@@ -1189,8 +1189,9 @@ window.submitOrden     = window.submitOrden      || function(){};
 
         // ── SELECCIÓN CATEGORÍA ───────────────────────────────────────────────
         function selectCategoria(key) {
-            document.querySelectorAll('.categoria-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('cat-' + key).classList.add('selected');
+            document.querySelectorAll('.categoria-card').forEach(c => { c.classList.remove('selected'); c.setAttribute('aria-pressed','false'); });
+            const catEl = document.getElementById('cat-' + key);
+            if (catEl) { catEl.classList.add('selected'); catEl.setAttribute('aria-pressed','true'); }
 
             STATE.categoriaKey    = key;
             STATE.categoriaNombre = MATERIAL_DATA[key].nombre;

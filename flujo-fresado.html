@@ -2166,32 +2166,32 @@
 
                         <h4 style="color: var(--gold-primary); margin: 25px 0 15px; font-size: 1.05rem;">Selecciona la Categoría</h4>
                         <div class="material-grid" style="grid-template-columns: repeat(6, 1fr);">
-                            <div class="material-card" onclick="selectMaterial('zirc')">
+                            <button type="button" class="material-card" onclick="selectMaterial('zirc')" aria-pressed="false">
                                 <span class="icon" style="font-size:2.4rem;display:block;text-align:center;margin-bottom:8px;">💿</span>
                                 <h3>Zirconio</h3>
                                 <p class="desc">Alta resistencia<br>y estética</p>
                             </div>
-                            <div class="material-card" onclick="selectMaterial('disi')">
+                            <button type="button" class="material-card" onclick="selectMaterial('disi')" aria-pressed="false">
                                 <span class="icon" style="font-size:2.4rem;display:block;text-align:center;margin-bottom:8px;">💎</span>
                                 <h3>Disilicato</h3>
                                 <p class="desc">Bloque C14</p>
                             </div>
-                            <div class="material-card" onclick="selectMaterial('pmma')">
+                            <button type="button" class="material-card" onclick="selectMaterial('pmma')" aria-pressed="false">
                                 <span class="icon" style="font-size:2.4rem;display:block;text-align:center;margin-bottom:8px;">⭕</span>
                                 <h3>PMMA - PEEK</h3>
                                 <p class="desc">Provisionales<br>y Guías</p>
                             </div>
-                            <div class="material-card" onclick="selectMaterial('metal')">
+                            <button type="button" class="material-card" onclick="selectMaterial('metal')" aria-pressed="false">
                                 <span class="icon" style="font-size:2.4rem;display:block;text-align:center;margin-bottom:8px;">🪙</span>
                                 <h3>METAL</h3>
                                 <p class="desc">Titanio y<br>Cromo Cobalto</p>
                             </div>
-                            <div class="material-card" onclick="selectMaterial('cera')">
+                            <button type="button" class="material-card" onclick="selectMaterial('cera')" aria-pressed="false">
                                 <span class="icon" style="font-size:2.4rem;display:block;text-align:center;margin-bottom:8px;">🔥</span>
                                 <h3>CERA</h3>
                                 <p class="desc">Fresada<br>Calcinable</p>
                             </div>
-                            <div class="material-card" onclick="selectMaterial('otro')">
+                            <button type="button" class="material-card" onclick="selectMaterial('otro')" aria-pressed="false">
                                 <span class="icon" style="font-size:2.4rem;display:block;text-align:center;margin-bottom:8px;">📋</span>
                                 <h3>OTRO</h3>
                                 <p class="desc">Especificar<br>necesidades</p>
@@ -2230,17 +2230,17 @@
             <div class="timeline-section" id="timeline-section">
                 <h2>⏱️ 4. TIEMPOS DE ENTREGA</h2>
                 <div class="timeline-slots">
-                    <div class="timeline-slot disabled" data-slot="express" onclick="selectTimeSlot('express')">
+                    <button type="button" class="timeline-slot disabled" data-slot="express" onclick="selectTimeSlot('express')" aria-pressed="false" aria-disabled="true">
                         <span class="slot-badge">EXPRESS</span>
                         <h4>🚀 9:00 AM</h4>
                         <p id="date-express">Cargando...</p>
                     </div>
-                    <div class="timeline-slot" data-slot="mediodia" onclick="selectTimeSlot('mediodia')">
+                    <button type="button" class="timeline-slot" data-slot="mediodia" onclick="selectTimeSlot('mediodia')" aria-pressed="false">
                         <span class="slot-badge">MEDIODÍA</span>
                         <h4>☀️ 12:00 PM</h4>
                         <p id="date-mediodia">Cargando...</p>
                     </div>
-                    <div class="timeline-slot" data-slot="tarde" onclick="selectTimeSlot('tarde')">
+                    <button type="button" class="timeline-slot" data-slot="tarde" onclick="selectTimeSlot('tarde')" aria-pressed="false">
                         <span class="slot-badge">TARDE</span>
                         <h4>🌙 5:00 PM</h4>
                         <p id="date-tarde">Cargando...</p>
@@ -2768,10 +2768,8 @@
         }
 
         function selectMaterial(tipo) {
-            document.querySelectorAll('.material-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            event.currentTarget.classList.add('selected');
+            document.querySelectorAll('.material-card').forEach(card => { card.classList.remove('selected'); card.setAttribute('aria-pressed','false'); });
+            event.currentTarget.classList.add('selected'); event.currentTarget.setAttribute('aria-pressed','true');
             STATE.materialTipo = tipo;
 
             STATE.submaterialId = null;
@@ -2890,24 +2888,24 @@
                 html = `
                     <h4 style="color: var(--gold-primary); margin-bottom: 15px;">Selecciona el Proceso</h4>
                     <div class="process-grid">
-                        <div class="process-card" onclick="selectProcess('crudo')">
+                        <button type="button" class="process-card" onclick="selectProcess('crudo')" aria-pressed="false">
                             <span class="icon">🧱</span>
                             <h4>1. Fresado en Crudo</h4>
                             <p>Sin sinterizado - Material verde</p>
                             <small style="color: var(--gold-primary); font-size: 0.7rem; display: block; margin-top: 6px;">📲 Te avisaremos cuando esté listo</small>
                         </div>
-                        <div class="process-card" onclick="selectProcess('sinterizado')">
+                        <button type="button" class="process-card" onclick="selectProcess('sinterizado')" aria-pressed="false">
                             <span class="icon">🔥</span>
                             <h4>2. Fresado + Sinterizado</h4>
                             <p>Proceso completo</p>
                         </div>
-                        <div class="process-card" onclick="selectProcess('glaze')">
+                        <button type="button" class="process-card" onclick="selectProcess('glaze')" aria-pressed="false">
                             <span class="icon">✨</span>
                             <h4>3. Fresado + Sinter + Glaze</h4>
                             <p>Acabado premium (+$25k)</p>
                             <div id="contador-glaze-zirc" class="hidden" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-subtle);"><label style="font-size:0.7rem;color:var(--text-secondary);display:block;margin-bottom:5px;">Cantidad Glaze:</label><input type="number" id="cant-glaze-zirc" min="1" value="1" onclick="event.stopPropagation()" onchange="calcularTotal()" style="width:100%;padding:8px;font-size:0.9rem;font-weight:700;text-align:center;background:var(--bg-dark);color:var(--gold-primary);border:2px solid var(--border-subtle);border-radius:6px;"></div>
                         </div>
-                        <div class="process-card" onclick="selectProcess('solo_sinter')">
+                        <button type="button" class="process-card" onclick="selectProcess('solo_sinter')" aria-pressed="false">
                             <span class="icon">🌡️</span>
                             <h4>4. Solo Sinterizado</h4>
                             <p>Para piezas ya fresadas</p>
@@ -2972,13 +2970,13 @@
                 html = `
                     <h4 style="color: var(--gold-primary); margin-bottom: 15px;">Selecciona el Proceso</h4>
                     <div class="process-grid" style="grid-template-columns: repeat(3, 1fr);">
-                        <div class="process-card" onclick="selectProcess('crudo')">
+                        <button type="button" class="process-card" onclick="selectProcess('crudo')" aria-pressed="false">
                             <div class="process-neon-wrapper neon-proc-gris">📦</div>
                             <h4 style="color:#ccc;">Fresado Crudo</h4>
                             <p>Entrega sin cristalizar</p>
                             <div style="font-size:0.67rem;color:var(--gold-primary);margin-top:8px;line-height:1.3;background:rgba(212,175,55,0.08);padding:5px 8px;border-radius:4px;border:1px dashed var(--gold-primary);">⚡ Posible entrega anticipada bajo disponibilidad. Se notificará si está listo antes del tiempo estándar.</div>
                         </div>
-                        <div class="process-card" onclick="selectProcess('cristalizado')">
+                        <button type="button" class="process-card" onclick="selectProcess('cristalizado')" aria-pressed="false">
                             <div class="process-neon-wrapper neon-proc-azul">💎</div>
                             <h4 style="color:#00c8ff;">Cristalizado</h4>
                             <p>Completo (+24h)</p>
@@ -2991,7 +2989,7 @@
                                               border-radius: 6px;">
                             </div>
                         </div>
-                        <div class="process-card" onclick="selectProcess('glaze')">
+                        <button type="button" class="process-card" onclick="selectProcess('glaze')" aria-pressed="false">
                             <div class="process-neon-wrapper neon-proc-oro">✨</div>
                             <h4 style="color:#ffe97a;">Glaze</h4>
                             <p>Acabado brillante</p>
@@ -3034,12 +3032,12 @@
                     
                     <h4 style="color: var(--gold-primary); margin-bottom: 15px;">Selecciona el Proceso</h4>
                     <div class="process-grid">
-                        <div class="process-card" onclick="selectProcess('standard')">
+                        <button type="button" class="process-card" onclick="selectProcess('standard')" aria-pressed="false">
                             <div class="process-neon-wrapper neon-proc-azul-oscuro">🧊</div>
                             <h4 style="color:#7dd8ff;">Fresado Standard</h4>
                             <p>Sin acabados adicionales</p>
                         </div>
-                        <div class="process-card" onclick="selectProcess('pulido')">
+                        <button type="button" class="process-card" onclick="selectProcess('pulido')" aria-pressed="false">
                             <div class="process-neon-wrapper neon-proc-blanco">✨</div>
                             <h4 style="color:#fff;">Fresado + Pulido</h4>
                             <p>${esClear ? 'Acabado brillante (+$18k)' : 'Manual (+$15k)'}</p>
