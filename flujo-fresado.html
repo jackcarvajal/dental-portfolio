@@ -2847,12 +2847,12 @@
             subMats.forEach(sub => {
                 const iD=SUBMAT_ICON_MAP[sub.id]||{icon:'🔹',cls:'neon-sub-oro'};
                 html += `
-                    <div class="submaterial-chip" data-id="${sub.id}" onclick="selectSubMaterial('${sub.id}', '${sub.nom}', ${sub.precio})">
+                    <button type="button" class="submaterial-chip" data-id="${sub.id}" onclick="selectSubMaterial('${sub.id}', '${sub.nom}', ${sub.precio})" aria-pressed="false">
                         <div class="icon-neon-wrapper ${iD.cls}">${iD.icon}</div>
                         <div class="submaterial-name" style="font-weight:700;">${sub.nom}</div>
                         ${sub.info?`<div class="submaterial-info">${sub.info}</div>`:''}
                         <div class="submaterial-price" style="margin-top:5px;color:var(--gold-primary);font-weight:bold;">$${sub.precio.toLocaleString('es-CO')}</div>
-                    </div>
+                    </button>
                 `;
             });
             // Centrar si solo hay 1 elemento (disi, cera)
@@ -2863,7 +2863,7 @@
             container.classList.remove('hidden');
         }
 
-        function selectSubMaterial(id,nombre,precio){document.querySelectorAll('.submaterial-chip').forEach(chip=>{chip.classList.remove('selected');});event.currentTarget.classList.add('selected');STATE.submaterialId=id;STATE.submaterialNombre=nombre;STATE.submaterialPrecio=precio;const toggle=document.getElementById('material-externo');const footer=document.getElementById('material-disclaimer-footer');if(id==='m_crco'||id==='m_peek'){if(toggle){toggle.checked=true;toggle.disabled=true;STATE.materialExterno=true;}if(footer)footer.style.display='block';}else if(STATE.materialTipo==='metal'||STATE.materialTipo==='pmma'){if(toggle)toggle.disabled=false;}actualizarVisibilidadColor();generarProceso(STATE.materialTipo);document.getElementById('acc-proceso').classList.add('active');updateTimeline();calcularTotal();}
+        function selectSubMaterial(id,nombre,precio){document.querySelectorAll('.submaterial-chip').forEach(chip=>{chip.classList.remove('selected');chip.setAttribute('aria-pressed','false');});event.currentTarget.classList.add('selected');event.currentTarget.setAttribute('aria-pressed','true');STATE.submaterialId=id;STATE.submaterialNombre=nombre;STATE.submaterialPrecio=precio;const toggle=document.getElementById('material-externo');const footer=document.getElementById('material-disclaimer-footer');if(id==='m_crco'||id==='m_peek'){if(toggle){toggle.checked=true;toggle.disabled=true;STATE.materialExterno=true;}if(footer)footer.style.display='block';}else if(STATE.materialTipo==='metal'||STATE.materialTipo==='pmma'){if(toggle)toggle.disabled=false;}actualizarVisibilidadColor();generarProceso(STATE.materialTipo);document.getElementById('acc-proceso').classList.add('active');updateTimeline();calcularTotal();}
 
         function generarProceso(tipo) {
             const contenedor = document.getElementById('proceso-content');
