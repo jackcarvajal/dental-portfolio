@@ -11,12 +11,16 @@
 |-------------------|-------|
 | Topbar HTML `topbarHtml =` | 456 |
 | Navbar HTML `navHtml =` | 485 |
+| Botón IA desktop `pnav2-ia-btn` | 557 |
+| Botón hamburguesa `pnav2-ham` | 490 |
+| Menú móvil `pnav2-mob` | 590 |
 | `document.body.insertAdjacentHTML` — inyección DOM | 684 |
 | `initUrgencia()` — widget horario | 699 |
-| `_phdrCtaToggle()` — botón HAZ TU PEDIDO | 817 |
-| `_pgBuildPrompt()` — system prompt chatbot | 844 |
-| `_phdrToggleIA()` — abrir/cerrar chatbot | 881 |
-| `_phdrLogin()` — mini-login topbar | 1022 |
+| `_phdrCtaToggle()` — botón HAZ TU PEDIDO | 819 |
+| `_pgBuildPrompt()` — system prompt chatbot | 846 |
+| `_phdrToggleIA()` — abrir/cerrar chatbot | 883 |
+| `_phdrLogin()` — mini-login topbar | 1026 |
+| initUrgencia() — widget horario | 699 |
 
 ### js/footer.js
 | Función / Sección | Línea |
@@ -86,14 +90,15 @@
 ### caso.html
 | Función | Línea |
 |---------|-------|
-| `_safeUrl()` — valida https:// en media | 195 |
-| `render()` — renderiza caso completo | ~202 |
-| `cargarRelacionados()` | ~312 |
-| `loadExocadBlob()` — visor Exocad | ~340 |
-| `cargarNotas()` — carga comentarios | ~373 |
-| `publicarNota()` — enviar comentario | ~413 |
-| `eliminarNota()` — admin delete | ~398 |
-| `fijarNota()` — admin pin | ~405 |
+| `_casoToast()` — toast no bloqueante | 174 |
+| `_safeUrl()` — valida https:// en media | 216 |
+| `render()` — renderiza caso completo | 237 |
+| `cargarRelacionados()` | 369 |
+| `loadExocadBlob()` — visor Exocad | 407 |
+| `cargarNotas()` — carga comentarios | 441 |
+| `eliminarNota()` — admin delete | 497 |
+| `fijarNota()` — admin pin | 504 |
+| `publicarNota()` — enviar comentario | 481 |
 | Lightbox HTML | 142 |
 
 ### journal.html
