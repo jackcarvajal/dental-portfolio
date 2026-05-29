@@ -91,6 +91,16 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 7)
+- **a11y aria-live**: matGrid catalogo.html + total-badge flujo-lab.html → role=status + aria-live=polite
+- **a11y label[for]**: flujo-diseno PRODIGY — indicativo, especialidad, origen, envio
+- **a11y aria-pressed**: caso.html (ambos) — selReaction() sincroniza botones de reacción
+- **ux Escape**: panel-interno-operaciones — cerrarModalCotizar agregado al keydown handler
+- **perf cache**: manifest.json → Cache-Control 1 día en _headers (ambos)
+- **seo redirects**: /cotizador, /blog, /diseno-dental, /laboratorio, /pedir PRODIGY; /cotizador, /guia-quirurgica, /pedido Alejandro
+- **seo titles**: calidad (74→67), calculadora-impresion (75→65), flujo-impresion (73→72), terminos (73→60)
+- **auditoría 0 errores**: PRODIGY 25 warnings intencionales, Alejandro 11 warnings intencionales
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 6)
 - **fix(css) crítico**: Alejandro — css/global-nav.min.css + css/styles.css no existían en repo (404 silenciosos en 4 páginas: envia-tu-scanner, portafolio, seguimiento-caso, terminos)
 - **a11y label[for]**: flujo-diseno PRODIGY + Alejandro — selects indicativo, especialidad, origen, envio sin label
