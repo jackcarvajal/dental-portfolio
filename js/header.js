@@ -554,7 +554,7 @@
             '</div>' +
           '</div>' +
           '<button class="pnav2-theme-btn" id="pnav2-theme-btn" onclick="_phdrToggleTheme()" aria-label="Cambiar tema" title="Modo claro / oscuro">🌙</button>' +
-          '<button class="pnav2-ia-btn" id="pnav2-ia-btn" onclick="_phdrToggleIA()" aria-label="Asistente IA">' +
+          '<button class="pnav2-ia-btn" id="pnav2-ia-btn" onclick="_phdrToggleIA()" aria-label="Asistente IA" aria-expanded="false" aria-controls="pg-chat-window">' +
             '<i class="fas fa-robot"></i>' +
           '</button>' +
           '<a href="/nosotros"' + ac('/nosotros') + '>NOSOTROS</a>' +
@@ -882,8 +882,10 @@
     _pgChatOpen = !_pgChatOpen;
     var win = document.getElementById('pg-chat-window');
     var ico = document.getElementById('pg-chat-ico');
+    var btn = document.getElementById('pnav2-ia-btn');
     if (win) win.classList.toggle('open', _pgChatOpen);
     if (ico) ico.className = _pgChatOpen ? 'fas fa-times' : 'fas fa-robot';
+    if (btn) btn.setAttribute('aria-expanded', _pgChatOpen ? 'true' : 'false');
     if (_pgChatOpen) {
       var notif = document.querySelector('#pg-chat-bubble .pg-notif');
       if (notif) notif.style.display = 'none';
