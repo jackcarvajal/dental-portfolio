@@ -193,15 +193,15 @@
 
     <form id="form-onboarding" onsubmit="guardarPerfil(event)">
         <div class="form-group">
-            <label>Nombre completo *</label>
+            <label for="ob-nombre">Nombre completo *</label>
             <div class="input-wrap">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user" aria-hidden="true"></i>
                 <input type="text" id="ob-nombre" autocomplete="name" placeholder="Dr. / Dra. Apellido" required maxlength="80">
             </div>
         </div>
 
         <div class="form-group">
-            <label>WhatsApp profesional *</label>
+            <label for="ob-wa">WhatsApp profesional *</label>
             <div class="wa-row">
                 <div class="prefix-wrap">
                     <div class="input-wrap">
@@ -227,7 +227,7 @@
         </div>
 
         <div class="form-group">
-            <label>Nombre del consultorio / cl�nica *</label>
+            <label for="ob-clinica">Nombre del consultorio / cl�nica *</label>
             <div class="input-wrap">
                 <i class="fas fa-tooth"></i>
                 <input type="text" id="ob-clinica" autocomplete="organization" placeholder="Odontolog�a Est�tica..." required maxlength="100">
@@ -235,9 +235,9 @@
         </div>
 
         <div class="form-group">
-            <label>Ciudad *</label>
+            <label for="ob-ciudad">Ciudad *</label>
             <div class="input-wrap">
-                <i class="fas fa-map-pin"></i>
+                <i class="fas fa-map-pin" aria-hidden="true"></i>
                 <input type="text" id="ob-ciudad" autocomplete="address-level2" placeholder="Bogot�, Medell�n..." required maxlength="80">
             </div>
         </div>
