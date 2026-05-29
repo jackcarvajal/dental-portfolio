@@ -1207,6 +1207,22 @@
         } catch(e){}
     })();
     </script>
+    <script>
+    /* Escape cierra todos los modales abiertos */
+    document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Escape') return;
+        // Modales con clase active
+        document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
+        // Modales con display flex (modal-overlay)
+        document.querySelectorAll('.modal-overlay').forEach(m => { m.style.display = 'none'; });
+        // Custom alert
+        var ca = document.getElementById('custom-alert-overlay');
+        if (ca) ca.style.display = 'none';
+        // Help modal
+        var hm = document.getElementById('help-modal');
+        if (hm) hm.remove();
+    });
+    </script>
 </body>
 </html>
 
