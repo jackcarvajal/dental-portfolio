@@ -57,6 +57,9 @@
 # /flujo-fresado          /flujo-fresado.html         200
 # /flujo-impresion        /flujo-impresion.html       200
 # /flujo-lab              /flujo-lab.html             200
+/terminos               /terminos-y-legal.html      301
+/privacidad             /terminos-y-legal.html      301
+/seguimiento            /seguimiento-caso.html      301
 /contacto               /nosotros.html#contacto     301
 # /soporte-tecnico        /soporte-tecnico.html       200  ← CF sirve nativo
 /soporte-xtcera         /soporte-tecnico.html       301
