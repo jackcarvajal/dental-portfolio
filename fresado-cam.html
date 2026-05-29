@@ -555,11 +555,11 @@
     <div class="eyebrow">Preguntas frecuentes</div>
     <h2 class="sech2" style="margin-bottom:36px">Lo que más nos <em>preguntan</em></h2>
     <div class="faq-list">
-      <div class="faq-item"><button class="faq-q" onclick="faq(this)">¿Qué necesito enviar para pedir fresado?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Puedes enviarnos el STL del diseño final o el escáner intraoral. Si solo tienes el escáner, nosotros diseñamos y fresamos en el mismo flujo. Escríbenos por WhatsApp con los detalles del caso.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faq(this)">¿Cuánto tiempo tarda una corona en zirconio?<i class="fas fa-chevron-down"></i></button><div class="faq-a">El tiempo estándar es 48–72 horas desde que recibimos el diseño aprobado. Para urgencias en 24 h, consúltanos disponibilidad. El tiempo incluye fresado, sinterizado y glaze.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faq(this)">¿Hacen envíos fuera de Bogotá?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Sí. Despachamos a toda Colombia por Servientrega, TCC o mensajería según la urgencia. El embalaje es especializado para restauraciones dentales. El costo de envío se acuerda por caso.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faq(this)">¿Puedo traer el caso directamente al laboratorio?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Sí. Recibimos casos en nuestra sede en Bogotá. También coordinamos recogida con mensajero para alto volumen. Escríbenos para coordinar.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faq(this)">¿Qué sistemas de implantes manejan?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Nobel Biocare, Straumann, MIS, Osstem, BioHorizons, Zimmer y los sistemas más comunes del mercado colombiano. Si tienes un sistema específico, consúltanos antes de hacer el caso.</div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false" onclick="faq(this)">¿Qué necesito enviar para pedir fresado?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Puedes enviarnos el STL del diseño final o el escáner intraoral. Si solo tienes el escáner, nosotros diseñamos y fresamos en el mismo flujo. Escríbenos por WhatsApp con los detalles del caso.</div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false" onclick="faq(this)">¿Cuánto tiempo tarda una corona en zirconio?<i class="fas fa-chevron-down"></i></button><div class="faq-a">El tiempo estándar es 48–72 horas desde que recibimos el diseño aprobado. Para urgencias en 24 h, consúltanos disponibilidad. El tiempo incluye fresado, sinterizado y glaze.</div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false" onclick="faq(this)">¿Hacen envíos fuera de Bogotá?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Sí. Despachamos a toda Colombia por Servientrega, TCC o mensajería según la urgencia. El embalaje es especializado para restauraciones dentales. El costo de envío se acuerda por caso.</div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false" onclick="faq(this)">¿Puedo traer el caso directamente al laboratorio?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Sí. Recibimos casos en nuestra sede en Bogotá. También coordinamos recogida con mensajero para alto volumen. Escríbenos para coordinar.</div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false" onclick="faq(this)">¿Qué sistemas de implantes manejan?<i class="fas fa-chevron-down"></i></button><div class="faq-a">Nobel Biocare, Straumann, MIS, Osstem, BioHorizons, Zimmer y los sistemas más comunes del mercado colombiano. Si tienes un sistema específico, consúltanos antes de hacer el caso.</div></div>
     </div>
   </div>
 </section>
@@ -577,8 +577,9 @@
 <script>
   function faq(btn) {
     var a = btn.nextElementSibling, open = a.classList.contains('open');
-    document.querySelectorAll('.faq-a,.faq-q').forEach(function(e){ e.classList.remove('open'); });
-    if (!open) { a.classList.add('open'); btn.classList.add('open'); }
+    document.querySelectorAll('.faq-q').forEach(function(e){ e.classList.remove('open'); e.setAttribute('aria-expanded','false'); });
+    document.querySelectorAll('.faq-a').forEach(function(e){ e.classList.remove('open'); });
+    if (!open) { a.classList.add('open'); btn.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
   }
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
 </script>

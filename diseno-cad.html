@@ -514,11 +514,11 @@
     <div class="eyebrow" data-i18n="cad.faq.ey">Preguntas frecuentes</div>
     <h2 class="sech2" style="margin-bottom:36px" data-i18n="cad.faq.h2">Resolvemos tus <em>dudas</em></h2>
     <div class="faq-list">
-      <div class="faq-item"><button class="faq-q" onclick="faq(this)"><span data-i18n="cad.q1">¿Necesito cuenta para cotizar?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a1">No. Puedes escribirnos por WhatsApp sin registro. La cuenta es útil para seguimiento en vivo y notificaciones automáticas.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faq(this)"><span data-i18n="cad.q2">¿Qué formatos aceptan?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a2">STL, OBJ, PLY, proyectos Exocad (.constructioninfo) y 3Shape (.3oxz/.3ox). Si tienes otro, consúltanos.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faq(this)"><span data-i18n="cad.q3">¿Puedo ver el diseño antes de recibirlo?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a3">Sí. Enviamos capturas del diseño antes de la entrega final. Si algo no convence, ajustamos sin costo adicional.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faq(this)"><span data-i18n="cad.q4">¿El STL es compatible con mi fresadora?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a4">Entregamos STL estándar, compatible con Roland, Zirkonzahn, VHF, Straumann, Amann Girrbach y cualquier fresadora con archivos abiertos.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faq(this)"><span data-i18n="cad.q5">¿Trabajan con clientes fuera de Colombia?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a5">Sí. El servicio CAD es 100 % digital. Trabajamos con laboratorios y clínicas en más de 20 países. Entrega por descarga o email.</div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false" onclick="faq(this)"><span data-i18n="cad.q1">¿Necesito cuenta para cotizar?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a1">No. Puedes escribirnos por WhatsApp sin registro. La cuenta es útil para seguimiento en vivo y notificaciones automáticas.</div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false" onclick="faq(this)"><span data-i18n="cad.q2">¿Qué formatos aceptan?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a2">STL, OBJ, PLY, proyectos Exocad (.constructioninfo) y 3Shape (.3oxz/.3ox). Si tienes otro, consúltanos.</div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false" onclick="faq(this)"><span data-i18n="cad.q3">¿Puedo ver el diseño antes de recibirlo?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a3">Sí. Enviamos capturas del diseño antes de la entrega final. Si algo no convence, ajustamos sin costo adicional.</div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false" onclick="faq(this)"><span data-i18n="cad.q4">¿El STL es compatible con mi fresadora?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a4">Entregamos STL estándar, compatible con Roland, Zirkonzahn, VHF, Straumann, Amann Girrbach y cualquier fresadora con archivos abiertos.</div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false" onclick="faq(this)"><span data-i18n="cad.q5">¿Trabajan con clientes fuera de Colombia?</span><i class="fas fa-chevron-down"></i></button><div class="faq-a" data-i18n="cad.a5">Sí. El servicio CAD es 100 % digital. Trabajamos con laboratorios y clínicas en más de 20 países. Entrega por descarga o email.</div></div>
     </div>
   </div>
 </section>
@@ -536,8 +536,9 @@
 <script>
   function faq(btn) {
     var a = btn.nextElementSibling, open = a.classList.contains('open');
-    document.querySelectorAll('.faq-a,.faq-q').forEach(function(e){ e.classList.remove('open'); });
-    if (!open) { a.classList.add('open'); btn.classList.add('open'); }
+    document.querySelectorAll('.faq-q').forEach(function(e){ e.classList.remove('open'); e.setAttribute('aria-expanded','false'); });
+    document.querySelectorAll('.faq-a').forEach(function(e){ e.classList.remove('open'); });
+    if (!open) { a.classList.add('open'); btn.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
   }
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
 </script>
