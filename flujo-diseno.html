@@ -2027,6 +2027,13 @@ function fdToast(msg, type){
 }
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script>
+document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
+    var nav = document.getElementById('nav-overlay'); if (nav) { nav.style.display = 'none'; document.getElementById('mobile-nav')?.classList.remove('open'); }
+});
+</script>
 </body>
 </html>
 
