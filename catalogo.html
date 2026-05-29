@@ -427,12 +427,12 @@
 
 <!-- FILTROS -->
 <div class="filters-bar">
-    <div class="filters" id="filterBtns">
-        <button class="filter-btn active" data-cat="todos" onclick="filtrar('todos',this)">Todos</button>
-        <button class="filter-btn" data-cat="fresado" onclick="filtrar('fresado',this)">Fresado</button>
-        <button class="filter-btn" data-cat="impresion" onclick="filtrar('impresion',this)">Impresión 3D</button>
-        <button class="filter-btn" data-cat="provisional" onclick="filtrar('provisional',this)">Provisionales</button>
-        <button class="filter-btn" data-cat="definitivo" onclick="filtrar('definitivo',this)">Definitivos</button>
+    <div class="filters" id="filterBtns" role="group" aria-label="Filtrar por categoría">
+        <button type="button" class="filter-btn active" data-cat="todos" onclick="filtrar('todos',this)" aria-pressed="true">Todos</button>
+        <button type="button" class="filter-btn" data-cat="fresado" onclick="filtrar('fresado',this)" aria-pressed="false">Fresado</button>
+        <button type="button" class="filter-btn" data-cat="impresion" onclick="filtrar('impresion',this)" aria-pressed="false">Impresión 3D</button>
+        <button type="button" class="filter-btn" data-cat="provisional" onclick="filtrar('provisional',this)" aria-pressed="false">Provisionales</button>
+        <button type="button" class="filter-btn" data-cat="definitivo" onclick="filtrar('definitivo',this)" aria-pressed="false">Definitivos</button>
     </div>
 </div>
 
@@ -562,8 +562,8 @@ let catActual = 'todos';
 
 function filtrar(cat, btn) {
     catActual = cat;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+    btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
     renderGrid();
 }
 
