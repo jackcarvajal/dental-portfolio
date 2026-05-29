@@ -845,8 +845,8 @@ async function generarOrden() {
   var antagonista = document.getElementById('rx-antagonista').value;
   var oclusion    = document.getElementById('rx-oclusion').value;
 
-  if (!doctor) { const fd=document.getElementById('rx-doctor'); fd.style.outline='2px solid #f87171'; fd.focus(); setTimeout(()=>fd.style.outline='',2500); return; }
-  if (!document.getElementById('checkHabeas').checked) { const hb=document.getElementById('checkHabeas'); hb.scrollIntoView({behavior:'smooth',block:'center'}); hb.style.outline='2px solid #f87171'; setTimeout(()=>hb.style.outline='',2500); return; }
+  if (!doctor) { const fd=document.getElementById('rx-doctor'); fd.style.outline='2px solid #f87171'; fd.setAttribute('aria-invalid','true'); fd.focus(); setTimeout(()=>{fd.style.outline='';fd.removeAttribute('aria-invalid');},2500); return; }
+  if (!document.getElementById('checkHabeas').checked) { const hb=document.getElementById('checkHabeas'); hb.scrollIntoView({behavior:'smooth',block:'center'}); hb.style.outline='2px solid #f87171'; hb.setAttribute('aria-invalid','true'); setTimeout(()=>{hb.style.outline='';hb.removeAttribute('aria-invalid');},2500); return; }
 
   var btn = document.getElementById('btn-generar');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Generando orden...'; }
