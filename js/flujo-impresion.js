@@ -173,7 +173,8 @@
 
         function toggleAccordion(header) {
             const accordion = header.parentElement;
-            accordion.classList.toggle('active');
+            const isOpen = accordion.classList.toggle('active');
+            header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         }
 
         function toggleOtroOrigen() {
