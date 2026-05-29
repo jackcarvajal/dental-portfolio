@@ -216,6 +216,7 @@
 
         function showError(element, message) {
             element.classList.add('input-error');
+            element.setAttribute('aria-invalid', 'true');
             const existingTooltip = element.parentElement.querySelector('.tooltip-error');
             if (existingTooltip) existingTooltip.remove();
 
@@ -230,6 +231,7 @@
 
         function clearError(element) {
             element.classList.remove('input-error');
+            element.setAttribute('aria-invalid', 'false');
             const tooltip = element.parentElement.querySelector('.tooltip-error');
             if (tooltip) tooltip.remove();
         }

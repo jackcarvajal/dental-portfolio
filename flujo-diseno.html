@@ -1138,6 +1138,7 @@ window.submitOrden     = window.submitOrden      || function(){};
             const el = document.getElementById(id);
             if (!el) return;
             el.classList.add('input-error');
+            el.setAttribute('aria-invalid', 'true');
             const existing = el.parentElement.querySelector('.tooltip-error');
             if (existing) existing.remove();
             const tip = document.createElement('div');
@@ -1146,7 +1147,7 @@ window.submitOrden     = window.submitOrden      || function(){};
             el.parentElement.appendChild(tip);
             el.scrollIntoView({ behavior:'smooth', block:'center' });
             el.focus();
-            setTimeout(() => { tip.remove(); el.classList.remove('input-error'); }, 2800);
+            setTimeout(() => { tip.remove(); el.classList.remove('input-error'); el.setAttribute('aria-invalid','false'); }, 2800);
         }
 
         function toggleAccordion(header) { header.parentElement.classList.toggle('active'); }
