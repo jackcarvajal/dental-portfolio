@@ -529,14 +529,14 @@
                 <div class="frow">
                     <div class="fg">
                         <label for="fecha_cita">Fecha deseada *</label>
-                        <input type="date" id="fecha_cita" autocomplete="off" required>
+                        <input type="date" id="fecha_cita" autocomplete="off" required aria-describedby="fecha-hint">
                     </div>
                     <div class="fg">
                         <label for="num_piezas">Número de pacientes</label>
                         <input type="number" id="num_piezas" autocomplete="off" min="1" max="10" placeholder="Ej: 2">
                     </div>
                 </div>
-                <p class="fecha-nota"><i class="fas fa-info-circle"></i> Solo L–S. Mínimo 24 h de antelación. Domingos y festivos sin servicio.</p>
+                <p class="fecha-nota" id="fecha-hint"><i class="fas fa-info-circle" aria-hidden="true"></i> Solo L–S. Mínimo 24 h de antelación. Domingos y festivos sin servicio.</p>
 
                 <div class="fg"><label>Franja horaria preferida *</label></div>
                 <div class="franja-grid" id="franjaGrid">

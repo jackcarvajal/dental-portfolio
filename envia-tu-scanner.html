@@ -572,9 +572,9 @@
                 <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
                     <i class="fas fa-cloud-upload-alt"></i>
                     <p><strong>Arrastra aquí</strong> o haz clic para seleccionar</p>
-                    <small>STL, OBJ, PLY, DCM, ZIP — máx. 50 MB</small>
+                    <small id="file-hint">STL, OBJ, PLY, DCM, ZIP — máx. 50 MB</small>
                 </div>
-                <input type="file" id="fileInput" accept=".stl,.obj,.ply,.dcm,.zip">
+                <input type="file" id="fileInput" accept=".stl,.obj,.ply,.dcm,.zip" aria-describedby="file-hint">
 
                 <div class="fpill" id="fpill">
                     <i class="fas fa-file-alt"></i>
