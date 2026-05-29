@@ -91,6 +91,17 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 8)
+- **a11y login**: role=alert + aria-live=assertive en mensajes de error del login (PRODIGY + Alejandro)
+- **a11y reset-password**: aria-live=polite en msg-box (PRODIGY + Alejandro)
+- **a11y onboarding**: aria-live en msg-box + label[for] en ob-nombre/wa/clinica/ciudad
+- **a11y gestionar-casos**: label[for] en editName/editCode/editDate/editDesc
+- **a11y prefers-reduced-motion**: admin-precios.html
+- **ux Escape handlers**: operator-panel (modal-panico+qa), flujo-impresion (global), flujo-fresado (global), flujo-diseno (PRODIGY+Alejandro), flujo-lab
+- **perf**: manifest.json cache 1 día en _headers (PRODIGY + Alejandro)
+- **a11y aria-live**: matGrid catalogo.html + total-badge flujo-lab.html
+- **docs Alejandro PENDIENTES**: ítem 0 urgente SQL RLS agregado
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 7)
 - **a11y aria-live**: matGrid catalogo.html + total-badge flujo-lab.html → role=status + aria-live=polite
 - **a11y label[for]**: flujo-diseno PRODIGY — indicativo, especialidad, origen, envio
