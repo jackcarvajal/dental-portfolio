@@ -675,7 +675,7 @@
         '<div class="pg-tdots"><span></span><span></span><span></span></div>' +
       '</div>' +
       '<div class="pg-chat-input-area">' +
-        '<textarea id="pg-chat-input" placeholder="Escribe tu pregunta…" rows="1" onkeydown="_phdrHandleKey(event)"></textarea>' +
+        '<textarea id="pg-chat-input" placeholder="Escribe tu pregunta…" rows="1" onkeydown="_phdrHandleKey(event)" aria-label="Escribe tu mensaje al asistente IA"></textarea>' +
         '<button id="pg-chat-send" onclick="_phdrSendMsg()" aria-label="Enviar"><i class="fas fa-paper-plane"></i></button>' +
       '</div>' +
     '</div>';
