@@ -248,10 +248,8 @@
         }
 
         function selectMaterial(tipo) {
-            document.querySelectorAll('.material-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            event.currentTarget.classList.add('selected');
+            document.querySelectorAll('.material-card').forEach(card => { card.classList.remove('selected'); card.setAttribute('aria-pressed','false'); });
+            event.currentTarget.classList.add('selected'); event.currentTarget.setAttribute('aria-pressed','true');
             STATE.materialTipo = tipo;
 
             STATE.submaterialId = null;
@@ -1381,10 +1379,8 @@
         function selectTimeSlot(slot) {
             if (event.currentTarget.classList.contains('disabled')) return;
 
-            document.querySelectorAll('.timeline-slot').forEach(s => {
-                s.classList.remove('selected');
-            });
-            event.currentTarget.classList.add('selected');
+            document.querySelectorAll('.timeline-slot').forEach(s => { s.classList.remove('selected'); s.setAttribute('aria-pressed','false'); });
+            event.currentTarget.classList.add('selected'); event.currentTarget.setAttribute('aria-pressed','true');
             STATE.timeSlot = slot;
             calcularTotal();
             actualizarResumenFechas();

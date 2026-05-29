@@ -3026,8 +3026,8 @@
                     <div class="alert alert-info" style="margin-bottom: 20px;">
                         <h4 style="color: var(--gold-primary); margin-bottom: 10px;">⚠️ TIPO DE APLICACIÓN (Obligatorio)</h4>
                         <div style="display:flex;gap:15px;margin-top:15px;">
-                            <div class="process-card" onclick="selectFerulaGuia('ferula')" style="flex:1;"><div class="process-neon-wrapper neon-proc-verde">🛡️</div><h4 style="color:#28a745;">Férula</h4><p>Para bruxismo/protección</p></div>
-                            <div class="process-card" onclick="selectFerulaGuia('guia')" style="flex:1;"><div class="process-neon-wrapper neon-proc-azul-oscuro">🎯</div><h4 style="color:#4A90E2;">Guía Quirúrgica</h4><p>Para implantes</p></div>
+                            <button type="button" class="process-card" onclick="selectFerulaGuia('ferula')" style="flex:1;background:none;border:none;cursor:pointer;text-align:center;" aria-pressed="false"><div class="process-neon-wrapper neon-proc-verde">🛡️</div><h4 style="color:#28a745;">Férula</h4><p>Para bruxismo/protección</p></div>
+                            <button type="button" class="process-card" onclick="selectFerulaGuia('guia')" style="flex:1;background:none;border:none;cursor:pointer;text-align:center;" aria-pressed="false"><div class="process-neon-wrapper neon-proc-azul-oscuro">🎯</div><h4 style="color:#4A90E2;">Guía Quirúrgica</h4><p>Para implantes</p></div>
                         </div>
                     </div>
                     ` : ''}
@@ -3254,12 +3254,12 @@
         }
 
         function selectFerulaGuia(tipo) {
-            const cards = document.querySelectorAll('[onclick^="selectFerulaGuia"]').forEach(el => {
-                el.parentElement.parentElement.querySelectorAll('.process-card').forEach(card => {
-                    card.classList.remove('selected');
-                });
+            document.querySelectorAll('[onclick^="selectFerulaGuia"]').forEach(card => {
+                card.classList.remove('selected');
+                card.setAttribute('aria-pressed','false');
             });
             event.currentTarget.classList.add('selected');
+            event.currentTarget.setAttribute('aria-pressed','true');
             STATE.ferulaGuia = tipo;
             calcularTotal();
         }

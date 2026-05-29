@@ -261,42 +261,42 @@
                         </div>
                         
                         <div class="material-grid" style="grid-template-columns: repeat(6, 1fr); gap: 10px; max-width: 100%; margin: 0 auto;">
-                            <div class="material-card" onclick="selectMaterial('resina_modelo')">
+                            <button type="button" class="material-card" onclick="selectMaterial('resina_modelo')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #00d2ff;box-shadow:0 0 15px rgba(0,210,255,0.3);">
                                     <i class="fas fa-layer-group" style="font-size:2.2rem;color:#00d2ff;"></i>
                                 </div>
                                 <h3>Modelos</h3>
                                 <p class="desc">Yeso Digital<br>y Troqueles</p>
                             </div>
-                            <div class="material-card" onclick="selectMaterial('resina_temporal')">
+                            <button type="button" class="material-card" onclick="selectMaterial('resina_temporal')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fbbf24;box-shadow:0 0 15px rgba(251,191,36,0.3);">
                                     <i class="fas fa-stopwatch" style="font-size:2.2rem;color:#fbbf24;"></i>
                                 </div>
                                 <h3>Temporales</h3>
                                 <p class="desc">Provisionales<br>y Prototipos</p>
                             </div>
-                            <div class="material-card" onclick="selectMaterial('resina_definitiva')">
+                            <button type="button" class="material-card" onclick="selectMaterial('resina_definitiva')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #a78bfa;box-shadow:0 0 15px rgba(167,139,250,0.3);">
                                     <i class="fas fa-gem" style="font-size:2.2rem;color:#a78bfa;"></i>
                                 </div>
                                 <h3>Definitivas</h3>
                                 <p class="desc">Carga Cerámica<br>Alta Gama</p>
                             </div>
-                            <div class="material-card" onclick="selectMaterial('resina_calcinable')">
+                            <button type="button" class="material-card" onclick="selectMaterial('resina_calcinable')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fb923c;box-shadow:0 0 15px rgba(251,146,60,0.4);">
                                     <i class="fas fa-fire-flame-curved" style="font-size:2.2rem;color:#fb923c;"></i>
                                 </div>
                                 <h3>Calcinables</h3>
                                 <p class="desc">Inyección<br>/ Fundición</p>
                             </div>
-                            <div class="material-card" onclick="selectMaterial('resina_ferulas_guias')">
+                            <button type="button" class="material-card" onclick="selectMaterial('resina_ferulas_guias')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #10b981;box-shadow:0 0 15px rgba(16,185,129,0.3);">
                                     <i class="fas fa-crosshairs" style="font-size:2.2rem;color:#10b981;"></i>
                                 </div>
                                 <h3>Férulas y Guías</h3>
                                 <p class="desc">Quirúrgicas<br>y Splint</p>
                             </div>
-                            <div class="material-card" onclick="selectMaterial('resina_biomodelos')">
+                            <button type="button" class="material-card" onclick="selectMaterial('resina_biomodelos')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #9ca3af;box-shadow:0 0 15px rgba(156,163,175,0.3);">
                                     <i class="fas fa-skull" style="font-size:2.2rem;color:#d4c5a9;"></i>
                                 </div>
@@ -368,17 +368,17 @@
                 </div>
                 
                 <div class="timeline-slots">
-                    <div class="timeline-slot disabled" data-slot="express" onclick="selectTimeSlot('express')">
+                    <button type="button" class="timeline-slot disabled" data-slot="express" onclick="selectTimeSlot('express')" aria-pressed="false" aria-disabled="true">
                         <span class="slot-badge">CORTE 9 AM</span>
                         <h4>🚀 9:00 AM</h4>
                         <p id="date-express">Selecciona material</p>
                     </div>
-                    <div class="timeline-slot" data-slot="mediodia" onclick="selectTimeSlot('mediodia')">
+                    <button type="button" class="timeline-slot" data-slot="mediodia" onclick="selectTimeSlot('mediodia')" aria-pressed="false">
                         <span class="slot-badge">CORTE 12 PM</span>
                         <h4>☀️ 12:00 PM</h4>
                         <p id="date-mediodia">Selecciona material</p>
                     </div>
-                    <div class="timeline-slot" data-slot="tarde" onclick="selectTimeSlot('tarde')">
+                    <button type="button" class="timeline-slot" data-slot="tarde" onclick="selectTimeSlot('tarde')" aria-pressed="false">
                         <span class="slot-badge">CORTE 5 PM</span>
                         <h4>🌙 5:00 PM</h4>
                         <p id="date-tarde">Selecciona material</p>
