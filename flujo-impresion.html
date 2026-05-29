@@ -93,7 +93,7 @@
             CICLO EN PRODUCCIÓN
         </span>
         <span style="font-size:0.78rem;color:#e2e8f0;" id="banner-msg">Cerramos recepción de casos hoy a las <strong style="color:#fbbf24;">5:00 PM</strong>. Envía tu orden antes para garantizar tu turno.</span>
-        <button onclick="document.getElementById('banner-ciclo').style.display='none'" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:0.9rem;padding:0 4px;">✕</button>
+        <button type="button" onclick="document.getElementById('banner-ciclo').style.display='none'" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:0.9rem;padding:0 4px;">✕</button>
     </div>
     <style>@keyframes pulseBanner{0%,100%{opacity:1}50%{opacity:0.3}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
@@ -115,12 +115,12 @@
     <div class="container">
         <header>
             <!-- Menú Hamburguesa -->
-            <button class="hamburger-menu" onclick="toggleMenu()" title="Menú de navegación">
+            <button type="button" class="hamburger-menu" onclick="toggleMenu()" title="Menú de navegación">
                 <i class="fas fa-bars"></i>
             </button>
             
             <!-- Botón Theme Toggle -->
-            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Cambiar tema">
+            <button type="button" class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Cambiar tema">
                 🌙
             </button>
             
@@ -574,13 +574,13 @@
                     <span style="font-size:.75rem;color:#94a3b8;">Sin comisión. PSE / tarjeta: +3% Wompi.</span></span>
                 </label>
             </div>
-            <button onclick="pagarConWompi()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-bottom:12px;">
+            <button type="button" onclick="pagarConWompi()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-bottom:12px;">
                 💳 Pagar con Wompi (PSE / Tarjeta)
             </button>
             <div class="payment-buttons">
-                <button class="payment-btn btn-nequi" onclick="showPaymentModal('nequi')">💙 NEQUI</button>
-                <button class="payment-btn btn-davi" onclick="showPaymentModal('daviplata')">💗 DAVIPLATA</button>
-                <button class="payment-btn btn-banco" onclick="showPaymentModal('banco')">🏦 BRE-B</button>
+                <button type="button" class="payment-btn btn-nequi" onclick="showPaymentModal('nequi')">💙 NEQUI</button>
+                <button type="button" class="payment-btn btn-davi" onclick="showPaymentModal('daviplata')">💗 DAVIPLATA</button>
+                <button type="button" class="payment-btn btn-banco" onclick="showPaymentModal('banco')">🏦 BRE-B</button>
             </div>
             </div><!-- /pago-co -->
 
@@ -650,7 +650,7 @@
                 </div>
             </div>
 
-            <button class="payment-btn btn-submit" id="btn-submit" onclick="submitOrder()" disabled>
+            <button type="button" class="payment-btn btn-submit" id="btn-submit" onclick="submitOrder()" disabled>
                 🚀 GENERAR ORDEN 🎯
             </button>
 
@@ -670,7 +670,7 @@
 
     <div class="modal" id="modal-payment">
         <div class="modal-content" style="position:relative;">
-            <button class="modal-close-x" onclick="closeModal('modal-payment')" title="Cerrar"><i class="fas fa-times"></i></button>
+            <button type="button" class="modal-close-x" onclick="closeModal('modal-payment')" title="Cerrar"><i class="fas fa-times"></i></button>
             <h3 id="modal-payment-title">Información de Pago</h3>
             <div id="modal-payment-body"></div>
         </div>
@@ -711,8 +711,8 @@
             <input type="hidden" id="recargo-distancia" value="0">
 
             <div class="modal-buttons" style="display: flex; gap: 12px; margin-top: 20px;">
-                <button class="modal-btn modal-btn-cancel" onclick="closeModal('modal-confirmation')" style="flex: 1;">Cancelar</button>
-                <button id="btn-whatsapp-confirm" class="modal-btn modal-btn-confirm" onclick="sendToWhatsApp()" disabled style="flex: 2; background: linear-gradient(135deg, var(--neon-green) 0%, #00CC35 100%); font-weight: 700; opacity:0.5; cursor:not-allowed;">
+                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeModal('modal-confirmation')" style="flex: 1;">Cancelar</button>
+                <button type="button" id="btn-whatsapp-confirm" class="modal-btn modal-btn-confirm" onclick="sendToWhatsApp()" disabled style="flex: 2; background: linear-gradient(135deg, var(--neon-green) 0%, #00CC35 100%); font-weight: 700; opacity:0.5; cursor:not-allowed;">
                     🚀 CONFIRMAR Y ABRIR WHATSAPP
                 </button>
             </div>
@@ -742,7 +742,7 @@
                 </div>
             </div>
             <div class="modal-buttons">
-                <button class="modal-btn modal-btn-confirm" onclick="closeModal('modal-terms')" style="width: 100%;">Entendido</button>
+                <button type="button" class="modal-btn modal-btn-confirm" onclick="closeModal('modal-terms')" style="width: 100%;">Entendido</button>
             </div>
         </div>
     </div>
@@ -756,19 +756,19 @@
                 <p style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                     <strong style="color:var(--gold-primary);">ID Orden:</strong>
                     <span id="exito-orden-id">—</span>
-                    <button onclick="copiarId()" style="background:rgba(0,210,255,.15);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;" title="Copiar ID">📋 Copiar</button>
+                    <button type="button" onclick="copiarId()" style="background:rgba(0,210,255,.15);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;" title="Copiar ID">📋 Copiar</button>
                 </p>
                 <p style="margin-top:6px;"><strong style="color:var(--gold-primary);">Cliente:</strong> <span id="exito-cliente">—</span></p>
                 <p style="margin-top:6px;"><strong style="color:var(--gold-primary);">Total:</strong> <span id="exito-total">—</span></p>
             </div>
             <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:15px;">Selecciona tu método de pago:</p>
             <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
-                <button class="payment-btn btn-nequi" onclick="showPaymentModal('nequi');closeModal('modal-exito');">💙 NEQUI</button>
-                <button class="payment-btn btn-davi" onclick="showPaymentModal('daviplata');closeModal('modal-exito');">💗 DAVIPLATA</button>
-                <button class="payment-btn btn-banco" onclick="showPaymentModal('banco');closeModal('modal-exito');">🏦 BRE-B</button>
+                <button type="button" class="payment-btn btn-nequi" onclick="showPaymentModal('nequi');closeModal('modal-exito');">💙 NEQUI</button>
+                <button type="button" class="payment-btn btn-davi" onclick="showPaymentModal('daviplata');closeModal('modal-exito');">💗 DAVIPLATA</button>
+                <button type="button" class="payment-btn btn-banco" onclick="showPaymentModal('banco');closeModal('modal-exito');">🏦 BRE-B</button>
             </div>
-            <button onclick="generarTarjetaIG()" style="width:100%;padding:11px;margin-bottom:10px;background:linear-gradient(135deg,#833AB4,#FD1D1D,#F77737);border:none;border-radius:50px;color:#fff;font-weight:700;font-size:0.9rem;cursor:pointer;letter-spacing:0.5px;">📸 Compartir en Instagram</button>
-            <button class="pay-copy" style="width:100%;padding:12px;" onclick="closeModal('modal-exito');location.reload();">+ Nueva Orden</button>
+            <button type="button" onclick="generarTarjetaIG()" style="width:100%;padding:11px;margin-bottom:10px;background:linear-gradient(135deg,#833AB4,#FD1D1D,#F77737);border:none;border-radius:50px;color:#fff;font-weight:700;font-size:0.9rem;cursor:pointer;letter-spacing:0.5px;">📸 Compartir en Instagram</button>
+            <button type="button" class="pay-copy" style="width:100%;padding:12px;" onclick="closeModal('modal-exito');location.reload();">+ Nueva Orden</button>
         </div>
     </div>
     <canvas id="ig-canvas" style="display:none;"></canvas>
@@ -778,7 +778,7 @@
     <!-- Menú Lateral -->
     <nav class="nav-menu" id="nav-menu">
         <div class="nav-menu-header">
-            <button class="nav-close-btn" onclick="toggleMenu()" title="Cerrar">✕</button>
+            <button type="button" class="nav-close-btn" onclick="toggleMenu()" title="Cerrar">✕</button>
             <div style="font-size:1.5rem;margin-bottom:3px;">🧭</div>
             <h3>NAVEGACIÓN</h3>
         </div>
@@ -815,16 +815,16 @@
     </nav>
 
     <!-- Botón Scroll to Top -->
-    <button class="scroll-to-top" id="scrollToTop" onclick="scrollToTop()" title="Volver arriba">
+    <button type="button" class="scroll-to-top" id="scrollToTop" onclick="scrollToTop()" title="Volver arriba">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <!-- Botones Flotantes -->
     <div class="floating-buttons">
-        <button class="floating-btn translate-btn" onclick="translatePage()" title="Traducir página">
+        <button type="button" class="floating-btn translate-btn" onclick="translatePage()" title="Traducir página">
             <i class="fas fa-language"></i>
         </button>
-        <button class="floating-btn help-btn" onclick="showHelp()" title="Ayuda">
+        <button type="button" class="floating-btn help-btn" onclick="showHelp()" title="Ayuda">
             <i class="fas fa-question"></i>
         </button>
     </div>
@@ -834,7 +834,7 @@
     <div id="modal-guia-modelos" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
         <div class="modal-content" style="background: var(--bg-card); width: 95%; max-width: 900px; max-height: 90vh; overflow-y: auto; border-radius: 12px; border: 1px solid var(--border-color); padding: 30px; position: relative;">
             
-            <button onclick="document.getElementById('modal-guia-modelos').style.display='none'" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer;">
+            <button type="button" onclick="document.getElementById('modal-guia-modelos').style.display='none'" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer;">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
@@ -875,7 +875,7 @@
     <div id="modal-guia-temporales" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
         <div class="modal-content" style="background: var(--bg-card); width: 95%; max-width: 900px; max-height: 90vh; overflow-y: auto; border-radius: 12px; border: 1px solid var(--border-color); padding: 30px; position: relative;">
             
-            <button onclick="document.getElementById('modal-guia-temporales').style.display='none'" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer;">
+            <button type="button" onclick="document.getElementById('modal-guia-temporales').style.display='none'" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer;">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
@@ -917,7 +917,7 @@
     <div id="modal-guia-ferulas" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
         <div class="modal-content" style="background: var(--bg-card); width: 95%; max-width: 900px; max-height: 90vh; overflow-y: auto; border-radius: 12px; border: 1px solid var(--border-color); padding: 30px; position: relative;">
             
-            <button onclick="document.getElementById('modal-guia-ferulas').style.display='none'" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer;">
+            <button type="button" onclick="document.getElementById('modal-guia-ferulas').style.display='none'" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer;">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
@@ -989,7 +989,7 @@
                 <h3 style="color: #d4c5a9; margin: 0; display: flex; align-items: center; gap: 10px;">
                     <i class="fas fa-skull"></i> Guía Clínica: Biomodelos FDM
                 </h3>
-                <button onclick="document.getElementById('modal-guia-biomodelos').style.display='none'" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0; width: 30px; height: 30px;">&times;</button>
+                <button type="button" onclick="document.getElementById('modal-guia-biomodelos').style.display='none'" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0; width: 30px; height: 30px;">&times;</button>
             </div>
 
             <div style="background: rgba(212,197,169,0.08); border: 1px solid rgba(212,197,169,0.3); border-radius: 8px; padding: 15px; margin-bottom: 20px;">
@@ -1024,7 +1024,7 @@
                 <h3 style="color: var(--accent-cyan); margin: 0; display: flex; align-items: center; gap: 10px;">
                     <i class="fa-solid fa-gem"></i> Guía Clínica: Resinas Definitivas
                 </h3>
-                <button onclick="document.getElementById('modal-guia-definitivas').style.display='none'" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0; width: 30px; height: 30px;">&times;</button>
+                <button type="button" onclick="document.getElementById('modal-guia-definitivas').style.display='none'" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0; width: 30px; height: 30px;">&times;</button>
             </div>
             <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">
                 Servicio de impresión 3D en resinas biocompatibles de larga duración (alta carga cerámica). <strong>Nota:</strong> Las piezas se entregan lavadas, fotocuradas y con los soportes retirados, listas para que el laboratorio realice la caracterización, pulido mecánico o glaseado fotopolimerizable final.
@@ -1059,7 +1059,7 @@
                 <h3 style="color: #fb923c; margin: 0; display: flex; align-items: center; gap: 10px;">
                     <i class="fa-solid fa-fire"></i> Guía Clínica: Resinas Calcinables
                 </h3>
-                <button onclick="document.getElementById('modal-guia-calcinables').style.display='none'" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0; width: 30px; height: 30px;">&times;</button>
+                <button type="button" onclick="document.getElementById('modal-guia-calcinables').style.display='none'" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0; width: 30px; height: 30px;">&times;</button>
             </div>
             <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">
                 Servicio de impresión de patrones para técnicas de colado tradicional o inyección de cerámica (ej. E.max). Resinas formuladas para un burnout limpio sin dejar residuos ni cenizas.
@@ -1087,7 +1087,7 @@
             <div style="height:3px; background:linear-gradient(90deg,#9B5DE5,#D946A6,#D4AF37); position:absolute; top:0; left:0; right:0;"></div>
             <h3 id="custom-alert-title" style="color:#e2e8f0; font-size:1.25rem; margin:10px 0 12px; font-weight:700;"></h3>
             <p id="custom-alert-message" style="color:#a8a8a8; font-size:0.95rem; line-height:1.6; margin-bottom:24px;"></p>
-            <button id="custom-alert-btn" onclick="closeProdigyAlert()" style="background:linear-gradient(135deg,#D946A6,#9B5DE5); color:#fff; border:none; padding:12px 32px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.95rem; letter-spacing:0.5px;"></button>
+            <button type="button" id="custom-alert-btn" onclick="closeProdigyAlert()" style="background:linear-gradient(135deg,#D946A6,#9B5DE5); color:#fff; border:none; padding:12px 32px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.95rem; letter-spacing:0.5px;"></button>
         </div>
     </div>
 
@@ -1201,7 +1201,7 @@
             b.innerHTML=`<i class="fas fa-link" style="color:#00d2ff;margin-top:2px;flex-shrink:0;"></i>
                 <div><strong style="color:#00d2ff;">Fabricación vinculada al diseño #${_fiEsc(p.codigo||_fd.slice(0,8))}</strong>
                 ${stlCount?`<br><span style="color:#fbbf24;font-size:.76rem;"><i class="fas fa-cube" style="margin-right:3px;"></i>El diseño tiene <strong>${stlCount} STL</strong> — verifica que la cantidad coincida.</span>`:''}
-                </div><button onclick="this.parentElement.remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:1rem;padding:0 4px;">✕</button>`;
+                </div><button type="button" onclick="this.parentElement.remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:1rem;padding:0 4px;">✕</button>`;
             document.body.appendChild(b);
             setTimeout(()=>b?.remove(),20000);
         } catch(e){}
