@@ -1861,13 +1861,13 @@ const lineWompi = document.getElementById('line-wompi');
             let c = '';
             if (tipo === 'nequi') {
                 titulo.textContent = '💙 PAGAR CON NEQUI';
-                c = `${pill}<div class="pay-box"><h3 style="color:#9B5DE5;margin-bottom:8px;">Jessica Mendez</h3><div class="pay-num">${NUM}</div><button class="pay-copy" onclick="navigator.clipboard.writeText('${NUM}');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500)">📋 Copiar número</button><p class="pay-info">📸 Envía el comprobante por WhatsApp al confirmar</p></div>`;
+                c = `${pill}<div class="pay-box"><h3 style="color:#9B5DE5;margin-bottom:8px;">Jessica Mendez</h3><div class="pay-num">${NUM}</div><button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('${NUM}');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500)">📋 Copiar número</button><p class="pay-info">📸 Envía el comprobante por WhatsApp al confirmar</p></div>`;
             } else if (tipo === 'davi') {
                 titulo.textContent = '💗 PAGAR CON DAVIPLATA';
-                c = `${pill}<div class="pay-box"><h3 style="color:#E91E8C;margin-bottom:8px;">Jessica Mendez</h3><div class="pay-num">${NUM}</div><button class="pay-copy" onclick="navigator.clipboard.writeText('${NUM}');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500)">📋 Copiar número</button><p class="pay-info">Usa el número directamente en tu app Daviplata</p></div>`;
+                c = `${pill}<div class="pay-box"><h3 style="color:#E91E8C;margin-bottom:8px;">Jessica Mendez</h3><div class="pay-num">${NUM}</div><button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('${NUM}');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500)">📋 Copiar número</button><p class="pay-info">Usa el número directamente en tu app Daviplata</p></div>`;
             } else if (tipo === 'banco') {
                 titulo.textContent = '🏦 BRE-B / NU';
-                c = `${pill}<div class="pay-box"><h3 style="margin-bottom:8px;">Jessica Mendez Carmelo</h3><div class="pay-num" style="font-size:1.3rem;letter-spacing:1px;">@LXY423</div><button class="pay-copy" onclick="navigator.clipboard.writeText('LXY423');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar llave Nu',1500)">📋 Copiar llave Nu</button><p class="pay-info">Cuenta Nu: 22253814 · CE: 7582423</p></div>`;
+                c = `${pill}<div class="pay-box"><h3 style="margin-bottom:8px;">Jessica Mendez Carmelo</h3><div class="pay-num" style="font-size:1.3rem;letter-spacing:1px;">@LXY423</div><button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('LXY423');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar llave Nu',1500)">📋 Copiar llave Nu</button><p class="pay-info">Cuenta Nu: 22253814 · CE: 7582423</p></div>`;
             }
             body.innerHTML = c;
             document.getElementById('modal-pago').classList.add('active');
