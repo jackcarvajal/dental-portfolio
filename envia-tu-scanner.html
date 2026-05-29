@@ -520,37 +520,37 @@
                     <label for="svcHidden">Trabajo solicitado *</label>
                 </div>
                 <div class="svc-grid" id="svcGrid">
-                    <div class="svc-btn sel" data-val="Corona unitaria" onclick="selSvc(this)">
+                    <button type="button" class="svc-btn sel" data-val="Corona unitaria" onclick="selSvc(this)" aria-pressed="true">
                         <span class="ico">👑</span>
                         <div class="lbl">Corona unitaria</div>
                         <div class="prc">desde $180K</div>
                     </div>
-                    <div class="svc-btn" data-val="Carilla" onclick="selSvc(this)">
+                    <button type="button" class="svc-btn" data-val="Carilla" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">✨</span>
                         <div class="lbl">Carilla</div>
                         <div class="prc">desde $220K</div>
                     </div>
-                    <div class="svc-btn" data-val="Inlay / Onlay" onclick="selSvc(this)">
+                    <button type="button" class="svc-btn" data-val="Inlay / Onlay" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">🔷</span>
                         <div class="lbl">Inlay / Onlay</div>
                         <div class="prc">desde $160K</div>
                     </div>
-                    <div class="svc-btn" data-val="Puente" onclick="selSvc(this)">
+                    <button type="button" class="svc-btn" data-val="Puente" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">🌉</span>
                         <div class="lbl">Puente</div>
                         <div class="prc">desde $480K</div>
                     </div>
-                    <div class="svc-btn" data-val="Provisional CAD" onclick="selSvc(this)">
+                    <button type="button" class="svc-btn" data-val="Provisional CAD" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">🏗️</span>
                         <div class="lbl">Provisional CAD</div>
                         <div class="prc">desde $90K</div>
                     </div>
-                    <div class="svc-btn" data-val="Modelo 3D impreso" onclick="selSvc(this)">
+                    <button type="button" class="svc-btn" data-val="Modelo 3D impreso" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">🖨️</span>
                         <div class="lbl">Modelo 3D</div>
                         <div class="prc">desde $60K</div>
                     </div>
-                    <div class="svc-btn" data-val="Otro" onclick="selSvc(this)">
+                    <button type="button" class="svc-btn" data-val="Otro" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">📋</span>
                         <div class="lbl">Otro</div>
                         <div class="prc">describir abajo</div>
@@ -728,8 +728,9 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 /* ── Selección de servicio ── */
 function selSvc(el) {
-    document.querySelectorAll('.svc-btn').forEach(b => b.classList.remove('sel'));
+    document.querySelectorAll('.svc-btn').forEach(b => { b.classList.remove('sel'); b.setAttribute('aria-pressed','false'); });
     el.classList.add('sel');
+    el.setAttribute('aria-pressed','true');
     document.getElementById('svcHidden').value = el.dataset.val;
 }
 window.selSvc = selSvc;

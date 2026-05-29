@@ -252,7 +252,7 @@
           <small>Materiales en stock — L-S 8am-5pm</small>
         </div>
         <span class="tog-price">+$40K</span>
-        <div class="tog" id="tog-urgente" onclick="togOp('urgente', this)"></div>
+        <button type="button" class="tog" id="tog-urgente" role="switch" aria-checked="false" aria-label="Entrega urgente" onclick="togOp('urgente', this)"></button>
       </div>
       <div class="tog-row">
         <div class="tog-info">
@@ -260,7 +260,7 @@
           <small>Aplicación de glaze cerámico estético</small>
         </div>
         <span class="tog-price">+$30K</span>
-        <div class="tog" id="tog-glaze" onclick="togOp('glaze', this)"></div>
+        <button type="button" class="tog" id="tog-glaze" role="switch" aria-checked="false" aria-label="Glasurado" onclick="togOp('glaze', this)"></button>
       </div>
       <div class="tog-row">
         <div class="tog-info">
@@ -268,7 +268,7 @@
           <small>Mensajero PRODIGY — zona metropolitana Bogotá</small>
         </div>
         <span class="tog-price">+$20K</span>
-        <div class="tog" id="tog-envio" onclick="togOp('envio', this)"></div>
+        <button type="button" class="tog" id="tog-envio" role="switch" aria-checked="false" aria-label="Envío a domicilio" onclick="togOp('envio', this)"></button>
       </div>
     </div>
 
@@ -407,7 +407,7 @@ function chgQty(d) {
 }
 function togOp(key, el) {
   ST[key] = !ST[key];
-  el.classList.toggle('on', ST[key]);
+  el.classList.toggle('on', ST[key]); el.setAttribute('aria-checked', ST[key] ? 'true' : 'false');
   render();
 }
 

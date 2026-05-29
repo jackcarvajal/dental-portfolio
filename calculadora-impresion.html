@@ -235,7 +235,7 @@
           <small>Prioridad en impresión y postcurado</small>
         </div>
         <span class="tog-price">+$35K</span>
-        <div class="tog" onclick="togOp('urgente', this)"></div>
+        <button type="button" class="tog" role="switch" aria-checked="false" aria-label="Entrega urgente" onclick="togOp('urgente', this)"></button>
       </div>
       <div class="tog-row">
         <div class="tog-info">
@@ -243,7 +243,7 @@
           <small>Coloración de resina del modelo para mayor detalle</small>
         </div>
         <span class="tog-price">+$25K</span>
-        <div class="tog" onclick="togOp('pintura', this)"></div>
+        <button type="button" class="tog" role="switch" aria-checked="false" aria-label="Pintura personalizada" onclick="togOp('pintura', this)"></button>
       </div>
       <div class="tog-row">
         <div class="tog-info">
@@ -251,7 +251,7 @@
           <small>Mensajero PRODIGY — zona metropolitana Bogotá</small>
         </div>
         <span class="tog-price">+$20K</span>
-        <div class="tog" onclick="togOp('envio', this)"></div>
+        <button type="button" class="tog" role="switch" aria-checked="false" aria-label="Envío a domicilio" onclick="togOp('envio', this)"></button>
       </div>
     </div>
 
@@ -354,7 +354,7 @@ function render() {
 function selSrv(btn) { document.querySelectorAll('.srv-btn').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); ST.srv=btn.dataset.key; render(); }
 function selMat(btn) { document.querySelectorAll('.mat-chip').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); ST.mat=btn.dataset.mat; render(); }
 function chgQty(d) { ST.qty=Math.max(1,Math.min(20,ST.qty+d)); document.getElementById('qtyNum').textContent=ST.qty; render(); }
-function togOp(k,el) { ST[k]=!ST[k]; el.classList.toggle('on',ST[k]); render(); }
+function togOp(k,el) { ST[k]=!ST[k]; el.classList.toggle('on',ST[k]); el.setAttribute('aria-checked',ST[k]?'true':'false'); render(); }
 
 function abrirWA() {
   if (!document.getElementById('chkHabeas').checked) { toast('Acepta el tratamiento de datos para continuar'); return; }

@@ -174,12 +174,12 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
     <div class="filtro">
       <div class="filtro-label">¿Eres odontólogo, clínica o laboratorio? — ¿Qué necesitas?</div>
       <div class="opts" id="opts">
-        <div class="opt" onclick="sel(this,'corona')"><span class="ico">👑</span><div><div>Corona o puente</div><div class="sub2">Prótesis fija unitaria o múltiple</div></div></div>
-        <div class="opt" onclick="sel(this,'carilla')"><span class="ico">💎</span><div><div>Carillas · Veneers</div><div class="sub2">Disilicato o composite</div></div></div>
-        <div class="opt" onclick="sel(this,'guia')"><span class="ico">🦴</span><div><div>Guía quirúrgica</div><div class="sub2">Planificación de implantes</div></div></div>
-        <div class="opt" onclick="sel(this,'full')"><span class="ico">🎭</span><div><div>Sonrisa completa</div><div class="sub2">DSD · Rehabilitación total</div></div></div>
-        <div class="opt" onclick="sel(this,'prov')"><span class="ico">🦷</span><div><div>Provisional</div><div class="sub2">PMMA · Urgencias</div></div></div>
-        <div class="opt" onclick="sel(this,'otro')"><span class="ico">📐</span><div><div>Otro / No sé</div><div class="sub2">Cuéntanos el caso</div></div></div>
+        <button type="button" class="opt" onclick="sel(this,'corona')" aria-pressed="false" aria-label="Corona o puente"><span class="ico">👑</span><div><div>Corona o puente</div><div class="sub2">Prótesis fija unitaria o múltiple</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'carilla')" aria-pressed="false" aria-label="Carillas y Veneers"><span class="ico">💎</span><div><div>Carillas · Veneers</div><div class="sub2">Disilicato o composite</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'guia')" aria-pressed="false" aria-label="Guía quirúrgica"><span class="ico">🦴</span><div><div>Guía quirúrgica</div><div class="sub2">Planificación de implantes</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'full')" aria-pressed="false" aria-label="Sonrisa completa"><span class="ico">🎭</span><div><div>Sonrisa completa</div><div class="sub2">DSD · Rehabilitación total</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'prov')" aria-pressed="false" aria-label="Provisional"><span class="ico">🦷</span><div><div>Provisional</div><div class="sub2">PMMA · Urgencias</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'otro')" aria-pressed="false" aria-label="Otro o no sé"><span class="ico">📐</span><div><div>Otro / No sé</div><div class="sub2">Cuéntanos el caso</div></div></button>
       </div>
     </div>
 
@@ -793,8 +793,9 @@ function _setWA(tipo) {
 }
 
 function sel(el, tipo) {
-  document.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel');});
+  document.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel');o.setAttribute('aria-pressed','false');});
   el.classList.add('sel');
+  el.setAttribute('aria-pressed','true');
   _setWA(tipo);
   if (window.ProdigyAnalytics) ProdigyAnalytics.track('landing_filtro', { tipo: tipo });
 }

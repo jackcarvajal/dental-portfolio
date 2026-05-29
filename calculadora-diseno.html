@@ -355,7 +355,7 @@
           <small>Diseño en menos de 8h hábiles desde recepción del STL</small>
         </div>
         <span class="tog-price" id="tp-urgente">+$8 USD</span>
-        <div class="tog" onclick="togOp('urgente', this)"></div>
+        <button type="button" class="tog" role="switch" aria-checked="false" aria-label="Entrega urgente" onclick="togOp('urgente', this)"></button>
       </div>
       <div class="tog-row">
         <div class="tog-info">
@@ -371,7 +371,7 @@
           <small>Segunda ronda de modificaciones post-aprobación</small>
         </div>
         <span class="tog-price" id="tp-revision">+$5 USD</span>
-        <div class="tog" onclick="togOp('revision', this)"></div>
+        <button type="button" class="tog" role="switch" aria-checked="false" aria-label="Revisión de diseño" onclick="togOp('revision', this)"></button>
       </div>
     </div>
 
@@ -515,7 +515,7 @@ function chgQty(d) {
 
 function togOp(k, el) {
   ST[k] = !ST[k];
-  el.classList.toggle('on', ST[k]);
+  el.classList.toggle('on', ST[k]); el.setAttribute('aria-checked', ST[k] ? 'true' : 'false');
   render();
 }
 
