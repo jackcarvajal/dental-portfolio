@@ -188,7 +188,7 @@
                                 <span class="error-tooltip" id="error-nombrePaciente"></span>
                             </div>
                             <div class="form-group">
-                                <label>¿Cómo nos conociste? *</label>
+                                <label for="origen">¿Cómo nos conociste? *</label>
                                 <select id="origen" onchange="toggleOtroOrigen()">
                                     <option value="">Seleccionar...</option>
                                     <option value="Consultorio">Consultorio</option>
@@ -456,7 +456,7 @@
 
                         <!-- ── BLOQUE 3: ENVÍO ────────────────────────── -->
                         <div class="form-group" style="margin-top: 4px;">
-                            <label>Método de Envío *</label>
+                            <label for="envio">Método de Envío *</label>
                             <select id="envio" onchange="calcularTotal()">
                                 <option value="retiro">Retiro en sede (Gratis)</option>
                                 <option value="app">App Uber/Picap (Cliente paga)</option>
@@ -604,6 +604,7 @@
                         <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 15px;">
                             ⚠️ Completa estos datos para verificar tu pago
                         </p>
+                        <label for="pago_metodo" style="font-size:.7rem;color:var(--text-secondary);display:block;margin-bottom:4px;">Método de pago</label>
                         <select id="pago_metodo" style="width:100%; background:var(--bg-dark); color:white; border:2px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm); margin-bottom:10px; font-size:0.9rem; cursor:pointer;">
                             <option value="">¿Por dónde pagaste?</option>
                             <option value="Nequi">💙 Nequi</option>
@@ -632,6 +633,7 @@
                             <span>Requiero <strong style="color:#00d2ff;">Factura Electrónica</strong> (DIAN)</span>
                         </label>
                         <div id="billing-fields" style="display:none;">
+                            <label for="billing_tipo" style="font-size:.72rem;color:rgba(255,255,255,.5);display:block;margin-bottom:4px;">Tipo de documento</label>
                             <select id="billing_tipo" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
                                 <option value="">Tipo de documento</option>
                                 <option value="NIT">NIT (Empresa / Clínica)</option>
