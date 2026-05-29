@@ -106,6 +106,15 @@
 - **Scan masivo**: toast functions → todas usan textContent (no innerHTML) en ambos proyectos ✓
 - **Scan masivo**: geo.region, keywords, viewport, canonical, noindex app/, og:type — 100% completo ambos proyectos ✓
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 13)
+- **a11y**: prefers-reduced-motion global en 19+1 páginas PRODIGY + 16+1 Alejandro — cubre todas las animaciones infinitas
+- **a11y**: aria-current='page' en link activo de navegación — header.js (ambos)
+- **ux**: noscript fallback con WA en calculadora-diseno + revision-diseno PRODIGY
+- **ux**: maxlength=2000/1000/254 en textareas/emails de formularios (nosotros, envia-tu-scanner, escaner-domicilio, flujo-lab, ambos proyectos)
+- **fix links**: 4 links internos rotos en Alejandro corregidos (/calidad→/sobre-mi, /diseno-cad→/diseno-remoto, /guia-tecnica→WA, /privacidad→/terminos-y-legal#privacidad)
+- **a11y scope**: <th scope='col'> en 5 tablas PRODIGY + 2 Alejandro
+- **Audits OK**: window.onload solo en DentalWebGL (aceptable) ✓; novalidate intencional ✓; SRI complejo sin hash ✓; LocalBusiness openingHoursSpecification correcto ✓
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 12+)
 - **Fix copy (usuario)**: 'Archivo escáner' → 'Archivos de escaneo' en label de envia-tu-scanner (ambos)
 - **Fix copy**: 6 textos en PRODIGY que confundían 'escáner' (dispositivo) con 'escaneo' (archivos): i18n.js, diseno-cad.html, fresado-cam.html, mantenimiento.html
