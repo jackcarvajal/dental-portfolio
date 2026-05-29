@@ -632,6 +632,17 @@ async function aprobarQA() {
     bar.classList.add('show');
     document.getElementById('btn-aprobar-qa').disabled = true;
 
+    // Validar magic bytes de las fotos antes de subir
+    if (window.validateMagicBytes) {
+        for (const { file } of _fotosEmpaque) {
+            const mbr = await validateMagicBytes(file);
+            if (!mbr.safe) {
+                bar.classList.remove('show'); document.getElementById('btn-aprobar-qa').disabled = false;
+                toast(mbr.error || 'Archivo de foto no válido', 'err'); return;
+            }
+        }
+    }
+
     // Subir fotos al bucket
     const paths = [];
     for (let i = 0; i < _fotosEmpaque.length; i++) {

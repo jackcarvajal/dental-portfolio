@@ -571,6 +571,14 @@ async function procesarConfirmacion(){
         let compSaldoUrl = null;
         const compFile = document.getElementById('comp-saldo-input')?.files[0];
         if (compFile && _activeSaldo > 0) {
+            // Validar tipo y magic bytes
+            if (!compFile.type.startsWith('image/') && compFile.type !== 'application/pdf') {
+                toast('Solo imágenes o PDF como comprobante', 'error'); return;
+            }
+            if (window.validateMagicBytes) {
+                const mbr = await validateMagicBytes(compFile);
+                if (!mbr.safe) { toast(mbr.error || 'Archivo no permitido', 'error'); return; }
+            }
             document.getElementById('upload-msg').textContent = 'Subiendo comprobante de pago...';
             const ext  = compFile.type === 'application/pdf' ? 'pdf' : 'jpg';
             const path = `${_activeDespId}/comprobante_saldo_${Date.now()}.${ext}`;

@@ -601,6 +601,18 @@ async function confirmarCalidad() {
     const btn         = document.getElementById('btn-cal-confirm');
     bar.classList.add('show'); btn.disabled = true;
 
+    // Validar magic bytes de todos los archivos antes de subir
+    if (window.validateMagicBytes) {
+        for (const { file } of media) {
+            const check = await validateMagicBytes(file);
+            if (!check.safe) {
+                bar.classList.remove('show'); btn.disabled = false;
+                toast(check.error || 'Archivo no permitido', 'error');
+                return;
+            }
+        }
+    }
+
     // Subir media de empaque
     const paths = [];
     for (let i = 0; i < media.length; i++) {

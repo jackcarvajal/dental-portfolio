@@ -629,6 +629,11 @@ async function guardarQA(resultado) {
 
   // Upload STL si se seleccionó
   if (stlFile) {
+    // Validar magic bytes
+    if (window.validateMagicBytes) {
+      const mbr = await validateMagicBytes(stlFile);
+      if (!mbr.safe) { toast(mbr.error || 'Archivo STL no válido', 'err'); return; }
+    }
     const stlPath = `${id}/v${revision}.stl`;
     const { error: upErr } = await sb.storage.from('dental-cases').upload(stlPath, stlFile, { upsert: true });
     if (upErr) { toast('Error subiendo STL: ' + upErr.message, 'err'); return; }
