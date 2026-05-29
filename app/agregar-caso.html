@@ -382,7 +382,7 @@
     <div class="alert error" id="alertError"></div>
 
     <!-- SUCCESS -->
-    <div class="success-panel" id="successPanel">
+    <div class="success-panel" id="successPanel" role="status" aria-live="polite" aria-atomic="true">
         <h2>🚀 ¡Caso publicado en línea!</h2>
         <p style="color:var(--muted);margin-bottom:8px;">El caso ya aparece en el portafolio público. No se requiere ninguna acción adicional.</p>
         <p id="successCaseId" style="color:#00d2ff;font-size:0.9rem;margin-bottom:24px;font-family:monospace;"></p>
@@ -438,7 +438,7 @@
 
         <div class="form-row full">
             <div class="form-group">
-                <label for="caseDesc">Descripción breve <span>*</span></label>
+                <label for="caseDescription">Descripción breve <span>*</span></label>
                 <textarea id="caseDescription" placeholder="Describe el caso: materiales, cantidad de unidades, técnica utilizada..." oninput="updateProgress()"></textarea>
                 <span class="field-hint">Aparece como subtítulo en la tarjeta del portafolio.</span>
             </div>
