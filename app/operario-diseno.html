@@ -195,28 +195,28 @@ body.ready{visibility:visible;}
         <span><i class="fas fa-inbox" style="margin-right:6px;"></i>Por validar</span>
         <span class="k-count" id="cnt-pend">0</span>
       </div>
-      <div class="k-drop-zone" id="col-pend" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'pend')"></div>
+      <div class="k-drop-zone" id="col-pend" aria-live="polite" aria-label="Casos pendientes de diseño" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'pend')"></div>
     </div>
     <div class="k-col">
       <div class="k-hdr" style="color:var(--cyan);">
         <span><i class="fas fa-drafting-compass" style="margin-right:6px;"></i>Diseñando</span>
         <span class="k-count" id="cnt-diseno">0</span>
       </div>
-      <div class="k-drop-zone" id="col-diseno" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'diseno')"></div>
+      <div class="k-drop-zone" id="col-diseno" aria-live="polite" aria-label="Casos en diseño CAD" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'diseno')"></div>
     </div>
     <div class="k-col">
       <div class="k-hdr" style="color:var(--gold);">
         <span><i class="fas fa-eye" style="margin-right:6px;"></i>En revisión</span>
         <span class="k-count" id="cnt-rev">0</span>
       </div>
-      <div class="k-drop-zone" id="col-rev" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'rev')"></div>
+      <div class="k-drop-zone" id="col-rev" aria-live="polite" aria-label="Casos en revisión" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'rev')"></div>
     </div>
     <div class="k-col">
       <div class="k-hdr" style="color:var(--green);">
         <span><i class="fas fa-check-circle" style="margin-right:6px;"></i>Aprobado / Entregado</span>
         <span class="k-count" id="cnt-done">0</span>
       </div>
-      <div class="k-drop-zone" id="col-done" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'done')"></div>
+      <div class="k-drop-zone" id="col-done" aria-live="polite" aria-label="Casos completados" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'done')"></div>
     </div>
   </div>
 
@@ -258,9 +258,9 @@ body.ready{visibility:visible;}
 </div>
 
 <!-- Modal QA Diseño -->
-<div class="modal-overlay" id="modal-qa">
+<div class="modal-overlay" id="modal-qa" role="dialog" aria-modal="true" aria-labelledby="modal-qa-title">
   <div class="modal">
-    <div class="modal-title"><i class="fas fa-search-plus" style="margin-right:8px;"></i>Control de Calidad — Diseño CAD</div>
+    <div class="modal-title" id="modal-qa-title"><i class="fas fa-search-plus" style="margin-right:8px;"></i>Control de Calidad — Diseño CAD</div>
     <div class="modal-sub" id="qa-caso-sub">Caso #—</div>
 
     <div class="qa-item"><input type="checkbox" id="qa1"><label for="qa1">Márgenes trazados y troncocónico correcto (mín. 6°)</label></div>
@@ -314,7 +314,7 @@ body.ready{visibility:visible;}
 <div id="toast"></div>
 
 <!-- Modal: Handoff diseño → producción -->
-<div id="modal-handoff-diseno" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+<div id="modal-handoff-diseno" role="dialog" aria-modal="true" aria-label="Hacer handoff de diseño" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9500;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#0a1525;border:1px solid rgba(212,175,55,.3);border-radius:16px;padding:28px;max-width:460px;width:100%;">
     <div style="font-size:.95rem;font-weight:800;color:#D4AF37;margin-bottom:4px;"><i class="fas fa-arrow-right-to-bracket" style="margin-right:8px;"></i>Diseño aprobado — Enviar a producción</div>
     <div id="modal-hd-codigo" style="font-size:.75rem;color:#94a3b8;margin-bottom:20px;"></div>
@@ -853,7 +853,7 @@ function toast(msg, tipo='ok') {
 </script>
 
 <!-- MODAL PREVIEW OPERARIO -->
-<div id="modal-preview-op" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9000;flex-direction:column;">
+<div id="modal-preview-op" role="dialog" aria-modal="true" aria-label="Previsualización del diseño" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9000;flex-direction:column;">
   <div style="background:#0d1520;border-bottom:1px solid rgba(255,255,255,.1);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
     <span style="font-size:.85rem;font-weight:800;color:#D4AF37">👁️ Previsualización — exactamente lo que verá el cliente</span>
     <div style="display:flex;gap:10px">

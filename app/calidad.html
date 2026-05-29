@@ -171,13 +171,13 @@ body.ready { visibility: visible; }
     </div>
 
     <div id="tab-pendientes" class="tab-panel active">
-        <div class="cards-grid" id="grid-pendientes">
+        <div class="cards-grid" id="grid-pendientes" aria-live="polite" aria-label="Casos pendientes de despacho">
             <div class="empty-state"><i class="fas fa-box-open"></i><p>Cargando...</p></div>
         </div>
     </div>
 
     <div id="tab-confirmados" class="tab-panel">
-        <div class="cards-grid" id="grid-confirmados">
+        <div class="cards-grid" id="grid-confirmados" aria-live="polite" aria-label="Casos confirmados y despachados">
             <div class="empty-state"><i class="fas fa-check-double"></i><p>Cargando...</p></div>
         </div>
     </div>
