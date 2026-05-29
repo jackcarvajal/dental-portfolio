@@ -2198,7 +2198,7 @@
                             </div>
                         </div>
 
-                        <div class="btn-guia-tecnica" id="btn-guia-zirc" style="display:none;" onclick="openModal('modal-guia-zirc')"><i class="fas fa-microscope"></i>&nbsp; Guía XT-PRO: ¿Qué Zirconio necesito? <span style="font-size:0.75rem;opacity:0.65;margin-left:6px;">Ver especificaciones Tosoh →</span></div>
+                        <button type="button" class="btn-guia-tecnica" id="btn-guia-zirc" style="display:none;" onclick="openModal('modal-guia-zirc')" aria-haspopup="dialog"><i class="fas fa-microscope" aria-hidden="true"></i>&nbsp; Guía XT-PRO: ¿Qué Zirconio necesito? <span style="font-size:0.75rem;opacity:0.65;margin-left:6px;">Ver especificaciones Tosoh →</span></button>
                         <div id="submaterial-container" class="hidden"></div>
                         
                         <div id="otro-container" class="hidden" style="margin-top: 25px;">
@@ -2528,7 +2528,7 @@
             <div style="margin: 15px 0; padding: 14px 16px; background: rgba(0,255,65,0.05); border-radius: 10px; border: 1px solid rgba(0,255,65,0.15);">
                 <label style="display:flex; align-items:flex-start; gap:12px; cursor:pointer; color:var(--text-secondary,#e2e8f0); font-size:0.88rem; line-height:1.5;">
                     <input type="checkbox" id="check-terminos-confirm" onchange="toggleWhatsAppBtn(this)" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;cursor:pointer;accent-color:var(--neon-green);">
-                    <span>He leído y acepto los <span onclick="showTerms();event.stopPropagation();" style="color:var(--gold-primary);cursor:pointer;text-decoration:underline;">Términos y Condiciones</span> del servicio PRODIGY, incluyendo el tratamiento de mis datos personales conforme a la <strong>Ley 1581/2012</strong> (Habeas Data).</span>
+                    <span>He leído y acepto los <a href="/terminos-y-legal" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="color:var(--gold-primary);">Términos y Condiciones</a> del servicio PRODIGY, incluyendo el tratamiento de mis datos personales conforme a la <strong>Ley 1581/2012</strong> (Habeas Data).</span>
                 </label>
             </div>
             <!-- Seguro de Garantía y Recargo GPS -->
@@ -3104,7 +3104,7 @@
 
         function generarOpcionesVita() {
             const colores = ['A1','A2','A3','A3.5','A4','B1','B2','B3','B4','C1','C2','C3','C4','D2','D3','D4','BL1','BL2','BL3','BL4'];
-            return colores.map(c => `<div class="vita-option" onclick="selectVita('${c}')">${c}</div>`).join('');
+            return colores.map(c => `<button type="button" class="vita-option" onclick="selectVita('${c}')" aria-pressed="false" aria-label="Color VITA ${c}">${c}</button>`).join('');
         }
 
         function selectProcess(proc) {
@@ -3211,7 +3211,7 @@
             calcularTotal();
         }
 
-        function selectVita(color){document.querySelectorAll('.vita-option').forEach(o=>{o.classList.remove('selected');});event.currentTarget.classList.add('selected');STATE.colorVita=color;document.querySelectorAll('[id="warning-color-cd"]').forEach(wCD=>{if(color.startsWith('C')||color.startsWith('D'))wCD.classList.remove('hidden');else wCD.classList.add('hidden');});calcularTotal();}
+        function selectVita(color){document.querySelectorAll('.vita-option').forEach(o=>{o.classList.remove('selected');o.setAttribute('aria-pressed','false');});event.currentTarget.classList.add('selected');event.currentTarget.setAttribute('aria-pressed','true');STATE.colorVita=color;document.querySelectorAll('[id="warning-color-cd"]').forEach(wCD=>{if(color.startsWith('C')||color.startsWith('D'))wCD.classList.remove('hidden');else wCD.classList.add('hidden');});calcularTotal();}
 
         function selectSinterType(tipo) {
             document.querySelectorAll('.sinter-pill').forEach(pill => {

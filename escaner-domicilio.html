@@ -540,17 +540,17 @@
                 <p class="fecha-nota" id="fecha-hint"><i class="fas fa-info-circle" aria-hidden="true"></i> Solo L–S. Mínimo 24 h de antelación. Domingos y festivos sin servicio.</p>
 
                 <div class="fg"><label>Franja horaria preferida *</label></div>
-                <div class="franja-grid" id="franjaGrid">
-                    <div class="franja-btn sel" data-val="manana" onclick="selFranja(this)">
+                <div class="franja-grid" id="franjaGrid" role="group" aria-label="Franja horaria">
+                    <button type="button" class="franja-btn sel" data-val="manana" onclick="selFranja(this)" aria-pressed="true">
                         <span class="fi">🌅</span>
                         <div class="fn">Mañana</div>
                         <div class="fh">8:00 am – 12:00 pm</div>
-                    </div>
-                    <div class="franja-btn" data-val="tarde" onclick="selFranja(this)">
+                    </button>
+                    <button type="button" class="franja-btn" data-val="tarde" onclick="selFranja(this)" aria-pressed="false">
                         <span class="fi">🌤️</span>
                         <div class="fn">Tarde</div>
                         <div class="fh">1:00 pm – 5:00 pm</div>
-                    </div>
+                    </button>
                 </div>
                 <input type="hidden" id="franja_hidden" value="manana">
 
@@ -734,8 +734,9 @@ const ANTICIPOS = {
 
 /* ── Selector de franja ── */
 function selFranja(el) {
-    document.querySelectorAll('.franja-btn').forEach(b => b.classList.remove('sel'));
+    document.querySelectorAll('.franja-btn').forEach(b => { b.classList.remove('sel'); b.setAttribute('aria-pressed','false'); });
     el.classList.add('sel');
+    el.setAttribute('aria-pressed','true');
     document.getElementById('franja_hidden').value = el.dataset.val;
 }
 window.selFranja = selFranja;

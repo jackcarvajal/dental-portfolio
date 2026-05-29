@@ -303,7 +303,7 @@
                             </div>
                         </div>
 
-                        <div class="btn-guia-tecnica" id="btn-guia-zirc" style="display:none;" onclick="openModal('modal-guia-resinas')"><i class="fas fa-flask"></i>&nbsp; Guía de Resinas: ¿Qué resina necesito? <span style="font-size:0.75rem;opacity:0.65;margin-left:6px;">Ver propiedades y usos →</span></div>
+                        <button type="button" class="btn-guia-tecnica" id="btn-guia-zirc" style="display:none;" onclick="openModal('modal-guia-resinas')" aria-haspopup="dialog"><i class="fas fa-flask" aria-hidden="true"></i>&nbsp; Guía de Resinas: ¿Qué resina necesito? <span style="font-size:0.75rem;opacity:0.65;margin-left:6px;">Ver propiedades y usos →</span></button>
                         <div id="submaterial-container" class="hidden"></div>
                         
                         <div id="otro-container" class="hidden" style="margin-top: 25px;">
@@ -330,16 +330,16 @@
                         
                         <div class="config-group" style="margin-bottom: 25px;">
                             <span style="font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px;">Resolución de Impresión</span>
-                            <div style="display: flex; gap: 12px; margin-top: 8px;">
-                                <div onclick="selectResolucion(50, 0)" data-tipo="res-50" style="flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 2px solid #444; border-radius: 8px; text-align: center; cursor: pointer;">
+                            <div style="display: flex; gap: 12px; margin-top: 8px;" role="group" aria-label="Resolución de impresión">
+                                <button type="button" onclick="selectResolucion(50, 0)" data-tipo="res-50" aria-pressed="false" style="flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 2px solid #444; border-radius: 8px; text-align: center; cursor: pointer; font-family:inherit; color:inherit;">
                                     <div style="font-weight: 700; font-size: 0.95rem;">50 MICRAS</div>
                                     <div style="font-size: 0.7rem; color: #888; margin-top: 3px;">Estándar - Mayor velocidad</div>
-                                </div>
-                                <div onclick="selectResolucion(25, 15000)" data-tipo="res-25" style="flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 2px solid #444; border-radius: 8px; text-align: center; cursor: pointer;">
+                                </button>
+                                <button type="button" onclick="selectResolucion(25, 15000)" data-tipo="res-25" aria-pressed="false" style="flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 2px solid #444; border-radius: 8px; text-align: center; cursor: pointer; font-family:inherit; color:inherit;">
                                     <div style="font-weight: 700; font-size: 0.95rem;">25 MICRAS</div>
                                     <div style="color: var(--gold-primary); font-weight: 600; margin-top: 3px;">+$15.000</div>
                                     <div style="font-size: 0.65rem; color: #888; margin-top: 1px;">Doble tiempo de máquina</div>
-                                </div>
+                                </button>
                             </div>
                         </div>
 
@@ -693,7 +693,7 @@
             <div style="margin: 15px 0; padding: 14px 16px; background: rgba(0,255,65,0.05); border-radius: 10px; border: 1px solid rgba(0,255,65,0.15);">
                 <label style="display:flex; align-items:flex-start; gap:12px; cursor:pointer; color:var(--text-secondary); font-size:0.88rem; line-height:1.5;">
                     <input type="checkbox" id="check-terminos-confirm" onchange="toggleWhatsAppBtn(this)" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;cursor:pointer; accent-color:var(--neon-green);">
-                    <span>He leído y acepto los <span onclick="showTerms();event.stopPropagation();" style="color:var(--gold-primary);cursor:pointer;text-decoration:underline;">Términos y Condiciones</span> del servicio PRODIGY, incluyendo el tratamiento de mis datos personales conforme a la <strong>Ley 1581/2012</strong> (Habeas Data).</span>
+                    <span>He leído y acepto los <a href="/terminos-y-legal" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="color:var(--gold-primary);">Términos y Condiciones</a> del servicio PRODIGY, incluyendo el tratamiento de mis datos personales conforme a la <strong>Ley 1581/2012</strong> (Habeas Data).</span>
                 </label>
             </div>
             <!-- Seguro de Garantía y Recargo GPS -->

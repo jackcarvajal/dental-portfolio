@@ -1659,11 +1659,13 @@
             document.querySelectorAll('[data-tipo^="res-"]').forEach(card => {
                 card.style.border = '2px solid #444';
                 card.style.background = 'rgba(0,0,0,0.3)';
+                card.setAttribute('aria-pressed','false');
             });
             const selected = document.querySelector(`[data-tipo="res-${micras}"]`);
             if (selected) {
                 selected.style.border = '2px solid var(--gold-primary)';
                 selected.style.background = 'rgba(255,215,0,0.05)';
+                selected.setAttribute('aria-pressed','true');
             }
             
             calcularTotalModelosV4();
