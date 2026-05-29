@@ -348,14 +348,14 @@ async function render(c) {
           · Tu comentario puede destacarse como reseña de experto si el equipo lo aprueba.
         </div>
         <div class="reaction-grid">
-          <button class="reaction-btn" onclick="selReaction(this,'Aprobado')"><span class="emoji">👍</span><span>Aprobado</span></button>
-          <button class="reaction-btn" onclick="selReaction(this,'Me Encanta')"><span class="emoji">🤍</span><span>Me Encanta</span></button>
-          <button class="reaction-btn" onclick="selReaction(this,'Impecable')"><span class="emoji">🔥</span><span>Impecable</span></button>
-          <button class="reaction-btn" onclick="selReaction(this,'Anatomía Top')"><span class="emoji">🦷</span><span>Anatomía Top</span></button>
-          <button class="reaction-btn" onclick="selReaction(this,'Perfección')"><span class="emoji">💎</span><span>Perfección</span></button>
+          <button type="button" class="reaction-btn" onclick="selReaction(this,'Aprobado')"><span class="emoji">👍</span><span>Aprobado</span></button>
+          <button type="button" class="reaction-btn" onclick="selReaction(this,'Me Encanta')"><span class="emoji">🤍</span><span>Me Encanta</span></button>
+          <button type="button" class="reaction-btn" onclick="selReaction(this,'Impecable')"><span class="emoji">🔥</span><span>Impecable</span></button>
+          <button type="button" class="reaction-btn" onclick="selReaction(this,'Anatomía Top')"><span class="emoji">🦷</span><span>Anatomía Top</span></button>
+          <button type="button" class="reaction-btn" onclick="selReaction(this,'Perfección')"><span class="emoji">💎</span><span>Perfección</span></button>
         </div>
         <textarea class="nota-area" id="nota-text" placeholder="Escribe tu opinión técnica: proporción, anatomía, estética, material… Comentarios respetuosos y en español."></textarea>
-        <button class="btn-publicar" onclick="publicarNota('${escHtml(String(c.id||''))}')"><i class="fas fa-paper-plane"></i> Publicar comentario</button>
+        <button type="button" class="btn-publicar" onclick="publicarNota('${escHtml(String(c.id||''))}')"><i class="fas fa-paper-plane"></i> Publicar comentario</button>
         <div class="notas-list" id="notas-list" aria-live="polite" aria-label="Comentarios técnicos"></div>
       </div>
     </div>`;
@@ -464,10 +464,10 @@ async function cargarNotas(casoId) {
         <div class="nota-date">${n.created_at ? new Date(n.created_at).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'}) : ''}</div>
         ${isAdmin ? `
         <div class="nota-admin">
-          <button class="btn-admin" onclick="fijarNota('${escHtml(String(n.id||''))}','${escHtml(String(casoId||''))}',${!n.pinned})">
+          <button type="button" class="btn-admin" onclick="fijarNota('${escHtml(String(n.id||''))}','${escHtml(String(casoId||''))}',${!n.pinned})">
             <i class="fas fa-thumbtack"></i>${n.pinned ? 'Quitar destaque' : 'Destacar'}
           </button>
-          <button class="btn-admin del" onclick="eliminarNota('${escHtml(String(n.id||''))}','${escHtml(String(casoId||''))}')">
+          <button type="button" class="btn-admin del" onclick="eliminarNota('${escHtml(String(n.id||''))}','${escHtml(String(casoId||''))}')">
             <i class="fas fa-trash"></i> Eliminar
           </button>
         </div>` : ''}
