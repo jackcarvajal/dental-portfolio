@@ -479,7 +479,7 @@
   var page = activePath.split('/').pop() || 'index.html';
   function ac(href) {
     var h = href.split('/').pop().split('#')[0];
-    return (h === page || (h === '' && (page === '' || page === 'index.html'))) ? ' class="pnav2-active"' : '';
+    return (h === page || (h === '' && (page === '' || page === 'index.html'))) ? ' class="pnav2-active" aria-current="page"' : '';
   }
 
   var navHtml =
