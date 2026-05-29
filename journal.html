@@ -815,19 +815,19 @@
       <h2>Tecnología que transforma clínicas</h2>
       <div class="section-sub">Filtra por categoría</div>
     </div>
-    <div class="filter-tags">
-      <button type="button" class="tag-btn active" onclick="filterArticles(this,'all')">Todos</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'materiales')">Materiales</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'implantologia')">Implantología</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'fabricacion')">Fabricación 3D</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'maquinaria')">Equipos Lab</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'software')">Software CAD</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'tecnologia')">Tecnología</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'clinica')">Clínica</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'estetica')">Estética</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'ortodoncia')">Ortodoncia</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'flujos')">Flujos CAD</button>
-      <button type="button" class="tag-btn" onclick="filterArticles(this,'ia')">IA</button>
+    <div class="filter-tags" role="group" aria-label="Filtrar artículos por categoría">
+      <button type="button" class="tag-btn active" onclick="filterArticles(this,'all')" aria-pressed="true">Todos</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'materiales')" aria-pressed="false">Materiales</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'implantologia')" aria-pressed="false">Implantología</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'fabricacion')" aria-pressed="false">Fabricación 3D</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'maquinaria')" aria-pressed="false">Equipos Lab</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'software')" aria-pressed="false">Software CAD</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'tecnologia')" aria-pressed="false">Tecnología</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'clinica')" aria-pressed="false">Clínica</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'estetica')" aria-pressed="false">Estética</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'ortodoncia')" aria-pressed="false">Ortodoncia</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'flujos')" aria-pressed="false">Flujos CAD</button>
+      <button type="button" class="tag-btn" onclick="filterArticles(this,'ia')" aria-pressed="false">IA</button>
     </div>
   </div>
 
@@ -991,8 +991,8 @@
 
   /* ── FILTRO ARTÍCULOS ─────────────────────────────── */
   function filterArticles(btnEl, cat) {
-    document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-    btnEl.classList.add('active');
+    document.querySelectorAll('.tag-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+    btnEl.classList.add('active'); btnEl.setAttribute('aria-pressed','true');
     document.querySelectorAll('.article-card').forEach(card => {
       const show = cat === 'all' || card.dataset.cat === cat;
       card.style.display = show ? 'flex' : 'none';
