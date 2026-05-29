@@ -197,7 +197,7 @@
     </div>
 
     <p class="nav-section">Panel</p>
-    <a href="#" class="nav-item active" onclick="switchTab('pedidos',this)">
+    <a href="#" class="nav-item active" onclick="switchTab('pedidos',this)" aria-current="page">
         <i class="fas fa-inbox"></i> Pedidos
     </a>
     <a href="#" class="nav-item" onclick="switchTab('portafolio',this)">
@@ -1092,8 +1092,8 @@ async function cerrarSesion() {
 ══════════════════════════════════════════ */
 function switchTab(tab, el) {
     // Sidebar
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    if (el) el.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(i => { i.classList.remove('active'); i.removeAttribute('aria-current'); });
+    if (el) { el.classList.add('active'); el.setAttribute('aria-current', 'page'); }
 
     // Panels
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
