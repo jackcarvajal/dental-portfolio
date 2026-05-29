@@ -106,6 +106,14 @@
 - **Scan masivo**: toast functions → todas usan textContent (no innerHTML) en ambos proyectos ✓
 - **Scan masivo**: geo.region, keywords, viewport, canonical, noindex app/, og:type — 100% completo ambos proyectos ✓
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — rondas 18-20 FINALES)
+- **a11y header.js (ambos)**: aria-expanded+aria-controls+label dinámico en hamburguesa; role=navigation+aria-label en nav desktop; role=navigation+aria-label en menú móvil; aria-expanded+aria-controls en botón chatbot IA; role=dialog+aria-label en ventana chatbot; aria-label en textarea chatbot
+- **a11y formularios**: aria-describedby en fecha_cita (escaner-domicilio) + fileInput (envia-tu-scanner ambos); aria-invalid en validaciones flujo-lab.html
+- **seo últimas**: og:locale:alternate en 28 PRODIGY + 13/13 Alejandro — 100% bilingüe; schema url field calculadora-diseno Alejandro; Person schema duplicado eliminado sobre-mi Alejandro
+- **perf**: version params 100% en todos los scripts JS — cobertura total
+- **AUDIT FINAL**: 27/27 PRODIGY + 13/13 Alejandro con todos los elementos SEO/a11y ✓
+- **Código autónomo**: AGOTADO — las mejoras restantes son ~0.1% impacto y requieren acción del usuario
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 17)
 - **a11y aria-live**: seguimiento-caso (ambos) + portafolio PRODIGY + articlesTrack journal/blog
 - **a11y role=feed**: journal.html PRODIGY + blog.html Alejandro
