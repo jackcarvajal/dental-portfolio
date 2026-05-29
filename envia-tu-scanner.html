@@ -805,8 +805,12 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
     const piezas   = document.getElementById('piezas').value.trim();
     const notas    = document.getElementById('notas').value.trim();
 
+    [['doctor',doctor],['clinica',clinica],['whatsapp',whatsapp],['escaner_marca',marca]].forEach(([id,val])=>{
+      const el=document.getElementById(id); if(el) el.setAttribute('aria-invalid',!val?'true':'false');
+    });
     if (!doctor || !clinica || !whatsapp || !marca) {
-        pubToast('Por favor completa todos los campos obligatorios (*)'); return;
+        pubToast('Por favor completa todos los campos obligatorios (*)');
+        document.querySelector('[aria-invalid="true"]')?.focus(); return;
     }
 
     const btn = document.getElementById('submitBtn');

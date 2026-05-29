@@ -784,8 +784,12 @@ document.getElementById('agendaForm').addEventListener('submit', async e => {
     const aceptaHabeas   = document.getElementById('acepta_habeas').checked;
     const aceptaMarketing = document.getElementById('acepta_marketing_dom').checked;
 
+    [['nombre',nombre],['whatsapp',whatsapp],['zona',zona],['servicio',servicio],['direccion',direccion],['fecha_cita',fecha]].forEach(([id,val])=>{
+      const el=document.getElementById(id); if(el) el.setAttribute('aria-invalid',!val?'true':'false');
+    });
     if (!nombre || !whatsapp || !zona || !servicio || !direccion || !fecha) {
-        pubToast('Por favor completa todos los campos obligatorios (*)'); return;
+        pubToast('Por favor completa todos los campos obligatorios (*)');
+        document.querySelector('[aria-invalid="true"]')?.focus(); return;
     }
     if (!acepta) {
         pubToast('Debes aceptar las políticas del servicio para continuar.'); return;

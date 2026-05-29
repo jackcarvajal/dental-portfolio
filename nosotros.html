@@ -851,8 +851,14 @@
     const tipo    = document.getElementById('tipo').value;
     const mensaje = document.getElementById('mensaje').value.trim();
     const habeas  = document.getElementById('habeas').checked;
+    ['nombre','email','tipo','mensaje'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.setAttribute('aria-invalid', !el.value.trim() ? 'true' : 'false');
+    });
+    document.getElementById('habeas').setAttribute('aria-invalid', !habeas ? 'true' : 'false');
     if (!nombre || !email || !tipo || !mensaje || !habeas) {
       pubToast('Por favor completa todos los campos requeridos y acepta la política de privacidad.');
+      document.querySelector('[aria-invalid="true"]')?.focus();
       return;
     }
     const btn = document.getElementById('submit-btn');
