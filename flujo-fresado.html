@@ -2014,7 +2014,7 @@
             CICLO EN PRODUCCIÓN
         </span>
         <span style="font-size:0.78rem;color:#e2e8f0;" id="banner-msg">Cerramos recepción de casos hoy a las <strong style="color:#fbbf24;">5:00 PM</strong>. Envía tu orden antes para garantizar tu turno.</span>
-        <button onclick="document.getElementById('banner-ciclo').style.display='none'" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:0.9rem;padding:0 4px;">✕</button>
+        <button type="button" onclick="document.getElementById('banner-ciclo').style.display='none'" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:0.9rem;padding:0 4px;" aria-label="Cerrar">✕</button>
     </div>
     <style>@keyframes pulseBanner{0%,100%{opacity:1}50%{opacity:0.3}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
@@ -2036,12 +2036,12 @@
     <div class="container">
         <header>
             <!-- Menú Hamburguesa -->
-            <button class="hamburger-menu" onclick="toggleMenu()" title="Menú de navegación">
+            <button type="button" class="hamburger-menu" onclick="toggleMenu()" title="Menú de navegación">
                 <i class="fas fa-bars"></i>
             </button>
             
             <!-- Botón Theme Toggle -->
-            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Cambiar tema">
+            <button type="button" class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Cambiar tema">
                 🌙
             </button>
             
@@ -2421,13 +2421,13 @@
                     <span style="font-size:.75rem;color:#94a3b8;">Sin comisión. PSE / tarjeta: +3% Wompi.</span></span>
                 </label>
             </div>
-            <button onclick="pagarConWompi()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-bottom:12px;">
+            <button type="button" onclick="pagarConWompi()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-bottom:12px;">
                 💳 Pagar con Wompi (PSE / Tarjeta)
             </button>
             <div class="payment-buttons">
-                <button class="payment-btn btn-nequi" onclick="showPaymentModal('nequi')">💙 NEQUI</button>
-                <button class="payment-btn btn-davi" onclick="showPaymentModal('daviplata')">💗 DAVIPLATA</button>
-                <button class="payment-btn btn-banco" onclick="showPaymentModal('banco')">🏦 BRE-B</button>
+                <button type="button" class="payment-btn btn-nequi" onclick="showPaymentModal('nequi')">💙 NEQUI</button>
+                <button type="button" class="payment-btn btn-davi" onclick="showPaymentModal('daviplata')">💗 DAVIPLATA</button>
+                <button type="button" class="payment-btn btn-banco" onclick="showPaymentModal('banco')">🏦 BRE-B</button>
             </div>
             </div><!-- /pago-co -->
 
@@ -2497,7 +2497,7 @@
                 </div>
             </div>
 
-            <button class="payment-btn btn-submit" id="btn-submit" onclick="submitOrder()" disabled>
+            <button type="button" class="payment-btn btn-submit" id="btn-submit" onclick="submitOrder()" disabled>
                 🚀 GENERAR ORDEN 🎯
             </button>
         </aside>
@@ -2505,7 +2505,7 @@
 
     <div class="modal" id="modal-payment">
         <div class="modal-content" style="position:relative;">
-            <button class="modal-close-x" onclick="closeModal('modal-payment')" title="Cerrar"><i class="fas fa-times"></i></button>
+            <button type="button" class="modal-close-x" onclick="closeModal('modal-payment')" title="Cerrar"><i class="fas fa-times"></i></button>
             <h3 id="modal-payment-title">Información de Pago</h3>
             <div id="modal-payment-body"></div>
         </div>
@@ -2546,8 +2546,8 @@
             <input type="hidden" id="recargo-distancia" value="0">
 
             <div class="modal-buttons" style="display: flex; gap: 12px; margin-top: 20px;">
-                <button class="modal-btn modal-btn-cancel" onclick="closeModal('modal-confirmation')" style="flex: 1;">Cancelar</button>
-                <button id="btn-whatsapp-confirm" class="modal-btn modal-btn-confirm" onclick="sendToWhatsApp()" disabled style="flex: 2; background: linear-gradient(135deg, var(--neon-green) 0%, #00CC35 100%); font-weight: 700; opacity:0.45; cursor:not-allowed;">
+                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeModal('modal-confirmation')" style="flex: 1;">Cancelar</button>
+                <button type="button" id="btn-whatsapp-confirm" class="modal-btn modal-btn-confirm" onclick="sendToWhatsApp()" disabled style="flex: 2; background: linear-gradient(135deg, var(--neon-green) 0%, #00CC35 100%); font-weight: 700; opacity:0.45; cursor:not-allowed;">
                     🚀 CONFIRMAR Y ABRIR WHATSAPP
                 </button>
             </div>
@@ -2559,7 +2559,7 @@
             <h3>📜 TÉRMINOS Y CONDICIONES</h3>
             <div class="policies-container alert alert-warning" style="display:flex;flex-direction:column;background:var(--bg-dark);border:2px solid var(--warning);padding:20px;margin:20px 0;border-radius:var(--radius-md);"><h4 style="margin-bottom:10px;color:var(--warning);">⚠️ Políticas de Operación</h4><ul style="padding-left:20px;line-height:1.6;color:var(--text-secondary);list-style:disc;"><li style="margin-bottom:8px"><strong>Sinterizado Rápido:</strong> Sin garantía por fracturas.</li><li style="margin-bottom:8px"><strong>Tinte Encía Rosa:</strong> Puede migrar en sinterizado.</li><li><strong>Sinterizado Lento:</strong> Recepción máx. 5:30 PM.</li></ul></div>
             <div class="modal-buttons">
-                <button class="modal-btn modal-btn-confirm" onclick="closeModal('modal-terms')" style="width: 100%;">Entendido</button>
+                <button type="button" class="modal-btn modal-btn-confirm" onclick="closeModal('modal-terms')" style="width: 100%;">Entendido</button>
             </div>
         </div>
     </div>
@@ -3776,7 +3776,7 @@
                         <div class="pay-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=3228774481" alt="QR Nequi" loading="lazy" style="width:100%;height:100%;image-rendering:crisp-edges;"></div>
                         <h3>Jessica Mendez</h3>
                         <div class="pay-num">322 877 4481</div>
-                        <button class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500);">📋 Copiar número</button>
+                        <button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500);">📋 Copiar número</button>
                         <p class="pay-info">📸 Sube el comprobante en el portal</p>
                     </div>`;
             } else if (tipo === 'daviplata') {
@@ -3787,7 +3787,7 @@
                         <i class="fas fa-mobile-alt" style="font-size:2.5rem;color:#E91E8C;margin-bottom:12px;display:block;filter:drop-shadow(0 0 10px #E91E8C88);"></i>
                         <h3>Jessica Mendez</h3>
                         <div class="pay-num">322 877 4481</div>
-                        <button class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500);">📋 Copiar número</button>
+                        <button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500);">📋 Copiar número</button>
                         <p class="pay-info">Usa el número directamente en tu app Daviplata.</p>
                     </div>`;
             } else if (tipo === 'banco') {
@@ -3797,7 +3797,7 @@
                         <span class="pay-method-tag">cuenta de ahorros · Nu</span>
                         <h3>Jessica Mendez Carmelo</h3>
                         <div class="pay-num">@LXY423</div>
-                        <button class="pay-copy" onclick="navigator.clipboard.writeText('LXY423');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar llave',1500);">📋 Copiar llave</button>
+                        <button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('LXY423');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar llave',1500);">📋 Copiar llave</button>
                         <p class="pay-info"><strong>Cuenta:</strong> 22253814 &nbsp;•&nbsp; <strong>CE:</strong> 7582423</p>
                     </div>
                     <div class="pay-divider">o también</div>
@@ -3805,7 +3805,7 @@
                         <span class="pay-method-tag">Breb · billetera</span>
                         <h3>Jessica</h3>
                         <div class="pay-num">322 877 4481</div>
-                        <button class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar',1500);">📋 Copiar</button>
+                        <button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('3228774481');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar',1500);">📋 Copiar</button>
                     </div>
                     <p class="pay-info" style="text-align:center;margin-top:6px;">📸 Sube el comprobante en el portal</p>`;
             }
@@ -4388,19 +4388,19 @@
                 <p style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                     <strong style="color:var(--gold-primary);">ID Orden:</strong>
                     <span id="exito-orden-id">—</span>
-                    <button onclick="copiarId()" style="background:rgba(0,210,255,.15);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;" title="Copiar ID">📋 Copiar</button>
+                    <button type="button" onclick="copiarId()" style="background:rgba(0,210,255,.15);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;" title="Copiar ID">📋 Copiar</button>
                 </p>
                 <p style="margin-top:6px;"><strong style="color:var(--gold-primary);">Cliente:</strong> <span id="exito-cliente">—</span></p>
                 <p style="margin-top:6px;"><strong style="color:var(--gold-primary);">Total:</strong> <span id="exito-total">—</span></p>
             </div>
             <p style="font-size:0.8rem;color:#aaa;margin-bottom:15px;">Selecciona tu método de pago:</p>
             <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
-                <button class="payment-btn btn-nequi" onclick="showPaymentModal('nequi');closeModal('modal-exito');">💙 NEQUI</button>
-                <button class="payment-btn btn-davi" onclick="showPaymentModal('daviplata');closeModal('modal-exito');">💗 DAVIPLATA</button>
-                <button class="payment-btn btn-banco" onclick="showPaymentModal('banco');closeModal('modal-exito');">🏦 BRE-B</button>
+                <button type="button" class="payment-btn btn-nequi" onclick="showPaymentModal('nequi');closeModal('modal-exito');">💙 NEQUI</button>
+                <button type="button" class="payment-btn btn-davi" onclick="showPaymentModal('daviplata');closeModal('modal-exito');">💗 DAVIPLATA</button>
+                <button type="button" class="payment-btn btn-banco" onclick="showPaymentModal('banco');closeModal('modal-exito');">🏦 BRE-B</button>
             </div>
-            <button onclick="generarTarjetaIG()" style="width:100%;padding:11px;margin-bottom:10px;background:linear-gradient(135deg,#833AB4,#FD1D1D,#F77737);border:none;border-radius:50px;color:#fff;font-weight:700;font-size:0.9rem;cursor:pointer;letter-spacing:0.5px;">📸 Compartir en Instagram</button>
-            <button class="pay-copy" style="width:100%;padding:12px;" onclick="closeModal('modal-exito');location.reload();">+ Nueva Orden</button>
+            <button type="button" onclick="generarTarjetaIG()" style="width:100%;padding:11px;margin-bottom:10px;background:linear-gradient(135deg,#833AB4,#FD1D1D,#F77737);border:none;border-radius:50px;color:#fff;font-weight:700;font-size:0.9rem;cursor:pointer;letter-spacing:0.5px;">📸 Compartir en Instagram</button>
+            <button type="button" class="pay-copy" style="width:100%;padding:12px;" onclick="closeModal('modal-exito');location.reload();">+ Nueva Orden</button>
         </div>
     </div>
     <canvas id="ig-canvas" style="display:none;"></canvas>
@@ -4451,7 +4451,7 @@
             </div>
             <div style="margin-top:14px;border-top:1px solid #333;padding-top:12px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
                 <p style="font-size:0.68rem;color:#555;margin:0;">Certificación Tosoh (Japón) · ISO 13356 grado médico.</p>
-                <button class="order-btn" style="width:auto;padding:10px 28px;font-size:0.88rem;" onclick="closeModal('modal-guia-zirc')">Cerrar</button>
+                <button type="button" class="order-btn" style="width:auto;padding:10px 28px;font-size:0.88rem;" onclick="closeModal('modal-guia-zirc')">Cerrar</button>
             </div>
         </div>
     </div>
@@ -4461,7 +4461,7 @@
     <!-- Menú Lateral -->
     <nav class="nav-menu" id="nav-menu">
         <div class="nav-menu-header">
-            <button class="nav-close-btn" onclick="toggleMenu()" title="Cerrar">✕</button>
+            <button type="button" class="nav-close-btn" onclick="toggleMenu()" title="Cerrar">✕</button>
             <div style="font-size:1.5rem;margin-bottom:3px;">🧭</div>
             <h3>NAVEGACIÓN</h3>
         </div>
@@ -4498,16 +4498,16 @@
     </nav>
 
     <!-- Botón Scroll to Top -->
-    <button class="scroll-to-top" id="scrollToTop" onclick="scrollToTop()" title="Volver arriba">
+    <button type="button" class="scroll-to-top" id="scrollToTop" onclick="scrollToTop()" title="Volver arriba">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <!-- Botones Flotantes -->
     <div class="floating-buttons">
-        <button class="floating-btn translate-btn" onclick="translatePage()" title="Traducir página">
+        <button type="button" class="floating-btn translate-btn" onclick="translatePage()" title="Traducir página">
             <i class="fas fa-language"></i>
         </button>
-        <button class="floating-btn help-btn" onclick="showHelp()" title="Ayuda">
+        <button type="button" class="floating-btn help-btn" onclick="showHelp()" title="Ayuda">
             <i class="fas fa-question"></i>
         </button>
     </div>
@@ -4657,14 +4657,14 @@
                                 <li style="color:#fff !important;">🍔 Menú navegación</li>
                                 <li style="color:#fff !important;">❓ Esta ayuda</li>
                             </ul>
-                            <button onclick="window.open('https://wa.me/573212816716?text=Hola,%20necesito%20ayuda%20para%20crear%20mi%20orden%20en%20PRODIGY','_blank');document.getElementById('help-modal').remove();" style="width:100%;padding:10px;background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);border:none;border-radius:6px;color:#fff;font-size:0.85rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.3s;">
+                            <button type="button" onclick="window.open('https://wa.me/573212816716?text=Hola,%20necesito%20ayuda%20para%20crear%20mi%20orden%20en%20PRODIGY','_blank');document.getElementById('help-modal').remove();" style="width:100%;padding:10px;background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);border:none;border-radius:6px;color:#fff;font-size:0.85rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.3s;">
                                 <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i>
                                 <span>Soporte WhatsApp</span>
                             </button>
                         </div>
                     </div>
                     <div style="padding:0 20px 20px;">
-                        <button onclick="document.getElementById('help-modal').remove()" style="width:100%;padding:12px;background:#E87427;border:none;border-radius:8px;color:#fff;font-size:0.95rem;font-weight:800;cursor:pointer;transition:all 0.3s;">
+                        <button type="button" onclick="document.getElementById('help-modal').remove()" style="width:100%;padding:12px;background:#E87427;border:none;border-radius:8px;color:#fff;font-size:0.95rem;font-weight:800;cursor:pointer;transition:all 0.3s;">
                             Aceptar
                         </button>
                     </div>
@@ -4692,7 +4692,7 @@
             <div style="height:3px; background:linear-gradient(90deg,#9B5DE5,#D946A6,#D4AF37); position:absolute; top:0; left:0; right:0;"></div>
             <h3 id="custom-alert-title" style="color:#e2e8f0; font-size:1.25rem; margin:10px 0 12px; font-weight:700;"></h3>
             <p id="custom-alert-message" style="color:#a8a8a8; font-size:0.95rem; line-height:1.6; margin-bottom:24px;"></p>
-            <button id="custom-alert-btn" onclick="closeProdigyAlert()" style="background:linear-gradient(135deg,#D946A6,#9B5DE5); color:#fff; border:none; padding:12px 32px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.95rem; letter-spacing:0.5px;"></button>
+            <button type="button" id="custom-alert-btn" onclick="closeProdigyAlert()" style="background:linear-gradient(135deg,#D946A6,#9B5DE5); color:#fff; border:none; padding:12px 32px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.95rem; letter-spacing:0.5px;"></button>
         </div>
     </div>
 
@@ -4801,7 +4801,7 @@
                             — verifica que la cantidad coincida con las unidades a fresar.
                         </span>` : ''}
                     </div>
-                    <button onclick="this.parentElement.remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:1rem;flex-shrink:0;padding:0 4px;">✕</button>`;
+                    <button type="button" onclick="this.parentElement.remove()" aria-label="Cerrar" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:1rem;flex-shrink:0;padding:0 4px;">✕</button>`;
                 document.body.appendChild(banner);
                 /* Auto-ocultar después de 20 s */
                 setTimeout(() => banner?.remove(), 20000);
