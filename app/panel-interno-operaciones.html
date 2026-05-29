@@ -1182,8 +1182,9 @@ function renderPedidos(lista) {
 
 async function cambiarEstado(pedidoId, nuevoEstado) {
     const { error } = await sb.from('pedidos').update({ estado: nuevoEstado }).eq('id', pedidoId);
-    if (error) toast('Error al actualizar: ' + error.message, 'error');
-    else toast('Estado actualizado → ' + nuevoEstado, 'success');
+    if (error) { toast('Error al actualizar: ' + error.message, 'error'); return; }
+    toast('Estado actualizado → ' + nuevoEstado, 'success');
+    await _auditLog('CAMBIAR_ESTADO', { pedido_id: pedidoId, nuevo_estado: nuevoEstado });
 }
 
 /* ── NOTIFICACIONES WA — PRODIGY ── */
@@ -2691,8 +2692,23 @@ async function confirmarDelCaso() {
   const id = _delCasoId;
   cerrarModalDelCaso();
   const { error } = await sb.from('casos_portafolio').delete().eq('id', id);
-  if (error) toast('Error: ' + error.message, 'error');
-  else { toast('Caso eliminado', 'success'); cargarPortafolio(); }
+  if (error) { toast('Error: ' + error.message, 'error'); return; }
+  // Audit log
+  await _auditLog('DELETE_CASO_PORTAFOLIO', { caso_id: id });
+  toast('Caso eliminado', 'success');
+  cargarPortafolio();
+}
+
+/* ── AUDIT LOG — registra acciones sensibles del admin ──────────────── */
+async function _auditLog(accion, datos) {
+  try {
+    await sb.from('logs_incidencias').insert({
+      tipo: 'ADMIN_ACTION',
+      severidad: 'INFO',
+      descripcion: `[AUDIT] ${accion} por ${window.PRODIGY_EMAIL || 'admin'}: ${JSON.stringify(datos)}`,
+      resuelta: true
+    });
+  } catch(_) { /* no bloquear si falla el log */ }
 }
 /* ── fin modales ──────────────────────────────────────────────── */
 
