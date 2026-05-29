@@ -372,14 +372,14 @@ textarea.modal-input{min-height:100px;}
     <div class="pago-panel active" id="pago-nequi">
       <div class="pago-info">
         <div class="row"><span class="lbl">Número Nequi</span>
-          <span class="val copy" onclick="copiarTexto(PAGOS.nequi.num,this)">${'<span id=\\'nq-num\\'>'+''+'</span>'}</span></div>
+          <button type="button" class="val copy" onclick="copiarTexto(PAGOS.nequi.num,this)" aria-label="Copiar número"><span id="nq-num"></span></button></div>
         <div class="row"><span class="lbl">Titular</span><span class="val" id="nq-tit"></span></div>
       </div>
     </div>
     <div class="pago-panel" id="pago-daviplata">
       <div class="pago-info">
         <div class="row"><span class="lbl">Número Daviplata</span>
-          <span class="val copy" onclick="copiarTexto(PAGOS.daviplata.num,this)" id="dp-num"></span></div>
+          <button type="button" class="val copy" onclick="copiarTexto(PAGOS.daviplata.num,this)" aria-label="Copiar número" id="dp-num"></button></div>
         <div class="row"><span class="lbl">Titular</span><span class="val" id="dp-tit"></span></div>
       </div>
     </div>
@@ -388,7 +388,7 @@ textarea.modal-input{min-height:100px;}
         <div class="row"><span class="lbl">Banco</span><span class="val" id="tr-banco"></span></div>
         <div class="row"><span class="lbl">Tipo</span><span class="val" id="tr-tipo"></span></div>
         <div class="row"><span class="lbl">Número de cuenta</span>
-          <span class="val copy" onclick="copiarTexto(PAGOS.transferencia.num,this)" id="tr-num"></span></div>
+          <button type="button" class="val copy" onclick="copiarTexto(PAGOS.transferencia.num,this)" aria-label="Copiar número" id="tr-num"></button></div>
         <div class="row"><span class="lbl">Titular</span><span class="val" id="tr-tit"></span></div>
         <div class="row"><span class="lbl">NIT / Cédula</span><span class="val" id="tr-nit"></span></div>
       </div>
@@ -693,16 +693,16 @@ function renderPage() {
             Los servicios de fabricación (fresado, impresión 3D, laboratorio) están disponibles de forma presencial o con <strong style="color:var(--text);">envío internacional</strong> bajo solicitud especial.
           </p>
           <div class="fab-opts" style="margin-bottom:14px;">
-            <div class="fab-opt" onclick="solicitarFabricacionInternacional('fresado')">
+            <button type="button" class="fab-opt" onclick="solicitarFabricacionInternacional('fresado')">
               <i class="fas fa-cog" style="color:var(--gold);"></i>
               <strong>Fresado / Laboratorio</strong>
               <span>Solicitud especial + envío internacional</span>
-            </div>
-            <div class="fab-opt" onclick="solicitarFabricacionInternacional('impresion')">
+            </button>
+            <button type="button" class="fab-opt" onclick="solicitarFabricacionInternacional('impresion')">
               <i class="fas fa-print" style="color:#fb923c;"></i>
               <strong>Impresión 3D</strong>
               <span>Solicitud especial + envío internacional</span>
-            </div>
+            </button>
           </div>
           <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:10px;padding:12px 16px;font-size:.82rem;color:var(--muted);margin-bottom:12px;">
             <i class="fas fa-info-circle" style="color:var(--cyan);margin-right:6px;"></i>
@@ -719,16 +719,16 @@ function renderPage() {
           <h3><i class="fas fa-question-circle" style="margin-right:7px;"></i>¿Qué sigue con tu caso?</h3>
           <p>Tu diseño fue aprobado. ¿Deseas que PRODIGY también realice la fabricación?</p>
           <div class="fab-opts">
-            <div class="fab-opt" onclick="solicitarFabricacion('fresado')">
+            <button type="button" class="fab-opt" onclick="solicitarFabricacion('fresado')">
               <i class="fas fa-cog" style="color:var(--gold);"></i>
               <strong>Fresado / Laboratorio</strong>
               <span>Zirconia, disilicato, PMMA y más</span>
-            </div>
-            <div class="fab-opt" onclick="solicitarFabricacion('impresion')">
+            </button>
+            <button type="button" class="fab-opt" onclick="solicitarFabricacion('impresion')">
               <i class="fas fa-print" style="color:#fb923c;"></i>
               <strong>Impresión 3D</strong>
               <span>Guías quirúrgicas, modelos, alineadores</span>
-            </div>
+            </button>
           </div>
           <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
             <span style="font-size:.78rem;color:var(--muted);">¿Ya pagaste fabricación?</span>
