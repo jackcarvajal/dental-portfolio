@@ -1042,11 +1042,15 @@ aprobarQA = async function() {
         .subscribe();
 })();
 
-/* Escape cierra modales de automatización */
+/* Escape cierra todos los modales */
 document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     cerrarModalMaquina();
     cerrarModalHandoffQA();
+    ['modal-panico','modal-qa'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('open');
+    });
 });
 </script>
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});</script>
