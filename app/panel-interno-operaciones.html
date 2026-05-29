@@ -1475,9 +1475,11 @@ async function cargarPortafolio() {
 }
 
 async function toggleVisible(id, actual) {
-    const { error } = await sb.from('casos_portafolio').update({ visible: !actual }).eq('id', id);
-    if (error) toast('Error: ' + error.message, 'error');
-    else cargarPortafolio();
+    const nuevo = !actual;
+    const { error } = await sb.from('casos_portafolio').update({ visible: nuevo }).eq('id', id);
+    if (error) { toast('Error: ' + error.message, 'error'); return; }
+    await _auditLog(nuevo ? 'PUBLICAR_CASO_PORTAFOLIO' : 'OCULTAR_CASO_PORTAFOLIO', { caso_id: id });
+    cargarPortafolio();
 }
 
 function eliminarCaso(id) { eliminarCasoConfirm(id); }
@@ -2586,6 +2588,7 @@ async function marcarPagoRecibido(id, tipo) {
     async () => {
       const { error } = await sbFab.from('pedidos').update({ cotizacion_fab_estado: 'pago_confirmado' }).eq('id', id);
       if (error) { toast('Error: ' + error.message, 'error'); return; }
+      await _auditLog('CONFIRMAR_PAGO_FABRICACION', { pedido_id: id });
       toast('Pago marcado. Ahora enruta el caso a producción.', 'success');
       cargarFabricacion();
     }
