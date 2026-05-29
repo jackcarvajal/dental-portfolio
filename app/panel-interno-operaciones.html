@@ -288,11 +288,11 @@
 
         <!-- Filtro estado -->
         <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
-            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('todos')" id="f-todos" style="background:rgba(212,175,55,0.1);">Todos</button>
-            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Pendiente')" id="f-Pendiente">Pendiente</button>
-            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Pagado')" id="f-Pagado">Pagado</button>
-            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('En Producción')" id="f-En Producción">En Producción</button>
-            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Despachado')" id="f-Despachado">Despachado</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('todos')" id="f-todos" aria-pressed="true" style="background:rgba(212,175,55,0.1);">Todos</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Pendiente')" id="f-Pendiente" aria-pressed="false">Pendiente</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Pagado')" id="f-Pagado" aria-pressed="false">Pagado</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('En Producción')" id="f-En Producción" aria-pressed="false">En Producción</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Despachado')" id="f-Despachado" aria-pressed="false">Despachado</button>
         </div>
 
         <div class="section-card">
@@ -1217,9 +1217,9 @@ function prodigyNotifCambios(p){
 }
 
 function filtrarPedidos(estado) {
-    document.querySelectorAll('[id^="f-"]').forEach(b => b.style.background = '');
+    document.querySelectorAll('[id^="f-"]').forEach(b => { b.style.background = ''; b.setAttribute('aria-pressed', 'false'); });
     const btn = document.getElementById('f-' + estado);
-    if (btn) btn.style.background = 'rgba(212,175,55,0.15)';
+    if (btn) { btn.style.background = 'rgba(212,175,55,0.15)'; btn.setAttribute('aria-pressed', 'true'); }
 
     const filtrado = estado === 'todos'
         ? todosLosPedidos
