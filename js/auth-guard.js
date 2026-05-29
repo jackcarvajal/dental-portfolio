@@ -83,5 +83,43 @@
         window.location.href = 'login.html';
     }
 
+    /* ── SESSION TIMEOUT — cierra sesión tras 30 min de inactividad ──
+       Se activa solo en páginas del portal (/app/).
+       Reinicia el timer en cada interacción del usuario.
+    ─────────────────────────────────────────────────────────────────── */
+    (function _sessionTimeout() {
+        if (!window.location.pathname.includes('/app/')) return;
+        const IDLE_MS = 30 * 60 * 1000; // 30 minutos
+        let _timer;
+
+        function _reset() {
+            clearTimeout(_timer);
+            _timer = setTimeout(function() {
+                // Mostrar advertencia 1 minuto antes
+                const warn = confirm(
+                    '⚠️ Tu sesión expirará en 1 minuto por inactividad.\n\n' +
+                    'Haz clic en OK para continuar o Cancelar para cerrar sesión ahora.'
+                );
+                if (!warn) {
+                    signOut();
+                    return;
+                }
+                // Dar 1 minuto más
+                _timer = setTimeout(function() {
+                    alert('Sesión cerrada por inactividad.');
+                    signOut();
+                }, 60 * 1000);
+            }, IDLE_MS - 60000); // 29 minutos → aviso
+        }
+
+        // Reiniciar en interacciones del usuario
+        ['mousemove','keydown','click','scroll','touchstart'].forEach(function(ev) {
+            document.addEventListener(ev, _reset, { passive: true });
+        });
+
+        // Arrancar al cargar
+        _reset();
+    })();
+
     window.ProdigyAuth = { require, signOut, getRole, getSb };
 })();
