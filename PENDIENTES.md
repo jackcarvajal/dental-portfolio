@@ -106,6 +106,15 @@
 - **Scan masivo**: toast functions → todas usan textContent (no innerHTML) en ambos proyectos ✓
 - **Scan masivo**: geo.region, keywords, viewport, canonical, noindex app/, og:type — 100% completo ambos proyectos ✓
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 16)
+- **perf version params 100%**: PRODIGY y Alejandro — todos los scripts JS locales tienen ?v=20260528 (header.js, footer.js, auth-guard.js, articles.js, i18n.js, emailnotif.js, stl-multi-viewer, upload-guard, webpush, callmebot, flujo-uploader, etc.)
+- **seo og:locale:alternate**: 28 páginas PRODIGY + 13/13 Alejandro con og:locale:alternate=en_US en páginas con hreflang EN
+- **seo títulos**: flujo-fresado (35→63 chars) + flujo-impresion (30→65 chars) PRODIGY
+- **fix schema url**: calculadora-diseno.html Alejandro — campo url agregado al Service schema
+- **a11y**: aria-label en botones de idioma ES/EN — guias-quirurgicas.html Alejandro
+- **seo sitemap**: lastmod 2026-05-28 para 4 páginas Alejandro con cambios de contenido
+- **Audit 100%**: PRODIGY 27/27, Alejandro 13/13 — cobertura total de elementos SEO/a11y
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 15)
 - **a11y**: type='button' en botones ux-btn + lang-btn — 24 páginas PRODIGY + 9 Alejandro + blog Alejandro
 - **seo**: redirects 301 en PRODIGY — /terminos, /privacidad, /seguimiento, /guias, /scanner, /pedido
