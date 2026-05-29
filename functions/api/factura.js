@@ -109,11 +109,30 @@ async function verificarAdmin(request, env) {
   } catch { return false; }
 }
 
+/* ── Rate limiting — factura: máx 10 facturas por IP por hora ──────── */
+async function _rlFactura(request) {
+  try {
+    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+    const rlKey = new Request('https://rl.internal/factura_' + ip);
+    const hit = await caches.default.match(rlKey);
+    const count = hit ? (parseInt(await hit.text(), 10) || 0) : 0;
+    if (count >= 10) return false; // bloquear
+    await caches.default.put(rlKey, new Response(String(count + 1), {
+      headers: { 'Cache-Control': 'max-age=3600' }
+    }));
+    return true;
+  } catch { return true; } // si falla el cache, dejar pasar
+}
+
 /* ── POST: emitir factura nueva ────────────────────────────────────── */
 export async function onRequestPost(context) {
   const { request, env } = context;
   const origin = request.headers.get('Origin') || '';
   const cors   = corsHeaders(origin);
+
+  if (!(await _rlFactura(request))) {
+    return new Response(JSON.stringify({ error: 'Demasiadas solicitudes de facturación. Intenta en 1 hora.' }), { status: 429, headers: cors });
+  }
 
   if (!(await verificarAdmin(request, env))) {
     return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 403, headers: cors });
