@@ -483,7 +483,7 @@
   }
 
   var navHtml =
-    '<nav id="pheader-v2">' +
+    '<nav id="pheader-v2" aria-label="Navegación principal">' +
       '<div class="pnav2-c">' +
 
         /* Hamburger */
