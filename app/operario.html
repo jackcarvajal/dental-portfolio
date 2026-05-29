@@ -122,14 +122,14 @@ body.ready{visibility:visible;}
   </div>
 </div>
 
-<div class="main" id="main-content">
-  <p style="color:var(--muted);padding:40px;text-align:center;"><i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;display:block;margin-bottom:12px;"></i>Cargando departamentos…</p>
+<div class="main" id="main-content" aria-live="polite" aria-label="Casos del operario">
+  <p style="color:var(--muted);padding:40px;text-align:center;"><i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;display:block;margin-bottom:12px;" aria-hidden="true"></i>Cargando departamentos…</p>
 </div>
 
 <!-- Modal Subir Diseño -->
-<div class="modal-ov" id="modal-subir">
+<div class="modal-ov" id="modal-subir" role="dialog" aria-modal="true" aria-labelledby="modal-subir-title">
   <div class="modal" style="max-width:520px;">
-    <h3><i class="fas fa-upload" style="margin-right:8px;"></i>Subir archivos de diseño</h3>
+    <h3 id="modal-subir-title"><i class="fas fa-upload" style="margin-right:8px;"></i>Subir archivos de diseño</h3>
     <p id="subir-sub">Caso #—</p>
     <div style="display:grid;gap:12px;">
       <div>
@@ -174,7 +174,7 @@ body.ready{visibility:visible;}
 </div>
 
 <!-- Modal QA -->
-<div class="modal-ov" id="modal-qa">
+<div class="modal-ov" id="modal-qa" role="dialog" aria-modal="true" aria-labelledby="modal-qa-title">
   <div class="modal">
     <h3 id="qa-titulo"><i class="fas fa-check-double" style="margin-right:8px;"></i>Control de Calidad</h3>
     <p id="qa-sub">Caso #—</p>
@@ -196,7 +196,7 @@ body.ready{visibility:visible;}
 <div id="toast"></div>
 
 <!-- Modal: confirmar acción operario (genérico) -->
-<div id="modal-op-confirm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+<div id="modal-op-confirm" role="dialog" aria-modal="true" aria-labelledby="modal-op-title" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#0a1525;border:1px solid rgba(212,175,55,.3);border-radius:14px;padding:24px;max-width:400px;width:100%;text-align:center;">
     <div id="modal-op-icon" style="font-size:2rem;margin-bottom:10px;"></div>
     <div id="modal-op-title" style="font-size:.95rem;font-weight:800;color:#D4AF37;margin-bottom:8px;"></div>

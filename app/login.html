@@ -464,14 +464,14 @@
             </div>
         </div>
 
-        <form onsubmit="handleLogin(event)">
+        <form onsubmit="handleLogin(event)" novalidate>
             <div class="form-group">
-                <label>Correo electrónico</label>
-                <input type="email" id="login-email" placeholder="correo@empresa.com" required autocomplete="email">
+                <label for="login-email">Correo electrónico</label>
+                <input type="email" id="login-email" placeholder="correo@empresa.com" required autocomplete="email" aria-required="true">
             </div>
             <div class="form-group">
-                <label>Contraseña</label>
-                <input type="password" id="login-pass" placeholder="••••••••" required autocomplete="current-password" spellcheck="false">
+                <label for="login-pass">Contraseña</label>
+                <input type="password" id="login-pass" placeholder="••••••••" required autocomplete="current-password" spellcheck="false" aria-required="true">
             </div>
             <button type="submit" class="btn-submit" aria-label="Iniciar sesión en el panel">
                 <i class="fas fa-arrow-right-to-bracket" aria-hidden="true"></i> &nbsp;Ingresar al Panel
@@ -535,28 +535,28 @@
             <li><i class="fas fa-check-circle"></i> Cuenta gratuita — sin tarjeta</li>
         </ul>
 
-        <form onsubmit="handleRegister(event)">
+        <form onsubmit="handleRegister(event)" novalidate>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Nombre</label>
-                    <input type="text" id="reg-nombre" autocomplete="given-name" placeholder="Dr. Juan López" required>
+                    <label for="reg-nombre">Nombre</label>
+                    <input type="text" id="reg-nombre" autocomplete="given-name" placeholder="Dr. Juan López" required aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label>Apellido</label>
-                    <input type="text" id="reg-apellido" autocomplete="family-name" placeholder="López" required>
+                    <label for="reg-apellido">Apellido</label>
+                    <input type="text" id="reg-apellido" autocomplete="family-name" placeholder="López" required aria-required="true">
                 </div>
             </div>
             <div class="form-group">
-                <label>Nombre de la Clínica / Consultorio</label>
-                <input type="text" id="reg-clinica" autocomplete="organization" placeholder="Clínica Dental del Norte" required>
+                <label for="reg-clinica">Nombre de la Clínica / Consultorio</label>
+                <input type="text" id="reg-clinica" autocomplete="organization" placeholder="Clínica Dental del Norte" required aria-required="true">
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Ciudad</label>
+                    <label for="reg-ciudad">Ciudad</label>
                     <input type="text" id="reg-ciudad" autocomplete="address-level2" placeholder="Bogotá" required>
                 </div>
                 <div class="form-group">
-                    <label>Especialidad</label>
+                    <label for="reg-especialidad">Especialidad</label>
                     <select id="reg-especialidad" required>
                         <option value="" disabled selected>Seleccionar</option>
                         <option>Odontología General</option>
@@ -571,15 +571,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>Correo electrónico profesional</label>
+                <label for="reg-email">Correo electrónico profesional</label>
                 <input type="email" id="reg-email" placeholder="correo@empresa.com" required autocomplete="email">
             </div>
             <div class="form-group">
-                <label>Contraseña</label>
+                <label for="reg-pass">Contraseña</label>
                 <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="new-password" spellcheck="false">
             </div>
             <div class="form-group">
-                <label>Teléfono / WhatsApp (opcional)</label>
+                <label for="reg-tel">Teléfono / WhatsApp (opcional)</label>
                 <input type="tel" inputmode="tel" id="reg-tel" placeholder="+57 300 000 0000" autocomplete="tel">
             </div>
             <button type="submit" class="btn-submit" style="background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;">

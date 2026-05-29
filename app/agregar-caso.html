@@ -406,11 +406,11 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>Nombre del caso <span>*</span></label>
+                <label for="caseName">Nombre del caso <span>*</span></label>
                 <input type="text" id="caseName" placeholder="Ej: Rehabilitación Full Arch Superior" oninput="updateProgress()">
             </div>
             <div class="form-group">
-                <label>Tipo de tratamiento <span>*</span></label>
+                <label for="caseType">Tipo de tratamiento <span>*</span></label>
                 <select id="caseType" onchange="updateProgress()">
                     <option value="">— Selecciona —</option>
                     <option value="rehabilitacion">🔬 Rehabilitación</option>
@@ -427,18 +427,18 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>Fecha <span>*</span></label>
+                <label for="caseDate">Fecha <span>*</span></label>
                 <input type="text" id="caseDate" placeholder="Ej: Marzo 2025" oninput="updateProgress()">
             </div>
             <div class="form-group">
-                <label>Link Google Drive <span style="color:var(--muted);font-weight:400;">(opcional)</span></label>
+                <label for="driveLink">Link Google Drive <span style="color:var(--muted);font-weight:400;">(opcional)</span></label>
                 <input type="url" id="driveLink" placeholder="https://drive.google.com/...">
             </div>
         </div>
 
         <div class="form-row full">
             <div class="form-group">
-                <label>Descripción breve <span>*</span></label>
+                <label for="caseDesc">Descripción breve <span>*</span></label>
                 <textarea id="caseDescription" placeholder="Describe el caso: materiales, cantidad de unidades, técnica utilizada..." oninput="updateProgress()"></textarea>
                 <span class="field-hint">Aparece como subtítulo en la tarjeta del portafolio.</span>
             </div>
