@@ -4,6 +4,14 @@
 
 ---
 
+## 🔴 URGENTE — Nuevos SQL para ejecutar en Supabase
+
+| # | Acción | Dónde | Detalle |
+|---|--------|-------|---------|
+| 0c | **Ejecutar `sql/patch-rls-bibliotecas-diseno-revisiones.sql`** | Supabase PRODIGY → SQL Editor | RLS en `bibliotecas_cliente` + `diseno_revisiones`: aísla acceso por usuario |
+
+---
+
 ## 🔴 URGENTE — Vulnerabilidad de seguridad + bugs activos
 
 | # | Acción | Dónde | Detalle |
@@ -90,6 +98,16 @@
 | 5 | Grabar video #3: "¿Cuánto cuesta diseño CAD?" — muestra calculadora |
 
 ---
+
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 10)
+- **security Modal Manager global**: header.js (PRODIGY+Alejandro) — role=dialog + aria-modal + focus trap automático vía MutationObserver en TODOS los modales de app/
+- **security session timeout**: auth-guard.js (PRODIGY+Alejandro) — 30 min inactividad, aviso 1 min antes, cierre automático
+- **security audit log**: panel-interno-operaciones — _auditLog() registra DELETE_CASO_PORTAFOLIO + CAMBIAR_ESTADO en logs_incidencias
+- **security upload-guard**: validateMagicBytes disponible en 9 paneles con file uploads; integrado en admin-panel subirCaso()
+- **security RLS SQL**: bibliotecas_cliente + diseno_revisiones — políticas de aislamiento por usuario (0c pendiente de ejecutar)
+- **security rate limiting**: factura.js edge function — 10/hora por IP
+- **a11y aria-current**: 8 paneles de PRODIGY con nav sidebar activo
+- **a11y upload-guard.js**: cargado en todos los paneles que suben archivos
 
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 9)
 - **a11y aria-live toast COMPLETO**: role=status + aria-live en TODOS los toasts de paneles app (PRODIGY 9 paneles, Alejandro 4 paneles incluye toast dinámico en JS)
