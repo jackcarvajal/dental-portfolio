@@ -99,6 +99,13 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 11)
+- **perf**: defer en jsPDF+QRCode (admin-panel) + content-guard/callmebot (client-panel)
+- **security audit log ampliado**: CONFIRMAR_PAGO_FABRICACION + PUBLICAR/OCULTAR_CASO_PORTAFOLIO + CONFIRMAR_PAGO contabilidad + DELETE gestionar-casos
+- **security validateMagicBytes 100%**: calidad, operario-diseno, mensajero, operator-panel, inventario, taller, client-panel, operario, admin-panel (PRODIGY) + admin-panel, client-panel (Alejandro)
+- **security SECURITY.md**: documentación formal de medidas de seguridad implementadas
+- **a11y aria-current**: mis-casos + client-panel Alejandro; aria-current en nav de todos los paneles completado
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 10)
 - **security Modal Manager global**: header.js (PRODIGY+Alejandro) — role=dialog + aria-modal + focus trap automático vía MutationObserver en TODOS los modales de app/
 - **security session timeout**: auth-guard.js (PRODIGY+Alejandro) — 30 min inactividad, aviso 1 min antes, cierre automático
