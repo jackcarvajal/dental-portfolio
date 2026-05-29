@@ -4,6 +4,15 @@
 
 ---
 
+## 🔴 URGENTE — Vulnerabilidad de seguridad + bugs activos
+
+| # | Acción | Dónde | Detalle |
+|---|--------|-------|---------|
+| 0a | **Ejecutar `sql/patch-rls-client-column-protection.sql`** | Supabase Dashboard → SQL Editor → PRODIGY | **RLS bug**: cliente puede modificar `estado`, `precio_total`, `pago_estado=confirmado` de sus propios pedidos. El trigger lo bloquea. |
+| 0b | **Ejecutar `sql/patch-rls-client-column-protection.sql`** | Supabase Dashboard → SQL Editor → Alejandro | **Bug doble**: (1) clientes no pueden aprobar diseño/comprobante/calificación por RLS; (2) si se desbloquea sin trigger, podrían modificar precio/estado. El SQL arregla ambos. |
+
+---
+
 ## 🔴 URGENTE — Bloquean funcionalidades activas
 
 | # | Acción | Dónde | Detalle |
