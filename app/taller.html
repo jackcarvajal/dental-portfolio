@@ -196,7 +196,7 @@
         <!-- QR SCANNER -->
         <div class="qr-bar">
             <input type="text" id="equipo-id-input" placeholder="ID del equipo (escanea QR o escribe)" autocomplete="off">
-            <button class="btn-scan" id="btn-qr" onclick="toggleQR()">
+            <button type="button" class="btn-scan" id="btn-qr" onclick="toggleQR()">
                 <i class="fas fa-qrcode"></i> QR
             </button>
         </div>
@@ -242,7 +242,7 @@
                 <textarea id="notas-input" placeholder="Describe el trabajo realizado, piezas cambiadas, estado observado..."></textarea>
             </div>
         </div>
-        <button class="btn-primary" id="btn-guardar" onclick="guardarMantenimiento()">
+        <button type="button" class="btn-primary" id="btn-guardar" onclick="guardarMantenimiento()">
             <i class="fas fa-save"></i> Guardar Registro
         </button>
     </div>
@@ -252,7 +252,7 @@
         <div class="card-title"><i class="fas fa-history"></i> Historial de Equipos</div>
         <div class="hist-filter">
             <input type="text" id="hist-filter-input" placeholder="Filtrar por ID equipo..." oninput="filtrarHistorial(this.value)">
-            <button class="btn-sm" onclick="cargarHistorial()"><i class="fas fa-refresh"></i> Actualizar</button>
+            <button type="button" class="btn-sm" onclick="cargarHistorial()"><i class="fas fa-refresh"></i> Actualizar</button>
         </div>
         <div id="hist-container">
             <div class="spinner"></div>
@@ -527,7 +527,7 @@ init();
 .pan-btn { padding:9px 18px; border-radius:8px; font-size:.82rem; font-weight:700; border:none; cursor:pointer; }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
-<button id="panico-fab" onclick="document.getElementById('modal-panico-fab').classList.add('open')">INCIDENCIA</button>
+<button type="button" id="panico-fab" onclick="document.getElementById('modal-panico-fab').classList.add('open')">INCIDENCIA</button>
 <div id="modal-panico-fab">
     <div class="pan-box">
         <h3>Reportar Incidencia</h3>
@@ -554,8 +554,8 @@ init();
             <textarea id="pfab-desc" placeholder="Describe el problema..."></textarea>
         </div>
         <div class="pan-footer">
-            <button class="pan-btn" style="background:transparent;border:1px solid rgba(255,255,255,.15);color:#94a3b8" onclick="document.getElementById('modal-panico-fab').classList.remove('open')">Cancelar</button>
-            <button class="pan-btn" style="background:#ef4444;color:#fff" onclick="enviarPanicoFab()">Enviar Alerta</button>
+            <button type="button" class="pan-btn" style="background:transparent;border:1px solid rgba(255,255,255,.15);color:#94a3b8" onclick="document.getElementById('modal-panico-fab').classList.remove('open')">Cancelar</button>
+            <button type="button" class="pan-btn" style="background:#ef4444;color:#fff" onclick="enviarPanicoFab()">Enviar Alerta</button>
         </div>
     </div>
 </div>

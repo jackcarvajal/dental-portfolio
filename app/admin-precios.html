@@ -193,7 +193,7 @@
             <h1><i class="fas fa-tags" style="color:var(--gold);margin-right:10px;font-size:1.2rem;"></i>Catálogo de Precios</h1>
             <p>Tabla <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;color:#94a3b8;">catalogo</code> · Edita y guarda precios en tiempo real · Cambios reflejados inmediatamente en calculadoras</p>
         </div>
-        <button onclick="exportarCSV()" style="padding:9px 18px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);color:var(--gold);border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;">
+        <button type="button" onclick="exportarCSV()" style="padding:9px 18px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);color:var(--gold);border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;">
             <i class="fas fa-download"></i> Exportar CSV
         </button>
     </div>
@@ -202,21 +202,21 @@
     <div id="pending-bar">
         <span style="font-size:0.82rem;color:#fbbf24;"><i class="fas fa-circle-exclamation"></i> <strong id="pending-count">0</strong> cambio(s) sin guardar</span>
         <div style="display:flex;gap:8px;">
-            <button onclick="descartarCambios()" style="padding:7px 14px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:#94a3b8;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;">Descartar</button>
-            <button class="btn-save-all" onclick="guardarTodo()"><i class="fas fa-check"></i> Guardar Todo</button>
+            <button type="button" onclick="descartarCambios()" style="padding:7px 14px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:#94a3b8;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;">Descartar</button>
+            <button type="button" class="btn-save-all" onclick="guardarTodo()"><i class="fas fa-check"></i> Guardar Todo</button>
         </div>
     </div>
 
     <!-- FILTROS -->
     <div class="filtros-bar">
-        <button class="filtro-btn active" onclick="filtrar('todos',this)">Todos</button>
-        <button class="filtro-btn" onclick="filtrar('resina_modelo',this)" data-cat="resina_modelo">Modelos</button>
-        <button class="filtro-btn" onclick="filtrar('resina_temporal',this)" data-cat="resina_temporal">Temporales</button>
-        <button class="filtro-btn" onclick="filtrar('resina_definitiva',this)" data-cat="resina_definitiva">Definitivas</button>
-        <button class="filtro-btn" onclick="filtrar('resina_calcinable',this)" data-cat="resina_calcinable">Calcinables</button>
-        <button class="filtro-btn" onclick="filtrar('resina_ferulas_guias',this)" data-cat="resina_ferulas_guias">Férulas</button>
-        <button class="filtro-btn" onclick="filtrar('resina_biomodelos',this)" data-cat="resina_biomodelos">Biomodelos</button>
-        <button class="filtro-btn" onclick="filtrar('diseno_cad',this)" data-cat="diseno_cad">Diseño CAD</button>
+        <button type="button" class="filtro-btn active" onclick="filtrar('todos',this)">Todos</button>
+        <button type="button" class="filtro-btn" onclick="filtrar('resina_modelo',this)" data-cat="resina_modelo">Modelos</button>
+        <button type="button" class="filtro-btn" onclick="filtrar('resina_temporal',this)" data-cat="resina_temporal">Temporales</button>
+        <button type="button" class="filtro-btn" onclick="filtrar('resina_definitiva',this)" data-cat="resina_definitiva">Definitivas</button>
+        <button type="button" class="filtro-btn" onclick="filtrar('resina_calcinable',this)" data-cat="resina_calcinable">Calcinables</button>
+        <button type="button" class="filtro-btn" onclick="filtrar('resina_ferulas_guias',this)" data-cat="resina_ferulas_guias">Férulas</button>
+        <button type="button" class="filtro-btn" onclick="filtrar('resina_biomodelos',this)" data-cat="resina_biomodelos">Biomodelos</button>
+        <button type="button" class="filtro-btn" onclick="filtrar('diseno_cad',this)" data-cat="diseno_cad">Diseño CAD</button>
         <input type="text" class="search-input" placeholder="🔍 Buscar por nombre..." oninput="buscar(this.value)">
     </div>
 
@@ -356,7 +356,7 @@
                     </div>
                 </td>
                 <td>
-                    <button class="btn-save ${hasPending ? 'visible' : ''}" id="btn-${item.id}" onclick="guardarUno('${item.id}')">
+                    <button type="button" class="btn-save ${hasPending ? 'visible' : ''}" id="btn-${item.id}" onclick="guardarUno('${item.id}')">
                         <i class="fas fa-check"></i> Guardar
                     </button>
                 </td>
@@ -383,7 +383,7 @@
                     </div>
                 </td>
                 <td>
-                    <button class="btn-save" id="extra-btn-${item.id}" onclick="guardarExtra('${item.id}')">
+                    <button type="button" class="btn-save" id="extra-btn-${item.id}" onclick="guardarExtra('${item.id}')">
                         <i class="fas fa-check"></i> Guardar
                     </button>
                 </td>

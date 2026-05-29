@@ -163,8 +163,8 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
         <div class="hdr-sub" id="hdr-user">Cargando...</div>
     </div>
     <div class="hdr-actions">
-        <button class="btn btn-primary btn-sm" onclick="abrirModalItem()">+ Ítem</button>
-        <button class="btn btn-outline btn-sm" onclick="ProdigyAuth.signOut()">Salir</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="abrirModalItem()">+ Ítem</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="ProdigyAuth.signOut()">Salir</button>
     </div>
 </div>
 
@@ -187,7 +187,7 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
                 <div style="font-size:1rem;font-weight:800;color:var(--gold);">Solicitudes de material en producción</div>
                 <div style="font-size:.78rem;color:var(--txt3);margin-top:2px;">Casos activos que necesitan material entregado. Haz clic en "Entregar" para registrar la salida y notificar al operario.</div>
             </div>
-            <button class="btn btn-primary" onclick="cargarSolicitudes()" style="white-space:nowrap;"><i class="fas fa-rotate-right"></i> Actualizar</button>
+            <button type="button" class="btn btn-primary" onclick="cargarSolicitudes()" style="white-space:nowrap;"><i class="fas fa-rotate-right"></i> Actualizar</button>
         </div>
         <div id="tbl-solicitudes">
             <p style="color:var(--txt3);font-size:.84rem;text-align:center;padding:32px;">Cargando solicitudes…</p>
@@ -253,8 +253,8 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
                 </div>
             </div>
             <div class="form-actions">
-                <button class="btn btn-primary" onclick="guardarEntrada()">Registrar Entrada</button>
-                <button class="btn btn-outline" onclick="limpiarEntrada()">Limpiar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarEntrada()">Registrar Entrada</button>
+                <button type="button" class="btn btn-outline" onclick="limpiarEntrada()">Limpiar</button>
             </div>
         </div>
     </div>
@@ -267,7 +267,7 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
             <div id="qr-scanner-box"></div>
             <div class="scan-result" id="scan-result"></div>
             <div style="text-align:center;margin-bottom:16px;display:flex;gap:10px;justify-content:center;">
-                <button class="btn btn-outline btn-sm" id="btn-scan" onclick="toggleScanner()">Activar Escáner QR</button>
+                <button type="button" class="btn btn-outline btn-sm" id="btn-scan" onclick="toggleScanner()">Activar Escáner QR</button>
             </div>
             <div class="form-grid">
                 <div class="form-group">
@@ -290,8 +290,8 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
                 </div>
             </div>
             <div class="form-actions">
-                <button class="btn btn-danger" onclick="guardarSalida()">Registrar Salida</button>
-                <button class="btn btn-outline" onclick="limpiarSalida()">Limpiar</button>
+                <button type="button" class="btn btn-danger" onclick="guardarSalida()">Registrar Salida</button>
+                <button type="button" class="btn btn-outline" onclick="limpiarSalida()">Limpiar</button>
             </div>
         </div>
     </div>
@@ -308,7 +308,7 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
             <select id="mov-item-fil" onchange="cargarMovimientos()">
                 <option value="">Todos los materiales</option>
             </select>
-            <button class="btn btn-outline btn-sm" onclick="cargarMovimientos()">Actualizar</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="cargarMovimientos()">Actualizar</button>
         </div>
         <div class="tbl-wrap">
             <table>
@@ -411,8 +411,8 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-outline" onclick="cerrarModal()">Cancelar</button>
-            <button class="btn btn-primary" onclick="guardarItem()">Crear Ítem</button>
+            <button type="button" class="btn btn-outline" onclick="cerrarModal()">Cancelar</button>
+            <button type="button" class="btn btn-primary" onclick="guardarItem()">Crear Ítem</button>
         </div>
     </div>
 </div>
@@ -433,8 +433,8 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-outline" onclick="cerrarModal('modal-ajuste')">Cancelar</button>
-            <button class="btn btn-primary" onclick="guardarAjuste()">Guardar Ajuste</button>
+            <button type="button" class="btn btn-outline" onclick="cerrarModal('modal-ajuste')">Cancelar</button>
+            <button type="button" class="btn btn-primary" onclick="guardarAjuste()">Guardar Ajuste</button>
         </div>
     </div>
 </div>
@@ -457,8 +457,8 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
             <input id="ent-sol-nota" type="text" class="form-control" placeholder="Ej: Color A2, lote 2024-B">
         </div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="cerrarEntregaMaterial()">Cancelar</button>
-            <button class="btn btn-primary" onclick="confirmarEntregaMaterial()">Confirmar entrega</button>
+            <button type="button" class="btn btn-outline" onclick="cerrarEntregaMaterial()">Cancelar</button>
+            <button type="button" class="btn btn-primary" onclick="confirmarEntregaMaterial()">Confirmar entrega</button>
         </div>
     </div>
 </div>
@@ -569,8 +569,8 @@ function renderStock() {
             ${it.numero_lote_inicial ? `<div style="font-size:.68rem;color:#475569;margin-top:2px;">Lote: ${escH(it.numero_lote_inicial)}</div>` : ''}
             ${it.kill_switch ? '<div class="kill-badge">KILL SWITCH ON</div>' : ''}
             <div class="stock-card-actions">
-                <button class="btn btn-outline btn-sm" onclick="abrirAjuste('${it.id}',${it.stock_actual})">Ajustar</button>
-                <button class="btn btn-sm ${it.kill_switch ? 'btn-primary' : 'btn-danger'}" onclick="toggleKill('${it.id}',${it.kill_switch})">
+                <button type="button" class="btn btn-outline btn-sm" onclick="abrirAjuste('${it.id}',${it.stock_actual})">Ajustar</button>
+                <button type="button" class="btn btn-sm ${it.kill_switch ? 'btn-primary' : 'btn-danger'}" onclick="toggleKill('${it.id}',${it.kill_switch})">
                     ${it.kill_switch ? 'Reactivar' : 'Kill'}
                 </button>
             </div>
@@ -992,7 +992,7 @@ async function cargarSolicitudes() {
                   : '<span style="color:#f97316;font-size:.78rem;">⏳ Pendiente</span>'}
               </td>
               <td style="padding:10px 8px;">
-                <button onclick="abrirEntregaMaterial('${escH(p.id)}','${escH(p.codigo||'')}','${escH(p.material||'')}','${escH(p.flujo||'')}')"
+                <button type="button" onclick="abrirEntregaMaterial('${escH(p.id)}','${escH(p.codigo||'')}','${escH(p.material||'')}','${escH(p.flujo||'')}')"
                   style="padding:5px 12px;border-radius:6px;border:1px solid rgba(0,210,255,.35);background:transparent;color:#00d2ff;font-size:.75rem;cursor:pointer;font-weight:700;">
                   📦 Entregar
                 </button>

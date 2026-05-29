@@ -299,7 +299,7 @@ async function cargarExtras() {
                            oninput="onExtraChange('${item.id}', this)">
                     <span class="precio-fmt" id="fmt-${item.id}">${formatCOP(item.precio)}</span>
                 </div>
-                <button class="btn-save" id="btn-${item.id}" onclick="guardarExtra('${item.id}')">
+                <button type="button" class="btn-save" id="btn-${item.id}" onclick="guardarExtra('${item.id}')">
                     <i class="fas fa-check"></i> Guardar
                 </button>
             </div>

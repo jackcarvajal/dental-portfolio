@@ -152,9 +152,9 @@
 <div class="toolbar">
     <div class="count-badge">Total: <strong id="totalCount">—</strong></div>
     <div class="filter-toggle">
-        <button class="ftbtn active" onclick="setFiltro('todos',this)">Todos</button>
-        <button class="ftbtn" onclick="setFiltro('visible',this)">Publicados</button>
-        <button class="ftbtn" onclick="setFiltro('oculto',this)">Ocultos</button>
+        <button type="button" class="ftbtn active" onclick="setFiltro('todos',this)">Todos</button>
+        <button type="button" class="ftbtn" onclick="setFiltro('visible',this)">Publicados</button>
+        <button type="button" class="ftbtn" onclick="setFiltro('oculto',this)">Ocultos</button>
     </div>
 </div>
 
@@ -194,8 +194,8 @@
             <textarea id="editDesc"></textarea>
         </div>
         <div class="modal-actions">
-            <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
-            <button class="btn-save" onclick="guardarEdicion()">💾 Guardar</button>
+            <button type="button" class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+            <button type="button" class="btn-save" onclick="guardarEdicion()">💾 Guardar</button>
         </div>
     </div>
 </div>
@@ -209,8 +209,8 @@
     <div style="font-size:.9rem;font-weight:800;color:#ef4444;margin-bottom:8px;">Eliminar caso</div>
     <div style="font-size:.78rem;color:#94a3b8;margin-bottom:20px;">Esta acción no se puede deshacer.</div>
     <div style="display:flex;gap:10px;justify-content:center;">
-      <button onclick="cerrarDelGc()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
-      <button onclick="confirmarDelGc()" style="background:#ef4444;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Sí, eliminar</button>
+      <button type="button" onclick="cerrarDelGc()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button type="button" onclick="confirmarDelGc()" style="background:#ef4444;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Sí, eliminar</button>
     </div>
   </div>
 </div>
@@ -272,8 +272,8 @@ function renderGrid() {
             ? `<span class="badge visible">● Publicado</span>`
             : `<span class="badge oculto">○ Oculto</span>`;
         const btnVisibilidad = c.visible
-            ? `<button class="btn-action btn-ocultar" onclick="toggleVisible('${c.id}',false)">🙈 Ocultar</button>`
-            : `<button class="btn-action btn-publicar" onclick="toggleVisible('${c.id}',true)">🟢 Publicar</button>`;
+            ? `<button type="button" class="btn-action btn-ocultar" onclick="toggleVisible('${c.id}',false)">🙈 Ocultar</button>`
+            : `<button type="button" class="btn-action btn-publicar" onclick="toggleVisible('${c.id}',true)">🟢 Publicar</button>`;
 
         return `
         <div class="caso-card ${c.visible ? '' : 'oculto'}" id="card-${c.id}">
@@ -288,10 +288,10 @@ function renderGrid() {
                 <div class="caso-desc">${escH(c.description)}</div>
             </div>
             <div class="caso-actions">
-                <button class="btn-action btn-ver" onclick="window.open('../patient?id=${c.id}','_blank')">👁 Ver</button>
-                <button class="btn-action btn-ver" onclick="abrirModal('${c.id}')">✏️ Editar</button>
+                <button type="button" class="btn-action btn-ver" onclick="window.open('../patient?id=${c.id}','_blank')">👁 Ver</button>
+                <button type="button" class="btn-action btn-ver" onclick="abrirModal('${c.id}')">✏️ Editar</button>
                 ${btnVisibilidad}
-                <button class="btn-action btn-eliminar" onclick="eliminarCaso('${c.id}')">🗑</button>
+                <button type="button" class="btn-action btn-eliminar" onclick="eliminarCaso('${c.id}')">🗑</button>
             </div>
         </div>`;
     }).join('');

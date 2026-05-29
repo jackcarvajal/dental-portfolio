@@ -137,7 +137,7 @@ body.ready{visibility:visible;}
   <a href="/seguimiento-caso" target="_blank" class="nav-item"><i class="fas fa-search" style="width:16px;"></i> Seguimiento</a>
   <div class="sidebar-footer">
     <div id="hdr-sub" style="font-size:.68rem;color:var(--muted);line-height:1.6;margin-bottom:10px;"></div>
-    <button class="btn-xs btn-cyan" style="width:100%;justify-content:center;" onclick="cargarCasos()">
+    <button type="button" class="btn-xs btn-cyan" style="width:100%;justify-content:center;" onclick="cargarCasos()">
       <i class="fas fa-rotate-right"></i> Actualizar
     </button>
     <a href="/" class="nav-item" style="margin-top:8px;"><i class="fas fa-home"></i> Página principal</a>
@@ -296,16 +296,16 @@ body.ready{visibility:visible;}
     <div style="background:rgba(37,211,102,.05);border:1px solid rgba(37,211,102,.15);border-radius:8px;padding:10px 12px;margin-bottom:12px;">
       <div style="font-size:.68rem;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Notificar al cliente</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.3);" onclick="notifWA('pago')"><i class="fab fa-whatsapp"></i> Pago OK</button>
-        <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.3);" onclick="notifWA('diseno')"><i class="fab fa-whatsapp"></i> Diseño listo</button>
-        <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.3);" onclick="notifWA('entrega')"><i class="fab fa-whatsapp"></i> Entregado</button>
+        <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.3);" onclick="notifWA('pago')"><i class="fab fa-whatsapp"></i> Pago OK</button>
+        <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.3);" onclick="notifWA('diseno')"><i class="fab fa-whatsapp"></i> Diseño listo</button>
+        <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.3);" onclick="notifWA('entrega')"><i class="fab fa-whatsapp"></i> Entregado</button>
       </div>
     </div>
 
     <div class="modal-actions">
-      <button class="btn-xs btn-red" onclick="cerrarQA()">Cancelar</button>
-      <button class="btn-xs btn-gold" onclick="guardarQA('CAMBIOS_SOLICITADOS')"><i class="fas fa-redo"></i> Requiere cambios</button>
-      <button class="btn-xs btn-green" onclick="guardarQA('DISENO_APROBADO')"><i class="fas fa-check"></i> Aprobar y entregar</button>
+      <button type="button" class="btn-xs btn-red" onclick="cerrarQA()">Cancelar</button>
+      <button type="button" class="btn-xs btn-gold" onclick="guardarQA('CAMBIOS_SOLICITADOS')"><i class="fas fa-redo"></i> Requiere cambios</button>
+      <button type="button" class="btn-xs btn-green" onclick="guardarQA('DISENO_APROBADO')"><i class="fas fa-check"></i> Aprobar y entregar</button>
     </div>
   </div>
 </div>
@@ -318,20 +318,20 @@ body.ready{visibility:visible;}
     <div style="font-size:.95rem;font-weight:800;color:#D4AF37;margin-bottom:4px;"><i class="fas fa-arrow-right-to-bracket" style="margin-right:8px;"></i>Diseño aprobado — Enviar a producción</div>
     <div id="modal-hd-codigo" style="font-size:.75rem;color:#94a3b8;margin-bottom:20px;"></div>
     <div style="display:grid;gap:10px;margin-bottom:20px;">
-      <button class="hd-dept-btn" onclick="confirmarHandoff('fresado')" style="background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.3);border-radius:10px;padding:14px 18px;color:#00d2ff;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
+      <button type="button" class="hd-dept-btn" onclick="confirmarHandoff('fresado')" style="background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.3);border-radius:10px;padding:14px 18px;color:#00d2ff;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
         <i class="fas fa-gear" style="margin-right:10px;"></i>Fresado / Lab — XTCERA · Dental Wings
       </button>
-      <button class="hd-dept-btn" onclick="confirmarHandoff('impresion')" style="background:rgba(217,70,166,.08);border:1px solid rgba(217,70,166,.3);border-radius:10px;padding:14px 18px;color:#D946A6;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
+      <button type="button" class="hd-dept-btn" onclick="confirmarHandoff('impresion')" style="background:rgba(217,70,166,.08);border:1px solid rgba(217,70,166,.3);border-radius:10px;padding:14px 18px;color:#D946A6;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
         <i class="fas fa-print" style="margin-right:10px;"></i>Impresión 3D — Biomodelos · Guías · Alineadores
       </button>
-      <button class="hd-dept-btn" onclick="confirmarHandoff('lab')" style="background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:14px 18px;color:#D4AF37;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
+      <button type="button" class="hd-dept-btn" onclick="confirmarHandoff('lab')" style="background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:14px 18px;color:#D4AF37;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
         <i class="fas fa-flask" style="margin-right:10px;"></i>Laboratorio convencional — Prótesis · Acrílico
       </button>
-      <button class="hd-dept-btn" onclick="confirmarHandoff('entrega_digital')" style="background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.25);border-radius:10px;padding:14px 18px;color:#00FF41;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
+      <button type="button" class="hd-dept-btn" onclick="confirmarHandoff('entrega_digital')" style="background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.25);border-radius:10px;padding:14px 18px;color:#00FF41;font-weight:800;cursor:pointer;text-align:left;font-size:.88rem;">
         <i class="fas fa-cloud-arrow-up" style="margin-right:10px;"></i>Solo archivo digital — Entrega STL directo al doctor
       </button>
     </div>
-    <button onclick="cerrarHandoffDiseno()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;width:100%;">Cancelar</button>
+    <button type="button" onclick="cerrarHandoffDiseno()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;width:100%;">Cancelar</button>
   </div>
 </div>
 
@@ -431,15 +431,15 @@ function cardHTML(p, col) {
 
   let actions = '';
   if (col === 'pend') {
-    actions = `<button class="btn-xs btn-cyan"   onclick="avanzar('${p.id}','EN_DISENO')"><i class="fas fa-play"></i> Iniciar diseño</button>
-               <button class="btn-xs btn-red"    onclick="avanzar('${p.id}','INCIDENCIA_CLIENTE')"><i class="fas fa-exclamation"></i> Incidencia</button>`;
+    actions = `<button type="button" class="btn-xs btn-cyan"   onclick="avanzar('${p.id}','EN_DISENO')"><i class="fas fa-play"></i> Iniciar diseño</button>
+               <button type="button" class="btn-xs btn-red"    onclick="avanzar('${p.id}','INCIDENCIA_CLIENTE')"><i class="fas fa-exclamation"></i> Incidencia</button>`;
   } else if (col === 'diseno') {
-    actions = `${p.link_diseno?`<button class="btn-xs btn-cyan" onclick="previsualizarDiseno('${escH(p.link_diseno)}','${p.id}')"><i class="fas fa-eye"></i> Preview</button>`:''}
-               <button class="btn-xs btn-gold"   onclick="avanzar('${p.id}','REVISION_CLIENTE')"><i class="fas fa-eye"></i> Enviar revisión</button>
-               <button class="btn-xs btn-cyan"   onclick="abrirQA('${p.id}','${escH(p.codigo)||''}')"><i class="fas fa-check-double"></i> QA</button>`;
+    actions = `${p.link_diseno?`<button type="button" class="btn-xs btn-cyan" onclick="previsualizarDiseno('${escH(p.link_diseno)}','${p.id}')"><i class="fas fa-eye"></i> Preview</button>`:''}
+               <button type="button" class="btn-xs btn-gold"   onclick="avanzar('${p.id}','REVISION_CLIENTE')"><i class="fas fa-eye"></i> Enviar revisión</button>
+               <button type="button" class="btn-xs btn-cyan"   onclick="abrirQA('${p.id}','${escH(p.codigo)||''}')"><i class="fas fa-check-double"></i> QA</button>`;
   } else if (col === 'rev') {
-    actions = `<button class="btn-xs btn-green"  onclick="abrirQA('${p.id}','${escH(p.codigo)||''}')"><i class="fas fa-check"></i> Aprobar</button>
-               <button class="btn-xs btn-yellow" onclick="avanzar('${p.id}','CAMBIOS_SOLICITADOS')"><i class="fas fa-redo"></i> Cambios</button>`;
+    actions = `<button type="button" class="btn-xs btn-green"  onclick="abrirQA('${p.id}','${escH(p.codigo)||''}')"><i class="fas fa-check"></i> Aprobar</button>
+               <button type="button" class="btn-xs btn-yellow" onclick="avanzar('${p.id}','CAMBIOS_SOLICITADOS')"><i class="fas fa-redo"></i> Cambios</button>`;
   } else {
     actions = p.link_diseno
       ? (/^https?:\/\//.test(p.link_diseno) ? `<a href="${escH(p.link_diseno)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-cyan"><i class="fas fa-external-link-alt"></i> Ver diseño</a>` : '')
@@ -856,8 +856,8 @@ function toast(msg, tipo='ok') {
   <div style="background:#0d1520;border-bottom:1px solid rgba(255,255,255,.1);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
     <span style="font-size:.85rem;font-weight:800;color:#D4AF37">👁️ Previsualización — exactamente lo que verá el cliente</span>
     <div style="display:flex;gap:10px">
-      <button id="btn-preview-enviar" style="background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem">Confirmar y enviar al cliente →</button>
-      <button onclick="document.getElementById('modal-preview-op').style.display='none'" style="background:none;border:1px solid rgba(255,255,255,.2);color:#94a3b8;padding:8px 14px;border-radius:6px;cursor:pointer">✕ Cerrar</button>
+      <button type="button" id="btn-preview-enviar" style="background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem">Confirmar y enviar al cliente →</button>
+      <button type="button" onclick="document.getElementById('modal-preview-op').style.display='none'" style="background:none;border:1px solid rgba(255,255,255,.2);color:#94a3b8;padding:8px 14px;border-radius:6px;cursor:pointer">✕ Cerrar</button>
     </div>
   </div>
   <iframe id="preview-iframe-op" src="" style="flex:1;border:none;width:100%" allowfullscreen></iframe>

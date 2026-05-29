@@ -213,7 +213,7 @@
                 <h1>Pedidos <span style="color:var(--gold);">PRODIGY</span></h1>
                 <p>Gestión de casos y estados de producción en tiempo real</p>
             </div>
-            <button class="btn-primary" onclick="cargarPedidos()">
+            <button type="button" class="btn-primary" onclick="cargarPedidos()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -248,19 +248,19 @@
                 style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:#fff;font-size:.82rem;outline:none;">
         </div>
         <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
-            <button class="btn-xs btn-gold" onclick="filtrarPedidos('todos')" id="f-todos" style="background:rgba(212,175,55,0.1);">Todos</button>
-            <button class="btn-xs btn-gold" onclick="filtrarPedidos('Pendiente')" id="f-Pendiente">Pendiente</button>
-            <button class="btn-xs btn-gold" onclick="filtrarPedidos('Pagado')" id="f-Pagado">Pagado</button>
-            <button class="btn-xs btn-gold" onclick="filtrarPedidos('En Producción')" id="f-En Producción">En Producción</button>
-            <button class="btn-xs btn-gold" onclick="filtrarPedidos('Despachado')" id="f-Despachado">Despachado</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('todos')" id="f-todos" style="background:rgba(212,175,55,0.1);">Todos</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Pendiente')" id="f-Pendiente">Pendiente</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Pagado')" id="f-Pagado">Pagado</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('En Producción')" id="f-En Producción">En Producción</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Despachado')" id="f-Despachado">Despachado</button>
         </div>
 
         <div class="section-card">
             <div class="section-header">
                 <h2><i class="fas fa-table-list" style="color:var(--gold);margin-right:8px;"></i>Casos</h2>
                 <div style="display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;">
-                    <button onclick="exportarVentasMes()" style="background:rgba(74,222,128,.1);border:1px solid #4ade80;color:#4ade80;padding:6px 14px;border-radius:8px;font-size:.8rem;cursor:pointer;">📊 Ventas del Mes</button>
-                    <button onclick="exportarDIAN()" style="background:rgba(0,210,255,.1);border:1px solid #00d2ff;color:#00d2ff;padding:6px 14px;border-radius:8px;font-size:.8rem;cursor:pointer;">📥 Exportar DIAN</button>
+                    <button type="button" onclick="exportarVentasMes()" style="background:rgba(74,222,128,.1);border:1px solid #4ade80;color:#4ade80;padding:6px 14px;border-radius:8px;font-size:.8rem;cursor:pointer;">📊 Ventas del Mes</button>
+                    <button type="button" onclick="exportarDIAN()" style="background:rgba(0,210,255,.1);border:1px solid #00d2ff;color:#00d2ff;padding:6px 14px;border-radius:8px;font-size:.8rem;cursor:pointer;">📥 Exportar DIAN</button>
                 </div>
             </div>
             <table>
@@ -442,7 +442,7 @@
         <div class="section-card" style="margin-top:24px;">
             <div class="section-header">
                 <h2><i class="fas fa-images" style="color:var(--gold);margin-right:8px;"></i>Casos publicados</h2>
-                <button class="btn-xs btn-gold" onclick="cargarPortafolio()" aria-label="Actualizar portafolio"><i class="fas fa-rotate-right"></i></button>
+                <button type="button" class="btn-xs btn-gold" onclick="cargarPortafolio()" aria-label="Actualizar portafolio"><i class="fas fa-rotate-right"></i></button>
             </div>
             <div id="portafolio-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:20px;">
                 <div class="empty-state" style="grid-column:1/-1;">
@@ -460,7 +460,7 @@
                 <h1>Clientes <span style="color:var(--gold);">/ Doctores</span></h1>
                 <p>Directorio de doctores registrados con historial de pedidos</p>
             </div>
-            <button class="btn-primary" onclick="cargarClientes()">
+            <button type="button" class="btn-primary" onclick="cargarClientes()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -503,7 +503,7 @@
                 <h1>Despachos <span style="color:var(--gold);">/ Flota</span></h1>
                 <p>Asigna mensajeros a pedidos listos para entregar</p>
             </div>
-            <button class="btn-primary" onclick="cargarDespachos()">
+            <button type="button" class="btn-primary" onclick="cargarDespachos()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -547,7 +547,7 @@
                 <h1>Torre de Control <span style="color:#ef4444;">/ Urgencias</span></h1>
                 <p>Casos por tiempo de gracia · Incidencias abiertas</p>
             </div>
-            <button class="btn-primary" onclick="cargarTorre()">
+            <button type="button" class="btn-primary" onclick="cargarTorre()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -607,7 +607,7 @@
         <div style="background:#0d1828;border-radius:16px;padding:24px;max-width:560px;width:100%;border:1px solid rgba(212,175,55,.3);max-height:90vh;overflow-y:auto;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
                 <h3 style="color:var(--gold);font-size:.95rem;"><i class="fas fa-shield-check"></i> Evidencia de Entrega — <span id="ev-codigo"></span></h3>
-                <button onclick="cerrarEvidencia()" aria-label="Cerrar" style="background:none;border:none;color:#94a3b8;font-size:1.1rem;cursor:pointer;">✕</button>
+                <button type="button" onclick="cerrarEvidencia()" aria-label="Cerrar" style="background:none;border:none;color:#94a3b8;font-size:1.1rem;cursor:pointer;">✕</button>
             </div>
 
             <!-- GPS -->
@@ -647,7 +647,7 @@
                 <h1>Radar de Ventas <span style="color:#F44336;">/ Inteligencia Comercial</span></h1>
                 <p>Carritos abandonados · Materiales más cotizados · Artículos más leídos</p>
             </div>
-            <button class="btn-primary" onclick="cargarAnalytics()">
+            <button type="button" class="btn-primary" onclick="cargarAnalytics()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -711,7 +711,7 @@
                 <h1>Métricas Operativas</h1>
                 <p>Ingresos · Embudo de casos · Tiempos de entrega · Top servicios y clientes</p>
             </div>
-            <button class="btn-primary" onclick="cargarMetricas()">
+            <button type="button" class="btn-primary" onclick="cargarMetricas()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -811,8 +811,8 @@
     <input id="modal-desp-guia" type="text" placeholder="Ej: 12345678901234, JD0012345..."
       style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.85rem;outline:none;margin-bottom:18px;">
     <div style="display:flex;gap:10px;justify-content:flex-end;">
-      <button onclick="cerrarModalDespacho()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
-      <button onclick="confirmarDespacho()" style="background:var(--gold);color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Despachar</button>
+      <button type="button" onclick="cerrarModalDespacho()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button type="button" onclick="confirmarDespacho()" style="background:var(--gold);color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Despachar</button>
     </div>
   </div>
 </div>
@@ -824,8 +824,8 @@
     <div style="font-size:.95rem;font-weight:800;color:#ef4444;margin-bottom:8px;">Eliminar caso</div>
     <div style="font-size:.8rem;color:#94a3b8;margin-bottom:20px;">Esta acción no se puede deshacer. ¿Confirmas?</div>
     <div style="display:flex;gap:10px;justify-content:center;">
-      <button onclick="cerrarModalConfirmDel()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
-      <button onclick="confirmarEliminarCaso()" style="background:#ef4444;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Sí, eliminar</button>
+      <button type="button" onclick="cerrarModalConfirmDel()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button type="button" onclick="confirmarEliminarCaso()" style="background:#ef4444;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Sí, eliminar</button>
     </div>
   </div>
 </div>
@@ -838,8 +838,8 @@
     <textarea id="modal-resolver-nota" rows="3" placeholder="Descripción de cómo se resolvió..."
       style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.82rem;resize:vertical;outline:none;margin-bottom:16px;"></textarea>
     <div style="display:flex;gap:10px;justify-content:flex-end;">
-      <button onclick="cerrarModalResolver()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
-      <button onclick="confirmarResolverIncidencia()" style="background:#00FF41;color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Resolver</button>
+      <button type="button" onclick="cerrarModalResolver()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button type="button" onclick="confirmarResolverIncidencia()" style="background:#00FF41;color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Resolver</button>
     </div>
   </div>
 </div>
@@ -992,7 +992,7 @@ async function cargarAnalytics() {
                     '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">' +
                     '<a href="https://wa.me/573212816716?text=' + waMsg + '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25D366;padding:7px 14px;border-radius:100px;text-decoration:none;font-size:.82rem;font-weight:700;white-space:nowrap;">' +
                     '<i class="fab fa-whatsapp"></i> Enviar oferta</a>' +
-                    '<button id="' + waCopyId + '" onclick="navigator.clipboard.writeText(decodeURIComponent(\'' + waMsg + '\')).then(function(){var b=document.getElementById(\'' + waCopyId + '\');b.textContent=\'✓ Copiado\';setTimeout(function(){b.textContent=\'📋 Copiar mensaje\';},2000);})" style="background:none;border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:5px 12px;border-radius:100px;font-size:.75rem;cursor:pointer;white-space:nowrap;">📋 Copiar mensaje</button>' +
+                    '<button type="button" id="' + waCopyId + '" onclick="navigator.clipboard.writeText(decodeURIComponent(\'' + waMsg + '\')).then(function(){var b=document.getElementById(\'' + waCopyId + '\');b.textContent=\'✓ Copiado\';setTimeout(function(){b.textContent=\'📋 Copiar mensaje\';},2000);})" style="background:none;border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:5px 12px;border-radius:100px;font-size:.75rem;cursor:pointer;white-space:nowrap;">📋 Copiar mensaje</button>' +
                     '</div>' +
                     '</div>';
             }).join('');
@@ -1343,7 +1343,7 @@ function renderPedidos(lista) {
         <td style="font-size:0.75rem;">${fmtFecha(p.created_at)}</td>
         <td>
             ${p.stl_ruta && p.stl_ruta.startsWith('https://') ? `<a href="${escHtml(p.stl_ruta)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
-            <button onclick="generarFicha('${escHtml(p.id)}')" class="btn-xs" style="color:#00d2ff;border:1px solid rgba(0,210,255,0.35);background:transparent;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:.7rem;font-weight:700;" title="Ficha técnica PDF"><i class="fas fa-file-pdf"></i> Ficha</button>
+            <button type="button" onclick="generarFicha('${escHtml(p.id)}')" class="btn-xs" style="color:#00d2ff;border:1px solid rgba(0,210,255,0.35);background:transparent;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:.7rem;font-weight:700;" title="Ficha técnica PDF"><i class="fas fa-file-pdf"></i> Ficha</button>
             ${p.numero_guia ? _renderTrackingBtn(p.numero_guia, p.pais || 'CO') : ''}
         </td>
     </tr>`).join('');
@@ -1770,8 +1770,8 @@ async function cargarPortafolio() {
                 <div style="font-size:0.72rem;color:var(--muted);">${escHtml(c.type || '')} · ${escHtml(c.date || '')}</div>
                 ${c.visible ? '<span style="color:#4ade80;font-size:0.65rem;font-weight:700;">● Visible</span>' : '<span style="color:#64748b;font-size:0.65rem;">○ Oculto</span>'}
                 <div style="margin-top:8px;display:flex;gap:6px;">
-                    <button class="btn-xs" style="background:${c.visible ? 'rgba(100,116,139,.15)' : 'rgba(74,222,128,.12)'};color:${c.visible ? '#64748b' : '#4ade80'};border:1px solid ${c.visible ? '#334155' : 'rgba(74,222,128,.3)'};" onclick="toggleVisibleCaso('${c.id}',${!c.visible})" title="${c.visible ? 'Ocultar del portafolio' : 'Publicar en portafolio'}"><i class="fas fa-eye${c.visible ? '-slash' : ''}"></i></button>
-                    <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')" aria-label="Eliminar caso"><i class="fas fa-trash"></i></button>
+                    <button type="button" class="btn-xs" style="background:${c.visible ? 'rgba(100,116,139,.15)' : 'rgba(74,222,128,.12)'};color:${c.visible ? '#64748b' : '#4ade80'};border:1px solid ${c.visible ? '#334155' : 'rgba(74,222,128,.3)'};" onclick="toggleVisibleCaso('${c.id}',${!c.visible})" title="${c.visible ? 'Ocultar del portafolio' : 'Publicar en portafolio'}"><i class="fas fa-eye${c.visible ? '-slash' : ''}"></i></button>
+                    <button type="button" class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')" aria-label="Eliminar caso"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
         </div>`).join('');
@@ -1952,7 +1952,7 @@ async function cargarDespachos() {
             <td><select id="sel-mens-${escHtml(p.id)}" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:6px;padding:4px 8px;font-size:.75rem;min-width:140px;">
                 <option value="">— Seleccionar —</option>${opsMens}
             </select></td>
-            <td><button onclick="asignarDespacho('${escHtml(p.id)}','${escHtml(p.codigo || '')}')" class="btn-xs btn-gold"><i class="fas fa-motorcycle"></i> Asignar</button></td>
+            <td><button type="button" onclick="asignarDespacho('${escHtml(p.id)}','${escHtml(p.codigo || '')}')" class="btn-xs btn-gold"><i class="fas fa-motorcycle"></i> Asignar</button></td>
         </tr>`;}).join('');
     }
 
@@ -1986,7 +1986,7 @@ async function cargarDespachos() {
                     ? 'Est. '+new Date(d.fecha_entrega_estimada).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})
                     : '—'}</td>
             <td>${tieneEvidencia
-                ? `<button onclick="verEvidencia(_admEviMap['${d.id}'])" class="btn-xs btn-gold"><i class="fas fa-eye"></i> Ver</button>`
+                ? `<button type="button" onclick="verEvidencia(_admEviMap['${d.id}'])" class="btn-xs btn-gold"><i class="fas fa-eye"></i> Ver</button>`
                 : `<span style="font-size:.72rem;color:#94a3b8;">${escHtml(d.novedades || '—')}</span>`}
             </td>
         </tr>`;}).join('');
@@ -2312,7 +2312,7 @@ async function cargarTorre() {
             <td style="font-size:.78rem">${escHtml(p.servicio || '—')}</td>
             <td><span style="font-size:.7rem;color:#94a3b8">${escHtml(p.estado_operativo || '—')}</span></td>
             <td style="color:${color};font-weight:700">${Math.floor(mins)} min</td>
-            <td><button onclick="resolverUrgente('${p.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#fff;font-size:.72rem;cursor:pointer">Gestionar</button></td>
+            <td><button type="button" onclick="resolverUrgente('${p.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#fff;font-size:.72rem;cursor:pointer">Gestionar</button></td>
         </tr>`;
     });
 
@@ -2339,7 +2339,7 @@ async function cargarTorre() {
             <td style="font-size:.78rem;max-width:220px">${escHtml((inc.descripcion||'').slice(0,80))}</td>
             <td style="font-family:monospace;font-size:.72rem">${escHtml(inc.pedidos?.codigo || '—')}</td>
             <td style="color:#94a3b8;font-size:.78rem">${timeLabel}</td>
-            <td><button onclick="resolverIncidencia('${inc.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid rgba(0,255,65,.3);background:transparent;color:#00FF41;font-size:.72rem;cursor:pointer">Resolver</button></td>
+            <td><button type="button" onclick="resolverIncidencia('${inc.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid rgba(0,255,65,.3);background:transparent;color:#00FF41;font-size:.72rem;cursor:pointer">Resolver</button></td>
         </tr>`;
     });
 

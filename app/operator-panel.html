@@ -166,7 +166,7 @@ body.ready { visibility: visible; }
     <a href="operator-panel.html" class="nav-item active">Mis Casos</a>
     <a href="inventario.html" class="nav-item">Inventario</a>
     <div class="sidebar-footer">
-        <button class="panico-btn" onclick="abrirPanico()">INCIDENCIA</button>
+        <button type="button" class="panico-btn" onclick="abrirPanico()">INCIDENCIA</button>
         <a href="#" class="nav-item" onclick="ProdigyAuth.signOut()" style="margin-top:8px">Cerrar Sesión</a>
     </div>
 </aside>
@@ -218,7 +218,7 @@ body.ready { visibility: visible; }
 <!-- Modal: Reportar Incidencia -->
 <div class="modal-overlay" id="modal-panico">
     <div class="modal-box">
-        <button class="modal-close" onclick="cerrarModal('modal-panico')" aria-label="Cerrar">✕</button>
+        <button type="button" class="modal-close" onclick="cerrarModal('modal-panico')" aria-label="Cerrar">✕</button>
         <div class="modal-title" style="color:var(--red)">REPORTAR INCIDENCIA</div>
         <div class="modal-sub">El administrador recibirá una alerta push inmediata.</div>
         <input type="hidden" id="inc-pedido-id">
@@ -254,8 +254,8 @@ body.ready { visibility: visible; }
             <textarea id="inc-desc" placeholder="Describe el problema en detalle..."></textarea>
         </div>
         <div class="modal-footer">
-            <button class="btn-modal btn-modal-outline" onclick="cerrarModal('modal-panico')">Cancelar</button>
-            <button class="btn-modal" style="background:var(--red);color:#fff" onclick="enviarIncidencia()">Enviar Alerta</button>
+            <button type="button" class="btn-modal btn-modal-outline" onclick="cerrarModal('modal-panico')">Cancelar</button>
+            <button type="button" class="btn-modal" style="background:var(--red);color:#fff" onclick="enviarIncidencia()">Enviar Alerta</button>
         </div>
     </div>
 </div>
@@ -263,7 +263,7 @@ body.ready { visibility: visible; }
 <!-- Modal: QA Checklist + finalizar -->
 <div class="modal-overlay" id="modal-qa">
     <div class="modal-box">
-        <button class="modal-close" onclick="cerrarModal('modal-qa')" aria-label="Cerrar">✕</button>
+        <button type="button" class="modal-close" onclick="cerrarModal('modal-qa')" aria-label="Cerrar">✕</button>
         <div class="modal-title">Control de Calidad — QA</div>
         <div class="modal-sub" id="qa-caso-sub">Caso #—</div>
         <div class="qa-list">
@@ -286,7 +286,7 @@ body.ready { visibility: visible; }
             <div class="foto-zone-hint">Mínimo 1 foto. Captura el caso empacado listo para despacho.</div>
             <div class="foto-previews" id="qa-foto-previews"></div>
             <input type="file" id="qa-foto-input" accept="image/*" capture="environment" multiple style="display:none" onchange="agregarFotosEmpaque(event)">
-            <button class="btn-add-foto" onclick="document.getElementById('qa-foto-input').click()">+ Agregar foto</button>
+            <button type="button" class="btn-add-foto" onclick="document.getElementById('qa-foto-input').click()">+ Agregar foto</button>
             <div class="foto-upload-bar" id="qa-upload-bar">
                 <div class="spinner" style="width:14px;height:14px;border-width:2px"></div>
                 <span id="qa-upload-msg">Subiendo fotos...</span>
@@ -294,8 +294,8 @@ body.ready { visibility: visible; }
         </div>
 
         <div class="modal-footer">
-            <button class="btn-modal btn-modal-outline" onclick="cerrarModal('modal-qa')">Cancelar</button>
-            <button class="btn-modal btn-modal-primary" id="btn-aprobar-qa" onclick="aprobarQA()">Aprobar para Envío</button>
+            <button type="button" class="btn-modal btn-modal-outline" onclick="cerrarModal('modal-qa')">Cancelar</button>
+            <button type="button" class="btn-modal btn-modal-primary" id="btn-aprobar-qa" onclick="aprobarQA()">Aprobar para Envío</button>
         </div>
     </div>
 </div>
@@ -328,8 +328,8 @@ body.ready { visibility: visible; }
     <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Nota (opcional)</label>
     <input id="maq-nota" type="text" placeholder="Ej: Bloque zirconia A2 parcial..." style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 14px;color:#fff;font-size:.84rem;outline:none;margin-bottom:18px;">
     <div style="display:flex;gap:10px;justify-content:flex-end;">
-      <button onclick="cerrarModalMaquina()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
-      <button onclick="confirmarInicioProduccion()" style="background:#00d2ff;color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"><i class="fas fa-play" style="margin-right:6px;"></i>Iniciar producción</button>
+      <button type="button" onclick="cerrarModalMaquina()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button type="button" onclick="confirmarInicioProduccion()" style="background:#00d2ff;color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"><i class="fas fa-play" style="margin-right:6px;"></i>Iniciar producción</button>
     </div>
   </div>
 </div>
@@ -341,8 +341,8 @@ body.ready { visibility: visible; }
     <div style="font-size:.95rem;font-weight:800;color:#00FF41;margin-bottom:6px;">QA Aprobado</div>
     <div id="modal-qa-handoff-sub" style="font-size:.8rem;color:#94a3b8;margin-bottom:20px;"></div>
     <div style="display:flex;gap:10px;justify-content:center;">
-      <button onclick="cerrarModalHandoffQA()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cerrar</button>
-      <button onclick="irADespachos()" style="background:#00FF41;color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"><i class="fas fa-motorcycle" style="margin-right:6px;"></i>Ver despachos</button>
+      <button type="button" onclick="cerrarModalHandoffQA()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cerrar</button>
+      <button type="button" onclick="irADespachos()" style="background:#00FF41;color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"><i class="fas fa-motorcycle" style="margin-right:6px;"></i>Ver despachos</button>
     </div>
   </div>
 </div>
@@ -431,12 +431,12 @@ function cardHTML(p, col) {
         : '';
 
     const actions = col === 'pend'
-        ? `<button class="btn-xs btn-green" onclick="avanzarEstado('${p.id}','EN_PRODUCCION')">OK — Iniciar</button>
-           <button class="btn-xs btn-red"   onclick="reportarIncidenciaCard('${p.id}','ERROR_STL')">Incidencia STL</button>`
+        ? `<button type="button" class="btn-xs btn-green" onclick="avanzarEstado('${p.id}','EN_PRODUCCION')">OK — Iniciar</button>
+           <button type="button" class="btn-xs btn-red"   onclick="reportarIncidenciaCard('${p.id}','ERROR_STL')">Incidencia STL</button>`
         : col === 'prod'
-        ? `<button class="btn-xs btn-cyan"  onclick="avanzarEstado('${p.id}','DISENO_FINALIZADO')">Diseño OK</button>
-           <button class="btn-xs btn-gold"  onclick="avanzarEstado('${p.id}','FRESADO_INICIADO')">Fresado</button>
-           <button class="btn-xs btn-yellow" onclick="abrirQA('${p.id}','${escH(p.codigo||'')}')">QA</button>`
+        ? `<button type="button" class="btn-xs btn-cyan"  onclick="avanzarEstado('${p.id}','DISENO_FINALIZADO')">Diseño OK</button>
+           <button type="button" class="btn-xs btn-gold"  onclick="avanzarEstado('${p.id}','FRESADO_INICIADO')">Fresado</button>
+           <button type="button" class="btn-xs btn-yellow" onclick="abrirQA('${p.id}','${escH(p.codigo||'')}')">QA</button>`
         : `<span style="font-size:.68rem;color:var(--green)">✓ ${escH(p.estado_operativo)}</span>`;
 
     return `
@@ -596,7 +596,7 @@ function agregarFotosEmpaque(event) {
         _fotosEmpaque.push({ file, previewUrl: url });
         const wrap = document.createElement('div');
         wrap.className = 'foto-thumb-wrap';
-        wrap.innerHTML = `<img class="foto-thumb" src="${url}" alt=""><button class="foto-thumb-del" onclick="eliminarFotoEmpaque(${idx})" aria-label="Quitar foto">✕</button>`;
+        wrap.innerHTML = `<img class="foto-thumb" src="${url}" alt=""><button type="button" class="foto-thumb-del" onclick="eliminarFotoEmpaque(${idx})" aria-label="Quitar foto">✕</button>`;
         previews.appendChild(wrap);
     });
     event.target.value = '';
@@ -610,7 +610,7 @@ function eliminarFotoEmpaque(idx) {
     _fotosEmpaque.forEach((f, i) => {
         const wrap = document.createElement('div');
         wrap.className = 'foto-thumb-wrap';
-        wrap.innerHTML = `<img class="foto-thumb" src="${f.previewUrl}" alt=""><button class="foto-thumb-del" onclick="eliminarFotoEmpaque(${i})" aria-label="Quitar foto">✕</button>`;
+        wrap.innerHTML = `<img class="foto-thumb" src="${f.previewUrl}" alt=""><button type="button" class="foto-thumb-del" onclick="eliminarFotoEmpaque(${i})" aria-label="Quitar foto">✕</button>`;
         previews.appendChild(wrap);
     });
 }

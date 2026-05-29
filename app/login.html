@@ -480,7 +480,7 @@
 
         <!-- OAuth Social Login -->
         <div class="oauth-divider">o continúa con</div>
-        <button class="btn-oauth google" onclick="loginConGoogle()" id="btn-google">
+        <button type="button" class="btn-oauth google" onclick="loginConGoogle()" id="btn-google">
             <svg class="oauth-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -491,7 +491,7 @@
         </button>
         <!-- ¿OLVIDASTE TU CONTRASEÑA? -->
         <p style="text-align:center;margin-top:14px;">
-            <button onclick="toggleReset()" style="background:none;border:none;color:#94a3b8;font-size:0.75rem;cursor:pointer;text-decoration:underline;padding:0;">
+            <button type="button" onclick="toggleReset()" style="background:none;border:none;color:#94a3b8;font-size:0.75rem;cursor:pointer;text-decoration:underline;padding:0;">
                 ¿Olvidaste tu contraseña?
             </button>
         </p>
@@ -505,7 +505,7 @@
             <div style="display:flex;gap:8px;">
                 <input type="email" id="reset-email" placeholder="correo@empresa.com" autocomplete="email"
                     style="flex:1;padding:9px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:0.85rem;outline:none;">
-                <button onclick="handleReset()" id="reset-btn"
+                <button type="button" onclick="handleReset()" id="reset-btn"
                     style="padding:9px 16px;background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;border:none;border-radius:8px;font-weight:800;font-size:0.78rem;cursor:pointer;white-space:nowrap;">
                     Enviar link
                 </button>

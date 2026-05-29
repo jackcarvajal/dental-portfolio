@@ -167,24 +167,24 @@ tbody td{padding:11px 14px;vertical-align:middle;}
 
     <!-- Tabs -->
     <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('confirmar',this)">
+        <button type="button" class="tab-btn active" onclick="switchTab('confirmar',this)">
             <i class="fas fa-clock"></i> Por confirmar
             <span class="badge" id="badge-conf">0</span>
         </button>
-        <button class="tab-btn" onclick="switchTab('historial',this)">
+        <button type="button" class="tab-btn" onclick="switchTab('historial',this)">
             <i class="fas fa-history"></i> Historial
         </button>
-        <button class="tab-btn" onclick="switchTab('saldos',this)">
+        <button type="button" class="tab-btn" onclick="switchTab('saldos',this)">
             <i class="fas fa-hand-holding-dollar"></i> Saldos entrega
             <span class="badge" id="badge-sald" style="background:var(--yellow);color:#000;">0</span>
         </button>
-        <button class="tab-btn" onclick="switchTab('pedidos',this)">
+        <button type="button" class="tab-btn" onclick="switchTab('pedidos',this)">
             <i class="fas fa-briefcase"></i> Pedidos
         </button>
-        <button class="tab-btn" onclick="switchTab('suministros',this)">
+        <button type="button" class="tab-btn" onclick="switchTab('suministros',this)">
             <i class="fas fa-boxes-stacked"></i> Suministros
         </button>
-        <button class="tab-btn" onclick="switchTab('facturas',this)">
+        <button type="button" class="tab-btn" onclick="switchTab('facturas',this)">
             <i class="fas fa-file-invoice"></i> Facturas DIAN
             <span class="badge" id="badge-fact" style="background:var(--pink);color:#fff;">0</span>
         </button>
@@ -220,7 +220,7 @@ tbody td{padding:11px 14px;vertical-align:middle;}
             <input type="date" id="fil-desde">
             <label>Hasta</label>
             <input type="date" id="fil-hasta">
-            <button class="btn-xs btn-ver" onclick="cargarHistorial()"><i class="fas fa-search"></i> Filtrar</button>
+            <button type="button" class="btn-xs btn-ver" onclick="cargarHistorial()"><i class="fas fa-search"></i> Filtrar</button>
         </div>
         <div class="total-bar" id="total-bar-hist" style="display:none;">
             <div class="total-item"><div class="t-lbl">Total cobrado</div><div class="t-val" id="tot-cobrado">—</div></div>
@@ -273,9 +273,9 @@ tbody td{padding:11px 14px;vertical-align:middle;}
     <div id="tab-facturas" class="tab-panel">
         <!-- Sub-tabs -->
         <div style="display:flex;gap:6px;margin-bottom:18px;">
-            <button id="ftab-pend" onclick="switchFTab('pendientes')" style="padding:6px 16px;border-radius:20px;border:1px solid var(--pink);background:rgba(217,70,166,.15);color:var(--pink);font-size:.78rem;font-weight:700;cursor:pointer;">⏳ Por emitir</button>
-            <button id="ftab-emit" onclick="switchFTab('emitidas')" style="padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:none;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;">✅ Emitidas</button>
-            <button id="ftab-err"  onclick="switchFTab('errores')"  style="padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:none;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;">⚠ Errores</button>
+            <button type="button" id="ftab-pend" onclick="switchFTab('pendientes')" style="padding:6px 16px;border-radius:20px;border:1px solid var(--pink);background:rgba(217,70,166,.15);color:var(--pink);font-size:.78rem;font-weight:700;cursor:pointer;">⏳ Por emitir</button>
+            <button type="button" id="ftab-emit" onclick="switchFTab('emitidas')" style="padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:none;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;">✅ Emitidas</button>
+            <button type="button" id="ftab-err"  onclick="switchFTab('errores')"  style="padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:none;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;">⚠ Errores</button>
         </div>
 
         <!-- Por emitir -->
@@ -305,7 +305,7 @@ tbody td{padding:11px 14px;vertical-align:middle;}
             <div class="filtros">
                 <label>Desde</label><input type="date" id="fact-desde">
                 <label>Hasta</label><input type="date" id="fact-hasta">
-                <button class="btn-xs btn-ver" onclick="cargarFacturasEmitidas()"><i class="fas fa-search"></i> Filtrar</button>
+                <button type="button" class="btn-xs btn-ver" onclick="cargarFacturasEmitidas()"><i class="fas fa-search"></i> Filtrar</button>
             </div>
             <div class="tbl-wrap">
                 <table>
@@ -365,7 +365,7 @@ tbody td{padding:11px 14px;vertical-align:middle;}
                 <option value="EN_REPARTO">En reparto</option>
                 <option value="ENTREGADO">Entregado</option>
             </select>
-            <button class="btn-xs btn-ver" onclick="cargarPedidos()"><i class="fas fa-search"></i> Filtrar</button>
+            <button type="button" class="btn-xs btn-ver" onclick="cargarPedidos()"><i class="fas fa-search"></i> Filtrar</button>
         </div>
         <div class="total-bar" id="total-bar-ped" style="display:none;">
             <div class="total-item"><div class="t-lbl">Casos en período</div><div class="t-val" id="ped-tot-casos">—</div></div>
@@ -408,7 +408,7 @@ tbody td{padding:11px 14px;vertical-align:middle;}
                 <option value="SALIDA">Salidas (consumo)</option>
                 <option value="AJUSTE">Ajustes</option>
             </select>
-            <button class="btn-xs btn-ver" onclick="cargarSuministros()"><i class="fas fa-search"></i> Filtrar</button>
+            <button type="button" class="btn-xs btn-ver" onclick="cargarSuministros()"><i class="fas fa-search"></i> Filtrar</button>
         </div>
         <div class="total-bar" id="total-bar-sum" style="display:none;">
             <div class="total-item"><div class="t-lbl">Compras (ENTRADAs)</div><div class="t-val" id="sum-tot-entradas" style="color:var(--cyan)">—</div></div>
@@ -460,9 +460,9 @@ tbody td{padding:11px 14px;vertical-align:middle;}
     </div>
 
     <div class="modal-actions">
-        <button class="btn-red" onclick="rechazarPago()"><i class="fas fa-times" style="margin-right:5px;"></i>Rechazar</button>
-        <button class="btn-outline" onclick="cerrarModalComp()">Cerrar</button>
-        <button class="btn-gold" id="btn-confirmar-pago" onclick="confirmarPago()">
+        <button type="button" class="btn-red" onclick="rechazarPago()"><i class="fas fa-times" style="margin-right:5px;"></i>Rechazar</button>
+        <button type="button" class="btn-outline" onclick="cerrarModalComp()">Cerrar</button>
+        <button type="button" class="btn-gold" id="btn-confirmar-pago" onclick="confirmarPago()">
             <i class="fas fa-check" style="margin-right:6px;"></i>Confirmar pago
         </button>
     </div>
@@ -537,8 +537,8 @@ tbody td{padding:11px 14px;vertical-align:middle;}
         </div>
       </div>
       <div style="display:flex;gap:10px;justify-content:flex-end;">
-        <button onclick="cerrarManualDIAN()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--muted);padding:8px 16px;border-radius:7px;font-size:.8rem;cursor:pointer;">Cerrar</button>
-        <button onclick="registrarFacturaManual()" style="background:var(--green);color:#000;border:none;padding:8px 18px;border-radius:7px;font-weight:800;font-size:.8rem;cursor:pointer;"><i class="fas fa-check"></i> Registrar en sistema</button>
+        <button type="button" onclick="cerrarManualDIAN()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--muted);padding:8px 16px;border-radius:7px;font-size:.8rem;cursor:pointer;">Cerrar</button>
+        <button type="button" onclick="registrarFacturaManual()" style="background:var(--green);color:#000;border:none;padding:8px 18px;border-radius:7px;font-weight:800;font-size:.8rem;cursor:pointer;"><i class="fas fa-check"></i> Registrar en sistema</button>
       </div>
     </div>
   </div>
@@ -580,8 +580,8 @@ tbody td{padding:11px 14px;vertical-align:middle;}
     </div>
 
     <div class="modal-actions">
-      <button class="btn-outline" id="btn-iva-cancel">Cancelar</button>
-      <button class="btn-gold" id="btn-iva-ok"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Emitir factura</button>
+      <button type="button" class="btn-outline" id="btn-iva-cancel">Cancelar</button>
+      <button type="button" class="btn-gold" id="btn-iva-ok"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Emitir factura</button>
     </div>
   </div>
 </div>
@@ -662,10 +662,10 @@ async function cargarPorConfirmar() {
             <td class="td-abono">${abono ? fmtCOP(abono) : '—'}</td>
             <td><span class="badge-subido">⏳ Comprobante enviado</span></td>
             <td>${p.comprobante_pago_url
-                ? `<button class="btn-xs btn-ver" onclick="verComprobante('${escH(p.id)}')"><i class="fas fa-eye"></i> Ver</button>`
+                ? `<button type="button" class="btn-xs btn-ver" onclick="verComprobante('${escH(p.id)}')"><i class="fas fa-eye"></i> Ver</button>`
                 : '<span style="font-size:.72rem;color:var(--muted);">Sin archivo</span>'
             }</td>
-            <td><button class="btn-xs btn-confirm" onclick="abrirModalComp('${escH(p.id)}')">
+            <td><button type="button" class="btn-xs btn-confirm" onclick="abrirModalComp('${escH(p.id)}')">
                 <i class="fas fa-check"></i> Confirmar
             </button></td>
         </tr>`;
@@ -968,10 +968,10 @@ async function cargarFacturasPendientes() {
             <td style="font-size:.74rem;color:var(--muted);">${escH(p.billing_email || '—')}</td>
             <td>
                 <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                    <button class="btn-xs btn-gold" onclick="emitirFactura('${escH(p.id)}',this)">
+                    <button type="button" class="btn-xs btn-gold" onclick="emitirFactura('${escH(p.id)}',this)">
                         <i class="fas fa-paper-plane"></i> Emitir
                     </button>
-                    <button class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN(_factMap['${escH(p.id)}'])">
+                    <button type="button" class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN(_factMap['${escH(p.id)}'])">
                         <i class="fas fa-pen"></i> Manual
                     </button>
                 </div>
@@ -1107,10 +1107,10 @@ async function cargarFacturasError() {
         <td style="font-size:.74rem;color:var(--red);max-width:260px;">${escH(p.factura_error || 'Error desconocido')}</td>
         <td>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button class="btn-xs btn-gold" onclick="reintentarFactura('${escH(p.id)}',this)">
+                <button type="button" class="btn-xs btn-gold" onclick="reintentarFactura('${escH(p.id)}',this)">
                     <i class="fas fa-redo"></i> Reintentar
                 </button>
-                <button class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN(_factMap['${escH(p.id)}'])">
+                <button type="button" class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN(_factMap['${escH(p.id)}'])">
                     <i class="fas fa-pen"></i> Manual
                 </button>
             </div>

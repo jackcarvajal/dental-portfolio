@@ -131,12 +131,12 @@
         <div class="header-brand"><i class="fas fa-motorcycle"></i> PRODIGY Ruta</div>
         <div class="header-user" id="user-label">Cargando...</div>
     </div>
-    <button class="btn-logout" onclick="cerrarSesion()"><i class="fas fa-arrow-right-from-bracket"></i> Salir</button>
+    <button type="button" class="btn-logout" onclick="cerrarSesion()"><i class="fas fa-arrow-right-from-bracket"></i> Salir</button>
 </div>
 
 <!-- QR SCANNER -->
 <div class="qr-bar">
-    <button class="btn-qr" onclick="toggleQR()">
+    <button type="button" class="btn-qr" onclick="toggleQR()">
         <i class="fas fa-qrcode"></i> Escanear QR de remisión
         <i class="fas fa-chevron-down" id="qr-chevron" style="margin-left:auto;font-size:.7rem"></i>
     </button>
@@ -165,7 +165,7 @@
             <div class="modal-label"><i class="fas fa-signature"></i> Firma del Cliente (obligatorio)</div>
             <div class="sig-wrap">
                 <canvas id="sig-canvas"></canvas>
-                <button class="btn-sig-clear" onclick="limpiarFirma()">Limpiar</button>
+                <button type="button" class="btn-sig-clear" onclick="limpiarFirma()">Limpiar</button>
             </div>
             <p style="font-size:.68rem;color:var(--muted);margin-top:4px;">El cliente firma directamente en la pantalla.</p>
         </div>
@@ -199,8 +199,8 @@
         </div>
 
         <div class="modal-btns">
-            <button class="btn-cancel-modal" onclick="cerrarModalConfirmar()">Cancelar</button>
-            <button class="btn-save-modal" id="btn-confirmar-final" onclick="procesarConfirmacion()">
+            <button type="button" class="btn-cancel-modal" onclick="cerrarModalConfirmar()">Cancelar</button>
+            <button type="button" class="btn-save-modal" id="btn-confirmar-final" onclick="procesarConfirmacion()">
                 <i class="fas fa-check"></i> Confirmar Entrega
             </button>
         </div>
@@ -213,8 +213,8 @@
         <div class="modal-title"><i class="fas fa-exclamation-triangle" style="color:#f87171"></i> Registrar Novedad</div>
         <textarea id="novedad-texto" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;padding:12px;font-size:.88rem;resize:none;height:100px;" placeholder="Describe el inconveniente..."></textarea>
         <div class="modal-btns">
-            <button class="btn-cancel-modal" onclick="cerrarModalNovedad()">Cancelar</button>
-            <button class="btn-save-modal" onclick="guardarNovedad()">Guardar</button>
+            <button type="button" class="btn-cancel-modal" onclick="cerrarModalNovedad()">Cancelar</button>
+            <button type="button" class="btn-save-modal" onclick="guardarNovedad()">Guardar</button>
         </div>
     </div>
 </div>
@@ -405,12 +405,12 @@ async function cargarRuta(){
             </div>
             <div class="card-actions">
                 ${!enRuta
-                    ? `<button class="btn-action btn-iniciar" onclick="iniciarEntrega(_dMap['${escH(d.id)}'])">
+                    ? `<button type="button" class="btn-action btn-iniciar" onclick="iniciarEntrega(_dMap['${escH(d.id)}'])">
                         <i class="fas fa-play"></i> Iniciar</button>`
-                    : `<button class="btn-action btn-confirmar" onclick="abrirModalConfirmar(_dMap['${escH(d.id)}'])">
+                    : `<button type="button" class="btn-action btn-confirmar" onclick="abrirModalConfirmar(_dMap['${escH(d.id)}'])">
                         <i class="fas fa-check"></i> Confirmar Entrega${saldo?' 💰':''}</button>`
                 }
-                <button class="btn-action btn-novedad" onclick="abrirModalNovedad('${escH(d.id)}')" aria-label="Reportar novedad"><i class="fas fa-flag"></i></button>
+                <button type="button" class="btn-action btn-novedad" onclick="abrirModalNovedad('${escH(d.id)}')" aria-label="Reportar novedad"><i class="fas fa-flag"></i></button>
             </div>
         </div>`;
     }).join('');
@@ -721,7 +721,7 @@ initPush();
 .pan-btn { padding:9px 18px; border-radius:8px; font-size:.82rem; font-weight:700; border:none; cursor:pointer; }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
-<button id="panico-fab" onclick="document.getElementById('modal-panico-fab').classList.add('open')">INCIDENCIA</button>
+<button type="button" id="panico-fab" onclick="document.getElementById('modal-panico-fab').classList.add('open')">INCIDENCIA</button>
 <div id="modal-panico-fab">
     <div class="pan-box">
         <h3>Reportar Incidencia</h3>
@@ -748,8 +748,8 @@ initPush();
             <textarea id="pfab-desc" placeholder="Describe el problema..."></textarea>
         </div>
         <div class="pan-footer">
-            <button class="pan-btn" style="background:transparent;border:1px solid rgba(255,255,255,.15);color:#94a3b8" onclick="document.getElementById('modal-panico-fab').classList.remove('open')">Cancelar</button>
-            <button class="pan-btn" style="background:#ef4444;color:#fff" onclick="enviarPanicoFab()">Enviar Alerta</button>
+            <button type="button" class="pan-btn" style="background:transparent;border:1px solid rgba(255,255,255,.15);color:#94a3b8" onclick="document.getElementById('modal-panico-fab').classList.remove('open')">Cancelar</button>
+            <button type="button" class="pan-btn" style="background:#ef4444;color:#fff" onclick="enviarPanicoFab()">Enviar Alerta</button>
         </div>
     </div>
 </div>

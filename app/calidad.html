@@ -159,11 +159,11 @@ body.ready { visibility: visible; }
     <div class="page-sub">Casos listos del operario — verifica empaque, factura y despacha al mensajero</div>
 
     <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('pendientes',this)">
+        <button type="button" class="tab-btn active" onclick="switchTab('pendientes',this)">
             <i class="fas fa-box-open"></i> Por empacar
             <span class="badge" id="badge-pend">0</span>
         </button>
-        <button class="tab-btn" onclick="switchTab('confirmados',this)">
+        <button type="button" class="tab-btn" onclick="switchTab('confirmados',this)">
             <i class="fas fa-check-double"></i> Confirmados
             <span class="badge" id="badge-conf">0</span>
         </button>
@@ -311,8 +311,8 @@ body.ready { visibility: visible; }
     </div>
 
     <div class="modal-actions">
-        <button class="btn-outline" onclick="cerrarModalCalidad()">Cancelar</button>
-        <button class="btn-confirm" id="btn-cal-confirm" onclick="confirmarCalidad()">
+        <button type="button" class="btn-outline" onclick="cerrarModalCalidad()">Cancelar</button>
+        <button type="button" class="btn-confirm" id="btn-cal-confirm" onclick="confirmarCalidad()">
             <i class="fas fa-rocket" style="margin-right:6px;"></i>Confirmar — listo para despacho
         </button>
     </div>
@@ -411,7 +411,7 @@ function renderCard(p, done) {
 
     const accion = done
         ? `<div class="btn-done"><i class="fas fa-check" style="margin-right:6px;"></i>Confirmado${p.nota_calidad ? ' — ' + escH(p.nota_calidad.slice(0,40)) : ''}</div>`
-        : `<button class="btn-primary" onclick="abrirModalCalidad('${escH(p.id)}')"><i class="fas fa-shield-check" style="margin-right:6px;"></i>Confirmar empaque &amp; despacho</button>`;
+        : `<button type="button" class="btn-primary" onclick="abrirModalCalidad('${escH(p.id)}')"><i class="fas fa-shield-check" style="margin-right:6px;"></i>Confirmar empaque &amp; despacho</button>`;
 
     return `
     <div class="case-card">
