@@ -425,12 +425,12 @@
 
     <!-- tabs -->
     <div class="cat-tabs">
-      <button class="cat-tab active" onclick="setTab('fija',this)"><i class="fas fa-crown"></i> Prótesis Fija</button>
-      <button class="cat-tab" onclick="setTab('implantes',this)"><i class="fas fa-bolt"></i> Implantes</button>
-      <button class="cat-tab" onclick="setTab('impresion',this)"><i class="fas fa-print"></i> Impresión 3D</button>
-      <button class="cat-tab" onclick="setTab('alineadores',this)"><i class="fas fa-align-left"></i> Alineadores</button>
-      <button class="cat-tab" onclick="setTab('guias',this)"><i class="fas fa-crosshairs"></i> Guías Quirúrg.</button>
-      <button class="cat-tab" onclick="setTab('removible',this)"><i class="fas fa-teeth"></i> Removible</button>
+      <button type="button" class="cat-tab active" onclick="setTab('fija',this)"><i class="fas fa-crown"></i> Prótesis Fija</button>
+      <button type="button" class="cat-tab" onclick="setTab('implantes',this)"><i class="fas fa-bolt"></i> Implantes</button>
+      <button type="button" class="cat-tab" onclick="setTab('impresion',this)"><i class="fas fa-print"></i> Impresión 3D</button>
+      <button type="button" class="cat-tab" onclick="setTab('alineadores',this)"><i class="fas fa-align-left"></i> Alineadores</button>
+      <button type="button" class="cat-tab" onclick="setTab('guias',this)"><i class="fas fa-crosshairs"></i> Guías Quirúrg.</button>
+      <button type="button" class="cat-tab" onclick="setTab('removible',this)"><i class="fas fa-teeth"></i> Removible</button>
     </div>
 
     <!-- FIJA -->
@@ -549,7 +549,7 @@
         (<a href="/terminos-y-legal" target="_blank" rel="noopener noreferrer" style="color:#00d2ff;">Política de privacidad</a>)
       </label>
     </div>
-    <button class="btn-generar" id="btn-generar" onclick="generarOrden()">
+    <button type="button" class="btn-generar" id="btn-generar" onclick="generarOrden()">
       <span class="pulse"></span>
       <i class="fas fa-file-alt"></i>
       Generar Orden de Trabajo
@@ -724,7 +724,7 @@ function buildGrids() {
     el.innerHTML = items.map(function(item) {
       var varHtml = item.variants && item.variants.length
         ? '<div class="variants-row">' + item.variants.map(function(v,i) {
-            return '<button class="var-btn' + (i===0?' sel':'') + '" onclick="selectVariant(\'' + item.id + '\',this,\'' + v.replace(/'/g,"\\'") + '\')">' + v + '</button>';
+            return '<button type="button" class="var-btn' + (i===0?' sel':'') + '" onclick="selectVariant(\'' + item.id + '\',this,\'' + v.replace(/'/g,"\\'") + '\')">' + v + '</button>';
           }).join('') + '</div>'
         : '';
       var priceLabel = item.quote
@@ -740,12 +740,12 @@ function buildGrids() {
         '</div>' +
         varHtml +
         (!item.quote ? '<div class="work-qty">' +
-          '<button class="qty-btn" onclick="changeQty(\'' + item.id + '\',-1)">−</button>' +
+          '<button type="button" class="qty-btn" onclick="changeQty(\'' + item.id + '\',-1)">−</button>' +
           '<span class="qty-val" id="qty-' + item.id + '">0</span>' +
-          '<button class="qty-btn" onclick="changeQty(\'' + item.id + '\',1)">+</button>' +
+          '<button type="button" class="qty-btn" onclick="changeQty(\'' + item.id + '\',1)">+</button>' +
           '<span class="work-subtotal" id="sub-' + item.id + '">—</span>' +
         '</div>' :
-        '<button style="margin-top:6px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.25);color:#D4AF37;font-size:.9rem;font-weight:700;padding:5px 12px;border-radius:7px;cursor:pointer;" onclick="ctaWhatsApp()"><i class="fas fa-whatsapp"></i> Cotizar por WhatsApp</button>') +
+        '<button type="button" style="margin-top:6px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.25);color:#D4AF37;font-size:.9rem;font-weight:700;padding:5px 12px;border-radius:7px;cursor:pointer;" onclick="ctaWhatsApp()"><i class="fas fa-whatsapp"></i> Cotizar por WhatsApp</button>') +
       '</div>';
     }).join('');
   });
@@ -831,7 +831,7 @@ function updateCart() {
 function buildVita() {
   var el = document.getElementById('vita-chips');
   el.innerHTML = VITA_SHADES.map(function(s) {
-    return '<button class="vita-chip" onclick="selVita(this,\'' + s + '\')">' + s + '</button>';
+    return '<button type="button" class="vita-chip" onclick="selVita(this,\'' + s + '\')">' + s + '</button>';
   }).join('');
 }
 function selVita(btn, shade) {
@@ -980,7 +980,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').cat
       <p style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
         <strong style="color:#D946A6;">ID Orden:</strong>
         <span id="lab-exito-id" style="font-family:monospace;font-size:.9rem;">—</span>
-        <button onclick="navigator.clipboard.writeText(document.getElementById('lab-exito-id').textContent);this.textContent='✓ Copiado';setTimeout(()=>this.textContent='📋 Copiar',2000);" style="background:rgba(0,210,255,.12);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.9rem;cursor:pointer;">📋 Copiar</button>
+        <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('lab-exito-id').textContent);this.textContent='✓ Copiado';setTimeout(()=>this.textContent='📋 Copiar',2000);" style="background:rgba(0,210,255,.12);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.9rem;cursor:pointer;">📋 Copiar</button>
       </p>
       <p style="margin-bottom:4px;"><strong style="color:#D946A6;">Doctor:</strong> <span id="lab-exito-doc">—</span></p>
       <p style="margin-bottom:4px;"><strong style="color:#D4AF37;">Total estimado:</strong> <span id="lab-exito-total">—</span></p>
@@ -989,7 +989,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').cat
     <div style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:10px 14px;font-size:.78rem;color:#fca5a5;margin-bottom:20px;text-align:left;">
       ⚠️ <strong>Política de despacho:</strong> El caso no sale del laboratorio sin liquidación del 100% del saldo.
     </div>
-    <button onclick="document.getElementById('modal-exito-lab').classList.remove('active');document.getElementById('modal-exito-lab').style.display='none';" style="width:100%;padding:13px;background:linear-gradient(135deg,#D946A6,#a0186e);border:none;border-radius:10px;color:#fff;font-weight:800;font-size:.95rem;cursor:pointer;letter-spacing:.5px;">Entendido</button>
+    <button type="button" onclick="document.getElementById('modal-exito-lab').classList.remove('active');document.getElementById('modal-exito-lab').style.display='none';" style="width:100%;padding:13px;background:linear-gradient(135deg,#D946A6,#a0186e);border:none;border-radius:10px;color:#fff;font-weight:800;font-size:.95rem;cursor:pointer;letter-spacing:.5px;">Entendido</button>
   </div>
 </div>
 <script>
