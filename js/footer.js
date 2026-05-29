@@ -210,10 +210,10 @@
     s.src = src; s.defer = true;
     document.body.appendChild(s);
   }
-  _loadScript('/js/utm-tracker.js');
-  _loadScript('/js/conversions.js');
-  _loadScript('/js/geo-detect.js');
-  _loadScript('/js/content-protection.js');
+  _loadScript('/js/utm-tracker.js?v=20260528');
+  _loadScript('/js/conversions.js?v=20260528');
+  _loadScript('/js/geo-detect.js?v=20260528');
+  _loadScript('/js/content-protection.js?v=20260528');
   /* GSAP + ScrollTrigger + animaciones PRODIGY */
   function _loadGSAP() {
     var g = document.createElement('script');
