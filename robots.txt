@@ -59,4 +59,10 @@ Disallow: /
 User-agent: SemrushBot
 Disallow: /
 
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
 Sitemap: https://prodigylabdental.com/sitemap.xml
