@@ -600,12 +600,14 @@ const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency
 const fmtFecha = ts => ts ? new Date(ts).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'}) : '—';
 
 let _userId  = null;
+let _userEmail = null;
 let _pedidos = [];
 
 /* ── Auth ─────────────────────────────────────────────────────────── */
 (async () => {
     const session = await ProdigyAuth.require(['admin','contabilidad']);
-    _userId = session.user.id;
+    _userId    = session.user.id;
+    _userEmail = session.user.email || 'contabilidad';
     const meta = session.user.user_metadata || {};
     document.getElementById('sb-nombre').textContent = meta.nombre || session.user.email?.split('@')[0] || 'Usuario';
     document.body.classList.add('ready');
@@ -836,6 +838,14 @@ async function confirmarPago() {
     }).eq('id', pedidoId);
 
     if (error) { toast('Error: ' + error.message, 'err'); btn.disabled = false; return; }
+
+    // Audit log — acción financiera crítica
+    try {
+        await sb.from('logs_incidencias').insert({
+            tipo:'ADMIN_ACTION', severidad:'INFO', resuelta:true,
+            descripcion:`[AUDIT] CONFIRMAR_PAGO pedido ${pedidoId} por ${_userEmail||'contabilidad'} — nota: ${nota||'sin nota'}`
+        });
+    } catch(_) {}
 
     // Notificar al doctor
     const { data: p } = await sb.from('pedidos').select('email,codigo,whatsapp,precio_total').eq('id', pedidoId).single();
