@@ -82,6 +82,17 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 3)
+- **a11y label[for] paneles**: admin-panel PRODIGY (met-periodo, p-tipo/material/software/categoria/destacado); client-panel PRODIGY (pd-tipo, pd-material, bib-tipo); contabilidad (fechas + aria-label selects); gestionar-casos (editType); inventario (fil-cat, ent-venc)
+- **a11y label[for] paneles Alejandro**: client-panel (bib-tipo); mis-casos (fil-estado, av-nuevo)
+- **a11y type=button + aria-pressed**: catálogo filtros + instalar-app dev-btn + guia-tecnica banner + guias-quirurgicas toggle-btn + terminos-y-legal btn-top + recibo-demo btn-pdf
+- **a11y paginación**: portafolio (PRODIGY + Alejandro) → type=button + aria-label + aria-current=page en botones de página
+- **a11y aria-live toasts**: 8 PRODIGY (envia-tu-scanner, escaner-domicilio, nosotros, 3 calculadoras, calculadora, journal) + 3 Alejandro (blog, calculadora-diseno, envia-tu-scanner)
+- **a11y aria-hidden FA**: header.js global → aria-hidden automático en ~700+ íconos decorativos FA
+- **a11y type=button**: seguimiento-caso (ambos) → botón buscar + aria-hidden en ícono
+- **a11y .sr-only**: styles.css global PRODIGY — clase utilitaria para screen readers
+- **a11y label en dates**: contabilidad.html — label[for] en todos los inputs de fecha
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 2)
 - **a11y label[for]**: flujo-diseno (software, pago_metodo, billing_tipo_d), flujo-fresado (origen, envio, pago_metodo, billing_tipo), flujo-impresion (origen, envio, pago_metodo, billing_tipo) — ambos proyectos
 - **a11y label[for]**: admin-panel PRODIGY modal portafolio (p-tipo, p-material, p-software, p-descripcion, p-categoria, p-destacado)
