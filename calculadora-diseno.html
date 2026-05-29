@@ -121,7 +121,8 @@
     .ux-btn:hover{border-color:var(--magenta);color:var(--magenta);}
     #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a2332;border:1px solid var(--border);color:#e2e8f0;padding:10px 20px;border-radius:8px;font-size:.85rem;opacity:0;transition:all .3s;pointer-events:none;z-index:9999;white-space:nowrap;}
     #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-  </style>
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
 </head>
 <body>
 <noscript><div style="text-align:center;padding:40px 20px;background:#050505;color:#94a3b8;font-family:sans-serif;">Esta calculadora requiere JavaScript. <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20una%20cotización." style="color:#D946A6">Cotizar por WhatsApp →</a></div></noscript>
@@ -174,7 +175,8 @@
 
 <!-- Carrusel escáneres -->
 <div style="padding:16px 0;background:#000;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.05);">
-  <style>.cd-sc{display:flex;gap:16px;animation:cdScroll 22s linear infinite;width:max-content;}.cd-sc:hover{animation-play-state:paused;}.cd-sb{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 14px;white-space:nowrap;font-size:.76rem;font-weight:700;color:#64748b;}.cd-sb span{width:5px;height:5px;border-radius:50%;background:#00FF41;display:inline-block;flex-shrink:0;}@keyframes cdScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}</style>
+  <style>.cd-sc{display:flex;gap:16px;animation:cdScroll 22s linear infinite;width:max-content;}.cd-sc:hover{animation-play-state:paused;}.cd-sb{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 14px;white-space:nowrap;font-size:.76rem;font-weight:700;color:#64748b;}.cd-sb span{width:5px;height:5px;border-radius:50%;background:#00FF41;display:inline-block;flex-shrink:0;}@keyframes cdScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
   <div style="position:relative;">
     <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,#000,transparent);z-index:2;pointer-events:none;"></div>
     <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,#000,transparent);z-index:2;pointer-events:none;"></div>

@@ -85,6 +85,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--gold)
 .faq-item p{padding:0 20px 16px;color:var(--muted);font-size:.83rem;line-height:1.7}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
 </head>
 <body>

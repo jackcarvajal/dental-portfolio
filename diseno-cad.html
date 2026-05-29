@@ -203,7 +203,8 @@
     .final-cta h2 em { font-style: normal; color: var(--gold); }
     .final-cta p { color: var(--muted); font-size: .98rem; margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
     .final-btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-  </style>
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});gtag('js',new Date());gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});</script>
   <script type="application/ld+json">
@@ -348,7 +349,8 @@
 <!-- Carrusel escáneres compatibles -->
 <div style="padding:20px 24px;background:#000;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.05);">
   <div style="text-align:center;margin-bottom:14px;"><span style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#475569;">✓ Compatible con todos los escáneres</span></div>
-  <style>.cad-scanner-track{display:flex;gap:24px;animation:scrollBrandsCad 20s linear infinite;width:max-content;}.cad-scanner-track:hover{animation-play-state:paused;}.cad-sbrand{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 16px;white-space:nowrap;font-size:.76rem;font-weight:700;color:#64748b;}.cad-sbrand .g{width:5px;height:5px;border-radius:50%;background:#00FF41;flex-shrink:0;}@keyframes scrollBrandsCad{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}</style>
+  <style>.cad-scanner-track{display:flex;gap:24px;animation:scrollBrandsCad 20s linear infinite;width:max-content;}.cad-scanner-track:hover{animation-play-state:paused;}.cad-sbrand{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 16px;white-space:nowrap;font-size:.76rem;font-weight:700;color:#64748b;}.cad-sbrand .g{width:5px;height:5px;border-radius:50%;background:#00FF41;flex-shrink:0;}@keyframes scrollBrandsCad{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
   <div style="position:relative;">
     <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,#000,transparent);z-index:2;pointer-events:none;"></div>
     <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,#000,transparent);z-index:2;pointer-events:none;"></div>

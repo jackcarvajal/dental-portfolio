@@ -1965,7 +1965,8 @@
         }
 
         body{ overflow-x: hidden;visibility:hidden}
-        </style>
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Cotizador y Pedido de Fresado CAM — PRODIGY","url":"https://prodigylabdental.com/flujo-fresado","provider":{"@type":"LocalBusiness","name":"PRODIGY Lab Dental","telephone":"+573212816716","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"}},"description":"Cotizador interactivo de fresado CAM dental. Zirconio multicapa, PMMA, disilicato de litio, titanio. Precios en tiempo real y pedido directo.","areaServed":"Colombia","offers":{"@type":"Offer","priceCurrency":"COP","price":"85000"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Fresado CAM","item":"https://prodigylabdental.com/fresado-cam"},{"@type":"ListItem","position":3,"name":"Hacer Pedido","item":"https://prodigylabdental.com/flujo-fresado"}]}</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -2009,7 +2010,8 @@
         <span style="font-size:0.78rem;color:#e2e8f0;" id="banner-msg">Cerramos recepción de casos hoy a las <strong style="color:#fbbf24;">5:00 PM</strong>. Envía tu orden antes para garantizar tu turno.</span>
         <button onclick="document.getElementById('banner-ciclo').style.display='none'" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:0.9rem;padding:0 4px;">✕</button>
     </div>
-    <style>@keyframes pulseBanner{0%,100%{opacity:1}50%{opacity:0.3}}</style>
+    <style>@keyframes pulseBanner{0%,100%{opacity:1}50%{opacity:0.3}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
     <script>
     (function(){
         var corte=new Date();corte.setUTCHours(22,0,0,0);

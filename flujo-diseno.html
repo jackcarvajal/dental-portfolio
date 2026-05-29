@@ -325,7 +325,8 @@
         margin-top:6px;line-height:1.5;
     }
     body{ overflow-x: hidden;visibility:hidden}.hamburger-menu,.theme-toggle{display:none!important}
-    </style>
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
         <!-- PayPal JS SDK — Client ID público por diseño de PayPal -->
     <script src="https://www.paypal.com/sdk/js?client-id=AfJ71Yzfk4hmHF_hj6F9sdUqTLCK9tiImCegiXOTpScB81NhLLDuiKX2u37aY_E4swf8UO8QuC7jvaQr&currency=USD&intent=capture&locale=es_CO" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Cotizador y Pedido de Diseño CAD — PRODIGY","url":"https://prodigylabdental.com/flujo-diseno","provider":{"@type":"LocalBusiness","name":"PRODIGY Lab Dental","telephone":"+573212816716","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"}},"description":"Cotizador interactivo de diseño CAD dental. Coronas, puentes, carillas, Full Arch, alineadores. Entrega STL en 24-48h. Precios desde $58.000 COP.","areaServed":"Colombia","offers":{"@type":"Offer","priceCurrency":"COP","price":"58000"}}</script>
@@ -360,7 +361,8 @@ window.submitOrden     = window.submitOrden      || function(){};
         <span style="font-size:0.78rem;color:#e2e8f0;" id="banner-msg">Cerramos recepción de casos hoy a las <strong style="color:#fbbf24;">5:00 PM</strong>. Envía tu orden antes para garantizar tu turno.</span>
         <button onclick="document.getElementById('banner-ciclo').style.display='none'" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:0.9rem;padding:0 4px;">✕</button>
     </div>
-    <style>@keyframes pulseBanner{0%,100%{opacity:1}50%{opacity:0.3}}</style>
+    <style>@keyframes pulseBanner{0%,100%{opacity:1}50%{opacity:0.3}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
     <script>
     (function(){
         var corte=new Date();corte.setUTCHours(22,0,0,0);

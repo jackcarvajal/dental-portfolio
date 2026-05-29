@@ -346,7 +346,8 @@
              white-space: nowrap; }
     #toast.show { transform: translateX(-50%) translateY(0); }
     #toast.ok   { border-color: rgba(0,255,65,0.4); }
-  </style>
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
     <!-- Google Analytics GA4 — reemplazar G-3N0ZZE5V10 con el Measurement ID real -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>
     <script>
