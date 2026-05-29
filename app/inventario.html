@@ -679,6 +679,14 @@ function previewFactura(input) {
 
 async function subirFactura() {
     if (!_facturaFile) return null;
+    // Validar tipo + magic bytes
+    if (!_facturaFile.type.startsWith('image/') && _facturaFile.type !== 'application/pdf') {
+        toast('Solo imágenes o PDF como factura', 'err'); return null;
+    }
+    if (window.validateMagicBytes) {
+        const mbr = await validateMagicBytes(_facturaFile);
+        if (!mbr.safe) { toast(mbr.error || 'Archivo de factura no válido', 'err'); return null; }
+    }
     const ext  = _facturaFile.name.split('.').pop();
     const path = `facturas/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
     const { error } = await sb.storage.from('evidencias-entrega').upload(path, _facturaFile);
