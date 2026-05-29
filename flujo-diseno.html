@@ -699,7 +699,7 @@ window.submitOrden     = window.submitOrden      || function(){};
 
                         <!-- SOFTWARE DISEÑO -->
                         <div class="form-group" style="margin-top:14px;">
-                            <label>Software de diseño</label>
+                            <label for="software_diseno">Software de diseño</label>
                             <select id="software_diseno" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#e2e8f0;font-size:.88rem;font-family:inherit;outline:none;transition:border-color .2s;">
                                 <option value="exocad">Exocad DentalCAD</option>
                                 <option value="3shape">3Shape Dental System</option>
@@ -841,6 +841,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                 </div>
                 <div class="accordion-content">
                     <div class="accordion-inner" style="padding:12px;">
+                        <label for="pago_metodo" style="font-size:.7rem;color:var(--text-secondary);display:block;margin-bottom:4px;">Método de pago</label>
                         <select id="pago_metodo" style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:.86rem;">
                             <option value="">¿Por dónde pagaste?</option>
                             <option>Nequi</option><option>Daviplata</option>
@@ -877,6 +878,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <span>Requiero <strong style="color:#00d2ff;">Factura Electrónica</strong> (DIAN)</span>
                         </label>
                         <div id="billing-fields-d" style="display:none;">
+                            <label for="billing_tipo_d" style="font-size:.72rem;color:rgba(255,255,255,.5);display:block;margin-bottom:4px;">Tipo de documento</label>
                             <select id="billing_tipo_d" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
                                 <option value="">Tipo de documento</option>
                                 <option value="CC">Cédula de Ciudadanía</option>
