@@ -389,6 +389,11 @@ async function guardarMantenimiento() {
 
         // Upload foto si hay
         if (fotoFile) {
+            if (!fotoFile.type.startsWith('image/')) { toast('Solo imágenes como foto de equipo', 'err'); return; }
+            if (window.validateMagicBytes) {
+                const mbr = await validateMagicBytes(fotoFile);
+                if (!mbr.safe) { toast(mbr.error || 'Archivo de foto no válido', 'err'); return; }
+            }
             const bytes = new Uint8Array(6);
             crypto.getRandomValues(bytes);
             const rand = Array.from(bytes).map(b => b.toString(16).padStart(2,'0')).join('');
