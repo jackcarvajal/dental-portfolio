@@ -2413,6 +2413,7 @@
         .eco-grid-3 .eco-card:nth-child(9){animation-delay:.36s}
         .eco-grid-3 .eco-card:nth-child(n+10){animation-delay:.40s}
         @media(prefers-reduced-motion:reduce){.eco-card{animation:none;opacity:1;}.eco-icon{filter:none!important;}}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
         /* Tarjeta horizontal: icono + nombre + categoría en una línea */
         .eco-card{display:flex;flex-direction:row;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;cursor:default;transition:transform .25s,box-shadow .25s,border-color .25s;border:1px solid transparent;}
         .eco-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.45);}
