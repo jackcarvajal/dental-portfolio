@@ -257,7 +257,7 @@
                 <h1>Pedidos <span style="color:var(--gold);">PRODIGY</span></h1>
                 <p>Gestión de casos y estados de producción en tiempo real</p>
             </div>
-            <button class="btn-primary" onclick="cargarPedidos()">
+            <button type="button" class="btn-primary" onclick="cargarPedidos()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -288,11 +288,11 @@
 
         <!-- Filtro estado -->
         <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
-            <button class="btn-xs btn-gold" onclick="filtrarPedidos('todos')" id="f-todos" style="background:rgba(212,175,55,0.1);">Todos</button>
-            <button class="btn-xs btn-gold" onclick="filtrarPedidos('Pendiente')" id="f-Pendiente">Pendiente</button>
-            <button class="btn-xs btn-gold" onclick="filtrarPedidos('Pagado')" id="f-Pagado">Pagado</button>
-            <button class="btn-xs btn-gold" onclick="filtrarPedidos('En Producción')" id="f-En Producción">En Producción</button>
-            <button class="btn-xs btn-gold" onclick="filtrarPedidos('Despachado')" id="f-Despachado">Despachado</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('todos')" id="f-todos" style="background:rgba(212,175,55,0.1);">Todos</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Pendiente')" id="f-Pendiente">Pendiente</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Pagado')" id="f-Pagado">Pagado</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('En Producción')" id="f-En Producción">En Producción</button>
+            <button type="button" class="btn-xs btn-gold" onclick="filtrarPedidos('Despachado')" id="f-Despachado">Despachado</button>
         </div>
 
         <div class="section-card">
@@ -303,7 +303,7 @@
                 <thead>
                     <tr><th>Código</th><th>Tipo</th><th>Material</th><th>Total</th><th>Pasarela</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr>
                 </thead>
-                <tbody id="tbody-pedidos">
+                <tbody id="tbody-pedidos" aria-live="polite" aria-label="Tabla de pedidos">
                     <tr class="loading-row"><td colspan="8"><div class="spinner" style="margin:0 auto;"></div></td></tr>
                 </tbody>
             </table>
@@ -453,7 +453,7 @@
         <div class="section-card" style="margin-top:24px;">
             <div class="section-header">
                 <h2><i class="fas fa-images" style="color:var(--gold);margin-right:8px;"></i>Casos publicados</h2>
-                <button class="btn-xs btn-gold" onclick="cargarPortafolio()" aria-label="Actualizar portafolio"><i class="fas fa-rotate-right"></i></button>
+                <button type="button" class="btn-xs btn-gold" onclick="cargarPortafolio()" aria-label="Actualizar portafolio"><i class="fas fa-rotate-right"></i></button>
             </div>
             <div id="portafolio-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:20px;">
                 <div class="empty-state" style="grid-column:1/-1;">
@@ -471,7 +471,7 @@
                 <h1>Clientes <span style="color:var(--gold);">/ Doctores</span></h1>
                 <p>Directorio de doctores registrados con historial de pedidos</p>
             </div>
-            <button class="btn-primary" onclick="cargarClientes()">
+            <button type="button" class="btn-primary" onclick="cargarClientes()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -484,7 +484,7 @@
                 <thead>
                     <tr><th>Cliente</th><th>Email</th><th>Clínica</th><th>Ciudad</th><th>País</th><th>Registro</th><th>Pedidos</th></tr>
                 </thead>
-                <tbody id="tbody-clientes">
+                <tbody id="tbody-clientes" aria-live="polite" aria-label="Tabla de clientes">
                     <tr class="loading-row"><td colspan="7"><div class="spinner" style="margin:0 auto;"></div></td></tr>
                 </tbody>
             </table>
@@ -498,7 +498,7 @@
                 <h1>Equipo <span style="color:var(--gold);">PRODIGY</span></h1>
                 <p>Crea agentes, asigna roles y gestiona accesos del equipo interno</p>
             </div>
-            <button class="btn-primary" onclick="abrirModalAgente()">
+            <button type="button" class="btn-primary" onclick="abrirModalAgente()">
                 <i class="fas fa-user-plus"></i> Nuevo Agente
             </button>
         </div>
@@ -523,7 +523,7 @@
                         <option value="inventario">Inventario</option>
                         <option value="admin">Admin</option>
                     </select>
-                    <button class="btn-primary" style="padding:6px 12px;font-size:0.78rem;" onclick="cargarEquipo()">
+                    <button type="button" class="btn-primary" style="padding:6px 12px;font-size:0.78rem;" onclick="cargarEquipo()">
                         <i class="fas fa-rotate-right"></i>
                     </button>
                 </div>
@@ -549,12 +549,12 @@
                 <h1>Operarios <span style="color:var(--gold);">/ Roles</span></h1>
                 <p>Asigna departamentos a cada operario. Los cambios aplican en su próximo inicio de sesión.</p>
             </div>
-            <button class="btn-primary" onclick="cargarStaff()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+            <button type="button" class="btn-primary" onclick="cargarStaff()"><i class="fas fa-rotate-right"></i> Actualizar</button>
         </div>
         <div class="section-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
                 <h2 style="font-size:.95rem;font-weight:800;color:var(--gold);"><i class="fas fa-users-cog" style="margin-right:8px;color:var(--magenta);"></i>Staff registrado</h2>
-                <button class="btn-xs btn-gold" onclick="abrirModalNuevoStaff()"><i class="fas fa-plus"></i> Agregar operario</button>
+                <button type="button" class="btn-xs btn-gold" onclick="abrirModalNuevoStaff()"><i class="fas fa-plus"></i> Agregar operario</button>
             </div>
             <div id="staff-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;">
                 <p style="color:var(--muted);font-size:.85rem;grid-column:1/-1;">Cargando…</p>
@@ -569,7 +569,7 @@
                 <h1>Leads <span style="color:var(--gold);">Journal</span></h1>
                 <p>Doctores que descargaron guías o se suscribieron desde el Journal</p>
             </div>
-            <button class="btn-primary" onclick="cargarLeads()">
+            <button type="button" class="btn-primary" onclick="cargarLeads()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -622,7 +622,7 @@
                 <h1>Pedidos <span style="color:var(--magenta);">Doctores</span></h1>
                 <p>Órdenes enviadas desde el portal de clientes</p>
             </div>
-            <button class="btn-primary" onclick="cargarPedidosDoc()">
+            <button type="button" class="btn-primary" onclick="cargarPedidosDoc()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -680,10 +680,10 @@
 </main>
 
 <!-- ═══ MODAL CREAR AGENTE ═══ -->
-<div id="modal-agente" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:5000;align-items:center;justify-content:center;">
+<div id="modal-agente" role="dialog" aria-modal="true" aria-labelledby="modal-agente-title" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:5000;align-items:center;justify-content:center;">
     <div style="background:#0d1525;border:1px solid rgba(217,70,166,0.4);border-radius:18px;padding:32px;width:100%;max-width:480px;position:relative;box-shadow:0 0 0 1px rgba(212,175,55,0.15),0 24px 60px rgba(0,0,0,0.7);">
-        <button onclick="cerrarModalAgente()" aria-label="Cerrar" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#94a3b8;font-size:1.1rem;cursor:pointer;"><i class="fas fa-xmark"></i></button>
-        <h2 style="font-size:1.1rem;font-weight:900;margin-bottom:4px;color:#fff;">Nuevo Agente</h2>
+        <button type="button" onclick="cerrarModalAgente()" aria-label="Cerrar diálogo" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#94a3b8;font-size:1.1rem;cursor:pointer;"><i class="fas fa-xmark"></i></button>
+        <h2 id="modal-agente-title" style="font-size:1.1rem;font-weight:900;margin-bottom:4px;color:#fff;">Nuevo Agente</h2>
         <p style="font-size:0.76rem;color:#94a3b8;margin-bottom:22px;">El agente recibirá un correo para establecer su contraseña.</p>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
@@ -715,7 +715,7 @@
 
         <div id="modal-msg" style="display:none;padding:10px 12px;border-radius:8px;font-size:0.8rem;margin-bottom:14px;"></div>
 
-        <button id="btn-crear-agente" onclick="crearAgente()" style="width:100%;padding:13px;background:linear-gradient(90deg,#D946A6,#D4AF37,#D946A6);background-size:200% auto;color:#fff;border:none;border-radius:10px;font-weight:900;font-size:0.92rem;cursor:pointer;animation:btnShimmer 2.5s linear infinite;">
+        <button type="button" id="btn-crear-agente" onclick="crearAgente()" style="width:100%;padding:13px;background:linear-gradient(90deg,#D946A6,#D4AF37,#D946A6);background-size:200% auto;color:#fff;border:none;border-radius:10px;font-weight:900;font-size:0.92rem;cursor:pointer;animation:btnShimmer 2.5s linear infinite;">
             <i class="fas fa-user-plus"></i> &nbsp;Crear Agente y Enviar Invitación
         </button>
         <p style="font-size:0.68rem;color:#94a3b8;text-align:center;margin-top:10px;">
@@ -728,22 +728,22 @@
 <div id="toast"></div>
 
 <!-- Modal: confirmar acción de fabricación -->
-<div id="modal-fab-confirm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+<div id="modal-fab-confirm" role="dialog" aria-modal="true" aria-labelledby="modal-fab-confirm-title" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#0a1525;border:1px solid rgba(212,175,55,.3);border-radius:14px;padding:24px;max-width:400px;width:100%;text-align:center;">
-    <div id="modal-fab-confirm-icon" style="font-size:2rem;margin-bottom:10px;"></div>
+    <div id="modal-fab-confirm-icon" style="font-size:2rem;margin-bottom:10px;" aria-hidden="true"></div>
     <div id="modal-fab-confirm-title" style="font-size:.95rem;font-weight:800;color:var(--gold,#D4AF37);margin-bottom:8px;"></div>
     <div id="modal-fab-confirm-body" style="font-size:.8rem;color:#94a3b8;margin-bottom:20px;"></div>
     <div style="display:flex;gap:10px;justify-content:center;">
-      <button onclick="cerrarModalFabConfirm()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
-      <button id="modal-fab-confirm-btn" onclick="ejecutarFabConfirm()" style="background:var(--gold,#D4AF37);color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"></button>
+      <button type="button" onclick="cerrarModalFabConfirm()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button type="button" id="modal-fab-confirm-btn" onclick="ejecutarFabConfirm()" style="background:var(--gold,#D4AF37);color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"></button>
     </div>
   </div>
 </div>
 
 <!-- Modal: agregar nuevo operario -->
-<div id="modal-nuevo-staff" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
+<div id="modal-nuevo-staff" role="dialog" aria-modal="true" aria-labelledby="modal-staff-title" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#0a1525;border:1px solid rgba(0,210,255,.25);border-radius:14px;padding:24px;max-width:400px;width:100%;">
-    <div style="font-size:.95rem;font-weight:800;color:var(--cyan,#00d2ff);margin-bottom:16px;"><i class="fas fa-user-plus" style="margin-right:6px;"></i>Nuevo operario</div>
+    <div id="modal-staff-title" style="font-size:.95rem;font-weight:800;color:var(--cyan,#00d2ff);margin-bottom:16px;"><i class="fas fa-user-plus" style="margin-right:6px;" aria-hidden="true"></i>Nuevo operario</div>
     <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Email (debe estar en Supabase Auth)</label>
     <input id="staff-email" type="email" placeholder="correo@ejemplo.com"
       style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.85rem;outline:none;margin-bottom:12px;">
@@ -751,8 +751,8 @@
     <input id="staff-nombre" type="text" placeholder="Nombre del operario"
       style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.85rem;outline:none;margin-bottom:18px;">
     <div style="display:flex;gap:10px;justify-content:flex-end;">
-      <button onclick="cerrarModalNuevoStaff()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
-      <button onclick="confirmarNuevoStaff()" style="background:var(--cyan,#00d2ff);color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Agregar</button>
+      <button type="button" onclick="cerrarModalNuevoStaff()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button type="button" onclick="confirmarNuevoStaff()" style="background:var(--cyan,#00d2ff);color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Agregar</button>
     </div>
   </div>
 </div>
@@ -764,8 +764,8 @@
     <div style="font-size:.9rem;font-weight:800;color:#ef4444;margin-bottom:8px;">Eliminar caso</div>
     <div style="font-size:.78rem;color:#94a3b8;margin-bottom:20px;">Esta acción no se puede deshacer.</div>
     <div style="display:flex;gap:10px;justify-content:center;">
-      <button onclick="cerrarModalDelCaso()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
-      <button onclick="confirmarDelCaso()" style="background:#ef4444;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Sí, eliminar</button>
+      <button type="button" onclick="cerrarModalDelCaso()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+      <button type="button" onclick="confirmarDelCaso()" style="background:#ef4444;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Sí, eliminar</button>
     </div>
   </div>
 </div>
@@ -782,7 +782,7 @@
                     <span style="width:7px;height:7px;border-radius:50%;background:#00FF41;animation:blink-rt 2s ease-in-out infinite;display:inline-block;box-shadow:0 0 6px #00FF41"></span>
                     Realtime activo
                 </span>
-                <button class="rut-reload" onclick="cargarRutador()">
+                <button type="button" class="rut-reload" onclick="cargarRutador()">
                     <i class="fas fa-rotate-right"></i> Recargar
                 </button>
             </div>
@@ -842,7 +842,7 @@
           <h1>Fabricación <span style="color:#fb923c">Solicitudes</span></h1>
           <p>Cotizar, confirmar pagos y enrutar casos al área de producción</p>
         </div>
-        <button class="rut-reload" onclick="cargarFabricacion()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+        <button type="button" class="rut-reload" onclick="cargarFabricacion()"><i class="fas fa-rotate-right"></i> Actualizar</button>
       </div>
 
       <!-- PENDIENTES DE COTIZAR -->
@@ -886,8 +886,8 @@
         <input type="hidden" id="cotizar-id">
         <input type="hidden" id="cotizar-tipo">
         <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
-          <button onclick="cerrarModalCotizar()" style="padding:9px 18px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--muted);font-size:.82rem;cursor:pointer;">Cancelar</button>
-          <button onclick="enviarCotizacion()" style="padding:9px 18px;border-radius:8px;background:#fb923c;color:#000;font-size:.82rem;font-weight:800;border:none;cursor:pointer;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar cotización al cliente</button>
+          <button type="button" onclick="cerrarModalCotizar()" style="padding:9px 18px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--muted);font-size:.82rem;cursor:pointer;">Cancelar</button>
+          <button type="button" onclick="enviarCotizacion()" style="padding:9px 18px;border-radius:8px;background:#fb923c;color:#000;font-size:.82rem;font-weight:800;border:none;cursor:pointer;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Enviar cotización al cliente</button>
         </div>
       </div>
     </div>
@@ -899,7 +899,7 @@
                 <h1>Métricas <span style="color:var(--gold)">PRODIGY</span></h1>
                 <p>Operación · Rentabilidad · Calidad · Agilidad</p>
             </div>
-            <button class="rut-reload" onclick="cargarMetricas()">
+            <button type="button" class="rut-reload" onclick="cargarMetricas()">
                 <i class="fas fa-rotate-right"></i> Actualizar
             </button>
         </div>
@@ -1172,9 +1172,9 @@ function renderPedidos(lista) {
         <td style="white-space:nowrap;">
             ${p.stl_ruta?.startsWith('https://') ? `<a href="${esc(p.stl_ruta)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
             <a href="../recibo-caso?id=${esc(p.codigo||p.id)}" target="_blank" class="btn-xs btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
-            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Pago confirmado" onclick="prodigyNotifPago(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Pago</button>
-            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Diseño listo" onclick="prodigyNotifDiseno(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Diseño</button>
-            <button class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Entregado" onclick="prodigyNotifEntrega(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Entrega</button>
+            <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Pago confirmado" onclick="prodigyNotifPago(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Pago</button>
+            <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Diseño listo" onclick="prodigyNotifDiseno(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Diseño</button>
+            <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Entregado" onclick="prodigyNotifEntrega(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Entrega</button>
         </td>
     </tr>`;
 }).join('');
@@ -1459,11 +1459,11 @@ async function cargarPortafolio() {
                 <div style="font-size:0.72rem;color:var(--muted);">${esc(c.type||'')} · ${esc(c.date||'')}</div>
                 <div style="font-size:0.68rem;margin-top:4px;color:${c.visible?'#00FF41':'#f87171'};">${c.visible?'● Visible':'○ Oculto'}</div>
                 <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap;">
-                    <button class="btn-xs btn-gold" onclick="abrirEditar('${c.id}')" title="Editar"><i class="fas fa-pen"></i></button>
-                    <button class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')" title="Eliminar"><i class="fas fa-trash"></i></button>
-                    <button class="btn-xs" style="background:rgba(255,255,255,.08);border:1px solid var(--border);color:#94a3b8;" onclick="toggleVisible('${c.id}',${c.visible})" title="${c.visible?'Ocultar':'Publicar'}">${c.visible?'Ocultar':'Publicar'}</button>
-                    <button class="btn-xs" style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:#94a3b8;" onclick="moverCaso('${c.id}',-1)" ${idx===0?'disabled':''} title="Subir">↑</button>
-                    <button class="btn-xs" style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:#94a3b8;" onclick="moverCaso('${c.id}',1)" ${idx===data.length-1?'disabled':''} title="Bajar">↓</button>
+                    <button type="button" class="btn-xs btn-gold" onclick="abrirEditar('${c.id}')" title="Editar"><i class="fas fa-pen"></i></button>
+                    <button type="button" class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')" title="Eliminar"><i class="fas fa-trash"></i></button>
+                    <button type="button" class="btn-xs" style="background:rgba(255,255,255,.08);border:1px solid var(--border);color:#94a3b8;" onclick="toggleVisible('${c.id}',${c.visible})" title="${c.visible?'Ocultar':'Publicar'}">${c.visible?'Ocultar':'Publicar'}</button>
+                    <button type="button" class="btn-xs" style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:#94a3b8;" onclick="moverCaso('${c.id}',-1)" ${idx===0?'disabled':''} title="Subir">↑</button>
+                    <button type="button" class="btn-xs" style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:#94a3b8;" onclick="moverCaso('${c.id}',1)" ${idx===data.length-1?'disabled':''} title="Bajar">↓</button>
                 </div>
             </div>
         </div>`).join('');
@@ -1513,7 +1513,7 @@ function abrirEditar(id) {
     <div style="background:#0d1525;border:1px solid rgba(212,175,55,.3);border-radius:16px;padding:28px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
             <h3 style="color:#D4AF37;font-size:1rem;font-weight:800;"><i class="fas fa-pen"></i> Editar caso</h3>
-            <button onclick="document.getElementById('edit-modal').remove()" style="background:none;border:none;color:#94a3b8;font-size:1.2rem;cursor:pointer;">✕</button>
+            <button type="button" onclick="document.getElementById('edit-modal').remove()" style="background:none;border:none;color:#94a3b8;font-size:1.2rem;cursor:pointer;">✕</button>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
             <div style="grid-column:1/-1;">
@@ -1562,8 +1562,8 @@ function abrirEditar(id) {
             </div>
 
             <div style="grid-column:1/-1;display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
-                <button onclick="document.getElementById('edit-modal').remove()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
-                <button onclick="guardarEdicion('${id}')" style="background:#D4AF37;border:none;color:#000;padding:10px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;"><i class="fas fa-save"></i> Guardar</button>
+                <button type="button" onclick="document.getElementById('edit-modal').remove()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+                <button type="button" onclick="guardarEdicion('${id}')" style="background:#D4AF37;border:none;color:#000;padding:10px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;"><i class="fas fa-save"></i> Guardar</button>
             </div>
         </div>
     </div>`;
@@ -1789,10 +1789,10 @@ function renderEquipo(lista) {
             <td style="color:#94a3b8;font-size:0.78rem;">${new Date(a.created_at).toLocaleDateString('es-CO')}</td>
             <td>
                 <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                    <button onclick="resetearContrasena('${a.email}')" title="Enviar link reset" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.35);color:#D4AF37;border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
+                    <button type="button" onclick="resetearContrasena('${a.email}')" title="Enviar link reset" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.35);color:#D4AF37;border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
                         <i class="fas fa-key"></i> Reset
                     </button>
-                    <button onclick="toggleActivo('${a.id}', ${a.activo})" title="${a.activo ? 'Desactivar' : 'Activar'}" style="background:${a.activo ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)'};border:1px solid ${a.activo ? 'rgba(239,68,68,0.35)' : 'rgba(34,197,94,0.35)'};color:${a.activo ? '#f87171' : '#86efac'};border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
+                    <button type="button" onclick="toggleActivo('${a.id}', ${a.activo})" title="${a.activo ? 'Desactivar' : 'Activar'}" style="background:${a.activo ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)'};border:1px solid ${a.activo ? 'rgba(239,68,68,0.35)' : 'rgba(34,197,94,0.35)'};color:${a.activo ? '#f87171' : '#86efac'};border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
                         <i class="fas fa-${a.activo ? 'ban' : 'check'}"></i> ${a.activo ? 'Desactivar' : 'Activar'}
                     </button>
                     <select aria-label="Cambiar rol" onchange="cambiarRol('${a.id}', this.value)" style="background:#0d1525;border:1px solid rgba(255,255,255,0.1);color:#94a3b8;border-radius:6px;padding:4px 6px;font-size:0.72rem;cursor:pointer;">
@@ -1894,7 +1894,7 @@ function renderLeads(arr) {
             <td style="font-size:0.78rem;color:#94a3b8;">${fecha}</td>
             <td>${badge}</td>
             <td>
-                <button onclick="toggleContactado('${l.id}', ${l.contactado})"
+                <button type="button" onclick="toggleContactado('${l.id}', ${l.contactado})"
                     style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);color:#D4AF37;border-radius:6px;padding:4px 10px;font-size:0.72rem;cursor:pointer;">
                     ${l.contactado ? 'Desmarcar' : 'Marcar contactado'}
                 </button>
@@ -2169,22 +2169,22 @@ function renderLane(laneId, casos, btnLabel) {
             </div>
             <div class="kcase-footer">
                 <span class="kcase-date">${fecha}</span>
-                <button class="kcase-btn" onclick="avanzarCaso('${c.id}','${next}')">${nextLabel}</button>
+                <button type="button" class="kcase-btn" onclick="avanzarCaso('${c.id}','${next}')">${nextLabel}</button>
             </div>
             ${c.estado === 'en_diseno' ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);">
                 ${c.link_diseno
                     ? `<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
                         <span style="color:#00FF41;font-size:.62rem;font-weight:700"><i class="fas fa-check-circle"></i> Diseño enviado</span>
-                        <button class="kcase-btn" style="font-size:.6rem;padding:2px 7px;" onclick="toggleDsh('${c.id}')">Actualizar link</button>
+                        <button type="button" class="kcase-btn" style="font-size:.6rem;padding:2px 7px;" onclick="toggleDsh('${c.id}')">Actualizar link</button>
                        </div>`
-                    : `<button class="kcase-btn" style="width:100%;font-size:.65rem;color:#00d2ff;border-color:rgba(0,210,255,.3);" onclick="toggleDsh('${c.id}')"><i class="fas fa-share-nodes"></i> Compartir HTML diseño</button>`
+                    : `<button type="button" class="kcase-btn" style="width:100%;font-size:.65rem;color:#00d2ff;border-color:rgba(0,210,255,.3);" onclick="toggleDsh('${c.id}')"><i class="fas fa-share-nodes"></i> Compartir HTML diseño</button>`
                 }
                 <div id="dsh-inp-${c.id}" style="display:none;margin-top:7px;">
                     <input id="dsh-url-${c.id}" type="url"
                         placeholder="Link HTML Exocad (Drive /preview o Supabase Storage)"
                         value="${(c.link_diseno||'').replace(/"/g,'&quot;')}"
                         style="width:100%;padding:5px 8px;background:#050505;border:1px solid rgba(0,210,255,.3);border-radius:6px;color:#fff;font-size:.63rem;outline:none;font-family:inherit;">
-                    <button onclick="guardarLinkDiseno('${c.id}')"
+                    <button type="button" onclick="guardarLinkDiseno('${c.id}')"
                         style="margin-top:5px;width:100%;padding:5px;background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.25);color:#00FF41;border-radius:6px;font-size:.65rem;font-weight:700;cursor:pointer;">
                         <i class="fas fa-paper-plane"></i> Guardar y activar aprobación del doctor
                     </button>
@@ -2482,7 +2482,7 @@ async function cargarFabricacion() {
         </div>
       </div>
       ${modo === 'cotizar' ? `
-        <button onclick="abrirModalCotizar('${escF(p.id)}','${escF(p.codigo||'')}','${escF(p.fabricacion_tipo||'')}')"
+        <button type="button" onclick="abrirModalCotizar('${escF(p.id)}','${escF(p.codigo||'')}','${escF(p.fabricacion_tipo||'')}')"
           style="padding:8px 16px;border-radius:8px;background:#fb923c;color:#000;font-size:.78rem;font-weight:800;border:none;cursor:pointer;">
           <i class="fas fa-calculator" style="margin-right:5px;"></i>Establecer cotización
         </button>` : ''}
@@ -2491,7 +2491,7 @@ async function cargarFabricacion() {
           Cotización enviada: <strong>${fmtCOPFab(p.cotizacion_fab_monto)}</strong> · ${fmtFab(p.cotizacion_fab_at)}
         </div>
         ${p.cotizacion_fab_nota ? `<div style="font-size:.75rem;color:var(--muted);margin-bottom:8px;">${escF(p.cotizacion_fab_nota)}</div>` : ''}
-        <button onclick="marcarPagoRecibido('${escF(p.id)}','${escF(p.fabricacion_tipo||'')}')"
+        <button type="button" onclick="marcarPagoRecibido('${escF(p.id)}','${escF(p.fabricacion_tipo||'')}')"
           style="padding:7px 14px;border-radius:8px;background:rgba(0,255,65,.1);color:#00FF41;border:1px solid rgba(0,255,65,.3);font-size:.75rem;cursor:pointer;">
           <i class="fas fa-check-circle"></i> Confirmar pago recibido
         </button>` : ''}
@@ -2499,7 +2499,7 @@ async function cargarFabricacion() {
         <div style="font-size:.82rem;color:#00FF41;margin-bottom:8px;">
           ✅ Pago confirmado por el cliente · <strong>${fmtCOPFab(p.cotizacion_fab_monto)}</strong>
         </div>
-        <button onclick="enrutarAFabricacion('${escF(p.id)}','${escF(p.fabricacion_tipo||'')}')"
+        <button type="button" onclick="enrutarAFabricacion('${escF(p.id)}','${escF(p.fabricacion_tipo||'')}')"
           style="padding:8px 16px;border-radius:8px;background:#D946A6;color:#fff;font-size:.78rem;font-weight:800;border:none;cursor:pointer;">
           <i class="fas fa-arrow-right"></i> Enrutar a producción → ${escF(TIPO_LBL[p.fabricacion_tipo]||'Fabricación')}
         </button>` : ''}
@@ -2698,7 +2698,7 @@ async function confirmarDelCaso() {
 
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  [cerrarModalFabConfirm, cerrarModalNuevoStaff, cerrarModalDelCaso].forEach(fn => { try { fn(); } catch(_) {} });
+  [cerrarModalFabConfirm, cerrarModalNuevoStaff, cerrarModalDelCaso, cerrarModalAgente].forEach(fn => { try { fn(); } catch(_) {} });
 });
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
