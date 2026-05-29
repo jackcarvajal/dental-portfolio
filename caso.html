@@ -435,8 +435,8 @@ function filtrarTexto(texto) {
 /* ── REACCIONES ── */
 let reaccionSel = '';
 function selReaction(btn, label) {
-  document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('.reaction-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+  btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
   reaccionSel = label;
 }
 
