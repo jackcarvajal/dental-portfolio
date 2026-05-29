@@ -217,9 +217,9 @@ tbody td{padding:11px 14px;vertical-align:middle;}
     <!-- TAB: Historial -->
     <div id="tab-historial" class="tab-panel">
         <div class="filtros">
-            <label>Desde</label>
+            <label for="fil-desde">Desde</label>
             <input type="date" id="fil-desde">
-            <label>Hasta</label>
+            <label for="fil-hasta">Hasta</label>
             <input type="date" id="fil-hasta">
             <button type="button" class="btn-xs btn-ver" onclick="cargarHistorial()"><i class="fas fa-search"></i> Filtrar</button>
         </div>
@@ -304,8 +304,8 @@ tbody td{padding:11px 14px;vertical-align:middle;}
         <!-- Emitidas -->
         <div id="fpanel-emitidas" style="display:none;">
             <div class="filtros">
-                <label>Desde</label><input type="date" id="fact-desde">
-                <label>Hasta</label><input type="date" id="fact-hasta">
+                <label for="fact-desde">Desde</label><input type="date" id="fact-desde">
+                <label for="fact-hasta">Hasta</label><input type="date" id="fact-hasta">
                 <button type="button" class="btn-xs btn-ver" onclick="cargarFacturasEmitidas()"><i class="fas fa-search"></i> Filtrar</button>
             </div>
             <div class="tbl-wrap">
