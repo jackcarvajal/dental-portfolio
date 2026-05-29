@@ -91,6 +91,16 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 5)
+- **security RLS 0a**: trigger ejecutado en Supabase PRODIGY — protege estado/precio/pago de clientes ✓
+- **security SQL**: `sql/patch-rls-client-column-protection.sql` creado para PRODIGY + Alejandro (0b pendiente de ejecutar)
+- **security**: noopener,noreferrer en todos los window.open _blank — 8 archivos PRODIGY + 11 Alejandro
+- **a11y type=button 100% HTML+JS**: footer.js (3), header.js (23), flujo-impresion.js (6), geo-detect.js (1), navbar.js (2), qr-generator.js (1), stl-multi-viewer.js (5), webpush.js (1), patient.html (1), seguimiento-caso.html (2) PRODIGY — mismo para Alejandro
+- **seo sitemap**: lastmod 2026-05-29 en 14 páginas PRODIGY + 7 Alejandro
+- **seo titles**: calidad (74→67), calculadora-impresion (75→65), flujo-impresion (73→72), terminos (73→60)
+- **seo redirects**: /cotizador, /blog, /diseno-dental, /laboratorio, /pedir, /dentista (PRODIGY) + /cotizador, /blog-cad, /guia-quirurgica, /pedido (Alejandro)
+- **audit paneles**: 0 riesgos en operario/calidad/taller — solo el trigger SQL faltaba para clientes
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 4)
 - **a11y type=button COMPLETO**: 0 buttons sin type= en páginas públicas de PRODIGY ni Alejandro
   - PRODIGY: flujo-diseno, flujo-fresado, flujo-impresion, flujo-lab, caso, revision-diseno, index, soporte, terminos, mantenimiento, calculadoras x3, portafolio, seguimiento-caso, patient, recibo-caso (100+ botones)
