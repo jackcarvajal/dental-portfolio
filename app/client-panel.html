@@ -681,7 +681,7 @@ function renderTablas(pedidos) {
                     <td>
                         <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold" style="margin-right:4px;">Ver</a>
                         ${puedeSTL?`<button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
-                        <a href="../recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" class="btn-sm btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
+                        <a href="../recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
                     </td>
                 </tr>`;
             }).join('')}</tbody></table>`;
@@ -705,7 +705,7 @@ function renderTablas(pedidos) {
                 <td style="display:flex;gap:5px;flex-wrap:wrap;">
                     <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold">Ver</a>
                     ${puedeSTL?`<button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
-                    <a href="../recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" class="btn-sm btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
+                    <a href="../recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
                     ${esEntregado&&!yaCalif?`<button type="button" onclick="abrirNPS('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#D4AF37;border-color:rgba(212,175,55,.3);">⭐ Calificar</button>`:''}
                     ${yaCalif?`<span style="font-size:.7rem;color:#D4AF37;">${'★'.repeat(p.calificacion)}</span>`:''}
                 </td>

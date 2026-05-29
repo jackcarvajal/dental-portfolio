@@ -1171,7 +1171,7 @@ function renderPedidos(lista) {
         <td style="font-size:0.75rem;">${fmtFecha(p.created_at)}</td>
         <td style="white-space:nowrap;">
             ${p.stl_ruta?.startsWith('https://') ? `<a href="${esc(p.stl_ruta)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
-            <a href="../recibo-caso?id=${esc(p.codigo||p.id)}" target="_blank" class="btn-xs btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
+            <a href="../recibo-caso?id=${esc(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
             <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Pago confirmado" onclick="prodigyNotifPago(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Pago</button>
             <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Diseño listo" onclick="prodigyNotifDiseno(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Diseño</button>
             <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Entregado" onclick="prodigyNotifEntrega(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Entrega</button>
@@ -2478,7 +2478,7 @@ async function cargarFabricacion() {
         </div>
         <div style="text-align:right;">
           ${stlCount ? `<span style="font-size:.7rem;background:rgba(0,210,255,.1);color:#00d2ff;border-radius:6px;padding:2px 8px;">${stlCount} STL</span>` : ''}
-          ${p.html_diseno_url ? `<a href="${location.origin}/revision-diseno?id=${escF(p.id)}" target="_blank" style="display:inline-block;margin-left:4px;font-size:.7rem;color:var(--gold);">Ver diseño</a>` : ''}
+          ${p.html_diseno_url ? `<a href="${location.origin}/revision-diseno?id=${escF(p.id)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-left:4px;font-size:.7rem;color:var(--gold);">Ver diseño</a>` : ''}
         </div>
       </div>
       ${modo === 'cotizar' ? `

@@ -414,7 +414,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>Nombre / Clínica *</label>
-                                <input type="text" id="nombreCliente" placeholder="Dr. Juan Pérez / Clínica Norte">
+                                <input type="text" id="nombreCliente" placeholder="Dr. Juan Pérez / Clínica Norte" autocomplete="name">
                                 <span class="tooltip-error" id="error-nombreCliente" style="display:none"></span>
                             </div>
                             <div class="form-group">
@@ -440,14 +440,14 @@ window.submitOrden     = window.submitOrden      || function(){};
                                 <label>WhatsApp *</label>
                                 <div style="display:flex;gap:6px;align-items:center;">
                                     <span id="indicativo-badge" style="background:rgba(217,70,166,0.1);border:1px solid rgba(217,70,166,0.3);border-radius:8px;padding:10px 10px;font-size:.85rem;font-weight:700;color:#D946A6;white-space:nowrap;">+57</span>
-                                    <input type="tel" inputmode="tel" id="whatsappCliente" placeholder="3001234567" maxlength="15"
+                                    <input type="tel" inputmode="tel" id="whatsappCliente" placeholder="3001234567" maxlength="15" autocomplete="tel-national"
                                            oninput="this.value=this.value.replace(/\D/g,'')" style="flex:1;">
                                 </div>
                                 <span class="tooltip-error" id="error-whatsappCliente" style="display:none"></span>
                             </div>
                             <div class="form-group">
                                 <label>Ciudad *</label>
-                                <input type="text" id="ciudad" placeholder="Bogotá">
+                                <input type="text" id="ciudad" placeholder="Bogotá" autocomplete="address-level2">
                                 <span class="tooltip-error" id="error-ciudad" style="display:none"></span>
                             </div>
                         </div>
@@ -886,7 +886,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <input type="text" id="billing_nit_d" oninput="validarNITd(this)" placeholder="NIT / Cédula (ej: 900123456-1)" maxlength="20" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:4px;font-size:.85rem;">
                             <span id="nit-indicator-d" style="font-size:.8rem;display:block;margin-top:3px;min-height:16px;margin-bottom:4px;"></span>
                             <input type="text" id="billing_razon_d" placeholder="Razón Social o Nombre Completo" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
-                            <input type="email" id="billing_email_d" placeholder="Correo para factura (contabilidad@...)" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);font-size:.85rem;">
+                            <input type="email" id="billing_email_d" placeholder="Correo para factura (contabilidad@...)" maxlength="80" autocomplete="email" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);font-size:.85rem;">
                             <p style="font-size:.8rem;color:#94a3b8;margin-top:6px;">Factura enviada al correo indicado en máx. 24h hábiles tras confirmación de pago.</p>
                         </div>
                     </div>
