@@ -751,15 +751,15 @@ function renderPage(page) {
 
     paginador.style.display = 'flex';
     const btnStyle = (active) =>
-        `style="padding:8px 18px;border-radius:8px;border:1px solid ${active ? '#D946A6' : '#333'};
+        `type="button" style="padding:8px 18px;border-radius:8px;border:1px solid ${active ? '#D946A6' : '#333'};
          background:${active ? '#D946A6' : 'transparent'};color:${active ? '#fff' : '#aaa'};
          cursor:pointer;font-size:0.9rem;transition:all .2s"`;
 
-    let html = `<button ${btnStyle(false)} onclick="goPage(${page-1})" ${page===1?'disabled style="opacity:.3;cursor:default"':''}>← Ant</button>`;
+    let html = `<button ${btnStyle(false)} onclick="goPage(${page-1})" aria-label="Página anterior" ${page===1?'disabled style="opacity:.3;cursor:default"':''}>← Ant</button>`;
     for (let p = 1; p <= totalPages; p++) {
-        html += `<button ${btnStyle(p===page)} onclick="goPage(${p})">${p}</button>`;
+        html += `<button ${btnStyle(p===page)} onclick="goPage(${p})" aria-label="Página ${p}" ${p===page?'aria-current="page"':''}>${p}</button>`;
     }
-    html += `<button ${btnStyle(false)} onclick="goPage(${page+1})" ${page===totalPages?'disabled style="opacity:.3;cursor:default"':''}>Sig →</button>`;
+    html += `<button ${btnStyle(false)} onclick="goPage(${page+1})" aria-label="Página siguiente" ${page===totalPages?'disabled style="opacity:.3;cursor:default"':''}>Sig →</button>`;
     paginador.innerHTML = html;
 }
 
