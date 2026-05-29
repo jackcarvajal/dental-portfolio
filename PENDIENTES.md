@@ -82,6 +82,13 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 4)
+- **a11y type=button COMPLETO**: 0 buttons sin type= en páginas públicas de PRODIGY ni Alejandro
+  - PRODIGY: flujo-diseno, flujo-fresado, flujo-impresion, flujo-lab, caso, revision-diseno, index, soporte, terminos, mantenimiento, calculadoras x3, portafolio, seguimiento-caso, patient, recibo-caso (100+ botones)
+  - Alejandro: caso, flujo-diseno, portafolio, recibo-caso, seguimiento-caso, calculadora-diseno, guias-quirurgicas, terminos, recibo-demo
+- **a11y type=button en app/**: admin-panel PRODIGY, client-panel PRODIGY, panel-interno, gestionar-casos, contabilidad, operario, mis-casos Alejandro, admin-panel Alejandro
+- **a11y .sr-only CSS global**: styles.css PRODIGY — clase utilitaria para screen readers
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 3)
 - **a11y label[for] paneles**: admin-panel PRODIGY (met-periodo, p-tipo/material/software/categoria/destacado); client-panel PRODIGY (pd-tipo, pd-material, bib-tipo); contabilidad (fechas + aria-label selects); gestionar-casos (editType); inventario (fil-cat, ent-venc)
 - **a11y label[for] paneles Alejandro**: client-panel (bib-tipo); mis-casos (fil-estado, av-nuevo)
