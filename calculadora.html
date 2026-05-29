@@ -476,7 +476,7 @@
           <small>Disponible para casos en stock de materiales</small>
         </div>
         <span class="toggle-price" id="precio-urgente">+$40K</span>
-        <div class="toggle" id="tog-urgente" onclick="toggleOpcion('urgente')"></div>
+        <button type="button" class="toggle" id="tog-urgente" onclick="toggleOpcion('urgente')" role="switch" aria-checked="false" aria-label="Activar entrega urgente"></button></div>
       </div>
 
       <div class="toggle-row">
@@ -485,7 +485,7 @@
           <small>Planificación estética previa al diseño</small>
         </div>
         <span class="toggle-price" id="precio-dsd">+$80K</span>
-        <div class="toggle" id="tog-dsd" onclick="toggleOpcion('dsd')"></div>
+        <button type="button" class="toggle" id="tog-dsd" onclick="toggleOpcion('dsd')" role="switch" aria-checked="false" aria-label="Activar diseño de sonrisa DSD"></button></div>
       </div>
 
       <div class="toggle-row">
@@ -494,7 +494,7 @@
           <small>Mensajero PRODIGY — zona metropolitana</small>
         </div>
         <span class="toggle-price" id="precio-envio">+$20K</span>
-        <div class="toggle" id="tog-envio" onclick="toggleOpcion('envio')"></div>
+        <button type="button" class="toggle" id="tog-envio" onclick="toggleOpcion('envio')" role="switch" aria-checked="false" aria-label="Activar envío a domicilio"></button></div>
       </div>
 
       <div class="toggle-row" id="row-internacional" style="display:none;">
@@ -503,7 +503,7 @@
           <small>Platform service fee 3.5% · USD via Stripe</small>
         </div>
         <span class="toggle-price" id="precio-intl-fee" style="color:var(--cyan)">+6.5%</span>
-        <div class="toggle" id="tog-internacional" onclick="toggleOpcion('internacional')"></div>
+        <button type="button" class="toggle" id="tog-internacional" onclick="toggleOpcion('internacional')" role="switch" aria-checked="false" aria-label="Activar precio internacional"></button></div>
       </div>
 
     </div>
@@ -765,6 +765,7 @@ function toggleOpcion(key) {
   state[key] = !state[key];
   const tog = document.getElementById('tog-' + key);
   tog.classList.toggle('on', state[key]);
+  tog.setAttribute('aria-checked', state[key] ? 'true' : 'false');
   renderResult();
 }
 
