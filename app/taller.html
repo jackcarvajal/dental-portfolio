@@ -254,7 +254,7 @@
             <input type="text" id="hist-filter-input" placeholder="Filtrar por ID equipo..." oninput="filtrarHistorial(this.value)">
             <button type="button" class="btn-sm" onclick="cargarHistorial()"><i class="fas fa-refresh"></i> Actualizar</button>
         </div>
-        <div id="hist-container">
+        <div id="hist-container" aria-live="polite" aria-label="Historial de trabajos del taller">
             <div class="spinner"></div>
         </div>
     </div>

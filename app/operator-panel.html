@@ -190,19 +190,19 @@ body.ready { visibility: visible; }
             <div class="k-hdr" style="color:var(--yellow)">
                 Pendientes / Validar <span class="k-count" id="cnt-pend">0</span>
             </div>
-            <div id="col-pend" class="k-drop-zone" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'pend')"><div class="loader"><div class="spinner"></div></div></div>
+            <div id="col-pend" class="k-drop-zone" aria-live="polite" aria-label="Casos pendientes" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'pend')"><div class="loader"><div class="spinner"></div></div></div>
         </div>
         <div class="k-col">
             <div class="k-hdr" style="color:var(--cyan)">
                 En Producción <span class="k-count" id="cnt-prod">0</span>
             </div>
-            <div id="col-prod" class="k-drop-zone" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'prod')"><div class="loader"><div class="spinner"></div></div></div>
+            <div id="col-prod" class="k-drop-zone" aria-live="polite" aria-label="Casos en producción" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'prod')"><div class="loader"><div class="spinner"></div></div></div>
         </div>
         <div class="k-col">
             <div class="k-hdr" style="color:var(--green)">
                 QA / Completados <span class="k-count" id="cnt-done">0</span>
             </div>
-            <div id="col-done" class="k-drop-zone" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'done')"><div class="loader"><div class="spinner"></div></div></div>
+            <div id="col-done" class="k-drop-zone" aria-live="polite" aria-label="Casos despachados" ondragover="_kdragOver(event)" ondragleave="_kdragLeave(event)" ondrop="_kdrop(event,'done')"><div class="loader"><div class="spinner"></div></div></div>
         </div>
     </div>
 
