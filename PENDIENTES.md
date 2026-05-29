@@ -106,6 +106,17 @@
 - **Scan masivo**: toast functions → todas usan textContent (no innerHTML) en ambos proyectos ✓
 - **Scan masivo**: geo.region, keywords, viewport, canonical, noindex app/, og:type — 100% completo ambos proyectos ✓
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 17)
+- **a11y aria-live**: seguimiento-caso (ambos) + portafolio PRODIGY + articlesTrack journal/blog
+- **a11y role=feed**: journal.html PRODIGY + blog.html Alejandro
+- **perf LCP**: article.html (ambos) — cover image lazy→eager + fetchPriority=high
+- **seo**: og:locale:alternate completado — 28 PRODIGY + 13/13 Alejandro (100% cobertura)
+- **seo**: redirects adicionales /guias, /scanner, /pedido en PRODIGY
+- **seo**: títulos flujo-fresado + flujo-impresion mejorados (35/30 → 63/65 chars)
+- **schema**: url field en calculadora-diseno.html Alejandro
+- **a11y**: aria-label en lang buttons — guias-quirurgicas.html Alejandro
+- **Audits OK**: DOM clobbering limpio ✓; format-detection no crítico ✓; conversions.js eventos OK ✓; checkout flujo-diseno validado ✓
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 16)
 - **perf version params 100%**: PRODIGY y Alejandro — todos los scripts JS locales tienen ?v=20260528 (header.js, footer.js, auth-guard.js, articles.js, i18n.js, emailnotif.js, stl-multi-viewer, upload-guard, webpush, callmebot, flujo-uploader, etc.)
 - **seo og:locale:alternate**: 28 páginas PRODIGY + 13/13 Alejandro con og:locale:alternate=en_US en páginas con hreflang EN
