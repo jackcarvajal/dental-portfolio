@@ -30,6 +30,10 @@
 /articles.js
   Cache-Control: public, max-age=0, must-revalidate
 
+# Manifest PWA — cache 1 día (cambia poco pero debe actualizarse)
+/manifest.json
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
 # Cache agresivo — assets inmutables
 /js/*
   Cache-Control: public, max-age=31536000, immutable
