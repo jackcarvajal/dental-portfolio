@@ -649,7 +649,7 @@
       '<i class="fas fa-robot" id="pg-chat-ico"></i>' +
       '<span class="pg-notif"></span>' +
     '</button>' +
-    '<div id="pg-chat-window">' +
+    '<div id="pg-chat-window" role="dialog" aria-label="Asistente IA PRODIGY" aria-modal="false">' +
       '<div class="pg-chat-header">' +
         '<div class="pg-chat-avatar"><i class="fas fa-robot"></i></div>' +
         '<div class="pg-chat-info">' +
