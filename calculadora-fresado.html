@@ -161,47 +161,47 @@
     <div class="calc-card">
       <div class="card-title"><i class="fas fa-tooth"></i> Tipo de restauración</div>
       <div class="srv-grid" id="srvGrid">
-        <button class="srv-btn selected" data-key="corona-mono" onclick="selSrv(this)">
+        <button type="button" class="srv-btn selected" data-key="corona-mono" onclick="selSrv(this)">
           <div class="ico">👑</div>
           <div class="lbl">Corona Monolítica</div>
           <div class="prc">Desde $180K</div>
         </button>
-        <button class="srv-btn" data-key="corona-multi" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="corona-multi" onclick="selSrv(this)">
           <div class="ico">✨</div>
           <div class="lbl">Corona Multicapa</div>
           <div class="prc">Desde $220K</div>
         </button>
-        <button class="srv-btn" data-key="carilla" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="carilla" onclick="selSrv(this)">
           <div class="ico">💎</div>
           <div class="lbl">Carilla / Lámina</div>
           <div class="prc">Desde $220K</div>
         </button>
-        <button class="srv-btn" data-key="inlay" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="inlay" onclick="selSrv(this)">
           <div class="ico">🔷</div>
           <div class="lbl">Inlay / Onlay</div>
           <div class="prc">Desde $160K</div>
         </button>
-        <button class="srv-btn" data-key="puente" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="puente" onclick="selSrv(this)">
           <div class="ico">🌉</div>
           <div class="lbl">Puente 3 pzas</div>
           <div class="prc">Desde $480K</div>
         </button>
-        <button class="srv-btn" data-key="abutment" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="abutment" onclick="selSrv(this)">
           <div class="ico">🔩</div>
           <div class="lbl">Abutment / Pilar</div>
           <div class="prc">Desde $280K</div>
         </button>
-        <button class="srv-btn" data-key="provisional" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="provisional" onclick="selSrv(this)">
           <div class="ico">🏗️</div>
           <div class="lbl">Provisional PMMA</div>
           <div class="prc">Desde $90K</div>
         </button>
-        <button class="srv-btn" data-key="barra" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="barra" onclick="selSrv(this)">
           <div class="ico">📐</div>
           <div class="lbl">Barra sobre Implantes</div>
           <div class="prc">Cotizar</div>
         </button>
-        <button class="srv-btn" data-key="protesis-total" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="protesis-total" onclick="selSrv(this)">
           <div class="ico">🦷</div>
           <div class="lbl">Prótesis Total CAD</div>
           <div class="prc">Desde $350K</div>
@@ -213,22 +213,22 @@
     <div class="calc-card">
       <div class="card-title"><i class="fas fa-gem"></i> Material de fresado</div>
       <div class="mat-grid" id="matGrid">
-        <button class="mat-chip selected" data-mat="zirconio-mono" onclick="selMat(this)">
+        <button type="button" class="mat-chip selected" data-mat="zirconio-mono" onclick="selMat(this)">
           <span class="dot" style="background:#a78bfa;"></span> Zirconio 3Y Monolítico
         </button>
-        <button class="mat-chip" data-mat="zirconio-multi" onclick="selMat(this)">
+        <button type="button" class="mat-chip" data-mat="zirconio-multi" onclick="selMat(this)">
           <span class="dot" style="background:#c4b5fd;"></span> Zirconio Multicapa
         </button>
-        <button class="mat-chip" data-mat="zirconio-ut" onclick="selMat(this)">
+        <button type="button" class="mat-chip" data-mat="zirconio-ut" onclick="selMat(this)">
           <span class="dot" style="background:#e9d5ff;"></span> Zirconio 5Y Ultra-T
         </button>
-        <button class="mat-chip" data-mat="disilicato" onclick="selMat(this)">
+        <button type="button" class="mat-chip" data-mat="disilicato" onclick="selMat(this)">
           <span class="dot" style="background:#f9a8d4;"></span> Disilicato (e.max CAD)
         </button>
-        <button class="mat-chip" data-mat="pmma" onclick="selMat(this)">
+        <button type="button" class="mat-chip" data-mat="pmma" onclick="selMat(this)">
           <span class="dot" style="background:#7dd3fc;"></span> PMMA Fresado
         </button>
-        <button class="mat-chip" data-mat="titanio" onclick="selMat(this)">
+        <button type="button" class="mat-chip" data-mat="titanio" onclick="selMat(this)">
           <span class="dot" style="background:#d1d5db;"></span> Titanio CNC
         </button>
       </div>
@@ -238,10 +238,10 @@
     <div class="calc-card">
       <div class="card-title"><i class="fas fa-hashtag"></i> Cantidad de unidades</div>
       <div class="qty-row">
-        <button class="qty-btn" onclick="chgQty(-1)">−</button>
+        <button type="button" class="qty-btn" onclick="chgQty(-1)">−</button>
         <div class="qty-num" id="qtyNum">1</div>
         <div class="qty-lbl">unidad(es)</div>
-        <button class="qty-btn" onclick="chgQty(1)">+</button>
+        <button type="button" class="qty-btn" onclick="chgQty(1)">+</button>
       </div>
     </div>
 
@@ -307,10 +307,10 @@
         <strong id="bdTotal2" style="color:var(--gold);">$180.000</strong>
       </div>
 
-      <button class="btn-wa" onclick="abrirWA()">
+      <button type="button" class="btn-wa" onclick="abrirWA()">
         <i class="fab fa-whatsapp"></i> Confirmar por WhatsApp
       </button>
-      <button class="btn-cot" onclick="abrirFlujo()">
+      <button type="button" class="btn-cot" onclick="abrirFlujo()">
         <i class="fas fa-paper-plane"></i> Pedir fresado online
       </button>
 

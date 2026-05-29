@@ -542,12 +542,12 @@
     <div class="filter-row">
         <div class="filter-label"><i class="fas fa-tag"></i> Por tipo</div>
         <div class="filters" id="filterBtns" role="group" aria-label="Filtrar por tipo de caso">
-            <button class="filter-btn active" data-type="todos" onclick="filtrar('todos', this)" aria-pressed="true">Todos</button>
-            <button class="filter-btn" data-type="rehabilitacion" onclick="filtrar('rehabilitacion', this)" aria-pressed="false">Rehabilitación</button>
-            <button class="filter-btn" data-type="estetica" onclick="filtrar('estetica', this)" aria-pressed="false">Estética</button>
-            <button class="filter-btn" data-type="implantes" onclick="filtrar('implantes', this)" aria-pressed="false">Implantes</button>
-            <button class="filter-btn" data-type="protesis" onclick="filtrar('protesis', this)" aria-pressed="false">Prótesis</button>
-            <button class="filter-btn" data-type="alineadores" onclick="filtrar('alineadores', this)" aria-pressed="false">Alineadores</button>
+            <button type="button" class="filter-btn active" data-type="todos" onclick="filtrar('todos', this)" aria-pressed="true">Todos</button>
+            <button type="button" class="filter-btn" data-type="rehabilitacion" onclick="filtrar('rehabilitacion', this)" aria-pressed="false">Rehabilitación</button>
+            <button type="button" class="filter-btn" data-type="estetica" onclick="filtrar('estetica', this)" aria-pressed="false">Estética</button>
+            <button type="button" class="filter-btn" data-type="implantes" onclick="filtrar('implantes', this)" aria-pressed="false">Implantes</button>
+            <button type="button" class="filter-btn" data-type="protesis" onclick="filtrar('protesis', this)" aria-pressed="false">Prótesis</button>
+            <button type="button" class="filter-btn" data-type="alineadores" onclick="filtrar('alineadores', this)" aria-pressed="false">Alineadores</button>
         </div>
     </div>
 </div>
@@ -755,11 +755,11 @@ function renderPage(page) {
          background:${active ? '#D946A6' : 'transparent'};color:${active ? '#fff' : '#aaa'};
          cursor:pointer;font-size:0.9rem;transition:all .2s"`;
 
-    let html = `<button ${btnStyle(false)} onclick="goPage(${page-1})" aria-label="Página anterior" ${page===1?'disabled style="opacity:.3;cursor:default"':''}>← Ant</button>`;
+    let html = `<button type="button" ${btnStyle(false)} onclick="goPage(${page-1})" aria-label="Página anterior" ${page===1?'disabled style="opacity:.3;cursor:default"':''}>← Ant</button>`;
     for (let p = 1; p <= totalPages; p++) {
-        html += `<button ${btnStyle(p===page)} onclick="goPage(${p})" aria-label="Página ${p}" ${p===page?'aria-current="page"':''}>${p}</button>`;
+        html += `<button type="button" ${btnStyle(p===page)} onclick="goPage(${p})" aria-label="Página ${p}" ${p===page?'aria-current="page"':''}>${p}</button>`;
     }
-    html += `<button ${btnStyle(false)} onclick="goPage(${page+1})" aria-label="Página siguiente" ${page===totalPages?'disabled style="opacity:.3;cursor:default"':''}>Sig →</button>`;
+    html += `<button type="button" ${btnStyle(false)} onclick="goPage(${page+1})" aria-label="Página siguiente" ${page===totalPages?'disabled style="opacity:.3;cursor:default"':''}>Sig →</button>`;
     paginador.innerHTML = html;
 }
 

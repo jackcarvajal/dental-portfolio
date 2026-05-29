@@ -150,47 +150,47 @@
     <div class="calc-card">
       <div class="card-title"><i class="fas fa-print"></i> Tipo de pieza</div>
       <div class="srv-grid" id="srvGrid">
-        <button class="srv-btn selected" data-key="modelo-dx" onclick="selSrv(this)">
+        <button type="button" class="srv-btn selected" data-key="modelo-dx" onclick="selSrv(this)">
           <div class="ico">🦷</div>
           <div class="lbl">Modelo Diagnóstico</div>
           <div class="prc">Desde $20K</div>
         </button>
-        <button class="srv-btn" data-key="modelo-full" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="modelo-full" onclick="selSrv(this)">
           <div class="ico">🦷🦷</div>
           <div class="lbl">Modelo Full Arch</div>
           <div class="prc">Desde $80K</div>
         </button>
-        <button class="srv-btn" data-key="guia-qx" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="guia-qx" onclick="selSrv(this)">
           <div class="ico">🎯</div>
           <div class="lbl">Guía Quirúrgica</div>
           <div class="prc">Desde $130K</div>
         </button>
-        <button class="srv-btn" data-key="provisional-corona" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="provisional-corona" onclick="selSrv(this)">
           <div class="ico">👑</div>
           <div class="lbl">Provisional Corona</div>
           <div class="prc">Desde $80K</div>
         </button>
-        <button class="srv-btn" data-key="provisional-puente" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="provisional-puente" onclick="selSrv(this)">
           <div class="ico">🌉</div>
           <div class="lbl">Provisional Puente</div>
           <div class="prc">Desde $160K</div>
         </button>
-        <button class="srv-btn" data-key="ferula" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="ferula" onclick="selSrv(this)">
           <div class="ico">😬</div>
           <div class="lbl">Férula Oclusal</div>
           <div class="prc">Desde $100K</div>
         </button>
-        <button class="srv-btn" data-key="cubeta" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="cubeta" onclick="selSrv(this)">
           <div class="ico">🔲</div>
           <div class="lbl">Cubeta Individual</div>
           <div class="prc">Desde $70K</div>
         </button>
-        <button class="srv-btn" data-key="retenedor" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="retenedor" onclick="selSrv(this)">
           <div class="ico">📎</div>
           <div class="lbl">Retenedor Ortodoncia</div>
           <div class="prc">Desde $80K</div>
         </button>
-        <button class="srv-btn" data-key="modelo-orto" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="modelo-orto" onclick="selSrv(this)">
           <div class="ico">📐</div>
           <div class="lbl">Modelo Ortodoncia</div>
           <div class="prc">Desde $75K</div>
@@ -201,19 +201,19 @@
     <div class="calc-card">
       <div class="card-title"><i class="fas fa-flask"></i> Tipo de resina</div>
       <div class="mat-grid" id="matGrid">
-        <button class="mat-chip selected" data-mat="modelo" onclick="selMat(this)">
+        <button type="button" class="mat-chip selected" data-mat="modelo" onclick="selMat(this)">
           <span class="dot" style="background:#86efac;"></span> Resina Modelo
         </button>
-        <button class="mat-chip" data-mat="qx" onclick="selMat(this)">
+        <button type="button" class="mat-chip" data-mat="qx" onclick="selMat(this)">
           <span class="dot" style="background:#fdba74;"></span> Resina Quirúrgica
         </button>
-        <button class="mat-chip" data-mat="provisional" onclick="selMat(this)">
+        <button type="button" class="mat-chip" data-mat="provisional" onclick="selMat(this)">
           <span class="dot" style="background:#f9a8d4;"></span> Resina Provisional
         </button>
-        <button class="mat-chip" data-mat="flexible" onclick="selMat(this)">
+        <button type="button" class="mat-chip" data-mat="flexible" onclick="selMat(this)">
           <span class="dot" style="background:#7dd3fc;"></span> Resina Flexible (Férula)
         </button>
-        <button class="mat-chip" data-mat="pmma3d" onclick="selMat(this)">
+        <button type="button" class="mat-chip" data-mat="pmma3d" onclick="selMat(this)">
           <span class="dot" style="background:#c4b5fd;"></span> PMMA Impreso
         </button>
       </div>
@@ -222,10 +222,10 @@
     <div class="calc-card">
       <div class="card-title"><i class="fas fa-hashtag"></i> Cantidad</div>
       <div class="qty-row">
-        <button class="qty-btn" onclick="chgQty(-1)">−</button>
+        <button type="button" class="qty-btn" onclick="chgQty(-1)">−</button>
         <div class="qty-num" id="qtyNum">1</div>
         <div class="qty-lbl">pieza(s)</div>
-        <button class="qty-btn" onclick="chgQty(1)">+</button>
+        <button type="button" class="qty-btn" onclick="chgQty(1)">+</button>
       </div>
     </div>
 
@@ -290,10 +290,10 @@
         <span>Saldo contra entrega (50%)</span>
         <strong id="bdSaldo">$30.000</strong>
       </div>
-      <button class="btn-wa" onclick="abrirWA()">
+      <button type="button" class="btn-wa" onclick="abrirWA()">
         <i class="fab fa-whatsapp"></i> Confirmar por WhatsApp
       </button>
-      <button class="btn-cot" onclick="window.location.href='/flujo-impresion'">
+      <button type="button" class="btn-cot" onclick="window.location.href='/flujo-impresion'">
         <i class="fas fa-paper-plane"></i> Pedir impresión online
       </button>
       <div class="trust-row">
