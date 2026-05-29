@@ -336,6 +336,8 @@ async function confirmarDelGc() {
     cerrarDelGc();
     const { error } = await sb.from('casos_portafolio').delete().eq('id', id);
     if (error) { toast('Error al eliminar', 'err'); return; }
+    // Audit log
+    try { await sb.from('logs_incidencias').insert({ tipo:'ADMIN_ACTION', severidad:'INFO', resuelta:true, descripcion:`[AUDIT] DELETE_CASO_PORTAFOLIO desde gestionar-casos: ${id}` }); } catch(_){}
     todosCasos = todosCasos.filter(c => c.id !== id);
     document.getElementById('totalCount').textContent = todosCasos.length;
     toast('🗑 Caso eliminado');
