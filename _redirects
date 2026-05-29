@@ -67,6 +67,14 @@
 /scanner                /envia-tu-scanner.html      301
 /pedido                 /flujo-diseno.html          301
 /contacto               /nosotros.html#contacto     301
+/cotizador              /calculadora.html           301
+/cotizacion             /calculadora.html           301
+/diseno-dental          /diseno-cad.html            301
+/laboratorio            /nosotros.html              301
+/blog                   /journal.html               301
+/articulos              /journal.html               301
+/pedir                  /flujo-diseno.html          301
+/dentista               /nosotros.html              301
 # /soporte-tecnico        /soporte-tecnico.html       200  ← CF sirve nativo
 /soporte-xtcera         /soporte-tecnico.html       301
 /soporte-alistar        /soporte-tecnico.html       301
