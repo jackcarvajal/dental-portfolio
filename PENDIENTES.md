@@ -82,6 +82,17 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29)
+- **a11y gallery**: caso.html (PRODIGY + Alejandro) + revision-diseno.html — gallery-item div→button con aria-label + CSS reset (display:block;padding:0)
+- **a11y portafolio/journal/blog**: aria-pressed en filtros + role=group + sincronización en filtrar()/filterArticles()
+- **a11y skip link**: mapa-sitio.html — único pendiente público; skip link + main id="main-content"
+- **a11y landmarks**: recibo-caso.html + offline.html (ambos proyectos) — main landmark + button[type=button] para Reintentar/Retry
+- **a11y nav**: panel-interno-operaciones.html — aria-current=page en switchTab() + item inicial
+- **a11y autocomplete**: flujo-diseno (nombre/tel/ciudad), flujo-fresado/impresion (billing_email) — ambos proyectos
+- **security noopener**: todos los target=_blank en app/ — admin-panel, client-panel, operario, operario-diseno, panel-interno, mis-casos, configuracion (PRODIGY + Alejandro)
+- **a11y prefers-reduced-motion**: portafolio.html + instalar-app.html (PRODIGY) + portafolio.html (Alejandro)
+- **seo desc**: caso.html PRODIGY 119→144 chars; caso.html Alejandro 85→136 chars
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 11)
 - **Fix dominio**: callmebot.js (6 refs), webpush.js (7 refs), emailnotif.js (3 refs), client-panel.html (1 ref) — prodigydentallab→prodigylabdental
 - **Fix schema**: BreadcrumbList duplicado eliminado en diseno-cad.html + diseno-remoto.html
