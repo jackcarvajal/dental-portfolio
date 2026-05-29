@@ -27,6 +27,9 @@
 /.env                           /404.html  404
 /.env.*                         /404.html  404
 /*.log                          /404.html  404
+/wp-login.php                   /404.html  404
+/wp-admin/*                     /404.html  404
+/xmlrpc.php                     /404.html  404
 
 # ─────────────────────────────────────────────────────────────
 # CLEAN URLs — NO NECESITAN CONFIGURACIÓN
