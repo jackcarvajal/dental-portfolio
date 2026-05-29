@@ -593,17 +593,17 @@ window.submitOrden     = window.submitOrden      || function(){};
             <!-- ── 3. TIEMPO DE ENTREGA ── -->
             <div class="timeline-section">
                 <h2>⏱️ 3. TIEMPO DE ENTREGA ESTIMADO</h2>
-                <div class="timeline-slots">
-                    <div class="timeline-slot" data-slot="48h" onclick="selectSlot('48h')">
+                <div class="timeline-slots" role="group" aria-label="Tiempo de entrega">
+                    <button type="button" class="timeline-slot" data-slot="48h" onclick="selectSlot('48h')" aria-pressed="false">
                         <span class="slot-badge">ESTÁNDAR</span>
                         <h4>📅 48 horas hábiles</h4>
                         <p>Coronas, carillas, puentes, unitarios y pilares personalizados</p>
-                    </div>
-                    <div class="timeline-slot" data-slot="72h" onclick="selectSlot('72h')">
+                    </button>
+                    <button type="button" class="timeline-slot" data-slot="72h" onclick="selectSlot('72h')" aria-pressed="false">
                         <span class="slot-badge">COMPLEJO</span>
                         <h4>📅 72 horas hábiles</h4>
                         <p>Full arch, barras, guías quirúrgicas y diseño de sonrisa 3D</p>
-                    </div>
+                    </button>
                 </div>
             </div>
 
@@ -1556,9 +1556,9 @@ window.submitOrden     = window.submitOrden      || function(){};
 
         // ── SLOT ENTREGA ──────────────────────────────────────────────────────
         function selectSlot(slot) {
-            document.querySelectorAll('.timeline-slot').forEach(s => s.classList.remove('selected'));
+            document.querySelectorAll('.timeline-slot').forEach(s => { s.classList.remove('selected'); s.setAttribute('aria-pressed','false'); });
             const el = document.querySelector(`.timeline-slot[data-slot="${slot}"]`);
-            if (el) el.classList.add('selected');
+            if (el) { el.classList.add('selected'); el.setAttribute('aria-pressed','true'); }
             STATE.slot = slot;
         }
 
