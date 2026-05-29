@@ -1053,7 +1053,7 @@ async function confirmarAprobacion() {
     estado_operativo:'DISENO_APROBADO', diseno_disclaimer:true,
     diseno_aprobado_at:ts, diseno_aprobado_por:'doctor'
   }).eq('id', PID);
-  if (error) { btn.disabled=false; btn.innerHTML='<i class="fas fa-signature"></i> Confirmar y aprobar'; alert('Error. Intenta de nuevo.'); return; }
+  if (error) { btn.disabled=false; btn.innerHTML='<i class="fas fa-signature"></i> Confirmar y aprobar'; _rdToast('Error. Intenta de nuevo.', false); return; }
   await logH('APROBACION','doctor','Diseño aprobado. Cliente autoriza fabricación y acepta condiciones.',[],{aprobado_at:ts});
   cerrarDisc(); location.reload();
 }
@@ -1068,7 +1068,7 @@ async function confirmarPagoDoctor() {
     cotizacion_fab_estado: 'pago_confirmado'
   }).eq('id', PID);
 
-  if (error) { alert('Error al registrar. Contáctanos por WhatsApp.'); return; }
+  if (error) { _rdToast('Error al registrar. Contáctanos por WhatsApp.', false); return; }
 
   await logH('FAB_PAGO_DOCTOR','doctor',
     `Doctor indica haber realizado el pago de fabricación. Monto declarado: ${Number(_p.cotizacion_fab_monto||0).toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0})}`,
@@ -1197,7 +1197,7 @@ function switchPago(id, btn) {
 function onComprobanteSelected(input) {
   const f = input.files[0];
   if (!f) return;
-  if (f.size > 10*1024*1024) { alert('El archivo supera 10 MB. Comprime e intenta de nuevo.'); return; }
+  if (f.size > 10*1024*1024) { _rdToast('El archivo supera 10 MB. Comprime e intenta de nuevo.', false); return; }
   _compFile = f;
   const prev = document.getElementById('comp-preview');
   prev.style.display = 'flex';
@@ -1228,9 +1228,9 @@ function copiarTexto(txt, el) {
 function cerrarPago() { document.getElementById('modal-pago').classList.remove('open'); }
 
 async function enviarComprobante() {
-  if (!_compFile) { alert('Adjunta el comprobante de pago.'); return; }
+  if (!_compFile) { _rdToast('Adjunta el comprobante de pago.', false); return; }
   const svcOpt = document.getElementById('pago-svc').selectedOptions[0];
-  if (!svcOpt?.value) { alert('Selecciona el servicio.'); return; }
+  if (!svcOpt?.value) { _rdToast('Selecciona el servicio.', false); return; }
 
   const btn = document.getElementById('btn-pago-ok');
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Enviando…';
@@ -1242,7 +1242,7 @@ async function enviarComprobante() {
   const fname = _compFile.name.replace(/[^a-zA-Z0-9._-]/g,'_');
   const path  = `${PID}/comprobante/${Date.now()}_${fname}`;
   const { error: upErr } = await sb.storage.from('diseno-archivos').upload(path, _compFile, {upsert:true});
-  if (upErr) { alert('Error al subir: '+upErr.message); btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar comprobante y solicitar'; return; }
+  if (upErr) { _rdToast('Error al subir. Intenta de nuevo.', false); btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar comprobante y solicitar'; return; }
   barEl.style.width = '60%';
   const compUrl = sb.storage.from('diseno-archivos').getPublicUrl(path).data.publicUrl;
   const monto   = Number(svcOpt.dataset.precio||0);
@@ -1292,7 +1292,7 @@ async function confirmarPagoFabricacion() {
 async function enviarNota() {
   const texto = document.getElementById('nota-txt').value.trim();
   const fotoFiles = [...document.getElementById('nota-fotos').files];
-  if (!texto && !fotoFiles.length) { alert('Agrega texto o al menos una foto.'); return; }
+  if (!texto && !fotoFiles.length) { _rdToast('Agrega texto o al menos una foto.', false); return; }
   const btn = document.querySelector('.note-form .btn');
   btn.disabled=true; btn.innerHTML='<i class="fas fa-circle-notch fa-spin"></i> Enviando…';
   const progEl=document.getElementById('nota-prog'),barEl=document.getElementById('nota-bar'),statEl=document.getElementById('nota-stat');
