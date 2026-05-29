@@ -221,7 +221,7 @@
     g.onload = function () {
       var st = document.createElement('script');
       st.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js';
-      st.onload = function () { _loadScript('/js/animations.js'); };
+      st.onload = function () { _loadScript('/js/animations.js?v=20260528'); };
       document.body.appendChild(st);
     };
     document.body.appendChild(g);
