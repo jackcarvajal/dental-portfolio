@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PRODIGY Geo-Detect v1.0
  * ─────────────────────────────────────────────────────────────────────
  * Detecta la ubicación del visitante por IP y:
@@ -75,7 +75,7 @@ window.ProdigyGeo = (function () {
     banner.innerHTML = '<span style="font-size:1.1rem;">🌍</span>' +
       '<span>We detected you\'re outside Colombia.</span>' +
       '<a href="/en/global-design" style="background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;text-decoration:none;padding:6px 14px;border-radius:8px;font-weight:700;font-size:.78rem;">View in English →</a>' +
-      '<button onclick="document.getElementById(\'geo-lang-banner\').remove();sessionStorage.setItem(\'geo_dismissed\',\'1\')" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:1rem;padding:0 4px;">✕</button>';
+      '<button type="button" onclick="document.getElementById(\'geo-lang-banner\').remove();sessionStorage.setItem(\'geo_dismissed\',\'1\')" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:1rem;padding:0 4px;">✕</button>';
 
     if (sessionStorage.getItem('geo_dismissed')) return;
     document.body.appendChild(banner);

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PRODIGY — Generador QR de Trazabilidad v1.0
  * Etiquetas 50×25 mm para Xprinter 365B (ZPL/EPL via ventana de impresión)
  * Librería: QRCode.js (cargada automáticamente via CDN si no está)
@@ -89,7 +89,7 @@ async function mostrarQR(containerId, pedido) {
         container.innerHTML = `
             ${_htmlEtiqueta(pedido, qrDataUrl)}
             <div class="qr-acciones">
-                <button onclick="imprimirEtiqueta('${containerId}')" class="qr-btn-imprimir">
+                <button type="button" onclick="imprimirEtiqueta('${containerId}')" class="qr-btn-imprimir">
                     🖨️ Imprimir (Xprinter 365B)
                 </button>
                 <a href="${qrDataUrl}" download="QR_${pedido.codigo}.png" class="qr-btn-descargar">

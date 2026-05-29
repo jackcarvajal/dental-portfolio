@@ -55,7 +55,7 @@ function mostrarBotonPush(containerId) {
         <div style="font-size:.78rem;font-weight:800;color:#e2e8f0;margin-bottom:2px">Notificaciones push</div>
         <div style="font-size:.72rem;color:#94a3b8">Recibe alertas cuando tu caso avance</div>
       </div>
-      <button id="btn-push-toggle" onclick="togglePush()" style="background:rgba(0,210,255,.15);border:1px solid rgba(0,210,255,.35);color:#00d2ff;padding:6px 14px;border-radius:6px;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap">
+      <button type="button" id="btn-push-toggle" onclick="togglePush()" style="background:rgba(0,210,255,.15);border:1px solid rgba(0,210,255,.35);color:#00d2ff;padding:6px 14px;border-radius:6px;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap">
         Activar
       </button>
     </div>`;

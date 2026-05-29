@@ -660,7 +660,7 @@
                     pb.innerHTML = '<span style="font-size:1.6rem;">🔔</span>' +
                         '<div style="flex:1;min-width:180px;"><div style="font-size:.88rem;font-weight:700;color:#e2e8f0;">Recibe una notificación cuando tu caso esté despachado</div>' +
                         '<div style="font-size:.75rem;color:#94a3b8;margin-top:2px;">Te avisamos en tu celular — sin necesidad de entrar a esta página.</div></div>' +
-                        '<button id="push-activate-btn" style="background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;padding:9px 18px;border-radius:100px;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;"><i class="fas fa-bell"></i> Activar notificación</button>';
+                        '<button type="button" id="push-activate-btn" style="background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;padding:9px 18px;border-radius:100px;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;"><i class="fas fa-bell"></i> Activar notificación</button>';
                     zonaDesc.before(pb);
                     document.getElementById('push-activate-btn').onclick = () => suscribirNotificaciones(caso.id || caso.numeroOrden);
                 }

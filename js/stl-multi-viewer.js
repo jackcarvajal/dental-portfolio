@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PRODIGY — STL Multi-Viewer v1.0
  * Visor 3D multi-archivo reutilizable para flujo pages.
  * STL → tarjeta con visor Three.js interactivo
@@ -233,13 +233,13 @@
     </div>
 </div>
 <div class="pmv-stl-ctrl">
-    <button class="pmv-stl-btn" onclick="ProdigyMultiViewer._reset('${id}')"><i class="fas fa-compress-arrows-alt"></i> Reset</button>
-    <button class="pmv-stl-btn" onclick="ProdigyMultiViewer._wire('${id}')"><i class="fas fa-border-none"></i> Wire</button>
+    <button type="button" class="pmv-stl-btn" onclick="ProdigyMultiViewer._reset('${id}')"><i class="fas fa-compress-arrows-alt"></i> Reset</button>
+    <button type="button" class="pmv-stl-btn" onclick="ProdigyMultiViewer._wire('${id}')"><i class="fas fa-border-none"></i> Wire</button>
 </div>
 <div class="pmv-card-foot">
     <span class="pmv-fname" title="${escH(fObj.name)}">${escH(fObj.name)}</span>
     <span class="pmv-fsize">${fObj.sizeMb} MB</span>
-    <button class="pmv-del" onclick="ProdigyMultiViewer._remove('${id}')" title="Quitar"><i class="fas fa-times"></i></button>
+    <button type="button" class="pmv-del" onclick="ProdigyMultiViewer._remove('${id}')" title="Quitar"><i class="fas fa-times"></i></button>
 </div>`;
         return card;
     }
@@ -367,7 +367,7 @@
 <div class="pmv-card-foot">
     <span class="pmv-fname" title="${escH(fObj.name)}">${escH(fObj.name)}</span>
     <span class="pmv-fsize">${fObj.sizeMb} MB</span>
-    <button class="pmv-del" onclick="ProdigyMultiViewer._remove('${fObj.id}')" title="Quitar"><i class="fas fa-times"></i></button>
+    <button type="button" class="pmv-del" onclick="ProdigyMultiViewer._remove('${fObj.id}')" title="Quitar"><i class="fas fa-times"></i></button>
 </div>`;
         return card;
     }
@@ -391,7 +391,7 @@
 <div class="pmv-card-foot">
     <span class="pmv-fname" title="${escH(fObj.name)}">${escH(fObj.name)}</span>
     <span class="pmv-fsize">${fObj.sizeMb} MB</span>
-    <button class="pmv-del" onclick="ProdigyMultiViewer._remove('${fObj.id}')" title="Quitar"><i class="fas fa-times"></i></button>
+    <button type="button" class="pmv-del" onclick="ProdigyMultiViewer._remove('${fObj.id}')" title="Quitar"><i class="fas fa-times"></i></button>
 </div>`;
         return card;
     }

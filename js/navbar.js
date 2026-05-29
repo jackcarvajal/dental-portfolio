@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PRODIGY — Navbar Compartido v2
  * Inyecta navbar con dropdown en cualquier página pública raíz.
  * Uso: <script src="js/navbar.js"></script> justo después de <body>
@@ -150,7 +150,7 @@
   nav.id = 'pnav-root';
 
   nav.innerHTML =
-    '<button class="pnav-ham" id="pnav-ham" aria-label="Abrir menú">' +
+    '<button type="button" class="pnav-ham" id="pnav-ham" aria-label="Abrir menú">' +
       '<span></span><span></span><span></span>' +
     '</button>' +
 
@@ -159,7 +159,7 @@
       '<div class="pnav-left">' +
         /* Dropdown Servicios */
         '<div class="pnav-dd" id="pnav-dd">' +
-          '<button class="pnav-dd-trigger" id="pnav-dd-btn" aria-haspopup="true" aria-expanded="false">' +
+          '<button type="button" class="pnav-dd-trigger" id="pnav-dd-btn" aria-haspopup="true" aria-expanded="false">' +
             'SERVICIOS <i class="fas fa-chevron-down pnav-dd-arrow"></i>' +
           '</button>' +
           '<div class="pnav-dd-menu" role="menu">' +
