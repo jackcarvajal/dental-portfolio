@@ -106,6 +106,19 @@
 - **Scan masivo**: toast functions → todas usan textContent (no innerHTML) en ambos proyectos ✓
 - **Scan masivo**: geo.region, keywords, viewport, canonical, noindex app/, og:type — 100% completo ambos proyectos ✓
 
+## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 15)
+- **a11y**: type='button' en botones ux-btn + lang-btn — 24 páginas PRODIGY + 9 Alejandro + blog Alejandro
+- **seo**: redirects 301 en PRODIGY — /terminos, /privacidad, /seguimiento, /guias, /scanner, /pedido
+- **seo**: redirects 301 en Alejandro — /privacidad, /seguimiento (completando faltantes)
+- **seo**: robots.txt Disallow /api/ en ambos proyectos
+- **seo**: WebSite schema + SearchAction en index.html Alejandro
+- **fix(csp)**: upload.wikimedia.org en img-src Alejandro — imágenes del auto-journal
+- **perf**: preconnect googletagmanager.com en flujos PRODIGY + páginas Alejandro
+- **perf**: footer.js?v=20260528 en 33+12 páginas; header.js en 22+7; auth-guard.js en 16+4
+- **perf**: scripts lazy footer.js con versión 20260528 (utm-tracker, conversions, geo-detect, content-protection)
+- **security(csp)**: upgrade-insecure-requests en ambos CSPs
+- **Audits OK**: noopener en todos los links WA ✓; Pragma no-cache en app ✓; X-Content-Type-Options nosniff ✓; X-Frame-Options ✓; Gemini API NO en CSP (proxy) ✓; SW version sin cambio (PRECACHE sin cambios) ✓
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-28 — ronda 14)
 - **Cache-busters**: footer.js?v=20260528 en 33 PRODIGY + 12 Alejandro
 - **Cache-busters**: header.js?v=20260528 en 22 PRODIGY + 7 Alejandro
