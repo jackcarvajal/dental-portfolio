@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PRODIGY — Header Maestro v2
  * Inyecta topbar (mini-login) + navbar completo + CTA flotante en todas las páginas.
  * Uso: primer <script> dentro de <body>
@@ -22,8 +22,8 @@
       '<a href="/terminos-y-legal#privacidad" style="color:#D4AF37;text-decoration:none;">Política de privacidad</a> · ' +
       'Ley 1581/2012 Colombia.</span>' +
       '<div style="display:flex;gap:8px;flex-shrink:0;">' +
-        '<button id="pg-ck-accept" style="padding:8px 18px;background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.78rem;">Aceptar</button>' +
-        '<button id="pg-ck-reject" style="padding:8px 18px;background:transparent;border:1px solid rgba(255,255,255,.15);color:#94a3b8;border-radius:8px;cursor:pointer;font-size:.78rem;">Solo esenciales</button>' +
+        '<button type="button" id="pg-ck-accept" style="padding:8px 18px;background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.78rem;">Aceptar</button>' +
+        '<button type="button" id="pg-ck-reject" style="padding:8px 18px;background:transparent;border:1px solid rgba(255,255,255,.15);color:#94a3b8;border-radius:8px;cursor:pointer;font-size:.78rem;">Solo esenciales</button>' +
       '</div>';
     document.body.appendChild(b);
 
@@ -447,9 +447,9 @@
   /* ── LANG ────────────────────────────────────────────────── */
   var langHtml = showLang
     ? '<div class="pheader-lang">' +
-        '<button data-lang-btn="es" onclick="window.i18n&&i18n.set(\'es\')">ES</button>' +
-        '<button data-lang-btn="en" onclick="window.i18n&&i18n.set(\'en\')">EN</button>' +
-        '<button data-lang-btn="pt" onclick="window.i18n&&i18n.set(\'pt\')">PT</button>' +
+        '<button type="button" data-lang-btn="es" onclick="window.i18n&&i18n.set(\'es\')">ES</button>' +
+        '<button type="button" data-lang-btn="en" onclick="window.i18n&&i18n.set(\'en\')">EN</button>' +
+        '<button type="button" data-lang-btn="pt" onclick="window.i18n&&i18n.set(\'pt\')">PT</button>' +
       '</div>'
     : '';
 
@@ -488,14 +488,14 @@
       '<div class="pnav2-c">' +
 
         /* Hamburger */
-        '<button class="pnav2-ham" id="pnav2-ham" aria-label="Abrir menú" aria-expanded="false" aria-controls="pnav2-mob">' +
+        '<button type="button" class="pnav2-ham" id="pnav2-ham" aria-label="Abrir menú" aria-expanded="false" aria-controls="pnav2-mob">' +
           '<i class="fas fa-bars" id="pnav2-ham-ico"></i>' +
         '</button>' +
 
         /* Izquierda */
         '<div class="pnav2-left">' +
           '<div class="pnav2-dd" id="pnav2-dd">' +
-            '<button class="pnav2-dd-btn" aria-haspopup="true" aria-expanded="false">' +
+            '<button type="button" class="pnav2-dd-btn" aria-haspopup="true" aria-expanded="false">' +
               'SERVICIOS <i class="fas fa-chevron-down pnav2-dd-arrow"></i>' +
             '</button>' +
             '<div class="pnav2-dd-menu">' +
@@ -540,7 +540,7 @@
           '<a href="/journal"' + ac('/journal') + '>BLOG</a>' +
           '<a href="/seguimiento-caso"' + ac('/seguimiento-caso') + '>SIGUE TU CASO</a>' +
           '<div class="pnav2-dd" id="pnav2-dd-sop">' +
-            '<button class="pnav2-dd-btn" aria-haspopup="true" aria-expanded="false">' +
+            '<button type="button" class="pnav2-dd-btn" aria-haspopup="true" aria-expanded="false">' +
               'SOPORTE <i class="fas fa-chevron-down pnav2-dd-arrow"></i>' +
             '</button>' +
             '<div class="pnav2-dd-menu r">' +
@@ -548,19 +548,19 @@
                 '<i class="fas fa-headset"></i>' +
                 '<span>Centro de Soporte<span class="dd-sub">FAQs · guías · materiales</span></span>' +
               '</a>' +
-              '<button onclick="_phdrToggleIA()" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 16px;width:100%;text-align:left;color:inherit;font:inherit;" aria-label="Abrir asistente IA">' +
+              '<button type="button" onclick="_phdrToggleIA()" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 16px;width:100%;text-align:left;color:inherit;font:inherit;" aria-label="Abrir asistente IA">' +
                 '<i class="fas fa-robot" style="color:#00FF41"></i>' +
                 '<span>Solución IA<span class="dd-sub">Gemini 2.0 · respuesta 24/7</span></span>' +
               '</button>' +
             '</div>' +
           '</div>' +
-          '<button class="pnav2-theme-btn" id="pnav2-theme-btn" onclick="_phdrToggleTheme()" aria-label="Cambiar tema" title="Modo claro / oscuro">🌙</button>' +
-          '<button class="pnav2-ia-btn" id="pnav2-ia-btn" onclick="_phdrToggleIA()" aria-label="Asistente IA" aria-expanded="false" aria-controls="pg-chat-window">' +
+          '<button type="button" class="pnav2-theme-btn" id="pnav2-theme-btn" onclick="_phdrToggleTheme()" aria-label="Cambiar tema" title="Modo claro / oscuro">🌙</button>' +
+          '<button type="button" class="pnav2-ia-btn" id="pnav2-ia-btn" onclick="_phdrToggleIA()" aria-label="Asistente IA" aria-expanded="false" aria-controls="pg-chat-window">' +
             '<i class="fas fa-robot"></i>' +
           '</button>' +
           '<a href="/nosotros"' + ac('/nosotros') + '>NOSOTROS</a>' +
           '<div class="pnav2-ped-wrap" id="pnav2-ped-wrap" onmouseenter="_phdrPedHover(true)" onmouseleave="_phdrPedHover(false)">' +
-            '<button class="pnav2-ped-btn">' +
+            '<button type="button" class="pnav2-ped-btn">' +
               'HAZ TU PEDIDO <i class="fas fa-chevron-down" style="font-size:9px;margin-left:4px;transition:transform .2s;" id="pnav2-ped-arrow"></i>' +
             '</button>' +
             '<div class="pnav2-ped-drop" id="pnav2-ped-drop">' +
@@ -598,7 +598,7 @@
       '<a href="/journal">BLOG</a>' +
       '<a href="/seguimiento-caso">SIGUE TU CASO</a>' +
       '<a href="/soporte">SOPORTE</a>' +
-      '<button onclick="_phdrToggleIA();document.getElementById(\'pnav2-mob\').classList.remove(\'open\');document.getElementById(\'pnav2-ham-ico\').className=\'fas fa-bars\';document.body.style.overflow=\'\';" style="background:none;border:none;cursor:pointer;color:#00FF41;font:inherit;font-size:.9rem;font-weight:700;display:flex;align-items:center;padding:12px 20px;width:100%;text-align:left;" aria-label="Abrir asistente IA">' +
+      '<button type="button" onclick="_phdrToggleIA();document.getElementById(\'pnav2-mob\').classList.remove(\'open\');document.getElementById(\'pnav2-ham-ico\').className=\'fas fa-bars\';document.body.style.overflow=\'\';" style="background:none;border:none;cursor:pointer;color:#00FF41;font:inherit;font-size:.9rem;font-weight:700;display:flex;align-items:center;padding:12px 20px;width:100%;text-align:left;" aria-label="Abrir asistente IA">' +
         '<i class="fas fa-robot" style="margin-right:8px"></i>HABLAR CON IA' +
       '</button>' +
       '<a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer" style="color:#25D366;">' +
@@ -607,7 +607,7 @@
       '<a href="/app/login.html" style="color:#D946A6;font-weight:900;">' +
         '<i class="fas fa-key" style="margin-right:8px"></i>INGRESAR' +
       '</a>' +
-      '<button onclick="_phdrToggleTheme();document.getElementById(\'pnav2-mob\').classList.remove(\'open\');document.getElementById(\'pnav2-ham-ico\').className=\'fas fa-bars\';document.body.style.overflow=\'\';" id="pnav2-theme-mob" style="background:none;border:none;cursor:pointer;color:#94a3b8;font:inherit;font-size:.9rem;font-weight:700;display:flex;align-items:center;padding:12px 20px;width:100%;text-align:left;" aria-label="Cambiar modo de color">' +
+      '<button type="button" onclick="_phdrToggleTheme();document.getElementById(\'pnav2-mob\').classList.remove(\'open\');document.getElementById(\'pnav2-ham-ico\').className=\'fas fa-bars\';document.body.style.overflow=\'\';" id="pnav2-theme-mob" style="background:none;border:none;cursor:pointer;color:#94a3b8;font:inherit;font-size:.9rem;font-weight:700;display:flex;align-items:center;padding:12px 20px;width:100%;text-align:left;" aria-label="Cambiar modo de color">' +
         '<i class="fas fa-moon" style="margin-right:8px" id="pnav2-theme-ico"></i>MODO CLARO' +
       '</button>' +
     '</div>' +
@@ -638,7 +638,7 @@
             '<span class="pcta-card-sub">Norte Bogotá</span>' +
           '</a>' +
         '</div>' +
-        '<button id="pcta-btn" onclick="_phdrCtaToggle(this)" aria-expanded="false">' +
+        '<button type="button" id="pcta-btn" onclick="_phdrCtaToggle(this)" aria-expanded="false">' +
           '<span class="ppulse"></span>' +
           'HAZ TU PEDIDO' +
           '<i class="fas fa-chevron-up pcta-chev"></i>' +
@@ -646,7 +646,7 @@
       '</div>') +
 
     /* CHATBOT GLOBAL — ícono robot, presente en todas las páginas */
-    '<button id="pg-chat-bubble" onclick="_phdrToggleIA()" aria-label="Asistente IA PRODIGY">' +
+    '<button type="button" id="pg-chat-bubble" onclick="_phdrToggleIA()" aria-label="Asistente IA PRODIGY">' +
       '<i class="fas fa-robot" id="pg-chat-ico"></i>' +
       '<span class="pg-notif"></span>' +
     '</button>' +
@@ -657,7 +657,7 @@
           '<h4>Asistente PRODIGY IA</h4>' +
           '<p>En línea · Gemini 2.0</p>' +
         '</div>' +
-        '<button class="pg-chat-close" onclick="_phdrToggleIA()" aria-label="Cerrar"><i class="fas fa-times"></i></button>' +
+        '<button type="button" class="pg-chat-close" onclick="_phdrToggleIA()" aria-label="Cerrar"><i class="fas fa-times"></i></button>' +
       '</div>' +
       '<div class="pg-chat-msgs" id="pg-chat-msgs">' +
         '<div class="pg-msg bot">' +
@@ -666,10 +666,10 @@
         '</div>' +
       '</div>' +
       '<div class="pg-chat-sugs" id="pg-chat-sugs">' +
-        '<button class="pg-sug-btn" onclick="_phdrSendSug(this)">⏱ Tiempo de entrega</button>' +
-        '<button class="pg-sug-btn" onclick="_phdrSendSug(this)">🦷 Materiales</button>' +
-        '<button class="pg-sug-btn" onclick="_phdrSendSug(this)">📂 Formatos STL</button>' +
-        '<button class="pg-sug-btn" onclick="_phdrSendSug(this)">💰 Cómo cotizar</button>' +
+        '<button type="button" class="pg-sug-btn" onclick="_phdrSendSug(this)">⏱ Tiempo de entrega</button>' +
+        '<button type="button" class="pg-sug-btn" onclick="_phdrSendSug(this)">🦷 Materiales</button>' +
+        '<button type="button" class="pg-sug-btn" onclick="_phdrSendSug(this)">📂 Formatos STL</button>' +
+        '<button type="button" class="pg-sug-btn" onclick="_phdrSendSug(this)">💰 Cómo cotizar</button>' +
       '</div>' +
       '<div class="pg-typing" id="pg-typing">' +
         '<div class="pg-msg-av">🤖</div>' +
@@ -677,7 +677,7 @@
       '</div>' +
       '<div class="pg-chat-input-area">' +
         '<textarea id="pg-chat-input" placeholder="Escribe tu pregunta…" rows="1" onkeydown="_phdrHandleKey(event)" aria-label="Escribe tu mensaje al asistente IA"></textarea>' +
-        '<button id="pg-chat-send" onclick="_phdrSendMsg()" aria-label="Enviar"><i class="fas fa-paper-plane"></i></button>' +
+        '<button type="button" id="pg-chat-send" onclick="_phdrSendMsg()" aria-label="Enviar"><i class="fas fa-paper-plane"></i></button>' +
       '</div>' +
     '</div>';
 
@@ -1014,7 +1014,7 @@
           '<div style="display:flex;align-items:center;gap:12px;padding:0 16px;height:100%">'+
             '<span style="font-size:.75rem;color:#94a3b8"><i class="fas fa-user-circle" style="color:#D4AF37;margin-right:5px"></i>'+(isAdmin?'Admin':'Dr.')+' · '+_pgEscHtml(u.email.split('@')[0])+'</span>'+
             '<a href="'+panelUrl+'" style="background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);color:#D4AF37;padding:5px 14px;border-radius:6px;font-size:.72rem;font-weight:800;text-decoration:none"><i class="fas fa-th-large" style="margin-right:4px"></i>Mi Panel</a>'+
-            '<button onclick="_phdrLogoutPG()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:5px 12px;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer"><i class="fas fa-sign-out-alt" style="margin-right:4px"></i>Salir</button>'+
+            '<button type="button" onclick="_phdrLogoutPG()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:5px 12px;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer"><i class="fas fa-sign-out-alt" style="margin-right:4px"></i>Salir</button>'+
           '</div>';
       }).catch(function(){});
   })();
