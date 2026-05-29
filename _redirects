@@ -60,6 +60,9 @@
 /terminos               /terminos-y-legal.html      301
 /privacidad             /terminos-y-legal.html      301
 /seguimiento            /seguimiento-caso.html      301
+/guias                  /guias-quirurgicas.html     301
+/scanner                /envia-tu-scanner.html      301
+/pedido                 /flujo-diseno.html          301
 /contacto               /nosotros.html#contacto     301
 # /soporte-tecnico        /soporte-tecnico.html       200  ← CF sirve nativo
 /soporte-xtcera         /soporte-tecnico.html       301
