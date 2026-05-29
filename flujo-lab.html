@@ -337,19 +337,19 @@
       <div class="step-num">1</div>
       <div><h2>¿Cómo envías el caso?</h2><p>Elige según si tienes archivos digitales o caso físico</p></div>
     </div>
-    <div class="via-grid">
-      <div class="via-btn" id="btn-digital" onclick="setVia('digital')">
-        <div class="via-ico via-ico-d"><i class="fas fa-cloud-upload-alt"></i></div>
+    <div class="via-grid" role="group" aria-label="Tipo de envío">
+      <button type="button" class="via-btn" id="btn-digital" onclick="setVia('digital')" aria-pressed="false">
+        <div class="via-ico via-ico-d"><i class="fas fa-cloud-upload-alt" aria-hidden="true"></i></div>
         <h3>Envío Digital</h3>
         <p>STL · DICOM · Exocad · 3Shape</p>
         <span class="via-pill via-pill-d">STL / DICOM</span>
-      </div>
-      <div class="via-btn" id="btn-analog" onclick="setVia('analog')">
-        <div class="via-ico via-ico-a"><i class="fas fa-box-open"></i></div>
+      </button>
+      <button type="button" class="via-btn" id="btn-analog" onclick="setVia('analog')" aria-pressed="false">
+        <div class="via-ico via-ico-a"><i class="fas fa-box-open" aria-hidden="true"></i></div>
         <h3>Envío Físico</h3>
         <p>Impresiones · Modelos · Prótesis</p>
         <span class="via-pill via-pill-a">Análogo</span>
-      </div>
+      </button>
     </div>
 
     <!-- Panel Digital -->
@@ -661,8 +661,12 @@ var vitaSel = '';
 function setVia(via) {
   document.getElementById('panel-digital').style.display = via === 'digital' ? 'block' : 'none';
   document.getElementById('panel-analog').style.display  = via === 'analog'  ? 'block' : 'none';
-  document.getElementById('btn-digital').className = 'via-btn' + (via === 'digital' ? ' active-digital' : '');
-  document.getElementById('btn-analog').className  = 'via-btn' + (via === 'analog'  ? ' active-analog'  : '');
+  const dBtn = document.getElementById('btn-digital');
+  const aBtn = document.getElementById('btn-analog');
+  dBtn.className = 'via-btn' + (via === 'digital' ? ' active-digital' : '');
+  aBtn.className = 'via-btn' + (via === 'analog'  ? ' active-analog'  : '');
+  dBtn.setAttribute('aria-pressed', via === 'digital' ? 'true' : 'false');
+  aBtn.setAttribute('aria-pressed', via === 'analog'  ? 'true' : 'false');
 }
 
 /* ───────────── DROPZONE (guardado defensivo — elemento puede no existir) ───── */

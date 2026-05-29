@@ -4401,7 +4401,7 @@
 
     <div id="modal-guia-zirc" class="modal">
         <div class="modal-content" style="max-width:1000px;text-align:center;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;position:relative;">
-            <span class="close" onclick="closeModal('modal-guia-zirc')" style="position:absolute;top:16px;right:20px;cursor:pointer;font-size:1.5rem;color:#aaa;">&times;</span>
+            <button type="button" class="close" onclick="closeModal('modal-guia-zirc')" style="position:absolute;top:16px;right:20px;cursor:pointer;font-size:1.5rem;color:#aaa;" aria-label="Cerrar">&times;</button>
             <h2 style="color:var(--gold-primary);border-bottom:1px solid #333;padding-bottom:12px;margin:0 0 4px;">💎 Guía XT-PRO — Certificación Tosoh (Japón)</h2>
             <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-primary); padding: 15px; border-radius: 8px; margin-bottom: 20px; margin-top: 16px;">
                 <h4 style="color: var(--gold-light); margin-top: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
@@ -4460,31 +4460,31 @@
             <h3>NAVEGACIÓN</h3>
         </div>
         <div class="nav-menu-items">
-            <div class="nav-item" onclick="scrollToSection('datos-cliente')">
+            <button type="button" class="nav-item" onclick="scrollToSection('datos-cliente')" aria-label="Ir a sección: datos-cliente">
                 <i class="fas fa-user"></i>
                 <span>Datos Cliente</span>
             </div>
-            <div class="nav-item" onclick="scrollToSection('material')">
+            <button type="button" class="nav-item" onclick="scrollToSection('material')" aria-label="Ir a sección: material">
                 <i class="fas fa-gem"></i>
                 <span>Material</span>
             </div>
-            <div class="nav-item" onclick="scrollToSection('procesos')">
+            <button type="button" class="nav-item" onclick="scrollToSection('procesos')" aria-label="Ir a sección: procesos">
                 <i class="fas fa-cog"></i>
                 <span>Procesos</span>
             </div>
-            <div class="nav-item" onclick="scrollToSection('tiempos')">
+            <button type="button" class="nav-item" onclick="scrollToSection('tiempos')" aria-label="Ir a sección: tiempos">
                 <i class="fas fa-clock"></i>
                 <span>Entrega</span>
             </div>
-            <div class="nav-item" onclick="scrollToSection('archivos')">
+            <button type="button" class="nav-item" onclick="scrollToSection('archivos')" aria-label="Ir a sección: archivos">
                 <i class="fas fa-file-upload"></i>
                 <span>Archivos STL</span>
             </div>
-            <div class="nav-item" onclick="scrollToSection('resumen')">
+            <button type="button" class="nav-item" onclick="scrollToSection('resumen')" aria-label="Ir a sección: resumen">
                 <i class="fas fa-calculator"></i>
                 <span>Resumen</span>
             </div>
-            <div class="nav-item full-width" onclick="showHelp();toggleMenu();">
+            <button type="button" class="nav-item full-width" onclick="showHelp();toggleMenu();">
                 <i class="fas fa-question-circle"></i>
                 <span>Ayuda Rápida</span>
             </div>
