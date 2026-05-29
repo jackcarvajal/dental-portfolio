@@ -91,6 +91,15 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 9)
+- **a11y aria-live toast COMPLETO**: role=status + aria-live en TODOS los toasts de paneles app (PRODIGY 9 paneles, Alejandro 4 paneles incluye toast dinámico en JS)
+- **a11y**: successPanel aria-live + fix label[for] caseDesc→caseDescription en agregar-caso (mismatch for/id)
+- **a11y label[for]**: reset-password (new-pass, confirm-pass) ambos proyectos
+- **a11y main landmark**: app/success.html
+- **a11y+ux type=search**: enterkeyhint=search + aria-label en 5 inputs de búsqueda de paneles PRODIGY + mis-casos Alejandro
+- **a11y aria-live login**: successPanel + mensajero upload-progress + admin-panel busq-pedidos
+- **perf**: eliminar og-guias-quirurgicas.png (408KB, huérfano — solo existía el .jpg de 94KB)
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 8)
 - **a11y login**: role=alert + aria-live=assertive en mensajes de error del login (PRODIGY + Alejandro)
 - **a11y reset-password**: aria-live=polite en msg-box (PRODIGY + Alejandro)
