@@ -91,6 +91,14 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 6)
+- **fix(css) crítico**: Alejandro — css/global-nav.min.css + css/styles.css no existían en repo (404 silenciosos en 4 páginas: envia-tu-scanner, portafolio, seguimiento-caso, terminos)
+- **a11y label[for]**: flujo-diseno PRODIGY + Alejandro — selects indicativo, especialidad, origen, envio sin label
+- **a11y aria-pressed**: caso.html (PRODIGY + Alejandro) — selReaction() sincroniza botones de reacción
+- **a11y type=button 100%**: header.js (23 PRODIGY, 26 Alejandro) + footer.js (3 PRODIGY, 2 Alejandro) + 18 JS files adicionales PRODIGY + 8 Alejandro
+- **ux**: Escape handler panel-interno — cerrarModalCotizar agregado
+- **auditoría**: 0 errores en ambos proyectos (25 PRODIGY warnings, 11 Alejandro warnings — todos intencionales o falsos positivos)
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 5)
 - **security RLS 0a**: trigger ejecutado en Supabase PRODIGY — protege estado/precio/pago de clientes ✓
 - **security SQL**: `sql/patch-rls-client-column-protection.sql` creado para PRODIGY + Alejandro (0b pendiente de ejecutar)
