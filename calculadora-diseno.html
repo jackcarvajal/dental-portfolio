@@ -145,8 +145,8 @@
     <span class="intl-chip">🌍 +20 países</span>
   </div>
   <div class="currency-toggle">
-    <button class="cur-btn" id="btnCOP" onclick="setCur('COP')">COP $</button>
-    <button class="cur-btn active" id="btnUSD" onclick="setCur('USD')">USD $</button>
+    <button type="button" class="cur-btn" id="btnCOP" onclick="setCur('COP')">COP $</button>
+    <button type="button" class="cur-btn active" id="btnUSD" onclick="setCur('USD')">USD $</button>
   </div>
   <div class="breadcrumb">
     <a href="/">Inicio</a><span>›</span>
@@ -196,139 +196,139 @@
     <div class="calc-card">
       <div class="card-title"><i class="fas fa-drafting-compass"></i> Tipo de diseño</div>
       <div class="srv-grid" id="srvGrid">
-        <button class="srv-btn selected" data-key="corona" onclick="selSrv(this)">
+        <button type="button" class="srv-btn selected" data-key="corona" onclick="selSrv(this)">
           <div class="ico">👑</div>
           <div class="lbl">Corona / Inlay</div>
           <div class="prc" id="p-corona">$14 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="carilla" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="carilla" onclick="selSrv(this)">
           <div class="ico">💎</div>
           <div class="lbl">Carilla / Lámina</div>
           <div class="prc" id="p-carilla">$16 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="puente" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="puente" onclick="selSrv(this)">
           <div class="ico">🌉</div>
           <div class="lbl">Puente 3 pzas</div>
           <div class="prc" id="p-puente">$32 USD</div>
           <div class="time">⏱ 24–48h</div>
         </button>
-        <button class="srv-btn" data-key="abutment" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="abutment" onclick="selSrv(this)">
           <div class="ico">🔩</div>
           <div class="lbl">Abutment CAD</div>
           <div class="prc" id="p-abutment">$35 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="guia" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="guia" onclick="selSrv(this)">
           <div class="ico">🎯</div>
           <div class="lbl">Guía Quirúrgica</div>
           <div class="prc" id="p-guia">$60 USD</div>
           <div class="time">⏱ 48h</div>
         </button>
-        <button class="srv-btn" data-key="fullarch" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="fullarch" onclick="selSrv(this)">
           <div class="ico">🦷</div>
           <div class="lbl">Full Arch Rehab</div>
           <div class="prc" id="p-fullarch">Cotizar</div>
           <div class="time">⏱ 48–72h</div>
         </button>
-        <button class="srv-btn" data-key="alineadores" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="alineadores" onclick="selSrv(this)">
           <div class="ico">📐</div>
           <div class="lbl">Setup Alineadores</div>
           <div class="prc" id="p-alineadores">$100 USD</div>
           <div class="time">⏱ 48–72h</div>
         </button>
-        <button class="srv-btn" data-key="provisional" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="provisional" onclick="selSrv(this)">
           <div class="ico">🏗️</div>
           <div class="lbl">Provisional CAD</div>
           <div class="prc" id="p-provisional">$12 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="dsd" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="dsd" onclick="selSrv(this)">
           <div class="ico">🖥️</div>
           <div class="lbl">DSD / Smile Design</div>
           <div class="prc" id="p-dsd">$80 USD</div>
           <div class="time">⏱ 48h</div>
         </button>
-        <button class="srv-btn" data-key="modelo" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="modelo" onclick="selSrv(this)">
           <div class="ico">🦷</div>
           <div class="lbl">Modelo 3D Diagnóstico</div>
           <div class="prc" id="p-modelo">$5 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="endocrown" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="endocrown" onclick="selSrv(this)">
           <div class="ico">🦠</div>
           <div class="lbl">Endocrown</div>
           <div class="prc" id="p-endocrown">$18 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="onlay" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="onlay" onclick="selSrv(this)">
           <div class="ico">🧩</div>
           <div class="lbl">Onlay / Overlay</div>
           <div class="prc" id="p-onlay">$16 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="maryland" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="maryland" onclick="selSrv(this)">
           <div class="ico">🔗</div>
           <div class="lbl">Maryland Bridge</div>
           <div class="prc" id="p-maryland">$40 USD</div>
           <div class="time">⏱ 24–48h</div>
         </button>
-        <button class="srv-btn" data-key="mockup" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="mockup" onclick="selSrv(this)">
           <div class="ico">🎨</div>
           <div class="lbl">Mock-up / Encerado</div>
           <div class="prc" id="p-mockup">$50 USD</div>
           <div class="time">⏱ 48h</div>
         </button>
-        <button class="srv-btn" data-key="guia_compleja" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="guia_compleja" onclick="selSrv(this)">
           <div class="ico">🔬</div>
           <div class="lbl">Guía Compleja 4+</div>
           <div class="prc" id="p-guia_compleja">$90 USD</div>
           <div class="time">⏱ 48h</div>
         </button>
-        <button class="srv-btn" data-key="guia_apilable" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="guia_apilable" onclick="selSrv(this)">
           <div class="ico">📚</div>
           <div class="lbl">Guía Apilable</div>
           <div class="prc" id="p-guia_apilable">$80 USD</div>
           <div class="time">⏱ 48h</div>
         </button>
-        <button class="srv-btn" data-key="guia_reduccion" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="guia_reduccion" onclick="selSrv(this)">
           <div class="ico">🪛</div>
           <div class="lbl">Guía Reducción Ósea</div>
           <div class="prc" id="p-guia_reduccion">$70 USD</div>
           <div class="time">⏱ 48h</div>
         </button>
-        <button class="srv-btn" data-key="barra_implante" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="barra_implante" onclick="selSrv(this)">
           <div class="ico">⚙️</div>
           <div class="lbl">Barra s/ Implantes</div>
           <div class="prc" id="p-barra_implante">$150 USD</div>
           <div class="time">⏱ 48–72h</div>
         </button>
-        <button class="srv-btn" data-key="supra" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="supra" onclick="selSrv(this)">
           <div class="ico">🔩</div>
           <div class="lbl">Supraestructura</div>
           <div class="prc" id="p-supra">$45 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="retenedor" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="retenedor" onclick="selSrv(this)">
           <div class="ico">😁</div>
           <div class="lbl">Retenedor Hawley/Essix</div>
           <div class="prc" id="p-retenedor">$18 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="ferula" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="ferula" onclick="selSrv(this)">
           <div class="ico">🛡️</div>
           <div class="lbl">Férula Michigan</div>
           <div class="prc" id="p-ferula">$35 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="guia_desgaste" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="guia_desgaste" onclick="selSrv(this)">
           <div class="ico">⚖️</div>
           <div class="lbl">Guía de Desgaste</div>
           <div class="prc" id="p-guia_desgaste">$25 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
-        <button class="srv-btn" data-key="plano_mordida" onclick="selSrv(this)">
+        <button type="button" class="srv-btn" data-key="plano_mordida" onclick="selSrv(this)">
           <div class="ico">📏</div>
           <div class="lbl">Plano de Mordida</div>
           <div class="prc" id="p-plano_mordida">$25 USD</div>

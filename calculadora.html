@@ -399,32 +399,32 @@
       <div class="card-title"><i class="fa-solid fa-tooth"></i> <span data-i18n="calc.srv.title">Tipo de restauración</span></div>
       <div class="servicio-grid" id="servicioGrid">
 
-        <button class="servicio-btn selected" data-key="corona" onclick="selServicio(this)">
+        <button type="button" class="servicio-btn selected" data-key="corona" onclick="selServicio(this)">
           <span class="icon">👑</span>
           <div class="label">Corona unitaria</div>
           <div class="precio">Desde $180K</div>
         </button>
-        <button class="servicio-btn" data-key="carilla" onclick="selServicio(this)">
+        <button type="button" class="servicio-btn" data-key="carilla" onclick="selServicio(this)">
           <span class="icon">✨</span>
           <div class="label">Carilla</div>
           <div class="precio">Desde $220K</div>
         </button>
-        <button class="servicio-btn" data-key="inlay" onclick="selServicio(this)">
+        <button type="button" class="servicio-btn" data-key="inlay" onclick="selServicio(this)">
           <span class="icon">🔷</span>
           <div class="label">Inlay / Onlay</div>
           <div class="precio">Desde $160K</div>
         </button>
-        <button class="servicio-btn" data-key="puente" onclick="selServicio(this)">
+        <button type="button" class="servicio-btn" data-key="puente" onclick="selServicio(this)">
           <span class="icon">🌉</span>
           <div class="label">Puente 3 pzas</div>
           <div class="precio">Desde $480K</div>
         </button>
-        <button class="servicio-btn" data-key="provisional" onclick="selServicio(this)">
+        <button type="button" class="servicio-btn" data-key="provisional" onclick="selServicio(this)">
           <span class="icon">🏗️</span>
           <div class="label">Provisional CAD</div>
           <div class="precio">Desde $90K</div>
         </button>
-        <button class="servicio-btn" data-key="modelo" onclick="selServicio(this)">
+        <button type="button" class="servicio-btn" data-key="modelo" onclick="selServicio(this)">
           <span class="icon">🖨️</span>
           <div class="label">Modelo impreso</div>
           <div class="precio">Desde $60K</div>
@@ -437,19 +437,19 @@
     <div class="calc-card">
       <div class="card-title"><i class="fa-solid fa-gem"></i> <span data-i18n="calc.mat.title">Material</span></div>
       <div class="material-grid" id="materialGrid">
-        <button class="mat-chip selected" data-mat="zirconio-mono" onclick="selMaterial(this)">
+        <button type="button" class="mat-chip selected" data-mat="zirconio-mono" onclick="selMaterial(this)">
           <span class="dot" style="background:#a78bfa;"></span> Zirconio Monolítico
         </button>
-        <button class="mat-chip" data-mat="zirconio-multi" onclick="selMaterial(this)">
+        <button type="button" class="mat-chip" data-mat="zirconio-multi" onclick="selMaterial(this)">
           <span class="dot" style="background:#c4b5fd;"></span> Zirconio Multicapa
         </button>
-        <button class="mat-chip" data-mat="disilicato" onclick="selMaterial(this)">
+        <button type="button" class="mat-chip" data-mat="disilicato" onclick="selMaterial(this)">
           <span class="dot" style="background:#f9a8d4;"></span> Disilicato de Litio
         </button>
-        <button class="mat-chip" data-mat="pmma" onclick="selMaterial(this)">
+        <button type="button" class="mat-chip" data-mat="pmma" onclick="selMaterial(this)">
           <span class="dot" style="background:#7dd3fc;"></span> PMMA Fresado
         </button>
-        <button class="mat-chip" data-mat="resina3d" onclick="selMaterial(this)">
+        <button type="button" class="mat-chip" data-mat="resina3d" onclick="selMaterial(this)">
           <span class="dot" style="background:#86efac;"></span> Resina 3D
         </button>
       </div>
@@ -459,10 +459,10 @@
     <div class="calc-card">
       <div class="card-title"><i class="fa-solid fa-hashtag"></i> <span data-i18n="calc.qty.title">Cantidad de unidades</span></div>
       <div class="qty-row">
-        <button class="qty-btn" onclick="cambiarQty(-1)">−</button>
+        <button type="button" class="qty-btn" onclick="cambiarQty(-1)" aria-label="Disminuir cantidad">−</button>
         <div class="qty-num" id="qtyNum">1</div>
         <div class="qty-label">unidad(es)</div>
-        <button class="qty-btn" onclick="cambiarQty(1)">+</button>
+        <button type="button" class="qty-btn" onclick="cambiarQty(1)" aria-label="Aumentar cantidad">+</button>
       </div>
     </div>
 
