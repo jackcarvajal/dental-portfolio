@@ -133,6 +133,7 @@ body.ready { visibility: visible; }
 /* ── Imagen lightbox ── */
 #lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 9990; align-items: center; justify-content: center; cursor: pointer; }
 #lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin>
 </head>

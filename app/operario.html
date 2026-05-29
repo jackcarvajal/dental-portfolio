@@ -104,6 +104,7 @@ body.ready{visibility:visible;}
 /* Toast */
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0d1520;border:1px solid var(--border);color:#e2e8f0;padding:10px 22px;border-radius:8px;font-size:.82rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999;}
 #toast.show{opacity:1;} #toast.ok{border-color:#00FF41;color:#00FF41;} #toast.err{border-color:#ef4444;color:#ef4444;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
 </head>
 <body>

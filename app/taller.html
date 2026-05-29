@@ -165,7 +165,8 @@
         @media(max-width:768px) {
             .container { padding: 16px 12px; }
         }
-    </style>
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -523,6 +524,7 @@ init();
 .pan-field textarea { min-height:70px; resize:vertical; }
 .pan-footer { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
 .pan-btn { padding:9px 18px; border-radius:8px; font-size:.82rem; font-weight:700; border:none; cursor:pointer; }
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
 <button id="panico-fab" onclick="document.getElementById('modal-panico-fab').classList.add('open')">INCIDENCIA</button>
 <div id="modal-panico-fab">

@@ -119,6 +119,7 @@ body.ready{visibility:visible;}
 #toast.show{opacity:1;}
 #toast.ok{border-color:var(--green);color:var(--green);}
 #toast.err{border-color:var(--red);color:var(--red);}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
 </head>
 <body>
@@ -860,7 +861,8 @@ function toast(msg, tipo='ok') {
   </div>
   <iframe id="preview-iframe-op" src="" style="flex:1;border:none;width:100%" allowfullscreen></iframe>
 </div>
-<style>#modal-preview-op.open{display:flex!important;}</style>
+<style>#modal-preview-op.open{display:flex!important;}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
 <script>
 function previsualizarDiseno(link, pedidoId) {
   try { const u = new URL(link); if (u.protocol !== 'https:') throw new Error(); } catch { toast('Link inválido','err'); return; }

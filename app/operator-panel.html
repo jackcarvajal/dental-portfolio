@@ -150,6 +150,7 @@ body.ready { visibility: visible; }
 #toast.err { background: rgba(239,68,68,.15); border: 1px solid var(--red);   color: var(--red); }
 
 @media(max-width:768px) { .sidebar { display: none; } .main { padding: 16px; } }
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
 </head>
 <body>
