@@ -587,7 +587,7 @@
     '</nav>' +
 
     /* MOBILE NAV */
-    '<div class="pnav2-mob" id="pnav2-mob">' +
+    '<div class="pnav2-mob" id="pnav2-mob" role="navigation" aria-label="Menú móvil">' +
       '<a href="/diseno-cad"><i class="fas fa-drafting-compass" style="margin-right:8px"></i>DISEÑO CAD</a>' +
       '<a href="/fresado-cam"><i class="fas fa-cog" style="margin-right:8px"></i>FRESADO &amp; IMPRESIÓN</a>' +
       '<a href="/escaner-domicilio"><i class="fas fa-mobile-alt" style="margin-right:8px"></i>ESCANEOS A DOMICILIO</a>' +
