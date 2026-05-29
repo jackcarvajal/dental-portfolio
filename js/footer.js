@@ -254,7 +254,7 @@
         '<div style="display:flex;gap:8px;">' +
           '<a href="/terminos-y-legal#privacidad" style="flex:1;text-align:center;padding:7px;border:1px solid rgba(0,210,255,.3);' +
             'border-radius:8px;color:#00d2ff;text-decoration:none;font-size:.72rem;font-weight:700;">Ver política</a>' +
-          '<button onclick="localStorage.setItem(\'prodigy_gdpr_ok\',\'1\');var b=document.getElementById(\'pfoot-gdpr-banner\');' +
+          '<button type="button" onclick="localStorage.setItem(\'prodigy_gdpr_ok\',\'1\');var b=document.getElementById(\'pfoot-gdpr-banner\');' +
             'b.style.transform=\'translateX(320px)\';setTimeout(function(){b.remove()},400);" ' +
             'style="flex:1;background:rgba(0,210,255,.12);border:1px solid rgba(0,210,255,.3);border-radius:8px;' +
             'color:#00d2ff;cursor:pointer;font-size:.72rem;font-weight:700;padding:7px;">Entendido</button>' +
@@ -316,14 +316,14 @@
             '</div>' +
           '</div>' +
         '</div>' +
-        '<button onclick="_pgAccept()" ' +
+        '<button type="button" onclick="_pgAccept()" ' +
           'style="width:100%;background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;border:none;border-radius:50px;' +
           'padding:12px 0;font-weight:900;font-size:.8rem;cursor:pointer;margin-bottom:6px;min-height:44px;' +
           'box-shadow:0 4px 14px rgba(217,70,166,.3);transition:opacity .2s;" ' +
           'onmouseover="this.style.opacity=\'.85\'" onmouseout="this.style.opacity=\'1\'">' +
           '✓ Sí, mejorar la experiencia' +
         '</button>' +
-        '<button onclick="_pgReject()" ' +
+        '<button type="button" onclick="_pgReject()" ' +
           'style="width:100%;background:transparent;color:#475569;border:none;padding:10px;' +
           'font-size:.7rem;cursor:pointer;text-decoration:underline;min-height:44px;">' +
           'No por ahora' +
