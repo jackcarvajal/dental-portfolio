@@ -82,6 +82,13 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 2)
+- **a11y label[for]**: flujo-diseno (software, pago_metodo, billing_tipo_d), flujo-fresado (origen, envio, pago_metodo, billing_tipo), flujo-impresion (origen, envio, pago_metodo, billing_tipo) — ambos proyectos
+- **a11y label[for]**: admin-panel PRODIGY modal portafolio (p-tipo, p-material, p-software, p-descripcion, p-categoria, p-destacado)
+- **a11y aria-live**: res-card en 3 calculadoras PRODIGY + calculadora-diseno Alejandro → role=status + aria-live=polite + aria-atomic
+- **a11y aria-current**: admin-panel Alejandro sidebar → showTab() sincroniza aria-current=page
+- **a11y journal**: filter-tags → role=group + aria-label + aria-pressed en todos los tag-btn; filterArticles() sincroniza
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29)
 - **a11y gallery**: caso.html (PRODIGY + Alejandro) + revision-diseno.html — gallery-item div→button con aria-label + CSS reset (display:block;padding:0)
 - **a11y portafolio/journal/blog**: aria-pressed en filtros + role=group + sincronización en filtrar()/filterArticles()
