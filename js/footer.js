@@ -292,6 +292,9 @@
     setTimeout(function() {
       var cb = document.createElement('div');
       cb.id = 'pfoot-cookie-banner';
+      cb.setAttribute('role', 'dialog');
+      cb.setAttribute('aria-label', 'Aviso de cookies');
+      cb.setAttribute('aria-modal', 'false');
       cb.style.cssText = [
         'position:fixed;bottom:24px;left:24px;z-index:99999;',
         'background:linear-gradient(135deg,#0d1520,#0a1018);',
