@@ -4829,6 +4829,16 @@ function frsToast(msg,type){
   el.style.cssText+='opacity:1;background:'+t.b+';border:1px solid '+t.br+';';
   clearTimeout(_frsT);_frsT=setTimeout(()=>{el.style.opacity='0';},4000);
 }
+/* Escape cierra modales */
+document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal.active,.modal-overlay[style*="flex"]').forEach(m => {
+        m.classList.remove('active'); m.style.display = 'none';
+    });
+    var ca = document.getElementById('custom-alert-overlay'); if (ca) ca.style.display = 'none';
+    var hm = document.getElementById('help-modal'); if (hm) hm.remove();
+    var nav = document.getElementById('nav-overlay'); if (nav) { nav.style.display = 'none'; document.getElementById('mobile-nav')?.classList.remove('open'); }
+});
 </script>
 </body>
 </html>
