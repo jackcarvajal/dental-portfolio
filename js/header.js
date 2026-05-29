@@ -1131,4 +1131,111 @@
     });
   });
 
+  /* ── MODAL MANAGER GLOBAL — role=dialog + focus trap ──────────────────
+     Detecta cuando cualquier elemento con clase .modal, .modal-overlay, o
+     id que empieza con "modal-" se vuelve visible y:
+     1. Agrega role=dialog + aria-modal=true si no los tiene
+     2. Mueve el foco al primer elemento interactivo dentro
+     3. Atrapa el Tab dentro del modal (focus trap)
+     4. Restaura el foco al elemento que lo tenía al cerrar
+  ─────────────────────────────────────────────────────────────────────── */
+  (function(){
+    var _lastFocus = null;
+    var _currentModal = null;
+
+    var FOCUSABLE = [
+      'a[href]','button:not([disabled])','input:not([disabled])',
+      'select:not([disabled])','textarea:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])'
+    ].join(',');
+
+    function _isVisible(el) {
+      if (!el) return false;
+      var s = window.getComputedStyle(el);
+      return s.display !== 'none' && s.visibility !== 'hidden' && s.opacity !== '0';
+    }
+
+    function _isModal(el) {
+      if (!el || el.nodeType !== 1) return false;
+      var cls = el.className || '';
+      var id  = el.id || '';
+      return (
+        cls.indexOf('modal-overlay') !== -1 ||
+        cls.indexOf('modal-ov') !== -1 ||
+        (cls.indexOf('modal') !== -1 && cls.indexOf('active') !== -1) ||
+        (id.indexOf('modal-') === 0 && _isVisible(el))
+      );
+    }
+
+    function _applyDialog(el) {
+      if (!el.hasAttribute('role')) el.setAttribute('role','dialog');
+      if (!el.hasAttribute('aria-modal')) el.setAttribute('aria-modal','true');
+      // Buscar título dentro del modal
+      if (!el.hasAttribute('aria-labelledby') && !el.hasAttribute('aria-label')) {
+        var h = el.querySelector('h1,h2,h3,[id*="title"],[id*="titulo"]');
+        if (h) {
+          if (!h.id) h.id = 'pgm-title-' + Math.random().toString(36).slice(2,7);
+          el.setAttribute('aria-labelledby', h.id);
+        } else {
+          el.setAttribute('aria-label','Diálogo');
+        }
+      }
+    }
+
+    function _focusFirst(modal) {
+      var items = Array.from(modal.querySelectorAll(FOCUSABLE)).filter(_isVisible);
+      if (items.length) items[0].focus();
+    }
+
+    function _trapFocus(e) {
+      if (!_currentModal || e.key !== 'Tab') return;
+      var items = Array.from(_currentModal.querySelectorAll(FOCUSABLE)).filter(_isVisible);
+      if (!items.length) return;
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+
+    function _onOpen(modal) {
+      _applyDialog(modal);
+      _lastFocus = document.activeElement;
+      _currentModal = modal;
+      setTimeout(function(){ _focusFirst(modal); }, 50);
+      document.addEventListener('keydown', _trapFocus);
+    }
+
+    function _onClose() {
+      _currentModal = null;
+      document.removeEventListener('keydown', _trapFocus);
+      if (_lastFocus && _lastFocus.focus) {
+        try { _lastFocus.focus(); } catch(_) {}
+      }
+    }
+
+    // Observar cambios de clase y estilo en el DOM
+    var obs = new MutationObserver(function(mutations) {
+      mutations.forEach(function(m) {
+        var el = m.target;
+        if (_isModal(el)) {
+          if (_isVisible(el)) {
+            _onOpen(el);
+          } else if (_currentModal === el) {
+            _onClose();
+          }
+        }
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function(){
+      obs.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class','style'],
+        subtree: true
+      });
+    });
+  })();
+
 })();
