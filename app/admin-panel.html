@@ -267,7 +267,7 @@
                 <thead>
                     <tr><th>Código</th><th>Doctor</th><th>Tipo</th><th>Material</th><th>Total</th><th>Pasarela</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr>
                 </thead>
-                <tbody id="tbody-pedidos">
+                <tbody id="tbody-pedidos" aria-live="polite" aria-label="Lista de pedidos">
                     <tr class="loading-row"><td colspan="9"><div class="spinner" style="margin:0 auto;"></div></td></tr>
                 </tbody>
             </table>
@@ -489,7 +489,7 @@
                 <thead>
                     <tr><th></th><th>Cliente</th><th>Email</th><th>Clínica</th><th>Ciudad</th><th>Pedidos</th><th style="color:var(--gold);">💰 CLV Total</th><th>Registro</th><th>WA</th></tr>
                 </thead>
-                <tbody id="tbody-clientes">
+                <tbody id="tbody-clientes" aria-live="polite" aria-label="Lista de clientes">
                     <tr class="loading-row"><td colspan="9"><div class="spinner" style="margin:0 auto;"></div></td></tr>
                 </tbody>
             </table>
@@ -518,7 +518,7 @@
                 <thead>
                     <tr><th>Código</th><th>Cliente</th><th>Dirección</th><th>Total</th><th>Mensajero</th><th>Acción</th></tr>
                 </thead>
-                <tbody id="tbody-sin-asignar">
+                <tbody id="tbody-sin-asignar" aria-live="polite" aria-label="Pedidos sin asignar">
                     <tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Cargando...</td></tr>
                 </tbody>
             </table>
@@ -533,7 +533,7 @@
                 <thead>
                     <tr><th>Código</th><th>Cliente</th><th>Mensajero</th><th>Estado</th><th>Entrega Est.</th><th>Evidencia</th></tr>
                 </thead>
-                <tbody id="tbody-en-ruta">
+                <tbody id="tbody-en-ruta" aria-live="polite" aria-label="Pedidos en ruta">
                     <tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Cargando...</td></tr>
                 </tbody>
             </table>
@@ -580,7 +580,7 @@
                 <thead>
                     <tr><th>Urgencia</th><th>Código</th><th>Paciente</th><th>Servicio</th><th>Estado op.</th><th>Tiempo</th><th>Acción</th></tr>
                 </thead>
-                <tbody id="tbody-urgentes">
+                <tbody id="tbody-urgentes" aria-live="polite" aria-label="Pedidos urgentes">
                     <tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">Cargando...</td></tr>
                 </tbody>
             </table>
@@ -595,7 +595,7 @@
                 <thead>
                     <tr><th>Severidad</th><th>Tipo</th><th>Descripción</th><th>Pedido</th><th>Hace</th><th>Acción</th></tr>
                 </thead>
-                <tbody id="tbody-incidencias">
+                <tbody id="tbody-incidencias" aria-live="polite" aria-label="Incidencias">
                     <tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8">Cargando...</td></tr>
                 </tbody>
             </table>
@@ -603,7 +603,7 @@
     </div>
 
     <!-- Modal Evidencia -->
-    <div id="modal-evidencia" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:600;align-items:center;justify-content:center;padding:20px;">
+    <div id="modal-evidencia" role="dialog" aria-modal="true" aria-label="Subir evidencia de entrega" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:600;align-items:center;justify-content:center;padding:20px;">
         <div style="background:#0d1828;border-radius:16px;padding:24px;max-width:560px;width:100%;border:1px solid rgba(212,175,55,.3);max-height:90vh;overflow-y:auto;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
                 <h3 style="color:var(--gold);font-size:.95rem;"><i class="fas fa-shield-check"></i> Evidencia de Entrega — <span id="ev-codigo"></span></h3>
@@ -803,7 +803,7 @@
 </main>
 
 <!-- Modal: Número de guía al despachar -->
-<div id="modal-despacho" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;align-items:center;justify-content:center;padding:20px;">
+<div id="modal-despacho" role="dialog" aria-modal="true" aria-labelledby="modal-desp-title" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#0d1828;border:1px solid rgba(212,175,55,.3);border-radius:14px;padding:24px;max-width:420px;width:100%;">
     <div style="font-size:.95rem;font-weight:800;color:var(--gold);margin-bottom:6px;"><i class="fas fa-truck-fast" style="margin-right:6px;"></i>Registrar Despacho</div>
     <div id="modal-desp-sub" style="font-size:.78rem;color:#94a3b8;margin-bottom:16px;"></div>
@@ -818,7 +818,7 @@
 </div>
 
 <!-- Modal: Confirmar eliminación portafolio -->
-<div id="modal-confirm-del" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:700;align-items:center;justify-content:center;padding:20px;">
+<div id="modal-confirm-del" role="dialog" aria-modal="true" aria-label="Confirmar eliminación" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:700;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#0d1828;border:1px solid rgba(239,68,68,.35);border-radius:14px;padding:24px;max-width:380px;width:100%;text-align:center;">
     <div style="font-size:2rem;margin-bottom:10px;">🗑️</div>
     <div style="font-size:.95rem;font-weight:800;color:#ef4444;margin-bottom:8px;">Eliminar caso</div>
@@ -831,7 +831,7 @@
 </div>
 
 <!-- Modal: Resolver incidencia -->
-<div id="modal-resolver" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;align-items:center;justify-content:center;padding:20px;">
+<div id="modal-resolver" role="dialog" aria-modal="true" aria-label="Resolver incidencia" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#0d1828;border:1px solid rgba(0,255,65,.25);border-radius:14px;padding:24px;max-width:420px;width:100%;">
     <div style="font-size:.95rem;font-weight:800;color:#00FF41;margin-bottom:6px;"><i class="fas fa-check-circle" style="margin-right:6px;"></i>Resolver Incidencia</div>
     <div style="font-size:.78rem;color:#94a3b8;margin-bottom:14px;">Deja una nota de resolución para el registro.</div>
