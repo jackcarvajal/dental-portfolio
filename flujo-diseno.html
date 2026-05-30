@@ -1839,7 +1839,19 @@ const lineWompi = document.getElementById('line-wompi');
                                 referido_nombre: STATE.nombreCliente || null,
                                 referido_at: new Date().toISOString(),
                                 estado: 'registrado'
-                            }).eq('codigo', ref).then(() => sessionStorage.removeItem('prodigy_ref'));
+                            }).eq('codigo', ref).then(() => {
+                                sessionStorage.removeItem('prodigy_ref');
+                                // Push al staff sobre el pedido con referido
+                                fetch('/api/send-push', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json', 'x-cron-secret': 'internal' },
+                                    body: JSON.stringify({
+                                        titulo: '🎁 Pedido con referido — ' + (STATE.nombreCliente||'Doctor'),
+                                        mensaje: 'Un doctor llegó por referido (' + ref + '). Revisar en panel de referidos.',
+                                        url: '/app/admin-panel.html',
+                                    })
+                                }).catch(() => {});
+                            });
                         }
                     });
                 }
