@@ -31,6 +31,29 @@
     border: 0;
 }
 
+/* ── Utilidades hover — reemplazan onmouseover/onmouseout inline ──
+   Reducen la superficie de unsafe-inline en CSP
+─────────────────────────────────────────────────────────────────── */
+.hover-fade          { transition: opacity .2s; }
+.hover-fade:hover    { opacity: .8; }
+
+.hover-lift          { transition: transform .2s, border-color .2s; }
+.hover-lift:hover    { transform: translateY(-3px); }
+
+.hover-gold          { transition: color .2s, border-color .2s; }
+.hover-gold:hover    { color: #D4AF37 !important; border-color: rgba(212,175,55,.4) !important; }
+
+.hover-cyan          { transition: color .2s, border-color .2s, background .2s; }
+.hover-cyan:hover    { color: #00d2ff !important; border-color: rgba(0,210,255,.4) !important; }
+
+.hover-mg            { transition: color .2s, border-color .2s, background .2s; }
+.hover-mg:hover      { color: #D946A6 !important; border-color: rgba(217,70,166,.4) !important; }
+
+.hover-scale         { transition: transform .2s; }
+.hover-scale:hover   { transform: scale(1.03); }
+
+.hover-shadow-gold:hover { box-shadow: 0 4px 18px rgba(212,175,55,.35); }
+
 html {
     scroll-behavior: smooth;
     overflow-x: hidden;
