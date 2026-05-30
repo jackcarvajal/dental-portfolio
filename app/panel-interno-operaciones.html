@@ -269,7 +269,7 @@
         </div>
 
         <!-- KPIs -->
-        <div class="kpi-grid">
+        <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);">
             <div class="kpi-card k1">
                 <div class="kpi-icon" style="color:#00FF41;"><i class="fas fa-money-bill-wave"></i></div>
                 <div class="kpi-value" style="color:#00FF41;" id="kpi-ingresos">—</div>
@@ -289,6 +289,11 @@
                 <div class="kpi-icon" style="color:#D946A6;"><i class="fas fa-truck-fast"></i></div>
                 <div class="kpi-value" style="color:#D946A6;" id="kpi-produccion">—</div>
                 <div class="kpi-label">En producción</div>
+            </div>
+            <div class="kpi-card" style="border-color:rgba(0,255,65,.2);">
+                <div class="kpi-icon" style="color:#00FF41;"><i class="fas fa-user-plus"></i></div>
+                <div class="kpi-value" style="color:#00FF41;" id="kpi-referidos">—</div>
+                <div class="kpi-label">Referidos activos</div>
             </div>
         </div>
 
@@ -1245,6 +1250,11 @@ function actualizarKPIs(data) {
     document.getElementById('kpi-ingresos').textContent  = fmtCOP(ingresos);
     document.getElementById('kpi-pendientes').textContent = pend;
     document.getElementById('kpi-produccion').textContent = prod;
+    // KPI referidos (fire-and-forget)
+    sb.from('referidos').select('id',{count:'exact',head:true}).not('referido_email','is',null).then(({count})=>{
+        const el=document.getElementById('kpi-referidos');
+        if(el) el.textContent=count||0;
+    }).catch(()=>{});
 }
 
 /* ══════════════════════════════════════════
