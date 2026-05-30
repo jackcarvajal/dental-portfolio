@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1200px;height:630px;background:#050505;font-family:Inter,system-ui,sans-serif;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:60px;position:relative;}
+.bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(0,255,65,.12),transparent);pointer-events:none;}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,65,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.inner{position:relative;z-index:1;max-width:800px;}
+.brand{font-size:12px;font-weight:900;letter-spacing:5px;text-transform:uppercase;color:#00FF41;margin-bottom:20px;}
+h1{font-size:62px;font-weight:900;line-height:1.0;color:#fff;margin-bottom:16px;}
+.sub{font-size:19px;color:#94a3b8;line-height:1.5;margin-bottom:32px;}
+.pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.pill{padding:6px 18px;border-radius:50px;font-size:13px;font-weight:700;background:rgba(255,255,255,.06);border:1px solid #00FF41;color:#00FF41;}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="grid"></div>
+<div class="inner">
+  <div class="brand">PRODIGY Lab Dental Bogota Colombia</div>
+  <h1 style="background:linear-gradient(135deg,#00FF41,#009900);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Calidad y Estandares</h1>
+  <p class="sub">Control de calidad en cada restauracion. 20 micras.</p>
+  <div class="pills">
+    <div class="pill">20 micras</div>
+    <div class="pill">QA aprobado</div>
+    <div class="pill">Certificado</div>
+  </div>
+</div>
+</body>
+</html>
