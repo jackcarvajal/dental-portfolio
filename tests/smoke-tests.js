@@ -134,6 +134,67 @@ const remainingUnsafe = (flujoDiseno.match(/window\.open[^)]*'_blank'\)/g) || []
   .filter(m => !m.includes('noopener'));
 assert(remainingUnsafe.length === 0, `flujo-diseno.html: 0 window.open sin noopener`);
 
+// ── BLOQUE 11: SW versión sync con MAP.md ─────────────────────────
+console.log('\n🔄 SERVICE WORKER SYNC');
+const map = fileContent('MAP.md');
+if (map.includes('SW_VERSION')) {
+  const mapVersion   = (map.match(/SW_VERSION\s*=\s*'([^']+)'/) || [])[1];
+  const swVersion    = (sw.match(/const CACHE = '([^']+)'/)  || [])[1];
+  if (mapVersion && swVersion) {
+    assert(mapVersion === swVersion, `MAP.md SW_VERSION (${mapVersion}) = sw.js CACHE (${swVersion})`);
+  } else { warn('No se pudo comparar versiones SW vs MAP.md'); }
+} else { warn('MAP.md no tiene SW_VERSION declarado'); }
+
+// ── BLOQUE 12: biomecanica-rules.js función validate exportada ─────
+console.log('\n🔬 BIOMECANICA VALIDATE FUNCTION');
+// Simular el entorno del browser
+const vmModule = require('vm');
+const bioCode = fileContent('js/biomecanica-rules.js');
+const sandbox = { window: {} };
+vmModule.createContext(sandbox);
+try {
+  vmModule.runInContext(bioCode, sandbox);
+  const rules = sandbox.window.BiomecanicaRules;
+  if (rules && typeof rules.validate === 'function') {
+    // Caso 1: puente 5 unidades en PMMA → debe bloquear
+    const r1 = rules.validate('puente', 'pmma', 5);
+    assert(!r1.ok, 'Bloquea: puente 5u en PMMA');
+    // Caso 2: Full Arch en e.max → bloqueo
+    const r2 = rules.validate('full arch', 'emax', 14);
+    assert(!r2.ok, 'Bloquea: Full Arch en e.max');
+    // Caso 3: Corona en zirconio → sin problemas
+    const r3 = rules.validate('corona', 'zirconio_multicapa', 1);
+    assert(r3.ok, 'OK: Corona unitaria en zirconio');
+    // Caso 4: Advertencia carilla posterior
+    const r4 = rules.validate('carilla', 'zirconi', 1, { zona: 'posterior' });
+    assert(r4.advertencias.length > 0, 'Advierte: carilla zirconio posterior');
+  } else { fail('BiomecanicaRules no encontrado o validate no es función'); }
+} catch(e) { fail(`Error ejecutando biomecanica-rules.js: ${e.message}`); }
+
+// ── BLOQUE 13: flujos tienen biomecanica-rules.js ─────────────────
+console.log('\n📋 COBERTURA BIOMECÁNICA EN FLUJOS');
+['flujo-fresado.html', 'flujo-impresion.html', 'calculadora-fresado.html', 'calculadora-diseno.html'].forEach(f => {
+  const content = fileContent(f);
+  assert(content.includes('biomecanica-rules'), `${f} carga biomecanica-rules.js`);
+});
+
+// ── BLOQUE 14: Churn alert y health check configurados ─────────────
+console.log('\n⚡ EDGE FUNCTIONS AVANZADAS');
+const churnFn   = fileContent('functions/api/churn-alert.js');
+const healthFn  = fileContent('functions/api/health-check.js');
+assert(churnFn.includes('prodigy_detectar_churn'), 'churn-alert llama RPC de Supabase');
+assert(churnFn.includes('sendWhatsAppAlert') || churnFn.includes('callmebot'), 'churn-alert envía WA');
+assert(healthFn.length > 5, 'health-check.js tiene contenido');
+const serviceCount = (healthFn.match(/name:/g) || []).length;
+assert(serviceCount >= 10, `health-check monitorea ${serviceCount} servicios (mín 10)`);
+
+// ── BLOQUE 15: Auth guard session timeout ─────────────────────────
+console.log('\n⏱️  SESSION TIMEOUT');
+const authContent = fileContent('js/auth-guard.js');
+assert(authContent.includes('30 * 60 * 1000') || authContent.includes('1800000'), 'Timeout de 30 min configurado');
+assert(authContent.includes('mousemove') && authContent.includes('keydown'), 'Detecta actividad del usuario');
+assert(authContent.includes('signOut'), 'Llama signOut al expirar');
+
 // ── RESUMEN ────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(50));
 console.log(`RESUMEN: ${passed} ✅  ${warnings} ⚠️  ${failed} ❌`);

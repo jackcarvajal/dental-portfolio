@@ -46,7 +46,7 @@ window.BiomecanicaRules = (function() {
                 opts?.espacio_mm && parseFloat(opts.espacio_mm) < 0.5,
             nivel: 'advertencia',
             titulo: 'Espacio oclusal insuficiente para zirconio',
-            mensaje: `Espacio de ${opts?.espacio_mm}mm detectado. Zirconio requiere mínimo 0.5mm (monolítico) o 1.0mm (con porcelana). Considera Disilicato e.max (mín 0.3mm).`,
+            mensaje: 'Espacio oclusal insuficiente para zirconio. Requiere mín 0.5mm (monolítico) o 1.0mm (con porcelana). Considera Disilicato e.max (mín 0.3mm).',
             alternativas: ['emax', 'vita_enamic'],
         },
         // FULL ARCH en disilicato (emax)
