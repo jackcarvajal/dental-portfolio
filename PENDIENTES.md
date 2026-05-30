@@ -8,7 +8,9 @@
 
 | # | Acción | Dónde | Detalle |
 |---|--------|-------|---------|
-| 0c | **Ejecutar `sql/patch-rls-bibliotecas-diseno-revisiones.sql`** | Supabase PRODIGY → SQL Editor | RLS en `bibliotecas_cliente` + `diseno_revisiones`: aísla acceso por usuario |
+| 0c | **Ejecutar `sql/patch-rls-bibliotecas-diseno-revisiones.sql`** | Supabase PRODIGY → SQL Editor | RLS en `bibliotecas_cliente` + `diseno_revisiones` |
+| 0d | **Ejecutar `sql/trigger-purga-stl-30dias.sql`** | Supabase PRODIGY → SQL Editor | Purga automática de STL a 30 días. Requiere pg_cron habilitado en Extensions |
+| 0e | **Agregar `ANTHROPIC_API_KEY`** en GitHub Secrets PRODIGY + Alejandro | Repo → Settings → Secrets → Actions | Para fallback IA del journal si Gemini falla |
 
 ---
 
