@@ -13,6 +13,7 @@
 | G3 | `sql/storage-webp-rls.sql` | RLS + política Storage para transformación WebP sin 403 |
 | 0f | `sql/trigger-doctor-inactivo-churn.sql` | VIEW doctors_inactivos + RPC prodigy_detectar_churn |
 | ~~WL~~ | ~~`sql/waitlist-labs-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — waitlist_labs activa |
+| ~~REF~~ | ~~`sql/referidos-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — sistema referidos activo |
 | ~~COT~~ | ~~`sql/cotizaciones-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — tabla cotizaciones activa |
 
 ---
