@@ -2234,7 +2234,14 @@
             texto += `• Titular: ${STATE.pagoTitular}\n`;
             texto += `• Ref: ${STATE.pagoReferencia || 'No proporcionada'}\n\n`;
             
-            texto += `💵 *TOTAL: ${STATE.total}* (pago 100% al confirmar)\n\n`;
+            let _totalImp = STATE.total;
+            if (window._cuponCreditoActivo) {
+                const n = parseInt((STATE.total||'0').replace(/[^0-9]/g,''),10)||0;
+                const d = window._cuponCreditoActivo.monto||0;
+                _totalImp = '$'+(Math.max(0,n-d)).toLocaleString('es-CO');
+                texto += `🎁 *CUPÓN:* ${window._cuponCreditoActivo.cupon} (-$${d.toLocaleString('es-CO')} COP)\n`;
+            }
+            texto += `💵 *TOTAL: ${_totalImp}* (pago 100% al confirmar)\n\n`;
 
             // Anillas (solo para guías quirúrgicas)
             const _anillasR = document.querySelector('input[name="anillas_opcion"]:checked');
