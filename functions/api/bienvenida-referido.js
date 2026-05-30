@@ -3,7 +3,7 @@
  * POST /api/bienvenida-referido
  *
  * Llamado desde flujo-diseno cuando se detecta un codigo_referido.
- * Envía email de bienvenida al nuevo doctor con el 10% de descuento confirmado.
+ * Envía email de bienvenida al nuevo doctor con el 5% de descuento confirmado.
  *
  * Env vars: RESEND_API_KEY, CRON_SECRET (para proteger llamadas no-autenticadas)
  */
@@ -62,7 +62,7 @@ export async function onRequestPost(context) {
   <div style="background:#0d1520;border:1px solid rgba(0,255,65,.2);border-radius:16px;padding:28px 24px;margin-bottom:20px;">
     <div style="font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:#00FF41;margin-bottom:12px;">🎁 ¡Bienvenida!</div>
     <h1 style="font-size:1.3rem;font-weight:900;color:#fff;margin:0 0 12px;">Hola Dr. ${nombreSafe},</h1>
-    <p style="color:#94a3b8;line-height:1.7;margin:0 0 16px;">Tu colega te recomendó PRODIGY Lab Dental y tu <strong style="color:#00FF41;">10% de descuento</strong> ha sido aplicado al pedido <strong style="color:#D4AF37;">${pedidoSafe}</strong>.</p>
+    <p style="color:#94a3b8;line-height:1.7;margin:0 0 16px;">Tu colega te recomendó PRODIGY Lab Dental y tu <strong style="color:#00FF41;">5% de descuento</strong> ha sido aplicado al pedido <strong style="color:#D4AF37;">${pedidoSafe}</strong>.</p>
     ${codigoSafe ? `<div style="background:rgba(0,255,65,.08);border:1px solid rgba(0,255,65,.25);border-radius:10px;padding:14px 18px;text-align:center;">
       <div style="font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:#00FF41;margin-bottom:6px;">Código de referido usado</div>
       <div style="font-size:1.3rem;font-weight:900;color:#fff;letter-spacing:4px;">${codigoSafe}</div>
@@ -97,7 +97,7 @@ export async function onRequestPost(context) {
       body: JSON.stringify({
         from: 'PRODIGY Lab Dental <bienvenida@prodigylabdental.com>',
         to:   [email],
-        subject: `¡Bienvenido a PRODIGY! Tu 10% de descuento fue aplicado 🎁`,
+        subject: `¡Bienvenido a PRODIGY! Tu 5% de descuento fue aplicado 🎁`,
         html,
       }),
     });

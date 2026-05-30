@@ -490,7 +490,7 @@
                     <div id="ref-codigo" style="font-size:1.4rem;font-weight:900;color:#fff;letter-spacing:3px;">Cargando...</div>
                     <button type="button" id="ref-copy-btn" onclick="copiarCodigo()" style="background:rgba(0,255,65,.15);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:8px;padding:6px 14px;font-size:.75rem;font-weight:700;cursor:pointer;"><i class="fas fa-copy"></i> Copiar</button>
                 </div>
-                <div style="font-size:.75rem;color:#475569;margin-top:8px;">Comparte este código con colegas. Ellos obtienen 10% de descuento en su primer caso.</div>
+                <div style="font-size:.75rem;color:#475569;margin-top:8px;">Comparte este código con colegas. Ellos obtienen 5% de descuento en su primer caso.</div>
             </div>
             <div id="ref-lista" aria-live="polite">
                 <div style="text-align:center;color:#475569;font-size:.82rem;padding:16px;"><i class="fas fa-user-plus" style="opacity:.3;display:block;font-size:1.5rem;margin-bottom:6px;"></i>Aún no has referido a nadie.</div>
@@ -1611,7 +1611,7 @@ async function cargarReferidos() {
 function copiarCodigo() {
     const codigo = document.getElementById('ref-codigo')?.dataset.codigo || document.getElementById('ref-codigo')?.textContent;
     if (!codigo || codigo === 'Cargando...') return;
-    const msg = `Hola! Te recomiendo PRODIGY Lab Dental para tus casos CAD/CAM. Usa mi código *${codigo}* y obtén 10% de descuento en tu primer caso. Más info: https://prodigylabdental.com`;
+    const msg = `Hola! Te recomiendo PRODIGY Lab Dental para tus casos CAD/CAM. Usa mi código *${codigo}* y obtén 5% de descuento en tu primer caso. Más info: https://prodigylabdental.com`;
     navigator.clipboard?.writeText(msg).then(() => {
         const btn = document.getElementById('ref-copy-btn');
         if (btn) { btn.innerHTML = '<i class="fas fa-check"></i> Copiado'; setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copiar'; }, 2000); }

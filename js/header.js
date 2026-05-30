@@ -874,7 +874,7 @@
       'POLÍTICA: Cliente nuevo 100% anticipado · Cliente existente 50% abono / 50% contra entrega.\n' +
       'CONTACTO: WhatsApp +57 321 281 6716 · gerencia@prodigylabdental.com\n' +
       'HORARIO: L-S 8am-6pm Colombia · Corte pedidos urgentes 5pm.\n\n' +
-      'PROGRAMA DE REFERIDOS: Si un doctor pregunta por descuentos o cómo referir colegas, menciona el programa de referidos en /app/client-panel.html → "Referir Colegas". El colega referido obtiene 10% de descuento en su primer caso usando un código único.\n\n' +
+      'PROGRAMA DE REFERIDOS: Si un doctor pregunta por descuentos o cómo referir colegas, menciona el programa de referidos en /app/client-panel.html → "Referir Colegas". El colega referido obtiene 5% de descuento en su primer caso usando un código único.\n\n' +
       'NUEVAS FUNCIONALIDADES: Cotizaciones guardadas desde la calculadora. BI Dashboard en /app/metricas. Guías quirúrgicas con evaluación CBCT gratuita.\n\n' +
       'Responde en español, técnico pero accesible para odontólogos y técnicos dentales. Máx 3-4 párrafos cortos. ' +
       'Si preguntan precios específicos, usa la calculadora en /calculadora o invita a WhatsApp para cotización exacta. ' +
