@@ -13,6 +13,7 @@
 const WA_PRODIGY = '573212816716';
 
 const MSGS_ES = {
+  WAITLIST_LAB:     (d) => `🧪 *Nuevo lab en waitlist*\n\n*Lab:* ${d.dr}\n*Ciudad/Volumen:* ${d.srv}\n\nRevisa: prodigylabdental.com/app/admin-panel`,
   EN_PRODUCCION:    (d) => `✅ *Caso #${d.cod} — Producción iniciada*\n\nHola Dr. ${d.dr}, tu caso ha superado la validación técnica y ya está en producción.\n\n📅 Entrega estimada: *${d.fecha}*\n🔬 Servicio: ${d.srv}\n\n_Cualquier novedad te notificamos. PRODIGY Lab Dental_`,
   FRESADO_INICIADO: (d) => `⚙️ *Caso #${d.cod} — Fresado en curso*\n\nHola Dr. ${d.dr}, iniciamos el fresado de tu caso. Estamos en la recta final.\n\n📅 Entrega estimada: *${d.fecha}*\n\n_PRODIGY Lab Dental_`,
   QA_APROBADO:      (d) => `🛡️ *Caso #${d.cod} — Control de calidad ✅*\n\nHola Dr. ${d.dr}, tu caso pasó el control de calidad exitosamente. Estamos programando el despacho.\n\n📅 Entrega estimada: *${d.fecha}*\n\n_PRODIGY Lab Dental_`,
@@ -22,6 +23,7 @@ const MSGS_ES = {
 };
 
 const MSGS_EN = {
+  WAITLIST_LAB:     (d) => `🧪 *New lab on waitlist*\n\n*Lab:* ${d.dr}\n*City/Volume:* ${d.srv}\n\nReview: prodigylabdental.com/app/admin-panel`,
   EN_PRODUCCION:    (d) => `✅ *Case #${d.cod} — Production started*\n\nHello Dr. ${d.dr}, your case passed technical validation and is now in production.\n\n📅 Estimated delivery: *${d.fecha}*\n🔬 Service: ${d.srv}\n\n_PRODIGY Lab Dental_`,
   FRESADO_INICIADO: (d) => `⚙️ *Case #${d.cod} — Milling in progress*\n\nHello Dr. ${d.dr}, we have started milling your case. Final stretch!\n\n📅 Estimated delivery: *${d.fecha}*\n\n_PRODIGY Lab Dental_`,
   QA_APROBADO:      (d) => `🛡️ *Case #${d.cod} — Quality control passed ✅*\n\nHello Dr. ${d.dr}, your case passed our quality control. Scheduling shipment now.\n\n📅 Estimated delivery: *${d.fecha}*\n\n_PRODIGY Lab Dental_`,
