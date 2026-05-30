@@ -313,6 +313,10 @@
       <button type="button" class="btn-cot" onclick="abrirFlujo()">
         <i class="fas fa-paper-plane"></i> Pedir fresado online
       </button>
+      <button type="button" id="btnGuardarCot" onclick="guardarCotizacion()" style="width:100%;padding:13px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:12px;font-size:.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;font-family:inherit;">
+        <i class="fa-regular fa-bookmark" aria-hidden="true"></i> Guardar cotización
+      </button>
+      <div id="cotMsg" style="font-size:.78rem;margin-top:6px;text-align:center;min-height:18px;" aria-live="polite"></div>
 
       <div class="trust-row">
         <div class="trust-chip"><i class="fas fa-shield-halved"></i> Sin compromiso</div>
@@ -503,6 +507,37 @@ render();
 </main>
 <script src="js/footer.js?v=20260528"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
+<script>
+(function(){
+  const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+  const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTA2OTAxMDUsImV4cCI6MjAyNjI2NjEwNX0.fQOcJKn3qAhGLi7XbOFWnhMBVz3DJLF37jUME2iNNL8';
+  let _sb;
+  function _getSb(){if(!_sb&&window.supabase)_sb=window.supabase.createClient(SURL,SANON);return _sb;}
+  window.guardarCotizacion=async function(){
+    const btn=document.getElementById('btnGuardarCot');
+    const msg=document.getElementById('cotMsg');
+    const p=SERVICES[ST.srv]||{};
+    const qty=p.fixedQty?1:ST.qty;
+    const unit=(p.base||0)+(typeof MAT_DELTA!=='undefined'&&MAT_DELTA[ST.mat]?MAT_DELTA[ST.mat]:0);
+    const total=unit*qty+(ST.urgente?EXTRAS.urgente:0)+(ST.glaze?EXTRAS.glaze:0)+(ST.envio?EXTRAS.envio:0);
+    if(!total||total<=0){return;}
+    btn.disabled=true;
+    btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Guardando...';
+    const sb=_getSb();
+    if(!sb){btn.disabled=false;btn.innerHTML='<i class="fa-regular fa-bookmark"></i> Guardar cotización';return;}
+    const {data,error}=await sb.from('cotizaciones').insert({
+      tipo:'fresado',
+      items:[{servicio:p.lbl||ST.srv,material:ST.mat,cantidad:qty,urgente:!!ST.urgente}],
+      subtotal:total,total,moneda:'COP',estado:'borrador'
+    }).select('id').single();
+    btn.disabled=false;
+    if(error){msg.style.color='#f87171';msg.textContent='Error al guardar.';btn.innerHTML='<i class="fa-regular fa-bookmark"></i> Guardar cotización';return;}
+    btn.innerHTML='<i class="fas fa-bookmark"></i> Guardada';
+    btn.style.background='rgba(0,255,65,.12)';btn.style.borderColor='rgba(0,255,65,.4)';btn.style.color='#00FF41';
+    msg.style.color='#00FF41';msg.textContent='✓ ('+data.id.slice(0,8)+')';
+  };
+})();
+</script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
