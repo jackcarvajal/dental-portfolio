@@ -152,6 +152,21 @@ export async function onRequestGet(context) {
   const critical = failed.filter(c => c.critical);
   const allOk    = failed.length === 0;
 
+  // Alerta email si hay fallos críticos y está configurado Resend
+  if (critical.length > 0 && env.RESEND_API_KEY) {
+    const emailBody = critical.map(s => `❌ ${s.name}: ${s.status} (${s.ms}ms)`).join('\n');
+    fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'PRODIGY Alertas <alertas@prodigylabdental.com>',
+        to:   ['gerencia@prodigylabdental.com'],
+        subject: `🚨 PRODIGY Health Check — ${critical.length} API(s) caídas`,
+        text: `PRODIGY Health Check ALERTA\n\n${emailBody}\n\n${new Date().toLocaleString('es-CO')}`,
+      }),
+    }).catch(() => {});
+  }
+
   // Alerta WA solo si hay fallos críticos
   if (critical.length > 0) {
     await sendWhatsAppAlert(critical, env);
