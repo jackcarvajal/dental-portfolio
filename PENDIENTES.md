@@ -109,6 +109,15 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 13)
+- **fix(CRÍTICO) Alejandro**: nombres de objetos JS con espacios → ACConversions, ACUTM, ACGeo, ACViewer, ACAnalytics. El tracking de UTM/conversiones/geo nunca había funcionado. 6 archivos corregidos.
+- **security**: 0 window.open sin noopener en TODA la codebase PRODIGY + Alejandro (HTML + JS + paneles app/)
+- **biomecanica-rules.js Alejandro**: copiado de PRODIGY + integrado en calculadora-diseno.selSrv()
+- **biomecanica flujo-impresion**: selectMaterial() integrado + cargado en flujo-impresion.html
+- **bulk upload operator-panel**: modal drag & drop completo con regex ID + magic bytes + auto-asocia kanban
+- **nesting pre-calculado**: inventario — barra de vida de discos con alerta <20%
+- **churn-alert integrado**: resumen-semanal ejecuta churn detection cada lunes automáticamente
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 12)
 - **Bulk Upload STL**: operator-panel — drag & drop masivo, regex extrae ID, magic bytes paralelo, auto-asocia a kanban
 - **Nesting Pre-calculado**: inventario — barra de vida de discos, alerta <20% espacio
