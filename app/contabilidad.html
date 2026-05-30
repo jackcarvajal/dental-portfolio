@@ -143,8 +143,15 @@ tbody td{padding:11px 14px;vertical-align:middle;}
 </nav>
 
 <main class="main">
-    <div class="page-title">Contabilidad &amp; Pagos</div>
-    <div class="page-sub">Confirmar abonos, controlar saldos contra entrega y ver historial de ingresos</div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:4px;">
+        <div>
+            <div class="page-title">Contabilidad &amp; Pagos</div>
+            <div class="page-sub">Confirmar abonos, controlar saldos contra entrega y ver historial de ingresos</div>
+        </div>
+        <button type="button" onclick="exportarCSV()" style="background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:#00FF41;padding:9px 18px;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;" aria-label="Exportar historial a CSV">
+            📊 Exportar CSV
+        </button>
+    </div>
 
     <!-- KPIs -->
     <div class="kpis">
@@ -1327,6 +1334,46 @@ document.addEventListener('keydown', e => {
         document.getElementById('modal-iva').style.display = 'none';
     }
 });
+
+/* ── EXPORT CSV ────────────────────────────────────────────────────
+   Exporta el historial completo a CSV descargable
+─────────────────────────────────────────────────────────────────── */
+function exportarCSV() {
+    if (!_pedidos || !_pedidos.length) {
+        toast('Carga el historial primero (tab Historial)', 'err');
+        return;
+    }
+    const fmtFecha = ts => ts ? new Date(ts).toLocaleDateString('es-CO') : '';
+    const fmtCOP = n => n ? Number(n).toLocaleString('es-CO') : '0';
+
+    const headers = [
+        'Código','Doctor','Servicio','Material','Estado Pago',
+        'Total COP','Saldo Pendiente','Modalidad Cobro','Fecha Creación','Última actualización'
+    ];
+
+    const rows = _pedidos.map(p => [
+        p.codigo || '',
+        `"${(p.nombre_doctor || p.nombre_cliente || '').replace(/"/g, '""')}"`,
+        `"${(p.servicio || '').replace(/"/g, '""')}"`,
+        `"${(p.material || '').replace(/"/g, '""')}"`,
+        p.pago_estado || '',
+        fmtCOP(p.precio_total),
+        fmtCOP(p.saldo_pendiente_monto),
+        p.modalidad_cobro || '',
+        fmtFecha(p.created_at),
+        fmtFecha(p.updated_at),
+    ]);
+
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href     = url;
+    link.download = `prodigy-contabilidad-${new Date().toISOString().slice(0,10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    toast(`✅ Exportado: ${_pedidos.length} registros`, 'ok');
+}
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
