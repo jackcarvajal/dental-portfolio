@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1200px;height:630px;background:#050505;font-family:'Inter',system-ui,sans-serif;overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:60px;}
+.left{flex:1;max-width:620px;}
+.brand{font-size:14px;font-weight:900;letter-spacing:4px;color:#00d2ff;text-transform:uppercase;margin-bottom:28px;}
+h1{font-size:52px;font-weight:900;line-height:1.05;color:#fff;margin-bottom:20px;}
+h1 span{background:linear-gradient(135deg,#00d2ff,#0099cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sub{font-size:18px;color:#94a3b8;line-height:1.5;margin-bottom:32px;}
+.badges{display:flex;gap:10px;flex-wrap:wrap;}
+.badge{background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.3);color:#00d2ff;border-radius:50px;padding:6px 16px;font-size:13px;font-weight:700;}
+.badge.gold{background:rgba(212,175,55,.1);border-color:rgba(212,175,55,.3);color:#D4AF37;}
+.right{width:400px;height:400px;background:linear-gradient(135deg,rgba(0,210,255,.1),rgba(0,210,255,.03));border-radius:32px;border:1px solid rgba(0,210,255,.2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.icon-big{font-size:120px;}
+.price-ex{font-size:36px;font-weight:900;color:#00d2ff;}
+.price-label{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;text-align:center;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,210,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,210,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="left">
+  <div class="brand">PRODIGY Lab Dental</div>
+  <h1><span>Calculadora</span><br>de Precios</h1>
+  <p class="sub">Calcula en segundos el costo de tu corona, carilla, puente o implante CAD/CAM. Precio exacto, sin sorpresas.</p>
+  <div class="badges">
+    <div class="badge">Diseño + Fresado</div>
+    <div class="badge gold">COP / USD</div>
+    <div class="badge">Precio en 10 seg</div>
+  </div>
+</div>
+<div class="right">
+  <div class="icon-big">🧮</div>
+  <div class="price-ex">$60K COP</div>
+  <div class="price-label">desde · por unidad</div>
+</div>
+</body>
+</html>
