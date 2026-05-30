@@ -2282,9 +2282,14 @@
                         user_agent:             navigator.userAgent.slice(0, 250),
                         seguro_garantia_activo: document.getElementById('seguro-garantia')?.checked || false,
                         costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0,
-                        pedido_diseno_id:       (typeof _disenoPedidoId !== 'undefined' ? _disenoPedidoId : null)
+                        pedido_diseno_id:       (typeof _disenoPedidoId !== 'undefined' ? _disenoPedidoId : null),
+                        codigo_referido:        sessionStorage.getItem('prodigy_ref') || null
                     }]).then(({ error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido no guardado en BD:', _e.message);
+                        const ref = sessionStorage.getItem('prodigy_ref');
+                        if (ref && !_e) {
+                            _sb.from('referidos').update({ referido_email: STATE.whatsappCliente||null, referido_nombre: STATE.nombreCliente||null, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',ref).then(()=>sessionStorage.removeItem('prodigy_ref'));
+                        }
                     });
                 }
             } catch(_e2) { /* silencioso */ }
