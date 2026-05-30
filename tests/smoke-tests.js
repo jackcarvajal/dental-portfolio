@@ -293,6 +293,60 @@ assert(webpRls.length > 200, 'storage-webp-rls.sql existe');
 assert(webpRls.includes('createSignedUrl'), 'WebP RLS documenta uso de URL firmadas para buckets privados');
 assert(webpRls.includes('403'), 'WebP RLS documenta el error 403 si falta configuración');
 
+// ── NUEVAS FEATURES 2026-05-30 ────────────────────────────────────
+console.log('\n🗂️  COTIZACIONES + BI + SOCIAL COPY');
+
+// Cotizaciones
+const cotSQL = fileContent('sql/cotizaciones-table.sql');
+assert(cotSQL.includes('CREATE TABLE IF NOT EXISTS public.cotizaciones'), 'cotizaciones-table.sql tiene CREATE TABLE');
+assert(cotSQL.includes('ENABLE ROW LEVEL SECURITY'), 'cotizaciones tiene RLS');
+assert(cotSQL.includes('cotiz_anon_insert'), 'cotizaciones permite insert desde anon (calculadora pública)');
+assert(cotSQL.includes('GRANT ALL ON TABLE'), 'cotizaciones tiene GRANT explícito (oct 2026)');
+assert(cotSQL.includes('mis_cotizaciones'), 'cotizaciones tiene RPC mis_cotizaciones()');
+
+const calcHtmlCot = fileContent('calculadora.html');
+assert(calcHtmlCot.includes('guardarCotizacion'), 'calculadora.html tiene función guardarCotizacion()');
+assert(calcHtmlCot.includes("from('cotizaciones').insert"), 'calculadora inserta en tabla cotizaciones');
+assert(calcHtmlCot.includes('btnGuardarCot'), 'calculadora tiene botón guardar cotización');
+
+const clientPanelCot = fileContent('app/client-panel.html');
+assert(clientPanelCot.includes('sec-cotizaciones'), 'client-panel tiene sección Mis Cotizaciones');
+assert(clientPanelCot.includes('cargarCotizaciones'), 'client-panel tiene función cargarCotizaciones()');
+assert(clientPanelCot.includes('eliminarCotizacion'), 'client-panel tiene función eliminarCotizacion()');
+
+// BI Dashboard
+const metricas = fileContent('app/metricas.html');
+assert(metricas.length > 500, 'app/metricas.html existe');
+assert(metricas.includes('noindex'), 'metricas.html es noindex (privado)');
+assert(metricas.includes('prodigy_dashboard_semana'), 'metricas llama RPC dashboard_semana');
+assert(metricas.includes('prodigy_top_servicios'), 'metricas llama RPC top_servicios');
+assert(metricas.includes('prodigy_forecast_semana'), 'metricas llama RPC forecast');
+assert(metricas.includes('auth-guard.js'), 'metricas.html protegido por auth-guard');
+assert(metricas.includes('setInterval'), 'metricas tiene auto-refresh');
+
+// Social Copy edge function
+const socialCopy = fileContent('functions/api/social-copy.js');
+assert(socialCopy.length > 200, 'functions/api/social-copy.js existe');
+assert(socialCopy.includes('GEMINI_API_KEY'), 'social-copy.js usa GEMINI_API_KEY');
+assert(socialCopy.includes('CRON_SECRET') || socialCopy.includes('ADMIN_SECRET'), 'social-copy.js requiere autenticación');
+assert(socialCopy.includes('instagram') && socialCopy.includes('linkedin'), 'social-copy.js genera copy para múltiples plataformas');
+assert(!socialCopy.includes("'Access-Control-Allow-Origin': origin") || socialCopy.includes('allowed'), 'social-copy.js no hace echo ciego del origin');
+
+// Inline handlers eliminados (páginas públicas)
+console.log('\n🎨  MIGRACIÓN CSS — SIN HANDLERS INLINE');
+const pagPublicas = ['fresado-cam.html','guias-quirurgicas.html','article.html','envia-tu-scanner.html','terminos-y-legal.html','caso.html','en/global-design.html','diseno-remoto.html','index.html'];
+for (const pg of pagPublicas) {
+  const content = fileContent(pg);
+  const count = (content.match(/onmouseover|onmouseout/g) || []).length;
+  if (count > 0) fail(`${pg} todavía tiene ${count} handlers inline onmouseover/onmouseout`);
+  else ok(`${pg} — 0 handlers inline`);
+}
+
+// SW v25
+const swContent = fileContent('sw.js');
+assert(swContent.includes('prodigy-v25'), 'sw.js actualizado a v25');
+assert(swContent.includes('/cotizaciones'), 'sw.js incluye /cotizaciones en PRECACHE');
+
 // ── RESUMEN ────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(50));
 console.log(`RESUMEN: ${passed} ✅  ${warnings} ⚠️  ${failed} ❌`);
