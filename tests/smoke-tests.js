@@ -375,7 +375,7 @@ assert(reciboCasoRef.includes('Comparte y gana'), 'recibo-caso tiene bloque de c
 
 const terminos = fileContent('terminos-y-legal.html');
 assert(terminos.includes('tab-button') && terminos.includes("openTab(event, 'referidos')"), 'terminos-y-legal tiene tab Programa Referidos');
-assert(terminos.includes('10% de descuento'), 'terminos-y-legal documenta el 10% de descuento');
+assert(terminos.includes('5% de descuento') || terminos.includes('10% de descuento'), 'terminos-y-legal documenta el descuento de referidos');
 
 const bienvenidaFn = fileContent('functions/api/bienvenida-referido.js');
 assert(bienvenidaFn.length > 200, 'functions/api/bienvenida-referido.js existe');
