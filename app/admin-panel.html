@@ -704,6 +704,22 @@
             </div>
             <div id="eventos-locales" style="padding:16px;max-height:280px;overflow-y:auto;"></div>
         </div>
+
+        <!-- Social Copy Generator -->
+        <div class="section-card" style="margin-top:20px;">
+            <div class="section-header">
+                <h2><i class="fas fa-wand-magic-sparkles" style="color:var(--mg);"></i> Social Copy IA <span style="font-size:.65rem;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.3);color:var(--mg);border-radius:12px;padding:2px 8px;margin-left:6px;">GEMINI</span></h2>
+                <button type="button" class="btn-primary" onclick="generarSocialCopy()" id="btn-social-copy"><i class="fas fa-sparkles"></i> Generar copy</button>
+            </div>
+            <div style="padding:20px;">
+                <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+                    <input type="text" id="sc-titulo" placeholder="Título del artículo..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:.85rem;outline:none;">
+                    <input type="text" id="sc-desc" placeholder="Descripción (opcional)..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:.85rem;outline:none;">
+                    <input type="url" id="sc-url" placeholder="URL artículo..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:.85rem;outline:none;">
+                </div>
+                <div id="sc-result" aria-live="polite"></div>
+            </div>
+        </div>
     </div>
 
     <!-- ═══════════ TAB MÉTRICAS OPERATIVAS ═══════════ -->
@@ -2390,5 +2406,51 @@ document.addEventListener('keydown', e => {
 });
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script>
+async function generarSocialCopy() {
+  const btn = document.getElementById('btn-social-copy');
+  const res = document.getElementById('sc-result');
+  const titulo = document.getElementById('sc-titulo').value.trim();
+  if (!titulo) { res.innerHTML='<div style="color:#f87171;font-size:.82rem;">Ingresa el título del artículo primero.</div>'; return; }
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+  res.innerHTML = '<div style="color:#475569;font-size:.82rem;padding:12px;"><i class="fas fa-spinner fa-spin"></i> Llamando a Gemini...</div>';
+  try {
+    const r = await fetch('/api/social-copy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-token': (window.__ADMIN_SECRET||'')
+      },
+      body: JSON.stringify({
+        titulo,
+        descripcion: document.getElementById('sc-desc').value.trim() || '',
+        url: document.getElementById('sc-url').value.trim() || 'https://prodigylabdental.com/article',
+      })
+    });
+    const d = await r.json();
+    if (!r.ok || !d.ok) throw new Error(d.error || 'Error desconocido');
+    const c = d.copies;
+    function copyBtn(id) { return `<button type="button" onclick="navigator.clipboard.writeText(document.getElementById('${id}').textContent).then(()=>this.textContent='✓ Copiado').catch(()=>{})" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:6px;padding:4px 10px;font-size:.7rem;cursor:pointer;">Copiar</button>`; }
+    const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    res.innerHTML = ['instagram','linkedin','twitter','whatsapp'].map((plat,i) => {
+      const icons = {instagram:'fa-instagram',linkedin:'fa-linkedin',twitter:'fa-x-twitter',whatsapp:'fa-whatsapp'};
+      const colors = {instagram:'#E1306C',linkedin:'#0A66C2',twitter:'#000',whatsapp:'#25D366'};
+      const id = 'sc-'+plat;
+      return `<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:${colors[plat]};"><i class="fab ${icons[plat]}"></i> ${plat}</span>
+          ${copyBtn(id)}
+        </div>
+        <pre id="${id}" style="white-space:pre-wrap;word-break:break-word;font-size:.78rem;color:#cbd5e1;font-family:inherit;margin:0;">${escH(c[plat]||'Sin datos')}</pre>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    res.innerHTML = `<div style="color:#f87171;font-size:.82rem;padding:12px;"><i class="fas fa-triangle-exclamation"></i> ${e.message}</div>`;
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fas fa-sparkles"></i> Generar copy';
+}
+</script>
 </body>
 </html>
