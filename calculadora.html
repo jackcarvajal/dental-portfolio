@@ -591,6 +591,9 @@
         <button type="button" class="btn-wa" id="btnWA" onclick="abrirWA()">
           <i class="fa-brands fa-whatsapp"></i> Enviar caso por WhatsApp
         </button>
+        <button type="button" id="btnGuardarCot" onclick="guardarCotizacion()" style="width:100%;padding:13px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:12px;font-size:.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;">
+          <i class="fa-regular fa-bookmark"></i> Guardar cotización
+        </button>
         <div class="form-msg" id="cotMsg"></div>
       </form>
 
@@ -805,6 +808,44 @@ async function enviarCotizacion(e) {
   btn.style.background = 'linear-gradient(135deg,#00FF41,#00cc33)';
   btn.style.color = '#050505';
   showToast('Cotización enviada con éxito', 'ok');
+}
+
+async function guardarCotizacion() {
+  const { total, srv } = calcTotal();
+  if (!total || total <= 0) { showToast('Configura el caso primero', 'err'); return; }
+  const btn = document.getElementById('btnGuardarCot');
+  const msg = document.getElementById('cotMsg');
+  const nombre = document.getElementById('cot-nombre').value.trim();
+  const tel    = document.getElementById('cot-wa').value.trim();
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+  const items = [{
+    servicio: srv.label, material: MAT_LABEL[state.material] || state.material,
+    cantidad: state.qty, urgente: !!state.urgente, dsd: !!state.dsd, envio: !!state.envio
+  }];
+  const payload = {
+    tipo: state.servicio || 'diseno',
+    items, subtotal: total, total,
+    moneda: state.moneda || 'COP',
+    doctor_nombre: nombre || null,
+    doctor_tel: tel || null,
+    estado: 'borrador'
+  };
+  const { data, error } = await sb.from('cotizaciones').insert(payload).select('id').single();
+  btn.disabled = false;
+  if (error) {
+    btn.innerHTML = '<i class="fa-regular fa-bookmark"></i> Guardar cotización';
+    msg.className = 'form-msg err';
+    msg.textContent = 'Error al guardar. Intenta de nuevo.';
+    return;
+  }
+  btn.innerHTML = '<i class="fa-solid fa-bookmark"></i> Guardada';
+  btn.style.background = 'rgba(0,255,65,.12)';
+  btn.style.borderColor = 'rgba(0,255,65,.4)';
+  btn.style.color = '#00FF41';
+  msg.className = 'form-msg ok';
+  msg.textContent = `✓ Cotización guardada (ID: ${data.id.slice(0,8)})`;
+  showToast('Cotización guardada', 'ok');
 }
 
 function abrirWA() {
