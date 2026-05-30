@@ -8,7 +8,8 @@
 
 | # | Archivo SQL | Descripción |
 |---|-------------|-------------|
-| REF-TRIG | `sql/referidos-trigger-primer-pedido.sql` | Trigger auto-detecta primer pedido pagado de referido → estado "primer_pedido" |
+| REF-COMP | `sql/referidos-sistema-completo.sql` | **REEMPLAZA** el anterior — ADD COLUMN codigo_referido, cupones CRED-, RPC validar cupón |
+| REF-TRIG | `~~sql/referidos-trigger-primer-pedido.sql~~` | Trigger auto-detecta primer pedido pagado de referido → estado "primer_pedido" |
 | G1 | `sql/revision-tokens-table.sql` | Tabla `revision_tokens` para aprobación OWASP-segura desde email |
 | G2 | `sql/prodigy-analytics-rpc.sql` | 6 RPCs de métricas para dashboard BI (evita SELECT* en frontend) |
 | G3 | `sql/storage-webp-rls.sql` | RLS + política Storage para transformación WebP sin 403 |
