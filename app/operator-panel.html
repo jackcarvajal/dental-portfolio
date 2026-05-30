@@ -511,7 +511,7 @@ async function notificarWA(pedido, nuevoEstado) {
             }),
         });
         const data = await res.json();
-        if (data.wa_url) window.open(data.wa_url, '_blank');
+        if (data.wa_url) window.open(data.wa_url, '_blank', 'noopener,noreferrer');
     } catch (_) { /* WA no crítico */ }
 }
 

@@ -439,7 +439,7 @@ async function iniciarEntrega(d){
             `Hola ${nombreCliente}, tu pedido *${codigo}* ya está en camino con nuestro mensajero *${mensNombre}*. `+
             `Llegará pronto a: ${direccion}. ¡Cualquier novedad nos avisas! 🛵`
         );
-        window.open(`https://wa.me/${waNum}?text=${txt}`,'_blank');
+        window.open(`https://wa.me/${waNum}?text=${txt}`, '_blank', 'noopener,noreferrer');
     }
     toast('Entrega iniciada — WhatsApp enviado','ok');
     await cargarRuta();
@@ -617,7 +617,7 @@ async function procesarConfirmacion(){
                     (totalStr ? `Total pagado: *${totalStr}*\n` : '') +
                     `\nConsulta tu recibo aquí: ${reciboUrl}\n\n_PRODIGY Lab Dental_`
                 );
-                window.open(`https://wa.me/${waNum}?text=${txt}`, '_blank');
+                window.open(`https://wa.me/${waNum}?text=${txt}`, '_blank', 'noopener,noreferrer');
             }
         } catch(_){}
     }

@@ -288,7 +288,7 @@ function renderGrid() {
                 <div class="caso-desc">${escH(c.description)}</div>
             </div>
             <div class="caso-actions">
-                <button type="button" class="btn-action btn-ver" onclick="window.open('../patient?id=${c.id}','_blank')">👁 Ver</button>
+                <button type="button" class="btn-action btn-ver" onclick="window.open('../patient?id=${c.id}', '_blank', 'noopener,noreferrer')">👁 Ver</button>
                 <button type="button" class="btn-action btn-ver" onclick="abrirModal('${c.id}')">✏️ Editar</button>
                 ${btnVisibilidad}
                 <button type="button" class="btn-action btn-eliminar" onclick="eliminarCaso('${c.id}')">🗑</button>

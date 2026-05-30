@@ -802,7 +802,7 @@ async function abrirModalComp(pedidoId) {
         const url = /^https?:\/\//.test(p.comprobante_pago_url) ? p.comprobante_pago_url : '';
         viewer.innerHTML = url && (url.endsWith('.pdf') || url.includes('application/pdf'))
             ? `<a href="${escH(url)}" target="_blank" rel="noopener noreferrer" class="comp-pdf-link"><i class="fas fa-file-pdf"></i> Abrir comprobante PDF</a>`
-            : url ? `<img src="${escH(url)}" class="comp-img" alt="Comprobante de pago" data-url="${escH(url)}" onclick="if(this.dataset.url)window.open(this.dataset.url,'_blank')">` : '<div class="comp-missing">URL de comprobante inválida.</div>';
+            : url ? `<img src="${escH(url)}" class="comp-img" alt="Comprobante de pago" data-url="${escH(url)}" onclick="if(this.dataset.url)window.open(this.dataset.url, '_blank', 'noopener,noreferrer')">` : '<div class="comp-missing">URL de comprobante inválida.</div>';
     } else {
         viewer.innerHTML = '<div class="comp-missing"><i class="fas fa-exclamation-triangle" style="color:var(--yellow)"></i><br>El cliente no adjuntó comprobante. Verificar manualmente.</div>';
     }
@@ -857,7 +857,7 @@ async function confirmarPago() {
             `Hola Doctor, confirmamos recibo de tu abono por *${fmtCOP(Math.round((p?.precio_total||0)/2))}*.\n\n` +
             `Tu recibo: ${reciboUrl}\n\n_PRODIGY Lab Dental_`
         );
-        window.open(`https://wa.me/${wa}?text=${txt}`, '_blank');
+        window.open(`https://wa.me/${wa}?text=${txt}`, '_blank', 'noopener,noreferrer');
     }
 
     if (activarFactura) {
@@ -878,7 +878,7 @@ async function confirmarPago() {
                 `Hello Doctor, we confirm receipt of your payment.\n\n` +
                 `📄 Your technical invoice:\n${reciboUrl}\n\n_PRODIGY Lab Dental_`
             );
-            window.open(`https://wa.me/${wa}?text=${txt}`, '_blank');
+            window.open(`https://wa.me/${wa}?text=${txt}`, '_blank', 'noopener,noreferrer');
         }
     }
 
@@ -902,7 +902,7 @@ async function rechazarPago() {
         const txt = encodeURIComponent(
             `⚠️ Comprobante de pago — Caso #${p?.codigo || ''}\n\nHola Doctor, no pudimos verificar tu comprobante de pago. Por favor envíalo nuevamente o comunícate al 3212816716.\n\n_PRODIGY Lab Dental_`
         );
-        window.open(`https://wa.me/${wa}?text=${txt}`, '_blank');
+        window.open(`https://wa.me/${wa}?text=${txt}`, '_blank', 'noopener,noreferrer');
     }
 
     toast('Comprobante rechazado — doctor notificado', 'warn');
@@ -1045,7 +1045,7 @@ async function emitirFactura(pedidoId, btn) {
         toast(`✅ Factura #${data.numero || ''} emitida — CUFE recibido`, 'ok');
 
         // Abrir PDF si está disponible
-        if (data.pdf) window.open(data.pdf, '_blank');
+        if (data.pdf) window.open(data.pdf, '_blank', 'noopener,noreferrer');
 
         await cargarFacturasPendientes();
 

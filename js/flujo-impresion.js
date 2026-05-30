@@ -251,6 +251,11 @@
             document.querySelectorAll('.material-card').forEach(card => { card.classList.remove('selected'); card.setAttribute('aria-pressed','false'); });
             event.currentTarget.classList.add('selected'); event.currentTarget.setAttribute('aria-pressed','true');
             STATE.materialTipo = tipo;
+            // Validación biomecánica
+            if (window.BiomecanicaRules && STATE.servicio) {
+                const r = BiomecanicaRules.validate(STATE.servicio, tipo, STATE.cantidad || 1);
+                if (!r.ok || r.advertencias.length) BiomecanicaRules.mostrarAlerta(r, null);
+            }
 
             STATE.submaterialId = null;
             STATE.submaterialPrecio = 0;
@@ -2307,7 +2312,7 @@
             const urlWhatsapp = `https://wa.me/573212816716?text=${encodeURIComponent(texto)}`;
             
             try {
-                window.open(urlWhatsapp, '_blank');
+                window.open(urlWhatsapp, '_blank', 'noopener,noreferrer');
                 const exito = document.getElementById('modal-exito');
                 if (exito) {
                     document.getElementById('exito-orden-id').textContent = STATE.ordenId || '—';
@@ -2746,7 +2751,7 @@
                                 <li style="color:#000 !important;">🍔 Menú navegación</li>
                                 <li style="color:#000 !important;">❓ Esta ayuda</li>
                             </ul>
-                            <button type="button" onclick="window.open('https://wa.me/573212816716?text=Hola,%20necesito%20ayuda%20para%20crear%20mi%20orden%20en%20PRODIGY','_blank');document.getElementById('help-modal').remove();" style="width:100%;padding:10px;background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);border:none;border-radius:6px;color:#fff;font-size:0.85rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.3s;">
+                            <button type="button" onclick="window.open('https://wa.me/573212816716?text=Hola,%20necesito%20ayuda%20para%20crear%20mi%20orden%20en%20PRODIGY', '_blank', 'noopener,noreferrer');document.getElementById('help-modal').remove();" style="width:100%;padding:10px;background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);border:none;border-radius:6px;color:#fff;font-size:0.85rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.3s;">
                                 <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i>
                                 <span>Soporte WhatsApp</span>
                             </button>

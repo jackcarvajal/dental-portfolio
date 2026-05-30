@@ -562,7 +562,7 @@ async function notificarWADiseno(caso, estado) {
       }),
     });
     const data = await res.json();
-    if (data.wa_url) window.open(data.wa_url, '_blank');
+    if (data.wa_url) window.open(data.wa_url, '_blank', 'noopener,noreferrer');
   } catch (_) {}
 }
 
@@ -772,7 +772,7 @@ function notifWA(tipo) {
     diseno: `🎨 Tu diseño está listo para revisar · Caso #${codigo}. Visita: https://prodigylabdental.com/seguimiento-caso?id=${codigo}`,
     entrega:`📦 Diseño aprobado y entregado · Caso #${codigo}. Descarga tu STL desde el portal de seguimiento.`
   };
-  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msgs[tipo]||'')}`, '_blank');
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msgs[tipo]||'')}`, '_blank', 'noopener,noreferrer');
 }
 
 /* ── KANBAN DRAG & DROP + TOUCH ── */

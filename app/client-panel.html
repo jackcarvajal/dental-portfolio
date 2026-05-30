@@ -730,7 +730,7 @@ async function descargarSTL(pedidoId, stlRuta) {
     toast('Generando enlace de descarga…');
     const { data, error } = await sb.storage.from('prodigy-files').createSignedUrl(stlRuta, 3600);
     if (error || !data?.signedUrl) { toast('Error generando link', 'error'); return; }
-    window.open(data.signedUrl, '_blank');
+    window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
 }
 
 /* ── UPLOAD FOTOS FEEDBACK ────────────────────────────────── */

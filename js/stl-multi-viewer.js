@@ -380,7 +380,7 @@
         card.id = 'pmv-card-' + fObj.id;
         const url = URL.createObjectURL(fObj.file);
         card.innerHTML = `
-<div class="pmv-canvas-wrap" style="cursor:zoom-in;" onclick="window.open('${url}','_blank')">
+<div class="pmv-canvas-wrap" style="cursor:zoom-in;" onclick="window.open('${url}', '_blank', 'noopener,noreferrer')">
     <img src="${url}" alt="${escH(fObj.name)}"
          style="width:100%;height:100%;object-fit:cover;display:block;"
          onload="this.style.opacity=1" style="opacity:0;transition:opacity .3s">

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PRODIGY — Sistema de Pagos v4.0 (Agente 2: Finanzas + Paddle)
  * ─────────────────────────────────────────────────────────────
  * ✅ Claves PÚBLICAS (seguras en frontend):
@@ -120,7 +120,7 @@ async function abrirCheckoutWompi({ monto, referencia, email, descripcion, onSuc
         const msg = 'El pago con PSE/Tarjeta estará disponible en 24–48 h.\n\nUsa Transferencia o contacta por WhatsApp.';
         if (confirm(msg + '\n\n¿Abrir WhatsApp ahora?')) {
             const ref = encodeURIComponent('Quiero pagar por transferencia — Ref: ' + referencia);
-            window.open('https://wa.me/573212816716?text=' + ref, '_blank');
+            window.open('https://wa.me/573212816716?text=' + ref, '_blank', 'noopener,noreferrer');
         }
         return;
     }
@@ -385,7 +385,7 @@ async function abrirCheckoutPaddle({ montoUSD, referencia, email, containerId, o
                   + 'Por favor usa PayPal para pago internacional o contáctanos por WhatsApp.';
         if (confirm(msg + '\n\n¿Abrir WhatsApp ahora?')) {
             const ref = encodeURIComponent('Quiero pagar por Paddle — Ref: ' + referencia);
-            window.open('https://wa.me/573212816716?text=' + ref, '_blank');
+            window.open('https://wa.me/573212816716?text=' + ref, '_blank', 'noopener,noreferrer');
         }
         return;
     }
