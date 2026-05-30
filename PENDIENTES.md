@@ -4,15 +4,18 @@
 
 ---
 
-## 🔴 URGENTE — Nuevos SQL para ejecutar en Supabase
+## 🔴 URGENTE — SQL de Gemini + nuevos (ejecutar en Supabase)
 
-| # | Acción | Dónde | Detalle |
-|---|--------|-------|---------|
-| 0f | **Ejecutar `sql/trigger-doctor-inactivo-churn.sql`** | Supabase PRODIGY → SQL Editor | VIEW doctors_inactivos + RPC prodigy_detectar_churn para alertas WA |
+| # | Archivo SQL | Descripción |
+|---|-------------|-------------|
+| G1 | `sql/revision-tokens-table.sql` | Tabla `revision_tokens` para aprobación OWASP-segura desde email |
+| G2 | `sql/prodigy-analytics-rpc.sql` | 6 RPCs de métricas para dashboard BI (evita SELECT* en frontend) |
+| G3 | `sql/storage-webp-rls.sql` | RLS + política Storage para transformación WebP sin 403 |
+| 0f | `sql/trigger-doctor-inactivo-churn.sql` | VIEW doctors_inactivos + RPC prodigy_detectar_churn |
 
 ---
 
-## 🔴 URGENTE — Nuevos SQL para ejecutar en Supabase
+## 🔴 URGENTE — SQL existentes por ejecutar en Supabase
 
 | # | Acción | Dónde | Detalle |
 |---|--------|-------|---------|
