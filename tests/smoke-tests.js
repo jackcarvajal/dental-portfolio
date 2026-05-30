@@ -245,6 +245,27 @@ const revDiseno = fileContent('revision-diseno.html');
 assert(revDiseno.includes('ar-viewer.js'), 'revision-diseno.html carga ar-viewer.js');
 assert(revDiseno.includes('ProdigyAR.launch'), 'revision-diseno.html tiene botón AR');
 
+// ── BLOQUE 21: Timeline historial + Bulk Diseño ───────────────────
+console.log('\n📋 TIMELINE + BULK DISEÑO');
+const clientPanelFinal = fileContent('app/client-panel.html');
+assert(clientPanelFinal.includes('verTimeline'), 'client-panel tiene verTimeline()');
+assert(clientPanelFinal.includes('modal-timeline'), 'client-panel tiene modal de timeline');
+assert(clientPanelFinal.includes('historial_diseno'), 'client-panel carga historial_diseno');
+const operDiseno = fileContent('app/operario-diseno.html');
+assert(operDiseno.includes('abrirBulkDiseno'), 'operario-diseno tiene Bulk Upload');
+assert(operDiseno.includes('modal-bulk-diseno'), 'operario-diseno tiene modal bulk');
+
+// ── BLOQUE 22: Migración inline→CSS ──────────────────────────────
+console.log('\n🎨 MIGRACIÓN INLINE→CSS');
+const stylesGlobal = fileContent('css/styles.css');
+assert(stylesGlobal.includes('.hover-fade'), 'styles.css tiene .hover-fade');
+assert(stylesGlobal.includes('.hover-lift'), 'styles.css tiene .hover-lift');
+assert(stylesGlobal.includes('.hover-gold'), 'styles.css tiene .hover-gold');
+const nosotros = fileContent('nosotros.html');
+const calcHtml = fileContent('calculadora.html');
+assert(!nosotros.includes('onmouseover'), 'nosotros.html: 0 onmouseover inline');
+assert(!calcHtml.includes('onmouseover'), 'calculadora.html: 0 onmouseover inline');
+
 // ── RESUMEN ────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(50));
 console.log(`RESUMEN: ${passed} ✅  ${warnings} ⚠️  ${failed} ❌`);
