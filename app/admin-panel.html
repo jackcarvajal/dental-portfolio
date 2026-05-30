@@ -290,7 +290,7 @@
 
                     <!-- Imagen del caso -->
                     <div class="form-group" style="grid-column:1/-1;">
-                        <label>Imagen del caso</label>
+                        <label for="img-input">Imagen del caso</label>
                         <div class="drop-zone" id="drop-zone" onclick="document.getElementById('img-input').click()"
                              ondrop="handleDrop(event)" ondragover="event.preventDefault();this.classList.add('drag-over')"
                              ondragleave="this.classList.remove('drag-over')">
@@ -303,7 +303,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Título del caso</label>
+                        <label for="p-titulo">Título del caso</label>
                         <input type="text" id="p-titulo" placeholder="Ej: Corona Zirconio E-max 24" required>
                     </div>
 
@@ -379,7 +379,7 @@
 
                     <!-- Galería adicional -->
                     <div class="form-group" style="grid-column:1/-1;">
-                        <label><i class="fas fa-images" style="color:#00d2ff;margin-right:6px;"></i>GALERÍA — Fotos adicionales del caso <span style="color:#475569;font-weight:400;">(opcional)</span></label>
+                        <label for="gallery-input"><i class="fas fa-images" style="color:#00d2ff;margin-right:6px;"></i>GALERÍA — Fotos adicionales del caso <span style="color:#475569;font-weight:400;">(opcional)</span></label>
                         <div class="drop-zone" onclick="document.getElementById('gallery-input').click()"
                              ondrop="handleGalleryDrop(event)" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')"
                              style="min-height:80px;">
@@ -393,7 +393,7 @@
 
                     <!-- Visor Exocad — solo HTML -->
                     <div class="form-group" style="grid-column:1/-1;">
-                        <label><i class="fas fa-cube" style="color:#D946A6;margin-right:6px;"></i>VISOR EXOCAD <span style="color:#475569;font-weight:400;">(opcional)</span></label>
+                        <label for="exocad-html-input"><i class="fas fa-cube" style="color:#D946A6;margin-right:6px;"></i>VISOR EXOCAD <span style="color:#475569;font-weight:400;">(opcional)</span></label>
                         <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(217,70,166,.06);border:1px dashed rgba(217,70,166,.3);border-radius:10px;">
                             <label for="exocad-html-input" style="display:inline-flex;align-items:center;gap:8px;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.4);color:#D946A6;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;white-space:nowrap;transition:background .2s;" onmouseover="this.style.background='rgba(217,70,166,.25)'" onmouseout="this.style.background='rgba(217,70,166,.15)'">
                                 <i class="fas fa-file-code"></i> Seleccionar archivo HTML
