@@ -815,6 +815,16 @@
       <h2>Tecnología que transforma clínicas</h2>
       <div class="section-sub">Filtra por categoría</div>
     </div>
+    <!-- Búsqueda por texto -->
+    <div style="margin-bottom:16px;max-width:480px;">
+      <div style="position:relative;">
+        <input type="search" id="journal-search" placeholder="Buscar artículo…" maxlength="80" autocomplete="off"
+          aria-label="Buscar en el journal"
+          style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;padding:10px 14px 10px 40px;font-size:.88rem;font-family:inherit;outline:none;"
+          oninput="if(typeof searchJournal==='function')searchJournal(this.value)">
+        <i class="fas fa-search" aria-hidden="true" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#475569;pointer-events:none;"></i>
+      </div>
+    </div>
     <div class="filter-tags" role="group" aria-label="Filtrar artículos por categoría">
       <button type="button" class="tag-btn active" onclick="filterArticles(this,'all')" aria-pressed="true">Todos</button>
       <button type="button" class="tag-btn" onclick="filterArticles(this,'materiales')" aria-pressed="false">Materiales</button>
