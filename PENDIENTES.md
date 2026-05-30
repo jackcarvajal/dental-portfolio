@@ -12,6 +12,8 @@
 | G2 | `sql/prodigy-analytics-rpc.sql` | 6 RPCs de métricas para dashboard BI (evita SELECT* en frontend) |
 | G3 | `sql/storage-webp-rls.sql` | RLS + política Storage para transformación WebP sin 403 |
 | 0f | `sql/trigger-doctor-inactivo-churn.sql` | VIEW doctors_inactivos + RPC prodigy_detectar_churn |
+| WL | `sql/waitlist-labs-table.sql` | Tabla waitlist_labs para landing /para-laboratorios |
+| ~~COT~~ | ~~`sql/cotizaciones-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — tabla cotizaciones activa |
 
 ---
 
