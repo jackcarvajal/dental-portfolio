@@ -109,6 +109,13 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-30 — ronda 2)
+- **MI CLÍNICA ANALYTICS**: Tab en client-panel con KPIs, gráfica barras CSS, top servicios, ahorro vs método tradicional, IntersectionObserver para carga lazy
+- **BACKGROUND SYNC offline mensajero**: SW + IndexedDB + badge visual — evidencias se suben automáticamente al recuperar señal en Bogotá
+- **EXPORT CSV panel-interno**: Botón en header, exporta todos los pedidos con campos completos, BOM UTF-8 Excel
+- **BIOMECÁNICA EN FLUJO-LAB**: generarOrden() interceptada, bloqueos impiden envío, advertencias piden confirmación
+- **AR VIEWER WebXR**: js/ar-viewer.js — Android WebXR hit-test real, iOS QuickLook fallback, visor 3D para desktop. Botón "AR" en revision-diseno y caso
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-30)
 - **SW v24**: cache invalidado para que usuarios vean los cambios de seguridad/UX
 - **90 Smoke Tests**: suite automatizada en CI/CD que valida 15 bloques antes del deploy
