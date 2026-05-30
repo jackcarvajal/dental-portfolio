@@ -230,6 +230,21 @@ assert(contabilidad.includes('exportarCSV'), 'contabilidad.html tiene exportarCS
 assert(panelInterno.includes('exportarPedidosCSV'), 'panel-interno tiene exportarPedidosCSV()');
 assert(contabilidad.includes('\\uFEFF') || contabilidad.includes("'﻿'") || contabilidad.includes('BOM'), 'CSV usa BOM UTF-8 para Excel');
 
+// ── BLOQUE 19: Búsqueda en portafolio y journal ────────────────────
+console.log('\n🔍 BÚSQUEDA EN LISTAS');
+const portafolio = fileContent('portafolio.html');
+assert(portafolio.includes('filtrarBusqueda'), 'portafolio.html tiene búsqueda por texto');
+assert(portafolio.includes('activeSearch'), 'portafolio.html maneja búsqueda en applyFilters');
+const journal2 = fileContent('journal.html');
+assert(journal2.includes('searchJournal'), 'journal.html tiene búsqueda por texto');
+assert(journal2.includes('_applyJournalFilters'), 'journal.html combina filtro + búsqueda');
+
+// ── BLOQUE 20: AR Viewer configuración ────────────────────────────
+console.log('\n🥽 AR VIEWER INTEGRACIÓN');
+const revDiseno = fileContent('revision-diseno.html');
+assert(revDiseno.includes('ar-viewer.js'), 'revision-diseno.html carga ar-viewer.js');
+assert(revDiseno.includes('ProdigyAR.launch'), 'revision-diseno.html tiene botón AR');
+
 // ── RESUMEN ────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(50));
 console.log(`RESUMEN: ${passed} ✅  ${warnings} ⚠️  ${failed} ❌`);
