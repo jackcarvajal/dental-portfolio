@@ -925,6 +925,18 @@ window.submitOrden     = window.submitOrden      || function(){};
                 <strong style="color:var(--neon-green);">Siguiente Paso: WhatsApp</strong>
                 <p style="font-size:.83rem;color:var(--text-primary);margin-top:5px;">Se abrirá WhatsApp con tu orden pre-cargada. Solo envía el mensaje para completar.</p>
             </div>
+            <!-- Campo cupón de crédito por referido -->
+            <div id="cupon-wrap" style="margin-bottom:12px;">
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <input type="text" id="cupon-input" placeholder="¿Tienes un cupón de crédito? Ej: CRED-XXXXXXXX"
+                        maxlength="13" autocomplete="off" spellcheck="false"
+                        style="flex:1;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:8px;color:#fff;padding:9px 12px;font-size:.82rem;font-family:inherit;outline:none;text-transform:uppercase;letter-spacing:1px;"
+                        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')">
+                    <button type="button" onclick="validarCuponCredito()" style="background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:8px;padding:9px 16px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;">Validar</button>
+                </div>
+                <div id="cupon-msg" style="font-size:.72rem;margin-top:5px;min-height:16px;" aria-live="polite"></div>
+            </div>
+
             <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.83rem;color:var(--text-secondary);line-height:1.5;padding:11px;background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.12);border-radius:8px;margin-bottom:14px;">
                 <input type="checkbox" id="chk-terminos"
                        onchange="const b=document.getElementById('btn-wa');b.disabled=!this.checked;b.style.opacity=this.checked?'1':'0.45';"
@@ -1772,7 +1784,16 @@ const lineWompi = document.getElementById('line-wompi');
             msg += `• ${_esIntl ? 'Method' : 'Medio'}: ${STATE.pagoMetodo}\n`;
             msg += `• ${_esIntl ? 'Holder' : 'Titular'}: ${STATE.pagoTitular}\n`;
             if (STATE.pagoRef) msg += `• Ref: ${STATE.pagoRef}\n`;
-            msg += `\n💵 *TOTAL: ${STATE.total}* (pago 100% al confirmar)\n\n`;
+            // Aplicar cupón de crédito si fue validado
+            let _totalConCupon = STATE.total;
+            if (window._cuponCreditoActivo) {
+                const totalNum = parseInt((STATE.total||'0').replace(/[^0-9]/g,''), 10) || 0;
+                const descuento = window._cuponCreditoActivo.monto || 0;
+                const finalNum = Math.max(0, totalNum - descuento);
+                _totalConCupon = '$' + finalNum.toLocaleString('es-CO');
+                msg += `\n🎁 *CUPÓN DE CRÉDITO:* ${window._cuponCreditoActivo.cupon} (-$${descuento.toLocaleString('es-CO')} COP)\n`;
+            }
+            msg += `\n💵 *TOTAL: ${_totalConCupon}* (pago 100% al confirmar)\n\n`;
             msg += `📎 ${_esIntl ? '*Files:*' : '*Archivos:*'} ${STATE.linkSTL}\n`;
             if (STATE.observaciones) msg += `📝 ${_esIntl ? '*Notes:*' : '*Indicaciones:*'} ${STATE.observaciones}\n`;
 
@@ -1907,6 +1928,37 @@ const lineWompi = document.getElementById('line-wompi');
         document.addEventListener('DOMContentLoaded', () => {
             calcularTotal();
             inicializarCatalogo(); /* sync precios desde admin-precios → Supabase */
+
+            // Validador de cupones de crédito por referido
+            window.validarCuponCredito = async function() {
+                const cupon = (document.getElementById('cupon-input')?.value || '').trim().toUpperCase();
+                const msg = document.getElementById('cupon-msg');
+                if (!cupon || !/^CRED-[A-Z0-9]{8}$/.test(cupon)) {
+                    if (msg) { msg.style.color='#f87171'; msg.textContent='Formato inválido. Debe ser CRED-XXXXXXXX'; }
+                    return;
+                }
+                if (msg) { msg.style.color='#94a3b8'; msg.textContent='Validando...'; }
+                try {
+                    if (!window.supabase) throw new Error('SDK no disponible');
+                    const sb2 = window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co', SUPABASE_ANON);
+                    const { data, error } = await sb2.rpc('prodigy_usar_cupon_credito', { p_cupon: cupon });
+                    if (error) throw error;
+                    if (!data.ok) {
+                        if (msg) { msg.style.color='#f87171'; msg.textContent=data.error||'Cupón inválido o ya usado.'; }
+                        return;
+                    }
+                    // Cupón válido — aplicar descuento
+                    window._cuponCreditoActivo = { cupon, monto: data.monto };
+                    if (msg) {
+                        msg.style.color='#00FF41';
+                        msg.textContent=`✓ Cupón válido — crédito de $${Number(data.monto).toLocaleString('es-CO')} COP aplicado a este pedido.`;
+                    }
+                    const inp = document.getElementById('cupon-input');
+                    if (inp) { inp.disabled=true; inp.style.borderColor='rgba(0,255,65,.5)'; }
+                } catch(e) {
+                    if (msg) { msg.style.color='#f87171'; msg.textContent='Error validando: '+e.message; }
+                }
+            };
 
             // Capturar código de referido de la URL (?ref=PRODY-XXXXXX)
             (function() {
