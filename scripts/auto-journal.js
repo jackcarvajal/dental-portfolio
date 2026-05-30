@@ -792,7 +792,14 @@ async function main() {
     console.warn('⚠️  No se pudo leer articles.js:', e.message);
   }
 
-  const allArticles = [...newArticles, ...existing];
+  // Limitar a 120 artículos (los más recientes) para no crecer indefinidamente
+  const MAX_ARTICLES = 120;
+  let allArticles = [...newArticles, ...existing];
+  if (allArticles.length > MAX_ARTICLES) {
+    const dropped = allArticles.length - MAX_ARTICLES;
+    allArticles = allArticles.slice(0, MAX_ARTICLES);
+    console.log(`🗑️  Purgados ${dropped} artículos antiguos (límite ${MAX_ARTICLES})`);
+  }
   fs.writeFileSync(ARTICLES_PATH, serializeArticles(allArticles), 'utf8');
   console.log(`✅ articles.js → ${allArticles.length} artículos totales`);
 
