@@ -560,6 +560,30 @@ function renderStock() {
         const ratio = it.stock_minimo > 0 ? it.stock_actual / it.stock_minimo : 2;
         const semClass = it.stock_actual === 0 ? 'sem-red' : ratio <= 1 ? 'sem-yellow' : 'sem-green';
         const semColor = it.stock_actual === 0 ? 'var(--red)' : ratio <= 1 ? 'var(--yellow)' : 'var(--green)';
+
+        // ── NESTING PRE-CALCULADO para discos de fresadora ──────────
+        // Calcula espacio disponible restante en el disco físico
+        // Estimación: 1 corona posterior ≈ 10% del disco 98mm
+        const esDiscoFresado = it.categoria === 'Disco' && it.stock_actual > 0;
+        const nestingHtml = esDiscoFresado ? (() => {
+            // Usar campo "usos_restantes" si existe, o calcular desde stock
+            const capacidadTotal = it.capacidad_unidades || 10; // unidades por disco
+            const usosRestantes  = it.usos_restantes !== undefined ? it.usos_restantes : capacidadTotal;
+            const pct = Math.max(0, Math.min(100, (usosRestantes / capacidadTotal) * 100));
+            const nestColor = pct <= 20 ? 'var(--red)' : pct <= 50 ? 'var(--yellow)' : 'var(--green)';
+            const alerta = pct <= 20 ? `<div style="font-size:.65rem;background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.2);border-radius:6px;padding:3px 8px;margin-top:6px;font-weight:700;">⚠️ Prepara cambio de disco</div>` : '';
+            return `<div style="margin-top:10px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:4px;">
+                <span>Espacio en disco</span>
+                <span style="font-weight:700;color:${nestColor}">${Math.round(pct)}% (≈${usosRestantes} unid.)</span>
+              </div>
+              <div style="background:rgba(255,255,255,.07);border-radius:100px;height:6px;overflow:hidden;">
+                <div style="background:${nestColor};width:${pct}%;height:100%;border-radius:100px;transition:width .3s;"></div>
+              </div>
+              ${alerta}
+            </div>`;
+        })() : '';
+
         return `
         <div class="stock-card">
             <div class="sem ${semClass}"></div>
@@ -572,6 +596,7 @@ function renderStock() {
             <div class="item-min">Mínimo: ${it.stock_minimo}</div>
             <div class="item-cost">Costo prom: $${(it.costo_promedio||0).toLocaleString('es-CO')}</div>
             ${it.numero_lote_inicial ? `<div style="font-size:.68rem;color:#475569;margin-top:2px;">Lote: ${escH(it.numero_lote_inicial)}</div>` : ''}
+            ${nestingHtml}
             ${it.kill_switch ? '<div class="kill-badge">KILL SWITCH ON</div>' : ''}
             <div class="stock-card-actions">
                 <button type="button" class="btn btn-outline btn-sm" onclick="abrirAjuste('${it.id}',${it.stock_actual})">Ajustar</button>

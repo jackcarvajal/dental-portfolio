@@ -2776,6 +2776,15 @@
             event.currentTarget.classList.add('selected'); event.currentTarget.setAttribute('aria-pressed','true');
             STATE.materialTipo = tipo;
 
+            // ── Validación biomecánica al seleccionar material ──
+            if (window.BiomecanicaRules && STATE.subtipo) {
+                const qty = parseInt(document.getElementById('cantidad')?.value) || 1;
+                const result = BiomecanicaRules.validate(STATE.subtipo, tipo, qty);
+                if (!result.ok || result.advertencias.length) {
+                    BiomecanicaRules.mostrarAlerta(result, null);
+                }
+            }
+
             STATE.submaterialId = null;
             STATE.submaterialPrecio = 0;
             STATE.submaterialNombre = null;
@@ -4701,6 +4710,7 @@
 <script src="js/prodigy-analytics.js?v=20260528" defer></script>
 </main>
 <script src="js/footer.js?v=20260528"></script>
+<script src="js/biomecanica-rules.js?v=20260528"></script>
 
     <!-- FLOTANTES UX -->
 

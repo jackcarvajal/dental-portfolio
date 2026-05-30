@@ -151,6 +151,31 @@
         <a id="btn-track" href="/seguimiento-caso" class="btn-seguimiento">
             Ver Seguimiento del Caso
         </a>
+
+        <!-- ── ONBOARDING CARD — primera vez ── -->
+        <div id="onboarding-card" style="display:none;background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.25);border-radius:14px;padding:20px;margin:18px 0;text-align:left;">
+            <div style="font-weight:800;color:#00d2ff;font-size:.88rem;margin-bottom:10px;">🎉 ¡Bienvenido a PRODIGY!</div>
+            <p style="font-size:.8rem;color:#cbd5e1;line-height:1.7;margin-bottom:14px;">Como es tu primer pedido, aquí te explicamos en 3 pasos cómo funciona el portal:</p>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                    <span style="background:#00d2ff;color:#000;border-radius:50%;width:22px;height:22px;font-size:.7rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</span>
+                    <p style="font-size:.78rem;color:#e2e8f0;margin:0;"><strong>Seguimiento en vivo</strong> — desde "Ver Seguimiento" puedes saber en qué etapa está tu caso en tiempo real.</p>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                    <span style="background:#00FF41;color:#000;border-radius:50%;width:22px;height:22px;font-size:.7rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</span>
+                    <p style="font-size:.78rem;color:#e2e8f0;margin:0;"><strong>Revisión del diseño</strong> — cuando el diseño esté listo, recibirás un link de WhatsApp para aprobarlo con visor 3D.</p>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                    <span style="background:#D4AF37;color:#000;border-radius:50%;width:22px;height:22px;font-size:.7rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</span>
+                    <p style="font-size:.78rem;color:#e2e8f0;margin:0;"><strong>Descarga del STL</strong> — después de aprobar, el archivo final queda disponible en tu portal.</p>
+                </div>
+            </div>
+            <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20acabo%20de%20hacer%20mi%20primer%20pedido%2C%20%C2%BFc%C3%B3mo%20funciona%20el%20portal%3F" target="_blank" rel="noopener noreferrer"
+               style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25D366;padding:8px 16px;border-radius:8px;font-size:.75rem;font-weight:700;text-decoration:none;">
+                💬 ¿Tienes dudas? Escríbenos
+            </a>
+        </div>
+
         <a href="/" class="btn-home">Volver al inicio</a>
 
         <!-- PWA install: aparece si el browser ofrece instalación -->
@@ -165,6 +190,13 @@
     (async function init() {
         // Anti-flash: mostrar página siempre (no requiere auth, es post-pago público)
         document.body.style.visibility = 'visible';
+
+        // Onboarding para clientes nuevos (primera vez en success.html)
+        const esNuevo = !localStorage.getItem('prodigy_success_visto');
+        if (esNuevo) {
+            document.getElementById('onboarding-card').style.display = 'block';
+            localStorage.setItem('prodigy_success_visto', '1');
+        }
 
         const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
         const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';

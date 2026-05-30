@@ -171,6 +171,9 @@ body.ready { visibility: visible; }
     </div>
     <a href="operator-panel.html" class="nav-item active" aria-current="page">Mis Casos</a>
     <a href="inventario.html" class="nav-item">Inventario</a>
+    <button type="button" onclick="abrirBulk()" class="nav-item" style="width:100%;text-align:left;background:rgba(0,255,65,.07);border:1px solid rgba(0,255,65,.2);color:#00FF41;margin-top:8px;border-radius:8px;cursor:pointer;">
+        ⚡ Carga Masiva STL
+    </button>
     <div class="sidebar-footer">
         <button type="button" class="panico-btn" onclick="abrirPanico()">INCIDENCIA</button>
         <a href="#" class="nav-item" onclick="ProdigyAuth.signOut()" style="margin-top:8px">Cerrar Sesión</a>
@@ -1065,6 +1068,203 @@ document.addEventListener('keydown', e => {
     });
 });
 </script>
+<!-- ═══════════════════════════════════════════════════════════
+     BULK UPLOAD MODAL — Carga masiva de STL por lote
+     El operario arrastra 20+ STL → el sistema extrae el ID del
+     pedido del nombre del archivo → valida magic bytes → sube
+     ═══════════════════════════════════════════════════════════ -->
+<div id="modal-bulk" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9500;align-items:center;justify-content:center;padding:20px;overflow-y:auto;">
+  <div style="background:#0a1020;border:2px solid rgba(0,255,65,.3);border-radius:18px;padding:28px;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <h2 style="font-size:1.1rem;font-weight:900;color:#00FF41;">⚡ Carga Masiva de STL</h2>
+        <p style="font-size:.75rem;color:#94a3b8;margin-top:2px;">Arrastra múltiples STL. El sistema detecta el ID de cada caso por el nombre del archivo.</p>
+      </div>
+      <button type="button" onclick="cerrarBulk()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1.2rem;" aria-label="Cerrar">✕</button>
+    </div>
+
+    <!-- Drop Zone -->
+    <div id="bulk-dropzone" style="border:2px dashed rgba(0,255,65,.4);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:.2s;position:relative;"
+         ondragover="bulkDragOver(event)" ondragleave="bulkDragLeave(event)" ondrop="bulkDrop(event)"
+         onclick="document.getElementById('bulk-file-input').click()">
+      <div style="font-size:2.5rem;margin-bottom:12px;">📂</div>
+      <p style="font-weight:700;color:#e2e8f0;margin-bottom:6px;">Arrastra aquí los archivos STL / OBJ / PLY</p>
+      <p style="font-size:.75rem;color:#94a3b8;">O haz clic para seleccionar. El nombre debe contener el código del caso.</p>
+      <p style="font-size:.68rem;color:#64748b;margin-top:6px;">Ej: <code style="color:#00d2ff">PRD-2026-0177_corona.stl</code> o <code style="color:#00d2ff">177_final.stl</code></p>
+      <input type="file" id="bulk-file-input" multiple accept=".stl,.obj,.ply,.3mf"
+             style="position:absolute;inset:0;opacity:0;cursor:pointer;"
+             onchange="bulkFilesSelected(event)">
+    </div>
+
+    <!-- Lista de archivos procesados -->
+    <div id="bulk-file-list" style="margin-top:20px;display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <span id="bulk-summary" style="font-size:.8rem;font-weight:700;color:#e2e8f0;"></span>
+        <button type="button" onclick="bulkUploadAll()" id="btn-bulk-upload"
+                style="background:linear-gradient(135deg,#00FF41,#00cc35);color:#000;border:none;padding:9px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.85rem;">
+          ⬆ Subir todos
+        </button>
+      </div>
+      <div id="bulk-items" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;"></div>
+    </div>
+
+    <!-- Progreso global -->
+    <div id="bulk-progress-wrap" style="display:none;margin-top:16px;">
+      <div style="background:rgba(255,255,255,.06);border-radius:100px;height:8px;overflow:hidden;">
+        <div id="bulk-progress-bar" style="background:linear-gradient(90deg,#00FF41,#00d2ff);height:100%;width:0%;transition:width .3s;border-radius:100px;"></div>
+      </div>
+      <p id="bulk-progress-msg" style="font-size:.75rem;color:#94a3b8;margin-top:6px;text-align:center;"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── BULK UPLOAD LOGIC ─────────────────────────────────────────── */
+let _bulkFiles = [];
+
+// Regex para extraer ID de pedido del nombre del archivo
+// Soporta: PRD-2026-0177, CAD-ABC123, 177761, pedido_177, caso177
+const ID_PATTERNS = [
+  /PRD[-_]?\d{4}[-_]?(\d+)/i,      // PRD-2026-0177 → 0177
+  /CAD[-_]([A-Z0-9]+)/i,            // CAD-ABC123
+  /pedido[-_]?(\d{4,})/i,           // pedido_177761
+  /caso[-_]?(\d{4,})/i,             // caso177
+  /[-_](\d{5,})[-_\s.]/,            // _177761_
+  /^(\d{5,})/,                       // 177761_corona.stl
+];
+
+function extractCaseId(filename) {
+    const base = filename.replace(/\.(stl|obj|ply|3mf)$/i, '');
+    for (const re of ID_PATTERNS) {
+        const m = base.match(re);
+        if (m) return m[1] || m[0];
+    }
+    return null;
+}
+
+function bulkDragOver(e) {
+    e.preventDefault();
+    document.getElementById('bulk-dropzone').style.borderColor = '#00FF41';
+    document.getElementById('bulk-dropzone').style.background = 'rgba(0,255,65,.04)';
+}
+function bulkDragLeave(e) {
+    document.getElementById('bulk-dropzone').style.borderColor = 'rgba(0,255,65,.4)';
+    document.getElementById('bulk-dropzone').style.background = '';
+}
+function bulkDrop(e) {
+    e.preventDefault();
+    bulkDragLeave(e);
+    processBulkFiles([...e.dataTransfer.files]);
+}
+function bulkFilesSelected(e) { processBulkFiles([...e.target.files]); }
+
+async function processBulkFiles(files) {
+    const allowed = ['.stl','.obj','.ply','.3mf'];
+    const filtered = files.filter(f => allowed.some(ext => f.name.toLowerCase().endsWith(ext)));
+    if (!filtered.length) { toast('Ningún archivo STL/OBJ/PLY encontrado','err'); return; }
+
+    _bulkFiles = [];
+    const itemsEl = document.getElementById('bulk-items');
+    itemsEl.innerHTML = '<p style="color:#94a3b8;font-size:.78rem;text-align:center;">Analizando archivos...</p>';
+    document.getElementById('bulk-file-list').style.display = 'block';
+
+    // Validar en paralelo
+    const results = await Promise.all(filtered.map(async (file) => {
+        const caseId = extractCaseId(file.name);
+        let magicOk = true, magicMsg = '';
+        if (window.validateMagicBytes) {
+            const r = await validateMagicBytes(file);
+            magicOk = r.safe;
+            magicMsg = r.error || '';
+        }
+        // Buscar el pedido en los datos cargados
+        const pedido = _pedidos.find(p =>
+            p.codigo?.includes(caseId) ||
+            p.id?.startsWith(caseId) ||
+            caseId === (p.codigo?.split('-').pop())
+        );
+        return { file, caseId, magicOk, magicMsg, pedido, status: 'pending' };
+    }));
+
+    _bulkFiles = results;
+    renderBulkList();
+}
+
+function renderBulkList() {
+    const el = document.getElementById('bulk-items');
+    const valid   = _bulkFiles.filter(f => f.magicOk && f.pedido);
+    const invalid = _bulkFiles.filter(f => !f.magicOk || !f.pedido);
+
+    document.getElementById('bulk-summary').textContent =
+        `${_bulkFiles.length} archivos — ${valid.length} listos para subir, ${invalid.length} con problemas`;
+
+    el.innerHTML = _bulkFiles.map((item, i) => {
+        const ok = item.magicOk && item.pedido && item.status === 'pending';
+        const color = !item.magicOk ? '#ef4444' : !item.pedido ? '#fbbf24' : item.status === 'done' ? '#00FF41' : item.status === 'uploading' ? '#00d2ff' : '#94a3b8';
+        const icon  = !item.magicOk ? '🚫' : !item.pedido ? '⚠️' : item.status === 'done' ? '✅' : item.status === 'uploading' ? '⬆' : '📄';
+        const label = !item.magicOk ? item.magicMsg : !item.pedido ? `ID "${item.caseId}" no encontrado` : item.status === 'done' ? 'Subido' : item.pedido.codigo + ' — ' + (item.pedido.servicio || '');
+        return `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;">
+          <span style="font-size:1.2rem;">${icon}</span>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:.78rem;font-weight:700;color:#e2e8f0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.file.name}</div>
+            <div style="font-size:.68rem;color:${color};margin-top:2px;">${label}</div>
+          </div>
+          <span style="font-size:.65rem;color:#64748b;flex-shrink:0;">${(item.file.size/1024).toFixed(0)} KB</span>
+        </div>`;
+    }).join('');
+}
+
+async function bulkUploadAll() {
+    const toUpload = _bulkFiles.filter(f => f.magicOk && f.pedido && f.status === 'pending');
+    if (!toUpload.length) { toast('Sin archivos válidos para subir','err'); return; }
+
+    document.getElementById('btn-bulk-upload').disabled = true;
+    document.getElementById('bulk-progress-wrap').style.display = 'block';
+
+    let done = 0;
+    for (const item of toUpload) {
+        item.status = 'uploading';
+        renderBulkList();
+        document.getElementById('bulk-progress-msg').textContent = `Subiendo ${item.file.name}...`;
+
+        try {
+            const path = `${item.pedido.id}/bulk_${Date.now()}_${item.file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+            const { error } = await sb.storage.from('diseno-archivos').upload(path, item.file, { upsert: true });
+            if (error) throw error;
+            const { data: { publicUrl } } = sb.storage.from('diseno-archivos').getPublicUrl(path);
+
+            // Actualizar stl_urls del pedido
+            const { data: ped } = await sb.from('pedidos').select('stl_urls').eq('id', item.pedido.id).single();
+            const urls = [...(ped?.stl_urls || []), publicUrl];
+            await sb.from('pedidos').update({ stl_urls: urls }).eq('id', item.pedido.id);
+
+            item.status = 'done';
+        } catch(e) {
+            item.status = 'error';
+            item.magicMsg = e.message;
+        }
+
+        done++;
+        const pct = Math.round((done / toUpload.length) * 100);
+        document.getElementById('bulk-progress-bar').style.width = pct + '%';
+        renderBulkList();
+    }
+
+    document.getElementById('bulk-progress-msg').textContent = `Completado: ${done} de ${toUpload.length} archivos subidos.`;
+    document.getElementById('btn-bulk-upload').disabled = false;
+    toast(`✅ Bulk upload: ${toUpload.filter(f=>f.status==='done').length}/${toUpload.length} subidos`,'ok');
+    await cargarPedidos();
+}
+
+function abrirBulk() {
+    document.getElementById('modal-bulk').style.display = 'flex';
+    _bulkFiles = [];
+    document.getElementById('bulk-file-list').style.display = 'none';
+    document.getElementById('bulk-progress-wrap').style.display = 'none';
+}
+function cerrarBulk() { document.getElementById('modal-bulk').style.display = 'none'; }
+</script>
+
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});</script>
 </body>
 </html>
