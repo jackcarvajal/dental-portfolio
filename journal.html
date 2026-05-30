@@ -829,6 +829,9 @@
       <button type="button" class="tag-btn" onclick="filterArticles(this,'flujos')" aria-pressed="false">Flujos CAD</button>
       <button type="button" class="tag-btn" onclick="filterArticles(this,'ia')" aria-pressed="false">IA</button>
     </div>
+    <input type="search" id="journal-search" placeholder="🔍 Buscar artículo..." enterkeyhint="search" aria-label="Buscar artículo por título o palabras clave"
+           style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:7px 16px;color:#e2e8f0;font-size:.8rem;outline:none;min-width:200px;transition:border-color .2s;"
+           oninput="searchJournal(this.value)">
   </div>
 
   <div class="articles-track" id="articlesTrack" role="feed" aria-label="Artículos técnicos PRODIGY Journal" aria-live="polite">
@@ -990,15 +993,31 @@
   }
 
   /* ── FILTRO ARTÍCULOS ─────────────────────────────── */
+  let _activeJournalCat    = 'all';
+  let _activeJournalSearch = '';
+
   function filterArticles(btnEl, cat) {
+    _activeJournalCat = cat;
     document.querySelectorAll('.tag-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
     btnEl.classList.add('active'); btnEl.setAttribute('aria-pressed','true');
-    document.querySelectorAll('.article-card').forEach(card => {
-      const show = cat === 'all' || card.dataset.cat === cat;
-      card.style.display = show ? 'flex' : 'none';
-    });
-    // Scroll al inicio del track
+    _applyJournalFilters();
     document.getElementById('articlesTrack').scrollTo({ left: 0, behavior: 'smooth' });
+  }
+
+  function searchJournal(q) {
+    _activeJournalSearch = (q || '').toLowerCase().trim();
+    _applyJournalFilters();
+  }
+
+  function _applyJournalFilters() {
+    const q = _activeJournalSearch;
+    document.querySelectorAll('.article-card').forEach(card => {
+      const catOk  = _activeJournalCat === 'all' || card.dataset.cat === _activeJournalCat;
+      const title  = (card.querySelector('.article-title, h3, h2')?.textContent || '').toLowerCase();
+      const chip   = (card.querySelector('.chip, .tag')?.textContent || '').toLowerCase();
+      const searchOk = !q || title.includes(q) || chip.includes(q) || card.textContent.toLowerCase().includes(q);
+      card.style.display = (catOk && searchOk) ? 'flex' : 'none';
+    });
   }
 
   /* ── NOTIFICACIÓN ─────────────────────────────────── */
