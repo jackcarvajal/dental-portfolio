@@ -22,6 +22,17 @@ export async function onRequestPost(context) {
     const stats = await _getWeeklyStats(env);
     const msg   = _buildMessage(stats);
     await _sendWA(msg, env);
+
+    // También ejecutar churn alert semanalmente (lunes)
+    const hoy = new Date().getDay(); // 1 = lunes
+    if (hoy === 1) {
+      try {
+        await fetch(new URL('/api/churn-alert', env.SITE_URL || 'https://prodigylabdental.com'), {
+          method: 'POST',
+          headers: { 'x-cron-secret': env.CRON_SECRET, 'Content-Type': 'application/json' }
+        });
+      } catch(e) { console.warn('[resumen] churn-alert falló:', e.message); }
+    }
     return new Response(JSON.stringify({ ok: true, msg }), {
       headers: { 'content-type': 'application/json' }
     });
