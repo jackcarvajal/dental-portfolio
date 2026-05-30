@@ -89,6 +89,18 @@ SI FALLA: qué hacer primero
 
 ---
 
+## SMOKE TESTS AUTOMATIZADOS (antes de deploy)
+
+```bash
+node tests/smoke-tests.js
+```
+
+Debe mostrar: `107 ✅  0 ⚠️  0 ❌`
+
+Si falla algún test → NO hacer deploy hasta resolverlo.
+
+---
+
 ## SEÑALES DE ALERTA (repórtame inmediatamente)
 
 - Página en blanco (sin contenido)
