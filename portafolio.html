@@ -539,7 +539,7 @@
 <!-- FILTROS (sticky) -->
 <!-- ============================================================ -->
 <div class="filters-section">
-    <div class="filter-row">
+    <div class="filter-row" style="flex-wrap:wrap;gap:12px;">
         <div class="filter-label"><i class="fas fa-tag"></i> Por tipo</div>
         <div class="filters" id="filterBtns" role="group" aria-label="Filtrar por tipo de caso">
             <button type="button" class="filter-btn active" data-type="todos" onclick="filtrar('todos', this)" aria-pressed="true">Todos</button>
@@ -549,6 +549,9 @@
             <button type="button" class="filter-btn" data-type="protesis" onclick="filtrar('protesis', this)" aria-pressed="false">Prótesis</button>
             <button type="button" class="filter-btn" data-type="alineadores" onclick="filtrar('alineadores', this)" aria-pressed="false">Alineadores</button>
         </div>
+        <input type="search" id="portafolio-search" placeholder="🔍 Buscar caso..." enterkeyhint="search" aria-label="Buscar caso por nombre o descripción"
+               style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:7px 14px;color:#e2e8f0;font-size:.82rem;outline:none;min-width:180px;transition:border-color .2s;"
+               oninput="filtrarBusqueda(this.value)">
     </div>
 </div>
 
@@ -652,8 +655,14 @@ let allCases = [];
 let currentPage = 1;
 let filteredCases = [];
 const PAGE_SIZE = 12;
-let activeType = 'todos';
-let activeMat  = 'todos';
+let activeType   = 'todos';
+let activeMat    = 'todos';
+let activeSearch = '';
+
+function filtrarBusqueda(q) {
+    activeSearch = (q || '').toLowerCase().trim();
+    applyFilters();
+}
 
 // IntersectionObserver para scroll reveal
 const revealObserver = new IntersectionObserver((entries) => {
@@ -771,8 +780,14 @@ function goPage(p) {
 
 function applyFilters() {
     let result = allCases;
-    if (activeType !== 'todos') result = result.filter(c => c.type === activeType);
-    if (activeMat  !== 'todos') result = result.filter(c => c.material === activeMat);
+    if (activeType   !== 'todos') result = result.filter(c => c.type === activeType);
+    if (activeMat    !== 'todos') result = result.filter(c => c.material === activeMat);
+    if (activeSearch)             result = result.filter(c =>
+        (c.name || '').toLowerCase().includes(activeSearch) ||
+        (c.description || '').toLowerCase().includes(activeSearch) ||
+        (c.type || '').toLowerCase().includes(activeSearch) ||
+        (c.material || '').toLowerCase().includes(activeSearch)
+    );
     renderCases(result);
 }
 
