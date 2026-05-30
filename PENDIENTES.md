@@ -8,6 +8,14 @@
 
 | # | Acción | Dónde | Detalle |
 |---|--------|-------|---------|
+| 0f | **Ejecutar `sql/trigger-doctor-inactivo-churn.sql`** | Supabase PRODIGY → SQL Editor | VIEW doctors_inactivos + RPC prodigy_detectar_churn para alertas WA |
+
+---
+
+## 🔴 URGENTE — Nuevos SQL para ejecutar en Supabase
+
+| # | Acción | Dónde | Detalle |
+|---|--------|-------|---------|
 | 0c | **Ejecutar `sql/patch-rls-bibliotecas-diseno-revisiones.sql`** | Supabase PRODIGY → SQL Editor | RLS en `bibliotecas_cliente` + `diseno_revisiones` |
 | 0d | **Ejecutar `sql/trigger-purga-stl-30dias.sql`** | Supabase PRODIGY → SQL Editor | Purga automática de STL a 30 días. Requiere pg_cron habilitado en Extensions |
 | 0e | **Agregar `ANTHROPIC_API_KEY`** en GitHub Secrets PRODIGY + Alejandro | Repo → Settings → Secrets → Actions | Para fallback IA del journal si Gemini falla |
@@ -100,6 +108,16 @@
 | 5 | Grabar video #3: "¿Cuánto cuesta diseño CAD?" — muestra calculadora |
 
 ---
+
+## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 12)
+- **Bulk Upload STL**: operator-panel — drag & drop masivo, regex extrae ID, magic bytes paralelo, auto-asocia a kanban
+- **Nesting Pre-calculado**: inventario — barra de vida de discos, alerta <20% espacio
+- **Onboarding post-pago**: success.html — card 3 pasos visible solo primera vez (localStorage)
+- **Reglas Biomecánicas**: biomecanica-rules.js con 7 reglas + integrado en calculadora-fresado, calculadora-diseno, flujo-diseno, flujo-fresado
+- **Churn Prevention**: churn-alert.js Edge Function + SQL VIEW doctors_inactivos
+- **AI Failover**: auto-journal → Gemini (2 reintentos) → Claude Haiku como backup
+- **Health Check**: functions/api/health-check.js verifica 12 APIs + alerta WA si fallan
+- **STL Purge trigger**: sql/trigger-purga-stl-30dias.sql — purga automática a 30 días
 
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 11)
 - **perf**: defer en jsPDF+QRCode (admin-panel) + content-guard/callmebot (client-panel)
