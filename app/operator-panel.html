@@ -193,6 +193,12 @@ body.ready { visibility: visible; }
         ALERTA: Tienes casos en validación por más de 25 minutos. Revisa la columna de pendientes.
     </div>
 
+    <!-- Alerta cotizaciones sin convertir -->
+    <div id="alerta-cotiz" style="display:none;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.25);border-radius:10px;padding:10px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <span style="font-size:.82rem;color:#D4AF37;"><i class="fas fa-receipt"></i> <span id="cotiz-sin-convertir">—</span> cotizaciones en borrador sin convertir · <a href="contabilidad.html#tab-cotizaciones" style="color:#D4AF37;font-weight:700;text-decoration:underline;">Ver →</a></span>
+      <button type="button" onclick="this.closest('#alerta-cotiz').style.display='none'" style="background:none;border:none;color:#475569;cursor:pointer;font-size:.8rem;">✕</button>
+    </div>
+
     <!-- Kanban -->
     <div class="kanban">
         <div class="k-col">
@@ -383,6 +389,14 @@ const COMPLETADOS = ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO
     await cargarPedidos();
     // Actualizar timers cada 30s
     _timerInterval = setInterval(actualizarTimers, 30000);
+    // Mostrar alerta de cotizaciones borrador (fire-and-forget)
+    sb.from('cotizaciones').select('id',{count:'exact',head:true}).eq('estado','borrador').then(({count})=>{
+        if(count>0){
+            document.getElementById('cotiz-sin-convertir').textContent=count;
+            const el=document.getElementById('alerta-cotiz');
+            if(el)el.style.display='flex';
+        }
+    }).catch(()=>{});
 })();
 
 // ── Cargar pedidos ────────────────────────────────────────────────
