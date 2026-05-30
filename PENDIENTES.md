@@ -8,7 +8,7 @@
 
 | # | Archivo SQL | Descripción |
 |---|-------------|-------------|
-| REF-COMP | `sql/referidos-sistema-completo.sql` | **REEMPLAZA** el anterior — ADD COLUMN codigo_referido, cupones CRED-, RPC validar cupón |
+| ~~REF-COMP~~ | ~~`sql/referidos-sistema-completo.sql`~~ | ✅ **Ejecutado 2026-05-30** — cupones CRED- activos, trigger detecta primer pedido | | **REEMPLAZA** el anterior — ADD COLUMN codigo_referido, cupones CRED-, RPC validar cupón |
 | REF-TRIG | `~~sql/referidos-trigger-primer-pedido.sql~~` | Trigger auto-detecta primer pedido pagado de referido → estado "primer_pedido" |
 | G1 | `sql/revision-tokens-table.sql` | Tabla `revision_tokens` para aprobación OWASP-segura desde email |
 | G2 | `sql/prodigy-analytics-rpc.sql` | 6 RPCs de métricas para dashboard BI (evita SELECT* en frontend) |
