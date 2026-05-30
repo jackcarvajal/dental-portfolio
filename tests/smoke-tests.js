@@ -347,6 +347,41 @@ const swContent = fileContent('sw.js');
 assert(swContent.includes('prodigy-v25'), 'sw.js actualizado a v25');
 assert(swContent.includes('/cotizaciones'), 'sw.js incluye /cotizaciones en PRECACHE');
 
+// ── SISTEMA DE REFERIDOS ────────────────────────────────────────────
+console.log('\n👥  SISTEMA DE REFERIDOS');
+const refSQL = fileContent('sql/referidos-table.sql');
+assert(refSQL.includes('CREATE TABLE IF NOT EXISTS public.referidos'), 'sql/referidos-table.sql tiene CREATE TABLE');
+assert(refSQL.includes('ENABLE ROW LEVEL SECURITY'), 'referidos tiene RLS');
+assert(refSQL.includes('obtener_mi_codigo_referido'), 'referidos tiene RPC obtener_mi_codigo_referido()');
+assert(refSQL.includes('GRANT ALL ON TABLE'), 'referidos tiene GRANT explícito oct 2026');
+
+const clientPanelRef = fileContent('app/client-panel.html');
+assert(clientPanelRef.includes('sec-referidos'), 'client-panel tiene sección Referir Colegas');
+assert(clientPanelRef.includes('cargarReferidos'), 'client-panel tiene función cargarReferidos()');
+assert(clientPanelRef.includes('copiarCodigo'), 'client-panel tiene función copiarCodigo()');
+
+const adminPanelRef = fileContent('app/admin-panel.html');
+assert(adminPanelRef.includes('tab-referidos'), 'admin-panel tiene tab Referidos');
+assert(adminPanelRef.includes('cargarReferidosAdmin'), 'admin-panel tiene función cargarReferidosAdmin()');
+
+const flujoDisRef = fileContent('flujo-diseno.html');
+assert(flujoDisRef.includes('prodigy_ref'), 'flujo-diseno captura sessionStorage prodigy_ref');
+assert(flujoDisRef.includes('codigo_referido'), 'flujo-diseno guarda codigo_referido en INSERT');
+assert(flujoDisRef.includes('/^PRODY-[A-Z0-9]'), 'flujo-diseno valida formato de código referido');
+
+const reciboCasoRef = fileContent('recibo-caso.html');
+assert(reciboCasoRef.includes('obtener_mi_codigo_referido'), 'recibo-caso llama RPC para mostrar código');
+assert(reciboCasoRef.includes('Comparte y gana'), 'recibo-caso tiene bloque de compartir referido');
+
+const terminos = fileContent('terminos-y-legal.html');
+assert(terminos.includes('tab-button') && terminos.includes("openTab(event, 'referidos')"), 'terminos-y-legal tiene tab Programa Referidos');
+assert(terminos.includes('10% de descuento'), 'terminos-y-legal documenta el 10% de descuento');
+
+const bienvenidaFn = fileContent('functions/api/bienvenida-referido.js');
+assert(bienvenidaFn.length > 200, 'functions/api/bienvenida-referido.js existe');
+assert(bienvenidaFn.includes('RESEND_API_KEY'), 'bienvenida-referido usa Resend');
+assert(bienvenidaFn.includes('rate-limit'), 'bienvenida-referido tiene rate limiting');
+
 // ── RESUMEN ────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(50));
 console.log(`RESUMEN: ${passed} ✅  ${warnings} ⚠️  ${failed} ❌`);
