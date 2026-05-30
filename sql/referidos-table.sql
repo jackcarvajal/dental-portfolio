@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS public.referidos (
 
   -- Estado y recompensa
   estado           text DEFAULT 'pendiente' CHECK (estado IN ('pendiente','registrado','primer_pedido','recompensado')),
-  descuento_pct    numeric(5,2) DEFAULT 10, -- descuento % para el referido
-  recompensa_cop   numeric(12,2) DEFAULT 0, -- recompensa para el referidor
+  descuento_pct    numeric(5,2) DEFAULT 5, -- descuento % para el referido (ajustado por márgenes)
+  recompensa_cop   numeric(12,2) DEFAULT 30000, -- recompensa COP para el referidor al primer pedido pagado
   notas            text
 );
 
@@ -78,3 +78,8 @@ BEGIN
 END;
 $$;
 GRANT EXECUTE ON FUNCTION public.obtener_mi_codigo_referido(text, text) TO authenticated, anon;
+
+-- ── PARCHE: ajustar descuento de 10% a 5% en todos los registros existentes ──
+-- Ejecutar una vez en Supabase SQL Editor si ya corriste el SQL original
+UPDATE public.referidos SET descuento_pct = 5 WHERE descuento_pct = 10;
+UPDATE public.referidos SET recompensa_cop = 30000 WHERE recompensa_cop = 0;
