@@ -1885,6 +1885,29 @@ const lineWompi = document.getElementById('line-wompi');
             calcularTotal();
             inicializarCatalogo(); /* sync precios desde admin-precios → Supabase */
 
+            // Pre-rellenar desde cotización guardada (?cotizacion=ID)
+            (async () => {
+                const cotId = new URLSearchParams(location.search).get('cotizacion');
+                if (!cotId || !window.supabase) return;
+                try {
+                    const sb = window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co', SUPABASE_ANON);
+                    const { data } = await sb.from('cotizaciones').select('items,notas,doctor_nombre,doctor_tel').eq('id', cotId).single();
+                    if (!data) return;
+                    const item = Array.isArray(data.items) ? data.items[0] : null;
+                    if (data.doctor_nombre) { const el=document.getElementById('nombre-doctor')||document.getElementById('nombre'); if(el) el.value=data.doctor_nombre; }
+                    if (data.doctor_tel) { const el=document.getElementById('whatsapp')||document.getElementById('cot-wa'); if(el) el.value=data.doctor_tel; }
+                    if (data.notas) { const el=document.getElementById('notas-adicionales')||document.getElementById('notas'); if(el) el.value=data.notas; }
+                    if (item?.servicio) {
+                        const notif=document.getElementById('notif-cotizacion')||document.createElement('div');
+                        notif.id='notif-cotizacion';
+                        notif.style.cssText='background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:10px;padding:10px 16px;font-size:.82rem;margin-bottom:16px;display:flex;align-items:center;gap:8px;';
+                        notif.innerHTML='<i class="fas fa-bookmark" aria-hidden="true"></i> Pre-rellenado desde tu cotización guardada. Revisa y ajusta lo que necesites.';
+                        const form=document.getElementById('flujo-form')||document.querySelector('form');
+                        if(form&&!document.getElementById('notif-cotizacion')) form.prepend(notif);
+                    }
+                } catch(_) {}
+            })();
+
             // ── TASAS DE PLATAFORMA EN TIEMPO REAL desde Supabase ────────────────
             fetch('https://zgihrwqfyvgyapbwzkvw.supabase.co/rest/v1/config_plataformas?activo=eq.true&select=clave,nombre,porcentaje,fijo_usd', {
                 headers: {

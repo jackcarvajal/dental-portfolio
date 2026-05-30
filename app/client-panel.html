@@ -1524,6 +1524,7 @@ async function cargarCotizaciones() {
                     <td style="padding:10px;text-align:right;font-weight:800;color:#D4AF37;">${escH(total)}</td>
                     <td style="padding:10px;text-align:center;"><span style="background:rgba(0,0,0,.3);border:1px solid ${color};color:${color};border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:700;">${escH(c.estado)}</span></td>
                     <td style="padding:10px;text-align:center;display:flex;gap:6px;justify-content:center;">
+                        <a href="../flujo-diseno?cotizacion=${escH(c.id)}" style="padding:5px 10px;background:rgba(217,70,166,.1);border:1px solid rgba(217,70,166,.3);color:#D946A6;border-radius:6px;font-size:.7rem;font-weight:700;text-decoration:none;" title="Convertir en pedido"><i class="fas fa-paper-plane"></i></a>
                         <a href="https://wa.me/573212816716?text=${waLink}" target="_blank" rel="noopener noreferrer" style="padding:5px 10px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25D366;border-radius:6px;font-size:.7rem;font-weight:700;text-decoration:none;" title="Enviar por WhatsApp"><i class="fab fa-whatsapp"></i></a>
                         <button type="button" onclick="eliminarCotizacion('${escH(c.id)}')" style="padding:5px 10px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;font-size:.7rem;cursor:pointer;" title="Eliminar cotización"><i class="fas fa-trash"></i></button>
                     </td>
