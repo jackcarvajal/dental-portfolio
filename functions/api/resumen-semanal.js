@@ -54,12 +54,16 @@ async function _getWeeklyStats(env) {
 
   const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  const [pedidos, escaners, leads] = await Promise.all([
+  const [pedidos, escaners, leads, cotizaciones, waitlist] = await Promise.all([
     fetch(`${base}/pedidos?created_at=gte.${since}&select=id,estado,servicio`, { headers: h })
       .then(r => r.json()).catch(() => []),
     fetch(`${base}/solicitudes_scanner?created_at=gte.${since}&select=id,servicio,whatsapp`, { headers: h })
       .then(r => r.json()).catch(() => []),
     fetch(`${base}/lead_sources?ts=gte.${since}&select=source,medium,campaign`, { headers: h })
+      .then(r => r.json()).catch(() => []),
+    fetch(`${base}/cotizaciones?created_at=gte.${since}&select=id,tipo,total,estado`, { headers: h })
+      .then(r => r.json()).catch(() => []),
+    fetch(`${base}/waitlist_labs?created_at=gte.${since}&select=id,nombre_lab,ciudad`, { headers: h })
       .then(r => r.json()).catch(() => [])
   ]);
 
@@ -77,6 +81,11 @@ async function _getWeeklyStats(env) {
   });
   const topFuente = Object.entries(porFuente).sort((a,b) => b[1]-a[1])[0] || ['directo', 0];
 
+  const cotArr = Array.isArray(cotizaciones) ? cotizaciones : [];
+  const cotAceptadas = cotArr.filter(c => c.estado === 'aceptada').length;
+  const cotValor = cotArr.reduce((s, c) => s + Number(c.total || 0), 0);
+  const waitArr = Array.isArray(waitlist) ? waitlist : [];
+
   return {
     pedidos_total:     Array.isArray(pedidos) ? pedidos.length : 0,
     pedidos_pendiente: porEstado['pendiente'] || 0,
@@ -85,6 +94,10 @@ async function _getWeeklyStats(env) {
     escaners_total:    Array.isArray(escaners) ? escaners.length : 0,
     leads_total:       Array.isArray(leads) ? leads.length : 0,
     top_fuente:        topFuente[0] + ' (' + topFuente[1] + ')',
+    cotizaciones_total: cotArr.length,
+    cotizaciones_aceptadas: cotAceptadas,
+    cotizaciones_valor: cotValor,
+    waitlist_nuevos:   waitArr.length,
     fecha_desde:       new Date(since).toLocaleDateString('es-CO', { day:'2-digit', month:'short' }),
     fecha_hasta:       new Date().toLocaleDateString('es-CO', { day:'2-digit', month:'short' })
   };
@@ -106,8 +119,11 @@ function _buildMessage(s) {
     '📊 *Leads registrados:* ' + s.leads_total,
     '🏆 *Top fuente:* ' + s.top_fuente,
     '',
+    '🗒️ *Cotizaciones guardadas:* ' + s.cotizaciones_total + (s.cotizaciones_aceptadas ? ' (' + s.cotizaciones_aceptadas + ' aceptadas)' : ''),
+    s.waitlist_nuevos > 0 ? '🧪 *Labs en waitlist (semana):* ' + s.waitlist_nuevos : null,
+    '',
     '🔗 Panel: prodigylabdental.com/app/admin-panel'
-  ].join('\n');
+  ].filter(Boolean).join('\n');
 }
 
 /* ── Retry helper (exponential backoff) ────────────────────────── */
