@@ -196,6 +196,9 @@ tbody td{padding:11px 14px;vertical-align:middle;}
             <i class="fas fa-file-invoice"></i> Facturas DIAN
             <span class="badge" id="badge-fact" style="background:var(--pink);color:#fff;">0</span>
         </button>
+        <button type="button" class="tab-btn" onclick="switchTab('cotizaciones',this);cargarCotizacionesCont()">
+            <i class="fas fa-receipt"></i> Cotizaciones
+        </button>
     </div>
 
     <!-- TAB: Por confirmar -->
@@ -439,6 +442,44 @@ tbody td{padding:11px 14px;vertical-align:middle;}
                 </thead>
                 <tbody id="tbody-suministros" aria-live="polite" aria-label="Suministros">
                     <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted);">Selecciona un rango de fechas</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB: Cotizaciones guardadas -->
+    <div id="tab-cotizaciones" class="tab-panel">
+        <div class="filtros">
+            <select id="cot-estado-fil" aria-label="Filtrar por estado" onchange="cargarCotizacionesCont()">
+                <option value="">Todos los estados</option>
+                <option value="borrador">Borrador</option>
+                <option value="enviada">Enviada</option>
+                <option value="aceptada">Aceptada</option>
+                <option value="rechazada">Rechazada</option>
+                <option value="expirada">Expirada</option>
+            </select>
+            <button type="button" class="btn-xs btn-ver" onclick="cargarCotizacionesCont()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+        </div>
+        <div class="total-bar" id="total-bar-cot" style="display:none;">
+            <div class="total-item"><div class="t-lbl">Cotizaciones</div><div class="t-val" id="cot-count" style="color:var(--cyan)">—</div></div>
+            <div class="total-item"><div class="t-lbl">Valor total</div><div class="t-val" id="cot-total" style="color:var(--gold)">—</div></div>
+            <div class="total-item"><div class="t-lbl">Aceptadas</div><div class="t-val" id="cot-aceptadas" style="color:#00FF41">—</div></div>
+        </div>
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Doctor / Email</th>
+                        <th scope="col">Tel</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-cot" aria-live="polite" aria-label="Cotizaciones guardadas">
+                    <tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted);">Cargando…</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1373,6 +1414,68 @@ function exportarCSV() {
     link.click();
     URL.revokeObjectURL(url);
     toast(`✅ Exportado: ${_pedidos.length} registros`, 'ok');
+}
+</script>
+<script>
+/* ── COTIZACIONES (contabilidad) ──────────────────────────── */
+async function cargarCotizacionesCont() {
+    const tbody = document.getElementById('tbody-cot');
+    const bar   = document.getElementById('total-bar-cot');
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--muted);"><i class="fas fa-spinner fa-spin"></i></td></tr>';
+    const estado = document.getElementById('cot-estado-fil')?.value || '';
+    try {
+        let q = sb.from('cotizaciones')
+            .select('id,created_at,tipo,doctor_nombre,doctor_email,doctor_tel,total,moneda,estado,expira_at')
+            .order('created_at', { ascending: false })
+            .limit(100);
+        if (estado) q = q.eq('estado', estado);
+        const { data, error } = await q;
+        if (error) throw error;
+        if (!data || !data.length) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted);">Sin cotizaciones.</td></tr>';
+            if (bar) bar.style.display = 'none';
+            return;
+        }
+        const ESTADO_COLOR = { borrador:'#94a3b8', enviada:'#00d2ff', aceptada:'#00FF41', rechazada:'#f87171', expirada:'#475569' };
+        const totalValor = data.reduce((s,c) => s + Number(c.total||0), 0);
+        const aceptadas  = data.filter(c => c.estado === 'aceptada').length;
+        if (bar) {
+            bar.style.display = 'flex';
+            document.getElementById('cot-count').textContent    = data.length;
+            document.getElementById('cot-total').textContent    = '$' + totalValor.toLocaleString('es-CO');
+            document.getElementById('cot-aceptadas').textContent = aceptadas;
+        }
+        tbody.innerHTML = data.map(c => {
+            const color  = ESTADO_COLOR[c.estado] || '#94a3b8';
+            const fecha  = new Date(c.created_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+            const total  = c.moneda === 'USD' ? 'USD ' + Number(c.total).toFixed(0) : '$' + Number(c.total).toLocaleString('es-CO');
+            const expira = c.expira_at ? new Date(c.expira_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}) : '—';
+            const tel    = (c.doctor_tel||'').replace(/\D/g,'');
+            const waLink = `https://wa.me/${tel}?text=${encodeURIComponent('Hola, es del equipo PRODIGY. Vimos tu cotización del ' + fecha + ' por ' + total + '. ¿Te gustaría proceder?')}`;
+            return `<tr>
+                <td>${escH(fecha)}</td>
+                <td style="text-transform:capitalize;">${escH(c.tipo)}</td>
+                <td>${escH(c.doctor_nombre||'—')}<br><span style="font-size:.7rem;color:#475569;">${escH(c.doctor_email||'')}</span></td>
+                <td>${tel ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" style="color:#25D366;"><i class="fab fa-whatsapp"></i> ${escH(c.doctor_tel)}</a>` : '—'}</td>
+                <td style="font-weight:700;color:var(--gold);">${escH(total)}</td>
+                <td>
+                    <select onchange="cambiarEstadoCot('${escH(c.id)}',this.value)" style="background:rgba(0,0,0,.3);border:1px solid ${color};color:${color};border-radius:6px;padding:3px 8px;font-size:.72rem;cursor:pointer;font-weight:700;">
+                        ${['borrador','enviada','aceptada','rechazada','expirada'].map(s=>`<option value="${s}"${c.estado===s?' selected':''}>${s}</option>`).join('')}
+                    </select>
+                </td>
+                <td style="font-size:.7rem;color:#475569;">vence ${escH(expira)}</td>
+            </tr>`;
+        }).join('');
+    } catch(err) {
+        tbody.innerHTML = `<tr><td colspan="7" style="color:#f87171;padding:12px;">${escH(err.message)}</td></tr>`;
+    }
+}
+
+async function cambiarEstadoCot(id, estado) {
+    const { error } = await sb.from('cotizaciones').update({ estado }).eq('id', id);
+    if (error) toast('Error actualizando cotización', 'error');
+    else toast('Estado actualizado', 'ok');
 }
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
