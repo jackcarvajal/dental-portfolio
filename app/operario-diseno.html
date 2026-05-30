@@ -135,6 +135,9 @@ body.ready{visibility:visible;}
     <div class="role-badge"><i class="fas fa-drafting-compass" style="font-size:.6rem;"></i> Diseño</div>
   </div>
   <a href="#" class="nav-item active" aria-current="page"><i class="fas fa-columns" style="width:16px;"></i> Mis casos</a>
+  <button type="button" onclick="abrirBulkDiseno()" class="nav-item" style="width:100%;text-align:left;background:rgba(0,255,65,.07);border:1px solid rgba(0,255,65,.2);color:#00FF41;border-radius:8px;cursor:pointer;margin-bottom:4px;">
+      <i class="fas fa-bolt" style="width:16px;"></i> ⚡ Carga Masiva
+  </button>
   <a href="panel-interno-operaciones.html" class="nav-item"><i class="fas fa-layer-group" style="width:16px;"></i> Panel completo</a>
   <a href="/seguimiento-caso" target="_blank" rel="noopener noreferrer" class="nav-item"><i class="fas fa-search" style="width:16px;"></i> Seguimiento</a>
   <div class="sidebar-footer">
@@ -886,5 +889,132 @@ function previsualizarDiseno(link, pedidoId) {
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+
+<!-- BULK UPLOAD para Operario Diseño — reutiliza la misma lógica del operator-panel -->
+<div id="modal-bulk-diseno" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9600;align-items:center;justify-content:center;padding:20px;overflow-y:auto;" role="dialog" aria-modal="true" aria-label="Carga masiva de diseños">
+  <div style="background:#050e1a;border:2px solid rgba(0,210,255,.35);border-radius:18px;padding:28px;width:100%;max-width:680px;max-height:88vh;overflow-y:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <h2 style="font-size:1rem;font-weight:900;color:#00d2ff;">⚡ Carga Masiva de Diseños</h2>
+        <p style="font-size:.72rem;color:#94a3b8;margin-top:2px;">Arrastra múltiples HTML de visor o STL. El sistema detecta el ID del caso por el nombre del archivo.</p>
+      </div>
+      <button type="button" onclick="cerrarBulkDiseno()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1.2rem;" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div id="bulk-diseno-drop" style="border:2px dashed rgba(0,210,255,.4);border-radius:12px;padding:36px 20px;text-align:center;cursor:pointer;transition:.2s;position:relative;"
+         ondragover="event.preventDefault();this.style.borderColor='#00d2ff'" ondragleave="this.style.borderColor='rgba(0,210,255,.4)'" ondrop="bulkDisenoDrop(event)">
+      <div style="font-size:2.2rem;margin-bottom:10px;">📂</div>
+      <p style="font-weight:700;color:#e2e8f0;margin-bottom:4px;">Arrastra archivos HTML de visor o STL</p>
+      <p style="font-size:.72rem;color:#94a3b8;">Nombre debe contener el código del caso. Ej: <code style="color:#00d2ff">PRD-2026-0177_diseno.html</code></p>
+      <input type="file" multiple accept=".html,.htm,.stl,.obj" style="position:absolute;inset:0;opacity:0;cursor:pointer;" onchange="bulkDisenoFiles(event)">
+    </div>
+
+    <div id="bulk-diseno-list" style="margin-top:18px;display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span id="bulk-diseno-summary" style="font-size:.8rem;font-weight:700;color:#e2e8f0;"></span>
+        <button type="button" onclick="bulkDisenoUploadAll()" id="btn-bulk-diseno-upload"
+                style="background:linear-gradient(135deg,#00FF41,#00cc35);color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">⬆ Subir todos</button>
+      </div>
+      <div id="bulk-diseno-items" style="display:flex;flex-direction:column;gap:7px;max-height:300px;overflow-y:auto;"></div>
+    </div>
+
+    <div id="bulk-diseno-prog" style="display:none;margin-top:14px;">
+      <div style="background:rgba(255,255,255,.06);border-radius:100px;height:7px;overflow:hidden;">
+        <div id="bulk-diseno-bar" style="background:linear-gradient(90deg,#00d2ff,#00FF41);height:100%;width:0%;transition:width .3s;border-radius:100px;"></div>
+      </div>
+      <p id="bulk-diseno-msg" style="font-size:.72rem;color:#94a3b8;margin-top:5px;text-align:center;"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── BULK UPLOAD DISEÑO — reutiliza la lógica de extractCaseId del operator-panel ── */
+let _bulkDisenoFiles = [];
+const _idPatternsDiseno = [
+  /PRD[-_]?\d{4}[-_]?(\d+)/i, /CAD[-_]([A-Z0-9]+)/i,
+  /pedido[-_]?(\d{4,})/i, /caso[-_]?(\d{4,})/i,
+  /[-_](\d{5,})[-_\s.]/,  /^(\d{5,})/,
+];
+function _extractIdDiseno(filename) {
+  const base = filename.replace(/\.(html?|stl|obj)$/i,'');
+  for (const re of _idPatternsDiseno) { const m=base.match(re); if(m) return m[1]||m[0]; }
+  return null;
+}
+function abrirBulkDiseno()  { document.getElementById('modal-bulk-diseno').style.display='flex'; _bulkDisenoFiles=[]; document.getElementById('bulk-diseno-list').style.display='none'; document.getElementById('bulk-diseno-prog').style.display='none'; }
+function cerrarBulkDiseno() { document.getElementById('modal-bulk-diseno').style.display='none'; }
+function bulkDisenoDrop(e)  { e.preventDefault(); document.getElementById('bulk-diseno-drop').style.borderColor='rgba(0,210,255,.4)'; bulkDisenoProcess([...e.dataTransfer.files]); }
+function bulkDisenoFiles(e) { bulkDisenoProcess([...e.target.files]); }
+
+async function bulkDisenoProcess(files) {
+  const allowed = ['.html','.htm','.stl','.obj'];
+  const filtered = files.filter(f => allowed.some(ext => f.name.toLowerCase().endsWith(ext)));
+  if (!filtered.length) { toast('Sin archivos compatibles','err'); return; }
+  _bulkDisenoFiles = [];
+  document.getElementById('bulk-diseno-list').style.display='block';
+  document.getElementById('bulk-diseno-items').innerHTML = '<p style="color:#94a3b8;font-size:.75rem;text-align:center;">Analizando...</p>';
+  const results = await Promise.all(filtered.map(async file => {
+    const caseId = _extractIdDiseno(file.name);
+    let mbOk = true, mbMsg = '';
+    if (window.validateMagicBytes && file.name.endsWith('.stl')) {
+      const r = await validateMagicBytes(file); mbOk = r.safe; mbMsg = r.error || '';
+    }
+    const caso = _casos.find(c => caseId && (c.codigo?.includes(caseId)||c.id?.startsWith(caseId)||caseId===(c.codigo?.split('-').pop())));
+    return { file, caseId, mbOk, mbMsg, caso, status:'pending' };
+  }));
+  _bulkDisenoFiles = results;
+  _renderBulkDiseno();
+}
+
+function _renderBulkDiseno() {
+  const valid = _bulkDisenoFiles.filter(f=>f.mbOk&&f.caso);
+  document.getElementById('bulk-diseno-summary').textContent = `${_bulkDisenoFiles.length} archivos — ${valid.length} listos`;
+  document.getElementById('bulk-diseno-items').innerHTML = _bulkDisenoFiles.map((item,i)=>{
+    const ok = item.mbOk&&item.caso&&item.status==='pending';
+    const color = !item.mbOk?'#ef4444':!item.caso?'#fbbf24':item.status==='done'?'#00FF41':item.status==='uploading'?'#00d2ff':'#94a3b8';
+    const icon  = !item.mbOk?'🚫':!item.caso?'⚠️':item.status==='done'?'✅':item.status==='uploading'?'⬆':'📄';
+    const label = !item.mbOk?item.mbMsg:!item.caso?`ID "${item.caseId}" no encontrado`:item.status==='done'?'Subido':item.caso.codigo+' — '+(item.caso.servicio||'');
+    return `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;">
+      <span style="font-size:1.1rem;">${icon}</span>
+      <div style="flex:1;min-width:0;"><div style="font-size:.75rem;font-weight:700;color:#e2e8f0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.file.name}</div><div style="font-size:.65rem;color:${color};margin-top:1px;">${label}</div></div>
+      <span style="font-size:.62rem;color:#475569;flex-shrink:0;">${(item.file.size/1024).toFixed(0)}KB</span>
+    </div>`;
+  }).join('');
+}
+
+async function bulkDisenoUploadAll() {
+  const toUpload = _bulkDisenoFiles.filter(f=>f.mbOk&&f.caso&&f.status==='pending');
+  if (!toUpload.length) { toast('Sin archivos válidos','err'); return; }
+  document.getElementById('btn-bulk-diseno-upload').disabled=true;
+  document.getElementById('bulk-diseno-prog').style.display='block';
+  let done=0;
+  for (const item of toUpload) {
+    item.status='uploading'; _renderBulkDiseno();
+    document.getElementById('bulk-diseno-msg').textContent=`Subiendo ${item.file.name}...`;
+    try {
+      const isHtml = item.file.name.toLowerCase().includes('.html') || item.file.name.toLowerCase().includes('.htm');
+      const bucket = 'dental-cases';
+      const path   = `${item.caso.id}/${isHtml?'diseno':'stl'}/${Date.now()}_${item.file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+      const {error} = await sb.storage.from(bucket).upload(path, item.file, {upsert:true, contentType: isHtml?'text/html':'application/octet-stream'});
+      if (error) throw error;
+      const {data:{publicUrl}} = sb.storage.from(bucket).getPublicUrl(path);
+      if (isHtml) {
+        await sb.from('pedidos').update({html_diseno_url:publicUrl, estado_operativo:'REVISION_CLIENTE', updated_at:new Date().toISOString()}).eq('id',item.caso.id);
+        await sb.from('historial_diseno').insert({pedido_id:item.caso.id,tipo:'SUBIDA_DISENO',actor:'operario-diseno-bulk',descripcion:`Bulk upload: ${item.file.name}`,metadata:{html:publicUrl}}).catch(()=>{});
+      } else {
+        const {data:ped} = await sb.from('pedidos').select('stl_urls').eq('id',item.caso.id).single();
+        await sb.from('pedidos').update({stl_urls:[...(ped?.stl_urls||[]),publicUrl]}).eq('id',item.caso.id);
+      }
+      item.status='done';
+    } catch(e) { item.status='error'; item.mbMsg=e.message; }
+    done++;
+    document.getElementById('bulk-diseno-bar').style.width=Math.round((done/toUpload.length)*100)+'%';
+    _renderBulkDiseno();
+  }
+  document.getElementById('bulk-diseno-msg').textContent=`Completado: ${toUpload.filter(f=>f.status==='done').length}/${toUpload.length}`;
+  document.getElementById('btn-bulk-diseno-upload').disabled=false;
+  toast(`✅ Bulk diseño: ${toUpload.filter(f=>f.status==='done').length} archivos subidos`,'ok');
+  await cargarCasos();
+}
+</script>
 </body>
 </html>
