@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1200px;height:630px;background:#050505;font-family:'Inter',system-ui,sans-serif;overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:60px;position:relative;}
+.bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 75% 50%,rgba(0,210,255,.08),transparent),radial-gradient(ellipse 40% 40% at 15% 20%,rgba(212,175,55,.07),transparent);pointer-events:none;}
+.bg-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;}
+.left{flex:1;max-width:580px;position:relative;z-index:1;}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:5px;text-transform:uppercase;color:#00d2ff;margin-bottom:14px;}
+h1{font-size:56px;font-weight:900;line-height:1.02;color:#fff;margin-bottom:16px;}
+h1 em{font-style:normal;color:#D4AF37;}
+.sub{font-size:17px;color:#94a3b8;line-height:1.6;margin-bottom:28px;}
+.pills{display:flex;gap:8px;}
+.pill{padding:5px 14px;border-radius:50px;font-size:12px;font-weight:700;}
+.pill-c{background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.25);color:#00d2ff;}
+.pill-g{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:#D4AF37;}
+.right{width:420px;display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1;}
+.case-thumb{border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#0d1525,#080e1a);border:1px solid rgba(255,255,255,.06);height:130px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;}
+.case-thumb:first-child{grid-column:span 2;height:160px;background:linear-gradient(135deg,rgba(0,210,255,.08),rgba(212,175,55,.05));border-color:rgba(212,175,55,.2);}
+.case-emoji{font-size:36px;}
+.case-label{font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="bg-dots"></div>
+<div class="left">
+  <div class="eyebrow">PRODIGY Lab Dental</div>
+  <h1>Portafolio<br><em>CAD/CAM</em></h1>
+  <p class="sub">Coronas, carillas, puentes, implantes y guías quirúrgicas diseñadas con Exocad para clínicas de Colombia y el mundo.</p>
+  <div class="pills">
+    <div class="pill pill-c">Exocad certified</div>
+    <div class="pill pill-g">24h entrega</div>
+  </div>
+</div>
+<div class="right">
+  <div class="case-thumb"><div class="case-emoji">👑</div><div class="case-label">Coronas Zirconio</div></div>
+  <div class="case-thumb"><div class="case-emoji">💎</div><div class="case-label">Carillas E-max</div></div>
+  <div class="case-thumb"><div class="case-emoji">🦷</div><div class="case-label">Full Arch</div></div>
+  <div class="case-thumb"><div class="case-emoji">⚙️</div><div class="case-label">Guías Quirúrgicas</div></div>
+</div>
+</body>
+</html>
