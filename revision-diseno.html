@@ -764,9 +764,14 @@ function renderPage() {
       ...stlFiles.map((u,i) => `<div class="dl-item">
         <i class="fas fa-cube"></i><span class="dl-name">Archivo STL ${i+1}</span>
         <span class="dl-ext">STL</span>
-        <a href="${esc(u)}" download onclick="onDownload('STL ${i+1}')" class="btn btn-dis btn-sm" style="margin-left:auto;">
-          <i class="fas fa-download"></i> Descargar
-        </a></div>`),
+        <div style="display:flex;gap:6px;margin-left:auto;">
+          <button type="button" class="btn btn-gold btn-sm" onclick="ProdigyAR&&ProdigyAR.launch('${esc(u)}','STL ${i+1}')" title="Ver en Realidad Aumentada" style="font-size:.65rem;padding:4px 9px;">
+            <i class="fas fa-cube"></i> AR
+          </button>
+          <a href="${esc(u)}" download onclick="onDownload('STL ${i+1}')" class="btn btn-dis btn-sm">
+            <i class="fas fa-download"></i> Descargar
+          </a>
+        </div></div>`),
       p.construinfo_url ? `<div class="dl-item">
         <i class="fas fa-file-archive"></i><span class="dl-name">Parámetros de construcción</span>
         <span class="dl-ext">ZIP</span>
@@ -1312,6 +1317,7 @@ async function enviarNota() {
 </script>
 </main>
 <script src="js/footer.js?v=20260528"></script>
+<script src="js/ar-viewer.js?v=20260528" defer></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
