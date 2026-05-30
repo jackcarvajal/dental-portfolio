@@ -146,6 +146,11 @@
   <link rel="alternate" hreflang="es" href="https://prodigylabdental.com/soporte">
   <link rel="alternate" hreflang="en" href="https://prodigylabdental.com/soporte?lang=en">
   <link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com/soporte">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -199,6 +204,56 @@
         <p>Soporte técnico especializado para equipos y materiales XTCERA y Alistar Sensa. Instalación, calibración y resolución de errores.</p>
         <div class="scard-tags"><span class="stag">XTCERA</span><span class="stag">Alistar Sensa</span><span class="stag">Equipos</span></div>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKET DE SOPORTE -->
+<section style="background:rgba(13,21,32,.5);border-top:1px solid rgba(0,210,255,.1);">
+  <div class="container" style="max-width:620px;">
+    <div class="section-tag sr">Soporte rápido</div>
+    <h2 class="st sr">¿No encontraste la respuesta? <span style="color:var(--cyan)">Escríbenos</span></h2>
+    <div style="background:rgba(5,5,5,.8);border:1px solid rgba(0,210,255,.2);border-radius:20px;padding:28px 24px;margin-top:24px;" class="sr">
+      <form id="form-ticket" novalidate onsubmit="enviarTicket(event)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div>
+            <label for="tk-nombre" style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px;">Nombre</label>
+            <input type="text" id="tk-nombre" required maxlength="100" autocomplete="name" placeholder="Dr. García"
+              style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;">
+          </div>
+          <div>
+            <label for="tk-wa" style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px;">WhatsApp</label>
+            <input type="tel" id="tk-wa" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="+57 321..."
+              style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;">
+          </div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label for="tk-asunto" style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px;">Tipo de consulta</label>
+          <select id="tk-asunto" required style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;">
+            <option value="" disabled selected>Seleccionar…</option>
+            <option value="seguimiento">Seguimiento de pedido</option>
+            <option value="diseno">Revisión de diseño</option>
+            <option value="archivos">Problema con archivos STL</option>
+            <option value="pago">Consulta de pago</option>
+            <option value="exocad">Ayuda con Exocad / 3Shape</option>
+            <option value="materiales">Consulta de materiales</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label for="tk-mensaje" style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px;">Mensaje</label>
+          <textarea id="tk-mensaje" required maxlength="1000" rows="4" placeholder="Describe tu consulta con el mayor detalle posible…"
+            style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;resize:vertical;"></textarea>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:16px;">
+          <input type="checkbox" id="tk-habeas" required style="width:15px;height:15px;flex-shrink:0;margin-top:2px;accent-color:var(--cyan);">
+          <label for="tk-habeas" style="font-size:.72rem;color:var(--muted);line-height:1.5;">Autorizo el tratamiento de mis datos para gestión de soporte (Ley 1581/2012).</label>
+        </div>
+        <button type="submit" id="btn-ticket" style="width:100%;background:linear-gradient(135deg,var(--cyan),#0099cc);color:#000;border:none;border-radius:10px;padding:13px;font-size:.9rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;">
+          <i class="fas fa-headset" aria-hidden="true"></i> Enviar consulta
+        </button>
+        <div id="tk-msg" style="font-size:.78rem;margin-top:10px;text-align:center;min-height:18px;" aria-live="polite"></div>
+      </form>
     </div>
   </div>
 </section>
@@ -271,6 +326,44 @@ function toggleFaq(btn) {
 }
 
 if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+
+/* ── TICKET DE SOPORTE ── */
+(function(){
+  const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+  const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTA2OTAxMDUsImV4cCI6MjAyNjI2NjEwNX0.fQOcJKn3qAhGLi7XbOFWnhMBVz3DJLF37jUME2iNNL8';
+  let _sb;
+  function _getSb(){if(!_sb&&window.supabase)_sb=window.supabase.createClient(SURL,SANON);return _sb;}
+  window.enviarTicket=async function(e){
+    e.preventDefault();
+    const btn=document.getElementById('btn-ticket');
+    const msg=document.getElementById('tk-msg');
+    const nombre=document.getElementById('tk-nombre').value.trim();
+    const wa=document.getElementById('tk-wa').value.trim();
+    const asunto=document.getElementById('tk-asunto').value;
+    const mensaje=document.getElementById('tk-mensaje').value.trim();
+    const habeas=document.getElementById('tk-habeas').checked;
+    if(!nombre||!asunto||!mensaje){msg.style.color='#f87171';msg.textContent='Completa los campos obligatorios.';return;}
+    if(!habeas){msg.style.color='#f87171';msg.textContent='Debes aceptar el tratamiento de datos.';return;}
+    btn.disabled=true;
+    btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Enviando...';
+    const sb=_getSb();
+    if(sb){
+      await sb.from('leads_doctores').insert({
+        nombre:nombre+(wa?' — '+wa:''),
+        whatsapp:wa||null,
+        recurso_descargado:'Ticket soporte: '+asunto+' — '+mensaje.slice(0,120),
+        acepta_marketing:false
+      }).catch(()=>{});
+    }
+    // Abrir WA con el ticket pre-cargado
+    const texto=encodeURIComponent('🎫 *Ticket de soporte*\n\n*Nombre:* '+nombre+(wa?'\n*WA:* '+wa:'')+'\n*Asunto:* '+asunto+'\n*Mensaje:* '+mensaje);
+    window.open('https://wa.me/573212816716?text='+texto,'_blank','noopener,noreferrer');
+    btn.innerHTML='<i class="fas fa-check"></i> Enviado';
+    btn.style.background='linear-gradient(135deg,#00FF41,#00cc33)';
+    msg.style.color='#00FF41';
+    msg.textContent='✓ Reenviado a WhatsApp. Te respondemos en menos de 2h.';
+  };
+})();
 </script>
 <noscript><p style="text-align:center;padding:2rem">Para ver el soporte activa JavaScript o <a href="https://wa.me/573212816716" rel="noopener noreferrer">contáctanos por WhatsApp</a>.</p></noscript>
     <div class="ux-floaters">

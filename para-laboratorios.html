@@ -422,19 +422,17 @@ async function unirseWaitlist(e) {
     cargarContador();
     // Track conversión
     if (window.gtag) gtag('event','waitlist_signup',{event_category:'conversion',event_label:'para-laboratorios'});
-    // Notificar al equipo por WA (silent fail — no bloquea UX)
-    fetch('/api/notify-wa', {
+    // Notificar al equipo (email Resend + WA Callmebot) — silent fail
+    fetch('/api/waitlist-notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        nuevo_estado: 'WAITLIST_LAB',
-        codigo: 'WL',
-        nombre_doctor: nombre + ' — ' + contacto,
-        whatsapp: '573212816716',
-        pais: 'CO',
-        servicio: ciudad + ' · ' + (pedidos || '?') + ' pedidos/mes',
-        fecha_entrega: null,
-        recibo_url: null,
+        nombre_lab: nombre,
+        nombre_contacto: contacto,
+        whatsapp: wa,
+        ciudad: ciudad || '—',
+        pedidos_mes: pedidos || '—',
+        dummy: true,  // compatibilidad
       })
     }).catch(() => {});  // WA interno — fallo silencioso
   } catch(err) {
