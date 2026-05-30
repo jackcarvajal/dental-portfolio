@@ -200,6 +200,41 @@
         </div>
     </div>
 
+    <!-- Panel de variables de entorno requeridas -->
+    <div class="section-card" style="margin-top:20px;">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:16px;">Variables de entorno — Cloudflare Pages</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:.8rem;">
+            <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0;"></span>
+                <code style="color:#D4AF37;font-weight:700;">GEMINI_API_KEY</code>
+                <span style="color:#94a3b8;">Chatbot IA + Social Copy + Journal</span>
+                <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" style="margin-left:auto;color:#00d2ff;font-size:.72rem;">Obtener →</a>
+            </div>
+            <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0;"></span>
+                <code style="color:#D4AF37;font-weight:700;">RESEND_API_KEY</code>
+                <span style="color:#94a3b8;">Emails transaccionales (waitlist, referidos, facturas)</span>
+                <a href="https://resend.com" target="_blank" rel="noopener noreferrer" style="margin-left:auto;color:#00d2ff;font-size:.72rem;">Obtener →</a>
+            </div>
+            <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0;"></span>
+                <code style="color:#D4AF37;font-weight:700;">CALLMEBOT_APIKEY</code>
+                <span style="color:#94a3b8;">Notificaciones WA (resumen semanal, churn, health-check)</span>
+            </div>
+            <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;flex-shrink:0;"></span>
+                <code style="color:#94a3b8;font-weight:700;">ONESIGNAL_APP_ID + ONESIGNAL_REST_API_KEY</code>
+                <span style="color:#475569;">Push notifications (opcional)</span>
+            </div>
+            <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;flex-shrink:0;"></span>
+                <code style="color:#94a3b8;font-weight:700;">CRON_SECRET + ADMIN_SECRET</code>
+                <span style="color:#475569;">Auth interna entre edge functions</span>
+            </div>
+        </div>
+        <p style="font-size:.72rem;color:#334155;margin-top:12px;">Cloudflare → Pages → dental-portfolio → Settings → Environment variables → Agregar variable</p>
+    </div>
+
 </main>
 
 <div id="toast" role="status" aria-live="polite">
