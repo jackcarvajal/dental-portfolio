@@ -401,6 +401,11 @@ function selMat(btn) {
   btn.classList.add('selected');
   ST.mat = btn.dataset.mat;
   render();
+  // Validación biomecánica al cambiar material
+  if (window.BiomecanicaRules && ST.srv) {
+    const result = BiomecanicaRules.validate(ST.srv, ST.mat, ST.qty);
+    if (!result.ok || result.advertencias.length) BiomecanicaRules.mostrarAlerta(result, null);
+  }
 }
 function chgQty(d) {
   ST.qty = Math.max(1, Math.min(20, ST.qty + d));
@@ -497,6 +502,7 @@ render();
 </script>
 </main>
 <script src="js/footer.js?v=20260528"></script>
+<script src="js/biomecanica-rules.js?v=20260528"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
