@@ -266,6 +266,33 @@ const calcHtml = fileContent('calculadora.html');
 assert(!nosotros.includes('onmouseover'), 'nosotros.html: 0 onmouseover inline');
 assert(!calcHtml.includes('onmouseover'), 'calculadora.html: 0 onmouseover inline');
 
+// ── BLOQUE 23: Ajustes de Gemini — Seguridad crítica ─────────────
+console.log('\n🔐 FIXES GEMINI (4 puntos críticos)');
+// Fix 1: CSP strict-dynamic + fallback https:
+const headersFile = fileContent('_headers');
+assert(headersFile.includes("'strict-dynamic' https:"), 'CSP tiene strict-dynamic + fallback https: para browsers antiguos');
+
+// Fix 2: revision-express.html — OWASP A01
+const revExpress = fileContent('revision-express.html');
+assert(revExpress.length > 500, 'revision-express.html existe con contenido');
+assert(revExpress.includes('_actionDone'), 'revision-express previene doble submit');
+assert(!revExpress.includes('window.location.href') || revExpress.includes('confirmar'), 'revision-express NO ejecuta acciones en GET');
+assert(revExpress.includes('revision_tokens'), 'revision-express valida tokens de un solo uso');
+assert(revExpress.includes('prefetch') || revExpress.includes('OWASP'), 'revision-express documenta la protección contra prefetch');
+
+// Fix 3: Analytics RPCs SQL
+const analyticsRpc = fileContent('sql/prodigy-analytics-rpc.sql');
+assert(analyticsRpc.includes('prodigy_dashboard_semana'), 'SQL tiene RPC dashboard_semana');
+assert(analyticsRpc.includes('prodigy_top_servicios'), 'SQL tiene RPC top_servicios');
+assert(analyticsRpc.includes('SECURITY DEFINER'), 'RPCs usan SECURITY DEFINER');
+assert(!analyticsRpc.includes("SELECT * FROM pedidos"), 'RPCs NO hacen SELECT * — usan COUNT y agregados');
+
+// Fix 4: WebP RLS documentado
+const webpRls = fileContent('sql/storage-webp-rls.sql');
+assert(webpRls.length > 200, 'storage-webp-rls.sql existe');
+assert(webpRls.includes('createSignedUrl'), 'WebP RLS documenta uso de URL firmadas para buckets privados');
+assert(webpRls.includes('403'), 'WebP RLS documenta el error 403 si falta configuración');
+
 // ── RESUMEN ────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(50));
 console.log(`RESUMEN: ${passed} ✅  ${warnings} ⚠️  ${failed} ❌`);
