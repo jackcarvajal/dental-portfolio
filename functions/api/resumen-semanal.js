@@ -110,7 +110,19 @@ function _buildMessage(s) {
   ].join('\n');
 }
 
-/* ── Envía por Callmebot ────────────────────────────────────────── */
+/* ── Retry helper (exponential backoff) ────────────────────────── */
+async function _retry(fn, retries = 2, delayMs = 1200) {
+  for (let i = 0; i <= retries; i++) {
+    try { return await fn(); }
+    catch(e) {
+      if (i === retries) throw e;
+      await new Promise(r => setTimeout(r, delayMs * (i + 1)));
+      console.warn(`[resumen] Reintento ${i + 1}/${retries}: ${e.message}`);
+    }
+  }
+}
+
+/* ── Envía por Callmebot (con 2 reintentos) ─────────────────────── */
 async function _sendWA(msg, env) {
   const phone  = env.WA_RESUMEN_PHONE  || '573212816716';
   const apikey = env.CALLMEBOT_APIKEY;
@@ -118,6 +130,8 @@ async function _sendWA(msg, env) {
   const url = 'https://api.callmebot.com/whatsapp.php?phone=' + phone
             + '&text=' + encodeURIComponent(msg)
             + '&apikey=' + apikey;
-  const r = await fetch(url);
-  if (!r.ok) throw new Error('Callmebot error: ' + r.status);
+  await _retry(async () => {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('Callmebot error: ' + r.status);
+  });
 }

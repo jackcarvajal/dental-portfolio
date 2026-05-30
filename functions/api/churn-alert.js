@@ -74,8 +74,15 @@ export async function onRequestPost(context) {
 
     try {
       const waUrl = `https://api.callmebot.com/whatsapp.php?phone=${wa}&text=${encodeURIComponent(msg)}&apikey=${CALLMEBOT_KEY}`;
-      const waRes = await fetch(waUrl);
-      const waOk  = waRes.ok || waRes.status === 200;
+      let waOk = false;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const waRes = await fetch(waUrl);
+          waOk = waRes.ok || waRes.status === 200;
+          if (waOk) break;
+        } catch(_) {}
+        if (attempt === 0) await new Promise(r => setTimeout(r, 1000));
+      }
 
       // Registrar en logs_incidencias
       await fetch(`${env.SUPABASE_URL}/rest/v1/logs_incidencias`, {

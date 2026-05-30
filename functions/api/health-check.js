@@ -92,40 +92,47 @@ const SERVICES = [
   },
 ];
 
+async function _fetchOnce(service, env) {
+  const url     = service.url(env);
+  const method  = service.method || 'GET';
+  const headers = service.headers ? service.headers(env) : {};
+  const allowed = service.expectStatus || [200, 201, 204];
+  const controller = new AbortController();
+  const tid = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const res = await fetch(url, { method, headers, signal: controller.signal, redirect: 'follow' });
+  clearTimeout(tid);
+  const ok = allowed.includes(res.status) || (res.status >= 200 && res.status < 400);
+  return { ok, status: res.status };
+}
+
 async function checkService(service, env) {
-  const start = Date.now();
-  try {
-    const url     = service.url(env);
-    const method  = service.method || 'GET';
-    const headers = service.headers ? service.headers(env) : {};
-    const allowed = service.expectStatus || [200, 201, 204];
-
-    const controller = new AbortController();
-    const tid = setTimeout(() => controller.abort(), TIMEOUT_MS);
-
-    const res = await fetch(url, {
-      method,
-      headers,
-      signal: controller.signal,
-      redirect: 'follow',
-    });
-    clearTimeout(tid);
-
-    const ms = Date.now() - start;
-    const ok = allowed.includes(res.status) || (res.status >= 200 && res.status < 400);
-    return { name: service.name, ok, status: res.status, ms, critical: service.critical };
-  } catch(e) {
-    const ms = Date.now() - start;
-    const timedOut = e.name === 'AbortError';
-    return {
-      name:     service.name,
-      ok:       false,
-      status:   timedOut ? 'TIMEOUT' : 'ERROR',
-      error:    e.message,
-      ms,
-      critical: service.critical,
-    };
+  const start    = Date.now();
+  const maxTries = service.critical ? 2 : 1; // críticos: 2 intentos; no-críticos: 1
+  let lastErr, lastStatus;
+  for (let attempt = 0; attempt < maxTries; attempt++) {
+    try {
+      const { ok, status } = await _fetchOnce(service, env);
+      const ms = Date.now() - start;
+      if (ok || attempt === maxTries - 1) {
+        return { name: service.name, ok, status, ms, critical: service.critical, attempt };
+      }
+      lastStatus = status;
+      await new Promise(r => setTimeout(r, 800)); // 800ms entre intentos
+    } catch(e) {
+      lastErr    = e;
+      lastStatus = e.name === 'AbortError' ? 'TIMEOUT' : 'ERROR';
+      if (attempt < maxTries - 1) await new Promise(r => setTimeout(r, 800));
+    }
   }
+  return {
+    name:     service.name,
+    ok:       false,
+    status:   lastStatus || 'ERROR',
+    error:    lastErr?.message,
+    ms:       Date.now() - start,
+    critical: service.critical,
+    attempt:  maxTries,
+  };
 }
 
 async function sendWhatsAppAlert(failedServices, env) {
