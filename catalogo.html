@@ -592,6 +592,10 @@ function renderGrid() {
                     <h4>Indicaciones clínicas</h4>
                     <ul>${m.indicaciones.map(ind => `<li>${ind}</li>`).join('')}</ul>
                 </div>
+                <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+                    <a href="${m.cats.includes('fresado') ? '/calculadora-fresado' : m.cats.includes('impresion') ? '/calculadora-impresion' : '/calculadora'}" style="display:inline-flex;align-items:center;gap:6px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:8px;padding:7px 14px;font-size:.75rem;font-weight:700;text-decoration:none;"><i class="fas fa-calculator" aria-hidden="true"></i> Cotizar</a>
+                    <a href="https://wa.me/573212816716?text=${encodeURIComponent('Hola PRODIGY, necesito información sobre ' + m.nombre)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.25);color:#25D366;border-radius:8px;padding:7px 14px;font-size:.75rem;font-weight:700;text-decoration:none;"><i class="fab fa-whatsapp" aria-hidden="true"></i> Consultar</a>
+                </div>
             </div>
         </div>
     `).join('');
