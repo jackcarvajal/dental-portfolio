@@ -245,6 +245,7 @@
     <a href="#historial" class="nav-item" onclick="document.getElementById('historial').scrollIntoView({behavior:'smooth'})"><i class="fas fa-folder-open"></i> Mis Casos</a>
     <a href="#sec-bibliotecas" class="nav-item" onclick="document.getElementById('sec-bibliotecas').scrollIntoView({behavior:'smooth'})"><i class="fas fa-book-medical"></i> Mis Bibliotecas</a>
     <a href="#sec-facturacion" class="nav-item" onclick="document.getElementById('sec-facturacion').scrollIntoView({behavior:'smooth'})"><i class="fas fa-file-invoice-dollar"></i> Facturación</a>
+    <a href="#sec-analytics" class="nav-item" onclick="document.getElementById('sec-analytics').scrollIntoView({behavior:'smooth'})" style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.15);"><i class="fas fa-chart-line" style="color:var(--gold)"></i> Mi Clínica ✨</a>
     <div class="sidebar-footer">
         <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer" class="nav-item"><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp</a>
         <div id="push-container" style="padding:0 4px"></div>
@@ -398,6 +399,59 @@
             </div>
             <!-- Casos con pago pendiente -->
             <div id="fact-casos-pendientes"></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         MI CLÍNICA ANALYTICS — Módulo de inteligencia de negocio
+         Muestra al doctor sus métricas, ahorro y tendencias
+         ═══════════════════════════════════════════════════════ -->
+    <div class="section-card" id="sec-analytics" style="margin-top:24px;">
+        <div class="section-header">
+            <h2><i class="fas fa-chart-line" style="color:var(--gold);margin-right:8px;" aria-hidden="true"></i>Mi Clínica Analytics ✨</h2>
+            <span style="font-size:.7rem;color:#64748b;">Actualizado al cargar</span>
+        </div>
+        <div style="padding:20px;">
+
+            <!-- KPIs de la clínica -->
+            <div id="analytics-kpis" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px;">
+                <div style="background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.2);border-radius:12px;padding:16px;text-align:center;">
+                    <div id="a-total-casos" style="font-size:2rem;font-weight:900;color:#00FF41;">—</div>
+                    <div style="font-size:.68rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;">Casos totales</div>
+                </div>
+                <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:12px;padding:16px;text-align:center;">
+                    <div id="a-este-mes" style="font-size:2rem;font-weight:900;color:#00d2ff;">—</div>
+                    <div style="font-size:.68rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;">Este mes</div>
+                </div>
+                <div style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:12px;padding:16px;text-align:center;">
+                    <div id="a-tasa-aprobacion" style="font-size:2rem;font-weight:900;color:#D4AF37;">—</div>
+                    <div style="font-size:.68rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;">Aprobados 1ª vez</div>
+                </div>
+                <div style="background:rgba(217,70,166,.06);border:1px solid rgba(217,70,166,.2);border-radius:12px;padding:16px;text-align:center;">
+                    <div id="a-ahorro" style="font-size:1.5rem;font-weight:900;color:#D946A6;">—</div>
+                    <div style="font-size:.68rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;">Ahorro estimado</div>
+                </div>
+            </div>
+
+            <!-- Gráfica de casos por mes — barras CSS puras, sin librería -->
+            <div style="margin-bottom:20px;">
+                <p style="font-size:.75rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;">Casos por mes (últimos 6 meses)</p>
+                <div id="analytics-chart" style="display:flex;align-items:flex-end;gap:8px;height:100px;" role="img" aria-label="Gráfica de casos por mes"></div>
+            </div>
+
+            <!-- Top servicios -->
+            <div style="margin-bottom:20px;">
+                <p style="font-size:.75rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">Top servicios más solicitados</p>
+                <div id="analytics-servicios" style="display:flex;flex-direction:column;gap:6px;"></div>
+            </div>
+
+            <!-- Gancho: Ahorro vs método tradicional -->
+            <div style="background:linear-gradient(135deg,rgba(0,255,65,.08),rgba(0,210,255,.06));border:1px solid rgba(0,255,65,.25);border-radius:12px;padding:18px;">
+                <div style="font-size:.8rem;font-weight:800;color:#00FF41;margin-bottom:8px;">💚 Ventaja del flujo digital PRODIGY</div>
+                <p style="font-size:.75rem;color:#cbd5e1;line-height:1.7;" id="analytics-ventaja">
+                    Calculando tu impacto...
+                </p>
+            </div>
         </div>
     </div>
 </main>
@@ -935,10 +989,13 @@ async function loadByToken(token) {
     _nombreDoctor = data[0].nombre_doctor || '';
     document.getElementById('user-display').textContent = _nombreDoctor ? `, Dr. ${_nombreDoctor}` : '';
     _pedidos = data;
+    window._pedidos = data; // exponer para analytics
     _modoToken = true;
     renderTablas(data);
     suscribirRealtime();
     document.body.style.visibility = 'visible';
+    // Precalcular analytics si ya está visible
+    if (window._renderClinicaAnalytics) window._renderClinicaAnalytics(data);
 }
 
 /* ── MODO AUTH (sesión Supabase) ───────────────────────────── */
@@ -1343,5 +1400,121 @@ document.addEventListener('keydown', e => {
 });
 </script>
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});</script>
+<script>
+/* ── MI CLÍNICA ANALYTICS ─────────────────────────────────────────
+   Carga cuando el usuario hace scroll hacia la sección analytics.
+   Usa los pedidos ya cargados en _pedidos (evita llamadas extra).
+─────────────────────────────────────────────────────────────────── */
+(function() {
+    let _analyticsLoaded = false;
+
+    function _renderAnalytics(pedidos) {
+        if (_analyticsLoaded || !pedidos || !pedidos.length) return;
+        _analyticsLoaded = true;
+
+        // ── KPIs ──────────────────────────────────────────────────
+        const ahora = new Date();
+        const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
+
+        const totalCasos  = pedidos.length;
+        const esteMes     = pedidos.filter(p => new Date(p.created_at) >= inicioMes).length;
+        const aprobados1a = pedidos.filter(p =>
+            p.diseno_aprobado && (p.revisiones_usadas || 0) === 0
+        ).length;
+        const pctAprobados = totalCasos ? Math.round((aprobados1a / totalCasos) * 100) : 0;
+
+        // Ahorro estimado: flujo digital vs tradicional
+        // Tradicional: 2h de escaneo físico + 3h de diseño manual × $120/h
+        // Digital: 20 min escaneo + diseño automático × $120/h
+        const ahorroHorasCaso = 4.5; // horas ahorradas por caso en promedio
+        const valorHora       = 120000; // COP/hora
+        const ahorroTotal     = totalCasos * ahorroHorasCaso * valorHora;
+        const fmtCOP = n => '$' + Math.round(n/1000) + 'K COP';
+
+        document.getElementById('a-total-casos').textContent     = totalCasos;
+        document.getElementById('a-este-mes').textContent        = esteMes;
+        document.getElementById('a-tasa-aprobacion').textContent = pctAprobados + '%';
+        document.getElementById('a-ahorro').textContent          = fmtCOP(ahorroTotal);
+
+        // ── Gráfica de barras CSS — últimos 6 meses ───────────────
+        const meses = [];
+        for (let i = 5; i >= 0; i--) {
+            const d = new Date(ahora.getFullYear(), ahora.getMonth() - i, 1);
+            const fin = new Date(ahora.getFullYear(), ahora.getMonth() - i + 1, 1);
+            const count = pedidos.filter(p => {
+                const f = new Date(p.created_at);
+                return f >= d && f < fin;
+            }).length;
+            meses.push({ label: d.toLocaleDateString('es-CO', { month: 'short' }), count });
+        }
+        const maxCount = Math.max(...meses.map(m => m.count), 1);
+        const chart = document.getElementById('analytics-chart');
+        chart.innerHTML = meses.map(m => {
+            const pct = Math.round((m.count / maxCount) * 100);
+            const color = pct > 70 ? '#00FF41' : pct > 40 ? '#00d2ff' : '#D4AF37';
+            return `<div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px;">
+                <span style="font-size:.7rem;font-weight:700;color:${color};">${m.count || ''}</span>
+                <div style="width:100%;background:${color};border-radius:4px 4px 0 0;height:${Math.max(pct, 4)}%;transition:height .4s;"></div>
+                <span style="font-size:.6rem;color:#64748b;text-align:center;">${m.label}</span>
+            </div>`;
+        }).join('');
+
+        // ── Top servicios ─────────────────────────────────────────
+        const servicioMap = {};
+        pedidos.forEach(p => {
+            const s = (p.servicio || 'Otro').split('(')[0].trim();
+            servicioMap[s] = (servicioMap[s] || 0) + 1;
+        });
+        const top5 = Object.entries(servicioMap)
+            .sort(([,a],[,b]) => b - a)
+            .slice(0, 5);
+        const maxSrv = top5[0]?.[1] || 1;
+        document.getElementById('analytics-servicios').innerHTML = top5.map(([srv, cnt]) => {
+            const pct = Math.round((cnt / maxSrv) * 100);
+            return `<div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-size:.75rem;color:#e2e8f0;min-width:150px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${srv}</span>
+                <div style="flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;">
+                    <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#D946A6,#00d2ff);border-radius:100px;transition:width .5s;"></div>
+                </div>
+                <span style="font-size:.72rem;color:#94a3b8;min-width:24px;text-align:right;">${cnt}</span>
+            </div>`;
+        }).join('');
+
+        // ── Gancho: ventaja del flujo digital ─────────────────────
+        const mesesActivo = Math.ceil((ahora - new Date(pedidos[pedidos.length - 1]?.created_at || ahora)) / (1000*60*60*24*30)) || 1;
+        const casosPromMes = Math.round(totalCasos / mesesActivo);
+        const ahorroMes = fmtCOP(casosPromMes * ahorroHorasCaso * valorHora);
+        document.getElementById('analytics-ventaja').innerHTML =
+            `Con <strong style="color:#00FF41">${totalCasos} casos digitales</strong> procesados, tu clínica ha ahorrado aproximadamente
+            <strong style="color:#00FF41">${fmtCOP(ahorroTotal)}</strong> en tiempo de laboratorio físico y desplazamiento.<br><br>
+            Al ritmo actual (<strong style="color:#00d2ff">${casosPromMes} casos/mes</strong>), el flujo digital te genera
+            <strong style="color:#D4AF37">${ahorroMes} mensuales</strong> de ventaja competitiva sobre clínicas que usan procesos tradicionales.
+            <br><br>Tasa de aprobación al primer intento: <strong style="color:#D946A6">${pctAprobados}%</strong>
+            ${pctAprobados >= 80 ? '🏆 Excelente precisión clínica' : pctAprobados >= 60 ? '👍 Buena tasa' : '— Solicita revisiones antes de enviar'}.`;
+    }
+
+    // IntersectionObserver — cargar analytics solo cuando el usuario ve la sección
+    function _initObserver() {
+        const sec = document.getElementById('sec-analytics');
+        if (!sec) return;
+        const obs = new IntersectionObserver(function(entries) {
+            if (entries[0].isIntersecting) {
+                obs.disconnect();
+                // _pedidos ya está disponible desde la lógica principal del panel
+                const pedidos = window._pedidos || [];
+                _renderAnalytics(pedidos);
+            }
+        }, { threshold: 0.1 });
+        obs.observe(sec);
+    }
+
+    // Inicializar cuando el DOM esté listo
+    if (document.readyState === 'complete') { _initObserver(); }
+    else { window.addEventListener('load', _initObserver); }
+
+    // También exponer para llamada manual tras cargar datos
+    window._renderClinicaAnalytics = _renderAnalytics;
+})();
+</script>
 </body>
 </html>

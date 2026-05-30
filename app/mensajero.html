@@ -130,6 +130,7 @@
     <div>
         <div class="header-brand"><i class="fas fa-motorcycle"></i> PRODIGY Ruta</div>
         <div class="header-user" id="user-label">Cargando...</div>
+        <div id="offline-badge" role="status" aria-live="polite" style="display:none;font-size:.65rem;background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3);border-radius:100px;padding:2px 10px;margin-top:3px;font-weight:700;"></div>
     </div>
     <button type="button" class="btn-logout" onclick="cerrarSesion()"><i class="fas fa-arrow-right-from-bracket"></i> Salir</button>
 </div>
@@ -773,6 +774,101 @@ async function enviarPanicoFab() {
     document.getElementById('pfab-desc').value = '';
     toast('Incidencia reportada. El admin fue notificado.', 'ok');
 }
+</script>
+
+<script>
+/* ── BACKGROUND SYNC — Mensajero offline ─────────────────────────
+   Si el mensajero intenta entregar sin señal:
+   1. Guarda la acción en IndexedDB local
+   2. Registra Background Sync en el Service Worker
+   3. Cuando hay señal, el SW sube automáticamente
+
+   API pública: window.MensajeroSync.guardar(url, method, headers, body)
+─────────────────────────────────────────────────────────────────── */
+window.MensajeroSync = (function() {
+    const DB_NAME    = 'prodigy-mensajero';
+    const STORE_NAME = 'pendientes';
+    const SYNC_TAG   = 'prodigy-mensajero-sync';
+    let _db = null;
+
+    async function _getDB() {
+        if (_db) return _db;
+        return new Promise((resolve, reject) => {
+            const req = indexedDB.open(DB_NAME, 1);
+            req.onupgradeneeded = e => {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains(STORE_NAME)) {
+                    db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+                }
+            };
+            req.onsuccess = e => { _db = e.target.result; resolve(_db); };
+            req.onerror   = e => reject(e.target.error);
+        });
+    }
+
+    async function guardar(url, method, headers, body) {
+        const db = await _getDB();
+        return new Promise((resolve, reject) => {
+            const tx    = db.transaction(STORE_NAME, 'readwrite');
+            const store = tx.objectStore(STORE_NAME);
+            const req   = store.add({ url, method, headers, body, ts: Date.now() });
+            req.onsuccess = () => resolve(req.result);
+            req.onerror   = e => reject(e.target.error);
+        });
+    }
+
+    async function registrarSync() {
+        if (!('serviceWorker' in navigator) || !('SyncManager' in window)) return false;
+        try {
+            const reg = await navigator.serviceWorker.ready;
+            await reg.sync.register(SYNC_TAG);
+            return true;
+        } catch(e) { return false; }
+    }
+
+    async function contarPendientes() {
+        const db = await _getDB();
+        return new Promise((resolve) => {
+            const tx  = db.transaction(STORE_NAME, 'readonly');
+            const req = tx.objectStore(STORE_NAME).count();
+            req.onsuccess = () => resolve(req.result);
+            req.onerror   = () => resolve(0);
+        });
+    }
+
+    // Indicador visual de pendientes offline
+    async function actualizarIndicador() {
+        const n = await contarPendientes();
+        const el = document.getElementById('offline-badge');
+        if (el) {
+            el.textContent = n > 0 ? `${n} pendientes offline` : '';
+            el.style.display = n > 0 ? 'block' : 'none';
+        }
+    }
+
+    // Escuchar cambios de conectividad
+    window.addEventListener('online', async function() {
+        const n = await contarPendientes();
+        if (n > 0) {
+            const syncOk = await registrarSync();
+            if (syncOk) {
+                toast(`📶 Conexión recuperada — subiendo ${n} evidencia(s) pendiente(s)...`, 'ok');
+            } else {
+                toast(`📶 Conexión recuperada. Recarga para subir ${n} evidencia(s).`, 'ok');
+            }
+        }
+        actualizarIndicador();
+    });
+    window.addEventListener('offline', function() {
+        toast('⚠️ Sin conexión — las evidencias se guardarán y subirán automáticamente', 'error');
+        actualizarIndicador();
+    });
+
+    // Mostrar badge si hay pendientes al cargar
+    document.addEventListener('DOMContentLoaded', actualizarIndicador);
+
+    return { guardar, registrarSync, contarPendientes, actualizarIndicador };
+})();
 </script>
 </body>
 </html>

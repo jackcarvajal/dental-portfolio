@@ -573,6 +573,7 @@
 <script src="js/prodigy-utils.js?v=20260528" defer></script>
 </main>
 <script src="js/footer.js?v=20260528"></script>
+<script src="js/biomecanica-rules.js?v=20260528"></script>
 <script>
 /* ═══════════════════════════════════════════════════════
    CONFIG DE PRECIOS — editar aquí para actualizar tarifas
@@ -852,6 +853,28 @@ async function generarOrden() {
   var antagonista = document.getElementById('rx-antagonista').value;
   var oclusion    = document.getElementById('rx-oclusion').value;
 
+  // Validación biomecánica sobre los items del carrito
+  if (window.BiomecanicaRules && Object.keys(cart).length > 0) {
+    var totalUds = Object.values(cart).reduce(function(s,i){ return s + (i.qty||1); }, 0);
+    var servicios = Object.values(cart).map(function(i){ return (i.nombre||'').toLowerCase(); }).join(' ');
+    var materiales = Object.values(cart).map(function(i){ return (i.variant||'').toLowerCase(); }).join(' ');
+    var r = BiomecanicaRules.validate(servicios, materiales, totalUds);
+    if (r.bloqueos.length > 0) {
+      BiomecanicaRules.mostrarAlerta(r, null);
+      return; // No generar orden con combinación bloqueada
+    }
+    if (r.advertencias.length > 0) {
+      BiomecanicaRules.mostrarAlerta(r, function() {
+        // El doctor acepta el riesgo — continuar
+        generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antagonista, oclusion);
+      });
+      return;
+    }
+  }
+  generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antagonista, oclusion);
+}
+
+async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antagonista, oclusion) {
   if (!doctor) { const fd=document.getElementById('rx-doctor'); fd.style.outline='2px solid #f87171'; fd.setAttribute('aria-invalid','true'); fd.focus(); setTimeout(()=>{fd.style.outline='';fd.removeAttribute('aria-invalid');},2500); return; }
   if (!document.getElementById('checkHabeas').checked) { const hb=document.getElementById('checkHabeas'); hb.scrollIntoView({behavior:'smooth',block:'center'}); hb.style.outline='2px solid #f87171'; hb.setAttribute('aria-invalid','true'); setTimeout(()=>{hb.style.outline='';hb.removeAttribute('aria-invalid');},2500); return; }
 

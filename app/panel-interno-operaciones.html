@@ -258,9 +258,14 @@
                 <h1>Pedidos <span style="color:var(--gold);">PRODIGY</span></h1>
                 <p>Gestión de casos y estados de producción en tiempo real</p>
             </div>
-            <button type="button" class="btn-primary" onclick="cargarPedidos()">
-                <i class="fas fa-rotate-right"></i> Actualizar
-            </button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="btn-primary" onclick="cargarPedidos()">
+                    <i class="fas fa-rotate-right"></i> Actualizar
+                </button>
+                <button type="button" onclick="exportarPedidosCSV()" style="background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:#00FF41;padding:9px 18px;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;" aria-label="Exportar pedidos a CSV">
+                    <i class="fas fa-file-csv"></i> Exportar CSV
+                </button>
+            </div>
         </div>
 
         <!-- KPIs -->
@@ -1137,6 +1142,7 @@ async function cargarPedidos() {
         if (error) throw error;
 
         todosLosPedidos = data || [];
+        window._pedidosAdmin = todosLosPedidos; // exponer para export CSV
         renderPedidos(todosLosPedidos);
         actualizarKPIs(todosLosPedidos);
 
@@ -2701,6 +2707,29 @@ async function confirmarDelCaso() {
   await _auditLog('DELETE_CASO_PORTAFOLIO', { caso_id: id });
   toast('Caso eliminado', 'success');
   cargarPortafolio();
+}
+
+/* ── EXPORT CSV pedidos ──────────────────────────────────────────────── */
+function exportarPedidosCSV() {
+    const data = window._pedidosAdmin || [];
+    if (!data.length) { toast('Carga los pedidos primero', 'error'); return; }
+    const esc = s => `"${String(s||'').replace(/"/g,'""')}"`;
+    const fmtF = ts => ts ? new Date(ts).toLocaleDateString('es-CO') : '';
+    const fmtCOP = n => n ? Number(n).toLocaleString('es-CO') : '0';
+    const headers = ['Código','Doctor','Paciente','Servicio','Material','Estado','Pago','Total COP','Saldo','Operativo','Creación','Actualización'];
+    const rows = data.map(p => [
+        esc(p.codigo), esc(p.nombre_doctor||p.nombre_cliente), esc(p.nombre_paciente),
+        esc(p.servicio), esc(p.material), esc(p.estado), esc(p.pago_estado),
+        fmtCOP(p.precio_total), fmtCOP(p.saldo_pendiente_monto||0),
+        esc(p.estado_operativo), fmtF(p.created_at), fmtF(p.updated_at)
+    ]);
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob(['﻿'+csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = `prodigy-pedidos-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
+    toast(`✅ ${data.length} pedidos exportados`, 'success');
 }
 
 /* ── AUDIT LOG — registra acciones sensibles del admin ──────────────── */

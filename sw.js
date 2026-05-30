@@ -147,6 +147,58 @@ self.addEventListener('push', e => {
   );
 });
 
+// --- BACKGROUND SYNC — Mensajero offline ─────────────────────────
+// Cuando el mensajero sube evidencia sin señal, se guarda en IndexedDB.
+// Al recuperar conexión, el sync "prodigy-mensajero-sync" sube todo.
+self.addEventListener('sync', e => {
+  if (e.tag !== 'prodigy-mensajero-sync') return;
+  e.waitUntil(
+    (async () => {
+      const db = await _openMensajeroIDB();
+      const tx = db.transaction('pendientes', 'readwrite');
+      const store = tx.objectStore('pendientes');
+      const items = await _getAllIDB(store);
+      for (const item of items) {
+        try {
+          const res = await fetch(item.url, {
+            method:  item.method || 'POST',
+            headers: item.headers || { 'Content-Type': 'application/json' },
+            body:    item.body,
+          });
+          if (res.ok) {
+            await store.delete(item.id);
+            console.log('[SW-Sync] Subida pendiente completada:', item.id);
+          }
+        } catch(e) {
+          console.warn('[SW-Sync] Fallo:', e.message);
+        }
+      }
+    })()
+  );
+});
+
+function _openMensajeroIDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('prodigy-mensajero', 1);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('pendientes')) {
+        db.createObjectStore('pendientes', { keyPath: 'id', autoIncrement: true });
+      }
+    };
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror   = e => reject(e.target.error);
+  });
+}
+
+function _getAllIDB(store) {
+  return new Promise((resolve, reject) => {
+    const req = store.getAll();
+    req.onsuccess = e => resolve(e.target.result || []);
+    req.onerror   = e => reject(e.target.error);
+  });
+}
+
 // --- NOTIFICATIONCLICK: abrir seguimiento-caso ---
 self.addEventListener('notificationclick', e => {
   e.notification.close();
