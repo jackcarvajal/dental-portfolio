@@ -109,6 +109,14 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-30 — ronda 3)
+- **CSP + strict-dynamic**: _headers PRODIGY+Alejandro — mejor protección XSS sin romper inline
+- **CSP monitoring endpoint**: functions/api/csp-report.js — registra violaciones en logs_incidencias para análisis
+- **107 smoke tests**: ampliados con tests de AR viewer, analytics, offline sync, CSP, export CSV
+- **Export CSV admin-panel Alejandro**: botón con window._acPedidos
+- **VERIFICAR.md**: sección smoke tests con comando y expectativa
+- **health-check dual-channel**: email Resend + WA Callmebot para APIs caídas
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-30 — ronda 2)
 - **MI CLÍNICA ANALYTICS**: Tab en client-panel con KPIs, gráfica barras CSS, top servicios, ahorro vs método tradicional, IntersectionObserver para carga lazy
 - **BACKGROUND SYNC offline mensajero**: SW + IndexedDB + badge visual — evidencias se suben automáticamente al recuperar señal en Bogotá
