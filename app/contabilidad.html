@@ -199,6 +199,10 @@ tbody td{padding:11px 14px;vertical-align:middle;}
         <button type="button" class="tab-btn" onclick="switchTab('cotizaciones',this);cargarCotizacionesCont()">
             <i class="fas fa-receipt"></i> Cotizaciones
         </button>
+        <button type="button" class="tab-btn" onclick="switchTab('ref-contab',this);cargarReferidosContab()">
+            <i class="fas fa-user-plus"></i> Referidos
+            <span class="badge" id="badge-ref" style="background:#00FF41;color:#000;">0</span>
+        </button>
     </div>
 
     <!-- TAB: Por confirmar -->
@@ -484,6 +488,31 @@ tbody td{padding:11px 14px;vertical-align:middle;}
             </table>
         </div>
     </div>
+
+    <!-- TAB: Referidos contabilidad -->
+    <div id="tab-ref-contab" class="tab-panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <div style="font-size:.72rem;color:#475569;">Referidos en estado "primer_pedido" requieren aplicar el crédito de $30.000 al referidor manualmente.</div>
+            <button type="button" class="btn-xs btn-ver" onclick="cargarReferidosContab()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+        </div>
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Referidor</th>
+                        <th scope="col">Referido</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Crédito</th>
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-ref-contab" aria-live="polite">
+                    <tr><td colspan="6" style="text-align:center;padding:16px;color:var(--muted);">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </main>
 
 <!-- Modal: Ver comprobante + confirmar -->
@@ -684,6 +713,7 @@ function switchTab(id, el) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
     document.getElementById('tab-' + id).classList.add('active');
+    if (id === 'ref-contab') cargarReferidosContab();
 }
 
 /* ── Por confirmar (pago_subido) ───────────────────────────────────── */
@@ -1418,6 +1448,53 @@ function exportarCSV() {
 </script>
 <script>
 /* ── COTIZACIONES (contabilidad) ──────────────────────────── */
+/* ── REFERIDOS CONTABILIDAD ─────────────────────────────────── */
+async function cargarReferidosContab() {
+    const tbody = document.getElementById('tbody-ref-contab');
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:14px;color:var(--muted);"><i class="fas fa-spinner fa-spin"></i></td></tr>';
+    try {
+        const { data, error } = await sb.from('referidos')
+            .select('id,codigo,referidor_email,referidor_nombre,referido_email,referido_nombre,estado,recompensa_cop,referido_at')
+            .in('estado', ['primer_pedido', 'recompensado'])
+            .order('referido_at', { ascending: false });
+        if (error) throw error;
+        // Actualizar badge
+        const badge = document.getElementById('badge-ref');
+        const pendientes = (data||[]).filter(r => r.estado === 'primer_pedido').length;
+        if (badge) badge.textContent = pendientes;
+        if (!data || !data.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--muted);">Sin referidos que procesar.</td></tr>'; return; }
+        const COLORES = { primer_pedido: '#D4AF37', recompensado: '#00FF41' };
+        tbody.innerHTML = data.map(r => {
+            const color = COLORES[r.estado] || '#94a3b8';
+            const fecha = r.referido_at ? new Date(r.referido_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}) : '—';
+            const waRef = (r.referidor_email||'').replace(/[^0-9]/g,'');
+            const waMsg = encodeURIComponent('Hola Dr. ' + (r.referidor_nombre||'') + '! Tu colega ' + (r.referido_nombre||r.referido_email||'') + ' pagó su primer caso. Tu crédito de $30.000 COP se aplicará en tu próximo pedido.');
+            return `<tr>
+                <td style="font-weight:800;color:#D4AF37;letter-spacing:1px;">${escH(r.codigo)}</td>
+                <td>${escH(r.referidor_nombre||r.referidor_email||'—')}</td>
+                <td>${escH(r.referido_nombre||r.referido_email||'—')}<br><span style="font-size:.65rem;color:#475569;">${escH(fecha)}</span></td>
+                <td><span style="background:rgba(0,0,0,.3);border:1px solid ${color};color:${color};border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:700;">${escH(r.estado.replace('_',' '))}</span></td>
+                <td style="font-weight:700;color:#D4AF37;">$${Number(r.recompensa_cop||30000).toLocaleString('es-CO')}</td>
+                <td style="display:flex;gap:6px;">
+                    ${r.estado === 'primer_pedido' ? `
+                    <a href="https://wa.me/${waRef}?text=${waMsg}" target="_blank" rel="noopener noreferrer" style="padding:4px 10px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25D366;border-radius:6px;font-size:.7rem;font-weight:700;text-decoration:none;"><i class="fab fa-whatsapp"></i> Notificar</a>
+                    <button type="button" onclick="marcarRecompensado('${escH(r.id)}')" style="padding:4px 10px;background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:6px;font-size:.7rem;cursor:pointer;font-weight:700;">✓ Crédito aplicado</button>
+                    ` : '<span style="color:#475569;font-size:.7rem;">Completado</span>'}
+                </td>
+            </tr>`;
+        }).join('');
+    } catch(err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="color:#f87171;padding:12px;">${escH(err.message)}</td></tr>`;
+    }
+}
+
+async function marcarRecompensado(id) {
+    const { error } = await sb.from('referidos').update({ estado: 'recompensado' }).eq('id', id);
+    if (error) toast('Error actualizando referido', 'error');
+    else { toast('Crédito marcado como aplicado', 'ok'); cargarReferidosContab(); }
+}
+
 async function cargarCotizacionesCont() {
     const tbody = document.getElementById('tbody-cot');
     const bar   = document.getElementById('total-bar-cot');
