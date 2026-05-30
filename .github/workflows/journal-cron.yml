@@ -31,9 +31,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Generar artículos (Gemini + Wikipedia)
+      - name: Generar artículos (Gemini → Claude fallback)
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY:     ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/auto-journal.js
 
       - name: Verificar cambios en articles.js

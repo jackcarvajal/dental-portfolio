@@ -452,8 +452,8 @@ function httpRequest(options, body) {
   });
 }
 
-// ── Gemini API ────────────────────────────────────────────────────
-async function callGemini(prompt) {
+// ── Gemini API — con fallback a Claude (Anthropic) ───────────────
+async function callGeminiDirect(prompt) {
   const body = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
     generationConfig: {
@@ -473,18 +473,73 @@ async function callGemini(prompt) {
     hostname: 'generativelanguage.googleapis.com',
     path: `/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
     method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+  }, body);
+
+  const parsed = JSON.parse(raw);
+  if (parsed.error) throw new Error('Gemini: ' + parsed.error.message);
+  const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('Gemini: respuesta vacía');
+  return { text, model: 'gemini-2.0-flash' };
+}
+
+async function callClaudeFallback(prompt) {
+  const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+  if (!ANTHROPIC_KEY) throw new Error('ANTHROPIC_API_KEY no configurada');
+
+  const body = JSON.stringify({
+    model: 'claude-haiku-4-5-20251001', // modelo rápido y económico para fallback
+    max_tokens: 8192,
+    temperature: 0.15,
+    messages: [{ role: 'user', content: prompt }]
+  });
+
+  const raw = await httpRequest({
+    hostname: 'api.anthropic.com',
+    path: '/v1/messages',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(body)
+      'Content-Length': Buffer.byteLength(body),
+      'x-api-key': ANTHROPIC_KEY,
+      'anthropic-version': '2023-06-01'
     }
   }, body);
 
   const parsed = JSON.parse(raw);
-  if (parsed.error) throw new Error(parsed.error.message);
+  if (parsed.error) throw new Error('Claude: ' + (parsed.error.message || JSON.stringify(parsed.error)));
+  const text = parsed.content?.[0]?.text;
+  if (!text) throw new Error('Claude fallback: respuesta vacía');
+  return { text, model: 'claude-haiku-4-5 (fallback)' };
+}
 
-  const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error('Gemini: respuesta vacía. ' + JSON.stringify(parsed).slice(0, 200));
-  return text;
+// Función principal con cadena de fallback: Gemini → Claude
+async function callGemini(prompt, retries = 2) {
+  let lastError;
+
+  // Intentar Gemini con reintentos
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const result = await callGeminiDirect(prompt);
+      if (i > 0) console.log(`[AI] Gemini OK en intento ${i + 1}`);
+      return result.text;
+    } catch(e) {
+      lastError = e;
+      console.warn(`[AI] Gemini intento ${i + 1} falló: ${e.message}`);
+      if (i < retries) await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+    }
+  }
+
+  // Fallback a Claude si Gemini falla completamente
+  console.warn(`[AI] Gemini agotó reintentos. Intentando Claude como fallback...`);
+  try {
+    const result = await callClaudeFallback(prompt);
+    console.log(`[AI] Claude fallback OK — modelo: ${result.model}`);
+    return result.text;
+  } catch(e) {
+    console.error(`[AI] Claude fallback también falló: ${e.message}`);
+    throw new Error(`Todos los modelos fallaron. Último error Gemini: ${lastError.message}. Error Claude: ${e.message}`);
+  }
 }
 
 // ── Wikipedia REST API — imagen principal del artículo ───────────
