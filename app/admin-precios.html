@@ -517,6 +517,24 @@
     // ── Init ──────────────────────────────────────────────────
     await cargarCatalogo();
     await cargarExtras();
+
+    // ── Config referidos: mostrar descuento actual ─────────────
+    (async () => {
+        try {
+            const { count } = await sb.from('referidos').select('*',{count:'exact',head:true}).not('referido_email','is',null);
+            const { count: totalCod } = await sb.from('referidos').select('*',{count:'exact',head:true});
+            const refInfo = document.createElement('div');
+            refInfo.style.cssText = 'background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.2);border-radius:12px;padding:16px 20px;margin-top:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;';
+            refInfo.innerHTML = `
+                <div>
+                    <div style="font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:#00FF41;margin-bottom:6px;"><i class="fas fa-user-plus"></i> Programa de Referidos</div>
+                    <div style="font-size:.85rem;color:#94a3b8;">Descuento: <strong style="color:#00FF41;">10%</strong> · Códigos generados: <strong style="color:#fff;">${totalCod||0}</strong> · Referidos activos: <strong style="color:#00FF41;">${count||0}</strong></div>
+                </div>
+                <a href="admin-panel.html" style="background:rgba(0,255,65,.12);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:8px;padding:7px 16px;font-size:.78rem;font-weight:700;text-decoration:none;"><i class="fas fa-external-link"></i> Gestionar referidos</a>
+            `;
+            document.querySelector('.main, main')?.appendChild(refInfo);
+        } catch(_) {}
+    })();
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
