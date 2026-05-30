@@ -109,6 +109,14 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-30)
+- **SW v24**: cache invalidado para que usuarios vean los cambios de seguridad/UX
+- **90 Smoke Tests**: suite automatizada en CI/CD que valida 15 bloques antes del deploy
+- **Export CSV contabilidad**: botón "📊 Exportar CSV" con historial completo + BOM UTF-8 Excel
+- **label[for] en client-panel y admin-panel**: pd-uds, pd-dientes, pd-link, pd-notas, img-input, p-titulo, gallery-input
+- **bugfix biomecanica-rules.js**: template literal con opts → string literal (error en Node.js vm)
+- **MAP.md sync**: SW_VERSION actualizado v23 → v24
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-29 — ronda 13)
 - **fix(CRÍTICO) Alejandro**: nombres de objetos JS con espacios → ACConversions, ACUTM, ACGeo, ACViewer, ACAnalytics. El tracking de UTM/conversiones/geo nunca había funcionado. 6 archivos corregidos.
 - **security**: 0 window.open sin noopener en TODA la codebase PRODIGY + Alejandro (HTML + JS + paneles app/)
