@@ -1827,9 +1827,20 @@ const lineWompi = document.getElementById('line-wompi');
                         billing_nit:           STATE.billingNit   || null,
                         billing_razon:         STATE.billingRazon || null,
                         billing_email:         STATE.billingEmail || null,
-                        factura_estado:        STATE.billingReq ? 'pendiente' : 'no_requerida'
+                        factura_estado:        STATE.billingReq ? 'pendiente' : 'no_requerida',
+                        codigo_referido:       sessionStorage.getItem('prodigy_ref') || null
                     }]).then(({ error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido diseño no guardado:', _e.message);
+                        // Registrar uso del código de referido en tabla referidos
+                        const ref = sessionStorage.getItem('prodigy_ref');
+                        if (ref && !_e) {
+                            _sb.from('referidos').update({
+                                referido_email: STATE.whatsappCliente || null,
+                                referido_nombre: STATE.nombreCliente || null,
+                                referido_at: new Date().toISOString(),
+                                estado: 'registrado'
+                            }).eq('codigo', ref).then(() => sessionStorage.removeItem('prodigy_ref'));
+                        }
                     });
                 }
             } catch(_e2) { /* silencioso */ }
@@ -1884,6 +1895,20 @@ const lineWompi = document.getElementById('line-wompi');
         document.addEventListener('DOMContentLoaded', () => {
             calcularTotal();
             inicializarCatalogo(); /* sync precios desde admin-precios → Supabase */
+
+            // Capturar código de referido de la URL (?ref=PRODY-XXXXXX)
+            (function() {
+                const ref = new URLSearchParams(location.search).get('ref');
+                if (ref && /^PRODY-[A-Z0-9]{6}$/.test(ref)) {
+                    sessionStorage.setItem('prodigy_ref', ref);
+                    // Mostrar badge de descuento
+                    const banner = document.createElement('div');
+                    banner.style.cssText = 'background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);border-radius:10px;padding:10px 16px;font-size:.82rem;color:#00FF41;display:flex;align-items:center;gap:8px;margin-bottom:12px;';
+                    banner.innerHTML = '<i class="fas fa-tag"></i> Código de referido <strong>' + ref + '</strong> aplicado. Recibirás 10% de descuento en este caso.';
+                    const form = document.querySelector('form') || document.querySelector('.flujo-form, .step-container, main');
+                    if (form) form.prepend(banner);
+                }
+            })();
 
             // Pre-rellenar desde cotización guardada (?cotizacion=ID)
             (async () => {
