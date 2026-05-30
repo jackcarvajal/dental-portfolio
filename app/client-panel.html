@@ -456,6 +456,19 @@
     </div>
 </main>
 
+<!-- MODAL TIMELINE DE ESTADOS -->
+<div id="modal-timeline" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:4500;align-items:center;justify-content:center;padding:20px;overflow-y:auto;" role="dialog" aria-modal="true" aria-labelledby="timeline-title">
+  <div style="background:#0d1525;border:1px solid rgba(0,210,255,.3);border-radius:18px;padding:28px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h3 id="timeline-title" style="color:#00d2ff;font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:8px;"><i class="fas fa-history" aria-hidden="true"></i> Historial del caso</h3>
+      <button type="button" onclick="cerrarTimeline()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1.2rem;" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="timeline-content" aria-live="polite" aria-label="Historial de eventos del caso">
+      <div style="text-align:center;padding:32px;color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> Cargando historial...</div>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL APROBACION DISEÑO -->
 <div id="modal-dap" role="dialog" aria-modal="true" aria-label="Revisar y aprobar diseño">
     <div class="dap-box">
@@ -759,6 +772,7 @@ function renderTablas(pedidos) {
                 <td>${estadoBadge(p.estado)}</td>
                 <td style="display:flex;gap:5px;flex-wrap:wrap;">
                     <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold">Ver</a>
+                    <button type="button" onclick="verTimeline('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#00d2ff;border-color:rgba(0,210,255,.3);" title="Historial de cambios"><i class="fas fa-history"></i></button>
                     ${puedeSTL?`<button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
                     <a href="../recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
                     ${esEntregado&&!yaCalif?`<button type="button" onclick="abrirNPS('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#D4AF37;border-color:rgba(212,175,55,.3);">⭐ Calificar</button>`:''}
@@ -1044,6 +1058,62 @@ async function loadByAuth(session) {
 }
 
 /* ── NPS ────────────────────────────────────────────────────── */
+/* ── TIMELINE HISTORIAL DE ESTADOS ─────────────────────────────── */
+async function verTimeline(pedidoId, codigo) {
+    const modal   = document.getElementById('modal-timeline');
+    const content = document.getElementById('timeline-content');
+    document.getElementById('timeline-title').innerHTML =
+        `<i class="fas fa-history" aria-hidden="true"></i> Historial — ${escH(codigo)}`;
+    modal.style.display = 'flex';
+    content.innerHTML   = '<div style="text-align:center;padding:32px;color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
+
+    try {
+        const { data, error } = await sb
+            .from('historial_diseno')
+            .select('id, tipo, actor, descripcion, created_at, metadata')
+            .eq('pedido_id', pedidoId)
+            .order('created_at', { ascending: true });
+
+        if (error) throw error;
+
+        const iconMap = {
+            SUBIDA_DISENO:   { ico:'fa-upload',       color:'#00d2ff' },
+            FAB_CONFIRMADA:  { ico:'fa-check-circle',  color:'#00FF41' },
+            TRANSICION:      { ico:'fa-arrow-right',   color:'#D4AF37' },
+            CAMBIO_ESTADO:   { ico:'fa-exchange-alt',  color:'#D946A6' },
+            DEFAULT:         { ico:'fa-circle',         color:'#94a3b8' },
+        };
+
+        if (!data || !data.length) {
+            content.innerHTML = '<div style="text-align:center;padding:24px;color:#94a3b8;font-size:.82rem;"><i class="fas fa-inbox" style="display:block;font-size:2rem;margin-bottom:10px;opacity:.3;"></i>Sin eventos registrados aún.</div>';
+            return;
+        }
+
+        const items = data.map(ev => {
+            const ic    = iconMap[ev.tipo] || iconMap.DEFAULT;
+            const actor = ev.actor ? `<span style="font-size:.65rem;color:#64748b;margin-left:6px;">[${escH(ev.actor)}]</span>` : '';
+            const fecha = new Date(ev.created_at).toLocaleDateString('es-CO', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+            return `<div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+                <div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.3);border:2px solid ${ic.color};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                    <i class="fas ${ic.ico}" style="font-size:.65rem;color:${ic.color};" aria-hidden="true"></i>
+                </div>
+                <div>
+                    <div style="font-size:.8rem;font-weight:700;color:#e2e8f0;">${escH(ev.descripcion || ev.tipo)}${actor}</div>
+                    <div style="font-size:.68rem;color:#64748b;margin-top:3px;">${fecha}</div>
+                </div>
+            </div>`;
+        }).join('');
+
+        content.innerHTML = `<div style="display:flex;flex-direction:column;">${items}</div>`;
+    } catch(e) {
+        content.innerHTML = `<div style="color:#f87171;text-align:center;padding:24px;font-size:.82rem;">Error: ${escH(e.message)}</div>`;
+    }
+}
+
+function cerrarTimeline() {
+    document.getElementById('modal-timeline').style.display = 'none';
+}
+
 function abrirNPS(pedidoId, codigo) {
     if (_modoToken) return;
     _npsId = pedidoId; _npsStar = 0;
@@ -1396,7 +1466,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof mostrarBotonPush === 'function') mostrarBotonPush('push-container');
 });
 document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') cerrarDelBib();
+    if (e.key === 'Escape') { cerrarDelBib(); cerrarTimeline(); }
 });
 </script>
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});</script>
