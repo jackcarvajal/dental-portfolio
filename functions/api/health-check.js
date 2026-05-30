@@ -90,6 +90,27 @@ const SERVICES = [
     expectStatus: [200, 301, 302, 404],
     critical: false,
   },
+  {
+    name: 'Resend Email API',
+    url: () => 'https://api.resend.com',
+    method: 'HEAD',
+    expectStatus: [200, 401, 403, 405],
+    critical: false,
+  },
+  {
+    name: 'Callmebot WA',
+    url: () => 'https://api.callmebot.com',
+    method: 'HEAD',
+    expectStatus: [200, 301, 302, 400, 403, 405],
+    critical: false,
+  },
+  {
+    name: 'PRODIGY Sitemap',
+    url: () => 'https://prodigylabdental.com/sitemap.xml',
+    method: 'HEAD',
+    expectStatus: [200],
+    critical: false,
+  },
 ];
 
 async function _fetchOnce(service, env) {
