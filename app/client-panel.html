@@ -497,23 +497,23 @@
       </div>
       <div class="pd-row">
         <div class="pd-fg">
-          <label>N° unidades *</label>
+          <label for="pd-uds">N° unidades *</label>
           <input type="number" id="pd-uds" min="1" max="28" value="1" oninput="pdCalc()">
         </div>
         <div class="pd-fg">
-          <label>Pieza(s) dental(es)</label>
+          <label for="pd-dientes">Pieza(s) dental(es)</label>
           <input type="text" id="pd-dientes" placeholder='Ej: "11, 21, 22"'>
         </div>
       </div>
       <div class="pd-row full">
         <div class="pd-fg">
-          <label>Link archivos STL (Drive / WeTransfer)</label>
+          <label for="pd-link">Link archivos STL (Drive / WeTransfer)</label>
           <input type="url" id="pd-link" placeholder="https://drive.google.com/...">
         </div>
       </div>
       <div class="pd-row full">
         <div class="pd-fg">
-          <label>Notas clínicas</label>
+          <label for="pd-notas">Notas clínicas</label>
           <textarea id="pd-notas" placeholder="Color VITA, guía de sombra, oclusión, indicaciones especiales..."></textarea>
         </div>
       </div>
@@ -1186,7 +1186,7 @@ async function cargarPedidosDoc_cliente(uid) {
             ${p.notas_cambios?`<div style="width:100%;margin-top:6px;font-size:.72rem;color:#f59e0b;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);border-radius:6px;padding:6px 10px"><i class="fas fa-comment-dots"></i> Cambios solicitados: "${escH(p.notas_cambios)}"</div>`:''}
             ${(p.estado==='revision'||p.estado==='en_diseno')?`
             <div class="feedback-upload" style="width:100%;margin-top:10px;">
-                <label><i class="fas fa-camera"></i> Fotos de feedback (opcional)</label>
+                <label for="fotos-${escH(p.id)}"><i class="fas fa-camera" aria-hidden="true"></i> Fotos de feedback (opcional)</label>
                 <input type="file" accept="image/*" multiple id="fotos-${escH(p.id)}">
                 <button type="button" class="btn-feedback" onclick="subirFotos('${escH(p.id)}')"><i class="fas fa-upload"></i> Subir fotos</button>
             </div>`:''}
