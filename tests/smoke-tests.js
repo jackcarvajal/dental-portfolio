@@ -195,6 +195,41 @@ assert(authContent.includes('30 * 60 * 1000') || authContent.includes('1800000')
 assert(authContent.includes('mousemove') && authContent.includes('keydown'), 'Detecta actividad del usuario');
 assert(authContent.includes('signOut'), 'Llama signOut al expirar');
 
+// ── BLOQUE 16: Nuevos features (AR, Analytics, Offline Sync) ──────
+console.log('\n🆕 NUEVOS FEATURES');
+const arViewer = fileContent('js/ar-viewer.js');
+assert(arViewer.length > 1000, 'ar-viewer.js tiene contenido sustancial');
+assert(arViewer.includes('detectCapabilities'), 'AR detecta capacidades del dispositivo');
+assert(arViewer.includes('immersive-ar'), 'AR soporta modo WebXR immersive-ar');
+assert(arViewer.includes('launch') && arViewer.includes('close'), 'AR exporta launch() y close()');
+
+const clientPanel = fileContent('app/client-panel.html');
+assert(clientPanel.includes('sec-analytics'), 'client-panel tiene sección analytics');
+assert(clientPanel.includes('_renderClinicaAnalytics'), 'client-panel tiene función de analytics');
+assert(clientPanel.includes('ahorro') || clientPanel.includes('Ahorro'), 'client-panel muestra ahorro estimado');
+
+const mensajero = fileContent('app/mensajero.html');
+assert(mensajero.includes('MensajeroSync'), 'mensajero.html tiene Background Sync');
+assert(mensajero.includes('IndexedDB') || mensajero.includes('indexedDB'), 'mensajero usa IndexedDB para offline');
+assert(mensajero.includes('offline-badge'), 'mensajero tiene badge de estado offline');
+
+// ── BLOQUE 17: CSP Report y monitoreo ─────────────────────────────
+console.log('\n🔍 CSP MONITORING');
+const cspReport = fileContent('functions/api/csp-report.js');
+assert(cspReport.length > 100, 'csp-report.js existe');
+assert(cspReport.includes('csp-report'), 'Procesa reportes CSP');
+const headersCsp = fileContent('_headers');
+assert(headersCsp.includes('strict-dynamic'), 'CSP incluye strict-dynamic');
+assert(headersCsp.includes('csp-report') || headersCsp.includes('CSP-Report'), 'CSP tiene report endpoint');
+
+// ── BLOQUE 18: Export CSV en paneles ──────────────────────────────
+console.log('\n📊 EXPORT CSV');
+const contabilidad = fileContent('app/contabilidad.html');
+const panelInterno = fileContent('app/panel-interno-operaciones.html');
+assert(contabilidad.includes('exportarCSV'), 'contabilidad.html tiene exportarCSV()');
+assert(panelInterno.includes('exportarPedidosCSV'), 'panel-interno tiene exportarPedidosCSV()');
+assert(contabilidad.includes('\\uFEFF') || contabilidad.includes("'﻿'") || contabilidad.includes('BOM'), 'CSV usa BOM UTF-8 para Excel');
+
 // ── RESUMEN ────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(50));
 console.log(`RESUMEN: ${passed} ✅  ${warnings} ⚠️  ${failed} ❌`);
