@@ -112,6 +112,15 @@
 
 ---
 
+## ✅ COMPLETADO (sesión continuación 2026-05-30 — ronda 4 — plan semanal)
+- **Migración CSS completa**: 43 handlers `onmouseover/onmouseout` eliminados en 9 páginas públicas. 170/170 smoke tests.
+- **Sistema cotizaciones**: `sql/cotizaciones-table.sql` (RLS + RPC) + botón "Guardar cotización" en calculadora + sección "Mis Cotizaciones" en client-panel
+- **BI Dashboard**: `app/metricas.html` — KPIs, pipeline operativo, top servicios, ingresos por semana, tiempos de entrega, forecast, auto-refresh 5min
+- **Social Copy Generator**: `functions/api/social-copy.js` (Gemini 2.0 Flash) + UI en admin-panel tab Radar de Ventas con copiar al portapapeles
+- **SW v25**: PRECACHE ampliado con /cotizaciones y /revision-express
+- **Suite de tests**: extendida de 136 a 170 (34 tests nuevos cubren todas las features de esta sesión)
+- **ARCHITECTURE.md**: documentación completa del stack, modelo de datos, seguridad y flujos de trabajo
+
 ## ✅ COMPLETADO (sesión continuación 2026-05-30 — ronda 3)
 - **CSP + strict-dynamic**: _headers PRODIGY+Alejandro — mejor protección XSS sin romper inline
 - **CSP monitoring endpoint**: functions/api/csp-report.js — registra violaciones en logs_incidencias para análisis
