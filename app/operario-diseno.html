@@ -551,6 +551,31 @@ async function avanzar(id, nuevoEstado) {
 
 async function notificarWADiseno(caso, estado) {
   try {
+    let recibo_url = `https://prodigylabdental.com/recibo-caso?id=${caso.codigo || caso.id}`;
+
+    // Si es REVISION_CLIENTE, generar token de aprobación para revision-express
+    if (estado === 'REVISION_CLIENTE') {
+      try {
+        const { data: tokenData } = await sb.rpc('prodigy_crear_revision_token', { p_pedido_id: caso.id });
+        if (tokenData) {
+          const revUrl = `https://prodigylabdental.com/revision-express?token=${tokenData}&pedido=${caso.id}&codigo=${caso.codigo||''}&doctor=${encodeURIComponent(caso.nombre_doctor||caso.doctor||'')}`;
+          // Mostrar el link en la UI para que el operario pueda copiarlo
+          toast(`Link de aprobación generado: copiar y enviar al doctor`, 'ok');
+          setTimeout(() => {
+            const linkEl = document.createElement('div');
+            linkEl.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0d1520;border:1px solid rgba(0,210,255,.4);border-radius:12px;padding:16px 20px;z-index:9999;max-width:480px;width:90%;';
+            linkEl.innerHTML=`<div style="font-size:.72rem;font-weight:700;color:#00d2ff;margin-bottom:8px;">Link Revision Express para Dr. ${caso.nombre_doctor||caso.doctor||''}</div>
+              <div style="display:flex;gap:8px;"><input type="text" value="${revUrl}" readonly style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#fff;padding:7px 10px;font-size:.7rem;outline:none;">
+              <button type="button" onclick="navigator.clipboard?.writeText('${revUrl}').then(()=>this.textContent='✓')" style="background:rgba(0,210,255,.15);border:1px solid rgba(0,210,255,.3);color:#00d2ff;border-radius:6px;padding:7px 12px;cursor:pointer;font-size:.75rem;font-weight:700;">Copiar</button>
+              <button type="button" onclick="this.closest('div[style]').remove()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;border-radius:6px;padding:7px 12px;cursor:pointer;">✕</button></div>`;
+            document.body.appendChild(linkEl);
+            setTimeout(() => linkEl.remove(), 30000);
+          }, 800);
+          recibo_url = revUrl;
+        }
+      } catch(_) {}
+    }
+
     const res  = await fetch('/api/notify-wa', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -561,7 +586,7 @@ async function notificarWADiseno(caso, estado) {
         whatsapp:      caso.whatsapp,
         pais:          caso.pais,
         servicio:      caso.servicio,
-        recibo_url:    `https://prodigylabdental.com/recibo-caso?id=${caso.codigo || caso.id}`,
+        recibo_url:    recibo_url,
       }),
     });
     const data = await res.json();
