@@ -1906,11 +1906,14 @@ async function cargarClientes() {
         '<tr class="loading-row"><td colspan="9"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
 
     try {
-        // Clientes con todos sus pedidos (para calcular CLV)
-        const { data, error } = await sb
-            .from('clientes')
-            .select('id, nombre, email, telefono, clinica, ciudad, pais, created_at, pedidos(precio_total, estado)')
-            .order('created_at', { ascending: false });
+        // Clientes con todos sus pedidos (para calcular CLV) + segmentación de onboarding
+        const [clientesRes, perfilesRes] = await Promise.all([
+            sb.from('clientes').select('id, nombre, email, telefono, clinica, ciudad, pais, created_at, pedidos(precio_total, estado)').order('created_at', { ascending: false }),
+            sb.from('doctores_perfil').select('id, especialidad, volumen_casos').catch(()=>({data:[]}))
+        ]);
+        const { data, error } = clientesRes;
+        const perfilesMap = {};
+        (perfilesRes.data||[]).forEach(p=>{perfilesMap[p.id]={especialidad:p.especialidad,volumen:p.volumen_casos};});
 
         if (error) throw error;
 
@@ -1957,9 +1960,12 @@ async function cargarClientes() {
                 ? `<a href="https://wa.me/${waNum.startsWith('57') ? waNum : '57' + waNum}" target="_blank" rel="noopener"
                        style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:rgba(37,211,102,.12);color:#25d366;border:1px solid rgba(37,211,102,.25);font-size:.8rem;" title="WhatsApp ${escHtml(c.nombre || '')}"><i class="fab fa-whatsapp"></i></a>`
                 : `<span style="color:#334155;font-size:.72rem;">—</span>`;
+            const perfil = perfilesMap[c.id] || {};
+            const espBadge = perfil.especialidad ? `<span style="background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.2);color:#00d2ff;border-radius:20px;padding:2px 8px;font-size:.6rem;font-weight:700;">${escHtml(perfil.especialidad)}</span>` : '';
+            const volBadge = perfil.volumen ? `<span style="background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);color:#D4AF37;border-radius:20px;padding:2px 8px;font-size:.6rem;font-weight:700;">${escHtml(perfil.volumen)}</span>` : '';
             return `<tr style="${rowBg}">
                 <td style="text-align:center;width:40px;">${rankBadge}</td>
-                <td style="font-weight:${esTop10?'800':'700'};color:${esTop10?'var(--gold)':'inherit'};">${escHtml(c.nombre || '—')}</td>
+                <td style="font-weight:${esTop10?'800':'700'};color:${esTop10?'var(--gold)':'inherit'};">${escHtml(c.nombre || '—')}<br>${espBadge} ${volBadge}</td>
                 <td style="font-size:0.78rem;color:#94a3b8;">${escHtml(c.email)}</td>
                 <td>${escHtml(c.clinica || '—')}</td>
                 <td>${escHtml(c.ciudad || '—')}</td>
