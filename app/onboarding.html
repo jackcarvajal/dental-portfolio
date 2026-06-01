@@ -242,6 +242,40 @@
             </div>
         </div>
 
+        <!-- Campos de segmentación para estudio de mercado -->
+        <div class="form-row" style="margin-bottom:16px;">
+            <div class="form-group">
+                <label for="ob-especialidad">Especialidad (opcional)</label>
+                <div class="input-wrap">
+                    <i class="fas fa-tooth" aria-hidden="true"></i>
+                    <select id="ob-especialidad" style="background:transparent;border:none;color:inherit;width:100%;outline:none;font-family:inherit;font-size:.9rem;padding:0;">
+                        <option value="">-- Seleccionar --</option>
+                        <option value="prostodoncia">Prostodoncia / Rehabilitación</option>
+                        <option value="implantologia">Implantología</option>
+                        <option value="estetica">Odontología Estética</option>
+                        <option value="ortodoncia">Ortodoncia</option>
+                        <option value="cirugia">Cirugía Oral y Maxilofacial</option>
+                        <option value="general">Odontología General</option>
+                        <option value="laboratorio">Laboratorio Dental</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ob-volumen">Casos esperados / mes (opcional)</label>
+                <div class="input-wrap">
+                    <i class="fas fa-chart-bar" aria-hidden="true"></i>
+                    <select id="ob-volumen" style="background:transparent;border:none;color:inherit;width:100%;outline:none;font-family:inherit;font-size:.9rem;padding:0;">
+                        <option value="">-- Seleccionar --</option>
+                        <option value="1-5">1–5 casos/mes</option>
+                        <option value="6-15">6–15 casos/mes</option>
+                        <option value="16-30">16–30 casos/mes</option>
+                        <option value="31+">Más de 30/mes</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <div style="margin-bottom:16px;">
             <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
                 <input type="checkbox" id="ob-habeas" required
@@ -342,8 +376,10 @@
         const waNum     = document.getElementById('ob-wa').value.trim().replace(/\D/g, '');
         const clinica   = document.getElementById('ob-clinica').value.trim();
         const ciudad    = document.getElementById('ob-ciudad').value.trim();
-        const marketing = document.getElementById('ob-marketing').checked;
-        const btn       = document.getElementById('btn-guardar');
+        const marketing      = document.getElementById('ob-marketing').checked;
+        const especialidad   = document.getElementById('ob-especialidad')?.value || '';
+        const volumen_casos  = document.getElementById('ob-volumen')?.value || '';
+        const btn            = document.getElementById('btn-guardar');
 
         if (!nombre || !waNum || !clinica || !ciudad) {
             showMsg('Completa todos los campos obligatorios.', 'err'); return;
@@ -364,6 +400,8 @@
             municipio:        ciudad,
             whatsapp,
             acepta_marketing: marketing,
+            especialidad:     especialidad || null,
+            volumen_casos:    volumen_casos || null,
         }, { onConflict: 'id' });
 
         if (error) {
