@@ -15,7 +15,7 @@ WITH doctor_stats AS (
     SELECT
         email,
         nombre_doctor,
-        whatsapp,
+        NULL::text AS whatsapp,
         COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '90 days') AS pedidos_90d,
         COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '30 days') AS pedidos_30d,
         MAX(created_at) AS ultimo_pedido,
@@ -23,7 +23,7 @@ WITH doctor_stats AS (
     FROM pedidos
     WHERE email IS NOT NULL
       AND estado NOT IN ('cancelado','CANCELADO')
-    GROUP BY email, nombre_doctor, whatsapp
+    GROUP BY email, nombre_doctor
     HAVING COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '90 days') >= 3
            -- Solo doctores que han sido activos (mín 3 pedidos en 90 días)
 )
