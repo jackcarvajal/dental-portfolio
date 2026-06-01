@@ -362,11 +362,51 @@ let _userId = null;
     document.querySelector('.main,main')?.prepend(al);
   }).catch(()=>{});
 
-  /* Realtime */
+  /* Realtime — notifica visualmente al operario */
+  let _rtInitialized = false;
   sb.channel('operario-casos')
-    .on('postgres_changes',{event:'*',schema:'public',table:'pedidos'},() => recargar())
-    .subscribe();
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'pedidos'}, async (payload)=>{
+      if (!_rtInitialized) { _rtInitialized=true; return; } // ignorar snapshot inicial
+      const p = payload.new;
+      const myCase = !p.departamento || _myDepts.includes(p.departamento);
+      if (myCase) {
+        toast('🔔 Nuevo caso: '+(p.codigo||p.id?.slice(0,8)),'ok');
+        if('Notification' in window && Notification.permission==='granted') {
+          new Notification('PRODIGY — Nuevo caso',{body:p.codigo||'Nuevo pedido asignado',icon:'/assets/icon-192.png'});
+        }
+        _rtBadge(1);
+      }
+      await recargar();
+    })
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'pedidos'}, async (payload)=>{
+      const p = payload.new; const old = payload.old;
+      if (p.estado !== old.estado && _myDepts.includes(p.departamento)) {
+        toast('↻ Caso '+(p.codigo||p.id?.slice(0,8))+' → '+p.estado,'ok');
+      }
+      await recargar();
+    })
+    .subscribe(status => { if(status==='SUBSCRIBED') _rtInitialized=true; });
+  // Solicitar permiso push si no está concedido (solo si el usuario interactúa)
+  if('Notification' in window && Notification.permission==='default') {
+    document.addEventListener('click',function _reqNotif(){
+      Notification.requestPermission();
+      document.removeEventListener('click',_reqNotif);
+    },{once:true});
+  }
 })();
+
+function _rtBadge(delta) {
+  let b = document.getElementById('rt-badge');
+  if (!b) {
+    b = document.createElement('span');
+    b.id = 'rt-badge';
+    b.style.cssText = 'position:fixed;top:56px;right:16px;background:#D946A6;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;z-index:8888;cursor:pointer;';
+    b.title = 'Casos nuevos desde tu última recarga';
+    b.onclick = () => { b.remove(); recargar(); };
+    document.body.appendChild(b);
+  }
+  b.textContent = (parseInt(b.textContent||'0',10) + delta) || delta;
+}
 
 /* ── Construir tabs ── */
 function buildTabs() {
