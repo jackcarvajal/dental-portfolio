@@ -13,7 +13,7 @@
 | ~~G1~~ | ~~`sql/revision-tokens-table.sql`~~ | ✅ **Ejecutado 2026-06-01** — revision-express activo | | Tabla `revision_tokens` para aprobación OWASP-segura desde email |
 | ~~G2~~ | ~~`sql/prodigy-analytics-rpc.sql`~~ | ✅ **Ejecutado 2026-06-01** — 6 RPCs BI activos | | 6 RPCs de métricas para dashboard BI (evita SELECT* en frontend) |
 | ~~G3~~ | ~~`sql/storage-webp-rls.sql`~~ | ✅ **Ejecutado 2026-06-01** — WebP RLS activo | | RLS + política Storage para transformación WebP sin 403 |
-| 0f | `sql/trigger-doctor-inactivo-churn.sql` | VIEW doctors_inactivos + RPC prodigy_detectar_churn |
+| ~~0f~~ | ~~`sql/trigger-doctor-inactivo-churn.sql`~~ | ✅ **Ejecutado 2026-06-03** — churn prevention activo | | VIEW doctors_inactivos + RPC prodigy_detectar_churn |
 | ~~WL~~ | ~~`sql/waitlist-labs-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — waitlist_labs activa |
 | ~~AC-RPC~~ | ~~`sql/alejandro-analytics-rpc.sql`~~ | ✅ **Ejecutado 2026-05-30** — RPCs BI Alejandro activos |
 | ~~REF~~ | ~~`sql/referidos-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — sistema referidos activo |
