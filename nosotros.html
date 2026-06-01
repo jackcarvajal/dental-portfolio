@@ -40,6 +40,7 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Nosotros","item":"https://prodigylabdental.com/nosotros"}]}
   </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿En qué zona de Bogotá está ubicado PRODIGY Lab Dental?","acceptedAnswer":{"@type":"Answer","text":"Estamos en el norte de Bogotá. Atendemos casos de toda Colombia y el exterior 100% de forma digital. El servicio de escaneo a domicilio cubre toda la ciudad L–S 8am–5pm."}},{"@type":"Question","name":"¿PRODIGY trabaja con laboratorios o solo con clínicas?","acceptedAnswer":{"@type":"Answer","text":"Con ambos. Ofrecemos maquila CAD/CAM para laboratorios dentales y servicio directo a clínicas y especialistas."}},{"@type":"Question","name":"¿PRODIGY tiene garantía en los trabajos dentales?","acceptedAnswer":{"@type":"Answer","text":"Sí. Garantizamos ajustes de diseño hasta aprobación del doctor. En fresado garantizamos defectos de manufactura. Si el caso no ajusta por causa del diseño, lo rehacemos sin costo."}},{"@type":"Question","name":"¿Cómo puedo hacer seguimiento de mis casos en PRODIGY?","acceptedAnswer":{"@type":"Answer","text":"Desde prodigylabdental.com/seguimiento-caso con el ID de tu caso o desde el Portal del Doctor. Recibes notificaciones por WhatsApp en cada etapa."}}]}</script>
   <link rel="manifest" href="/manifest.json">
   <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -806,6 +807,32 @@
 </section>
 
 <script>(function(){var ns=document.querySelectorAll('.ns');if(!ns.length)return;var done=false;function go(){if(done)return;done=true;ns.forEach(function(el){var t=parseInt(el.dataset.target),p=el.dataset.prefix||'',s=el.dataset.suffix||'',t0=performance.now();function tick(now){var r=Math.min((now-t0)/1200,1),e=1-Math.pow(1-r,3);el.textContent=p+Math.round(e*t)+s;if(r<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);});}var bar=document.getElementById('nosotros-stats');if(!bar){go();return;}new IntersectionObserver(function(e){if(e[0].isIntersecting){go();}},{threshold:0.4}).observe(bar);})();</script>
+
+<!-- FAQs sobre PRODIGY -->
+<section style="padding:60px 24px;background:rgba(13,21,32,.4);border-top:1px solid rgba(255,255,255,.05);">
+  <div style="max-width:760px;margin:0 auto;">
+    <div style="font-size:.7rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;text-align:center;">Preguntas frecuentes</div>
+    <h2 style="font-size:clamp(1.3rem,3vw,1.8rem);font-weight:900;text-align:center;margin-bottom:28px;">Sobre PRODIGY</h2>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <details style="background:var(--bg-card);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿En qué zona de Bogotá están ubicados? <span style="color:var(--cyan);">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">Estamos en el norte de Bogotá. Atendemos casos de toda Colombia y el exterior 100% de forma digital. Para el servicio de escaneo a domicilio cubrimos toda la ciudad L–S 8am–5pm.</p>
+      </details>
+      <details style="background:var(--bg-card);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿Trabajan con laboratorios o solo con clínicas? <span style="color:var(--cyan);">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">Con ambos. Ofrecemos maquila CAD/CAM para laboratorios dentales que necesitan capacidad extra, y servicio directo a clínicas odontológicas y especialistas. Los precios varían según volumen.</p>
+      </details>
+      <details style="background:var(--bg-card);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿Tienen garantía en los trabajos? <span style="color:var(--cyan);">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">Sí. Garantizamos los ajustes de diseño hasta aprobación del doctor (revisiones incluidas en el precio). En fresado, garantizamos defectos de manufactura. Si el caso no ajusta por causa del diseño, lo rehacemos sin costo.</p>
+      </details>
+      <details style="background:var(--bg-card);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿Cómo puedo hacer seguimiento de mis casos? <span style="color:var(--cyan);">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">Desde <a href="/seguimiento-caso" style="color:var(--cyan);">prodigylabdental.com/seguimiento-caso</a> con el ID de tu caso o desde el <a href="/app/client-panel.html" style="color:var(--cyan);">Portal del Doctor</a>. Recibes notificaciones por WhatsApp en cada etapa clave.</p>
+      </details>
+    </div>
+  </div>
+</section>
 </main>
 
 <!-- REFERIDOS STRIP -->
