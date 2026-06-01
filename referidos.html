@@ -140,6 +140,11 @@
 <section class="beneficios">
   <div style="text-align:center;margin-bottom:32px;">
     <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;">Los números</h2>
+    <!-- Contador social dinámico -->
+    <div id="ref-social-proof" style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.2);border-radius:100px;padding:6px 16px;margin-top:12px;font-size:.78rem;color:#94a3b8;">
+      <span style="width:7px;height:7px;background:#00FF41;border-radius:50%;display:inline-block;animation:blink 2s infinite;" aria-hidden="true"></span>
+      <span id="ref-count-txt">Cargando...</span>
+    </div>
   </div>
   <div class="benef-grid">
     <div class="benef-card green">
@@ -227,6 +232,25 @@
 })();
 </script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script>
+// Contador social anónimo — cuántos doctores tienen código de referido activo
+(function(){
+  const el=document.getElementById('ref-count-txt');
+  if(!el) return;
+  const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+  const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+  fetch(SURL+'/rest/v1/referidos?select=id&limit=1',{
+    headers:{'apikey':SANON,'Prefer':'count=exact','Range':'0-0'}
+  }).then(r=>{
+    const count=parseInt(r.headers.get('content-range')?.split('/')[1]||'0',10);
+    if(count>0){
+      el.innerHTML='<strong style="color:#00FF41;">'+count+'</strong> doctores ya en el programa';
+    } else {
+      el.textContent='Sé el primero en referir a un colega';
+    }
+  }).catch(()=>{ document.getElementById('ref-social-proof').style.display='none'; });
+})();
+</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo funciona el programa de referidos de PRODIGY","description":"Pasos para referir colegas a PRODIGY Lab Dental y ganar crédito de $30.000 COP por cada referido que haga su primer pedido.","step":[{"@type":"HowToStep","position":1,"name":"Obtén tu código personal","text":"Al registrarte en PRODIGY recibes automáticamente tu código PRODY-XXXXXX en el portal de cliente."},{"@type":"HowToStep","position":2,"name":"Comparte con colegas","text":"Envía tu código a otros odontólogos o clínicos. Tu colega ingresa el código al hacer su primer pedido y recibe 5% de descuento."},{"@type":"HowToStep","position":3,"name":"Gana crédito automáticamente","text":"Cuando tu referido realiza su primer pago, el sistema genera un cupón CRED-XXXXXXXX con $30.000 COP de crédito para ti."},{"@type":"HowToStep","position":4,"name":"Usa tu crédito","text":"Aplica el cupón en tu próxima cotización. Sin vencimiento, acumulable, válido para cualquier servicio."}]}</script>
 </body>
 </html>
