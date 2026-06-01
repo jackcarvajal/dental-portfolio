@@ -712,6 +712,18 @@
             <!-- Recargo envío — campo oculto, el admin lo setea desde panel -->
             <input type="hidden" id="recargo-distancia" value="0">
 
+            <!-- Campo cupón de crédito por referido -->
+            <div style="margin:10px 0;">
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <input type="text" id="cupon-input" placeholder="¿Tienes un cupón? Ej: CRED-XXXXXXXX"
+                        maxlength="13" autocomplete="off" spellcheck="false"
+                        style="flex:1;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:8px;color:#fff;padding:9px 12px;font-size:.82rem;font-family:inherit;outline:none;text-transform:uppercase;letter-spacing:1px;"
+                        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')">
+                    <button type="button" onclick="validarCuponImpresion()" style="background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:8px;padding:9px 14px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;">Validar</button>
+                </div>
+                <div id="cupon-msg-imp" style="font-size:.72rem;margin-top:5px;min-height:16px;" aria-live="polite"></div>
+            </div>
+
             <div class="modal-buttons" style="display: flex; gap: 12px; margin-top: 20px;">
                 <button type="button" class="modal-btn modal-btn-cancel" onclick="closeModal('modal-confirmation')" style="flex: 1;">Cancelar</button>
                 <button type="button" id="btn-whatsapp-confirm" class="modal-btn modal-btn-confirm" onclick="sendToWhatsApp()" disabled style="flex: 2; background: linear-gradient(135deg, var(--neon-green) 0%, #00CC35 100%); font-weight: 700; opacity:0.5; cursor:not-allowed;">
@@ -1184,6 +1196,30 @@
     <script src="js/stl-multi-viewer.js?v=20260528"></script>
     <script>ProdigyMultiViewer.init('pmv-impresion');</script>
     <script src="js/flujo-uploader.js?v=20260528"></script>
+    <script>
+    (function(){
+      const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+      const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+      let _sb;
+      function _getSb(){if(!_sb&&window.supabase)_sb=window.supabase.createClient(SURL,SANON);return _sb;}
+      window.validarCuponImpresion=async function(){
+        const cupon=(document.getElementById('cupon-input')?.value||'').trim().toUpperCase();
+        const msg=document.getElementById('cupon-msg-imp');
+        if(!cupon||!/^CRED-[A-Z0-9]{8}$/.test(cupon)){if(msg){msg.style.color='#f87171';msg.textContent='Formato inválido. Debe ser CRED-XXXXXXXX';}return;}
+        if(msg){msg.style.color='#94a3b8';msg.textContent='Validando...';}
+        try{
+          const sb=_getSb();if(!sb)throw new Error('SDK no disponible');
+          const{data,error}=await sb.rpc('prodigy_usar_cupon_credito',{p_cupon:cupon});
+          if(error)throw error;
+          if(!data.ok){if(msg){msg.style.color='#f87171';msg.textContent=data.error||'Cupón inválido o ya usado.';}return;}
+          window._cuponCreditoActivo={cupon,monto:data.monto};
+          if(msg){msg.style.color='#00FF41';msg.textContent='✓ Cupón válido — crédito de $'+Number(data.monto).toLocaleString('es-CO')+' COP aplicado.';}
+          const inp=document.getElementById('cupon-input');
+          if(inp){inp.disabled=true;inp.style.borderColor='rgba(0,255,65,.5)';}
+        }catch(e){if(msg){msg.style.color='#f87171';msg.textContent='Error validando: '+e.message;}}
+      };
+    })();
+    </script>
     <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
     <script>
     /* Pre-fill desde diseño aprobado: ?from_diseno=UUID */
