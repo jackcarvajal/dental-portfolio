@@ -265,6 +265,26 @@
         </table>
     </div>
 
+    <!-- ESTUDIO DE MERCADO — Referencia de precios competencia -->
+    <div style="margin-top:24px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:20px;">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#D4AF37;margin-bottom:12px;"><i class="fas fa-magnifying-glass-chart" aria-hidden="true"></i> Estudio de mercado — Referencia precios competencia</div>
+        <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:.78rem;">
+            <thead><tr style="border-bottom:1px solid rgba(255,255,255,.08);">
+                <th style="padding:8px;text-align:left;color:#475569;">Servicio</th>
+                <th style="padding:8px;text-align:right;color:#475569;">Mercado bajo (COP)</th>
+                <th style="padding:8px;text-align:right;color:#475569;">Mercado alto (COP)</th>
+                <th style="padding:8px;text-align:right;color:#475569;">Precio PRODIGY actual</th>
+                <th style="padding:8px;text-align:center;color:#475569;">Posición</th>
+            </tr></thead>
+            <tbody id="mercado-body">
+                <tr><td colspan="5" style="text-align:center;padding:16px;color:#475569;">Cargando precios actuales...</td></tr>
+            </tbody>
+        </table>
+        </div>
+        <p style="font-size:.7rem;color:#475569;margin-top:10px;">Referencia estimada basada en laboratorios digitales Colombia 2026. Actualizar manualmente según investigación.</p>
+    </div>
+
     <!-- NOTA MIGRACIÓN -->
     <div style="margin-top:24px;background:rgba(0,210,255,0.04);border:1px solid rgba(0,210,255,0.15);border-radius:12px;padding:18px 20px;font-size:0.8rem;color:#94a3b8;line-height:1.7;">
         <i class="fas fa-database" style="color:var(--cyan);margin-right:8px;"></i>
@@ -517,6 +537,46 @@
     // ── Init ──────────────────────────────────────────────────
     await cargarCatalogo();
     await cargarExtras();
+    // Tabla de estudio de mercado — precios referencia vs PRODIGY
+    cargarMercado();
+
+    async function cargarMercado() {
+        // Precios de mercado estimados Colombia 2026 (rango bajo-alto labs digitales)
+        const MERCADO = [
+            { srv:'Corona zirconio unitaria', bajo:35000, alto:80000, ids:['fresado_corona_zirconia','corona_zirconia'] },
+            { srv:'Carilla disilicato',       bajo:80000, alto:150000, ids:['fresado_carilla_emax','carilla_emax'] },
+            { srv:'Diseño CAD corona',        bajo:8000,  alto:20000, ids:['cad_corona','diseno_corona'] },
+            { srv:'Diseño Full Arch/arco',    bajo:60000, alto:120000, ids:['cad_full_arch','full_arch'] },
+            { srv:'Modelo 3D diagnóstico',    bajo:20000, alto:45000, ids:['imp3d_modelo','modelo_estudio'] },
+            { srv:'Guía quirúrgica implante', bajo:150000,alto:380000, ids:['guia_quirurgica','guia_qx'] },
+        ];
+        try {
+            const { data } = await sb.from('config_precios').select('id,nombre,precio');
+            const precios = {};
+            (data||[]).forEach(p=>{ precios[p.id.toLowerCase()]=p.precio; });
+            const tbody = document.getElementById('mercado-body');
+            if (!tbody) return;
+            const fmtCOP = v => '$'+Math.round(v||0).toLocaleString('es-CO');
+            tbody.innerHTML = MERCADO.map(m => {
+                let prodigioPrecio = null;
+                for(const id of m.ids) { if(precios[id]){ prodigioPrecio=precios[id]; break; } }
+                if(!prodigioPrecio) prodigioPrecio = null;
+                let pos='—', posColor='#475569';
+                if(prodigioPrecio){
+                    if(prodigioPrecio < m.bajo*0.9){ pos='Por debajo ↓'; posColor='#f59e0b'; }
+                    else if(prodigioPrecio > m.alto*1.1){ pos='Por encima ↑'; posColor='#f87171'; }
+                    else { pos='En rango ✓'; posColor='#00FF41'; }
+                }
+                return `<tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                    <td style="padding:8px;font-weight:600;">${m.srv}</td>
+                    <td style="padding:8px;text-align:right;color:#475569;">${fmtCOP(m.bajo)}</td>
+                    <td style="padding:8px;text-align:right;color:#475569;">${fmtCOP(m.alto)}</td>
+                    <td style="padding:8px;text-align:right;font-weight:700;color:#D4AF37;">${prodigioPrecio?fmtCOP(prodigioPrecio):'—'}</td>
+                    <td style="padding:8px;text-align:center;font-size:.72rem;font-weight:700;color:${posColor};">${pos}</td>
+                </tr>`;
+            }).join('');
+        } catch(_) {}
+    }
 
     // ── Config referidos: mostrar descuento actual ─────────────
     (async () => {
