@@ -830,11 +830,13 @@ async function guardarCotizacion() {
   }];
   const payload = {
     tipo: state.servicio || 'diseno',
+    negocio: 'prodigy',
     items, subtotal: total, total,
     moneda: state.moneda || 'COP',
     doctor_nombre: nombre || null,
     doctor_tel: tel || null,
-    estado: 'borrador'
+    estado: 'borrador',
+    expira_at: new Date(Date.now()+30*24*60*60*1000).toISOString()
   };
   const { data, error } = await sb.from('cotizaciones').insert(payload).select('id').single();
   btn.disabled = false;
