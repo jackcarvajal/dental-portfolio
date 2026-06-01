@@ -235,6 +235,16 @@
         <p style="font-size:.72rem;color:#334155;margin-top:12px;">Cloudflare → Pages → dental-portfolio → Settings → Environment variables → Agregar variable</p>
     </div>
 
+    <!-- VERIFICADOR DE EDGE FUNCTIONS (proxy para verificar keys sin exponerlas) -->
+    <div style="background:var(--card);border:1px solid rgba(0,210,255,.15);border-radius:12px;padding:20px;margin-top:20px;">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#00d2ff;margin-bottom:12px;"><i class="fas fa-plug" aria-hidden="true"></i> Verificar edge functions (estado live)</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+            <button type="button" onclick="verificarEdgeFns()" style="background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:#00d2ff;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-bolt" aria-hidden="true"></i> Verificar todas</button>
+            <button type="button" onclick="window.open('/api/health-check','_blank','noopener')" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#94a3b8;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-external-link" aria-hidden="true"></i> Health Check JSON</button>
+        </div>
+        <div id="edge-results" style="font-size:.76rem;font-family:monospace;background:rgba(0,0,0,.3);border-radius:8px;padding:12px;min-height:40px;color:#94a3b8;max-height:200px;overflow-y:auto;" aria-live="polite">Haz click en "Verificar todas" para comprobar el estado de cada edge function.</div>
+    </div>
+
 </main>
 
 <div id="toast" role="status" aria-live="polite">
@@ -394,6 +404,36 @@ async function init() {
 }
 
 init();
+</script>
+<script>
+async function verificarEdgeFns() {
+    const el = document.getElementById('edge-results');
+    el.textContent = '⏳ Verificando...';
+    const fns = [
+        { name: 'gemini (chatbot)', url: '/api/gemini', method: 'OPTIONS' },
+        { name: 'health-check', url: '/api/health-check', method: 'GET' },
+        { name: 'notify-wa', url: '/api/notify-wa', method: 'OPTIONS' },
+        { name: 'social-copy', url: '/api/social-copy', method: 'OPTIONS' },
+        { name: 'waitlist-notify', url: '/api/waitlist-notify', method: 'OPTIONS' },
+        { name: 'churn-alert', url: '/api/churn-alert', method: 'OPTIONS' },
+        { name: 'revision-notify', url: '/api/revision-notify', method: 'OPTIONS' },
+        { name: 'bienvenida-referido', url: '/api/bienvenida-referido', method: 'OPTIONS' },
+        { name: 'send-push', url: '/api/send-push', method: 'OPTIONS' },
+    ];
+    const results = [];
+    for (const fn of fns) {
+        const t0 = Date.now();
+        try {
+            const r = await fetch(fn.url, { method: fn.method });
+            const ms = Date.now() - t0;
+            const ok = r.status < 500;
+            results.push((ok ? '✅' : '⚠️') + ` ${fn.name}: ${r.status} (${ms}ms)`);
+        } catch(e) {
+            results.push('❌ ' + fn.name + ': ' + e.message);
+        }
+    }
+    el.textContent = results.join('\n');
+}
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
