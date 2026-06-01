@@ -38,19 +38,20 @@
   });
 })();
 
-/* ── MANTENIMIENTO GLOBAL ──────────────────────────────────────────
-   Bloquea acceso a todas las páginas públicas si no hay cookie pg_admin=1.
+/* ── MANTENIMIENTO GLOBAL — DESACTIVADO (sitio en producción) ────────
+   Para reactivar: descomentar el bloque de código abajo.
    Para activar bypass: visita /?preview=prodigy (cookie 30 días).
-   Excluye: /mantenimiento, /app/*, /404
 ──────────────────────────────────────────────────────────────────── */
+// Mantener el bypass de preview por si acaso, pero sin bloquear el sitio
 (function(){
-  // Activar bypass con ?preview=prodigy → cookie 30 días
   if (new URLSearchParams(location.search).get('preview') === 'prodigy') {
     var exp = new Date(Date.now() + 30*24*60*60*1000).toUTCString();
     document.cookie = 'pg_admin=1; path=/; expires=' + exp;
-    window.location.replace(location.pathname); // quita el param de la URL
-    return;
+    window.location.replace(location.pathname);
   }
+  // MANTENIMIENTO DESACTIVADO — el sitio está en producción
+  // Para reactivar: descomentar el bloque siguiente
+  /*
   var path = window.location.pathname;
   var skip = path.startsWith('/mantenimiento') ||
              path.startsWith('/app/') ||
@@ -64,6 +65,7 @@
     document.documentElement.style.visibility = 'hidden';
     window.location.replace('/mantenimiento');
   }
+  */
 })();
 
 /* ── MICROSOFT CLARITY — mapas de calor + grabaciones de sesión ────
