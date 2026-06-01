@@ -453,6 +453,12 @@
                 <div id="analytics-chart" style="display:flex;align-items:flex-end;gap:8px;height:100px;" role="img" aria-label="Gráfica de casos por mes"></div>
             </div>
 
+            <!-- Gráfica de gastos por mes -->
+            <div style="margin-bottom:20px;">
+                <p style="font-size:.75rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;">Inversión por mes (últimos 6 meses)</p>
+                <div id="analytics-gastos" style="display:flex;align-items:flex-end;gap:8px;height:100px;" role="img" aria-label="Gráfica de gastos por mes"></div>
+            </div>
+
             <!-- Top servicios -->
             <div style="margin-bottom:20px;">
                 <p style="font-size:.75rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">Top servicios más solicitados</p>
@@ -1770,6 +1776,32 @@ async function eliminarCotizacion(id) {
                 <span style="font-size:.6rem;color:#64748b;text-align:center;">${m.label}</span>
             </div>`;
         }).join('');
+
+        // ── Gráfica de gastos por mes ──────────────────────────────
+        const gastosChart = document.getElementById('analytics-gastos');
+        if (gastosChart) {
+            const gastosMap = {};
+            pedidos.forEach(p => {
+                const d = new Date(p.created_at);
+                const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+                gastosMap[key] = (gastosMap[key] || 0) + (Number(p.precio_total) || 0);
+            });
+            const gastosArr = meses.map(m => ({
+                label: m.label,
+                total: gastosMap[m.key] || 0
+            }));
+            const maxGasto = Math.max(...gastosArr.map(m => m.total), 1);
+            gastosChart.innerHTML = gastosArr.map(m => {
+                const pct = Math.round((m.total / maxGasto) * 100);
+                const color = pct > 70 ? '#D946A6' : pct > 40 ? '#D4AF37' : '#94a3b8';
+                const label = m.total > 0 ? ('$' + (m.total/1000).toFixed(0) + 'K') : '';
+                return `<div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px;">
+                    <span style="font-size:.65rem;font-weight:700;color:${color};">${label}</span>
+                    <div style="width:100%;background:${color};border-radius:4px 4px 0 0;height:${Math.max(pct,4)}%;opacity:.85;transition:height .4s;"></div>
+                    <span style="font-size:.6rem;color:#64748b;text-align:center;">${m.label}</span>
+                </div>`;
+            }).join('');
+        }
 
         // ── Top servicios ─────────────────────────────────────────
         const servicioMap = {};
