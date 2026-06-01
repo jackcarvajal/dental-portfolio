@@ -2413,6 +2413,16 @@
                 <span class="value" id="calc-wompi" style="color:#f87171;">+$0</span>
             </div>
 
+            <!-- Estimador de entrega fresado -->
+            <div id="delivery-estimator" style="background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:12px 14px;margin:12px 0;display:flex;align-items:center;gap:10px;">
+              <i class="fas fa-clock" style="color:#D4AF37;font-size:1.1rem;" aria-hidden="true"></i>
+              <div>
+                <div style="font-size:.72rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Entrega estimada</div>
+                <div id="delivery-time" style="font-size:.92rem;font-weight:900;color:#D4AF37;">24–48 horas hábiles</div>
+                <div id="delivery-fecha" style="font-size:.68rem;color:#94a3b8;margin-top:2px;">Desde confirmación del pago</div>
+              </div>
+            </div>
+
             <div class="payment-banner">
                 💵 PAGO 100% ANTICIPADO
             </div>
@@ -3729,6 +3739,29 @@
             totalElement.classList.remove('pulse');
             setTimeout(() => totalElement.classList.add('pulse'), 10);
             setTimeout(() => totalElement.classList.remove('pulse'), 610);
+
+            // Estimador de entrega fresado
+            const dtEl = document.getElementById('delivery-time');
+            const dfEl = document.getElementById('delivery-fecha');
+            if (dtEl && dfEl) {
+              const urgente = STATE.urgente || express > 0;
+              let horas = 24;
+              if (urgente) horas = 8;
+              else if (cantidad > 4) horas = 48;
+              else if (STATE.submaterialId && STATE.submaterialId.includes('multi')) horas = 36;
+              const label = urgente ? '4–8 horas hábiles ⚡' :
+                            horas <= 24 ? '24 horas hábiles' :
+                            horas <= 36 ? '24–36 horas hábiles' : '48 horas hábiles';
+              dtEl.textContent = label;
+              dtEl.style.color = urgente ? '#ef4444' : '#D4AF37';
+              let est = new Date(), hr = horas;
+              while (hr > 0) {
+                est = new Date(est.getTime() + 3600000);
+                const h = est.getHours(), d = est.getDay();
+                if (d !== 0 && d !== 6 && h >= 8 && h < 18) hr--;
+              }
+              dfEl.textContent = 'Aprox. ' + est.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'});
+            }
 
             return total;
         }

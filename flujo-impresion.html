@@ -566,6 +566,16 @@
                 </span>
             </div>
 
+            <!-- Estimador de entrega impresión 3D -->
+            <div id="delivery-estimator" style="background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.2);border-radius:10px;padding:12px 14px;margin:12px 0;display:flex;align-items:center;gap:10px;">
+              <i class="fas fa-clock" style="color:#fb923c;font-size:1.1rem;" aria-hidden="true"></i>
+              <div>
+                <div style="font-size:.72rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Entrega estimada</div>
+                <div id="delivery-time" style="font-size:.92rem;font-weight:900;color:#fb923c;">48–72 horas hábiles</div>
+                <div id="delivery-fecha" style="font-size:.68rem;color:#94a3b8;margin-top:2px;">Desde confirmación del pago</div>
+              </div>
+            </div>
+
             <div class="payment-banner">
                 💵 PAGO 100% ANTICIPADO
             </div>
@@ -1273,6 +1283,41 @@
         if (hm) hm.remove();
     });
     </script>
+<script>
+// Estimador de entrega impresión — observa cambios en el total
+(function(){
+  function updateDelivery(){
+    const dtEl=document.getElementById('delivery-time');
+    const dfEl=document.getElementById('delivery-fecha');
+    if(!dtEl||!dfEl) return;
+    const qty=parseInt(document.getElementById('cantidad')?.value||'1',10)||1;
+    const urgente=document.getElementById('urgente-imp')?.checked||false;
+    let horas=48;
+    if(urgente) horas=12;
+    else if(qty>5) horas=72;
+    else if(qty>2) horas=48;
+    const label=urgente?'8–12 horas hábiles ⚡':
+                horas<=48?'48 horas hábiles':'48–72 horas hábiles';
+    dtEl.textContent=label;
+    dtEl.style.color=urgente?'#ef4444':'#fb923c';
+    let est=new Date(),hr=horas;
+    while(hr>0){
+      est=new Date(est.getTime()+3600000);
+      const h=est.getHours(),d=est.getDay();
+      if(d!==0&&d!==6&&h>=8&&h<18)hr--;
+    }
+    dfEl.textContent='Aprox. '+est.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'});
+  }
+  // Observar cambios en los campos relevantes
+  ['cantidad','urgente-imp','envio'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener('change',updateDelivery);
+  });
+  // Correr al cargar
+  document.addEventListener('DOMContentLoaded',updateDelivery);
+  setTimeout(updateDelivery,1000);
+})();
+</script>
 </body>
 </html>
 
