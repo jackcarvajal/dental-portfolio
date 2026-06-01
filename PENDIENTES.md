@@ -10,8 +10,8 @@
 |---|-------------|-------------|
 | ~~REF-COMP~~ | ~~`sql/referidos-sistema-completo.sql`~~ | ✅ **Ejecutado 2026-05-30** — cupones CRED- activos, trigger detecta primer pedido | | **REEMPLAZA** el anterior — ADD COLUMN codigo_referido, cupones CRED-, RPC validar cupón |
 | REF-TRIG | `~~sql/referidos-trigger-primer-pedido.sql~~` | Trigger auto-detecta primer pedido pagado de referido → estado "primer_pedido" |
-| G1 | `sql/revision-tokens-table.sql` | Tabla `revision_tokens` para aprobación OWASP-segura desde email |
-| G2 | `sql/prodigy-analytics-rpc.sql` | 6 RPCs de métricas para dashboard BI (evita SELECT* en frontend) |
+| ~~G1~~ | ~~`sql/revision-tokens-table.sql`~~ | ✅ **Ejecutado 2026-06-01** — revision-express activo | | Tabla `revision_tokens` para aprobación OWASP-segura desde email |
+| ~~G2~~ | ~~`sql/prodigy-analytics-rpc.sql`~~ | ✅ **Ejecutado 2026-06-01** — 6 RPCs BI activos | | 6 RPCs de métricas para dashboard BI (evita SELECT* en frontend) |
 | G3 | `sql/storage-webp-rls.sql` | RLS + política Storage para transformación WebP sin 403 |
 | 0f | `sql/trigger-doctor-inactivo-churn.sql` | VIEW doctors_inactivos + RPC prodigy_detectar_churn |
 | ~~WL~~ | ~~`sql/waitlist-labs-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — waitlist_labs activa |
