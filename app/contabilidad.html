@@ -465,6 +465,13 @@ tbody td{padding:11px 14px;vertical-align:middle;}
                 <option value="rechazada">Rechazada</option>
                 <option value="expirada">Expirada</option>
             </select>
+            <select id="cot-tipo-fil" aria-label="Filtrar por tipo" onchange="cargarCotizacionesCont()">
+                <option value="">Todos los tipos</option>
+                <option value="diseno">Diseño CAD</option>
+                <option value="fresado">Fresado</option>
+                <option value="impresion">Impresión 3D</option>
+            </select>
+            <button type="button" class="btn-xs btn-ver" onclick="exportarCotizacionesCSV()"><i class="fas fa-download"></i> CSV</button>
             <button type="button" class="btn-xs btn-ver" onclick="cargarCotizacionesCont()"><i class="fas fa-rotate-right"></i> Actualizar</button>
         </div>
         <div class="total-bar" id="total-bar-cot" style="display:none;">
@@ -1547,18 +1554,43 @@ async function marcarRecompensado(id) {
     else { toast('Crédito marcado como aplicado', 'ok'); cargarReferidosContab(); }
 }
 
+async function exportarCotizacionesCSV() {
+    try {
+        const estado = document.getElementById('cot-estado-fil')?.value || '';
+        const tipo   = document.getElementById('cot-tipo-fil')?.value || '';
+        let q = sb.from('cotizaciones').select('id,created_at,tipo,doctor_nombre,doctor_email,doctor_tel,total,moneda,estado,expira_at').order('created_at',{ascending:false}).limit(500);
+        if (estado) q = q.eq('estado', estado);
+        if (tipo)   q = q.eq('tipo', tipo);
+        const { data } = await q;
+        if (!data?.length) { toast('Sin datos para exportar','error'); return; }
+        const fmtF = d => d ? new Date(d).toLocaleDateString('es-CO') : '—';
+        const rows = [['ID','Fecha','Tipo','Doctor','Email','Tel','Total','Moneda','Estado','Vence']];
+        data.forEach(c => rows.push([c.id.slice(0,8),fmtF(c.created_at),c.tipo||'',c.doctor_nombre||'',c.doctor_email||'',c.doctor_tel||'',c.total||0,c.moneda||'COP',c.estado||'',fmtF(c.expira_at)]));
+        const bom = '﻿';
+        const csv = bom + rows.map(r => r.map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'cotizaciones-'+new Date().toISOString().slice(0,10)+'.csv';
+        a.click();
+        toast('✅ CSV exportado: '+data.length+' cotizaciones','ok');
+    } catch(e) { toast('Error: '+e.message,'error'); }
+}
+
 async function cargarCotizacionesCont() {
     const tbody = document.getElementById('tbody-cot');
     const bar   = document.getElementById('total-bar-cot');
     if (!tbody) return;
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--muted);"><i class="fas fa-spinner fa-spin"></i></td></tr>';
     const estado = document.getElementById('cot-estado-fil')?.value || '';
+    const tipo   = document.getElementById('cot-tipo-fil')?.value || '';
     try {
         let q = sb.from('cotizaciones')
             .select('id,created_at,tipo,doctor_nombre,doctor_email,doctor_tel,total,moneda,estado,expira_at')
             .order('created_at', { ascending: false })
             .limit(100);
         if (estado) q = q.eq('estado', estado);
+        if (tipo)   q = q.eq('tipo', tipo);
         const { data, error } = await q;
         if (error) throw error;
         if (!data || !data.length) {
