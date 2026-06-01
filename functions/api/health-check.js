@@ -111,6 +111,20 @@ const SERVICES = [
     expectStatus: [200],
     critical: false,
   },
+  {
+    name: 'Landing Referidos',
+    url: () => 'https://prodigylabdental.com/referidos',
+    method: 'HEAD',
+    expectStatus: [200],
+    critical: false,
+  },
+  {
+    name: 'Landing Para Labs',
+    url: () => 'https://prodigylabdental.com/para-laboratorios',
+    method: 'HEAD',
+    expectStatus: [200],
+    critical: false,
+  },
 ];
 
 async function _fetchOnce(service, env) {
