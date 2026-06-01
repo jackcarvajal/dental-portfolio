@@ -245,6 +245,18 @@ async function confirmarAprobacion() {
             resuelta:    true,
         }).catch(() => {});
 
+        // Notificar al operario (WA + email) — silent fail
+        fetch('/api/revision-notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tipo: 'aprobacion',
+                pedido_id: pedidoId,
+                codigo: new URLSearchParams(location.search).get('codigo') || '',
+                doctor_nombre: new URLSearchParams(location.search).get('doctor') || '',
+            })
+        }).catch(() => {});
+
         showMsg('✅ Diseño aprobado. PRODIGY inicia la producción ahora. Recibirás confirmación por WhatsApp.', 'ok');
         document.getElementById('title').textContent    = '✅ Diseño aprobado';
         document.getElementById('subtitle').textContent = 'Gracias. El laboratorio fue notificado y comienza la fabricación.';
@@ -288,6 +300,20 @@ async function confirmarCambios() {
             severidad:   'INFO',
             descripcion: `[REVISION-EXPRESS] Cambios solicitados — pedido: ${pedidoId} | rev: ${rev}/2 | notas: ${notas.trim().slice(0,60)}`,
             resuelta:    true,
+        }).catch(() => {});
+
+        // Notificar al operario sobre cambios — silent fail
+        fetch('/api/revision-notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tipo: 'cambios',
+                pedido_id: pedidoId,
+                codigo: new URLSearchParams(location.search).get('codigo') || '',
+                doctor_nombre: new URLSearchParams(location.search).get('doctor') || '',
+                notas: notas.trim(),
+                revision_num: rev,
+            })
         }).catch(() => {});
 
         showMsg(`Cambios enviados (revisión ${rev}/2). El equipo PRODIGY los atenderá pronto.`, 'ok');
