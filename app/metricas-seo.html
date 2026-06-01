@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="color-scheme" content="dark">
+  <title>Métricas SEO — PRODIGY</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <style>
+    :root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--card:#0d1520;--muted:#94a3b8;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#e2e8f0;min-height:100vh;}
+    .topbar{background:rgba(5,5,5,.95);border-bottom:1px solid rgba(217,70,166,.15);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:100;}
+    .topbar h1{font-size:1rem;font-weight:900;letter-spacing:2px;color:var(--mg);}
+    .btn-back{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+    main{max-width:1200px;margin:0 auto;padding:24px;}
+    .kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:28px;}
+    .kpi{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px;text-align:center;}
+    .kpi-v{font-size:2rem;font-weight:900;line-height:1;margin-bottom:4px;}
+    .kpi-l{font-size:.68rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+    @media(max-width:720px){.grid-2{grid-template-columns:1fr;}}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px;}
+    .card-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+    .item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.78rem;}
+    .item:last-child{border-bottom:none;}
+    .item-icon{font-size:.72rem;font-weight:900;width:18px;text-align:center;flex-shrink:0;}
+    .ok{color:#00FF41;}.warn{color:#f59e0b;}.err{color:#f87171;}
+    .badge{display:inline-flex;align-items:center;border-radius:20px;padding:2px 8px;font-size:.65rem;font-weight:700;border:1px solid;}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1><i class="fas fa-magnifying-glass-chart" aria-hidden="true" style="color:var(--mg);margin-right:6px;"></i>SEO Dashboard — PRODIGY</h1>
+  <a href="admin-panel.html" class="btn-back"><i class="fas fa-arrow-left"></i> Panel</a>
+</div>
+
+<main>
+  <!-- KPIs SEO -->
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-v" style="color:var(--green);">216</div><div class="kpi-l">Smoke Tests</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--gold);">0</div><div class="kpi-l">OG genéricos</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--cyan);">18+</div><div class="kpi-l">FAQPage schemas</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--mg);">25+</div><div class="kpi-l">Páginas con strip referidos</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--green);">11</div><div class="kpi-l">Templates OG HTML</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--gold);">189</div><div class="kpi-l">Tests PRODIGY</div></div>
+  </div>
+
+  <div class="grid-2">
+    <!-- FAQPage coverage -->
+    <div class="card">
+      <div class="card-title"><i class="fas fa-question-circle" style="color:var(--cyan);" aria-hidden="true"></i> FAQPage Schema Coverage</div>
+      <div id="faq-list">
+        ${[
+          ['diseno-cad.html','✅ FAQPage'],
+          ['fresado-cam.html','✅ FAQPage'],
+          ['guias-quirurgicas.html','✅ FAQPage'],
+          ['catalogo.html','✅ FAQPage'],
+          ['nosotros.html','✅ FAQPage'],
+          ['guia-tecnica.html','✅ FAQPage'],
+          ['escaner-domicilio.html','✅ FAQPage'],
+          ['soporte.html','✅ FAQPage'],
+          ['calculadora.html','✅ FAQPage'],
+          ['seguimiento-caso.html','✅ FAQPage'],
+          ['portafolio.html','✅ FAQPage'],
+          ['envia-tu-scanner.html','✅ FAQPage'],
+          ['instalar-app.html','✅ FAQPage'],
+          ['flujo-diseno.html','✅ FAQPage'],
+          ['flujo-fresado.html','✅ FAQPage'],
+          ['flujo-impresion.html','✅ FAQPage'],
+          ['terminos-y-legal.html','✅ FAQPage'],
+          ['calculadora-diseno.html','✅ FAQPage'],
+          ['calculadora-fresado.html','✅ FAQPage'],
+          ['calculadora-impresion.html','✅ FAQPage'],
+          ['en/global-design.html','✅ FAQPage EN'],
+          ['diseno-remoto.html','✅ FAQPage'],
+        ].map(([f,s])=>`<div class="item"><span class="item-icon ok">✓</span><span style="color:#94a3b8;flex:1;">${f}</span><span class="badge ok" style="border-color:#00FF41;color:#00FF41;">Rich Result</span></div>`).join('')}
+      </div>
+    </div>
+
+    <!-- OG Images coverage -->
+    <div class="card">
+      <div class="card-title"><i class="fas fa-image" style="color:var(--gold);" aria-hidden="true"></i> OG Images Templates</div>
+      ${[
+        'og-diseno-cad','og-fresado-cam','og-calculadora','og-portafolio',
+        'og-journal','og-nosotros','og-soporte','og-para-laboratorios',
+        'og-guias-quirurgicas','og-diseno-remoto','og-escaner-domicilio',
+      ].map(f=>`<div class="item"><span class="item-icon ok">✓</span><span style="color:#94a3b8;flex:1;">assets/${f}.html</span><span class="badge" style="border-color:var(--gold);color:var(--gold);">1200×630</span></div>`).join('')}
+      <div class="item" style="margin-top:10px;border-top:1px solid rgba(255,255,255,.08);padding-top:10px;">
+        <span class="item-icon warn">⚠</span>
+        <span style="color:#94a3b8;font-size:.72rem;">Los .jpg se generan con: <code style="background:rgba(255,255,255,.06);border-radius:4px;padding:2px 5px;">node scripts/gen-og-images.js</code></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Robots.txt bots bloqueados -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title"><i class="fas fa-robot" style="color:var(--mg);" aria-hidden="true"></i> Bots bloqueados en robots.txt</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      ${['ClaudeBot','CCBot','Bytespider','FacebookBot','MJ12bot','AhrefsBot','SemrushBot','Applebot-Extended','Diffbot','DataForSeoBot','DotBot','Sogou','Amazonbot','PetalBot','proximic'].map(b=>`<span class="badge err" style="border-color:#f87171;color:#f87171;">🚫 ${b}</span>`).join('')}
+      ${['GPTBot','OAI-SearchBot','PerplexityBot','Google-Extended'].map(b=>`<span class="badge ok" style="border-color:#00FF41;color:#00FF41;">✅ ${b}</span>`).join('')}
+    </div>
+  </div>
+
+  <!-- SQL pendientes -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-database" style="color:var(--gold);" aria-hidden="true"></i> SQL Pendientes de Ejecutar en Supabase</div>
+    ${[
+      ['G1','sql/revision-tokens-table.sql','Tokens de aprobación OWASP','🔴'],
+      ['G2','sql/prodigy-analytics-rpc.sql','6 RPCs para BI Dashboard','🔴'],
+      ['G3','sql/storage-webp-rls.sql','RLS WebP Storage','🟡'],
+      ['0f','sql/trigger-doctor-inactivo-churn.sql','Churn prevention trigger','🟡'],
+      ['0c','sql/patch-rls-bibliotecas-diseno-revisiones.sql','RLS seguridad','🔴'],
+    ].map(([id,file,desc,prio])=>`<div class="item"><span class="item-icon" style="color:${prio==='🔴'?'#f87171':'#f59e0b'};">${prio}</span><div style="flex:1;"><div style="font-size:.75rem;font-weight:700;">${file}</div><div style="font-size:.68rem;color:#475569;">${desc}</div></div><span class="badge" style="border-color:${prio==='🔴'?'#f87171':'#f59e0b'};color:${prio==='🔴'?'#f87171':'#f59e0b'};">${id}</span></div>`).join('')}
+  </div>
+</main>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>
