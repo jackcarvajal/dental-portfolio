@@ -234,6 +234,56 @@ async function testQueryPerf() {
   log('result-perf',results.join('\n'),'ok');
 }
 </script>
+
+<!-- SECCIÓN ADICIONAL: Guía de pruebas de pago -->
+<div style="margin-top:32px;background:var(--card);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:20px;">
+  <div style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--gold);margin-bottom:14px;"><i class="fas fa-credit-card" aria-hidden="true"></i> Guía de pruebas de cobros — Antes del lanzamiento</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+    <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:16px;">
+      <div style="font-size:.72rem;font-weight:800;color:#00d2ff;margin-bottom:8px;">STRIPE (Internacional USD)</div>
+      <div style="font-size:.76rem;color:var(--muted);line-height:1.8;">
+        ✅ Configurar <code style="background:rgba(255,255,255,.06);border-radius:4px;padding:1px 5px;">STRIPE_SECRET_KEY=sk_test_...</code><br>
+        ✅ Probar con tarjeta test: <code>4242 4242 4242 4242</code><br>
+        ✅ Verificar webhook en Stripe Dashboard<br>
+        ✅ Probar pago rechazado: <code>4000 0000 0000 0002</code><br>
+        ⬜ Activar clave live: <code>sk_live_...</code> al lanzar
+      </div>
+    </div>
+    <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:16px;">
+      <div style="font-size:.72rem;font-weight:800;color:#D4AF37;margin-bottom:8px;">WOMPI (Colombia COP)</div>
+      <div style="font-size:.76rem;color:var(--muted);line-height:1.8;">
+        ✅ Configurar <code style="background:rgba(255,255,255,.06);border-radius:4px;padding:1px 5px;">WOMPI_INTEGRITY_SECRET</code><br>
+        ✅ Usar Sandbox: <code>pub_test_...</code><br>
+        ✅ Probar PSE (requiere banco sandbox)<br>
+        ✅ Verificar IPN (notificación de Wompi)<br>
+        ⬜ Activar clave producción: <code>pub_prod_...</code>
+      </div>
+    </div>
+    <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:16px;">
+      <div style="font-size:.72rem;font-weight:800;color:#00FF41;margin-bottom:8px;">FLUJO COMPLETO 50/50</div>
+      <div style="font-size:.76rem;color:var(--muted);line-height:1.8;">
+        ✅ Doctor solicita caso → paga 50% abono<br>
+        ✅ Operario diseña → doctor aprueba (revision-express)<br>
+        ✅ Mensajero despacha → doctor paga 50% saldo<br>
+        ✅ Admin confirma pago → trigger churn activo<br>
+        ✅ Referido registrado → cupón generado para referidor
+      </div>
+    </div>
+    <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:16px;">
+      <div style="font-size:.72rem;font-weight:800;color:#D946A6;margin-bottom:8px;">CHECKLIST LANZAMIENTO</div>
+      <div style="font-size:.76rem;color:var(--muted);line-height:1.8;">
+        ⬜ Precios finales en <a href="admin-precios.html" style="color:#D946A6;">admin-precios</a><br>
+        ⬜ Fotos Exocad reales en portafolio<br>
+        ⬜ OG JPGs generados (<code>node scripts/gen-og-images.js</code>)<br>
+        ⬜ Stripe live key configurada<br>
+        ⬜ Wompi prod key configurada<br>
+        ⬜ Descomentar mantenimiento en <code>header.js</code> línea 63<br>
+        ⬜ Verificar GA4 en producción<br>
+        ⬜ Search Console re-enviar sitemap
+      </div>
+    </div>
+  </div>
+</div>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
