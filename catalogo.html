@@ -399,6 +399,7 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Catálogo","item":"https://prodigylabdental.com/catalogo"}]}
   </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Qué diferencia hay entre zirconio 3Y y 5Y?","acceptedAnswer":{"@type":"Answer","text":"El 3Y-TZP (monolítico) tiene mayor resistencia (~1200 MPa) pero menor translucidez — ideal para posteriores. El 5Y-PSZ (multicapa) imita el gradiente esmalte-dentina, perfecto para el sector anterior estético."}},{"@type":"Question","name":"¿Cuándo usar PMMA en lugar de zirconio?","acceptedAnswer":{"@type":"Answer","text":"El PMMA es ideal para provisionales de larga duración, prótesis totales implantosoportadas y guías de diagnóstico. Se puede rebasar y ajustar en clínica."}},{"@type":"Question","name":"¿El disilicato de litio e.max se puede fresar?","acceptedAnswer":{"@type":"Answer","text":"Sí. Fresamos e.max CAD en fase cristalina azul, con sinterizado posterior al horno (~400 MPa). Más preciso que el prensado convencional."}},{"@type":"Question","name":"¿Qué resinas 3D dental usan?","acceptedAnswer":{"@type":"Answer","text":"Resinas biocompatibles: NextDent (modelos y guías quirúrgicas), SprintRay (provisionales y férulas), Phrozen (modelos de estudio). Tolerancia ±50μm en guías quirúrgicas."}}]}</script>
   <link rel="alternate" hreflang="es" href="https://prodigylabdental.com/catalogo">
   <link rel="alternate" hreflang="en" href="https://prodigylabdental.com/catalogo?lang=en">
   <link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com/catalogo">
@@ -441,6 +442,32 @@
     <h2 class="sr-only">Materiales disponibles</h2>
     <div class="materials-grid" id="matGrid" aria-live="polite" aria-atomic="false" aria-label="Materiales del catálogo"></div>
 </div>
+
+<!-- FAQs materiales -->
+<section style="padding:48px 24px;background:rgba(13,17,23,.8);border-top:1px solid rgba(212,175,55,.1);">
+  <div style="max-width:760px;margin:0 auto;">
+    <div style="font-size:.7rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;text-align:center;">Preguntas frecuentes</div>
+    <h2 style="font-size:clamp(1.3rem,3vw,1.8rem);font-weight:900;text-align:center;margin-bottom:24px;">Materiales CAD/CAM</h2>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <details style="background:#0d1117;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿Qué diferencia hay entre zirconio 3Y y 5Y? <span style="color:var(--gold);">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">El <strong style="color:#e2e8f0;">3Y-TZP (monolítico)</strong> tiene mayor resistencia (~1200 MPa) pero menor translucidez — ideal para posteriores con alta carga. El <strong style="color:#e2e8f0;">5Y-PSZ (multicapa)</strong> llega a ~600 MPa pero imita el gradiente esmalte-dentina, perfecto para el sector anterior estético.</p>
+      </details>
+      <details style="background:#0d1117;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿Cuándo usar PMMA en lugar de zirconio? <span style="color:var(--gold);">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">El <strong style="color:#e2e8f0;">PMMA</strong> es ideal para provisionales de larga duración, prótesis totales implantosoportadas y guías de diagnóstico. Se puede rebasar y ajustar en clínica. No se recomienda como definitivo en zonas de alta carga oclusal.</p>
+      </details>
+      <details style="background:#0d1117;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿El e.max se puede fresar o solo prensarse? <span style="color:var(--gold);">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">Fresamos <strong style="color:#e2e8f0;">e.max CAD</strong> en fase cristalina azul, sinterizado posterior al horno (~400 MPa). Más preciso y rápido que el prensado convencional, sin burbujas y con contracción controlada.</p>
+      </details>
+      <details style="background:#0d1117;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿Qué resinas 3D dental usan y para qué sirven? <span style="color:var(--gold);">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">Resinas biocompatibles certificadas: <strong style="color:#e2e8f0;">NextDent</strong> (modelos y guías quirúrgicas), <strong style="color:#e2e8f0;">SprintRay</strong> (provisionales y férulas), <strong style="color:#e2e8f0;">Phrozen</strong> (modelos de estudio). Post-curado UV certificado. Tolerancia ±50μm en guías quirúrgicas.</p>
+      </details>
+    </div>
+  </div>
+</section>
 
 </main>
 
