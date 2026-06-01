@@ -800,6 +800,19 @@
       </div>
     </div>
 
+    <!-- ── CAPTURA DE LEADS ── -->
+    <div style="max-width:440px;margin:28px auto;background:rgba(13,21,32,.8);border:1px solid rgba(217,70,166,.2);border-radius:16px;padding:20px 22px;">
+      <div style="font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:#D946A6;margin-bottom:8px;">Avísame cuando abra</div>
+      <p style="font-size:.82rem;color:#94a3b8;margin-bottom:14px;line-height:1.5;">Deja tu WhatsApp y te notificamos el día del lanzamiento con <strong style="color:#D4AF37;">10% de descuento</strong> en tu primer caso.</p>
+      <form id="maint-form" onsubmit="registrarMaint(event)" novalidate style="display:flex;gap:8px;flex-wrap:wrap;">
+        <input type="tel" id="maint-wa" inputmode="tel" placeholder="+57 300 000 0000" maxlength="20" autocomplete="tel" required
+          style="flex:1;min-width:180px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;padding:10px 14px;font-size:.85rem;font-family:inherit;outline:none;">
+        <button type="submit" id="maint-btn" style="background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;">
+          Avisarme 🚀
+        </button>
+      </form>
+      <div id="maint-msg" style="font-size:.75rem;margin-top:8px;min-height:16px;text-align:center;" aria-live="polite"></div>
+    </div>
     <!-- ── SOCIAL ── -->
     <div class="social">
       <a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer" title="WhatsApp">
@@ -829,6 +842,32 @@
       document.getElementById('staff-link').style.display = 'inline';
     }
   </script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+(function(){
+  var SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+  var SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+  var _sb;
+  function _getSb(){if(!_sb&&window.supabase)_sb=window.supabase.createClient(SURL,SANON);return _sb;}
+  window.registrarMaint=async function(e){
+    e.preventDefault();
+    var btn=document.getElementById('maint-btn');
+    var msg=document.getElementById('maint-msg');
+    var wa=document.getElementById('maint-wa').value.trim();
+    if(!wa||wa.replace(/\D/g,'').length<7){msg.style.color='#f87171';msg.textContent='Ingresa un WhatsApp válido.';return;}
+    btn.disabled=true;btn.textContent='Guardando...';
+    var sb=_getSb();
+    if(sb){
+      await sb.from('leads_doctores').insert({whatsapp:wa,nombre:'Lista espera lanzamiento',recurso_descargado:'Mantenimiento — Aviso lanzamiento + 10% descuento',acepta_marketing:true}).catch(()=>{});
+    }
+    // WA al equipo
+    fetch('/api/notify-wa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nuevo_estado:'WAITLIST_LAB',codigo:'MANT',nombre_doctor:'Lista espera: '+wa,whatsapp:'573212816716',pais:'CO',servicio:'Aviso lanzamiento',fecha_entrega:null,recibo_url:null})}).catch(()=>{});
+    btn.textContent='✓ Registrado';btn.style.background='linear-gradient(135deg,#00FF41,#00cc33)';btn.style.color='#000';
+    msg.style.color='#00FF41';msg.textContent='¡Listo! Te avisamos el día del lanzamiento.';
+    if(window.gtag)gtag('event','waitlist_maint',{event_category:'lead',event_label:'mantenimiento'});
+  };
+})();
+</script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
