@@ -12,7 +12,7 @@
 | REF-TRIG | `~~sql/referidos-trigger-primer-pedido.sql~~` | Trigger auto-detecta primer pedido pagado de referido → estado "primer_pedido" |
 | ~~G1~~ | ~~`sql/revision-tokens-table.sql`~~ | ✅ **Ejecutado 2026-06-01** — revision-express activo | | Tabla `revision_tokens` para aprobación OWASP-segura desde email |
 | ~~G2~~ | ~~`sql/prodigy-analytics-rpc.sql`~~ | ✅ **Ejecutado 2026-06-01** — 6 RPCs BI activos | | 6 RPCs de métricas para dashboard BI (evita SELECT* en frontend) |
-| G3 | `sql/storage-webp-rls.sql` | RLS + política Storage para transformación WebP sin 403 |
+| ~~G3~~ | ~~`sql/storage-webp-rls.sql`~~ | ✅ **Ejecutado 2026-06-01** — WebP RLS activo | | RLS + política Storage para transformación WebP sin 403 |
 | 0f | `sql/trigger-doctor-inactivo-churn.sql` | VIEW doctors_inactivos + RPC prodigy_detectar_churn |
 | ~~WL~~ | ~~`sql/waitlist-labs-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — waitlist_labs activa |
 | ~~AC-RPC~~ | ~~`sql/alejandro-analytics-rpc.sql`~~ | ✅ **Ejecutado 2026-05-30** — RPCs BI Alejandro activos |
@@ -25,7 +25,7 @@
 
 | # | Acción | Dónde | Detalle |
 |---|--------|-------|---------|
-| 0c | **Ejecutar `sql/patch-rls-bibliotecas-diseno-revisiones.sql`** | Supabase PRODIGY → SQL Editor | RLS en `bibliotecas_cliente` + `diseno_revisiones` |
+| ~~0c~~ | ~~**Ejecutar `sql/patch-rls-bibliotecas-diseno-revisiones.sql`**~~ | ✅ **Ejecutado 2026-06-01** | | Supabase PRODIGY → SQL Editor | RLS en `bibliotecas_cliente` + `diseno_revisiones` |
 | 0d | **Ejecutar `sql/trigger-purga-stl-30dias.sql`** | Supabase PRODIGY → SQL Editor | Purga automática de STL a 30 días. Requiere pg_cron habilitado en Extensions |
 | 0e | **Agregar `ANTHROPIC_API_KEY`** en GitHub Secrets PRODIGY + Alejandro | Repo → Settings → Secrets → Actions | Para fallback IA del journal si Gemini falla |
 
