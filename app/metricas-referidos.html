@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="color-scheme" content="dark">
+  <title>Métricas Referidos — PRODIGY</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    :root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--card:#0d1520;--muted:#94a3b8;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#e2e8f0;min-height:100vh;}
+    .topbar{background:rgba(5,5,5,.95);border-bottom:1px solid rgba(0,255,65,.15);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:100;}
+    .topbar h1{font-size:1rem;font-weight:900;letter-spacing:2px;color:#00FF41;}
+    .btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+    .btn-refresh{background:rgba(0,255,65,.08);border-color:rgba(0,255,65,.25);color:#00FF41;}
+    main{max-width:1100px;margin:0 auto;padding:24px;}
+    .kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:28px;}
+    .kpi{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px;}
+    .kpi-v{font-size:1.9rem;font-weight:900;line-height:1;margin-bottom:5px;}
+    .kpi-l{font-size:.68rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px;margin-bottom:20px;}
+    .card-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+    table{width:100%;border-collapse:collapse;font-size:.78rem;}
+    th{padding:8px 12px;text-align:left;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid rgba(255,255,255,.06);}
+    td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
+    .chip{display:inline-flex;align-items:center;border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:700;border:1px solid;}
+    .spinner{text-align:center;padding:24px;color:#475569;}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1><i class="fas fa-user-plus" aria-hidden="true" style="margin-right:6px;"></i>Referidos — Dashboard</h1>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <button type="button" class="btn btn-refresh" onclick="cargarTodo()" id="btnR"><i class="fas fa-rotate-right"></i> Actualizar</button>
+    <a href="admin-panel.html" class="btn"><i class="fas fa-arrow-left"></i> Panel</a>
+  </div>
+</div>
+
+<main>
+  <!-- KPIs -->
+  <div class="kpis" id="kpi-grid" aria-live="polite">
+    <div class="kpi"><div class="kpi-v" style="color:#00FF41;">—</div><div class="kpi-l">Códigos generados</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--cyan);">—</div><div class="kpi-l">Referidos registrados</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--gold);">—</div><div class="kpi-l">Primer pedido pagado</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--mg);">—</div><div class="kpi-l">Cupones pendientes</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:#00FF41;">—</div><div class="kpi-l">Recompensados</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--gold);">—</div><div class="kpi-l">Créditos emitidos</div></div>
+  </div>
+
+  <!-- Tabla completa -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-table" style="color:#00FF41;" aria-hidden="true"></i> Pipeline de referidos</div>
+    <div id="tabla-ref" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  </div>
+
+  <!-- Top referidores -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-trophy" style="color:var(--gold);" aria-hidden="true"></i> Top referidores</div>
+    <div id="top-ref" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  </div>
+
+  <div style="text-align:center;font-size:.7rem;color:#334155;padding:12px 0;" id="ultima-act">Cargando...</div>
+</main>
+
+<script src="../js/auth-guard.js?v=20260528"></script>
+<script>
+const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmtCOP(n){return '$'+Number(n||0).toLocaleString('es-CO');}
+const ESTADO_COLOR={pendiente:'#94a3b8',registrado:'#00d2ff',primer_pedido:'#D4AF37',recompensado:'#00FF41'};
+let sb;
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!window.supabase)return;
+  sb=window.supabase.createClient(SURL,SANON);
+  cargarTodo();
+  setInterval(cargarTodo, 5*60*1000);
+});
+
+async function cargarTodo(){
+  const btn=document.getElementById('btnR');
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i>';btn.disabled=true;
+  try{ await Promise.all([cargarKPIs(),cargarTabla(),cargarTop()]); }
+  catch(e){console.error('[REF-DASHBOARD]',e);}
+  document.getElementById('ultima-act').textContent='Actualizado: '+new Date().toLocaleString('es-CO',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
+  btn.innerHTML='<i class="fas fa-rotate-right"></i> Actualizar';btn.disabled=false;
+}
+
+async function cargarKPIs(){
+  const {data}=await sb.from('referidos').select('id,estado,recompensa_cop,cupon_credito,cupon_usado');
+  const all=data||[];
+  const vals=[
+    {v:all.length,c:'#00FF41',l:'Códigos generados'},
+    {v:all.filter(r=>r.estado!=='pendiente').length,c:'var(--cyan)',l:'Referidos activos'},
+    {v:all.filter(r=>['primer_pedido','recompensado'].includes(r.estado)).length,c:'var(--gold)',l:'Primer pedido pagado'},
+    {v:all.filter(r=>r.cupon_credito&&!r.cupon_usado).length,c:'var(--mg)',l:'Cupones pendientes'},
+    {v:all.filter(r=>r.estado==='recompensado').length,c:'#00FF41',l:'Recompensados'},
+    {v:fmtCOP(all.filter(r=>r.cupon_credito&&!r.cupon_usado).reduce((s,r)=>s+Number(r.recompensa_cop||30000),0)),c:'var(--gold)',l:'Créditos emitidos'},
+  ];
+  document.getElementById('kpi-grid').innerHTML=vals.map(k=>`<div class="kpi"><div class="kpi-v" style="color:${k.c};">${escH(String(k.v))}</div><div class="kpi-l">${escH(k.l)}</div></div>`).join('');
+}
+
+async function cargarTabla(){
+  const el=document.getElementById('tabla-ref');
+  const {data,error}=await sb.from('referidos').select('*').order('created_at',{ascending:false}).limit(50);
+  if(error||!data){el.innerHTML=`<div style="color:#f87171;padding:12px;">${escH(error?.message||'Error')}</div>`;return;}
+  if(!data.length){el.innerHTML='<div style="text-align:center;color:#475569;padding:16px;">Sin referidos aún.</div>';return;}
+  el.innerHTML=`<div style="overflow-x:auto;"><table>
+    <thead><tr>
+      <th>Fecha</th><th>Código</th><th>Referidor</th><th>Referido</th><th>Estado</th><th>Cupón</th><th>Crédito</th>
+    </tr></thead>
+    <tbody>${data.map(r=>{
+      const color=ESTADO_COLOR[r.estado]||'#94a3b8';
+      const fecha=r.created_at?new Date(r.created_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}):'—';
+      return `<tr>
+        <td style="color:#475569;">${escH(fecha)}</td>
+        <td style="font-weight:800;color:var(--gold);letter-spacing:.5px;">${escH(r.codigo)}</td>
+        <td>${escH(r.referidor_nombre||r.referidor_email||'—')}</td>
+        <td>${r.referido_email?escH(r.referido_nombre||r.referido_email):'<span style="color:#475569;">Sin usar</span>'}</td>
+        <td><span class="chip" style="border-color:${color};color:${color};">${escH(r.estado.replace('_',' '))}</span></td>
+        <td>${r.cupon_credito?`<span style="font-family:monospace;color:${r.cupon_usado?'#475569':'#00FF41'};font-size:.72rem;">${escH(r.cupon_credito)}</span>`:'—'}</td>
+        <td style="color:var(--gold);">${fmtCOP(r.recompensa_cop||30000)}</td>
+      </tr>`;
+    }).join('')}</tbody></table></div>`;
+}
+
+async function cargarTop(){
+  const el=document.getElementById('top-ref');
+  const {data}=await sb.from('referidos').select('referidor_email,referidor_nombre,estado').not('referido_email','is',null);
+  if(!data||!data.length){el.innerHTML='<div style="color:#475569;padding:12px;">Sin datos.</div>';return;}
+  const map={};
+  data.forEach(r=>{
+    const k=r.referidor_email||'?';
+    if(!map[k])map[k]={nombre:r.referidor_nombre||r.referidor_email||'—',total:0,convertidos:0};
+    map[k].total++;
+    if(['primer_pedido','recompensado'].includes(r.estado))map[k].convertidos++;
+  });
+  const sorted=Object.entries(map).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
+  el.innerHTML=`<table><thead><tr><th>#</th><th>Referidor</th><th>Referidos</th><th>Convertidos</th><th>Tasa</th></tr></thead><tbody>${sorted.map(([,v],i)=>`<tr>
+    <td style="color:#475569;">${i+1}</td>
+    <td style="font-weight:700;">${escH(v.nombre)}</td>
+    <td style="text-align:center;color:var(--cyan);">${v.total}</td>
+    <td style="text-align:center;color:#00FF41;">${v.convertidos}</td>
+    <td style="text-align:center;color:var(--gold);">${Math.round((v.convertidos/v.total)*100)}%</td>
+  </tr>`).join('')}</tbody></table>`;
+}
+</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>

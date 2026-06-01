@@ -933,6 +933,7 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
     '⚠️ *Política de entrega: el caso no sale del laboratorio sin liquidación del 100% del saldo.*\n' +
     (hasQuote ? '\n📌 Algunos ítems requieren cotización manual.\n' : '') +
     (obs ? '\n📝 *Observaciones:*\n' + obs + '\n' : '') +
+    (window._cuponCreditoActivo ? '\n🎁 *CUPÓN APLICADO:* ' + window._cuponCreditoActivo.cupon + ' (-$' + Number(window._cuponCreditoActivo.monto||0).toLocaleString('es-CO') + ' COP)\n' : '') +
     '\n🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso?id=' + ordenId + '&key=' + nonce +
     '\n\n🤝 *¡Gracias por confiar en PRODIGY Lab Dental!*\n' +
     'Su caso está en las mejores manos. Trabajamos con precisión, calidad y compromiso en cada detalle.\n' +
