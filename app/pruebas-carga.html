@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="color-scheme" content="dark">
+  <title>Pruebas de Carga — PRODIGY Lab</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    :root{--bg:#050505;--card:#0d1520;--gold:#D4AF37;--mg:#D946A6;--cyan:#00d2ff;--green:#00FF41;--muted:#94a3b8;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#e2e8f0;min-height:100vh;padding:24px;}
+    h1{font-size:1.2rem;font-weight:900;color:var(--gold);margin-bottom:4px;}
+    .sub{font-size:.78rem;color:var(--muted);margin-bottom:24px;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;}
+    .card-title{font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:.2s;}
+    .btn-primary{background:linear-gradient(135deg,var(--mg),#9333ea);color:#fff;}
+    .btn-gold{background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);color:var(--gold);}
+    .btn-cyan{background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:var(--cyan);}
+    .btn-green{background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:var(--green);}
+    .btn-red{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;}
+    .result{background:rgba(0,0,0,.3);border-radius:8px;padding:12px;margin-top:12px;font-size:.76rem;font-family:monospace;min-height:40px;max-height:200px;overflow-y:auto;white-space:pre-wrap;color:#94a3b8;border:1px solid rgba(255,255,255,.06);}
+    .ok{color:#00FF41;}.err{color:#f87171;}.warn{color:#f59e0b;}
+    .badge{display:inline-flex;align-items:center;border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:700;border:1px solid;}
+    input[type=file],input[type=text],select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:8px 12px;font-size:.82rem;width:100%;margin-bottom:8px;font-family:inherit;outline:none;}
+    label{font-size:.72rem;color:var(--muted);display:block;margin-bottom:4px;}
+    .progress{background:rgba(255,255,255,.05);border-radius:4px;height:6px;margin-top:8px;overflow:hidden;}
+    .progress-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--mg),#9333ea);transition:width .3s ease;}
+    .stat{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.78rem;}
+    .stat:last-child{border-bottom:none;}
+    @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;}}
+  </style>
+</head>
+<body>
+<a href="admin-panel.html" style="display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:.78rem;font-weight:700;margin-bottom:16px;"><i class="fas fa-arrow-left" aria-hidden="true"></i> Volver al panel</a>
+<h1>🧪 Panel de Pruebas de Carga — PRODIGY</h1>
+<p class="sub">Prueba uploads de STL, pagos, flujos de panel y RPCs antes del lanzamiento. Solo acceso admin.</p>
+
+<div class="grid">
+  <!-- PRUEBA 1: Upload STL a Supabase Storage -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-file-code" style="color:var(--cyan);" aria-hidden="true"></i> Upload STL / Diseño</div>
+    <label>Archivo STL (hasta 500MB)</label>
+    <input type="file" id="test-stl" accept=".stl,.obj,.ply">
+    <label>Bucket destino</label>
+    <select id="test-bucket">
+      <option value="disenos-cad">disenos-cad (diseños)</option>
+      <option value="portafolio">portafolio (casos)</option>
+      <option value="evidencias-entrega">evidencias-entrega (fotos)</option>
+    </select>
+    <button type="button" class="btn btn-cyan" onclick="testUploadSTL()"><i class="fas fa-upload" aria-hidden="true"></i> Probar upload</button>
+    <div class="progress" style="display:none;" id="prog-stl"><div class="progress-bar" id="prog-bar-stl" style="width:0%"></div></div>
+    <div class="result" id="result-stl">Selecciona un archivo y haz click en "Probar upload"</div>
+  </div>
+
+  <!-- PRUEBA 2: RPCs de Analytics -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--gold);" aria-hidden="true"></i> RPCs de Métricas</div>
+    <button type="button" class="btn btn-gold" onclick="testRPC('prodigy_dashboard_semana',{})">Dashboard Semana</button><br><br>
+    <button type="button" class="btn btn-gold" onclick="testRPC('prodigy_top_servicios',{limite:5})">Top Servicios</button><br><br>
+    <button type="button" class="btn btn-gold" onclick="testRPC('prodigy_ingresos_semanas',{n_semanas:4})">Ingresos 4 semanas</button><br><br>
+    <button type="button" class="btn btn-gold" onclick="testRPC('prodigy_forecast_semana',{})">Forecast</button><br><br>
+    <button type="button" class="btn btn-gold" onclick="testRPC('prodigy_tiempos_entrega',{})">Tiempos entrega</button>
+    <div class="result" id="result-rpc">Click en un RPC para probar</div>
+  </div>
+
+  <!-- PRUEBA 3: Cupón de referido -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-tag" style="color:var(--green);" aria-hidden="true"></i> Sistema de Referidos</div>
+    <label>Email para generar código</label>
+    <input type="text" id="test-ref-email" placeholder="doctor@clinica.com">
+    <button type="button" class="btn btn-green" onclick="testGenerarCodigo()">Generar código</button><br><br>
+    <label>Cupón CRED- para validar</label>
+    <input type="text" id="test-cupon" placeholder="CRED-XXXXXXXX" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+    <button type="button" class="btn btn-cyan" onclick="testValidarCupon()">Validar (sin consumir)</button>
+    <div class="result" id="result-ref">Prueba el sistema de referidos</div>
+  </div>
+
+  <!-- PRUEBA 4: Tablas Supabase -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-database" style="color:var(--mg);" aria-hidden="true"></i> Verificar Tablas</div>
+    <button type="button" class="btn btn-primary" onclick="testTablas()"><i class="fas fa-check" aria-hidden="true"></i> Verificar todas las tablas</button>
+    <div class="result" id="result-tablas">Click para verificar tablas activas</div>
+  </div>
+
+  <!-- PRUEBA 5: Flows de notificación -->
+  <div class="card">
+    <div class="card-title"><i class="fab fa-whatsapp" style="color:#25D366;" aria-hidden="true"></i> Edge Functions</div>
+    <button type="button" class="btn btn-green" onclick="testEdgeFn('health-check','GET')">Health Check</button><br><br>
+    <button type="button" class="btn btn-cyan" onclick="testRevisionNotify()">Revision Notify (WA+Email)</button><br><br>
+    <button type="button" class="btn btn-gold" onclick="testSocialCopy()">Social Copy IA</button>
+    <div class="result" id="result-edge">Prueba las edge functions</div>
+  </div>
+
+  <!-- PRUEBA 6: Performance -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-gauge-high" style="color:var(--cyan);" aria-hidden="true"></i> Performance de Consultas</div>
+    <button type="button" class="btn btn-cyan" onclick="testQueryPerf()">Benchmark consultas</button>
+    <div class="result" id="result-perf">Mide tiempos de respuesta de la DB</div>
+  </div>
+</div>
+
+<script src="../js/auth-guard.js?v=20260528"></script>
+<script>
+const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+let sb;
+document.addEventListener('DOMContentLoaded',()=>{if(!window.supabase)return;sb=window.supabase.createClient(SURL,SANON);});
+
+function log(id,msg,type=''){const el=document.getElementById(id);if(el){el.textContent=msg;el.className='result '+(type||'');}}
+
+async function testUploadSTL() {
+  const file=document.getElementById('test-stl').files[0];
+  if(!file){log('result-stl','Selecciona un archivo primero','err');return;}
+  const bucket=document.getElementById('test-bucket').value;
+  const prog=document.getElementById('prog-stl');
+  const bar=document.getElementById('prog-bar-stl');
+  prog.style.display='block'; bar.style.width='10%';
+  const t0=Date.now();
+  log('result-stl',`📤 Subiendo ${file.name} (${(file.size/1024/1024).toFixed(2)} MB) a ${bucket}...`);
+  try {
+    const path=`prueba-${Date.now()}/${file.name}`;
+    bar.style.width='40%';
+    const {data,error}=await sb.storage.from(bucket).upload(path,file,{cacheControl:'3600',upsert:false});
+    bar.style.width='90%';
+    if(error)throw error;
+    const t1=Date.now();
+    const {data:{publicUrl}}=sb.storage.from(bucket).getPublicUrl(path);
+    bar.style.width='100%';
+    log('result-stl',`✅ Upload exitoso en ${((t1-t0)/1000).toFixed(2)}s\nPath: ${data.path}\nURL: ${publicUrl.slice(0,80)}...\nTamaño: ${(file.size/1024/1024).toFixed(2)} MB\n\n⚠️ Elimina el archivo de prueba desde Supabase Storage`,'ok');
+  }catch(e){log('result-stl','❌ Error: '+e.message,'err');}
+}
+
+async function testRPC(fn,params) {
+  log('result-rpc',`⏳ Llamando ${fn}...`);
+  const t0=Date.now();
+  try{
+    const{data,error}=await sb.rpc(fn,params);
+    const ms=Date.now()-t0;
+    if(error)throw error;
+    log('result-rpc',`✅ ${fn} — ${ms}ms\n\n${JSON.stringify(data,null,2).slice(0,500)}`,'ok');
+  }catch(e){log('result-rpc','❌ '+e.message,'err');}
+}
+
+async function testGenerarCodigo() {
+  const email=document.getElementById('test-ref-email').value.trim();
+  if(!email){log('result-ref','Ingresa un email primero','err');return;}
+  try{
+    const{data,error}=await sb.rpc('obtener_mi_codigo_referido',{p_email:email,p_nombre:'Test'});
+    if(error)throw error;
+    log('result-ref','✅ Código generado/encontrado:\n'+data+'\n\nEste código es real — ya quedó en la BD.','ok');
+  }catch(e){log('result-ref','❌ '+e.message,'err');}
+}
+
+async function testValidarCupon() {
+  const cupon=document.getElementById('test-cupon').value.trim().toUpperCase();
+  if(!/^CRED-[A-Z0-9]{8}$/.test(cupon)){log('result-ref','Formato inválido (CRED-XXXXXXXX)','err');return;}
+  try{
+    // Solo buscar, no consumir
+    const{data,error}=await sb.from('referidos').select('id,estado,cupon_usado,recompensa_cop').eq('cupon_credito',cupon).single();
+    if(error||!data)throw new Error('Cupón no encontrado');
+    log('result-ref',`✅ Cupón encontrado:\nEstado: ${data.estado}\nUsado: ${data.cupon_usado}\nCrédito: $${data.recompensa_cop?.toLocaleString('es-CO')||'—'} COP\n\n(No fue consumido — solo consulta)`,'ok');
+  }catch(e){log('result-ref','❌ '+e.message,'err');}
+}
+
+async function testTablas() {
+  log('result-tablas','⏳ Verificando tablas...');
+  const tablas=['pedidos','cotizaciones','referidos','waitlist_labs','leads_doctores','revision_tokens','historial_diseno','logs_incidencias'];
+  const results=[];
+  for(const t of tablas){
+    try{
+      const t0=Date.now();
+      const{count,error}=await sb.from(t).select('*',{count:'exact',head:true});
+      const ms=Date.now()-t0;
+      if(error)throw error;
+      results.push(`✅ ${t}: ${count} filas (${ms}ms)`);
+    }catch(e){results.push(`❌ ${t}: ${e.message}`);}
+  }
+  log('result-tablas',results.join('\n'),'ok');
+}
+
+async function testEdgeFn(fn,method) {
+  log('result-edge',`⏳ Llamando /api/${fn}...`);
+  const t0=Date.now();
+  try{
+    const r=await fetch(`/api/${fn}`,{method:method||'GET'});
+    const ms=Date.now()-t0;
+    const text=await r.text().then(t=>{try{return JSON.stringify(JSON.parse(t),null,2).slice(0,400);}catch{return t.slice(0,400);}});
+    log('result-edge',`${r.ok?'✅':'⚠️'} ${fn} — ${r.status} en ${ms}ms\n\n${text}`);
+  }catch(e){log('result-edge','❌ '+e.message,'err');}
+}
+
+async function testRevisionNotify() {
+  log('result-edge','⏳ Probando revision-notify (solo log, no envía WA real)...');
+  try{
+    const r=await fetch('/api/revision-notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tipo:'aprobacion',pedido_id:'TEST-'+Date.now(),codigo:'PRD-TEST-001',doctor_nombre:'Dr. Prueba'})});
+    const d=await r.json();
+    log('result-edge',`${r.ok?'✅':'⚠️'} revision-notify — ${r.status}\n\n${JSON.stringify(d,null,2)}`);
+  }catch(e){log('result-edge','❌ '+e.message,'err');}
+}
+
+async function testSocialCopy() {
+  log('result-edge','⏳ Probando social-copy IA...');
+  try{
+    const r=await fetch('/api/social-copy',{method:'POST',headers:{'Content-Type':'application/json','x-admin-token':'test'},body:JSON.stringify({titulo:'Prueba de generación de contenido',descripcion:'Test de la edge function social-copy',url:'https://prodigylabdental.com/journal',categoria:'tecnologia'})});
+    const d=await r.json();
+    if(d.error)throw new Error(d.error);
+    log('result-edge',`✅ Social Copy IA OK\n\n${d.copies?.instagram?.slice(0,200)||'...'}...`,'ok');
+  }catch(e){log('result-edge','❌ '+e.message,'err');}
+}
+
+async function testQueryPerf() {
+  log('result-perf','⏳ Midiendo performance de consultas...');
+  const tests=[
+    {name:'pedidos (limit 10)',fn:async()=>sb.from('pedidos').select('id,codigo,estado').limit(10)},
+    {name:'prodigy_dashboard_semana',fn:async()=>sb.rpc('prodigy_dashboard_semana')},
+    {name:'prodigy_top_servicios',fn:async()=>sb.rpc('prodigy_top_servicios',{limite:5})},
+    {name:'cotizaciones count',fn:async()=>sb.from('cotizaciones').select('*',{count:'exact',head:true})},
+    {name:'referidos activos',fn:async()=>sb.from('referidos').select('id').not('referido_email','is',null)},
+  ];
+  const results=[];
+  for(const t of tests){
+    const t0=Date.now();
+    try{await t.fn();const ms=Date.now()-t0;results.push(`${ms<200?'✅':'⚠️'} ${t.name}: ${ms}ms`);}
+    catch(e){results.push(`❌ ${t.name}: ${e.message}`);}
+  }
+  log('result-perf',results.join('\n'),'ok');
+}
+</script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>
