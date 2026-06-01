@@ -22,7 +22,7 @@ WITH doctor_stats AS (
         AVG(precio_total) AS ticket_promedio
     FROM pedidos
     WHERE email IS NOT NULL
-      AND estado NOT IN ('cancelado','CANCELADO')
+      AND estado::text NOT IN ('cancelado','CANCELADO','Cancelado')
     GROUP BY email, nombre_doctor
     HAVING COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '90 days') >= 3
            -- Solo doctores que han sido activos (mín 3 pedidos en 90 días)
