@@ -54,7 +54,7 @@ async function _getWeeklyStats(env) {
 
   const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  const [pedidos, escaners, leads, cotizaciones, waitlist] = await Promise.all([
+  const [pedidos, escaners, leads, cotizaciones, waitlist, referidos] = await Promise.all([
     fetch(`${base}/pedidos?created_at=gte.${since}&select=id,estado,servicio`, { headers: h })
       .then(r => r.json()).catch(() => []),
     fetch(`${base}/solicitudes_scanner?created_at=gte.${since}&select=id,servicio,whatsapp`, { headers: h })
@@ -64,6 +64,8 @@ async function _getWeeklyStats(env) {
     fetch(`${base}/cotizaciones?created_at=gte.${since}&select=id,tipo,total,estado`, { headers: h })
       .then(r => r.json()).catch(() => []),
     fetch(`${base}/waitlist_labs?created_at=gte.${since}&select=id,nombre_lab,ciudad`, { headers: h })
+      .then(r => r.json()).catch(() => []),
+    fetch(`${base}/referidos?estado=in.(primer_pedido,recompensado)&cupon_credito=not.is.null&select=id,estado,cupon_usado`, { headers: h })
       .then(r => r.json()).catch(() => [])
   ]);
 
@@ -85,6 +87,9 @@ async function _getWeeklyStats(env) {
   const cotAceptadas = cotArr.filter(c => c.estado === 'aceptada').length;
   const cotValor = cotArr.reduce((s, c) => s + Number(c.total || 0), 0);
   const waitArr = Array.isArray(waitlist) ? waitlist : [];
+  const refArr = Array.isArray(referidos) ? referidos : [];
+  const cuponesPend = refArr.filter(r => r.cupon_credito && !r.cupon_usado).length;
+  const cuponesUsados = refArr.filter(r => r.cupon_usado).length;
 
   return {
     pedidos_total:     Array.isArray(pedidos) ? pedidos.length : 0,
@@ -98,6 +103,8 @@ async function _getWeeklyStats(env) {
     cotizaciones_aceptadas: cotAceptadas,
     cotizaciones_valor: cotValor,
     waitlist_nuevos:   waitArr.length,
+    cupones_pendientes: cuponesPend,
+    cupones_usados:     cuponesUsados,
     fecha_desde:       new Date(since).toLocaleDateString('es-CO', { day:'2-digit', month:'short' }),
     fecha_hasta:       new Date().toLocaleDateString('es-CO', { day:'2-digit', month:'short' })
   };
@@ -121,6 +128,7 @@ function _buildMessage(s) {
     '',
     '🗒️ *Cotizaciones guardadas:* ' + s.cotizaciones_total + (s.cotizaciones_aceptadas ? ' (' + s.cotizaciones_aceptadas + ' aceptadas)' : ''),
     s.waitlist_nuevos > 0 ? '🧪 *Labs en waitlist (semana):* ' + s.waitlist_nuevos : null,
+    s.cupones_pendientes > 0 ? '🏷️ *Cupones CRED- sin usar:* ' + s.cupones_pendientes + (s.cupones_usados ? ' · usados: ' + s.cupones_usados : '') : null,
     '',
     '🔗 Panel: prodigylabdental.com/app/admin-panel'
   ].filter(Boolean).join('\n');
