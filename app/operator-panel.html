@@ -368,6 +368,7 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const ADMIN_PUSH_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/send-push';
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+window.sb = sb;
 let _pedidos = [];
 let _userId  = null;
 let _timerInterval = null;
@@ -1280,5 +1281,7 @@ function cerrarBulk() { document.getElementById('modal-bulk').style.display = 'n
 </script>
 
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});</script>
+<script src="../js/notif-panel.js?v=20260601"></script>
+<script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 </body>
 </html>

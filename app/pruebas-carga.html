@@ -285,5 +285,7 @@ async function testQueryPerf() {
   </div>
 </div>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script src="../js/notif-panel.js?v=20260601"></script>
+<script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 </body>
 </html>

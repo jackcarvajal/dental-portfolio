@@ -229,6 +229,7 @@
 const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+window.sb = sb;
 
 let _mensajeroId       = null;
 let _signaturePad      = null;
@@ -870,5 +871,7 @@ window.MensajeroSync = (function() {
     return { guardar, registrarSync, contarPendientes, actualizarIndicador };
 })();
 </script>
+<script src="../js/notif-panel.js?v=20260601"></script>
+<script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 </body>
 </html>
