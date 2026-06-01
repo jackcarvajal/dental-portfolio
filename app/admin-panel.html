@@ -739,9 +739,12 @@
                 <h1>Métricas Operativas</h1>
                 <p>Ingresos · Embudo de casos · Tiempos de entrega · Top servicios y clientes</p>
             </div>
-            <button type="button" class="btn-primary" onclick="cargarMetricas()">
-                <i class="fas fa-rotate-right"></i> Actualizar
-            </button>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <a href="metricas.html" style="background:rgba(0,255,65,.08);border:1px solid rgba(0,255,65,.2);color:#00FF41;border-radius:8px;padding:8px 14px;font-size:.78rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="fas fa-gauge-high"></i> BI Dashboard</a>
+                <button type="button" class="btn-primary" onclick="cargarMetricas()">
+                    <i class="fas fa-rotate-right"></i> Actualizar
+                </button>
+            </div>
         </div>
 
         <!-- Selector de período -->
