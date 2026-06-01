@@ -1,5 +1,5 @@
-// Prodigy Lab Dental — Service Worker v3.9 (+ Referidos Landing + Churn Dashboard + HowTo SEO)
-const CACHE = 'prodigy-v27';
+// Prodigy Lab Dental — Service Worker v4.0 (+ Notif panel + Analytics CLV + Estimadores entrega)
+const CACHE = 'prodigy-v28';
 
 // Assets estáticos que siempre cacheamos en install
 const PRECACHE = [
@@ -43,7 +43,11 @@ const PRECACHE = [
   '/revision-express',
   '/para-laboratorios',
   '/referidos',
-  '/catalogo'
+  '/catalogo',
+  '/caso',
+  '/patient',
+  '/js/notif-panel.js',
+  '/js/geo-detect.js',
 ];
 
 // Rutas que NUNCA cacheamos (siempre network-only)
