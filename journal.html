@@ -700,7 +700,8 @@
     .toast.show { transform: translateY(0); opacity: 1; }
     .toast.ok  { border-color: rgba(0,255,65,0.4); }
     .toast.err { border-color: rgba(248,113,113,0.4); }
-  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+  .sec,.section-inner,.container{content-visibility:auto;contain-intrinsic-size:0 400px;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
     <!-- Google Analytics GA4 — reemplazar G-3N0ZZE5V10 con el Measurement ID real -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>

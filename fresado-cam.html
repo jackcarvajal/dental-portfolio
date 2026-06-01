@@ -232,7 +232,8 @@
     .sticky-wa a { display: inline-flex; align-items: center; gap: 9px; background: #25D366; color: #fff; font-size: 1rem; font-weight: 800; text-decoration: none; padding: 12px 20px; border-radius: 100px; box-shadow: 0 5px 20px rgba(37,211,102,0.5); transition: transform .2s; }
     .sticky-wa a:hover { transform: scale(1.04); }
     @media(max-width:480px) { .sticky-wa a span { display: none; } .sticky-wa a { padding: 14px; border-radius: 50%; } }
-  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+  .sec,.section-inner,.container{content-visibility:auto;contain-intrinsic-size:0 400px;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});gtag('js',new Date());gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});</script>
