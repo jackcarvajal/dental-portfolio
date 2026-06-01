@@ -684,6 +684,25 @@
                 }
             }
 
+            // Bloque de referidos cuando el caso está entregado
+            if (['Listo para Entrega', 'Aprobado'].includes(estado)) {
+                (async () => {
+                    try {
+                        if (!window.supabase) return;
+                        const sb3 = window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634');
+                        const user = (await sb3.auth.getUser()).data?.user;
+                        if (!user) return;
+                        const { data: cod } = await sb3.rpc('obtener_mi_codigo_referido', { p_email: user.email, p_nombre: user.user_metadata?.nombre||'' });
+                        if (!cod) return;
+                        const waMsg = encodeURIComponent('Hola! Te recomiendo PRODIGY Lab Dental para tus casos CAD/CAM en Bogotá 🦷\n\nUsa mi código *' + cod + '* al hacer tu primer pedido y obtienes *5% de descuento*.\n\n🔗 https://prodigylabdental.com');
+                        const refB = document.createElement('div');
+                        refB.style.cssText = 'background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.2);border-radius:14px;padding:16px 18px;margin-bottom:16px;';
+                        refB.innerHTML = '<div style="font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:#00FF41;margin-bottom:8px;">🎁 Comparte y gana $30.000 COP</div><p style="font-size:.8rem;color:#94a3b8;margin-bottom:10px;">Tu colega obtiene <strong style="color:#00FF41;">5% de descuento</strong> en su primer caso.</p><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><div style="font-size:1.1rem;font-weight:900;color:#fff;letter-spacing:2px;background:rgba(0,0,0,.4);border:1px solid rgba(0,255,65,.3);border-radius:8px;padding:6px 14px;">' + _escH(cod) + '</div><a href="https://wa.me/?text=' + waMsg + '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:5px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25D366;border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:700;text-decoration:none;"><i class="fab fa-whatsapp"></i> Compartir</a></div>';
+                        zonaDesc?.before(refB);
+                    } catch(_){}
+                })();
+            }
+
             // Agente 4: WhatsApp flotante con ID del caso
             const waBtn = document.getElementById('wa-flotante-caso');
             if (waBtn) {
