@@ -1257,6 +1257,23 @@ function actualizarKPIs(data) {
     }).catch(()=>{});
 }
 
+/* ── Forecast semanal via RPC ────────────────────────────── */
+(async () => {
+    try {
+        const { data } = await sb.rpc('prodigy_forecast_semana');
+        if (!data) return;
+        const fc = document.createElement('div');
+        fc.style.cssText = 'background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.15);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:.8rem;';
+        const trend = v => v > 0 ? `<span style="color:#00FF41;">↑${v}%</span>` : `<span style="color:#f87171;">↓${Math.abs(v)}%</span>`;
+        fc.innerHTML = `<i class="fas fa-wand-magic-sparkles" style="color:#00FF41;font-size:1.2rem;"></i>
+            <span style="font-weight:800;color:#00FF41;">Forecast próx. semana:</span>
+            <span>Pedidos esperados: <strong>${data.pedidos_proyectados||'—'}</strong> ${trend(data.tendencia_pedidos||0)}</span>
+            <span>Ingresos: <strong>$${Number(data.ingresos_proyectados||0).toLocaleString('es-CO')}</strong></span>
+            <span>Ocupación: <strong style="color:${data.alerta_capacidad?'#f59e0b':'#00FF41'};">${data.ocupacion_pct||0}%${data.alerta_capacidad?' ⚠️':''}</strong></span>`;
+        document.querySelector('.main,main')?.prepend(fc);
+    } catch(_) {}
+})();
+
 /* ══════════════════════════════════════════
    TAB 2 — PORTAFOLIO (tabla: casos_portafolio, bucket: portafolio)
 ══════════════════════════════════════════ */
