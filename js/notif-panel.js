@@ -1,7 +1,7 @@
 /**
- * PRODIGY — Notificaciones internas por rol
- * Uso: <script src="js/notif-panel.js?v=20260601"></script>
- * Requiere: window._sb (supabase client), window._notifDept, window._notifRol
+ * PRODIGY — Notificaciones internas por rol + cliente
+ * Uso staff:   _notifInit(sb, 'diseno', 'operario')
+ * Uso cliente: _notifInit(sb, null, null, true)  ← modo cliente
  */
 (function(){
 'use strict';
@@ -14,19 +14,21 @@ const TIPO_ICON  = {
   cotizacion:'fa-receipt'
 };
 
-let _notifs = [];
-let _unread = 0;
-let _uid    = null;
-let _dept   = null;
-let _rol    = null;
-let _sb     = null;
-let _channel= null;
+let _notifs  = [];
+let _unread  = 0;
+let _uid     = null;
+let _dept    = null;
+let _rol     = null;
+let _sb      = null;
+let _channel = null;
+let _modoCliente = false;
 
 /* ── Init ── */
-window._notifInit = async function(sb, dept, rol) {
-  _sb   = sb;
-  _dept = dept || null;
-  _rol  = rol  || null;
+window._notifInit = async function(sb, dept, rol, modoCliente) {
+  _sb          = sb;
+  _dept        = dept || null;
+  _rol         = rol  || null;
+  _modoCliente = !!modoCliente;
   const { data: { session } } = await sb.auth.getSession();
   if (!session) return;
   _uid = session.user.id;
@@ -109,21 +111,29 @@ function _togglePanel() {
   if (open) _renderList();
 }
 
-/* ── Cargar notificaciones vía RPC ── */
+/* ── Cargar notificaciones ── */
 async function _loadNotifs() {
   try {
-    const { data } = await _sb.rpc('prodigy_mis_notifs', {
-      p_dept: _dept,
-      p_rol:  _rol,
-      p_limit: 15
-    });
+    let data;
+    if (_modoCliente && _uid) {
+      // Cliente: query directa por user_id
+      const { data: rows } = await _sb
+        .from('notificaciones_internas')
+        .select('id,created_at,tipo,prioridad,titulo,mensaje,pedido_codigo,accion_url,leida_por')
+        .eq('destinatario_user_id', _uid)
+        .order('created_at', { ascending: false })
+        .limit(15);
+      data = (rows||[]).map(n => ({...n, es_nueva: !Array.isArray(n.leida_por) || !n.leida_por.includes(_uid)}));
+    } else {
+      // Staff: RPC
+      const { data: rows } = await _sb.rpc('prodigy_mis_notifs', { p_dept:_dept, p_rol:_rol, p_limit:15 });
+      data = rows || [];
+    }
     _notifs = data || [];
     _unread = _notifs.filter(n => n.es_nueva).length;
     _updateBadge();
     _renderList();
-  } catch(e) {
-    // RPC no disponible aún (tabla no creada) — silencioso
-  }
+  } catch(e) { /* silencioso hasta que el SQL esté ejecutado */ }
 }
 
 /* ── Actualizar badge ── */
@@ -184,7 +194,17 @@ window._notifIr = async function(url, notifId) {
 window._notifMarcarLeidas = async function() {
   if (!_uid) return;
   try {
-    await _sb.rpc('prodigy_marcar_notifs_leidas', { p_user_id: _uid });
+    if (_modoCliente) {
+      // Cliente: actualizar leida_por en sus notificaciones directamente
+      const ids = _notifs.filter(n=>n.es_nueva).map(n=>n.id);
+      if (ids.length) {
+        await _sb.from('notificaciones_internas')
+          .update({ leida_por: _sb.sql`array_append(leida_por, ${_uid}::uuid)` })
+          .in('id', ids);
+      }
+    } else {
+      await _sb.rpc('prodigy_marcar_notifs_leidas', { p_user_id: _uid });
+    }
     _notifs = _notifs.map(n => ({...n, es_nueva: false}));
     _unread = 0;
     _updateBadge();
@@ -195,16 +215,22 @@ window._notifMarcarLeidas = async function() {
 /* ── Realtime ── */
 function _subscribeRealtime() {
   if (_channel) return;
-  _channel = _sb.channel('notif-internas-live')
+  const channelName = _modoCliente ? `notif-cliente-${_uid}` : 'notif-staff-live';
+  _channel = _sb.channel(channelName)
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'notificaciones_internas'}, async (payload) => {
       const n = payload.new;
-      // Filtrar: solo si es para mi dept/rol o broadcast
-      const meDirige = (!n.destinatario_dept || n.destinatario_dept === _dept)
-                    && (!n.destinatario_rol  || n.destinatario_rol  === _rol || _rol === 'admin' || _rol === 'superadmin');
+      let meDirige = false;
+      if (_modoCliente) {
+        // cliente solo ve sus propias notificaciones
+        meDirige = n.destinatario_user_id === _uid;
+      } else {
+        // staff: por dept, rol o broadcast
+        meDirige = (!n.destinatario_dept || n.destinatario_dept === _dept)
+                && (!n.destinatario_rol  || n.destinatario_rol  === _rol || _rol === 'admin' || _rol === 'superadmin')
+                && !n.destinatario_user_id; // no son notifs de cliente
+      }
       if (!meDirige) return;
-      // Toast visual
       _notifToast(n);
-      // Recargar lista
       await _loadNotifs();
     })
     .subscribe();

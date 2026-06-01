@@ -572,9 +572,20 @@ async function avanzar(id, nuevoEstado, dept) {
 
   /* Notificaciones automáticas por hito */
   try {
-    const { data: p } = await sb.from('pedidos').select('codigo,email,servicio').eq('id',id).single();
+    const { data: p } = await sb.from('pedidos').select('codigo,email,servicio,nombre_doctor,whatsapp_doctor,pais').eq('id',id).single();
     const pushUrl = SB_URL+'/functions/v1/send-push';
+    const waUrl   = '/api/wa-auto';
     const heads   = {'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON};
+    const hCT     = {'Content-Type':'application/json'};
+
+    const _enviarWA = (estado) => {
+      if (!p?.whatsapp_doctor) return;
+      fetch(waUrl, { method:'POST', headers:hCT, body:JSON.stringify({
+        whatsapp:p.whatsapp_doctor, nuevo_estado:estado,
+        codigo:p.codigo, nombre_doctor:p.nombre_doctor,
+        pais:p.pais || 'CO', pedido_id: id
+      })}).catch(()=>{});
+    };
 
     if (nuevoEstado === 'EN_DISENO' && p?.email) {
       await fetch(pushUrl,{method:'POST',headers:heads,
@@ -586,24 +597,32 @@ async function avanzar(id, nuevoEstado, dept) {
         body:JSON.stringify({email:p.email, titulo:'👁 Diseño listo para revisión',
           cuerpo:`Caso ${p.codigo} — Tu diseño está listo. Entra a revisarlo y aprobarlo.`})});
     }
+    if (nuevoEstado === 'EN_PRODUCCION') {
+      _enviarWA('EN_PRODUCCION');
+      if (p?.email) await fetch(pushUrl,{method:'POST',headers:heads,
+        body:JSON.stringify({email:p.email, titulo:'⚙️ Caso en producción',
+          cuerpo:`Caso ${p.codigo} en producción. Te avisamos cuando esté listo.`})});
+    }
     if (nuevoEstado === 'DISENO_APROBADO' && p?.email) {
-      /* Notificar al doctor — listo para descarga */
       const linkRevision = location.origin+'/revision-diseno?id='+id;
       await fetch(pushUrl,{method:'POST',headers:heads,
         body:JSON.stringify({email:p.email, titulo:'⬇️ Diseño aprobado — Listo para descarga',
-          cuerpo:`Caso ${p.codigo}: tus archivos STL y de construcción ya están disponibles. Descárgalos en: ${linkRevision}`})});
-      /* Insertar log de transición para que el equipo de fresado lo vea */
+          cuerpo:`Caso ${p.codigo}: tus archivos STL están disponibles. Descárgalos en: ${linkRevision}`})});
       await sb.from('logs_incidencias').insert({
         pedido_id: id, tipo:'TRANSICION', severidad:'INFO',
         descripcion: `Diseño aprobado → pasa a fresado/producción (Caso ${p?.codigo})`,
         resuelta: true
       });
     }
-    if (nuevoEstado === 'QA_APROBADO' && p?.email) {
-      await fetch(pushUrl,{method:'POST',headers:heads,
+    if (nuevoEstado === 'QA_APROBADO') {
+      _enviarWA('QA_APROBADO');
+      if (p?.email) await fetch(pushUrl,{method:'POST',headers:heads,
         body:JSON.stringify({email:p.email, titulo:'🎉 Caso listo para despacho',
           cuerpo:`Caso ${p.codigo} superó QA. Listo para envío.`})});
     }
+    if (nuevoEstado === 'LISTO_DESPACHAR') _enviarWA('LISTO_DESPACHAR');
+    if (nuevoEstado === 'EN_REPARTO')      _enviarWA('EN_REPARTO');
+    if (nuevoEstado === 'ENTREGADO')       _enviarWA('ENTREGADO');
   } catch(_) { /* notificaciones no bloquean el flujo */ }
 
   toast('Actualizado ✓','ok');

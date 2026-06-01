@@ -668,6 +668,7 @@
 const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+window.sb = sb;
 
 // CAMPOS_CLIENTE — excluye nota_interna, nonce, comprobante_url, whatsapp operario
 const CAMPOS_CLIENTE = 'id,codigo,servicio,material,submaterial,estado,pago_estado,precio_total,created_at,updated_at,link_diseno,diseno_aprobado,notas_cambios,revisiones_usadas,stl_ruta,stl_liberado,fotos_feedback,user_id,email,nombre_doctor,nombre_paciente,tipo_trabajo,estado_operativo,calificacion,calificacion_comentario';
@@ -1825,6 +1826,17 @@ async function eliminarCotizacion(id) {
 
     // También exponer para llamada manual tras cargar datos
     window._renderClinicaAnalytics = _renderAnalytics;
+})();
+</script>
+<script src="../js/notif-panel.js?v=20260601"></script>
+<script>
+// Notificaciones para cliente — modo cliente = true
+(async()=>{
+  try {
+    const { data:{ session } } = await sb.auth.getSession();
+    if (!session) return;
+    await window._notifInit(sb, null, null, true); // modoCliente=true
+  } catch(_){}
 })();
 </script>
 </body>
