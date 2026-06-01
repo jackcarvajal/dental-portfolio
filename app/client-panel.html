@@ -312,6 +312,16 @@
         </div>
     </div>
 
+    <!-- Banner cupón activo (se muestra dinámicamente si el doctor tiene cupón) -->
+    <div id="banner-cupon" style="display:none;background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(0,255,65,.08));border:1px solid rgba(212,175,55,.3);border-radius:14px;padding:16px 20px;margin-bottom:20px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div>
+            <div style="font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:#D4AF37;margin-bottom:4px;"><i class="fas fa-tag" aria-hidden="true"></i> Tienes un cupón de crédito disponible</div>
+            <div id="banner-cupon-codigo" style="font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:2px;">—</div>
+            <div style="font-size:.72rem;color:#94a3b8;margin-top:3px;">$30.000 COP de crédito · Un solo uso · Úsalo en tu próximo pedido</div>
+        </div>
+        <a href="/flujo-diseno" style="background:linear-gradient(135deg,#D4AF37,#f59e0b);color:#000;border-radius:10px;padding:10px 18px;font-size:.82rem;font-weight:800;text-decoration:none;white-space:nowrap;"><i class="fas fa-arrow-right" aria-hidden="true"></i> Pedir ahora con descuento</a>
+    </div>
+
     <!-- CTA NUEVO CASO -->
     <div class="cta-nuevo" id="cta-nuevo">
         <h3>¿Listo para tu próximo caso?</h3>
@@ -1519,6 +1529,29 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') { cerrarDelBib(); cerrarTimeline(); }
 });
+
+/* ── BANNER CUPÓN PENDIENTE ───────────────────────────────── */
+(async function() {
+    try {
+        const user = (await sb.auth.getUser()).data?.user;
+        if (!user) return;
+        const { data } = await sb.from('referidos')
+            .select('cupon_credito')
+            .eq('referidor_email', user.email)
+            .eq('cupon_usado', false)
+            .not('cupon_credito', 'is', null)
+            .limit(1)
+            .single();
+        if (data?.cupon_credito) {
+            const banner = document.getElementById('banner-cupon');
+            const codigoEl = document.getElementById('banner-cupon-codigo');
+            if (banner && codigoEl) {
+                codigoEl.textContent = data.cupon_credito;
+                banner.style.display = 'flex';
+            }
+        }
+    } catch(_) {}
+})();
 
 /* ── MIS COTIZACIONES ─────────────────────────────────────────────── */
 async function cargarCotizaciones() {
