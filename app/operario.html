@@ -345,6 +345,23 @@ let _userId = null;
   await recargar();
   setInterval(recargar, 60000);
 
+  // Alertas: cotizaciones de fresado en borrador (sin convertir)
+  sb.from('cotizaciones').select('id',{count:'exact',head:true}).eq('tipo','fresado').eq('estado','borrador').then(({count})=>{
+    if(!count) return;
+    const al=document.createElement('div');
+    al.style.cssText='background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:10px 16px;margin-bottom:12px;font-size:.8rem;color:#D4AF37;display:flex;align-items:center;gap:8px;';
+    al.innerHTML=`<i class="fas fa-receipt" aria-hidden="true"></i> <strong>${count}</strong> cotizaciones de fresado guardadas sin convertir. <a href="contabilidad.html" style="color:#D4AF37;font-weight:700;text-decoration:underline;">Ver en contabilidad →</a>`;
+    document.querySelector('.main,main')?.prepend(al);
+  }).catch(()=>{});
+  // Alerta: doctores en riesgo de churn (crítico)
+  sb.from('doctors_inactivos').select('email',{count:'exact',head:true}).eq('nivel_riesgo','CRITICO').then(({count})=>{
+    if(!count) return;
+    const al=document.createElement('div');
+    al.style.cssText='background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);border-radius:10px;padding:10px 16px;margin-bottom:12px;font-size:.8rem;color:#f87171;display:flex;align-items:center;gap:8px;';
+    al.innerHTML=`<i class="fas fa-triangle-exclamation" aria-hidden="true"></i> <strong>${count}</strong> doctor(es) en riesgo crítico de abandono. <a href="metricas-churn.html" style="color:#f87171;font-weight:700;text-decoration:underline;">Ver churn →</a>`;
+    document.querySelector('.main,main')?.prepend(al);
+  }).catch(()=>{});
+
   /* Realtime */
   sb.channel('operario-casos')
     .on('postgres_changes',{event:'*',schema:'public',table:'pedidos'},() => recargar())
