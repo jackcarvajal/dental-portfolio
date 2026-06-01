@@ -389,6 +389,9 @@ const paginasSEO = [
   'escaner-domicilio.html','nosotros.html','catalogo.html',
   'guia-tecnica.html','calculadora.html','seguimiento-caso.html',
   'portafolio.html','envia-tu-scanner.html','soporte.html',
+  'flujo-diseno.html','flujo-fresado.html','flujo-impresion.html',
+  'flujo-lab.html','instalar-app.html','mapa-sitio.html',
+  'calculadora-diseno.html','calculadora-fresado.html','calculadora-impresion.html',
 ];
 paginasSEO.forEach(pg => {
   const content = fileContent(pg);
