@@ -203,6 +203,9 @@ tbody td{padding:11px 14px;vertical-align:middle;}
             <i class="fas fa-user-plus"></i> Referidos
             <span class="badge" id="badge-ref" style="background:#00FF41;color:#000;">0</span>
         </button>
+        <button type="button" class="tab-btn" onclick="switchTab('tendencia',this);cargarTendencia()">
+            <i class="fas fa-chart-area"></i> Tendencia
+        </button>
     </div>
 
     <!-- TAB: Por confirmar -->
@@ -513,6 +516,16 @@ tbody td{padding:11px 14px;vertical-align:middle;}
             </table>
         </div>
     </div>
+
+    <!-- TAB: Tendencia de ingresos -->
+    <div id="tab-tendencia" class="tab-panel">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:16px;">Ingresos por semana — últimas 6 semanas</div>
+        <div id="tendencia-chart" style="display:flex;align-items:flex-end;gap:8px;height:140px;margin-bottom:16px;" aria-live="polite">
+            <div style="text-align:center;color:#475569;padding:40px;width:100%;"><i class="fas fa-spinner fa-spin"></i></div>
+        </div>
+        <div style="font-size:.7rem;color:#334155;text-align:center;margin-bottom:20px;">Barras = ingresos pagados · Números = pedidos</div>
+        <div id="tendencia-tabla" style="overflow-x:auto;"></div>
+    </div>
 </main>
 
 <!-- Modal: Ver comprobante + confirmar -->
@@ -714,6 +727,7 @@ function switchTab(id, el) {
     el.classList.add('active');
     document.getElementById('tab-' + id).classList.add('active');
     if (id === 'ref-contab') cargarReferidosContab();
+    if (id === 'tendencia')  cargarTendencia();
 }
 
 /* ── Por confirmar (pago_subido) ───────────────────────────────────── */
@@ -1487,6 +1501,43 @@ async function cargarReferidosContab() {
         }).join('');
     } catch(err) {
         tbody.innerHTML = `<tr><td colspan="6" style="color:#f87171;padding:12px;">${escH(err.message)}</td></tr>`;
+    }
+}
+
+/* ── TENDENCIA DE INGRESOS (RPC) ──────────────────────────── */
+async function cargarTendencia() {
+    const chartEl = document.getElementById('tendencia-chart');
+    const tablaEl = document.getElementById('tendencia-tabla');
+    if (!chartEl) return;
+    try {
+        const { data, error } = await sb.rpc('prodigy_ingresos_semanas', { n_semanas: 6 });
+        if (error) throw error;
+        if (!data || !data.length) { chartEl.innerHTML = '<div style="color:#475569;padding:20px;">Sin datos.</div>'; return; }
+        const max = Math.max(...data.map(d => Number(d.ingresos) || 0), 1);
+        const colors = ['#D946A6','#00d2ff','#D4AF37','#00FF41','#fb923c','#a78bfa'];
+        chartEl.innerHTML = data.map((d, i) => {
+            const pct = Math.round((Number(d.ingresos) / max) * 100);
+            const sem = d.semana ? d.semana.slice(5, 10) : '';
+            return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="font-size:.6rem;color:${colors[i]};font-weight:700;">${d.pedidos}</div>
+                <div style="width:100%;background:${colors[i]};border-radius:4px 4px 0 0;height:${Math.max(pct, 3)}%;opacity:.85;" title="$${Number(d.ingresos).toLocaleString('es-CO')}"></div>
+                <div style="font-size:.6rem;color:#475569;white-space:nowrap;">${sem}</div>
+            </div>`;
+        }).join('');
+        if (tablaEl) tablaEl.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:.78rem;">
+            <thead><tr style="border-bottom:1px solid rgba(255,255,255,.08);">
+                <th style="padding:8px;text-align:left;color:#475569;">Semana</th>
+                <th style="padding:8px;text-align:right;color:#475569;">Pedidos</th>
+                <th style="padding:8px;text-align:right;color:#475569;">Ingresos pagados</th>
+            </tr></thead>
+            <tbody>${data.map(d=>`<tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                <td style="padding:8px;">${d.semana||'—'}</td>
+                <td style="padding:8px;text-align:right;">${d.pedidos}</td>
+                <td style="padding:8px;text-align:right;font-weight:700;color:#D4AF37;">$${Number(d.ingresos).toLocaleString('es-CO')}</td>
+            </tr>`).join('')}</tbody>
+        </table>`;
+    } catch(err) {
+        chartEl.innerHTML = `<div style="color:#f87171;font-size:.82rem;padding:12px;">${escH(err.message)}</div>`;
     }
 }
 
