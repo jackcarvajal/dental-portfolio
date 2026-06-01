@@ -2608,8 +2608,25 @@ async function cambiarEstadoRef(id, estado) {
         const referidoNombre = refData.referido_nombre || 'tu colega';
         const waMsg = encodeURIComponent(`🎁 *¡Tu referido hizo su primer pedido!*\n\nHola Dr. ${refData.referidor_nombre||''},\n\n${referidoNombre} acaba de pagar su primer caso en PRODIGY.\n\n🏷️ Tu cupón de crédito: *${cupon}*\nÚsalo en tu próximo pedido para descontar $30.000 COP. Un solo uso, sin vencimiento.\n\n_PRODIGY Lab Dental_`);
         if (waRef) {
-            const confirmed = confirm(`¿Enviar WA de notificación al referidor ${refData.referidor_nombre||refData.referidor_email}?`);
-            if (confirmed) window.open(`https://wa.me/${waRef}?text=${waMsg}`, '_blank', 'noopener,noreferrer');
+            const confirmed = confirm(`¿Enviar WA + email al referidor ${refData.referidor_nombre||refData.referidor_email}?`);
+            if (confirmed) {
+                window.open(`https://wa.me/${waRef}?text=${waMsg}`, '_blank', 'noopener,noreferrer');
+                // Enviar email al referidor via edge function (silent fail)
+                if (refData.referidor_email && refData.referidor_email.includes('@')) {
+                    fetch('/api/bienvenida-referido', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'x-cron-secret': 'internal' },
+                        body: JSON.stringify({
+                            email: refData.referidor_email,
+                            nombre: refData.referidor_nombre || 'Doctor',
+                            codigo_referido: cupon,
+                            pedido_codigo: refData.referido_nombre || '—',
+                        })
+                    }).then(r => r.json()).then(d => {
+                        if (d.ok) showToast('✅ WA + email enviados al referidor', 'ok');
+                    }).catch(() => {});
+                }
+            }
         }
         cargarReferidosAdmin();
     }
