@@ -535,10 +535,12 @@ render();
     btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Guardando...';
     const sb=_getSb();
     if(!sb){btn.disabled=false;btn.innerHTML='<i class="fa-regular fa-bookmark"></i> Guardar cotización';return;}
+    const _exp = new Date(Date.now()+30*24*60*60*1000).toISOString();
     const {data,error}=await sb.from('cotizaciones').insert({
-      tipo:'fresado',
+      tipo:'fresado',negocio:'prodigy',
       items:[{servicio:p.lbl||ST.srv,material:ST.mat,cantidad:qty,urgente:!!ST.urgente}],
-      subtotal:total,total,moneda:'COP',estado:'borrador'
+      subtotal:total,total,moneda:'COP',estado:'borrador',
+      expira_at:_exp
     }).select('id').single();
     btn.disabled=false;
     if(error){msg.style.color='#f87171';msg.textContent='Error al guardar.';btn.innerHTML='<i class="fa-regular fa-bookmark"></i> Guardar cotización';return;}
