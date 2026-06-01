@@ -2582,9 +2582,25 @@ async function cargarReferidosAdmin() {
 }
 
 async function cambiarEstadoRef(id, estado) {
+    // Obtener datos del referido para notificación WA
+    const { data: refData } = await sb.from('referidos').select('referidor_email,referidor_nombre,referido_nombre,cupon_credito').eq('id',id).single().catch(()=>({data:null}));
+
     const { error } = await sb.from('referidos').update({ estado }).eq('id', id);
-    if (error) showToast('Error actualizando referido', 'error');
-    else showToast('Estado actualizado', 'ok');
+    if (error) { showToast('Error actualizando referido', 'error'); return; }
+    showToast('Estado actualizado', 'ok');
+
+    // Si se cambia a primer_pedido → generar WA para notificar al referidor
+    if (estado === 'primer_pedido' && refData) {
+        const waRef = (refData.referidor_email||'').replace(/[^0-9]/g,'');
+        const cupon = refData.cupon_credito || '(sin cupón aún)';
+        const referidoNombre = refData.referido_nombre || 'tu colega';
+        const waMsg = encodeURIComponent(`🎁 *¡Tu referido hizo su primer pedido!*\n\nHola Dr. ${refData.referidor_nombre||''},\n\n${referidoNombre} acaba de pagar su primer caso en PRODIGY.\n\n🏷️ Tu cupón de crédito: *${cupon}*\nÚsalo en tu próximo pedido para descontar $30.000 COP. Un solo uso, sin vencimiento.\n\n_PRODIGY Lab Dental_`);
+        if (waRef) {
+            const confirmed = confirm(`¿Enviar WA de notificación al referidor ${refData.referidor_nombre||refData.referidor_email}?`);
+            if (confirmed) window.open(`https://wa.me/${waRef}?text=${waMsg}`, '_blank', 'noopener,noreferrer');
+        }
+        cargarReferidosAdmin();
+    }
 }
 
 async function eliminarRef(id) {
