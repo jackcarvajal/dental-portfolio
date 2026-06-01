@@ -229,12 +229,20 @@ async function confirmarAprobacion() {
 
         if (error) throw error;
 
-        // Registrar en historial
+        // Registrar en historial de diseño
         await sb.from('historial_diseno').insert({
             pedido_id:   pedidoId,
             tipo:        'APROBACION_EXPRESS',
             actor:       'doctor_email',
             descripcion: `Diseño aprobado vía enlace de email (revision-express)`,
+        }).catch(() => {});
+
+        // Audit log en logs_incidencias para trazabilidad
+        await sb.from('logs_incidencias').insert({
+            tipo:        'REVISION_EXPRESS_APROBADA',
+            severidad:   'INFO',
+            descripcion: `[REVISION-EXPRESS] Diseño aprobado — pedido: ${pedidoId} | token: ${token.slice(0,12)}... | UA: ${navigator.userAgent.slice(0,80)}`,
+            resuelta:    true,
         }).catch(() => {});
 
         showMsg('✅ Diseño aprobado. PRODIGY inicia la producción ahora. Recibirás confirmación por WhatsApp.', 'ok');
@@ -273,6 +281,13 @@ async function confirmarCambios() {
             tipo:        'CAMBIOS_EXPRESS',
             actor:       'doctor_email',
             descripcion: `Cambios solicitados vía email: ${notas.trim().slice(0,100)}`,
+        }).catch(() => {});
+
+        await sb.from('logs_incidencias').insert({
+            tipo:        'REVISION_EXPRESS_CAMBIOS',
+            severidad:   'INFO',
+            descripcion: `[REVISION-EXPRESS] Cambios solicitados — pedido: ${pedidoId} | rev: ${rev}/2 | notas: ${notas.trim().slice(0,60)}`,
+            resuelta:    true,
         }).catch(() => {});
 
         showMsg(`Cambios enviados (revisión ${rev}/2). El equipo PRODIGY los atenderá pronto.`, 'ok');
