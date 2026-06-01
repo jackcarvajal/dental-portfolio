@@ -52,10 +52,25 @@
     return;
   }
   var path = window.location.pathname;
+  // ── Páginas SIEMPRE PÚBLICAS (Google las indexa, visitantes las ven) ──
+  // Servicios y landings principales ya terminados:
+  var publicPages = [
+    '/diseno-remoto','/diseno-cad','/fresado-cam','/guias-quirurgicas',
+    '/calculadora','/calculadora-diseno','/calculadora-fresado','/calculadora-impresion',
+    '/portafolio','/journal','/article','/nosotros','/soporte','/catalogo',
+    '/escaner-domicilio','/envia-tu-scanner','/guia-tecnica','/calidad',
+    '/instalar-app','/terminos-y-legal','/seguimiento-caso','/mapa-sitio',
+    '/para-laboratorios','/referidos','/flujo-diseno','/flujo-fresado',
+    '/flujo-impresion','/flujo-lab','/caso','/patient',
+  ];
   var skip = path.startsWith('/mantenimiento') ||
              path.startsWith('/app/') ||
              path.startsWith('/404') ||
-             path.startsWith('/en/global-design');
+             path.startsWith('/en/global-design') ||
+             path.startsWith('/revision-express') ||
+             path.startsWith('/recibo-caso') ||
+             path.startsWith('/offline') ||
+             publicPages.some(function(p){ return path === p || path.startsWith(p+'.') || path.startsWith(p+'?'); });
   if (skip) return;
   var hasCookie = document.cookie.split(';').some(function(c){
     return c.trim().startsWith('pg_admin=1');
