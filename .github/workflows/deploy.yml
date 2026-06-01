@@ -51,7 +51,7 @@ jobs:
             [ -f "$f" ] && echo "OK: $f" || echo "WARN: falta $f (no bloquea deploy)"
           done
 
-      - name: Smoke Tests (189 checks)
+      - name: Smoke Tests (216 checks)
         run: node tests/smoke-tests.js
 
   deploy:
