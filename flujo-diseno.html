@@ -914,6 +914,10 @@ window.submitOrden     = window.submitOrden      || function(){};
             <button type="button" class="btn-submit" id="btn-submit" onclick="submitOrden()" disabled>
                 🚀 GENERAR ORDEN CAD
             </button>
+            <button type="button" id="btn-borrador" onclick="guardarBorrador()" style="width:100%;margin-top:10px;padding:12px;background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.2);color:#94a3b8;border-radius:12px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;">
+                <i class="fa-regular fa-bookmark" aria-hidden="true"></i> Guardar borrador
+            </button>
+            <div id="borrador-msg" style="font-size:.72rem;color:#00FF41;text-align:center;margin-top:6px;display:none;">✓ Borrador guardado — disponible 7 días en este dispositivo</div>
         </aside>
     </div>
 
@@ -2134,6 +2138,57 @@ const lineWompi = document.getElementById('line-wompi');
             document.body.classList.add('light-theme');
             setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
         }
+
+        /* ── BORRADOR ─────────────────────────────────────────────── */
+        const BORRADOR_KEY = 'prodigy_fd_borrador';
+
+        function guardarBorrador() {
+            try {
+                const campos = ['cot-nombre','cot-wa','cot-email','select-moneda',
+                                'nota-caso','link-diseno','cupon-diseno'];
+                const data = { ts: Date.now(), expira: Date.now() + 7*24*60*60*1000 };
+                campos.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) data[id] = el.value;
+                });
+                // Guardar también el STATE del formulario
+                if (typeof STATE !== 'undefined') {
+                    data.STATE = { categoriaNombre: STATE.categoriaNombre, subtipoNombre: STATE.subtipoNombre, moneda: STATE.moneda };
+                }
+                localStorage.setItem(BORRADOR_KEY, JSON.stringify(data));
+                const msg = document.getElementById('borrador-msg');
+                const btn = document.getElementById('btn-borrador');
+                if (msg) { msg.style.display = 'block'; setTimeout(() => { msg.style.display = 'none'; }, 3500); }
+                if (btn) { btn.innerHTML = '<i class="fas fa-bookmark" aria-hidden="true"></i> Borrador guardado'; btn.style.color = '#00FF41'; setTimeout(() => { btn.innerHTML = '<i class="fa-regular fa-bookmark" aria-hidden="true"></i> Guardar borrador'; btn.style.color = '#94a3b8'; }, 3000); }
+            } catch(e) { console.warn('[borrador]', e.message); }
+        }
+
+        function cargarBorrador() {
+            try {
+                const raw = localStorage.getItem(BORRADOR_KEY);
+                if (!raw) return;
+                const data = JSON.parse(raw);
+                if (data.expira && Date.now() > data.expira) { localStorage.removeItem(BORRADOR_KEY); return; }
+                const campos = ['cot-nombre','cot-wa','cot-email','nota-caso','link-diseno','cupon-diseno'];
+                let cargados = 0;
+                campos.forEach(id => {
+                    if (data[id] !== undefined) {
+                        const el = document.getElementById(id);
+                        if (el) { el.value = data[id]; cargados++; }
+                    }
+                });
+                if (cargados > 0) {
+                    const banner = document.createElement('div');
+                    banner.style.cssText = 'background:rgba(0,255,65,.07);border:1px solid rgba(0,255,65,.2);border-radius:10px;padding:10px 16px;margin-bottom:12px;font-size:.78rem;color:#00FF41;display:flex;align-items:center;gap:10px;';
+                    banner.innerHTML = '<i class="fas fa-bookmark" aria-hidden="true"></i> Borrador restaurado. <button type="button" onclick="localStorage.removeItem(\''+BORRADOR_KEY+'\');this.parentElement.remove();" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:.72rem;margin-left:auto;">Descartar</button>';
+                    const aside = document.querySelector('aside') || document.getElementById('btn-borrador')?.parentElement;
+                    if (aside) aside.prepend(banner);
+                }
+            } catch(e) {}
+        }
+
+        // Cargar borrador al iniciar si existe
+        document.addEventListener('DOMContentLoaded', cargarBorrador);
     </script>
 
     
