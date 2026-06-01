@@ -325,6 +325,15 @@ function render(pedido, revisiones){
 
     </div>
 
+    <!-- QR de seguimiento -->
+    <div style="display:flex;align-items:center;gap:20px;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;margin-bottom:20px;">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=${encodeURIComponent('https://prodigylabdental.com/seguimiento-caso?id='+escH(codigo))}&bgcolor=050505&color=D4AF37&format=png" alt="QR seguimiento caso ${escH(codigo)}" width="90" height="90" style="border-radius:6px;flex-shrink:0;" loading="lazy">
+      <div>
+        <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#D4AF37;margin-bottom:4px;">Seguimiento en tiempo real</div>
+        <div style="font-size:.78rem;color:#94a3b8;line-height:1.5;">Escanea el QR o visita<br><strong style="color:#fff;">prodigylabdental.com/seguimiento-caso?id=${escH(codigo)}</strong></div>
+      </div>
+    </div>
+
     <div class="rec-footer">
       <p>${escH(L.lDoc)}: ${escH(docGen)}</p>
       <div>
