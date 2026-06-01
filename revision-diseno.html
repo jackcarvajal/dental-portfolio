@@ -336,6 +336,7 @@ textarea.modal-input{min-height:100px;}
     </ul>
     <div class="modal-btns">
       <button type="button" class="btn btn-gold" onclick="cerrarDisc()"><i class="fas fa-arrow-left"></i> Volver a revisar</button>
+      <button type="button" class="btn" style="background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:#00d2ff;" onclick="generarLinkRevision()" title="Genera un link de aprobación para enviar por email o WA"><i class="fas fa-link"></i> Copiar link aprobación</button>
       <button type="button" class="btn btn-mg" id="btn-aprobar-ok" onclick="confirmarAprobacion()"><i class="fas fa-signature"></i> Confirmar y aprobar</button>
     </div>
   </div>
@@ -1316,6 +1317,22 @@ async function enviarNota() {
 }
 </script>
 </main>
+<script>
+async function generarLinkRevision() {
+  if (!PID) { _rdToast('No se encontró el ID del caso', false); return; }
+  try {
+    const { data, error } = await sb.rpc('prodigy_crear_revision_token', { p_pedido_id: PID });
+    if (error) throw error;
+    const codigo = _p.codigo || PID.slice(0, 12);
+    const doctor = encodeURIComponent(_p.nombre_doctor || _p.doctor || '');
+    const url = `https://prodigylabdental.com/revision-express?token=${data}&pedido=${PID}&codigo=${codigo}&doctor=${doctor}`;
+    await navigator.clipboard.writeText(url);
+    _rdToast('✅ Link copiado al portapapeles — compártelo por WA o email', true);
+  } catch(e) {
+    _rdToast('Error generando link: ' + e.message, false);
+  }
+}
+</script>
 <script src="js/footer.js?v=20260528"></script>
 <script src="js/ar-viewer.js?v=20260528" defer></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
