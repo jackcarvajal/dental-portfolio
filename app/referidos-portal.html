@@ -66,7 +66,27 @@
     <div class="codigo-actions">
       <button type="button" class="btn-copy" onclick="copiarMsgPortal()"><i class="fas fa-copy"></i> Copiar mensaje</button>
       <a id="portal-wa-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-wa"><i class="fab fa-whatsapp"></i> Compartir por WA</a>
+      <button type="button" id="btn-share-native" onclick="compartirNativo()" style="display:none;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:#00d2ff;border-radius:10px;padding:10px 20px;font-size:.85rem;font-weight:700;cursor:pointer;display:none;align-items:center;gap:6px;font-family:inherit;"><i class="fas fa-share-nodes"></i> Compartir</button>
       <a href="/referidos" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:10px;padding:10px 20px;font-size:.85rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="fas fa-info-circle"></i> Ver programa</a>
+    </div>
+  </div>
+
+  <!-- Mini guía de cómo compartir -->
+  <div style="background:rgba(13,21,32,.6);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px 24px;margin-bottom:20px;">
+    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#475569;margin-bottom:14px;"><i class="fas fa-lightbulb" style="color:#fbbf24;margin-right:6px;" aria-hidden="true"></i> 3 formas de compartir tu código</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+      <div style="background:rgba(37,211,102,.05);border:1px solid rgba(37,211,102,.15);border-radius:10px;padding:14px;">
+        <div style="font-size:.82rem;font-weight:800;color:#25D366;margin-bottom:4px;"><i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp</div>
+        <div style="font-size:.72rem;color:#94a3b8;line-height:1.5;">Toca "Compartir por WA" y el mensaje ya viene escrito con tu código y el beneficio del 5%.</div>
+      </div>
+      <div style="background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.15);border-radius:10px;padding:14px;">
+        <div style="font-size:.82rem;font-weight:800;color:#00d2ff;margin-bottom:4px;"><i class="fas fa-copy" aria-hidden="true"></i> Copiar y pegar</div>
+        <div style="font-size:.72rem;color:#94a3b8;line-height:1.5;">Copia el mensaje y pégalo en Instagram DM, Telegram o email. El texto incluye el link directo al flujo.</div>
+      </div>
+      <div style="background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:10px;padding:14px;">
+        <div style="font-size:.82rem;font-weight:800;color:#D4AF37;margin-bottom:4px;"><i class="fas fa-tag" aria-hidden="true"></i> Al pedir</div>
+        <div style="font-size:.72rem;color:#94a3b8;line-height:1.5;">Tu colega escribe tu código en el campo "Cupón" al hacer su pedido. El descuento se aplica automáticamente.</div>
+      </div>
     </div>
   </div>
 
@@ -107,6 +127,7 @@ let sb, _codigo='', _userEmail='';
 document.addEventListener('DOMContentLoaded', async () => {
   if (!window.supabase) return;
   sb = window.supabase.createClient(SURL, SANON);
+  window.sb = sb;
   const user = (await sb.auth.getUser()).data?.user;
   if (!user) { window.location.href = 'login.html'; return; }
   _userEmail = user.email;
@@ -199,15 +220,41 @@ async function cargarReferidos() {
   }
 }
 
+function _buildMsg() {
+  return 'Hola! Te recomiendo PRODIGY Lab Dental para tus casos CAD/CAM en Bogotá 🦷\n\n'
+    + 'Usa mi código *' + _codigo + '* al hacer tu primer pedido y obtienes *5% de descuento*.\n\n'
+    + 'Diseño CAD, fresado y guías quirúrgicas — entrega 24–48h.\n'
+    + '🔗 https://prodigylabdental.com/flujo-diseno?ref=' + _codigo;
+}
+
 function copiarMsgPortal() {
   if (!_codigo) return;
-  const msg = 'Hola! Te recomiendo PRODIGY Lab Dental para tus casos CAD/CAM en Bogotá 🦷\n\nUsa mi código *' + _codigo + '* al hacer tu primer pedido y obtienes *5% de descuento*.\n\nDiseño CAD, fresado y guías quirúrgicas — entrega 24–48h.\n🔗 https://prodigylabdental.com/referidos';
+  const msg = _buildMsg();
   navigator.clipboard?.writeText(msg).then(() => {
     const btns = document.querySelectorAll('.btn-copy');
     btns.forEach(b => { b.innerHTML = '<i class="fas fa-check"></i> Copiado'; setTimeout(() => { b.innerHTML = '<i class="fas fa-copy"></i> Copiar mensaje'; }, 2000); });
   });
 }
+
+async function compartirNativo() {
+  if (!_codigo || !navigator.share) return;
+  try {
+    await navigator.share({
+      title: 'PRODIGY Lab Dental — 5% de descuento',
+      text: _buildMsg(),
+      url: 'https://prodigylabdental.com/flujo-diseno?ref=' + _codigo
+    });
+  } catch(e) { if (e.name !== 'AbortError') copiarMsgPortal(); }
+}
+
+// Mostrar botón nativo si la API está disponible (móvil)
+if (navigator.share) {
+  const btn = document.getElementById('btn-share-native');
+  if (btn) btn.style.display = 'inline-flex';
+}
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script src="../js/notif-panel.js?v=20260601"></script>
+<script>(async()=>{try{if(!window.sb)return;await window._notifInit(window.sb,null,null,true);}catch(_){}})();</script>
 </body>
 </html>
