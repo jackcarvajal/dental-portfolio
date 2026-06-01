@@ -245,6 +245,11 @@
                 <div class="kpi-value" style="color:#D946A6;" id="kpi-produccion">—</div>
                 <div class="kpi-label">En producción</div>
             </div>
+            <div class="kpi-card" style="border-color:rgba(0,255,65,.2);" id="kpi-card-referidos" onclick="switchTab('referidos',document.querySelector('[onclick*=\"referidos\"]'));cargarReferidosAdmin()" title="Ver referidos">
+                <div class="kpi-icon" style="color:#00FF41;cursor:pointer;"><i class="fas fa-user-plus"></i></div>
+                <div class="kpi-value" style="color:#00FF41;" id="kpi-referidos-admin">—</div>
+                <div class="kpi-label">Referidos activos</div>
+            </div>
         </div>
 
         <!-- Búsqueda + Filtro estado -->
@@ -1629,6 +1634,11 @@ function actualizarKPIs(data) {
     document.getElementById('kpi-ingresos').textContent  = fmtCOP(ingresos);
     document.getElementById('kpi-pendientes').textContent = pend;
     document.getElementById('kpi-produccion').textContent = prod;
+    // KPI referidos activos (fire-and-forget)
+    sb.from('referidos').select('id',{count:'exact',head:true}).not('referido_email','is',null).then(({count})=>{
+        const el=document.getElementById('kpi-referidos-admin');
+        if(el) el.textContent=count||0;
+    }).catch(()=>{});
 }
 
 /* ══════════════════════════════════════════
