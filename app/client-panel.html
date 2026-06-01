@@ -1578,6 +1578,7 @@ async function cargarCotizaciones() {
                 <th scope="col" style="padding:8px 10px;text-align:left;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Tipo</th>
                 <th scope="col" style="padding:8px 10px;text-align:right;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Total</th>
                 <th scope="col" style="padding:8px 10px;text-align:center;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Estado</th>
+                <th scope="col" style="padding:8px 10px;text-align:center;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Vence</th>
                 <th scope="col" style="padding:8px 10px;text-align:center;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Acciones</th>
             </tr></thead>
             <tbody>${data.map(c => {
@@ -1585,11 +1586,19 @@ async function cargarCotizaciones() {
                 const total = c.moneda === 'USD' ? `USD ${Number(c.total).toFixed(0)}` : `$${Number(c.total).toLocaleString('es-CO')}`;
                 const color = ESTADO_COLOR[c.estado] || '#94a3b8';
                 const waLink = encodeURIComponent(`Hola PRODIGY! Quiero proceder con la cotización ${c.id.slice(0,8)} por ${total}.`);
+                let venceHtml = '<span style="color:#475569;font-size:.7rem;">—</span>';
+                if (c.expira_at) {
+                    const diasRestantes = Math.ceil((new Date(c.expira_at)-Date.now())/(1000*60*60*24));
+                    if (diasRestantes < 0) venceHtml = '<span style="color:#f87171;font-size:.7rem;font-weight:700;">Expirada</span>';
+                    else if (diasRestantes <= 5) venceHtml = `<span style="color:#fbbf24;font-size:.7rem;font-weight:700;">${diasRestantes}d</span>`;
+                    else venceHtml = `<span style="color:#94a3b8;font-size:.7rem;">${diasRestantes}d</span>`;
+                }
                 return `<tr style="border-bottom:1px solid rgba(255,255,255,.04);">
                     <td style="padding:10px;color:#94a3b8;">${escH(fecha)}</td>
                     <td style="padding:10px;text-transform:capitalize;">${escH(c.tipo)}</td>
                     <td style="padding:10px;text-align:right;font-weight:800;color:#D4AF37;">${escH(total)}</td>
                     <td style="padding:10px;text-align:center;"><span style="background:rgba(0,0,0,.3);border:1px solid ${color};color:${color};border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:700;">${escH(c.estado)}</span></td>
+                    <td style="padding:10px;text-align:center;">${venceHtml}</td>
                     <td style="padding:10px;text-align:center;display:flex;gap:6px;justify-content:center;">
                         <a href="../flujo-diseno?cotizacion=${escH(c.id)}" style="padding:5px 10px;background:rgba(217,70,166,.1);border:1px solid rgba(217,70,166,.3);color:#D946A6;border-radius:6px;font-size:.7rem;font-weight:700;text-decoration:none;" title="Convertir en pedido"><i class="fas fa-paper-plane"></i></a>
                         <a href="https://wa.me/573212816716?text=${waLink}" target="_blank" rel="noopener noreferrer" style="padding:5px 10px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25D366;border-radius:6px;font-size:.7rem;font-weight:700;text-decoration:none;" title="Enviar por WhatsApp"><i class="fab fa-whatsapp"></i></a>
