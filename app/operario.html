@@ -213,6 +213,7 @@ body.ready{visibility:visible;}
 const SB_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
 const sb = window.supabase.createClient(SB_URL, SB_ANON);
+window.sb = sb; // exponer para módulos externos (notif-panel.js)
 const esc = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 /* ── Config por departamento ── */
@@ -325,6 +326,7 @@ let _userId = null;
 
   /* Admin ve todos los departamentos */
   const role = session.user.app_metadata?.role;
+  window._currentRole = role || null; // exponer para notif-panel.js
   if (role === 'admin' || role === 'superadmin') {
     _myDepts = ['diseno','fresado','impresion','taller'];
   } else if (staff && staff.activo && staff.departamentos?.length) {
@@ -340,6 +342,7 @@ let _userId = null;
     document.getElementById('hdr-user').textContent = staff.nombre + ' · ' + session.user.email;
   }
 
+  window._myDepts = _myDepts; // exponer para notif-panel.js
   buildTabs();
   document.body.classList.add('ready');
   await recargar();
@@ -927,5 +930,19 @@ function toast(msg, t='ok') {
 }
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script src="../js/notif-panel.js?v=20260601"></script>
+<script>
+// Inicializar notificaciones cuando el usuario esté autenticado
+document.addEventListener('DOMContentLoaded', () => {
+  const _waitSb = setInterval(() => {
+    if (window.sb && window._myDepts !== undefined) {
+      clearInterval(_waitSb);
+      const _rol = window._currentRole || null;
+      const _dept = (window._myDepts && window._myDepts.length) ? window._myDepts[0] : null;
+      window._notifInit(window.sb, _dept, _rol).catch(()=>{});
+    }
+  }, 500);
+});
+</script>
 </body>
 </html>
