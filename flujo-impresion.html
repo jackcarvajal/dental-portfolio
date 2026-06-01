@@ -50,7 +50,8 @@
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/flujo-impresion.min.css">
-    <link rel="stylesheet" href="css/global-nav.min.css">
+    <link rel="preload" href="css/global-nav.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/global-nav.min.css"></noscript>
     <style>body{ overflow-x: hidden;visibility:hidden}.hamburger-menu,.theme-toggle{display:none!important}.sec,.section,.form-section,.step-section{content-visibility:auto;contain-intrinsic-size:0 350px;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
