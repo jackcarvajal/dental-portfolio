@@ -803,7 +803,7 @@
     <!-- ── CAPTURA DE LEADS ── -->
     <div style="max-width:440px;margin:28px auto;background:rgba(13,21,32,.8);border:1px solid rgba(217,70,166,.2);border-radius:16px;padding:20px 22px;">
       <div style="font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:#D946A6;margin-bottom:8px;">Avísame cuando abra</div>
-      <p style="font-size:.82rem;color:#94a3b8;margin-bottom:14px;line-height:1.5;">Deja tu WhatsApp y te notificamos el día del lanzamiento con <strong style="color:#D4AF37;">10% de descuento</strong> en tu primer caso.</p>
+      <p style="font-size:.82rem;color:#94a3b8;margin-bottom:14px;line-height:1.5;">Deja tu WhatsApp y te notificamos cuando el laboratorio esté disponible.</p>
       <form id="maint-form" onsubmit="registrarMaint(event)" novalidate style="display:flex;gap:8px;flex-wrap:wrap;">
         <input type="tel" id="maint-wa" inputmode="tel" placeholder="+57 300 000 0000" maxlength="20" autocomplete="tel" required
           style="flex:1;min-width:180px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;padding:10px 14px;font-size:.85rem;font-family:inherit;outline:none;">
@@ -858,7 +858,7 @@
     btn.disabled=true;btn.textContent='Guardando...';
     var sb=_getSb();
     if(sb){
-      await sb.from('leads_doctores').insert({whatsapp:wa,nombre:'Lista espera lanzamiento',recurso_descargado:'Mantenimiento — Aviso lanzamiento + 10% descuento',acepta_marketing:true}).catch(()=>{});
+      await sb.from('leads_doctores').insert({whatsapp:wa,nombre:'Lista espera lanzamiento',recurso_descargado:'Mantenimiento — Aviso de lanzamiento',acepta_marketing:true}).catch(()=>{});
     }
     // WA al equipo
     fetch('/api/notify-wa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nuevo_estado:'WAITLIST_LAB',codigo:'MANT',nombre_doctor:'Lista espera: '+wa,whatsapp:'573212816716',pais:'CO',servicio:'Aviso lanzamiento',fecha_entrega:null,recibo_url:null})}).catch(()=>{});
