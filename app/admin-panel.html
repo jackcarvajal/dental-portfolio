@@ -1641,10 +1641,24 @@ function actualizarKPIs(data) {
     document.getElementById('kpi-ingresos').textContent  = fmtCOP(ingresos);
     document.getElementById('kpi-pendientes').textContent = pend;
     document.getElementById('kpi-produccion').textContent = prod;
-    // KPI referidos activos (fire-and-forget)
-    sb.from('referidos').select('id',{count:'exact',head:true}).not('referido_email','is',null).then(({count})=>{
-        const el=document.getElementById('kpi-referidos-admin');
-        if(el) el.textContent=count||0;
+        // KPIs adicionales en paralelo (referidos + cotizaciones + waitlist)
+    Promise.all([
+        sb.from('referidos').select('id',{count:'exact',head:true}).not('referido_email','is',null),
+        sb.from('cotizaciones').select('id',{count:'exact',head:true}).eq('estado','borrador'),
+        sb.from('waitlist_labs').select('id',{count:'exact',head:true}),
+    ]).then(([refs,cots,waitlist])=>{
+        const refEl=document.getElementById('kpi-referidos-admin');
+        if(refEl) refEl.textContent=refs.count||0;
+        const alerts=[];
+        if((cots.count||0)>0) alerts.push('📋 '+cots.count+' cotizaciones sin convertir');
+        if((waitlist.count||0)>0) alerts.push('🧪 '+waitlist.count+' labs en waitlist');
+        if(alerts.length>0){
+            const bar=document.createElement('div');
+            bar.style.cssText='background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:10px;padding:9px 16px;margin-bottom:12px;font-size:.75rem;color:#D4AF37;display:flex;gap:12px;flex-wrap:wrap;';
+            bar.innerHTML=alerts.join(' &middot; ');
+            const kg=document.querySelector('.kpi-grid');
+            if(kg) kg.before(bar);
+        }
     }).catch(()=>{});
 }
 
