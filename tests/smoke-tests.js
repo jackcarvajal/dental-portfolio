@@ -382,6 +382,31 @@ assert(bienvenidaFn.length > 200, 'functions/api/bienvenida-referido.js existe')
 assert(bienvenidaFn.includes('RESEND_API_KEY'), 'bienvenida-referido usa Resend');
 assert(bienvenidaFn.includes('rate-limit'), 'bienvenida-referido tiene rate limiting');
 
+// ── COBERTURA SEO — FAQPage y Strips ────────────────────────────────
+console.log('\n🔍  SEO — FAQPage + Referidos Strip');
+const paginasSEO = [
+  'diseno-cad.html','fresado-cam.html','guias-quirurgicas.html',
+  'escaner-domicilio.html','nosotros.html','catalogo.html',
+  'guia-tecnica.html','calculadora.html','seguimiento-caso.html',
+  'portafolio.html','envia-tu-scanner.html','soporte.html',
+];
+paginasSEO.forEach(pg => {
+  const content = fileContent(pg);
+  assert(content.includes('FAQPage'), pg + ' tiene FAQPage schema');
+});
+
+const paginasStrip = [
+  'diseno-remoto.html','diseno-cad.html','fresado-cam.html',
+  'guias-quirurgicas.html','calculadora.html','nosotros.html',
+  'soporte.html','journal.html','portafolio.html','article.html',
+  'flujo-diseno.html','flujo-fresado.html','flujo-impresion.html',
+  'envia-tu-scanner.html','para-laboratorios.html',
+];
+paginasStrip.forEach(pg => {
+  const content = fileContent(pg);
+  assert(content.includes('REFERIDOS STRIP'), pg + ' tiene strip de referidos');
+});
+
 // ── RESUMEN ────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(50));
 console.log(`RESUMEN: ${passed} ✅  ${warnings} ⚠️  ${failed} ❌`);
