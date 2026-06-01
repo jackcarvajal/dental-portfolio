@@ -52,6 +52,7 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Guía Técnica","item":"https://prodigylabdental.com/guia-tecnica"}]}
   </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Qué resolución mínima necesita el STL para diseño CAD dental?","acceptedAnswer":{"@type":"Answer","text":"Resolución mínima 0.05mm (50μm) para diseño CAD. Para fresado de alta estética recomendamos 0.02mm."}},{"@type":"Question","name":"¿Debo enviar antagonista y preparación en el mismo archivo STL?","acceptedAnswer":{"@type":"Answer","text":"Puedes enviarlos en archivos separados o en uno solo. Nómbralos claramente: prep.stl y antagonista.stl. Incluye mordida si el caso es complejo."}},{"@type":"Question","name":"¿Qué pasa si el STL tiene errores como non-manifold o agujeros?","acceptedAnswer":{"@type":"Answer","text":"Nuestros diseñadores intentan corregir errores menores automáticamente. Si el archivo tiene defectos graves, te notificamos por WhatsApp para que vuelvas a escanear."}},{"@type":"Question","name":"¿Puedo enviar un proyecto de 3Shape Communicate directamente?","acceptedAnswer":{"@type":"Answer","text":"Sí, aceptamos proyectos 3Shape Communicate (.3oxz), iTero, Medit Link y DICOM para planificación de guías quirúrgicas."}}]}</script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -314,6 +315,30 @@
         <a href="/envia-tu-scanner" class="btn-primary"><i class="fas fa-upload"></i> Subir archivo ahora</a>
         <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20enviar%20un%20caso" target="_blank" rel="noopener noreferrer" class="btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
       </div>
+    </div>
+  </section>
+
+  <!-- FAQs técnicas -->
+  <section style="padding:48px 0 0;">
+    <div style="font-size:.7rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#00d2ff;margin-bottom:12px;text-align:center;">Preguntas frecuentes</div>
+    <h2 style="font-size:clamp(1.3rem,3vw,1.8rem);font-weight:900;text-align:center;margin-bottom:24px;">Dudas técnicas frecuentes</h2>
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:720px;margin:0 auto;">
+      <details style="background:#0d1525;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿Qué resolución mínima necesita el STL? <span style="color:#00d2ff;">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">Resolución mínima <strong style="color:#e2e8f0;">0.05mm (50μm)</strong> para diseño CAD. Para fresado de alta estética recomendamos 0.02mm. Archivos demasiado grandes (+50MB) pueden ralentizar el diseño — usa decimación si es necesario.</p>
+      </details>
+      <details style="background:#0d1525;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿Debo enviar antagonista y preparación en el mismo archivo? <span style="color:#00d2ff;">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">Puedes enviarlos en archivos separados o en uno solo. Si los envías por separado, nómbralos claramente: <code style="background:rgba(255,255,255,.06);border-radius:4px;padding:2px 6px;font-size:.82rem;">prep.stl</code> y <code style="background:rgba(255,255,255,.06);border-radius:4px;padding:2px 6px;font-size:.82rem;">antagonista.stl</code>. Incluye mordida si el caso es complejo.</p>
+      </details>
+      <details style="background:#0d1525;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿Qué pasa si el STL tiene errores (non-manifold, agujeros)? <span style="color:#00d2ff;">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">Nuestros diseñadores intentan corregir errores menores automáticamente. Si el archivo tiene defectos graves, te notificamos por WhatsApp antes de iniciar para que vuelvas a escanear. Sin costo adicional por reparación de errores leves.</p>
+      </details>
+      <details style="background:#0d1525;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">¿Puedo enviar un proyecto de 3Shape Communicate directamente? <span style="color:#00d2ff;">+</span></summary>
+        <p style="padding:0 20px 16px;color:#94a3b8;font-size:.86rem;line-height:1.7;">Sí, aceptamos proyectos de <strong style="color:#e2e8f0;">3Shape Communicate</strong> completos (archivo .3oxz). También archivos de <strong style="color:#e2e8f0;">iTero</strong>, <strong style="color:#e2e8f0;">Medit Link</strong> y DICOM para planificación de guías quirúrgicas.</p>
+      </details>
     </div>
   </section>
 
