@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#00FF41">
+  <meta name="color-scheme" content="dark">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+  <title>Programa de Referidos — PRODIGY Lab Dental | Gana $30.000 COP</title>
+  <meta name="description" content="Refiere a un colega odontólogo a PRODIGY Lab y gana $30.000 COP de crédito. Tu colega obtiene 5% de descuento en su primer caso CAD/CAM. Sin límite de referidos.">
+  <meta name="keywords" content="referidos laboratorio dental, ganar credito laboratorio CAD/CAM, programa referidos odontologia, descuento laboratorio dental Colombia">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://prodigylabdental.com/referidos">
+  <meta property="og:title" content="Refiere y Gana — PRODIGY Lab Dental">
+  <meta property="og:description" content="Refiere un colega → él obtiene 5% descuento → tú recibes $30.000 COP de crédito. Sin límite. Sin vencimiento del cupón.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://prodigylabdental.com/referidos">
+  <meta property="og:image" content="https://prodigylabdental.com/assets/og-portafolio.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="es_CO">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Refiere y Gana — PRODIGY Lab Dental">
+  <meta name="twitter:description" content="Refiere un colega → 5% descuento para él → $30.000 COP para ti.">
+  <meta name="twitter:image" content="https://prodigylabdental.com/assets/og-portafolio.jpg">
+  <meta name="geo.region" content="CO-DC">
+  <meta name="geo.placename" content="Bogotá">
+  <meta name="geo.position" content="4.710989;-74.072090">
+  <meta name="ICBM" content="4.710989, -74.072090">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Cómo funciona el programa de referidos de PRODIGY Lab Dental?","acceptedAnswer":{"@type":"Answer","text":"Obtienes un código único desde tu Portal de Doctor. Lo compartes con colegas. Cuando tu colega usa el código en su primer pedido, él recibe 5% de descuento y tú recibes un cupón CRED-XXXXXXXX con $30.000 COP de crédito."}},{"@type":"Question","name":"¿Tiene vencimiento el cupón de crédito?","acceptedAnswer":{"@type":"Answer","text":"No. El cupón CRED- no tiene fecha de vencimiento y es de un solo uso. Se descuenta automáticamente al ingresarlo en el flujo de pedido."}},{"@type":"Question","name":"¿Cuántos colegas puedo referir?","acceptedAnswer":{"@type":"Answer","text":"Sin límite. Puedes referir tantos colegas como quieras con el mismo código. Cada referido exitoso genera un cupón de $30.000 COP para ti."}}]}</script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    :root{--bg:#050505;--card:#0d1520;--green:#00FF41;--gold:#D4AF37;--mg:#D946A6;--cyan:#00d2ff;--muted:#94a3b8;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#e2e8f0;overflow-x:hidden;}
+    /* Hero */
+    .hero{min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;position:relative;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(0,255,65,.1),transparent);pointer-events:none;}
+    .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:var(--green);border-radius:50px;padding:6px 16px;font-size:.78rem;font-weight:800;letter-spacing:.5px;margin-bottom:24px;}
+    .badge::before{content:'';width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 8px rgba(0,255,65,.6);}
+    h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:900;line-height:1.05;margin-bottom:16px;}
+    h1 .highlight{background:linear-gradient(135deg,var(--green),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .hero-sub{font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:40px;}
+    /* Flujo */
+    .steps-section{padding:60px 24px;background:rgba(13,21,32,.5);border-top:1px solid rgba(0,255,65,.1);border-bottom:1px solid rgba(0,255,65,.1);}
+    .steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:960px;margin:0 auto;}
+    .step-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:24px 20px;text-align:center;position:relative;}
+    .step-num{width:40px;height:40px;border-radius:50%;background:rgba(0,255,65,.12);border:1px solid rgba(0,255,65,.3);color:var(--green);font-size:1rem;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+    .step-icon{font-size:2rem;margin-bottom:10px;}
+    .step-card h3{font-size:.92rem;font-weight:800;margin-bottom:8px;}
+    .step-card p{font-size:.8rem;color:var(--muted);line-height:1.6;}
+    .step-arrow{display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:rgba(0,255,65,.4);}
+    /* Beneficios */
+    .beneficios{padding:60px 24px;max-width:900px;margin:0 auto;}
+    .benef-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+    @media(max-width:640px){.benef-grid{grid-template-columns:1fr;}}
+    .benef-card{background:var(--card);border-radius:16px;padding:24px;text-align:center;}
+    .benef-card.green{border:1px solid rgba(0,255,65,.3);}
+    .benef-card.gold{border:1px solid rgba(212,175,55,.3);}
+    .benef-card.cyan{border:1px solid rgba(0,210,255,.3);}
+    .benef-val{font-size:2.4rem;font-weight:900;line-height:1;margin-bottom:8px;}
+    .benef-label{font-size:.72rem;color:var(--muted);line-height:1.5;}
+    /* CTA */
+    .cta-section{padding:60px 24px;text-align:center;}
+    .btn-primary{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,var(--green),#00cc33);color:#000;border-radius:14px;padding:16px 32px;font-size:1rem;font-weight:900;text-decoration:none;margin:8px;}
+    .btn-secondary{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#e2e8f0;border-radius:14px;padding:16px 32px;font-size:1rem;font-weight:700;text-decoration:none;margin:8px;}
+    /* FAQ */
+    .faq-section{padding:60px 24px;background:rgba(13,21,32,.4);border-top:1px solid rgba(255,255,255,.05);}
+    .faq-inner{max-width:700px;margin:0 auto;}
+    details{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:12px;margin-bottom:10px;overflow:hidden;}
+    summary{padding:16px 20px;cursor:pointer;font-weight:700;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+    summary::after{content:'+';font-size:1.2rem;color:var(--green);transition:transform .2s;}
+    details[open] summary::after{transform:rotate(45deg);}
+    details p{padding:0 20px 16px;font-size:.84rem;color:var(--muted);line-height:1.7;}
+    /* Widget código */
+    .codigo-widget{background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.2);border-radius:16px;padding:28px 24px;max-width:520px;margin:40px auto 0;text-align:left;}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+  </style>
+</head>
+<body>
+<script src="js/header.js?v=20260528"></script>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">Programa de Referidos</div>
+  <h1>Refiere y <span class="highlight">Gana</span><br>sin límites</h1>
+  <p class="hero-sub">Cada colega que refieres a PRODIGY obtiene <strong style="color:var(--green);">5% de descuento</strong> en su primer caso. Tú recibes un cupón de <strong style="color:var(--gold);">$30.000 COP</strong> cuando paga. Sin vencimiento. Sin acumulación necesaria.</p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+    <a href="/app/client-panel.html" class="btn-primary"><i class="fas fa-user-plus" aria-hidden="true"></i> Obtener mi código</a>
+    <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20saber%20más%20sobre%20el%20programa%20de%20referidos." target="_blank" rel="noopener noreferrer" class="btn-secondary"><i class="fab fa-whatsapp" aria-hidden="true"></i> Preguntar por WA</a>
+  </div>
+</section>
+
+<!-- FLUJO -->
+<section class="steps-section">
+  <div style="text-align:center;margin-bottom:32px;">
+    <div style="font-size:.7rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:8px;">Así funciona</div>
+    <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;">4 pasos, crédito real</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-icon">🔑</div>
+      <h3>Obtén tu código</h3>
+      <p>Entra a tu <a href="/app/client-panel.html" style="color:var(--green);">Portal del Doctor</a> → sección "Referir Colegas". Tu código único es del tipo <strong>PRODY-XXXXXX</strong>.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-icon">📤</div>
+      <h3>Compártelo</h3>
+      <p>Envía el código a colegas por WhatsApp o email. Puedes copiar el mensaje pre-cargado directamente desde tu portal.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-icon">🦷</div>
+      <h3>Tu colega pide</h3>
+      <p>Al hacer su primer pedido, ingresa el código <strong>PRODY-XXXXXX</strong> en el flujo. El sistema aplica el <strong style="color:var(--green);">5% de descuento</strong> automáticamente.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-icon">🎁</div>
+      <h3>Recibes tu crédito</h3>
+      <p>Cuando tu colega paga, recibes un cupón <strong>CRED-XXXXXXXX</strong> por <strong style="color:var(--gold);">$30.000 COP</strong> vía WhatsApp. Úsalo en tu próximo pedido.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section class="beneficios">
+  <div style="text-align:center;margin-bottom:32px;">
+    <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;">Los números</h2>
+  </div>
+  <div class="benef-grid">
+    <div class="benef-card green">
+      <div class="benef-val" style="color:var(--green);">5%</div>
+      <div class="benef-label">Descuento que recibe tu colega en su <strong>primer caso</strong></div>
+    </div>
+    <div class="benef-card gold">
+      <div class="benef-val" style="color:var(--gold);">$30K</div>
+      <div class="benef-label">COP de crédito que <strong>tú recibes</strong> cuando tu colega paga</div>
+    </div>
+    <div class="benef-card cyan">
+      <div class="benef-val" style="color:var(--cyan);">∞</div>
+      <div class="benef-label">Sin límite de referidos con el <strong>mismo código</strong></div>
+    </div>
+  </div>
+
+  <!-- Widget para obtener código si está logueado -->
+  <div class="codigo-widget" id="codigo-widget" style="display:none;">
+    <div style="font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--green);margin-bottom:8px;">Tu código de referido</div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div id="ref-codigo-pub" style="font-size:1.6rem;font-weight:900;color:#fff;letter-spacing:3px;">—</div>
+      <button type="button" id="ref-copy-pub" onclick="copiarCodigoPub()" style="background:rgba(0,255,65,.15);border:1px solid rgba(0,255,65,.3);color:var(--green);border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-copy"></i> Copiar mensaje</button>
+    </div>
+    <div style="font-size:.72rem;color:#475569;margin-top:8px;">Tu colega obtiene 5% descuento · Tú recibes $30.000 COP de crédito</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <h2 style="font-size:clamp(1.3rem,3vw,1.8rem);font-weight:900;text-align:center;margin-bottom:24px;">Preguntas frecuentes</h2>
+    <details>
+      <summary>¿Cómo obtengo mi código de referido?</summary>
+      <p>Entra a tu <a href="/app/client-panel.html" style="color:var(--green);">Portal del Doctor</a> → sección "Referir Colegas". El sistema genera automáticamente un código único tipo <strong>PRODY-XXXXXX</strong> la primera vez que accedes.</p>
+    </details>
+    <details>
+      <summary>¿Tiene vencimiento el cupón CRED- que recibo?</summary>
+      <p>No. El cupón <strong>CRED-XXXXXXXX</strong> no tiene fecha de vencimiento. Es de un solo uso y se aplica automáticamente en el flujo de pedido cuando lo ingresas.</p>
+    </details>
+    <details>
+      <summary>¿El descuento del 5% se aplica a todos los servicios?</summary>
+      <p>Sí, aplica al primer caso de cualquier servicio (diseño CAD, fresado, impresión 3D, guías quirúrgicas). Solo para el primer pedido pagado del colega referido.</p>
+    </details>
+    <details>
+      <summary>¿Puedo referir a laboratorios completos, no solo doctores?</summary>
+      <p>Sí. Puedes referir cualquier laboratorio dental o clínica odontológica. Si el laboratorio está interesado en adoptar nuestra plataforma completa, visita <a href="/para-laboratorios" style="color:var(--green);">/para-laboratorios</a>.</p>
+    </details>
+    <details>
+      <summary>¿Qué pasa si mi colega ya es cliente de PRODIGY?</summary>
+      <p>El descuento aplica solo para clientes nuevos (primer pedido pagado). Si tu colega ya tiene cuenta, el código no generará el cupón de crédito para ti.</p>
+    </details>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin-bottom:12px;">¿Listo para referir?</h2>
+  <p style="color:var(--muted);margin-bottom:28px;font-size:.95rem;">Entra a tu portal, copia el código y compártelo por WhatsApp.</p>
+  <a href="/app/client-panel.html" class="btn-primary"><i class="fas fa-arrow-right" aria-hidden="true"></i> Ir a mi portal</a>
+</section>
+
+<script src="js/footer.js?v=20260530"></script>
+<script>
+// Si el usuario está autenticado, mostrar su código
+(function(){
+  const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+  const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+  document.addEventListener('DOMContentLoaded',async()=>{
+    if(!window.supabase) return;
+    const sb=window.supabase.createClient(SURL,SANON);
+    const user=(await sb.auth.getUser()).data?.user;
+    if(!user) return;
+    const{data:cod}=await sb.rpc('obtener_mi_codigo_referido',{p_email:user.email,p_nombre:user.user_metadata?.nombre||''});
+    if(!cod) return;
+    const w=document.getElementById('codigo-widget');
+    const el=document.getElementById('ref-codigo-pub');
+    if(w&&el){w.style.display='block';el.textContent=cod;el.dataset.codigo=cod;}
+  });
+  window.copiarCodigoPub=function(){
+    const cod=document.getElementById('ref-codigo-pub')?.dataset.codigo||'';
+    if(!cod) return;
+    const msg='Hola! Te recomiendo PRODIGY Lab Dental para tus casos CAD/CAM en Bogotá 🦷\n\nUsa mi código *'+cod+'* al hacer tu primer pedido y obtienes *5% de descuento*.\n\nDiseño CAD, fresado y guías quirúrgicas — entrega 24–48h.\n🔗 https://prodigylabdental.com';
+    navigator.clipboard?.writeText(msg).then(()=>{const b=document.getElementById('ref-copy-pub');if(b){b.innerHTML='<i class=\"fas fa-check\"></i> Copiado';setTimeout(()=>{b.innerHTML='<i class=\"fas fa-copy\"></i> Copiar mensaje';},2000);}});
+  };
+})();
+</script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>

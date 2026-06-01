@@ -108,6 +108,8 @@
 /revision-express
   Cache-Control: no-store, no-cache, must-revalidate
   X-Robots-Tag: noindex
+/referidos
+  Cache-Control: public, max-age=0, must-revalidate
 /para-laboratorios
   Cache-Control: public, max-age=0, must-revalidate
 /flujo-diseno
