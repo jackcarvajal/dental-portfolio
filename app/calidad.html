@@ -351,6 +351,19 @@ let _comprobanteFile = null; // comprobante de pago completo
     document.body.classList.add('ready');
     await cargarCasos();
     initRealtime();
+    // KPI aprobaciones express hoy
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    sb.from('logs_incidencias')
+      .select('id',{count:'exact',head:true})
+      .eq('tipo','REVISION_EXPRESS_APROBADA')
+      .gte('created_at',hoy.toISOString())
+      .then(({count})=>{
+        if(!count) return;
+        const al=document.createElement('div');
+        al.style.cssText='background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.2);border-radius:10px;padding:10px 16px;margin-bottom:14px;font-size:.82rem;color:#94a3b8;';
+        al.innerHTML=`<i class="fas fa-check-circle" style="color:#00FF41;margin-right:6px;"></i> <strong style="color:#00FF41;">${count}</strong> diseño(s) aprobados por email hoy vía Revision Express.`;
+        document.querySelector('.main,main')?.prepend(al);
+      }).catch(()=>{});
 })();
 
 /* ── Tabs ─────────────────────────────────────────────────────────── */
