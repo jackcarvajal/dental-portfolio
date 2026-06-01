@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="color-scheme" content="dark">
+  <title>Mis Referidos — PRODIGY Lab Dental</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    :root{--bg:#050505;--card:#0d1520;--green:#00FF41;--gold:#D4AF37;--mg:#D946A6;--cyan:#00d2ff;--muted:#94a3b8;--border:rgba(255,255,255,.07);}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#e2e8f0;min-height:100vh;}
+    .topbar{background:rgba(5,5,5,.95);border-bottom:1px solid rgba(0,255,65,.15);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:100;}
+    .topbar h1{font-size:1rem;font-weight:900;letter-spacing:2px;color:var(--green);}
+    .btn-back{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+    main{max-width:900px;margin:0 auto;padding:24px;}
+    /* Código widget hero */
+    .codigo-hero{background:linear-gradient(135deg,rgba(0,255,65,.08),rgba(0,210,255,.05));border:1px solid rgba(0,255,65,.2);border-radius:20px;padding:28px 24px;margin-bottom:24px;text-align:center;}
+    .codigo-label{font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--green);margin-bottom:10px;}
+    .codigo-value{font-size:2.4rem;font-weight:900;color:#fff;letter-spacing:5px;margin-bottom:12px;}
+    .codigo-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+    .btn-copy{background:rgba(0,255,65,.15);border:1px solid rgba(0,255,65,.3);color:var(--green);border-radius:10px;padding:10px 20px;font-size:.85rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+    .btn-wa{background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25D366;border-radius:10px;padding:10px 20px;font-size:.85rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
+    /* KPIs */
+    .kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
+    .kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+    .kpi-v{font-size:1.8rem;font-weight:900;line-height:1;margin-bottom:4px;}
+    .kpi-l{font-size:.66rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);}
+    /* Cupones */
+    .cupon-card{background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+    .cupon-code{font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:2px;}
+    .cupon-info{font-size:.72rem;color:var(--muted);margin-top:3px;}
+    .cupon-used{opacity:.5;border-color:rgba(255,255,255,.1);}
+    /* Tabla referidos */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;}
+    .card-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+    table{width:100%;border-collapse:collapse;font-size:.78rem;}
+    th{padding:8px 12px;text-align:left;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid rgba(255,255,255,.06);}
+    td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
+    .chip{display:inline-flex;align-items:center;border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:700;border:1px solid;}
+    .spinner{text-align:center;padding:24px;color:#475569;}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1><i class="fas fa-user-plus" aria-hidden="true" style="margin-right:6px;"></i>Mis Referidos</h1>
+  <a href="client-panel.html" class="btn-back"><i class="fas fa-arrow-left"></i> Mi Portal</a>
+</div>
+
+<main>
+  <!-- Código hero -->
+  <div class="codigo-hero">
+    <div class="codigo-label">Tu código de referido</div>
+    <div class="codigo-value" id="portal-codigo">Cargando...</div>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px;">Tu colega obtiene <strong style="color:var(--green);">5% descuento</strong> · Tú recibes <strong style="color:var(--gold);">$30.000 COP</strong> de crédito cuando paga</p>
+    <div class="codigo-actions">
+      <button type="button" class="btn-copy" onclick="copiarMsgPortal()"><i class="fas fa-copy"></i> Copiar mensaje</button>
+      <a id="portal-wa-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-wa"><i class="fab fa-whatsapp"></i> Compartir por WA</a>
+      <a href="/referidos" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:10px;padding:10px 20px;font-size:.85rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="fas fa-info-circle"></i> Ver programa</a>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis" id="portal-kpis">
+    <div class="kpi"><div class="kpi-v" style="color:var(--cyan);">—</div><div class="kpi-l">Colegas referidos</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--gold);">—</div><div class="kpi-l">Primer pedido pagado</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--green);">—</div><div class="kpi-l">Cupones disponibles</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--mg);">—</div><div class="kpi-l">Crédito total ganado</div></div>
+  </div>
+
+  <!-- Cupones de crédito -->
+  <div class="card" id="card-cupones" style="display:none;">
+    <div class="card-title"><i class="fas fa-tag" style="color:var(--gold);" aria-hidden="true"></i> Mis cupones de crédito</div>
+    <div id="cupones-portal" aria-live="polite"></div>
+  </div>
+
+  <!-- Historial de referidos -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-users" style="color:var(--cyan);" aria-hidden="true"></i> Mis referidos</div>
+    <div id="referidos-portal" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  </div>
+
+  <!-- CTA -->
+  <div style="text-align:center;padding:20px 0 40px;">
+    <p style="color:var(--muted);font-size:.82rem;margin-bottom:14px;">¿Quieres referir más colegas? Comparte tu código.</p>
+    <button type="button" class="btn-copy" onclick="copiarMsgPortal()" style="font-size:.92rem;padding:13px 24px;"><i class="fas fa-share-nodes"></i> Compartir mi código ahora</button>
+  </div>
+</main>
+
+<script src="../js/auth-guard.js?v=20260528"></script>
+<script>
+const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+let sb, _codigo='', _userEmail='';
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!window.supabase) return;
+  sb = window.supabase.createClient(SURL, SANON);
+  const user = (await sb.auth.getUser()).data?.user;
+  if (!user) { window.location.href = 'login.html'; return; }
+  _userEmail = user.email;
+  await Promise.all([cargarCodigo(), cargarReferidos()]);
+});
+
+async function cargarCodigo() {
+  const el = document.getElementById('portal-codigo');
+  try {
+    const { data: cod } = await sb.rpc('obtener_mi_codigo_referido', {
+      p_email: _userEmail,
+      p_nombre: (await sb.auth.getUser()).data?.user?.user_metadata?.nombre || ''
+    });
+    if (cod) {
+      _codigo = cod;
+      if (el) el.textContent = cod;
+      // Actualizar link WA
+      const waMsg = encodeURIComponent('Hola! Te recomiendo PRODIGY Lab Dental para tus casos CAD/CAM en Bogotá 🦷\n\nUsa mi código *' + cod + '* al hacer tu primer pedido y obtienes *5% de descuento*.\n\nDiseño CAD, fresado y guías quirúrgicas — entrega 24–48h.\n🔗 https://prodigylabdental.com/referidos');
+      const waBtn = document.getElementById('portal-wa-btn');
+      if (waBtn) waBtn.href = 'https://wa.me/?text=' + waMsg;
+    }
+  } catch(e) { if (el) el.textContent = 'Error cargando'; }
+}
+
+async function cargarReferidos() {
+  const el = document.getElementById('referidos-portal');
+  try {
+    const { data, error } = await sb.from('referidos')
+      .select('referido_nombre,referido_email,estado,created_at,descuento_pct,cupon_credito,cupon_usado,recompensa_cop')
+      .eq('referidor_email', _userEmail)
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+
+    // KPIs
+    const all = data || [];
+    const conReferido = all.filter(r => r.referido_email).length;
+    const convertidos = all.filter(r => ['primer_pedido','recompensado'].includes(r.estado)).length;
+    const cuponesPend = all.filter(r => r.cupon_credito && !r.cupon_usado).length;
+    const credTotal = all.filter(r => r.cupon_credito).reduce((s,r)=>s+Number(r.recompensa_cop||30000),0);
+    const COLORES = {pendiente:'#94a3b8',registrado:'#00d2ff',primer_pedido:'#D4AF37',recompensado:'#00FF41'};
+
+    const kpis = document.getElementById('portal-kpis');
+    if (kpis) kpis.innerHTML = [
+      {v:conReferido,c:'var(--cyan)',l:'Colegas referidos'},
+      {v:convertidos,c:'var(--gold)',l:'Primer pedido pagado'},
+      {v:cuponesPend,c:'var(--green)',l:'Cupones disponibles'},
+      {v:'$'+credTotal.toLocaleString('es-CO'),c:'var(--mg)',l:'Crédito total ganado'},
+    ].map(k=>`<div class="kpi"><div class="kpi-v" style="color:${k.c};">${escH(String(k.v))}</div><div class="kpi-l">${escH(k.l)}</div></div>`).join('');
+
+    // Cupones de crédito
+    const cuponesCard = document.getElementById('card-cupones');
+    const cuponesEl = document.getElementById('cupones-portal');
+    const cupones = all.filter(r => r.cupon_credito);
+    if (cupones.length > 0 && cuponesCard && cuponesEl) {
+      cuponesCard.style.display = 'block';
+      cuponesEl.innerHTML = cupones.map(r => `
+        <div class="cupon-card ${r.cupon_usado?'cupon-used':''}">
+          <div>
+            <div class="cupon-code">${escH(r.cupon_credito)}</div>
+            <div class="cupon-info">${r.cupon_usado?'✓ Usado':'⏳ Disponible · '+'$'+Number(r.recompensa_cop||30000).toLocaleString('es-CO')+' COP'}</div>
+          </div>
+          ${!r.cupon_usado?`<div style="display:flex;gap:8px;">
+            <button type="button" onclick="navigator.clipboard?.writeText('${escH(r.cupon_credito)}').then(()=>this.textContent='✓ Copiado')" style="background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:8px;padding:7px 14px;font-size:.75rem;font-weight:700;cursor:pointer;"><i class="fas fa-copy"></i> Copiar</button>
+            <a href="/flujo-diseno" style="background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.25);color:#00FF41;border-radius:8px;padding:7px 14px;font-size:.75rem;font-weight:700;text-decoration:none;">Usar ahora</a>
+          </div>`:'<span style="color:#475569;font-size:.72rem;">Crédito aplicado</span>'}
+        </div>`).join('');
+    }
+
+    // Tabla historial
+    if (!all.filter(r => r.referido_email).length) {
+      el.innerHTML = `<div style="text-align:center;color:#475569;padding:24px;"><i class="fas fa-user-plus" style="font-size:2rem;opacity:.3;display:block;margin-bottom:8px;"></i>Aún no has referido a nadie.<br>Comparte tu código <strong>${escH(_codigo)}</strong> con colegas.</div>`;
+      return;
+    }
+    el.innerHTML = `<div style="overflow-x:auto;"><table>
+      <thead><tr>
+        <th scope="col">Colega</th><th scope="col">Estado</th><th scope="col">Descuento dado</th><th scope="col">Fecha</th>
+      </tr></thead>
+      <tbody>${all.filter(r=>r.referido_email).map(r => {
+        const color = COLORES[r.estado]||'#94a3b8';
+        const fecha = new Date(r.created_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});
+        return `<tr>
+          <td style="font-weight:600;">${escH(r.referido_nombre||r.referido_email||'—')}</td>
+          <td><span class="chip" style="border-color:${color};color:${color};">${escH(r.estado.replace('_',' '))}</span></td>
+          <td style="color:var(--green);font-weight:700;">${escH(String(r.descuento_pct||5))}%</td>
+          <td style="color:#475569;">${escH(fecha)}</td>
+        </tr>`;
+      }).join('')}</tbody></table></div>`;
+  } catch(err) {
+    el.innerHTML = `<div style="color:#f87171;padding:12px;">${escH(err.message)}</div>`;
+  }
+}
+
+function copiarMsgPortal() {
+  if (!_codigo) return;
+  const msg = 'Hola! Te recomiendo PRODIGY Lab Dental para tus casos CAD/CAM en Bogotá 🦷\n\nUsa mi código *' + _codigo + '* al hacer tu primer pedido y obtienes *5% de descuento*.\n\nDiseño CAD, fresado y guías quirúrgicas — entrega 24–48h.\n🔗 https://prodigylabdental.com/referidos';
+  navigator.clipboard?.writeText(msg).then(() => {
+    const btns = document.querySelectorAll('.btn-copy');
+    btns.forEach(b => { b.innerHTML = '<i class="fas fa-check"></i> Copiado'; setTimeout(() => { b.innerHTML = '<i class="fas fa-copy"></i> Copiar mensaje'; }, 2000); });
+  });
+}
+</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>

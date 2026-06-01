@@ -79,6 +79,7 @@
 # /soporte-tecnico        /soporte-tecnico.html       200  ← CF sirve nativo
 /soporte-xtcera         /soporte-tecnico.html       301
 /referidos              /referidos.html             200
+/mis-referidos          /app/referidos-portal.html  200
 /labs                   /para-laboratorios.html     301
 /laboratorios           /para-laboratorios.html     301
 /saas                   /para-laboratorios.html     301
