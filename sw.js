@@ -1,5 +1,5 @@
-// Prodigy Lab Dental — Service Worker v3.8 (SWR + Push + Biomecanica + BulkUpload + WebP + Cotizaciones + Referidos + FAQs)
-const CACHE = 'prodigy-v26';
+// Prodigy Lab Dental — Service Worker v3.9 (+ Referidos Landing + Churn Dashboard + HowTo SEO)
+const CACHE = 'prodigy-v27';
 
 // Assets estáticos que siempre cacheamos en install
 const PRECACHE = [
@@ -42,6 +42,7 @@ const PRECACHE = [
   '/cotizaciones',
   '/revision-express',
   '/para-laboratorios',
+  '/referidos',
   '/catalogo'
 ];
 
