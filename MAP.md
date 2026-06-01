@@ -61,7 +61,7 @@
 ### sw.js
 | Item | Valor |
 |------|-------|
-| Cache version | `prodigy-v25` (línea 2) |
+| Cache version | `prodigy-v26` (línea 2) |
 | PRECACHE array | línea 5–37 (incluye /flujo-diseno/fresado/impresion/lab) |
 | NEVER_CACHE array | línea 40–51 |
 
@@ -250,7 +250,7 @@
 ```
 SUPABASE_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co'
 PORT_BUCKET  = 'portafolio'
-SW_VERSION   = 'prodigy-v25'
+SW_VERSION   = 'prodigy-v26'
 FOOTER_VER   = 'v=20260528'
 ADMIN_EMAILS = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com']
 ```

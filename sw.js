@@ -1,5 +1,5 @@
-// Prodigy Lab Dental — Service Worker v3.7 (SWR + Push + Biomecanica + BulkUpload + WebP + Cotizaciones)
-const CACHE = 'prodigy-v25';
+// Prodigy Lab Dental — Service Worker v3.8 (SWR + Push + Biomecanica + BulkUpload + WebP + Cotizaciones + Referidos + FAQs)
+const CACHE = 'prodigy-v26';
 
 // Assets estáticos que siempre cacheamos en install
 const PRECACHE = [
@@ -40,7 +40,9 @@ const PRECACHE = [
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png',
   '/cotizaciones',
-  '/revision-express'
+  '/revision-express',
+  '/para-laboratorios',
+  '/catalogo'
 ];
 
 // Rutas que NUNCA cacheamos (siempre network-only)
