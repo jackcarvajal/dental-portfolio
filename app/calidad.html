@@ -351,6 +351,20 @@ let _comprobanteFile = null; // comprobante de pago completo
     document.body.classList.add('ready');
     await cargarCasos();
     initRealtime();
+    // Métricas de tiempos de entrega via RPC
+    sb.rpc('prodigy_tiempos_entrega').then(({data})=>{
+        if(!data) return;
+        const metricsEl = document.createElement('div');
+        metricsEl.style.cssText='display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px;';
+        const items=[
+            {l:'Promedio diseño',v:data.promedio_diseno_dias||'—',u:'días',c:'#00d2ff'},
+            {l:'Promedio fresado',v:data.promedio_fresado_dias||'—',u:'días',c:'#D4AF37'},
+            {l:'Promedio total',v:data.promedio_total_dias||'—',u:'días',c:'#00FF41'},
+            {l:'Aprobación cliente',v:data.promedio_aprobacion_dias||'—',u:'días',c:'#D946A6'},
+        ];
+        metricsEl.innerHTML=items.map(i=>`<div style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:1.4rem;font-weight:900;color:${i.c};">${typeof i.v==='number'?i.v.toFixed(1):i.v}</div><div style="font-size:.65rem;color:#94a3b8;margin-top:3px;text-transform:uppercase;letter-spacing:.4px;">${i.l}</div></div>`).join('');
+        document.querySelector('.main,main')?.prepend(metricsEl);
+    }).catch(()=>{});
     // KPI aprobaciones express hoy
     const hoy = new Date(); hoy.setHours(0,0,0,0);
     sb.from('logs_incidencias')
