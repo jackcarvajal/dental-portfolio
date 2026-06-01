@@ -66,20 +66,25 @@
   }
 })();
 
-/* ── MICROSOFT CLARITY — mapas de calor + grabaciones de sesión ────
-   Gratis, sin límites. Cuenta en clarity.microsoft.com → nuevo proyecto
-   → copia el ID (ej: "abc123xyz") y reemplaza CLARITY_ID abajo.
-   Alejandro: agrega tu ID real para activar.
+/* ── MICROSOFT CLARITY — diferido con requestIdleCallback ────────────
+   Mapas de calor + grabaciones de sesión. No es crítico para el render.
 ─────────────────────────────────────────────────────────────────────── */
 (function(){
-  var CLARITY_ID = 'wo8ivp56qd';
-  if (document.getElementById('prodigy-clarity')) return;
-  (function(c,l,a,r,i,t,y){
-    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-    t=l.createElement(r);t.async=1;t.id='prodigy-clarity';
-    t.src='https://www.clarity.ms/tag/'+i;
-    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-  })(window,document,'clarity','script',CLARITY_ID);
+  function _loadClarity() {
+    var CLARITY_ID = 'wo8ivp56qd';
+    if (document.getElementById('prodigy-clarity')) return;
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.id='prodigy-clarity';
+      t.src='https://www.clarity.ms/tag/'+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,'clarity','script',CLARITY_ID);
+  }
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(_loadClarity, { timeout: 5000 });
+  } else {
+    setTimeout(_loadClarity, 2000);
+  }
 })();
 
 /* ── GA4 GLOBAL — carga diferida con requestIdleCallback ─────────────
