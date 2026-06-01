@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="color-scheme" content="dark">
+  <title>Churn Prevention — PRODIGY</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    :root{--bg:#050505;--card:#0d1520;--gold:#D4AF37;--mg:#D946A6;--cyan:#00d2ff;--green:#00FF41;--muted:#94a3b8;--red:#f87171;--yellow:#f59e0b;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#e2e8f0;min-height:100vh;}
+    .topbar{background:rgba(5,5,5,.95);border-bottom:1px solid rgba(248,113,113,.15);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:100;}
+    .topbar h1{font-size:1rem;font-weight:900;letter-spacing:2px;color:var(--red);}
+    .btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+    .btn-refresh{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.25);color:var(--red);}
+    main{max-width:1100px;margin:0 auto;padding:24px;}
+    .kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:24px;}
+    .kpi{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px;text-align:center;}
+    .kpi-v{font-size:2rem;font-weight:900;line-height:1;margin-bottom:4px;}
+    .kpi-l{font-size:.68rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px;margin-bottom:20px;}
+    .card-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:7px;}
+    table{width:100%;border-collapse:collapse;font-size:.78rem;}
+    th{padding:8px 12px;text-align:left;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid rgba(255,255,255,.06);}
+    td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
+    .chip{display:inline-flex;align-items:center;border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:700;border:1px solid;}
+    .chip-critico{border-color:#f87171;color:#f87171;background:rgba(248,113,113,.08);}
+    .chip-alerta{border-color:#f59e0b;color:#f59e0b;background:rgba(245,158,11,.08);}
+    .chip-vigilar{border-color:#94a3b8;color:#94a3b8;background:rgba(148,163,184,.06);}
+    .spinner{text-align:center;padding:24px;color:#475569;}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1><i class="fas fa-triangle-exclamation" aria-hidden="true" style="margin-right:6px;"></i>Churn Prevention — Doctores en Riesgo</h1>
+  <div style="display:flex;gap:10px;">
+    <button type="button" class="btn btn-refresh" onclick="cargarTodo()" id="btnR"><i class="fas fa-rotate-right"></i> Actualizar</button>
+    <a href="admin-panel.html" class="btn"><i class="fas fa-arrow-left"></i> Panel</a>
+  </div>
+</div>
+
+<main>
+  <div class="kpis" id="kpi-grid">
+    <div class="kpi"><div class="kpi-v" style="color:var(--red);">—</div><div class="kpi-l">Críticos (30+ días)</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--yellow);">—</div><div class="kpi-l">En alerta (20-29 días)</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--muted);">—</div><div class="kpi-l">Vigilar (14-19 días)</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--gold);">—</div><div class="kpi-l">Valor en riesgo (COP)</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span><i class="fas fa-user-xmark" style="color:var(--red);" aria-hidden="true"></i> Doctores con riesgo de abandono</span>
+      <button type="button" onclick="enviarChurnAlert()" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red);border-radius:8px;padding:6px 14px;font-size:.75rem;font-weight:700;cursor:pointer;" id="btn-alerta"><i class="fas fa-bell"></i> Enviar alertas WA</button>
+    </div>
+    <div id="churn-tabla" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--gold);" aria-hidden="true"></i> Configuración del trigger</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;font-size:.82rem;">
+      <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:14px;">
+        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Umbral crítico</div>
+        <div style="font-size:1.4rem;font-weight:900;color:var(--red);">30 días</div>
+      </div>
+      <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:14px;">
+        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Umbral alerta</div>
+        <div style="font-size:1.4rem;font-weight:900;color:var(--yellow);">20 días</div>
+      </div>
+      <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:14px;">
+        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Doctor habitual (mín)</div>
+        <div style="font-size:1.4rem;font-weight:900;color:var(--cyan);">3 pedidos/90d</div>
+      </div>
+      <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:14px;">
+        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Edge fn activa</div>
+        <div style="font-size:.88rem;font-weight:700;color:var(--green);">/api/churn-alert ✅</div>
+      </div>
+    </div>
+    <p style="font-size:.72rem;color:#334155;margin-top:12px;">El cron de resumen semanal activa churn-alert los lunes. También puedes dispararlo manualmente con el botón "Enviar alertas WA".</p>
+  </div>
+</main>
+
+<script src="../js/auth-guard.js?v=20260528"></script>
+<script>
+const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmtCOP(n){return '$'+Number(n||0).toLocaleString('es-CO');}
+let sb;
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!window.supabase)return;
+  sb=window.supabase.createClient(SURL,SANON);
+  cargarTodo();
+  setInterval(cargarTodo, 5*60*1000);
+});
+
+async function cargarTodo(){
+  const btn=document.getElementById('btnR');
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i>';btn.disabled=true;
+  await cargarChurn();
+  btn.innerHTML='<i class="fas fa-rotate-right"></i> Actualizar';btn.disabled=false;
+}
+
+async function cargarChurn(){
+  const el=document.getElementById('churn-tabla');
+  try{
+    const{data,error}=await sb.from('doctors_inactivos').select('*').order('dias_inactivo',{ascending:false}).limit(50);
+    if(error)throw error;
+    if(!data||!data.length){el.innerHTML='<div style="text-align:center;color:#475569;padding:24px;"><i class="fas fa-check-circle" style="color:#00FF41;font-size:1.5rem;display:block;margin-bottom:8px;"></i>Sin doctores en riesgo. ¡Todos activos!</div>';
+      updateKPIs([],[],[],0); return;
+    }
+    const criticos=data.filter(d=>d.nivel_riesgo==='CRITICO');
+    const alertas=data.filter(d=>d.nivel_riesgo==='ALERTA');
+    const vigilar=data.filter(d=>d.nivel_riesgo==='VIGILAR');
+    const valorRiesgo=data.reduce((s,d)=>s+Number(d.ticket_promedio||0)*Number(d.pedidos_30d||1),0);
+    updateKPIs(criticos,alertas,vigilar,valorRiesgo);
+    el.innerHTML=`<div style="overflow-x:auto;"><table>
+      <thead><tr>
+        <th>Doctor</th><th>Email</th><th>Último pedido</th><th>Días inactivo</th><th>Pedidos 90d</th><th>Ticket prom.</th><th>Riesgo</th><th>Acción</th>
+      </tr></thead>
+      <tbody>${data.map(d=>{
+        const chip=d.nivel_riesgo==='CRITICO'?'chip-critico':d.nivel_riesgo==='ALERTA'?'chip-alerta':'chip-vigilar';
+        const wa=encodeURIComponent(`Hola Dr. ${d.nombre_doctor||''}, 👋 notamos que llevan ${d.dias_inactivo} días sin enviar casos a PRODIGY.\n\n¿Tienes algún caso pendiente al que podamos ayudarte? Escríbenos y lo agendamos de inmediato.\n\nEquipo PRODIGY Lab Dental`);
+        const fecha=d.ultimo_pedido?new Date(d.ultimo_pedido).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}):'—';
+        return `<tr>
+          <td style="font-weight:700;">${escH(d.nombre_doctor||'—')}</td>
+          <td style="color:#475569;font-size:.72rem;">${escH(d.email||'—')}</td>
+          <td>${escH(fecha)}</td>
+          <td style="font-weight:800;color:${d.nivel_riesgo==='CRITICO'?'#f87171':d.nivel_riesgo==='ALERTA'?'#f59e0b':'#94a3b8'};">${d.dias_inactivo} días</td>
+          <td style="text-align:center;">${d.pedidos_90d}</td>
+          <td>${fmtCOP(d.ticket_promedio)}</td>
+          <td><span class="chip ${chip}">${escH(d.nivel_riesgo)}</span></td>
+          <td><a href="https://wa.me/?text=${wa}" target="_blank" rel="noopener noreferrer" style="background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25D366;border-radius:6px;padding:5px 10px;font-size:.7rem;font-weight:700;text-decoration:none;"><i class="fab fa-whatsapp"></i> WA</a></td>
+        </tr>`;
+      }).join('')}</tbody></table></div>`;
+  }catch(err){
+    el.innerHTML=`<div style="color:#f87171;padding:12px;">Error: ${escH(err.message)}<br><small>Verifica que el SQL trigger-doctor-inactivo-churn.sql fue ejecutado en Supabase.</small></div>`;
+  }
+}
+
+function updateKPIs(criticos,alertas,vigilar,valor){
+  const g=document.getElementById('kpi-grid');
+  if(!g)return;
+  g.innerHTML=[
+    {v:criticos.length,c:'var(--red)',l:'Críticos (30+ días)'},
+    {v:alertas.length,c:'var(--yellow)',l:'En alerta (20-29 días)'},
+    {v:vigilar.length,c:'var(--muted)',l:'Vigilar (14-19 días)'},
+    {v:fmtCOP(valor),c:'var(--gold)',l:'Valor en riesgo (COP)'},
+  ].map(k=>`<div class="kpi"><div class="kpi-v" style="color:${k.c};">${escH(String(k.v))}</div><div class="kpi-l">${escH(k.l)}</div></div>`).join('');
+}
+
+async function enviarChurnAlert(){
+  const btn=document.getElementById('btn-alerta');
+  btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Enviando...';
+  try{
+    const r=await fetch('/api/churn-alert',{method:'POST',headers:{'Content-Type':'application/json','x-cron-secret':'internal'}});
+    const d=await r.json();
+    btn.innerHTML='<i class="fas fa-check"></i> Alertas enviadas';
+    setTimeout(()=>{btn.innerHTML='<i class="fas fa-bell"></i> Enviar alertas WA';btn.disabled=false;},3000);
+  }catch(e){btn.innerHTML='<i class="fas fa-bell"></i> Enviar alertas WA';btn.disabled=false;}
+}
+</script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>
