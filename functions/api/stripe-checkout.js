@@ -16,6 +16,18 @@
 export async function onRequestPost(context) {
   const { request, env } = context;
 
+  /* ── RATE LIMIT: 5 checkouts/5min por IP ──────────── */
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const rlKey = new Request('https://rl.internal/stripe-checkout_' + ip);
+  const rlHit = await caches.default.match(rlKey);
+  if (rlHit) {
+    const count = parseInt(await rlHit.text(), 10) || 0;
+    if (count >= 5) return new Response(JSON.stringify({ error: 'Demasiadas solicitudes. Espera unos minutos.' }), { status: 429, headers: { 'Content-Type': 'application/json' } });
+    await caches.default.put(rlKey, new Response(String(count + 1), { headers: { 'Cache-Control': 'max-age=300' } }));
+  } else {
+    await caches.default.put(rlKey, new Response('1', { headers: { 'Cache-Control': 'max-age=300' } }));
+  }
+
   /* ── CORS ─────────────────────────────────────────── */
   const origin = request.headers.get('Origin') || '';
   const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
