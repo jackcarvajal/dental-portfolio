@@ -187,6 +187,31 @@ async function cargarKPIs() {
   document.getElementById('pipeline-grid').innerHTML = pipe.map(p=>
     `<div class="pipeline-step"><div class="pipeline-num" style="color:${p.color};">${escH(String(p.v))}</div><div class="pipeline-label">${escH(p.label)}</div></div>`
   ).join('');
+
+  // Métricas adicionales: cotizaciones + referidos
+  (async () => {
+    try {
+      const [cotR, refR] = await Promise.all([
+        sb.from('cotizaciones').select('id,estado,total').gte('created_at', new Date(Date.now()-7*86400000).toISOString()),
+        sb.from('referidos').select('id,estado,cupon_usado').not('referido_email','is',null)
+      ]);
+      const cots = cotR.data || [];
+      const refs = refR.data || [];
+      const cotBor = cots.filter(c=>c.estado==='borrador').length;
+      const cotValor = cots.reduce((s,c)=>s+Number(c.total||0),0);
+      const refAct = refs.filter(r=>!['recompensado'].includes(r.estado)).length;
+      const cupPend = refs.filter(r=>r.cupon_usado===false && ['primer_pedido'].includes(r.estado)).length;
+      const extra = document.createElement('div');
+      extra.style.cssText='display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:16px;';
+      extra.innerHTML=[
+        {v:cotBor,c:'#f59e0b',l:'Cotizaciones borrador'},
+        {v:fmtCOP(cotValor),c:'var(--gold)',l:'Valor cotizaciones (7d)'},
+        {v:refAct,c:'#00FF41',l:'Referidos activos'},
+        {v:cupPend,c:'var(--cyan)',l:'Cupones CRED- pendientes'},
+      ].map(k=>`<div class="pipeline-step"><div class="pipeline-num" style="color:${k.c};font-size:1.4rem;">${escH(String(k.v))}</div><div class="pipeline-label">${escH(k.l)}</div></div>`).join('');
+      document.getElementById('pipeline-grid').appendChild(extra);
+    } catch(_) {}
+  })();
 }
 
 async function cargarServicios() {
