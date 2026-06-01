@@ -117,6 +117,18 @@
     </div>
   </div>
 
+  <!-- Funnel cotizaciones → pedidos -->
+  <div class="grid-2" style="margin-top:4px;">
+    <div class="card">
+      <div class="card-title"><i class="fas fa-filter" style="color:var(--gold);" aria-hidden="true"></i> Funnel cotizaciones → pedidos (30d)</div>
+      <div id="funnel-prodigy" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="fas fa-receipt" style="color:var(--cyan);" aria-hidden="true"></i> Cotizaciones recientes</div>
+      <div id="cotiz-recientes-prodigy" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+    </div>
+  </div>
+
   <div style="text-align:center;font-size:.7rem;color:#334155;padding:16px 0;" id="ultima-actualizacion">Cargando datos...</div>
 </main>
 
@@ -152,7 +164,9 @@ async function cargarTodo() {
       cargarServicios(),
       cargarIngresos(),
       cargarTiempos(),
-      cargarForecast()
+      cargarForecast(),
+      cargarFunnelProdigy(),
+      cargarCotizRecientesProdigy()
     ]);
     document.getElementById('ultima-actualizacion').textContent = 'Actualizado: ' + new Date().toLocaleString('es-CO',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
   } catch(e) {
@@ -291,6 +305,61 @@ async function cargarForecast() {
       <div style="font-size:.65rem;color:#334155;margin-top:10px;"><i class="fas fa-circle-info"></i> Basado en promedio de las últimas 4 semanas</div>
     `;
   } catch(e){ el.innerHTML=`<div class="error-msg"><i class="fas fa-triangle-exclamation"></i> ${escH(e.message)}</div>`; }
+}
+
+async function cargarFunnelProdigy() {
+  const el = document.getElementById('funnel-prodigy');
+  try {
+    const desde = new Date(Date.now()-30*24*60*60*1000).toISOString();
+    const [{ data: cots },{ data: peds }] = await Promise.all([
+      sb.from('cotizaciones').select('id').eq('negocio','prodigy').gte('created_at',desde),
+      sb.from('pedidos').select('id').gte('created_at',desde).not('estado','eq','cancelado')
+    ]);
+    const nCot = cots?.length||0;
+    const nPed = peds?.length||0;
+    const tasa = nCot>0 ? Math.round(nPed/nCot*100) : 0;
+    el.innerHTML=`<div style="padding:8px 0;">
+      <div style="margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;font-size:.75rem;color:#94a3b8;margin-bottom:6px;"><span><i class="fas fa-receipt"></i> Cotizaciones</span><strong style="color:#D4AF37;">${nCot}</strong></div>
+        <div style="background:rgba(255,255,255,.06);border-radius:4px;height:10px;"><div style="background:#D4AF37;height:10px;border-radius:4px;width:100%;"></div></div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;font-size:.75rem;color:#94a3b8;margin-bottom:6px;"><span><i class="fas fa-file-medical"></i> Pedidos</span><strong style="color:#D946A6;">${nPed}</strong></div>
+        <div style="background:rgba(255,255,255,.06);border-radius:4px;height:10px;"><div style="background:#D946A6;height:10px;border-radius:4px;width:${nCot>0?Math.round(nPed/nCot*100):0}%;"></div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.15);border-radius:8px;">
+        <i class="fas fa-arrow-trend-up" style="color:#00FF41;font-size:1.2rem;" aria-hidden="true"></i>
+        <div><div style="font-size:1.4rem;font-weight:900;color:#00FF41;">${tasa}%</div><div style="font-size:.7rem;color:#94a3b8;">Tasa de conversión</div></div>
+      </div>
+    </div>`;
+  } catch(e){ el.innerHTML=`<div class="error-msg">${escH(e.message)}</div>`; }
+}
+
+async function cargarCotizRecientesProdigy() {
+  const el = document.getElementById('cotiz-recientes-prodigy');
+  try {
+    const { data } = await sb.from('cotizaciones')
+      .select('id,created_at,tipo,total,moneda,estado,doctor_nombre')
+      .eq('negocio','prodigy')
+      .order('created_at',{ascending:false}).limit(6);
+    if (!data?.length){ el.innerHTML='<p style="color:#475569;font-size:.78rem;padding:12px;">Sin cotizaciones aún.</p>'; return; }
+    const fmtD = d => new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+    const fmtT = c => c.moneda==='USD'?`USD ${Number(c.total).toFixed(0)}`:`$${Number(c.total).toLocaleString('es-CO')}`;
+    const EC = {borrador:'#475569',enviada:'#00d2ff',aceptada:'#00FF41',rechazada:'#ef4444',expirada:'#334155'};
+    el.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:.74rem;">
+      <thead><tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+        <th scope="col" style="padding:7px;color:#475569;">Fecha</th>
+        <th scope="col" style="padding:7px;color:#475569;">Doctor</th>
+        <th scope="col" style="padding:7px;text-align:right;color:#475569;">Total</th>
+        <th scope="col" style="padding:7px;text-align:center;color:#475569;">Estado</th>
+      </tr></thead>
+      <tbody>${data.map(c=>`<tr style="border-bottom:1px solid rgba(255,255,255,.03);">
+        <td style="padding:7px;color:#94a3b8;">${escH(fmtD(c.created_at))}</td>
+        <td style="padding:7px;">${escH((c.doctor_nombre||'—').split(' ')[0])}</td>
+        <td style="padding:7px;text-align:right;font-weight:700;color:#D4AF37;">${escH(fmtT(c))}</td>
+        <td style="padding:7px;text-align:center;"><span style="border:1px solid ${EC[c.estado]||'#475569'};color:${EC[c.estado]||'#475569'};border-radius:10px;padding:2px 7px;font-size:.62rem;font-weight:700;">${escH(c.estado||'—')}</span></td>
+      </tr>`).join('')}</tbody></table>`;
+  } catch(e){ el.innerHTML=`<div class="error-msg">${escH(e.message)}</div>`; }
 }
 </script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
