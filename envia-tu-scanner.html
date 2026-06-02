@@ -503,8 +503,9 @@
                         <input type="tel" inputmode="tel" id="whatsapp" placeholder="+57 300 000 0000" autocomplete="tel" required>
                     </div>
                     <div class="fg">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" maxlength="254" placeholder="doctor@clinica.com" autocomplete="email">
+                        <label for="email">Email * <span style="font-size:.65rem;color:#00FF41;font-weight:700;">(crea tu portal de seguimiento)</span></label>
+                        <input type="email" id="email" maxlength="254" placeholder="doctor@clinica.com" autocomplete="email" required aria-describedby="email-hint">
+                        <span id="email-hint" style="font-size:.65rem;color:#94a3b8;margin-top:3px;display:block;">Te enviamos acceso al portal para ver el estado de tu caso en tiempo real.</span>
                     </div>
                 </div>
 
@@ -824,8 +825,8 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
     [['doctor',doctor],['clinica',clinica],['whatsapp',whatsapp],['escaner_marca',marca]].forEach(([id,val])=>{
       const el=document.getElementById(id); if(el) el.setAttribute('aria-invalid',!val?'true':'false');
     });
-    if (!doctor || !clinica || !whatsapp || !marca) {
-        pubToast('Por favor completa todos los campos obligatorios (*)');
+    if (!doctor || !clinica || !whatsapp || !marca || !email) {
+        pubToast('Por favor completa todos los campos obligatorios (*) — incluyendo el email para tu portal.');
         document.querySelector('[aria-invalid="true"]')?.focus(); return;
     }
 
@@ -856,6 +857,7 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
 
     setProg(80, 'Guardando solicitud…');
 
+    // 1. Guardar solicitud
     await sb.from('solicitudes_scanner').insert({
         doctor, clinica, whatsapp, email: email || null,
         escaner_marca: marca, servicio, piezas: piezas || null,
@@ -864,16 +866,54 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         acepta_habeas:    document.getElementById('checkHabeas').checked
     });
 
+    setProg(85, 'Creando tu acceso al portal…');
+
+    // 2. Registro implícito: crear/vincular cuenta si tiene email
+    let portalLink = 'https://prodigylabdental.com/app/client-panel.html';
+    if (email) {
+        try {
+            // signUp crea la cuenta si no existe, signIn si ya existe
+            const { data: signUpData, error: signUpErr } = await sb.auth.signUp({
+                email,
+                password: 'ProdigyTemp2026!',  // contraseña temporal — el usuario la cambiará
+                options: {
+                    data: { nombre: doctor, clinica, whatsapp, rol_solicitado: 'client' },
+                    emailRedirectTo: 'https://prodigylabdental.com/app/client-panel.html'
+                }
+            });
+            if (!signUpErr && signUpData?.user) {
+                // Insertar en tabla doctores si no existe
+                await sb.from('doctores').upsert({
+                    user_id: signUpData.user.id,
+                    email,
+                    nombre: doctor,
+                    clinica,
+                    whatsapp
+                }, { onConflict: 'user_id', ignoreDuplicates: true }).catch(()=>{});
+
+                // Enviar WA al doctor invitándolo al portal
+                fetch('/api/wa-auto', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        whatsapp,
+                        mensaje: `🦷 *PRODIGY Lab Dental*\n\nHola ${doctor.split(' ')[0]}, recibimos tu solicitud de ${servicio}.\n\n✅ Hemos creado tu portal de seguimiento. Ingresa aquí para ver el estado en tiempo real:\n\n👉 ${portalLink}\n\n📧 Email: ${email}\n🔐 Contraseña temporal: ProdigyTemp2026!\n_(Cámbiala al ingresar)_\n\nCualquier duda: wa.me/573212816716`
+                    })
+                }).catch(()=>{});
+            }
+        } catch(_) {}
+    }
+
     setProg(100, 'Listo');
 
-    // Notificar a PRODIGY (silencioso)
+    // 3. Notificar a PRODIGY (silencioso)
     fetch(`${SUPABASE_URL}/functions/v1/notify-wa`, {
         method:'POST',
         headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_ANON}`},
         body:JSON.stringify({
             tipo:'scanner_nuevo', telefono:WA_PRODIGY,
             nombre:doctor, caseId:clinica,
-            mensaje:`Nueva solicitud: ${servicio} — ${clinica} — WA: ${whatsapp}`
+            mensaje:`Nueva solicitud: ${servicio} — ${clinica} — WA: ${whatsapp}${email?' — Email: '+email:' — SIN EMAIL'}`
         })
     }).catch(()=>{});
 
@@ -882,8 +922,11 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         document.getElementById('formContainer').style.display = 'none';
         const sc = document.getElementById('successScreen');
         sc.classList.add('show');
-        document.getElementById('successMsg').textContent =
-            `Gracias, ${doctor.split(' ')[0]}. Recibimos tu caso de ${servicio.toLowerCase()}. Te escribimos al ${whatsapp} con la previsualización del diseño.`;
+        const _nom = doctor.split(' ')[0];
+        document.getElementById('successMsg').innerHTML =
+            `Gracias, <strong>${_nom}</strong>. Recibimos tu caso de ${servicio.toLowerCase()}.<br><br>`+
+            (email ? `✅ <strong>Hemos creado tu portal de seguimiento</strong>. Revisa tu WhatsApp (${whatsapp}) — te enviamos el link de acceso con tus datos de ingreso.` :
+                     `Te contactamos al ${whatsapp} cuando tengamos el diseño listo.`);
         document.getElementById('waLink').href =
             `https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, acabo de enviar mi escáner. Soy ${doctor} de ${clinica}.`)}`;
         sc.scrollIntoView({ behavior:'smooth', block:'center' });
