@@ -351,6 +351,14 @@
   </div>
 </section>
 <script src="js/footer.js?v=20260601"></script>
-<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script><script>
+(function(){
+  function _t(e,m){fetch('/api/track-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({evento:e,pagina:window.location.pathname,negocio:'prodigy',metadata:m||{}})}).catch(function(){});}
+  if('requestIdleCallback'in window)requestIdleCallback(function(){_t('page_view',{title:document.title});},{timeout:3000});
+  else setTimeout(function(){_t('page_view',{title:document.title});},2000);
+  window._trackEvent=_t;
+})();
+</script>
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>

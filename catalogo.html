@@ -695,5 +695,13 @@ renderGrid();
     })();
     </script>
     <script>(function(){function t(){var l=document.body.classList.toggle('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent=l?'☀️':'🌙';localStorage.setItem('theme',l?'light':'dark');}window.toggleTheme=t;if(localStorage.getItem('theme')==='light'){document.body.classList.add('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent='☀️';}window.addEventListener('scroll',function(){var s=document.getElementById('scroll-top-btn');if(s)s.classList.toggle('visible',window.scrollY>400);});})();</script>
+<script>
+(function(){
+  function _t(e,m){fetch('/api/track-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({evento:e,pagina:window.location.pathname,negocio:'prodigy',metadata:m||{}})}).catch(function(){});}
+  if('requestIdleCallback'in window)requestIdleCallback(function(){_t('page_view',{title:document.title});},{timeout:3000});
+  else setTimeout(function(){_t('page_view',{title:document.title});},2000);
+  window._trackEvent=_t;
+})();
+</script>
 </body>
 </html>
