@@ -358,6 +358,9 @@
         <div id="lista-pedidos-doc"></div>
     </div>
 
+    <!-- BANNER ACCIÓN PRIORITARIA -->
+    <div id="banner-accion" style="display:none;margin-bottom:16px;" aria-live="polite"></div>
+
     <!-- CASOS ACTIVOS CON BARRA DE PROGRESO -->
     <div class="section-card" id="card-activos" style="display:none;">
         <div class="section-header">
@@ -802,6 +805,29 @@ function renderTablas(pedidos) {
         const e = (p.estado || '').toLowerCase();
         return !e.includes('entregado') && !e.includes('cancelado') && !e.includes('borrador');
     });
+
+    // Banner de acción prioritaria — casos esperando respuesta del doctor
+    const esperandoDoctor = activos.filter(p => {
+        const e = (p.estado_operativo || p.estado || '').toUpperCase();
+        return e.includes('REVISION_CLIENTE') || e.includes('CAMBIOS_SOLICITADOS') || e.includes('APROBACION');
+    });
+    const bannerEl = document.getElementById('banner-accion');
+    if (bannerEl) {
+        if (esperandoDoctor.length > 0) {
+            const cod = escH(esperandoDoctor[0].codigo || esperandoDoctor[0].id?.slice(0,8) || '');
+            bannerEl.innerHTML = `<div style="background:rgba(217,70,166,.1);border:1px solid rgba(217,70,166,.35);border-left:4px solid #D946A6;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <i class="fas fa-circle-exclamation" style="color:#D946A6;font-size:1.2rem;" aria-hidden="true"></i>
+                <div style="flex:1;">
+                    <div style="font-size:.82rem;font-weight:800;color:#D946A6;margin-bottom:2px;">⏳ Tu revisión está pendiente</div>
+                    <div style="font-size:.75rem;color:#94a3b8;">El caso <strong style="color:#fff;">${cod}</strong> está esperando tu aprobación o comentarios. Revísalo para avanzar.</div>
+                </div>
+                <a href="../revision-diseno?id=${escH(esperandoDoctor[0].id||'')}" style="background:rgba(217,70,166,.2);border:1px solid rgba(217,70,166,.4);color:#D946A6;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;text-decoration:none;white-space:nowrap;">Ver diseño →</a>
+            </div>`;
+            bannerEl.style.display = 'block';
+        } else {
+            bannerEl.style.display = 'none';
+        }
+    }
     const historial = [...pedidos].sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
 
     const cardActivos = document.getElementById('card-activos');
