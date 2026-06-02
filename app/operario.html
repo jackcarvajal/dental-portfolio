@@ -608,6 +608,13 @@ async function avanzar(id, nuevoEstado, dept) {
       })}).catch(()=>{});
     };
 
+    const _enviarEmail = (tipo, asunto, texto) => {
+      if (!p?.email) return;
+      fetch('/api/send-email', { method:'POST', headers:hCT, body:JSON.stringify({
+        to: p.email, subject: asunto, tipo, text: texto
+      })}).catch(()=>{});
+    };
+
     if (nuevoEstado === 'EN_DISENO' && p?.email) {
       await fetch(pushUrl,{method:'POST',headers:heads,
         body:JSON.stringify({email:p.email, titulo:'📋 Caso recibido en diseño',
@@ -637,13 +644,14 @@ async function avanzar(id, nuevoEstado, dept) {
     }
     if (nuevoEstado === 'QA_APROBADO') {
       _enviarWA('QA_APROBADO');
+      _enviarEmail('pedido_confirmado', `✅ Caso ${p?.codigo} superó control de calidad`, `Hola ${p?.nombre_doctor||'Doctor'}, tu caso ${p?.codigo} pasó control de calidad y está listo para despacho.`);
       if (p?.email) await fetch(pushUrl,{method:'POST',headers:heads,
         body:JSON.stringify({email:p.email, titulo:'🎉 Caso listo para despacho',
           cuerpo:`Caso ${p.codigo} superó QA. Listo para envío.`})});
     }
-    if (nuevoEstado === 'LISTO_DESPACHAR') _enviarWA('LISTO_DESPACHAR');
+    if (nuevoEstado === 'LISTO_DESPACHAR') { _enviarWA('LISTO_DESPACHAR'); _enviarEmail('diseno_listo',`📦 Caso ${p?.codigo} listo para entrega`,`Hola ${p?.nombre_doctor||'Doctor'}, tu caso está empacado y listo para despacho.`); }
     if (nuevoEstado === 'EN_REPARTO')      _enviarWA('EN_REPARTO');
-    if (nuevoEstado === 'ENTREGADO')       _enviarWA('ENTREGADO');
+    if (nuevoEstado === 'ENTREGADO')       { _enviarWA('ENTREGADO'); _enviarEmail('pedido_confirmado',`🎉 Caso ${p?.codigo} entregado`,`Hola ${p?.nombre_doctor||'Doctor'}, tu caso fue entregado exitosamente. ¡Gracias por confiar en PRODIGY!`); }
   } catch(_) { /* notificaciones no bloquean el flujo */ }
 
   toast('Actualizado ✓','ok');
