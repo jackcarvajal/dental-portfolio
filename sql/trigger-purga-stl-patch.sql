@@ -24,7 +24,7 @@ BEGIN
   FOR _row IN
     SELECT p.id, p.codigo, p.stl_ruta, p.link_diseno
     FROM public.pedidos p
-    WHERE p.estado IN ('ENTREGADO','entregado')
+    WHERE p.estado_operativo IN ('ENTREGADO','LISTO','LISTO_DESPACHAR')
       AND p.stl_purgado = false
       AND p.updated_at < now() - interval '30 days'
       AND (p.stl_ruta IS NOT NULL OR p.link_diseno IS NOT NULL)
@@ -63,7 +63,7 @@ SELECT
   p.stl_purgado,
   p.stl_purgado_at
 FROM public.pedidos p
-WHERE p.estado IN ('ENTREGADO','entregado')
+WHERE p.estado_operativo IN ('ENTREGADO','LISTO','LISTO_DESPACHAR')
   AND p.stl_purgado = false
   AND p.updated_at > now() - interval '45 days'
 ORDER BY p.updated_at ASC;
