@@ -190,6 +190,9 @@
 <!-- MAIN -->
 <div class="container">
 
+    <!-- KPIs TALLER EN TIEMPO REAL -->
+    <div id="taller-kpis" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:20px;" aria-live="polite" aria-label="KPIs del taller"></div>
+
     <!-- REGISTRAR MANTENIMIENTO -->
     <div class="card">
         <div class="card-title"><i class="fas fa-tools"></i> Registrar Mantenimiento</div>
@@ -274,6 +277,7 @@
 const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+window.sb = sb;
 
 let _qrScanner   = null;
 let _qrActivo    = false;
@@ -299,6 +303,17 @@ async function init() {
     document.getElementById('tecnico-input').value = session.user.user_metadata?.nombre || _userEmail.split('@')[0];
     document.body.style.visibility = 'visible';
     await cargarHistorial();
+    await cargarKPIsTaller();
+    // Realtime — nuevos casos asignados al taller
+    sb.channel('taller-cases-live')
+      .on('postgres_changes',{event:'*',schema:'public',table:'pedidos'}, async (payload)=>{
+          const e=(payload.new?.estado_operativo||'').toUpperCase();
+          if(e.includes('TALLER')||e.includes('DESPACHO')||e.includes('ENTREGA')){
+              toast('🔧 Nuevo caso en taller: '+(payload.new?.codigo||''), 'ok');
+              await cargarKPIsTaller();
+          }
+      })
+      .subscribe();
     // Cotizaciones de fresado en borrador — mostrar alerta si hay pendientes
     sb.from('cotizaciones').select('id',{count:'exact',head:true}).eq('tipo','fresado').eq('estado','borrador').then(({count})=>{
         if (count > 0) {
@@ -477,6 +492,30 @@ const _LABEL = {
 
 function escH(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
+/* ── KPIs del taller ────────────────────────────────────────── */
+async function cargarKPIsTaller() {
+    const el = document.getElementById('taller-kpis');
+    if (!el) return;
+    try {
+        const [pendR, prodR, qaR, listR] = await Promise.all([
+            sb.from('pedidos').select('id',{count:'exact',head:true}).in('estado_operativo',['LISTO_DESPACHAR','EMPACADO']),
+            sb.from('pedidos').select('id',{count:'exact',head:true}).in('estado_operativo',['QA_APROBADO','LISTO']),
+            sb.from('pedidos').select('id',{count:'exact',head:true}).eq('estado_operativo','CONTROL_CALIDAD'),
+            sb.from('logs_mantenimiento').select('id',{count:'exact',head:true}).gte('created_at', new Date(Date.now()-30*86400000).toISOString()),
+        ]);
+        const kpis=[
+            {v:pendR.count||0,l:'Para despacho hoy',c:'#D4AF37'},
+            {v:prodR.count||0,l:'Listos QA',c:'#00FF41'},
+            {v:qaR.count||0,l:'En control calidad',c:'#00d2ff'},
+            {v:listR.count||0,l:'Mantenimientos (30d)',c:'#94a3b8'},
+        ];
+        el.innerHTML=kpis.map(k=>`<div style="background:#0d1520;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px;text-align:center;">
+            <div style="font-size:1.8rem;font-weight:900;color:${k.c};">${k.v}</div>
+            <div style="font-size:.65rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:4px;">${k.l}</div>
+        </div>`).join('');
+    } catch(_) {}
+}
+
 function renderHistorial(lista) {
     const c = document.getElementById('hist-container');
     if (!lista.length) {
@@ -587,5 +626,8 @@ async function enviarPanicoFab() {
 }
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+
+<script src="../js/notif-panel.js?v=20260601"></script>
+<script>(async()=>{try{if(!window.sb)return;const{data:{session}}=await window.sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(window.sb,null,rol);}catch(_){}})();</script>
 </body>
 </html>

@@ -10,6 +10,9 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../js/auth-guard.js?v=20260601"></script>
   <style>
     :root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--card:#0d1520;--muted:#94a3b8;}
     *{margin:0;padding:0;box-sizing:border-box;}
@@ -120,5 +123,22 @@
   </div>
 </main>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script>
+// Auth guard — solo admin
+(async()=>{
+  try {
+    const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+    const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+    const sb=window.supabase.createClient(SURL,SANON);
+    window.sb=sb;
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html?redirect=metricas-seo.html';return;}
+    const rol=session.user.app_metadata?.role||'';
+    if(!['admin','superadmin'].includes(rol)){window.location.href='login.html';return;}
+    if(window._notifInit) await window._notifInit(sb,null,rol);
+  } catch(e){console.error('[metricas-seo auth]',e);}
+})();
+</script>
+<script src="../js/notif-panel.js?v=20260601"></script>
 </body>
 </html>

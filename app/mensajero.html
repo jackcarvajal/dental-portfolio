@@ -286,6 +286,17 @@ async function init(){
     window.addEventListener('resize', ajustarCanvas);
 
     await cargarRuta();
+
+    // Realtime — nuevas entregas asignadas al mensajero
+    sb.channel('mensajero-entregas-live')
+      .on('postgres_changes',{event:'UPDATE',schema:'public',table:'pedidos'}, async (payload)=>{
+          const e=(payload.new?.estado_operativo||'').toUpperCase();
+          if(e.includes('EN_REPARTO')||e.includes('LISTO_DESPACHAR')||e.includes('ENTREGADO')){
+              showToast('🏍️ Nuevo estado en ruta: '+(payload.new?.codigo||payload.new?.nombre_doctor||'caso'));
+              await cargarRuta();
+          }
+      })
+      .subscribe();
 }
 
 function ajustarCanvas(){

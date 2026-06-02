@@ -378,6 +378,9 @@
 
 <div class="container">
 
+    <!-- KPIs portafolio -->
+    <div id="kpi-portafolio" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:20px;" aria-live="polite"></div>
+
     <!-- ALERT -->
     <div class="alert error" id="alertError"></div>
 
@@ -690,8 +693,34 @@ let _sbClient = null;
 function getSB() {
     if (_sbClient) return _sbClient;
     _sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    window.sb = _sbClient;
     return _sbClient;
 }
+
+// ── KPIs portafolio ─────────────────────────────────────────
+async function cargarKPIsPortafolio() {
+    const el = document.getElementById('kpi-portafolio');
+    if (!el) return;
+    try {
+        const sb = getSB();
+        const [totR, pubR, recR] = await Promise.all([
+            sb.from('casos_portafolio').select('id',{count:'exact',head:true}),
+            sb.from('casos_portafolio').select('id',{count:'exact',head:true}).eq('publicado',true),
+            sb.from('casos_portafolio').select('id',{count:'exact',head:true}).gte('created_at',new Date(Date.now()-7*86400000).toISOString()),
+        ]);
+        const kpis=[
+            {v:totR.count||0,l:'Total casos',c:'#D4AF37'},
+            {v:pubR.count||0,l:'Publicados',c:'#00FF41'},
+            {v:recR.count||0,l:'Esta semana',c:'#00d2ff'},
+            {v:((totR.count||0)-(pubR.count||0)),l:'Borradores',c:'#94a3b8'},
+        ];
+        el.innerHTML=kpis.map(k=>`<div style="background:#0d1520;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:900;color:${k.c};">${k.v}</div>
+            <div style="font-size:.62rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;">${k.l}</div>
+        </div>`).join('');
+    } catch(_) {}
+}
+document.addEventListener('DOMContentLoaded', cargarKPIsPortafolio);
 
 // =============================================
 // GENERAR ID AUTOMÁTICO (desde Supabase)
@@ -875,5 +904,8 @@ function resetForm() {
 }
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+
+<script src="../js/notif-panel.js?v=20260601"></script>
+<script>(async()=>{try{if(!window.sb)return;const{data:{session}}=await window.sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(window.sb,null,rol);}catch(_){}})();</script>
 </body>
 </html>
