@@ -193,6 +193,7 @@
     <a href="#" class="nav-item" onclick="switchTab('referidos',this);cargarReferidosAdmin()"><i class="fas fa-user-plus" style="color:#00FF41;"></i> Referidos</a>
     <a href="metricas-referidos.html" class="nav-item" style="background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.1);"><i class="fas fa-chart-pie" style="color:#00FF41;"></i> ROI Referidos ✨</a>
     <a href="metricas-churn.html" class="nav-item" style="background:rgba(248,113,113,.04);border:1px solid rgba(248,113,113,.15);"><i class="fas fa-triangle-exclamation" style="color:#f87171;"></i> Churn Prevention</a>
+    <a href="#" class="nav-item" onclick="switchTab('newsletter',this);cargarNewsletter()"><i class="fas fa-envelope" style="color:#00d2ff;"></i> Newsletter <span id="badge-nl" style="background:#00d2ff;color:#000;border-radius:10px;padding:1px 7px;font-size:.62rem;font-weight:900;display:none;margin-left:4px;"></span></a>
     <a href="/referidos" target="_blank" rel="noopener noreferrer" class="nav-item" style="font-size:.75rem;"><i class="fas fa-arrow-up-right-from-square" style="color:#94a3b8;"></i> Landing pública</a>
     <p class="nav-section">Configuración</p>
     <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Catálogo</a>
@@ -887,6 +888,32 @@
     <div style="display:flex;gap:10px;justify-content:flex-end;">
       <button type="button" onclick="cerrarModalResolver()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
       <button type="button" onclick="confirmarResolverIncidencia()" style="background:#00FF41;color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Resolver</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ TAB NEWSLETTER ═══════════ -->
+<div id="tab-newsletter" class="tab-panel">
+  <div class="page-header">
+    <div>
+      <h1>Newsletter <span style="color:var(--cyan);">/ Suscriptores</span></h1>
+      <p>Gestión de suscriptores al newsletter de PRODIGY Lab Dental</p>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button type="button" class="btn-primary" onclick="exportarNewsletterCSV()"><i class="fas fa-download"></i> CSV</button>
+      <button type="button" class="btn-outline" onclick="cargarNewsletter()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:20px;" id="nl-kpis">
+    <div class="kpi-card k3"><div class="kpi-icon" style="color:#00d2ff;"><i class="fas fa-users"></i></div><div class="kpi-value" id="nl-total" style="color:#00d2ff;">—</div><div class="kpi-label">Total suscriptores</div></div>
+    <div class="kpi-card k1"><div class="kpi-icon" style="color:#00FF41;"><i class="fas fa-check-circle"></i></div><div class="kpi-value" id="nl-activos" style="color:#00FF41;">—</div><div class="kpi-label">Activos</div></div>
+    <div class="kpi-card k4"><div class="kpi-icon" style="color:#D946A6;"><i class="fas fa-bullhorn"></i></div><div class="kpi-value" id="nl-promo" style="color:#D946A6;">—</div><div class="kpi-label">Acepta marketing</div></div>
+    <div class="kpi-card k2"><div class="kpi-icon" style="color:var(--gold);"><i class="fas fa-calendar"></i></div><div class="kpi-value" id="nl-mes" style="color:var(--gold);">—</div><div class="kpi-label">Nuevos este mes</div></div>
+  </div>
+  <div class="section-card">
+    <div class="section-header"><h2>Lista de suscriptores</h2></div>
+    <div id="nl-tabla" style="overflow-x:auto;padding:4px;" aria-live="polite">
+      <div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>
     </div>
   </div>
 </div>
@@ -2536,6 +2563,68 @@ document.addEventListener('keydown', e => {
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <script>
+/* ── NEWSLETTER ────────────────────────────────────────────── */
+async function cargarNewsletter() {
+  const tablaEl = document.getElementById('nl-tabla');
+  if (!tablaEl) return;
+  try {
+    const { data, count } = await sb.from('newsletter_subscribers')
+      .select('*', { count: 'exact' })
+      .eq('negocio','prodigy')
+      .order('created_at', { ascending: false })
+      .limit(200);
+    const todos = data || [];
+    const activos = todos.filter(s => s.activo).length;
+    const promo = todos.filter(s => s.acepta_promo).length;
+    const mes = todos.filter(s => new Date(s.created_at) > new Date(Date.now() - 30 * 86400000)).length;
+    document.getElementById('nl-total').textContent = count || 0;
+    document.getElementById('nl-activos').textContent = activos;
+    document.getElementById('nl-promo').textContent = promo;
+    document.getElementById('nl-mes').textContent = mes;
+    const badge = document.getElementById('badge-nl');
+    if (badge && (count || 0) > 0) { badge.textContent = count; badge.style.display = 'inline'; }
+    if (!todos.length) { tablaEl.innerHTML = '<div style="text-align:center;padding:20px;color:#475569;">Sin suscriptores aún.</div>'; return; }
+    const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const fmtF = d => new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});
+    tablaEl.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:.78rem;">
+      <thead><tr style="border-bottom:1px solid rgba(255,255,255,.08);">
+        <th style="padding:8px;text-align:left;color:#475569;">Email</th>
+        <th style="padding:8px;text-align:left;color:#475569;">Nombre</th>
+        <th style="padding:8px;text-align:left;color:#475569;">Fuente</th>
+        <th style="padding:8px;text-align:center;color:#475569;">Marketing</th>
+        <th style="padding:8px;text-align:center;color:#475569;">Estado</th>
+        <th style="padding:8px;text-align:right;color:#475569;">Fecha</th>
+      </tr></thead>
+      <tbody>${todos.map(s=>`<tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+        <td style="padding:8px;">${escH(s.email||'—')}</td>
+        <td style="padding:8px;">${escH(s.nombre||'—')}</td>
+        <td style="padding:8px;color:#475569;font-size:.7rem;">${escH(s.fuente||'—')}</td>
+        <td style="padding:8px;text-align:center;">${s.acepta_promo?'<span style="color:#00FF41;font-size:.7rem;font-weight:700;">✓ SÍ</span>':'<span style="color:#475569;font-size:.7rem;">—</span>'}</td>
+        <td style="padding:8px;text-align:center;"><span style="color:${s.activo?'#00FF41':'#f87171'};font-size:.7rem;font-weight:700;">${s.activo?'Activo':'Inactivo'}</span></td>
+        <td style="padding:8px;text-align:right;color:#475569;font-size:.7rem;">${fmtF(s.created_at)}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch(e) {
+    if (tablaEl) tablaEl.innerHTML = `<div style="color:#f87171;padding:12px;">Error: ${String(e.message||'').replace(/</g,'&lt;')}</div>`;
+  }
+}
+
+async function exportarNewsletterCSV() {
+  try {
+    const { data } = await sb.from('newsletter_subscribers').select('*').eq('negocio','prodigy').order('created_at',{ascending:false});
+    if (!data?.length) { toast('Sin suscriptores para exportar','err'); return; }
+    const rows = [['Email','Nombre','Fuente','Marketing','Activo','Tags','Fecha']];
+    data.forEach(s => rows.push([s.email||'',s.nombre||'',s.fuente||'',s.acepta_promo?'SI':'NO',s.activo?'SI':'NO',(s.tags||[]).join(';'),s.created_at?.slice(0,10)||'']));
+    const bom='﻿';
+    const csv=bom+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+    a.download='newsletter-prodigy-'+new Date().toISOString().slice(0,10)+'.csv';
+    a.click();
+    toast('✅ CSV exportado: '+data.length+' suscriptores','ok');
+  } catch(e) { toast('Error: '+e.message,'err'); }
+}
+
 /* ── WAITLIST LABS ─────────────────────────────────────────── */
 async function cargarWaitlist() {
   const el  = document.getElementById('waitlist-tabla');
