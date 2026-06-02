@@ -254,6 +254,11 @@
                 <div class="kpi-value" style="color:#00FF41;" id="kpi-referidos-admin">—</div>
                 <div class="kpi-label">Referidos activos</div>
             </div>
+            <div class="kpi-card" style="border-color:rgba(0,210,255,.2);" title="Tasa conversión cotizaciones→pedidos">
+                <div class="kpi-icon" style="color:#00d2ff;"><i class="fas fa-filter"></i></div>
+                <div class="kpi-value" style="color:#00d2ff;" id="kpi-conversion">—</div>
+                <div class="kpi-label">Conversión cotiz.→pedido</div>
+            </div>
         </div>
 
         <!-- Búsqueda + Filtro estado -->
@@ -1647,9 +1652,18 @@ function actualizarKPIs(data) {
         sb.from('referidos').select('id',{count:'exact',head:true}).not('referido_email','is',null),
         sb.from('cotizaciones').select('id',{count:'exact',head:true}).eq('estado','borrador'),
         sb.from('waitlist_labs').select('id',{count:'exact',head:true}),
-    ]).then(([refs,cots,waitlist])=>{
+        sb.from('cotizaciones').select('id',{count:'exact',head:true}).eq('negocio','prodigy'),
+        sb.from('pedidos').select('id',{count:'exact',head:true}).gte('created_at',new Date(Date.now()-30*86400000).toISOString()),
+    ]).then(([refs,cots,waitlist,totalCots,pedidosMes])=>{
         const refEl=document.getElementById('kpi-referidos-admin');
         if(refEl) refEl.textContent=refs.count||0;
+        // Tasa de conversión
+        const convEl=document.getElementById('kpi-conversion');
+        if(convEl){
+            const tc=totalCots.count||0; const tp=pedidosMes.count||0;
+            const tasa=tc>0?Math.round(tp/tc*100):0;
+            convEl.textContent=tasa+'%';
+        }
         const alerts=[];
         if((cots.count||0)>0) alerts.push('📋 '+cots.count+' cotizaciones sin convertir');
         if((waitlist.count||0)>0) alerts.push('🧪 '+waitlist.count+' labs en waitlist');
