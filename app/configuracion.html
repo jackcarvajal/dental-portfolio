@@ -245,6 +245,32 @@
         <div id="edge-results" style="font-size:.76rem;font-family:monospace;background:rgba(0,0,0,.3);border-radius:8px;padding:12px;min-height:40px;color:#94a3b8;max-height:200px;overflow-y:auto;" aria-live="polite">Haz click en "Verificar todas" para comprobar el estado de cada edge function.</div>
     </div>
 
+    <!-- SEGURIDAD: Cambiar contraseña -->
+    <div class="section-card" style="margin-top:20px;">
+        <div class="section-header">
+            <div>
+                <div class="section-title"><i class="fas fa-key" style="color:#fbbf24;"></i> Seguridad — Cambiar contraseña</div>
+                <div class="section-sub">Actualiza tu contraseña de acceso al portal PRODIGY</div>
+            </div>
+        </div>
+        <div style="padding:20px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:480px;">
+                <div style="grid-column:1/-1;">
+                    <label style="font-size:.7rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">Nueva contraseña</label>
+                    <input type="password" id="cfg-pass-new" placeholder="Mínimo 8 caracteres" autocomplete="new-password" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 13px;color:#fff;font-size:.88rem;font-family:inherit;outline:none;">
+                </div>
+                <div style="grid-column:1/-1;">
+                    <label style="font-size:.7rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">Confirmar contraseña</label>
+                    <input type="password" id="cfg-pass-confirm" placeholder="Repite la contraseña" autocomplete="new-password" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 13px;color:#fff;font-size:.88rem;font-family:inherit;outline:none;">
+                </div>
+            </div>
+            <button type="button" id="cfg-pass-btn" onclick="cambiarPassConfig()" style="margin-top:12px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:#fbbf24;border-radius:8px;padding:9px 20px;font-size:.82rem;font-weight:700;cursor:pointer;">
+                <i class="fas fa-key"></i> Cambiar contraseña
+            </button>
+            <div id="cfg-pass-msg" style="font-size:.75rem;margin-top:8px;min-height:16px;" aria-live="polite"></div>
+        </div>
+    </div>
+
 </main>
 
 <div id="toast" role="status" aria-live="polite">
@@ -433,6 +459,28 @@ async function verificarEdgeFns() {
         }
     }
     el.textContent = results.join('\n');
+}
+
+async function cambiarPassConfig() {
+    const btn = document.getElementById('cfg-pass-btn');
+    const msg = document.getElementById('cfg-pass-msg');
+    const newPass = document.getElementById('cfg-pass-new').value;
+    const confirm = document.getElementById('cfg-pass-confirm').value;
+    msg.style.color = '#f87171'; msg.textContent = '';
+    if (newPass.length < 8) { msg.textContent = 'Mínimo 8 caracteres.'; return; }
+    if (newPass !== confirm) { msg.textContent = 'Las contraseñas no coinciden.'; return; }
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+    try {
+        const { error } = await sb.auth.updateUser({ password: newPass, data: { primera_vez: false } });
+        if (error) throw error;
+        msg.style.color = '#00FF41';
+        msg.textContent = '✅ Contraseña actualizada correctamente.';
+        document.getElementById('cfg-pass-new').value = '';
+        document.getElementById('cfg-pass-confirm').value = '';
+    } catch(e) {
+        msg.textContent = 'Error: ' + (e.message || 'No se pudo actualizar.');
+    }
+    btn.disabled = false; btn.innerHTML = '<i class="fas fa-key"></i> Cambiar contraseña';
 }
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
