@@ -893,12 +893,24 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
                 }, { onConflict: 'user_id', ignoreDuplicates: true }).catch(()=>{});
 
                 // Enviar WA al doctor invitándolo al portal
+                // WA notification
                 fetch('/api/wa-auto', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         whatsapp,
-                        mensaje: `🦷 *PRODIGY Lab Dental*\n\nHola ${doctor.split(' ')[0]}, recibimos tu solicitud de ${servicio}.\n\n✅ Hemos creado tu portal de seguimiento. Ingresa aquí para ver el estado en tiempo real:\n\n👉 ${portalLink}\n\n📧 Email: ${email}\n🔐 Contraseña temporal: ProdigyTemp2026!\n_(Cámbiala al ingresar)_\n\nCualquier duda: wa.me/573212816716`
+                        mensaje: `🦷 *PRODIGY Lab Dental*\n\nHola ${doctor.split(' ')[0]}, recibimos tu solicitud de ${servicio}.\n\n✅ Portal creado. Ingresa aquí:\n👉 ${portalLink}\n\n📧 ${email}\n🔐 Clave: ProdigyTemp2026!\n_(Cámbiala al ingresar)_\n\nwa.me/573212816716`
+                    })
+                }).catch(()=>{});
+                // Email de bienvenida (si Resend está configurado)
+                fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        to: email,
+                        subject: 'Bienvenido a PRODIGY Lab Dental — Tu portal está listo',
+                        tipo: 'bienvenida',
+                        text: `Hola ${doctor.split(' ')[0]}, recibimos tu caso de ${servicio}. Tu portal está listo en prodigylabdental.com/app/client-panel.html`
                     })
                 }).catch(()=>{});
             }
