@@ -162,6 +162,7 @@
           '<li><a href="envia-tu-scanner">Envía tu Escaneo</a></li>' +
           '<li><a href="seguimiento-caso">Seguimiento en Vivo</a></li>' +
           '<li><a href="soporte-tecnico">Soporte XTCERA & Alistar</a></li>' +
+          '<li><a href="preguntas"><i class="fas fa-circle-question" style="color:#D946A6;margin-right:5px;" aria-hidden="true"></i>Preguntas Frecuentes</a></li>' +
         '</ul>' +
       '</div>' +
 
