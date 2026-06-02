@@ -80,6 +80,9 @@
 /soporte-xtcera         /soporte-tecnico.html       301
 /referidos              /referidos.html             200
 /preguntas              /preguntas.html             200
+/impresion-3d           /impresion-3d.html          200
+/impresion              /impresion-3d.html          301
+/impresion-dental       /impresion-3d.html          301
 /faq                    /preguntas.html             301
 /ayuda                  /preguntas.html             301
 /mis-referidos          /app/referidos-portal.html  200
