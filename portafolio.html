@@ -535,7 +535,22 @@
     <p class="hero-desc" data-i18n="port.hero.desc">
         Casos reales de rehabilitación, estética y prótesis. Cada trabajo refleja precisión técnica y excelencia clínica.
     </p>
-    <a href="/" class="hero-back">
+    <!-- Stats bar del portafolio -->
+    <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:24px;" aria-label="Estadísticas del portafolio">
+        <div style="text-align:center;padding:10px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(212,175,55,.15);border-radius:12px;">
+            <div id="port-count-total" style="font-size:1.5rem;font-weight:900;color:#D4AF37;">—</div>
+            <div style="font-size:.62rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Casos publicados</div>
+        </div>
+        <div style="text-align:center;padding:10px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(0,210,255,.15);border-radius:12px;">
+            <div style="font-size:1.5rem;font-weight:900;color:#00d2ff;">8.000+</div>
+            <div style="font-size:.62rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Casos totales procesados</div>
+        </div>
+        <div style="text-align:center;padding:10px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(0,255,65,.15);border-radius:12px;">
+            <div style="font-size:1.5rem;font-weight:900;color:#00FF41;">±50μm</div>
+            <div style="font-size:.62rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Tolerancia de fresado</div>
+        </div>
+    </div>
+    <a href="/" class="hero-back" style="margin-top:16px;">
         <i class="fas fa-arrow-left"></i> <span data-i18n="port.hero.back">Volver al inicio</span>
     </a>
 </section>
@@ -931,5 +946,21 @@ document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') e.
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});gtag('js',new Date());gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});</script>
     <script>if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script>
+// Contador de casos publicados (idle)
+(function(){
+  function loadCount(){
+    fetch('https://zgihrwqfyvgyapbwzkvw.supabase.co/rest/v1/casos_portafolio?publicado=eq.true&select=id&limit=1',{
+      headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634','Prefer':'count=exact','Range':'0-0'}
+    }).then(r=>{
+      var count=parseInt((r.headers.get('content-range')||'').split('/')[1]||'0',10);
+      var el=document.getElementById('port-count-total');
+      if(el&&count>0) el.textContent=count+'+';
+    }).catch(function(){});
+  }
+  if('requestIdleCallback'in window) requestIdleCallback(loadCount,{timeout:3000});
+  else setTimeout(loadCount,1500);
+})();
+</script>
 </body>
 </html>
