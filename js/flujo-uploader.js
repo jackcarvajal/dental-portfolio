@@ -45,8 +45,24 @@
         const urls = [];
         const safeOrderId = (orderId || 'sin-id').replace(/[^a-zA-Z0-9_-]/g, '-');
 
+        const MAX_FILE_MB = 500; // STL/PLY pueden ser grandes
+        const ALLOWED_EXTS = ['.stl','.ply','.obj','.dcm','.zip','.jpg','.jpeg','.png','.pdf','.3oxz','.constructionfile'];
+
         for (let i = 0; i < files.length; i++) {
             const f        = files[i];
+            const ext      = ('.' + f.name.split('.').pop()).toLowerCase();
+
+            // Validar extensión permitida
+            if (!ALLOWED_EXTS.includes(ext)) {
+                console.warn('[FlujoUploader] Extensión no permitida:', f.name);
+                continue;
+            }
+            // Validar tamaño
+            if (f.size > MAX_FILE_MB * 1024 * 1024) {
+                console.warn('[FlujoUploader] Archivo demasiado grande:', f.name, '>', MAX_FILE_MB+'MB');
+                continue;
+            }
+
             const safeName = sanitizeFilename(f.name);
             const path     = `${uid}/${safeOrderId}/${safeName}`;
 

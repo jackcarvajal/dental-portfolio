@@ -1509,7 +1509,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                         ? `<span style="font-size:.72rem;color:#fbbf24;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:6px;padding:5px 10px">✍️ Indicar en Notas del caso</span>`
                         : `<label id="lbl-${a.id}" style="display:inline-flex;align-items:center;gap:6px;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.3);color:#D946A6;padding:6px 12px;border-radius:7px;cursor:pointer;font-size:.75rem;font-weight:700;white-space:nowrap">
                         <i class="fas fa-upload"></i> Subir
-                        <input type="file" id="file-${a.id}" style="display:none" onchange="marcarArchivoSubido('${a.id}','${a.req}',this)">
+                        <input type="file" id="file-${a.id}" style="display:none" accept=".stl,.ply,.obj,.dcm,.zip,.jpg,.jpeg,.png,.pdf,.3oxz" onchange="marcarArchivoSubido('${a.id}','${a.req}',this)">
                       </label>
                       <span id="estado-${a.id}" style="font-size:.72rem;color:#94a3b8">Sin subir</span>`}
                     </div>
@@ -1535,9 +1535,39 @@ window.submitOrden     = window.submitOrden      || function(){};
             if (!file) return;
             const estado = document.getElementById('estado-' + id);
             const lbl = document.getElementById('lbl-' + id);
+
+            // ── Validación de seguridad ──────────────────────────────
+            const MAX_MB = 500;
+            const ALLOWED_EXT = ['.stl','.ply','.obj','.dcm','.zip','.jpg','.jpeg','.png','.pdf','.3oxz'];
+            const ext = ('.' + file.name.split('.').pop()).toLowerCase();
+            if (!ALLOWED_EXT.includes(ext)) {
+                if (estado) estado.innerHTML = '<span style="color:#f87171"><i class="fas fa-times"></i> Tipo no permitido (STL, PLY, OBJ, DCM...)</span>';
+                input.value = '';
+                return;
+            }
+            if (file.size > MAX_MB * 1024 * 1024) {
+                if (estado) estado.innerHTML = `<span style="color:#f87171"><i class="fas fa-times"></i> Archivo muy grande (máx ${MAX_MB}MB)</span>`;
+                input.value = '';
+                return;
+            }
+            // Magic bytes: STL binario empieza con 80 bytes header (no "solid")
+            if (ext === '.stl') {
+                const buf = await file.slice(0, 5).arrayBuffer();
+                const header = new TextDecoder().decode(buf).toLowerCase();
+                const isASCII_STL = header.startsWith('solid');
+                // Ambos son válidos (ASCII o binario) — solo bloquear si no es STL reconocible
+                if (!isASCII_STL && file.size < 84) {
+                    if (estado) estado.innerHTML = '<span style="color:#f87171"><i class="fas fa-times"></i> Archivo STL inválido</span>';
+                    input.value = '';
+                    return;
+                }
+            }
+
             if (estado) { estado.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:#D4AF37"></i> Subiendo…'; }
 
-            const path = `casos/${Date.now()}_${file.name.replace(/\s/g,'_')}`;
+            // Nombre seguro: solo alphanumeric, guiones y extensión
+            const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,80);
+            const path = `casos/${Date.now()}_${safeName}`;
             try {
                 const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
                 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';

@@ -987,9 +987,26 @@ function onDownload(nombre) {
 /* ─── SUBIR FOTOS (helper) ─── */
 async function uploadFotos(files, prefix, barEl, statEl) {
   const urls = []; const total = files.length; let done = 0, errors = 0;
+  const MAX_IMG_MB = 20;
+  const ALLOWED_IMG = ['jpg','jpeg','png','webp','gif','heic','heif','pdf'];
   for (const f of files) {
+    // Validación de tipo y tamaño
+    const ext = (f.name.split('.').pop()||'').toLowerCase();
+    if (!ALLOWED_IMG.includes(ext)) {
+      errors++; done++;
+      console.warn('[PRODIGY] Tipo no permitido:', f.name);
+      barEl.style.width = Math.round((done/total)*100)+'%';
+      continue;
+    }
+    if (f.size > MAX_IMG_MB * 1024 * 1024) {
+      errors++; done++;
+      console.warn('[PRODIGY] Archivo muy grande:', f.name, '>', MAX_IMG_MB+'MB');
+      barEl.style.width = Math.round((done/total)*100)+'%';
+      continue;
+    }
     statEl.textContent = `Subiendo ${f.name}…`;
-    const path = `${PID}/${prefix}/${Date.now()}_${f.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+    const safeName = f.name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,80);
+    const path = `${PID}/${prefix}/${Date.now()}_${safeName}`;
     const { error } = await sb.storage.from('diseno-archivos').upload(path, f, {upsert:true});
     if (!error) {
       urls.push(sb.storage.from('diseno-archivos').getPublicUrl(path).data.publicUrl);
