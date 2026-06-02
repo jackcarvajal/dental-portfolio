@@ -199,8 +199,23 @@ body.ready { visibility: visible; }
       <button type="button" onclick="this.closest('#alerta-cotiz').style.display='none'" style="background:none;border:none;color:#475569;cursor:pointer;font-size:.8rem;">✕</button>
     </div>
 
+    <!-- Filtros rápidos -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
+        <input type="search" id="op-search" placeholder="Buscar doctor, código, material..." oninput="filtrarOperator()" aria-label="Buscar casos" style="flex:1;min-width:200px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 14px;color:#fff;font-family:inherit;font-size:.82rem;outline:none;">
+        <select id="op-estado-fil" onchange="filtrarOperator()" aria-label="Filtrar por estado" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-family:inherit;font-size:.82rem;outline:none;cursor:pointer;">
+            <option value="">Todos los estados</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="produccion">En producción</option>
+            <option value="completado">Completados</option>
+            <option value="urgente">Urgentes</option>
+        </select>
+        <button type="button" onclick="filtrarOperator()" style="background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.25);color:#00d2ff;border-radius:8px;padding:8px 14px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;"><i class="fas fa-filter"></i> Filtrar</button>
+        <button type="button" id="btn-refresh-op" onclick="cargarPedidos()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:8px;padding:8px 14px;font-size:.78rem;cursor:pointer;font-family:inherit;"><i class="fas fa-rotate-right"></i></button>
+        <span id="op-count-label" style="font-size:.72rem;color:#475569;white-space:nowrap;"></span>
+    </div>
+
     <!-- Kanban -->
-    <div class="kanban">
+    <div class="kanban" id="kanban-op">
         <div class="k-col">
             <div class="k-hdr" style="color:var(--yellow)">
                 Pendientes / Validar <span class="k-count" id="cnt-pend">0</span>
@@ -401,6 +416,35 @@ const COMPLETADOS = ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO
 })();
 
 // ── Cargar pedidos ────────────────────────────────────────────────
+function filtrarOperator() {
+    const q = (document.getElementById('op-search')?.value || '').toLowerCase().trim();
+    const est = document.getElementById('op-estado-fil')?.value || '';
+    const PEND = ['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE'];
+    const PROD = ['EN_PRODUCCION','FRESADO_INICIADO','QA_APROBADO'];
+    const COMP = ['LISTO_DESPACHAR','EN_REPARTO','ENTREGADO'];
+
+    let filtrados = _pedidos;
+    if (q) filtrados = filtrados.filter(p =>
+        (p.codigo||'').toLowerCase().includes(q) ||
+        (p.nombre_doctor||'').toLowerCase().includes(q) ||
+        (p.material||'').toLowerCase().includes(q) ||
+        (p.servicio||'').toLowerCase().includes(q)
+    );
+    if (est === 'pendiente') filtrados = filtrados.filter(p => PEND.includes(p.estado_operativo));
+    else if (est === 'produccion') filtrados = filtrados.filter(p => PROD.includes(p.estado_operativo));
+    else if (est === 'completado') filtrados = filtrados.filter(p => COMP.includes(p.estado_operativo));
+    else if (est === 'urgente') filtrados = filtrados.filter(p => p.urgente);
+
+    const lbl = document.getElementById('op-count-label');
+    if (lbl) lbl.textContent = filtrados.length < _pedidos.length ? filtrados.length + ' de ' + _pedidos.length + ' casos' : '';
+
+    // Re-renderizar con datos filtrados
+    const _orig = _pedidos;
+    _pedidos = filtrados;
+    renderKanban();
+    _pedidos = _orig;
+}
+
 async function cargarPedidos() {
     const { data, error } = await sb.from('pedidos')
         .select('id, codigo, nombre_paciente, nombre_doctor, servicio, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo, pago_estado, precio_total, whatsapp, pais, fecha_entrega_estimada')
