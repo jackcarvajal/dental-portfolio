@@ -175,7 +175,7 @@
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-inner">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                             <div class="form-group">
                                 <label>Nombre Cliente *</label>
                                 <input type="text" id="nombreCliente" placeholder="Dr. Juan Pérez" autocomplete="name">
@@ -185,6 +185,11 @@
                                 <label>WhatsApp Cliente *</label>
                                 <input type="tel" inputmode="tel" id="whatsappCliente" placeholder="3001234567" maxlength="10" oninput="validatePhone(this)" autocomplete="tel">
                                 <span class="error-tooltip" id="error-whatsappCliente"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Email * <span style="font-size:.62rem;color:#00FF41;font-weight:700;">(portal de seguimiento)</span></label>
+                                <input type="email" id="emailCliente" placeholder="doctor@clinica.com" required autocomplete="email">
+                                <span class="error-tooltip" id="error-emailCliente"></span>
                             </div>
                             <div class="form-group">
                                 <label>Ciudad *</label>

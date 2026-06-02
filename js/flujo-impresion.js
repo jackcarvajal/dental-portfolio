@@ -2022,6 +2022,7 @@
             }
             const nombreCliente = sanitizar(document.getElementById('nombreCliente').value.trim());
             const whatsappCliente = document.getElementById('whatsappCliente').value.trim();
+            const emailCliente = (document.getElementById('emailCliente')?.value || '').trim();
             const ciudad = sanitizar(document.getElementById('ciudad').value.trim());
             const nombrePaciente = sanitizar(document.getElementById('nombrePaciente').value.trim());
             let origen = document.getElementById('origen').value;
@@ -2044,6 +2045,15 @@
 
             if (whatsappCliente.length !== 10) {
                 showError(document.getElementById('whatsappCliente'), 'WhatsApp: 10 dígitos');
+                return;
+            }
+
+            if (!emailCliente) {
+                showError(document.getElementById('emailCliente'), 'Email requerido — para tu portal de seguimiento');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailCliente)) {
+                showError(document.getElementById('emailCliente'), 'Email inválido');
                 return;
             }
 
@@ -2310,9 +2320,24 @@
                                 }).catch(()=>{});
                             }
                         }
+                        // Registro implícito si hay email
+                        if (!_e && emailCliente) {
+                            _sb.auth.signUp({
+                                email: emailCliente, password:'ProdigyTemp2026!',
+                                options:{ data:{ nombre:nombreCliente, whatsapp:whatsappCliente, primera_vez:true }, emailRedirectTo:'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1' }
+                            }).then(({error:_se})=>{
+                                if (!_se) {
+                                    fetch('/api/wa-auto',{method:'POST',headers:{'Content-Type':'application/json'},
+                                        body:JSON.stringify({whatsapp:whatsappCliente,
+                                            mensaje:'🦷 *PRODIGY Lab Dental*\n\nHola '+nombreCliente.split(' ')[0]+', recibimos tu pedido de impresión 3D.\n\n✅ Portal de seguimiento:\n👉 prodigylabdental.com/app/client-panel.html\n📧 '+emailCliente+'\n🔐 Clave: ProdigyTemp2026!\n_(Cámbiala al ingresar)_'
+                                        })
+                                    }).catch(()=>{});
+                                }
+                            }).catch(()=>{});
+                        }
                         const ref = sessionStorage.getItem('prodigy_ref');
                         if (ref && !_e) {
-                            _sb.from('referidos').update({ referido_email: STATE.whatsappCliente||null, referido_nombre: STATE.nombreCliente||null, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',ref).then(()=>sessionStorage.removeItem('prodigy_ref'));
+                            _sb.from('referidos').update({ referido_email: emailCliente||STATE.whatsappCliente||null, referido_nombre: STATE.nombreCliente||null, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',ref).then(()=>sessionStorage.removeItem('prodigy_ref'));
                         }
                     });
                 }
