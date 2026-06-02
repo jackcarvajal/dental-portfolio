@@ -123,3 +123,6 @@
 # Acceso staff durante mantenimiento: /app/login.html directo
 # ─────────────────────────────────────────────────────────────
 /app/*                /app/:splat           200
+
+/alineadores-cad        /alineadores-cad.html       200
+/alineadores            /alineadores-cad.html       301
