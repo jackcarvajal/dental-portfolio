@@ -227,6 +227,15 @@
             </button>
         </div>
 
+        <!-- Widget actividad reciente -->
+        <div id="widget-actividad" style="background:rgba(13,21,32,.6);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px;margin-bottom:18px;display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#475569;"><span style="width:6px;height:6px;background:#00FF41;border-radius:50%;display:inline-block;margin-right:6px;animation:blink 2s infinite;" aria-hidden="true"></span>Actividad reciente</div>
+                <button type="button" onclick="document.getElementById('widget-actividad').style.display='none'" style="background:none;border:none;color:#475569;cursor:pointer;font-size:.8rem;" aria-label="Cerrar">✕</button>
+            </div>
+            <div id="actividad-feed" style="display:flex;flex-direction:column;gap:6px;max-height:120px;overflow-y:auto;"></div>
+        </div>
+
         <!-- KPIs -->
         <div class="kpi-grid">
             <div class="kpi-card k1">
@@ -986,6 +995,7 @@ async function verificarAdmin() {
         // Cargar datos iniciales
         await cargarPedidos();
         cargarBadgeIncidencias();
+        cargarActividadReciente();
 
         sb.channel('admin-pedidos-live')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'pedidos' }, () => { cargarPedidos(); })
@@ -2489,6 +2499,28 @@ async function cargarBadgeIncidencias() {
     const { count } = await sb.from('logs_incidencias').select('id', { count: 'exact', head: true }).eq('resuelta', false);
     const badge = document.getElementById('badge-incidencias');
     if (count > 0) { badge.style.display = 'inline'; badge.textContent = count; }
+}
+
+async function cargarActividadReciente() {
+    try {
+        const { data } = await sb.from('logs_incidencias')
+            .select('id,tipo,descripcion,created_at,pedido_id')
+            .order('created_at', { ascending: false })
+            .limit(6);
+        if (!data || !data.length) return;
+        const feed = document.getElementById('actividad-feed');
+        const widget = document.getElementById('widget-actividad');
+        if (!feed || !widget) return;
+        const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        const fmtT = d => { const diff=Date.now()-new Date(d).getTime(); if(diff<3600000) return Math.floor(diff/60000)+'min'; if(diff<86400000) return Math.floor(diff/3600000)+'h'; return Math.floor(diff/86400000)+'d'; };
+        const TIPO_COLOR = { PEDIDO_CREADO:'#00FF41', PAGO_NO_CONFIRMADO:'#f87171', PURGA_STL:'#94a3b8', TRANSICION:'#00d2ff', SUBIDA_DISENO:'#D4AF37' };
+        feed.innerHTML = data.map(l => `<div style="display:flex;gap:8px;align-items:flex-start;font-size:.72rem;">
+            <span style="width:6px;height:6px;border-radius:50%;background:${TIPO_COLOR[l.tipo]||'#475569'};flex-shrink:0;margin-top:4px;" aria-hidden="true"></span>
+            <span style="color:#e2e8f0;flex:1;line-height:1.4;">${escH((l.descripcion||l.tipo||'Evento').slice(0,80))}</span>
+            <span style="color:#334155;flex-shrink:0;">${fmtT(l.created_at)}</span>
+        </div>`).join('');
+        widget.style.display = 'block';
+    } catch(_) {}
 }
 
 /* ══════════════════════════════════════════
