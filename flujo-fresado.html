@@ -2095,7 +2095,7 @@
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-inner">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                             <div class="form-group">
                                 <label>Nombre Cliente *</label>
                                 <input type="text" id="nombreCliente" placeholder="Dr. Juan Pérez" autocomplete="name">
@@ -2105,6 +2105,12 @@
                                 <label>WhatsApp Cliente *</label>
                                 <input type="tel" inputmode="tel" id="whatsappCliente" placeholder="3001234567" maxlength="10" oninput="validatePhone(this)" autocomplete="tel">
                                 <span class="error-tooltip" id="error-whatsappCliente"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Email * <span style="font-size:.62rem;color:#00FF41;font-weight:700;">(acceso a portal de seguimiento)</span></label>
+                                <input type="email" id="emailCliente" placeholder="doctor@clinica.com" required autocomplete="email" aria-describedby="email-fres-hint">
+                                <span id="email-fres-hint" style="font-size:.62rem;color:#94a3b8;">Recibes notificaciones del estado de tu caso.</span>
+                                <span class="error-tooltip" id="error-emailCliente"></span>
                             </div>
                             <div class="form-group">
                                 <label>Ciudad *</label>
@@ -3927,6 +3933,7 @@
             }
             const nombreCliente = sanitizar(document.getElementById('nombreCliente').value.trim());
             const whatsappCliente = document.getElementById('whatsappCliente').value.trim();
+            const emailCliente = (document.getElementById('emailCliente')?.value || '').trim();
             const ciudad = sanitizar(document.getElementById('ciudad').value.trim());
             const nombrePaciente = sanitizar(document.getElementById('nombrePaciente').value.trim());
             let origen = document.getElementById('origen').value;
@@ -3949,6 +3956,16 @@
 
             if (whatsappCliente.length !== 10) {
                 showError(document.getElementById('whatsappCliente'), 'WhatsApp: 10 dígitos');
+                return;
+            }
+
+            if (emailCliente && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailCliente)) {
+                showError(document.getElementById('emailCliente'), 'Email inválido');
+                return;
+            }
+
+            if (!emailCliente) {
+                showError(document.getElementById('emailCliente'), 'Email requerido — para tu portal de seguimiento');
                 return;
             }
 
@@ -4190,9 +4207,24 @@
                                 }).catch(()=>{});
                             }
                         }
+                        // Registro implícito si hay email
+                        if (!_e && emailCliente) {
+                            _sb.auth.signUp({
+                                email: emailCliente, password:'ProdigyTemp2026!',
+                                options:{ data:{ nombre:nombreCliente, whatsapp:whatsappCliente, primera_vez:true }, emailRedirectTo:'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1' }
+                            }).then(({error:_se})=>{
+                                if (!_se) {
+                                    fetch('/api/wa-auto',{method:'POST',headers:{'Content-Type':'application/json'},
+                                        body:JSON.stringify({whatsapp:whatsappCliente,
+                                            mensaje:'🦷 *PRODIGY Lab Dental*\n\nHola '+nombreCliente.split(' ')[0]+', recibimos tu pedido de fresado.\n\n✅ Portal de seguimiento:\n👉 prodigylabdental.com/app/client-panel.html\n📧 '+emailCliente+'\n🔐 Clave: ProdigyTemp2026!\n_(Cámbiala al ingresar)_'
+                                        })
+                                    }).catch(()=>{});
+                                }
+                            }).catch(()=>{});
+                        }
                         const ref = sessionStorage.getItem('prodigy_ref');
                         if (ref && !_e) {
-                            _sb.from('referidos').update({ referido_email: STATE.whatsappCliente||null, referido_nombre: STATE.nombreCliente||null, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',ref).then(()=>sessionStorage.removeItem('prodigy_ref'));
+                            _sb.from('referidos').update({ referido_email: emailCliente||STATE.whatsappCliente||null, referido_nombre: STATE.nombreCliente||null, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',ref).then(()=>sessionStorage.removeItem('prodigy_ref'));
                         }
                     });
                 }
