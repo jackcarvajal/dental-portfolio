@@ -554,6 +554,10 @@
             cerrarModalNoEncontrado();
             document.getElementById('resultado').style.display = 'block';
 
+            // Activar realtime para este caso
+            const cod = (caso.codigo || caso.numeroOrden || '').toUpperCase();
+            if (cod) activarRealtime(cod);
+
             document.getElementById('nombrePacienteDisplay').textContent = 'Caso Registrado';
             document.getElementById('ordenDisplay').textContent = caso.codigo || caso.numeroOrden || '—';
 
@@ -721,6 +725,10 @@
 
         /* ── AUTO-RELEASE: genera URL firmada desde bucket dental-cases ── */
         let _sbSeg = null;
+        let _rtChannel = null;
+        let _pollTimer = null;
+        let _casoActualCodigo = null;
+
         function getSbSeg() {
             if (_sbSeg) return _sbSeg;
             _sbSeg = window.supabase.createClient(
@@ -728,6 +736,63 @@
                 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634'
             );
             return _sbSeg;
+        }
+
+        // Activar realtime + polling cuando se carga un caso
+        function activarRealtime(codigo) {
+            if (_casoActualCodigo === codigo) return; // ya activo
+            _casoActualCodigo = codigo;
+
+            // Limpiar anterior
+            if (_rtChannel) { getSbSeg().removeChannel(_rtChannel); _rtChannel = null; }
+            clearInterval(_pollTimer);
+
+            // Realtime via Supabase
+            _rtChannel = getSbSeg().channel('seg-'+codigo)
+                .on('postgres_changes', { event:'UPDATE', schema:'public', table:'pedidos' }, (payload) => {
+                    if ((payload.new.codigo || '').toUpperCase() === codigo) {
+                        mostrarCaso(payload.new);
+                        _mostrarToastActualiz('Estado actualizado en tiempo real');
+                    }
+                })
+                .subscribe();
+
+            // Polling de respaldo cada 60s
+            _pollTimer = setInterval(async () => {
+                try {
+                    const sb = getSbSeg();
+                    const { data } = await sb.rpc('buscar_pedido_publico', { p_codigo: codigo });
+                    if (data) mostrarCaso(data);
+                } catch(_) {}
+            }, 60000);
+
+            // Badge LIVE
+            _mostrarBadgeLive(true);
+        }
+
+        function _mostrarBadgeLive(on) {
+            let badge = document.getElementById('live-badge-seg');
+            if (!badge) {
+                badge = document.createElement('div');
+                badge.id = 'live-badge-seg';
+                badge.style.cssText = 'position:fixed;top:68px;right:16px;background:rgba(0,255,65,.12);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:20px;padding:5px 12px;font-size:.68rem;font-weight:800;letter-spacing:.5px;z-index:9000;display:flex;align-items:center;gap:6px;';
+                badge.innerHTML = '<span style="width:6px;height:6px;background:#00FF41;border-radius:50%;animation:blink2 2s infinite;"></span> LIVE';
+                document.body.appendChild(badge);
+            }
+            badge.style.display = on ? 'flex' : 'none';
+        }
+
+        function _mostrarToastActualiz(msg) {
+            const t = document.createElement('div');
+            t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,255,65,.12);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:10px;padding:10px 20px;font-size:.78rem;font-weight:700;z-index:9999;animation:_seg_slide .3s ease;';
+            t.textContent = '🔄 ' + msg;
+            if (!document.getElementById('_seg_css')) {
+                const s=document.createElement('style'); s.id='_seg_css';
+                s.textContent='@keyframes _seg_slide{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}';
+                document.head.appendChild(s);
+            }
+            document.body.appendChild(t);
+            setTimeout(()=>{ t.style.transition='opacity .4s'; t.style.opacity='0'; setTimeout(()=>t.remove(),400); }, 3000);
         }
 
         async function descargar(tipo, ruta) {

@@ -562,6 +562,27 @@ function cardHTML(p, colId, dept) {
 
 /* ── Avanzar estado ── */
 async function avanzar(id, nuevoEstado, dept) {
+  // ── PROTOCOLO DE PAGO: verificar antes de iniciar producción ──
+  const ESTADOS_REQUIEREN_PAGO = ['EN_PRODUCCION','FRESADO_INICIADO','EN_IMPRESION'];
+  if (ESTADOS_REQUIEREN_PAGO.includes(nuevoEstado)) {
+      const { data: pedido } = await sb.from('pedidos')
+          .select('pago_estado,codigo,nombre_doctor')
+          .eq('id', id).single();
+      const pagoOk = pedido?.pago_estado === 'pago_confirmado';
+      if (!pagoOk) {
+          const forzar = confirm(
+              `⚠️ ALERTA DE PAGO\n\nCaso ${pedido?.codigo || id}\nDoctor: ${pedido?.nombre_doctor || '—'}\n\nEl pago NO está confirmado (estado: ${pedido?.pago_estado || 'pendiente'}).\n\n¿Deseas iniciar producción de todas formas?\n(Solo si tienes confirmación externa del pago)`
+          );
+          if (!forzar) { toast('Producción cancelada — pago pendiente','err'); return; }
+          // Log de excepción
+          await sb.from('logs_incidencias').insert({
+              pedido_id: id, tipo:'PAGO_NO_CONFIRMADO', severidad:'ADVERTENCIA',
+              descripcion: `Producción iniciada sin pago_confirmado. Estado pago: ${pedido?.pago_estado}. Operario: ${_userEmail||'?'}`,
+              resuelta: false
+          }).catch(()=>{});
+      }
+  }
+
   const updates = { estado_operativo: nuevoEstado };
   if (nuevoEstado === 'EN_PRODUCCION')    updates.timestamp_validacion = new Date().toISOString();
   if (nuevoEstado === 'FRESADO_INICIADO') updates.timestamp_produccion  = new Date().toISOString();
