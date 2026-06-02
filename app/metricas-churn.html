@@ -88,6 +88,18 @@
     </div>
     <p style="font-size:.72rem;color:#334155;margin-top:12px;">El cron de resumen semanal activa churn-alert los lunes. También puedes dispararlo manualmente con el botón "Enviar alertas WA".</p>
   </div>
+
+  <!-- Distribución de riesgo -->
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title"><i class="fas fa-chart-pie" style="color:var(--mg);" aria-hidden="true"></i> Distribución de riesgo (últimos 90 días)</div>
+    <div id="riesgo-dist" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  </div>
+
+  <!-- Doctores en riesgo por valor CLV -->
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title"><i class="fas fa-trophy" style="color:var(--gold);" aria-hidden="true"></i> Top doctores en riesgo (por CLV)</div>
+    <div id="churn-clv" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  </div>
 </main>
 
 <script src="../js/auth-guard.js?v=20260601"></script>
@@ -107,8 +119,47 @@ document.addEventListener('DOMContentLoaded',()=>{
 async function cargarTodo(){
   const btn=document.getElementById('btnR');
   btn.innerHTML='<i class="fas fa-spinner fa-spin"></i>';btn.disabled=true;
-  await cargarChurn();
+  await Promise.all([cargarChurn(), cargarDistribucion(), cargarChurnCLV()]);
   btn.innerHTML='<i class="fas fa-rotate-right"></i> Actualizar';btn.disabled=false;
+}
+
+async function cargarDistribucion(){
+  const el=document.getElementById('riesgo-dist');
+  if(!el) return;
+  try{
+    const{data}=await sb.from('doctors_inactivos').select('nivel_riesgo,email',{count:'exact'});
+    if(!data||!data.length){el.innerHTML='<p style="color:#475569;font-size:.78rem;padding:12px;">Sin datos.</p>';return;}
+    const counts={CRITICO:0,ALERTA:0,VIGILAR:0};
+    data.forEach(d=>{ if(counts[d.nivel_riesgo]!==undefined) counts[d.nivel_riesgo]++; });
+    const total=data.length||1;
+    const bars=['CRITICO|#ef4444','ALERTA|#f59e0b','VIGILAR|#94a3b8'];
+    el.innerHTML='<div style="display:flex;flex-direction:column;gap:8px;padding:8px 0;">'+
+      bars.map(b=>{const[nivel,color]=b.split('|');const n=counts[nivel];const pct=Math.round(n/total*100);
+        return `<div style="display:flex;align-items:center;gap:10px;"><div style="font-size:.72rem;color:${color};min-width:70px;font-weight:700;">${nivel}</div><div style="flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:10px;overflow:hidden;"><div style="height:100%;background:${color};width:${pct}%;border-radius:4px;transition:width .6s;"></div></div><div style="font-size:.72rem;font-weight:700;color:${color};min-width:36px;text-align:right;">${n} (${pct}%)</div></div>`;
+      }).join('')+'</div>';
+  }catch(e){el.innerHTML='<p style="color:#f87171;font-size:.78rem;">'+escH(e.message)+'</p>';}
+}
+
+async function cargarChurnCLV(){
+  const el=document.getElementById('churn-clv');
+  if(!el) return;
+  try{
+    const{data}=await sb.from('doctors_inactivos').select('email,nombre_doctor,nivel_riesgo,dias_inactivo,valor_total_pagado').order('valor_total_pagado',{ascending:false}).limit(8);
+    if(!data||!data.length){el.innerHTML='<p style="color:#475569;font-size:.78rem;padding:12px;">Sin datos.</p>';return;}
+    const COLORS={CRITICO:'#ef4444',ALERTA:'#f59e0b',VIGILAR:'#94a3b8'};
+    el.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:.75rem;"><thead><tr style="border-bottom:1px solid rgba(255,255,255,.06);">'+
+      '<th style="padding:8px;text-align:left;color:#475569;">Doctor</th>'+
+      '<th style="padding:8px;text-align:center;color:#475569;">Riesgo</th>'+
+      '<th style="padding:8px;text-align:right;color:#475569;">Días inactivo</th>'+
+      '<th style="padding:8px;text-align:right;color:#475569;">CLV</th>'+
+      '</tr></thead><tbody>'+
+      data.map(d=>`<tr style="border-bottom:1px solid rgba(255,255,255,.03);">
+        <td style="padding:8px;">${escH(d.nombre_doctor||d.email||'—')}</td>
+        <td style="padding:8px;text-align:center;"><span style="color:${COLORS[d.nivel_riesgo]||'#94a3b8'};font-weight:700;font-size:.7rem;">${escH(d.nivel_riesgo||'—')}</span></td>
+        <td style="padding:8px;text-align:right;color:#94a3b8;">${d.dias_inactivo||'—'}d</td>
+        <td style="padding:8px;text-align:right;font-weight:700;color:#D4AF37;">${fmtCOP(d.valor_total_pagado||0)}</td>
+      </tr>`).join('')+'</tbody></table>';
+  }catch(e){el.innerHTML='<p style="color:#f87171;font-size:.78rem;">'+escH(e.message)+'</p>';}
 }
 
 async function cargarChurn(){
