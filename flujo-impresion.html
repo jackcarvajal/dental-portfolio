@@ -675,6 +675,9 @@
             <button type="button" class="payment-btn btn-submit" id="btn-submit" onclick="submitOrder()" disabled>
                 🚀 GENERAR ORDEN 🎯
             </button>
+            <button type="button" id="btn-borrador-imp" onclick="guardarBorradorImp()" style="width:100%;margin-top:10px;padding:11px;background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.2);color:#94a3b8;border-radius:10px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;">
+                <i class="fa-regular fa-bookmark" aria-hidden="true"></i> Guardar borrador
+            </button>
 
             <div style="margin-top: 20px; padding: 15px; background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.2); border-radius: 8px; font-size: 0.85rem; color: #ccc;">
                 <strong style="color: var(--gold-primary); display: block; margin-bottom: 8px;"><i class="fas fa-book"></i> Especificaciones y Protocolos Técnicos</strong>
@@ -1156,6 +1159,26 @@
             document.body.classList.add('light-theme');
             setTimeout(() => { document.querySelectorAll('[id="theme-btn"]').forEach(b => b.textContent = '☀️'); }, 0);
         }
+
+        /* ── BORRADOR flujo-impresion ─────────────────────────── */
+        const BORRADOR_IMP_KEY = 'prodigy_fi_borrador';
+        function guardarBorradorImp() {
+            try {
+                const campos=['fi-nombre','fi-wa','fi-email','fi-clinica'];
+                const data={ts:Date.now(),expira:Date.now()+7*24*60*60*1000};
+                campos.forEach(id=>{const el=document.getElementById(id);if(el)data[id]=el.value;});
+                localStorage.setItem(BORRADOR_IMP_KEY,JSON.stringify(data));
+                const btn=document.getElementById('btn-borrador-imp');
+                if(btn){btn.innerHTML='<i class="fas fa-bookmark"></i> Borrador guardado';btn.style.color='#00FF41';setTimeout(()=>{btn.innerHTML='<i class="fa-regular fa-bookmark"></i> Guardar borrador';btn.style.color='#94a3b8';},3000);}
+            } catch(_) {}
+        }
+        (function cargarBorradorImp(){
+            try{
+                const raw=localStorage.getItem(BORRADOR_IMP_KEY);if(!raw)return;
+                const data=JSON.parse(raw);if(data.expira&&Date.now()>data.expira){localStorage.removeItem(BORRADOR_IMP_KEY);return;}
+                ['fi-nombre','fi-wa','fi-email','fi-clinica'].forEach(id=>{if(data[id]){const el=document.getElementById(id);if(el)el.value=data[id];}});
+            }catch(_){}
+        })();
     </script>
     <!-- FLOTANTES UX -->
 

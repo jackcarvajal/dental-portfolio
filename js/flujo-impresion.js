@@ -2263,10 +2263,17 @@
             try {
                 const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
                 if (_sb) {
+                    // Obtener user_id y email de sesión activa
+                    const _sess = (await _sb.auth.getSession()).data?.session;
+                    const _uid = _sess?.user?.id || null;
+                    const _email = _sess?.user?.email || null;
                     const _fechaElem = document.getElementById('fecha-entrega');
                     const _fechaTxt  = _fechaElem ? (_fechaElem.innerText||_fechaElem.textContent).replace('Entrega estimada: ','').trim() : null;
                     _sb.from('pedidos').insert([{
                         codigo:           STATE.ordenId,
+                        user_id:          _uid,
+                        email:            _email,
+                        negocio:          'prodigy',
                         doctor:           STATE.nombreCliente,
                         whatsapp:         STATE.whatsappCliente,
                         servicio:         CONFIG.materiales[STATE.materialTipo]?.nom || STATE.materialTipo,
@@ -2291,8 +2298,18 @@
                         costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0,
                         pedido_diseno_id:       (typeof _disenoPedidoId !== 'undefined' ? _disenoPedidoId : null),
                         codigo_referido:        sessionStorage.getItem('prodigy_ref') || null
-                    }]).then(({ error: _e }) => {
-                        if (_e) console.warn('[PRODIGY] Pedido no guardado en BD:', _e.message);
+                    }]).then(({ data: _d, error: _e }) => {
+                        if (_e) console.warn('[PRODIGY] Pedido impresion no guardado:', _e.message);
+                        else {
+                            const _pid = _d?.[0]?.id || null;
+                            if (_pid) {
+                                _sb.from('logs_incidencias').insert({
+                                    pedido_id: _pid, tipo:'PEDIDO_CREADO', severidad:'INFO',
+                                    descripcion:`Pedido impresión ${STATE.ordenId} creado por ${_email||STATE.whatsappCliente}. Material: ${STATE.materialTipo}. Total: ${STATE.total}.`,
+                                    resuelta: true
+                                }).catch(()=>{});
+                            }
+                        }
                         const ref = sessionStorage.getItem('prodigy_ref');
                         if (ref && !_e) {
                             _sb.from('referidos').update({ referido_email: STATE.whatsappCliente||null, referido_nombre: STATE.nombreCliente||null, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',ref).then(()=>sessionStorage.removeItem('prodigy_ref'));
