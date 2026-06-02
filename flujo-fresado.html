@@ -4216,7 +4216,7 @@
                                 if (!_se) {
                                     fetch('/api/wa-auto',{method:'POST',headers:{'Content-Type':'application/json'},
                                         body:JSON.stringify({whatsapp:whatsappCliente,
-                                            mensaje:'🦷 *PRODIGY Lab Dental*\n\nHola '+nombreCliente.split(' ')[0]+', recibimos tu pedido de fresado.\n\n✅ Portal de seguimiento:\n👉 prodigylabdental.com/app/client-panel.html\n📧 '+emailCliente+'\n🔐 Clave: ProdigyTemp2026!\n_(Cámbiala al ingresar)_'
+                                            mensaje:'🦷 *PRODIGY Lab Dental*\n\nHola '+nombreCliente.split(' ')[0]+', recibimos tu pedido de fresado.\n\n✅ Portal de seguimiento:\n👉 prodigylabdental.com/app/login.html?nuevo=1\n📧 '+emailCliente+'\n🔐 Clave: ProdigyTemp2026!\n_(Cámbiala al ingresar)_'
                                         })
                                     }).catch(()=>{});
                                 }

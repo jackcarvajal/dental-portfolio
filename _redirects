@@ -90,6 +90,10 @@
 /mis-cotizaciones       /app/client-panel.html      301
 /metricas               /app/metricas.html          301
 /instalar               /instalar-app.html          301
+/cambiar-clave          /app/cambiar-contrasena.html 200
+/cambiar-contrasena     /app/cambiar-contrasena.html 200
+/mi-portal              /app/client-panel.html      301
+/portal-cliente         /app/client-panel.html      301
 /soporte-alistar        /soporte-tecnico.html       301
 # /guia-tecnica           /guia-tecnica.html          200  ← CF sirve nativo
 # /diseno-remoto          /diseno-remoto.html         200  ← CF sirve nativo

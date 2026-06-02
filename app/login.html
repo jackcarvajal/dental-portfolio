@@ -408,6 +408,12 @@
         <p>Acceso Profesional · CAD/CAM Digital</p>
     </div>
 
+    <!-- Hint para nuevos usuarios (registro implícito) -->
+    <div id="hint-nuevo-usuario" style="display:none;background:rgba(0,255,65,.07);border:1px solid rgba(0,255,65,.2);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:.75rem;color:#94a3b8;line-height:1.6;">
+        <i class="fas fa-circle-info" style="color:#00FF41;margin-right:6px;" aria-hidden="true"></i>
+        <strong style="color:#00FF41;">¡Bienvenido!</strong> Acabamos de crear tu cuenta. Usa el email y la clave temporal <strong style="color:#fff;">ProdigyTemp2026!</strong> para ingresar. <span style="color:#fbbf24;">Te pediremos que la cambies al entrar.</span>
+    </div>
+
     <!-- LIVE INDICATOR -->
     <div style="text-align:center;">
         <span class="live-badge"><span class="live-dot"></span> Operadores en línea ahora</span>
@@ -612,6 +618,20 @@
     const params = new URLSearchParams(window.location.search);
     document.getElementById('banner-cotizar').style.display =
         (params.get('msg') === 'cotizar' || params.get('msg') === 'sesion') ? 'flex' : 'none';
+
+    // Hint para nuevos usuarios (registro implícito)
+    if (params.get('nuevo') === '1') {
+        const hint = document.getElementById('hint-nuevo-usuario');
+        if (hint) hint.style.display = 'block';
+        // Pre-rellenar email si viene en URL
+        const emailNuevo = params.get('email');
+        if (emailNuevo) {
+            const ef = document.getElementById('login-email');
+            if (ef) ef.value = decodeURIComponent(emailNuevo);
+            const pf = document.getElementById('login-pass');
+            if (pf) pf.value = 'ProdigyTemp2026!';
+        }
+    }
 
     // Pre-llenar formulario si viene del mini-login del topbar
     const tbEmail = sessionStorage.getItem('tb_email');
