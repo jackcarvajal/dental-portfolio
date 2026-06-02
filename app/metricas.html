@@ -135,6 +135,12 @@
     <div id="clv-tabla" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
   </div>
 
+  <!-- Analytics propios — Funnel de eventos -->
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--mg);" aria-hidden="true"></i> Funnel de eventos propios (30d) <span style="font-size:.65rem;color:#475569;font-weight:400;">vía /api/track-event</span></div>
+    <div id="analytics-funnel" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  </div>
+
   <div style="text-align:center;font-size:.7rem;color:#334155;padding:16px 0;" id="ultima-actualizacion">Cargando datos...</div>
 </main>
 
@@ -173,7 +179,8 @@ async function cargarTodo() {
       cargarForecast(),
       cargarFunnelProdigy(),
       cargarCotizRecientesProdigy(),
-      cargarCLV()
+      cargarCLV(),
+      cargarAnalyticsFunnel()
     ]);
     document.getElementById('ultima-actualizacion').textContent = 'Actualizado: ' + new Date().toLocaleString('es-CO',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
   } catch(e) {
@@ -398,6 +405,57 @@ async function cargarCLV() {
         </tr>`;
       }).join('')}</tbody></table></div>`;
   } catch(e){ el.innerHTML=`<p style="color:#475569;font-size:.75rem;padding:12px;"><i class="fas fa-info-circle"></i> Ejecuta sql/analytics-conversion-rpc.sql para activar este panel.</p>`; }
+}
+
+async function cargarAnalyticsFunnel() {
+  const el = document.getElementById('analytics-funnel');
+  if (!el) return;
+  try {
+    // Usar RPC propio si está disponible
+    const { data, error } = await sb.rpc('prodigy_funnel', { p_negocio: 'prodigy', p_dias: 30 });
+    if (error || !data || !data.length) {
+      // Fallback: contar directamente
+      const [vis, cot, ped] = await Promise.all([
+        sb.from('analytics_events').select('id',{count:'exact',head:true}).eq('evento','page_view').eq('negocio','prodigy').gte('created_at', new Date(Date.now()-30*86400000).toISOString()),
+        sb.from('analytics_events').select('id',{count:'exact',head:true}).eq('evento','calculator_use').eq('negocio','prodigy').gte('created_at', new Date(Date.now()-30*86400000).toISOString()),
+        sb.from('analytics_events').select('id',{count:'exact',head:true}).eq('evento','pedido_completado').eq('negocio','prodigy').gte('created_at', new Date(Date.now()-30*86400000).toISOString()),
+      ]);
+      const etapas = [
+        {etapa:'Visitas totales',v:vis.count||0,color:'#D4AF37'},
+        {etapa:'Usan calculadora',v:cot.count||0,color:'#00d2ff'},
+        {etapa:'Completan pedido',v:ped.count||0,color:'#00FF41'},
+      ];
+      const max = Math.max(...etapas.map(e=>e.v),1);
+      el.innerHTML = '<div style="padding:8px 0;display:flex;flex-direction:column;gap:10px;">' +
+        etapas.map(e => `<div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:.72rem;color:#94a3b8;min-width:140px;">${e.etapa}</div>
+          <div style="flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:10px;overflow:hidden;">
+            <div style="height:100%;background:${e.color};width:${Math.round(e.v/max*100)}%;border-radius:4px;transition:width .6s;"></div>
+          </div>
+          <div style="font-size:.75rem;font-weight:800;color:${e.color};min-width:36px;text-align:right;">${e.v}</div>
+        </div>`).join('') + '</div>' +
+        '<p style="font-size:.65rem;color:#334155;margin-top:8px;">Datos de /api/track-event — últimos 30 días. <a href="../sql/analytics-events-table.sql" style="color:#475569;">Ver SQL →</a></p>';
+      return;
+    }
+    // Renderizar con datos RPC
+    const max = Math.max(...data.map(d=>Number(d.total)||0), 1);
+    el.innerHTML = '<div style="padding:8px 0;display:flex;flex-direction:column;gap:10px;">' +
+      data.map((d,i) => {
+        const colors=['#D4AF37','#00d2ff','#D946A6','#00FF41'];
+        const color=colors[i%colors.length];
+        const pct=Math.round(Number(d.total)/max*100);
+        return `<div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:.72rem;color:#94a3b8;min-width:140px;">${escH(d.etapa)}</div>
+          <div style="flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:10px;overflow:hidden;">
+            <div style="height:100%;background:${color};width:${pct}%;border-radius:4px;transition:width .6s;"></div>
+          </div>
+          <div style="font-size:.75rem;font-weight:800;color:${color};min-width:36px;text-align:right;">${d.total}</div>
+          <div style="font-size:.65rem;color:#475569;min-width:40px;">${d.tasa_conversion}%</div>
+        </div>`;
+      }).join('') + '</div>';
+  } catch(e) {
+    el.innerHTML = `<p style="color:#475569;font-size:.75rem;padding:12px;">Ejecuta sql/analytics-events-table.sql para activar. ${escH(e.message)}</p>`;
+  }
 }
 </script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
