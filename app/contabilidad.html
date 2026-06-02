@@ -171,6 +171,14 @@ tbody td{padding:11px 14px;vertical-align:middle;}
             <div class="kpi-num" id="kpi-saldos-pend" style="color:var(--yellow)">—</div>
             <div class="kpi-lbl">Saldos x cobrar</div>
         </div>
+        <div class="kpi">
+            <div class="kpi-num" id="kpi-tasa-cobro" style="color:#00d2ff">—</div>
+            <div class="kpi-lbl">Tasa de cobro</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-num" id="kpi-ticket-prom" style="color:#D946A6">—</div>
+            <div class="kpi-lbl">Ticket promedio</div>
+        </div>
     </div>
 
     <!-- Tabs -->
@@ -840,6 +848,18 @@ async function cargarHistorial() {
     const esMes = desde === new Date(hoy.getFullYear(), hoy.getMonth(), 1).toISOString().slice(0,10);
     if (esMes || esHoy) {
         document.getElementById('kpi-cobrado-mes').textContent = fmtCOP(totalCobrado) || '—';
+        // Tasa de cobro y ticket promedio
+        const tasaEl = document.getElementById('kpi-tasa-cobro');
+        const ticketEl = document.getElementById('kpi-ticket-prom');
+        // Calcular tasa de cobro vs total pendiente
+        sb.from('pedidos').select('precio_total,pago_estado',{count:'exact',head:false}).gte('created_at',desde).then(({data:allData})=>{
+            if(allData&&allData.length>0){
+                const totalAll=allData.reduce((s,p)=>s+(Number(p.precio_total)||0),0);
+                const tasa=totalAll>0?Math.round(totalCobrado/totalAll*100):0;
+                if(tasaEl) tasaEl.textContent=tasa+'%';
+            }
+        }).catch(()=>{});
+        if(ticketEl) ticketEl.textContent=fmtCOP(ticketProm)||'—';
     }
 
     // Total bar
