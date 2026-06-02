@@ -877,8 +877,8 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
                 email,
                 password: 'ProdigyTemp2026!',  // contraseña temporal — el usuario la cambiará
                 options: {
-                    data: { nombre: doctor, clinica, whatsapp, rol_solicitado: 'client' },
-                    emailRedirectTo: 'https://prodigylabdental.com/app/client-panel.html'
+                    data: { nombre: doctor, clinica, whatsapp, rol_solicitado: 'client', primera_vez: true },
+                    emailRedirectTo: 'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1'
                 }
             });
             if (!signUpErr && signUpData?.user) {

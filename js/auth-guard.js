@@ -64,6 +64,21 @@
             window.location.href = loginUrl || 'login.html';
             return null;
         }
+
+        // ── SEGURIDAD: Cambio de contraseña obligatorio en primer acceso ──
+        // Se activa cuando el usuario fue creado con registro implícito (primera_vez=true)
+        const meta = session.user.user_metadata || {};
+        const isPrimerAcceso = meta.primera_vez === true;
+        const isChangingPassword = window.location.pathname.includes('cambiar-contrasena') ||
+                                    window.location.pathname.includes('reset-password') ||
+                                    window.location.pathname.includes('configuracion');
+        if (isPrimerAcceso && !isChangingPassword) {
+            // Guardar destino para volver después de cambiar contraseña
+            const dest = encodeURIComponent(window.location.href);
+            window.location.href = 'cambiar-contrasena.html?primera_vez=1&next=' + dest;
+            return null;
+        }
+
         const role = getRole(session.user);
         const allowed = Array.isArray(neededRole) ? neededRole : (neededRole ? [neededRole] : null);
         if (allowed && !allowed.includes(role)) {
