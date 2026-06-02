@@ -1704,6 +1704,10 @@ function actualizarKPIs(data) {
         const alerts=[];
         if((cots.count||0)>0) alerts.push('📋 '+cots.count+' cotizaciones sin convertir');
         if((waitlist.count||0)>0) alerts.push('🧪 '+waitlist.count+' labs en waitlist');
+        // Cotizaciones por vencer en 7 días
+        sb.rpc('prodigy_cotizaciones_por_vencer',{p_dias:7}).then(({data:cv})=>{
+          if(cv&&cv.length>0) alerts.push('⏰ '+cv.length+' cotizaciones vencen en 7d');
+        }).catch(()=>{});
         if(alerts.length>0){
             const bar=document.createElement('div');
             bar.style.cssText='background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:10px;padding:9px 16px;margin-bottom:12px;font-size:.75rem;color:#D4AF37;display:flex;gap:12px;flex-wrap:wrap;';
