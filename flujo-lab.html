@@ -553,12 +553,28 @@
         (<a href="/terminos-y-legal" target="_blank" rel="noopener noreferrer" style="color:#00d2ff;">Política de privacidad</a>)
       </label>
     </div>
+    <!-- Estimador de entrega lab -->
+    <div id="delivery-estimator-lab" style="background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:10px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+      <i class="fas fa-clock" style="color:#D4AF37;font-size:1.1rem;" aria-hidden="true"></i>
+      <div>
+        <div style="font-size:.72rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Entrega estimada</div>
+        <div id="delivery-time-lab" style="font-size:.9rem;font-weight:900;color:#D4AF37;">24–48 horas hábiles</div>
+        <div id="delivery-fecha-lab" style="font-size:.68rem;color:#94a3b8;margin-top:2px;">Desde confirmación del pago</div>
+      </div>
+    </div>
+
     <button type="button" class="btn-generar" id="btn-generar" onclick="generarOrden()">
       <span class="pulse"></span>
       <i class="fas fa-file-alt"></i>
       Generar Orden de Trabajo
     </button>
-    <p class="nota" style="text-align:center;margin-top:14px;"><i class="fas fa-shield-alt"></i>Tu información es confidencial. No compartimos datos de pacientes.</p>
+
+    <!-- Borrador -->
+    <button type="button" id="btn-borrador-lab" onclick="guardarBorradorLab()" style="width:100%;margin-top:10px;padding:10px;background:rgba(148,163,184,.06);border:1px solid rgba(148,163,184,.18);color:#94a3b8;border-radius:10px;font-size:.8rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <i class="fa-regular fa-bookmark" aria-hidden="true"></i> Guardar borrador
+    </button>
+
+    <p class="nota" style="text-align:center;margin-top:12px;"><i class="fas fa-shield-alt"></i>Tu información es confidencial. No compartimos datos de pacientes.</p>
   </div>
 
   <div style="padding-bottom:80px;"></div>
@@ -1058,6 +1074,47 @@ document.addEventListener('keydown', function(e) {
     document.querySelectorAll('.modal.active,.modal-overlay.active').forEach(m => m.classList.remove('active'));
     var el = document.getElementById('modal-exito-lab'); if (el) { el.classList.remove('active'); el.style.display='none'; }
 });
+</script>
+<script>
+/* ── BORRADOR flujo-lab ──────────────────────────────── */
+const BORRADOR_LAB_KEY = 'prodigy_fl_borrador';
+function guardarBorradorLab() {
+    try {
+        const campos = ['rx-doctor','rx-paciente','rx-tel','rx-fecha','rx-color','rx-obs'];
+        const data = { ts: Date.now(), expira: Date.now() + 7*24*60*60*1000 };
+        campos.forEach(id => { const el=document.getElementById(id); if(el) data[id]=el.value; });
+        localStorage.setItem(BORRADOR_LAB_KEY, JSON.stringify(data));
+        const btn = document.getElementById('btn-borrador-lab');
+        if(btn){btn.innerHTML='<i class="fas fa-bookmark"></i> Borrador guardado';btn.style.color='#00FF41';setTimeout(()=>{btn.innerHTML='<i class="fa-regular fa-bookmark"></i> Guardar borrador';btn.style.color='#94a3b8';},3000);}
+    } catch(_) {}
+}
+(function cargarBorradorLab(){
+    try {
+        const raw = localStorage.getItem(BORRADOR_LAB_KEY);
+        if(!raw) return;
+        const data = JSON.parse(raw);
+        if(data.expira && Date.now() > data.expira){ localStorage.removeItem(BORRADOR_LAB_KEY); return; }
+        ['rx-doctor','rx-paciente','rx-tel','rx-fecha','rx-color','rx-obs'].forEach(id=>{
+            if(data[id]){ const el=document.getElementById(id); if(el) el.value=data[id]; }
+        });
+    } catch(_) {}
+})();
+
+/* ── ESTIMADOR ENTREGA lab ──────────────────────────── */
+function actualizarEstimadorLab() {
+    const dtEl = document.getElementById('delivery-time-lab');
+    const dfEl = document.getElementById('delivery-fecha-lab');
+    if (!dtEl || !dfEl) return;
+    // Detectar si hay items de Full Arch (>4 unidades) → 72h
+    const totalUds = Object.values(window.cart || {}).reduce((s,i)=>s+(i.qty||1), 0);
+    const horas = totalUds > 4 ? 72 : 48;
+    dtEl.textContent = horas <= 48 ? '24–48 horas hábiles' : '48–72 horas hábiles';
+    let est = new Date(), hr = horas;
+    while(hr > 0){ est = new Date(est.getTime()+3600000); const h=est.getHours(),d=est.getDay(); if(d!==0&&d!==6&&h>=8&&h<18)hr--; }
+    dfEl.textContent = 'Aprox. ' + est.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'});
+}
+// Actualizar estimador cuando cambia el carrito
+var _labCartObserver = setInterval(function(){ if(window.cart) actualizarEstimadorLab(); }, 2000);
 </script>
 </body>
 </html>
