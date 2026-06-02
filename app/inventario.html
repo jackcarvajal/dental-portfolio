@@ -169,6 +169,7 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
     </div>
     <div class="hdr-actions">
         <button type="button" class="btn btn-primary btn-sm" onclick="abrirModalItem()">+ Ítem</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="exportarInventarioCSV()" title="Exportar inventario completo"><i class="fas fa-download"></i> CSV</button>
         <button type="button" class="btn btn-outline btn-sm" onclick="ProdigyAuth.signOut()">Salir</button>
     </div>
 </div>
@@ -1118,6 +1119,31 @@ async function confirmarEntregaMaterial() {
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') cerrarEntregaMaterial();
 });
+
+// ── Export CSV ────────────────────────────────────────────────────
+async function exportarInventarioCSV() {
+    try {
+        const { data, error } = await sb.from('inventario')
+            .select('id,nombre,categoria,unidad,cantidad_actual,cantidad_minima,costo_unitario,proveedor,updated_at')
+            .order('categoria').order('nombre');
+        if (error) throw error;
+        if (!data?.length) { toast('Sin datos para exportar','err'); return; }
+        const fmtF = d => d ? new Date(d).toLocaleDateString('es-CO') : '—';
+        const rows = [['ID','Nombre','Categoría','Unidad','Stock Actual','Mínimo','Costo Unit. (COP)','Proveedor','Actualizado']];
+        data.forEach(i => rows.push([
+            i.id?.slice(0,8)||'',i.nombre||'',i.categoria||'',i.unidad||'',
+            i.cantidad_actual||0,i.cantidad_minima||0,i.costo_unitario||0,
+            i.proveedor||'',fmtF(i.updated_at)
+        ]));
+        const bom='﻿';
+        const csv=bom+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+        const a=document.createElement('a');
+        a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+        a.download='inventario-prodigy-'+new Date().toISOString().slice(0,10)+'.csv';
+        a.click();
+        toast('✅ CSV exportado: '+data.length+' ítems','ok');
+    } catch(e) { toast('Error: '+e.message,'err'); }
+}
 
 // ── Toast ─────────────────────────────────────────────────────────
 function toast(msg, type = 'ok') {
