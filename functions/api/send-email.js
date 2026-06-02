@@ -52,7 +52,7 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: cors });
   }
 
-  const { to, subject, html, text, tipo } = body;
+  const { to, subject, html, text, tipo, unsubscribe_token } = body;
 
   if (!to || !subject || (!html && !text)) {
     return new Response(JSON.stringify({ error: 'Faltan campos: to, subject, html/text' }), { status: 400, headers: cors });
@@ -66,7 +66,8 @@ export async function onRequestPost({ request, env }) {
   const fromEmail = env.FROM_EMAIL || 'PRODIGY Lab Dental <noreply@prodigylabdental.com>';
 
   // Templates según tipo
-  const htmlContent = html || buildTemplate(tipo, { text, to, subject });
+  const htmlContent = (html || buildTemplate(tipo, { text, to, subject }))
+    .replace('{{TOKEN}}', unsubscribe_token || '');
 
   try {
     const resp = await fetch('https://api.resend.com/emails', {
@@ -123,7 +124,7 @@ function buildTemplate(tipo, { text, subject }) {
   </div>
   <div class="footer">
     PRODIGY Lab Dental · Bogotá, Colombia · <a href="https://prodigylabdental.com" style="color:#D4AF37;">prodigylabdental.com</a><br>
-    Para cancelar suscripción escríbenos a gerencia@prodigylabdental.com
+    <a href="https://prodigylabdental.com/unsubscribe?token={{TOKEN}}" style="color:#475569;">Cancelar suscripción</a>
   </div>
 </div>
 </body>
