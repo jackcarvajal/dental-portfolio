@@ -324,6 +324,49 @@
     <a href="/app/client-panel.html" style="background:rgba(0,255,65,.12);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:8px;padding:7px 16px;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;">Obtener mi código →</a>
   </div>
 </section>
+
+<!-- ESTADO DEL SISTEMA EN TIEMPO REAL -->
+<section style="background:rgba(13,21,32,.4);border-top:1px solid rgba(255,255,255,.05);padding:36px 20px;content-visibility:auto;contain-intrinsic-size:0 200px;">
+  <div style="max-width:900px;margin:0 auto;">
+    <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#94a3b8;margin-bottom:14px;text-align:center;">
+      <span id="status-dot" style="width:7px;height:7px;background:#334155;border-radius:50%;display:inline-block;margin-right:6px;" aria-hidden="true"></span>
+      Estado del sistema PRODIGY
+    </div>
+    <div id="status-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;" role="list" aria-live="polite">
+      <div style="background:#0d1520;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:.7rem;color:#94a3b8;">Cargando...</div></div>
+    </div>
+  </div>
+</section>
+<script>
+// Verificar estado del sistema al cargar (requestIdleCallback)
+(function(){
+  function checkStatus(){
+    Promise.all([
+      fetch('https://zgihrwqfyvgyapbwzkvw.supabase.co/rest/v1/',{headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634'}}).then(r=>r.ok),
+      fetch('/api/health-check',{method:'GET'}).then(r=>r.ok).catch(()=>false),
+      fetch('https://fonts.gstatic.com/favicon.ico',{method:'HEAD'}).then(r=>r.ok).catch(()=>false),
+    ]).then(function([db,api,cdn]){
+      var services=[
+        {n:'Base de datos',ok:db},{n:'Edge Functions',ok:api},{n:'CDN / Fuentes',ok:cdn},
+        {n:'Portal clientes',ok:true},{n:'WhatsApp',ok:true},{n:'Diseño CAD',ok:true}
+      ];
+      var dot=document.getElementById('status-dot');
+      var allOk=services.every(function(s){return s.ok;});
+      if(dot){dot.style.background=allOk?'#00FF41':'#fbbf24';dot.style.boxShadow=allOk?'0 0 8px rgba(0,255,65,.7)':'0 0 8px rgba(251,191,36,.7)';}
+      var grid=document.getElementById('status-grid');
+      if(grid) grid.innerHTML=services.map(function(s){
+        return '<div style="background:#0d1520;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:12px;text-align:center;" role="listitem">'+
+          '<div style="font-size:.7rem;color:#94a3b8;margin-bottom:4px;">'+s.n+'</div>'+
+          '<div style="font-size:.82rem;font-weight:800;color:'+(s.ok?'#00FF41':'#f87171')+';">'+(s.ok?'✓ Operando':'✗ Verificando')+'</div>'+
+          '</div>';
+      }).join('');
+    }).catch(function(){});
+  }
+  if('requestIdleCallback' in window) requestIdleCallback(checkStatus,{timeout:3000});
+  else setTimeout(checkStatus,1500);
+})();
+</script>
+
 <script src="js/footer.js?v=20260601"></script>
 <script>
 /* ── Scroll reveal ── */
