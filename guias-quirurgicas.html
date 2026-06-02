@@ -669,6 +669,22 @@ const ro=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});
 },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+<script>
+/* PRODIGY Analytics — track-event */
+(function(){
+  function _track(evento,meta){
+    var pg=window.location.pathname;
+    fetch('/api/track-event',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({evento:evento,pagina:pg,negocio:'prodigy',metadata:meta||{}})
+    }).catch(function(){});
+  }
+  // page_view diferido
+  if('requestIdleCallback'in window)requestIdleCallback(function(){_track('page_view',{title:document.title});},{timeout:3000});
+  else setTimeout(function(){_track('page_view',{title:document.title});},2000);
+  // Exponer para uso manual
+  window._trackEvent=_track;
+})();
+</script>
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 const st=document.createElement('style');
 st.textContent='@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}';

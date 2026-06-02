@@ -950,7 +950,23 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
     }, 700);
 });
 </script>
-<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script><script>
+/* PRODIGY Analytics — track-event */
+(function(){
+  function _track(evento,meta){
+    var pg=window.location.pathname;
+    fetch('/api/track-event',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({evento:evento,pagina:pg,negocio:'prodigy',metadata:meta||{}})
+    }).catch(function(){});
+  }
+  // page_view diferido
+  if('requestIdleCallback'in window)requestIdleCallback(function(){_track('page_view',{title:document.title});},{timeout:3000});
+  else setTimeout(function(){_track('page_view',{title:document.title});},2000);
+  // Exponer para uso manual
+  window._trackEvent=_track;
+})();
+</script>
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <div id="_pub-toast" role="status" aria-live="polite" aria-atomic="true" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;padding:12px 22px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px;text-align:center;"></div>
 <script>let _pubT;function pubToast(m){const e=document.getElementById('_pub-toast');e.textContent=m;e.style.opacity='1';clearTimeout(_pubT);_pubT=setTimeout(()=>{e.style.opacity='0';},3800);}</script>
 <noscript><p style="text-align:center;padding:2rem">Para enviar tus archivos de escaneo activa JavaScript o <a href="https://wa.me/573212816716" rel="noopener noreferrer">escríbenos por WhatsApp</a>.</p></noscript>
