@@ -15,7 +15,7 @@ export async function onRequestPost(context) {
   // Seguridad: verificar secret header
   const secret = request.headers.get('x-cron-secret');
   if (secret !== env.CRON_SECRET) {
-    return new Response('Unauthorized', { status: 401 });
+    return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
   }
 
   try {
