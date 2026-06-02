@@ -64,8 +64,14 @@
     <div id="tabla-ref" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
   </div>
 
+  <!-- Funnel conversión referidos -->
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title"><i class="fas fa-filter" style="color:var(--cyan);" aria-hidden="true"></i> Funnel del programa</div>
+    <div id="funnel-ref" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  </div>
+
   <!-- Top referidores -->
-  <div class="card">
+  <div class="card" style="margin-top:14px;">
     <div class="card-title"><i class="fas fa-trophy" style="color:var(--gold);" aria-hidden="true"></i> Top referidores</div>
     <div id="top-ref" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
   </div>
@@ -91,7 +97,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 async function cargarTodo(){
   const btn=document.getElementById('btnR');
   btn.innerHTML='<i class="fas fa-spinner fa-spin"></i>';btn.disabled=true;
-  try{ await Promise.all([cargarKPIs(),cargarTabla(),cargarTop()]); }
+  try{ await Promise.all([cargarKPIs(),cargarTabla(),cargarTop(),cargarFunnelRef()]); }
   catch(e){console.error('[REF-DASHBOARD]',e);}
   document.getElementById('ultima-act').textContent='Actualizado: '+new Date().toLocaleString('es-CO',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
   btn.innerHTML='<i class="fas fa-rotate-right"></i> Actualizar';btn.disabled=false;
@@ -154,6 +160,35 @@ async function cargarTop(){
     <td style="text-align:center;color:#00FF41;">${v.convertidos}</td>
     <td style="text-align:center;color:var(--gold);">${Math.round((v.convertidos/v.total)*100)}%</td>
   </tr>`).join('')}</tbody></table>`;
+}
+
+async function cargarFunnelRef(){
+  const el=document.getElementById('funnel-ref');
+  if(!el) return;
+  try{
+    const[{count:total},{count:conReferido},{count:primer},{count:recomp}]=await Promise.all([
+      sb.from('referidos').select('id',{count:'exact',head:true}),
+      sb.from('referidos').select('id',{count:'exact',head:true}).not('referido_email','is',null),
+      sb.from('referidos').select('id',{count:'exact',head:true}).in('estado',['primer_pedido','recompensado']),
+      sb.from('referidos').select('id',{count:'exact',head:true}).eq('estado','recompensado'),
+    ]);
+    const steps=[
+      {l:'Códigos generados',v:total||0,c:'#D4AF37'},
+      {l:'Colega usó código',v:conReferido||0,c:'#00d2ff'},
+      {l:'Primer pago recibido',v:primer||0,c:'#00FF41'},
+      {l:'Cupón CRED- emitido',v:recomp||0,c:'#D946A6'},
+    ];
+    const max=Math.max(...steps.map(s=>s.v),1);
+    el.innerHTML='<div style="display:flex;flex-direction:column;gap:10px;padding:8px 0;">'+
+      steps.map((s,i)=>`<div style="display:flex;align-items:center;gap:12px;">
+        <div style="font-size:.72rem;color:#94a3b8;min-width:160px;">${s.l}</div>
+        <div style="flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:10px;overflow:hidden;">
+          <div style="height:100%;background:${s.c};width:${Math.round(s.v/max*100)}%;border-radius:4px;transition:width .6s;"></div>
+        </div>
+        <div style="font-size:.82rem;font-weight:800;color:${s.c};min-width:32px;text-align:right;">${s.v}</div>
+      </div>`).join('')+
+    '</div>';
+  }catch(e){el.innerHTML='<p style="color:#f87171;font-size:.78rem;">'+escH(e.message)+'</p>';}
 }
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
