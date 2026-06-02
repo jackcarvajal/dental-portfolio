@@ -423,6 +423,18 @@
          MI CLÍNICA ANALYTICS — Módulo de inteligencia de negocio
          Muestra al doctor sus métricas, ahorro y tendencias
          ═══════════════════════════════════════════════════════ -->
+    <!-- PRÓXIMO PASO SUGERIDO -->
+    <div id="sec-sugerido" style="display:none;margin-top:16px;">
+      <div style="background:linear-gradient(135deg,rgba(217,70,166,.08),rgba(0,210,255,.05));border:1px solid rgba(217,70,166,.25);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <i class="fas fa-lightbulb" style="color:#D946A6;font-size:1.4rem;flex-shrink:0;" aria-hidden="true"></i>
+        <div style="flex:1;">
+          <div style="font-size:.78rem;font-weight:800;color:#D946A6;margin-bottom:4px;"><i class="fas fa-robot" aria-hidden="true"></i> Sugerencia basada en tu historial</div>
+          <div id="sugerido-msg" style="font-size:.82rem;color:#e2e8f0;line-height:1.5;">Cargando...</div>
+        </div>
+        <a id="sugerido-btn" href="/calculadora" style="background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.35);color:#D946A6;border-radius:8px;padding:9px 18px;font-size:.78rem;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;">Ver opciones →</a>
+      </div>
+    </div>
+
     <div class="section-card" id="sec-analytics" style="margin-top:24px;">
         <div class="section-header">
             <h2><i class="fas fa-chart-line" style="color:var(--gold);margin-right:8px;" aria-hidden="true"></i>Mi Clínica Analytics ✨</h2>
@@ -1106,6 +1118,8 @@ async function loadByToken(token) {
     document.body.style.visibility = 'visible';
     // Precalcular analytics si ya está visible
     if (window._renderClinicaAnalytics) window._renderClinicaAnalytics(data);
+    // Sugerencia basada en historial
+    _generarSugerencia(data);
 }
 
 /* ── MODO AUTH (sesión Supabase) ───────────────────────────── */
@@ -1886,6 +1900,49 @@ async function eliminarCotizacion(id) {
     window._renderClinicaAnalytics = _renderAnalytics;
 })();
 </script>
+
+<script>
+/* ── SUGERENCIA SIGUIENTE PEDIDO ─────────────────────────── */
+function _generarSugerencia(pedidos) {
+    if (!pedidos || !pedidos.length) return;
+    const sec = document.getElementById('sec-sugerido');
+    const msg = document.getElementById('sugerido-msg');
+    const btn = document.getElementById('sugerido-btn');
+    if (!sec || !msg || !btn) return;
+
+    // Analizar el servicio más frecuente
+    const count = {};
+    pedidos.forEach(p => {
+        const s = (p.servicio || p.flujo || p.tipo_trabajo || 'diseno').toLowerCase();
+        count[s] = (count[s] || 0) + 1;
+    });
+    const topServicio = Object.entries(count).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'diseno';
+    const ultimoPedido = pedidos[0];
+    const diasDesdeUltimo = ultimoPedido ? Math.round((Date.now()-new Date(ultimoPedido.created_at).getTime())/86400000) : null;
+
+    // Generar sugerencia contextual
+    let texto='', href='/calculadora';
+    if (diasDesdeUltimo !== null && diasDesdeUltimo > 14) {
+        texto = `Han pasado <strong>${diasDesdeUltimo} días</strong> desde tu último pedido. ¿Tienes casos nuevos de ${topServicio.replace('diseno','diseño CAD').replace('fresado','fresado CAM')} pendientes?`;
+        href = topServicio.includes('fres') ? '/calculadora-fresado' : topServicio.includes('imp') ? '/calculadora-impresion' : '/calculadora-diseno';
+    } else if (topServicio.includes('diseno') || topServicio.includes('diseño')) {
+        texto = 'Tu servicio más usado es <strong>Diseño CAD</strong>. ¿Ya conociste el paquete <strong>Diseño + Fresado</strong>? Ahorras un paso y tiempo.';
+        href = '/flujo-diseno';
+    } else if (topServicio.includes('fres')) {
+        texto = 'Con tu volumen de fresado, considera el <strong>plan mayorista</strong>. Escríbenos y calculamos un precio especial para ti.';
+        href = 'https://wa.me/573212816716?text=Hola, quiero info del plan mayorista de fresado.';
+    } else {
+        texto = 'Basado en tu historial: ¿consideraste agregar <strong>Impresión 3D</strong> a tu flujo? Modelos de trabajo desde $18.000 COP.';
+        href = '/calculadora-impresion';
+    }
+
+    msg.innerHTML = texto;
+    btn.href = href;
+    btn.textContent = diasDesdeUltimo > 14 ? 'Hacer un pedido →' : 'Ver opciones →';
+    sec.style.display = 'block';
+}
+</script>
+
 <script src="../js/notif-panel.js?v=20260601"></script>
 <script>
 // Notificaciones para cliente — modo cliente = true
