@@ -135,10 +135,16 @@
     <div id="clv-tabla" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
   </div>
 
-  <!-- Analytics propios — Funnel de eventos -->
-  <div class="card" style="margin-top:14px;">
-    <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--mg);" aria-hidden="true"></i> Funnel de eventos propios (30d) <span style="font-size:.65rem;color:#475569;font-weight:400;">vía /api/track-event</span></div>
-    <div id="analytics-funnel" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  <!-- Analytics propios — Funnel + Top Páginas -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+    <div class="card">
+      <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--mg);" aria-hidden="true"></i> Funnel propios (30d) <span style="font-size:.65rem;color:#475569;font-weight:400;">vía /api/track-event</span></div>
+      <div id="analytics-funnel" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="fas fa-fire" style="color:var(--gold);" aria-hidden="true"></i> Top páginas (30d)</div>
+      <div id="top-paginas" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+    </div>
   </div>
 
   <div style="text-align:center;font-size:.7rem;color:#334155;padding:16px 0;" id="ultima-actualizacion">Cargando datos...</div>
@@ -180,7 +186,8 @@ async function cargarTodo() {
       cargarFunnelProdigy(),
       cargarCotizRecientesProdigy(),
       cargarCLV(),
-      cargarAnalyticsFunnel()
+      cargarAnalyticsFunnel(),
+      cargarTopPaginas()
     ]);
     document.getElementById('ultima-actualizacion').textContent = 'Actualizado: ' + new Date().toLocaleString('es-CO',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
   } catch(e) {
@@ -455,6 +462,38 @@ async function cargarAnalyticsFunnel() {
       }).join('') + '</div>';
   } catch(e) {
     el.innerHTML = `<p style="color:#475569;font-size:.75rem;padding:12px;">Ejecuta sql/analytics-events-table.sql para activar. ${escH(e.message)}</p>`;
+  }
+}
+
+async function cargarTopPaginas() {
+  const el = document.getElementById('top-paginas');
+  if (!el) return;
+  try {
+    const since = new Date(Date.now()-30*86400000).toISOString();
+    const { data, error } = await sb.from('analytics_events')
+      .select('pagina')
+      .eq('evento','page_view').eq('negocio','prodigy')
+      .gte('created_at', since);
+    if (error || !data) throw error || new Error('sin datos');
+    // Agrupar por pagina
+    const counts = {};
+    data.forEach(r => { counts[r.pagina] = (counts[r.pagina]||0)+1; });
+    const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    const max = sorted[0]?.[1] || 1;
+    el.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;">' +
+      sorted.map(([pg,n]) => {
+        const pct = Math.round(n/max*100);
+        const label = pg.replace('/','').replace(/-/g,' ') || 'home';
+        return `<div style="display:flex;align-items:center;gap:8px;">
+          <div style="font-size:.7rem;color:#94a3b8;min-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escH(pg)}">${escH(label)}</div>
+          <div style="flex:1;background:rgba(255,255,255,.05);border-radius:3px;height:8px;overflow:hidden;">
+            <div style="height:100%;background:var(--gold);width:${pct}%;border-radius:3px;"></div>
+          </div>
+          <div style="font-size:.7rem;font-weight:700;color:var(--gold);min-width:28px;text-align:right;">${n}</div>
+        </div>`;
+      }).join('') + '</div>';
+  } catch(e) {
+    el.innerHTML = '<p style="color:#475569;font-size:.75rem;">Disponible al ejecutar analytics-events-table.sql</p>';
   }
 }
 </script>
