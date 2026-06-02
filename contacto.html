@@ -16,6 +16,14 @@
 <body>
   <script>window.location.replace('/nosotros#contacto');</script>
   <p>Redirigiendo… <a href="/nosotros#contacto">Haz clic aquí si no eres redirigido.</a></p>
-<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script><script>
+(function(){
+  function _t(e,m){fetch('/api/track-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({evento:e,pagina:window.location.pathname,negocio:'prodigy',metadata:m||{}})}).catch(function(){});}
+  if('requestIdleCallback'in window)requestIdleCallback(function(){_t('page_view',{title:document.title});},{timeout:3000});
+  else setTimeout(function(){_t('page_view',{title:document.title});},2000);
+  window._trackEvent=_t;
+})();
+</script>
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>

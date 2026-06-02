@@ -4198,6 +4198,7 @@
                     }]).then(({ data: _d, error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido fresado no guardado:', _e.message);
                         else {
+                            if(window._trackEvent) _trackEvent('pedido_creado',{flujo:'fresado',total:STATE.total,material:STATE.materialTipo});
                             // Log de auditoría del pedido creado
                             const _pid = _d?.[0]?.id || null;
                             if (_pid) {
@@ -4975,7 +4976,15 @@
       };
     })();
     </script>
-    <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+    <script><script>
+(function(){
+  function _t(e,m){fetch('/api/track-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({evento:e,pagina:window.location.pathname,negocio:'prodigy',metadata:m||{}})}).catch(function(){});}
+  if('requestIdleCallback'in window)requestIdleCallback(function(){_t('page_view',{title:document.title});},{timeout:3000});
+  else setTimeout(function(){_t('page_view',{title:document.title});},2000);
+  window._trackEvent=_t;
+})();
+</script>
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <div id="frs-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:13px 20px;border-radius:12px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:360px;box-shadow:0 4px 24px rgba(0,0,0,.4)"></div>
 <script>
 const _FRT={success:{i:'fa-circle-check',c:'#00FF41',b:'rgba(0,255,65,.15)',br:'rgba(0,255,65,.4)'},error:{i:'fa-circle-xmark',c:'#ff3b30',b:'rgba(255,59,48,.15)',br:'rgba(255,59,48,.4)'},warning:{i:'fa-triangle-exclamation',c:'#ff9500',b:'rgba(255,149,0,.12)',br:'rgba(255,149,0,.4)'},info:{i:'fa-circle-info',c:'#00d2ff',b:'rgba(0,210,255,.12)',br:'rgba(0,210,255,.4)'}};
