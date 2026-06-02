@@ -867,6 +867,14 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         acepta_habeas:    document.getElementById('checkHabeas').checked
     });
 
+    // Suscribir al newsletter si acepta marketing y tiene email
+    if (email && document.getElementById('checkMarketing')?.checked) {
+        sb.rpc('newsletter_subscribe', {
+            p_email: email, p_nombre: doctor, p_negocio: 'prodigy',
+            p_fuente: 'envia-scanner', p_tags: ['scanner', servicio.toLowerCase().replace(/\s/g,'_')]
+        }).catch(()=>{});
+    }
+
     setProg(85, 'Creando tu acceso al portal…');
 
     // 2. Registro implícito: crear/vincular cuenta si tiene email
