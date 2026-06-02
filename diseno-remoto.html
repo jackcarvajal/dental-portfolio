@@ -985,6 +985,50 @@ function selPortafolio(tipo) {
     <a href="/app/client-panel.html" style="background:rgba(0,255,65,.12);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:8px;padding:7px 16px;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;">Obtener mi código →</a>
   </div>
 </section>
+<!-- CALCULADORA DE AHORRO PRODIGY vs mercado -->
+<section style="background:linear-gradient(135deg,rgba(217,70,166,.06),rgba(212,175,55,.04));padding:40px 20px;border-top:1px solid rgba(217,70,166,.1);content-visibility:auto;contain-intrinsic-size:0 280px;">
+  <div style="max-width:680px;margin:0 auto;text-align:center;">
+    <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#D946A6;margin-bottom:12px;"><i class="fas fa-calculator" aria-hidden="true"></i> Calculadora de ahorro</div>
+    <h2 style="font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:8px;">PRODIGY vs. mercado promedio</h2>
+    <p style="font-size:.78rem;color:#94a3b8;margin-bottom:18px;">Compara el precio de PRODIGY con el rango bajo del mercado colombiano</p>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;">
+      <select id="pr-ahorro-srv" onchange="calcAhorroPR()" aria-label="Servicio" style="background:rgba(255,255,255,.08);border:1px solid rgba(217,70,166,.2);border-radius:8px;padding:9px 14px;color:#fff;font-family:inherit;font-size:.83rem;outline:none;cursor:pointer;">
+        <option value="">-- Selecciona --</option>
+        <option value="diseno_corona|8000|20000">Diseño CAD corona ($8K vs $20K COP)</option>
+        <option value="diseno_fullarch|60000|120000">Diseño Full Arch ($60K vs $120K COP)</option>
+        <option value="fresado_corona|35000|80000">Fresado corona zirconio ($35K vs $80K COP)</option>
+        <option value="guia_qx|380000|600000">Guía quirúrgica completa ($380K vs $600K COP)</option>
+        <option value="modelo_3d|18000|40000">Modelo 3D impreso ($18K vs $40K COP)</option>
+      </select>
+      <input type="number" id="pr-ahorro-qty" min="1" max="50" value="1" onchange="calcAhorroPR()" aria-label="Cantidad" style="width:65px;background:rgba(255,255,255,.08);border:1px solid rgba(217,70,166,.2);border-radius:8px;padding:9px 12px;color:#fff;font-family:inherit;font-size:.83rem;outline:none;text-align:center;">
+      <span style="line-height:2.2;font-size:.8rem;color:#94a3b8;">unidades</span>
+    </div>
+    <div id="pr-ahorro-result" style="display:none;background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.2);border-radius:14px;padding:18px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center;margin-bottom:14px;">
+        <div><div id="pr-r-p" style="font-size:1.4rem;font-weight:900;color:#00FF41;">—</div><div style="font-size:.62rem;color:#94a3b8;text-transform:uppercase;margin-top:2px;">PRODIGY</div></div>
+        <div><div id="pr-r-m" style="font-size:1.4rem;font-weight:900;color:#f87171;">—</div><div style="font-size:.62rem;color:#94a3b8;text-transform:uppercase;margin-top:2px;">Mercado bajo</div></div>
+        <div><div id="pr-r-a" style="font-size:1.4rem;font-weight:900;color:#D4AF37;">—</div><div style="font-size:.62rem;color:#94a3b8;text-transform:uppercase;margin-top:2px;">Ahorro</div></div>
+      </div>
+      <a href="/calculadora" style="background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border-radius:50px;padding:9px 22px;font-size:.8rem;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="fas fa-calculator" aria-hidden="true"></i> Cotización exacta</a>
+    </div>
+  </div>
+</section>
+<script>
+function calcAhorroPR(){
+  var s=document.getElementById('pr-ahorro-srv').value;
+  var q=parseInt(document.getElementById('pr-ahorro-qty').value)||1;
+  var r=document.getElementById('pr-ahorro-result');
+  if(!s){r.style.display='none';return;}
+  var p=s.split('|');
+  var vP=parseInt(p[1])*q,vM=parseInt(p[2])*q,vA=vM-vP;
+  var fmt=function(n){return '$'+n.toLocaleString('es-CO')+' COP';};
+  document.getElementById('pr-r-p').textContent=fmt(vP);
+  document.getElementById('pr-r-m').textContent=fmt(vM);
+  document.getElementById('pr-r-a').textContent=Math.round(vA/vM*100)+'% menos';
+  r.style.display='block';
+}
+</script>
+
 <script src="js/footer.js?v=20260601"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});</script>
 <script>
