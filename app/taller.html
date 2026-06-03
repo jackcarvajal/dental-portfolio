@@ -181,6 +181,9 @@
     </div>
     <div class="top-bar-right">
         <span class="user-pill"><i class="fas fa-wrench"></i> Equipos</span>
+        <button type="button" onclick="_exportarTallerCSV()" style="background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:var(--gold);border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;" title="Exportar pedidos del día a CSV">
+          <i class="fas fa-download"></i> CSV hoy
+        </button>
         <a href="admin-panel.html" style="color:var(--muted);font-size:0.78rem;text-decoration:none;">
             <i class="fas fa-arrow-left"></i> Volver
         </a>
@@ -326,6 +329,29 @@ async function init() {
 }
 
 /* ── QR SCANNER ────────────────────────────────────────────── */
+function _exportarTallerCSV() {
+  try {
+    const sb = typeof getSupabase==='function'?getSupabase():window._sb;
+    if (!sb) { alert('Sesión no iniciada'); return; }
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    sb.from('logs_incidencias')
+      .select('created_at,tipo,descripcion,pedido_id')
+      .eq('negocio','prodigy')
+      .gte('created_at', hoy.toISOString())
+      .order('created_at',{ascending:false})
+      .then(({data})=>{
+        if(!data||!data.length){alert('Sin registros hoy');return;}
+        const esc=s=>'"'+String(s||'').replace(/"/g,'""')+'"';
+        const rows=data.map(r=>[esc(r.created_at?.slice(0,19)),esc(r.tipo),esc(r.descripcion),esc(r.pedido_id||'')].join(','));
+        const csv='﻿Fecha,Tipo,Descripcion,PedidoID\n'+rows.join('\n');
+        const a=document.createElement('a');
+        a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+        a.download='taller-'+new Date().toISOString().slice(0,10)+'.csv';
+        a.click();
+      });
+  } catch(e) { console.warn('[Taller CSV]',e); }
+}
+
 function toggleQR() {
     const btn = document.getElementById('btn-qr');
     const reader = document.getElementById('qr-reader');
