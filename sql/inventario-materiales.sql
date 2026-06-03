@@ -20,11 +20,16 @@ CREATE TABLE IF NOT EXISTS public.inventario_materiales (
   negocio         text DEFAULT 'prodigy'
 );
 
--- Trigger updated_at
+-- Trigger updated_at (sin extensión moddatetime — compatible con cualquier Supabase)
+CREATE OR REPLACE FUNCTION public._set_updated_at()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN NEW.updated_at = now(); RETURN NEW; END;
+$$;
+
 DROP TRIGGER IF EXISTS trg_inv_upd ON public.inventario_materiales;
 CREATE TRIGGER trg_inv_upd
   BEFORE UPDATE ON public.inventario_materiales
-  FOR EACH ROW EXECUTE FUNCTION moddatetime(updated_at);
+  FOR EACH ROW EXECUTE FUNCTION public._set_updated_at();
 
 -- Índices
 CREATE INDEX IF NOT EXISTS idx_inv_negocio ON public.inventario_materiales (negocio, activo);
