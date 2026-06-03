@@ -513,7 +513,31 @@ function renderDept(dept) {
     }
   }
 
-  main.innerHTML = timerHtml + compHtml + `<div class="kanban ${numCols}">${colsHtml}</div>`;
+  // Buscador
+  const busqHtml = `<div style="margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+    <input type="search" id="op-busq" placeholder="🔍 Buscar código, doctor, paciente…" oninput="_opFiltrar(this.value)"
+      style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 14px;color:#e2e8f0;font-size:.82rem;flex:1;min-width:200px;font-family:inherit;outline:none;"
+      aria-label="Buscar pedidos">
+    <span id="op-count" style="font-size:.75rem;color:#475569;white-space:nowrap;"></span>
+  </div>`;
+  main.innerHTML = timerHtml + compHtml + busqHtml + `<div id="op-kanban-wrap"><div class="kanban ${numCols}">${colsHtml}</div></div>`;
+  // Contar tarjetas visibles
+  const total = main.querySelectorAll('.card-pedido, [data-codigo]').length;
+  const countEl = document.getElementById('op-count');
+  if(countEl) countEl.textContent = total + ' pedido(s)';
+}
+
+function _opFiltrar(q) {
+  const t = q.toLowerCase().trim();
+  const cards = document.querySelectorAll('#op-kanban-wrap .card, #op-kanban-wrap [class*="pedido"]');
+  let visible = 0;
+  cards.forEach(el => {
+    const show = !t || el.textContent.toLowerCase().includes(t);
+    el.style.display = show ? '' : 'none';
+    if(show) visible++;
+  });
+  const countEl = document.getElementById('op-count');
+  if(countEl) countEl.textContent = (t ? visible : cards.length) + ' pedido(s)';
 }
 
 function timerHTML(dept, list, cfg) {
