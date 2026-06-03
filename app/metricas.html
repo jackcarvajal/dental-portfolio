@@ -147,6 +147,15 @@
     </div>
   </div>
 
+  <!-- Inventario — alertas de stock bajo -->
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+      <span><i class="fas fa-boxes-stacked" style="color:var(--cyan);" aria-hidden="true"></i> Inventario — Alertas de Stock</span>
+      <a href="inventario.html" style="font-size:.72rem;color:var(--cyan);font-weight:700;">Ver inventario →</a>
+    </div>
+    <div id="inventario-alertas" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  </div>
+
   <div style="text-align:center;font-size:.7rem;color:#334155;padding:16px 0;" id="ultima-actualizacion">Cargando datos...</div>
 </main>
 
@@ -187,7 +196,8 @@ async function cargarTodo() {
       cargarCotizRecientesProdigy(),
       cargarCLV(),
       cargarAnalyticsFunnel(),
-      cargarTopPaginas()
+      cargarTopPaginas(),
+      cargarInventarioAlertas()
     ]);
     document.getElementById('ultima-actualizacion').textContent = 'Actualizado: ' + new Date().toLocaleString('es-CO',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
   } catch(e) {
@@ -381,6 +391,36 @@ async function cargarCotizRecientesProdigy() {
         <td style="padding:7px;text-align:center;"><span style="border:1px solid ${EC[c.estado]||'#475569'};color:${EC[c.estado]||'#475569'};border-radius:10px;padding:2px 7px;font-size:.62rem;font-weight:700;">${escH(c.estado||'—')}</span></td>
       </tr>`).join('')}</tbody></table>`;
   } catch(e){ el.innerHTML=`<div class="error-msg">${escH(e.message)}</div>`; }
+}
+
+async function cargarInventarioAlertas() {
+  const el = document.getElementById('inventario-alertas');
+  if (!el) return;
+  try {
+    const { data, error } = await sb.rpc('prodigy_inventario_alertas');
+    if (error || !data) throw error || new Error('sin datos');
+    if (!data.length) {
+      el.innerHTML = '<p style="color:var(--green);font-size:.82rem;padding:8px;">✓ Todo el inventario está sobre el mínimo.</p>';
+      return;
+    }
+    const agotados = data.filter(m => Number(m.stock_actual) <= 0);
+    const bajos = data.filter(m => Number(m.stock_actual) > 0);
+    el.innerHTML = '<div style="display:flex;flex-direction:column;gap:6px;">' +
+      data.map(m => {
+        const agotado = Number(m.stock_actual) <= 0;
+        const color = agotado ? '#f87171' : '#fbbf24';
+        const icon = agotado ? '🔴' : '🟡';
+        return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);">
+          <span>${icon}</span>
+          <span style="flex:1;font-size:.82rem;">${escH(m.nombre)}</span>
+          <span style="font-size:.78rem;color:${color};font-weight:700;">${agotado ? 'AGOTADO' : 'Stock: '+m.stock_actual+' (mín: '+m.stock_minimo+')'}</span>
+          <span style="font-size:.72rem;color:#475569;">${escH(m.categoria||'')}</span>
+        </div>`;
+      }).join('') + '</div>' +
+      `<p style="font-size:.7rem;color:#475569;margin-top:8px;">${data.length} material(es) por reponer. <a href="inventario.html" style="color:var(--cyan);">Ver inventario →</a></p>`;
+  } catch(e) {
+    el.innerHTML = '<p style="color:#475569;font-size:.75rem;padding:8px;">Ejecuta sql/inventario-materiales.sql para activar.</p>';
+  }
 }
 
 async function cargarCLV() {
