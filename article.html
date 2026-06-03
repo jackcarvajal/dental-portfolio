@@ -586,7 +586,15 @@ function showNotFound() {
   </div>
 </section>
 <script src="js/footer.js?v=20260601"></script>
-<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script><script>
+(function(){
+  function _t(e,m){fetch('/api/track-event',{method:'POST',headers:{"Content-Type":"application/json"},body:JSON.stringify({evento:e,pagina:window.location.pathname,negocio:'prodigy',metadata:m||{}})}).catch(function(){});}
+  if('requestIdleCallback'in window)requestIdleCallback(function(){_t('page_view',{title:document.title});},{timeout:3000});
+  else setTimeout(function(){_t('page_view',{title:document.title});},2000);
+  window._trackEvent=_t;
+})();
+</script>
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <noscript><p style="text-align:center;padding:2rem">Este artículo requiere JavaScript. <a href="/journal">Ver todos los artículos</a> o <a href="https://wa.me/573212816716" rel="noopener noreferrer">contáctanos por WhatsApp</a>.</p></noscript>
 <div class="ux-floaters">
     <button type="button" class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'});" title="Volver arriba" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></button>
