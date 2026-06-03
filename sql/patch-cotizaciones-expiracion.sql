@@ -36,13 +36,13 @@ BEGIN
 END;
 $$;
 
--- 4. RPC pública: cotizaciones próximas a vencer (para alertas en admin)
+-- 4. RPC pública: cotizaciones próximas a vencer (para alertas en admin y WA)
 CREATE OR REPLACE FUNCTION public.prodigy_cotizaciones_por_vencer(p_dias int DEFAULT 7)
-RETURNS TABLE(id uuid, codigo text, doctor text, total numeric, expira_at timestamptz, dias_restantes int)
+RETURNS TABLE(id uuid, codigo text, doctor text, whatsapp text, total numeric, expira_at timestamptz, dias_restantes int)
 LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN
   RETURN QUERY
-  SELECT c.id, c.codigo, c.doctor, c.total, c.expira_at,
+  SELECT c.id, c.codigo, c.doctor, c.whatsapp, c.total, c.expira_at,
     EXTRACT(DAY FROM c.expira_at - now())::int AS dias_restantes
   FROM public.cotizaciones c
   WHERE c.estado IN ('borrador','enviada')

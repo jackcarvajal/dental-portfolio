@@ -19,27 +19,41 @@ export async function onRequestGet({ request, env }) {
     return new Response(JSON.stringify({ error: 'SUPABASE_SERVICE_KEY no configurada' }), { status: 503 });
   }
 
-  try {
-    const resp = await fetch(`${SURL}/rest/v1/rpc/prodigy_expirar_cotizaciones`, {
-      method: 'POST',
-      headers: {
-        'apikey': env.SUPABASE_SERVICE_KEY,
-        'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: '{}',
-    });
+  const h = { 'apikey': env.SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`, 'Content-Type': 'application/json' };
+  const baseUrl = new URL(request.url);
 
-    const count = await resp.json();
+  try {
+    // 1. Expirar las vencidas
+    const r1 = await fetch(`${SURL}/rest/v1/rpc/prodigy_expirar_cotizaciones`, { method: 'POST', headers: h, body: '{}' });
+    const expiradas = await r1.json();
+
+    // 2. Obtener las que vencen en 2 días para WA recordatorio
+    const r2 = await fetch(`${SURL}/rest/v1/rpc/prodigy_cotizaciones_por_vencer`, {
+      method: 'POST', headers: h, body: JSON.stringify({ p_dias: 2 }),
+    });
+    const porVencer = await r2.json();
+
+    // 3. Enviar WA a cada doctor
+    let waEnviados = 0;
+    if (Array.isArray(porVencer) && env.CALLMEBOT_APIKEY) {
+      const waBase = `${baseUrl.origin}/api/wa-cotizacion`;
+      await Promise.allSettled(porVencer.map(async c => {
+        if (!c.whatsapp) return;
+        await fetch(waBase, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '127.0.0.1' },
+          body: JSON.stringify({ whatsapp: c.whatsapp, nombre: c.doctor, total: `$${Number(c.total||0).toLocaleString('es-CO')} COP`, codigo: c.codigo, dias: c.dias_restantes }),
+        });
+        waEnviados++;
+      }));
+    }
 
     return new Response(JSON.stringify({
       ok: true,
-      expiradas: count,
+      expiradas,
+      wa_enviados: waEnviados,
       ts: new Date().toISOString(),
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });
