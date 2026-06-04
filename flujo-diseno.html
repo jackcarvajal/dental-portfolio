@@ -1938,7 +1938,8 @@ const lineWompi = document.getElementById('line-wompi');
                         billing_razon:         STATE.billingRazon || null,
                         billing_email:         STATE.billingEmail || null,
                         factura_estado:        STATE.billingReq ? 'pendiente' : 'no_requerida',
-                        codigo_referido:       sessionStorage.getItem('prodigy_ref') || null
+                        codigo_referido:       sessionStorage.getItem('prodigy_ref') || null,
+                        canal_origen:          sessionStorage.getItem('prodigy_canal') || (document.referrer.includes('google')?'seo':document.referrer.includes('instagram')?'instagram':(document.referrer.includes('wa.me')||document.referrer.includes('whatsapp'))?'whatsapp':null)
                     }]).then(({ error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido diseño no guardado:', _e.message);
                         // Registrar uso del código de referido en tabla referidos

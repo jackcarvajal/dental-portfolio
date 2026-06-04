@@ -4194,7 +4194,8 @@
                         seguro_garantia_activo: document.getElementById('seguro-garantia')?.checked || false,
                         costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0,
                         pedido_diseno_id:       _disenoPedidoId || null,
-                        codigo_referido:        sessionStorage.getItem('prodigy_ref') || null
+                        codigo_referido:        sessionStorage.getItem('prodigy_ref') || null,
+                        canal_origen:           sessionStorage.getItem('prodigy_canal') || (document.referrer.includes('google')?'seo':document.referrer.includes('instagram')?'instagram':(document.referrer.includes('wa.me')||document.referrer.includes('whatsapp'))?'whatsapp':null)
                     }]).then(({ data: _d, error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido fresado no guardado:', _e.message);
                         else {
