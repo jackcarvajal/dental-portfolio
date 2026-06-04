@@ -148,6 +148,18 @@
   </div>
 
   <!-- Inventario — alertas de stock bajo -->
+  <!-- Top doctores + Pedidos por material -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+    <div class="card">
+      <div class="card-title"><i class="fas fa-user-doctor" style="color:var(--mg);" aria-hidden="true"></i> Top doctores (90d)</div>
+      <div id="top-doctores" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="fas fa-layer-group" style="color:var(--gold);" aria-hidden="true"></i> Pedidos por material (30d)</div>
+      <div id="por-material" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+    </div>
+  </div>
+
   <div class="card" style="margin-top:14px;">
     <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
       <span><i class="fas fa-boxes-stacked" style="color:var(--cyan);" aria-hidden="true"></i> Inventario — Alertas de Stock</span>
@@ -197,7 +209,9 @@ async function cargarTodo() {
       cargarCLV(),
       cargarAnalyticsFunnel(),
       cargarTopPaginas(),
-      cargarInventarioAlertas()
+      cargarInventarioAlertas(),
+      cargarTopDoctores(),
+      cargarPorMaterial()
     ]);
     document.getElementById('ultima-actualizacion').textContent = 'Actualizado: ' + new Date().toLocaleString('es-CO',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
   } catch(e) {
@@ -391,6 +405,46 @@ async function cargarCotizRecientesProdigy() {
         <td style="padding:7px;text-align:center;"><span style="border:1px solid ${EC[c.estado]||'#475569'};color:${EC[c.estado]||'#475569'};border-radius:10px;padding:2px 7px;font-size:.62rem;font-weight:700;">${escH(c.estado||'—')}</span></td>
       </tr>`).join('')}</tbody></table>`;
   } catch(e){ el.innerHTML=`<div class="error-msg">${escH(e.message)}</div>`; }
+}
+
+async function cargarTopDoctores() {
+  const el = document.getElementById('top-doctores');
+  if (!el) return;
+  try {
+    const { data, error } = await sb.rpc('prodigy_top_doctores', { p_dias: 90, p_limit: 8 });
+    if (error || !data?.length) throw error || new Error('sin datos');
+    const fmtCOP = n => '$' + Math.round(n / 1000) + 'k';
+    el.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:.75rem;">' +
+      '<thead><tr style="border-bottom:1px solid rgba(255,255,255,.06);"><th style="padding:6px;text-align:left;color:#475569;">Doctor</th><th style="padding:6px;text-align:center;color:#475569;">Ped.</th><th style="padding:6px;text-align:right;color:#475569;">Ingresos</th></tr></thead>' +
+      '<tbody>' + data.map(d => `<tr style="border-bottom:1px solid rgba(255,255,255,.03);">
+        <td style="padding:6px;font-weight:600;">${escH(d.doctor.slice(0,22))}</td>
+        <td style="padding:6px;text-align:center;color:var(--cyan);">${d.pedidos}</td>
+        <td style="padding:6px;text-align:right;color:var(--gold);font-weight:700;">${fmtCOP(d.ingresos)}</td>
+      </tr>`).join('') + '</tbody></table>';
+  } catch(e) {
+    el.innerHTML = '<p style="color:#475569;font-size:.75rem;padding:8px;">Ejecuta sql/rpc-reportes-admin.sql para activar.</p>';
+  }
+}
+
+async function cargarPorMaterial() {
+  const el = document.getElementById('por-material');
+  if (!el) return;
+  try {
+    const { data, error } = await sb.rpc('prodigy_pedidos_por_material', { p_dias: 30 });
+    if (error || !data?.length) throw error || new Error('sin datos');
+    const mx = data[0]?.total || 1;
+    el.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;">' +
+      data.slice(0,8).map(m => `<div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:.72rem;color:#94a3b8;min-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escH(m.material)}">${escH((m.material||'otro').slice(0,18))}</div>
+        <div style="flex:1;background:rgba(255,255,255,.05);border-radius:3px;height:8px;overflow:hidden;">
+          <div style="height:100%;background:var(--gold);width:${Math.round(m.total/mx*100)}%;border-radius:3px;"></div>
+        </div>
+        <div style="font-size:.7rem;font-weight:700;color:var(--gold);min-width:24px;text-align:right;">${m.total}</div>
+        <div style="font-size:.65rem;color:#475569;min-width:34px;text-align:right;">${m.pct_total}%</div>
+      </div>`).join('') + '</div>';
+  } catch(e) {
+    el.innerHTML = '<p style="color:#475569;font-size:.75rem;padding:8px;">Ejecuta sql/rpc-reportes-admin.sql para activar.</p>';
+  }
 }
 
 async function cargarInventarioAlertas() {
