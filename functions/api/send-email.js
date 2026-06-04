@@ -149,6 +149,26 @@ function buildTemplate(tipo, { text, subject }) {
     <a href="https://prodigylabdental.com/app/client-panel.html" class="btn">Revisar diseño →</a>
   `);
 
+  if (tipo === 'cotizacion_enviada') return base(`
+    <h1>📋 Tu cotización está lista</h1>
+    <p>${text || 'Hemos preparado una cotización para tu caso. Revísala y conviértela en pedido cuando estés listo.'}</p>
+    <a href="https://prodigylabdental.com/app/cotizaciones.html" class="btn">Ver cotización →</a>
+    <p style="font-size:.78rem;color:#475569;">La cotización tiene una vigencia de 30 días. Si tienes preguntas, responde este correo o escríbenos por WhatsApp.</p>
+  `);
+
+  if (tipo === 'pedido_entregado') return base(`
+    <h1>🚀 Tu pedido fue entregado</h1>
+    <p>${text || 'Tu caso ha sido despachado y está en camino. Revisa el seguimiento en el portal.'}</p>
+    <a href="https://prodigylabdental.com/seguimiento-caso" class="btn">Ver seguimiento →</a>
+    <p style="font-size:.78rem;color:#475569;">Si tienes algún problema con la entrega, contáctanos de inmediato por WhatsApp +57 321 281 6716.</p>
+  `);
+
+  if (tipo === 'stock_bajo') return base(`
+    <h1>⚠️ Alerta de inventario</h1>
+    <p>${text || 'Uno o más materiales del inventario están por debajo del mínimo establecido.'}</p>
+    <a href="https://prodigylabdental.com/app/inventario.html" class="btn">Ver inventario →</a>
+  `);
+
   // Default genérico
   return base(`<h1>${subject}</h1><p>${text || ''}</p>`);
 }
