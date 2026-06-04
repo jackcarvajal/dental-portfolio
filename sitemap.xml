@@ -577,5 +577,23 @@
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
+    <url>
+        <loc>https://prodigylabdental.com/sobredentadura-digital</loc>
+        <lastmod>2026-06-03</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://prodigylabdental.com/barra-implante-cad</loc>
+        <lastmod>2026-06-03</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://prodigylabdental.com/protesis-hibrida</loc>
+        <lastmod>2026-06-03</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
 </urlset>
 
