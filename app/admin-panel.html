@@ -197,6 +197,7 @@
     <a href="inventario.html" class="nav-item"><i class="fas fa-boxes-stacked" style="color:var(--cyan);"></i> Inventario</a>
     <a href="#" class="nav-item" onclick="switchTab('newsletter',this);cargarNewsletter()"><i class="fas fa-envelope" style="color:#00d2ff;"></i> Newsletter <span id="badge-nl" style="background:#00d2ff;color:#000;border-radius:10px;padding:1px 7px;font-size:.62rem;font-weight:900;display:none;margin-left:4px;"></span></a>
     <a href="/referidos" target="_blank" rel="noopener noreferrer" class="nav-item" style="font-size:.75rem;"><i class="fas fa-arrow-up-right-from-square" style="color:#94a3b8;"></i> Landing pública</a>
+    <a href="#" class="nav-item" onclick="switchTab('reportes',this);cargarReportesAdmin()" style="background:rgba(0,210,255,.04);border:1px solid rgba(0,210,255,.1);"><i class="fas fa-chart-pie" style="color:var(--cyan);"></i> Reportes BI</a>
     <p class="nav-section">Configuración</p>
     <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Catálogo</a>
     <a href="configuracion.html" class="nav-item"><i class="fas fa-sliders"></i> Variables del Sistema</a>
@@ -944,6 +945,19 @@
 </div>
 
 <!-- ═══════════ TAB REFERIDOS ═══════════ -->
+<div id="tab-reportes" class="tab-panel">
+  <div class="page-header">
+    <div><h1>Reportes <span style="color:var(--cyan);">/ BI Analytics</span></h1><p>Canal de origen, ingresos por material y conversión por flujo</p></div>
+    <button type="button" class="btn-outline" onclick="cargarReportesAdmin()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;" id="reportes-grid">
+    <div class="card"><div class="card-title"><i class="fas fa-route" style="color:var(--mg);"></i> Canal de Origen (90d)</div><div id="rep-canal" aria-live="polite"><div class="spinner"></div></div></div>
+    <div class="card"><div class="card-title"><i class="fas fa-layer-group" style="color:var(--gold);"></i> Pedidos por Material (30d)</div><div id="rep-material" aria-live="polite"><div class="spinner"></div></div></div>
+    <div class="card"><div class="card-title"><i class="fas fa-user-doctor" style="color:var(--mg);"></i> Top Doctores (90d)</div><div id="rep-doctores" aria-live="polite"><div class="spinner"></div></div></div>
+    <div class="card"><div class="card-title"><i class="fas fa-exchange-alt" style="color:var(--cyan);"></i> Conversión por Flujo (30d)</div><div id="rep-flujo" aria-live="polite"><div class="spinner"></div></div></div>
+  </div>
+</div>
+
 <div id="tab-referidos" class="tab-panel">
   <div class="page-header">
     <div><h1>Referidos <span style="color:#00FF41;">/ Programa de Referidos</span></h1><p>Doctores que refirieron colegas a PRODIGY</p></div>
@@ -2703,6 +2717,67 @@ async function eliminarWaitlist(id) {
 }
 
 /* ── REFERIDOS ADMIN ──────────────────────────────────────── */
+async function cargarReportesAdmin() {
+  const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const fmtCOP = n => '$'+Math.round(Number(n||0)/1000)+'k';
+  const CANAL_COLOR={'seo':'#00d2ff','whatsapp':'#25D366','referido':'#D4AF37','directo':'#94a3b8','instagram':'#D946A6','google_ads':'#4285f4'};
+
+  // Canal de origen
+  const elC=document.getElementById('rep-canal');
+  if(elC){
+    sb.rpc('prodigy_ingresos_por_canal',{p_dias:90}).then(({data})=>{
+      if(!data?.length){elC.innerHTML='<p style="color:#475569;font-size:.75rem;">Ejecuta sql/patch-canal-origen.sql</p>';return;}
+      const mx=data[0]?.pedidos||1;
+      elC.innerHTML='<div style="display:flex;flex-direction:column;gap:8px;">'+data.map(c=>`<div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:.72rem;color:#94a3b8;min-width:80px;font-weight:600;">${escH(c.canal)}</div>
+        <div style="flex:1;background:rgba(255,255,255,.05);border-radius:3px;height:8px;overflow:hidden;">
+          <div style="height:100%;background:${CANAL_COLOR[c.canal]||'#94a3b8'};width:${Math.round(c.pedidos/mx*100)}%;border-radius:3px;"></div>
+        </div>
+        <div style="font-size:.7rem;font-weight:700;min-width:24px;text-align:right;">${c.pedidos}</div>
+        <div style="font-size:.65rem;color:#475569;min-width:40px;text-align:right;">${fmtCOP(c.ingresos)}</div>
+      </div>`).join('')+'</div>';
+    }).catch(()=>{if(elC)elC.innerHTML='<p style="color:#475569;font-size:.75rem;">Ejecuta sql/patch-canal-origen.sql</p>';});
+  }
+
+  // Pedidos por material
+  const elM=document.getElementById('rep-material');
+  if(elM){
+    sb.rpc('prodigy_pedidos_por_material',{p_dias:30}).then(({data})=>{
+      if(!data?.length){elM.innerHTML='<p style="color:#475569;font-size:.75rem;">Sin datos aún</p>';return;}
+      const mx=data[0]?.total||1;
+      elM.innerHTML='<div style="display:flex;flex-direction:column;gap:8px;">'+data.slice(0,8).map(m=>`<div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:.72rem;color:#94a3b8;min-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escH((m.material||'otro').slice(0,18))}</div>
+        <div style="flex:1;background:rgba(255,255,255,.05);border-radius:3px;height:8px;overflow:hidden;">
+          <div style="height:100%;background:var(--gold);width:${Math.round(m.total/mx*100)}%;border-radius:3px;"></div>
+        </div>
+        <div style="font-size:.7rem;font-weight:700;color:var(--gold);min-width:24px;text-align:right;">${m.total}</div>
+      </div>`).join('')+'</div>';
+    }).catch(()=>{});
+  }
+
+  // Top doctores
+  const elD=document.getElementById('rep-doctores');
+  if(elD){
+    sb.rpc('prodigy_top_doctores',{p_dias:90,p_limit:8}).then(({data})=>{
+      if(!data?.length){elD.innerHTML='<p style="color:#475569;font-size:.75rem;">Sin datos</p>';return;}
+      elD.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:.75rem;"><thead><tr style="border-bottom:1px solid rgba(255,255,255,.06);"><th style="padding:6px;text-align:left;color:#475569;">Doctor</th><th style="padding:6px;text-align:center;color:#475569;">Ped.</th><th style="padding:6px;text-align:right;color:#475569;">Ingresos</th></tr></thead><tbody>'+
+        data.map(d=>`<tr style="border-bottom:1px solid rgba(255,255,255,.03);"><td style="padding:6px;font-weight:600;">${escH(d.doctor.slice(0,22))}</td><td style="padding:6px;text-align:center;color:var(--cyan);">${d.pedidos}</td><td style="padding:6px;text-align:right;color:var(--gold);font-weight:700;">${fmtCOP(d.ingresos)}</td></tr>`).join('')+
+      '</tbody></table>';
+    }).catch(()=>{});
+  }
+
+  // Conversión por flujo
+  const elF=document.getElementById('rep-flujo');
+  if(elF){
+    sb.rpc('prodigy_conversion_por_flujo',{p_dias:30}).then(({data})=>{
+      if(!data?.length){elF.innerHTML='<p style="color:#475569;font-size:.75rem;">Sin datos</p>';return;}
+      elF.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:.75rem;"><thead><tr style="border-bottom:1px solid rgba(255,255,255,.06);"><th style="padding:6px;text-align:left;color:#475569;">Flujo</th><th style="padding:6px;text-align:center;color:#475569;">Pedidos</th><th style="padding:6px;text-align:center;color:#475569;">Entregados</th><th style="padding:6px;text-align:right;color:#475569;">Tasa</th></tr></thead><tbody>'+
+        data.map(f=>`<tr style="border-bottom:1px solid rgba(255,255,255,.03);"><td style="padding:6px;text-transform:capitalize;">${escH(f.flujo)}</td><td style="padding:6px;text-align:center;">${f.pedidos}</td><td style="padding:6px;text-align:center;color:var(--neon);">${f.entregados}</td><td style="padding:6px;text-align:right;font-weight:700;color:${f.tasa_entrega>=80?'var(--neon)':f.tasa_entrega>=50?'#fbbf24':'#f87171'};">${f.tasa_entrega}%</td></tr>`).join('')+
+      '</tbody></table>';
+    }).catch(()=>{});
+  }
+}
+
 async function cargarReferidosAdmin() {
     const el  = document.getElementById('ref-admin-tabla');
     const kpi = document.getElementById('ref-admin-kpi');
