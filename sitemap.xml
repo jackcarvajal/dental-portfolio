@@ -841,5 +841,35 @@
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
+    <url>
+        <loc>https://prodigylabdental.com/laboratorio-dental-medellin</loc>
+        <lastmod>2026-06-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+    </url>
+    <url>
+        <loc>https://prodigylabdental.com/laboratorio-dental-cali</loc>
+        <lastmod>2026-06-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+    </url>
+    <url>
+        <loc>https://prodigylabdental.com/laboratorio-dental-barranquilla</loc>
+        <lastmod>2026-06-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+    </url>
+    <url>
+        <loc>https://prodigylabdental.com/laboratorio-dental-bucaramanga</loc>
+        <lastmod>2026-06-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+    </url>
+    <url>
+        <loc>https://prodigylabdental.com/laboratorio-dental-cartagena</loc>
+        <lastmod>2026-06-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+    </url>
 </urlset>
 
