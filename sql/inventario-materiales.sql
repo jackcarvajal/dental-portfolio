@@ -41,6 +41,7 @@ ALTER TABLE public.inventario_materiales ENABLE ROW LEVEL SECURITY;
 GRANT ALL ON TABLE public.inventario_materiales TO anon, authenticated, service_role;
 
 -- Admin lee y escribe
+DROP POLICY IF EXISTS "admin_rw_inventario" ON public.inventario_materiales;
 CREATE POLICY "admin_rw_inventario" ON public.inventario_materiales
   FOR ALL TO authenticated
   USING (auth.jwt()->'app_metadata'->>'role' IN ('admin','superadmin','operario'))
