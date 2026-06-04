@@ -146,10 +146,11 @@
 
 <!-- STATS -->
 <div class="summary-bar">
-    <div class="stat-pill"><div class="stat-num" id="stat-total">—</div><div class="stat-lbl">Total</div></div>
+    <div class="stat-pill"><div class="stat-num" id="stat-total">—</div><div class="stat-lbl">Total hoy</div></div>
     <div class="stat-pill"><div class="stat-num" id="stat-pendiente" style="color:#fbbf24">—</div><div class="stat-lbl">Pendiente</div></div>
     <div class="stat-pill"><div class="stat-num" id="stat-ruta" style="color:var(--cyan)">—</div><div class="stat-lbl">En Ruta</div></div>
     <div class="stat-pill"><div class="stat-num" id="stat-entregado" style="color:var(--green)">—</div><div class="stat-lbl">Entregado</div></div>
+    <div class="stat-pill" style="cursor:pointer;" onclick="_exportarRutaCSV()" title="Exportar ruta del día"><div class="stat-num" style="color:var(--gold);font-size:.75rem;"><i class="fas fa-download"></i></div><div class="stat-lbl">CSV</div></div>
 </div>
 
 <!-- LISTA -->
@@ -385,6 +386,7 @@ async function cargarRuta(){
 
     const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '—';
     ;(desp||[]).forEach(d => { _dMap[d.id] = d; });
+    window._despachosList = desp || []; // exponer para CSV export
     lista.innerHTML=(desp||[]).map(d=>{
         const p       = d.pedidos||{};
         const codigo  = p.codigo||d.id.slice(0,8);
@@ -459,6 +461,26 @@ async function iniciarEntrega(d){
 }
 
 /* ── MODAL CONFIRMAR ────────────────────────────────────── */
+function _exportarRutaCSV() {
+  const despachos = window._despachosList || [];
+  if (!despachos.length) { alert('Sin entregas para exportar hoy'); return; }
+  const esc = s => '"' + String(s||'').replace(/"/g,'""') + '"';
+  const header = 'Código,Doctor,Dirección,Estado,Saldo,Hora';
+  const rows = despachos.map(d => [
+    esc(d.codigo||d.id?.slice(0,8)||''),
+    esc(d.doctor||d.nombre_doctor||''),
+    esc(d.direccion_entrega||d.ciudad||''),
+    esc(d.estado_mensajero||d.estado_operativo||''),
+    esc(d.saldo_pendiente||''),
+    esc(d.updated_at?.slice(0,16)||'')
+  ].join(','));
+  const csv = '﻿' + header + '\n' + rows.join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'ruta-mensajero-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
 function abrirModalConfirmar(d){
     if (!d) return;
     const p = d.pedidos || {};
