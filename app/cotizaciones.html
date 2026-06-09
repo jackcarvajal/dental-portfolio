@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#D946A6">
 <meta name="color-scheme" content="dark">
-<title>Cotizaciones â€” PRODIGY Lab Dental</title>
+<title>Cotizaciones — PRODIGY Lab Dental</title>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
@@ -69,24 +69,24 @@ textarea{resize:vertical;min-height:80px;}
 <script src="../js/auth-guard.js?v=20260603"></script>
 <div class="topbar">
   <a href="admin-panel.html"><i class="fas fa-chevron-left"></i></a>
-  <h1><i class="fas fa-receipt" style="color:var(--gold);margin-right:6px;"></i>GestiÃ³n de Cotizaciones</h1>
+  <h1><i class="fas fa-receipt" style="color:var(--gold);margin-right:6px;"></i>Gestión de Cotizaciones</h1>
   <span style="font-size:.75rem;color:#475569;margin-left:auto;" id="ultima-act"></span>
 </div>
 
 <div class="main">
   <!-- KPIs -->
   <div class="kpi-row" id="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--gold);" id="k-total">â€”</div><div class="kpi-lbl">Total</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--cyan);" id="k-enviadas">â€”</div><div class="kpi-lbl">Enviadas</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--neon);" id="k-aceptadas">â€”</div><div class="kpi-lbl">Aceptadas</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:#fbbf24;" id="k-por-vencer">â€”</div><div class="kpi-lbl">Por vencer 7d</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--mg);" id="k-valor">â€”</div><div class="kpi-lbl">Valor enviadas</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--neon);" id="k-conversion">â€”</div><div class="kpi-lbl">ConversiÃ³n</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--gold);" id="k-total">—</div><div class="kpi-lbl">Total</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--cyan);" id="k-enviadas">—</div><div class="kpi-lbl">Enviadas</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--neon);" id="k-aceptadas">—</div><div class="kpi-lbl">Aceptadas</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:#fbbf24;" id="k-por-vencer">—</div><div class="kpi-lbl">Por vencer 7d</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--mg);" id="k-valor">—</div><div class="kpi-lbl">Valor enviadas</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--neon);" id="k-conversion">—</div><div class="kpi-lbl">Conversión</div></div>
   </div>
 
   <!-- Toolbar -->
   <div class="toolbar">
-    <input type="search" id="busq" placeholder="Buscar cÃ³digo, doctor, tipoâ€¦" oninput="filtrar()" aria-label="Buscar cotizaciones">
+    <input type="search" id="busq" placeholder="Buscar código, doctor, tipo…" oninput="filtrar()" aria-label="Buscar cotizaciones">
     <select id="fil-estado" onchange="filtrar()">
       <option value="">Todos los estados</option>
       <option value="borrador">Borrador</option>
@@ -97,9 +97,9 @@ textarea{resize:vertical;min-height:80px;}
     </select>
     <select id="fil-tipo" onchange="filtrar()">
       <option value="">Todos los tipos</option>
-      <option value="diseno">DiseÃ±o</option>
+      <option value="diseno">Diseño</option>
       <option value="fresado">Fresado</option>
-      <option value="impresion">ImpresiÃ³n</option>
+      <option value="impresion">Impresión</option>
     </select>
     <button class="btn btn-primary" onclick="abrirModalNueva()"><i class="fas fa-plus"></i> Nueva</button>
     <button class="btn btn-gold" onclick="exportCSV()"><i class="fas fa-download"></i> CSV</button>
@@ -112,10 +112,10 @@ textarea{resize:vertical;min-height:80px;}
   </div>
 </div>
 
-<!-- Modal nueva/editar cotizaciÃ³n -->
-<div class="modal-overlay" id="modal" style="display:none;" role="dialog" aria-modal="true" aria-label="CotizaciÃ³n">
+<!-- Modal nueva/editar cotización -->
+<div class="modal-overlay" id="modal" style="display:none;" role="dialog" aria-modal="true" aria-label="Cotización">
   <div class="modal-box">
-    <h2 id="modal-title">Nueva CotizaciÃ³n</h2>
+    <h2 id="modal-title">Nueva Cotización</h2>
     <input type="hidden" id="m-id">
     <div class="form-row">
       <div><label>Doctor / cliente</label><input type="text" id="m-doctor" placeholder="Nombre del doctor"></div>
@@ -125,9 +125,9 @@ textarea{resize:vertical;min-height:80px;}
       <div><label>WhatsApp</label><input type="tel" id="m-wa" placeholder="3001234567"></div>
       <div><label>Tipo</label>
         <select id="m-tipo">
-          <option value="diseno">DiseÃ±o CAD</option>
+          <option value="diseno">Diseño CAD</option>
           <option value="fresado">Fresado</option>
-          <option value="impresion">ImpresiÃ³n 3D</option>
+          <option value="impresion">Impresión 3D</option>
           <option value="otro">Otro</option>
         </select>
       </div>
@@ -153,7 +153,7 @@ textarea{resize:vertical;min-height:80px;}
       <div><label>Vence</label><input type="date" id="m-expira"></div>
     </div>
     <div class="form-row full">
-      <div><label>Notas / detalle</label><textarea id="m-notas" placeholder="DescripciÃ³n del caso, materiales, dientesâ€¦"></textarea></div>
+      <div><label>Notas / detalle</label><textarea id="m-notas" placeholder="Descripción del caso, materiales, dientes…"></textarea></div>
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
@@ -167,7 +167,7 @@ textarea{resize:vertical;min-height:80px;}
 <script>
 const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtCOP = (n,m) => m==='USD' ? `USD ${Number(n).toFixed(0)}` : '$'+Number(n).toLocaleString('es-CO');
-const fmtD = d => d ? new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'}) : 'â€”';
+const fmtD = d => d ? new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'}) : '—';
 
 let _all = [];
 let sb;
@@ -237,18 +237,18 @@ function renderTabla(rows) {
   const hoy = Date.now();
   document.getElementById('tabla-cuerpo').innerHTML = `<table>
     <thead><tr>
-      <th>CÃ³digo</th><th>Doctor</th><th>Tipo</th><th>Total</th><th>Estado</th><th>Vence</th><th>Notas</th><th>Acciones</th>
+      <th>Código</th><th>Doctor</th><th>Tipo</th><th>Total</th><th>Estado</th><th>Vence</th><th>Notas</th><th>Acciones</th>
     </tr></thead>
     <tbody>${rows.map(c => {
-      const doctor = escH(c.doctor||c.doctor_nombre||c.doctor_email||c.email||'â€”');
-      const codigo = escH(c.codigo||c.id?.slice(0,8)||'â€”');
+      const doctor = escH(c.doctor||c.doctor_nombre||c.doctor_email||c.email||'—');
+      const codigo = escH(c.codigo||c.id?.slice(0,8)||'—');
       const dias = c.expira_at ? Math.ceil((new Date(c.expira_at)-hoy)/86400000) : null;
       const diasCls = dias===null?'dias-ok':dias<0?'dias-urgent':dias<=3?'dias-urgent':dias<=7?'dias-warn':'dias-ok';
-      const diasLbl = dias===null?'â€”':dias<0?'<span class="'+diasCls+'">Vencida</span>':`<span class="${diasCls}">${dias}d</span>`;
+      const diasLbl = dias===null?'—':dias<0?'<span class="'+diasCls+'">Vencida</span>':`<span class="${diasCls}">${dias}d</span>`;
       return `<tr>
         <td style="font-family:monospace;color:var(--cyan);">${codigo}</td>
         <td>${doctor}</td>
-        <td style="text-transform:capitalize;color:var(--muted);">${escH(c.tipo||'â€”')}</td>
+        <td style="text-transform:capitalize;color:var(--muted);">${escH(c.tipo||'—')}</td>
         <td style="font-weight:700;color:var(--gold);">${escH(fmtCOP(c.total,c.moneda))}</td>
         <td><span class="badge badge-${escH(c.estado||'borrador')}">${escH(c.estado||'borrador')}</span></td>
         <td>${diasLbl}</td>
@@ -275,7 +275,7 @@ function abrirModalNueva() {
   document.getElementById('m-estado').value='borrador';
   const d30=new Date(Date.now()+30*86400000); document.getElementById('m-expira').value=d30.toISOString().slice(0,10);
   document.getElementById('m-notas').value='';
-  document.getElementById('modal-title').textContent='Nueva CotizaciÃ³n';
+  document.getElementById('modal-title').textContent='Nueva Cotización';
   document.getElementById('modal').style.display='flex';
 }
 
@@ -291,7 +291,7 @@ function editarCotizacion(id) {
   document.getElementById('m-estado').value=c.estado||'borrador';
   document.getElementById('m-expira').value=c.expira_at?c.expira_at.slice(0,10):'';
   document.getElementById('m-notas').value=c.notas||'';
-  document.getElementById('modal-title').textContent='Editar CotizaciÃ³n';
+  document.getElementById('modal-title').textContent='Editar Cotización';
   document.getElementById('modal').style.display='flex';
 }
 
@@ -334,7 +334,7 @@ async function cambiarEstado(id, estado) {
 }
 
 async function eliminarCotizacion(id) {
-  if (!confirm('Â¿Eliminar esta cotizaciÃ³n?')) return;
+  if (!confirm('¿Eliminar esta cotización?')) return;
   await sb.from('cotizaciones').delete().eq('id',id);
   await cargar();
 }
@@ -342,12 +342,12 @@ async function eliminarCotizacion(id) {
 function enviarWA(id) {
   const c = _all.find(x=>x.id===id); if(!c) return;
   const wa = (c.whatsapp||c.doctor_tel||'').replace(/\D/g,'');
-  if (!wa) { alert('Sin WhatsApp registrado en esta cotizaciÃ³n.'); return; }
+  if (!wa) { alert('Sin WhatsApp registrado en esta cotización.'); return; }
   const num = wa.length===10?'57'+wa:wa;
   const doctor = (c.doctor||c.doctor_nombre||'Doctor').split(' ')[0];
   const total = fmtCOP(c.total, c.moneda);
-  const expira = c.expira_at ? new Date(c.expira_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'}) : '30 dÃ­as';
-  const msg = `ðŸ’Ž *PRODIGY Lab Dental*\n\nHola ${doctor}, te enviamos la cotizaciÃ³n para tu caso de *${c.tipo||'servicio'}*.\n\nðŸ’° *Total: ${total}*\nðŸ“… *VÃ¡lida hasta:* ${expira}\n\n${c.notas?'ðŸ“‹ '+c.notas+'\n\n':''}Para aprobar y generar tu pedido:\nðŸ‘‰ https://prodigylabdental.com/flujo-${c.tipo==='fresado'?'fresado':c.tipo==='impresion'?'impresion':'diseno'}\n\n_Respondenos este WA para cualquier consulta._`;
+  const expira = c.expira_at ? new Date(c.expira_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'}) : '30 días';
+  const msg = `💎 *PRODIGY Lab Dental*\n\nHola ${doctor}, te enviamos la cotización para tu caso de *${c.tipo||'servicio'}*.\n\n💰 *Total: ${total}*\n📅 *Válida hasta:* ${expira}\n\n${c.notas?'📋 '+c.notas+'\n\n':''}Para aprobar y generar tu pedido:\n👉 https://prodigylabdental.com/flujo-${c.tipo==='fresado'?'fresado':c.tipo==='impresion'?'impresion':'diseno'}\n\n_Respondenos este WA para cualquier consulta._`;
   window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank','noopener,noreferrer');
 }
 
@@ -361,7 +361,7 @@ function exportCSV() {
     if(q){const txt=[c.codigo,c.doctor,c.doctor_nombre,c.email,c.tipo].join(' ').toLowerCase();if(!txt.includes(q))return false;}
     return true;
   });
-  const header='CÃ³digo,Doctor,Email,WhatsApp,Tipo,Total,Moneda,Estado,Vence,Notas,Fecha';
+  const header='Código,Doctor,Email,WhatsApp,Tipo,Total,Moneda,Estado,Vence,Notas,Fecha';
   const data=rows.map(c=>[
     c.codigo||c.id?.slice(0,8)||'',
     c.doctor||c.doctor_nombre||'',
@@ -375,7 +375,7 @@ function exportCSV() {
     (c.notas||'').replace(/,/g,';').replace(/\n/g,' '),
     c.created_at?c.created_at.slice(0,10):'',
   ].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','));
-  const csv='ï»¿'+header+'\n'+data.join('\n');
+  const csv='﻿'+header+'\n'+data.join('\n');
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
   a.download='cotizaciones-prodigy-'+new Date().toISOString().slice(0,10)+'.csv';
@@ -390,4 +390,3 @@ window.addEventListener('DOMContentLoaded', init);
 <script>if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
-
