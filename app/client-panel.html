@@ -328,17 +328,28 @@
     <!-- CTA NUEVO CASO -->
     <div class="cta-nuevo" id="cta-nuevo">
         <h3>¿Listo para tu próximo caso?</h3>
-        <p>Pide directamente desde aquí o usa los flujos detallados.</p>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
-            <button type="button" onclick="pdAbrir()" class="btn-nuevo-caso" style="font-size:.95rem;padding:14px 28px;">
-              <i class="fas fa-plus-circle"></i> Nuevo Pedido Online
-            </button>
-        </div>
-        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-            <a href="../flujo-diseno" class="btn-nuevo-caso" style="font-size:.78rem;padding:9px 14px;background:rgba(255,255,255,.06);box-shadow:none;border:1px solid rgba(255,255,255,.1);"><i class="fas fa-pen-nib"></i> Flujo Diseño</a>
-            <a href="../flujo-fresado" class="btn-nuevo-caso" style="font-size:.78rem;padding:9px 14px;background:rgba(255,255,255,.06);box-shadow:none;border:1px solid rgba(255,255,255,.1);"><i class="fas fa-gear"></i> Flujo Fresado</a>
-            <a href="../flujo-impresion" class="btn-nuevo-caso" style="font-size:.78rem;padding:9px 14px;background:rgba(255,255,255,.06);box-shadow:none;border:1px solid rgba(255,255,255,.1);"><i class="fas fa-print"></i> Flujo Impresión</a>
-            <a href="../flujo-lab" class="btn-nuevo-caso" style="font-size:.78rem;padding:9px 14px;background:rgba(255,255,255,.06);box-shadow:none;border:1px solid rgba(255,255,255,.1);"><i class="fas fa-flask"></i> Flujo Lab Full</a>
+        <p style="margin-bottom:18px;font-size:.85rem;color:#94a3b8;">Elige el servicio que necesitas:</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;max-width:760px;margin:0 auto;">
+            <a href="../flujo-diseno" class="btn-nuevo-caso" style="flex-direction:column;gap:6px;padding:16px 12px;text-align:center;background:linear-gradient(135deg,rgba(217,70,166,.18),rgba(217,70,166,.06));border:1px solid rgba(217,70,166,.35);">
+                <i class="fas fa-pen-nib" style="font-size:1.4rem;color:#D946A6;"></i>
+                <span style="font-size:.88rem;">Diseño CAD</span>
+                <span style="font-size:.7rem;font-weight:400;color:#94a3b8;">Coronas, puentes, Full Arch, guías</span>
+            </a>
+            <a href="../flujo-fresado" class="btn-nuevo-caso" style="flex-direction:column;gap:6px;padding:16px 12px;text-align:center;background:linear-gradient(135deg,rgba(0,210,255,.18),rgba(0,210,255,.06));border:1px solid rgba(0,210,255,.35);">
+                <i class="fas fa-gear" style="font-size:1.4rem;color:#00d2ff;"></i>
+                <span style="font-size:.88rem;">Fresado CAM</span>
+                <span style="font-size:.7rem;font-weight:400;color:#94a3b8;">Zirconia, disilicato, PMMA</span>
+            </a>
+            <a href="../flujo-impresion" class="btn-nuevo-caso" style="flex-direction:column;gap:6px;padding:16px 12px;text-align:center;background:linear-gradient(135deg,rgba(0,255,65,.18),rgba(0,255,65,.06));border:1px solid rgba(0,255,65,.35);">
+                <i class="fas fa-print" style="font-size:1.4rem;color:#00FF41;"></i>
+                <span style="font-size:.88rem;">Impresión 3D</span>
+                <span style="font-size:.7rem;font-weight:400;color:#94a3b8;">Modelos, guías, alineadores</span>
+            </a>
+            <a href="../flujo-lab" class="btn-nuevo-caso" style="flex-direction:column;gap:6px;padding:16px 12px;text-align:center;background:linear-gradient(135deg,rgba(212,175,55,.18),rgba(212,175,55,.06));border:1px solid rgba(212,175,55,.35);">
+                <i class="fas fa-flask" style="font-size:1.4rem;color:#D4AF37;"></i>
+                <span style="font-size:.88rem;">Lab Full</span>
+                <span style="font-size:.7rem;font-weight:400;color:#94a3b8;">Prótesis, metal-cerámica, complejo</span>
+            </a>
         </div>
     </div>
 
