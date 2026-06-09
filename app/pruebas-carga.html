@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <meta name="color-scheme" content="dark">
-  <title>Pruebas de Carga — PRODIGY Lab</title>
+  <title>Pruebas de Carga â€” PRODIGY Lab</title>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -40,18 +40,18 @@
 </head>
 <body>
 <a href="admin-panel.html" style="display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:.78rem;font-weight:700;margin-bottom:16px;"><i class="fas fa-arrow-left" aria-hidden="true"></i> Volver al panel</a>
-<h1>🧪 Panel de Pruebas de Carga — PRODIGY</h1>
+<h1>ðŸ§ª Panel de Pruebas de Carga â€” PRODIGY</h1>
 <p class="sub">Prueba uploads de STL, pagos, flujos de panel y RPCs antes del lanzamiento. Solo acceso admin.</p>
 
 <div class="grid">
   <!-- PRUEBA 1: Upload STL a Supabase Storage -->
   <div class="card">
-    <div class="card-title"><i class="fas fa-file-code" style="color:var(--cyan);" aria-hidden="true"></i> Upload STL / Diseño</div>
+    <div class="card-title"><i class="fas fa-file-code" style="color:var(--cyan);" aria-hidden="true"></i> Upload STL / DiseÃ±o</div>
     <label>Archivo STL (hasta 500MB)</label>
     <input type="file" id="test-stl" accept=".stl,.obj,.ply">
     <label>Bucket destino</label>
     <select id="test-bucket">
-      <option value="disenos-cad">disenos-cad (diseños)</option>
+      <option value="disenos-cad">disenos-cad (diseÃ±os)</option>
       <option value="portafolio">portafolio (casos)</option>
       <option value="evidencias-entrega">evidencias-entrega (fotos)</option>
     </select>
@@ -62,7 +62,7 @@
 
   <!-- PRUEBA 2: RPCs de Analytics -->
   <div class="card">
-    <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--gold);" aria-hidden="true"></i> RPCs de Métricas</div>
+    <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--gold);" aria-hidden="true"></i> RPCs de MÃ©tricas</div>
     <button type="button" class="btn btn-gold" onclick="testRPC('prodigy_dashboard_semana',{})">Dashboard Semana</button><br><br>
     <button type="button" class="btn btn-gold" onclick="testRPC('prodigy_top_servicios',{limite:5})">Top Servicios</button><br><br>
     <button type="button" class="btn btn-gold" onclick="testRPC('prodigy_ingresos_semanas',{n_semanas:4})">Ingresos 4 semanas</button><br><br>
@@ -71,13 +71,13 @@
     <div class="result" id="result-rpc">Click en un RPC para probar</div>
   </div>
 
-  <!-- PRUEBA 3: Cupón de referido -->
+  <!-- PRUEBA 3: CupÃ³n de referido -->
   <div class="card">
     <div class="card-title"><i class="fas fa-tag" style="color:var(--green);" aria-hidden="true"></i> Sistema de Referidos</div>
-    <label>Email para generar código</label>
+    <label>Email para generar cÃ³digo</label>
     <input type="text" id="test-ref-email" placeholder="doctor@clinica.com">
-    <button type="button" class="btn btn-green" onclick="testGenerarCodigo()">Generar código</button><br><br>
-    <label>Cupón CRED- para validar</label>
+    <button type="button" class="btn btn-green" onclick="testGenerarCodigo()">Generar cÃ³digo</button><br><br>
+    <label>CupÃ³n CRED- para validar</label>
     <input type="text" id="test-cupon" placeholder="CRED-XXXXXXXX" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
     <button type="button" class="btn btn-cyan" onclick="testValidarCupon()">Validar (sin consumir)</button>
     <div class="result" id="result-ref">Prueba el sistema de referidos</div>
@@ -90,7 +90,7 @@
     <div class="result" id="result-tablas">Click para verificar tablas activas</div>
   </div>
 
-  <!-- PRUEBA 5: Flows de notificación -->
+  <!-- PRUEBA 5: Flows de notificaciÃ³n -->
   <div class="card">
     <div class="card-title"><i class="fab fa-whatsapp" style="color:#25D366;" aria-hidden="true"></i> Edge Functions</div>
     <button type="button" class="btn btn-green" onclick="testEdgeFn('health-check','GET')">Health Check</button><br><br>
@@ -124,7 +124,7 @@ async function testUploadSTL() {
   const bar=document.getElementById('prog-bar-stl');
   prog.style.display='block'; bar.style.width='10%';
   const t0=Date.now();
-  log('result-stl',`📤 Subiendo ${file.name} (${(file.size/1024/1024).toFixed(2)} MB) a ${bucket}...`);
+  log('result-stl',`ðŸ“¤ Subiendo ${file.name} (${(file.size/1024/1024).toFixed(2)} MB) a ${bucket}...`);
   try {
     const path=`prueba-${Date.now()}/${file.name}`;
     bar.style.width='40%';
@@ -134,19 +134,19 @@ async function testUploadSTL() {
     const t1=Date.now();
     const {data:{publicUrl}}=sb.storage.from(bucket).getPublicUrl(path);
     bar.style.width='100%';
-    log('result-stl',`✅ Upload exitoso en ${((t1-t0)/1000).toFixed(2)}s\nPath: ${data.path}\nURL: ${publicUrl.slice(0,80)}...\nTamaño: ${(file.size/1024/1024).toFixed(2)} MB\n\n⚠️ Elimina el archivo de prueba desde Supabase Storage`,'ok');
-  }catch(e){log('result-stl','❌ Error: '+e.message,'err');}
+    log('result-stl',`âœ… Upload exitoso en ${((t1-t0)/1000).toFixed(2)}s\nPath: ${data.path}\nURL: ${publicUrl.slice(0,80)}...\nTamaÃ±o: ${(file.size/1024/1024).toFixed(2)} MB\n\nâš ï¸ Elimina el archivo de prueba desde Supabase Storage`,'ok');
+  }catch(e){log('result-stl','âŒ Error: '+e.message,'err');}
 }
 
 async function testRPC(fn,params) {
-  log('result-rpc',`⏳ Llamando ${fn}...`);
+  log('result-rpc',`â³ Llamando ${fn}...`);
   const t0=Date.now();
   try{
     const{data,error}=await sb.rpc(fn,params);
     const ms=Date.now()-t0;
     if(error)throw error;
-    log('result-rpc',`✅ ${fn} — ${ms}ms\n\n${JSON.stringify(data,null,2).slice(0,500)}`,'ok');
-  }catch(e){log('result-rpc','❌ '+e.message,'err');}
+    log('result-rpc',`âœ… ${fn} â€” ${ms}ms\n\n${JSON.stringify(data,null,2).slice(0,500)}`,'ok');
+  }catch(e){log('result-rpc','âŒ '+e.message,'err');}
 }
 
 async function testGenerarCodigo() {
@@ -155,23 +155,23 @@ async function testGenerarCodigo() {
   try{
     const{data,error}=await sb.rpc('obtener_mi_codigo_referido',{p_email:email,p_nombre:'Test'});
     if(error)throw error;
-    log('result-ref','✅ Código generado/encontrado:\n'+data+'\n\nEste código es real — ya quedó en la BD.','ok');
-  }catch(e){log('result-ref','❌ '+e.message,'err');}
+    log('result-ref','âœ… CÃ³digo generado/encontrado:\n'+data+'\n\nEste cÃ³digo es real â€” ya quedÃ³ en la BD.','ok');
+  }catch(e){log('result-ref','âŒ '+e.message,'err');}
 }
 
 async function testValidarCupon() {
   const cupon=document.getElementById('test-cupon').value.trim().toUpperCase();
-  if(!/^CRED-[A-Z0-9]{8}$/.test(cupon)){log('result-ref','Formato inválido (CRED-XXXXXXXX)','err');return;}
+  if(!/^CRED-[A-Z0-9]{8}$/.test(cupon)){log('result-ref','Formato invÃ¡lido (CRED-XXXXXXXX)','err');return;}
   try{
     // Solo buscar, no consumir
     const{data,error}=await sb.from('referidos').select('id,estado,cupon_usado,recompensa_cop').eq('cupon_credito',cupon).single();
-    if(error||!data)throw new Error('Cupón no encontrado');
-    log('result-ref',`✅ Cupón encontrado:\nEstado: ${data.estado}\nUsado: ${data.cupon_usado}\nCrédito: $${data.recompensa_cop?.toLocaleString('es-CO')||'—'} COP\n\n(No fue consumido — solo consulta)`,'ok');
-  }catch(e){log('result-ref','❌ '+e.message,'err');}
+    if(error||!data)throw new Error('CupÃ³n no encontrado');
+    log('result-ref',`âœ… CupÃ³n encontrado:\nEstado: ${data.estado}\nUsado: ${data.cupon_usado}\nCrÃ©dito: $${data.recompensa_cop?.toLocaleString('es-CO')||'â€”'} COP\n\n(No fue consumido â€” solo consulta)`,'ok');
+  }catch(e){log('result-ref','âŒ '+e.message,'err');}
 }
 
 async function testTablas() {
-  log('result-tablas','⏳ Verificando tablas...');
+  log('result-tablas','â³ Verificando tablas...');
   const tablas=['pedidos','cotizaciones','referidos','waitlist_labs','leads_doctores','revision_tokens','historial_diseno','logs_incidencias'];
   const results=[];
   for(const t of tablas){
@@ -180,44 +180,44 @@ async function testTablas() {
       const{count,error}=await sb.from(t).select('*',{count:'exact',head:true});
       const ms=Date.now()-t0;
       if(error)throw error;
-      results.push(`✅ ${t}: ${count} filas (${ms}ms)`);
-    }catch(e){results.push(`❌ ${t}: ${e.message}`);}
+      results.push(`âœ… ${t}: ${count} filas (${ms}ms)`);
+    }catch(e){results.push(`âŒ ${t}: ${e.message}`);}
   }
   log('result-tablas',results.join('\n'),'ok');
 }
 
 async function testEdgeFn(fn,method) {
-  log('result-edge',`⏳ Llamando /api/${fn}...`);
+  log('result-edge',`â³ Llamando /api/${fn}...`);
   const t0=Date.now();
   try{
     const r=await fetch(`/api/${fn}`,{method:method||'GET'});
     const ms=Date.now()-t0;
     const text=await r.text().then(t=>{try{return JSON.stringify(JSON.parse(t),null,2).slice(0,400);}catch{return t.slice(0,400);}});
-    log('result-edge',`${r.ok?'✅':'⚠️'} ${fn} — ${r.status} en ${ms}ms\n\n${text}`);
-  }catch(e){log('result-edge','❌ '+e.message,'err');}
+    log('result-edge',`${r.ok?'âœ…':'âš ï¸'} ${fn} â€” ${r.status} en ${ms}ms\n\n${text}`);
+  }catch(e){log('result-edge','âŒ '+e.message,'err');}
 }
 
 async function testRevisionNotify() {
-  log('result-edge','⏳ Probando revision-notify (solo log, no envía WA real)...');
+  log('result-edge','â³ Probando revision-notify (solo log, no envÃ­a WA real)...');
   try{
     const r=await fetch('/api/revision-notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tipo:'aprobacion',pedido_id:'TEST-'+Date.now(),codigo:'PRD-TEST-001',doctor_nombre:'Dr. Prueba'})});
     const d=await r.json();
-    log('result-edge',`${r.ok?'✅':'⚠️'} revision-notify — ${r.status}\n\n${JSON.stringify(d,null,2)}`);
-  }catch(e){log('result-edge','❌ '+e.message,'err');}
+    log('result-edge',`${r.ok?'âœ…':'âš ï¸'} revision-notify â€” ${r.status}\n\n${JSON.stringify(d,null,2)}`);
+  }catch(e){log('result-edge','âŒ '+e.message,'err');}
 }
 
 async function testSocialCopy() {
-  log('result-edge','⏳ Probando social-copy IA...');
+  log('result-edge','â³ Probando social-copy IA...');
   try{
-    const r=await fetch('/api/social-copy',{method:'POST',headers:{'Content-Type':'application/json','x-admin-token':'test'},body:JSON.stringify({titulo:'Prueba de generación de contenido',descripcion:'Test de la edge function social-copy',url:'https://prodigylabdental.com/journal',categoria:'tecnologia'})});
+    const r=await fetch('/api/social-copy',{method:'POST',headers:{'Content-Type':'application/json','x-admin-token':'test'},body:JSON.stringify({titulo:'Prueba de generaciÃ³n de contenido',descripcion:'Test de la edge function social-copy',url:'https://prodigylabdental.com/journal',categoria:'tecnologia'})});
     const d=await r.json();
     if(d.error)throw new Error(d.error);
-    log('result-edge',`✅ Social Copy IA OK\n\n${d.copies?.instagram?.slice(0,200)||'...'}...`,'ok');
-  }catch(e){log('result-edge','❌ '+e.message,'err');}
+    log('result-edge',`âœ… Social Copy IA OK\n\n${d.copies?.instagram?.slice(0,200)||'...'}...`,'ok');
+  }catch(e){log('result-edge','âŒ '+e.message,'err');}
 }
 
 async function testQueryPerf() {
-  log('result-perf','⏳ Midiendo performance de consultas...');
+  log('result-perf','â³ Midiendo performance de consultas...');
   const tests=[
     {name:'pedidos (limit 10)',fn:async()=>sb.from('pedidos').select('id,codigo,estado').limit(10)},
     {name:'prodigy_dashboard_semana',fn:async()=>sb.rpc('prodigy_dashboard_semana')},
@@ -228,58 +228,58 @@ async function testQueryPerf() {
   const results=[];
   for(const t of tests){
     const t0=Date.now();
-    try{await t.fn();const ms=Date.now()-t0;results.push(`${ms<200?'✅':'⚠️'} ${t.name}: ${ms}ms`);}
-    catch(e){results.push(`❌ ${t.name}: ${e.message}`);}
+    try{await t.fn();const ms=Date.now()-t0;results.push(`${ms<200?'âœ…':'âš ï¸'} ${t.name}: ${ms}ms`);}
+    catch(e){results.push(`âŒ ${t.name}: ${e.message}`);}
   }
   log('result-perf',results.join('\n'),'ok');
 }
 </script>
 
-<!-- SECCIÓN ADICIONAL: Guía de pruebas de pago -->
+<!-- SECCIÃ“N ADICIONAL: GuÃ­a de pruebas de pago -->
 <div style="margin-top:32px;background:var(--card);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:20px;">
-  <div style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--gold);margin-bottom:14px;"><i class="fas fa-credit-card" aria-hidden="true"></i> Guía de pruebas de cobros — Antes del lanzamiento</div>
+  <div style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--gold);margin-bottom:14px;"><i class="fas fa-credit-card" aria-hidden="true"></i> GuÃ­a de pruebas de cobros â€” Antes del lanzamiento</div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
     <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:16px;">
       <div style="font-size:.72rem;font-weight:800;color:#00d2ff;margin-bottom:8px;">STRIPE (Internacional USD)</div>
       <div style="font-size:.76rem;color:var(--muted);line-height:1.8;">
-        ✅ Configurar <code style="background:rgba(255,255,255,.06);border-radius:4px;padding:1px 5px;">STRIPE_SECRET_KEY=sk_test_...</code><br>
-        ✅ Probar con tarjeta test: <code>4242 4242 4242 4242</code><br>
-        ✅ Verificar webhook en Stripe Dashboard<br>
-        ✅ Probar pago rechazado: <code>4000 0000 0000 0002</code><br>
-        ⬜ Activar clave live: <code>sk_live_...</code> al lanzar
+        âœ… Configurar <code style="background:rgba(255,255,255,.06);border-radius:4px;padding:1px 5px;">STRIPE_SECRET_KEY=sk_test_...</code><br>
+        âœ… Probar con tarjeta test: <code>4242 4242 4242 4242</code><br>
+        âœ… Verificar webhook en Stripe Dashboard<br>
+        âœ… Probar pago rechazado: <code>4000 0000 0000 0002</code><br>
+        â¬œ Activar clave live: <code>sk_live_...</code> al lanzar
       </div>
     </div>
     <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:16px;">
       <div style="font-size:.72rem;font-weight:800;color:#D4AF37;margin-bottom:8px;">WOMPI (Colombia COP)</div>
       <div style="font-size:.76rem;color:var(--muted);line-height:1.8;">
-        ✅ Configurar <code style="background:rgba(255,255,255,.06);border-radius:4px;padding:1px 5px;">WOMPI_INTEGRITY_SECRET</code><br>
-        ✅ Usar Sandbox: <code>pub_test_...</code><br>
-        ✅ Probar PSE (requiere banco sandbox)<br>
-        ✅ Verificar IPN (notificación de Wompi)<br>
-        ⬜ Activar clave producción: <code>pub_prod_...</code>
+        âœ… Configurar <code style="background:rgba(255,255,255,.06);border-radius:4px;padding:1px 5px;">WOMPI_INTEGRITY_SECRET</code><br>
+        âœ… Usar Sandbox: <code>pub_test_...</code><br>
+        âœ… Probar PSE (requiere banco sandbox)<br>
+        âœ… Verificar IPN (notificaciÃ³n de Wompi)<br>
+        â¬œ Activar clave producciÃ³n: <code>pub_prod_...</code>
       </div>
     </div>
     <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:16px;">
       <div style="font-size:.72rem;font-weight:800;color:#00FF41;margin-bottom:8px;">FLUJO COMPLETO 50/50</div>
       <div style="font-size:.76rem;color:var(--muted);line-height:1.8;">
-        ✅ Doctor solicita caso → paga 50% abono<br>
-        ✅ Operario diseña → doctor aprueba (revision-express)<br>
-        ✅ Mensajero despacha → doctor paga 50% saldo<br>
-        ✅ Admin confirma pago → trigger churn activo<br>
-        ✅ Referido registrado → cupón generado para referidor
+        âœ… Doctor solicita caso â†’ paga 50% abono<br>
+        âœ… Operario diseÃ±a â†’ doctor aprueba (revision-express)<br>
+        âœ… Mensajero despacha â†’ doctor paga 50% saldo<br>
+        âœ… Admin confirma pago â†’ trigger churn activo<br>
+        âœ… Referido registrado â†’ cupÃ³n generado para referidor
       </div>
     </div>
     <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:16px;">
       <div style="font-size:.72rem;font-weight:800;color:#D946A6;margin-bottom:8px;">CHECKLIST LANZAMIENTO</div>
       <div style="font-size:.76rem;color:var(--muted);line-height:1.8;">
-        ⬜ Precios finales en <a href="admin-precios.html" style="color:#D946A6;">admin-precios</a><br>
-        ⬜ Fotos Exocad reales en portafolio<br>
-        ⬜ OG JPGs generados (<code>node scripts/gen-og-images.js</code>)<br>
-        ⬜ Stripe live key configurada<br>
-        ⬜ Wompi prod key configurada<br>
-        ⬜ Descomentar mantenimiento en <code>header.js</code> línea 63<br>
-        ⬜ Verificar GA4 en producción<br>
-        ⬜ Search Console re-enviar sitemap
+        â¬œ Precios finales en <a href="admin-precios.html" style="color:#D946A6;">admin-precios</a><br>
+        â¬œ Fotos Exocad reales en portafolio<br>
+        â¬œ OG JPGs generados (<code>node scripts/gen-og-images.js</code>)<br>
+        â¬œ Stripe live key configurada<br>
+        â¬œ Wompi prod key configurada<br>
+        â¬œ Descomentar mantenimiento en <code>header.js</code> lÃ­nea 63<br>
+        â¬œ Verificar GA4 en producciÃ³n<br>
+        â¬œ Search Console re-enviar sitemap
       </div>
     </div>
   </div>
@@ -289,3 +289,4 @@ async function testQueryPerf() {
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 </body>
 </html>
+

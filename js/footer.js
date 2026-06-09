@@ -143,12 +143,12 @@
       '<div class="pfoot-col">' +
         '<h4>Servicios</h4>' +
         '<ul>' +
-          '<li><a href="diseno-cad">Diseño CAD — Exocad · 3Shape</a></li>' +
-          '<li><a href="diseno-remoto">🌍 Diseño CAD Remoto</a></li>' +
-          '<li><a href="fresado-cam">Fresado & Manufactura CAM</a></li>' +
-          '<li><a href="escaner-domicilio">Escaneos a Domicilio</a></li>' +
-          '<li><a href="catalogo">Catálogo de Materiales</a></li>' +
-          '<li><a href="calculadora">Cotizador de Precios</a></li>' +
+          '<li><a href="/diseno-cad">Diseño CAD — Exocad · 3Shape</a></li>' +
+          '<li><a href="/diseno-remoto">🌍 Diseño CAD Remoto</a></li>' +
+          '<li><a href="/fresado-cam">Fresado & Manufactura CAM</a></li>' +
+          '<li><a href="/escaner-domicilio">Escaneos a Domicilio</a></li>' +
+          '<li><a href="/catalogo">Catálogo de Materiales</a></li>' +
+          '<li><a href="/calculadora">Cotizador de Precios</a></li>' +
         '</ul>' +
       '</div>' +
 
@@ -156,15 +156,15 @@
       '<div class="pfoot-col">' +
         '<h4>Portafolio y Recursos</h4>' +
         '<ul>' +
-          '<li><a href="portafolio">Portafolio de Casos</a></li>' +
-          '<li><a href="journal">PRODIGY Journal — Blog</a></li>' +
-          '<li><a href="guia-tecnica">Guía Técnica de Materiales</a></li>' +
-          '<li><a href="envia-tu-scanner">Envía tu Escaneo</a></li>' +
-          '<li><a href="seguimiento-caso">Seguimiento en Vivo</a></li>' +
-          '<li><a href="soporte-tecnico">Soporte XTCERA & Alistar</a></li>' +
-          '<li><a href="preguntas"><i class="fas fa-circle-question" style="color:#D946A6;margin-right:5px;" aria-hidden="true"></i>Preguntas Frecuentes</a></li>' +
-          '<li><a href="impresion-3d"><i class="fas fa-print" style="color:#fb923c;margin-right:5px;" aria-hidden="true"></i>Impresión 3D Dental</a></li>' +
-          '<li><a href="alineadores-cad">Alineadores Invisibles CAD</a></li>' +
+          '<li><a href="/portafolio">Portafolio de Casos</a></li>' +
+          '<li><a href="/journal">PRODIGY Journal — Blog</a></li>' +
+          '<li><a href="/guia-tecnica">Guía Técnica de Materiales</a></li>' +
+          '<li><a href="/envia-tu-scanner">Envía tu Escaneo</a></li>' +
+          '<li><a href="/seguimiento-caso">Seguimiento en Vivo</a></li>' +
+          '<li><a href="/soporte-tecnico">Soporte XTCERA & Alistar</a></li>' +
+          '<li><a href="/preguntas"><i class="fas fa-circle-question" style="color:#D946A6;margin-right:5px;" aria-hidden="true"></i>Preguntas Frecuentes</a></li>' +
+          '<li><a href="/impresion-3d"><i class="fas fa-print" style="color:#fb923c;margin-right:5px;" aria-hidden="true"></i>Impresión 3D Dental</a></li>' +
+          '<li><a href="/alineadores-cad">Alineadores Invisibles CAD</a></li>' +
         '</ul>' +
       '</div>' +
 
@@ -172,20 +172,20 @@
       '<div class="pfoot-col">' +
         '<h4>Empresa</h4>' +
         '<ul>' +
-          '<li><a href="nosotros">Nosotros · Equipo</a></li>' +
-          '<li><a href="nosotros#contacto">Contacto</a></li>' +
-          '<li><a href="soporte">Centro de Soporte</a></li>' +
-          '<li><a href="instalar-app">Instalar App Móvil</a></li>' +
-          '<li><a href="para-laboratorios" style="color:#D4AF37;font-weight:700;">💼 Para Laboratorios</a></li>' +
-          '<li><a href="referidos" style="color:#00FF41;font-weight:700;">🎁 Programa Referidos</a></li>' +
-          '<li><a href="terminos-y-legal">Términos y Privacidad</a></li>' +
+          '<li><a href="/nosotros">Nosotros · Equipo</a></li>' +
+          '<li><a href="/nosotros#contacto">Contacto</a></li>' +
+          '<li><a href="/soporte">Centro de Soporte</a></li>' +
+          '<li><a href="/instalar-app">Instalar App Móvil</a></li>' +
+          '<li><a href="/para-laboratorios" style="color:#D4AF37;font-weight:700;">💼 Para Laboratorios</a></li>' +
+          '<li><a href="/referidos" style="color:#00FF41;font-weight:700;">🎁 Programa Referidos</a></li>' +
+          '<li><a href="/terminos-y-legal">Términos y Privacidad</a></li>' +
         '</ul>' +
       '</div>' +
 
       /* Col 4 — Portal Profesional */
       '<div class="pfoot-col">' +
         '<h4>Portal Profesional</h4>' +
-        '<a href="app/login.html" class="pfoot-cta"><i class="fas fa-key"></i> Acceso Doctores</a>' +
+        '<a href="/app/login.html" class="pfoot-cta"><i class="fas fa-key"></i> Acceso Doctores</a>' +
         '<ul>' +
           '<li><a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20soporte%20t%C3%A9cnico" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" style="color:#25D366;margin-right:6px"></i>Soporte Técnico</a></li>' +
           '<li><a href="mailto:gerencia@prodigylabdental.com"><i class="far fa-envelope" style="margin-right:6px"></i>gerencia@prodigylabdental.com</a></li>' +
@@ -196,8 +196,8 @@
 
     '<div class="pfoot-copy">' +
       '<p>© 2026 PRODIGY Digital Dentistry · Bogotá, Colombia · Todos los derechos reservados · ' +
-        '<a href="terminos-y-legal">Términos</a> · ' +
-        '<a href="terminos-y-legal#privacidad">Privacidad</a>' +
+        '<a href="/terminos-y-legal">Términos</a> · ' +
+        '<a href="/terminos-y-legal#privacidad">Privacidad</a>' +
       '</p>' +
       '<p style="font-size:.68rem;color:#475569;margin-top:8px;line-height:1.6;">' +
         'Las marcas registradas Exocad®, 3Shape®, Ivoclar®, Vita®, Amann Girrbach®, Dentsply Sirona®, Renfert®, ' +

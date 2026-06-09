@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <meta name="color-scheme" content="dark">
-  <title>Churn Prevention — PRODIGY</title>
+  <title>Churn Prevention â€” PRODIGY</title>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -43,7 +43,7 @@
 </head>
 <body>
 <div class="topbar">
-  <h1><i class="fas fa-triangle-exclamation" aria-hidden="true" style="margin-right:6px;"></i>Churn Prevention — Doctores en Riesgo</h1>
+  <h1><i class="fas fa-triangle-exclamation" aria-hidden="true" style="margin-right:6px;"></i>Churn Prevention â€” Doctores en Riesgo</h1>
   <div style="display:flex;gap:10px;">
     <button type="button" class="btn btn-refresh" onclick="cargarTodo()" id="btnR"><i class="fas fa-rotate-right"></i> Actualizar</button>
     <a href="admin-panel.html" class="btn"><i class="fas fa-arrow-left"></i> Panel</a>
@@ -52,10 +52,10 @@
 
 <main>
   <div class="kpis" id="kpi-grid">
-    <div class="kpi"><div class="kpi-v" style="color:var(--red);">—</div><div class="kpi-l">Críticos (30+ días)</div></div>
-    <div class="kpi"><div class="kpi-v" style="color:var(--yellow);">—</div><div class="kpi-l">En alerta (20-29 días)</div></div>
-    <div class="kpi"><div class="kpi-v" style="color:var(--muted);">—</div><div class="kpi-l">Vigilar (14-19 días)</div></div>
-    <div class="kpi"><div class="kpi-v" style="color:var(--gold);">—</div><div class="kpi-l">Valor en riesgo (COP)</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--red);">â€”</div><div class="kpi-l">CrÃ­ticos (30+ dÃ­as)</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--yellow);">â€”</div><div class="kpi-l">En alerta (20-29 dÃ­as)</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--muted);">â€”</div><div class="kpi-l">Vigilar (14-19 dÃ­as)</div></div>
+    <div class="kpi"><div class="kpi-v" style="color:var(--gold);">â€”</div><div class="kpi-l">Valor en riesgo (COP)</div></div>
   </div>
 
   <div class="card">
@@ -67,31 +67,31 @@
   </div>
 
   <div class="card">
-    <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--gold);" aria-hidden="true"></i> Configuración del trigger</div>
+    <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--gold);" aria-hidden="true"></i> ConfiguraciÃ³n del trigger</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;font-size:.82rem;">
       <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:14px;">
-        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Umbral crítico</div>
-        <div style="font-size:1.4rem;font-weight:900;color:var(--red);">30 días</div>
+        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Umbral crÃ­tico</div>
+        <div style="font-size:1.4rem;font-weight:900;color:var(--red);">30 dÃ­as</div>
       </div>
       <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:14px;">
         <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Umbral alerta</div>
-        <div style="font-size:1.4rem;font-weight:900;color:var(--yellow);">20 días</div>
+        <div style="font-size:1.4rem;font-weight:900;color:var(--yellow);">20 dÃ­as</div>
       </div>
       <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:14px;">
-        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Doctor habitual (mín)</div>
+        <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Doctor habitual (mÃ­n)</div>
         <div style="font-size:1.4rem;font-weight:900;color:var(--cyan);">3 pedidos/90d</div>
       </div>
       <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:14px;">
         <div style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Edge fn activa</div>
-        <div style="font-size:.88rem;font-weight:700;color:var(--green);">/api/churn-alert ✅</div>
+        <div style="font-size:.88rem;font-weight:700;color:var(--green);">/api/churn-alert âœ…</div>
       </div>
     </div>
-    <p style="font-size:.72rem;color:#334155;margin-top:12px;">El cron de resumen semanal activa churn-alert los lunes. También puedes dispararlo manualmente con el botón "Enviar alertas WA".</p>
+    <p style="font-size:.72rem;color:#334155;margin-top:12px;">El cron de resumen semanal activa churn-alert los lunes. TambiÃ©n puedes dispararlo manualmente con el botÃ³n "Enviar alertas WA".</p>
   </div>
 
-  <!-- Distribución de riesgo -->
+  <!-- DistribuciÃ³n de riesgo -->
   <div class="card" style="margin-top:14px;">
-    <div class="card-title"><i class="fas fa-chart-pie" style="color:var(--mg);" aria-hidden="true"></i> Distribución de riesgo (últimos 90 días)</div>
+    <div class="card-title"><i class="fas fa-chart-pie" style="color:var(--mg);" aria-hidden="true"></i> DistribuciÃ³n de riesgo (Ãºltimos 90 dÃ­as)</div>
     <div id="riesgo-dist" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
   </div>
 
@@ -150,13 +150,13 @@ async function cargarChurnCLV(){
     el.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:.75rem;"><thead><tr style="border-bottom:1px solid rgba(255,255,255,.06);">'+
       '<th style="padding:8px;text-align:left;color:#475569;">Doctor</th>'+
       '<th style="padding:8px;text-align:center;color:#475569;">Riesgo</th>'+
-      '<th style="padding:8px;text-align:right;color:#475569;">Días inactivo</th>'+
+      '<th style="padding:8px;text-align:right;color:#475569;">DÃ­as inactivo</th>'+
       '<th style="padding:8px;text-align:right;color:#475569;">CLV</th>'+
       '</tr></thead><tbody>'+
       data.map(d=>`<tr style="border-bottom:1px solid rgba(255,255,255,.03);">
-        <td style="padding:8px;">${escH(d.nombre_doctor||d.email||'—')}</td>
-        <td style="padding:8px;text-align:center;"><span style="color:${COLORS[d.nivel_riesgo]||'#94a3b8'};font-weight:700;font-size:.7rem;">${escH(d.nivel_riesgo||'—')}</span></td>
-        <td style="padding:8px;text-align:right;color:#94a3b8;">${d.dias_inactivo||'—'}d</td>
+        <td style="padding:8px;">${escH(d.nombre_doctor||d.email||'â€”')}</td>
+        <td style="padding:8px;text-align:center;"><span style="color:${COLORS[d.nivel_riesgo]||'#94a3b8'};font-weight:700;font-size:.7rem;">${escH(d.nivel_riesgo||'â€”')}</span></td>
+        <td style="padding:8px;text-align:right;color:#94a3b8;">${d.dias_inactivo||'â€”'}d</td>
         <td style="padding:8px;text-align:right;font-weight:700;color:#D4AF37;">${fmtCOP(d.valor_total_pagado||0)}</td>
       </tr>`).join('')+'</tbody></table>';
   }catch(e){el.innerHTML='<p style="color:#f87171;font-size:.78rem;">'+escH(e.message)+'</p>';}
@@ -167,7 +167,7 @@ async function cargarChurn(){
   try{
     const{data,error}=await sb.from('doctors_inactivos').select('*').order('dias_inactivo',{ascending:false}).limit(50);
     if(error)throw error;
-    if(!data||!data.length){el.innerHTML='<div style="text-align:center;color:#475569;padding:24px;"><i class="fas fa-check-circle" style="color:#00FF41;font-size:1.5rem;display:block;margin-bottom:8px;"></i>Sin doctores en riesgo. ¡Todos activos!</div>';
+    if(!data||!data.length){el.innerHTML='<div style="text-align:center;color:#475569;padding:24px;"><i class="fas fa-check-circle" style="color:#00FF41;font-size:1.5rem;display:block;margin-bottom:8px;"></i>Sin doctores en riesgo. Â¡Todos activos!</div>';
       updateKPIs([],[],[],0); return;
     }
     const criticos=data.filter(d=>d.nivel_riesgo==='CRITICO');
@@ -177,17 +177,17 @@ async function cargarChurn(){
     updateKPIs(criticos,alertas,vigilar,valorRiesgo);
     el.innerHTML=`<div style="overflow-x:auto;"><table>
       <thead><tr>
-        <th>Doctor</th><th>Email</th><th>Último pedido</th><th>Días inactivo</th><th>Pedidos 90d</th><th>Ticket prom.</th><th>Riesgo</th><th>Acción</th>
+        <th>Doctor</th><th>Email</th><th>Ãšltimo pedido</th><th>DÃ­as inactivo</th><th>Pedidos 90d</th><th>Ticket prom.</th><th>Riesgo</th><th>AcciÃ³n</th>
       </tr></thead>
       <tbody>${data.map(d=>{
         const chip=d.nivel_riesgo==='CRITICO'?'chip-critico':d.nivel_riesgo==='ALERTA'?'chip-alerta':'chip-vigilar';
-        const wa=encodeURIComponent(`Hola Dr. ${d.nombre_doctor||''}, 👋 notamos que llevan ${d.dias_inactivo} días sin enviar casos a PRODIGY.\n\n¿Tienes algún caso pendiente al que podamos ayudarte? Escríbenos y lo agendamos de inmediato.\n\nEquipo PRODIGY Lab Dental`);
-        const fecha=d.ultimo_pedido?new Date(d.ultimo_pedido).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}):'—';
+        const wa=encodeURIComponent(`Hola Dr. ${d.nombre_doctor||''}, ðŸ‘‹ notamos que llevan ${d.dias_inactivo} dÃ­as sin enviar casos a PRODIGY.\n\nÂ¿Tienes algÃºn caso pendiente al que podamos ayudarte? EscrÃ­benos y lo agendamos de inmediato.\n\nEquipo PRODIGY Lab Dental`);
+        const fecha=d.ultimo_pedido?new Date(d.ultimo_pedido).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}):'â€”';
         return `<tr>
-          <td style="font-weight:700;">${escH(d.nombre_doctor||'—')}</td>
-          <td style="color:#475569;font-size:.72rem;">${escH(d.email||'—')}</td>
+          <td style="font-weight:700;">${escH(d.nombre_doctor||'â€”')}</td>
+          <td style="color:#475569;font-size:.72rem;">${escH(d.email||'â€”')}</td>
           <td>${escH(fecha)}</td>
-          <td style="font-weight:800;color:${d.nivel_riesgo==='CRITICO'?'#f87171':d.nivel_riesgo==='ALERTA'?'#f59e0b':'#94a3b8'};">${d.dias_inactivo} días</td>
+          <td style="font-weight:800;color:${d.nivel_riesgo==='CRITICO'?'#f87171':d.nivel_riesgo==='ALERTA'?'#f59e0b':'#94a3b8'};">${d.dias_inactivo} dÃ­as</td>
           <td style="text-align:center;">${d.pedidos_90d}</td>
           <td>${fmtCOP(d.ticket_promedio)}</td>
           <td><span class="chip ${chip}">${escH(d.nivel_riesgo)}</span></td>
@@ -203,9 +203,9 @@ function updateKPIs(criticos,alertas,vigilar,valor){
   const g=document.getElementById('kpi-grid');
   if(!g)return;
   g.innerHTML=[
-    {v:criticos.length,c:'var(--red)',l:'Críticos (30+ días)'},
-    {v:alertas.length,c:'var(--yellow)',l:'En alerta (20-29 días)'},
-    {v:vigilar.length,c:'var(--muted)',l:'Vigilar (14-19 días)'},
+    {v:criticos.length,c:'var(--red)',l:'CrÃ­ticos (30+ dÃ­as)'},
+    {v:alertas.length,c:'var(--yellow)',l:'En alerta (20-29 dÃ­as)'},
+    {v:vigilar.length,c:'var(--muted)',l:'Vigilar (14-19 dÃ­as)'},
     {v:fmtCOP(valor),c:'var(--gold)',l:'Valor en riesgo (COP)'},
   ].map(k=>`<div class="kpi"><div class="kpi-v" style="color:${k.c};">${escH(String(k.v))}</div><div class="kpi-l">${escH(k.l)}</div></div>`).join('');
 }
@@ -227,3 +227,4 @@ async function enviarChurnAlert(){
 <script>(async()=>{try{if(!window.sb)return;const{data:{session}}=await window.sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(window.sb,null,rol);}catch(_){}})();</script>
 </body>
 </html>
+

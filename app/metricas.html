@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <meta name="color-scheme" content="dark">
-  <title>Métricas PRODIGY — Dashboard BI</title>
+  <title>MÃ©tricas PRODIGY â€” Dashboard BI</title>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -63,7 +63,7 @@
 </head>
 <body>
 <div class="topbar">
-  <h1><i class="fas fa-chart-line" aria-hidden="true" style="color:var(--gold);margin-right:6px;"></i>PRODIGY — Dashboard BI</h1>
+  <h1><i class="fas fa-chart-line" aria-hidden="true" style="color:var(--gold);margin-right:6px;"></i>PRODIGY â€” Dashboard BI</h1>
   <div class="topbar-right">
     <span class="badge-live">LIVE</span>
     <button type="button" class="btn-refresh" onclick="cargarTodo()" id="btnRefresh"><i class="fas fa-rotate-right"></i> Actualizar</button>
@@ -74,29 +74,29 @@
 <main>
   <!-- KPIs principales -->
   <div class="grid-kpi" id="kpi-grid" aria-live="polite" aria-label="Indicadores principales">
-    <div class="kpi"><div class="kpi-val" style="color:var(--cyan);">—</div><div class="kpi-label">Pedidos esta semana</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--gold);">—</div><div class="kpi-label">Pedidos este mes</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--green);">—</div><div class="kpi-label">Ingresos semana</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--mg);">—</div><div class="kpi-label">Ingresos mes</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:#fff;">—</div><div class="kpi-label">Total histórico</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:#fb923c;">—</div><div class="kpi-label">Aprobación 1.ª revisión</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--cyan);">â€”</div><div class="kpi-label">Pedidos esta semana</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--gold);">â€”</div><div class="kpi-label">Pedidos este mes</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--green);">â€”</div><div class="kpi-label">Ingresos semana</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--mg);">â€”</div><div class="kpi-label">Ingresos mes</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:#fff;">â€”</div><div class="kpi-label">Total histÃ³rico</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:#fb923c;">â€”</div><div class="kpi-label">AprobaciÃ³n 1.Âª revisiÃ³n</div></div>
   </div>
 
   <!-- Pipeline operativo -->
   <div class="card-title" style="margin-bottom:10px;"><i class="fas fa-layer-group" style="color:var(--cyan);" aria-hidden="true"></i> Pipeline operativo</div>
   <div class="pipeline" id="pipeline-grid" aria-live="polite">
-    <div class="pipeline-step"><div class="pipeline-num" style="color:#f59e0b;">—</div><div class="pipeline-label">Por validar</div></div>
-    <div class="pipeline-step"><div class="pipeline-num" style="color:var(--cyan);">—</div><div class="pipeline-label">En producción</div></div>
-    <div class="pipeline-step"><div class="pipeline-num" style="color:var(--mg);">—</div><div class="pipeline-label">En revisión</div></div>
-    <div class="pipeline-step"><div class="pipeline-num" style="color:var(--green);">—</div><div class="pipeline-label">Listos para despacho</div></div>
-    <div class="pipeline-step"><div class="pipeline-num" style="color:#f87171;">—</div><div class="pipeline-label">Pagos pendientes</div></div>
-    <div class="pipeline-step"><div class="pipeline-num" style="color:var(--gold);">—</div><div class="pipeline-label">Saldos por cobrar</div></div>
+    <div class="pipeline-step"><div class="pipeline-num" style="color:#f59e0b;">â€”</div><div class="pipeline-label">Por validar</div></div>
+    <div class="pipeline-step"><div class="pipeline-num" style="color:var(--cyan);">â€”</div><div class="pipeline-label">En producciÃ³n</div></div>
+    <div class="pipeline-step"><div class="pipeline-num" style="color:var(--mg);">â€”</div><div class="pipeline-label">En revisiÃ³n</div></div>
+    <div class="pipeline-step"><div class="pipeline-num" style="color:var(--green);">â€”</div><div class="pipeline-label">Listos para despacho</div></div>
+    <div class="pipeline-step"><div class="pipeline-num" style="color:#f87171;">â€”</div><div class="pipeline-label">Pagos pendientes</div></div>
+    <div class="pipeline-step"><div class="pipeline-num" style="color:var(--gold);">â€”</div><div class="pipeline-label">Saldos por cobrar</div></div>
   </div>
 
-  <!-- Gráficas -->
+  <!-- GrÃ¡ficas -->
   <div class="grid-2">
     <div class="card">
-      <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--mg);" aria-hidden="true"></i> Top servicios (30 días)</div>
+      <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--mg);" aria-hidden="true"></i> Top servicios (30 dÃ­as)</div>
       <div id="servicios-chart" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
     </div>
     <div class="card">
@@ -108,19 +108,19 @@
   <!-- Tiempos de entrega + Forecast -->
   <div class="grid-2">
     <div class="card">
-      <div class="card-title"><i class="fas fa-clock" style="color:var(--gold);" aria-hidden="true"></i> Tiempos de entrega promedio (días)</div>
+      <div class="card-title"><i class="fas fa-clock" style="color:var(--gold);" aria-hidden="true"></i> Tiempos de entrega promedio (dÃ­as)</div>
       <div id="tiempos-chart" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
     </div>
     <div class="card">
-      <div class="card-title"><i class="fas fa-wand-magic-sparkles" style="color:var(--green);" aria-hidden="true"></i> Forecast próxima semana</div>
+      <div class="card-title"><i class="fas fa-wand-magic-sparkles" style="color:var(--green);" aria-hidden="true"></i> Forecast prÃ³xima semana</div>
       <div id="forecast-chart" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
     </div>
   </div>
 
-  <!-- Funnel cotizaciones → pedidos -->
+  <!-- Funnel cotizaciones â†’ pedidos -->
   <div class="grid-2" style="margin-top:4px;">
     <div class="card">
-      <div class="card-title"><i class="fas fa-filter" style="color:var(--gold);" aria-hidden="true"></i> Funnel cotizaciones → pedidos (30d)</div>
+      <div class="card-title"><i class="fas fa-filter" style="color:var(--gold);" aria-hidden="true"></i> Funnel cotizaciones â†’ pedidos (30d)</div>
       <div id="funnel-prodigy" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
     </div>
     <div class="card">
@@ -135,14 +135,14 @@
     <div id="clv-tabla" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
   </div>
 
-  <!-- Analytics propios — Funnel + Top Páginas -->
+  <!-- Analytics propios â€” Funnel + Top PÃ¡ginas -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
     <div class="card">
-      <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--mg);" aria-hidden="true"></i> Funnel propios (30d) <span style="font-size:.65rem;color:#475569;font-weight:400;">vía /api/track-event</span></div>
+      <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--mg);" aria-hidden="true"></i> Funnel propios (30d) <span style="font-size:.65rem;color:#475569;font-weight:400;">vÃ­a /api/track-event</span></div>
       <div id="analytics-funnel" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
     </div>
     <div class="card">
-      <div class="card-title"><i class="fas fa-fire" style="color:var(--gold);" aria-hidden="true"></i> Top páginas (30d)</div>
+      <div class="card-title"><i class="fas fa-fire" style="color:var(--gold);" aria-hidden="true"></i> Top pÃ¡ginas (30d)</div>
       <div id="top-paginas" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
     </div>
   </div>
@@ -153,7 +153,7 @@
     <div id="por-canal" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
   </div>
 
-  <!-- Inventario — alertas de stock bajo -->
+  <!-- Inventario â€” alertas de stock bajo -->
   <!-- Top doctores + Pedidos por material -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
     <div class="card">
@@ -168,8 +168,8 @@
 
   <div class="card" style="margin-top:14px;">
     <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
-      <span><i class="fas fa-boxes-stacked" style="color:var(--cyan);" aria-hidden="true"></i> Inventario — Alertas de Stock</span>
-      <a href="inventario.html" style="font-size:.72rem;color:var(--cyan);font-weight:700;">Ver inventario →</a>
+      <span><i class="fas fa-boxes-stacked" style="color:var(--cyan);" aria-hidden="true"></i> Inventario â€” Alertas de Stock</span>
+      <a href="inventario.html" style="font-size:.72rem;color:var(--cyan);font-weight:700;">Ver inventario â†’</a>
     </div>
     <div id="inventario-alertas" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
   </div>
@@ -235,8 +235,8 @@ async function cargarKPIs() {
     {v: escH(String(d.pedidos_mes||0)), color:'var(--gold)', label:'Pedidos este mes'},
     {v: escH(fmtCOP(d.ingresos_semana)), color:'var(--green)', label:'Ingresos semana'},
     {v: escH(fmtCOP(d.ingresos_mes)), color:'var(--mg)', label:'Ingresos mes'},
-    {v: escH(String(d.pedidos_total||0)), color:'#fff', label:'Total histórico'},
-    {v: escH((d.tasa_aprobacion_1a||0)+'%'), color:'#fb923c', label:'Aprobación 1.ª revisión'},
+    {v: escH(String(d.pedidos_total||0)), color:'#fff', label:'Total histÃ³rico'},
+    {v: escH((d.tasa_aprobacion_1a||0)+'%'), color:'#fb923c', label:'AprobaciÃ³n 1.Âª revisiÃ³n'},
   ];
   document.getElementById('kpi-grid').innerHTML = vals.map(k=>
     `<div class="kpi"><div class="kpi-val" style="color:${k.color};">${k.v}</div><div class="kpi-label">${k.label}</div></div>`
@@ -244,8 +244,8 @@ async function cargarKPIs() {
 
   const pipe = [
     {v:d.por_validar||0, color:'#f59e0b', label:'Por validar'},
-    {v:d.en_produccion||0, color:'var(--cyan)', label:'En producción'},
-    {v:d.en_revision||0, color:'var(--mg)', label:'En revisión'},
+    {v:d.en_produccion||0, color:'var(--cyan)', label:'En producciÃ³n'},
+    {v:d.en_revision||0, color:'var(--mg)', label:'En revisiÃ³n'},
     {v:d.listos_despacho||0, color:'var(--green)', label:'Listos despacho'},
     {v:d.pagos_pendientes||0, color:'#f87171', label:'Pagos pendientes'},
     {v:fmtCOP(d.saldos_pendientes), color:'var(--gold)', label:'Saldos por cobrar'},
@@ -254,7 +254,7 @@ async function cargarKPIs() {
     `<div class="pipeline-step"><div class="pipeline-num" style="color:${p.color};">${escH(String(p.v))}</div><div class="pipeline-label">${escH(p.label)}</div></div>`
   ).join('');
 
-  // Métricas adicionales: cotizaciones + referidos
+  // MÃ©tricas adicionales: cotizaciones + referidos
   (async () => {
     try {
       const [cotR, refR] = await Promise.all([
@@ -284,7 +284,7 @@ async function cargarServicios() {
   const el = document.getElementById('servicios-chart');
   try {
     const data = await rpc('prodigy_top_servicios',{limite:6});
-    if(!data||!data.length){el.innerHTML='<div class="error-msg">Sin datos en los últimos 30 días.</div>';return;}
+    if(!data||!data.length){el.innerHTML='<div class="error-msg">Sin datos en los Ãºltimos 30 dÃ­as.</div>';return;}
     const max = Math.max(...data.map(d=>d.total));
     el.innerHTML = data.map(d=>`
       <div class="bar-row">
@@ -313,7 +313,7 @@ async function cargarIngresos() {
         <div class="chart-week-label">${escH(sem)}</div>
       </div>`;
     }).join('')}</div>
-    <div style="text-align:center;font-size:.65rem;color:#475569;margin-top:6px;">Números encima = pedidos · Barras = ingresos</div>`;
+    <div style="text-align:center;font-size:.65rem;color:#475569;margin-top:6px;">NÃºmeros encima = pedidos Â· Barras = ingresos</div>`;
   } catch(e){ el.innerHTML=`<div class="error-msg"><i class="fas fa-triangle-exclamation"></i> ${escH(e.message)}</div>`; }
 }
 
@@ -323,10 +323,10 @@ async function cargarTiempos() {
     const data = await rpc('prodigy_tiempos_entrega');
     if(!data){el.innerHTML='<div class="error-msg">Sin datos de tiempos.</div>';return;}
     const items = [
-      {label:'Diseño CAD',val:data.promedio_diseno_dias},
+      {label:'DiseÃ±o CAD',val:data.promedio_diseno_dias},
       {label:'Fresado CAM',val:data.promedio_fresado_dias},
-      {label:'Impresión 3D',val:data.promedio_impresion_dias},
-      {label:'Aprobación cliente',val:data.promedio_aprobacion_dias},
+      {label:'ImpresiÃ³n 3D',val:data.promedio_impresion_dias},
+      {label:'AprobaciÃ³n cliente',val:data.promedio_aprobacion_dias},
       {label:'Total end-to-end',val:data.promedio_total_dias},
     ].filter(i=>i.val!=null);
     const max = Math.max(...items.map(i=>Number(i.val)||0), 1);
@@ -344,17 +344,17 @@ async function cargarForecast() {
   const el = document.getElementById('forecast-chart');
   try {
     const d = await rpc('prodigy_forecast_semana');
-    if(!d){el.innerHTML='<div class="error-msg">Sin datos para proyección.</div>';return;}
+    if(!d){el.innerHTML='<div class="error-msg">Sin datos para proyecciÃ³n.</div>';return;}
     el.innerHTML = `
       <table class="forecast-table">
-        <thead><tr><th scope="col">Métrica</th><th scope="col">Proyección</th><th scope="col">Tendencia</th></tr></thead>
+        <thead><tr><th scope="col">MÃ©trica</th><th scope="col">ProyecciÃ³n</th><th scope="col">Tendencia</th></tr></thead>
         <tbody>
-          <tr><td>Pedidos esperados</td><td style="font-weight:800;color:var(--cyan);">${escH(String(d.pedidos_proyectados||'—'))}</td><td style="color:${d.tendencia_pedidos>0?'#00FF41':'#f87171'}">${d.tendencia_pedidos>0?'↑':'↓'} ${escH(String(Math.abs(d.tendencia_pedidos||0))+'%')}</td></tr>
-          <tr><td>Ingresos esperados</td><td style="font-weight:800;color:var(--gold);">${escH(fmtCOP(d.ingresos_proyectados||0))}</td><td style="color:${d.tendencia_ingresos>0?'#00FF41':'#f87171'}">${d.tendencia_ingresos>0?'↑':'↓'} ${escH(String(Math.abs(d.tendencia_ingresos||0))+'%')}</td></tr>
-          <tr><td>Ocupación estimada</td><td style="font-weight:800;color:var(--mg);">${escH((d.ocupacion_pct||0)+'%')}</td><td>${d.alerta_capacidad?'<span style="color:#f59e0b;">⚠️ Alta</span>':'<span style="color:#00FF41;">✓ Normal</span>'}</td></tr>
+          <tr><td>Pedidos esperados</td><td style="font-weight:800;color:var(--cyan);">${escH(String(d.pedidos_proyectados||'â€”'))}</td><td style="color:${d.tendencia_pedidos>0?'#00FF41':'#f87171'}">${d.tendencia_pedidos>0?'â†‘':'â†“'} ${escH(String(Math.abs(d.tendencia_pedidos||0))+'%')}</td></tr>
+          <tr><td>Ingresos esperados</td><td style="font-weight:800;color:var(--gold);">${escH(fmtCOP(d.ingresos_proyectados||0))}</td><td style="color:${d.tendencia_ingresos>0?'#00FF41':'#f87171'}">${d.tendencia_ingresos>0?'â†‘':'â†“'} ${escH(String(Math.abs(d.tendencia_ingresos||0))+'%')}</td></tr>
+          <tr><td>OcupaciÃ³n estimada</td><td style="font-weight:800;color:var(--mg);">${escH((d.ocupacion_pct||0)+'%')}</td><td>${d.alerta_capacidad?'<span style="color:#f59e0b;">âš ï¸ Alta</span>':'<span style="color:#00FF41;">âœ“ Normal</span>'}</td></tr>
         </tbody>
       </table>
-      <div style="font-size:.65rem;color:#334155;margin-top:10px;"><i class="fas fa-circle-info"></i> Basado en promedio de las últimas 4 semanas</div>
+      <div style="font-size:.65rem;color:#334155;margin-top:10px;"><i class="fas fa-circle-info"></i> Basado en promedio de las Ãºltimas 4 semanas</div>
     `;
   } catch(e){ el.innerHTML=`<div class="error-msg"><i class="fas fa-triangle-exclamation"></i> ${escH(e.message)}</div>`; }
 }
@@ -381,7 +381,7 @@ async function cargarFunnelProdigy() {
       </div>
       <div style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.15);border-radius:8px;">
         <i class="fas fa-arrow-trend-up" style="color:#00FF41;font-size:1.2rem;" aria-hidden="true"></i>
-        <div><div style="font-size:1.4rem;font-weight:900;color:#00FF41;">${tasa}%</div><div style="font-size:.7rem;color:#94a3b8;">Tasa de conversión</div></div>
+        <div><div style="font-size:1.4rem;font-weight:900;color:#00FF41;">${tasa}%</div><div style="font-size:.7rem;color:#94a3b8;">Tasa de conversiÃ³n</div></div>
       </div>
     </div>`;
   } catch(e){ el.innerHTML=`<div class="error-msg">${escH(e.message)}</div>`; }
@@ -394,7 +394,7 @@ async function cargarCotizRecientesProdigy() {
       .select('id,created_at,tipo,total,moneda,estado,doctor_nombre')
       .eq('negocio','prodigy')
       .order('created_at',{ascending:false}).limit(6);
-    if (!data?.length){ el.innerHTML='<p style="color:#475569;font-size:.78rem;padding:12px;">Sin cotizaciones aún.</p>'; return; }
+    if (!data?.length){ el.innerHTML='<p style="color:#475569;font-size:.78rem;padding:12px;">Sin cotizaciones aÃºn.</p>'; return; }
     const fmtD = d => new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
     const fmtT = c => c.moneda==='USD'?`USD ${Number(c.total).toFixed(0)}`:`$${Number(c.total).toLocaleString('es-CO')}`;
     const EC = {borrador:'#475569',enviada:'#00d2ff',aceptada:'#00FF41',rechazada:'#ef4444',expirada:'#334155'};
@@ -407,9 +407,9 @@ async function cargarCotizRecientesProdigy() {
       </tr></thead>
       <tbody>${data.map(c=>`<tr style="border-bottom:1px solid rgba(255,255,255,.03);">
         <td style="padding:7px;color:#94a3b8;">${escH(fmtD(c.created_at))}</td>
-        <td style="padding:7px;">${escH((c.doctor_nombre||'—').split(' ')[0])}</td>
+        <td style="padding:7px;">${escH((c.doctor_nombre||'â€”').split(' ')[0])}</td>
         <td style="padding:7px;text-align:right;font-weight:700;color:#D4AF37;">${escH(fmtT(c))}</td>
-        <td style="padding:7px;text-align:center;"><span style="border:1px solid ${EC[c.estado]||'#475569'};color:${EC[c.estado]||'#475569'};border-radius:10px;padding:2px 7px;font-size:.62rem;font-weight:700;">${escH(c.estado||'—')}</span></td>
+        <td style="padding:7px;text-align:center;"><span style="border:1px solid ${EC[c.estado]||'#475569'};color:${EC[c.estado]||'#475569'};border-radius:10px;padding:2px 7px;font-size:.62rem;font-weight:700;">${escH(c.estado||'â€”')}</span></td>
       </tr>`).join('')}</tbody></table>`;
   } catch(e){ el.innerHTML=`<div class="error-msg">${escH(e.message)}</div>`; }
 }
@@ -488,7 +488,7 @@ async function cargarInventarioAlertas() {
     const { data, error } = await sb.rpc('prodigy_inventario_alertas');
     if (error || !data) throw error || new Error('sin datos');
     if (!data.length) {
-      el.innerHTML = '<p style="color:var(--green);font-size:.82rem;padding:8px;">✓ Todo el inventario está sobre el mínimo.</p>';
+      el.innerHTML = '<p style="color:var(--green);font-size:.82rem;padding:8px;">âœ“ Todo el inventario estÃ¡ sobre el mÃ­nimo.</p>';
       return;
     }
     const agotados = data.filter(m => Number(m.stock_actual) <= 0);
@@ -497,15 +497,15 @@ async function cargarInventarioAlertas() {
       data.map(m => {
         const agotado = Number(m.stock_actual) <= 0;
         const color = agotado ? '#f87171' : '#fbbf24';
-        const icon = agotado ? '🔴' : '🟡';
+        const icon = agotado ? 'ðŸ”´' : 'ðŸŸ¡';
         return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);">
           <span>${icon}</span>
           <span style="flex:1;font-size:.82rem;">${escH(m.nombre)}</span>
-          <span style="font-size:.78rem;color:${color};font-weight:700;">${agotado ? 'AGOTADO' : 'Stock: '+m.stock_actual+' (mín: '+m.stock_minimo+')'}</span>
+          <span style="font-size:.78rem;color:${color};font-weight:700;">${agotado ? 'AGOTADO' : 'Stock: '+m.stock_actual+' (mÃ­n: '+m.stock_minimo+')'}</span>
           <span style="font-size:.72rem;color:#475569;">${escH(m.categoria||'')}</span>
         </div>`;
       }).join('') + '</div>' +
-      `<p style="font-size:.7rem;color:#475569;margin-top:8px;">${data.length} material(es) por reponer. <a href="inventario.html" style="color:var(--cyan);">Ver inventario →</a></p>`;
+      `<p style="font-size:.7rem;color:#475569;margin-top:8px;">${data.length} material(es) por reponer. <a href="inventario.html" style="color:var(--cyan);">Ver inventario â†’</a></p>`;
   } catch(e) {
     el.innerHTML = '<p style="color:#475569;font-size:.75rem;padding:8px;">Ejecuta sql/inventario-materiales.sql para activar.</p>';
   }
@@ -515,7 +515,7 @@ async function cargarCLV() {
   const el = document.getElementById('clv-tabla');
   try {
     const { data } = await sb.rpc('prodigy_clv_doctores', { p_limit: 10 });
-    if (!data?.length) { el.innerHTML='<p style="color:#475569;font-size:.78rem;padding:12px;">Sin datos de pedidos confirmados aún.</p>'; return; }
+    if (!data?.length) { el.innerHTML='<p style="color:#475569;font-size:.78rem;padding:12px;">Sin datos de pedidos confirmados aÃºn.</p>'; return; }
     const fmtCOPK = n => n>=1000000 ? '$'+(n/1000000).toFixed(1)+'M' : '$'+Number(n).toLocaleString('es-CO');
     el.innerHTML=`<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:.74rem;">
       <thead><tr style="border-bottom:1px solid rgba(255,255,255,.06);">
@@ -527,12 +527,12 @@ async function cargarCLV() {
         <th scope="col" style="padding:8px;text-align:center;color:#475569;">Activo</th>
       </tr></thead>
       <tbody>${data.map((d,i)=>{
-        const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+        const medal=i===0?'ðŸ¥‡':i===1?'ðŸ¥ˆ':i===2?'ðŸ¥‰':'';
         const diasActivo=d.dias_activo||1;
         const meses=Math.ceil(diasActivo/30);
         return `<tr style="border-bottom:1px solid rgba(255,255,255,.03);">
           <td style="padding:8px;color:#475569;font-size:.68rem;">${medal||i+1}</td>
-          <td style="padding:8px;"><div style="font-weight:700;">${escH((d.nombre||d.email||'—').split(' ')[0])}</div><div style="font-size:.65rem;color:#475569;">${escH(d.email||'')}</div></td>
+          <td style="padding:8px;"><div style="font-weight:700;">${escH((d.nombre||d.email||'â€”').split(' ')[0])}</div><div style="font-size:.65rem;color:#475569;">${escH(d.email||'')}</div></td>
           <td style="padding:8px;text-align:right;color:#00d2ff;font-weight:700;">${d.pedidos_total}</td>
           <td style="padding:8px;text-align:right;font-weight:800;color:#D4AF37;">${fmtCOPK(d.ingresos_total)}</td>
           <td style="padding:8px;text-align:right;color:#00FF41;">${fmtCOPK(d.clv_mensual)}<span style="font-size:.62rem;color:#475569;">/mes</span></td>
@@ -546,7 +546,7 @@ async function cargarAnalyticsFunnel() {
   const el = document.getElementById('analytics-funnel');
   if (!el) return;
   try {
-    // Usar RPC propio si está disponible
+    // Usar RPC propio si estÃ¡ disponible
     const { data, error } = await sb.rpc('prodigy_funnel', { p_negocio: 'prodigy', p_dias: 30 });
     if (error || !data || !data.length) {
       // Fallback: contar directamente
@@ -569,7 +569,7 @@ async function cargarAnalyticsFunnel() {
           </div>
           <div style="font-size:.75rem;font-weight:800;color:${e.color};min-width:36px;text-align:right;">${e.v}</div>
         </div>`).join('') + '</div>' +
-        '<p style="font-size:.65rem;color:#334155;margin-top:8px;">Datos de /api/track-event — últimos 30 días. <a href="../sql/analytics-events-table.sql" style="color:#475569;">Ver SQL →</a></p>';
+        '<p style="font-size:.65rem;color:#334155;margin-top:8px;">Datos de /api/track-event â€” Ãºltimos 30 dÃ­as. <a href="../sql/analytics-events-table.sql" style="color:#475569;">Ver SQL â†’</a></p>';
       return;
     }
     // Renderizar con datos RPC
@@ -631,3 +631,4 @@ async function cargarTopPaginas() {
 <script>(async()=>{try{if(!window.sb)return;const{data:{session}}=await window.sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(window.sb,null,rol);}catch(_){}})();</script>
 </body>
 </html>
+
