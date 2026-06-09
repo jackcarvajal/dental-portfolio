@@ -192,6 +192,14 @@
             align-items: center;
             background: linear-gradient(135deg, var(--bg-card) 0%, #2a2a2c 100%);
             transition: all var(--transition-base);
+            border: none;
+            outline: none;
+            width: 100%;
+            text-align: left;
+            font: inherit;
+            color: inherit;
+            appearance: none;
+            -webkit-appearance: none;
         }
 
         .accordion-header:hover {

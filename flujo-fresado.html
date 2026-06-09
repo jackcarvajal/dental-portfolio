@@ -233,6 +233,14 @@
             align-items: center;
             background: linear-gradient(135deg, var(--bg-card) 0%, #2a2a2c 100%);
             transition: all var(--transition-base);
+            border: none;
+            outline: none;
+            width: 100%;
+            text-align: left;
+            font: inherit;
+            color: inherit;
+            appearance: none;
+            -webkit-appearance: none;
         }
 
         .accordion-header:hover {
@@ -2952,23 +2960,23 @@ if(window.ProdigyAuth){
                             <h4>1. Fresado en Crudo</h4>
                             <p>Sin sinterizado - Material verde</p>
                             <small style="color: var(--gold-primary); font-size: 0.7rem; display: block; margin-top: 6px;">📲 Te avisaremos cuando esté listo</small>
-                        </div>
+                        </button>
                         <button type="button" class="process-card" onclick="selectProcess('sinterizado')" aria-pressed="false">
                             <span class="icon">🔥</span>
                             <h4>2. Fresado + Sinterizado</h4>
                             <p>Proceso completo</p>
-                        </div>
+                        </button>
                         <button type="button" class="process-card" onclick="selectProcess('glaze')" aria-pressed="false">
                             <span class="icon">✨</span>
                             <h4>3. Fresado + Sinter + Glaze</h4>
                             <p>Acabado premium (+$25k)</p>
                             <div id="contador-glaze-zirc" class="hidden" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-subtle);"><label style="font-size:0.7rem;color:var(--text-secondary);display:block;margin-bottom:5px;">Cantidad Glaze:</label><input type="number" id="cant-glaze-zirc" min="1" value="1" onclick="event.stopPropagation()" onchange="calcularTotal()" style="width:100%;padding:8px;font-size:0.9rem;font-weight:700;text-align:center;background:var(--bg-dark);color:var(--gold-primary);border:2px solid var(--border-subtle);border-radius:6px;"></div>
-                        </div>
+                        </button>
                         <button type="button" class="process-card" onclick="selectProcess('solo_sinter')" aria-pressed="false">
                             <span class="icon">🌡️</span>
                             <h4>4. Solo Sinterizado</h4>
                             <p>Para piezas ya fresadas</p>
-                        </div>
+                        </button>
                     </div>
 
                     <div id="solo-sinter-options" class="hidden" style="margin-top: 25px;">
@@ -3034,7 +3042,7 @@ if(window.ProdigyAuth){
                             <h4 style="color:#ccc;">Fresado Crudo</h4>
                             <p>Entrega sin cristalizar</p>
                             <div style="font-size:0.67rem;color:var(--gold-primary);margin-top:8px;line-height:1.3;background:rgba(212,175,55,0.08);padding:5px 8px;border-radius:4px;border:1px dashed var(--gold-primary);">⚡ Posible entrega anticipada bajo disponibilidad. Se notificará si está listo antes del tiempo estándar.</div>
-                        </div>
+                        </button>
                         <button type="button" class="process-card" onclick="selectProcess('cristalizado')" aria-pressed="false">
                             <div class="process-neon-wrapper neon-proc-azul">💎</div>
                             <h4 style="color:#00c8ff;">Cristalizado</h4>
@@ -3047,7 +3055,7 @@ if(window.ProdigyAuth){
                                               background: var(--bg-dark); color: var(--gold-primary); border: 2px solid var(--border-subtle); 
                                               border-radius: 6px;">
                             </div>
-                        </div>
+                        </button>
                         <button type="button" class="process-card" onclick="selectProcess('glaze')" aria-pressed="false">
                             <div class="process-neon-wrapper neon-proc-oro">✨</div>
                             <h4 style="color:#ffe97a;">Glaze</h4>
@@ -3060,7 +3068,7 @@ if(window.ProdigyAuth){
                                               background: var(--bg-dark); color: var(--gold-primary); border: 2px solid var(--border-subtle); 
                                               border-radius: 6px;">
                             </div>
-                        </div>
+                        </button>
                     </div>
 
                     <div class="alert alert-warning" style="margin-top: 15px;">
@@ -3083,8 +3091,8 @@ if(window.ProdigyAuth){
                     <div class="alert alert-info" style="margin-bottom: 20px;">
                         <h4 style="color: var(--gold-primary); margin-bottom: 10px;">⚠️ TIPO DE APLICACIÓN (Obligatorio)</h4>
                         <div style="display:flex;gap:15px;margin-top:15px;">
-                            <button type="button" class="process-card" onclick="selectFerulaGuia('ferula')" style="flex:1;background:none;border:none;cursor:pointer;text-align:center;" aria-pressed="false"><div class="process-neon-wrapper neon-proc-verde">🛡️</div><h4 style="color:#28a745;">Férula</h4><p>Para bruxismo/protección</p></div>
-                            <button type="button" class="process-card" onclick="selectFerulaGuia('guia')" style="flex:1;background:none;border:none;cursor:pointer;text-align:center;" aria-pressed="false"><div class="process-neon-wrapper neon-proc-azul-oscuro">🎯</div><h4 style="color:#4A90E2;">Guía Quirúrgica</h4><p>Para implantes</p></div>
+                            <button type="button" class="process-card" onclick="selectFerulaGuia('ferula')" style="flex:1;background:none;border:none;cursor:pointer;text-align:center;" aria-pressed="false"><div class="process-neon-wrapper neon-proc-verde">🛡️</div><h4 style="color:#28a745;">Férula</h4><p>Para bruxismo/protección</p></button>
+                            <button type="button" class="process-card" onclick="selectFerulaGuia('guia')" style="flex:1;background:none;border:none;cursor:pointer;text-align:center;" aria-pressed="false"><div class="process-neon-wrapper neon-proc-azul-oscuro">🎯</div><h4 style="color:#4A90E2;">Guía Quirúrgica</h4><p>Para implantes</p></button>
                         </div>
                     </div>
                     ` : ''}
@@ -3095,13 +3103,13 @@ if(window.ProdigyAuth){
                             <div class="process-neon-wrapper neon-proc-azul-oscuro">🧊</div>
                             <h4 style="color:#7dd8ff;">Fresado Standard</h4>
                             <p>Sin acabados adicionales</p>
-                        </div>
+                        </button>
                         <button type="button" class="process-card" onclick="selectProcess('pulido')" aria-pressed="false">
                             <div class="process-neon-wrapper neon-proc-blanco">✨</div>
                             <h4 style="color:#fff;">Fresado + Pulido</h4>
                             <p>${esClear ? 'Acabado brillante (+$18k)' : 'Manual (+$15k)'}</p>
                             <div id="contador-pulido-pmma" class="hidden" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border-subtle);"><label style="font-size:0.7rem;color:var(--gold-primary);display:block;margin-bottom:4px;">Cantidad:</label><input type="number" id="cant-pulido-pmma" min="1" value="1" onclick="event.stopPropagation()" onchange="calcularTotal()" style="width:100%;padding:7px;font-size:0.9rem;font-weight:700;text-align:center;background:#000;color:var(--gold-primary);border:1px solid var(--gold-primary);border-radius:5px;"></div>
-                        </div>
+                        </button>
                     </div>
 
                     ${!esClear ? `
