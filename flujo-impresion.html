@@ -292,42 +292,42 @@ if(window.ProdigyAuth){
                                 </div>
                                 <h3>Modelos</h3>
                                 <p class="desc">Yeso Digital<br>y Troqueles</p>
-                            </div>
+                            </button>
                             <button type="button" class="material-card" onclick="selectMaterial('resina_temporal')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fbbf24;box-shadow:0 0 15px rgba(251,191,36,0.3);">
                                     <i class="fas fa-stopwatch" style="font-size:2.2rem;color:#fbbf24;"></i>
                                 </div>
                                 <h3>Temporales</h3>
                                 <p class="desc">Provisionales<br>y Prototipos</p>
-                            </div>
+                            </button>
                             <button type="button" class="material-card" onclick="selectMaterial('resina_definitiva')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #a78bfa;box-shadow:0 0 15px rgba(167,139,250,0.3);">
                                     <i class="fas fa-gem" style="font-size:2.2rem;color:#a78bfa;"></i>
                                 </div>
                                 <h3>Definitivas</h3>
                                 <p class="desc">Carga Cerámica<br>Alta Gama</p>
-                            </div>
+                            </button>
                             <button type="button" class="material-card" onclick="selectMaterial('resina_calcinable')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fb923c;box-shadow:0 0 15px rgba(251,146,60,0.4);">
                                     <i class="fas fa-fire-flame-curved" style="font-size:2.2rem;color:#fb923c;"></i>
                                 </div>
                                 <h3>Calcinables</h3>
                                 <p class="desc">Inyección<br>/ Fundición</p>
-                            </div>
+                            </button>
                             <button type="button" class="material-card" onclick="selectMaterial('resina_ferulas_guias')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #10b981;box-shadow:0 0 15px rgba(16,185,129,0.3);">
                                     <i class="fas fa-crosshairs" style="font-size:2.2rem;color:#10b981;"></i>
                                 </div>
                                 <h3>Férulas y Guías</h3>
                                 <p class="desc">Quirúrgicas<br>y Splint</p>
-                            </div>
+                            </button>
                             <button type="button" class="material-card" onclick="selectMaterial('resina_biomodelos')" aria-pressed="false">
                                 <div style="width:4.5rem;height:4.5rem;margin:0 auto 8px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #9ca3af;box-shadow:0 0 15px rgba(156,163,175,0.3);">
                                     <i class="fas fa-skull" style="font-size:2.2rem;color:#d4c5a9;"></i>
                                 </div>
                                 <h3>Biomodelos (FDM)</h3>
                                 <p class="desc">Filamento<br>alta resistencia</p>
-                            </div>
+                            </button>
                         </div>
 
                         <button type="button" class="btn-guia-tecnica" id="btn-guia-zirc" style="display:none;" onclick="openModal('modal-guia-resinas')" aria-haspopup="dialog"><i class="fas fa-flask" aria-hidden="true"></i>&nbsp; Guía de Resinas: ¿Qué resina necesito? <span style="font-size:0.75rem;opacity:0.65;margin-left:6px;">Ver propiedades y usos →</span></button>
@@ -397,17 +397,17 @@ if(window.ProdigyAuth){
                         <span class="slot-badge">CORTE 9 AM</span>
                         <h4>🚀 9:00 AM</h4>
                         <p id="date-express">Selecciona material</p>
-                    </div>
+                    </button>
                     <button type="button" class="timeline-slot" data-slot="mediodia" onclick="selectTimeSlot('mediodia')" aria-pressed="false">
                         <span class="slot-badge">CORTE 12 PM</span>
                         <h4>☀️ 12:00 PM</h4>
                         <p id="date-mediodia">Selecciona material</p>
-                    </div>
+                    </button>
                     <button type="button" class="timeline-slot" data-slot="tarde" onclick="selectTimeSlot('tarde')" aria-pressed="false">
                         <span class="slot-badge">CORTE 5 PM</span>
                         <h4>🌙 5:00 PM</h4>
                         <p id="date-tarde">Selecciona material</p>
-                    </div>
+                    </button>
                 </div>
                 <div class="alert alert-info hidden" id="alert-express">
                     ℹ️ <strong>Express:</strong> Solo Zirconio/PMMA. Disponible hasta medianoche (00:00).
@@ -490,7 +490,6 @@ if(window.ProdigyAuth){
                         </div>
                     </div>
                 </div>
-            </div>
 
             <div class="accordion">
                 <button type="button" class="accordion-header" aria-expanded="false" onclick="toggleAccordion(this)">
@@ -836,31 +835,31 @@ if(window.ProdigyAuth){
             <button type="button" class="nav-item" onclick="scrollToSection('datos-cliente')" aria-label="Ir a sección: datos-cliente">
                 <i class="fas fa-user"></i>
                 <span>Datos Cliente</span>
-            </div>
+            </button>
             <button type="button" class="nav-item" onclick="scrollToSection('material')" aria-label="Ir a sección: material">
                 <i class="fas fa-gem"></i>
                 <span>Material</span>
-            </div>
+            </button>
             <button type="button" class="nav-item" onclick="scrollToSection('procesos')" aria-label="Ir a sección: procesos">
                 <i class="fas fa-cog"></i>
                 <span>Procesos</span>
-            </div>
+            </button>
             <button type="button" class="nav-item" onclick="scrollToSection('tiempos')" aria-label="Ir a sección: tiempos">
                 <i class="fas fa-clock"></i>
                 <span>Entrega</span>
-            </div>
+            </button>
             <button type="button" class="nav-item" onclick="scrollToSection('archivos')" aria-label="Ir a sección: archivos">
                 <i class="fas fa-file-upload"></i>
                 <span>Archivos STL</span>
-            </div>
+            </button>
             <button type="button" class="nav-item" onclick="scrollToSection('resumen')" aria-label="Ir a sección: resumen">
                 <i class="fas fa-calculator"></i>
                 <span>Resumen</span>
-            </div>
+            </button>
             <button type="button" class="nav-item full-width" onclick="showHelp();toggleMenu();">
                 <i class="fas fa-question-circle"></i>
                 <span>Ayuda Rápida</span>
-            </div>
+            </button>
         </div>
     </nav>
 
