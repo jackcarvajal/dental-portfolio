@@ -426,15 +426,15 @@
             return;
         }
 
-        showMsg('�Perfil guardado! Redirigiendo...', 'ok');
+        showMsg('✅ Perfil guardado! Redirigiendo...', 'ok');
         // Vincular referido si existe
         const _ref = sessionStorage.getItem('prodigy_ref');
         if (_ref) { sb.from('referidos').update({ referido_email: currentUser.email, referido_nombre: nombre, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',_ref).then(()=>sessionStorage.removeItem('prodigy_ref')).catch(()=>{}); }
         // Pre-generar codigo de referido propio
         sb.rpc('obtener_mi_codigo_referido',{p_email:currentUser.email,p_nombre:nombre}).catch(()=>{});
-                setTimeout(() => {
-            window.location.href = DEST_MAP[getRole(currentUser)] || 'client-panel.html';
-        }, 1200);
+        const destRole = getRole(currentUser);
+        const destUrl  = '/app/' + (DEST_MAP[destRole] || 'client-panel.html');
+        setTimeout(() => { window.location.replace(destUrl); }, 800);
     }
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
