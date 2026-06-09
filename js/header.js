@@ -55,6 +55,7 @@
   // ── Páginas SIEMPRE PÚBLICAS (Google las indexa, visitantes las ven) ──
   // Servicios y landings principales ya terminados:
   var publicPages = [
+    '/',
     '/diseno-remoto','/diseno-cad','/fresado-cam','/guias-quirurgicas',
     '/calculadora','/calculadora-diseno','/calculadora-fresado','/calculadora-impresion',
     '/portafolio','/journal','/article','/nosotros','/soporte','/catalogo',

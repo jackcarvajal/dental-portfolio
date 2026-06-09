@@ -1197,8 +1197,8 @@
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <script>window._headerConfig = { noCta: true };</script>
-<link rel="preload" href="js/header.js?v=20260601" as="script">
-<script src="js/header.js?v=20260601"></script>
+<link rel="preload" href="js/header.js?v=20260609" as="script">
+<script src="js/header.js?v=20260609"></script>
 <style>
 /* ── TOPBAR ── */
 /* ── TOPBAR ── barra superior con mini-login inline ── */
@@ -3442,14 +3442,14 @@
     // CTA flotante aparece después del hero
     (function() {
         const cta = document.getElementById('cta-pedido');
-        const navbar = document.querySelector('.navbar');
+        const navbar = document.getElementById('pheader-v2');
         const HERO_H = 500;
         let ticking = false;
         window.addEventListener('scroll', function() {
             if (!ticking) {
                 requestAnimationFrame(function() {
                     const y = window.scrollY;
-                    navbar.classList.toggle('nav-scrolled', y > 10);
+                    if (navbar) navbar.classList.toggle('nav-scrolled', y > 10);
                     cta.classList.toggle('visible', y > HERO_H);
                     ticking = false;
                 });
