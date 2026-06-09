@@ -1,5 +1,5 @@
 // Prodigy Lab Dental — Service Worker v4.0 (+ Notif panel + Analytics CLV + Estimadores entrega)
-const CACHE = 'prodigy-v34';
+const CACHE = 'prodigy-v35';
 
 // Assets estáticos que siempre cacheamos en install
 const PRECACHE = [
