@@ -204,8 +204,10 @@
     <a href="#" class="nav-item" onclick="switchTab('rutador',this)">
         <i class="fas fa-code-branch"></i> Rutador de Casos
     </a>
-    <a href="admin-panel.html" class="nav-item"><i class="fas fa-truck-fast" style="color:#94a3b8;"></i> Despachos</a>
-    <a href="admin-panel.html" class="nav-item"><i class="fas fa-tower-broadcast" style="color:#94a3b8;"></i> Torre de Control</a>
+    <a href="#" class="nav-item" onclick="switchTab('despachos',this)"><i class="fas fa-truck-fast" style="color:#94a3b8;"></i> Despachos</a>
+    <a href="#" class="nav-item" onclick="switchTab('torre',this)"><i class="fas fa-tower-broadcast" style="color:#ef4444;"></i> Torre de Control
+        <span id="badge-incidencias" style="display:none;background:#ef4444;color:#fff;border-radius:10px;padding:1px 6px;font-size:.62rem;margin-left:auto"></span>
+    </a>
     <a href="#" class="nav-item" onclick="switchTab('fabricacion',this)" id="nav-fab">
         <i class="fas fa-industry" style="color:#fb923c;"></i> Fabricación
         <span id="fab-badge" style="display:none;background:#fb923c;color:#000;font-size:.65rem;font-weight:900;padding:1px 6px;border-radius:100px;margin-left:4px;">0</span>
@@ -926,6 +928,164 @@
       </div>
     </div>
 
+    <!-- ══ TAB DESPACHOS ══════════════════════════════════ -->
+    <div id="tab-despachos" class="tab-panel" style="display:none">
+        <div class="page-header">
+            <div>
+                <h1>Despachos <span style="color:var(--gold);">/ Flota</span></h1>
+                <p>Asigna mensajeros a pedidos listos para entregar</p>
+            </div>
+            <button type="button" class="btn-primary" onclick="cargarDespachos()">
+                <i class="fas fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+
+        <!-- Pedidos sin asignar -->
+        <div class="section-card" style="margin-bottom:24px;">
+            <div class="section-header">
+                <h2><i class="fas fa-box-open" style="color:var(--gold);margin-right:8px;"></i>Listos para Despachar</h2>
+                <span id="badge-sin-asignar" style="background:rgba(217,70,166,.15);color:#D946A6;border-radius:20px;padding:3px 12px;font-size:.75rem;font-weight:700;"></span>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Código</th><th>Cliente</th><th>Dirección</th><th>Total</th><th>Mensajero</th><th>Acción</th></tr>
+                </thead>
+                <tbody id="tbody-sin-asignar" aria-live="polite" aria-label="Pedidos sin asignar">
+                    <tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Despachos activos + entregados hoy -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2><i class="fas fa-motorcycle" style="color:#00d2ff;margin-right:8px;"></i>Actividad de Hoy</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Código</th><th>Cliente</th><th>Mensajero</th><th>Estado</th><th>Entrega Est.</th><th>Evidencia</th></tr>
+                </thead>
+                <tbody id="tbody-en-ruta" aria-live="polite" aria-label="Pedidos en ruta">
+                    <tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div><!-- /tab-despachos -->
+
+    <!-- ══ TAB TORRE DE CONTROL ══════════════════════════════════ -->
+    <div id="tab-torre" class="tab-panel" style="display:none">
+        <div class="page-header">
+            <div>
+                <h1>Torre de Control <span style="color:#ef4444;">/ Urgencias</span></h1>
+                <p>Casos por tiempo de gracia · Incidencias abiertas</p>
+            </div>
+            <button type="button" class="btn-primary" onclick="cargarTorre()">
+                <i class="fas fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+
+        <!-- Semáforo de urgencia -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px;" id="torre-kpis">
+            <div style="background:var(--card);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:16px;">
+                <div style="font-size:.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Crítico — +40 min sin validar</div>
+                <div id="torre-critico" style="font-size:2rem;font-weight:900;color:#ef4444">—</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(251,191,36,.2);border-radius:12px;padding:16px;">
+                <div style="font-size:.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Alerta — 25-40 min sin validar</div>
+                <div id="torre-alerta" style="font-size:2rem;font-weight:900;color:#fbbf24">—</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(0,255,65,.15);border-radius:12px;padding:16px;">
+                <div style="font-size:.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Incidencias abiertas</div>
+                <div id="torre-inc" style="font-size:2rem;font-weight:900;color:#00d2ff">—</div>
+            </div>
+        </div>
+
+        <!-- Dashboard por departamento -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:24px;" id="torre-depts"></div>
+
+        <!-- Tabla pedidos urgentes -->
+        <div class="section-card" style="margin-bottom:24px;">
+            <div class="section-header">
+                <h2><i class="fas fa-fire" style="color:#ef4444;margin-right:8px;"></i>Pedidos por Tiempo de Gracia</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Urgencia</th><th>Código</th><th>Paciente</th><th>Servicio</th><th>Estado op.</th><th>Tiempo</th><th>Acción</th></tr>
+                </thead>
+                <tbody id="tbody-urgentes" aria-live="polite" aria-label="Pedidos urgentes">
+                    <tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tabla incidencias abiertas -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2><i class="fas fa-triangle-exclamation" style="color:#fbbf24;margin-right:8px;"></i>Incidencias Abiertas</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Severidad</th><th>Tipo</th><th>Descripción</th><th>Pedido</th><th>Hace</th><th>Acción</th></tr>
+                </thead>
+                <tbody id="tbody-incidencias" aria-live="polite" aria-label="Incidencias">
+                    <tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div><!-- /tab-torre -->
+
+    <!-- Modal Evidencia de Entrega -->
+    <div id="modal-evidencia" role="dialog" aria-modal="true" aria-label="Subir evidencia de entrega" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:600;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:#0d1828;border-radius:16px;padding:24px;max-width:560px;width:100%;border:1px solid rgba(212,175,55,.3);max-height:90vh;overflow-y:auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h3 style="color:var(--gold);font-size:.95rem;"><i class="fas fa-shield-check"></i> Evidencia de Entrega — <span id="ev-codigo"></span></h3>
+                <button type="button" onclick="cerrarEvidencia()" aria-label="Cerrar" style="background:none;border:none;color:#94a3b8;font-size:1.1rem;cursor:pointer;">✕</button>
+            </div>
+
+            <!-- GPS -->
+            <div style="margin-bottom:16px;">
+                <p style="font-size:.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;"><i class="fas fa-location-dot"></i> GPS de Entrega</p>
+                <div id="ev-mapa" style="border-radius:10px;overflow:hidden;height:180px;background:#1a2332;display:flex;align-items:center;justify-content:center;">
+                    <span id="ev-gps-txt" style="font-size:.78rem;color:#94a3b8;">Sin coordenadas GPS</span>
+                </div>
+            </div>
+
+            <!-- Foto + Firma -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                <div>
+                    <p style="font-size:.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;"><i class="fas fa-camera"></i> Foto</p>
+                    <a id="ev-foto-link" href="#" target="_blank" rel="noopener noreferrer">
+                        <img id="ev-foto" style="width:100%;height:120px;object-fit:cover;border-radius:10px;border:1px solid rgba(255,255,255,.08);" alt="Foto entrega">
+                    </a>
+                    <p id="ev-foto-none" style="font-size:.75rem;color:#94a3b8;display:none;">Sin foto</p>
+                </div>
+                <div>
+                    <p style="font-size:.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;"><i class="fas fa-signature"></i> Firma</p>
+                    <a id="ev-firma-link" href="#" target="_blank" rel="noopener noreferrer">
+                        <img id="ev-firma" style="width:100%;height:120px;object-fit:contain;border-radius:10px;background:#fff;border:1px solid rgba(255,255,255,.08);" alt="Firma cliente">
+                    </a>
+                    <p id="ev-firma-none" style="font-size:.75rem;color:#94a3b8;display:none;">Sin firma</p>
+                </div>
+            </div>
+
+            <p id="ev-fecha" style="font-size:.75rem;color:#94a3b8;text-align:center;"></p>
+        </div>
+    </div>
+
+    <!-- Modal: Resolver incidencia -->
+    <div id="modal-resolver" role="dialog" aria-modal="true" aria-label="Resolver incidencia" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;align-items:center;justify-content:center;padding:20px;">
+      <div style="background:#0d1828;border:1px solid rgba(0,255,65,.25);border-radius:14px;padding:24px;max-width:420px;width:100%;">
+        <div style="font-size:.95rem;font-weight:800;color:#00FF41;margin-bottom:6px;"><i class="fas fa-check-circle" style="margin-right:6px;"></i>Resolver Incidencia</div>
+        <div style="font-size:.78rem;color:#94a3b8;margin-bottom:14px;">Deja una nota de resolución para el registro.</div>
+        <textarea id="modal-resolver-nota" rows="3" placeholder="Descripción de cómo se resolvió..."
+          style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.82rem;resize:vertical;outline:none;margin-bottom:16px;"></textarea>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button type="button" onclick="cerrarModalResolver()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
+          <button type="button" onclick="confirmarResolverIncidencia()" style="background:#00FF41;color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Resolver</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ TAB MÉTRICAS ══════════════════════════════════ -->
     <div id="tab-metricas" class="tab-panel" style="display:none">
         <div class="page-header">
@@ -1044,6 +1204,7 @@ async function verificarAdmin() {
 
         // Cargar datos iniciales
         await cargarPedidos();
+        cargarBadgeIncidencias();
 
     } catch (e) {
         // Sin fallback de sessionStorage — si Supabase no responde, denegar acceso
@@ -1143,6 +1304,8 @@ function switchTab(tab, el) {
     if (tab === 'rutador')      cargarRutador();
     if (tab === 'metricas')     cargarMetricas();
     if (tab === 'fabricacion')  cargarFabricacion();
+    if (tab === 'despachos')    cargarDespachos();
+    if (tab === 'torre')        cargarTorre();
 }
 
 /* ══════════════════════════════════════════
@@ -2498,6 +2661,335 @@ async function cargarMetricas() {
 }
 
 /* ══════════════════════════════════════════════════════════
+   TAB DESPACHOS — Asignación de mensajeros
+══════════════════════════════════════════════════════════ */
+let _mensajerosList = [];
+const _admEviMap = {}; // mapa id→despacho para onclick seguro (evita JSON.stringify en atributo)
+const SEND_PUSH_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co/functions/v1/send-push';
+
+async function cargarDespachos() {
+    // 1. Cargar mensajeros activos para el dropdown
+    const { data: mens } = await sb.from('mensajeros').select('id,nombre,zona_preferencial').eq('activo', true).order('nombre');
+    _mensajerosList = mens || [];
+
+    // 2. Pedidos TERMINADO sin despacho asignado
+    const { data: pedSinAsignar } = await sb
+        .from('pedidos')
+        .select('id,codigo,nombre_cliente,nombre_doctor,direccion,precio_total,estado_operativo')
+        .eq('estado', 'TERMINADO')
+        .not('id', 'in', `(SELECT pedido_id FROM despachos WHERE estado != 'NO_ENTREGADO')`);
+
+    // Fallback: obtener IDs de despachos activos y excluirlos
+    const { data: despActivos } = await sb
+        .from('despachos')
+        .select('pedido_id')
+        .neq('estado', 'NO_ENTREGADO');
+
+    const idsOcupados = new Set((despActivos || []).map(d => d.pedido_id));
+    const sinAsignar  = (pedSinAsignar || []).filter(p => !idsOcupados.has(p.id));
+
+    const badgeSin = document.getElementById('badge-sin-asignar');
+    if (badgeSin) badgeSin.textContent = `${sinAsignar.length} pendientes`;
+
+    const tbodySin = document.getElementById('tbody-sin-asignar');
+    if (!tbodySin) return;
+
+    if (!sinAsignar.length) {
+        tbodySin.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Sin pedidos listos para despachar</td></tr>';
+    } else {
+        const opsMens = _mensajerosList.map(m => `<option value="${esc(m.id)}">${esc(m.nombre)}${m.zona_preferencial ? ' — ' + esc(m.zona_preferencial) : ''}</option>`).join('');
+        tbodySin.innerHTML = sinAsignar.map(p => {
+            const calOk = p.estado_operativo === 'LISTO_DESPACHAR';
+            const calBadge = calOk
+                ? '<span style="font-size:.65rem;background:rgba(0,255,65,.12);color:#00FF41;padding:2px 7px;border-radius:20px;font-weight:700;">✓ Calidad OK</span>'
+                : '<span style="font-size:.65rem;background:rgba(251,191,36,.1);color:#fbbf24;padding:2px 7px;border-radius:20px;font-weight:700;">⏳ Sin calidad</span>';
+            return `
+        <tr>
+            <td style="font-family:monospace;color:var(--cyan);">${esc(p.codigo || p.id?.slice(0,8))}</td>
+            <td>${esc(p.nombre_cliente || p.nombre_doctor || '—')}<br>${calBadge}</td>
+            <td style="font-size:.75rem;max-width:160px;">${esc(p.direccion || '—')}</td>
+            <td style="color:#00FF41;">${fmtCOP(p.precio_total)}</td>
+            <td><select id="sel-mens-${esc(p.id)}" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:6px;padding:4px 8px;font-size:.75rem;min-width:140px;">
+                <option value="">— Seleccionar —</option>${opsMens}
+            </select></td>
+            <td><button type="button" onclick="asignarDespacho('${esc(p.id)}','${esc(p.codigo || '')}')" class="btn-xs btn-gold"><i class="fas fa-motorcycle"></i> Asignar</button></td>
+        </tr>`;}).join('');
+    }
+
+    // 3. Todos los despachos del día (activos + entregados)
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const { data: enRuta } = await sb
+        .from('despachos')
+        .select('id,estado,fecha_entrega_estimada,fecha_entrega_real,novedades,lat_entrega,lon_entrega,firma_url,foto_url,pedidos(codigo,nombre_cliente,nombre_doctor),mensajeros(nombre)')
+        .gte('created_at', hoy.toISOString())
+        .order('created_at', { ascending: false });
+
+    const tbodyRuta = document.getElementById('tbody-en-ruta');
+    if (!tbodyRuta) return;
+
+    if (!(enRuta || []).length) {
+        tbodyRuta.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Sin actividad hoy</td></tr>';
+    } else {
+        const estadoColor = { PROGRAMADO:'#fbbf24', EN_REPARTO:'#00d2ff', ENTREGADO:'#00FF41', NO_ENTREGADO:'#f87171' };
+        tbodyRuta.innerHTML = (enRuta || []).map(d => {
+            _admEviMap[d.id] = d;
+            const tieneEvidencia = d.firma_url || d.foto_url || d.lat_entrega;
+            return `
+        <tr>
+            <td style="font-family:monospace;color:var(--cyan);">${esc(d.pedidos?.codigo || '—')}</td>
+            <td>${esc(d.pedidos?.nombre_cliente || d.pedidos?.nombre_doctor || '—')}</td>
+            <td>${esc(d.mensajeros?.nombre || '—')}</td>
+            <td><span style="color:${estadoColor[d.estado]||'#fff'};font-weight:700;">${esc(d.estado)}</span></td>
+            <td style="font-size:.75rem;">${d.fecha_entrega_real
+                ? new Date(d.fecha_entrega_real).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})
+                : d.fecha_entrega_estimada
+                    ? 'Est. '+new Date(d.fecha_entrega_estimada).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})
+                    : '—'}</td>
+            <td>${tieneEvidencia
+                ? `<button type="button" onclick="verEvidencia(_admEviMap['${d.id}'])" class="btn-xs btn-gold"><i class="fas fa-eye"></i> Ver</button>`
+                : `<span style="font-size:.72rem;color:#94a3b8;">${esc(d.novedades || '—')}</span>`}
+            </td>
+        </tr>`;}).join('');
+    }
+}
+
+function verEvidencia(d) {
+    document.getElementById('ev-codigo').textContent = d.pedidos?.codigo || d.id.slice(0,8);
+
+    // GPS
+    const mapa = document.getElementById('ev-mapa');
+    const gpsTxt = document.getElementById('ev-gps-txt');
+    if (d.lat_entrega && d.lon_entrega) {
+        const lat = d.lat_entrega, lon = d.lon_entrega;
+        mapa.innerHTML = `<iframe style="width:100%;height:180px;border:0;" loading="lazy"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=${lon-.003},${lat-.003},${lon+.003},${lat+.003}&layer=mapnik&marker=${lat},${lon}">
+        </iframe>`;
+        gpsTxt.style.display = 'none';
+    } else {
+        mapa.innerHTML = '';
+        mapa.appendChild(gpsTxt);
+        gpsTxt.style.display = 'block';
+    }
+
+    // Foto
+    const fotoEl   = document.getElementById('ev-foto');
+    const fotoLink = document.getElementById('ev-foto-link');
+    const fotoNone = document.getElementById('ev-foto-none');
+    if (d.foto_url) {
+        fotoEl.src = d.foto_url; fotoEl.style.display = 'block';
+        fotoLink.href = d.foto_url; fotoNone.style.display = 'none';
+    } else {
+        fotoEl.style.display = 'none'; fotoNone.style.display = 'block';
+    }
+
+    // Firma
+    const firmaEl   = document.getElementById('ev-firma');
+    const firmaLink = document.getElementById('ev-firma-link');
+    const firmaNone = document.getElementById('ev-firma-none');
+    if (d.firma_url) {
+        firmaEl.src = d.firma_url; firmaEl.style.display = 'block';
+        firmaLink.href = d.firma_url; firmaNone.style.display = 'none';
+    } else {
+        firmaEl.style.display = 'none'; firmaNone.style.display = 'block';
+    }
+
+    document.getElementById('ev-fecha').textContent = d.fecha_entrega_real
+        ? 'Entregado: ' + new Date(d.fecha_entrega_real).toLocaleString('es-CO') : '';
+
+    document.getElementById('modal-evidencia').style.display = 'flex';
+}
+
+function cerrarEvidencia() {
+    document.getElementById('modal-evidencia').style.display = 'none';
+    document.getElementById('ev-mapa').innerHTML = '';
+}
+
+async function asignarDespacho(pedidoId, codigo) {
+    const selEl = document.getElementById('sel-mens-' + pedidoId);
+    const mensajeroId = selEl?.value;
+    if (!mensajeroId) { toast('Selecciona un mensajero', 'error'); return; }
+
+    const ahora = new Date();
+    const etaMs = ahora.getTime() + 2 * 60 * 60 * 1000; // +2 h estimado
+
+    const { error: errD } = await sb.from('despachos').insert({
+        pedido_id:              pedidoId,
+        mensajero_id:           mensajeroId,
+        fecha_salida:           ahora.toISOString(),
+        fecha_entrega_estimada: new Date(etaMs).toISOString(),
+        estado:                 'PROGRAMADO',
+    });
+    if (errD) { toast('Error creando despacho: ' + errD.message, 'error'); return; }
+
+    const { error: errP } = await sb.from('pedidos').update({ estado: 'POR_DESPACHAR' }).eq('id', pedidoId);
+    if (errP) { toast('Despacho creado pero error actualizando pedido', 'error'); return; }
+
+    toast(`Ruta asignada — ${codigo || pedidoId.slice(0,8)}`, 'success');
+    notificarMensajero(mensajeroId, codigo || pedidoId.slice(0,8));
+    await cargarDespachos();
+}
+
+async function notificarMensajero(mensajeroId, codigo) {
+    try {
+        await fetch(SEND_PUSH_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                mensajero_id: mensajeroId,
+                title: 'PRODIGY — Nueva Ruta',
+                body:  `Se te asignó el pedido ${codigo}. Ábrelo para ver la dirección.`,
+                tag:   'nuevo-despacho',
+                url:   '/app/mensajero.html',
+            }),
+        });
+    } catch (_) { /* push silencioso — no bloquear el flujo */ }
+}
+
+/* ══════════════════════════════════════════════════════════
+   TAB TORRE DE CONTROL — Urgencias e incidencias
+══════════════════════════════════════════════════════════ */
+const SEV_COLOR = { CRITICA: '#ef4444', ALTA: '#f97316', MEDIA: '#fbbf24', BAJA: '#94a3b8' };
+let _resolverPendienteId = null;
+
+async function cargarTorre() {
+    // Pedidos urgentes + flujo para desglose por departamento
+    const { data: pedidos } = await sb.from('pedidos')
+        .select('id, codigo, nombre_paciente, servicio, estado_operativo, created_at, flujo')
+        .not('estado_operativo', 'in', '("ENTREGADO","CANCELADO","QA_APROBADO")')
+        .order('created_at', { ascending: true })
+        .limit(200);
+
+    /* Desglose por departamento */
+    const deptCfg = {
+      diseno:    {label:'Diseño CAD',   color:'#00d2ff', icon:'fa-drafting-compass', flujos:['diseno'],           panel:'operario-diseno.html'},
+      fresado:   {label:'Fresado/Lab',  color:'#D4AF37', icon:'fa-cog',              flujos:['fresado','lab'],    panel:'operator-panel.html'},
+      impresion: {label:'Impresión 3D', color:'#fb923c', icon:'fa-print',            flujos:['impresion'],        panel:'operator-panel.html'},
+      taller:    {label:'Taller',       color:'#a78bfa', icon:'fa-tools',            flujos:['taller'],           panel:'taller.html'}
+    };
+    const activos   = ['VALIDACION_PENDIENTE','EN_PRODUCCION','EN_DISENO','DISENO_FINALIZADO','FRESADO_INICIADO','REVISION_CLIENTE'];
+    const deptHtml = Object.entries(deptCfg).map(([k,c]) => {
+      const all  = (pedidos||[]).filter(p => c.flujos.includes(p.flujo));
+      const act  = all.filter(p => activos.includes(p.estado_operativo));
+      const pend = all.filter(p => p.estado_operativo === 'VALIDACION_PENDIENTE');
+      const done = all.filter(p => ['QA_APROBADO','ENTREGADO','DISENO_APROBADO'].includes(p.estado_operativo));
+      return `<div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-left:3px solid ${c.color};border-radius:12px;padding:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <i class="fas ${c.icon}" style="color:${c.color};font-size:1rem;"></i>
+          <span style="font-size:.82rem;font-weight:800;">${c.label}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;">
+          <div><div style="font-size:1.4rem;font-weight:900;color:#fbbf24;">${pend.length}</div><div style="font-size:.62rem;color:#64748b;">Pendiente</div></div>
+          <div><div style="font-size:1.4rem;font-weight:900;color:${c.color};">${act.length}</div><div style="font-size:.62rem;color:#64748b;">Activos</div></div>
+          <div><div style="font-size:1.4rem;font-weight:900;color:#00FF41;">${done.length}</div><div style="font-size:.62rem;color:#64748b;">Hoy listos</div></div>
+        </div>
+        <div style="margin-top:10px;">
+          <a href="${c.panel}" target="_blank" rel="noopener noreferrer" style="font-size:.72rem;color:${c.color};text-decoration:none;font-weight:700;">Ver panel →</a>
+        </div>
+      </div>`;
+    }).join('');
+    const deptsEl = document.getElementById('torre-depts');
+    if (deptsEl) deptsEl.innerHTML = deptHtml;
+
+    // Incidencias abiertas
+    const { data: incs } = await sb.from('logs_incidencias')
+        .select('*, pedidos(codigo)')
+        .eq('resuelta', false)
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+    const ahora = Date.now();
+    let criticos = 0, alertas = 0;
+    const rows = (pedidos || []).map(p => {
+        const mins = (ahora - new Date(p.created_at).getTime()) / 60000;
+        const esPend = ['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE'].includes(p.estado_operativo);
+        let urgencia = 'OK', color = '#94a3b8';
+        if (esPend && mins > 40) { urgencia = 'CRITICO'; color = '#ef4444'; criticos++; }
+        else if (esPend && mins > 25) { urgencia = 'ALERTA';  color = '#fbbf24'; alertas++; }
+        return `<tr>
+            <td><span style="font-size:.72rem;font-weight:800;color:${color}">${urgencia}</span></td>
+            <td style="font-family:monospace;font-size:.78rem">${esc(p.codigo || p.id.slice(0,8))}</td>
+            <td>${esc(p.nombre_paciente || '—')}</td>
+            <td style="font-size:.78rem">${esc(p.servicio || '—')}</td>
+            <td><span style="font-size:.7rem;color:#94a3b8">${esc(p.estado_operativo || '—')}</span></td>
+            <td style="color:${color};font-weight:700">${Math.floor(mins)} min</td>
+            <td><button type="button" onclick="resolverUrgente('${p.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#fff;font-size:.72rem;cursor:pointer">Gestionar</button></td>
+        </tr>`;
+    });
+
+    document.getElementById('torre-critico').textContent = criticos;
+    document.getElementById('torre-alerta').textContent  = alertas;
+    document.getElementById('torre-inc').textContent     = (incs || []).length;
+
+    // Badge en sidebar
+    const total = criticos + (incs || []).length;
+    const badge = document.getElementById('badge-incidencias');
+    if (badge) {
+        if (total > 0) { badge.style.display = 'inline'; badge.textContent = total; }
+        else badge.style.display = 'none';
+    }
+
+    document.getElementById('tbody-urgentes').innerHTML = rows.length
+        ? rows.join('')
+        : '<tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">Sin urgencias activas</td></tr>';
+
+    const incRows = (incs || []).map(inc => {
+        const mins = Math.floor((ahora - new Date(inc.created_at).getTime()) / 60000);
+        const timeLabel = mins < 60 ? `${mins} min` : `${Math.floor(mins/60)}h ${mins%60}m`;
+        return `<tr>
+            <td><span style="font-size:.7rem;font-weight:800;color:${SEV_COLOR[inc.severidad]}">${esc(inc.severidad)}</span></td>
+            <td style="font-size:.78rem">${esc(inc.tipo)}</td>
+            <td style="font-size:.78rem;max-width:220px">${esc((inc.descripcion||'').slice(0,80))}</td>
+            <td style="font-family:monospace;font-size:.72rem">${esc(inc.pedidos?.codigo || '—')}</td>
+            <td style="color:#94a3b8;font-size:.78rem">${timeLabel}</td>
+            <td><button type="button" onclick="resolverIncidencia('${inc.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid rgba(0,255,65,.3);background:transparent;color:#00FF41;font-size:.72rem;cursor:pointer">Resolver</button></td>
+        </tr>`;
+    });
+
+    document.getElementById('tbody-incidencias').innerHTML = incRows.length
+        ? incRows.join('')
+        : '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8">Sin incidencias abiertas</td></tr>';
+}
+
+function resolverIncidencia(incId) {
+    abrirModalResolver(incId);
+}
+
+function resolverUrgente(pedidoId) {
+    // Enfocar en pedidos
+    switchTab('pedidos', document.querySelector('[onclick*="pedidos"]'));
+}
+
+// Cargar badge de incidencias al init
+async function cargarBadgeIncidencias() {
+    const { count } = await sb.from('logs_incidencias').select('id', { count: 'exact', head: true }).eq('resuelta', false);
+    const badge = document.getElementById('badge-incidencias');
+    if (badge && count > 0) { badge.style.display = 'inline'; badge.textContent = count; }
+}
+
+function abrirModalResolver(incId) {
+    _resolverPendienteId = incId;
+    document.getElementById('modal-resolver-nota').value = '';
+    document.getElementById('modal-resolver').style.display = 'flex';
+    document.getElementById('modal-resolver-nota').focus();
+}
+function cerrarModalResolver() {
+    document.getElementById('modal-resolver').style.display = 'none';
+    _resolverPendienteId = null;
+}
+async function confirmarResolverIncidencia() {
+    if (!_resolverPendienteId) return;
+    const nota = document.getElementById('modal-resolver-nota').value.trim();
+    const incId = _resolverPendienteId;
+    cerrarModalResolver();
+    const { error } = await sb.from('logs_incidencias')
+        .update({ resuelta: true, resolucion: nota || 'Resuelta por admin' })
+        .eq('id', incId);
+    if (error) { toast('Error: ' + error.message, 'error'); return; }
+    toast('Incidencia resuelta', 'success');
+    cargarTorre();
+}
+
+/* ══════════════════════════════════════════════════════════
    TAB FABRICACIÓN — Cotizaciones y enrutamiento
 ══════════════════════════════════════════════════════════ */
 const SB_URL_FAB  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
@@ -2798,7 +3290,7 @@ async function _auditLog(accion, datos) {
 
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  [cerrarModalFabConfirm, cerrarModalNuevoStaff, cerrarModalDelCaso, cerrarModalAgente, cerrarModalCotizar].forEach(fn => { try { fn(); } catch(_) {} });
+  [cerrarModalFabConfirm, cerrarModalNuevoStaff, cerrarModalDelCaso, cerrarModalAgente, cerrarModalCotizar, cerrarEvidencia, cerrarModalResolver].forEach(fn => { try { fn(); } catch(_) {} });
 });
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
