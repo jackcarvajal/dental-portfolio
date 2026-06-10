@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Confirmar diseño — PRODIGY Lab Dental</title>
+<meta name="theme-color" content="#D946A6">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+/*
+ * PRODIGY — revision-express.html
+ *
+ * Página intermedia SEGURA para aprobación de diseño desde email.
+ *
+ * OWASP A01 Prevention:
+ *   - El link del email (GET) SOLO muestra esta página
+ *   - NUNCA ejecuta la aprobación en GET (Outlook/Gmail pre-renderiza links)
+ *   - La mutación SOLO ocurre cuando el doctor presiona [Aprobar] (POST implícito via JS)
+ *   - El token JWT se valida en Supabase antes de mostrar cualquier acción
+ *   - Cada token es de un solo uso — se invalida tras la primera acción
+ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#050505;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.card{background:linear-gradient(135deg,rgba(13,21,37,.9),rgba(13,21,37,.7));border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:40px 36px;max-width:500px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6);}
+.logo{font-size:.75rem;font-weight:900;letter-spacing:3px;color:#D4AF37;text-transform:uppercase;margin-bottom:28px;}
+.status-icon{font-size:3rem;margin-bottom:16px;}
+h1{font-size:1.3rem;font-weight:800;margin-bottom:8px;}
+p{font-size:.85rem;color:#94a3b8;line-height:1.7;margin-bottom:24px;}
+.caso-info{background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:12px;padding:16px;margin-bottom:28px;text-align:left;}
+.caso-info .label{font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:3px;}
+.caso-info .value{font-size:.88rem;font-weight:700;color:#e2e8f0;}
+.actions{display:flex;flex-direction:column;gap:12px;}
+.btn{padding:16px;border:none;border-radius:12px;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;}
+.btn-approve{background:linear-gradient(135deg,#00FF41,#00cc35);color:#000;}
+.btn-approve:hover{opacity:.9;transform:translateY(-2px);}
+.btn-changes{background:rgba(212,175,55,.12);border:2px solid rgba(212,175,55,.4);color:#D4AF37;}
+.btn-changes:hover{background:rgba(212,175,55,.2);}
+.btn-view{background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:#00d2ff;padding:12px;font-size:.82rem;}
+.btn-view:hover{background:rgba(0,210,255,.18);}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid rgba(255,255,255,.2);border-top-color:#D4AF37;border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.msg{padding:14px 18px;border-radius:10px;font-size:.82rem;margin-top:16px;text-align:center;}
+.msg.ok{background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:#00FF41;}
+.msg.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo aprobar un diseño dental desde email en PRODIGY Lab","totalTime":"PT5M","step":[{"@type":"HowToStep","name":"Abre el link de revisión","text":"Haz click en el enlace enviado por el laboratorio por WhatsApp o email."},{"@type":"HowToStep","name":"Revisa el diseño 3D","text":"Visualiza el diseño CAD en el visor 3D interactivo. Puedes rotar y ampliar la vista."},{"@type":"HowToStep","name":"Aprueba o solicita cambios","text":"Si el diseño está correcto, haz click en Aprobar. Si necesitas ajustes, escribe las indicaciones. El laboratorio procesa la respuesta inmediatamente."}]}</script>
+</head>
+<body>
+<div class="card">
+    <div class="logo">💎 PRODIGY Lab Dental</div>
+    <div id="loading">
+        <div class="status-icon">⏳</div>
+        <h1>Verificando diseño...</h1>
+        <p>Validando tu enlace de acceso seguro.</p>
+        <div class="spinner"></div>
+    </div>
+
+    <div id="main-content" style="display:none">
+        <div class="status-icon">🎨</div>
+        <h1 id="title">Diseño listo para revisar</h1>
+        <p id="subtitle">Antes de aprobar, revisa el diseño 3D en el visor. Tienes hasta 2 revisiones sin costo.</p>
+
+        <div class="caso-info">
+            <div class="label">Caso</div>
+            <div class="value" id="info-codigo">—</div>
+            <div class="label" style="margin-top:10px;">Paciente</div>
+            <div class="value" id="info-paciente">—</div>
+            <div class="label" style="margin-top:10px;">Servicio</div>
+            <div class="value" id="info-servicio">—</div>
+            <div class="label" style="margin-top:10px;">Revisión</div>
+            <div class="value" id="info-revision">—</div>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="btn btn-view" id="btn-view" onclick="abrirVisor()">
+                <i class="fas fa-cube" aria-hidden="true"></i> Ver diseño 3D antes de decidir
+            </button>
+            <button type="button" class="btn btn-approve" id="btn-approve" onclick="confirmarAprobacion()">
+                <i class="fas fa-check-circle" aria-hidden="true"></i> Aprobar este diseño
+            </button>
+            <button type="button" class="btn btn-changes" id="btn-changes" onclick="confirmarCambios()">
+                <i class="fas fa-pencil-alt" aria-hidden="true"></i> Solicitar cambios
+            </button>
+        </div>
+        <div id="msg-area"></div>
+    </div>
+
+    <div id="error-content" style="display:none">
+        <div class="status-icon">⚠️</div>
+        <h1 id="error-title">Enlace inválido</h1>
+        <p id="error-msg">Este enlace ya fue usado o ha expirado. Accede al portal para revisar tu diseño.</p>
+        <a href="/app/client-panel" style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:14px 28px;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.4);color:#D946A6;border-radius:10px;text-decoration:none;font-weight:700;font-size:.85rem;transition:.2s;">
+            Ir al portal del cliente
+        </a>
+    </div>
+</div>
+
+<script>
+/* ── REVISION EXPRESS — Aprobación segura desde email ──────────────
+ *
+ * FLUJO SEGURO:
+ *  1. Email llega al doctor con link: /revision-express?token=JWT&pedido=ID
+ *  2. ESTA página valida el token en Supabase (GET → solo lectura)
+ *  3. Muestra los datos del caso + 2 botones grandes
+ *  4. Solo al presionar [Aprobar] o [Cambios] → mutación en DB (POST via JS)
+ *  5. El token se marca como usado en DB para prevenir replay attacks
+ *
+ * Si Outlook/Gmail pre-renderiza el link: ve esta página sin acción → seguro.
+ * Si el doctor presiona [Aprobar]: acción real → POST → irreversible.
+ ─────────────────────────────────────────────────────────────────── */
+
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const params   = new URLSearchParams(window.location.search);
+const token    = params.get('token');
+const pedidoId = params.get('pedido');
+
+let _pedido = null;
+let _actionDone = false;
+
+function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showError(title, msg) {
+    document.getElementById('loading').style.display='none';
+    document.getElementById('main-content').style.display='none';
+    const err = document.getElementById('error-content');
+    document.getElementById('error-title').textContent = title;
+    document.getElementById('error-msg').textContent   = msg;
+    err.style.display='block';
+}
+function showMsg(txt, tipo) {
+    const el = document.getElementById('msg-area');
+    el.innerHTML = `<div class="msg ${tipo}" role="alert" aria-live="assertive">${escH(txt)}</div>`;
+}
+function disableButtons() {
+    ['btn-approve','btn-changes','btn-view'].forEach(id => {
+        const b = document.getElementById(id);
+        if (b) b.disabled = true;
+    });
+}
+
+async function init() {
+    if (!token || !pedidoId) {
+        showError('Enlace incompleto', 'Este enlace no tiene los parámetros necesarios. Usa el enlace completo del correo.');
+        return;
+    }
+
+    try {
+        // Verificar token en tabla revision_tokens (de un solo uso)
+        const { data: tokenData, error: tokenErr } = await sb
+            .from('revision_tokens')
+            .select('pedido_id, usado, expires_at, revisiones_usadas')
+            .eq('token', token)
+            .eq('pedido_id', pedidoId)
+            .single();
+
+        if (tokenErr || !tokenData) {
+            showError('Enlace inválido', 'El token no existe o no corresponde a este caso. Usa el portal del cliente.');
+            return;
+        }
+        if (tokenData.usado) {
+            showError('Ya utilizado', 'Este enlace ya fue usado para aprobar o solicitar cambios. Accede al portal para ver el estado.');
+            return;
+        }
+        if (new Date(tokenData.expires_at) < new Date()) {
+            showError('Enlace expirado', 'Este enlace venció. Los links de aprobación tienen validez de 7 días. Solicita un nuevo envío al laboratorio.');
+            return;
+        }
+
+        // Cargar datos del pedido (solo lectura)
+        const { data: ped, error: pedErr } = await sb
+            .from('pedidos_doctor')
+            .select('id, codigo, nombre_paciente, servicio, revisiones_usadas, html_diseno_url')
+            .eq('id', pedidoId)
+            .single();
+
+        if (pedErr || !ped) {
+            showError('Caso no encontrado', 'No se encontró el caso en el sistema. Contacta a PRODIGY.');
+            return;
+        }
+
+        _pedido = ped;
+        document.getElementById('info-codigo').textContent   = ped.codigo || pedidoId.slice(0,8);
+        document.getElementById('info-paciente').textContent = ped.nombre_paciente || '—';
+        document.getElementById('info-servicio').textContent = ped.servicio || '—';
+        document.getElementById('info-revision').textContent = `Revisión ${(ped.revisiones_usadas||0)+1} de 2`;
+
+        document.getElementById('loading').style.display='none';
+        document.getElementById('main-content').style.display='block';
+
+    } catch(e) {
+        showError('Error de conexión', 'No se pudo verificar el enlace. Verifica tu conexión e intenta de nuevo.');
+    }
+}
+
+function abrirVisor() {
+    if (_pedido?.html_diseno_url) {
+        window.open(_pedido.html_diseno_url, '_blank', 'noopener,noreferrer');
+    } else {
+        window.open(`/revision-diseno?id=${pedidoId}`, '_blank', 'noopener,noreferrer');
+    }
+}
+
+async function confirmarAprobacion() {
+    if (_actionDone) return;
+    if (!confirm('¿Confirmas que el diseño está correcto y apruebas la fabricación?\n\nEsta acción iniciará la producción inmediatamente.')) return;
+    _actionDone = true;
+    disableButtons();
+    showMsg('Procesando aprobación...', 'ok');
+
+    try {
+        // Marcar token como usado PRIMERO (previene doble submit)
+        await sb.from('revision_tokens').update({ usado: true, usado_at: new Date().toISOString() }).eq('token', token);
+
+        // Ejecutar aprobación
+        const { error } = await sb.from('pedidos_doctor').update({
+            diseno_aprobado:    true,
+            estado:             'aprobado',
+            diseno_aprobado_at: new Date().toISOString(),
+        }).eq('id', pedidoId);
+
+        if (error) throw error;
+
+        // Registrar en historial de diseño
+        await sb.from('historial_diseno').insert({
+            pedido_id:   pedidoId,
+            tipo:        'APROBACION_EXPRESS',
+            actor:       'doctor_email',
+            descripcion: `Diseño aprobado vía enlace de email (revision-express)`,
+        }).catch(() => {});
+
+        // Audit log en logs_incidencias para trazabilidad
+        await sb.from('logs_incidencias').insert({
+            tipo:        'REVISION_EXPRESS_APROBADA',
+            severidad:   'INFO',
+            descripcion: `[REVISION-EXPRESS] Diseño aprobado — pedido: ${pedidoId} | token: ${token.slice(0,12)}... | UA: ${navigator.userAgent.slice(0,80)}`,
+            resuelta:    true,
+        }).catch(() => {});
+
+        // Notificar al operario (WA + email) — silent fail
+        fetch('/api/revision-notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tipo: 'aprobacion',
+                pedido_id: pedidoId,
+                codigo: new URLSearchParams(location.search).get('codigo') || '',
+                doctor_nombre: new URLSearchParams(location.search).get('doctor') || '',
+            })
+        }).catch(() => {});
+
+        showMsg('✅ Diseño aprobado. PRODIGY inicia la producción ahora. Recibirás confirmación por WhatsApp.', 'ok');
+        document.getElementById('title').textContent    = '✅ Diseño aprobado';
+        document.getElementById('subtitle').textContent = 'Gracias. El laboratorio fue notificado y comienza la fabricación.';
+
+    } catch(e) {
+        _actionDone = false;
+        showMsg('Error al procesar: ' + e.message + '. Intenta desde el portal del cliente.', 'err');
+        disableButtons();
+    }
+}
+
+async function confirmarCambios() {
+    if (_actionDone) return;
+    const notas = prompt('¿Qué cambios necesitas? (sé específico — máx 500 caracteres):');
+    if (!notas || !notas.trim()) return;
+    _actionDone = true;
+    disableButtons();
+    showMsg('Enviando solicitud de cambios...', 'ok');
+
+    try {
+        await sb.from('revision_tokens').update({ usado: true, usado_at: new Date().toISOString() }).eq('token', token);
+
+        const rev = (_pedido?.revisiones_usadas || 0) + 1;
+        const { error } = await sb.from('pedidos_doctor').update({
+            estado:             'revision',
+            notas_cambios:      notas.trim().slice(0, 500),
+            revisiones_usadas:  rev,
+        }).eq('id', pedidoId);
+
+        if (error) throw error;
+
+        await sb.from('historial_diseno').insert({
+            pedido_id:   pedidoId,
+            tipo:        'CAMBIOS_EXPRESS',
+            actor:       'doctor_email',
+            descripcion: `Cambios solicitados vía email: ${notas.trim().slice(0,100)}`,
+        }).catch(() => {});
+
+        await sb.from('logs_incidencias').insert({
+            tipo:        'REVISION_EXPRESS_CAMBIOS',
+            severidad:   'INFO',
+            descripcion: `[REVISION-EXPRESS] Cambios solicitados — pedido: ${pedidoId} | rev: ${rev}/2 | notas: ${notas.trim().slice(0,60)}`,
+            resuelta:    true,
+        }).catch(() => {});
+
+        // Notificar al operario sobre cambios — silent fail
+        fetch('/api/revision-notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tipo: 'cambios',
+                pedido_id: pedidoId,
+                codigo: new URLSearchParams(location.search).get('codigo') || '',
+                doctor_nombre: new URLSearchParams(location.search).get('doctor') || '',
+                notas: notas.trim(),
+                revision_num: rev,
+            })
+        }).catch(() => {});
+
+        showMsg(`Cambios enviados (revisión ${rev}/2). El equipo PRODIGY los atenderá pronto.`, 'ok');
+        document.getElementById('title').textContent    = '✏️ Cambios solicitados';
+        document.getElementById('subtitle').textContent = 'Procesaremos tus cambios y te avisamos cuando el nuevo diseño esté listo.';
+
+    } catch(e) {
+        _actionDone = false;
+        showMsg('Error: ' + e.message, 'err');
+        disableButtons();
+    }
+}
+
+// NO ejecutar nada al cargar la página excepto validar el token (solo lectura)
+init();
+</script>
+<script>
+(function(){
+  function _t(e,m){fetch('/api/track-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({evento:e,pagina:window.location.pathname,negocio:'prodigy',metadata:m||{}})}).catch(function(){});}
+  if('requestIdleCallback'in window)requestIdleCallback(function(){_t('page_view',{title:document.title});},{timeout:3000});
+  else setTimeout(function(){_t('page_view',{title:document.title});},2000);
+  window._trackEvent=_t;
+})();
+</script>
+</body>
+</html>

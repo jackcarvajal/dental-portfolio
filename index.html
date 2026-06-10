@@ -1536,6 +1536,13 @@
 .nav-ped-card div { display: flex; flex-direction: column; }
 .nav-ped-card strong { font-size: .85rem; font-weight: 800; }
 .nav-ped-card span   { font-size: .9rem; color: #94a3b8; margin-top: 1px; }
+.idx-svc-card { background:#0d1520; border-radius:12px; padding:18px; text-decoration:none; color:#e2e8f0; display:flex; flex-direction:column; gap:6px; transition:border-color .2s; }
+.idx-svc-card-pink { border:1px solid rgba(255,255,255,.07); }
+.idx-svc-card-pink:hover { border-color: rgba(217,70,166,.4); }
+.idx-svc-card-gold { border:1px solid rgba(212,175,55,.2); }
+.idx-svc-card-gold:hover { border-color: rgba(212,175,55,.5); }
+.idx-svc-card-cyan { border:1px solid rgba(0,210,255,.2); }
+.idx-svc-card-cyan:hover { border-color: rgba(0,210,255,.5); }
 </style>
 
     <!-- CTA FLOTANTE HAZ TU PEDIDO -->
@@ -1614,62 +1621,62 @@
             <h2 class="section-header" data-i18n="index.srv.title">Servicios de Laboratorio Digital</h2>
             <p class="section-subtitle" style="text-align:center;color:#94a3b8;margin-bottom:36px;font-size:.95rem;">Fresado CAD/CAM, impresión 3D y diseño digital en Bogotá. Entrega 24–72h.</p>
             <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
-              <a href="flujo-fresado" style="background:#0d1520;border:1px solid rgba(212,175,55,.2);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(212,175,55,.5)'" onmouseout="this.style.borderColor='rgba(212,175,55,.2)'">
+              <a href="flujo-fresado" class="idx-svc-card idx-svc-card-gold">
                 <span style="font-size:1.5rem;">👑</span>
                 <strong style="font-size:.88rem;">Coronas & Puentes</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Zirconio · e.max · PFM</span>
               </a>
-              <a href="puentes-dentales" style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+              <a href="puentes-dentales" class="idx-svc-card idx-svc-card-pink">
                 <span style="font-size:1.5rem;">🔗</span>
                 <strong style="font-size:.88rem;">Puentes Dentales</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">3–6 unidades · implante</span>
               </a>
-              <a href="implante-dental-unitario" style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+              <a href="implante-dental-unitario" class="idx-svc-card idx-svc-card-pink">
                 <span style="font-size:1.5rem;">🦷</span>
                 <strong style="font-size:.88rem;">Corona sobre Implante</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Cualquier plataforma</span>
               </a>
-              <a href="full-arch-digital" style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+              <a href="full-arch-digital" class="idx-svc-card idx-svc-card-pink">
                 <span style="font-size:1.5rem;">🏗️</span>
                 <strong style="font-size:.88rem;">Full Arch Digital</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">All-on-4 · All-on-6</span>
               </a>
-              <a href="carillas-porcelana" style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+              <a href="carillas-porcelana" class="idx-svc-card idx-svc-card-pink">
                 <span style="font-size:1.5rem;">✨</span>
                 <strong style="font-size:.88rem;">Carillas de Porcelana</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">e.max · Feldespática</span>
               </a>
-              <a href="guias-quirurgicas" style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+              <a href="guias-quirurgicas" class="idx-svc-card idx-svc-card-pink">
                 <span style="font-size:1.5rem;">🔬</span>
                 <strong style="font-size:.88rem;">Guías Quirúrgicas</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Dento · Muco · Óseo</span>
               </a>
-              <a href="alineadores-cad" style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+              <a href="alineadores-cad" class="idx-svc-card idx-svc-card-pink">
                 <span style="font-size:1.5rem;">🔧</span>
                 <strong style="font-size:.88rem;">Alineadores CAD</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Setup Exocad Ortho</span>
               </a>
-              <a href="modelo-estudio" style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+              <a href="modelo-estudio" class="idx-svc-card idx-svc-card-pink">
                 <span style="font-size:1.5rem;">🖨️</span>
                 <strong style="font-size:.88rem;">Modelos de Estudio</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Impresión 3D · 50 micras</span>
               </a>
-              <a href="ferulas-oclusales" style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+              <a href="ferulas-oclusales" class="idx-svc-card idx-svc-card-pink">
                 <span style="font-size:1.5rem;">🛡️</span>
                 <strong style="font-size:.88rem;">Férulas Oclusales</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Michigan · Resina 3D</span>
               </a>
-              <a href="encerado-diagnostico" style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+              <a href="encerado-diagnostico" class="idx-svc-card idx-svc-card-pink">
                 <span style="font-size:1.5rem;">🎨</span>
                 <strong style="font-size:.88rem;">Encerado Diagnóstico</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Wax-up digital CAD</span>
               </a>
-              <a href="blanqueamiento-dental" style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(217,70,166,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+              <a href="blanqueamiento-dental" class="idx-svc-card idx-svc-card-pink">
                 <span style="font-size:1.5rem;">💡</span>
                 <strong style="font-size:.88rem;">Bandejas Blanqueamiento</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">EVA 1mm/2mm · 24h</span>
               </a>
-              <a href="calculadora-fresado" style="background:#0d1520;border:1px solid rgba(0,210,255,.2);border-radius:12px;padding:18px;text-decoration:none;color:#e2e8f0;display:flex;flex-direction:column;gap:6px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(0,210,255,.5)'" onmouseout="this.style.borderColor='rgba(0,210,255,.2)'">
+              <a href="calculadora-fresado" class="idx-svc-card idx-svc-card-cyan">
                 <span style="font-size:1.5rem;">🧮</span>
                 <strong style="font-size:.88rem;color:#00d2ff;">Calculadora de Precios</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Cotiza en tiempo real</span>

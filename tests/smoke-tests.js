@@ -344,7 +344,8 @@ for (const pg of pagPublicas) {
 
 // SW v25
 const swContent = fileContent('sw.js');
-assert(swContent.includes('prodigy-v28') || swContent.includes('prodigy-v27') || swContent.includes('prodigy-v26'), 'sw.js actualizado a v25+');
+const swVerNum = parseInt((swContent.match(/prodigy-v(\d+)/) || [])[1] || '0', 10);
+assert(swVerNum >= 25, 'sw.js actualizado a v25+');
 assert(swContent.includes('/cotizaciones'), 'sw.js incluye /cotizaciones en PRECACHE');
 
 // ── SISTEMA DE REFERIDOS ────────────────────────────────────────────

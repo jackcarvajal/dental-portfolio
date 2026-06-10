@@ -253,8 +253,8 @@
             STATE.materialTipo = tipo;
             // Validación biomecánica
             if (window.BiomecanicaRules && STATE.servicio) {
-                const r = BiomecanicaRules.validate(STATE.servicio, tipo, STATE.cantidad || 1);
-                if (!r.ok || r.advertencias.length) BiomecanicaRules.mostrarAlerta(r, null);
+                const r = window.BiomecanicaRules.validate(STATE.servicio, tipo, STATE.cantidad || 1);
+                if (!r.ok || r.advertencias.length) window.BiomecanicaRules.mostrarAlerta(r, null);
             }
 
             STATE.submaterialId = null;
@@ -1866,10 +1866,10 @@
             if (!file) return;
 
             if (window.validateUpload) {
-                const ext = validateUpload(file, 'COMPROBANTE');
-                if (!ext.valid) { showUploadError(ext.error); return; }
-                const mb = await validateMagicBytes(file);
-                if (!mb.safe) { showUploadError(mb.error); return; }
+                const ext = window.validateUpload(file, 'COMPROBANTE');
+                if (!ext.valid) { window.showUploadError(ext.error); return; }
+                const mb = await window.validateMagicBytes(file);
+                if (!mb.safe) { window.showUploadError(mb.error); return; }
             }
 
             const placeholder = document.getElementById('comprobante-placeholder');
@@ -2152,6 +2152,7 @@
             STATE.ordenId = orderId;
             STATE.nombreCliente = nombreCliente;
             STATE.whatsappCliente = whatsappCliente;
+            STATE.emailCliente = emailCliente;
             STATE.nombrePaciente = nombrePaciente;
             STATE.origen = origen;
             STATE.linkSTL = linkSTL || 'Carga directa PRODIGY';
@@ -2306,7 +2307,7 @@
                         user_agent:             navigator.userAgent.slice(0, 250),
                         seguro_garantia_activo: document.getElementById('seguro-garantia')?.checked || false,
                         costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0,
-                        pedido_diseno_id:       (typeof _disenoPedidoId !== 'undefined' ? _disenoPedidoId : null),
+                        pedido_diseno_id:       null,
                         codigo_referido:        sessionStorage.getItem('prodigy_ref') || null
                     }]).then(({ data: _d, error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido impresion no guardado:', _e.message);
@@ -2321,15 +2322,15 @@
                             }
                         }
                         // Registro implícito si hay email
-                        if (!_e && emailCliente) {
+                        if (!_e && STATE.emailCliente) {
                             _sb.auth.signUp({
-                                email: emailCliente, password:'ProdigyTemp2026!',
-                                options:{ data:{ nombre:nombreCliente, whatsapp:whatsappCliente, primera_vez:true }, emailRedirectTo:'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1' }
+                                email: STATE.emailCliente, password:'ProdigyTemp2026!',
+                                options:{ data:{ nombre:STATE.nombreCliente, whatsapp:STATE.whatsappCliente, primera_vez:true }, emailRedirectTo:'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1' }
                             }).then(({error:_se})=>{
                                 if (!_se) {
                                     fetch('/api/wa-auto',{method:'POST',headers:{'Content-Type':'application/json'},
-                                        body:JSON.stringify({whatsapp:whatsappCliente,
-                                            mensaje:'🦷 *PRODIGY Lab Dental*\n\nHola '+nombreCliente.split(' ')[0]+', recibimos tu pedido de impresión 3D.\n\n✅ Portal de seguimiento:\n👉 prodigylabdental.com/app/client-panel.html\n📧 '+emailCliente+'\n🔐 Clave: ProdigyTemp2026!\n_(Cámbiala al ingresar)_'
+                                        body:JSON.stringify({whatsapp:STATE.whatsappCliente,
+                                            mensaje:'🦷 *PRODIGY Lab Dental*\n\nHola '+STATE.nombreCliente.split(' ')[0]+', recibimos tu pedido de impresión 3D.\n\n✅ Portal de seguimiento:\n👉 prodigylabdental.com/app/client-panel.html\n📧 '+STATE.emailCliente+'\n🔐 Clave: ProdigyTemp2026!\n_(Cámbiala al ingresar)_'
                                         })
                                     }).catch(()=>{});
                                 }
@@ -2337,7 +2338,7 @@
                         }
                         const ref = sessionStorage.getItem('prodigy_ref');
                         if (ref && !_e) {
-                            _sb.from('referidos').update({ referido_email: emailCliente||STATE.whatsappCliente||null, referido_nombre: STATE.nombreCliente||null, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',ref).then(()=>sessionStorage.removeItem('prodigy_ref'));
+                            _sb.from('referidos').update({ referido_email: STATE.emailCliente||STATE.whatsappCliente||null, referido_nombre: STATE.nombreCliente||null, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',ref).then(()=>sessionStorage.removeItem('prodigy_ref'));
                         }
                     });
                 }
