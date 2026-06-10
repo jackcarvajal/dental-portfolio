@@ -361,9 +361,9 @@ assert(clientPanelRef.includes('sec-referidos'), 'client-panel tiene sección Re
 assert(clientPanelRef.includes('cargarReferidos'), 'client-panel tiene función cargarReferidos()');
 assert(clientPanelRef.includes('copiarCodigo'), 'client-panel tiene función copiarCodigo()');
 
-const adminPanelRef = fileContent('app/admin-panel.html');
-assert(adminPanelRef.includes('tab-referidos'), 'admin-panel tiene tab Referidos');
-assert(adminPanelRef.includes('cargarReferidosAdmin'), 'admin-panel tiene función cargarReferidosAdmin()');
+const adminPanelRef = fileContent('app/panel-interno-operaciones.html');
+assert(adminPanelRef.includes('tab-referidos'), 'panel-interno-operaciones tiene tab Referidos');
+assert(adminPanelRef.includes('cargarReferidosAdmin'), 'panel-interno-operaciones tiene función cargarReferidosAdmin()');
 
 const flujoDisRef = fileContent('flujo-diseno.html');
 assert(flujoDisRef.includes('prodigy_ref'), 'flujo-diseno captura sessionStorage prodigy_ref');

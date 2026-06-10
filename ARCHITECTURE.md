@@ -18,7 +18,7 @@
 ```
 /
 ├── app/                     # Rutas protegidas (auth-guard.js obligatorio)
-│   ├── admin-panel.html     # Staff PRODIGY — gestión pedidos + analytics
+│   ├── panel-interno-operaciones.html  # Staff PRODIGY — gestión pedidos + analytics (dashboard único, 18 tabs)
 │   ├── client-panel.html    # Doctores — seguimiento + cotizaciones
 │   ├── metricas.html        # BI Dashboard (solo admin/staff)
 │   ├── operator-panel.html  # Operario — QA + bulk upload diseños
@@ -94,7 +94,7 @@
 ### Flujo de un pedido
 ```
 Doctor (flujo-diseno.html) → Supabase INSERT pedido
-  → Realtime → admin-panel.html (Nuevo pedido)
+  → Realtime → panel-interno-operaciones.html (Nuevo pedido)
   → Operario (operario.html) → sube STL → QA
   → Diseñador (operario-diseno.html) → sube HTML diseño
   → revision-express.html → doctor aprueba vía email (token single-use)

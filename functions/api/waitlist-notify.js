@@ -60,7 +60,7 @@ export async function onRequestPost(context) {
               <tr><td style="padding:6px 12px;font-weight:700;">Ciudad:</td><td>${escH(ciudad || '—')}</td></tr>
               <tr><td style="padding:6px 12px;font-weight:700;">Volumen/mes:</td><td>${escH(pedidos_mes || '—')}</td></tr>
             </table>
-            <p style="margin-top:16px;"><a href="https://prodigylabdental.com/app/admin-panel" style="background:#D4AF37;color:#000;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">Ver en Admin Panel →</a></p>`,
+            <p style="margin-top:16px;"><a href="https://prodigylabdental.com/app/panel-interno-operaciones.html" style="background:#D4AF37;color:#000;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">Ver en Admin Panel →</a></p>`,
         }),
       });
       results.email = r.ok ? 'ok' : `error ${r.status}`;

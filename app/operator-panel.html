@@ -783,7 +783,7 @@ async function enviarIncidencia() {
                 title: `INCIDENCIA ${sev}`,
                 body:  `${tipo}: ${desc.slice(0,80)}`,
                 tag:   'incidencia-prod',
-                url:   '/app/admin-panel.html',
+                url:   '/app/panel-interno-operaciones.html',
             }),
         });
     } catch {}
@@ -1047,7 +1047,7 @@ function cerrarModalHandoffQA() {
 }
 function irADespachos() {
     cerrarModalHandoffQA();
-    window.location.href = '/app/admin-panel.html';
+    window.location.href = '/app/panel-interno-operaciones.html';
 }
 
 /* Sobreescribir aprobarQA para disparar handoff automático */
@@ -1074,7 +1074,7 @@ aprobarQA = async function() {
         fetch(ADMIN_PUSH_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
-            body: JSON.stringify({ ...pushBody, titulo: `📦 QA aprobado — Caso #${p?.codigo || ''}`, url: '/app/admin-panel.html', rol: 'admin' }),
+            body: JSON.stringify({ ...pushBody, titulo: `📦 QA aprobado — Caso #${p?.codigo || ''}`, url: '/app/panel-interno-operaciones.html', rol: 'admin' }),
         }),
     ]);
 

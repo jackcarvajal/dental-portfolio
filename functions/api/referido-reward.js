@@ -107,7 +107,7 @@ export async function onRequestPost({ request, env }) {
         mensaje: `Código ${codigo_referido} → cupón ${cupon} ($30.000 COP) generado automáticamente.`,
         destinatario_rol: 'admin',
         leida_por: [],
-        accion_url: '/app/admin-panel.html',
+        accion_url: '/app/panel-interno-operaciones.html',
       }),
     }).catch(() => {});
 

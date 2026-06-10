@@ -108,6 +108,7 @@
 /portal                         /               301
 /portal.html                    /               301
 /admin-panel.html               /app/login.html  302
+/app/admin-panel.html           /app/panel-interno-operaciones.html  301
 /operario                      /app/operario.html           200
 /operario-diseno               /app/operario-diseno.html    200
 /agregar-caso.html              /app/login.html  302

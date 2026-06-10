@@ -156,7 +156,7 @@
     "lista": [
       "app/login.html",
       "app/client-panel.html",
-      "app/admin-panel.html",
+      "app/admin-panel.html (RETIRADO — 301 a panel-interno-operaciones.html)",
       "app/operator-panel.html",
       "app/panel-interno-operaciones.html",
       "app/agregar-caso.html",

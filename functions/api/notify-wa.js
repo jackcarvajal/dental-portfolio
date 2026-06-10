@@ -13,7 +13,7 @@
 const WA_PRODIGY = '573212816716';
 
 const MSGS_ES = {
-  WAITLIST_LAB:            (d) => `🧪 *Nuevo lab en waitlist*\n\n*Lab:* ${d.dr}\n*Ciudad/Volumen:* ${d.srv}\n\nRevisa: prodigylabdental.com/app/admin-panel`,
+  WAITLIST_LAB:            (d) => `🧪 *Nuevo lab en waitlist*\n\n*Lab:* ${d.dr}\n*Ciudad/Volumen:* ${d.srv}\n\nRevisa: prodigylabdental.com/app/panel-interno-operaciones.html`,
   REFERIDO_PRIMER_PEDIDO:  (d) => `🎁 *¡Tu referido hizo su primer pedido!*\n\nHola Dr. ${d.dr}, tu colega ${d.srv} acaba de pagar su primer caso en PRODIGY.\n\n🏷️ Tu cupón de crédito: *${d.cod}*\nÚsalo en tu próximo pedido para descontar *$30.000 COP* automáticamente. Es de un solo uso y no caduca.\n\n_PRODIGY Lab Dental_`,
   EN_PRODUCCION:    (d) => `✅ *Caso #${d.cod} — Producción iniciada*\n\nHola Dr. ${d.dr}, tu caso ha superado la validación técnica y ya está en producción.\n\n📅 Entrega estimada: *${d.fecha}*\n🔬 Servicio: ${d.srv}\n\n_Cualquier novedad te notificamos. PRODIGY Lab Dental_`,
   FRESADO_INICIADO: (d) => `⚙️ *Caso #${d.cod} — Fresado en curso*\n\nHola Dr. ${d.dr}, iniciamos el fresado de tu caso. Estamos en la recta final.\n\n📅 Entrega estimada: *${d.fecha}*\n\n_PRODIGY Lab Dental_`,
@@ -24,7 +24,7 @@ const MSGS_ES = {
 };
 
 const MSGS_EN = {
-  WAITLIST_LAB:            (d) => `🧪 *New lab on waitlist*\n\n*Lab:* ${d.dr}\n*City/Volume:* ${d.srv}\n\nReview: prodigylabdental.com/app/admin-panel`,
+  WAITLIST_LAB:            (d) => `🧪 *New lab on waitlist*\n\n*Lab:* ${d.dr}\n*City/Volume:* ${d.srv}\n\nReview: prodigylabdental.com/app/panel-interno-operaciones.html`,
   REFERIDO_PRIMER_PEDIDO:  (d) => `🎁 *Your referral made their first order!*\n\nHi Dr. ${d.dr}, your colleague ${d.srv} just paid their first case at PRODIGY.\n\n🏷️ Your credit coupon: *${d.cod}*\nApply it on your next order for an automatic *$30,000 COP* discount. Single use, no expiry.\n\n_PRODIGY Lab Dental_`,
   EN_PRODUCCION:    (d) => `✅ *Case #${d.cod} — Production started*\n\nHello Dr. ${d.dr}, your case passed technical validation and is now in production.\n\n📅 Estimated delivery: *${d.fecha}*\n🔬 Service: ${d.srv}\n\n_PRODIGY Lab Dental_`,
   FRESADO_INICIADO: (d) => `⚙️ *Case #${d.cod} — Milling in progress*\n\nHello Dr. ${d.dr}, we have started milling your case. Final stretch!\n\n📅 Estimated delivery: *${d.fecha}*\n\n_PRODIGY Lab Dental_`,

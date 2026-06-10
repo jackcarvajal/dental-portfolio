@@ -52,13 +52,13 @@ export async function onRequestPost(context) {
   const {
     titulo    = '🦷 PRODIGY — Nuevo pedido',
     mensaje   = 'Hay un caso nuevo esperando validación.',
-    url       = '/app/admin-panel.html',
+    url       = '/app/panel-interno-operaciones.html',
     segmento  = 'staff',  // 'staff' | 'all' | email específico
   } = body;
 
   // Validar URL (solo dominio propio)
   const _own = /^https?:\/\/(www\.)?prodigylabdental\.com\//;
-  const safeUrl = (_own.test(url) || url.startsWith('/')) ? url : '/app/admin-panel.html';
+  const safeUrl = (_own.test(url) || url.startsWith('/')) ? url : '/app/panel-interno-operaciones.html';
 
   const payload = {
     app_id:   env.ONESIGNAL_APP_ID,

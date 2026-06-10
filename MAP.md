@@ -131,7 +131,7 @@
 
 ## PORTAL /app/
 
-### app/admin-panel.html
+### app/admin-panel.html (RETIRADO — fusionado en app/panel-interno-operaciones.html, ver _redirects)
 | Función / Sección | Línea aprox. |
 |-------------------|--------------|
 | `switchTab()` — navegación tabs + auto-refresh Torre | 972 |

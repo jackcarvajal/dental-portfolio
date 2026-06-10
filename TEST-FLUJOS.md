@@ -72,7 +72,7 @@
 **Simula: Alejandro recibiendo un caso nuevo**
 
 ### Pasos:
-1. [ ] Ir a `prodigylabdental.com/app/admin-panel`
+1. [ ] Ir a `prodigylabdental.com/app/panel-interno-operaciones.html`
 2. [ ] Verificar que carga el panel con pedidos en tiempo real
 3. [ ] Buscar el caso de prueba del TEST 1 (solicitudes_scanner)
 4. [ ] Buscar el caso del TEST 2 (pedidos)
