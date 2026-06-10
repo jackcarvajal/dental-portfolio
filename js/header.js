@@ -593,15 +593,15 @@
               'HAZ TU PEDIDO <i class="fas fa-chevron-down" style="font-size:9px;margin-left:4px;transition:transform .2s;" id="pnav2-ped-arrow"></i>' +
             '</button>' +
             '<div class="pnav2-ped-drop" id="pnav2-ped-drop">' +
-              '<a href="/diseno-cad" class="pnav2-ped-card">' +
+              '<a href="/app/login.html?redirect=/flujo-diseno" class="pnav2-ped-card">' +
                 '<i class="fas fa-drafting-compass" style="color:#00d2ff;font-size:1.2rem;"></i>' +
                 '<div><strong>Diseño CAD</strong><span>Exocad · 3Shape · archivo STL</span></div>' +
               '</a>' +
-              '<a href="/fresado-cam" class="pnav2-ped-card">' +
+              '<a href="/app/login.html?redirect=/flujo-fresado" class="pnav2-ped-card">' +
                 '<i class="fas fa-cog" style="color:#D4AF37;font-size:1.2rem;"></i>' +
                 '<div><strong>Fabricación CAM</strong><span>Zirconia · Disilicato · PMMA</span></div>' +
               '</a>' +
-              '<a href="/flujo-lab" class="pnav2-ped-card">' +
+              '<a href="/app/login.html?redirect=/flujo-lab" class="pnav2-ped-card">' +
                 '<i class="fas fa-layer-group" style="color:#D946A6;font-size:1.2rem;"></i>' +
                 '<div><strong>Flujo Lab Full</strong><span>Modelo → diseño → acabado final</span></div>' +
               '</a>' +
@@ -646,17 +646,17 @@
       '<div id="pcta-pedido">' +
         '<div id="pcta-label" style="display:none;">¿Qué necesitas?</div>' +
         '<div id="pcta-menu">' +
-          '<a href="/diseno-cad" class="pcta-card pcta-card-cad">' +
+          '<a href="/app/login.html?redirect=/flujo-diseno" class="pcta-card pcta-card-cad">' +
             '<i class="fas fa-drafting-compass"></i>' +
             '<span class="pcta-card-title">Diseño CAD</span>' +
             '<span class="pcta-card-sub">Exocad · STL</span>' +
           '</a>' +
-          '<a href="/fresado-cam" class="pcta-card pcta-card-cam">' +
+          '<a href="/app/login.html?redirect=/flujo-fresado" class="pcta-card pcta-card-cam">' +
             '<i class="fas fa-cog"></i>' +
             '<span class="pcta-card-title">Fabricación CAM</span>' +
             '<span class="pcta-card-sub">Zirconia · PMMA</span>' +
           '</a>' +
-          '<a href="/flujo-lab" class="pcta-card pcta-card-lab">' +
+          '<a href="/app/login.html?redirect=/flujo-lab" class="pcta-card pcta-card-lab">' +
             '<i class="fas fa-layer-group"></i>' +
             '<span class="pcta-card-title">Flujo Lab Full</span>' +
             '<span class="pcta-card-sub">Completo → entrega</span>' +
