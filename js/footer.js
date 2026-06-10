@@ -176,7 +176,6 @@
           '<li><a href="/nosotros#contacto">Contacto</a></li>' +
           '<li><a href="/soporte">Centro de Soporte</a></li>' +
           '<li><a href="/instalar-app">Instalar App Móvil</a></li>' +
-          '<li><a href="/para-laboratorios" style="color:#D4AF37;font-weight:700;">💼 Para Laboratorios</a></li>' +
           '<li><a href="/referidos" style="color:#00FF41;font-weight:700;">🎁 Programa Referidos</a></li>' +
           '<li><a href="/terminos-y-legal">Términos y Privacidad</a></li>' +
         '</ul>' +
