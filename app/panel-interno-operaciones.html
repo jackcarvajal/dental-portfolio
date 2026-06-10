@@ -197,44 +197,67 @@
         <div class="sidebar-user" id="admin-email">—</div>
     </div>
 
-    <p class="nav-section">Panel</p>
+    <p class="nav-section">Operación</p>
     <a href="#" class="nav-item active" onclick="switchTab('pedidos',this)" aria-current="page">
         <i class="fas fa-inbox"></i> Pedidos
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('portafolio',this)">
-        <i class="fas fa-images"></i> Portafolio
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('clientes',this)">
-        <i class="fas fa-users"></i> Clientes
-    </a>
-
-    <a href="#" class="nav-item" onclick="switchTab('equipo',this)">
-        <i class="fas fa-user-shield"></i> Equipo PRODIGY
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('leads',this)">
-        <i class="fas fa-magnet"></i> Leads Journal
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('pedidos-doc',this)">
-        <i class="fas fa-inbox"></i> Pedidos Doctores
     </a>
     <a href="#" class="nav-item" onclick="switchTab('rutador',this)">
         <i class="fas fa-code-branch"></i> Rutador de Casos
     </a>
-    <a href="#" class="nav-item" onclick="switchTab('metricas',this)">
-        <i class="fas fa-chart-line"></i> Métricas
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('staff',this)">
-        <i class="fas fa-users-cog" style="color:#a78bfa;"></i> Operarios / Roles
-    </a>
+    <a href="admin-panel.html" class="nav-item"><i class="fas fa-truck-fast" style="color:#94a3b8;"></i> Despachos</a>
+    <a href="admin-panel.html" class="nav-item"><i class="fas fa-tower-broadcast" style="color:#94a3b8;"></i> Torre de Control</a>
     <a href="#" class="nav-item" onclick="switchTab('fabricacion',this)" id="nav-fab">
         <i class="fas fa-industry" style="color:#fb923c;"></i> Fabricación
         <span id="fab-badge" style="display:none;background:#fb923c;color:#000;font-size:.65rem;font-weight:900;padding:1px 6px;border-radius:100px;margin-left:4px;">0</span>
     </a>
 
+    <p class="nav-section">Clientes &amp; Equipo</p>
+    <a href="#" class="nav-item" onclick="switchTab('clientes',this)">
+        <i class="fas fa-users"></i> Clientes
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('equipo',this)">
+        <i class="fas fa-user-shield"></i> Equipo PRODIGY
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('staff',this)">
+        <i class="fas fa-users-cog" style="color:#a78bfa;"></i> Operarios / Roles
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('pedidos-doc',this)">
+        <i class="fas fa-inbox"></i> Pedidos Doctores
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('leads',this)">
+        <i class="fas fa-magnet"></i> Leads Journal
+    </a>
+
+    <p class="nav-section">Portafolio</p>
+    <a href="#" class="nav-item" onclick="switchTab('portafolio',this)">
+        <i class="fas fa-images"></i> Portafolio
+    </a>
+
+    <p class="nav-section">Analytics &amp; Reportes</p>
+    <a href="#" class="nav-item" onclick="switchTab('metricas',this)">
+        <i class="fas fa-chart-line"></i> Métricas
+    </a>
+    <a href="admin-panel.html" class="nav-item"><i class="fas fa-sack-dollar" style="color:#94a3b8;"></i> Métricas Financieras</a>
+    <a href="admin-panel.html" class="nav-item"><i class="fas fa-radar" style="color:#94a3b8;"></i> Radar de Ventas</a>
+    <a href="admin-panel.html" class="nav-item"><i class="fas fa-file-lines" style="color:#94a3b8;"></i> Reportes BI</a>
+    <a href="metricas.html" class="nav-item"><i class="fas fa-chart-pie" style="color:#00d2ff;"></i> BI Dashboard ✨</a>
+    <a href="metricas-seo.html" class="nav-item"><i class="fas fa-magnifying-glass-chart"></i> SEO Dashboard</a>
+
+    <p class="nav-section">Marketing &amp; Crecimiento</p>
+    <a href="admin-panel.html" class="nav-item"><i class="fas fa-gift" style="color:#94a3b8;"></i> Referidos</a>
+    <a href="metricas-referidos.html" class="nav-item"><i class="fas fa-chart-line" style="color:#00FF41;"></i> ROI Referidos ✨</a>
+    <a href="metricas-churn.html" class="nav-item"><i class="fas fa-user-clock"></i> Churn Prevention</a>
+    <a href="admin-panel.html" class="nav-item"><i class="fas fa-flask" style="color:#94a3b8;"></i> Waitlist Labs</a>
+    <a href="admin-panel.html" class="nav-item"><i class="fas fa-envelope-open-text" style="color:#94a3b8;"></i> Newsletter</a>
+
     <p class="nav-section">Configuración</p>
     <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Materiales</a>
     <a href="configuracion.html" class="nav-item"><i class="fas fa-sliders"></i> Variables del Sistema</a>
-    <div style="font-size:.62rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px 4px;">Paneles operarios</div>
+    <a href="cotizaciones.html" class="nav-item"><i class="fas fa-file-invoice-dollar" style="color:#D4AF37;"></i> Cotizaciones ✨</a>
+    <a href="inventario.html" class="nav-item"><i class="fas fa-boxes-stacked"></i> Inventario</a>
+    <a href="pruebas-carga.html" class="nav-item"><i class="fas fa-vial" style="color:#94a3b8;"></i> Pruebas Carga 🧪</a>
+
+    <p class="nav-section">Paneles operarios</p>
     <a href="operario-diseno.html" class="nav-item"><i class="fas fa-drafting-compass" style="color:#00d2ff;"></i> Diseño CAD</a>
     <a href="operator-panel.html" class="nav-item"><i class="fas fa-cog" style="color:#D4AF37;"></i> Fresado / Lab</a>
     <a href="taller.html" class="nav-item"><i class="fas fa-tools" style="color:#D946A6;"></i> Taller</a>
