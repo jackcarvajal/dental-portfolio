@@ -241,16 +241,24 @@
     </a>
     <a href="admin-panel.html" class="nav-item"><i class="fas fa-sack-dollar" style="color:#94a3b8;"></i> Métricas Financieras</a>
     <a href="admin-panel.html" class="nav-item"><i class="fas fa-radar" style="color:#94a3b8;"></i> Radar de Ventas</a>
-    <a href="admin-panel.html" class="nav-item"><i class="fas fa-file-lines" style="color:#94a3b8;"></i> Reportes BI</a>
+    <a href="#" class="nav-item" onclick="switchTab('reportes',this)">
+        <i class="fas fa-file-lines" style="color:var(--cyan);"></i> Reportes BI
+    </a>
     <a href="metricas.html" class="nav-item"><i class="fas fa-chart-pie" style="color:#00d2ff;"></i> BI Dashboard ✨</a>
     <a href="metricas-seo.html" class="nav-item"><i class="fas fa-magnifying-glass-chart"></i> SEO Dashboard</a>
 
     <p class="nav-section">Marketing &amp; Crecimiento</p>
-    <a href="admin-panel.html" class="nav-item"><i class="fas fa-gift" style="color:#94a3b8;"></i> Referidos</a>
+    <a href="#" class="nav-item" onclick="switchTab('referidos',this)">
+        <i class="fas fa-gift" style="color:#00FF41;"></i> Referidos
+    </a>
     <a href="metricas-referidos.html" class="nav-item"><i class="fas fa-chart-line" style="color:#00FF41;"></i> ROI Referidos ✨</a>
     <a href="metricas-churn.html" class="nav-item"><i class="fas fa-user-clock"></i> Churn Prevention</a>
-    <a href="admin-panel.html" class="nav-item"><i class="fas fa-flask" style="color:#94a3b8;"></i> Waitlist Labs</a>
-    <a href="admin-panel.html" class="nav-item"><i class="fas fa-envelope-open-text" style="color:#94a3b8;"></i> Newsletter</a>
+    <a href="#" class="nav-item" onclick="switchTab('waitlist',this)">
+        <i class="fas fa-flask" style="color:var(--gold);"></i> Waitlist Labs
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('newsletter',this)">
+        <i class="fas fa-envelope-open-text" style="color:var(--cyan);"></i> Newsletter
+    </a>
 
     <p class="nav-section">Configuración</p>
     <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Materiales</a>
@@ -1086,6 +1094,86 @@
       </div>
     </div>
 
+    <!-- ══ TAB NEWSLETTER ══════════════════════════════════ -->
+    <div id="tab-newsletter" class="tab-panel" style="display:none">
+        <div class="page-header">
+            <div>
+                <h1>Newsletter <span style="color:var(--cyan);">/ Suscriptores</span></h1>
+                <p>Gestión de suscriptores al newsletter de PRODIGY Lab Dental</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+                <button type="button" class="btn-primary" onclick="exportarNewsletterCSV()"><i class="fas fa-download"></i> CSV</button>
+                <button type="button" class="btn-primary" onclick="cargarNewsletter()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+            </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px;">
+            <div class="kpi-card k3"><div class="kpi-icon" style="color:#00d2ff;"><i class="fas fa-users"></i></div><div class="kpi-value" id="nl-total" style="color:#00d2ff;">—</div><div class="kpi-label">Total suscriptores</div></div>
+            <div class="kpi-card k1"><div class="kpi-icon" style="color:#00FF41;"><i class="fas fa-check-circle"></i></div><div class="kpi-value" id="nl-activos" style="color:#00FF41;">—</div><div class="kpi-label">Activos</div></div>
+            <div class="kpi-card k4"><div class="kpi-icon" style="color:#D946A6;"><i class="fas fa-bullhorn"></i></div><div class="kpi-value" id="nl-promo" style="color:#D946A6;">—</div><div class="kpi-label">Acepta marketing</div></div>
+            <div class="kpi-card k2"><div class="kpi-icon" style="color:var(--gold);"><i class="fas fa-calendar"></i></div><div class="kpi-value" id="nl-mes" style="color:var(--gold);">—</div><div class="kpi-label">Nuevos este mes</div></div>
+        </div>
+        <div class="section-card">
+            <div class="section-header"><h2>Lista de suscriptores</h2></div>
+            <div id="nl-tabla" style="overflow-x:auto;padding:4px;" aria-live="polite">
+                <div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>
+            </div>
+        </div>
+    </div><!-- /tab-newsletter -->
+
+    <!-- ══ TAB WAITLIST LABS ══════════════════════════════════ -->
+    <div id="tab-waitlist" class="tab-panel" style="display:none">
+        <div class="page-header">
+            <div>
+                <h1>Waitlist Labs <span style="color:var(--gold);">/ SaaS Pipeline</span></h1>
+                <p>Laboratorios interesados en adoptar PRODIGY como plataforma</p>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+                <a href="../para-laboratorios" target="_blank" rel="noopener noreferrer" class="btn-primary" style="text-decoration:none;font-size:.82rem;padding:8px 14px;"><i class="fas fa-external-link"></i> Ver landing</a>
+                <button type="button" class="btn-primary" onclick="cargarWaitlist()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+            </div>
+        </div>
+        <div class="section-card">
+            <div class="section-header">
+                <h2><i class="fas fa-flask-vial" style="color:var(--gold);"></i> Lista de espera</h2>
+                <div id="waitlist-kpi" style="font-size:.82rem;color:var(--muted);">Cargando...</div>
+            </div>
+            <div id="waitlist-tabla" style="padding:16px;" aria-live="polite">
+                <div style="text-align:center;color:#475569;padding:24px;"><i class="fas fa-spinner fa-spin"></i></div>
+            </div>
+        </div>
+    </div><!-- /tab-waitlist -->
+
+    <!-- ══ TAB REPORTES BI ══════════════════════════════════ -->
+    <div id="tab-reportes" class="tab-panel" style="display:none">
+        <div class="page-header">
+            <div><h1>Reportes <span style="color:var(--cyan);">/ BI Analytics</span></h1><p>Canal de origen, ingresos por material y conversión por flujo</p></div>
+            <button type="button" class="btn-primary" onclick="cargarReportesAdmin()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
+            <div class="section-card"><div class="section-header"><h2><i class="fas fa-route" style="color:var(--gold2);margin-right:8px;"></i>Canal de Origen (90d)</h2></div><div id="rep-canal" style="padding:16px;" aria-live="polite"><div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div></div></div>
+            <div class="section-card"><div class="section-header"><h2><i class="fas fa-layer-group" style="color:var(--gold);margin-right:8px;"></i>Pedidos por Material (30d)</h2></div><div id="rep-material" style="padding:16px;" aria-live="polite"><div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div></div></div>
+            <div class="section-card"><div class="section-header"><h2><i class="fas fa-user-doctor" style="color:var(--gold2);margin-right:8px;"></i>Top Doctores (90d)</h2></div><div id="rep-doctores" style="padding:16px;" aria-live="polite"><div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div></div></div>
+            <div class="section-card"><div class="section-header"><h2><i class="fas fa-exchange-alt" style="color:var(--cyan);margin-right:8px;"></i>Conversión por Flujo (30d)</h2></div><div id="rep-flujo" style="padding:16px;" aria-live="polite"><div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div></div></div>
+        </div>
+    </div><!-- /tab-reportes -->
+
+    <!-- ══ TAB REFERIDOS ══════════════════════════════════ -->
+    <div id="tab-referidos" class="tab-panel" style="display:none">
+        <div class="page-header">
+            <div><h1>Referidos <span style="color:#00FF41;">/ Programa de Referidos</span></h1><p>Doctores que refirieron colegas a PRODIGY</p></div>
+            <button type="button" class="btn-primary" onclick="cargarReferidosAdmin()"><i class="fas fa-rotate-right"></i> Actualizar</button>
+        </div>
+        <div class="section-card">
+            <div class="section-header">
+                <h2><i class="fas fa-user-plus" style="color:#00FF41;"></i> Pipeline de referidos</h2>
+                <div id="ref-admin-kpi" style="font-size:.82rem;color:var(--muted);">Cargando...</div>
+            </div>
+            <div id="ref-admin-tabla" style="padding:16px;" aria-live="polite">
+                <div style="text-align:center;color:#475569;padding:24px;"><i class="fas fa-spinner fa-spin"></i></div>
+            </div>
+        </div>
+    </div><!-- /tab-referidos -->
+
     <!-- ══ TAB MÉTRICAS ══════════════════════════════════ -->
     <div id="tab-metricas" class="tab-panel" style="display:none">
         <div class="page-header">
@@ -1306,6 +1394,10 @@ function switchTab(tab, el) {
     if (tab === 'fabricacion')  cargarFabricacion();
     if (tab === 'despachos')    cargarDespachos();
     if (tab === 'torre')        cargarTorre();
+    if (tab === 'newsletter')   cargarNewsletter();
+    if (tab === 'waitlist')     cargarWaitlist();
+    if (tab === 'reportes')     cargarReportesAdmin();
+    if (tab === 'referidos')    cargarReferidosAdmin();
 }
 
 /* ══════════════════════════════════════════
@@ -2987,6 +3079,295 @@ async function confirmarResolverIncidencia() {
     if (error) { toast('Error: ' + error.message, 'error'); return; }
     toast('Incidencia resuelta', 'success');
     cargarTorre();
+}
+
+/* ══════════════════════════════════════════════════════════
+   TAB NEWSLETTER — Suscriptores
+══════════════════════════════════════════════════════════ */
+async function cargarNewsletter() {
+  const tablaEl = document.getElementById('nl-tabla');
+  if (!tablaEl) return;
+  try {
+    const { data, count } = await sb.from('newsletter_subscribers')
+      .select('*', { count: 'exact' })
+      .eq('negocio','prodigy')
+      .order('created_at', { ascending: false })
+      .limit(200);
+    const todos = data || [];
+    const activos = todos.filter(s => s.activo).length;
+    const promo = todos.filter(s => s.acepta_promo).length;
+    const mes = todos.filter(s => new Date(s.created_at) > new Date(Date.now() - 30 * 86400000)).length;
+    document.getElementById('nl-total').textContent = count || 0;
+    document.getElementById('nl-activos').textContent = activos;
+    document.getElementById('nl-promo').textContent = promo;
+    document.getElementById('nl-mes').textContent = mes;
+    if (!todos.length) { tablaEl.innerHTML = '<div style="text-align:center;padding:20px;color:#475569;">Sin suscriptores aún.</div>'; return; }
+    const fmtF = d => new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});
+    tablaEl.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:.78rem;">
+      <thead><tr style="border-bottom:1px solid rgba(255,255,255,.08);">
+        <th style="padding:8px;text-align:left;color:#475569;">Email</th>
+        <th style="padding:8px;text-align:left;color:#475569;">Nombre</th>
+        <th style="padding:8px;text-align:left;color:#475569;">Fuente</th>
+        <th style="padding:8px;text-align:center;color:#475569;">Marketing</th>
+        <th style="padding:8px;text-align:center;color:#475569;">Estado</th>
+        <th style="padding:8px;text-align:right;color:#475569;">Fecha</th>
+      </tr></thead>
+      <tbody>${todos.map(s=>`<tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+        <td style="padding:8px;">${esc(s.email||'—')}</td>
+        <td style="padding:8px;">${esc(s.nombre||'—')}</td>
+        <td style="padding:8px;color:#475569;font-size:.7rem;">${esc(s.fuente||'—')}</td>
+        <td style="padding:8px;text-align:center;">${s.acepta_promo?'<span style="color:#00FF41;font-size:.7rem;font-weight:700;">✓ SÍ</span>':'<span style="color:#475569;font-size:.7rem;">—</span>'}</td>
+        <td style="padding:8px;text-align:center;"><span style="color:${s.activo?'#00FF41':'#f87171'};font-size:.7rem;font-weight:700;">${s.activo?'Activo':'Inactivo'}</span></td>
+        <td style="padding:8px;text-align:right;color:#475569;font-size:.7rem;">${fmtF(s.created_at)}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch(e) {
+    if (tablaEl) tablaEl.innerHTML = `<div style="color:#f87171;padding:12px;">Error: ${esc(e.message)}</div>`;
+  }
+}
+
+async function exportarNewsletterCSV() {
+  try {
+    const { data } = await sb.from('newsletter_subscribers').select('*').eq('negocio','prodigy').order('created_at',{ascending:false});
+    if (!data?.length) { toast('Sin suscriptores para exportar','error'); return; }
+    const rows = [['Email','Nombre','Fuente','Marketing','Activo','Tags','Fecha']];
+    data.forEach(s => rows.push([s.email||'',s.nombre||'',s.fuente||'',s.acepta_promo?'SI':'NO',s.activo?'SI':'NO',(s.tags||[]).join(';'),s.created_at?.slice(0,10)||'']));
+    const bom='﻿';
+    const csv=bom+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+    a.download='newsletter-prodigy-'+new Date().toISOString().slice(0,10)+'.csv';
+    a.click();
+    toast('✅ CSV exportado: '+data.length+' suscriptores','success');
+  } catch(e) { toast('Error: '+e.message,'error'); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   TAB WAITLIST LABS — Pipeline SaaS
+══════════════════════════════════════════════════════════ */
+async function cargarWaitlist() {
+  const el  = document.getElementById('waitlist-tabla');
+  const kpi = document.getElementById('waitlist-kpi');
+  if (!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div>';
+  try {
+    const { data, count, error } = await sb.from('waitlist_labs')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .limit(50);
+    if (error) throw error;
+    if (kpi) kpi.textContent = `${count || 0} laboratorios en espera`;
+    const ESTADO_COLOR = { pendiente:'#94a3b8', contactado:'#00d2ff', demo_agendada:'#D4AF37', convertido:'#00FF41', descartado:'#f87171' };
+    const PEDIDOS_LABEL = { lt50:'< 50/mes', '50-200':'50–200/mes', '200-500':'200–500/mes', gt500:'500+/mes' };
+    el.innerHTML = !data || !data.length
+      ? '<div style="color:#475569;padding:20px;text-align:center;">Sin registros todavía.</div>'
+      : `<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:.78rem;">
+          <thead><tr style="border-bottom:1px solid rgba(255,255,255,.08);">
+            <th scope="col" style="padding:8px;text-align:left;color:#475569;font-weight:700;">Lab</th>
+            <th scope="col" style="padding:8px;text-align:left;color:#475569;font-weight:700;">Contacto</th>
+            <th scope="col" style="padding:8px;text-align:left;color:#475569;font-weight:700;">WhatsApp</th>
+            <th scope="col" style="padding:8px;text-align:left;color:#475569;font-weight:700;">Ciudad</th>
+            <th scope="col" style="padding:8px;text-align:left;color:#475569;font-weight:700;">Volumen</th>
+            <th scope="col" style="padding:8px;text-align:center;color:#475569;font-weight:700;">Estado</th>
+            <th scope="col" style="padding:8px;text-align:center;color:#475569;font-weight:700;">Acciones</th>
+          </tr></thead>
+          <tbody>${data.map(w => {
+            const wa = (w.whatsapp||'').replace(/\D/g,'');
+            const color = ESTADO_COLOR[w.estado] || '#94a3b8';
+            const fecha = new Date(w.created_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+            return `<tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+              <td style="padding:10px;font-weight:700;">${esc(w.nombre_lab)}<br><span style="color:#475569;font-size:.68rem;">${esc(fecha)}</span></td>
+              <td style="padding:10px;">${esc(w.nombre_contacto||'—')}</td>
+              <td style="padding:10px;">
+                <a href="https://wa.me/${encodeURIComponent(wa)}?text=${encodeURIComponent('Hola '+(w.nombre_contacto||'')+', soy del equipo de PRODIGY. Vi tu interés en nuestra plataforma para laboratorios.')}" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:700;text-decoration:none;"><i class="fab fa-whatsapp"></i> ${esc(w.whatsapp)}</a>
+              </td>
+              <td style="padding:10px;">${esc(w.ciudad||'—')}</td>
+              <td style="padding:10px;">${esc(PEDIDOS_LABEL[w.pedidos_mes]||w.pedidos_mes||'—')}</td>
+              <td style="padding:10px;text-align:center;">
+                <select onchange="actualizarEstadoWaitlist('${esc(w.id)}',this.value)" style="background:rgba(0,0,0,.4);border:1px solid ${color};color:${color};border-radius:6px;padding:4px 8px;font-size:.7rem;cursor:pointer;font-weight:700;">
+                  ${['pendiente','contactado','demo_agendada','convertido','descartado'].map(s=>`<option value="${s}"${w.estado===s?' selected':''}>${s.replace('_',' ')}</option>`).join('')}
+                </select>
+              </td>
+              <td style="padding:10px;text-align:center;">
+                <button type="button" onclick="eliminarWaitlist('${esc(w.id)}')" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;padding:5px 8px;font-size:.7rem;cursor:pointer;" title="Eliminar"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table></div>`;
+  } catch(err) {
+    el.innerHTML = `<div style="color:#f87171;padding:16px;"><i class="fas fa-triangle-exclamation"></i> ${esc(err.message)}</div>`;
+  }
+}
+
+async function actualizarEstadoWaitlist(id, estado) {
+  const { error } = await sb.from('waitlist_labs').update({ estado }).eq('id', id);
+  if (error) toast('Error actualizando estado', 'error');
+  else toast('Estado actualizado', 'success');
+}
+
+async function eliminarWaitlist(id) {
+  if (!confirm('¿Eliminar este registro de la waitlist?')) return;
+  await sb.from('waitlist_labs').delete().eq('id', id);
+  cargarWaitlist();
+}
+
+/* ══════════════════════════════════════════════════════════
+   TAB REPORTES BI — Canal, material, doctores, conversión
+══════════════════════════════════════════════════════════ */
+async function cargarReportesAdmin() {
+  const fmtCOPk = n => '$'+Math.round(Number(n||0)/1000)+'k';
+  const CANAL_COLOR={'seo':'#00d2ff','whatsapp':'#25D366','referido':'#D4AF37','directo':'#94a3b8','instagram':'#D946A6','google_ads':'#4285f4'};
+
+  // Canal de origen
+  const elC=document.getElementById('rep-canal');
+  if(elC){
+    sb.rpc('prodigy_ingresos_por_canal',{p_dias:90}).then(({data})=>{
+      if(!data?.length){elC.innerHTML='<p style="color:#475569;font-size:.75rem;">Ejecuta sql/patch-canal-origen.sql</p>';return;}
+      const mx=data[0]?.pedidos||1;
+      elC.innerHTML='<div style="display:flex;flex-direction:column;gap:8px;">'+data.map(c=>`<div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:.72rem;color:#94a3b8;min-width:80px;font-weight:600;">${esc(c.canal)}</div>
+        <div style="flex:1;background:rgba(255,255,255,.05);border-radius:3px;height:8px;overflow:hidden;">
+          <div style="height:100%;background:${CANAL_COLOR[c.canal]||'#94a3b8'};width:${Math.round(c.pedidos/mx*100)}%;border-radius:3px;"></div>
+        </div>
+        <div style="font-size:.7rem;font-weight:700;min-width:24px;text-align:right;">${c.pedidos}</div>
+        <div style="font-size:.65rem;color:#475569;min-width:40px;text-align:right;">${fmtCOPk(c.ingresos)}</div>
+      </div>`).join('')+'</div>';
+    }).catch(()=>{if(elC)elC.innerHTML='<p style="color:#475569;font-size:.75rem;">Ejecuta sql/patch-canal-origen.sql</p>';});
+  }
+
+  // Pedidos por material
+  const elM=document.getElementById('rep-material');
+  if(elM){
+    sb.rpc('prodigy_pedidos_por_material',{p_dias:30}).then(({data})=>{
+      if(!data?.length){elM.innerHTML='<p style="color:#475569;font-size:.75rem;">Sin datos aún</p>';return;}
+      const mx=data[0]?.total||1;
+      elM.innerHTML='<div style="display:flex;flex-direction:column;gap:8px;">'+data.slice(0,8).map(m=>`<div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:.72rem;color:#94a3b8;min-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc((m.material||'otro').slice(0,18))}</div>
+        <div style="flex:1;background:rgba(255,255,255,.05);border-radius:3px;height:8px;overflow:hidden;">
+          <div style="height:100%;background:var(--gold);width:${Math.round(m.total/mx*100)}%;border-radius:3px;"></div>
+        </div>
+        <div style="font-size:.7rem;font-weight:700;color:var(--gold);min-width:24px;text-align:right;">${m.total}</div>
+      </div>`).join('')+'</div>';
+    }).catch(()=>{});
+  }
+
+  // Top doctores
+  const elD=document.getElementById('rep-doctores');
+  if(elD){
+    sb.rpc('prodigy_top_doctores',{p_dias:90,p_limit:8}).then(({data})=>{
+      if(!data?.length){elD.innerHTML='<p style="color:#475569;font-size:.75rem;">Sin datos</p>';return;}
+      elD.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:.75rem;"><thead><tr style="border-bottom:1px solid rgba(255,255,255,.06);"><th style="padding:6px;text-align:left;color:#475569;">Doctor</th><th style="padding:6px;text-align:center;color:#475569;">Ped.</th><th style="padding:6px;text-align:right;color:#475569;">Ingresos</th></tr></thead><tbody>'+
+        data.map(d=>`<tr style="border-bottom:1px solid rgba(255,255,255,.03);"><td style="padding:6px;font-weight:600;">${esc((d.doctor||'').slice(0,22))}</td><td style="padding:6px;text-align:center;color:var(--cyan);">${d.pedidos}</td><td style="padding:6px;text-align:right;color:var(--gold);font-weight:700;">${fmtCOPk(d.ingresos)}</td></tr>`).join('')+
+      '</tbody></table>';
+    }).catch(()=>{});
+  }
+
+  // Conversión por flujo
+  const elF=document.getElementById('rep-flujo');
+  if(elF){
+    sb.rpc('prodigy_conversion_por_flujo',{p_dias:30}).then(({data})=>{
+      if(!data?.length){elF.innerHTML='<p style="color:#475569;font-size:.75rem;">Sin datos</p>';return;}
+      elF.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:.75rem;"><thead><tr style="border-bottom:1px solid rgba(255,255,255,.06);"><th style="padding:6px;text-align:left;color:#475569;">Flujo</th><th style="padding:6px;text-align:center;color:#475569;">Pedidos</th><th style="padding:6px;text-align:center;color:#475569;">Entregados</th><th style="padding:6px;text-align:right;color:#475569;">Tasa</th></tr></thead><tbody>'+
+        data.map(f=>`<tr style="border-bottom:1px solid rgba(255,255,255,.03);"><td style="padding:6px;text-transform:capitalize;">${esc(f.flujo)}</td><td style="padding:6px;text-align:center;">${f.pedidos}</td><td style="padding:6px;text-align:center;color:var(--neon);">${f.entregados}</td><td style="padding:6px;text-align:right;font-weight:700;color:${f.tasa_entrega>=80?'var(--neon)':f.tasa_entrega>=50?'#fbbf24':'#f87171'};">${f.tasa_entrega}%</td></tr>`).join('')+
+      '</tbody></table>';
+    }).catch(()=>{});
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   TAB REFERIDOS — Programa de referidos
+══════════════════════════════════════════════════════════ */
+async function cargarReferidosAdmin() {
+    const el  = document.getElementById('ref-admin-tabla');
+    const kpi = document.getElementById('ref-admin-kpi');
+    if (!el) return;
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div>';
+    try {
+        const { data, count, error } = await sb.from('referidos')
+            .select('*', { count: 'exact' })
+            .order('created_at', { ascending: false })
+            .limit(100);
+        if (error) throw error;
+        if (kpi) {
+            const activos = (data||[]).filter(r => r.referido_email).length;
+            const recompensados = (data||[]).filter(r => r.estado === 'recompensado').length;
+            kpi.textContent = `${count||0} códigos · ${activos} con referido · ${recompensados} recompensados`;
+        }
+        if (!data || !data.length) { el.innerHTML = '<div style="color:#475569;padding:16px;text-align:center;">Sin referidos aún.</div>'; return; }
+        const ESTADO_COLOR = { pendiente:'#94a3b8', registrado:'#00d2ff', primer_pedido:'#D4AF37', recompensado:'#00FF41' };
+        el.innerHTML = `<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:.78rem;">
+            <thead><tr style="border-bottom:1px solid rgba(255,255,255,.08);">
+                <th scope="col" style="padding:8px;text-align:left;color:#475569;">Referidor</th>
+                <th scope="col" style="padding:8px;text-align:left;color:#475569;">Código</th>
+                <th scope="col" style="padding:8px;text-align:left;color:#475569;">Referido</th>
+                <th scope="col" style="padding:8px;text-align:center;color:#475569;">Estado</th>
+                <th scope="col" style="padding:8px;text-align:center;color:#475569;">Descuento</th>
+                <th scope="col" style="padding:8px;text-align:center;color:#475569;">Acciones</th>
+            </tr></thead>
+            <tbody>${(data||[]).map(r => {
+                const color = ESTADO_COLOR[r.estado] || '#94a3b8';
+                const fecha = new Date(r.created_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+                return `<tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                    <td style="padding:8px;">${esc(r.referidor_nombre||r.referidor_email||'—')}<br><span style="font-size:.65rem;color:#475569;">${esc(fecha)}</span></td>
+                    <td style="padding:8px;font-weight:800;color:#D4AF37;letter-spacing:1px;">${esc(r.codigo)}</td>
+                    <td style="padding:8px;">${r.referido_email ? esc(r.referido_nombre||r.referido_email) : '<span style="color:#475569;">Sin usar</span>'}</td>
+                    <td style="padding:8px;text-align:center;">
+                        <select onchange="cambiarEstadoRef('${esc(r.id)}',this.value)" style="background:rgba(0,0,0,.4);border:1px solid ${color};color:${color};border-radius:6px;padding:3px 8px;font-size:.7rem;cursor:pointer;font-weight:700;">
+                            ${['pendiente','registrado','primer_pedido','recompensado'].map(s=>`<option value="${s}"${r.estado===s?' selected':''}>${s.replace('_',' ')}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td style="padding:8px;text-align:center;font-weight:700;color:#00FF41;">${esc(String(r.descuento_pct||10))}%</td>
+                    <td style="padding:8px;text-align:center;">
+                        <button type="button" onclick="eliminarRef('${esc(r.id)}')" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;padding:4px 8px;font-size:.7rem;cursor:pointer;"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+            }).join('')}</tbody></table></div>`;
+    } catch(err) {
+        el.innerHTML = `<div style="color:#f87171;padding:12px;">${esc(err.message)}</div>`;
+    }
+}
+
+async function cambiarEstadoRef(id, estado) {
+    const { data: refData } = await sb.from('referidos').select('referidor_email,referidor_nombre,referido_nombre,cupon_credito').eq('id',id).single().catch(()=>({data:null}));
+
+    const { error } = await sb.from('referidos').update({ estado }).eq('id', id);
+    if (error) { toast('Error actualizando referido', 'error'); return; }
+    toast('Estado actualizado', 'success');
+
+    // Si se cambia a primer_pedido → generar WA para notificar al referidor
+    if (estado === 'primer_pedido' && refData) {
+        const waRef = (refData.referidor_email||'').replace(/[^0-9]/g,'');
+        const cupon = refData.cupon_credito || '(sin cupón aún)';
+        const referidoNombre = refData.referido_nombre || 'tu colega';
+        const waMsg = encodeURIComponent(`🎁 *¡Tu referido hizo su primer pedido!*\n\nHola Dr. ${refData.referidor_nombre||''},\n\n${referidoNombre} acaba de pagar su primer caso en PRODIGY.\n\n🏷️ Tu cupón de crédito: *${cupon}*\nÚsalo en tu próximo pedido para descontar $30.000 COP. Un solo uso, sin vencimiento.\n\n_PRODIGY Lab Dental_`);
+        if (waRef) {
+            const confirmed = confirm(`¿Enviar WA + email al referidor ${refData.referidor_nombre||refData.referidor_email}?`);
+            if (confirmed) {
+                window.open(`https://wa.me/${waRef}?text=${waMsg}`, '_blank', 'noopener,noreferrer');
+                if (refData.referidor_email && refData.referidor_email.includes('@')) {
+                    fetch('/api/bienvenida-referido', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'x-cron-secret': 'internal' },
+                        body: JSON.stringify({
+                            email: refData.referidor_email,
+                            nombre: refData.referidor_nombre || 'Doctor',
+                            codigo_referido: cupon,
+                            pedido_codigo: refData.referido_nombre || '—',
+                        })
+                    }).then(r => r.json()).then(d => {
+                        if (d.ok) toast('✅ WA + email enviados al referidor', 'success');
+                    }).catch(() => {});
+                }
+            }
+        }
+        cargarReferidosAdmin();
+    }
+}
+
+async function eliminarRef(id) {
+    if (!confirm('¿Eliminar este referido?')) return;
+    await sb.from('referidos').delete().eq('id', id);
+    cargarReferidosAdmin();
 }
 
 /* ══════════════════════════════════════════════════════════
