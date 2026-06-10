@@ -239,8 +239,12 @@
     <a href="#" class="nav-item" onclick="switchTab('metricas',this)">
         <i class="fas fa-chart-line"></i> Métricas
     </a>
-    <a href="admin-panel.html" class="nav-item"><i class="fas fa-sack-dollar" style="color:#94a3b8;"></i> Métricas Financieras</a>
-    <a href="admin-panel.html" class="nav-item"><i class="fas fa-radar" style="color:#94a3b8;"></i> Radar de Ventas</a>
+    <a href="#" class="nav-item" onclick="switchTab('metricas-fin',this)">
+        <i class="fas fa-sack-dollar" style="color:var(--gold);"></i> Métricas Financieras
+    </a>
+    <a href="#" class="nav-item" onclick="switchTab('analytics',this)">
+        <i class="fas fa-radar" style="color:#F44336;"></i> Radar de Ventas
+    </a>
     <a href="#" class="nav-item" onclick="switchTab('reportes',this)">
         <i class="fas fa-file-lines" style="color:var(--cyan);"></i> Reportes BI
     </a>
@@ -1174,6 +1178,178 @@
         </div>
     </div><!-- /tab-referidos -->
 
+    <!-- ══ TAB RADAR DE VENTAS ══════════════════════════════════ -->
+    <div id="tab-analytics" class="tab-panel" style="display:none">
+        <div class="page-header">
+            <div>
+                <h1>Radar de Ventas <span style="color:#F44336;">/ Inteligencia Comercial</span></h1>
+                <p>Carritos abandonados · Materiales más cotizados · Artículos más leídos</p>
+            </div>
+            <button type="button" class="btn-primary" onclick="cargarAnalytics()">
+                <i class="fas fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:28px;">
+            <div style="background:var(--card);border:1px solid rgba(244,67,54,.3);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:2rem;font-weight:900;color:#F44336;" id="kpi-abandonados">—</div>
+                <div style="font-size:.78rem;color:#94a3b8;margin-top:4px;">Carritos abandonados (7 días)</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:2rem;font-weight:900;color:var(--gold);" id="kpi-cotizaciones">—</div>
+                <div style="font-size:.78rem;color:#94a3b8;margin-top:4px;">Eventos calculadora (30 días)</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(0,210,255,.3);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:2rem;font-weight:900;color:var(--cyan);" id="kpi-articulos">—</div>
+                <div style="font-size:.78rem;color:#94a3b8;margin-top:4px;">Artículos leídos completos</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(0,255,65,.2);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:2rem;font-weight:900;color:#00FF41;" id="kpi-stl-validos">—</div>
+                <div style="font-size:.78rem;color:#94a3b8;margin-top:4px;">STL válidos subidos (leads)</div>
+            </div>
+        </div>
+
+        <!-- Carritos Abandonados -->
+        <div class="section-card" style="margin-bottom:20px;">
+            <div class="section-header" style="background:rgba(244,67,54,.05);">
+                <h2 style="color:#F44336;"><i class="fas fa-cart-shopping"></i> Carritos Abandonados — Acción Requerida</h2>
+            </div>
+            <div id="lista-abandonados" style="padding:16px;">
+                <div style="text-align:center;color:#94a3b8;padding:32px;font-size:.9rem;">Cargando...</div>
+            </div>
+        </div>
+
+        <!-- Tendencias Calculadora -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+            <div class="section-card">
+                <div class="section-header"><h2><i class="fas fa-chart-bar"></i> Materiales más cotizados</h2></div>
+                <div id="tabla-materiales" style="padding:16px;"></div>
+            </div>
+            <div class="section-card">
+                <div class="section-header"><h2><i class="fas fa-book-open"></i> Artículos más leídos</h2></div>
+                <div id="tabla-articulos" style="padding:16px;"></div>
+            </div>
+        </div>
+
+        <!-- Eventos recientes locales -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2><i class="fas fa-history"></i> Eventos locales recientes</h2>
+                <span style="font-size:.75rem;color:#94a3b8;">(Guardados en este browser)</span>
+            </div>
+            <div id="eventos-locales" style="padding:16px;max-height:280px;overflow-y:auto;"></div>
+        </div>
+
+        <!-- Social Copy Generator -->
+        <div class="section-card" style="margin-top:20px;">
+            <div class="section-header">
+                <h2><i class="fas fa-wand-magic-sparkles" style="color:var(--gold2);"></i> Social Copy IA <span style="font-size:.65rem;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.3);color:var(--gold2);border-radius:12px;padding:2px 8px;margin-left:6px;">GEMINI</span></h2>
+                <button type="button" class="btn-primary" onclick="generarSocialCopy()" id="btn-social-copy"><i class="fas fa-sparkles"></i> Generar copy</button>
+            </div>
+            <div style="padding:20px;">
+                <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+                    <input type="text" id="sc-titulo" placeholder="Título del artículo..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:.85rem;outline:none;">
+                    <input type="text" id="sc-desc" placeholder="Descripción (opcional)..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:.85rem;outline:none;">
+                    <input type="url" id="sc-url" placeholder="URL artículo..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:.85rem;outline:none;">
+                </div>
+                <div id="sc-result" aria-live="polite"></div>
+            </div>
+        </div>
+    </div><!-- /tab-analytics -->
+
+    <!-- ══ TAB MÉTRICAS FINANCIERAS ══════════════════════════════════ -->
+    <div id="tab-metricas-fin" class="tab-panel" style="display:none">
+        <div class="page-header">
+            <div>
+                <h1>Métricas Financieras</h1>
+                <p>Ingresos · Embudo de casos · Tiempos de entrega · Top servicios y clientes</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <a href="metricas.html" style="background:rgba(0,255,65,.08);border:1px solid rgba(0,255,65,.2);color:#00FF41;border-radius:8px;padding:8px 14px;font-size:.78rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="fas fa-gauge-high"></i> BI Dashboard</a>
+                <button type="button" class="btn-primary" onclick="cargarMetricasFinanzas()">
+                    <i class="fas fa-rotate-right"></i> Actualizar
+                </button>
+            </div>
+        </div>
+
+        <!-- Selector de período -->
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:22px;flex-wrap:wrap;">
+            <label for="metfin-periodo" style="font-size:.78rem;color:#94a3b8;">Período:</label>
+            <select id="metfin-periodo" onchange="cargarMetricasFinanzas()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:7px 14px;font-size:.82rem;cursor:pointer;">
+                <option value="mes">Este mes</option>
+                <option value="trimestre">Este trimestre</option>
+                <option value="año">Este año</option>
+                <option value="todo">Todo el tiempo</option>
+            </select>
+        </div>
+
+        <!-- KPIs de ingresos -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:28px;">
+            <div style="background:var(--card);border:1px solid rgba(0,255,65,.25);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:.7rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Facturado período</div>
+                <div style="font-size:1.9rem;font-weight:900;color:#00FF41;" id="metfin-facturado">—</div>
+                <div style="font-size:.7rem;color:#94a3b8;margin-top:2px;" id="metfin-facturado-casos">— casos</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:.7rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Cobrado</div>
+                <div style="font-size:1.9rem;font-weight:900;color:var(--gold);" id="metfin-cobrado">—</div>
+                <div style="font-size:.7rem;color:#94a3b8;margin-top:2px;" id="metfin-cobrado-pct">—% cobrado</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:.7rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Por cobrar</div>
+                <div style="font-size:1.9rem;font-weight:900;color:#ef4444;" id="metfin-por-cobrar">—</div>
+                <div style="font-size:.7rem;color:#94a3b8;margin-top:2px;" id="metfin-por-cobrar-casos">— casos pendientes</div>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(217,70,166,.3);border-radius:12px;padding:18px;text-align:center;">
+                <div style="font-size:.7rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Ticket promedio</div>
+                <div style="font-size:1.9rem;font-weight:900;color:var(--gold2);" id="metfin-ticket">—</div>
+                <div style="font-size:.7rem;color:#94a3b8;margin-top:2px;">por caso</div>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
+            <!-- Embudo por estado -->
+            <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;">
+                <div style="font-size:.82rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">
+                    <i class="fas fa-filter" style="color:var(--cyan);margin-right:6px;"></i>Embudo de casos
+                </div>
+                <div id="metfin-embudo" style="display:flex;flex-direction:column;gap:8px;">
+                    <div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Cargando...</div>
+                </div>
+            </div>
+            <!-- Tiempo promedio de entrega -->
+            <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;">
+                <div style="font-size:.82rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">
+                    <i class="fas fa-clock" style="color:var(--gold);margin-right:6px;"></i>Tiempos operativos
+                </div>
+                <div id="metfin-tiempos" style="display:flex;flex-direction:column;gap:10px;">
+                    <div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Cargando...</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+            <!-- Top servicios -->
+            <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;">
+                <div style="font-size:.82rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">
+                    <i class="fas fa-trophy" style="color:var(--gold);margin-right:6px;"></i>Top servicios por ingreso
+                </div>
+                <div id="metfin-top-servicios">
+                    <div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Cargando...</div>
+                </div>
+            </div>
+            <!-- Top clientes -->
+            <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;">
+                <div style="font-size:.82rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">
+                    <i class="fas fa-star" style="color:var(--gold2);margin-right:6px;"></i>Top clientes por volumen
+                </div>
+                <div id="metfin-top-clientes">
+                    <div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Cargando...</div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /tab-metricas-fin -->
+
     <!-- ══ TAB MÉTRICAS ══════════════════════════════════ -->
     <div id="tab-metricas" class="tab-panel" style="display:none">
         <div class="page-header">
@@ -1398,6 +1574,8 @@ function switchTab(tab, el) {
     if (tab === 'waitlist')     cargarWaitlist();
     if (tab === 'reportes')     cargarReportesAdmin();
     if (tab === 'referidos')    cargarReferidosAdmin();
+    if (tab === 'analytics')    cargarAnalytics();
+    if (tab === 'metricas-fin') cargarMetricasFinanzas();
 }
 
 /* ══════════════════════════════════════════
@@ -3368,6 +3546,345 @@ async function eliminarRef(id) {
     if (!confirm('¿Eliminar este referido?')) return;
     await sb.from('referidos').delete().eq('id', id);
     cargarReferidosAdmin();
+}
+
+/* ══════════════════════════════════════════════════════════
+   TAB RADAR DE VENTAS — Carritos abandonados, tendencias, social copy
+══════════════════════════════════════════════════════════ */
+async function cargarAnalytics() {
+    // 1. Carritos abandonados desde Supabase
+    try {
+        const { data: abandonados } = await sb
+            .from('analytics_events')
+            .select('session_id,props,ts')
+            .eq('event', 'checkout_abandoned')
+            .gte('ts', new Date(Date.now() - 7 * 86400000).toISOString())
+            .order('ts', { ascending: false })
+            .limit(20);
+
+        const listEl = document.getElementById('lista-abandonados');
+        document.getElementById('kpi-abandonados').textContent = abandonados ? abandonados.length : '—';
+
+        if (abandonados && abandonados.length > 0) {
+            var altosValores = abandonados.filter(function(a){ return (a.props && a.props.monto > 500000); });
+            if (altosValores.length > 0) {
+                listEl.innerHTML = '<div style="background:rgba(244,67,54,.1);border:1px solid rgba(244,67,54,.35);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">' +
+                    '<span style="font-size:1.4rem;">🚨</span>' +
+                    '<div><strong style="color:#F44336;">' + altosValores.length + ' carrito(s) de ALTO VALOR abandonados</strong>' +
+                    '<div style="font-size:.82rem;color:#94a3b8;margin-top:2px;">Montos > $500.000 COP — prioridad de recuperación</div></div>' +
+                    '</div>';
+            } else { listEl.innerHTML = ''; }
+
+            listEl.innerHTML += abandonados.map(function(a) {
+                var p = a.props || {};
+                var montoNum = parseFloat(p.monto) || 0;
+                var monto = montoNum ? ('$' + Math.round(montoNum).toLocaleString('es-CO') + ' COP') : '—';
+                var ref = esc(p.referencia || '—');
+                var pasarela = esc((p.pasarela || 'desconocida').toUpperCase());
+                var fecha = new Date(a.ts).toLocaleString('es-CO', { dateStyle:'short', timeStyle:'short' });
+                var esAltoValor = montoNum > 500000;
+                var descuento5 = montoNum ? Math.round(montoNum * 0.05) : 0;
+                var montoConDesc = montoNum ? ('$' + Math.round(montoNum * 0.95).toLocaleString('es-CO') + ' COP') : '—';
+                var waMsg = encodeURIComponent(
+                    '🦷 *PRODIGY Lab Dental — Oferta de Recuperación*\n\n' +
+                    'Hola Doctor, soy Alejandro de PRODIGY.\n\n' +
+                    'Noté que inició un pago de *' + monto + '* (Ref: ' + ref + ') pero no se completó.\n\n' +
+                    (descuento5 > 0
+                        ? '✅ *Descuento especial:* Si completa su pedido en las próximas *2 horas*, le aplicamos el *5% de descuento*.\n' +
+                          'Su precio final quedaría en *' + montoConDesc + '* (ahorro de $' + Math.round(descuento5).toLocaleString('es-CO') + ' COP)\n\n'
+                        : '') +
+                    '¿Tuvo algún inconveniente técnico? Con gusto le ayudo a finalizar. 🚀'
+                );
+                var waCopyId = 'copy-wa-' + (a.session_id || ref).replace(/[^a-z0-9]/gi, '');
+                return '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:10px;' + (esAltoValor ? 'background:rgba(244,67,54,.04);border-radius:8px;padding:14px;' : '') + '">' +
+                    '<div style="flex:1;min-width:200px;">' +
+                    '<div style="font-size:.88rem;font-weight:700;color:' + (esAltoValor ? '#F44336' : '#e2e8f0') + ';">' + (esAltoValor ? '🚨 ' : '') + monto + ' <span style="color:#94a3b8;font-weight:400;">vía</span> ' + pasarela + '</div>' +
+                    '<div style="font-size:.75rem;color:#64748b;margin-top:2px;">' + fecha + ' · Ref: ' + ref + '</div>' +
+                    (descuento5 > 0 ? '<div style="font-size:.75rem;color:#4ade80;margin-top:4px;">💰 Descuento 5% disponible → ' + montoConDesc + '</div>' : '') +
+                    '</div>' +
+                    '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">' +
+                    '<a href="https://wa.me/573212816716?text=' + waMsg + '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25D366;padding:7px 14px;border-radius:100px;text-decoration:none;font-size:.82rem;font-weight:700;white-space:nowrap;">' +
+                    '<i class="fab fa-whatsapp"></i> Enviar oferta</a>' +
+                    '<button type="button" id="' + waCopyId + '" onclick="navigator.clipboard.writeText(decodeURIComponent(\'' + waMsg + '\')).then(function(){var b=document.getElementById(\'' + waCopyId + '\');b.textContent=\'✓ Copiado\';setTimeout(function(){b.textContent=\'📋 Copiar mensaje\';},2000);})" style="background:none;border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:5px 12px;border-radius:100px;font-size:.75rem;cursor:pointer;white-space:nowrap;">📋 Copiar mensaje</button>' +
+                    '</div>' +
+                    '</div>';
+            }).join('');
+        } else {
+            listEl.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:32px;font-size:.9rem;">✅ Sin carritos abandonados en los últimos 7 días</div>';
+        }
+    } catch(e) { console.warn('Analytics abandonados:', e.message); }
+
+    // 2. Tendencias calculadora
+    try {
+        const { data: trends } = await sb
+            .from('analytics_events')
+            .select('props')
+            .eq('event', 'calculator_engagement')
+            .gte('ts', new Date(Date.now() - 30 * 86400000).toISOString());
+
+        document.getElementById('kpi-cotizaciones').textContent = trends ? trends.length : '0';
+
+        if (trends && trends.length > 0) {
+            var counts = {};
+            trends.forEach(function(t) {
+                var v = (t.props && t.props.valor) ? t.props.valor : 'unknown';
+                counts[v] = (counts[v] || 0) + 1;
+            });
+            var sorted = Object.entries(counts).sort(function(a,b){ return b[1]-a[1]; }).slice(0, 8);
+            document.getElementById('tabla-materiales').innerHTML =
+                sorted.map(function(e) {
+                    return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.88rem;">' +
+                        '<span style="color:#e2e8f0;">' + esc(e[0]) + '</span>' +
+                        '<span style="color:#D4AF37;font-weight:700;">' + e[1] + ' veces</span></div>';
+                }).join('');
+        }
+    } catch(e) { console.warn('Analytics trends:', e.message); }
+
+    // 3. Artículos más leídos
+    try {
+        const { data: arts } = await sb
+            .from('analytics_events')
+            .select('props')
+            .eq('event', 'article_read_complete')
+            .gte('ts', new Date(Date.now() - 30 * 86400000).toISOString());
+
+        document.getElementById('kpi-articulos').textContent = arts ? arts.length : '0';
+
+        if (arts && arts.length > 0) {
+            var artCounts = {};
+            arts.forEach(function(a) { var id = a.props && a.props.article_id || '?'; artCounts[id] = (artCounts[id] || 0) + 1; });
+            var artSorted = Object.entries(artCounts).sort(function(a,b){ return b[1]-a[1]; }).slice(0, 6);
+            document.getElementById('tabla-articulos').innerHTML =
+                artSorted.map(function(e) {
+                    return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;">' +
+                        '<span style="color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;" title="' + esc(e[0]) + '">' + esc(e[0]).replace(/-/g,' ') + '</span>' +
+                        '<span style="color:#00d2ff;font-weight:700;flex-shrink:0;margin-left:8px;">' + e[1] + '</span></div>';
+                }).join('');
+        }
+    } catch(e) { console.warn('Analytics artículos:', e.message); }
+
+    // 4. STL válidos (leads calificados)
+    try {
+        const { data: stls } = await sb
+            .from('analytics_events')
+            .select('id')
+            .eq('event', 'file_validation_success')
+            .gte('ts', new Date(Date.now() - 30 * 86400000).toISOString());
+        document.getElementById('kpi-stl-validos').textContent = stls ? stls.length : '0';
+    } catch(e) {}
+
+    // 5. Eventos locales (del browser actual)
+    var localEvts = JSON.parse(localStorage.getItem('pg_events') || '[]').reverse().slice(0, 30);
+    document.getElementById('eventos-locales').innerHTML = localEvts.length > 0
+        ? localEvts.map(function(e) {
+            return '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:.8rem;">' +
+                '<span style="color:#e2e8f0;font-weight:600;">' + esc(e.event) + '</span>' +
+                '<span style="color:#64748b;">' + new Date(e.ts).toLocaleTimeString('es-CO') + ' · ' + esc(e.page) + '</span>' +
+                '</div>';
+          }).join('')
+        : '<div style="color:#94a3b8;text-align:center;padding:24px;font-size:.88rem;">Sin eventos locales aún — navega la web con la sesión activa</div>';
+}
+
+async function generarSocialCopy() {
+  const btn = document.getElementById('btn-social-copy');
+  const res = document.getElementById('sc-result');
+  const titulo = document.getElementById('sc-titulo').value.trim();
+  if (!titulo) { res.innerHTML='<div style="color:#f87171;font-size:.82rem;">Ingresa el título del artículo primero.</div>'; return; }
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+  res.innerHTML = '<div style="color:#475569;font-size:.82rem;padding:12px;"><i class="fas fa-spinner fa-spin"></i> Llamando a Gemini...</div>';
+  try {
+    const r = await fetch('/api/social-copy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-token': (window.__ADMIN_SECRET||'')
+      },
+      body: JSON.stringify({
+        titulo,
+        descripcion: document.getElementById('sc-desc').value.trim() || '',
+        url: document.getElementById('sc-url').value.trim() || 'https://prodigylabdental.com/article',
+      })
+    });
+    const d = await r.json();
+    if (!r.ok || !d.ok) throw new Error(d.error || 'Error desconocido');
+    const c = d.copies;
+    function copyBtn(id) { return `<button type="button" onclick="navigator.clipboard.writeText(document.getElementById('${id}').textContent).then(()=>this.textContent='✓ Copiado').catch(()=>{})" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:6px;padding:4px 10px;font-size:.7rem;cursor:pointer;">Copiar</button>`; }
+    res.innerHTML = ['instagram','linkedin','twitter','whatsapp'].map((plat,i) => {
+      const icons = {instagram:'fa-instagram',linkedin:'fa-linkedin',twitter:'fa-x-twitter',whatsapp:'fa-whatsapp'};
+      const colors = {instagram:'#E1306C',linkedin:'#0A66C2',twitter:'#000',whatsapp:'#25D366'};
+      const id = 'sc-'+plat;
+      return `<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:${colors[plat]};"><i class="fab ${icons[plat]}"></i> ${plat}</span>
+          ${copyBtn(id)}
+        </div>
+        <pre id="${id}" style="white-space:pre-wrap;word-break:break-word;font-size:.78rem;color:#cbd5e1;font-family:inherit;margin:0;">${esc(c[plat]||'Sin datos')}</pre>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    res.innerHTML = `<div style="color:#f87171;font-size:.82rem;padding:12px;"><i class="fas fa-triangle-exclamation"></i> ${e.message}</div>`;
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fas fa-sparkles"></i> Generar copy';
+}
+
+/* ══════════════════════════════════════════════════════════
+   TAB MÉTRICAS FINANCIERAS — Ingresos, embudo, tiempos, tops
+══════════════════════════════════════════════════════════ */
+async function cargarMetricasFinanzas() {
+    const periodo = document.getElementById('metfin-periodo')?.value || 'mes';
+    const now = new Date();
+    let desde;
+    if (periodo === 'mes') {
+        desde = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+    } else if (periodo === 'trimestre') {
+        const q = Math.floor(now.getMonth() / 3);
+        desde = new Date(now.getFullYear(), q * 3, 1).toISOString();
+    } else if (periodo === 'año') {
+        desde = new Date(now.getFullYear(), 0, 1).toISOString();
+    } else {
+        desde = '2020-01-01T00:00:00Z';
+    }
+
+    try {
+        const { data: pedidos } = await sb.from('pedidos')
+            .select('id,estado,estado_operativo,pago_estado,precio_total,created_at,fecha_entrega_estimada,servicio,nombre_doctor,timestamp_validacion')
+            .gte('created_at', desde)
+            .not('estado','in','("cancelado","CANCELADO")');
+
+        if (!pedidos || pedidos.length === 0) {
+            ['metfin-facturado','metfin-cobrado','metfin-por-cobrar','metfin-ticket'].forEach(id => {
+                document.getElementById(id).textContent = '$0';
+            });
+            document.getElementById('metfin-embudo').innerHTML = '<div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:16px;">Sin datos en el período</div>';
+            return;
+        }
+
+        const fmtCOPround = v => '$' + Math.round(v).toLocaleString('es-CO');
+
+        // KPIs de ingresos
+        const totalFact  = pedidos.reduce((s, p) => s + (Number(p.precio_total) || 0), 0);
+        const cobrados   = pedidos.filter(p => p.pago_estado === 'pagado');
+        const totalCob   = cobrados.reduce((s, p) => s + (Number(p.precio_total) || 0), 0);
+        const porCobrar  = pedidos.filter(p => p.pago_estado !== 'pagado');
+        const totalPC    = porCobrar.reduce((s, p) => s + (Number(p.precio_total) || 0), 0);
+        const ticket     = pedidos.length > 0 ? totalFact / pedidos.length : 0;
+        const pctCob     = totalFact > 0 ? Math.round(totalCob / totalFact * 100) : 0;
+
+        document.getElementById('metfin-facturado').textContent = fmtCOPround(totalFact);
+        document.getElementById('metfin-facturado-casos').textContent = pedidos.length + ' casos';
+        document.getElementById('metfin-cobrado').textContent = fmtCOPround(totalCob);
+        document.getElementById('metfin-cobrado-pct').textContent = pctCob + '% cobrado';
+        document.getElementById('metfin-por-cobrar').textContent = fmtCOPround(totalPC);
+        document.getElementById('metfin-por-cobrar-casos').textContent = porCobrar.length + ' casos pendientes';
+        document.getElementById('metfin-ticket').textContent = fmtCOPround(ticket);
+
+        // Embudo por estado_operativo
+        const ESTADOS_ORD = [
+            ['VALIDACION_PENDIENTE','Validación'],['EN_PRODUCCION','Producción'],
+            ['FRESADO_INICIADO','Fresado'],['QA_APROBADO','QA Aprobado'],
+            ['LISTO_DESPACHAR','Listo despacho'],['EN_REPARTO','En reparto'],
+            ['ENTREGADO','Entregado'],
+        ];
+        const countEstado = {};
+        pedidos.forEach(p => { const e = p.estado_operativo || p.estado || '—'; countEstado[e] = (countEstado[e] || 0) + 1; });
+        const maxE = Math.max(...Object.values(countEstado), 1);
+
+        const COLORES_E = {
+            VALIDACION_PENDIENTE:'#94a3b8', EN_PRODUCCION:'#00d2ff',
+            FRESADO_INICIADO:'#D4AF37', QA_APROBADO:'#00FF41',
+            LISTO_DESPACHAR:'#D946A6', EN_REPARTO:'#f97316', ENTREGADO:'#22c55e',
+        };
+        document.getElementById('metfin-embudo').innerHTML = ESTADOS_ORD.map(([k, label]) => {
+            const n = countEstado[k] || 0;
+            const pct = Math.round(n / maxE * 100);
+            const col = COLORES_E[k] || '#94a3b8';
+            return `<div>
+                <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:3px;">
+                    <span style="color:#e2e8f0;">${label}</span>
+                    <span style="color:${col};font-weight:700;">${n}</span>
+                </div>
+                <div style="background:rgba(255,255,255,.06);border-radius:4px;height:6px;">
+                    <div style="background:${col};width:${pct}%;height:100%;border-radius:4px;transition:width .4s;"></div>
+                </div>
+            </div>`;
+        }).join('');
+
+        // Tiempos operativos (desde created_at hasta ENTREGADO)
+        const entregados = pedidos.filter(p => (p.estado_operativo === 'ENTREGADO' || p.estado === 'ENTREGADO') && p.created_at);
+        let tiempoHTML = '';
+        if (entregados.length > 0) {
+            const dias = entregados.map(p => {
+                const ref = p.timestamp_validacion || p.created_at;
+                return (new Date(p.fecha_entrega_estimada || Date.now()) - new Date(ref)) / 86400000;
+            }).filter(d => d > 0);
+            const prom = dias.length > 0 ? (dias.reduce((a,b) => a+b,0) / dias.length).toFixed(1) : '—';
+            const min  = dias.length > 0 ? Math.min(...dias).toFixed(0) : '—';
+            const max  = dias.length > 0 ? Math.max(...dias).toFixed(0) : '—';
+
+            tiempoHTML = [
+                ['Promedio entrega', prom + ' días', '#00d2ff'],
+                ['Más rápido', min + ' días', '#00FF41'],
+                ['Más lento', max + ' días', '#ef4444'],
+                ['Casos entregados', entregados.length, '#D4AF37'],
+            ].map(([l, v, c]) => `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+                <span style="color:#94a3b8;font-size:.82rem;">${l}</span>
+                <span style="color:${c};font-weight:800;font-size:.9rem;">${v}</span>
+            </div>`).join('');
+        } else {
+            tiempoHTML = '<div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">No hay casos entregados en el período</div>';
+        }
+        document.getElementById('metfin-tiempos').innerHTML = tiempoHTML;
+
+        // Top servicios por ingreso
+        const porServicio = {};
+        pedidos.forEach(p => {
+            const k = p.servicio || 'Sin servicio';
+            if (!porServicio[k]) porServicio[k] = { total: 0, n: 0 };
+            porServicio[k].total += Number(p.precio_total) || 0;
+            porServicio[k].n++;
+        });
+        const topSrv = Object.entries(porServicio).sort((a,b) => b[1].total - a[1].total).slice(0,8);
+        const maxSrv = topSrv[0]?.[1].total || 1;
+        document.getElementById('metfin-top-servicios').innerHTML = topSrv.map(([srv, d]) => {
+            const pct = Math.round(d.total / maxSrv * 100);
+            return `<div style="margin-bottom:10px;">
+                <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:3px;">
+                    <span style="color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;">${esc(srv)}</span>
+                    <span style="color:var(--gold);font-weight:700;">${fmtCOPround(d.total)}</span>
+                </div>
+                <div style="background:rgba(255,255,255,.06);border-radius:4px;height:5px;">
+                    <div style="background:var(--gold);width:${pct}%;height:100%;border-radius:4px;"></div>
+                </div>
+                <div style="font-size:.7rem;color:#64748b;margin-top:2px;">${d.n} casos</div>
+            </div>`;
+        }).join('') || '<div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Sin datos</div>';
+
+        // Top clientes por volumen
+        const porCliente = {};
+        pedidos.forEach(p => {
+            const k = p.nombre_doctor || 'Desconocido';
+            if (!porCliente[k]) porCliente[k] = { total: 0, n: 0 };
+            porCliente[k].total += Number(p.precio_total) || 0;
+            porCliente[k].n++;
+        });
+        const topCli = Object.entries(porCliente).sort((a,b) => b[1].n - a[1].n).slice(0,8);
+        document.getElementById('metfin-top-clientes').innerHTML = topCli.map(([cli, d], i) => {
+            const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}.`;
+            return `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="font-size:.85rem;">${medal}</span>
+                    <span style="color:#e2e8f0;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px;">${esc(cli)}</span>
+                </div>
+                <div style="text-align:right;">
+                    <div style="color:var(--gold2);font-weight:800;font-size:.85rem;">${d.n} casos</div>
+                    <div style="color:#94a3b8;font-size:.7rem;">${fmtCOPround(d.total)}</div>
+                </div>
+            </div>`;
+        }).join('') || '<div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:20px;">Sin datos</div>';
+
+    } catch(e) { console.error('Métricas financieras:', e.message); }
 }
 
 /* ══════════════════════════════════════════════════════════
