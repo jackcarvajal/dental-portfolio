@@ -65,10 +65,13 @@ jobs:
       # 1 — Clonar el repo
       #     persist-credentials:false evita que el GITHUB_TOKEN (github-actions[bot],
       #     sin acceso a prodigy-web) sobrescriba el PRODIGY_WEB_TOKEN en el push final
+      #     fetch-depth:0 evita "did not receive expected object" al hacer push
+      #     de un clon superficial a otro repo (prodigy-web)
       - name: Checkout
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
 
       # 2 — Node para ESLint + minify.js (sin npm install en producción extra)
       - name: Setup Node.js
