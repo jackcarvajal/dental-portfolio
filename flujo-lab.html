@@ -64,7 +64,7 @@
     body { overflow-x: hidden; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
 
     /* ── LAYOUT ── */
-    .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+    .container { max-width: 1400px; width: 96%; margin: 0 auto; display: grid; grid-template-columns: 1fr 380px; gap: 30px; align-items: start; }
     .section { padding: 60px 0; }
 
     /* ── HERO ── */
@@ -240,6 +240,17 @@
     .cart-item .ci-del  { color: var(--muted); cursor: pointer; font-size: .8rem; margin-left: 4px; }
     .cart-item .ci-del:hover { color: #ef4444; }
 
+    /* ── COLUMNA DERECHA — RESUMEN STICKY ── */
+    .calculator {
+      position: sticky; top: 20px; max-height: calc(100vh - 40px); overflow-y: auto;
+      background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 20px;
+    }
+    .calculator h3 { font-size: 1rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .calculator h3 i { color: var(--gold); }
+    .calculator .total-badge { width: 100%; box-sizing: border-box; margin-bottom: 14px; }
+    .calculator .cart-section { padding: 0; border-top: none; }
+    .calculator hr.divider { margin: 20px 0; }
+
     /* ── PRESCRIPCIÓN ── */
     .rx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media(max-width:600px) { .rx-grid { grid-template-columns: 1fr; } }
@@ -290,19 +301,10 @@
     .nota { font-size: .75rem; color: var(--muted); margin-top: 8px; }
     .nota i { color: var(--gold); margin-right: 4px; }
 
-    /* ── STICKY TOTAL ── */
-    .sticky-total {
-      position: fixed; bottom: 20px; right: 20px; z-index: 400;
-      background: rgba(10,14,20,0.95); backdrop-filter: blur(16px);
-      border: 1px solid rgba(212,175,55,0.3); border-radius: 14px;
-      padding: 12px 18px; display: none; flex-direction: column; align-items: flex-end; gap: 2px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    @media(max-width:900px) {
+      .container { grid-template-columns: 1fr; }
+      .calculator { position: static; max-height: none; }
     }
-    .sticky-total.show { display: flex; }
-    .sticky-total .st-lbl { font-size: .6rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
-    .sticky-total .st-val { font-size: 1.3rem; font-weight: 900; color: var(--gold2); line-height: 1; }
-    .sticky-total .st-cur { font-size: .65rem; color: var(--muted); }
-
     @media(max-width:480px) {
       .calc-header { gap: 10px; }
       .work-grid { grid-template-columns: 1fr 1fr; }
@@ -344,6 +346,7 @@ if(window.ProdigyAuth){
 </div>
 
 <div class="container">
+<div>
 
   <!-- ── PASO 1: VÍA DE ENTRADA ── -->
   <div class="section" style="padding-top:20px">
@@ -424,15 +427,6 @@ if(window.ProdigyAuth){
   <div class="calc-wrap">
     <div class="calc-header">
       <h3><i class="fas fa-calculator" style="color:var(--gold);margin-right:8px;"></i>Cotización instantánea</h3>
-      <div class="total-badge" aria-live="polite" aria-atomic="true" role="status">
-        <div>
-          <div class="lbl">Total estimado</div>
-          <div style="display:flex;align-items:baseline;gap:4px;">
-            <span class="val" id="total-val">0</span>
-            <span class="cur" id="total-cur">COP</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- tabs -->
@@ -468,13 +462,6 @@ if(window.ProdigyAuth){
     <!-- REMOVIBLE -->
     <div class="cat-panel" id="panel-removible">
       <div class="work-grid" id="grid-removible"></div>
-    </div>
-
-    <!-- Resumen del carrito -->
-    <div class="cart-section">
-      <div class="eyebrow" style="margin-bottom:10px;">Resumen del pedido</div>
-      <div id="cart-list"><div class="cart-empty"><i class="fas fa-shopping-cart" style="font-size:1.5rem;display:block;margin-bottom:8px;opacity:.3;"></i>Aún no has agregado trabajos</div></div>
-      <p class="nota" style="margin-top:12px;"><i class="fas fa-info-circle"></i>Precios en COP. No incluyen transporte. Sujetos a confirmación según complejidad del caso.</p>
     </div>
   </div>
 
@@ -540,15 +527,34 @@ if(window.ProdigyAuth){
     </div>
   </div>
 
-  <hr class="divider">
+  <div style="padding-bottom:30px;"></div>
+</div>
 
-  <!-- ── PASO 4: ENVÍO ── -->
-  <div class="step-label">
-    <div class="step-num">4</div>
-    <div><h2>Generar orden de trabajo</h2><p>Te llega por WhatsApp y queda registrada en el sistema</p></div>
+<!-- ═══════════════════════════════
+     COLUMNA DERECHA — RESUMEN Y ENVÍO
+═══════════════════════════════ -->
+<aside class="calculator">
+  <h3><i class="fas fa-receipt"></i> Resumen del pedido</h3>
+
+  <div class="total-badge" aria-live="polite" aria-atomic="true" role="status">
+    <div>
+      <div class="lbl">Total estimado</div>
+      <div style="display:flex;align-items:baseline;gap:4px;">
+        <span class="val" id="total-val">0</span>
+        <span class="cur" id="total-cur">COP</span>
+      </div>
+    </div>
   </div>
 
-  <div class="submit-section">
+  <!-- Resumen del carrito -->
+  <div class="cart-section">
+    <div id="cart-list"><div class="cart-empty"><i class="fas fa-shopping-cart" style="font-size:1.5rem;display:block;margin-bottom:8px;opacity:.3;"></i>Aún no has agregado trabajos</div></div>
+    <p class="nota" style="margin-top:12px;"><i class="fas fa-info-circle"></i>Precios en COP. No incluyen transporte. Sujetos a confirmación según complejidad del caso.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="submit-section" style="padding-top:0;">
     <div class="nota-precio">
       <strong>¿Cómo funciona el cobro?</strong><br>
       Esta cotización es un estimado en COP. Al recibir el caso, el técnico confirma el precio final. Trabajos complejos (Full Arch, barras sobre implantes) requieren presupuesto manual.<br><strong>Política de pago: 50% abono para inicio de labores · 50% saldo contra entrega antes del despacho.</strong> Esta política garantiza la reserva de materiales y prioridad de producción para su caso.
@@ -584,17 +590,7 @@ if(window.ProdigyAuth){
 
     <p class="nota" style="text-align:center;margin-top:12px;"><i class="fas fa-shield-alt"></i>Tu información es confidencial. No compartimos datos de pacientes.</p>
   </div>
-
-  <div style="padding-bottom:80px;"></div>
-</div>
-
-<!-- STICKY TOTAL -->
-<div class="sticky-total" id="sticky-total">
-  <span class="st-lbl">Total estimado</span>
-  <div style="display:flex;align-items:baseline;gap:4px;">
-    <span class="st-val" id="sticky-val">0</span>
-    <span class="st-cur">COP</span>
-  </div>
+</aside>
 </div>
 
 <script src="js/audio-manager.js?v=20260528" defer></script>
@@ -838,9 +834,6 @@ function updateCart() {
     lines.push({ id:id, name:c.name, qty:c.qty, price:c.price, variant:c.variant });
   });
   document.getElementById('total-val').textContent = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  document.getElementById('sticky-val').textContent = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  var sticky = document.getElementById('sticky-total');
-  sticky.classList.toggle('show', total > 0);
   var cartEl = document.getElementById('cart-list');
   if (!lines.length) {
     cartEl.innerHTML = '<div class="cart-empty"><i class="fas fa-shopping-cart" style="font-size:1.5rem;display:block;margin-bottom:8px;opacity:.3;"></i>Aún no has agregado trabajos</div>';

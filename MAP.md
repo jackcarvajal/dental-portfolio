@@ -250,7 +250,7 @@
 ```
 SUPABASE_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co'
 PORT_BUCKET  = 'portafolio'
-SW_VERSION   = 'prodigy-v35'
+SW_VERSION   = 'prodigy-v36'
 FOOTER_VER   = 'v=20260528'
 ADMIN_EMAILS = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com']
 ```
