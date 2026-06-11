@@ -194,6 +194,21 @@
         .subtipo-chip.selected { border-color:var(--gold-primary); background:rgba(212,175,55,.08); }
         .chip-name  { font-weight:800; font-size:.86rem; color:#fff; }
         .chip-price { font-size:.82rem; color:var(--gold-primary); font-weight:700; margin-left:auto; white-space:nowrap; }
+        .subtipo-card-guia {
+            background:var(--bg-dark); border:1.5px solid var(--border-subtle);
+            border-radius:var(--radius-md); padding:13px 15px;
+            cursor:pointer; transition:all .2s; display:flex; flex-direction:column; gap:8px;
+        }
+        .subtipo-card-guia:hover    { border-color:var(--accent-cad); background:rgba(0,210,255,.05); }
+        .subtipo-card-guia.selected { border-color:var(--gold-primary); background:rgba(212,175,55,.08); }
+        .guia-stepper { display:flex; align-items:center; gap:10px; font-size:.82rem; color:#e2e8f0; }
+        .guia-step-btn {
+            background:rgba(0,210,255,.1); border:1px solid rgba(0,210,255,.3); color:#00d2ff;
+            width:28px; height:28px; border-radius:7px; font-size:1rem; font-weight:900; cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .guia-step-btn:hover { background:rgba(0,210,255,.2); }
+        .guia-toggle { display:flex; align-items:center; gap:7px; font-size:.76rem; color:#94a3b8; cursor:pointer; }
 
         /* ── CHECKLIST ── */
         .checklist-matrix { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px; }
@@ -325,6 +340,8 @@
         body.light-theme .categoria-card { background:linear-gradient(135deg,#f0f0f0,#e8e8e8); }
         body.light-theme .subtipo-chip { background:#f0f0f0; border-color:rgba(0,0,0,.15); color:#1a1a1a; }
         body.light-theme .subtipo-chip.selected { border-color:var(--gold-primary); background:rgba(212,175,55,.1); }
+        body.light-theme .subtipo-card-guia { background:#f0f0f0; border-color:rgba(0,0,0,.15); color:#1a1a1a; }
+        body.light-theme .subtipo-card-guia.selected { border-color:var(--gold-primary); background:rgba(212,175,55,.1); }
         body.light-theme .modal-content { background:#ffffff; }
         body.light-theme p, body.light-theme span, body.light-theme li { color:#4a4a4a; }
         body.light-theme .tech-subtitle { color:rgba(0,130,180,.9); }
@@ -347,9 +364,46 @@
 <script>
 // Auto-fill si hay sesión activa (flujos son públicos)
 if(window.ProdigyAuth){
-  window.supabase && window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634').auth.getSession().then(function(r){
-    if(r.data&&r.data.session){window.PRODIGY_ROLE=r.data.session.user.email==='jackalejandroc@gmail.com'||r.data.session.user.email==='labdentalprodigy@gmail.com'?'admin':'client';window.PRODIGY_EMAIL=r.data.session.user.email;window.PRODIGY_UID=r.data.session.user.id;}
+  var _pgSb = window.supabase && window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634');
+  _pgSb && _pgSb.auth.getSession().then(function(r){
+    if(r.data&&r.data.session){
+      var u=r.data.session.user;
+      window.PRODIGY_ROLE=u.email==='jackalejandroc@gmail.com'||u.email==='labdentalprodigy@gmail.com'?'admin':'client';
+      window.PRODIGY_EMAIL=u.email;window.PRODIGY_UID=u.id;
+      _pgSb.from('doctores_perfil').select('nombre,clinica,municipio,whatsapp,especialidad').eq('id',u.id).maybeSingle().then(function(p){
+        window.PRODIGY_PROFILE=p.data||null;
+        _pgAplicarAutofill();
+      });
+    }
   });
+}
+function _pgAplicarAutofill(){
+  var p=window.PRODIGY_PROFILE; if(!p) return;
+  var run=function(){
+    var elNombre=document.getElementById('nombreCliente');
+    if(elNombre && !elNombre.value) elNombre.value = p.clinica || p.nombre || '';
+    var elCiudad=document.getElementById('ciudad');
+    if(elCiudad && !elCiudad.value) elCiudad.value = p.municipio || '';
+    var elEsp=document.getElementById('especialidad');
+    if(elEsp && p.especialidad && !elEsp.value) elEsp.value = p.especialidad;
+    var elBilling=document.getElementById('billing_email_d');
+    if(elBilling && window.PRODIGY_EMAIL && !elBilling.value) elBilling.value = window.PRODIGY_EMAIL;
+    if(p.whatsapp){
+      var m = String(p.whatsapp).match(/^(\+\d{1,3})(\d+)$/);
+      var sel=document.getElementById('indicativo');
+      var wa=document.getElementById('whatsappCliente');
+      if(m && sel && wa && !wa.value){
+        var opt=null;
+        for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===m[1]){ opt=sel.options[i]; break; } }
+        if(opt){
+          sel.value=m[1];
+          if(typeof actualizarIndicativo==='function') actualizarIndicativo(sel);
+          wa.value=m[2];
+        }
+      }
+    }
+  };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', run); else run();
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Como pago mi pedido de diseno CAD en PRODIGY?","acceptedAnswer":{"@type":"Answer","text":"Aceptamos Wompi (PSE, tarjetas Colombia), Stripe (tarjetas internacionales), PayPal, transferencia bancaria y pago en efectivo. Politica 50% abono inicio, 50% saldo contra entrega."}},{"@type":"Question","name":"Que pasa si no me gusta el diseno CAD?","acceptedAnswer":{"@type":"Answer","text":"Tienes 1 revision gratuita incluida. Puedes solicitar cambios directamente desde el visor 3D antes de que inicie la produccion. El laboratorio no produce sin tu aprobacion."}}]}</script>
@@ -1085,11 +1139,6 @@ window.submitOrden     = window.submitOrden      || function(){};
                 nombre: "Planificación Quirúrgica",
                 subtipos: {
                     guia_1:         { nombre: "Guía Quirúrgica — 1 implante",              precio: 180000, anticipo: 85000 },
-                    guia_2:         { nombre: "Guía Quirúrgica — 2 implantes",             precio: 240000, anticipo: 85000 },
-                    guia_3:         { nombre: "Guía Quirúrgica — 3 implantes",             precio: 300000, anticipo: 85000 },
-                    guia_4:         { nombre: "Guía Quirúrgica — 4 implantes",             precio: 360000, anticipo: 85000 },
-                    guia_5:         { nombre: "Guía Quirúrgica — 5 implantes",             precio: 420000, anticipo: 85000 },
-                    guia_6mas:      { nombre: "Guía Quirúrgica — 6+ implantes",            precio: 480000, anticipo: 85000 },
                     guia_sobredent: { nombre: "Guía Sobredentadura (2 impl.) — solo diseño", precio: 384000, anticipo: 85000 },
                     guia_hibrida:   { nombre: "Guía Híbrida 4 impl. — solo diseño",       precio: 456000, anticipo: 85000 },
                     guia_reborde:   { nombre: "Regularización de reborde — solo diseño",   precio: 216000, anticipo: 85000 },
@@ -1098,10 +1147,6 @@ window.submitOrden     = window.submitOrden      || function(){};
                     sonrisa_3d:     { nombre: "Diseño de Sonrisa 3D (Mockup)",             precio: 150000 },
                     /* ── COMBO: diseño + guía impresa (CDR sin convenio) ── */
                     guia_1_impresa:        { nombre: "Guía 1 implante — diseño + impresa",        precio: 380000, anticipo: 190000, combo: true },
-                    guia_2_impresa:        { nombre: "Guía 2 implantes — diseño + impresa",       precio: 470000, anticipo: 235000, combo: true },
-                    guia_3_impresa:        { nombre: "Guía 3 implantes — diseño + impresa",       precio: 560000, anticipo: 280000, combo: true },
-                    guia_4_impresa:        { nombre: "Guía 4 implantes — diseño + impresa",       precio: 650000, anticipo: 325000, combo: true },
-                    guia_5_impresa:        { nombre: "Guía 5 implantes — diseño + impresa",       precio: 740000, anticipo: 370000, combo: true },
                     guia_sobredent_impresa:{ nombre: "Guía Sobredentadura — diseño + impresa",    precio: 500000, anticipo: 250000, combo: true },
                     guia_hibrida_impresa:  { nombre: "Guía Híbrida 4 impl. — diseño + impresa",  precio: 780000, anticipo: 390000, combo: true },
                     guia_reborde_impresa:  { nombre: "Regularización reborde — diseño + impresa", precio: 310000, anticipo: 155000, combo: true }
@@ -1146,7 +1191,9 @@ window.submitOrden     = window.submitOrden      || function(){};
                 if (expressSec) expressSec.style.display = fastEnabled ? '' : 'none';
                 if (!fastEnabled) { const cb = document.getElementById('express-cad'); if (cb) { cb.checked = false; } }
                 /* Recalcular si ya hay subtipo seleccionado */
-                if (STATE.subtipoId && MATERIAL_DATA_MUT[STATE.categoriaKey]) {
+                if (STATE.subtipoId === 'guia_1' || STATE.subtipoId === 'guia_1_impresa') {
+                    actualizarGuiaImplantes();
+                } else if (STATE.subtipoId && MATERIAL_DATA_MUT[STATE.categoriaKey]) {
                     const sub = MATERIAL_DATA_MUT[STATE.categoriaKey].subtipos[STATE.subtipoId];
                     if (sub) { STATE.subtipoPrecio = sub.precio; calcularTotal(); }
                 }
@@ -1271,15 +1318,30 @@ window.submitOrden     = window.submitOrden      || function(){};
             titulo.textContent = '→ ' + MATERIAL_DATA[key].nombre;
             grid.innerHTML = '';
 
-            Object.entries(MATERIAL_DATA[key].subtipos).forEach(([id, sub]) => {
-                const chip = document.createElement('div');
-                chip.className = 'subtipo-chip';
-                chip.id = 'sub-' + id;
-                const escN = String(sub.nombre||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-                chip.innerHTML = `<div class="chip-name">${escN}</div><div class="chip-price">${fmtCLP(sub.precio)}</div>`;
-                chip.onclick = () => selectSubtipo(id, sub.nombre, sub.precio);
-                grid.appendChild(chip);
-            });
+            if (key === 'cad_quirurgica') {
+                grid.appendChild(_renderGuiaImplantesCard());
+                ['guia_sobredent','guia_hibrida','guia_reborde'].forEach(baseId => grid.appendChild(_renderGuiaToggleCard(baseId)));
+                ['planif_unit','planif_fullarch','sonrisa_3d'].forEach(id => {
+                    const sub = MATERIAL_DATA[key].subtipos[id];
+                    const chip = document.createElement('div');
+                    chip.className = 'subtipo-chip';
+                    chip.id = 'sub-' + id;
+                    const escN = String(sub.nombre||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    chip.innerHTML = `<div class="chip-name">${escN}</div><div class="chip-price">${fmtCLP(sub.precio)}</div>`;
+                    chip.onclick = () => selectSubtipo(id, sub.nombre, sub.precio);
+                    grid.appendChild(chip);
+                });
+            } else {
+                Object.entries(MATERIAL_DATA[key].subtipos).forEach(([id, sub]) => {
+                    const chip = document.createElement('div');
+                    chip.className = 'subtipo-chip';
+                    chip.id = 'sub-' + id;
+                    const escN = String(sub.nombre||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    chip.innerHTML = `<div class="chip-name">${escN}</div><div class="chip-price">${fmtCLP(sub.precio)}</div>`;
+                    chip.onclick = () => selectSubtipo(id, sub.nombre, sub.precio);
+                    grid.appendChild(chip);
+                });
+            }
 
             cont.style.display = 'block';
             document.getElementById('acc-diseno').classList.add('active');
@@ -1294,12 +1356,10 @@ window.submitOrden     = window.submitOrden      || function(){};
         // ── SELECCIÓN SUBTIPO ─────────────────────────────────────────────────
         /* ── PROTOCOLOS CLÍNICOS ── */
         const PG_PROTOCOLOS = {
-            guia_1:'guia_quirurgica', guia_2:'guia_quirurgica', guia_3:'guia_quirurgica',
-            guia_4:'guia_quirurgica', guia_5:'guia_quirurgica', guia_6mas:'guia_quirurgica',
+            guia_1:'guia_quirurgica',
             guia_sobredent:'guia_quirurgica', guia_hibrida:'guia_quirurgica', guia_reborde:'guia_quirurgica',
             planif_unit:'guia_quirurgica', planif_fullarch:'guia_quirurgica',
-            guia_1_impresa:'guia_quirurgica', guia_2_impresa:'guia_quirurgica', guia_3_impresa:'guia_quirurgica',
-            guia_4_impresa:'guia_quirurgica', guia_5_impresa:'guia_quirurgica',
+            guia_1_impresa:'guia_quirurgica',
             guia_sobredent_impresa:'guia_quirurgica', guia_hibrida_impresa:'guia_quirurgica', guia_reborde_impresa:'guia_quirurgica',
             setup_orto:'alineadores'
         };
@@ -1311,7 +1371,7 @@ window.submitOrden     = window.submitOrden      || function(){};
            Guías quirúrgicas y Setup alineadores.
            El costo de viabilidad se cobra aunque el caso no se ejecute. ── */
         const VIABILIDAD_COSTO_COP = 85000;
-        const FLUJO_2_ETAPAS = ['guia_1','guia_2','guia_3','guia_4','guia_5','guia_6mas','guia_sobredent','guia_hibrida','guia_reborde','planif_unit','planif_fullarch','guia_1_impresa','guia_2_impresa','guia_3_impresa','guia_4_impresa','guia_5_impresa','guia_sobredent_impresa','guia_hibrida_impresa','guia_reborde_impresa','setup_orto'];
+        const FLUJO_2_ETAPAS = ['guia_1','guia_sobredent','guia_hibrida','guia_reborde','planif_unit','planif_fullarch','guia_1_impresa','guia_sobredent_impresa','guia_hibrida_impresa','guia_reborde_impresa','setup_orto'];
 
         function getBannerEtapas(subtipoId, precioTotal) {
             if (!FLUJO_2_ETAPAS.includes(subtipoId)) return '';
@@ -1463,27 +1523,10 @@ window.submitOrden     = window.submitOrden      || function(){};
                 {id:'modelo-prov',   label:'Provisional o encerado de referencia',       ext:'STL/ZIP',req:false}
             ],
             // ── GUÍAS QUIRÚRGICAS ──
-            guia_1_2: [
-                {id:'dicom-1',       label:'DICOM / TAC — Sin contacto oclusal · cortes 0.5mm · 150μ', ext:'ZIP', req:true},
+            guia_1: [
+                {id:'dicom-1',       label:'DICOM / TAC — Sin contacto oclusal · cortes 0.5mm · 150μ', ext:'ZIP', req:true, tip:'Para 5+ implantes con prótesis removible se requieren 2 TAC — consulta por WhatsApp'},
                 {id:'stl-intraoral', label:'STL intraoral — 2 maxilares',                               ext:'PLY/STL', req:true},
-                {id:'datos-impl',    label:'Sistema implante a usar: fabricante + Ø + longitud + conexión', ext:'Texto en Notas', req:true, tip:'Si no tienes definido el implante, podemos recomendar uno según el caso'}
-            ],
-            guia_3_4: [
-                {id:'dicom-1',       label:'DICOM / TAC — Sin contacto oclusal · cortes 0.5mm · 150μ', ext:'ZIP', req:true},
-                {id:'stl-intraoral', label:'STL intraoral — 2 maxilares',                               ext:'PLY/STL', req:true},
-                {id:'datos-impl',    label:'Sistema implante: fabricante + Ø + longitud + conexión',    ext:'Texto en Notas', req:true, tip:'Podemos recomendar implante y posición según TAC y hueso disponible'}
-            ],
-            guia_5_mas: [
-                {id:'dicom-1',       label:'TAC 1 — Con prótesis + marcadores (sentado · 0.5mm · 150μ)', ext:'ZIP', req:true},
-                {id:'dicom-2',       label:'TAC 2 — Solo prótesis marcada',                               ext:'ZIP', req:true},
-                {id:'stl-intraoral', label:'STL intraoral — 2 maxilares',                                 ext:'PLY/STL', req:true},
-                {id:'datos-impl',    label:'Sistema implante: fabricante + Ø + longitud',                 ext:'Texto en Notas', req:true},
-                {id:'foto-prot',     label:'Foto prótesis con marcadores colocados',                      ext:'JPG', req:false}
-            ],
-            guia_reduccion: [
-                {id:'dicom-1',       label:'DICOM / TAC maxilar completo',  ext:'ZIP',     req:true},
-                {id:'stl-intraoral', label:'STL intraoral — 2 maxilares',   ext:'PLY/STL', req:true},
-                {id:'datos-impl',    label:'Sistema implante planificado',   ext:'Texto en Notas', req:false, tip:'Podemos orientar sobre el sistema ideal según el caso'}
+                {id:'datos-impl',    label:'Sistema implante a usar: fabricante + Ø + longitud + conexión (todos los implantes)', ext:'Texto en Notas', req:true, tip:'Si no tienes definido el implante, podemos recomendar uno según el caso'}
             ],
             // ── FÉRULAS ──
             ferula: [
@@ -1503,6 +1546,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                 {id:'foto-retractor',label:'Foto con retractor bucal',                            ext:'JPG/PNG', req:false}
             ]
         };
+        ARCHIVOS_REQUERIDOS.guia_1_impresa = ARCHIVOS_REQUERIDOS.guia_1;
 
         function renderArchivosRequeridos(subtipoId) {
             const cont = document.getElementById('archivos-requeridos-servicio');
@@ -1510,7 +1554,7 @@ window.submitOrden     = window.submitOrden      || function(){};
             const archivos = ARCHIVOS_REQUERIDOS[subtipoId];
             if (!archivos || !archivos.length) { cont.innerHTML = ''; return; }
 
-            const esGuiaImplante  = ['guia_1_2','guia_3_4','guia_5_mas','guia_reduccion'].includes(subtipoId);
+            const esGuiaImplante  = ['guia_1','guia_1_impresa'].includes(subtipoId);
             const esAbutmentBarra = ['corona_ator','pilar_pers','barra','all_on_4'].includes(subtipoId);
 
             cont.innerHTML = `
@@ -1627,27 +1671,122 @@ window.submitOrden     = window.submitOrden      || function(){};
             return true;
         }
 
-        function mostrarProtocoloPG(id){
+        function mostrarProtocoloPG(id, precioOverride){
             const t = PG_PROTOCOLOS[id];
             const c = document.getElementById('protocolo-servicio-pg');
             if (!c) return;
-            const precioBase = (MATERIAL_DATA[STATE.categoriaKey]?.subtipos[id]?.precio) || 0;
+            const precioBase = precioOverride != null ? precioOverride : ((MATERIAL_DATA[STATE.categoriaKey]?.subtipos[id]?.precio) || 0);
             const bannerEtapas = getBannerEtapas(id, precioBase);
             c.innerHTML = bannerEtapas + (t && PG_PROTOCOLO_HTML[t] ? PG_PROTOCOLO_HTML[t] : '');
             renderArchivosRequeridos(id);
         }
 
+        // Mapea variantes de Guía Quirúrgica (contador/toggle) a la tarjeta visual correspondiente
+        function _guiaCardId(id){
+            if (id === 'guia_1' || id === 'guia_1_impresa') return 'sub-guia_1';
+            if (id === 'guia_sobredent' || id === 'guia_sobredent_impresa') return 'sub-guia_sobredent';
+            if (id === 'guia_hibrida' || id === 'guia_hibrida_impresa') return 'sub-guia_hibrida';
+            if (id === 'guia_reborde' || id === 'guia_reborde_impresa') return 'sub-guia_reborde';
+            return 'sub-' + id;
+        }
+
         function selectSubtipo(id, nombre, precio) {
-            document.querySelectorAll('.subtipo-chip').forEach(c => c.classList.remove('selected'));
-            const el = document.getElementById('sub-' + id);
+            document.querySelectorAll('.subtipo-chip, .subtipo-card-guia').forEach(c => c.classList.remove('selected'));
+            const el = document.getElementById(_guiaCardId(id));
             if (el) el.classList.add('selected');
             STATE.subtipoId     = id;
             STATE.subtipoNombre = nombre;
             STATE.subtipoPrecio = precio;
             const cat = MATERIAL_DATA[STATE.categoriaKey];
             STATE.antipicoAmt = (cat && cat.subtipos[id] && cat.subtipos[id].anticipo) || 0;
-            mostrarProtocoloPG(id);
+            mostrarProtocoloPG(id, precio);
             calcularTotal();
+        }
+
+        // ── GUÍA QUIRÚRGICA — contador de implantes adicionales + toggle "diseño + impresa" ──
+        let _guiaImplantes = 1;
+        let _guiaImpresa   = false;
+
+        function _guiaCalcular(){
+            const subs = MATERIAL_DATA_MUT.cad_quirurgica.subtipos;
+            const n = _guiaImplantes;
+            const sufijo = `— ${n} implante${n>1?'s':''}`;
+            if (_guiaImpresa) {
+                const precio = subs.guia_1_impresa.precio + (n-1)*80000;
+                return { id:'guia_1_impresa', nombre:`Guía Quirúrgica ${sufijo} (diseño + impresa)`, precio, anticipo: Math.round(precio/2) };
+            }
+            const precio = subs.guia_1.precio + (n-1)*60000;
+            return { id:'guia_1', nombre:`Guía Quirúrgica ${sufijo}`, precio, anticipo: subs.guia_1.anticipo };
+        }
+
+        function actualizarGuiaImplantes(){
+            const r = _guiaCalcular();
+            const elCount = document.getElementById('guia-implantes-count');
+            if (elCount) elCount.textContent = _guiaImplantes + (_guiaImplantes>1?' implantes':' implante');
+            const elPrecio = document.getElementById('guia-implantes-precio');
+            if (elPrecio) elPrecio.textContent = fmtCLP(r.precio);
+            selectSubtipo(r.id, r.nombre, r.precio);
+            STATE.antipicoAmt = r.anticipo;
+            mostrarProtocoloPG(r.id, r.precio);
+            calcularTotal();
+        }
+
+        function cambiarImplantes(delta){
+            _guiaImplantes = Math.min(20, Math.max(1, _guiaImplantes + delta));
+            actualizarGuiaImplantes();
+        }
+
+        function toggleGuiaImpresa(chk){
+            _guiaImpresa = !!chk.checked;
+            actualizarGuiaImplantes();
+        }
+
+        function _renderGuiaImplantesCard(){
+            const r = _guiaCalcular();
+            const card = document.createElement('div');
+            card.className = 'subtipo-card-guia';
+            card.id = 'sub-guia_1';
+            card.innerHTML = `
+              <div class="chip-name">Guía Quirúrgica</div>
+              <div class="guia-stepper">
+                <button type="button" class="guia-step-btn" onclick="event.stopPropagation();cambiarImplantes(-1)" aria-label="Quitar implante">−</button>
+                <span id="guia-implantes-count">${_guiaImplantes} implante</span>
+                <button type="button" class="guia-step-btn" onclick="event.stopPropagation();cambiarImplantes(1)" aria-label="Agregar implante">+</button>
+              </div>
+              <label class="guia-toggle">
+                <input type="checkbox" onclick="event.stopPropagation()" onchange="toggleGuiaImpresa(this)"> Diseño + impresa (CDR)
+              </label>
+              <div class="chip-price" id="guia-implantes-precio">${fmtCLP(r.precio)}</div>`;
+            card.onclick = () => actualizarGuiaImplantes();
+            return card;
+        }
+
+        // ── TOGGLE "diseño + impresa" para Sobredentadura / Híbrida / Regularización de reborde ──
+        function seleccionarGuiaToggle(baseId, chk){
+            const id  = chk.checked ? baseId + '_impresa' : baseId;
+            const sub = MATERIAL_DATA_MUT.cad_quirurgica.subtipos[id];
+            const elPrecio = document.getElementById('precio-' + baseId);
+            if (elPrecio) elPrecio.textContent = fmtCLP(sub.precio);
+            selectSubtipo(id, sub.nombre, sub.precio);
+        }
+
+        function _renderGuiaToggleCard(baseId){
+            const sub = MATERIAL_DATA_MUT.cad_quirurgica.subtipos[baseId];
+            const escN = String(sub.nombre||'').replace(/ — solo diseño/,'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            const card = document.createElement('div');
+            card.className = 'subtipo-card-guia';
+            card.id = 'sub-' + baseId;
+            card.innerHTML = `
+              <div class="chip-name">${escN}</div>
+              <label class="guia-toggle">
+                <input type="checkbox" onclick="event.stopPropagation()" onchange="seleccionarGuiaToggle('${baseId}', this)"> Diseño + impresa (CDR)
+              </label>
+              <div class="chip-price" id="precio-${baseId}">${fmtCLP(sub.precio)}</div>`;
+            card.onclick = () => {
+                const chk = card.querySelector('input[type="checkbox"]');
+                seleccionarGuiaToggle(baseId, chk);
+            };
+            return card;
         }
 
         // ── SLOT ENTREGA ──────────────────────────────────────────────────────
