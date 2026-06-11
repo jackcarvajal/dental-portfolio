@@ -25,6 +25,9 @@
 
 | # | Acción | Dónde | Detalle |
 |---|--------|-------|---------|
+| 0i | **Ejecutar `sql/patch-marcar-notifs-authz.sql`** | Supabase PRODIGY → SQL Editor | **IDOR**: RPC `prodigy_marcar_notifs_leidas(p_user_id)` confiaba en el UUID recibido — cualquier usuario autenticado podía marcar como leídas las notificaciones de OTRO usuario (oculta alertas operativas). Fix: usa siempre `auth.uid()`, ignora el parámetro. |
+| 0h | **Ejecutar `sql/patch-mis-cotizaciones-authz.sql`** | Supabase PRODIGY → SQL Editor | **CRÍTICO — IDOR sin auth**: RPC `mis_cotizaciones(p_email)` (SECURITY DEFINER, GRANT a `anon`+`authenticated`) retornaba TODAS las cotizaciones (items, totales, notas) de cualquier email pasado por parámetro, sin sesión. Fix: ignora `p_email`, filtra solo por `auth.uid()`/email propio, revoca `anon`. |
+| 0g | **Ejecutar `sql/patch-corte-mensual-authz.sql`** | Supabase PRODIGY → SQL Editor | **IDOR**: RPC `corte_mensual(p_whatsapp)` (SECURITY DEFINER, GRANT a `authenticated`) no valida que el WhatsApp pertenezca al doctor autenticado — cualquier doctor logueado podía ver el corte mensual (pedidos+ingresos) de OTRO doctor. Fix agrega verificación contra `doctores_perfil.whatsapp` o rol staff. |
 | ~~0c~~ | ~~**Ejecutar `sql/patch-rls-bibliotecas-diseno-revisiones.sql`**~~ | ✅ **Ejecutado 2026-06-01** | | Supabase PRODIGY → SQL Editor | RLS en `bibliotecas_cliente` + `diseno_revisiones` |
 | 0d | **Ejecutar `sql/trigger-purga-stl-30dias.sql`** | Supabase PRODIGY → SQL Editor | Purga automática de STL a 30 días. Requiere pg_cron habilitado en Extensions |
 | 0e | **Agregar `ANTHROPIC_API_KEY`** en GitHub Secrets PRODIGY + Alejandro | Repo → Settings → Secrets → Actions | Para fallback IA del journal si Gemini falla |

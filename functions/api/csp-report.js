@@ -18,15 +18,28 @@ export async function onRequestPost(context) {
   const { request, env } = context;
 
   try {
+    // Rate limit: 5 req/min por IP (evita flood de logs_incidencias)
+    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+    const rlKey = new Request('https://rl.internal/csp-report_' + ip);
+    const hit = await caches.default.match(rlKey);
+    if (hit) {
+      const count = parseInt(await hit.text(), 10) || 0;
+      if (count >= 5) return new Response(JSON.stringify({ ok: false, error: 'Demasiadas solicitudes.' }), { status: 429, headers: CORS });
+      await caches.default.put(rlKey, new Response(String(count + 1), { headers: { 'Cache-Control': 'max-age=60' } }));
+    } else {
+      await caches.default.put(rlKey, new Response('1', { headers: { 'Cache-Control': 'max-age=60' } }));
+    }
+
     const body   = await request.json();
     const report = body['csp-report'] || body;
+    const _trunc = (s, n) => String(s || '').slice(0, n);
 
     // Solo loggear violaciones reales (no las del browser testing)
     const violation = {
-      blocked_uri:   report['blocked-uri']   || report.blockedURI    || '',
-      violated_dir:  report['violated-directive'] || report.violatedDirective || '',
-      source_file:   report['source-file']   || report.sourceFile    || '',
-      document_uri:  report['document-uri']  || report.documentURI   || '',
+      blocked_uri:   _trunc(report['blocked-uri']   || report.blockedURI,    300),
+      violated_dir:  _trunc(report['violated-directive'] || report.violatedDirective, 150),
+      source_file:   _trunc(report['source-file']   || report.sourceFile,    300),
+      document_uri:  _trunc(report['document-uri']  || report.documentURI,   300),
       ts:            new Date().toISOString(),
       ua:            request.headers.get('User-Agent')?.slice(0,120) || '',
     };

@@ -360,7 +360,8 @@ function render(pedido, revisiones){
   }
 
   try{
-    let{data,error}=await sb.from('pedidos').select('*,factura_pdf_url,factura_numero,factura_cufe,requiere_factura,factura_estado,pais,precio_usd,precio_total').or(`id.eq.${id},codigo.eq.${id}`).maybeSingle();
+    const _id=encodeURIComponent(id);
+    let{data,error}=await sb.from('pedidos').select('*,factura_pdf_url,factura_numero,factura_cufe,requiere_factura,factura_estado,pais,precio_usd,precio_total').or(`id.eq.${_id},codigo.eq.${_id}`).maybeSingle();
     if(!data){
       const r2=await sb.from('pedidos').select('*').eq('codigo',id).maybeSingle();
       if(!r2.data){
