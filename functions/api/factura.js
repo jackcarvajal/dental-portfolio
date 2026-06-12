@@ -273,7 +273,7 @@ export async function onRequestPost(context) {
 async function patchPedido(env, pedidoId, fields) {
   if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return;
   try {
-    await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${pedidoId}`, {
+    await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${encodeURIComponent(pedidoId)}`, {
       method:  'PATCH',
       headers: {
         apikey:         env.SUPABASE_SERVICE_KEY,

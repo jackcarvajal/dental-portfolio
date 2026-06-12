@@ -73,6 +73,11 @@ export async function onRequestPost({ request, env }) {
   }
   if (!mensaje) return new Response(JSON.stringify({ error: 'Sin mensaje para este estado' }), { status: 200, headers: cors });
 
+  // Evita usar este endpoint como relay de WA arbitrario: solo mensajes con la marca PRODIGY y longitud acotada
+  if (mensaje.length > 700 || !mensaje.includes('PRODIGY')) {
+    return new Response(JSON.stringify({ error: 'Mensaje no permitido' }), { status: 400, headers: cors });
+  }
+
   const waUrl = `https://wa.me/${wa}?text=${encodeURIComponent(mensaje)}`;
 
   // Intentar envío automático vía Callmebot
@@ -86,7 +91,7 @@ export async function onRequestPost({ request, env }) {
 
       // Marcar en Supabase si enviado
       if (enviado && body.pedido_id && env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
-        await fetch(`${env.SUPABASE_URL}/rest/v1/notificaciones_internas?pedido_id=eq.${body.pedido_id}&destinatario_user_id=not.is.null`, {
+        await fetch(`${env.SUPABASE_URL}/rest/v1/notificaciones_internas?pedido_id=eq.${encodeURIComponent(body.pedido_id)}&destinatario_user_id=not.is.null`, {
           method: 'PATCH',
           headers: {
             'apikey': env.SUPABASE_SERVICE_KEY,
