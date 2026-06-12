@@ -34,7 +34,7 @@
 | # | Archivo SQL | Descripción |
 |---|-------------|-------------|
 | ~~REF-COMP~~ | ~~`sql/referidos-sistema-completo.sql`~~ | ✅ **Ejecutado 2026-05-30** — cupones CRED- activos, trigger detecta primer pedido | | **REEMPLAZA** el anterior — ADD COLUMN codigo_referido, cupones CRED-, RPC validar cupón |
-| REF-TRIG | `~~sql/referidos-trigger-primer-pedido.sql~~` | Trigger auto-detecta primer pedido pagado de referido → estado "primer_pedido" |
+| ~~REF-TRIG~~ | ~~`sql/referidos-trigger-primer-pedido.sql`~~ | ✅ **Superado por REF-COMP** (2026-05-30) — `referidos-sistema-completo.sql` ya incluye este trigger |
 | ~~G1~~ | ~~`sql/revision-tokens-table.sql`~~ | ✅ **Ejecutado 2026-06-01** — revision-express activo | | Tabla `revision_tokens` para aprobación OWASP-segura desde email |
 | ~~G2~~ | ~~`sql/prodigy-analytics-rpc.sql`~~ | ✅ **Ejecutado 2026-06-01** — 6 RPCs BI activos | | 6 RPCs de métricas para dashboard BI (evita SELECT* en frontend) |
 | ~~G3~~ | ~~`sql/storage-webp-rls.sql`~~ | ✅ **Ejecutado 2026-06-01** — WebP RLS activo | | RLS + política Storage para transformación WebP sin 403 |
@@ -65,7 +65,7 @@
 | # | Acción | Dónde | Detalle |
 |---|--------|-------|---------|
 | ~~0a~~ | ~~Ejecutar `sql/patch-rls-client-column-protection.sql` — PRODIGY~~ | ✅ **Ejecutado 2026-05-29** | Trigger activo — clientes no pueden modificar estado/precio/pago_confirmado |
-| 0b | **Ejecutar `sql/patch-rls-client-column-protection.sql`** | Supabase Dashboard → SQL Editor → Alejandro | **Bug doble**: (1) clientes no pueden aprobar diseño/comprobante/calificación por RLS; (2) si se desbloquea sin trigger, podrían modificar precio/estado. El SQL arregla ambos. |
+| ~~0b~~ | ~~Ejecutar `sql/patch-rls-client-column-protection.sql` — Alejandro~~ | ✅ **Ya cubierto por 0a** | PRODIGY y Alejandro comparten el mismo proyecto Supabase (`zgihrwqfyvgyapbwzkvw`) y las mismas tablas `pedidos`/`pedidos_doctor` — el trigger ejecutado en 0a (2026-05-29) ya protege ambos negocios (filtra por rol/email, no por `negocio`). |
 | ~~0k~~ | ~~Ejecutar `supabase functions deploy send-push`~~ | ✅ **Desplegado 2026-06-12** | IDOR corregido — exige `app_metadata.role` admin/operario/staff. |
 | ~~0l~~ | ~~Ejecutar `supabase functions deploy notify-wa`~~ | ✅ **Desplegado 2026-06-12** | Relay abierto corregido — exige `app_metadata.role` admin/operario/staff. |
 | ~~0m~~ | ~~Corregir HSTS en Cloudflare~~ | ✅ **Corregido 2026-06-12** | `Strict-Transport-Security: max-age=15552000; includeSubDomains; preload` verificado en producción. |
