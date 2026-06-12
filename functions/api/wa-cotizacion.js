@@ -26,6 +26,15 @@ export async function onRequestPost({ request, env }) {
   if (!env.CALLMEBOT_APIKEY) return new Response(JSON.stringify({ error: 'CALLMEBOT_APIKEY no configurada' }), { status: 503, headers: h });
   if (!env.SUPABASE_SERVICE_KEY) return new Response(JSON.stringify({ error: 'SUPABASE_SERVICE_KEY no configurada' }), { status: 503, headers: h });
 
+  let body;
+  try { body = await request.json(); } catch { return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: h }); }
+
+  // Solo cron interno — evita relay de WA arbitrario via CALLMEBOT_APIKEY
+  const key = request.headers.get('X-Cron-Key') || body.key;
+  if (!env.CRON_SECRET || key !== env.CRON_SECRET) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: h });
+  }
+
   // Rate limit: 20 WA/hora
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const rlKey = new Request('https://rl.internal/wa-cotizacion_' + ip);
@@ -37,9 +46,6 @@ export async function onRequestPost({ request, env }) {
   } else {
     await caches.default.put(rlKey, new Response('1', { headers: { 'Cache-Control': 'max-age=3600' } }));
   }
-
-  let body;
-  try { body = await request.json(); } catch { return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: h }); }
 
   const { whatsapp, nombre, total, codigo, dias } = body;
   if (!whatsapp || !codigo) return new Response(JSON.stringify({ error: 'Faltan whatsapp o codigo' }), { status: 400, headers: h });

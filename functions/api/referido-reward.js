@@ -62,6 +62,17 @@ export async function onRequestPost({ request, env }) {
   };
 
   try {
+    // 0. Verificar que el pedido sea real, tenga ese codigo_referido y ya esté pagado
+    //    (evita que cualquiera con un codigo_referido ajeno genere un cupon falso)
+    const pedResp = await fetch(
+      `${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${encodeURIComponent(pedido_id)}&codigo_referido=eq.${encodeURIComponent(codigo_referido)}&pago_estado=eq.pago_confirmado&select=id`,
+      { headers: { ...sbHeaders, 'Accept': 'application/json' } }
+    );
+    const peds = await pedResp.json();
+    if (!Array.isArray(peds) || !peds.length) {
+      return new Response(JSON.stringify({ ok: false, reason: 'pedido_no_elegible' }), { status: 200, headers: h });
+    }
+
     // 1. Buscar el referido en la tabla referidos
     const refResp = await fetch(
       `${env.SUPABASE_URL}/rest/v1/referidos?codigo=eq.${encodeURIComponent(codigo_referido)}&select=*`,
