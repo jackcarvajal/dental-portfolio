@@ -16,6 +16,7 @@
  */
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const CORS = {
     "Access-Control-Allow-Origin":  "https://prodigylabdental.com",
@@ -52,13 +53,28 @@ serve(async (req) => {
     if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
     if (req.method !== "POST")    return json({ error: "Método no permitido" }, 405);
 
-    const ACCESS_TOKEN = Deno.env.get("META_ACCESS_TOKEN");
-    const PHONE_ID     = Deno.env.get("WA_PHONE_ID");
+    const ACCESS_TOKEN  = Deno.env.get("META_ACCESS_TOKEN");
+    const PHONE_ID      = Deno.env.get("WA_PHONE_ID");
+    const SUPABASE_URL  = Deno.env.get("SUPABASE_URL");
+    const SERVICE_KEY   = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
     if (!ACCESS_TOKEN || !PHONE_ID) {
         return json({
             error: "Faltan variables de entorno: META_ACCESS_TOKEN y/o WA_PHONE_ID"
         }, 500);
+    }
+
+    // Solo staff autenticado puede enviar WA via Meta Graph API
+    // (evita relay de WA arbitrario con el token/numero de PRODIGY)
+    if (!SUPABASE_URL || !SERVICE_KEY) {
+        return json({ error: "Config Supabase incompleta" }, 500);
+    }
+    const sb = createClient(SUPABASE_URL, SERVICE_KEY);
+    const jwt = (req.headers.get("Authorization") || "").replace("Bearer ", "").trim();
+    const { data: authData } = await sb.auth.getUser(jwt);
+    const role = authData?.user?.app_metadata?.role;
+    if (!role || !["admin", "operario", "staff"].includes(role)) {
+        return json({ error: "No autorizado" }, 401);
     }
 
     let body: Record<string, string>;
