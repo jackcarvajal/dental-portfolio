@@ -38,12 +38,15 @@ export async function onRequestPost(context) {
 
   const { email, nombre, codigo_referido, pedido_codigo } = body;
   if (!email) return new Response(JSON.stringify({ ok: false, reason: 'email_required' }), { status: 400, headers: CORS });
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return new Response(JSON.stringify({ ok: false, reason: 'email_invalido' }), { status: 400, headers: CORS });
+  }
 
   if (!env.RESEND_API_KEY) {
     return new Response(JSON.stringify({ ok: false, reason: 'no_resend_key' }), { headers: CORS });
   }
 
-  const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   const nombreSafe = escH(nombre || 'Doctor/a');
   const codigoSafe = escH(codigo_referido || '');
   const pedidoSafe = escH(pedido_codigo || '');
