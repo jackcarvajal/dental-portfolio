@@ -25,7 +25,7 @@
 
 | # | Acción | Dónde | Detalle |
 |---|--------|-------|---------|
-| 0j | **Re-ejecutar `sql/patch-revoke-rpcs-internas.sql`** (corregido — antes daba error `prodigy_set_sla does not exist` y abortaba toda la transaccion, por lo que 0g/0h/0i tampoco habian quedado aplicados hasta re-correrlos) | Supabase PRODIGY → SQL Editor | RPCs `prodigy_marcar_recordatorio`, `prodigy_marcar_sla_alerta`, `prodigy_set_sla` (uso exclusivo de crons via service_role) tenían GRANT a `authenticated` — cualquier doctor logueado podía silenciar alertas SLA/pago de cualquier pedido o cambiar el SLA objetivo de un flujo completo. El SQL ahora revoca solo las funciones que existen (idempotente). |
+| ~~0j~~ | ~~Ejecutar `sql/patch-revoke-rpcs-internas.sql`~~ | ✅ **Ejecutado 2026-06-12** | Revocado `authenticated` de `prodigy_marcar_recordatorio`/`prodigy_marcar_sla_alerta` (y `prodigy_set_sla` si existe). |
 | ~~0i~~ | ~~Ejecutar `sql/patch-marcar-notifs-authz.sql`~~ | ✅ **Ejecutado 2026-06-12** | IDOR en `prodigy_marcar_notifs_leidas` corregido — ahora usa siempre `auth.uid()`. |
 | ~~0h~~ | ~~Ejecutar `sql/patch-mis-cotizaciones-authz.sql`~~ | ✅ **Ejecutado 2026-06-12** | IDOR critico en `mis_cotizaciones(p_email)` corregido — filtra por `auth.uid()`, revocado `anon`. |
 | ~~0g~~ | ~~Ejecutar `sql/patch-corte-mensual-authz.sql`~~ | ✅ **Ejecutado 2026-06-12** | IDOR en `corte_mensual(p_whatsapp)` corregido. |
