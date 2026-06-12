@@ -42,6 +42,7 @@
 | ~~0a~~ | ~~Ejecutar `sql/patch-rls-client-column-protection.sql` — PRODIGY~~ | ✅ **Ejecutado 2026-05-29** | Trigger activo — clientes no pueden modificar estado/precio/pago_confirmado |
 | 0b | **Ejecutar `sql/patch-rls-client-column-protection.sql`** | Supabase Dashboard → SQL Editor → Alejandro | **Bug doble**: (1) clientes no pueden aprobar diseño/comprobante/calificación por RLS; (2) si se desbloquea sin trigger, podrían modificar precio/estado. El SQL arregla ambos. |
 | 0k | **Ejecutar `supabase functions deploy send-push`** (CLI, no se despliega con git push) | Terminal con Supabase CLI logueado | **IDOR**: la función aceptaba `{user_id\|mensajero_id, title, body, url}` sin validar quién llama — con la anon key (pública) cualquiera podía hacer push-spam/phishing a cualquier usuario via `SUPABASE_SERVICE_ROLE_KEY`. Ya corregido en `supabase/functions/send-push/index.ts` (exige `app_metadata.role` admin/operario/staff) — falta desplegar. |
+| 0l | **Ejecutar `supabase functions deploy notify-wa`** (CLI, no se despliega con git push) | Terminal con Supabase CLI logueado | **Relay abierto**: la función enviaba WA via Meta Graph API a cualquier `telefono` con `nombre`/`caseId`/`monto`/`url_seguimiento` arbitrarios, sin auth ni rate limit (riesgo de phishing y suspensión del WABA). Ya corregido (exige `app_metadata.role` admin/operario/staff) — falta desplegar. |
 
 ---
 
