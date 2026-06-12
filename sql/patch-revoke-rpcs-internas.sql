@@ -17,6 +17,17 @@
 -- que no requiere el GRANT a `authenticated`.
 -- =============================================================
 
-REVOKE EXECUTE ON FUNCTION public.prodigy_marcar_recordatorio(uuid) FROM authenticated;
-REVOKE EXECUTE ON FUNCTION public.prodigy_marcar_sla_alerta(uuid) FROM authenticated;
-REVOKE EXECUTE ON FUNCTION public.prodigy_set_sla(text, int) FROM authenticated;
+-- Version idempotente: revoca solo si la funcion existe en esta DB
+-- (prodigy_set_sla puede no existir si patch-sla-pedidos.sql no se ha aplicado).
+DO $$
+BEGIN
+  IF to_regprocedure('public.prodigy_marcar_recordatorio(uuid)') IS NOT NULL THEN
+    EXECUTE 'REVOKE EXECUTE ON FUNCTION public.prodigy_marcar_recordatorio(uuid) FROM authenticated';
+  END IF;
+  IF to_regprocedure('public.prodigy_marcar_sla_alerta(uuid)') IS NOT NULL THEN
+    EXECUTE 'REVOKE EXECUTE ON FUNCTION public.prodigy_marcar_sla_alerta(uuid) FROM authenticated';
+  END IF;
+  IF to_regprocedure('public.prodigy_set_sla(text, int)') IS NOT NULL THEN
+    EXECUTE 'REVOKE EXECUTE ON FUNCTION public.prodigy_set_sla(text, int) FROM authenticated';
+  END IF;
+END $$;
