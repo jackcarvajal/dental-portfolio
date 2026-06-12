@@ -52,7 +52,7 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: cors });
   }
 
-  const { to, subject, text, tipo, unsubscribe_token } = body;
+  const { to, subject, text, tipo, unsubscribe_token, temp_pass } = body;
 
   if (!to || !subject || !text) {
     return new Response(JSON.stringify({ error: 'Faltan campos: to, subject, text' }), { status: 400, headers: cors });
@@ -66,7 +66,7 @@ export async function onRequestPost({ request, env }) {
   const fromEmail = env.FROM_EMAIL || 'PRODIGY Lab Dental <noreply@prodigylabdental.com>';
 
   // Contenido SIEMPRE generado server-side desde plantillas (no se acepta HTML del cliente — evita relay de phishing)
-  const htmlContent = buildTemplate(tipo, { text, to, subject })
+  const htmlContent = buildTemplate(tipo, { text, to, subject, temp_pass })
     .replace('{{TOKEN}}', unsubscribe_token || '');
 
   try {
@@ -100,9 +100,10 @@ export async function onRequestPost({ request, env }) {
 
 function escMail(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
-function buildTemplate(tipo, { text, subject }) {
+function buildTemplate(tipo, { text, subject, temp_pass }) {
   text = escMail(text);
   subject = escMail(subject);
+  temp_pass = temp_pass ? escMail(temp_pass) : '';
   const base = (content) => `
 <!DOCTYPE html>
 <html lang="es">
@@ -138,7 +139,7 @@ function buildTemplate(tipo, { text, subject }) {
     <h1>¡Bienvenido a PRODIGY! 🎉</h1>
     <p>Tu cuenta ha sido creada exitosamente. Ya puedes acceder al portal para hacer seguimiento de tus casos en tiempo real.</p>
     <a href="https://prodigylabdental.com/app/client-panel.html" class="btn">Ir a mi portal →</a>
-    <p style="font-size:.78rem;color:#475569;">Tu clave temporal es <strong style="color:#fbbf24;">ProdigyTemp2026!</strong> — Cámbiala al ingresar por seguridad.</p>
+    <p style="font-size:.78rem;color:#475569;">${temp_pass ? `Tu clave temporal es <strong style="color:#fbbf24;">${temp_pass}</strong> — Cámbiala al ingresar por seguridad.` : 'Revisa el mensaje de WhatsApp que te enviamos con tu clave temporal de acceso.'}</p>
   `);
 
   if (tipo === 'pedido_confirmado') return base(`

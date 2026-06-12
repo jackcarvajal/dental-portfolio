@@ -3604,15 +3604,16 @@ document.getElementById('form-canal').addEventListener('submit', async function(
     // 2. Registro implícito
     if (window.supabase) {
       var sbLocal = window.supabase.createClient(SURL, SANON);
+      var tempPass = 'Prodigy@' + Math.random().toString(36).slice(2, 8).toUpperCase();
       var signUpResult = await sbLocal.auth.signUp({
-        email, password:'ProdigyTemp2026!',
+        email, password:tempPass,
         options:{ data:{ nombre, whatsapp:wa, primera_vez:true }, emailRedirectTo:'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1' }
       });
       if (!signUpResult.error) {
         // WA con acceso al portal
         fetch('/api/wa-auto', { method:'POST', headers:{'Content-Type':'application/json'},
           body:JSON.stringify({ whatsapp:wa,
-            mensaje:'🦷 *PRODIGY Lab Dental*\n\nHola '+nombre.split(' ')[0]+', gracias por contactarnos.\n\n✅ Creamos tu portal de seguimiento:\n\n👉 prodigylabdental.com/app/client-panel.html\n📧 Email: '+email+'\n🔐 Clave: ProdigyTemp2026!\n_(Cámbiala al ingresar)_\n\nEnvía tu caso por '+_CANAL_LABELS[_mcTipo]+' y lo procesamos en 24h.'
+            mensaje:'🦷 *PRODIGY Lab Dental*\n\nHola '+nombre.split(' ')[0]+', gracias por contactarnos.\n\n✅ Creamos tu portal de seguimiento:\n\n👉 prodigylabdental.com/app/client-panel.html\n📧 Email: '+email+'\n🔐 Clave: '+tempPass+'\n_(Cámbiala al ingresar)_\n\nEnvía tu caso por '+_CANAL_LABELS[_mcTipo]+' y lo procesamos en 24h.'
           })
         }).catch(function(){});
       }

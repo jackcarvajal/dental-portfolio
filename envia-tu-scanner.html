@@ -882,9 +882,10 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
     if (email) {
         try {
             // signUp crea la cuenta si no existe, signIn si ya existe
+            const tempPass = 'Prodigy@' + Math.random().toString(36).slice(2, 8).toUpperCase();
             const { data: signUpData, error: signUpErr } = await sb.auth.signUp({
                 email,
-                password: 'ProdigyTemp2026!',  // contraseña temporal — el usuario la cambiará
+                password: tempPass,  // contraseña temporal aleatoria — el usuario la cambiará
                 options: {
                     data: { nombre: doctor, clinica, whatsapp, rol_solicitado: 'client', primera_vez: true },
                     emailRedirectTo: 'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1'
@@ -907,7 +908,7 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         whatsapp,
-                        mensaje: `🦷 *PRODIGY Lab Dental*\n\nHola ${doctor.split(' ')[0]}, recibimos tu solicitud de ${servicio}.\n\n✅ Portal creado. Ingresa aquí:\n👉 ${portalLink}\n\n📧 ${email}\n🔐 Clave: ProdigyTemp2026!\n_(Cámbiala al ingresar)_\n\nwa.me/573212816716`
+                        mensaje: `🦷 *PRODIGY Lab Dental*\n\nHola ${doctor.split(' ')[0]}, recibimos tu solicitud de ${servicio}.\n\n✅ Portal creado. Ingresa aquí:\n👉 ${portalLink}\n\n📧 ${email}\n🔐 Clave: ${tempPass}\n_(Cámbiala al ingresar)_\n\nwa.me/573212816716`
                     })
                 }).catch(()=>{});
                 // Email de bienvenida (si Resend está configurado)
@@ -918,6 +919,7 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
                         to: email,
                         subject: 'Bienvenido a PRODIGY Lab Dental — Tu portal está listo',
                         tipo: 'bienvenida',
+                        temp_pass: tempPass,
                         text: `Hola ${doctor.split(' ')[0]}, recibimos tu caso de ${servicio}. Tu portal está listo en prodigylabdental.com/app/client-panel.html`
                     })
                 }).catch(()=>{});
