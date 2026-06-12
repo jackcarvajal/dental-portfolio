@@ -1,0 +1,5 @@
+Contact: mailto:gerencia@prodigylabdental.com
+Contact: https://wa.me/573212816716
+Expires: 2027-06-12T00:00:00.000Z
+Preferred-Languages: es, en
+Canonical: https://prodigylabdental.com/.well-known/security.txt
