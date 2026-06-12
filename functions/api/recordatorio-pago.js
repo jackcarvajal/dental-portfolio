@@ -67,6 +67,7 @@ export async function onRequestGet({ request, env }) {
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+    console.error('[recordatorio-pago]', err);
+    return new Response(JSON.stringify({ error: 'Error interno del servidor' }), { status: 500 });
   }
 }

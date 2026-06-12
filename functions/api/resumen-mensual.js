@@ -121,6 +121,7 @@ a{color:#D946A6;}
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+    console.error('[resumen-mensual]', err);
+    return new Response(JSON.stringify({ error: 'Error interno del servidor' }), { status: 500 });
   }
 }

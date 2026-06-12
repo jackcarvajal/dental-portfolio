@@ -40,6 +40,7 @@ export async function onRequestGet({ request, env }) {
 
     return new Response(JSON.stringify({ ok: true, alertas: pedidos.length }), { status: 200 });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+    console.error('[alerta-sla]', err);
+    return new Response(JSON.stringify({ error: 'Error interno del servidor' }), { status: 500 });
   }
 }
