@@ -52,10 +52,10 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: cors });
   }
 
-  const { to, subject, html, text, tipo, unsubscribe_token } = body;
+  const { to, subject, text, tipo, unsubscribe_token } = body;
 
-  if (!to || !subject || (!html && !text)) {
-    return new Response(JSON.stringify({ error: 'Faltan campos: to, subject, html/text' }), { status: 400, headers: cors });
+  if (!to || !subject || !text) {
+    return new Response(JSON.stringify({ error: 'Faltan campos: to, subject, text' }), { status: 400, headers: cors });
   }
 
   // Validar email destino
@@ -65,8 +65,8 @@ export async function onRequestPost({ request, env }) {
 
   const fromEmail = env.FROM_EMAIL || 'PRODIGY Lab Dental <noreply@prodigylabdental.com>';
 
-  // Templates según tipo
-  const htmlContent = (html || buildTemplate(tipo, { text, to, subject }))
+  // Contenido SIEMPRE generado server-side desde plantillas (no se acepta HTML del cliente — evita relay de phishing)
+  const htmlContent = buildTemplate(tipo, { text, to, subject })
     .replace('{{TOKEN}}', unsubscribe_token || '');
 
   try {
@@ -98,7 +98,11 @@ export async function onRequestPost({ request, env }) {
   }
 }
 
+function escMail(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
 function buildTemplate(tipo, { text, subject }) {
+  text = escMail(text);
+  subject = escMail(subject);
   const base = (content) => `
 <!DOCTYPE html>
 <html lang="es">
