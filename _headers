@@ -18,10 +18,12 @@
 /app/*.html
   Cache-Control: no-store, no-cache, must-revalidate
   Pragma: no-cache
+  X-Robots-Tag: noindex, nofollow
 
 /patient.html
   Cache-Control: no-store, no-cache, must-revalidate
   Pragma: no-cache
+  X-Robots-Tag: noindex
 
 /portafolio.html
   Cache-Control: no-store, no-cache, must-revalidate

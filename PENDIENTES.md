@@ -4,6 +4,31 @@
 
 ---
 
+## 🔴 URGENTE — Fuga de información: archivos internos servidos en producción (acción en Cloudflare Dashboard)
+
+**Hallazgo (auditoría 2026-06-12):** `_redirects` tiene reglas `/*.md`, `/sql/*`, `/scripts/*`, `/MAP.md`, `/PENDIENTES.md`, `/CLAUDE.md`, etc. → `404`, pero en producción TODOS responden `200` con el contenido real:
+- `MAP.md`, `PENDIENTES.md`, `CLAUDE.md`, `SESIONES.md`, `PRODIGY_LOG.md`, `ESTANDARES-TECNICOS.md`, `ARCHITECTURE.md`, `MAPA_PROYECTO.json`, `VERIFICAR.md` → exponen arquitectura interna, líneas de funciones críticas, reglas de seguridad y tareas pendientes (incluye hallazgos de seguridad sin resolver).
+- `sql/patch-revoke-rpcs-internas.sql` (y todo `sql/*`) → exponen nombres de tablas/funciones/políticas RLS de Supabase.
+- `scripts/auto-journal.js` → expone lógica del pipeline de Gemini.
+- `js/supabase-mock.js`, `package.json` → menor severidad pero también deberían bloquearse.
+
+**Causa raíz:** Cloudflare Pages solo aplica `_redirects` cuando NO existe un archivo estático con esa ruta exacta en el deploy. Como estos archivos SÍ existen en la raíz del repo (que se despliega tal cual, sin build step), Cloudflare los sirve directo y `_redirects` nunca se evalúa para ellos.
+
+**Fix (requiere Cloudflare Dashboard → Pages → prodigylabdental.com → Settings → Builds & deployments):**
+1. Configurar **Build command** que elimine estos archivos/carpetas antes de publicar, ej:
+   ```
+   rm -rf sql supabase scripts MEMORY *.md MAPA_PROYECTO.json js/supabase-mock.js
+   ```
+2. Mantener **Build output directory** = `/` (raíz) — el `rm` se ejecuta sobre el working copy que luego se publica.
+3. Reintentar el último deploy (Deployments → ⋯ → Retry deployment) y volver a probar:
+   ```
+   curl -I https://prodigylabdental.com/MAP.md   → debe dar 404
+   curl -I https://prodigylabdental.com/sql/patch-revoke-rpcs-internas.sql → debe dar 404
+   ```
+4. ⚠️ Verificar que ningún `.html`/`.js` de producción haga `fetch()` a estos archivos `.md`/`.sql`/`scripts/*` antes de borrarlos (no debería — son solo documentación interna y pipeline de CI).
+
+---
+
 ## 🔴 URGENTE — SQL de Gemini + nuevos (ejecutar en Supabase)
 
 | # | Archivo SQL | Descripción |
