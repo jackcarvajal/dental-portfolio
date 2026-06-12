@@ -141,6 +141,16 @@ serve(async (req: Request) => {
         }
 
         const sb = createClient(SUPABASE_URL, SERVICE_KEY);
+
+        // Solo staff autenticado puede enviar push a un user_id/mensajero_id arbitrario
+        // (la anon key sola no basta — evita push-spam/phishing a cualquier usuario)
+        const jwt = (req.headers.get('Authorization') || '').replace('Bearer ', '').trim();
+        const { data: authData } = await sb.auth.getUser(jwt);
+        const role = authData?.user?.app_metadata?.role;
+        if (!role || !['admin', 'operario', 'staff'].includes(role)) {
+            return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401, headers: CORS_HEADERS });
+        }
+
         const body = await req.json();
 
         let userId: string | null = body.user_id || null;
