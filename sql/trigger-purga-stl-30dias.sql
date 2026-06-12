@@ -18,6 +18,9 @@
 -- Ejecutar en Supabase Dashboard → SQL Editor
 -- ============================================================
 
+-- ── 0. Habilitar pg_cron (evita paso manual en Database → Extensions) ──
+CREATE EXTENSION IF NOT EXISTS pg_cron;
+
 -- ── 1. Función de purga de STL ───────────────────────────────────
 CREATE OR REPLACE FUNCTION prodigy_purgar_stl_vencidos()
 RETURNS void
