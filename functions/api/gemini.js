@@ -60,10 +60,10 @@ export async function onRequestPost(context) {
 
   // Modelos en orden de preferencia (fallback automático)
   const MODELS = [
-    'gemini-2.0-flash',
-    'gemini-2.0-flash-lite',
-    'gemini-1.5-flash',
-    'gemini-1.5-flash-8b'
+    'gemini-2.5-flash',
+    'gemini-2.5-flash-lite',
+    'gemini-flash-lite-latest',
+    'gemini-2.0-flash-lite'
   ];
 
   let lastError = null;
@@ -80,7 +80,9 @@ export async function onRequestPost(context) {
       lastError = `Red: ${e.message}`;
       continue;
     }
-    const data = await geminiRes.json();
+    let data;
+    try { data = await geminiRes.json(); }
+    catch { lastError = `HTTP ${geminiRes.status} (respuesta no-JSON)`; continue; }
     if (geminiRes.ok && data.candidates) {
       return new Response(JSON.stringify(data), {
         status: 200,

@@ -471,7 +471,7 @@ async function callGeminiDirect(prompt) {
 
   const raw = await httpRequest({
     hostname: 'generativelanguage.googleapis.com',
-    path: `/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+    path: `/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
   }, body);
@@ -480,7 +480,7 @@ async function callGeminiDirect(prompt) {
   if (parsed.error) throw new Error('Gemini: ' + parsed.error.message);
   const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) throw new Error('Gemini: respuesta vacía');
-  return { text, model: 'gemini-2.0-flash' };
+  return { text, model: 'gemini-2.5-flash' };
 }
 
 async function callClaudeFallback(prompt) {
