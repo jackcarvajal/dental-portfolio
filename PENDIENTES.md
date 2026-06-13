@@ -55,8 +55,9 @@
 | ~~0h~~ | ~~Ejecutar `sql/patch-mis-cotizaciones-authz.sql`~~ | ✅ **Ejecutado 2026-06-12** | IDOR critico en `mis_cotizaciones(p_email)` corregido — filtra por `auth.uid()`, revocado `anon`. |
 | ~~0g~~ | ~~Ejecutar `sql/patch-corte-mensual-authz.sql`~~ | ✅ **Ejecutado 2026-06-12** | IDOR en `corte_mensual(p_whatsapp)` corregido. |
 | ~~0c~~ | ~~**Ejecutar `sql/patch-rls-bibliotecas-diseno-revisiones.sql`**~~ | ✅ **Ejecutado 2026-06-01** | | Supabase PRODIGY → SQL Editor | RLS en `bibliotecas_cliente` + `diseno_revisiones` |
-| 0d | **Ejecutar `sql/trigger-purga-stl-30dias.sql`** | Supabase PRODIGY → SQL Editor | Purga automática de STL a 30 días. Requiere pg_cron habilitado en Extensions |
-| 0e | **Agregar `ANTHROPIC_API_KEY`** en GitHub Secrets PRODIGY + Alejandro | Repo → Settings → Secrets → Actions | Para fallback IA del journal si Gemini falla |
+| 0d | **Ejecutar `sql/trigger-purga-stl-30dias.sql`** | Supabase PRODIGY → SQL Editor | Purga automática de STL a 30 días. Ya incluye `CREATE EXTENSION IF NOT EXISTS pg_cron` — no requiere paso aparte en Extensions |
+| ~~0e~~ | ~~Agregar `ANTHROPIC_API_KEY` en GitHub Secrets~~ | ❌ **Omitido** (sin presupuesto para API Anthropic) | Cron de artículos sigue 100% con Gemini, sin fallback. Si falla Gemini, simplemente no se publica ese día — bajo riesgo. |
+| ~~0p~~ | ~~Claves Google Drive Picker hardcodeadas en `patients/patient-001/exocad.html` y `patients/patient-002/caso.html`~~ | ✅ **Corregido 2026-06-13** | Visor Exocad/DentalWebGL traía `apiKey`/`pickerApiKey` de Google embebidos (feature "abrir/guardar desde Drive", no usada) → vaciadas a `""`. Resuelve alerta "clave de API expuesta" de Google AI Studio sobre proyecto ProDigy-Platform. |
 
 ---
 
