@@ -17,6 +17,10 @@
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  <link rel="preconnect" href="https://prod.spline.design">
+  <link rel="dns-prefetch" href="https://prod.spline.design">
   <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
@@ -127,6 +131,59 @@
       0%,100% { transform: translateY(0); }
       50%      { transform: translateY(-12px); }
     }
+
+    /* ── Cubo 3D giratorio (CSS puro) — vitrina de servicios PRODIGY ── */
+    .cube3d-wrap {
+      --cs: 80px;
+      position: absolute;
+      right: 4%;
+      top: 4%;
+      width: var(--cs); height: var(--cs);
+      perspective: 600px;
+      z-index: 1;
+    }
+    .cube3d {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: cube3dSpin 18s linear infinite;
+    }
+    .cube3d-face {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: calc(var(--cs) * 0.42);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      backdrop-filter: blur(3px);
+      background: linear-gradient(135deg, var(--c1), rgba(5,5,5,.55));
+      box-shadow: 0 4px 24px rgba(0,0,0,.35);
+      backface-visibility: hidden;
+    }
+    .cube3d-face.f-front  { --c1: rgba(217,70,166,.22); transform: translateZ(calc(var(--cs)/2)); }
+    .cube3d-face.f-back   { --c1: rgba(0,210,255,.18);  transform: rotateY(180deg) translateZ(calc(var(--cs)/2)); }
+    .cube3d-face.f-right  { --c1: rgba(212,175,55,.2);  transform: rotateY(90deg) translateZ(calc(var(--cs)/2)); }
+    .cube3d-face.f-left   { --c1: rgba(156,39,176,.2);  transform: rotateY(-90deg) translateZ(calc(var(--cs)/2)); }
+    .cube3d-face.f-top    { --c1: rgba(0,255,65,.18);   transform: rotateX(90deg) translateZ(calc(var(--cs)/2)); }
+    .cube3d-face.f-bottom { --c1: rgba(244,163,0,.2);   transform: rotateX(-90deg) translateZ(calc(var(--cs)/2)); }
+    @keyframes cube3dSpin {
+      from { transform: rotateX(0deg) rotateY(0deg); }
+      to   { transform: rotateX(360deg) rotateY(360deg); }
+    }
+    @media(max-width:700px){ .cube3d-wrap { display: none; } }
+
+    /* ── Robot 3D (Spline) — lazy, oculto en móvil y reduced-motion ── */
+    .spline-robot-wrap{position:fixed;left:0;top:0;width:clamp(900px,100.8vw,1620px);height:clamp(900px,100.8vw,1620px);z-index:0;overflow:hidden;border-radius:24px;transform:translateZ(0)}
+    .spline-robot-wrap spline-viewer{width:100%;height:100%;background:transparent}
+    .spline-robot-wrap::after{content:'';position:absolute;left:0;right:0;bottom:0;height:90px;background:#000;pointer-events:none;z-index:5}
+    @media(max-width:1100px){.spline-robot-wrap{width:684px;height:684px}}
+    @media(max-width:900px){.spline-robot-wrap{display:none}}
+    @media(prefers-reduced-motion:reduce){.spline-robot-wrap{display:none}}
+/* ── Contraste de texto sobre el robot 3D ── */
+.subtitle, .status-line, .main-text, .sub-text, .service-tag,
+.sec-label, .sec-title, .psych-badge, .psych-headline, .psych-body, .psych-proof-item {
+  text-shadow: 0 2px 10px rgba(0,0,0,.85), 0 1px 3px rgba(0,0,0,.95);
+}
+.psych-headline span { text-shadow: none; }
 
     /* ── Logo ── */
     h1 {
@@ -555,9 +612,24 @@
     <div class="hero-shape hero-shape-2"><div class="hero-shape-inner"></div></div>
     <div class="hero-shape hero-shape-3"><div class="hero-shape-inner"></div></div>
   </div>
-  <div class="scan-line" aria-hidden="true"></div>
+  <!-- ── Robot 3D (Spline) ── -->
+  <div class="spline-robot-wrap" aria-hidden="true">
+    <spline-viewer loading="lazy" url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"></spline-viewer>
+  </div>
 
   <div class="container">
+
+    <!-- ── Cubo 3D giratorio — vitrina de servicios ── -->
+    <div class="cube3d-wrap" aria-hidden="true">
+      <div class="cube3d">
+        <div class="cube3d-face f-front">💎</div>
+        <div class="cube3d-face f-back">🦷</div>
+        <div class="cube3d-face f-right">⚙️</div>
+        <div class="cube3d-face f-left">🖨️</div>
+        <div class="cube3d-face f-top">📐</div>
+        <div class="cube3d-face f-bottom">✨</div>
+      </div>
+    </div>
 
     <!-- ── HERO ── -->
     <span class="diamond">💎</span>
@@ -590,8 +662,7 @@
       <p class="sub-text">Estamos en fase de pruebas internas.<br>Pronto abriremos al público.</p>
     </div>
 
-    <!-- CONTENIDO OCULTO DURANTE MANTENIMIENTO -->
-    <div style="display:none"><!-- ── STATS ── -->
+    <!-- ── STATS ── -->
     <div class="stats-row">
       <div class="stat-card">
         <span class="stat-num">300+</span>
@@ -876,7 +947,6 @@
       </a>
     </div>
 
-    </div><!-- fin contenido oculto -->
     <p class="footer-text" data-i18n="footer.text">
       prodigylabdental.com &nbsp;·&nbsp; Laboratorio dental de precisión
       &nbsp;·&nbsp;
@@ -919,5 +989,15 @@
 })();
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<!-- Robot 3D (Spline) — solo desktop, carga diferida -->
+<script>
+if(window.matchMedia('(min-width:901px)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  var _splineScript=document.createElement('script');
+  _splineScript.type='module';
+  _splineScript.src='https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js';
+  if('requestIdleCallback' in window) requestIdleCallback(function(){document.head.appendChild(_splineScript);},{timeout:1200});
+  else setTimeout(function(){document.head.appendChild(_splineScript);},600);
+}
+</script>
 </body>
 </html>

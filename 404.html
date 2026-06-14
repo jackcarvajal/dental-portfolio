@@ -30,9 +30,12 @@
     body {
       background: var(--bg); color: var(--text); overflow-x: hidden;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      text-align: center;
+    }
+    main {
       min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center;
-      padding: 24px; overflow: hidden;
+      align-items: center; justify-content: center;
+      padding: 24px;
     }
     body::before {
       content: ''; position: fixed; inset: 0;
@@ -82,19 +85,21 @@
     .hero-shape-3 { width: clamp(90px,14vw,170px);  height: clamp(26px,4vw,46px); bottom: 14%; left: 6%;  --sr: -8deg;  --sc: rgba(212,175,55,.16); --sd: .4s; }
     @media(max-width:700px){ .hero-shape-3 { display: none; } }
 
-    /* ── Línea de escaneo intraoral ── */
+    /* ── Línea de escaneo intraoral (vaivén tipo escáner, no monótona) ── */
     .scan-line {
-      position: fixed; left: 0; right: 0; top: -2px; height: 2px; z-index: 1;
+      position: fixed; left: 0; right: 0; top: 0; height: 2px; z-index: 1;
       background: linear-gradient(90deg, transparent, var(--cyan), transparent);
       box-shadow: 0 0 14px var(--cyan);
-      animation: scanSweep 4.5s linear infinite;
+      animation: scanSweep 7s ease-in-out infinite alternate;
       pointer-events: none;
     }
     @keyframes scanSweep {
-      0%   { top: -2px; opacity: 0; }
-      6%   { opacity: .8; }
-      94%  { opacity: .8; }
-      100% { top: 100%; opacity: 0; }
+      0%   { top: 0; opacity: .75; }
+      8%   { top: 0; opacity: .25; }
+      16%  { top: 0; opacity: .75; }
+      84%  { top: calc(100% - 2px); opacity: .75; }
+      92%  { top: calc(100% - 2px); opacity: .25; }
+      100% { top: calc(100% - 2px); opacity: .75; }
     }
     .code {
       font-size: clamp(5rem,20vw,10rem);
@@ -132,7 +137,7 @@
       color: #25D366;
     }
     .link-wa:hover { background: rgba(37,211,102,0.18); }
-    footer { position: fixed; bottom: 20px; font-size: 0.72rem; color: var(--muted); }
+    footer:not(#pfoot-root) { position: fixed; bottom: 20px; font-size: 0.72rem; color: var(--muted); }
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
 </head>

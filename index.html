@@ -124,13 +124,13 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+    <link rel="preconnect" href="https://prod.spline.design">
+  <link rel="dns-prefetch" href="https://prod.spline.design">
     <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
     <link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
     <link rel="dns-prefetch" href="https://wa.me">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"></noscript>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -270,6 +270,8 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%);
+            background-attachment: fixed;
             color: var(--text-primary);
             line-height: 1.6;
             scroll-behavior: smooth;
@@ -474,14 +476,13 @@
            ======================================== */
         .hero {
             position: relative;
-            overflow: hidden;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%);
+            background: transparent;
             padding: 170px 20px 60px;
             gap: 20px;
         }
@@ -582,43 +583,32 @@
         .hero-shape-5 { width: clamp(60px,8vw,110px);   height: clamp(18px,3vw,34px);  top: 5%;   left: 21%; --sr: -22deg; --sc: rgba(0,255,65,.16); --sd: .7s; }
         @media(max-width:700px){ .hero-shape-3, .hero-shape-5 { display: none; } }
 
-        /* ── Cubo 3D giratorio (CSS puro) — vitrina de servicios PRODIGY ── */
-        .cube3d-wrap {
-            --cs: 90px;
+        .diamond-in-y {
             position: absolute;
             right: 8%;
-            top: -14%;
-            width: var(--cs); height: var(--cs);
-            perspective: 600px;
-            z-index: 1;
+            top: -22%;
+            font-size: 4rem;
+            animation: floatDiamond 3s ease-in-out infinite;
         }
-        .cube3d {
-            width: 100%; height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            animation: cube3dSpin 18s linear infinite;
+
+        @keyframes floatDiamond {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-8px) rotate(5deg); }
         }
-        .cube3d-face {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: calc(var(--cs) * 0.42);
-            border: 1px solid rgba(255,255,255,.12);
-            border-radius: 14px;
-            backdrop-filter: blur(3px);
-            background: linear-gradient(135deg, var(--c1), rgba(5,5,5,.55));
-            box-shadow: 0 4px 24px rgba(0,0,0,.35);
+
+        /* ── Robot 3D (Spline) — lazy, oculto en móvil y reduced-motion ── */
+        .spline-robot-wrap{position:fixed;left:0;top:0;width:clamp(900px,100.8vw,1620px);height:clamp(900px,100.8vw,1620px);z-index:0;overflow:hidden;border-radius:24px;transform:translateZ(0)}
+        .spline-robot-wrap spline-viewer{width:100%;height:100%;background:transparent}
+        .spline-robot-wrap::after{content:'';position:absolute;left:0;right:0;bottom:0;height:90px;background:#000;pointer-events:none;z-index:5}
+        @media(max-width:1100px){.spline-robot-wrap{width:684px;height:684px}}
+        @media(max-width:900px){.spline-robot-wrap{display:none}}
+        @media(prefers-reduced-motion:reduce){.spline-robot-wrap{display:none}}
+        /* Asegura que el footer quede SIEMPRE por encima del robot fixed */
+        #pfoot-root{position:relative;z-index:1}
+        /* ── Contraste de texto sobre el robot 3D ── */
+        .hero-subtitle, .hero-desc, .hero-workflow {
+            text-shadow: 0 2px 10px rgba(0,0,0,.85), 0 1px 3px rgba(0,0,0,.95);
         }
-        .cube3d-face.f-front  { --c1: rgba(217,70,166,.22); transform: translateZ(calc(var(--cs)/2)); }
-        .cube3d-face.f-back   { --c1: rgba(0,210,255,.18);  transform: rotateY(180deg) translateZ(calc(var(--cs)/2)); }
-        .cube3d-face.f-right  { --c1: rgba(212,175,55,.2);  transform: rotateY(90deg) translateZ(calc(var(--cs)/2)); }
-        .cube3d-face.f-left   { --c1: rgba(156,39,176,.2);  transform: rotateY(-90deg) translateZ(calc(var(--cs)/2)); }
-        .cube3d-face.f-top    { --c1: rgba(0,255,65,.18);   transform: rotateX(90deg) translateZ(calc(var(--cs)/2)); }
-        .cube3d-face.f-bottom { --c1: rgba(244,163,0,.2);   transform: rotateX(-90deg) translateZ(calc(var(--cs)/2)); }
-        @keyframes cube3dSpin {
-            from { transform: rotateX(0deg) rotateY(0deg); }
-            to   { transform: rotateX(360deg) rotateY(360deg); }
-        }
-        @media(max-width:700px){ .cube3d-wrap { --cs: 60px; right: 4%; top: -8%; } }
 
         .hero-subtitle {
             font-size: 1.5rem;
@@ -1155,7 +1145,7 @@
             box-shadow: 0 8px 28px rgba(217,70,166,0.65);
         }
         @media (max-width: 768px) {
-            .ingresa-floating { top: auto; bottom: 80px; right: 12px; font-size: 0.7rem; padding: 8px 14px; }
+            .ingresa-floating { top: auto; bottom: 80px; left: 12px; right: auto; font-size: 0.7rem; padding: 8px 14px; }
             /* En desktop el flotante se oculta — va en el navbar */
         }
 
@@ -1179,7 +1169,7 @@
 
         /* SOUND BUTTON */
         #sound-btn {
-            position: fixed; bottom: 88px; left: 28px; z-index: 998;
+            position: fixed; bottom: 104px; left: 28px; z-index: 998;
             width: 46px; height: 46px;
             background: rgba(10,10,10,0.92); border: 1px solid rgba(212,175,55,0.35);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -1216,6 +1206,7 @@
 
             /* HERO */
             .hero-title-main { font-size: 3rem; letter-spacing: -2px; }
+            .diamond-in-y { font-size: 2.4rem; right: 2%; top: -12%; }
             .hero-subtitle { font-size: 0.85rem; letter-spacing: 3px; }
             .hero-desc { font-size: 0.88rem; padding: 0 4px; }
 
@@ -1631,6 +1622,16 @@
 }
 .idx-svc-card:hover::before { opacity: 1; }
 @media(prefers-reduced-motion:reduce){ .idx-svc-card::before { display:none; } }
+/* ── Carrusel de servicios ── */
+.svc-carousel-wrap { position:relative; }
+.svc-carousel { display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:4px; scroll-behavior:smooth; }
+.svc-carousel::-webkit-scrollbar { display:none; }
+.svc-carousel .idx-svc-card { flex:0 0 200px; scroll-snap-align:start; }
+.svc-nav { display:flex; justify-content:center; gap:12px; margin-top:18px; }
+.svc-nav-btn { width:42px; height:42px; border-radius:50%; border:1px solid rgba(212,175,55,.25); background:#0d1520; color:#D4AF37; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .2s,background .2s,opacity .2s; font-size:1rem; }
+.svc-nav-btn:hover:not(:disabled) { border-color:rgba(212,175,55,.6); background:rgba(212,175,55,.08); }
+.svc-nav-btn:disabled { opacity:.3; cursor:default; }
+@media(prefers-reduced-motion:reduce){ .svc-carousel { scroll-behavior:auto; } }
 </style>
 
     <!-- CTA FLOTANTE HAZ TU PEDIDO -->
@@ -1674,6 +1675,10 @@
 
     <!-- HERO -->
     <header class="hero">
+        <!-- Robot 3D (Spline) -->
+        <div class="spline-robot-wrap" aria-hidden="true">
+            <spline-viewer loading="lazy" url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"></spline-viewer>
+        </div>
         <div class="hero-shapes" aria-hidden="true">
             <div class="hero-shape hero-shape-1"><div class="hero-shape-inner"></div></div>
             <div class="hero-shape hero-shape-2"><div class="hero-shape-inner"></div></div>
@@ -1702,16 +1707,7 @@
 
         <div class="hero-title-container">
             <h1 class="hero-title-main">PRODIGY</h1>
-            <div class="cube3d-wrap" aria-hidden="true">
-                <div class="cube3d">
-                    <div class="cube3d-face f-front">💎</div>
-                    <div class="cube3d-face f-back">🦷</div>
-                    <div class="cube3d-face f-right">⚙️</div>
-                    <div class="cube3d-face f-left">🖨️</div>
-                    <div class="cube3d-face f-top">📐</div>
-                    <div class="cube3d-face f-bottom">✨</div>
-                </div>
-            </div>
+            <div class="diamond-in-y">💎</div>
         </div>
 
         <p class="hero-subtitle" data-i18n="index.hero.subtitle">LUXURY CAD/CAM</p>
@@ -1724,7 +1720,8 @@
         <div class="container">
             <h2 class="section-header" data-i18n="index.srv.title">Servicios de Laboratorio Digital</h2>
             <p class="section-subtitle" style="text-align:center;color:#94a3b8;margin-bottom:36px;font-size:.95rem;">Fresado CAD/CAM, impresión 3D y diseño digital en Bogotá. Entrega 24–72h.</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
+            <div class="svc-carousel-wrap">
+            <div class="svc-carousel" id="svc-carousel">
               <a href="flujo-fresado" class="idx-svc-card idx-svc-card-gold">
                 <span style="font-size:1.5rem;">👑</span>
                 <strong style="font-size:.88rem;">Coronas & Puentes</strong>
@@ -1786,8 +1783,36 @@
                 <span style="font-size:.75rem;color:#94a3b8;">Cotiza en tiempo real</span>
               </a>
             </div>
+            <div class="svc-nav">
+              <button class="svc-nav-btn" id="svc-prev" type="button" aria-label="Servicios anteriores"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+              <button class="svc-nav-btn" id="svc-next" type="button" aria-label="Servicios siguientes"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+            </div>
+            </div>
         </div>
     </section>
+    <script>
+    (function(){
+      var car = document.getElementById('svc-carousel');
+      var prev = document.getElementById('svc-prev');
+      var next = document.getElementById('svc-next');
+      if(!car || !prev || !next) return;
+      function step(){
+        var card = car.querySelector('.idx-svc-card');
+        var gap = 14;
+        return card ? card.offsetWidth + gap : 220;
+      }
+      function atEnd(){ return car.scrollLeft >= car.scrollWidth - car.clientWidth - 4; }
+      function atStart(){ return car.scrollLeft <= 4; }
+      prev.addEventListener('click', function(){
+        if(atStart()) car.scrollTo({left:car.scrollWidth, behavior:'smooth'});
+        else car.scrollBy({left:-step()*2, behavior:'smooth'});
+      });
+      next.addEventListener('click', function(){
+        if(atEnd()) car.scrollTo({left:0, behavior:'smooth'});
+        else car.scrollBy({left:step()*2, behavior:'smooth'});
+      });
+    })();
+    </script>
 
     <section id="portfolio">
         <div class="container">
@@ -2690,7 +2715,7 @@
     <script src="js/prodigy-analytics.js?v=20260601" defer></script>
 
 <!-- REFERIDOS STRIP -->
-<section style="background:rgba(0,255,65,.05);border-top:1px solid rgba(0,255,65,.15);padding:14px 24px;">
+<section style="position:relative;z-index:1;background:rgba(0,255,65,.05);border-top:1px solid rgba(0,255,65,.15);padding:14px 24px;">
   <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
     <div style="font-size:.82rem;color:#94a3b8;"><i class="fas fa-user-plus" style="color:#00FF41;margin-right:6px;" aria-hidden="true"></i> <strong style="color:#00FF41;">Referidos:</strong> Recomienda PRODIGY — 5% descuento para tu colega, <strong style="color:#D4AF37;">$30.000 COP</strong> para ti.</div>
     <a href="/app/client-panel.html" style="background:rgba(0,255,65,.12);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:8px;padding:7px 16px;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;">Obtener código →</a>
@@ -2726,7 +2751,17 @@
 
     <!-- SCRIPTS -->
     <script src="js/main.js?v=20260601" defer></script>
-    
+    <!-- Robot 3D (Spline) — solo desktop, carga diferida -->
+    <script>
+    if(window.matchMedia('(min-width:901px)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      var _splineScript=document.createElement('script');
+      _splineScript.type='module';
+      _splineScript.src='https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js';
+      if('requestIdleCallback' in window) requestIdleCallback(function(){document.head.appendChild(_splineScript);},{timeout:1200});
+      else setTimeout(function(){document.head.appendChild(_splineScript);},600);
+    }
+    </script>
+
     <!-- SCRIPT DE RENDERIZADO DINÁMICO "A PRUEBA DE FALLOS" -->
     <script>
         // =============================================
@@ -3503,7 +3538,7 @@
     </script>
 
     <!-- AUDIO SYSTEM — ProdigyAudio Manager -->
-    <script src="js/audio-manager.js?v=20260601" defer></script>
+    <script src="js/audio-manager.js?v=20260614" defer></script>
     <button type="button" id="sound-btn" onclick="ProdigyAudio.toggleAmbient()" title="Música ambiente" aria-label="Activar/desactivar música ambiente">
         <i class="fas fa-volume-xmark" aria-hidden="true"></i>
     </button>

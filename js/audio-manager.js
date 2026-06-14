@@ -13,6 +13,8 @@
   var ambientActive = false;
   var initialized = false;
   var MAX_GAIN = 0.18;
+  var AUTO_STOP_MS = 5 * 60 * 1000; // apaga la música ambiente tras 5 min para no cansar al usuario
+  var autoStopTimer = null;
 
   function init() {
     if (initialized) return;
@@ -361,11 +363,15 @@
         buildArpeggio();
         buildRhythm();
         if (window.ProdigyAnalytics) ProdigyAnalytics.trackAudioToggle('on');
+        clearTimeout(autoStopTimer);
+        autoStopTimer = setTimeout(function() { AM.toggleAmbient(); }, AUTO_STOP_MS);
       } else {
         if (btn) btn.classList.remove('playing');
         if (ico) ico.className = 'fas fa-volume-xmark';
         if (btn) btn.title = 'Música ambiente';
         stopAll();
+        clearTimeout(autoStopTimer);
+        autoStopTimer = null;
         if (window.ProdigyAnalytics) ProdigyAnalytics.trackAudioToggle('off');
       }
     },
