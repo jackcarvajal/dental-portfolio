@@ -473,6 +473,8 @@
            HERO SECTION (INTACTO - NO TOCAR)
            ======================================== */
         .hero {
+            position: relative;
+            overflow: hidden;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -542,10 +544,43 @@
             from { opacity: 0; transform: translateY(24px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .hero-workflow      { animation: heroFadeUp .7s ease-out both; }
-        .hero-title-container { animation: heroFadeUp .8s ease-out .15s both; }
-        .hero-subtitle      { animation: heroFadeUp .8s ease-out .3s both; }
-        .hero-desc          { animation: heroFadeUp .8s ease-out .45s both; }
+        .hero-workflow      { position: relative; z-index: 1; animation: heroFadeUp .7s ease-out both; }
+        .hero-title-container { position: relative; z-index: 1; animation: heroFadeUp .8s ease-out .15s both; }
+        .hero-subtitle      { position: relative; z-index: 1; animation: heroFadeUp .8s ease-out .3s both; }
+        .hero-desc          { position: relative; z-index: 1; animation: heroFadeUp .8s ease-out .45s both; }
+
+        /* ── Formas flotantes CAD/CAM — fondo decorativo del hero ── */
+        .hero-shapes { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        .hero-shape {
+            position: absolute;
+            opacity: 0;
+            animation: shapeFadeIn 1.8s cubic-bezier(.23,.86,.39,.96) forwards;
+            animation-delay: var(--sd, 0s);
+        }
+        .hero-shape-inner {
+            width: 100%; height: 100%;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,.10);
+            background: linear-gradient(135deg, var(--sc, rgba(217,70,166,.15)), transparent 70%);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 8px 32px rgba(0,0,0,.3);
+            animation: shapeFloat 13s ease-in-out infinite;
+            animation-delay: var(--sd, 0s);
+        }
+        @keyframes shapeFadeIn {
+            from { opacity: 0; transform: translateY(-70px) rotate(calc(var(--sr, 0deg) - 14deg)); }
+            to   { opacity: 1; transform: translateY(0) rotate(var(--sr, 0deg)); }
+        }
+        @keyframes shapeFloat {
+            0%, 100% { transform: translateY(0) rotate(var(--sr, 0deg)); }
+            50%      { transform: translateY(16px) rotate(var(--sr, 0deg)); }
+        }
+        .hero-shape-1 { width: clamp(180px,28vw,360px); height: clamp(50px,8vw,100px); top: 16%;  left: -8%;  --sr: 12deg;  --sc: rgba(0,210,255,.16); --sd: .3s; }
+        .hero-shape-2 { width: clamp(160px,24vw,300px); height: clamp(46px,7vw,84px);  bottom: 10%; right: -6%; --sr: -15deg; --sc: rgba(217,70,166,.16); --sd: .5s; }
+        .hero-shape-3 { width: clamp(110px,16vw,200px); height: clamp(32px,5vw,56px);  bottom: 16%; left: 5%;  --sr: -8deg;  --sc: rgba(156,39,176,.18); --sd: .4s; }
+        .hero-shape-4 { width: clamp(80px,11vw,140px);  height: clamp(24px,4vw,42px);  top: 9%;   right: 13%; --sr: 18deg;  --sc: rgba(212,175,55,.18); --sd: .6s; }
+        .hero-shape-5 { width: clamp(60px,8vw,110px);   height: clamp(18px,3vw,34px);  top: 5%;   left: 21%; --sr: -22deg; --sc: rgba(0,255,65,.16); --sd: .7s; }
+        @media(max-width:700px){ .hero-shape-3, .hero-shape-5 { display: none; } }
 
         .diamond-in-y {
             position: absolute;
@@ -1603,6 +1638,13 @@
 
     <!-- HERO -->
     <header class="hero">
+        <div class="hero-shapes" aria-hidden="true">
+            <div class="hero-shape hero-shape-1"><div class="hero-shape-inner"></div></div>
+            <div class="hero-shape hero-shape-2"><div class="hero-shape-inner"></div></div>
+            <div class="hero-shape hero-shape-3"><div class="hero-shape-inner"></div></div>
+            <div class="hero-shape hero-shape-4"><div class="hero-shape-inner"></div></div>
+            <div class="hero-shape hero-shape-5"><div class="hero-shape-inner"></div></div>
+        </div>
         <div class="hero-workflow">
             <span class="wf-text">YOU SCAN</span>
             <svg class="wf-arrow" viewBox="0 0 40 20">
