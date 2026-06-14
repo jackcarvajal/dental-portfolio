@@ -1,10 +1,10 @@
 // Prodigy Lab Dental — Service Worker v4.0 (+ Notif panel + Analytics CLV + Estimadores entrega)
-const CACHE = 'prodigy-v36';
+const CACHE = 'prodigy-v37';
 
 // Assets estáticos que siempre cacheamos en install
 const PRECACHE = [
   // '/' — NO cachear el home: tiene el bypass de preview que debe ejecutarse siempre
-  '/offline.html',
+  '/404.html',
   '/portafolio',
   '/calculadora',
   '/calculadora-diseno',
@@ -39,7 +39,6 @@ const PRECACHE = [
   '/assets/og-guias-quirurgicas.jpg',
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png',
-  '/cotizaciones',
   '/revision-express',
   '/para-laboratorios',
   '/referidos',
@@ -111,7 +110,7 @@ self.addEventListener('fetch', e => {
 
           // Si hay caché: devolver inmediatamente + revalidar en fondo
           // Si no hay caché: esperar red (primera visita)
-          return cached || networkFetch.then(res => res || cache.match('/offline.html'));
+          return cached || networkFetch.then(res => res || cache.match('/404.html'));
         })
       )
     );
