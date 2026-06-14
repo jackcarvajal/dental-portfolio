@@ -1588,13 +1588,25 @@
 .nav-ped-card div { display: flex; flex-direction: column; }
 .nav-ped-card strong { font-size: .85rem; font-weight: 800; }
 .nav-ped-card span   { font-size: .9rem; color: #94a3b8; margin-top: 1px; }
-.idx-svc-card { background:#0d1520; border-radius:12px; padding:18px; text-decoration:none; color:#e2e8f0; display:flex; flex-direction:column; gap:6px; transition:border-color .2s; }
+.idx-svc-card { position:relative; overflow:hidden; background:#0d1520; border-radius:12px; padding:18px; text-decoration:none; color:#e2e8f0; display:flex; flex-direction:column; gap:6px; transition:border-color .2s; }
 .idx-svc-card-pink { border:1px solid rgba(255,255,255,.07); }
 .idx-svc-card-pink:hover { border-color: rgba(217,70,166,.4); }
 .idx-svc-card-gold { border:1px solid rgba(212,175,55,.2); }
 .idx-svc-card-gold:hover { border-color: rgba(212,175,55,.5); }
 .idx-svc-card-cyan { border:1px solid rgba(0,210,255,.2); }
 .idx-svc-card-cyan:hover { border-color: rgba(0,210,255,.5); }
+/* Spotlight — brillo que sigue al cursor */
+.idx-svc-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(180px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.10), transparent 70%);
+    opacity: 0;
+    transition: opacity .25s;
+    pointer-events: none;
+}
+.idx-svc-card:hover::before { opacity: 1; }
+@media(prefers-reduced-motion:reduce){ .idx-svc-card::before { display:none; } }
 </style>
 
     <!-- CTA FLOTANTE HAZ TU PEDIDO -->
@@ -3698,6 +3710,18 @@ document.getElementById('form-canal').addEventListener('submit', async function(
   if('requestIdleCallback'in window)requestIdleCallback(function(){_t('page_view',{title:document.title});},{timeout:3000});
   else setTimeout(function(){_t('page_view',{title:document.title});},2000);
   window._trackEvent=_t;
+})();
+</script>
+<script>
+// Spotlight — brillo que sigue al cursor en tarjetas de servicios
+(function(){
+  document.addEventListener('mousemove', function(e){
+    var card = e.target.closest && e.target.closest('.idx-svc-card');
+    if(!card) return;
+    var r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
 })();
 </script>
 </body>
