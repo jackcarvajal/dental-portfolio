@@ -693,8 +693,13 @@
 
         .portfolio-card:hover {
             transform: translateY(-12px);
-            border-color: #FFD700;
-            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.3);
+            animation: pcardGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pcardGlow {
+            0%, 100% { border-color: #FFD700; box-shadow: 0 20px 50px rgba(212, 175, 55, 0.35); }
+            33% { border-color: #D946A6; box-shadow: 0 20px 50px rgba(217, 70, 166, 0.35); }
+            66% { border-color: #00d2ff; box-shadow: 0 20px 50px rgba(0, 210, 255, 0.35); }
         }
 
         .image-wrapper {
