@@ -123,8 +123,8 @@
 | 3 | GA4 Real Time → verificar que llegan hits | ⏳ |
 | 4 | Google Ads ID → reemplazar `AW-XXXXXXXXX` en `js/conversions.js` línea 22 | ⏳ |
 | 5 | DNS Cloudflare → SPF + DKIM + DMARC (ver `PENDIENTES-DNS-EMAIL.md`) | ⏳ |
-| 6 | **OG images Alejandro** → capturar JPG desde HTML: `assets/og-home.html`, `og-calculadora-diseno.html`, `og-diseno-remoto.html` → guardar como `.jpg` 1200×630 | ⏳ |
-| 7 | **OG images PRODIGY** → 19 páginas usan `prodigy-preview.jpg` compartido. Crear imágenes dedicadas por servicio (CAD, fresado, calculadoras) para mejor CTR en redes | ⏳ |
+| ~~6~~ | ~~**OG images Alejandro** → capturar JPG desde HTML: `assets/og-home.html`, `og-calculadora-diseno.html`, `og-diseno-remoto.html` → guardar como `.jpg` 1200×630~~ | ✅ Hecho 2026-06-14 — generadas con Chrome headless, commit 31769c7 |
+| ~~7~~ | ~~**OG images PRODIGY** → 19 páginas usan `prodigy-preview.jpg` compartido. Crear imágenes dedicadas por servicio (CAD, fresado, calculadoras) para mejor CTR en redes~~ | ✅ Hecho 2026-06-14 — 26 imágenes generadas, commit 1b8ecd9 |
 
 ---
 
