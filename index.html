@@ -582,18 +582,43 @@
         .hero-shape-5 { width: clamp(60px,8vw,110px);   height: clamp(18px,3vw,34px);  top: 5%;   left: 21%; --sr: -22deg; --sc: rgba(0,255,65,.16); --sd: .7s; }
         @media(max-width:700px){ .hero-shape-3, .hero-shape-5 { display: none; } }
 
-        .diamond-in-y {
+        /* ── Cubo 3D giratorio (CSS puro) — vitrina de servicios PRODIGY ── */
+        .cube3d-wrap {
+            --cs: 90px;
             position: absolute;
             right: 8%;
-            top: -15%;
-            font-size: 2.5rem;
-            animation: floatDiamond 3s ease-in-out infinite;
+            top: -14%;
+            width: var(--cs); height: var(--cs);
+            perspective: 600px;
+            z-index: 1;
         }
-
-        @keyframes floatDiamond {
-            0%, 100% { transform: translateY(0) rotate(-5deg); }
-            50% { transform: translateY(-8px) rotate(5deg); }
+        .cube3d {
+            width: 100%; height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: cube3dSpin 18s linear infinite;
         }
+        .cube3d-face {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: calc(var(--cs) * 0.42);
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 14px;
+            backdrop-filter: blur(3px);
+            background: linear-gradient(135deg, var(--c1), rgba(5,5,5,.55));
+            box-shadow: 0 4px 24px rgba(0,0,0,.35);
+        }
+        .cube3d-face.f-front  { --c1: rgba(217,70,166,.22); transform: translateZ(calc(var(--cs)/2)); }
+        .cube3d-face.f-back   { --c1: rgba(0,210,255,.18);  transform: rotateY(180deg) translateZ(calc(var(--cs)/2)); }
+        .cube3d-face.f-right  { --c1: rgba(212,175,55,.2);  transform: rotateY(90deg) translateZ(calc(var(--cs)/2)); }
+        .cube3d-face.f-left   { --c1: rgba(156,39,176,.2);  transform: rotateY(-90deg) translateZ(calc(var(--cs)/2)); }
+        .cube3d-face.f-top    { --c1: rgba(0,255,65,.18);   transform: rotateX(90deg) translateZ(calc(var(--cs)/2)); }
+        .cube3d-face.f-bottom { --c1: rgba(244,163,0,.2);   transform: rotateX(-90deg) translateZ(calc(var(--cs)/2)); }
+        @keyframes cube3dSpin {
+            from { transform: rotateX(0deg) rotateY(0deg); }
+            to   { transform: rotateX(360deg) rotateY(360deg); }
+        }
+        @media(max-width:700px){ .cube3d-wrap { --cs: 60px; right: 4%; top: -8%; } }
 
         .hero-subtitle {
             font-size: 1.5rem;
@@ -1193,7 +1218,6 @@
             .hero-title-main { font-size: 3rem; letter-spacing: -2px; }
             .hero-subtitle { font-size: 0.85rem; letter-spacing: 3px; }
             .hero-desc { font-size: 0.88rem; padding: 0 4px; }
-            .diamond-in-y { font-size: 1.6rem; right: 2%; top: -8%; }
 
             /* GRIDS → columna única (steps; cajones y portfolio van a scroll horizontal via bloque al final) */
             .steps-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
@@ -1678,7 +1702,16 @@
 
         <div class="hero-title-container">
             <h1 class="hero-title-main">PRODIGY</h1>
-            <div class="diamond-in-y">💎</div>
+            <div class="cube3d-wrap" aria-hidden="true">
+                <div class="cube3d">
+                    <div class="cube3d-face f-front">💎</div>
+                    <div class="cube3d-face f-back">🦷</div>
+                    <div class="cube3d-face f-right">⚙️</div>
+                    <div class="cube3d-face f-left">🖨️</div>
+                    <div class="cube3d-face f-top">📐</div>
+                    <div class="cube3d-face f-bottom">✨</div>
+                </div>
+            </div>
         </div>
 
         <p class="hero-subtitle" data-i18n="index.hero.subtitle">LUXURY CAD/CAM</p>
