@@ -42,12 +42,59 @@
       pointer-events: none;
     }
     .diamond {
-      font-size: 4rem; margin-bottom: 20px;
+      font-size: 4rem; margin-bottom: 20px; position: relative; z-index: 2;
       animation: float 3s ease-in-out infinite;
+    }
+    .diamond .gear {
+      position: absolute; top: -10px; right: -22px; font-size: 1.8rem;
+      animation: spinGear 4s linear infinite;
+      filter: drop-shadow(0 0 6px rgba(0,210,255,.6));
     }
     @keyframes float {
       0%,100% { transform: translateY(0) rotate(0deg); }
       50%      { transform: translateY(-14px) rotate(3deg); }
+    }
+    @keyframes spinGear {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* ── Formas flotantes CAD/CAM (mismo patrón del hero de index.html) ── */
+    .hero-shapes { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .hero-shape { position: absolute; opacity: 0; animation: shapeFadeIn 1.8s cubic-bezier(.23,.86,.39,.96) forwards; animation-delay: var(--sd,0s); }
+    .hero-shape-inner {
+      width: 100%; height: 100%; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(135deg, var(--sc, rgba(217,70,166,.15)), transparent 70%);
+      backdrop-filter: blur(2px); box-shadow: 0 8px 32px rgba(0,0,0,.3);
+      animation: shapeFloat 13s ease-in-out infinite; animation-delay: var(--sd,0s);
+    }
+    @keyframes shapeFadeIn {
+      from { opacity: 0; transform: translateY(-70px) rotate(calc(var(--sr,0deg) - 14deg)); }
+      to   { opacity: 1; transform: translateY(0) rotate(var(--sr,0deg)); }
+    }
+    @keyframes shapeFloat {
+      0%,100% { transform: translateY(0) rotate(var(--sr,0deg)); }
+      50%     { transform: translateY(16px) rotate(var(--sr,0deg)); }
+    }
+    .hero-shape-1 { width: clamp(160px,26vw,320px); height: clamp(46px,7vw,90px); top: 12%;  left: -8%;  --sr: 12deg;  --sc: rgba(0,210,255,.14); --sd: .3s; }
+    .hero-shape-2 { width: clamp(150px,22vw,280px); height: clamp(42px,6vw,76px); bottom: 8%; right: -6%; --sr: -15deg; --sc: rgba(217,70,166,.14); --sd: .5s; }
+    .hero-shape-3 { width: clamp(90px,14vw,170px);  height: clamp(26px,4vw,46px); bottom: 14%; left: 6%;  --sr: -8deg;  --sc: rgba(212,175,55,.16); --sd: .4s; }
+    @media(max-width:700px){ .hero-shape-3 { display: none; } }
+
+    /* ── Línea de escaneo intraoral ── */
+    .scan-line {
+      position: fixed; left: 0; right: 0; top: -2px; height: 2px; z-index: 1;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      box-shadow: 0 0 14px var(--cyan);
+      animation: scanSweep 4.5s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes scanSweep {
+      0%   { top: -2px; opacity: 0; }
+      6%   { opacity: .8; }
+      94%  { opacity: .8; }
+      100% { top: 100%; opacity: 0; }
     }
     .code {
       font-size: clamp(5rem,20vw,10rem);
@@ -91,11 +138,17 @@
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
+<div class="hero-shapes" aria-hidden="true">
+  <div class="hero-shape hero-shape-1"><div class="hero-shape-inner"></div></div>
+  <div class="hero-shape hero-shape-2"><div class="hero-shape-inner"></div></div>
+  <div class="hero-shape hero-shape-3"><div class="hero-shape-inner"></div></div>
+</div>
+<div class="scan-line" aria-hidden="true"></div>
 <main id="main-content">
-  <div class="diamond">💎</div>
+  <div class="diamond">💎<span class="gear">⚙️</span></div>
   <div class="code">404</div>
-  <h1>Esta página no existe</h1>
-  <p>El enlace puede estar roto o la página fue movida.<br>¿A dónde querías ir?</p>
+  <h1>¡La fresadora no encontró este archivo!</h1>
+  <p>Escaneamos los ejes X, Y, Z (y el eje secreto) y esta página no aparece en ningún plato de impresión ni archivo .STL.<br>Quizás se quedó atrapada en la cámara de curado.</p>
   <div class="links">
     <a href="/" class="link-btn link-primary">
       <i class="fa-solid fa-house"></i> Inicio
