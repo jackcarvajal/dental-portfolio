@@ -153,7 +153,7 @@
             width:100%; padding:11px 14px;
             background:var(--bg-dark); border:1px solid var(--border-subtle);
             border-radius:var(--radius-sm); color:var(--text-primary);
-            font-size:.95rem; transition:all var(--transition-base); outline:none; font-family:inherit;
+            font-size:16px; transition:all var(--transition-base); outline:none; font-family:inherit;
         }
         .form-group input:focus,.form-group select:focus,.form-group textarea:focus {
             border-color:var(--accent-cad); box-shadow:0 0 0 3px rgba(0,210,255,.08);
@@ -936,7 +936,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                 <div class="accordion-content">
                     <div class="accordion-inner" style="padding:12px;">
                         <label for="pago_metodo" style="font-size:.7rem;color:var(--text-secondary);display:block;margin-bottom:4px;">Método de pago</label>
-                        <select id="pago_metodo" style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:.86rem;">
+                        <select id="pago_metodo" style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:16px;">
                             <option value="">¿Por dónde pagaste?</option>
                             <option>Nequi</option><option>Daviplata</option>
                             <option>Nu</option><option>Breb</option>
@@ -944,9 +944,9 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <option>PayPal</option><option>Otro</option>
                         </select>
                         <input type="text" id="pago_titular" placeholder="Nombre del titular" maxlength="50" autocomplete="name"
-                               style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:.86rem;">
+                               style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:16px;">
                         <input type="text" id="pago_ref" placeholder="Comprobante / Ref. (opcional)" maxlength="30" autocomplete="off"
-                               style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;font-size:.86rem;">
+                               style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;font-size:16px;">
                     </div>
                 </div>
             </div>
@@ -973,16 +973,16 @@ window.submitOrden     = window.submitOrden      || function(){};
                         </label>
                         <div id="billing-fields-d" style="display:none;">
                             <label for="billing_tipo_d" style="font-size:.72rem;color:rgba(255,255,255,.5);display:block;margin-bottom:4px;">Tipo de documento</label>
-                            <select id="billing_tipo_d" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
+                            <select id="billing_tipo_d" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:16px;">
                                 <option value="">Tipo de documento</option>
                                 <option value="CC">Cédula de Ciudadanía</option>
                                 <option value="NIT">NIT (Empresa / Clínica)</option>
                                 <option value="CE">Cédula de Extranjería</option>
                             </select>
-                            <input type="text" id="billing_nit_d" oninput="validarNITd(this)" placeholder="NIT / Cédula (ej: 900123456-1)" maxlength="20" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:4px;font-size:.85rem;">
+                            <input type="text" id="billing_nit_d" oninput="validarNITd(this)" placeholder="NIT / Cédula (ej: 900123456-1)" maxlength="20" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:4px;font-size:16px;">
                             <span id="nit-indicator-d" style="font-size:.8rem;display:block;margin-top:3px;min-height:16px;margin-bottom:4px;"></span>
-                            <input type="text" id="billing_razon_d" placeholder="Razón Social o Nombre Completo" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
-                            <input type="email" id="billing_email_d" placeholder="Correo para factura (contabilidad@...)" maxlength="80" autocomplete="email" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);font-size:.85rem;">
+                            <input type="text" id="billing_razon_d" placeholder="Razón Social o Nombre Completo" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:16px;">
+                            <input type="email" id="billing_email_d" placeholder="Correo para factura (contabilidad@...)" maxlength="80" autocomplete="email" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);font-size:16px;">
                             <p style="font-size:.8rem;color:#94a3b8;margin-top:6px;">Factura enviada al correo indicado en máx. 24h hábiles tras confirmación de pago.</p>
                         </div>
                     </div>
