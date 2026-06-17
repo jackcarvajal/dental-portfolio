@@ -41,7 +41,7 @@ BEGIN
             p.stl_urls,
             p.link_diseno
         FROM pedidos p
-        WHERE p.estado IN ('ENTREGADO', 'entregado')
+        WHERE p.estado_operativo = 'ENTREGADO'
           AND p.updated_at < NOW() - INTERVAL '30 days'
           AND p.stl_ruta IS NOT NULL
           AND (p.stl_purgado IS NULL OR p.stl_purgado = false)
@@ -130,7 +130,7 @@ SELECT
         ELSE 'OK'
     END AS estado_purga
 FROM pedidos
-WHERE estado IN ('ENTREGADO', 'entregado')
+WHERE estado_operativo = 'ENTREGADO'
   AND stl_ruta IS NOT NULL
   AND (stl_purgado IS NULL OR stl_purgado = false)
 ORDER BY updated_at ASC;
