@@ -961,8 +961,7 @@ async function cargarRotacion() {
 async function contarSolicitudesPendientes() {
     const { count } = await sb.from('pedidos')
         .select('id', { count: 'exact', head: true })
-        .in('estado_operativo', ['EN_PRODUCCION', 'FRESADO_INICIADO'])
-        .not('estado', 'in', '("cancelado","terminado","ENTREGADO")');
+        .in('estado_operativo', ['EN_PRODUCCION', 'FRESADO_INICIADO']);
     const badge = document.getElementById('badge-sol');
     if (count > 0) { badge.textContent = count; badge.style.display = 'inline'; }
     else badge.style.display = 'none';
@@ -976,7 +975,6 @@ async function cargarSolicitudes() {
         .select('id,codigo,nombre_paciente,servicio,material,flujo,estado_operativo,departamento_actual,created_at,timestamp_produccion')
         .in('estado_operativo', ['EN_PRODUCCION','FRESADO_INICIADO','VALIDACION_PENDIENTE'])
         .in('flujo', ['fresado','lab','impresion'])
-        .not('estado', 'in', '("cancelado","terminado")')
         .order('created_at', { ascending: true })
         .limit(80);
 
