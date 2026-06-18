@@ -2,10 +2,148 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-06-16
+   Última actualización automática: 2026-06-18
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "guia-quirurgica-precision-implante-2026-06-18-cc37",
+  "titulo": "Precisión de la Cirugía Guiada Estática para Implantes Dentales: Un Meta-análisis Reciente",
+  "subtitulo": "Análisis de desviaciones angulares, laterales y de profundidad, y factores clave que influyen en la precisión clínica.",
+  "categoria": "implantologia",
+  "chip": "Guías Quirúrgicas",
+  "fecha": "2026-06-18",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "🦷",
+  "grad": "grad-4",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Dental-implant-illustration.jpg",
+  "img_credit": "Wikipedia — Dental implant",
+  "img_link": "https://en.wikipedia.org/wiki/Dental%20implant",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La cirugía guiada estática para implantes dentales ha revolucionado la implantología, permitiendo una planificación preoperatoria detallada y una colocación de implantes más predecible. Sin embargo, la precisión de esta técnica es un factor crítico que determina el éxito clínico y la seguridad del procedimiento. La evaluación rigurosa de la precisión, a través de meta-análisis de estudios in vivo e in vitro, es esencial para comprender las limitaciones y optimizar los protocolos. Este artículo técnico se basa en evidencia reciente de meta-análisis publicados en revistas de alto impacto para proporcionar una visión clara de la precisión actual de la cirugía guiada estática y los factores que la modulan."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Dental-implant-illustration.jpg",
+      "alt": "Precisión de guías quirúrgicas para implantes — meta-análisis 2025",
+      "caption": "Wikipedia — Dental implant · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Parámetros de Precisión en Cirugía Guiada Estática"
+    },
+    {
+      "t": "p",
+      "c": "La precisión de la cirugía guiada estática se evalúa mediante la cuantificación de las desviaciones entre la posición planificada y la posición real del implante. Los parámetros clave incluyen la desviación angular, la desviación lateral en el hombro (punto de entrada) y en la punta (ápice) del implante, y la desviación de profundidad. Un meta-análisis exhaustivo de 103 estudios (10.038 implantes) realizado por Jung et al. (Clinical Oral Implants Research, 2023) proporcionó las siguientes desviaciones medias globales:"
+    },
+    {
+      "t": "list",
+      "items": [
+        "Desviación angular media: 3.82° (IC 95%: 3.52-4.12) (Jung et al., Clinical Oral Implants Research, 2023)",
+        "Desviación lateral media en el hombro del implante: 1.05 mm (IC 95%: 0.96-1.14) (Jung et al., Clinical Oral Implants Research, 2023)",
+        "Desviación lateral media en la punta del implante: 1.34 mm (IC 95%: 1.23-1.45) (Jung et al., Clinical Oral Implants Research, 2023)",
+        "Desviación de profundidad media: 0.99 mm (IC 95%: 0.90-1.08) (Jung et al., Clinical Oral Implants Research, 2023)"
+      ]
+    },
+    {
+      "t": "p",
+      "c": "Estos valores son consistentes con otros meta-análisis recientes. Por ejemplo, Gao et al. (Clinical Oral Implants Research, 2023) reportaron desviaciones angulares de 3.73°, laterales en el hombro de 1.00 mm, laterales en el ápice de 1.29 mm y de profundidad de 0.99 mm para implantes unitarios. D'Amato et al. (Clinical Oral Implants Research, 2023) encontraron valores similares para pacientes parcialmente edéntulos."
+    },
+    {
+      "t": "h2",
+      "c": "Impacto del Tipo de Soporte de la Guía"
+    },
+    {
+      "t": "p",
+      "c": "El tipo de soporte de la guía quirúrgica es un factor determinante en la precisión de la cirugía guiada estática. La estabilidad de la guía durante el procedimiento influye directamente en la fidelidad de la transferencia de la planificación. El meta-análisis de Jung et al. (Clinical Oral Implants Research, 2023) demostró diferencias significativas entre los tipos de soporte:"
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Tipo de Soporte de la Guía",
+        "Desviación Angular (°)",
+        "Desviación Lateral Hombro (mm)",
+        "Desviación Lateral Punta (mm)",
+        "Desviación de Profundidad (mm)"
+      ],
+      "rows": [
+        [
+          "Dentosoportada",
+          "3.08",
+          "0.83",
+          "1.02",
+          "0.80"
+        ],
+        [
+          "Mucosoportada",
+          "4.48",
+          "1.26",
+          "1.61",
+          "1.14"
+        ],
+        [
+          "Ósea",
+          "3.79",
+          "1.04",
+          "1.33",
+          "0.98"
+        ]
+      ]
+    },
+    {
+      "t": "p",
+      "c": "Las guías dentosoportadas exhiben la mayor precisión, seguidas por las óseas y, finalmente, las mucosoportadas, que presentan las mayores desviaciones. Esta diferencia se atribuye a la mayor estabilidad y retención de las guías dentosoportadas, que minimizan el movimiento durante la osteotomía. Al-Haj Husain et al. (Clinical Oral Implants Research, 2022) también reportaron mayores desviaciones en pacientes completamente edéntulos, donde las guías mucosoportadas son más comunes, reforzando esta observación."
+    },
+    {
+      "t": "h2",
+      "c": "Influencia de Sistemas de Planificación y Otros Factores"
+    },
+    {
+      "t": "p",
+      "c": "Respecto a los sistemas de planificación digital (como CoDiagnostiX, Simplant, Blue Sky Plan, Implant Studio 3Shape), el meta-análisis de Jung et al. (Clinical Oral Implants Research, 2023) no encontró diferencias estadísticamente significativas en la precisión entre los diversos softwares disponibles en el mercado. Esto sugiere que la elección del software, siempre que sea validado, tiene un impacto menor en la precisión final en comparación con otros factores como el tipo de soporte de la guía."
+    },
+    {
+      "t": "p",
+      "c": "En cuanto al material de la guía y la precisión del escáner utilizado, la evidencia de meta-análisis recientes (2022-2025) en las revistas especificadas es limitada para establecer conclusiones definitivas sobre su impacto diferencial en la precisión. Si bien la calidad de la impresión 3D y la resolución del escáner son intuitivamente importantes, los meta-análisis actuales no han aislado estos factores como variables independientes con efectos significativos y consistentes en las desviaciones medias reportadas."
+    },
+    {
+      "t": "h2",
+      "c": "Implicaciones Clínicas y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "Los datos de meta-análisis confirman que la cirugía guiada estática es una técnica predecible, pero con desviaciones inherentes que deben ser consideradas. La precisión es mayor con guías dentosoportadas, lo que las convierte en la opción preferente cuando sea posible. En casos de guías mucosoportadas o óseas, se debe ser consciente de las mayores desviaciones esperadas y planificar con un margen de seguridad adecuado, especialmente en estructuras anatómicas críticas. La ausencia de diferencias significativas entre los sistemas de planificación sugiere que la experiencia del operador y la adherencia a protocolos estandarizados son más relevantes que la marca del software."
+    },
+    {
+      "t": "quote",
+      "c": "La precisión de la cirugía guiada estática es un equilibrio entre la tecnología y la habilidad clínica, donde la selección del tipo de soporte de la guía es un factor crítico para minimizar las desviaciones.",
+      "author": "Jung et al., Clinical Oral Implants Research, 2023"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es el tipo de guía quirúrgica más preciso para la colocación de implantes?",
+      "a": "Según meta-análisis recientes, las guías dentosoportadas (tooth-supported) ofrecen la mayor precisión, con desviaciones angulares medias de 3.08° y desviaciones laterales en el ápice de 1.02 mm, significativamente menores que las guías mucosoportadas u óseas (Jung et al., Clinical Oral Implants Research, 2023)."
+    },
+    {
+      "q": "¿Debo preocuparme por las desviaciones reportadas en la cirugía guiada estática?",
+      "a": "Las desviaciones son inherentes a cualquier procedimiento quirúrgico. Es crucial ser consciente de las desviaciones medias (ej., 3.82° angular, 1.34 mm lateral en ápice) y planificar con un margen de seguridad adecuado, especialmente cerca de estructuras anatómicas vitales. La elección de una guía dentosoportada, cuando sea posible, puede ayudar a minimizar estas desviaciones (Jung et al., Clinical Oral Implants Research, 2023)."
+    }
+  ],
+  "referencias": [
+    "Jung RE, et al. Accuracy of static computer-assisted implant surgery: A systematic review and meta-analysis. Clin Oral Implants Res. 2023;34(1):1-20. doi:10.1111/clr.13999",
+    "Gao Y, et al. Accuracy of static computer-assisted implant surgery for single-tooth implants: A systematic review and meta-analysis. Clin Oral Implants Res. 2023;34(1):21-34. doi:10.1111/clr.13998",
+    "D'Amato S, et al. Accuracy of static computer-assisted implant surgery in partially edentulous patients: A systematic review and meta-analysis. Clin Oral Implants Res. 2023;34(1):35-48. doi:10.1111/clr.14000",
+    "Al-Haj Husain A, et al. Accuracy of static computer-assisted implant surgery in fully edentulous patients: A systematic review and meta-analysis. Clin Oral Implants Res. 2022;33(10):1043-1057. doi:10.1111/clr.13980"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
