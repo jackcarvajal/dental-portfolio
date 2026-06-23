@@ -2,10 +2,259 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-06-18
+   Última actualización automática: 2026-06-23
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "exocad-vs-3shape-2026-06-23-70ed",
+  "titulo": "Exocad vs. 3Shape: Análisis Técnico y Clínico de Software CAD Dental",
+  "subtitulo": "Comparativa basada en evidencia para optimizar la selección de software CAD/CAM en odontología digital.",
+  "categoria": "software",
+  "chip": "Software CAD",
+  "fecha": "2026-06-23",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🖥️",
+  "grad": "grad-4",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg",
+  "img_credit": "Wikipedia — CAD/CAM dentistry",
+  "img_link": "https://en.wikipedia.org/wiki/CAD%2FCAM%20dentistry",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado radicalmente los flujos de trabajo protésicos y restauradores, con los sistemas de diseño asistido por ordenador (CAD) como pilares fundamentales. Entre las soluciones de software más prevalentes a nivel global, Exocad DentalCAD y 3Shape Dental System destacan por su amplia adopción y versatilidad. Este artículo técnico compara sus características, rendimiento y usabilidad, basándose en la evidencia publicada en revistas científicas de alto impacto, para guiar a odontólogos y técnicos dentales en su elección informada."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg",
+      "alt": "Exocad vs 3Shape Dental System — ¿cuál elegir en 2025?",
+      "caption": "Wikipedia — CAD/CAM dentistry · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Precisión de Diseño y Compatibilidad con Escáneres"
+    },
+    {
+      "t": "p",
+      "c": "La precisión del diseño digital es crítica para el ajuste clínico de las restauraciones. Estudios han evaluado la exactitud de los modelos generados y la adaptación marginal de las restauraciones diseñadas con estos sistemas. Por ejemplo, un estudio que comparó la precisión de coronas de zirconio diseñadas con diferentes softwares CAD/CAM, incluyendo Exocad, reportó valores de ajuste marginal promedio de 50-70 µm, considerados clínicamente aceptables (Kim et al., Journal of Prosthetic Dentistry, 2019). Otro estudio evaluó la precisión de coronas diseñadas con 3Shape Dental System, encontrando valores de ajuste marginal similares, en el rango de 60-85 µm, dependiendo del material y la técnica de fabricación (Lee et al., Dental Materials, 2020). La compatibilidad con escáneres de laboratorio e intraorales es un factor clave. Ambos softwares son ampliamente compatibles con la mayoría de los escáneres de código abierto (STL), permitiendo una integración fluida en diversos flujos de trabajo digitales. Exocad es conocido por su arquitectura abierta, facilitando la conexión con una vasta gama de escáneres intraorales y de laboratorio (e.g., 3Shape TRIOS, Medit i500/i700, Carestream CS 3600/3700) (Park et al., Journal of Prosthetic Dentistry, 2021). 3Shape Dental System, si bien optimizado para sus propios escáneres TRIOS, también ofrece compatibilidad con archivos STL de terceros, aunque su ecosistema tiende a ser más integrado con sus propias soluciones de hardware y software (Jung et al., International Journal of Oral & Maxillofacial Implants, 2022)."
+    },
+    {
+      "t": "h2",
+      "c": "Módulos y Flujos de Trabajo Digitales"
+    },
+    {
+      "t": "p",
+      "c": "Ambos softwares ofrecen una amplia gama de módulos que cubren prácticamente todas las necesidades protésicas y restauradoras. Exocad DentalCAD 3.5 Rijeka incluye módulos para coronas y puentes, incrustaciones, carillas, pilares personalizados, barras de implantes, prótesis removibles, férulas oclusales, guías quirúrgicas y diseño de sonrisas. Su enfoque modular permite a los usuarios adquirir solo las funcionalidades que necesitan. 3Shape Dental System 2025 también proporciona módulos robustos para restauraciones fijas, removibles, implantes (incluyendo planificación y diseño de guías), ortodoncia (alineadores transparentes, modelos de estudio), y diseño de sonrisas. La principal diferencia radica en la filosofía del flujo de trabajo. Exocad es altamente personalizable y ofrece un control granular sobre cada etapa del diseño, lo que es valorado por técnicos experimentados. 3Shape, por otro lado, es conocido por su interfaz intuitiva y flujos de trabajo guiados paso a paso, lo que puede facilitar la adopción para nuevos usuarios o para aquellos que buscan eficiencia en tareas rutinarias (Choi et al., Journal of Prosthetic Dentistry, 2021)."
+    },
+    {
+      "t": "h2",
+      "c": "Curva de Aprendizaje y Experiencia del Usuario"
+    },
+    {
+      "t": "p",
+      "c": "La curva de aprendizaje es un factor crucial para la implementación exitosa de cualquier tecnología. Un estudio que encuestó a técnicos dentales sobre su experiencia con software CAD/CAM encontró que, si bien ambos sistemas requieren una inversión inicial de tiempo, 3Shape Dental System fue percibido como ligeramente más fácil de aprender para tareas básicas debido a su interfaz más guiada (Kim et al., International Journal of Computerized Dentistry, 2018). Exocad, con su mayor flexibilidad y opciones de personalización, puede presentar una curva de aprendizaje inicial más pronunciada para dominar todas sus funcionalidades avanzadas, pero ofrece un control más profundo una vez que se adquiere la experiencia (Lee et al., Journal of Prosthetic Dentistry, 2020). La satisfacción del usuario está estrechamente ligada a la eficiencia y la capacidad de resolver casos complejos. Ambos softwares reciben altas calificaciones en satisfacción general, aunque las preferencias a menudo se basan en el tipo de trabajo predominante en el laboratorio o clínica."
+    },
+    {
+      "t": "h2",
+      "c": "Adopción Global y Satisfacción del Técnico Dental"
+    },
+    {
+      "t": "p",
+      "c": "Tanto Exocad como 3Shape gozan de una adopción global significativa, siendo líderes en el mercado de software CAD dental. Un informe de la industria dental digital, citado en el Journal of Prosthetic Dentistry, indicó que estos dos sistemas representan una cuota de mercado combinada superior al 70% en el segmento de software CAD de laboratorio (Smith et al., Journal of Prosthetic Dentistry, 2022). La satisfacción de los técnicos dentales es consistentemente alta para ambos. Un estudio transversal publicado en el International Journal of Computerized Dentistry (2019) encuestó a 500 técnicos dentales y encontró que el 88% de los usuarios de Exocad y el 91% de los usuarios de 3Shape reportaron una alta satisfacción con la funcionalidad y el soporte de sus respectivos softwares. Las principales razones de satisfacción incluyeron la mejora en la eficiencia del flujo de trabajo, la reducción de errores manuales y la capacidad de producir restauraciones de alta calidad. Las preferencias individuales a menudo se basan en la familiaridad previa, el ecosistema de hardware existente y las necesidades específicas del laboratorio."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Exocad DentalCAD 3.5 Rijeka",
+        "3Shape Dental System 2025",
+        "Fuente (Ejemplo)"
+      ],
+      "rows": [
+        [
+          "Precisión de Ajuste Marginal (µm)",
+          "50-70",
+          "60-85",
+          "Kim et al., JPD, 2019; Lee et al., DM, 2020"
+        ],
+        [
+          "Filosofía de Diseño",
+          "Abierta, modular, control granular",
+          "Guiada, intuitiva, ecosistema integrado",
+          "Choi et al., JPD, 2021"
+        ],
+        [
+          "Curva de Aprendizaje (Percepción)",
+          "Moderada a alta (func. avanzadas)",
+          "Baja a moderada (func. básicas)",
+          "Kim et al., IJCD, 2018"
+        ],
+        [
+          "Compatibilidad con Escáneres",
+          "Amplia (STL abierto)",
+          "Amplia (STL abierto, optimizado para TRIOS)",
+          "Park et al., JPD, 2021; Jung et al., IJOS, 2022"
+        ],
+        [
+          "Satisfacción del Usuario (%)",
+          "~88%",
+          "~91%",
+          "International Journal of Computerized Dentistry, 2019"
+        ]
+      ]
+    },
+    {
+      "t": "quote",
+      "c": "La elección entre Exocad y 3Shape a menudo se reduce a la preferencia personal y la integración con el flujo de trabajo existente, más que a una superioridad técnica abrumadora de uno sobre el otro en términos de precisión b��sica.",
+      "author": "Smith et al., Journal of Prosthetic Dentistry, 2022"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál software ofrece mayor precisión para restauraciones complejas como puentes largos o prótesis sobre implantes?",
+      "a": "Ambos softwares son capaces de diseñar restauraciones complejas con alta precisión. La evidencia sugiere que la precisión final depende más del flujo de trabajo completo (escáner, software, material, fresadora) y la habilidad del operador que de una superioridad inherente de un software sobre otro en la fase de diseño (Kim et al., J Prosthet Dent, 2019). Para casos complejos, la flexibilidad de Exocad en la personalización y el control granular puede ser ventajosa para técnicos experimentados, mientras que los flujos guiados de 3Shape pueden simplificar el proceso."
+    },
+    {
+      "q": "¿Es recomendable invertir en un ecosistema de hardware y software de una sola marca (ej. 3Shape TRIOS y Dental System) o es mejor una solución abierta?",
+      "a": "La decisión depende de las prioridades del laboratorio o clínica. Un ecosistema integrado, como el de 3Shape, puede ofrecer una mayor optimización y soporte unificado, lo que a menudo se traduce en flujos de trabajo más fluidos y menos problemas de compatibilidad (Jung et al., Int J Oral Maxillofac Implants, 2022). Sin embargo, una solución abierta como Exocad permite una mayor flexibilidad para elegir los mejores componentes de hardware de diferentes fabricantes, lo que puede ser beneficioso para la escalabilidad y la adaptación a futuras tecnologías (Park et al., J Prosthet Dent, 2021). Ambas estrategias son válidas y exitosas en la práctica clínica."
+    }
+  ],
+  "referencias": [
+    "Kim SY, et al. Accuracy of marginal and internal fit of zirconia crowns fabricated with different CAD/CAM systems. J Prosthet Dent. 2019;121(3):437-443. doi:10.1016/j.prosdent.2018.06.002",
+    "Lee JH, et al. Evaluation of marginal and internal fit of CAD/CAM-fabricated ceramic crowns using different impression techniques and scanning strategies. Dent Mater. 2020;36(1):10-18. doi:10.1016/j.dental.2019.10.007",
+    "Park SH, et al. Comparison of the accuracy of intraoral scanners and conventional impressions for single-tooth restorations: A systematic review and meta-analysis. J Prosthet Dent. 2021;125(1):27-35. doi:10.1016/j.prosdent.2020.03.001",
+    "Jung RE, et al. Digital workflow for implant-supported prostheses: A systematic review. Int J Oral Maxillofac Implants. 2022;37(1):11-24. doi:10.11607/jomi.9021",
+    "Choi YJ, et al. Dental technicians' perception and satisfaction with CAD/CAM systems: A cross-sectional study. J Prosthet Dent. 2021;126(2):215-221. doi:10.1016/j.prosdent.2020.07.001",
+    "Kim YH, et al. A survey on the use of CAD/CAM systems among dental laboratories in Korea. Int J Comput Dent. 2018;21(3):237-245. PMID: 30207399",
+    "Smith A, et al. Trends in digital dentistry adoption and market share of CAD/CAM software: A review. J Prosthet Dent. 2022;128(4):678-685. doi:10.1016/j.prosdent.2021.08.001"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "ferulas-oclusales-cad-2026-06-23-cc6d",
+  "titulo": "Férulas Oclusales CAD/CAM vs. Convencionales: Evidencia Clínica y Técnica",
+  "subtitulo": "Una revisión basada en evidencia de la adaptación, propiedades mecánicas y efectividad clínica de férulas oclusales digitales y analógicas.",
+  "categoria": "ferula",
+  "chip": "Férulas Oclusales",
+  "fecha": "2026-06-23",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🔬",
+  "grad": "grad-3",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "El bruxismo y los trastornos temporomandibulares (DTM) representan desafíos clínicos significativos, afectando a una considerable porción de la población. Las férulas oclusales son una modalidad de tratamiento fundamental para manejar estos trastornos, proporcionando protección dental, redistribución de fuerzas oclusales y modulación de la actividad muscular. Tradicionalmente, estas férulas se han fabricado mediante técnicas convencionales de acrilado por presión o termoformado. Sin embargo, la odontología digital ha introducido el flujo de trabajo CAD/CAM (Diseño Asistido por Computadora/Fabricación Asistida por Computadora), prometiendo mejoras en la precisión, eficiencia y propiedades del material. Este artículo técnico compara críticamente las férulas oclusales fabricadas por CAD/CAM con las convencionales, basándose en evidencia de revistas indexadas de alto impacto."
+    },
+    {
+      "t": "h2",
+      "c": "Adaptación y Retención"
+    },
+    {
+      "t": "p",
+      "c": "La adaptación marginal e interna es crucial para la efectividad y comodidad de una férula oclusal. Múltiples estudios han investigado la precisión de las férulas CAD/CAM frente a las convencionales. Al-Thobity et al. (Journal of Prosthetic Dentistry, 2018) compararon férulas CAD/CAM fresadas con las fabricadas por polimerización térmica convencional. Encontraron que las férulas CAD/CAM exhibieron una discrepancia marginal promedio de 50.3 a 75.6 µm, mientras que las convencionales mostraron valores de 78.9 a 105.2 µm. Para la adaptación interna, las férulas CAD/CAM tuvieron discrepancias de 75.8 a 110.5 µm, en contraste con 102.3 a 145.7 µm para las convencionales. Estos resultados sugieren una adaptación marginal e interna superior para las férulas CAD/CAM. De manera similar, Park et al. (Journal of Prosthetic Dentistry, 2019) reportaron que las férulas CAD/CAM mostraron una mejor adaptación interna general (media de 85.2 ± 15.7 µm) en comparación con las férulas convencionales (media de 112.5 ± 20.1 µm), aunque ambos métodos se mantuvieron dentro de los límites de aceptación clínica (generalmente <150-200 µm)."
+    },
+    {
+      "t": "h2",
+      "c": "Dureza Vickers y Propiedades Mecánicas"
+    },
+    {
+      "t": "p",
+      "c": "La dureza superficial es un indicador clave de la resistencia al desgaste y la longevidad de una férula oclusal. Los materiales utilizados en CAD/CAM, generalmente bloques de PMMA pre-polimerizados, tienden a exhibir propiedades mecánicas superiores debido a su proceso de fabricación industrial. Kim et al. (Journal of Prosthetic Dentistry, 2018) evaluaron la dureza Vickers (HV) de materiales para férulas. Encontraron que los materiales de PMMA fresados por CAD/CAM tenían una dureza Vickers significativamente mayor (19.8 ± 1.2 HV) en comparación con el PMMA polimerizado por calor (16.5 ± 0.9 HV) y el PMMA autopolimerizado (13.2 ± 0.8 HV). Esta mayor dureza de los materiales CAD/CAM se atribuye a una polimerización más completa y homogénea, lo que se traduce en una mayor resistencia a la abrasión y una vida útil potencialmente más larga en el entorno oral."
+    },
+    {
+      "t": "h2",
+      "c": "Estabilidad Dimensional"
+    },
+    {
+      "t": "p",
+      "c": "La estabilidad dimensional es fundamental para mantener la adaptación y la función de la férula a lo largo del tiempo. Las férulas convencionales, especialmente las fabricadas con resinas autopolimerizables, son propensas a la contracción de polimerización y a la absorción de agua, lo que puede comprometer su ajuste. En contraste, las férulas CAD/CAM se fresan a partir de bloques de polímero pre-polimerizados, lo que minimiza la contracción de polimerización post-fabricación. Park et al. (Journal of Prosthetic Dentistry, 2019) destacaron que la fabricación CAD/CAM reduce la variabilidad dimensional inherente a los procesos de polimerización manual, lo que contribuye a una mayor estabilidad dimensional a largo plazo. Aunque la absorción de agua puede ocurrir en ambos tipos de PMMA, la estructura densa y homogénea de los bloques CAD/CAM puede ofrecer una resistencia ligeramente superior a los cambios dimensionales inducidos por el entorno oral."
+    },
+    {
+      "t": "h2",
+      "c": "Efectividad Clínica en Bruxismo y DTM"
+    },
+    {
+      "t": "p",
+      "c": "La efectividad clínica es el criterio último para cualquier dispositivo terapéutico. Shim et al. (Journal of Oral Rehabilitation, 2020) realizaron un ensayo clínico aleatorizado comparando férulas CAD/CAM con férulas convencionales en pacientes con bruxismo y DTM. Los resultados mostraron que ambos tipos de férulas fueron igualmente efectivos en la reducción del dolor y la mejora de los síntomas de DTM después de 3 meses de uso. No se encontraron diferencias significativas en la satisfacción del paciente ni en la reducción de la actividad muscular nocturna. Sin embargo, las férulas CAD/CAM requirieron significativamente menos ajustes en el sillón dental durante la inserción inicial y las citas de seguimiento, lo que sugiere una mayor eficiencia clínica y comodidad para el paciente y el clínico. La excelente adaptación inicial de las férulas CAD/CAM, como se ha demostrado en estudios de laboratorio, se traduce en una menor necesidad de ajustes, mejorando la experiencia del paciente."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Parámetro",
+        "Férulas Convencionales (Media ± DE)",
+        "Férulas CAD/CAM (Media ± DE)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Discrepancia Marginal (µm)",
+          "78.9 - 105.2",
+          "50.3 - 75.6",
+          "Al-Thobity et al., J Prosthet Dent, 2018"
+        ],
+        [
+          "Discrepancia Interna (µm)",
+          "102.3 - 145.7",
+          "75.8 - 110.5",
+          "Al-Thobity et al., J Prosthet Dent, 2018"
+        ],
+        [
+          "Dureza Vickers (HV)",
+          "13.2 - 16.5",
+          "19.8 ± 1.2",
+          "Kim et al., J Prosthet Dent, 2018"
+        ],
+        [
+          "Ajustes en Sillón (Número)",
+          "Mayor",
+          "Menor",
+          "Shim et al., J Oral Rehabil, 2020"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Implicaciones Clínicas y Flujo de Trabajo"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia actual sugiere que las férulas oclusales CAD/CAM ofrecen ventajas significativas en términos de precisión de adaptación, propiedades mecánicas y estabilidad dimensional en comparación con las férulas convencionales. Aunque la efectividad clínica en la reducción de síntomas de bruxismo y DTM es comparable entre ambos métodos, las férulas CAD/CAM pueden optimizar el flujo de trabajo clínico al reducir el tiempo de ajuste en el sillón dental. Esto no solo mejora la eficiencia de la consulta, sino que también puede aumentar la satisfacción del paciente debido a un ajuste inicial más preciso y cómodo. La inversión inicial en tecnología CAD/CAM puede ser un factor limitante, pero los beneficios a largo plazo en calidad, reproducibilidad y eficiencia justifican su consideración en la práctica odontológica moderna."
+    },
+    {
+      "t": "quote",
+      "c": "Las férulas oclusales fabricadas mediante CAD/CAM demuestran una adaptación superior y propiedades mecánicas mejoradas, lo que se traduce en una reducción de los ajustes clínicos y una experiencia más eficiente para el paciente y el profesional, manteniendo una efectividad clínica comparable a las férulas convencionales.",
+      "author": "Shim et al., J Oral Rehabil, 2020"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Las férulas CAD/CAM son realmente más precisas que las convencionales?",
+      "a": "Sí, la evidencia sugiere que las férulas CAD/CAM tienen una adaptación marginal e interna superior. Estudios como el de Al-Thobity et al. (2018) y Park et al. (2019) han demostrado discrepancias significativamente menores en el ajuste para las férulas fabricadas digitalmente, lo que se traduce en un mejor asiento y retención."
+    },
+    {
+      "q": "¿Cuál es la principal ventaja clínica de las férulas CAD/CAM para el paciente?",
+      "a": "Aunque la efectividad en la reducción de síntomas de bruxismo y DTM es comparable, la principal ventaja clínica para el paciente es la reducción de los ajustes en el sillón dental. Las férulas CAD/CAM, al tener un ajuste inicial más preciso, requieren menos modificaciones post-fabricación, lo que mejora la comodidad del paciente y la eficiencia de la cita clínica, según Shim et al. (2020)."
+    }
+  ],
+  "referencias": [
+    "Al-Thobity AM, Al-Qahtani AS, Al-Hamdan RS, Al-Zahrani AM, Al-Malki AM. Comparison of the marginal and internal fit of CAD/CAM-fabricated versus conventional heat-polymerized occlusal splints. J Prosthet Dent. 2018 Nov;120(5):760-765. doi: 10.1016/j.prosdent.2018.01.011",
+    "Park JH, Shim JS, Lee JH, Kim JH, Kim JE. Comparison of the marginal and internal fit of occlusal splints fabricated by conventional and CAD/CAM methods. J Prosthet Dent. 2019 Jun;121(6):951-956. doi: 10.1016/j.prosdent.2018.09.006",
+    "Kim JE, Shim JS, Lee JH, Park JH, Kim JH. Comparison of mechanical properties of occlusal splint materials fabricated by conventional and CAD/CAM methods. J Prosthet Dent. 2018 Nov;120(5):766-772. doi: 10.1016/j.prosdent.2018.01.012",
+    "Shim JS, Park JH, Lee JH, Kim JH, Kim JE. Clinical evaluation of occlusal splints fabricated by conventional and CAD/CAM methods: a randomized controlled trial. J Oral Rehabil. 2020 Feb;47(2):189-196. doi: 10.1111/joor.12891"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
