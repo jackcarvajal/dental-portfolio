@@ -3723,7 +3723,7 @@ async function generarSocialCopy() {
       </div>`;
     }).join('');
   } catch(e) {
-    res.innerHTML = `<div style="color:#f87171;font-size:.82rem;padding:12px;"><i class="fas fa-triangle-exclamation"></i> ${e.message}</div>`;
+    res.innerHTML = `<div style="color:#f87171;font-size:.82rem;padding:12px;"><i class="fas fa-triangle-exclamation"></i> ${esc(e.message)}</div>`;
   }
   btn.disabled = false;
   btn.innerHTML = '<i class="fas fa-sparkles"></i> Generar copy';

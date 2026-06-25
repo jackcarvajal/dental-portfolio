@@ -566,7 +566,7 @@ async function notificarWADiseno(caso, estado) {
           setTimeout(() => {
             const linkEl = document.createElement('div');
             linkEl.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0d1520;border:1px solid rgba(0,210,255,.4);border-radius:12px;padding:16px 20px;z-index:9999;max-width:480px;width:90%;';
-            linkEl.innerHTML=`<div style="font-size:.72rem;font-weight:700;color:#00d2ff;margin-bottom:8px;">Link Revision Express para Dr. ${caso.nombre_doctor||caso.doctor||''}</div>
+            linkEl.innerHTML=`<div style="font-size:.72rem;font-weight:700;color:#00d2ff;margin-bottom:8px;">Link Revision Express para Dr. ${escH(caso.nombre_doctor||caso.doctor||'')}</div>
               <div style="display:flex;gap:8px;"><input type="text" value="${revUrl}" readonly style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#fff;padding:7px 10px;font-size:.7rem;outline:none;">
               <button type="button" onclick="navigator.clipboard?.writeText('${revUrl}').then(()=>this.textContent='✓')" style="background:rgba(0,210,255,.15);border:1px solid rgba(0,210,255,.3);color:#00d2ff;border-radius:6px;padding:7px 12px;cursor:pointer;font-size:.75rem;font-weight:700;">Copiar</button>
               <button type="button" onclick="this.closest('div[style]').remove()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;border-radius:6px;padding:7px 12px;cursor:pointer;">✕</button></div>`;
