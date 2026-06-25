@@ -540,7 +540,7 @@
                             Si desea troqueles extra, asegúrese de incluirlos en su archivo STL.
                         </p>
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <input type="number" id="num-troqueles" min="0" value="0" onchange="calcularTotalModelosV4()" style="flex: 1; padding: 10px; background: #111; border: 2px solid #333; color: white; border-radius: 6px; font-size: 0.95rem; font-weight: 600;">
+                            <input type="number" id="num-troqueles" min="0" value="0" onchange="calcularTotalModelosV4()" style="flex: 1; padding: 10px; background: #111; border: 2px solid #333; color: white; border-radius: 6px; font-size:16px; font-weight: 600;">
                             <span style="color: var(--gold-primary); font-weight: 600;">x $2.500 c/u</span>
                         </div>
                         <div id="warning-troqueles-v4" style="display: none; margin-top: 10px; padding: 10px; background: rgba(255,152,0,0.1); border-left: 3px solid #ff9800; border-radius: 4px; font-size: 0.75rem; color: #ff9800;">

@@ -98,7 +98,7 @@ tbody td{padding:11px 14px;vertical-align:middle;}
 .comp-missing{padding:20px;text-align:center;color:var(--muted);font-size:.84rem;font-style:italic;}
 .form-group{display:flex;flex-direction:column;gap:6px;}
 .form-group label{font-size:.75rem;color:var(--muted);font-weight:600;}
-.form-group textarea{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:9px 14px;color:#fff;font-size:.84rem;outline:none;font-family:inherit;resize:vertical;min-height:60px;}
+.form-group textarea{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:9px 14px;color:#fff;font-size:16px;outline:none;font-family:inherit;resize:vertical;min-height:60px;}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;}
 .btn-outline{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:var(--muted);padding:9px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:600;}
 .btn-gold{background:linear-gradient(135deg,var(--gold),#b8941d);border:none;color:#000;padding:9px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.84rem;}
@@ -107,7 +107,7 @@ tbody td{padding:11px 14px;vertical-align:middle;}
 
 /* Filtros */
 .filtros{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
-.filtros input,.filtros select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:7px 12px;color:#fff;font-size:.8rem;outline:none;}
+.filtros input,.filtros select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:7px 12px;color:#fff;font-size:16px;outline:none;}
 .filtros label{font-size:.76rem;color:var(--muted);}
 
 /* Totales */
@@ -635,11 +635,11 @@ tbody td{padding:11px 14px;vertical-align:middle;}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
         <div>
           <label style="font-size:.68rem;color:var(--muted);display:block;margin-bottom:4px;">Número de factura</label>
-          <input id="mdian-numero" type="text" placeholder="Ej: FE-0001" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:8px 10px;color:var(--text);font-size:.83rem;outline:none;">
+          <input id="mdian-numero" type="text" placeholder="Ej: FE-0001" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:8px 10px;color:var(--text);font-size:16px;outline:none;">
         </div>
         <div>
           <label style="font-size:.68rem;color:var(--muted);display:block;margin-bottom:4px;">CUFE (opcional)</label>
-          <input id="mdian-cufe" type="text" placeholder="Código único DIAN" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:8px 10px;color:var(--text);font-size:.83rem;outline:none;">
+          <input id="mdian-cufe" type="text" placeholder="Código único DIAN" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:8px 10px;color:var(--text);font-size:16px;outline:none;">
         </div>
       </div>
       <div style="display:flex;gap:10px;justify-content:flex-end;">
@@ -1643,7 +1643,7 @@ async function cargarCotizacionesCont() {
                 <td>${tel ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" style="color:#25D366;"><i class="fab fa-whatsapp"></i> ${escH(c.doctor_tel)}</a>` : '—'}</td>
                 <td style="font-weight:700;color:var(--gold);">${escH(total)}</td>
                 <td>
-                    <select onchange="cambiarEstadoCot('${escH(c.id)}',this.value)" style="background:rgba(0,0,0,.3);border:1px solid ${color};color:${color};border-radius:6px;padding:3px 8px;font-size:.72rem;cursor:pointer;font-weight:700;">
+                    <select onchange="cambiarEstadoCot('${escH(c.id)}',this.value)" style="background:rgba(0,0,0,.3);border:1px solid ${color};color:${color};border-radius:6px;padding:3px 8px;font-size:16px;cursor:pointer;font-weight:700;">
                         ${['borrador','enviada','aceptada','rechazada','expirada'].map(s=>`<option value="${s}"${c.estado===s?' selected':''}>${s}</option>`).join('')}
                     </select>
                 </td>

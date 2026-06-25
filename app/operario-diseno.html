@@ -285,7 +285,7 @@ body.ready{visibility:visible;}
     <!-- Upload STL -->
     <div class="link-box" style="margin-top:12px;background:rgba(0,255,65,.04);border-color:rgba(0,255,65,.2);">
       <label style="color:var(--green);"><i class="fas fa-cube" style="margin-right:5px;"></i>Upload STL (privado en Storage)</label>
-      <input type="file" id="qa-stl-file" accept=".stl,.obj" style="color:#e2e8f0;font-size:.8rem;width:100%;">
+      <input type="file" id="qa-stl-file" accept=".stl,.obj" style="color:#e2e8f0;font-size:16px;width:100%;">
       <small id="qa-stl-status" style="color:var(--muted);font-size:.7rem;">Se sube a: dental-cases/{pedido_id}/v{revision}.stl</small>
     </div>
 
@@ -567,7 +567,7 @@ async function notificarWADiseno(caso, estado) {
             const linkEl = document.createElement('div');
             linkEl.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0d1520;border:1px solid rgba(0,210,255,.4);border-radius:12px;padding:16px 20px;z-index:9999;max-width:480px;width:90%;';
             linkEl.innerHTML=`<div style="font-size:.72rem;font-weight:700;color:#00d2ff;margin-bottom:8px;">Link Revision Express para Dr. ${escH(caso.nombre_doctor||caso.doctor||'')}</div>
-              <div style="display:flex;gap:8px;"><input type="text" value="${revUrl}" readonly style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#fff;padding:7px 10px;font-size:.7rem;outline:none;">
+              <div style="display:flex;gap:8px;"><input type="text" value="${revUrl}" readonly style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#fff;padding:7px 10px;font-size:16px;outline:none;">
               <button type="button" onclick="navigator.clipboard?.writeText('${revUrl}').then(()=>this.textContent='✓')" style="background:rgba(0,210,255,.15);border:1px solid rgba(0,210,255,.3);color:#00d2ff;border-radius:6px;padding:7px 12px;cursor:pointer;font-size:.75rem;font-weight:700;">Copiar</button>
               <button type="button" onclick="this.closest('div[style]').remove()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;border-radius:6px;padding:7px 12px;cursor:pointer;">✕</button></div>`;
             document.body.appendChild(linkEl);

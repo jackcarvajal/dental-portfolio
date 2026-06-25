@@ -167,7 +167,7 @@
         .dap-iframe-wrap { flex:1; min-height:380px; overflow:hidden; position:relative; background:#000; }
         .dap-iframe-wrap iframe { width:100%; height:100%; border:none; min-height:380px; }
         .dap-notas-area { display:none; padding:12px 20px; border-top:1px solid rgba(255,255,255,.05); flex-shrink:0; }
-        .dap-notas-area textarea { width:100%; padding:10px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:8px; color:#fff; font-size:.82rem; min-height:80px; resize:vertical; outline:none; font-family:inherit; }
+        .dap-notas-area textarea { width:100%; padding:10px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:8px; color:#fff; font-size:16px; min-height:80px; resize:vertical; outline:none; font-family:inherit; }
         .dap-footer { padding:14px 20px; border-top:1px solid rgba(255,255,255,.05); display:flex; gap:10px; flex-wrap:wrap; flex-shrink:0; }
         .dap-btn-aprobar { flex:1; padding:12px; background:linear-gradient(135deg,#00FF41,#00cc33); color:#000; border:none; border-radius:10px; font-weight:900; font-size:.88rem; cursor:pointer; min-width:200px; }
         .dap-btn-cambios { padding:12px 18px; background:rgba(212,175,55,.1); border:1px solid rgba(212,175,55,.3); color:#D4AF37; border-radius:10px; font-weight:700; font-size:.82rem; cursor:pointer; }
@@ -177,7 +177,7 @@
         /* UPLOAD FOTOS FEEDBACK */
         .feedback-upload{background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:10px;padding:12px 16px;margin-top:8px;}
         .feedback-upload label{font-size:.72rem;font-weight:700;color:#D4AF37;display:block;margin-bottom:6px;}
-        .feedback-upload input[type=file]{font-size:.75rem;color:var(--muted);width:100%;margin-bottom:8px;}
+        .feedback-upload input[type=file]{font-size:16px;color:var(--muted);width:100%;margin-bottom:8px;}
         .btn-feedback{padding:6px 14px;border-radius:7px;font-size:.72rem;font-weight:700;border:1px solid rgba(212,175,55,.4);background:transparent;color:#D4AF37;cursor:pointer;}
         .btn-feedback:hover{background:rgba(212,175,55,.1);}
 
@@ -186,7 +186,7 @@
         .pago-card h4{font-size:.88rem;font-weight:800;color:#fff;margin-bottom:6px;}
         .pago-card .inst{font-size:.78rem;color:#94a3b8;margin-bottom:12px;line-height:1.6;}
         .upload-area{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-        .upload-area input[type=file]{font-size:.75rem;color:var(--muted);}
+        .upload-area input[type=file]{font-size:16px;color:var(--muted);}
         .btn-subir-comp{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:rgba(0,210,255,.12);border:1px solid rgba(0,210,255,.35);color:var(--cyan);border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;}
         .btn-subir-comp:hover{background:rgba(0,210,255,.22);}
         .comp-status{font-size:.75rem;font-weight:700;padding:4px 10px;border-radius:8px;}
@@ -207,7 +207,7 @@
         .pd-row.full{grid-template-columns:1fr;}
         @media(max-width:480px){.pd-row{grid-template-columns:1fr;}}
         .pd-fg label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;}
-        .pd-fg input,.pd-fg select,.pd-fg textarea{width:100%;background:#0d1525;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 12px;font-size:.86rem;outline:none;font-family:inherit;}
+        .pd-fg input,.pd-fg select,.pd-fg textarea{width:100%;background:#0d1525;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 12px;font-size:16px;outline:none;font-family:inherit;}
         .pd-fg textarea{resize:vertical;min-height:70px;}
         .pd-fg select option{background:#0d1525;}
         .pd-extras{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
@@ -386,7 +386,7 @@
     <div class="section-card" id="historial">
         <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
             <h2><i class="fas fa-folder-open" style="color:var(--gold);margin-right:8px;"></i>Mis Casos</h2>
-            <input type="search" id="busq-casos-cliente" placeholder="Buscar por código, paciente, servicio…" oninput="_filtrarCasosCliente(this.value)" aria-label="Buscar casos" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 14px;color:#e2e8f0;font-size:.82rem;width:260px;font-family:inherit;outline:none;">
+            <input type="search" id="busq-casos-cliente" placeholder="Buscar por código, paciente, servicio…" oninput="_filtrarCasosCliente(this.value)" aria-label="Buscar casos" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 14px;color:#e2e8f0;font-size:16px;width:260px;font-family:inherit;outline:none;">
         </div>
         <div id="tabla-historial" aria-live="polite" aria-label="Historial de casos"><div class="spinner"></div></div>
     </div>
@@ -1553,11 +1553,11 @@ document.getElementById('btn-logout').addEventListener('click', (e) => {
     <div id="bib-msg" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#f87171;border-radius:8px;padding:10px 14px;font-size:.8rem;margin-bottom:14px"></div>
     <div style="margin-bottom:14px">
       <label style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Nombre *</label>
-      <input id="bib-nombre" type="text" placeholder="Ej: Nobel Biocare RP 4.3, Straumann Roxolid" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 14px;font-size:.88rem;outline:none">
+      <input id="bib-nombre" type="text" placeholder="Ej: Nobel Biocare RP 4.3, Straumann Roxolid" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 14px;font-size:16px;outline:none">
     </div>
     <div style="margin-bottom:14px">
       <label for="bib-tipo" style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Tipo *</label>
-      <select id="bib-tipo" style="width:100%;background:#0d1525;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 14px;font-size:.88rem;outline:none">
+      <select id="bib-tipo" style="width:100%;background:#0d1525;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 14px;font-size:16px;outline:none">
         <option value="implantes">🔩 Biblioteca de implantes</option>
         <option value="pilares">🪛 Pilares personalizados</option>
         <option value="dientes">🦷 Biblioteca de dientes</option>
@@ -1567,16 +1567,16 @@ document.getElementById('btn-logout').addEventListener('click', (e) => {
     </div>
     <div style="margin-bottom:14px">
       <label style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Subir archivo (opcional)</label>
-      <input id="bib-file" type="file" accept=".zip,.rar,.7z,.ddb,.3ox,.stl,.obj,.pdf" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:#94a3b8;padding:8px 12px;font-size:.82rem">
+      <input id="bib-file" type="file" accept=".zip,.rar,.7z,.ddb,.3ox,.stl,.obj,.pdf" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:#94a3b8;padding:8px 12px;font-size:16px">
       <div style="font-size:.68rem;color:#475569;margin-top:4px">Formatos: ZIP, RAR, DDB (Exocad), 3OX, STL — máx 10MB</div>
     </div>
     <div style="margin-bottom:14px">
       <label style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">O pegar link (Drive, Dropbox, WeTransfer)</label>
-      <input id="bib-link" type="url" placeholder="https://drive.google.com/..." style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 14px;font-size:.88rem;outline:none">
+      <input id="bib-link" type="url" placeholder="https://drive.google.com/..." style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 14px;font-size:16px;outline:none">
     </div>
     <div style="margin-bottom:20px">
       <label style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Notas técnicas (opcional)</label>
-      <textarea id="bib-notas" placeholder="Ej: Plataforma NP, compatible con Exocad 3.3, sistema Bone Level" rows="2" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 14px;font-size:.85rem;outline:none;resize:vertical;font-family:inherit"></textarea>
+      <textarea id="bib-notas" placeholder="Ej: Plataforma NP, compatible con Exocad 3.3, sistema Bone Level" rows="2" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 14px;font-size:16px;outline:none;resize:vertical;font-family:inherit"></textarea>
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end">
       <button type="button" onclick="document.getElementById('modal-bib').classList.remove('open')" style="background:none;border:1px solid rgba(255,255,255,.15);color:var(--muted);padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:700">Cancelar</button>

@@ -110,7 +110,7 @@
         .form-group label { font-size:0.75rem; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; }
         .form-group input, .form-group select, .form-group textarea {
             background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
-            color:#fff; border-radius:8px; padding:10px 14px; font-size:0.85rem;
+            color:#fff; border-radius:8px; padding:10px 14px; font-size:16px;
             transition:border-color 0.2s; font-family:inherit;
         }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
@@ -465,7 +465,7 @@
                                 <i class="fas fa-video"></i> Subir video MP4
                             </label>
                             <span id="video-filename" style="font-size:.78rem;color:#94a3b8;">— o pega URL:</span>
-                            <input type="url" id="p-video" placeholder="https://youtube.com/watch?v=..." style="flex:1;min-width:200px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px;color:#f8fafc;font-size:.78rem;">
+                            <input type="url" id="p-video" placeholder="https://youtube.com/watch?v=..." style="flex:1;min-width:200px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px;color:#f8fafc;font-size:16px;">
                         </div>
                         <input type="file" id="p-video-file" accept="video/*" style="display:none;" onchange="selectVideoFile(this)">
                         <p style="font-size:.65rem;color:#475569;margin-top:4px;">MP4 propio o URL de YouTube / Google Drive</p>
@@ -563,7 +563,7 @@
             <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;">
                 <h2><i class="fas fa-users-gear" style="color:var(--gold);margin-right:8px;"></i>Agentes registrados</h2>
                 <div style="display:flex;gap:8px;">
-                    <select id="filtro-rol-equipo" onchange="filtrarEquipo()" style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.78rem;">
+                    <select id="filtro-rol-equipo" onchange="filtrarEquipo()" style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:16px;">
                         <option value="">Todos los roles</option>
                         <option value="operator">Operador</option>
                         <option value="mensajero">Mensajero</option>
@@ -634,13 +634,13 @@
             <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
                 <h2><i class="fas fa-magnet" style="color:var(--gold);margin-right:8px;"></i>Doctores registrados</h2>
                 <div style="display:flex;gap:8px;">
-                    <select id="filtro-leads-contactado" onchange="filtrarLeads()" style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.78rem;">
+                    <select id="filtro-leads-contactado" onchange="filtrarLeads()" style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:16px;">
                         <option value="">Todos</option>
                         <option value="false">Sin contactar</option>
                         <option value="true">Contactados</option>
                     </select>
                     <input type="search" id="filtro-leads-q" placeholder="Buscar nombre o WA..." oninput="filtrarLeads()" enterkeyhint="search" aria-label="Buscar lead por nombre o WhatsApp"
-                        style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.78rem;width:180px;">
+                        style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:16px;width:180px;">
                 </div>
             </div>
             <div style="overflow-x:auto;">
@@ -688,7 +688,7 @@
                 <h2><i class="fas fa-inbox" style="color:var(--magenta);margin-right:8px;"></i>Cola de pedidos</h2>
                 <div style="display:flex;gap:8px;">
                     <select id="filtro-pdd-estado" onchange="filtrarPedidosDoc()"
-                        style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.78rem;">
+                        style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:16px;">
                         <option value="">Todos los estados</option>
                         <option value="recibido">Recibido</option>
                         <option value="en_diseno">En diseño</option>
@@ -699,7 +699,7 @@
                     </select>
                     <input type="text" id="filtro-pdd-q" placeholder="Doctor o clínica..."
                         oninput="filtrarPedidosDoc()"
-                        style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.78rem;width:160px;">
+                        style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:16px;width:160px;">
                 </div>
             </div>
             <div style="overflow-x:auto;">
@@ -737,11 +737,11 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
             <div>
                 <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Nombre completo</label>
-                <input id="ag-nombre" type="text" placeholder="Carlos López" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.88rem;outline:none;">
+                <input id="ag-nombre" type="text" placeholder="Carlos López" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
             </div>
             <div>
                 <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Rol</label>
-                <select id="ag-rol" style="width:100%;padding:10px 12px;background:#0d1525;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.88rem;outline:none;-webkit-appearance:none;">
+                <select id="ag-rol" style="width:100%;padding:10px 12px;background:#0d1525;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;-webkit-appearance:none;">
                     <option value="operator">Operador CAD/CAM</option>
                     <option value="mensajero">Mensajero</option>
                     <option value="taller">Taller</option>
@@ -753,12 +753,12 @@
 
         <div style="margin-bottom:12px;">
             <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Correo corporativo</label>
-            <input id="ag-email" type="email" placeholder="operador@prodigy.com" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.88rem;outline:none;">
+            <input id="ag-email" type="email" placeholder="operador@prodigy.com" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
         </div>
 
         <div style="margin-bottom:20px;">
             <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Teléfono (opcional)</label>
-            <input id="ag-tel" type="tel" inputmode="tel" placeholder="+57 300 000 0000" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:0.88rem;outline:none;">
+            <input id="ag-tel" type="tel" inputmode="tel" placeholder="+57 300 000 0000" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
         </div>
 
         <div id="modal-msg" style="display:none;padding:10px 12px;border-radius:8px;font-size:0.8rem;margin-bottom:14px;"></div>
@@ -794,10 +794,10 @@
     <div id="modal-staff-title" style="font-size:.95rem;font-weight:800;color:var(--cyan,#00d2ff);margin-bottom:16px;"><i class="fas fa-user-plus" style="margin-right:6px;" aria-hidden="true"></i>Nuevo operario</div>
     <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Email (debe estar en Supabase Auth)</label>
     <input id="staff-email" type="email" placeholder="correo@ejemplo.com"
-      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.85rem;outline:none;margin-bottom:12px;">
+      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:16px;outline:none;margin-bottom:12px;">
     <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Nombre</label>
     <input id="staff-nombre" type="text" placeholder="Nombre del operario"
-      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.85rem;outline:none;margin-bottom:18px;">
+      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:16px;outline:none;margin-bottom:18px;">
     <div style="display:flex;gap:10px;justify-content:flex-end;">
       <button type="button" onclick="cerrarModalNuevoStaff()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
       <button type="button" onclick="confirmarNuevoStaff()" style="background:var(--cyan,#00d2ff);color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Agregar</button>
@@ -929,7 +929,7 @@
           placeholder="Ej: 180000">
         <label style="font-size:.72rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;">Nota para el cliente (opcional)</label>
         <textarea id="cotizar-nota" rows="3"
-          style="width:100%;background:#0f1c2e;border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;font-size:.83rem;padding:11px;resize:vertical;font-family:inherit;margin-bottom:12px;"
+          style="width:100%;background:#0f1c2e;border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;font-size:16px;padding:11px;resize:vertical;font-family:inherit;margin-bottom:12px;"
           placeholder="Ej: Incluye fresado en zirconia HT + glaseado, tiempo estimado 3 días hábiles…"></textarea>
         <input type="hidden" id="cotizar-id">
         <input type="hidden" id="cotizar-tipo">
@@ -1090,7 +1090,7 @@
         <div style="font-size:.95rem;font-weight:800;color:#00FF41;margin-bottom:6px;"><i class="fas fa-check-circle" style="margin-right:6px;"></i>Resolver Incidencia</div>
         <div style="font-size:.78rem;color:#94a3b8;margin-bottom:14px;">Deja una nota de resolución para el registro.</div>
         <textarea id="modal-resolver-nota" rows="3" placeholder="Descripción de cómo se resolvió..."
-          style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:.82rem;resize:vertical;outline:none;margin-bottom:16px;"></textarea>
+          style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:16px;resize:vertical;outline:none;margin-bottom:16px;"></textarea>
         <div style="display:flex;gap:10px;justify-content:flex-end;">
           <button type="button" onclick="cerrarModalResolver()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
           <button type="button" onclick="confirmarResolverIncidencia()" style="background:#00FF41;color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Resolver</button>
@@ -1248,9 +1248,9 @@
             </div>
             <div style="padding:20px;">
                 <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
-                    <input type="text" id="sc-titulo" placeholder="Título del artículo..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:.85rem;outline:none;">
-                    <input type="text" id="sc-desc" placeholder="Descripción (opcional)..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:.85rem;outline:none;">
-                    <input type="url" id="sc-url" placeholder="URL artículo..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:.85rem;outline:none;">
+                    <input type="text" id="sc-titulo" placeholder="Título del artículo..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:16px;outline:none;">
+                    <input type="text" id="sc-desc" placeholder="Descripción (opcional)..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:16px;outline:none;">
+                    <input type="url" id="sc-url" placeholder="URL artículo..." style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:9px 14px;font-size:16px;outline:none;">
                 </div>
                 <div id="sc-result" aria-live="polite"></div>
             </div>
@@ -1275,7 +1275,7 @@
         <!-- Selector de período -->
         <div style="display:flex;gap:10px;align-items:center;margin-bottom:22px;flex-wrap:wrap;">
             <label for="metfin-periodo" style="font-size:.78rem;color:#94a3b8;">Período:</label>
-            <select id="metfin-periodo" onchange="cargarMetricasFinanzas()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:7px 14px;font-size:.82rem;cursor:pointer;">
+            <select id="metfin-periodo" onchange="cargarMetricasFinanzas()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:7px 14px;font-size:16px;cursor:pointer;">
                 <option value="mes">Este mes</option>
                 <option value="trimestre">Este trimestre</option>
                 <option value="año">Este año</option>
@@ -1632,7 +1632,7 @@ function renderPedidos(lista) {
         <td style="font-size:0.75rem;color:#94a3b8;">${esc(p.pasarela)}</td>
         <td>
             <select aria-label="Estado del pedido" onchange="cambiarEstado('${p.id}',this.value)"
-                    style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:6px;padding:4px 8px;font-size:0.72rem;">
+                    style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:6px;padding:4px 8px;font-size:16px;">
                 ${['Pendiente','Pagado','En Producción','Despachado'].map(e =>
                     `<option ${p.estado===e?'selected':''}>${e}</option>`).join('')}
             </select>
@@ -2012,23 +2012,23 @@ function abrirEditar(id) {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
             <div style="grid-column:1/-1;">
                 <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">NOMBRE DEL CASO</label>
-                <input id="e-nombre" value="${esc(c.name||'')}" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;">
+                <input id="e-nombre" value="${esc(c.name||'')}" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:16px;">
             </div>
             <div>
                 <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">TIPO</label>
-                <select id="e-tipo" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;">${tipoOpts}</select>
+                <select id="e-tipo" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:16px;">${tipoOpts}</select>
             </div>
             <div>
                 <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">MATERIAL</label>
-                <select id="e-material" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;">${matOpts}</select>
+                <select id="e-material" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:16px;">${matOpts}</select>
             </div>
             <div>
                 <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">FECHA</label>
-                <input id="e-fecha" value="${esc(c.date||'')}" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;">
+                <input id="e-fecha" value="${esc(c.date||'')}" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:16px;">
             </div>
             <div style="grid-column:1/-1;">
                 <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">DESCRIPCIÓN</label>
-                <textarea id="e-desc" rows="3" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:.85rem;resize:vertical;">${esc(c.description||'')}</textarea>
+                <textarea id="e-desc" rows="3" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:16px;resize:vertical;">${esc(c.description||'')}</textarea>
             </div>
 
             <!-- Actualizar Exocad HTML -->
@@ -2289,7 +2289,7 @@ function renderEquipo(lista) {
                     <button type="button" onclick="toggleActivo('${a.id}', ${a.activo})" title="${a.activo ? 'Desactivar' : 'Activar'}" style="background:${a.activo ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)'};border:1px solid ${a.activo ? 'rgba(239,68,68,0.35)' : 'rgba(34,197,94,0.35)'};color:${a.activo ? '#f87171' : '#86efac'};border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
                         <i class="fas fa-${a.activo ? 'ban' : 'check'}"></i> ${a.activo ? 'Desactivar' : 'Activar'}
                     </button>
-                    <select aria-label="Cambiar rol" onchange="cambiarRol('${a.id}', this.value)" style="background:#0d1525;border:1px solid rgba(255,255,255,0.1);color:#94a3b8;border-radius:6px;padding:4px 6px;font-size:0.72rem;cursor:pointer;">
+                    <select aria-label="Cambiar rol" onchange="cambiarRol('${a.id}', this.value)" style="background:#0d1525;border:1px solid rgba(255,255,255,0.1);color:#94a3b8;border-radius:6px;padding:4px 6px;font-size:16px;cursor:pointer;">
                         <option value="">Cambiar rol...</option>
                         <option value="operator">Operador</option>
                         <option value="mensajero">Mensajero</option>
@@ -2480,7 +2480,7 @@ function renderPedidosDoc(arr) {
             <td style="color:#D4AF37;font-weight:700;font-size:.82rem">${precio}</td>
             <td>
                 <select aria-label="Estado del diseño" onchange="cambiarEstadoDoc('${p.id}',this.value)"
-                    style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:4px 8px;border-radius:6px;font-size:.75rem;">
+                    style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:4px 8px;border-radius:6px;font-size:16px;">
                     ${estadoOpts}
                 </select>
             </td>
@@ -2659,7 +2659,7 @@ function renderLane(laneId, casos, btnLabel) {
                     placeholder="— sin asignar"
                     onblur="asignarCaso('${c.id}',this.value)"
                     onkeydown="if(event.key==='Enter'){this.blur()}"
-                    style="flex:1;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.1);color:#cbd5e1;font-size:.65rem;outline:none;padding:1px 2px;font-family:inherit;">
+                    style="flex:1;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.1);color:#cbd5e1;font-size:16px;outline:none;padding:1px 2px;font-family:inherit;">
             </div>
             <div class="kcase-footer">
                 <span class="kcase-date">${fecha}</span>
@@ -2677,7 +2677,7 @@ function renderLane(laneId, casos, btnLabel) {
                     <input id="dsh-url-${c.id}" type="url"
                         placeholder="Link HTML Exocad (Drive /preview o Supabase Storage)"
                         value="${(c.link_diseno||'').replace(/"/g,'&quot;')}"
-                        style="width:100%;padding:5px 8px;background:#050505;border:1px solid rgba(0,210,255,.3);border-radius:6px;color:#fff;font-size:.63rem;outline:none;font-family:inherit;">
+                        style="width:100%;padding:5px 8px;background:#050505;border:1px solid rgba(0,210,255,.3);border-radius:6px;color:#fff;font-size:16px;outline:none;font-family:inherit;">
                     <button type="button" onclick="guardarLinkDiseno('${c.id}')"
                         style="margin-top:5px;width:100%;padding:5px;background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.25);color:#00FF41;border-radius:6px;font-size:.65rem;font-weight:700;cursor:pointer;">
                         <i class="fas fa-paper-plane"></i> Guardar y activar aprobación del doctor
@@ -2979,7 +2979,7 @@ async function cargarDespachos() {
             <td>${esc(p.nombre_cliente || p.nombre_doctor || '—')}<br>${calBadge}</td>
             <td style="font-size:.75rem;max-width:160px;">${esc(p.direccion || '—')}</td>
             <td style="color:#00FF41;">${fmtCOP(p.precio_total)}</td>
-            <td><select id="sel-mens-${esc(p.id)}" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:6px;padding:4px 8px;font-size:.75rem;min-width:140px;">
+            <td><select id="sel-mens-${esc(p.id)}" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:6px;padding:4px 8px;font-size:16px;min-width:140px;">
                 <option value="">— Seleccionar —</option>${opsMens}
             </select></td>
             <td><button type="button" onclick="asignarDespacho('${esc(p.id)}','${esc(p.codigo || '')}')" class="btn-xs btn-gold"><i class="fas fa-motorcycle"></i> Asignar</button></td>
@@ -3362,7 +3362,7 @@ async function cargarWaitlist() {
               <td style="padding:10px;">${esc(w.ciudad||'—')}</td>
               <td style="padding:10px;">${esc(PEDIDOS_LABEL[w.pedidos_mes]||w.pedidos_mes||'—')}</td>
               <td style="padding:10px;text-align:center;">
-                <select onchange="actualizarEstadoWaitlist('${esc(w.id)}',this.value)" style="background:rgba(0,0,0,.4);border:1px solid ${color};color:${color};border-radius:6px;padding:4px 8px;font-size:.7rem;cursor:pointer;font-weight:700;">
+                <select onchange="actualizarEstadoWaitlist('${esc(w.id)}',this.value)" style="background:rgba(0,0,0,.4);border:1px solid ${color};color:${color};border-radius:6px;padding:4px 8px;font-size:16px;cursor:pointer;font-weight:700;">
                   ${['pendiente','contactado','demo_agendada','convertido','descartado'].map(s=>`<option value="${s}"${w.estado===s?' selected':''}>${s.replace('_',' ')}</option>`).join('')}
                 </select>
               </td>
@@ -3490,7 +3490,7 @@ async function cargarReferidosAdmin() {
                     <td style="padding:8px;font-weight:800;color:#D4AF37;letter-spacing:1px;">${esc(r.codigo)}</td>
                     <td style="padding:8px;">${r.referido_email ? esc(r.referido_nombre||r.referido_email) : '<span style="color:#475569;">Sin usar</span>'}</td>
                     <td style="padding:8px;text-align:center;">
-                        <select onchange="cambiarEstadoRef('${esc(r.id)}',this.value)" style="background:rgba(0,0,0,.4);border:1px solid ${color};color:${color};border-radius:6px;padding:3px 8px;font-size:.7rem;cursor:pointer;font-weight:700;">
+                        <select onchange="cambiarEstadoRef('${esc(r.id)}',this.value)" style="background:rgba(0,0,0,.4);border:1px solid ${color};color:${color};border-radius:6px;padding:3px 8px;font-size:16px;cursor:pointer;font-weight:700;">
                             ${['pendiente','registrado','primer_pedido','recompensado'].map(s=>`<option value="${s}"${r.estado===s?' selected':''}>${s.replace('_',' ')}</option>`).join('')}
                         </select>
                     </td>

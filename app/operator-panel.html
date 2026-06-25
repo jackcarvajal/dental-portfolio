@@ -118,7 +118,7 @@ body.ready { visibility: visible; }
 .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; }
 .field { margin-bottom: 14px; }
 .field label { font-size: .75rem; font-weight: 700; color: #cbd5e1; display: block; margin-bottom: 5px; }
-.field input, .field select, .field textarea { width: 100%; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 9px 12px; color: #fff; font-size: .82rem; }
+.field input, .field select, .field textarea { width: 100%; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 9px 12px; color: #fff; font-size:16px; }
 .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--green); }
 .field textarea { resize: vertical; min-height: 70px; }
 .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
@@ -202,8 +202,8 @@ body.ready { visibility: visible; }
 
     <!-- Filtros rápidos -->
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
-        <input type="search" id="op-search" placeholder="Buscar doctor, código, material..." oninput="filtrarOperator()" aria-label="Buscar casos" style="flex:1;min-width:200px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 14px;color:#fff;font-family:inherit;font-size:.82rem;outline:none;">
-        <select id="op-estado-fil" onchange="filtrarOperator()" aria-label="Filtrar por estado" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-family:inherit;font-size:.82rem;outline:none;cursor:pointer;">
+        <input type="search" id="op-search" placeholder="Buscar doctor, código, material..." oninput="filtrarOperator()" aria-label="Buscar casos" style="flex:1;min-width:200px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 14px;color:#fff;font-family:inherit;font-size:16px;outline:none;">
+        <select id="op-estado-fil" onchange="filtrarOperator()" aria-label="Filtrar por estado" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-family:inherit;font-size:16px;outline:none;cursor:pointer;">
             <option value="">Todos los estados</option>
             <option value="pendiente">Pendientes</option>
             <option value="produccion">En producción</option>
@@ -339,7 +339,7 @@ body.ready { visibility: visible; }
     <div style="font-size:.95rem;font-weight:800;color:#00d2ff;margin-bottom:4px;"><i class="fas fa-gear" style="margin-right:6px;"></i>Asignar máquina y material</div>
     <div id="modal-maq-codigo" style="font-size:.75rem;color:#94a3b8;margin-bottom:16px;"></div>
     <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Máquina a usar</label>
-    <select id="maq-equipo" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 14px;color:#fff;font-size:.84rem;outline:none;margin-bottom:12px;">
+    <select id="maq-equipo" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 14px;color:#fff;font-size:16px;outline:none;margin-bottom:12px;">
       <option value="">— Selecciona máquina —</option>
       <option value="FRESADORA-01">🔩 Fresadora 01</option>
       <option value="FRESADORA-02">🔩 Fresadora 02</option>
@@ -351,13 +351,13 @@ body.ready { visibility: visible; }
     </select>
     <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Material a consumir</label>
     <div style="display:flex;gap:8px;margin-bottom:12px;">
-      <select id="maq-item" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 14px;color:#fff;font-size:.84rem;outline:none;">
+      <select id="maq-item" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 14px;color:#fff;font-size:16px;outline:none;">
         <option value="">— Sin consumo registrado —</option>
       </select>
-      <input id="maq-cantidad" type="number" min="1" max="99" value="1" style="width:70px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 10px;color:#fff;font-size:.84rem;outline:none;text-align:center;">
+      <input id="maq-cantidad" type="number" min="1" max="99" value="1" style="width:70px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 10px;color:#fff;font-size:16px;outline:none;text-align:center;">
     </div>
     <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Nota (opcional)</label>
-    <input id="maq-nota" type="text" placeholder="Ej: Bloque zirconia A2 parcial..." style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 14px;color:#fff;font-size:.84rem;outline:none;margin-bottom:18px;">
+    <input id="maq-nota" type="text" placeholder="Ej: Bloque zirconia A2 parcial..." style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 14px;color:#fff;font-size:16px;outline:none;margin-bottom:18px;">
     <div style="display:flex;gap:10px;justify-content:flex-end;">
       <button type="button" onclick="cerrarModalMaquina()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
       <button type="button" onclick="confirmarInicioProduccion()" style="background:#00d2ff;color:#000;border:none;padding:8px 22px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;"><i class="fas fa-play" style="margin-right:6px;"></i>Iniciar producción</button>
