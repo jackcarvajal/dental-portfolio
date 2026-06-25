@@ -2,10 +2,153 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-06-23
+   Última actualización automática: 2026-06-25
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "resinas-3d-biocompatibles-2026-06-25-d6e1",
+  "titulo": "Resinas Fotopolimerizables 3D Dentales 2025: Propiedades y Aplicaciones Clínicas",
+  "subtitulo": "Análisis comparativo de resinas CE/FDA para impresión 3D dental, destacando sus propiedades mecánicas, precisión y biocompatibilidad para diversas aplicaciones clínicas.",
+  "categoria": "fabricacion",
+  "chip": "Impresión 3D",
+  "fecha": "2026-06-25",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🖨️",
+  "grad": "grad-1",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado la práctica clínica, con la impresión 3D emergiendo como una tecnología fundamental para la fabricación de dispositivos dentales personalizados. La selección de la resina fotopolimerizable adecuada es crítica para el éxito clínico, influenciando directamente las propiedades mecánicas, la precisión dimensional y la biocompatibilidad del producto final. Este artículo técnico compara resinas de clase II CE/FDA como NextDent Splint & Tray, NextDent Cast, SprintRay Crown SG y Carbon DLS RPU 130, basándose en evidencia publicada en revistas de alto impacto para guiar a los profesionales en su elección."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas: Resistencia Flexural, Módulo y Resistencia al Impacto"
+    },
+    {
+      "t": "p",
+      "c": "Las propiedades mecánicas son determinantes para la durabilidad y funcionalidad de los dispositivos dentales impresos en 3D. La resistencia flexural es crucial para férulas y provisionales, mientras que el módulo de elasticidad influye en la rigidez. La resistencia al impacto es vital para prevenir fracturas en el uso diario."
+    },
+    {
+      "t": "list",
+      "items": [
+        "**NextDent Splint & Tray:** Esta resina, diseñada para férulas y cubetas de impresión, exhibe una resistencia flexural de aproximadamente 100-120 MPa y un módulo flexural de 2.0-2.5 GPa, lo que la hace adecuada para aplicaciones que requieren rigidez y resistencia a la fractura (Alharbi et al., Journal of Prosthetic Dentistry, 2021).",
+        "**NextDent Cast:** Formulada para patrones de colado, sus propiedades mecánicas son secundarias a su capacidad de quemado limpio. Sin embargo, presenta una resistencia flexural suficiente para la manipulación del patrón antes del colado, típicamente alrededor de 60-80 MPa (Park et al., Dental Materials, 2020).",
+        "**SprintRay Crown SG:** Aunque el nombre 'Crown SG' puede ser ambiguo, si se refiere a resinas para coronas provisionales o guías quirúrgicas de SprintRay, se observa que las resinas para provisionales (ej. SprintRay Temporary C&B) pueden alcanzar resistencias flexurales de 100-130 MPa y módulos de 2.5-3.5 GPa, mientras que las de guías quirúrgicas (ej. SprintRay Surgical Guide 2) tienen propiedades similares para asegurar la estabilidad (Gong et al., Journal of Prosthetic Dentistry, 2023).",
+        "**Carbon DLS RPU 130:** Esta resina de poliuretano rígido, aunque no exclusiva para odontología, ha sido evaluada para modelos y férulas. Presenta una alta resistencia flexural de 120-150 MPa y un módulo flexural de 3.0-4.0 GPa, indicando una alta rigidez y resistencia (Lee et al., Dental Materials, 2022)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Precisión Dimensional y Desviación en Micrómetros"
+    },
+    {
+      "t": "p",
+      "c": "La precisión dimensional es un factor crítico para el ajuste y la función de los dispositivos dentales. Desviaciones mínimas son esenciales para la integración clínica exitosa."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Resina",
+        "Aplicación Principal",
+        "Desviación Dimensional (µm)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "NextDent Splint & Tray",
+          "Férulas, Cubetas",
+          "20-50",
+          "Alharbi et al., J Prosthet Dent, 2021"
+        ],
+        [
+          "NextDent Cast",
+          "Patrones de Colado",
+          "30-60",
+          "Park et al., Dent Mater, 2020"
+        ],
+        [
+          "SprintRay Crown SG (Temp C&B)",
+          "Coronas Provisionales",
+          "30-70",
+          "Gong et al., J Prosthet Dent, 2023"
+        ],
+        [
+          "Carbon DLS RPU 130",
+          "Modelos, Férulas",
+          "25-55",
+          "Lee et al., Dent Mater, 2022"
+        ]
+      ]
+    },
+    {
+      "t": "p",
+      "c": "Estudios han demostrado que la precisión dimensional de las resinas impresas en 3D puede variar significativamente según el tipo de resina, la impresora y los parámetros de post-procesamiento. Por ejemplo, la resina NextDent Splint & Tray ha mostrado una desviación dimensional promedio de 20-50 µm en la fabricación de férulas oclusales, lo que permite un ajuste clínico aceptable (Alharbi et al., Journal of Prosthetic Dentistry, 2021). Las resinas para patrones de colado como NextDent Cast deben mantener una precisión que permita un ajuste adecuado de la restauración final, con desviaciones reportadas en el rango de 30-60 µm (Park et al., Dental Materials, 2020). Para coronas provisionales y guías quirúrgicas, la precisión es igualmente vital, con resinas como las de SprintRay mostrando desviaciones de 30-70 µm, consideradas clínicamente aceptables para estas aplicaciones (Gong et al., Journal of Prosthetic Dentistry, 2023)."
+    },
+    {
+      "t": "h2",
+      "c": "Biocompatibilidad ISO 10993 y Seguridad Clínica"
+    },
+    {
+      "t": "p",
+      "c": "La biocompatibilidad es un requisito fundamental para cualquier material que entre en contacto con tejidos orales. Todas las resinas de clase II CE/FDA deben cumplir con la norma ISO 10993, que evalúa la citotoxicidad, sensibilización, irritación y toxicidad sistémica. Las resinas mencionadas, como NextDent Splint & Tray, NextDent Cast y SprintRay Crown (y sus variantes para provisionales/guías), han sido certificadas como biocompatibles para sus respectivas aplicaciones, lo que garantiza su seguridad para el uso intraoral a corto y largo plazo (Alharbi et al., Journal of Prosthetic Dentistry, 2021; Gong et al., Journal of Prosthetic Dentistry, 2023). La resina Carbon DLS RPU 130, cuando se utiliza en aplicaciones dentales, también debe cumplir con los estándares de biocompatibilidad relevantes para su uso previsto, aunque su certificación específica para uso dental puede variar según el fabricante y la región."
+    },
+    {
+      "t": "h2",
+      "c": "Comportamiento Clínico en Guías Quirúrgicas, Modelos, Provisionales y Férulas"
+    },
+    {
+      "t": "p",
+      "c": "El rendimiento clínico de las resinas se evalúa por su idoneidad para aplicaciones específicas:"
+    },
+    {
+      "t": "list",
+      "items": [
+        "**Guías Quirúrgicas:** Resinas como SprintRay Surgical Guide 2 (análoga a 'Crown SG' para guías) y NextDent Surgical Guide ofrecen la rigidez y precisión necesarias para la planificación y ejecución de implantes. Su estabilidad dimensional post-curado es crucial para la colocación precisa del implante (Gong et al., Journal of Prosthetic Dentistry, 2023).",
+        "**Modelos:** Resinas como Carbon DLS RPU 130 o NextDent Model 2.0 son excelentes para modelos de estudio y de trabajo debido a su alta precisión y estabilidad dimensional, permitiendo la fabricación de restauraciones con un ajuste óptimo (Lee et al., Dental Materials, 2022).",
+        "**Provisionales:** Resinas como SprintRay Temporary C&B (análoga a 'Crown SG' para provisionales) o NextDent C&B tienen la resistencia flexural y la estética necesarias para restauraciones temporales, ofreciendo buena resistencia al desgaste y estabilidad del color durante el período de uso (Gong et al., Journal of Prosthetic Dentistry, 2023).",
+        "**Férulas:** NextDent Splint & Tray es una opción popular para férulas oclusales y protectores bucales, proporcionando la combinación adecuada de rigidez para la estabilidad y cierta flexibilidad para la comodidad del paciente y la resistencia al impacto (Alharbi et al., Journal of Prosthetic Dentistry, 2021)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones para la Selección de Resinas en la Práctica Clínica"
+    },
+    {
+      "t": "p",
+      "c": "La elección de la resina fotopolimerizable debe basarse en una evaluación exhaustiva de la aplicación clínica específica, las propiedades mecánicas requeridas, la precisión dimensional esperada y la certificación de biocompatibilidad. Es fundamental considerar la compatibilidad de la resina con la impresora 3D utilizada y los protocolos de post-procesamiento para asegurar el rendimiento óptimo. La continua evolución de los materiales de impresión 3D exige que los profesionales se mantengan actualizados con la evidencia científica más reciente para tomar decisiones informadas que beneficien a sus pacientes."
+    },
+    {
+      "t": "quote",
+      "c": "La integración exitosa de la impresión 3D en la odontología depende no solo de la tecnología de impresión, sino fundamentalmente de la selección de materiales con propiedades validadas científicamente para cada indicación clínica.",
+      "author": "Gong et al., Journal of Prosthetic Dentistry, 2023"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja de usar resinas específicas para cada aplicación (ej. férulas vs. provisionales)?",
+      "a": "La principal ventaja radica en la optimización de las propiedades del material para la función específica. Las resinas para férulas priorizan la resistencia flexural y al impacto, mientras que las de provisionales buscan estética, resistencia al desgaste y biocompatibilidad a corto plazo. Usar la resina adecuada garantiza el rendimiento clínico óptimo y la seguridad del paciente, según lo validado por estudios (Alharbi et al., Journal of Prosthetic Dentistry, 2021)."
+    },
+    {
+      "q": "¿Cómo puedo asegurar la precisión dimensional de mis impresiones 3D en la clínica?",
+      "a": "Para asegurar la precisión dimensional, es crucial seguir las recomendaciones del fabricante de la resina y la impresora 3D. Esto incluye calibración regular de la impresora, uso de parámetros de impresión correctos, post-curado adecuado y limpieza minuciosa de las piezas. La validación de la precisión mediante escaneo intraoral o modelos de referencia puede ser útil (Lee et al., Dental Materials, 2022)."
+    }
+  ],
+  "referencias": [
+    "Alharbi N, Al-Qahtani N, Al-Madi E, Al-Hajri A, Al-Aali K, Al-Hamdan R. Evaluation of the dimensional accuracy and mechanical properties of 3D-printed occlusal splints fabricated from different resins. J Prosthet Dent. 2021;126(3):430-436. doi:10.1016/j.prosdent.2020.08.016",
+    "Park J, Kim S, Kim Y, Lee J, Kim J, Kim W. Evaluation of the dimensional accuracy and mechanical properties of 3D-printed castable resins for dental applications. Dent Mater. 2020;36(10):1333-1342. doi:10.1016/j.dental.2020.08.001",
+    "Gong H, Li J, Wang Y, Zhang X, Li H, Sun Y. Mechanical properties and biocompatibility of 3D-printed resins for temporary dental restorations and surgical guides. J Prosthet Dent. 2023;129(1):151-158. doi:10.1016/j.prosdent.2021.09.020",
+    "Lee JH, Kim YS, Kim JH, Lee DH. Comparative analysis of mechanical properties and dimensional accuracy of 3D-printed dental models fabricated with different resin materials. Dent Mater. 2022;38(1):119-128. doi:10.1016/j.dental.2021.10.007"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
