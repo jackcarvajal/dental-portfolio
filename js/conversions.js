@@ -9,9 +9,10 @@
  *  cotizacion_sent  → formulario cotización enviado (valor $15.000 COP)
  *  lead_qualified   → click en "videollamada técnica" (valor $50.000 COP)
  *
- * Para Google Ads: reemplaza AW-XXXXXXXXX/YYYYYYYYYY con tu ID real
- * (Settings → Conversions en ads.google.com)
- * Para Meta Pixel: reemplaza TU_PIXEL_ID con el ID de tu Business Manager
+ * GADS_ID ya configurado (AW-18130335500). Pendiente: crear en ads.google.com
+ * una acción de conversión por cada *_LABEL (WA_CLICK_LABEL, STL_UPLOAD_LABEL,
+ * COTI_LABEL, LEAD_LABEL) y reemplazar el placeholder por el label real —
+ * mientras tanto _sendGAds() los descarta sin enviar (ver guard arriba).
  */
 'use strict';
 
@@ -51,6 +52,7 @@ window.ProdigyConversions = (function () {
 
   function _sendGAds(conversionLabel, value) {
     if (!GADS_ID || GADS_ID.includes('XXXXXXXXX')) return;
+    if (!conversionLabel || conversionLabel.endsWith('_LABEL')) return; // label real aún no configurado en Google Ads
     _gtag('event', 'conversion', {
       send_to:        GADS_ID + '/' + conversionLabel,
       value:          value || 0,
