@@ -1,0 +1,36 @@
+# ============================================================
+# PRODIGY — Supabase Keepalive
+# Evita la pausa automática por inactividad (7 días) del plan
+# gratuito de Supabase. Hace una petición real a la API REST
+# cada semana — el mismo proyecto sirve a PRODIGY y Alejandro.
+# ============================================================
+
+name: Supabase Keepalive
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'   # Lunes 7 AM Bogotá (12:00 UTC)
+  workflow_dispatch:        # Ejecución manual desde GitHub Actions
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping Supabase REST API
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://zgihrwqfyvgyapbwzkvw.supabase.co/rest/v1/casos_portafolio?select=id&limit=1" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634")
+          echo "Status: $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Supabase keepalive falló con status $STATUS"
+            exit 1
+          fi
+
+      - name: Resumen del job
+        if: always()
+        run: |
+          echo "## 🟢 Supabase Keepalive" >> $GITHUB_STEP_SUMMARY
+          echo "**Fecha:** $(date +'%d/%m/%Y %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "Petición enviada a la API REST de Supabase para evitar pausa por inactividad." >> $GITHUB_STEP_SUMMARY
