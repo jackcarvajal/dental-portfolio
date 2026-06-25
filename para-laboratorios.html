@@ -303,16 +303,16 @@
     <p>Lanzamiento estimado: <strong style="color:var(--gold);">Q3 2026</strong>. Los primeros 20 labs obtienen precio de fundador y acceso beta prioritario.</p>
     <form id="waitlist-form" onsubmit="unirseWaitlist(event)" novalidate>
       <div class="form-group">
-        <input type="text" id="wl-nombre" placeholder="Nombre del laboratorio" required maxlength="120" autocomplete="organization">
+        <input type="text" id="wl-nombre" placeholder="Nombre del laboratorio" required maxlength="120" autocomplete="organization" aria-label="Nombre del laboratorio">
       </div>
       <div class="form-group">
-        <input type="text" id="wl-contacto" placeholder="Tu nombre (Dr. / responsable)" required maxlength="100" autocomplete="name">
+        <input type="text" id="wl-contacto" placeholder="Tu nombre (Dr. / responsable)" required maxlength="100" autocomplete="name" aria-label="Tu nombre (Dr. / responsable)">
       </div>
       <div class="form-group">
-        <input type="tel" inputmode="tel" id="wl-wa" placeholder="WhatsApp (+57...)" required maxlength="20" autocomplete="tel">
+        <input type="tel" inputmode="tel" id="wl-wa" placeholder="WhatsApp (+57...)" required maxlength="20" autocomplete="tel" aria-label="WhatsApp (+57...)">
       </div>
       <div class="form-group">
-        <input type="email" id="wl-email" placeholder="Email de contacto" maxlength="120" autocomplete="email">
+        <input type="email" id="wl-email" placeholder="Email de contacto" maxlength="120" autocomplete="email" aria-label="Email de contacto">
       </div>
       <div class="form-group">
         <select id="wl-ciudad" aria-label="Ciudad del laboratorio">

@@ -497,7 +497,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                     <div class="accordion-inner">
                         <div class="form-grid">
                             <div class="form-group">
-                                <label>Nombre / Clínica *</label>
+                                <label for="nombreCliente">Nombre / Clínica *</label>
                                 <input type="text" id="nombreCliente" placeholder="Dr. Juan Pérez / Clínica Norte" autocomplete="name">
                                 <span class="tooltip-error" id="error-nombreCliente" style="display:none"></span>
                             </div>
@@ -525,12 +525,12 @@ window.submitOrden     = window.submitOrden      || function(){};
                                 <div style="display:flex;gap:6px;align-items:center;">
                                     <span id="indicativo-badge" style="background:rgba(217,70,166,0.1);border:1px solid rgba(217,70,166,0.3);border-radius:8px;padding:10px 10px;font-size:.85rem;font-weight:700;color:#D946A6;white-space:nowrap;">+57</span>
                                     <input type="tel" inputmode="tel" id="whatsappCliente" placeholder="3001234567" maxlength="15" autocomplete="tel-national"
-                                           oninput="this.value=this.value.replace(/\D/g,'')" style="flex:1;">
+                                           oninput="this.value=this.value.replace(/\D/g,'')" style="flex:1;" aria-label="3001234567">
                                 </div>
                                 <span class="tooltip-error" id="error-whatsappCliente" style="display:none"></span>
                             </div>
                             <div class="form-group">
-                                <label>Ciudad *</label>
+                                <label for="ciudad">Ciudad *</label>
                                 <input type="text" id="ciudad" placeholder="Bogotá" autocomplete="address-level2">
                                 <span class="tooltip-error" id="error-ciudad" style="display:none"></span>
                             </div>
@@ -538,7 +538,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>Nombre Paciente * <span style="font-size:.7rem;color:#ef4444;">(ID del caso)</span></label>
-                                <input type="text" id="nombrePaciente" placeholder="María González" maxlength="50">
+                                <input type="text" id="nombrePaciente" placeholder="María González" maxlength="50" aria-label="María González">
                                 <span class="tooltip-error" id="error-nombrePaciente" style="display:none"></span>
                             </div>
                             <div class="form-group">
@@ -584,7 +584,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                         <div style="display:grid;grid-template-columns:1fr 130px;gap:16px;margin-bottom:20px;align-items:end;">
                             <p style="font-size:.85rem;color:var(--text-secondary);">Selecciona la categoría y luego el servicio específico. El precio se actualiza en tiempo real.</p>
                             <div class="form-group">
-                                <label>Unidades *</label>
+                                <label for="cantidad">Unidades *</label>
                                 <input type="number" id="cantidad" min="1" value="1"
                                        onchange="calcularTotal()"
                                        onkeydown="if(['e','E','+','-','.'].includes(event.key))event.preventDefault()">
@@ -773,7 +773,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                             </label>
                             <input type="url" id="linkSTL"
                                    placeholder="https://drive.google.com/... o https://we.tl/..."
-                                   oninput="validarLink(this)">
+                                   oninput="validarLink(this)" aria-label="https://drive.google.com/... o https://we.tl/...">
                             <div class="link-feedback" id="link-feedback"></div>
                             <div style="margin-top:8px;padding:9px 12px;background:rgba(255,149,0,.06);border:1px solid rgba(255,149,0,.2);border-radius:8px;font-size:.72rem;color:#ff9500;display:flex;align-items:flex-start;gap:7px;line-height:1.5">
                                 <i class="fas fa-shield-halved" style="flex-shrink:0;margin-top:1px"></i>
@@ -944,9 +944,9 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <option>PayPal</option><option>Otro</option>
                         </select>
                         <input type="text" id="pago_titular" placeholder="Nombre del titular" maxlength="50" autocomplete="name"
-                               style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:16px;">
+                               style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:16px;" aria-label="Nombre del titular">
                         <input type="text" id="pago_ref" placeholder="Comprobante / Ref. (opcional)" maxlength="30" autocomplete="off"
-                               style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;font-size:16px;">
+                               style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;font-size:16px;" aria-label="Comprobante / Ref. (opcional)">
                     </div>
                 </div>
             </div>
@@ -979,10 +979,10 @@ window.submitOrden     = window.submitOrden      || function(){};
                                 <option value="NIT">NIT (Empresa / Clínica)</option>
                                 <option value="CE">Cédula de Extranjería</option>
                             </select>
-                            <input type="text" id="billing_nit_d" oninput="validarNITd(this)" placeholder="NIT / Cédula (ej: 900123456-1)" maxlength="20" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:4px;font-size:16px;">
+                            <input type="text" id="billing_nit_d" oninput="validarNITd(this)" placeholder="NIT / Cédula (ej: 900123456-1)" maxlength="20" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:4px;font-size:16px;" aria-label="NIT / Cédula (ej: 900123456-1)">
                             <span id="nit-indicator-d" style="font-size:.8rem;display:block;margin-top:3px;min-height:16px;margin-bottom:4px;"></span>
-                            <input type="text" id="billing_razon_d" placeholder="Razón Social o Nombre Completo" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:16px;">
-                            <input type="email" id="billing_email_d" placeholder="Correo para factura (contabilidad@...)" maxlength="80" autocomplete="email" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);font-size:16px;">
+                            <input type="text" id="billing_razon_d" placeholder="Razón Social o Nombre Completo" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:16px;" aria-label="Razón Social o Nombre Completo">
+                            <input type="email" id="billing_email_d" placeholder="Correo para factura (contabilidad@...)" maxlength="80" autocomplete="email" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);font-size:16px;" aria-label="Correo para factura (contabilidad@...)">
                             <p style="font-size:.8rem;color:#94a3b8;margin-top:6px;">Factura enviada al correo indicado en máx. 24h hábiles tras confirmación de pago.</p>
                         </div>
                     </div>
@@ -1029,7 +1029,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                     <input type="text" id="cupon-input" placeholder="¿Tienes un cupón de crédito? Ej: CRED-XXXXXXXX"
                         maxlength="13" autocomplete="off" spellcheck="false"
                         style="flex:1;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:8px;color:#fff;padding:9px 12px;font-size:.82rem;font-family:inherit;outline:none;text-transform:uppercase;letter-spacing:1px;"
-                        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')">
+                        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')" aria-label="¿Tienes un cupón de crédito? Ej: CRED-XXXXXXXX">
                     <button type="button" onclick="validarCuponCredito()" style="background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:8px;padding:9px 16px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;">Validar</button>
                 </div>
                 <div id="cupon-msg" style="font-size:.72rem;margin-top:5px;min-height:16px;" aria-live="polite"></div>
@@ -1577,7 +1577,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                         ? `<span style="font-size:.72rem;color:#fbbf24;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:6px;padding:5px 10px">✍️ Indicar en Notas del caso</span>`
                         : `<label id="lbl-${a.id}" style="display:inline-flex;align-items:center;gap:6px;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.3);color:#D946A6;padding:6px 12px;border-radius:7px;cursor:pointer;font-size:.75rem;font-weight:700;white-space:nowrap">
                         <i class="fas fa-upload"></i> Subir
-                        <input type="file" id="file-${a.id}" style="display:none" accept=".stl,.ply,.obj,.dcm,.zip,.jpg,.jpeg,.png,.pdf,.3oxz" onchange="marcarArchivoSubido('${a.id}','${a.req}',this)">
+                        <input type="file" id="file-${a.id}" aria-label="Subir archivo de diseño" style="display:none" accept=".stl,.ply,.obj,.dcm,.zip,.jpg,.jpeg,.png,.pdf,.3oxz" onchange="marcarArchivoSubido('${a.id}','${a.req}',this)">
                       </label>
                       <span id="estado-${a.id}" style="font-size:.72rem;color:#94a3b8">Sin subir</span>`}
                     </div>

@@ -310,7 +310,7 @@ textarea.modal-input{min-height:100px;}
     <label class="modal-lbl"><i class="fas fa-comment-alt" style="margin-right:4px;"></i>Descripción del cambio <span style="color:#ef4444;">*</span></label>
     <textarea class="modal-input" id="cambio-texto" placeholder="Ej: Aumentar grosor mesial, ajustar punto de contacto distal, modificar cúspide palatina…"></textarea>
     <label class="modal-lbl"><i class="fas fa-camera" style="margin-right:4px;"></i>Fotos de referencia (opcional)</label>
-    <input type="file" id="cambio-fotos" accept="image/*" multiple class="modal-input" style="cursor:pointer;padding:9px;">
+    <input type="file" id="cambio-fotos" accept="image/*" multiple aria-label="Subir fotos del cambio solicitado" class="modal-input" style="cursor:pointer;padding:9px;">
     <div class="up-prog" id="cambio-prog">
       <div class="up-track"><div class="up-bar" id="cambio-bar"></div></div>
       <div class="up-stat" id="cambio-stat"></div>
@@ -411,7 +411,7 @@ textarea.modal-input{min-height:100px;}
       <p>Toca para subir la foto o captura del comprobante</p>
       <p style="font-size:.7rem;margin-top:4px;">JPG, PNG, PDF — máx 10 MB</p>
     </div>
-    <input type="file" id="comp-file" accept="image/*,.pdf" style="display:none;" onchange="onComprobanteSelected(this)">
+    <input type="file" id="comp-file" accept="image/*,.pdf" aria-label="Subir comprobante" style="display:none;" onchange="onComprobanteSelected(this)">
     <div id="comp-preview" style="display:none;display:flex;gap:8px;align-items:center;margin-bottom:10px;">
       <img class="preview-img" id="comp-img" src="" alt="">
       <span id="comp-name" style="font-size:.78rem;color:var(--muted);"></span>
@@ -591,7 +591,7 @@ function renderPage() {
         <p style="font-size:.78rem;color:var(--muted);margin-bottom:10px;">¿Necesitas agregar algo más sobre tu solicitud?</p>
         <div class="note-form">
           <textarea id="nota-txt" placeholder="Comentarios adicionales para el equipo de diseño…"></textarea>
-          <input type="file" id="nota-fotos" accept="image/*" multiple style="font-size:.75rem;color:var(--muted);cursor:pointer;width:100%;margin-bottom:8px;">
+          <input type="file" id="nota-fotos" accept="image/*" multiple aria-label="Adjuntar fotos a la nota" style="font-size:.75rem;color:var(--muted);cursor:pointer;width:100%;margin-bottom:8px;">
           <div class="up-prog" id="nota-prog"><div class="up-track"><div class="up-bar" id="nota-bar"></div></div><div class="up-stat" id="nota-stat"></div></div>
           <button type="button" class="btn btn-gold btn-sm" onclick="enviarNota()"><i class="fas fa-paper-plane"></i> Enviar nota</button>
         </div>
@@ -603,7 +603,7 @@ function renderPage() {
       <p>Deja comentarios o fotos de referencia para el equipo si lo necesitas.</p>
       <div class="note-form">
         <textarea id="nota-txt" placeholder="Comentarios, referencias de color, notas para el laboratorio…"></textarea>
-        <input type="file" id="nota-fotos" accept="image/*" multiple style="font-size:.75rem;color:var(--muted);cursor:pointer;width:100%;margin-bottom:8px;">
+        <input type="file" id="nota-fotos" accept="image/*" multiple aria-label="Adjuntar fotos a la nota" style="font-size:.75rem;color:var(--muted);cursor:pointer;width:100%;margin-bottom:8px;">
         <div class="up-prog" id="nota-prog"><div class="up-track"><div class="up-bar" id="nota-bar"></div></div><div class="up-stat" id="nota-stat"></div></div>
         <button type="button" class="btn btn-gold btn-sm" onclick="enviarNota()"><i class="fas fa-paper-plane"></i> Enviar nota</button>
       </div>
