@@ -2308,7 +2308,7 @@ if(window.ProdigyAuth){
                             </label>
                             <input type="url" id="linkSTL"
                                    placeholder="https://drive.google.com/... o https://we.tl/..."
-                                   style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#e2e8f0;font-size:.88rem;font-family:inherit;outline:none;transition:border-color .2s;box-sizing:border-box" aria-label="https://drive.google.com/... o https://we.tl/...">
+                                   style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#e2e8f0;font-size:16px;font-family:inherit;outline:none;transition:border-color .2s;box-sizing:border-box" aria-label="https://drive.google.com/... o https://we.tl/...">
                             <div style="margin-top:8px;padding:9px 12px;background:rgba(255,149,0,.06);border:1px solid rgba(255,149,0,.2);border-radius:8px;font-size:.72rem;color:#ff9500;display:flex;align-items:flex-start;gap:7px;line-height:1.5">
                                 <i class="fas fa-shield-halved" style="flex-shrink:0;margin-top:1px"></i>
                                 <span><strong>Aviso de privacidad:</strong> Los archivos enviados mediante Drive o WeTransfer son procesados en servidores de terceros fuera del control de PRODIGY. Para mayor privacidad y trazabilidad, usa la <strong>carga directa</strong> en el visor de arriba — los archivos quedan en nuestra base de datos.</span>
@@ -2493,7 +2493,7 @@ if(window.ProdigyAuth){
                             ⚠️ Completa estos datos para verificar tu pago
                         </p>
                         <label for="pago_metodo" style="font-size:.7rem;color:var(--text-secondary);display:block;margin-bottom:4px;">Método de pago</label>
-                        <select id="pago_metodo" style="width:100%; background:var(--bg-dark); color:white; border:2px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm); margin-bottom:10px; font-size:0.9rem; cursor:pointer;">
+                        <select id="pago_metodo" style="width:100%; background:var(--bg-dark); color:white; border:2px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm); margin-bottom:10px; font-size:16px; cursor:pointer;">
                             <option value="">¿Por dónde pagaste?</option>
                             <option value="Nequi">💙 Nequi</option>
                             <option value="Daviplata">💗 Daviplata</option>
@@ -2502,8 +2502,8 @@ if(window.ProdigyAuth){
                             <option value="PSE">💳 PSE / Tarjeta</option>
                             <option value="Otro">💵 Otro</option>
                         </select>
-                        <input type="text" id="pago_titular" placeholder="Nombre del titular de la cuenta" maxlength="50" style="width:100%; background:var(--bg-dark); color:white; border:2px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm); margin-bottom:10px; font-size:0.9rem;" aria-label="Nombre del titular de la cuenta">
-                        <input type="text" id="pago_referencia" placeholder="Número de comprobante / Ref (opcional)" maxlength="30" style="width:100%; background:var(--bg-dark); color:white; border:2px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm); font-size:0.9rem;" aria-label="Número de comprobante / Ref (opcional)">
+                        <input type="text" id="pago_titular" placeholder="Nombre del titular de la cuenta" maxlength="50" style="width:100%; background:var(--bg-dark); color:white; border:2px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm); margin-bottom:10px; font-size:16px;" aria-label="Nombre del titular de la cuenta">
+                        <input type="text" id="pago_referencia" placeholder="Número de comprobante / Ref (opcional)" maxlength="30" style="width:100%; background:var(--bg-dark); color:white; border:2px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm); font-size:16px;" aria-label="Número de comprobante / Ref (opcional)">
                     </div>
                 </div>
             </div>
@@ -2522,16 +2522,16 @@ if(window.ProdigyAuth){
                         </label>
                         <div id="billing-fields" style="display:none;">
                             <label for="billing_tipo" style="font-size:.72rem;color:rgba(255,255,255,.5);display:block;margin-bottom:4px;">Tipo de documento</label>
-                            <select id="billing_tipo" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;">
+                            <select id="billing_tipo" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:16px;">
                                 <option value="">Tipo de documento</option>
                                 <option value="NIT">NIT (Empresa / Clínica)</option>
                                 <option value="CC">Cédula de Ciudadanía</option>
                                 <option value="CE">Cédula de Extranjería</option>
                             </select>
-                            <input type="text" id="billing_nit" oninput="validarNIT(this)" placeholder="NIT / Cédula (ej: 900123456-1)" maxlength="20" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:4px;font-size:.85rem;" aria-label="NIT / Cédula (ej: 900123456-1)">
+                            <input type="text" id="billing_nit" oninput="validarNIT(this)" placeholder="NIT / Cédula (ej: 900123456-1)" maxlength="20" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:4px;font-size:16px;" aria-label="NIT / Cédula (ej: 900123456-1)">
                             <span id="nit-indicator" style="font-size:.72rem;display:block;margin-top:3px;min-height:16px;margin-bottom:4px;"></span>
-                            <input type="text" id="billing_razon" placeholder="Razón Social o Nombre Completo" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:.85rem;" aria-label="Razón Social o Nombre Completo">
-                            <input type="email" id="billing_email" placeholder="Correo para factura (contabilidad@...)" maxlength="80" autocomplete="email" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);font-size:.85rem;" aria-label="Correo para factura (contabilidad@...)">
+                            <input type="text" id="billing_razon" placeholder="Razón Social o Nombre Completo" maxlength="80" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:16px;" aria-label="Razón Social o Nombre Completo">
+                            <input type="email" id="billing_email" placeholder="Correo para factura (contabilidad@...)" maxlength="80" autocomplete="email" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);font-size:16px;" aria-label="Correo para factura (contabilidad@...)">
                             <p style="font-size:.72rem;color:#94a3b8;margin-top:6px;">Factura enviada al correo indicado en máx. 24h hábiles.</p>
                         </div>
                     </div>
@@ -2591,7 +2591,7 @@ if(window.ProdigyAuth){
                 <div style="display:flex;gap:8px;align-items:center;">
                     <input type="text" id="cupon-input" placeholder="¿Tienes un cupón? Ej: CRED-XXXXXXXX"
                         maxlength="13" autocomplete="off" spellcheck="false"
-                        style="flex:1;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:8px;color:#fff;padding:9px 12px;font-size:.82rem;font-family:inherit;outline:none;text-transform:uppercase;letter-spacing:1px;"
+                        style="flex:1;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:8px;color:#fff;padding:9px 12px;font-size:16px;font-family:inherit;outline:none;text-transform:uppercase;letter-spacing:1px;"
                         oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')" aria-label="¿Tienes un cupón? Ej: CRED-XXXXXXXX">
                     <button type="button" onclick="validarCuponFresado()" style="background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:8px;padding:9px 16px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;">Validar</button>
                 </div>
@@ -2969,7 +2969,7 @@ if(window.ProdigyAuth){
                             <span class="icon">✨</span>
                             <h4>3. Fresado + Sinter + Glaze</h4>
                             <p>Acabado premium (+$25k)</p>
-                            <div id="contador-glaze-zirc" class="hidden" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-subtle);"><label style="font-size:0.7rem;color:var(--text-secondary);display:block;margin-bottom:5px;" for="cant-glaze-zirc">Cantidad Glaze:</label><input type="number" id="cant-glaze-zirc" min="1" value="1" onclick="event.stopPropagation()" onchange="calcularTotal()" style="width:100%;padding:8px;font-size:0.9rem;font-weight:700;text-align:center;background:var(--bg-dark);color:var(--gold-primary);border:2px solid var(--border-subtle);border-radius:6px;"></div>
+                            <div id="contador-glaze-zirc" class="hidden" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-subtle);"><label style="font-size:0.7rem;color:var(--text-secondary);display:block;margin-bottom:5px;" for="cant-glaze-zirc">Cantidad Glaze:</label><input type="number" id="cant-glaze-zirc" min="1" value="1" onclick="event.stopPropagation()" onchange="calcularTotal()" style="width:100%;padding:8px;font-size:16px;font-weight:700;text-align:center;background:var(--bg-dark);color:var(--gold-primary);border:2px solid var(--border-subtle);border-radius:6px;"></div>
                         </button>
                         <button type="button" class="process-card" onclick="selectProcess('solo_sinter')" aria-pressed="false">
                             <span class="icon">🌡️</span>
@@ -3050,7 +3050,7 @@ if(window.ProdigyAuth){
                                 <label style="font-size: 0.7rem; color: var(--text-secondary); display: block; margin-bottom: 5px;" for="cant-cristal">Cantidad:</label>
                                 <input type="number" id="cant-cristal" min="1" value="1" 
                                        onchange="limitarContadoresDisi(); calcularTotal()"
-                                       style="width: 100%; padding: 8px; font-size: 0.9rem; font-weight: 700; text-align: center; 
+                                       style="width: 100%; padding: 8px; font-size:16px; font-weight: 700; text-align: center; 
                                               background: var(--bg-dark); color: var(--gold-primary); border: 2px solid var(--border-subtle); 
                                               border-radius: 6px;">
                             </div>
@@ -3063,7 +3063,7 @@ if(window.ProdigyAuth){
                                 <label style="font-size: 0.7rem; color: var(--text-secondary); display: block; margin-bottom: 5px;" for="cant-glaze">Cantidad:</label>
                                 <input type="number" id="cant-glaze" min="0" value="0" 
                                        onchange="limitarContadoresDisi(); calcularTotal()"
-                                       style="width: 100%; padding: 8px; font-size: 0.9rem; font-weight: 700; text-align: center; 
+                                       style="width: 100%; padding: 8px; font-size:16px; font-weight: 700; text-align: center; 
                                               background: var(--bg-dark); color: var(--gold-primary); border: 2px solid var(--border-subtle); 
                                               border-radius: 6px;">
                             </div>
@@ -3107,7 +3107,7 @@ if(window.ProdigyAuth){
                             <div class="process-neon-wrapper neon-proc-blanco">✨</div>
                             <h4 style="color:#fff;">Fresado + Pulido</h4>
                             <p>${esClear ? 'Acabado brillante (+$18k)' : 'Manual (+$15k)'}</p>
-                            <div id="contador-pulido-pmma" class="hidden" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border-subtle);"><label style="font-size:0.7rem;color:var(--gold-primary);display:block;margin-bottom:4px;" for="cant-pulido-pmma">Cantidad:</label><input type="number" id="cant-pulido-pmma" min="1" value="1" onclick="event.stopPropagation()" onchange="calcularTotal()" style="width:100%;padding:7px;font-size:0.9rem;font-weight:700;text-align:center;background:#000;color:var(--gold-primary);border:1px solid var(--gold-primary);border-radius:5px;"></div>
+                            <div id="contador-pulido-pmma" class="hidden" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border-subtle);"><label style="font-size:0.7rem;color:var(--gold-primary);display:block;margin-bottom:4px;" for="cant-pulido-pmma">Cantidad:</label><input type="number" id="cant-pulido-pmma" min="1" value="1" onclick="event.stopPropagation()" onchange="calcularTotal()" style="width:100%;padding:7px;font-size:16px;font-weight:700;text-align:center;background:#000;color:var(--gold-primary);border:1px solid var(--gold-primary);border-radius:5px;"></div>
                         </button>
                     </div>
 

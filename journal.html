@@ -389,7 +389,7 @@
       border-radius: 10px;
       padding: 12px 14px 12px 38px;
       color: var(--text);
-      font-size: 0.9rem;
+      font-size: 16px;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
@@ -824,7 +824,7 @@
       <div style="position:relative;">
         <input type="search" id="journal-search" placeholder="Buscar artículo…" maxlength="80" autocomplete="off"
           aria-label="Buscar en el journal"
-          style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;padding:10px 14px 10px 40px;font-size:.88rem;font-family:inherit;outline:none;"
+          style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;padding:10px 14px 10px 40px;font-size:16px;font-family:inherit;outline:none;"
           oninput="if(typeof searchJournal==='function')searchJournal(this.value)">
         <i class="fas fa-search" aria-hidden="true" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#475569;pointer-events:none;"></i>
       </div>
@@ -844,7 +844,7 @@
       <button type="button" class="tag-btn" onclick="filterArticles(this,'ia')" aria-pressed="false">IA</button>
     </div>
     <input type="search" id="journal-search" placeholder="🔍 Buscar artículo..." enterkeyhint="search" aria-label="Buscar artículo por título o palabras clave"
-           style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:7px 16px;color:#e2e8f0;font-size:.8rem;outline:none;min-width:200px;transition:border-color .2s;"
+           style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:7px 16px;color:#e2e8f0;font-size:16px;outline:none;min-width:200px;transition:border-color .2s;"
            oninput="searchJournal(this.value)">
   </div>
 

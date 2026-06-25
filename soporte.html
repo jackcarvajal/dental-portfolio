@@ -224,17 +224,17 @@
           <div>
             <label for="tk-nombre" style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px;">Nombre</label>
             <input type="text" id="tk-nombre" required maxlength="100" autocomplete="name" placeholder="Dr. García"
-              style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;">
+              style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:16px;font-family:inherit;outline:none;">
           </div>
           <div>
             <label for="tk-wa" style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px;">WhatsApp</label>
             <input type="tel" id="tk-wa" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="+57 321..."
-              style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;">
+              style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:16px;font-family:inherit;outline:none;">
           </div>
         </div>
         <div style="margin-bottom:12px;">
           <label for="tk-asunto" style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px;">Tipo de consulta</label>
-          <select id="tk-asunto" required style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;" onchange="(function(v){var ta=document.getElementById('tk-mensaje');var t={seguimiento:'Hola PRODIGY, necesito el estado del caso [CÓDIGO]. Lo envié el [FECHA].',diseno:'Hola, necesito una revisión del diseño del caso [CÓDIGO]. El ajuste que necesito es: ',archivos:'Hola, tengo un problema al abrir el STL del caso [CÓDIGO]. El error es: ',pago:'Hola, tengo una consulta sobre el pago del caso [CÓDIGO]. Monto: ',exocad:'Hola, necesito ayuda con Exocad/3Shape. El problema es: ',materiales:'Hola, necesito información sobre el material: ',otro:'Hola PRODIGY, necesito ayuda con lo siguiente: '};if(ta&&!ta.value.trim()&&t[v]){ta.value=t[v];ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);})(this.value)">
+          <select id="tk-asunto" required style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:16px;font-family:inherit;outline:none;" onchange="(function(v){var ta=document.getElementById('tk-mensaje');var t={seguimiento:'Hola PRODIGY, necesito el estado del caso [CÓDIGO]. Lo envié el [FECHA].',diseno:'Hola, necesito una revisión del diseño del caso [CÓDIGO]. El ajuste que necesito es: ',archivos:'Hola, tengo un problema al abrir el STL del caso [CÓDIGO]. El error es: ',pago:'Hola, tengo una consulta sobre el pago del caso [CÓDIGO]. Monto: ',exocad:'Hola, necesito ayuda con Exocad/3Shape. El problema es: ',materiales:'Hola, necesito información sobre el material: ',otro:'Hola PRODIGY, necesito ayuda con lo siguiente: '};if(ta&&!ta.value.trim()&&t[v]){ta.value=t[v];ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);})(this.value)">
             <option value="" disabled selected>Seleccionar…</option>
             <option value="seguimiento">Seguimiento de pedido</option>
             <option value="diseno">Revisión de diseño</option>
@@ -248,7 +248,7 @@
         <div style="margin-bottom:16px;">
           <label for="tk-mensaje" style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px;">Mensaje</label>
           <textarea id="tk-mensaje" required maxlength="1000" rows="4" placeholder="Describe tu consulta con el mayor detalle posible…"
-            style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;resize:vertical;"></textarea>
+            style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:16px;font-family:inherit;outline:none;resize:vertical;"></textarea>
         </div>
         <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:16px;">
           <input type="checkbox" id="tk-habeas" required style="width:15px;height:15px;flex-shrink:0;margin-top:2px;accent-color:var(--cyan);">
