@@ -78,9 +78,9 @@
 /dentista               /nosotros.html              301
 # /soporte-tecnico        /soporte-tecnico.html       200  ← CF sirve nativo
 /soporte-xtcera         /soporte-tecnico.html       301
-/referidos              /referidos.html             200
+# /referidos             /referidos.html             200  ← CF sirve nativo (200 causaba ERR_TOO_MANY_REDIRECTS)
 # /preguntas             /preguntas.html             200  ← CF sirve nativo (200 causaba ERR_TOO_MANY_REDIRECTS)
-/impresion-3d           /impresion-3d.html          200
+# /impresion-3d          /impresion-3d.html          200  ← CF sirve nativo (200 causaba ERR_TOO_MANY_REDIRECTS)
 /impresion              /impresion-3d.html          301
 /impresion-dental       /impresion-3d.html          301
 /faq                    /preguntas.html             301
@@ -125,5 +125,5 @@
 # ─────────────────────────────────────────────────────────────
 /app/*                /app/:splat           200
 
-/alineadores-cad        /alineadores-cad.html       200
+# /alineadores-cad       /alineadores-cad.html       200  ← CF sirve nativo (200 causaba ERR_TOO_MANY_REDIRECTS)
 /alineadores            /alineadores-cad.html       301
