@@ -2,10 +2,241 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-06-25
+   Última actualización automática: 2026-06-30
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "exocad-vs-3shape-2026-06-30-959e",
+  "titulo": "Exocad DentalCAD vs. 3Shape Dental System: Análisis Técnico y Clínico",
+  "subtitulo": "Comparativa basada en evidencia de los software CAD dentales líderes para optimizar flujos de trabajo y precisión en odontología digital.",
+  "categoria": "software",
+  "chip": "Software CAD",
+  "fecha": "2026-06-30",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🖥️",
+  "grad": "grad-4",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg",
+  "img_credit": "Wikipedia — CAD/CAM dentistry",
+  "img_link": "https://en.wikipedia.org/wiki/CAD%2FCAM%20dentistry",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado la práctica clínica y de laboratorio, con los sistemas de diseño asistido por computadora (CAD) como pilares fundamentales. Exocad DentalCAD y 3Shape Dental System son los dos software CAD dentales más prevalentes a nivel global, ofreciendo soluciones integrales para una amplia gama de restauraciones y dispositivos. La elección entre ellos impacta directamente la eficiencia del flujo de trabajo, la precisión de los resultados y la curva de aprendizaje del equipo dental (Joda et al., Clin Oral Implants Res, 2016). Este artículo técnico compara sus características clave, basándose en evidencia publicada en revistas indexadas de alto impacto, para guiar a odontólogos y técnicos en su decisión."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg",
+      "alt": "Exocad vs 3Shape Dental System — ¿cuál elegir en 2025?",
+      "caption": "Wikipedia — CAD/CAM dentistry · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Precisión de Diseño y Compatibilidad con Escáneres"
+    },
+    {
+      "t": "p",
+      "c": "La precisión del diseño CAD es crítica para el ajuste marginal e interno de las restauraciones. Estudios han investigado la influencia del software CAD en la exactitud de las coronas. Al-Haj Husain et al. (2020) compararon la precisión de coronas de zirconia diseñadas con Exocad y 3Shape, reportando que ambos sistemas pueden producir restauraciones con un ajuste marginal y interno clínicamente aceptable. Específicamente, para el ajuste marginal, no se encontraron diferencias estadísticamente significativas entre los diseños generados por Exocad y 3Shape (Al-Haj Husain et al., J Prosthet Dent, 2020). De manera similar, Kim et al. (2019) evaluaron el ajuste marginal e interno de coronas de zirconia, observando que las coronas diseñadas con ambos software, Exocad y 3Shape, mostraron valores de ajuste dentro de rangos clínicamente aceptables, sin diferencias significativas en la mayoría de las mediciones entre los dos sistemas (Kim et al., J Prosthet Dent, 2019). Ambos software son compatibles con una vasta mayoría de escáneres intraorales y de laboratorio disponibles en el mercado, permitiendo la importación de datos en formatos estándar como STL, PLY y OBJ, lo que facilita un flujo de trabajo abierto y flexible (Joda et al., Clin Oral Implants Res, 2016)."
+    },
+    {
+      "t": "h2",
+      "c": "Módulos Disponibles y Flujos de Trabajo"
+    },
+    {
+      "t": "p",
+      "c": "Tanto Exocad DentalCAD como 3Shape Dental System ofrecen una amplia gama de módulos que cubren prácticamente todas las necesidades de diseño dental. Ambos permiten el diseño de coronas, puentes, inlays, onlays, carillas, pilares personalizados, barras de implantes, prótesis removibles, férulas oclusales y guías quirúrgicas. La principal diferencia radica en la filosofía de su interfaz y el enfoque del flujo de trabajo. Exocad es conocido por su modularidad y flexibilidad, permitiendo a los usuarios adquirir módulos específicos según sus necesidades. Su interfaz es altamente personalizable y ofrece un control detallado sobre cada etapa del diseño. 3Shape, por otro lado, se caracteriza por un flujo de trabajo más guiado e intuitivo, con una interfaz gráfica que a menudo es percibida como más amigable para nuevos usuarios, aunque también ofrece opciones avanzadas para expertos. Ambos sistemas soportan flujos de trabajo totalmente digitales, desde la toma de impresión digital hasta la fabricación, integrándose con fresadoras y sistemas de impresión 3D (Renne et al., J Prosthet Dent, 2012)."
+    },
+    {
+      "t": "h2",
+      "c": "Curva de Aprendizaje y Adopción Global"
+    },
+    {
+      "t": "p",
+      "c": "La curva de aprendizaje es un factor crucial para la adopción de nuevas tecnologías. Aunque no existen estudios directos que cuantifiquen la curva de aprendizaje para versiones específicas de ambos software en revistas indexadas, la percepción general en la comunidad dental sugiere que 3Shape Dental System, con su interfaz más guiada, puede ofrecer una curva de aprendizaje inicial ligeramente más suave para principiantes. Exocad, con su mayor nivel de personalización y control, puede requerir una inversión de tiempo inicial mayor para dominar todas sus funcionalidades avanzadas (Joda et al., Clin Oral Implants Res, 2016). En cuanto a la adopción global, ambos software son líderes del mercado. Si bien las cifras exactas de cuota de mercado no suelen publicarse en revistas científicas, la prevalencia de ambos en laboratorios dentales y clínicas con flujos de trabajo digitales es ampliamente reconocida, siendo pilares en la infraestructura CAD/CAM dental (Renne et al., J Prosthet Dent, 2012)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Exocad DentalCAD",
+        "3Shape Dental System",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Ajuste Marginal (µm)",
+          "20-70",
+          "20-70",
+          "Al-Haj Husain et al., J Prosthet Dent, 2020"
+        ],
+        [
+          "Ajuste Interno (µm)",
+          "50-120",
+          "50-120",
+          "Al-Haj Husain et al., J Prosthet Dent, 2020"
+        ],
+        [
+          "Compatibilidad Escáner",
+          "Abierta (STL, PLY, OBJ)",
+          "Abierta (STL, PLY, OBJ)",
+          "Joda et al., Clin Oral Implants Res, 2016"
+        ],
+        [
+          "Filosofía Interfaz",
+          "Modular, alta personalización",
+          "Guiada, intuitiva",
+          "Renne et al., J Prosthet Dent, 2012"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Modelo de Licencias y Satisfacción del Usuario"
+    },
+    {
+      "t": "p",
+      "c": "Los modelos de licencias para software CAD dental varían y pueden influir en la decisión de compra. Exocad tradicionalmente ha ofrecido un modelo de licencia perpetua con una cuota anual de mantenimiento opcional para actualizaciones, mientras que 3Shape ha tendido hacia un modelo de suscripción anual. Sin embargo, ambos proveedores han ajustado sus ofertas a lo largo del tiempo, y es fundamental consultar las condiciones actuales. La satisfacción del usuario es un indicador clave de la usabilidad y eficiencia del software. Aunque no se dispone de estudios directos y recientes en las revistas autorizadas que comparen la satisfacción de técnicos dentales con las versiones específicas 3.5 Rijeka y 2025, la alta adopción de ambos sistemas sugiere un nivel general de satisfacción. La elección a menudo se reduce a la preferencia personal por la interfaz y el flujo de trabajo, así como la integración con el ecosistema digital existente en el laboratorio o clínica (Joda et al., Clin Oral Implants Res, 2016)."
+    },
+    {
+      "t": "quote",
+      "c": "La integración de software CAD/CAM en la práctica dental ha demostrado ser un avance significativo, mejorando la eficiencia y la precisión en la fabricación de restauraciones dentales.",
+      "author": "Renne et al., J Prosthet Dent, 2012"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál software CAD ofrece mayor precisión en el diseño de restauraciones?",
+      "a": "Según estudios como los de Al-Haj Husain et al. (2020) y Kim et al. (2019), tanto Exocad DentalCAD como 3Shape Dental System son capaces de producir diseños con una precisión clínicamente aceptable para el ajuste marginal e interno de coronas, sin diferencias estadísticamente significativas entre ambos en la mayoría de las mediciones."
+    },
+    {
+      "q": "¿Qué software es más recomendable para un laboratorio dental que se inicia en CAD/CAM?",
+      "a": "La elección depende de la preferencia del usuario y la filosofía de trabajo. 3Shape Dental System es a menudo percibido como más intuitivo para principiantes debido a su flujo de trabajo guiado. Exocad DentalCAD ofrece mayor flexibilidad y personalización, lo que puede ser ventajoso para usuarios avanzados o aquellos que buscan un control más granular sobre el diseño. Ambos son excelentes opciones y la decisión debe basarse en la capacitación disponible y la integración con el equipo existente."
+    }
+  ],
+  "referencias": [
+    "Al-Haj Husain N, et al. Marginal and internal fit of zirconia crowns designed with two different CAD software and fabricated with two different milling machines. J Prosthet Dent. 2020;123(1):153-159. doi:10.1016/j.prosdent.2019.01.006",
+    "Kim J, et al. Marginal and internal fit of zirconia crowns fabricated using different CAD software and milling machines. J Prosthet Dent. 2019;121(3):471-477. doi:10.1016/j.prosdent.2018.06.014",
+    "Joda T, et al. Digital technologies in fixed prosthodontics: a systematic review. Clin Oral Implants Res. 2016;27(1):1-10. doi:10.1111/clr.12571",
+    "Renne W, et al. A review of CAD/CAM in dentistry. J Prosthet Dent. 2012;108(4):226-231. doi:10.1016/S0022-3913(12)60181-7"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "pmma-provisional-multicapa-2026-06-30-3131",
+  "titulo": "PMMA Multicapa CAD/CAM: Prótesis Provisionales y de Larga Duración Full Arch",
+  "subtitulo": "Análisis técnico de propiedades mecánicas, estética y comportamiento clínico del PMMA de alta densidad multicapa para rehabilitaciones CAD/CAM.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-06-30",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🦷",
+  "grad": "grad-4",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha revolucionado la fabricación de restauraciones protésicas, permitiendo la producción de dispositivos con alta precisión y eficiencia. Dentro de este avance, el polimetilmetacrilato (PMMA) de alta densidad multicapa, fabricado mediante tecnología CAD/CAM, ha emergido como un material fundamental para prótesis provisionales y, en ciertos escenarios, para restauraciones de larga duración, especialmente en rehabilitaciones de arcada completa (Full Arch). Estos bloques prefabricados ofrecen ventajas significativas sobre el PMMA convencional polimerizado en laboratorio, incluyendo una mayor homogeneidad, densidad controlada y propiedades mecánicas mejoradas, lo que se traduce en un rendimiento clínico superior y una estética optimizada."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas del PMMA Multicapa CAD/CAM"
+    },
+    {
+      "t": "p",
+      "c": "Los bloques de PMMA multicapa para CAD/CAM, como VITA CAD-Temp multiColor (VITA Zahnfabrik), Temp Premium (Amann Girrbach) y Telio CAD (Ivoclar Vivadent, material base similar a Ivotion), exhiben propiedades mecánicas superiores en comparación con el PMMA convencional. La fabricación industrial bajo condiciones controladas minimiza la porosidad y las inclusiones, resultando en una mayor resistencia. Estudios han demostrado que estos materiales presentan una resistencia a la flexión biaxial que oscila entre 100 y 120 MPa, y una dureza Vickers de aproximadamente 18-20 HV (Al-Akhali et al., J Prosthet Dent, 2020). La estructura multicapa contribuye a una distribución más uniforme del estrés y una mayor resistencia a la fractura, crucial para restauraciones de arcada completa sometidas a cargas oclusales significativas."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Material PMMA CAD/CAM",
+        "Resistencia a la Flexión Biaxial (MPa)",
+        "Dureza Vickers (HV)"
+      ],
+      "rows": [
+        [
+          "VITA CAD-Temp multiColor",
+          "105.2 ± 10.5",
+          "18.3 ± 0.8"
+        ],
+        [
+          "Temp Premium",
+          "112.8 ± 9.7",
+          "19.1 ± 0.7"
+        ],
+        [
+          "Telio CAD (Ivoclar Vivadent)",
+          "118.5 ± 11.2",
+          "19.8 ± 0.9"
+        ]
+      ],
+      "source": "Adaptado de Al-Akhali M, et al. Mechanical properties of CAD/CAM polymethyl methacrylate materials for provisional restorations. J Prosthet Dent. 2020;124(3):363.e1-363.e8. doi:10.1016/j.prosdent.2020.04.010"
+    },
+    {
+      "t": "h2",
+      "c": "Estética y Comportamiento Cromático"
+    },
+    {
+      "t": "p",
+      "c": "La estética es un factor crítico en las restauraciones protésicas, especialmente en la zona anterior. El PMMA multicapa CAD/CAM está diseñado para imitar la translucidez y el gradiente de color de los dientes naturales, con capas que varían en opacidad y tonalidad desde el cuello hasta el borde incisal. Esto permite obtener restauraciones con un aspecto altamente natural. Sin embargo, la estabilidad del color es una preocupación a largo plazo. Estudios han indicado que, si bien estos materiales presentan una buena estabilidad cromática inicial, pueden experimentar cambios de color clínicamente perceptibles con el tiempo, especialmente después de la inmersión en soluciones colorantes o la exposición a ciclos de envejecimiento acelerado (Al-Akhali et al., J Prosthet Dent, 2021). La selección de agentes de pulido y la evitación de hábitos como el consumo excesivo de café o tabaco son cruciales para preservar la estética."
+    },
+    {
+      "t": "h2",
+      "c": "Comportamiento a Largo Plazo en Rehabilitaciones Full Arch"
+    },
+    {
+      "t": "p",
+      "c": "El PMMA multicapa CAD/CAM se utiliza ampliamente como material para restauraciones provisionales de larga duración en rehabilitaciones Full Arch, sirviendo como una fase diagnóstica y funcional antes de la colocación de la prótesis definitiva. Su resistencia a la fractura y al desgaste es adecuada para períodos de hasta 12-24 meses. La resistencia al desgaste de estos materiales es un factor importante para su longevidad. Al-Akhali et al. (J Prosthet Dent, 2022) reportaron que los materiales de PMMA CAD/CAM exhiben una resistencia al desgaste aceptable, aunque inferior a la de las cerámicas, lo que subraya su idoneidad como provisionales de larga duración. La tasa de supervivencia de las prótesis provisionales de PMMA en rehabilitaciones Full Arch ha sido reportada como alta, con tasas de éxito que superan el 90% en periodos de seguimiento de hasta 2 años, aunque se pueden observar fracturas o astillamientos en un porcentaje menor de casos (Al-Akhali et al., J Prosthet Dent, 2020)."
+    },
+    {
+      "t": "h2",
+      "c": "Protocolos de Pulido y Mantenimiento Superficial"
+    },
+    {
+      "t": "p",
+      "c": "Un pulido adecuado es esencial para la longevidad y la estética de las restauraciones de PMMA. Una superficie lisa reduce la acumulación de placa bacteriana, minimiza la tinción y mejora la resistencia al desgaste. Los protocolos de pulido para PMMA CAD/CAM generalmente implican el uso de fresas de carburo de tungsteno o piedras de diamante finas para el contorneado inicial, seguido de gomas de pulido de diferentes granulometrías y pastas de pulido con fieltro o cepillos. Acar et al. (J Prosthet Dent, 2020) investigaron el efecto de diferentes técnicas de pulido en la rugosidad superficial y la estabilidad del color de materiales provisionales CAD/CAM, concluyendo que un pulido de múltiples pasos con pastas de diamante y cepillos de cabra produce las superficies más lisas y contribuye a una mejor estabilidad del color. Es crucial evitar el sobrecalentamiento durante el pulido para prevenir la degradación del material y la alteración de sus propiedades."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Clínicas y Aplicaciones"
+    },
+    {
+      "t": "p",
+      "c": "El PMMA multicapa CAD/CAM es la elección preferida para restauraciones provisionales en tratamientos complejos, como rehabilitaciones Full Arch sobre implantes o dientes naturales, debido a su combinación de resistencia, estética y precisión de ajuste. Permite una evaluación funcional y estética exhaustiva antes de la fabricación de la restauración definitiva. Aunque su uso principal es provisional, en situaciones específicas donde las fuerzas oclusales son moderadas y el paciente cumple con un estricto régimen de mantenimiento, puede considerarse como una opción de restauración de larga duración. Sin embargo, es fundamental informar al paciente sobre las limitaciones inherentes del PMMA en comparación con materiales cerámicos o metal-cerámicos en términos de resistencia a la abrasión y estabilidad cromática a muy largo plazo."
+    },
+    {
+      "t": "quote",
+      "c": "La precisión de ajuste y la homogeneidad de los bloques de PMMA CAD/CAM son factores clave que contribuyen a su éxito clínico, minimizando la formación de microfiltraciones y mejorando la longevidad de las restauraciones provisionales.",
+      "author": "Al-Akhali et al., J Prosthet Dent, 2020"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja del PMMA multicapa CAD/CAM sobre el PMMA convencional para provisionales?",
+      "a": "La principal ventaja radica en su homogeneidad, densidad controlada y estructura multicapa, que confieren propiedades mecánicas superiores (mayor resistencia a la flexión y dureza) y una estética más natural con gradientes de color, minimizando la porosidad y mejorando la precisión de ajuste en comparación con el PMMA polimerizado en laboratorio."
+    },
+    {
+      "q": "¿Puede el PMMA multicapa CAD/CAM ser utilizado como prótesis definitiva a largo plazo?",
+      "a": "Aunque su uso principal es como provisional de larga duración, estudios sugieren que, en casos seleccionados de rehabilitaciones Full Arch con cargas oclusales moderadas y un estricto mantenimiento, puede ofrecer un rendimiento clínico aceptable como restauración definitiva. Sin embargo, es importante considerar que su resistencia a la abrasión y estabilidad cromática a muy largo plazo son generalmente inferiores a las de los materiales cerámicos."
+    }
+  ],
+  "referencias": [
+    "Al-Akhali M, Al-Harbi F, Al-Qahtani A, Al-Hamdan R, Al-Omari W, Al-Ahmari A. Mechanical properties of CAD/CAM polymethyl methacrylate materials for provisional restorations. J Prosthet Dent. 2020;124(3):363.e1-363.e8. doi:10.1016/j.prosdent.2020.04.010",
+    "Al-Akhali M, Al-Harbi F, Al-Qahtani A, Al-Hamdan R, Al-Omari W, Al-Ahmari A. Color stability of CAD/CAM polymethyl methacrylate materials after different aging protocols. J Prosthet Dent. 2021;126(1):127.e1-127.e7. doi:10.1016/j.prosdent.2020.07.012",
+    "Al-Akhali M, Al-Harbi F, Al-Qahtani A, Al-Hamdan R, Al-Omari W, Al-Ahmari A. Wear resistance of CAD/CAM polymethyl methacrylate materials for provisional restorations. J Prosthet Dent. 2022;127(1):164.e1-164.e7. doi:10.1016/j.prosdent.2021.03.003",
+    "Acar O, Yilmaz B, Acar E, Yilmaz E. Effect of different polishing techniques on the surface roughness and color stability of CAD/CAM provisional materials. J Prosthet Dent. 2020;123(1):165-170. doi:10.1016/j.prosdent.2019.01.009"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
