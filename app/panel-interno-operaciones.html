@@ -347,6 +347,7 @@
             <div class="section-header">
                 <h2><i class="fas fa-table-list" style="color:var(--gold);margin-right:8px;"></i>Casos</h2>
             </div>
+            <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr><th>Código</th><th>Tipo</th><th>Material</th><th>Total</th><th>Pasarela</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr>
@@ -528,6 +529,7 @@
             <div class="section-header">
                 <h2><i class="fas fa-users" style="color:var(--gold);margin-right:8px;"></i>Doctores registrados</h2>
             </div>
+            <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr><th>Cliente</th><th>Email</th><th>Clínica</th><th>Ciudad</th><th>País</th><th>Registro</th><th>Pedidos</th></tr>
@@ -576,6 +578,7 @@
                     </button>
                 </div>
             </div>
+            <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr>
@@ -958,6 +961,7 @@
                 <h2><i class="fas fa-box-open" style="color:var(--gold);margin-right:8px;"></i>Listos para Despachar</h2>
                 <span id="badge-sin-asignar" style="background:rgba(217,70,166,.15);color:#D946A6;border-radius:20px;padding:3px 12px;font-size:.75rem;font-weight:700;"></span>
             </div>
+            <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr><th>Código</th><th>Cliente</th><th>Dirección</th><th>Total</th><th>Mensajero</th><th>Acción</th></tr>
@@ -973,6 +977,7 @@
             <div class="section-header">
                 <h2><i class="fas fa-motorcycle" style="color:#00d2ff;margin-right:8px;"></i>Actividad de Hoy</h2>
             </div>
+            <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr><th>Código</th><th>Cliente</th><th>Mensajero</th><th>Estado</th><th>Entrega Est.</th><th>Evidencia</th></tr>
@@ -1020,6 +1025,7 @@
             <div class="section-header">
                 <h2><i class="fas fa-fire" style="color:#ef4444;margin-right:8px;"></i>Pedidos por Tiempo de Gracia</h2>
             </div>
+            <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr><th>Urgencia</th><th>Código</th><th>Paciente</th><th>Servicio</th><th>Estado op.</th><th>Tiempo</th><th>Acción</th></tr>
@@ -1035,6 +1041,7 @@
             <div class="section-header">
                 <h2><i class="fas fa-triangle-exclamation" style="color:#fbbf24;margin-right:8px;"></i>Incidencias Abiertas</h2>
             </div>
+            <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr><th>Severidad</th><th>Tipo</th><th>Descripción</th><th>Pedido</th><th>Hace</th><th>Acción</th></tr>
@@ -1156,8 +1163,8 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
             <div class="section-card"><div class="section-header"><h2><i class="fas fa-route" style="color:var(--gold2);margin-right:8px;"></i>Canal de Origen (90d)</h2></div><div id="rep-canal" style="padding:16px;" aria-live="polite"><div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div></div></div>
             <div class="section-card"><div class="section-header"><h2><i class="fas fa-layer-group" style="color:var(--gold);margin-right:8px;"></i>Pedidos por Material (30d)</h2></div><div id="rep-material" style="padding:16px;" aria-live="polite"><div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div></div></div>
-            <div class="section-card"><div class="section-header"><h2><i class="fas fa-user-doctor" style="color:var(--gold2);margin-right:8px;"></i>Top Doctores (90d)</h2></div><div id="rep-doctores" style="padding:16px;" aria-live="polite"><div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div></div></div>
-            <div class="section-card"><div class="section-header"><h2><i class="fas fa-exchange-alt" style="color:var(--cyan);margin-right:8px;"></i>Conversión por Flujo (30d)</h2></div><div id="rep-flujo" style="padding:16px;" aria-live="polite"><div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div></div></div>
+            <div class="section-card"><div class="section-header"><h2><i class="fas fa-user-doctor" style="color:var(--gold2);margin-right:8px;"></i>Top Doctores (90d)</h2></div><div id="rep-doctores" style="padding:16px;overflow-x:auto;" aria-live="polite"><div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div></div></div>
+            <div class="section-card"><div class="section-header"><h2><i class="fas fa-exchange-alt" style="color:var(--cyan);margin-right:8px;"></i>Conversión por Flujo (30d)</h2></div><div id="rep-flujo" style="padding:16px;overflow-x:auto;" aria-live="polite"><div style="text-align:center;padding:20px;color:#475569;"><i class="fas fa-spinner fa-spin"></i></div></div></div>
         </div>
     </div><!-- /tab-reportes -->
 

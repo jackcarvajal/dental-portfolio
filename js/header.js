@@ -279,7 +279,7 @@
 
     /* HAMBURGER */
     '.pnav2-ham{display:none;background:none;border:none;cursor:pointer;',
-    'padding:6px;color:#D4AF37;font-size:1.4rem;}',
+    'padding:10px;color:#D4AF37;font-size:1.4rem;min-width:44px;min-height:44px;}',
 
     /* MOBILE NAV */
     '.pnav2-mob{display:none;position:fixed;top:108px;left:0;right:0;',
@@ -361,7 +361,7 @@
 
     /* IA BUTTON en navbar */
     '.pnav2-ia-btn{background:rgba(0,255,65,0.08);border:1.5px solid rgba(0,255,65,0.3);',
-    'color:#00FF41;width:38px;height:38px;border-radius:8px;cursor:pointer;',
+    'color:#00FF41;width:44px;height:44px;border-radius:8px;cursor:pointer;',
     'display:flex;align-items:center;justify-content:center;font-size:1rem;',
     'flex-shrink:0;transition:all .2s;font-family:inherit;',
     'animation:_pia-glow 3s ease-in-out infinite;}',
@@ -452,7 +452,7 @@
     'transition:border-color .2s;}',
     '#pg-chat-input:focus{border-color:rgba(0,210,255,0.4);}',
     '#pg-chat-input::placeholder{color:#94a3b8;}',
-    '#pg-chat-send{width:38px;height:38px;border-radius:10px;',
+    '#pg-chat-send{width:44px;height:44px;border-radius:10px;',
     'background:linear-gradient(135deg,#00d2ff,#006699);border:none;cursor:pointer;',
     'color:#fff;font-size:.9rem;display:flex;align-items:center;justify-content:center;',
     'flex-shrink:0;transition:opacity .2s;font-family:inherit;}',
@@ -461,7 +461,7 @@
 
     /* THEME TOGGLE BTN */
     '.pnav2-theme-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);',
-    'color:#e2e8f0;width:38px;height:38px;border-radius:8px;cursor:pointer;',
+    'color:#e2e8f0;width:44px;height:44px;border-radius:8px;cursor:pointer;',
     'display:flex;align-items:center;justify-content:center;font-size:1rem;',
     'flex-shrink:0;transition:all .2s;font-family:inherit;}',
     '.pnav2-theme-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);}',

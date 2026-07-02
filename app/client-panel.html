@@ -379,7 +379,7 @@
         <div class="section-header">
             <h2><i class="fas fa-circle-notch fa-spin" style="color:var(--cyan);margin-right:8px;"></i>En Producción</h2>
         </div>
-        <div id="tabla-activos" aria-live="polite" aria-label="Casos en producción"></div>
+        <div id="tabla-activos" style="overflow-x:auto;" aria-live="polite" aria-label="Casos en producción"></div>
     </div>
 
     <!-- HISTORIAL COMPLETO -->
@@ -388,7 +388,7 @@
             <h2><i class="fas fa-folder-open" style="color:var(--gold);margin-right:8px;"></i>Mis Casos</h2>
             <input type="search" id="busq-casos-cliente" placeholder="Buscar por código, paciente, servicio…" oninput="_filtrarCasosCliente(this.value)" aria-label="Buscar casos" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 14px;color:#e2e8f0;font-size:16px;width:260px;font-family:inherit;outline:none;">
         </div>
-        <div id="tabla-historial" aria-live="polite" aria-label="Historial de casos"><div class="spinner"></div></div>
+        <div id="tabla-historial" style="overflow-x:auto;" aria-live="polite" aria-label="Historial de casos"><div class="spinner"></div></div>
     </div>
 
     <!-- BIBLIOTECAS DEL CLIENTE -->
