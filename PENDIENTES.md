@@ -4,6 +4,16 @@
 
 ---
 
+## 🔴 Ejecutar SQL: el saldo/crédito del cliente se buscaba por nombre (suplantable)
+
+**Hallazgo:** en `app/client-panel.html`, la tarjeta de "billetera" (saldo a favor, puntos, nivel) buscaba el registro del doctor **por su nombre**, y ese nombre venía de `user_metadata` — el mismo campo editable por el usuario que causó el problema de escalamiento de privilegios de antes. Cualquier doctor podía cambiar su propio nombre para que coincidiera con el de otro doctor y ver su saldo de crédito.
+
+**Ejecutar `sql/patch-wallet-idor-2026.sql`** en Supabase Dashboard → SQL Editor. Crea una función que resuelve la identidad real del doctor a partir de sus propios pedidos (dato que no puede manipular), en vez de confiar en su nombre autoreportado.
+
+**Ya corregido en código:** `client-panel.html` ahora usa esa función en vez de buscar por nombre.
+
+---
+
 ## 🟡 Riesgo residual documentado — send-email.js acepta `tipo`/`text` sin auth (bajo, no urgente)
 
 **Contexto:** a diferencia de Alejandro (que sí tenía el hueco grave de `html` arbitrario, ya corregido), `functions/api/send-email.js` de PRODIGY genera el HTML siempre server-side desde plantillas (`buildTemplate()`), y escapa `text`/`subject` — no permite inyectar HTML/links arbitrarios. Pero **no exige ninguna autenticación**, y tiene 3 llamadores legítimos anónimos reales (`envia-tu-scanner.html`, `operario.html`, `js/emailnotif.js`), así que no se le puede agregar un gate de auth sin romper ese flujo público.

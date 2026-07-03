@@ -1163,10 +1163,13 @@ async function loadByAuth(session) {
         window.PRD_UID = user.id;
         window.PRD_EMAIL = email;
 
-        // Wallet
-        const { data: wallet } = await sb.from('creditos_cliente').select('*')
-            .or(`nombre_doctor.eq.${encodeURIComponent(_nombreDoctor)}`)
-            .maybeSingle();
+        // Wallet — antes se buscaba por nombre_doctor (user_metadata,
+        // editable por el propio usuario: cualquiera podía verse el saldo
+        // de otro doctor con solo poner el mismo nombre). Ahora resuelve
+        // la identidad real vía RPC usando doctor_uid=auth.uid() de sus
+        // propios pedidos, que no es manipulable desde el cliente.
+        const { data: walletRows } = await sb.rpc('prodigy_mi_wallet');
+        const wallet = walletRows?.[0] || null;
         if (wallet) {
             document.getElementById('wallet-card').style.display = 'flex';
             document.getElementById('wallet-saldo').textContent  = fmtCOP(wallet.saldo_cop);
