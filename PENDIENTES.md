@@ -4,6 +4,18 @@
 
 ---
 
+## 🔴 CRÍTICO — Ejecutar SQL: los cambios de precio en admin-precios.html probablemente nunca se guardan (auditoría 2026-07-03)
+
+**Hallazgo:** las políticas de seguridad de las tablas `catalogo`, `config_precios` y `billeteras` usan `auth.jwt() ->> 'role' = 'admin'` — pero ese `role` es el **rol de Postgres** (siempre `"authenticated"` para cualquier usuario logueado), no el rol de negocio. El rol real vive en `app_metadata.role`. Resultado: esa condición nunca es verdadera para nadie, ni para ti como admin real — **todo intento de cambiar un precio, activar/desactivar un ítem del catálogo, o tocar `billeteras` (saldo a favor de doctores) queda bloqueado silenciosamente**. El código de `admin-precios.html` tampoco mostraba error cuando esto fallaba, así que probablemente no te habías dado cuenta.
+
+**Ejecutar `sql/patch-rls-catalogo-precios-role-2026.sql`** en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new`
+
+**Ya corregido en código:** `admin-precios.html` ahora sí muestra un toast de error si el guardado falla (antes fallaba en silencio total).
+
+**Cómo confirmar que ya funciona (después de ejecutar el SQL):** entra a `/app/admin-precios.html`, cambia un precio cualquiera, guarda, recarga la página — el precio nuevo debe seguir ahí. Si vuelve al valor anterior, el SQL no se aplicó correctamente.
+
+---
+
 ## 🔴 CRÍTICO — Ejecutar SQL de fraude en cupones de referidos (auditoría 2026-07-03)
 
 **Hallazgo grave:** cualquier persona podía insertar directamente una fila en la tabla `referidos` (vía la API pública de Supabase) fijando un `cupon_credito` y un `recompensa_cop` inventados — sin haber referido a nadie ni pagado nada — y luego canjearlo con la función RPC existente. Es fraude real y explotable, no teórico.

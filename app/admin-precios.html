@@ -439,7 +439,14 @@
         el.classList.toggle('on');
         const activo = el.classList.contains('on');
         document.getElementById('toggle-label-' + id).textContent = activo ? 'Activo' : 'Inactivo';
-        await supabase.from('catalogo').update({ activo }).eq('id', id);
+        const { error } = await supabase.from('catalogo').update({ activo }).eq('id', id);
+        if (error) {
+            el.classList.toggle('on'); // revertir visualmente, el cambio no se guardó
+            document.getElementById('toggle-label-' + id).textContent = !activo ? 'Activo' : 'Inactivo';
+            showToast('Error al guardar: ' + (error.message || 'sin permiso'));
+            console.error('[admin-precios] toggleActivo falló:', error);
+            return;
+        }
         const item = allItems.find(x => x.id === id);
         if (item) item.activo = activo;
         showToast(activo ? 'Ítem activado' : 'Ítem desactivado');
@@ -459,6 +466,12 @@
             document.getElementById('btn-' + id)?.classList.remove('visible');
             actualizarPendingBar();
             showToast('Precio actualizado: ' + formatCOP(nuevo));
+        } else {
+            // Antes este caso quedaba en silencio total — el admin no se
+            // enteraba de que el precio nunca se guardó (ver patch RLS
+            // 2026-07-03: la policy de escritura estaba rota para todos).
+            showToast('Error al guardar: ' + (error.message || 'sin permiso'));
+            console.error('[admin-precios] updatePrecio falló:', error);
         }
     };
 
@@ -471,6 +484,9 @@
             input.classList.add('saved');
             document.getElementById('extra-btn-' + id)?.classList.remove('visible');
             showToast('Extra actualizado: ' + formatCOP(nuevo));
+        } else {
+            showToast('Error al guardar: ' + (error.message || 'sin permiso'));
+            console.error('[admin-precios] guardarExtra falló:', error);
         }
     };
 
