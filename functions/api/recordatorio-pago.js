@@ -50,12 +50,23 @@ export async function onRequestGet({ request, env }) {
       const waUrl = `https://api.callmebot.com/whatsapp.php?phone=${waFull}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`;
 
       try {
-        await fetch(waUrl);
-        // Marcar que se envió recordatorio
-        await fetch(`${SURL}/rest/v1/rpc/prodigy_marcar_recordatorio`, {
-          method: 'POST', headers: h, body: JSON.stringify({ p_id: p.id }),
-        });
-        enviados++;
+        const waRes = await fetch(waUrl);
+        const waTxt = await waRes.text();
+        const waOk = waRes.ok && /message queued/i.test(waTxt);
+        if (waOk) {
+          // Solo marcar como enviado si CallMeBot confirmó — antes se marcaba
+          // siempre, así que un WA fallido dejaba al doctor sin más
+          // recordatorios (el cron nunca lo volvía a intentar).
+          await fetch(`${SURL}/rest/v1/rpc/prodigy_marcar_recordatorio`, {
+            method: 'POST', headers: h, body: JSON.stringify({ p_id: p.id }),
+          });
+          enviados++;
+        } else {
+          await fetch(`${SURL}/rest/v1/logs_incidencias`, {
+            method: 'POST', headers: h,
+            body: JSON.stringify({ tipo: 'RECORDATORIO_PAGO_WA_ERROR', severidad: 'WARN', descripcion: `[recordatorio-pago] Falló WA a ${waFull} (${p.codigo}): ${waTxt.slice(0, 300)}`, resuelta: false }),
+          }).catch(() => {});
+        }
       } catch(_) { /* continuar con el siguiente */ }
     }
 

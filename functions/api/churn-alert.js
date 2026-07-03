@@ -78,7 +78,11 @@ export async function onRequestPost(context) {
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
           const waRes = await fetch(waUrl);
-          waOk = waRes.ok || waRes.status === 200;
+          const waTxt = await waRes.text();
+          // CallMeBot responde HTTP 200 incluso en fallos — "Message queued"
+          // es la única confirmación real de envío. waRes.ok/status 200 solo
+          // decían si Cloudflare pudo contactar la API, no si el WA se envió.
+          waOk = waRes.ok && /message queued/i.test(waTxt);
           if (waOk) break;
         } catch(_) {}
         if (attempt === 0) await new Promise(r => setTimeout(r, 1000));

@@ -51,7 +51,17 @@ export async function onRequestPost(context) {
         : `✏️ *Cambios solicitados por email*\n\nDr. ${doctor_nombre||'—'} solicita cambios en caso *${codigo||pedido_id.slice(0,12)}* (revisión ${revision_num||'?'}/2).\n\nNotas: ${(notas||'—').slice(0,100)}\n\nPanel: prodigylabdental.com/app/operario-diseno`;
       const url = `https://api.callmebot.com/whatsapp.php?phone=573212816716&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`;
       const r = await fetch(url);
-      results.wa = r.ok ? 'ok' : `error ${r.status}`;
+      const rTxt = await r.text();
+      // CallMeBot responde HTTP 200 incluso en fallos — r.ok solo no basta.
+      const waOk = r.ok && /message queued/i.test(rTxt);
+      results.wa = waOk ? 'ok' : `error: ${rTxt.slice(0, 150)}`;
+      if (!waOk && env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
+        await fetch(`${env.SUPABASE_URL}/rest/v1/logs_incidencias`, {
+          method: 'POST',
+          headers: { 'apikey': env.SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tipo: 'REVISION_NOTIFY_WA_ERROR', severidad: 'WARN', descripcion: `[revision-notify] Falló WA operario (${codigo||pedido_id}): ${rTxt.slice(0, 300)}`, resuelta: false }),
+        }).catch(() => {});
+      }
     } catch(e) { results.wa = 'exception: ' + e.message; }
   }
 

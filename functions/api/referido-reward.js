@@ -126,8 +126,16 @@ export async function onRequestPost({ request, env }) {
     if (ref.referidor_tel && env.CALLMEBOT_APIKEY) {
       const wa = ref.referidor_tel.replace(/\D/g, '');
       const msg = `🎁 *PRODIGY Lab Dental*\n\n¡Tu colega hizo su primer pedido!\n\nTu cupón de crédito: *${cupon}*\nValor: *$30.000 COP*\n\nÚsalo en tu próximo pedido escribiendo el código en el flujo de pedido. Sin vencimiento.\n\nGracias por recomendar PRODIGY 🦷`;
-      await fetch(`https://api.callmebot.com/whatsapp.php?phone=${wa}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`)
-        .catch(() => {});
+      try {
+        const waRes = await fetch(`https://api.callmebot.com/whatsapp.php?phone=${wa}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`);
+        const waTxt = await waRes.text();
+        if (!waRes.ok || !/message queued/i.test(waTxt)) {
+          await fetch(`${env.SUPABASE_URL}/rest/v1/logs_incidencias`, {
+            method: 'POST', headers: sbHeaders,
+            body: JSON.stringify({ tipo: 'REFERIDO_REWARD_WA_ERROR', severidad: 'WARN', descripcion: `[referido-reward] Falló WA a ${wa} (cupón ${cupon}): ${waTxt.slice(0, 300)}`, resuelta: false }),
+          }).catch(() => {});
+        }
+      } catch (_) {}
     }
 
     return new Response(JSON.stringify({ ok: true, cupon, codigo_referido }), { status: 200, headers: h });

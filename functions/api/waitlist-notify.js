@@ -73,7 +73,8 @@ export async function onRequestPost(context) {
       const msg = `🧪 *Nuevo lab en waitlist*\n*Lab:* ${nombre_lab}\n*Contacto:* ${nombre_contacto||'—'}\n*Ciudad:* ${ciudad||'—'} · ${pedidos_mes||'?'} ped/mes\n*WA:* ${whatsapp||'—'}`;
       const url = `https://api.callmebot.com/whatsapp.php?phone=573212816716&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`;
       const r = await fetch(url);
-      results.wa = r.ok ? 'ok' : `error ${r.status}`;
+      const rTxt = await r.text();
+      results.wa = (r.ok && /message queued/i.test(rTxt)) ? 'ok' : `error: ${rTxt.slice(0, 150)}`;
     } catch(e) { results.wa = 'exception: ' + e.message; }
   }
 
