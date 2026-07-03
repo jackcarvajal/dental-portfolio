@@ -182,8 +182,29 @@ async function sendWhatsAppAlert(failedServices, env) {
   await fetch(url).catch(() => {}); // silent fail si WA no funciona
 }
 
+async function _rlHealthCheck(request) {
+  try {
+    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+    const rlKey = new Request('https://rl.internal/health-check_' + ip);
+    const hit = await caches.default.match(rlKey);
+    const count = hit ? (parseInt(await hit.text(), 10) || 0) : 0;
+    if (count >= 5) return false; // máx 5 req/min por IP — evita abuso de las 12 APIs externas
+    await caches.default.put(rlKey, new Response(String(count + 1), {
+      headers: { 'Cache-Control': 'max-age=60' }
+    }));
+    return true;
+  } catch { return true; }
+}
+
 export async function onRequestGet(context) {
-  const { env } = context;
+  const { request, env } = context;
+
+  if (!(await _rlHealthCheck(request))) {
+    return new Response(JSON.stringify({ error: 'Demasiadas solicitudes.' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
   const results = await Promise.allSettled(
     SERVICES.map(s => checkService(s, env))

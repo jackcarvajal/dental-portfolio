@@ -173,6 +173,21 @@ CREATE POLICY "pedidos_archivos_staff_read" ON storage.objects
         )
     );
 
+-- js/flujo-uploader.js usa uid='anon' si el doctor no inició sesión (self-service).
+-- El propio uploader necesita firmar su URL inmediatamente después de subir
+-- (para incluirla en el mensaje de WhatsApp que arma el flujo). Se limita el
+-- acceso anon SOLO a la carpeta compartida 'anon/' — las carpetas de usuarios
+-- con sesión ({uid}/...) quedan protegidas por la policy anterior, que exige
+-- authenticated. Antes de este patch TODO el bucket era público, así que esto
+-- sigue siendo una mejora neta (superficie reducida a una sola carpeta).
+DROP POLICY IF EXISTS "pedidos_archivos_anon_read" ON storage.objects;
+CREATE POLICY "pedidos_archivos_anon_read" ON storage.objects
+    FOR SELECT TO anon
+    USING (
+        bucket_id = 'pedidos-archivos'
+        AND (storage.foldername(name))[1] = 'anon'
+    );
+
 CREATE POLICY "pedidos_archivos_staff_delete" ON storage.objects
     FOR DELETE TO authenticated
     USING (
