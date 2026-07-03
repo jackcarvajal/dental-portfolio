@@ -4,6 +4,18 @@
 
 ---
 
+## 🔴 CRÍTICO — Ejecutar SQL de fraude en cupones de referidos (auditoría 2026-07-03)
+
+**Hallazgo grave:** cualquier persona podía insertar directamente una fila en la tabla `referidos` (vía la API pública de Supabase) fijando un `cupon_credito` y un `recompensa_cop` inventados — sin haber referido a nadie ni pagado nada — y luego canjearlo con la función RPC existente. Es fraude real y explotable, no teórico.
+
+**Ejecutar `sql/patch-fraude-cupones-referidos-2026.sql`** en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new`
+
+Esto: (1) restringe qué puede insertar un cliente en `referidos` a solo los valores "de fábrica" — el cupón real solo lo genera el sistema cuando se confirma un pago real; (2) bloquea que alguien use su propio código de referido para auto-generarse recompensa. También corregido en código: el descuento del cupón ahora sí se resta del total guardado en la base de datos (antes solo aparecía en el texto de WhatsApp, el staff tenía que ajustarlo a mano).
+
+**Este es el SQL más urgente de todos los pendientes** — a diferencia de los otros (que son mejoras de rendimiento/seguridad preventiva), este ya es un hueco activo por el que se puede sacar dinero real del negocio hoy mismo si alguien lo descubre.
+
+---
+
 ## 🔴 URGENTE — Activar webhook de Stripe (auditoría pagos 2026-07-03)
 
 **Hallazgo grave:** no existía NINGÚN receptor de webhook de Stripe en el proyecto. `stripe-checkout.js` solo creaba la sesión de pago — nada confirmaba del lado del servidor que el cliente realmente pagó. La página `app/success.html` intentaba marcar el pedido como pagado desde el navegador (`estado: 'Pagado_LS'`), pero el trigger de seguridad `trg_restrict_client_pedido_updates` (ya activo en producción) bloquea que un cliente cambie `estado` — esa actualización **fallaba silenciosamente todos los intentos**, sin ningún error visible. En la práctica: los pagos con Stripe (clientes internacionales) nunca quedaban confirmados en el sistema salvo que alguien revisara el Dashboard de Stripe manualmente.
