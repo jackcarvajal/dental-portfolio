@@ -2075,7 +2075,15 @@ const lineWompi = document.getElementById('line-wompi');
                         material:              STATE.categoriaKey,
                         submaterial:           STATE.subtipoId,
                         cantidad:              cantidad,
-                        total:                 typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total,
+                        // Aplica el descuento del cupón de crédito (ya validado server-side
+                        // vía RPC prodigy_usar_cupon_credito) — antes el total guardado en BD
+                        // no reflejaba el cupón, solo aparecía en el texto de WhatsApp, y
+                        // el staff tenía que ajustarlo manualmente al facturar.
+                        total: (() => {
+                            const base = typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total;
+                            const desc = window._cuponCreditoActivo?.monto || 0;
+                            return Math.max(0, (base||0) - desc);
+                        })(),
                         estado:                'Borrador',
                         link_stl:              STATE.linkSTL,
                         nonce:                 _nonce,

@@ -53,6 +53,7 @@ const PRECACHE = [
 const NEVER_CACHE = [
   '/',                     // Homepage: tiene bypass, debe ser siempre fresco
   '/app/',
+  '/api/',                 // Algunos endpoints GET llevan ?key=CRON_SECRET en la URL
   '/sql/',
   '/supabase/',
   '/mantenimiento',
