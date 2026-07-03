@@ -69,6 +69,25 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'Monto inválido' }), { status: 400, headers: corsH });
   }
 
+  // Validar el monto contra el precio real del pedido en BD — evita que el
+  // cliente manipule amount_cop desde el navegador antes de crear la sesión.
+  if (pedido_id && env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
+    try {
+      const pedRes = await fetch(
+        `${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${encodeURIComponent(pedido_id)}&select=precio_total`,
+        { headers: { 'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`, 'apikey': env.SUPABASE_SERVICE_KEY } }
+      );
+      const pedData = await pedRes.json();
+      const precioReal = Number(pedData?.[0]?.precio_total);
+      if (pedRes.ok && pedData?.length && Number.isFinite(precioReal) && Math.abs(precioReal - amount_cop) > 1) {
+        return new Response(JSON.stringify({ error: 'El monto no coincide con el pedido' }), { status: 400, headers: corsH });
+      }
+    } catch (_) {
+      // Si la validación falla por error de red, se continúa — no bloquear
+      // el pago por un problema transitorio de la validación misma.
+    }
+  }
+
   const description = String(raw_desc || '').slice(0, 250);
 
   // Validar URLs de retorno — solo dominio propio (defensa contra open redirect)
@@ -85,12 +104,18 @@ export async function onRequestPost(context) {
     ? `${description} — Pago total (cliente nuevo)`
     : `${description} — Abono 50% (${new Intl.NumberFormat('es-CO').format(amount_cop)} COP total)`;
 
+  // Idempotency key estable — evita sesiones duplicadas si el frontend reintenta
+  // la misma petición (doble clic, timeout de red). Cambia el resultado si el
+  // pedido o el monto cambian, pero un reintento idéntico reutiliza la sesión.
+  const idempotencyKey = `checkout_${pedido_id || 'sin-pedido'}_${cobrar_cop}`.slice(0, 255);
+
   try {
     const stripeRes = await fetch('https://api.stripe.com/v1/checkout/sessions', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + sk,
-        'Content-Type':  'application/x-www-form-urlencoded'
+        'Content-Type':  'application/x-www-form-urlencoded',
+        'Idempotency-Key': idempotencyKey
       },
       body: new URLSearchParams({
         'payment_method_types[]': 'card',

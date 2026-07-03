@@ -41,6 +41,14 @@ async function sha256hex(input: string): Promise<string> {
               .join("");
 }
 
+// Comparación en tiempo constante — evita timing attack sobre la firma
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
 async function handleWompi(sb: any, payload: any) {
   const integrity = Deno.env.get("WOMPI_INTEGRITY_SECRET") ?? "";
   const evento    = payload.data?.transaction;
@@ -59,7 +67,7 @@ async function handleWompi(sb: any, payload: any) {
     return new Response("WOMPI_INTEGRITY_SECRET no configurado", { status: 500 });
   }
   const expected = await sha256hex(`${txId}${txStatus}${monto}${integrity}`);
-  if (expected !== checksum) {
+  if (!timingSafeEqual(expected, checksum)) {
     return new Response("firma inválida", { status: 401 });
   }
 
@@ -71,7 +79,7 @@ async function handleWompi(sb: any, payload: any) {
     // ── Idempotencia: no procesar si ya está Pagado ──
     const { data: existing } = await sb
       .from("pedidos")
-      .select("estado")
+      .select("id, estado")
       .eq("codigo", referencia)
       .maybeSingle();
 
@@ -85,15 +93,24 @@ async function handleWompi(sb: any, payload: any) {
       .eq("codigo", referencia)
       .neq("estado", "Pagado");   // guard extra contra race condition
 
-    // ── Registrar pago ──
-    await sb.from("pagos").insert({
-      pasarela:       "wompi",
-      transaction_id: txId,
-      monto:          monto / 100,
+    // ── Registrar pago (columnas reales del schema: sql/schema-completo.sql) ──
+    // referencia = UNIQUE — usa el txId de Wompi (no el código del pedido, que
+    // puede repetirse entre intentos de pago fallidos/reintentados)
+    const montoReal = monto / 100;
+    const { error: pagoErr } = await sb.from("pagos").insert({
+      pedido_id:     existing?.id ?? null,
+      pedido_codigo: referencia,
+      referencia:    txId,
+      pasarela:      "wompi",
+      estado_pago:   "aprobado",
+      monto_base:    montoReal,
+      monto_total:   montoReal,
       moneda,
-      estado:         "completado",
-      webhook_data:   payload,
+      payload_raw:   payload,
     });
+    if (pagoErr) {
+      console.error("[webhook-handler] Error insertando en pagos:", pagoErr.message, "txId:", txId);
+    }
   }
 
   return new Response("ok", { status: 200 });

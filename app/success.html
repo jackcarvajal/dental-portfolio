@@ -236,15 +236,13 @@
             const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 window.sb = sb;
 
-            // Marcar pedido como pagado si viene de LS (usa sesión activa del usuario)
-            const { data: { session } } = await sb.auth.getSession();
-            if (session) {
-                await sb.from('pedidos')
-                    .update({ estado: 'Pagado_LS', fecha_pago: new Date().toISOString() })
-                    .eq('codigo', caseId)
-                    .eq('doctor_uid', session.user.id)
-                    .eq('estado', 'Pendiente_LS');
-            }
+            // NOTA: el pedido YA fue marcado "Pagado" del lado del servidor por
+            // functions/api/stripe-webhook.js (o webhook-handler para Wompi) antes
+            // de que el navegador llegue a esta página — el trigger de seguridad
+            // trg_restrict_client_pedido_updates bloquea que el cliente cambie
+            // `estado` directamente, así que este intento client-side se eliminó
+            // (fallaba silenciosamente sin avisar). Esta página solo muestra el
+            // resumen y dispara la notificación de WhatsApp.
 
             // Obtener datos del pedido para el mensaje WA
             const { data: caso, error } = await sb

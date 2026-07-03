@@ -4,6 +4,28 @@
 
 ---
 
+## 🔴 URGENTE — Activar webhook de Stripe (auditoría pagos 2026-07-03)
+
+**Hallazgo grave:** no existía NINGÚN receptor de webhook de Stripe en el proyecto. `stripe-checkout.js` solo creaba la sesión de pago — nada confirmaba del lado del servidor que el cliente realmente pagó. La página `app/success.html` intentaba marcar el pedido como pagado desde el navegador (`estado: 'Pagado_LS'`), pero el trigger de seguridad `trg_restrict_client_pedido_updates` (ya activo en producción) bloquea que un cliente cambie `estado` — esa actualización **fallaba silenciosamente todos los intentos**, sin ningún error visible. En la práctica: los pagos con Stripe (clientes internacionales) nunca quedaban confirmados en el sistema salvo que alguien revisara el Dashboard de Stripe manualmente.
+
+**Ya corregido en código (este commit):**
+- Nueva función `functions/api/stripe-webhook.js` — verifica la firma de Stripe (HMAC-SHA256, tiempo constante, rechaza timestamps >5min), procesa `checkout.session.completed`, marca el pedido como Pagado e inserta el registro en `pagos` con las columnas reales del schema
+- `stripe-checkout.js`: ahora valida que el monto recibido del navegador coincida con `precio_total` real del pedido en BD (antes se confiaba ciegamente en lo que mandaba el frontend); agregado `Idempotency-Key` para evitar sesiones duplicadas por reintento/doble clic
+- `app/success.html`: eliminado el intento de actualización client-side que siempre fallaba
+- `supabase/functions/webhook-handler/index.ts` (Wompi): las columnas del insert a `pagos` no coincidían con el schema real (`transaction_id`/`monto`/`estado`/`webhook_data` vs `referencia`/`monto_total`/`estado_pago`/`payload_raw`) — el insert fallaba silencioso, sin auditoría de pagos. Corregido. También se cambió la comparación de firma a tiempo constante.
+
+**Pasos que faltan:**
+
+1. **Esperar deploy de Cloudflare Pages** de este commit
+2. **Stripe Dashboard → Developers → Webhooks → Add endpoint**
+   - URL: `https://prodigylabdental.com/api/stripe-webhook`
+   - Evento a escuchar: `checkout.session.completed`
+   - Copiar el "Signing secret" que te muestra Stripe (empieza con `whsec_`)
+3. **Agregar `STRIPE_WEBHOOK_SECRET`** en Cloudflare Pages → Settings → Environment Variables (Production, y también en Preview con la clave de test si pruebas ahí)
+4. **Probar:** Stripe Dashboard → tu webhook → "Send test webhook" con evento `checkout.session.completed` → debe responder 200
+
+---
+
 ## 🔴 URGENTE — Ejecutar 2 SQL + configurar 1 secret (auditoría Storage/Rendimiento 2026-07-03)
 
 **Hallazgo Storage:** los buckets `diseno-archivos`, `evidencias-entrega`, `prodigy-files`, `dental-cases` y `pedidos-archivos` son **públicos** — cualquiera con la ruta del archivo (predecible) puede descargar escaneos STL, fotos de evidencia y documentos de clientes sin login. Además, el cron de purga de STL a 30 días (`trigger-purga-stl-30dias.sql`) solo limpiaba columnas en `pedidos`, **nunca borraba el archivo real en Storage**.

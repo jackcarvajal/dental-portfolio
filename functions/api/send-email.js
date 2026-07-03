@@ -58,6 +58,19 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ error: 'Faltan campos: to, subject, text' }), { status: 400, headers: cors });
   }
 
+  // Rate limit adicional por destinatario — el límite por IP no evita que un
+  // atacante rote IPs (o use varios requests desde IPs distintas) para
+  // bombardear repetidamente el mismo `to` con emails no solicitados.
+  const rlToKey = new Request('https://rl.internal/send-email-to_' + String(to).toLowerCase());
+  const rlToHit = await caches.default.match(rlToKey);
+  if (rlToHit) {
+    const toCount = parseInt(await rlToHit.text(), 10) || 0;
+    if (toCount >= 5) return new Response(JSON.stringify({ error: 'Demasiados emails a este destinatario.' }), { status: 429, headers: cors });
+    await caches.default.put(rlToKey, new Response(String(toCount + 1), { headers: { 'Cache-Control': 'max-age=3600' } }));
+  } else {
+    await caches.default.put(rlToKey, new Response('1', { headers: { 'Cache-Control': 'max-age=3600' } }));
+  }
+
   // Validar email destino
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
     return new Response(JSON.stringify({ error: 'Email destino inválido' }), { status: 400, headers: cors });
