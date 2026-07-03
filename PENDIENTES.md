@@ -4,6 +4,16 @@
 
 ---
 
+## 🟡 Riesgo residual documentado — send-email.js acepta `tipo`/`text` sin auth (bajo, no urgente)
+
+**Contexto:** a diferencia de Alejandro (que sí tenía el hueco grave de `html` arbitrario, ya corregido), `functions/api/send-email.js` de PRODIGY genera el HTML siempre server-side desde plantillas (`buildTemplate()`), y escapa `text`/`subject` — no permite inyectar HTML/links arbitrarios. Pero **no exige ninguna autenticación**, y tiene 3 llamadores legítimos anónimos reales (`envia-tu-scanner.html`, `operario.html`, `js/emailnotif.js`), así que no se le puede agregar un gate de auth sin romper ese flujo público.
+
+**Riesgo real:** alguien podría enviar emails con contenido de texto libre (aunque sin HTML/links propios) usando la marca y el dominio de PRODIGY, a cualquier destinatario, dentro del límite de rate-limit (10/hora por IP + 5/hora por destinatario, ya activo). Impacto limitado por esos límites y por el escape de contenido — no es un relay de phishing completo, pero sí permite spam de texto simple.
+
+**No se corrigió esta sesión** para evitar romper el flujo público de `envia-tu-scanner.html` sin poder probarlo en vivo. Si en el futuro quieres cerrarlo del todo, la opción sería restringir qué valores de `tipo` puede disparar cada llamador específico (allowlist por origen/contexto) en vez de un gate binario de autenticación.
+
+---
+
 ## 🔴 Ejecutar SQL: 2 funciones internas seguían exponiendo listados completos a cualquier doctor
 
 **Hallazgo:** el patch de junio (`patch-revoke-rpcs-internas.sql`) ya había revocado las funciones que "marcan como resuelto" (`prodigy_marcar_recordatorio`, `prodigy_marcar_sla_alerta`), pero dejó pasar las 2 funciones de **lectura** equivalentes: `prodigy_pagos_pendientes` y `prodigy_pedidos_sla_vencido`. Cualquier doctor logueado podía llamar estas funciones y ver el listado completo de pedidos con pago pendiente o SLA vencido de **todos** los doctores (nombre, WhatsApp, monto).
