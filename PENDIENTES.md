@@ -4,6 +4,20 @@
 
 ---
 
+## 🔴🔴 EL MÁS URGENTE DE TODO — Escalamiento de privilegios (ejecutar YA)
+
+**Hallazgo más grave de toda la auditoría (2026-07-03):** varias políticas de seguridad usaban `user_metadata.role` (o `raw_user_meta_data.role`) como forma válida de verificar si alguien es admin/operario/encargado de inventario. **El problema: `user_metadata` lo puede editar el propio usuario desde el navegador**, sin ningún control del servidor. Cualquier doctor logueado podía abrir la consola del navegador y escribir:
+
+```js
+await supabase.auth.updateUser({ data: { role: 'admin' } })
+```
+
+Y en su siguiente sesión obtener acceso de administrador a: saldos a favor de TODOS los doctores (`creditos_cliente`), todos los reportes internos (`logs_incidencias`), poder cambiar el estado de CUALQUIER pedido, todos los perfiles de doctores, la tabla de equipo interno, y el inventario de materiales.
+
+No es un exploit complicado — es una sola línea de código en la consola del navegador. **Ejecutar `sql/patch-privesc-user-metadata-2026.sql` antes que cualquier otro SQL pendiente**, en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new`
+
+---
+
 ## 🔴 CRÍTICO — Ejecutar SQL: los cambios de precio en admin-precios.html probablemente nunca se guardan (auditoría 2026-07-03)
 
 **Hallazgo:** las políticas de seguridad de las tablas `catalogo`, `config_precios` y `billeteras` usan `auth.jwt() ->> 'role' = 'admin'` — pero ese `role` es el **rol de Postgres** (siempre `"authenticated"` para cualquier usuario logueado), no el rol de negocio. El rol real vive en `app_metadata.role`. Resultado: esa condición nunca es verdadera para nadie, ni para ti como admin real — **todo intento de cambiar un precio, activar/desactivar un ítem del catálogo, o tocar `billeteras` (saldo a favor de doctores) queda bloqueado silenciosamente**. El código de `admin-precios.html` tampoco mostraba error cuando esto fallaba, así que probablemente no te habías dado cuenta.
