@@ -88,8 +88,13 @@ async function handleWompi(sb: any, payload: any) {
     }
 
     // ── Actualizar pedido ──
+    // pago_estado también se actualiza aquí: los paneles de operario (ej.
+    // operario-diseno.html avanzar()) bloquean el inicio de diseño hasta que
+    // pago_estado sea 'pago_confirmado'/'pago_subido'/'credito_autorizado' —
+    // solo actualizar `estado` dejaba el caso atascado para pagos con
+    // pasarela (tarjeta), que no pasan por el flujo de comprobante manual.
     await sb.from("pedidos")
-      .update({ estado: "Pagado" })
+      .update({ estado: "Pagado", pago_estado: "pago_confirmado" })
       .eq("codigo", referencia)
       .neq("estado", "Pagado");   // guard extra contra race condition
 

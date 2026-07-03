@@ -112,10 +112,13 @@ export async function onRequestPost(context) {
     if (pedido.estado === 'Pagado') return new Response('ya procesado', { status: 200 });
 
     // ── Actualizar pedido ──
+    // pago_estado también se actualiza aquí: los paneles de operario bloquean
+    // el inicio de diseño hasta que pago_estado sea 'pago_confirmado' — solo
+    // actualizar `estado` dejaba el caso atascado para pagos con Stripe.
     await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${encodeURIComponent(pedidoId)}&estado=neq.Pagado`, {
       method: 'PATCH',
       headers: { ...sbHeaders, 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ estado: 'Pagado' }),
+      body: JSON.stringify({ estado: 'Pagado', pago_estado: 'pago_confirmado' }),
     });
 
     // ── Registrar pago (mismo schema real que webhook-handler de Wompi) ──
