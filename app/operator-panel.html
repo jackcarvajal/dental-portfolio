@@ -1289,8 +1289,17 @@ async function bulkUploadAll() {
 
         try {
             const path = `${item.pedido.id}/bulk_${Date.now()}_${item.file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
-            const { error } = await sb.storage.from('diseno-archivos').upload(path, item.file, { upsert: true });
-            if (error) throw error;
+            let uploadErr = null;
+            for (let intento = 1; intento <= 3; intento++) {
+                const res = await sb.storage.from('diseno-archivos').upload(path, item.file, { upsert: true });
+                uploadErr = res.error;
+                if (!uploadErr) break;
+                if (intento < 3) {
+                    document.getElementById('bulk-progress-msg').textContent = `Reintentando ${item.file.name} (${intento+1}/3)...`;
+                    await new Promise(r => setTimeout(r, 1000 * intento));
+                }
+            }
+            if (uploadErr) throw uploadErr;
             const { data: signedData } = await sb.storage.from('diseno-archivos').createSignedUrl(path, 157788000);
             const publicUrl = signedData?.signedUrl;
 

@@ -846,12 +846,19 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         setProg(15, 'Subiendo archivo…');
         try {
             const path = `${Date.now()}_${doctor.replace(/\s+/g,'_')}.${selectedFile.name.split('.').pop()}`;
-            const { data: up, error: upErr } = await sb.storage.from('scanner-uploads').upload(path, selectedFile);
+            let upErr = null, up = null;
+            for (let intento = 1; intento <= 3; intento++) {
+                const res = await sb.storage.from('scanner-uploads').upload(path, selectedFile);
+                upErr = res.error; up = res.data;
+                if (!upErr) break;
+                if (intento < 3) { setProg(15, `Reintentando subida (${intento+1}/3)…`); await new Promise(r=>setTimeout(r,1000*intento)); }
+            }
             if (!upErr) {
                 setProg(65, 'Archivo subido. Guardando solicitud…');
                 archivo_nombre = selectedFile.name;
-                const { data: { publicUrl } } = sb.storage.from('scanner-uploads').getPublicUrl(path);
-                archivo_url = publicUrl || up?.path;
+                // Se guarda solo la ruta — el usuario anónimo no tiene permiso de lectura
+                // sobre el bucket (solo admin). El panel admin genera la URL firmada al mostrarla.
+                archivo_url = up?.path || path;
             }
         } catch(_) {}
     }

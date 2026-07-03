@@ -2,13 +2,13 @@
 -- PRODIGY — Privatizar buckets clínicos + desactivar purga incompleta
 -- Ejecutar en: Supabase Dashboard → SQL Editor
 --
--- Contexto (auditoría 2026-07-02):
+-- Contexto (auditoría 2026-07-02 / 2026-07-03):
 -- 1) Los buckets 'diseno-archivos', 'evidencias-entrega',
---    'prodigy-files' y 'dental-cases' son PÚBLICOS. Las URLs se
---    generan con getPublicUrl() en varios paneles → cualquiera con
---    la ruta (predecible por convención de nombre/UUID) puede
---    descargar escaneos STL, fotos de evidencia y documentos de
---    clientes SIN autenticación.
+--    'prodigy-files', 'dental-cases' y 'pedidos-archivos' son
+--    PÚBLICOS. Las URLs se generan con getPublicUrl() en varios
+--    paneles → cualquiera con la ruta (predecible por convención de
+--    nombre/UUID) puede descargar escaneos STL, fotos de evidencia y
+--    documentos de clientes SIN autenticación.
 -- 2) El cron 'prodigy-purga-stl-semanal' (trigger-purga-stl-30dias.sql)
 --    solo limpia columnas en la tabla `pedidos` — NUNCA borra el
 --    archivo real en Storage (SQL no puede llamar la API de Storage
@@ -143,8 +143,48 @@ CREATE POLICY "dental_cases_staff_write" ON storage.objects
         )
     );
 
+-- ── 6. Privatizar bucket 'pedidos-archivos' (flujo-diseno.html — subida de doctores) ──
+-- ⚠️ A diferencia de los demás, este bucket recibe uploads de doctores/clientes
+--    SIN LOGIN OBLIGATORIO (js/flujo-uploader.js usa uid='anon' si no hay sesión).
+--    Se replica el patrón de scanner-uploads: INSERT público restringido por
+--    extensión, lectura/borrado solo para staff. No se puede exigir
+--    app_metadata.role en el INSERT porque el usuario puede ser anon.
+UPDATE storage.buckets SET public = false WHERE id = 'pedidos-archivos';
+
+DROP POLICY IF EXISTS "pedidos_archivos_public_upload" ON storage.objects;
+DROP POLICY IF EXISTS "pedidos_archivos_staff_read"     ON storage.objects;
+DROP POLICY IF EXISTS "pedidos_archivos_staff_delete"   ON storage.objects;
+
+CREATE POLICY "pedidos_archivos_public_upload" ON storage.objects
+    FOR INSERT TO anon, authenticated
+    WITH CHECK (
+        bucket_id = 'pedidos-archivos'
+        AND name ~* '\.(stl|ply|obj|dcm|zip|jpg|jpeg|png|pdf|3oxz|constructionfile)$'
+    );
+
+CREATE POLICY "pedidos_archivos_staff_read" ON storage.objects
+    FOR SELECT TO authenticated
+    USING (
+        bucket_id = 'pedidos-archivos'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+            OR (storage.foldername(name))[1] = auth.uid()::text
+        )
+    );
+
+CREATE POLICY "pedidos_archivos_staff_delete" ON storage.objects
+    FOR DELETE TO authenticated
+    USING (
+        bucket_id = 'pedidos-archivos'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+        )
+    );
+
 -- ── VERIFICACIÓN ─────────────────────────────────────────────────
--- SELECT id, public FROM storage.buckets WHERE id IN ('diseno-archivos','evidencias-entrega','prodigy-files','dental-cases','scanner-uploads');
+-- SELECT id, public FROM storage.buckets WHERE id IN ('diseno-archivos','evidencias-entrega','prodigy-files','dental-cases','pedidos-archivos','scanner-uploads');
 --   → todos deben mostrar public = false
 -- SELECT * FROM cron.job WHERE jobname = 'prodigy-purga-stl-semanal';
 --   → debe devolver 0 filas (ya desactivado)

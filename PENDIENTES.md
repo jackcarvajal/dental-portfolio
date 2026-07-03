@@ -4,12 +4,17 @@
 
 ---
 
-## 🔴 URGENTE — Ejecutar en Supabase + configurar 1 secret (auditoría Storage 2026-07-03)
+## 🔴 URGENTE — Ejecutar 2 SQL + configurar 1 secret (auditoría Storage/Rendimiento 2026-07-03)
 
-**Hallazgo:** los buckets `diseno-archivos`, `evidencias-entrega`, `prodigy-files` y `dental-cases` son **públicos** — cualquiera con la ruta del archivo (predecible) puede descargar escaneos STL, fotos de evidencia y documentos de clientes sin login. Además, el cron de purga de STL a 30 días (`trigger-purga-stl-30dias.sql`) solo limpiaba columnas en `pedidos`, **nunca borraba el archivo real en Storage**.
+**Hallazgo Storage:** los buckets `diseno-archivos`, `evidencias-entrega`, `prodigy-files`, `dental-cases` y `pedidos-archivos` son **públicos** — cualquiera con la ruta del archivo (predecible) puede descargar escaneos STL, fotos de evidencia y documentos de clientes sin login. Además, el cron de purga de STL a 30 días (`trigger-purga-stl-30dias.sql`) solo limpiaba columnas en `pedidos`, **nunca borraba el archivo real en Storage**.
+
+**Hallazgo Rendimiento:** columnas muy consultadas en `pedidos` (`email`, `hash_seguridad`, `created_at`) sin índice — fuerza sequential scan en paneles admin/cliente. Subidas de STL grandes (hasta 500MB) sin reintento automático — en red móvil inestable, un corte a mitad de subida perdía el archivo silenciosamente.
 
 **Ya corregido en código (este commit):**
-- 9 llamadas `getPublicUrl()` → `createSignedUrl()` (5 años, ya que reemplazan URLs que se guardan permanentemente en BD) en `operario-diseno.html`, `operator-panel.html`, `revision-diseno.html`, `taller.html`, `mensajero.html`, `client-panel.html`
+- 11 llamadas `getPublicUrl()` → `createSignedUrl()` (5 años, ya que reemplazan URLs que se guardan permanentemente en BD) en `operario-diseno.html`, `operator-panel.html`, `revision-diseno.html`, `taller.html`, `mensajero.html`, `client-panel.html`, `js/flujo-uploader.js`
+- `envia-tu-scanner.html`: usuario anónimo ya no intenta firmar URL de un bucket que no puede leer — ahora guarda solo la ruta (el futuro panel admin la firma al mostrarla)
+- Reintento automático (3 intentos, backoff 1s/2s) en `js/flujo-uploader.js`, `envia-tu-scanner.html`, `operator-panel.html` (bulk upload)
+- `portafolio.html`: SDK de Supabase (~100KB) ya no bloquea el `<head>` — movido justo antes de donde se usa
 - Nueva Cloudflare Function `functions/api/purgar-stl-storage.js` — borra el archivo real en Storage antes de limpiar la BD
 - Nuevo GitHub Action `.github/workflows/purga-stl-semanal.yml` — dispara la purga cada domingo
 
@@ -18,15 +23,17 @@
 1. **Esperar a que este commit se despliegue en Cloudflare Pages** (para que los paneles ya generen URLs firmadas antes de cerrar los buckets)
 
 2. **Ejecutar `sql/patch-storage-buckets-privados-2026.sql`** en Supabase Dashboard → SQL Editor → link directo: `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new`
-   - Esto privatiza los 4 buckets, agrega políticas RLS para staff (`app_metadata.role`), y desactiva el cron SQL incompleto
+   - Privatiza los 5 buckets, agrega políticas RLS (staff vía `app_metadata.role`, y anon-insert-only para `pedidos-archivos` que recibe uploads sin login), y desactiva el cron SQL incompleto
 
-3. **Agregar 2 variables de entorno en Cloudflare Pages** (Settings → Environment Variables, ambos entornos Production+Preview):
+3. **Ejecutar `sql/patch-indices-pedidos-2026.sql`** en el mismo SQL Editor — sin riesgo, no bloquea nada, solo agrega 3 índices (`email`, `hash_seguridad`, `created_at`)
+
+4. **Agregar 2 variables de entorno en Cloudflare Pages** (Settings → Environment Variables, ambos entornos Production+Preview):
    - `SUPABASE_SERVICE_KEY` = tu `service_role` key (Supabase Dashboard → Settings → API) — puede que ya exista si `factura.js` la usa, en ese caso no la dupliques
-   - `CRON_SECRET` = un string aleatorio largo que tú inventes (ej. generado con `openssl rand -hex 32`) — solo debe coincidir con el mismo valor en el paso 4
+   - `CRON_SECRET` = un string aleatorio largo que tú inventes (ej. generado con `openssl rand -hex 32`) — solo debe coincidir con el mismo valor en el paso 5
 
-4. **Agregar el mismo `CRON_SECRET` como GitHub Secret** en el repo `dental-portfolio` → Settings → Secrets and variables → Actions → New repository secret → nombre `CRON_SECRET`, mismo valor del paso 3
+5. **Agregar el mismo `CRON_SECRET` como GitHub Secret** en el repo `dental-portfolio` → Settings → Secrets and variables → Actions → New repository secret → nombre `CRON_SECRET`, mismo valor del paso 4
 
-5. **Probar manualmente:** GitHub → Actions → "Purga STL Storage Semanal" → Run workflow (botón manual) → revisar que el resumen del job no dé error
+6. **Probar manualmente:** GitHub → Actions → "Purga STL Storage Semanal" → Run workflow (botón manual) → revisar que el resumen del job no dé error
 
 ---
 

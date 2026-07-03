@@ -77,21 +77,32 @@
                 }
             }
 
-            const { error } = await sb.storage
-                .from(BUCKET)
-                .upload(path, f, {
-                    contentType: f.type || 'application/octet-stream',
-                    upsert: true
-                });
+            // Reintento con backoff — redes móviles inestables cortan subidas grandes a mitad
+            const MAX_INTENTOS = 3;
+            let uploadError = null;
+            for (let intento = 1; intento <= MAX_INTENTOS; intento++) {
+                const { error } = await sb.storage
+                    .from(BUCKET)
+                    .upload(path, f, {
+                        contentType: f.type || 'application/octet-stream',
+                        upsert: true
+                    });
+                uploadError = error;
+                if (!error) break;
+                console.warn(`[FlujoUploader] Intento ${intento}/${MAX_INTENTOS} falló para ${f.name}:`, error.message);
+                if (intento < MAX_INTENTOS) {
+                    await new Promise(r => setTimeout(r, 1000 * intento)); // backoff: 1s, 2s
+                }
+            }
 
-            if (error) {
-                console.warn('[FlujoUploader] Error subiendo', f.name, error.message);
-                // Continuar con el siguiente archivo en lugar de abortar
+            if (uploadError) {
+                console.warn('[FlujoUploader] Error definitivo subiendo', f.name, uploadError.message);
+                // Continuar con el siguiente archivo en lugar de abortar todo el pedido
                 continue;
             }
 
-            const { data: pub } = sb.storage.from(BUCKET).getPublicUrl(path);
-            if (pub?.publicUrl) urls.push(pub.publicUrl);
+            const { data: signedData } = await sb.storage.from(BUCKET).createSignedUrl(path, 157788000); // 5 años — bucket privado, URL persiste en el pedido
+            if (signedData?.signedUrl) urls.push(signedData.signedUrl);
         }
 
         if (onProgress) onProgress(files.length, files.length);
