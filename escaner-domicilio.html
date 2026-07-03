@@ -908,7 +908,7 @@ document.getElementById('agendaForm').addEventListener('submit', async e => {
     }, 600);
 });
 </script>
-<script><script>
+<script>
 (function(){
   function _t(e,m){fetch('/api/track-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({evento:e,pagina:window.location.pathname,negocio:'prodigy',metadata:m||{}})}).catch(function(){});}
   if('requestIdleCallback'in window)requestIdleCallback(function(){_t('page_view',{title:document.title});},{timeout:3000});
