@@ -1045,8 +1045,8 @@ function calcAhorroPR(){
   // Exponer para uso manual
   window._trackEvent=_track;
 })();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
 </script>
-if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});</script>
 <script>
 // Contador en vivo de casos en producción (anónimo, requestIdleCallback)
 (function(){

@@ -257,8 +257,8 @@ summary::-webkit-details-marker{display:none;}
   // Exponer para uso manual
   window._trackEvent=_track;
 })();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
-if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <noscript><p style="text-align:center;padding:2rem;color:#94a3b8;">Esta página requiere JavaScript. <a href="https://wa.me/573212816716" style="color:#D946A6;">Contáctanos por WhatsApp</a>.</p></noscript>
 </body>
 </html>

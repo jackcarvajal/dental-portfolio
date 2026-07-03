@@ -496,8 +496,8 @@ async function unirseWaitlist(e) {
   else setTimeout(function(){_t('page_view',{title:document.title});},2000);
   window._trackEvent=_t;
 })();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
-if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo integrar tu laboratorio dental a PRODIGY","description":"Pasos para que un laboratorio dental externo se conecte con la plataforma PRODIGY para recibir pedidos digitales.","step":[{"@type":"HowToStep","position":1,"name":"Únete a la lista de espera","text":"Regístraste en la lista de espera con tu nombre, laboratorio y ciudad. Te notificamos cuando tu zona esté disponible."},{"@type":"HowToStep","position":2,"name":"Evaluación técnica","text":"Nuestro equipo verifica que tu laboratorio cuente con capacidad para procesar pedidos digitales (fresado, impresión 3D o ambos)."},{"@type":"HowToStep","position":3,"name":"Onboarding y configuración","text":"Accedes al portal de laboratorio, configuras tu catálogo y tiempos de entrega. Capacitación incluida."},{"@type":"HowToStep","position":4,"name":"Recibe pedidos de toda Colombia","text":"Los pedidos fluyen automáticamente a tu panel. Gestionas producción, entregas y pagos desde un solo lugar."}]}</script>
 </body>
 </html>

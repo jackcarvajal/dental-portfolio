@@ -1528,8 +1528,8 @@
   else setTimeout(function(){_t('page_view',{title:document.title});},2000);
   window._trackEvent=_t;
 })();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
-if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </main>
     <script src="js/footer.js?v=20260609"></script>
     <noscript><p style="text-align:center;padding:2rem;color:#94a3b8">Esta página requiere JavaScript. <a href="https://wa.me/573212816716" style="color:#D946A6">Contáctanos por WhatsApp</a>.</p></noscript>

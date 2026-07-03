@@ -1293,8 +1293,8 @@ if(window.ProdigyAuth){
   else setTimeout(function(){_t('page_view',{title:document.title});},2000);
   window._trackEvent=_t;
 })();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
-if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
     <script>
     /* Pre-fill desde diseño aprobado: ?from_diseno=UUID */
     const _fiEsc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');

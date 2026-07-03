@@ -384,7 +384,7 @@ shown.forEach(k => {
   else setTimeout(function(){_t('page_view',{title:document.title});},2000);
   window._trackEvent=_t;
 })();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
-if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
