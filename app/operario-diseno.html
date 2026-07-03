@@ -1023,7 +1023,8 @@ async function bulkDisenoUploadAll() {
       const path   = `${item.caso.id}/${isHtml?'diseno':'stl'}/${Date.now()}_${item.file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
       const {error} = await sb.storage.from(bucket).upload(path, item.file, {upsert:true, contentType: isHtml?'text/html':'application/octet-stream'});
       if (error) throw error;
-      const {data:{publicUrl}} = sb.storage.from(bucket).getPublicUrl(path);
+      const {data:signedData} = await sb.storage.from(bucket).createSignedUrl(path, 157788000); // 5 años — bucket privado, no expira en la práctica
+      const publicUrl = signedData?.signedUrl;
       if (isHtml) {
         await sb.from('pedidos').update({html_diseno_url:publicUrl, estado_operativo:'REVISION_CLIENTE', updated_at:new Date().toISOString()}).eq('id',item.caso.id);
         await sb.from('historial_diseno').insert({pedido_id:item.caso.id,tipo:'SUBIDA_DISENO',actor:'operario-diseno-bulk',descripcion:`Bulk upload: ${item.file.name}`,metadata:{html:publicUrl}}).catch(()=>{});

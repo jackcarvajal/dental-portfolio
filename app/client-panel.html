@@ -1001,8 +1001,6 @@ async function subirComprobante(pedidoId) {
     toast('Subiendo comprobante…');
     const { error: upErr } = await sb.storage.from('prodigy-files').upload(path, file, { upsert: true });
     if (upErr) { toast('Error al subir: ' + upErr.message, 'error'); return; }
-    const { data: urlData } = sb.storage.from('prodigy-files').getPublicUrl(path);
-    const publicUrl = urlData?.publicUrl || path;
     const { error: updErr } = await sb.from('pedidos').update({
         pago_estado: 'pago_subido', updated_at: new Date().toISOString()
     }).eq('id', pedidoId);
@@ -1080,8 +1078,8 @@ async function guardarBiblioteca() {
         const path = `bibliotecas/${window.PRD_UID}/${Date.now()}_${file.name}`;
         const { error: upErr } = await sb.storage.from('prodigy-files').upload(path, file, { upsert: true });
         if (upErr) { msg.textContent='Error subiendo: '+upErr.message; msg.style.display='block'; btn.disabled=false; btn.textContent='Guardar'; return; }
-        const { data: ud } = sb.storage.from('prodigy-files').getPublicUrl(path);
-        archivo_url = ud?.publicUrl || null;
+        const { data: ud } = await sb.storage.from('prodigy-files').createSignedUrl(path, 157788000);
+        archivo_url = ud?.signedUrl || null;
     }
     const { error } = await sb.from('bibliotecas_cliente').insert({
         user_id: window.PRD_UID,

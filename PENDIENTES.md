@@ -1,6 +1,32 @@
 # PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-05-28 (sesión autónoma continua)
+> Solo tareas activas. Última revisión: 2026-07-03 (sesión autónoma continua)
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
+
+---
+
+## 🔴 URGENTE — Ejecutar en Supabase + configurar 1 secret (auditoría Storage 2026-07-03)
+
+**Hallazgo:** los buckets `diseno-archivos`, `evidencias-entrega`, `prodigy-files` y `dental-cases` son **públicos** — cualquiera con la ruta del archivo (predecible) puede descargar escaneos STL, fotos de evidencia y documentos de clientes sin login. Además, el cron de purga de STL a 30 días (`trigger-purga-stl-30dias.sql`) solo limpiaba columnas en `pedidos`, **nunca borraba el archivo real en Storage**.
+
+**Ya corregido en código (este commit):**
+- 9 llamadas `getPublicUrl()` → `createSignedUrl()` (5 años, ya que reemplazan URLs que se guardan permanentemente en BD) en `operario-diseno.html`, `operator-panel.html`, `revision-diseno.html`, `taller.html`, `mensajero.html`, `client-panel.html`
+- Nueva Cloudflare Function `functions/api/purgar-stl-storage.js` — borra el archivo real en Storage antes de limpiar la BD
+- Nuevo GitHub Action `.github/workflows/purga-stl-semanal.yml` — dispara la purga cada domingo
+
+**Pasos que faltan (en orden):**
+
+1. **Esperar a que este commit se despliegue en Cloudflare Pages** (para que los paneles ya generen URLs firmadas antes de cerrar los buckets)
+
+2. **Ejecutar `sql/patch-storage-buckets-privados-2026.sql`** en Supabase Dashboard → SQL Editor → link directo: `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new`
+   - Esto privatiza los 4 buckets, agrega políticas RLS para staff (`app_metadata.role`), y desactiva el cron SQL incompleto
+
+3. **Agregar 2 variables de entorno en Cloudflare Pages** (Settings → Environment Variables, ambos entornos Production+Preview):
+   - `SUPABASE_SERVICE_KEY` = tu `service_role` key (Supabase Dashboard → Settings → API) — puede que ya exista si `factura.js` la usa, en ese caso no la dupliques
+   - `CRON_SECRET` = un string aleatorio largo que tú inventes (ej. generado con `openssl rand -hex 32`) — solo debe coincidir con el mismo valor en el paso 4
+
+4. **Agregar el mismo `CRON_SECRET` como GitHub Secret** en el repo `dental-portfolio` → Settings → Secrets and variables → Actions → New repository secret → nombre `CRON_SECRET`, mismo valor del paso 3
+
+5. **Probar manualmente:** GitHub → Actions → "Purga STL Storage Semanal" → Run workflow (botón manual) → revisar que el resumen del job no dé error
 
 ---
 

@@ -1,0 +1,40 @@
+# ============================================================
+# PRODIGY — Purga semanal de STL en Storage
+# Dispara functions/api/purgar-stl-storage.js, que borra los
+# archivos STL reales (bucket diseno-archivos) de pedidos
+# entregados hace más de 30 días y limpia la BD.
+# ============================================================
+
+name: Purga STL Storage Semanal
+
+on:
+  schedule:
+    - cron: '0 6 * * 0'   # Domingo 1 AM Bogotá (6:00 UTC)
+  workflow_dispatch:        # Ejecución manual desde GitHub Actions
+
+jobs:
+  purgar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Llamar endpoint de purga
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            "https://prodigylabdental.com/api/purgar-stl-storage" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}")
+          STATUS=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "Status: $STATUS"
+          echo "Body: $BODY"
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Purga STL falló con status $STATUS — $BODY"
+            exit 1
+          fi
+          echo "BODY=$BODY" >> $GITHUB_ENV
+
+      - name: Resumen del job
+        if: always()
+        run: |
+          echo "## 🗑️ Purga STL Storage Semanal" >> $GITHUB_STEP_SUMMARY
+          echo "**Fecha:** $(date +'%d/%m/%Y %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "**Resultado:** ${BODY:-sin datos}" >> $GITHUB_STEP_SUMMARY

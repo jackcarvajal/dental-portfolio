@@ -713,8 +713,8 @@ async function aprobarQA() {
         const path = `${pedidoId}/empaque_${Date.now()}_${i}.jpg`;
         const { error: eUp } = await sb.storage.from('evidencias-entrega').upload(path, _fotosEmpaque[i].file, { contentType: 'image/jpeg', upsert: true });
         if (!eUp) {
-            const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
-            paths.push(publicUrl);
+            const { data: signedData } = await sb.storage.from('evidencias-entrega').createSignedUrl(path, 157788000);
+            if (signedData?.signedUrl) paths.push(signedData.signedUrl);
         }
     }
 
@@ -1291,7 +1291,8 @@ async function bulkUploadAll() {
             const path = `${item.pedido.id}/bulk_${Date.now()}_${item.file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
             const { error } = await sb.storage.from('diseno-archivos').upload(path, item.file, { upsert: true });
             if (error) throw error;
-            const { data: { publicUrl } } = sb.storage.from('diseno-archivos').getPublicUrl(path);
+            const { data: signedData } = await sb.storage.from('diseno-archivos').createSignedUrl(path, 157788000);
+            const publicUrl = signedData?.signedUrl;
 
             // Actualizar stl_urls del pedido
             const { data: ped } = await sb.from('pedidos').select('stl_urls').eq('id', item.pedido.id).single();

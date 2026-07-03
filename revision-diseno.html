@@ -1009,7 +1009,8 @@ async function uploadFotos(files, prefix, barEl, statEl) {
     const path = `${PID}/${prefix}/${Date.now()}_${safeName}`;
     const { error } = await sb.storage.from('diseno-archivos').upload(path, f, {upsert:true});
     if (!error) {
-      urls.push(sb.storage.from('diseno-archivos').getPublicUrl(path).data.publicUrl);
+      const { data: signedData } = await sb.storage.from('diseno-archivos').createSignedUrl(path, 157788000);
+      if (signedData?.signedUrl) urls.push(signedData.signedUrl);
     } else {
       errors++;
       console.warn('[PRODIGY] Error subiendo foto:', f.name, error.message);
@@ -1267,7 +1268,8 @@ async function enviarComprobante() {
   const { error: upErr } = await sb.storage.from('diseno-archivos').upload(path, _compFile, {upsert:true});
   if (upErr) { _rdToast('Error al subir. Intenta de nuevo.', false); btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar comprobante y solicitar'; return; }
   barEl.style.width = '60%';
-  const compUrl = sb.storage.from('diseno-archivos').getPublicUrl(path).data.publicUrl;
+  const { data: compSignedData } = await sb.storage.from('diseno-archivos').createSignedUrl(path, 157788000);
+  const compUrl = compSignedData?.signedUrl;
   const monto   = Number(svcOpt.dataset.precio||0);
   const svcNom  = svcOpt.text.split('—')[0].trim();
   statEl.textContent = 'Registrando…';

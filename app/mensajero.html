@@ -568,8 +568,8 @@ async function procesarConfirmacion(){
         const firmaPath    = `${_activeDespId}/firma_${Date.now()}.png`;
         const { error:eF } = await sb.storage.from('evidencias-entrega').upload(firmaPath, firmaBlob, { contentType:'image/png', upsert:true });
         if(!eF){
-            const { data:{ publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(firmaPath);
-            firmaUrl = publicUrl;
+            const { data: signedData } = await sb.storage.from('evidencias-entrega').createSignedUrl(firmaPath, 157788000);
+            firmaUrl = signedData?.signedUrl || null;
         }
     }catch(e){ toast('Advertencia: firma no subida — '+e.message); }
 
@@ -582,8 +582,8 @@ async function procesarConfirmacion(){
             const fotoPath = `${_activeDespId}/foto_${Date.now()}.jpg`;
             const { error:eFoto } = await sb.storage.from('evidencias-entrega').upload(fotoPath, fotoFile, { contentType:'image/jpeg', upsert:true });
             if(!eFoto){
-                const { data:{ publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(fotoPath);
-                fotoUrl = publicUrl;
+                const { data: signedData } = await sb.storage.from('evidencias-entrega').createSignedUrl(fotoPath, 157788000);
+                fotoUrl = signedData?.signedUrl || null;
             }
         }catch(e){ toast('Advertencia: foto no subida — '+e.message); }
     }
@@ -619,8 +619,8 @@ async function procesarConfirmacion(){
             const path = `${_activeDespId}/comprobante_saldo_${Date.now()}.${ext}`;
             const { error: eCp } = await sb.storage.from('evidencias-entrega').upload(path, compFile, { contentType: compFile.type, upsert: true });
             if (!eCp) {
-                const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
-                compSaldoUrl = publicUrl;
+                const { data: signedData } = await sb.storage.from('evidencias-entrega').createSignedUrl(path, 157788000);
+                compSaldoUrl = signedData?.signedUrl || null;
             }
         }
 

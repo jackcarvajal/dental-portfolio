@@ -450,8 +450,8 @@ async function guardarMantenimiento() {
             const path = `taller/${equipoId}/${Date.now()}_${rand}.jpg`;
             const { data: up, error: upErr } = await sb.storage.from('evidencias-entrega').upload(path, fotoFile, { contentType: fotoFile.type });
             if (!upErr && up) {
-                const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
-                foto_url = publicUrl;
+                const { data: signedData } = await sb.storage.from('evidencias-entrega').createSignedUrl(path, 157788000);
+                foto_url = signedData?.signedUrl || null;
             }
         }
 
