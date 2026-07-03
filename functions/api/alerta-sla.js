@@ -30,7 +30,16 @@ export async function onRequestGet({ request, env }) {
         `• *${p.codigo}* — ${p.doctor || '?'} (${p.horas_transcurridas}h / SLA ${p.sla_horas_objetivo}h)`
       ).join('\n');
       const msg = `⚠️ *PRODIGY — SLA Vencido*\n\n${pedidos.length} pedido(s) superaron su tiempo objetivo:\n\n${lista}\n\n🔗 Ver todos: https://prodigylabdental.com/app/taller.html`;
-      await fetch(`https://api.callmebot.com/whatsapp.php?phone=${wa}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`);
+      const waResp = await fetch(`https://api.callmebot.com/whatsapp.php?phone=${wa}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`);
+      const waTxt = await waResp.text();
+      if (!waResp.ok || !/message queued/i.test(waTxt)) {
+        // Crítico: si esta alerta falla silenciosamente, el admin nunca se
+        // entera de pedidos con SLA vencido. Se registra para poder auditarlo.
+        await fetch(`${SURL}/rest/v1/logs_incidencias`, {
+          method: 'POST', headers: h,
+          body: JSON.stringify({ tipo: 'ALERTA_SLA_WA_ERROR', severidad: 'WARN', descripcion: `[alerta-sla] Falló WA a admin: ${waTxt.slice(0, 300)}`, resuelta: false }),
+        }).catch(() => {});
+      }
     }
 
     // Marcar alertas como enviadas

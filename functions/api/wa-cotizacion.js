@@ -65,8 +65,19 @@ export async function onRequestPost({ request, env }) {
   try {
     const resp = await fetch(url);
     const txt = await resp.text();
-    if (!resp.ok && !txt.includes('Message queued')) {
-      return new Response(JSON.stringify({ error: 'Callmebot error', detail: txt.slice(0, 200) }), { status: 502, headers: h });
+    // CallMeBot responde HTTP 200 incluso en fallos (API key inválida, límite
+    // alcanzado, etc.) — la condición anterior (!resp.ok && !txt.includes(...))
+    // nunca se disparaba en la práctica porque resp.ok casi siempre es true.
+    // "Message queued" es la única confirmación real de envío.
+    if (!resp.ok || !/message queued/i.test(txt)) {
+      if (env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
+        await fetch(`${env.SUPABASE_URL}/rest/v1/logs_incidencias`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`, 'apikey': env.SUPABASE_SERVICE_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tipo: 'WA_COTIZACION_ERROR', severidad: 'WARN', descripcion: `[wa-cotizacion] Falló envío a ${waFull} (${codigo}): ${txt.slice(0, 300)}`, resuelta: false }),
+        }).catch(() => {});
+      }
+      return new Response(JSON.stringify({ error: 'Callmebot no confirmó el envío', detail: txt.slice(0, 200) }), { status: 502, headers: h });
     }
     return new Response(JSON.stringify({ ok: true, wa: waFull }), { status: 200, headers: h });
   } catch (err) {

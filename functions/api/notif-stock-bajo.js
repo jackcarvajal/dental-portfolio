@@ -44,7 +44,14 @@ export async function onRequestGet({ request, env }) {
       msg += `\n🔗 https://prodigylabdental.com/app/inventario.html`;
 
       const waNum = String(env.WA_ADMIN).replace(/\D/g, '');
-      await fetch(`https://api.callmebot.com/whatsapp.php?phone=${waNum}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`);
+      const waResp = await fetch(`https://api.callmebot.com/whatsapp.php?phone=${waNum}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`);
+      const waTxt = await waResp.text();
+      if (!waResp.ok || !/message queued/i.test(waTxt)) {
+        await fetch(`${SURL}/rest/v1/logs_incidencias`, {
+          method: 'POST', headers: h,
+          body: JSON.stringify({ tipo: 'ALERTA_STOCK_WA_ERROR', severidad: 'WARN', descripcion: `[notif-stock-bajo] Falló WA a admin: ${waTxt.slice(0, 300)}`, resuelta: false }),
+        }).catch(() => {});
+      }
     }
 
     return new Response(JSON.stringify({ ok: true, alertas: alertas.length, agotados: alertas.filter(a=>Number(a.stock_actual)<=0).length }), { status: 200 });
