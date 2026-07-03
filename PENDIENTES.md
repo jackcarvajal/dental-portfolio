@@ -4,6 +4,18 @@
 
 ---
 
+## 🔴 CRÍTICO — Ejecutar SQL: enlaces de aprobación por email eran enumerables + probablemente no funcionaban
+
+**Hallazgo:** los enlaces "mágicos" que se envían por email para que el doctor apruebe un diseño (`revision-express.html`) tenían 2 problemas:
+1. Cualquiera sin sesión podía listar **todos** los tokens válidos de **todos** los casos pendientes de aprobación de todo el negocio (RLS no puede exigir que el cliente use el token específico, solo revisa el estado de la fila).
+2. No existía ninguna regla que permitiera a un visitante sin sesión (el caso normal — alguien haciendo clic en el enlace del email desde su teléfono) actualizar el pedido — es decir, es posible que este flujo **nunca haya funcionado** para el caso de uso principal, fallando en silencio.
+
+**Ejecutar `sql/patch-revision-express-rpc-seguro-2026.sql`** en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new`
+
+**Ya corregido en código:** `revision-express.html` ahora usa 3 funciones seguras en vez de tocar las tablas directamente. **Después de ejecutar el SQL, prueba el flujo completo una vez**: genera un enlace de revisión real, ábrelo en una ventana de incógnito (sin sesión) y confirma que aprobar/pedir cambios funciona de principio a fin.
+
+---
+
 ## 🔴🔴 EL MÁS URGENTE DE TODO — Escalamiento de privilegios (ejecutar YA)
 
 **Hallazgo más grave de toda la auditoría (2026-07-03):** varias políticas de seguridad usaban `user_metadata.role` (o `raw_user_meta_data.role`) como forma válida de verificar si alguien es admin/operario/encargado de inventario. **El problema: `user_metadata` lo puede editar el propio usuario desde el navegador**, sin ningún control del servidor. Cualquier doctor logueado podía abrir la consola del navegador y escribir:

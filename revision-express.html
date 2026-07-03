@@ -155,38 +155,31 @@ async function init() {
     }
 
     try {
-        // Verificar token en tabla revision_tokens (de un solo uso)
-        const { data: tokenData, error: tokenErr } = await sb
-            .from('revision_tokens')
-            .select('pedido_id, usado, expires_at, revisiones_usadas')
-            .eq('token', token)
-            .eq('pedido_id', pedidoId)
-            .single();
+        // Validar token + cargar pedido en una sola llamada RPC atómica —
+        // antes esto hacía SELECT directo sobre revision_tokens/pedidos_doctor,
+        // lo cual (a) permitía enumerar TODOS los tokens válidos del negocio
+        // sin conocerlos (RLS no puede exigir un filtro exacto), y (b) fallaba
+        // silenciosamente para anon porque no existía policy de SELECT anon
+        // en pedidos_doctor.
+        const { data: resp, error: rpcErr } = await sb.rpc('prodigy_validar_token_revision', {
+            p_token: token, p_pedido_id: pedidoId
+        });
 
-        if (tokenErr || !tokenData) {
-            showError('Enlace inválido', 'El token no existe o no corresponde a este caso. Usa el portal del cliente.');
-            return;
-        }
-        if (tokenData.usado) {
-            showError('Ya utilizado', 'Este enlace ya fue usado para aprobar o solicitar cambios. Accede al portal para ver el estado.');
-            return;
-        }
-        if (new Date(tokenData.expires_at) < new Date()) {
-            showError('Enlace expirado', 'Este enlace venció. Los links de aprobación tienen validez de 7 días. Solicita un nuevo envío al laboratorio.');
+        if (rpcErr || !resp?.ok) {
+            const err = resp?.error;
+            if (err === 'usado') {
+                showError('Ya utilizado', 'Este enlace ya fue usado para aprobar o solicitar cambios. Accede al portal para ver el estado.');
+            } else if (err === 'expirado') {
+                showError('Enlace expirado', 'Este enlace venció. Los links de aprobación tienen validez de 7 días. Solicita un nuevo envío al laboratorio.');
+            } else if (err === 'pedido_no_encontrado') {
+                showError('Caso no encontrado', 'No se encontró el caso en el sistema. Contacta a PRODIGY.');
+            } else {
+                showError('Enlace inválido', 'El token no existe o no corresponde a este caso. Usa el portal del cliente.');
+            }
             return;
         }
 
-        // Cargar datos del pedido (solo lectura)
-        const { data: ped, error: pedErr } = await sb
-            .from('pedidos_doctor')
-            .select('id, codigo, nombre_paciente, servicio, revisiones_usadas, html_diseno_url')
-            .eq('id', pedidoId)
-            .single();
-
-        if (pedErr || !ped) {
-            showError('Caso no encontrado', 'No se encontró el caso en el sistema. Contacta a PRODIGY.');
-            return;
-        }
+        const ped = resp.pedido;
 
         _pedido = ped;
         document.getElementById('info-codigo').textContent   = ped.codigo || pedidoId.slice(0,8);
@@ -218,33 +211,17 @@ async function confirmarAprobacion() {
     showMsg('Procesando aprobación...', 'ok');
 
     try {
-        // Marcar token como usado PRIMERO (previene doble submit)
-        await sb.from('revision_tokens').update({ usado: true, usado_at: new Date().toISOString() }).eq('token', token);
+        // Una sola RPC atómica: valida token + marca usado + aprueba pedido +
+        // historial + log — reemplaza 4 llamadas separadas que dependían de
+        // acceso directo a tablas sin policy anon (fallaba silenciosamente)
+        // y de un TOCTOU entre validar y marcar el token como usado.
+        const { data: resp, error: rpcErr } = await sb.rpc('prodigy_aprobar_via_token', {
+            p_token: token, p_pedido_id: pedidoId
+        });
 
-        // Ejecutar aprobación
-        const { error } = await sb.from('pedidos_doctor').update({
-            diseno_aprobado:    true,
-            estado:             'aprobado',
-            diseno_aprobado_at: new Date().toISOString(),
-        }).eq('id', pedidoId);
-
-        if (error) throw error;
-
-        // Registrar en historial de diseño
-        await sb.from('historial_diseno').insert({
-            pedido_id:   pedidoId,
-            tipo:        'APROBACION_EXPRESS',
-            actor:       'doctor_email',
-            descripcion: `Diseño aprobado vía enlace de email (revision-express)`,
-        }).catch(() => {});
-
-        // Audit log en logs_incidencias para trazabilidad
-        await sb.from('logs_incidencias').insert({
-            tipo:        'REVISION_EXPRESS_APROBADA',
-            severidad:   'INFO',
-            descripcion: `[REVISION-EXPRESS] Diseño aprobado — pedido: ${pedidoId} | token: ${token.slice(0,12)}... | UA: ${navigator.userAgent.slice(0,80)}`,
-            resuelta:    true,
-        }).catch(() => {});
+        if (rpcErr || !resp?.ok) {
+            throw new Error(resp?.error || rpcErr?.message || 'Error desconocido');
+        }
 
         // Notificar al operario (WA + email) — silent fail
         fetch('/api/revision-notify', {
@@ -278,30 +255,15 @@ async function confirmarCambios() {
     showMsg('Enviando solicitud de cambios...', 'ok');
 
     try {
-        await sb.from('revision_tokens').update({ usado: true, usado_at: new Date().toISOString() }).eq('token', token);
+        // Una sola RPC atómica: valida token + marca usado + registra cambios
+        const { data: resp, error: rpcErr } = await sb.rpc('prodigy_solicitar_cambios_via_token', {
+            p_token: token, p_pedido_id: pedidoId, p_notas: notas.trim()
+        });
 
-        const rev = (_pedido?.revisiones_usadas || 0) + 1;
-        const { error } = await sb.from('pedidos_doctor').update({
-            estado:             'revision',
-            notas_cambios:      notas.trim().slice(0, 500),
-            revisiones_usadas:  rev,
-        }).eq('id', pedidoId);
-
-        if (error) throw error;
-
-        await sb.from('historial_diseno').insert({
-            pedido_id:   pedidoId,
-            tipo:        'CAMBIOS_EXPRESS',
-            actor:       'doctor_email',
-            descripcion: `Cambios solicitados vía email: ${notas.trim().slice(0,100)}`,
-        }).catch(() => {});
-
-        await sb.from('logs_incidencias').insert({
-            tipo:        'REVISION_EXPRESS_CAMBIOS',
-            severidad:   'INFO',
-            descripcion: `[REVISION-EXPRESS] Cambios solicitados — pedido: ${pedidoId} | rev: ${rev}/2 | notas: ${notas.trim().slice(0,60)}`,
-            resuelta:    true,
-        }).catch(() => {});
+        if (rpcErr || !resp?.ok) {
+            throw new Error(resp?.error || rpcErr?.message || 'Error desconocido');
+        }
+        const rev = resp.revisiones_usadas;
 
         // Notificar al operario sobre cambios — silent fail
         fetch('/api/revision-notify', {
