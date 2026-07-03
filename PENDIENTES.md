@@ -4,6 +4,20 @@
 
 ---
 
+## 🔴 Ejecutar SQL: 2 funciones internas seguían exponiendo listados completos a cualquier doctor
+
+**Hallazgo:** el patch de junio (`patch-revoke-rpcs-internas.sql`) ya había revocado las funciones que "marcan como resuelto" (`prodigy_marcar_recordatorio`, `prodigy_marcar_sla_alerta`), pero dejó pasar las 2 funciones de **lectura** equivalentes: `prodigy_pagos_pendientes` y `prodigy_pedidos_sla_vencido`. Cualquier doctor logueado podía llamar estas funciones y ver el listado completo de pedidos con pago pendiente o SLA vencido de **todos** los doctores (nombre, WhatsApp, monto).
+
+**Ejecutar `sql/patch-revoke-rpcs-lectura-2026.sql`** en Supabase Dashboard → SQL Editor.
+
+---
+
+## 🟡 Riesgo residual documentado (requiere refactor mayor, no urgente para ejecutar hoy)
+
+**`revision-diseno.html`** tiene el mismo problema de fondo que ya corregí en `revision-express.html`: las políticas RLS anon sobre `pedidos` (`migrate-diseno-revision.sql`) permiten leer/actualizar por "posesión del UUID" pero no impiden que alguien con la anon key haga una consulta sin filtro y traiga **todos** los pedidos en revisión del negocio. A diferencia de `revision-express.html`, este flujo tiene 7+ puntos de código que tocan la tabla directamente — convertirlo a RPCs seguras (como ya hice con revision-express) es un trabajo más grande que no quise apurar para no romper un flujo que hoy sí funciona. Queda pendiente para una sesión dedicada.
+
+---
+
 ## 🔴 CRÍTICO — Ejecutar SQL: enlaces de aprobación por email eran enumerables + probablemente no funcionaban
 
 **Hallazgo:** los enlaces "mágicos" que se envían por email para que el doctor apruebe un diseño (`revision-express.html`) tenían 2 problemas:
