@@ -115,6 +115,14 @@ serve(async (req) => {
 
     if (!resp.ok) {
         console.error("Meta API error:", JSON.stringify(result));
+        // Log persistente — antes solo quedaba en console.error (se perdía al
+        // reiniciar el runtime), sin forma de que el admin auditara fallos.
+        await sb.from("logs_incidencias").insert({
+            tipo: "NOTIFY_WA_ERROR",
+            severidad: "WARN",
+            descripcion: `[notify-wa] Falló envío a ${tel} (caso ${caseId}, tipo ${tipo}): ${JSON.stringify(result).slice(0, 400)}`,
+            resuelta: false,
+        }).then(() => {}, () => {});
         return json({ error: "Error Meta API", detail: result }, resp.status);
     }
 

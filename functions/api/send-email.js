@@ -27,6 +27,24 @@ export async function onRequestOptions({ request }) {
   return new Response(null, { status: 204, headers: corsHeaders(request.headers.get('Origin') || '') });
 }
 
+async function logFalloEmail(env, to, subject, detalle) {
+  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return;
+  await fetch(`${env.SUPABASE_URL}/rest/v1/logs_incidencias`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`,
+      'apikey': env.SUPABASE_SERVICE_KEY,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tipo: 'SEND_EMAIL_ERROR',
+      severidad: 'WARN',
+      descripcion: `[send-email] Falló envío a ${to} (asunto: ${subject}): ${detalle.slice(0, 400)}`,
+      resuelta: false,
+    }),
+  }).catch(() => {});
+}
+
 export async function onRequestPost({ request, env }) {
   const origin = request.headers.get('Origin') || '';
   const cors = corsHeaders(origin);
@@ -101,6 +119,7 @@ export async function onRequestPost({ request, env }) {
     const data = await resp.json();
 
     if (!resp.ok) {
+      await logFalloEmail(env, to, subject, JSON.stringify(data));
       return new Response(JSON.stringify({ error: data.message || 'Error Resend', data }), { status: 502, headers: cors });
     }
 
@@ -108,6 +127,7 @@ export async function onRequestPost({ request, env }) {
 
   } catch (err) {
     console.error('[send-email]', err);
+    await logFalloEmail(env, to, subject, err.message || String(err));
     return new Response(JSON.stringify({ error: 'Error interno del servidor' }), { status: 500, headers: cors });
   }
 }
