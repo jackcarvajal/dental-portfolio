@@ -12,17 +12,15 @@ Nota técnica: el patch 3 (billeteras) tuvo que corregirse a mitad de sesión �
 
 ---
 
-## 🔴 Ejecutar SQL — 5 patches nuevos de RLS "admin" que no verificaba rol (patches 19-23)
+## ✅ SQL ejecutado (2026-07-05) — 5 patches de RLS "admin" que no verificaba rol (patches 19-23)
 
-Encontrados por auditoría sistemática de archivos `sql/` no revisados a fondo aún (agente de exploración + verificación manual). Todos con el mismo patrón: política nombrada "admin_*" pero `USING(true)`/sin chequeo de `app_metadata.role`, por lo que cualquier doctor autenticado (o incluso anon en un caso) tenía acceso total.
+Confirmado por Alejandro, "Patches 19-23 aplicados". Encontrados por auditoría sistemática de archivos `sql/` no revisados a fondo aún. Todos con el mismo patrón: política nombrada "admin_*" pero `USING(true)`/sin chequeo de `app_metadata.role`.
 
-- **Patch 19** — `obtener_mi_codigo_referido()` confiaba en el email enviado por el cliente — permitía consultar/crear códigos de referido a nombre de otros doctores.
-- **Patch 20** — `mensajeros`/`despachos`: cualquier doctor veía teléfono/placa de todos los mensajeros y direcciones/tracking de todos los despachos.
-- **Patch 21** — `citas_escaneo`: abierta a **anon sin sesión** (leer/modificar/borrar). Tabla sin uso en el código actual.
-- **Patch 22** — `clientes` (PII de todos los clientes) y `portfolio` (cualquier doctor podía defacear la galería pública).
-- **Patch 23** — `citas_domicilio`, `solicitudes_scanner`, `config_plataformas` (comisiones de pago — un doctor podía manipular el % que afecta precios en toda la plataforma).
-
-Todos ya incluidos en `sql/MAESTRO-EJECUTAR-TODO-2026-07-04.sql` (patches 19-23). **Pendiente de ejecutar en Supabase.**
+- **Patch 19** — `obtener_mi_codigo_referido()` confiaba en el email enviado por el cliente.
+- **Patch 20** — `mensajeros`/`despachos` abiertos a cualquier doctor.
+- **Patch 21** — `citas_escaneo`: abierta a **anon sin sesión**.
+- **Patch 22** — `clientes` (PII) y `portfolio` (defacement).
+- **Patch 23** — `citas_domicilio`, `solicitudes_scanner`, `config_plataformas` (comisiones de pago).
 
 **Nota**: el mismo agente reportó otros 4 hallazgos que resultaron ser falsos positivos (ya corregidos antes en esta sesión, el agente no tenía el contexto completo): `creditos_cliente`, `perfiles`, `inventario_items/lotes_material/inventario_movimientos` (los 3 vía `patch-privesc-user-metadata-2026.sql`), y las RPCs `prodigy_pagos_pendientes`/`prodigy_pedidos_sla_vencido` (ya revocadas vía `patch-revoke-rpcs-lectura-2026.sql`).
 
