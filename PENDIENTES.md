@@ -12,6 +12,14 @@ Nota técnica: el patch 3 (billeteras) tuvo que corregirse a mitad de sesión �
 
 ---
 
+## ✅ Fix de código (2026-07-05) — getPublicUrl() roto tras privatizar buckets
+
+`calidad.html`, `inventario.html`, `operario.html` y `js/supabase-client.js` seguían usando `getPublicUrl()` en `evidencias-entrega`, `diseno-archivos` y `dental-cases` — buckets ya privatizados por `patch-storage-buckets-privados-2026.sql`. Efecto real: fotos de evidencia de entrega, facturas de inventario y archivos de diseño se veían rotos (403) desde que se ejecutó ese patch. Corregido a `createSignedUrl()` (5 años), mismo patrón que `client-panel.html`/`admin-panel.html`. Ya commiteado y pusheado — no requiere acción de Alejandro.
+
+Sin tocar (bajo riesgo, no aplica): `pruebas-carga.html` (herramienta interna de QA, solo texto informativo) y `js/supabase-mock.js` (mock de desarrollo).
+
+---
+
 ## 🔴 Ejecutar SQL: reportes financieros del negocio visibles para cualquier doctor
 
 **Hallazgo:** 4 funciones literalmente nombradas "reportes ADMIN" (`prodigy_top_doctores`, `prodigy_ingresos_por_dia`, `prodigy_pedidos_por_material`, `prodigy_conversion_por_flujo`) estaban otorgadas a cualquier usuario logueado, sin verificar que fuera admin/staff. Cualquier doctor podía ver: el ranking de otros doctores por volumen de compra e ingresos (quién es tu cliente más grande y cuánto gasta), tus ingresos totales día a día, y el desglose financiero completo del negocio por material y por flujo.
