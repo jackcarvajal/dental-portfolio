@@ -4,6 +4,16 @@
 
 ---
 
+## ⭐ ATAJO — Un solo archivo con TODO el SQL pendiente de seguridad
+
+En vez de ejecutar cada patch por separado, **`sql/MAESTRO-EJECUTAR-TODO-2026-07-04.sql`** los reúne todos (12 patches, en el orden correcto) en un solo archivo. Copiar todo su contenido y pegarlo de una vez en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new` → Run.
+
+Cubre: escalamiento de privilegios, fraude de cupones, RLS de precios/catálogo, 8 RPCs de reportes/dashboard/tokens sin verificar rol, tokens de revisión enumerables, wallet suplantable, buckets de Storage públicos, e índices de rendimiento.
+
+(No incluye `patch-supabase-public-grants-2026.sql`, ya ejecutado antes.)
+
+---
+
 ## 🔴 Ejecutar SQL: reportes financieros del negocio visibles para cualquier doctor
 
 **Hallazgo:** 4 funciones literalmente nombradas "reportes ADMIN" (`prodigy_top_doctores`, `prodigy_ingresos_por_dia`, `prodigy_pedidos_por_material`, `prodigy_conversion_por_flujo`) estaban otorgadas a cualquier usuario logueado, sin verificar que fuera admin/staff. Cualquier doctor podía ver: el ranking de otros doctores por volumen de compra e ingresos (quién es tu cliente más grande y cuánto gasta), tus ingresos totales día a día, y el desglose financiero completo del negocio por material y por flujo.

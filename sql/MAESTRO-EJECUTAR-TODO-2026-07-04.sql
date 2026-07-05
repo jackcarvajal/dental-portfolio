@@ -1,0 +1,1338 @@
+-- ================================================================
+-- PRODIGY — SQL MAESTRO CONSOLIDADO — Ejecutar TODO de una sola vez
+-- Generado 2026-07-04 — reune los 12 patches de seguridad de esta sesion
+-- en el orden correcto. Copiar y pegar completo en Supabase SQL Editor.
+-- ================================================================
+
+-- ############################################################
+-- # 1/12 — ESCALAMIENTO DE PRIVILEGIOS (EL MAS GRAVE)
+-- ############################################################
+-- ============================================================
+-- PRODIGY — CRÍTICO: eliminar escalamiento de privilegios vía user_metadata
+-- Ejecutar en: Supabase Dashboard → SQL Editor — CON PRIORIDAD MÁXIMA
+--
+-- Hallazgo (auditoría 2026-07-03): múltiples políticas RLS usan
+-- `auth.jwt() -> 'user_metadata' ->> 'role'` (o su equivalente
+-- `raw_user_meta_data`) como condición de autorización, casi siempre
+-- como fallback con OR junto al chequeo correcto de app_metadata.
+--
+-- user_metadata es un campo que EL PROPIO USUARIO puede editar desde
+-- el navegador, sin ningún control de servidor:
+--
+--   await supabase.auth.updateUser({ data: { role: 'admin' } })
+--
+-- Cualquier doctor/cliente autenticado podía ejecutar esa línea desde
+-- la consola del navegador y, en su siguiente sesión/refresh de JWT,
+-- obtener acceso de:
+--   - admin total a `creditos_cliente` (saldo a favor de TODOS los
+--     doctores — podía leer y modificar cualquier saldo)
+--   - lectura de TODOS los reportes internos en `logs_incidencias`
+--   - UPDATE de `estado_operativo` en CUALQUIER pedido (rol 'operator')
+--   - admin total a `doctores_perfil` (perfiles de todos los doctores)
+--   - admin total a `pedidos_doctor` (todos los pedidos, rol admin/operator)
+--   - admin total a `perfiles` (tabla de equipo interno — podía incluso
+--     verse a sí mismo con rol admin ahí también)
+--   - escritura en `inventario_items`/`lotes_material`/`inventario_movimientos`
+--     (rol 'encargado_inventario')
+--
+-- Este es el hallazgo MÁS GRAVE de toda la auditoría: no requiere
+-- ningún exploit sofisticado, solo una línea de JavaScript en la
+-- consola del navegador estando logueado como cualquier doctor.
+-- ============================================================
+
+-- ── 1. creditos_cliente — admin total (migrate-fix-rls-roles.sql) ──
+DROP POLICY IF EXISTS "creditos_admin_all" ON creditos_cliente;
+CREATE POLICY "creditos_admin_all" ON creditos_cliente
+    FOR ALL TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    );
+
+-- ── 2. logs_incidencias — lectura staff (migrate-fix-rls-roles.sql) ──
+DROP POLICY IF EXISTS "inc_read_staff" ON logs_incidencias;
+CREATE POLICY "inc_read_staff" ON logs_incidencias
+    FOR SELECT TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    );
+
+-- ── 3. pedidos — UPDATE operator (migrate-fix-rls-roles.sql) ──
+DROP POLICY IF EXISTS "pedidos_update_operator" ON pedidos;
+CREATE POLICY "pedidos_update_operator" ON pedidos
+    FOR UPDATE TO authenticated
+    USING ((auth.jwt() -> 'app_metadata' ->> 'role') = 'operator')
+    WITH CHECK ((auth.jwt() -> 'app_metadata' ->> 'role') = 'operator');
+
+-- ── 4. doctores_perfil — admin (migrate-doctores.sql) ──
+DROP POLICY IF EXISTS "admin_all_profiles" ON doctores_perfil;
+CREATE POLICY "admin_all_profiles" ON doctores_perfil
+    FOR ALL USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    );
+
+-- ── 5. pedidos_doctor — admin/operator (migrate-doctores.sql) ──
+DROP POLICY IF EXISTS "admin_all_pedidos" ON pedidos_doctor;
+CREATE POLICY "admin_all_pedidos" ON pedidos_doctor
+    FOR ALL USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    );
+
+-- ── 6. perfiles (equipo interno) — admin (migrate-equipo.sql) ──
+DROP POLICY IF EXISTS "perfiles_admin_all" ON perfiles;
+CREATE POLICY "perfiles_admin_all" ON perfiles
+    FOR ALL TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    );
+
+-- ── 7. inventario_items / lotes_material / inventario_movimientos ──
+-- (migrate-inventario.sql)
+DROP POLICY IF EXISTS "inv_write_admin" ON inventario_items;
+CREATE POLICY "inv_write_admin" ON inventario_items
+    FOR ALL USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'encargado_inventario'
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'encargado_inventario'
+    );
+
+DROP POLICY IF EXISTS "lotes_write_admin" ON lotes_material;
+CREATE POLICY "lotes_write_admin" ON lotes_material
+    FOR ALL USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'encargado_inventario'
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'encargado_inventario'
+    );
+
+DROP POLICY IF EXISTS "mov_write_admin" ON inventario_movimientos;
+CREATE POLICY "mov_write_admin" ON inventario_movimientos
+    FOR ALL USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'encargado_inventario'
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'encargado_inventario'
+    );
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- Ejecutar como cualquier usuario autenticado NO-admin (ej. una cuenta
+-- de prueba de doctor) tras correr:
+--   await supabase.auth.updateUser({ data: { role: 'admin' } })
+-- y luego intentar:
+--   await supabase.from('creditos_cliente').select('*')
+-- Debe devolver 0 filas o error de permisos — NO debe mostrar los
+-- creditos de otros doctores.
+--
+-- SELECT policyname, qual FROM pg_policies
+-- WHERE tablename IN ('creditos_cliente','logs_incidencias','pedidos',
+--   'doctores_perfil','pedidos_doctor','perfiles','inventario_items',
+--   'lotes_material','inventario_movimientos')
+--   AND (qual LIKE '%user_metadata%' OR qual LIKE '%raw_user_meta_data%');
+-- → debe devolver 0 filas (ninguna policy activa debe mencionar
+--   user_metadata/raw_user_meta_data en su condición)
+-- ============================================================
+
+-- ############################################################
+-- # 2/12 — FRAUDE EN CUPONES DE REFERIDOS
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Cerrar fraude en sistema de referidos/cupones
+-- Ejecutar en: Supabase Dashboard → SQL Editor
+--
+-- Hallazgo (auditoría 2026-07-03):
+-- La política "ref_anon_insert" (sql/referidos-table.sql) permite
+-- INSERT con WITH CHECK(true) — cualquier usuario anónimo puede
+-- insertar una fila en `referidos` fijando DIRECTAMENTE columnas que
+-- deberían ser exclusivas del trigger de pago confirmado:
+--   cupon_credito, cupon_usado, estado, recompensa_cop
+--
+-- Ejemplo de explotación (antes de este patch):
+--   POST /rest/v1/referidos
+--   { "referidor_email":"atacante@x.com", "codigo":"FAKE1",
+--     "cupon_credito":"CRED-FALSO1", "cupon_usado":false,
+--     "estado":"primer_pedido", "recompensa_cop":999999999 }
+--   → luego RPC prodigy_usar_cupon_credito('CRED-FALSO1') devuelve
+--     ok:true con un monto de crédito completamente inventado.
+--
+-- Además: no había verificación de auto-referido (un doctor podía
+-- usar su propio código para "referirse a sí mismo" y generar cupón).
+-- ============================================================
+
+-- ── 1. Restringir el INSERT a solo los valores "seguros" de fábrica ──
+-- Un cliente solo puede crear una fila NUEVA sin cupón, sin usar, en
+-- estado inicial. cupon_credito/cupon_usado/recompensa/descuento SOLO
+-- los toca el trigger (SECURITY DEFINER, corre con permisos de owner,
+-- no pasa por esta policy).
+DROP POLICY IF EXISTS "ref_anon_insert" ON public.referidos;
+CREATE POLICY "ref_anon_insert" ON public.referidos
+  FOR INSERT TO anon, authenticated
+  WITH CHECK (
+    cupon_credito IS NULL
+    AND cupon_usado = false
+    AND cupon_at IS NULL
+    AND estado IN ('pendiente', 'registrado')
+    AND recompensa_cop = 30000
+    AND descuento_pct = 5
+    AND referido_email IS NULL   -- se completa solo vía trigger al confirmar pago
+  );
+
+-- ── 2. Prevenir que un cliente modifique su propia fila directamente ──
+-- No existía ninguna policy UPDATE para authenticated no-staff, lo cual
+-- ya bloqueaba UPDATE por RLS (implícito) — se agrega explícita y
+-- restrictiva por claridad, en caso de que alguna GRANT futura la abra.
+DROP POLICY IF EXISTS "ref_client_no_update" ON public.referidos;
+CREATE POLICY "ref_client_no_update" ON public.referidos
+  FOR UPDATE TO authenticated
+  USING (false);
+
+-- ── 3. Prevenir auto-referido en el trigger de primer pedido ──
+CREATE OR REPLACE FUNCTION public.prodigy_detectar_primer_pedido_referido()
+RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+  v_email       text;
+  v_codigo      text;
+  v_cupon       text;
+  v_ref_id      uuid;
+  v_referidor_email text;
+BEGIN
+  IF NEW.pago_estado = 'pago_confirmado' AND
+     (OLD.pago_estado IS DISTINCT FROM 'pago_confirmado') AND
+     NEW.codigo_referido IS NOT NULL THEN
+
+    v_codigo := NEW.codigo_referido;
+    v_email  := lower(trim(COALESCE(NEW.email, NEW.doctor, '')));
+
+    SELECT id, lower(trim(referidor_email)) INTO v_ref_id, v_referidor_email
+    FROM public.referidos
+    WHERE codigo = v_codigo AND estado IN ('pendiente','registrado')
+    LIMIT 1;
+
+    -- Auto-referido: el email del pedido referido es el mismo que el
+    -- del referidor original — bloquear, no generar cupón ni recompensa.
+    IF v_ref_id IS NOT NULL AND v_referidor_email = v_email AND v_email <> '' THEN
+      INSERT INTO public.logs_incidencias(tipo, severidad, descripcion, resuelta)
+      VALUES (
+        'REFERIDO_AUTO_BLOQUEADO', 'WARN',
+        '[REFERIDOS] Intento de auto-referido bloqueado — código: ' || v_codigo ||
+        ' | email: ' || v_email || ' | pedido: ' || COALESCE(NEW.codigo, NEW.id::text),
+        true
+      );
+      RETURN NEW;
+    END IF;
+
+    IF v_ref_id IS NOT NULL THEN
+      v_cupon := public._generar_cupon_credito();
+
+      UPDATE public.referidos SET
+        estado         = 'primer_pedido',
+        referido_email = COALESCE(referido_email, v_email),
+        referido_at    = COALESCE(referido_at, NOW()),
+        cupon_credito  = v_cupon,
+        cupon_at       = NOW()
+      WHERE id = v_ref_id;
+
+      INSERT INTO public.logs_incidencias(tipo, severidad, descripcion, resuelta)
+      VALUES (
+        'REFERIDO_PRIMER_PEDIDO', 'INFO',
+        '[REFERIDOS] Primer pedido confirmado — código: ' || v_codigo ||
+        ' | cupón generado: ' || v_cupon ||
+        ' | pedido: ' || COALESCE(NEW.codigo, NEW.id::text),
+        true
+      );
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- Intentar (debe FALLAR con violación de policy):
+-- INSERT INTO referidos (referidor_email, codigo, estado, cupon_credito, recompensa_cop)
+-- VALUES ('test@test.com', 'TEST123', 'primer_pedido', 'CRED-FAKE', 999999999);
+--
+-- Confirmar que un INSERT "legítimo" sigue funcionando:
+-- INSERT INTO referidos (referidor_email, codigo) VALUES ('doctor@test.com', 'TESTOK1');
+-- ============================================================
+
+-- ############################################################
+-- # 3/12 — RLS CATALOGO/PRECIOS/BILLETERAS (claim JWT incorrecto)
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Corregir RLS de catalogo/config_precios/billeteras
+-- Ejecutar en: Supabase Dashboard → SQL Editor
+--
+-- Hallazgo (auditoría 2026-07-03): las políticas de escritura de
+-- estas 3 tablas (sql/migrate-catalogo-completo.sql) usan:
+--
+--   auth.jwt() ->> 'role' = 'admin'
+--
+-- Pero `role` a nivel raíz del JWT de Supabase Auth es el ROL DE
+-- POSTGRES (siempre 'authenticated' para cualquier usuario logueado,
+-- admin o no) — NUNCA el rol de negocio. El rol de negocio real vive
+-- en `app_metadata.role`, como se usa correctamente en todas las
+-- demás policies del proyecto.
+--
+-- Efecto práctico: esta condición NUNCA es verdadera para ningún
+-- usuario real → los 3 UPDATE/INSERT/DELETE en catalogo,
+-- config_precios y billeteras están bloqueados por RLS para TODOS,
+-- incluido el admin real. app/admin-precios.html:451 no revisa el
+-- caso de error (`if (!error) {...}` sin rama else) — el admin no
+-- ve ningún mensaje de fallo, el precio simplemente no se actualiza
+-- en la base de datos aunque el toast de "guardado" no aparezca.
+-- ============================================================
+
+DROP POLICY IF EXISTS "admin_write_catalogo" ON catalogo;
+CREATE POLICY "admin_write_catalogo" ON catalogo FOR ALL TO authenticated USING (
+    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+) WITH CHECK (
+    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+);
+
+DROP POLICY IF EXISTS "admin_write_config" ON config_precios;
+CREATE POLICY "admin_write_config" ON config_precios FOR ALL TO authenticated USING (
+    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+) WITH CHECK (
+    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+);
+
+DROP POLICY IF EXISTS "admin_billeteras" ON billeteras;
+CREATE POLICY "admin_billeteras" ON billeteras FOR ALL TO authenticated USING (
+    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+) WITH CHECK (
+    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+);
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- Como admin logueado en app/admin-precios.html, cambiar un precio
+-- y guardar — debe aparecer el toast "Precio actualizado" Y el
+-- cambio debe persistir tras recargar la página (antes del patch,
+-- el toast podía no aparecer o el valor volvía al original al
+-- recargar, indicando que el UPDATE nunca se aplicó).
+-- ============================================================
+
+-- ############################################################
+-- # 4/12 — RPCs REPORTES ADMIN EXPUESTAS
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Restringir RPCs de reportes admin a staff real
+-- Ejecutar en: Supabase Dashboard → SQL Editor
+--
+-- Hallazgo (auditoría 2026-07-03): las 4 funciones de
+-- sql/rpc-reportes-admin.sql (nombradas explícitamente "reportes ADMIN")
+-- estaban otorgadas a `authenticated` sin ninguna verificación de rol.
+-- Cualquier doctor con sesión podía llamar:
+--   - prodigy_top_doctores(): ranking de TODOS los doctores por volumen
+--     de pedidos e INGRESOS — inteligencia de negocio competitiva real
+--     (qué clínicas son las más grandes, cuánto gastan, cuándo compraron
+--     por última vez).
+--   - prodigy_ingresos_por_dia(): ingresos totales diarios de PRODIGY.
+--   - prodigy_pedidos_por_material() / prodigy_conversion_por_flujo():
+--     desglose financiero y operativo completo del negocio.
+--
+-- Se agrega verificación de rol admin/staff DENTRO de cada función
+-- (SECURITY DEFINER ya bypassa RLS de `pedidos`, así que la única
+-- protección real es esta verificación interna).
+-- ============================================================
+
+CREATE OR REPLACE FUNCTION public.prodigy_pedidos_por_material(p_dias int DEFAULT 30)
+RETURNS TABLE(material text, total bigint, ingresos numeric, pct_total numeric)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE _total bigint;
+BEGIN
+  IF NOT (
+    (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+    OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+  ) THEN
+    RAISE EXCEPTION 'No autorizado';
+  END IF;
+
+  SELECT COUNT(*) INTO _total FROM public.pedidos
+  WHERE negocio='prodigy' AND created_at > now() - (p_dias||' days')::interval;
+  RETURN QUERY
+  SELECT
+    COALESCE(p.material, p.servicio, 'otro') AS material,
+    COUNT(*) AS total,
+    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos,
+    CASE WHEN _total > 0 THEN ROUND(COUNT(*)::numeric/_total*100,1) ELSE 0 END AS pct_total
+  FROM public.pedidos p
+  WHERE p.negocio='prodigy'
+    AND p.created_at > now() - (p_dias||' days')::interval
+  GROUP BY COALESCE(p.material, p.servicio, 'otro')
+  ORDER BY total DESC LIMIT 15;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.prodigy_ingresos_por_dia(p_dias int DEFAULT 30)
+RETURNS TABLE(fecha date, pedidos bigint, ingresos numeric)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+BEGIN
+  IF NOT (
+    (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+    OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+  ) THEN
+    RAISE EXCEPTION 'No autorizado';
+  END IF;
+
+  RETURN QUERY
+  SELECT
+    DATE(p.created_at) AS fecha,
+    COUNT(*) AS pedidos,
+    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos
+  FROM public.pedidos p
+  WHERE p.negocio='prodigy'
+    AND p.created_at > now() - (p_dias||' days')::interval
+  GROUP BY DATE(p.created_at)
+  ORDER BY fecha DESC;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.prodigy_conversion_por_flujo(p_dias int DEFAULT 30)
+RETURNS TABLE(flujo text, pedidos bigint, entregados bigint, tasa_entrega numeric, ingreso_promedio numeric)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+BEGIN
+  IF NOT (
+    (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+    OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+  ) THEN
+    RAISE EXCEPTION 'No autorizado';
+  END IF;
+
+  RETURN QUERY
+  SELECT
+    COALESCE(p.flujo,'otro') AS flujo,
+    COUNT(*) AS pedidos,
+    COUNT(*) FILTER (WHERE p.estado_operativo IN ('ENTREGADO','LISTO_DESPACHAR')) AS entregados,
+    CASE WHEN COUNT(*)>0 THEN ROUND(COUNT(*) FILTER (WHERE p.estado_operativo IN ('ENTREGADO','LISTO_DESPACHAR'))::numeric/COUNT(*)*100,1) ELSE 0 END AS tasa_entrega,
+    ROUND(AVG(COALESCE(p.total::numeric, p.precio_total::numeric, 0)),0) AS ingreso_promedio
+  FROM public.pedidos p
+  WHERE p.negocio='prodigy'
+    AND p.created_at > now() - (p_dias||' days')::interval
+  GROUP BY COALESCE(p.flujo,'otro')
+  ORDER BY pedidos DESC;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.prodigy_top_doctores(p_dias int DEFAULT 90, p_limit int DEFAULT 10)
+RETURNS TABLE(doctor text, pedidos bigint, ingresos numeric, ultimo_pedido date)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+BEGIN
+  IF NOT (
+    (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+    OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+  ) THEN
+    RAISE EXCEPTION 'No autorizado';
+  END IF;
+
+  RETURN QUERY
+  SELECT
+    COALESCE(p.doctor, p.nombre_doctor, 'Anónimo') AS doctor,
+    COUNT(*) AS pedidos,
+    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos,
+    MAX(DATE(p.created_at)) AS ultimo_pedido
+  FROM public.pedidos p
+  WHERE p.negocio='prodigy'
+    AND p.created_at > now() - (p_dias||' days')::interval
+  GROUP BY COALESCE(p.doctor, p.nombre_doctor, 'Anónimo')
+  ORDER BY ingresos DESC LIMIT p_limit;
+END;
+$$;
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- Como doctor logueado (no admin), esto debe fallar con "No autorizado":
+--   SELECT * FROM prodigy_top_doctores();
+-- Como admin, debe seguir funcionando normal (usado en panel-interno-operaciones.html).
+-- ============================================================
+
+-- ############################################################
+-- # 5/12 — RPCs DASHBOARD FINANCIERO EXPUESTAS
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Restringir RPCs de analytics/dashboard a staff real
+-- Ejecutar en: Supabase Dashboard → SQL Editor
+--
+-- Hallazgo (auditoría 2026-07-04): las 6 funciones de
+-- sql/prodigy-analytics-rpc.sql estaban otorgadas a `authenticated`
+-- SIN ninguna verificación de rol dentro de la función:
+--
+--   prodigy_dashboard_semana() — pedidos/ingresos semana y mes, saldos
+--     pendientes, tasa de aprobación — dashboard ejecutivo completo.
+--   prodigy_top_servicios(), prodigy_ingresos_semanas(),
+--     prodigy_tiempos_entrega(), prodigy_forecast_semana() —
+--     desglose financiero y operativo del negocio.
+--   alejandro_dashboard() — el equivalente para el negocio de
+--     Alejandro, con las mismas cifras (incluye ingresos_mes_usd).
+--
+-- Cualquier doctor con sesión (de CUALQUIERA de los 2 negocios, ya que
+-- comparten el mismo proyecto Supabase) podía llamar cualquiera de
+-- estas 6 funciones vía /rest/v1/rpc/... y ver el dashboard financiero
+-- completo de ambos negocios.
+-- ============================================================
+
+CREATE OR REPLACE FUNCTION prodigy_dashboard_semana()
+RETURNS JSON
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+    resultado JSON;
+BEGIN
+    IF NOT (
+        (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+        OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+    ) THEN
+        RAISE EXCEPTION 'No autorizado';
+    END IF;
+
+    SELECT json_build_object(
+        'pedidos_semana',    (SELECT COUNT(*) FROM pedidos WHERE created_at >= NOW() - INTERVAL '7 days'),
+        'pedidos_mes',       (SELECT COUNT(*) FROM pedidos WHERE created_at >= NOW() - INTERVAL '30 days'),
+        'pedidos_total',     (SELECT COUNT(*) FROM pedidos),
+        'ingresos_semana',   (SELECT COALESCE(SUM(precio_total),0) FROM pedidos WHERE pago_estado = 'pago_confirmado' AND created_at >= NOW() - INTERVAL '7 days'),
+        'ingresos_mes',      (SELECT COALESCE(SUM(precio_total),0) FROM pedidos WHERE pago_estado = 'pago_confirmado' AND created_at >= NOW() - INTERVAL '30 days'),
+        'por_validar',       (SELECT COUNT(*) FROM pedidos WHERE estado_operativo IN ('VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE')),
+        'en_produccion',     (SELECT COUNT(*) FROM pedidos WHERE estado_operativo IN ('EN_DISENO','FRESADO_INICIADO','EN_PRODUCCION')),
+        'en_revision',       (SELECT COUNT(*) FROM pedidos WHERE estado_operativo = 'REVISION_CLIENTE'),
+        'listos_despacho',   (SELECT COUNT(*) FROM pedidos WHERE estado_operativo IN ('QA_APROBADO','LISTO_DESPACHAR')),
+        'pagos_pendientes',  (SELECT COUNT(*) FROM pedidos WHERE pago_estado IN ('pendiente','pago_subido') AND estado NOT IN ('cancelado','CANCELADO')),
+        'saldos_pendientes', (SELECT COALESCE(SUM(saldo_pendiente_monto),0) FROM pedidos WHERE modalidad_cobro='50_50' AND pago_estado='pago_confirmado'),
+        'tasa_aprobacion_1a', (SELECT ROUND(100.0 * COUNT(*) FILTER(WHERE revisiones_usadas = 0 AND diseno_aprobado = true) / NULLIF(COUNT(*) FILTER(WHERE diseno_aprobado = true),0), 1) FROM pedidos_doctor WHERE created_at >= NOW() - INTERVAL '30 days'),
+        'calculado_en',      NOW()
+    ) INTO resultado;
+
+    RETURN resultado;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION prodigy_top_servicios(limite INT DEFAULT 5)
+RETURNS JSON
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE resultado JSON;
+BEGIN
+    IF NOT (
+        (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+        OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+    ) THEN
+        RAISE EXCEPTION 'No autorizado';
+    END IF;
+
+    SELECT json_agg(row_to_json(t)) INTO resultado FROM (
+        SELECT
+            SPLIT_PART(servicio, '(', 1) AS servicio,
+            COUNT(*) AS total,
+            ROUND(AVG(precio_total)) AS ticket_promedio
+        FROM pedidos
+        WHERE created_at >= NOW() - INTERVAL '30 days'
+          AND servicio IS NOT NULL
+        GROUP BY 1
+        ORDER BY total DESC
+        LIMIT limite
+    ) t;
+    RETURN COALESCE(resultado, '[]'::JSON);
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION prodigy_ingresos_semanas(n_semanas INT DEFAULT 6)
+RETURNS JSON
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE resultado JSON;
+BEGIN
+    IF NOT (
+        (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+        OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+    ) THEN
+        RAISE EXCEPTION 'No autorizado';
+    END IF;
+
+    SELECT json_agg(row_to_json(t)) INTO resultado FROM (
+        SELECT
+            DATE_TRUNC('week', created_at)::date AS semana,
+            COUNT(*) AS pedidos,
+            COALESCE(SUM(precio_total) FILTER(WHERE pago_estado='pago_confirmado'), 0) AS ingresos
+        FROM pedidos
+        WHERE created_at >= NOW() - (n_semanas || ' weeks')::INTERVAL
+        GROUP BY 1
+        ORDER BY 1 ASC
+    ) t;
+    RETURN COALESCE(resultado, '[]'::JSON);
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION prodigy_tiempos_entrega()
+RETURNS JSON
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE resultado JSON;
+BEGIN
+    IF NOT (
+        (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+        OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+    ) THEN
+        RAISE EXCEPTION 'No autorizado';
+    END IF;
+
+    SELECT json_agg(row_to_json(t)) INTO resultado FROM (
+        SELECT
+            SPLIT_PART(servicio, '(', 1) AS servicio,
+            ROUND(AVG(EXTRACT(EPOCH FROM (timestamp_qa - created_at))/3600)) AS horas_promedio,
+            COUNT(*) AS total
+        FROM pedidos
+        WHERE timestamp_qa IS NOT NULL
+          AND created_at >= NOW() - INTERVAL '90 days'
+          AND servicio IS NOT NULL
+        GROUP BY 1
+        HAVING COUNT(*) >= 3
+        ORDER BY horas_promedio ASC
+        LIMIT 8
+    ) t;
+    RETURN COALESCE(resultado, '[]'::JSON);
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION prodigy_forecast_semana()
+RETURNS JSON
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE resultado JSON;
+BEGIN
+    IF NOT (
+        (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+        OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+    ) THEN
+        RAISE EXCEPTION 'No autorizado';
+    END IF;
+
+    SELECT json_agg(row_to_json(t)) INTO resultado FROM (
+        SELECT
+            EXTRACT(DOW FROM created_at)::int AS dia_semana,
+            TO_CHAR(created_at, 'Day') AS nombre_dia,
+            ROUND(AVG(cnt)) AS pedidos_esperados
+        FROM (
+            SELECT DATE_TRUNC('day', created_at) AS dia, COUNT(*) AS cnt,
+                   EXTRACT(DOW FROM created_at) AS dow
+            FROM pedidos
+            WHERE created_at >= NOW() - INTERVAL '28 days'
+            GROUP BY 1, 3
+        ) daily
+        GROUP BY dia_semana, nombre_dia
+        ORDER BY dia_semana
+    ) t;
+    RETURN COALESCE(resultado, '[]'::JSON);
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION alejandro_dashboard()
+RETURNS JSON
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE resultado JSON;
+BEGIN
+    IF NOT (
+        (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+        OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+    ) THEN
+        RAISE EXCEPTION 'No autorizado';
+    END IF;
+
+    SELECT json_build_object(
+        'pedidos_semana',     (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND created_at >= NOW() - INTERVAL '7 days'),
+        'pedidos_mes',        (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND created_at >= NOW() - INTERVAL '30 days'),
+        'ingresos_mes_usd',   (SELECT COALESCE(SUM(precio_usd),0) FROM pedidos WHERE negocio='alejandrocadcam' AND pago_estado='pago_confirmado' AND created_at >= NOW() - INTERVAL '30 days'),
+        'en_diseno',          (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND estado='en_diseno'),
+        'en_revision',        (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND estado='revision'),
+        'tasa_aprobacion_1a', (SELECT ROUND(100.0 * COUNT(*) FILTER(WHERE revisiones_usadas=0 AND diseno_aprobado=true) / NULLIF(COUNT(*) FILTER(WHERE diseno_aprobado=true),0),1) FROM pedidos WHERE negocio='alejandrocadcam' AND created_at >= NOW() - INTERVAL '30 days'),
+        'calculado_en',       NOW()
+    ) INTO resultado;
+    RETURN resultado;
+END;
+$$;
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- Como doctor logueado (no admin), esto debe fallar con "No autorizado":
+--   SELECT prodigy_dashboard_semana();
+--   SELECT alejandro_dashboard();
+-- Como admin, debe seguir devolviendo los datos normalmente.
+-- ============================================================
+
+-- ############################################################
+-- # 6/12 — RPC INGRESOS POR CANAL EXPUESTA
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Restringir RPC de ingresos por canal a staff real
+-- Ejecutar en: Supabase Dashboard → SQL Editor
+--
+-- Mismo hallazgo que patch-analytics-rpc-authz-2026.sql y
+-- patch-reportes-admin-authz-2026.sql: prodigy_ingresos_por_canal()
+-- (sql/patch-canal-origen.sql) estaba otorgada a `authenticated` sin
+-- verificación de rol — cualquier doctor podía ver el desglose de
+-- ingresos por canal de marketing (SEO, WhatsApp, Google Ads, etc.)
+-- de todo el negocio.
+-- ============================================================
+
+CREATE OR REPLACE FUNCTION public.prodigy_ingresos_por_canal(p_dias int DEFAULT 90)
+RETURNS TABLE(canal text, pedidos bigint, ingresos numeric, pct_pedidos numeric)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE _total bigint;
+BEGIN
+  IF NOT (
+    (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','staff')
+    OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+  ) THEN
+    RAISE EXCEPTION 'No autorizado';
+  END IF;
+
+  SELECT COUNT(*) INTO _total FROM public.pedidos
+  WHERE negocio='prodigy' AND created_at > now() - (p_dias||' days')::interval;
+  RETURN QUERY
+  SELECT
+    COALESCE(p.canal_origen,'directo') AS canal,
+    COUNT(*) AS pedidos,
+    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos,
+    CASE WHEN _total>0 THEN ROUND(COUNT(*)::numeric/_total*100,1) ELSE 0 END AS pct_pedidos
+  FROM public.pedidos p
+  WHERE p.negocio='prodigy'
+    AND p.created_at > now() - (p_dias||' days')::interval
+  GROUP BY COALESCE(p.canal_origen,'directo')
+  ORDER BY pedidos DESC LIMIT 10;
+END;
+$$;
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- Como doctor logueado (no admin): SELECT * FROM prodigy_ingresos_por_canal();
+-- debe fallar con "No autorizado".
+-- ============================================================
+
+-- ############################################################
+-- # 7/12 — CREAR TOKEN DE REVISION SIN AUTH (grave)
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Restringir creación de tokens de revisión a staff
+-- Ejecutar en: Supabase Dashboard → SQL Editor — URGENTE
+--
+-- Hallazgo (auditoría 2026-07-04): prodigy_crear_revision_token(uuid)
+-- estaba otorgada a CUALQUIER usuario `authenticated`, sin verificar
+-- que quien la llama sea staff. Esta función:
+--   1) INVALIDA el token vigente de un pedido (UPDATE ... usado=true
+--      WHERE pedido_id = p_pedido_id AND NOT usado) — es decir,
+--      cualquier doctor podía invalidar el enlace de aprobación real
+--      que ya se le envió por email a OTRO doctor.
+--   2) Genera un NUEVO token para ESE pedido y lo devuelve al llamador.
+--
+-- Combinado con prodigy_aprobar_via_token (ya corregida en
+-- patch-revision-express-rpc-seguro-2026.sql), esto permitía que
+-- cualquier persona con sesión (doctor, o incluso un cliente cualquiera)
+-- generara su propio token para el pedido de OTRO doctor y aprobara la
+-- fabricación de un diseño que el verdadero doctor nunca revisó.
+--
+-- Esta función solo debe usarla el operario al subir un diseño nuevo
+-- (según su propio comentario de uso en revision-tokens-table.sql).
+-- ============================================================
+
+CREATE OR REPLACE FUNCTION prodigy_crear_revision_token(p_pedido_id uuid)
+RETURNS text
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+    nuevo_token text;
+BEGIN
+    IF NOT (
+        (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operario','operator','staff')
+        OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+    ) THEN
+        RAISE EXCEPTION 'No autorizado';
+    END IF;
+
+    -- Invalidar tokens anteriores para este pedido
+    UPDATE revision_tokens SET usado = true WHERE pedido_id = p_pedido_id AND NOT usado;
+
+    -- Crear nuevo token (UUID v4 como token seguro)
+    nuevo_token := gen_random_uuid()::text || '-' || encode(gen_random_bytes(16), 'hex');
+
+    INSERT INTO revision_tokens (token, pedido_id, expires_at)
+    VALUES (nuevo_token, p_pedido_id, NOW() + INTERVAL '7 days');
+
+    RETURN nuevo_token;
+END;
+$$;
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- Como doctor logueado (no operario/admin), esto debe fallar:
+--   SELECT prodigy_crear_revision_token('<uuid-de-cualquier-pedido>');
+-- Como operario/admin, debe seguir funcionando igual que antes.
+-- ============================================================
+
+-- ############################################################
+-- # 8/12 — REVOCAR RPCs DE LECTURA (pagos/SLA pendientes)
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Revocar RPCs de lectura interna que exponían datos a cualquier doctor
+-- Ejecutar en: Supabase Dashboard → SQL Editor
+--
+-- Hallazgo (auditoría IDOR 2026-07-03): sql/patch-revoke-rpcs-internas.sql
+-- (ejecutado 2026-06-12) ya revocó las funciones de ESCRITURA
+-- (prodigy_marcar_recordatorio, prodigy_marcar_sla_alerta, prodigy_set_sla)
+-- para `authenticated`, pero dejó pasar las 2 funciones de LECTURA
+-- equivalentes, que seguían otorgadas a `authenticated`:
+--
+--   prodigy_pagos_pendientes(p_horas)  — sql/patch-pagos-vencidos.sql
+--   prodigy_pedidos_sla_vencido()      — sql/patch-sla-pedidos.sql
+--
+-- Cualquier doctor con sesión podía llamar estas RPCs vía
+-- /rest/v1/rpc/... y obtener el LISTADO COMPLETO de:
+--   - todos los pedidos con pago pendiente de TODOS los doctores
+--     (nombre, WhatsApp, monto, tiempo de espera)
+--   - todos los pedidos con SLA vencido de TODO el negocio
+--
+-- Ambas son llamadas únicamente desde functions/api/recordatorio-pago.js
+-- y functions/api/alerta-sla.js usando SUPABASE_SERVICE_KEY (service_role),
+-- que no requiere el GRANT a `authenticated`.
+-- ============================================================
+
+DO $$
+BEGIN
+  IF to_regprocedure('public.prodigy_pagos_pendientes(int)') IS NOT NULL THEN
+    EXECUTE 'REVOKE EXECUTE ON FUNCTION public.prodigy_pagos_pendientes(int) FROM authenticated';
+  END IF;
+  IF to_regprocedure('public.prodigy_pedidos_sla_vencido()') IS NOT NULL THEN
+    EXECUTE 'REVOKE EXECUTE ON FUNCTION public.prodigy_pedidos_sla_vencido() FROM authenticated';
+  END IF;
+END $$;
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- Como doctor logueado (no admin), esto debe fallar con "permission denied":
+--   SELECT * FROM prodigy_pagos_pendientes(48);
+--   SELECT * FROM prodigy_pedidos_sla_vencido();
+-- ============================================================
+
+-- ############################################################
+-- # 9/12 — REVISION-EXPRESS: TOKENS ENUMERABLES
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Convertir revision-express a RPCs seguras (RLS insuficiente)
+-- Ejecutar en: Supabase Dashboard → SQL Editor
+--
+-- Hallazgo (auditoría 2026-07-03):
+-- 1) Las políticas RLS de `revision_tokens` (tokens_select_anon,
+--    tokens_update_used) solo verifican el ESTADO de la fila (no usado,
+--    no vencido) — NO exigen que el cliente conozca el valor exacto del
+--    token. Cualquiera sin sesión puede hacer:
+--      GET /rest/v1/revision_tokens?select=*
+--    y obtener TODOS los tokens válidos + pedido_id de TODOS los casos
+--    pendientes de aprobación, sin haber recibido el email. Postgres RLS
+--    no puede "exigir" que el cliente incluya un filtro — solo evalúa
+--    fila por fila, así que la única forma correcta de proteger un
+--    "enlace mágico" es NO exponer la tabla directamente.
+-- 2) No existe NINGUNA política que permita al rol `anon` hacer UPDATE
+--    en `pedidos_doctor` — es decir, cuando un doctor SIN sesión iniciada
+--    hace clic en el enlace de aprobación del email (el caso de uso
+--    principal de esta función), el UPDATE en revision-express.html
+--    probablemente fallaba silenciosamente con error de RLS.
+--
+-- Este patch reemplaza el acceso directo a las tablas por 3 funciones
+-- SECURITY DEFINER que reciben el token como parámetro obligatorio y
+-- hacen toda la operación (validar + marcar usado + actualizar pedido +
+-- historial + log) en una sola transacción atómica — sin exponer las
+-- tablas a SELECT/UPDATE directo desde anon.
+-- ============================================================
+
+-- ── 1. Endurecer RLS de revision_tokens — quitar acceso directo anon ──
+DROP POLICY IF EXISTS "tokens_select_anon" ON revision_tokens;
+DROP POLICY IF EXISTS "tokens_update_used" ON revision_tokens;
+-- tokens_admin_all se mantiene (admin sigue pudiendo auditar la tabla)
+
+-- ── 2. RPC: validar token (solo lectura, para mostrar la página) ──
+CREATE OR REPLACE FUNCTION public.prodigy_validar_token_revision(
+    p_token text,
+    p_pedido_id uuid
+)
+RETURNS json
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+    v_tok record;
+    v_ped record;
+BEGIN
+    SELECT * INTO v_tok FROM revision_tokens
+    WHERE token = p_token AND pedido_id = p_pedido_id
+    LIMIT 1;
+
+    IF NOT FOUND THEN
+        RETURN json_build_object('ok', false, 'error', 'invalido');
+    END IF;
+    IF v_tok.usado THEN
+        RETURN json_build_object('ok', false, 'error', 'usado');
+    END IF;
+    IF v_tok.expires_at < NOW() THEN
+        RETURN json_build_object('ok', false, 'error', 'expirado');
+    END IF;
+
+    SELECT id, codigo, nombre_paciente, servicio, revisiones_usadas, html_diseno_url
+    INTO v_ped FROM pedidos_doctor WHERE id = p_pedido_id;
+
+    IF NOT FOUND THEN
+        RETURN json_build_object('ok', false, 'error', 'pedido_no_encontrado');
+    END IF;
+
+    RETURN json_build_object(
+        'ok', true,
+        'pedido', json_build_object(
+            'id', v_ped.id, 'codigo', v_ped.codigo,
+            'nombre_paciente', v_ped.nombre_paciente, 'servicio', v_ped.servicio,
+            'revisiones_usadas', v_ped.revisiones_usadas, 'html_diseno_url', v_ped.html_diseno_url
+        )
+    );
+END;
+$$;
+GRANT EXECUTE ON FUNCTION public.prodigy_validar_token_revision(text, uuid) TO anon, authenticated;
+
+-- ── 3. RPC: aprobar diseño (atómico: valida + marca usado + aprueba) ──
+CREATE OR REPLACE FUNCTION public.prodigy_aprobar_via_token(
+    p_token text,
+    p_pedido_id uuid
+)
+RETURNS json
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+    v_tok record;
+BEGIN
+    -- Bloquea la fila para evitar doble-submit concurrente (TOCTOU)
+    SELECT * INTO v_tok FROM revision_tokens
+    WHERE token = p_token AND pedido_id = p_pedido_id
+    FOR UPDATE;
+
+    IF NOT FOUND THEN
+        RETURN json_build_object('ok', false, 'error', 'invalido');
+    END IF;
+    IF v_tok.usado THEN
+        RETURN json_build_object('ok', false, 'error', 'usado');
+    END IF;
+    IF v_tok.expires_at < NOW() THEN
+        RETURN json_build_object('ok', false, 'error', 'expirado');
+    END IF;
+
+    UPDATE revision_tokens SET usado = true, usado_at = NOW() WHERE id = v_tok.id;
+
+    UPDATE pedidos_doctor SET
+        diseno_aprobado    = true,
+        estado             = 'aprobado',
+        diseno_aprobado_at = NOW()
+    WHERE id = p_pedido_id;
+
+    INSERT INTO historial_diseno (pedido_id, tipo, actor, descripcion)
+    VALUES (p_pedido_id, 'APROBACION_EXPRESS', 'doctor_email',
+            'Diseño aprobado vía enlace de email (revision-express)');
+
+    INSERT INTO logs_incidencias (tipo, severidad, descripcion, resuelta)
+    VALUES ('REVISION_EXPRESS_APROBADA', 'INFO',
+            format('[REVISION-EXPRESS] Diseño aprobado — pedido: %s', p_pedido_id),
+            true);
+
+    RETURN json_build_object('ok', true);
+END;
+$$;
+GRANT EXECUTE ON FUNCTION public.prodigy_aprobar_via_token(text, uuid) TO anon, authenticated;
+
+-- ── 4. RPC: solicitar cambios (atómico: valida + marca usado + registra) ──
+CREATE OR REPLACE FUNCTION public.prodigy_solicitar_cambios_via_token(
+    p_token text,
+    p_pedido_id uuid,
+    p_notas text
+)
+RETURNS json
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+    v_tok record;
+    v_rev int;
+    v_notas text;
+BEGIN
+    SELECT * INTO v_tok FROM revision_tokens
+    WHERE token = p_token AND pedido_id = p_pedido_id
+    FOR UPDATE;
+
+    IF NOT FOUND THEN
+        RETURN json_build_object('ok', false, 'error', 'invalido');
+    END IF;
+    IF v_tok.usado THEN
+        RETURN json_build_object('ok', false, 'error', 'usado');
+    END IF;
+    IF v_tok.expires_at < NOW() THEN
+        RETURN json_build_object('ok', false, 'error', 'expirado');
+    END IF;
+
+    v_notas := left(trim(COALESCE(p_notas, '')), 500);
+    IF v_notas = '' THEN
+        RETURN json_build_object('ok', false, 'error', 'notas_vacias');
+    END IF;
+
+    UPDATE revision_tokens SET usado = true, usado_at = NOW() WHERE id = v_tok.id;
+
+    SELECT COALESCE(revisiones_usadas, 0) + 1 INTO v_rev FROM pedidos_doctor WHERE id = p_pedido_id;
+
+    UPDATE pedidos_doctor SET
+        estado            = 'revision',
+        notas_cambios     = v_notas,
+        revisiones_usadas = v_rev
+    WHERE id = p_pedido_id;
+
+    INSERT INTO historial_diseno (pedido_id, tipo, actor, descripcion)
+    VALUES (p_pedido_id, 'CAMBIOS_EXPRESS', 'doctor_email',
+            format('Cambios solicitados vía email: %s', left(v_notas, 100)));
+
+    INSERT INTO logs_incidencias (tipo, severidad, descripcion, resuelta)
+    VALUES ('REVISION_EXPRESS_CAMBIOS', 'INFO',
+            format('[REVISION-EXPRESS] Cambios solicitados — pedido: %s | rev: %s/2', p_pedido_id, v_rev),
+            true);
+
+    RETURN json_build_object('ok', true, 'revisiones_usadas', v_rev);
+END;
+$$;
+GRANT EXECUTE ON FUNCTION public.prodigy_solicitar_cambios_via_token(text, uuid, text) TO anon, authenticated;
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- Sin sesión (anon key), esto ya NO debe devolver filas:
+--   SELECT * FROM revision_tokens; -- vía REST: GET /rest/v1/revision_tokens?select=*
+-- Debe devolver 0 filas o error de permisos.
+--
+-- El flujo normal debe seguir funcionando end-to-end tras actualizar
+-- revision-express.html (ver commit de código adjunto a este patch).
+-- ============================================================
+
+-- ############################################################
+-- # 10/12 — WALLET/CREDITO BUSCADO POR NOMBRE SUPLANTABLE
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Corregir IDOR en consulta de billetera/créditos del cliente
+-- Ejecutar en: Supabase Dashboard → SQL Editor
+--
+-- Hallazgo (auditoría 2026-07-03): app/client-panel.html:1167-1169 busca
+-- el saldo de crédito del doctor logueado así:
+--
+--   sb.from('creditos_cliente').select('*')
+--     .or(`nombre_doctor.eq.${_nombreDoctor}`)
+--
+-- donde `_nombreDoctor = user.user_metadata?.nombre || ...`. Dos
+-- problemas:
+--   1) user_metadata lo edita el propio usuario desde el navegador —
+--      cualquiera puede poner su nombre igual al de otro doctor y ver
+--      SU saldo/crédito/puntos.
+--   2) Aunque nadie lo explote a propósito, nombre_doctor no es único
+--      (dos doctores pueden compartir nombre) — riesgo real de mostrar
+--      el saldo de la persona equivocada por coincidencia.
+--
+-- Se agrega una RPC que resuelve la identidad del usuario SOLO a partir
+-- de sus propios pedidos ya creados (pedidos.doctor_uid = auth.uid(),
+-- protegido por RLS existente) — nunca confía en datos que el cliente
+-- pueda editar.
+-- ============================================================
+
+CREATE OR REPLACE FUNCTION public.prodigy_mi_wallet()
+RETURNS TABLE (saldo_cop int, puntos int, nivel text, total_gastado int)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+    v_whatsapp text;
+BEGIN
+    -- Resuelve el whatsapp real del usuario a partir de SUS PROPIOS
+    -- pedidos (doctor_uid = auth.uid(), no editable por el cliente)
+    SELECT p.whatsapp INTO v_whatsapp
+    FROM public.pedidos p
+    WHERE p.doctor_uid = auth.uid() AND p.whatsapp IS NOT NULL
+    ORDER BY p.created_at DESC
+    LIMIT 1;
+
+    IF v_whatsapp IS NULL THEN
+        RETURN;
+    END IF;
+
+    RETURN QUERY
+    SELECT c.saldo_cop, c.puntos, c.nivel, c.total_gastado
+    FROM public.creditos_cliente c
+    WHERE c.whatsapp = v_whatsapp
+    LIMIT 1;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.prodigy_mi_wallet() TO authenticated;
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- Como doctor A logueado, cambiar user_metadata.nombre para que
+-- coincida con el de otro doctor B (con saldo) y confirmar que
+-- prodigy_mi_wallet() sigue devolviendo el saldo de A (o vacío si A
+-- no tiene wallet), NUNCA el de B.
+-- ============================================================
+
+-- ############################################################
+-- # 11/12 — BUCKETS DE STORAGE PUBLICOS + PURGA INCOMPLETA
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Privatizar buckets clínicos + desactivar purga incompleta
+-- Ejecutar en: Supabase Dashboard → SQL Editor
+--
+-- Contexto (auditoría 2026-07-02 / 2026-07-03):
+-- 1) Los buckets 'diseno-archivos', 'evidencias-entrega',
+--    'prodigy-files', 'dental-cases' y 'pedidos-archivos' son
+--    PÚBLICOS. Las URLs se generan con getPublicUrl() en varios
+--    paneles → cualquiera con la ruta (predecible por convención de
+--    nombre/UUID) puede descargar escaneos STL, fotos de evidencia y
+--    documentos de clientes SIN autenticación.
+-- 2) El cron 'prodigy-purga-stl-semanal' (trigger-purga-stl-30dias.sql)
+--    solo limpia columnas en la tabla `pedidos` — NUNCA borra el
+--    archivo real en Storage (SQL no puede llamar la API de Storage
+--    directamente). Se reemplaza por una Cloudflare Function +
+--    GitHub Action que sí borra el archivo real antes de limpiar BD.
+-- ============================================================
+
+-- ── 1. Desactivar el cron incompleto (evita doble limpieza/carrera) ──
+--    La purga real ahora la hace functions/api/purgar-stl-storage.js
+--    vía GitHub Action semanal (ver .github/workflows/purga-stl-semanal.yml)
+SELECT cron.unschedule('prodigy-purga-stl-semanal')
+WHERE EXISTS (SELECT 1 FROM cron.job WHERE jobname = 'prodigy-purga-stl-semanal');
+
+-- ── 2. Privatizar bucket 'diseno-archivos' (STL de trabajo, más sensible) ──
+UPDATE storage.buckets SET public = false WHERE id = 'diseno-archivos';
+
+DROP POLICY IF EXISTS "diseno_archivos_staff_read"   ON storage.objects;
+DROP POLICY IF EXISTS "diseno_archivos_staff_write"  ON storage.objects;
+DROP POLICY IF EXISTS "diseno_archivos_staff_delete" ON storage.objects;
+
+-- Lectura: staff (admin/operario) vía app_metadata.role — NUNCA user_metadata
+CREATE POLICY "diseno_archivos_staff_read" ON storage.objects
+    FOR SELECT TO authenticated
+    USING (
+        bucket_id = 'diseno-archivos'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+        )
+    );
+
+CREATE POLICY "diseno_archivos_staff_write" ON storage.objects
+    FOR INSERT TO authenticated
+    WITH CHECK (
+        bucket_id = 'diseno-archivos'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+        )
+    );
+
+CREATE POLICY "diseno_archivos_staff_delete" ON storage.objects
+    FOR DELETE TO authenticated
+    USING (
+        bucket_id = 'diseno-archivos'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+        )
+    );
+
+-- ── 3. Privatizar bucket 'evidencias-entrega' (firmas/fotos de entrega) ──
+UPDATE storage.buckets SET public = false WHERE id = 'evidencias-entrega';
+
+DROP POLICY IF EXISTS "evidencias_staff_read"   ON storage.objects;
+DROP POLICY IF EXISTS "evidencias_staff_write"  ON storage.objects;
+
+CREATE POLICY "evidencias_staff_read" ON storage.objects
+    FOR SELECT TO authenticated
+    USING (
+        bucket_id = 'evidencias-entrega'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff', 'mensajero')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+        )
+    );
+
+CREATE POLICY "evidencias_staff_write" ON storage.objects
+    FOR INSERT TO authenticated
+    WITH CHECK (
+        bucket_id = 'evidencias-entrega'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff', 'mensajero')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+        )
+    );
+
+-- ── 4. Privatizar bucket 'prodigy-files' (archivos de clientes/doctores) ──
+UPDATE storage.buckets SET public = false WHERE id = 'prodigy-files';
+
+DROP POLICY IF EXISTS "prodigy_files_staff_read"  ON storage.objects;
+DROP POLICY IF EXISTS "prodigy_files_owner_read"  ON storage.objects;
+DROP POLICY IF EXISTS "prodigy_files_write"       ON storage.objects;
+
+-- Lectura: staff siempre, o el propio doctor autenticado si la ruta
+-- del archivo empieza con su propio user_id (convención: {user_id}/...)
+CREATE POLICY "prodigy_files_staff_read" ON storage.objects
+    FOR SELECT TO authenticated
+    USING (
+        bucket_id = 'prodigy-files'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+            OR (storage.foldername(name))[1] = auth.uid()::text
+        )
+    );
+
+CREATE POLICY "prodigy_files_write" ON storage.objects
+    FOR INSERT TO authenticated
+    WITH CHECK (
+        bucket_id = 'prodigy-files'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+            OR (storage.foldername(name))[1] = auth.uid()::text
+        )
+    );
+
+-- ── 5. Privatizar bucket 'dental-cases' (subida masiva operario-diseno) ──
+UPDATE storage.buckets SET public = false WHERE id = 'dental-cases';
+
+DROP POLICY IF EXISTS "dental_cases_staff_read"  ON storage.objects;
+DROP POLICY IF EXISTS "dental_cases_staff_write" ON storage.objects;
+
+CREATE POLICY "dental_cases_staff_read" ON storage.objects
+    FOR SELECT TO authenticated
+    USING (
+        bucket_id = 'dental-cases'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+        )
+    );
+
+CREATE POLICY "dental_cases_staff_write" ON storage.objects
+    FOR INSERT TO authenticated
+    WITH CHECK (
+        bucket_id = 'dental-cases'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+        )
+    );
+
+-- ── 6. Privatizar bucket 'pedidos-archivos' (flujo-diseno.html — subida de doctores) ──
+-- ⚠️ A diferencia de los demás, este bucket recibe uploads de doctores/clientes
+--    SIN LOGIN OBLIGATORIO (js/flujo-uploader.js usa uid='anon' si no hay sesión).
+--    Se replica el patrón de scanner-uploads: INSERT público restringido por
+--    extensión, lectura/borrado solo para staff. No se puede exigir
+--    app_metadata.role en el INSERT porque el usuario puede ser anon.
+UPDATE storage.buckets SET public = false WHERE id = 'pedidos-archivos';
+
+DROP POLICY IF EXISTS "pedidos_archivos_public_upload" ON storage.objects;
+DROP POLICY IF EXISTS "pedidos_archivos_staff_read"     ON storage.objects;
+DROP POLICY IF EXISTS "pedidos_archivos_staff_delete"   ON storage.objects;
+
+CREATE POLICY "pedidos_archivos_public_upload" ON storage.objects
+    FOR INSERT TO anon, authenticated
+    WITH CHECK (
+        bucket_id = 'pedidos-archivos'
+        AND name ~* '\.(stl|ply|obj|dcm|zip|jpg|jpeg|png|pdf|3oxz|constructionfile)$'
+    );
+
+CREATE POLICY "pedidos_archivos_staff_read" ON storage.objects
+    FOR SELECT TO authenticated
+    USING (
+        bucket_id = 'pedidos-archivos'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+            OR (storage.foldername(name))[1] = auth.uid()::text
+        )
+    );
+
+-- js/flujo-uploader.js usa uid='anon' si el doctor no inició sesión (self-service).
+-- El propio uploader necesita firmar su URL inmediatamente después de subir
+-- (para incluirla en el mensaje de WhatsApp que arma el flujo). Se limita el
+-- acceso anon SOLO a la carpeta compartida 'anon/' — las carpetas de usuarios
+-- con sesión ({uid}/...) quedan protegidas por la policy anterior, que exige
+-- authenticated. Antes de este patch TODO el bucket era público, así que esto
+-- sigue siendo una mejora neta (superficie reducida a una sola carpeta).
+DROP POLICY IF EXISTS "pedidos_archivos_anon_read" ON storage.objects;
+CREATE POLICY "pedidos_archivos_anon_read" ON storage.objects
+    FOR SELECT TO anon
+    USING (
+        bucket_id = 'pedidos-archivos'
+        AND (storage.foldername(name))[1] = 'anon'
+    );
+
+CREATE POLICY "pedidos_archivos_staff_delete" ON storage.objects
+    FOR DELETE TO authenticated
+    USING (
+        bucket_id = 'pedidos-archivos'
+        AND (
+            (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin', 'operario', 'staff')
+            OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+        )
+    );
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- SELECT id, public FROM storage.buckets WHERE id IN ('diseno-archivos','evidencias-entrega','prodigy-files','dental-cases','pedidos-archivos','scanner-uploads');
+--   → todos deben mostrar public = false
+-- SELECT * FROM cron.job WHERE jobname = 'prodigy-purga-stl-semanal';
+--   → debe devolver 0 filas (ya desactivado)
+
+-- ============================================================
+-- ⚠️ IMPORTANTE — orden de despliegue:
+-- Este SQL debe ejecutarse DESPUÉS de desplegar el código que
+-- reemplaza getPublicUrl() por createSignedUrl() en los paneles
+-- (operario-diseno.html, operator-panel.html, revision-diseno.html,
+-- taller.html, mensajero.html, client-panel.html). Si se ejecuta
+-- antes, esos paneles mostrarán enlaces rotos hasta el siguiente
+-- deploy de Cloudflare Pages.
+-- ============================================================
+
+-- ############################################################
+-- # 12/12 — INDICES FALTANTES EN PEDIDOS (rendimiento)
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Índices faltantes en `pedidos`
+-- Ejecutar en: Supabase Dashboard → SQL Editor
+--
+-- Hallazgo (auditoría rendimiento 2026-07-03): 3 columnas muy
+-- consultadas en paneles activos no tienen índice de soporte,
+-- forzando sequential scan en una tabla que crece con cada pedido:
+--
+-- 1) pedidos.email — client-panel.html:1151
+--    .eq('email', email).order('created_at', ...)
+-- 2) pedidos.hash_seguridad — client-panel.html:1121
+--    .eq('hash_seguridad', token)  (login por link mágico)
+-- 3) pedidos.created_at — panel-interno-operaciones.html:1607,3760
+--    .order('created_at', ...) / .gte('created_at', desde) SIN filtro
+--    (el único índice existente que toca created_at es un compuesto
+--    canal_origen+negocio+created_at, insuficiente para ORDER BY solo)
+-- ============================================================
+
+CREATE INDEX IF NOT EXISTS idx_pedidos_email
+    ON public.pedidos (email);
+
+CREATE INDEX IF NOT EXISTS idx_pedidos_hash_seguridad
+    ON public.pedidos (hash_seguridad)
+    WHERE hash_seguridad IS NOT NULL;
+
+CREATE INDEX IF NOT EXISTS idx_pedidos_created_at
+    ON public.pedidos (created_at DESC);
+
+-- ── VERIFICACIÓN ─────────────────────────────────────────────────
+-- SELECT indexname FROM pg_indexes WHERE tablename = 'pedidos' AND indexname LIKE 'idx_pedidos_%';
+--   → debe incluir idx_pedidos_email, idx_pedidos_hash_seguridad, idx_pedidos_created_at
+-- EXPLAIN ANALYZE SELECT * FROM pedidos WHERE email = 'test@test.com' ORDER BY created_at DESC;
+--   → debe mostrar "Index Scan" en vez de "Seq Scan"
+
+-- ================================================================
+-- FIN DEL SQL MAESTRO — 12/12 patches aplicados
+-- ================================================================
+SELECT 'SQL MAESTRO 2026-07-04 aplicado completo' AS status;
