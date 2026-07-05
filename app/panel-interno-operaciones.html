@@ -3131,7 +3131,7 @@ let _resolverPendienteId = null;
 async function cargarTorre() {
     // Pedidos urgentes + flujo para desglose por departamento
     const { data: pedidos } = await sb.from('pedidos')
-        .select('id, codigo, nombre_paciente, servicio, estado_operativo, created_at, flujo')
+        .select('id, codigo, nombre_paciente, tipo_trabajo, estado_operativo, created_at, flujo')
         .not('estado_operativo', 'in', '("ENTREGADO","CANCELADO","QA_APROBADO")')
         .order('created_at', { ascending: true })
         .limit(200);
@@ -3186,7 +3186,7 @@ async function cargarTorre() {
             <td><span style="font-size:.72rem;font-weight:800;color:${color}">${urgencia}</span></td>
             <td style="font-family:monospace;font-size:.78rem">${esc(p.codigo || p.id.slice(0,8))}</td>
             <td>${esc(p.nombre_paciente || '—')}</td>
-            <td style="font-size:.78rem">${esc(p.servicio || '—')}</td>
+            <td style="font-size:.78rem">${esc(p.tipo_trabajo || '—')}</td>
             <td><span style="font-size:.7rem;color:#94a3b8">${esc(p.estado_operativo || '—')}</span></td>
             <td style="color:${color};font-weight:700">${Math.floor(mins)} min</td>
             <td><button type="button" onclick="resolverUrgente('${p.id}')" style="padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#fff;font-size:.72rem;cursor:pointer">Gestionar</button></td>
@@ -3757,7 +3757,7 @@ async function cargarMetricasFinanzas() {
 
     try {
         const { data: pedidos } = await sb.from('pedidos')
-            .select('id,estado,estado_operativo,pago_estado,precio_total,created_at,fecha_entrega_estimada,servicio,nombre_doctor,timestamp_validacion')
+            .select('id,estado,estado_operativo,pago_estado,precio_total,created_at,fecha_entrega,tipo_trabajo,nombre_doctor,timestamp_validacion')
             .gte('created_at', desde)
             .not('estado','in','("cancelado","CANCELADO")');
 
@@ -3825,7 +3825,7 @@ async function cargarMetricasFinanzas() {
         if (entregados.length > 0) {
             const dias = entregados.map(p => {
                 const ref = p.timestamp_validacion || p.created_at;
-                return (new Date(p.fecha_entrega_estimada || Date.now()) - new Date(ref)) / 86400000;
+                return (new Date(p.fecha_entrega || Date.now()) - new Date(ref)) / 86400000;
             }).filter(d => d > 0);
             const prom = dias.length > 0 ? (dias.reduce((a,b) => a+b,0) / dias.length).toFixed(1) : '—';
             const min  = dias.length > 0 ? Math.min(...dias).toFixed(0) : '—';
@@ -3848,7 +3848,7 @@ async function cargarMetricasFinanzas() {
         // Top servicios por ingreso
         const porServicio = {};
         pedidos.forEach(p => {
-            const k = p.servicio || 'Sin servicio';
+            const k = p.tipo_trabajo || 'Sin servicio';
             if (!porServicio[k]) porServicio[k] = { total: 0, n: 0 };
             porServicio[k].total += Number(p.precio_total) || 0;
             porServicio[k].n++;
@@ -3908,7 +3908,7 @@ const TIPO_LBL = {fresado:'Fresado / Lab', impresion:'Impresión 3D', fresado_in
 
 async function cargarFabricacion() {
   const { data: todos } = await sbFab.from('pedidos')
-    .select('id,codigo,nombre_paciente,servicio,email,fabricacion_solicitada,fabricacion_pagada,fabricacion_tipo,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_at,cotizacion_fab_nota,pais,stl_urls,html_diseno_url,departamento_actual')
+    .select('id,codigo,nombre_paciente,tipo_trabajo,email,fabricacion_solicitada,fabricacion_pagada,fabricacion_tipo,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_at,cotizacion_fab_nota,pais,stl_urls,html_diseno_url,departamento_actual')
     .eq('fabricacion_solicitada', true)
     .order('created_at', {ascending: false})
     .limit(100);
@@ -3933,7 +3933,7 @@ async function cargarFabricacion() {
         <div>
           <div style="font-size:.7rem;color:#fb923c;font-weight:800;text-transform:uppercase;margin-bottom:3px;">${escF(tipoLbl)}${esIntl?'  🌎 Internacional':''}</div>
           <div style="font-size:.9rem;font-weight:700;">#${escF(p.codigo||p.id.slice(0,8))} — ${escF(p.nombre_paciente||'Sin nombre')}</div>
-          <div style="font-size:.72rem;color:var(--muted);margin-top:2px;">${escF(p.servicio||'—')} · ${escF(p.email||'sin email')}</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:2px;">${escF(p.tipo_trabajo||'—')} · ${escF(p.email||'sin email')}</div>
         </div>
         <div style="text-align:right;">
           ${stlCount ? `<span style="font-size:.7rem;background:rgba(0,210,255,.1);color:#00d2ff;border-radius:6px;padding:2px 8px;">${stlCount} STL</span>` : ''}
@@ -4168,7 +4168,7 @@ function exportarPedidosCSV() {
     const headers = ['Código','Doctor','Paciente','Servicio','Material','Estado','Pago','Total COP','Saldo','Operativo','Creación','Actualización'];
     const rows = data.map(p => [
         esc(p.codigo), esc(p.nombre_doctor||p.nombre_cliente), esc(p.nombre_paciente),
-        esc(p.servicio), esc(p.material), esc(p.estado), esc(p.pago_estado),
+        esc(p.tipo_trabajo), esc(p.material), esc(p.estado), esc(p.pago_estado),
         fmtCOP(p.precio_total), fmtCOP(p.saldo_pendiente_monto||0),
         esc(p.estado_operativo), fmtF(p.created_at), fmtF(p.updated_at)
     ]);

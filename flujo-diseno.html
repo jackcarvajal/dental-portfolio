@@ -2069,9 +2069,9 @@ const lineWompi = document.getElementById('line-wompi');
                     const _esCombo = !!_subData.combo;
                     _sb.from('pedidos').insert([{
                         codigo:                STATE.ordenId,
-                        doctor:                STATE.nombreCliente,
-                        whatsapp:              STATE.whatsappCliente,
-                        servicio:              STATE.subtipoNombre || STATE.categoriaNombre,
+                        nombre_doctor:         STATE.nombreCliente,
+                        telefono:              STATE.whatsappCliente,
+                        tipo_trabajo:          STATE.subtipoNombre || STATE.categoriaNombre,
                         material:              STATE.categoriaKey,
                         submaterial:           STATE.subtipoId,
                         cantidad:              cantidad,
@@ -2079,18 +2079,16 @@ const lineWompi = document.getElementById('line-wompi');
                         // vía RPC prodigy_usar_cupon_credito) — antes el total guardado en BD
                         // no reflejaba el cupón, solo aparecía en el texto de WhatsApp, y
                         // el staff tenía que ajustarlo manualmente al facturar.
-                        total: (() => {
+                        precio_total: (() => {
                             const base = typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total;
                             const desc = window._cuponCreditoActivo?.monto || 0;
                             return Math.max(0, (base||0) - desc);
                         })(),
                         estado:                'Borrador',
-                        link_stl:              STATE.linkSTL,
-                        nonce:                 _nonce,
+                        stl_url:               STATE.linkSTL,
+                        hash_seguridad:        _nonce,
                         flujo:                 'diseno',
                         negocio:               'prodigy',
-                        software_diseno:       document.getElementById('software_diseno')?.value || 'exocad',
-                        fuente_pago:           window.location.hostname + window.location.pathname,
                         terminos_aceptados_at: new Date().toISOString(),
                         user_agent:            navigator.userAgent.slice(0, 250),
                         seguro_garantia_activo: false,

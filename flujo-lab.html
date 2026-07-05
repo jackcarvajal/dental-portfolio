@@ -976,20 +976,21 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
     if (_sb) {
       _sb.from('pedidos').insert([{
         codigo:    ordenId,
-        doctor:    doctor,
-        whatsapp:  tel || null,
-        servicio:  lines.length ? lines.map(function(l){ return l.split(' — ')[0]; }).join(', ') : 'Lab Full',
+        nombre_doctor: doctor,
+        telefono:  tel || null,
+        tipo_trabajo: lines.length ? lines.map(function(l){ return l.split(' — ')[0]; }).join(', ') : 'Lab Full',
         material:  'lab',
         cantidad:  Object.keys(cart).reduce(function(s,id){ return s + cart[id].qty; }, 0) || 1,
-        total:     total,
+        precio_total: total,
         estado:    'Borrador',
         fecha_entrega: fecha || null,
-        link_stl:  linkSTL || null,
-        nonce:     nonce,
+        stl_url:   linkSTL || null,
+        hash_seguridad: nonce,
         flujo:     'lab',
+        negocio:   'prodigy',
         terminos_aceptados_at: new Date().toISOString(),
         user_agent: navigator.userAgent.slice(0, 250)
-      }]);
+      }]).then(function(r){ if (r.error) console.warn('[PRODIGY] Pedido lab no guardado:', r.error.message); });
     }
   } catch(_e) { /* silencioso */ }
 

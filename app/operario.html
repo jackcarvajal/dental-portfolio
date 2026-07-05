@@ -438,7 +438,7 @@ async function recargar() {
   for (const dept of _myDepts) {
     const cfg = DEPTS[dept];
     const { data } = await sb.from('pedidos')
-      .select('id,codigo,nombre_paciente,servicio,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,observaciones,html_diseno_url,stl_urls,construinfo_url,cambios_count,fabricacion_solicitada,fabricacion_pagada,servicios_pagados,departamento_actual,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_nota,pais')
+      .select('id,codigo,nombre_paciente,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,html_diseno_url,stl_urls,construinfo_url,cambios_count,fabricacion_solicitada,fabricacion_pagada,servicios_pagados,departamento_actual,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_nota,pais')
       .in('flujo', cfg.flujos)
       .not('estado','in','("cancelado","CANCELADO")')
       .order('created_at',{ascending:false})
@@ -452,7 +452,7 @@ async function recargar() {
     if (!_myDepts.includes(dept)) continue;
     const tiposFab = dept === 'fresado' ? ['fresado','fresado_internacional','lab'] : ['impresion','impresion_internacional'];
     const { data: comp } = await sb.from('pedidos')
-      .select('id,codigo,nombre_paciente,servicio,cotizacion_fab_monto,cotizacion_fab_nota,html_diseno_url')
+      .select('id,codigo,nombre_paciente,tipo_trabajo,cotizacion_fab_monto,cotizacion_fab_nota,html_diseno_url')
       .eq('cotizacion_fab_estado','pago_enviado')
       .eq('fabricacion_pagada', false)
       .in('fabricacion_tipo', tiposFab)
@@ -502,7 +502,7 @@ function renderDept(dept) {
         ${pendComp.map(p => `<div style="background:rgba(0,0,0,.2);border-radius:9px;padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           <div style="flex:1;min-width:160px;">
             <div style="font-size:.78rem;font-weight:700;">#${esc(p.codigo||p.id.slice(0,8))} — ${esc(p.nombre_paciente||'')}</div>
-            <div style="font-size:.7rem;color:var(--muted);">${esc(p.cotizacion_fab_nota||p.servicio||'—')} · <strong style="color:#fbbf24;">${fmtCOP(p.cotizacion_fab_monto)}</strong></div>
+            <div style="font-size:.7rem;color:var(--muted);">${esc(p.cotizacion_fab_nota||p.tipo_trabajo||'—')} · <strong style="color:#fbbf24;">${fmtCOP(p.cotizacion_fab_monto)}</strong></div>
           </div>
           ${p.html_diseno_url?`<a href="${location.origin}/revision-diseno?id=${esc(p.id)}" target="_blank" rel="noopener noreferrer" class="btn btn-dis" style="font-size:.65rem;padding:4px 9px;"><i class="fas fa-cube"></i> Ver diseño</a>`:''}
           <button type="button" class="btn btn-grn" style="font-size:.68rem;padding:5px 11px;" onclick="verificarPagoComp('${esc(p.id)}','${dept}')">
@@ -568,10 +568,10 @@ function cardHTML(p, colId, dept) {
     <div class="caso-id">#${esc(p.codigo)||p.id.slice(0,8)}</div>
     <div class="caso-nombre">${esc(p.nombre_paciente)||'Sin nombre'}</div>
     <div class="caso-meta">
-      ${esc(p.servicio)||'—'}
+      ${esc(p.tipo_trabajo)||'—'}
       ${p.material?'<br>'+esc(p.material):''}
       ${p.color_vita?'<br>Color: '+esc(p.color_vita):''}
-      ${p.observaciones?'<br><span style="color:#D4AF37;">📝 '+esc(p.observaciones.slice(0,60))+'</span>':''}
+      ${p.notas_cambios?'<br><span style="color:#D4AF37;">📝 '+esc(p.notas_cambios.slice(0,60))+'</span>':''}
     </div>
     <div class="caso-actions">${actions}</div>
     ${p.html_diseno_url && dept !== 'diseno' ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
@@ -617,16 +617,16 @@ async function avanzar(id, nuevoEstado, dept) {
 
   /* Notificaciones automáticas por hito */
   try {
-    const { data: p } = await sb.from('pedidos').select('codigo,email,servicio,nombre_doctor,whatsapp_doctor,pais').eq('id',id).single();
+    const { data: p } = await sb.from('pedidos').select('codigo,email,tipo_trabajo,nombre_doctor,telefono,pais').eq('id',id).single();
     const pushUrl = SB_URL+'/functions/v1/send-push';
     const waUrl   = '/api/wa-auto';
     const heads   = {'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON};
     const hCT     = {'Content-Type':'application/json'};
 
     const _enviarWA = (estado) => {
-      if (!p?.whatsapp_doctor) return;
+      if (!p?.telefono) return;
       fetch(waUrl, { method:'POST', headers:hCT, body:JSON.stringify({
-        whatsapp:p.whatsapp_doctor, nuevo_estado:estado,
+        whatsapp:p.telefono, nuevo_estado:estado,
         codigo:p.codigo, nombre_doctor:p.nombre_doctor,
         pais:p.pais || 'CO', pedido_id: id
       })}).catch(()=>{});
