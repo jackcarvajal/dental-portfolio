@@ -26,11 +26,15 @@ Sin tocar (bajo riesgo, no aplica): `pruebas-carga.html` (herramienta interna de
 
 ---
 
-## 🔴 URGENTE — Ejecutar hotfix: RPCs de revision-diseno usaban columnas inexistentes
+## ✅ VERIFICADO EN VIVO (2026-07-05) — revision-diseno.html funciona de punta a punta
 
-`sql/patch-revision-diseno-hotfix-columnas-2026.sql`. Al probar en vivo (2026-07-05) se detectó que `prodigy_revision_diseno_get()` (patch 17) usaba `p.servicio` y `p.flujo` — columnas que **no existen** en la tabla real `pedidos` (heredado de un bug preexistente en `revision-diseno.html` anterior a esta sesión — PL/pgSQL no valida columnas hasta ejecutar, así que `CREATE FUNCTION` no lo detectó). También `prodigy_rd_solicitar_cambio()` (patch 18) usaba `observaciones`, que tampoco existe — el campo real es `notas_cambios`. **Mientras no se ejecute este hotfix, CUALQUIER intento real de abrir un link de revisión o solicitar un cambio falla con error de Postgres.** Ya corregido en código (los 2 patches originales y el MAESTRO) y en este hotfix para producción. **Pendiente de ejecutar en Supabase — máxima prioridad.**
+Se probó con un pedido de prueba real (`TEST-AUDIT-001`, ya borrado) el flujo completo: cargar el link, solicitar cambio, aprobar diseño. En el camino se encontraron y corrigieron **3 bugs preexistentes** (no relacionados con seguridad, existían desde antes de esta sesión, solo salieron a la luz al probar en vivo por primera vez):
 
-**Después de ejecutar, probar en vivo** un caso real en estado `REVISION_CLIENTE` (o crear uno de prueba) — abrir `revision-diseno.html?id=...`, confirmar que carga sin error, solicitar un cambio de prueba y confirmar que el flujo completo (incluida la notificación al equipo vía `logs_incidencias`) funciona.
+1. `sql/patch-revision-diseno-hotfix-columnas-2026.sql` — `prodigy_revision_diseno_get()`/`prodigy_rd_solicitar_cambio()` usaban `servicio`/`flujo`/`observaciones`, columnas que no existen (reales: `tipo_trabajo`, ninguna para flujo, `notas_cambios`).
+2. `sql/patch-notif-pedido-hotfix-columnas-2026.sql` — el trigger `prodigy_notif_pedido()` (se ejecuta en CADA insert/update de `pedidos`, no solo en revisión de diseño) usaba `departamento`/`servicio`/`urgente`, ninguna existe (reales: `departamento_actual`, `tipo_trabajo`; `urgente` nunca se persistió). **Esto bloqueaba la creación de CUALQUIER pedido nuevo en todo el sistema** hasta que se corrigió.
+3. `sql/patch-trigger-restrict-vs-rpc-hotfix-2026.sql` — el trigger `prodigy_restrict_client_pedido_updates()` bloqueaba `estado_operativo` incluso para las RPCs seguras (SECURITY DEFINER no cambia el JWT que ve el trigger); se agregó una excepción puntual vía `set_config` local a la transacción. De paso se corrigió otra columna inexistente (`precio_saldo` → `saldo_pendiente_monto`) en el mismo trigger.
+
+Los 3 hotfixes ya están **ejecutados y confirmados en producción** (Alejandro los aplicó y probó en vivo — `prodigy_rd_aprobar()` devolvió `{"ok":true,...}`).
 
 ---
 
