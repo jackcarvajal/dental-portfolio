@@ -46,6 +46,10 @@ CREATE INDEX IF NOT EXISTS idx_pedidos_flujo ON public.pedidos(flujo);
 ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS nombre_cliente text;
 ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS nota_calidad text;
 
+-- app/mensajero.html (panel de mensajero/despachos) también referencia
+-- direccion, que tampoco existe — necesaria para la ruta de entrega.
+ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS direccion text;
+
 -- ── VERIFICACIÓN ─────────────────────────────────────────────────
 -- SELECT column_name FROM information_schema.columns
 -- WHERE table_name='pedidos' AND column_name='flujo';

@@ -380,7 +380,7 @@ async function cargarCasos() {
   const { data, error } = await sb.from('pedidos')
     // Operario NO ve: nombre_paciente, email, whatsapp real del cliente — solo código interno
     // wa_op: número enmascarado solo para notificaciones internas de operario
-    .select('id,codigo,servicio,material,color_vita,estado,estado_operativo,pago_estado,precio_total,created_at,flujo,link_diseno,observaciones,revisiones_usadas,stl_ruta,operario_codigo,whatsapp,pais,nombre_doctor')
+    .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,pago_estado,precio_total,created_at,flujo,link_diseno,notas_cambios,revisiones_usadas,stl_ruta,operario_codigo,telefono,pais,nombre_doctor')
     .eq('flujo','diseno')
     .not('estado','in','("cancelado","CANCELADO")')
     .order('created_at',{ascending:false})
@@ -463,10 +463,10 @@ function cardHTML(p, col) {
     <div class="caso-nombre">Caso ${escH(p.codigo||p.id?.slice(0,8)||'—')}</div>
     ${p.nombre_doctor?`<div style="font-size:.72rem;font-weight:700;color:var(--cyan);margin:2px 0;">Dr. ${escH(p.nombre_doctor)}</div>`:''}
     <div class="caso-meta">
-      ${escH(p.servicio)||'—'}
+      ${escH(p.tipo_trabajo)||'—'}
       ${p.material?'<br>Material: '+escH(p.material):''}
       ${p.color_vita?'<br>Color: '+escH(p.color_vita):''}
-      ${p.observaciones?'<br><span style="color:var(--gold)">📝 '+escH(p.observaciones.slice(0,60))+'</span>':''}
+      ${p.notas_cambios?'<br><span style="color:var(--gold)">📝 '+escH(p.notas_cambios.slice(0,60))+'</span>':''}
     </div>
     <div class="caso-actions">${actions}</div>
   </div>`;
@@ -585,9 +585,9 @@ async function notificarWADiseno(caso, estado) {
         nuevo_estado:  estado,
         codigo:        caso.codigo,
         nombre_doctor: caso.nombre_doctor || caso.doctor,
-        whatsapp:      caso.whatsapp,
+        whatsapp:      caso.telefono,
         pais:          caso.pais,
-        servicio:      caso.servicio,
+        servicio:      caso.tipo_trabajo,
         recibo_url:    recibo_url,
       }),
     });
@@ -607,7 +607,7 @@ function abrirQA(id, codigo) {
   const caso = _casos.find(p => p.id === id) || {};
   document.getElementById('qa-pedido-id').value    = id;
   document.getElementById('qa-codigo').value       = codigo;
-  document.getElementById('qa-wa-cliente').value   = caso.whatsapp || '';
+  document.getElementById('qa-wa-cliente').value   = caso.telefono || '';
   document.getElementById('qa-revisiones').value   = caso.revisiones_usadas || 0;
   document.getElementById('qa-caso-sub').textContent = 'Caso #' + codigo;
   document.getElementById('qa-notas').value   = '';
@@ -681,7 +681,7 @@ async function guardarQA(resultado) {
 
   const updates = { estado_operativo: resultado, revisiones_usadas: revision };
   if (link)    updates.link_diseno   = link;
-  if (notas)   updates.observaciones = notas;
+  if (notas)   updates.notas_cambios = notas;
   if (stlRuta) updates.stl_ruta      = stlRuta;
   if (resultado === 'DISENO_APROBADO') {
     updates.estado       = 'DISENO_FINALIZADO';
@@ -698,9 +698,9 @@ async function guardarQA(resultado) {
     const caso = _casos.find(p => p.id === id) || {};
     _handoffPendiente = { id, codigo, caso };
     document.getElementById('modal-hd-codigo').textContent =
-      `Caso #${codigo} — ${caso.servicio || ''} · ${caso.material || ''}`;
+      `Caso #${codigo} — ${caso.tipo_trabajo || ''} · ${caso.material || ''}`;
     // Preselección visual según servicio
-    const svc = (caso.servicio || '').toLowerCase();
+    const svc = (caso.tipo_trabajo || '').toLowerCase();
     document.querySelectorAll('.hd-dept-btn').forEach(b => b.style.outline = '');
     if (svc.includes('fresa') || svc.includes('corona') || svc.includes('puente') || svc.includes('zirconia')) {
       document.querySelector('[onclick*="fresado"]').style.outline = '2px solid #00d2ff';
@@ -760,7 +760,7 @@ async function confirmarHandoff(dept) {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON },
         body: JSON.stringify({
           titulo: `📥 Nuevo caso para ${lbl} — #${codigo}`,
-          cuerpo:  `${caso.servicio || 'Caso'} · ${caso.material || ''} · Diseño aprobado y listo para producción.`,
+          cuerpo:  `${caso.tipo_trabajo || 'Caso'} · ${caso.material || ''} · Diseño aprobado y listo para producción.`,
           url:     '/app/operator-panel.html',
         }),
       });
@@ -768,7 +768,7 @@ async function confirmarHandoff(dept) {
   }
 
   // Notificar al doctor
-  if (caso.email || caso.whatsapp) {
+  if (caso.email || caso.telefono) {
     try {
       await fetch(PUSH_URL, {
         method: 'POST',
@@ -999,7 +999,7 @@ function _renderBulkDiseno() {
     const ok = item.mbOk&&item.caso&&item.status==='pending';
     const color = !item.mbOk?'#ef4444':!item.caso?'#fbbf24':item.status==='done'?'#00FF41':item.status==='uploading'?'#00d2ff':'#94a3b8';
     const icon  = !item.mbOk?'🚫':!item.caso?'⚠️':item.status==='done'?'✅':item.status==='uploading'?'⬆':'📄';
-    const label = !item.mbOk?item.mbMsg:!item.caso?`ID "${item.caseId}" no encontrado`:item.status==='done'?'Subido':item.caso.codigo+' — '+(item.caso.servicio||'');
+    const label = !item.mbOk?item.mbMsg:!item.caso?`ID "${item.caseId}" no encontrado`:item.status==='done'?'Subido':item.caso.codigo+' — '+(item.caso.tipo_trabajo||'');
     return `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;">
       <span style="font-size:1.1rem;">${icon}</span>
       <div style="flex:1;min-width:0;"><div style="font-size:.75rem;font-weight:700;color:#e2e8f0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.file.name}</div><div style="font-size:.65rem;color:${color};margin-top:1px;">${label}</div></div>

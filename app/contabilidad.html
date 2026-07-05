@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -749,7 +749,7 @@ function switchTab(id, el) {
 /* ── Por confirmar (pago_subido) ───────────────────────────────────── */
 async function cargarPorConfirmar() {
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,precio_total,pago_estado,comprobante_pago_url,created_at,email,whatsapp')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,precio_total,pago_estado,comprobante_pago_url,created_at,email,telefono')
         .eq('pago_estado', 'pago_subido')
         .order('created_at', { ascending: false });
 
@@ -786,7 +786,7 @@ async function cargarPorConfirmar() {
 /* ── Saldos contra entrega ─────────────────────────────────────────── */
 async function cargarSaldos() {
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,saldo_pendiente_monto,estado_operativo,nota_calidad,comprobante_saldo_url,pago_estado')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,saldo_pendiente_monto,estado_operativo,nota_calidad,comprobante_saldo_url,pago_estado')
         .gt('saldo_pendiente_monto', 0)
         .order('created_at', { ascending: false });
 
@@ -832,7 +832,7 @@ async function cargarHistorial() {
     const hastaISO = new Date(hasta + 'T23:59:59').toISOString();
 
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,precio_total,saldo_pendiente_monto,modalidad_cobro,pago_estado,updated_at')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,precio_total,saldo_pendiente_monto,modalidad_cobro,pago_estado,updated_at')
         .eq('pago_estado', 'pago_confirmado')
         .gte('updated_at', desdeISO)
         .lte('updated_at', hastaISO)
@@ -902,7 +902,7 @@ async function cargarHistorial() {
 /* ── Modal comprobante ─────────────────────────────────────────────── */
 async function abrirModalComp(pedidoId) {
     const { data: p } = await sb.from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,precio_total,comprobante_pago_url,email,whatsapp')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,precio_total,comprobante_pago_url,email,telefono')
         .eq('id', pedidoId).single();
     if (!p) return;
 
@@ -944,7 +944,7 @@ async function confirmarPago() {
 
     // Verificar si requiere factura o si es cliente internacional
     const { data: pCheck } = await sb.from('pedidos')
-        .select('requiere_factura,factura_estado,pais,codigo,whatsapp')
+        .select('requiere_factura,factura_estado,pais,codigo,telefono')
         .eq('id', pedidoId).single();
     const esIntl         = pCheck?.pais && pCheck.pais !== 'CO';
     const activarFactura = !esIntl && pCheck?.requiere_factura && pCheck?.factura_estado === 'no_requerida';
@@ -968,8 +968,8 @@ async function confirmarPago() {
     } catch(_) {}
 
     // Notificar al doctor
-    const { data: p } = await sb.from('pedidos').select('email,codigo,whatsapp,precio_total').eq('id', pedidoId).single();
-    const wa = (p?.whatsapp || '').replace(/\D/g,'');
+    const { data: p } = await sb.from('pedidos').select('email,codigo,telefono,precio_total').eq('id', pedidoId).single();
+    const wa = (p?.telefono || '').replace(/\D/g,'');
     if (wa) {
         const reciboUrl = `https://prodigylabdental.com/recibo-caso?id=${p?.codigo || pedidoId}`;
         const txt = encodeURIComponent(
@@ -1016,7 +1016,7 @@ async function rechazarPago() {
 
     if (error) { toast('Error: ' + error.message, 'err'); return; }
 
-    const { data: p } = await sb.from('pedidos').select('codigo,whatsapp').eq('id', pedidoId).single();
+    const { data: p } = await sb.from('pedidos').select('codigo,telefono').eq('id', pedidoId).single();
     const wa = (p?.whatsapp || '').replace(/\D/g,'');
     if (wa) {
         const txt = encodeURIComponent(
@@ -1071,7 +1071,7 @@ function switchFTab(nombre) {
 
 async function cargarFacturasPendientes() {
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,servicio,precio_total,billing_tipo,billing_nit,billing_razon,billing_email,pago_estado,factura_estado,factura_error')
+        .select('id,codigo,tipo_trabajo,precio_total,billing_tipo,billing_nit,billing_razon,billing_email,pago_estado,factura_estado,factura_error')
         .eq('requiere_factura', true)
         .eq('factura_estado', 'pendiente')
         .order('created_at', { ascending: false });
@@ -1120,7 +1120,7 @@ async function emitirFactura(pedidoId, btn) {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Emitiendo…';
 
     const { data: p } = await sb.from('pedidos')
-        .select('id,codigo,servicio,precio_total,billing_tipo,billing_nit,billing_razon,billing_email')
+        .select('id,codigo,tipo_trabajo,precio_total,billing_tipo,billing_nit,billing_razon,billing_email')
         .eq('id', pedidoId).single();
 
     if (!p) { toast('Caso no encontrado', 'err'); btn.disabled = false; return; }
@@ -1220,7 +1220,7 @@ async function cargarFacturasEmitidas() {
 
 async function cargarFacturasError() {
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,billing_razon,billing_nit,billing_tipo,billing_email,servicio,precio_total,factura_error')
+        .select('id,codigo,billing_razon,billing_nit,billing_tipo,billing_email,tipo_trabajo,precio_total,factura_error')
         .eq('requiere_factura', true)
         .eq('factura_estado', 'error')
         .order('created_at', { ascending: false });
@@ -1313,7 +1313,7 @@ async function cargarPedidos() {
     const hastaISO = new Date(hasta + 'T23:59:59').toISOString();
 
     let q = sb.from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,estado_operativo,precio_total,pago_estado,saldo_pendiente_monto,modalidad_cobro,created_at')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,estado_operativo,precio_total,pago_estado,saldo_pendiente_monto,modalidad_cobro,created_at')
         .gte('created_at', desdeISO)
         .lte('created_at', hastaISO)
         .order('created_at', { ascending: false });

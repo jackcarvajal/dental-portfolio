@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -356,7 +356,7 @@ function resaltarPedido(codigo){
 /* ── CARGAR RUTA ───────────────────────────────────────── */
 async function cargarRuta(){
     let query = sb.from('despachos')
-        .select('id,estado,fecha_entrega_estimada,novedades,pedidos(id,codigo,nombre_cliente,nombre_doctor,whatsapp,direccion,precio_total,saldo_pendiente_monto,nota_calidad,modalidad_cobro,pago_estado)')
+        .select('id,estado,fecha_entrega_estimada,novedades,pedidos(id,codigo,nombre_cliente,nombre_doctor,telefono,direccion,precio_total,saldo_pendiente_monto,nota_calidad,modalidad_cobro,pago_estado)')
         .in('estado',['PROGRAMADO','EN_REPARTO'])
         .order('created_at',{ ascending:true });
     if(_mensajeroId) query=query.eq('mensajero_id',_mensajeroId);
@@ -440,7 +440,7 @@ async function iniciarEntrega(d){
     const pedidoId = p.id || '';
     const nombreCliente = p.nombre_cliente || p.nombre_doctor || '—';
     const direccion = p.direccion || '—';
-    const waCliente = p.whatsapp || '';
+    const waCliente = p.telefono || '';
     const codigo = p.codigo || d.id.slice(0,8);
 
     const { error } = await sb.from('despachos').update({ estado:'EN_REPARTO' }).eq('id',despId);
@@ -489,7 +489,7 @@ function abrirModalConfirmar(d){
     const codigo = p.codigo || d.id.slice(0,8);
     const nombre = p.nombre_cliente || p.nombre_doctor || '—';
     const saldoMonto = p.saldo_pendiente_monto || 0;
-    const waCliente = p.whatsapp || '';
+    const waCliente = p.telefono || '';
 
     _activeDespId    = despId;
     _activePedidoId  = pedidoId;
@@ -633,7 +633,7 @@ async function procesarConfirmacion(){
 
         // Notificación al doctor + recibo WA
         try {
-            const { data:ped } = await sb.from('pedidos').select('email,codigo,whatsapp,precio_total').eq('id',_activePedidoId).single();
+            const { data:ped } = await sb.from('pedidos').select('email,codigo,telefono,precio_total').eq('id',_activePedidoId).single();
             if (ped?.email) {
                 await fetch(`${SUPABASE_URL}/functions/v1/send-push`, {
                     method:'POST',
@@ -642,7 +642,7 @@ async function procesarConfirmacion(){
                 });
             }
             // WA con link al recibo
-            const waNum = (ped?.whatsapp || _activeWA || '').replace(/\D/g,'');
+            const waNum = (ped?.telefono || _activeWA || '').replace(/\D/g,'');
             if (waNum) {
                 const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '';
                 const totalStr = ped?.precio_total ? fmtCOP(ped.precio_total) : '';
