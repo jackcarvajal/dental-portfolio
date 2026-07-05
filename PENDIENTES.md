@@ -12,6 +12,18 @@ Nota técnica: el patch 3 (billeteras) tuvo que corregirse a mitad de sesión �
 
 ---
 
+## ✅ Fix de código (2026-07-05) — 4 endpoints sin autenticación real (spam/relay + métricas falsas)
+
+Ya commiteado y pusheado. Cubre:
+- `bienvenida-referido.js` — decía estar protegido por `CRON_SECRET` pero nunca se verificaba. Ahora exige JWT real de staff (mismo patrón que `factura.js`). El único llamador (`panel-interno-operaciones.html`) ya está actualizado para enviar su `access_token` real.
+- `wa-auto.js` — sigue siendo público (necesario para el registro de clientes antes de login), pero ahora tiene límite adicional de 5 mensajes/hora por **número destino** (no solo por IP) para frenar acoso dirigido.
+- `lead-magnet.js` — mismo límite por destino (3/día), defensa adicional de bajo costo.
+- `supabase/functions/meta-capi/index.ts` — sin ningún llamador real en el código; se agregó verificación opcional de secreto (`META_CAPI_SECRET`).
+
+**Pendiente de tu parte**: 1) agregar `META_CAPI_SECRET` como env var en Supabase (Settings → Edge Functions → Secrets) si quieres activar la protección — mientras no exista, la función sigue abierta sin romper nada. 2) **Redesplegar la Edge Function manualmente** — a diferencia de Cloudflare Pages Functions, los cambios en `supabase/functions/*` no se despliegan solos con `git push`; requiere `supabase functions deploy meta-capi` (o desde el Dashboard si tienes esa opción).
+
+---
+
 ## ✅ SQL ejecutado (2026-07-05) — 5 patches de RLS "admin" que no verificaba rol (patches 19-23)
 
 Confirmado por Alejandro, "Patches 19-23 aplicados". Encontrados por auditoría sistemática de archivos `sql/` no revisados a fondo aún. Todos con el mismo patrón: política nombrada "admin_*" pero `USING(true)`/sin chequeo de `app_metadata.role`.
