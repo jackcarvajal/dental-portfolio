@@ -20,17 +20,17 @@ Sin tocar (bajo riesgo, no aplica): `pruebas-carga.html` (herramienta interna de
 
 ---
 
-## ✅ SQL ejecutado (2026-07-05) — revision-diseno.html lectura por RPC (patch 17/17)
+## ✅ SQL ejecutado (2026-07-05) — revision-diseno.html lectura + escritura por RPC (patches 17 y 18)
 
-`sql/patch-revision-diseno-idor-2026.sql` — confirmado por Alejandro, "Patch 17 aplicado". Lectura de pedidos/historial ahora exige el UUID exacto vía RPC, ya no hay SELECT abierto de anon.
+`sql/patch-revision-diseno-idor-2026.sql` y `sql/patch-revision-diseno-escritura-rpc-2026.sql` — ambos confirmados por Alejandro ("aplicado"). Lectura y escritura de pedidos/historial ahora exigen el UUID exacto vía 10 RPCs, ya no hay SELECT/UPDATE abierto de anon.
 
 ---
 
-## 🔴 Ejecutar SQL — revision-diseno.html: escritura sin filtro por pedido (patch 18/18)
+## 🔴 URGENTE — Ejecutar hotfix: RPCs de revision-diseno usaban columnas inexistentes
 
-`sql/patch-revision-diseno-escritura-rpc-2026.sql` (ya incluido como patch 18 en el MAESTRO). Cierra el riesgo residual del patch 17: las políticas `anon_diseno_review_update` y `anon_diseno_postaprobacion_update` solo validaban el ESTADO de la fila, no el id — cualquiera con la anon key podía aprobar diseños ajenos o marcar pagos de fabricación como confirmados en CUALQUIER pedido en revisión, de un solo golpe. Se crearon 8 RPCs (`prodigy_rd_*`) que exigen el UUID exacto y `revision-diseno.html` ya está reescrito para usarlas (los 8 puntos que antes hacían UPDATE/INSERT directo). **Pendiente de ejecutar en Supabase.**
+`sql/patch-revision-diseno-hotfix-columnas-2026.sql`. Al probar en vivo (2026-07-05) se detectó que `prodigy_revision_diseno_get()` (patch 17) usaba `p.servicio` y `p.flujo` — columnas que **no existen** en la tabla real `pedidos` (heredado de un bug preexistente en `revision-diseno.html` anterior a esta sesión — PL/pgSQL no valida columnas hasta ejecutar, así que `CREATE FUNCTION` no lo detectó). También `prodigy_rd_solicitar_cambio()` (patch 18) usaba `observaciones`, que tampoco existe — el campo real es `notas_cambios`. **Mientras no se ejecute este hotfix, CUALQUIER intento real de abrir un link de revisión o solicitar un cambio falla con error de Postgres.** Ya corregido en código (los 2 patches originales y el MAESTRO) y en este hotfix para producción. **Pendiente de ejecutar en Supabase — máxima prioridad.**
 
-**Importante al probar:** después de ejecutar este patch, probar en vivo un caso real en estado `REVISION_CLIENTE` — abrir `revision-diseno.html?id=...`, solicitar un cambio de prueba o aprobar, y confirmar que el flujo completo (incluida la notificación al equipo vía `logs_incidencias`) sigue funcionando igual que antes.
+**Después de ejecutar, probar en vivo** un caso real en estado `REVISION_CLIENTE` (o crear uno de prueba) — abrir `revision-diseno.html?id=...`, confirmar que carga sin error, solicitar un cambio de prueba y confirmar que el flujo completo (incluida la notificación al equipo vía `logs_incidencias`) funciona.
 
 ---
 
