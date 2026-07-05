@@ -1,6 +1,14 @@
 # PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-07-03 (sesión autónoma continua)
+> Solo tareas activas. Última revisión: 2026-07-04 (sesión autónoma continua)
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
+
+---
+
+## 🔴 Ejecutar SQL: reportes financieros del negocio visibles para cualquier doctor
+
+**Hallazgo:** 4 funciones literalmente nombradas "reportes ADMIN" (`prodigy_top_doctores`, `prodigy_ingresos_por_dia`, `prodigy_pedidos_por_material`, `prodigy_conversion_por_flujo`) estaban otorgadas a cualquier usuario logueado, sin verificar que fuera admin/staff. Cualquier doctor podía ver: el ranking de otros doctores por volumen de compra e ingresos (quién es tu cliente más grande y cuánto gasta), tus ingresos totales día a día, y el desglose financiero completo del negocio por material y por flujo.
+
+**Ejecutar `sql/patch-reportes-admin-authz-2026.sql`** en Supabase Dashboard → SQL Editor. Agrega verificación de rol dentro de cada función — el panel admin (`metricas.html`, `panel-interno-operaciones.html`) sigue funcionando igual, solo se bloquea a quien no sea staff.
 
 ---
 
