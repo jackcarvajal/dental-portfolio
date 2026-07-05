@@ -2,6 +2,11 @@
 -- PRODIGY — revision-diseno.html: dump completo de pedidos/historial vía anon
 -- Ejecutar en: Supabase Dashboard → SQL Editor
 --
+-- [Corregido 2026-07-05: se quitaron 'servicio' y 'flujo' del SELECT —
+--  esas columnas NO existen en la tabla pedidos real, eran heredadas
+--  de un bug preexistente en revision-diseno.html anterior a esta
+--  sesión. Ver patch-revision-diseno-hotfix-columnas-2026.sql.]
+--
 -- Hallazgo (auditoría 2026-07-04/05, riesgo residual documentado y ahora
 -- corregido en su parte de LECTURA):
 --
@@ -38,8 +43,8 @@ DECLARE result json;
 BEGIN
   SELECT json_build_object(
     'id', p.id, 'codigo', p.codigo, 'nombre_paciente', p.nombre_paciente,
-    'servicio', p.servicio, 'material', p.material, 'color_vita', p.color_vita,
-    'flujo', p.flujo, 'estado_operativo', p.estado_operativo,
+    'material', p.material, 'color_vita', p.color_vita,
+    'estado_operativo', p.estado_operativo,
     'html_diseno_url', p.html_diseno_url, 'stl_urls', p.stl_urls,
     'construinfo_url', p.construinfo_url, 'fotos_diseno_urls', p.fotos_diseno_urls,
     'cambios_count', p.cambios_count, 'diseno_aprobado_at', p.diseno_aprobado_at,

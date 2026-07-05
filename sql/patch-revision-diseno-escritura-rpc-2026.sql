@@ -2,6 +2,11 @@
 -- PRODIGY — revision-diseno.html: escritura anon sin filtro por pedido
 -- Ejecutar en: Supabase Dashboard → SQL Editor
 --
+-- [Corregido 2026-07-05: prodigy_rd_solicitar_cambio usaba la columna
+--  'observaciones', que NO existe en pedidos — el campo real es
+--  'notas_cambios' (confirmado: prodigy_notif_pedido() ya lo usa para
+--  el mismo propósito). Ver patch-revision-diseno-hotfix-columnas-2026.sql.]
+--
 -- Hallazgo (auditoría 2026-07-05, cierre del riesgo residual documentado
 -- junto con el patch 17 de lectura):
 --
@@ -44,7 +49,7 @@ BEGIN
     WHERE id = p_id AND html_diseno_url IS NOT NULL AND estado_operativo = 'REVISION_CLIENTE';
   IF _cc IS NULL THEN RETURN json_build_object('ok',false,'error','Estado inválido'); END IF;
 
-  UPDATE public.pedidos SET estado_operativo='CAMBIOS_SOLICITADOS', cambios_count=_cc, observaciones=p_texto
+  UPDATE public.pedidos SET estado_operativo='CAMBIOS_SOLICITADOS', cambios_count=_cc, notas_cambios=p_texto
   WHERE id = p_id;
 
   INSERT INTO public.historial_diseno(pedido_id,tipo,actor,descripcion,fotos_urls,metadata)

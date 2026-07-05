@@ -1590,8 +1590,8 @@ DECLARE result json;
 BEGIN
   SELECT json_build_object(
     'id', p.id, 'codigo', p.codigo, 'nombre_paciente', p.nombre_paciente,
-    'servicio', p.servicio, 'material', p.material, 'color_vita', p.color_vita,
-    'flujo', p.flujo, 'estado_operativo', p.estado_operativo,
+    'material', p.material, 'color_vita', p.color_vita,
+    'estado_operativo', p.estado_operativo,
     'html_diseno_url', p.html_diseno_url, 'stl_urls', p.stl_urls,
     'construinfo_url', p.construinfo_url, 'fotos_diseno_urls', p.fotos_diseno_urls,
     'cambios_count', p.cambios_count, 'diseno_aprobado_at', p.diseno_aprobado_at,
@@ -1655,7 +1655,7 @@ BEGIN
     WHERE id = p_id AND html_diseno_url IS NOT NULL AND estado_operativo = 'REVISION_CLIENTE';
   IF _cc IS NULL THEN RETURN json_build_object('ok',false,'error','Estado inválido'); END IF;
 
-  UPDATE public.pedidos SET estado_operativo='CAMBIOS_SOLICITADOS', cambios_count=_cc, observaciones=p_texto
+  UPDATE public.pedidos SET estado_operativo='CAMBIOS_SOLICITADOS', cambios_count=_cc, notas_cambios=p_texto
   WHERE id = p_id;
 
   INSERT INTO public.historial_diseno(pedido_id,tipo,actor,descripcion,fotos_urls,metadata)
