@@ -1846,4 +1846,49 @@ BEGIN
 END;
 $$;
 
-SELECT 'Patch 19/19 (referidos email suplantable) aplicado' AS status;
+SELECT 'Patch 19/20 (referidos email suplantable) aplicado' AS status;
+
+-- ############################################################
+-- # 20/20 (agregado 2026-07-05) — mensajeros/despachos abiertos a cualquier autenticado
+-- ############################################################
+-- "admin_all_mensajeros"/"admin_all_despachos" eran USING(true)/CHECK(true)
+-- pese al nombre "admin" -- cualquier doctor logueado podia leer/modificar
+-- telefono y placa de TODOS los mensajeros, y direcciones/tracking de
+-- TODOS los despachos de cualquier pedido.
+
+DROP POLICY IF EXISTS "admin_all_mensajeros" ON mensajeros;
+CREATE POLICY "admin_all_mensajeros" ON mensajeros
+    FOR ALL TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    );
+
+DROP POLICY IF EXISTS "admin_all_despachos" ON despachos;
+CREATE POLICY "admin_all_despachos" ON despachos
+    FOR ALL TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    );
+
+DROP POLICY IF EXISTS "mensajero_own_despachos" ON despachos;
+CREATE POLICY "mensajero_own_despachos" ON despachos
+    FOR SELECT TO authenticated
+    USING (mensajero_id IN (SELECT id FROM mensajeros WHERE user_id = auth.uid()));
+
+DROP POLICY IF EXISTS "mensajero_update_own_despachos" ON despachos;
+CREATE POLICY "mensajero_update_own_despachos" ON despachos
+    FOR UPDATE TO authenticated
+    USING (mensajero_id IN (SELECT id FROM mensajeros WHERE user_id = auth.uid()))
+    WITH CHECK (mensajero_id IN (SELECT id FROM mensajeros WHERE user_id = auth.uid()));
+
+SELECT 'Patch 20/20 (mensajeros/despachos RLS) aplicado' AS status;
