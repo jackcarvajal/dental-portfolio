@@ -478,7 +478,7 @@ async function detectarPais() {
 
     /* Guardar en el pedido para próximas visitas (best-effort) */
     if (geo.country) {
-      sb.from('pedidos').update({ pais: geo.country }).eq('id', PID).then(() => {});
+      sb.rpc('prodigy_rd_set_pais', { p_id: PID, p_pais: geo.country }).then(() => {});
     }
   } catch(_) {
     _esInternacional = false; /* por defecto Colombia si falla la detección */
@@ -839,7 +839,7 @@ function renderPage() {
 
   /* Registrar descarga disponible */
   if (isAprobado && stlFiles.length && !_hist.some(h=>h.tipo==='DESCARGA_DISPONIBLE')) {
-    logH('DESCARGA_DISPONIBLE','sistema','Archivos listos para descarga tras aprobación.');
+    logH('DESCARGA_DISPONIBLE','Archivos listos para descarga tras aprobación.');
   }
 }
 
@@ -963,23 +963,13 @@ function buildReport() {
 }
 
 /* ─── LOG HISTORIAL ─── */
-async function logH(tipo, actor, desc, fotos=[], meta=null) {
-  try {
-    const e = {pedido_id:PID, tipo, actor, descripcion:desc, fotos_urls:fotos};
-    if (meta) e.metadata = meta;
-    await sb.from('historial_diseno').insert(e);
-  } catch(_) {}
+async function logH(tipo, desc, fotos=[]) {
+  try { await sb.rpc('prodigy_rd_log', { p_id: PID, p_tipo: tipo, p_desc: desc, p_fotos: fotos }); } catch(_) {}
 }
 
 /* ─── DESCARGA ─── */
 function onDownload(nombre) {
-  logH('DESCARGA','doctor','Descargado: '+nombre);
-  /* Notificar al equipo registrando en logs_incidencias para que el operario lo vea */
-  sb.from('logs_incidencias').insert({
-    pedido_id: PID, tipo:'INFO', severidad:'INFO',
-    descripcion:`Doctor descargó archivos: ${nombre} — Caso ${_p?.codigo||''}`,
-    resuelta: true
-  }).catch(()=>{});
+  logH('DESCARGA','Descargado: '+nombre);
 }
 
 /* ─── SUBIR FOTOS (helper) ─── */
@@ -1054,12 +1044,8 @@ async function enviarCambio() {
   if (fotoFiles.length) fotoUrls = await uploadFotos(fotoFiles,'cambios',barEl,statEl);
   barEl.style.width = '100%'; statEl.textContent = 'Guardando…';
 
-  const nuevoCount = (_p.cambios_count||0) + 1;
-  const { error } = await sb.from('pedidos').update({
-    estado_operativo:'CAMBIOS_SOLICITADOS', cambios_count:nuevoCount, observaciones:texto
-  }).eq('id', PID);
-  if (error) { btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar solicitud'; _rdToast('Error al enviar. Intenta de nuevo.', false); return; }
-  await logH('CAMBIO_SOLICITADO','doctor',texto,fotoUrls,{num:nuevoCount,paga_extra:nuevoCount>2});
+  const { data, error } = await sb.rpc('prodigy_rd_solicitar_cambio', { p_id: PID, p_texto: texto, p_fotos: fotoUrls });
+  if (error || !data?.ok) { btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar solicitud'; _rdToast('Error al enviar. Intenta de nuevo.', false); return; }
   cerrarCambio(); location.reload();
 }
 
@@ -1070,13 +1056,8 @@ function cerrarDisc() { document.getElementById('modal-disc').classList.remove('
 async function confirmarAprobacion() {
   const btn = document.getElementById('btn-aprobar-ok');
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Procesando…';
-  const ts = new Date().toISOString();
-  const { error } = await sb.from('pedidos').update({
-    estado_operativo:'DISENO_APROBADO', diseno_disclaimer:true,
-    diseno_aprobado_at:ts, diseno_aprobado_por:'doctor'
-  }).eq('id', PID);
-  if (error) { btn.disabled=false; btn.innerHTML='<i class="fas fa-signature"></i> Confirmar y aprobar'; _rdToast('Error. Intenta de nuevo.', false); return; }
-  await logH('APROBACION','doctor','Diseño aprobado. Cliente autoriza fabricación y acepta condiciones.',[],{aprobado_at:ts});
+  const { data, error } = await sb.rpc('prodigy_rd_aprobar', { p_id: PID });
+  if (error || !data?.ok) { btn.disabled=false; btn.innerHTML='<i class="fas fa-signature"></i> Confirmar y aprobar'; _rdToast('Error. Intenta de nuevo.', false); return; }
   cerrarDisc(); location.reload();
 }
 
@@ -1086,23 +1067,8 @@ async function confirmarAprobacion() {
 async function confirmarPagoDoctor() {
   if (!confirm('¿Confirmas que ya realizaste el pago de fabricación?\n\nNuestro equipo lo verificará y te notificará la confirmación.')) return;
 
-  const { error } = await sb.from('pedidos').update({
-    cotizacion_fab_estado: 'pago_confirmado'
-  }).eq('id', PID);
-
-  if (error) { _rdToast('Error al registrar. Contáctanos por WhatsApp.', false); return; }
-
-  await logH('FAB_PAGO_DOCTOR','doctor',
-    `Doctor indica haber realizado el pago de fabricación. Monto declarado: ${Number(_p.cotizacion_fab_monto||0).toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0})}`,
-    [], { monto: _p.cotizacion_fab_monto });
-
-  /* Alertar al equipo via logs_incidencias */
-  sb.from('logs_incidencias').insert({
-    pedido_id: PID, tipo:'INFO', severidad:'INFO',
-    descripcion:`💰 Doctor confirma pago de fabricación — Caso ${_p?.codigo||''} — Verificar y enrutar a producción`,
-    resuelta: false
-  }).catch(()=>{});
-
+  const { data, error } = await sb.rpc('prodigy_rd_confirmar_pago_doctor', { p_id: PID });
+  if (error || !data?.ok) { _rdToast('Error al registrar. Contáctanos por WhatsApp.', false); return; }
   location.reload();
 }
 
@@ -1113,20 +1079,7 @@ async function solicitarFabricacionInternacional(tipo) {
 
   if (!confirm(`¿Confirmas que quieres solicitar ${lbl} con envío internacional?\n\nUn asesor de PRODIGY te contactará para confirmar costos y coordinar el envío a ${paisNombre}.`)) return;
 
-  await sb.from('pedidos').update({
-    fabricacion_solicitada: true,
-    fabricacion_tipo: tipo + '_internacional'
-  }).eq('id', PID);
-
-  await logH('FAB_SOLICITADA','doctor',
-    `Solicitud especial de fabricación internacional: ${lbl} — País: ${paisNombre}`,
-    [], { tipo, pais: paisNombre, es_internacional: true });
-
-  sb.from('logs_incidencias').insert({
-    pedido_id: PID, tipo:'INFO', severidad:'INFO',
-    descripcion:`🌎 SOLICITUD INTERNACIONAL: Doctor solicita ${lbl} con envío a ${paisNombre} — Caso ${_p?.codigo||''}. Requiere cotización y coordinación de envío.`,
-    resuelta: false
-  }).catch(()=>{});
+  await sb.rpc('prodigy_rd_solicitar_fab_internacional', { p_id: PID, p_tipo: tipo, p_pais: paisNombre });
 
   /* Abrir WhatsApp automáticamente */
   const waMsg = encodeURIComponent(
@@ -1272,29 +1225,10 @@ async function enviarComprobante() {
   const svcNom  = svcOpt.text.split('—')[0].trim();
   statEl.textContent = 'Registrando…';
 
-  /* Actualizar pedido */
-  await sb.from('pedidos').update({
-    fabricacion_solicitada: true,
-    fabricacion_tipo:       _pagoTipo,
-    cotizacion_fab_monto:   monto,
-    cotizacion_fab_estado:  'pago_enviado',
-    cotizacion_fab_nota:    svcNom
-  }).eq('id', PID);
+  /* Registrar pedido + historial + alerta al equipo (RPC atómico) */
+  await sb.rpc('prodigy_rd_enviar_comprobante', { p_id: PID, p_tipo: _pagoTipo, p_monto: monto, p_nota: svcNom, p_comp_url: compUrl });
 
   barEl.style.width = '80%';
-
-  /* Log historial con foto del comprobante */
-  await logH('FAB_PAGO_DOCTOR','doctor',
-    `${svcNom} — ${monto.toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0})} — Comprobante adjunto`,
-    [compUrl], {tipo:_pagoTipo, monto, svc:svcNom});
-
-  /* Alerta equipo */
-  sb.from('logs_incidencias').insert({
-    pedido_id:PID, tipo:'INFO', severidad:'INFO',
-    descripcion:`💰 VERIFICAR PAGO: ${svcNom} ${monto.toLocaleString('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0})} — Caso ${_p?.codigo||''} — Ver comprobante: ${compUrl}`,
-    resuelta:false
-  }).catch(()=>{});
-
   barEl.style.width = '100%'; statEl.textContent = '¡Enviado!';
   cerrarPago();
   location.reload();
@@ -1302,12 +1236,7 @@ async function enviarComprobante() {
 
 async function confirmarPagoFabricacion() {
   if (!confirm('¿Confirmas que ya realizaste el pago de fabricación?\n\nEl equipo verificará y te notificará la confirmación.')) return;
-  await sb.from('pedidos').update({fabricacion_solicitada:true}).eq('id',PID);
-  await logH('FAB_SOLICITADA','doctor','Cliente indica haber realizado pago de fabricación. Pendiente verificación.');
-  sb.from('logs_incidencias').insert({
-    pedido_id:PID, tipo:'INFO', severidad:'INFO',
-    descripcion:`Doctor confirma pago de fabricación — Verificar — Caso ${_p?.codigo||''}`,resuelta:false
-  }).catch(()=>{});
+  await sb.rpc('prodigy_rd_confirmar_pago_fab', { p_id: PID });
   location.reload();
 }
 
@@ -1323,8 +1252,8 @@ async function enviarNota() {
   let fotoUrls = [];
   if (fotoFiles.length) fotoUrls = await uploadFotos(fotoFiles,'notas',barEl,statEl);
   barEl.style.width='100%'; statEl.textContent='Guardando…';
-  await logH('NOTA_DOCTOR','doctor',texto||'(fotos adjuntadas)',fotoUrls);
-  const { data:hist } = await sb.from('historial_diseno').select('*').eq('pedido_id',PID).order('created_at',{ascending:true});
+  await logH('NOTA_DOCTOR',texto||'(fotos adjuntadas)',fotoUrls);
+  const { data:hist } = await sb.rpc('prodigy_revision_diseno_historial', { p_id: PID });
   _hist = hist || [];
   document.getElementById('nota-txt').value='';
   document.getElementById('nota-fotos').value='';
