@@ -1,6 +1,18 @@
 # PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-07-04 (sesión autónoma continua)
+> Solo tareas activas. Última revisión: 2026-07-05 (sesión autónoma continua)
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
+
+---
+
+## 🔴 URGENTE — Ejecutar SQL: pedidos nunca ha guardado un solo registro (patch 24/24)
+
+**El hallazgo más grave de toda la auditoría.** Al probar en vivo (2026-07-05) se confirmó con `SELECT count(*) FROM pedidos;` → **0 filas, nunca ha habido ninguna**. Causa: los 4 flujos donde un doctor crea un pedido (`flujo-diseno.html`, `flujo-fresado.html`, `flujo-lab.html`, `js/flujo-impresion.js`) insertaban con columnas que **nunca existieron** en la tabla real (`doctor`, `whatsapp`, `servicio`, `total`, `link_stl`, `nonce`, `flujo`, `fuente_pago`, `software_diseno`). Postgres rechaza el INSERT completo por columna inexistente; los 4 archivos atrapan el error con `console.warn` (o en silencio) sin detener el checkout — el cliente veía "éxito" sin que el pedido se guardara jamás.
+
+**Ya corregido en código** (commiteado y pusheado, se despliega solo): los 4 flujos de creación + ~10 paneles de staff (`operario.html`, `operario-diseno.html`, `operator-panel.html`, `panel-interno-operaciones.html`, `inventario.html`, `calidad.html`, `contabilidad.html`, `mensajero.html`, `success.html`) que también referenciaban las mismas columnas fantasma en sus consultas — **el panel de trabajo de los operarios de diseño nunca pudo cargar un solo caso** por el mismo motivo.
+
+**Pendiente de ejecutar en Supabase** — `sql/patch-pedidos-columnas-fantasma-flujo-2026.sql` (ya incluido como patch 24 en el MAESTRO). Agrega 4 columnas reales que el código ya usa extensamente y nunca se crearon: `flujo`, `nombre_cliente`, `nota_calidad`, `direccion`.
+
+**Después de ejecutar, PRUEBA REAL OBLIGATORIA**: crea un pedido de prueba real desde `flujo-diseno.html` (o cualquiera de los 4 flujos) y confirma con `SELECT * FROM pedidos ORDER BY created_at DESC LIMIT 1;` que se guardó correctamente. Este es el flujo de ingreso de ingresos del negocio — no des la tarea por cerrada sin esta prueba.
 
 ---
 

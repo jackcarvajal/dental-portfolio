@@ -1978,4 +1978,24 @@ CREATE POLICY "admin_all_config_plataformas" ON config_plataformas
         OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
     );
 
-SELECT 'Patch 23/23 (domicilio/scanner/config RLS) aplicado' AS status;
+SELECT 'Patch 23/24 (domicilio/scanner/config RLS) aplicado' AS status;
+
+-- ############################################################
+-- # 24/24 (agregado 2026-07-05) — CRITICO: pedidos.flujo/nombre_cliente/nota_calidad/direccion faltantes
+-- ############################################################
+-- Confirmado en vivo: SELECT count(*) FROM pedidos = 0 filas, nunca ha
+-- habido ninguna. Los 4 flujos de creacion de pedidos (diseno, fresado,
+-- impresion, lab) y multiples paneles de staff referencian columnas que
+-- nunca existieron. La mayoria ya tenian equivalente real (nombre_doctor,
+-- telefono, tipo_trabajo, precio_total, stl_url, hash_seguridad) y se
+-- corrigieron en el codigo. Estas 4 no tenian equivalente y se agregan
+-- como columnas reales porque ya se usan extensamente en codigo existente.
+
+ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS flujo text;
+CREATE INDEX IF NOT EXISTS idx_pedidos_flujo ON public.pedidos(flujo);
+
+ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS nombre_cliente text;
+ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS nota_calidad text;
+ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS direccion text;
+
+SELECT 'Patch 24/24 (pedidos columnas faltantes) aplicado' AS status;
