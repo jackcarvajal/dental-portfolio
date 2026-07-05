@@ -20,6 +20,12 @@ Sin tocar (bajo riesgo, no aplica): `pruebas-carga.html` (herramienta interna de
 
 ---
 
+## 🔴 Ejecutar SQL — newsletter_subscribers: constraint distinta entre PRODIGY y Alejandro (patch 16/16)
+
+`sql/patch-newsletter-negocio-unificado-2026.sql` (ya incluido como patch 16 en el MAESTRO). La tabla compartida tiene una sola constraint real en producción, pero PRODIGY la define `UNIQUE(email)` y Alejandro `UNIQUE(email,negocio)` — probablemente ganó la de PRODIGY, lo que hace que `alejandro_newsletter_subscribe()` falle en cada suscripción (error tragado en silencio por su `EXCEPTION WHEN OTHERS THEN NULL`). Unifica a `UNIQUE(email,negocio)` y corrige `newsletter_subscribe()` de PRODIGY para filtrar por negocio. Pendiente de ejecutar en Supabase.
+
+---
+
 ## 🔴 Ejecutar SQL: reportes financieros del negocio visibles para cualquier doctor
 
 **Hallazgo:** 4 funciones literalmente nombradas "reportes ADMIN" (`prodigy_top_doctores`, `prodigy_ingresos_por_dia`, `prodigy_pedidos_por_material`, `prodigy_conversion_por_flujo`) estaban otorgadas a cualquier usuario logueado, sin verificar que fuera admin/staff. Cualquier doctor podía ver: el ranking de otros doctores por volumen de compra e ingresos (quién es tu cliente más grande y cuánto gasta), tus ingresos totales día a día, y el desglose financiero completo del negocio por material y por flujo.
