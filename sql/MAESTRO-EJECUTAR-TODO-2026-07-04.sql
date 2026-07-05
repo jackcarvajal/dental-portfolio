@@ -1813,4 +1813,37 @@ DROP POLICY IF EXISTS "anon_diseno_review_update" ON pedidos;
 DROP POLICY IF EXISTS "anon_diseno_postaprobacion_update" ON pedidos;
 DROP POLICY IF EXISTS "anon_historial_insert" ON historial_diseno;
 
-SELECT 'Patch 18/18 (revision-diseno escritura por RPC) aplicado' AS status;
+SELECT 'Patch 18/19 (revision-diseno escritura por RPC) aplicado' AS status;
+
+-- ############################################################
+-- # 19/19 (agregado 2026-07-05) — obtener_mi_codigo_referido: email suplantable
+-- ############################################################
+-- Hallazgo: la RPC confiaba en el p_email enviado por el cliente sin
+-- validar contra la sesion real -- permitia enumerar/crear codigos de
+-- referido a nombre de otros doctores. Los 4 llamadores reales siempre
+-- pasan el email de su propia sesion, asi que exigirlo server-side no
+-- rompe nada.
+
+CREATE OR REPLACE FUNCTION public.obtener_mi_codigo_referido(p_email text, p_nombre text DEFAULT NULL)
+RETURNS text LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+  v_codigo text;
+  v_email_real text;
+BEGIN
+  v_email_real := lower(trim(auth.jwt() ->> 'email'));
+  IF v_email_real IS NULL OR v_email_real = '' THEN
+    RETURN NULL;
+  END IF;
+
+  SELECT codigo INTO v_codigo FROM public.referidos
+  WHERE lower(trim(referidor_email)) = v_email_real LIMIT 1;
+  IF v_codigo IS NULL THEN
+    v_codigo := public.generar_codigo_referido(v_email_real);
+    INSERT INTO public.referidos(referidor_email, referidor_nombre, codigo)
+    VALUES(v_email_real, p_nombre, v_codigo);
+  END IF;
+  RETURN v_codigo;
+END;
+$$;
+
+SELECT 'Patch 19/19 (referidos email suplantable) aplicado' AS status;
