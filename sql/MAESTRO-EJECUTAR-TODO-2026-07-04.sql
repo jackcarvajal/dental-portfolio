@@ -1891,4 +1891,91 @@ CREATE POLICY "mensajero_update_own_despachos" ON despachos
     USING (mensajero_id IN (SELECT id FROM mensajeros WHERE user_id = auth.uid()))
     WITH CHECK (mensajero_id IN (SELECT id FROM mensajeros WHERE user_id = auth.uid()));
 
-SELECT 'Patch 20/20 (mensajeros/despachos RLS) aplicado' AS status;
+SELECT 'Patch 20/23 (mensajeros/despachos RLS) aplicado' AS status;
+
+-- ############################################################
+-- # 21/23 (agregado 2026-07-05) — citas_escaneo abierta a anon sin sesion
+-- ############################################################
+DROP POLICY IF EXISTS "anon_upsert_citas" ON citas_escaneo;
+CREATE POLICY "admin_all_citas_escaneo" ON citas_escaneo
+    FOR ALL TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    );
+
+SELECT 'Patch 21/23 (citas_escaneo RLS) aplicado' AS status;
+
+-- ############################################################
+-- # 22/23 (agregado 2026-07-05) — clientes/portfolio abiertos a cualquier autenticado
+-- ############################################################
+DROP POLICY IF EXISTS "admin_all_clientes" ON clientes;
+CREATE POLICY "admin_all_clientes" ON clientes
+    FOR ALL TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    );
+
+DROP POLICY IF EXISTS "admin_write_portfolio" ON portfolio;
+CREATE POLICY "admin_write_portfolio" ON portfolio
+    FOR ALL TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    );
+
+SELECT 'Patch 22/23 (clientes/portfolio RLS) aplicado' AS status;
+
+-- ############################################################
+-- # 23/23 (agregado 2026-07-05) — citas_domicilio/solicitudes_scanner/config_plataformas
+-- ############################################################
+DROP POLICY IF EXISTS "admin_all_citas" ON citas_domicilio;
+CREATE POLICY "admin_all_citas" ON citas_domicilio
+    FOR ALL TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    );
+
+DROP POLICY IF EXISTS "admin_all_scanner" ON solicitudes_scanner;
+CREATE POLICY "admin_all_scanner" ON solicitudes_scanner
+    FOR ALL TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    );
+
+DROP POLICY IF EXISTS "admin_all_config_plataformas" ON config_plataformas;
+CREATE POLICY "admin_all_config_plataformas" ON config_plataformas
+    FOR ALL TO authenticated
+    USING (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    )
+    WITH CHECK (
+        (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com')
+        OR (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator')
+    );
+
+SELECT 'Patch 23/23 (domicilio/scanner/config RLS) aplicado' AS status;
