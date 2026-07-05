@@ -1495,4 +1495,79 @@ SELECT 'Patch 14/15 (notificaciones_internas) aplicado' AS status;
 
 DROP POLICY IF EXISTS "unsubscribe_self" ON public.newsletter_subscribers;
 
-SELECT 'Patch 15/15 (newsletter unsubscribe) aplicado' AS status;
+SELECT 'Patch 15/16 (newsletter unsubscribe) aplicado' AS status;
+
+-- ############################################################
+-- # 16/16 (agregado 2026-07-05) — newsletter_subscribers: constraint inconsistente PRODIGY/Alejandro
+-- ############################################################
+-- Hallazgo: la tabla compartida newsletter_subscribers tiene una sola
+-- constraint real en producción, pero PRODIGY la define como
+-- UNIQUE(email) y Alejandro como UNIQUE(email,negocio) en sus
+-- respectivos .sql. Efecto: alejandro_newsletter_subscribe() hace
+-- ON CONFLICT (email,negocio) — si la constraint real es solo
+-- UNIQUE(email), Postgres lanza error en cada suscripción de
+-- Alejandro (tragado en silencio por su EXCEPTION WHEN OTHERS THEN
+-- NULL). Ademas, newsletter_subscribe() de PRODIGY buscaba por email
+-- SIN filtrar negocio, asi que un doctor ya suscrito en PRODIGY nunca
+-- quedaba registrado en la lista de Alejandro.
+
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conrelid = 'public.newsletter_subscribers'::regclass
+      AND contype = 'u'
+      AND conkey = (SELECT array_agg(attnum) FROM pg_attribute
+                    WHERE attrelid = 'public.newsletter_subscribers'::regclass
+                      AND attname = 'email')
+  ) THEN
+    EXECUTE (
+      SELECT 'ALTER TABLE public.newsletter_subscribers DROP CONSTRAINT ' || quote_ident(conname)
+      FROM pg_constraint
+      WHERE conrelid = 'public.newsletter_subscribers'::regclass
+        AND contype = 'u'
+        AND conkey = (SELECT array_agg(attnum) FROM pg_attribute
+                      WHERE attrelid = 'public.newsletter_subscribers'::regclass
+                        AND attname = 'email')
+      LIMIT 1
+    );
+  END IF;
+END;
+$$;
+
+ALTER TABLE public.newsletter_subscribers
+  ADD CONSTRAINT newsletter_subscribers_email_negocio_key UNIQUE (email, negocio);
+
+CREATE OR REPLACE FUNCTION public.newsletter_subscribe(
+  p_email      text,
+  p_nombre     text DEFAULT NULL,
+  p_negocio    text DEFAULT 'prodigy',
+  p_fuente     text DEFAULT 'web',
+  p_tags       text[] DEFAULT '{}'::text[]
+)
+RETURNS json LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+  _existing public.newsletter_subscribers;
+BEGIN
+  IF p_email !~ '^[^@\s]+@[^@\s]+\.[^@\s]+$' THEN
+    RETURN json_build_object('ok',false,'error','Email inválido');
+  END IF;
+
+  SELECT * INTO _existing FROM public.newsletter_subscribers
+    WHERE email = lower(p_email) AND negocio = p_negocio;
+
+  IF FOUND THEN
+    IF NOT _existing.activo THEN
+      UPDATE public.newsletter_subscribers SET activo=true WHERE email=lower(p_email) AND negocio=p_negocio;
+    END IF;
+    RETURN json_build_object('ok',true,'status','existing');
+  END IF;
+
+  INSERT INTO public.newsletter_subscribers(email,nombre,negocio,fuente,tags)
+  VALUES(lower(p_email),p_nombre,p_negocio,p_fuente,p_tags);
+
+  RETURN json_build_object('ok',true,'status','new');
+END;
+$$;
+
+SELECT 'Patch 16/16 (newsletter negocio unificado) aplicado' AS status;
