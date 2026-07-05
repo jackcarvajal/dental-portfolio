@@ -20,6 +20,14 @@ Sin tocar (bajo riesgo, no aplica): `pruebas-carga.html` (herramienta interna de
 
 ---
 
+## 🔴 Ejecutar SQL — revision-diseno.html dump completo de pedidos vía anon (patch 17/17)
+
+`sql/patch-revision-diseno-idor-2026.sql` (ya incluido como patch 17 en el MAESTRO). Las políticas `anon_diseno_review_select`/`anon_historial_select` solo revisaban el estado de la fila, no un id — cualquiera con la anon key podía volcar TODOS los pedidos con diseño listo (nombre paciente, cotizaciones, notas), no solo el de su propio link. Ya corregido con 2 RPCs (`prodigy_revision_diseno_get`, `prodigy_revision_diseno_historial`) + código de `revision-diseno.html` ya pusheado. **Pendiente de ejecutar en Supabase.**
+
+**Riesgo residual sin resolver (a propósito):** los 7 `UPDATE` directos a `pedidos` en `revision-diseno.html` (aprobar, solicitar cambio, notas, pagos, fabricación) tienen el mismo problema de fondo — la política `anon_diseno_review_update` permite modificar CUALQUIER pedido en estado `REVISION_CLIENTE`, no solo el propio. No se tocó esta vez porque requiere refactor a RPC por cada acción y pruebas en vivo (aprobar un diseño real, solicitar cambio real, etc.) que no se pueden hacer sin acompañamiento. Evaluar en la próxima sesión con tiempo para probar en vivo.
+
+---
+
 ## ✅ SQL ejecutado (2026-07-05) — newsletter_subscribers: constraint unificada PRODIGY/Alejandro
 
 `sql/patch-newsletter-negocio-unificado-2026.sql` (patch 16) — confirmado por Alejandro, "Patch 16 aplicado". Constraint unificada a `UNIQUE(email,negocio)`, `newsletter_subscribe()` de PRODIGY ahora filtra por negocio.
