@@ -1474,4 +1474,17 @@ CREATE POLICY "staff_inserta_notifs" ON public.notificaciones_internas
 
 DROP POLICY IF EXISTS "staff_marca_leida" ON public.notificaciones_internas;
 
-SELECT 'Patch 14/14 (notificaciones_internas) aplicado' AS status;
+SELECT 'Patch 14/15 (notificaciones_internas) aplicado' AS status;
+
+-- ############################################################
+-- # 15/15 (agregado) — NEWSLETTER: UPDATE anonimo sin filtro (mass-unsubscribe)
+-- ############################################################
+-- Hallazgo (auditoría 2026-07-04): "unsubscribe_self" (FOR UPDATE TO
+-- anon USING(true) WITH CHECK(activo=false)) no filtra por email ni
+-- token — cualquier visitante podía desactivar TODOS los suscriptores
+-- en una sola llamada. Ya existe newsletter_unsubscribe(p_token)
+-- (SECURITY DEFINER, filtra por token real) que cubre el caso legítimo.
+
+DROP POLICY IF EXISTS "unsubscribe_self" ON public.newsletter_subscribers;
+
+SELECT 'Patch 15/15 (newsletter unsubscribe) aplicado' AS status;

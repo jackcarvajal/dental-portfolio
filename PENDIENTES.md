@@ -6,13 +6,13 @@
 
 ## ⭐ ATAJO — Un solo archivo con TODO el SQL pendiente de seguridad
 
-En vez de ejecutar cada patch por separado, **`sql/MAESTRO-EJECUTAR-TODO-2026-07-04.sql`** los reúne todos (14 patches, en el orden correcto) en un solo archivo. Copiar todo su contenido y pegarlo de una vez en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new` → Run.
+En vez de ejecutar cada patch por separado, **`sql/MAESTRO-EJECUTAR-TODO-2026-07-04.sql`** los reúne todos (15 patches, en el orden correcto) en un solo archivo. Copiar todo su contenido y pegarlo de una vez en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new` → Run.
 
-Cubre: escalamiento de privilegios, fraude de cupones, RLS de precios/catálogo, 8 RPCs de reportes/dashboard/tokens sin verificar rol, tokens de revisión enumerables, wallet suplantable, buckets de Storage públicos, índices de rendimiento, funnel/conversión expuesto sin login, y notificaciones internas (rol falsificable + insert/update abiertos a cualquier autenticado).
+Cubre: escalamiento de privilegios, fraude de cupones, RLS de precios/catálogo, 8 RPCs de reportes/dashboard/tokens sin verificar rol, tokens de revisión enumerables, wallet suplantable, buckets de Storage públicos, índices de rendimiento, funnel/conversión expuesto sin login, notificaciones internas (rol falsificable + insert/update abiertos a cualquier autenticado), y newsletter (UPDATE anónimo sin filtro permitía desactivar todos los suscriptores).
 
 (No incluye `patch-supabase-public-grants-2026.sql`, ya ejecutado antes.)
 
-**Confirmado por Alejandro (screenshots 2026-07-04):** patches 1-13 ejecutados en producción con éxito. Falta patch 14 (notificaciones_internas), agregado después.
+**Confirmado por Alejandro (screenshots 2026-07-04):** patches 1-13 ejecutados en producción con éxito. Faltan patches 14 y 15 (notificaciones_internas, newsletter), agregados después.
 
 ---
 
