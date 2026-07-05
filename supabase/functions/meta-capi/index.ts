@@ -40,6 +40,14 @@ serve(async (req) => {
     if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
     if (req.method !== "POST")    return json({ error: "Método no permitido" }, 405);
 
+    // Auth — sin llamador real en el código actual; requerir secreto para
+    // evitar que cualquiera inyecte eventos de conversión falsos ("Purchase"
+    // con monto arbitrario) que contaminen la optimización de anuncios.
+    const CAPI_SECRET = Deno.env.get("META_CAPI_SECRET");
+    if (CAPI_SECRET && req.headers.get("x-capi-secret") !== CAPI_SECRET) {
+        return json({ error: "No autorizado" }, 401);
+    }
+
     const ACCESS_TOKEN = Deno.env.get("META_ACCESS_TOKEN");
     const PIXEL_ID     = Deno.env.get("META_PIXEL_ID");
     const TEST_CODE    = Deno.env.get("META_TEST_CODE"); // undefined en producción

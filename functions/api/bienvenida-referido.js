@@ -11,6 +11,7 @@
 const CORS = {
   'Access-Control-Allow-Origin':  'https://prodigylabdental.com',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Content-Type':                 'application/json',
 };
 
@@ -18,8 +19,29 @@ export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: CORS });
 }
 
+async function esStaff(request, env) {
+  const authHeader = request.headers.get('Authorization') || '';
+  const token = authHeader.replace('Bearer ', '').trim();
+  if (!token || !env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) return false;
+  try {
+    const res = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'apikey': env.SUPABASE_SERVICE_KEY }
+    });
+    if (!res.ok) return false;
+    const user = await res.json();
+    const ADMIN_EMAILS = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com'];
+    return ADMIN_EMAILS.includes(user.email) || ['admin','operator'].includes(user.app_metadata?.role);
+  } catch { return false; }
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
+
+  // Auth — solo staff real (JWT de sesión), esta función envía un email
+  // de marca a una dirección arbitraria y no debe ser pública.
+  if (!(await esStaff(request, env))) {
+    return new Response(JSON.stringify({ ok: false, reason: 'no_autorizado' }), { status: 401, headers: CORS });
+  }
 
   // Rate limit: 20 req / 10 min por IP
   const ip  = request.headers.get('CF-Connecting-IP') || 'unknown';

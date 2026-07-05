@@ -64,6 +64,19 @@ export async function onRequestPost({ request, env }) {
   const wa = whatsapp.replace(/\D/g,'');
   if (!wa || wa.length < 10) return new Response(JSON.stringify({ error: 'Número inválido' }), { status: 400, headers: cors });
 
+  // Rate limit adicional por NÚMERO destino (no solo por IP) — evita usar
+  // este endpoint como herramienta de acoso/spam repetido contra un mismo
+  // número rotando de IP. Máx 5 mensajes/hora al mismo número.
+  const rlDestKey = new Request('https://rl.internal/wa-auto-dest_' + wa);
+  const rlDestHit = await caches.default.match(rlDestKey);
+  if (rlDestHit) {
+    const destCount = parseInt(await rlDestHit.text(), 10) || 0;
+    if (destCount >= 5) return new Response(JSON.stringify({ error: 'Demasiados mensajes a este número.' }), { status: 429, headers: cors });
+    await caches.default.put(rlDestKey, new Response(String(destCount+1), { headers: { 'Cache-Control': 'max-age=3600' } }));
+  } else {
+    await caches.default.put(rlDestKey, new Response('1', { headers: { 'Cache-Control': 'max-age=3600' } }));
+  }
+
   // Construir mensaje
   const dr = (nombre_doctor||'').split(' ')[0] || 'Doctor';
   const cod = codigo || '—';

@@ -59,9 +59,17 @@ export async function onRequestPost({ request, env }) {
     if (whatsapp && env.CALLMEBOT_APIKEY) {
       const wa = String(whatsapp).replace(/\D/g,'');
       const waFull = wa.length === 10 ? '57'+wa : wa;
-      const nombreCorto = (nombre||'Doctor').split(' ')[0];
-      const msg = `💎 *PRODIGY Lab Dental*\n\nHola ${nombreCorto}, gracias por descargar *${recurso||'el catálogo'}*.\n\nCualquier consulta sobre servicios o precios, estamos aquí:\n👉 prodigylabdental.com\n📱 WhatsApp: +57 321 281 6716\n\n_¡Esperamos trabajar contigo!_`;
-      await fetch(`https://api.callmebot.com/whatsapp.php?phone=${waFull}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`).catch(()=>{});
+
+      // Límite por número destino (no solo por IP) — máx 3/día al mismo número
+      const rlDestKey = new Request('https://rl.internal/lead-magnet-dest_' + waFull);
+      const rlDestHit = await caches.default.match(rlDestKey);
+      const destCount = rlDestHit ? (parseInt(await rlDestHit.text(), 10) || 0) : 0;
+      if (destCount < 3) {
+        await caches.default.put(rlDestKey, new Response(String(destCount+1), { headers: { 'Cache-Control': 'max-age=86400' } }));
+        const nombreCorto = (nombre||'Doctor').split(' ')[0];
+        const msg = `💎 *PRODIGY Lab Dental*\n\nHola ${nombreCorto}, gracias por descargar *${recurso||'el catálogo'}*.\n\nCualquier consulta sobre servicios o precios, estamos aquí:\n👉 prodigylabdental.com\n📱 WhatsApp: +57 321 281 6716\n\n_¡Esperamos trabajar contigo!_`;
+        await fetch(`https://api.callmebot.com/whatsapp.php?phone=${waFull}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`).catch(()=>{});
+      }
     }
 
     return new Response(JSON.stringify({ ok: true }), { status: 200, headers: h });

@@ -3530,9 +3530,10 @@ async function cambiarEstadoRef(id, estado) {
             if (confirmed) {
                 window.open(`https://wa.me/${waRef}?text=${waMsg}`, '_blank', 'noopener,noreferrer');
                 if (refData.referidor_email && refData.referidor_email.includes('@')) {
+                    const { data: { session: _sesBienv } } = await sb.auth.getSession();
                     fetch('/api/bienvenida-referido', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'x-cron-secret': 'internal' },
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (_sesBienv?.access_token || '') },
                         body: JSON.stringify({
                             email: refData.referidor_email,
                             nombre: refData.referidor_nombre || 'Doctor',
