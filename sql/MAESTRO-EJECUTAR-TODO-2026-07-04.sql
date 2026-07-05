@@ -314,14 +314,22 @@ CREATE POLICY "admin_write_config" ON config_precios FOR ALL TO authenticated US
     OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
 );
 
-DROP POLICY IF EXISTS "admin_billeteras" ON billeteras;
-CREATE POLICY "admin_billeteras" ON billeteras FOR ALL TO authenticated USING (
-    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
-    OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
-) WITH CHECK (
-    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
-    OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
-);
+-- billeteras: tabla legacy, nunca llegó a crearse en producción (el
+-- wallet real vive en creditos_cliente) — se aplica solo si existe.
+DO $$
+BEGIN
+  IF to_regclass('public.billeteras') IS NOT NULL THEN
+    EXECUTE 'DROP POLICY IF EXISTS "admin_billeteras" ON billeteras';
+    EXECUTE $q$CREATE POLICY "admin_billeteras" ON billeteras FOR ALL TO authenticated USING (
+        (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+        OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+    ) WITH CHECK (
+        (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+        OR auth.email() IN ('jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com')
+    )$q$;
+  END IF;
+END;
+$$;
 
 -- ── VERIFICACIÓN ─────────────────────────────────────────────────
 -- Como admin logueado en app/admin-precios.html, cambiar un precio
