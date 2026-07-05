@@ -488,15 +488,13 @@ async function detectarPais() {
 /* ─── INIT ─── */
 (async function init() {
   if (!PID) { showErr('Enlace inválido.'); return; }
-  const { data, error } = await sb.from('pedidos')
-    .select('id,codigo,nombre_paciente,servicio,material,color_vita,flujo,estado_operativo,html_diseno_url,stl_urls,construinfo_url,fotos_diseno_urls,cambios_count,diseno_aprobado_at,diseno_disclaimer,fabricacion_solicitada,fabricacion_pagada,fabricacion_tipo,servicios_pagados,departamento_actual,pais,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_nota')
-    .eq('id', PID).single();
+  const { data, error } = await sb.rpc('prodigy_revision_diseno_get', { p_id: PID });
   if (error || !data || !data.html_diseno_url) {
     showErr('El enlace no es válido o el diseño aún no está disponible. Espera la notificación del equipo.');
     return;
   }
   _p = data;
-  const { data: hist } = await sb.from('historial_diseno').select('*').eq('pedido_id',PID).order('created_at',{ascending:true});
+  const { data: hist } = await sb.rpc('prodigy_revision_diseno_historial', { p_id: PID });
   _hist = hist || [];
   await detectarPais();
   renderPage();

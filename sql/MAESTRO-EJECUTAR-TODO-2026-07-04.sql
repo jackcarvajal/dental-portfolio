@@ -1570,4 +1570,61 @@ BEGIN
 END;
 $$;
 
-SELECT 'Patch 16/16 (newsletter negocio unificado) aplicado' AS status;
+SELECT 'Patch 16/17 (newsletter negocio unificado) aplicado' AS status;
+
+-- ############################################################
+-- # 17/17 (agregado 2026-07-05) — revision-diseno.html: dump completo via anon
+-- ############################################################
+-- Hallazgo: "anon_diseno_review_select" (pedidos) y "anon_historial_select"
+-- (historial_diseno) solo verifican estado de fila, no un id que el cliente
+-- deba suplir — cualquiera con la anon key podia volcar TODOS los pedidos
+-- con diseno listo (nombre paciente, cotizaciones, notas) sin conocer
+-- ningun link especifico. Fix: mover lectura a 2 RPCs SECURITY DEFINER que
+-- exigen el UUID exacto (mismo patron que buscar_pedido_publico()), y
+-- eliminar los SELECT abiertos de anon. La escritura (7 UPDATE directos en
+-- revision-diseno.html) queda documentada como pendiente aparte.
+
+CREATE OR REPLACE FUNCTION public.prodigy_revision_diseno_get(p_id uuid)
+RETURNS json LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE result json;
+BEGIN
+  SELECT json_build_object(
+    'id', p.id, 'codigo', p.codigo, 'nombre_paciente', p.nombre_paciente,
+    'servicio', p.servicio, 'material', p.material, 'color_vita', p.color_vita,
+    'flujo', p.flujo, 'estado_operativo', p.estado_operativo,
+    'html_diseno_url', p.html_diseno_url, 'stl_urls', p.stl_urls,
+    'construinfo_url', p.construinfo_url, 'fotos_diseno_urls', p.fotos_diseno_urls,
+    'cambios_count', p.cambios_count, 'diseno_aprobado_at', p.diseno_aprobado_at,
+    'diseno_disclaimer', p.diseno_disclaimer, 'fabricacion_solicitada', p.fabricacion_solicitada,
+    'fabricacion_pagada', p.fabricacion_pagada, 'fabricacion_tipo', p.fabricacion_tipo,
+    'servicios_pagados', p.servicios_pagados, 'departamento_actual', p.departamento_actual,
+    'pais', p.pais, 'cotizacion_fab_monto', p.cotizacion_fab_monto,
+    'cotizacion_fab_estado', p.cotizacion_fab_estado, 'cotizacion_fab_nota', p.cotizacion_fab_nota
+  ) INTO result
+  FROM public.pedidos p
+  WHERE p.id = p_id AND p.html_diseno_url IS NOT NULL;
+
+  RETURN result;
+END;
+$$;
+REVOKE ALL ON FUNCTION public.prodigy_revision_diseno_get(uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.prodigy_revision_diseno_get(uuid) TO anon, authenticated;
+
+CREATE OR REPLACE FUNCTION public.prodigy_revision_diseno_historial(p_id uuid)
+RETURNS SETOF historial_diseno LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM public.pedidos WHERE id = p_id AND html_diseno_url IS NOT NULL) THEN
+    RETURN;
+  END IF;
+
+  RETURN QUERY
+  SELECT * FROM public.historial_diseno WHERE pedido_id = p_id ORDER BY created_at ASC;
+END;
+$$;
+REVOKE ALL ON FUNCTION public.prodigy_revision_diseno_historial(uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.prodigy_revision_diseno_historial(uuid) TO anon, authenticated;
+
+DROP POLICY IF EXISTS "anon_diseno_review_select" ON pedidos;
+DROP POLICY IF EXISTS "anon_historial_select" ON historial_diseno;
+
+SELECT 'Patch 17/17 (revision-diseno lectura por RPC) aplicado' AS status;
