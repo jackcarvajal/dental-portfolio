@@ -42,9 +42,14 @@ BEGIN
             OLD.id, OLD.estado, NEW.estado;
     END IF;
 
-    -- Estado operativo interno
+    -- Estado operativo interno: permitido SOLO si lo activa una RPC de
+    -- confianza (prodigy_rd_aprobar/prodigy_rd_solicitar_cambio en
+    -- revision-diseno.html) vía set_config local a la transacción —
+    -- ver patch-trigger-restrict-vs-rpc-hotfix-2026.sql.
     IF NEW.estado_operativo IS DISTINCT FROM OLD.estado_operativo THEN
-        RAISE EXCEPTION 'PRODIGY_SECURITY: Clientes no pueden modificar estado_operativo';
+        IF current_setting('prodigy.allow_estado_change', true) IS DISTINCT FROM 'true' THEN
+            RAISE EXCEPTION 'PRODIGY_SECURITY: Clientes no pueden modificar estado_operativo';
+        END IF;
     END IF;
 
     -- Precio total
@@ -52,9 +57,9 @@ BEGIN
         RAISE EXCEPTION 'PRODIGY_SECURITY: Clientes no pueden modificar precio_total';
     END IF;
 
-    -- Precio saldo
-    IF NEW.precio_saldo IS DISTINCT FROM OLD.precio_saldo THEN
-        RAISE EXCEPTION 'PRODIGY_SECURITY: Clientes no pueden modificar precio_saldo';
+    -- Saldo pendiente
+    IF NEW.saldo_pendiente_monto IS DISTINCT FROM OLD.saldo_pendiente_monto THEN
+        RAISE EXCEPTION 'PRODIGY_SECURITY: Clientes no pueden modificar saldo_pendiente_monto';
     END IF;
 
     -- Pago confirmado (el cliente puede subir comprobante pero no confirmarlo)
