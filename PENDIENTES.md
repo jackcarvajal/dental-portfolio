@@ -24,7 +24,13 @@ Sin tocar (bajo riesgo, no aplica): `pruebas-carga.html` (herramienta interna de
 
 `sql/patch-revision-diseno-idor-2026.sql` — confirmado por Alejandro, "Patch 17 aplicado". Lectura de pedidos/historial ahora exige el UUID exacto vía RPC, ya no hay SELECT abierto de anon.
 
-**Riesgo residual sin resolver (a propósito):** los 7 `UPDATE` directos a `pedidos` en `revision-diseno.html` (aprobar, solicitar cambio, notas, pagos, fabricación) tienen el mismo problema de fondo — la política `anon_diseno_review_update` permite modificar CUALQUIER pedido en estado `REVISION_CLIENTE`, no solo el propio. No se tocó esta vez porque requiere refactor a RPC por cada acción y pruebas en vivo (aprobar un diseño real, solicitar cambio real, etc.) que no se pueden hacer sin acompañamiento. Evaluar en la próxima sesión con tiempo para probar en vivo.
+---
+
+## 🔴 Ejecutar SQL — revision-diseno.html: escritura sin filtro por pedido (patch 18/18)
+
+`sql/patch-revision-diseno-escritura-rpc-2026.sql` (ya incluido como patch 18 en el MAESTRO). Cierra el riesgo residual del patch 17: las políticas `anon_diseno_review_update` y `anon_diseno_postaprobacion_update` solo validaban el ESTADO de la fila, no el id — cualquiera con la anon key podía aprobar diseños ajenos o marcar pagos de fabricación como confirmados en CUALQUIER pedido en revisión, de un solo golpe. Se crearon 8 RPCs (`prodigy_rd_*`) que exigen el UUID exacto y `revision-diseno.html` ya está reescrito para usarlas (los 8 puntos que antes hacían UPDATE/INSERT directo). **Pendiente de ejecutar en Supabase.**
+
+**Importante al probar:** después de ejecutar este patch, probar en vivo un caso real en estado `REVISION_CLIENTE` — abrir `revision-diseno.html?id=...`, solicitar un cambio de prueba o aprobar, y confirmar que el flujo completo (incluida la notificación al equipo vía `logs_incidencias`) sigue funcionando igual que antes.
 
 ---
 
