@@ -91,9 +91,9 @@ async function subirSTL(file) {
 
     if (error) throw error;
 
-    // URL pública del archivo subido
-    const { data: { publicUrl } } = sb.storage.from('dental-cases').getPublicUrl(path);
-    return { path: data.path, url: publicUrl };
+    // Bucket privado — URL firmada (5 años)
+    const { data: signed } = await sb.storage.from('dental-cases').createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
+    return { path: data.path, url: signed?.signedUrl || null };
 }
 
 async function subirComprobante(file, pedidoId) {
@@ -106,8 +106,8 @@ async function subirComprobante(file, pedidoId) {
         .upload(path, file, { contentType: file.type });
 
     if (error) throw error;
-    const { data: { publicUrl } } = sb.storage.from('dental-cases').getPublicUrl(path);
-    return publicUrl;
+    const { data: signed } = await sb.storage.from('dental-cases').createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
+    return signed?.signedUrl || null;
 }
 
 /* ═══════════════════════════════════════

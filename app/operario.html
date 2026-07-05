@@ -800,7 +800,8 @@ async function ejecutarSubida() {
   async function upload(path, file) {
     const { error } = await sb.storage.from(BUCKET).upload(path, file, {upsert:true});
     if (error) throw new Error('Error subiendo '+path+': '+error.message);
-    return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+    const { data: signed } = await sb.storage.from(BUCKET).createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
+    return signed?.signedUrl || null;
   }
 
   try {

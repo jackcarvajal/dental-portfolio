@@ -719,8 +719,8 @@ async function subirFactura() {
     const path = `facturas/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
     const { error } = await sb.storage.from('evidencias-entrega').upload(path, _facturaFile);
     if (error) { toast('Error subiendo factura: ' + error.message, 'err'); return null; }
-    const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
-    return publicUrl;
+    const { data: signed } = await sb.storage.from('evidencias-entrega').createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
+    return signed?.signedUrl || null;
 }
 
 // ── Entrada ───────────────────────────────────────────────────────

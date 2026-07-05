@@ -652,8 +652,8 @@ async function confirmarCalidad() {
             .from('evidencias-entrega')
             .upload(path, file, { contentType: file.type, upsert: true });
         if (!eUp) {
-            const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
-            paths.push(publicUrl);
+            const { data: signed } = await sb.storage.from('evidencias-entrega').createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
+            if (signed?.signedUrl) paths.push(signed.signedUrl);
         }
     }
 
@@ -667,8 +667,8 @@ async function confirmarCalidad() {
             .from('evidencias-entrega')
             .upload(path, _comprobanteFile, { contentType: _comprobanteFile.type, upsert: true });
         if (!eCp) {
-            const { data: { publicUrl } } = sb.storage.from('evidencias-entrega').getPublicUrl(path);
-            comprobanteUrl = publicUrl;
+            const { data: signed } = await sb.storage.from('evidencias-entrega').createSignedUrl(path, 60 * 60 * 24 * 365 * 5);
+            comprobanteUrl = signed?.signedUrl || null;
         }
     }
 
