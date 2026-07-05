@@ -1408,3 +1408,70 @@ REVOKE EXECUTE ON FUNCTION public.prodigy_analytics_conversion(text,int) FROM an
 -- ============================================================
 
 SELECT 'Patch 13/13 (funnel) aplicado' AS status;
+
+-- ############################################################
+-- # 14/14 (agregado) — NOTIFICACIONES INTERNAS: p_rol del cliente + INSERT/UPDATE abiertos
+-- ############################################################
+-- ============================================================
+-- PRODIGY — Corregir autorización en notificaciones_internas
+--
+-- Hallazgos (auditoría 2026-07-04):
+-- 1. prodigy_mis_notifs(p_dept,p_rol,p_limit) confiaba en el p_rol
+--    ENVIADO POR EL CLIENTE para decidir si ve notificaciones admin
+--    (incluye tipo 'pago' con monto y doctor). Cualquier autenticado
+--    podía llamar rpc('prodigy_mis_notifs',{p_rol:'admin'}) y verlas.
+--    Fix: el rol ahora se toma siempre de auth.jwt()->app_metadata.
+-- 2. Política "sistema_inserta_notifs" (WITH CHECK true) permitía a
+--    CUALQUIER autenticado insertar notificaciones falsas. El trigger
+--    real es SECURITY DEFINER y no depende de esta política.
+--    Fix: restringir INSERT a roles de staff.
+-- 3. Política "staff_marca_leida" (USING true, WITH CHECK true)
+--    permitía a cualquier autenticado modificar CUALQUIER columna de
+--    CUALQUIER notificación. El único caso de uso real (marcar
+--    leída) ya pasa por la RPC prodigy_marcar_notifs_leidas (segura,
+--    usa auth.uid()). Fix: eliminar la política de UPDATE directo.
+-- ============================================================
+
+CREATE OR REPLACE FUNCTION public.prodigy_mis_notifs(
+  p_dept text DEFAULT NULL,
+  p_rol  text DEFAULT NULL,
+  p_limit int DEFAULT 15
+)
+RETURNS TABLE (
+  id uuid, created_at timestamptz, tipo text, prioridad text,
+  titulo text, mensaje text, pedido_codigo text, accion_url text,
+  es_nueva boolean
+) LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+  _uid uuid := auth.uid();
+  _rol_real text := auth.jwt() -> 'app_metadata' ->> 'role';
+BEGIN
+  IF _uid IS NULL THEN
+    RETURN;
+  END IF;
+
+  RETURN QUERY
+  SELECT
+    n.id, n.created_at, n.tipo, n.prioridad,
+    n.titulo, n.mensaje, n.pedido_codigo, n.accion_url,
+    NOT (_uid = ANY(n.leida_por)) AS es_nueva
+  FROM public.notificaciones_internas n
+  WHERE
+    (n.destinatario_dept IS NULL OR n.destinatario_dept = p_dept)
+    AND (n.destinatario_rol IS NULL OR n.destinatario_rol = _rol_real OR _rol_real IN ('admin','superadmin'))
+    AND n.created_at > now() - interval '7 days'
+  ORDER BY n.prioridad DESC, n.created_at DESC
+  LIMIT p_limit;
+END;
+$$;
+
+DROP POLICY IF EXISTS "sistema_inserta_notifs" ON public.notificaciones_internas;
+CREATE POLICY "staff_inserta_notifs" ON public.notificaciones_internas
+  FOR INSERT TO authenticated
+  WITH CHECK (
+    auth.jwt() -> 'app_metadata' ->> 'role' IN ('admin','superadmin','operario','operator','staff')
+  );
+
+DROP POLICY IF EXISTS "staff_marca_leida" ON public.notificaciones_internas;
+
+SELECT 'Patch 14/14 (notificaciones_internas) aplicado' AS status;
