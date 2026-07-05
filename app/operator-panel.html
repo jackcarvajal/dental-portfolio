@@ -429,7 +429,7 @@ function filtrarOperator() {
         (p.codigo||'').toLowerCase().includes(q) ||
         (p.nombre_doctor||'').toLowerCase().includes(q) ||
         (p.material||'').toLowerCase().includes(q) ||
-        (p.servicio||'').toLowerCase().includes(q)
+        (p.tipo_trabajo||'').toLowerCase().includes(q)
     );
     if (est === 'pendiente') filtrados = filtrados.filter(p => PEND.includes(p.estado_operativo));
     else if (est === 'produccion') filtrados = filtrados.filter(p => PROD.includes(p.estado_operativo));
@@ -448,7 +448,7 @@ function filtrarOperator() {
 
 async function cargarPedidos() {
     const { data, error } = await sb.from('pedidos')
-        .select('id, codigo, nombre_paciente, nombre_doctor, servicio, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo, pago_estado, precio_total, whatsapp, pais, fecha_entrega_estimada')
+        .select('id, codigo, nombre_paciente, nombre_doctor, tipo_trabajo, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo, pago_estado, precio_total, telefono, pais, fecha_entrega')
         .not('estado', 'in', '("cancelado","CANCELADO")')
         .in('flujo', ['fresado','lab','impresion',''])   /* Excluir flujo=diseno — tiene su propio panel */
         .order('created_at', { ascending: false })
@@ -521,10 +521,10 @@ function cardHTML(p, col) {
         <div class="caso-nombre">${escH(p.nombre_paciente) || 'Sin nombre'}</div>
         ${p.nombre_doctor ? `<div style="font-size:.72rem;font-weight:700;color:var(--cyan);margin:2px 0;">Dr. ${escH(p.nombre_doctor)}</div>` : ''}
         <div class="caso-meta">
-            ${escH(p.servicio) || '—'}<br>
+            ${escH(p.tipo_trabajo) || '—'}<br>
             ${p.material ? 'Material: ' + escH(p.material) : ''}
             ${p.color_vita ? ' · Color: ' + escH(p.color_vita) : ''}
-            ${p.fecha_entrega_estimada ? `<br><span style="font-size:.7rem;color:var(--gold);">📅 ${new Date(p.fecha_entrega_estimada).toLocaleDateString('es-CO',{day:'2-digit',month:'short'})}</span>` : ''}
+            ${p.fecha_entrega ? `<br><span style="font-size:.7rem;color:var(--gold);">📅 ${new Date(p.fecha_entrega).toLocaleDateString('es-CO',{day:'2-digit',month:'short'})}</span>` : ''}
         </div>
         <div class="caso-actions">${actions}</div>
     </div>`;
@@ -562,11 +562,11 @@ async function notificarWA(pedido, nuevoEstado) {
             body: JSON.stringify({
                 nuevo_estado:   nuevoEstado,
                 codigo:         pedido.codigo,
-                nombre_doctor:  pedido.nombre_doctor || pedido.doctor,
-                whatsapp:       pedido.whatsapp,
+                nombre_doctor:  pedido.nombre_doctor,
+                whatsapp:       pedido.telefono,
                 pais:           pedido.pais,
-                servicio:       pedido.servicio,
-                fecha_entrega:  pedido.fecha_entrega_estimada,
+                servicio:       pedido.tipo_trabajo,
+                fecha_entrega:  pedido.fecha_entrega,
                 recibo_url:     `https://prodigylabdental.com/recibo-caso?id=${pedido.codigo || pedido.id}`,
             }),
         });
@@ -632,7 +632,7 @@ async function avanzarEstado(pedidoId, nuevoEstado) {
     const _WA_HITOS = ['EN_PRODUCCION','FRESADO_INICIADO','QA_APROBADO','LISTO_DESPACHAR','EN_REPARTO','ENTREGADO'];
     if (_WA_HITOS.includes(nuevoEstado)) {
         const _p = _pedidos.find(p => p.id === pedidoId);
-        if (_p?.whatsapp) {
+        if (_p?.telefono) {
             notificarWA(_p, nuevoEstado);
         }
     }
@@ -939,7 +939,7 @@ avanzarEstado = async function(pedidoId, nuevoEstado) {
         }
         _produccionPendiente = { pedidoId };
         document.getElementById('modal-maq-codigo').textContent =
-            `Caso #${p?.codigo || pedidoId.slice(0,8)} — ${p?.servicio || ''} · ${p?.material || ''}`;
+            `Caso #${p?.codigo || pedidoId.slice(0,8)} — ${p?.tipo_trabajo || ''} · ${p?.material || ''}`;
         // Pre-seleccionar máquina según flujo
         const flujo = p?.flujo || '';
         const sel = document.getElementById('maq-equipo');
@@ -1061,7 +1061,7 @@ aprobarQA = async function() {
     // Notificar al área de calidad y al admin
     const pushBody = {
         titulo: `📦 Caso listo para empacar — #${p?.codigo || ''}`,
-        cuerpo:  `${p?.servicio || 'Caso'} aprobó QA técnico. Confirmar empaque y despacho.`,
+        cuerpo:  `${p?.tipo_trabajo || 'Caso'} aprobó QA técnico. Confirmar empaque y despacho.`,
         url:     '/app/calidad.html',
         rol:     'calidad',
     };
@@ -1089,7 +1089,7 @@ aprobarQA = async function() {
 
     // Mostrar modal de éxito con acceso rápido a calidad
     document.getElementById('modal-qa-handoff-sub').textContent =
-        `Caso #${p?.codigo || ''} — ${p?.servicio || ''} · Área de calidad fue notificada para empaque y despacho.`;
+        `Caso #${p?.codigo || ''} — ${p?.tipo_trabajo || ''} · Área de calidad fue notificada para empaque y despacho.`;
     document.getElementById('modal-handoff-qa').style.display = 'flex';
 };
 
@@ -1262,7 +1262,7 @@ function renderBulkList() {
         const ok = item.magicOk && item.pedido && item.status === 'pending';
         const color = !item.magicOk ? '#ef4444' : !item.pedido ? '#fbbf24' : item.status === 'done' ? '#00FF41' : item.status === 'uploading' ? '#00d2ff' : '#94a3b8';
         const icon  = !item.magicOk ? '🚫' : !item.pedido ? '⚠️' : item.status === 'done' ? '✅' : item.status === 'uploading' ? '⬆' : '📄';
-        const label = !item.magicOk ? item.magicMsg : !item.pedido ? `ID "${item.caseId}" no encontrado` : item.status === 'done' ? 'Subido' : item.pedido.codigo + ' — ' + (item.pedido.servicio || '');
+        const label = !item.magicOk ? item.magicMsg : !item.pedido ? `ID "${item.caseId}" no encontrado` : item.status === 'done' ? 'Subido' : item.pedido.codigo + ' — ' + (item.pedido.tipo_trabajo || '');
         return `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;">
           <span style="font-size:1.2rem;">${icon}</span>
           <div style="flex:1;min-width:0;">

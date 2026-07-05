@@ -393,7 +393,7 @@ function switchTab(id, el) {
 async function cargarCasos() {
     const { data, error } = await sb
         .from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,servicio,estado_operativo,precio_total,pago_estado,modalidad_cobro,saldo_pendiente_monto,comprobante_abono_url,fotos_empaque,nota_calidad,flujo,whatsapp,created_at,timestamp_qa')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,estado_operativo,precio_total,pago_estado,modalidad_cobro,saldo_pendiente_monto,comprobante_abono_url,fotos_empaque,nota_calidad,flujo,telefono,created_at,timestamp_qa')
         .in('estado_operativo', ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO'])
         .order('timestamp_qa', { ascending: false, nullsFirst: false });
 
@@ -451,7 +451,7 @@ function renderCard(p, done) {
         </div>
         <div>
             <div class="case-nombre">${escH(nombre)}</div>
-            <div class="case-serv">${escH(p.servicio || '—')}</div>
+            <div class="case-serv">${escH(p.tipo_trabajo || '—')}</div>
         </div>
         <div class="case-meta">
             <span class="meta-tag">${escH(p.flujo || 'producción')}</span>
@@ -698,8 +698,8 @@ async function confirmarCalidad() {
     const p = _activePedido;
 
     // Si pagó completo → enviar link de recibo por WA
-    if (modalidad === 'completo' && p?.whatsapp) {
-        const wa  = String(p.whatsapp).replace(/\D/g, '');
+    if (modalidad === 'completo' && p?.telefono) {
+        const wa  = String(p.telefono).replace(/\D/g, '');
         const url = `https://prodigylabdental.com/recibo-caso?id=${p.codigo || pedidoId}`;
         const txt = encodeURIComponent(
             `✅ *Pago confirmado* — Caso #${p.codigo || ''}\n\nHola Doctor, confirmamos recibo de pago completo por *${new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(p.precio_total)}*.\n\nTu recibo: ${url}\n\n_PRODIGY Lab Dental_`
@@ -714,7 +714,7 @@ async function confirmarCalidad() {
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
             body: JSON.stringify({
                 titulo:  `🚀 Listo para despacho — Caso #${p?.codigo || ''}` + (saldoMonto ? ` · Cobrar $${(saldoMonto/1000).toFixed(0)}k` : ''),
-                cuerpo:  `${p?.servicio || 'Caso'} pasó calidad. Modalidad: ${modalidad === 'contra_entrega' ? 'Cobrar saldo en entrega' : modalidad}`,
+                cuerpo:  `${p?.tipo_trabajo || 'Caso'} pasó calidad. Modalidad: ${modalidad === 'contra_entrega' ? 'Cobrar saldo en entrega' : modalidad}`,
                 url:     '/app/panel-interno-operaciones.html',
                 rol:     'admin',
             }),

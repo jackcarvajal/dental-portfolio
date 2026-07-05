@@ -247,7 +247,7 @@ window.sb = sb;
             // Obtener datos del pedido para el mensaje WA
             const { data: caso, error } = await sb
                 .from('pedidos')
-                .select('codigo, nombre_doctor, telefono, servicio, moneda, monto_total')
+                .select('codigo, nombre_doctor, telefono, tipo_trabajo, moneda, monto_total, precio_total')
                 .eq('codigo', caseId)
                 .single();
 

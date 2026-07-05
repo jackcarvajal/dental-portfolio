@@ -972,7 +972,7 @@ async function cargarSolicitudes() {
     wrap.innerHTML = '<p style="color:var(--txt3);text-align:center;padding:24px;">Cargando…</p>';
 
     const { data: pedidos, error } = await sb.from('pedidos')
-        .select('id,codigo,nombre_paciente,servicio,material,flujo,estado_operativo,departamento_actual,created_at,timestamp_produccion')
+        .select('id,codigo,nombre_paciente,tipo_trabajo,material,flujo,estado_operativo,departamento_actual,created_at,timestamp_produccion')
         .in('estado_operativo', ['EN_PRODUCCION','FRESADO_INICIADO','VALIDACION_PENDIENTE'])
         .in('flujo', ['fresado','lab','impresion'])
         .order('created_at', { ascending: true })
@@ -1017,7 +1017,7 @@ async function cargarSolicitudes() {
             return `<tr style="border-bottom:1px solid var(--border);">
               <td style="padding:10px 8px;font-family:monospace;font-weight:700;">#${escH(p.codigo || p.id.slice(0,8))}</td>
               <td style="padding:10px 8px;">
-                <div style="font-weight:600;">${escH(p.servicio || '—')}</div>
+                <div style="font-weight:600;">${escH(p.tipo_trabajo || '—')}</div>
                 <div style="font-size:.75rem;color:var(--txt3);">${escH(p.material || 'Sin especificar')}</div>
               </td>
               <td style="padding:10px 8px;font-size:1.1rem;" title="${escH(p.flujo || '')}">${DEPT_ICON[p.flujo || ''] || '📦'}</td>

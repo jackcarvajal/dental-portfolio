@@ -38,6 +38,14 @@ ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS flujo text;
 
 CREATE INDEX IF NOT EXISTS idx_pedidos_flujo ON public.pedidos(flujo);
 
+-- app/calidad.html (panel de control de calidad) también referencia
+-- nombre_cliente y nota_calidad, que tampoco existen y no tienen un
+-- equivalente semántico claro entre las columnas ya existentes
+-- (nombre_paciente es el paciente, no el cliente/clínica; notas_operador
+-- es de otro flujo) — se agregan como columnas reales.
+ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS nombre_cliente text;
+ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS nota_calidad text;
+
 -- ── VERIFICACIÓN ─────────────────────────────────────────────────
 -- SELECT column_name FROM information_schema.columns
 -- WHERE table_name='pedidos' AND column_name='flujo';
