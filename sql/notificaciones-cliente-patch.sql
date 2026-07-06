@@ -1,6 +1,13 @@
 -- ============================================================
 -- PRODIGY — Patch: notificaciones para clientes + WA automático
 -- Ejecutar en Supabase Dashboard → SQL Editor
+--
+-- ⚠️ SUPERSEDED (sección 4, prodigy_notif_pedido()): usa columnas
+-- fantasma (NEW.departamento, NEW.servicio, NEW.urgente) que ya NO
+-- existen. NO reejecutar esa sección — usar
+-- sql/patch-notif-pedido-hotfix-columnas-2026.sql (ya aplicado en
+-- producción). Las secciones 1-3 (columnas nuevas, RLS de cliente)
+-- siguen vigentes.
 -- ============================================================
 
 -- 1. Agregar columna destinatario_user_id (cliente específico)

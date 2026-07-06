@@ -1,6 +1,14 @@
 -- ============================================================
 -- PRODIGY — Sistema de notificaciones internas por rol
 -- Ejecutar en Supabase Dashboard → SQL Editor
+--
+-- ⚠️ SUPERSEDED: la función prodigy_notif_pedido() de este archivo
+-- (sección 3) usa columnas fantasma (NEW.departamento, NEW.servicio,
+-- NEW.urgente) que ya NO existen en pedidos. NO reejecutar esa
+-- sección — usar sql/patch-notif-pedido-hotfix-columnas-2026.sql
+-- (ya aplicado en producción) que la reemplaza correctamente.
+-- El resto de este archivo (tabla, RLS, RPCs de notificaciones) sigue
+-- vigente, ya con sus propios hotfixes posteriores aplicados encima.
 -- ============================================================
 
 -- 1. Tabla de notificaciones
