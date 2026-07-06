@@ -14,11 +14,9 @@
 
 ---
 
-## 🔴 URGENTE — Ejecutar SQL: trigger de referidos rompía la confirmación de pago (patch 25/25)
+## ✅ SQL ejecutado (2026-07-05) — trigger de referidos que rompía la confirmación de pago (patch 25/25)
 
-Encontrado en el mismo barrido: `prodigy_detectar_primer_pedido_referido()` (se dispara en cada UPDATE de `pago_estado` a `pago_confirmado`, y en cada INSERT con `codigo_referido`) usaba `NEW.doctor` — columna inexistente. **Confirmar el pago de cualquier pedido que tenga un código de referido asociado fallaba por completo** ("record new has no field doctor"), revirtiendo la actualización de `pago_estado`.
-
-Ya corregido en código (`sql/patch-referidos-trigger-columna-fantasma-2026.sql`, incluido como patch 25 en el MAESTRO) — usa `NEW.nombre_doctor`. **Pendiente de ejecutar en Supabase.**
+Confirmado por Alejandro, "Patch 25 aplicado". `prodigy_detectar_primer_pedido_referido()` usaba `NEW.doctor` (columna inexistente) — confirmar el pago de cualquier pedido con código de referido fallaba por completo. Corregido a `NEW.nombre_doctor`.
 
 ---
 
