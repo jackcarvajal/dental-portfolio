@@ -2067,4 +2067,65 @@ BEGIN
 END;
 $$;
 
-SELECT 'Patch 25/25 (referidos trigger columna fantasma) aplicado' AS status;
+SELECT 'Patch 25/26 (referidos trigger columna fantasma) aplicado' AS status;
+
+-- ############################################################
+-- # 26/26 (agregado 2026-07-06) — CRITICO: buscar_pedido_publico() usa nonce/servicio (no existen)
+-- ############################################################
+-- La RPC publica que usa seguimiento-caso.html para que cualquier
+-- cliente (sin login) consulte el estado de su pedido por codigo
+-- referencia 2 columnas inexistentes ("nonce" bare y "p.servicio").
+-- La pagina publica de seguimiento nunca ha podido mostrar un pedido
+-- real -- fallaba con "column does not exist" en cada llamada.
+
+CREATE OR REPLACE FUNCTION public.buscar_pedido_publico(
+    p_codigo TEXT,
+    p_nonce  TEXT DEFAULT NULL
+)
+RETURNS JSON
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+    result JSON;
+    v_nonce TEXT;
+BEGIN
+    SELECT hash_seguridad INTO v_nonce
+    FROM pedidos
+    WHERE upper(trim(codigo)) = upper(trim(p_codigo))
+    LIMIT 1;
+
+    IF v_nonce IS NOT NULL AND p_nonce IS NULL THEN
+        RETURN NULL;
+    END IF;
+
+    IF v_nonce IS NOT NULL AND p_nonce IS NOT NULL AND v_nonce <> p_nonce THEN
+        RETURN NULL;
+    END IF;
+
+    SELECT json_build_object(
+        'codigo',        p.codigo,
+        'servicio',      p.tipo_trabajo,
+        'material',      p.material,
+        'submaterial',   p.submaterial,
+        'color_vita',    p.color_vita,
+        'cantidad',      p.cantidad,
+        'estado',        p.estado::text,
+        'fecha_entrega', p.fecha_entrega,
+        'flujo',         p.flujo,
+        'created_at',    p.created_at
+    )
+    INTO result
+    FROM pedidos p
+    WHERE upper(trim(p.codigo)) = upper(trim(p_codigo))
+    LIMIT 1;
+
+    RETURN result;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.buscar_pedido_publico(TEXT, TEXT) TO anon;
+GRANT EXECUTE ON FUNCTION public.buscar_pedido_publico(TEXT, TEXT) TO authenticated;
+
+SELECT 'Patch 26/26 (buscar_pedido_publico columnas) aplicado' AS status;

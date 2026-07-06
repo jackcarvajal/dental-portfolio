@@ -188,7 +188,7 @@ function render(pedido, revisiones){
   };
 
   // Precio: USD para internacionales, COP para locales
-  const totalUsd = pedido.precio_usd || (total ? copToUsd(total) : null);
+  const totalUsd = pedido.total_usd || (total ? copToUsd(total) : null);
   const fmtTotal = _isIntl
     ? (totalUsd ? fmtUSD(totalUsd) : (total ? fmtCOP(total)+' COP' : '—'))
     : (total ? fmtCOP(total) : '—');
@@ -361,7 +361,7 @@ function render(pedido, revisiones){
 
   try{
     const _id=encodeURIComponent(id);
-    let{data,error}=await sb.from('pedidos').select('*,factura_pdf_url,factura_numero,factura_cufe,requiere_factura,factura_estado,pais,precio_usd,precio_total').or(`id.eq.${_id},codigo.eq.${_id}`).maybeSingle();
+    let{data,error}=await sb.from('pedidos').select('*,factura_pdf_url,factura_numero,factura_cufe,requiere_factura,factura_estado,pais,total_usd,precio_total').or(`id.eq.${_id},codigo.eq.${_id}`).maybeSingle();
     if(!data){
       const r2=await sb.from('pedidos').select('*').eq('codigo',id).maybeSingle();
       if(!r2.data){
