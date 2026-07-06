@@ -14,6 +14,20 @@
 
 ---
 
+## 🔴 URGENTE — Ejecutar SQL: trigger de referidos rompía la confirmación de pago (patch 25/25)
+
+Encontrado en el mismo barrido: `prodigy_detectar_primer_pedido_referido()` (se dispara en cada UPDATE de `pago_estado` a `pago_confirmado`, y en cada INSERT con `codigo_referido`) usaba `NEW.doctor` — columna inexistente. **Confirmar el pago de cualquier pedido que tenga un código de referido asociado fallaba por completo** ("record new has no field doctor"), revirtiendo la actualización de `pago_estado`.
+
+Ya corregido en código (`sql/patch-referidos-trigger-columna-fantasma-2026.sql`, incluido como patch 25 en el MAESTRO) — usa `NEW.nombre_doctor`. **Pendiente de ejecutar en Supabase.**
+
+---
+
+## ✅ Fix de código (2026-07-05) — panel de cotizaciones nunca pudo cargar ni guardar
+
+`app/cotizaciones.html` usaba `doctor`/`email`/`whatsapp`/`codigo` en su SELECT y al guardar — ninguna existe en la tabla real `cotizaciones` (columnas reales: `doctor_nombre`, `doctor_email`, `doctor_tel`; `codigo` no existe en absoluto). Ya corregido y pusheado — los fallbacks que ya estaban en el código (`c.doctor||c.doctor_nombre`) ahora sí encuentran datos.
+
+---
+
 ## ✅ Auditoría de STL/roles (2026-07-05) — sin hallazgos críticos adicionales
 
 Se auditó el flujo completo de subida de STL (los 4 flujos + `client-panel.html`/`operario.html`/`operario-diseno.html`) y el sistema de roles (`js/auth-guard.js`, `DEST_MAP`). Todo correcto: sin más columnas fantasma, `createSignedUrl()` usado consistentemente, autorización siempre vía `app_metadata.role`. 2 hallazgos menores ya corregidos: comentario desactualizado en `flujo-uploader.js` (decía que el bucket era público) y `DEST_MAP` duplicado en `panel-interno-operaciones.html` desincronizado del de `auth-guard.js` (le faltaba el rol `client` y usaba rutas relativas).
