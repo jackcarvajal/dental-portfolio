@@ -1,6 +1,14 @@
 # PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-07-05 (sesión autónoma continua)
+> Solo tareas activas. Última revisión: 2026-07-06 (sesión autónoma continua)
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
+
+---
+
+## 🔴 URGENTE — Ejecutar SQL: buscar_pedido_publico() rota desde siempre (patch 26/26)
+
+La RPC pública que usa `seguimiento-caso.html` (y el equivalente de Alejandro) para que **cualquier cliente sin login** consulte el estado de su pedido por código usaba `nonce` (real: `hash_seguridad`) y `p.servicio` (real: `tipo_trabajo`) — columnas inexistentes. **La página pública de seguimiento nunca ha podido mostrar un pedido real.**
+
+Ya corregido en código (`sql/patch-buscar-pedido-publico-columnas-2026.sql`, incluido como patch 26 en el MAESTRO). También se corrigió `recibo-caso.html` (usaba `precio_usd`, real: `total_usd`). Verificados sin hallazgos: `stripe-webhook.js`, webhook de Wompi, `functions/api/factura.js` (Alegra/Factus). **Pendiente de ejecutar en Supabase.**
 
 ---
 
