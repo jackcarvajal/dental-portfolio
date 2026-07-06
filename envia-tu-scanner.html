@@ -899,14 +899,13 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
                 }
             });
             if (!signUpErr && signUpData?.user) {
-                // Insertar en tabla doctores si no existe
-                await sb.from('doctores').upsert({
-                    user_id: signUpData.user.id,
-                    email,
+                // Insertar en tabla doctores_perfil si no existe (id = auth.users.id, sin columna user_id/email propia)
+                await sb.from('doctores_perfil').upsert({
+                    id: signUpData.user.id,
                     nombre: doctor,
                     clinica,
                     whatsapp
-                }, { onConflict: 'user_id', ignoreDuplicates: true }).catch(()=>{});
+                }, { onConflict: 'id', ignoreDuplicates: true }).catch(()=>{});
 
                 // Enviar WA al doctor invitándolo al portal
                 // WA notification
