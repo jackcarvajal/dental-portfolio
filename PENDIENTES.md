@@ -4,11 +4,11 @@
 
 ---
 
-## 🔴 URGENTE — Ejecutar SQL: buscar_pedido_publico() rota desde siempre (patch 26/26)
+## ✅ SQL ejecutado (2026-07-06) — buscar_pedido_publico() (patch 26/26)
 
-La RPC pública que usa `seguimiento-caso.html` (y el equivalente de Alejandro) para que **cualquier cliente sin login** consulte el estado de su pedido por código usaba `nonce` (real: `hash_seguridad`) y `p.servicio` (real: `tipo_trabajo`) — columnas inexistentes. **La página pública de seguimiento nunca ha podido mostrar un pedido real.**
+Confirmado, "Patch 26 aplicado". La RPC pública de seguimiento (`nonce`→`hash_seguridad`, `p.servicio`→`tipo_trabajo`) ya funciona. También corregido `recibo-caso.html` (`precio_usd`→`total_usd`). Verificados sin hallazgos: `stripe-webhook.js`, webhook de Wompi, `functions/api/factura.js`.
 
-Ya corregido en código (`sql/patch-buscar-pedido-publico-columnas-2026.sql`, incluido como patch 26 en el MAESTRO). También se corrigió `recibo-caso.html` (usaba `precio_usd`, real: `total_usd`). Verificados sin hallazgos: `stripe-webhook.js`, webhook de Wompi, `functions/api/factura.js` (Alegra/Factus). **Pendiente de ejecutar en Supabase.**
+**Con esto se cierra el barrido completo de columnas fantasma por código.** Solo queda pendiente la prueba en vivo (crear un pedido real de principio a fin) para validar todo de punta a punta.
 
 ---
 
