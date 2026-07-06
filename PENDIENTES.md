@@ -8,7 +8,13 @@
 
 Confirmado, "Patch 26 aplicado". La RPC pública de seguimiento (`nonce`→`hash_seguridad`, `p.servicio`→`tipo_trabajo`) ya funciona. También corregido `recibo-caso.html` (`precio_usd`→`total_usd`). Verificados sin hallazgos: `stripe-webhook.js`, webhook de Wompi, `functions/api/factura.js`.
 
-**Con esto se cierra el barrido completo de columnas fantasma por código.** Solo queda pendiente la prueba en vivo (crear un pedido real de principio a fin) para validar todo de punta a punta.
+## ✅ Fix de código (2026-07-06) — envia-tu-scanner.html usaba tabla "doctores" inexistente
+
+Al registrar un doctor vía el formulario de escáner, se hacía `upsert` en tabla `doctores` (no existe) con columnas `user_id`/`email` (tampoco existen en la tabla real `doctores_perfil`, cuya llave primaria es `id = auth.users.id` directamente). El perfil del doctor nunca se creaba tras el registro. Ya corregido y pusheado.
+
+Verificados a fondo y **limpios**: `flujo-fresado.html`, `flujo-lab.html`, `js/flujo-impresion.js`, `js/flujo-uploader.js` (línea por línea, no solo el INSERT ya conocido) — todos usan columnas reales y `createSignedUrl` correctamente.
+
+**Con esto se cierra el barrido completo de columnas fantasma por código en ambos proyectos.** Solo queda pendiente la prueba en vivo (crear un pedido real de principio a fin) para validar todo de punta a punta.
 
 ---
 
