@@ -1449,19 +1449,21 @@ async function verificarAdmin() {
         const esAdmin = ADMIN_EMAILS.includes(email.toLowerCase());
 
         if (!esAdmin) {
+            // Mantener sincronizado con DEST_MAP de js/auth-guard.js
             const DEST_MAP = {
-                operator:             'operator-panel.html',
-                mensajero:            'mensajero.html',
-                encargado_inventario: 'inventario.html',
-                calidad:              'calidad.html',
-                contabilidad:         'contabilidad.html',
-                diseno:               'operario-diseno.html',
-                taller:               'taller.html',
-                fresado:              'operario.html',
-                impresion:            'operario.html',
+                operator:             '/app/operator-panel.html',
+                mensajero:            '/app/mensajero.html',
+                encargado_inventario: '/app/inventario.html',
+                calidad:              '/app/calidad.html',
+                contabilidad:         '/app/contabilidad.html',
+                diseno:               '/app/operario-diseno.html',
+                taller:               '/app/taller.html',
+                fresado:              '/app/operario.html',
+                impresion:            '/app/operario.html',
+                client:               '/app/client-panel.html',
             };
             const staffRole = (user.app_metadata || {}).role || '';
-            window.location.href = DEST_MAP[staffRole] || 'client-panel.html';
+            window.location.href = DEST_MAP[staffRole] || '/app/client-panel.html';
             return;
         }
 
