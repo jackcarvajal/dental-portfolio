@@ -4,15 +4,21 @@
 
 ---
 
-## 🔴 URGENTE — Ejecutar SQL: pedidos nunca ha guardado un solo registro (patch 24/24)
+## 🟡 PRUEBA EN VIVO PENDIENTE — pedidos nunca ha guardado un solo registro (patch 24/24 YA EJECUTADO)
 
-**El hallazgo más grave de toda la auditoría.** Al probar en vivo (2026-07-05) se confirmó con `SELECT count(*) FROM pedidos;` → **0 filas, nunca ha habido ninguna**. Causa: los 4 flujos donde un doctor crea un pedido (`flujo-diseno.html`, `flujo-fresado.html`, `flujo-lab.html`, `js/flujo-impresion.js`) insertaban con columnas que **nunca existieron** en la tabla real (`doctor`, `whatsapp`, `servicio`, `total`, `link_stl`, `nonce`, `flujo`, `fuente_pago`, `software_diseno`). Postgres rechaza el INSERT completo por columna inexistente; los 4 archivos atrapan el error con `console.warn` (o en silencio) sin detener el checkout — el cliente veía "éxito" sin que el pedido se guardara jamás.
+**El hallazgo más grave de toda la auditoría.** Se confirmó con `SELECT count(*) FROM pedidos;` → 0 filas, nunca ha habido ninguna. Causa: los 4 flujos donde un doctor crea un pedido insertaban con columnas que nunca existieron (`doctor`, `whatsapp`, `servicio`, `total`, `link_stl`, `nonce`, `flujo`, `fuente_pago`, `software_diseno`) — el cliente veía "éxito" sin que el pedido se guardara jamás.
 
-**Ya corregido en código** (commiteado y pusheado, se despliega solo): los 4 flujos de creación + ~10 paneles de staff (`operario.html`, `operario-diseno.html`, `operator-panel.html`, `panel-interno-operaciones.html`, `inventario.html`, `calidad.html`, `contabilidad.html`, `mensajero.html`, `success.html`) que también referenciaban las mismas columnas fantasma en sus consultas — **el panel de trabajo de los operarios de diseño nunca pudo cargar un solo caso** por el mismo motivo.
+**Ya corregido en código y SQL ejecutado** (patch 24 confirmado por Alejandro — agregó `flujo`, `nombre_cliente`, `nota_calidad`, `direccion`). Corregidos: los 4 flujos de creación + ~10 paneles de staff que referenciaban las mismas columnas fantasma.
 
-**Pendiente de ejecutar en Supabase** — `sql/patch-pedidos-columnas-fantasma-flujo-2026.sql` (ya incluido como patch 24 en el MAESTRO). Agrega 4 columnas reales que el código ya usa extensamente y nunca se crearon: `flujo`, `nombre_cliente`, `nota_calidad`, `direccion`.
+**FALTA LA PRUEBA REAL** — Alejandro no pudo hacerla en esta sesión (sin tiempo). **Antes de dar esto por cerrado**: crear un pedido de prueba real desde `flujo-diseno.html` (o cualquiera de los 4 flujos) hasta el final, y confirmar con `SELECT * FROM pedidos ORDER BY created_at DESC LIMIT 1;` que se guardó. Si falla, revisar la consola del navegador (F12) al enviar — el mensaje empieza con `[PRODIGY] Pedido diseño no guardado:` y da el error exacto.
 
-**Después de ejecutar, PRUEBA REAL OBLIGATORIA**: crea un pedido de prueba real desde `flujo-diseno.html` (o cualquiera de los 4 flujos) y confirma con `SELECT * FROM pedidos ORDER BY created_at DESC LIMIT 1;` que se guardó correctamente. Este es el flujo de ingreso de ingresos del negocio — no des la tarea por cerrada sin esta prueba.
+---
+
+## ✅ Auditoría de STL/roles (2026-07-05) — sin hallazgos críticos adicionales
+
+Se auditó el flujo completo de subida de STL (los 4 flujos + `client-panel.html`/`operario.html`/`operario-diseno.html`) y el sistema de roles (`js/auth-guard.js`, `DEST_MAP`). Todo correcto: sin más columnas fantasma, `createSignedUrl()` usado consistentemente, autorización siempre vía `app_metadata.role`. 2 hallazgos menores ya corregidos: comentario desactualizado en `flujo-uploader.js` (decía que el bucket era público) y `DEST_MAP` duplicado en `panel-interno-operaciones.html` desincronizado del de `auth-guard.js` (le faltaba el rol `client` y usaba rutas relativas).
+
+**Verificar cuando puedas** (no bloqueante): `sql/migrate-storage-pedidos-archivos.sql` (migración antigua) deja el bucket `pedidos-archivos` como público — solo es correcto si `patch-storage-buckets-privados-2026.sql` se ejecutó *después* en producción (que debería ser el caso). Confirmar con `SELECT public FROM storage.buckets WHERE id='pedidos-archivos';` → debe dar `false`.
 
 ---
 
