@@ -18,7 +18,7 @@ BEGIN
      (OLD.pago_estado IS DISTINCT FROM 'pago_confirmado') THEN
 
     -- Obtener email del doctor del pedido
-    v_email := COALESCE(NEW.email, NEW.doctor);
+    v_email := COALESCE(NEW.email, NEW.nombre_doctor);
 
     -- Buscar código de referido en el pedido
     v_codigo := NEW.codigo_referido;

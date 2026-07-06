@@ -184,7 +184,7 @@ async function cargar() {
   document.getElementById('tabla-cuerpo').innerHTML = '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>';
   try {
     const { data, error } = await sb.from('cotizaciones')
-      .select('id,created_at,updated_at,tipo,doctor,doctor_nombre,doctor_email,email,whatsapp,doctor_tel,total,moneda,estado,expira_at,notas,negocio,codigo')
+      .select('id,created_at,updated_at,tipo,doctor_nombre,doctor_email,doctor_tel,total,moneda,estado,expira_at,notas,negocio')
       .eq('negocio','prodigy')
       .order('created_at',{ascending:false})
       .limit(200);
@@ -300,11 +300,9 @@ function cerrarModal() { document.getElementById('modal').style.display='none'; 
 async function guardarCotizacion() {
   const id=document.getElementById('m-id').value;
   const payload={
-    doctor: document.getElementById('m-doctor').value.trim()||null,
     doctor_nombre: document.getElementById('m-doctor').value.trim()||null,
-    email: document.getElementById('m-email').value.trim()||null,
     doctor_email: document.getElementById('m-email').value.trim()||null,
-    whatsapp: document.getElementById('m-wa').value.trim()||null,
+    doctor_tel: document.getElementById('m-wa').value.trim()||null,
     tipo: document.getElementById('m-tipo').value,
     total: Number(document.getElementById('m-total').value)||0,
     subtotal: Number(document.getElementById('m-total').value)||0,

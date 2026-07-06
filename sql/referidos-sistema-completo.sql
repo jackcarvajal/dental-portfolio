@@ -51,7 +51,7 @@ BEGIN
      NEW.codigo_referido IS NOT NULL THEN
 
     v_codigo := NEW.codigo_referido;
-    v_email  := COALESCE(NEW.email, NEW.doctor);
+    v_email  := COALESCE(NEW.email, NEW.nombre_doctor);
 
     -- Verificar que el referido no haya sido ya procesado
     SELECT id INTO v_ref_id FROM public.referidos

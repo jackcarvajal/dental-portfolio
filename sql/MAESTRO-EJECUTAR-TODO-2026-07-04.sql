@@ -1998,4 +1998,73 @@ ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS nombre_cliente text;
 ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS nota_calidad text;
 ALTER TABLE public.pedidos ADD COLUMN IF NOT EXISTS direccion text;
 
-SELECT 'Patch 24/24 (pedidos columnas faltantes) aplicado' AS status;
+SELECT 'Patch 24/25 (pedidos columnas faltantes) aplicado' AS status;
+
+-- ############################################################
+-- # 25/25 (agregado 2026-07-05) — CRITICO: trigger de referidos usaba NEW.doctor (no existe)
+-- ############################################################
+-- prodigy_detectar_primer_pedido_referido() (se dispara en CADA UPDATE
+-- de pago_estado a 'pago_confirmado' Y en cada INSERT con
+-- codigo_referido) referenciaba NEW.doctor, columna inexistente (real:
+-- nombre_doctor). Confirmar el pago de CUALQUIER pedido con codigo_referido
+-- fallaba con "record new has no field doctor" -- la actualizacion de
+-- pago_estado se revertia por completo.
+
+CREATE OR REPLACE FUNCTION public.prodigy_detectar_primer_pedido_referido()
+RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+  v_email       text;
+  v_codigo      text;
+  v_cupon       text;
+  v_ref_id      uuid;
+  v_referidor_email text;
+BEGIN
+  IF NEW.pago_estado = 'pago_confirmado' AND
+     (OLD.pago_estado IS DISTINCT FROM 'pago_confirmado') AND
+     NEW.codigo_referido IS NOT NULL THEN
+
+    v_codigo := NEW.codigo_referido;
+    v_email  := lower(trim(COALESCE(NEW.email, NEW.nombre_doctor, '')));
+
+    SELECT id, lower(trim(referidor_email)) INTO v_ref_id, v_referidor_email
+    FROM public.referidos
+    WHERE codigo = v_codigo AND estado IN ('pendiente','registrado')
+    LIMIT 1;
+
+    IF v_ref_id IS NOT NULL AND v_referidor_email = v_email AND v_email <> '' THEN
+      INSERT INTO public.logs_incidencias(tipo, severidad, descripcion, resuelta)
+      VALUES (
+        'REFERIDO_AUTO_BLOQUEADO', 'WARN',
+        '[REFERIDOS] Intento de auto-referido bloqueado — código: ' || v_codigo ||
+        ' | email: ' || v_email || ' | pedido: ' || COALESCE(NEW.codigo, NEW.id::text),
+        true
+      );
+      RETURN NEW;
+    END IF;
+
+    IF v_ref_id IS NOT NULL THEN
+      v_cupon := public._generar_cupon_credito();
+
+      UPDATE public.referidos SET
+        estado         = 'primer_pedido',
+        referido_email = COALESCE(referido_email, v_email),
+        referido_at    = COALESCE(referido_at, NOW()),
+        cupon_credito  = v_cupon,
+        cupon_at       = NOW()
+      WHERE id = v_ref_id;
+
+      INSERT INTO public.logs_incidencias(tipo, severidad, descripcion, resuelta)
+      VALUES (
+        'REFERIDO_PRIMER_PEDIDO', 'INFO',
+        '[REFERIDOS] Primer pedido confirmado — código: ' || v_codigo ||
+        ' | cupón generado: ' || v_cupon ||
+        ' | pedido: ' || COALESCE(NEW.codigo, NEW.id::text),
+        true
+      );
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+SELECT 'Patch 25/25 (referidos trigger columna fantasma) aplicado' AS status;
