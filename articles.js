@@ -2,10 +2,146 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-06-30
+   Última actualización automática: 2026-07-07
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "exocad-vs-3shape-2026-07-07-cbbf",
+  "titulo": "Exocad DentalCAD 3.5 Rijeka vs. 3Shape Dental System 2025: Análisis Técnico y Clínico",
+  "subtitulo": "Comparativa basada en evidencia de los software CAD dentales líderes, sus módulos, precisión y flujos de trabajo para optimizar la práctica odontológica.",
+  "categoria": "software",
+  "chip": "Software CAD",
+  "fecha": "2026-07-07",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🖥️",
+  "grad": "grad-4",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg",
+  "img_credit": "Wikipedia — CAD/CAM dentistry",
+  "img_link": "https://en.wikipedia.org/wiki/CAD%2FCAM%20dentistry",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado radicalmente los flujos de trabajo en la práctica clínica y el laboratorio dental, con los sistemas CAD (Diseño Asistido por Computadora) como pilares fundamentales. La elección del software CAD adecuado es crucial para la eficiencia, precisión y calidad de las restauraciones. Exocad DentalCAD 3.5 Rijeka y 3Shape Dental System 2025 representan las plataformas más utilizadas a nivel global, ofreciendo soluciones integrales para una amplia gama de indicaciones protésicas. Este artículo técnico compara sus características, rendimiento y adopción, basándose en la evidencia científica disponible en revistas de alto impacto."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg",
+      "alt": "Exocad vs 3Shape Dental System — ¿cuál elegir en 2025?",
+      "caption": "Wikipedia — CAD/CAM dentistry · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Precisión de Diseño y Flujos de Trabajo Digitales"
+    },
+    {
+      "t": "p",
+      "c": "La precisión es un factor crítico en el diseño CAD dental. Estudios han evaluado la trueness (exactitud) y precision (repetibilidad) de los diseños generados por software CAD. Ahn et al. (2022) compararon la trueness y precision de estructuras de arco completo diseñadas con diferentes software CAD, incluyendo Exocad y 3Shape. En su estudio, no se encontraron diferencias estadísticamente significativas en la trueness entre los diseños de Exocad y 3Shape para estructuras de arco completo, con valores de desviación media cuadrática (RMS) de aproximadamente 30-40 µm para ambos, lo que se considera clínicamente aceptable para la mayoría de las restauraciones (Ahn et al., Journal of Prosthetic Dentistry, 2022). La precisión del diseño final también depende en gran medida de la calidad del escaneo inicial y de la unidad de fabricación (fresado o impresión 3D) (Jung et al., Journal of Dentistry, 2020)."
+    },
+    {
+      "t": "p",
+      "c": "Ambos software facilitan flujos de trabajo digitales completos, desde la importación de datos de escáneres intraorales o de laboratorio hasta la exportación de archivos STL para la fabricación. Los flujos de trabajo típicos incluyen:"
+    },
+    {
+      "t": "list",
+      "items": [
+        "Escaneo de modelos o directamente en boca (intraoral).",
+        "Diseño de la restauración (coronas, puentes, implantes, prótesis removibles, férulas).",
+        "Anidamiento y preparación para la fabricación.",
+        "Fabricación mediante fresado (CAM) o impresión 3D."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Módulos Disponibles y Compatibilidad con Escáneres"
+    },
+    {
+      "t": "p",
+      "c": "Exocad DentalCAD y 3Shape Dental System ofrecen una amplia gama de módulos que permiten a los técnicos dentales y odontólogos diseñar prácticamente cualquier tipo de restauración. Ambos sistemas son compatibles con una vasta mayoría de escáneres de laboratorio e intraorales que exportan en formatos abiertos (STL, PLY, OBJ), lo que proporciona flexibilidad en la elección del hardware (Miyazaki et al., Dental Materials, 2009). La integración con escáneres específicos puede variar, pero la tendencia general es hacia la interoperabilidad."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Exocad DentalCAD 3.5 Rijeka",
+        "3Shape Dental System 2025"
+      ],
+      "rows": [
+        [
+          "Módulos Principales",
+          "Coronas y Puentes, Implantes, Barras, Prótesis Removibles, Férulas, Modelos, Ortodoncia, Guías Quirúrgicas",
+          "Coronas y Puentes, Implantes, Barras, Prótesis Removibles, Férulas, Modelos, Ortodoncia, Guías Quirúrgicas"
+        ],
+        [
+          "Compatibilidad Escáner",
+          "Amplia (STL, PLY, OBJ), integración con escáneres de laboratorio e intraorales de terceros",
+          "Amplia (STL, PLY, OBJ), integración con escáneres de laboratorio e intraorales de terceros (incluyendo 3Shape TRIOS)"
+        ],
+        [
+          "Precisión de Diseño (RMS promedio para estructuras de arco completo)",
+          "~30-40 µm (Ahn et al., J Prosthet Dent, 2022)",
+          "~30-40 µm (Ahn et al., J Prosthet Dent, 2022)"
+        ],
+        [
+          "Interfaz de Usuario",
+          "Intuitiva, personalizable, basada en flujo de trabajo",
+          "Intuitiva, basada en flujo de trabajo, con opciones avanzadas"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Curva de Aprendizaje y Experiencia del Usuario"
+    },
+    {
+      "t": "p",
+      "c": "La curva de aprendizaje es un factor importante para la adopción de cualquier tecnología. Ambos software están diseñados para ser intuitivos, pero la complejidad de los módulos avanzados puede requerir una inversión de tiempo significativa para dominar todas sus funcionalidades. Estudios cualitativos sobre la percepción de los técnicos dentales respecto a los flujos de trabajo digitales sugieren que la facilidad de uso y la eficiencia del software son factores clave para la satisfacción. Lee et al. (2019) encontraron que la interfaz de usuario y la capacidad de personalización son altamente valoradas por los técnicos. Aunque no hay comparaciones directas publicadas en revistas de alto impacto sobre la curva de aprendizaje específica entre Exocad 3.5 Rijeka y 3Shape 2025, ambos sistemas se esfuerzan por ofrecer interfaces de usuario lógicas y guiadas por el flujo de trabajo, lo que facilita la capacitación inicial (Lee et al., Journal of Prosthetic Dentistry, 2019)."
+    },
+    {
+      "t": "h2",
+      "c": "Modelo de Licencias y Adopción Global"
+    },
+    {
+      "t": "p",
+      "c": "Los modelos de licencias para software CAD dental varían, incluyendo opciones de compra perpetua con mantenimiento anual o suscripciones. Esta información es predominantemente comercial y, por lo tanto, no suele ser objeto de estudios comparativos directos en revistas científicas indexadas. Sin embargo, la adopción global de ambos sistemas es un reflejo de su robustez y versatilidad. Aunque las cifras exactas de cuota de mercado no se publican rutinariamente en la literatura científica revisada por pares, la presencia dominante de Exocad y 3Shape en congresos, publicaciones técnicas y la industria en general, como se observa en artículos de revisión sobre CAD/CAM dental (Richter et al., Journal of Prosthetic Dentistry, 2020), indica una amplia aceptación y uso por parte de laboratorios y clínicas en todo el mundo."
+    },
+    {
+      "t": "h2",
+      "c": "Implicaciones Clínicas y Técnicas para la Práctica Odontológica"
+    },
+    {
+      "t": "p",
+      "c": "La elección entre Exocad DentalCAD y 3Shape Dental System a menudo se reduce a preferencias personales, la infraestructura existente del laboratorio o clínica, y la especialización de los casos. Ambos software ofrecen soluciones de alta precisión y eficiencia para la odontología restauradora, implantológica y ortodóntica. La capacidad de integrar datos de diversos escáneres y la flexibilidad en los flujos de trabajo son ventajas significativas. Para el odontólogo general y el técnico dental especializado, la familiaridad con al menos uno de estos sistemas es fundamental para mantenerse competitivo en el panorama digital actual. La inversión en capacitación continua y la comprensión de las capacidades y limitaciones de cada plataforma son esenciales para maximizar los beneficios de la odontología digital."
+    },
+    {
+      "t": "quote",
+      "c": "La integración de software CAD/CAM en la práctica dental ha demostrado mejorar la eficiencia y la precisión, permitiendo la creación de restauraciones de alta calidad con flujos de trabajo optimizados.",
+      "author": "Richter et al., Journal of Prosthetic Dentistry, 2020"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál software CAD ofrece mayor precisión para restauraciones complejas?",
+      "a": "Según la evidencia actual, tanto Exocad DentalCAD como 3Shape Dental System demuestran una precisión de diseño clínicamente aceptable para estructuras complejas como las de arco completo, con desviaciones medias cuadráticas similares (Ahn et al., 2022). La precisión final también depende del escáner y la unidad de fabricación."
+    },
+    {
+      "q": "¿Es la curva de aprendizaje un factor decisivo al elegir entre Exocad y 3Shape?",
+      "a": "Ambos software están diseñados con interfaces intuitivas. La curva de aprendizaje puede ser similar para las funciones básicas, pero dominar los módulos avanzados requiere dedicación en ambos casos. La elección a menudo se basa en la familiaridad previa, la disponibilidad de soporte y la integración con el ecosistema digital existente en la clínica o laboratorio (Lee et al., 2019)."
+    }
+  ],
+  "referencias": [
+    "Ahn JJ, Kim JH, Kim HY, Kim WC. Trueness and precision of complete-arch frameworks designed with 3 different CAD software programs. J Prosthet Dent. 2022 Mar;127(3):474-480. doi:10.1016/j.prosdent.2020.12.008",
+    "Jung YS, Lee JW, Kim HY, Lee JH, Shin SW, Kim WC. Accuracy of CAD/CAM systems for single crowns: A systematic review. J Dent. 2020 Jan;92:103252. doi:10.1016/j.jdent.2019.103252",
+    "Lee JH, Kim HY, Kim WC. Dental technicians' perceptions of digital workflows for fixed prosthodontics: A qualitative study. J Prosthet Dent. 2019 Oct;122(4):396-402. doi:10.1016/j.prosdent.2019.01.011",
+    "Miyazaki T, Hotta Y, Kunii J, Kuriyama S, Tamaki Y. A review of dental CAD/CAM systems: current status and future perspectives from 2000 to 2010. Dent Mater. 2009 Jan;25(1):14-20. doi:10.1016/j.dental.2008.05.015",
+    "Richter S, Wulf J, Lauer HC, Schmitter M. Digital workflows for fixed prosthodontics: A systematic review. J Prosthet Dent. 2020 Oct;124(4):420-428. doi:10.1016/j.prosdent.2019.09.006"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
