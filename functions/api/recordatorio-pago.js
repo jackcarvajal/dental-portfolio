@@ -9,7 +9,7 @@
 const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 
 export async function onRequestGet({ request, env }) {
-  const key = new URL(request.url).searchParams.get('key');
+  const key = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim() || new URL(request.url).searchParams.get('key');
   if (!env.CRON_SECRET || key !== env.CRON_SECRET) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }

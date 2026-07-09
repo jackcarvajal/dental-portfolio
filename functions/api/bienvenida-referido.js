@@ -2,10 +2,11 @@
  * PRODIGY — Email de bienvenida para doctor referido
  * POST /api/bienvenida-referido
  *
- * Llamado desde flujo-diseno cuando se detecta un codigo_referido.
- * Envía email de bienvenida al nuevo doctor con el 5% de descuento confirmado.
+ * Llamado desde panel-interno-operaciones.html (staff) al confirmar un
+ * referido. Envía email de bienvenida al nuevo doctor con el 5% de
+ * descuento confirmado. Requiere JWT de sesión staff (admin/operator).
  *
- * Env vars: RESEND_API_KEY, CRON_SECRET (para proteger llamadas no-autenticadas)
+ * Env vars: RESEND_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY
  */
 
 const CORS = {

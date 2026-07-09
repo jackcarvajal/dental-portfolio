@@ -9,8 +9,8 @@
 const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 
 export async function onRequestGet({ request, env }) {
-  // Verificar clave de cron
-  const key = new URL(request.url).searchParams.get('key');
+  // Verificar clave de cron (header preferido, query string como fallback legacy)
+  const key = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim() || new URL(request.url).searchParams.get('key');
   if (!env.CRON_SECRET || key !== env.CRON_SECRET) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
