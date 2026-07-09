@@ -982,7 +982,7 @@ async function bulkDisenoProcess(files) {
   const results = await Promise.all(filtered.map(async file => {
     const caseId = _extractIdDiseno(file.name);
     let mbOk = true, mbMsg = '';
-    if (window.validateMagicBytes && file.name.endsWith('.stl')) {
+    if (window.validateMagicBytes) {
       const r = await validateMagicBytes(file); mbOk = r.safe; mbMsg = r.error || '';
     }
     const caso = _casos.find(c => caseId && (c.codigo?.includes(caseId)||c.id?.startsWith(caseId)||caseId===(c.codigo?.split('-').pop())));

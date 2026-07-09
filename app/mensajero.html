@@ -578,6 +578,10 @@ async function procesarConfirmacion(){
     const fotoFile = document.getElementById('foto-input').files[0];
     if(fotoFile){
         try{
+            if (window.validateMagicBytes) {
+                const mbr = await validateMagicBytes(fotoFile);
+                if (!mbr.safe) { toast(mbr.error || 'Foto no permitida', 'error'); return; }
+            }
             document.getElementById('upload-msg').textContent='Subiendo foto...';
             const fotoPath = `${_activeDespId}/foto_${Date.now()}.jpg`;
             const { error:eFoto } = await sb.storage.from('evidencias-entrega').upload(fotoPath, fotoFile, { contentType:'image/jpeg', upsert:true });

@@ -1854,6 +1854,10 @@ async function subirCaso(e) {
         // 1. Portada (opcional)
         let coverUrl = null;
         if (imgFile) {
+            if (window.validateMagicBytes) {
+                const mbr = await validateMagicBytes(imgFile);
+                if (!mbr.safe) throw new Error(mbr.error || 'Portada no válida');
+            }
             prog.textContent = 'Subiendo portada…';
             const cExt = imgFile.name.split('.').pop().toLowerCase();
             const cPath = id + '/cover.' + cExt;
@@ -1865,6 +1869,10 @@ async function subirCaso(e) {
         // 2. Galería
         const galleryUrls = [];
         for (let i = 0; i < galFiles.length; i++) {
+            if (window.validateMagicBytes) {
+                const mbr = await validateMagicBytes(galFiles[i]);
+                if (!mbr.safe) throw new Error('Galería foto ' + (i+1) + ': ' + (mbr.error || 'no válida'));
+            }
             prog.textContent = 'Subiendo galería (' + (i+1) + '/' + galFiles.length + ')…';
             const gExt  = galFiles[i].name.split('.').pop().toLowerCase();
             const gPath = id + '/gallery/foto-' + (i+1) + '.' + gExt;
@@ -1876,6 +1884,10 @@ async function subirCaso(e) {
         // 3. Exocad (opcional)
         let exocadUrl = null;
         if (exocadMain) {
+            if (window.validateMagicBytes) {
+                const mbr = await validateMagicBytes(exocadMain);
+                if (!mbr.safe) throw new Error('Exocad: ' + (mbr.error || 'archivo no válido'));
+            }
             prog.textContent = 'Subiendo visor Exocad…';
             const storagePath = id + '/exocad/caso.html';
             const { error: exErr } = await sb.storage.from(PORT_BUCKET).upload(storagePath, exocadMain, { contentType: 'text/html', upsert: true });
@@ -1886,6 +1898,10 @@ async function subirCaso(e) {
         // 3b. Video propio (opcional)
         let videoUrl = null;
         if (videoFile) {
+            if (window.validateMagicBytes) {
+                const mbr = await validateMagicBytes(videoFile);
+                if (!mbr.safe) throw new Error('Video: ' + (mbr.error || 'archivo no válido'));
+            }
             prog.textContent = 'Subiendo video…';
             const vExt = videoFile.name.split('.').pop().toLowerCase();
             const vPath = id + '/video/caso.' + vExt;
@@ -1895,6 +1911,10 @@ async function subirCaso(e) {
 
         let pdfUrl = null;
         if (pdfFile) {
+            if (window.validateMagicBytes) {
+                const mbr = await validateMagicBytes(pdfFile);
+                if (!mbr.safe) throw new Error('PDF: ' + (mbr.error || 'archivo no válido'));
+            }
             prog.textContent = 'Subiendo PDF…';
             const pPath = id + '/pdf/documento.pdf';
             const { error: pErr } = await sb.storage.from(PORT_BUCKET).upload(pPath, pdfFile, { contentType: 'application/pdf', upsert: true });
@@ -2089,6 +2109,10 @@ async function guardarEdicion(id) {
     const exocadInput = document.getElementById('e-exocad-file');
     if (exocadInput && exocadInput.files[0]) {
         const f = exocadInput.files[0];
+        if (window.validateMagicBytes) {
+            const mbr = await validateMagicBytes(f);
+            if (!mbr.safe) { toast('Exocad: ' + (mbr.error || 'archivo no válido'), 'error'); return; }
+        }
         const path = id + '/exocad/caso.html';
         const { error: upErr } = await sb.storage.from(PORT_BUCKET).upload(path, f, { contentType: 'text/html', upsert: true });
         if (upErr) { toast('Error subiendo Exocad: ' + upErr.message, 'error'); return; }
@@ -2099,6 +2123,10 @@ async function guardarEdicion(id) {
     const pdfInput = document.getElementById('e-pdf-file');
     if (pdfInput && pdfInput.files[0]) {
         const f = pdfInput.files[0];
+        if (window.validateMagicBytes) {
+            const mbr = await validateMagicBytes(f);
+            if (!mbr.safe) { toast('PDF: ' + (mbr.error || 'archivo no válido'), 'error'); return; }
+        }
         const path = id + '/pdf/documento.pdf';
         const { error: pErr } = await sb.storage.from(PORT_BUCKET).upload(path, f, { contentType: 'application/pdf', upsert: true });
         if (pErr) { toast('Error subiendo PDF: ' + pErr.message, 'error'); return; }

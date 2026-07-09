@@ -4,6 +4,22 @@
 
 ---
 
+## ✅ Fix de código (2026-07-09) — auditoría flujo carga/entrega diseño↔fabricación
+
+Todo commiteado/pusheado. Auditados: RLS de Storage, purga STL, magic-bytes en subidas internas, URLs firmadas y exposición de datos en paneles de fabricación.
+
+**5 puntos de subida sin validar magic-bytes, corregidos:**
+- `app/panel-interno-operaciones.html` — 7 subidas (portada, galería, exocad HTML, video, PDF, + 2 en modo edición) cargaban `upload-guard.js` pero nunca llamaban `validateMagicBytes()`. El más grave: el HTML de Exocad subido aquí se sirve públicamente en el portafolio.
+- `app/calidad.html` — comprobante de pago subía sin validar (el resto de fotos/video de empaque sí validaba).
+- `app/mensajero.html` — foto de entrega subía sin validar (el comprobante de saldo sí validaba).
+- `app/operario-diseno.html` — subida masiva solo validaba `.stl`, dejaba `.obj`/`.html` sin chequeo de magic-bytes.
+
+**Confirmado limpio:** `operator-panel.html`, `taller.html`, `inventario.html`, `agregar-caso.html` ya validaban correctamente. URLs firmadas correctas en los 4 paneles de fabricación (sin `getPublicUrl()` residual). Purga STL sin condición de carrera (solo actúa sobre `estado_operativo=ENTREGADO`, no interfiere con producción activa).
+
+**Hallazgo de arquitectura (no es bug, es una decisión de diseño a revisar si algún día importa):** no existe separación real a nivel de RLS/Storage entre operario de "diseño" y de "fabricación" — ambos comparten `app_metadata.role='operario'`. `departamento_actual`/`departamento` en `staff_departamentos` solo filtran la UI (qué casos ve cada quien), pero cualquier operario autenticado puede leer vía Storage los buckets de cualquier departamento (`diseno-archivos`, `dental-cases`, etc.) y consultar cualquier fila de `pedidos`. Es un riesgo solo interno (staff ya autenticado), no explotable por atacante externo — se documenta por si en el futuro se quiere aplicar least-privilege real entre departamentos.
+
+---
+
 ## ✅ Fix de código (2026-07-09) — ronda 3: secretos en query string + auditoría final de paridad
 
 Todo commiteado/pusheado, sin SQL pendiente:
