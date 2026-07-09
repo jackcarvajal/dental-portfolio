@@ -368,7 +368,7 @@ let _userId = null;
   /* Realtime — notifica visualmente al operario */
   let _rtInitialized = false;
   sb.channel('operario-casos')
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'pedidos'}, async (payload)=>{
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'pedidos',filter:'negocio=eq.prodigy'}, async (payload)=>{
       if (!_rtInitialized) { _rtInitialized=true; return; } // ignorar snapshot inicial
       const p = payload.new;
       const myCase = !p.departamento_actual || _myDepts.includes(p.departamento_actual);
@@ -381,7 +381,7 @@ let _userId = null;
       }
       await recargar();
     })
-    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'pedidos'}, async (payload)=>{
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'pedidos',filter:'negocio=eq.prodigy'}, async (payload)=>{
       const p = payload.new; const old = payload.old;
       if (p.estado !== old.estado && _myDepts.includes(p.departamento_actual)) {
         toast('↻ Caso '+(p.codigo||p.id?.slice(0,8))+' → '+p.estado,'ok');

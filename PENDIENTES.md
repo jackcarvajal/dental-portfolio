@@ -4,6 +4,34 @@
 
 ---
 
+## 🔴 Ejecutar SQL — auditoría panel interno (admin/operarios): audit log roto + casos_portafolio sobre-permisiva
+
+**Hallazgo 1 — el audit log de acciones admin nunca ha funcionado.** `logs_incidencias.tipo` tiene un `CHECK` con solo 7 valores fijos, pero el código real (panel-interno-operaciones.html, operario.html, operator-panel.html, inventario.html, calidad.html, contabilidad.html, gestionar-casos.html, y ~10 Cloudflare Functions) inserta con **más de 20 valores distintos** de `tipo` y `severidad IN ('INFO','WARN','ADVERTENCIA')` que tampoco están en su CHECK. Cada INSERT que no matchea falla, y como todos usan try/catch silencioso, nunca se notó. En la práctica: `_auditLog()` del panel admin (cambios de estado, precios, roles, eliminar casos) **nunca ha dejado rastro real**, y la mayoría de logs operativos tampoco (solo `STOCK_CRITICO`/`ALTA` matcheaban por casualidad).
+
+**Hallazgo 2 — `casos_portafolio` permite escritura a cualquier autenticado, no solo staff.** Cualquier doctor/cliente con cuenta podía en teoría insertar/editar/borrar casos del portafolio público llamando la API directamente (no vía el panel, que sí exige admin en su UI — pero la RLS real no lo exigía).
+
+**Ejecutar `sql/patch-audit-log-y-portafolio-rls-2026-07.sql`** en Supabase Dashboard → SQL Editor. Quita los 2 CHECK problemáticos de `logs_incidencias` (se deja como taxonomía de texto libre, ya la usan >20 tipos distintos de forma orgánica) y restringe INSERT/UPDATE/DELETE de `casos_portafolio` a `app_metadata.role IN ('admin','operario','staff')`.
+
+**Ya corregido en código:** `_auditLog()` ahora envía `emisor_id` (antes quedaba NULL, violando otra condición de la policy de INSERT). Se agregó `_auditLog()` a `cambiarRol()` (cambio de rol de staff — la RLS ya lo protegía correctamente con `app_metadata.role='admin'`, pero no dejaba rastro de quién cambió el rol de quién).
+
+**Pendiente de código (no urgente, bajo impacto — ya protegidas por RLS, solo falta el rastro de auditoría):** `eliminarWaitlist()`, `eliminarRef()`, `cambiarEstadoRef()`, `cambiarEstadoDoc()`, `toggleStaffActivo()`, `toggleActivo()`, `toggleDept()`, `guardarEdicion()` (portafolio) no llaman `_auditLog()`. Se puede completar en una sesión dedicada si quieres el trail completo.
+
+---
+
+## ✅ Fix de código (2026-07-09) — auditoría flujo carga/entrega diseño↔fabricación + realtime cross-negocio
+
+Todo commiteado/pusheado.
+
+**Realtime sin filtro por negocio (leak de datos entre PRODIGY/Alejandro):** `operario.html`, `operario-diseno.html` y `operator-panel.html` se suscribían a `postgres_changes` de `pedidos` sin filtro — el navegador de un operario de PRODIGY recibía el payload completo (nombre, teléfono, precio) de pedidos de Alejandro CAD/CAM y viceversa, aunque la UI no lo mostrara. Corregido agregando `filter: 'negocio=eq.prodigy'` a los 3 canales (Supabase Realtime solo soporta un filtro por canal — en `operator-panel.html` se sacrificó el filtro por `flujo` server-side porque ya se re-verifica client-side en el callback).
+
+**Confirmado limpio en esta ronda:** URLs firmadas en paneles de fabricación, exports CSV (ningún export expone `hash_seguridad`/`qr_code`/tokens/pagos), RLS de `logs_incidencias` UPDATE/DELETE (solo admin puede editar, nadie puede borrar), `staff_departamentos` RLS (admin-only, correcto), no existe ruta de auto-escalamiento de rol vía el panel.
+
+**Hallazgo de diseño documentado (no es bug, confirmar si es intencional):** ninguna policy RLS sobre `pedidos`/`referidos`/`waitlist_labs` filtra por `negocio` — un admin/operario de PRODIGY con sesión válida técnicamente puede tocar filas de Alejandro CAD/CAM vía RLS y viceversa (ambos comparten los mismos roles). Consistente con "mismo equipo interno gestiona ambos negocios" (CLAUDE.md Ley 1b), pero vale la pena confirmarlo explícitamente si en algún momento los equipos se separan.
+
+**5 gaps de magic-bytes corregidos** (ronda anterior el mismo día): `panel-interno-operaciones.html` (7 subidas), `calidad.html`, `mensajero.html`, `operario-diseno.html`.
+
+---
+
 ## ✅ Fix de código (2026-07-09) — auditoría flujo carga/entrega diseño↔fabricación
 
 Todo commiteado/pusheado. Auditados: RLS de Storage, purga STL, magic-bytes en subidas internas, URLs firmadas y exposición de datos en paneles de fabricación.

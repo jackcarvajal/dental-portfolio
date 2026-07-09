@@ -2358,6 +2358,7 @@ async function cambiarRol(id, nuevoRol) {
     if (!nuevoRol) return;
     const { error } = await sb.from('perfiles').update({ rol: nuevoRol }).eq('id', id);
     if (error) { toast('Error: ' + error.message, false); return; }
+    await _auditLog('CAMBIAR_ROL_STAFF', { perfil_id: id, nuevo_rol: nuevoRol });
     toast('Rol actualizado a ' + ROL_LABELS[nuevoRol], true);
     cargarEquipo();
 }
@@ -4214,11 +4215,13 @@ function exportarPedidosCSV() {
 /* ── AUDIT LOG — registra acciones sensibles del admin ──────────────── */
 async function _auditLog(accion, datos) {
   try {
+    const { data: { user } } = await sb.auth.getUser();
     await sb.from('logs_incidencias').insert({
       tipo: 'ADMIN_ACTION',
       severidad: 'INFO',
       descripcion: `[AUDIT] ${accion} por ${window.PRODIGY_EMAIL || 'admin'}: ${JSON.stringify(datos)}`,
-      resuelta: true
+      resuelta: true,
+      emisor_id: user?.id || null
     });
   } catch(_) { /* no bloquear si falla el log */ }
 }

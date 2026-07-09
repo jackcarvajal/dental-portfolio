@@ -371,7 +371,7 @@ let _userId = null;
   setInterval(cargarCasos, 60000); // auto-refresh cada 60s
   /* Realtime */
   sb.channel('diseno-casos')
-    .on('postgres_changes',{event:'*',schema:'public',table:'pedidos'},() => cargarCasos())
+    .on('postgres_changes',{event:'*',schema:'public',table:'pedidos',filter:'negocio=eq.prodigy'},() => cargarCasos())
     .subscribe();
 })();
 

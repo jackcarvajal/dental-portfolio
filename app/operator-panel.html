@@ -1102,7 +1102,7 @@ aprobarQA = async function() {
             event:  '*',
             schema: 'public',
             table:  'pedidos',
-            filter: `flujo=in.(fresado,lab,impresion,)`,
+            filter: `negocio=eq.prodigy`,
         }, payload => {
             if (['INSERT','UPDATE'].includes(payload.eventType)) {
                 const p = payload.new;
