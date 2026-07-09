@@ -1,6 +1,18 @@
 # PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-07-08 (sesión autónoma continua)
+> Solo tareas activas. Última revisión: 2026-07-09 (sesión autónoma continua)
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
+
+---
+
+## ✅ Fix de código (2026-07-09) — ronda 3: secretos en query string + auditoría final de paridad
+
+Todo commiteado/pusheado, sin SQL pendiente:
+- 5 funciones cron (`expire-cotizaciones.js`, `alerta-sla.js`, `recordatorio-pago.js`, `resumen-mensual.js`, `notif-stock-bajo.js`) aceptaban `CRON_SECRET` solo por `?key=` en la URL (expuesto en logs de acceso de Cloudflare) → ahora prefieren header `Authorization: Bearer`, con el query string como fallback para no romper ningún caller existente que no se pudo confirmar.
+- `bienvenida-referido.js` — comentario de cabecera desactualizado corregido (decía que lo llamaba `flujo-diseno.html` y mencionaba `CRON_SECRET`; en realidad solo lo llama `panel-interno-operaciones.html` con JWT de sesión staff).
+
+**Auditoría completa cerrada esta ronda (los 12 frentes pedidos):** columnas fantasma en tablas compartidas y en TODOS los paneles de staff (incluyendo `panel-interno-operaciones.html`, el dashboard real de login, nunca antes auditado) — 6 bugs reales corregidos; Cloudflare Functions completas en ambos repos (CORS, rate limit, open redirect, validación de montos) — 2 hallazgos corregidos (`factura.js`, `social-copy.js`) + 6 de secretos en query string; validación de protocolo en iframes/galerías — 2 hallazgos corregidos; `sw.js` — limpio en ambos repos; XSS — 2 hallazgos reales corregidos (`caso.html`, `envia-tu-scanner.html` en ambos repos); Habeas Data — limpio, todos los formularios públicos ya lo tienen; `auth-guard.js`+`noindex` — 100% de páginas `/app/*` correctas en ambos repos; GRANT explícitos de Supabase — confirmado ejecutado; paridad RLS entre PRODIGY/Alejandro — confirmado sin exclusiones silenciosas por `negocio`.
+
+**Único pendiente real que queda de toda esta auditoría:** la prueba en vivo de creación de pedido end-to-end (documentada arriba, patch 24 ya ejecutado, solo falta que alguien confirme creando un pedido real).
 
 ---
 
