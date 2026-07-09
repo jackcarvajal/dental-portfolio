@@ -247,48 +247,15 @@ curl -I https://prodigylabdental.com/scripts/auto-journal.js             → 404
 
 ---
 
-## 🔴 URGENTE — SQL de Gemini + nuevos (ejecutar en Supabase)
+## ✅ RESUELTO — SQL históricos (referidos, revision-tokens, analytics RPCs, churn, waitlist, cotizaciones, RLS bibliotecas, purga STL, RLS client-column-protection, send-push/notify-wa deploy, HSTS, claves Google Drive expuestas)
 
-| # | Archivo SQL | Descripción |
-|---|-------------|-------------|
-| ~~REF-COMP~~ | ~~`sql/referidos-sistema-completo.sql`~~ | ✅ **Ejecutado 2026-05-30** — cupones CRED- activos, trigger detecta primer pedido | | **REEMPLAZA** el anterior — ADD COLUMN codigo_referido, cupones CRED-, RPC validar cupón |
-| ~~REF-TRIG~~ | ~~`sql/referidos-trigger-primer-pedido.sql`~~ | ✅ **Superado por REF-COMP** (2026-05-30) — `referidos-sistema-completo.sql` ya incluye este trigger |
-| ~~G1~~ | ~~`sql/revision-tokens-table.sql`~~ | ✅ **Ejecutado 2026-06-01** — revision-express activo | | Tabla `revision_tokens` para aprobación OWASP-segura desde email |
-| ~~G2~~ | ~~`sql/prodigy-analytics-rpc.sql`~~ | ✅ **Ejecutado 2026-06-01** — 6 RPCs BI activos | | 6 RPCs de métricas para dashboard BI (evita SELECT* en frontend) |
-| ~~G3~~ | ~~`sql/storage-webp-rls.sql`~~ | ✅ **Ejecutado 2026-06-01** — WebP RLS activo | | RLS + política Storage para transformación WebP sin 403 |
-| ~~0f~~ | ~~`sql/trigger-doctor-inactivo-churn.sql`~~ | ✅ **Ejecutado 2026-06-03** — churn prevention activo | | VIEW doctors_inactivos + RPC prodigy_detectar_churn |
-| ~~WL~~ | ~~`sql/waitlist-labs-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — waitlist_labs activa |
-| ~~AC-RPC~~ | ~~`sql/alejandro-analytics-rpc.sql`~~ | ✅ **Ejecutado 2026-05-30** — RPCs BI Alejandro activos |
-| ~~REF~~ | ~~`sql/referidos-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — sistema referidos activo |
-| ~~COT~~ | ~~`sql/cotizaciones-table.sql`~~ | ✅ **Ejecutado 2026-05-30** — tabla cotizaciones activa |
+Todos ejecutados/desplegados entre 2026-05-29 y 2026-06-17, confirmados en su momento — se colapsa aquí solo como referencia histórica, ninguna acción pendiente.
 
 ---
 
-## 🔴 URGENTE — SQL existentes por ejecutar en Supabase
+## 🔴 Pendiente (acción externa, requiere dashboard) — DMARC + verificar dominio Resend
 
-| # | Acción | Dónde | Detalle |
-|---|--------|-------|---------|
-| ~~0j~~ | ~~Ejecutar `sql/patch-revoke-rpcs-internas.sql`~~ | ✅ **Ejecutado 2026-06-12** | Revocado `authenticated` de `prodigy_marcar_recordatorio`/`prodigy_marcar_sla_alerta` (y `prodigy_set_sla` si existe). |
-| ~~0i~~ | ~~Ejecutar `sql/patch-marcar-notifs-authz.sql`~~ | ✅ **Ejecutado 2026-06-12** | IDOR en `prodigy_marcar_notifs_leidas` corregido — ahora usa siempre `auth.uid()`. |
-| ~~0h~~ | ~~Ejecutar `sql/patch-mis-cotizaciones-authz.sql`~~ | ✅ **Ejecutado 2026-06-12** | IDOR critico en `mis_cotizaciones(p_email)` corregido — filtra por `auth.uid()`, revocado `anon`. |
-| ~~0g~~ | ~~Ejecutar `sql/patch-corte-mensual-authz.sql`~~ | ✅ **Ejecutado 2026-06-12** | IDOR en `corte_mensual(p_whatsapp)` corregido. |
-| ~~0c~~ | ~~**Ejecutar `sql/patch-rls-bibliotecas-diseno-revisiones.sql`**~~ | ✅ **Ejecutado 2026-06-01** | | Supabase PRODIGY → SQL Editor | RLS en `bibliotecas_cliente` + `diseno_revisiones` |
-| ~~0d~~ | ~~Ejecutar `sql/trigger-purga-stl-30dias.sql`~~ | ✅ **Ejecutado 2026-06-17** | Bug encontrado y corregido: usaba `estado IN ('ENTREGADO','entregado')` contra el enum `estado` (que no tiene ese valor) — corregido a `estado_operativo='ENTREGADO'` (columna texto real donde se marca la entrega). Cron activo: domingos 3AM UTC. Tabla `pedidos` vacía (0 filas) en este momento, sin impacto inmediato. |
-| ~~0e~~ | ~~Agregar `ANTHROPIC_API_KEY` en GitHub Secrets~~ | ❌ **Omitido** (sin presupuesto para API Anthropic) | Cron de artículos sigue 100% con Gemini, sin fallback. Si falla Gemini, simplemente no se publica ese día — bajo riesgo. |
-| ~~0p~~ | ~~Claves Google Drive Picker hardcodeadas en `patients/patient-001/exocad.html` y `patients/patient-002/caso.html`~~ | ✅ **Corregido 2026-06-13** | Visor Exocad/DentalWebGL traía `apiKey`/`pickerApiKey` de Google embebidos (feature "abrir/guardar desde Drive", no usada) → vaciadas a `""`. Resuelve alerta "clave de API expuesta" de Google AI Studio sobre proyecto ProDigy-Platform. |
-
----
-
-## 🔴 URGENTE — Vulnerabilidad de seguridad + bugs activos
-
-| # | Acción | Dónde | Detalle |
-|---|--------|-------|---------|
-| ~~0a~~ | ~~Ejecutar `sql/patch-rls-client-column-protection.sql` — PRODIGY~~ | ✅ **Ejecutado 2026-05-29** | Trigger activo — clientes no pueden modificar estado/precio/pago_confirmado |
-| ~~0b~~ | ~~Ejecutar `sql/patch-rls-client-column-protection.sql` — Alejandro~~ | ✅ **Ya cubierto por 0a** | PRODIGY y Alejandro comparten el mismo proyecto Supabase (`zgihrwqfyvgyapbwzkvw`) y las mismas tablas `pedidos`/`pedidos_doctor` — el trigger ejecutado en 0a (2026-05-29) ya protege ambos negocios (filtra por rol/email, no por `negocio`). |
-| ~~0k~~ | ~~Ejecutar `supabase functions deploy send-push`~~ | ✅ **Desplegado 2026-06-12** | IDOR corregido — exige `app_metadata.role` admin/operario/staff. |
-| ~~0l~~ | ~~Ejecutar `supabase functions deploy notify-wa`~~ | ✅ **Desplegado 2026-06-12** | Relay abierto corregido — exige `app_metadata.role` admin/operario/staff. |
-| ~~0m~~ | ~~Corregir HSTS en Cloudflare~~ | ✅ **Corregido 2026-06-12** | `Strict-Transport-Security: max-age=15552000; includeSubDomains; preload` verificado en producción. |
-| 0n | **Configurar DMARC + verificar dominio Resend en Cloudflare DNS** | Cloudflare Dashboard → DNS | **Auditoría SecurityScorecard — DNS Health**: `_dmarc.prodigylabdental.com` NO existe (sin política anti-spoofing/reporting). Además `resend._domainkey.prodigylabdental.com` y `send.prodigylabdental.com` tampoco existen → Resend probablemente NO está verificado para este dominio, por lo que los correos enviados desde `noreply@/bienvenida@/alertas@/sistema@prodigylabdental.com` (vía `functions/api/*.js`) pueden fallar DKIM/SPF y caer en spam. **Guía paso a paso lista en `PENDIENTES-DNS-EMAIL.md`** (ya corregida — MX real Cloudflare Email Routing): (1) Resend Dashboard → Domains → agregar `prodigylabdental.com`, copiar registros DKIM/SPF a Cloudflare DNS; (2) confirmar "Verified" en Resend; (3) agregar TXT `_dmarc` con `v=DMARC1; p=quarantine; rua=mailto:gerencia@prodigylabdental.com; pct=100`. Solo falta que el usuario ejecute estos pasos en los dashboards de Resend/Cloudflare. |
+`_dmarc.prodigylabdental.com` no existe (sin anti-spoofing/reporting). `resend._domainkey.prodigylabdental.com` y `send.prodigylabdental.com` tampoco → Resend probablemente no está verificado, los correos desde `noreply@/bienvenida@/alertas@/sistema@prodigylabdental.com` pueden caer en spam. Guía paso a paso en `PENDIENTES-DNS-EMAIL.md`: (1) Resend Dashboard → Domains → agregar dominio, copiar DKIM/SPF a Cloudflare DNS; (2) confirmar "Verified"; (3) agregar TXT `_dmarc` con `v=DMARC1; p=quarantine; rua=mailto:gerencia@prodigylabdental.com; pct=100`.
 
 ---
 
