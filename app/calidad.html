@@ -427,7 +427,7 @@ function renderCasos() {
 
 function renderCard(p, done) {
     const nombre    = p.nombre_cliente || p.nombre_doctor || '—';
-    const fotos     = Array.isArray(p.fotos_empaque) ? p.fotos_empaque : [];
+    const fotos     = (Array.isArray(p.fotos_empaque) ? p.fotos_empaque : []).filter(u => /^https?:\/\//.test(u));
     const fotosHtml = fotos.length
         ? fotos.map(u => `<img src="${escH(u)}" loading="lazy" onclick="abrirLightbox('${escH(u)}')" alt="Foto empaque">`).join('')
         : '<span class="no-foto">Sin fotos del operario</span>';
@@ -505,7 +505,7 @@ function abrirModalCalidad(pedidoId) {
     document.getElementById('cal-nota-mensajero').value = p.nota_calidad || '';
 
     // Fotos del operario
-    const fotos = Array.isArray(p.fotos_empaque) ? p.fotos_empaque : [];
+    const fotos = (Array.isArray(p.fotos_empaque) ? p.fotos_empaque : []).filter(u => /^https?:\/\//.test(u));
     const fGrid  = document.getElementById('cal-fotos-qa');
     fGrid.innerHTML = fotos.length
         ? fotos.map(u => `<img src="${escH(u)}" loading="lazy" onclick="abrirLightbox('${escH(u)}')" alt="Foto QA operario">`).join('')

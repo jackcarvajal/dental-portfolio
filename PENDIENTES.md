@@ -1,6 +1,27 @@
 # PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-07-06 (sesión autónoma continua)
+> Solo tareas activas. Última revisión: 2026-07-08 (sesión autónoma continua)
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
+
+---
+
+## ✅ Fix de código (2026-07-08) — ronda 2 de auditoría: columnas fantasma en paneles de staff + hardening de Cloudflare Functions
+
+Todo ya commiteado/pusheado, sin SQL pendiente (solo fixes de código):
+
+- `app/inventario.html` — exportar CSV usaba tabla `inventario` (no existe) y columnas `cantidad_actual`/`cantidad_minima`/`unidad` (no existen) → corregido a `inventario_items` con `stock_actual`/`stock_minimo`/`unidad_medida`. Botón "Exportar CSV" estaba roto en producción.
+- `app/operario.html` — realtime de "mi departamento" usaba `p.departamento` (fantasma) → corregido a `departamento_actual`; el filtro quedaba anulado (notificaba de todos los departamentos). También `updates.observaciones` (fantasma) → `notas_cambios`: el guardado de notas al aprobar/rechazar diseño fallaba por completo (error de Postgres en el UPDATE).
+- `app/operario-diseno.html` — guard `caso?.whatsapp` (fantasma, real `telefono`) siempre `undefined` → la notificación WA automática al doctor en revisión/aprobación de diseño **nunca se ejecutaba**. Corregido.
+- `app/contabilidad.html` — `p.servicio` (fantasma, real `tipo_trabajo`) en 7 sitios (tablas de comprobantes/saldos/facturas, modal factura manual, export CSV) quedaba vacío siempre; línea que envía `servicio` a `/api/factura` también corregida. `p.whatsapp`/`pCheck?.whatsapp` (fantasma, real `telefono`) en 2 sitios rompía el aviso WA de factura internacional.
+- `app/panel-interno-operaciones.html` — `getWAPedido()` usaba `p.doctor_whatsapp||p.whatsapp` (ambas fantasma) → corregido a `p.telefono`. Rompía los 3 botones de notificación WA (Pago/Diseño/Entrega) sobre el panel de pedidos (este es el dashboard real de login admin, nunca auditado hasta ahora).
+- `app/operator-panel.html` — filtro "Urgentes" apuntaba a `p.urgente` (columna nunca persistida, dead code) → corregido a `p.slot_express` (columna real del schema, agregada también al SELECT). **Nota:** ningún flujo de creación de pedido escribe `slot_express` todavía, así que el filtro hoy no traerá resultados hasta que se implemente esa escritura — queda documentado como mejora futura, no se inventó ninguna función nueva.
+- `functions/api/factura.js` — ahora valida `precio_total` del body contra el valor real del pedido en BD antes de emitir factura DIAN (antes confiaba ciegamente en el monto recibido).
+- `functions/api/social-copy.js` — agregado rate limit (10/hora/IP) que faltaba pese a exigir secreto (protege cuota de Gemini).
+- `functions/api/send-push.js` — CORS unificado al patrón dinámico con allowlist (`.pages.dev` + dominio propio) que ya usaba el mismo archivo en Alejandro.
+- `patient.html` — filtro de protocolo (`https?://` o ruta relativa) agregado a `gallery` antes de renderizar imágenes (venía de Supabase sin filtrar, a diferencia de `caso.html`).
+- `app/calidad.html` — mismo filtro agregado a `fotos_empaque` en 2 puntos.
+- **Alejandro** — `functions/api/resumen-semanal.js`: secreto movido de query string (`?key=`) a header `Authorization: Bearer` (quedaba en logs de acceso de Cloudflare).
+
+**Confirmado limpio (sin cambios necesarios):** schemas reales de `creditos_cliente`, `logs_incidencias`, `notificaciones_internas`, `revision_tokens`, `catalogo`, `config_precios`, `despachos`, `waitlist_labs`, `newsletter_subscribers` — todo el código que las usa ya referencia las columnas correctas. `billeteras` confirmada como tabla legacy que nunca se creó (el wallet real vive en `creditos_cliente`). `_middleware.js` (bloqueo de `.md`/`/sql/`/`/scripts/`) ya existe y funciona en ambos repos (verificado con curl en producción, 404 real). Open redirect: solo `stripe-checkout.js` maneja URLs de redirect en ambos repos, y ya valida contra dominio propio — Wompi no recibe redirects del cliente.
 
 ---
 
@@ -114,21 +135,17 @@ Los 3 hotfixes ya están **ejecutados y confirmados en producción** (Alejandro 
 
 ---
 
-## 🔴 Ejecutar SQL: reportes financieros del negocio visibles para cualquier doctor
+## ✅ RESUELTO (via MAESTRO) — reportes financieros, wallet IDOR, RPCs internas, escalamiento de privilegios, admin-precios, fraude de cupones, revision-express
 
-**Hallazgo:** 4 funciones literalmente nombradas "reportes ADMIN" (`prodigy_top_doctores`, `prodigy_ingresos_por_dia`, `prodigy_pedidos_por_material`, `prodigy_conversion_por_flujo`) estaban otorgadas a cualquier usuario logueado, sin verificar que fuera admin/staff. Cualquier doctor podía ver: el ranking de otros doctores por volumen de compra e ingresos (quién es tu cliente más grande y cuánto gasta), tus ingresos totales día a día, y el desglose financiero completo del negocio por material y por flujo.
-
-**Ejecutar `sql/patch-reportes-admin-authz-2026.sql`** en Supabase Dashboard → SQL Editor. Agrega verificación de rol dentro de cada función — el panel admin (`metricas.html`, `panel-interno-operaciones.html`) sigue funcionando igual, solo se bloquea a quien no sea staff.
-
----
-
-## 🔴 Ejecutar SQL: el saldo/crédito del cliente se buscaba por nombre (suplantable)
-
-**Hallazgo:** en `app/client-panel.html`, la tarjeta de "billetera" (saldo a favor, puntos, nivel) buscaba el registro del doctor **por su nombre**, y ese nombre venía de `user_metadata` — el mismo campo editable por el usuario que causó el problema de escalamiento de privilegios de antes. Cualquier doctor podía cambiar su propio nombre para que coincidiera con el de otro doctor y ver su saldo de crédito.
-
-**Ejecutar `sql/patch-wallet-idor-2026.sql`** en Supabase Dashboard → SQL Editor. Crea una función que resuelve la identidad real del doctor a partir de sus propios pedidos (dato que no puede manipular), en vez de confiar en su nombre autoreportado.
-
-**Ya corregido en código:** `client-panel.html` ahora usa esa función en vez de buscar por nombre.
+Los siguientes hallazgos de la auditoría 2026-07-03 quedaron **todos ejecutados** como parte de `sql/MAESTRO-EJECUTAR-TODO-2026-07-04.sql` (confirmado, "Patch 15/15" y sucesivos hasta 26/26) — se dejan aquí solo como referencia histórica, no requieren ninguna acción:
+- Reportes "ADMIN" visibles a cualquier doctor (`patch-reportes-admin-authz-2026.sql`)
+- Wallet/crédito suplantable por nombre (`patch-wallet-idor-2026.sql`)
+- `prodigy_pagos_pendientes`/`prodigy_pedidos_sla_vencido` sin revocar (`patch-revoke-rpcs-lectura-2026.sql`)
+- Escalamiento de privilegios vía `user_metadata.role` (`patch-privesc-user-metadata-2026.sql`) — el hallazgo más grave de esa ronda
+- `admin-precios.html` con `auth.jwt()->>'role'` en vez de `app_metadata.role` (`patch-rls-catalogo-precios-role-2026.sql`)
+- Fraude de cupones de referidos (`patch-fraude-cupones-referidos-2026.sql`)
+- Enlaces de aprobación de `revision-express.html` enumerables (`patch-revision-express-rpc-seguro-2026.sql`)
+- **`revision-diseno.html`** (residual documentado en una ronda anterior) — completamente resuelto y **probado en vivo** el 2026-07-05 (patches 17/18 + 3 hotfixes de columnas), ver sección más abajo.
 
 ---
 
@@ -139,70 +156,6 @@ Los 3 hotfixes ya están **ejecutados y confirmados en producción** (Alejandro 
 **Riesgo real:** alguien podría enviar emails con contenido de texto libre (aunque sin HTML/links propios) usando la marca y el dominio de PRODIGY, a cualquier destinatario, dentro del límite de rate-limit (10/hora por IP + 5/hora por destinatario, ya activo). Impacto limitado por esos límites y por el escape de contenido — no es un relay de phishing completo, pero sí permite spam de texto simple.
 
 **No se corrigió esta sesión** para evitar romper el flujo público de `envia-tu-scanner.html` sin poder probarlo en vivo. Si en el futuro quieres cerrarlo del todo, la opción sería restringir qué valores de `tipo` puede disparar cada llamador específico (allowlist por origen/contexto) en vez de un gate binario de autenticación.
-
----
-
-## 🔴 Ejecutar SQL: 2 funciones internas seguían exponiendo listados completos a cualquier doctor
-
-**Hallazgo:** el patch de junio (`patch-revoke-rpcs-internas.sql`) ya había revocado las funciones que "marcan como resuelto" (`prodigy_marcar_recordatorio`, `prodigy_marcar_sla_alerta`), pero dejó pasar las 2 funciones de **lectura** equivalentes: `prodigy_pagos_pendientes` y `prodigy_pedidos_sla_vencido`. Cualquier doctor logueado podía llamar estas funciones y ver el listado completo de pedidos con pago pendiente o SLA vencido de **todos** los doctores (nombre, WhatsApp, monto).
-
-**Ejecutar `sql/patch-revoke-rpcs-lectura-2026.sql`** en Supabase Dashboard → SQL Editor.
-
----
-
-## 🟡 Riesgo residual documentado (requiere refactor mayor, no urgente para ejecutar hoy)
-
-**`revision-diseno.html`** tiene el mismo problema de fondo que ya corregí en `revision-express.html`: las políticas RLS anon sobre `pedidos` (`migrate-diseno-revision.sql`) permiten leer/actualizar por "posesión del UUID" pero no impiden que alguien con la anon key haga una consulta sin filtro y traiga **todos** los pedidos en revisión del negocio. A diferencia de `revision-express.html`, este flujo tiene 7+ puntos de código que tocan la tabla directamente — convertirlo a RPCs seguras (como ya hice con revision-express) es un trabajo más grande que no quise apurar para no romper un flujo que hoy sí funciona. Queda pendiente para una sesión dedicada.
-
----
-
-## 🔴 CRÍTICO — Ejecutar SQL: enlaces de aprobación por email eran enumerables + probablemente no funcionaban
-
-**Hallazgo:** los enlaces "mágicos" que se envían por email para que el doctor apruebe un diseño (`revision-express.html`) tenían 2 problemas:
-1. Cualquiera sin sesión podía listar **todos** los tokens válidos de **todos** los casos pendientes de aprobación de todo el negocio (RLS no puede exigir que el cliente use el token específico, solo revisa el estado de la fila).
-2. No existía ninguna regla que permitiera a un visitante sin sesión (el caso normal — alguien haciendo clic en el enlace del email desde su teléfono) actualizar el pedido — es decir, es posible que este flujo **nunca haya funcionado** para el caso de uso principal, fallando en silencio.
-
-**Ejecutar `sql/patch-revision-express-rpc-seguro-2026.sql`** en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new`
-
-**Ya corregido en código:** `revision-express.html` ahora usa 3 funciones seguras en vez de tocar las tablas directamente. **Después de ejecutar el SQL, prueba el flujo completo una vez**: genera un enlace de revisión real, ábrelo en una ventana de incógnito (sin sesión) y confirma que aprobar/pedir cambios funciona de principio a fin.
-
----
-
-## 🔴🔴 EL MÁS URGENTE DE TODO — Escalamiento de privilegios (ejecutar YA)
-
-**Hallazgo más grave de toda la auditoría (2026-07-03):** varias políticas de seguridad usaban `user_metadata.role` (o `raw_user_meta_data.role`) como forma válida de verificar si alguien es admin/operario/encargado de inventario. **El problema: `user_metadata` lo puede editar el propio usuario desde el navegador**, sin ningún control del servidor. Cualquier doctor logueado podía abrir la consola del navegador y escribir:
-
-```js
-await supabase.auth.updateUser({ data: { role: 'admin' } })
-```
-
-Y en su siguiente sesión obtener acceso de administrador a: saldos a favor de TODOS los doctores (`creditos_cliente`), todos los reportes internos (`logs_incidencias`), poder cambiar el estado de CUALQUIER pedido, todos los perfiles de doctores, la tabla de equipo interno, y el inventario de materiales.
-
-No es un exploit complicado — es una sola línea de código en la consola del navegador. **Ejecutar `sql/patch-privesc-user-metadata-2026.sql` antes que cualquier otro SQL pendiente**, en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new`
-
----
-
-## 🔴 CRÍTICO — Ejecutar SQL: los cambios de precio en admin-precios.html probablemente nunca se guardan (auditoría 2026-07-03)
-
-**Hallazgo:** las políticas de seguridad de las tablas `catalogo`, `config_precios` y `billeteras` usan `auth.jwt() ->> 'role' = 'admin'` — pero ese `role` es el **rol de Postgres** (siempre `"authenticated"` para cualquier usuario logueado), no el rol de negocio. El rol real vive en `app_metadata.role`. Resultado: esa condición nunca es verdadera para nadie, ni para ti como admin real — **todo intento de cambiar un precio, activar/desactivar un ítem del catálogo, o tocar `billeteras` (saldo a favor de doctores) queda bloqueado silenciosamente**. El código de `admin-precios.html` tampoco mostraba error cuando esto fallaba, así que probablemente no te habías dado cuenta.
-
-**Ejecutar `sql/patch-rls-catalogo-precios-role-2026.sql`** en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new`
-
-**Ya corregido en código:** `admin-precios.html` ahora sí muestra un toast de error si el guardado falla (antes fallaba en silencio total).
-
-**Cómo confirmar que ya funciona (después de ejecutar el SQL):** entra a `/app/admin-precios.html`, cambia un precio cualquiera, guarda, recarga la página — el precio nuevo debe seguir ahí. Si vuelve al valor anterior, el SQL no se aplicó correctamente.
-
----
-
-## 🔴 CRÍTICO — Ejecutar SQL de fraude en cupones de referidos (auditoría 2026-07-03)
-
-**Hallazgo grave:** cualquier persona podía insertar directamente una fila en la tabla `referidos` (vía la API pública de Supabase) fijando un `cupon_credito` y un `recompensa_cop` inventados — sin haber referido a nadie ni pagado nada — y luego canjearlo con la función RPC existente. Es fraude real y explotable, no teórico.
-
-**Ejecutar `sql/patch-fraude-cupones-referidos-2026.sql`** en Supabase Dashboard → SQL Editor → `https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new`
-
-Esto: (1) restringe qué puede insertar un cliente en `referidos` a solo los valores "de fábrica" — el cupón real solo lo genera el sistema cuando se confirma un pago real; (2) bloquea que alguien use su propio código de referido para auto-generarse recompensa. También corregido en código: el descuento del cupón ahora sí se resta del total guardado en la base de datos (antes solo aparecía en el texto de WhatsApp, el staff tenía que ajustarlo a mano).
-
-**Este es el SQL más urgente de todos los pendientes** — a diferencia de los otros (que son mejoras de rendimiento/seguridad preventiva), este ya es un hueco activo por el que se puede sacar dinero real del negocio hoy mismo si alguien lo descubre.
 
 ---
 

@@ -157,6 +157,21 @@ export async function onRequestPost(context) {
     }), { status: 400, headers: cors });
   }
 
+  // Validar precio_total contra el valor real del pedido en BD — nunca confiar en lo que manda el body
+  try {
+    const pedidoRes = await fetch(
+      `${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${pedido_id}&select=precio_total`,
+      { headers: { 'apikey': env.SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}` } }
+    );
+    const pedidoRows = await pedidoRes.json();
+    const precioReal = pedidoRows?.[0]?.precio_total;
+    if (precioReal == null || Math.round(Number(precioReal)) !== Math.round(Number(precio_total))) {
+      return new Response(JSON.stringify({ error: 'El monto no coincide con el pedido registrado' }), { status: 400, headers: cors });
+    }
+  } catch {
+    return new Response(JSON.stringify({ error: 'No se pudo verificar el pedido' }), { status: 502, headers: cors });
+  }
+
   // Limpiar NIT y extraer dígito verificador
   const nitBase  = billing_nit.replace(/[^0-9]/g, '').slice(0, 15);
   const dvMatch  = billing_nit.match(/[-\s]?(\d)$/);

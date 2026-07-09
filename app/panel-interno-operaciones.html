@@ -1666,7 +1666,7 @@ async function cambiarEstado(pedidoId, nuevoEstado) {
 }
 
 /* ── NOTIFICACIONES WA — PRODIGY ── */
-function getWAPedido(p){ const wa=(p.doctor_whatsapp||p.whatsapp||'').replace(/\D/g,''); return wa.length>=10?wa:null; }
+function getWAPedido(p){ const wa=(p.telefono||'').replace(/\D/g,''); return wa.length>=10?wa:null; }
 
 function prodigyNotifPago(p){
     const wa=getWAPedido(p);

@@ -768,7 +768,7 @@ async function cargarPorConfirmar() {
         return `<tr>
             <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
             <td>${nombre}</td>
-            <td style="font-size:.78rem;">${escH(p.servicio || '—')}</td>
+            <td style="font-size:.78rem;">${escH(p.tipo_trabajo || '—')}</td>
             <td class="td-monto">${fmtCOP(p.precio_total)}</td>
             <td class="td-abono">${abono ? fmtCOP(abono) : '—'}</td>
             <td><span class="badge-subido">⏳ Comprobante enviado</span></td>
@@ -810,7 +810,7 @@ async function cargarSaldos() {
         return `<tr>
             <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
             <td>${nombre}</td>
-            <td style="font-size:.78rem;">${escH(p.servicio || '—')}</td>
+            <td style="font-size:.78rem;">${escH(p.tipo_trabajo || '—')}</td>
             <td>${saldoCell}</td>
             <td><span class="${entregado ? 'badge-ok' : 'badge-ce'}">${escH(p.estado_operativo || '—')}</span></td>
             <td style="font-size:.76rem;color:var(--muted);max-width:180px;">${escH(p.nota_calidad || '—')}</td>
@@ -882,7 +882,7 @@ async function cargarHistorial() {
         return `<tr>
             <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
             <td>${nombre}</td>
-            <td style="font-size:.78rem;">${escH(p.servicio || '—')}</td>
+            <td style="font-size:.78rem;">${escH(p.tipo_trabajo || '—')}</td>
             <td class="td-monto">${fmtCOP(p.precio_total)}</td>
             <td class="td-abono">${abono}</td>
             <td class="td-saldo-pend">${saldo}</td>
@@ -990,7 +990,7 @@ async function confirmarPago() {
     // Cliente internacional → ofrecer enviar link del recibo (invoice en inglés)
     if (esIntl) {
         const codigoRecibo = pCheck?.codigo || pedidoId;
-        const wa = (pCheck?.whatsapp || p?.whatsapp || '').replace(/\D/g,'');
+        const wa = (pCheck?.telefono || p?.telefono || '').replace(/\D/g,'');
         const reciboUrl = `https://prodigylabdental.com/recibo-caso?id=${codigoRecibo}&lang=en`;
         if (wa && confirm(`🌍 International client detected.\n\nSend invoice link via WhatsApp?\n${reciboUrl}`)) {
             const txt = encodeURIComponent(
@@ -1017,7 +1017,7 @@ async function rechazarPago() {
     if (error) { toast('Error: ' + error.message, 'err'); return; }
 
     const { data: p } = await sb.from('pedidos').select('codigo,telefono').eq('id', pedidoId).single();
-    const wa = (p?.whatsapp || '').replace(/\D/g,'');
+    const wa = (p?.telefono || '').replace(/\D/g,'');
     if (wa) {
         const txt = encodeURIComponent(
             `⚠️ Comprobante de pago — Caso #${p?.codigo || ''}\n\nHola Doctor, no pudimos verificar tu comprobante de pago. Por favor envíalo nuevamente o comunícate al 3212816716.\n\n_PRODIGY Lab Dental_`
@@ -1094,7 +1094,7 @@ async function cargarFacturasPendientes() {
                 <div style="font-weight:700;font-size:.82rem;">${razon}</div>
                 <div style="font-size:.72rem;color:var(--muted);">${escH(p.billing_tipo||'')} ${nit}</div>
             </td>
-            <td style="font-size:.78rem;">${escH(p.servicio || '—')}</td>
+            <td style="font-size:.78rem;">${escH(p.tipo_trabajo || '—')}</td>
             <td class="td-monto">${fmtCOP(p.precio_total)}</td>
             <td style="font-size:.74rem;color:var(--muted);">${escH(p.billing_email || '—')}</td>
             <td>
@@ -1133,7 +1133,7 @@ async function emitirFactura(pedidoId, btn) {
             body: JSON.stringify({
                 pedido_id:     p.id,
                 codigo:        p.codigo,
-                servicio:      p.servicio,
+                servicio:      p.tipo_trabajo,
                 precio_total:  p.precio_total,
                 billing_tipo:  p.billing_tipo,
                 billing_nit:   p.billing_nit,
@@ -1266,7 +1266,7 @@ function abrirManualDIAN(p) {
     document.getElementById('mdian-razon').textContent    = p.billing_razon || '—';
     document.getElementById('mdian-nit').textContent      = (p.billing_tipo || '') + ' ' + (p.billing_nit || '—');
     document.getElementById('mdian-email').textContent    = p.billing_email || '—';
-    document.getElementById('mdian-servicio').textContent = p.servicio || '—';
+    document.getElementById('mdian-servicio').textContent = p.tipo_trabajo || '—';
     document.getElementById('mdian-total').textContent    = fmtCOP(p.precio_total);
     document.getElementById('mdian-numero').value = '';
     document.getElementById('mdian-cufe').value   = '';
@@ -1352,7 +1352,7 @@ async function cargarPedidos() {
         return `<tr>
             <td class="td-mono">#${escH(p.codigo || p.id?.slice(0,8))}</td>
             <td>${nombre}</td>
-            <td style="font-size:.78rem;">${escH(p.servicio || '—')}</td>
+            <td style="font-size:.78rem;">${escH(p.tipo_trabajo || '—')}</td>
             <td><span style="font-size:.72rem;color:${color};font-weight:700;">${escH(p.estado_operativo || '—')}</span></td>
             <td class="td-monto">${fmtCOP(p.precio_total)}</td>
             <td style="font-size:.76rem;">${escH(PAGO_LABELS[p.pago_estado] || p.pago_estado || '—')}</td>
@@ -1467,7 +1467,7 @@ function exportarCSV() {
     const rows = _pedidos.map(p => [
         p.codigo || '',
         `"${(p.nombre_doctor || p.nombre_cliente || '').replace(/"/g, '""')}"`,
-        `"${(p.servicio || '').replace(/"/g, '""')}"`,
+        `"${(p.tipo_trabajo || '').replace(/"/g, '""')}"`,
         `"${(p.material || '').replace(/"/g, '""')}"`,
         p.pago_estado || '',
         fmtCOP(p.precio_total),

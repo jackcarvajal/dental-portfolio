@@ -371,7 +371,7 @@ let _userId = null;
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'pedidos'}, async (payload)=>{
       if (!_rtInitialized) { _rtInitialized=true; return; } // ignorar snapshot inicial
       const p = payload.new;
-      const myCase = !p.departamento || _myDepts.includes(p.departamento);
+      const myCase = !p.departamento_actual || _myDepts.includes(p.departamento_actual);
       if (myCase) {
         toast('🔔 Nuevo caso: '+(p.codigo||p.id?.slice(0,8)),'ok');
         if('Notification' in window && Notification.permission==='granted') {
@@ -383,7 +383,7 @@ let _userId = null;
     })
     .on('postgres_changes',{event:'UPDATE',schema:'public',table:'pedidos'}, async (payload)=>{
       const p = payload.new; const old = payload.old;
-      if (p.estado !== old.estado && _myDepts.includes(p.departamento)) {
+      if (p.estado !== old.estado && _myDepts.includes(p.departamento_actual)) {
         toast('↻ Caso '+(p.codigo||p.id?.slice(0,8))+' → '+p.estado,'ok');
       }
       await recargar();
@@ -724,7 +724,7 @@ async function submitQA(accion) {
 
   const updates = { estado_operativo: nuevoEstado };
   if (link)  updates.link_diseno   = link;
-  if (notes) updates.observaciones = notes;
+  if (notes) updates.notas_cambios = notes;
   if (nuevoEstado === 'DISENO_APROBADO') updates.estado = 'DISENO_FINALIZADO';
   if (nuevoEstado === 'QA_APROBADO')     updates.estado = 'QA_APROBADO';
 

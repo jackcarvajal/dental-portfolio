@@ -10,18 +10,26 @@
  * Env vars: ONESIGNAL_APP_ID, ONESIGNAL_REST_API_KEY, CRON_SECRET
  */
 
-const CORS = {
-  'Access-Control-Allow-Origin':  'https://prodigylabdental.com',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Content-Type':                 'application/json',
-};
+function corsHeaders(origin) {
+  const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
+  const o = allowed.includes(origin) || (origin || '').endsWith('.pages.dev') ? origin : 'https://prodigylabdental.com';
+  return {
+    'Access-Control-Allow-Origin':  o,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type':                 'application/json',
+  };
+}
 
-export async function onRequestOptions() {
-  return new Response(null, { status: 204, headers: CORS });
+export async function onRequestOptions(context) {
+  const origin = context.request.headers.get('Origin') || '';
+  return new Response(null, { status: 204, headers: corsHeaders(origin) });
 }
 
 export async function onRequestPost(context) {
   const { request, env } = context;
+  const origin = request.headers.get('Origin') || '';
+  const CORS = corsHeaders(origin);
 
   // Auth — solo desde CRON o admin interno
   const secret = request.headers.get('x-cron-secret');

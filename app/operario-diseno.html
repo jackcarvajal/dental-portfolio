@@ -544,7 +544,7 @@ async function avanzar(id, nuevoEstado) {
   // WA automático al doctor en revisión y aprobación
   if (['REVISION_CLIENTE','DISENO_APROBADO'].includes(nuevoEstado)) {
     const caso = _casos.find(c => c.id === id);
-    if (caso?.whatsapp) notificarWADiseno(caso, nuevoEstado);
+    if (caso?.telefono) notificarWADiseno(caso, nuevoEstado);
   }
 
   toast(stateLabels[nuevoEstado] || nuevoEstado, 'ok');

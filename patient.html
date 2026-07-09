@@ -1020,7 +1020,7 @@
                 description: data.description || data.descripcion || '',
                 coverImage:  data.cover_image || data.imagen_url  || '',
                 exocadFile:  data.exocad_file || '',
-                gallery:     Array.isArray(data.gallery) ? data.gallery : [],
+                gallery:     (Array.isArray(data.gallery) ? data.gallery : []).filter(u => /^https?:\/\//.test(u) || !/^[a-z]+:/i.test(u)),
                 driveLink:   data.drive_link  || ''
             };
         }

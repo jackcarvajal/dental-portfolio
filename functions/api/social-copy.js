@@ -21,8 +21,25 @@ export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: CORS });
 }
 
+// Rate limiting — protege cuota de Gemini aunque el llamador tenga el secreto correcto
+async function _rlSocialCopy(request) {
+  try {
+    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+    const rlKey = new Request('https://rl.internal/social-copy_' + ip);
+    const hit = await caches.default.match(rlKey);
+    const count = hit ? (parseInt(await hit.text(), 10) || 0) : 0;
+    if (count >= 10) return false;
+    await caches.default.put(rlKey, new Response(String(count + 1), { headers: { 'Cache-Control': 'max-age=3600' } }));
+    return true;
+  } catch { return true; }
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
+
+  if (!(await _rlSocialCopy(request))) {
+    return new Response(JSON.stringify({ error: 'Demasiadas solicitudes. Intenta en 1 hora.' }), { status: 429, headers: CORS });
+  }
 
   // Auth — acepta tanto cron-secret como sesión admin (header x-admin)
   const secret = request.headers.get('x-cron-secret');

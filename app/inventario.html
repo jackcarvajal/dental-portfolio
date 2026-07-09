@@ -1122,16 +1122,16 @@ document.addEventListener('keydown', e => {
 // ── Export CSV ────────────────────────────────────────────────────
 async function exportarInventarioCSV() {
     try {
-        const { data, error } = await sb.from('inventario')
-            .select('id,nombre,categoria,unidad,cantidad_actual,cantidad_minima,costo_unitario,proveedor,updated_at')
+        const { data, error } = await sb.from('inventario_items')
+            .select('id,nombre,categoria,unidad_medida,stock_actual,stock_minimo,costo_unitario,proveedor,updated_at')
             .order('categoria').order('nombre');
         if (error) throw error;
         if (!data?.length) { toast('Sin datos para exportar','err'); return; }
         const fmtF = d => d ? new Date(d).toLocaleDateString('es-CO') : '—';
         const rows = [['ID','Nombre','Categoría','Unidad','Stock Actual','Mínimo','Costo Unit. (COP)','Proveedor','Actualizado']];
         data.forEach(i => rows.push([
-            i.id?.slice(0,8)||'',i.nombre||'',i.categoria||'',i.unidad||'',
-            i.cantidad_actual||0,i.cantidad_minima||0,i.costo_unitario||0,
+            i.id?.slice(0,8)||'',i.nombre||'',i.categoria||'',i.unidad_medida||'',
+            i.stock_actual||0,i.stock_minimo||0,i.costo_unitario||0,
             i.proveedor||'',fmtF(i.updated_at)
         ]));
         const bom='﻿';
