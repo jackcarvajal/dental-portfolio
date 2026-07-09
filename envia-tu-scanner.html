@@ -951,11 +951,13 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         document.getElementById('formContainer').style.display = 'none';
         const sc = document.getElementById('successScreen');
         sc.classList.add('show');
-        const _nom = doctor.split(' ')[0];
+        const _esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        const _nom = _esc(doctor.split(' ')[0]);
+        const _wa  = _esc(whatsapp);
         document.getElementById('successMsg').innerHTML =
-            `Gracias, <strong>${_nom}</strong>. Recibimos tu caso de ${servicio.toLowerCase()}.<br><br>`+
-            (email ? `✅ <strong>Hemos creado tu portal de seguimiento</strong>. Revisa tu WhatsApp (${whatsapp}) — te enviamos el link de acceso con tus datos de ingreso.` :
-                     `Te contactamos al ${whatsapp} cuando tengamos el diseño listo.`);
+            `Gracias, <strong>${_nom}</strong>. Recibimos tu caso de ${_esc(servicio.toLowerCase())}.<br><br>`+
+            (email ? `✅ <strong>Hemos creado tu portal de seguimiento</strong>. Revisa tu WhatsApp (${_wa}) — te enviamos el link de acceso con tus datos de ingreso.` :
+                     `Te contactamos al ${_wa} cuando tengamos el diseño listo.`);
         document.getElementById('waLink').href =
             `https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, acabo de enviar mi escáner. Soy ${doctor} de ${clinica}.`)}`;
         sc.scrollIntoView({ behavior:'smooth', block:'center' });

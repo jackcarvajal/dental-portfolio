@@ -536,7 +536,7 @@ async function fijarNota(notaId, casoId, fijar) {
       <div class="error-box">
         <i class="fas fa-exclamation-triangle"></i>
         <h2>Caso no encontrado</h2>
-        <p style="margin-bottom:20px;">No se encontró el caso: <code style="color:var(--gold)">${id}</code></p>
+        <p style="margin-bottom:20px;">No se encontró el caso: <code style="color:var(--gold)">${escHtml(id)}</code></p>
         <a href="portafolio" style="background:var(--gold);color:#000;padding:10px 24px;border-radius:10px;font-weight:700;">← Ver Portafolio</a>
       </div>`;
   }

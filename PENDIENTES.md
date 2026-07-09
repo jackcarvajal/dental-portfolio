@@ -23,6 +23,10 @@ Todo ya commiteado/pusheado, sin SQL pendiente (solo fixes de código):
 
 **Confirmado limpio (sin cambios necesarios):** schemas reales de `creditos_cliente`, `logs_incidencias`, `notificaciones_internas`, `revision_tokens`, `catalogo`, `config_precios`, `despachos`, `waitlist_labs`, `newsletter_subscribers` — todo el código que las usa ya referencia las columnas correctas. `billeteras` confirmada como tabla legacy que nunca se creó (el wallet real vive en `creditos_cliente`). `_middleware.js` (bloqueo de `.md`/`/sql/`/`/scripts/`) ya existe y funciona en ambos repos (verificado con curl en producción, 404 real). Open redirect: solo `stripe-checkout.js` maneja URLs de redirect en ambos repos, y ya valida contra dominio propio — Wompi no recibe redirects del cliente.
 
+**XSS — 2 hallazgos reales corregidos (dato controlado por atacante externo anónimo):**
+- `caso.html:539` — el `id` de la URL (`?id=...`) se insertaba sin escapar en el mensaje de error "caso no encontrado", compartible por link → corregido con `escHtml()` (la función ya existía en el archivo, solo faltaba aplicarla aquí).
+- `envia-tu-scanner.html` (PRODIGY y Alejandro) — nombre del doctor y WhatsApp (campos de formulario público, sin sesión) se insertaban sin escapar en el mensaje de éxito → agregada función de escape local y aplicada a ambos campos, en ambos repos.
+
 ---
 
 ## ✅ SQL ejecutado (2026-07-06) — buscar_pedido_publico() (patch 26/26)
