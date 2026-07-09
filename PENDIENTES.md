@@ -4,15 +4,11 @@
 
 ---
 
-## 🔴 Ejecutar SQL — auditoría panel interno (admin/operarios): audit log roto + casos_portafolio sobre-permisiva
+## ✅ SQL ejecutado (2026-07-09) — audit log roto + casos_portafolio sobre-permisiva
 
-**Hallazgo 1 — el audit log de acciones admin nunca ha funcionado.** `logs_incidencias.tipo` tiene un `CHECK` con solo 7 valores fijos, pero el código real (panel-interno-operaciones.html, operario.html, operator-panel.html, inventario.html, calidad.html, contabilidad.html, gestionar-casos.html, y ~10 Cloudflare Functions) inserta con **más de 20 valores distintos** de `tipo` y `severidad IN ('INFO','WARN','ADVERTENCIA')` que tampoco están en su CHECK. Cada INSERT que no matchea falla, y como todos usan try/catch silencioso, nunca se notó. En la práctica: `_auditLog()` del panel admin (cambios de estado, precios, roles, eliminar casos) **nunca ha dejado rastro real**, y la mayoría de logs operativos tampoco (solo `STOCK_CRITICO`/`ALTA` matcheaban por casualidad).
+Confirmado por Alejandro ("Success. No rows returned"). `sql/patch-audit-log-y-portafolio-rls-2026-07.sql` aplicado: quitados los 2 CHECK de `logs_incidencias` (tenían solo 7 valores fijos, el código real usa >20 tipos distintos en todo el proyecto — cada INSERT fallaba en silencio, incluido el audit log de acciones admin); `casos_portafolio` restringida a `app_metadata.role IN ('admin','operario','staff')` en vez de cualquier autenticado.
 
-**Hallazgo 2 — `casos_portafolio` permite escritura a cualquier autenticado, no solo staff.** Cualquier doctor/cliente con cuenta podía en teoría insertar/editar/borrar casos del portafolio público llamando la API directamente (no vía el panel, que sí exige admin en su UI — pero la RLS real no lo exigía).
-
-**Ejecutar `sql/patch-audit-log-y-portafolio-rls-2026-07.sql`** en Supabase Dashboard → SQL Editor. Quita los 2 CHECK problemáticos de `logs_incidencias` (se deja como taxonomía de texto libre, ya la usan >20 tipos distintos de forma orgánica) y restringe INSERT/UPDATE/DELETE de `casos_portafolio` a `app_metadata.role IN ('admin','operario','staff')`.
-
-**Ya corregido en código:** `_auditLog()` ahora envía `emisor_id` (antes quedaba NULL, violando otra condición de la policy de INSERT). Se agregó `_auditLog()` a `cambiarRol()` (cambio de rol de staff — la RLS ya lo protegía correctamente con `app_metadata.role='admin'`, pero no dejaba rastro de quién cambió el rol de quién).
+**Ya corregido en código (commit previo):** `_auditLog()` ahora envía `emisor_id`; `cambiarRol()` deja rastro de auditoría.
 
 **Pendiente de código (no urgente, bajo impacto — ya protegidas por RLS, solo falta el rastro de auditoría):** `eliminarWaitlist()`, `eliminarRef()`, `cambiarEstadoRef()`, `cambiarEstadoDoc()`, `toggleStaffActivo()`, `toggleActivo()`, `toggleDept()`, `guardarEdicion()` (portafolio) no llaman `_auditLog()`. Se puede completar en una sesión dedicada si quieres el trail completo.
 
