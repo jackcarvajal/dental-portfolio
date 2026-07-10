@@ -4,13 +4,11 @@
 
 ---
 
-## 🔴 Ejecutar SQL — anti-abuso de referidos por WhatsApp
+## ✅ SQL ejecutado (2026-07-09) — anti-abuso de referidos por WhatsApp
 
-**Hallazgo:** el trigger `prodigy_detectar_primer_pedido_referido()` solo bloqueaba el auto-referido si el email del pedido "referido" era idéntico al del referidor. Un doctor podía registrar una segunda cuenta con otro email (mismo WhatsApp/clínica), pedir un caso mínimo pagado con su propio código de referido, y cobrar su propio cupón de $30.000 COP repetidamente con emails desechables — sin límite.
+Confirmado ("Success. No rows returned"). `sql/patch-referidos-antiabuso-whatsapp-2026-07.sql` aplicado: el trigger `prodigy_detectar_primer_pedido_referido()` ahora también bloquea el auto-referido si el teléfono del pedido "referido" coincide con el WhatsApp real del doctor referidor (vía `doctores_perfil`), no solo por email idéntico.
 
-**Ejecutar `sql/patch-referidos-antiabuso-whatsapp-2026-07.sql`** en Supabase Dashboard → SQL Editor. Agrega una segunda verificación: si el teléfono del pedido "referido" coincide con el WhatsApp real registrado del doctor referidor (vía `doctores_perfil`, no un campo auto-reportado), también bloquea — complementa la validación de email existente, no la reemplaza.
-
-**Nota:** el registro de doctor (`signUp`) no tiene rate limiting propio en el repo (solo lo que Supabase Auth tenga configurado en el Dashboard, no verificable desde código) — si además "Confirm email" estuviera desactivado en el Dashboard, facilitaría emails desechables masivos. Verificar manualmente en Supabase Dashboard → Auth → Settings si "Confirm email" está en ON.
+**Nota pendiente (verificación manual, no código):** el registro de doctor (`signUp`) no tiene rate limiting propio en el repo — si "Confirm email" estuviera desactivado en Supabase Dashboard → Auth → Settings, facilitaría emails desechables masivos. Pendiente que confirmes ese ajuste en el Dashboard.
 
 ---
 
