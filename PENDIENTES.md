@@ -4,11 +4,17 @@
 
 ---
 
+## 🔴 Ejecutar SQL — límite de longitud en RPCs anon (cierre de riesgos residuales)
+
+**Ejecutar `sql/patch-limite-texto-rpc-anon-2026-07.sql`** en Supabase Dashboard → SQL Editor. Trunca (no rechaza, para no romper el flujo real) el texto libre que aceptan `prodigy_rd_solicitar_cambio()` y `prodigy_rd_enviar_comprobante()` (ambas callable por `anon` sin sesión, vía link directo en `revision-diseno.html`) — antes sin límite, riesgo de relleno de BD.
+
+---
+
 ## ✅ SQL ejecutado (2026-07-09) — CHECK de formato en billing_email
 
 Confirmado. `sql/patch-check-billing-email-2026-07.sql` aplicado: CHECK constraint permisivo en `pedidos.billing_email`. `factura.js` ya rechazaba NIT/email/razón inválidos antes de facturar (fix de código previo).
 
-**Riesgo residual documentado, sin corregir (bajo impacto):** `pedidos.telefono`/`email` sin CHECK de formato (fallos silenciosos en cron de WA/recordatorios, no crítico); 2 RPCs `anon` (`prodigy_rd_solicitar_cambio`, `prodigy_rd_enviar_comprobante`) aceptan texto libre sin límite de longitud (riesgo de relleno de BD, no de seguridad).
+**Riesgo residual documentado, sin corregir (bajo impacto, no crítico):** `pedidos.telefono`/`email` sin CHECK de formato (fallos silenciosos en cron de WA/recordatorios).
 
 ---
 
