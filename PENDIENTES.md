@@ -12,6 +12,19 @@
 
 ---
 
+## ✅ Auditoría (2026-07-10) — replay de webhooks + race conditions de pago: SIN vulnerabilidad (verificado con modelo pesado)
+
+Auditoría profunda de concurrencia sobre el flujo de pago (Stripe + Wompi + trigger de referidos). **El frente de mayor riesgo económico — doble cobro / doble cupón de $30.000 por un evento de pago reenviado — está bien protegido.** Verificado paso a paso bajo row-locks de Postgres:
+- **Replay de webhook**: idempotencia efectiva por la combinación de UPDATE condicional (`neq.Pagado`, se serializa por row-lock) + constraint `UNIQUE` en `pagos.referencia` (el segundo insert choca y no crea pago duplicado). Stripe además rechaza eventos de más de 5 min por timestamp firmado.
+- **Race/TOCTOU en confirmación**: el check `estado==='Pagado'` en JS tiene ventana check-then-act, pero es inofensivo porque la escritura usa el predicado atómico `neq.Pagado` a nivel DB — la transición ocurre exactamente una vez.
+- **Cupón de referido**: triple guarda (trigger solo en `UPDATE OF pago_estado` + `OLD.pago_estado IS DISTINCT FROM 'pago_confirmado'` + `WHERE estado IN ('pendiente','registrado')` que pasa a `'primer_pedido'` tras el primer cupón). Imposible generar el cupón dos veces.
+
+**Notas de defensa-en-profundidad (NO ejecutar — evaluadas y descartadas o diferidas):**
+- Freshness check en Wompi (rechazar webhooks viejos como hace Stripe): **descartado a propósito** — Wompi reintenta webhooks fallidos horas/días después, un rechazo por timestamp rompería un reintento legítimo de un pago no confirmado. La idempotencia ya cubre el replay sin este riesgo.
+- Filtro de estado extra en el UPDATE del trigger de referidos: redundante hoy por la triple guarda; solo tendría valor si en el futuro se agrega otra vía concurrente que toque `referidos`. Diferido.
+
+---
+
 ## ✅ SQL ejecutado (2026-07-10) — mass assignment/IDOR en 4 tablas más
 
 Confirmado. `sql/patch-mass-assignment-otras-tablas-2026-07.sql` aplicado:
