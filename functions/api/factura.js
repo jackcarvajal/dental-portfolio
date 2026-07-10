@@ -174,6 +174,15 @@ export async function onRequestPost(context) {
 
   // Limpiar NIT y extraer dígito verificador
   const nitBase  = billing_nit.replace(/[^0-9]/g, '').slice(0, 15);
+  if (!nitBase || nitBase.length < 5) {
+    return new Response(JSON.stringify({ error: 'billing_nit inválido — debe tener al menos 5 dígitos' }), { status: 400, headers: cors });
+  }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(billing_email)) {
+    return new Response(JSON.stringify({ error: 'billing_email con formato inválido' }), { status: 400, headers: cors });
+  }
+  if (!billing_razon || !billing_razon.trim()) {
+    return new Response(JSON.stringify({ error: 'billing_razon requerido' }), { status: 400, headers: cors });
+  }
   const dvMatch  = billing_nit.match(/[-\s]?(\d)$/);
   const dv       = dvMatch ? dvMatch[1] : calcularDV(nitBase);
 

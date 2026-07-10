@@ -4,6 +4,18 @@
 
 ---
 
+## 🔴 Ejecutar SQL — CHECK de formato en billing_email (validación server-side)
+
+**Hallazgo:** `billing_nit`/`billing_email`/`billing_razon` en `pedidos` solo se validaban con el navegador (JS) — cualquier doctor autenticado podía saltarse esa validación insertando el pedido directo vía API con `billing_nit="abc"` o un email corrupto. El caso más grave: `functions/api/factura.js` limpiaba el NIT (`.replace(/[^0-9]/g,'')`) pero si quedaba vacío, seguía adelante y le pedía a Factus (DIAN) facturar con `identification: ''` — el fallo solo se descubría cuando la pasarela lo rechazaba, no antes.
+
+**Ya corregido en código:** `factura.js` ahora rechaza el request (400) si `billing_nit` limpio queda con menos de 5 dígitos, si `billing_email` no tiene formato válido, o si `billing_razon` está vacío — antes de intentar facturar.
+
+**Ejecutar `sql/patch-check-billing-email-2026-07.sql`** en Supabase Dashboard → SQL Editor. Agrega un CHECK constraint permisivo (permite NULL, solo valida formato si se envía algo) a `pedidos.billing_email` como defensa adicional a nivel de BD.
+
+**Riesgo residual documentado, sin corregir (bajo impacto):** `pedidos.telefono`/`email` sin CHECK de formato (fallos silenciosos en cron de WA/recordatorios, no crítico); 2 RPCs `anon` (`prodigy_rd_solicitar_cambio`, `prodigy_rd_enviar_comprobante`) aceptan texto libre sin límite de longitud (riesgo de relleno de BD, no de seguridad).
+
+---
+
 ## ✅ SQL ejecutado (2026-07-09) — anti-abuso de referidos por WhatsApp
 
 Confirmado ("Success. No rows returned"). `sql/patch-referidos-antiabuso-whatsapp-2026-07.sql` aplicado: el trigger `prodigy_detectar_primer_pedido_referido()` ahora también bloquea el auto-referido si el teléfono del pedido "referido" coincide con el WhatsApp real del doctor referidor (vía `doctores_perfil`), no solo por email idéntico.
