@@ -4,13 +4,9 @@
 
 ---
 
-## 🔴 Ejecutar SQL — alerta de precio sospechoso (hallazgo crítico de dinero)
+## ✅ SQL ejecutado (2026-07-09) — alerta de precio sospechoso
 
-**Hallazgo:** los 4 flujos de creación calculan `precio_total` en el navegador (`calcularTotal()`) y lo insertan directo en `pedidos` sin que nada server-side lo revalide contra el catálogo real. La validación de Stripe (`stripe-checkout.js`) solo confirma que el monto cobrado coincide con `pedidos.precio_total` — pero si ese valor ya fue manipulado en el INSERT (interceptando la request), la validación "pasa" comparando el fraude contra sí mismo. Un atacante podría insertar un pedido de alto valor (ej. guía quirúrgica) con `precio_total` artificialmente bajo y pagarlo por una fracción de su costo real, sin que nada lo detecte antes de producción/entrega.
-
-**Por qué no se bloquea el INSERT:** `calcularTotal()` está marcado INTOCABLE en CLAUDE.md ("sin variables paralelas para precios") — reimplementar su lógica completa en SQL (3 versiones distintas, cada una con sus propios extras de express/envío/DSD/recargos) es arriesgado: un caso borde no contemplado bloquearía pedidos legítimos y pagados.
-
-**Ejecutar `sql/patch-alerta-precio-sospechoso-2026-07.sql`** en Supabase Dashboard → SQL Editor. Agrega un trigger `AFTER INSERT` (no bloqueante, fail-open) que compara `precio_total` contra el precio base real de `catalogo` para ese material — si está por debajo del 40% del precio esperado, genera una alerta CRÍTICA en `logs_incidencias` (visible en el panel, tab Incidencias/Torre de Control) para que el staff lo revise antes de confirmar pago o iniciar producción. Si no encuentra el material en catálogo, no genera alerta (evita falsos positivos). Cubre ambos negocios (misma tabla `pedidos`).
+Confirmado por Alejandro. `sql/patch-alerta-precio-sospechoso-2026-07.sql` aplicado: trigger `AFTER INSERT` (no bloqueante) en `pedidos` que compara `precio_total` contra el precio base real de `catalogo` — si está por debajo del 40% del esperado, genera alerta CRÍTICA en `logs_incidencias` (visible en panel, tab Incidencias/Torre de Control). Cubre ambos negocios.
 
 ---
 
