@@ -4,6 +4,14 @@
 
 ---
 
+## 🔴 Ejecutar SQL — mass assignment en pedidos_doctor (misma clase que pedidos)
+
+`pedidos_doctor` (pedidos que el doctor envía desde `client-panel.html`) tenía el mismo bug ya corregido en `pedidos`: su policy de INSERT solo validaba `auth.uid() = doctor_id`, sin restringir `estado` ni `precio_final`. Un doctor autenticado podía crear un pedido directo por API ya en `estado='enviado'/'listo'` o con `precio_final=1`. El trigger de protección existente solo corría en UPDATE.
+
+**Ejecutar `sql/patch-mass-assignment-pedidos-doctor-2026-07.sql`** en Supabase Dashboard → SQL Editor. Trigger `BEFORE INSERT` que fuerza `estado='recibido'` y `precio_final=NULL` — el flujo legítimo no se afecta (el JS envía `estado='recibido'` y nunca `precio_final`). `precio_estimado` se deja intacto (client-side, mismo caso que `calcularTotal()` INTOCABLE).
+
+---
+
 ## ✅ SQL ejecutado (2026-07-10) — mass assignment/IDOR en 4 tablas más
 
 Confirmado. `sql/patch-mass-assignment-otras-tablas-2026-07.sql` aplicado:
