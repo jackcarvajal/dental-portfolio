@@ -4,6 +4,25 @@
 
 ---
 
+## ⚠️ ANTES DE ACTIVAR PAYPAL — arquitectura insegura (hoy código muerto, no explotable)
+
+Auditoría Opus: el checkout de PayPal (`js/pagos.js` `abrirCheckoutPayPal`) es 100% client-side (`actions.order.create` + `actions.order.capture()` en el navegador), **sin verificación server-side** — a diferencia de Wompi (webhook con firma) y Stripe (stripe-webhook). Hoy NO es explotable porque es código muerto: ninguna página lo llama, no escribe en `pedidos`, no hay webhook de PayPal.
+
+**El riesgo:** si alguien lo "activa" con el patrón actual, se abre el hueco de pagar US$1 por un pedido de US$500 (el `montoUSD` viene del cliente) o marcar pagado sin verificar con PayPal. Ya se agregó un comentario-guardrail en `pagos.js` (ambos repos) advirtiéndolo.
+
+**Bug operativo latente:** como PayPal no tiene webhook, un pago PayPal *legítimo* cobraría el dinero pero dejaría el pedido sin marcar `Pagado` (nadie escribe a la BD). Por eso hoy solo Wompi está realmente operativo para pago con pasarela.
+
+**Fix de fondo (cuando se quiera activar PayPal):** Edge Function que capture con `PAYPAL_CLIENT_SECRET` server-side, llame `GET /v2/checkout/orders/{id}` a `api.paypal.com`, confirme `status=COMPLETED` y que `amount == precio_total` del pedido en la BD, y recién ahí marque `Pagado` vía service-role (mismo patrón que webhook-handler de Wompi). Aplica a ambos repos.
+
+## 🟡 Edge Functions Deno de notificación — rotas/duplicadas (no es hueco de seguridad)
+
+Auditoría Sonnet de `meta-capi`, `notify-wa`, `send-push` (versiones Deno en `supabase/functions/`):
+- **Seguridad: OK** — el gateway de Supabase (`verify_jwt=true` por default, no tienen bloque en config.toml) exige JWT antes de ejecutar; además verifican rol staff. No son relay abierto ni spam.
+- **Bug operativo:** varios llamadores apuntan a la versión Deno (`${SUPABASE_URL}/functions/v1/notify-wa` y `/send-push`) pasando la **anon key** como Bearer → `getUser(anon)` no resuelve usuario → **401 en cada llamada, la notificación falla en silencio** (`.catch(()=>{})`). Afectados: `success.html`, `envia-tu-scanner.html`, `escaner-domicilio.html`, `panel-interno-operaciones.html` (notify-wa); `calidad`, `contabilidad`, `mensajero`, `operario*`, `operator-panel` (send-push). OTROS llamadores sí usan la versión Cloudflare que funciona (`/api/notify-wa`).
+- **Recomendación (operativo, no urgente, requiere probar):** consolidar todos los `fetch` a las versiones Cloudflare (`/api/notify-wa`, `/api/send-push`) que ya están auditadas y funcionan, y borrar las Edge Functions Deno duplicadas + `meta-capi` (código muerto, sin llamador). No se hizo ahora porque es cambio operativo en ~13 sitios con posible mismatch de schema de body — decidir y probar con calma.
+
+---
+
 ## 🔴🔴 REDESPLEGAR Edge Function — wompi-signature firmaba montos arbitrarios del cliente (EL HUECO DE DINERO MÁS GRAVE)
 
 **Hallazgo (auditoría Opus):** `supabase/functions/wompi-signature/index.ts` tomaba `monto_en_centavos` **directo del body del cliente** y firmaba ESE monto sin cruzarlo con el pedido real en la BD. Un atacante podía pedir una firma válida para $1.000 sobre un pedido de $500.000 — la firma era criptográficamente correcta (la generaba el servidor), Wompi la aceptaba, y el webhook confirmaba el pago "íntegro". **Vector real de pagar de menos.** (La función `verify-price` que parecía validar precio resultó ser **código muerto** — nadie la llama y ni siquiera consulta la BD; la conclusión previa de "precio sin validar server-side" se confirma.)
