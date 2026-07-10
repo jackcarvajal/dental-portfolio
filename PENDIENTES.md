@@ -4,6 +4,30 @@
 
 ---
 
+## 🔴 Ejecutar SQL — anti-abuso de referidos por WhatsApp
+
+**Hallazgo:** el trigger `prodigy_detectar_primer_pedido_referido()` solo bloqueaba el auto-referido si el email del pedido "referido" era idéntico al del referidor. Un doctor podía registrar una segunda cuenta con otro email (mismo WhatsApp/clínica), pedir un caso mínimo pagado con su propio código de referido, y cobrar su propio cupón de $30.000 COP repetidamente con emails desechables — sin límite.
+
+**Ejecutar `sql/patch-referidos-antiabuso-whatsapp-2026-07.sql`** en Supabase Dashboard → SQL Editor. Agrega una segunda verificación: si el teléfono del pedido "referido" coincide con el WhatsApp real registrado del doctor referidor (vía `doctores_perfil`, no un campo auto-reportado), también bloquea — complementa la validación de email existente, no la reemplaza.
+
+**Nota:** el registro de doctor (`signUp`) no tiene rate limiting propio en el repo (solo lo que Supabase Auth tenga configurado en el Dashboard, no verificable desde código) — si además "Confirm email" estuviera desactivado en el Dashboard, facilitaría emails desechables masivos. Verificar manualmente en Supabase Dashboard → Auth → Settings si "Confirm email" está en ON.
+
+---
+
+## ✅ Fix de código (2026-07-09) — sesión/logout + relay WA abierto (Alejandro) + npm audit
+
+Todo commiteado/pusheado.
+
+- **`js/header.js` (ambos repos)** — el logout del mini-login del header (`_phdrLogoutPG`/`_phdrLogout`, usado en el topbar de páginas públicas) solo borraba el token de `localStorage`, **nunca revocaba el refresh token server-side**. Un JWT copiado antes de "cerrar sesión" seguía siendo válido hasta su expiración natural (~1h). El logout de los paneles internos (`auth-guard.js`) sí llamaba `supabase.auth.signOut()` correctamente — la inconsistencia era solo en el header. Corregido: ahora llama `POST /auth/v1/logout` antes de limpiar el storage local.
+- **Alejandro `functions/api/wa-auto.js`** — a diferencia de PRODIGY, no validaba el contenido del mensaje: cualquier visitante podía usarlo como relay de WhatsApp arbitrario (cualquier texto, a cualquier número, dentro del rate-limit) usando la cuota CallMeBot del negocio. Corregido con el mismo patrón de PRODIGY: exige que el mensaje incluya la marca y limita a 700 caracteres.
+- **PRODIGY `npm audit fix`** — 2 vulnerabilidades moderadas en `devDependencies` (`js-yaml`, `tar` transitiva de `supabase` CLI, ninguna se despliega a producción) corregidas, 0 vulnerabilidades restantes.
+
+**Confirmado limpio (sin hallazgos):** inyección de headers en emails (JSON transport, no vulnerable), SQL injection en RPCs (ninguna función pública construye SQL dinámico con parámetros de usuario), JWT en URL (ninguno), `autoRefreshToken`/`persistSession` (default correcto en todos los `createClient()`), rate limiting con doble control IP+destino en la mayoría de endpoints con destinatario externo.
+
+**Riesgo residual documentado, sin corregir (dependencia de CDN, no de código propio):** `@supabase/supabase-js@2` se carga desde jsdelivr sin pin de versión exacta (`@2`, resuelve siempre a la última `2.x.x`) — no reproducible, un compromiso del paquete en el registro se propagaría sin aviso. `three.js@0.165.0` (visor STL) no está en la última versión pero no es crítico. Pin de versión exacta queda como mejora futura si se quiere.
+
+---
+
 ## ✅ SQL ejecutado (2026-07-09) — alerta de precio sospechoso
 
 Confirmado por Alejandro. `sql/patch-alerta-precio-sospechoso-2026-07.sql` aplicado: trigger `AFTER INSERT` (no bloqueante) en `pedidos` que compara `precio_total` contra el precio base real de `catalogo` — si está por debajo del 40% del esperado, genera alerta CRÍTICA en `logs_incidencias` (visible en panel, tab Incidencias/Torre de Control). Cubre ambos negocios.

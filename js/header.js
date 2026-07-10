@@ -1055,8 +1055,19 @@
   })();
 
   window._phdrLogoutPG = function(){
+    var stored = localStorage.getItem('sb-zgihrwqfyvgyapbwzkvw-auth-token');
+    var tok = '';
+    try { tok = JSON.parse(stored)?.access_token||''; } catch(e){}
     localStorage.removeItem('sb-zgihrwqfyvgyapbwzkvw-auth-token');
-    window.location.reload();
+    // Revocar el refresh token server-side — sin esto, un JWT copiado antes
+    // del logout seguía siendo válido hasta su expiración natural (~1h).
+    var done = function(){ window.location.reload(); };
+    if (tok) {
+      fetch(_SURL_PG+'/auth/v1/logout',{method:'POST',headers:{'apikey':_SKEY_PG,'Authorization':'Bearer '+tok}})
+        .then(done).catch(done);
+    } else {
+      done();
+    }
   };
 
   window._phdrLogin = function (e) {
