@@ -12,16 +12,21 @@ on:
     - cron: '0 6 * * 0'   # Domingo 1 AM Bogotá (6:00 UTC)
   workflow_dispatch:        # Ejecución manual desde GitHub Actions
 
+permissions:
+  contents: read
+
 jobs:
   purgar:
     runs-on: ubuntu-latest
 
     steps:
       - name: Llamar endpoint de purga
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           RESPONSE=$(curl -s -w "\n%{http_code}" \
             "https://prodigylabdental.com/api/purgar-stl-storage" \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}")
+            -H "Authorization: Bearer ${CRON_SECRET}")
           STATUS=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | sed '$d')
           echo "Status: $STATUS"

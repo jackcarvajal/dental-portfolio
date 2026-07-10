@@ -4,6 +4,25 @@
 
 ---
 
+## ✅ Fix de código (2026-07-09) — SRI en scripts de CDN + higiene de GitHub Actions (frentes nunca auditados)
+
+Todo commiteado/pusheado, sin SQL pendiente.
+
+**Subresource Integrity (SRI) — hallazgo real: ~63 scripts de CDN en ambos repos se cargaban sin `integrity`, y el SDK de Supabase además sin versión fijada (`@2` resolvía siempre a la última `2.x.x` de jsDelivr).** Si el CDN fuera comprometido, el sitio ejecutaría JS malicioso en login/checkout/subida de archivos de pacientes sin ninguna barrera — la CSP actual (`script-src ... https: 'unsafe-inline'`) no lo habría bloqueado. Corregido:
+- `@supabase/supabase-js` fijado a `2.110.2` (versión que estaba resolviendo `@2` en el momento del fix) + `integrity`/`crossorigin` en los 47 archivos de PRODIGY y 16 de Alejandro que lo cargan. Hash verificado descargando el archivo real y comparando contra lo que sirve la URL fijada — coincide exactamente.
+- `html5-qrcode@2.3.8` (`mensajero.html`, `inventario.html`, `taller.html`) y `signature_pad@4.1.7` (`mensajero.html`) — ya tenían versión fijada, se agregó `integrity`.
+- **Pendiente (menor, no crítico):** Font Awesome se inyecta dinámicamente vía `js/header.js` (no un `<script>` estático) — agregar SRI ahí requiere tocar el JS de inyección, no un simple atributo HTML. `three.js` (visor STL) usa `importmap`, cuyo soporte de `integrity` es inconsistente entre navegadores — no se tocó.
+- **Recordatorio operativo:** si en el futuro se actualiza la versión de `@supabase/supabase-js` (o cualquier otra lib con SRI), hay que recalcular el hash y actualizarlo en TODOS los archivos a la vez — un hash desactualizado rompe la carga del script en vez de solo perder la protección.
+
+**GitHub Actions — 2 mejoras de higiene (sin vulnerabilidad crítica encontrada):**
+- `deploy.yml` y `purga-stl-semanal.yml` interpolaban secrets (`${{ secrets.X }}`) directo dentro de un bloque `run:` de shell en vez de pasarlos por `env:` — GitHub enmascara el valor en logs automáticamente así que no había fuga confirmada, pero es el patrón recomendado. Corregido en ambos.
+- `purga-stl-semanal.yml` y `supabase-keepalive.yml` no declaraban `permissions:` explícito → agregado `contents: read` (mínimo necesario, ninguno de los dos escribe al repo).
+- Confirmado limpio: ningún workflow de ninguno de los dos repos se dispara por `pull_request`/`pull_request_target`/`issue_comment` (sin superficie de script-injection vía PR/issue externo), y todas las `uses:` son acciones oficiales `actions/*` en versión fija.
+
+**Confirmado limpio (sin hallazgos):** clickjacking (`X-Frame-Options: SAMEORIGIN` activo y verificado en producción en ambos dominios), cookies propias (solo un flag de "vio el preview" en PRODIGY, no es sesión, no aplica session fixation — Alejandro no tiene cookies propias en absoluto), Service Worker (excluye `/app/` y `*.supabase.co` del caché — ningún dato sensible se cachea, ni siquiera el shell HTML de los paneles).
+
+---
+
 ## ✅ SQL ejecutado (2026-07-09) — límite de longitud en RPCs anon
 
 Confirmado. `sql/patch-limite-texto-rpc-anon-2026-07.sql` aplicado: `prodigy_rd_solicitar_cambio()` y `prodigy_rd_enviar_comprobante()` (callable por `anon` sin sesión) ahora truncan el texto libre en vez de aceptarlo sin límite.
