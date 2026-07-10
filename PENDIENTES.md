@@ -4,9 +4,9 @@
 
 ---
 
-## 🔴 Ejecutar SQL — límite de longitud en RPCs anon (cierre de riesgos residuales)
+## ✅ SQL ejecutado (2026-07-09) — límite de longitud en RPCs anon
 
-**Ejecutar `sql/patch-limite-texto-rpc-anon-2026-07.sql`** en Supabase Dashboard → SQL Editor. Trunca (no rechaza, para no romper el flujo real) el texto libre que aceptan `prodigy_rd_solicitar_cambio()` y `prodigy_rd_enviar_comprobante()` (ambas callable por `anon` sin sesión, vía link directo en `revision-diseno.html`) — antes sin límite, riesgo de relleno de BD.
+Confirmado. `sql/patch-limite-texto-rpc-anon-2026-07.sql` aplicado: `prodigy_rd_solicitar_cambio()` y `prodigy_rd_enviar_comprobante()` (callable por `anon` sin sesión) ahora truncan el texto libre en vez de aceptarlo sin límite.
 
 ---
 
