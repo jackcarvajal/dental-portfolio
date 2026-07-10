@@ -4,18 +4,15 @@
 
 ---
 
-## 🔴 Ejecutar SQL — mass assignment/IDOR en 4 tablas más (barrido sistemático tras el hallazgo de pedidos)
+## ✅ SQL ejecutado (2026-07-10) — mass assignment/IDOR en 4 tablas más
 
-Tras confirmar el bug de `pedidos`, se auditaron todas las demás tablas con INSERT abierto a `anon`/`authenticated`. 4 hallazgos:
+Confirmado. `sql/patch-mass-assignment-otras-tablas-2026-07.sql` aplicado:
+1. **`newsletter_subscribers`** — quitada la policy `unsubscribe_self` que permitía a cualquiera sin autenticar dar de baja **cualquier email** (el unsubscribe legítimo sigue vía RPC con token).
+2. **`cotizaciones`** — INSERT ahora fuerza `estado='borrador'` y `pedido_id IS NULL`.
+3. **`solicitudes_scanner`** — INSERT fuerza `estado='nuevo'`, `contactado=false`, `cotizacion IS NULL`.
+4. **`waitlist_labs`** — INSERT fuerza `estado='pendiente'`.
 
-1. **`newsletter_subscribers` — el más grave.** La policy `unsubscribe_self` permitía a CUALQUIERA (sin autenticar, sin token) desactivar la suscripción de **cualquier email de la tabla** con un simple PATCH — no validaba ownership. Un competidor podía dar de baja toda la lista de marketing en un loop. Ya existe la RPC segura `newsletter_unsubscribe(p_token)` que sí valida por token — la policy insegura era redundante y peligrosa.
-2. **`cotizaciones`** — INSERT sin restricción permitía crear una cotización ya con `estado='aceptada'` y vincularla a un `pedido_id` ajeno (sin validar ownership del pedido).
-3. **`solicitudes_scanner`** — INSERT sin restricción permitía marcar la propia solicitud como `estado='cerrado'`/`contactado=true` desde el origen, ocultándola de la cola de gestión de leads del staff.
-4. **`waitlist_labs`** — mismo patrón, `estado` podía llegar ya en `'convertido'`, contaminando métricas de conversión.
-
-**Ejecutar `sql/patch-mass-assignment-otras-tablas-2026-07.sql`** en Supabase Dashboard → SQL Editor. Quita la policy insegura de newsletter y fuerza los valores iniciales seguros en el `WITH CHECK` de las otras 3 — verificado que ningún flujo legítimo del navegador se ve afectado (todos ya envían `estado='borrador'`/default explícito, ninguno envía `pedido_id`).
-
-**Confirmado limpio en la misma auditoría:** `referidos` (ya protegida, fuerza valores de fábrica), `casos_portafolio` (ya corregida esta sesión a solo-staff), `bibliotecas_cliente` y `comentarios_portafolio` (ambas exigen ownership correctamente, sin campos de aprobación explotables).
+**Confirmado limpio en la misma auditoría:** `referidos`, `casos_portafolio`, `bibliotecas_cliente`, `comentarios_portafolio` (todas ya exigen ownership o valores de fábrica).
 
 ---
 
