@@ -8,9 +8,7 @@
 
 Confirmado por Alejandro ("Success. No rows returned"). `sql/patch-audit-log-y-portafolio-rls-2026-07.sql` aplicado: quitados los 2 CHECK de `logs_incidencias` (tenían solo 7 valores fijos, el código real usa >20 tipos distintos en todo el proyecto — cada INSERT fallaba en silencio, incluido el audit log de acciones admin); `casos_portafolio` restringida a `app_metadata.role IN ('admin','operario','staff')` en vez de cualquier autenticado.
 
-**Ya corregido en código (commit previo):** `_auditLog()` ahora envía `emisor_id`; `cambiarRol()` deja rastro de auditoría.
-
-**Pendiente de código (no urgente, bajo impacto — ya protegidas por RLS, solo falta el rastro de auditoría):** `eliminarWaitlist()`, `eliminarRef()`, `cambiarEstadoRef()`, `cambiarEstadoDoc()`, `toggleStaffActivo()`, `toggleActivo()`, `toggleDept()`, `guardarEdicion()` (portafolio) no llaman `_auditLog()`. Se puede completar en una sesión dedicada si quieres el trail completo.
+**Ya corregido en código:** `_auditLog()` ahora envía `emisor_id`; se agregó `_auditLog()` a las 9 funciones sensibles que no dejaban rastro (`cambiarRol`, `cambiarEstadoDoc`, `eliminarWaitlist`, `cambiarEstadoRef`, `eliminarRef`, `toggleStaffActivo`, `toggleDept`, `toggleActivo`, `guardarEdicion` del portafolio). Trail de auditoría del panel admin completo.
 
 ---
 
