@@ -4,6 +4,28 @@
 
 ---
 
+## 🟡 Redesplegar Edge Function de Wompi tras los fixes (webhook-handler)
+
+Se endureció `supabase/functions/webhook-handler/index.ts` + `supabase/config.toml`. **Para que tome efecto hay que redesplegar:**
+```
+supabase functions deploy webhook-handler --no-verify-jwt
+```
+(o sin la bandera si ya está `verify_jwt=false` en el Dashboard — el config.toml ahora lo fija explícitamente).
+
+**Qué se corrigió (auditoría Opus, superficie de pago pública):**
+- `config.toml` ahora fija `[functions.webhook-handler] verify_jwt = false` — antes NO estaba versionado, así que un redeploy desde el repo podía romper pagos silenciosamente (default `verify_jwt=true` rechaza a Wompi con 401) o dejar la postura de auth sin revisar.
+- Límite de tamaño de body (64 KB) ANTES de `req.json()` — antes parseaba a memoria un body arbitrariamente grande sin validar (DoS pre-auth, la función es pública).
+- Mensajes de error genéricos al cliente (`'solicitud inválida'`) en vez de `e.message` crudo; el detalle real va a `console.error` server-side.
+
+**Confirmado PROTEGIDO en la misma auditoría (sin cambios):** la service-role key no ejecuta ninguna query antes de verificar la firma HMAC (un request con firma inválida nunca toca la BD); `payload_raw` se guarda sin sanear pero requiere firma válida para inyectarse y no se renderiza en ningún panel (XSS latente solo si en el futuro se muestra con innerHTML sin escapar — anotado).
+
+## 🟡 Riesgo residual documentado (bajo, sin corregir) — subidas anónimas + errores de proveedores externos
+
+- **Rate-limit en subidas anónimas:** `envia-tu-scanner.html` y `js/flujo-uploader.js` suben directo del navegador a Supabase Storage (con la key `anon`, sin pasar por ninguna Cloudflare Function), así que el patrón de rate-limit con Cache API no aplica. Un script podría automatizar muchas subidas. Sí validan tamaño (50MB/500MB) y extensión, pero no cantidad por IP. Cerrarlo requeriría mover la subida a través de una Pages Function o una policy de Storage con límite — cambio arquitectónico, diferido.
+- **Errores de proveedores externos en respuestas:** `factura.js` (Factus, detrás de auth admin), `wa-auto.js`/`wa-cotizacion.js` (texto de CallMeBot) devuelven el error crudo del proveedor al cliente. No filtran estructura de BD; severidad baja. No se corrige por ahora (útil para debugging, riesgo mínimo).
+
+---
+
 ## ✅ SQL ejecutado (2026-07-10) — mass assignment en pedidos_doctor
 
 Confirmado. `sql/patch-mass-assignment-pedidos-doctor-2026-07.sql` aplicado: trigger `BEFORE INSERT` que fuerza `estado='recibido'` y `precio_final=NULL`. Cierra el mismo mass-assignment que se corrigió en `pedidos` — un doctor ya no puede crear un pedido directo por API con estado avanzado o precio falso.

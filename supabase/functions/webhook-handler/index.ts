@@ -19,17 +19,36 @@ import { crypto }       from "https://deno.land/std@0.177.0/crypto/mod.ts";
 
 const SUPABASE_URL = "https://zgihrwqfyvgyapbwzkvw.supabase.co";
 
+// Límite de tamaño del body — un webhook legítimo de Wompi pesa unos pocos KB.
+// Sin esto, `req.json()` parsea a memoria un body arbitrariamente grande ANTES
+// de cualquier validación (la función es pública), abriendo un DoS de memoria.
+const MAX_BODY_BYTES = 64 * 1024; // 64 KB
+
 serve(async (req) => {
   const url    = new URL(req.url);
   const source = url.searchParams.get("source");
-  const sb     = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+
+  // Rechazar bodies demasiado grandes antes de parsear (defensa DoS pre-auth).
+  const clen = Number(req.headers.get("content-length") || 0);
+  if (clen > MAX_BODY_BYTES) {
+    return new Response("payload demasiado grande", { status: 413 });
+  }
+
+  const sb = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
   try {
-    const body = await req.json();
+    // Leer con tope duro incluso si content-length miente/está ausente.
+    const raw = await req.text();
+    if (raw.length > MAX_BODY_BYTES) {
+      return new Response("payload demasiado grande", { status: 413 });
+    }
+    const body = JSON.parse(raw);
     if (source === "wompi") return await handleWompi(sb, body);
     return new Response("source no reconocido", { status: 400 });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+    // Mensaje genérico al cliente — no filtrar detalles internos de parseo/BD.
+    console.error("[webhook-handler] error:", e?.message);
+    return new Response(JSON.stringify({ error: "solicitud inválida" }), { status: 400 });
   }
 });
 

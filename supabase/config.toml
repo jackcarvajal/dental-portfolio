@@ -1,1 +1,9 @@
 project_id = "zgihrwqfyvgyapbwzkvw"
+
+# webhook-handler recibe webhooks de Wompi, que NO envían un JWT de Supabase —
+# debe ser público (verify_jwt = false). Se fija aquí explícitamente para que un
+# redeploy desde el repo no rompa los pagos (default verify_jwt = true rechazaría
+# a Wompi con 401) ni deje la postura de auth sin versionar. La barrera real es
+# la verificación de firma HMAC dentro de index.ts.
+[functions.webhook-handler]
+verify_jwt = false
