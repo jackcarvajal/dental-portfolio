@@ -4,13 +4,11 @@
 
 ---
 
-## 🔴 Ejecutar SQL — mass assignment crítico en INSERT de pedidos (auditoría estilo pentest)
+## ✅ SQL ejecutado (2026-07-10) — mass assignment crítico en INSERT de pedidos (auditoría estilo pentest)
 
-**Hallazgo (probado con curl real contra producción, solo lectura):** la policy RLS de INSERT en `pedidos` ("pedidos_insert_owner") solo valida `doctor_uid = auth.uid()` — no restringe ningún otro campo. El trigger que protege columnas sensibles (`trg_restrict_client_pedido_updates`) solo corre en UPDATE, nunca en INSERT. Resultado: un doctor autenticado podía hacer un INSERT directo a PostgREST (saltándose el JS del flujo normal) con `pago_estado='pago_confirmado'` y `estado_operativo='ENTREGADO'` desde la creación del pedido — sin haber pagado nunca. A diferencia del hallazgo de precio de la ronda anterior, este SÍ se puede bloquear sin riesgo (no toca `calcularTotal()`, son campos de estado, no de precio).
+Confirmado. `sql/patch-mass-assignment-insert-pedidos-2026-07.sql` aplicado: trigger `BEFORE INSERT` que fuerza `pago_estado='pendiente'`, `estado_operativo='VALIDACION_PENDIENTE'` y recalcula `factura_estado` server-side en cada INSERT — antes, un doctor autenticado podía crear un pedido directo por API ya marcado como pagado/entregado sin pagar nunca.
 
-**Ejecutar `sql/patch-mass-assignment-insert-pedidos-2026-07.sql`** en Supabase Dashboard → SQL Editor. Agrega un trigger `BEFORE INSERT` que fuerza `pago_estado='pendiente'`, `estado_operativo='VALIDACION_PENDIENTE'` y recalcula `factura_estado` server-side, sin importar lo que venga en el INSERT — el flujo legítimo no se ve afectado porque el JS normal nunca envía esos campos.
-
-**Confirmado limpio en la misma ronda (sin hallazgos, probado con curl real):** rate-limit de Cloudflare no falsificable (todos los endpoints usan `CF-Connecting-IP`, ninguno confía en `X-Forwarded-For`); mensajes de error de login no revelan si un email existe; enumeración de UUID en `revision_tokens`/`pedidos` indistinguible (RLS bloquea `anon` por completo, responde `[]` igual con o sin filtro).
+**Confirmado limpio en la misma ronda (sin hallazgos, probado con curl real contra producción):** rate-limit de Cloudflare no falsificable (todos los endpoints usan `CF-Connecting-IP`, ninguno confía en `X-Forwarded-For`); mensajes de error de login no revelan si un email existe; enumeración de UUID en `revision_tokens`/`pedidos` indistinguible (RLS bloquea `anon` por completo, responde `[]` igual con o sin filtro).
 
 **Pendiente de verificación externa (no es código):** confirmar en Supabase Dashboard → Auth → Rate Limits que el límite nativo de intentos de login no esté relajado (el proyecto no tiene ninguna capa propia de rate-limit sobre el login, depende 100% de esa config).
 
