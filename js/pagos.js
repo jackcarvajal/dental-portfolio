@@ -124,29 +124,36 @@ async function abrirCheckoutWompi({ monto, referencia, email, descripcion, onSuc
         }
         return;
     }
-    const centavos = Math.round(monto * 100);
-
-    // Obtener firma SHA-256 con timeout de 10s + ErrorBoundary
+    // Obtener firma SHA-256 + monto AUTORITATIVO del servidor (timeout 10s).
+    // El servidor lee precio_total real del pedido en la BD y firma ESE monto —
+    // el monto que se envíe desde el cliente se ignora. Sin firma NO se abre el
+    // checkout (fail-closed): antes se continuaba sin firma, lo que permitía
+    // pagar un monto arbitrario del cliente.
     let signature = '';
+    let centavos  = 0;
     try {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 10000);
         const sigRes = await fetch(WOMPI_SIGNATURE_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ referencia, monto_en_centavos: centavos, moneda: 'COP' }),
+            body: JSON.stringify({ referencia, moneda: 'COP' }),
             signal: controller.signal
         });
         clearTimeout(timeout);
         if (sigRes.ok) {
             const sigData = await sigRes.json();
             signature = sigData.signature ?? '';
+            centavos  = Number(sigData.monto_en_centavos) || 0;
         }
     } catch (_e) {
-        if (_e.name === 'AbortError') {
-            if (window.ProdigyUtils) ProdigyUtils.ErrorBoundary.showToast('Conexión lenta — continuando sin firma de seguridad', 'warn');
-        }
-        /* Wompi procesa sin firma — solo sin validación extra */
+        /* cae al guard de abajo */
+    }
+
+    if (!signature || centavos <= 0) {
+        if (window.ProdigyUtils) ProdigyUtils.ErrorBoundary.showToast('No se pudo validar el pago. Intenta de nuevo o usa Transferencia.', 'err');
+        else alert('No se pudo validar el pago. Intenta de nuevo o usa Transferencia.');
+        return;
     }
 
     const params = new URLSearchParams({

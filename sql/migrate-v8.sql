@@ -1,6 +1,13 @@
 -- ────────────────────────────────────────────────────────────────
 -- PRODIGY v8.0 — Workflows, Incidencias, Torre de Control
 -- Ejecutar en Supabase SQL Editor
+--
+-- ⚠️ SUPERSEDED (RLS) — NO RE-EJECUTAR TAL CUAL EN PRODUCCIÓN.
+-- La policy "inc_read_admin" de este archivo usa USING(true) (cualquier
+-- authenticated leía logs_incidencias). Ya fue reemplazada por
+-- "inc_read_staff" en sql/migrate-fix-rls-roles.sql (solo admin/operator).
+-- Si se corre este archivo en un entorno nuevo, aplicar DESPUÉS
+-- migrate-fix-rls-roles.sql para no reintroducir el hueco.
 -- ────────────────────────────────────────────────────────────────
 
 -- ── 1. Columnas de flujo operativo en pedidos ────────────────────

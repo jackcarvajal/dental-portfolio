@@ -2,6 +2,13 @@
 -- PRODIGY — Tabla solicitudes_scanner
 -- Para clínicas con iTero/Medit/Trios que envían archivos sin lab propio
 -- Ejecutar en Supabase SQL Editor
+--
+-- ⚠️ SUPERSEDED (RLS) — NO RE-EJECUTAR TAL CUAL EN PRODUCCIÓN.
+-- La policy "admin_all_scanner" de este archivo usa FOR ALL ... USING(true)
+-- (cualquier authenticated leía las solicitudes/contactos de clínicas
+-- competidoras). Ya fue reemplazada por la versión scoped a admin/operator
+-- en sql/patch-domicilio-scanner-config-rls-2026.sql (y MAESTRO patch 23).
+-- Si se corre este archivo en un entorno nuevo, aplicar DESPUÉS ese patch.
 -- ────────────────────────────────────────────────────────────────
 
 CREATE TABLE IF NOT EXISTS solicitudes_scanner (

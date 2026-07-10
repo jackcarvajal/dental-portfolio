@@ -4,6 +4,29 @@
 
 ---
 
+## 🔴🔴 REDESPLEGAR Edge Function — wompi-signature firmaba montos arbitrarios del cliente (EL HUECO DE DINERO MÁS GRAVE)
+
+**Hallazgo (auditoría Opus):** `supabase/functions/wompi-signature/index.ts` tomaba `monto_en_centavos` **directo del body del cliente** y firmaba ESE monto sin cruzarlo con el pedido real en la BD. Un atacante podía pedir una firma válida para $1.000 sobre un pedido de $500.000 — la firma era criptográficamente correcta (la generaba el servidor), Wompi la aceptaba, y el webhook confirmaba el pago "íntegro". **Vector real de pagar de menos.** (La función `verify-price` que parecía validar precio resultó ser **código muerto** — nadie la llama y ni siquiera consulta la BD; la conclusión previa de "precio sin validar server-side" se confirma.)
+
+**Ya corregido en código (commit de esta ronda):**
+- `wompi-signature/index.ts` v2.0 — ahora busca el pedido por `referencia` (=`codigo`), lee `precio_total` autoritativo de la BD con la service-role key, firma ESE monto y lo devuelve. El monto del cliente se ignora por completo.
+- `js/pagos.js` — usa el `monto_en_centavos` que devuelve el servidor (no el del cliente) para `amount-in-cents`, y **falla cerrado** si no hay firma (antes continuaba sin firma → reabría el hueco). Cache-buster bumpeado a `?v=20260710`.
+
+**PASOS QUE FALTAN (tú):**
+1. **Redesplegar la Edge Function:** `supabase functions deploy wompi-signature`
+2. Confirmar que el secret `SUPABASE_SERVICE_ROLE_KEY` esté configurado en Supabase (ya lo usa webhook-handler, debería estar).
+3. **Fijar `verify_jwt` en `config.toml`** para `wompi-signature` y `verify-price` (quedaron sin versionar — solo webhook-handler tiene su bloque). `wompi-signature` debe ser público (`verify_jwt = false`) porque el flujo de pago lo llama sin JWT de Supabase.
+4. **Probar un pago real de bajo monto** de punta a punta tras el deploy para confirmar que el checkout de Wompi sigue abriendo con el monto correcto.
+5. Opcional: borrar `verify-price` (código muerto) para reducir superficie.
+
+## ✅ Auditoría (2026-07-10) — lectura RLS: SIN IDOR (10 tablas sensibles OK)
+
+Barrido del lado de lectura (complemento del de escritura). Las 10 tablas sensibles (`pedidos`, `pedidos_doctor`, `creditos_cliente`, `pagos`, `cotizaciones`, `doctores_perfil`, `logs_incidencias`, `solicitudes_scanner`, `newsletter_subscribers`, `referidos`) tienen su policy SELECT correctamente scoped a dueño/staff — ningún `USING(true)` vigente sobre datos multi-usuario, sin IDOR de lectura.
+
+**Higiene aplicada:** `sql/migrate-v8.sql` y `sql/migrate-scanner.sql` tenían las versiones inseguras originales (`USING(true)`) ya superseded por patches — se les agregó banner `⚠️ SUPERSEDED` para que no se re-ejecuten por error en un entorno nuevo.
+
+---
+
 ## 🟡 Redesplegar Edge Function de Wompi tras los fixes (webhook-handler)
 
 Se endureció `supabase/functions/webhook-handler/index.ts` + `supabase/config.toml`. **Para que tome efecto hay que redesplegar:**
