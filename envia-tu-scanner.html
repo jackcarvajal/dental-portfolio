@@ -845,7 +845,8 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         }
         setProg(15, 'Subiendo archivo…');
         try {
-            const path = `${Date.now()}_${doctor.replace(/\s+/g,'_')}.${selectedFile.name.split('.').pop()}`;
+            const _ext = (selectedFile.name.split('.').pop() || 'bin').replace(/[^a-zA-Z0-9]/g,'').slice(0,10);
+            const path = `${Date.now()}_${doctor.replace(/\s+/g,'_')}.${_ext}`;
             let upErr = null, up = null;
             for (let intento = 1; intento <= 3; intento++) {
                 const res = await sb.storage.from('scanner-uploads').upload(path, selectedFile);

@@ -177,6 +177,8 @@
             <div class="modal-label" style="color:#fbbf24;"><i class="fas fa-hand-holding-dollar"></i> Cobrar saldo en entrega</div>
             <div style="font-size:1.1rem;font-weight:900;color:#fff;margin:6px 0;" id="saldo-cobro-monto">—</div>
             <div style="font-size:.74rem;color:#94a3b8;margin-bottom:10px;">Recibe el pago del doctor y sube el comprobante.</div>
+            <label style="display:block;font-size:.74rem;color:#94a3b8;margin-bottom:4px;">Monto realmente cobrado (COP)</label>
+            <input type="number" id="monto-cobrado-input" inputmode="numeric" min="0" step="1000" placeholder="Ej: 150000" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(251,191,36,.3);border-radius:8px;padding:8px 12px;color:#fff;font-size:16px;margin-bottom:10px;">
             <label style="display:inline-flex;align-items:center;gap:8px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.8rem;color:#fbbf24;">
                 <i class="fas fa-receipt"></i> Capturar comprobante
                 <input type="file" id="comp-saldo-input" accept="image/*" capture="environment" style="display:none" onchange="previewCompSaldo(event)">
@@ -512,6 +514,8 @@ function abrirModalConfirmar(d){
             saldoSection.style.display = 'block';
             document.getElementById('comp-saldo-preview').style.display='none';
             document.getElementById('comp-saldo-input').value='';
+            const _mci = document.getElementById('monto-cobrado-input');
+            if (_mci) _mci.value = '';
         } else {
             saldoSection.style.display = 'none';
         }
@@ -608,8 +612,17 @@ async function procesarConfirmacion(){
     if(_activePedidoId) {
         // Subir comprobante del saldo cobrado si existe
         let compSaldoUrl = null;
+        let montoCobrado = null;
         const compFile = document.getElementById('comp-saldo-input')?.files[0];
         if (compFile && _activeSaldo > 0) {
+            montoCobrado = Number(document.getElementById('monto-cobrado-input')?.value || 0);
+            // El mensajero debe declarar el monto exacto cobrado — evita marcar
+            // "pagado" sin haber cobrado, o cobrando de menos, con cualquier foto.
+            if (!montoCobrado || Math.abs(montoCobrado - _activeSaldo) > 1000) {
+                toast(`El monto cobrado debe coincidir con el saldo (${_activeSaldo.toLocaleString('es-CO')} COP)`, 'error');
+                btnFinal.disabled = false; prog.classList.remove('show');
+                return;
+            }
             // Validar tipo y magic bytes
             if (!compFile.type.startsWith('image/') && compFile.type !== 'application/pdf') {
                 toast('Solo imágenes o PDF como comprobante', 'error'); return;
@@ -634,6 +647,17 @@ async function procesarConfirmacion(){
             ...(compSaldoUrl ? { comprobante_saldo_url: compSaldoUrl, pago_estado: 'pago_confirmado', saldo_pendiente_monto: 0 } : {}),
         };
         await sb.from('pedidos').update(pedUpdate).eq('id', _activePedidoId);
+        if (compSaldoUrl) {
+            const { data: { user } } = await sb.auth.getUser();
+            await sb.from('logs_incidencias').insert({
+                pedido_id: _activePedidoId,
+                tipo: 'COBRO_SALDO_ENTREGA',
+                severidad: 'INFO',
+                descripcion: `[AUDIT] Mensajero cobró ${montoCobrado} COP (saldo esperado ${_activeSaldo}) en entrega ${_activeDespId}`,
+                resuelta: true,
+                emisor_id: user?.id || null
+            }).catch(() => {});
+        }
 
         // Notificación al doctor + recibo WA
         try {

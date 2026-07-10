@@ -4,6 +4,34 @@
 
 ---
 
+## 🔴 Ejecutar SQL — alerta de precio sospechoso (hallazgo crítico de dinero)
+
+**Hallazgo:** los 4 flujos de creación calculan `precio_total` en el navegador (`calcularTotal()`) y lo insertan directo en `pedidos` sin que nada server-side lo revalide contra el catálogo real. La validación de Stripe (`stripe-checkout.js`) solo confirma que el monto cobrado coincide con `pedidos.precio_total` — pero si ese valor ya fue manipulado en el INSERT (interceptando la request), la validación "pasa" comparando el fraude contra sí mismo. Un atacante podría insertar un pedido de alto valor (ej. guía quirúrgica) con `precio_total` artificialmente bajo y pagarlo por una fracción de su costo real, sin que nada lo detecte antes de producción/entrega.
+
+**Por qué no se bloquea el INSERT:** `calcularTotal()` está marcado INTOCABLE en CLAUDE.md ("sin variables paralelas para precios") — reimplementar su lógica completa en SQL (3 versiones distintas, cada una con sus propios extras de express/envío/DSD/recargos) es arriesgado: un caso borde no contemplado bloquearía pedidos legítimos y pagados.
+
+**Ejecutar `sql/patch-alerta-precio-sospechoso-2026-07.sql`** en Supabase Dashboard → SQL Editor. Agrega un trigger `AFTER INSERT` (no bloqueante, fail-open) que compara `precio_total` contra el precio base real de `catalogo` para ese material — si está por debajo del 40% del precio esperado, genera una alerta CRÍTICA en `logs_incidencias` (visible en el panel, tab Incidencias/Torre de Control) para que el staff lo revise antes de confirmar pago o iniciar producción. Si no encuentra el material en catálogo, no genera alerta (evita falsos positivos). Cubre ambos negocios (misma tabla `pedidos`).
+
+---
+
+## ✅ Fix de código (2026-07-09) — auditoría dinero + archivos
+
+Todo commiteado/pusheado.
+
+**Dinero:**
+- `app/mensajero.html` — el mensajero podía marcar un pedido como "pago confirmado" (saldo contraentrega) subiendo CUALQUIER imagen/PDF como comprobante, sin declarar ni validar el monto realmente cobrado. Ahora exige un campo numérico "monto cobrado" que debe coincidir (±$1.000 COP) con el saldo pendiente antes de permitir confirmar, y deja rastro en `logs_incidencias`.
+- Cupones/descuentos, wallet/créditos, reembolsos: sin hallazgos nuevos — ya están bien controlados server-side o no existe la funcionalidad (reembolsos no están implementados en ningún panel).
+
+**Archivos:**
+- `app/client-panel.html` (ambos repos) — subida a "bibliotecas" usaba `file.name` crudo en la ruta de Storage (los otros 2 puntos de subida del mismo archivo sí sanitizaban) → agregado el mismo `.replace(/[^a-zA-Z0-9._-]/g,'_')`.
+- `envia-tu-scanner.html` (ambos repos) — la extensión del archivo (`file.name.split('.').pop()`) se usaba sin sanitizar en la ruta de Storage → ahora se limpia a solo alfanumérico.
+- `seguimiento-caso.html` (ambos repos) — el iframe que carga el HTML de Exocad no tenía atributo `sandbox`, permitiendo que un HTML malicioso navegara la ventana superior o abriera popups → agregado `sandbox="allow-scripts allow-same-origin"`. (`revision-diseno.html` ya lo tenía correctamente.)
+- Path traversal por ID/código adivinable, `upsert` sobre rutas predecibles: sin hallazgos nuevos — todos los puntos revisados usan UUIDs no secuenciales + sesión de staff requerida.
+
+**Riesgo residual documentado, sin corregir (requiere decisión sobre UX):** `revision-express.html` abre el HTML de Exocad con `window.open()` directo (no en iframe sandboxeado) — si un HTML malicioso lograra subirse (requiere cuenta de staff comprometida, no explotable por atacante externo anónimo), se ejecutaría con control total de la pestaña. Cambiarlo a descarga forzada en vez de apertura directa rompería la UX actual de "ver el diseño en el navegador" — queda para una sesión dedicada si se quiere endurecer.
+
+---
+
 ## ✅ SQL ejecutado (2026-07-09) — audit log roto + casos_portafolio sobre-permisiva
 
 Confirmado por Alejandro ("Success. No rows returned"). `sql/patch-audit-log-y-portafolio-rls-2026-07.sql` aplicado: quitados los 2 CHECK de `logs_incidencias` (tenían solo 7 valores fijos, el código real usa >20 tipos distintos en todo el proyecto — cada INSERT fallaba en silencio, incluido el audit log de acciones admin); `casos_portafolio` restringida a `app_metadata.role IN ('admin','operario','staff')` en vez de cualquier autenticado.
