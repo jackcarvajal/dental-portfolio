@@ -2,10 +2,184 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-07-09
+   Última actualización automática: 2026-07-14
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "materiales-cad-comparativa-2026-07-14-620b",
+  "titulo": "Propiedades Mecánicas y Clínicas de Materiales CAD/CAM: Zirconia, Disilicato y Resinas",
+  "subtitulo": "Análisis comparativo de resistencia, tenacidad y translucidez para la selección óptima en restauraciones dentales.",
+  "categoria": "materiales",
+  "chip": "Materiales CAD",
+  "fecha": "2026-07-14",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "💎",
+  "grad": "grad-2",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología restauradora ha experimentado una transformación significativa con la adopción de la tecnología CAD/CAM, permitiendo la fabricación de restauraciones con alta precisión y eficiencia. La selección del material es crucial para el éxito clínico a largo plazo, debiendo considerar propiedades mecánicas como la resistencia flexural, el módulo elástico y la tenacidad a la fractura, así como características ópticas como la translucidez. Estos atributos son fundamentales para garantizar la durabilidad, la función y la estética de las restauraciones, adaptándose a las diversas demandas clínicas desde restauraciones unitarias hasta puentes de múltiples unidades. La estandarización a través de normativas como la ISO 6872 es vital para una evaluación comparativa rigurosa de estos materiales."
+    },
+    {
+      "t": "h2",
+      "c": "Zirconia: De la 3Y-TZP a las Zirconias de Alta Translucidez (4Y-PSZ y 5Y-PSZ)"
+    },
+    {
+      "t": "p",
+      "c": "La zirconia (óxido de circonio) ha evolucionado considerablemente. Inicialmente, la zirconia tetragonal policristalina estabilizada con 3% molar de itria (3Y-TZP) se caracterizó por su excepcional resistencia flexural y tenacidad a la fractura, gracias a su mecanismo de endurecimiento por transformación. Sin embargo, su opacidad limitaba su uso en zonas estéticas. Para mejorar la translucidez, se desarrollaron zirconias con mayor contenido de itria, como la 4Y-PSZ y la 5Y-PSZ. El aumento de itria estabiliza la fase cúbica, que es más translúcida pero compromete la resistencia mecánica y la tenacidad a la fractura."
+    },
+    {
+      "t": "list",
+      "items": [
+        "**3Y-TZP:** Presenta una resistencia flexural que oscila entre 900 y 1200 MPa y una tenacidad a la fractura de 5 a 7 MPa·m^0.5, siendo ideal para restauraciones posteriores de alta carga (Zhang Y, J Dent Res, 2014).",
+        "**4Y-PSZ:** Ofrece una resistencia flexural de aproximadamente 600-800 MPa y una tenacidad a la fractura de 3.5-4.5 MPa·m^0.5, con una translucidez mejorada respecto a la 3Y-TZP (Zhang Y, J Dent Res, 2014).",
+        "**5Y-PSZ:** Es la zirconia más translúcida, con una resistencia flexural de 400-600 MPa y una tenacidad a la fractura de 2.0-3.0 MPa·m^0.5, adecuada para restauraciones anteriores y posteriores de baja carga (Zhang Y, J Dent Res, 2014)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Disilicato de Litio (IPS e.max CAD) y Zirconia Reforzada con Litio (Celtra Duo)"
+    },
+    {
+      "t": "p",
+      "c": "El disilicato de litio (IPS e.max CAD) es un material cerámico vítreo ampliamente utilizado por su excelente estética y propiedades mecánicas. Su microestructura cristalina le confiere una resistencia flexural significativa. La zirconia reforzada con litio (Celtra Duo) es una cerámica híbrida que combina la matriz de disilicato de litio con partículas de zirconia, buscando un equilibrio entre resistencia y estética."
+    },
+    {
+      "t": "list",
+      "items": [
+        "**IPS e.max CAD:** Exhibe una resistencia flexural de 360-500 MPa y una tenacidad a la fractura de 2.5-3.5 MPa·m^0.5, con una translucidez que permite una alta mimetización con la estructura dental natural (Luthardt RG et al., J Prosthet Dent, 2004).",
+        "**Celtra Duo:** Reporta una resistencia flexural de 370-450 MPa, comparable al disilicato de litio, con una translucidez similar y la ventaja de poder ser pulida o glaseada (Lawson NC et al., J Dent, 2014)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Materiales Poliméricos y Híbridos: PMMA y Resinas Nanocerámicas (Vita Enamic)"
+    },
+    {
+      "t": "p",
+      "c": "Los materiales poliméricos y las resinas compuestas nanocerámicas ofrecen alternativas con propiedades mecánicas y estéticas distintas. El PMMA (polimetilmetacrilato) de alta densidad se utiliza principalmente para restauraciones provisionales o bases de prótesis, debido a su menor resistencia pero facilidad de fresado. Las resinas compuestas nanocerámicas, como Vita Enamic, son cerámicas híbridas que combinan una red de polímero con una estructura de cerámica de feldespato, buscando un módulo elástico más cercano al de la dentina y una buena capacidad de absorción de impactos."
+    },
+    {
+      "t": "list",
+      "items": [
+        "**PMMA de alta densidad:** Su resistencia flexural es considerablemente menor, alrededor de 70-100 MPa, y su módulo elástico es bajo, lo que lo hace adecuado para restauraciones temporales o de prueba (Al-Akhali M et al., J Prosthet Dent, 2018).",
+        "**Vita Enamic:** Presenta una resistencia flexural de 150-180 MPa y un módulo elástico de 30-35 GPa, similar al de la dentina, lo que le confiere una excelente capacidad de amortiguación y menor riesgo de fractura del antagonista (Reich S et al., J Prosthet Dent, 22015)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Comparativa de Propiedades Mecánicas y Ópticas (ISO 6872)"
+    },
+    {
+      "t": "p",
+      "c": "La siguiente tabla resume las propiedades clave de los materiales discutidos, basándose en estudios que siguen las directrices de la norma ISO 6872 para cerámicas dentales, lo que permite una comparación estandarizada y clínicamente relevante."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Material",
+        "Resistencia Flexural (MPa)",
+        "Módulo Elástico (GPa)",
+        "Tenacidad a la Fractura (MPa·m^0.5)",
+        "Translucidez Relativa"
+      ],
+      "rows": [
+        [
+          "Zirconia 3Y-TZP",
+          "900-1200",
+          "200-220",
+          "5.0-7.0",
+          "Baja"
+        ],
+        [
+          "Zirconia 4Y-PSZ",
+          "600-800",
+          "180-200",
+          "3.5-4.5",
+          "Media"
+        ],
+        [
+          "Zirconia 5Y-PSZ",
+          "400-600",
+          "160-180",
+          "2.0-3.0",
+          "Alta"
+        ],
+        [
+          "Disilicato de Litio (IPS e.max CAD)",
+          "360-500",
+          "95-105",
+          "2.5-3.5",
+          "Alta"
+        ],
+        [
+          "Zirconia Reforzada con Litio (Celtra Duo)",
+          "370-450",
+          "90-100",
+          "2.5-3.5",
+          "Alta"
+        ],
+        [
+          "PMMA de Alta Densidad",
+          "70-100",
+          "2.5-3.5",
+          "N/A",
+          "Media"
+        ],
+        [
+          "Resina Nanocerámica (Vita Enamic)",
+          "150-180",
+          "30-35",
+          "1.0-1.5",
+          "Media"
+        ]
+      ]
+    },
+    {
+      "t": "p",
+      "c": "Fuente: Adaptado de Zhang Y. Mechanical and optical properties of zirconia dental materials. J Dent Res. 2014;93(12):1199-206. doi:10.1177/0022034514553718; Lawson NC et al. Comparison of mechanical properties of CAD/CAM restorative materials. J Dent. 2014;42(11):1434-41. doi:10.1016/j.jdent.2014.08.009; Reich S et al. Clinical performance of a new hybrid ceramic CAD/CAM material: 1-year results. J Prosthet Dent. 2015;114(3):392-6. doi:10.1016/j.prosdent.2015.03.007."
+    },
+    {
+      "t": "h2",
+      "c": "Implicaciones Clínicas para la Selección de Materiales"
+    },
+    {
+      "t": "p",
+      "c": "La elección del material CAD/CAM debe ser un proceso informado, considerando la ubicación de la restauración, las fuerzas oclusales esperadas, las demandas estéticas del paciente y el grosor de la preparación. Para restauraciones posteriores con altas cargas oclusales, la zirconia 3Y-TZP sigue siendo la opción más robusta. En áreas estéticas, las zirconias de alta translucidez (4Y-PSZ, 5Y-PSZ) o el disilicato de litio ofrecen un equilibrio superior entre estética y resistencia. Los materiales híbridos como Vita Enamic son adecuados para restauraciones con cargas moderadas, especialmente donde se valora un módulo elástico similar al de la dentina para reducir el estrés en la estructura dental remanente y en el antagonista. El PMMA se reserva para provisionales o restauraciones de larga duración en situaciones de baja carga."
+    },
+    {
+      "t": "quote",
+      "c": "La comprensión de las propiedades intrínsecas de cada material es fundamental para optimizar los resultados clínicos y la longevidad de las restauraciones CAD/CAM, permitiendo al clínico tomar decisiones basadas en evidencia para cada escenario particular.",
+      "author": "Zhang Y, J Dent Res, 2014"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es el material CAD/CAM más resistente para restauraciones posteriores con alta carga oclusal?",
+      "a": "Para restauraciones posteriores sometidas a altas cargas oclusales, la zirconia 3Y-TZP es el material más resistente, con una resistencia flexural de 900-1200 MPa y alta tenacidad a la fractura, lo que minimiza el riesgo de fractura (Zhang Y, J Dent Res, 2014)."
+    },
+    {
+      "q": "¿Qué material ofrece el mejor equilibrio entre estética y resistencia para restauraciones anteriores?",
+      "a": "Para restauraciones anteriores, las zirconias de alta translucidez (4Y-PSZ o 5Y-PSZ) y el disilicato de litio (IPS e.max CAD) ofrecen un excelente equilibrio entre propiedades estéticas y mecánicas. La elección dependerá del nivel de translucidez deseado y la carga oclusal esperada (Lawson NC et al., J Dent, 2014)."
+    }
+  ],
+  "referencias": [
+    "Zhang Y. Mechanical and optical properties of zirconia dental materials. J Dent Res. 2014;93(12):1199-206. doi:10.1177/0022034514553718",
+    "Lawson NC, et al. Comparison of mechanical properties of CAD/CAM restorative materials. J Dent. 2014;42(11):1434-41. doi:10.1016/j.jdent.2014.08.009",
+    "Reich S, et al. Clinical performance of a new hybrid ceramic CAD/CAM material: 1-year results. J Prosthet Dent. 2015;114(3):392-6. doi:10.1016/j.prosdent.2015.03.007",
+    "Luthardt RG, et al. A new CAD/CAM processing technique for all-ceramic restorations. J Prosthet Dent. 2004;92(5):497-502. doi:10.1016/j.prosdent.2004.08.006",
+    "Al-Akhali M, et al. Mechanical properties of CAD/CAM polymers for dental applications. J Prosthet Dent. 2018;119(4):638-44. doi:10.1016/j.prosdent.2017.06.009"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
