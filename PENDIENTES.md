@@ -1,6 +1,14 @@
 # PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-07-10 (sesión autónoma continua)
+> Solo tareas activas. Última revisión: 2026-07-14 (sesión autónoma continua)
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
+
+---
+
+## 🔴 Ejecutar SQL — doble gasto de cupón de referido (race condition, dinero real)
+
+**Hallazgo:** `prodigy_usar_cupon_credito()` no era atómica. El SELECT del cupón no usaba `FOR UPDATE` y el UPDATE que lo marca usado filtraba solo por `id` (no por `cupon_usado = false`). Con dos requests concurrentes del mismo cupón (callable por `anon`), ambos pasaban el chequeo y ambos devolvían `ok:true, monto:30000` → el cupón de $30.000 se aplicaba a DOS pedidos. Pérdida real por doble gasto.
+
+**Ejecutar `sql/patch-cupon-doble-gasto-2026-07.sql`** en Supabase Dashboard → SQL Editor. Cambia a un UPDATE condicional atómico (`WHERE ... AND cupon_usado = false` + `GET DIAGNOSTICS ROW_COUNT`): si otra transacción ya lo tomó, afecta 0 filas y devuelve error. Mismo patrón de idempotencia que el webhook.
 
 ---
 
