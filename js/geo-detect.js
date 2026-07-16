@@ -43,6 +43,7 @@ window.ProdigyGeo = (function () {
       .then(function(d) {
         var result = {
           pais:       d.country_code || 'XX',
+          detectado: true,
           ciudad:     d.city || '',
           moneda:     d.currency || 'USD',
           esColombia: d.country_code === 'CO',
@@ -55,7 +56,7 @@ window.ProdigyGeo = (function () {
       })
       .catch(function() {
         // Fallback: Colombia por defecto si falla la detección
-        _resolve({ pais:'CO', moneda:'COP', esColombia:true, esMexico:false, esLatam:true, esEuropa:false });
+        _resolve({ pais:'CO', moneda:'COP', detectado:false, esColombia:true, esMexico:false, esLatam:true, esEuropa:false });
       });
   }
 

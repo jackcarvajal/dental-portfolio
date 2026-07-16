@@ -32,6 +32,12 @@
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="preload" href="../js/header.js?v=20260610" as="script">
+<!-- Filtro geo: esta landing es solo para el exterior (dentistas US). Un visitante
+     de Colombia (detección positiva, no el fallback) se redirige a la home local,
+     porque es otra línea de negocio con precios distintos. La página sigue pública
+     e indexable para Google/ads en EE.UU. -->
+<script src="../js/geo-detect.js?v=20260716"></script>
+<script>try{window.ProdigyGeo&&window.ProdigyGeo.onReady(function(g){if(g&&g.detectado&&g.esColombia){window.location.replace('/');}});}catch(e){}</script>
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalBusiness","name":"PRODIGY Lab Dental","description":"Digital dental laboratory fabricating veneers, crowns and bridges for dentists worldwide from digital scans or impressions, with delivery to the United States.","url":"https://prodigylabdental.com","telephone":"+573212816716","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"},"areaServed":{"@type":"Country","name":"United States"},"medicalSpecialty":"Dentistry"}</script>
