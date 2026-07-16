@@ -101,6 +101,16 @@ summary::-webkit-details-marker{display:none;}
 .compliance{background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.2);border-radius:14px;padding:18px 22px;margin-top:30px;font-size:.82rem;color:var(--muted);line-height:1.7;}
 .compliance b{color:var(--cyan);}
 .below{content-visibility:auto;contain-intrinsic-size:0 360px;}
+.qform{display:flex;flex-direction:column;gap:12px;margin-top:26px;text-align:left;}
+.qform label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:-6px;}
+.qform input,.qform select,.qform textarea{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:13px 15px;color:var(--txt);font-size:16px;font-family:inherit;width:100%;}
+.qform input:focus,.qform select:focus,.qform textarea:focus{outline:2px solid var(--mg);outline-offset:1px;border-color:transparent;}
+.qform textarea{resize:vertical;min-height:70px;}
+.qform .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.qform button{margin-top:8px;justify-content:center;width:100%;}
+.qform-alt{text-align:center;margin-top:16px;font-size:.86rem;color:var(--muted);}
+.qform-alt a{color:var(--cyan);border-bottom:1px solid color-mix(in srgb,var(--cyan) 35%,transparent);}
+@media(max-width:520px){.qform .row{grid-template-columns:1fr;}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 </style>
 </head>
@@ -116,8 +126,8 @@ summary::-webkit-details-marker{display:none;}
     <h1>Premium veneers, fabricated in Colombia — <em>shipped to your U.S. practice</em></h1>
     <p class="hero-sub">Send a digital scan or impression. We design and fabricate your veneers in e.max, feldspathic porcelain or zirconia, run quality control, and ship to your practice with tracking — typically <strong style="color:var(--txt);">40–60% less</strong> than a domestic lab, in days.</p>
     <div class="hero-ctas">
-      <a href="https://wa.me/573212816716?text=Hello%20PRODIGY%2C%20I%27m%20a%20U.S.%20dentist%20interested%20in%20outsourcing%20veneer%20fabrication.%20How%20do%20we%20start%3F" target="_blank" rel="noopener noreferrer" class="btn-p"><i class="fab fa-whatsapp" aria-hidden="true"></i> Send your first case</a>
-      <a href="/envia-tu-scanner" class="btn-o"><i class="fas fa-upload" aria-hidden="true"></i> Upload a scan</a>
+      <a href="#quote" class="btn-p"><i class="fas fa-calculator" aria-hidden="true"></i> Get your quote</a>
+      <a href="https://wa.me/573212816716?text=Hello%20PRODIGY%2C%20I%27m%20a%20U.S.%20dentist%20interested%20in%20outsourcing%20veneer%20fabrication.%20How%20do%20we%20start%3F" target="_blank" rel="noopener noreferrer" class="btn-o"><i class="fab fa-whatsapp" aria-hidden="true"></i> Message on WhatsApp</a>
     </div>
     <div class="trust-row">
       <div class="trust"><div class="n">40–60%</div><div class="l">Lower cost / unit</div></div>
@@ -226,19 +236,57 @@ summary::-webkit-details-marker{display:none;}
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="sec sec-card below" style="text-align:center;">
-    <div class="container">
-      <h2 class="sec-title">Send us one case. See the difference.</h2>
-      <p style="color:var(--muted);font-size:.94rem;margin:12px auto 28px;max-width:520px;">Try a single veneer case with no commitment. Get a quote in minutes and see the quality, price and turnaround for yourself.</p>
-      <div class="hero-ctas">
-        <a href="https://wa.me/573212816716?text=Hello%20PRODIGY%2C%20I%27d%20like%20to%20send%20my%20first%20veneer%20case%20and%20get%20a%20quote." target="_blank" rel="noopener noreferrer" class="btn-p"><i class="fab fa-whatsapp" aria-hidden="true"></i> Get a quote on WhatsApp</a>
-        <a href="/envia-tu-scanner" class="btn-o"><i class="fas fa-upload" aria-hidden="true"></i> Upload your scan</a>
-      </div>
+  <!-- QUOTE / CONFIGURATOR -->
+  <section class="sec sec-card below" id="quote">
+    <div class="container" style="max-width:640px;">
+      <div class="sec-tag" style="text-align:center;">Get your quote</div>
+      <h2 class="sec-title" style="text-align:center;">Tell us about your case</h2>
+      <p class="sec-sub" style="margin:0 auto;text-align:center;">Fill in the details and we'll send your per-unit quote. Then upload your scan to start the order, or send it on WhatsApp — no commitment.</p>
+      <form id="quoteForm" class="qform" onsubmit="return sendVeneerQuote(event)">
+        <div class="row">
+          <div><label for="q-name">Your name</label><input id="q-name" name="name" required autocomplete="name"></div>
+          <div><label for="q-email">Email</label><input id="q-email" name="email" type="email" required autocomplete="email"></div>
+        </div>
+        <div><label for="q-practice">Practice / clinic (optional)</label><input id="q-practice" name="practice"></div>
+        <div class="row">
+          <div><label for="q-material">Material</label>
+            <select id="q-material" name="material">
+              <option value="Lithium disilicate (e.max)">Lithium disilicate (e.max)</option>
+              <option value="Feldspathic porcelain">Feldspathic porcelain</option>
+              <option value="Zirconia">Zirconia</option>
+              <option value="Recommend for me">Recommend for me</option>
+            </select>
+          </div>
+          <div><label for="q-units">Number of units</label><input id="q-units" name="units" type="number" min="1" value="1" inputmode="numeric"></div>
+        </div>
+        <div><label for="q-shade">Shade (optional)</label><input id="q-shade" name="shade" placeholder="e.g. A1, BL2"></div>
+        <div><label for="q-notes">Case notes (optional)</label><textarea id="q-notes" name="notes" placeholder="Prep type, timeline, anything we should know"></textarea></div>
+        <button type="submit" class="btn-p"><i class="fab fa-whatsapp" aria-hidden="true"></i> Get my quote on WhatsApp</button>
+      </form>
+      <p class="qform-alt">Prefer to send your files first? <a href="/envia-tu-scanner">Upload your STL or impression &amp; start an order →</a></p>
     </div>
   </section>
 
 </main>
+
+<script>
+function sendVeneerQuote(e){
+  e.preventDefault();
+  var f=e.target, v=function(n){return (f[n]&&f[n].value||'').trim();};
+  var lines=[
+    "Hello PRODIGY — veneer quote request:",
+    "Name: "+v('name'),
+    "Email: "+v('email'),
+    v('practice')?"Practice: "+v('practice'):"",
+    "Material: "+v('material'),
+    "Units: "+(v('units')||'1'),
+    v('shade')?"Shade: "+v('shade'):"",
+    v('notes')?"Notes: "+v('notes'):""
+  ].filter(Boolean);
+  window.open('https://wa.me/573212816716?text='+encodeURIComponent(lines.join("\n")),'_blank','noopener,noreferrer');
+  return false;
+}
+</script>
 
 <script src="../js/footer.js?v=20260609"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});</script>
