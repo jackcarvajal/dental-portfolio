@@ -37,7 +37,14 @@
      porque es otra línea de negocio con precios distintos. La página sigue pública
      e indexable para Google/ads en EE.UU. -->
 <script src="../js/geo-detect.js?v=20260716"></script>
-<script>try{window.ProdigyGeo&&window.ProdigyGeo.onReady(function(g){if(g&&g.detectado&&g.esColombia){window.location.replace('/');}});}catch(e){}</script>
+<script>try{
+  /* Bypass para revisar la página desde Colombia: abrir con ?preview=1
+     (queda activo el resto de la sesión). Sin él, un visitante de
+     Colombia se redirige a la home. */
+  var _byp = /[?&]preview=1/.test(location.search) || sessionStorage.getItem('pg_preview')==='1';
+  if(/[?&]preview=1/.test(location.search)){ sessionStorage.setItem('pg_preview','1'); }
+  if(!_byp){ window.ProdigyGeo&&window.ProdigyGeo.onReady(function(g){ if(g&&g.detectado&&g.esColombia){ window.location.replace('/'); } }); }
+}catch(e){}</script>
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalBusiness","name":"PRODIGY Lab Dental","description":"Digital dental laboratory fabricating veneers, crowns and bridges for dentists worldwide from digital scans or impressions, with delivery to the United States.","url":"https://prodigylabdental.com","telephone":"+573212816716","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"},"areaServed":{"@type":"Country","name":"United States"},"medicalSpecialty":"Dentistry"}</script>
