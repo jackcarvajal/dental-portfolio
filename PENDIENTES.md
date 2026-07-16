@@ -4,11 +4,16 @@
 
 ---
 
-## 🔴 Ejecutar SQL — doble gasto de cupón de referido (race condition, dinero real)
+## ✅ SQL ejecutado (2026-07-16) — doble gasto de cupón de referido
 
-**Hallazgo:** `prodigy_usar_cupon_credito()` no era atómica. El SELECT del cupón no usaba `FOR UPDATE` y el UPDATE que lo marca usado filtraba solo por `id` (no por `cupon_usado = false`). Con dos requests concurrentes del mismo cupón (callable por `anon`), ambos pasaban el chequeo y ambos devolvían `ok:true, monto:30000` → el cupón de $30.000 se aplicaba a DOS pedidos. Pérdida real por doble gasto.
+Confirmado ("Success. No rows returned"). `prodigy_usar_cupon_credito()` ahora usa UPDATE condicional atómico — el cupón de $30.000 ya no se puede canjear dos veces por requests concurrentes. **Con esto no queda ningún SQL pendiente de la sesión.** Solo faltan 2 deploys de Edge Functions: `supabase functions deploy wompi-signature` y `webhook-handler`.
 
-**Ejecutar `sql/patch-cupon-doble-gasto-2026-07.sql`** en Supabase Dashboard → SQL Editor. Cambia a un UPDATE condicional atómico (`WHERE ... AND cupon_usado = false` + `GET DIAGNOSTICS ROW_COUNT`): si otra transacción ya lo tomó, afecta 0 filas y devuelve error. Mismo patrón de idempotencia que el webhook.
+## ✅ Fixes autónomos (2026-07-16) — SEO/a11y/infra (pusheados)
+
+- **PRODIGY**: 4 títulos EN duplicados → únicos; hreflang `en` en alineadores-cad/impresion-3d/mapa-sitio/preguntas; `para-laboratorios` al sitemap; `client-panel.html` con h1 único (logo degradado a div); keepalive de Supabase de semanal a cada 3 días (evita auto-pausa del backend compartido).
+- **Alejandro**: 3 páginas rotas (endodoncia/guías-cad/prótesis) reescritas con contenido real de su tema (precios como "cotiza por caso" por decisión del usuario) + agregadas al sitemap; `admin-panel.html` con h1 accesible.
+
+**Pendiente autónomo con riesgo (requiere probar, NO forzado):** `defer` al SDK de Supabase en `flujo-diseno.html` — puede romper el flujo de pago si un script inline usa el SDK durante el parseo; hay que verificar por archivo antes. Font Awesome lazy en flujo-diseno. Estos afectan la página de checkout, así que mejor con prueba en vivo, no a ciegas.
 
 ---
 
