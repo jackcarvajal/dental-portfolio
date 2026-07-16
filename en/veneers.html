@@ -261,6 +261,10 @@ summary::-webkit-details-marker{display:none;}
         </div>
         <div><label for="q-shade">Shade (optional)</label><input id="q-shade" name="shade" placeholder="e.g. A1, BL2"></div>
         <div><label for="q-notes">Case notes (optional)</label><textarea id="q-notes" name="notes" placeholder="Prep type, timeline, anything we should know"></textarea></div>
+        <label style="display:flex;gap:10px;align-items:flex-start;font-size:.78rem;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400;line-height:1.5;margin-top:2px;cursor:pointer;">
+          <input type="checkbox" name="terms" required style="width:auto;margin-top:3px;flex-shrink:0;accent-color:var(--mg);">
+          <span>I am a licensed dental professional, this is a prescription for a patient of record, and I accept the <a href="/en/veneer-terms" target="_blank" rel="noopener" style="color:var(--cyan);">Terms of Service</a>.</span>
+        </label>
         <button type="submit" class="btn-p"><i class="fab fa-whatsapp" aria-hidden="true"></i> Get my quote on WhatsApp</button>
       </form>
       <p class="qform-alt">Prefer to send your files first? <a href="/envia-tu-scanner">Upload your STL or impression &amp; start an order →</a></p>
@@ -281,7 +285,8 @@ function sendVeneerQuote(e){
     "Material: "+v('material'),
     "Units: "+(v('units')||'1'),
     v('shade')?"Shade: "+v('shade'):"",
-    v('notes')?"Notes: "+v('notes'):""
+    v('notes')?"Notes: "+v('notes'):"",
+    "— I confirm I'm a licensed dentist (patient of record) and accept your Terms of Service."
   ].filter(Boolean);
   window.open('https://wa.me/573212816716?text='+encodeURIComponent(lines.join("\n")),'_blank','noopener,noreferrer');
   return false;
