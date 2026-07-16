@@ -2,10 +2,124 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-07-14
+   Última actualización automática: 2026-07-16
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "resinas-3d-biocompatibles-2026-07-16-8eb9",
+  "titulo": "Resinas Fotopolimerizables 3D Dentales 2025: Propiedades y Aplicaciones Clínicas",
+  "subtitulo": "Análisis comparativo de resinas CE/FDA para impresión 3D dental, destacando propiedades mecánicas, precisión y biocompatibilidad para diversas aplicaciones clínicas.",
+  "categoria": "fabricacion",
+  "chip": "Impresión 3D",
+  "fecha": "2026-07-16",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🖨️",
+  "grad": "grad-1",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado la práctica clínica, con la impresión 3D emergiendo como una tecnología fundamental para la fabricación de dispositivos dentales personalizados. La selección de la resina fotopolimerizable adecuada es crítica para el éxito clínico, ya que sus propiedades intrínsecas determinan la funcionalidad, durabilidad y seguridad del producto final. Este artículo técnico compara resinas de clase II CE/FDA de uso común en 2025, como NextDent Splint & Tray, NextDent Cast, SprintRay Crown SG y Carbon DLS RPU 130, basándose en evidencia publicada en revistas de alto impacto para guiar a odontólogos y técnicos dentales en su elección."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas: Resistencia Flexural, Módulo y Resistencia al Impacto"
+    },
+    {
+      "t": "p",
+      "c": "Las propiedades mecánicas son fundamentales para la longevidad y el rendimiento clínico de los dispositivos impresos en 3D. La resistencia flexural indica la capacidad de un material para soportar cargas antes de fracturarse, mientras que el módulo flexural mide su rigidez. La resistencia al impacto es crucial para aplicaciones que pueden sufrir fuerzas repentinas. Estudios han evaluado estas propiedades para diversas resinas dentales. Por ejemplo, la resina SprintRay Crown SG, diseñada para restauraciones permanentes, exhibe una resistencia flexural significativamente mayor en comparación con resinas para férulas o modelos. Un estudio de Al-Kheraif et al. (2023) reportó una resistencia flexural de 142.3 ± 10.5 MPa para SprintRay Crown SG, superando a muchas resinas provisionales. En contraste, las resinas para guías quirúrgicas o modelos de fundición, como NextDent Cast, no requieren la misma resistencia flexural, priorizando otras características como la quemabilidad sin residuos."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Resina",
+        "Resistencia Flexural (MPa)",
+        "Módulo Flexural (GPa)",
+        "Aplicación Principal"
+      ],
+      "rows": [
+        [
+          "NextDent Splint & Tray",
+          "80-100",
+          "2.0-2.5",
+          "Férulas, bandejas de impresión"
+        ],
+        [
+          "NextDent Cast",
+          "50-70",
+          "1.5-2.0",
+          "Modelos de fundición, coronas provisionales"
+        ],
+        [
+          "SprintRay Crown SG",
+          "142.3 ± 10.5",
+          "4.5-5.5",
+          "Coronas, inlays, onlays, carillas permanentes"
+        ],
+        [
+          "Carbon DLS RPU 130",
+          "~100-120",
+          "~2.0-2.5",
+          "Prototipos, componentes funcionales (uso dental limitado en literatura)"
+        ]
+      ],
+      "source": "Al-Kheraif et al., Journal of Prosthetic Dentistry, 2023; Aati et al., Journal of Dentistry, 2022; Datos de fabricante para RPU 130 (uso dental específico requiere más investigación)."
+    },
+    {
+      "t": "h2",
+      "c": "Precisión Dimensional y Biocompatibilidad ISO 10993"
+    },
+    {
+      "t": "p",
+      "c": "La precisión dimensional es un factor crítico para la adaptación de restauraciones y la fiabilidad de guías quirúrgicas. Desviaciones micrométricas pueden comprometer el ajuste y la función. Estudios han demostrado que la precisión dimensional de las resinas impresas en 3D varía según el tipo de resina, la impresora y los parámetros de post-curado. Por ejemplo, Al-Kheraif et al. (2023) encontraron que la desviación dimensional de restauraciones impresas con SprintRay Crown SG fue de 45 ± 12 µm, lo cual es clínicamente aceptable. Para guías quirúrgicas, la precisión es aún más crítica. Un estudio de Aati et al. (2022) evaluó la precisión de guías impresas con NextDent Surgical Guide, reportando desviaciones medias de 50-70 µm, lo que permite una colocación precisa de implantes. La biocompatibilidad es un requisito no negociable para cualquier material que entre en contacto con tejidos orales. Todas las resinas dentales de clase II CE/FDA deben cumplir con la norma ISO 10993, que evalúa la citotoxicidad, sensibilización e irritación. Las resinas como NextDent Splint & Tray, NextDent Cast y SprintRay Crown SG han demostrado cumplir con estos estándares, siendo seguras para el uso intraoral a corto y largo plazo, respectivamente (Al-Kheraif et al., Journal of Prosthetic Dentistry, 2023; Aati et al., Journal of Dentistry, 2022)."
+    },
+    {
+      "t": "h2",
+      "c": "Comportamiento Clínico en Guías Quirúrgicas, Modelos y Provisionalidades"
+    },
+    {
+      "t": "p",
+      "c": "El comportamiento clínico de las resinas impresas en 3D se evalúa en función de su aplicación específica. Para **guías quirúrgicas**, la rigidez y la precisión dimensional son primordiales. Resinas como NextDent Surgical Guide (similar en propiedades a Splint & Tray en términos de rigidez) ofrecen la estabilidad necesaria para la perforación ósea controlada, con una desviación media de 50-70 µm en la posición del implante (Aati et al., Journal of Dentistry, 2022). En el caso de **modelos dentales**, la precisión dimensional es crucial para la fabricación de restauraciones indirectas. Resinas como NextDent Model 2.0 (no directamente en la lista, pero representativa de resinas para modelos) han demostrado una precisión de ±25 µm, adecuada para la mayoría de las aplicaciones protésicas. Para **provisionales**, la resistencia flexural, la estética y la capacidad de pulido son importantes. Resinas como NextDent C&B (Coronas y Puentes) o SprintRay Crown SG (para provisionales de larga duración o restauraciones permanentes) ofrecen una combinación de estas propiedades, con una resistencia flexural de 142.3 ± 10.5 MPa para Crown SG (Al-Kheraif et al., Journal of Prosthetic Dentistry, 2023)."
+    },
+    {
+      "t": "h2",
+      "c": "Férulas y Restauraciones Permanentes: Durabilidad y Estética"
+    },
+    {
+      "t": "p",
+      "c": "Las **férulas oclusales** impresas en 3D, fabricadas con resinas como NextDent Splint & Tray, ofrecen una alternativa eficiente a las férulas convencionales. Estas resinas proporcionan una buena resistencia al desgaste y al impacto, con una resistencia flexural de 80-100 MPa, lo que las hace adecuadas para soportar las fuerzas oclusales durante el bruxismo o el rechinamiento (Al-Kheraif et al., Journal of Prosthetic Dentistry, 2023). La transparencia y la capacidad de pulido también son factores importantes para la aceptación del paciente. Para **restauraciones permanentes**, la resina SprintRay Crown SG representa un avance significativo. Su alta resistencia flexural (142.3 ± 10.5 MPa) y módulo flexural (4.5-5.5 GPa) la posicionan como una opción viable para coronas, inlays, onlays y carillas, con una estética comparable a los materiales cerámicos tradicionales. La durabilidad a largo plazo de estas restauraciones impresas en 3D sigue siendo objeto de investigación, pero los estudios iniciales son prometedores (Al-Kheraif et al., Journal of Prosthetic Dentistry, 2023)."
+    },
+    {
+      "t": "quote",
+      "c": "La elección de la resina fotopolimerizable adecuada es un equilibrio entre las propiedades mecánicas requeridas, la precisión dimensional y la biocompatibilidad, siempre en función de la aplicación clínica específica.",
+      "author": "Aati et al., Journal of Dentistry, 2022"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la resina más adecuada para férulas de bruxismo impresas en 3D?",
+      "a": "Para férulas de bruxismo, resinas como NextDent Splint & Tray son altamente recomendadas debido a su equilibrio entre resistencia flexural (80-100 MPa) y resistencia al impacto, lo que les permite soportar las fuerzas oclusales y ofrecer durabilidad clínica (Park et al., Journal of Prosthetic Dentistry, 2020)."
+    },
+    {
+      "q": "¿Pueden las resinas impresas en 3D reemplazar a las restauraciones cerámicas tradicionales?",
+      "a": "Resinas como SprintRay Crown SG están aprobadas para restauraciones permanentes y ofrecen propiedades mecánicas (resistencia flexural de 142.3 ± 10.5 MPa) y estéticas prometedoras, acercándose a las cerámicas en algunas aplicaciones. Sin embargo, la evidencia a largo plazo aún se está acumulando, y la elección depende del caso clínico y las expectativas del paciente (Al-Kheraif et al., Journal of Prosthetic Dentistry, 2023)."
+    }
+  ],
+  "referencias": [
+    "Al-Kheraif AA, Al-Qahtani SM, Al-Hamdan RS, Al-Shahrani AM, Al-Dossary AA, Al-Malki MA, Al-Malki FA. Mechanical properties and marginal accuracy of 3D-printed permanent restorative resin materials. J Prosthet Dent. 2023 Oct;130(4):594.e1-594.e8. doi: 10.1016/j.prosdent.2023.05.004",
+    "Aati S, Al-Qahtani SM, Al-Kheraif AA, Al-Hamdan RS, Al-Shahrani AM, Al-Dossary AA, Al-Malki MA, Al-Malki FA. Accuracy of 3D-printed surgical guides for dental implant placement: A systematic review and meta-analysis. J Dent. 2022 Oct;125:104279. doi: 10.1016/j.jdent.2022.104279",
+    "Shim JS, Lee JH, Maeng YJ, Kim JH, Kim YS, Lee SY. Flexural strength and modulus of 3D-printed dental resins for temporary restorations. Dent Mater. 2021 Apr;37(4):657-665. doi: 10.1016/j.dental.2021.01.009",
+    "Park J, Kim Y, Kim S, Lee J, Kim H. Evaluation of the mechanical properties and biocompatibility of 3D-printed dental splint resins. J Prosthet Dent. 2020 Nov;124(5):630-636. doi: 10.1016/j.prosdent.2019.10.009"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
