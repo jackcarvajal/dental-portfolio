@@ -17,7 +17,7 @@ Confirmado ("Success. No rows returned"). `prodigy_usar_cupon_credito()` ahora u
 - **PRODIGY**: 4 títulos EN duplicados → únicos; hreflang `en` en alineadores-cad/impresion-3d/mapa-sitio/preguntas; `para-laboratorios` al sitemap; `client-panel.html` con h1 único (logo degradado a div); keepalive de Supabase de semanal a cada 3 días (evita auto-pausa del backend compartido).
 - **Alejandro**: 3 páginas rotas (endodoncia/guías-cad/prótesis) reescritas con contenido real de su tema (precios como "cotiza por caso" por decisión del usuario) + agregadas al sitemap; `admin-panel.html` con h1 accesible.
 
-**Pendiente autónomo con riesgo (requiere probar, NO forzado):** `defer` al SDK de Supabase en `flujo-diseno.html` — puede romper el flujo de pago si un script inline usa el SDK durante el parseo; hay que verificar por archivo antes. Font Awesome lazy en flujo-diseno. Estos afectan la página de checkout, así que mejor con prueba en vivo, no a ciegas.
+**Verificado y DESCARTADO — `defer` al SDK de Supabase en `flujo-diseno.html`:** NO se puede aplicar tal cual. La línea 362 carga el SDK y la 367 es un `<script>` inline que llama `window.supabase.createClient(...)` durante el parseo — con `defer`, `window.supabase` sería `undefined` en la 367 y se rompería la inicialización de Supabase en toda la página de pago. El fix de rendimiento requiere primero mover ese `createClient` inline a una función que corra en `DOMContentLoaded` (o diferir también ese script), y probarlo en vivo. NO hacer el cambio de `defer` a ciegas. Mismo patrón probable en Alejandro.
 
 ---
 
