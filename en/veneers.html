@@ -110,6 +110,15 @@ summary::-webkit-details-marker{display:none;}
 .qform button{margin-top:8px;justify-content:center;width:100%;}
 .qform-alt{text-align:center;margin-top:16px;font-size:.86rem;color:var(--muted);}
 .qform-alt a{color:var(--cyan);border-bottom:1px solid color-mix(in srgb,var(--cyan) 35%,transparent);}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px;}
+@media(max-width:820px){.gallery{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.gallery{grid-template-columns:1fr;}}
+.gcase{margin:0;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--card);}
+.gcase img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;}
+.gcase .cap{font-size:.8rem;color:var(--txt);padding:11px 14px;font-weight:600;border-top:1px solid var(--border);}
+.gcase.ph img{display:none;}
+.gcase.ph{position:relative;}
+.gcase.ph::before{content:"\f118";font-family:"Font Awesome 6 Free";font-weight:900;display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;font-size:2rem;color:color-mix(in srgb,var(--mg) 55%,transparent);background:linear-gradient(135deg,rgba(217,70,166,.10),rgba(0,210,255,.06));}
 .paybox{margin-top:26px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:20px 22px;}
 .paybox-h{font-size:.78rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .paybox-terms{font-size:.88rem;color:var(--muted);margin:0 0 14px;line-height:1.55;}
@@ -233,6 +242,25 @@ summary::-webkit-details-marker{display:none;}
       <div class="compliance">
         <b>How the compliant workflow works:</b> restorations are custom-fabricated to the prescription of the treating, licensed dentist, who provides the scan or impression and seats the final veneer. This is the same lab-to-dentist model used across the industry. We do not market or sell restorations directly to patients.
       </div>
+    </div>
+  </section>
+
+  <!-- GALLERY / SELECTED WORK -->
+  <!-- Para activar: sube fotos before/after (composites) a /assets/veneers/case-1.jpg ... case-6.jpg (recomendado 800x600, <150KB). Aparecen solas. -->
+  <section class="sec sec-card below" id="work">
+    <div class="container">
+      <div class="sec-tag" style="text-align:center;">Selected work</div>
+      <h2 class="sec-title" style="text-align:center;">Cases fabricated in our lab</h2>
+      <p class="sec-sub" style="margin:0 auto 8px;text-align:center;">Real restorations, designed digitally and finished by hand. Before &amp; after, shade-matched to the prescription.</p>
+      <div class="gallery">
+        <figure class="gcase"><img src="/assets/veneers/case-1.jpg" alt="e.max veneers, 8 units — before and after" loading="lazy" onerror="this.closest('.gcase').classList.add('ph')"><figcaption class="cap">e.max veneers · 8 units · anterior</figcaption></figure>
+        <figure class="gcase"><img src="/assets/veneers/case-2.jpg" alt="Feldspathic veneers, 6 units — before and after" loading="lazy" onerror="this.closest('.gcase').classList.add('ph')"><figcaption class="cap">Feldspathic veneers · 6 units</figcaption></figure>
+        <figure class="gcase"><img src="/assets/veneers/case-3.jpg" alt="Zirconia crowns, full arch — before and after" loading="lazy" onerror="this.closest('.gcase').classList.add('ph')"><figcaption class="cap">Zirconia crowns · full arch</figcaption></figure>
+        <figure class="gcase"><img src="/assets/veneers/case-4.jpg" alt="e.max crowns, 4 units — before and after" loading="lazy" onerror="this.closest('.gcase').classList.add('ph')"><figcaption class="cap">e.max crowns · 4 units</figcaption></figure>
+        <figure class="gcase"><img src="/assets/veneers/case-5.jpg" alt="Implant crown with titanium base" loading="lazy" onerror="this.closest('.gcase').classList.add('ph')"><figcaption class="cap">Implant crown · +Ti-base</figcaption></figure>
+        <figure class="gcase"><img src="/assets/veneers/case-6.jpg" alt="Full smile makeover, 10 units — before and after" loading="lazy" onerror="this.closest('.gcase').classList.add('ph')"><figcaption class="cap">Smile makeover · 10 units</figcaption></figure>
+      </div>
+      <p class="qform-alt" style="margin-top:22px;">Want to see a case like yours? <a href="#quote">Get your quote →</a></p>
     </div>
   </section>
 
