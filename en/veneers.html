@@ -110,6 +110,12 @@ summary::-webkit-details-marker{display:none;}
 .qform button{margin-top:8px;justify-content:center;width:100%;}
 .qform-alt{text-align:center;margin-top:16px;font-size:.86rem;color:var(--muted);}
 .qform-alt a{color:var(--cyan);border-bottom:1px solid color-mix(in srgb,var(--cyan) 35%,transparent);}
+.q-est{margin-top:4px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:.86rem;}
+.q-est-row{display:flex;justify-content:space-between;padding:3px 0;color:var(--muted);}
+.q-est-row span:last-child{font-variant-numeric:tabular-nums;font-family:var(--mono,ui-monospace),monospace;}
+.q-est-row.disc{color:var(--gold);}
+.q-est-row.total{border-top:1px solid var(--border);margin-top:6px;padding-top:8px;font-weight:800;color:var(--txt);font-size:1.02rem;}
+.q-est-note{font-size:.72rem;color:var(--muted);margin-top:8px;line-height:1.5;}
 @media(max-width:520px){.qform .row{grid-template-columns:1fr;}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 </style>
@@ -249,16 +255,24 @@ summary::-webkit-details-marker{display:none;}
         </div>
         <div><label for="q-practice">Practice / clinic (optional)</label><input id="q-practice" name="practice"></div>
         <div class="row">
-          <div><label for="q-material">Material</label>
-            <select id="q-material" name="material">
-              <option value="Lithium disilicate (e.max)">Lithium disilicate (e.max)</option>
-              <option value="Feldspathic porcelain">Feldspathic porcelain</option>
-              <option value="Zirconia">Zirconia</option>
-              <option value="Recommend for me">Recommend for me</option>
+          <div><label for="q-material">Restoration &amp; material</label>
+            <select id="q-material" name="material" onchange="estimateVeneer()">
+              <option value="e.max veneer">Veneer — e.max (from $89)</option>
+              <option value="Feldspathic veneer">Veneer — feldspathic layered (from $139)</option>
+              <option value="Zirconia crown">Crown — zirconia (from $59)</option>
+              <option value="e.max crown">Crown — e.max (from $69)</option>
+              <option value="Implant crown (+Ti-base)">Implant crown + Ti-base (from $159)</option>
+              <option value="Inlay / onlay">Inlay / onlay (from $65)</option>
+              <option value="Recommend for me">Not sure — recommend for me</option>
             </select>
           </div>
-          <div><label for="q-units">Number of units</label><input id="q-units" name="units" type="number" min="1" value="1" inputmode="numeric"></div>
+          <div><label for="q-units">Number of units</label><input id="q-units" name="units" type="number" min="1" value="1" inputmode="numeric" oninput="estimateVeneer()"></div>
         </div>
+        <label style="display:flex;gap:10px;align-items:center;font-size:.8rem;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400;margin-top:2px;cursor:pointer;">
+          <input type="checkbox" id="q-first" name="first" onchange="estimateVeneer()" style="width:auto;flex-shrink:0;accent-color:var(--mg);">
+          <span>This is my <b style="color:var(--gold);">first order</b> — apply 20% off + free shipping</span>
+        </label>
+        <div id="q-estimate" class="q-est" aria-live="polite"></div>
         <div><label for="q-shade">Shade (optional)</label><input id="q-shade" name="shade" placeholder="e.g. A1, BL2"></div>
         <div><label for="q-notes">Case notes (optional)</label><textarea id="q-notes" name="notes" placeholder="Prep type, timeline, anything we should know"></textarea></div>
         <label style="display:flex;gap:10px;align-items:flex-start;font-size:.78rem;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400;line-height:1.5;margin-top:2px;cursor:pointer;">
@@ -274,6 +288,30 @@ summary::-webkit-details-marker{display:none;}
 </main>
 
 <script>
+var VPRICES={'e.max veneer':89,'Feldspathic veneer':139,'Zirconia crown':59,'e.max crown':69,'Implant crown (+Ti-base)':159,'Inlay / onlay':65,'Recommend for me':0};
+function _money(n){return '$'+Math.round(n).toLocaleString('en-US');}
+function estimateVeneer(){
+  var mat=document.getElementById('q-material').value;
+  var units=Math.max(1,parseInt(document.getElementById('q-units').value,10)||1);
+  var first=document.getElementById('q-first').checked;
+  var box=document.getElementById('q-estimate');
+  var p=VPRICES[mat]||0;
+  if(!p){ box.innerHTML='<span class="q-est-note">We’ll send your exact per-unit quote for this option — just submit the case.</span>'; window._vEst=''; return; }
+  var base=p*units, disc=0, lbl='';
+  if(first){ disc=.20; lbl='First-order 20% off'; }
+  else if(units>=12){ disc=.15; lbl='Volume 15% off'; }
+  else if(units>=5){ disc=.10; lbl='Volume 10% off'; }
+  var after=base*(1-disc);
+  var ship=(first||units>=12)?0:35;
+  var total=after+ship;
+  var html='<div class="q-est-row"><span>'+units+' × '+_money(p)+'</span><span>'+_money(base)+'</span></div>';
+  if(disc>0) html+='<div class="q-est-row disc"><span>'+lbl+'</span><span>−'+_money(base-after)+'</span></div>';
+  html+='<div class="q-est-row"><span>Shipping'+(ship===0?' (free)':'')+'</span><span>'+_money(ship)+'</span></div>';
+  html+='<div class="q-est-row total"><span>Estimated total</span><span>'+_money(total)+'</span></div>';
+  html+='<div class="q-est-note">Estimate in USD · final per-case quote confirmed on WhatsApp · free shipping on 12+ units.</div>';
+  box.innerHTML=html;
+  window._vEst='Estimated total: '+_money(total)+' ('+units+' × '+mat+(disc>0?', '+lbl:'')+(ship===0?', free shipping':'')+')';
+}
 function sendVeneerQuote(e){
   e.preventDefault();
   var f=e.target, v=function(n){return (f[n]&&f[n].value||'').trim();};
@@ -282,8 +320,10 @@ function sendVeneerQuote(e){
     "Name: "+v('name'),
     "Email: "+v('email'),
     v('practice')?"Practice: "+v('practice'):"",
-    "Material: "+v('material'),
+    "Restoration: "+v('material'),
     "Units: "+(v('units')||'1'),
+    (f['first']&&f['first'].checked)?"First order (20% off + free shipping)":"",
+    window._vEst?window._vEst:"",
     v('shade')?"Shade: "+v('shade'):"",
     v('notes')?"Notes: "+v('notes'):"",
     "— I confirm I'm a licensed dentist (patient of record) and accept your Terms of Service."
@@ -291,6 +331,7 @@ function sendVeneerQuote(e){
   window.open('https://wa.me/573212816716?text='+encodeURIComponent(lines.join("\n")),'_blank','noopener,noreferrer');
   return false;
 }
+document.addEventListener('DOMContentLoaded',estimateVeneer);
 </script>
 
 <script src="../js/footer.js?v=20260609"></script>
