@@ -9,8 +9,11 @@ name: Supabase Keepalive
 
 on:
   schedule:
-    - cron: '0 12 * * 1'   # Lunes 7 AM Bogotá (12:00 UTC)
-  workflow_dispatch:        # Ejecución manual desde GitHub Actions
+    # Cada 3 días — el proyecto free de Supabase se pausa tras 7 días sin
+    # actividad; un ping semanal no deja margen si una corrida se retrasa/falla.
+    # Cada 3 días garantiza al menos 2 pings dentro de cada ventana de 7 días.
+    - cron: '0 12 */3 * *'   # 7 AM Bogotá (12:00 UTC), días 1,4,7,10... del mes
+  workflow_dispatch:         # Ejecución manual desde GitHub Actions
 
 permissions:
   contents: read
