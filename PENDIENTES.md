@@ -6,7 +6,11 @@
 
 ## ✅ SQL ejecutado (2026-07-16) — doble gasto de cupón de referido
 
-Confirmado ("Success. No rows returned"). `prodigy_usar_cupon_credito()` ahora usa UPDATE condicional atómico — el cupón de $30.000 ya no se puede canjear dos veces por requests concurrentes. **Con esto no queda ningún SQL pendiente de la sesión.** Solo faltan 2 deploys de Edge Functions: `supabase functions deploy wompi-signature` y `webhook-handler`.
+Confirmado ("Success. No rows returned"). `prodigy_usar_cupon_credito()` ahora usa UPDATE condicional atómico — el cupón de $30.000 ya no se puede canjear dos veces por requests concurrentes.
+
+## ✅ Edge Functions desplegadas (2026-07-16) — Wompi blindado en producción
+
+`wompi-signature` y `webhook-handler` actualizadas vía Dashboard ("Successfully updated edge function"). **El hueco de dinero más grave (firmar montos arbitrarios del cliente) está cerrado en producción** — la firma ahora se genera sobre el `precio_total` real de la BD. **Con esto no queda ningún SQL ni deploy pendiente de la sesión de seguridad.** Pendiente de tu parte: probar un pago real de bajo monto de punta a punta para confirmar que el checkout abre con el monto correcto (cambió `pagos.js`: usa el monto del servidor + falla cerrado sin firma).
 
 ## ✅ Fixes autónomos (2026-07-16) — SEO/a11y/infra (pusheados)
 
