@@ -378,6 +378,7 @@ function sendVeneerQuote(e){
     v('notes')?"Notes: "+v('notes'):"",
     "— I confirm I'm a licensed dentist (patient of record) and accept your Terms of Service."
   ].filter(Boolean);
+  try{fetch('/api/veneer-lead',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre:v('name'),email:v('email'),practice:v('practice'),material:v('material'),units:v('units')||'1',first_order:!!(f['first']&&f['first'].checked),estimado:window._vEst||'',shade:v('shade'),notas:v('notes')})}).catch(function(){});}catch(_){}
   window.open('https://wa.me/573212816716?text='+encodeURIComponent(lines.join("\n")),'_blank','noopener,noreferrer');
   return false;
 }
