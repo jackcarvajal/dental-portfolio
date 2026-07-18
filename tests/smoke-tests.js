@@ -219,8 +219,15 @@ const cspReport = fileContent('functions/api/csp-report.js');
 assert(cspReport.length > 100, 'csp-report.js existe');
 assert(cspReport.includes('csp-report'), 'Procesa reportes CSP');
 const headersCsp = fileContent('_headers');
-assert(headersCsp.includes('strict-dynamic'), 'CSP incluye strict-dynamic');
-assert(headersCsp.includes('csp-report') || headersCsp.includes('CSP-Report'), 'CSP tiene report endpoint');
+// NOTA (2026-07-18): se retiro la cabecera Content-Security-Policy-Report-Only que
+// usaba 'nonce-PLACEHOLDER' + 'strict-dynamic'. El nonce nunca se reemplazaba en el
+// servidor, asi que TODO script inline la violaba y saturaba /api/csp-report con 429.
+// Al ser Report-Only no bloqueaba nada: era coste sin proteccion. La CSP real
+// (enforcing, con unsafe-inline) sigue activa y es la que protege.
+// PENDIENTE: migrar a CSP estricta con nonces reales inyectados por middleware.
+assert(headersCsp.includes('Content-Security-Policy'), 'CSP enforcing presente en _headers');
+assert(headersCsp.includes("object-src 'none'"), 'CSP bloquea object-src');
+assert(headersCsp.includes("base-uri 'self'"), 'CSP restringe base-uri');
 
 // ── BLOQUE 18: Export CSV en paneles ──────────────────────────────
 console.log('\n📊 EXPORT CSV');
@@ -270,7 +277,8 @@ assert(!calcHtml.includes('onmouseover'), 'calculadora.html: 0 onmouseover inlin
 console.log('\n🔐 FIXES GEMINI (4 puntos críticos)');
 // Fix 1: CSP strict-dynamic + fallback https:
 const headersFile = fileContent('_headers');
-assert(headersFile.includes("'strict-dynamic' https:"), 'CSP tiene strict-dynamic + fallback https: para browsers antiguos');
+// Ver nota del BLOQUE 17: la Report-Only con strict-dynamic se retiro por estar rota.
+assert(headersFile.includes('upgrade-insecure-requests'), 'CSP fuerza HTTPS (upgrade-insecure-requests)');
 
 // Fix 2: revision-express.html — OWASP A01
 const revExpress = fileContent('revision-express.html');
@@ -346,7 +354,13 @@ for (const pg of pagPublicas) {
 const swContent = fileContent('sw.js');
 const swVerNum = parseInt((swContent.match(/prodigy-v(\d+)/) || [])[1] || '0', 10);
 assert(swVerNum >= 25, 'sw.js actualizado a v25+');
-assert(swContent.includes('/cotizaciones'), 'sw.js incluye /cotizaciones en PRECACHE');
+// NOTA (2026-07-18): /cotizaciones NO es una ruta publica — solo existe
+// app/cotizaciones.html (panel autenticado), que _headers marca como no-store.
+// Precachearla en el SW serviria contenido privado desde cache: no debe hacerse.
+const swPre = (swContent.match(/const PRECACHE\s*=\s*\[([\s\S]*?)\];/) || [])[1] || '';
+assert(!swPre.includes('/app/'), 'sw.js NO precachea paginas del panel autenticado');
+assert(swContent.includes('NEVER_CACHE') && /NEVER_CACHE[\s\S]{0,300}\/app\//.test(swContent),
+       'sw.js marca /app/ como NEVER_CACHE (panel nunca se sirve de cache)');
 
 // ── SISTEMA DE REFERIDOS ────────────────────────────────────────────
 console.log('\n👥  SISTEMA DE REFERIDOS');
