@@ -205,7 +205,17 @@ async function testTablas() {
       const ms=Date.now()-t0;
       if(error)throw error;
       results.push(`✅ ${t}: ${count} filas (${ms}ms)`);
-    }catch(e){results.push(`❌ ${t}: ${e.message}`);}
+    }catch(e){
+      // Mostrar el detalle real de PostgREST (message suele venir vacio en errores de permisos)
+      const det=[e.code&&('code '+e.code), e.message, e.details, e.hint].filter(Boolean).join(' · ');
+      let extra='';
+      try{ // segundo intento sin count, para distinguir permisos de otra cosa
+        const r2=await sb.from(t).select('id').limit(1);
+        extra = r2.error ? ` | select simple: ${r2.error.code||''} ${r2.error.message||''}`.trim()
+                         : ` | select simple SI funciona (${(r2.data||[]).length} fila) -> falla solo el conteo`;
+      }catch(_){}
+      results.push(`❌ ${t}: ${det||'error sin detalle'}${extra}`);
+    }
   }
   log('result-tablas',results.join('\n'),'ok');
 }
