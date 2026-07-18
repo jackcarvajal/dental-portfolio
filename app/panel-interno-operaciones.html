@@ -1482,13 +1482,20 @@ function switchTab(tab, el) {
     panel.classList.add('active');
     panel.style.display = 'block';
 
-    // Verificación: si aún colapsa (h=0), reportar el culpable
+    // Verificación: si aún colapsa (h=0), reportar la CADENA DE ANCESTROS (culpable común)
     setTimeout(function(){
       try{
         if(panel.offsetHeight>4) return;
-        var rows=[]; Array.prototype.forEach.call(panel.children,function(c){var s=getComputedStyle(c);rows.push('<'+c.tagName.toLowerCase()+' .'+c.className+'> h='+c.offsetHeight+' d='+s.display);});
-        var b=document.createElement('div');b.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#7c2d12;color:#fff;font:11px/1.5 ui-monospace,monospace;padding:10px 40px;white-space:pre-wrap;max-height:45vh;overflow:auto';
-        b.textContent='⚠ Tab "'+tab+'" AÚN colapsado. panel.display='+getComputedStyle(panel).display+'\n'+rows.join('\n');
+        var rows=['panel offsetH='+panel.offsetHeight+' scrollH='+panel.scrollHeight+' (si scrollH>0 = contenido recortado)'];
+        var el=panel;
+        while(el && el.tagName!=='HTML'){
+          var s=getComputedStyle(el);
+          rows.push((el.id?'#'+el.id:'')+(el.className?('.'+String(el.className).split(' ')[0]):'<'+el.tagName.toLowerCase()+'>')+
+            ' offH='+el.offsetHeight+' scrH='+el.scrollHeight+' disp='+s.display+' ovf='+s.overflow+' h='+s.height+' maxH='+s.maxHeight+' flex='+s.flex);
+          el=el.parentElement;
+        }
+        var b=document.createElement('div');b.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#7c2d12;color:#fff;font:11px/1.5 ui-monospace,monospace;padding:10px 40px;white-space:pre-wrap;max-height:60vh;overflow:auto';
+        b.textContent='⚠ "'+tab+'" colapsado — cadena de ancestros:\n'+rows.join('\n');
         var x=document.createElement('button');x.textContent='×';x.style.cssText='position:absolute;top:4px;right:8px;background:none;border:none;color:#fff;font-size:20px;cursor:pointer';x.onclick=function(){b.remove();};b.appendChild(x);
         document.body.appendChild(b);
       }catch(e){}
