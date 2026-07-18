@@ -11,6 +11,32 @@
 
 ## 2026-07-18
 
+### 🔴 CI ROTO — el deploy no publicaba (resuelto)
+- El workflow **"Deploy PRODIGY" fallaba en cada push** durante horas: los cambios de seguridad
+  y el tour de clientes **no llegaban a producción** aunque `git push` decía OK.
+- Causa: 5 smoke tests fallando. 3 los rompí yo al retirar la CSP `Report-Only` con
+  `nonce-PLACEHOLDER` (estaba rota y saturaba `/api/csp-report`); se reemplazaron por asserts
+  sobre la CSP enforcing real. 1 era desfase `MAP.md` v36 vs `sw.js` v37. 1 exigía
+  `/cotizaciones` en PRECACHE, pero esa ruta **no es pública** (solo el panel autenticado,
+  `no-store`) → precachearla serviría contenido privado; se cambió por verificar que
+  `/app/` esté en `NEVER_CACHE` (sw.js ya lo hacía bien).
+- 💡 **Lección: un `git push` exitoso NO significa desplegado.** Verificar siempre contra
+  producción (curl con `-L`: las URLs `.html` hacen 308 a la ruta limpia).
+- Resultado: 227 tests ✅ 0 ❌ y deploy destrabado.
+
+### ✅ Verificación de producción (41 checks)
+- 13 páginas públicas, landing EE.UU. + términos, 10 páginas del panel, 8 módulos JS,
+  health-check y 4 pruebas de seguridad (anon NO lee `pedidos`, `clientes`, `veneer_leads`
+  ni `logs_incidencias`): **todo correcto**.
+- health-check: DEGRADED con **0 críticos**. Los 3 degradados son servicios externos
+  (ipapi.co 429, Wikipedia 403, Factus DIAN 403), no código propio.
+- El `207` de health-check es intencional (`allOk?200: critical?503:207`).
+
+### ✅ Bot IA actualizado
+- Verificado en vivo (gemini-2.5-flash, 200). Se agregó al prompt el servicio de carillas
+  para EE.UU. (precios USD, descuentos, tiempos, garantía, 50/50, B2B con licencia) y se
+  eliminó el bloque **duplicado** de referidos que gastaba tokens en cada consulta.
+
 ### ✅ Auditoría exhaustiva del panel (27 páginas, 11 roles)
 - **Estructura:** HTML correcto en las 27. El bug de `<div>` sin cerrar era exclusivo de
   `panel-interno-operaciones` (ya resuelto). **0 handlers muertos** (los `window.fn = ...` daban falso positivo).
