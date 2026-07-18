@@ -16,6 +16,25 @@
 
   /* ── Guiones por pantalla ─────────────────────────────────────── */
   var TOURS = {
+    'panel-interno-operaciones.html': {
+      nombre: 'el panel interno',
+      pasos: [
+        { sel: null, titulo: 'Bienvenido al centro de operaciones',
+          texto: 'Desde aquí controlas todo el laboratorio: pedidos, producción, despachos, equipo y portafolio. Te muestro lo esencial en 6 pasos.' },
+        { sel: '#midia', titulo: 'Tu resumen de hoy',
+          texto: 'Lo primero que ves: cuántos pedidos hay, cuántos están en producción y cuántos listos para despachar. Si todo está en cero es porque aún no hay datos, no es un error.' },
+        { sel: '.nav-item[onclick*="pedidos"]', titulo: 'Pedidos — tu vista del día a día',
+          texto: 'Todos los casos con su estado, cliente y avance. Desde el menú de la izquierda te mueves entre secciones; cada una tiene su ayuda al pasar el mouse.' },
+        { sel: '#bg-side-btn', titulo: 'Buscar un caso (Ctrl+K)',
+          texto: 'Busca cualquier caso por código, doctor o cliente desde cualquier pantalla, sin navegar. El atajo Ctrl+K funciona siempre.' },
+        { sel: '#hist-side-btn', titulo: 'Actividad reciente',
+          texto: 'Quién cambió qué y cuándo. Muy útil si otra persona del equipo usa el panel y quieres saber qué pasó con un caso.' },
+        { sel: '.nav-item[onclick*="portafolio"]', titulo: 'Portafolio',
+          texto: 'Sube tus casos terminados con fotos. Se publican de inmediato en el portafolio público de la web.' },
+        { sel: '#phelp-btn', titulo: 'Ayuda siempre a mano',
+          texto: 'Este botón abre la guía de todas las secciones. Además, al pasar el mouse por cualquier botón aparece una nota explicando qué hace.' }
+      ]
+    },
     'client-panel.html': {
       nombre: 'tu panel',
       pasos: [

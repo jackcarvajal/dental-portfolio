@@ -154,6 +154,7 @@
     if (side) {
       var b = document.createElement('button');
       b.type = 'button';
+      b.id = 'hist-side-btn';
       b.setAttribute('data-tip', 'Ver quién hizo cada cambio en el panel y cuándo. Sirve para saber qué pasó con un caso.');
       b.style.cssText = 'margin:0 14px 10px;padding:9px 12px;width:calc(100% - 28px);background:rgba(255,255,255,.05);'
         + 'border:1px solid rgba(255,255,255,.12);border-radius:9px;color:#94a3b8;font-size:.78rem;cursor:pointer;'

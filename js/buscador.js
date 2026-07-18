@@ -163,6 +163,7 @@
     if (side) {
       var b = document.createElement('button');
       b.type = 'button';
+      b.id = 'bg-side-btn';
       b.setAttribute('data-tip', 'Busca un caso por código, doctor o cliente desde cualquier pantalla. Atajo: Ctrl+K');
       b.style.cssText = 'margin:10px 14px;padding:9px 12px;width:calc(100% - 28px);background:rgba(255,255,255,.05);'
         + 'border:1px solid rgba(255,255,255,.12);border-radius:9px;color:#94a3b8;font-size:.78rem;cursor:pointer;'
