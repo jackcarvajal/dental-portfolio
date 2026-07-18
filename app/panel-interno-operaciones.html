@@ -1684,6 +1684,34 @@ async function cambiarEstado(pedidoId, nuevoEstado) {
     if (error) { toast('Error al actualizar: ' + error.message, 'error'); return; }
     toast('Estado actualizado → ' + nuevoEstado, 'success');
     await _auditLog('CAMBIAR_ESTADO', { pedido_id: pedidoId, nuevo_estado: nuevoEstado });
+
+    /* Avisar al area que corresponda segun el nuevo estado */
+    try {
+        const p = _pioMap[pedidoId] || {};
+        const cod = p.codigo || '';
+        const AVISOS = {
+            'TERMINADO':        { dept: null, rol: null, tipo:'estado_cambio', prio:'alta',
+                                  t:'Caso listo para despachar',
+                                  m:`El caso ${cod} termino produccion. Asignalo a un mensajero desde Despachos.`,
+                                  url:'/app/mensajero.html' },
+            'LISTO_DESPACHAR':  { dept: null, rol: null, tipo:'estado_cambio', prio:'alta',
+                                  t:'Caso listo para despachar',
+                                  m:`El caso ${cod} paso control de calidad y espera mensajero.`,
+                                  url:'/app/mensajero.html' },
+            'En Producción':    { dept: null, rol: null, tipo:'estado_cambio', prio:'media',
+                                  t:'Caso en produccion',
+                                  m:`El caso ${cod} entro a produccion.`, url:'/app/operario.html' },
+            'ENTREGADO':        { dept: null, rol: 'admin', tipo:'estado_cambio', prio:'baja',
+                                  t:'Caso entregado',
+                                  m:`El caso ${cod} fue entregado. Verifica el pago del saldo.`,
+                                  url:'/app/contabilidad.html' }
+        };
+        const a = AVISOS[nuevoEstado];
+        if (a) await _notificarInterno({
+            tipo:a.tipo, prioridad:a.prio, dept:a.dept, rol:a.rol,
+            titulo:a.t, mensaje:a.m, pedido_id:pedidoId, codigo:cod, url:a.url
+        });
+    } catch (_) {}
 }
 
 /* ── NOTIFICACIONES WA — PRODIGY ── */
@@ -4172,6 +4200,21 @@ async function _doEnrutar(id, tipo, tipoBase, lbl) {
     descripcion:`Pago confirmado y caso enrutado a ${lbl}. STL disponibles en el panel de ${lbl}.`
   }).catch(()=>{});
 
+  /* Avisar al operario del área que le asignaron un caso */
+  try {
+    const { data: pn } = await sbFab.from('pedidos').select('codigo,tipo_trabajo').eq('id', id).single();
+    await _notificarInterno({
+      tipo: 'nuevo_caso',
+      prioridad: 'alta',
+      dept: tipoBase,
+      titulo: `Nuevo caso en ${lbl}`,
+      mensaje: `Te asignaron el caso ${pn?.codigo || ''}${pn?.tipo_trabajo ? ' — ' + pn.tipo_trabajo : ''}. Los archivos STL ya están disponibles.`,
+      pedido_id: id,
+      codigo: pn?.codigo || null,
+      url: '/app/operario.html'
+    });
+  } catch (_) {}
+
   /* Notificar al doctor */
   try {
     const { data: p } = await sbFab.from('pedidos').select('codigo,email').eq('id',id).single();
@@ -4277,6 +4320,26 @@ function exportarPedidosCSV() {
 }
 
 /* ── AUDIT LOG — registra acciones sensibles del admin ──────────────── */
+/* ── Notificación interna: avisa al área/rol que le toca un caso ──────
+   La tabla notificaciones_internas y el panel (notif-panel.js) ya existían,
+   pero nadie creaba avisos. Este helper es el que los dispara. */
+async function _notificarInterno(n) {
+  try {
+    await sb.from('notificaciones_internas').insert({
+      tipo:              n.tipo || 'estado_cambio',
+      prioridad:         n.prioridad || 'media',
+      destinatario_rol:  n.rol  || null,     // null = todo el staff
+      destinatario_dept: n.dept || null,     // null = todos los departamentos
+      titulo:            n.titulo,
+      mensaje:           n.mensaje,
+      pedido_id:         n.pedido_id || null,
+      pedido_codigo:     n.codigo || null,
+      accion_url:        n.url || null,
+      leida_por:         []
+    });
+  } catch (_) { /* nunca bloquear la operación por un aviso */ }
+}
+
 async function _auditLog(accion, datos) {
   try {
     const { data: { user } } = await sb.auth.getUser();
@@ -4298,7 +4361,7 @@ document.addEventListener('keydown', e => {
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <script src="../js/notif-panel.js?v=20260601"></script>
-<script src="../js/panel-tips.js?v=20260718d"></script>
+<script src="../js/panel-tips.js?v=20260718e"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 <script>
 /* Detector de errores visible — evita "pantalla en blanco" sin pistas.
@@ -4325,10 +4388,11 @@ document.addEventListener('keydown', e => {
   });
 })();
 </script>
-<script src="../js/mi-dia.js?v=20260718d"></script>
-<script src="../js/buscador.js?v=20260718d"></script>
-<script src="../js/historial.js?v=20260718d"></script>
-<script src="../js/tour.js?v=20260718d"></script>
-<script src="../js/imprimir.js?v=20260718d"></script>
+<script src="../js/mi-dia.js?v=20260718e"></script>
+<script src="../js/buscador.js?v=20260718e"></script>
+<script src="../js/historial.js?v=20260718e"></script>
+<script src="../js/tour.js?v=20260718e"></script>
+<script src="../js/imprimir.js?v=20260718e"></script>
+<script src="../js/rol-actual.js?v=20260718e"></script>
 </body>
 </html>

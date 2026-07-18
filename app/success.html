@@ -363,5 +363,6 @@ window.sb = sb;
 
 <script src="../js/notif-panel.js?v=20260601"></script>
 <script>(async()=>{try{if(!window.sb)return;const{data:{session}}=await window.sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(window.sb,null,rol);}catch(_){}})();</script>
+<script src="../js/rol-actual.js?v=20260718e"></script>
 </body>
 </html>
