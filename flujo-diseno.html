@@ -2115,16 +2115,13 @@ const lineWompi = document.getElementById('line-wompi');
                                 estado: 'registrado'
                             }).eq('codigo', ref).then(() => {
                                 sessionStorage.removeItem('prodigy_ref');
-                                // Push al staff sobre el pedido con referido
-                                fetch('/api/send-push', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json', 'x-cron-secret': 'internal' },
-                                    body: JSON.stringify({
-                                        titulo: '🎁 Pedido con referido — ' + (STATE.nombreCliente||'Doctor'),
-                                        mensaje: 'Un doctor llegó por referido (' + ref + '). Revisar en panel de referidos.',
-                                        url: '/app/panel-interno-operaciones.html',
-                                    })
-                                }).catch(() => {});
+                                /* El aviso al staff lo genera un TRIGGER en la base
+                                   (trg_avisar_referido) al pasar el referido a
+                                   'registrado'. Antes se llamaba a /api/send-push desde
+                                   aqui con un secreto placeholder y el endpoint SIEMPRE
+                                   respondia 401, asi que el aviso nunca llegaba. No se
+                                   puede poner el secreto real en el navegador: quedaria
+                                   expuesto. Ver sql/patch-trigger-aviso-referido-2026-07.sql */
                             });
                         }
                     });
