@@ -11,15 +11,23 @@
 
 ## 2026-07-17
 
-### 🔴 ABIERTO — Bugs sin resolver
-- **Panel `panel-interno-operaciones` → tab "Portafolio" sale en blanco.**
-  - El panel SÍ carga y renderiza (tab Pedidos muestra KPIs, filtros, texto blanco visible).
-  - Diagnóstico confirmó: `main-content` display=block h=1937; tab-pedidos h=559 OK;
-    **pero `tab-portafolio` colapsa a h=0px con 3 hijos** (page-header + section-card/form + grid).
-  - El formulario de subir caso (`form-portafolio`, drop-zones) existe en el HTML pero no se ve.
-  - Causa aún NO identificada (no es error JS — el detector no dispara; no es color — texto es #fff).
-  - `cargarPortafolio()` solo escribe en `#portafolio-grid` (no duplicado). El colapso es del tab entero.
-  - **Siguiente paso:** re-diagnosticar el tab-portafolio específico (children heights/display) al hacer clic.
+### ✅ RESUELTO — Panel en blanco / "los botones no abren" (bug sistémico)
+- **Causa raíz:** HTML malformado en `panel-interno-operaciones.html`:
+  1. **6 `<div>` sin cerrar** en varios tab-panel (tab-pedidos +1, tab-clientes +1,
+     tab-equipo +1, tab-despachos +2, tab-torre +2) → cada tab quedaba ANIDADO dentro
+     del anterior. Al cambiar de pestaña, `switchTab` ponía el padre en `display:none`
+     y ocultaba a los hijos → pantalla en blanco en TODO el panel.
+  2. **`</main>` mal ubicado** (cerraba tras 7 tabs) → 11 tab-panels quedaban FUERA de
+     `#main-content` y no renderizaban.
+- **Cómo se halló:** diagnóstico en pantalla de la CADENA DE ANCESTROS reveló que
+  `tab-portafolio` tenía como padre a `tab-pedidos` (imposible si fueran hermanos).
+- **Fix:** cerrados los 6 `<div>` + movido `</main>` al final del último tab. Ahora los
+  18 tab-panels son hijos directos de `#main-content` (balance 370/370).
+- **Además:** `switchTab` fuerza `display` por style inline (paneles con `display:none`
+  inline no abrían); tab Portafolio reconstruido limpio con `subirCasoSimple()`.
+- 💡 Lección: ante "todo el panel en blanco/no abre", sospechar HTML malformado
+  (divs sin cerrar que anidan) ANTES que CSS/JS. El diag de cadena de ancestros lo caza.
+- **Pendiente menor:** quitar el diag temporal del banner café de `switchTab` (queda inofensivo, solo dispara si un tab colapsa).
 - **"Los botones/funciones del panel no sirven"** — en gran parte porque la **DB está vacía**
   (0 pedidos, $0, 0 clientes) y hay features en construcción. Falta distinguir bug real vs sin-datos.
 - **RLS:** tabla `referidos` da 403 al leer desde el panel (KPI referidos) — falta política de lectura para admin.
