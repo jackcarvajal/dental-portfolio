@@ -4273,6 +4273,29 @@ document.addEventListener('keydown', e => {
     var r=e.reason; showErr('Promesa rechazada: ' + (r && (r.message||r.error_description||JSON.stringify(r)) || r));
   });
 })();
+/* DIAGNÓSTICO TEMPORAL — reporta el estado del DOM 2.5s tras cargar.
+   Muestra un banner azul con por qué el contenido podría no verse. */
+setTimeout(function(){
+  try{
+    var mc=document.getElementById('main-content');
+    var ov=document.getElementById('auth-overlay');
+    var act=document.querySelector('.tab-panel.active');
+    var g=function(el){return el?getComputedStyle(el):null;};
+    var info=[
+      'body.visibility = '+getComputedStyle(document.body).visibility,
+      'auth-overlay display = '+(ov?g(ov).display:'(no existe)'),
+      'main-content display = '+(mc?g(mc).display:'(no existe)')+' · altura='+(mc?mc.offsetHeight:'-')+'px',
+      'tab activo = '+(act?act.id:'(NINGUNO activo)'),
+      'tab activo display = '+(act?g(act).display:'-')+' · altura='+(act?act.offsetHeight:'-')+'px · hijos='+(act?act.childElementCount:'-'),
+      'PRODIGY_ROLE = '+(window.PRODIGY_ROLE||'(no seteado)')
+    ].join('\n');
+    var b=document.createElement('div');
+    b.style.cssText='position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:100000;background:#0c4a6e;color:#fff;font:12px/1.6 ui-monospace,Menlo,monospace;padding:12px 40px 12px 16px;border-radius:10px;max-width:92vw;white-space:pre-wrap;box-shadow:0 4px 20px rgba(0,0,0,.6)';
+    b.textContent='🔎 DIAGNÓSTICO PANEL:\n'+info;
+    var x=document.createElement('button');x.textContent='×';x.style.cssText='position:absolute;top:4px;right:8px;background:none;border:none;color:#fff;font-size:20px;cursor:pointer';x.onclick=function(){b.remove();};
+    b.appendChild(x);document.body.appendChild(b);
+  }catch(err){}
+}, 2500);
 </script>
 </body>
 </html>
