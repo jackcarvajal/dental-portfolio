@@ -1,0 +1,132 @@
+/* ═══════════════════════════════════════════════════════════════════
+   PRODIGY — Mejoras de interfaz de los paneles internos
+   v1.0 · 2026-07-18
+
+   Hoja ADITIVA: no reescribe el diseño existente, lo pule. Se carga después
+   del <style> de cada panel para poder ajustar puntos concretos.
+
+   Qué mejora:
+     1. Menú lateral fijo con scroll propio (son 18 secciones)
+     2. Encabezados de tabla que no se pierden al bajar
+     3. Filas más fáciles de seguir con la vista
+     4. Foco visible con teclado (accesibilidad)
+     5. Tablas que no rompen el layout en pantallas chicas
+     6. Botones con área de clic cómoda
+     7. Carga con "esqueleto" en vez de pantalla vacía
+     8. Texto pequeño más legible
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Menú lateral: siempre visible, con su propio scroll ────────── */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212,175,55,.35) transparent;
+}
+.sidebar::-webkit-scrollbar { width: 7px; }
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(212,175,55,.3); border-radius: 4px;
+}
+.sidebar::-webkit-scrollbar-thumb:hover { background: rgba(212,175,55,.5); }
+
+/* El item activo se distingue con una barra lateral, no solo por color */
+.nav-item.active {
+  position: relative;
+  box-shadow: inset 3px 0 0 var(--gold, #D4AF37);
+}
+.nav-item { transition: background .15s ease, color .15s ease; }
+
+/* ── 2 · Encabezados de tabla fijos al hacer scroll ─────────────────── */
+.section-card table thead th,
+.tab-panel table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #171208;                 /* opaco: si no, el texto se superpone */
+  backdrop-filter: blur(2px);
+}
+
+/* ── 3 · Filas legibles: rayado sutil + hover claro ─────────────────── */
+tbody tr:nth-child(even) td { background: rgba(255,255,255,.014); }
+tbody tr:hover td {
+  background: rgba(212,175,55,.07) !important;
+  color: #fff;
+}
+tbody tr { transition: background .12s ease; }
+
+/* ── 4 · Foco visible con teclado (accesibilidad) ───────────────────── */
+.nav-item:focus-visible,
+.btn-xs:focus-visible,
+.btn-primary:focus-visible,
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--cyan, #00d2ff);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ── 5 · Tablas que no rompen el layout en pantallas chicas ─────────── */
+.section-card { overflow-x: auto; }
+.section-card table { min-width: 620px; }
+@media (max-width: 900px) {
+  .main { padding: 20px 14px; }
+  .page-header h1 { font-size: 1.3rem; }
+}
+
+/* ── 6 · Botones con área de clic cómoda ───────────────────────────── */
+.btn-xs {
+  padding: 6px 12px;
+  min-height: 30px;
+  line-height: 1.2;
+}
+.btn-primary { min-height: 42px; }
+@media (max-width: 640px) {
+  .btn-xs { min-height: 38px; padding: 9px 14px; font-size: .74rem; }
+  .btn-primary { width: 100%; }
+}
+
+/* ── 7 · Carga con "esqueleto": se ve que algo viene, no una nada ──── */
+.skeleton {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,.04) 25%,
+    rgba(255,255,255,.09) 37%,
+    rgba(255,255,255,.04) 63%);
+  background-size: 400% 100%;
+  animation: skel 1.3s ease-in-out infinite;
+  border-radius: 6px;
+  height: 14px;
+}
+@keyframes skel { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+
+/* ── 8 · Texto pequeño más legible ─────────────────────────────────── */
+th { color: #a8b4c4; }                        /* antes #94a3b8 sobre fondo oscuro */
+.kpi-label { color: #a8b4c4; letter-spacing: .6px; }
+.nav-section { color: #a8b4c4; }
+td { line-height: 1.45; }
+
+/* ── Detalles de acabado ───────────────────────────────────────────── */
+.kpi-card { transition: transform .15s ease, border-color .15s ease; }
+.kpi-card:hover { transform: translateY(-2px); border-color: rgba(212,175,55,.35); }
+.section-card { box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.status-badge { white-space: nowrap; }
+
+/* La franja del identificador de rol no debe tapar el contenido */
+body { padding-top: 5px; }
+
+/* Respeta a quien prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .kpi-card, .nav-item, tbody tr { transition: none !important; }
+  .skeleton { animation: none; }
+}
+
+/* Nada de esto debe aparecer al imprimir */
+@media print {
+  .sidebar, #rolbar, #rolchip, #phelp-btn, #tr-replay { display: none !important; }
+  .main { padding: 0 !important; }
+}
