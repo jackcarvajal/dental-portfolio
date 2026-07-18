@@ -24,6 +24,17 @@
   → `sql/patch-roles-rls-alineacion-2026-07.sql` (Parte 1 ejecutada: admin ya tiene el rol).
   💡 Tras ejecutarlo hay que **cerrar sesión y volver a entrar** para que el JWT tome el rol.
 
+### ✅ UX — Mejoras del panel (ronda 3)
+- **`js/historial.js`** (4 paneles): el panel ya registraba todo con `_auditLog()` en
+  `logs_incidencias` pero **nadie podía verlo**. Ahora hay botón "Actividad reciente" que
+  traduce los registros a lenguaje claro ("Cambió el estado de un pedido ABC-123 · email ·
+  hace 2 h"). Filtrable por caso: `window.verHistorial('caso-123')`.
+- **Móvil del mensajero** (es quien más lo usa desde el celular): botones de 48px a lo ancho,
+  resumen en 2 columnas (1 en <380px), filas apiladas, modales a pantalla casi completa,
+  inputs a 16px (evita el zoom automático de iOS).
+- **🔴 Accesibilidad (WCAG):** `mensajero.html` y `taller.html` traían `user-scalable=no` /
+  `maximum-scale=1` → **impedían hacer zoom**. Eliminado. 0 paneles de `/app/` bloquean el zoom.
+
 ### ✅ UX — Mejoras del panel (ronda 2)
 - **`js/mi-dia.js`** (6 paneles): tarjeta "Mi día" con la tarea principal de cada rol y números
   REALES (diseño→casos en su flujo; calidad→casos en QA; inventario→materiales bajo mínimo;
