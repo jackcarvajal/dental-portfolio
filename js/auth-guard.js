@@ -48,8 +48,15 @@
         return 'client';
     }
 
+    // Cliente Supabase ÚNICO (singleton). Crear múltiples instancias con la misma
+    // storageKey provoca conflictos de GoTrue y carreras donde la sesión no está
+    // lista al hacer una operación → la petición cae a 'anon' y RLS la bloquea.
+    let _sbInstance = null;
     function getSb() {
-        return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+        if (_sbInstance) return _sbInstance;
+        _sbInstance = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+        window.sb = _sbInstance;   // reutilizable por las páginas del panel
+        return _sbInstance;
     }
 
     /**
