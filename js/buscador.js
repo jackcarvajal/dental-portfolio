@@ -41,6 +41,9 @@
     + '#bg-res .who b{display:block;font-size:.86rem;color:#f5f5f7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}'
     + '#bg-res .who span{font-size:.74rem;color:#94a3b8;}'
     + '#bg-res .est{font-size:.68rem;font-weight:800;padding:3px 9px;border-radius:20px;white-space:nowrap;}'
+    + '#bg-res .pr{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#cbd5e1;'
+    + 'border-radius:7px;padding:4px 8px;cursor:pointer;font-size:.85rem;line-height:1;}'
+    + '#bg-res .pr:hover{background:rgba(212,175,55,.18);border-color:#D4AF37;color:#D4AF37;}'
     + '#bg-msg{padding:22px 18px;color:#94a3b8;font-size:.86rem;text-align:center;}'
     + '#bg-foot{padding:9px 18px;border-top:1px solid rgba(255,255,255,.07);font-size:.7rem;color:#64748b;'
     + 'display:flex;gap:14px;flex-wrap:wrap;}'
@@ -97,7 +100,12 @@
         return '<div class="r" data-i="' + i + '">'
           + '<div class="cod">' + esc(p.codigo || '—') + '</div>'
           + '<div class="who"><b>' + esc(quien) + '</b><span>' + esc(detalle) + '</span></div>'
-          + '<div class="est" style="color:' + c + ';background:' + c + '1f;">' + esc(e) + '</div></div>';
+          + '<div class="est" style="color:' + c + ';background:' + c + '1f;">' + esc(e) + '</div>'
+          + (window.imprimirOrdenTrabajo
+              ? '<button type="button" class="pr" data-p="' + i + '" title="Imprimir orden de trabajo"'
+                + ' aria-label="Imprimir orden de trabajo de ' + esc(p.codigo || '') + '">&#128424;</button>'
+              : '')
+          + '</div>';
       }).join('');
       sel = -1;
     } catch (err) {
@@ -145,6 +153,13 @@
       timer = setTimeout(function () { buscar(q); }, 260);
     });
     res.addEventListener('click', function (e) {
+      var pr = e.target.closest('.pr');
+      if (pr) {                                   // imprimir sin salir del buscador
+        e.stopPropagation();
+        var f = filas[parseInt(pr.getAttribute('data-p'), 10)];
+        if (f && window.imprimirOrdenTrabajo) window.imprimirOrdenTrabajo(f);
+        return;
+      }
       var r = e.target.closest('.r'); if (r) elegir(parseInt(r.getAttribute('data-i'), 10));
     });
 
