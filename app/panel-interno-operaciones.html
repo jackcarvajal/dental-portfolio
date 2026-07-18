@@ -1647,7 +1647,7 @@ async function cargarPedidos() {
 function renderPedidos(lista) {
     if (!lista || lista.length === 0) {
         document.getElementById('tbody-pedidos').innerHTML =
-            '<tr><td colspan="8" class="empty-state"><i class="fas fa-inbox"></i><br>Sin pedidos aún</td></tr>';
+            '<tr><td colspan="8" class="empty-state"><i class="fas fa-inbox"></i><br><b>Aún no hay pedidos</b><span style="font-size:.8rem;color:#64748b;margin-top:6px;display:block;font-weight:400;">Los casos aparecen aquí cuando un doctor envía uno desde el portal, o cuando lo registras tú. Usa <b>Actualizar</b> si acabas de crear uno.</span></td></tr>';
         return;
     }
 
@@ -2024,7 +2024,7 @@ async function cargarPortafolio() {
         const { data, error } = await sb.from('casos_portafolio').select('*').order('sort_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false });
         if (error) throw error;
         if (!data || !data.length) {
-            grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><p>Sin casos publicados aún.</p></div>';
+            grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><p><b>Aún no has publicado casos</b></p><span style="font-size:.8rem;color:#64748b;margin-top:6px;display:block;font-weight:400;">Llena el formulario de arriba (nombre + foto) y pulsa <b>Publicar en Portafolio</b>. El caso se verá al instante en la web pública.</span></div>';
             return;
         }
         window._casosData = data;
@@ -2215,7 +2215,7 @@ async function cargarClientes() {
 
         if (!data || data.length === 0) {
             document.getElementById('tbody-clientes').innerHTML =
-                '<tr><td colspan="7" class="empty-state"><i class="fas fa-users"></i><br>Sin clientes registrados aún</td></tr>';
+                '<tr><td colspan="7" class="empty-state"><i class="fas fa-users"></i><br><b>Aún no hay clientes</b><span style="font-size:.8rem;color:#64748b;margin-top:6px;display:block;font-weight:400;">Los doctores aparecen aquí automáticamente al crear su cuenta en el portal, o al registrarles un primer pedido.</span></td></tr>';
             return;
         }
 
@@ -2365,7 +2365,7 @@ function filtrarEquipo() {
 function renderEquipo(lista) {
     const tbody = document.getElementById('tbody-equipo');
     if (!lista.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><i class="fas fa-users"></i><br>Sin agentes registrados</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><i class="fas fa-users"></i><br><b>Aún no hay personal registrado</b><span style="font-size:.8rem;color:#64748b;margin-top:6px;display:block;font-weight:400;">Usa <b>Nuevo agente</b> para dar acceso a alguien del equipo y asignarle su rol (diseño, taller, mensajero…).</span></td></tr>';
         return;
     }
     tbody.innerHTML = lista.map(a => `
@@ -3064,7 +3064,7 @@ async function cargarDespachos() {
     if (!tbodySin) return;
 
     if (!sinAsignar.length) {
-        tbodySin.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Sin pedidos listos para despachar</td></tr>';
+        tbodySin.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;"><b>Nada por despachar ahora</b><span style="font-size:.8rem;color:#64748b;margin-top:6px;display:block;font-weight:400;">Aquí caen los casos en estado <b>TERMINADO</b> que aún no tienen mensajero asignado.</span></td></tr>';
     } else {
         const opsMens = _mensajerosList.map(m => `<option value="${esc(m.id)}">${esc(m.nombre)}${m.zona_preferencial ? ' — ' + esc(m.zona_preferencial) : ''}</option>`).join('');
         tbodySin.innerHTML = sinAsignar.map(p => {
