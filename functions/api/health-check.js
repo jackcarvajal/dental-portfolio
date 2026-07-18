@@ -20,7 +20,7 @@ const SERVICES = [
   {
     name: 'Supabase API',
     url: (env) => `${env.SUPABASE_URL}/rest/v1/`,
-    headers: (env) => ({ 'apikey': env.SUPABASE_ANON_KEY }),
+    headers: (env) => ({ 'apikey': env.SUPABASE_ANON_KEY || env.SUPABASE_SERVICE_KEY }),
     critical: true,
   },
   {
