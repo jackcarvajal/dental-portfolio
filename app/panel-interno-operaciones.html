@@ -3099,7 +3099,7 @@ async function cargarDespachos() {
     if (!(enRuta || []).length) {
         tbodyRuta.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">Sin actividad hoy</td></tr>';
     } else {
-        const estadoColor = { PROGRAMADO:'#fbbf24', EN_REPARTO:'#00d2ff', ENTREGADO:'#00FF41', NO_ENTREGADO:'#f87171' };
+        const estadoColor = { PROGRAMADO:'#fbbf24', EN_REPARTO:'#f97316', ENTREGADO:'#00FF41', NO_ENTREGADO:'#f87171' };
         tbodyRuta.innerHTML = (enRuta || []).map(d => {
             _admEviMap[d.id] = d;
             const tieneEvidencia = d.firma_url || d.foto_url || d.lat_entrega;
@@ -3897,7 +3897,7 @@ async function cargarMetricasFinanzas() {
         const COLORES_E = {
             VALIDACION_PENDIENTE:'#94a3b8', EN_PRODUCCION:'#00d2ff',
             FRESADO_INICIADO:'#D4AF37', QA_APROBADO:'#00FF41',
-            LISTO_DESPACHAR:'#D946A6', EN_REPARTO:'#f97316', ENTREGADO:'#22c55e',
+            LISTO_DESPACHAR:'#D946A6', EN_REPARTO:'#f97316', ENTREGADO:'#00FF41',
         };
         document.getElementById('metfin-embudo').innerHTML = ESTADOS_ORD.map(([k, label]) => {
             const n = countEstado[k] || 0;
@@ -4326,5 +4326,6 @@ document.addEventListener('keydown', e => {
 })();
 </script>
 <script src="../js/mi-dia.js?v=20260718"></script>
+<script src="../js/buscador.js?v=20260718"></script>
 </body>
 </html>
