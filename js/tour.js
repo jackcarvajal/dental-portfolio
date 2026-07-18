@@ -164,7 +164,13 @@
     try { localStorage.setItem('tour_visto_' + archivo(), completado ? 'ok' : 'skip'); } catch (e) {}
     replayBtn();
   }
-  function archivo() { return (location.pathname.split('/').pop() || 'index.html').toLowerCase(); }
+  /* Las URLs del sitio son limpias (/app/panel-interno-operaciones, sin .html),
+     asi que normalizamos para que coincida con las claves de TOURS. */
+  function archivo() {
+    var n = (location.pathname.split('/').pop() || 'index').toLowerCase();
+    if (!n) n = 'index';
+    return n.indexOf('.html') > -1 ? n : n + '.html';
+  }
 
   function replayBtn() {
     if (document.getElementById('tr-replay')) return;

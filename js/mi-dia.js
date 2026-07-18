@@ -132,7 +132,8 @@
   }
 
   async function init() {
-    var archivo = (location.pathname.split('/').pop() || '').toLowerCase();
+    var archivo = (location.pathname.split('/').pop() || 'index').toLowerCase();
+    if (archivo.indexOf('.html') === -1) archivo += '.html';   // URLs limpias
     var cfg = PANELES[archivo];
     if (!cfg) return;
     var sbc = getClient();

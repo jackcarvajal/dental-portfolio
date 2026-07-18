@@ -180,7 +180,8 @@
 
   /* ── Tarjeta "¿qué hago aquí?" (una por panel, se puede ocultar) ── */
   function intro() {
-    var archivo = (location.pathname.split('/').pop() || '').toLowerCase();
+    var archivo = (location.pathname.split('/').pop() || 'index').toLowerCase();
+    if (archivo.indexOf('.html') === -1) archivo += '.html';   // URLs limpias
     var info = PANEL_INTRO[archivo];
     if (!info) return;
     var KEY = 'pintro_oculto_' + archivo;
