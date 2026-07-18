@@ -1567,10 +1567,13 @@ function switchTab(tab, el) {
     if (el) { el.classList.add('active'); el.setAttribute('aria-current', 'page'); }
 
     // Panels
+    const panel = document.getElementById('tab-' + tab);
+    if (!panel) { console.error('[switchTab] panel inexistente: tab-' + tab); return; }
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('tab-' + tab).classList.add('active');
+    panel.classList.add('active');
 
-    // Cargar datos al abrir tab por primera vez
+    // Cargar datos al abrir tab por primera vez (un fallo de carga NO debe romper la navegación)
+    try {
     if (tab === 'portafolio') cargarPortafolio();
     if (tab === 'clientes')   cargarClientes();
     if (tab === 'equipo')     cargarEquipo();
@@ -1587,6 +1590,7 @@ function switchTab(tab, el) {
     if (tab === 'referidos')    cargarReferidosAdmin();
     if (tab === 'analytics')    cargarAnalytics();
     if (tab === 'metricas-fin') cargarMetricasFinanzas();
+    } catch(e){ console.error('[switchTab] error cargando datos de "' + tab + '":', e); }
 }
 
 /* ══════════════════════════════════════════
@@ -2989,10 +2993,12 @@ async function cargarDespachos() {
     const { data: pedSinAsignar } = await sb
         .from('pedidos')
         .select('id,codigo,nombre_cliente,nombre_doctor,direccion,precio_total,estado_operativo')
-        .eq('estado', 'TERMINADO')
-        .not('id', 'in', `(SELECT pedido_id FROM despachos WHERE estado != 'NO_ENTREGADO')`);
+        .eq('estado', 'TERMINADO');
+    // (Antes había un .not('id','in','(SELECT ...)') — PostgREST NO soporta
+    //  subqueries en filtros → devolvía 400 y la lista salía vacía. Se excluyen
+    //  los ya asignados client-side con idsOcupados, abajo.)
 
-    // Fallback: obtener IDs de despachos activos y excluirlos
+    // Obtener IDs de despachos activos y excluirlos
     const { data: despActivos } = await sb
         .from('despachos')
         .select('pedido_id')
@@ -4243,5 +4249,30 @@ document.addEventListener('keydown', e => {
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <script src="../js/notif-panel.js?v=20260601"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
+<script>
+/* Detector de errores visible — evita "pantalla en blanco" sin pistas.
+   Si un error de JS o una promesa rechazada ocurre, muestra un banner con el detalle. */
+(function(){
+  function showErr(msg){
+    var b = document.getElementById('__errbar');
+    if(!b){
+      b = document.createElement('div'); b.id='__errbar';
+      b.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#7f1d1d;color:#fff;font:12px/1.5 ui-monospace,Menlo,monospace;padding:10px 44px 10px 14px;max-height:35vh;overflow:auto;white-space:pre-wrap;box-shadow:0 -2px 12px rgba(0,0,0,.5)';
+      var x=document.createElement('button'); x.textContent='×';
+      x.style.cssText='position:absolute;top:6px;right:10px;background:none;border:none;color:#fff;font-size:20px;cursor:pointer';
+      x.onclick=function(){b.remove();}; b.appendChild(x);
+      var t=document.createElement('div'); t.id='__errtxt'; b.appendChild(t);
+      document.body.appendChild(b);
+    }
+    document.getElementById('__errtxt').textContent = '⚠ Error en el panel:\n' + msg;
+  }
+  window.addEventListener('error', function(e){
+    showErr((e.message||'Error') + '\n' + (e.filename||'') + ':' + (e.lineno||'?') + ':' + (e.colno||'?'));
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    var r=e.reason; showErr('Promesa rechazada: ' + (r && (r.message||r.error_description||JSON.stringify(r)) || r));
+  });
+})();
+</script>
 </body>
 </html>
