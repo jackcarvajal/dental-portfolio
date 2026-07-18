@@ -63,6 +63,32 @@
     'filtrar':                'Filtra la lista por esta categoría.'
   };
 
+  /* ── "¿Qué hago aquí?" — misión de cada panel, por archivo ───── */
+  var PANEL_INTRO = {
+    'panel-interno-operaciones.html': ['Centro de operaciones', 'Desde aquí controlas todo: pedidos, producción, despachos, equipo y portafolio. Usa el menú de la izquierda para moverte entre secciones.'],
+    'operator-panel.html':  ['Panel de operación', 'Gestiona los casos asignados y actualiza su avance para que el resto del equipo vea el estado real.'],
+    'mensajero.html':       ['Tus entregas', 'Aquí ves los casos asignados para recoger y entregar. Marca cada entrega y sube la foto de evidencia.'],
+    'taller.html':          ['Casos en taller', 'Trabajos asignados a tu área. Actualiza el estado a medida que avanzas para no frenar el despacho.'],
+    'operario-diseno.html': ['Casos por diseñar', 'Descarga los archivos del caso, haz el diseño CAD y súbelo. Al marcarlo listo pasa a producción.'],
+    'operario.html':        ['Tus casos asignados', 'Los trabajos que te tocan. Actualiza el avance de cada uno cuando lo termines.'],
+    'calidad.html':         ['Control de calidad', 'Revisa los casos terminados antes de despachar: apruébalos o devuélvelos con la observación.'],
+    'inventario.html':      ['Inventario', 'Existencias de materiales, entradas y salidas. Revisa las alertas de stock bajo para no quedarte sin material.'],
+    'contabilidad.html':    ['Finanzas', 'Pagos, facturación e ingresos del laboratorio. Concilia lo cobrado contra lo entregado.'],
+    'client-panel.html':    ['Tu portal', 'Crea pedidos, sigue el avance de tus casos y consulta tu historial y facturas.'],
+    'cotizaciones.html':    ['Cotizaciones', 'Cotizaciones enviadas a los doctores y su estado (pendiente, aceptada, vencida).'],
+    'gestionar-casos.html': ['Casos del portafolio', 'Administra los casos publicados: editar, reordenar, ocultar o eliminar.'],
+    'agregar-caso.html':    ['Subir caso al portafolio', 'Publica un caso terminado con sus fotos y archivos. Aparece de inmediato en la web pública.'],
+    'admin-precios.html':   ['Precios del catálogo', 'Los cambios aquí afectan a las cotizaciones NUEVAS. Guarda para aplicar.'],
+    'configuracion.html':   ['Configuración', 'Ajustes generales de la plataforma y del negocio.'],
+    'metricas.html':        ['Métricas', 'Indicadores de volumen, tiempos y desempeño del laboratorio.'],
+    'metricas-churn.html':  ['Retención de clientes', 'Doctores que dejaron de pedir. Sirve para reactivarlos a tiempo.'],
+    'metricas-referidos.html': ['Referidos', 'Rendimiento del programa de referidos y recompensas generadas.'],
+    'metricas-seo.html':    ['SEO', 'Cómo se está posicionando la web en buscadores.'],
+    'inventario-materiales.html': ['Materiales', 'Control de materiales del laboratorio.'],
+    'referidos-portal.html': ['Portal de referidos', 'Comparte tu enlace y sigue las recompensas que generas.'],
+    'onboarding.html':      ['Completa tu perfil', 'Estos datos se usan para tus pedidos y facturación. Solo se piden una vez.']
+  };
+
   /* Agrupación para la guía rápida */
   var GUIA = [
     ['Operación diaria', ['pedidos', 'rutador', 'despachos', 'torre', 'fabricacion']],
@@ -99,6 +125,14 @@
     + '#phelp-panel .row .d{font-size:.76rem;color:#94a3b8;line-height:1.45;margin-top:2px;}'
     + '#phelp-close{position:absolute;top:10px;right:12px;background:none;border:none;color:#94a3b8;'
     + 'font-size:1.3rem;cursor:pointer;line-height:1;}'
+    + '#pintro{position:relative;background:linear-gradient(135deg,rgba(212,175,55,.10),rgba(212,175,55,.03));'
+    + 'border:1px solid rgba(212,175,55,.28);border-left:3px solid #D4AF37;border-radius:12px;'
+    + 'padding:14px 44px 14px 16px;margin:0 0 20px;}'
+    + '#pintro .t{font-weight:800;color:#D4AF37;font-size:.9rem;margin-bottom:3px;}'
+    + '#pintro .x{font-size:.83rem;color:#cbd5e1;line-height:1.55;}'
+    + '#pintro button{position:absolute;top:8px;right:10px;background:none;border:none;color:#94a3b8;'
+    + 'font-size:1.15rem;cursor:pointer;line-height:1;}'
+    + '#pintro button:hover{color:#fff;}'
     + '@media(prefers-reduced-motion:reduce){#ptip{transition:none;}}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -144,8 +178,32 @@
     if (txt) show(el, txt);
   }
 
+  /* ── Tarjeta "¿qué hago aquí?" (una por panel, se puede ocultar) ── */
+  function intro() {
+    var archivo = (location.pathname.split('/').pop() || '').toLowerCase();
+    var info = PANEL_INTRO[archivo];
+    if (!info) return;
+    var KEY = 'pintro_oculto_' + archivo;
+    try { if (localStorage.getItem(KEY) === '1') return; } catch (e) {}
+
+    // Insertar al inicio del contenido principal (o del body si no hay)
+    var host = document.getElementById('main-content')
+            || document.querySelector('main, .main, .container, .content')
+            || document.body;
+    var box = document.createElement('div');
+    box.id = 'pintro';
+    box.innerHTML = '<div class="t">' + info[0] + '</div><div class="x">' + info[1] + '</div>'
+      + '<button type="button" aria-label="Ocultar esta ayuda" title="No volver a mostrar">&times;</button>';
+    box.querySelector('button').addEventListener('click', function () {
+      try { localStorage.setItem(KEY, '1'); } catch (e) {}
+      box.remove();
+    });
+    host.insertBefore(box, host.firstChild);
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     document.body.appendChild(tip);
+    intro();
 
     document.addEventListener('mouseover', onEnter);
     document.addEventListener('mouseout', hide);
