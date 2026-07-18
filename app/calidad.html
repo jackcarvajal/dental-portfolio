@@ -392,8 +392,8 @@ function switchTab(id, el) {
 /* ── Cargar casos ─────────────────────────────────────────────────── */
 async function cargarCasos() {
     const { data, error } = await sb
-        .from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,estado_operativo,precio_total,pago_estado,modalidad_cobro,saldo_pendiente_monto,comprobante_abono_url,fotos_empaque,nota_calidad,flujo,telefono,created_at,timestamp_qa')
+        .from('pedidos_operacion')
+        .select('id,codigo,nombre_doctor,tipo_trabajo,estado_operativo,pago_estado,fotos_empaque,nota_calidad,flujo,created_at,timestamp_qa')
         .in('estado_operativo', ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO'])
         .order('timestamp_qa', { ascending: false, nullsFirst: false });
 

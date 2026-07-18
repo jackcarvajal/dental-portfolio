@@ -522,7 +522,7 @@ async function avanzar(id, nuevoEstado) {
   /* Notificar al doctor cuando va a revisión */
   if (nuevoEstado === 'REVISION_CLIENTE') {
     try {
-      const { data: p } = await sb.from('pedidos').select('email,codigo').eq('id',id).single();
+      const { data: p } = await sb.from('pedidos_operacion').select('codigo').eq('id',id).single();
       if (p?.email) await fetch(PUSH_URL,{
         method:'POST',
         headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
@@ -532,7 +532,7 @@ async function avanzar(id, nuevoEstado) {
   }
   if (nuevoEstado === 'DISENO_APROBADO') {
     try {
-      const { data: p } = await sb.from('pedidos').select('email,codigo').eq('id',id).single();
+      const { data: p } = await sb.from('pedidos_operacion').select('codigo').eq('id',id).single();
       if (p?.email) await fetch(PUSH_URL,{
         method:'POST',
         headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
@@ -1029,7 +1029,7 @@ async function bulkDisenoUploadAll() {
         await sb.from('pedidos').update({html_diseno_url:publicUrl, estado_operativo:'REVISION_CLIENTE', updated_at:new Date().toISOString()}).eq('id',item.caso.id);
         await sb.from('historial_diseno').insert({pedido_id:item.caso.id,tipo:'SUBIDA_DISENO',actor:'operario-diseno-bulk',descripcion:`Bulk upload: ${item.file.name}`,metadata:{html:publicUrl}}).catch(()=>{});
       } else {
-        const {data:ped} = await sb.from('pedidos').select('stl_urls').eq('id',item.caso.id).single();
+        const {data:ped} = await sb.from('pedidos_operacion').select('stl_urls').eq('id',item.caso.id).single();
         await sb.from('pedidos').update({stl_urls:[...(ped?.stl_urls||[]),publicUrl]}).eq('id',item.caso.id);
       }
       item.status='done';

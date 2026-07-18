@@ -524,9 +524,9 @@ async function cargarKPIsTaller() {
     if (!el) return;
     try {
         const [pendR, prodR, qaR, listR] = await Promise.all([
-            sb.from('pedidos').select('id',{count:'exact',head:true}).in('estado_operativo',['LISTO_DESPACHAR','EMPACADO']),
-            sb.from('pedidos').select('id',{count:'exact',head:true}).in('estado_operativo',['QA_APROBADO','LISTO']),
-            sb.from('pedidos').select('id',{count:'exact',head:true}).eq('estado_operativo','CONTROL_CALIDAD'),
+            sb.from('pedidos_operacion').select('id',{count:'exact',head:true}).in('estado_operativo',['LISTO_DESPACHAR','EMPACADO']),
+            sb.from('pedidos_operacion').select('id',{count:'exact',head:true}).in('estado_operativo',['QA_APROBADO','LISTO']),
+            sb.from('pedidos_operacion').select('id',{count:'exact',head:true}).eq('estado_operativo','CONTROL_CALIDAD'),
             sb.from('logs_mantenimiento').select('id',{count:'exact',head:true}).gte('created_at', new Date(Date.now()-30*86400000).toISOString()),
         ]);
         const kpis=[

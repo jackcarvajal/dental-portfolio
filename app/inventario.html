@@ -786,7 +786,7 @@ async function guardarSalida() {
     // Resolver pedido_id desde código si se pasó
     let pedidoId = null;
     if (pedidoRef) {
-        const { data: p } = await sb.from('pedidos').select('id').ilike('codigo', `%${pedidoRef}%`).maybeSingle();
+        const { data: p } = await sb.from('pedidos_operacion').select('id').ilike('codigo', `%${pedidoRef}%`).maybeSingle();
         pedidoId = p?.id || null;
     }
 
@@ -959,7 +959,7 @@ async function cargarRotacion() {
 ══════════════════════════════════════════ */
 
 async function contarSolicitudesPendientes() {
-    const { count } = await sb.from('pedidos')
+    const { count } = await sb.from('pedidos_operacion')
         .select('id', { count: 'exact', head: true })
         .in('estado_operativo', ['EN_PRODUCCION', 'FRESADO_INICIADO']);
     const badge = document.getElementById('badge-sol');
@@ -971,8 +971,8 @@ async function cargarSolicitudes() {
     const wrap = document.getElementById('tbl-solicitudes');
     wrap.innerHTML = '<p style="color:var(--txt3);text-align:center;padding:24px;">Cargando…</p>';
 
-    const { data: pedidos, error } = await sb.from('pedidos')
-        .select('id,codigo,nombre_paciente,tipo_trabajo,material,flujo,estado_operativo,departamento_actual,created_at,timestamp_produccion')
+    const { data: pedidos, error } = await sb.from('pedidos_operacion')
+        .select('id,codigo,tipo_trabajo,material,flujo,estado_operativo,departamento_actual,created_at,timestamp_produccion')
         .in('estado_operativo', ['EN_PRODUCCION','FRESADO_INICIADO','VALIDACION_PENDIENTE'])
         .in('flujo', ['fresado','lab','impresion'])
         .order('created_at', { ascending: true })
