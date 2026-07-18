@@ -1572,6 +1572,22 @@ function switchTab(tab, el) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     panel.classList.add('active');
 
+    // DIAG temporal: si el panel activo colapsa (h=0), reportar qué hijo lo causa
+    setTimeout(function(){
+      try{
+        if(panel.offsetHeight>4) return;
+        var rows=[]; Array.prototype.forEach.call(panel.children,function(c){
+          var s=getComputedStyle(c);
+          rows.push('<'+c.tagName.toLowerCase()+' class="'+c.className+'"> h='+c.offsetHeight+' disp='+s.display+' pos='+s.position);
+        });
+        var b=document.createElement('div');
+        b.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#7c2d12;color:#fff;font:11px/1.5 ui-monospace,monospace;padding:10px 40px 10px 12px;white-space:pre-wrap;max-height:45vh;overflow:auto';
+        b.textContent='⚠ Tab "'+tab+'" colapsado (h=0). '+panel.children.length+' hijos:\n'+rows.join('\n');
+        var x=document.createElement('button');x.textContent='×';x.style.cssText='position:absolute;top:4px;right:8px;background:none;border:none;color:#fff;font-size:20px;cursor:pointer';x.onclick=function(){b.remove();};b.appendChild(x);
+        document.body.appendChild(b);
+      }catch(e){}
+    }, 500);
+
     // Cargar datos al abrir tab por primera vez (un fallo de carga NO debe romper la navegación)
     try {
     if (tab === 'portafolio') cargarPortafolio();
