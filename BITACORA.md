@@ -24,6 +24,20 @@
   → `sql/patch-roles-rls-alineacion-2026-07.sql` (Parte 1 ejecutada: admin ya tiene el rol).
   💡 Tras ejecutarlo hay que **cerrar sesión y volver a entrar** para que el JWT tome el rol.
 
+### ✅ UX — Mejoras del panel (ronda 2)
+- **`js/mi-dia.js`** (6 paneles): tarjeta "Mi día" con la tarea principal de cada rol y números
+  REALES (diseño→casos en su flujo; calidad→casos en QA; inventario→materiales bajo mínimo;
+  mensajero→entregadas hoy/pendientes; admin→pedidos totales/en producción/listos).
+  Las consultas se tomaron del código real de cada panel, no inventadas.
+- **`js/buscador.js`** (10 paneles): buscador global **Ctrl+K** por código, doctor o cliente
+  desde cualquier pantalla. Flechas para navegar, Enter abre, Esc cierra. Botón visible en el
+  sidebar. Escapa HTML de los datos de Supabase.
+- **Semáforo de estados unificado:** `ENTREGADO` usaba dos verdes distintos (#00FF41 / #22c55e)
+  y `EN_REPARTO` dos colores (#00d2ff / #f97316) según la vista → confundía. Unificado a
+  ENTREGADO=#00FF41 y EN_REPARTO=#f97316 (el cyan ya lo usa EN_PRODUCCION). 0 inconsistencias.
+- **Verificado:** los 3 puntos de borrado (portafolio/waitlist/referidos) YA confirmaban antes
+  de eliminar — no hay riesgo de borrado accidental.
+
 ### ✅ UX — Asistente de ayuda (`js/panel-tips.js`, en 23 paneles)
 - Tooltips al pasar el mouse / enfocar con teclado sobre menú y botones. Las ayudas se asignan
   solas leyendo `switchTab('X')` y la función del `onclick` (no hay que tocar el HTML).
