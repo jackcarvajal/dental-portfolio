@@ -11,6 +11,46 @@
 
 ## 2026-07-18
 
+### ✅ Ronda 4 — features de operación, pruebas y paridad
+
+**Nuevos módulos (PRODIGY + portados a Alejandro):**
+- `js/imprimir.js` — **Orden de trabajo** (sin precios, para el operario) y **Remisión de
+  entrega** (con firma), en A4 vía impresión nativa: sin librerías ni CDNs. Botón 🖨️ en cada
+  resultado del buscador Ctrl+K.
+- `js/rol-actual.js` — **franja de color + chip** con el panel y el rol actual (Administración
+  dorado, Diseño azul, Producción naranja, Calidad verde, Mensajería verde WA, Contabilidad
+  magenta). Selector **"Ir a…"** solo para admin: salta entre paneles sin cerrar sesión.
+  💡 Resuelve la confusión de rol siendo pocas personas cubriendo varios puestos.
+- **Notificaciones internas (#6):** la tabla `notificaciones_internas` y `notif-panel.js` ya
+  existían, pero **nadie creaba avisos** — el panel solo escuchaba. Se agregó el helper
+  `_notificarInterno()` y se dispara al **enrutar a fabricación** (avisa al área) y en
+  **cambios de estado** (TERMINADO/LISTO_DESPACHAR → mensajería; ENTREGADO → contabilidad).
+
+**Panel de pruebas (`/app/pruebas-carga`) — para medir antes/después del lanzamiento:**
+- **Seguridad por rol:** verifica que un anónimo no lea tablas privadas y que las vistas
+  `pedidos_operacion`/`pedidos_entrega` no expongan datos del paciente.
+- **Módulos del panel:** que carguen los 7 scripts con su tamaño.
+- **Snapshot antes/después:** guarda filas y tiempos por tabla y compara (▲/▼ y delta ms).
+
+### 🔴 RLS — políticas que consultaban `auth.users` (resuelto)
+- `cotizaciones` y `referidos` salían en ❌ **sin mensaje** en "Verificar tablas".
+- Causa: `cotiz_auth_select` y `ref_auth_select` hacían
+  `(SELECT email FROM auth.users WHERE id = auth.uid())`. El rol `authenticated` **no tiene
+  permiso sobre el esquema `auth`**, así que la política **lanzaba un error** en vez de denegar.
+  Por eso fallaba solo estando logueado (un anónimo obtenía 200 — verificado con curl).
+  Además `cotiz_auth_select` comparaba `user_id`, columna inexistente (el campo es `doctor_email`).
+- Fix: usar `auth.email()` (lee el JWT, sin tocar `auth.users`). Parche
+  `sql/patch-fix-politicas-auth-users-2026-07.sql` + query para detectar otros casos.
+- 💡 **Lección:** una política RLS que consulta `auth.users` rompe para usuarios autenticados.
+  Usar siempre `auth.email()` / `auth.uid()`.
+
+### ✅ Paridad Alejandro CAD/CAM
+- `app/metricas.html` cargaba auth-guard pero **nunca llamaba require()** → sin proteger.
+  Corregido con `ACAuth.require('admin')`. (Alejandro expone `ACAuth`, no `ProdigyAuth` —
+  ojo con los falsos positivos al auditar.)
+- Portados y adaptados: `rol-actual`, `panel-tips`, `historial`, `imprimir`. Verificado en vivo:
+  los 4 responden 200 en ambos dominios.
+
 ### 🔴 CI ROTO — el deploy no publicaba (resuelto)
 - El workflow **"Deploy PRODIGY" fallaba en cada push** durante horas: los cambios de seguridad
   y el tour de clientes **no llegaban a producción** aunque `git push` decía OK.
@@ -20,6 +60,9 @@
   `/cotizaciones` en PRECACHE, pero esa ruta **no es pública** (solo el panel autenticado,
   `no-store`) → precachearla serviría contenido privado; se cambió por verificar que
   `/app/` esté en `NEVER_CACHE` (sw.js ya lo hacía bien).
+- 💡 **Lección: al verificar `/js/*` en producción hay que incluir el `?v=` del cache-buster.**
+  Esos assets se cachean **1 año como `immutable`**; sin el parámetro, el CDN devuelve la copia
+  vieja y parece que el deploy falló (me pasó dos veces).
 - 💡 **Lección: un `git push` exitoso NO significa desplegado.** Verificar siempre contra
   producción (curl con `-L`: las URLs `.html` hacen 308 a la ruta limpia).
 - Resultado: 227 tests ✅ 0 ❌ y deploy destrabado.
