@@ -8,7 +8,7 @@
     <link rel="manifest" href="/manifest.json">
   <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
     <meta name="robots" content="noindex, nofollow">
-    <title>PRODIGY � Completa tu perfil</title>
+    <title>PRODIGY · Completa tu perfil</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>??</text></svg>">
         <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -220,17 +220,17 @@
                 </div>
                 <div class="num-wrap">
                     <input type="tel" inputmode="tel" id="ob-wa" autocomplete="tel" placeholder="3001234567" required maxlength="15"
-                        pattern="[0-9]{7,15}" title="Solo n�meros, sin espacios">
+                        pattern="[0-9]{7,15}" title="Solo números, sin espacios">
                 </div>
             </div>
             <p class="hint">Lo usamos para notificarte el estado de tus casos. Sin spam.</p>
         </div>
 
         <div class="form-group">
-            <label for="ob-clinica">Nombre del consultorio / cl�nica *</label>
+            <label for="ob-clinica">Nombre del consultorio / clínica *</label>
             <div class="input-wrap">
                 <i class="fas fa-tooth"></i>
-                <input type="text" id="ob-clinica" autocomplete="organization" placeholder="Odontolog�a Est�tica..." required maxlength="100">
+                <input type="text" id="ob-clinica" autocomplete="organization" placeholder="Odontología Estética..." required maxlength="100">
             </div>
         </div>
 
@@ -238,7 +238,7 @@
             <label for="ob-ciudad">Ciudad *</label>
             <div class="input-wrap">
                 <i class="fas fa-map-pin" aria-hidden="true"></i>
-                <input type="text" id="ob-ciudad" autocomplete="address-level2" placeholder="Bogot�, Medell�n..." required maxlength="80">
+                <input type="text" id="ob-ciudad" autocomplete="address-level2" placeholder="Bogotá, Medellín..." required maxlength="80">
             </div>
         </div>
 
@@ -281,7 +281,7 @@
                 <input type="checkbox" id="ob-habeas" required
                     style="margin-top:3px;flex-shrink:0;accent-color:#D4AF37;">
                 <span style="font-size:0.72rem;color:#94a3b8;line-height:1.5;">
-                    Autorizo el tratamiento de mis datos personales para la gesti�n de pedidos y
+                    Autorizo el tratamiento de mis datos personales para la gestión de pedidos y
                     seguimiento de casos. Puedo solicitar baja sin afectar el seguimiento activo.
                     <span style="color:#D4AF37;">*</span>
                 </span>
@@ -325,7 +325,7 @@
         return (user.app_metadata?.role) || 'client';
     }
 
-    // Verificar sesi�n activa
+    // Verificar sesión activa
     sb.auth.getSession().then(({ data: { session } }) => {
         if (!session) {
             window.location.href = 'login.html';
@@ -385,7 +385,7 @@
 
     async function guardarPerfil(e) {
         e.preventDefault();
-        if (!currentUser) { showMsg('Sesi�n no encontrada. Recarga.', 'err'); return; }
+        if (!currentUser) { showMsg('Sesión no encontrada. Recarga.', 'err'); return; }
 
         const nombre    = document.getElementById('ob-nombre').value.trim();
         const prefijo   = document.getElementById('ob-prefijo').value;
@@ -401,7 +401,7 @@
             showMsg('Completa todos los campos obligatorios.', 'err'); return;
         }
         if (waNum.length < 7) {
-            showMsg('WhatsApp inv�lido � m�nimo 7 d�gitos.', 'err'); return;
+            showMsg('WhatsApp inválido · mínimo 7 dígitos.', 'err'); return;
         }
 
         btn.disabled = true;

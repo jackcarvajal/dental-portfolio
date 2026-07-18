@@ -1174,7 +1174,7 @@ const ARTICLES = [
     },
     {
       "t": "quote",
-      "c": "La elección entre Exocad y 3Shape a menudo se reduce a la preferencia personal y la integración con el flujo de trabajo existente, más que a una superioridad técnica abrumadora de uno sobre el otro en términos de precisión b��sica.",
+      "c": "La elección entre Exocad y 3Shape a menudo se reduce a la preferencia personal y la integración con el flujo de trabajo existente, más que a una superioridad técnica abrumadora de uno sobre el otro en términos de precisión básica.",
       "author": "Smith et al., Journal of Prosthetic Dentistry, 2022"
     }
   ],
