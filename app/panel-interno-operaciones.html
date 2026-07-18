@@ -117,7 +117,10 @@
             outline:none; border-color:var(--gold);
         }
         .form-group textarea { resize:vertical; min-height:90px; }
-        .form-group select option { background:#1a1a1a; }
+        .form-group select { color-scheme:dark; }
+        .form-group select option { background:#1a1a1a; color:#f5f5f7; }
+        select { color-scheme:dark; }
+        select option { background:#1a1a1a; color:#f5f5f7; }
         .drop-zone {
             border:2px dashed rgba(212,175,55,0.3); border-radius:12px; padding:32px;
             text-align:center; cursor:pointer; transition:all 0.2s; grid-column:1/-1;
@@ -362,62 +365,156 @@
 
     <!-- ═══════════ TAB PORTAFOLIO ═══════════ -->
     <div id="tab-portafolio" class="tab-panel">
-      <div style="margin-bottom:22px;">
-        <h1 style="margin:0 0 4px;">Portafolio <span style="color:var(--gold);">Upload</span></h1>
-        <p style="color:#94a3b8;margin:0;font-size:.9rem;">Sube un caso y se publica de inmediato en el portafolio público.</p>
-      </div>
-
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:22px;">
-        <form id="pf-form" onsubmit="return subirCasoSimple(event)">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-            <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:6px;">
-              <label style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">Nombre del caso <span style="color:#f87171;">*</span></label>
-              <input id="pf-nombre" required placeholder="Ej: Rehabilitacion Full Arch Zirconia" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:#fff;font-size:16px;width:100%;">
+        <div class="page-header">
+            <div>
+                <h1>Portafolio <span style="color:var(--gold);">Upload</span></h1>
+                <p>Sube casos exitosos directamente desde aquí. Se publican de inmediato en el portafolio público.</p>
             </div>
-            <div style="display:flex;flex-direction:column;gap:6px;">
-              <label style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">Tipo de trabajo</label>
-              <select id="pf-tipo" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:#fff;font-size:16px;width:100%;color-scheme:dark;">
-                <option value="">Seleccionar...</option>
-                <option value="rehabilitacion">Rehabilitacion</option>
-                <option value="estetica">Estetica</option>
-                <option value="implantes">Implantes</option>
-                <option value="protesis">Protesis</option>
-                <option value="alineadores">Alineadores</option>
-                <option value="biomodelo">Biomodelo</option>
-              </select>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:6px;">
-              <label style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">Fecha del caso</label>
-              <input id="pf-fecha" placeholder="Ej: Enero 2026" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:#fff;font-size:16px;width:100%;">
-            </div>
-            <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:6px;">
-              <label style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">Descripcion tecnica</label>
-              <textarea id="pf-desc" placeholder="Tecnica, materiales, resultado clinico..." style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:#fff;font-size:16px;width:100%;min-height:80px;resize:vertical;"></textarea>
-            </div>
-            <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:6px;">
-              <label style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">Portada (imagen del caso)</label>
-              <input type="file" id="pf-cover" accept="image/*" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:#fff;font-size:16px;width:100%;padding:9px 12px;">
-              <span style="font-size:.7rem;color:#64748b;">Opcional. JPG, PNG o WebP.</span>
-            </div>
-          </div>
-          <div style="margin-top:18px;display:flex;gap:14px;align-items:center;justify-content:flex-end;flex-wrap:wrap;">
-            <span id="pf-msg" style="flex:1;min-width:180px;font-size:.85rem;color:#94a3b8;"></span>
-            <button type="submit" id="pf-btn" style="background:linear-gradient(135deg,#D4AF37,#B8860B);color:#000;border:none;border-radius:8px;padding:12px 24px;font-weight:800;font-size:.9rem;cursor:pointer;">
-              Publicar en portafolio
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-          <h2 style="margin:0;font-size:1.1rem;">Casos publicados</h2>
-          <button type="button" onclick="cargarPortafolio()" style="background:rgba(212,175,55,.15);border:1px solid var(--border);color:var(--gold);border-radius:8px;padding:7px 13px;cursor:pointer;font-weight:700;">&#8635; Actualizar</button>
         </div>
-        <div id="portafolio-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;">
-          <div style="grid-column:1/-1;color:#94a3b8;text-align:center;padding:20px;">Cargando...</div>
+
+        <div class="section-card" style="padding:28px;">
+            <form id="form-portafolio" onsubmit="subirCaso(event)">
+                <div class="form-grid">
+
+                    <!-- PORTADA -->
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label style="color:var(--gold);font-weight:700;">📷 PORTADA <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">(opcional) — imagen principal del portafolio</span></label>
+                        <div class="drop-zone" id="drop-zone" onclick="document.getElementById('img-input').click()"
+                             ondrop="handleDropPortada(event)" ondragover="event.preventDefault();this.classList.add('drag-over')"
+                             ondragleave="this.classList.remove('drag-over')">
+                            <i class="fas fa-image" style="font-size:2rem;color:rgba(212,175,55,0.5);"></i>
+                            <p><strong>Clic para seleccionar</strong> o arrastra la portada aquí</p>
+                            <p style="font-size:0.75rem;margin-top:4px;">1 sola foto · JPG, PNG, WebP</p>
+                            <img id="img-preview" class="preview-img" alt="" style="display:none;max-height:180px;object-fit:cover;border-radius:8px;margin-top:10px;">
+                        </div>
+                        <input type="file" id="img-input" accept="image/*" style="display:none;" onchange="previewImg(this)">
+                    </div>
+
+                    <!-- GALERÍA -->
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label style="font-weight:700;">🖼️ GALERÍA <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">— fotos adicionales del caso (opcional)</span></label>
+                        <div class="drop-zone" id="gallery-zone" onclick="document.getElementById('gallery-input').click()"
+                             ondrop="handleDropGaleria(event)" ondragover="event.preventDefault();this.classList.add('drag-over')"
+                             ondragleave="this.classList.remove('drag-over')">
+                            <i class="fas fa-images" style="font-size:2rem;color:rgba(0,210,255,0.4);"></i>
+                            <p><strong>Clic para seleccionar</strong> o arrastra las fotos aquí</p>
+                            <p style="font-size:0.75rem;margin-top:4px;">Puedes seleccionar varias a la vez</p>
+                        </div>
+                        <input type="file" id="gallery-input" accept="image/*" multiple style="display:none;" onchange="previewGaleria(this)">
+                        <div id="gallery-thumbs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;"></div>
+                    </div>
+
+                    <!-- EXOCAD — solo el archivo HTML -->
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label style="font-weight:700;"><i class="fas fa-cube" style="color:#D946A6;margin-right:6px;"></i>VISOR EXOCAD <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">(opcional)</span></label>
+                        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(217,70,166,.06);border:1px dashed rgba(217,70,166,.3);border-radius:10px;">
+                            <label for="exocad-input" style="display:inline-flex;align-items:center;gap:8px;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.4);color:#D946A6;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;white-space:nowrap;">
+                                <i class="fas fa-file-code"></i> Seleccionar archivo HTML
+                            </label>
+                            <span id="exocad-status" style="font-size:.82rem;color:#94a3b8;">Ningún archivo seleccionado</span>
+                        </div>
+                        <input type="file" id="exocad-input" accept=".html,.htm,.stl,.zip" style="display:none;" onchange="handleExocadPanel(this)">
+                        <p style="font-size:.68rem;color:#475569;margin-top:4px;">Selecciona el archivo <strong>exocad.html</strong> exportado desde Exocad</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nombre del caso <span style="color:#f87171;font-size:.72rem;font-weight:700;">*</span></label>
+                        <input type="text" id="p-titulo" placeholder="Ej: Rehabilitación Full Arch Zirconia" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de trabajo <span style="color:#475569;font-size:.75rem;font-weight:400;">(opcional)</span></label>
+                        <select id="p-tipo">
+                            <option value="">Seleccionar…</option>
+                            <option value="rehabilitacion">Rehabilitación</option>
+                            <option value="estetica">Estética</option>
+                            <option value="implantes">Implantes</option>
+                            <option value="protesis">Prótesis</option>
+                            <option value="alineadores">Alineadores</option>
+                            <option value="biomodelo">Biomodelo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Material <span style="color:#475569;font-size:.75rem;font-weight:400;">(opcional)</span></label>
+                        <select id="p-material">
+                            <option value="">— Sin especificar —</option>
+                            <option>Zirconia 3Y Monolítica</option>
+                            <option>Zirconia Multicapa ST</option>
+                            <option>Zirconia UT 5Y</option>
+                            <option>Disilicato e.max CAD</option>
+                            <option>Disilicato e.max Press</option>
+                            <option>PMMA Provisional</option>
+                            <option>Titanio Grado 5</option>
+                            <option>Resina 3D Dental</option>
+                            <option>Vita Enamic</option>
+                            <option>PEEK Dental</option>
+                            <option>Múltiples materiales</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fecha del caso <span style="color:#475569;font-size:.75rem;font-weight:400;">(opcional)</span></label>
+                        <input type="text" id="p-fecha" placeholder="Ej: Enero 2025">
+                    </div>
+
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label>Descripción técnica <span style="color:#475569;font-size:.75rem;font-weight:400;">(opcional)</span></label>
+                        <textarea id="p-descripcion" placeholder="Técnica, materiales, resultado clínico…" style="min-height:90px;"></textarea>
+                    </div>
+
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label><i class="fas fa-play-circle" style="color:#D946A6;margin-right:6px;"></i>Video del caso <span style="color:#475569;font-weight:400;">(opcional)</span></label>
+                        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                            <label for="p-video-file" style="display:inline-flex;align-items:center;gap:6px;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.3);color:#D946A6;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.78rem;white-space:nowrap;">
+                                <i class="fas fa-video"></i> Subir video MP4
+                            </label>
+                            <span id="video-filename" style="font-size:.78rem;color:#94a3b8;">— o pega URL:</span>
+                            <input type="url" id="p-video" placeholder="https://youtube.com/watch?v=..." style="flex:1;min-width:200px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px;color:#f8fafc;font-size:16px;">
+                        </div>
+                        <input type="file" id="p-video-file" accept="video/*" style="display:none;" onchange="selectVideoFile(this)">
+                        <p style="font-size:.65rem;color:#475569;margin-top:4px;">MP4 propio o URL de YouTube / Google Drive</p>
+                    </div>
+
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label><i class="fas fa-file-pdf" style="color:#00d2ff;margin-right:6px;"></i>Documento PDF <span style="color:#475569;font-weight:400;">(opcional — plan de tratamiento, reporte, ficha técnica)</span></label>
+                        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                            <label for="p-pdf-file" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.3);color:#00d2ff;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.78rem;white-space:nowrap;">
+                                <i class="fas fa-file-pdf"></i> Seleccionar PDF
+                            </label>
+                            <span id="pdf-filename" style="font-size:.78rem;color:#94a3b8;">Ningún archivo seleccionado</span>
+                        </div>
+                        <input type="file" id="p-pdf-file" accept="application/pdf" style="display:none;" onchange="selectPdfFile(this)">
+                        <p style="font-size:.65rem;color:#475569;margin-top:4px;">Se mostrará como visor inline en la página del caso. Máx. 20 MB.</p>
+                    </div>
+
+                </div>
+
+                <div style="margin-top:24px;display:flex;gap:12px;justify-content:flex-end;align-items:center;">
+                    <div id="p-progress" style="font-size:0.82rem;color:var(--muted);flex:1;display:none;"></div>
+                    <button type="button" class="btn-xs btn-gold" onclick="limpiarFormPortafolio()">
+                        <i class="fas fa-rotate-left"></i> Limpiar
+                    </button>
+                    <button type="submit" class="btn-primary" id="btn-subir">
+                        <i class="fas fa-cloud-upload-alt"></i> Publicar en Portafolio
+                    </button>
+                </div>
+            </form>
         </div>
-      </div>
+
+        <!-- Casos publicados -->
+        <div class="section-card" style="margin-top:24px;">
+            <div class="section-header">
+                <h2><i class="fas fa-images" style="color:var(--gold);margin-right:8px;"></i>Casos publicados</h2>
+                <button type="button" class="btn-xs btn-gold" onclick="cargarPortafolio()" aria-label="Actualizar portafolio"><i class="fas fa-rotate-right"></i></button>
+            </div>
+            <div id="portafolio-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:20px;">
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-images"></i>
+                    <p>Cargando casos…</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ═══════════ TAB CLIENTES ═══════════ -->
@@ -1489,24 +1586,6 @@ function switchTab(tab, el) {
     panel.classList.add('active');
     panel.style.display = 'block';
 
-    // Verificación: si aún colapsa (h=0), reportar la CADENA DE ANCESTROS (culpable común)
-    setTimeout(function(){
-      try{
-        if(panel.offsetHeight>4) return;
-        var rows=['panel offsetH='+panel.offsetHeight+' scrollH='+panel.scrollHeight+' (si scrollH>0 = contenido recortado)'];
-        var el=panel;
-        while(el && el.tagName!=='HTML'){
-          var s=getComputedStyle(el);
-          rows.push((el.id?'#'+el.id:'')+(el.className?('.'+String(el.className).split(' ')[0]):'<'+el.tagName.toLowerCase()+'>')+
-            ' offH='+el.offsetHeight+' scrH='+el.scrollHeight+' disp='+s.display+' ovf='+s.overflow+' h='+s.height+' maxH='+s.maxHeight+' flex='+s.flex);
-          el=el.parentElement;
-        }
-        var b=document.createElement('div');b.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#7c2d12;color:#fff;font:11px/1.5 ui-monospace,monospace;padding:10px 40px;white-space:pre-wrap;max-height:60vh;overflow:auto';
-        b.textContent='⚠ "'+tab+'" colapsado — cadena de ancestros:\n'+rows.join('\n');
-        var x=document.createElement('button');x.textContent='×';x.style.cssText='position:absolute;top:4px;right:8px;background:none;border:none;color:#fff;font-size:20px;cursor:pointer';x.onclick=function(){b.remove();};b.appendChild(x);
-        document.body.appendChild(b);
-      }catch(e){}
-    }, 500);
 
     // Cargar datos al abrir tab por primera vez (un fallo de carga NO debe romper la navegación)
     try {
