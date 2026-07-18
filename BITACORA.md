@@ -9,6 +9,31 @@
 
 ---
 
+## 2026-07-18
+
+### ✅ Auditoría exhaustiva del panel (27 páginas, 11 roles)
+- **Estructura:** HTML correcto en las 27. El bug de `<div>` sin cerrar era exclusivo de
+  `panel-interno-operaciones` (ya resuelto). **0 handlers muertos** (los `window.fn = ...` daban falso positivo).
+- **🔴 Seguridad (corregido):** 5 páginas cargaban `auth-guard.js` pero NUNCA llamaban `require()`
+  → sin validar sesión/rol: `cotizaciones`, `metricas`, `metricas-churn`, `metricas-referidos`,
+  `pruebas-carga`. Se agregó `ProdigyAuth.require([...])` a cada una.
+- **Roles:** 11 roles, todos con panel de aterrizaje, sin bucles de redirección. Admin por email.
+- **🔴 RLS desalineado (parche SQL ejecutado):** las políticas verificaban `app_metadata.role='admin'`
+  pero el admin se identifica por EMAIL → RLS lo bloqueaba (causa del **403 en `referidos`**).
+  Además 7 tablas (incl. 22 políticas de storage) usan roles inexistentes `'staff'`/`'operario'`.
+  → `sql/patch-roles-rls-alineacion-2026-07.sql` (Parte 1 ejecutada: admin ya tiene el rol).
+  💡 Tras ejecutarlo hay que **cerrar sesión y volver a entrar** para que el JWT tome el rol.
+
+### ✅ UX — Asistente de ayuda (`js/panel-tips.js`, en 23 paneles)
+- Tooltips al pasar el mouse / enfocar con teclado sobre menú y botones. Las ayudas se asignan
+  solas leyendo `switchTab('X')` y la función del `onclick` (no hay que tocar el HTML).
+- Usa **delegación de eventos** → funciona con botones creados dinámicamente.
+- Botón flotante **"?"** con guía rápida **adaptativa** (cada rol ve solo sus secciones).
+- Tarjeta **"¿qué hago aquí?"** por panel, ocultable (localStorage).
+- **Estados vacíos accionables** en el panel principal: dicen qué hacer, no solo "sin datos".
+
+---
+
 ## 2026-07-17
 
 ### ✅ RESUELTO — Panel en blanco / "los botones no abren" (bug sistémico)
