@@ -106,6 +106,28 @@
     <button type="button" class="btn btn-cyan" onclick="testQueryPerf()">Benchmark consultas</button>
     <div class="result" id="result-perf">Mide tiempos de respuesta de la DB</div>
   </div>
+
+  <!-- PRUEBA 7: Seguridad por rol -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-shield-halved" style="color:#f87171;" aria-hidden="true"></i> Seguridad por rol</div>
+    <button type="button" class="btn" style="background:rgba(248,113,113,.15);border:1px solid #f87171;color:#f87171;" onclick="testSeguridad()">Auditar fugas de datos</button>
+    <div class="result" id="result-seg">Verifica que un visitante SIN sesion no pueda leer datos privados, y que las vistas de staff no expongan datos del paciente.</div>
+  </div>
+
+  <!-- PRUEBA 8: Modulos del panel -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-puzzle-piece" style="color:var(--gold);" aria-hidden="true"></i> Modulos del panel</div>
+    <button type="button" class="btn btn-gold" onclick="testModulos()">Verificar modulos</button>
+    <div class="result" id="result-mod">Comprueba que carguen ayuda, Mi dia, buscador, historial y tour.</div>
+  </div>
+
+  <!-- PRUEBA 9: Snapshot antes/despues -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-camera" style="color:var(--cyan);" aria-hidden="true"></i> Snapshot antes / despues</div>
+    <button type="button" class="btn btn-cyan" onclick="guardarSnapshot()">Guardar estado actual</button><br><br>
+    <button type="button" class="btn" style="background:rgba(255,255,255,.08);border:1px solid var(--border);color:#cbd5e1;" onclick="compararSnapshot()">Comparar con el guardado</button>
+    <div class="result" id="result-snap">Guarda una foto de los numeros hoy (antes del lanzamiento) y luego compara para ver que cambio.</div>
+  </div>
 </div>
 
 <script src="../js/auth-guard.js?v=20260717"></script>
@@ -289,6 +311,112 @@ async function testQueryPerf() {
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <script src="../js/notif-panel.js?v=20260601"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
-<script src="../js/panel-tips.js?v=20260718c"></script>
+<script src="../js/panel-tips.js?v=20260718c">
+/* ══════════════════════════════════════════════════════════════════
+   PRUEBAS DE LANZAMIENTO (agregadas 2026-07-18)
+   ══════════════════════════════════════════════════════════════════ */
+
+/* 7 · SEGURIDAD POR ROL — que un anonimo no lea nada privado y que las
+       vistas de staff no expongan datos del paciente. */
+async function testSeguridad(){
+  const out=document.getElementById('result-seg');
+  out.textContent='Auditando...';
+  const L=[]; let fallos=0;
+  const privadas=['pedidos','clientes','veneer_leads','logs_incidencias','cotizaciones','referidos'];
+  // A) anon (sin sesion) no debe obtener filas
+  for(const t of privadas){
+    try{
+      const r=await fetch(`${SURL}/rest/v1/${t}?select=*&limit=1`,{headers:{apikey:SANON,Authorization:'Bearer '+SANON}});
+      const j=await r.json().catch(()=>null);
+      const filtra=Array.isArray(j)&&j.length>0;
+      if(filtra){ L.push(`❌ FUGA: un anonimo leyo ${t}`); fallos++; }
+      else L.push(`✅ anon no lee ${t}`);
+    }catch(e){ L.push(`⚠️ ${t}: ${e.message}`); }
+  }
+  // B) las vistas de staff no deben traer datos personales
+  const PII=['nombre_paciente','email','telefono','direccion','precio_total'];
+  for(const v of ['pedidos_operacion','pedidos_entrega']){
+    try{
+      const {data,error}=await sb.from(v).select('*').limit(1);
+      if(error){ L.push(`⚠️ vista ${v}: ${error.message}`); continue; }
+      if(!data||!data.length){ L.push(`✅ vista ${v} existe (sin datos aun)`); continue; }
+      const cols=Object.keys(data[0]);
+      const permitido = v==='pedidos_entrega' ? ['telefono','direccion'] : [];
+      const malas=cols.filter(c=>PII.includes(c)&&!permitido.includes(c));
+      if(malas.length){ L.push(`❌ ${v} expone: ${malas.join(', ')}`); fallos++; }
+      else L.push(`✅ vista ${v} sin datos personales`);
+    }catch(e){ L.push(`⚠️ ${v}: ${e.message}`); }
+  }
+  L.push('', fallos===0 ? '🎉 Sin fugas detectadas' : `🚨 ${fallos} problema(s) — revisar antes de lanzar`);
+  out.textContent=L.join('\n');
+}
+
+/* 8 · MODULOS DEL PANEL — que los scripts de ayuda esten cargados */
+async function testModulos(){
+  const out=document.getElementById('result-mod');
+  out.textContent='Verificando...';
+  const V='20260718c';
+  const mods=[['panel-tips','Ayudas y guia'],['mi-dia','Mi dia'],['buscador','Buscador Ctrl+K'],
+              ['historial','Actividad reciente'],['tour','Recorrido guiado'],
+              ['auth-guard','Control de acceso'],['header','Cabecera + bot IA']];
+  const L=[]; let fallos=0;
+  for(const [f,nombre] of mods){
+    try{
+      const r=await fetch(`/js/${f}.js?v=${V}`,{cache:'no-store'});
+      const txt=await r.text();
+      if(r.ok && txt.length>500){ L.push(`✅ ${nombre} (${(txt.length/1024).toFixed(1)} KB)`); }
+      else { L.push(`❌ ${nombre} no cargo [HTTP ${r.status}]`); fallos++; }
+    }catch(e){ L.push(`❌ ${nombre}: ${e.message}`); fallos++; }
+  }
+  L.push('', fallos===0?'🎉 Todos los modulos cargan':`🚨 ${fallos} modulo(s) con problema`);
+  out.textContent=L.join('\n');
+}
+
+/* 9 · SNAPSHOT ANTES/DESPUES — foto de los numeros para comparar */
+const SNAP_KEY='prodigy_snapshot_lanzamiento';
+async function _tomarDatos(){
+  const tablas=['pedidos','cotizaciones','referidos','clientes','veneer_leads','leads_doctores','logs_incidencias'];
+  const snap={fecha:new Date().toISOString(), filas:{}, perf:{}};
+  for(const t of tablas){
+    const t0=performance.now();
+    try{
+      const {count,error}=await sb.from(t).select('id',{count:'exact',head:true});
+      snap.filas[t]= error? null : (count||0);
+      snap.perf[t]= Math.round(performance.now()-t0);
+    }catch(e){ snap.filas[t]=null; }
+  }
+  return snap;
+}
+async function guardarSnapshot(){
+  const out=document.getElementById('result-snap');
+  out.textContent='Tomando foto del estado actual...';
+  const s=await _tomarDatos();
+  try{ localStorage.setItem(SNAP_KEY, JSON.stringify(s)); }catch(e){}
+  const L=['📸 Snapshot guardado — '+new Date(s.fecha).toLocaleString('es-CO'),''];
+  for(const t in s.filas) L.push(`  ${t}: ${s.filas[t]===null?'(sin acceso)':s.filas[t]+' filas'}  ·  ${s.perf[t]}ms`);
+  L.push('','Vuelve a este panel despues del lanzamiento y pulsa "Comparar".');
+  out.textContent=L.join('\n');
+}
+async function compararSnapshot(){
+  const out=document.getElementById('result-snap');
+  let prev=null;
+  try{ prev=JSON.parse(localStorage.getItem(SNAP_KEY)||'null'); }catch(e){}
+  if(!prev){ out.textContent='Aun no hay snapshot guardado. Pulsa "Guardar estado actual" primero.'; return; }
+  out.textContent='Comparando...';
+  const now=await _tomarDatos();
+  const L=[`Antes:   ${new Date(prev.fecha).toLocaleString('es-CO')}`,
+           `Ahora:   ${new Date(now.fecha).toLocaleString('es-CO')}`,''];
+  for(const t in now.filas){
+    const a=prev.filas[t], b=now.filas[t];
+    if(a===null||b===null){ L.push(`  ${t}: (sin acceso)`); continue; }
+    const d=b-a;
+    const flecha = d>0?`▲ +${d}`: (d<0?`▼ ${d}`:'=');
+    const dp = now.perf[t]-(prev.perf[t]||0);
+    L.push(`  ${t}: ${a} → ${b}  ${flecha}   (${now.perf[t]}ms, ${dp>=0?'+':''}${dp}ms)`);
+  }
+  out.textContent=L.join('\n');
+}
+
+</script>
 </body>
 </html>
