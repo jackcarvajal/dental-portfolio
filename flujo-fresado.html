@@ -4121,6 +4121,8 @@ if(window.ProdigyAuth){
                         if (btn) btn.textContent = `⏳ Subiendo archivo ${n+1}/${total}...`;
                     });
                     if (urls.length > 0) STATE.linkSTL = urls.join(' | ');
+                    // Para registrar en `pedido_archivos` cuando el pedido ya tenga UUID
+                    STATE._subida = urls;
                 } catch(e) { console.warn('[PRODIGY] Upload error:', e); }
             }
 
@@ -4209,9 +4211,21 @@ if(window.ProdigyAuth){
                         pedido_diseno_id:       _disenoPedidoId || null,
                         codigo_referido:        sessionStorage.getItem('prodigy_ref') || null,
                         canal_origen:           (()=>{try{const u=JSON.parse(localStorage.getItem('pg_utm')||'{}');return u.source||null;}catch(_){return null;}})() || (document.referrer.includes('google')?'seo':document.referrer.includes('instagram')?'instagram':(document.referrer.includes('wa.me')||document.referrer.includes('whatsapp'))?'whatsapp':null)
-                    }]).then(({ data: _d, error: _e }) => {
+                    // .select('id') es imprescindible: sin él supabase-js devuelve
+                    // data:null y el `_d?.[0]?.id` de más abajo era siempre null, así
+                    // que el log de auditoría del pedido nunca llegaba a crearse.
+                    }]).select('id').then(({ data: _d, error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido fresado no guardado:', _e.message);
-                        else {
+
+                        // Registrar archivos y fallos — deja rastro de lo que no llegó
+                        if (_d?.[0]?.id && STATE._subida && window.FlujoUploader?.registrarEnPedido) {
+                            FlujoUploader.registrarEnPedido(_sb, _d[0].id, STATE._subida, {
+                                etapa: 'cliente_caso',
+                                subidoPor: STATE.whatsappCliente || STATE.nombreCliente || null
+                            });
+                        }
+
+                        if (!_e) {
                             if(window._trackEvent) _trackEvent('pedido_creado',{flujo:'fresado',total:STATE.total,material:STATE.materialTipo});
                             // Log de auditoría del pedido creado
                             const _pid = _d?.[0]?.id || null;
@@ -4873,6 +4887,7 @@ if(window.ProdigyAuth){
     </script>
     <script src="js/supabase-client.js?v=20260528"></script>
     <script src="js/formatos.js?v=20260718"></script>
+<script src="js/registro-archivos.js?v=20260718"></script>
     <script src="js/upload-guard.js?v=20260718"></script>
     <script src="js/pagos.js?v=20260710b"></script>
     <script>

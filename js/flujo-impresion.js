@@ -2204,6 +2204,8 @@
                     try {
                         const _urls = await window.FlujoUploader.upload(STATE.ordenId);
                         if (_urls && _urls.length > 0) STATE.linkSTL = _urls.join(', ');
+                        // Para registrar en `pedido_archivos` cuando el pedido ya tenga UUID
+                        STATE._subida = _urls;
                     } catch(_ue) { /* continuar con link manual */ }
                 }
             }
@@ -2309,9 +2311,21 @@
                         costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0,
                         pedido_diseno_id:       null,
                         codigo_referido:        sessionStorage.getItem('prodigy_ref') || null
-                    }]).then(({ data: _d, error: _e }) => {
+                    // .select('id') es imprescindible: sin él supabase-js devuelve
+                    // data:null y `_d?.[0]?.id` era siempre null, así que el log de
+                    // auditoría del pedido nunca llegaba a crearse.
+                    }]).select('id').then(({ data: _d, error: _e }) => {
                         if (_e) console.warn('[PRODIGY] Pedido impresion no guardado:', _e.message);
-                        else {
+
+                        // Registrar archivos y fallos — deja rastro de lo que no llegó
+                        if (_d?.[0]?.id && STATE._subida && window.FlujoUploader?.registrarEnPedido) {
+                            FlujoUploader.registrarEnPedido(_sb, _d[0].id, STATE._subida, {
+                                etapa: 'cliente_caso',
+                                subidoPor: STATE.whatsappCliente || null
+                            });
+                        }
+
+                        if (!_e) {
                             const _pid = _d?.[0]?.id || null;
                             if (_pid) {
                                 _sb.from('logs_incidencias').insert({

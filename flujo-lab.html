@@ -940,6 +940,8 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
         if (btn) btn.textContent = '⏳ Subiendo archivos...';
         var _urls = await window.FlujoUploader.upload(ordenId);
         if (_urls && _urls.length > 0) linkSTL = _urls.join(', ');
+        // Para registrar en `pedido_archivos` cuando el pedido ya tenga UUID
+        window._labSubida = _urls;
       } catch(_ue) { /* continuar sin URLs */ }
     }
   }
@@ -990,7 +992,13 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
         negocio:   'prodigy',
         terminos_aceptados_at: new Date().toISOString(),
         user_agent: navigator.userAgent.slice(0, 250)
-      }]).then(function(r){ if (r.error) console.warn('[PRODIGY] Pedido lab no guardado:', r.error.message); });
+      }]).select('id').single().then(function(r){
+        if (r.error) { console.warn('[PRODIGY] Pedido lab no guardado:', r.error.message); return; }
+        // Registrar archivos y fallos — deja rastro de lo que no llegó
+        if (r.data && r.data.id && window._labSubida && window.FlujoUploader && window.FlujoUploader.registrarEnPedido) {
+          window.FlujoUploader.registrarEnPedido(_sb, r.data.id, window._labSubida, { etapa: 'cliente_caso' });
+        }
+      });
     }
   } catch(_e) { /* silencioso */ }
 
@@ -1021,6 +1029,7 @@ buildVita();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
 </script>
 <script src="js/formatos.js?v=20260718"></script>
+<script src="js/registro-archivos.js?v=20260718"></script>
 <script src="js/upload-guard.js?v=20260718"></script>
 <script src="js/stl-multi-viewer.js?v=20260718"></script>
 <script>ProdigyMultiViewer.init('pmv-lab');</script>
