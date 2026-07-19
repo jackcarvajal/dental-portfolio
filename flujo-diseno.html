@@ -2093,6 +2093,14 @@ const lineWompi = document.getElementById('line-wompi');
                     // En modo prueba añade es_prueba y da el pago por confirmado.
                     // Devuelve {} si no está activo, así que en uso normal no cambia nada.
                     const _mp = (window.ModoPrueba && ModoPrueba.camposPedido()) || {};
+
+                    // Si el doctor tiene sesión abierta, el pedido debe quedar
+                    // atado a él. app/client-panel filtra con .eq('email', email):
+                    // sin esto, sus casos NO le aparecen en su propio panel.
+                    // El flujo funciona igual sin sesión (queda como anónimo).
+                    const { data: { session: _ses } } = await _sb.auth.getSession();
+                    const _duenio = _ses ? { email: _ses.user.email, user_id: _ses.user.id } : {};
+
                     _sb.from('pedidos').insert([{
                         codigo:                STATE.ordenId,
                         nombre_doctor:         STATE.nombreCliente,
@@ -2129,6 +2137,7 @@ const lineWompi = document.getElementById('line-wompi');
                         factura_estado:        STATE.billingReq ? 'pendiente' : 'no_requerida',
                         codigo_referido:       sessionStorage.getItem('prodigy_ref') || null,
                         canal_origen:          (()=>{try{const u=JSON.parse(localStorage.getItem('pg_utm')||'{}');return u.source||null;}catch(_){return null;}})() || (document.referrer.includes('google')?'seo':document.referrer.includes('instagram')?'instagram':(document.referrer.includes('wa.me')||document.referrer.includes('whatsapp'))?'whatsapp':null),
+                        ..._duenio,
                         ..._mp
                     }]).select('id').single().then(({ data: _ped, error: _e }) => {
                         // No puede ser un console.warn: así estuvo la tabla `pedidos`
