@@ -52,24 +52,70 @@
           texto: 'Tus facturas y pagos. Puedes descargarlas cuando las necesites para tu contabilidad.' }
       ]
     },
+    // ⚠️ SELECTORES REALES, NO GENÉRICOS.
+    // Antes se usaban listas como '[type=submit], .btn-enviar, .btn-primary':
+    // querySelector devuelve el PRIMER elemento que coincida en toda la página,
+    // así que el paso "Envía el caso" terminaba señalando el botón ACCESO del
+    // header. Cada flujo tiene sus propios IDs y por eso cada uno lleva su guion.
     'flujo-diseno.html': {
       nombre: 'el pedido de diseño',
       pasos: [
         { sel: null, titulo: 'Cómo enviar tu caso',
           texto: 'Te guío rápido: subir el escaneo, elegir opciones y confirmar. Toma menos de 2 minutos.' },
-        { sel: 'input[type=file], .drop-zone, #dropzone', titulo: '1· Sube tu escaneo',
-          texto: 'Arrastra aquí el archivo STL o PLY de tu escáner (iTero, Medit, 3Shape…). También puedes hacer clic para buscarlo.' },
-        { sel: 'select, .opciones, #tipo-trabajo', titulo: '2· Elige el trabajo',
-          texto: 'Indica el tipo de trabajo y el material. Si tienes dudas, déjalo en automático y lo confirmamos contigo.' },
-        { sel: '[type=submit], .btn-enviar, .btn-primary', titulo: '3· Envía el caso',
-          texto: 'Al enviarlo recibes el código del pedido y podrás seguir su avance desde tu panel.' }
+        { sel: '#pmv-diseno', titulo: '1· Sube tus archivos',
+          texto: 'Arrastra aquí el escaneo (STL, PLY, OBJ), el CBCT en ZIP si es guía quirúrgica, y las fotos clínicas. Los STL se ven en 3D al soltarlos.' },
+        { sel: '#especialidad', titulo: '2· Datos del caso',
+          texto: 'Tu especialidad, el paciente y el tipo de diseño. Con eso calculamos precio y fecha de entrega.' },
+        { sel: '#cantidad', titulo: '3· Cantidad de unidades',
+          texto: 'Cuántas piezas lleva el caso. El total se recalcula al instante.' },
+        { sel: '#btn-wa', titulo: '4· Envía el caso',
+          texto: 'Al enviarlo se suben tus archivos, recibes el código del pedido y se abre WhatsApp con el resumen. Guarda ese código para seguir tu caso.' }
+      ]
+    },
+    'flujo-fresado.html': {
+      nombre: 'el pedido de fresado',
+      pasos: [
+        { sel: null, titulo: 'Cómo enviar tu caso de fresado',
+          texto: 'Subes el diseño, eliges material y confirmas. Te muestro dónde está cada cosa.' },
+        { sel: '#pmv-fresado', titulo: '1· Sube tus archivos',
+          texto: 'El STL del diseño listo para fresar. También aceptamos proyectos de Exocad y 3Shape.' },
+        { sel: '#cantidad', titulo: '2· Cantidad de unidades',
+          texto: 'Cuántas piezas vas a fresar. El precio se ajusta automáticamente.' },
+        // #btn-whatsapp-confirm vive dentro del modal de confirmación, que está
+        // cerrado durante el tour: el paso apuntaría a la nada. Se señala el
+        // botón visible que abre ese modal.
+        { sel: '#btn-submit', titulo: '3· Genera la orden',
+          texto: 'Se abre un resumen para que revises todo antes de confirmar. Al aceptarlo recibes el código del pedido y se abre WhatsApp con el detalle.' }
+      ]
+    },
+    'flujo-impresion.html': {
+      nombre: 'el pedido de impresión 3D',
+      pasos: [
+        { sel: null, titulo: 'Cómo enviar tu caso de impresión',
+          texto: 'Subes el archivo, eliges resina y confirmas. Menos de 2 minutos.' },
+        { sel: '#pmv-impresion', titulo: '1· Sube tus archivos',
+          texto: 'El STL de lo que vas a imprimir: guía quirúrgica, modelo, férula o provisional.' },
+        { sel: '#cantidad', titulo: '2· Cantidad de unidades',
+          texto: 'Cuántas piezas. El total se recalcula al instante.' },
+        // #btn-whatsapp-confirm vive dentro del modal de confirmación, que está
+        // cerrado durante el tour: el paso apuntaría a la nada. Se señala el
+        // botón visible que abre ese modal.
+        { sel: '#btn-submit', titulo: '3· Genera la orden',
+          texto: 'Se abre un resumen para que revises todo antes de confirmar. Al aceptarlo recibes el código del pedido y se abre WhatsApp con el detalle.' }
+      ]
+    },
+    'flujo-lab.html': {
+      nombre: 'el pedido de laboratorio',
+      pasos: [
+        { sel: null, titulo: 'Cómo enviar tu caso de laboratorio',
+          texto: 'Subes lo que tengas, indicas el trabajo y confirmas.' },
+        { sel: '#pmv-lab', titulo: '1· Sube tus archivos',
+          texto: 'Escaneo, fotos del caso y cualquier referencia que nos sirva. Si envías modelos físicos, indícalo en las notas.' },
+        { sel: '#btn-generar', titulo: '2· Genera la orden',
+          texto: 'Al generarla recibes el código del pedido y se abre WhatsApp con el resumen del caso.' }
       ]
     }
   };
-  // Los otros flujos comparten el guion de diseño
-  ['flujo-fresado.html', 'flujo-impresion.html', 'flujo-lab.html'].forEach(function (f) {
-    TOURS[f] = TOURS['flujo-diseno.html'];
-  });
 
   /* ── Estilos ──────────────────────────────────────────────────── */
   var css = ''

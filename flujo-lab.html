@@ -1031,6 +1031,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').cat
 </script>
 <script src="js/formatos.js?v=20260718"></script>
 <script src="js/pedido-guard.js?v=20260719"></script>
+<script src="js/modo-prueba.js?v=20260719"></script>
 <script src="js/registro-archivos.js?v=20260718"></script>
 <script src="js/upload-guard.js?v=20260718"></script>
 <script src="js/stl-multi-viewer.js?v=20260718"></script>
@@ -1132,6 +1133,7 @@ function actualizarEstimadorLab() {
 var _labCartObserver = setInterval(function(){ if(window.cart) actualizarEstimadorLab(); }, 2000);
 </script>
 <script src="js/tour.js?v=20260718e"></script>
+<script>(function(){function go(){var s=window.sb||(window.ProdigyAuth&&window.ProdigyAuth.getSb&&window.ProdigyAuth.getSb());if(s&&window.ModoPrueba){ModoPrueba.init(s);}else{setTimeout(go,400);}}if(document.readyState!=="loading")go();else document.addEventListener("DOMContentLoaded",go);})();</script>
 </body>
 </html>
 
