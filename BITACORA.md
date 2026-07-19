@@ -11,6 +11,59 @@
 
 ## 2026-07-18
 
+### ✅ Ronda 5c — Aprobación → producción · Contabilidad · Registro de archivos
+
+**🔴 La aprobación del doctor no llegaba a producción (resuelto)**
+`prodigy_rd_aprobar()` escribe `estado_operativo='DISENO_APROBADO'`, pero el trigger de
+avisos evalúa `NEW.estado IN ('APROBADO','APROBADO_CLIENTE')`. **Columnas distintas** y nada
+pone jamás `estado` en `'APROBADO'` → esa rama **nunca se ejecutó**. Y `departamento_actual`
+solo se escribía en el enrutado manual, así que el caso aprobado no caía en la bandeja de
+ninguna área: esperaba a que alguien lo notara a ojo.
+- `sql/patch-aprobacion-a-produccion-2026-07.sql` ✅ **EJECUTADO**. Tres ramas:
+  fabricación pagada → enruta y avisa al área · sin pago → avisa a admin sin enrutar
+  (producir sin cobrar consume material a riesgo) · solo diseño → avisa que hay que liberar.
+- 💡 La rama vieja sobre `estado` sigue muerta pero no se elimina: ese mismo trigger maneja
+  otros casos que sí funcionan (CAMBIOS_SOLICITADOS, pago, urgente).
+
+**✅ Contabilidad — de solo cifras a ver archivos y personas**
+Antes solo leía `pedidos`. Dos tabs nuevos:
+- **Productividad:** agrupa `historial_diseno.actor` por persona y clasifica cada acción en
+  diseños / revisiones / producción, con última actividad y export CSV. No necesitó parche
+  de BD: `auth_historial_all` ya permite SELECT a todo autenticado.
+- **Archivos por caso:** busca por código, doctor o paciente; lista diseño, STL y fotos
+  firmando la ruta al momento (1h). Trae además el **despacho de mensajería** (estado,
+  fechas, novedades) — lo que cierra el ciclo del cobro y contabilidad no veía.
+- 🔴 `sql/patch-contabilidad-archivos-2026-07.sql` **PENDIENTE**. Las policies de storage
+  listan roles uno por uno y `'contabilidad'` no estaba en ninguna. Se agregan 3 de
+  **solo lectura**: verifica, no produce, y así no altera la evidencia que audita.
+
+**✅ Tabla `pedido_archivos` — un registro por archivo**
+Los archivos vivían en 4 columnas sin estructura (`stl_url` con URLs pegadas por `' | '`,
+`stl_urls`, `stl_ruta`, `fotos_feedback`). No se podía saber cuántos archivos debían llegar,
+ni qué pedidos están incompletos, ni cuál imagen es la radiografía y cuál la toma de color.
+- 🔴 `sql/patch-pedido-archivos-2026-07.sql` **PENDIENTE**. Etapa + tipo clínico
+  (escaneo, cbct, radiografía, foto_clinica, proyecto_cad, librería, diagnóstico, diseño,
+  stl_final, comprobante, factura, evidencia) + bucket + **ruta, no URL firmada**.
+  Vista `pedidos_archivos_resumen` para ver qué trae y qué le falta a cada caso.
+- `js/registro-archivos.js` deduce el tipo por extensión y nombre. El ZIP es ambiguo
+  (CBCT o librería): si el nombre sugiere tomografía se marca `cbct`, que es el caso que más
+  importa no perder.
+- **`registrarFallo()`** deja constancia de lo que NO llegó — antes un archivo descartado no
+  dejaba ninguna huella en la base. Esa era la razón de que el CBCT perdido fuera invisible.
+- 💡 NO migra ni borra columnas: se llena en paralelo. Migrar de golpe rompería los paneles.
+
+**✅ Paridad Alejandro** — `3624660` (mismo bug del CBCT, crítico ahí porque las guías
+quirúrgicas dependen del CBCT) y `a7922c3` (registro de archivos). El SQL corre una sola vez
+(Supabase compartido); el código va repo por repo.
+
+### 🔴 PENDIENTE — Alejandro no tiene `revision-diseno.html`
+PRODIGY ofrece fabricación al aprobar el diseño (Colombia: fresado/impresión · internacional:
+solicitud especial con envío). **Alejandro no tiene esa página**, y siendo el proyecto más
+orientado a diseño es justo donde más ingreso se deja sobre la mesa: el cliente aprueba y
+nadie le ofrece fabricar.
+
+---
+
 ### 🔴 Ronda 5 — FLUJO DE ARCHIVOS: 5 fallas que impedían entregar (resueltas)
 
 Auditoría completa del ciclo de archivos (cliente sube → operario trabaja → cliente recibe).
