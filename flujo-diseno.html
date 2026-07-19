@@ -1876,17 +1876,27 @@ const lineWompi = document.getElementById('line-wompi');
                             horas <= 36 ? '24–36 horas hábiles' : '48 horas hábiles';
               dtEl.textContent = label;
               dtEl.style.color = express ? '#ef4444' : '#00FF41';
-              // Calcular fecha estimada
-              const ahora = new Date();
-              const msPorHora = 3600000;
-              let horasRestantes = horas;
-              let estimado = new Date(ahora);
-              while (horasRestantes > 0) {
-                estimado = new Date(estimado.getTime() + 3600000);
-                const h = estimado.getHours(), d = estimado.getDay();
-                if (d !== 0 && d !== 6 && h >= 8 && h < 18) horasRestantes--;
+              // Fecha estimada. Antes se calculaba aquí con un bucle propio que
+              // solo saltaba sábado y domingo: NO conocía los festivos (~18 al año
+              // en Colombia, casi todos lunes) ni el corte de las 5 PM. Un pedido
+              // de viernes 6 PM prometía entrega el sábado.
+              let estimado;
+              if (window.PFechas) {
+                estimado = PFechas.entrega(horas);
+              } else {
+                // Respaldo por si no cargó el módulo: no promete de más
+                estimado = new Date(Date.now() + horas * 3600000);
               }
-              dfEl.textContent = 'Aprox. ' + estimado.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'}) + ' — sujeto a confirmar pago';
+              let txtFecha = 'Aprox. ' + estimado.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'});
+              // Si hay un festivo de por medio, decirlo: evita el reclamo de
+              // "me dijeron 24 horas y llegó 3 días después".
+              if (window.PFechas) {
+                const fest = PFechas.festivosEntre(new Date(), estimado);
+                if (fest.length) {
+                  txtFecha += ' (incluye ' + fest.length + ' festivo' + (fest.length > 1 ? 's' : '') + ')';
+                }
+              }
+              dfEl.textContent = txtFecha + ' — sujeto a confirmar pago';
             }
 
             return total;
@@ -2461,7 +2471,8 @@ const lineWompi = document.getElementById('line-wompi');
 <script src="js/supabase-client.js?v=20260609"></script>
 <script src="js/footer.js?v=20260609"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
-    <script src="js/formatos.js?v=20260718"></script>
+    <script src="js/fechas-habiles.js?v=20260719"></script>
+<script src="js/formatos.js?v=20260718"></script>
 <script src="js/pedido-guard.js?v=20260719"></script>
 <script src="js/modo-prueba.js?v=20260719"></script>
     <script src="js/registro-archivos.js?v=20260718"></script>
