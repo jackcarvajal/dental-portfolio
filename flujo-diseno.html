@@ -1057,7 +1057,13 @@ window.submitOrden     = window.submitOrden      || function(){};
             <h3 style="color:var(--gold-primary);">¡Orden Registrada!</h3>
             <p style="color:#aaa;font-size:.86rem;margin:8px 0 16px;">Tu solicitud de Diseño CAD fue ingresada correctamente.</p>
             <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:16px;text-align:left;font-size:.86rem;line-height:1.9;margin-bottom:16px;">
-                <p><strong style="color:var(--gold-primary);">ID Orden:</strong> <span id="exito-id">—</span></p>
+                <p><strong style="color:var(--gold-primary);">ID Orden:</strong>
+                   <span id="exito-id" style="font-family:monospace;">—</span>
+                   <button type="button" title="Copiar el número de orden"
+                     onclick="navigator.clipboard.writeText(document.getElementById('exito-id').textContent);this.textContent='✓ Copiado';setTimeout(()=>this.textContent='📋 Copiar',2000);"
+                     style="background:rgba(0,210,255,.12);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;margin-left:6px;">📋 Copiar</button>
+                </p>
+                <p style="font-size:.74rem;color:#94a3b8;margin-top:-4px;">Guarda este número: con él consultas tu caso en cualquier momento.</p>
                 <p><strong style="color:var(--gold-primary);">Profesional:</strong> <span id="exito-cliente">—</span></p>
                 <p><strong style="color:var(--gold-primary);">Total:</strong> <span id="exito-total">—</span></p>
             </div>
