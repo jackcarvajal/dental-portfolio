@@ -11,6 +11,45 @@
 
 ## 2026-07-19
 
+### ✅ Entorno de pruebas · Tour corregido · Fechas con festivos
+
+**🧪 Modo prueba — `sql/patch-modo-prueba-2026-07.sql` ✅ EJECUTADO**
+Se podía probar el sistema solo creando pedidos reales. Ahora un usuario con
+`app_metadata.role = 'test'` recorre todos los flujos sin pagar:
+- Columna `es_prueba` + vista `pedidos_reales` (KPIs y facturación excluyen las pruebas)
+- El trigger de estado inicial respeta `pago_estado='pago_confirmado'` **solo** si `es_prueba`;
+  si alguien manda `es_prueba=true` sin el rol, se le quita
+- `limpiar_pedidos_prueba()` borra todo el rastro — **no se expone a la API** a propósito
+- `js/modo-prueba.js`: se activa **solo con sesión real**, nunca con un parámetro de URL o
+  localStorage (eso lo encendería cualquiera). Franja fija en pantalla.
+- 🔴 **Falta crear el usuario** en Dashboard → Authentication → Users + asignarle el rol.
+  💡 Tras asignarlo hay que **cerrar y reabrir sesión**: el rol viaja dentro del JWT.
+
+**🎯 Tour — apuntaba a botones equivocados**
+Los selectores eran genéricos: `'[type=submit], .btn-enviar, .btn-primary'`. `querySelector`
+devuelve el **primer** match de toda la página, así que "Envía el caso" señalaba el botón
+**ACCESO del header**. Y los 4 flujos compartían el mismo guion (`TOURS[f] = TOURS['flujo-diseno.html']`)
+pese a tener IDs distintos. Ahora cada flujo tiene su guion con IDs reales, verificados uno a
+uno contra su HTML. En fresado/impresión se apunta a `#btn-submit` y no a
+`#btn-whatsapp-confirm`, que vive en un modal cerrado y no sería visible.
+
+**📅 Fechas de entrega — `js/fechas-habiles.js` (ambos repos)**
+`flujo-diseno` y `flujo-lab` calculaban así: `if (d !== 0 && d !== 6 && h >= 8 && h < 18)`.
+Saltaban fin de semana pero **no conocían los festivos** — 18 al año en Colombia, casi todos
+lunes — ni el corte de 5 PM que anuncia el propio banner. Un pedido de **viernes 6 PM
+prometía entrega el sábado**.
+Además los criterios no coincidían: impresión documenta "Lunes a Sábado" y diseño saltaba
+también el sábado — el mismo caso daba fechas distintas según por dónde entrara.
+- Módulo compartido: festivos (fijos + Ley Emiliani + Pascua por Butcher), días hábiles,
+  corte configurable en un solo `CFG`.
+- Verificado: 18 festivos en 2026 · viernes 17-jul 6PM → **martes 21** (el 20 es festivo) ·
+  16 h hábiles desde jueves 9AM → viernes 3PM.
+- Avisa **"(incluye N festivos)"** — mata el reclamo de *"me dijeron 24 horas"*.
+- ⚠️ **NO se tocó** `calcularFechaEntrega()` de fresado ni impresión: están INTOCABLE y ya
+  calculaban bien con su propia copia de los festivos.
+
+---
+
 ### 🔴🔴 HALLAZGO MAYOR — NINGÚN PEDIDO SE ESTABA GUARDANDO (resuelto)
 
 ```sql
