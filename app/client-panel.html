@@ -708,9 +708,14 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 window.sb = sb;
 
-// Bucket donde el operario deja el STL final (ver operario-diseno.html → sube a 'dental-cases').
-// Debe coincidir con el de la purga (functions/api/purgar-stl-storage.js).
-const BUCKET_STL     = 'dental-cases';
+// El STL final NO siempre cae en el mismo bucket: Diseño CAD lo sube a
+// 'dental-cases' (operario-diseno.html) pero Producción y Operación lo suben a
+// 'diseno-archivos' (operario.html, operator-panel.html). Como `stl_ruta` guarda
+// solo la ruta, sin el bucket, hay que probar ambos.
+// Unificar los buckets por etapa es la solución de fondo, pero exige mover
+// archivos; mientras tanto esto evita que el doctor se quede sin su descarga.
+const BUCKETS_STL    = ['dental-cases', 'diseno-archivos'];
+const BUCKET_STL     = BUCKETS_STL[0];
 // Bucket de archivos que sube el propio cliente (comprobantes, fotos de feedback)
 const BUCKET_CLIENTE = 'prodigy-files';
 
@@ -942,15 +947,22 @@ async function descargarSTL(pedidoId, stlRuta) {
     }
 
     toast('Generando enlace de descarga…');
-    // BUCKET_STL debe coincidir con donde lo sube el operario (operario-diseno.html).
-    // Antes apuntaba a 'prodigy-files' — bucket equivocado: la descarga fallaba siempre.
-    const { data, error } = await sb.storage.from(BUCKET_STL).createSignedUrl(stlRuta, 3600);
-    if (error || !data?.signedUrl) {
-        console.warn('[client-panel] createSignedUrl falló:', BUCKET_STL, stlRuta, error?.message);
+    const url = await firmarSTL(stlRuta);
+    if (!url) {
         toast('No pudimos generar el enlace. Escríbenos por WhatsApp y te lo enviamos.', 'error');
         return;
     }
-    window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+    window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+/** Firma una ruta de STL probando los buckets donde puede estar. */
+async function firmarSTL(ruta) {
+    for (const b of BUCKETS_STL) {
+        const { data, error } = await sb.storage.from(b).createSignedUrl(ruta, 3600);
+        if (!error && data?.signedUrl) return data.signedUrl;
+    }
+    console.warn('[client-panel] STL no encontrado en', BUCKETS_STL.join(' ni '), '→', ruta);
+    return null;
 }
 
 /* ── VISOR DE ENTREGABLES ─────────────────────────────────────
@@ -972,8 +984,8 @@ async function verArchivos(pedidoId) {
         if (/^https?:\/\//i.test(p.stl_ruta)) {
             items.push({ url: p.stl_ruta, nombre: 'Modelo.stl' });
         } else {
-            const { data } = await sb.storage.from(BUCKET_STL).createSignedUrl(p.stl_ruta, 3600);
-            if (data?.signedUrl) items.push({ url: data.signedUrl, nombre: 'Modelo.stl' });
+            const u = await firmarSTL(p.stl_ruta);
+            if (u) items.push({ url: u, nombre: 'Modelo.stl' });
         }
     }
 

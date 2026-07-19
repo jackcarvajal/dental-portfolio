@@ -110,7 +110,13 @@ export async function onRequestGet(context) {
         // Borrar STL principal — stl_ruta es una ruta dentro de BUCKET_STL
         const ref1 = rutaDesdeUrl(pedido.stl_ruta);
         if (!ref1) throw new Error(`No se pudo interpretar stl_ruta: ${pedido.stl_ruta}`);
-        const del1 = await borrarArchivoStorage(env, ref1.bucket, ref1.path);
+        // El STL puede estar en 'dental-cases' (Diseño CAD) o en 'diseno-archivos'
+        // (Producción / Operación) y stl_ruta no guarda cuál. Se borra de ambos:
+        // el 404 del que no lo tenga es inocuo e idempotente.
+        let del1 = await borrarArchivoStorage(env, ref1.bucket, ref1.path);
+        if (ref1.bucket === BUCKET_STL) {
+          await borrarArchivoStorage(env, 'diseno-archivos', ref1.path);
+        }
 
         // stl_urls guarda URLs firmadas completas y de buckets distintos
         // ('dental-cases' desde operario-diseno, 'diseno-archivos' desde operator-panel):

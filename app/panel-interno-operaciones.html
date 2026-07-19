@@ -1689,12 +1689,13 @@ async function abrirSTL(stlRuta) {
         window.open(stlRuta, '_blank', 'noopener,noreferrer');
         return;
     }
-    const { data, error } = await sb.storage.from('dental-cases').createSignedUrl(stlRuta, 3600);
-    if (error || !data?.signedUrl) {
-        toast('No se pudo generar el enlace del STL: ' + (error?.message || 'desconocido'), 'error');
-        return;
+    // El STL cae en 'dental-cases' si lo subió Diseño CAD, o en 'diseno-archivos'
+    // si lo subió Producción u Operación. `stl_ruta` no guarda el bucket: hay que probar.
+    for (const b of ['dental-cases', 'diseno-archivos']) {
+        const { data } = await sb.storage.from(b).createSignedUrl(stlRuta, 3600);
+        if (data?.signedUrl) { window.open(data.signedUrl, '_blank', 'noopener,noreferrer'); return; }
     }
-    window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+    toast('No se encontró el STL en ningún bucket. Ruta: ' + stlRuta, 'error');
 }
 
 async function cambiarEstado(pedidoId, nuevoEstado) {
