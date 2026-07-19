@@ -11,6 +11,28 @@
 
 ## 2026-07-18
 
+### ⚠️ Ronda 5d — CI en verde en ambos repos (los correos de "Run failed")
+
+**Alejandro fallaba en CADA push desde hacía tiempo** → un correo por cada uno. Con el CI
+permanentemente en rojo, un fallo real pasa desapercibido: fue exactamente lo que ocurrió.
+- `offline.html` no existía → **creada** y enlazada en `sw.js` (entra al PRECACHE y es el
+  fallback sin red). Antes caía en `/404.html`, que dice "no encontrada" — mensaje equivocado
+  cuando el problema es que no hay internet. Avisa que los archivos del caso NO se enviaron.
+- **24 handlers JS inline** en `index.html`: solo cambios de `border-color` en hover →
+  pasados a CSS (`.svc-card` / `.svc-gold` / `.svc-cyan`). Se ve igual, no depende de JS y no
+  choca con una CSP que prohíba código en atributos.
+- `instalar-app.html` no existe en ese proyecto: la lista de FAQPage se copió de PRODIGY.
+  Sacada de la lista con nota.
+- Resultado: **89 ✅ 0 ❌**.
+
+**🔴 Deploy de PRODIGY roto por mí (`46aa0b3`)** — escribí `FlujoUploader.registrarEnPedido()`
+sin `window.` en `js/flujo-impresion.js`, que está en el lint crítico y usa `window.FlujoUploader`
+en el resto. eslint → `no-undef` → deploy caído.
+- 💡 **LECCIÓN (segunda vez que pasa):** correr `npm run lint` **antes** de pushear, no solo
+  `smoke-tests`. Los tests pasaban; el lint no. Son dos puertas distintas del workflow.
+
+---
+
 ### ✅ Ronda 5c — Aprobación → producción · Contabilidad · Registro de archivos
 
 **🔴 La aprobación del doctor no llegaba a producción (resuelto)**
