@@ -2319,7 +2319,7 @@
 
                         // Registrar archivos y fallos — deja rastro de lo que no llegó
                         if (_d?.[0]?.id && STATE._subida && window.FlujoUploader?.registrarEnPedido) {
-                            FlujoUploader.registrarEnPedido(_sb, _d[0].id, STATE._subida, {
+                            window.FlujoUploader.registrarEnPedido(_sb, _d[0].id, STATE._subida, {
                                 etapa: 'cliente_caso',
                                 subidoPor: STATE.whatsappCliente || null
                             });
