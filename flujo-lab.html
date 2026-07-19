@@ -993,7 +993,8 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
         terminos_aceptados_at: new Date().toISOString(),
         user_agent: navigator.userAgent.slice(0, 250)
       }]).select('id').single().then(function(r){
-        if (r.error) { console.warn('[PRODIGY] Pedido lab no guardado:', r.error.message); return; }
+        if (window.PedidoGuard && !window.PedidoGuard.verificar(r.error, { codigo: ordenId, flujo: 'lab', sb: _sb })) return;
+        if (r.error) { console.error('[PRODIGY] Pedido lab NO guardado:', r.error.message); return; }
         // Registrar archivos y fallos — deja rastro de lo que no llegó
         if (r.data && r.data.id && window._labSubida && window.FlujoUploader && window.FlujoUploader.registrarEnPedido) {
           window.FlujoUploader.registrarEnPedido(_sb, r.data.id, window._labSubida, { etapa: 'cliente_caso' });
@@ -1029,6 +1030,7 @@ buildVita();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
 </script>
 <script src="js/formatos.js?v=20260718"></script>
+<script src="js/pedido-guard.js?v=20260719"></script>
 <script src="js/registro-archivos.js?v=20260718"></script>
 <script src="js/upload-guard.js?v=20260718"></script>
 <script src="js/stl-multi-viewer.js?v=20260718"></script>

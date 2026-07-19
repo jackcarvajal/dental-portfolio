@@ -2315,7 +2315,11 @@
                     // data:null y `_d?.[0]?.id` era siempre null, así que el log de
                     // auditoría del pedido nunca llegaba a crearse.
                     }]).select('id').then(({ data: _d, error: _e }) => {
-                        if (_e) console.warn('[PRODIGY] Pedido impresion no guardado:', _e.message);
+                        if (window.PedidoGuard) {
+                            window.PedidoGuard.verificar(_e, { codigo: STATE.ordenId, flujo: 'impresion', sb: _sb });
+                        } else if (_e) {
+                            console.error('[PRODIGY] Pedido impresion NO guardado:', _e.message);
+                        }
 
                         // Registrar archivos y fallos — deja rastro de lo que no llegó
                         if (_d?.[0]?.id && STATE._subida && window.FlujoUploader?.registrarEnPedido) {

@@ -2117,7 +2117,13 @@ const lineWompi = document.getElementById('line-wompi');
                         codigo_referido:       sessionStorage.getItem('prodigy_ref') || null,
                         canal_origen:          (()=>{try{const u=JSON.parse(localStorage.getItem('pg_utm')||'{}');return u.source||null;}catch(_){return null;}})() || (document.referrer.includes('google')?'seo':document.referrer.includes('instagram')?'instagram':(document.referrer.includes('wa.me')||document.referrer.includes('whatsapp'))?'whatsapp':null)
                     }]).select('id').single().then(({ data: _ped, error: _e }) => {
-                        if (_e) console.warn('[PRODIGY] Pedido diseño no guardado:', _e.message);
+                        // No puede ser un console.warn: así estuvo la tabla `pedidos`
+                        // vacía sin que nadie lo notara. PedidoGuard lo hace visible.
+                        if (window.PedidoGuard) {
+                            PedidoGuard.verificar(_e, { codigo: STATE.ordenId, flujo: 'diseno', sb: _sb });
+                        } else if (_e) {
+                            console.error('[PRODIGY] Pedido diseño NO guardado:', _e.message);
+                        }
 
                         // Registrar cada archivo (y cada fallo) en `pedido_archivos`.
                         // Es lo que permite saber si el caso llegó completo ANTES de
@@ -2452,6 +2458,7 @@ const lineWompi = document.getElementById('line-wompi');
 <script src="js/footer.js?v=20260609"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
     <script src="js/formatos.js?v=20260718"></script>
+<script src="js/pedido-guard.js?v=20260719"></script>
     <script src="js/registro-archivos.js?v=20260718"></script>
     <script src="js/upload-guard.js?v=20260718"></script>
     <script src="js/stl-multi-viewer.js?v=20260718"></script>
