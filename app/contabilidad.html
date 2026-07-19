@@ -215,6 +215,62 @@ tbody td{padding:11px 14px;vertical-align:middle;}
         <button type="button" class="tab-btn" onclick="switchTab('tendencia',this);cargarTendencia()">
             <i class="fas fa-chart-area"></i> Tendencia
         </button>
+        <button type="button" class="tab-btn" onclick="switchTab('productividad',this);cargarProductividad()">
+            <i class="fas fa-user-clock"></i> Productividad
+        </button>
+        <button type="button" class="tab-btn" onclick="switchTab('archivos',this);cargarArchivosCaso()">
+            <i class="fas fa-folder-open"></i> Archivos por caso
+        </button>
+    </div>
+
+    <!-- TAB: Productividad por persona ─────────────────────────────────
+         Cuánto diseña y produce cada quien. Sale de historial_diseno.actor
+         (el operario que registró cada acción) cruzado con pedidos.         -->
+    <div id="tab-productividad" class="tab-panel">
+        <div class="filtros">
+            <label for="prod-desde">Desde</label>
+            <input type="date" id="prod-desde">
+            <label for="prod-hasta">Hasta</label>
+            <input type="date" id="prod-hasta">
+            <button type="button" class="btn-xs btn-ver" onclick="cargarProductividad()"><i class="fas fa-search"></i> Filtrar</button>
+            <button type="button" class="btn-xs" onclick="exportarProductividad()"><i class="fas fa-file-csv"></i> Exportar CSV</button>
+        </div>
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Persona</th>
+                        <th scope="col">Área</th>
+                        <th scope="col">Diseños entregados</th>
+                        <th scope="col">Revisiones atendidas</th>
+                        <th scope="col">Casos producidos</th>
+                        <th scope="col">Total acciones</th>
+                        <th scope="col">Última actividad</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-productividad" aria-live="polite" aria-label="Productividad por persona">
+                    <tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted);">Selecciona un rango y pulsa Filtrar.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="font-size:.72rem;color:var(--muted);margin-top:10px;">
+            <i class="fas fa-circle-info"></i> Se cuenta cada acción registrada en el historial del caso.
+            Un mismo caso puede sumar varias acciones si tuvo revisiones.
+        </p>
+    </div>
+
+    <!-- TAB: Archivos por caso ──────────────────────────────────────────
+         Contabilidad necesita ver comprobantes, facturas de proveedor y
+         evidencias de entrega para cuadrar cada caso. Antes no tenía acceso. -->
+    <div id="tab-archivos" class="tab-panel">
+        <div class="filtros">
+            <label for="arch-buscar">Buscar caso</label>
+            <input type="search" id="arch-buscar" placeholder="Código, doctor o paciente" style="min-width:220px;">
+            <button type="button" class="btn-xs btn-ver" onclick="cargarArchivosCaso()"><i class="fas fa-search"></i> Buscar</button>
+        </div>
+        <div id="arch-resultados" aria-live="polite" aria-label="Archivos del caso">
+            <p style="color:var(--muted);padding:20px;text-align:center;">Busca un caso para ver sus archivos.</p>
+        </div>
     </div>
 
     <!-- TAB: Por confirmar -->
@@ -1430,6 +1486,189 @@ function initRealtime() {
             toast(`💳 Nuevo comprobante — Caso #${payload.new?.codigo || ''}`, 'ok');
             cargarPorConfirmar();
         }).subscribe();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PRODUCTIVIDAD POR PERSONA
+   Contabilidad no tenía forma de saber cuánto produce cada quien.
+   La fuente es `historial_diseno.actor`: cada acción sobre un caso queda
+   registrada con quién la hizo. Se agrupa por persona y tipo de acción.
+   ═══════════════════════════════════════════════════════════════════ */
+let _prodFilas = [];
+
+/* Qué tipo de acción cuenta como qué. Los tipos vienen de historial_diseno.tipo */
+const _PROD_MAP = {
+    SUBIDA_DISENO:  'disenos',
+    APROBACION:     'revisiones',
+    CAMBIOS:        'revisiones',
+    QA:             'revisiones',
+    FAB_CONFIRMADA: 'produccion',
+    ENRUTADO_AUTO:  null            // lo genera el sistema, no una persona
+};
+
+async function cargarProductividad() {
+    const tb = document.getElementById('tbody-productividad');
+    tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted);">Cargando…</td></tr>';
+
+    const desde = document.getElementById('prod-desde').value;
+    const hasta = document.getElementById('prod-hasta').value;
+
+    let q = sb.from('historial_diseno').select('actor,tipo,created_at,pedido_id').limit(3000);
+    if (desde) q = q.gte('created_at', desde);
+    if (hasta) q = q.lte('created_at', hasta + 'T23:59:59');
+
+    const { data, error } = await q;
+    if (error) {
+        tb.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;color:#f87171;">Error: ${escH(error.message)}</td></tr>`;
+        return;
+    }
+    if (!data || !data.length) {
+        tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted);">Sin actividad en ese rango.</td></tr>';
+        _prodFilas = [];
+        return;
+    }
+
+    const porPersona = {};
+    for (const r of data) {
+        const quien = (r.actor || 'sin registrar').trim();
+        if (quien === 'sistema') continue;            // acciones automáticas, no son de nadie
+        if (!porPersona[quien]) {
+            porPersona[quien] = { persona: quien, disenos: 0, revisiones: 0, produccion: 0, total: 0, ultima: null };
+        }
+        const p = porPersona[quien];
+        const cubeta = _PROD_MAP[r.tipo];
+        if (cubeta) p[cubeta]++;
+        p.total++;
+        if (!p.ultima || r.created_at > p.ultima) p.ultima = r.created_at;
+    }
+
+    /* El área se infiere del nombre del actor: 'operario-diseno-bulk' → diseño */
+    const areaDe = a => /dise/i.test(a) ? 'Diseño'
+                     : /oper|fres|impres|produc/i.test(a) ? 'Producción'
+                     : /doctor|cliente/i.test(a) ? 'Cliente'
+                     : /admin/i.test(a) ? 'Administración' : '—';
+
+    _prodFilas = Object.values(porPersona)
+        .map(p => ({ ...p, area: areaDe(p.persona) }))
+        .sort((a, b) => b.total - a.total);
+
+    tb.innerHTML = _prodFilas.map(p => `<tr>
+        <td style="font-weight:700;color:#e2e8f0;">${escH(p.persona)}</td>
+        <td style="font-size:.75rem;color:var(--muted);">${escH(p.area)}</td>
+        <td style="color:#3b82f6;font-weight:700;">${p.disenos}</td>
+        <td style="color:#fbbf24;font-weight:700;">${p.revisiones}</td>
+        <td style="color:#f97316;font-weight:700;">${p.produccion}</td>
+        <td style="color:var(--neon);font-weight:800;">${p.total}</td>
+        <td style="font-size:.75rem;color:var(--muted);">${fmtFecha(p.ultima)}</td>
+    </tr>`).join('');
+}
+
+function exportarProductividad() {
+    if (!_prodFilas.length) { toast('Nada que exportar — filtra primero', 'error'); return; }
+    const filas = [['Persona','Area','Disenos','Revisiones','Produccion','Total','Ultima actividad']]
+        .concat(_prodFilas.map(p => [p.persona, p.area, p.disenos, p.revisiones, p.produccion, p.total, p.ultima || '']));
+    // Comillas dobles escapadas para que un nombre con coma no rompa el CSV
+    const csv = filas.map(f => f.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+    const url = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `productividad-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('CSV descargado', 'ok');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ARCHIVOS POR CASO
+   Para cuadrar un caso contabilidad necesita ver el comprobante del doctor,
+   la factura del proveedor y la evidencia de entrega. Antes no tenía acceso:
+   esos archivos viven en buckets que solo abrían los paneles operativos.
+   Se firma al momento (1h) — no se guardan URLs permanentes.
+   ═══════════════════════════════════════════════════════════════════ */
+async function cargarArchivosCaso() {
+    const cont = document.getElementById('arch-resultados');
+    const term = document.getElementById('arch-buscar').value.trim();
+    if (term.length < 2) {
+        cont.innerHTML = '<p style="color:var(--muted);padding:20px;text-align:center;">Escribe al menos 2 caracteres.</p>';
+        return;
+    }
+    cont.innerHTML = '<p style="color:var(--muted);padding:20px;text-align:center;">Buscando…</p>';
+
+    const like = `%${term}%`;
+    const { data, error } = await sb.from('pedidos')
+        .select('id,codigo,nombre_doctor,nombre_paciente,precio_total,pago_estado,estado,stl_ruta,stl_urls,html_diseno_url,fotos_feedback,created_at')
+        .or(`codigo.ilike.${like},nombre_doctor.ilike.${like},nombre_paciente.ilike.${like}`)
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+    if (error) { cont.innerHTML = `<p style="color:#f87171;padding:20px;text-align:center;">Error: ${escH(error.message)}</p>`; return; }
+    if (!data || !data.length) { cont.innerHTML = '<p style="color:var(--muted);padding:20px;text-align:center;">Sin resultados.</p>'; return; }
+
+    // Datos de mensajería de esos casos — antes contabilidad no veía si algo
+    // se entregó ni cuándo, y eso es justo lo que cierra el ciclo del cobro.
+    const _desp = {};
+    const { data: dsp } = await sb.from('despachos')
+        .select('pedido_id,estado,fecha_salida,fecha_entrega_real,novedades')
+        .in('pedido_id', data.map(p => p.id));
+    (dsp || []).forEach(d => { _desp[d.pedido_id] = d; });
+
+    const _ESTDESP = {
+        PROGRAMADO:   ['Programado',   '#94a3b8'],
+        EN_REPARTO:   ['En reparto',   '#f97316'],
+        ENTREGADO:    ['Entregado',    '#00FF41'],
+        NO_ENTREGADO: ['No entregado', '#ef4444']
+    };
+
+    cont.innerHTML = data.map(p => {
+        const d  = _desp[p.id];
+        const em = d ? (_ESTDESP[d.estado] || [d.estado, '#94a3b8']) : null;
+        const envio = d
+            ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);font-size:.75rem;color:var(--muted);">
+                 <i class="fas fa-truck" style="color:${em[1]};"></i>
+                 <strong style="color:${em[1]};">${escH(em[0])}</strong>
+                 ${d.fecha_entrega_real ? ' · entregado ' + fmtFecha(d.fecha_entrega_real) : (d.fecha_salida ? ' · salió ' + fmtFecha(d.fecha_salida) : '')}
+                 ${d.novedades ? ' · <em>' + escH(d.novedades) + '</em>' : ''}
+               </div>`
+            : '<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);font-size:.75rem;color:var(--muted);"><i class="fas fa-truck"></i> Sin despacho registrado</div>';
+        const arch = [];
+        if (p.html_diseno_url) arch.push({ t:'Diseño 3D', u:p.html_diseno_url, i:'fa-cube', c:'#D946A6' });
+        (Array.isArray(p.stl_urls) ? p.stl_urls : []).forEach((u,i) =>
+            arch.push({ t:`STL ${i+1}`, u, i:'fa-download', c:'#00d2ff' }));
+        if (p.stl_ruta) arch.push({ t:'STL final', ruta:p.stl_ruta, bucket:'dental-cases', i:'fa-download', c:'#00d2ff' });
+        (Array.isArray(p.fotos_feedback) ? p.fotos_feedback : []).forEach((r,i) =>
+            arch.push({ t:`Foto ${i+1}`, ruta:r, bucket:'prodigy-files', i:'fa-image', c:'#fb923c' }));
+
+        const botones = arch.length ? arch.map(a => a.u
+            ? `<a href="${escH(a.u)}" target="_blank" rel="noopener noreferrer" class="btn-xs" style="color:${a.c};border-color:${a.c}55;"><i class="fas ${a.i}"></i> ${escH(a.t)}</a>`
+            : `<button type="button" class="btn-xs" style="color:${a.c};border-color:${a.c}55;" onclick="abrirArchivoContab('${escH(a.bucket)}','${escH(a.ruta)}')"><i class="fas ${a.i}"></i> ${escH(a.t)}</button>`
+        ).join(' ') : '<span style="color:var(--muted);font-size:.75rem;">Sin archivos registrados</span>';
+
+        return `<div class="section-card" style="margin-bottom:12px;padding:14px;">
+            <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:10px;">
+                <div>
+                    <strong style="color:var(--cyan);font-family:monospace;">#${escH(p.codigo || p.id.slice(0,8))}</strong>
+                    <span style="color:var(--muted);font-size:.78rem;margin-left:8px;">${escH(p.nombre_doctor || '—')} · ${escH(p.nombre_paciente || '—')}</span>
+                </div>
+                <div style="font-size:.8rem;">
+                    <span style="color:var(--neon);font-weight:700;">${fmtCOP(p.precio_total)}</span>
+                    <span style="color:var(--muted);margin-left:8px;">${escH(p.pago_estado || 'pendiente')}</span>
+                </div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">${botones}</div>
+            ${envio}
+        </div>`;
+    }).join('');
+}
+
+/** Firma la ruta al momento y la abre. No se guardan URLs permanentes. */
+async function abrirArchivoContab(bucket, ruta) {
+    if (!bucket || !ruta) { toast('Archivo no disponible', 'error'); return; }
+    const { data, error } = await sb.storage.from(bucket).createSignedUrl(ruta, 3600);
+    if (error || !data?.signedUrl) {
+        toast('No se pudo abrir: ' + (error?.message || 'sin permiso sobre ese bucket'), 'error');
+        return;
+    }
+    window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
 }
 
 /* ── Toast ────────────────────────────────────────────────────────── */
