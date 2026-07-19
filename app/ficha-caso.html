@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#D946A6">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex, nofollow">
+<title>PRODIGY — Ficha del caso</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔎</text></svg>">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script src="../js/formatos.js?v=20260718"></script>
+<script src="../js/visor-universal.js?v=20260718"></script>
+<style>
+:root{--bg:#050505;--card:#0d1520;--gold:#D4AF37;--pink:#D946A6;--cyan:#00d2ff;--neon:#00FF41;--muted:#94a3b8;--txt:#e2e8f0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:20px;padding-top:26px;}
+.wrap{max-width:1080px;margin:0 auto;}
+h1{font-size:1.25rem;color:var(--gold);margin-bottom:4px;}
+.sub{color:var(--muted);font-size:.82rem;margin-bottom:20px;}
+.buscador{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+.buscador input{flex:1;min-width:240px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--txt);padding:12px 15px;font-size:16px;font-family:inherit;}
+.buscador input:focus{outline:2px solid var(--cyan);outline-offset:1px;}
+.btn{background:linear-gradient(135deg,var(--gold),#c19b2e);color:#0a0a0a;border:none;padding:12px 22px;border-radius:10px;font-weight:800;cursor:pointer;font-size:.85rem;min-height:46px;font-family:inherit;}
+.btn-sec{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:var(--txt);}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px;margin-bottom:14px;}
+.card h2{font-size:.82rem;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+.f{font-size:.8rem;}
+.f .k{color:var(--muted);display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;}
+.f .v{color:var(--txt);font-weight:700;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:800;}
+.arch{display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:9px;margin-bottom:7px;flex-wrap:wrap;}
+.arch .nm{flex:1;min-width:140px;font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.arch .tp{font-size:.66rem;padding:2px 9px;border-radius:12px;background:rgba(0,210,255,.12);color:var(--cyan);white-space:nowrap;}
+.btn-xs{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:var(--txt);padding:6px 12px;border-radius:7px;font-size:.72rem;cursor:pointer;min-height:32px;font-family:inherit;}
+.btn-xs:hover{background:rgba(212,175,55,.14);border-color:rgba(212,175,55,.4);}
+.hist{border-left:2px solid rgba(212,175,55,.25);padding-left:14px;margin-left:5px;}
+.hist .it{margin-bottom:12px;position:relative;}
+.hist .it::before{content:'';position:absolute;left:-19px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--gold);}
+.hist .t{font-size:.78rem;color:var(--txt);font-weight:700;}
+.hist .m{font-size:.73rem;color:var(--muted);margin-top:2px;}
+.vacio{color:var(--muted);font-size:.78rem;padding:12px;text-align:center;}
+.alerta{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);color:#f87171;border-radius:10px;padding:12px 15px;font-size:.8rem;margin-bottom:14px;}
+.ok{background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.25);color:var(--neon);border-radius:10px;padding:12px 15px;font-size:.8rem;margin-bottom:14px;}
+.res{padding:11px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;margin-bottom:7px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;}
+.res:hover{border-color:rgba(212,175,55,.4);background:rgba(212,175,55,.05);}
+@media(max-width:640px){body{padding:14px;}.btn{width:100%;}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><i class="fas fa-magnifying-glass"></i> Ficha del caso</h1>
+  <p class="sub">Todo sobre un caso en una sola pantalla: datos, archivos que entraron, lo que se entregó, quién lo trabajó y dónde va.</p>
+
+  <div class="buscador">
+    <input type="search" id="q" placeholder="Código, doctor o paciente… (Enter para buscar)" aria-label="Buscar caso">
+    <button type="button" class="btn" id="btn-buscar"><i class="fas fa-search"></i> Buscar</button>
+  </div>
+
+  <div id="salida" aria-live="polite"></div>
+</div>
+
+<script>
+const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const esc  = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const cop  = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '—';
+const fech = t => t ? new Date(t).toLocaleString('es-CO',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+
+/* El STL puede estar en cualquiera de los dos buckets de entrega */
+const BUCKETS_ENTREGA = ['dental-cases','diseno-archivos'];
+
+(async () => { await ProdigyAuth.require(['admin','operator','contabilidad']); })();
+
+/* ── BÚSQUEDA ───────────────────────────────────────────────────────── */
+async function buscar() {
+  const term = document.getElementById('q').value.trim();
+  const out  = document.getElementById('salida');
+  if (term.length < 2) { out.innerHTML = '<p class="vacio">Escribe al menos 2 caracteres.</p>'; return; }
+  out.innerHTML = '<p class="vacio"><i class="fas fa-circle-notch fa-spin"></i> Buscando…</p>';
+
+  const like = `%${term}%`;
+  const { data, error } = await sb.from('pedidos')
+    .select('id,codigo,nombre_doctor,nombre_paciente,created_at,estado,estado_operativo')
+    .or(`codigo.ilike.${like},nombre_doctor.ilike.${like},nombre_paciente.ilike.${like}`)
+    .order('created_at',{ascending:false}).limit(25);
+
+  if (error) { out.innerHTML = `<div class="alerta">Error: ${esc(error.message)}</div>`; return; }
+  if (!data.length) { out.innerHTML = '<p class="vacio">Sin resultados.</p>'; return; }
+  if (data.length === 1) { verFicha(data[0].id); return; }
+
+  out.innerHTML = `<div class="card"><h2><i class="fas fa-list"></i> ${data.length} casos</h2>` +
+    data.map(p => `<div class="res" role="button" tabindex="0" data-id="${esc(p.id)}">
+        <div><strong style="color:var(--cyan);font-family:monospace;">${esc(p.codigo||p.id.slice(0,8))}</strong>
+          <span style="color:var(--muted);font-size:.78rem;margin-left:8px;">${esc(p.nombre_doctor||'—')} · ${esc(p.nombre_paciente||'—')}</span></div>
+        <span style="font-size:.72rem;color:var(--muted);">${fech(p.created_at)}</span>
+      </div>`).join('') + '</div>';
+
+  out.querySelectorAll('.res').forEach(r => {
+    const ir = () => verFicha(r.dataset.id);
+    r.addEventListener('click', ir);
+    r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ir(); } });
+  });
+}
+
+/* ── FICHA COMPLETA ─────────────────────────────────────────────────── */
+async function verFicha(id) {
+  const out = document.getElementById('salida');
+  out.innerHTML = '<p class="vacio"><i class="fas fa-circle-notch fa-spin"></i> Cargando ficha…</p>';
+
+  /* Todo en paralelo: el caso, sus archivos, su historial y su despacho */
+  const [ped, arch, hist, desp] = await Promise.all([
+    sb.from('pedidos').select('*').eq('id',id).single(),
+    sb.from('pedido_archivos').select('*').eq('pedido_id',id).order('created_at'),
+    sb.from('historial_diseno').select('*').eq('pedido_id',id).order('created_at',{ascending:false}).limit(40),
+    sb.from('despachos').select('*').eq('pedido_id',id).order('created_at',{ascending:false}).limit(1)
+  ]);
+
+  if (ped.error || !ped.data) { out.innerHTML = `<div class="alerta">No se pudo cargar el caso: ${esc(ped.error?.message||'')}</div>`; return; }
+  const p = ped.data, A = arch.data || [], H = hist.data || [], D = (desp.data||[])[0];
+
+  /* Archivos registrados en pedido_archivos, separados por tramo */
+  const entrada = A.filter(a => a.etapa && a.etapa.startsWith('cliente'));
+  const entrega = A.filter(a => a.etapa && a.etapa.startsWith('operario'));
+  const fallidos = A.filter(a => a.estado === 'fallido');
+
+  /* Compatibilidad: los casos viejos no tienen pedido_archivos, sus archivos
+     están en las columnas antiguas. Se muestran igual para no dejar huecos. */
+  const legacy = [];
+  if (p.stl_url) String(p.stl_url).split(/\s*\|\s*|\s*,\s*/).filter(Boolean)
+      .forEach((u,i) => legacy.push({nombre:`Archivo ${i+1} (histórico)`, url:u, tipo:'escaneo'}));
+  (Array.isArray(p.stl_urls)?p.stl_urls:[]).forEach((u,i) => legacy.push({nombre:`STL ${i+1}`, url:u, tipo:'stl_final'}));
+  if (p.html_diseno_url) legacy.push({nombre:'Diseño 3D', url:p.html_diseno_url, tipo:'diseno'});
+  if (p.stl_ruta) legacy.push({nombre:'STL final', ruta:p.stl_ruta, tipo:'stl_final'});
+
+  const chip = (t,c) => `<span class="badge" style="background:${c}22;color:${c};">${esc(t)}</span>`;
+  const colorEstado = e => /entrega|termin|aprob/i.test(e||'') ? '#00FF41'
+                        : /reparto|produc|fresa|impres/i.test(e||'') ? '#f97316'
+                        : /revis|cambio/i.test(e||'') ? '#fbbf24' : '#94a3b8';
+
+  const filaArchivo = a => {
+    const meta = window.PFormatos ? window.PFormatos.meta(a.extension || '') : {icon:'fa-file',color:'#94a3b8'};
+    const roto = a.estado === 'fallido';
+    return `<div class="arch">
+      <i class="fas ${roto?'fa-triangle-exclamation':meta.icon}" style="color:${roto?'#ef4444':meta.color};"></i>
+      <span class="nm">${esc(a.nombre)}</span>
+      <span class="tp">${esc(a.tipo||'otro')}</span>
+      ${roto ? `<span style="font-size:.7rem;color:#f87171;">NO LLEGÓ — ${esc(a.error_msg||'')}</span>`
+             : `<button type="button" class="btn-xs" data-b="${esc(a.bucket)}" data-r="${esc(a.ruta)}"><i class="fas fa-eye"></i> Ver</button>`}
+    </div>`;
+  };
+
+  out.innerHTML = `
+  <button type="button" class="btn btn-sec" id="volver" style="margin-bottom:14px;"><i class="fas fa-arrow-left"></i> Volver a buscar</button>
+
+  ${fallidos.length ? `<div class="alerta"><i class="fas fa-triangle-exclamation"></i>
+      <strong>${fallidos.length} archivo(s) no llegaron.</strong> Revísalo con el doctor antes de producir.</div>` : ''}
+  ${(!A.length && !legacy.length) ? `<div class="alerta"><i class="fas fa-triangle-exclamation"></i>
+      <strong>Este caso no tiene ningún archivo.</strong> No debería entrar a producción así.</div>` : ''}
+
+  <div class="card">
+    <h2><i class="fas fa-folder-open"></i> Caso ${esc(p.codigo || p.id.slice(0,8))}</h2>
+    <div class="grid">
+      <div class="f"><span class="k">Doctor</span><span class="v">${esc(p.nombre_doctor||'—')}</span></div>
+      <div class="f"><span class="k">Paciente</span><span class="v">${esc(p.nombre_paciente||'—')}</span></div>
+      <div class="f"><span class="k">Trabajo</span><span class="v">${esc(p.tipo_trabajo||p.material||'—')}</span></div>
+      <div class="f"><span class="k">Cantidad</span><span class="v">${esc(p.cantidad||'—')}</span></div>
+      <div class="f"><span class="k">Creado</span><span class="v">${fech(p.created_at)}</span></div>
+      <div class="f"><span class="k">Flujo</span><span class="v">${esc(p.flujo||'—')}</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-diagram-project"></i> Estado</h2>
+    <div class="grid">
+      <div class="f"><span class="k">Estado</span><span class="v">${chip(p.estado||'—', colorEstado(p.estado))}</span></div>
+      <div class="f"><span class="k">Etapa operativa</span><span class="v">${chip(p.estado_operativo||'—', colorEstado(p.estado_operativo))}</span></div>
+      <div class="f"><span class="k">Área actual</span><span class="v">${esc(p.departamento_actual||'sin asignar')}</span></div>
+      <div class="f"><span class="k">Revisiones</span><span class="v">${esc(p.revisiones_usadas||0)}</span></div>
+      <div class="f"><span class="k">Total</span><span class="v" style="color:var(--neon);">${cop(p.precio_total)}</span></div>
+      <div class="f"><span class="k">Pago</span><span class="v">${chip(p.pago_estado||'pendiente', p.pago_estado==='pago_confirmado'?'#00FF41':'#fbbf24')}</span></div>
+      <div class="f"><span class="k">STL liberado</span><span class="v">${p.stl_liberado?'<span style="color:var(--neon)">Sí</span>':'<span style="color:var(--muted)">No</span>'}</span></div>
+      <div class="f"><span class="k">Fabricación</span><span class="v">${p.fabricacion_solicitada ? (p.fabricacion_pagada?'Pagada':'Solicitada, sin pago') : 'Solo diseño'}</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-upload"></i> Lo que envió el doctor ${entrada.length?`(${entrada.length})`:''}</h2>
+    ${entrada.length ? entrada.map(filaArchivo).join('') : '<p class="vacio">Sin archivos registrados en esta etapa.</p>'}
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-download"></i> Lo que se entregó ${entrega.length?`(${entrega.length})`:''}</h2>
+    ${entrega.length ? entrega.map(filaArchivo).join('') : '<p class="vacio">Todavía no hay entregables registrados.</p>'}
+  </div>
+
+  ${legacy.length ? `<div class="card">
+    <h2><i class="fas fa-clock-rotate-left"></i> Archivos del registro anterior (${legacy.length})</h2>
+    <p style="font-size:.72rem;color:var(--muted);margin-bottom:10px;">Casos creados antes del registro por archivo. Se leen de las columnas antiguas.</p>
+    ${legacy.map((l,i) => `<div class="arch">
+        <i class="fas fa-file" style="color:var(--muted);"></i>
+        <span class="nm">${esc(l.nombre)}</span>
+        <span class="tp">${esc(l.tipo)}</span>
+        <button type="button" class="btn-xs" data-lg="${i}"><i class="fas fa-eye"></i> Ver</button>
+      </div>`).join('')}
+  </div>` : ''}
+
+  <div class="card">
+    <h2><i class="fas fa-truck"></i> Entrega</h2>
+    ${D ? `<div class="grid">
+        <div class="f"><span class="k">Estado</span><span class="v">${chip(D.estado, colorEstado(D.estado))}</span></div>
+        <div class="f"><span class="k">Salida</span><span class="v">${fech(D.fecha_salida)}</span></div>
+        <div class="f"><span class="k">Entregado</span><span class="v">${fech(D.fecha_entrega_real)}</span></div>
+        <div class="f"><span class="k">Novedades</span><span class="v">${esc(D.novedades||'—')}</span></div>
+      </div>` : '<p class="vacio">Sin despacho registrado.</p>'}
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-clock-rotate-left"></i> Quién hizo qué</h2>
+    ${H.length ? `<div class="hist">${H.map(h => `<div class="it">
+        <div class="t">${esc(h.tipo||'—')} · <span style="color:var(--cyan);">${esc(h.actor||'—')}</span></div>
+        <div class="m">${esc(h.descripcion||'')} — ${fech(h.created_at)}</div>
+      </div>`).join('')}</div>` : '<p class="vacio">Sin historial.</p>'}
+  </div>`;
+
+  document.getElementById('volver').addEventListener('click', () => { document.getElementById('salida').innerHTML=''; document.getElementById('q').focus(); });
+
+  /* Ver archivo: se firma al momento, nunca se guardan URLs permanentes */
+  out.querySelectorAll('[data-b]').forEach(b => b.addEventListener('click', async () => {
+    const { data } = await sb.storage.from(b.dataset.b).createSignedUrl(b.dataset.r, 3600);
+    if (data?.signedUrl) window.PVisor.abrir([{url:data.signedUrl, nombre:b.previousElementSibling?.previousElementSibling?.textContent || 'Archivo'}]);
+    else alert('No se pudo abrir el archivo. Puede haber sido purgado.');
+  }));
+
+  out.querySelectorAll('[data-lg]').forEach(b => b.addEventListener('click', async () => {
+    const l = legacy[+b.dataset.lg];
+    if (l.url) { window.PVisor.abrir([{url:l.url, nombre:l.nombre}]); return; }
+    for (const bk of BUCKETS_ENTREGA) {
+      const { data } = await sb.storage.from(bk).createSignedUrl(l.ruta, 3600);
+      if (data?.signedUrl) { window.PVisor.abrir([{url:data.signedUrl, nombre:l.nombre}]); return; }
+    }
+    alert('No se encontró el archivo en ningún bucket.');
+  }));
+}
+
+document.getElementById('btn-buscar').addEventListener('click', buscar);
+document.getElementById('q').addEventListener('keydown', e => { if (e.key === 'Enter') buscar(); });
+
+/* Permite entrar directo con ?id=UUID o ?codigo=XXX desde otro panel */
+(function(){
+  const u = new URLSearchParams(location.search);
+  if (u.get('id')) { verFicha(u.get('id')); return; }
+  if (u.get('codigo')) { document.getElementById('q').value = u.get('codigo'); buscar(); }
+})();
+</script>
+<script src="../js/rol-actual.js?v=20260718e"></script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+</body>
+</html>
