@@ -283,6 +283,18 @@ body.ready{visibility:visible;}
       <input type="url" id="qa-link" class="link-input" placeholder="https://drive.google.com/...">
     </div>
 
+    <!-- Upload HTML del visor Exocad -----------------------------------
+         Antes solo existía el campo de LINK de arriba, que escribe en
+         `link_diseno`. Pero revision-diseno.html exige `html_diseno_url`,
+         así que el doctor veía "el diseño aún no está disponible" para
+         siempre. Y un link de Drive tampoco serviría: el visor hace fetch()
+         del HTML y Drive lo bloquea por CORS. Hay que subir el archivo. -->
+    <div class="link-box" style="margin-top:12px;background:rgba(217,70,166,.05);border-color:rgba(217,70,166,.25);">
+      <label style="color:#D946A6;"><i class="fas fa-cube" style="margin-right:5px;"></i>Subir visor Exocad (.html) — es lo que ve el doctor</label>
+      <input type="file" id="qa-html-file" accept=".html,.htm" style="color:#e2e8f0;font-size:16px;width:100%;">
+      <small id="qa-html-status" style="color:var(--muted);font-size:.7rem;">Exporta el visor desde Exocad y súbelo aquí. Sin esto el doctor no puede revisar.</small>
+    </div>
+
     <!-- Upload STL -->
     <div class="link-box" style="margin-top:12px;background:rgba(0,255,65,.04);border-color:rgba(0,255,65,.2);">
       <label style="color:var(--green);"><i class="fas fa-cube" style="margin-right:5px;"></i>Upload STL (privado en Storage)</label>
@@ -312,6 +324,10 @@ body.ready{visibility:visible;}
     <div class="modal-actions">
       <button type="button" class="btn-xs btn-red" onclick="cerrarQA()">Cancelar</button>
       <button type="button" class="btn-xs btn-gold" onclick="guardarQA('CAMBIOS_SOLICITADOS')"><i class="fas fa-redo"></i> Requiere cambios</button>
+      <!-- El camino normal: el doctor revisa ANTES de que se libere nada.
+           No existía — solo estaba "Aprobar y entregar", que se saltaba la
+           revisión del cliente y liberaba el STL de una vez. -->
+      <button type="button" class="btn-xs" style="color:#D946A6;border-color:rgba(217,70,166,.45);font-weight:800;" onclick="guardarQA('REVISION_CLIENTE')"><i class="fas fa-paper-plane"></i> Enviar al doctor a revisar</button>
       <button type="button" class="btn-xs btn-green" onclick="guardarQA('DISENO_APROBADO')"><i class="fas fa-check"></i> Aprobar y entregar</button>
     </div>
   </div>
@@ -647,6 +663,7 @@ async function guardarQA(resultado) {
   const link     = document.getElementById('qa-link').value.trim();
   const notas    = document.getElementById('qa-notas').value.trim();
   const stlFile  = document.getElementById('qa-stl-file')?.files[0];
+  const htmlFile = document.getElementById('qa-html-file')?.files[0];
   const revActual= parseInt(document.getElementById('qa-revisiones').value)||0;
   const revision = revActual + 1;
   const checks   = ['qa1','qa2','qa3','qa4','qa5','qa6','qa7'];
@@ -656,7 +673,27 @@ async function guardarQA(resultado) {
     if (incompleto) { toast('Completa todos los checks de QA antes de aprobar','err'); return; }
   }
 
-  let stlRuta = null;
+  let stlRuta  = null;
+  let htmlUrl  = null;
+
+  // Upload del visor Exocad. Es lo que abre el doctor en revision-diseno,
+  // que exige `html_diseno_url`: sin esto ve "el diseño aún no está disponible".
+  if (htmlFile) {
+    const htmlPath = `${id}/v${revision}.html`;
+    const { error: hErr } = await sb.storage.from('dental-cases')
+      .upload(htmlPath, htmlFile, { upsert: true, contentType: 'text/html' });
+    if (hErr) { toast('Error subiendo el visor: ' + hErr.message, 'err'); return; }
+    // URL firmada larga: se guarda en el pedido y el doctor la abre desde su panel
+    const { data: sd } = await sb.storage.from('dental-cases').createSignedUrl(htmlPath, 157788000);
+    htmlUrl = sd?.signedUrl || null;
+    document.getElementById('qa-html-status').textContent = `✅ Visor subido: ${htmlPath}`;
+  }
+
+  // Mandar a revisión sin visor deja al doctor sin nada que mirar
+  if (resultado === 'REVISION_CLIENTE' && !htmlUrl && !document.getElementById('qa-link').value.trim()) {
+    toast('Sube el visor .html antes de enviarlo al doctor — si no, no verá nada', 'err');
+    return;
+  }
 
   // Upload STL si se seleccionó
   if (stlFile) {
@@ -684,9 +721,17 @@ async function guardarQA(resultado) {
   if (link)    updates.link_diseno   = link;
   if (notas)   updates.notas_cambios = notas;
   if (stlRuta) updates.stl_ruta      = stlRuta;
+  // `html_diseno_url` es la columna que lee revision-diseno.html. Antes solo la
+  // escribía la carga masiva, por eso los diseños subidos desde este modal
+  // nunca le llegaban al doctor.
+  if (htmlUrl) updates.html_diseno_url = htmlUrl;
   if (resultado === 'DISENO_APROBADO') {
     updates.estado       = 'DISENO_FINALIZADO';
     updates.stl_liberado = true;
+  }
+  if (resultado === 'REVISION_CLIENTE') {
+    // El STL NO se libera todavía: primero el doctor aprueba.
+    updates.stl_liberado = false;
   }
 
   const { error } = await sb.from('pedidos').update(updates).eq('id', id);
