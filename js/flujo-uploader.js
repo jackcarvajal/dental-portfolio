@@ -31,9 +31,11 @@
      * Sube todos los archivos del ProdigyMultiViewer al bucket.
      * @param {string} orderId  — ID de la orden (ej. "FRE-2026-001")
      * @param {Function} onProgress — callback(n, total) opcional
-     * @returns {Promise<string[]>} — array de URLs públicas
+     * @param {string} contexto — clave de js/formatos.js (default: 'cliente_caso')
+     * @returns {Promise<string[]>} — array de URLs firmadas; `.fallidos` lista los rechazos
      */
-    async function upload(orderId, onProgress) {
+    async function upload(orderId, onProgress, contexto) {
+        contexto = contexto || 'cliente_caso';
         if (!window.ProdigyMultiViewer) return [];
         const files = window.ProdigyMultiViewer.getFiles();
         if (!files || !files.length) return [];
@@ -45,39 +47,28 @@
         const uid = session?.user?.id || 'anon';
 
         const urls = [];
+        const fallidos = [];   // se le informan al usuario al terminar
         const safeOrderId = (orderId || 'sin-id').replace(/[^a-zA-Z0-9_-]/g, '-');
 
-        const MAX_FILE_MB = 500; // STL/PLY pueden ser grandes
-        const ALLOWED_EXTS = ['.stl','.ply','.obj','.dcm','.zip','.jpg','.jpeg','.png','.pdf','.3oxz','.constructionfile'];
-
         for (let i = 0; i < files.length; i++) {
-            const f        = files[i];
-            const ext      = ('.' + f.name.split('.').pop()).toLowerCase();
+            const f = files[i];
 
-            // Validar extensión permitida
-            if (!ALLOWED_EXTS.includes(ext)) {
-                console.warn('[FlujoUploader] Extensión no permitida:', f.name);
-                continue;
-            }
-            // Validar tamaño
-            if (f.size > MAX_FILE_MB * 1024 * 1024) {
-                console.warn('[FlujoUploader] Archivo demasiado grande:', f.name, '>', MAX_FILE_MB+'MB');
-                continue;
+            // Validación contra la fuente única de verdad (js/formatos.js).
+            // Antes había una lista local que contradecía al visor y al guard:
+            // los .zip (CBCT) y .3oxz se descartaban en silencio.
+            if (window.PFormatos) {
+                const chk = await window.PFormatos.validarCompleto(f, contexto);
+                if (!chk.ok) {
+                    console.warn('[FlujoUploader] Rechazado:', f.name, chk.error);
+                    fallidos.push({ name: f.name, error: chk.error });
+                    continue;
+                }
             }
 
             const safeName = sanitizeFilename(f.name);
             const path     = `${uid}/${safeOrderId}/${safeName}`;
 
             if (onProgress) onProgress(i, files.length);
-
-            // Validar magic bytes antes de subir (evita ejecutables renombrados)
-            if (window.validateMagicBytes) {
-                const mbCheck = await window.validateMagicBytes(f);
-                if (!mbCheck.safe) {
-                    console.warn('[FlujoUploader] Archivo bloqueado por magic bytes:', f.name, mbCheck.error);
-                    continue;
-                }
-            }
 
             // Reintento con backoff — redes móviles inestables cortan subidas grandes a mitad
             const MAX_INTENTOS = 3;
@@ -99,6 +90,7 @@
 
             if (uploadError) {
                 console.warn('[FlujoUploader] Error definitivo subiendo', f.name, uploadError.message);
+                fallidos.push({ name: f.name, error: `No se pudo subir "${f.name}" tras 3 intentos. Revisa tu conexión.` });
                 // Continuar con el siguiente archivo en lugar de abortar todo el pedido
                 continue;
             }
@@ -108,6 +100,24 @@
         }
 
         if (onProgress) onProgress(files.length, files.length);
+
+        // AVISAR AL USUARIO. Antes todos los fallos eran mudos (solo console.warn):
+        // el doctor creía haber enviado el CBCT y el laboratorio recibía el caso sin él.
+        if (fallidos.length) {
+            const detalle = fallidos.map(x => '• ' + x.error).join('\n');
+            if (window.showUploadError) {
+                window.showUploadError(
+                    fallidos.length === 1
+                        ? fallidos[0].error
+                        : `${fallidos.length} archivos no se enviaron. Revisa el detalle.`
+                );
+            }
+            console.warn('[FlujoUploader] Archivos no enviados:\n' + detalle);
+        }
+
+        // Retrocompatible: se sigue devolviendo un ARRAY (los 4 flujos hacen urls.length
+        // y urls.join), con la lista de fallos colgada como propiedad.
+        urls.fallidos = fallidos;
         return urls;
     }
 

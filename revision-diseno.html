@@ -851,7 +851,12 @@ async function loadVisor(url) {
     const html = await resp.text();
     const wrap = document.getElementById('viewer-wrap');
     const iframe = document.createElement('iframe');
-    iframe.sandbox = 'allow-scripts allow-same-origin';
+    // SANDBOX: 'allow-scripts' SIN 'allow-same-origin'. Las dos juntas se anulan:
+    // el contenido enmarcado puede quitarse el sandbox y, al ser srcdoc, heredaba
+    // el origen de esta página → acceso al DOM y a la sesión del doctor.
+    // Los export de Exocad son autocontenidos (Three.js embebido), no necesitan same-origin.
+    iframe.sandbox = 'allow-scripts';
+    iframe.referrerPolicy = 'no-referrer';
     iframe.style.cssText = 'width:100%;height:100%;border:none;';
     wrap.innerHTML = '';
     wrap.appendChild(iframe);

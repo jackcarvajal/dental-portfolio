@@ -11,6 +11,103 @@
 
 ## 2026-07-18
 
+### 🔴 Ronda 5 — FLUJO DE ARCHIVOS: 5 fallas que impedían entregar (resueltas)
+
+Auditoría completa del ciclo de archivos (cliente sube → operario trabaja → cliente recibe).
+Se encontraron fallas **silenciosas**: nadie veía un error, pero el caso llegaba incompleto
+o el entregable nunca alcanzaba al doctor.
+
+**1 · El STL final no le llegaba al doctor** 🔴→✅
+- `operario-diseno.html:669` sube el STL al bucket **`dental-cases`** y guarda la ruta en `stl_ruta`.
+- `client-panel.html` lo buscaba en **`prodigy-files`** → *"Error generando link"* siempre.
+- Fix: constante `BUCKET_STL = 'dental-cases'` + soporte para el formato antiguo (URL completa).
+
+**2 · La purga dejaba archivos huérfanos y rompía la referencia** 🔴→✅
+- `purgar-stl-storage.js` borraba de **`diseno-archivos`** (tercer bucket distinto).
+- El DELETE daba 404 → se contaba como éxito (línea 41) → **igual limpiaba la BD**.
+- Resultado: el archivo real quedaba para siempre ocupando espacio y la referencia se destruía.
+- Fix: `rutaDesdeUrl()` extrae bucket+ruta de la URL firmada (`stl_urls` guarda URLs, no rutas).
+
+**3 · El botón STL nunca aparecía en el panel interno** 🔴→✅
+- Pedía `stl_ruta?.startsWith('https://')`, pero `stl_ruta` guarda una ruta (`{id}/v1.stl`).
+- Fallo mudo: el botón simplemente no se dibujaba. Fix: `abrirSTL()` firma al vuelo.
+
+**4 · El CBCT se perdía en silencio** 🔴→✅
+- `flujo-uploader.js` permitía `.zip`, pero `upload-guard.js` bloqueaba la firma `50 4B 03 04`.
+- El CBCT viaja **siempre** como ZIP de cortes DICOM; los `.3oxz` de 3Shape también son ZIP.
+- El archivo pasaba la primera validación y moría en la segunda con solo un `console.warn`:
+  el doctor creía haber enviado la tomografía y el caso llegaba sin ella.
+- Peor: **fallaba distinto según el flujo** — `flujo-diseno` no cargaba `upload-guard.js`,
+  así que ahí sí subía. Mismo archivo, resultado distinto según la página.
+- Fix: se quitó la firma ZIP de la lista de bloqueo (el riesgo real es el ejecutable, que sigue
+  bloqueado) + `flujo-diseno` ya carga el guard como los otros tres.
+
+**5 · Todos los errores de subida eran mudos** 🔴→✅
+- Las 4 rutas de fallo (extensión, tamaño, firma, 3 reintentos agotados) hacían `continue`
+  con solo un `console.warn`. `showUploadError()` existía pero nadie la llamaba.
+- Fix: se acumulan en `fallidos[]` y se muestran al terminar. Retorno **retrocompatible**
+  (sigue siendo un array; `.fallidos` va colgado como propiedad) para no romper los 4 flujos.
+
+**Causa raíz común: CUATRO listas de formatos que no coincidían**
+`stl-multi-viewer.js` · `flujo-uploader.js` · `upload-guard.js` · `flujo-diseno.html` inline.
+Efectos: el `.pdf` se podía subir pero no seleccionar; se anunciaba `.constructioninfo`
+(Exocad) pero el código esperaba `.constructionfile` → rechazado; `.3ox` anunciado y no aceptado.
+
+- **NUEVO `js/formatos.js`** — fuente única. Define categorías, extensiones y **contextos con
+  obligatoriedad**: `cliente_caso` (obligatorio, mín. 1, 500MB) · `cliente_revision` (opcional)
+  · `cliente_pago` (obligatorio, 10MB) · `operario_diseno` · `operario_evidencia`.
+- Incluye lo que faltaba: librerías (`.zip .rar .7z`), Exocad (`.constructioninfo .dxd`),
+  3Shape (`.3oxz .3ox`), HEIC/HEIF (iPhone).
+
+### ✅ Ronda 5b — Visor universal
+
+**NUEVO `js/visor-universal.js` (`PVisor`)** — los visores existían solo del lado de *subir*:
+el doctor veía su STL en 3D al mandarlo, pero **no podía ver nada de lo que se le entregaba**.
+Y el PDF no tenía visor en ningún lado.
+
+| Tipo | Render |
+|---|---|
+| HTML (export Exocad) | iframe aislado — el flujo modelo, el único que ya funcionaba bien |
+| STL / OBJ / PLY | Three.js con OrbitControls (antes solo STL; OBJ y PLY salían como ícono) |
+| Imágenes | `<img>` con zoom |
+| PDF | visor nativo del navegador |
+| ZIP / DICOM | tarjeta + descarga |
+
+Carga perezosa (solo pinta la pestaña abierta), Three.js bajo demanda, `Escape` cierra.
+Montado en `client-panel` → botón **Visor** por caso: diseño + modelo 3D + fotos.
+
+### ⚠️ Seguridad — sandbox del iframe del visor Exocad
+`revision-diseno.html:854` tenía `sandbox='allow-scripts allow-same-origin'`. **Esas dos
+banderas juntas se anulan**: el contenido enmarcado puede quitarse el sandbox y, al ser
+`srcdoc`, heredaba el origen de la página → acceso al DOM y a la sesión del doctor.
+Fix: `sandbox='allow-scripts'` + `referrerpolicy='no-referrer'`. Los export de Exocad son
+autocontenidos, no necesitan same-origin.
+
+### 💡 Decisión — notas de voz descartadas
+Se evaluó permitir audio en el feedback clínico. **Se descartó**: el operario no puede revisar
+12 casos con audios, el buscador Ctrl+K no encuentra nada dentro de un audio, y en un reclamo
+un texto es evidencia y un audio no. El canal es **texto + imagen** — una foto marcando el
+margen es más precisa que cualquier descripción. Anotado en `js/formatos.js` para que nadie
+lo re-agregue sin revisar la decisión.
+
+### 🔴 PENDIENTE — el STL cae en dos buckets según quién lo suba
+- Diseño CAD → `dental-cases` · Producción y Operación → `diseno-archivos`
+- El cliente solo lee de `dental-cases`: **si el STL final lo sube Producción, el doctor
+  sigue sin poder descargarlo.** Hoy se arregló la ruta principal (Diseño CAD).
+- Hay **5 buckets** para un mismo caso (`pedidos-archivos`, `prodigy-files`, `dental-cases`,
+  `diseno-archivos`, `evidencias-entrega`) — uno por panel que lo escribió, no por etapa.
+- Lo correcto: `caso-entrada` / `caso-entrega` / `evidencias`. Requiere migración.
+
+### 🔴 PENDIENTE — el cliente no recibe todo lo que debería
+Hoy solo obtiene diseño y STL. Faltan: **factura PDF**, fotos de entrega/firma, y poder
+recuperar sus propios archivos. Requiere tabla `pedido_archivos` (un registro por archivo con
+tramo, tipo y estado) — hoy todo va en `stl_url`, una sola columna de texto con URLs pegadas
+por `' | '`, sin forma de saber si un pedido llegó completo.
+
+---
+
+## 2026-07-18
+
 ### ✅ Ronda 4 — features de operación, pruebas y paridad
 
 **Nuevos módulos (PRODIGY + portados a Alejandro):**

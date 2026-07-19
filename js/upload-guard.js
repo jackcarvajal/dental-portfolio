@@ -9,10 +9,14 @@
 
 const UPLOAD_RULES = {
     CAD: {
-        allowed: ['.stl', '.obj', '.ply'],
+        // Alineado con js/formatos.js (fuente única). Incluye contenedores porque
+        // el CBCT, los .3oxz y las librerías Exocad llegan comprimidos.
+        allowed: ['.stl', '.stlb', '.stla', '.obj', '.ply', '.dcm', '.dicom',
+                  '.3oxz', '.3ox', '.constructioninfo', '.constructionfile', '.dxd',
+                  '.zip', '.rar', '.7z'],
         blocked: ['.scene', '.cad', '.3dm', '.3ds', '.max', '.mb', '.ma', '.blend',
-                  '.mp4', '.avi', '.mov', '.mkv', '.wmv', '.webm', '.m4v', '.exe',
-                  '.zip', '.rar', '.7z', '.js', '.php', '.sh'],
+                  '.mp4', '.avi', '.mov', '.mkv', '.wmv', '.m4v', '.exe',
+                  '.js', '.php', '.sh', '.bat', '.cmd', '.ps1'],
         maxMB:   500,
         label:   'archivos CAD'
     },
@@ -106,10 +110,17 @@ function showUploadError(message) {
 }
 
 // Magic-bytes signatures that must never appear in uploaded files
+//
+// ⚠️ EL ZIP YA NO SE BLOQUEA (fix 2026-07-18). Bloquearlo rompía el negocio:
+//    · el CBCT/tomografía viaja SIEMPRE como .zip de cortes DICOM
+//    · los .3oxz de 3Shape son contenedores ZIP
+//    · las librerías de implantes de Exocad también
+//    Como flujo-uploader.js sí permitía .zip en su lista de extensiones, el archivo
+//    pasaba la primera validación y moría aquí en silencio: el doctor creía haber
+//    enviado la tomografía y el caso llegaba sin ella.
+//    El riesgo real es el EJECUTABLE, no el contenedor. Esos siguen bloqueados.
 const BLOCKED_SIGNATURES = [
     { sig: [0x4D,0x5A],             label: 'ejecutable Windows (EXE/DLL)' },
-    { sig: [0x50,0x4B,0x03,0x04],   label: 'archivo ZIP' },
-    { sig: [0x50,0x4B,0x05,0x06],   label: 'archivo ZIP vacío' },
     { sig: [0x7F,0x45,0x4C,0x46],   label: 'ejecutable Linux (ELF)' },
     { sig: [0x23,0x21],             label: 'script de shell (#!)' },
     { sig: [0xCA,0xFE,0xBA,0xBE],   label: 'ejecutable macOS (Mach-O)' },

@@ -1670,7 +1670,7 @@ function renderPedidos(lista) {
         </td>
         <td style="font-size:0.75rem;">${fmtFecha(p.created_at)}</td>
         <td style="white-space:nowrap;">
-            ${p.stl_ruta?.startsWith('https://') ? `<a href="${esc(p.stl_ruta)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-download"></i> STL</a>` : ''}
+            ${p.stl_ruta ? `<button type="button" class="btn-xs btn-gold" onclick="abrirSTL('${esc(p.stl_ruta)}')"><i class="fas fa-download"></i> STL</button>` : ''}
             <a href="../recibo-caso?id=${esc(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
             <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Pago confirmado" onclick="prodigyNotifPago(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Pago</button>
             <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Diseño listo" onclick="prodigyNotifDiseno(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Diseño</button>
@@ -1678,6 +1678,23 @@ function renderPedidos(lista) {
         </td>
     </tr>`;
 }).join('');
+}
+
+// Abre el STL del pedido. `stl_ruta` guarda una RUTA dentro del bucket 'dental-cases'
+// (ver operario-diseno.html), no una URL. Antes se pedía .startsWith('https://'),
+// así que el botón no se dibujaba nunca. Se aceptan ambos formatos por compatibilidad.
+async function abrirSTL(stlRuta) {
+    if (!stlRuta) { toast('Este pedido no tiene STL', 'error'); return; }
+    if (/^https?:\/\//i.test(stlRuta)) {
+        window.open(stlRuta, '_blank', 'noopener,noreferrer');
+        return;
+    }
+    const { data, error } = await sb.storage.from('dental-cases').createSignedUrl(stlRuta, 3600);
+    if (error || !data?.signedUrl) {
+        toast('No se pudo generar el enlace del STL: ' + (error?.message || 'desconocido'), 'error');
+        return;
+    }
+    window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
 }
 
 async function cambiarEstado(pedidoId, nuevoEstado) {

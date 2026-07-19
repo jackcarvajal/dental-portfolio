@@ -1577,7 +1577,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                         ? `<span style="font-size:.72rem;color:#fbbf24;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:6px;padding:5px 10px">✍️ Indicar en Notas del caso</span>`
                         : `<label id="lbl-${a.id}" style="display:inline-flex;align-items:center;gap:6px;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.3);color:#D946A6;padding:6px 12px;border-radius:7px;cursor:pointer;font-size:.75rem;font-weight:700;white-space:nowrap">
                         <i class="fas fa-upload"></i> Subir
-                        <input type="file" id="file-${a.id}" aria-label="Subir archivo de diseño" style="display:none" accept=".stl,.ply,.obj,.dcm,.zip,.jpg,.jpeg,.png,.pdf,.3oxz" onchange="marcarArchivoSubido('${a.id}','${a.req}',this)">
+                        <input type="file" id="file-${a.id}" aria-label="Subir archivo de diseño" style="display:none" accept=".stl,.stlb,.stla,.ply,.obj,.dcm,.dicom,.zip,.rar,.7z,.3oxz,.3ox,.constructioninfo,.constructionfile,.dxd,.jpg,.jpeg,.png,.webp,.heic,.heif,.pdf" onchange="marcarArchivoSubido('${a.id}','${a.req}',this)">
                       </label>
                       <span id="estado-${a.id}" style="font-size:.72rem;color:#94a3b8">Sin subir</span>`}
                     </div>
@@ -1605,15 +1605,19 @@ window.submitOrden     = window.submitOrden      || function(){};
             const lbl = document.getElementById('lbl-' + id);
 
             // ── Validación de seguridad ──────────────────────────────
+            // Validación contra js/formatos.js — fuente única. Antes había aquí una
+            // lista propia que no coincidía con el uploader ni con el visor.
             const MAX_MB = 500;
-            const ALLOWED_EXT = ['.stl','.ply','.obj','.dcm','.zip','.jpg','.jpeg','.png','.pdf','.3oxz'];
-            const ext = ('.' + file.name.split('.').pop()).toLowerCase();
-            if (!ALLOWED_EXT.includes(ext)) {
-                if (estado) estado.innerHTML = '<span style="color:#f87171"><i class="fas fa-times"></i> Tipo no permitido (STL, PLY, OBJ, DCM...)</span>';
-                input.value = '';
-                return;
-            }
-            if (file.size > MAX_MB * 1024 * 1024) {
+            const ext = window.PFormatos ? window.PFormatos.extDe(file.name)
+                                         : ('.' + file.name.split('.').pop()).toLowerCase();
+            if (window.PFormatos) {
+                const chk = window.PFormatos.validar(file, 'cliente_caso');
+                if (!chk.ok) {
+                    if (estado) estado.innerHTML = `<span style="color:#f87171"><i class="fas fa-times"></i> ${chk.error}</span>`;
+                    input.value = '';
+                    return;
+                }
+            } else if (file.size > MAX_MB * 1024 * 1024) {
                 if (estado) estado.innerHTML = `<span style="color:#f87171"><i class="fas fa-times"></i> Archivo muy grande (máx ${MAX_MB}MB)</span>`;
                 input.value = '';
                 return;
@@ -2428,9 +2432,11 @@ const lineWompi = document.getElementById('line-wompi');
 <script src="js/supabase-client.js?v=20260609"></script>
 <script src="js/footer.js?v=20260609"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
-    <script src="js/stl-multi-viewer.js?v=20260528"></script>
+    <script src="js/formatos.js?v=20260718"></script>
+    <script src="js/upload-guard.js?v=20260718"></script>
+    <script src="js/stl-multi-viewer.js?v=20260718"></script>
     <script>ProdigyMultiViewer.init('pmv-diseno');</script>
-    <script src="js/flujo-uploader.js?v=20260528"></script>
+    <script src="js/flujo-uploader.js?v=20260718"></script>
 <div id="fd-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:13px 22px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;opacity:0;transition:all .35s;pointer-events:none;max-width:400px;text-align:left;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);backdrop-filter:blur(8px);"></div>
 <script>
 let _fdToastT;

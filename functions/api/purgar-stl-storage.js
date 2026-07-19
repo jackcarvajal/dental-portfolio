@@ -25,6 +25,28 @@ function corsHeaders() {
   return { 'Content-Type': 'application/json' };
 }
 
+// Bucket donde el operario deja el STL final (operario-diseno.html) y desde donde
+// lo descarga el cliente (app/client-panel.html). Antes esta función borraba de
+// 'diseno-archivos' — bucket equivocado: el DELETE daba 404, se contaba como éxito
+// y la BD se limpiaba igual. Resultado: el archivo real quedaba huérfano para siempre.
+const BUCKET_STL = 'dental-cases';
+
+/**
+ * `stl_urls` guarda URLs firmadas completas, no rutas. Para borrar el objeto real
+ * hay que extraer el bucket y la ruta de la URL.
+ * Formato: https://<proj>.supabase.co/storage/v1/object/sign/<bucket>/<path>?token=…
+ * @returns {{bucket:string, path:string}|null}
+ */
+function rutaDesdeUrl(u) {
+  if (!u || typeof u !== 'string') return null;
+  if (!/^https?:\/\//i.test(u)) return { bucket: BUCKET_STL, path: u }; // ya es una ruta
+  try {
+    const m = new URL(u).pathname.match(/\/storage\/v1\/object\/(?:sign|public)\/([^/]+)\/(.+)$/);
+    if (!m) return null;
+    return { bucket: decodeURIComponent(m[1]), path: decodeURIComponent(m[2]) };
+  } catch { return null; }
+}
+
 async function borrarArchivoStorage(env, bucket, path) {
   if (!path) return { ok: true, skipped: true };
   const res = await fetch(
@@ -85,16 +107,22 @@ export async function onRequestGet(context) {
 
     for (const pedido of pedidos) {
       try {
-        // Borrar STL principal
-        const del1 = await borrarArchivoStorage(env, 'diseno-archivos', pedido.stl_ruta);
+        // Borrar STL principal — stl_ruta es una ruta dentro de BUCKET_STL
+        const ref1 = rutaDesdeUrl(pedido.stl_ruta);
+        if (!ref1) throw new Error(`No se pudo interpretar stl_ruta: ${pedido.stl_ruta}`);
+        const del1 = await borrarArchivoStorage(env, ref1.bucket, ref1.path);
 
-        // Borrar archivos adicionales si stl_urls es un array de rutas
+        // stl_urls guarda URLs firmadas completas y de buckets distintos
+        // ('dental-cases' desde operario-diseno, 'diseno-archivos' desde operator-panel):
+        // hay que resolver bucket + ruta de cada una.
         const rutasExtra = Array.isArray(pedido.stl_urls) ? pedido.stl_urls : [];
         for (const ruta of rutasExtra) {
-          await borrarArchivoStorage(env, 'diseno-archivos', ruta);
+          const ref = rutaDesdeUrl(ruta);
+          if (!ref) { console.warn('[purga] URL no interpretable, se omite:', ruta); continue; }
+          await borrarArchivoStorage(env, ref.bucket, ref.path);
         }
 
-        if (!del1.ok) throw new Error(`Storage delete falló (status ${del1.status}) para ${pedido.stl_ruta}`);
+        if (!del1.ok) throw new Error(`Storage delete falló (status ${del1.status}) para ${ref1.path}`);
 
         // Solo si el borrado real fue exitoso, limpiar la BD
         const updateRes = await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${pedido.id}`, {

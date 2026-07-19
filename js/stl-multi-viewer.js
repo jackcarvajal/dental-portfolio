@@ -20,8 +20,12 @@
     const STL_CDN     = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/STLLoader.js';
     const ORBIT_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/controls/OrbitControls.js';
     const MAX_MB      = 250;
-    const ACCEPT_EXTS = '.stl,.obj,.ply,.dcm,.zip,.3oxz,.3ox,.stlb,.stla,.jpg,.jpeg,.png,.webp,.tiff,.tif,.bmp,.gif';
-    const IMG_EXTS    = new Set(['jpg','jpeg','png','webp','tiff','tif','bmp','gif']);
+    // Se toma de js/formatos.js (fuente única). El literal es solo el respaldo
+    // por si la página no cargó formatos.js — antes esta lista contradecía al
+    // uploader: el .pdf se podía subir pero no se podía seleccionar aquí.
+    const ACCEPT_EXTS = (window.PFormatos && window.PFormatos.accept('cliente_caso'))
+        || '.stl,.obj,.ply,.dcm,.zip,.rar,.7z,.3oxz,.3ox,.constructioninfo,.constructionfile,.dxd,.stlb,.stla,.jpg,.jpeg,.png,.webp,.heic,.heif,.tiff,.tif,.bmp,.gif,.pdf,.mp3,.m4a,.ogg,.wav,.webm';
+    const IMG_EXTS    = new Set(['jpg','jpeg','png','webp','tiff','tif','bmp','gif','heic','heif']);
 
     function escH(s) {
         return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -43,6 +47,15 @@
         tif:  { icon: 'fa-image',       label: 'TIFF',      color: '#94a3b8' },
         bmp:  { icon: 'fa-image',       label: 'BMP',       color: '#94a3b8' },
         gif:  { icon: 'fa-image',       label: 'GIF',       color: '#c084fc' },
+        heic: { icon: 'fa-image',       label: 'HEIC',      color: '#fb923c' },
+        heif: { icon: 'fa-image',       label: 'HEIF',      color: '#fb923c' },
+        // Faltaban: el uploader los aceptaba pero aquí salían como archivo genérico
+        rar:  { icon: 'fa-file-zipper', label: 'RAR',       color: '#fbbf24' },
+        '7z': { icon: 'fa-file-zipper', label: '7Z',        color: '#fbbf24' },
+        pdf:  { icon: 'fa-file-pdf',    label: 'PDF',       color: '#ef4444' },
+        dxd:  { icon: 'fa-drafting-compass', label: 'Exocad DXD', color: '#fbbf24' },
+        constructioninfo: { icon: 'fa-drafting-compass', label: 'Exocad', color: '#fbbf24' },
+        constructionfile: { icon: 'fa-drafting-compass', label: 'Exocad', color: '#fbbf24' },
     };
 
     /* ── STATE ─────────────────────────────────────────── */

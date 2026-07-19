@@ -20,7 +20,9 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
     <script src="../js/auth-guard.js?v=20260717"></script>
-    <script src="../js/upload-guard.js?v=20260601"></script>
+    <script src="../js/formatos.js?v=20260718"></script>
+    <script src="../js/upload-guard.js?v=20260718"></script>
+    <script src="../js/visor-universal.js?v=20260718"></script>
     <style>
         body { overflow-x: hidden; }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -706,8 +708,14 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 window.sb = sb;
 
+// Bucket donde el operario deja el STL final (ver operario-diseno.html → sube a 'dental-cases').
+// Debe coincidir con el de la purga (functions/api/purgar-stl-storage.js).
+const BUCKET_STL     = 'dental-cases';
+// Bucket de archivos que sube el propio cliente (comprobantes, fotos de feedback)
+const BUCKET_CLIENTE = 'prodigy-files';
+
 // CAMPOS_CLIENTE — excluye nota_interna, nonce, comprobante_url, whatsapp operario
-const CAMPOS_CLIENTE = 'id,codigo,servicio,material,submaterial,estado,pago_estado,precio_total,created_at,updated_at,link_diseno,diseno_aprobado,notas_cambios,revisiones_usadas,stl_ruta,stl_liberado,fotos_feedback,user_id,email,nombre_doctor,nombre_paciente,tipo_trabajo,estado_operativo,calificacion,calificacion_comentario';
+const CAMPOS_CLIENTE ='id,codigo,servicio,material,submaterial,estado,pago_estado,precio_total,created_at,updated_at,link_diseno,html_diseno_url,diseno_aprobado,notas_cambios,revisiones_usadas,stl_ruta,stl_liberado,fotos_feedback,user_id,email,nombre_doctor,nombre_paciente,tipo_trabajo,estado_operativo,calificacion,calificacion_comentario';
 
 let _pedidos     = [];
 let _npsId       = null;
@@ -877,7 +885,8 @@ function renderTablas(pedidos) {
                     <td>${renderProgress(p)}</td>
                     <td>
                         <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold" style="margin-right:4px;">Ver</a>
-                        ${puedeSTL?`<button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
+                        ${puedeSTL?`<button type="button" onclick="verArchivos('${escH(p.id)}')" class="btn-sm" style="color:#D946A6;border-color:rgba(217,70,166,.35);" title="Ver diseño, modelo 3D y fotos"><i class="fas fa-eye"></i> Visor</button>
+                        <button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
                         <a href="../recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
                     </td>
                 </tr>`;
@@ -902,7 +911,8 @@ function renderTablas(pedidos) {
                 <td style="display:flex;gap:5px;flex-wrap:wrap;">
                     <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold">Ver</a>
                     <button type="button" onclick="verTimeline('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#00d2ff;border-color:rgba(0,210,255,.3);" title="Historial de cambios"><i class="fas fa-history"></i></button>
-                    ${puedeSTL?`<button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
+                    ${puedeSTL?`<button type="button" onclick="verArchivos('${escH(p.id)}')" class="btn-sm" style="color:#D946A6;border-color:rgba(217,70,166,.35);" title="Ver diseño, modelo 3D y fotos"><i class="fas fa-eye"></i> Visor</button>
+                        <button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
                     <a href="../recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
                     ${esEntregado&&!yaCalif?`<button type="button" onclick="abrirNPS('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#D4AF37;border-color:rgba(212,175,55,.3);">⭐ Calificar</button>`:''}
                     ${yaCalif?`<span style="font-size:.7rem;color:#D4AF37;">${'★'.repeat(p.calificacion)}</span>`:''}
@@ -924,10 +934,60 @@ function renderTablas(pedidos) {
 /* ── DESCARGA STL FIRMADA ─────────────────────────────────── */
 async function descargarSTL(pedidoId, stlRuta) {
     if (!stlRuta) { toast('Ruta STL no disponible', 'error'); return; }
+
+    // Si ya es una URL firmada completa, abrirla directo (formato antiguo en BD)
+    if (/^https?:\/\//i.test(stlRuta)) {
+        window.open(stlRuta, '_blank', 'noopener,noreferrer');
+        return;
+    }
+
     toast('Generando enlace de descarga…');
-    const { data, error } = await sb.storage.from('prodigy-files').createSignedUrl(stlRuta, 3600);
-    if (error || !data?.signedUrl) { toast('Error generando link', 'error'); return; }
+    // BUCKET_STL debe coincidir con donde lo sube el operario (operario-diseno.html).
+    // Antes apuntaba a 'prodigy-files' — bucket equivocado: la descarga fallaba siempre.
+    const { data, error } = await sb.storage.from(BUCKET_STL).createSignedUrl(stlRuta, 3600);
+    if (error || !data?.signedUrl) {
+        console.warn('[client-panel] createSignedUrl falló:', BUCKET_STL, stlRuta, error?.message);
+        toast('No pudimos generar el enlace. Escríbenos por WhatsApp y te lo enviamos.', 'error');
+        return;
+    }
     window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+}
+
+/* ── VISOR DE ENTREGABLES ─────────────────────────────────────
+   Antes el doctor solo tenía un botón de descarga: no podía VER lo que le
+   entregamos sin abrir un software CAD. Ahora abre diseño, modelo 3D y fotos
+   en el mismo visor (js/visor-universal.js).                              */
+async function verArchivos(pedidoId) {
+    const p = _pedidos.find(x => x.id === pedidoId);
+    if (!p) { toast('Caso no encontrado', 'error'); return; }
+    if (!window.PVisor) { toast('Visor no disponible, recarga la página', 'error'); return; }
+
+    const items = [];
+
+    // 1 · Diseño (export Exocad) — el entregable principal
+    if (p.html_diseno_url) items.push({ url: p.html_diseno_url, nombre: 'Diseño 3D' });
+
+    // 2 · Modelo STL — firmar al momento, no guardar la URL
+    if (p.stl_liberado && p.stl_ruta) {
+        if (/^https?:\/\//i.test(p.stl_ruta)) {
+            items.push({ url: p.stl_ruta, nombre: 'Modelo.stl' });
+        } else {
+            const { data } = await sb.storage.from(BUCKET_STL).createSignedUrl(p.stl_ruta, 3600);
+            if (data?.signedUrl) items.push({ url: data.signedUrl, nombre: 'Modelo.stl' });
+        }
+    }
+
+    // 3 · Fotos que el propio doctor envió (se guardan como rutas, no URLs)
+    const fotos = Array.isArray(p.fotos_feedback) ? p.fotos_feedback : [];
+    for (let i = 0; i < fotos.length; i++) {
+        const r = fotos[i];
+        if (/^https?:\/\//i.test(r)) { items.push({ url: r, nombre: `Foto ${i+1}` }); continue; }
+        const { data } = await sb.storage.from(BUCKET_CLIENTE).createSignedUrl(r, 3600);
+        if (data?.signedUrl) items.push({ url: data.signedUrl, nombre: `Foto ${i+1}` });
+    }
+
+    if (!items.length) { toast('Este caso todavía no tiene archivos para ver', 'error'); return; }
+    window.PVisor.abrir(items, { titulo: 'Caso ' + (p.codigo || '') });
 }
 
 /* ── UPLOAD FOTOS FEEDBACK ────────────────────────────────── */
