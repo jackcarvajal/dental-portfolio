@@ -9,6 +9,61 @@
 
 ---
 
+## 2026-07-19
+
+### 🔴🔴 HALLAZGO MAYOR — NINGÚN PEDIDO SE ESTABA GUARDANDO (resuelto)
+
+```sql
+SELECT negocio, count(*) FROM pedidos GROUP BY negocio;   -- → 0 filas
+```
+
+**La tabla `pedidos` estaba VACÍA.** Nunca se guardó un pedido, en ninguno de los dos
+proyectos. Todo el negocio ha corrido a punta del mensaje de WhatsApp: la base, los
+paneles, los reportes y los KPIs miraban una tabla sin una sola fila.
+
+**Causa** — la única política de INSERT sobre `pedidos` era:
+```sql
+FOR INSERT TO authenticated WITH CHECK (doctor_uid = auth.uid())
+```
+Dos bloqueos, cada uno suficiente por sí solo:
+1. `TO authenticated` — los 4 flujos públicos se llenan **sin login**. El rol es `anon`,
+   que no figuraba en ninguna política de INSERT → rechazo garantizado.
+2. `WITH CHECK (doctor_uid = auth.uid())` — el JS **nunca envía `doctor_uid`**. Un
+   `WITH CHECK` que no da TRUE deniega, así que ni un doctor con sesión habría pasado.
+
+**Por qué nadie se enteró** — los 4 flujos hacían `if (error) console.warn(...)`. El doctor
+veía *"¡Orden registrada!"*, el WhatsApp salía normal, y el pedido nunca existió.
+Mismo vicio que el CBCT perdido: **el fallo ocurre pero es MUDO**. Van tres casos del mismo
+patrón en dos días — archivos, log de auditoría y ahora el pedido entero.
+
+**Sobre la auditoría anterior:** `patch-mass-assignment-insert-pedidos-2026-07.sql` razonaba
+sobre *"un doctor **AUTENTICADO** podía insertar con `pago_estado='pago_confirmado'`"*.
+La premisa era falsa — en estos flujos nadie está autenticado. Se auditó un escenario que no
+existía mientras el real estaba roto. 💡 Su trigger sigue siendo correcto y **es justamente lo
+que hace seguro abrir el INSERT a `anon`**.
+
+**Fix:**
+- `sql/patch-pedidos-insert-anon-2026-07.sql` ✅ **EJECUTADO** — política de INSERT para `anon`
+  con guardas (no puede atribuirse `doctor_uid`/`user_id`, `negocio` válido, `codigo` y
+  `nombre_doctor` obligatorios, techo de monto). `pedidos_insert_owner` reescrita para aceptar
+  `doctor_uid` NULL. **No se abre SELECT a `anon`**: escribe y no ve nada.
+- `js/pedido-guard.js` (ambos repos) — el fallo deja de ser mudo: aviso en pantalla al doctor
+  (su WhatsApp SÍ salió, lo que falló es el registro), copia en `localStorage` y rastro en
+  `logs_incidencias`.
+
+**🔴 PENDIENTE — la prueba que valida todo:** crear un caso desde `/flujo-diseno` en ventana
+privada (sin sesión) y verificar que aparece en `pedidos` y en `/ficha`. Hasta que eso pase,
+nada de esta ronda está confirmado con datos reales.
+
+### ✅ Ficha única de caso — `/ficha` (`app/ficha-caso.html`)
+Para responderle a un doctor o validar un caso había que recorrer varios paneles. Ahora una
+búsqueda (código, doctor o paciente) muestra en una pantalla: datos y estado, **lo que envió
+el doctor** vs. **lo que se entregó** (separado por etapa desde `pedido_archivos`), archivos
+de casos viejos leídos de las columnas antiguas, entrega/mensajería e historial de quién hizo
+qué. Avisa *"N archivos no llegaron"* y *"este caso no tiene ningún archivo"*.
+
+---
+
 ## 2026-07-18
 
 ### ⚠️ Ronda 5d — CI en verde en ambos repos (los correos de "Run failed")
