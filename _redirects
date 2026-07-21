@@ -93,6 +93,7 @@
 /mis-cotizaciones       /app/client-panel.html      301
 /metricas               /app/metricas.html          301
 /ficha                  /app/ficha-caso.html        301
+/editar-links           /app/editar-links.html      301
 /instalar               /instalar-app.html          301
 /cambiar-clave          /app/cambiar-contrasena.html 200
 /cambiar-contrasena     /app/cambiar-contrasena.html 200

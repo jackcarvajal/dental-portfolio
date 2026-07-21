@@ -5,19 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PRODIGY Lab Dental — Enlaces</title>
 <meta name="description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores. Cotiza por WhatsApp.">
-<meta name="theme-color" content="#D946A6">
-<meta name="color-scheme" content="dark">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://prodigylabdental.com/links">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%94%97</text></svg>">
-<link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-<meta property="og:type" content="website"><meta property="og:site_name" content="PRODIGY Lab Dental">
-<meta property="og:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D"><meta property="og:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores. Cotiza por WhatsApp.">
-<meta property="og:url" content="https://prodigylabdental.com/links"><meta property="og:image" content="https://prodigylabdental.com/assets/og-index.jpg">
-<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:locale" content="es_CO"><meta property="og:locale:alternate" content="en_US">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D">
-<meta name="twitter:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores. Cotiza por WhatsApp."><meta name="twitter:image" content="https://prodigylabdental.com/assets/og-index.jpg">
+<meta name="theme-color" content="#D946A6"><meta name="color-scheme" content="dark"><meta name="robots" content="index, follow">
+<link rel="canonical" href="https://prodigylabdental.com/links"><link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%94%97</text></svg>"><link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+<meta property="og:type" content="website"><meta property="og:site_name" content="PRODIGY Lab Dental"><meta property="og:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D">
+<meta property="og:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores. Cotiza por WhatsApp."><meta property="og:url" content="https://prodigylabdental.com/links"><meta property="og:image" content="https://prodigylabdental.com/assets/og-index.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="es_CO"><meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D"><meta name="twitter:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores. Cotiza por WhatsApp."><meta name="twitter:image" content="https://prodigylabdental.com/assets/og-index.jpg">
 </head>
 <body>
 <style>
@@ -34,7 +27,21 @@
       var(--bg);
     color:var(--ink);font-family:var(--font);line-height:1.5;min-height:100vh;
     -webkit-font-smoothing:antialiased;padding:0 16px 60px}
-  .wrap{max-width:460px;margin:0 auto}
+  .wrap{max-width:460px;margin:0 auto;position:relative;z-index:1}
+  /* ── fondo dinámico (aurora que se mueve) ── */
+  .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+  .aurora span{position:absolute;border-radius:50%;filter:blur(72px);opacity:.42;will-change:transform}
+  .aurora .b1{width:min(360px,80vw);height:min(360px,80vw);background:var(--magenta);top:-70px;left:-50px}
+  .aurora .b2{width:min(320px,70vw);height:min(320px,70vw);background:var(--cyan);top:26%;right:-90px}
+  .aurora .b3{width:min(300px,66vw);height:min(300px,66vw);background:var(--gold);bottom:-40px;left:18%}
+  @media(prefers-reduced-motion:no-preference){
+    .aurora .b1{animation:dr1 15s ease-in-out infinite}
+    .aurora .b2{animation:dr2 19s ease-in-out infinite}
+    .aurora .b3{animation:dr3 17s ease-in-out infinite}
+    @keyframes dr1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(46px,64px) scale(1.18)}}
+    @keyframes dr2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-54px,42px) scale(1.12)}}
+    @keyframes dr3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(34px,-44px) scale(1.22)}}
+  }
 
   /* ── barra idioma ── */
   .langbar{display:flex;justify-content:center;padding:16px 0 4px}
@@ -114,6 +121,7 @@
     max-width:max-content;padding:7px 16px;border-radius:999px;font-size:.76rem;font-weight:700;
     color:#ffd9ef;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.38)}
   .urgency .pulse{width:8px;height:8px;border-radius:50%;background:var(--neon);flex:none}
+  .offer{display:none;text-align:center;font-size:.8rem;font-weight:800;color:#1a1206;background:linear-gradient(135deg,var(--gold),#e6c65a);border-radius:999px;padding:8px 17px;margin:0 auto 8px;max-width:max-content}
   .trust{display:flex;flex-direction:column;gap:10px;margin-top:14px;
     border:1px solid var(--line);border-radius:15px;padding:15px 17px;background:var(--card)}
   .trust .tb{display:flex;align-items:center;gap:12px;font-size:.85rem;color:var(--ink-soft);font-weight:600}
@@ -163,6 +171,7 @@
   @media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important}}
 </style>
 
+<div class="aurora"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
 <div class="wrap">
   <div class="langbar">
     <div class="langtog" role="group" aria-label="Idioma">
@@ -172,6 +181,7 @@
   </div>
 
   <div class="urgency"><span class="pulse"></span><span data-i="urgency">Recepción abierta hoy · Respondemos en minutos</span></div>
+  <div class="offer" id="offerbar"></div>
 
   <header>
     <svg class="logo" viewBox="0 0 100 100" aria-label="PRODIGY">
@@ -334,6 +344,7 @@
     document.documentElement.lang=l;
     const t=T[l];
     document.querySelectorAll('[data-i]').forEach(function(el){var k=el.getAttribute('data-i');if(t[k]!==undefined)el.textContent=t[k];});
+    CURLANG=l; if(window.__applyCfg)window.__applyCfg();
   }
   setLang('es');
   // entrada en cascada — cada bloque aparece con un pequeño retraso

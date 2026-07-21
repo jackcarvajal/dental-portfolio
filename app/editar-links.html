@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#D946A6">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex, nofollow">
+<title>Editar página de enlaces — PRODIGY</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔗</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/auth-guard.js?v=20260721"></script>
+<style>
+  :root{--bg:#050505;--card:#0d1520;--card2:#101a28;--line:#1e2b3d;--ink:#e8e4ee;--muted:#94a3b8;
+    --gold:#D4AF37;--magenta:#D946A6;--cyan:#00d2ff;--neon:#00FF41;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5;padding:0 16px 120px}
+  .wrap{max-width:720px;margin:0 auto}
+  header{position:sticky;top:0;background:linear-gradient(var(--bg) 80%,transparent);z-index:10;
+    padding:16px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+  h1{font-size:1.05rem;font-weight:800}
+  h1 span{color:var(--muted);font-weight:500;font-size:.85rem}
+  .spring{flex:1}
+  select,input,textarea{background:var(--card2);border:1px solid var(--line);color:var(--ink);
+    font:inherit;font-size:16px;border-radius:9px;padding:9px 12px;width:100%}
+  select:focus,input:focus,textarea:focus{outline:2px solid var(--cyan);outline-offset:-1px}
+  textarea{resize:vertical;min-height:60px}
+  .neg{max-width:210px}
+  .btn{background:var(--card2);border:1px solid var(--line);color:var(--ink);font:inherit;font-weight:700;
+    font-size:.82rem;padding:9px 15px;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;min-height:40px}
+  .btn:hover{border-color:var(--magenta)}
+  .btn-primary{background:linear-gradient(135deg,var(--magenta),#b93a8c);border:none;color:#fff}
+  .btn-gold{background:linear-gradient(135deg,var(--gold),#c19b2e);border:none;color:#0a0a0a}
+  .btn-sm{font-size:.74rem;padding:6px 11px;min-height:32px}
+  .btn-del{color:#f87171;border-color:rgba(239,68,68,.35)}
+  .btn-del:hover{background:rgba(239,68,68,.12)}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-top:16px}
+  .sh{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .sh h2{font-size:.95rem;font-weight:800}
+  .sh .ic{font-size:1.1rem}
+  .hint{font-size:.78rem;color:var(--muted);margin-bottom:14px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:.74rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:5px}
+  .flags{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:560px){.flags{grid-template-columns:1fr}}
+  .card-item{border:1px solid var(--line);border-radius:11px;padding:13px;margin-bottom:11px;background:var(--card2)}
+  .card-item .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;gap:8px}
+  .card-item .top b{font-size:.82rem;color:var(--gold)}
+  .toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.82rem;user-select:none}
+  .toggle input{width:auto}
+  .sw{width:38px;height:22px;border-radius:999px;background:var(--line);position:relative;transition:.15s;flex:none}
+  .sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.15s}
+  .toggle input:checked+.sw{background:var(--neon)}
+  .toggle input:checked+.sw::after{transform:translateX(16px)}
+  .toggle input{position:absolute;opacity:0}
+  .stars{display:flex;gap:3px}
+  .star{cursor:pointer;font-size:1.3rem;color:var(--line)}
+  .star.on{color:var(--gold)}
+  .thumb{width:54px;height:54px;border-radius:8px;object-fit:cover;border:1px solid var(--line);flex:none}
+  .thumb.vid{display:grid;place-items:center;background:rgba(217,70,166,.12);color:var(--magenta);font-size:1.2rem}
+  .savebar{position:fixed;left:0;right:0;bottom:0;background:rgba(5,5,5,.95);border-top:1px solid var(--line);
+    padding:12px 16px;display:flex;gap:12px;align-items:center;justify-content:center;z-index:20;backdrop-filter:blur(8px)}
+  .savebar .btn-primary{min-width:180px;justify-content:center}
+  #toast{position:fixed;bottom:78px;left:50%;transform:translateX(-50%) translateY(20px);background:#111019;
+    border:1px solid var(--magenta);color:var(--ink);padding:11px 20px;border-radius:10px;font-size:.85rem;
+    font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:30}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  #toast.err{border-color:#ef4444;color:#f87171}
+  .color-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .swatch{width:34px;height:34px;border-radius:8px;border:2px solid transparent;cursor:pointer}
+  .swatch.on{border-color:#fff}
+  a.link{color:var(--cyan);text-decoration:none;font-size:.82rem;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🔗 Editar enlaces <span id="neg-label"></span></h1>
+    <div class="spring"></div>
+    <select class="neg" id="neg" onchange="cargar()">
+      <option value="prodigy">PRODIGY Lab Dental</option>
+      <option value="alejandrocadcam">Alejandro CAD/CAM</option>
+    </select>
+    <a class="link" id="ver" href="#" target="_blank" rel="noopener noreferrer">Ver página ↗</a>
+  </header>
+
+  <p class="hint" style="margin-top:14px">Cambia lo que quieras y pulsa <b>Guardar</b>. La página <b>/links</b> se actualiza sola — sin tocar código. Deja un campo vacío para usar el texto por defecto.</p>
+
+  <!-- APARIENCIA -->
+  <section>
+    <div class="sh"><span class="ic">🎨</span><h2>Apariencia</h2></div>
+    <p class="hint">Color de acento de los botones y detalles.</p>
+    <div class="color-row" id="acentos"></div>
+  </section>
+
+  <!-- BARRA DE URGENCIA -->
+  <section>
+    <div class="sh"><span class="ic">⚡</span><h2>Barra de urgencia</h2></div>
+    <p class="hint">La franja de arriba. Ideal para “respondemos en minutos”.</p>
+    <label class="toggle" style="margin-bottom:12px"><input type="checkbox" id="urg-on"><span class="sw"></span> Mostrar la barra</label>
+    <div class="field"><label>Texto (español)</label><input id="urg-es" placeholder="Recepción de casos abierta hoy · Respondemos en minutos"></div>
+    <div class="field"><label>Texto (inglés)</label><input id="urg-en" placeholder="Case intake open today · We reply in minutes"></div>
+  </section>
+
+  <!-- OFERTA -->
+  <section>
+    <div class="sh"><span class="ic">🎁</span><h2>Oferta / anuncio</h2></div>
+    <p class="hint">Una barra dorada opcional. Ej: “Primer caso con 20% de descuento”.</p>
+    <label class="toggle" style="margin-bottom:12px"><input type="checkbox" id="off-on"><span class="sw"></span> Mostrar la oferta</label>
+    <div class="field"><label>Texto (español)</label><input id="off-es" placeholder="🎁 Primer caso: 20% de descuento"></div>
+    <div class="field"><label>Texto (inglés)</label><input id="off-en" placeholder="🎁 First case: 20% off"></div>
+  </section>
+
+  <!-- ENLACES -->
+  <section>
+    <div class="sh"><span class="ic">🔗</span><h2>Botones</h2></div>
+    <p class="hint">A dónde van los botones principales. Apágalos si no los usas.</p>
+    <div id="enlaces"></div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section>
+    <div class="sh"><span class="ic">📸</span><h2>Galería (fotos y videos)</h2></div>
+    <p class="hint">Sube fotos de tus casos o pega enlaces de video (YouTube, etc.). El primero sale grande.</p>
+    <div id="galeria"></div>
+    <div class="row" style="margin-top:6px">
+      <button type="button" class="btn btn-sm" onclick="agregarFoto()">📷 Subir foto</button>
+      <button type="button" class="btn btn-sm" onclick="agregarVideo()">▶ Añadir video</button>
+      <input type="file" id="file-input" accept="image/*" style="display:none">
+    </div>
+  </section>
+
+  <!-- RESEÑAS -->
+  <section>
+    <div class="sh"><span class="ic">⭐</span><h2>Reseñas</h2></div>
+    <p class="hint">Reseñas reales de tus clientes. Añade su nombre y una frase.</p>
+    <div id="resenas"></div>
+    <button type="button" class="btn btn-sm" style="margin-top:6px" onclick="agregarResena()">+ Añadir reseña</button>
+  </section>
+</div>
+
+<div class="savebar">
+  <button type="button" class="btn" onclick="cargar()">Descartar cambios</button>
+  <button type="button" class="btn-primary btn" id="btn-save" onclick="guardar()">💾 Guardar cambios</button>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const sb=window.supabase.createClient(SURL,SKEY);
+const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const ACENTOS=['#D946A6','#D4AF37','#00d2ff','#00FF41','#f97316','#a855f7'];
+let CFG={}, _email='';
+
+/* URLs por defecto de los botones, por negocio */
+const DEF={
+  prodigy:{ wa:'https://wa.me/573212816716', quote:'https://prodigylabdental.com/cotizador',
+    web:'https://prodigylabdental.com', ig:'https://instagram.com/prodigylabdental',
+    verUrl:'https://prodigylabdental.com/links' },
+  alejandrocadcam:{ wa:'https://wa.me/573219581949', quote:'https://alejandrocadcam.pages.dev/flujo-diseno',
+    web:'https://alejandrocadcam.pages.dev', ig:'https://instagram.com/alejandrocadcam',
+    verUrl:'https://alejandrocadcam.pages.dev/links' }
+};
+const LINK_LABELS={wa:'WhatsApp',quote:'Cotizar',web:'Sitio web',ig:'Instagram'};
+
+(async()=>{ const s=await ProdigyAuth.require(['admin']); _email=s.user.email; cargar(); })();
+
+function negocio(){ return document.getElementById('neg').value; }
+
+async function cargar(){
+  const n=negocio();
+  document.getElementById('ver').href=DEF[n].verUrl;
+  document.getElementById('neg-label').textContent='· '+(n==='prodigy'?'PRODIGY':'Alejandro');
+  const {data,error}=await sb.from('links_config').select('config').eq('negocio',n).single();
+  if(error && error.code!=='PGRST116'){ toast('Error al cargar: '+error.message,true); }
+  CFG=(data&&data.config)||{};
+  pintar();
+}
+
+function pintar(){
+  // acento
+  const ac=CFG.accent||'#D946A6';
+  document.getElementById('acentos').innerHTML=ACENTOS.map(c=>
+    `<button type="button" class="swatch${c===ac?' on':''}" style="background:${c}" data-c="${c}" aria-label="Acento ${c}"></button>`).join('');
+  document.querySelectorAll('.swatch').forEach(b=>b.onclick=()=>{CFG.accent=b.dataset.c;pintar();});
+  // urgencia
+  const u=CFG.urgency||{};
+  document.getElementById('urg-on').checked=u.on!==false;
+  document.getElementById('urg-es').value=u.es||'';
+  document.getElementById('urg-en').value=u.en||'';
+  // oferta
+  const o=CFG.offer||{};
+  document.getElementById('off-on').checked=!!o.on;
+  document.getElementById('off-es').value=o.es||'';
+  document.getElementById('off-en').value=o.en||'';
+  // enlaces
+  const n=negocio(); const L=CFG.links||{};
+  document.getElementById('enlaces').innerHTML=Object.keys(LINK_LABELS).map(k=>{
+    const cur=L[k]||{}; const url=cur.url!==undefined?cur.url:DEF[n][k]; const on=cur.on!==false;
+    return `<div class="card-item"><div class="top"><b>${LINK_LABELS[k]}</b>
+      <label class="toggle"><input type="checkbox" data-lon="${k}" ${on?'checked':''}><span class="sw"></span></label></div>
+      <input data-lurl="${k}" value="${esc(url)}" placeholder="${esc(DEF[n][k])}"></div>`;
+  }).join('');
+  // galería
+  pintarGaleria();
+  // reseñas
+  pintarResenas();
+}
+
+/* ── GALERÍA ── */
+function galArr(){ if(!Array.isArray(CFG.gallery)) CFG.gallery=[]; return CFG.gallery; }
+function pintarGaleria(){
+  const g=galArr();
+  document.getElementById('galeria').innerHTML=g.length? g.map((it,i)=>{
+    const thumb= it.kind==='video'
+      ? `<div class="thumb vid">▶</div>`
+      : `<img class="thumb" src="${esc(it.url)}" alt="">`;
+    return `<div class="card-item"><div class="row" style="flex-wrap:nowrap">
+      ${thumb}
+      <div style="flex:1;min-width:0">
+        <input data-gcap="${i}" value="${esc(it.es||'')}" placeholder="Descripción (ej. Corona zirconia)" style="margin-bottom:6px">
+        ${it.kind==='video'?`<input data-gurl="${i}" value="${esc(it.url)}" placeholder="https://youtube.com/...">`:''}
+      </div>
+      <button type="button" class="btn btn-sm btn-del" onclick="borrarFoto(${i})">✕</button>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <button type="button" class="btn btn-sm" onclick="moverFoto(${i},-1)" ${i===0?'disabled':''}>↑</button>
+      <button type="button" class="btn btn-sm" onclick="moverFoto(${i},1)" ${i===g.length-1?'disabled':''}>↓</button>
+      <span style="font-size:.72rem;color:var(--muted)">${i===0?'Sale grande (destacado)':'#'+(i+1)}</span>
+    </div></div>`;
+  }).join('') : '<p class="hint">Aún no hay fotos. Sube la primera 👇</p>';
+  // enganchar inputs de caption/url
+  document.querySelectorAll('[data-gcap]').forEach(inp=>inp.oninput=()=>{galArr()[+inp.dataset.gcap].es=inp.value;});
+  document.querySelectorAll('[data-gurl]').forEach(inp=>inp.oninput=()=>{galArr()[+inp.dataset.gurl].url=inp.value;});
+}
+function agregarVideo(){ galArr().push({kind:'video',url:'',es:''}); pintarGaleria(); }
+function borrarFoto(i){ galArr().splice(i,1); pintarGaleria(); }
+function moverFoto(i,d){ const g=galArr(); const j=i+d; if(j<0||j>=g.length)return; [g[i],g[j]]=[g[j],g[i]]; pintarGaleria(); }
+function agregarFoto(){ document.getElementById('file-input').click(); }
+document.getElementById('file-input').addEventListener('change',async function(){
+  const f=this.files[0]; this.value=''; if(!f)return;
+  if(f.size>8*1024*1024){ toast('La foto pesa más de 8MB, comprímela',true); return; }
+  toast('Subiendo foto…');
+  const path=negocio()+'/'+Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  const {error}=await sb.storage.from('links-media').upload(path,f,{upsert:true,contentType:f.type});
+  if(error){ toast('Error al subir: '+error.message,true); return; }
+  const {data}=sb.storage.from('links-media').getPublicUrl(path);
+  galArr().push({kind:'image',url:data.publicUrl,es:''}); pintarGaleria();
+  toast('Foto lista ✓');
+});
+
+/* ── RESEÑAS ── */
+function revArr(){ if(!Array.isArray(CFG.reviews)) CFG.reviews=[]; return CFG.reviews; }
+function pintarResenas(){
+  const r=revArr();
+  document.getElementById('resenas').innerHTML=r.length? r.map((it,i)=>`
+    <div class="card-item">
+      <div class="top"><div class="stars" data-stars="${i}">${[1,2,3,4,5].map(s=>
+        `<span class="star${s<=(it.stars||5)?' on':''}" data-s="${s}">★</span>`).join('')}</div>
+        <button type="button" class="btn btn-sm btn-del" onclick="borrarResena(${i})">✕</button></div>
+      <div class="field"><textarea data-rtxt="${i}" placeholder="La reseña de tu cliente…">${esc(it.es||'')}</textarea></div>
+      <input data-rwho="${i}" value="${esc(it.who||'')}" placeholder="Nombre — ej. Dra. Ana, Bogotá">
+    </div>`).join('') : '<p class="hint">Aún no hay reseñas reales. Añade la primera 👇</p>';
+  document.querySelectorAll('[data-rtxt]').forEach(t=>t.oninput=()=>{revArr()[+t.dataset.rtxt].es=t.value;});
+  document.querySelectorAll('[data-rwho]').forEach(t=>t.oninput=()=>{revArr()[+t.dataset.rwho].who=t.value;});
+  document.querySelectorAll('[data-stars]').forEach(g=>{
+    const i=+g.dataset.stars;
+    g.querySelectorAll('.star').forEach(st=>st.onclick=()=>{revArr()[i].stars=+st.dataset.s;pintarResenas();});
+  });
+}
+function agregarResena(){ revArr().push({stars:5,es:'',who:''}); pintarResenas(); }
+function borrarResena(i){ revArr().splice(i,1); pintarResenas(); }
+
+/* ── GUARDAR ── */
+function recoger(){
+  CFG.urgency={on:document.getElementById('urg-on').checked,
+    es:document.getElementById('urg-es').value.trim(), en:document.getElementById('urg-en').value.trim()};
+  CFG.offer={on:document.getElementById('off-on').checked,
+    es:document.getElementById('off-es').value.trim(), en:document.getElementById('off-en').value.trim()};
+  const n=negocio(); const L={};
+  document.querySelectorAll('[data-lurl]').forEach(inp=>{const k=inp.dataset.lurl;L[k]=L[k]||{};L[k].url=inp.value.trim();});
+  document.querySelectorAll('[data-lon]').forEach(inp=>{const k=inp.dataset.lon;L[k]=L[k]||{};L[k].on=inp.checked;});
+  CFG.links=L;
+  // limpiar galería/reseñas vacías
+  CFG.gallery=galArr().filter(x=>x.url || x.kind==='image');
+  CFG.reviews=revArr().filter(x=>(x.es||'').trim());
+}
+async function guardar(){
+  recoger();
+  const btn=document.getElementById('btn-save'); btn.disabled=true; btn.textContent='Guardando…';
+  const {error}=await sb.from('links_config')
+    .upsert({negocio:negocio(),config:CFG,updated_at:new Date().toISOString(),updated_by:_email},{onConflict:'negocio'});
+  btn.disabled=false; btn.innerHTML='💾 Guardar cambios';
+  if(error){ toast('Error al guardar: '+error.message,true); return; }
+  toast('Guardado ✓ — abre la página para verlo');
+}
+
+function toast(m,err){ const t=document.getElementById('toast'); t.textContent=m; t.className='show'+(err?' err':'');
+  clearTimeout(t._h); t._h=setTimeout(()=>t.className='',2600); }
+</script>
+</body>
+</html>
