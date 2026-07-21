@@ -228,10 +228,25 @@
     document.body.appendChild(b);
   }
 
+  /* ¿El elemento EXISTE en la página? (sin exigir que esté visible).
+     Antes se filtraba con target(), que exige visibilidad — en flujo-fresado,
+     flujo-impresion y flujo-lab el formulario es por pasos (wizard), así que
+     #cantidad o #btn-submit están ocultos al cargar. Se filtraban TODOS y el
+     tour no aparecía. Ahora se conservan: pintar() ya centra la tarjeta cuando
+     el elemento aún no está visible, y lo resalta cuando el usuario avanza. */
+  function existe(sel) {
+    if (!sel) return true;
+    var partes = sel.split(',');
+    for (var k = 0; k < partes.length; k++) {
+      if (document.querySelector(partes[k].trim())) return true;
+    }
+    return false;
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     tour = TOURS[archivo()];
     if (!tour) return;
-    pasos = tour.pasos.filter(function (p) { return !p.sel || target(p.sel); });
+    pasos = tour.pasos.filter(function (p) { return existe(p.sel); });
     if (!pasos.length) return;
 
     ov = document.createElement('div'); ov.id = 'tr-ov';
