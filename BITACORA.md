@@ -11,6 +11,31 @@
 
 ## 2026-07-19
 
+### ✅ Cadena de diseño completa — el eslabón que faltaba
+
+Preparando la validación end-to-end aparecieron **tres cortes** en la misma cadena
+(cliente sube → operario diseña → doctor revisa → cliente descarga). Cada uno rompía el
+flujo por su cuenta:
+
+**1. El diseño del modal QA nunca le llegaba al doctor** — `app/operario-diseno.html`
+El botón principal (QA de cada caso) escribía en `link_diseno`, pero la carga masiva escribía
+en `html_diseno_url`, y `revision-diseno.html` **exige `html_diseno_url`**. Todo diseño subido
+por el camino natural era invisible para el doctor. Además un link de Drive tampoco serviría:
+el visor hace `fetch()` del HTML y Drive lo bloquea por CORS.
+Fix: campo para **subir el visor Exocad (.html)** → `dental-cases/{id}/v{n}.html`, firmado a
+`html_diseno_url`. Botón nuevo **"Enviar al doctor a revisar"** (`REVISION_CLIENTE`,
+`stl_liberado=false`) — antes solo existía "Aprobar y entregar", que se saltaba la revisión.
+
+**2. El doctor no podía ver sus propios pedidos** — `sql/patch-cliente-ve-sus-pedidos-2026-07.sql` ✅
+Tres columnas distintas para lo mismo: el flujo no guardaba `email`, el panel filtra por
+`.eq('email', email)`, y la única policy de SELECT miraba `doctor_uid` (que nadie escribe).
+RLS le negaba todas las filas → panel vacío.
+Fix: el flujo guarda `email` + `user_id` si hay sesión; policies de SELECT y UPDATE que
+reconocen al dueño por `user_id` OR `doctor_uid` OR `email`. El UPDATE abre la fila, no las
+columnas — las sensibles siguen protegidas por `trg_restrict_client_pedido_updates`.
+
+Con esto la cadena cierra de punta a punta por primera vez.
+
 ### ✅ Entorno de pruebas · Tour corregido · Fechas con festivos
 
 **🧪 Modo prueba — `sql/patch-modo-prueba-2026-07.sql` ✅ EJECUTADO**
