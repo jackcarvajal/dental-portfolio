@@ -11,22 +11,13 @@
 <link rel="canonical" href="https://prodigylabdental.com/links">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%94%97</text></svg>">
 <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-<!-- Open Graph — vista previa al compartir en redes -->
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="PRODIGY Lab Dental">
-<meta property="og:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D">
-<meta property="og:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores. Cotiza por WhatsApp.">
-<meta property="og:url" content="https://prodigylabdental.com/links">
-<meta property="og:image" content="https://prodigylabdental.com/assets/og-index.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="es_CO">
-<meta property="og:locale:alternate" content="en_US">
-<!-- Twitter / X -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D">
-<meta name="twitter:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores. Cotiza por WhatsApp.">
-<meta name="twitter:image" content="https://prodigylabdental.com/assets/og-index.jpg">
+<meta property="og:type" content="website"><meta property="og:site_name" content="PRODIGY Lab Dental">
+<meta property="og:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D"><meta property="og:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores. Cotiza por WhatsApp.">
+<meta property="og:url" content="https://prodigylabdental.com/links"><meta property="og:image" content="https://prodigylabdental.com/assets/og-index.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_CO"><meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D">
+<meta name="twitter:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores. Cotiza por WhatsApp."><meta name="twitter:image" content="https://prodigylabdental.com/assets/og-index.jpg">
 </head>
 <body>
 <style>
@@ -106,14 +97,27 @@
   .stat span{font-size:.64rem;color:var(--ink-dim);letter-spacing:.04em;margin-top:5px;display:block}
 
   /* ── galería ── */
-  .gal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-  .gtile{aspect-ratio:1;border-radius:12px;border:1px dashed var(--line);
-    background:radial-gradient(circle at 50% 30%,rgba(0,210,255,.08),rgba(13,21,32,.6));
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-    color:var(--ink-dim);text-align:center;padding:8px}
-  .gtile svg{width:24px;height:24px;stroke:var(--ink-dim);fill:none;stroke-width:1.6}
-  .gtile span{font-size:.6rem;line-height:1.25}
-  .gtile.video{background:radial-gradient(circle at 50% 30%,rgba(217,70,166,.12),rgba(13,21,32,.6))}
+  .gal{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .gtile{aspect-ratio:1;border-radius:16px;border:1px dashed var(--line);
+    background:radial-gradient(circle at 50% 32%,rgba(0,210,255,.09),rgba(13,21,32,.65));
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;
+    color:var(--ink-soft);text-align:center;padding:12px;position:relative;overflow:hidden}
+  .gtile svg{width:34px;height:34px;stroke:var(--ink-dim);fill:none;stroke-width:1.5}
+  .gtile span{font-size:.75rem;line-height:1.3;font-weight:600}
+  .gtile.video{background:radial-gradient(circle at 50% 38%,rgba(217,70,166,.16),rgba(13,21,32,.65))}
+  .gfeature{grid-column:1/-1;aspect-ratio:16/9}
+  .playb{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--magenta),#b93a8c);color:#fff;font-size:1.05rem;
+    box-shadow:0 6px 22px rgba(217,70,166,.5);padding-left:3px}
+  .gfeature .playb{width:66px;height:66px;font-size:1.4rem}
+  .urgency{display:flex;align-items:center;justify-content:center;gap:9px;margin:0 auto 4px;
+    max-width:max-content;padding:7px 16px;border-radius:999px;font-size:.76rem;font-weight:700;
+    color:#ffd9ef;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.38)}
+  .urgency .pulse{width:8px;height:8px;border-radius:50%;background:var(--neon);flex:none}
+  .trust{display:flex;flex-direction:column;gap:10px;margin-top:14px;
+    border:1px solid var(--line);border-radius:15px;padding:15px 17px;background:var(--card)}
+  .trust .tb{display:flex;align-items:center;gap:12px;font-size:.85rem;color:var(--ink-soft);font-weight:600}
+  .trust .tb svg{width:20px;height:20px;stroke:var(--neon);fill:none;stroke-width:2.2;flex:none}
   .ph-note{font-size:.72rem;color:var(--gold);margin:10px 2px 0;display:flex;gap:7px;align-items:flex-start}
   .ph-note svg{width:13px;height:13px;fill:var(--gold);flex:none;margin-top:2px}
 
@@ -167,6 +171,8 @@
     </div>
   </div>
 
+  <div class="urgency"><span class="pulse"></span><span data-i="urgency">Recepción abierta hoy · Respondemos en minutos</span></div>
+
   <header>
     <svg class="logo" viewBox="0 0 100 100" aria-label="PRODIGY">
       <polygon points="38,29 62,29 62,44 38,44" fill="#9fecff"/>
@@ -209,6 +215,12 @@
     </a>
   </div>
 
+  <div class="trust">
+    <div class="tb"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg><span data-i="trust1">Apruebas el diseño 3D antes de producir</span></div>
+    <div class="tb"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"/><path d="M8 12l3 3 5-6"/></svg><span data-i="trust2">Hasta 2 revisiones sin costo</span></div>
+    <div class="tb"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-i="trust3">Entrega en 24 horas</span></div>
+  </div>
+
   <!-- SERVICIOS -->
   <div class="eyebrow" data-i="svcTitle">Servicios</div>
   <div class="svc">
@@ -243,12 +255,11 @@
   <!-- GALERÍA -->
   <div class="eyebrow" data-i="galTitle">Casos & videos</div>
   <div class="gal">
-    <div class="gtile video"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span data-i="g1">Video del taller</span></div>
+    <div class="gtile gfeature video"><span class="playb">▶</span><span data-i="g1">Video del taller</span></div>
     <div class="gtile"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M3 17l5-4 4 3 3-2 6 5"/></svg><span data-i="g2">Caso terminado</span></div>
     <div class="gtile"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M3 17l5-4 4 3 3-2 6 5"/></svg><span data-i="g3">Antes / después</span></div>
-    <div class="gtile"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H4z"/><path d="M2 20h20"/></svg><span data-i="g4">Diseño CAD</span></div>
-    <div class="gtile video"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span data-i="g5">Proceso de fresado</span></div>
-    <div class="gtile"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M3 17l5-4 4 3 3-2 6 5"/></svg><span data-i="g6">Guía quirúrgica</span></div>
+    <div class="gtile"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H4z"/><path d="M2 20h20M9 9l2 2 4-4"/></svg><span data-i="g4">Diseño CAD 3D</span></div>
+    <div class="gtile video"><span class="playb">▶</span><span data-i="g5">Proceso en vivo</span></div>
   </div>
   <p class="ph-note"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.58z"/></svg><span data-i="galNote">Marcadores de ejemplo. Reemplázalos con fotos y videos reales de tus casos.</span></p>
 
@@ -280,7 +291,7 @@
       pitch:"Diseño CAD, fresado e impresión 3D para odontólogos. Tú escaneas, nosotros diseñamos y producimos.",
       waSub:"Pedidos y cotizaciones · +57 321 281 6716",
       quote:"Cotizar mi caso",quoteSub:"Precio y fecha al instante",web:"Sitio web",
-      svcTitle:"Servicios",s1:"Diseño CAD",s1d:"Coronas, puentes y full-arch",
+      svcTitle:"Servicios",urgency:"Recepción de casos abierta hoy · Respondemos en minutos",trust1:"Apruebas el diseño 3D antes de producir",trust2:"Hasta 2 revisiones sin costo",trust3:"Entrega en 24 horas",g4:"Diseño CAD 3D",g5:"Proceso en vivo",s1:"Diseño CAD",s1d:"Coronas, puentes y full-arch",
       s2:"Fresado",s2d:"Zirconia, disilicato, PMMA",s3:"Guías quirúrgicas",s3d:"Cirugía guiada · CBCT",
       s4:"Alineadores",s4d:"Setup y secuencia ortodóntica",
       s5:"Carillas para dentistas de EE.UU. 🇺🇸",s5d:"e.max y zirconia desde $89 · envío a tu clínica",
@@ -300,7 +311,7 @@
       pitch:"CAD design, milling and 3D printing for dentists. You scan, we design and produce.",
       waSub:"Orders & quotes · +57 321 281 6716",
       quote:"Get a quote",quoteSub:"Price and date instantly",web:"Website",
-      svcTitle:"Services",s1:"CAD Design",s1d:"Crowns, bridges & full-arch",
+      svcTitle:"Services",urgency:"Case intake open today · We reply in minutes",trust1:"Approve the 3D design before we produce",trust2:"Up to 2 free revisions",trust3:"24-hour delivery",g4:"3D CAD design",g5:"Live process",s1:"CAD Design",s1d:"Crowns, bridges & full-arch",
       s2:"Milling",s2d:"Zirconia, disilicate, PMMA",s3:"Surgical guides",s3d:"Guided surgery · CBCT",
       s4:"Aligners",s4d:"Orthodontic setup & staging",
       s5:"Veneers for US dentists 🇺🇸",s5d:"e.max & zirconia from $89 · ships to your clinic",
