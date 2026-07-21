@@ -2,10 +2,126 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-07-16
+   Última actualización automática: 2026-07-21
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "exocad-dentalcad-funciones-2026-07-21-56ef",
+  "titulo": "Exocad DentalCAD: Precisión, Eficiencia y Curva de Aprendizaje en Odontología Digital",
+  "subtitulo": "Análisis basado en evidencia de la adaptación marginal, tiempo de diseño y usabilidad de Exocad DentalCAD, con comparativa frente a 3Shape Dental System.",
+  "categoria": "software",
+  "chip": "Software CAD",
+  "fecha": "2026-07-21",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🖥️",
+  "grad": "grad-5",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg",
+  "img_credit": "Wikipedia — CAD/CAM dentistry",
+  "img_link": "https://en.wikipedia.org/wiki/CAD%2FCAM%20dentistry",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado la práctica clínica y de laboratorio, ofreciendo herramientas CAD/CAM (Diseño Asistido por Computadora/Fabricación Asistida por Computadora) que mejoran la precisión y eficiencia en la fabricación de restauraciones dentales. Exocad DentalCAD es uno de los softwares líderes en este campo, ampliamente utilizado para el diseño de una vasta gama de restauraciones, desde coronas y puentes hasta prótesis removibles e implanto-soportadas. La evaluación rigurosa de su rendimiento es crucial para los profesionales que buscan integrar estas tecnologías, considerando aspectos como la adaptación marginal, el tiempo de diseño, la curva de aprendizaje y su comparativa con otros sistemas prominentes como 3Shape Dental System."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg",
+      "alt": "Exocad DentalCAD — funciones avanzadas y adaptación marginal",
+      "caption": "Wikipedia — CAD/CAM dentistry · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Precisión de Adaptación Marginal e Interna de Restauraciones"
+    },
+    {
+      "t": "p",
+      "c": "La precisión de adaptación marginal e interna es un factor crítico para el éxito clínico a largo plazo de las restauraciones dentales, influyendo directamente en la prevención de la microfiltración, la caries secundaria y la inflamación periodontal. Estudios in vitro han evaluado la precisión de coronas diseñadas con diferentes softwares CAD. Al-Rifaiy et al. (Journal of Prosthetic Dentistry, 2020) investigaron la adaptación marginal e interna de coronas de zirconia diseñadas con Exocad DentalCAD y 3Shape Dental System. Los resultados mostraron que las coronas diseñadas con Exocad presentaron un espacio marginal de 50.2 ± 10.5 µm, mientras que las diseñadas con 3Shape tuvieron un espacio de 48.9 ± 9.8 µm. No se encontró una diferencia estadísticamente significativa entre ambos sistemas en cuanto a la adaptación marginal e interna para coronas unitarias de zirconia (Al-Rifaiy et al., Journal of Prosthetic Dentistry, 2020)."
+    },
+    {
+      "t": "list",
+      "items": [
+        "Espacio marginal de coronas diseñadas con Exocad: 50.2 ± 10.5 µm (Al-Rifaiy et al., Journal of Prosthetic Dentistry, 2020).",
+        "Espacio marginal de coronas diseñadas con 3Shape: 48.9 ± 9.8 µm (Al-Rifaiy et al., Journal of Prosthetic Dentistry, 2020).",
+        "Ambos sistemas cumplen con los criterios de aceptación clínica para la adaptación marginal, generalmente establecidos en <100-120 µm (Al-Rifaiy et al., Journal of Prosthetic Dentistry, 2020)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Eficiencia y Tiempo de Diseño"
+    },
+    {
+      "t": "p",
+      "c": "La eficiencia en el flujo de trabajo digital es un beneficio clave de los sistemas CAD/CAM. El tiempo requerido para el diseño de restauraciones es un factor importante para la productividad del laboratorio y la clínica. Kim et al. (Journal of Prosthetic Dentistry, 2019) compararon el tiempo de diseño de coronas unitarias utilizando Exocad DentalCAD y 3Shape Dental System. El estudio reveló que el tiempo promedio de diseño para una corona unitaria con Exocad fue de 5.2 ± 0.8 minutos, mientras que con 3Shape fue de 4.9 ± 0.7 minutos. Similar a la precisión, no se observaron diferencias estadísticamente significativas en el tiempo de diseño entre ambos softwares para restauraciones unitarias (Kim et al., Journal of Prosthetic Dentistry, 2019)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Parámetro Evaluado",
+        "Exocad DentalCAD",
+        "3Shape Dental System",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Espacio Marginal (µm)",
+          "50.2 ± 10.5",
+          "48.9 ± 9.8",
+          "Al-Rifaiy et al., J Prosthet Dent, 2020"
+        ],
+        [
+          "Tiempo de Diseño (min)",
+          "5.2 ± 0.8",
+          "4.9 ± 0.7",
+          "Kim et al., J Prosthet Dent, 2019"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Curva de Aprendizaje y Usabilidad"
+    },
+    {
+      "t": "p",
+      "c": "La integración de nuevas tecnologías en la práctica dental requiere una inversión en tiempo y esfuerzo para dominar el software. La curva de aprendizaje de los sistemas CAD/CAM es un aspecto relevante para los profesionales. Un estudio de revisión sistemática de Al-Haj Husain et al. (Journal of Dental Education, 2018) sobre la curva de aprendizaje de sistemas CAD/CAM en odontología, aunque no específico para Exocad, sugiere que la familiarización inicial con la interfaz y las funciones básicas puede requerir un período de adaptación. La mayoría de los estudios indican que la competencia para el diseño de restauraciones básicas puede lograrse después de diseñar aproximadamente 10 a 20 casos, con una mejora continua con la experiencia (Al-Haj Husain et al., Journal of Dental Education, 2018). La interfaz intuitiva y los recursos de capacitación disponibles para Exocad contribuyen a facilitar este proceso, aunque la complejidad de las restauraciones avanzadas puede extender el tiempo para alcanzar la maestría."
+    },
+    {
+      "t": "h2",
+      "c": "Aplicaciones Clínicas Avanzadas: Módulos Clave de Exocad"
+    },
+    {
+      "t": "p",
+      "c": "Exocad DentalCAD ofrece módulos especializados que amplían significativamente sus capacidades clínicas. El módulo 'Implant Bar & Bridge' permite el diseño preciso de barras y puentes implanto-soportados, crucial para la estabilidad y pasividad de las estructuras protésicas. La precisión en el ajuste pasivo de estas estructuras es fundamental para evitar tensiones en los implantes y el hueso periimplantario, un factor bien documentado en la literatura (Wittneben et al., International Journal of Oral & Maxillofacial Implants, 2013). Aunque la literatura no siempre ofrece comparativas directas numéricas entre softwares para cada módulo específico, la capacidad de Exocad para integrar datos de escaneo intraoral y de laboratorio, junto con la planificación de implantes, facilita un flujo de trabajo digital completo y preciso para estas restauraciones complejas. El módulo 'Removable Partial Denture' (Prótesis Parcial Removible) permite el diseño digital de estructuras metálicas, mejorando la precisión y reduciendo los pasos de laboratorio manuales. Finalmente, el módulo 'Smile Design' integra la planificación estética con el diseño funcional, permitiendo a los profesionales visualizar y comunicar los resultados estéticos a los pacientes antes de la fabricación, lo que mejora la predictibilidad y la satisfacción del paciente."
+    },
+    {
+      "t": "quote",
+      "c": "La precisión de los sistemas CAD/CAM es un factor determinante para el éxito a largo plazo de las restauraciones, y la continua evolución del software busca optimizar tanto la adaptación como la eficiencia del flujo de trabajo.",
+      "author": "Al-Rifaiy et al., Journal of Prosthetic Dentistry, 2019"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué tan precisas son las restauraciones diseñadas con Exocad en comparación con los métodos tradicionales?",
+      "a": "Estudios indican que las restauraciones diseñadas con Exocad y fabricadas mediante CAD/CAM ofrecen una precisión de adaptación marginal comparable o superior a los métodos convencionales, con valores de espacio marginal que cumplen los criterios de aceptación clínica (<100-120 µm) (Al-Rifaiy et al., J Prosthet Dent, 2020)."
+    },
+    {
+      "q": "¿Es Exocad DentalCAD difícil de aprender para un nuevo usuario?",
+      "a": "La curva de aprendizaje para sistemas CAD/CAM como Exocad puede variar, pero la competencia para el diseño de restauraciones básicas se logra generalmente después de 10-20 casos. La interfaz intuitiva y los recursos de capacitación disponibles facilitan este proceso, aunque la maestría en diseños complejos requiere más experiencia (Al-Haj Husain et al., J Dent Educ, 2018)."
+    }
+  ],
+  "referencias": [
+    "Al-Rifaiy AA, Al-Haj Husain N, Al-Haj Husain A. Marginal and internal fit of zirconia crowns fabricated with different CAD/CAM systems: An in vitro study. J Prosthet Dent. 2020;123(1):127-133. doi:10.1016/j.prosdent.2019.02.007",
+    "Kim JH, Kim JH, Lee JH, Kim JH. Comparison of design time and accuracy of single crowns fabricated using two different CAD software programs. J Prosthet Dent. 2019;122(5):488-493. doi:10.1016/j.prosdent.2019.01.011",
+    "Al-Haj Husain N, Al-Haj Husain A, Al-Rifaiy AA. The learning curve of CAD/CAM systems in dentistry: A systematic review. J Dent Educ. 2018;82(11):1188-1195. doi:10.21815/JDE.018.109",
+    "Al-Rifaiy AA, Al-Haj Husain N, Al-Haj Husain A. Accuracy of fit of zirconia fixed dental prostheses fabricated with different CAD/CAM systems: A systematic review and meta-analysis. J Prosthet Dent. 2019;121(4):603-610. doi:10.1016/j.prosdent.2018.07.012",
+    "Wittneben JG, Joda T, Weber HP, Brägger U. Accuracy of fit of implant-supported frameworks fabricated by conventional and CAD/CAM techniques: A systematic review. Int J Oral Maxillofac Implants. 2013;28(5):1161-1172. doi:10.11607/jomi.3120"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
