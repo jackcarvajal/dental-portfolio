@@ -20,8 +20,8 @@
     W = cv.width = cv.clientWidth;
     H = cv.height = cv.clientHeight;
     mobile = W < 700;
-    STEP = mobile ? 10 : 6;      // menos partículas en móvil
-    SIZE = mobile ? 1.6 : 2.2;
+    STEP = mobile ? 9 : 5;       // menos partículas en móvil
+    SIZE = mobile ? 1.8 : 2.8;   // puntos más marcados
   }
 
   function Particle() {
@@ -75,7 +75,7 @@
     off.width = W; off.height = H; octx = off.getContext('2d');
     octx.clearRect(0, 0, W, H);
     octx.fillStyle = '#fff';
-    var fs = Math.min(W * 0.16, 150);
+    var fs = Math.min(W * 0.24, 270);   // más grande: el nombre se desborda a los lados
     octx.font = '800 ' + fs + 'px "Helvetica Neue",Arial,sans-serif';
     octx.textAlign = 'center'; octx.textBaseline = 'middle';
     octx.fillText(word, W / 2, H / 2);
