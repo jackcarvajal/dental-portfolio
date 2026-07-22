@@ -137,7 +137,15 @@ footer{text-align:center;color:var(--muted2);font-size:.76rem;margin-top:34px}
       </div>
       <div class="ctrl">
         <label>Altura (subir / bajar) <b id="vY">0</b></label>
-        <input type="range" id="offy" min="-40" max="40" value="0">
+        <input type="range" id="offy" min="-60" max="60" value="0">
+      </div>
+      <div class="ctrl">
+        <label>Lado (izq / der) <b id="vX">0</b></label>
+        <input type="range" id="offx" min="-80" max="80" value="0">
+      </div>
+      <div class="ctrl">
+        <label>Rotar (grados) <b id="vR">0°</b></label>
+        <input type="range" id="rotd" min="-30" max="30" value="0">
       </div>
       <div class="ctrl">
         <label>Grosor <b id="vThick">100%</b></label>
@@ -170,7 +178,7 @@ const $=id=>document.getElementById(id);
 const cv=$('cv'),ctx=cv.getContext('2d');
 let queue=[]; // {name, img(Image), done, eyes:[{x,y},{x,y}]}
 let idx=0, style='wayfarer', brand='none', exporting=false, drag=null;
-let opt={scale:1,offy:0,thick:1,dx:0,dy:0,rot:0};
+let opt={scale:1,offy:0,offx:0,thick:1,dx:0,dy:0,rot:0,rotDeg:0};
 
 // ---- carga de archivos ----
 function addFiles(files){
@@ -208,8 +216,9 @@ function closeEditor(){ $('editor').classList.remove('on'); }
 function openAt(i){
   idx=i; const it=queue[i]; if(!it)return;
   $('editor').classList.add('on');
-  opt={scale:1,offy:0,thick:1,dx:0,dy:0,rot:0}; $('scale').value=100;$('offy').value=0;$('thick').value=100;
-  $('vScale').textContent='100%';$('vY').textContent='0';$('vThick').textContent='100%';
+  opt={scale:1,offy:0,offx:0,thick:1,dx:0,dy:0,rot:0,rotDeg:0};
+  $('scale').value=100;$('offy').value=0;$('offx').value=0;$('rotd').value=0;$('thick').value=100;
+  $('vScale').textContent='100%';$('vY').textContent='0';$('vX').textContent='0';$('vR').textContent='0°';$('vThick').textContent='100%';
   fitCanvas(it.img);
   it.eyes = it.eyes.length===2 ? it.eyes : [];
   updateHint(); draw();
@@ -243,6 +252,7 @@ cv.addEventListener('click',e=>{
   updateHint(); draw();
 });
 $('reset').onclick=()=>{ queue[idx].eyes=[]; opt.dx=0;opt.dy=0;opt.rot=0; $('dl').disabled=true; updateHint(); draw(); };
+// clic sobre las gafas y arrastrar = mover libre (además de los sliders)
 
 // ---- arrastrar para MOVER · punto azul para ROTAR (directo sobre la imagen) ----
 function toImg(e){ const r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)/dispScale, y:(e.clientY-r.top)/dispScale}; }
@@ -267,6 +277,8 @@ cv.addEventListener('pointermove',e=>{
 // ---- controles ----
 $('scale').oninput=e=>{opt.scale=+e.target.value/100;$('vScale').textContent=e.target.value+'%';draw();};
 $('offy').oninput=e=>{opt.offy=+e.target.value;$('vY').textContent=e.target.value;draw();};
+$('offx').oninput=e=>{opt.offx=+e.target.value;$('vX').textContent=e.target.value;draw();};
+$('rotd').oninput=e=>{opt.rotDeg=+e.target.value*Math.PI/180;$('vR').textContent=e.target.value+'°';draw();};
 $('thick').oninput=e=>{opt.thick=+e.target.value/100;$('vThick').textContent=e.target.value+'%';draw();};
 $('styleSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   style=b.dataset.style; $('styleSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); draw();
@@ -311,9 +323,9 @@ function glassGeom(it){
   const [a,b]=it.eyes;
   const baseAng=Math.atan2(b.y-a.y, b.x-a.x);
   const eyeDist=Math.hypot(b.x-a.x, b.y-a.y)||cv.width*0.2;
-  const cx=(a.x+b.x)/2 + opt.dx;
+  const cx=(a.x+b.x)/2 + opt.offx*(cv.width*0.0016) + opt.dx;
   const cy=(a.y+b.y)/2 + opt.offy*(cv.width*0.0016) + opt.dy;
-  const ang=baseAng + opt.rot;
+  const ang=baseAng + opt.rot + opt.rotDeg;
   const h=eyeDist*0.92*opt.scale*opt.thick;
   const hoff=h*1.05;                          // manija arriba de las gafas
   const handle={x:cx+Math.cos(ang-Math.PI/2)*hoff, y:cy+Math.sin(ang-Math.PI/2)*hoff};
@@ -332,12 +344,18 @@ function drawLogo(kind, cx, cy, boxW, boxH){
     let ss=fs*0.30; ctx.font=`700 ${ss}px "Helvetica Neue",Arial,sans-serif`; ctx.fillStyle='#D946A6';
     ctx.fillText('D I G I T A L   D E N T I S T R Y', cx, cy+fs*0.55);
   } else {
-    let fs=boxH*0.34; ctx.font=`italic 700 ${fs}px Georgia,"Times New Roman",serif`;
-    let tw=ctx.measureText('Alejandro').width;
-    if(tw>boxW*0.90){ fs*=boxW*0.90/tw; ctx.font=`italic 700 ${fs}px Georgia,"Times New Roman",serif`; }
-    ctx.fillStyle='#f0dc8a'; ctx.fillText('Alejandro', cx, cy-fs*0.15);
-    let ss=fs*0.30; ctx.font=`700 ${ss}px "Helvetica Neue",Arial,sans-serif`; ctx.fillStyle='#cfc7dd';
-    ctx.fillText('C A R V A J A L', cx, cy+fs*0.5);
+    // Logo real: ALEJANDRO (serif dorado sólido) + CARVAJAL multicolor (nube LiDAR)
+    let fs=boxH*0.30; const serif='"Bodoni MT","Didot","Big Caslon",Georgia,serif';
+    ctx.font=`700 ${fs}px ${serif}`;
+    let tw=ctx.measureText('ALEJANDRO').width;
+    if(tw>boxW*0.94){ fs*=boxW*0.94/tw; ctx.font=`700 ${fs}px ${serif}`; }
+    ctx.fillStyle='#f0dc8a'; ctx.fillText('ALEJANDRO', cx, cy-fs*0.34);
+    // CARVAJAL en degradado multicolor (cian→verde→ámbar→magenta)
+    let ss=fs*0.60; ctx.font=`700 ${ss}px ${serif}`;
+    const ctxt='C A R V A J A L', cw=ctx.measureText(ctxt).width;
+    const grad=ctx.createLinearGradient(cx-cw/2,0,cx+cw/2,0);
+    grad.addColorStop(0,'#00c8e6');grad.addColorStop(.27,'#14d67e');grad.addColorStop(.5,'#bfe24a');grad.addColorStop(.73,'#eca63a');grad.addColorStop(1,'#d94f9e');
+    ctx.fillStyle=grad; ctx.fillText(ctxt, cx, cy+fs*0.42);
   }
   ctx.restore();
 }
