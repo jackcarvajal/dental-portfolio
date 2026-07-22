@@ -72,6 +72,11 @@
   .swatch{width:34px;height:34px;border-radius:8px;border:2px solid transparent;cursor:pointer}
   .swatch.on{border-color:#fff}
   a.link{color:var(--cyan);text-decoration:none;font-size:.82rem;font-weight:700}
+  .lprev{font-size:.75rem;margin-top:6px;color:var(--muted);display:flex;align-items:center;gap:6px;line-height:1.3;word-break:break-all}
+  .lprev b{color:var(--ink);font-weight:700}
+  .lprev .pv-ic{flex:none;font-weight:800}
+  .lprev.ok{color:#34d399}.lprev.ok b{color:#6ee7b7}
+  .lprev.bad{color:#f87171}
 </style>
 </head>
 <body>
@@ -219,12 +224,38 @@ function pintar(){
     const cur=L[k]||{}; const url=cur.url!==undefined?cur.url:DEF[n][k]; const on=cur.on!==false;
     return `<div class="card-item"><div class="top"><b>${LINK_LABELS[k]}</b>
       <label class="toggle"><input type="checkbox" data-lon="${k}" ${on?'checked':''}><span class="sw"></span></label></div>
-      <input data-lurl="${k}" value="${esc(url)}" placeholder="${esc(DEF[n][k])}"></div>`;
+      <input data-lurl="${k}" value="${esc(url)}" placeholder="${esc(DEF[n][k])}">
+      <div class="lprev" data-lprev="${k}"></div></div>`;
   }).join('');
+  // preview de destino en vivo bajo cada enlace
+  document.querySelectorAll('[data-lurl]').forEach(inp=>{
+    const k=inp.dataset.lurl;
+    const upd=()=>pintarPrev(k, inp.value || inp.placeholder);
+    inp.oninput=upd; upd();
+  });
   // galería
   pintarGaleria();
   // reseñas
   pintarResenas();
+}
+
+/* ── PREVIEW DE DESTINO (a dónde va cada enlace) ── */
+function pintarPrev(k,val){
+  const el=document.querySelector(`[data-lprev="${k}"]`); if(!el)return;
+  const v=(val||'').trim();
+  if(!v){ el.className='lprev'; el.innerHTML='<span class="pv-ic">·</span> Usará el enlace por defecto'; return; }
+  let ok=false,dest=v;
+  try{
+    const u=new URL(/^(https?:|mailto:|tel:)/.test(v)?v:'https://'+v);
+    ok=/^https?:$/.test(u.protocol)||/^(mailto|tel):$/.test(u.protocol);
+    if(/wa\.me|api\.whatsapp/.test(u.host+u.pathname)){ dest='WhatsApp → +'+u.pathname.replace(/\D/g,''); }
+    else if(u.protocol==='mailto:'){ dest='Correo → '+u.pathname; }
+    else if(u.protocol==='tel:'){ dest='Llamada → '+u.pathname; }
+    else dest=u.host.replace(/^www\./,'')+(u.pathname!=='/'?u.pathname:'');
+  }catch(e){ ok=false; }
+  el.className='lprev '+(ok?'ok':'bad');
+  el.innerHTML = ok ? `<span class="pv-ic">↗</span> Va a: <b>${esc(dest)}</b>`
+                    : `<span class="pv-ic">⚠</span> Enlace inválido — debe empezar por https://`;
 }
 
 /* ── GALERÍA ── */
