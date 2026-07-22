@@ -21,6 +21,7 @@
     -webkit-font-smoothing:antialiased;padding:0 16px 60px}
   .wrap{max-width:460px;margin:0 auto;position:relative;z-index:1}
   /* ── fondo dinámico (aurora que se mueve) ── */
+  #pbg{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;opacity:.5}
   .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
   .aurora span{position:absolute;border-radius:50%;filter:blur(72px);opacity:.42;will-change:transform}
   .aurora .b1{width:min(360px,80vw);height:min(360px,80vw);background:var(--magenta);top:-70px;left:-50px}
@@ -201,6 +202,7 @@
   }
 </style>
 
+<canvas id="pbg"></canvas>
 <div class="aurora"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
 <div class="wrap">
   <div class="langbar">
@@ -415,8 +417,10 @@
     if(!okUrl(it.url))return '';
     return '<div class="'+cls+'"><img src="'+esc(it.url)+'" alt="'+cap+'" loading="lazy">'+(cap?'<span>'+cap+'</span>':'')+'</div>';
   }
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
   function paint(items){
     if(!gal||!items.length)return false;
+    items=shuffle(items.slice());  // orden aleatorio en cada carga
     var html=items.slice(0,7).map(function(it,i){return tile(it,i===0);}).join('');
     if(!html)return false;
     gal.innerHTML=html; if(note)note.style.display='none'; return true;
@@ -438,5 +442,6 @@
    }).catch(function(){});
 })();
 </script>
+<script src="js/particle-bg.js?v=20260722" data-words="PRODIGY,DENTAL,CAD/CAM,DISEÑO,3D"></script>
 
 </body></html>
