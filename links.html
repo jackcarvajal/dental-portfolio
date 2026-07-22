@@ -22,6 +22,12 @@
   .wrap{max-width:460px;margin:0 auto;position:relative;z-index:1}
   /* ── fondo dinámico (aurora que se mueve) ── */
   #pbg{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;opacity:.72}
+  /* oscurece el centro (donde va el contenido) para legibilidad; deja vibrantes los lados */
+  #pbgdim{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(ellipse 820px 130% at 50% 50%,rgba(5,5,5,.9) 0,rgba(5,5,5,.88) 40%,rgba(5,5,5,.42) 64%,transparent 84%)}
+  /* pantallas grandes: usa mejor el espacio — escala todo + columna más ancha */
+  @media(min-width:1200px){ html{font-size:18px} .wrap{max-width:700px}
+    #pbgdim{background:radial-gradient(ellipse 980px 130% at 50% 50%,rgba(5,5,5,.9) 0,rgba(5,5,5,.88) 42%,rgba(5,5,5,.42) 66%,transparent 85%)} }
   .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
   .aurora span{position:absolute;border-radius:50%;filter:blur(72px);opacity:.42;will-change:transform}
   .aurora .b1{width:min(360px,80vw);height:min(360px,80vw);background:var(--magenta);top:-70px;left:-50px}
@@ -47,7 +53,7 @@
   /* ── cabecera ── */
   header{text-align:center;padding:14px 0 22px}
   .logo{width:76px;height:76px;margin:0 auto 14px;filter:drop-shadow(0 6px 20px rgba(0,210,255,.35))}
-  .brand{font-size:2rem;font-weight:800;letter-spacing:.12em;line-height:1;
+  .brand{font-size:3rem;font-weight:800;letter-spacing:.1em;line-height:1;
     background:linear-gradient(95deg,var(--gold) 6%,var(--magenta) 52%,var(--cyan) 96%);
     -webkit-background-clip:text;background-clip:text;color:transparent}
   .sub{font-size:.72rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-top:8px}
@@ -182,9 +188,9 @@
     .wrap{max-width:600px}
     .langbar{padding:28px 0 6px}
     .logo{width:104px;height:104px}
-    .brand{font-size:2.9rem}
-    .sub{font-size:.8rem;letter-spacing:.36em}
-    .pitch{font-size:1.03rem;max-width:44ch}
+    .brand{font-size:4.4rem}
+    .sub{font-size:.86rem;letter-spacing:.36em}
+    .pitch{font-size:1.12rem;max-width:46ch}
     .urgency{font-size:.82rem;padding:9px 20px}
     .lnk{padding:18px 22px;font-size:1.06rem;border-radius:13px}
     .lnk .ic svg{width:28px;height:28px}
@@ -203,6 +209,7 @@
 </style>
 
 <canvas id="pbg"></canvas>
+<div id="pbgdim"></div>
 <div class="aurora"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
 <div class="wrap">
   <div class="langbar">
