@@ -481,16 +481,45 @@
 
     <!-- PASO 3.5: EXOCAD HTML (OPCIONAL) -->
     <div class="card">
-        <div class="card-title">🦷 Visor Exocad/3Shape <span style="font-size:0.75rem;font-weight:400;color:var(--muted);margin-left:8px;">— opcional</span></div>
+        <div class="card-title">🦷 Visores Exocad/3Shape <span style="font-size:0.75rem;font-weight:400;color:var(--muted);margin-left:8px;">— opcional · hasta 3 revisiones</span></div>
         <p style="color:var(--muted);font-size:0.9rem;margin-bottom:16px;line-height:1.6;">
-            Si el caso tiene un <strong style="color:var(--text);">archivo HTML exportado desde Exocad o 3Shape</strong>, súbelo aquí. Se publicará como visor 3D del caso en el portafolio.
+            Sube la <strong style="color:var(--text);">carpeta exportada por Exocad o 3Shape</strong>. Puedes subir <strong style="color:var(--text);">hasta 3</strong> (propuesta inicial y sus revisiones) — se muestran una debajo de otra en el caso. Ponle una etiqueta a cada una.
         </p>
+
+        <div class="form-group" style="margin-bottom:8px">
+            <label for="label1">Etiqueta del diseño 1</label>
+            <input type="text" id="label1" placeholder="Ej: Propuesta inicial">
+        </div>
         <div class="upload-zone" id="exocadZone">
-            <input type="file" id="exocadInput" webkitdirectory mozdirectory directory multiple onchange="handleExocad(this)">
+            <input type="file" id="exocadInput" webkitdirectory mozdirectory directory multiple onchange="handleExocad(this,0)">
             <div class="upload-icon">🦷</div>
-            <div class="upload-title">Arrastra la carpeta del visor Exocad/3Shape</div>
-            <div class="upload-sub">Selecciona la carpeta completa que exportó Exocad — sube el HTML y todas las imágenes automáticamente</div>
+            <div class="upload-title">Carpeta del diseño 1</div>
+            <div class="upload-sub">Selecciona la carpeta completa que exportó Exocad — sube el HTML y sus imágenes</div>
             <div class="upload-status" id="exocadStatus"></div>
+        </div>
+
+        <div class="form-group" style="margin:18px 0 8px">
+            <label for="label2">Etiqueta del diseño 2 <span style="color:var(--muted);font-weight:400">(opcional)</span></label>
+            <input type="text" id="label2" placeholder="Ej: Revisión 1">
+        </div>
+        <div class="upload-zone" id="exocadZone2">
+            <input type="file" id="exocadInput2" webkitdirectory mozdirectory directory multiple onchange="handleExocad(this,1)">
+            <div class="upload-icon">🦷</div>
+            <div class="upload-title">Carpeta del diseño 2</div>
+            <div class="upload-sub">Segunda revisión / propuesta (opcional)</div>
+            <div class="upload-status" id="exocadStatus2"></div>
+        </div>
+
+        <div class="form-group" style="margin:18px 0 8px">
+            <label for="label3">Etiqueta del diseño 3 <span style="color:var(--muted);font-weight:400">(opcional)</span></label>
+            <input type="text" id="label3" placeholder="Ej: Revisión 2">
+        </div>
+        <div class="upload-zone" id="exocadZone3">
+            <input type="file" id="exocadInput3" webkitdirectory mozdirectory directory multiple onchange="handleExocad(this,2)">
+            <div class="upload-icon">🦷</div>
+            <div class="upload-title">Carpeta del diseño 3</div>
+            <div class="upload-sub">Tercera revisión / propuesta (opcional)</div>
+            <div class="upload-status" id="exocadStatus3"></div>
         </div>
     </div>
 
@@ -526,8 +555,8 @@ ProdigyAuth.require(['admin']).then(session => {
 // =============================================
 let coverFile = null;
 let galleryFiles = [];
-let exocadFile = null;      // archivo HTML principal
-let exocadFolder = [];     // todos los archivos de la carpeta Exocad
+// hasta 3 visores (revisiones): cada slot {file: HTML principal, folder: todos los archivos}
+let exocadSlots = [ {file:null,folder:[]}, {file:null,folder:[]}, {file:null,folder:[]} ];
 
 // =============================================
 // PORTADA
@@ -587,36 +616,37 @@ function handleGallery(input) {
 // =============================================
 // EXOCAD — carpeta completa
 // =============================================
-function handleExocad(input) {
+function handleExocad(input, slot) {
+    slot = slot || 0;
     const files = Array.from(input.files);
+    const statusId = 'exocadStatus' + (slot === 0 ? '' : (slot + 1));
+    const zoneId   = 'exocadZone'   + (slot === 0 ? '' : (slot + 1));
     if (!files.length) return;
 
-    // Buscar el HTML principal: el que está en la raíz de la carpeta (sin subcarpeta)
-    // webkitRelativePath = "nombreCarpeta/archivo.html" → split('/')[1] es el archivo directo
+    // HTML principal: el que está en la raíz de la carpeta (sin subcarpeta)
     const htmlFiles = files.filter(f => {
         const parts = f.webkitRelativePath.split('/');
         return parts.length === 2 && f.name.toLowerCase().endsWith('.html');
     });
 
     if (!htmlFiles.length) {
-        document.getElementById('exocadStatus').textContent = '⚠️ No se encontró un archivo .html en la raíz de la carpeta';
+        document.getElementById(statusId).textContent = '⚠️ No se encontró un archivo .html en la raíz de la carpeta';
         return;
     }
 
-    exocadFile   = htmlFiles[0];   // HTML principal
-    exocadFolder = files;           // todos los archivos (HTML + imágenes + assets)
+    exocadSlots[slot].file   = htmlFiles[0];
+    exocadSlots[slot].folder = files;
 
     const totalMB = (files.reduce((s, f) => s + f.size, 0) / 1024 / 1024).toFixed(1);
-    const zone = document.getElementById('exocadZone');
-    zone.classList.add('loaded');
-    document.getElementById('exocadStatus').textContent =
-        '✓ ' + exocadFile.name + ' + ' + (files.length - 1) + ' archivo(s) de soporte (' + totalMB + ' MB total)';
+    document.getElementById(zoneId).classList.add('loaded');
+    document.getElementById(statusId).textContent =
+        '✓ ' + htmlFiles[0].name + ' + ' + (files.length - 1) + ' archivo(s) de soporte (' + totalMB + ' MB total)';
 }
 
 // =============================================
 // DRAG & DROP
 // =============================================
-['coverZone', 'galleryZone', 'exocadZone'].forEach(id => {
+['coverZone', 'galleryZone', 'exocadZone', 'exocadZone2', 'exocadZone3'].forEach(id => {
     const zone = document.getElementById(id);
     zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
     zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
@@ -806,34 +836,33 @@ async function publicarCaso() {
             galleryUrls.push(base + gpath);
         }
 
-        // ── Exocad (opcional) — sube carpeta completa ──
-        let exocadUrl = null;
-        if (exocadFile && exocadFolder.length) {
-            // Validar magic bytes de archivos Exocad (evitar ejecutables)
+        // ── Exocad (hasta 3 revisiones) — sube cada carpeta a su subcarpeta ──
+        const exocadUrls = [null, null, null];
+        for (let s = 0; s < 3; s++) {
+            const slot = exocadSlots[s];
+            if (!slot.file || !slot.folder.length) continue;
+            // Validar magic bytes (evitar ejecutables)
             if (window.validateMagicBytes) {
-                for (const ef of exocadFolder) {
+                for (const ef of slot.folder) {
                     const mb = await validateMagicBytes(ef);
                     if (!mb.safe) throw new Error('Archivo Exocad bloqueado "' + ef.name + '": ' + mb.error);
                 }
             }
-            // La carpeta raíz del export, ej. "CasoFullArch/"
-            const folderRoot = exocadFolder[0].webkitRelativePath.split('/')[0];
-            setProgress('Subiendo visor Exocad (0/' + exocadFolder.length + ')...');
-            for (let i = 0; i < exocadFolder.length; i++) {
-                const f = exocadFolder[i];
-                // relativePath dentro de la carpeta: quitar "nombreCarpeta/"
+            const folderRoot = slot.folder[0].webkitRelativePath.split('/')[0];
+            const sub = s === 0 ? 'exocad' : 'exocad' + (s + 1);   // exocad / exocad2 / exocad3
+            for (let i = 0; i < slot.folder.length; i++) {
+                const f = slot.folder[i];
                 const relPath = f.webkitRelativePath.slice(folderRoot.length + 1);
-                const storagePath = id + '/exocad/' + relPath;
+                const storagePath = id + '/' + sub + '/' + relPath;
+                setProgress('Subiendo visor ' + (s + 1) + ' (' + (i + 1) + '/' + slot.folder.length + ')...');
                 const { error: exErr } = await sb.storage.from(BUCKET).upload(storagePath, f, {
                     contentType: f.type || 'application/octet-stream',
                     upsert: true
                 });
-                if (exErr) throw new Error('Exocad archivo "' + relPath + '": ' + exErr.message);
-                setProgress('Subiendo visor Exocad (' + (i + 1) + '/' + exocadFolder.length + ')...');
+                if (exErr) throw new Error('Exocad ' + (s + 1) + ' "' + relPath + '": ' + exErr.message);
             }
-            // URL del HTML principal
-            const htmlRel = exocadFile.webkitRelativePath.slice(folderRoot.length + 1);
-            exocadUrl = base + id + '/exocad/' + htmlRel;
+            const htmlRel = slot.file.webkitRelativePath.slice(folderRoot.length + 1);
+            exocadUrls[s] = base + id + '/' + sub + '/' + htmlRel;
         }
 
         // ── Insert en tabla ──
@@ -846,7 +875,12 @@ async function publicarCaso() {
             date,
             description: desc,
             cover_image:   coverUrl,
-            exocad_file:   exocadUrl,
+            exocad_file:   exocadUrls[0],
+            exocad_file_2: exocadUrls[1],
+            exocad_file_3: exocadUrls[2],
+            label_1:       document.getElementById('label1').value.trim() || null,
+            label_2:       document.getElementById('label2').value.trim() || null,
+            label_3:       document.getElementById('label3').value.trim() || null,
             drive_link:    drive || null,
             gallery:       galleryUrls,
             gallery_count: galleryFiles.length,
