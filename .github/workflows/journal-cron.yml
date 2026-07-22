@@ -24,7 +24,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0   # historia completa: permite pull --rebase sin errores de shallow
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -49,7 +49,13 @@ jobs:
           git config user.email "bot@prodigylabdental.com"
           git add articles.js sitemap.xml
           git commit -m "feat(journal): $(date +'%Y-%m-%d') — 2 artículos técnicos auto-generados [skip ci]"
-          git push
+          # Reintento con rebase: evita 'fetch first' si otro push llegó mientras corría el cron
+          for i in 1 2 3; do
+            git push && break
+            echo "push rechazado (intento $i) — rebase y reintento"
+            git pull --rebase origin main
+            sleep 3
+          done
 
       # Social copy → Artifact privado (solo visible en GitHub Actions)
       - name: Subir social copy como Artifact
