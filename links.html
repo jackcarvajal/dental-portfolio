@@ -425,11 +425,25 @@
     if(!html)return false;
     gal.innerHTML=html; if(note)note.style.display='none'; return true;
   }
+  // reseñas REALES del panel (sin inventar). Si no hay, quedan los ejemplos marcados.
+  function paintReviews(revs){
+    var rev=document.querySelector('.rev'); if(!rev||!revs.length)return;
+    rev.innerHTML=revs.slice(0,6).map(function(r){
+      var n=Math.max(1,Math.min(5,r.stars||5));
+      var who=esc(r.who||'');
+      return '<div class="rcard"><span class="rstars">'+'★'.repeat(n)+'</span>'+
+        '<p class="rbody">“'+esc(r.es||'')+'”</p>'+
+        (who?'<div class="rwho">— '+who+'</div>':'')+'</div>';
+    }).join('');
+    var rn=document.querySelector('[data-i="revNote"]'); if(rn){var p=rn.closest('.ph-note'); if(p)p.style.display='none';}
+  }
   // 1) galería del panel; 2) si vacía, casos reales del portafolio
   fetch(SURL+'/rest/v1/links_config?select=config&negocio=eq.'+NEG,{headers:H})
    .then(function(r){return r.json();})
    .then(function(rows){
      var cfg=(rows&&rows[0]&&rows[0].config)||{};
+     var revs=Array.isArray(cfg.reviews)?cfg.reviews.filter(function(r){return r&&(r.es||'').trim();}):[];
+     paintReviews(revs);
      var g=Array.isArray(cfg.gallery)?cfg.gallery.filter(function(x){return x&&okUrl(x.url);}):[];
      if(paint(g))return;
      return fetch(SURL+'/rest/v1/casos_portafolio?select=name,cover_image&visible=eq.true&order=sort_order.asc&limit=7',{headers:H})

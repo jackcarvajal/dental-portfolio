@@ -334,28 +334,55 @@ function glassGeom(it){
 function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
 const BRANDCOL={prodigy:['#D946A6','#D4AF37'],alejandro:['#D4AF37','#f0dc8a'],ambas:['#D946A6','#D4AF37']};
 // logo de marca dibujado dentro de un lente (o mitad de barra), centrado en (cx,cy)
+function rainbowAt(t){ // cian→verde→ámbar→magenta (color por profundidad, tipo escaneo)
+  const s=[[0,'#00c8e6'],[.27,'#14d67e'],[.5,'#bfe24a'],[.73,'#eca63a'],[1,'#d94f9e']];
+  for(let i=0;i<s.length-1;i++){ if(t<=s[i+1][0])return s[i+1][1]; }
+  return s[s.length-1][1];
+}
+// texto como NUBE DE PUNTOS multicolor (efecto LiDAR del apellido Carvajal)
+function drawDotText(text, cx, cy, fs, maxW){
+  const font=`700 ${fs}px "Bodoni MT","Didot","Big Caslon",Georgia,serif`;
+  ctx.font=font; ctx.textAlign='left';
+  let tw=ctx.measureText(text).width; const scale=tw>maxW?maxW/tw:1;
+  const pad=Math.ceil(fs*0.35);
+  const oc=document.createElement('canvas');
+  oc.width=Math.ceil(tw)+pad*2; oc.height=Math.ceil(fs*1.5)+pad*2;
+  const ox=oc.getContext('2d');
+  ox.font=font; ox.textAlign='left'; ox.textBaseline='middle'; ox.fillStyle='#fff';
+  ox.fillText(text, pad, oc.height/2);
+  const d=ox.getImageData(0,0,oc.width,oc.height).data;
+  const step=Math.max(2,Math.round(fs*0.085)), dotR=Math.max(.6,fs*0.032)*scale;
+  for(let y=0;y<oc.height;y+=step)for(let x=0;x<oc.width;x+=step){
+    if(d[(y*oc.width+x)*4+3]>60){
+      ctx.fillStyle=rainbowAt(x/oc.width);
+      ctx.beginPath(); ctx.arc(cx+(x-oc.width/2)*scale, cy+(y-oc.height/2)*scale, dotR, 0, 7); ctx.fill();
+    }
+  }
+}
 function drawLogo(kind, cx, cy, boxW, boxH){
   ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
   if(kind==='prodigy'){
+    // PRODIGY con degradado dorado→magenta + "LABORATORIO DENTAL DIGITAL"
     let fs=boxH*0.30; ctx.font=`800 ${fs}px "Helvetica Neue",Arial,sans-serif`;
     let tw=ctx.measureText('PRODIGY').width;
-    if(tw>boxW*0.86){ fs*=boxW*0.86/tw; ctx.font=`800 ${fs}px "Helvetica Neue",Arial,sans-serif`; }
-    ctx.fillStyle='#f0dc8a'; ctx.fillText('PRODIGY', cx, cy-fs*0.18);
-    let ss=fs*0.30; ctx.font=`700 ${ss}px "Helvetica Neue",Arial,sans-serif`; ctx.fillStyle='#D946A6';
-    ctx.fillText('D I G I T A L   D E N T I S T R Y', cx, cy+fs*0.55);
+    if(tw>boxW*0.9){ fs*=boxW*0.9/tw; ctx.font=`800 ${fs}px "Helvetica Neue",Arial,sans-serif`; tw=ctx.measureText('PRODIGY').width; }
+    let gr=ctx.createLinearGradient(cx-tw/2,0,cx+tw/2,0);
+    gr.addColorStop(0,'#f0dc8a'); gr.addColorStop(.5,'#e8a24c'); gr.addColorStop(1,'#D946A6');
+    ctx.fillStyle=gr; ctx.fillText('PRODIGY', cx, cy-fs*0.22);
+    let ss=fs*0.27; ctx.font=`700 ${ss}px "Helvetica Neue",Arial,sans-serif`;
+    let sub='LABORATORIO DENTAL DIGITAL', sw=ctx.measureText(sub).width;
+    if(sw>boxW*0.96){ ss*=boxW*0.96/sw; ctx.font=`700 ${ss}px "Helvetica Neue",Arial,sans-serif`; sw=ctx.measureText(sub).width; }
+    let gr2=ctx.createLinearGradient(cx-sw/2,0,cx+sw/2,0);
+    gr2.addColorStop(0,'#f0dc8a'); gr2.addColorStop(1,'#D946A6');
+    ctx.fillStyle=gr2; ctx.fillText(sub, cx, cy+fs*0.5);
   } else {
-    // Logo real: ALEJANDRO (serif dorado sólido) + CARVAJAL multicolor (nube LiDAR)
+    // ALEJANDRO serif dorado sólido + CARVAJAL en nube de puntos multicolor
     let fs=boxH*0.30; const serif='"Bodoni MT","Didot","Big Caslon",Georgia,serif';
     ctx.font=`700 ${fs}px ${serif}`;
     let tw=ctx.measureText('ALEJANDRO').width;
     if(tw>boxW*0.94){ fs*=boxW*0.94/tw; ctx.font=`700 ${fs}px ${serif}`; }
-    ctx.fillStyle='#f0dc8a'; ctx.fillText('ALEJANDRO', cx, cy-fs*0.34);
-    // CARVAJAL en degradado multicolor (cian→verde→ámbar→magenta)
-    let ss=fs*0.60; ctx.font=`700 ${ss}px ${serif}`;
-    const ctxt='C A R V A J A L', cw=ctx.measureText(ctxt).width;
-    const grad=ctx.createLinearGradient(cx-cw/2,0,cx+cw/2,0);
-    grad.addColorStop(0,'#00c8e6');grad.addColorStop(.27,'#14d67e');grad.addColorStop(.5,'#bfe24a');grad.addColorStop(.73,'#eca63a');grad.addColorStop(1,'#d94f9e');
-    ctx.fillStyle=grad; ctx.fillText(ctxt, cx, cy+fs*0.42);
+    ctx.fillStyle='#f0dc8a'; ctx.fillText('ALEJANDRO', cx, cy-fs*0.36);
+    drawDotText('CARVAJAL', cx, cy+fs*0.42, fs*0.92, boxW*0.94);
   }
   ctx.restore();
 }
