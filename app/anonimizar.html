@@ -352,6 +352,7 @@ function drawDotText(text, cx, cy, fs, maxW){
   ox.fillText(text, pad, oc.height/2);
   const d=ox.getImageData(0,0,oc.width,oc.height).data;
   const step=Math.max(2,Math.round(fs*0.085)), dotR=Math.max(.6,fs*0.032)*scale;
+  ctx.shadowColor='rgba(0,0,0,.85)'; ctx.shadowBlur=dotR*2.4; ctx.shadowOffsetY=dotR*0.35; // contraste
   for(let y=0;y<oc.height;y+=step)for(let x=0;x<oc.width;x+=step){
     if(d[(y*oc.width+x)*4+3]>60){
       ctx.fillStyle=rainbowAt(x/oc.width);
@@ -361,6 +362,8 @@ function drawDotText(text, cx, cy, fs, maxW){
 }
 function drawLogo(kind, cx, cy, boxW, boxH){
   ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+  // sombra oscura para que el logo se lea siempre sobre el lente
+  ctx.shadowColor='rgba(0,0,0,.92)'; ctx.shadowBlur=Math.max(2.5,boxH*0.05); ctx.shadowOffsetY=Math.max(1,boxH*0.008);
   if(kind==='prodigy'){
     // PRODIGY con degradado dorado→magenta + "LABORATORIO DENTAL DIGITAL"
     let fs=boxH*0.30; ctx.font=`800 ${fs}px "Helvetica Neue",Arial,sans-serif`;
