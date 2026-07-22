@@ -780,6 +780,10 @@ function renderPage(page) {
         revealObserver.observe(card);
         addTilt(card);
     });
+    // Red de seguridad: si el IntersectionObserver no dispara (cards ya en
+    // viewport, reduced-motion, etc.) revelamos igual para no dejarlas invisibles.
+    setTimeout(() => grid.querySelectorAll('.case-card:not(.revealed)')
+        .forEach(c => c.classList.add('revealed')), 400);
 
     // Paginador
     if (totalPages <= 1) {
