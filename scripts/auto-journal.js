@@ -624,6 +624,24 @@ Devuelve EXACTAMENTE este JSON (sin texto antes ni después, sin markdown):
 }
 
 // ── Parsear y validar respuesta Gemini ────────────────────────────
+// Escapa saltos de línea / tabs crudos DENTRO de strings — causa #1 de
+// "Unterminated string in JSON" cuando Gemini emite JSON con newlines literales.
+function repairJson(s) {
+  let out = '', inStr = false, esc = false;
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (esc) { out += ch; esc = false; continue; }
+    if (ch === '\\') { out += ch; esc = true; continue; }
+    if (ch === '"') { inStr = !inStr; out += ch; continue; }
+    if (inStr) {
+      if (ch === '\n') { out += '\\n'; continue; }
+      if (ch === '\r') { out += '\\r'; continue; }
+      if (ch === '\t') { out += '\\t'; continue; }
+    }
+    out += ch;
+  }
+  return out;
+}
 function parseGeminiResponse(raw) {
   let jsonStr = raw.trim();
 
@@ -631,7 +649,13 @@ function parseGeminiResponse(raw) {
   const match = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (match) jsonStr = match[1].trim();
 
-  const data = JSON.parse(jsonStr);
+  // recortar al objeto JSON externo (descarta prefacios/sufijos del modelo)
+  const a = jsonStr.indexOf('{'), b = jsonStr.lastIndexOf('}');
+  if (a >= 0 && b > a) jsonStr = jsonStr.slice(a, b + 1);
+
+  let data;
+  try { data = JSON.parse(jsonStr); }
+  catch (e) { data = JSON.parse(repairJson(jsonStr)); }
 
   // Validaciones mínimas
   if (!data.titulo)    throw new Error('Falta titulo');
