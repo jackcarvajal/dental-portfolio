@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#050505">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕶️</text></svg>">
+<title>Anonimizador de pacientes — PRODIGY</title>
+<style>
+:root{
+  --bg:#050505; --bg2:#0a0f16; --surface:#0d1520; --surface2:#111a26; --line:#1c2836;
+  --ink:#f4f0f7; --muted:#9a93a8; --muted2:#6f6a7d;
+  --gold:#D4AF37; --gold-lt:#f0dc8a; --magenta:#D946A6; --cyan:#00d2ff; --ok:#34d399; --bad:#f87171;
+  --serif:"Bodoni MT","Didot","Big Caslon",Georgia,serif;
+  --sans:"Helvetica Neue",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:radial-gradient(1000px 560px at 50% -10%,rgba(212,175,55,.09),transparent 60%),var(--bg);
+  color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:1080px;margin:0 auto;padding:26px 18px 70px}
+header{text-align:center;margin-bottom:18px}
+.eyebrow{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:700}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(1.5rem,4vw,2.2rem);letter-spacing:.02em;margin:8px 0 4px}
+.lede{color:var(--muted);font-size:.92rem;max-width:60ch;margin:0 auto;text-wrap:balance}
+.priv{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-size:.76rem;color:var(--ok);
+  background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-radius:999px;padding:6px 14px}
+
+/* dropzone */
+.drop{margin-top:20px;border:1.5px dashed var(--line);border-radius:16px;background:var(--surface);
+  padding:34px 20px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.drop.hot{border-color:var(--gold);background:var(--surface2)}
+.drop b{color:var(--ink)} .drop span{color:var(--muted);font-size:.86rem}
+.drop .big{font-size:1.7rem;margin-bottom:6px}
+
+/* editor */
+.editor{margin-top:20px;display:none;gap:16px;grid-template-columns:1fr;align-items:start}
+.editor.on{display:grid}
+.stage-wrap{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;position:relative}
+.stagebar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px;flex-wrap:wrap}
+.stepline{font-size:.82rem;color:var(--muted)}
+.stepline b{color:var(--gold-lt)}
+.stage{position:relative;display:inline-block;max-width:100%;border-radius:10px;overflow:hidden;touch-action:none}
+.stage canvas{display:block;max-width:100%;height:auto;cursor:crosshair}
+.hintpill{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:3;pointer-events:none;
+  background:rgba(5,5,5,.82);border:1px solid var(--line);color:var(--ink);font-size:.8rem;font-weight:600;
+  padding:8px 14px;border-radius:999px;white-space:nowrap;backdrop-filter:blur(4px)}
+.hintpill b{color:var(--cyan)}
+
+/* controls */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.panel h2{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:700}
+.seg{display:flex;gap:6px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:4px;margin-bottom:16px}
+.seg button{flex:1;font:inherit;font-size:.8rem;font-weight:700;color:var(--muted);background:none;border:none;
+  padding:9px 6px;border-radius:7px;cursor:pointer;transition:.15s}
+.seg button.on{background:linear-gradient(180deg,var(--gold-lt),var(--gold));color:#0a0a0a}
+.ctrl{margin-bottom:14px}
+.ctrl label{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-bottom:6px}
+.ctrl label b{color:var(--ink);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--gold)}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;font-size:.86rem;padding:12px 16px;border-radius:11px;cursor:pointer;border:1px solid var(--line);
+  background:var(--surface2);color:var(--ink);transition:.15s;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn:hover{border-color:var(--gold)}
+.btn.primary{background:linear-gradient(180deg,var(--gold-lt),var(--gold));color:#0a0a0a;border:none;flex:1}
+.btn.ghost{color:var(--muted)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.wide{width:100%}
+.note{font-size:.76rem;color:var(--muted2);margin-top:10px;line-height:1.4}
+
+/* queue */
+.queue{margin-top:20px}
+.queue h2{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:700;display:flex;gap:10px;align-items:center}
+.qcount{color:var(--gold-lt)}
+.qstrip{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}
+.qitem{flex:none;width:88px;cursor:pointer;position:relative}
+.qitem img{width:88px;height:88px;object-fit:cover;border-radius:10px;border:2px solid var(--line);display:block;transition:.15s}
+.qitem.cur img{border-color:var(--gold)}
+.qitem.done::after{content:"✓";position:absolute;top:4px;right:4px;width:20px;height:20px;background:var(--ok);color:#04240f;
+  border-radius:50%;font-size:.72rem;font-weight:900;display:grid;place-items:center}
+.qitem .x{position:absolute;top:4px;left:4px;width:20px;height:20px;background:rgba(5,5,5,.8);border:1px solid var(--line);
+  color:var(--bad);border-radius:50%;font-size:.8rem;display:none;place-items:center}
+.qitem:hover .x{display:grid}
+@media(min-width:820px){ .editor.on{grid-template-columns:1fr 300px} }
+footer{text-align:center;color:var(--muted2);font-size:.76rem;margin-top:34px}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Herramienta interna · PRODIGY Lab Dental</p>
+    <h1>Anonimizador de pacientes</h1>
+    <p class="lede">Coloca gafas negras sobre los ojos para proteger la identidad del paciente (Ley 1581 · Habeas Data). Marca los dos ojos con un clic cada uno y listo.</p>
+    <div class="priv">🔒 100% privado — las fotos se procesan en tu navegador, nunca se suben a internet</div>
+  </header>
+
+  <div class="drop" id="drop">
+    <div class="big">📷</div>
+    <b>Arrastra tus fotos aquí</b> o haz clic para elegir<br>
+    <span>Puedes soltar varias a la vez · JPG o PNG</span>
+    <input type="file" id="file" accept="image/*" multiple hidden>
+  </div>
+
+  <section class="editor" id="editor">
+    <div class="stage-wrap">
+      <div class="stagebar">
+        <div class="stepline" id="stepline">Foto <b id="pos">1</b> de <b id="total">1</b></div>
+        <div class="row">
+          <button class="btn ghost" id="reset" title="Volver a marcar los ojos">↺ Re-marcar</button>
+        </div>
+      </div>
+      <div class="stage" id="stage">
+        <div class="hintpill" id="hint">Haz clic en el <b>ojo izquierdo</b></div>
+        <canvas id="cv"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Estilo</h2>
+      <div class="seg" id="styleSeg">
+        <button data-style="wayfarer" class="on">🕶 Gafas</button>
+        <button data-style="bar">▬ Barra</button>
+      </div>
+      <h2>Marca</h2>
+      <div class="seg" id="brandSeg">
+        <button data-brand="none" class="on">Ninguna</button>
+        <button data-brand="ambas">Ambas</button>
+        <button data-brand="prodigy">PRODIGY</button>
+        <button data-brand="alejandro">Alejandro</button>
+      </div>
+      <div class="ctrl">
+        <label>Tamaño <b id="vScale">100%</b></label>
+        <input type="range" id="scale" min="60" max="180" value="100">
+      </div>
+      <div class="ctrl">
+        <label>Altura (subir / bajar) <b id="vY">0</b></label>
+        <input type="range" id="offy" min="-40" max="40" value="0">
+      </div>
+      <div class="ctrl">
+        <label>Grosor <b id="vThick">100%</b></label>
+        <input type="range" id="thick" min="70" max="150" value="100">
+      </div>
+      <div class="row" style="margin-top:6px">
+        <button class="btn primary" id="dl" disabled>⬇ Descargar y siguiente</button>
+      </div>
+      <button class="btn wide ghost" id="skip" style="margin-top:9px">Saltar esta foto →</button>
+      <p class="note">Marca <b>ojo izquierdo</b> y luego <b>ojo derecho</b> (2 clics). Luego <b>arrastra las gafas</b> para moverlas y usa el <b style="color:#00d2ff">punto azul ↻</b> para rotarlas — o ajusta con los controles. Descarga con <code>-anon</code> en el nombre.</p>
+    </div>
+  </section>
+
+  <section class="queue" id="queue" style="display:none">
+    <h2>En cola <span class="qcount" id="qc"></span></h2>
+    <div class="qstrip" id="qstrip"></div>
+  </section>
+
+  <section class="done" id="done" style="display:none">
+    <h2>✅ Listas — toca para guardar <span class="qcount" id="dc"></span></h2>
+    <div class="qstrip" id="dstrip"></div>
+    <p class="note" style="margin-top:8px">Si al tocar no descarga (vista previa o móvil), <b>mantén presionada</b> la imagen y elige <b>"Guardar imagen"</b>.</p>
+  </section>
+
+  <footer>PRODIGY Lab Dental · Uso interno · Nada de lo que subes sale de tu equipo</footer>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const cv=$('cv'),ctx=cv.getContext('2d');
+let queue=[]; // {name, img(Image), done, eyes:[{x,y},{x,y}]}
+let idx=0, style='wayfarer', brand='none', exporting=false, drag=null;
+let opt={scale:1,offy:0,thick:1,dx:0,dy:0,rot:0};
+
+// ---- carga de archivos ----
+function addFiles(files){
+  [...files].filter(f=>/^image\//.test(f.type)).forEach(f=>{
+    const url=URL.createObjectURL(f);
+    const img=new Image();
+    img.onload=()=>{ renderQueue(); if(!$('editor').classList.contains('on')) openAt(0); };
+    img.src=url;
+    queue.push({name:f.name.replace(/\.[^.]+$/,''),img,done:false,eyes:[]});
+  });
+}
+$('file').addEventListener('change',e=>addFiles(e.target.files));
+$('drop').addEventListener('click',()=>$('file').click());
+['dragover','dragenter'].forEach(ev=>$('drop').addEventListener(ev,e=>{e.preventDefault();$('drop').classList.add('hot');}));
+['dragleave','drop'].forEach(ev=>$('drop').addEventListener(ev,e=>{e.preventDefault();$('drop').classList.remove('hot');}));
+$('drop').addEventListener('drop',e=>addFiles(e.dataTransfer.files));
+
+// ---- cola ----
+function renderQueue(){
+  const q=$('queue'); q.style.display=queue.length?'block':'none';
+  $('qc').textContent=queue.length?`(${queue.filter(x=>x.done).length}/${queue.length} listas)`:'';
+  $('qstrip').innerHTML=queue.map((it,i)=>
+    `<div class="qitem ${i===idx?'cur':''} ${it.done?'done':''}" data-i="${i}">
+       <img src="${it.img.src}" alt="">
+       <span class="x" data-x="${i}">✕</span>
+     </div>`).join('');
+  $('qstrip').querySelectorAll('.qitem').forEach(el=>el.onclick=e=>{
+    if(e.target.dataset.x!==undefined){ e.stopPropagation(); queue.splice(+e.target.dataset.x,1); if(idx>=queue.length)idx=Math.max(0,queue.length-1); queue.length?openAt(idx):closeEditor(); renderQueue(); return; }
+    openAt(+el.dataset.i);
+  });
+}
+function closeEditor(){ $('editor').classList.remove('on'); }
+
+// ---- abrir una foto ----
+function openAt(i){
+  idx=i; const it=queue[i]; if(!it)return;
+  $('editor').classList.add('on');
+  opt={scale:1,offy:0,thick:1,dx:0,dy:0,rot:0}; $('scale').value=100;$('offy').value=0;$('thick').value=100;
+  $('vScale').textContent='100%';$('vY').textContent='0';$('vThick').textContent='100%';
+  fitCanvas(it.img);
+  it.eyes = it.eyes.length===2 ? it.eyes : [];
+  updateHint(); draw();
+  $('pos').textContent=i+1; $('total').textContent=queue.length;
+  $('dl').disabled = it.eyes.length!==2;
+  renderQueue();
+}
+// escala de despliegue (para no exceder ancho); guardamos factor
+let dispScale=1;
+function fitCanvas(img){
+  const maxW=Math.min(720, window.innerWidth-60);
+  dispScale = img.width>maxW ? maxW/img.width : 1;
+  cv.width=img.width; cv.height=img.height;              // canvas a resolución real
+  cv.style.width=(img.width*dispScale)+'px';             // css lo achica
+  cv.style.height=(img.height*dispScale)+'px';
+}
+function updateHint(){
+  const it=queue[idx]; const h=$('hint');
+  if(it.eyes.length===0){ h.style.display='block'; h.innerHTML='Haz clic en el <b>ojo izquierdo</b>'; }
+  else if(it.eyes.length===1){ h.style.display='block'; h.innerHTML='Ahora el <b>ojo derecho</b>'; }
+  else h.style.display='none';
+}
+
+// ---- clic para marcar ojos (coords en resolución real) ----
+cv.addEventListener('click',e=>{
+  const it=queue[idx]; if(it.eyes.length>=2)return;
+  const r=cv.getBoundingClientRect();
+  const x=(e.clientX-r.left)/dispScale, y=(e.clientY-r.top)/dispScale;
+  it.eyes.push({x,y});
+  if(it.eyes.length===2)$('dl').disabled=false;
+  updateHint(); draw();
+});
+$('reset').onclick=()=>{ queue[idx].eyes=[]; opt.dx=0;opt.dy=0;opt.rot=0; $('dl').disabled=true; updateHint(); draw(); };
+
+// ---- arrastrar para MOVER · punto azul para ROTAR (directo sobre la imagen) ----
+function toImg(e){ const r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)/dispScale, y:(e.clientY-r.top)/dispScale}; }
+cv.addEventListener('pointerdown',e=>{
+  const it=queue[idx]; if(!it||it.eyes.length!==2)return;   // en fase de ojos manda el click
+  const p=toImg(e), g=glassGeom(it);
+  if(Math.hypot(p.x-g.handle.x,p.y-g.handle.y) < g.eyeDist*0.4){ drag={mode:'rot'}; }
+  else { drag={mode:'move',px:p.x,py:p.y,dx0:opt.dx,dy0:opt.dy}; }
+  try{cv.setPointerCapture(e.pointerId);}catch(_){}
+  e.preventDefault();
+});
+cv.addEventListener('pointermove',e=>{
+  if(!drag)return; const it=queue[idx]; if(!it)return;
+  const p=toImg(e), g=glassGeom(it);
+  if(drag.mode==='move'){ opt.dx=drag.dx0+(p.x-drag.px); opt.dy=drag.dy0+(p.y-drag.py); }
+  else { const base=Math.atan2(it.eyes[1].y-it.eyes[0].y, it.eyes[1].x-it.eyes[0].x);
+    opt.rot=(Math.atan2(p.y-g.cy,p.x-g.cx)+Math.PI/2)-base; }
+  draw(); e.preventDefault();
+});
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{drag=null;}));
+
+// ---- controles ----
+$('scale').oninput=e=>{opt.scale=+e.target.value/100;$('vScale').textContent=e.target.value+'%';draw();};
+$('offy').oninput=e=>{opt.offy=+e.target.value;$('vY').textContent=e.target.value;draw();};
+$('thick').oninput=e=>{opt.thick=+e.target.value/100;$('vThick').textContent=e.target.value+'%';draw();};
+$('styleSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  style=b.dataset.style; $('styleSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); draw();
+});
+$('brandSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  brand=b.dataset.brand; $('brandSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); draw();
+});
+
+// ---- dibujar ----
+function draw(){
+  const it=queue[idx]; if(!it)return;
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.drawImage(it.img,0,0);
+  // marcadores de ojos aún sin completar
+  if(it.eyes.length<2){
+    it.eyes.forEach(p=>{ ctx.fillStyle='#00d2ff'; ctx.beginPath(); ctx.arc(p.x,p.y,Math.max(4,cv.width*0.006),0,7); ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,.8)';ctx.lineWidth=Math.max(1,cv.width*0.001);ctx.stroke(); });
+    return;
+  }
+  const g=glassGeom(it);
+  ctx.save(); ctx.translate(g.cx,g.cy); ctx.rotate(g.ang);
+  const w=g.eyeDist*1.22*opt.scale;          // ancho de cada lente
+  const h=g.eyeDist*0.92*opt.scale*opt.thick; // alto (cubre bastante cara)
+  const gap=g.eyeDist*0.30*opt.scale;         // separación entre lentes
+  style==='bar' ? drawBar(w,h,gap) : drawGlasses(w,h,gap);
+  ctx.restore();
+  // manija de rotación + guía (solo en pantalla, NO se exporta)
+  if(!exporting){
+    ctx.save();
+    ctx.strokeStyle='rgba(0,210,255,.9)'; ctx.lineWidth=Math.max(1.5,cv.width*0.0022);
+    ctx.setLineDash([cv.width*0.012,cv.width*0.008]);
+    ctx.beginPath(); ctx.moveTo(g.cx,g.cy); ctx.lineTo(g.handle.x,g.handle.y); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#00d2ff'; ctx.beginPath(); ctx.arc(g.handle.x,g.handle.y,Math.max(8,cv.width*0.012),0,7); ctx.fill();
+    ctx.fillStyle='#04222b'; ctx.font=`700 ${Math.max(10,cv.width*0.015)}px sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('↻', g.handle.x, g.handle.y+cv.width*0.0012);
+    ctx.restore();
+  }
+}
+function glassGeom(it){
+  const [a,b]=it.eyes;
+  const baseAng=Math.atan2(b.y-a.y, b.x-a.x);
+  const eyeDist=Math.hypot(b.x-a.x, b.y-a.y)||cv.width*0.2;
+  const cx=(a.x+b.x)/2 + opt.dx;
+  const cy=(a.y+b.y)/2 + opt.offy*(cv.width*0.0016) + opt.dy;
+  const ang=baseAng + opt.rot;
+  const h=eyeDist*0.92*opt.scale*opt.thick;
+  const hoff=h*1.05;                          // manija arriba de las gafas
+  const handle={x:cx+Math.cos(ang-Math.PI/2)*hoff, y:cy+Math.sin(ang-Math.PI/2)*hoff};
+  return {cx,cy,ang,eyeDist,handle};
+}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+const BRANDCOL={prodigy:['#D946A6','#D4AF37'],alejandro:['#D4AF37','#f0dc8a'],ambas:['#D946A6','#D4AF37']};
+// logo de marca dibujado dentro de un lente (o mitad de barra), centrado en (cx,cy)
+function drawLogo(kind, cx, cy, boxW, boxH){
+  ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+  if(kind==='prodigy'){
+    let fs=boxH*0.30; ctx.font=`800 ${fs}px "Helvetica Neue",Arial,sans-serif`;
+    let tw=ctx.measureText('PRODIGY').width;
+    if(tw>boxW*0.86){ fs*=boxW*0.86/tw; ctx.font=`800 ${fs}px "Helvetica Neue",Arial,sans-serif`; }
+    ctx.fillStyle='#f0dc8a'; ctx.fillText('PRODIGY', cx, cy-fs*0.18);
+    let ss=fs*0.30; ctx.font=`700 ${ss}px "Helvetica Neue",Arial,sans-serif`; ctx.fillStyle='#D946A6';
+    ctx.fillText('D I G I T A L   D E N T I S T R Y', cx, cy+fs*0.55);
+  } else {
+    let fs=boxH*0.34; ctx.font=`italic 700 ${fs}px Georgia,"Times New Roman",serif`;
+    let tw=ctx.measureText('Alejandro').width;
+    if(tw>boxW*0.90){ fs*=boxW*0.90/tw; ctx.font=`italic 700 ${fs}px Georgia,"Times New Roman",serif`; }
+    ctx.fillStyle='#f0dc8a'; ctx.fillText('Alejandro', cx, cy-fs*0.15);
+    let ss=fs*0.30; ctx.font=`700 ${ss}px "Helvetica Neue",Arial,sans-serif`; ctx.fillStyle='#cfc7dd';
+    ctx.fillText('C A R V A J A L', cx, cy+fs*0.5);
+  }
+  ctx.restore();
+}
+// ambas = PRODIGY izq / Alejandro der · single = misma marca en ambos lentes
+function brandKinds(){
+  if(brand==='ambas')return ['prodigy','alejandro'];
+  if(brand==='prodigy')return ['prodigy','prodigy'];
+  if(brand==='alejandro')return ['alejandro','alejandro'];
+  return null;
+}
+function accentLine(left,right,topY,thick){
+  const c=BRANDCOL[brand]||['#D4AF37','#f0dc8a'];
+  const ag=ctx.createLinearGradient(left,0,right,0); ag.addColorStop(0,c[0]); ag.addColorStop(1,c[1]);
+  ctx.fillStyle=ag; rr(left,topY,right-left,thick,thick*0.4); ctx.fill();
+}
+function drawBar(w,h,gap){
+  const total=w*2+gap;
+  ctx.fillStyle='#070707'; rr(-total/2,-h*0.62,total,h*1.24,h*0.24); ctx.fill();
+  const kinds=brandKinds(); if(!kinds)return;
+  if(brand==='ambas'){ drawLogo('prodigy',-total*0.245,0,total*0.44,h*1.05); drawLogo('alejandro',total*0.245,0,total*0.44,h*1.05); }
+  else drawLogo(kinds[0],0,0,total*0.7,h*1.05);
+}
+function drawGlasses(w,h,gap){
+  // Frente estilo Ray-Ban Justin SIN patillas: dos lentes + browline superior + puente ancho
+  const cxL=-(gap/2+w/2), cxR=(gap/2+w/2);
+  const lensR=h*0.26, frame='#070707';
+  const left=cxL-w/2, right=cxR+w/2, spanW=right-left;
+  ctx.fillStyle=frame;
+  rr(left-h*0.03, -h/2-h*0.10, spanW+h*0.06, h*0.30, h*0.12); ctx.fill();   // browline
+  rr(-gap/2-h*0.04, -h/2, gap+h*0.08, h*0.52, h*0.14); ctx.fill();          // puente
+  const drawLens=(cx)=>{
+    ctx.fillStyle=frame; rr(cx-w/2,-h/2,w,h,lensR); ctx.fill();
+    ctx.save(); rr(cx-w/2+h*0.05,-h/2+h*0.05,w-h*0.10,h-h*0.10,lensR*0.8); ctx.clip();
+    const g=ctx.createLinearGradient(cx-w/2,-h/2,cx+w/2,h/2);
+    if(brand==='prodigy'||brand==='ambas'){ g.addColorStop(0,'#241226'); g.addColorStop(1,'#080808'); }
+    else if(brand==='alejandro'){ g.addColorStop(0,'#241d0e'); g.addColorStop(1,'#080808'); }
+    else { g.addColorStop(0,'#1b212a'); g.addColorStop(1,'#050505'); }
+    ctx.fillStyle=g; ctx.fillRect(cx-w/2,-h/2,w,h);
+    ctx.strokeStyle='rgba(200,215,230,.22)'; ctx.lineWidth=Math.max(1,h*0.024);
+    ctx.beginPath(); ctx.moveTo(cx-w*0.32,-h*0.30); ctx.lineTo(cx-w*0.08,-h*0.08); ctx.stroke();
+    ctx.restore();
+  };
+  drawLens(cxL); drawLens(cxR);
+  const kinds=brandKinds();
+  if(kinds){
+    drawLogo(kinds[0], cxL, 0, w*0.9, h*0.82);
+    drawLogo(kinds[1], cxR, 0, w*0.9, h*0.82);
+  }
+}
+
+// ---- descargar ----
+function download(){
+  const it=queue[idx]; if(it.eyes.length!==2)return;
+  exporting=true; draw();                 // dibuja SIN la manija de rotación
+  cv.toBlob(blob=>{
+    const url=URL.createObjectURL(blob), fname=it.name+'-anon.png';
+    // 1) intento de descarga directa (funciona en dominio propio)
+    try{ const a=document.createElement('a'); a.href=url; a.download=fname; a.click(); }catch(_){}
+    // 2) respaldo SIEMPRE visible: imagen lista para guardar (funciona en vista previa/móvil)
+    addResult(url,fname);
+    exporting=false; it.done=true; renderQueue(); next();
+  },'image/png');
+}
+function addResult(url,fname){
+  $('done').style.display='block';
+  const a=document.createElement('a');
+  a.href=url; a.download=fname; a.target='_blank'; a.className='qitem done'; a.title='Guardar '+fname;
+  const im=document.createElement('img'); im.src=url; im.alt=fname; a.appendChild(im);
+  $('dstrip').appendChild(a);
+  $('dc').textContent='('+$('dstrip').children.length+')';
+}
+$('dl').onclick=download;
+$('skip').onclick=()=>next();
+function next(){
+  const ni=queue.findIndex((x,i)=>i>idx && !x.done);
+  const any=queue.findIndex(x=>!x.done);
+  if(ni>=0)openAt(ni); else if(any>=0)openAt(any);
+  else { closeEditor(); alert('✅ Todas las fotos quedaron anonimizadas.'); }
+}
+window.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!$('dl').disabled)download(); });
+window.addEventListener('resize',()=>{ if(queue[idx]){ fitCanvas(queue[idx].img); draw(); } });
+</script>
+
+</body>
+</html>
