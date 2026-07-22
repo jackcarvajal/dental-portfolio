@@ -265,6 +265,14 @@ async function render(c) {
     visor2HTML = `<div class="viewer-wrap"><iframe id="exocad-frame-2" title="Visor 3D — ${escHtml(c.label_2||'Diseño 2')}" allowfullscreen oncontextmenu="return false;"></iframe></div>`;
   }
 
+  /* ── VISOR 3 (opcional) — 3ra revisión/propuesta ── */
+  const rawExocad3 = c.exocad_file_3 && c.exocad_file_3.trim();
+  const hasExocad3 = rawExocad3 ? await urlOk(rawExocad3) : false;
+  let visor3HTML = null;
+  if (hasExocad3) {
+    visor3HTML = `<div class="viewer-wrap"><iframe id="exocad-frame-3" title="Visor 3D — ${escHtml(c.label_3||'Diseño 3')}" allowfullscreen oncontextmenu="return false;"></iframe></div>`;
+  }
+
   /* ── GALERÍAS ── */
   const label1 = escHtml(c.label_1 || 'Diseño 1');
   const label2 = escHtml(c.label_2 || 'Diseño 2');
@@ -318,6 +326,11 @@ async function render(c) {
       ${visor2HTML}
     </div>` : ''}
 
+    ${visor3HTML ? `<div class="section">
+      <div class="section-title"><i class="fas fa-cube"></i> ${escHtml(c.label_3||'Diseño 3')} — Visor 3D</div>
+      ${visor3HTML}
+    </div>` : ''}
+
     ${galHTML}
     ${gal2HTML}
 
@@ -364,6 +377,7 @@ async function render(c) {
   cargarNotas(c.id);
   if (hasExocad) loadExocadBlob(c.exocad_file, 'exocad-frame');
   if (hasExocad2) loadExocadBlob(c.exocad_file_2, 'exocad-frame-2');
+  if (hasExocad3) loadExocadBlob(c.exocad_file_3, 'exocad-frame-3');
   cargarRelacionados(c.id, c.type);
   // Lightbox pool para galería 2
   window._gallery2 = gal2;
