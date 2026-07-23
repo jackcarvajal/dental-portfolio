@@ -417,8 +417,8 @@
                             </label>
                             <span id="exocad-status" style="font-size:.82rem;color:#94a3b8;">Ningún archivo seleccionado</span>
                         </div>
-                        <input type="file" id="exocad-input" accept=".html,.htm,.stl,.zip" style="display:none;" onchange="handleExocadPanel(this)">
-                        <p style="font-size:.68rem;color:#475569;margin-top:4px;">Selecciona el archivo <strong>exocad.html</strong> exportado desde Exocad</p>
+                        <input type="file" id="exocad-input" accept=".html,.htm" multiple style="display:none;" onchange="handleExocadPanel(this)">
+                        <p style="font-size:.68rem;color:#475569;margin-top:4px;">Selecciona <strong>uno o varios</strong> archivos .html (propuesta inicial + revisiones) — se muestran apilados</p>
                     </div>
 
                     <div class="form-group">
@@ -1897,13 +1897,11 @@ function selectVideoFile(input) {
 
 /* — Exocad — solo archivo HTML — */
 function handleExocadPanel(input) {
-    const f = input.files[0];
-    if (!f) return;
-    exocadMain = f;
-    exocadAll  = [f];
-    const sizeMB = (f.size / 1024 / 1024).toFixed(1);
-    document.getElementById('exocad-status').innerHTML =
-        '<strong style="color:#D946A6"><i class="fas fa-check-circle"></i> ' + f.name + '</strong> (' + sizeMB + ' MB)';
+    window._exocadFiles = [...input.files].filter(f => /\.html?$/i.test(f.name));
+    const n = window._exocadFiles.length;
+    document.getElementById('exocad-status').innerHTML = n
+        ? '<strong style="color:#D946A6"><i class="fas fa-check-circle"></i> ' + n + ' HTML</strong> · ' + window._exocadFiles.map(f => f.name).join(', ')
+        : '⚠️ Selecciona archivos .html';
 }
 
 /* — Upload principal — */
@@ -1952,19 +1950,22 @@ async function subirCaso(e) {
             galleryUrls.push(base + gPath);
         }
 
-        // 3. Exocad (opcional)
-        let exocadUrl = null;
-        if (exocadMain) {
+        // 3. Exocad — uno o varios HTML → exocad_visores (array)
+        let exocadVisores = [];
+        const _exFiles = window._exocadFiles || [];
+        for (let k = 0; k < _exFiles.length; k++) {
+            const f = _exFiles[k];
             if (window.validateMagicBytes) {
-                const mbr = await validateMagicBytes(exocadMain);
-                if (!mbr.safe) throw new Error('Exocad: ' + (mbr.error || 'archivo no válido'));
+                const mbr = await validateMagicBytes(f);
+                if (!mbr.safe) throw new Error('Exocad "' + f.name + '": ' + (mbr.error || 'no válido'));
             }
-            prog.textContent = 'Subiendo visor Exocad…';
-            const storagePath = id + '/exocad/caso.html';
-            const { error: exErr } = await sb.storage.from(PORT_BUCKET).upload(storagePath, exocadMain, { contentType: 'text/html', upsert: true });
+            prog.textContent = 'Subiendo visor ' + (k + 1) + '/' + _exFiles.length + '…';
+            const sp = id + '/exocad-' + k + '/caso.html';
+            const { error: exErr } = await sb.storage.from(PORT_BUCKET).upload(sp, f, { contentType: 'text/html', upsert: true });
             if (exErr) throw new Error('Exocad: ' + exErr.message);
-            exocadUrl = base + storagePath;
+            exocadVisores.push({ url: base + sp, label: 'Diseño ' + (k + 1) });
         }
+        const exocadUrl = exocadVisores[0] ? exocadVisores[0].url : null;
 
         // 3b. Video propio (opcional)
         let videoUrl = null;
@@ -2003,6 +2004,7 @@ async function subirCaso(e) {
             description:   document.getElementById('p-descripcion').value,
             cover_image:   coverUrl,
             exocad_file:   exocadUrl,
+            exocad_visores: exocadVisores,
             gallery:       galleryUrls,
             gallery_count: galleryUrls.length,
             drive_link:    videoUrl || document.getElementById('p-video').value.trim() || null,
