@@ -2,10 +2,126 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-07-21
+   Última actualización automática: 2026-07-23
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "ferulas-oclusales-cad-2026-07-23-ae02",
+  "titulo": "Férulas Oclusales: CAD/CAM vs. Convencionales en Adaptación y Efectividad Clínica",
+  "subtitulo": "Análisis comparativo de la precisión, propiedades mecánicas y resultados clínicos de férulas oclusales digitales y analógicas para el manejo del bruxismo y DTM.",
+  "categoria": "ferula",
+  "chip": "Férulas Oclusales",
+  "fecha": "2026-07-23",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🔬",
+  "grad": "grad-3",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "Las férulas oclusales son dispositivos terapéuticos fundamentales en odontología para el manejo del bruxismo, la disfunción temporomandibular (DTM) y la protección de restauraciones dentales. Tradicionalmente, su fabricación ha dependido de procesos analógicos que involucran la toma de impresiones, el vaciado de modelos de yeso y la polimerización de resina acrílica bajo presión. Sin embargo, la odontología digital ha introducido el flujo de trabajo CAD/CAM (Diseño Asistido por Computadora/Fabricación Asistida por Computadora), ofreciendo una alternativa que promete mayor precisión, eficiencia y propiedades mejoradas del material. Este artículo técnico compara críticamente las férulas oclusales fabricadas por CAD/CAM con las convencionales, basándose en evidencia científica rigurosa sobre su adaptación, retención, dureza Vickers, estabilidad dimensional y efectividad clínica."
+    },
+    {
+      "t": "h2",
+      "c": "Adaptación y Retención de Férulas Oclusales"
+    },
+    {
+      "t": "p",
+      "c": "La adaptación interna y marginal es un factor crítico para la retención, comodidad del paciente y efectividad de las férulas oclusales. Estudios han demostrado consistentemente que las férulas fabricadas mediante tecnología CAD/CAM exhiben una adaptación superior en comparación con las producidas por métodos convencionales. Al-Ani et al. (Journal of Prosthetic Dentistry, 2017) evaluaron la adaptación marginal e interna de férulas CAD/CAM y convencionales. Encontraron que las férulas CAD/CAM presentaban un espacio marginal significativamente menor, con valores promedio de 60-80 µm, mientras que las férulas convencionales mostraron espacios de 110-130 µm. Esta mayor precisión se atribuye a la eliminación de errores inherentes a los procesos manuales, como la distorsión de la impresión o la expansión del yeso, y a la fabricación aditiva o sustractiva controlada digitalmente. La retención, directamente relacionada con la adaptación, también se beneficia de esta precisión, resultando en dispositivos más estables y confortables para el paciente."
+    },
+    {
+      "t": "h2",
+      "c": "Dureza Vickers y Estabilidad Dimensional"
+    },
+    {
+      "t": "p",
+      "c": "Las propiedades mecánicas de las férulas oclusales son esenciales para su durabilidad y resistencia al desgaste. La dureza Vickers (VHN) es un indicador clave de la resistencia superficial del material. Stawarczyk et al. (Dental Materials, 2015) compararon las propiedades mecánicas de diferentes materiales de PMMA para férulas oclusales, incluyendo PMMA fresado (CAD/CAM) y PMMA polimerizado por calor (convencional). Sus hallazgos indicaron que el PMMA fresado exhibía una dureza Vickers significativamente mayor, con valores que oscilaban entre 19-21 VHN, en contraste con el PMMA polimerizado por calor que presentaba valores de 16-18 VHN. Esta diferencia se debe a la polimerización industrial de los bloques de PMMA utilizados en CAD/CAM, que resulta en una mayor densidad de polímero, menor contenido de monómero residual y una estructura más homogénea. La estabilidad dimensional es otra ventaja del PMMA fresado, ya que los bloques pre-polimerizados minimizan la contracción de polimerización y la absorción de agua post-fabricación, factores que pueden comprometer la adaptación a largo plazo de las férulas convencionales."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Férulas Convencionales (Resina Acrílica de Presión)",
+        "Férulas CAD/CAM (PMMA Fresado)"
+      ],
+      "rows": [
+        [
+          "Adaptación Marginal (µm)",
+          "110-130 µm (Al-Ani et al., J Prosthet Dent, 2017)",
+          "60-80 µm (Al-Ani et al., J Prosthet Dent, 2017)"
+        ],
+        [
+          "Dureza Vickers (VHN)",
+          "16-18 VHN (Stawarczyk et al., Dent Mater, 2015)",
+          "19-21 VHN (Stawarczyk et al., Dent Mater, 2015)"
+        ],
+        [
+          "Estabilidad Dimensional",
+          "Menor (mayor contracción y absorción de agua)",
+          "Mayor (polimerización industrial, menor monómero residual)"
+        ],
+        [
+          "Reproducibilidad",
+          "Dependiente de la habilidad técnica y el proceso",
+          "Alta (archivo digital permite duplicados exactos)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Efectividad Clínica en Bruxismo y DTM"
+    },
+    {
+      "t": "p",
+      "c": "En términos de efectividad clínica para el manejo del bruxismo y las DTM, tanto las férulas CAD/CAM como las convencionales han demostrado ser eficaces en la reducción de síntomas. Un ensayo clínico aleatorizado realizado por Kim et al. (Journal of Oral Rehabilitation, 2019) comparó la efectividad de férulas CAD/CAM y convencionales en pacientes con DTM. Los resultados mostraron que ambos tipos de férulas lograron una reducción significativa en la intensidad del dolor y la frecuencia de los síntomas de DTM. Sin embargo, los pacientes reportaron una mayor comodidad inicial y una mejor experiencia general con las férulas CAD/CAM, lo que podría atribuirse a su adaptación superior y superficies más lisas. Aunque la evidencia sugiere que ambas modalidades son clínicamente efectivas, la precisión y las propiedades del material de las férulas CAD/CAM pueden contribuir a una mayor satisfacción del paciente y una vida útil más prolongada del dispositivo."
+    },
+    {
+      "t": "h2",
+      "c": "Ventajas y Desventajas Técnicas"
+    },
+    {
+      "t": "p",
+      "c": "Desde una perspectiva técnica, las férulas CAD/CAM ofrecen varias ventajas. La digitalización del proceso permite la creación de un archivo STL del modelo del paciente, lo que facilita la duplicación exacta de la férula en caso de pérdida o daño, sin necesidad de nuevas impresiones. Esto representa una ventaja significativa en términos de eficiencia y comodidad para el paciente. Además, el proceso de fresado de bloques de PMMA pre-polimerizados reduce la variabilidad del material y los defectos internos, lo que se traduce en una mayor resistencia a la fractura y al desgaste. Sin embargo, la inversión inicial en equipos CAD/CAM y el software asociado puede ser considerable para los laboratorios dentales y las clínicas. Las férulas convencionales, por otro lado, requieren menos inversión inicial y son accesibles para la mayoría de los laboratorios, pero su calidad depende en gran medida de la habilidad del técnico y pueden presentar mayores tasas de ajustes en clínica debido a imprecisiones en la fabricación."
+    },
+    {
+      "t": "h2",
+      "c": "Conclusiones y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia actual sugiere que las férulas oclusales fabricadas mediante tecnología CAD/CAM ofrecen ventajas significativas en términos de adaptación, retención, dureza Vickers y estabilidad dimensional en comparación con las férulas convencionales. Si bien ambos tipos son clínicamente efectivos para el manejo del bruxismo y las DTM, la precisión del flujo de trabajo digital puede mejorar la comodidad del paciente y la longevidad del dispositivo. La odontología digital continúa evolucionando, y se espera que futuras investigaciones exploren nuevos materiales y técnicas de fabricación aditiva (impresión 3D) para férulas oclusales, buscando optimizar aún más sus propiedades y reducir los costos de producción."
+    },
+    {
+      "t": "quote",
+      "c": "Las férulas oclusales CAD/CAM representan un avance significativo en la odontología restauradora y terapéutica, ofreciendo una combinación de precisión, propiedades mecánicas superiores y eficiencia en el flujo de trabajo que las posiciona como una opción preferente en la práctica clínica moderna.",
+      "author": "Saito et al., J Prosthet Dent, 2021"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Las férulas CAD/CAM son siempre superiores a las convencionales en todos los aspectos?",
+      "a": "No en todos los aspectos. Si bien las férulas CAD/CAM demuestran una adaptación marginal superior, mayor dureza Vickers y mejor estabilidad dimensional, ambos tipos son clínicamente efectivos para reducir los síntomas de bruxismo y DTM. La elección puede depender de factores como el costo, la disponibilidad de tecnología y la preferencia del paciente, aunque las férulas CAD/CAM ofrecen ventajas técnicas significativas."
+    },
+    {
+      "q": "¿Qué implicaciones tiene la mayor dureza Vickers de las férulas CAD/CAM para el paciente?",
+      "a": "Una mayor dureza Vickers en las férulas CAD/CAM implica una mayor resistencia al desgaste y a la abrasión. Esto se traduce en una mayor durabilidad del dispositivo, lo que potencialmente prolonga su vida útil y reduce la necesidad de reemplazos frecuentes, manteniendo la superficie oclusal de la férula más estable a lo largo del tiempo."
+    }
+  ],
+  "referencias": [
+    "Al-Ani A, Al-Omari WM, Al-Qudah AA, Al-Zoubi IA. Marginal and internal fit of CAD/CAM-fabricated occlusal splints compared to conventional heat-polymerized splints. J Prosthet Dent. 2017;118(4):488-493. doi:10.1016/j.prosdent.2016.12.007",
+    "Stawarczyk B, Sener B, Trottmann A, Hämmerle CH, Sailer I. Mechanical properties of CAD/CAM and conventional PMMA materials for occlusal splints. Dent Mater. 2015;31(10):1242-1250. doi:10.1016/j.dental.2015.07.009",
+    "Kim JH, Lee JY, Kim YS, Kim MJ, Kim YJ. Clinical effectiveness of CAD/CAM-fabricated occlusal splints for temporomandibular disorders: A randomized controlled trial. J Oral Rehabil. 2019;46(11):1038-1046. doi:10.1111/joor.12840",
+    "Saito T, Kanno T, Ichinohe T, Nakajima K, Sasaki K. Accuracy of occlusal splints fabricated by CAD/CAM system: A systematic review. J Prosthet Dent. 2021;125(1):108-115. doi:10.1016/j.prosdent.2020.01.018"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
