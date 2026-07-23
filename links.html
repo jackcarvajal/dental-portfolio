@@ -123,6 +123,10 @@
     padding:22px 10px 9px;color:#fff;font-size:.72rem;text-align:left;
     background:linear-gradient(0deg,rgba(5,5,5,.85),transparent)}
   .gtile.filled .playb{position:relative;z-index:2}
+  /* galería hidratada: masonry que respeta la proporción real de cada foto/video */
+  .gal.masonry{display:block;columns:2;column-gap:11px}
+  .gal.masonry .gtile{break-inside:avoid;margin:0 0 11px;aspect-ratio:auto;min-height:0;padding:0;position:relative;overflow:hidden}
+  .gal.masonry .gtile.filled img,.gal.masonry .gtile.filled video{position:static;width:100%;height:auto;display:block}
   .urgency{display:flex;align-items:center;justify-content:center;gap:9px;margin:0 auto 4px;
     max-width:max-content;padding:7px 16px;border-radius:999px;font-size:.76rem;font-weight:700;
     color:#ffd9ef;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.38)}
@@ -417,6 +421,9 @@
     var cap=esc(it.es||it.name||''), cls='gtile filled'+(feat?' gfeature':'');
     if(it.kind==='video'){
       if(!okUrl(it.url))return '';
+      if(/\.(mp4|webm)(\?|$)/i.test(it.url)){  // video propio → reproductor inline
+        return '<div class="'+cls+'"><video src="'+esc(it.url)+'" controls preload="metadata" playsinline style="width:100%;display:block;background:#000"></video>'+(cap?'<span>'+cap+'</span>':'')+'</div>';
+      }
       return '<a class="'+cls+' video" href="'+esc(it.url)+'" target="_blank" rel="noopener noreferrer">'+
              (okUrl(it.thumb)?'<img src="'+esc(it.thumb)+'" alt="" loading="lazy">':'')+
              '<span class="playb">▶</span>'+(cap?'<span>'+cap+'</span>':'')+'</a>';
@@ -430,7 +437,7 @@
     items=shuffle(items.slice());  // orden aleatorio en cada carga
     var html=items.slice(0,7).map(function(it,i){return tile(it,i===0);}).join('');
     if(!html)return false;
-    gal.innerHTML=html; if(note)note.style.display='none'; return true;
+    gal.classList.add('masonry'); gal.innerHTML=html; if(note)note.style.display='none'; return true;
   }
   // reseñas REALES del panel (sin inventar). Si no hay, quedan los ejemplos marcados.
   function paintReviews(revs){
@@ -455,8 +462,10 @@
      if(paint(g))return;
      // fotos de trabajo curadas (assets del sitio, sin rostro) — default si no subiste galería
      var work=[
+       {kind:'video',url:'/assets/links-gallery/lentes-ceramicos.mp4',es:'Lentes cerámicos'},
        {kind:'image',url:'/assets/links-gallery/lentes-ceramicos.jpg',es:'Lentes cerámicos'},
        {kind:'image',url:'/assets/links-gallery/antes-despues-1.png',es:'Antes / después'},
+       {kind:'video',url:'/assets/links-gallery/barra-zircona.mp4',es:'Barra zirconia'},
        {kind:'image',url:'/assets/links-gallery/antes-despues-2.png',es:'Rehabilitación'},
        {kind:'image',url:'/assets/links-gallery/antes-despues-3.png',es:'Diseño de sonrisa'}
      ];
