@@ -2143,6 +2143,20 @@ async function reordenarPf(fromId, toId) {
     cargarPortafolio();
 }
 
+/* — Fila para subir un HTML más (visor) en el modal — */
+function addVisorRow() {
+    const cont = document.getElementById('e-visores-nuevos');
+    const i = (window._editVisores || []).length + cont.children.length + 1;
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:7px;flex-wrap:wrap;';
+    row.innerHTML = `
+        <input type="text" class="e-vlabel" placeholder="Etiqueta (ej. Revisión ${i})" style="flex:1;min-width:120px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:7px 10px;color:#f8fafc;font-size:14px;">
+        <label style="display:inline-flex;align-items:center;gap:5px;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.4);color:#D946A6;padding:7px 12px;border-radius:7px;cursor:pointer;font-weight:700;font-size:.72rem;white-space:nowrap;"><i class="fas fa-file-code"></i> .html<input type="file" class="e-vfile" accept=".html,.htm" style="display:none;" onchange="this.closest('div').querySelector('.e-vname').textContent=this.files[0]?'📎 '+this.files[0].name:'';"></label>
+        <span class="e-vname" style="font-size:.72rem;color:#64748b;"></span>
+        <button type="button" onclick="this.closest('div').remove()" style="background:none;border:none;color:#f87171;cursor:pointer;font-size:1rem;">✕</button>`;
+    cont.appendChild(row);
+}
+
 /* — Modal de edición — */
 function abrirEditar(id) {
     const c = (window._casosData || []).find(x => x.id === id);
@@ -2151,6 +2165,14 @@ function abrirEditar(id) {
     const matOpts = mat.map(m => `<option value="${m}" ${c.material===m?'selected':''}>${m||'— Sin especificar —'}</option>`).join('');
     const tipos = ['rehabilitacion','estetica','implantes','protesis','alineadores','biomodelo'];
     const tipoOpts = tipos.map(t => `<option value="${t}" ${c.type===t?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('');
+
+    // visores existentes: array nuevo o columnas viejas
+    const cVisores = (Array.isArray(c.exocad_visores) && c.exocad_visores.length)
+        ? c.exocad_visores.filter(v => v && v.url)
+        : [[c.exocad_file,c.label_1],[c.exocad_file_2,c.label_2],[c.exocad_file_3,c.label_3]]
+            .filter(([u]) => u && u.trim()).map(([u,l],i) => ({ url:u, label:l||('Diseño '+(i+1)) }));
+    window._editVisores = cVisores;
+    const nGal = Array.isArray(c.gallery) ? c.gallery.length : 0;
 
     const modal = document.createElement('div');
     modal.id = 'edit-modal';
@@ -2183,16 +2205,21 @@ function abrirEditar(id) {
                 <textarea id="e-desc" rows="3" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:16px;resize:vertical;">${esc(c.description||'')}</textarea>
             </div>
 
-            <!-- Actualizar Exocad HTML -->
+            <!-- Visores Exocad HTML (varios) -->
             <div style="grid-column:1/-1;background:rgba(217,70,166,.06);border:1px dashed rgba(217,70,166,.3);border-radius:10px;padding:14px;">
-                <div style="font-size:.72rem;font-weight:700;color:#D946A6;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;"><i class="fas fa-cube" style="margin-right:5px;"></i>Actualizar Visor Exocad HTML</div>
-                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                    <label for="e-exocad-file" style="display:inline-flex;align-items:center;gap:6px;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.4);color:#D946A6;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.76rem;white-space:nowrap;">
-                        <i class="fas fa-file-code"></i> Seleccionar .html
-                    </label>
-                    <span id="e-exocad-name" style="font-size:.76rem;color:#64748b;">${c.exocad_file ? '✅ Ya tiene visor — puedes reemplazarlo' : '⚠️ Sin visor — selecciona el archivo'}</span>
-                </div>
-                <input type="file" id="e-exocad-file" style="display:none;" onchange="this.nextElementSibling.textContent=this.files[0]?'📎 '+this.files[0].name:''; document.getElementById('e-exocad-name').innerHTML='<strong style=color:#D946A6>'+this.files[0].name+'</strong>';">
+                <div style="font-size:.72rem;font-weight:700;color:#D946A6;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;"><i class="fas fa-cube" style="margin-right:5px;"></i>Visores Exocad HTML <span style="color:#64748b;font-weight:400;text-transform:none;">· ${cVisores.length} actual(es) · agrega los que quieras</span></div>
+                <div id="e-visores-nuevos"></div>
+                <button type="button" onclick="addVisorRow()" style="background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.35);color:#D946A6;padding:7px 13px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.74rem;margin-top:4px;"><i class="fas fa-plus"></i> Añadir HTML</button>
+            </div>
+
+            <!-- Añadir fotos a la galería -->
+            <div style="grid-column:1/-1;background:rgba(0,255,65,.04);border:1px dashed rgba(0,255,65,.22);border-radius:10px;padding:14px;">
+                <div style="font-size:.72rem;font-weight:700;color:#00FF41;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;"><i class="fas fa-images" style="margin-right:5px;"></i>Añadir fotos a la galería <span style="color:#64748b;font-weight:400;text-transform:none;">· ${nGal} actual(es)</span></div>
+                <label for="e-fotos" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:#00FF41;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.76rem;">
+                    <i class="fas fa-plus"></i> Seleccionar fotos
+                </label>
+                <span id="e-fotos-name" style="font-size:.76rem;color:#64748b;margin-left:8px;"></span>
+                <input type="file" id="e-fotos" accept="image/*" multiple style="display:none;" onchange="document.getElementById('e-fotos-name').textContent=this.files.length+' foto(s) seleccionada(s)';">
             </div>
 
             <!-- Actualizar PDF -->
@@ -2227,19 +2254,46 @@ async function guardarEdicion(id) {
     };
 
     const base = `https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/object/public/${PORT_BUCKET}/`;
+    const c = (window._casosData || []).find(x => x.id === id) || {};
 
-    // Subir nuevo exocad HTML si se seleccionó
-    const exocadInput = document.getElementById('e-exocad-file');
-    if (exocadInput && exocadInput.files[0]) {
-        const f = exocadInput.files[0];
+    // Visores Exocad: subir los HTML nuevos y anexarlos al array existente
+    const rows = [...document.querySelectorAll('#e-visores-nuevos > div')];
+    const nuevos = [];
+    for (let r = 0; r < rows.length; r++) {
+        const f = rows[r].querySelector('.e-vfile').files[0];
+        if (!f) continue;
         if (window.validateMagicBytes) {
             const mbr = await validateMagicBytes(f);
-            if (!mbr.safe) { toast('Exocad: ' + (mbr.error || 'archivo no válido'), 'error'); return; }
+            if (!mbr.safe) { toast('HTML: ' + (mbr.error || 'archivo no válido'), 'error'); return; }
         }
-        const path = id + '/exocad/caso.html';
+        const label = rows[r].querySelector('.e-vlabel').value.trim() || ('Diseño ' + ((window._editVisores||[]).length + nuevos.length + 1));
+        const path = id + '/exocad-' + Date.now() + '-' + r + '/caso.html';
         const { error: upErr } = await sb.storage.from(PORT_BUCKET).upload(path, f, { contentType: 'text/html', upsert: true });
-        if (upErr) { toast('Error subiendo Exocad: ' + upErr.message, 'error'); return; }
-        updates.exocad_file = base + path;
+        if (upErr) { toast('Error subiendo HTML: ' + upErr.message, 'error'); return; }
+        nuevos.push({ url: base + path, label });
+    }
+    if (nuevos.length || (window._editVisores && window._editVisores.length)) {
+        updates.exocad_visores = (window._editVisores || []).concat(nuevos);
+    }
+
+    // Fotos nuevas: subir y anexar a la galería
+    const fotosInput = document.getElementById('e-fotos');
+    if (fotosInput && fotosInput.files.length) {
+        const gal = Array.isArray(c.gallery) ? c.gallery.slice() : [];
+        for (let i = 0; i < fotosInput.files.length; i++) {
+            const f = fotosInput.files[i];
+            if (window.validateMagicBytes) {
+                const mbr = await validateMagicBytes(f);
+                if (!mbr.safe) { toast('Foto: ' + (mbr.error || 'no válida'), 'error'); return; }
+            }
+            const ext = (f.name.split('.').pop() || 'jpg').toLowerCase();
+            const path = id + '/gallery/foto-' + Date.now() + '-' + i + '.' + ext;
+            const { error: gErr } = await sb.storage.from(PORT_BUCKET).upload(path, f, { contentType: f.type || 'image/jpeg', upsert: true });
+            if (gErr) { toast('Error subiendo foto: ' + gErr.message, 'error'); return; }
+            gal.push(base + path);
+        }
+        updates.gallery = gal;
+        updates.gallery_count = gal.length;
     }
 
     // Subir PDF si se seleccionó
