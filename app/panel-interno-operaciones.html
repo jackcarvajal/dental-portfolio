@@ -2079,7 +2079,7 @@ async function cargarPortafolio() {
         }
         window._casosData = data;
         grid.innerHTML = data.map((c, idx) => `
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <div class="pf-card" draggable="true" data-id="${c.id}" style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:grab;">
             <img src="${esc(c.cover_image || '')}" alt="${esc(c.name)}" loading="lazy" style="width:100%;height:130px;object-fit:cover;">
             <div style="padding:10px;">
                 <div style="font-weight:700;font-size:0.8rem;margin-bottom:3px;">${esc(c.name)}</div>
@@ -2089,11 +2089,11 @@ async function cargarPortafolio() {
                     <button type="button" class="btn-xs btn-gold" onclick="abrirEditar('${c.id}')" title="Editar"><i class="fas fa-pen"></i></button>
                     <button type="button" class="btn-xs btn-pink" onclick="eliminarCaso('${c.id}')" title="Eliminar"><i class="fas fa-trash"></i></button>
                     <button type="button" class="btn-xs" style="background:rgba(255,255,255,.08);border:1px solid var(--border);color:#94a3b8;" onclick="toggleVisible('${c.id}',${c.visible})" title="${c.visible?'Ocultar':'Publicar'}">${c.visible?'Ocultar':'Publicar'}</button>
-                    <button type="button" class="btn-xs" style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:#94a3b8;" onclick="moverCaso('${c.id}',-1)" ${idx===0?'disabled':''} title="Subir">↑</button>
-                    <button type="button" class="btn-xs" style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:#94a3b8;" onclick="moverCaso('${c.id}',1)" ${idx===data.length-1?'disabled':''} title="Bajar">↓</button>
+                    <span class="btn-xs pf-handle" style="background:rgba(212,175,55,.12);border:1px solid var(--border);color:#D4AF37;cursor:grab;" title="Arrastra la tarjeta a la posición que quieras">⠿ arrastra</span>
                 </div>
             </div>
         </div>`).join('');
+        initPfDrag(grid);
     } catch (err) {
         grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;color:#f87171;">${esc(err.message)}</div>`;
     }
@@ -2109,20 +2109,37 @@ async function toggleVisible(id, actual) {
 
 function eliminarCaso(id) { eliminarCasoConfirm(id); }
 
-/* — Reordenar con campo sort_order — */
-async function moverCaso(id, dir) {
-    const casos = window._casosData || [];
-    const idx = casos.findIndex(c => c.id === id);
-    if (idx < 0) return;
-    const swap = idx + dir;
-    if (swap < 0 || swap >= casos.length) return;
-    const updates = [
-        { id: casos[idx].id,   sort_order: swap },
-        { id: casos[swap].id,  sort_order: idx  }
-    ];
-    for (const u of updates) {
-        await sb.from('casos_portafolio').update({ sort_order: u.sort_order }).eq('id', u.id);
+/* — Reordenar ARRASTRANDO la tarjeta a cualquier posición — */
+let _pfDragId = null;
+function initPfDrag(grid) {
+    grid.querySelectorAll('.pf-card').forEach(card => {
+        card.addEventListener('dragstart', e => { _pfDragId = card.dataset.id; card.style.opacity = '.4'; e.dataTransfer.effectAllowed = 'move'; });
+        card.addEventListener('dragend', () => { card.style.opacity = ''; _pfDragId = null; grid.querySelectorAll('.pf-card').forEach(c => c.style.outline = ''); });
+        card.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; if (card.dataset.id !== _pfDragId) card.style.outline = '2px dashed #D4AF37'; });
+        card.addEventListener('dragleave', () => { card.style.outline = ''; });
+        card.addEventListener('drop', async e => {
+            e.preventDefault(); card.style.outline = '';
+            const from = _pfDragId, to = card.dataset.id;
+            if (from && to && from !== to) await reordenarPf(from, to);
+        });
+    });
+}
+async function reordenarPf(fromId, toId) {
+    const casos = (window._casosData || []).slice();
+    const fi = casos.findIndex(c => c.id === fromId), ti = casos.findIndex(c => c.id === toId);
+    if (fi < 0 || ti < 0) return;
+    const [moved] = casos.splice(fi, 1);
+    casos.splice(ti, 0, moved);
+    window._casosData = casos;
+    toast('Guardando orden…');
+    // persistir solo los que cambiaron de posición
+    for (let i = 0; i < casos.length; i++) {
+        if (casos[i].sort_order !== i) {
+            casos[i].sort_order = i;
+            await sb.from('casos_portafolio').update({ sort_order: i }).eq('id', casos[i].id);
+        }
     }
+    toast('✅ Orden actualizado');
     cargarPortafolio();
 }
 
