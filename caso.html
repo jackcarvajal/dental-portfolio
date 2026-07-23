@@ -229,10 +229,13 @@ function toEmbed(url) {
   return null;
 }
 
-/* ── VERIFICAR URL EXISTE ── */
+/* ── VERIFICAR URL EXISTE (con timeout — no debe bloquear el render) ── */
 async function urlOk(url) {
   try {
-    const r = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 4000);
+    const r = await fetch(url, { method: 'HEAD', cache: 'no-store', signal: ctrl.signal });
+    clearTimeout(t);
     return r.ok;
   } catch(e) { return false; }
 }
@@ -249,8 +252,9 @@ async function render(c) {
     [[c.exocad_file, c.label_1], [c.exocad_file_2, c.label_2], [c.exocad_file_3, c.label_3]]
       .forEach(([u, l], i) => { if (u && u.trim()) visores.push({ url: u.trim(), label: l || ('Diseño ' + (i + 1)) }); });
   }
-  const visoresOk = [];
-  for (const v of visores) { if (await urlOk(v.url)) visoresOk.push({ url: String(v.url), label: v.label || ('Diseño ' + (visoresOk.length + 1)) }); }
+  // checks en PARALELO (no secuencial) — con timeout, no bloquean el render por un archivo lento
+  const visoresChecked = await Promise.all(visores.map(async (v, i) => (await urlOk(v.url)) ? { url: String(v.url), label: v.label || ('Diseño ' + (i + 1)) } : null));
+  const visoresOk = visoresChecked.filter(Boolean);
   const multi = visoresOk.length > 1;
 
   // video (drive_link) — se muestra siempre que exista, independiente de si hay visores Exocad
@@ -310,8 +314,8 @@ async function render(c) {
       </div>
     </div>
 
-    ${visoresSections}
     ${videoSection}
+    ${visoresSections}
 
     ${galHTML}
     ${gal2HTML}
