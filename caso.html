@@ -99,31 +99,31 @@ a{color:inherit;text-decoration:none;}
 .btn-admin.del:hover{border-color:#f87171;color:#f87171;}
 
 /* FEEDBACK */
-.feedback-box{background:#111;border:2px solid rgba(212,175,55,.3);border-radius:24px;padding:48px 40px;}
-.feedback-title{font-size:1.6rem;font-weight:900;color:var(--gold);margin-bottom:8px;text-align:center;text-transform:uppercase;letter-spacing:2px;}
-.feedback-subtitle{text-align:center;color:var(--muted);font-size:.88rem;margin-bottom:32px;}
-.feedback-rules{background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.15);border-radius:12px;padding:14px 18px;margin-bottom:28px;font-size:.78rem;color:var(--muted);line-height:1.7;}
+.feedback-box{background:#111;border:2px solid rgba(212,175,55,.3);border-radius:18px;padding:22px 20px;}
+.feedback-title{font-size:1.05rem;font-weight:900;color:var(--gold);margin-bottom:4px;text-align:center;text-transform:uppercase;letter-spacing:1.4px;}
+.feedback-subtitle{text-align:center;color:var(--muted);font-size:.8rem;margin-bottom:14px;}
+.feedback-rules{background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.15);border-radius:10px;padding:9px 14px;margin-bottom:14px;font-size:.72rem;color:var(--muted);line-height:1.5;}
 .feedback-rules strong{color:var(--gold);}
-.reaction-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;max-width:760px;margin:0 auto 28px;}
-.reaction-btn{background:rgba(255,255,255,.03);border:2px solid rgba(212,175,55,.2);border-radius:16px;padding:22px 16px;cursor:pointer;text-align:center;transition:all .3s;color:var(--text);font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;}
-.reaction-btn:hover{transform:translateY(-4px);border-color:var(--gold);background:rgba(212,175,55,.1);}
-.reaction-btn.active{background:linear-gradient(135deg,rgba(212,175,55,.22),rgba(255,102,0,.16));border-color:var(--gold);transform:scale(1.04);box-shadow:0 0 16px var(--gold);}
-.reaction-btn .emoji{font-size:2.2rem;display:block;filter:grayscale(100%);transition:filter .3s;}
+.reaction-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;max-width:760px;margin:0 auto 14px;}
+.reaction-btn{background:rgba(255,255,255,.03);border:2px solid rgba(212,175,55,.2);border-radius:12px;padding:10px 10px;cursor:pointer;text-align:center;transition:all .3s;color:var(--text);font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.reaction-btn:hover{transform:translateY(-2px);border-color:var(--gold);background:rgba(212,175,55,.1);}
+.reaction-btn.active{background:linear-gradient(135deg,rgba(212,175,55,.22),rgba(255,102,0,.16));border-color:var(--gold);transform:scale(1.03);box-shadow:0 0 10px var(--gold);}
+.reaction-btn .emoji{font-size:1.35rem;display:block;filter:grayscale(100%);transition:filter .3s;}
 .reaction-btn:hover .emoji,.reaction-btn.active .emoji{filter:grayscale(0%);}
-.reaction-btn span{font-size:.78rem;font-weight:700;color:var(--muted);}
+.reaction-btn span{font-size:.68rem;font-weight:700;color:var(--muted);}
 .reaction-btn.active span{color:var(--gold);}
-.nota-area{width:100%;background:rgba(0,0,0,.4);border:2px solid rgba(212,175,55,.3);border-radius:12px;padding:18px;color:var(--text);font-family:inherit;font-size:.95rem;resize:vertical;min-height:120px;margin-bottom:14px;transition:all .3s;}
+.nota-area{width:100%;background:rgba(0,0,0,.4);border:2px solid rgba(212,175,55,.3);border-radius:10px;padding:11px 14px;color:var(--text);font-family:inherit;font-size:.88rem;resize:vertical;min-height:64px;margin-bottom:10px;transition:all .3s;}
 .nota-area:focus{outline:none;border-color:var(--gold);background:rgba(0,0,0,.6);box-shadow:0 0 10px rgba(212,175,55,.2);}
 .nota-area::placeholder{color:var(--muted);}
-.btn-publicar{background:linear-gradient(135deg,#D4AF37,#F4C430);color:#000;border:none;border-radius:50px;padding:14px 40px;font-weight:900;font-size:.95rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .3s;text-transform:uppercase;letter-spacing:1px;}
+.btn-publicar{background:linear-gradient(135deg,#D4AF37,#F4C430);color:#000;border:none;border-radius:50px;padding:10px 28px;font-weight:900;font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .3s;text-transform:uppercase;letter-spacing:1px;}
 .btn-publicar:hover{transform:scale(1.05);box-shadow:0 8px 25px rgba(212,175,55,.4);}
-.notas-list{margin-top:28px;display:flex;flex-direction:column;gap:16px;}
-.nota-item{background:rgba(0,0,0,.4);border:1px solid rgba(212,175,55,.15);border-radius:12px;padding:18px;animation:fadeInNote .3s ease;}
+.notas-list{margin-top:14px;display:flex;flex-direction:column;gap:10px;}
+.nota-item{background:rgba(0,0,0,.4);border:1px solid rgba(212,175,55,.15);border-radius:10px;padding:12px 14px;animation:fadeInNote .3s ease;}
 @keyframes fadeInNote{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-.nota-reaction{color:var(--gold);font-size:.8rem;font-weight:800;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;}
-.nota-text{font-size:.9rem;color:var(--text);line-height:1.65;}
-.nota-date{font-size:.72rem;color:var(--muted);margin-top:8px;}
-.notas-empty{text-align:center;color:var(--muted);font-size:.9rem;padding:32px 0;}
+.nota-reaction{color:var(--gold);font-size:.72rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;}
+.nota-text{font-size:.85rem;color:var(--text);line-height:1.5;}
+.nota-date{font-size:.68rem;color:var(--muted);margin-top:5px;}
+.notas-empty{text-align:center;color:var(--muted);font-size:.82rem;padding:10px 0 2px;}
 
 /* LOADING */
 .loading{text-align:center;padding:80px 24px;color:var(--muted);}
@@ -253,10 +253,10 @@ async function render(c) {
   for (const v of visores) { if (await urlOk(v.url)) visoresOk.push({ url: String(v.url), label: v.label || ('Diseño ' + (visoresOk.length + 1)) }); }
   const multi = visoresOk.length > 1;
 
-  // video (drive_link) solo si no hay ningún visor Exocad
+  // video (drive_link) — se muestra siempre que exista, independiente de si hay visores Exocad
   const hasDrive = c.drive_link && c.drive_link.trim();
   let videoHTML = null;
-  if (!visoresOk.length && hasDrive) {
+  if (hasDrive) {
     const embed = toEmbed(c.drive_link);
     if (embed) videoHTML = `<div class="viewer-wrap"><iframe src="${embed}" title="Video" allowfullscreen allow="autoplay"></iframe></div>`;
     else if (/\.(mp4|webm)(\?|$)/i.test(c.drive_link)) { const vs = _safeUrl(c.drive_link); if (vs) videoHTML = `<div class="viewer-wrap"><video controls controlsList="nodownload nofullscreen" oncontextmenu="return false;" preload="metadata" style="width:100%;height:100%;background:#000;"><source src="${vs}"></video></div>`; }
@@ -334,14 +334,10 @@ async function render(c) {
     <div class="section" style="padding-bottom:60px;">
       <div class="section-title"><i class="fas fa-comment-medical"></i> Feedback Clínico</div>
       <div class="feedback-box">
-        <div class="feedback-title">💬 Comentarios de la Comunidad</div>
-        <p class="feedback-subtitle">¿Qué te parece este trabajo? Ayúdanos a ser los mejores — tu perspectiva clínica impulsa nuestra excelencia.</p>
+        <div class="feedback-title">💬 Comentarios</div>
+        <p class="feedback-subtitle">¿Qué te parece este trabajo?</p>
         <div class="feedback-rules">
-          <strong>📋 Normas de la comunidad:</strong><br>
-          · Comparte tu opinión técnica sobre el diseño: anatomía, estética, proporción, material.<br>
-          · Sé respetuoso y usa lenguaje profesional — comentarios ofensivos serán eliminados.<br>
-          · Este es un portafolio de casos terminados, no un canal de solicitudes de cambio.<br>
-          · Tu comentario puede destacarse como reseña de experto si el equipo lo aprueba.
+          <strong>📋 Normas:</strong> opinión técnica y respetuosa (anatomía, estética, material) · no es canal de solicitudes de cambio.
         </div>
         <div class="reaction-grid">
           <button type="button" class="reaction-btn" onclick="selReaction(this,'Aprobado')"><span class="emoji">👍</span><span>Aprobado</span></button>
