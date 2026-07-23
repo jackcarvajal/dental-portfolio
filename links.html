@@ -411,7 +411,7 @@
   var NEG='prodigy';
   var H={apikey:SKEY,Authorization:'Bearer '+SKEY};
   function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  function okUrl(u){return /^https?:\/\//i.test(u||'');}
+  function okUrl(u){return /^(https?:\/\/|\/[a-zA-Z0-9])/i.test(u||'');}
   var gal=document.querySelector('.gal'), note=document.querySelector('.ph-note');
   function tile(it,feat){
     var cap=esc(it.es||it.name||''), cls='gtile filled'+(feat?' gfeature':'');
@@ -453,6 +453,14 @@
      paintReviews(revs);
      var g=Array.isArray(cfg.gallery)?cfg.gallery.filter(function(x){return x&&okUrl(x.url);}):[];
      if(paint(g))return;
+     // fotos de trabajo curadas (assets del sitio, sin rostro) — default si no subiste galería
+     var work=[
+       {kind:'image',url:'/assets/links-gallery/lentes-ceramicos.jpg',es:'Lentes cerámicos'},
+       {kind:'image',url:'/assets/links-gallery/antes-despues-1.png',es:'Antes / después'},
+       {kind:'image',url:'/assets/links-gallery/antes-despues-2.png',es:'Rehabilitación'},
+       {kind:'image',url:'/assets/links-gallery/antes-despues-3.png',es:'Diseño de sonrisa'}
+     ];
+     if(paint(work))return;
      return fetch(SURL+'/rest/v1/casos_portafolio?select=name,cover_image&visible=eq.true&order=sort_order.asc&limit=7',{headers:H})
        .then(function(r){return r.json();})
        .then(function(cs){
