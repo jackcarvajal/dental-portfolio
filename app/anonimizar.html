@@ -68,6 +68,8 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .btn.wide{width:100%}
 .note{font-size:.76rem;color:var(--muted2);margin-top:10px;line-height:1.4}
+.tcolor{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}
+.tcolor.on{border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,175,55,.25)}
 
 /* queue */
 .queue{margin-top:20px}
@@ -151,6 +153,30 @@ footer{text-align:center;color:var(--muted2);font-size:.76rem;margin-top:34px}
         <label>Grosor <b id="vThick">100%</b></label>
         <input type="range" id="thick" min="70" max="150" value="100">
       </div>
+      <h2 style="margin-top:16px">Texto (opcional)</h2>
+      <div class="ctrl">
+        <input type="text" id="txtInput" placeholder="Ej: Caso #123 · Confidencial" maxlength="60"
+          style="width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:9px 12px;color:var(--ink);font-size:16px;">
+      </div>
+      <div class="row" id="txtColorRow" style="margin-bottom:14px;">
+        <button class="tcolor on" data-c="#ffffff" style="background:#ffffff" title="Blanco"></button>
+        <button class="tcolor" data-c="#050505" style="background:#050505" title="Negro"></button>
+        <button class="tcolor" data-c="#D4AF37" style="background:#D4AF37" title="Dorado"></button>
+        <button class="tcolor" data-c="#D946A6" style="background:#D946A6" title="Magenta"></button>
+        <button class="tcolor" data-c="#00d2ff" style="background:#00d2ff" title="Cian"></button>
+      </div>
+      <div class="ctrl">
+        <label>Tamaño texto <b id="vTxtSize">28</b></label>
+        <input type="range" id="txtSize" min="12" max="80" value="28">
+      </div>
+      <div class="ctrl">
+        <label>Posición horizontal <b id="vTxtX">50%</b></label>
+        <input type="range" id="txtX" min="0" max="100" value="50">
+      </div>
+      <div class="ctrl">
+        <label>Posición vertical <b id="vTxtY">90%</b></label>
+        <input type="range" id="txtY" min="0" max="100" value="90">
+      </div>
       <div class="row" style="margin-top:6px">
         <button class="btn primary" id="dl" disabled>⬇ Descargar y siguiente</button>
       </div>
@@ -179,6 +205,7 @@ const cv=$('cv'),ctx=cv.getContext('2d');
 let queue=[]; // {name, img(Image), done, eyes:[{x,y},{x,y}]}
 let idx=0, style='wayfarer', brand='none', exporting=false, drag=null;
 let opt={scale:1,offy:0,offx:0,thick:1,dx:0,dy:0,rot:0,rotDeg:0};
+let txt={value:'',color:'#ffffff',size:28,x:50,y:90};
 
 // ---- carga de archivos ----
 function addFiles(files){
@@ -286,6 +313,13 @@ $('styleSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
 $('brandSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   brand=b.dataset.brand; $('brandSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); draw();
 });
+$('txtInput').oninput=e=>{txt.value=e.target.value; draw();};
+$('txtSize').oninput=e=>{txt.size=+e.target.value; $('vTxtSize').textContent=e.target.value; draw();};
+$('txtX').oninput=e=>{txt.x=+e.target.value; $('vTxtX').textContent=e.target.value+'%'; draw();};
+$('txtY').oninput=e=>{txt.y=+e.target.value; $('vTxtY').textContent=e.target.value+'%'; draw();};
+document.querySelectorAll('.tcolor').forEach(b=>b.onclick=()=>{
+  txt.color=b.dataset.c; document.querySelectorAll('.tcolor').forEach(x=>x.classList.toggle('on',x===b)); draw();
+});
 
 // ---- dibujar ----
 function draw(){
@@ -296,6 +330,7 @@ function draw(){
   if(it.eyes.length<2){
     it.eyes.forEach(p=>{ ctx.fillStyle='#00d2ff'; ctx.beginPath(); ctx.arc(p.x,p.y,Math.max(4,cv.width*0.006),0,7); ctx.fill();
       ctx.strokeStyle='rgba(255,255,255,.8)';ctx.lineWidth=Math.max(1,cv.width*0.001);ctx.stroke(); });
+    drawCustomText();
     return;
   }
   const g=glassGeom(it);
@@ -305,6 +340,7 @@ function draw(){
   const gap=g.eyeDist*0.30*opt.scale;         // separación entre lentes
   style==='bar' ? drawBar(w,h,gap) : drawGlasses(w,h,gap);
   ctx.restore();
+  drawCustomText();
   // manija de rotación + guía (solo en pantalla, NO se exporta)
   if(!exporting){
     ctx.save();
@@ -318,6 +354,17 @@ function draw(){
     ctx.fillText('↻', g.handle.x, g.handle.y+cv.width*0.0012);
     ctx.restore();
   }
+}
+function drawCustomText(){
+  const v=(txt.value||'').trim(); if(!v)return;
+  ctx.save();
+  const fs=txt.size/900*cv.width;
+  ctx.font=`800 ${fs}px "Helvetica Neue",Arial,sans-serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.shadowColor='rgba(0,0,0,.85)'; ctx.shadowBlur=fs*0.18; ctx.shadowOffsetY=fs*0.03;
+  ctx.fillStyle=txt.color;
+  ctx.fillText(v, cv.width*(txt.x/100), cv.height*(txt.y/100));
+  ctx.restore();
 }
 function glassGeom(it){
   const [a,b]=it.eyes;
