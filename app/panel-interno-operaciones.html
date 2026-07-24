@@ -1890,14 +1890,6 @@ function selectVideoFile(input) {
     }
 }
 
-/* — Exocad — solo archivo HTML — */
-function handleExocadPanel(input) {
-    window._exocadFiles = [...input.files].filter(f => /\.html?$/i.test(f.name));
-    const n = window._exocadFiles.length;
-    document.getElementById('exocad-status').innerHTML = n
-        ? '<strong style="color:#D946A6"><i class="fas fa-check-circle"></i> ' + n + ' HTML</strong> · ' + window._exocadFiles.map(f => f.name).join(', ')
-        : '⚠️ Selecciona archivos .html';
-}
 
 /* — Upload principal — */
 async function subirCaso(e) {
@@ -1945,20 +1937,22 @@ async function subirCaso(e) {
             galleryUrls.push(base + gPath);
         }
 
-        // 3. Exocad — uno o varios HTML → exocad_visores (array)
+        // 3. Exocad — uno o varios HTML (con título) → exocad_visores (array)
         let exocadVisores = [];
-        const _exFiles = window._exocadFiles || [];
-        for (let k = 0; k < _exFiles.length; k++) {
-            const f = _exFiles[k];
+        const _visorRows = [...document.querySelectorAll('#p-visores-rows > div')];
+        for (let k = 0; k < _visorRows.length; k++) {
+            const f = _visorRows[k].querySelector('.p-vfile').files[0];
+            if (!f) continue;
             if (window.validateMagicBytes) {
                 const mbr = await validateMagicBytes(f);
                 if (!mbr.safe) throw new Error('Exocad "' + f.name + '": ' + (mbr.error || 'no válido'));
             }
-            prog.textContent = 'Subiendo visor ' + (k + 1) + '/' + _exFiles.length + '…';
+            const label = _visorRows[k].querySelector('.p-vlabel').value.trim() || ('Diseño ' + (exocadVisores.length + 1));
+            prog.textContent = 'Subiendo visor ' + (k + 1) + '/' + _visorRows.length + '…';
             const sp = id + '/exocad-' + k + '/caso.html';
             const { error: exErr } = await sb.storage.from(PORT_BUCKET).upload(sp, f, { contentType: 'text/html', upsert: true });
             if (exErr) throw new Error('Exocad: ' + exErr.message);
-            exocadVisores.push({ url: base + sp, label: 'Diseño ' + (k + 1) });
+            exocadVisores.push({ url: base + sp, label });
         }
         const exocadUrl = exocadVisores[0] ? exocadVisores[0].url : null;
 
@@ -2025,8 +2019,8 @@ function limpiarFormPortafolio() {
     document.getElementById('form-portafolio').reset();
     document.getElementById('img-preview').style.display = 'none';
     document.getElementById('gallery-thumbs').innerHTML = '';
-    document.getElementById('exocad-status').textContent = '';
-    imgFile = null; galFiles = []; exocadMain = null; exocadAll = [];
+    document.getElementById('p-visores-rows').innerHTML = '';
+    imgFile = null; galFiles = [];
 }
 
 async function subirCasoSimple(e){
@@ -2188,6 +2182,20 @@ function quitarPdfActual() {
     window._editPdfUrl = null;
     window._editPdfRemoved = true;
     document.getElementById('e-pdf-actual').innerHTML = renderPdfActual();
+}
+
+/* — Fila para subir un HTML en el formulario CREAR CASO (con su título) — */
+function addVisorRowCrear() {
+    const cont = document.getElementById('p-visores-rows');
+    const i = cont.children.length + 1;
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:7px;flex-wrap:wrap;';
+    row.innerHTML = `
+        <input type="text" class="p-vlabel" placeholder="Título (ej. Propuesta inicial)" value="Diseño ${i}" style="flex:1;min-width:140px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:8px 11px;color:#f8fafc;font-size:14px;">
+        <label style="display:inline-flex;align-items:center;gap:5px;background:rgba(217,70,166,.15);border:1px solid rgba(217,70,166,.4);color:#D946A6;padding:8px 13px;border-radius:7px;cursor:pointer;font-weight:700;font-size:.74rem;white-space:nowrap;"><i class="fas fa-file-code"></i> .html<input type="file" class="p-vfile" accept=".html,.htm" style="display:none;" onchange="this.closest('div').querySelector('.p-vname').textContent=this.files[0]?'📎 '+this.files[0].name:'';"></label>
+        <span class="p-vname" style="font-size:.74rem;color:#64748b;"></span>
+        <button type="button" onclick="this.closest('div').remove()" style="background:none;border:none;color:#f87171;cursor:pointer;font-size:1.05rem;">✕</button>`;
+    cont.appendChild(row);
 }
 
 function addVisorRow() {
