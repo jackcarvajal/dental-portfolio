@@ -2294,6 +2294,7 @@
                         submaterial:      STATE.submaterialNombre,
                         color_vita:       STATE.colorVita,
                         cantidad:         STATE.cantidad,
+                        precio_base:      (typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total) || 0,
                         precio_total:     typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total,
                         estado:           'Borrador',
                         fecha_entrega:    _fechaTxt,

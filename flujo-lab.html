@@ -983,6 +983,7 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
         tipo_trabajo: lines.length ? lines.map(function(l){ return l.split(' — ')[0]; }).join(', ') : 'Lab Full',
         material:  'lab',
         cantidad:  Object.keys(cart).reduce(function(s,id){ return s + cart[id].qty; }, 0) || 1,
+        precio_base: total,
         precio_total: total,
         estado:    'Borrador',
         fecha_entrega: fecha || null,

@@ -2113,6 +2113,8 @@ const lineWompi = document.getElementById('line-wompi');
                         // vía RPC prodigy_usar_cupon_credito) — antes el total guardado en BD
                         // no reflejaba el cupón, solo aparecía en el texto de WhatsApp, y
                         // el staff tenía que ajustarlo manualmente al facturar.
+                        // precio_base = subtotal antes del descuento del cupón (columna NOT NULL en BD).
+                        precio_base: (typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total) || 0,
                         precio_total: (() => {
                             const base = typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total;
                             const desc = window._cuponCreditoActivo?.monto || 0;

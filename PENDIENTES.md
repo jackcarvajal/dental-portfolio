@@ -302,6 +302,16 @@ Verificados a fondo y **limpios**: `flujo-fresado.html`, `flujo-lab.html`, `js/f
 
 **FALTA LA PRUEBA REAL** — Alejandro no pudo hacerla en esta sesión (sin tiempo). **Antes de dar esto por cerrado**: crear un pedido de prueba real desde `flujo-diseno.html` (o cualquiera de los 4 flujos) hasta el final, y confirmar con `SELECT * FROM pedidos ORDER BY created_at DESC LIMIT 1;` que se guardó. Si falla, revisar la consola del navegador (F12) al enviar — el mensaje empieza con `[PRODIGY] Pedido diseño no guardado:` y da el error exacto.
 
+**🎯 CAUSA RAÍZ ENCONTRADA Y CORREGIDA EN CÓDIGO (2026-07-23):** el diagnóstico reveló que las columnas obligatorias (`NOT NULL` sin default) de `pedidos` son `precio_base`, `precio_total`, `tipo_trabajo`. **Los flujos NUNCA mandaban `precio_base`** → todo INSERT reventaba con "null value in column precio_base violates not-null constraint". Esa es la razón real del count=0 histórico. (Sospechoso `servicio` descartado: ya no existe en la BD, `schema-completo.sql` está viejo.)
+
+**Corregido `precio_base` (= subtotal, mismo `STATE.total`) en los 5 puntos de INSERT:**
+- PRODIGY: `flujo-diseno.html:2117`, `flujo-fresado.html:4195`, `flujo-lab.html:986`, `js/flujo-impresion.js:2297`
+- Alejandro (misma tabla compartida, Ley 1b): `flujo-diseno.html`
+
+**Bug secundario corregido:** `app/client-panel.html` pedía la columna inexistente `servicio` en su `.select()` (`CAMPOS_CLIENTE`) → al ver el primer pedido real, el panel del cliente habría fallado (Supabase rechaza el select entero por columna inexistente). Quitado `servicio` del SELECT (el render ya cae a `tipo_trabajo`). Nunca se había notado porque la tabla estaba vacía.
+
+**FALTA SOLO LA PRUEBA EN VIVO** tras el deploy: crear un pedido real desde `flujo-diseno` y confirmar `SELECT * FROM pedidos ORDER BY created_at DESC LIMIT 1`. Con `precio_base` ya no debería fallar.
+
 ---
 
 ## ✅ SQL ejecutado (2026-07-05) — trigger de referidos que rompía la confirmación de pago (patch 25/25)
@@ -506,9 +516,9 @@ Todos ejecutados/desplegados entre 2026-05-29 y 2026-06-17, confirmados en su mo
 | ~~2~~ | ~~`GEMINI_API_KEY` en Cloudflare Pages — **Alejandro**~~ | ✅ **Corregido 2026-06-13** — chatbot responde 200 con gemini-2.5-flash |
 | ~~3~~ | ~~`GEMINI_API_KEY` en GitHub Secrets — **repo Alejandro**~~ | ✅ **Corregido 2026-06-13** (`gh secret set`) |
 | ~~3b~~ | ~~`GEMINI_API_KEY` en GitHub Secrets — **repo PRODIGY**~~ | ✅ **Corregido 2026-06-13** (`gh secret set`) |
-| 4 | `WOMPI_INTEGRITY_SECRET` en Supabase Secrets | Dashboard → Edge Functions → Secrets | Webhook de pago falla |
+| ~~4~~ | ~~`WOMPI_INTEGRITY_SECRET` en Supabase Secrets~~ | ✅ **Confirmado 2026-07-23** (screenshot, secret existe desde 15 abr). Falta solo redesplegar `wompi-signature`/`webhook-handler` para que tomen los fixes. |
 | ~~5~~ | ~~**Redesplegar ambos sitios** en Cloudflare tras agregar env vars~~ | ✅ **Hecho 2026-06-14** — ambos confirmados funcionando |
-| 6 | **Subir casos al portafolio** | `/app/panel-interno-operaciones.html` | Mínimo 5 casos con portada + galería |
+| ~~6~~ | ~~**Subir casos al portafolio**~~ | ✅ **En progreso 2026-07-23** — Alejandro subió más casos. Verificar en navegador que el portafolio los renderiza (carga client-side desde Supabase). |
 | ~~7~~ | ~~**Ejecutar `patch-supabase-public-grants-2026.sql`**~~ | ~~Supabase Dashboard → SQL Editor~~ | ✅ **Ejecutado 2026-05-28** |
 
 ---

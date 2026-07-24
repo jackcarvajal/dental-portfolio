@@ -9,6 +9,40 @@
 
 ---
 
+## 2026-07-23
+
+### 🔴 Auditoría pre-lanzamiento — sospechoso de por qué `pedidos` sigue vacío
+
+Barrido de "qué falta para lanzar". Infra OK (webs 200, APIs vivas, chatbot `/api/gemini` responde,
+sitemaps 200). Confirmado por screenshots del usuario: `WOMPI_INTEGRITY_SECRET` ya existe en Supabase
+Secrets, buckets sensibles ya privados (`pedidos-archivos`, `dental-cases`, `evidencias-entrega`,
+`scanner-uploads`, `casos`); `portafolio`/`links-media` siguen PUBLIC (correcto, contenido público).
+Faltan secrets Meta (WhatsApp auto). Existe `PADDLE_API_KEY` (pasarela Paddle configurada).
+
+🔴 **Hallazgo:** los 4 flujos de creación (`flujo-diseno.html:2104`, `flujo-fresado.html:4184`,
+`flujo-lab.html:979`, `js/flujo-impresion.js:2285`) mandan `tipo_trabajo` pero NO `servicio`.
+`schema-completo.sql:52` declara `servicio text NOT NULL` y ningún patch del repo lo renombra/dropea.
+Si en la BD real `servicio` sigue NOT NULL sin default → todo INSERT de pedido revienta → tabla vacía
+(explicaría el count=0 histórico). Creado `sql/diagnostico-pedidos-columnas-2026-07.sql` para
+confirmarlo ANTES de la prueba en vivo. Como la tabla `pedidos` es compartida, el fix sirve para
+PRODIGY y Alejandro de una vez. 💡 `schema-completo.sql` está desactualizado — NO es fuente de verdad.
+
+### ✅ CAUSA RAÍZ del count=0 encontrada y corregida
+
+El diagnóstico (corrido por Alejandro en Supabase) reveló: columnas obligatorias de `pedidos` =
+`precio_base`, `precio_total`, `tipo_trabajo`. Los flujos **nunca mandaban `precio_base`** (NOT NULL
+sin default) → todo INSERT reventaba en silencio. `servicio` descartado (ya no existe en la BD).
+Corregido `precio_base` (= `STATE.total`, subtotal) en los 5 INSERT: PRODIGY `flujo-diseno.html:2117`,
+`flujo-fresado.html:4195`, `flujo-lab.html:986`, `js/flujo-impresion.js:2297` + Alejandro
+`flujo-diseno.html`. Bug 2: `client-panel.html` pedía `servicio` (inexistente) en su `.select()` →
+habría roto el panel del cliente al ver el 1er pedido; quitado del SELECT (render ya cae a `tipo_trabajo`).
+🟡 Falta la prueba en vivo tras deploy (crear pedido real → confirmar en `pedidos`).
+
+### 🎨 Kit de marca Alejandro CAD/CAM — fix servicio duplicado
+
+Artefacto Claude: s3 renombrado de "Wax-up / Sonrisa" (duplicaba s4) a "Guía quirúrgica"/"Surgical guide"
+en i18n ES/EN + 3 títulos estáticos. Republicado en misma URL.
+
 ## 2026-07-19
 
 ### ✅ Cadena de diseño completa — el eslabón que faltaba
