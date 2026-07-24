@@ -985,7 +985,7 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
         cantidad:  Object.keys(cart).reduce(function(s,id){ return s + cart[id].qty; }, 0) || 1,
         precio_base: total,
         precio_total: total,
-        estado:    'Borrador',
+        estado:    'Pendiente',
         fecha_entrega: fecha || null,
         stl_url:   linkSTL || null,
         hash_seguridad: nonce,

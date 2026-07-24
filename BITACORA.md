@@ -38,6 +38,24 @@ Corregido `precio_base` (= `STATE.total`, subtotal) en los 5 INSERT: PRODIGY `fl
 habría roto el panel del cliente al ver el 1er pedido; quitado del SELECT (render ya cae a `tipo_trabajo`).
 🟡 Falta la prueba en vivo tras deploy (crear pedido real → confirmar en `pedidos`).
 
+### 🔬 Auditoría profunda vía anon REST — 3 obstáculos en cadena
+
+Usando la anon key (pública) contra PostgREST se validó el INSERT sin depender de la prueba
+manual. Cada obstáculo estaba oculto tras el anterior:
+1. ✅ `precio_base` faltante (ya corregido).
+2. ✅ `estado:'Borrador'` → el enum `estado_pedido` real NO tiene 'Borrador' (repo desactualizado).
+   Valores reales: Pendiente/En Diseño/En Revisión/En Producción/Pagado. Corregido a 'Pendiente'
+   en los 5 flujos (PRODIGY x4 + Alejandro).
+3. 🔴 RLS 42501: insert anónimo que cumple todas las condiciones de la policy del repo igual es
+   rechazado → la policy `pedidos_insert_flujo_publico` desplegada ≠ repo (o no existe). Bloquea
+   la creación de pedidos de clientes sin sesión. Creado `sql/diagnostico-policies-insert-pedidos-2026-07.sql`;
+   fix probable: re-ejecutar `patch-pedidos-insert-anon-2026-07.sql`.
+Verificado además: todas las columnas leídas por paneles y escritas por los INSERT existen en la BD.
+💡 Método útil para el futuro: probar columnas/enums/policies contra prod con la anon key vía
+`?select=col` (columna), `?estado=eq.valor` (enum) y POST de prueba (RLS) — sin tocar el Dashboard.
+💡 Confirmado (3ª vez) que los .sql del repo (schema-completo, enum, policies) están desactualizados
+vs la BD viva.
+
 ### 🎨 Kit de marca Alejandro CAD/CAM — fix servicio duplicado
 
 Artefacto Claude: s3 renombrado de "Wax-up / Sonrisa" (duplicaba s4) a "Guía quirúrgica"/"Surgical guide"

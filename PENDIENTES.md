@@ -310,7 +310,14 @@ Verificados a fondo y **limpios**: `flujo-fresado.html`, `flujo-lab.html`, `js/f
 
 **Bug secundario corregido:** `app/client-panel.html` pedía la columna inexistente `servicio` en su `.select()` (`CAMPOS_CLIENTE`) → al ver el primer pedido real, el panel del cliente habría fallado (Supabase rechaza el select entero por columna inexistente). Quitado `servicio` del SELECT (el render ya cae a `tipo_trabajo`). Nunca se había notado porque la tabla estaba vacía.
 
-**FALTA SOLO LA PRUEBA EN VIVO** tras el deploy: crear un pedido real desde `flujo-diseno` y confirmar `SELECT * FROM pedidos ORDER BY created_at DESC LIMIT 1`. Con `precio_base` ya no debería fallar.
+**Auditoría profunda vía anon REST (2026-07-24) — 3 obstáculos en cadena, cada uno oculto tras el anterior:**
+1. ✅ **`precio_base` faltante** (NOT NULL) — corregido en los 5 flujos.
+2. ✅ **`estado:'Borrador'` inválido** — el enum `estado_pedido` real NO tiene 'Borrador' (el repo `schema-completo.sql:22` está desactualizado). Valores reales confirmados: `Pendiente`, `En Diseño`, `En Revisión`, `En Producción`, `Pagado` (NO existen Borrador/Aprobado/Entregado/Cancelado). Corregido a `'Pendiente'` en los 5 flujos.
+3. 🔴 **RLS 42501** — un INSERT anónimo que CUMPLE todas las condiciones de `patch-pedidos-insert-anon-2026-07.sql` (negocio='prodigy', codigo/nombre_doctor válidos, precio_total OK, sin user_id/doctor_uid) igual es rechazado. La policy `pedidos_insert_flujo_publico` desplegada NO coincide con el repo (o no existe). **Sin esto, un cliente SIN sesión no puede crear pedidos.** → Correr `sql/diagnostico-policies-insert-pedidos-2026-07.sql`; si falta la policy anon, re-ejecutar `sql/patch-pedidos-insert-anon-2026-07.sql`.
+
+Nota: `servicio` ya no existe en la BD (confirmado). Verificado además que TODAS las columnas leídas por los paneles de staff y escritas por los 4 INSERT existen en la BD real (barrido anon REST) — sin más fantasmas.
+
+**Verificado por auditoría anon REST:** los bugs 1 y 2 ya no aparecen. Falta destrabar el 3 (RLS) y luego la prueba en vivo real desde el navegador.
 
 ---
 
