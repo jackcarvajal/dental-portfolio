@@ -15,3 +15,6 @@ limit 1;
 -- 2) BORRAR la prueba (correr solo cuando ya confirmaste que guardó).
 --    Descomenta la línea de abajo (quítale el "-- ") y ajústala al codigo real.
 -- delete from pedidos where nombre_doctor = 'PRUEBA BORRAR';
+
+-- 2b) BORRAR las filas de prueba que dejó la auditoría automática (2 filas):
+-- delete from pedidos where nombre_doctor = 'AUDIT BOT BORRAR';

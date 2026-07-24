@@ -976,7 +976,9 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
   try {
     var _sb = window.ProdigyAuth ? window.ProdigyAuth.getSb() : null;
     if (_sb) {
+      var _pedId = (crypto.randomUUID ? crypto.randomUUID() : (function(){var b=crypto.getRandomValues(new Uint8Array(16));b[6]=(b[6]&0x0f)|0x40;b[8]=(b[8]&0x3f)|0x80;var h=[].map.call(b,function(x){return x.toString(16).padStart(2,'0');});return h[0]+h[1]+h[2]+h[3]+'-'+h[4]+h[5]+'-'+h[6]+h[7]+'-'+h[8]+h[9]+'-'+h[10]+h[11]+h[12]+h[13]+h[14]+h[15];})());
       _sb.from('pedidos').insert([{
+        id:        _pedId,
         codigo:    ordenId,
         nombre_doctor: doctor,
         telefono:  tel || null,
@@ -993,12 +995,12 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
         negocio:   'prodigy',
         terminos_aceptados_at: new Date().toISOString(),
         user_agent: navigator.userAgent.slice(0, 250)
-      }]).select('id').single().then(function(r){
+      }]).then(function(r){
         if (window.PedidoGuard && !window.PedidoGuard.verificar(r.error, { codigo: ordenId, flujo: 'lab', sb: _sb })) return;
         if (r.error) { console.error('[PRODIGY] Pedido lab NO guardado:', r.error.message); return; }
-        // Registrar archivos y fallos — deja rastro de lo que no llegó
-        if (r.data && r.data.id && window._labSubida && window.FlujoUploader && window.FlujoUploader.registrarEnPedido) {
-          window.FlujoUploader.registrarEnPedido(_sb, r.data.id, window._labSubida, { etapa: 'cliente_caso' });
+        // Registrar archivos y fallos — deja rastro de lo que no llegó (id generado client-side)
+        if (_pedId && window._labSubida && window.FlujoUploader && window.FlujoUploader.registrarEnPedido) {
+          window.FlujoUploader.registrarEnPedido(_sb, _pedId, window._labSubida, { etapa: 'cliente_caso' });
         }
       });
     }

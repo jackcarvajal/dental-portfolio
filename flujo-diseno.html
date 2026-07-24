@@ -2101,7 +2101,12 @@ const lineWompi = document.getElementById('line-wompi');
                     const { data: { session: _ses } } = await _sb.auth.getSession();
                     const _duenio = _ses ? { email: _ses.user.email, user_id: _ses.user.id } : {};
 
+                    // El flujo genera el id (uuid) y lo manda: así NO necesita
+                    // .select('id') (RETURNING) — que como anon revierte el insert
+                    // por falta de policy SELECT y devolvía 42501, dejando la tabla vacía.
+                    const _pedId = (crypto.randomUUID ? crypto.randomUUID() : (()=>{const b=crypto.getRandomValues(new Uint8Array(16));b[6]=(b[6]&0x0f)|0x40;b[8]=(b[8]&0x3f)|0x80;const h=[...b].map(x=>x.toString(16).padStart(2,'0'));return `${h[0]}${h[1]}${h[2]}${h[3]}-${h[4]}${h[5]}-${h[6]}${h[7]}-${h[8]}${h[9]}-${h[10]}${h[11]}${h[12]}${h[13]}${h[14]}${h[15]}`;})());
                     _sb.from('pedidos').insert([{
+                        id:                    _pedId,
                         codigo:                STATE.ordenId,
                         nombre_doctor:         STATE.nombreCliente,
                         telefono:              STATE.whatsappCliente,
@@ -2141,7 +2146,7 @@ const lineWompi = document.getElementById('line-wompi');
                         canal_origen:          (()=>{try{const u=JSON.parse(localStorage.getItem('pg_utm')||'{}');return u.source||null;}catch(_){return null;}})() || (document.referrer.includes('google')?'seo':document.referrer.includes('instagram')?'instagram':(document.referrer.includes('wa.me')||document.referrer.includes('whatsapp'))?'whatsapp':null),
                         ..._duenio,
                         ..._mp
-                    }]).select('id').single().then(({ data: _ped, error: _e }) => {
+                    }]).then(({ error: _e }) => {
                         // No puede ser un console.warn: así estuvo la tabla `pedidos`
                         // vacía sin que nadie lo notara. PedidoGuard lo hace visible.
                         if (window.PedidoGuard) {
@@ -2153,8 +2158,8 @@ const lineWompi = document.getElementById('line-wompi');
                         // Registrar cada archivo (y cada fallo) en `pedido_archivos`.
                         // Es lo que permite saber si el caso llegó completo ANTES de
                         // mandarlo a producción — y deja rastro de lo que no subió.
-                        if (_ped?.id && STATE._subida && window.FlujoUploader?.registrarEnPedido) {
-                            FlujoUploader.registrarEnPedido(_sb, _ped.id, STATE._subida, {
+                        if (_pedId && !_e && STATE._subida && window.FlujoUploader?.registrarEnPedido) {
+                            FlujoUploader.registrarEnPedido(_sb, _pedId, STATE._subida, {
                                 etapa: 'cliente_caso',
                                 subidoPor: STATE.whatsappCliente || STATE.nombreCliente || null
                             });

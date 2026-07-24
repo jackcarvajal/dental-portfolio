@@ -2282,7 +2282,9 @@
                     const _email = _sess?.user?.email || null;
                     const _fechaElem = document.getElementById('fecha-entrega');
                     const _fechaTxt  = _fechaElem ? (_fechaElem.innerText||_fechaElem.textContent).replace('Entrega estimada: ','').trim() : null;
+                    const _pedId = (crypto.randomUUID ? crypto.randomUUID() : (()=>{const b=crypto.getRandomValues(new Uint8Array(16));b[6]=(b[6]&0x0f)|0x40;b[8]=(b[8]&0x3f)|0x80;const h=[...b].map(x=>x.toString(16).padStart(2,'0'));return `${h[0]}${h[1]}${h[2]}${h[3]}-${h[4]}${h[5]}-${h[6]}${h[7]}-${h[8]}${h[9]}-${h[10]}${h[11]}${h[12]}${h[13]}${h[14]}${h[15]}`;})());
                     _sb.from('pedidos').insert([{
+                        id:               _pedId,
                         codigo:           STATE.ordenId,
                         user_id:          _uid,
                         email:            _email,
@@ -2312,10 +2314,10 @@
                         costo_envio:            Number(document.getElementById('recargo-distancia')?.value) || 0,
                         pedido_diseno_id:       null,
                         codigo_referido:        sessionStorage.getItem('prodigy_ref') || null
-                    // .select('id') es imprescindible: sin él supabase-js devuelve
-                    // data:null y `_d?.[0]?.id` era siempre null, así que el log de
-                    // auditoría del pedido nunca llegaba a crearse.
-                    }]).select('id').then(({ data: _d, error: _e }) => {
+                    // El flujo genera el id (uuid) arriba y lo manda: se elimina el
+                    // .select('id') (RETURNING), que como anon revertía el insert por
+                    // falta de policy SELECT (42501) y dejaba la tabla `pedidos` vacía.
+                    }]).then(({ error: _e }) => {
                         if (window.PedidoGuard) {
                             window.PedidoGuard.verificar(_e, { codigo: STATE.ordenId, flujo: 'impresion', sb: _sb });
                         } else if (_e) {
@@ -2323,15 +2325,15 @@
                         }
 
                         // Registrar archivos y fallos — deja rastro de lo que no llegó
-                        if (_d?.[0]?.id && STATE._subida && window.FlujoUploader?.registrarEnPedido) {
-                            window.FlujoUploader.registrarEnPedido(_sb, _d[0].id, STATE._subida, {
+                        if (_pedId && !_e && STATE._subida && window.FlujoUploader?.registrarEnPedido) {
+                            window.FlujoUploader.registrarEnPedido(_sb, _pedId, STATE._subida, {
                                 etapa: 'cliente_caso',
                                 subidoPor: STATE.whatsappCliente || null
                             });
                         }
 
                         if (!_e) {
-                            const _pid = _d?.[0]?.id || null;
+                            const _pid = _pedId || null;
                             if (_pid) {
                                 _sb.from('logs_incidencias').insert({
                                     pedido_id: _pid, tipo:'PEDIDO_CREADO', severidad:'INFO',

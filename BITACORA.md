@@ -51,6 +51,20 @@ manual. Cada obstáculo estaba oculto tras el anterior:
    la creación de pedidos de clientes sin sesión. Creado `sql/diagnostico-policies-insert-pedidos-2026-07.sql`;
    fix probable: re-ejecutar `patch-pedidos-insert-anon-2026-07.sql`.
 Verificado además: todas las columnas leídas por paneles y escritas por los INSERT existen en la BD.
+
+### ✅ CAUSA RAÍZ DEFINITIVA del count=0 — el RETURNING de .select('id')
+
+Tras descartar columnas, enum, policies y triggers, la prueba decisiva: POST anónimo con
+`Prefer: return=minimal` → **201** (el insert SÍ está permitido). El culpable era el
+`.insert([...]).select('id')` de los flujos: el `.select()` añade un `RETURNING id` que exige
+una policy SELECT para anon sobre la fila nueva; como no existe, PostgREST **revierte todo el
+insert** y devuelve 42501. Por eso `pedidos` llevaba 730 días vacía pese a que el insert era válido.
+**Fix sin SQL:** cada flujo genera su `id` (uuid) con `crypto.randomUUID()` (con fallback) y lo manda
+en el insert; se elimina el `.select('id')`. El flujo conserva el id para `pedido_archivos`.
+Aplicado en los 5 flujos (PRODIGY: diseno/fresado/lab/impresion + Alejandro diseno). `node --check` OK.
+💡 Método de sondeo con anon key: `Prefer: return=minimal` vs `return=representation` aísla si un
+fallo es del INSERT o del RETURNING. Dejó 2 filas de prueba 'AUDIT BOT BORRAR' (borrar con
+sql/verificar-pedido-prueba-2026-07.sql §2b).
 💡 Método útil para el futuro: probar columnas/enums/policies contra prod con la anon key vía
 `?select=col` (columna), `?estado=eq.valor` (enum) y POST de prueba (RLS) — sin tocar el Dashboard.
 💡 Confirmado (3ª vez) que los .sql del repo (schema-completo, enum, policies) están desactualizados
