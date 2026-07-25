@@ -837,7 +837,9 @@ async function guardarCotizacion() {
     servicio: srv.label, material: MAT_LABEL[state.material] || state.material,
     cantidad: state.qty, urgente: !!state.urgente, dsd: !!state.dsd, envio: !!state.envio
   }];
+  const _cotId = (crypto.randomUUID ? crypto.randomUUID() : (()=>{const b=crypto.getRandomValues(new Uint8Array(16));b[6]=(b[6]&0x0f)|0x40;b[8]=(b[8]&0x3f)|0x80;const h=[...b].map(x=>x.toString(16).padStart(2,'0'));return `${h[0]}${h[1]}${h[2]}${h[3]}-${h[4]}${h[5]}-${h[6]}${h[7]}-${h[8]}${h[9]}-${h[10]}${h[11]}${h[12]}${h[13]}${h[14]}${h[15]}`;})());
   const payload = {
+    id: _cotId,
     tipo: state.servicio || 'diseno',
     negocio: 'prodigy',
     items, subtotal: total, total,
@@ -847,7 +849,9 @@ async function guardarCotizacion() {
     estado: 'borrador',
     expira_at: new Date(Date.now()+30*24*60*60*1000).toISOString()
   };
-  const { data, error } = await sb.from('cotizaciones').insert(payload).select('id').single();
+  // El id se genera client-side (arriba): se omite .select('id') (RETURNING), que como
+  // anon revierte el insert por falta de policy SELECT (42501) → la cotización nunca se guardaba.
+  const { error } = await sb.from('cotizaciones').insert(payload);
   btn.disabled = false;
   if (error) {
     btn.innerHTML = '<i class="fa-regular fa-bookmark"></i> Guardar cotización';
@@ -860,7 +864,7 @@ async function guardarCotizacion() {
   btn.style.borderColor = 'rgba(0,255,65,.4)';
   btn.style.color = '#00FF41';
   msg.className = 'form-msg ok';
-  msg.textContent = `✓ Cotización guardada (ID: ${data.id.slice(0,8)})`;
+  msg.textContent = `✓ Cotización guardada (ID: ${_cotId.slice(0,8)})`;
   showToast('Cotización guardada', 'ok');
 }
 

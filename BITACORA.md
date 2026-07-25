@@ -11,6 +11,15 @@
 
 ## 2026-07-25
 
+### ✅ El bug RETURNING también en las 5 calculadoras (cotizaciones)
+
+Barrido multilínea de `.insert().select()` en páginas públicas: las 5 calculadoras (PRODIGY
+calculadora/-diseno/-fresado/-impresion + Alejandro calculadora-diseno) guardaban la cotización con
+`.insert(payload).select('id')` → RETURNING revierte el insert anon (42501) → ninguna cotización
+pública se guardó nunca (mostraba "✓ Guardada" en falso). Mismo fix: id uuid client-side + sin .select.
+`app/inventario.html` (lotes_material con RETURNING) es staff autenticado → no aplica. Filas de prueba
+'AUDIT BOT BORRAR' también en cotizaciones (limpieza en verificar-pedido-prueba §2b).
+
 ### ✅ Auditoría de transiciones de estado — 5 UPDATEs rotos por enum
 
 Con `pedidos` ya no-vacía, auditadas las transiciones del staff contra la BD real. Enum `estado_pedido`

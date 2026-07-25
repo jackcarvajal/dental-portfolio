@@ -4,6 +4,22 @@
 
 ---
 
+## ✅ Auditoría del mismo bug RETURNING en cotizaciones (2026-07-25) — las calculadoras nunca guardaron
+
+El bug del `.insert().select('id')` (RETURNING que revierte el insert anónimo, 42501) NO era
+exclusivo de `pedidos`. Barrido multilínea de TODOS los `.insert().select()` en páginas públicas:
+**las 5 calculadoras** guardaban la cotización con ese patrón → **ninguna cotización pública se
+guardó jamás** (el usuario veía "✓ Guardada" con un id que nunca se persistió). Verificado contra
+la BD: insert a `cotizaciones` con `return=minimal` → 201; con RETURNING → 42501.
+
+**Corregido (mismo fix: id uuid client-side + sin .select):**
+- PRODIGY: `calculadora.html`, `calculadora-diseno.html`, `calculadora-fresado.html`, `calculadora-impresion.html`
+- Alejandro: `calculadora-diseno.html`
+
+Verificado sano (no aplica el fix): `app/inventario.html` inserta `lotes_material` con RETURNING pero
+es panel de staff autenticado (tiene policy SELECT, el RETURNING no revierte). Sin más inserts públicos
+con RETURNING en ninguno de los dos repos.
+
 ## ✅ Auditoría de transiciones de estado (2026-07-25) — 5 UPDATEs que reventaban por enum
 
 Con `pedidos` por fin no-vacía, auditadas las transiciones de estado del staff contra la BD real
