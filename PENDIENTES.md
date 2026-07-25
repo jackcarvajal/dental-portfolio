@@ -4,6 +4,29 @@
 
 ---
 
+## ✅ Auditoría de transiciones de estado (2026-07-25) — 5 UPDATEs que reventaban por enum
+
+Con `pedidos` por fin no-vacía, auditadas las transiciones de estado del staff contra la BD real
+(anon REST). El enum `estado_pedido` = **Pendiente · En Diseño · En Revisión · En Producción · Pagado**
+(nada más). `estado_operativo` y `pago_estado` son TEXT libre (sin enum, sin riesgo). Bugs corregidos:
+
+**PRODIGY** (escribían un valor inexistente al enum `estado` → el UPDATE entero fallaba, la transición
+se atascaba en silencio):
+- `app/operator-panel.html` — "Aprobar QA" ponía `estado:'terminado'` (quitado; `estado_operativo:'QA_APROBADO'` ya lleva el pipeline).
+- `app/mensajero.html` — "En reparto" ponía `estado:'EN_REPARTO'` → `estado_operativo:'EN_REPARTO'`.
+- `app/panel-interno-operaciones.html` — "Asignar ruta" ponía `estado:'POR_DESPACHAR'` → `estado_operativo:'POR_DESPACHAR'` (los paneles calidad/taller/mi-día filtran ese valor en estado_operativo).
+
+**Alejandro** (`estado` inválido dentro de un update con datos reales → fallaba TODO, incl. `diseno_aprobado`):
+- `app/client-panel.html` — "Aprobar diseño" (`estado:'aprobado'`) y "Pedir cambios" (`estado:'revision'`): quitado el `estado` inválido; se conservan `diseno_aprobado`/`notas_cambios`/`revisiones_usadas`. **Aprobar diseño y pedir cambios nunca habían funcionado en Alejandro.**
+
+**Verificado sano:** flujo de escáner (`envia-tu-scanner` → `solicitudes_scanner`): columnas existen, anon inserta (201), sin RETURNING.
+
+🟡 **PENDIENTE (Alejandro, sesión dedicada):** su display de estado usa un **enum ficticio**
+(`revision`/`en_diseno`/`aprobado`/`entregado`/`pago_confirmado`) que NO existe en la tabla compartida,
+en `app/client-panel.html:684`, `app/admin-panel.html`, `calculadora-diseno.html`. Los badges de estado
+nunca reflejan el valor real. Requiere mapear todo el manejo de estado de Alejandro al enum real
+(Pendiente/En Diseño/En Revisión/En Producción/Pagado) y probar — o migrarlo a las RPCs que ya usa PRODIGY.
+
 ## ✅ SQL ejecutado (2026-07-16) — doble gasto de cupón de referido
 
 Confirmado ("Success. No rows returned"). `prodigy_usar_cupon_credito()` ahora usa UPDATE condicional atómico — el cupón de $30.000 ya no se puede canjear dos veces por requests concurrentes.

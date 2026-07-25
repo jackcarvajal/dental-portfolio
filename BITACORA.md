@@ -9,6 +9,22 @@
 
 ---
 
+## 2026-07-25
+
+### ✅ Auditoría de transiciones de estado — 5 UPDATEs rotos por enum
+
+Con `pedidos` ya no-vacía, auditadas las transiciones del staff contra la BD real. Enum `estado_pedido`
+= Pendiente/En Diseño/En Revisión/En Producción/Pagado; `estado_operativo`/`pago_estado` = TEXT libre.
+Corregidos 5 updates que escribían valores inexistentes al enum `estado` (todo el UPDATE fallaba):
+PRODIGY `operator-panel` (terminado→se quita), `mensajero` (EN_REPARTO→estado_operativo), `panel-interno`
+(POR_DESPACHAR→estado_operativo); Alejandro `client-panel` aprobar-diseño y pedir-cambios (estado
+inválido dentro del update con diseno_aprobado/notas → fallaba todo; nunca funcionaron). Flujo de escáner
+verificado sano. 🟡 Pendiente: Alejandro usa un enum de estado ficticio en su display (client-panel:684,
+admin-panel, calculadora-diseno) — refactor dedicado al enum real. Dejó filas 'AUDIT BOT BORRAR' en
+pedidos y solicitudes_scanner (limpieza en sql/verificar-pedido-prueba-2026-07.sql).
+💡 Método: `estado_operativo`/`pago_estado` aceptan cualquier valor (text), `estado` es enum estricto —
+probado con `?col=eq.valor` (error 22P02 = valor fuera del enum).
+
 ## 2026-07-23
 
 ### 🔴 Auditoría pre-lanzamiento — sospechoso de por qué `pedidos` sigue vacío

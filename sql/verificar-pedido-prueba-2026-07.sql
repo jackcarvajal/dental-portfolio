@@ -16,5 +16,6 @@ limit 1;
 --    Descomenta la línea de abajo (quítale el "-- ") y ajústala al codigo real.
 -- delete from pedidos where nombre_doctor = 'PRUEBA BORRAR';
 
--- 2b) BORRAR las filas de prueba que dejó la auditoría automática (2 filas):
+-- 2b) BORRAR las filas de prueba que dejó la auditoría automática:
 -- delete from pedidos where nombre_doctor = 'AUDIT BOT BORRAR';
+-- delete from solicitudes_scanner where doctor = 'AUDIT BOT BORRAR';

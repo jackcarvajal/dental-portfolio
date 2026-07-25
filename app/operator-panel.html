@@ -723,7 +723,9 @@ async function aprobarQA() {
     const { error } = await sb.from('pedidos').update({
         estado_operativo: 'QA_APROBADO',
         timestamp_qa: new Date().toISOString(),
-        estado: 'terminado',
+        // 'estado' es un enum estricto (Pendiente/En Diseño/En Revisión/En Producción/Pagado)
+        // y NO tiene 'terminado' → incluirlo hacía fallar TODO el UPDATE. El pipeline real
+        // lo lleva estado_operativo (text), así que se omite 'estado' aquí.
         fotos_empaque: paths,
     }).eq('id', pedidoId);
 
