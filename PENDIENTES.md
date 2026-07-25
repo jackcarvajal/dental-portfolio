@@ -4,6 +4,21 @@
 
 ---
 
+## ✅ Captura de leads 100% rota (2026-07-25) — columna fantasma `recurso_descargado`
+
+Auditoría de TODOS los inserts a tablas desde páginas públicas. Hallazgo crítico: `leads_doctores`
+**no tiene** la columna `recurso_descargado` (real: `notas`), pero **los 9 inserts** la usaban →
+PGRST204 / HTTP 400 → **ningún lead se capturó jamás**. Afecta todos los imanes de leads del negocio:
+calculadoras, lead-magnets del journal/blog, cursos, contacto (nosotros), tickets de soporte.
+
+**Corregido `recurso_descargado` → `notas`:**
+- PRODIGY (6 inserts): `calculadora.html`, `journal.html` (x2), `mantenimiento.html`, `nosotros.html`, `soporte.html` + lectura en `app/panel-interno-operaciones.html` (4 líneas).
+- Alejandro (3 inserts): `blog.html`, `cursos.html`, `soporte.html` + lectura en `app/admin-panel.html` (3 líneas).
+
+**Bug adicional:** `leads_doctores.whatsapp` es NOT NULL, y los formularios de **contacto** (`nosotros.html` PRODIGY, `soporte.html` Alejandro) no lo mandaban → añadido `whatsapp:'—'` (placeholder; esos forms no piden WhatsApp).
+
+Verificado contra la BD: `origen` tiene un CHECK constraint (no acepta texto libre, es categórico) — por eso el texto descriptivo va a `notas`, no a `origen`. Insert con `notas` sin `origen` → 201.
+
 ## ✅ Auditoría del mismo bug RETURNING en cotizaciones (2026-07-25) — las calculadoras nunca guardaron
 
 El bug del `.insert().select('id')` (RETURNING que revierte el insert anónimo, 42501) NO era

@@ -20,3 +20,4 @@ limit 1;
 -- delete from pedidos where nombre_doctor = 'AUDIT BOT BORRAR';
 -- delete from solicitudes_scanner where doctor = 'AUDIT BOT BORRAR';
 -- delete from cotizaciones where doctor_nombre = 'AUDIT BOT BORRAR';
+-- delete from leads_doctores where nombre = 'AUDIT BOT BORRAR';

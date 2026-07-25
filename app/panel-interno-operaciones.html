@@ -2655,9 +2655,9 @@ function renderLeads(arr) {
         const badge = l.contactado
             ? '<span style="background:rgba(0,255,65,0.1);color:#00FF41;border:1px solid rgba(0,255,65,0.3);border-radius:20px;padding:2px 9px;font-size:0.68rem;font-weight:700;">Contactado</span>'
             : '<span style="background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.3);border-radius:20px;padding:2px 9px;font-size:0.68rem;font-weight:700;">Pendiente</span>';
-        const recursoCorto = (l.recurso_descargado || '').length > 30
-            ? l.recurso_descargado.substring(0, 30) + '…'
-            : (l.recurso_descargado || '—');
+        const recursoCorto = (l.notas || '').length > 30
+            ? l.notas.substring(0, 30) + '…'
+            : (l.notas || '—');
         const waLink = l.whatsapp
             ? `<a href="https://wa.me/${l.whatsapp.replace(/\D/g,'')}" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none;">
                  <i class="fab fa-whatsapp"></i> ${esc(l.whatsapp)}
@@ -2666,7 +2666,7 @@ function renderLeads(arr) {
         return `<tr>
             <td style="font-weight:600;">${esc(l.nombre)}</td>
             <td>${waLink}</td>
-            <td style="font-size:0.75rem;color:#94a3b8;" title="${esc(l.recurso_descargado)}">${esc(recursoCorto)}</td>
+            <td style="font-size:0.75rem;color:#94a3b8;" title="${esc(l.notas)}">${esc(recursoCorto)}</td>
             <td style="font-size:0.78rem;color:#94a3b8;">${fecha}</td>
             <td>${badge}</td>
             <td>

@@ -978,7 +978,7 @@
     btn.disabled=true;btn.textContent='Guardando...';
     var sb=_getSb();
     if(sb){
-      await sb.from('leads_doctores').insert({whatsapp:wa,nombre:'Lista espera lanzamiento',recurso_descargado:'Mantenimiento — Aviso de lanzamiento',acepta_marketing:true}).catch(()=>{});
+      await sb.from('leads_doctores').insert({whatsapp:wa,nombre:'Lista espera lanzamiento',notas:'Mantenimiento — Aviso de lanzamiento',acepta_marketing:true}).catch(()=>{});
     }
     // WA al equipo
     fetch('/api/notify-wa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nuevo_estado:'WAITLIST_LAB',codigo:'MANT',nombre_doctor:'Lista espera: '+wa,whatsapp:'573212816716',pais:'CO',servicio:'Aviso lanzamiento',fecha_entrega:null,recibo_url:null})}).catch(()=>{});

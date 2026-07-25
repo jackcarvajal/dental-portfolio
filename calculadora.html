@@ -804,7 +804,7 @@ async function enviarCotizacion(e) {
   const { error } = await sb.from('leads_doctores').insert({
     nombre,
     whatsapp: wa,
-    recurso_descargado: `Calculadora: ${srv.label} · ${MAT_LABEL[state.material]} · ${state.qty}u · ${fmtCOP(total)} COP`,
+    notas: `Calculadora: ${srv.label} · ${MAT_LABEL[state.material]} · ${state.qty}u · ${fmtCOP(total)} COP`,
     acepta_marketing: marketing
   });
 

@@ -985,7 +985,7 @@
     const { error } = await sb.from('leads_doctores').insert({
       nombre,
       whatsapp: wa,
-      recurso_descargado: 'Guía Clínica 2026: Zirconio Multicapa vs Disilicato',
+      notas: 'Guía Clínica 2026: Zirconio Multicapa vs Disilicato',
       acepta_marketing: marketing
     });
 
@@ -1053,7 +1053,7 @@
     const { error } = await sb.from('leads_doctores').insert({
       nombre: 'Suscriptor Journal',
       whatsapp: wa,
-      recurso_descargado: 'Notificacion Journal',
+      notas: 'Notificacion Journal',
       acepta_marketing: false
     });
 

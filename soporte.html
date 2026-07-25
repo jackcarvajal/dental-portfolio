@@ -407,7 +407,7 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catc
       await sb.from('leads_doctores').insert({
         nombre:nombre+(wa?' — '+wa:''),
         whatsapp:wa||null,
-        recurso_descargado:'Ticket soporte: '+asunto+' — '+mensaje.slice(0,120),
+        notas:'Ticket soporte: '+asunto+' — '+mensaje.slice(0,120),
         acepta_marketing:false
       }).catch(()=>{});
     }

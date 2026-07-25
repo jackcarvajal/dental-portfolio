@@ -11,6 +11,16 @@
 
 ## 2026-07-25
 
+### 🔴→✅ Captura de leads 100% rota — columna fantasma recurso_descargado
+
+`leads_doctores` no tiene `recurso_descargado` (real: `notas`); los 9 inserts la usaban → PGRST204/400
+→ ningún lead se capturó nunca (calculadoras, journal/blog lead-magnets, cursos, nosotros, soporte).
+Corregido recurso_descargado→notas en PRODIGY (6 inserts + panel-interno lectura) y Alejandro (3 inserts
++ admin-panel lectura). Además `whatsapp` es NOT NULL y los forms de contacto (nosotros PRODIGY,
+soporte Alejandro) no lo mandaban → añadido whatsapp:'—'. `origen` tiene CHECK (categórico), por eso
+el texto va a `notas`. Filas 'AUDIT BOT BORRAR' también en leads_doctores.
+💡 Método: PGRST204 al insertar = columna que no existe en la tabla; 23514 = viola CHECK; 23502 = NOT NULL.
+
 ### ✅ El bug RETURNING también en las 5 calculadoras (cotizaciones)
 
 Barrido multilínea de `.insert().select()` en páginas públicas: las 5 calculadoras (PRODIGY
