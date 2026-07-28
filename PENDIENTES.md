@@ -1046,3 +1046,14 @@ Todos ejecutados/desplegados entre 2026-05-29 y 2026-06-17, confirmados en su mo
 - **SEO lote 2026-05-27h**: twitter:title+description en 5 páginas PRODIGY (calculadora-fresado/diseno/impresion, calidad, guia-tecnica) + 4 Alejandro (calculadora-diseno, cursos, index, soporte); títulos >75chars → ≤72 en 5 PRODIGY + 4 Alejandro; descriptions >165chars → ≤160 en 6 PRODIGY + 6 Alejandro; schema WebSite en mapa-sitio.html PRODIGY; keywords en terminos-y-legal (ambos proyectos); audit completo: hreflang ✓, BreadcrumbList ✓, FAQPage ✓, SW ✓, CORS ✓, auth-guard ✓, robots.txt ✓, manifest.json ✓
 - **SEO/Fix lote 2026-05-27i**: max-snippet:-1+max-image-preview:large en 10 páginas PRODIGY (calidad, flujos, mapa-sitio, guia-tecnica, envia-tu-scanner, escaner-domicilio, terminos) + 4 Alejandro (flujo-diseno, article, soporte, terminos); **hreflang dedup**: eliminados duplicados en 6 páginas PRODIGY (envia-tu-scanner, escaner-domicilio, fresado-cam, guias-quirurgicas, nosotros, calidad) + 2 Alejandro (guias-quirurgicas, envia-tu-scanner); **MAP.md Alejandro**: líneas header.js actualizadas (topbar 296, navHtml 344, _SURL 529, _pgHistory 642, _pgSystemPrompt 644, _pgAddMsg 682, fetch gemini 706, errores 717-730); **auto-journal pool**: +7 temas PRODIGY (34 total) + +12 temas Alejandro (25 total); mapa-sitio.html: hreflang es/x-default agregado; hreflang+max-snippet en mapa-sitio.html PRODIGY
 - **Schemas+Security lote 2026-05-27j**: Service+BreadcrumbList en 6 páginas servicio PRODIGY (diseno-cad, diseno-remoto, fresado-cam, guias-quirurgicas, escaner-domicilio, envia-tu-scanner); XSS fix r.revision_num en recibo-caso.html (ambos); XSS fix n.reaction en caso.html (ambos); TOPIC_POOL Alejandro: tema faltante flujo-digital-ortopedico agregado (25 total confirmado)
+
+## 🟡 Alinear el vocabulario de estado del panel-interno a estado_operativo (2026-07-28)
+
+`panel-interno-operaciones.html` maneja estados OPERATIVOS (cancelado/listo/enviado/TERMINADO/
+control_calidad) que NO son del enum `estado` (Pendiente/En Diseño/En Revisión/En Producción/Pagado).
+`cambiarEstado()` los escribía en `estado` → "invalid input value for enum estado_pedido: cancelado".
+**Fix aplicado:** `cambiarEstado()` ahora escribe `estado_operativo` (text); quitado también
+`estado='DISENO_FINALIZADO'` en `operario-diseno.html:534` (mismo bug al aprobar diseño).
+**PENDIENTE (refactor dedicado):** el panel todavía LEE `p.estado` para sus filtros de estados
+finales (ESTADOS_FINALES, `activos`) y el dropdown — migrar esas lecturas a `estado_operativo`
+para que cancelar/listo/enviado se reflejen en la UI. Requiere probar el panel completo en vivo.

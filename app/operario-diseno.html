@@ -531,7 +531,8 @@ async function avanzar(id, nuevoEstado) {
   const updates = { estado_operativo: nuevoEstado };
   if (nuevoEstado === 'EN_DISENO')         updates.timestamp_validacion = new Date().toISOString();
   if (nuevoEstado === 'REVISION_CLIENTE')  updates.timestamp_produccion  = new Date().toISOString();
-  if (nuevoEstado === 'DISENO_APROBADO')   updates.estado = 'DISENO_FINALIZADO';
+  // (antes: updates.estado='DISENO_FINALIZADO' — valor fuera del enum que hacía fallar TODO
+  //  el update al aprobar diseño; el pipeline lo lleva estado_operativo='DISENO_APROBADO')
 
   const { error } = await sb.from('pedidos').update(updates).eq('id', id);
   if (error) { toast('Error: ' + error.message, 'err'); return; }
