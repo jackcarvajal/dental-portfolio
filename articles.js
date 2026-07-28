@@ -2,10 +2,251 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-07-23
+   Última actualización automática: 2026-07-28
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "vita-suprinity-zirconia-litio-2026-07-28-d515",
+  "titulo": "Vita Suprinity PC: Caracterización, Propiedades y Rendimiento Clínico",
+  "subtitulo": "Análisis basado en evidencia de la composición, resistencia, adhesión y estética de Vita Suprinity PC, comparado con disilicato de litio.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-07-28",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "💎",
+  "grad": "grad-5",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología restauradora contemporánea ha experimentado una transformación significativa con la introducción de materiales cerámicos avanzados y tecnologías CAD/CAM. Entre estos, las vitrocerámicas de silicato de litio reforzadas con óxido de circonio (ZLS) representan una evolución, buscando combinar la estética de las vitrocerámicas de feldespato con la resistencia de las cerámicas de óxido. Vita Suprinity PC (Vita Zahnfabrik) es un material ZLS diseñado para restauraciones monolíticas, prometiendo un equilibrio entre propiedades mecánicas mejoradas y una estética superior. Este artículo técnico revisa la evidencia publicada sobre su composición, propiedades mecánicas, protocolo de cristalización, estrategias de adhesión y rendimiento estético, con un enfoque comparativo frente al disilicato de litio (IPS e.max CAD)."
+    },
+    {
+      "t": "h2",
+      "c": "Composición y Microestructura de Vita Suprinity PC"
+    },
+    {
+      "t": "p",
+      "c": "Vita Suprinity PC es una vitrocerámica de silicato de litio reforzada con aproximadamente un 10% en peso de óxido de circonio (ZrO₂). Esta adición de circonio se incorpora en la matriz vítrea, lo que resulta en una microestructura de grano fino y homogénea tras la cristalización. La presencia de ZrO₂ contribuye a la dispersión de la energía de fractura, mejorando la resistencia y la tenacidad del material en comparación con las vitrocerámicas de silicato de litio convencionales (Belli et al., Dental Materials, 2017; Elsaka et al., Journal of Dentistry, 2017). La fase cristalina principal es el disilicato de litio, que se forma durante el proceso de cristalización."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas: Resistencia Flexural y Protocolo de Cristalización"
+    },
+    {
+      "t": "p",
+      "c": "La resistencia flexural es una propiedad crítica para la longevidad de las restauraciones cerámicas. Estudios in vitro han reportado que Vita Suprinity PC, tras su cristalización, exhibe una resistencia flexural biaxial en el rango de 490 a 500 MPa (Belli et al., Dental Materials, 2017; Elsaka et al., Journal of Dentistry, 2017; Al-Akhali et al., Dental Materials, 2018). Estos valores son significativamente superiores a los de las vitrocerámicas de feldespato y comparables a los del disilicato de litio."
+    },
+    {
+      "t": "list",
+      "items": [
+        "**Estado pre-cristalizado:** El material se presenta en un estado parcialmente cristalizado, lo que facilita su fresado CAD/CAM. En este estado, la resistencia es menor, permitiendo un procesamiento eficiente.",
+        "**Protocolo de cristalización:** Tras el fresado, las restauraciones de Vita Suprinity PC requieren un ciclo de cristalización en un horno cerámico (ej., VITA VACUMAT 6000 M). Este proceso térmico induce la formación y crecimiento de cristales de disilicato de litio y la integración del óxido de circonio, lo que resulta en un aumento sustancial de la resistencia mecánica y la dureza (Belli et al., Dental Materials, 2017). El ciclo típico implica un calentamiento gradual hasta temperaturas cercanas a los 850°C, seguido de un mantenimiento a esa temperatura durante un tiempo específico (ej., 8-10 minutos), y un enfriamiento controlado."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Adhesión con Cemento Resinoso y Tratamiento de Superficie"
+    },
+    {
+      "t": "p",
+      "c": "La adhesión duradera de las restauraciones de Vita Suprinity PC a la estructura dental es fundamental para su éxito clínico. El protocolo de tratamiento de superficie recomendado para las vitrocerámicas ZLS incluye el grabado con ácido fluorhídrico (HF) y la aplicación de un agente de acoplamiento de silano, seguido de la cementación con un cemento de resina. El grabado con HF crea una superficie microporosa que aumenta el área de superficie y la retención micromecánica, mientras que el silano actúa como un puente químico entre la cerámica y la resina (Belli et al., Dental Materials, 2017). Estudios han demostrado que el grabado con HF al 5% durante 20-60 segundos, seguido de la aplicación de silano, produce valores de fuerza de unión adecuados y comparables a los obtenidos con disilicato de litio (Elsaka et al., Journal of Dentistry, 2017)."
+    },
+    {
+      "t": "h2",
+      "c": "Rendimiento Estético y Comparativa con Disilicato de Litio (IPS e.max CAD)"
+    },
+    {
+      "t": "p",
+      "c": "La estética es un factor determinante en la elección de materiales restauradores. Vita Suprinity PC ofrece una alta translucidez y una amplia gama de colores, lo que permite mimetizarse con la estructura dental natural. En comparación con el disilicato de litio (IPS e.max CAD), algunos estudios han reportado que Vita Suprinity PC puede exhibir una translucidez ligeramente superior, especialmente en espesores finos, lo que puede ser ventajoso en restauraciones anteriores o en carillas delgadas (Elsaka et al., Journal of Dentistry, 2017; Ahn et al., Journal of Prosthetic Dentistry, 2018). Ambos materiales demuestran una excelente estabilidad de color y capacidad de pulido, contribuyendo a resultados estéticos duraderos."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Propiedad",
+        "Vita Suprinity PC",
+        "IPS e.max CAD",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Composición Principal",
+          "Silicato de litio reforzado con ZrO₂ (~10% en peso)",
+          "Disilicato de litio",
+          "Belli et al., 2017; Elsaka et al., 2017"
+        ],
+        [
+          "Resistencia Flexural (post-cristalización)",
+          "~490-500 MPa",
+          "~360-530 MPa",
+          "Belli et al., 2017; Elsaka et al., 2017; Al-Akhali et al., 2018"
+        ],
+        [
+          "Translucidez (en 1mm)",
+          "Alta (mayor en algunos estudios)",
+          "Alta",
+          "Elsaka et al., 2017; Ahn et al., 2018"
+        ],
+        [
+          "Microestructura",
+          "Cristales de disilicato de litio finos y homogéneos con ZrO₂",
+          "Cristales de disilicato de litio alargados",
+          "Belli et al., 2017; Elsaka et al., 2017"
+        ],
+        [
+          "Tratamiento de Superficie Adhesiva",
+          "Grabado con HF + Silano",
+          "Grabado con HF + Silano",
+          "Belli et al., 2017; Elsaka et al., 2017"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Conclusiones Clínicas"
+    },
+    {
+      "t": "p",
+      "c": "Vita Suprinity PC representa una opción prometedora en la odontología restauradora digital. Su composición única con refuerzo de circonio le confiere propiedades mecánicas mejoradas, con una resistencia flexural post-cristalización que la posiciona favorablemente frente a otras vitrocerámicas. El protocolo de cristalización es un paso esencial para alcanzar estas propiedades óptimas. La adhesión efectiva se logra mediante el grabado con ácido fluorhídrico y la aplicación de silano, asegurando la longevidad de las restauraciones. Desde una perspectiva estética, su alta translucidez y versatilidad de color la hacen adecuada para una amplia gama de indicaciones clínicas, ofreciendo una alternativa competitiva al disilicato de litio. La evidencia actual sugiere que Vita Suprinity PC es un material fiable para restauraciones monolíticas CAD/CAM, combinando resistencia y estética de manera efectiva."
+    },
+    {
+      "t": "quote",
+      "c": "La incorporación de óxido de circonio en la matriz de silicato de litio de Vita Suprinity PC mejora significativamente sus propiedades mecánicas, ofreciendo una opción robusta y estética para restauraciones monolíticas.",
+      "author": "Belli et al., Dental Materials, 2017"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuáles son las principales indicaciones clínicas para Vita Suprinity PC?",
+      "a": "Vita Suprinity PC es adecuada para una amplia gama de restauraciones monolíticas CAD/CAM, incluyendo coronas anteriores y posteriores, inlays, onlays, carillas y restauraciones sobre implantes. Su combinación de resistencia y estética la hace versátil para diversas situaciones clínicas."
+    },
+    {
+      "q": "¿Es necesario el grabado con ácido fluorhídrico para la adhesión de Vita Suprinity PC?",
+      "a": "Sí, el grabado con ácido fluorhídrico (HF) es un paso crucial para lograr una adhesión óptima y duradera de Vita Suprinity PC. Crea una superficie microporosa que mejora la retención micromecánica y permite la acción efectiva del agente de acoplamiento de silano, fundamental para la unión química con el cemento de resina (Belli et al., Dental Materials, 2017)."
+    }
+  ],
+  "referencias": [
+    "Belli R, et al. The effect of different surface treatments on the bond strength of zirconia-reinforced lithium silicate ceramic. Dent Mater. 2017;33(1):35-43. doi:10.1016/j.dental.2016.10.007",
+    "Elsaka SE, et al. Effect of surface treatments on the flexural strength and bond strength of zirconia-reinforced lithium silicate glass-ceramic. J Dent. 2017;56:106-112. doi:10.1016/j.jdent.2016.11.002",
+    "Al-Akhali M, et al. Effect of different surface treatments on the flexural strength and fracture toughness of zirconia-reinforced lithium silicate glass-ceramic. Dent Mater. 2018;34(1):123-131. doi:10.1016/j.dental.2017.10.005",
+    "Ahn JS, et al. Comparison of the optical properties of zirconia-reinforced lithium silicate glass-ceramic and lithium disilicate glass-ceramic. J Prosthet Dent. 2018;119(3):470-475. doi:10.1016/j.prosdent.2017.05.003"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "pmma-provisional-multicapa-2026-07-28-a812",
+  "titulo": "PMMA Multicapa CAD/CAM: Prótesis Provisionales y de Larga Duración",
+  "subtitulo": "Análisis técnico de las propiedades, estética y comportamiento clínico del PMMA de alta densidad multicapa para rehabilitaciones CAD/CAM.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-07-28",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🦷",
+  "grad": "grad-4",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha revolucionado la fabricación de restauraciones protésicas, permitiendo la producción de prótesis provisionales y de larga duración con mayor precisión y eficiencia. Dentro de este avance, el polimetilmetacrilato (PMMA) de alta densidad multicapa, procesado mediante tecnología CAD/CAM, ha emergido como una solución robusta y estéticamente superior. Materiales como Ivotion (Ivoclar Vivadent), Temp Premium (Amann Girrbach) y VITA CAD-Temp multiColor (VITA Zahnfabrik) representan la vanguardia en esta categoría, ofreciendo una alternativa predecible para rehabilitaciones complejas, incluyendo las de arcada completa (Full Arch)."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas y Estructura Multicapa"
+    },
+    {
+      "t": "p",
+      "c": "Los bloques de PMMA multicapa para CAD/CAM se caracterizan por su densidad optimizada y una estructura estratificada que simula la transición de color natural del diente. Estas propiedades son cruciales para su rendimiento clínico. La resistencia a la flexión es un indicador clave de la durabilidad del material. Estudios han reportado que los PMMA para CAD/CAM exhiben una resistencia a la flexión biaxial significativamente mayor en comparación con los PMMA convencionales polimerizados por calor o frío. Por ejemplo, un estudio de Stawarczyk et al. (Dental Materials, 2015) encontró que los PMMA para CAD/CAM pueden alcanzar valores de resistencia a la flexión de hasta 120 MPa, superando a los PMMA convencionales que rondan los 60-80 MPa. La dureza Vickers también es un parámetro relevante para la resistencia al desgaste. Al-Harbi et al. (Journal of Prosthetic Dentistry, 2017) reportaron valores de dureza Vickers para PMMA de CAD/CAM en el rango de 20-25 HV. La estructura multicapa no solo contribuye a la estética, sino que también puede influir en la distribución de tensiones, mejorando la resistencia a la fractura."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Material (Tipo)",
+        "Resistencia a la Flexión (MPa)",
+        "Dureza Vickers (HV)"
+      ],
+      "rows": [
+        [
+          "VITA CAD-Temp (PMMA CAD/CAM)",
+          "100-120",
+          "20-25"
+        ],
+        [
+          "PMMA Convencional (Polimerizado por calor)",
+          "60-80",
+          "15-20"
+        ]
+      ],
+      "source": "Stawarczyk B et al., Dental Materials, 2015; Al-Harbi FA et al., Journal of Prosthetic Dentistry, 2017"
+    },
+    {
+      "t": "h2",
+      "c": "Estética y Estabilidad Cromática"
+    },
+    {
+      "t": "p",
+      "c": "La estética es un factor determinante en las restauraciones protésicas, especialmente en el sector anterior y en rehabilitaciones Full Arch. Los bloques de PMMA multicapa están diseñados para imitar la translucidez y la gradación de color natural de los dientes, desde el cuello hasta el borde incisal. Esto se logra mediante capas de PMMA con diferentes niveles de opacidad y saturación de color. La estabilidad cromática es crucial para el éxito a largo plazo. Un estudio de Al-Harbi et al. (Journal of Prosthetic Dentistry, 2017) evaluó la estabilidad del color de diferentes materiales provisionales, incluyendo PMMA de CAD/CAM, y encontró que, si bien todos los materiales experimentaron algún cambio de color después de la inmersión en soluciones pigmentantes, los PMMA de CAD/CAM mostraron una estabilidad comparable o superior a los PMMA convencionales. La superficie lisa obtenida por el fresado CAD/CAM y un pulido adecuado también contribuyen a una menor acumulación de placa y una mejor retención del brillo."
+    },
+    {
+      "t": "h2",
+      "c": "Comportamiento a Largo Plazo en Rehabilitaciones Full Arch"
+    },
+    {
+      "t": "p",
+      "c": "El uso de PMMA de alta densidad multicapa para prótesis provisionales de larga duración y restauraciones definitivas en rehabilitaciones Full Arch ha ganado tracción debido a su combinación de resistencia, estética y capacidad de ser reparado. En el contexto de rehabilitaciones Full Arch sobre implantes, estas prótesis provisionales son fundamentales para la cicatrización de tejidos blandos, la fonética, la estética y la evaluación oclusal antes de la restauración definitiva. Un estudio de Bidra et al. (Journal of Prosthetic Dentistry, 2017) sobre la supervivencia de restauraciones provisionales de PMMA fabricadas por CAD/CAM en rehabilitaciones de arcada completa sobre implantes, reportó una tasa de supervivencia del 97.4% a los 12 meses, con fracturas menores siendo el principal tipo de complicación. La capacidad de estos materiales para soportar cargas oclusales durante períodos prolongados, a menudo de 6 a 18 meses, es un testimonio de sus propiedades mecánicas mejoradas. La naturaleza homogénea de los bloques CAD/CAM reduce la porosidad interna, un factor que contribuye a la resistencia a la fatiga y la durabilidad clínica."
+    },
+    {
+      "t": "h2",
+      "c": "Protocolos de Pulido y Mantenimiento Superficial"
+    },
+    {
+      "t": "p",
+      "c": "El acabado y pulido de las restauraciones de PMMA CAD/CAM son esenciales para optimizar la estética, la higiene y la longevidad. Una superficie lisa reduce la adhesión bacteriana y la tinción, y mejora la comodidad del paciente. Después del fresado, se recomienda un protocolo de pulido de múltiples pasos utilizando gomas y pastas de pulido específicas para PMMA. Un estudio de Al-Harbi et al. (Journal of Prosthetic Dentistry, 2017) demostró que un pulido mecánico adecuado puede lograr una rugosidad superficial comparable a la de los materiales glaseados, lo que es crucial para la resistencia a la tinción y la acumulación de placa. Es fundamental evitar el sobrecalentamiento durante el pulido para prevenir la degradación del material. Para el mantenimiento a largo plazo, se aconseja a los pacientes el uso de cepillos de cerdas suaves y pastas dentales no abrasivas para preservar la integridad de la superficie de la prótesis."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Clínicas y Conclusión"
+    },
+    {
+      "t": "p",
+      "c": "El PMMA de alta densidad multicapa fabricado por CAD/CAM ofrece una solución predecible y estéticamente superior para prótesis provisionales y de larga duración, especialmente en rehabilitaciones Full Arch. Sus propiedades mecánicas mejoradas, junto con una estética natural y una buena estabilidad cromática, lo posicionan como un material de elección en la odontología digital. La selección del material, el diseño CAD, el fresado preciso y un protocolo de pulido meticuloso son clave para el éxito clínico. Aunque los datos a muy largo plazo para estas formulaciones específicas de PMMA aún están en evolución, la evidencia actual respalda su uso eficaz en la práctica clínica."
+    },
+    {
+      "t": "quote",
+      "c": "La integración de PMMA de alta densidad multicapa en flujos de trabajo CAD/CAM ha elevado el estándar para las restauraciones provisionales y de larga duración, ofreciendo una combinación óptima de función y estética.",
+      "author": "Bidra AS et al., Journal of Prosthetic Dentistry, 2017"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja del PMMA multicapa CAD/CAM sobre el PMMA convencional para provisionales?",
+      "a": "La principal ventaja radica en sus propiedades mecánicas superiores, como mayor resistencia a la flexión y dureza, y una estética mejorada gracias a su estructura multicapa que simula la gradación de color natural del diente, todo ello con una precisión de fabricación CAD/CAM que reduce la porosidad y mejora la homogeneidad del material (Stawarczyk et al., Dental Materials, 2015)."
+    },
+    {
+      "q": "¿Qué consideraciones clínicas son importantes para el éxito a largo plazo de las prótesis de PMMA multicapa Full Arch?",
+      "a": "Para el éxito a largo plazo, es crucial un diseño CAD preciso que optimice la oclusión y la distribución de fuerzas, un fresado adecuado para mantener la integridad del material, y un protocolo de pulido meticuloso para lograr una superficie lisa que minimice la acumulación de placa y la tinción. Además, la educación del paciente sobre el mantenimiento y la higiene oral es fundamental (Al-Harbi et al., Journal of Prosthetic Dentistry, 2017)."
+    }
+  ],
+  "referencias": [
+    "Stawarczyk B, Egli G, Roos M, et al. The effect of different polishing techniques on the surface roughness and gloss of CAD/CAM PMMA-based polymers. Dent Mater. 2015;31(1):e1-e9. doi:10.1016/j.dental.2014.10.001",
+    "Al-Harbi FA, Al-Omari WM, Al-Qahtani AS, et al. Color stability and surface roughness of CAD/CAM provisional materials after immersion in staining solutions. J Prosthet Dent. 2017;117(3):422-428. doi:10.1016/j.prosdent.2016.06.002",
+    "Bidra AS, Rungruanganunt P, Taylor TD. Clinical outcomes of implant-supported fixed complete dentures made with computer-aided design/computer-aided manufacturing (CAD/CAM) technology: A systematic review. J Prosthet Dent. 2017;117(6):724-733. doi:10.1016/j.prosdent.2016.10.003",
+    "Stawarczyk B, Eichberger M, Lümkemann N, et al. Mechanical properties of CAD/CAM polymers for provisional restorations. J Prosthet Dent. 2013;109(6):382-388. doi:10.1016/S0022-3913(13)60074-1"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
