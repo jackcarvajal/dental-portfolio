@@ -1978,6 +1978,31 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
 <script src="js/auth-guard.js?v=20260717"></script>
 <script>
+// Auto-fill datos del profesional desde la sesión (mismo doctor; solo cambia el paciente).
+(function(){
+  function go(){
+    if(!(window.supabase && window.supabase.createClient)) return setTimeout(go,300);
+    var _sb=window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634');
+    _sb.auth.getSession().then(function(r){
+      if(!(r.data&&r.data.session)) return; var u=r.data.session.user;
+      window.PRODIGY_EMAIL=u.email; window.PRODIGY_UID=u.id;
+      _sb.from('doctores_perfil').select('nombre,clinica,municipio,whatsapp,especialidad').eq('id',u.id).maybeSingle().then(function(p){
+        var perfil=p.data; if(!perfil) return;
+        var run=function(){
+          var elN=document.getElementById('nombreCliente'); if(elN&&!elN.value) elN.value=perfil.clinica||perfil.nombre||'';
+          var elC=document.getElementById('ciudad'); if(elC&&!elC.value) elC.value=perfil.municipio||'';
+          var elE=document.getElementById('especialidad'); if(elE&&perfil.especialidad&&!elE.value) elE.value=perfil.especialidad;
+          var elB=document.getElementById('billing_email_d'); if(elB&&u.email&&!elB.value) elB.value=u.email;
+          var wa=document.getElementById('whatsappCliente'); if(wa&&perfil.whatsapp&&!wa.value) wa.value=String(perfil.whatsapp).replace(/^\+?57/,'').replace(/\D/g,'');
+        };
+        if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
+      });
+    });
+  }
+  go();
+})();
+</script>
+<script>
 // Auto-fill si hay sesión activa (flujos son públicos)
 if(window.ProdigyAuth){
   window.supabase && window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634').auth.getSession().then(function(r){
