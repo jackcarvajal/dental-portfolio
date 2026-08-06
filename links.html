@@ -408,7 +408,7 @@
 
 <!-- Carrusel abanico (GSAP + módulo) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="js/card-fan-carousel.js?v=20260806"></script>
+<script src="js/card-fan-carousel.js?v=20260806c"></script>
 
 <!-- Hidratación de galería desde Supabase (config del panel /editar-links) -->
 <script>
@@ -479,7 +479,7 @@
      paintReviews(revs);
      var g=Array.isArray(cfg.gallery)?cfg.gallery.filter(function(x){return x&&okUrl(x.url);}):[];
      if(paint(g))return;
-     // fotos de trabajo curadas (assets del sitio, sin rostro) — default si no subiste galería
+     // fotos de trabajo curadas (fallback FINAL si el portafolio está vacío)
      var work=[
        {kind:'video',url:'/assets/links-gallery/lentes-ceramicos.mp4',es:'Lentes cerámicos'},
        {kind:'image',url:'/assets/links-gallery/lentes-ceramicos.jpg',es:'Lentes cerámicos'},
@@ -488,14 +488,15 @@
        {kind:'image',url:'/assets/links-gallery/antes-despues-2.png',es:'Rehabilitación'},
        {kind:'image',url:'/assets/links-gallery/antes-despues-3.png',es:'Diseño de sonrisa'}
      ];
-     if(paint(work))return;
+     // PRIORIDAD: casos REALES del portafolio; si no hay, fotos curadas
      return fetch(SURL+'/rest/v1/casos_portafolio?select=name,cover_image&visible=eq.true&order=sort_order.asc&limit=20',{headers:H})
        .then(function(r){return r.json();})
        .then(function(cs){
          var items=(cs||[]).filter(function(c){return okUrl(c.cover_image);})
            .map(function(c){return {kind:'image',url:c.cover_image,name:c.name};});
-         paint(items);
-       });
+         if(items.length && paint(items))return;
+         paint(work);
+       }).catch(function(){paint(work);});
    }).catch(function(){});
 })();
 </script>
