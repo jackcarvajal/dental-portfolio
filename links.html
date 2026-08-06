@@ -327,20 +327,19 @@
   <p class="ph-note"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.58z"/></svg><span data-i="galNote">Marcadores de ejemplo. Reemplázalos con fotos y videos reales de tus casos.</span></p>
 
   <!-- RESEÑAS -->
-  <div class="eyebrow" data-i="revTitle">Lo que dicen</div>
+  <div class="eyebrow" data-i="revTitle">Nuestro compromiso</div>
   <div class="rev">
     <div class="rcard">
-      <span class="rstars">★★★★★</span><span class="rtag" data-i="ejemplo">Ejemplo</span>
-      <p class="rbody" data-i="r1">“El diseño llegó al día siguiente y encajó perfecto. Ya no mando casos a otro lado.”</p>
-      <div class="rwho" data-i="r1w">— Reemplaza con la reseña real de tu cliente</div>
+      <span class="rstars">✓</span>
+      <p class="rbody" data-i="r1">Apruebas el diseño 3D antes de producir. Si algo no encaja, lo ajustamos — hasta 2 revisiones sin costo.</p>
+      <div class="rwho" data-i="r1w">— Compromiso PRODIGY</div>
     </div>
     <div class="rcard">
-      <span class="rstars">★★★★★</span><span class="rtag" data-i="ejemplo">Ejemplo</span>
-      <p class="rbody" data-i="r2">“La guía quirúrgica fue exacta. El protocolo CBCT que piden vale la pena.”</p>
-      <div class="rwho" data-i="r2w">— Reemplaza con la reseña real de tu cliente</div>
+      <span class="rstars">✓</span>
+      <p class="rbody" data-i="r2">Cada caso lo diseña alguien con criterio clínico real, no una plantilla. Entrega en 24 h para casos estándar.</p>
+      <div class="rwho" data-i="r2w">— Compromiso PRODIGY</div>
     </div>
   </div>
-  <p class="ph-note"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.58z"/></svg><span data-i="revNote">Estas reseñas son de ejemplo. Pídeles a tus clientes reales una frase y su nombre, y reemplázalas.</span></p>
 
   <footer>
     <div class="fbrand">PRODIGY LAB DENTAL</div>
@@ -363,12 +362,12 @@
       st1:"DISEÑO",st2:"DIGITAL",st3:"PROPIO",
       galTitle:"Casos & videos",g1:"Video del taller",g2:"Caso terminado",g3:"Antes / después",g4:"Diseño CAD",g5:"Proceso de fresado",g6:"Guía quirúrgica",
       galNote:"Marcadores de ejemplo. Reemplázalos con fotos y videos reales de tus casos.",
-      revTitle:"Lo que dicen",ejemplo:"Ejemplo",
-      r1:"“El diseño llegó al día siguiente y encajó perfecto. Ya no mando casos a otro lado.”",
-      r1w:"— Reemplaza con la reseña real de tu cliente",
-      r2:"“La guía quirúrgica fue exacta. El protocolo CBCT que piden vale la pena.”",
-      r2w:"— Reemplaza con la reseña real de tu cliente",
-      revNote:"Estas reseñas son de ejemplo. Pídeles a tus clientes reales una frase y su nombre, y reemplázalas.",
+      revTitle:"Nuestro compromiso",ejemplo:"",
+      r1:"Apruebas el diseño 3D antes de producir. Si algo no encaja, lo ajustamos — hasta 2 revisiones sin costo.",
+      r1w:"— Compromiso PRODIGY",
+      r2:"Cada caso lo diseña alguien con criterio clínico real, no una plantilla. Entrega en 24 h para casos estándar.",
+      r2w:"— Compromiso PRODIGY",
+      revNote:"",
       foot:"Bogotá, Colombia · "},
     en:{loc:"Bogotá, Colombia · Ships nationwide and abroad",
       pitch:"CAD design, milling and 3D printing for dentists. You scan, we design and produce.",
@@ -383,12 +382,12 @@
       st1:"DESIGN",st2:"DIGITAL",st3:"IN-HOUSE",
       galTitle:"Cases & videos",g1:"Lab video",g2:"Finished case",g3:"Before / after",g4:"CAD design",g5:"Milling process",g6:"Surgical guide",
       galNote:"Sample slots. Replace them with real photos and videos of your cases.",
-      revTitle:"What they say",ejemplo:"Sample",
-      r1:"“The design arrived next day and fit perfectly. I don't send cases anywhere else now.”",
-      r1w:"— Replace with your client's real review",
-      r2:"“The surgical guide was spot on. The CBCT protocol they ask for is worth it.”",
-      r2w:"— Replace with your client's real review",
-      revNote:"These reviews are samples. Ask your real clients for a sentence and their name, then replace them.",
+      revTitle:"Our commitment",ejemplo:"",
+      r1:"You approve the 3D design before we produce. If something doesn't fit, we adjust it — up to 2 free revisions.",
+      r1w:"— PRODIGY commitment",
+      r2:"Every case is designed by someone with real clinical judgment, not a template. 24-hour delivery for standard cases.",
+      r2w:"— PRODIGY commitment",
+      revNote:"",
       foot:"Bogotá, Colombia · "}
   };
   function setLang(l){
@@ -446,7 +445,7 @@
         return {img:url, cap:(it.es||it.name||''), link: it.kind==='video'? it.url : null};
       }).filter(Boolean);
       if(cards.length){
-        cards=shuffle(cards.slice()).slice(0,10);
+        cards=shuffle(cards.slice()).slice(0,20);
         gal.classList.remove('masonry'); gal.classList.add('cf-host'); gal.style.display='block';
         window.initCardFan(gal, cards);
         if(note)note.style.display='none';
@@ -468,6 +467,7 @@
         '<p class="rbody">“'+esc(r.es||'')+'”</p>'+
         (who?'<div class="rwho">— '+who+'</div>':'')+'</div>';
     }).join('');
+    var et=document.querySelector('[data-i="revTitle"]'); if(et) et.textContent=(document.documentElement.lang==='en'?'What they say':'Lo que dicen');
     var rn=document.querySelector('[data-i="revNote"]'); if(rn){var p=rn.closest('.ph-note'); if(p)p.style.display='none';}
   }
   // 1) galería del panel; 2) si vacía, casos reales del portafolio
@@ -489,7 +489,7 @@
        {kind:'image',url:'/assets/links-gallery/antes-despues-3.png',es:'Diseño de sonrisa'}
      ];
      if(paint(work))return;
-     return fetch(SURL+'/rest/v1/casos_portafolio?select=name,cover_image&visible=eq.true&order=sort_order.asc&limit=7',{headers:H})
+     return fetch(SURL+'/rest/v1/casos_portafolio?select=name,cover_image&visible=eq.true&order=sort_order.asc&limit=20',{headers:H})
        .then(function(r){return r.json();})
        .then(function(cs){
          var items=(cs||[]).filter(function(c){return okUrl(c.cover_image);})
