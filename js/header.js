@@ -59,7 +59,7 @@
     '/diseno-remoto','/diseno-cad','/fresado-cam','/guias-quirurgicas',
     '/calculadora','/calculadora-diseno','/calculadora-fresado','/calculadora-impresion',
     '/portafolio','/journal','/article','/nosotros','/soporte','/catalogo',
-    '/escaner-domicilio','/envia-tu-scanner','/guia-tecnica','/calidad',
+    '/escaner-domicilio','/envia-tu-scanner','/soporte-tecnico','/guia-tecnica','/calidad',
     '/instalar-app','/terminos-y-legal','/seguimiento-caso','/mapa-sitio',
     '/para-laboratorios','/referidos','/flujo-diseno','/flujo-fresado',
     '/flujo-impresion','/flujo-lab','/caso','/patient',
