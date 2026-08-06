@@ -59,7 +59,7 @@
     '/diseno-remoto','/diseno-cad','/fresado-cam','/guias-quirurgicas',
     '/calculadora','/calculadora-diseno','/calculadora-fresado','/calculadora-impresion',
     '/portafolio','/journal','/article','/nosotros','/soporte','/catalogo',
-    '/escaner-domicilio','/envia-tu-scanner','/soporte-tecnico','/guia-tecnica','/calidad',
+    '/escaner-domicilio','/envia-tu-scanner','/escaneo-fotogrametria','/soporte-exocad','/guia-tecnica','/calidad',
     '/instalar-app','/terminos-y-legal','/seguimiento-caso','/mapa-sitio',
     '/para-laboratorios','/referidos','/flujo-diseno','/flujo-fresado',
     '/flujo-impresion','/flujo-lab','/caso','/patient',
@@ -893,7 +893,7 @@
       '• /diseno-cad — servicio diseño CAD\n' +
       '• /fresado-cam — servicio fresado\n' +
       '• /calculadora — cotizador online\n' +
-      '• /soporte-tecnico — soporte XTCERA y Alistar Sensa\n' +
+      '• /escaneo-fotogrametria — escaneo a domicilio Aidite Rapid 5 + fotogrametría full-arch\n' +
       '• /en/global-design — English landing for international clients\n' +
       '• /guia-tecnica — guías exportación STL por software\n' +
       '• /seguimiento-caso — tracking pedidos\n\n' +

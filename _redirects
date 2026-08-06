@@ -129,3 +129,4 @@
 
 # /alineadores-cad       /alineadores-cad.html       200  ← CF sirve nativo (200 causaba ERR_TOO_MANY_REDIRECTS)
 /alineadores            /alineadores-cad.html       301
+/soporte-tecnico   /escaneo-fotogrametria   301

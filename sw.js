@@ -28,7 +28,7 @@ const PRECACHE = [
   '/diseno-remoto',
   '/guias-quirurgicas',
   '/en/global-design',
-  '/soporte-tecnico',
+  '/escaneo-fotogrametria',
   '/flujo-diseno',
   '/flujo-fresado',
   '/flujo-impresion',
