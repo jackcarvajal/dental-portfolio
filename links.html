@@ -408,7 +408,7 @@
 
 <!-- Carrusel abanico (GSAP + módulo) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="js/card-fan-carousel.js?v=20260806c"></script>
+<script src="js/card-fan-carousel.js?v=20260806d"></script>
 
 <!-- Hidratación de galería desde Supabase (config del panel /editar-links) -->
 <script>
@@ -488,13 +488,18 @@
        {kind:'image',url:'/assets/links-gallery/antes-despues-2.png',es:'Rehabilitación'},
        {kind:'image',url:'/assets/links-gallery/antes-despues-3.png',es:'Diseño de sonrisa'}
      ];
-     // PRIORIDAD: casos REALES del portafolio; si no hay, fotos curadas
-     return fetch(SURL+'/rest/v1/casos_portafolio?select=name,cover_image&visible=eq.true&order=sort_order.asc&limit=20',{headers:H})
+     var curImgs=work.filter(function(w){return w.kind==='image';});  // curadas (solo fotos)
+     // COMBINA casos reales + curadas; limita renders de diseño (modelos 3D) a máx 3; baraja en cada visita
+     return fetch(SURL+'/rest/v1/casos_portafolio?select=name,cover_image&visible=eq.true&order=sort_order.asc&limit=30',{headers:H})
        .then(function(r){return r.json();})
        .then(function(cs){
-         var items=(cs||[]).filter(function(c){return okUrl(c.cover_image);})
+         var port=(cs||[]).filter(function(c){return okUrl(c.cover_image);})
            .map(function(c){return {kind:'image',url:c.cover_image,name:c.name};});
-         if(items.length && paint(items))return;
+         var DES=/aline|plan de trat|tratamiento|dise[ñn]o|encerad|setup|wax/i;
+         var fotos=[],disenos=[];
+         port.forEach(function(it){(DES.test(it.name||'')?disenos:fotos).push(it);});
+         var combinado=fotos.concat(curImgs).concat(shuffle(disenos.slice()).slice(0,3));
+         if(combinado.length && paint(combinado))return;
          paint(work);
        }).catch(function(){paint(work);});
    }).catch(function(){});
