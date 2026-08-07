@@ -92,6 +92,14 @@
   .scard span{font-size:.72rem;color:var(--ink-dim);line-height:1.35}
   .scard.us{border-color:rgba(212,175,55,.4)}
   .scard.us .si{stroke:var(--gold)}
+  /* color por bloque de servicio */
+  .scard.c1{border-color:rgba(217,70,166,.38);background:linear-gradient(160deg,rgba(217,70,166,.08),rgba(13,21,32,.65))}.scard.c1 .si{stroke:#D946A6}
+  .scard.c2{border-color:rgba(212,175,55,.38);background:linear-gradient(160deg,rgba(212,175,55,.08),rgba(13,21,32,.65))}.scard.c2 .si{stroke:#D4AF37}
+  .scard.c3{border-color:rgba(74,222,128,.38);background:linear-gradient(160deg,rgba(74,222,128,.08),rgba(13,21,32,.65))}.scard.c3 .si{stroke:#4ade80}
+  .scard.c4{border-color:rgba(0,210,255,.38);background:linear-gradient(160deg,rgba(0,210,255,.08),rgba(13,21,32,.65))}.scard.c4 .si{stroke:#00d2ff}
+  .scard.c5{border-color:rgba(168,85,247,.38);background:linear-gradient(160deg,rgba(168,85,247,.08),rgba(13,21,32,.65))}.scard.c5 .si{stroke:#a855f7}
+  .scard.c6{border-color:rgba(245,158,11,.4);background:linear-gradient(160deg,rgba(245,158,11,.09),rgba(13,21,32,.65))}.scard.c6 .si{stroke:#f59e0b}
+  .scard.c1:hover,.scard.c2:hover,.scard.c3:hover,.scard.c4:hover,.scard.c5:hover,.scard.c6:hover{transform:translateY(-2px);filter:brightness(1.12)}
 
   /* ── resumen del lab ── */
   .about{margin-top:14px;border:1px solid var(--line);border-radius:16px;padding:18px 20px;
@@ -300,19 +308,19 @@
   <!-- SERVICIOS -->
   <div class="eyebrow" data-i="svcTitle">Servicios</div>
   <div class="svc">
-    <a class="scard" href="https://prodigylabdental.com/diseno-cad" target="_blank" rel="noopener noreferrer">
+    <a class="scard c1" href="https://prodigylabdental.com/diseno-cad" target="_blank" rel="noopener noreferrer">
       <svg class="si" viewBox="0 0 24 24"><path d="M4 5h16v11H4z"/><path d="M2 20h20M9 9l2 2 4-4"/></svg>
       <b data-i="s1">Diseño CAD</b><span data-i="s1d">Coronas, puentes y full-arch</span></a>
-    <a class="scard" href="https://prodigylabdental.com/fresado-cam" target="_blank" rel="noopener noreferrer">
+    <a class="scard c2" href="https://prodigylabdental.com/fresado-cam" target="_blank" rel="noopener noreferrer">
       <svg class="si" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/></svg>
       <b data-i="s2">Fresado</b><span data-i="s2d">Zirconia, disilicato, PMMA</span></a>
-    <a class="scard" href="https://prodigylabdental.com/guias-quirurgicas" target="_blank" rel="noopener noreferrer">
+    <a class="scard c3" href="https://prodigylabdental.com/guias-quirurgicas" target="_blank" rel="noopener noreferrer">
       <svg class="si" viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 4.5-3.4 7.5-8 8-4.6-.5-8-3.5-8-8V7z"/><path d="M9 12l2 2 4-4"/></svg>
       <b data-i="s3">Guías quirúrgicas</b><span data-i="s3d">Cirugía guiada · CBCT</span></a>
-    <a class="scard" href="https://prodigylabdental.com/alineadores-cad" target="_blank" rel="noopener noreferrer">
+    <a class="scard c4" href="https://prodigylabdental.com/alineadores-cad" target="_blank" rel="noopener noreferrer">
       <svg class="si" viewBox="0 0 24 24"><path d="M5 9c0-3 3-5 7-5s7 2 7 5c0 4-2 5-3 8s-2 3-4 3-3-1-4-3-3-4-3-8z"/></svg>
       <b data-i="s4">Alineadores</b><span data-i="s4d">Setup y secuencia ortodóntica</span></a>
-    <a class="scard us" href="https://prodigylabdental.com/en/veneers" target="_blank" rel="noopener noreferrer" style="grid-column:1/-1">
+    <a class="scard c6" href="https://prodigylabdental.com/en/veneers" target="_blank" rel="noopener noreferrer" style="grid-column:1/-1">
       <svg class="si" viewBox="0 0 24 24"><path d="M6 3h12l-1 6c-1 5-3 12-5 12s-4-7-5-12z"/></svg>
       <b data-i="s5">Veneers for US dentists 🇺🇸</b><span data-i="s5d">e.max & zirconia from $89 · ships to your clinic</span></a>
   </div>
