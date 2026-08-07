@@ -261,6 +261,14 @@
       <span class="tx" data-i="quote">Cotizar mi caso<small data-i="quoteSub">Elige el servicio · precio y fecha al instante</small></span>
       <span class="arw">›</span>
     </a>
+    <style>
+      .svc-label{font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#94a3b8;opacity:.65;margin:18px 4px 8px;text-align:left}
+      .social-row{display:flex;justify-content:center;gap:12px;margin-top:16px}
+      .social-btn{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#0d1525;border:1px solid rgba(255,255,255,.08);transition:.2s;text-decoration:none}
+      .social-btn:hover{border-color:rgba(0,210,255,.35);transform:translateY(-2px)}
+      .social-btn svg{width:22px;height:22px}
+    </style>
+    <div class="svc-label" data-i="svcLbl">Servicios</div>
     <a class="lnk" href="https://prodigylabdental.com/escaner-domicilio" target="_blank" rel="noopener noreferrer">
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M3 12h18"/></svg></span>
       <span class="tx" data-i="svcScan">Escáner a domicilio<small data-i="svcScanS">Vamos a tu clínica · Bogotá</small></span>
@@ -276,21 +284,11 @@
       <span class="tx" data-i="svcExo">Soporte &amp; educación exocad<small data-i="svcExoS">Por hora · remoto</small></span>
       <span class="arw">›</span>
     </a>
-    <a class="lnk" href="https://prodigylabdental.com" target="_blank" rel="noopener noreferrer">
-      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
-      <span class="tx" data-i="web">Sitio web<small>prodigylabdental.com</small></span>
-      <span class="arw">›</span>
-    </a>
-    <a class="lnk" href="https://instagram.com/prodigylabdental" target="_blank" rel="noopener noreferrer">
-      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#D946A6" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r="1"/></svg></span>
-      <span class="tx">Instagram<small>@prodigylabdental</small></span>
-      <span class="arw">›</span>
-    </a>
-    <a class="lnk" href="https://www.tiktok.com/@prodigylabdental" target="_blank" rel="noopener noreferrer">
-      <span class="ic"><svg viewBox="0 0 24 24" fill="#ff4d9d"><path d="M16.5 3c.4 2.1 1.9 3.7 4 3.9v2.7c-1.5 0-2.9-.5-4-1.3v6.1a5.6 5.6 0 1 1-5.6-5.6c.3 0 .6 0 .9.1v2.8a2.8 2.8 0 1 0 2 2.7V3h2.7z"/></svg></span>
-      <span class="tx">TikTok<small>@prodigylabdental</small></span>
-      <span class="arw">›</span>
-    </a>
+    <div class="social-row">
+      <a class="social-btn" href="https://prodigylabdental.com" target="_blank" rel="noopener noreferrer" aria-label="Sitio web" title="Sitio web"><svg viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
+      <a class="social-btn" href="https://instagram.com/prodigylabdental" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="#D946A6" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r="1"/></svg></a>
+      <a class="social-btn" href="https://www.tiktok.com/@prodigylabdental" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" fill="#ff4d9d"><path d="M16.5 3c.4 2.1 1.9 3.7 4 3.9v2.7c-1.5 0-2.9-.5-4-1.3v6.1a5.6 5.6 0 1 1-5.6-5.6c.3 0 .6 0 .9.1v2.8a2.8 2.8 0 1 0 2 2.7V3h2.7z"/></svg></a>
+    </div>
   </div>
 
   <div class="trust">
@@ -368,7 +366,7 @@
       pitch:"Diseño CAD, fresado e impresión 3D para odontólogos. Tú escaneas, nosotros diseñamos y producimos.",
       waSub:"Pedidos y cotizaciones · +57 321 281 6716",
       quote:"Cotizar mi caso",quoteSub:"Precio y fecha al instante",web:"Sitio web",
-      svcScan:"Escáner a domicilio",svcScanS:"Vamos a tu clínica · Bogotá",svcMill:"Fresado (maquila)",svcMillS:"Fresamos tu diseño · 5 ejes",svcExo:"Soporte & educación exocad",svcExoS:"Por hora · remoto",
+      svcLbl:"Servicios",svcScan:"Escáner a domicilio",svcScanS:"Vamos a tu clínica · Bogotá",svcMill:"Fresado (maquila)",svcMillS:"Fresamos tu diseño · 5 ejes",svcExo:"Soporte & educación exocad",svcExoS:"Por hora · remoto",
       svcTitle:"Servicios",vcardT:"Guardar mi contacto",vcardS:"Un toque y quedo en tu agenda 📇",urgency:"Recepción de casos abierta hoy · Respondemos en minutos",trust1:"Apruebas el diseño 3D antes de producir",trust2:"Hasta 2 revisiones sin costo",trust3:"Entrega en 24 horas",g4:"Diseño CAD 3D",g5:"Proceso en vivo",s1:"Diseño CAD",s1d:"Coronas, puentes y full-arch",
       s2:"Fresado",s2d:"Zirconia, disilicato, PMMA",s3:"Guías quirúrgicas",s3d:"Cirugía guiada · CBCT",
       s4:"Alineadores",s4d:"Setup y secuencia ortodóntica",
@@ -389,7 +387,7 @@
       pitch:"CAD design, milling and 3D printing for dentists. You scan, we design and produce.",
       waSub:"Orders & quotes · +57 321 281 6716",
       quote:"Get a quote",quoteSub:"Price and date instantly",web:"Website",
-      svcScan:"At-home scanning",svcScanS:"We come to your clinic · Bogotá",svcMill:"Milling service",svcMillS:"We mill your design · 5-axis",svcExo:"exocad support & training",svcExoS:"By the hour · remote",
+      svcLbl:"Services",svcScan:"At-home scanning",svcScanS:"We come to your clinic · Bogotá",svcMill:"Milling service",svcMillS:"We mill your design · 5-axis",svcExo:"exocad support & training",svcExoS:"By the hour · remote",
       svcTitle:"Services",vcardT:"Save my contact",vcardS:"One tap and I'm in your phone 📇",urgency:"Case intake open today · We reply in minutes",trust1:"Approve the 3D design before we produce",trust2:"Up to 2 free revisions",trust3:"24-hour delivery",g4:"3D CAD design",g5:"Live process",s1:"CAD Design",s1d:"Crowns, bridges & full-arch",
       s2:"Milling",s2d:"Zirconia, disilicate, PMMA",s3:"Surgical guides",s3d:"Guided surgery · CBCT",
       s4:"Aligners",s4d:"Orthodontic setup & staging",
