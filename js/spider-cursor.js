@@ -74,6 +74,7 @@
     var running = true;
     function anim(t){
       if(!running) return;
+      if(document.body.classList.contains('light-mode')){ requestAnimationFrame(anim); return; }  // pausa en modo claro
       if(w!==window.innerWidth) w=canvas.width=window.innerWidth;
       if(h!==window.innerHeight) h=canvas.height=window.innerHeight;
       ctx.fillStyle = "#050505"; drawCircle(0,0,w*10);
