@@ -120,23 +120,16 @@
             console.warn('[FlujoUploader] Archivos no enviados:\n' + detalle);
         }
 
-        // 🎉 Celebración al enviar el caso — emojis variados según el flujo.
-        // (En /flujo-diseno ya hubo un toast por-archivo; aquí solo confetti de cierre.)
+        // 🎉 Celebración al enviar el caso — mensaje y emojis propios del flujo (js/confetti.js).
+        // En /flujo-diseno ya hubo un toast por-archivo, así que aquí solo confetti de cierre.
         try {
-            if (urls.length) {
+            if (urls.length && window.celebrateFlujo) {
                 const pg = (location.pathname || '').toLowerCase();
-                let emojis, esDiseno = pg.indexOf('diseno') > -1;
-                if (pg.indexOf('fresado') > -1)        emojis = ['⚙️','💎','✨','🔩','🦷','🎉'];
-                else if (pg.indexOf('impresion') > -1)  emojis = ['🖨️','🧩','✨','🦷','🎯','🎉'];
-                else if (pg.indexOf('lab') > -1)         emojis = ['🔬','🧪','🦷','✨','⭐','🎉'];
-                else                                     emojis = ['🦷','✨','🎉','💎','📐','🚀'];
-                if (esDiseno) {
-                    if (window.confettiBurst) window.confettiBurst({ origin:{x:0.5,y:0.35}, particleCount:120, emojis });
-                } else if (window.celebrateUpload) {
-                    window.celebrateUpload(null, { emojis });
-                } else if (window.confettiBurst) {
-                    window.confettiBurst({ origin:{x:0.5,y:0.35}, particleCount:130, emojis });
-                }
+                let clave = pg.indexOf('fresado') > -1 ? 'fresado'
+                          : pg.indexOf('impresion') > -1 ? 'impresion'
+                          : pg.indexOf('lab') > -1 ? 'lab'
+                          : 'diseno';
+                window.celebrateFlujo(clave, null, { toast: clave !== 'diseno' });
             }
         } catch (_e) { /* la celebración nunca debe tumbar un envío */ }
 
