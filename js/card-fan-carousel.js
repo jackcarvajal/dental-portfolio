@@ -28,6 +28,10 @@
     ".cf-lightbox.on{opacity:1}"+
     ".cf-lightbox img{max-width:min(94vw,1100px);max-height:90vh;border-radius:12px;box-shadow:0 20px 70px rgba(0,0,0,.7);object-fit:contain}"+
     ".cf-lightbox .cf-cap{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:#fff;font:600 .9rem system-ui;text-shadow:0 2px 12px #000}"+
+    ".cf-lightbox .cf-cta{position:absolute;bottom:52px;left:0;right:0;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:0 16px;cursor:auto}"+
+    ".cf-lightbox .cf-btn{display:inline-flex;align-items:center;gap:7px;font:800 .85rem system-ui;text-decoration:none;padding:11px 20px;border-radius:100px;cursor:pointer}"+
+    ".cf-lightbox .cf-btn-main{background:linear-gradient(135deg,#D946A6,#D4AF37);color:#0a0a0a;box-shadow:0 10px 28px rgba(217,70,166,.45)}"+
+    ".cf-lightbox .cf-btn-sec{background:rgba(255,255,255,.08);border:1px solid rgba(212,175,55,.5);color:#f0e6c8}"+
     ".cf-lightbox .cf-x{position:absolute;top:16px;right:22px;color:#fff;font-size:2.2rem;line-height:1;cursor:pointer;opacity:.85}"+
     /* fallback estático (reduced-motion o sin GSAP) */
     ".cf-static .fan-layout{height:auto;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 4px 12px;justify-content:flex-start}"+
@@ -36,14 +40,21 @@
     document.head.appendChild(css);
   }
 
-  function openLightbox(src, cap){
+  function openLightbox(src, cap, caso){
     var lb=document.createElement('div');lb.className='cf-lightbox';
     var safe=String(cap||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    lb.innerHTML='<span class="cf-x" aria-hidden="true">×</span><img src="'+src+'" alt="'+safe.replace(/"/g,'&quot;')+'">'+(cap?'<div class="cf-cap">'+safe+'</div>':'');
+    var portafolioURL='/portafolio';
+    var cta='<div class="cf-cta">'+
+      (caso?'<a class="cf-btn cf-btn-main" href="'+caso+'" target="_blank" rel="noopener noreferrer">👁️ Ver el caso</a>':'')+
+      '<a class="cf-btn cf-btn-sec" href="'+portafolioURL+'">🖼️ Ver más casos</a>'+
+      '</div>';
+    lb.innerHTML='<span class="cf-x" aria-hidden="true">×</span><img src="'+src+'" alt="'+safe.replace(/"/g,'&quot;')+'">'+(cap?'<div class="cf-cap">'+safe+'</div>':'')+cta;
     document.body.appendChild(lb);
     requestAnimationFrame(function(){lb.classList.add('on');});
     function close(){lb.classList.remove('on');setTimeout(function(){if(lb.parentNode)lb.parentNode.removeChild(lb);},260);document.removeEventListener('keydown',onKey);}
     lb.addEventListener('click',close);
+    // los botones no deben cerrar el lightbox al hacer clic
+    var btns=lb.querySelectorAll('.cf-btn');for(var b=0;b<btns.length;b++){btns[b].addEventListener('click',function(e){e.stopPropagation();});}
     function onKey(e){if(e.key==='Escape')close();}
     document.addEventListener('keydown',onKey);
   }
@@ -70,7 +81,7 @@
     cards.forEach(function(c,i){
       var el=document.createElement(c.link?'a':'div');el.className='fan-card';
       if(c.link){el.href=c.link;el.target=/^https?:/i.test(c.link)?'_blank':'_self';el.rel='noopener noreferrer';}
-      else{el.style.cursor='zoom-in';el.addEventListener('click',function(ev){ev.preventDefault();openLightbox(c.img,c.cap);});}
+      else{el.style.cursor='zoom-in';el.addEventListener('click',function(ev){ev.preventDefault();openLightbox(c.img,c.cap,c.caso);});}
       var cap=(c.cap||'').replace(/"/g,'&quot;');
       el.innerHTML='<img src="'+c.img+'" loading="lazy" alt="'+cap+'">'+(c.cap?'<span class="cap">'+c.cap+'</span>':'');
       layout.appendChild(el);
