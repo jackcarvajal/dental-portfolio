@@ -156,6 +156,15 @@
   .rtag{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
     color:var(--magenta);border:1px solid rgba(217,70,166,.4);border-radius:999px;padding:2px 8px;margin-left:8px}
   .rcard{border-style:solid}
+  /* ── compromiso (chips dinámicos) ── */
+  .promesas{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:2px 0 20px}
+  .pchip{display:inline-flex;align-items:center;gap:7px;padding:9px 14px 9px 12px;border-radius:100px;
+    border:1px solid var(--line);border-left:3px solid var(--ac,#00d2ff);background:var(--card);
+    font-size:.78rem;font-weight:700;color:var(--ink-soft);opacity:0;transform:translateY(8px);
+    animation:pchipIn .55s cubic-bezier(.2,.7,.3,1) forwards}
+  .pchip .pe{font-size:1rem;line-height:1}
+  @keyframes pchipIn{to{opacity:1;transform:translateY(0)}}
+  @media(prefers-reduced-motion:reduce){.pchip{animation:none;opacity:1;transform:none}}
   .rwho2{display:flex;align-items:center;gap:10px;margin-top:8px}
   .ravatar{width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;background:radial-gradient(circle at 40% 35%,#2a1830,#120a18);border:1px solid rgba(217,70,166,.35)}
   .ravatar svg{width:18px;height:18px;stroke:var(--magenta);fill:none;stroke-width:1.8}
@@ -355,6 +364,16 @@
   </div>
   <p class="ph-note"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.58z"/></svg><span data-i="galNote">Marcadores de ejemplo. Reemplázalos con fotos y videos reales de tus casos.</span></p>
 
+  <!-- COMPROMISO -->
+  <div class="eyebrow" data-i="promTitle">Nuestro compromiso</div>
+  <div class="promesas">
+    <span class="pchip" style="--ac:#00d2ff;animation-delay:.05s"><span class="pe">🧪</span> <span data-i="p1">Lab digital completo</span></span>
+    <span class="pchip" style="--ac:#D946A6;animation-delay:.12s"><span class="pe">👁️</span> <span data-i="p2">Apruebas en 3D antes de producir</span></span>
+    <span class="pchip" style="--ac:#D4AF37;animation-delay:.19s"><span class="pe">🏆</span> <span data-i="p3">Producción propia</span></span>
+    <span class="pchip" style="--ac:#00FF41;animation-delay:.26s"><span class="pe">⚡</span> <span data-i="p4">Entrega en 24 h</span></span>
+    <span class="pchip" style="--ac:#a855f7;animation-delay:.33s"><span class="pe">🔄</span> <span data-i="p5">2 revisiones sin costo</span></span>
+  </div>
+
   <!-- RESEÑAS -->
   <div class="eyebrow" data-i="revTitle">Lo que dicen</div>
   <div class="rev">
@@ -409,6 +428,7 @@
       st1:"DISEÑO",st2:"DIGITAL",st3:"PROPIO",
       galTitle:"Casos & videos",g1:"Video del taller",g2:"Caso terminado",g3:"Antes / después",g4:"Diseño CAD",g5:"Proceso de fresado",g6:"Guía quirúrgica",
       galNote:"Marcadores de ejemplo. Reemplázalos con fotos y videos reales de tus casos.",
+      promTitle:"Nuestro compromiso",p1:"Lab digital completo",p2:"Apruebas en 3D antes de producir",p3:"Producción propia",p4:"Entrega en 24 h",p5:"2 revisiones sin costo",
       revTitle:"Lo que dicen",ejemplo:"",
       r1:"No solo diseño: laboratorio dental digital completo — diseño CAD, fresado, impresión 3D, guías quirúrgicas, alineadores y escaneo a domicilio. Un solo proveedor para todo tu flujo.",
       r1w:"— PRODIGY Lab Dental",
@@ -430,6 +450,7 @@
       st1:"DESIGN",st2:"DIGITAL",st3:"IN-HOUSE",
       galTitle:"Cases & videos",g1:"Lab video",g2:"Finished case",g3:"Before / after",g4:"CAD design",g5:"Milling process",g6:"Surgical guide",
       galNote:"Sample slots. Replace them with real photos and videos of your cases.",
+      promTitle:"Our commitment",p1:"Full digital lab",p2:"Approve in 3D before we produce",p3:"In-house production",p4:"24 h delivery",p5:"2 free revisions",
       revTitle:"What they say",ejemplo:"",
       r1:"Not just design: a full digital dental lab — CAD design, milling, 3D printing, surgical guides, aligners and at-home scanning. One provider for your whole workflow.",
       r1w:"— PRODIGY Lab Dental",
