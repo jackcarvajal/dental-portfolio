@@ -54,12 +54,12 @@
     var colors=opts.colors||['#D946A6','#D4AF37','#00d2ff','#00FF41','#ffffff'];
     var cx=ox*window.innerWidth, cy=oy*window.innerHeight;
     for(var i=0;i<n;i++){
-      var ang=Math.random()*Math.PI*2, spd=6+Math.random()*12, useE=Math.random()<0.32;
+      var ang=Math.random()*Math.PI*2, spd=11+Math.random()*17, useE=Math.random()<0.32;
       particles.push({
         x:cx, y:cy,
-        vx:Math.cos(ang)*spd, vy:Math.sin(ang)*spd-(6+Math.random()*6),
-        g:0.30+Math.random()*0.18, rot:Math.random()*6.28, vr:(Math.random()-0.5)*0.4,
-        life:1, decay:0.013+Math.random()*0.013,
+        vx:Math.cos(ang)*spd, vy:Math.sin(ang)*spd-(9+Math.random()*8),
+        g:0.55+Math.random()*0.30, rot:Math.random()*6.28, vr:(Math.random()-0.5)*0.6,
+        life:1, decay:0.022+Math.random()*0.020,
         emoji: useE? emojis[Math.floor(Math.random()*emojis.length)]:null,
         color: colors[Math.floor(Math.random()*colors.length)],
         size: useE?(16+Math.random()*14):(5+Math.random()*6)
@@ -73,7 +73,7 @@
     var alive=0;
     for(var i=0;i<particles.length;i++){
       var p=particles[i]; if(p.life<=0) continue;
-      p.vy+=p.g; p.vx*=0.985; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.life-=p.decay; alive++;
+      p.vy+=p.g; p.vx*=0.978; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.life-=p.decay; alive++;
       CTX.save(); CTX.globalAlpha=Math.max(0,p.life); CTX.translate(p.x,p.y); CTX.rotate(p.rot);
       if(p.emoji){ CTX.font=p.size+'px serif'; CTX.textAlign='center'; CTX.textBaseline='middle'; CTX.fillText(p.emoji,0,0); }
       else { CTX.fillStyle=p.color; CTX.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.62); }
