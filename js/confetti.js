@@ -33,6 +33,17 @@
   };
 
   var CANVAS=null, CTX=null, particles=[], raf=null;
+
+  // Cache de sprites de emoji: fillText por-frame es lentísimo y traba la animación.
+  // Cada emoji se dibuja UNA vez a un canvas offscreen y luego solo se copia (drawImage).
+  var SPRITES={};
+  function sprite(ch){
+    if(SPRITES[ch]) return SPRITES[ch];
+    var c=document.createElement('canvas'), S=64; c.width=S; c.height=S;
+    var g=c.getContext('2d'); g.font=Math.floor(S*0.78)+'px serif'; g.textAlign='center'; g.textBaseline='middle';
+    g.fillText(ch, S/2, S/2+2);
+    SPRITES[ch]=c; return c;
+  }
   function ensureCanvas(){
     if(CANVAS) return;
     CANVAS=document.createElement('canvas');
@@ -60,7 +71,7 @@
         vx:Math.cos(ang)*spd, vy:Math.sin(ang)*spd-(9+Math.random()*8),
         g:0.55+Math.random()*0.30, rot:Math.random()*6.28, vr:(Math.random()-0.5)*0.6,
         life:1, decay:0.022+Math.random()*0.020,
-        emoji: useE? emojis[Math.floor(Math.random()*emojis.length)]:null,
+        spr: useE? sprite(emojis[Math.floor(Math.random()*emojis.length)]):null,
         color: colors[Math.floor(Math.random()*colors.length)],
         size: useE?(16+Math.random()*14):(5+Math.random()*6)
       });
@@ -75,7 +86,7 @@
       var p=particles[i]; if(p.life<=0) continue;
       p.vy+=p.g; p.vx*=0.978; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.life-=p.decay; alive++;
       CTX.save(); CTX.globalAlpha=Math.max(0,p.life); CTX.translate(p.x,p.y); CTX.rotate(p.rot);
-      if(p.emoji){ CTX.font=p.size+'px serif'; CTX.textAlign='center'; CTX.textBaseline='middle'; CTX.fillText(p.emoji,0,0); }
+      if(p.spr){ CTX.drawImage(p.spr, -p.size/2, -p.size/2, p.size, p.size); }
       else { CTX.fillStyle=p.color; CTX.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.62); }
       CTX.restore();
     }
