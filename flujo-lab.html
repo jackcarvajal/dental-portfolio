@@ -1041,6 +1041,7 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
   }
 
   window.open('https://wa.me/573212816716?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  if(window.celebrateFlujo) window.celebrateFlujo('lab');
 }
 
 function ctaWhatsApp() {

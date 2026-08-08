@@ -4317,6 +4317,7 @@ if(window.ProdigyAuth){
             
             try {
                 window.open(urlWhatsapp, '_blank', 'noopener,noreferrer');
+                if(window.celebrateFlujo) window.celebrateFlujo('fresado');
                 const exito = document.getElementById('modal-exito');
                 if (exito) {
                     document.getElementById('exito-orden-id').textContent = STATE.ordenId || '—';

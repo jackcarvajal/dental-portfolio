@@ -120,18 +120,8 @@
             console.warn('[FlujoUploader] Archivos no enviados:\n' + detalle);
         }
 
-        // 🎉 Celebración al enviar el caso — mensaje y emojis propios del flujo (js/confetti.js).
-        // En /flujo-diseno ya hubo un toast por-archivo, así que aquí solo confetti de cierre.
-        try {
-            if (urls.length && window.celebrateFlujo) {
-                const pg = (location.pathname || '').toLowerCase();
-                let clave = pg.indexOf('fresado') > -1 ? 'fresado'
-                          : pg.indexOf('impresion') > -1 ? 'impresion'
-                          : pg.indexOf('lab') > -1 ? 'lab'
-                          : 'diseno';
-                window.celebrateFlujo(clave, null, { toast: clave !== 'diseno' });
-            }
-        } catch (_e) { /* la celebración nunca debe tumbar un envío */ }
+        // (La celebración de confetti ahora se dispara en el envío del pedido de cada flujo
+        //  —sendToWhatsApp— para que ocurra SIEMPRE, no solo cuando hay archivos subidos.)
 
         // Retrocompatible: se sigue devolviendo un ARRAY (los 4 flujos hacen urls.length
         // y urls.join), con las listas extra colgadas como propiedades.

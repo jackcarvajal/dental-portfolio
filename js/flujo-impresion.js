@@ -2390,6 +2390,7 @@
             
             try {
                 window.open(urlWhatsapp, '_blank', 'noopener,noreferrer');
+                if(window.celebrateFlujo) window.celebrateFlujo('impresion');
                 const exito = document.getElementById('modal-exito');
                 if (exito) {
                     document.getElementById('exito-orden-id').textContent = STATE.ordenId || '—';
