@@ -29,13 +29,24 @@
     "@media(prefers-reduced-motion:reduce){.orb-arm,.orb-badge{animation:none!important}}";
 
   var DIAMOND = '<svg viewBox="0 0 100 100" width="100%" height="100%"><polygon points="38,29 62,29 62,44 38,44" fill="#9fecff"/><polygon points="38,29 17,44 38,44" fill="#56cef5"/><polygon points="62,29 83,44 62,44" fill="#34ace2"/><polygon points="17,44 50,44 50,77" fill="#0f6fb0"/><polygon points="50,44 83,44 50,77" fill="#0d68a8"/><polygon points="38,29 62,29 83,44 50,77 17,44" fill="none" stroke="#d4f2ff" stroke-width="2" stroke-linejoin="round"/></svg>';
+  var CROWN = '<svg viewBox="0 0 100 100" width="100%" height="100%"><polygon points="22,64 78,64 83,38 64,51 50,28 36,51 17,38" fill="#f0c040" stroke="#fff3c0" stroke-width="2" stroke-linejoin="round"/><rect x="22" y="64" width="56" height="11" rx="2.5" fill="#d9a520" stroke="#fff3c0" stroke-width="2"/><circle cx="50" cy="28" r="4.5" fill="#ff5da2"/><circle cx="17" cy="38" r="3.6" fill="#5ad1ff"/><circle cx="83" cy="38" r="3.6" fill="#5ad1ff"/></svg>';
+  var LOGOS = { diamond:DIAMOND, crown:CROWN };
 
-  // Ecosistema dental real (sin logos externos): nombre + color
-  var RINGS = [
-    { r:15, dur:20, cw:true,  brands:[["exocad","#00d2ff"],["3Shape","#7db8ff"],["Medit","#4ade80"]] },
-    { r:21, dur:28, cw:false, brands:[["exoplan","#a855f7"],["iTero","#e0b23a"],["Aidite","#D946A6"]] },
-    { r:27, dur:36, cw:true,  brands:[["VHF K5+","#00d2ff"],["Amann","#4ade80"],["Blender","#e0894a"]] }
-  ];
+  // Ecosistema dental real (sin logos externos): nombre + color. Preset por data-preset.
+  var PRESETS = {
+    // PRODIGY: laboratorio completo (escaneo + diseño + fresado)
+    full: [
+      { r:15, dur:20, cw:true,  brands:[["exocad","#00d2ff"],["3Shape","#7db8ff"],["Medit","#4ade80"]] },
+      { r:21, dur:28, cw:false, brands:[["exoplan","#a855f7"],["iTero","#e0b23a"],["Aidite","#D946A6"]] },
+      { r:27, dur:36, cw:true,  brands:[["VHF K5+","#00d2ff"],["Amann","#4ade80"],["Blender","#e0894a"]] }
+    ],
+    // Alejandro: diseño remoto puro (software, sin fresadoras)
+    cad: [
+      { r:15, dur:20, cw:true,  brands:[["exocad","#00d2ff"],["3Shape","#7db8ff"],["Medit","#4ade80"]] },
+      { r:21, dur:28, cw:false, brands:[["CoDiagnostiX","#a855f7"],["exoplan","#e0b23a"],["DSD","#D946A6"]] },
+      { r:27, dur:36, cw:true,  brands:[["Blender","#e0894a"],["Meshmixer","#00d2ff"],["STL / PLY","#4ade80"]] }
+    ]
+  };
 
   function particleSphere(canvas){
     var ctx=canvas.getContext('2d'), N=170, pts=[], dpr=Math.min(window.devicePixelRatio||1,2);
@@ -67,6 +78,7 @@
 
   function build(mount){
     var logoKind = mount.getAttribute('data-logo')||'diamond';
+    var RINGS = PRESETS[mount.getAttribute('data-preset')||'full'] || PRESETS.full;
     var stage=document.createElement('div'); stage.className='orb-stage';
     // rings
     RINGS.forEach(function(ring){
@@ -91,7 +103,7 @@
     var core=document.createElement('div'); core.className='orb-core';
     var cv=document.createElement('canvas'); core.appendChild(cv);
     stage.appendChild(core);
-    var logo=document.createElement('div'); logo.className='orb-logo'; logo.innerHTML=(logoKind==='diamond'?DIAMOND:DIAMOND);
+    var logo=document.createElement('div'); logo.className='orb-logo'; logo.innerHTML=(LOGOS[logoKind]||DIAMOND);
     stage.appendChild(logo);
     mount.innerHTML=''; mount.appendChild(stage);
     particleSphere(cv);
