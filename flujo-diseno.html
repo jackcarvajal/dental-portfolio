@@ -1659,6 +1659,11 @@ window.submitOrden     = window.submitOrden      || function(){};
                 if (estado) { const _fn=String(file.name||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); estado.innerHTML = `<span style="color:#00FF41"><i class="fas fa-check-circle"></i> ${_fn.length>20?_fn.slice(0,20)+'…':_fn}</span>`; }
                 if (lbl) { lbl.style.background = 'rgba(0,255,65,.1)'; lbl.style.borderColor = 'rgba(0,255,65,.3)'; lbl.style.color = '#00FF41'; }
                 validarChecks();
+                // 🎉 Celebración al subir el archivo del caso (completa la 1ª vez, burst ligero después)
+                try{
+                  if(!window._celebradoSubida && window.celebrateUpload){ window._celebradoSubida=true; window.celebrateUpload(estado||lbl||input, {emojis:['🦷','✨','🎉','💎','📐','🚀']}); }
+                  else if(window.confettiBurst){ var _r=(estado||lbl||input).getBoundingClientRect(); window.confettiBurst({origin:{x:(_r.left+_r.width/2)/window.innerWidth, y:(_r.top+_r.height/2)/window.innerHeight}, particleCount:45}); }
+                }catch(_e){}
             } catch(e) {
                 if (estado) { estado.innerHTML = '<span style="color:#f87171"><i class="fas fa-times"></i> Error — intenta de nuevo</span>'; }
             }
@@ -2485,6 +2490,7 @@ const lineWompi = document.getElementById('line-wompi');
   </div>
 </section>
 <script src="js/supabase-client.js?v=20260609"></script>
+<script src="js/confetti.js?v=20260807" defer></script>
 <script src="js/footer.js?v=20260609"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
     <script src="js/fechas-habiles.js?v=20260719"></script>

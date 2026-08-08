@@ -120,6 +120,26 @@
             console.warn('[FlujoUploader] Archivos no enviados:\n' + detalle);
         }
 
+        // 🎉 Celebración al enviar el caso — emojis variados según el flujo.
+        // (En /flujo-diseno ya hubo un toast por-archivo; aquí solo confetti de cierre.)
+        try {
+            if (urls.length) {
+                const pg = (location.pathname || '').toLowerCase();
+                let emojis, esDiseno = pg.indexOf('diseno') > -1;
+                if (pg.indexOf('fresado') > -1)        emojis = ['⚙️','💎','✨','🔩','🦷','🎉'];
+                else if (pg.indexOf('impresion') > -1)  emojis = ['🖨️','🧩','✨','🦷','🎯','🎉'];
+                else if (pg.indexOf('lab') > -1)         emojis = ['🔬','🧪','🦷','✨','⭐','🎉'];
+                else                                     emojis = ['🦷','✨','🎉','💎','📐','🚀'];
+                if (esDiseno) {
+                    if (window.confettiBurst) window.confettiBurst({ origin:{x:0.5,y:0.35}, particleCount:120, emojis });
+                } else if (window.celebrateUpload) {
+                    window.celebrateUpload(null, { emojis });
+                } else if (window.confettiBurst) {
+                    window.confettiBurst({ origin:{x:0.5,y:0.35}, particleCount:130, emojis });
+                }
+            }
+        } catch (_e) { /* la celebración nunca debe tumbar un envío */ }
+
         // Retrocompatible: se sigue devolviendo un ARRAY (los 4 flujos hacen urls.length
         // y urls.join), con las listas extra colgadas como propiedades.
         urls.fallidos = fallidos;
