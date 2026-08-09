@@ -63,6 +63,7 @@
     '/instalar-app','/terminos-y-legal','/seguimiento-caso','/mapa-sitio',
     '/para-laboratorios','/referidos','/flujo-diseno','/flujo-fresado',
     '/flujo-impresion','/flujo-lab','/caso','/patient',
+    '/preguntas','/impresion-3d','/alineadores-cad',
   ];
   var skip = path.startsWith('/mantenimiento') ||
              path.startsWith('/app/') ||
