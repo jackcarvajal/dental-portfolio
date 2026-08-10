@@ -1629,7 +1629,10 @@
 @media(prefers-reduced-motion:reduce){ .idx-svc-card::before { display:none; } }
 /* ── Carrusel de servicios ── */
 .svc-carousel-wrap { position:relative; }
-.svc-carousel { display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:4px; scroll-behavior:smooth; }
+/* Degradado de borde: indica que el carrusel tiene más tarjetas para deslizar (la última no queda "cortada" sino difuminada). */
+.svc-carousel-wrap::after { content:''; position:absolute; top:0; right:0; bottom:4px; width:60px; background:linear-gradient(to left, var(--bg,#050505) 12%, transparent); pointer-events:none; z-index:2; border-radius:0 16px 16px 0; }
+.svc-carousel-wrap.at-end::after { opacity:0; transition:opacity .3s; }
+.svc-carousel { display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:4px; scroll-behavior:smooth; scroll-padding-right:16px; }
 .svc-carousel::-webkit-scrollbar { display:none; }
 .svc-carousel .idx-svc-card { flex:0 0 200px; scroll-snap-align:start; }
 .svc-nav { display:flex; justify-content:center; gap:12px; margin-top:18px; }
@@ -1816,6 +1819,11 @@
         if(atEnd()) car.scrollTo({left:0, behavior:'smooth'});
         else car.scrollBy({left:step()*2, behavior:'smooth'});
       });
+      // Ocultar el degradado del borde al llegar al final del carrusel
+      var wrap = car.closest('.svc-carousel-wrap');
+      function updFade(){ if(wrap) wrap.classList.toggle('at-end', atEnd()); }
+      car.addEventListener('scroll', updFade, {passive:true});
+      window.addEventListener('resize', updFade); updFade();
     })();
     </script>
 
