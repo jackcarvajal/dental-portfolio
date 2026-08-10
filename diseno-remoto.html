@@ -132,6 +132,14 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
 .intl-d{font-size:.7rem;color:#94a3b8;margin-top:2px}
 
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.benef-card{transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.benef-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.benef-ico{transition:transform .22s ease}
+.benef-card:hover .benef-ico{transform:scale(1.15) rotate(-4deg)}
+.hover-card-mg{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.hover-card-mg:hover{transform:translateY(-4px);border-color:rgba(217,70,166,.5)!important;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.hover-card-mg i{transition:transform .25s ease}
+.hover-card-mg:hover i{transform:scale(1.18)}
 @media(max-width:480px){.opts{grid-template-columns:1fr}}
 .sec,.section-inner,.container{content-visibility:auto;contain-intrinsic-size:0 400px;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
@@ -190,34 +198,32 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
     <div class="filtro">
       <div class="filtro-label">¿Eres odontólogo, clínica o laboratorio? — ¿Qué necesitas?</div>
       <div class="opts" id="opts">
-        <button type="button" class="opt" onclick="sel(this,'corona')" aria-pressed="false" aria-label="Corona o puente"><span class="ico">👑</span><div><div>Corona o puente</div><div class="sub2">Prótesis fija unitaria o múltiple</div></div></button>
-        <button type="button" class="opt" onclick="sel(this,'carilla')" aria-pressed="false" aria-label="Carillas y Veneers"><span class="ico">💎</span><div><div>Carillas · Veneers</div><div class="sub2">Disilicato o composite</div></div></button>
-        <button type="button" class="opt" onclick="sel(this,'guia')" aria-pressed="false" aria-label="Guía quirúrgica"><span class="ico">🦴</span><div><div>Guía quirúrgica</div><div class="sub2">Planificación de implantes</div></div></button>
-        <button type="button" class="opt" onclick="sel(this,'full')" aria-pressed="false" aria-label="Sonrisa completa"><span class="ico">🎭</span><div><div>Sonrisa completa</div><div class="sub2">DSD · Rehabilitación total</div></div></button>
-        <button type="button" class="opt" onclick="sel(this,'prov')" aria-pressed="false" aria-label="Provisional"><span class="ico">🦷</span><div><div>Provisional</div><div class="sub2">PMMA · Urgencias</div></div></button>
-        <button type="button" class="opt" onclick="sel(this,'otro')" aria-pressed="false" aria-label="Otro o no sé"><span class="ico">📐</span><div><div>Otro / No sé</div><div class="sub2">Cuéntanos el caso</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'corona')" aria-pressed="false" aria-label="Corona o puente"><span class="ico"><i class="fas fa-crown"></i></span><div><div>Corona o puente</div><div class="sub2">Prótesis fija unitaria o múltiple</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'carilla')" aria-pressed="false" aria-label="Carillas y Veneers"><span class="ico"><i class="fas fa-gem"></i></span><div><div>Carillas · Veneers</div><div class="sub2">Disilicato o composite</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'guia')" aria-pressed="false" aria-label="Guía quirúrgica"><span class="ico"><i class="fas fa-bullseye"></i></span><div><div>Guía quirúrgica</div><div class="sub2">Planificación de implantes</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'full')" aria-pressed="false" aria-label="Sonrisa completa"><span class="ico"><i class="fas fa-face-smile"></i></span><div><div>Sonrisa completa</div><div class="sub2">DSD · Rehabilitación total</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'prov')" aria-pressed="false" aria-label="Provisional"><span class="ico"><i class="fas fa-tooth"></i></span><div><div>Provisional</div><div class="sub2">PMMA · Urgencias</div></div></button>
+        <button type="button" class="opt" onclick="sel(this,'otro')" aria-pressed="false" aria-label="Otro o no sé"><span class="ico"><i class="fas fa-circle-question"></i></span><div><div>Otro / No sé</div><div class="sub2">Cuéntanos el caso</div></div></button>
       </div>
     </div>
 
-    <a id="cta-wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20un%20diseño%20CAD." target="_blank" rel="noopener noreferrer" class="btn-wa">
-      <span style="font-size:1.35rem;">💬</span>
-      <span id="cta-texto">Cotizar por WhatsApp</span>
+    <!-- CTA PRIMARIA: sistema propio -->
+    <a id="cta-subir" href="envia-tu-scanner" class="hover-btn-mg" style="display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;text-decoration:none;border-radius:13px;padding:17px 28px;font-size:1.02rem;font-weight:800;min-height:54px;box-shadow:0 8px 28px rgba(217,70,166,.28);">
+      <i class="fas fa-cloud-arrow-up" style="font-size:1.25rem;"></i>
+      <span id="cta-texto">Subir mi caso ahora</span>
     </a>
-    <p class="cta-note">Respuesta promedio 8 min · L-S 8am–6pm · Recibimos archivos 24/7</p>
+    <p class="cta-note">Sin registro previo · Cotización automática · Recibimos archivos 24/7</p>
 
-    <!-- DIVISOR -->
-    <div style="display:flex;align-items:center;gap:10px;margin:18px 0;"><div style="flex:1;height:1px;background:rgba(255,255,255,.08);"></div><span style="font-size:.72rem;color:#475569;font-weight:700;">ENVÍA TU ARCHIVO</span><div style="flex:1;height:1px;background:rgba(255,255,255,.08);"></div></div>
-
-    <!-- BOTONES CLIENTE -->
-    <div style="display:flex;gap:10px;flex-wrap:wrap;">
-      <a href="envia-tu-scanner" class="hover-btn-mg" style="flex:1;min-width:160px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;text-decoration:none;border-radius:13px;padding:14px 20px;font-size:.9rem;font-weight:800;min-height:50px;">
-        <span style="font-size:1.1rem;">📤</span> Subir mi STL / caso
+    <!-- CTA SECUNDARIAS -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+      <a href="calculadora-diseno" class="hover-bg-light" style="flex:1;min-width:150px;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#e2e8f0;text-decoration:none;border-radius:13px;padding:13px 18px;font-size:.88rem;font-weight:800;min-height:48px;">
+        <i class="fas fa-calculator" style="color:var(--gold);"></i> Ver precios exactos
       </a>
-      <a href="calculadora-diseno" class="hover-bg-light" style="flex:1;min-width:160px;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#e2e8f0;text-decoration:none;border-radius:13px;padding:14px 20px;font-size:.9rem;font-weight:800;min-height:50px;">
-        <span style="font-size:1.1rem;">🧮</span> Ver precios exactos
+      <a id="cta-wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20un%20diseño%20CAD." target="_blank" rel="noopener noreferrer" style="flex:1;min-width:150px;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.35);color:#25D366;text-decoration:none;border-radius:13px;padding:13px 18px;font-size:.88rem;font-weight:800;min-height:48px;">
+        <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i> Prefiero WhatsApp
       </a>
     </div>
-    <p style="font-size:.68rem;color:#475569;margin-top:8px;text-align:center;">¿Ya tienes cuenta? <a href="app/login.html" style="color:var(--mg);text-decoration:none;font-weight:700;">Acceder al portal →</a></p>
+    <p style="font-size:.68rem;color:#475569;margin-top:10px;text-align:center;">¿Ya tienes cuenta? <a href="app/login.html" style="color:var(--mg);text-decoration:none;font-weight:700;">Acceder al portal →</a></p>
   </div>
 </section>
 
@@ -235,7 +241,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
 
       <!-- Diseño CAD -->
       <div style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.25);border-radius:16px;padding:28px;">
-        <div style="font-size:2rem;margin-bottom:12px;">✏️</div>
+        <div style="font-size:1.7rem;margin-bottom:12px;color:var(--mg);"><i class="fas fa-pen-ruler"></i></div>
         <h3 style="font-size:1.05rem;font-weight:800;color:#f8fafc;margin-bottom:8px;">Solo Diseño CAD</h3>
         <p style="color:var(--muted);font-size:.85rem;line-height:1.6;margin-bottom:16px;">Archivo STL listo para fresar en tu equipo. Compatible con todas las fresadoras. Entrega digital.</p>
         <div style="background:rgba(217,70,166,.1);border-radius:8px;padding:10px 14px;margin-bottom:16px;">
@@ -249,7 +255,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
       <!-- Diseño + Fresado -->
       <div style="background:rgba(13,21,37,.9);border:1.5px solid rgba(212,175,55,.35);border-radius:16px;padding:28px;position:relative;">
         <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;font-size:.68rem;font-weight:900;padding:4px 14px;border-radius:100px;white-space:nowrap;">⭐ MÁS PEDIDO</div>
-        <div style="font-size:2rem;margin-bottom:12px;">⚙️</div>
+        <div style="font-size:1.7rem;margin-bottom:12px;color:var(--gold);"><i class="fas fa-gears"></i></div>
         <h3 style="font-size:1.05rem;font-weight:800;color:#f8fafc;margin-bottom:8px;">Diseño + Fresado CAM</h3>
         <p style="color:var(--muted);font-size:.85rem;line-height:1.6;margin-bottom:16px;">Diseñamos y fresamos en zirconio, disilicato o PMMA. La pieza llega lista a tu laboratorio.</p>
         <div style="background:rgba(212,175,55,.1);border-radius:8px;padding:10px 14px;margin-bottom:16px;">
@@ -262,7 +268,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
 
       <!-- Servicio Lab Full -->
       <div style="background:rgba(13,21,37,.9);border:1px solid rgba(0,210,255,.25);border-radius:16px;padding:28px;">
-        <div style="font-size:2rem;margin-bottom:12px;">🏭</div>
+        <div style="font-size:1.7rem;margin-bottom:12px;color:var(--cyan);"><i class="fas fa-industry"></i></div>
         <h3 style="font-size:1.05rem;font-weight:800;color:#f8fafc;margin-bottom:8px;">Lab Full — Terminado completo</h3>
         <p style="color:var(--muted);font-size:.85rem;line-height:1.6;margin-bottom:16px;">Diseño + Fresado + Tinción + Glaseado + Empaque. La restauración lista para cementar. Ideal si no tienes laboratorio propio.</p>
         <div style="background:rgba(0,210,255,.08);border-radius:8px;padding:10px 14px;margin-bottom:16px;">
@@ -312,23 +318,23 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
     <h2 style="margin-bottom:6px;">El servicio de diseño CAD que tu clínica necesitaba</h2>
     <p style="color:var(--muted);font-size:.9rem;margin-bottom:28px;">No somos un software. Somos el equipo que te libera tiempo y te entrega diseños listos para fresar.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
-      <div style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.18);border-radius:14px;padding:20px;">
-        <div style="font-size:1.6rem;margin-bottom:10px;">⚡</div>
+      <div class="benef-card" style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.18);border-radius:14px;padding:20px;">
+        <div class="benef-ico" style="font-size:1.5rem;margin-bottom:10px;color:var(--gold);"><i class="fas fa-bolt"></i></div>
         <div style="font-size:.88rem;font-weight:800;color:var(--gold);margin-bottom:6px;">Desde 15 min*</div>
         <p style="font-size:.8rem;color:var(--muted);line-height:1.6;">Diseños simples desde 15 min. Casos estándar en 24h. Urgencias en 2h disponibles (aplican condiciones y restricciones).</p>
       </div>
-      <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.18);border-radius:14px;padding:20px;">
-        <div style="font-size:1.6rem;margin-bottom:10px;">📁</div>
+      <div class="benef-card" style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.18);border-radius:14px;padding:20px;">
+        <div class="benef-ico" style="font-size:1.5rem;margin-bottom:10px;color:var(--cyan);"><i class="fas fa-folder-open"></i></div>
         <div style="font-size:.88rem;font-weight:800;color:var(--cyan);margin-bottom:6px;">Compatible con todo</div>
         <p style="font-size:.8rem;color:var(--muted);line-height:1.6;">iTero, Medit, 3Shape Trios, Carestream, Planmeca, Sirona. STL, OBJ, PLY, archivos Exocad y 3Shape nativos. Sin conversiones.</p>
       </div>
-      <div style="background:rgba(217,70,166,.06);border:1px solid rgba(217,70,166,.18);border-radius:14px;padding:20px;">
-        <div style="font-size:1.6rem;margin-bottom:10px;">🎯</div>
+      <div class="benef-card" style="background:rgba(217,70,166,.06);border:1px solid rgba(217,70,166,.18);border-radius:14px;padding:20px;">
+        <div class="benef-ico" style="font-size:1.5rem;margin-bottom:10px;color:var(--mg);"><i class="fas fa-user-doctor"></i></div>
         <div style="font-size:.88rem;font-weight:800;color:var(--mg);margin-bottom:6px;">Diseñadores con experiencia clínica</div>
         <p style="font-size:.8rem;color:var(--muted);line-height:1.6;">No solo operamos software. Entendemos la oclusión, los márgenes y lo que el doctor y el paciente esperan del resultado final.</p>
       </div>
-      <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.18);border-radius:14px;padding:20px;">
-        <div style="font-size:1.6rem;margin-bottom:10px;">✅</div>
+      <div class="benef-card" style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.18);border-radius:14px;padding:20px;">
+        <div class="benef-ico" style="font-size:1.5rem;margin-bottom:10px;color:#4ade80;"><i class="fas fa-circle-check"></i></div>
         <div style="font-size:.88rem;font-weight:800;color:#4ade80;margin-bottom:6px;">Sin contratos ni exclusividad</div>
         <p style="font-size:.8rem;color:var(--muted);line-height:1.6;">Paga solo por lo que usas. Sin mensualidades, sin mínimos, sin cláusulas. Revisión incluida en cada diseño sin costo adicional.</p>
       </div>
@@ -417,27 +423,27 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
       <h3 style="text-align:center;font-size:1.1rem;font-weight:800;margin-bottom:28px;color:#f8fafc;">Tipos de diseño disponibles</h3>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
         <div class="hover-card-mg" style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;cursor:default;">
-          <div style="height:100px;background:linear-gradient(135deg,rgba(217,70,166,.15),rgba(147,51,234,.1));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">👑</div>
+          <div style="height:100px;background:linear-gradient(135deg,rgba(217,70,166,.15),rgba(147,51,234,.1));display:flex;align-items:center;justify-content:center;font-size:2.1rem;color:#f0abdc;"><i class="fas fa-crown"></i></div>
           <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Coronas &amp; Inlays</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $14 USD · ~$58K COP · 24h</div></div>
         </div>
         <div class="hover-card-mg" style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;cursor:default;">
-          <div style="height:100px;background:linear-gradient(135deg,rgba(0,210,255,.12),rgba(0,128,170,.08));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">💎</div>
+          <div style="height:100px;background:linear-gradient(135deg,rgba(0,210,255,.12),rgba(0,128,170,.08));display:flex;align-items:center;justify-content:center;font-size:2.1rem;color:#7fe3ff;"><i class="fas fa-gem"></i></div>
           <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Carillas &amp; Láminas</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $16 USD · ~$66K COP · 24h</div></div>
         </div>
         <div class="hover-card-mg" style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;cursor:default;">
-          <div style="height:100px;background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(180,130,20,.08));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🌉</div>
+          <div style="height:100px;background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(180,130,20,.08));display:flex;align-items:center;justify-content:center;font-size:2.1rem;color:#e8cd7a;"><i class="fas fa-bridge"></i></div>
           <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Puentes CAD</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $32 USD · ~$132K COP · 24h</div></div>
         </div>
         <div class="hover-card-mg" style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;cursor:default;">
-          <div style="height:100px;background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(16,185,129,.06));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎯</div>
+          <div style="height:100px;background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(16,185,129,.06));display:flex;align-items:center;justify-content:center;font-size:2.1rem;color:#86efac;"><i class="fas fa-bullseye"></i></div>
           <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Guías Quirúrgicas</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $60 USD · 48h</div></div>
         </div>
         <div class="hover-card-mg" style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;cursor:default;">
-          <div style="height:100px;background:linear-gradient(135deg,rgba(192,132,252,.1),rgba(124,58,237,.06));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🔩</div>
+          <div style="height:100px;background:linear-gradient(135deg,rgba(192,132,252,.1),rgba(124,58,237,.06));display:flex;align-items:center;justify-content:center;font-size:2.1rem;color:#d8b4fe;"><i class="fas fa-screwdriver-wrench"></i></div>
           <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Abutments CAD</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $35 USD · 24h</div></div>
         </div>
         <div class="hover-card-mg" style="background:rgba(13,21,37,.9);border:1px solid rgba(217,70,166,.2);border-radius:14px;overflow:hidden;cursor:default;">
-          <div style="height:100px;background:linear-gradient(135deg,rgba(251,146,60,.1),rgba(234,88,12,.06));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎭</div>
+          <div style="height:100px;background:linear-gradient(135deg,rgba(251,146,60,.1),rgba(234,88,12,.06));display:flex;align-items:center;justify-content:center;font-size:2.1rem;color:#fdba74;"><i class="fas fa-face-smile"></i></div>
           <div style="padding:14px;text-align:center;"><div style="font-size:.82rem;font-weight:800;color:#f8fafc;">Full Arch / DSD</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;">Desde $180 USD · 48–72h</div></div>
         </div>
       </div>
@@ -733,13 +739,14 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
 <!-- CTA FINAL: urgencia + riesgo cero -->
 <section style="padding:64px 24px;background:linear-gradient(135deg,rgba(217,70,166,.12),rgba(0,210,255,.06));text-align:center;">
   <div style="max-width:560px;margin:0 auto;">
-    <div style="font-size:2.4rem;margin-bottom:16px;">🦷</div>
+    <div style="font-size:2.2rem;margin-bottom:16px;color:var(--mg);"><i class="fas fa-tooth"></i></div>
     <h2 style="font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:900;margin-bottom:12px;">Envía tu primer caso hoy.<br>Sin riesgo.</h2>
     <p style="color:var(--muted);font-size:.95rem;line-height:1.7;margin-bottom:8px;">Sin contratos. Sin exclusividad. Sin mensualidades.<br>Revisión incluida. <strong style="color:#e2e8f0;">Pagas solo cuando apruebas.</strong></p>
     <p style="color:var(--muted);font-size:.82rem;margin-bottom:28px;">+1000 casos/año · desde 15 min* · Compatible con todo</p>
-    <a id="cta-wa-bottom" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20enviar%20mi%20primer%20caso%20de%20diseño%20CAD.%20¿Cómo%20empezamos%3F" target="_blank" rel="noopener noreferrer" class="btn-wa" style="max-width:440px;margin:0 auto;font-size:1.05rem;">
-      <span style="font-size:1.4rem;">💬</span><span>Enviar mi primer caso — es gratis</span>
+    <a href="envia-tu-scanner" class="hover-btn-mg" style="max-width:440px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;text-decoration:none;border-radius:13px;padding:17px 28px;font-size:1.05rem;font-weight:800;min-height:54px;">
+      <i class="fas fa-cloud-arrow-up" style="font-size:1.3rem;"></i><span>Subir mi primer caso — es gratis</span>
     </a>
+    <p style="margin-top:12px;font-size:.8rem;color:var(--muted);">o <a id="cta-wa-bottom" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20enviar%20mi%20primer%20caso%20de%20diseño%20CAD.%20¿Cómo%20empezamos%3F" target="_blank" rel="noopener noreferrer" style="color:#25D366;text-decoration:none;font-weight:700;"><i class="fab fa-whatsapp"></i> escríbenos por WhatsApp</a></p>
     <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:18px;font-size:.75rem;color:var(--muted);">
       <span>✓ Sin registro previo</span>
       <span>✓ Respuesta rápida L-S 8am–6pm</span>
@@ -784,10 +791,10 @@ var _MSG = {
   otro:     'Hola%20PRODIGY%2C%20tengo%20un%20caso%20de%20diseño%20CAD%20dental%20y%20quiero%20cotizar.%20¿Podemos%20hablar%3F'
 };
 var _TEXTOS = {
-  corona:'Cotizar diseño de corona', puente:'Cotizar diseño de puente',
-  carilla:'Cotizar diseño de carillas', guia:'Cotizar guía quirúrgica',
-  implante:'Cotizar restauración implante', full:'Cotizar sonrisa completa',
-  prov:'Cotizar provisional urgente', modelo:'Cotizar modelo 3D', otro:'Enviar mi caso'
+  corona:'Subir mi corona ahora', puente:'Subir mi puente ahora',
+  carilla:'Subir mis carillas ahora', guia:'Subir mi guía quirúrgica ahora',
+  implante:'Subir mi caso de implante ahora', full:'Subir mi sonrisa completa ahora',
+  prov:'Subir mi provisional ahora', modelo:'Subir mi modelo 3D ahora', otro:'Subir mi caso ahora'
 };
 
 function _setWA(tipo) {
@@ -796,10 +803,13 @@ function _setWA(tipo) {
     ? '%0A%5BRef%3A%20' + encodeURIComponent(utm.source + (utm.campaign ? '/' + utm.campaign : '')) + '%5D'
     : '';
   var href = _WA + (_MSG[tipo] || _MSG.otro) + ref;
-  document.getElementById('cta-wa').href = href;
-  document.getElementById('cta-wa-bottom').href = href;
+  var wa = document.getElementById('cta-wa'); if (wa) wa.href = href;
+  var wb = document.getElementById('cta-wa-bottom'); if (wb) wb.href = href;
+  // Botón primario → sistema propio, llevando el tipo de caso
+  var subir = document.getElementById('cta-subir');
+  if (subir) subir.href = 'envia-tu-scanner?tipo=' + encodeURIComponent(tipo);
   var t = document.getElementById('cta-texto');
-  if (t) t.textContent = _TEXTOS[tipo] || 'Cotizar por WhatsApp';
+  if (t) t.textContent = _TEXTOS[tipo] || 'Subir mi caso ahora';
 }
 
 function sel(el, tipo) {
@@ -813,7 +823,8 @@ function sel(el, tipo) {
 function selPortafolio(tipo) {
   // Click en tarjeta de portafolio → actualiza filtro y hace scroll al CTA
   _setWA(tipo);
-  document.getElementById('cta-wa').scrollIntoView({ behavior:'smooth', block:'center' });
+  var d = document.getElementById('cta-subir') || document.getElementById('cta-wa');
+  if (d) d.scrollIntoView({ behavior:'smooth', block:'center' });
   if (window.ProdigyAnalytics) ProdigyAnalytics.track('landing_portafolio_click', { tipo: tipo });
 }
 
@@ -909,15 +920,15 @@ function selPortafolio(tipo) {
   function renderPlaceholders() {
     if (!grid) return;
     var tipos = [
-      {ico:'👑',tipo:'PRÓTESIS FIJA',nombre:'Coronas y puentes',key:'corona'},
-      {ico:'💎',tipo:'ESTÉTICA DENTAL',nombre:'Carillas · Veneers',key:'carilla'},
-      {ico:'🦴',tipo:'IMPLANTOLOGÍA',nombre:'Guías quirúrgicas',key:'guia'},
-      {ico:'🎭',tipo:'REHABILITACIÓN TOTAL',nombre:'Sonrisa completa',key:'full'}
+      {ico:'fa-crown',tipo:'PRÓTESIS FIJA',nombre:'Coronas y puentes',key:'corona'},
+      {ico:'fa-gem',tipo:'ESTÉTICA DENTAL',nombre:'Carillas · Veneers',key:'carilla'},
+      {ico:'fa-bullseye',tipo:'IMPLANTOLOGÍA',nombre:'Guías quirúrgicas',key:'guia'},
+      {ico:'fa-face-smile',tipo:'REHABILITACIÓN TOTAL',nombre:'Sonrisa completa',key:'full'}
     ];
     grid.innerHTML = tipos.map(function(t) {
       return '<div class="hover-card-gold" style="background:#0d1525;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.08);cursor:pointer;" ' +
         'onclick="selPortafolio(\'' + t.key + '\')">' +
-        '<div style="height:160px;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,#0a0f1e,#0d1525);">' + t.ico + '</div>' +
+        '<div style="height:160px;display:flex;align-items:center;justify-content:center;font-size:3rem;color:#D4AF37;background:linear-gradient(135deg,#0a0f1e,#0d1525);"><i class="fas ' + t.ico + '"></i></div>' +
         '<div style="padding:18px 20px;">' +
           '<div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#D946A6;margin-bottom:5px;">' + t.tipo + '</div>' +
           '<div style="font-size:1rem;font-weight:700;color:#e2e8f0;margin-bottom:12px;">' + t.nombre + '</div>' +
