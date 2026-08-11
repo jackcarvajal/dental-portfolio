@@ -1628,14 +1628,21 @@
 }
 .idx-svc-card:hover::before { opacity: 1; }
 @media(prefers-reduced-motion:reduce){ .idx-svc-card::before { display:none; } }
-/* ── Carrusel de servicios ── */
+/* ── Coverflow de servicios (3D) ── */
 .svc-carousel-wrap { position:relative; }
-/* Degradado de borde: indica que el carrusel tiene más tarjetas para deslizar (la última no queda "cortada" sino difuminada). */
-.svc-carousel-wrap::after { content:''; position:absolute; top:0; right:0; bottom:4px; width:60px; background:linear-gradient(to left, var(--bg,#050505) 12%, transparent); pointer-events:none; z-index:2; border-radius:0 16px 16px 0; }
-.svc-carousel-wrap.at-end::after { opacity:0; transition:opacity .3s; }
-.svc-carousel { display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:4px; scroll-behavior:smooth; scroll-padding-right:16px; }
-.svc-carousel::-webkit-scrollbar { display:none; }
-.svc-carousel .idx-svc-card { flex:0 0 200px; scroll-snap-align:start; }
+.svc-coverflow { position:relative; height:238px; perspective:1200px; overflow:hidden; touch-action:pan-y; cursor:grab; outline:none; }
+.svc-coverflow.grabbing { cursor:grabbing; }
+.svc-coverflow .idx-svc-card {
+  position:absolute; top:50%; left:50%; width:212px; min-height:130px; margin:0;
+  justify-content:center; align-items:center; text-align:center;
+  transform:translate(-50%,-50%); transform-origin:center center; backface-visibility:hidden;
+  transition:transform .55s cubic-bezier(.2,.7,.2,1), opacity .55s, box-shadow .3s; will-change:transform,opacity;
+}
+.svc-coverflow .idx-svc-card i { margin-bottom:2px; }
+.svc-coverflow .idx-svc-card.cf-active { box-shadow:0 18px 50px rgba(0,0,0,.55); }
+.svc-coverflow:focus-visible { box-shadow:0 0 0 2px rgba(212,175,55,.5) inset; border-radius:16px; }
+@media(prefers-reduced-motion:reduce){ .svc-coverflow .idx-svc-card { transition:none; } }
+@media(max-width:600px){ .svc-coverflow { height:224px; } .svc-coverflow .idx-svc-card { width:184px; } }
 .svc-nav { display:flex; justify-content:center; gap:12px; margin-top:18px; }
 .svc-nav-btn { width:42px; height:42px; border-radius:50%; border:1px solid rgba(212,175,55,.25); background:#0d1520; color:#D4AF37; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .2s,background .2s,opacity .2s; font-size:1rem; }
 .svc-nav-btn:hover:not(:disabled) { border-color:rgba(212,175,55,.6); background:rgba(212,175,55,.08); }
@@ -1730,7 +1737,7 @@
             <h2 class="section-header" data-i18n="index.srv.title">Servicios de Laboratorio Digital</h2>
             <p class="section-subtitle" style="text-align:center;color:#94a3b8;margin-bottom:36px;font-size:.95rem;">Fresado CAD/CAM, impresión 3D y diseño digital en Bogotá. Entrega 24–72h.</p>
             <div class="svc-carousel-wrap">
-            <div class="svc-carousel" id="svc-carousel">
+            <div class="svc-coverflow" id="svc-carousel">
               <a href="flujo-fresado" class="idx-svc-card idx-svc-card-gold">
                 <i class="fas fa-crown" style="font-size:1.35rem;color:#D4AF37" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Coronas & Puentes</strong>
@@ -1799,34 +1806,7 @@
             </div>
         </div>
     </section>
-    <script>
-    (function(){
-      var car = document.getElementById('svc-carousel');
-      var prev = document.getElementById('svc-prev');
-      var next = document.getElementById('svc-next');
-      if(!car || !prev || !next) return;
-      function step(){
-        var card = car.querySelector('.idx-svc-card');
-        var gap = 14;
-        return card ? card.offsetWidth + gap : 220;
-      }
-      function atEnd(){ return car.scrollLeft >= car.scrollWidth - car.clientWidth - 4; }
-      function atStart(){ return car.scrollLeft <= 4; }
-      prev.addEventListener('click', function(){
-        if(atStart()) car.scrollTo({left:car.scrollWidth, behavior:'smooth'});
-        else car.scrollBy({left:-step()*2, behavior:'smooth'});
-      });
-      next.addEventListener('click', function(){
-        if(atEnd()) car.scrollTo({left:0, behavior:'smooth'});
-        else car.scrollBy({left:step()*2, behavior:'smooth'});
-      });
-      // Ocultar el degradado del borde al llegar al final del carrusel
-      var wrap = car.closest('.svc-carousel-wrap');
-      function updFade(){ if(wrap) wrap.classList.toggle('at-end', atEnd()); }
-      car.addEventListener('scroll', updFade, {passive:true});
-      window.addEventListener('resize', updFade); updFade();
-    })();
-    </script>
+    <script src="js/coverflow-svc.js?v=20260810" defer></script>
 
     <section id="portfolio">
         <div class="container">
