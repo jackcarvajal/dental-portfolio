@@ -130,3 +130,13 @@
 # /alineadores-cad       /alineadores-cad.html       200  ← CF sirve nativo (200 causaba ERR_TOO_MANY_REDIRECTS)
 /alineadores            /alineadores-cad.html       301
 /soporte-tecnico   /escaneo-fotogrametria   301
+
+# ─── Tarjetas de servicios del home sin landing propia todavía → página real más cercana (evita 404) ───
+/puentes-dentales          /diseno-remoto    301
+/implante-dental-unitario  /diseno-remoto    301
+/full-arch-digital         /diseno-remoto    301
+/carillas-porcelana        /diseno-remoto    301
+/encerado-diagnostico      /diseno-remoto    301
+/modelo-estudio            /impresion-3d     301
+/ferulas-oclusales         /impresion-3d     301
+/blanqueamiento-dental     /impresion-3d     301
