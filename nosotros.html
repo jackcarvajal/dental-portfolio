@@ -856,6 +856,7 @@
   // Navbar hide-on-scroll
   (function(){
     const nav = document.getElementById('navbar');
+    if (!nav) return;   // el header lo inyecta header.js; si no existe, no enganchar (evita null.classList en cada scroll)
     let lastY = 0, ticking = false;
     function onScroll() {
       const y = window.scrollY;

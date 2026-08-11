@@ -1065,6 +1065,14 @@
             initFeedbackModule();
         }
 
+        // Helper de escape en el scope exterior (renderError/renderPatient lo usan;
+        // había otro escapeHtml anidado en el módulo de comentarios, no visible aquí)
+        function escapeHtml(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
         // =============================================
         // RENDERIZAR ERROR
         // =============================================

@@ -430,14 +430,14 @@ const ADMIN_EMAILS = ['jackalejandroc@gmail.com','labdentalprodigy@gmail.com'];
 let isAdmin = false;
 
 /* ── FILTRO DE PALABRAS ── */
-const PALABRAS_PROHIBIDAS = [
+const PALABRAS_PROHIBIDAS_CASO = [
   'mierda','puta','puto','culo','coño','verga','hijueputa','hp','marica','gonorrea',
   'idiota','estupido','estúpido','imbecil','imbécil','pendejo','cabron','cabrón',
   'joder','concha','chinga','fuck','shit','ass','bitch','bastard','cunt'
 ];
 function filtrarTexto(texto) {
   const lower = texto.toLowerCase();
-  return PALABRAS_PROHIBIDAS.some(p => lower.includes(p));
+  return PALABRAS_PROHIBIDAS_CASO.some(p => lower.includes(p));
 }
 
 /* ── REACCIONES ── */
