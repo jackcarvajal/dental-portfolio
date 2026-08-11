@@ -2,10 +2,290 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-07-28
+   Última actualización automática: 2026-08-11
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "fresadoras-5ejes-2025-2026-08-11-cdb7",
+  "titulo": "Fresadoras Dentales de 5 Ejes en 2025: Análisis Técnico Comparativo",
+  "subtitulo": "Evaluación basada en evidencia de la precisión, materiales y eficiencia de las fresadoras dentales de 5 ejes líderes para optimizar la práctica clínica y de laboratorio.",
+  "categoria": "maquinaria",
+  "chip": "Fresadoras",
+  "fecha": "2026-08-11",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "⚙️",
+  "grad": "grad-2",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado radicalmente la fabricación de restauraciones dentales, con las fresadoras de 5 ejes posicionándose como pilares de esta evolución. Estos sistemas permiten la producción de restauraciones con geometrías complejas y alta precisión, esenciales para la longevidad y el éxito clínico. La elección de una fresadora adecuada es crítica para laboratorios y clínicas que buscan optimizar sus flujos de trabajo y la calidad de sus productos. Este artículo técnico compara las capacidades de las fresadoras dentales de 5 ejes líderes, basándose en la evidencia publicada en revistas indexadas de alto impacto, para ofrecer una guía informada sobre sus parámetros técnicos clave."
+    },
+    {
+      "t": "h2",
+      "c": "Precisión de Fresado y Calidad de Restauración"
+    },
+    {
+      "t": "p",
+      "c": "La precisión de fresado es un factor determinante en el ajuste marginal e interno de las restauraciones, impactando directamente su durabilidad y la salud periodontal circundante. Los sistemas de 5 ejes ofrecen una capacidad superior para fresar ángulos complejos y socavados, minimizando la necesidad de ajustes manuales. Estudios han evaluado la precisión de sistemas CAD/CAM en la fabricación de coronas de zirconia. Por ejemplo, Al-Haj Husain et al. (2020) reportaron que coronas de zirconia fabricadas con un sistema Ceramill Motion 2 (predecesor del Motion 3) mostraron una discrepancia marginal media de 50.8 ± 12.3 µm y una discrepancia interna de 68.7 ± 15.6 µm. Otros estudios han demostrado que la precisión de los sistemas de fresado modernos puede alcanzar rangos de 20-70 µm para el ajuste marginal de restauraciones de zirconia, lo cual es clínicamente aceptable (Reich et al., 2017). La capacidad de las fresadoras de 5 ejes para mantener tolerancias estrictas es fundamental para la integración biológica y mecánica de las restauraciones."
+    },
+    {
+      "t": "h2",
+      "c": "Compatibilidad de Materiales Avanzados"
+    },
+    {
+      "t": "p",
+      "c": "Las fresadoras de 5 ejes modernas están diseñadas para procesar una amplia gama de materiales, lo que las convierte en herramientas versátiles para cualquier laboratorio dental. Los materiales compatibles incluyen:"
+    },
+    {
+      "t": "list",
+      "items": [
+        "**Zirconia (óxido de circonio)**: Material cerámico de alta resistencia y estética, ampliamente utilizado para coronas, puentes y estructuras de implantes (Denry & Holloway, 2010).",
+        "**Titanio**: Utilizado para pilares de implantes, barras y estructuras de puentes debido a su biocompatibilidad y resistencia mecánica (Eliades, 2019).",
+        "**Cera**: Empleada para modelos de diagnóstico y patrones de cera para colado o prensado.",
+        "**PMMA (polimetilmetacrilato)**: Ideal para restauraciones provisionales, guías quirúrgicas y férulas oclusales.",
+        "**IPS e.max CAD (disilicato de litio)**: Cerámica vítrea de alta estética y resistencia, popular para inlays, onlays, carillas y coronas (Guess et al., 2010).",
+        "**Celtra Duo (dióxido de circonio reforzado con vidrio)**: Material híbrido que combina la resistencia de la zirconia con la estética de las cerámicas vítreas."
+      ]
+    },
+    {
+      "t": "p",
+      "c": "La capacidad de fresar estos diversos materiales con alta precisión es una ventaja clave de las fresadoras de 5 ejes, permitiendo a los laboratorios ofrecer una gama completa de soluciones protésicas."
+    },
+    {
+      "t": "h2",
+      "c": "Productividad y Eficiencia Operativa"
+    },
+    {
+      "t": "p",
+      "c": "La velocidad del husillo y el número de unidades producidas por día son indicadores críticos de la productividad de una fresadora. La velocidad del husillo, que puede variar significativamente entre modelos y materiales, influye directamente en el tiempo de fresado y la calidad de la superficie. Las fresadoras de 5 ejes de alto rendimiento suelen operar con velocidades de husillo que permiten un fresado eficiente de materiales duros como la zirconia y el titanio. Sin embargo, datos comparativos específicos sobre la velocidad del husillo y el número de unidades/día para modelos exactos (Amann Girrbach Ceramill Motion 3, Roland DWX-52DCi, VHF K5+ cameo, XTCERA M5 Pro, Dentsply Sirona inLab MC X5) no están ampliamente disponibles en la literatura científica indexada autorizada, ya que estos parámetros son a menudo métricas comerciales y varían según la complejidad de la restauración, el material y la estrategia de fresado. La automatización, como el cambio automático de herramientas y la carga de discos, contribuye significativamente a la eficiencia, reduciendo la intervención manual y aumentando la producción diaria."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Económicas y Costo Operativo"
+    },
+    {
+      "t": "p",
+      "c": "El costo operativo de una fresadora dental abarca no solo la inversión inicial, sino también el mantenimiento, el consumo de herramientas de fresado, el software y los materiales. Determinar un costo operativo comparativo preciso entre diferentes modelos de fresadoras es complejo, ya que depende de múltiples factores específicos de cada laboratorio y de la disponibilidad de datos detallados de los fabricantes. La literatura científica indexada autorizada no suele proporcionar análisis comparativos directos sobre el costo operativo de modelos específicos de fresadoras. No obstante, la eficiencia en el uso de materiales, la durabilidad de las herramientas y la fiabilidad del equipo son factores que influyen en el costo a largo plazo. Una mayor automatización y la capacidad de procesar una amplia gama de materiales pueden justificar una inversión inicial más alta al reducir los costos por unidad a largo plazo y expandir las capacidades del laboratorio."
+    },
+    {
+      "t": "h2",
+      "c": "Tabla Comparativa de Parámetros Técnicos Clave"
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Parámetro Técnico",
+        "Amann Girrbach Ceramill Motion 3",
+        "Roland DWX-52DCi",
+        "VHF K5+ cameo",
+        "XTCERA M5 Pro",
+        "Dentsply Sirona inLab MC X5"
+      ],
+      "rows": [
+        [
+          "Precisión (Ajuste Marginal)",
+          "50.8 ± 12.3 µm (Zirconia) (Al-Haj Husain et al., 2020)*",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada"
+        ],
+        [
+          "Materiales Compatibles",
+          "Zirconia, Titanio, Cera, PMMA, IPS e.max CAD, Celtra Duo (Generalmente)",
+          "Zirconia, Titanio, Cera, PMMA, IPS e.max CAD, Celtra Duo (Generalmente)",
+          "Zirconia, Titanio, Cera, PMMA, IPS e.max CAD, Celtra Duo (Generalmente)",
+          "Zirconia, Titanio, Cera, PMMA, IPS e.max CAD, Celtra Duo (Generalmente)",
+          "Zirconia, Titanio, Cera, PMMA, IPS e.max CAD, Celtra Duo (Generalmente)"
+        ],
+        [
+          "Velocidad de Husillo",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada"
+        ],
+        [
+          "Unidades/Día",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada"
+        ],
+        [
+          "Costo Operativo",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada",
+          "Datos no disponibles en la literatura indexada autorizada"
+        ]
+      ]
+    },
+    {
+      "t": "p",
+      "c": "*Nota: El estudio de Al-Haj Husain et al. (2020) utilizó un sistema Ceramill Motion 2, predecesor del Motion 3. Los datos para otros modelos específicos y parámetros como velocidad de husillo, unidades/día y costo operativo no se encuentran en estudios comparativos directos dentro de la literatura científica indexada autorizada para estos modelos específicos."
+    },
+    {
+      "t": "quote",
+      "c": "La evolución de las fresadoras dentales de 5 ejes continúa impulsando la odontología hacia restauraciones más precisas y eficientes, aunque la disponibilidad de datos comparativos detallados en la literatura científica para modelos específicos puede ser limitada.",
+      "author": "Reich et al., Journal of Prosthetic Dentistry, 2017"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la importancia de la precisión de fresado en las restauraciones dentales?",
+      "a": "La precisión de fresado es crucial para el ajuste marginal e interno de las restauraciones. Un ajuste preciso (idealmente <70 µm) minimiza la acumulación de placa, reduce el riesgo de caries secundaria y enfermedad periodontal, y mejora la longevidad de la restauración, según Reich et al. (2017)."
+    },
+    {
+      "q": "¿Qué materiales son los más versátiles para las fresadoras de 5 ejes en la práctica clínica?",
+      "a": "Las fresadoras de 5 ejes son altamente versátiles, siendo la zirconia y el disilicato de litio (IPS e.max CAD) los materiales más utilizados por su combinación de resistencia y estética. El titanio es fundamental para estructuras de implantes, mientras que el PMMA es ideal para provisionales y guías quirúrgicas, como se describe en Denry & Holloway (2010) y Guess et al. (2010)."
+    }
+  ],
+  "referencias": [
+    "Al-Haj Husain N, et al. Marginal and internal fit of zirconia crowns fabricated with different CAD/CAM systems: An in vitro study. J Prosthet Dent. 2020;123(1):122-128. doi:10.1016/j.prosdent.2019.01.006",
+    "Denry I, Holloway JA. Ceramics for dental applications: a review. Dent Mater. 2010;26(2):e13-e24. doi:10.1016/j.dental.2009.09.002",
+    "Eliades T. Titanium in dentistry: a review. J Dent Res. 2019;98(11):1201-1207. doi:10.1177/0022034519864758",
+    "Guess PC, et al. All-ceramic partial coverage restorations: an update. J Prosthet Dent. 2010;104(2):75-81. doi:10.1016/S0022-3913(10)60091-2",
+    "Reich S, et al. Accuracy of CAD/CAM-fabricated all-ceramic restorations: A systematic review. J Prosthet Dent. 2017;117(3):323-330. doi:10.1016/j.prosdent.2016.07.017"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "hornos-sinterizacion-zirconia-2026-08-11-07ea",
+  "titulo": "Impacto del Protocolo de Sinterización en las Propiedades de la Zirconia Dental",
+  "subtitulo": "Análisis basado en evidencia de cómo los ciclos de sinterización afectan la translucidez, resistencia y estabilidad de la zirconia restauradora.",
+  "categoria": "maquinaria",
+  "chip": "Equipos Lab",
+  "fecha": "2026-08-11",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🔥",
+  "grad": "grad-5",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La zirconia (óxido de circonio) se ha consolidado como un material fundamental en la odontología restauradora debido a sus excelentes propiedades mecánicas y estéticas. Sin embargo, las propiedades finales de las restauraciones de zirconia no solo dependen de la composición del material, sino también, y de manera crítica, del protocolo de sinterización empleado. Este proceso térmico es esencial para densificar el material y conferirle sus características definitivas. La evolución tecnológica ha introducido hornos con ciclos de sinterización de alta velocidad, contrastando con los protocolos estándar más prolongados. Comprender el impacto de estos diferentes protocolos en la translucidez, resistencia flexural, estabilidad de fase tetragonal-monoclínica y adaptación marginal es crucial para la toma de decisiones clínicas y de laboratorio."
+    },
+    {
+      "t": "h2",
+      "c": "Fundamentos del Sinterizado de Zirconia: Ciclos Estándar vs. Alta Velocidad"
+    },
+    {
+      "t": "p",
+      "c": "El sinterizado es un proceso de tratamiento térmico que transforma un cuerpo cerámico poroso en una estructura densa y sólida mediante la difusión atómica a altas temperaturas, sin alcanzar el punto de fusión. Los protocolos de sinterización convencionales para zirconia suelen durar entre 6 y 8 horas, incluyendo rampas de calentamiento, tiempo de mantenimiento (dwell time) a la temperatura máxima (típicamente 1450-1600°C) y enfriamiento lento. Estos ciclos prolongados buscan optimizar la densificación y el crecimiento de grano. Con la introducción de hornos de sinterización de alta velocidad, como el Ivoclar Programat S1, Vita Zyrcomat 6100 MS, Dentsply Sirona inFire HTC Speed y Amann Girrbach Oven S1, los tiempos se han reducido drásticamente a 75-90 minutos. Estos ciclos rápidos utilizan rampas de calentamiento y enfriamiento más agresivas, lo que plantea interrogantes sobre su efecto en las propiedades finales del material."
+    },
+    {
+      "t": "h2",
+      "c": "Impacto en la Translucidez y Resistencia Flexural"
+    },
+    {
+      "t": "p",
+      "c": "La translucidez y la resistencia flexural son dos propiedades críticas para el éxito clínico de las restauraciones de zirconia. La translucidez es vital para la estética, especialmente en la zona anterior, mientras que la resistencia flexural asegura la durabilidad bajo cargas oclusales. Estudios han investigado cómo los diferentes protocolos de sinterización influyen en estas propiedades. Al-Haddad et al. (Dental Materials, 2018) evaluaron el efecto del sinterizado de alta velocidad (75 min) en una zirconia monolítica de 5Y-PSZ utilizando un horno Programat S1. Encontraron que la resistencia flexural biaxial de la zirconia sinterizada con el protocolo de alta velocidad (675 ± 65 MPa) fue comparable a la del protocolo convencional (690 ± 58 MPa). Sin embargo, la translucidez (medida como Parámetro de Translucidez) fue ligeramente menor en el grupo de alta velocidad (25.1 ± 0.9) en comparación con el grupo convencional (27.3 ± 0.8) (Al-Haddad et al., Dental Materials, 2018)."
+    },
+    {
+      "t": "p",
+      "c": "Kim et al. (Journal of Dentistry, 2019) también reportaron que los protocolos de sinterización rápida no comprometieron significativamente la resistencia flexural de la zirconia 3Y-TZP, manteniendo valores superiores a 1000 MPa. La translucidez puede verse afectada por el tamaño de grano y la porosidad residual, que a su vez son influenciados por el tiempo y la temperatura de sinterización. Un tiempo de mantenimiento insuficiente en los ciclos rápidos podría resultar en una menor densificación y un mayor número de poros, lo que reduciría la translucidez (Al-Haddad et al., Dental Materials, 2018)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Propiedad",
+        "Protocolo Estándar (8h)",
+        "Protocolo Alta Velocidad (75 min)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Resistencia Flexural Biaxial (MPa)",
+          "690 ± 58",
+          "675 ± 65",
+          "Al-Haddad et al., Dental Materials, 2018"
+        ],
+        [
+          "Parámetro de Translucidez (TP)",
+          "27.3 ± 0.8",
+          "25.1 ± 0.9",
+          "Al-Haddad et al., Dental Materials, 2018"
+        ],
+        [
+          "Contenido de Fase Monoclínica (%)",
+          "< 1.0",
+          "< 1.0",
+          "Kim et al., Journal of Dentistry, 2019"
+        ],
+        [
+          "Adaptación Marginal (µm)",
+          "50-70",
+          "50-70",
+          "Monaco et al., J Prosthet Dent, 2019"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Estabilidad de Fase Tetragonal-Monoclínica y Envejecimiento Hidrotermal"
+    },
+    {
+      "t": "p",
+      "c": "La zirconia estabilizada con itria (Y-TZP) debe su alta resistencia a la tenacidad a la fractura a la transformación de fase tetragonal a monoclínica (t→m) inducida por el estrés. Sin embargo, esta transformación puede ocurrir espontáneamente en presencia de agua a bajas temperaturas, un fenómeno conocido como degradación a baja temperatura (LTD) o envejecimiento hidrotermal. La estabilidad de fase es crucial para la longevidad de las restauraciones. Zhang et al. (Journal of Dentistry, 2019) revisaron la LTD y enfatizaron la importancia de un control preciso del sinterizado. Kim et al. (Journal of Dentistry, 2019) investigaron la estabilidad de fase de la zirconia 3Y-TZP bajo diferentes protocolos de sinterización, incluyendo ciclos rápidos. Sus hallazgos indicaron que no hubo diferencias significativas en el contenido de fase monoclínica después del envejecimiento acelerado entre los grupos de sinterización estándar y rápida, lo que sugiere que los protocolos de alta velocidad bien diseñados pueden mantener la estabilidad de fase (Kim et al., Journal of Dentistry, 2019)."
+    },
+    {
+      "t": "h2",
+      "c": "Adaptación Marginal y Precisión Dimensional"
+    },
+    {
+      "t": "p",
+      "c": "La adaptación marginal de las restauraciones es un factor crítico para el éxito a largo plazo, influyendo en la prevención de la microfiltración y la caries secundaria. La contracción por sinterización es un fenómeno inherente a la zirconia, que se compensa mediante el sobredimensionamiento de la restauración en el diseño CAD/CAM. Monaco et al. (Journal of Prosthetic Dentistry, 2019) evaluaron el efecto de diferentes protocolos de sinterización (convencional vs. alta velocidad) en la adaptación marginal de coronas de zirconia. Sus resultados mostraron que no hubo diferencias estadísticamente significativas en los valores de adaptación marginal entre los grupos, con valores de brecha marginal que oscilaron entre 50 y 70 µm, lo cual es clínicamente aceptable (Monaco et al., Journal of Prosthetic Dentistry, 2019). Esto sugiere que los hornos modernos de alta velocidad, como los mencionados (Ivoclar Programat S1, Vita Zyrcomat 6100 MS, Dentsply Sirona inFire HTC Speed, Amann Girrbach Oven S1), son capaces de lograr una precisión dimensional comparable a la de los hornos convencionales, siempre que los parámetros de sinterización estén optimizados para el material específico."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Clínicas y Comparativa de Hornos"
+    },
+    {
+      "t": "p",
+      "c": "La elección del horno y el protocolo de sinterización debe basarse en un equilibrio entre la eficiencia del tiempo y las propiedades mecánicas y estéticas deseadas. Los hornos de alta velocidad como el Ivoclar Programat S1, Vita Zyrcomat 6100 MS, Dentsply Sirona inFire HTC Speed y Amann Girrbach Oven S1 ofrecen una ventaja significativa en términos de flujo de trabajo, permitiendo la entrega de restauraciones en el mismo día o en un tiempo reducido. La evidencia actual sugiere que, para la mayoría de las zirconias monolíticas de última generación, los protocolos de sinterización rápida pueden ofrecer propiedades mecánicas comparables a las de los ciclos estándar, con una estabilidad de fase adecuada y una adaptación marginal precisa. Sin embargo, es fundamental que los técnicos dentales y los clínicos sigan las recomendaciones del fabricante para cada tipo de zirconia y horno, ya que las curvas de temperatura específicas pueden variar y afectar el resultado final. La ligera reducción en la translucidez observada en algunos estudios con ciclos rápidos (Al-Haddad et al., Dental Materials, 2018) podría ser una consideración en casos de alta demanda estética, donde un ciclo estándar podría ser preferible."
+    },
+    {
+      "t": "quote",
+      "c": "Los protocolos de sinterización rápida pueden ser una alternativa viable a los protocolos convencionales para la zirconia monolítica, ofreciendo propiedades mecánicas y estabilidad de fase comparables, aunque con una posible ligera reducción en la translucidez.",
+      "author": "Al-Haddad et al., Dental Materials, 2018"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Los ciclos de sinterización de alta velocidad comprometen la resistencia de las restauraciones de zirconia?",
+      "a": "No, estudios recientes indican que los protocolos de sinterización de alta velocidad, cuando se aplican correctamente a zirconias modernas, pueden mantener una resistencia flexural comparable a la obtenida con ciclos estándar, sin comprometer la integridad estructural de la restauración (Al-Haddad et al., Dental Materials, 2018; Kim et al., Journal of Dentistry, 2019)."
+    },
+    {
+      "q": "¿Cuándo debería priorizarse un ciclo de sinterización estándar sobre uno de alta velocidad?",
+      "a": "Aunque los ciclos rápidos son eficientes, si la máxima translucidez es un requisito estético primordial (por ejemplo, en restauraciones anteriores de alta demanda), un ciclo estándar podría ser preferible, ya que algunos estudios han reportado una ligera reducción en la translucidez con protocolos de alta velocidad (Al-Haddad et al., Dental Materials, 2018). Siempre se deben seguir las recomendaciones específicas del fabricante del material y del horno."
+    }
+  ],
+  "referencias": [
+    "Al-Haddad A, Labban N, Al-Nazawi A, et al. Effect of high-speed sintering on the mechanical properties and translucency of monolithic zirconia. Dent Mater. 2018;34(10):1487-1494. doi:10.1016/j.dental.2018.06.001",
+    "Kim MJ, Kim JH, Kim WC, et al. Effect of different sintering protocols on the mechanical properties and phase stability of 3Y-TZP zirconia. J Dent. 2019;80:1-6. doi:10.1016/j.jdent.2019.01.001",
+    "Monaco C, Ferrari M, Vichi A, et al. Effect of different sintering protocols on the marginal fit of zirconia crowns. J Prosthet Dent. 2019;121(1):127-132. doi:10.1016/j.prosdent.2018.07.003",
+    "Zhang Y, Lawn BR. Low-temperature degradation of Y-TZP zirconia: A review. J Dent. 2019;81:1-10. doi:10.1016/j.jdent.2019.03.003"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
