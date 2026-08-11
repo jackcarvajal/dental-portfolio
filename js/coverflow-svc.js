@@ -20,7 +20,7 @@
 
     function spread() {
       var w = stage.clientWidth || 900;
-      return Math.max(92, Math.min(150, w * 0.17));
+      return Math.max(120, Math.min(190, w * 0.2));
     }
     function layout() {
       var S = spread();
@@ -29,17 +29,17 @@
         if (ad > 3) {
           c.style.opacity = 0;
           c.style.pointerEvents = 'none';
-          c.style.transform = 'translate(-50%,-50%) translateX(' + (d * S * 1.25) + 'px) translateZ(-620px)';
+          c.style.transform = 'translate(-50%,-50%) translateX(' + (d * S * 1.25) + 'px) translateZ(-640px)';
           c.classList.remove('cf-active');
           c.setAttribute('aria-hidden', 'true');
           continue;
         }
         var x = d * S;
-        var z = -ad * 145;
-        var rot = Math.max(-55, Math.min(55, -d * 38));
-        var sc = d === 0 ? 1 : 0.8;
+        var z = -ad * 120;
+        var rot = Math.max(-50, Math.min(50, -d * 34));
+        var sc = d === 0 ? 1 : 0.86;
         c.style.transform = 'translate(-50%,-50%) translateX(' + x + 'px) translateZ(' + z + 'px) rotateY(' + rot + 'deg) scale(' + sc + ')';
-        c.style.opacity = d === 0 ? 1 : (ad === 1 ? 0.6 : 0.32);
+        c.style.opacity = d === 0 ? 1 : (ad === 1 ? 0.72 : 0.42);
         c.style.zIndex = 100 - ad;
         c.style.pointerEvents = 'auto';
         c.setAttribute('aria-hidden', d === 0 ? 'false' : 'true');

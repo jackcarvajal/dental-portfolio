@@ -1630,19 +1630,23 @@
 @media(prefers-reduced-motion:reduce){ .idx-svc-card::before { display:none; } }
 /* ── Coverflow de servicios (3D) ── */
 .svc-carousel-wrap { position:relative; }
-.svc-coverflow { position:relative; height:238px; perspective:1200px; overflow:hidden; touch-action:pan-y; cursor:grab; outline:none; }
+.svc-coverflow { position:relative; height:300px; perspective:1300px; overflow:hidden; touch-action:pan-y; cursor:grab; outline:none; }
 .svc-coverflow.grabbing { cursor:grabbing; }
 .svc-coverflow .idx-svc-card {
-  position:absolute; top:50%; left:50%; width:212px; min-height:130px; margin:0;
+  position:absolute; top:50%; left:50%; width:252px; min-height:174px; margin:0; padding:24px 22px !important; gap:8px !important;
   justify-content:center; align-items:center; text-align:center;
+  background:linear-gradient(165deg,#12203a,#0a1220) !important; border-radius:18px !important;
+  box-shadow:0 8px 26px rgba(0,0,0,.4);
   transform:translate(-50%,-50%); transform-origin:center center; backface-visibility:hidden;
   transition:transform .55s cubic-bezier(.2,.7,.2,1), opacity .55s, box-shadow .3s; will-change:transform,opacity;
 }
-.svc-coverflow .idx-svc-card i { margin-bottom:2px; }
-.svc-coverflow .idx-svc-card.cf-active { box-shadow:0 18px 50px rgba(0,0,0,.55); }
+.svc-coverflow .idx-svc-card i { font-size:2.1rem !important; margin-bottom:8px; }
+.svc-coverflow .idx-svc-card strong { font-size:1.02rem !important; }
+.svc-coverflow .idx-svc-card span { font-size:.82rem !important; color:#b6c2d4 !important; }
+.svc-coverflow .idx-svc-card.cf-active { box-shadow:0 26px 64px rgba(0,0,0,.6), 0 0 0 1.5px rgba(217,70,166,.55), 0 0 44px rgba(217,70,166,.22); }
 .svc-coverflow:focus-visible { box-shadow:0 0 0 2px rgba(212,175,55,.5) inset; border-radius:16px; }
 @media(prefers-reduced-motion:reduce){ .svc-coverflow .idx-svc-card { transition:none; } }
-@media(max-width:600px){ .svc-coverflow { height:224px; } .svc-coverflow .idx-svc-card { width:184px; } }
+@media(max-width:600px){ .svc-coverflow { height:272px; } .svc-coverflow .idx-svc-card { width:214px; min-height:160px; } }
 .svc-nav { display:flex; justify-content:center; gap:12px; margin-top:18px; }
 .unete-card { transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease; }
 .unete-card:hover { transform:translateY(-4px); box-shadow:0 14px 34px rgba(0,0,0,.4); }
@@ -1810,7 +1814,7 @@
             </div>
         </div>
     </section>
-    <script src="js/coverflow-svc.js?v=20260810" defer></script>
+    <script src="js/coverflow-svc.js?v=20260810b" defer></script>
 
     <section id="portfolio">
         <div class="container">
