@@ -11,7 +11,7 @@
   function init() {
     var stage = document.getElementById('svc-carousel');
     if (!stage) return;
-    var cards = [].slice.call(stage.querySelectorAll('.idx-svc-card'));
+    var cards = [].slice.call(stage.querySelectorAll('.idx-svc-card, .svc-card'));
     if (!cards.length) return;
     var prev = document.getElementById('svc-prev');
     var next = document.getElementById('svc-next');
