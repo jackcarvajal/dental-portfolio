@@ -174,7 +174,7 @@ if(window.ProdigyAuth){
             </button>
             
             <!-- Botón Theme Toggle -->
-            <button type="button" class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Cambiar tema">
+            <button type="button" class="theme-toggle theme-btn" onclick="toggleTheme()" title="Cambiar tema">
                 🌙
             </button>
             
@@ -1199,12 +1199,12 @@ if(window.ProdigyAuth){
         });
         function toggleTheme() {
             const light = document.body.classList.toggle('light-theme');
-            document.querySelectorAll('[id="theme-btn"]').forEach(b => b.textContent = light ? '☀️' : '🌙');
+            document.querySelectorAll('.theme-btn').forEach(b => b.textContent = light ? '☀️' : '🌙');
             localStorage.setItem('theme', light ? 'light' : 'dark');
         }
         if (localStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-theme');
-            setTimeout(() => { document.querySelectorAll('[id="theme-btn"]').forEach(b => b.textContent = '☀️'); }, 0);
+            setTimeout(() => { document.querySelectorAll('.theme-btn').forEach(b => b.textContent = '☀️'); }, 0);
         }
 
         /* ── BORRADOR flujo-impresion ─────────────────────────── */
@@ -1233,7 +1233,7 @@ if(window.ProdigyAuth){
 
     <div class="ux-floaters">
         <button type="button" class="ux-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></button>
-        <button type="button" class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro" aria-label="Modo claro/oscuro">🌙</button>
+        <button type="button" class="ux-btn theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro" aria-label="Modo claro/oscuro">🌙</button>
         <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte." class="ux-btn" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);"><i class="fab fa-whatsapp" aria-hidden="true" style="color:#25D366;"></i></a>
     </div>
 
