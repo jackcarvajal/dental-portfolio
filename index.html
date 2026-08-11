@@ -1644,6 +1644,10 @@
 @media(prefers-reduced-motion:reduce){ .svc-coverflow .idx-svc-card { transition:none; } }
 @media(max-width:600px){ .svc-coverflow { height:224px; } .svc-coverflow .idx-svc-card { width:184px; } }
 .svc-nav { display:flex; justify-content:center; gap:12px; margin-top:18px; }
+.unete-card { transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease; }
+.unete-card:hover { transform:translateY(-4px); box-shadow:0 14px 34px rgba(0,0,0,.4); }
+.unete-ico { transition:transform .22s ease; }
+.unete-card:hover .unete-ico { transform:scale(1.15) rotate(-4deg); }
 .svc-nav-btn { width:42px; height:42px; border-radius:50%; border:1px solid rgba(212,175,55,.25); background:#0d1520; color:#D4AF37; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .2s,background .2s,opacity .2s; font-size:1rem; }
 .svc-nav-btn:hover:not(:disabled) { border-color:rgba(212,175,55,.6); background:rgba(212,175,55,.08); }
 .svc-nav-btn:disabled { opacity:.3; cursor:default; }
@@ -1888,7 +1892,7 @@
                     <div class="step-number" style="background: linear-gradient(135deg, #D4AF37, #F4C430); color: #000; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: 900; font-size: 1.5rem;">2</div>
                     <div class="step-icon">📤</div>
                     <h3>Subes Archivos</h3>
-                    <p>Envía por Drive, WhatsApp o WeTransfer. Servicio disponible 24/7.</p>
+                    <p>Regístrate y sube tu caso directo en nuestra plataforma. Disponible 24/7.</p>
                 </div>
 
                 <!-- PASO 3 -->
@@ -1995,60 +1999,60 @@
             <!-- ============================================
          SECCIÓN: CANALES DE ENVÍO (CAJONES ORIGINALES)
          ============================================ -->
-            <section class="canales-envio-persuasive" style="background: radial-gradient(ellipse at center, #FFD700 0%, #D4AF37 50%, #B8860B 100%); padding: 55px 0; position: relative; overflow: hidden; margin: 25px 0 0 0;">
+            <section class="unete-prodigy" style="background:linear-gradient(180deg,#080c16 0%,#0b1220 100%);padding:64px 24px;position:relative;overflow:hidden;border-top:1px solid rgba(217,70,166,.15);border-bottom:1px solid rgba(217,70,166,.15);margin:25px 0 0 0;">
+                <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 18% 0%,rgba(217,70,166,.12),transparent 55%),radial-gradient(ellipse at 92% 100%,rgba(212,175,55,.08),transparent 50%);pointer-events:none;"></div>
+                <div class="container" style="position:relative;z-index:1;max-width:1080px;">
+                    <div style="text-align:center;margin-bottom:38px;">
+                        <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.35);color:#e07cc4;font-size:.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:100px;margin-bottom:16px;"><i class="fas fa-cloud-arrow-up"></i> Nuestro sistema · sin terceros</span>
+                        <h2 style="font-size:clamp(1.7rem,4.2vw,2.7rem);font-weight:900;color:#fff;margin-bottom:12px;line-height:1.15;">Crea tu cuenta y envía tu<br><span style="background:linear-gradient(90deg,#D946A6,#D4AF37);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">primer caso hoy</span></h2>
+                        <p style="color:#94a3b8;font-size:.98rem;max-width:600px;margin:0 auto;line-height:1.7;">Nada de enlaces sueltos por Drive o WeTransfer. Subes tu escaneo directo en la plataforma y controlas todo el proceso — cotización, diseño, revisión y entrega — desde un solo lugar.</p>
+                    </div>
 
-                <div class="container">
-                    <h2 style="text-align: center; font-size: 2.2rem; font-weight: 900; color: #000; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1;">
-                        SELECCIONA TU CANAL DE ENVÍO
-                    </h2>
-                    <p style="text-align:center; color:#3a2a00; font-size:0.9rem; margin-bottom:36px; position:relative; z-index:1; font-weight:600;">Lo ideal: <strong>regístrate y sube tu caso en nuestro sistema</strong> — más rápido, ordenado y con seguimiento en vivo. ¿No tienes cuenta o necesitas ayuda? Te guiamos por WhatsApp · 24/7</p>
+                    <!-- Beneficios de trabajar con nosotros -->
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-bottom:40px;">
+                        <div class="unete-card" style="background:rgba(13,21,37,.85);border:1px solid rgba(217,70,166,.18);border-radius:16px;padding:22px;">
+                            <div class="unete-ico" style="font-size:1.5rem;color:#D946A6;margin-bottom:10px;"><i class="fas fa-satellite-dish"></i></div>
+                            <h3 style="font-size:.95rem;font-weight:800;color:#f8fafc;margin-bottom:6px;">Seguimiento en vivo</h3>
+                            <p style="font-size:.82rem;color:#94a3b8;line-height:1.6;">Ves el estado real de tu caso — del escaneo a la entrega — sin preguntar por WhatsApp.</p>
+                        </div>
+                        <div class="unete-card" style="background:rgba(13,21,37,.85);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:22px;">
+                            <div class="unete-ico" style="font-size:1.5rem;color:#D4AF37;margin-bottom:10px;"><i class="fas fa-bolt"></i></div>
+                            <h3 style="font-size:.95rem;font-weight:800;color:#f8fafc;margin-bottom:6px;">Cotización automática</h3>
+                            <p style="font-size:.82rem;color:#94a3b8;line-height:1.6;">Precio claro al instante al subir tu caso. Sin esperar respuestas ni regateos.</p>
+                        </div>
+                        <div class="unete-card" style="background:rgba(13,21,37,.85);border:1px solid rgba(0,210,255,.18);border-radius:16px;padding:22px;">
+                            <div class="unete-ico" style="font-size:1.5rem;color:#00d2ff;margin-bottom:10px;"><i class="fas fa-user-doctor"></i></div>
+                            <h3 style="font-size:.95rem;font-weight:800;color:#f8fafc;margin-bottom:6px;">Criterio clínico real</h3>
+                            <p style="font-size:.82rem;color:#94a3b8;line-height:1.6;">Diseñadores que entienden oclusión, márgenes y estética — no solo operan software.</p>
+                        </div>
+                        <div class="unete-card" style="background:rgba(13,21,37,.85);border:1px solid rgba(74,222,128,.18);border-radius:16px;padding:22px;">
+                            <div class="unete-ico" style="font-size:1.5rem;color:#4ade80;margin-bottom:10px;"><i class="fas fa-clock"></i></div>
+                            <h3 style="font-size:.95rem;font-weight:800;color:#f8fafc;margin-bottom:6px;">Entrega 24–72h</h3>
+                            <p style="font-size:.82rem;color:#94a3b8;line-height:1.6;">Según complejidad, con vista previa y revisión incluida antes de la entrega final.</p>
+                        </div>
+                        <div class="unete-card" style="background:rgba(13,21,37,.85);border:1px solid rgba(217,70,166,.18);border-radius:16px;padding:22px;">
+                            <div class="unete-ico" style="font-size:1.5rem;color:#D946A6;margin-bottom:10px;"><i class="fas fa-handshake"></i></div>
+                            <h3 style="font-size:.95rem;font-weight:800;color:#f8fafc;margin-bottom:6px;">Sin contratos</h3>
+                            <p style="font-size:.82rem;color:#94a3b8;line-height:1.6;">Pagas solo por lo que usas. Sin mensualidades, sin mínimos, sin exclusividad.</p>
+                        </div>
+                        <div class="unete-card" style="background:rgba(13,21,37,.85);border:1px solid rgba(212,175,55,.18);border-radius:16px;padding:22px;">
+                            <div class="unete-ico" style="font-size:1.5rem;color:#D4AF37;margin-bottom:10px;"><i class="fas fa-folder-open"></i></div>
+                            <h3 style="font-size:.95rem;font-weight:800;color:#f8fafc;margin-bottom:6px;">Historial de tus casos</h3>
+                            <p style="font-size:.82rem;color:#94a3b8;line-height:1.6;">Todos tus pedidos guardados. Re-ordena un caso recurrente en un solo clic.</p>
+                        </div>
+                    </div>
 
-                    <div class="cajones-persuasive-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1280px; margin: 0 auto; position: relative; z-index: 1;">
-
-                        <!-- CAJÓN 1: WHATSAPP -->
-                        <a href="#" onclick="abrirModalCanal('wa','https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20enviar%20archivos%20STL.%20Soy%20{nombre}.'); return false;" class="cajon-persuasive cajon-whatsapp" target="_blank" rel="noopener noreferrer" style="background: #0a0f0a; border: 2px solid #25D366; border-radius: 18px; padding: 32px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.35s ease; box-shadow: 0 6px 25px rgba(37,211,102,0.25); display: block;">
-                            <div style="width:72px;height:72px;margin:0 auto 18px;background:rgba(37,211,102,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(37,211,102,0.5);">
-                                <i class="fab fa-whatsapp" style="font-size:2.4rem;color:#25D366;filter:drop-shadow(0 0 10px rgba(37,211,102,0.7));"></i>
-                            </div>
-                            <h3 style="font-size:1rem;font-weight:900;margin-bottom:10px;color:#25D366;text-transform:uppercase;letter-spacing:1px;">WhatsApp</h3>
-                            <p style="font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.6;margin-bottom:20px;min-height:54px;">Envía tus archivos STL directamente. Respuesta inmediata en horario hábil.</p>
-                            <div style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.55);color:#25D366;border-radius:40px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;">Enviar ahora <i class="fas fa-arrow-right" style="font-size:9px;"></i></div>
+                    <!-- CTA -->
+                    <div style="text-align:center;">
+                        <a href="/flujo-diseno" class="hover-btn-mg" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;text-decoration:none;border-radius:14px;padding:17px 34px;font-size:1.05rem;font-weight:800;box-shadow:0 10px 32px rgba(217,70,166,.35);">
+                            <i class="fas fa-cloud-arrow-up" style="font-size:1.25rem;"></i> Registrarme y enviar mi primer caso
                         </a>
-
-                        <!-- CAJÓN 2: GOOGLE DRIVE -->
-                        <a href="#" onclick="abrirModalCanal('drive','https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20expliquen%20c%C3%B3mo%20abrir%20mi%20cuenta%20y%20subir%20mis%20archivos%20en%20su%20sistema.'); return false;" class="cajon-persuasive cajon-drive" style="background: #080d14; border: 2px solid #4285F4; border-radius: 18px; padding: 32px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.35s ease; box-shadow: 0 6px 25px rgba(66,133,244,0.25); display: block;">
-                            <div style="width:72px;height:72px;margin:0 auto 18px;background:rgba(66,133,244,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(66,133,244,0.5);">
-                                <i class="fab fa-google-drive" style="font-size:2.4rem;color:#4285F4;filter:drop-shadow(0 0 10px rgba(66,133,244,0.7));"></i>
-                            </div>
-                            <h3 style="font-size:1rem;font-weight:900;margin-bottom:10px;color:#4d9fff;text-transform:uppercase;letter-spacing:1px;">Google Drive</h3>
-                            <p style="font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.6;margin-bottom:20px;min-height:54px;">Sube tus archivos pesados a Drive y comparte el enlace. Sin límite de tamaño.</p>
-                            <div style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:rgba(66,133,244,0.15);border:1px solid rgba(66,133,244,0.55);color:#4d9fff;border-radius:40px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;">Subir a Drive <i class="fas fa-arrow-right" style="font-size:9px;"></i></div>
-                        </a>
-
-                        <!-- CAJÓN 3: WETRANSFER -->
-                        <a href="#" onclick="abrirModalCanal('we','https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20expliquen%20c%C3%B3mo%20abrir%20mi%20cuenta%20y%20subir%20mis%20archivos%20en%20su%20sistema.'); return false;" class="cajon-persuasive cajon-wetransfer" style="background: #080d14; border: 2px solid #409FFF; border-radius: 18px; padding: 32px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.35s ease; box-shadow: 0 6px 25px rgba(64,159,255,0.25); display: block;">
-                            <div style="width:72px;height:72px;margin:0 auto 18px;background:rgba(64,159,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(64,159,255,0.5);">
-                                <svg width="38" height="38" viewBox="0 0 100 100" style="filter:drop-shadow(0 0 10px rgba(64,159,255,0.7));">
-                                    <circle cx="50" cy="50" r="46" fill="#409FFF"/>
-                                    <text x="50" y="58" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="30" fill="#fff">We</text>
-                                </svg>
-                            </div>
-                            <h3 style="font-size:1rem;font-weight:900;margin-bottom:10px;color:#5ab4ff;text-transform:uppercase;letter-spacing:1px;">WeTransfer</h3>
-                            <p style="font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.6;margin-bottom:20px;min-height:54px;">Transferencia directa de hasta 2 GB. Sin cuenta, sin complicaciones.</p>
-                            <div style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:rgba(64,159,255,0.15);border:1px solid rgba(64,159,255,0.55);color:#5ab4ff;border-radius:40px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;">Enviar por We <i class="fas fa-arrow-right" style="font-size:9px;"></i></div>
-                        </a>
-
-                        <!-- CAJÓN 4: BUZÓN DROPBOX PRODIGY (NUEVO) -->
-                        <a href="/flujo-diseno" class="cajon-persuasive cajon-dropbox" style="background: linear-gradient(160deg,#0a1424,#0d1b30); border: 2px solid #D946A6; border-radius: 18px; padding: 32px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.35s ease; box-shadow: 0 6px 28px rgba(217,70,166,0.3); display: block; position:relative;">
-                            <div style="position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#D946A6,#D4AF37);color:#000;font-size:9px;font-weight:900;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;">Recomendado</div>
-                            <div style="width:72px;height:72px;margin:0 auto 18px;background:rgba(217,70,166,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(217,70,166,0.5);">
-                                <i class="fas fa-cloud-arrow-up" style="font-size:2.2rem;color:#D946A6;filter:drop-shadow(0 0 10px rgba(217,70,166,0.7));"></i>
-                            </div>
-                            <h3 style="font-size:1rem;font-weight:900;margin-bottom:10px;color:#e07cc4;text-transform:uppercase;letter-spacing:1px;">Nuestro sistema</h3>
-                            <p style="font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.6;margin-bottom:20px;min-height:54px;">Regístrate y sube tu caso directo en nuestra plataforma — rápido, seguro y con seguimiento en vivo.</p>
-                            <div style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:rgba(217,70,166,0.15);border:1px solid rgba(217,70,166,0.55);color:#e07cc4;border-radius:40px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;">Registrarme y pedir <i class="fas fa-arrow-right" style="font-size:9px;"></i></div>
-                        </a>
-
+                        <p style="margin-top:14px;font-size:.82rem;color:#94a3b8;">¿Ya tienes cuenta? <a href="app/login.html" style="color:#e07cc4;text-decoration:none;font-weight:700;">Acceder al portal →</a></p>
+                        <div style="display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-top:18px;font-size:.76rem;color:#64748b;">
+                            <span><i class="fas fa-check" style="color:#4ade80;"></i> Registro gratis</span>
+                            <span><i class="fas fa-check" style="color:#4ade80;"></i> Cotización automática</span>
+                            <span><i class="fas fa-check" style="color:#4ade80;"></i> Seguimiento en vivo</span>
+                        </div>
                     </div>
                 </div>
             </section>
