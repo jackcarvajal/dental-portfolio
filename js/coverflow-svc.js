@@ -1,18 +1,22 @@
 /* coverflow-svc.js — coverflow 3D para las tarjetas de servicios (vanilla, self-contained)
    Adaptación a Vanilla del componente React "coverflow-carousel".
    Estructura esperada:
-     <div class="svc-coverflow" id="svc-carousel"> <a class="idx-svc-card">…</a> … </div>
+     <div class="svc-coverflow" id="svc-carousel"> <a class="idx-svc-card" data-cat="…">…</a> … </div>
      <button id="svc-prev"> <button id="svc-next">
    · la tarjeta central va al frente y navega al hacer click
    · las laterales rotan/retroceden; click en una lateral la trae al centro
    · flechas prev/next, teclado ←/→, arrastre/swipe
+   · FILTRO POR CATEGORÍA (opcional): botones .svc-chip[data-cat] filtran las tarjetas
+     por su atributo data-cat (multi-valor separado por espacios). Retro-compatible:
+     si no hay chips, se comporta como antes.
    · respeta prefers-reduced-motion (sin transición) */
 (function () {
   function init() {
     var stage = document.getElementById('svc-carousel');
     if (!stage) return;
-    var cards = [].slice.call(stage.querySelectorAll('.idx-svc-card, .svc-card'));
-    if (!cards.length) return;
+    var all = [].slice.call(stage.querySelectorAll('.idx-svc-card, .svc-card'));
+    if (!all.length) return;
+    var cards = all;              // vista actual (puede ser un subconjunto filtrado)
     var prev = document.getElementById('svc-prev');
     var next = document.getElementById('svc-next');
     var active = 0;
@@ -52,17 +56,61 @@
       active = Math.max(0, Math.min(cards.length - 1, i));
       layout();
     }
+    function center() { active = cards.length ? Math.floor((cards.length - 1) / 2) : 0; }
 
-    cards.forEach(function (c, i) {
+    // Filtro por categoría (data-cat multi-valor). cat vacío o 'todos' → todas.
+    function setFilter(cat) {
+      cards = (!cat || cat === 'todos') ? all : all.filter(function (c) {
+        return (' ' + (c.dataset.cat || '') + ' ').indexOf(' ' + cat + ' ') > -1;
+      });
+      // ocultar las tarjetas fuera de la vista
+      all.forEach(function (c) {
+        if (cards.indexOf(c) === -1) {
+          c.style.opacity = 0;
+          c.style.pointerEvents = 'none';
+          c.style.transform = 'translate(-50%,-50%) translateZ(-900px)';
+          c.setAttribute('aria-hidden', 'true');
+          c.classList.remove('cf-active');
+        }
+      });
+      center();
+      layout();
+    }
+
+    // click: índice dinámico contra la vista actual
+    all.forEach(function (c) {
       c.addEventListener('click', function (e) {
-        // recién arrastramos → no navegar
-        if (Date.now() - swipedAt < 250) { e.preventDefault(); return; }
-        // no es la central → traerla al centro en vez de navegar
+        if (Date.now() - swipedAt < 250) { e.preventDefault(); return; } // recién arrastramos
+        var i = cards.indexOf(this);
+        if (i === -1) { e.preventDefault(); return; } // no visible en el filtro actual
         if (i !== active) { e.preventDefault(); setActive(i); }
       });
     });
     if (prev) prev.addEventListener('click', function () { setActive(active - 1); });
     if (next) next.addEventListener('click', function () { setActive(active + 1); });
+
+    // Chips de categoría (opcional)
+    var chips = [].slice.call(document.querySelectorAll('.svc-chip'));
+    if (chips.length) {
+      var cta = document.getElementById('svc-flow-cta');
+      chips.forEach(function (ch) {
+        ch.addEventListener('click', function () {
+          chips.forEach(function (x) { x.classList.remove('active'); x.setAttribute('aria-pressed', 'false'); });
+          ch.classList.add('active'); ch.setAttribute('aria-pressed', 'true');
+          setFilter(ch.dataset.cat);
+          if (cta) {
+            if (ch.dataset.flow) {
+              cta.href = ch.dataset.flow;
+              var lbl = cta.querySelector('span');
+              if (lbl) lbl.textContent = 'Pedir por ' + (ch.dataset.flowlabel || 'este flujo');
+              cta.style.display = '';
+            } else {
+              cta.style.display = 'none';
+            }
+          }
+        });
+      });
+    }
 
     stage.tabIndex = 0;
     stage.setAttribute('role', 'listbox');
@@ -84,6 +132,7 @@
 
     var rt;
     window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(layout, 120); });
+    center();
     layout();
   }
   if (document.readyState !== 'loading') init();

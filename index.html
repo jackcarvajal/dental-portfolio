@@ -1654,6 +1654,12 @@
 .svc-nav-btn { width:42px; height:42px; border-radius:50%; border:1px solid rgba(212,175,55,.25); background:#0d1520; color:#D4AF37; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .2s,background .2s,opacity .2s; font-size:1rem; }
 .svc-nav-btn:hover:not(:disabled) { border-color:rgba(212,175,55,.6); background:rgba(212,175,55,.08); }
 .svc-nav-btn:disabled { opacity:.3; cursor:default; }
+.svc-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:26px; }
+.svc-chip { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); color:#cbd5e1; border-radius:100px; padding:7px 16px; font-size:.82rem; font-weight:700; font-family:inherit; cursor:pointer; transition:background .2s,border-color .2s,color .2s; }
+.svc-chip:hover { border-color:rgba(217,70,166,.4); color:#fff; }
+.svc-chip.active { background:linear-gradient(135deg,#D946A6,#9333ea); border-color:transparent; color:#fff; }
+.svc-flow-cta { display:inline-flex; align-items:center; gap:8px; margin-top:18px; background:rgba(217,70,166,.12); border:1px solid rgba(217,70,166,.4); color:#e07cc4; text-decoration:none; border-radius:100px; padding:10px 22px; font-size:.85rem; font-weight:800; transition:background .2s; }
+.svc-flow-cta:hover { background:rgba(217,70,166,.22); }
 @media(prefers-reduced-motion:reduce){ .svc-carousel { scroll-behavior:auto; } }
 </style>
 
@@ -1743,64 +1749,71 @@
         <div class="container">
             <h2 class="section-header" data-i18n="index.srv.title">Servicios de Laboratorio Digital</h2>
             <p class="section-subtitle" style="text-align:center;color:#94a3b8;margin-bottom:36px;font-size:.95rem;">Fresado CAD/CAM, impresión 3D y diseño digital en Bogotá. Entrega 24–72h.</p>
+            <div class="svc-chips" role="group" aria-label="Filtrar servicios por flujo">
+              <button type="button" class="svc-chip active" data-cat="todos" aria-pressed="true">Todos</button>
+              <button type="button" class="svc-chip" data-cat="diseno" data-flow="/flujo-diseno" data-flowlabel="flujo de Diseño CAD" aria-pressed="false">Diseño CAD</button>
+              <button type="button" class="svc-chip" data-cat="fresado" data-flow="/flujo-fresado" data-flowlabel="flujo de Fresado" aria-pressed="false">Fresado</button>
+              <button type="button" class="svc-chip" data-cat="impresion" data-flow="/flujo-impresion" data-flowlabel="flujo de Impresión 3D" aria-pressed="false">Impresión 3D</button>
+              <button type="button" class="svc-chip" data-cat="lab" data-flow="/flujo-lab" data-flowlabel="flujo Lab Full" aria-pressed="false">Lab Full</button>
+            </div>
             <div class="svc-carousel-wrap">
             <div class="svc-coverflow" id="svc-carousel">
-              <a href="flujo-fresado" class="idx-svc-card idx-svc-card-gold">
+              <a href="flujo-fresado" class="idx-svc-card idx-svc-card-gold" data-cat="fresado lab">
                 <i class="fas fa-crown" style="font-size:1.35rem;color:#D4AF37" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Coronas & Puentes</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Zirconio · e.max · PFM</span>
               </a>
-              <a href="puentes-dentales" class="idx-svc-card idx-svc-card-pink">
+              <a href="puentes-dentales" class="idx-svc-card idx-svc-card-pink" data-cat="fresado lab">
                 <i class="fas fa-bridge" style="font-size:1.35rem;color:#D946A6" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Puentes Dentales</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">3–6 unidades · implante</span>
               </a>
-              <a href="implante-dental-unitario" class="idx-svc-card idx-svc-card-pink">
+              <a href="implante-dental-unitario" class="idx-svc-card idx-svc-card-pink" data-cat="diseno fresado lab">
                 <i class="fas fa-tooth" style="font-size:1.35rem;color:#D946A6" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Corona sobre Implante</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Cualquier plataforma</span>
               </a>
-              <a href="full-arch-digital" class="idx-svc-card idx-svc-card-pink">
+              <a href="full-arch-digital" class="idx-svc-card idx-svc-card-pink" data-cat="diseno lab">
                 <i class="fas fa-bezier-curve" style="font-size:1.35rem;color:#D946A6" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Full Arch Digital</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">All-on-4 · All-on-6</span>
               </a>
-              <a href="carillas-porcelana" class="idx-svc-card idx-svc-card-pink">
+              <a href="carillas-porcelana" class="idx-svc-card idx-svc-card-pink" data-cat="diseno fresado lab">
                 <i class="fas fa-wand-magic-sparkles" style="font-size:1.35rem;color:#D946A6" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Carillas de Porcelana</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">e.max · Feldespática</span>
               </a>
-              <a href="guias-quirurgicas" class="idx-svc-card idx-svc-card-pink">
+              <a href="guias-quirurgicas" class="idx-svc-card idx-svc-card-pink" data-cat="diseno">
                 <i class="fas fa-crosshairs" style="font-size:1.35rem;color:#D946A6" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Guías Quirúrgicas</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Dento · Muco · Óseo</span>
               </a>
-              <a href="alineadores-cad" class="idx-svc-card idx-svc-card-pink">
+              <a href="alineadores-cad" class="idx-svc-card idx-svc-card-pink" data-cat="diseno">
                 <i class="fas fa-grip-lines" style="font-size:1.35rem;color:#D946A6" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Alineadores CAD</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Setup Exocad Ortho</span>
               </a>
-              <a href="modelo-estudio" class="idx-svc-card idx-svc-card-pink">
+              <a href="modelo-estudio" class="idx-svc-card idx-svc-card-pink" data-cat="impresion">
                 <i class="fas fa-cube" style="font-size:1.35rem;color:#D946A6" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Modelos de Estudio</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Impresión 3D · 50 micras</span>
               </a>
-              <a href="ferulas-oclusales" class="idx-svc-card idx-svc-card-pink">
+              <a href="ferulas-oclusales" class="idx-svc-card idx-svc-card-pink" data-cat="impresion">
                 <i class="fas fa-shield-halved" style="font-size:1.35rem;color:#D946A6" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Férulas Oclusales</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Michigan · Resina 3D</span>
               </a>
-              <a href="encerado-diagnostico" class="idx-svc-card idx-svc-card-pink">
+              <a href="encerado-diagnostico" class="idx-svc-card idx-svc-card-pink" data-cat="diseno">
                 <i class="fas fa-palette" style="font-size:1.35rem;color:#D946A6" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Encerado Diagnóstico</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Wax-up digital CAD</span>
               </a>
-              <a href="blanqueamiento-dental" class="idx-svc-card idx-svc-card-pink">
+              <a href="blanqueamiento-dental" class="idx-svc-card idx-svc-card-pink" data-cat="impresion">
                 <i class="fas fa-lightbulb" style="font-size:1.35rem;color:#D946A6" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;">Bandejas Blanqueamiento</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">EVA 1mm/2mm · 24h</span>
               </a>
-              <a href="calculadora-fresado" class="idx-svc-card idx-svc-card-cyan">
+              <a href="calculadora-fresado" class="idx-svc-card idx-svc-card-cyan" data-cat="diseno fresado impresion lab">
                 <i class="fas fa-calculator" style="font-size:1.35rem;color:#00d2ff" aria-hidden="true"></i>
                 <strong style="font-size:.88rem;color:#00d2ff;">Calculadora de Precios</strong>
                 <span style="font-size:.75rem;color:#94a3b8;">Cotiza en tiempo real</span>
@@ -1810,10 +1823,13 @@
               <button class="svc-nav-btn" id="svc-prev" type="button" aria-label="Servicios anteriores"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
               <button class="svc-nav-btn" id="svc-next" type="button" aria-label="Servicios siguientes"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
             </div>
+            <div style="text-align:center;">
+              <a id="svc-flow-cta" class="svc-flow-cta" href="/flujo-diseno" style="display:none;"><i class="fas fa-bolt" aria-hidden="true"></i> <span>Pedir por flujo</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
             </div>
         </div>
     </section>
-    <script src="js/coverflow-svc.js?v=20260810b" defer></script>
+    <script src="js/coverflow-svc.js?v=20260811" defer></script>
 
     <section id="portfolio">
         <div class="container">
