@@ -2104,42 +2104,6 @@
                 box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
             }
 
-            .cajon-whatsapp:hover {
-                border-color: #128C7E;
-                box-shadow: 0 15px 45px rgba(37, 211, 102, 0.6);
-            }
-
-            .cajon-whatsapp:hover i {
-                color: #128C7E;
-            }
-
-            .cajon-drive:hover {
-                border-color: #5a9bfc;
-                box-shadow: 0 15px 45px rgba(66, 133, 244, 0.6);
-            }
-
-            .cajon-drive:hover i {
-                color: #5a9bfc;
-            }
-
-            .cajon-wetransfer:hover {
-                border-color: #5ab4ff;
-                box-shadow: 0 15px 45px rgba(64, 159, 255, 0.6);
-            }
-
-            .cajon-wetransfer:hover svg circle {
-                fill: #5ab4ff;
-            }
-
-            .cajon-dropbox:hover {
-                border-color: #3a8fff;
-                box-shadow: 0 15px 45px rgba(0, 97, 255, 0.6);
-            }
-
-            .cajon-dropbox:hover svg {
-                filter: drop-shadow(0 0 14px rgba(0,97,255,1)) !important;
-            }
-
             /* Hover effects para botones WhatsApp */
             .whatsapp-btn-card:hover {
                 transform: translateY(-5px);
@@ -3328,51 +3292,6 @@
         }
 
         /* ══════════════════════════════════════════════════
-           CAJONES ENVÍO — glow en color propio (fresado/impresión)
-           ══════════════════════════════════════════════════ */
-        /* Banner etiqueta sobre la sección */
-        .canales-envio-persuasive::before {
-            content: '⚡ SUBE TU CASO · FRESADO & IMPRESIÓN';
-            display: block;
-            text-align: center;
-            font-size: 0.72rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #000;
-            opacity: 0.55;
-            margin-bottom: -24px;
-            padding-top: 10px;
-        }
-
-        @keyframes glowGreen {
-            0%, 100% { box-shadow: 0 6px 25px rgba(37,211,102,0.25), 0 0 0 0 rgba(37,211,102,0.5); }
-            50%       { box-shadow: 0 10px 40px rgba(37,211,102,0.55), 0 0 0 10px rgba(37,211,102,0); }
-        }
-        @keyframes glowBlue {
-            0%, 100% { box-shadow: 0 6px 25px rgba(66,133,244,0.25), 0 0 0 0 rgba(66,133,244,0.5); }
-            50%       { box-shadow: 0 10px 40px rgba(66,133,244,0.55), 0 0 0 10px rgba(66,133,244,0); }
-        }
-        @keyframes glowCyan {
-            0%, 100% { box-shadow: 0 6px 25px rgba(90,180,255,0.25), 0 0 0 0 rgba(90,180,255,0.5); }
-            50%       { box-shadow: 0 10px 40px rgba(90,180,255,0.55), 0 0 0 10px rgba(90,180,255,0); }
-        }
-        @keyframes glowInk {
-            0%, 100% { box-shadow: 0 6px 25px rgba(0,97,255,0.25), 0 0 0 0 rgba(0,97,255,0.5); }
-            50%       { box-shadow: 0 10px 40px rgba(0,97,255,0.55), 0 0 0 10px rgba(0,97,255,0); }
-        }
-
-        .cajon-whatsapp   { animation: glowGreen 2.6s ease-in-out infinite; }
-        .cajon-drive      { animation: glowBlue  2.9s ease-in-out infinite; }
-        .cajon-wetransfer { animation: glowCyan  3.1s ease-in-out infinite; }
-        .cajon-dropbox    { animation: glowInk   2.7s ease-in-out infinite; }
-
-        /* Desactivar glow al hover para no acumular animaciones */
-        .cajon-whatsapp:hover, .cajon-drive:hover,
-        .cajon-wetransfer:hover, .cajon-dropbox:hover {
-            animation: none;
-        }
-
-        /* ══════════════════════════════════════════════════
            ANIMACIONES CTAs CRÍTICOS — cada uno distinto
            ══════════════════════════════════════════════════ */
 
@@ -3388,26 +3307,7 @@
         }
         .btn-portfolio-cta:hover { animation: none; opacity: 0.85; }
 
-        /* 2. Cajón WhatsApp pill "Enviar ahora" — glint sweep */
-        @keyframes glintSweep {
-            0%       { left: -110%; }
-            45%, 100%{ left: 160%; }
-        }
-        .cajon-whatsapp div[style*="inline-flex"] {
-            position: relative;
-            overflow: hidden;
-        }
-        .cajon-whatsapp div[style*="inline-flex"]::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -110%;
-            width: 55%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.38), transparent);
-            animation: glintSweep 3s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        /* 3. Cards WhatsApp (Informes / Dudas) — ripple verde expansivo */
+        /* Cards WhatsApp (Informes / Dudas) — ripple verde expansivo */
         @keyframes rippleWA {
             0%   { box-shadow: 0 6px 20px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.45); }
             65%  { box-shadow: 0 6px 20px rgba(37,211,102,0.4), 0 0 0 14px rgba(37,211,102,0); }
