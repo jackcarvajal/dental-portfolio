@@ -417,9 +417,11 @@ document.addEventListener('DOMContentLoaded', () => {
 async function cargarContador() {
   if (!sb) return;
   try {
-    const { count } = await sb.from('waitlist_labs').select('*', { count: 'exact', head: true });
+    // RPC pública: devuelve solo el total (anon no puede SELECT la tabla por RLS)
+    const { data, error } = await sb.rpc('waitlist_labs_count');
+    if (error) return;               // si el SQL aún no se corrió, deja el valor por defecto
     const el = document.getElementById('waitlist-count');
-    if (el) el.textContent = count || 0;
+    if (el && data != null) el.textContent = data;
   } catch(_) {}
 }
 

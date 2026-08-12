@@ -1232,7 +1232,6 @@
             .cajon-persuasive i[style*="font-size:2.4rem"] { font-size: 1.6rem !important; }
 
             /* Títulos inline de secciones */
-            .canales-envio-persuasive h2 { font-size: 1.4rem !important; letter-spacing: 1px !important; }
             [style*="font-size: 36px"] { font-size: 1.4rem !important; }
             [style*="font-size: 2.2rem"] { font-size: 1.4rem !important; }
         }
@@ -2112,23 +2111,9 @@
 
             /* Responsive */
             @media (max-width: 1024px) {
-                .cajones-persuasive-grid, .whatsapp-buttons-grid {
+                .whatsapp-buttons-grid {
                     grid-template-columns: repeat(2, 1fr) !important;
                 }
-            }
-
-            @media (max-width: 768px) {
-                .canales-envio-persuasive {
-                    padding: 35px 15px !important;
-                }
-
-                .canales-envio-persuasive h2 {
-                    font-size: 32px !important;
-                    margin-bottom: 20px !important;
-                }
-
-                /* cajones → scroll horizontal gestionado por bloque MOBILE FIX al final */
-                .canales-envio-persuasive h2 { font-size: 1.3rem !important; }
             }
             </style>
     </section>
@@ -3097,14 +3082,12 @@
         h2[style*="font-size: 36px"],
         h2[style*="font-size: 2.2rem"] { font-size: 1.15rem !important; letter-spacing: 0.5px !important; margin-bottom: 12px !important; }
         section[style*="padding: 45px"],
-        section[style*="padding: 55px"],
-        .canales-envio-persuasive { padding-top: 22px !important; padding-bottom: 22px !important; }
+        section[style*="padding: 55px"] { padding-top: 22px !important; padding-bottom: 22px !important; }
 
         /* ── MIXIN CARRUSEL (base reutilizable) ── */
         .steps-grid,
         .production-grid,
         .portfolio-grid,
-        .cajones-persuasive-grid,
         .academy-grid {
             display: flex !important;
             flex-wrap: nowrap !important;
@@ -3120,7 +3103,6 @@
         .steps-grid::-webkit-scrollbar,
         .production-grid::-webkit-scrollbar,
         .portfolio-grid::-webkit-scrollbar,
-        .cajones-persuasive-grid::-webkit-scrollbar,
         .academy-grid::-webkit-scrollbar { display: none !important; }
 
         /* ── STEPS: tarjetas compactas, se ven 1.4 a la vez ── */
@@ -3405,7 +3387,6 @@
         const carousels = [
             { el: document.querySelector('.portfolio-grid'),          id: 'dots-portfolio' },
             { el: document.querySelector('.steps-grid'),              id: 'dots-steps'     },
-            { el: document.querySelector('.cajones-persuasive-grid'), id: 'dots-cajones'   },
         ];
         carousels.forEach(({ el, id }) => {
             if (!el) return;
@@ -3462,7 +3443,6 @@
             '#servicios',
             '#portfolio',
             '#workflow-247',
-            '.canales-envio-persuasive',
             '#production',
             '#envia-scanner',
             '#escaner',
