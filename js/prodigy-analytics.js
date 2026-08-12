@@ -33,12 +33,14 @@ window.ProdigyAnalytics = (function() {
 
   /* ── TRACK ──────────────────────────────────────────────── */
   function track(event, props) {
+    // El contrato de /api/track-event es { evento, pagina, negocio?, metadata? }.
+    // anon NO puede insertar directo en analytics_events (revocado por diseño -> 401):
+    // la edge function inserta con service_role, con rate-limit y sanitización.
     var payload = {
-      event:      event,
-      session_id: _sid,
-      page:       window.location.pathname,
-      ts:         new Date().toISOString(),
-      props:      props || {}
+      evento:   event,
+      pagina:   window.location.pathname,
+      negocio:  'prodigy',
+      metadata: Object.assign({ session_id: _sid }, props || {})
     };
 
     // 1. localStorage inmediato (no se pierde si falla red)
@@ -57,22 +59,18 @@ window.ProdigyAnalytics = (function() {
     // navigator.sendBeacon → funciona en beforeunload, no necesita respuesta
     if (navigator.sendBeacon) {
       var blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-      navigator.sendBeacon(SB_URL + '/rest/v1/analytics_events?apikey=' + SB_ANON, blob);
+      navigator.sendBeacon('/api/track-event', blob);
     } else {
       _sendToSupabase(payload);
     }
   }
 
   function _sendToSupabase(payload) {
-    fetch(SB_URL + '/rest/v1/analytics_events', {
+    // Vía edge function (service_role) — no directo a Supabase con anon (401 por diseño)
+    fetch('/api/track-event', {
       method:  'POST',
-      headers: {
-        'Content-Type':  'application/json',
-        'apikey':        SB_ANON,
-        'Authorization': 'Bearer ' + SB_ANON,
-        'Prefer':        'return=minimal'
-      },
-      body: JSON.stringify(payload)
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
     }).catch(function() {
       // Silencioso — el evento ya está en localStorage
     });
