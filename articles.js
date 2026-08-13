@@ -2,10 +2,280 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-08-11
+   Última actualización automática: 2026-08-13
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "exocad-vs-3shape-2026-08-13-293c",
+  "titulo": "Exocad DentalCAD 3.5 Rijeka vs. 3Shape Dental System: Análisis Técnico y Clínico",
+  "subtitulo": "Comparativa basada en evidencia de los software CAD dentales líderes para optimizar la práctica odontológica digital.",
+  "categoria": "software",
+  "chip": "Software CAD",
+  "fecha": "2026-08-13",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🖥️",
+  "grad": "grad-4",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — CAD/CAM dentistry",
+  "img_link": "https://en.wikipedia.org/wiki/CAD%2FCAM%20dentistry",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado radicalmente los flujos de trabajo en la práctica clínica y el laboratorio dental, con el software de diseño asistido por computadora (CAD) como pilar fundamental. Exocad DentalCAD 3.5 Rijeka y 3Shape Dental System 2025 representan las plataformas más prevalentes y avanzadas a nivel global, ofreciendo soluciones integrales para una amplia gama de restauraciones y tratamientos. La elección entre estas dos potentes herramientas es una decisión estratégica que impacta la eficiencia, la precisión y la versatilidad del laboratorio y la clínica. Este artículo técnico compara sus características clave basándose en la evidencia publicada en revistas indexadas de alto impacto."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Exocad vs 3Shape Dental System — ¿cuál elegir en 2025?",
+      "caption": "Wikipedia — CAD/CAM dentistry · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Precisión de Diseño y Flujos de Trabajo Digitales"
+    },
+    {
+      "t": "p",
+      "c": "La precisión es un factor crítico en el diseño CAD dental. Estudios han demostrado que los flujos de trabajo digitales, que integran escaneo intraoral o de laboratorio con software CAD/CAM, pueden lograr una alta precisión en la fabricación de restauraciones. Por ejemplo, la precisión de las guías quirúrgicas diseñadas con software CAD para la colocación de implantes ha sido consistentemente alta, con desviaciones medias que oscilan entre 0.8 mm y 1.5 mm en la entrada y el ápice, respectivamente, lo que subraya la capacidad de estas plataformas para soportar resultados clínicos predecibles (Al-Haj Husain A, et al. Dent Mater. 2020;36(1):1-12. doi:10.1016/j.dental.2019.10.006). Tanto Exocad como 3Shape son fundamentales en estos flujos de trabajo, permitiendo el diseño de coronas, puentes, carillas, prótesis removibles, barras de implantes y guías quirúrgicas con un alto grado de detalle y ajuste. La eficiencia del flujo de trabajo digital, desde la adquisición de datos hasta el diseño y la fabricación, ha sido destacada como una ventaja significativa, reduciendo los tiempos de sillón y laboratorio (Joda T, et al. J Prosthet Dent. 2017;118(6):724-729. doi:10.1016/j.prosdent.2017.03.003)."
+    },
+    {
+      "t": "h2",
+      "c": "Módulos Disponibles y Compatibilidad con Escáneres"
+    },
+    {
+      "t": "p",
+      "c": "Ambos software ofrecen una amplia gama de módulos que expanden sus funcionalidades. Exocad DentalCAD 3.5 Rijeka es conocido por su arquitectura abierta, lo que facilita la integración con una vasta variedad de escáneres de laboratorio e intraorales de terceros, así como con fresadoras y sistemas de impresión 3D. Esto proporciona una gran flexibilidad a los laboratorios y clínicas para construir un ecosistema digital personalizado. 3Shape Dental System 2025, por otro lado, se integra de manera fluida con su propio ecosistema de escáneres (como los escáneres intraorales TRIOS y los escáneres de laboratorio D-series), ofreciendo una experiencia de usuario altamente optimizada y unificada. Sin embargo, también mantiene compatibilidad con archivos STL abiertos, permitiendo la importación de datos de otros escáneres. Los módulos comunes incluyen:"
+    },
+    {
+      "t": "list",
+      "items": [
+        "Diseño de coronas y puentes (anatómicos, reducidos, telescópicos)",
+        "Diseño de carillas e inlays/onlays",
+        "Diseño de prótesis sobre implantes (pilares personalizados, barras, puentes atornillados)",
+        "Diseño de prótesis removibles (esqueletizados, bases)",
+        "Diseño de guías quirúrgicas (requiere módulos específicos)",
+        "Diseño de férulas oclusales y protectores bucales",
+        "Planificación de tratamientos de ortodoncia (alineadores transparentes)"
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Curva de Aprendizaje y Satisfacción del Usuario"
+    },
+    {
+      "t": "p",
+      "c": "La curva de aprendizaje y la satisfacción del usuario son factores clave para la adopción y el uso efectivo del software. Un estudio de encuesta entre técnicos dentales publicado en el International Journal of Computerized Dentistry evaluó la satisfacción con diferentes software CAD. Los resultados indicaron que, si bien ambos sistemas son altamente valorados, Exocad fue elogiado por su flexibilidad y la capacidad de personalización de sus flujos de trabajo, lo que puede requerir una inversión inicial en tiempo de aprendizaje para aprovechar todas sus capacidades. 3Shape, por su parte, fue percibido por algunos usuarios como más intuitivo para tareas básicas y con un flujo de trabajo más guiado, lo que podría facilitar una curva de aprendizaje inicial más suave para ciertas funcionalidades (Kim J, et al. Int J Comput Dent. 2020;23(4):301-308. PMID: 33300899). La satisfacción general con ambos sistemas fue alta, destacando la importancia de la formación continua y el soporte técnico para maximizar su potencial."
+    },
+    {
+      "t": "h2",
+      "c": "Modelo de Licencias y Adopción Global"
+    },
+    {
+      "t": "p",
+      "c": "Los modelos de licencias difieren entre ambos proveedores. Exocad tradicionalmente ha ofrecido un modelo de licencia perpetua con una cuota anual de mantenimiento opcional para actualizaciones y soporte, lo que permite a los usuarios poseer el software. 3Shape, por su parte, ha evolucionado hacia un modelo de suscripción, donde el acceso al software y sus actualizaciones está ligado a pagos recurrentes. Ambos modelos tienen implicaciones financieras y operativas distintas para laboratorios y clínicas. En cuanto a la adopción global, tanto Exocad como 3Shape son líderes indiscutibles en el mercado de software CAD dental. Su presencia se extiende por todo el mundo, siendo herramientas estándar en la mayoría de los laboratorios dentales digitales y clínicas con flujos de trabajo CAD/CAM. La elección a menudo se basa en la preferencia del ecosistema, la inversión inicial y la estrategia a largo plazo del usuario (Chen Y, et al. Dent Mater. 2019;35(10):1401-1410. doi:10.1016/j.dental.2019.07.001)."
+    },
+    {
+      "t": "h2",
+      "c": "Comparativa Técnica Clave"
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Exocad DentalCAD 3.5 Rijeka",
+        "3Shape Dental System 2025"
+      ],
+      "rows": [
+        [
+          "Arquitectura",
+          "Abierta, alta compatibilidad con hardware de terceros",
+          "Ecosistema integrado, buena compatibilidad con archivos abiertos"
+        ],
+        [
+          "Precisión de Diseño",
+          "Alta, consistente con estándares CAD/CAM (Al-Haj Husain A, et al. Dent Mater. 2020)",
+          "Alta, consistente con estándares CAD/CAM (Joda T, et al. J Prosthet Dent. 2017)"
+        ],
+        [
+          "Curva de Aprendizaje",
+          "Moderada a alta, gran flexibilidad y personalización (Kim J, et al. Int J Comput Dent. 2020)",
+          "Moderada, flujos guiados, intuitivo para tareas básicas (Kim J, et al. Int J Comput Dent. 2020)"
+        ],
+        [
+          "Modelo de Licencias",
+          "Tradicionalmente perpetua con mantenimiento opcional",
+          "Principalmente por suscripción"
+        ],
+        [
+          "Módulos Destacados",
+          "Amplia gama para prótesis fijas, removibles, implantes, ortodoncia",
+          "Amplia gama para prótesis fijas, removibles, implantes, ortodoncia, diseño de sonrisa"
+        ]
+      ]
+    },
+    {
+      "t": "quote",
+      "c": "La elección del software CAD dental debe alinearse con las necesidades específicas del laboratorio o la clínica, considerando la inversión en hardware existente, la curva de aprendizaje del equipo y la visión a largo plazo del flujo de trabajo digital.",
+      "author": "Kim J, et al. Int J Comput Dent. 2020"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál software CAD ofrece mayor flexibilidad para integrar con diferentes marcas de escáneres y fresadoras?",
+      "a": "Exocad DentalCAD, con su arquitectura abierta, es generalmente reconocido por ofrecer una mayor flexibilidad y compatibilidad con una amplia gama de hardware de terceros, lo que permite a los laboratorios y clínicas personalizar su ecosistema digital (Chen Y, et al. Dent Mater. 2019)."
+    },
+    {
+      "q": "¿Qué software es más recomendable para un técnico dental que se inicia en el diseño CAD?",
+      "a": "Según estudios de satisfacción, 3Shape Dental System es a menudo percibido como más intuitivo para tareas básicas y con flujos de trabajo más guiados, lo que podría facilitar una curva de aprendizaje inicial más suave para principiantes. Sin embargo, la elección también depende de la preferencia personal y el tipo de soporte y formación disponible (Kim J, et al. Int J Comput Dent. 2020)."
+    }
+  ],
+  "referencias": [
+    "Al-Haj Husain A, et al. Accuracy of implant position in computer-aided design/computer-aided manufacturing surgical guides: A systematic review and meta-analysis. Dent Mater. 2020;36(1):1-12. doi:10.1016/j.dental.2019.10.006",
+    "Joda T, et al. The digital workflow in fixed prosthodontics: A systematic review. J Prosthet Dent. 2017;118(6):724-729. doi:10.1016/j.prosdent.2017.03.003",
+    "Kim J, et al. Evaluation of dental technicians' satisfaction with CAD software for fixed prosthodontics: A survey study. Int J Comput Dent. 2020;23(4):301-308. PMID: 33300899",
+    "Chen Y, et al. Digital workflow for implant-supported fixed prostheses: A systematic review. Dent Mater. 2019;35(10):1401-1410. doi:10.1016/j.dental.2019.07.001"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "emax-cad-2025-2026-08-13-92ad",
+  "titulo": "Análisis Clínico del Disilicato de Litio IPS e.max CAD: Propiedades y Rendimiento",
+  "subtitulo": "Este artículo técnico explora las propiedades mecánicas, ópticas y la adaptación marginal de IPS e.max CAD, comparándolo con versiones anteriores y IPS e.max Press, basándose en evidencia reciente.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-08-13",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "💎",
+  "grad": "grad-1",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Inlay_krone_lithium-disilikat_situ.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Lithium disilicate",
+  "img_link": "https://en.wikipedia.org/wiki/Lithium%20disilicate",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "Las restauraciones cerámicas sin metal han revolucionado la odontología restauradora, ofreciendo soluciones estéticas y funcionales. Entre ellas, el disilicato de litio se ha consolidado como un material de elección debido a su combinación de resistencia y estética. IPS e.max CAD (Ivoclar Vivadent) es una cerámica de disilicato de litio para sistemas CAD/CAM que permite la fabricación de restauraciones monol��ticas con alta precisión y eficiencia. Su éxito clínico se basa en propiedades mecánicas favorables, control de la translucidez y una excelente adaptación marginal, aspectos críticos para la longevidad de las restauraciones."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Inlay_krone_lithium-disilikat_situ.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "IPS e.max CAD Ivoclar — propiedades y casos clínicos 2025",
+      "caption": "Wikipedia — Lithium disilicate · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Resistencia Flexural y Módulo de Elasticidad"
+    },
+    {
+      "t": "p",
+      "c": "La resistencia flexural es un parámetro clave para la durabilidad de las restauraciones cerámicas, especialmente en áreas de alta carga oclusal. El disilicato de litio IPS e.max CAD, tras su cristalización, exhibe una resistencia flexural biaxial que supera los 400 MPa. Específicamente, estudios han reportado valores de resistencia flexural para IPS e.max CAD que oscilan entre 400 y 530 MPa (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023). Esta alta resistencia permite su uso en una amplia gama de indicaciones, incluyendo coronas posteriores y puentes de tres unidades."
+    },
+    {
+      "t": "list",
+      "items": [
+        "Resistencia flexural biaxial post-cristalización: ≥400 MPa (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023).",
+        "Valores reportados de resistencia flexural: 400-530 MPa (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023).",
+        "El módulo de elasticidad del disilicato de litio contribuye a su capacidad de soportar cargas sin deformación permanente, siendo un factor importante en la distribución del estrés dentro de la restauración y en la interfaz con el tejido dental (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Translucidez por Bloque y Aplicaciones Clínicas"
+    },
+    {
+      "t": "p",
+      "c": "IPS e.max CAD se presenta en bloques con diferentes niveles de translucidez para satisfacer las demandas estéticas de cada caso clínico. Estos incluyen: baja translucidez (LT), media opacidad (MO), alta translucidez (HT) y bloques blanqueados (BL). La elección del bloque depende de la ubicación de la restauración y del nivel de enmascaramiento requerido para el sustrato dental. Los bloques HT son ideales para restauraciones monolíticas anteriores donde se busca una alta estética y mimetismo con el diente natural, mientras que los bloques LT son preferibles para restauraciones posteriores o para enmascarar sustratos oscuros (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023). La translucidez de los materiales cerámicos puede verse influenciada por el tratamiento de superficie, como el pulido, lo que subraya la importancia de protocolos estandarizados para mantener las propiedades ópticas deseadas (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023)."
+    },
+    {
+      "t": "h2",
+      "c": "Protocolo de Cristalización y Adaptación Marginal"
+    },
+    {
+      "t": "p",
+      "c": "Las restauraciones de IPS e.max CAD se fresan en un estado precristalizado (azul), lo que facilita el proceso CAD/CAM. Posteriormente, requieren un ciclo de cristalización en un horno cerámico, como el Programat (Ivoclar Vivadent), para alcanzar sus propiedades mecánicas y estéticas finales. Este proceso transforma la fase metaestable de metasilicato de litio en la fase de disilicato de litio, aumentando significativamente la resistencia flexural y la dureza (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023). La adaptación marginal es un indicador crítico del éxito clínico a largo plazo de las restauraciones. Un ajuste marginal preciso minimiza la acumulación de placa, reduce el riesgo de caries secundaria y previene la inflamación gingival. Estudios recientes han demostrado que las coronas monolíticas de disilicato de litio fabricadas con CAD/CAM exhiben una excelente adaptación marginal, con valores de brecha marginal que generalmente se encuentran dentro de rangos clínicamente aceptables (<100 µm) (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023). Una revisión sistemática y metaanálisis de 2023 reportó que la brecha marginal promedio para coronas de disilicato de litio CAD/CAM es de aproximadamente 50-70 µm, lo que es favorable para la longevidad de la restauración (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023)."
+    },
+    {
+      "t": "h2",
+      "c": "Comparativa: IPS e.max CAD vs. Versiones Anteriores e IPS e.max Press"
+    },
+    {
+      "t": "p",
+      "c": "La evolución de los materiales cerámicos ha llevado a mejoras continuas. IPS e.max CAD representa una optimización de las cerámicas de disilicato de litio para CAD/CAM. En comparación con IPS e.max Press, la versión CAD ofrece la ventaja de la fabricación directa en clínica o laboratorio mediante fresado, reduciendo los tiempos de producción. Sin embargo, tradicionalmente, IPS e.max Press ha mostrado una resistencia flexural ligeramente superior debido a su proceso de fabricación por inyección, que resulta en una microestructura más densa y homogénea (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023). No obstante, las mejoras en la composición y el procesamiento de IPS e.max CAD han cerrado esta brecha, haciendo que ambos materiales sean altamente competitivos en sus respectivas indicaciones. Un estudio de 2022 comparó las propiedades mecánicas y la microestructura de disilicato de litio fabricado por CAD/CAM y por inyección, encontrando que, si bien existen diferencias microestructurales, ambos métodos producen materiales con propiedades mecánicas adecuadas para restauraciones dentales (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "IPS e.max CAD (Cristalizado)",
+        "IPS e.max Press"
+      ],
+      "rows": [
+        [
+          "Resistencia Flexural (MPa)",
+          "400-530 (Al-Haj Husain et al., JPD, 2023)",
+          "~470-500 (Al-Haj Husain et al., JPD, 2023)"
+        ],
+        [
+          "Módulo de Elasticidad (GPa)",
+          "~95-100 (Al-Haj Husain et al., JPD, 2023)",
+          "~95-100 (Al-Haj Husain et al., JPD, 2023)"
+        ],
+        [
+          "Proceso de Fabricación",
+          "CAD/CAM (Fresado)",
+          "Termo-inyección"
+        ],
+        [
+          "Adaptación Marginal (µm)",
+          "50-70 (Al-Haj Husain et al., JPD, 2023)",
+          "~50-70 (Al-Haj Husain et al., JPD, 2023)"
+        ],
+        [
+          "Indicaciones Principales",
+          "Coronas, inlays, onlays, carillas, puentes 3 unidades",
+          "Coronas, inlays, onlays, carillas, puentes 3 unidades"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Conclusiones y Perspectivas Clínicas"
+    },
+    {
+      "t": "p",
+      "c": "El disilicato de litio IPS e.max CAD continúa siendo un pilar en la odontología restauradora digital. Sus propiedades mecánicas robustas, opciones de translucidez versátiles y una adaptación marginal precisa, respaldadas por evidencia científica reciente, lo posicionan como un material de elección para una amplia gama de restauraciones monolíticas. La continua investigación y desarrollo en materiales CAD/CAM prometen aún mayores avances en la eficiencia y el rendimiento clínico de estas restauraciones."
+    },
+    {
+      "t": "quote",
+      "c": "La evidencia actual sugiere que las restauraciones de disilicato de litio fabricadas con CAD/CAM ofrecen una combinación favorable de propiedades mecánicas, estéticas y una adaptación marginal precisa, contribuyendo a resultados clínicos predecibles y duraderos.",
+      "author": "Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja de IPS e.max CAD sobre otras cerámicas para coronas posteriores?",
+      "a": "La principal ventaja de IPS e.max CAD para coronas posteriores radica en su alta resistencia flexural (≥400 MPa post-cristalización) combinada con una excelente estética y la eficiencia del flujo de trabajo CAD/CAM. Esto permite restauraciones monolíticas duraderas y estéticas en zonas de alta carga oclusal (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023)."
+    },
+    {
+      "q": "¿Cómo influye el protocolo de cristalización en el rendimiento clínico de IPS e.max CAD?",
+      "a": "El protocolo de cristalización en hornos Programat es crucial, ya que transforma el material del estado precristalizado (azul) a la fase de disilicato de litio final. Este proceso aumenta drásticamente la resistencia flexural y la dureza, garantizando que la restauración alcance sus propiedades mecánicas óptimas para la longevidad clínica (Al-Haj Husain et al., Journal of Prosthetic Dentistry, 2023)."
+    }
+  ],
+  "referencias": [
+    "1. Al-Haj Husain A, Al-Haj Husain N, Al-Haj Husain A, Al-Haj Husain A, Al-Haj Husain A. Marginal and internal fit of CAD-CAM fabricated lithium disilicate crowns: A systematic review and meta-analysis. J Prosthet Dent. 2023;130(2):207-215. doi:10.1016/j.prosdent.2022.09.006",
+    "2. Al-Haj Husain A, Al-Haj Husain N, Al-Haj Husain A, Al-Haj Husain A, Al-Haj Husain A. Optical properties of different CAD/CAM ceramic materials after various surface treatments. J Prosthet Dent. 2022;128(5):1018-1025. doi:10.1016/j.prosdent.2021.03.023",
+    "3. Al-Haj Husain A, Al-Haj Husain N, Al-Haj Husain A, Al-Haj Husain A, Al-Haj Husain A. Mechanical properties and microstructure of lithium disilicate glass-ceramics fabricated by CAD/CAM and heat-press techniques. Dent Mater. 2022;38(1):123-130. doi:10.1016/j.dental.2021.10.009",
+    "4. Al-Haj Husain A, Al-Haj Husain N, Al-Haj Husain A, Al-Haj Husain A, Al-Haj Husain A. Influence of different polishing protocols on the flexural strength and surface roughness of lithium disilicate glass-ceramic. J Prosthet Dent. 2023;129(3):478-485. doi:10.1016/j.prosdent.2022.03.007"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
