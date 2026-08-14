@@ -405,7 +405,7 @@
 <script src="js/footer.js?v=20260609"></script>
 <script>
 const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
-const SANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTA2OTAxMDUsImV4cCI6MjAyNjI2NjEwNX0.fQOcJKn3qAhGLi7XbOFWnhMBVz3DJLF37jUME2iNNL8';
+const SANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
 function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 let sb;
 document.addEventListener('DOMContentLoaded', () => {
@@ -421,7 +421,15 @@ async function cargarContador() {
     const { data, error } = await sb.rpc('waitlist_labs_count');
     if (error) return;               // si el SQL aún no se corrió, deja el valor por defecto
     const el = document.getElementById('waitlist-count');
-    if (el && data != null) el.textContent = data;
+    const lbl = document.querySelector('.contador-label');
+    const n = Number(data) || 0;
+    if (n > 0) {
+      if (el) el.textContent = n;
+    } else {
+      // Lista recién abierta: evitar mostrar "0" como prueba social débil
+      if (el) el.innerHTML = '<i class="fas fa-rocket" aria-hidden="true"></i>';
+      if (lbl) lbl.textContent = 'Lista recién abierta — sé de los primeros';
+    }
   } catch(_) {}
 }
 
