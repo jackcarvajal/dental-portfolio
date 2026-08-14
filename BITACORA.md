@@ -26,6 +26,14 @@ y además `anon` tiene INSERT **revocado por diseño** (→401). Ahora POST a `/
 rate-limit, sanitización) con contrato `{evento,pagina,negocio,metadata}`; `session_id` va en metadata. Bump v20260811.
 💡 Regla: 400 = columna inexistente; 401 en insert = RLS/GRANT revocado (el camino correcto es la edge function).
 
+### 🔴→✅ Anon key vieja/rotada rompía features (calculadoras, soporte, waitlist)
+6 archivos PRODIGY (calculadora-diseno/fresado/impresion, soporte, para-laboratorios, app/metricas) + 5 Alejandro
+(calculadora-diseno, cursos, flujo-diseno, soporte, app/metricas) usaban una anon key **antigua (iat 2024)** que
+daba **401** — mientras los otros 58 archivos usan la vigente (iat 2026). Rompía en silencio el guardado de
+cotizaciones, tickets de soporte y el form+contador de waitlist. Reemplazada por la key vigente en los 11.
+💡 Cómo se detectó: `sb.rpc('waitlist_labs_count')` daba 401 con la key vieja; decodificar el JWT (iat/exp) reveló
+la diferencia. Verificado: RPC pasó de 401 → 200. Contador con fallback elegante cuando total=0 ('sé de los primeros').
+
 ### ✅ IDs duplicados (HTML inválido)
 - `theme-btn` (flujo-fresado/impresion): 2 botones → `id`→clase `.theme-btn` + selectores JS.
 - `journal-search`: había 2 cajas de búsqueda → quitada la duplicada.
