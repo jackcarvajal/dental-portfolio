@@ -9,6 +9,52 @@
 
 ---
 
+## 2026-08-11
+
+### ✅ Auditoría profunda del sitio (crawler CDP) — bugs JS reales corregidos
+Rastreo headless de ~40 páginas PRODIGY + ~38 Alejandro. Errores JS que **mataban el JS de la página**
+(mismo patrón que la página vacía de guías):
+- **caso.html** (ambos): `const PALABRAS_PROHIBIDAS` duplicado con `content-guard.js` → SyntaxError. Renombrado a `_CASO`.
+- **nosotros.html**: `null.classList` en `onScroll` (no existe `#navbar`, lo inyecta header.js) → guarda `if(!nav)return`.
+- **patient.html**: `escapeHtml is not defined` en `renderError` (estaba anidada) → definida en scope exterior.
+- **calculadora-diseno** (Alejandro): `biomecanica-rules.js` tenía `mensaje` con template literal `${opts}` que se evaluaba **en carga** → ReferenceError rompía el módulo. A string estático (como PRODIGY). Bump v20260811.
+💡 Los "8 slugs rotos" del coverflow y `/terminos` (Alejandro) eran **falsos positivos**: los resuelve `_redirects` (el server local no lo procesa).
+
+### ✅ Analytics propio nunca registró — enrutado por edge function
+`prodigy-analytics.js` insertaba directo en `analytics_events` con columnas en inglés (`event/page/ts/props`→400)
+y además `anon` tiene INSERT **revocado por diseño** (→401). Ahora POST a `/api/track-event` (service_role,
+rate-limit, sanitización) con contrato `{evento,pagina,negocio,metadata}`; `session_id` va en metadata. Bump v20260811.
+💡 Regla: 400 = columna inexistente; 401 en insert = RLS/GRANT revocado (el camino correcto es la edge function).
+
+### ✅ IDs duplicados (HTML inválido)
+- `theme-btn` (flujo-fresado/impresion): 2 botones → `id`→clase `.theme-btn` + selectores JS.
+- `journal-search`: había 2 cajas de búsqueda → quitada la duplicada.
+- `seguimiento-caso` (ambos): panel `#resultado`/`#noEncontrado` **duplicado entero** (copia B muerta) → eliminada.
+
+### ✅ Limpieza / sanitización
+- Home: eliminado `#modal-canal` + `abrirModalCanal` + form + signup (122 líneas huérfanas del canal).
+- Home: CSS muerto del canal (`glowGreen/Blue/Cyan/Ink`, `.cajon-whatsapp/drive/wetransfer/dropbox`, glint,
+  `.canales-envio-persuasive`, `.cajones-persuasive-grid` — quitado solo el selector muerto de los grupos con `.cajon-persuasive` vivo).
+
+### ✅ Home: sección canal → registro + coverflow por categoría
+- **"SELECCIONA TU CANAL DE ENVÍO"** (Drive/WeTransfer/WhatsApp) anulada → **"Crea tu cuenta y envía tu primer caso"**
+  con 6 beneficios + CTA al sistema propio (`/flujo-diseno`). Quitado el CTA duplicado "PEDIR MI CASO AHORA".
+- **Coverflow de servicios por flujo**: chips `Todos/Diseño CAD/Fresado/Impresión 3D/Lab Full` que filtran
+  (data-cat multi-valor) + CTA contextual "Pedir por flujo de X". `coverflow-svc.js` retrocompatible + centrado inicial. Bump v20260811.
+
+### ✅ Otros
+- **diseño-remoto** (ambos): iconos emoji→FA, flujo primario al sistema propio, hover en tarjetas.
+- **guías-quirúrgicas** (ambos): reveal robusto (threshold 0 + fallback scroll) — `.12` dejaba el contenido vacío.
+- **8 tarjetas de servicios** del home iban a 404 → `_redirects` 301 a `/diseno-remoto` / `/impresion-3d`.
+- **instalar-app.html** creado en Alejandro (paridad; footer enlazaba a página inexistente → 404 site-wide).
+- Emoji quitado del `<h3>` CAPACIDAD DE PRODUCCIÓN (a11y).
+
+### 🟡 Pendiente (SQL — correr en Supabase)
+- **Contador de waitlist**: `sql/waitlist-count-rpc.sql` — RPC `waitlist_labs_count()` (anon no puede SELECT por RLS).
+  El código ya llama la RPC con fallback silencioso; falta **ejecutar el SQL** para que muestre el número.
+
+---
+
 ## 2026-07-25
 
 ### 🔴→✅ Captura de leads 100% rota — columna fantasma recurso_descargado
