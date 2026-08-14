@@ -736,7 +736,7 @@ async function cargarKPIsPortafolio() {
         const sb = getSB();
         const [totR, pubR, recR] = await Promise.all([
             sb.from('casos_portafolio').select('id',{count:'exact',head:true}),
-            sb.from('casos_portafolio').select('id',{count:'exact',head:true}).eq('publicado',true),
+            sb.from('casos_portafolio').select('id',{count:'exact',head:true}).eq('visible',true),
             sb.from('casos_portafolio').select('id',{count:'exact',head:true}).gte('created_at',new Date(Date.now()-7*86400000).toISOString()),
         ]);
         const kpis=[

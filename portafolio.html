@@ -958,7 +958,7 @@ document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') e.
 // Contador de casos publicados (idle)
 (function(){
   function loadCount(){
-    fetch('https://zgihrwqfyvgyapbwzkvw.supabase.co/rest/v1/casos_portafolio?publicado=eq.true&select=id&limit=1',{
+    fetch('https://zgihrwqfyvgyapbwzkvw.supabase.co/rest/v1/casos_portafolio?visible=eq.true&select=id&limit=1',{
       headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634','Prefer':'count=exact','Range':'0-0'}
     }).then(r=>{
       var count=parseInt((r.headers.get('content-range')||'').split('/')[1]||'0',10);
