@@ -9,6 +9,40 @@
 
 ---
 
+## 2026-08-17
+
+### ✅ Herramientas de auditoría automática (`tools/`) — prevención pre-deploy
+Nacen de los bugs recurrentes (anon key rotada→401, column mismatches→400). En ambos repos + git hook `pre-push`:
+- `tools/audit.mjs` (estático, ~1s): anon key drift, IDs duplicados, enlaces internos rotos, SEO básico.
+- `tools/audit-live.mjs` (runtime headless): errores JS de consola, llamadas Supabase/API 4xx, páginas vacías.
+- `tools/audit-schema.mjs` (contrato front↔BD): extrae tablas/columnas/RPCs que toca el código y valida vs esquema real (`--schema`) → caza columnas fantasma. Ver `tools/README.md` y CLAUDE.md §9.
+
+### ✅ Auditoría de backend/BD (raíz de los 400) — schema drift
+`audit-schema` + `information_schema` revelaron: `pedidos` con ~130 columnas (4 "total"), 6 tablas `pedidos*`
+solapadas, columnas bilingües. **RPCs de dashboard/recordatorios rotas por columnas fantasma** — corregido en repo
+(`p.total→precio_total`, `p.doctor→nombre_doctor`, `servicio→tipo_trabajo`, `p.whatsapp→telefono`, enum
+`cancelado`/`CANCELADO`/`en_diseno`→valores reales). **Falta re-ejecutar 6 archivos en Supabase** — ver `sql/PENDIENTE-metricas-rpcs.md`.
+
+### ✅ Otros hallazgos de las herramientas
+- **portafolio.html** + app/agregar-caso: `casos_portafolio?publicado` (columna inexistente) → `visible`. 400→200.
+- **app/calidad + contabilidad**: link "Cerrar sesión" `../login.html` (root inexistente) → `/app/login.html`.
+- Contador de waitlist: fallback elegante cuando total=0 (RPC `waitlist_labs_count` ya corre).
+
+### ✅ Home: coverflow de servicios por flujo/categoría
+Chips `Todos/Diseño CAD/Fresado/Impresión 3D/Lab Full` que filtran las tarjetas (`data-cat`) + CTA contextual
+"Pedir por flujo de X". `coverflow-svc.js` retrocompatible. Iconos con su color original.
+
+### ✅ Atención al cliente — artefacto de respuestas WhatsApp
+Artefacto con mensajes auto (bienvenida/ausencia) + ~17 respuestas rápidas por tema (copiar/pegar, con atajos)
++ guía de automatización en 3 niveles (App WhatsApp Business → no-code → Cloud API + bot Gemini en Cloudflare).
+https://claude.ai/code/artifact/0290c216-5dd1-4a87-bbab-5c4569b66351
+
+### ✅ Reglas anti-slop
+CLAUDE.md §9 (verificar esquema real antes de tocar BD, correr audit tools, no columnas bilingües/tablas solapadas)
++ memoria de sesión. Nace de los hilos de X (gastonfoncea/adevsays) sobre slop de IA sin guía.
+
+---
+
 ## 2026-08-11
 
 ### ✅ Auditoría profunda del sitio (crawler CDP) — bugs JS reales corregidos
