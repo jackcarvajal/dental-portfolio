@@ -27,10 +27,12 @@ const add = (t, c) => { (tables[t] ||= new Set()); if (c) c.split(',').forEach(x
 
 for (const f of files) {
   const s = readFileSync(f, 'utf8');
-  // .from('tabla')  … encadenado
+  // .from('tabla') … encadenado. Cortamos en el siguiente .from( para no mezclar columnas.
   let m, re = /\.from\(\s*['"`]([a-z_][\w]*)['"`]\s*\)([\s\S]{0,600})/gi;
   while ((m = re.exec(s))) {
-    const t = m[1], chain = m[2];
+    const t = m[1];
+    let chain = m[2];
+    const nxt = chain.search(/\.from\(/); if (nxt > -1) chain = chain.slice(0, nxt);   // no pasar de la siguiente query
     let c;
     const selRe = /\.select\(\s*['"`]([^'"`]*)['"`]/g; while ((c = selRe.exec(chain))) add(t, c[1]);
     const opRe = /\.(?:eq|neq|gt|gte|lt|lte|like|ilike|is|in|order|contains|match)\(\s*['"`]([a-z_][\w]*)['"`]/g; while ((c = opRe.exec(chain))) add(t, c[1]);

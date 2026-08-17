@@ -12,6 +12,18 @@ desplegada. Cada llamada probada directo contra Supabase con la anon key:
 | `prodigy_top_doctores` | `42703 column p.doctor does not exist` | la columna es **`nombre_doctor`** (o `doctor_uid`), no `doctor` | `p.doctor` → `p.nombre_doctor` |
 | `prodigy_ingresos_por_canal` | `42703 column p.total does not exist` | la columna es **`monto_total`**, no `total` | `p.total` → `p.monto_total` |
 
+## ✅ Columnas reales confirmadas (2026-08, information_schema de `pedidos`)
+Con el esquema real ya sabemos los nombres correctos — reemplazar en las funciones:
+
+| Usado en la RPC (no existe) | Columna real en `pedidos` |
+|---|---|
+| `p.doctor` | **`nombre_doctor`** |
+| `p.total` | **`monto_total`** (ingresos) o `precio_total` |
+| `p.servicio` / `servicio` | **`tipo_trabajo`** (o `flujo`) — no hay columna `servicio` |
+| `'cancelado'` | **`'Cancelado'`** (enum, ya corregido en repo) |
+
+`pedidos` tiene ~130 columnas; verificar también `estado` (enum `estado_pedido`) vs `estado_operativo`.
+
 ## Ojo — el esquema del repo puede estar desactualizado
 `sql/schema-completo.sql` lista `servicio`, `monto_total`, `nombre_doctor` en `pedidos`, pero la RPC
 dice que `servicio` **no existe** en producción → el esquema desplegado **difiere del repo**.
