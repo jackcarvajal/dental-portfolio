@@ -4,13 +4,26 @@ Nacieron de la sesión donde encontramos (en producción) cosas que debieron atr
 anon key rotada (401 en calculadoras/soporte/waitlist), errores JS que dejaban páginas vacías,
 IDs duplicados, enlaces rotos. Estas dos herramientas los detectan **antes** de subir.
 
-## Estrategia en 3 capas
+## Estrategia en capas
 
 | Capa | Qué atrapa | Costo | Cuándo |
 |---|---|---|---|
 | **1. Estática** (`audit.mjs`) | anon key desactualizada · IDs duplicados · enlaces internos rotos · SEO básico | Node puro, ~1s, sin navegador | **antes de cada `git push`** |
 | **2. Runtime** (`audit-live.mjs`) | errores JS de consola · llamadas Supabase/API 4xx · páginas vacías | headless Edge, ~3-4 min | **antes de cada deploy** / semanal |
-| **3. Hook/CI** | corre la capa 1 automáticamente y bloquea si hay crítico | — | automático |
+| **3. Backend/BD** (`audit-schema.mjs`) | contrato front↔BD: **columnas/tablas que el código usa y no existen** (schema drift), RPCs, redundancia | Node puro; validar necesita el esquema real | al tocar BD / periódico |
+| **4. Hook/CI** | corre la capa 1 automáticamente y bloquea si hay crítico | — | automático |
+
+### Capa 3 — contrato front ↔ base de datos
+```bash
+node tools/audit-schema.mjs                 # lista tablas/columnas/RPCs que toca el código
+# Validar una tabla contra su esquema real (encuentra columnas inexistentes de una):
+#   En Supabase SQL editor:
+#     SELECT string_agg(column_name, ',') FROM information_schema.columns WHERE table_name='pedidos';
+#   Guarda el resultado en pedidos.txt (mismo nombre que la tabla) y:
+node tools/audit-schema.mjs --schema pedidos.txt
+```
+Nace de los bugs recurrentes de columna: `publicado`/`visible`, `cancelado`/`Cancelado`, `event`/`evento`,
+`recurso_descargado`/`notas`. En vez de encontrarlos uno por uno en producción (400), los detecta todos juntos.
 
 ## Uso
 
