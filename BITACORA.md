@@ -34,6 +34,18 @@ cotizaciones, tickets de soporte y el form+contador de waitlist. Reemplazada por
 💡 Cómo se detectó: `sb.rpc('waitlist_labs_count')` daba 401 con la key vieja; decodificar el JWT (iat/exp) reveló
 la diferencia. Verificado: RPC pasó de 401 → 200. Contador con fallback elegante cuando total=0 ('sé de los primeros').
 
+### 🟡 Panel de métricas (app/metricas) — RPCs rotas por schema drift
+`tools/audit-live.mjs` detectó 400 en las RPCs del dashboard. Probadas directo: `prodigy_dashboard_semana`
+usaba enum `'cancelado'` (real: `'Cancelado'` → **corregido en repo, falta re-ejecutar**); `prodigy_top_doctores`
+(`column p.doctor` → `nombre_doctor`), `prodigy_ingresos_por_canal` (`p.total` → `monto_total`),
+`prodigy_tiempos_entrega`/`prodigy_pedidos_por_material` (`servicio` no existe en la tabla desplegada).
+El esquema desplegado difiere del repo (`pedidos` es RLS, no introspectable con anon). Detalle en
+`sql/PENDIENTE-metricas-rpcs.md`. Interno (admin), no afecta al público.
+
+### ✅ casos_portafolio: columna 'publicado' inexistente → 'visible'
+Contador de casos del **portafolio público** (y stat de app/agregar-caso) usaban `?publicado=eq.true` (columna
+que no existe) → 400. Cambiado a `visible`. Verificado 400→200. (Detectado por audit-live.)
+
 ### ✅ IDs duplicados (HTML inválido)
 - `theme-btn` (flujo-fresado/impresion): 2 botones → `id`→clase `.theme-btn` + selectores JS.
 - `journal-search`: había 2 cajas de búsqueda → quitada la duplicada.

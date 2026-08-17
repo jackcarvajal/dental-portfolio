@@ -29,7 +29,7 @@ BEGIN
     SELECT p.servicio AS tipo, count(*) AS cnt
     FROM public.pedidos p
     WHERE p.created_at >= p_desde
-      AND p.estado NOT IN ('cancelado','CANCELADO')
+      AND p.estado NOT IN ('Cancelado','CANCELADO')
     GROUP BY p.servicio
   )
   SELECT
