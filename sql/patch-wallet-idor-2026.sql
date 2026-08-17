@@ -31,9 +31,9 @@ DECLARE
 BEGIN
     -- Resuelve el whatsapp real del usuario a partir de SUS PROPIOS
     -- pedidos (doctor_uid = auth.uid(), no editable por el cliente)
-    SELECT p.whatsapp INTO v_whatsapp
+    SELECT p.telefono INTO v_whatsapp
     FROM public.pedidos p
-    WHERE p.doctor_uid = auth.uid() AND p.whatsapp IS NOT NULL
+    WHERE p.doctor_uid = auth.uid() AND p.telefono IS NOT NULL
     ORDER BY p.created_at DESC
     LIMIT 1;
 

@@ -35,14 +35,14 @@ BEGIN
   WHERE negocio='prodigy' AND created_at > now() - (p_dias||' days')::interval;
   RETURN QUERY
   SELECT
-    COALESCE(p.material, p.servicio, 'otro') AS material,
+    COALESCE(p.material, p.tipo_trabajo, 'otro') AS material,
     COUNT(*) AS total,
-    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos,
+    SUM(COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0)) AS ingresos,
     CASE WHEN _total > 0 THEN ROUND(COUNT(*)::numeric/_total*100,1) ELSE 0 END AS pct_total
   FROM public.pedidos p
   WHERE p.negocio='prodigy'
     AND p.created_at > now() - (p_dias||' days')::interval
-  GROUP BY COALESCE(p.material, p.servicio, 'otro')
+  GROUP BY COALESCE(p.material, p.tipo_trabajo, 'otro')
   ORDER BY total DESC LIMIT 15;
 END;
 $$;
@@ -62,7 +62,7 @@ BEGIN
   SELECT
     DATE(p.created_at) AS fecha,
     COUNT(*) AS pedidos,
-    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos
+    SUM(COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0)) AS ingresos
   FROM public.pedidos p
   WHERE p.negocio='prodigy'
     AND p.created_at > now() - (p_dias||' days')::interval
@@ -88,7 +88,7 @@ BEGIN
     COUNT(*) AS pedidos,
     COUNT(*) FILTER (WHERE p.estado_operativo IN ('ENTREGADO','LISTO_DESPACHAR')) AS entregados,
     CASE WHEN COUNT(*)>0 THEN ROUND(COUNT(*) FILTER (WHERE p.estado_operativo IN ('ENTREGADO','LISTO_DESPACHAR'))::numeric/COUNT(*)*100,1) ELSE 0 END AS tasa_entrega,
-    ROUND(AVG(COALESCE(p.total::numeric, p.precio_total::numeric, 0)),0) AS ingreso_promedio
+    ROUND(AVG(COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0)),0) AS ingreso_promedio
   FROM public.pedidos p
   WHERE p.negocio='prodigy'
     AND p.created_at > now() - (p_dias||' days')::interval
@@ -110,14 +110,14 @@ BEGIN
 
   RETURN QUERY
   SELECT
-    COALESCE(p.doctor, p.nombre_doctor, 'Anónimo') AS doctor,
+    COALESCE(p.nombre_doctor, 'Anónimo') AS doctor,
     COUNT(*) AS pedidos,
-    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos,
+    SUM(COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0)) AS ingresos,
     MAX(DATE(p.created_at)) AS ultimo_pedido
   FROM public.pedidos p
   WHERE p.negocio='prodigy'
     AND p.created_at > now() - (p_dias||' days')::interval
-  GROUP BY COALESCE(p.doctor, p.nombre_doctor, 'Anónimo')
+  GROUP BY COALESCE(p.nombre_doctor, 'Anónimo')
   ORDER BY ingresos DESC LIMIT p_limit;
 END;
 $$;

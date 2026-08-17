@@ -379,14 +379,14 @@ BEGIN
   WHERE negocio='prodigy' AND created_at > now() - (p_dias||' days')::interval;
   RETURN QUERY
   SELECT
-    COALESCE(p.material, p.servicio, 'otro') AS material,
+    COALESCE(p.material, p.tipo_trabajo, 'otro') AS material,
     COUNT(*) AS total,
-    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos,
+    SUM(COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0)) AS ingresos,
     CASE WHEN _total > 0 THEN ROUND(COUNT(*)::numeric/_total*100,1) ELSE 0 END AS pct_total
   FROM public.pedidos p
   WHERE p.negocio='prodigy'
     AND p.created_at > now() - (p_dias||' days')::interval
-  GROUP BY COALESCE(p.material, p.servicio, 'otro')
+  GROUP BY COALESCE(p.material, p.tipo_trabajo, 'otro')
   ORDER BY total DESC LIMIT 15;
 END;
 $$;
@@ -406,7 +406,7 @@ BEGIN
   SELECT
     DATE(p.created_at) AS fecha,
     COUNT(*) AS pedidos,
-    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos
+    SUM(COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0)) AS ingresos
   FROM public.pedidos p
   WHERE p.negocio='prodigy'
     AND p.created_at > now() - (p_dias||' days')::interval
@@ -432,7 +432,7 @@ BEGIN
     COUNT(*) AS pedidos,
     COUNT(*) FILTER (WHERE p.estado_operativo IN ('ENTREGADO','LISTO_DESPACHAR')) AS entregados,
     CASE WHEN COUNT(*)>0 THEN ROUND(COUNT(*) FILTER (WHERE p.estado_operativo IN ('ENTREGADO','LISTO_DESPACHAR'))::numeric/COUNT(*)*100,1) ELSE 0 END AS tasa_entrega,
-    ROUND(AVG(COALESCE(p.total::numeric, p.precio_total::numeric, 0)),0) AS ingreso_promedio
+    ROUND(AVG(COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0)),0) AS ingreso_promedio
   FROM public.pedidos p
   WHERE p.negocio='prodigy'
     AND p.created_at > now() - (p_dias||' days')::interval
@@ -454,14 +454,14 @@ BEGIN
 
   RETURN QUERY
   SELECT
-    COALESCE(p.doctor, p.nombre_doctor, 'Anónimo') AS doctor,
+    COALESCE(p.nombre_doctor, 'Anónimo') AS doctor,
     COUNT(*) AS pedidos,
-    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos,
+    SUM(COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0)) AS ingresos,
     MAX(DATE(p.created_at)) AS ultimo_pedido
   FROM public.pedidos p
   WHERE p.negocio='prodigy'
     AND p.created_at > now() - (p_dias||' days')::interval
-  GROUP BY COALESCE(p.doctor, p.nombre_doctor, 'Anónimo')
+  GROUP BY COALESCE(p.nombre_doctor, 'Anónimo')
   ORDER BY ingresos DESC LIMIT p_limit;
 END;
 $$;
@@ -520,7 +520,7 @@ BEGIN
         'en_produccion',     (SELECT COUNT(*) FROM pedidos WHERE estado_operativo IN ('EN_DISENO','FRESADO_INICIADO','EN_PRODUCCION')),
         'en_revision',       (SELECT COUNT(*) FROM pedidos WHERE estado_operativo = 'REVISION_CLIENTE'),
         'listos_despacho',   (SELECT COUNT(*) FROM pedidos WHERE estado_operativo IN ('QA_APROBADO','LISTO_DESPACHAR')),
-        'pagos_pendientes',  (SELECT COUNT(*) FROM pedidos WHERE pago_estado IN ('pendiente','pago_subido') AND estado NOT IN ('Cancelado','CANCELADO')),
+        'pagos_pendientes',  (SELECT COUNT(*) FROM pedidos WHERE pago_estado IN ('pendiente','pago_subido') AND estado NOT IN ('Cancelado')),
         'saldos_pendientes', (SELECT COALESCE(SUM(saldo_pendiente_monto),0) FROM pedidos WHERE modalidad_cobro='50_50' AND pago_estado='pago_confirmado'),
         'tasa_aprobacion_1a', (SELECT ROUND(100.0 * COUNT(*) FILTER(WHERE revisiones_usadas = 0 AND diseno_aprobado = true) / NULLIF(COUNT(*) FILTER(WHERE diseno_aprobado = true),0), 1) FROM pedidos_doctor WHERE created_at >= NOW() - INTERVAL '30 days'),
         'calculado_en',      NOW()
@@ -544,12 +544,12 @@ BEGIN
 
     SELECT json_agg(row_to_json(t)) INTO resultado FROM (
         SELECT
-            SPLIT_PART(servicio, '(', 1) AS servicio,
+            SPLIT_PART(tipo_trabajo, '(', 1) AS servicio,
             COUNT(*) AS total,
             ROUND(AVG(precio_total)) AS ticket_promedio
         FROM pedidos
         WHERE created_at >= NOW() - INTERVAL '30 days'
-          AND servicio IS NOT NULL
+          AND tipo_trabajo IS NOT NULL
         GROUP BY 1
         ORDER BY total DESC
         LIMIT limite
@@ -598,13 +598,13 @@ BEGIN
 
     SELECT json_agg(row_to_json(t)) INTO resultado FROM (
         SELECT
-            SPLIT_PART(servicio, '(', 1) AS servicio,
+            SPLIT_PART(tipo_trabajo, '(', 1) AS servicio,
             ROUND(AVG(EXTRACT(EPOCH FROM (timestamp_qa - created_at))/3600)) AS horas_promedio,
             COUNT(*) AS total
         FROM pedidos
         WHERE timestamp_qa IS NOT NULL
           AND created_at >= NOW() - INTERVAL '90 days'
-          AND servicio IS NOT NULL
+          AND tipo_trabajo IS NOT NULL
         GROUP BY 1
         HAVING COUNT(*) >= 3
         ORDER BY horas_promedio ASC
@@ -660,9 +660,9 @@ BEGIN
     SELECT json_build_object(
         'pedidos_semana',     (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND created_at >= NOW() - INTERVAL '7 days'),
         'pedidos_mes',        (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND created_at >= NOW() - INTERVAL '30 days'),
-        'ingresos_mes_usd',   (SELECT COALESCE(SUM(precio_usd),0) FROM pedidos WHERE negocio='alejandrocadcam' AND pago_estado='pago_confirmado' AND created_at >= NOW() - INTERVAL '30 days'),
-        'en_diseno',          (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND estado='en_diseno'),
-        'en_revision',        (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND estado='revision'),
+        'ingresos_mes_usd',   (SELECT COALESCE(SUM(total_usd),0) FROM pedidos WHERE negocio='alejandrocadcam' AND pago_estado='pago_confirmado' AND created_at >= NOW() - INTERVAL '30 days'),
+        'en_diseno',          (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND estado='En Diseño'),
+        'en_revision',        (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND estado='En Revisión'),
         'tasa_aprobacion_1a', (SELECT ROUND(100.0 * COUNT(*) FILTER(WHERE revisiones_usadas=0 AND diseno_aprobado=true) / NULLIF(COUNT(*) FILTER(WHERE diseno_aprobado=true),0),1) FROM pedidos WHERE negocio='alejandrocadcam' AND created_at >= NOW() - INTERVAL '30 days'),
         'calculado_en',       NOW()
     ) INTO resultado;
@@ -710,7 +710,7 @@ BEGIN
   SELECT
     COALESCE(p.canal_origen,'directo') AS canal,
     COUNT(*) AS pedidos,
-    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos,
+    SUM(COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0)) AS ingresos,
     CASE WHEN _total>0 THEN ROUND(COUNT(*)::numeric/_total*100,1) ELSE 0 END AS pct_pedidos
   FROM public.pedidos p
   WHERE p.negocio='prodigy'
@@ -1057,9 +1057,9 @@ DECLARE
 BEGIN
     -- Resuelve el whatsapp real del usuario a partir de SUS PROPIOS
     -- pedidos (doctor_uid = auth.uid(), no editable por el cliente)
-    SELECT p.whatsapp INTO v_whatsapp
+    SELECT p.telefono INTO v_whatsapp
     FROM public.pedidos p
-    WHERE p.doctor_uid = auth.uid() AND p.whatsapp IS NOT NULL
+    WHERE p.doctor_uid = auth.uid() AND p.telefono IS NOT NULL
     ORDER BY p.created_at DESC
     LIMIT 1;
 

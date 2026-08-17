@@ -1,39 +1,37 @@
-# 🔴 PENDIENTE — RPCs del panel de métricas rotas (schema drift)
+# ✅ RPCs de métricas/recordatorios — corregidas en repo · FALTA RE-EJECUTAR
 
-Detectado por `tools/audit-live.mjs` (2026-08). El panel `app/metricas.html` da varios **400**
-porque las funciones RPC referencian **columnas/valores que ya no coinciden** con la tabla `pedidos`
-desplegada. Cada llamada probada directo contra Supabase con la anon key:
+Schema drift detectado por `tools/audit-schema.mjs` + validado contra el esquema real de `pedidos`.
+Las funciones referenciaban columnas/valores que ya no existen → `42703`/`22P02` → **400** en el panel
+de métricas y automatizaciones rotas. **Ya está corregido en los .sql del repo.**
 
-| RPC | Error exacto (Postgres) | Causa | Fix probable |
-|---|---|---|---|
-| `prodigy_dashboard_semana` | `22P02 invalid input value for enum estado_pedido: "cancelado"` | el enum es **`'Cancelado'`** (mayúscula), la función usa `'cancelado'` | ✅ ya corregido en los .sql del repo — **falta re-ejecutar** |
-| `prodigy_tiempos_entrega` | `42703 column "servicio" does not exist` | referencia a columna inexistente en la tabla desplegada | verificar nombre real de la columna de servicio |
-| `prodigy_pedidos_por_material` | `42703 column p.servicio does not exist` | idem | idem |
-| `prodigy_top_doctores` | `42703 column p.doctor does not exist` | la columna es **`nombre_doctor`** (o `doctor_uid`), no `doctor` | `p.doctor` → `p.nombre_doctor` |
-| `prodigy_ingresos_por_canal` | `42703 column p.total does not exist` | la columna es **`monto_total`**, no `total` | `p.total` → `p.monto_total` |
+## Qué se corrigió (columna fantasma → real)
+| Fantasma (no existe en `pedidos`) | Real | Nota |
+|---|---|---|
+| `p.total` | `p.precio_total` (fallback `p.monto_total`) | el COALESCE fallaba al parsear la columna inexistente |
+| `p.doctor` | `p.nombre_doctor` | |
+| `p.servicio` / `servicio` | `p.tipo_trabajo` | |
+| `p.whatsapp` | `p.telefono` | resolver WhatsApp del cliente (recordatorios) |
+| `precio_usd` | `total_usd` | alejandro_dashboard |
+| `'cancelado'` (enum) | `'Cancelado'` | 22P02 |
+| `'CANCELADO'` (enum) | `'Cancelado'` | quitado el duplicado inválido |
+| `estado='en_diseno'` / `'revision'` | `'En Diseño'` / `'En Revisión'` | valores reales del enum `estado_pedido` |
 
-## ✅ Columnas reales confirmadas (2026-08, information_schema de `pedidos`)
-Con el esquema real ya sabemos los nombres correctos — reemplazar en las funciones:
+## 👉 Falta: RE-EJECUTAR en Supabase (SQL Editor)
+Correr estos archivos (cada uno es `CREATE OR REPLACE` autocontenido), en este orden:
+1. `sql/patch-analytics-rpc-authz-2026.sql` — dashboard_semana, tiempos_entrega, forecast_semana, top_servicios, ingresos_semanas, alejandro_dashboard
+2. `sql/patch-reportes-admin-authz-2026.sql` — top_doctores, pedidos_por_material, ingresos_por_dia, conversion_por_flujo
+3. `sql/patch-canal-origen-authz-2026.sql` — ingresos_por_canal
+4. `sql/patch-pagos-vencidos.sql` — recordatorios de pago vencido
+5. `sql/patch-sla-pedidos.sql` — alertas SLA
+6. `sql/patch-wallet-idor-2026.sql` — resolver WhatsApp del cliente
 
-| Usado en la RPC (no existe) | Columna real en `pedidos` |
-|---|---|
-| `p.doctor` | **`nombre_doctor`** |
-| `p.total` | **`monto_total`** (ingresos) o `precio_total` |
-| `p.servicio` / `servicio` | **`tipo_trabajo`** (o `flujo`) — no hay columna `servicio` |
-| `'cancelado'` | **`'Cancelado'`** (enum, ya corregido en repo) |
+Link: https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/sql/new
+Verificar (debe devolver datos, no error):
+```sql
+SELECT prodigy_dashboard_semana();
+SELECT * FROM prodigy_top_doctores();
+SELECT * FROM prodigy_ingresos_por_canal();
+```
 
-`pedidos` tiene ~130 columnas; verificar también `estado` (enum `estado_pedido`) vs `estado_operativo`.
-
-## Ojo — el esquema del repo puede estar desactualizado
-`sql/schema-completo.sql` lista `servicio`, `monto_total`, `nombre_doctor` en `pedidos`, pero la RPC
-dice que `servicio` **no existe** en producción → el esquema desplegado **difiere del repo**.
-No se puede arreglar a ciegas: `pedidos` está protegida por RLS (anon no la ve).
-
-## Cómo cerrarlo
-1. En Supabase → Table Editor → `pedidos`, copiar los **nombres reales de las columnas** (o correr
-   `SELECT column_name FROM information_schema.columns WHERE table_name='pedidos';`).
-2. Con esa lista, corregir las funciones en `sql/prodigy-analytics-rpc.sql`, `sql/rpc-reportes-admin.sql`,
-   `sql/patch-canal-origen.sql` (y sus variantes `*-authz-*`) — que son las definiciones vigentes.
-3. Re-ejecutar en el SQL Editor de Supabase. El `'cancelado'→'Cancelado'` ya está corregido en el repo.
-
-> El panel de métricas es **interno (admin, tras login)** — no afecta al sitio público.
+> Nota: `estado_operativo` usa texto MAYÚSCULA (`'EN_DISENO'`, `'ENTREGADO'`) — eso es correcto y NO se tocó.
+> Solo el enum `estado` (`estado_pedido`) usa Capitalizado (`'En Diseño'`, `'Cancelado'`).

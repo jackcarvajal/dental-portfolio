@@ -31,13 +31,13 @@ RETURNS TABLE(
 LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN
   RETURN QUERY
-  SELECT p.id, p.codigo, p.doctor, p.whatsapp,
+  SELECT p.id, p.codigo, p.nombre_doctor, p.telefono,
     p.estado, p.estado_operativo,
     ROUND(EXTRACT(EPOCH FROM (now() - p.created_at))/3600, 1) AS horas_transcurridas,
     COALESCE(p.sla_horas_objetivo, 48) AS sla_horas_objetivo
   FROM public.pedidos p
   WHERE p.negocio = 'prodigy'
-    AND p.estado NOT IN ('CANCELADO', 'ENTREGADO')
+    AND p.estado NOT IN ('Cancelado', 'Entregado')
     AND p.estado_operativo NOT IN ('ENTREGADO', 'LISTO_DESPACHAR')
     AND (NOT p.sla_alerta_enviada OR p.sla_alerta_enviada IS NULL)
     AND EXTRACT(EPOCH FROM (now() - p.created_at))/3600 > COALESCE(p.sla_horas_objetivo, 48)

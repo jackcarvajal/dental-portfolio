@@ -33,7 +33,7 @@ BEGIN
   SELECT
     COALESCE(p.canal_origen,'directo') AS canal,
     COUNT(*) AS pedidos,
-    SUM(COALESCE(p.total::numeric, p.precio_total::numeric, 0)) AS ingresos,
+    SUM(COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0)) AS ingresos,
     CASE WHEN _total>0 THEN ROUND(COUNT(*)::numeric/_total*100,1) ELSE 0 END AS pct_pedidos
   FROM public.pedidos p
   WHERE p.negocio='prodigy'

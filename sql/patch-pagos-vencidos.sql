@@ -31,15 +31,15 @@ RETURNS TABLE(
 LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN
   RETURN QUERY
-  SELECT p.id, p.codigo, p.doctor, p.whatsapp,
-    COALESCE(p.total::numeric, p.precio_total::numeric, 0) AS total,
+  SELECT p.id, p.codigo, p.nombre_doctor, p.telefono,
+    COALESCE(p.precio_total::numeric, p.monto_total::numeric, 0) AS total,
     p.created_at,
     ROUND(EXTRACT(EPOCH FROM (now() - p.created_at))/3600, 1) AS horas_espera,
     p.pago_recordatorio_at
   FROM public.pedidos p
   WHERE p.negocio = 'prodigy'
     AND p.pago_estado IN ('pendiente', 'sin_pago')
-    AND p.estado NOT IN ('CANCELADO', 'ENTREGADO')
+    AND p.estado NOT IN ('Cancelado', 'Entregado')
     AND p.created_at < now() - (p_horas||' hours')::interval
     AND (p.pago_recordatorio_at IS NULL OR p.pago_recordatorio_at < now() - interval '24 hours')
   ORDER BY p.created_at ASC
