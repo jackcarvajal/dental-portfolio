@@ -74,3 +74,7 @@ Al final de sesión: `/clear` (todo commiteado) o `/compact` (trabajo en vuelo).
 - `docs/GUIA-SEGURIDAD.md` — patrones de seguridad con código (XSS, CORS, GRANT, CSP, etc).
 - `docs/GUIA-BOT-Y-ARTICULOS.md` — arquitectura del chatbot Gemini y pipeline de artículos auto-generados.
 - `docs/GUIA-AUDITORIA.md` — checklist de auditoría web app / e-commerce (404, Schema.org, hreflang).
+- `tools/` — **auditoría automática (correr antes de push/deploy)**: `audit.mjs` (estático: anon key, IDs dup, links rotos), `audit-live.mjs` (runtime: errores JS, 4xx Supabase), `audit-schema.mjs` (contrato front↔BD, columnas fantasma). Ver `tools/README.md`.
+
+## 9. ANTI-SLOP / ARQUITECTURA (aprendido ago-2026)
+La IA sin guía genera slop de BD/backend. Reglas: **verificar el esquema real antes de tocar tablas/columnas/RPCs** (un 400 = columna que no existe; 401 anon = RLS/GRANT o anon key vieja). No inventar nombres, no columnas bilingües (`event`/`evento`), no tablas solapadas, una sola fuente de verdad por RPC. Correr los `tools/audit-*.mjs`. Refactor de esquema = cirugía sobre datos vivos → por etapas.
