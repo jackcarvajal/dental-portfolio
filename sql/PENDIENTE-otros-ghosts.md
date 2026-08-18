@@ -17,7 +17,8 @@ no afecta al sitio público.
 - **app/operario:621**: consultaba `nombre_doctor` de la vista `pedidos_operacion` (no lo tiene) → cambiado a `from('pedidos')` (sí lo tiene).
 - **app/metricas-churn:149**: `valor_total_pagado` (la vista no lo tiene) → alias `valor_total_pagado:ticket_promedio` (muestra ticket promedio; si quieres el total real hay que ampliar la vista).
 - **pedidos_doctor.revisiones_usadas**: la tabla no la tenía → `sql/fix-pedidos-doctor-revisiones.sql` (ALTER ADD COLUMN, no-destructivo). **Falta re-ejecutar** → arregla el límite de revisiones del cliente.
-- Falsos positivos confirmados: `inventario_items` (costo_unitario/proveedor eran bleed), `cotizaciones` (van en jsonb `items`), `catalogo.precio_base`.
+- **equipo_mantenimiento**: el código (taller/operator-panel) registraba un LOG de mantenimiento (accion/tecnico/duracion) en una tabla que es un REGISTRO de equipos → 400, logging roto. Creada tabla `mantenimiento_log` (`sql/create-mantenimiento-log.sql`) y **repuntadas las 4 referencias** en el código. **Falta re-ejecutar el SQL** (crea la tabla). Validado: equipo_mantenimiento ya no aparece como ghost.
+- Falsos positivos confirmados: `inventario_items` (costo_unitario/proveedor eran bleed), `cotizaciones` (van en jsonb `items`), `catalogo.precio_base`, `doctors_inactivos`/`despachos`/`pedidos_operacion` restantes = vistas (ampliar si se quiere el dato exacto).
 
 ## 🔧 Requieren TU decisión de esquema (no lo adiviné — es data viva)
 | Dónde | Columnas fantasma | Recomendación |

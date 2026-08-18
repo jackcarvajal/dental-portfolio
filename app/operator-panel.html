@@ -1003,7 +1003,7 @@ async function confirmarInicioProduccion() {
     await _avanzarEstadoOrig(pedidoId, 'EN_PRODUCCION');
 
     // 2. Registrar uso de máquina en equipo_mantenimiento
-    await sb.from('equipo_mantenimiento').insert({
+    await sb.from('mantenimiento_log').insert({
         equipo_id:    equipo,
         accion:       'USO_PRODUCCION',
         tecnico:      _userId,

@@ -384,7 +384,7 @@ function toggleQR() {
 /* ── INFO EQUIPO (último mantenimiento) ───────────────────── */
 async function mostrarInfoEquipo(equipoId) {
     if (!equipoId) { document.getElementById('equipo-info-card').classList.remove('visible'); return; }
-    const { data } = await sb.from('equipo_mantenimiento')
+    const { data } = await sb.from('mantenimiento_log')
         .select('accion,created_at,duracion_min,tecnico')
         .eq('equipo_id', equipoId)
         .order('created_at', { ascending: false })
@@ -459,7 +459,7 @@ async function guardarMantenimiento() {
         const payload = { equipo_id: equipoId, tecnico, accion, notas: notas || null, foto_url };
         if (duracion) payload.duracion_min = parseInt(duracion, 10);
 
-        const { error } = await sb.from('equipo_mantenimiento').insert(payload);
+        const { error } = await sb.from('mantenimiento_log').insert(payload);
         if (error) throw error;
 
         toast(`Registro guardado — ${accion}`, 'ok');
@@ -484,7 +484,7 @@ async function guardarMantenimiento() {
 /* ── HISTORIAL ──────────────────────────────────────────────── */
 async function cargarHistorial() {
     document.getElementById('hist-container').innerHTML = '<div class="spinner"></div>';
-    const { data, error } = await sb.from('equipo_mantenimiento')
+    const { data, error } = await sb.from('mantenimiento_log')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(200);
