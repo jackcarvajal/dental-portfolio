@@ -23,6 +23,12 @@ no afecta al sitio público.
 | **inventario_items** | `costo_unitario, proveedor` | Reales: `costo_promedio` (no `costo_unitario`); `proveedor` está en `inventario_materiales`. Verificar si el código apunta a la tabla equivocada. |
 | **despachos** | `codigo, nombre_cliente, nombre_doctor, telefono, direccion, precio_total…` | El código espera columnas de un JOIN (pedido+mensajero). ¿Debe consultar una vista `v_despachos` o hacer el join explícito? |
 
+## 🆕 Hallazgos de la 2ª pasada (Alejandro + operario)
+- ✅ **Alejandro `envia-tu-scanner`**: insertaba `negocio` inexistente en `solicitudes_scanner` → 400, **se perdían las solicitudes**. Quitado. ARREGLADO.
+- ✅ **Alejandro `admin-panel`**: seleccionaba `doctor` de `cotizaciones` (real: `doctor_nombre`) → 400 en la lista. Fix con alias `doctor:doctor_nombre`. ARREGLADO.
+- 🟡 **`alejandro_top_servicios`** (RPC): desplegada pero rota (`servicio` inexistente) y NO estaba en el repo → 400 en app/metricas de Alejandro. **Reconstruida corregida en `sql/fix-alejandro-top-servicios.sql` — falta re-ejecutar en Supabase.**
+- 🔧 **`app/operario.html` línea 621**: `.select('codigo,tipo_trabajo,nombre_doctor,pais')` sobre la VISTA `pedidos_operacion`, que **no expone `nombre_doctor`** → 400 en el panel operario. Recomendación: **añadir `nombre_doctor` a la vista** `pedidos_operacion` (ya existe en `pedidos`), o quitarlo del select.
+
 ## Cómo cerrarlo
 Dime por cada fila si prefieres **ampliar la vista** o **cambiar el código**, y lo aplico. Las de vistas
 (`pedidos_operacion`, `doctors_inactivos`, `pedidos_doctor`) suelen resolverse mejor **ampliando la vista**
