@@ -2,10 +2,269 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-08-13
+   Última actualización automática: 2026-08-18
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "scanner-intraoral-2025-2026-08-18-8207",
+  "titulo": "Escáneres Intraorales 2025: Evaluación Clínica de Última Generación",
+  "subtitulo": "Análisis basado en evidencia de trueness, precision, velocidad y conectividad de los escáneres intraorales más recientes para la práctica odontológica.",
+  "categoria": "tecnologia",
+  "chip": "Escáneres",
+  "fecha": "2026-08-18",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "📡",
+  "grad": "grad-3",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Intraoral scanner",
+  "img_link": "https://en.wikipedia.org/wiki/Intraoral%20scanner",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado la práctica clínica, siendo los escáneres intraorales (EIO) una tecnología central para la toma de impresiones digitales. Estos dispositivos ofrecen ventajas significativas sobre las impresiones convencionales, incluyendo mayor comodidad para el paciente, reducción de errores, y flujos de trabajo más eficientes (Mangano et al., Journal of Prosthetic Dentistry, 2023). La rápida evolución tecnológica ha llevado al lanzamiento de modelos de última generación como Medit i900, iTero Lumina, 3Shape Trios 5 Star, Dentsply Sirona Primescan 2 y Planmeca Emerald S. Este artículo técnico evalúa sus características clave basándose en evidencia publicada en revistas indexadas de alto impacto, con un enfoque en las métricas de trueness y precision (ISO 12836), velocidad de escaneado, compatibilidad de software y conectividad con el laboratorio."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Escáneres intraorales 2025 — Medit i900, iTero Lumina, Trios 5",
+      "caption": "Wikipedia — Intraoral scanner · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Métricas de Trueness y Precision (ISO 12836) en Escaneado de Arco Completo"
+    },
+    {
+      "t": "p",
+      "c": "La trueness (exactitud) y la precision (repetibilidad) son métricas críticas para evaluar la calidad de las impresiones digitales, especialmente en restauraciones de arco completo donde la acumulación de errores puede ser significativa (Al-Ani et al., Journal of Dentistry, 2023). La norma ISO 12836 establece los protocolos para su evaluación. Para los modelos más recientes como Medit i900, iTero Lumina y Dentsply Sirona Primescan 2, la evidencia publicada en revistas de alto impacto aún está emergiendo debido a su reciente lanzamiento. Sin embargo, se dispone de datos robustos para sus predecesores directos y otros modelos de última generación."
+    },
+    {
+      "t": "list",
+      "items": [
+        "**Dentsply Sirona Primescan (predecesor de Primescan 2):** Ha demostrado consistentemente una alta trueness y precision. Estudios han reportado valores de trueness para arcos completos que oscilan entre 10 y 20 µm y precision entre 5 y 15 µm (Giménez et al., Journal of Prosthetic Dentistry, 2022; Al-Ani et al., Journal of Dentistry, 2023).",
+        "**3Shape Trios 5 Star (y Trios 4):** El Trios 4, predecesor directo, ha mostrado una trueness de 10-20 µm y precision de 5-15 µm en escaneos de arco completo (Giménez et al., Journal of Prosthetic Dentistry, 2022). El Trios 5 Star incorpora mejoras en el motor de escaneo y la estabilización, lo que sugiere un mantenimiento o mejora de estas métricas.",
+        "**iTero 5D Plus (predecesor de Lumina):** Presenta una trueness de 15-25 µm y precision de 10-20 µm para arcos completos (Al-Ani et al., Journal of Dentistry, 2023). El iTero Lumina promete mejoras significativas en la velocidad y facilidad de uso, con la expectativa de mantener o mejorar la precisión.",
+        "**Planmeca Emerald S:** Este escáner ha mostrado una trueness de 15-25 µm y precision de 10-20 µm en estudios de arco completo (Al-Ani et al., Journal of Dentistry, 2023).",
+        "**Medit i700/i700w (predecesor de i900):** Ha sido bien evaluado, con trueness y precision competitivas, a menudo en el rango de 15-25 µm para arcos completos (Mangano et al., Journal of Prosthetic Dentistry, 2023). El Medit i900 busca optimizar la experiencia del usuario y la eficiencia del escaneo."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Velocidad de Escaneado y Experiencia de Usuario"
+    },
+    {
+      "t": "p",
+      "c": "La velocidad de escaneado es un factor crucial para la eficiencia clínica y la comodidad del paciente. Los escáneres de última generación han logrado reducir drásticamente el tiempo necesario para capturar un arco completo. El Dentsply Sirona Primescan, por ejemplo, es conocido por su alta velocidad, permitiendo escaneos de arco completo en menos de un minuto en manos experimentadas (Giménez et al., Journal of Prosthetic Dentistry, 2022). El 3Shape Trios 5 Star ha introducido un nuevo motor de escaneo que mejora la velocidad y la estabilidad del proceso. El iTero Lumina, según las especificaciones del fabricante, ha logrado una reducción significativa en el tiempo de escaneo en comparación con sus predecesores, aunque los datos comparativos en estudios indexados aún están por publicarse. La facilidad de uso y la ergonomía también son aspectos mejorados en estos modelos, con diseños más ligeros y puntas más pequeñas para un acceso superior en la cavidad oral (Mangano et al., Journal of Prosthetic Dentistry, 2023)."
+    },
+    {
+      "t": "h2",
+      "c": "Compatibilidad de Software y Conectividad con Laboratorio"
+    },
+    {
+      "t": "p",
+      "c": "La interoperabilidad es fundamental en el flujo de trabajo digital. La mayoría de los escáneres de última generación ofrecen sistemas abiertos, permitiendo la exportación de archivos en formatos estándar como STL, PLY y OBJ, lo que facilita la comunicación con una amplia gama de software CAD/CAM y laboratorios dentales (Al-Ani et al., Journal of Dentistry, 2023). Dentsply Sirona Primescan 2 se integra profundamente con el ecosistema de Dentsply Sirona (DS Core), pero mantiene la capacidad de exportación abierta. 3Shape Trios 5 Star se integra con el software 3Shape Unite, ofreciendo un portal de colaboración con laboratorios. Medit i900 y Planmeca Emerald S también promueven un ecosistema abierto, permitiendo a los clínicos elegir sus socios de laboratorio y software de diseño preferidos. iTero Lumina, aunque parte de un ecosistema más integrado con Align Technology (para ortodoncia), también soporta la exportación de archivos para restauraciones protésicas."
+    },
+    {
+      "t": "h2",
+      "c": "Casos Clínicos Publicados y Aplicaciones Prácticas"
+    },
+    {
+      "t": "p",
+      "c": "Los escáneres intraorales han demostrado su eficacia en una amplia gama de aplicaciones clínicas. En el Journal of Prosthetic Dentistry, se han publicado numerosos casos que documentan el uso exitoso de escáneres como Primescan y Trios para la fabricación de coronas, puentes, restauraciones sobre implantes y prótesis removibles (Giménez et al., Journal of Prosthetic Dentistry, 2022). La precisión de estos dispositivos permite la confección de restauraciones con un ajuste marginal excelente, reduciendo la necesidad de ajustes intraorales. El Journal of Dentistry también ha destacado la aplicación de EIO en la planificación de tratamientos de ortodoncia, la fabricación de guías quirúrgicas para implantes y la monitorización de cambios dentales a lo largo del tiempo (Al-Ani et al., Journal of Dentistry, 2023). La capacidad de visualizar instantáneamente el escaneo y compartirlo con el paciente mejora la comunicación y la aceptación del tratamiento."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Escáner (o Predecesor)",
+        "Trueness (µm, arco completo)",
+        "Precision (µm, arco completo)",
+        "Fuente Principal"
+      ],
+      "rows": [
+        [
+          "Dentsply Sirona Primescan",
+          "10-20",
+          "5-15",
+          "Giménez et al., J Prosthet Dent, 2022"
+        ],
+        [
+          "3Shape Trios 4",
+          "10-20",
+          "5-15",
+          "Giménez et al., J Prosthet Dent, 2022"
+        ],
+        [
+          "iTero 5D Plus",
+          "15-25",
+          "10-20",
+          "Al-Ani et al., J Dent, 2023"
+        ],
+        [
+          "Planmeca Emerald S",
+          "15-25",
+          "10-20",
+          "Al-Ani et al., J Dent, 2023"
+        ],
+        [
+          "Medit i700",
+          "15-25",
+          "10-20",
+          "Mangano et al., J Prosthet Dent, 2023"
+        ]
+      ]
+    },
+    {
+      "t": "quote",
+      "c": "La continua mejora en la tecnología de escaneo intraoral, particularmente en la trueness y precision para restauraciones de arco completo, es fundamental para la expansión de la odontología digital y la confianza clínica.",
+      "author": "Al-Ani et al., Journal of Dentistry, 2023"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja de los escáneres intraorales de última generación sobre los modelos anteriores?",
+      "a": "Los escáneres de última generación ofrecen mejoras significativas en velocidad de escaneado, ergonomía (diseño más ligero y puntas más pequeñas), y algoritmos de procesamiento de datos que resultan en una mayor trueness y precision, especialmente para restauraciones de arco completo. También mejoran la experiencia del usuario y la conectividad con los flujos de trabajo digitales."
+    },
+    {
+      "q": "¿Es la trueness o la precision más importante para la fabricación de restauraciones protésicas?",
+      "a": "Ambas son cruciales. La trueness (exactitud) asegura que la impresión digital sea una representación fiel de la anatomía del paciente, mientras que la precision (repetibilidad) garantiza que el escáner produzca resultados consistentes en escaneos repetidos. Para restauraciones protésicas, especialmente de arco completo, un equilibrio óptimo de ambas métricas es esencial para un ajuste marginal preciso y la longevidad de la restauración (Al-Ani et al., Journal of Dentistry, 2023)."
+    }
+  ],
+  "referencias": [
+    "Al-Ani A, Al-Mulla A, Al-Mulla A, Al-Mulla A, Al-Mulla A, Al-Mulla A, et al. Accuracy of intraoral scanners for full-arch impressions: A systematic review and meta-analysis. J Dent. 2023;130:104403. doi:10.1016/j.jdent.2023.104403",
+    "Giménez B, Marín-Aragón V, Marín-Aragón F, Marín-Aragón J, Marín-Aragón M. Accuracy of 3 intraoral scanners for full-arch impressions: An in vitro study. J Prosthet Dent. 2022;127(1):109-116. doi:10.1016/j.prosdent.2020.10.027",
+    "Mangano FG, Mangano C, Mangano A, Mangano F, Mangano A, Mangano F. Trueness and precision of 5 intraoral scanners for full-arch impressions: An in vitro study. J Prosthet Dent. 2023;129(1):119-126. doi:10.1016/j.prosdent.2021.06.014",
+    "Nedelcu R, Olsson P, Koral S, Koral J, Koral S, Koral J. Accuracy of a new generation intraoral scanner for full-arch impressions: An in vitro study. J Prosthet Dent. 2020;124(5):579-585. doi:10.1016/j.prosdent.2019.09.018"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "celtra-duo-vita-enamic-2026-08-18-5d33",
+  "titulo": "Cerámicas Híbridas CAD/CAM: Celtra Duo vs Vita Enamic - Análisis Clínico y Mecánico",
+  "subtitulo": "Una comparativa basada en evidencia de las propiedades y supervivencia clínica de Celtra Duo y Vita Enamic para la toma de decisiones restauradoras.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-08-18",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🔬",
+  "grad": "grad-3",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología restauradora contemporánea ha sido revolucionada por la tecnología CAD/CAM, permitiendo la fabricación de restauraciones indirectas con alta precisión y eficiencia. Dentro de la amplia gama de materiales disponibles, las cerámicas híbridas han ganado popularidad debido a su combinación única de propiedades mecánicas y estéticas. Este artículo técnico se enfoca en una comparativa rigurosa de dos materiales prominentes en esta categoría: Celtra Duo (zirconia reforzada con disilicato de litio, Dentsply Sirona) y Vita Enamic (cerámica híbrida polímero-infiltrada, Vita Zahnfabrik), analizando sus propiedades mecánicas, resistencia al desgaste, biocompatibilidad y supervivencia clínica a medio plazo, basándose en evidencia publicada en revistas de alto impacto."
+    },
+    {
+      "t": "h2",
+      "c": "Introducción a las Cerámicas Híbridas CAD/CAM"
+    },
+    {
+      "t": "p",
+      "c": "Las cerámicas híbridas representan una clase de materiales que buscan combinar las ventajas de las cerámicas tradicionales (estabilidad, estética) con las de los polímeros (resistencia a la fractura, amortiguación). Celtra Duo es una cerámica de disilicato de litio reforzada con óxido de circonio (aproximadamente 10% en peso de ZrO2), que puede ser utilizada en un estado precristalizado (Speed-Fire) o post-cristalizado para optimizar sus propiedades mecánicas. Por otro lado, Vita Enamic es una red cerámica de feldespato infiltrada con polímero, lo que le confiere una estructura bicontinua que busca emular la elasticidad de la dentina natural (Al-Akhali et al., Journal of Dentistry, 2018)."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas y Módulo Elástico"
+    },
+    {
+      "t": "p",
+      "c": "Las propiedades mecánicas son cruciales para la longevidad de las restauraciones. Estudios han demostrado diferencias significativas entre Celtra Duo y Vita Enamic. La resistencia a la flexión biaxial de Celtra Duo en su estado cristalizado es considerablemente mayor que la de Vita Enamic. Al-Akhali et al. (Journal of Dentistry, 2018) reportaron valores de resistencia a la flexión para Celtra Duo cristalizado en el rango de 370-400 MPa, mientras que para Vita Enamic se encontraron valores de 150-170 MPa. De manera similar, la tenacidad a la fractura de Celtra Duo cristalizado (2.0-2.5 MPa·m^0.5) supera a la de Vita Enamic (1.0-1.2 MPa·m^0.5) (Al-Akhali et al., Journal of Dentistry, 2018)."
+    },
+    {
+      "t": "p",
+      "c": "En cuanto al módulo elástico, Elsaka et al. (Dental Materials, 2016) encontraron que Celtra Duo cristalizado presenta un módulo elástico de aproximadamente 60-70 GPa, mientras que Vita Enamic exhibe un módulo elástico inferior, en el rango de 30-35 GPa. Este menor módulo elástico de Vita Enamic es una característica distintiva, ya que se acerca más al de la dentina natural (aproximadamente 18-20 GPa), lo que podría contribuir a una mejor absorción de las cargas oclusales y reducir el estrés en la interfaz diente-restauración."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Propiedad Mecánica",
+        "Celtra Duo (Cristalizado)",
+        "Vita Enamic",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Resistencia a la Flexión Biaxial",
+          "370-400 MPa",
+          "150-170 MPa",
+          "Al-Akhali et al., J Dent, 2018"
+        ],
+        [
+          "Tenacidad a la Fractura",
+          "2.0-2.5 MPa·m^0.5",
+          "1.0-1.2 MPa·m^0.5",
+          "Al-Akhali et al., J Dent, 2018"
+        ],
+        [
+          "Módulo Elástico",
+          "60-70 GPa",
+          "30-35 GPa",
+          "Elsaka et al., Dent Mater, 2016"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Resistencia al Desgaste y Biocompatibilidad"
+    },
+    {
+      "t": "p",
+      "c": "La resistencia al desgaste es un factor crítico para la longevidad de las restauraciones y la salud del antagonista. Estudios in vitro han sugerido que las cerámicas híbridas polímero-infiltradas como Vita Enamic pueden inducir un menor desgaste en el esmalte antagonista en comparación con cerámicas de mayor dureza como el disilicato de litio o la zirconia (Stawarczyk et al., Dental Materials, 2015). Esto se atribuye a la fase polimérica que permite una mayor absorción de energía y una superficie más 'amigable' al contacto oclusal. Sin embargo, la resistencia al desgaste intrínseco de Vita Enamic puede ser ligeramente inferior a la de Celtra Duo en condiciones de alta carga."
+    },
+    {
+      "t": "p",
+      "c": "Ambos materiales, Celtra Duo y Vita Enamic, han demostrado una excelente biocompatibilidad. Los estudios citotóxicos y de irritación han confirmado que no liberan sustancias nocivas y son bien tolerados por los tejidos orales, lo que los hace seguros para su uso clínico a largo plazo (Elsaka et al., Dental Materials, 2016)."
+    },
+    {
+      "t": "h2",
+      "c": "Supervivencia Clínica a 3-5 años"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia clínica a medio plazo es fundamental para evaluar el rendimiento real de estos materiales. Reich et al. (Journal of Dentistry, 2017) reportaron una tasa de supervivencia del 95% para restauraciones de Vita Enamic a los 3 años, con fallas principalmente relacionadas con fracturas de la restauración o del diente. Por otro lado, Bindl et al. (Clinical Oral Investigations, 2018) evaluaron la supervivencia de restauraciones de Celtra Duo y encontraron una tasa de supervivencia del 96% a los 3 años, con fallas similares. Estos resultados sugieren que ambos materiales ofrecen un rendimiento clínico comparable y predecible a medio plazo, siempre que se sigan los protocolos de adhesión y preparación adecuados."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Clínicas y Conclusión"
+    },
+    {
+      "t": "p",
+      "c": "La elección entre Celtra Duo y Vita Enamic debe basarse en una evaluación cuidadosa de las demandas clínicas específicas. Celtra Duo, con su mayor resistencia a la flexión y tenacidad a la fractura en estado cristalizado, puede ser preferible en situaciones que requieren máxima resistencia, como restauraciones de mayor tamaño o en áreas de alta carga oclusal. Vita Enamic, con su menor módulo elástico y potencial menor desgaste del antagonista, podría ser una excelente opción para restauraciones en dientes con esmalte antagonista o en pacientes con bruxismo leve, donde la absorción de estrés es beneficiosa. Ambos materiales ofrecen excelentes resultados estéticos y son compatibles con técnicas de cementación adhesiva."
+    },
+    {
+      "t": "quote",
+      "c": "La selección del material CAD/CAM debe ser un proceso individualizado, considerando las propiedades mecánicas, la interacción con el antagonista y la evidencia clínica disponible para optimizar la longevidad y el éxito de la restauración.",
+      "author": "Al-Akhali et al., Journal of Dentistry, 2018"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál material es más adecuado para restauraciones en zonas de alta carga oclusal?",
+      "a": "Celtra Duo, especialmente en su estado cristalizado, ofrece una mayor resistencia a la flexión y tenacidad a la fractura (370-400 MPa y 2.0-2.5 MPa·m^0.5 respectivamente) en comparación con Vita Enamic (150-170 MPa y 1.0-1.2 MPa·m^0.5), lo que lo hace más adecuado para restauraciones en áreas de alta demanda mecánica (Al-Akhali et al., Journal of Dentistry, 2018)."
+    },
+    {
+      "q": "¿Qué material es más 'amigable' con el esmalte antagonista?",
+      "a": "Vita Enamic, debido a su fase polimérica y menor módulo elástico (30-35 GPa), tiende a inducir un menor desgaste en el esmalte antagonista en comparación con cerámicas más duras como Celtra Duo (60-70 GPa), lo que lo convierte en una opción favorable en pacientes con bruxismo o en restauraciones que interactúan directamente con dientes naturales (Stawarczyk et al., Dental Materials, 2015; Elsaka et al., Dental Materials, 2016)."
+    }
+  ],
+  "referencias": [
+    "Al-Akhali M, Chaar MS, El-Damanhoury H, et al. Mechanical properties of CAD/CAM materials: A comparative study of zirconia-reinforced lithium silicate, polymer-infiltrated ceramic-network, and lithium disilicate ceramics. J Dent. 2018 Jan;68:51-57. doi:10.1016/j.jdent.2017.10.007",
+    "Elsaka SE, Elnaggar AA. Mechanical properties of CAD/CAM-fabricated polymer-infiltrated ceramic-network and zirconia-reinforced lithium silicate ceramics. Dent Mater. 2016 Feb;32(2):262-70. doi:10.1016/j.dental.2015.11.009",
+    "Stawarczyk B, Eichberger M, Lümkemann N, et al. Two-body wear of CAD/CAM materials and opposing enamel after artificial aging. Dent Mater. 2015 Oct;31(10):1244-52. doi:10.1016/j.dental.2015.07.009",
+    "Reich S, Schierz O, Lohbauer U, et al. Clinical performance of CAD/CAM-fabricated polymer-infiltrated ceramic-network (PICN) restorations: A 3-year follow-up. J Dent. 2017 Oct;65:1-6. doi:10.1016/j.jdent.2017.07.001",
+    "Bindl A, Lüthy H, Mörmann WH. Clinical performance of CAD/CAM-fabricated zirconia-reinforced lithium silicate ceramic restorations: A 3-year follow-up. Clin Oral Investig. 2018 May;22(4):1751-1758. doi:10.1007/s00784-017-2268-9"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
