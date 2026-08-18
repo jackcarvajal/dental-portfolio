@@ -12,6 +12,13 @@ no afecta al sitio público.
 - **cotizaciones** (`cantidad/material/urgente`): van DENTRO del jsonb `items:[{...}]`, no son columnas top-level. OK.
 - **catalogo.precio_base**: bleed del extractor, no hay uso real.
 
+## ✅ 3ª pasada — decididos y arreglados (autónomo, validados con audit-schema)
+- **app/calidad** (QA): `fotos_calidad→fotos_empaque`, `timestamp_calidad→timestamp_qa`, quitado `calidad_user_id` (no existe columna). **El QA vuelve a guardar** — validado: los ghosts de `pedidos` desaparecieron.
+- **app/operario:621**: consultaba `nombre_doctor` de la vista `pedidos_operacion` (no lo tiene) → cambiado a `from('pedidos')` (sí lo tiene).
+- **app/metricas-churn:149**: `valor_total_pagado` (la vista no lo tiene) → alias `valor_total_pagado:ticket_promedio` (muestra ticket promedio; si quieres el total real hay que ampliar la vista).
+- **pedidos_doctor.revisiones_usadas**: la tabla no la tenía → `sql/fix-pedidos-doctor-revisiones.sql` (ALTER ADD COLUMN, no-destructivo). **Falta re-ejecutar** → arregla el límite de revisiones del cliente.
+- Falsos positivos confirmados: `inventario_items` (costo_unitario/proveedor eran bleed), `cotizaciones` (van en jsonb `items`), `catalogo.precio_base`.
+
 ## 🔧 Requieren TU decisión de esquema (no lo adiviné — es data viva)
 | Dónde | Columnas fantasma | Recomendación |
 |---|---|---|

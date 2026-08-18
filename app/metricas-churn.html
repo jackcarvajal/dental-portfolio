@@ -146,7 +146,7 @@ async function cargarChurnCLV(){
   const el=document.getElementById('churn-clv');
   if(!el) return;
   try{
-    const{data}=await sb.from('doctors_inactivos').select('email,nombre_doctor,nivel_riesgo,dias_inactivo,valor_total_pagado').order('valor_total_pagado',{ascending:false}).limit(8);
+    const{data}=await sb.from('doctors_inactivos').select('email,nombre_doctor,nivel_riesgo,dias_inactivo,valor_total_pagado:ticket_promedio').order('valor_total_pagado',{ascending:false}).limit(8);
     if(!data||!data.length){el.innerHTML='<p style="color:#475569;font-size:.78rem;padding:12px;">Sin datos.</p>';return;}
     const COLORS={CRITICO:'#ef4444',ALERTA:'#f59e0b',VIGILAR:'#94a3b8'};
     el.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:.75rem;"><thead><tr style="border-bottom:1px solid rgba(255,255,255,.06);">'+

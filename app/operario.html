@@ -618,7 +618,7 @@ async function avanzar(id, nuevoEstado, dept) {
 
   /* Notificaciones automáticas por hito */
   try {
-    const { data: p } = await sb.from('pedidos_operacion').select('codigo,tipo_trabajo,nombre_doctor,pais').eq('id',id).single();
+    const { data: p } = await sb.from('pedidos').select('codigo,tipo_trabajo,nombre_doctor,pais').eq('id',id).single();
     const pushUrl = SB_URL+'/functions/v1/send-push';
     const waUrl   = '/api/wa-auto';
     const heads   = {'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON};
