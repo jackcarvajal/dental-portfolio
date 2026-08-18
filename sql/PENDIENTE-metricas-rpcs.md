@@ -1,4 +1,12 @@
-# ✅ RPCs de métricas/recordatorios — corregidas en repo · FALTA RE-EJECUTAR
+# ✅ RESUELTO (2026-08-18) — RPCs de métricas/recordatorios corregidas y DESPLEGADAS
+
+> Ejecutado en Supabase con éxito (`sql/EJECUTAR-EN-SUPABASE-metricas.sql`). Enum `estado` comparado como
+> `::text` (el enum desplegado difiere del repo — ni `cancelado` ni `Cancelado` validaban). Pendiente solo:
+> confirmar que el panel `app/metricas` carga cifras. Historial del fix abajo.
+
+---
+
+## (histórico) RPCs de métricas/recordatorios — corregidas en repo
 
 Schema drift detectado por `tools/audit-schema.mjs` + validado contra el esquema real de `pedidos`.
 Las funciones referenciaban columnas/valores que ya no existen → `42703`/`22P02` → **400** en el panel

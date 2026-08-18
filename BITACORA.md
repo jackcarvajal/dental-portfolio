@@ -21,7 +21,7 @@ Nacen de los bugs recurrentes (anon key rotada→401, column mismatches→400). 
 `audit-schema` + `information_schema` revelaron: `pedidos` con ~130 columnas (4 "total"), 6 tablas `pedidos*`
 solapadas, columnas bilingües. **RPCs de dashboard/recordatorios rotas por columnas fantasma** — corregido en repo
 (`p.total→precio_total`, `p.doctor→nombre_doctor`, `servicio→tipo_trabajo`, `p.whatsapp→telefono`, enum
-`cancelado`/`CANCELADO`/`en_diseno`→valores reales). **Falta re-ejecutar 6 archivos en Supabase** — ver `sql/PENDIENTE-metricas-rpcs.md`.
+`cancelado`/`CANCELADO`/`en_diseno`→valores reales). ✅ RESUELTO y DESPLEGADO en Supabase (2026-08-18, enum como ::text). Ver `sql/PENDIENTE-metricas-rpcs.md`.
 
 ### ✅ Otros hallazgos de las herramientas
 - **portafolio.html** + app/agregar-caso: `casos_portafolio?publicado` (columna inexistente) → `visible`. 400→200.
