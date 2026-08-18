@@ -15,7 +15,8 @@
 `tools/audit-schema.mjs --schema-all` cruzó todo el código contra el esquema real. De 35 candidatos:
 - **Arreglado**: `leads_doctores` — panel ordenaba `.order('fecha_descarga')` (inexistente) → 400 en lista de leads → `created_at`.
 - **Falsos positivos**: cotizaciones (`cantidad/material` van en jsonb `items`), catalogo.precio_base (bleed).
-- **Documentado (requiere decisión de esquema, interno)**: app/calidad QA (`fotos_calidad→fotos_empaque`, `timestamp_calidad→timestamp_qa`, `calidad_user_id`?), vistas `pedidos_operacion`/`doctors_inactivos`/`pedidos_doctor` (ampliar vista), `equipo_mantenimiento`, `inventario_items`, `despachos`. Ver `sql/PENDIENTE-otros-ghosts.md`.
+- **Arreglados (2ª/3ª pasada, autónomo, validados con audit-schema)**: Alejandro `envia-tu-scanner` (insertaba `negocio` inexistente → se perdían solicitudes de escáner) y `admin-panel` cotizaciones (`doctor→doctor_nombre`); `alejandro_top_servicios` reconstruida; app/calidad QA (`fotos_calidad→fotos_empaque`, `timestamp_calidad→timestamp_qa`, quitado `calidad_user_id`); operario:621 (`nombre_doctor` vía pedidos base); metrics-churn (alias); **equipo_mantenimiento** → creada tabla `mantenimiento_log` + repuntado el código.
+- **Pendiente SQL (correr en Supabase)**: `sql/fix-pedidos-doctor-revisiones.sql` (ADD COLUMN revisiones_usadas), `sql/create-mantenimiento-log.sql` (CREATE TABLE). Vistas (`pedidos_operacion`/`doctors_inactivos`/`despachos`) opcionales. Ver `sql/PENDIENTE-otros-ghosts.md`.
 
 ### ✅ FAQ /preguntas — categoría "Servicios" (10 preguntas)
 Diseño CAD, software, materiales fresado, solo fresado, impresión 3D, Lab Full, niveles, escaneo domicilio, Aidite, fotogrametría. + filtro + schema FAQPage (12→22). También ~14 respuestas nuevas en el artefacto de WhatsApp.
