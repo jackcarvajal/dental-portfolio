@@ -1,5 +1,5 @@
 -- FIX RPCs de métricas/recordatorios (schema drift) — 2026-08. Pegar TODO en Supabase SQL Editor → Run.
--- Enum comparado como ::text para evitar 22P02 (el enum desplegado difiere del repo).
+-- Enum estado comparado como ::text para evitar 22P02 (el enum desplegado difiere del repo).
 
 
 -- ═══ patch-analytics-rpc-authz-2026.sql ═══
@@ -427,7 +427,7 @@ BEGIN
   FROM public.pedidos p
   WHERE p.negocio = 'prodigy'
     AND p.pago_estado IN ('pendiente', 'sin_pago')
-    AND p.estado NOT IN ('Cancelado', 'Entregado')
+    AND p.estado::text NOT IN ('Cancelado','cancelado','CANCELADO','Entregado','entregado','ENTREGADO')
     AND p.created_at < now() - (p_horas||' hours')::interval
     AND (p.pago_recordatorio_at IS NULL OR p.pago_recordatorio_at < now() - interval '24 hours')
   ORDER BY p.created_at ASC
@@ -497,7 +497,7 @@ BEGIN
     COALESCE(p.sla_horas_objetivo, 48) AS sla_horas_objetivo
   FROM public.pedidos p
   WHERE p.negocio = 'prodigy'
-    AND p.estado NOT IN ('Cancelado', 'Entregado')
+    AND p.estado::text NOT IN ('Cancelado','cancelado','CANCELADO','Entregado','entregado','ENTREGADO')
     AND p.estado_operativo NOT IN ('ENTREGADO', 'LISTO_DESPACHAR')
     AND (NOT p.sla_alerta_enviada OR p.sla_alerta_enviada IS NULL)
     AND EXTRACT(EPOCH FROM (now() - p.created_at))/3600 > COALESCE(p.sla_horas_objetivo, 48)

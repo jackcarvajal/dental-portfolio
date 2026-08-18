@@ -39,7 +39,7 @@ BEGIN
   FROM public.pedidos p
   WHERE p.negocio = 'prodigy'
     AND p.pago_estado IN ('pendiente', 'sin_pago')
-    AND p.estado NOT IN ('Cancelado', 'Entregado')
+    AND p.estado::text NOT IN ('Cancelado','cancelado','CANCELADO','Entregado','entregado','ENTREGADO')
     AND p.created_at < now() - (p_horas||' hours')::interval
     AND (p.pago_recordatorio_at IS NULL OR p.pago_recordatorio_at < now() - interval '24 hours')
   ORDER BY p.created_at ASC
