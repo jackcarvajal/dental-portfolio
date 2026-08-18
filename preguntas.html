@@ -56,7 +56,17 @@
 {"@type":"Question","name":"¿Cuánto cuesta una guía quirúrgica para implantes?","acceptedAnswer":{"@type":"Answer","text":"Una guía quirúrgica completa (planificación CBCT + diseño + impresión 3D) parte desde $380.000 COP para casos simples hasta 2 implantes. Incluye planificación en CoDiagnostiX y las anillas Neodent. Casos más complejos o con mayor número de implantes tienen precio diferenciado."}},
 {"@type":"Question","name":"¿Tienen escaneo intraoral a domicilio?","acceptedAnswer":{"@type":"Answer","text":"Sí, en la zona norte de Bogotá (Chapinero, Usaquén, Chico, Santa Bárbara). Costo: $60.000 COP por visita más el servicio contratado. Coordinamos la visita con mínimo 2 horas de anticipación. Fuera de esta zona, evalúa enviar el escáner digitalmente."}},
 {"@type":"Question","name":"¿Qué diferencia hay entre el diseño CAD y el diseño + fresado?","acceptedAnswer":{"@type":"Answer","text":"El diseño CAD solo entrega el archivo STL para que tú lo freses en tu propia máquina. El servicio completo diseño + fresado incluye el archivo STL y la pieza física terminada (corona, carilla, modelo, etc.) lista para instalar en el paciente."}},
-{"@type":"Question","name":"¿Trabajan con todos los sistemas de implantes?","acceptedAnswer":{"@type":"Answer","text":"Sí. Tenemos bibliotecas de implantes para Straumann, Nobel Biocare, Neodent, MegaGen, Osstem, Zimmer, Dentsply Sirona, BioHorizons, Alpha Bio, Cortex y más. Si tu sistema no está en la lista, contáctanos — podemos importar la librería."}}
+{"@type":"Question","name":"¿Trabajan con todos los sistemas de implantes?","acceptedAnswer":{"@type":"Answer","text":"Sí. Tenemos bibliotecas de implantes para Straumann, Nobel Biocare, Neodent, MegaGen, Osstem, Zimmer, Dentsply Sirona, BioHorizons, Alpha Bio, Cortex y más. Si tu sistema no está en la lista, contáctanos — podemos importar la librería."}},
+{"@type":"Question","name":"¿Qué incluye el servicio de solo diseño CAD?","acceptedAnswer":{"@type":"Answer","text":"Te entregamos el archivo STL listo para fresar en tu propio equipo, compatible con cualquier fresadora. Diseño de corona desde $58.000 COP / $14 USD. Diseñamos en Exocad y 3Shape con criterio clínico real."}},
+{"@type":"Question","name":"¿En qué software diseñan?","acceptedAnswer":{"@type":"Answer","text":"Trabajamos en Exocad y 3Shape según el caso, entregando archivos nativos de ambos además de STL, OBJ y PLY. Nuestros diseñadores tienen experiencia clínica: entienden oclusión, márgenes y estética."}},
+{"@type":"Question","name":"¿Qué materiales fresan (CAM)?","acceptedAnswer":{"@type":"Answer","text":"Fresamos en Zirconio monolítico, multicapa y translúcido 5Y, Disilicato de litio e.max, PMMA, Titanio Grado 5 y Amber Mill, en máquina de 5 ejes con control de calidad. Incluye Full Arch sobre implantes."}},
+{"@type":"Question","name":"¿Pueden fresar si ya tengo el diseño STL?","acceptedAnswer":{"@type":"Answer","text":"Sí. Solo fresado: corona en zirconio 3Y desde $35.000 COP, incluyendo bloque de material, fresado en 5 ejes y pulido básico."}},
+{"@type":"Question","name":"¿Qué imprimen en 3D?","acceptedAnswer":{"@type":"Answer","text":"Modelos de estudio, modelos con muñón removible, provisionales, guías quirúrgicas y férulas, en resina biocompatible con precisión de 50 micras. Modelo desde $18.000 COP."}},
+{"@type":"Question","name":"¿Qué es el servicio Lab Full o terminado completo?","acceptedAnswer":{"@type":"Answer","text":"Servicio integral: diseñamos, fresamos, tinción, glaseado y empaque. Recibes la restauración lista para cementar. Ideal si no tienes laboratorio propio."}},
+{"@type":"Question","name":"¿Cuál es la diferencia entre solo diseño, diseño + fresado y Lab Full?","acceptedAnswer":{"@type":"Answer","text":"Tres niveles: Solo Diseño (recibes el archivo STL), Diseño + Fresado (recibes la pieza fresada) y Lab Full (recibes la pieza terminada lista para cementar)."}},
+{"@type":"Question","name":"¿Cómo funciona el escaneo intraoral a domicilio?","acceptedAnswer":{"@type":"Answer","text":"Vamos a tu clínica en el norte de Bogotá, escaneamos al paciente y entregamos el STL el mismo día. Costo $60.000 COP por visita más el servicio contratado. Agenda con mínimo 2 horas de anticipación."}},
+{"@type":"Question","name":"¿Qué escáner usan a domicilio?","acceptedAnswer":{"@type":"Answer","text":"El escáner intraoral Aidite Rapid 5, con malla y rendimiento comparables a iTero, Medit i700 y 3Shape Trios. Entrega en STL universal, sin polvo y con color real."}},
+{"@type":"Question","name":"¿Hacen fotogrametría para casos All-on-X?","acceptedAnswer":{"@type":"Answer","text":"Sí. Fotogrametría full-arch para All-on-4, All-on-6 y All-on-X: registramos la posición exacta de cada multi-unit para lograr ajuste pasivo real en rehabilitaciones sobre implantes. Vamos a tu consultorio en Bogotá."}}
 ]}</script>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Preguntas Frecuentes","item":"https://prodigylabdental.com/preguntas"}]}</script>
@@ -148,6 +158,7 @@ summary::-webkit-details-marker{display:none;}
     <button type="button" class="cat-btn" onclick="filtrarCat('pagos',this)">💳 Pagos</button>
     <button type="button" class="cat-btn" onclick="filtrarCat('proceso',this)">⚙️ Proceso</button>
     <button type="button" class="cat-btn" onclick="filtrarCat('envios',this)">📦 Envíos</button>
+    <button type="button" class="cat-btn" onclick="filtrarCat('servicios',this)">🔧 Servicios</button>
   </div>
 
   <!-- FAQs -->
@@ -254,6 +265,58 @@ summary::-webkit-details-marker{display:none;}
     <details data-cat="envios" data-q="recogida domicilio bogota escaner intraoral">
       <summary>¿Tienen escaneo intraoral a domicilio?</summary>
       <div class="faq-body">Sí, disponible en la zona <strong>norte de Bogotá</strong> (Chapinero, Usaquén, Chico, Santa Bárbara, Cedritos). Costo: <strong>$60.000 COP</strong> por visita + el servicio contratado. Coordina con mínimo 2 horas de anticipación al <a href="https://wa.me/573212816716">+57 321 281 6716</a>.</div>
+    </details>
+
+    <div class="cat-header" data-cat="servicios"><i class="fas fa-screwdriver-wrench" aria-hidden="true"></i> Servicios</div>
+
+    <details data-cat="servicios" data-q="solo diseño cad stl que incluye">
+      <summary>¿Qué incluye el servicio de solo diseño CAD?</summary>
+      <div class="faq-body">Te entregamos el archivo <strong>STL listo para fresar</strong> en tu propio equipo — compatible con cualquier fresadora del mercado. Diseño de corona desde <strong>$58.000 COP</strong> / <strong>$14 USD</strong>. Ideal si ya tienes tu propio CAM. Diseñamos en <strong>Exocad</strong> y <strong>3Shape</strong> con criterio clínico real.</div>
+    </details>
+
+    <details data-cat="servicios" data-q="software diseño exocad 3shape">
+      <summary>¿En qué software diseñan?</summary>
+      <div class="faq-body">Trabajamos en <strong>Exocad</strong> y <strong>3Shape</strong> según el caso, y entregamos archivos nativos de ambos además de STL, OBJ y PLY. Nuestros diseñadores tienen experiencia clínica — no solo operan el software: entienden oclusión, márgenes y estética.</div>
+    </details>
+
+    <details data-cat="servicios" data-q="materiales fresado zirconio emax pmma titanio">
+      <summary>¿Qué materiales fresan (CAM)?</summary>
+      <div class="faq-body">Fresamos en <strong>Zirconio</strong> (monolítico, multicapa y translúcido 5Y), <strong>Disilicato de litio e.max</strong>, <strong>PMMA</strong>, <strong>Titanio Grado 5</strong> y <strong>Amber Mill</strong>, en máquina de <strong>5 ejes</strong> con control de calidad. Incluye Full Arch sobre implantes (All-on-X).</div>
+    </details>
+
+    <details data-cat="servicios" data-q="solo fresado ya tengo stl precio">
+      <summary>¿Pueden fresar si ya tengo el diseño STL?</summary>
+      <div class="faq-body">Sí. Te hacemos <strong>solo el fresado</strong>: corona en zirconio 3Y desde <strong>$35.000 COP</strong>, incluyendo bloque de material, fresado en 5 ejes y pulido básico. Ver precios en la <a href="/calculadora-fresado">calculadora de fresado</a>.</div>
+    </details>
+
+    <details data-cat="servicios" data-q="que imprimen 3d modelos provisionales ferulas resina">
+      <summary>¿Qué imprimen en 3D?</summary>
+      <div class="faq-body">Imprimimos <strong>modelos de estudio, modelos con muñón removible, provisionales, guías quirúrgicas y férulas</strong>, en resina biocompatible con precisión de <strong>50 micras</strong>. Modelo desde $18.000, con muñón removible desde $25.000, provisional desde $30.000 COP. Ver <a href="/calculadora-impresion">calculadora de impresión</a>.</div>
+    </details>
+
+    <details data-cat="servicios" data-q="lab full terminado completo tincion glaseado listo cementar">
+      <summary>¿Qué es el servicio Lab Full o "terminado completo"?</summary>
+      <div class="faq-body">Es el servicio integral: <strong>diseñamos + fresamos + tinción + glaseado + empaque</strong>. Recibes la restauración <strong>lista para cementar</strong> en tu paciente. Ideal si no tienes laboratorio propio o quieres delegar todo el flujo.</div>
+    </details>
+
+    <details data-cat="servicios" data-q="diferencia solo diseño fresado lab full niveles">
+      <summary>¿Cuál es la diferencia entre solo diseño, diseño + fresado y Lab Full?</summary>
+      <div class="faq-body">Son 3 niveles, eliges según lo que necesites: <strong>1) Solo Diseño</strong> → recibes el archivo STL. <strong>2) Diseño + Fresado</strong> → recibes la pieza ya fresada. <strong>3) Lab Full</strong> → recibes la pieza terminada, lista para cementar.</div>
+    </details>
+
+    <details data-cat="servicios" data-q="escaneo intraoral domicilio bogota como funciona">
+      <summary>¿Cómo funciona el escaneo intraoral a domicilio?</summary>
+      <div class="faq-body">Vamos a tu clínica en el <strong>norte de Bogotá</strong>, escaneamos al paciente y te entregamos el <strong>STL el mismo día</strong>. Costo: <strong>$60.000 COP</strong> por visita + el servicio contratado. Agenda con mínimo 2 horas de anticipación al <strong>+57 321 281 6716</strong>. Sin que tengas que invertir en un escáner.</div>
+    </details>
+
+    <details data-cat="servicios" data-q="que escaner usan aidite rapid 5 domicilio">
+      <summary>¿Qué escáner usan a domicilio?</summary>
+      <div class="faq-body">Usamos el escáner intraoral <strong>Aidite Rapid 5</strong>, con malla y rendimiento comparables a iTero, Medit i700 y 3Shape Trios. Entrega en <strong>STL universal</strong>, sin polvo y con color real, compatible con cualquier flujo CAD/CAM.</div>
+    </details>
+
+    <details data-cat="servicios" data-q="fotogrametria full arch all on x ajuste pasivo multiunit">
+      <summary>¿Hacen fotogrametría para casos All-on-X?</summary>
+      <div class="faq-body">Sí. Hacemos <strong>fotogrametría full-arch</strong> para <strong>All-on-4 / All-on-6 / All-on-X</strong>: registramos la posición exacta de cada multi-unit para lograr <strong>ajuste pasivo real</strong> en rehabilitaciones sobre implantes. Vamos a tu consultorio en Bogotá con nuestro equipo.</div>
     </details>
 
   </div><!-- /faq-container -->
