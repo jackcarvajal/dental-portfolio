@@ -66,6 +66,26 @@ if (schemaArg && existsSync(schemaArg)) {
   process.exit(0);
 }
 
+// ── Modo validación TOTAL: cruzar todas las tablas contra un dump CSV (table,"col,col,...") ──
+const schemaAllArg = (() => { const i = args.indexOf('--schema-all'); return i > -1 ? args[i + 1] : null; })();
+if (schemaAllArg && existsSync(schemaAllArg)) {
+  const real = {};
+  for (const line of readFileSync(schemaAllArg, 'utf8').split('\n')) {
+    const m = line.match(/^([a-z_0-9]+),"(.+)"$/); if (m) real[m[1]] = new Set(m[2].split(','));
+  }
+  // ruido de extracción (no son columnas reales): 1-2 letras, mayúsculas, y falsos conocidos
+  const NOISE = new Set(['arr', 'el', 'html', 'soporte', 'casos', 'props', 'event', 'ts', 'total', 'servicio', 'bajo', 'pago']);
+  console.log('\n\x1b[1mCOLUMNAS FANTASMA — código usa, tabla no tiene (filtrado ruido)\x1b[0m\n');
+  let nT = 0, nC = 0;
+  for (const t of Object.keys(tables).sort()) {
+    const r = real[t]; if (!r) continue;
+    const ghost = [...tables[t]].filter(c => !r.has(c) && !NOISE.has(c) && /^[a-z_][a-z0-9_]{2,}$/.test(c));
+    if (ghost.length) { nT++; nC += ghost.length; console.log(`  \x1b[31m✗ ${t}\x1b[0m → ${ghost.join(', ')}`); }
+  }
+  console.log(`\n${nT} tablas con columnas fantasma, ${nC} columnas. (Verificar: pueden ser vistas o bleed — grep el uso real.)`);
+  process.exit(nT ? 1 : 0);
+}
+
 // ── Modo reporte: superficie de BD ──
 const T = Object.keys(tables).sort();
 console.log(`\n\x1b[1mSUPERFICIE DE BD — ${ROOT.replace(/.*[\\/]/, '')}\x1b[0m  (${T.length} tablas, ${Object.keys(rpcs).length} RPCs)\n`);

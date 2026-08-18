@@ -2622,7 +2622,7 @@ async function cargarLeads() {
 
     const { data, error } = await sb.from('leads_doctores')
         .select('*')
-        .order('fecha_descarga', { ascending: false });
+        .order('created_at', { ascending: false });
 
     if (error) {
         document.getElementById('tbody-leads').innerHTML =
@@ -2655,7 +2655,7 @@ function renderLeads(arr) {
         return;
     }
     tbody.innerHTML = arr.map(l => {
-        const fecha = l.fecha_descarga ? new Date(l.fecha_descarga).toLocaleDateString('es-CO') : '—';
+        const fecha = l.created_at ? new Date(l.created_at).toLocaleDateString('es-CO') : '—';
         const badge = l.contactado
             ? '<span style="background:rgba(0,255,65,0.1);color:#00FF41;border:1px solid rgba(0,255,65,0.3);border-radius:20px;padding:2px 9px;font-size:0.68rem;font-weight:700;">Contactado</span>'
             : '<span style="background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.3);border-radius:20px;padding:2px 9px;font-size:0.68rem;font-weight:700;">Pendiente</span>';
