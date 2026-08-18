@@ -9,6 +9,22 @@
 
 ---
 
+## 2026-08-18
+
+### ✅ Validación total front↔BD (con esquema real de las 57 tablas)
+`tools/audit-schema.mjs --schema-all` cruzó todo el código contra el esquema real. De 35 candidatos:
+- **Arreglado**: `leads_doctores` — panel ordenaba `.order('fecha_descarga')` (inexistente) → 400 en lista de leads → `created_at`.
+- **Falsos positivos**: cotizaciones (`cantidad/material` van en jsonb `items`), catalogo.precio_base (bleed).
+- **Documentado (requiere decisión de esquema, interno)**: app/calidad QA (`fotos_calidad→fotos_empaque`, `timestamp_calidad→timestamp_qa`, `calidad_user_id`?), vistas `pedidos_operacion`/`doctors_inactivos`/`pedidos_doctor` (ampliar vista), `equipo_mantenimiento`, `inventario_items`, `despachos`. Ver `sql/PENDIENTE-otros-ghosts.md`.
+
+### ✅ FAQ /preguntas — categoría "Servicios" (10 preguntas)
+Diseño CAD, software, materiales fresado, solo fresado, impresión 3D, Lab Full, niveles, escaneo domicilio, Aidite, fotogrametría. + filtro + schema FAQPage (12→22). También ~14 respuestas nuevas en el artefacto de WhatsApp.
+
+### ✅ Métricas RPCs — DESPLEGADAS
+Ejecutado en Supabase con éxito. Enum `estado` comparado como `::text` (el enum desplegado difiere del repo — ni `cancelado` ni `Cancelado` validaban). Consolidado en `sql/EJECUTAR-EN-SUPABASE-metricas.sql`.
+
+---
+
 ## 2026-08-17
 
 ### ✅ Herramientas de auditoría automática (`tools/`) — prevención pre-deploy
