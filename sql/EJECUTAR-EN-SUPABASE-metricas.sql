@@ -1,13 +1,8 @@
--- ═══════════════════════════════════════════════════════════════
--- FIX RPCs de métricas / recordatorios (schema drift) — 2026-08
--- Pegar TODO esto en Supabase → SQL Editor → Run.
--- Corrige columnas fantasma y enum inválido (400/42703/22P02).
--- ═══════════════════════════════════════════════════════════════
+-- FIX RPCs de métricas/recordatorios (schema drift) — 2026-08. Pegar TODO en Supabase SQL Editor → Run.
+-- Enum comparado como ::text para evitar 22P02 (el enum desplegado difiere del repo).
 
 
--- ┌───────────────────────────────────────────────────────────
--- │ patch-analytics-rpc-authz-2026.sql
--- └───────────────────────────────────────────────────────────
+-- ═══ patch-analytics-rpc-authz-2026.sql ═══
 -- ============================================================
 -- PRODIGY — Restringir RPCs de analytics/dashboard a staff real
 -- Ejecutar en: Supabase Dashboard → SQL Editor
@@ -53,7 +48,7 @@ BEGIN
         'en_produccion',     (SELECT COUNT(*) FROM pedidos WHERE estado_operativo IN ('EN_DISENO','FRESADO_INICIADO','EN_PRODUCCION')),
         'en_revision',       (SELECT COUNT(*) FROM pedidos WHERE estado_operativo = 'REVISION_CLIENTE'),
         'listos_despacho',   (SELECT COUNT(*) FROM pedidos WHERE estado_operativo IN ('QA_APROBADO','LISTO_DESPACHAR')),
-        'pagos_pendientes',  (SELECT COUNT(*) FROM pedidos WHERE pago_estado IN ('pendiente','pago_subido') AND estado NOT IN ('Cancelado')),
+        'pagos_pendientes',  (SELECT COUNT(*) FROM pedidos WHERE pago_estado IN ('pendiente','pago_subido') AND estado::text NOT IN ('Cancelado','cancelado','CANCELADO')),
         'saldos_pendientes', (SELECT COALESCE(SUM(saldo_pendiente_monto),0) FROM pedidos WHERE modalidad_cobro='50_50' AND pago_estado='pago_confirmado'),
         'tasa_aprobacion_1a', (SELECT ROUND(100.0 * COUNT(*) FILTER(WHERE revisiones_usadas = 0 AND diseno_aprobado = true) / NULLIF(COUNT(*) FILTER(WHERE diseno_aprobado = true),0), 1) FROM pedidos_doctor WHERE created_at >= NOW() - INTERVAL '30 days'),
         'calculado_en',      NOW()
@@ -194,8 +189,8 @@ BEGIN
         'pedidos_semana',     (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND created_at >= NOW() - INTERVAL '7 days'),
         'pedidos_mes',        (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND created_at >= NOW() - INTERVAL '30 days'),
         'ingresos_mes_usd',   (SELECT COALESCE(SUM(total_usd),0) FROM pedidos WHERE negocio='alejandrocadcam' AND pago_estado='pago_confirmado' AND created_at >= NOW() - INTERVAL '30 days'),
-        'en_diseno',          (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND estado='En Diseño'),
-        'en_revision',        (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND estado='En Revisión'),
+        'en_diseno',          (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND estado::text IN ('En Diseño','En Diseno','en_diseno','EN_DISENO')),
+        'en_revision',        (SELECT COUNT(*) FROM pedidos WHERE negocio='alejandrocadcam' AND estado::text IN ('En Revisión','En Revision','revision','REVISION_CLIENTE')),
         'tasa_aprobacion_1a', (SELECT ROUND(100.0 * COUNT(*) FILTER(WHERE revisiones_usadas=0 AND diseno_aprobado=true) / NULLIF(COUNT(*) FILTER(WHERE diseno_aprobado=true),0),1) FROM pedidos WHERE negocio='alejandrocadcam' AND created_at >= NOW() - INTERVAL '30 days'),
         'calculado_en',       NOW()
     ) INTO resultado;
@@ -211,9 +206,7 @@ $$;
 -- ============================================================
 
 
--- ┌───────────────────────────────────────────────────────────
--- │ patch-reportes-admin-authz-2026.sql
--- └───────────────────────────────────────────────────────────
+-- ═══ patch-reportes-admin-authz-2026.sql ═══
 -- ============================================================
 -- PRODIGY — Restringir RPCs de reportes admin a staff real
 -- Ejecutar en: Supabase Dashboard → SQL Editor
@@ -345,9 +338,7 @@ $$;
 -- ============================================================
 
 
--- ┌───────────────────────────────────────────────────────────
--- │ patch-canal-origen-authz-2026.sql
--- └───────────────────────────────────────────────────────────
+-- ═══ patch-canal-origen-authz-2026.sql ═══
 -- ============================================================
 -- PRODIGY — Restringir RPC de ingresos por canal a staff real
 -- Ejecutar en: Supabase Dashboard → SQL Editor
@@ -394,9 +385,7 @@ $$;
 -- ============================================================
 
 
--- ┌───────────────────────────────────────────────────────────
--- │ patch-pagos-vencidos.sql
--- └───────────────────────────────────────────────────────────
+-- ═══ patch-pagos-vencidos.sql ═══
 -- ============================================================
 -- PRODIGY — Gestión de pagos vencidos y alertas
 -- Ejecutar en Supabase Dashboard → SQL Editor
@@ -468,9 +457,7 @@ GRANT EXECUTE ON FUNCTION public.prodigy_marcar_recordatorio(uuid) TO authentica
 SELECT 'pagos vencidos OK' AS status;
 
 
--- ┌───────────────────────────────────────────────────────────
--- │ patch-sla-pedidos.sql
--- └───────────────────────────────────────────────────────────
+-- ═══ patch-sla-pedidos.sql ═══
 -- ============================================================
 -- PRODIGY — SLA de pedidos (alertas por tiempo)
 -- Ejecutar en Supabase Dashboard → SQL Editor
@@ -551,9 +538,7 @@ GRANT EXECUTE ON FUNCTION public.prodigy_set_sla(text, int) TO authenticated, se
 SELECT 'SLA pedidos OK' AS status;
 
 
--- ┌───────────────────────────────────────────────────────────
--- │ patch-wallet-idor-2026.sql
--- └───────────────────────────────────────────────────────────
+-- ═══ patch-wallet-idor-2026.sql ═══
 -- ============================================================
 -- PRODIGY — Corregir IDOR en consulta de billetera/créditos del cliente
 -- Ejecutar en: Supabase Dashboard → SQL Editor
