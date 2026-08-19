@@ -26,7 +26,7 @@ export async function onRequestGet({ request, env }) {
 
   try {
     // 1. Pedidos del mes
-    const rPed = await fetch(`${SURL}/rest/v1/pedidos?negocio=eq.prodigy&created_at=gte.${desde}T00:00:00&created_at=lte.${hasta}T23:59:59&select=id,estado,total,flujo,created_at`, { headers: h });
+    const rPed = await fetch(`${SURL}/rest/v1/pedidos?negocio=eq.prodigy&created_at=gte.${desde}T00:00:00&created_at=lte.${hasta}T23:59:59&select=id,estado,precio_total,flujo,created_at`, { headers: h });
     const pedidos = await rPed.json();
 
     // 2. Cotizaciones del mes
@@ -39,7 +39,7 @@ export async function onRequestGet({ request, env }) {
 
     // Calcular KPIs
     const totalPedidos = Array.isArray(pedidos) ? pedidos.length : 0;
-    const ingresosBrutos = Array.isArray(pedidos) ? pedidos.reduce((s, p) => s + Number(p.total || 0), 0) : 0;
+    const ingresosBrutos = Array.isArray(pedidos) ? pedidos.reduce((s, p) => s + Number(p.precio_total || 0), 0) : 0;
     const entregados = Array.isArray(pedidos) ? pedidos.filter(p => ['ENTREGADO', 'LISTO_DESPACHAR'].includes(p.estado_operativo || p.estado)).length : 0;
     const totalCotiz = Array.isArray(cotizaciones) ? cotizaciones.length : 0;
     const cotizAceptadas = Array.isArray(cotizaciones) ? cotizaciones.filter(c => c.estado === 'aceptada').length : 0;

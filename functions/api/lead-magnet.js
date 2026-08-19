@@ -52,7 +52,9 @@ export async function onRequestPost({ request, env }) {
     await fetch(`${SURL}/rest/v1/leads_doctores`, {
       method: 'POST',
       headers: sbH,
-      body: JSON.stringify({ nombre: escH(nombre), email: escH(email), whatsapp: escH(whatsapp), recurso_descargado: escH(recurso), negocio, fuente: 'lead-magnet' }),
+      // leads_doctores no tiene columnas recurso_descargado/fuente/negocio:
+      // reales -> origen; el recurso y (si aplica) el negocio van en notas.
+      body: JSON.stringify({ nombre: escH(nombre), email: escH(email), whatsapp: escH(whatsapp), origen: 'lead-magnet', notas: [recurso ? 'Recurso: ' + escH(recurso) : null, negocio && negocio !== 'prodigy' ? 'negocio: ' + escH(negocio) : null].filter(Boolean).join(' · ') || null }),
     });
 
     // Enviar WA de bienvenida si hay WA y CALLMEBOT_APIKEY

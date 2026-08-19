@@ -41,8 +41,10 @@ CREATE OR REPLACE FUNCTION public.prodigy_cotizaciones_por_vencer(p_dias int DEF
 RETURNS TABLE(id uuid, codigo text, doctor text, whatsapp text, total numeric, expira_at timestamptz, dias_restantes int)
 LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN
+  -- cotizaciones no tiene codigo/doctor/whatsapp: se mapean posicionalmente
+  -- desde id (código corto legible), doctor_nombre y doctor_tel (reales).
   RETURN QUERY
-  SELECT c.id, c.codigo, c.doctor, c.whatsapp, c.total, c.expira_at,
+  SELECT c.id, LEFT(c.id::text, 8), c.doctor_nombre, c.doctor_tel, c.total, c.expira_at,
     EXTRACT(DAY FROM c.expira_at - now())::int AS dias_restantes
   FROM public.cotizaciones c
   WHERE c.estado IN ('borrador','enviada')
