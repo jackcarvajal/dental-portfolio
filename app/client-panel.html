@@ -849,7 +849,8 @@ function estadoBadge(estado) {
 function renderTablas(pedidos) {
     const activos = pedidos.filter(p => {
         const e = (p.estado || '').toLowerCase();
-        return !e.includes('entregado') && !e.includes('cancelado') && !e.includes('borrador');
+        const op = (p.estado_operativo || '').toUpperCase();
+        return !e.includes('entregado') && !e.includes('cancelado') && !e.includes('borrador') && op !== 'CANCELADO_DOCTOR';
     });
 
     // Banner de acción prioritaria — casos esperando respuesta del doctor
@@ -883,6 +884,9 @@ function renderTablas(pedidos) {
             <thead><tr><th>ID</th><th>Paciente</th><th>Servicio</th><th>Progreso</th><th>Acción</th></tr></thead>
             <tbody>${activos.map(p => {
                 const puedeSTL = p.stl_liberado && p.stl_ruta;
+                // Ventana de gracia: cancelable mientras un operario no haya iniciado la validación
+                const op = (p.estado_operativo || '').toUpperCase();
+                const cancelable = !_modoToken && (op === '' || op === 'VALIDACION_PENDIENTE');
                 return `<tr>
                     <td style="font-family:monospace;color:var(--cyan);">${escH(p.codigo || p.id?.slice(0,8))}</td>
                     <td>${escH(p.nombre_paciente || '—')}</td>
@@ -893,6 +897,7 @@ function renderTablas(pedidos) {
                         ${puedeSTL?`<button type="button" onclick="verArchivos('${escH(p.id)}')" class="btn-sm" style="color:#D946A6;border-color:rgba(217,70,166,.35);" title="Ver diseño, modelo 3D y fotos"><i class="fas fa-eye"></i> Visor</button>
                         <button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
                         <a href="../recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
+                        ${cancelable?`<button type="button" onclick="cancelarPedido('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#ff6b6b;border-color:rgba(255,107,107,.35);" title="Cancelar este pedido antes de que entre a producción"><i class="fas fa-ban"></i> Cancelar</button>`:''}
                     </td>
                 </tr>`;
             }).join('')}</tbody></table>`;
@@ -912,7 +917,7 @@ function renderTablas(pedidos) {
                 <td style="font-size:.75rem;">${escH(p.tipo_trabajo || p.material || '—')}</td>
                 <td style="font-size:.75rem;color:#94a3b8;">${fmtFecha(p.created_at)}</td>
                 <td style="color:var(--neon);font-weight:700;">${fmtCOP(p.precio_total)}</td>
-                <td>${estadoBadge(p.estado)}</td>
+                <td>${(p.estado_operativo||'').toUpperCase()==='CANCELADO_DOCTOR' ? '<span class="status-badge" style="background:rgba(255,107,107,.12);color:#ff6b6b;"><i class="fas fa-ban"></i> Cancelado</span>' : estadoBadge(p.estado)}</td>
                 <td style="display:flex;gap:5px;flex-wrap:wrap;">
                     <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold">Ver</a>
                     <button type="button" onclick="verTimeline('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#00d2ff;border-color:rgba(0,210,255,.3);" title="Historial de cambios"><i class="fas fa-history"></i></button>
@@ -1343,6 +1348,29 @@ async function enviarNPS() {
     cerrarNPS();
     const p = _pedidos.find(x => x.id === _npsId);
     if (p) { p.calificacion = _npsStar; }
+    renderTablas(_pedidos);
+}
+
+/* ── VENTANA DE GRACIA — cancelar antes de producción ───────── */
+async function cancelarPedido(id, codigo) {
+    if (_modoToken) return;
+    const p = _pedidos.find(x => x.id === id);
+    if (!p) { toast('Caso no válido', 'error'); return; }
+    const op = (p.estado_operativo || '').toUpperCase();
+    if (op !== '' && op !== 'VALIDACION_PENDIENTE') {
+        toast('Este caso ya entró a validación/producción y no puede cancelarse aquí. Escríbenos por WhatsApp.', 'error');
+        return;
+    }
+    if (!confirm(`¿Cancelar el pedido ${codigo}?\n\nSe retira antes de entrar a producción. Esta acción no se puede deshacer.`)) return;
+    const sello = `Cancelado por el doctor el ${new Date().toLocaleString('es-CO')}`;
+    const notas = [(p.notas_cambios || '').trim(), sello].filter(Boolean).join(' | ');
+    const { error } = await sb.from('pedidos')
+        .update({ estado_operativo: 'CANCELADO_DOCTOR', notas_cambios: notas })
+        .eq('id', id).eq('user_id', _userId);
+    if (error) { toast('No se pudo cancelar: ' + error.message, 'error'); return; }
+    p.estado_operativo = 'CANCELADO_DOCTOR';
+    p.notas_cambios = notas;
+    toast('Pedido cancelado. No entrará a producción.', 'ok');
     renderTablas(_pedidos);
 }
 
