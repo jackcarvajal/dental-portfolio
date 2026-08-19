@@ -11,6 +11,14 @@
 
 ## 2026-08-18
 
+### ✅ Auditoría de las edge functions (Cloudflare `functions/api/*`) — mismo schema-drift
+Auditadas las 27 functions serverless (service_role, sin RLS que las tape). 3 bugs reales:
+- **resumen-mensual.js** — consultaba `pedidos?select=...,total,...` (fantasma) → 400, el resumen mensual no salía → `precio_total`.
+- **RPC `prodigy_cotizaciones_por_vencer`** — seleccionaba `c.codigo/c.doctor/c.whatsapp` inexistentes en `cotizaciones` (42703) → `expire-cotizaciones` no enviaba WA de por-vencer → `LEFT(id,8)/doctor_nombre/doctor_tel` (`sql/fix-cotizaciones-por-vencer.sql`, 🟡 falta correr).
+- **lead-magnet.js** — insertaba `recurso_descargado/fuente/negocio` en `leads_doctores` (no existen) → 400, **los leads de lead-magnet se perdían** → `origen`+`notas` (sin SQL).
+- **Paridad Alejandro**: mismo bug en `alejandro_cotizaciones_por_vencer` (tabla compartida) → arreglado (`sql/fix-cotizaciones-por-vencer.sql` en su repo, 🟡 falta correr). `resumen-semanal.js` ya usaba `precio_total` (sano).
+- Limpias (verificadas vs esquema): pagos, analytics_events, veneer_leads, notificaciones_internas, logs_incidencias, stripe-*, factura, referido-reward.
+
 ### ✅ Validación total front↔BD (con esquema real de las 57 tablas)
 `tools/audit-schema.mjs --schema-all` cruzó todo el código contra el esquema real. De 35 candidatos:
 - **Arreglado**: `leads_doctores` — panel ordenaba `.order('fecha_descarga')` (inexistente) → 400 en lista de leads → `created_at`.
