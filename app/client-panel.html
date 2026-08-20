@@ -382,6 +382,7 @@
         <div class="section-header">
             <h2><i class="fas fa-circle-notch fa-spin" style="color:var(--cyan);margin-right:8px;"></i>En Producción</h2>
         </div>
+        <div id="entrega-consolidada" style="margin-bottom:14px;"></div>
         <div id="tabla-activos" style="overflow-x:auto;" aria-live="polite" aria-label="Casos en producción"></div>
     </div>
 
@@ -720,7 +721,7 @@ const BUCKET_STL     = BUCKETS_STL[0];
 const BUCKET_CLIENTE = 'prodigy-files';
 
 // CAMPOS_CLIENTE — excluye nota_interna, nonce, comprobante_url, whatsapp operario
-const CAMPOS_CLIENTE ='id,codigo,material,submaterial,estado,pago_estado,precio_total,created_at,updated_at,link_diseno,html_diseno_url,diseno_aprobado,notas_cambios,revisiones_usadas,stl_ruta,stl_liberado,fotos_feedback,user_id,email,nombre_doctor,nombre_paciente,tipo_trabajo,estado_operativo,calificacion,calificacion_comentario';
+const CAMPOS_CLIENTE ='id,codigo,material,submaterial,estado,pago_estado,precio_total,created_at,updated_at,fecha_entrega,link_diseno,html_diseno_url,diseno_aprobado,notas_cambios,revisiones_usadas,stl_ruta,stl_liberado,fotos_feedback,user_id,email,nombre_doctor,nombre_paciente,tipo_trabajo,estado_operativo,calificacion,calificacion_comentario';
 
 let _pedidos     = [];
 let _npsId       = null;
@@ -845,6 +846,37 @@ function estadoBadge(estado) {
     return `<span class="status-badge pendiente"><i class="fas fa-clock"></i> ${escH(estado || 'Pendiente')}</span>`;
 }
 
+/* ── ENTREGA CONSOLIDADA — casos que se despachan juntos (corte 5PM Colombia) ── */
+function buildEntregaConsolidada(activos) {
+    // Misma fecha_entrega (mismo doctor, ya filtrado por su sesión) = una sola mensajería
+    const grupos = {};
+    activos.forEach(p => {
+        const f = (p.fecha_entrega || '').trim();
+        if (!f) return;
+        (grupos[f] = grupos[f] || []).push(p);
+    });
+    const lotes = Object.entries(grupos).filter(([, arr]) => arr.length >= 2);
+    // Corte de recepción: 5:00 PM hora Colombia (UTC-5, sin horario de verano)
+    const cotHora = (new Date().getUTCHours() - 5 + 24) % 24;
+    const antesCorte = cotHora < 17;
+    const avisoCorte = antesCorte
+        ? `Agrega más casos <strong>antes de las 5:00 PM</strong> (hora Colombia) y entran en la misma entrega.`
+        : `Ya cerró la recepción de hoy (5:00 PM). Los casos nuevos entrarán en la próxima entrega.`;
+    if (!lotes.length) {
+        return `<div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:10px;padding:10px 14px;font-size:.78rem;color:#9fd8e8;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <span style="font-size:1.1rem;">📦</span><span>¿Tienes más trabajos para hoy? ${avisoCorte}</span>
+        </div>`;
+    }
+    const cards = lotes.map(([fecha, arr]) => {
+        const ids = arr.map(p => escH(p.codigo || p.id?.slice(0, 8))).join(', ');
+        return `<div style="background:rgba(217,70,166,.07);border:1px solid rgba(217,70,166,.28);border-left:4px solid #D946A6;border-radius:10px;padding:12px 16px;margin-bottom:8px;">
+            <div style="font-size:.82rem;font-weight:800;color:#D946A6;margin-bottom:3px;">📦 Entrega agrupada · ${escH(fecha)}</div>
+            <div style="font-size:.76rem;color:#cbd5e1;">${arr.length} casos se despachan juntos en una sola mensajería: <span style="font-family:monospace;color:#00d2ff;">${ids}</span></div>
+        </div>`;
+    }).join('');
+    return cards + `<div style="font-size:.74rem;color:#94a3b8;padding:2px 4px;">${avisoCorte}</div>`;
+}
+
 /* ── RENDER TABLAS ──────────────────────────────────────────── */
 function renderTablas(pedidos) {
     const activos = pedidos.filter(p => {
@@ -880,6 +912,7 @@ function renderTablas(pedidos) {
     const cardActivos = document.getElementById('card-activos');
     if (activos.length) {
         cardActivos.style.display = 'block';
+        document.getElementById('entrega-consolidada').innerHTML = buildEntregaConsolidada(activos);
         document.getElementById('tabla-activos').innerHTML = `<table>
             <thead><tr><th>ID</th><th>Paciente</th><th>Servicio</th><th>Progreso</th><th>Acción</th></tr></thead>
             <tbody>${activos.map(p => {

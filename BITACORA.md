@@ -11,6 +11,10 @@
 
 ## 2026-08-18
 
+### ✅ Fase 2A — Entrega consolidada (batching por corte, idea de SINDEKAR)
+En `client-panel`, los casos activos del doctor se **agrupan por `fecha_entrega`** (columna que ya existe; los flujos ya la guardan) → cuando 2+ casos comparten fecha se muestra "📦 Entrega agrupada · [fecha] — N casos se despachan juntos en una sola mensajería". Aviso del **corte real de recepción: 5:00 PM hora Colombia** (reutiliza el corte que ya usan los flujos, NO inventé las 12 PM). Sin migración, sin cron, sin tocar el intake — el lote emerge de (doctor por su sesión + fecha_entrega).
+- 💡 **Fase 2B (pendiente)**: llevar el lote al lado operativo — agrupar en `operario`/`mensajero`/`despachos` para nesting de fresado por lote y **una sola salida de mensajería** por doctor/fecha. Requiere tocar el flujo de despacho (mayor). Se puede materializar con un `lote_entrega` derivado o un join por (doctor, fecha_entrega).
+
 ### ✅ Feature — "Pedido en curso" / ventana de gracia (idea de SINDEKAR)
 Tras crear un pedido, el doctor puede **cancelarlo** mientras un operario no haya iniciado la validación.
 - **client-panel**: botón *Cancelar* en casos activos (visible solo con `estado_operativo` vacío o `VALIDACION_PENDIENTE`) → marca `estado_operativo='CANCELADO_DOCTOR'` (columna TEXTO, **no toca el enum `estado` frágil** — no acepta 'cancelado', da 22P02) + sello en `notas_cambios`. Badge *Cancelado* en historial; `activos` excluye cancelados.
