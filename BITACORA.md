@@ -11,6 +11,14 @@
 
 ## 2026-08-18
 
+### ✅ Feature — "Pedido en curso" / ventana de gracia (idea de SINDEKAR)
+Tras crear un pedido, el doctor puede **cancelarlo** mientras un operario no haya iniciado la validación.
+- **client-panel**: botón *Cancelar* en casos activos (visible solo con `estado_operativo` vacío o `VALIDACION_PENDIENTE`) → marca `estado_operativo='CANCELADO_DOCTOR'` (columna TEXTO, **no toca el enum `estado` frágil** — no acepta 'cancelado', da 22P02) + sello en `notas_cambios`. Badge *Cancelado* en historial; `activos` excluye cancelados.
+- **operario.html**: el kanban filtra por lista de estados → **oculta `CANCELADO_DOCTOR` solo**, sin cambios de código.
+- **4 flujos** (diseño/fresado/impresión/lab): aviso en el modal de éxito con link al panel. Sin migración SQL (RLS ya permite self-update).
+- 🟡 **Follow-up**: `panel-interno-operaciones` y las RPC de métricas cuentan por `estado` (enum, sigue 'Pendiente' en un cancelado) → leve sobreconteo interno. Pendiente: excluir `estado_operativo LIKE 'CANCELADO%'` en esos conteos, o agregar un valor de enum de cancelación.
+- 💡 **Fase 2 (pendiente decisión de negocio)**: corte diario ("suba STL hasta las 12:00 PM") que agrupa varios STL del doctor en un pedido/entrega por lote — requiere definir hora de corte + política de agrupación.
+
 ### ✅ Auditoría de las edge functions (Cloudflare `functions/api/*`) — mismo schema-drift
 Auditadas las 27 functions serverless (service_role, sin RLS que las tape). 3 bugs reales:
 - **resumen-mensual.js** — consultaba `pedidos?select=...,total,...` (fantasma) → 400, el resumen mensual no salía → `precio_total`.
