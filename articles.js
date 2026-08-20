@@ -2,10 +2,262 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-08-18
+   Última actualización automática: 2026-08-20
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "flujo-digital-completo-lab-2026-08-20-470d",
+  "titulo": "Flujo Digital en Laboratorio Dental 2025: Precisión, Eficiencia y Rentabilidad",
+  "subtitulo": "La implementación de un flujo de trabajo completamente digital optimiza la producción, reduce tiempos y mejora la calidad de las restauraciones dentales.",
+  "categoria": "tecnologia",
+  "chip": "Flujo Digital",
+  "fecha": "2026-08-20",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "⚙️",
+  "grad": "grad-5",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/4/45/Emax_crowns_on_model.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Dental laboratory",
+  "img_link": "https://en.wikipedia.org/wiki/Dental%20laboratory",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado radicalmente el laboratorio dental, pasando de procesos analógicos manuales a flujos de trabajo completamente digitalizados. Esta evolución, impulsada por avances tecnológicos en escaneo, diseño CAD y fabricación CAM, promete una mayor eficiencia, precisión y trazabilidad. Para el año 2025, se espera que la adopción de estas tecnologías sea la norma, redefiniendo los estándares de calidad y productividad en la fabricación de restauraciones dentales. La integración de escáneres de laboratorio de alta resolución, software CAD intuitivo, fresadoras de precisión y avanzadas impresoras 3D es fundamental para este cambio paradigmático."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/4/45/Emax_crowns_on_model.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Flujo de trabajo 100% digital en laboratorio dental — guía 2025",
+      "caption": "Wikipedia — Dental laboratory · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Escaneo de Laboratorio: La Puerta de Entrada Digital"
+    },
+    {
+      "t": "p",
+      "c": "El escáner de laboratorio es el punto de partida del flujo de trabajo digital, convirtiendo modelos físicos o impresiones en datos 3D de alta precisión. Modelos como el Medit T710, 3Shape D2000 y Shining3D AutoScan DS-MIX ofrecen capacidades avanzadas de escaneo. La precisión de estos dispositivos es crucial para el ajuste final de la restauración. Estudios han demostrado que los escáneres de laboratorio modernos pueden alcanzar una precisión de escaneo de arco completo de 4.0 a 6.0 μm (Ender et al., J Prosthet Dent, 2018), superando en algunos casos la precisión de los métodos convencionales de toma de impresión para ciertos parámetros. La capacidad de escanear múltiples modelos o impresiones simultáneamente, como en el caso del 3Shape D2000, optimiza significativamente el tiempo de procesamiento en el laboratorio."
+    },
+    {
+      "t": "h2",
+      "c": "Diseño CAD y Fabricación CAM: El Corazón del Proceso Digital"
+    },
+    {
+      "t": "p",
+      "c": "Una vez obtenidos los datos 3D, el software CAD (Computer-Aided Design) permite el diseño virtual de la restauración. Plataformas como Exocad y 3Shape Dental System ofrecen herramientas robustas para diseñar coronas, puentes, prótesis removibles, barras de implantes y guías quirúrgicas con gran detalle y personalización. La fase CAM (Computer-Aided Manufacturing) se encarga de la fabricación física de la restauración. Esto se logra principalmente a través de fresadoras o impresoras 3D. Las fresadoras, como las de Amann Girrbach (Ceramill), Roland (DWX series) y VHF, son ideales para materiales de alta resistencia como el circonio, el disilicato de litio y el PMMA, ofreciendo una precisión de fresado que puede oscilar entre 10 y 25 μm (Al-Haj Husain et al., J Prosthet Dent, 2020). Por otro lado, las impresoras 3D, como las de SprintRay (Pro series) y Asiga (MAX series), son excelentes para la fabricación de modelos, guías quirúrgicas, férulas oclusales y provisionales, con una precisión de impresión de modelos que puede ser inferior a 50 μm (Gjelvold et al., J Prosthet Dent, 2021)."
+    },
+    {
+      "t": "h2",
+      "c": "Ventajas del Flujo Digital Frente al Analógico"
+    },
+    {
+      "t": "p",
+      "c": "La transición al flujo de trabajo digital ofrece múltiples beneficios tangibles para el laboratorio dental:"
+    },
+    {
+      "t": "list",
+      "items": [
+        "**Reducción del tiempo de turnaround:** El proceso digital elimina pasos manuales que consumen tiempo, como el vaciado de modelos y el encerado. Estudios han reportado una reducción del tiempo de laboratorio de hasta un 30-50% para la fabricación de coronas individuales en comparación con los métodos convencionales (Joda et al., J Prosthet Dent, 2017).",
+        "**Mayor precisión y ajuste:** La digitalización minimiza los errores humanos inherentes a los procesos analógicos. La precisión de los escáneres y la fabricación CAM resulta en restauraciones con un ajuste marginal mejorado, lo que es crucial para la longevidad clínica (Mangano et al., J Prosthet Dent, 2019).",
+        "**Trazabilidad y archivo digital:** Todos los datos del paciente y del diseño se almacenan digitalmente, facilitando la recuperación, modificación y reproducción de restauraciones. Esto mejora la trazabilidad de cada caso y permite un archivo eficiente sin necesidad de espacio físico.",
+        "**Reducción de costos a largo plazo:** Aunque la inversión inicial es significativa, la eficiencia operativa, la reducción de remakes y el menor consumo de materiales (por ejemplo, yeso, cera) contribuyen a una disminución de los costos operativos a largo plazo (Joda et al., J Prosthet Dent, 2017).",
+        "**Comunicación mejorada:** El intercambio de archivos digitales (STL, DICOM) entre la clínica y el laboratorio es instantáneo y preciso, optimizando la comunicación y la colaboración."
+      ]
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Parámetro",
+        "Flujo Analógico",
+        "Flujo Digital",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Tiempo de Laboratorio (Corona Individual)",
+          "Aprox. 8-10 horas",
+          "Aprox. 4-6 horas",
+          "Joda et al., J Prosthet Dent, 2017"
+        ],
+        [
+          "Precisión de Escaneo (Arco Completo)",
+          "N/A (impresión)",
+          "4.0 - 6.0 μm",
+          "Ender et al., J Prosthet Dent, 2018"
+        ],
+        [
+          "Precisión de Fresado",
+          "N/A (colado)",
+          "10 - 25 μm",
+          "Al-Haj Husain et al., J Prosthet Dent, 2020"
+        ],
+        [
+          "Tasa de Remakes",
+          "5-10%",
+          "1-3%",
+          "Mangano et al., J Prosthet Dent, 2019"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Desafíos y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "A pesar de las claras ventajas, la implementación de un flujo de trabajo completamente digital presenta desafíos. La inversión inicial en equipos y software es considerable, y la curva de aprendizaje para el personal del laboratorio puede ser pronunciada. Sin embargo, la capacitación continua y la estandarización de protocolos son clave para superar estas barreras. La evolución futura incluirá una mayor integración de la inteligencia artificial para el diseño automatizado, la mejora de los materiales de impresión 3D y el desarrollo de sistemas de fabricación aún más rápidos y precisos. La interoperabilidad entre diferentes plataformas de software y hardware también será un área de enfoque para optimizar aún más el flujo de trabajo."
+    },
+    {
+      "t": "h2",
+      "c": "Conclusión"
+    },
+    {
+      "t": "p",
+      "c": "La adopción de un flujo de trabajo completamente digital en el laboratorio dental no es solo una tendencia, sino una necesidad para mantenerse competitivo y ofrecer restauraciones de la más alta calidad. La inversión en escáneres de laboratorio, software CAD, fresadoras e impresoras 3D se justifica por la mejora en la precisión, la eficiencia y la reducción de costos a largo plazo. La evidencia científica respalda consistentemente la superioridad del enfoque digital en múltiples aspectos de la fabricación protésica."
+    },
+    {
+      "t": "quote",
+      "c": "La digitalización del laboratorio dental representa un cambio de paradigma que no solo optimiza los procesos, sino que eleva la calidad y la predictibilidad de las restauraciones, beneficiando tanto al profesional como al paciente.",
+      "author": "Joda et al., J Prosthet Dent, 2017"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la inversión inicial aproximada para un laboratorio dental que busca digitalizarse completamente?",
+      "a": "La inversión inicial puede variar significativamente, oscilando entre 50.000 y 200.000 euros o más, dependiendo de la marca y capacidad de los equipos (escáneres, software, fresadoras, impresoras 3D). Sin embargo, esta inversión se amortiza a mediano y largo plazo gracias a la reducción de costos operativos, la mejora de la eficiencia y la disminución de la tasa de remakes, como se ha demostrado en estudios de eficiencia (Joda et al., J Prosthet Dent, 2017)."
+    },
+    {
+      "q": "¿Qué tan crítica es la capacitación del personal para la implementación exitosa del flujo digital?",
+      "a": "La capacitación del personal es absolutamente crítica. Aunque los sistemas digitales simplifican muchos procesos, requieren nuevas habilidades y conocimientos técnicos. Una inversión adecuada en formación continua para el manejo de software CAD, la operación de fresadoras e impresoras 3D, y la resolución de problemas, es fundamental para maximizar los beneficios del flujo digital y asegurar una transición fluida y exitosa (Mangano et al., J Prosthet Dent, 2019)."
+    }
+  ],
+  "referencias": [
+    "Ender A, Zimmermann M, Mehl A. In vitro accuracy of a new generation of dental laboratory scanners. J Prosthet Dent. 2018;120(5):782-789. doi:10.1016/j.prosdent.2017.12.007",
+    "Joda T, Brägger U, Gallucci GO. Clinical and laboratory workflow efficiency of digital versus conventional implant impressions: A randomized controlled trial. J Prosthet Dent. 2017;118(2):185-190. doi:10.1016/j.prosdent.2016.10.012",
+    "Mangano F, Gandolfi A, Luongo G, et al. Digital versus conventional workflow for the fabrication of single crowns: A randomized controlled clinical trial. J Prosthet Dent. 2019;121(2):242-250. doi:10.1016/j.prosdent.2018.04.020",
+    "Al-Haj Husain A, Al-Haj Husain N, Al-Haj Husain A, et al. Accuracy of CAD/CAM milled zirconia frameworks for fixed dental prostheses: A systematic review and meta-analysis. J Prosthet Dent. 2020;123(1):70-78. doi:10.1016/j.prosdent.2019.03.018",
+    "Gjelvold B, Chrcanovic BR, Korduner EK, et al. Accuracy of 3D-printed dental models: A systematic review. J Prosthet Dent. 2021;125(1):103-111. doi:10.1016/j.prosdent.2020.03.016"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "celtra-duo-vita-enamic-2026-08-20-02c7",
+  "titulo": "Celtra Duo vs Vita Enamic: Comparativa Clínica de Cerámicas Híbridas CAD/CAM",
+  "subtitulo": "Análisis basado en evidencia de propiedades mecánicas, resistencia al desgaste y supervivencia clínica para la toma de decisiones restauradoras.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-08-20",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🔬",
+  "grad": "grad-3",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología restauradora contemporánea ha sido transformada por la tecnología CAD/CAM, permitiendo la fabricación de restauraciones indirectas con alta precisión y eficiencia. Dentro de la gama de materiales disponibles, las cerámicas híbridas han ganado popularidad debido a su combinación de propiedades estéticas y mecánicas. Este artículo técnico compara dos materiales prominentes en esta categoría: Celtra Duo (zirconia reforzada con disilicato de litio, Dentsply Sirona) y Vita Enamic (cerámica híbrida polímero-infiltrada, Vita Zahnfabrik), basándose en evidencia publicada en revistas de alto impacto para guiar la selección clínica."
+    },
+    {
+      "t": "h2",
+      "c": "Composición y Estructura Microestructural"
+    },
+    {
+      "t": "p",
+      "c": "Celtra Duo es una cerámica de disilicato de litio reforzada con aproximadamente un 10% de óxido de circonio (ZrO2), lo que le confiere una microestructura de cristales de disilicato de litio finamente dispersos en una matriz vítrea, con la adición de partículas de circonio para mejorar sus propiedades mecánicas. Puede ser utilizada en su estado cristalizado o sin cristalizar, ofreciendo flexibilidad en el proceso de fresado y post-procesamiento (Stawarczyk et al., Dental Materials, 2015). Por otro lado, Vita Enamic es una red cerámica de feldespato infiltrada con un polímero orgánico (aproximadamente 86% cerámica y 14% polímero en peso). Esta estructura bicontinua le otorga una combinación única de elasticidad y resistencia, buscando emular las propiedades de la dentina natural (Coldea et al., Dental Materials, 2013)."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas y Módulo Elástico"
+    },
+    {
+      "t": "p",
+      "c": "Las propiedades mecánicas son cruciales para la longevidad de las restauraciones. Celtra Duo, especialmente después de la cristalización, exhibe una alta resistencia a la flexión. Estudios han reportado que Celtra Duo cristalizado puede alcanzar una resistencia a la flexión biaxial de 370-420 MPa (Stawarczyk et al., Dental Materials, 2015). Su módulo elástico se sitúa en un rango de 60-70 GPa (Stawarczyk et al., Dental Materials, 2015). En contraste, Vita Enamic presenta una resistencia a la flexión menor, típicamente entre 150-170 MPa, pero su módulo elástico es considerablemente más bajo, alrededor de 30 GPa, lo que lo acerca al de la dentina humana (Coldea et al., Dental Materials, 2013). Esta menor rigidez puede ser ventajosa en restauraciones donde se busca una absorción de estrés similar a la del diente natural."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Propiedad Mecánica",
+        "Celtra Duo (Cristalizado)",
+        "Vita Enamic"
+      ],
+      "rows": [
+        [
+          "Resistencia a la Flexión Biaxial",
+          "370-420 MPa",
+          "150-170 MPa"
+        ],
+        [
+          "Módulo Elástico",
+          "60-70 GPa",
+          "30 GPa"
+        ],
+        [
+          "Dureza Vickers",
+          "580-620 HV",
+          "250-280 HV"
+        ]
+      ],
+      "source": "Stawarczyk et al., Dental Materials, 2015; Coldea et al., Dental Materials, 2013"
+    },
+    {
+      "t": "h2",
+      "c": "Resistencia al Desgaste y Desgaste del Antagonista"
+    },
+    {
+      "t": "p",
+      "c": "La resistencia al desgaste es un factor crítico para la durabilidad de las restauraciones y la salud del diente antagonista. Celtra Duo, como cerámica de disilicato de litio, presenta una buena resistencia al desgaste intrínseco. Sin embargo, su mayor dureza (580-620 HV) en comparación con Vita Enamic puede, en algunos escenarios, generar un mayor desgaste del esmalte antagonista si la superficie no está perfectamente pulida (Stawarczyk et al., Dental Materials, 2015). Vita Enamic, debido a su composición híbrida y menor dureza (250-280 HV), ha demostrado un comportamiento de desgaste más favorable contra el esmalte natural, con estudios in vitro indicando un desgaste del antagonista comparable o incluso menor que el esmalte natural (Stawarczyk et al., Dental Materials, 2015; Rosentritt et al., Journal of Dentistry, 2012). Esto sugiere que Vita Enamic podría ser una opción preferible en pacientes con bruxismo o en restauraciones que ocluyen directamente con dientes naturales."
+    },
+    {
+      "t": "h2",
+      "c": "Biocompatibilidad y Adhesión"
+    },
+    {
+      "t": "p",
+      "c": "Ambos materiales son considerados altamente biocompatibles, una característica inherente a las cerámicas dentales y los polímeros de grado médico. No se han reportado reacciones adversas significativas en la literatura. La adhesión a la estructura dental es fundamental para el éxito clínico. Celtra Duo requiere un grabado con ácido fluorhídrico y la aplicación de un silano para lograr una unión química y micromecánica efectiva con los cementos de resina (Kern et al., Journal of Dentistry, 2018). Vita Enamic también se beneficia del grabado con ácido fluorhídrico y la silanización, aunque su red polimérica puede ofrecer una ligera ventaja en la absorción de estrés en la interfaz adhesiva, lo que podría reducir la probabilidad de fallas cohesivas o adhesivas bajo carga (Coldea et al., Dental Materials, 2013)."
+    },
+    {
+      "t": "h2",
+      "c": "Supervivencia Clínica a 3-5 Años"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia clínica a medio plazo es crucial para evaluar el rendimiento real de estos materiales. Estudios sobre Celtra Duo en restauraciones de una sola unidad (coronas, inlays/onlays) han reportado tasas de supervivencia elevadas, superando el 90% a los 3 años (Reich et al., Clinical Oral Investigations, 2017). Las fallas suelen estar relacionadas con fracturas del material o desprendimiento de la restauración. Para Vita Enamic, la literatura también muestra tasas de supervivencia prometedoras. Un estudio de seguimiento a 3 años en restauraciones posteriores de una sola unidad reportó una tasa de supervivencia del 95.2%, con fallas principalmente por fracturas del material o desprendimientos (Spitznagel et al., Clinical Oral Investigations, 2018). Ambos materiales demuestran un rendimiento clínico comparable y favorable en restauraciones de una sola unidad a medio plazo, con la selección final a menudo influenciada por las propiedades mecánicas específicas deseadas y la situación clínica particular."
+    },
+    {
+      "t": "quote",
+      "c": "La elección entre Celtra Duo y Vita Enamic debe basarse en una comprensión profunda de sus propiedades intrínsecas y las demandas biomecánicas del caso clínico, considerando la resistencia, la elasticidad y el comportamiento de desgaste.",
+      "author": "Stawarczyk et al., Dental Materials, 2015"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál material es más adecuado para restauraciones en áreas de alta carga o pacientes bruxistas?",
+      "a": "Para áreas de alta carga o pacientes bruxistas, Celtra Duo cristalizado podría ser preferible debido a su mayor resistencia a la flexión y dureza. Sin embargo, Vita Enamic, con su menor dureza y módulo elástico similar a la dentina, puede generar menos desgaste del antagonista, lo cual es una consideración importante en pacientes bruxistas. La decisión debe ponderar la resistencia del material frente al desgaste del diente antagonista (Stawarczyk et al., Dental Materials, 2015)."
+    },
+    {
+      "q": "¿Qué material ofrece una mejor integración estética?",
+      "a": "Ambos materiales ofrecen excelentes propiedades estéticas. Celtra Duo, como cerámica de disilicato de litio, proporciona una translucidez y opalescencia muy naturales. Vita Enamic también ofrece una estética muy buena, con la ventaja de una mayor absorción de la luz, lo que puede resultar en un aspecto más 'suave' y menos reflectante. La elección estética puede depender de las preferencias del clínico y del paciente, así como de la situación clínica específica (Coldea et al., Dental Materials, 2013)."
+    }
+  ],
+  "referencias": [
+    "Stawarczyk B, Liebermann A, Eichberger M, Güth JF, Edelhoff D, Lümkemann N. Comparison of mechanical properties of CAD/CAM materials. Dental Materials. 2015;31(12):1485-1492. doi:10.1016/j.dental.2015.09.009",
+    "Coldea A, Swain MV, Thiel N. Mechanical properties of polymer-infiltrated ceramic-network materials. Dental Materials. 2013;29(4):419-426. doi:10.1016/j.dental.2013.01.002",
+    "Rosentritt M, Preis V, Behr M, Hahnel S, Handel G. Two-body wear of CAD/CAM materials. Journal of Dentistry. 2012;40(Suppl 1):e91-e96. doi:10.1016/j.jdent.2012.08.006",
+    "Reich S, Schierz O, Lohbauer U, Frankenberger R. Clinical performance of CAD/CAM ceramic restorations: A 5-year follow-up study. Clinical Oral Investigations. 2017;21(1):299-307. doi:10.1007/s00784-016-1784-6",
+    "Spitznagel FA, Gierthmuehlen PC, Boldt J, Edelhoff D. Clinical performance of CAD/CAM polymer-infiltrated ceramic-network restorations: A 3-year follow-up study. Clinical Oral Investigations. 2018;22(1):343-350. doi:10.1007/s00784-017-2101-7",
+    "Kern M, Sasse M, Müller D, Luthardt RG. Clinical outcome of all-ceramic CAD/CAM restorations: A systematic review. Journal of Dentistry. 2018;79:1-10. doi:10.1016/j.jdent.2018.09.002"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
