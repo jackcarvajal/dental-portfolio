@@ -8,6 +8,10 @@
 -- que son los nombres de SALIDA, mapeados posicionalmente). No-destructivo.
 -- Pegar en Supabase SQL Editor → Run.
 -- ═══════════════════════════════════════════════════════════════
+-- La función desplegada tiene un tipo de retorno distinto → CREATE OR REPLACE
+-- no puede cambiarlo (42P13). Se hace DROP + CREATE.
+DROP FUNCTION IF EXISTS public.prodigy_cotizaciones_por_vencer(int);
+
 CREATE OR REPLACE FUNCTION public.prodigy_cotizaciones_por_vencer(p_dias int DEFAULT 7)
 RETURNS TABLE(id uuid, codigo text, doctor text, whatsapp text, total numeric, expira_at timestamptz, dias_restantes int)
 LANGUAGE plpgsql SECURITY DEFINER AS $$

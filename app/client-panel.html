@@ -1361,7 +1361,20 @@ async function cancelarPedido(id, codigo) {
         toast('Este caso ya entró a validación/producción y no puede cancelarse aquí. Escríbenos por WhatsApp.', 'error');
         return;
     }
-    if (!confirm(`¿Cancelar el pedido ${codigo}?\n\nSe retira antes de entrar a producción. Esta acción no se puede deshacer.`)) return;
+    // Caso PAGADO: no se auto-cancela. Correcciones = modificar/re-subir archivos.
+    // Devolución del dinero = 5 minutos y se gestiona por WhatsApp (lo atiende el equipo).
+    if ((p.pago_estado || '') === 'pago_confirmado') {
+        const min = (Date.now() - new Date(p.created_at).getTime()) / 60000;
+        const dentro5 = min <= 5;
+        const waTxt = encodeURIComponent(`Hola, mi pedido ${codigo} ya está pagado y necesito ${dentro5 ? 'solicitar la devolución' : 'revisar una devolución'}.`);
+        const waUrl = `https://wa.me/573212816716?text=${waTxt}`;
+        const info = dentro5
+            ? `El pedido ${codigo} ya está PAGADO.\n\n• Para correcciones puedes modificar y volver a subir tus archivos desde el caso.\n• Para DEVOLUCIÓN del pago cuentas con 5 minutos y se gestiona por WhatsApp; el equipo la atenderá en un tiempo prudente.\n\n¿Abrir WhatsApp ahora para solicitar la devolución?`
+            : `El pedido ${codigo} ya está PAGADO y pasaron más de 5 minutos.\n\n• Puedes modificar y volver a subir tus archivos desde el caso.\n• Para evaluar una devolución, escríbenos por WhatsApp y espera nuestra respuesta.\n\n¿Abrir WhatsApp?`;
+        if (confirm(info)) window.open(waUrl, '_blank', 'noopener,noreferrer');
+        return;
+    }
+    if (!confirm(`¿Cancelar el pedido ${codigo}?\n\nSe retira antes de entrar a producción y podrás corregir o volver a subir tus archivos. Esta acción no se puede deshacer.`)) return;
     const sello = `Cancelado por el doctor el ${new Date().toLocaleString('es-CO')}`;
     const notas = [(p.notas_cambios || '').trim(), sello].filter(Boolean).join(' | ');
     const { error } = await sb.from('pedidos')

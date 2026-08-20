@@ -37,6 +37,8 @@ END;
 $$;
 
 -- 4. RPC pública: cotizaciones próximas a vencer (para alertas en admin y WA)
+-- DROP antes del CREATE: si la desplegada tiene otro tipo de retorno, CREATE OR REPLACE falla (42P13).
+DROP FUNCTION IF EXISTS public.prodigy_cotizaciones_por_vencer(int);
 CREATE OR REPLACE FUNCTION public.prodigy_cotizaciones_por_vencer(p_dias int DEFAULT 7)
 RETURNS TABLE(id uuid, codigo text, doctor text, whatsapp text, total numeric, expira_at timestamptz, dias_restantes int)
 LANGUAGE plpgsql SECURITY DEFINER AS $$
