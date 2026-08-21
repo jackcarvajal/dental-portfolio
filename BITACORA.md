@@ -18,6 +18,9 @@
 - Sin migración, sin cron, sin tocar el intake. Lote = emergente de (doctor + fecha_entrega) / (doctor + dirección).
 - **Alejandro NO aplica**: es solo diseño, sin despachos → no se porta.
 
+**2C (operario · `app/operario.html`) — nesting de fabricación**: en los tableros de **fresado/impresión**, las tarjetas que comparten **material + color** muestran badge "▣ Nido {material} {color} · N casos" (mismo disco/placa en un solo montaje). Agrupa por columnas reales de la vista `pedidos_operacion` (material/color_vita) — la vista NO tiene fecha_entrega/nombre_doctor, así que el nesting es por material (que es lo correcto para fresado). Solo badge, sin reordenar el kanban.
+- 🐛 **Fix de paso**: `operario.html` (chequeo de pago antes de producir, ~línea 596) consultaba `pago_estado,nombre_doctor` de la VISTA `pedidos_operacion` (no los tiene) → 400 → el protocolo de pago mostraba "pendiente" siempre. Repuntado a `from('pedidos')` (mismo patrón que el fix de :621).
+
 ### ✅ Feature — "Pedido en curso" / ventana de gracia (idea de SINDEKAR)
 Tras crear un pedido, el doctor puede **cancelarlo** mientras un operario no haya iniciado la validación.
 - **client-panel**: botón *Cancelar* en casos activos (visible solo con `estado_operativo` vacío o `VALIDACION_PENDIENTE`) → marca `estado_operativo='CANCELADO_DOCTOR'` (columna TEXTO, **no toca el enum `estado` frágil** — no acepta 'cancelado', da 22P02) + sello en `notas_cambios`. Badge *Cancelado* en historial; `activos` excluye cancelados.

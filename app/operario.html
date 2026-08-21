@@ -310,6 +310,7 @@ const DEPTS = {
 let _myDepts = [];
 let _activeDept = null;
 let _casos = {};   // { dept: [] }
+let _nido  = {};   // { dept: { 'material|color': count } } — nesting de fabricación
 let _userId = null;
 
 /* ── Init ── */
@@ -447,6 +448,11 @@ async function recargar() {
     _casos[dept] = (data||[]).map(p => ({
       ...p, estado_operativo: p.estado_operativo||'VALIDACION_PENDIENTE'
     }));
+    // Nesting: en fabricación, contar casos que comparten material+color (mismo disco/placa)
+    _nido[dept] = {};
+    if (dept === 'fresado' || dept === 'impresion') {
+      _casos[dept].forEach(p => { const k = nidoKey(p); if (k) _nido[dept][k] = (_nido[dept][k]||0)+1; });
+    }
   }
   /* Comprobantes pendientes por dept de fabricación */
   for (const dept of ['fresado','impresion']) {
@@ -553,6 +559,13 @@ function timerHTML(dept, list, cfg) {
 }
 
 /* ── Card HTML ── */
+function nidoKey(p) {
+  const mat = (p.material||'').trim().toLowerCase();
+  if (!mat) return '';
+  const col = (p.color_vita||'').trim().toLowerCase();
+  return mat + (col ? '|'+col : '');
+}
+
 function cardHTML(p, colId, dept) {
   const cfg  = DEPTS[dept];
   const hrs  = (Date.now() - new Date(p.created_at).getTime()) / 3600000;
@@ -560,11 +573,13 @@ function cardHTML(p, colId, dept) {
   const tl   = `${Math.floor(hrs)}h ${Math.floor((hrs%1)*60)}m`;
   const fromDesign = p.estado_operativo === 'DISENO_FINALIZADO' && dept !== 'diseno';
   const actions = (cfg.acciones[colId]?.(p)) || '';
+  const _nn = (_nido[dept]||{})[nidoKey(p)] || 0; // nº de casos con mismo material+color
 
   return `<div class="caso-card" style="${hrs > cfg.timerHrs.critico ? 'border-color:rgba(239,68,68,.4);' : ''}">
     ${fromDesign ? `<div class="card-badge" style="background:rgba(0,210,255,.1);color:#00d2ff;border:1px solid rgba(0,210,255,.25);">✏️ Viene de Diseño</div>` : ''}
     ${p.fabricacion_solicitada && !p.fabricacion_pagada ? `<div class="card-badge" style="background:rgba(251,146,60,.1);color:#fb923c;border:1px solid rgba(251,146,60,.3);">⚙️ Fabricación solicitada — verificar pago</div>` : ''}
     ${p.fabricacion_pagada ? `<div class="card-badge" style="background:rgba(0,255,65,.1);color:#00FF41;border:1px solid rgba(0,255,65,.25);">✅ Fabricación confirmada</div>` : ''}
+    ${_nn >= 2 ? `<div class="card-badge" style="background:rgba(217,70,166,.1);color:#f0a3d5;border:1px solid rgba(217,70,166,.3);" title="Casos con el mismo material y color: nido de fabricación en un solo montaje">▣ Nido ${esc(p.material)}${p.color_vita?' '+esc(p.color_vita):''} · ${_nn} casos</div>` : ''}
     <div class="card-timer ${tc}"><i class="fas fa-clock" style="margin-right:3px;"></i>${tl}</div>
     <div class="caso-id">#${esc(p.codigo)||p.id.slice(0,8)}</div>
     <div class="caso-nombre">${esc(p.nombre_paciente)||'Sin nombre'}</div>
@@ -590,7 +605,7 @@ async function avanzar(id, nuevoEstado, dept) {
   // ── PROTOCOLO DE PAGO: verificar antes de iniciar producción ──
   const ESTADOS_REQUIEREN_PAGO = ['EN_PRODUCCION','FRESADO_INICIADO','EN_IMPRESION'];
   if (ESTADOS_REQUIEREN_PAGO.includes(nuevoEstado)) {
-      const { data: pedido } = await sb.from('pedidos_operacion')
+      const { data: pedido } = await sb.from('pedidos')
           .select('pago_estado,codigo,nombre_doctor')
           .eq('id', id).single();
       const pagoOk = pedido?.pago_estado === 'pago_confirmado';
