@@ -11,9 +11,12 @@
 
 ## 2026-08-18
 
-### ✅ Fase 2A — Entrega consolidada (batching por corte, idea de SINDEKAR)
-En `client-panel`, los casos activos del doctor se **agrupan por `fecha_entrega`** (columna que ya existe; los flujos ya la guardan) → cuando 2+ casos comparten fecha se muestra "📦 Entrega agrupada · [fecha] — N casos se despachan juntos en una sola mensajería". Aviso del **corte real de recepción: 5:00 PM hora Colombia** (reutiliza el corte que ya usan los flujos, NO inventé las 12 PM). Sin migración, sin cron, sin tocar el intake — el lote emerge de (doctor por su sesión + fecha_entrega).
-- 💡 **Fase 2B (pendiente)**: llevar el lote al lado operativo — agrupar en `operario`/`mensajero`/`despachos` para nesting de fresado por lote y **una sola salida de mensajería** por doctor/fecha. Requiere tocar el flujo de despacho (mayor). Se puede materializar con un `lote_entrega` derivado o un join por (doctor, fecha_entrega).
+### ✅ Fase 2A+2B — Entrega consolidada / batching (idea de SINDEKAR)
+**2A (doctor · `client-panel`)**: los casos activos se **agrupan por `fecha_entrega`** (columna que ya existe; los flujos ya la guardan) → 2+ casos misma fecha ⇒ "📦 Entrega agrupada · [fecha] — N casos se despachan juntos en una sola mensajería".
+**Cortes reales (¡son DOS, según el flujo!)**: **mediodía (12 PM)** = express / sinterizado rápido (ver `MATRIZ_FRESADO` y el bloqueo `hora>=12` del sinter rápido) y **5:00 PM** = estándar. El aviso ahora es de 3 tramos (antes de 12 / entre 12 y 17 / después de 17), hora Colombia. NO inventé un corte único.
+**2B (mensajero · `app/mensajero.html`)**: la lista de despachos se **agrupa por doctor+dirección** con encabezado "📦 Misma ruta · Dr · dir · N casos — una sola parada"; las tarjetas quedan contiguas y **cada caso conserva sus acciones** (no toqué la lógica de entrega). Solo agrupación visual → una parada por doctor/dirección.
+- Sin migración, sin cron, sin tocar el intake. Lote = emergente de (doctor + fecha_entrega) / (doctor + dirección).
+- **Alejandro NO aplica**: es solo diseño, sin despachos → no se porta.
 
 ### ✅ Feature — "Pedido en curso" / ventana de gracia (idea de SINDEKAR)
 Tras crear un pedido, el doctor puede **cancelarlo** mientras un operario no haya iniciado la validación.

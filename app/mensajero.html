@@ -389,7 +389,20 @@ async function cargarRuta(){
     const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '—';
     ;(desp||[]).forEach(d => { _dMap[d.id] = d; });
     window._despachosList = desp || []; // exponer para CSV export
-    lista.innerHTML=(desp||[]).map(d=>{
+    // Fase 2B — agrupar despachos por doctor+dirección: una sola parada por ruta
+    const batchKey = d => {
+        const q = d.pedidos||{};
+        const dir = (q.direccion||'').trim().toLowerCase();
+        if(!dir) return 'x-'+d.id; // sin dirección → no se agrupa
+        return ((q.nombre_doctor||q.nombre_cliente||'').trim().toLowerCase())+'|'+dir;
+    };
+    const _grpCount = {}; (desp||[]).forEach(d=>{ const k=batchKey(d); _grpCount[k]=(_grpCount[k]||0)+1; });
+    const _arrOrden = (desp||[]).slice().sort((a,b)=> batchKey(a).localeCompare(batchKey(b)));
+    let _prevKey = null;
+    lista.innerHTML=_arrOrden.map(d=>{
+        let _hdr = '';
+        const _k = batchKey(d);
+        if(_k!==_prevKey){ _prevKey=_k; if(_grpCount[_k]>=2){ const _q=d.pedidos||{}; _hdr = `<div style="margin:10px 14px 4px;background:rgba(217,70,166,.08);border:1px solid rgba(217,70,166,.3);border-left:4px solid #D946A6;border-radius:10px;padding:9px 14px;font-size:.78rem;color:#f5b0da;font-weight:700;">📦 Misma ruta · ${escH(_q.nombre_doctor||_q.nombre_cliente||'—')} · ${escH(_q.direccion||'—')} · ${_grpCount[_k]} casos — una sola parada</div>`; } }
         const p       = d.pedidos||{};
         const codigo  = p.codigo||d.id.slice(0,8);
         const nombre  = p.nombre_cliente||p.nombre_doctor||'—';
@@ -406,7 +419,7 @@ async function cargarRuta(){
                 <div style="font-size:1rem;font-weight:900;color:#fff;">${fmtCOP(saldo)}</div>
                </div>`
             : (p.nota_calidad ? `<div style="background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:.76rem;color:#00d2ff;">📝 ${escH(p.nota_calidad)}</div>` : '');
-        return `
+        return _hdr + `
         <div class="despacho-card estado-${d.estado}" data-codigo="${escH(codigo)}" id="card-${escH(d.id)}">
             <div class="card-header">
                 <span class="card-codigo"><i class="fas fa-box"></i> ${escH(codigo)}</span>

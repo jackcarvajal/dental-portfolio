@@ -856,12 +856,14 @@ function buildEntregaConsolidada(activos) {
         (grupos[f] = grupos[f] || []).push(p);
     });
     const lotes = Object.entries(grupos).filter(([, arr]) => arr.length >= 2);
-    // Corte de recepción: 5:00 PM hora Colombia (UTC-5, sin horario de verano)
+    // Dos cortes de recepción según el flujo (hora Colombia, UTC-5, sin DST):
+    //   • mediodía (12 PM) — turno express / sinterizado rápido
+    //   • 5:00 PM — turno estándar
     const cotHora = (new Date().getUTCHours() - 5 + 24) % 24;
-    const antesCorte = cotHora < 17;
-    const avisoCorte = antesCorte
-        ? `Agrega más casos <strong>antes de las 5:00 PM</strong> (hora Colombia) y entran en la misma entrega.`
-        : `Ya cerró la recepción de hoy (5:00 PM). Los casos nuevos entrarán en la próxima entrega.`;
+    let avisoCorte;
+    if (cotHora < 12)      avisoCorte = `Aún estás a tiempo para los cortes de hoy (<strong>mediodía</strong> express y <strong>5:00 PM</strong> estándar) — suma más casos y entran en la misma entrega.`;
+    else if (cotHora < 17) avisoCorte = `El corte de <strong>mediodía</strong> (express) ya pasó; aún puedes sumar casos al corte de las <strong>5:00 PM</strong> y entran en la misma entrega.`;
+    else                   avisoCorte = `Ya cerró la recepción de hoy (5:00 PM). Los casos nuevos entrarán en la próxima entrega.`;
     if (!lotes.length) {
         return `<div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:10px;padding:10px 14px;font-size:.78rem;color:#9fd8e8;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <span style="font-size:1.1rem;">📦</span><span>¿Tienes más trabajos para hoy? ${avisoCorte}</span>
