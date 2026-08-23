@@ -20,6 +20,15 @@ no afecta al sitio público.
 - **equipo_mantenimiento**: el código (taller/operator-panel) registraba un LOG de mantenimiento (accion/tecnico/duracion) en una tabla que es un REGISTRO de equipos → 400, logging roto. Creada tabla `mantenimiento_log` (`sql/create-mantenimiento-log.sql`) y **repuntadas las 4 referencias** en el código. **Falta re-ejecutar el SQL** (crea la tabla). Validado: equipo_mantenimiento ya no aparece como ghost.
 - Falsos positivos confirmados: `inventario_items` (costo_unitario/proveedor eran bleed), `cotizaciones` (van en jsonb `items`), `catalogo.precio_base`, `doctors_inactivos`/`despachos`/`pedidos_operacion` restantes = vistas (ampliar si se quiere el dato exacto).
 
+## 🔴 CONFIRMADO EN VIVO (ago-2026) — la vista `pedidos_operacion` rompe queries
+Probado contra la BD (anon, 42703): el código pide a la vista columnas que **no tiene** → el `SELECT` falla ENTERO (400):
+- **operario.html:442** (tablero) → `cotizacion_fab_monto, cotizacion_fab_estado, cotizacion_fab_nota` — **el tablero no carga casos**.
+- **operario.html:459/461** (comprobantes fab) → `fabricacion_tipo, cotizacion_fab_*`.
+- **calidad.html:396** (panel QA) → `nombre_doctor, pago_estado, fotos_empaque, nota_calidad, timestamp_qa`.
+- Todas existen en la tabla base `pedidos`; la vista quedó desfasada.
+- **Fix correcto = ampliar la vista** (añadir esas columnas). NO se recrea a ciegas: puede tener un `WHERE` que es su frontera de seguridad. → `sql/DIAGNOSTICO-pedidos-operacion.sql` obtiene la definición real; con eso se genera el `CREATE OR REPLACE VIEW` que solo añade las columnas.
+- Fix parcial ya aplicado en código: `operario.html:596` (chequeo de pago) repuntado a `from('pedidos')`.
+
 ## 🔧 Requieren TU decisión de esquema (no lo adiviné — es data viva)
 | Dónde | Columnas fantasma | Recomendación |
 |---|---|---|
