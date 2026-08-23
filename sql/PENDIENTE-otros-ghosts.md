@@ -20,14 +20,16 @@ no afecta al sitio público.
 - **equipo_mantenimiento**: el código (taller/operator-panel) registraba un LOG de mantenimiento (accion/tecnico/duracion) en una tabla que es un REGISTRO de equipos → 400, logging roto. Creada tabla `mantenimiento_log` (`sql/create-mantenimiento-log.sql`) y **repuntadas las 4 referencias** en el código. **Falta re-ejecutar el SQL** (crea la tabla). Validado: equipo_mantenimiento ya no aparece como ghost.
 - Falsos positivos confirmados: `inventario_items` (costo_unitario/proveedor eran bleed), `cotizaciones` (van en jsonb `items`), `catalogo.precio_base`, `doctors_inactivos`/`despachos`/`pedidos_operacion` restantes = vistas (ampliar si se quiere el dato exacto).
 
-## 🔴 CONFIRMADO EN VIVO (ago-2026) — la vista `pedidos_operacion` rompe queries
-Probado contra la BD (anon, 42703): el código pide a la vista columnas que **no tiene** → el `SELECT` falla ENTERO (400):
-- **operario.html:442** (tablero) → `cotizacion_fab_monto, cotizacion_fab_estado, cotizacion_fab_nota` — **el tablero no carga casos**.
-- **operario.html:459/461** (comprobantes fab) → `fabricacion_tipo, cotizacion_fab_*`.
-- **calidad.html:396** (panel QA) → `nombre_doctor, pago_estado, fotos_empaque, nota_calidad, timestamp_qa`.
-- Todas existen en la tabla base `pedidos`; la vista quedó desfasada.
-- **Fix correcto = ampliar la vista** (añadir esas columnas). NO se recrea a ciegas: puede tener un `WHERE` que es su frontera de seguridad. → `sql/DIAGNOSTICO-pedidos-operacion.sql` obtiene la definición real; con eso se genera el `CREATE OR REPLACE VIEW` que solo añade las columnas.
-- Fix parcial ya aplicado en código: `operario.html:596` (chequeo de pago) repuntado a `from('pedidos')`.
+## ✅ RESUELTO (ago-2026) — la vista `pedidos_operacion` rompía queries (400)
+El código pedía a la vista columnas que NO tiene → `SELECT` fallaba ENTERO (42703): `operario.html:442` (tablero
+no cargaba casos), `operario.html:456` (comprobantes fab: `fabricacion_tipo, cotizacion_fab_*`), `calidad.html:396`
+(panel QA: `nombre_doctor, pago_estado, fotos_empaque, nota_calidad, timestamp_qa`).
+- **Diagnóstico decisivo**: la vista es `security_invoker=true` → respeta la RLS del que consulta; **no** oculta
+  filas por sí misma. Como la vista funciona para operarios, ellos ya leen `pedidos` base con la MISMA RLS de fila.
+- **Fix aplicado**: los 3 selects rotos (+ el chequeo de pago `:596`) repuntados a `from('pedidos')` — mismas filas,
+  todas las columnas. Se seleccionan solo las columnas necesarias (no se exponen columnas sensibles). NO hubo que
+  recrear la vista. Validado en vivo (200 contra `pedidos`) + audit: 0 fantasmas.
+- Bonus: `operario:442` ahora trae `nombre_paciente` (arregla el "Sin nombre" de las tarjetas).
 
 ## 🔧 Requieren TU decisión de esquema (no lo adiviné — es data viva)
 | Dónde | Columnas fantasma | Recomendación |

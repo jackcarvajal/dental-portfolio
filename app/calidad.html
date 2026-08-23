@@ -393,7 +393,7 @@ function switchTab(id, el) {
 /* ── Cargar casos ─────────────────────────────────────────────────── */
 async function cargarCasos() {
     const { data, error } = await sb
-        .from('pedidos_operacion')
+        .from('pedidos')  // la vista pedidos_operacion no expone nombre_doctor/pago_estado/fotos_empaque/nota_calidad/timestamp_qa (400); pedidos sí, con la misma RLS
         .select('id,codigo,nombre_doctor,tipo_trabajo,estado_operativo,pago_estado,fotos_empaque,nota_calidad,flujo,created_at,timestamp_qa')
         .in('estado_operativo', ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO'])
         .order('timestamp_qa', { ascending: false, nullsFirst: false });

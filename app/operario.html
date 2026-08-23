@@ -439,8 +439,10 @@ function switchDept(dept) {
 async function recargar() {
   for (const dept of _myDepts) {
     const cfg = DEPTS[dept];
-    const { data } = await sb.from('pedidos_operacion')
-      .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,html_diseno_url,stl_urls,construinfo_url,cambios_count,fabricacion_solicitada,fabricacion_pagada,servicios_pagados,departamento_actual,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_nota,pais')
+    // Lee de `pedidos` (no de la vista pedidos_operacion, que no expone cotizacion_fab_*/nombre_paciente → 400).
+    // La vista es security_invoker=true, así que la RLS de filas es idéntica leyendo la tabla base.
+    const { data } = await sb.from('pedidos')
+      .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,html_diseno_url,stl_urls,construinfo_url,cambios_count,fabricacion_solicitada,fabricacion_pagada,servicios_pagados,departamento_actual,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_nota,pais,nombre_paciente')
       .in('flujo', cfg.flujos)
       .not('estado','in','("cancelado","CANCELADO")')
       .order('created_at',{ascending:false})
@@ -458,7 +460,7 @@ async function recargar() {
   for (const dept of ['fresado','impresion']) {
     if (!_myDepts.includes(dept)) continue;
     const tiposFab = dept === 'fresado' ? ['fresado','fresado_internacional','lab'] : ['impresion','impresion_internacional'];
-    const { data: comp } = await sb.from('pedidos_operacion')
+    const { data: comp } = await sb.from('pedidos')
       .select('id,codigo,tipo_trabajo,cotizacion_fab_monto,cotizacion_fab_nota,html_diseno_url')
       .eq('cotizacion_fab_estado','pago_enviado')
       .eq('fabricacion_pagada', false)

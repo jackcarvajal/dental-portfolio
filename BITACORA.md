@@ -11,6 +11,14 @@
 
 ## 2026-08-18
 
+### 🔴→✅ Vista `pedidos_operacion` desfasada rompía el tablero operario y el panel QA (400)
+Auditando los selects contra la vista encontré (y verifiqué EN VIVO, 42703) que `operario.html:442` (tablero),
+`operario.html:456` (comprobantes fab) y `calidad.html:396` (QA) pedían columnas que la vista no expone
+(`cotizacion_fab_*, fabricacion_tipo, nombre_doctor, pago_estado, fotos_empaque, nota_calidad, timestamp_qa`) →
+el `SELECT` fallaba entero → **no cargaban casos**. La vista es `security_invoker=true` (respeta la RLS del
+invocador, no oculta filas), así que el fix seguro fue repuntar a `from('pedidos')` (mismas filas, todas las
+columnas, sin recrear la vista). +`nombre_paciente` en el tablero. Validado en vivo + 0 fantasmas.
+
 ### ✅ Fase 2A+2B — Entrega consolidada / batching (idea de SINDEKAR)
 **2A (doctor · `client-panel`)**: los casos activos se **agrupan por `fecha_entrega`** (columna que ya existe; los flujos ya la guardan) → 2+ casos misma fecha ⇒ "📦 Entrega agrupada · [fecha] — N casos se despachan juntos en una sola mensajería".
 **Cortes reales (¡son DOS, según el flujo!)**: **mediodía (12 PM)** = express / sinterizado rápido (ver `MATRIZ_FRESADO` y el bloqueo `hora>=12` del sinter rápido) y **5:00 PM** = estándar. El aviso ahora es de 3 tramos (antes de 12 / entre 12 y 17 / después de 17), hora Colombia. NO inventé un corte único.
