@@ -11,6 +11,16 @@
 
 ## 2026-08-18
 
+### ✅ Auditoría edge functions (seguridad) + pasada a11y/perf públicas
+**Edge functions** — revisadas las 27: `stripe-webhook` verifica firma HMAC en tiempo constante (sin fake-payments);
+`factura` gateada con `verificarAdmin` que usa **`app_metadata.role`** (correcto, no user_metadata) + emails
+hardcodeados; los POST públicos (gemini, send-email, notify-wa, referido-reward, etc.) tienen CORS allowlist +
+rate-limit por IP (`caches.default`). Sin fuga de secretos. Nota menor: varias devuelven `e.message` al cliente
+(fuga cosmética de detalles internos, no crítica).
+**a11y/perf públicas** (44 páginas): 0 `<img>` sin alt, 0 `<html>` sin lang, 100% con bloque `prefers-reduced-motion`.
+Arreglado: `recibo-caso.html` era dark sin `<meta color-scheme>` (flash blanco) → añadido; y `preconnect` faltante
+a Google Fonts/cdnjs en 10 páginas live (calculadoras, flujos, guias-quirurgicas, referidos, links, revision-express).
+
 ### 🔴→✅ Vista `pedidos_operacion` desfasada rompía el tablero operario y el panel QA (400)
 Auditando los selects contra la vista encontré (y verifiqué EN VIVO, 42703) que `operario.html:442` (tablero),
 `operario.html:456` (comprobantes fab) y `calidad.html:396` (QA) pedían columnas que la vista no expone
