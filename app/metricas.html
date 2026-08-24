@@ -15,7 +15,7 @@
   <link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
-  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
   <style>
     :root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--card:#0d1520;--muted:#94a3b8;}
     *{margin:0;padding:0;box-sizing:border-box;}
@@ -368,7 +368,7 @@ async function cargarFunnelProdigy() {
     const desde = new Date(Date.now()-30*24*60*60*1000).toISOString();
     const [{ data: cots },{ data: peds }] = await Promise.all([
       sb.from('cotizaciones').select('id').eq('negocio','prodigy').gte('created_at',desde),
-      sb.from('pedidos').select('id').gte('created_at',desde).not('estado','eq','cancelado')
+      sb.from('pedidos').select('id').gte('created_at',desde)  /* sin .not(estado=cancelado): valor inexistente en el enum → 22P02/400 */
     ]);
     const nCot = cots?.length||0;
     const nPed = peds?.length||0;

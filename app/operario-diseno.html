@@ -399,7 +399,7 @@ async function cargarCasos() {
     // wa_op: número enmascarado solo para notificaciones internas de operario
     .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,pago_estado,precio_total,created_at,flujo,link_diseno,notas_cambios,revisiones_usadas,stl_ruta,operario_codigo,telefono,pais,nombre_doctor')
     .eq('flujo','diseno')
-    .not('estado','in','("cancelado","CANCELADO")')
+    // (quitado filtro estado='cancelado': valor inexistente en el enum estado_pedido → 22P02/400)
     .order('created_at',{ascending:false})
     .limit(80);
 

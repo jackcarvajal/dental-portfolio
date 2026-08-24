@@ -4043,8 +4043,8 @@ async function cargarMetricasFinanzas() {
     try {
         const { data: pedidos } = await sb.from('pedidos')
             .select('id,estado,estado_operativo,pago_estado,precio_total,created_at,fecha_entrega,tipo_trabajo,nombre_doctor,timestamp_validacion')
-            .gte('created_at', desde)
-            .not('estado','in','("cancelado","CANCELADO")');
+            .gte('created_at', desde);
+            // (quitado filtro estado='cancelado': valor inexistente en el enum estado_pedido → 22P02/400)
 
         if (!pedidos || pedidos.length === 0) {
             ['metfin-facturado','metfin-cobrado','metfin-por-cobrar','metfin-ticket'].forEach(id => {

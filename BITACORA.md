@@ -11,6 +11,12 @@
 
 ## 2026-08-18
 
+### 🔴→✅ Auditoría RUNTIME (headless) — 3 clases de bug reales en producción
+Corrí `audit-live` (carga real headless). Hallazgos + fixes (todos verificados en vivo con curl):
+1. **Filtro de enum roto en 5 queries sobre `pedidos`** — `.not('estado','in','("cancelado","CANCELADO")')` (y `.eq` en métricas) daban **22P02/400** porque el enum `estado_pedido` **solo tiene {Pendiente, Pagado, En Producción, Despachado}** (no existe 'cancelado'). Afectaba: `operario` (tablero), `operario-diseno`, `operator-panel`, `panel-interno:4047`, `metricas:371`. Quitado el filtro (nunca excluía nada; los cancelados-por-doctor se ocultan por `estado_operativo`). Las 2 de `pedidos_doctor` (estado TEXTO) quedan OK.
+2. **`createClient` de undefined en 5 páginas** (`metricas`, `metricas-churn`, `metricas-referidos`, `pruebas-carga`, `referidos-portal`) — cargaban supabase con **`defer`** pero el inline lo usa durante el parseo → `window.supabase` aún no existía. Quitado `defer` (como las páginas que funcionan).
+3. **RPC `prodigy_forecast_semana`** — 400 `column created_at does not exist`: el SELECT externo del bloque "por día" usaba `created_at`, pero la subconsulta lo renombró a `dia/dow`. Corregido a `dow`/`dia` en `sql/patch-analytics-rpc-authz-2026.sql` (🟡 re-ejecutar).
+
 ### ✅ Auditoría edge functions (seguridad) + pasada a11y/perf públicas
 **Edge functions** — revisadas las 27: `stripe-webhook` verifica firma HMAC en tiempo constante (sin fake-payments);
 `factura` gateada con `verificarAdmin` que usa **`app_metadata.role`** (correcto, no user_metadata) + emails

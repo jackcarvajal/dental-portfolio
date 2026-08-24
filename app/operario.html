@@ -444,7 +444,8 @@ async function recargar() {
     const { data } = await sb.from('pedidos')
       .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,html_diseno_url,stl_urls,construinfo_url,cambios_count,fabricacion_solicitada,fabricacion_pagada,servicios_pagados,departamento_actual,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_nota,pais,nombre_paciente')
       .in('flujo', cfg.flujos)
-      .not('estado','in','("cancelado","CANCELADO")')
+      // (sin filtro por estado='cancelado': el enum estado_pedido no tiene ese valor → daba 22P02/400.
+      //  Los cancelados por el doctor se ocultan por estado_operativo='CANCELADO_DOCTOR' en el kanban)
       .order('created_at',{ascending:false})
       .limit(80);
     _casos[dept] = (data||[]).map(p => ({

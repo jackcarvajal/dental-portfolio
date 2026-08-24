@@ -450,7 +450,7 @@ function filtrarOperator() {
 async function cargarPedidos() {
     const { data, error } = await sb.from('pedidos')
         .select('id, codigo, nombre_paciente, nombre_doctor, tipo_trabajo, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo, pago_estado, precio_total, telefono, pais, fecha_entrega, slot_express')
-        .not('estado', 'in', '("cancelado","CANCELADO")')
+        /* (quitado filtro estado='cancelado': el enum estado_pedido no tiene ese valor → 22P02/400) */
         .in('flujo', ['fresado','lab','impresion',''])   /* Excluir flujo=diseno — tiene su propio panel */
         .order('created_at', { ascending: false })
         .limit(100);

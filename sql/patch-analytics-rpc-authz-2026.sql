@@ -151,8 +151,8 @@ BEGIN
 
     SELECT json_agg(row_to_json(t)) INTO resultado FROM (
         SELECT
-            EXTRACT(DOW FROM created_at)::int AS dia_semana,
-            TO_CHAR(created_at, 'Day') AS nombre_dia,
+            dow::int AS dia_semana,               -- fix: la subconsulta `daily` expone dow/dia, no created_at
+            TO_CHAR(dia, 'Day') AS nombre_dia,     -- (antes usaba created_at inexistente aquí → 42703/400)
             ROUND(AVG(cnt)) AS pedidos_esperados
         FROM (
             SELECT DATE_TRUNC('day', created_at) AS dia, COUNT(*) AS cnt,
