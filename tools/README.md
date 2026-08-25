@@ -11,7 +11,12 @@ IDs duplicados, enlaces rotos. Estas dos herramientas los detectan **antes** de 
 | **1. Estática** (`audit.mjs`) | anon key desactualizada · IDs duplicados · enlaces internos rotos · SEO básico | Node puro, ~1s, sin navegador | **antes de cada `git push`** |
 | **2. Runtime** (`audit-live.mjs`) | errores JS de consola · llamadas Supabase/API 4xx · páginas vacías | headless Edge, ~3-4 min | **antes de cada deploy** / semanal |
 | **3. Backend/BD** (`audit-schema.mjs`) | contrato front↔BD: **columnas/tablas que el código usa y no existen** (schema drift), RPCs, redundancia | Node puro; validar necesita el esquema real | al tocar BD / periódico |
-| **4. Hook/CI** | corre la capa 1 automáticamente y bloquea si hay crítico | — | automático |
+| **3b. Backend/BD en vivo** (`audit-schema-live.mjs`) | igual pero **contra la base REAL** (columnas/RPCs/valores de enum inexistentes) — sin snapshot | Node + red, ~10s | **en cada `git push`** (hook) |
+| **3c. Gobernanza SQL** (`sql-map.mjs`) | código↔repo: RPC **duplicadas** en varios .sql, opacas (solo desplegadas), definiciones sin uso | Node puro, ~1s | al ordenar el `sql/` |
+| **4. Hook/CI** | corre las capas 1 y 3b automáticamente y bloquea si hay crítico | — | automático |
+
+> **Gobernanza del `sql/`**: son ~158 parches sin fuente de verdad (36 RPC duplicadas). Ver `sql/_baseline/README.md`
+> — el plan es exportar lo desplegado (`EXPORTAR-BASELINE.sql`) y dejar 1 definición canónica por RPC.
 
 ### Capa 3 — contrato front ↔ base de datos
 ```bash
