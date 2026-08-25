@@ -11,6 +11,14 @@
 
 ## 2026-08-18
 
+### ✅ PREVENCIÓN — `audit-schema-live.mjs` + gate en pre-push (recomendación macro implementada)
+Raíz de casi todos los 400 de esta sesión = schema drift (código pide columnas/RPCs que la BD ya no tiene).
+Nuevo `tools/audit-schema-live.mjs`: extrae cada tabla·columna·RPC que usa el código y la **prueba contra la
+base REAL** (42703/42P01/42P13/22P02/PGRST202). Se autovalida contra el esquema vigente → sin snapshot que
+mantener; filtra ruido (mayúsculas=valores de enum) + allowlist de falsos positivos (jsonb/embed/bleed).
+**Cableado al `.git/hooks/pre-push`** (corre `audit.mjs` + `audit-schema-live.mjs`; no bloquea si no hay red).
+Probado en el push: ✓ todo lo que el código pide existe. Habría cazado cada 400 de hoy antes de desplegar.
+
 ### 🔴→✅ Auditoría RUNTIME (headless) — 3 clases de bug reales en producción
 Corrí `audit-live` (carga real headless). Hallazgos + fixes (todos verificados en vivo con curl):
 1. **Filtro de enum roto en 5 queries sobre `pedidos`** — `.not('estado','in','("cancelado","CANCELADO")')` (y `.eq` en métricas) daban **22P02/400** porque el enum `estado_pedido` **solo tiene {Pendiente, Pagado, En Producción, Despachado}** (no existe 'cancelado'). Afectaba: `operario` (tablero), `operario-diseno`, `operator-panel`, `panel-interno:4047`, `metricas:371`. Quitado el filtro (nunca excluía nada; los cancelados-por-doctor se ocultan por `estado_operativo`). Las 2 de `pedidos_doctor` (estado TEXTO) quedan OK.
