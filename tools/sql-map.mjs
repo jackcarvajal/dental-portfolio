@@ -24,20 +24,28 @@ for (const f of codeFiles) {
 const sqlDir = join(ROOT, 'sql');
 const defFn = {};   // funcion -> [{file, mtime}]
 const defTb = {};   // tabla   -> [files]
+const trigFns = new Set();   // funciones-trigger (RETURNS trigger o EXECUTE FUNCTION)
+let allSql = '';             // todo el SQL concatenado (para detectar llamadas internas)
 let sqlFiles = 0;
 try {
   for (const n of readdirSync(sqlDir)) {
     if (!n.endsWith('.sql')) continue;
     sqlFiles++;
     const p = join(sqlDir, n), s = readFileSync(p, 'utf8'), mtime = statSync(p).mtime;
+    allSql += '\n' + s;
     let m;
     // exige `(` tras el nombre → función real (evita matches en prosa/comentarios)
     const fn = /CREATE\s+(?:OR\s+REPLACE\s+)?FUNCTION\s+(?:public\.)?([a-z_][\w]*)\s*\(/gi;
     while ((m = fn.exec(s))) { (defFn[m[1]] ||= []).push({ file: n, mtime }); }
     const tb = /CREATE\s+(?:TABLE|MATERIALIZED\s+VIEW|VIEW)\s+(?:IF\s+NOT\s+EXISTS\s+)?(?:OR\s+REPLACE\s+)?(?:public\.)?([a-z_][\w]*)/gi;
     while ((m = tb.exec(s))) { (defTb[m[1]] ||= new Set()).add(n); }
+    // triggers que ejecutan una función
+    const tg = /EXECUTE\s+(?:FUNCTION|PROCEDURE)\s+(?:public\.)?([a-z_][\w]*)/gi;
+    while ((m = tg.exec(s))) trigFns.add(m[1]);
   }
 } catch { console.log('No hay carpeta sql/.'); process.exit(0); }
+// funciones que RETURNS trigger (aunque no tengan CREATE TRIGGER en el repo)
+{ let m; const rt = /FUNCTION\s+(?:public\.)?([a-z_][\w]*)\s*\([^;]*?\)\s*RETURNS\s+trigger/gi; while ((m = rt.exec(allSql))) trigFns.add(m[1]); }
 
 const C = { r: '\x1b[31m', y: '\x1b[33m', g: '\x1b[32m', b: '\x1b[1m', x: '\x1b[0m', d: '\x1b[2m' };
 const fecha = (arr) => arr.slice().sort((a, b) => b.mtime - a.mtime);
@@ -57,10 +65,29 @@ console.log(`\n${C.b}② RPC DUPLICADAS — misma función en varios archivos (�
 if (!dup.length) console.log(`   ${C.g}✓ ninguna${C.x}`);
 else for (const n of dup) { const fs2 = fecha(defFn[n]); console.log(`   ${C.y}⚠ ${n}()${C.x} — ${fs2.length} copias · más reciente: ${C.b}${fs2[0].file}${C.x}\n      ${C.d}${fs2.slice(1).map(x => x.file).join(', ')}${C.x}`); }
 
-// C. muertas: definidas en el repo pero nunca llamadas por el código
-const muertas = Object.keys(defFn).filter(n => !called.has(n) && !/^(set_updated_at|handle_|trg_|tg_)/.test(n)).sort();
-console.log(`\n${C.b}③ Definiciones sin uso — en el repo pero el código no las llama (posible muerto/backend-only):${C.x}`);
-console.log(muertas.length ? `   ${muertas.map(n => C.d + n + C.x).join(', ')}` : `   ${C.g}✓ ninguna${C.x}`);
+// C. sin uso por el código → CLASIFICAR (no todo lo no-llamado es muerto)
+const noCode = Object.keys(defFn).filter(n => !called.has(n));
+const calledInSql = (n) => {   // ¿la llama otra función del sql? (uso interno)
+  const defs = (allSql.match(new RegExp(`FUNCTION\\s+(?:public\\.)?${n}\\s*\\(`, 'gi')) || []).length;
+  const uses = (allSql.match(new RegExp(`\\b${n}\\s*\\(`, 'g')) || []).length;
+  return uses > defs;   // aparece más veces de las que se define → alguien la llama
+};
+const cls = { trigger: [], interna: [], alejandro: [], backend: [], muerta: [] };
+const BACKEND = /^(_|prodigy_(purgar|notif|set_sla|forzar|limpiar|restrict|alerta)|corte_|detectar_|avisar_|enrutar_|actualizar_|generar_|newsletter_unsub|role_from|es_admin|no$)/;
+for (const n of noCode.sort()) {
+  if (trigFns.has(n)) cls.trigger.push(n);
+  else if (/^alejandro_/.test(n)) cls.alejandro.push(n);
+  else if (calledInSql(n)) cls.interna.push(n);
+  else if (BACKEND.test(n)) cls.backend.push(n);
+  else cls.muerta.push(n);
+}
+console.log(`\n${C.b}③ Definiciones no llamadas por el frontend — clasificadas:${C.x}`);
+const line = (lbl, arr, col) => console.log(`   ${col}${lbl}${C.x} (${arr.length}): ${C.d}${arr.join(', ') || '—'}${C.x}`);
+line('trigger', cls.trigger, C.g);
+line('helper interno (lo llama otra función)', cls.interna, C.g);
+line('Alejandro (otro negocio)', cls.alejandro, C.g);
+line('backend/cron (heurística por nombre)', cls.backend, C.y);
+console.log(`   ${C.r}posible MUERTA (revisar antes de borrar)${C.x} (${cls.muerta.length}): ${cls.muerta.join(', ') || C.g + 'ninguna' + C.x}`);
 
-console.log(`\n${C.b}Resumen:${C.x} ${opacas.length} opacas · ${dup.length} duplicadas · ${muertas.length} sin uso. ` +
-  `Prioridad: (1) exportar baseline de lo desplegado, (2) dejar 1 definición canónica por RPC, (3) migraciones ordenadas.\n`);
+console.log(`\n${C.b}Resumen:${C.x} ${opacas.length} opacas · ${dup.length} duplicadas · ${cls.muerta.length} posibles muertas (de ${noCode.length} no-llamadas). ` +
+  `Prioridad: (1) exportar baseline, (2) 1 definición canónica por RPC, (3) migraciones ordenadas.\n`);
