@@ -81,8 +81,31 @@ CREATE OR REPLACE VIEW public.pedidos_proximos_a_purgar AS
   WHERE estado_operativo = 'ENTREGADO'::text AND stl_ruta IS NOT NULL AND (stl_purgado IS NULL OR stl_purgado = false)
   ORDER BY updated_at;
 
--- pedidos_reales — pedidos con es_prueba=false (todas las columnas). Definición larga:
--- ver captura completa; se recomienda regenerarla desde el baseline si se necesita.
+-- pedidos_reales — pedidos con es_prueba=false (TODAS las columnas de pedidos)
+CREATE OR REPLACE VIEW public.pedidos_reales AS
+ SELECT id, codigo, cliente_id, tipo_trabajo, material, pieza, unidades, precio_base, precio_total,
+    pasarela, recargo_pct, estado, stl_url, qr_code, notas, fecha_entrega, created_at, updated_at,
+    doctor_uid, nombre_doctor, email, telefono, nombre_paciente, submaterial, color_vita, piezas,
+    cantidad, instrucciones, "oclusión", espacio_cemento, proceso, archivo_stl_path, archivo_final_path,
+    foto_salida_path, exocad_link, monto_base, monto_total, moneda, slot_express, fecha_ingreso,
+    notas_operador, estado_operativo, timestamp_validacion, timestamp_produccion, timestamp_qa,
+    operador_id, fotos_empaque, calificacion, calificacion_comentario, tracking_mensajero,
+    requiere_factura, billing_tipo, billing_nit, billing_razon, billing_email, terminos_aceptados_at,
+    ip_registro, user_agent, seguro_garantia_activo, costo_envio, hash_seguridad, total_usd,
+    paypal_order_id, paypal_payer, paypal_email, paypal_ref, fecha_pago, numero_guia, pais, negocio,
+    link_diseno, diseno_aprobado, notas_cambios, revisiones_usadas, pago_estado, comprobante_url,
+    stl_ruta, stl_liberado, fotos_feedback, operario_codigo, user_id, servicios_pagados,
+    departamento_actual, pedido_diseno_id, cotizacion_fab_monto, cotizacion_fab_estado,
+    cotizacion_fab_at, cotizacion_fab_nota, html_diseno_url, stl_urls, construinfo_url,
+    fotos_diseno_urls, cambios_count, diseno_aprobado_at, diseno_aprobado_por, diseno_disclaimer,
+    fabricacion_solicitada, fabricacion_pagada, fabricacion_tipo, modalidad_cobro, saldo_pendiente_monto,
+    comprobante_abono_url, comprobante_saldo_url, nota_confirmacion_pago, timestamp_pago_confirmado,
+    pago_confirmado_por, comprobante_pago_url, factura_estado, factura_alegra_id, factura_numero,
+    factura_cufe, factura_pdf_url, factura_emitida_at, factura_error, codigo_referido,
+    pago_recordatorio_at, pago_vencido, canal_origen, sla_horas_objetivo, sla_alerta_enviada,
+    stl_purgado, stl_purgado_at, flujo, nombre_cliente, nota_calidad, direccion, es_prueba
+   FROM pedidos
+  WHERE es_prueba = false;
 
 CREATE OR REPLACE VIEW public.pedidos_revision_publica AS
  SELECT id, codigo, tipo_trabajo, material, color_vita, estado_operativo, html_diseno_url,
