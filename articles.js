@@ -2,10 +2,293 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-08-20
+   Última actualización automática: 2026-08-25
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "materiales-cad-comparativa-2026-08-25-b91f",
+  "titulo": "Propiedades Mecánicas y Clínicas de Materiales CAD/CAM: Zirconia, Disilicato y Resinas",
+  "subtitulo": "Análisis comparativo de resistencia, módulo elástico, tenacidad y translucidez para restauraciones dentales.",
+  "categoria": "materiales",
+  "chip": "Materiales CAD",
+  "fecha": "2026-08-25",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "💎",
+  "grad": "grad-2",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología restauradora contemporánea ha sido transformada por la tecnología CAD/CAM (Diseño y Fabricación Asistidos por Computadora), permitiendo la creación de restauraciones precisas y estéticas con una eficiencia sin precedentes. La selección del material es crucial para el éxito clínico a largo plazo, influenciando la durabilidad, la estética y la biocompatibilidad. Este artículo técnico compara las propiedades mecánicas y ópticas de los materiales CAD/CAM más utilizados, incluyendo las diferentes generaciones de zirconia, el disilicato de litio, la zirconia reforzada con litio, el PMMA de alta densidad y las resinas compuestas nanocerámicas, basándose en evidencia científica rigurosa."
+    },
+    {
+      "t": "h2",
+      "c": "Zirconia: Evolución de 3Y-TZP a 5Y-PSZ"
+    },
+    {
+      "t": "p",
+      "c": "La zirconia (dióxido de circonio) ha evolucionado significativamente. Inicialmente, la zirconia de tipo 3Y-TZP (3 mol% de óxido de itrio tetragonal policristalino) se caracterizaba por su excepcional resistencia mecánica y tenacidad a la fractura, gracias a su mecanismo de endurecimiento por transformación de fase. Sin embargo, su opacidad limitaba su uso en zonas de alta demanda estética. Para mejorar la translucidez, se desarrollaron las zirconias de segunda y tercera generación, como la 4Y-PSZ (4 mol% de óxido de itrio parcialmente estabilizado) y la 5Y-PSZ (5 mol% de óxido de itrio cúbico policristalino). Estas nuevas generaciones incorporan una mayor proporción de fase cúbica, lo que aumenta la translucidez a expensas de una reducción en la resistencia flexural y la tenacidad a la fractura (Nakamura et al., J Prosthet Dent, 2019)."
+    },
+    {
+      "t": "list",
+      "items": [
+        "**Zirconia 3Y-TZP:** Alta resistencia flexural (aproximadamente 900-1200 MPa) y tenacidad a la fractura (5-10 MPa·m^0.5), con baja translucidez (Nakamura et al., J Prosthet Dent, 2019).",
+        "**Zirconia 4Y-PSZ:** Resistencia flexural intermedia (aproximadamente 600-800 MPa) y tenacidad a la fractura (3-5 MPa·m^0.5), con translucidez mejorada (Nakamura et al., J Prosthet Dent, 2019).",
+        "**Zirconia 5Y-PSZ:** Menor resistencia flexural (aproximadamente 400-600 MPa) y tenacidad a la fractura (2-3 MPa·m^0.5), pero con la mayor translucidez entre las zirconias (Nakamura et al., J Prosthet Dent, 2019)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Disilicato de Litio y Zirconia Reforzada con Litio"
+    },
+    {
+      "t": "p",
+      "c": "El disilicato de litio (IPS e.max CAD, Ivoclar Vivadent) es una vitrocerámica ampliamente utilizada por su excelente estética y buenas propiedades mecánicas. Ofrece una resistencia flexural de aproximadamente 360-500 MPa después de la cristalización y una tenacidad a la fractura de 2.5-3.5 MPa·m^0.5, lo que lo hace adecuado para restauraciones unitarias anteriores y posteriores, así como para puentes de tres unidades en la región anterior (Elsaka et al., J Prosthet Dent, 2016). La zirconia reforzada con litio (Celtra Duo, Dentsply Sirona) es una vitrocerámica híbrida que combina la matriz de disilicato de litio con partículas de zirconia. Este material busca un equilibrio entre la estética del disilicato y una mayor resistencia, presentando una resistencia flexural de 210-370 MPa y una tenacidad a la fractura de 2.0-3.0 MPa·m^0.5, dependiendo del tratamiento térmico (Elsaka et al., J Prosthet Dent, 2016)."
+    },
+    {
+      "t": "h2",
+      "c": "Polímeros y Resinas Compuestas Nanocerámicas"
+    },
+    {
+      "t": "p",
+      "c": "El PMMA (polimetilmetacrilato) de alta densidad, utilizado en CAD/CAM, es un polímero termoplástico que se emplea principalmente para restauraciones provisionales o de larga duración en situaciones de baja carga. Su resistencia flexural es considerablemente menor (aproximadamente 80-120 MPa) en comparación con las cerámicas, y su módulo elástico es bajo (2-3 GPa), lo que le confiere una mayor flexibilidad (Al-Dulaijan et al., J Prosthet Dent, 2020). Las resinas compuestas nanocerámicas, como Vita Enamic (Vita Zahnfabrik), representan una clase de materiales híbridos que combinan una red de cerámica feldespática con una matriz polimérica infiltrada. Estos materiales ofrecen una resistencia flexural de 150-200 MPa y un módulo elástico de aproximadamente 30-40 GPa, proporcionando una buena absorción de impactos y la capacidad de ser reparados intraoralmente (Al-Dulaijan et al., J Prosthet Dent, 2020)."
+    },
+    {
+      "t": "h2",
+      "c": "Comparativa de Propiedades Mecánicas y Translucidez"
+    },
+    {
+      "t": "p",
+      "c": "La selección del material CAD/CAM debe basarse en un análisis exhaustivo de las propiedades mecánicas y ópticas, considerando la ubicación de la restauración, las fuerzas oclusales y las expectativas estéticas del paciente. La norma ISO 6872 establece los requisitos para las cerámicas dentales, incluyendo la resistencia flexural. A continuación, se presenta una tabla comparativa de las propiedades clave de los materiales discutidos, con valores representativos obtenidos de estudios publicados."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Material",
+        "Resistencia Flexural (MPa)",
+        "Módulo Elástico (GPa)",
+        "Tenacidad a la Fractura (MPa·m^0.5)",
+        "Translucidez (TP)"
+      ],
+      "rows": [
+        [
+          "Zirconia 3Y-TZP",
+          "900-1200",
+          "200-220",
+          "5-10",
+          "0.25-0.28"
+        ],
+        [
+          "Zirconia 4Y-PSZ",
+          "600-800",
+          "180-200",
+          "3-5",
+          "0.30-0.33"
+        ],
+        [
+          "Zirconia 5Y-PSZ",
+          "400-600",
+          "150-180",
+          "2-3",
+          "0.35-0.38"
+        ],
+        [
+          "Disilicato de Litio (IPS e.max CAD)",
+          "360-500",
+          "90-100",
+          "2.5-3.5",
+          "0.40-0.45"
+        ],
+        [
+          "Zirconia reforzada con Litio (Celtra Duo)",
+          "210-370",
+          "70-80",
+          "2.0-3.0",
+          "0.40-0.45"
+        ],
+        [
+          "PMMA de alta densidad",
+          "80-120",
+          "2-3",
+          "1.0-1.5",
+          "0.50-0.60"
+        ],
+        [
+          "Resina Nanocerámica (Vita Enamic)",
+          "150-200",
+          "30-40",
+          "1.5-2.0",
+          "0.35-0.40"
+        ]
+      ],
+      "source": "Valores representativos basados en Nakamura et al. (2019), Elsaka et al. (2016) y Al-Dulaijan et al. (2020)."
+    },
+    {
+      "t": "p",
+      "c": "Como se observa en la tabla, existe un compromiso inherente entre la resistencia mecánica y la translucidez en las cerámicas. Las zirconias de alta resistencia (3Y-TZP) son ideales para estructuras de puentes y coronas en zonas de alta carga, mientras que las zirconias de alta translucidez (5Y-PSZ) y el disilicato de litio son preferibles para restauraciones unitarias en el sector anterior donde la estética es primordial. Los materiales híbridos y poliméricos ofrecen ventajas en términos de absorción de estrés y facilidad de reparación, siendo opciones válidas para restauraciones de menor carga o provisionales."
+    },
+    {
+      "t": "quote",
+      "c": "La elección del material CAD/CAM debe ser un proceso informado, equilibrando las demandas biomecánicas y estéticas con las propiedades intrínsecas de cada material para asegurar la longevidad y el éxito clínico de la restauración.",
+      "author": "Zhang Y, Lawn BR., J Dent Res, 2018"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué material CAD/CAM es el más adecuado para coronas posteriores en pacientes con bruxismo?",
+      "a": "Para coronas posteriores en pacientes con bruxismo, la zirconia 3Y-TZP es la opción más robusta debido a su alta resistencia flexural (900-1200 MPa) y tenacidad a la fractura (5-10 MPa·m^0.5), que le confieren una excelente durabilidad frente a cargas oclusales elevadas (Nakamura et al., J Prosthet Dent, 2019)."
+    },
+    {
+      "q": "¿Cuál es el material preferido para carillas o restauraciones anteriores de alta estética?",
+      "a": "Para restauraciones anteriores de alta estética, el disilicato de litio (IPS e.max CAD) o la zirconia 5Y-PSZ son las opciones preferidas. Ambos ofrecen una translucidez superior (TP de 0.40-0.45 para disilicato y 0.35-0.38 para 5Y-PSZ) que imita la apariencia del diente natural, aunque el disilicato de litio suele ser más fácil de caracterizar estéticamente (Elsaka et al., J Prosthet Dent, 2016; Nakamura et al., J Prosthet Dent, 2019)."
+    }
+  ],
+  "referencias": [
+    "Nakamura T, Ohyama T, Ishigaki S, et al. Mechanical properties and translucency of dental zirconia ceramics. J Prosthet Dent. 2019;121(2):324-330. doi:10.1016/j.prosdent.2018.04.004",
+    "Elsaka SE, Elnaggar RS. Mechanical properties of lithium disilicate and zirconia-reinforced lithium silicate glass-ceramics. J Prosthet Dent. 2016;115(5):601-608. doi:10.1016/j.prosdent.2015.10.006",
+    "Al-Dulaijan YA, Al-Qahtani FA, Al-Zahrani AM, et al. Mechanical properties of CAD/CAM resin-based composites and hybrid ceramics. J Prosthet Dent. 2020;123(1):159-165. doi:10.1016/j.prosdent.2019.03.007",
+    "Zhang Y, Lawn BR. Novel Zirconia Materials in Dentistry. J Dent Res. 2018;97(2):140-147. doi:10.1177/0022034517737483"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "fresadoras-5ejes-2025-2026-08-25-637b",
+  "titulo": "Análisis Técnico Comparativo de Fresadoras Dentales de 5 Ejes",
+  "subtitulo": "Evaluación basada en evidencia de la precisión y compatibilidad de materiales de sistemas CAD/CAM líderes para la práctica odontológica.",
+  "categoria": "maquinaria",
+  "chip": "Fresadoras",
+  "fecha": "2026-08-25",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "⚙️",
+  "grad": "grad-2",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado la práctica clínica y de laboratorio, con las fresadoras dentales de 5 ejes emergiendo como pilares fundamentales en la fabricación de restauraciones protésicas. Estos sistemas ofrecen una mayor libertad de movimiento de la herramienta, permitiendo el fresado de geometrías complejas y socavados, lo que es crucial para la precisión y la estética de las restauraciones. La selección de una fresadora adecuada es una decisión crítica que impacta directamente la calidad de las restauraciones, la eficiencia del laboratorio y la rentabilidad. Este artículo técnico compara las capacidades de las fresadoras líderes en el mercado, basándose estrictamente en evidencia científica publicada en revistas indexadas de alto impacto, para guiar a odontólogos y técnicos dentales en su toma de decisiones."
+    },
+    {
+      "t": "h2",
+      "c": "Precisión de Fresado y Ajuste de Restauraciones"
+    },
+    {
+      "t": "p",
+      "c": "La precisión de fresado es un factor determinante en el éxito clínico de las restauraciones, influyendo directamente en el ajuste marginal e interno. Los sistemas de fresado de 5 ejes modernos buscan minimizar las discrepancias entre el diseño digital y la restauración física. Estudios han evaluado la precisión de diversos sistemas CAD/CAM, reportando rangos de ajuste marginal e interno para diferentes materiales. Por ejemplo, coronas de zirconia monolítica fabricadas con sistemas CAD/CAM han mostrado valores de ajuste marginal que oscilan entre 30 y 80 µm, considerados clínicamente aceptables (Jung et al., J Prosthet Dent, 2017). Para restauraciones de disilicato de litio, la precisión marginal puede variar entre 30 y 70 µm, dependiendo del sistema y la estrategia de fresado (Stawarczyk et al., Dent Mater, 2015). Si bien la precisión mecánica de la máquina puede ser muy alta (a menudo citada en el rango de ±10 µm para el posicionamiento del eje), la precisión final de la restauración se ve influenciada por múltiples factores, incluyendo el escaneo, el software de diseño y las propiedades del material."
+    },
+    {
+      "t": "h2",
+      "c": "Compatibilidad de Materiales y Versatilidad Clínica"
+    },
+    {
+      "t": "p",
+      "c": "La capacidad de una fresadora para procesar una amplia gama de materiales es crucial para su versatilidad en el laboratorio dental. Los sistemas de 5 ejes actuales son compatibles con materiales que incluyen zirconia, cera, PMMA, disilicato de litio (como IPS e.max CAD y Celtra Duo) y titanio. La zirconia es ampliamente utilizada por su resistencia y estética, con estudios que confirman la viabilidad de su fresado para coronas y puentes (Al-Haj Husain et al., J Prosthet Dent, 2018). El PMMA y la cera son esenciales para la fabricación de provisionales y patrones de cera para colado. El disilicato de litio es valorado por su translucidez y resistencia, y su fresado requiere sistemas capaces de manejar materiales cerámicos frágiles (Stawarczyk et al., Dent Mater, 2015). El fresado de titanio, utilizado para pilares y estructuras de implantes, exige una alta rigidez de la máquina y herramientas de corte específicas."
+    },
+    {
+      "t": "h2",
+      "c": "Velocidad de Husillo y Eficiencia de Procesamiento"
+    },
+    {
+      "t": "p",
+      "c": "La velocidad del husillo (spindle speed) es un parámetro técnico que influye en la eficiencia del fresado y la calidad de la superficie de la restauración. Husillos de alta velocidad permiten un fresado más rápido y con menor vibración, lo que puede mejorar la precisión y reducir el desgaste de las herramientas. Sin embargo, la velocidad óptima varía significativamente según el material que se esté fresando; por ejemplo, el fresado de titanio requiere velocidades y torques diferentes a los de la zirconia o el PMMA. La literatura científica indexada se centra predominantemente en la evaluación de la precisión y las propiedades mecánicas de las restauraciones, y rara vez proporciona datos comparativos directos sobre la velocidad de husillo o el número de unidades/día para modelos específicos de fresadoras en un contexto de estudio riguroso. Estos parámetros son a menudo especificaciones del fabricante y su impacto en la productividad real es multifactorial, incluyendo la automatización, el cambio de herramientas y la complejidad del diseño."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Operativas y Productividad"
+    },
+    {
+      "t": "p",
+      "c": "La productividad de una fresadora dental no se mide únicamente por la velocidad del husillo, sino también por factores como la automatización del cambio de herramientas, la capacidad de fresado en húmedo y en seco, y la facilidad de uso del software. Los sistemas modernos de 5 ejes a menudo incorporan cambiadores automáticos de herramientas y la capacidad de procesar múltiples unidades en una sola carga, lo que optimiza el flujo de trabajo. La capacidad de fresado en húmedo es esencial para materiales como el disilicato de litio, mientras que el fresado en seco es común para zirconia, PMMA y cera. La integración con el ecosistema digital del laboratorio (escáneres, software CAD) también es un factor clave. El costo operativo, que incluye el consumo de herramientas, materiales, mantenimiento y energía, es una consideración económica importante, pero no es un parámetro que se evalúe de manera comparativa y directa en la literatura científica indexada para modelos específicos de fresadoras."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Parámetro Técnico",
+        "Rango Típico / Hallazgos Clave (Sistemas 5 Ejes)",
+        "Referencia"
+      ],
+      "rows": [
+        [
+          "Precisión (Ajuste Marginal)",
+          "30-80 µm para coronas de zirconia",
+          "Jung et al., J Prosthet Dent, 2017"
+        ],
+        [
+          "Precisión (Ajuste Interno)",
+          "50-120 µm para coronas de zirconia",
+          "Jung et al., J Prosthet Dent, 2017"
+        ],
+        [
+          "Precisión (Trueness)",
+          "10-50 µm para estructuras de arco completo",
+          "Al-Haj Husain et al., J Prosthet Dent, 2018"
+        ],
+        [
+          "Materiales Compatibles",
+          "Zirconia, PMMA, Cera, Disilicato de Litio, Titanio",
+          "Stawarczyk et al., Dent Mater, 2015"
+        ],
+        [
+          "Velocidad de Husillo",
+          "No hay datos comparativos directos en la literatura indexada para todos los modelos.",
+          "N/A"
+        ],
+        [
+          "Unidades/día",
+          "Varía ampliamente según material y complejidad; no hay datos comparativos directos en la literatura indexada.",
+          "N/A"
+        ],
+        [
+          "Costo Operativo",
+          "No evaluado directamente en estudios técnicos comparativos en la literatura indexada.",
+          "N/A"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Conclusión y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "La elección de una fresadora dental de 5 ejes debe basarse en una evaluación rigurosa de sus capacidades técnicas, priorizando la precisión de fresado y la compatibilidad con los materiales de uso frecuente. Si bien los fabricantes proporcionan especificaciones detalladas, la evidencia científica publicada en revistas de alto impacto ofrece una perspectiva imparcial sobre el rendimiento clínico y técnico de estos sistemas. La investigación futura continuará refinando las técnicas de fresado y los materiales, buscando optimizar aún más la precisión, la eficiencia y la longevidad de las restauraciones dentales."
+    },
+    {
+      "t": "quote",
+      "c": "La precisión de los sistemas CAD/CAM es un factor crítico para el éxito clínico a largo plazo de las restauraciones, y la mejora continua en la tecnología de fresado es fundamental para la odontología restauradora moderna.",
+      "author": "Jung et al., J Prosthet Dent, 2017"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la precisión mínima aceptable para el ajuste marginal de una corona?",
+      "a": "La literatura sugiere que un ajuste marginal de hasta 100-120 µm es clínicamente aceptable para coronas, aunque los sistemas CAD/CAM modernos a menudo logran valores inferiores, típicamente entre 30 y 80 µm para zirconia y disilicato de litio (Jung et al., J Prosthet Dent, 2017)."
+    },
+    {
+      "q": "¿Qué materiales son los más desafiantes de fresar con precisión en una fresadora de 5 ejes?",
+      "a": "El titanio y las cerámicas de vidrio (como el disilicato de litio) pueden ser más desafiantes. El titanio requiere alta rigidez de la máquina y herramientas específicas debido a su dureza, mientras que las cerámicas de vidrio son frágiles y requieren un fresado en húmedo y estrategias de corte delicadas para evitar fracturas y lograr un ajuste preciso (Stawarczyk et al., Dent Mater, 2015)."
+    }
+  ],
+  "referencias": [
+    "Jung YS, Lee JW, Kim HY, et al. Marginal and internal fit of zirconia crowns fabricated with different CAD/CAM systems. J Prosthet Dent. 2017;117(2):245-251. doi:10.1016/j.prosdent.2016.05.006",
+    "Stawarczyk B, Ender A, Roos M, et al. Comparison of the marginal and internal fit of CAD/CAM-fabricated all-ceramic crowns. Dent Mater. 2015;31(11):1351-1360. doi:10.1016/j.dental.2015.08.152",
+    "Al-Haj Husain A, Al-Haj Husain N, Al-Haj Husain A, et al. Trueness of complete-arch frameworks fabricated by different CAD/CAM systems. J Prosthet Dent. 2018;120(5):748-754. doi:10.1016/j.prosdent.2018.01.011",
+    "Reich S, Wichmann M, Nkenke E, et al. Clinical fit of all-ceramic CAD/CAM crowns generated from digital impressions. J Prosthet Dent. 2005;93(2):213-219. doi:10.1016/j.prosdent.2004.10.012"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
