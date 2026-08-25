@@ -36,17 +36,21 @@ const ALLOW = new Set([
 const files = [];
 (function walk(d) { for (const n of readdirSync(d)) { if (['node_modules', '.git', 'assets', 'patients', 'docs'].includes(n)) continue; const p = join(d, n); const st = statSync(p); if (st.isDirectory()) walk(p); else if (/\.(html|js)$/.test(n)) files.push(p); } })(ROOT);
 
-const tables = {}; const rpcs = new Set();
+const tables = {}; const rpcs = new Set(); const enumVals = {};   // tabla -> Set(valores usados para filtrar `estado`)
 // solo tokens tipo columna real: snake_case en minúscula (rechaza VALORES de enum como RECHAZADO / Calculadora)
 const add = (t, c) => { (tables[t] ||= new Set()); if (c) c.split(',').forEach(x => { x = x.trim().replace(/^["'`]|["'`]$/g, '').split(':').pop().trim(); if (x && x !== '*' && /^[a-z_][a-z0-9_]{2,}$/.test(x)) tables[t].add(x); }); };
+const addEnum = (t, v) => { v = (v || '').trim().replace(/^["'`(]+|["'`)]+$/g, '').trim(); if (v && /^[A-Za-zÀ-ÿ][\w \-]*$/.test(v)) (enumVals[t] ||= new Set()).add(v); };
 let src = '';
 for (const f of files) src += '\n' + readFileSync(f, 'utf8');
 {
   let m; const s = src;
   let re = /\.from\(\s*['"`]([a-z_][\w]*)['"`]\s*\)([\s\S]{0,600})/gi;
-  while ((m = re.exec(s))) { const t = m[1]; let chain = m[2]; const nxt = chain.search(/\.from\(/); if (nxt > -1) chain = chain.slice(0, nxt); let c; const selRe = /\.select\(\s*['"`]([^'"`]*)['"`]/g; while ((c = selRe.exec(chain))) add(t, c[1]); const opRe = /\.(?:eq|neq|gt|gte|lt|lte|like|ilike|is|in|order|contains|match)\(\s*['"`]([a-z_][\w]*)['"`]/g; while ((c = opRe.exec(chain))) add(t, c[1]); const insRe = /\.(?:insert|update|upsert)\(\s*\{([^}]*)\}/g; while ((c = insRe.exec(chain))) { for (const k of c[1].match(/([a-z_][\w]*)\s*:/gi) || []) add(t, k.replace(':', '')); } }
+  while ((m = re.exec(s))) { const t = m[1]; let chain = m[2]; const nxt = chain.search(/\.from\(/); if (nxt > -1) chain = chain.slice(0, nxt); let c; const selRe = /\.select\(\s*['"`]([^'"`]*)['"`]/g; while ((c = selRe.exec(chain))) add(t, c[1]); const opRe = /\.(?:eq|neq|gt|gte|lt|lte|like|ilike|is|in|order|contains|match)\(\s*['"`]([a-z_][\w]*)['"`]/g; while ((c = opRe.exec(chain))) add(t, c[1]); const insRe = /\.(?:insert|update|upsert)\(\s*\{([^}]*)\}/g; while ((c = insRe.exec(chain))) { for (const k of c[1].match(/([a-z_][\w]*)\s*:/gi) || []) add(t, k.replace(':', '')); }
+    // valores de filtro sobre `estado` (enum frágil) → validar 22P02
+    let ev; const evEq = /\.(?:eq|neq)\(\s*['"`]estado['"`]\s*,\s*['"`]([^'"`]+)['"`]/g; while ((ev = evEq.exec(chain))) addEnum(t, ev[1]);
+    const evList = /\.(?:in|not)\(\s*['"`]estado['"`]\s*,(?:\s*['"`](?:in|eq)['"`]\s*,)?\s*['"`]\(?([^'"`]+?)\)?['"`]/g; while ((ev = evList.exec(chain))) ev[1].split(',').forEach(v => addEnum(t, v)); }
   const rest = /\/rest\/v1\/([a-z_][\w]*)\?([^'"`\s]*)/gi;
-  while ((m = rest.exec(s))) { const t = m[1], q = m[2]; let c; const qcol = /([a-z_][\w]*)=(?:eq|neq|gt|gte|lt|lte|like|ilike|is|in|not)\./g; while ((c = qcol.exec(q))) add(t, c[1]); const sel = /select=([^&]+)/.exec(q); if (sel) add(t, decodeURIComponent(sel[1]).replace(/[()]/g, '')); }
+  while ((m = rest.exec(s))) { const t = m[1], q = m[2]; let c; const qcol = /([a-z_][\w]*)=(?:eq|neq|gt|gte|lt|lte|like|ilike|is|in|not)\./g; while ((c = qcol.exec(q))) add(t, c[1]); const sel = /select=([^&]+)/.exec(q); if (sel) add(t, decodeURIComponent(sel[1]).replace(/[()]/g, '')); let ev; const eq = /(?:^|&)estado=(?:eq|neq|in|not\.in)\.\(?([^&)]+)\)?/g; while ((ev = eq.exec(q))) ev[1].split(',').forEach(v => addEnum(t, decodeURIComponent(v))); }
   const rr = /\.rpc\(\s*['"`]([a-z_][\w]*)['"`]/gi; while ((m = rr.exec(s))) rpcs.add(m[1]);
   const rpcRest = /\/rest\/v1\/rpc\/([a-z_][\w]*)/gi; while ((m = rpcRest.exec(s))) rpcs.add(m[1]);
 }
@@ -95,8 +99,19 @@ if (!offline) for (const name of [...rpcs].sort()) {
   if (RPC_BROKEN.test(r.code)) { broken++; console.log(`  \x1b[31m✗ rpc ${name}()\x1b[0m → ${r.code} (rota o ausente)`); }
 }
 
+// ── 3b. valores de filtro de `estado` que NO existen en el enum (22P02) ──
+let badEnum = 0;
+if (!offline) for (const t of Object.keys(enumVals).sort()) {
+  for (const v of enumVals[t]) {
+    const r = await probe(`/rest/v1/${t}?select=id&estado=eq.${encodeURIComponent(v)}&limit=0`);
+    if (r.net) { offline = true; break; }
+    if (/22P02/.test(r.code)) { badEnum++; console.log(`  \x1b[31m✗ ${t}.estado\x1b[0m → valor de enum inexistente: '${v}' (filtrar por él da 22P02/400)`); }
+  }
+  if (offline) break;
+}
+
 if (offline) { console.log('\x1b[33m⚠ Sin red / Supabase inalcanzable — omito la validación (no bloqueo el push).\x1b[0m'); process.exit(0); }
 
-if (!ghosts && !broken) { console.log('  \x1b[32m✓ Todo lo que el código pide existe en la BD (columnas y RPCs).\x1b[0m\n'); process.exit(0); }
-console.log(`\n\x1b[31m${ghosts} columnas fantasma · ${broken} RPCs rotas/ausentes.\x1b[0m Corrige, o si es falso positivo (jsonb/embed) añádelo al ALLOW de este script.\n`);
+if (!ghosts && !broken && !badEnum) { console.log('  \x1b[32m✓ Todo lo que el código pide existe en la BD (columnas, RPCs y valores de enum `estado`).\x1b[0m\n'); process.exit(0); }
+console.log(`\n\x1b[31m${ghosts} columnas fantasma · ${broken} RPCs rotas/ausentes · ${badEnum} valores de enum inexistentes.\x1b[0m Corrige, o si es falso positivo (jsonb/embed) añádelo al ALLOW.\n`);
 process.exit(1);

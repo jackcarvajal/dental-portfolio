@@ -139,7 +139,7 @@ function buildTimeline(pedido, revisiones){
     if(r.notas_cliente) items.push({ts:r.creado_en,desc:`Cambios solicitados: "${escH(r.notas_cliente)}"`,cls:''});
   });
   if(pedido.diseno_aprobado&&pedido.updated_at) items.push({ts:pedido.updated_at,desc:'Diseño APROBADO',cls:'aprobado'});
-  const entregado=(pedido.estado||'').toLowerCase().includes('entregado')||(pedido.estado||'').toLowerCase().includes('despachado');
+  const entregado=(pedido.estado_operativo||'').toUpperCase()==='ENTREGADO'||(pedido.estado||'').toLowerCase().includes('entregado')||(pedido.estado||'').toLowerCase().includes('despachado');
   if(entregado&&pedido.updated_at) items.push({ts:pedido.updated_at,desc:'Caso entregado',cls:'entregado'});
   items.sort((a,b)=>new Date(a.ts)-new Date(b.ts));
   if(!items.length) return '<p style="color:#94a3b8;font-size:.82rem;">Sin eventos registrados.</p>';

@@ -837,13 +837,17 @@ function suscribirRealtime() {
 }
 
 /* ── BADGE ESTADO ───────────────────────────────────────────── */
-function estadoBadge(estado) {
-    const e = (estado || '').toLowerCase();
-    if (e.includes('entregado')) return `<span class="status-badge entregado"><i class="fas fa-check"></i> Entregado</span>`;
-    if (e.includes('camino') || e.includes('reparto') || e.includes('despacha')) return `<span class="status-badge camino"><i class="fas fa-motorcycle"></i> En Camino</span>`;
-    if (e.includes('terminado') || e.includes('listo')) return `<span class="status-badge listo"><i class="fas fa-star"></i> Listo</span>`;
-    if (e.includes('producc') || e.includes('pagado')) return `<span class="status-badge produccion"><i class="fas fa-circle-notch fa-spin"></i> En Producción</span>`;
-    return `<span class="status-badge pendiente"><i class="fas fa-clock"></i> ${escH(estado || 'Pendiente')}</span>`;
+function estadoBadge(p) {
+    // Preferir estado_operativo (la máquina real, ver docs/CONTRATO-ESTADOS.md);
+    // `estado` (enum) es solo un fallback grueso. Acepta el pedido o un string legado.
+    const op = (typeof p === 'object' && p ? (p.estado_operativo || '') : '').toUpperCase();
+    const e  = (typeof p === 'object' && p ? (p.estado || '') : (p || '')).toLowerCase();
+    if (op === 'CANCELADO_DOCTOR') return `<span class="status-badge" style="background:rgba(255,107,107,.12);color:#ff6b6b;"><i class="fas fa-ban"></i> Cancelado</span>`;
+    if (op === 'ENTREGADO' || e.includes('entregado')) return `<span class="status-badge entregado"><i class="fas fa-check"></i> Entregado</span>`;
+    if (op.includes('REPARTO') || op.includes('DESPACH') || e.includes('camino') || e.includes('reparto') || e.includes('despacha')) return `<span class="status-badge camino"><i class="fas fa-motorcycle"></i> En Camino</span>`;
+    if (op === 'QA_APROBADO' || op.includes('LISTO') || e.includes('terminado') || e.includes('listo')) return `<span class="status-badge listo"><i class="fas fa-star"></i> Listo</span>`;
+    if (op.includes('PRODUCC') || op.includes('FRESADO') || op.includes('IMPRESION') || op.includes('DISENO') || e.includes('producc') || e.includes('pagado')) return `<span class="status-badge produccion"><i class="fas fa-circle-notch fa-spin"></i> En Producción</span>`;
+    return `<span class="status-badge pendiente"><i class="fas fa-clock"></i> ${escH((typeof p === 'object' && p ? p.estado : p) || 'Pendiente')}</span>`;
 }
 
 /* ── ENTREGA CONSOLIDADA — casos que se despachan juntos (corte 5PM Colombia) ── */
@@ -884,7 +888,8 @@ function renderTablas(pedidos) {
     const activos = pedidos.filter(p => {
         const e = (p.estado || '').toLowerCase();
         const op = (p.estado_operativo || '').toUpperCase();
-        return !e.includes('entregado') && !e.includes('cancelado') && !e.includes('borrador') && op !== 'CANCELADO_DOCTOR';
+        // "Activo" = no terminado. La verdad operativa está en estado_operativo (ver docs/CONTRATO-ESTADOS.md).
+        return op !== 'ENTREGADO' && op !== 'NO_ENTREGADO' && op !== 'CANCELADO_DOCTOR' && !e.includes('borrador');
     });
 
     // Banner de acción prioritaria — casos esperando respuesta del doctor
@@ -943,7 +948,7 @@ function renderTablas(pedidos) {
     document.getElementById('tabla-historial').innerHTML = historial.length ? `<table>
         <thead><tr><th>ID Caso</th><th>Paciente</th><th>Servicio</th><th>Fecha</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead>
         <tbody>${historial.map(p => {
-            const esEntregado = (p.estado||'').toLowerCase().includes('entregado');
+            const esEntregado = (p.estado_operativo||'').toUpperCase()==='ENTREGADO' || (p.estado||'').toLowerCase().includes('entregado');
             const puedeSTL    = esEntregado && p.stl_liberado && p.stl_ruta;
             const yaCalif     = !!p.calificacion;
             return `<tr>
@@ -952,7 +957,7 @@ function renderTablas(pedidos) {
                 <td style="font-size:.75rem;">${escH(p.tipo_trabajo || p.material || '—')}</td>
                 <td style="font-size:.75rem;color:#94a3b8;">${fmtFecha(p.created_at)}</td>
                 <td style="color:var(--neon);font-weight:700;">${fmtCOP(p.precio_total)}</td>
-                <td>${(p.estado_operativo||'').toUpperCase()==='CANCELADO_DOCTOR' ? '<span class="status-badge" style="background:rgba(255,107,107,.12);color:#ff6b6b;"><i class="fas fa-ban"></i> Cancelado</span>' : estadoBadge(p.estado)}</td>
+                <td>${estadoBadge(p)}</td>
                 <td style="display:flex;gap:5px;flex-wrap:wrap;">
                     <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold">Ver</a>
                     <button type="button" onclick="verTimeline('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#00d2ff;border-color:rgba(0,210,255,.3);" title="Historial de cambios"><i class="fas fa-history"></i></button>
@@ -968,7 +973,7 @@ function renderTablas(pedidos) {
 
     document.getElementById('stat-total').textContent = pedidos.length;
     document.getElementById('stat-activos').textContent = activos.length;
-    const entregados = pedidos.filter(p => (p.estado||'').toLowerCase().includes('entregado'));
+    const entregados = pedidos.filter(p => (p.estado_operativo||'').toUpperCase()==='ENTREGADO' || (p.estado||'').toLowerCase().includes('entregado'));
     document.getElementById('stat-entregados').textContent = entregados.length;
     const calif = pedidos.filter(p => p.calificacion);
     document.getElementById('stat-satisfaccion').textContent = calif.length ? (calif.reduce((s,p)=>s+p.calificacion,0)/calif.length).toFixed(1) : '—';
