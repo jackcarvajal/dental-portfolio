@@ -11,6 +11,19 @@
 
 ## 2026-08-18
 
+### ✅ Dual-estado abordado (contrato + convergencia + prevención)
+`pedidos` tenía dos sistemas de estado en paralelo: `estado` (enum de 4 valores: Pendiente/Pagado/En Producción/
+Despachado) y `estado_operativo` (texto, la máquina real de ~18 estados). Raíz de los 22P02.
+- **Contrato**: `docs/CONTRATO-ESTADOS.md` — `estado_operativo` = verdad; `estado` = flag grueso legado; reglas.
+- **Bug latente arreglado**: `client-panel` (y `recibo-caso`) decidían "entregado/cancelado/activos" leyendo
+  `estado`, que **nunca** tiene esos valores → el doctor nunca veía el estado *Entregado*, el stat "entregados"
+  daba 0, y el STL/calificación de entregados no aparecían. Migrado a `estado_operativo` (=`ENTREGADO`, etc.).
+  `estadoBadge()` ahora prioriza `estado_operativo`. **Portado a Alejandro** (mismo patrón en sus 3 puntos).
+- **Prevención**: `audit-schema-live.mjs` ahora valida también los **valores** de filtro de `estado` contra el
+  enum real (caza 22P02 pre-push), además de columnas y RPCs. Ambos repos limpios.
+- Etapa 2-DB (trigger que derive `estado` desde `estado_operativo`) NO se hizo: la convergencia de código ya
+  elimina el drift y el enum mezcla pago+progreso; un trigger sería frágil. Se deja como opción futura.
+
 ### ✅ PREVENCIÓN — `audit-schema-live.mjs` + gate en pre-push (recomendación macro implementada)
 Raíz de casi todos los 400 de esta sesión = schema drift (código pide columnas/RPCs que la BD ya no tiene).
 Nuevo `tools/audit-schema-live.mjs`: extrae cada tabla·columna·RPC que usa el código y la **prueba contra la
