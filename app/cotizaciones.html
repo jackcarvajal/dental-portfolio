@@ -68,6 +68,9 @@ textarea{resize:vertical;min-height:80px;}
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
 </head>
 <body>
+<!-- supabase debe cargar ANTES de auth-guard (usa window.supabase.createClient al arrancar) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/supabase-client.js?v=20260603"></script>
 <script src="../js/auth-guard.js?v=20260717"></script>
 <script>ProdigyAuth.require(['admin','operator']);</script>
 <div class="topbar">
@@ -165,8 +168,6 @@ textarea{resize:vertical;min-height:80px;}
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
-<script src="../js/supabase-client.js?v=20260603"></script>
 <script>
 const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtCOP = (n,m) => m==='USD' ? `USD ${Number(n).toFixed(0)}` : '$'+Number(n).toLocaleString('es-CO');
