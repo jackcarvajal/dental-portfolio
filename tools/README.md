@@ -37,16 +37,32 @@ node tools/audit-live.mjs
 node tools/audit-live.mjs "D:/proyectos-web/alejandro-carvajal-site"
 ```
 
-## Capa 3 — git hook (opcional, recomendado)
+## Capa 3b — contrato front↔BD contra la base REAL (`audit-schema-live.mjs`)
 
-Para que la capa 1 corra sola antes de cada push, crea `.git/hooks/pre-push` con:
+`audit-schema.mjs` valida contra un CSV que se desactualiza. `audit-schema-live.mjs` **prueba cada columna
+y RPC que el código usa contra Supabase en vivo** (42703 columna inexistente · 42P01 tabla · 42P13/22P02/PGRST202
+RPC rota/ausente). Se autovalida contra el esquema vigente → no hay snapshot que mantener. Habría cazado los
+400 de agosto-2026 (vista `pedidos_operacion`, `prodigy_forecast_semana`, etc.).
+
+```sh
+node tools/audit-schema-live.mjs            # 0 = limpio · 1 = hay columna/RPC inexistente · sin red = no bloquea
+```
+
+Falsos positivos del extractor (jsonb anidado, columnas de un embed `pedidos(...)`, bleed) van al `ALLOW` del script.
+
+## Capa 4 — git hook (recomendado)
+
+Para que las capas 1 y 3b corran solas antes de cada push, crea `.git/hooks/pre-push` con:
 
 ```sh
 #!/bin/sh
-node tools/audit.mjs || { echo "Auditoría estática falló — corrige antes de pushear (o git push --no-verify para saltar)"; exit 1; }
+command -v node >/dev/null 2>&1 || exit 0
+node tools/audit.mjs             || { echo "⛔ Auditoría estática falló"; exit 1; }
+node tools/audit-schema-live.mjs || { echo "⛔ Drift front↔BD (columna/RPC inexistente)"; exit 1; }
 ```
 
-y dale permiso: `chmod +x .git/hooks/pre-push`. (Los hooks NO se versionan; hay que crearlo en cada clon.)
+y dale permiso: `chmod +x .git/hooks/pre-push`. (Los hooks NO se versionan; recréalo en cada clon.
+El de este repo ya corre ambas capas.)
 
 ## Notas / cómo leer los resultados
 
