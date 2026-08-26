@@ -2537,6 +2537,22 @@ document.addEventListener('keydown', function(e) {
 </script>
 <script src="js/tour.js?v=20260721"></script>
 <script>(function(){function go(){var s=window.sb||(window.ProdigyAuth&&window.ProdigyAuth.getSb&&window.ProdigyAuth.getSb());if(s&&window.ModoPrueba){ModoPrueba.init(s);}else{setTimeout(go,400);}}if(document.readyState!=="loading")go();else document.addEventListener("DOMContentLoaded",go);})();</script>
+<script>
+/* Autosave del perfil del doctor (nombre/whatsapp/ciudad) en localStorage — como en flujo-fresado.
+   SINDEKAR: no re-teclear en cada pedido. Comparte la clave 'prodigy_profile' entre flujos. */
+document.addEventListener('DOMContentLoaded', function () {
+  var map = { nombreCliente: 'nombre', whatsappCliente: 'wa', ciudad: 'ciudad' };
+  var prof = {}; try { prof = JSON.parse(localStorage.getItem('prodigy_profile') || '{}'); } catch (e) {}
+  Object.keys(map).forEach(function (id) {
+    var el = document.getElementById(id); if (!el) return;
+    if (prof[map[id]] && !el.value) el.value = prof[map[id]];
+    el.addEventListener('input', function () {
+      var p = {}; try { p = JSON.parse(localStorage.getItem('prodigy_profile') || '{}'); } catch (e) {}
+      p[map[id]] = el.value; localStorage.setItem('prodigy_profile', JSON.stringify(p));
+    });
+  });
+});
+</script>
 </body>
 </html>
 
