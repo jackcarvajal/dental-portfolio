@@ -11,6 +11,9 @@
 -- ═══════════════════════════════════════════════════════════════
 DROP FUNCTION IF EXISTS public.prodigy_conversion_por_tipo(timestamptz);
 DROP FUNCTION IF EXISTS public.prodigy_tendencia_conversion(text, int);
+-- corte_mensual: además de no usarse, está ROTA (selecciona p.whatsapp/p.total/p.servicio,
+-- columnas que no existen en pedidos, y filtra estado sin ::text). Nadie la llama → segura de borrar.
+DROP FUNCTION IF EXISTS public.corte_mensual(text);
 
 -- Verificar que se fueron:
 -- SELECT proname FROM pg_proc WHERE proname IN ('prodigy_conversion_por_tipo','prodigy_tendencia_conversion');

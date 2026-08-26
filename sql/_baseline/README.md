@@ -22,6 +22,19 @@ Este directorio es el plan para ordenarlo, sin romper nada.
 - `tools/audit-schema-live.mjs` — código ↔ base REAL: columnas/RPCs/valores de enum inexistentes (corre en pre-push).
 - `EXPORTAR-BASELINE.sql` — vuelca lo desplegado a este directorio.
 
+## Conclusión práctica (ago-2026)
+Comparando lo desplegado (bloque 1) contra el repo se confirmó que **el archivo más reciente que señala
+`sql-map.mjs` para cada RPC coincide con lo desplegado**. Entonces:
+
+> **Canónico = el archivo "más reciente" que reporta `node tools/sql-map.mjs`** para esa función.
+> No hace falta pegar el baseline gigante de funciones por chat (excede límites); si alguna vez se quiere
+> el snapshot completo, guardar el resultado de `EXPORTAR-FUNCIONES.sql` **directo a `functions.sql`**
+> (copiar la celda / descargar), no pegarlo.
+
+Verificado además que los fixes de esta ronda están desplegados (forecast, cotizaciones-por-vencer,
+dashboard_semana con `estado::text`). Y detectada 1 función desplegada rota + muerta: `corte_mensual`
+(ver `OPCIONAL-limpiar-rpc-muertas.sql`).
+
 ## Regla
-No agregar más `patch-*.sql` sueltos que redefinan RPCs ya existentes. Editar la definición canónica y
-versionarla como migración.
+No agregar más `patch-*.sql` sueltos que redefinan RPCs ya existentes. Editar la definición canónica
+(el archivo más reciente, el que sql-map marca) y versionarla como migración.
