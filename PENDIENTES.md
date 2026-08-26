@@ -11,10 +11,14 @@ Reemplazo de Stripe (suspendido) para pagos fuera de Colombia. **Código hecho y
 - `functions/api/paypal-capture.js` — captura vía API de PayPal con el secret, confirma `COMPLETED`, verifica que **referencia y monto** coincidan con el pedido, marca `Pagado` (service-role) e inserta en `pagos`. Idempotente.
 - `js/pagos.js` — `abrirCheckoutPayPal({referencia,containerId})` usa esas 2 functions (sin captura en el navegador, el hueco viejo). `inicializarPasarelas(..., referencia)` ya renderiza el botón. Habilitado pago con **tarjeta** (guest checkout). Cache-buster `?v=20260826`.
 
+Red de seguridad: `functions/api/paypal-webhook.js` (reconciliación) — verifica la firma del webhook con PayPal y marca Pagado si la captura síncrona no alcanzó a escribir en la BD. Idempotente. En ambos repos.
+
 **PASOS QUE FALTAN (tú):**
-1. **Env vars en Cloudflare Pages** (Settings → Environment Variables, Production): `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` (de developer.paypal.com → tu app Live), `PAYPAL_ENV=live`. `SUPABASE_URL`/`SUPABASE_SERVICE_KEY` ya existen (los usa factura/stripe).
+1. **Env vars en Cloudflare Pages** (Settings → Environment Variables, Production, **ambos sitios**): `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` (de developer.paypal.com → tu app Live), `PAYPAL_ENV=live`, `PAYPAL_WEBHOOK_ID` (del webhook que registres, paso 4). `SUPABASE_URL`/`SUPABASE_SERVICE_KEY` ya existen.
 2. **Probar primero en sandbox**: `PAYPAL_ENV=sandbox` + credenciales sandbox → un pago de prueba de punta a punta.
 3. **Cablear en el checkout**: llamar `inicializarPasarelas(containerId, precioBaseCOP, onSelect, ordenId)` desde donde el doctor paga (pasar el código del pedido como 4º arg). Para país≠CO se auto-renderiza el botón PayPal seguro. (Hoy `inicializarPasarelas` no lo llama ninguna página — es el último cable.)
+4. **Registrar el webhook** en developer.paypal.com → tu app → Webhooks → Add: URL `https://<tu-dominio>/api/paypal-webhook`, evento `PAYMENT.CAPTURE.COMPLETED`. Copia el **Webhook ID** que te da → esa es la env var `PAYPAL_WEBHOOK_ID`.
+5. **Redesplegar `wompi-signature`** (`supabase functions deploy wompi-signature`) — cierra el hueco de dinero viejo (montos arbitrarios) **y** el CORS de Alejandro, de una.
 
 ## 🟡 BACKLOG del health-check (2026-08-26) — infra sólida, quedan estos
 
