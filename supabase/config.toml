@@ -7,3 +7,14 @@ project_id = "zgihrwqfyvgyapbwzkvw"
 # la verificación de firma HMAC dentro de index.ts.
 [functions.webhook-handler]
 verify_jwt = false
+
+# wompi-signature y verify-price las llama el checkout de Wompi (js/pagos.js) SIN un JWT
+# de Supabase. Si un redeploy desde el repo las dejara en el default (verify_jwt = true),
+# Supabase las rechazaría con 401 y los pagos se romperían en silencio. La barrera real es
+# server-side dentro de index.ts (wompi-signature firma el precio autoritativo de la BD, no
+# el del cliente). Ver PENDIENTES.md → "wompi-signature firmaba montos arbitrarios".
+[functions.wompi-signature]
+verify_jwt = false
+
+[functions.verify-price]
+verify_jwt = false

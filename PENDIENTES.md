@@ -114,11 +114,11 @@ Auditoría Sonnet de `meta-capi`, `notify-wa`, `send-push` (versiones Deno en `s
 - `js/pagos.js` — usa el `monto_en_centavos` que devuelve el servidor (no el del cliente) para `amount-in-cents`, y **falla cerrado** si no hay firma (antes continuaba sin firma → reabría el hueco). Cache-buster bumpeado a `?v=20260710`.
 
 **PASOS QUE FALTAN (tú):**
-1. **Redesplegar la Edge Function:** `supabase functions deploy wompi-signature`
+1. **Redesplegar la Edge Function:** `supabase functions deploy wompi-signature` (ya es seguro: el config.toml versiona `verify_jwt=false`, no romperá el checkout).
 2. Confirmar que el secret `SUPABASE_SERVICE_ROLE_KEY` esté configurado en Supabase (ya lo usa webhook-handler, debería estar).
-3. **Fijar `verify_jwt` en `config.toml`** para `wompi-signature` y `verify-price` (quedaron sin versionar — solo webhook-handler tiene su bloque). `wompi-signature` debe ser público (`verify_jwt = false`) porque el flujo de pago lo llama sin JWT de Supabase.
+3. ✅ **HECHO (repo)** — `supabase/config.toml` ahora fija `[functions.wompi-signature] verify_jwt=false` y `[functions.verify-price] verify_jwt=false` (antes solo webhook-handler estaba versionado; un redeploy las habría puesto en `true` → 401 → pagos rotos).
 4. **Probar un pago real de bajo monto** de punta a punta tras el deploy para confirmar que el checkout de Wompi sigue abriendo con el monto correcto.
-5. Opcional: borrar `verify-price` (código muerto) para reducir superficie.
+5. ~~Borrar verify-price~~ — **corregido: NO es código muerto**, `js/pagos.js:82` la llama en el flujo de pago (por eso también se le versionó `verify_jwt=false`).
 
 ## ✅ Auditoría (2026-07-10) — lectura RLS: SIN IDOR (10 tablas sensibles OK)
 
