@@ -30,18 +30,29 @@ import { crypto } from "https://deno.land/std@0.177.0/crypto/mod.ts";
 
 const SUPABASE_URL = "https://zgihrwqfyvgyapbwzkvw.supabase.co";
 
-const CORS = {
-    "Access-Control-Allow-Origin":  "https://prodigylabdental.com",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Content-Type":                 "application/json",
-};
-
-function json(data: unknown, status = 200) {
-    return new Response(JSON.stringify(data), { status, headers: CORS });
+// CORS: esta función la comparten AMBOS negocios (PRODIGY + Alejandro CAD/CAM).
+// Alejandro vive en alejandrocadcam.pages.dev → una CORS fija a prodigylabdental.com
+// bloqueaba sus pagos Wompi (el navegador rechaza la firma → fail-closed → no abre
+// el checkout). Allowlist dinámico por Origin (incluye *.pages.dev).
+const ALLOWED = [
+    "https://prodigylabdental.com",
+    "https://www.prodigylabdental.com",
+    "https://alejandrocadcam.pages.dev",
+];
+function corsFor(origin: string) {
+    const ok = ALLOWED.includes(origin) || origin.endsWith(".pages.dev");
+    return {
+        "Access-Control-Allow-Origin":  ok ? origin : "https://prodigylabdental.com",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Content-Type":                 "application/json",
+    };
 }
 
 serve(async (req) => {
+    const CORS = corsFor(req.headers.get("Origin") || "");
+    const json = (data: unknown, status = 200) =>
+        new Response(JSON.stringify(data), { status, headers: CORS });
     if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
     if (req.method !== "POST")    return json({ error: "Método no permitido" }, 405);
 
