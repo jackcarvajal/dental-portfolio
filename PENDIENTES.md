@@ -4,6 +4,17 @@
 
 ---
 
+## 🟡 BACKLOG del health-check (2026-08-26) — infra sólida, quedan estos
+
+Tras la sesión de hardening (schema drift, dual-estado, gobernanza SQL — todo cerrado y auto-verificable),
+el sistema está verde (audit estático + `audit-schema-live` + runtime). Quedan como deuda, no urgente:
+
+- 🟡 **Bloat de `pedidos` — Etapa 2**: dropear `cliente_id` y `pieza` (0 usos, del modelo viejo). Es refactor por etapas (las referencian vistas legado). Plan en `docs/CONTRATO-COLUMNAS-PEDIDOS.md`.
+- 🟡 **6 vistas no usadas por código** (`historial_doctor`, `pedidos_reales`, `pedidos_revision_publica`, `pedidos_proximos_a_purgar`, `v_pedidos_urgentes`, `v_utm_performance`) — candidatas admin/legado. `historial_doctor` apunta a la tabla vieja `clientes`. Baseline en `sql/_baseline/views.sql`.
+- 🟡 **Edge functions**: varias devuelven `e.message` al cliente (fuga cosmética de detalles internos). Endurecer a mensaje genérico + `console.error`.
+- 🟡 **Repo SQL**: las 3 RPC muertas dropeadas siguen definidas en archivos-parche viejos; ~120 duplicados históricos. La regla "canónico = archivo más reciente (sql-map)" + `audit-schema-live` ya lo hacen irrelevante; archivar es opcional.
+- ✅ Prevención activa: `.git/hooks/pre-push` corre `audit.mjs` + `audit-schema-live.mjs` (ambos repos). `docs/CONTRATO-ESTADOS.md` y `CONTRATO-COLUMNAS-PEDIDOS.md` son la fuente de verdad.
+
 ## ✅ Captura de leads 100% rota (2026-07-25) — columna fantasma `recurso_descargado`
 
 Auditoría de TODOS los inserts a tablas desde páginas públicas. Hallazgo crítico: `leads_doctores`
