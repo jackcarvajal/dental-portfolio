@@ -311,7 +311,9 @@ function cargarSDKPayPal() {
         const s  = document.createElement('script');
         s.id     = 'paypal-sdk';
         // Entorno Live — no agregar &debug=true ni &env=sandbox
-        s.src    = `https://www.paypal.com/sdk/js?client-id=${PAGOS_CONFIG.paypal.clientId}&currency=USD&intent=capture&disable-funding=credit,card`;
+        // disable-funding=credit (sin pay-later) pero SÍ permitir tarjeta (guest checkout,
+        // sin cuenta PayPal) — coincide con la etiqueta "Tarjeta Internacional".
+        s.src    = `https://www.paypal.com/sdk/js?client-id=${PAGOS_CONFIG.paypal.clientId}&currency=USD&intent=capture&disable-funding=credit`;
         s.onload  = () => { _paypalLoaded = true; resolve(); };
         s.onerror = () => reject(new Error('No se pudo cargar PayPal SDK'));
         document.head.appendChild(s);
@@ -319,51 +321,50 @@ function cargarSDKPayPal() {
 }
 
 /**
- * Abre el checkout de PayPal en un div contenedor.
- * @param {object} opts - { montoUSD, referencia, descripcion, containerId, onSuccess }
+ * Abre el checkout de PayPal en un div contenedor — SEGURO (server-side).
+ * @param {object} opts - { referencia, containerId, onSuccess }
  *
- * ⚠️⚠️ NO ACTIVAR ESTE FLUJO TAL CUAL — INSEGURO (auditoría 2026-07-10).
- * Hoy es código muerto (ninguna página lo llama). Si se activa así:
- *  (1) `montoUSD` viene 100% del cliente → un atacante paga US$1 por un
- *      pedido de US$500 editando el valor antes de create/capture.
- *  (2) La captura ocurre en el navegador (`actions.order.capture()`), sin
- *      NINGUNA verificación server-side contra la API de PayPal — a
- *      diferencia de Wompi (webhook con firma) y Stripe (stripe-webhook).
- * Antes de activar PayPal hay que: crear una Edge Function que capture con
- * PAYPAL_CLIENT_SECRET server-side, llame GET /v2/checkout/orders/{id} a
- * api.paypal.com, confirme status=COMPLETED y que amount == precio_total del
- * pedido en la BD, y recién ahí marque Pagado vía service-role. El monto
- * debe salir de la BD, nunca de `montoUSD`. Ver PENDIENTES.md.
+ * El monto NO viene del cliente: el servidor lo calcula desde `precio_total`
+ * del pedido en la BD (+5.4% que absorbe el cliente) al crear la orden, y la
+ * captura se verifica contra la API de PayPal (monto + referencia + COMPLETED)
+ * antes de marcar Pagado. Ver functions/api/paypal-create-order.js y paypal-capture.js.
  */
-async function abrirCheckoutPayPal({ montoUSD, referencia, descripcion, containerId, onSuccess }) {
-    if (window.ProdigyAnalytics) ProdigyAnalytics.trackPaymentIntent('paypal', montoUSD, referencia);
+async function abrirCheckoutPayPal({ referencia, containerId, onSuccess }) {
+    if (window.ProdigyAnalytics) ProdigyAnalytics.trackPaymentIntent('paypal', null, referencia);
     try {
         await cargarSDKPayPal();
     } catch {
         _pgToast('No se pudo conectar con PayPal. Intenta con transferencia o contáctanos.');
         return;
     }
-    const container = document.getElementById(containerId || 'paypal-button-container');
+    const cid = containerId || 'paypal-button-container';
+    const container = document.getElementById(cid);
     if (!container) return;
     container.innerHTML = '';
 
     window.paypal.Buttons({
-        createOrder: (data, actions) => actions.order.create({
-            purchase_units: [{
-                reference_id: referencia,
-                description:  descripcion || 'PRODIGY Digital Dentistry',
-                amount: { value: montoUSD.toFixed(2), currency_code: 'USD' }
-            }]
+        // El servidor crea la orden con el monto autoritativo de la BD (no el cliente)
+        createOrder: () => fetch('/api/paypal-create-order', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ referencia })
+        }).then(r => r.json()).then(d => {
+            if (!d.id) throw new Error(d.error || 'No se pudo crear la orden');
+            return d.id;
         }),
-        onApprove: (data, actions) => actions.order.capture().then(details => {
-            if (onSuccess) onSuccess({ referencia, details });
-            else window.location.href = `https://prodigylabdental.com/success?pedido=${referencia}`;
+        // La captura se verifica server-side (monto + referencia + COMPLETED)
+        onApprove: (data) => fetch('/api/paypal-capture', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderID: data.orderID, referencia })
+        }).then(r => r.json()).then(res => {
+            if (!res.ok) { _pgToast(res.error || 'No se pudo confirmar el pago.'); return; }
+            if (onSuccess) onSuccess({ referencia });
+            else window.location.href = `https://prodigylabdental.com/success?pedido=${encodeURIComponent(referencia)}`;
         }),
         onError: (err) => {
             console.error('PayPal error:', err);
             _pgToast('Pago PayPal no completado. Intenta de nuevo.');
         }
-    }).render(`#${containerId || 'paypal-button-container'}`);
+    }).render(`#${cid}`);
 }
 
 /* ═══════════════════════════════════════
@@ -505,7 +506,7 @@ function formatDivisa(amount, moneda = 'COP') {
  * @param {number}   precioBase  - Precio base en COP
  * @param {function} onSelect    - Callback(pasarela, { total, recargoAmt, moneda })
  */
-async function inicializarPasarelas(containerId, precioBase, onSelect) {
+async function inicializarPasarelas(containerId, precioBase, onSelect, referencia) {
     const pais = await detectarPais();
     const esInternacional = pais !== 'CO';
 
@@ -558,6 +559,10 @@ async function inicializarPasarelas(containerId, precioBase, onSelect) {
             </p>
         </div>`;
 
+        // Renderiza el botón PayPal seguro (server-side) si hay referencia del pedido.
+        // El monto real lo calcula /api/paypal-create-order desde la BD; aquí solo se muestra.
+        if (referencia) abrirCheckoutPayPal({ referencia, containerId: 'paypal-button-container' });
+
         // Cambio de pasarela internacional
         container.querySelectorAll('input[name="gw-intl"]').forEach(r => {
             r.addEventListener('change', () => {
@@ -565,6 +570,7 @@ async function inicializarPasarelas(containerId, precioBase, onSelect) {
                 const pdBox  = container.querySelector('#paddle-checkout-container');
                 if (r.value === 'paypal') {
                     ppBox.style.display = ''; pdBox.style.display = 'none';
+                    if (referencia) abrirCheckoutPayPal({ referencia, containerId: 'paypal-button-container' });
                     if (onSelect) onSelect('paypal', { total: totalFinalUSD, recargoAmt: recargoUSD, moneda: 'USD' });
                 } else {
                     ppBox.style.display = 'none'; pdBox.style.display = '';

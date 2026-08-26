@@ -4,6 +4,18 @@
 
 ---
 
+## 🟢 PayPal internacional SEGURO — listo, falta config + cablear (2026-08-26)
+
+Reemplazo de Stripe (suspendido) para pagos fuera de Colombia. **Código hecho y seguro** (patrón Wompi):
+- `functions/api/paypal-create-order.js` — crea la orden con el **precio autoritativo de la BD** (`precio_total` +5.4% que absorbe el cliente, /4200 a USD). El monto NUNCA viene del cliente.
+- `functions/api/paypal-capture.js` — captura vía API de PayPal con el secret, confirma `COMPLETED`, verifica que **referencia y monto** coincidan con el pedido, marca `Pagado` (service-role) e inserta en `pagos`. Idempotente.
+- `js/pagos.js` — `abrirCheckoutPayPal({referencia,containerId})` usa esas 2 functions (sin captura en el navegador, el hueco viejo). `inicializarPasarelas(..., referencia)` ya renderiza el botón. Habilitado pago con **tarjeta** (guest checkout). Cache-buster `?v=20260826`.
+
+**PASOS QUE FALTAN (tú):**
+1. **Env vars en Cloudflare Pages** (Settings → Environment Variables, Production): `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` (de developer.paypal.com → tu app Live), `PAYPAL_ENV=live`. `SUPABASE_URL`/`SUPABASE_SERVICE_KEY` ya existen (los usa factura/stripe).
+2. **Probar primero en sandbox**: `PAYPAL_ENV=sandbox` + credenciales sandbox → un pago de prueba de punta a punta.
+3. **Cablear en el checkout**: llamar `inicializarPasarelas(containerId, precioBaseCOP, onSelect, ordenId)` desde donde el doctor paga (pasar el código del pedido como 4º arg). Para país≠CO se auto-renderiza el botón PayPal seguro. (Hoy `inicializarPasarelas` no lo llama ninguna página — es el último cable.)
+
 ## 🟡 BACKLOG del health-check (2026-08-26) — infra sólida, quedan estos
 
 Tras la sesión de hardening (schema drift, dual-estado, gobernanza SQL — todo cerrado y auto-verificable),
