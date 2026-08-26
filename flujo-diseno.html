@@ -1073,11 +1073,13 @@ window.submitOrden     = window.submitOrden      || function(){};
                 <p><strong style="color:var(--gold-primary);">Total:</strong> <span id="exito-total">—</span></p>
             </div>
             <p style="font-size:.78rem;color:#aaa;margin-bottom:10px;">Selecciona tu método de pago:</p>
-            <div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px;">
+            <div id="pago-co-modal" style="display:flex;gap:8px;justify-content:center;margin-bottom:14px;">
                 <button type="button" class="payment-btn btn-nequi" onclick="showPayModal('nequi');cerrarModal('modal-exito')">💙 NEQUI</button>
                 <button type="button" class="payment-btn btn-davi" onclick="showPayModal('davi'); cerrarModal('modal-exito')">💗 DAVI</button>
                 <button type="button" class="payment-btn btn-banco" onclick="showPayModal('banco');cerrarModal('modal-exito')">🏦 BRE-B</button>
             </div>
+            <!-- Pago internacional (país≠CO): PayPal seguro, se renderiza al abrir el modal -->
+            <div id="pago-intl-modal" style="display:none;margin-bottom:14px;"></div>
             <button type="button" class="pay-copy" style="width:100%;padding:11px;" onclick="cerrarModal('modal-exito');location.reload();">+ Nueva Orden CAD</button>
         </div>
     </div>
@@ -2206,6 +2208,23 @@ const lineWompi = document.getElementById('line-wompi');
                 document.getElementById('exito-cliente').textContent = STATE.nombreCliente;
                 document.getElementById('exito-total').textContent   = STATE.total;
                 document.getElementById('modal-exito').classList.add('active');
+                // Pago internacional: si el país no es CO, oculta los métodos colombianos y
+                // renderiza el botón PayPal seguro (usa el pedido ya creado, STATE.ordenId).
+                try {
+                    if (typeof detectarPais === 'function' && typeof inicializarPasarelas === 'function') {
+                        detectarPais().then(function (pais) {
+                            if (!pais || pais === 'CO') return;
+                            var coBox = document.getElementById('pago-co-modal');
+                            var intlBox = document.getElementById('pago-intl-modal');
+                            if (coBox) coBox.style.display = 'none';
+                            if (intlBox) intlBox.style.display = '';
+                            var base = typeof STATE.total === 'string'
+                                ? (parseInt(STATE.total.replace(/\D/g, ''), 10) || 0)
+                                : (STATE.total || 0);
+                            inicializarPasarelas('pago-intl-modal', base, null, STATE.ordenId);
+                        }).catch(function () {});
+                    }
+                } catch (_e) {}
                 if(window.celebrateFlujo) window.celebrateFlujo('diseno', null, {toast:false});
             } catch(e) {
                 fdToast('No se pudo abrir WhatsApp. Verifica que esté instalado e intenta de nuevo.');
@@ -2500,6 +2519,7 @@ const lineWompi = document.getElementById('line-wompi');
 <script src="js/footer.js?v=20260609"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
     <script src="js/fechas-habiles.js?v=20260719"></script>
+    <script src="js/pagos.js?v=20260826"></script>
 <script src="js/formatos.js?v=20260718"></script>
 <script src="js/pedido-guard.js?v=20260719"></script>
 <script src="js/modo-prueba.js?v=20260719"></script>
