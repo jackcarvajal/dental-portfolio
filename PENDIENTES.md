@@ -518,9 +518,17 @@ Los siguientes hallazgos de la auditoría 2026-07-03 quedaron **todos ejecutados
 
 ---
 
-## 🔴 URGENTE — Ejecutar 2 SQL + configurar 1 secret (auditoría Storage/Rendimiento 2026-07-03)
+## 🟡 Storage/Rendimiento (2026-07-03) — ✅ buckets YA privados (verificado 2026-08-26)
 
-**Hallazgo Storage:** los buckets `diseno-archivos`, `evidencias-entrega`, `prodigy-files`, `dental-cases` y `pedidos-archivos` son **públicos** — cualquiera con la ruta del archivo (predecible) puede descargar escaneos STL, fotos de evidencia y documentos de clientes sin login. Además, el cron de purga de STL a 30 días (`trigger-purga-stl-30dias.sql`) solo limpiaba columnas en `pedidos`, **nunca borraba el archivo real en Storage**.
+> **VERIFICADO EN VIVO (2026-08-26):** los 5 buckets responden `Bucket not found` en el endpoint
+> `/storage/v1/object/public/` → **ya NO son públicos**. Los STL/fotos de evidencia/docs de clientes
+> **no** son descargables por URL sin login. El patch de privatización se ejecutó. Lo que puede quedar
+> del bloque original: los 3 índices de rendimiento (`patch-indices-pedidos-2026.sql`, sin riesgo) y el
+> `CRON_SECRET`/purga semanal — verificar si se corrieron; no son de seguridad.
+
+<details><summary>Hallazgo original (la parte de seguridad ya resuelta)</summary>
+
+**Hallazgo Storage:** los buckets `diseno-archivos`, `evidencias-entrega`, `prodigy-files`, `dental-cases` y `pedidos-archivos` eran **públicos** — cualquiera con la ruta del archivo (predecible) puede descargar escaneos STL, fotos de evidencia y documentos de clientes sin login. Además, el cron de purga de STL a 30 días (`trigger-purga-stl-30dias.sql`) solo limpiaba columnas en `pedidos`, **nunca borraba el archivo real en Storage**.
 
 **Hallazgo Rendimiento:** columnas muy consultadas en `pedidos` (`email`, `hash_seguridad`, `created_at`) sin índice — fuerza sequential scan en paneles admin/cliente. Subidas de STL grandes (hasta 500MB) sin reintento automático — en red móvil inestable, un corte a mitad de subida perdía el archivo silenciosamente.
 
@@ -548,6 +556,7 @@ Los siguientes hallazgos de la auditoría 2026-07-03 quedaron **todos ejecutados
 5. **Agregar el mismo `CRON_SECRET` como GitHub Secret** en el repo `dental-portfolio` → Settings → Secrets and variables → Actions → New repository secret → nombre `CRON_SECRET`, mismo valor del paso 4
 
 6. **Probar manualmente:** GitHub → Actions → "Purga STL Storage Semanal" → Run workflow (botón manual) → revisar que el resumen del job no dé error
+</details>
 
 ---
 
@@ -574,9 +583,14 @@ Todos ejecutados/desplegados entre 2026-05-29 y 2026-06-17, confirmados en su mo
 
 ---
 
-## 🔴 Pendiente (acción externa, requiere dashboard) — DMARC + verificar dominio Resend
+## ✅ VERIFICADO HECHO (2026-08-26, por DNS) — DMARC + Resend
+
+Verificado en vivo: `_dmarc.prodigylabdental.com` = `v=DMARC1; p=quarantine; rua=mailto:gerencia@prodigylabdental.com; pct=100` ✓ (exactamente lo pedido). SPF root = `include:_spf.mx.cloudflare.net`; `send.prodigylabdental.com` = `include:amazonses.com` (Resend/SES). Anti-spoofing activo. Nada pendiente.
+
+<details><summary>Contexto original (resuelto)</summary>
 
 `_dmarc.prodigylabdental.com` no existe (sin anti-spoofing/reporting). `resend._domainkey.prodigylabdental.com` y `send.prodigylabdental.com` tampoco → Resend probablemente no está verificado, los correos desde `noreply@/bienvenida@/alertas@/sistema@prodigylabdental.com` pueden caer en spam. Guía paso a paso en `PENDIENTES-DNS-EMAIL.md`: (1) Resend Dashboard → Domains → agregar dominio, copiar DKIM/SPF a Cloudflare DNS; (2) confirmar "Verified"; (3) agregar TXT `_dmarc` con `v=DMARC1; p=quarantine; rua=mailto:gerencia@prodigylabdental.com; pct=100`.
+</details>
 
 ---
 
