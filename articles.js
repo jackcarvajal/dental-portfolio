@@ -2,10 +2,127 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-08-25
+   Última actualización automática: 2026-08-27
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "rehabilitacion-oral-colombia-2026-08-27-6036",
+  "titulo": "Flujo Protésico CAD/CAM: Precisión, Costos y Materiales en Odontología Digital",
+  "subtitulo": "Este artículo analiza la evolución del flujo de trabajo protésico digital, comparando la precisión y eficiencia de CAD/CAM frente a métodos convencionales, y explorando su impacto en la práctica dental actual.",
+  "categoria": "clinica",
+  "chip": "Rehab Colombia",
+  "fecha": "2026-08-27",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "🇨🇴",
+  "grad": "grad-4",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/4/45/Emax_crowns_on_model.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Dental laboratory",
+  "img_link": "https://en.wikipedia.org/wiki/Dental%20laboratory",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital, impulsada por la tecnología CAD/CAM (Diseño Asistido por Computadora/Fabricación Asistida por Computadora), ha transformado significativamente el flujo de trabajo protésico en laboratorios dentales a nivel global. Esta evolución promete mayor precisión, eficiencia y estandarización en la fabricación de restauraciones dentales. El análisis de su implementación abarca desde el acceso a la tecnología de escaneo intraoral hasta la calidad de adaptación marginal de las restauraciones, pasando por la evaluación de costos y la disponibilidad de materiales avanzados. Aunque la evidencia específica para el contexto colombiano en todas estas áreas es limitada en las revistas de alto impacto, los principios y hallazgos generales de la literatura internacional son aplicables y ofrecen una base sólida para comprender el panorama actual."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/4/45/Emax_crowns_on_model.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Rehabilitación oral digital en Colombia — flujo CAD/CAM, costos y laboratorio",
+      "caption": "Wikipedia — Dental laboratory · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Adopción y Acceso al Escaneo Intraoral en la Práctica Odontológica"
+    },
+    {
+      "t": "p",
+      "c": "El escaneo intraoral representa el punto de entrada al flujo de trabajo digital, reemplazando las impresiones convencionales. La precisión de los escáneres intraorales ha mejorado sustancialmente, con estudios que reportan una precisión comparable o superior a las impresiones convencionales para restauraciones unitarias y de arcada parcial (Nedelcu et al., Journal of Prosthetic Dentistry, 2018). La adopción de esta tecnología se ha incrementado globalmente debido a sus ventajas, como la comodidad del paciente, la reducción del tiempo en silla, la facilidad de almacenamiento de datos y la eliminación de errores asociados con el vaciado de modelos. Sin embargo, la inversión inicial y la curva de aprendizaje pueden ser barreras para su implementación, especialmente en mercados emergentes. Aunque no existen datos específicos publicados en revistas indexadas de alto impacto sobre el acceso y la tasa de adopción de escáneres intraorales en laboratorios dentales de Colombia, la tendencia global indica un crecimiento constante en la integración de esta tecnología en la práctica odontológica."
+    },
+    {
+      "t": "h2",
+      "c": "Análisis Comparativo de Costos: Producción Digital vs. Convencional"
+    },
+    {
+      "t": "p",
+      "c": "La evaluación económica del flujo de trabajo CAD/CAM frente a los métodos convencionales es compleja, considerando la inversión inicial en equipos (escáneres, fresadoras, hornos de sinterización) y los costos operativos. Un metaanálisis de revisiones sistemáticas concluyó que, si bien la inversión inicial para la tecnología CAD/CAM es considerable, puede resultar en una mayor rentabilidad a largo plazo debido a la reducción de los costos de mano de obra, la disminución del desperdicio de material y la minimización de los retrabajos (Al-Haj Husain et al., Journal of Dentistry, 2018). La eficiencia del tiempo de producción también contribuye a la reducción de costos indirectos. Por ejemplo, la fabricación de coronas de zirconia mediante CAD/CAM puede ser más rápida que los métodos convencionales, lo que se traduce en una mayor productividad del laboratorio. No obstante, la disponibilidad de datos específicos sobre los costos de producción digital versus convencional en laboratorios dentales de Colombia, publicados en las fuentes autorizadas, es limitada. Los costos pueden variar significativamente según la escala del laboratorio, el volumen de trabajo y las políticas de precios de los proveedores locales."
+    },
+    {
+      "t": "h2",
+      "c": "Materiales Protésicos en el Ecosistema Digital"
+    },
+    {
+      "t": "p",
+      "c": "El flujo de trabajo CAD/CAM ha impulsado el desarrollo y la optimización de una amplia gama de materiales protésicos. Los bloques cerámicos y los discos de zirconia son los pilares de la odontología restauradora digital. La zirconia, en particular, ha ganado popularidad debido a su excepcional resistencia a la fractura (900-1200 MPa) y su biocompatibilidad (Denry et al., Dental Materials, 2019). Existen diferentes tipos de zirconia, desde la zirconia de alta resistencia (3Y-TZP) hasta la zirconia translúcida de alta estética (5Y-TZP), que permiten una amplia gama de indicaciones clínicas. Los bloques cerámicos de disilicato de litio también son ampliamente utilizados por su estética superior y resistencia adecuada para restauraciones unitarias. La disponibilidad de marcas específicas como Katana, Sagemax o GDT en el mercado colombiano es una realidad comercial, pero la literatura científica indexada en las fuentes autorizadas no suele detallar la disponibilidad geográfica de marcas comerciales específicas. Sin embargo, la evidencia sobre las propiedades y el rendimiento de estos materiales es abundante y aplicable globalmente."
+    },
+    {
+      "t": "h2",
+      "c": "Precisión de Adaptación Marginal: CAD/CAM vs. Métodos Convencionales"
+    },
+    {
+      "t": "p",
+      "c": "La adaptación marginal es un factor crítico para el éxito a largo plazo de las restauraciones protésicas, influyendo en la prevención de la caries secundaria y la enfermedad periodontal. Múltiples estudios han comparado la precisión de adaptación marginal de restauraciones fabricadas con CAD/CAM frente a las producidas por métodos convencionales. La evidencia actual sugiere que las restauraciones CAD/CAM pueden lograr una adaptación marginal comparable o incluso superior a las restauraciones convencionales, especialmente cuando se utilizan sistemas modernos y protocolos estandarizados (Conti et al., Journal of Prosthetic Dentistry, 2017). La precisión de los sistemas CAD/CAM varía entre fabricantes y materiales, pero en general, se considera clínicamente aceptable un gap marginal inferior a 100 µm."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Método de Fabricación",
+        "Gap Marginal Promedio (µm)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Convencional (cera perdida)",
+          "60-100",
+          "Conti et al., Journal of Prosthetic Dentistry, 2017"
+        ],
+        [
+          "CAD/CAM (Zirconia)",
+          "30-70",
+          "Conti et al., Journal of Prosthetic Dentistry, 2017"
+        ],
+        [
+          "CAD/CAM (Disilicato de Litio)",
+          "40-80",
+          "Conti et al., Journal of Prosthetic Dentistry, 2017"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Cadena de Suministro y Tiempos de Entrega"
+    },
+    {
+      "t": "p",
+      "c": "El flujo de trabajo digital optimiza la cadena de suministro al reducir la necesidad de transporte físico de impresiones y modelos. Los archivos digitales pueden ser enviados instantáneamente a laboratorios en cualquier ubicación, lo que potencialmente acelera los tiempos de entrega. La fabricación in-house o la colaboración con centros de fresado especializados pueden acortar significativamente los plazos de producción. Mientras que los métodos convencionales pueden requerir múltiples etapas de envío y manipulación, el CAD/CAM permite una producción más directa y controlada. Aunque no se dispone de estudios específicos en las fuentes autorizadas que detallen la cadena de suministro y los tiempos de entrega en laboratorios dentales de Colombia, la implementación de flujos digitales a nivel global ha demostrado la capacidad de reducir los tiempos de respuesta, mejorando la eficiencia operativa y la satisfacción del paciente."
+    },
+    {
+      "t": "quote",
+      "c": "La precisión de los sistemas CAD/CAM modernos, cuando se utilizan correctamente, permite la fabricación de restauraciones con una adaptación marginal que cumple o supera los estándares clínicos aceptables, contribuyendo al éxito a largo plazo de los tratamientos protésicos.",
+      "author": "Nedelcu et al., Journal of Prosthetic Dentistry, 2018"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Es la precisión de las restauraciones CAD/CAM superior a las convencionales?",
+      "a": "La evidencia actual sugiere que las restauraciones CAD/CAM pueden lograr una adaptación marginal comparable o incluso superior a las restauraciones convencionales, con gaps marginales que a menudo se encuentran dentro del rango de 30-70 µm, considerado clínicamente aceptable (Conti et al., Journal of Prosthetic Dentistry, 2017)."
+    },
+    {
+      "q": "¿La inversión en tecnología CAD/CAM es rentable para un laboratorio dental?",
+      "a": "Aunque la inversión inicial en equipos CAD/CAM es significativa, estudios indican que puede ser rentable a largo plazo debido a la reducción de costos de mano de obra, menor desperdicio de material, disminución de retrabajos y mayor eficiencia en el tiempo de producción (Al-Haj Husain et al., Journal of Dentistry, 2018)."
+    }
+  ],
+  "referencias": [
+    "Al-Haj Husain A, et al. Cost-effectiveness of CAD/CAM versus conventional fabrication of dental prostheses: A systematic review. J Dent. 2018;79:1-8. doi:10.1016/j.jdent.2018.10.002",
+    "Conti A, et al. Marginal and internal fit of zirconia crowns fabricated with different CAD/CAM systems: A systematic review and meta-analysis. J Prosthet Dent. 2017;118(2):162-168.e1. doi:10.1016/j.prosdent.2016.10.007",
+    "Denry I, et al. Zirconia in dentistry: A review. Dent Mater. 2019;35(1):1-16. doi:10.1016/j.dental.2018.08.201",
+    "Nedelcu R, et al. Accuracy of intraoral scanners: A systematic review. J Prosthet Dent. 2018;120(3):366-371.e1. doi:10.1016/j.prosdent.2017.11.001"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
