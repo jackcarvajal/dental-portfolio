@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex, nofollow">
+<title>Pagar tu pedido — PRODIGY Lab Dental</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+<style>
+  :root{--bg:#050505;--card:#111a2e;--gold:#D4AF37;--cyan:#00d2ff;--mg:#D946A6;--green:#00FF41;--muted:#94a3b8;}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif;}
+  body{background:var(--bg);color:#e5e7eb;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:18px;max-width:440px;width:100%;padding:30px 26px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  .logo{font-size:.72rem;font-weight:900;letter-spacing:3px;color:var(--gold);margin-bottom:4px;}
+  h1{font-size:1.2rem;color:#fff;margin-bottom:6px;}
+  .ref{font-family:monospace;color:var(--cyan);font-size:.9rem;background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.2);border-radius:8px;padding:6px 12px;display:inline-block;margin:8px 0 14px;}
+  .note{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+  .sep{display:flex;align-items:center;gap:10px;color:#475569;font-size:.72rem;margin:16px 0;}
+  .sep::before,.sep::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
+  #paypal-button-container{min-height:48px;}
+  .btn-wompi{width:100%;padding:13px;border:1px solid rgba(0,210,255,.3);background:rgba(0,210,255,.08);color:var(--cyan);border-radius:12px;font-weight:800;font-size:.9rem;cursor:pointer;margin-top:4px;}
+  .wa{display:inline-block;margin-top:16px;font-size:.76rem;color:var(--muted);text-decoration:none;}
+  .wa b{color:#25D366;}
+  .err{color:#f87171;font-size:.85rem;padding:10px;}
+  @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">💎 PRODIGY LAB DENTAL</div>
+    <h1>Pagar tu pedido</h1>
+    <div id="ref-box"></div>
+    <div id="pago" style="display:none;">
+      <p class="note">El monto se calcula automáticamente de tu pedido. Elige tu método:</p>
+      <!-- PayPal / tarjeta internacional -->
+      <div id="paypal-button-container"></div>
+      <div class="sep">o desde Colombia</div>
+      <button type="button" class="btn-wompi" id="btn-wompi">💳 PSE / Nequi / Tarjeta (Wompi)</button>
+    </div>
+    <div id="msg" class="err" style="display:none;"></div>
+    <a class="wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20ayuda%20con%20mi%20pago." target="_blank" rel="noopener noreferrer">¿Problemas? Escríbenos por <b>WhatsApp</b></a>
+  </div>
+
+  <script src="js/pagos.js?v=20260826"></script>
+  <script>
+    (function () {
+      var q = new URLSearchParams(location.search);
+      var ref = (q.get('ref') || q.get('pedido') || q.get('codigo') || '').trim();
+      var refBox = document.getElementById('ref-box');
+      var pago = document.getElementById('pago');
+      var msg = document.getElementById('msg');
+
+      if (!ref) {
+        msg.style.display = 'block';
+        msg.textContent = 'Falta el código del pedido en el enlace. Pídenos el enlace de pago correcto por WhatsApp.';
+        return;
+      }
+      refBox.innerHTML = '<span class="ref">Pedido ' + ref.replace(/[<>&"]/g, '') + '</span>';
+      pago.style.display = 'block';
+
+      // PayPal seguro (el monto sale del servidor por la referencia)
+      if (typeof abrirCheckoutPayPal === 'function') {
+        abrirCheckoutPayPal({
+          referencia: ref,
+          containerId: 'paypal-button-container',
+          onSuccess: function () { location.href = '/seguimiento-caso?pedido=' + encodeURIComponent(ref) + '&pago=ok'; }
+        });
+      }
+
+      // Wompi (Colombia) — también lee el monto autoritativo por referencia
+      document.getElementById('btn-wompi').addEventListener('click', function () {
+        if (typeof abrirCheckoutWompi === 'function') {
+          abrirCheckoutWompi({ monto: 0, referencia: ref, descripcion: 'PRODIGY — Pedido ' + ref });
+        } else {
+          msg.style.display = 'block';
+          msg.textContent = 'No se pudo cargar el pago. Intenta de nuevo o escríbenos por WhatsApp.';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
