@@ -135,6 +135,19 @@ async function handleWompi(sb: any, payload: any) {
     if (pagoErr) {
       console.error("[webhook-handler] Error insertando en pagos:", pagoErr.message, "txId:", txId);
     }
+
+    // Aviso al staff (admin/finanzas) por el sistema de notificaciones internas
+    // (la campana del panel, ruteada por rol/depto). Best-effort.
+    try {
+      await sb.from("notificaciones_internas").insert({
+        tipo: "pago", prioridad: "alta", destinatario_rol: "admin", destinatario_dept: null,
+        titulo: "💰 Pago recibido — " + referencia,
+        mensaje: "Pago Wompi confirmado ($" + Math.round(montoReal).toLocaleString("es-CO") +
+                 " COP) del pedido " + referencia + ". El caso ya puede entrar a producción.",
+        pedido_id: existing?.id ?? null, pedido_codigo: referencia,
+        accion_url: "/app/panel-interno-operaciones.html", leida_por: [],
+      });
+    } catch (_e) { /* no romper la confirmación por un fallo de notificación */ }
   }
 
   return new Response("ok", { status: 200 });

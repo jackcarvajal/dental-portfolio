@@ -37,6 +37,23 @@ async function ppToken(env) {
 }
 const sbHeaders = (env) => ({ Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}`, apikey: env.SUPABASE_SERVICE_KEY, 'Content-Type': 'application/json' });
 
+// Avisa al staff (admin/finanzas) por el sistema de notificaciones internas (la campana del
+// panel, ruteada por rol/depto). Best-effort: nunca rompe el pago si falla.
+async function notificarStaffPago(env, pedido, detalle) {
+  try {
+    await fetch(`${env.SUPABASE_URL}/rest/v1/notificaciones_internas`, {
+      method: 'POST', headers: { ...sbHeaders(env), Prefer: 'return=minimal' },
+      body: JSON.stringify({
+        tipo: 'pago', prioridad: 'alta', destinatario_rol: 'admin', destinatario_dept: null,
+        titulo: '💰 Pago recibido — ' + pedido.codigo,
+        mensaje: 'Pago confirmado (' + detalle + ') del pedido ' + pedido.codigo + '. El caso ya puede entrar a producción.',
+        pedido_id: pedido.id, pedido_codigo: pedido.codigo,
+        accion_url: '/app/panel-interno-operaciones.html', leida_por: [],
+      }),
+    });
+  } catch (_e) { /* no bloquear el pago por un fallo de notificación */ }
+}
+
 export async function onRequestOptions(context) {
   return new Response(null, { status: 204, headers: cors(context.request.headers.get('Origin') || '') });
 }
@@ -128,6 +145,8 @@ export async function onRequestPost(context) {
         moneda: 'USD', payload_raw: cap,
       }),
     });
+    // Aviso al staff (finanzas/admin) por el sistema de notificaciones internas
+    await notificarStaffPago(env, pedido, 'PayPal · US$' + pagadoUSD);
   } catch (e) {
     // El pago SÍ se capturó en PayPal; si falla el registro, se loguea pero no se le
     // dice al cliente que falló (su dinero salió). Un reintento/webhook lo reconcilia.

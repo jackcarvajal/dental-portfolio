@@ -114,6 +114,19 @@ export async function onRequestPost(context) {
         monto_base: precioCOP, monto_total: montoTotal, monto_usd: pagadoUSD, moneda: 'USD', payload_raw: evt,
       }),
     });
+    // Aviso al staff (admin/finanzas) — notificaciones internas, best-effort
+    try {
+      await fetch(`${env.SUPABASE_URL}/rest/v1/notificaciones_internas`, {
+        method: 'POST', headers: { ...sbH(env), Prefer: 'return=minimal' },
+        body: JSON.stringify({
+          tipo: 'pago', prioridad: 'alta', destinatario_rol: 'admin', destinatario_dept: null,
+          titulo: '💰 Pago recibido — ' + pedido.codigo,
+          mensaje: 'Pago PayPal confirmado (US$' + pagadoUSD + ') del pedido ' + pedido.codigo + ' [reconciliado por webhook]. Puede entrar a producción.',
+          pedido_id: pedido.id, pedido_codigo: pedido.codigo,
+          accion_url: '/app/panel-interno-operaciones.html', leida_por: [],
+        }),
+      });
+    } catch (_e) {}
   } catch (e) {
     console.error('[paypal-webhook] fallo registrando:', e.message);
     return new Response('error registro', { status: 502 }); // PayPal reintentará
