@@ -20,6 +20,8 @@
   .sep::before,.sep::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
   #paypal-button-container{min-height:48px;}
   .btn-wompi{width:100%;padding:13px;border:1px solid rgba(0,210,255,.3);background:rgba(0,210,255,.08);color:var(--cyan);border-radius:12px;font-weight:800;font-size:.9rem;cursor:pointer;margin-top:4px;}
+  .btn-transfer{width:100%;padding:13px;border:1px solid rgba(212,175,55,.3);background:rgba(212,175,55,.08);color:var(--gold);border-radius:12px;font-weight:800;font-size:.9rem;cursor:pointer;margin-top:8px;}
+  .transfer-box a,.transfer-box b{color:var(--gold);}
   .wa{display:inline-block;margin-top:16px;font-size:.76rem;color:var(--muted);text-decoration:none;}
   .wa b{color:#25D366;}
   .err{color:#f87171;font-size:.85rem;padding:10px;}
@@ -37,6 +39,10 @@
       <div id="paypal-button-container"></div>
       <div class="sep">o desde Colombia</div>
       <button type="button" class="btn-wompi" id="btn-wompi">💳 PSE / Nequi / Tarjeta (Wompi)</button>
+      <!-- Transferencia: sin comisión -->
+      <button type="button" class="btn-transfer" id="btn-transfer">🏦 Transferencia <span style="font-weight:600;opacity:.85;">· sin comisión</span></button>
+      <div id="transfer-box" style="display:none;text-align:left;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.25);border-radius:10px;padding:14px;margin-top:10px;font-size:.82rem;color:#e2e8f0;line-height:1.7;"></div>
+      <div style="font-size:.74rem;color:#94a3b8;margin-top:12px;">💡 La <b style="color:#D4AF37;">transferencia no tiene comisión</b>. PayPal/tarjeta agregan ~5.4% que asume el pagador.</div>
     </div>
     <div id="msg" class="err" style="display:none;"></div>
     <a class="wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20ayuda%20con%20mi%20pago." target="_blank" rel="noopener noreferrer">¿Problemas? Escríbenos por <b>WhatsApp</b></a>
@@ -76,6 +82,22 @@
           msg.style.display = 'block';
           msg.textContent = 'No se pudo cargar el pago. Intenta de nuevo o escríbenos por WhatsApp.';
         }
+      });
+
+      // Transferencia (sin comisión) — muestra los datos + enviar comprobante por WhatsApp
+      document.getElementById('btn-transfer').addEventListener('click', function () {
+        var box = document.getElementById('transfer-box');
+        var inst = (window.PAGOS_CONFIG && PAGOS_CONFIG.transferencia && PAGOS_CONFIG.transferencia.instrucciones)
+                 || 'Escríbenos por WhatsApp y te enviamos los datos de transferencia.';
+        var safeRef = ref.replace(/[<>&"]/g, '');
+        box.className = 'transfer-box';
+        box.innerHTML = '<div style="font-weight:800;color:#D4AF37;margin-bottom:6px;">🏦 Transferencia · sin comisión · Pedido ' + safeRef + '</div>'
+          + inst
+          + '<div style="margin-top:10px;"><a href="https://wa.me/573212816716?text='
+          + encodeURIComponent('Pagué mi pedido #' + ref + ' por transferencia. Adjunto el comprobante.')
+          + '" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:9px 16px;background:#25D366;border-radius:8px;color:#062e0f;font-weight:800;text-decoration:none;">💬 Enviar comprobante por WhatsApp</a></div>';
+        box.style.display = '';
+        box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
     })();
   </script>

@@ -358,7 +358,7 @@ async function abrirCheckoutPayPal({ referencia, containerId, onSuccess }) {
         }).then(r => r.json()).then(res => {
             if (!res.ok) { _pgToast(res.error || 'No se pudo confirmar el pago.'); return; }
             if (onSuccess) onSuccess({ referencia });
-            else window.location.href = `https://prodigylabdental.com/success?pedido=${encodeURIComponent(referencia)}`;
+            else window.location.href = `/seguimiento-caso?pedido=${encodeURIComponent(referencia)}&pago=ok`;
         }),
         onError: (err) => {
             console.error('PayPal error:', err);

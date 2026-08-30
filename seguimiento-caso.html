@@ -812,9 +812,12 @@
                 banner.innerHTML = `
                     <div style="font-size:2rem;margin-bottom:6px;">✅</div>
                     <div style="font-size:1.05rem;font-weight:700;color:#00FF41;margin-bottom:4px;">¡Pago Confirmado!</div>
-                    <div style="font-size:.9rem;color:#e2e8f0;">Su caso <strong id="banner-case-id" style="color:#D4AF37;"></strong> ha sido enviado a producción.</div>
-                    <div style="font-size:.9rem;color:#94a3b8;margin-top:6px;">Recibirá actualizaciones por WhatsApp.</div>
-                    <button type="button" onclick="this.parentElement.remove()" style="margin-top:12px;padding:6px 18px;background:rgba(0,255,65,.12);border:1px solid #00FF41;border-radius:20px;color:#00FF41;cursor:pointer;font-size:.8rem;">Cerrar</button>
+                    <div style="font-size:.9rem;color:#e2e8f0;">Tu pedido <strong id="banner-case-id" style="color:#D4AF37;"></strong> quedó pagado y pasó a producción.</div>
+                    <div style="font-size:.82rem;color:#94a3b8;margin-top:6px;">Recibirás actualizaciones por WhatsApp.</div>
+                    <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap;">
+                        <a href="https://wa.me/573212816716?text=${encodeURIComponent('✅ Confirmo el pago de mi pedido #' + id + '. Adjunto el comprobante.')}" target="_blank" rel="noopener noreferrer" style="padding:9px 18px;background:#25D366;border-radius:20px;color:#062e0f;font-size:.82rem;font-weight:800;text-decoration:none;">💬 Confirmar por WhatsApp</a>
+                        <button type="button" onclick="this.closest('#pago-confirmado-banner').remove()" style="padding:9px 18px;background:rgba(0,255,65,.1);border:1px solid #00FF41;border-radius:20px;color:#00FF41;cursor:pointer;font-size:.82rem;">Cerrar</button>
+                    </div>
                 `;
                 banner.querySelector('#banner-case-id').textContent = id;
                 document.body.appendChild(banner);
