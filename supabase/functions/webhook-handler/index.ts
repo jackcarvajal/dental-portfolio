@@ -98,7 +98,7 @@ async function handleWompi(sb: any, payload: any) {
     // ── Idempotencia: no procesar si ya está Pagado ──
     const { data: existing } = await sb
       .from("pedidos")
-      .select("id, estado")
+      .select("id, estado, flujo")
       .eq("codigo", referencia)
       .maybeSingle();
 
@@ -139,14 +139,14 @@ async function handleWompi(sb: any, payload: any) {
     // Aviso al staff (admin/finanzas) por el sistema de notificaciones internas
     // (la campana del panel, ruteada por rol/depto). Best-effort.
     try {
-      await sb.from("notificaciones_internas").insert({
-        tipo: "pago", prioridad: "alta", destinatario_rol: "admin", destinatario_dept: null,
-        titulo: "💰 Pago recibido — " + referencia,
-        mensaje: "Pago Wompi confirmado ($" + Math.round(montoReal).toLocaleString("es-CO") +
-                 " COP) del pedido " + referencia + ". El caso ya puede entrar a producción.",
-        pedido_id: existing?.id ?? null, pedido_codigo: referencia,
-        accion_url: "/app/panel-interno-operaciones.html", leida_por: [],
-      });
+      const _f   = String((existing as any)?.flujo ?? "").replace("_internacional", "");
+      const dept = ["diseno", "fresado", "impresion"].includes(_f) ? _f : "diseno";
+      const montoTxt = "$" + Math.round(montoReal).toLocaleString("es-CO") + " COP";
+      const _base = { tipo: "pago", prioridad: "alta", pedido_id: existing?.id ?? null, pedido_codigo: referencia, accion_url: "/app/panel-interno-operaciones.html", leida_por: [] };
+      await sb.from("notificaciones_internas").insert([
+        { ..._base, destinatario_rol: "admin", destinatario_dept: null, titulo: "💰 Pago recibido — " + referencia, mensaje: "Pago Wompi confirmado (" + montoTxt + ") del pedido " + referencia + "." },
+        { ..._base, destinatario_rol: null, destinatario_dept: dept, titulo: "✅ Pedido pagado — " + referencia, mensaje: "El pedido " + referencia + " ya está pagado (" + montoTxt + "). Puede entrar a producción (" + dept + ")." },
+      ]);
     } catch (_e) { /* no romper la confirmación por un fallo de notificación */ }
   }
 

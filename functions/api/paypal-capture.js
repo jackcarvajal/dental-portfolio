@@ -39,19 +39,33 @@ const sbHeaders = (env) => ({ Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}
 
 // Avisa al staff (admin/finanzas) por el sistema de notificaciones internas (la campana del
 // panel, ruteada por rol/depto). Best-effort: nunca rompe el pago si falla.
+function _deptDePedido(flujo) {
+  const f = String(flujo || '').replace('_internacional', '');
+  return ['diseno', 'fresado', 'impresion'].indexOf(f) >= 0 ? f : 'diseno';
+}
 async function notificarStaffPago(env, pedido, detalle) {
-  try {
-    await fetch(`${env.SUPABASE_URL}/rest/v1/notificaciones_internas`, {
-      method: 'POST', headers: { ...sbHeaders(env), Prefer: 'return=minimal' },
-      body: JSON.stringify({
-        tipo: 'pago', prioridad: 'alta', destinatario_rol: 'admin', destinatario_dept: null,
-        titulo: '💰 Pago recibido — ' + pedido.codigo,
-        mensaje: 'Pago confirmado (' + detalle + ') del pedido ' + pedido.codigo + '. El caso ya puede entrar a producción.',
-        pedido_id: pedido.id, pedido_codigo: pedido.codigo,
-        accion_url: '/app/panel-interno-operaciones.html', leida_por: [],
-      }),
-    });
-  } catch (_e) { /* no bloquear el pago por un fallo de notificación */ }
+  const dept = _deptDePedido(pedido.flujo);
+  const base = {
+    tipo: 'pago', prioridad: 'alta', pedido_id: pedido.id, pedido_codigo: pedido.codigo,
+    accion_url: '/app/panel-interno-operaciones.html', leida_por: [],
+  };
+  const notifs = [
+    // 1) Admin / finanzas — entró un pago
+    { ...base, destinatario_rol: 'admin', destinatario_dept: null,
+      titulo: '💰 Pago recibido — ' + pedido.codigo,
+      mensaje: 'Pago confirmado (' + detalle + ') del pedido ' + pedido.codigo + '.' },
+    // 2) Área de producción según el flujo — ya pagado, pueden empezar
+    { ...base, destinatario_rol: null, destinatario_dept: dept,
+      titulo: '✅ Pedido pagado — ' + pedido.codigo,
+      mensaje: 'El pedido ' + pedido.codigo + ' ya está pagado (' + detalle + '). Puede entrar a producción (' + dept + ').' },
+  ];
+  for (const n of notifs) {
+    try {
+      await fetch(`${env.SUPABASE_URL}/rest/v1/notificaciones_internas`, {
+        method: 'POST', headers: { ...sbHeaders(env), Prefer: 'return=minimal' }, body: JSON.stringify(n),
+      });
+    } catch (_e) { /* best-effort: no bloquear el pago por un fallo de notificación */ }
+  }
 }
 
 export async function onRequestOptions(context) {
@@ -82,7 +96,7 @@ export async function onRequestPost(context) {
   // Pedido autoritativo
   let pedido;
   try {
-    const pr = await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?codigo=eq.${encodeURIComponent(referencia)}&select=id,codigo,precio_total,pago_estado&limit=1`, { headers: sbHeaders(env) });
+    const pr = await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?codigo=eq.${encodeURIComponent(referencia)}&select=id,codigo,precio_total,pago_estado,flujo&limit=1`, { headers: sbHeaders(env) });
     pedido = (await pr.json())?.[0];
   } catch { return new Response(JSON.stringify({ error: 'No se pudo validar el pedido' }), { status: 502, headers: h }); }
   if (!pedido?.id) return new Response(JSON.stringify({ error: 'Pedido no encontrado' }), { status: 400, headers: h });
