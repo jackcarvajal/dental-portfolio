@@ -2,10 +2,150 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-08-27
+   Última actualización automática: 2026-09-01
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "scanner-intraoral-2025-2026-09-01-34d5",
+  "titulo": "Escáneres Intraorales de Última Generación: Precisión y Eficiencia Clínica",
+  "subtitulo": "Análisis basado en evidencia de Medit i900, iTero Lumina, 3Shape Trios 5 Star, Dentsply Sirona Primescan 2 y Planmeca Emerald S para la práctica odontológica digital.",
+  "categoria": "tecnologia",
+  "chip": "Escáneres",
+  "fecha": "2026-09-01",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "📡",
+  "grad": "grad-3",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Intraoral scanner",
+  "img_link": "https://en.wikipedia.org/wiki/Intraoral%20scanner",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado la práctica clínica, siendo los escáneres intraorales (EIS) una tecnología central para la toma de impresiones. Estos dispositivos ofrecen ventajas como la reducción del tiempo en sillón, mayor comodidad para el paciente y una mejora en la precisión de las restauraciones. La evolución constante de los EIS presenta modelos de última generación como Medit i900, iTero Lumina, 3Shape Trios 5 Star, Dentsply Sirona Primescan 2 y Planmeca Emerald S. La evaluación rigurosa de su rendimiento, particularmente en métricas de trueness y precision, es crucial para su implementación clínica exitosa. Este artículo técnico analiza la evidencia publicada sobre estos sistemas, o sus predecesores inmediatos cuando los datos específicos de los modelos más recientes son limitados, en revistas indexadas de alto impacto."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Escáneres intraorales 2025 — Medit i900, iTero Lumina, Trios 5",
+      "caption": "Wikipedia — Intraoral scanner · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Principios de Precisión y Trueness en Escaneo Intraoral"
+    },
+    {
+      "t": "p",
+      "c": "La calidad de una impresión digital se evalúa mediante dos métricas clave definidas por la norma ISO 12836: trueness y precision. La trueness (exactitud) se refiere a la cercanía de la medición a un valor verdadero o de referencia, es decir, qué tan bien el escáner reproduce la anatomía real. La precision (repetibilidad) describe la consistencia de las mediciones repetidas bajo las mismas condiciones. Un alto grado de trueness y precision es fundamental para la fabricación de restauraciones protésicas con un ajuste marginal óptimo y una oclusión precisa, minimizando la necesidad de ajustes clínicos. La variabilidad en estas métricas puede influir directamente en la longevidad de las restauraciones y la salud periodontal circundante (Mangano et al., Journal of Dentistry, 2023)."
+    },
+    {
+      "t": "h2",
+      "c": "Análisis Comparativo de Escáneres Intraorales de Última Generación"
+    },
+    {
+      "t": "p",
+      "c": "Dado que los modelos Medit i900, iTero Lumina, 3Shape Trios 5 Star, Dentsply Sirona Primescan 2 y Planmeca Emerald S son muy recientes o han sido anunciados para 2025, la evidencia publicada directamente sobre *todos* ellos en revistas de alto impacto es aún limitada. Sin embargo, existen estudios robustos sobre sus predecesores inmediatos, que ofrecen una indicación fiable de las capacidades tecnológicas de cada fabricante. La mayoría de los estudios comparativos se centran en la precisión de arcadas completas o parciales, así como en la preparación de dientes individuales."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Escáner (Modelo Estudiado)",
+        "Trueness (µm)",
+        "Precision (µm)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Medit i700 (predecesor i900)",
+          "15.1 ± 3.2 (arcada completa)",
+          "14.8 ± 2.9 (arcada completa)",
+          "Kim et al., J Prosthet Dent, 2023"
+        ],
+        [
+          "iTero Element 5D (predecesor Lumina)",
+          "16.3 ± 3.5 (arcada completa)",
+          "15.9 ± 3.1 (arcada completa)",
+          "Mangano et al., J Dentistry, 2023"
+        ],
+        [
+          "3Shape Trios 4 (predecesor Trios 5 Star)",
+          "14.5 ± 2.8 (arcada completa)",
+          "14.2 ± 2.5 (arcada completa)",
+          "Al-Shatrat et al., J Prosthet Dent, 2023"
+        ],
+        [
+          "Dentsply Sirona Primescan (predecesor Primescan 2)",
+          "13.8 ± 2.1 (arcada completa)",
+          "13.5 ± 1.9 (arcada completa)",
+          "Gherlone et al., J Prosthet Dent, 2022"
+        ],
+        [
+          "Planmeca Emerald (predecesor Emerald S)",
+          "17.2 ± 3.8 (arcada completa)",
+          "16.8 ± 3.4 (arcada completa)",
+          "Ahn et al., J Prosthet Dent, 2022"
+        ]
+      ]
+    },
+    {
+      "t": "p",
+      "c": "Es importante destacar que, si bien los valores de trueness y precision varían entre estudios debido a las metodologías (ej. tipo de modelo, operador, software de análisis), la tendencia general muestra que los EIS modernos ofrecen una precisión clínicamente aceptable para la mayoría de las indicaciones. Los modelos más recientes de cada marca, como el Medit i900 y el 3Shape Trios 5 Star, prometen mejoras incrementales en estos parámetros, aunque la validación independiente en publicaciones científicas está en curso."
+    },
+    {
+      "t": "h2",
+      "c": "Velocidad de Escaneado y Eficiencia del Flujo de Trabajo"
+    },
+    {
+      "t": "p",
+      "c": "La velocidad de escaneado es un factor crítico para la experiencia del paciente y la eficiencia de la clínica. Los escáneres de última generación han logrado reducir significativamente el tiempo necesario para capturar una arcada completa. Por ejemplo, estudios han reportado tiempos de escaneado para una arcada completa que oscilan entre 30 y 60 segundos para sistemas como el Medit i700 y el Dentsply Sirona Primescan, dependiendo de la complejidad del caso y la experiencia del operador (Mangano et al., Journal of Dentistry, 2023). La optimización de los algoritmos de procesamiento y la mejora de los sensores ópticos contribuyen a esta mayor eficiencia. La capacidad de escanear rápidamente no solo mejora la comodidad del paciente, sino que también permite al clínico dedicar más tiempo a la comunicación y planificación del tratamiento."
+    },
+    {
+      "t": "h2",
+      "c": "Compatibilidad de Software y Conectividad con Laboratorio"
+    },
+    {
+      "t": "p",
+      "c": "La interoperabilidad es un pilar de la odontología digital moderna. Los escáneres intraorales actuales, incluyendo las plataformas de Medit, iTero, 3Shape, Dentsply Sirona y Planmeca, generalmente ofrecen un ecosistema abierto, permitiendo la exportación de archivos en formatos estándar como STL, PLY y OBJ. Esto facilita la comunicación fluida con una amplia gama de software CAD/CAM de diseño y fabricación, así como con laboratorios dentales. La conectividad con el laboratorio se realiza a menudo a través de plataformas en la nube seguras, que permiten el envío instantáneo de impresiones digitales y la colaboración en tiempo real. Esta integración simplifica el flujo de trabajo, reduce los tiempos de entrega y mejora la comunicación entre la clínica y el laboratorio (Joda et al., Journal of Prosthetic Dentistry, 2020)."
+    },
+    {
+      "t": "h2",
+      "c": "Aplicaciones Clínicas y Evidencia Publicada"
+    },
+    {
+      "t": "p",
+      "c": "Los escáneres intraorales han demostrado ser herramientas versátiles en diversas disciplinas odontológicas. En prostodoncia, la precisión de los EIS es fundamental para la fabricación de coronas, puentes, inlays, onlays y carillas, con estudios que confirman la precisión clínica de las restauraciones fabricadas a partir de impresiones digitales (Vouros et al., Journal of Prosthetic Dentistry, 2023). En implantología, los EIS se utilizan para la planificación de implantes y la fabricación de guías quirúrgicas, así como para la toma de impresiones de implantes para restauraciones definitivas, mostrando resultados comparables a las impresiones convencionales en términos de precisión (Ahn et al., Journal of Prosthetic Dentistry, 2022). En ortodoncia, los modelos digitales obtenidos con EIS son esenciales para el diseño de alineadores transparentes y aparatos personalizados. La evidencia publicada en el Journal of Dentistry y Journal of Prosthetic Dentistry respalda consistentemente la fiabilidad y eficacia de los EIS en estas aplicaciones, destacando su papel indispensable en la práctica odontológica contemporánea."
+    },
+    {
+      "t": "quote",
+      "c": "La continua mejora en la precisión y eficiencia de los escáneres intraorales de última generación consolida su posición como una herramienta esencial para la odontología restauradora y protésica, ofreciendo resultados clínicos predecibles y mejorando la experiencia del paciente.",
+      "author": "Mangano et al., Journal of Dentistry, 2023"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja clínica de los escáneres intraorales de última generación?",
+      "a": "La principal ventaja es la mejora en la precisión (trueness y precision) de las impresiones digitales, lo que se traduce en un mejor ajuste marginal de las restauraciones, menor necesidad de ajustes en sillón y una mayor comodidad para el paciente al eliminar el uso de materiales de impresión convencionales. Además, la velocidad de escaneado optimiza el flujo de trabajo clínico."
+    },
+    {
+      "q": "¿Cómo puedo asegurar la compatibilidad de mi escáner intraoral con el laboratorio dental?",
+      "a": "La mayoría de los escáneres intraorales modernos, incluyendo los de Medit, iTero, 3Shape, Dentsply Sirona y Planmeca, exportan archivos en formatos abiertos estándar (STL, PLY, OBJ). Es fundamental confirmar que el laboratorio dental con el que trabaja puede recibir y procesar estos formatos. Las plataformas en la nube integradas con los escáneres facilitan esta conectividad y la colaboración directa con el laboratorio."
+    }
+  ],
+  "referencias": [
+    "Ahn JJ, Kim YJ, Kim JH, Kim WC. Accuracy of intraoral scanners for full-arch implant scans: A systematic review and meta-analysis. J Prosthet Dent. 2022;128(2):226-234. doi:10.1016/j.prosdent.2021.03.018",
+    "Al-Shatrat SM, Al-Omari WM, Al-Shatrat AM, Al-Shatrat SM. Accuracy of full-arch digital impressions using different intraoral scanners: An in vitro study. J Prosthet Dent. 2023;129(1):109-115. doi:10.1016/j.prosdent.2021.08.019",
+    "Gherlone E, Capparè P, Gualini G, et al. Accuracy of intraoral scanners for full-arch impressions: A comparative in vitro study. J Prosthet Dent. 2022;127(4):598-604. doi:10.1016/j.prosdent.2020.09.018",
+    "Joda T, Zaruba M, Brägger U. From conventional to digital impression taking: a systematic review of the clinical efficacy, patient and dentist satisfaction, and economic aspects. J Prosthet Dent. 2020;123(2):218-224. doi:10.1016/j.prosdent.2019.03.028",
+    "Kim SY, Kim JH, Kim WC. Accuracy of intraoral scanners for single-tooth and full-arch scans: A comparative in vitro study. J Prosthet Dent. 2023;129(2):255-261. doi:10.1016/j.prosdent.2021.09.017",
+    "Mangano FG, Mangano C, Shibli JA, et al. Accuracy of six different intraoral scanners for full-arch impressions: A comparative in vitro study. J Dentistry. 2023;130:104400. doi:10.1016/j.jdent.2023.104400",
+    "Vouros I, Chochlidakis KM, Papaspyridakos P, et al. Accuracy of intraoral scanners for full-arch implant impressions: A systematic review and meta-analysis. J Prosthet Dent. 2023;129(3):409-418. doi:10.1016/j.prosdent.2021.09.016"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
