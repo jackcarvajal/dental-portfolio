@@ -45,7 +45,7 @@ export async function onRequestGet({ request, env }) {
       const total = '$' + Math.round(Number(p.total || 0)).toLocaleString('es-CO') + ' COP';
       const horas = Math.round(Number(p.horas_espera || 48));
 
-      const msg = `💎 *PRODIGY Lab Dental*\n\nHola ${doctor}, tu pedido *${p.codigo}* lleva ${horas}h con pago pendiente.\n\n💰 *Total a pagar:* ${total}\n\nPuedes confirmarlo en:\n👉 https://prodigylabdental.com/seguimiento-caso?id=${p.codigo}\n\n_Respondenos por WhatsApp si necesitas ayuda con el pago._`;
+      const msg = `💎 *PRODIGY Lab Dental*\n\nHola ${doctor}, tu pedido *${p.codigo}* lleva ${horas}h con pago pendiente.\n\n💰 *Total a pagar:* ${total}\n\n👉 Págalo aquí (PayPal / tarjeta / PSE / transferencia sin comisión):\nhttps://prodigylabdental.com/pagar?ref=${p.codigo}\n\n_Respondenos por WhatsApp si necesitas ayuda con el pago._`;
 
       const waUrl = `https://api.callmebot.com/whatsapp.php?phone=${waFull}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`;
 
