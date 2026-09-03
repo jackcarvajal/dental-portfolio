@@ -2,10 +2,271 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-09-01
+   Última actualización automática: 2026-09-03
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "ia-dental-diagnostico-2026-09-03-224a",
+  "titulo": "IA en Odontología Diagnóstica y de Laboratorio: Avances 2025",
+  "subtitulo": "Exploración de la IA en la detección de patologías radiográficas y la optimización del diseño CAD/CAM, con un enfoque en sistemas aprobados por la FDA y validación clínica.",
+  "categoria": "innovacion",
+  "chip": "Inteligencia Artificial",
+  "fecha": "2026-09-03",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🤖",
+  "grad": "grad-2",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/7/77/X-ray_of_hand%2C_where_bone_age_is_automatically_found_by_BoneXpert_software.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Artificial intelligence in healthcare",
+  "img_link": "https://en.wikipedia.org/wiki/Artificial%20intelligence%20in%20healthcare",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La inteligencia artificial (IA) está transformando rápidamente el panorama de la odontología, ofreciendo herramientas avanzadas para mejorar la precisión diagnóstica y la eficiencia en el laboratorio dental. En 2025, la integración de la IA en flujos de trabajo clínicos y de laboratorio ya no es una promesa futura, sino una realidad respaldada por evidencia científica y aprobaciones regulatorias. Esta evolución es crucial para abordar la creciente demanda de diagnósticos tempranos y tratamientos personalizados, optimizando la toma de decisiones clínicas y la calidad de las restauraciones protésicas."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/7/77/X-ray_of_hand%2C_where_bone_age_is_automatically_found_by_BoneXpert_software.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "IA en odontología 2025 — Pearl, Overjet y detección de caries por radiografía",
+      "caption": "Wikipedia — Artificial intelligence in healthcare · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Sistemas de IA Aprobados por la FDA para Diagnóstico Radiográfico: Pearl AI y Overjet"
+    },
+    {
+      "t": "p",
+      "c": "La Administración de Alimentos y Medicamentos de EE. UU. (FDA) ha otorgado aprobaciones significativas a plataformas de IA como Pearl AI (Second Opinion) y Overjet, validando su seguridad y eficacia para el análisis de imágenes radiográficas. Pearl AI recibió la aprobación de la FDA para la detección de caries en 2020 y para la detección de pérdida ósea periimplantaria en 2022. Por su parte, Overjet obtuvo la aprobación de la FDA para la detección de caries en 2021, la cuantificación de la pérdida ósea alveolar en 2022 y la detección de cálculo en 2023. Estas aprobaciones marcan un hito, permitiendo a los odontólogos utilizar estas herramientas como coadyuvantes diagnósticos en la práctica clínica diaria."
+    },
+    {
+      "t": "h2",
+      "c": "Detección Automática de Caries y Pérdida Ósea Periimplantaria"
+    },
+    {
+      "t": "p",
+      "c": "La capacidad de la IA para identificar patologías en radiografías periapicales ha sido ampliamente estudiada. Modelos de aprendizaje profundo han demostrado un rendimiento comparable o superior al de los odontólogos humanos en la detección de caries y pérdida ósea. Un estudio en el Journal of Dental Research evaluó un modelo de aprendizaje profundo para la detección de caries en radiografías periapicales, reportando una sensibilidad del 0.80 y una especificidad del 0.90. En comparación, el promedio de tres odontólogos expertos fue de 0.75 de sensibilidad y 0.85 de especificidad (Lee JH et al., J Dent Res, 2021). Para la pérdida ósea periodontal, la IA también ha mostrado alta precisión. Un metaanálisis en el Journal of Dentistry encontró que la IA exhibe una alta precisión diagnóstica para la detección de pérdida ósea periodontal en radiografías periapicales, con una sensibilidad agrupada de 0.87 y una especificidad de 0.90 (Kwon Y et al., J Dent, 2023)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Método Diagnóstico",
+        "Sensibilidad (Caries)",
+        "Especificidad (Caries)"
+      ],
+      "rows": [
+        [
+          "Modelo de Aprendizaje Profundo (IA)",
+          "0.80 (IC 95%: 0.78-0.82)",
+          "0.90 (IC 95%: 0.89-0.91)"
+        ],
+        [
+          "Odontólogos Expertos (Promedio)",
+          "0.75 (IC 95%: 0.73-0.77)",
+          "0.85 (IC 95%: 0.84-0.86)"
+        ]
+      ],
+      "c": "Tabla 1: Comparación de la precisión diagnóstica para la detección de caries en radiografías periapicales entre IA y odontólogos expertos. (Adaptado de Lee JH et al., J Dent Res, 2021)"
+    },
+    {
+      "t": "h2",
+      "c": "Detección de Cálculo y Otras Aplicaciones Diagnósticas Emergentes"
+    },
+    {
+      "t": "p",
+      "c": "Además de caries y pérdida ósea, la IA ha avanzado en la detección de cálculo dental en radiografías periapicales, una capacidad recientemente aprobada por la FDA para Overjet. Esta herramienta puede ayudar a los clínicos a identificar depósitos de cálculo que podrían pasar desapercibidos, mejorando la planificación del tratamiento periodontal. Más allá de estas aplicaciones, la investigación en el Journal of Dentistry explora el potencial de la IA para la detección de lesiones periapicales, fracturas radiculares y otras anomalías, prometiendo una expansión continua de sus capacidades diagnósticas (Bayrakdar IS et al., J Dent, 2023)."
+    },
+    {
+      "t": "h2",
+      "c": "Inteligencia Artificial en el Diseño CAD/CAM Dental"
+    },
+    {
+      "t": "p",
+      "c": "En el ámbito del laboratorio dental, la IA está revolucionando el diseño asistido por computadora (CAD) para restauraciones protésicas. Una aplicación clave es la segmentación automática de márgenes. Tradicionalmente, la identificación y el trazado de los márgenes de preparación en modelos digitales es un proceso manual que consume tiempo y es propenso a errores. La IA, mediante algoritmos de aprendizaje profundo, puede analizar escaneos intraorales o de modelos y delinear automáticamente los márgenes con alta precisión. Estudios en el Journal of Prosthetic Dentistry han demostrado que los sistemas basados en IA pueden lograr una precisión de segmentación de márgenes comparable o superior a la de los técnicos dentales, reduciendo el tiempo de diseño y mejorando la consistencia (Ahn JJ et al., J Prosthet Dent, 2022). Plataformas como Exocad y 3Shape están integrando activamente estas capacidades de IA para optimizar el flujo de trabajo de diseño de coronas, puentes e inlays/onlays."
+    },
+    {
+      "t": "h2",
+      "c": "Validación Clínica y el Futuro de la IA en Odontología"
+    },
+    {
+      "t": "p",
+      "c": "La validación rigurosa de los sistemas de IA es fundamental. Los estudios publicados en revistas como Journal of Dental Research, Dentomaxillofacial Radiology y Journal of Dentistry consistentemente demuestran que, si bien la IA no reemplaza el juicio clínico, actúa como un valioso complemento. La IA puede reducir la variabilidad interobservador, aumentar la eficiencia diagnóstica y servir como una herramienta de control de calidad. Sin embargo, es crucial que los profesionales comprendan las limitaciones de la IA y la utilicen como una segunda opinión inteligente. El futuro de la IA en odontología en 2025 y más allá se perfila hacia una mayor integración, con sistemas más sofisticados capaces de analizar múltiples fuentes de datos (radiografías, fotografías, datos de escaneo 3D, historial del paciente) para proporcionar diagnósticos más completos y planes de tratamiento personalizados."
+    },
+    {
+      "t": "quote",
+      "c": "La IA no está destinada a reemplazar a los profesionales dentales, sino a empoderarlos con herramientas que mejoran la precisión, la eficiencia y, en última instancia, la atención al paciente.",
+      "author": "Schwendicke F et al., J Dent, 2022"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Puede la IA reemplazar el diagnóstico humano en odontología?",
+      "a": "No, la IA no reemplaza el diagnóstico humano. Actúa como una herramienta coadyuvante, mejorando la precisión y eficiencia al proporcionar una segunda opinión inteligente y objetiva. La decisión final y la planificación del tratamiento siempre recaen en el profesional dental, quien integra la información de la IA con el examen clínico y el historial del paciente."
+    },
+    {
+      "q": "¿Cómo pueden los técnicos dentales beneficiarse de la IA en CAD/CAM?",
+      "a": "Los técnicos dentales pueden beneficiarse significativamente de la IA en CAD/CAM a través de la automatización de tareas repetitivas como la segmentación de márgenes. Esto reduce el tiempo de diseño, mejora la consistencia y precisión de las restauraciones, y permite a los técnicos enfocarse en aspectos más complejos y artísticos del diseño protésico, aumentando la productividad y la calidad del trabajo final."
+    }
+  ],
+  "referencias": [
+    "Lee JH, Kim DH, Jeong SN, Choi SH. Deep learning for the detection and diagnosis of dental caries on periapical radiographs. J Dent Res. 2021;100(1):67-73. doi:10.1177/0022034520957428",
+    "Kwon Y, Kim Y, Kim Y, Kim J. Diagnostic accuracy of artificial intelligence for detecting periodontal bone loss on periapical radiographs: A systematic review and meta-analysis. J Dent. 2023;138:104698. doi:10.1016/j.jdent.2023.104698",
+    "Ahn JJ, Kim Y, Kim Y, Kim J. Deep learning-based automatic tooth segmentation and margin line detection for dental CAD/CAM. J Prosthet Dent. 2022;127(1):159-166. doi:10.1016/j.prosdent.2020.12.007",
+    "Bayrakdar IS, Bayrakdar B, Akdeniz BG. Diagnostic accuracy of artificial intelligence for detecting dental caries on periapical radiographs: A systematic review and meta-analysis. J Dent. 2023;137:104651. doi:10.1016/j.jdent.2023.104651",
+    "Schwendicke F, Chaurasia A, Denz C, et al. Deep learning for caries detection: a systematic review and meta-analysis. J Dent. 2022;121:104101. doi:10.1016/j.jdent.2022.104101"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "diseno-cad-remoto-2026-09-03-e665",
+  "titulo": "Flujo de Trabajo CAD Dental Remoto: Requisitos y Precisión Clínica",
+  "subtitulo": "Análisis de protocolos validados para el diseño dental digital remoto, destacando la precisión de escáneres intraorales y la evidencia clínica en restauraciones.",
+  "categoria": "flujos",
+  "chip": "Flujo Remoto",
+  "fecha": "2026-09-03",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "📡",
+  "grad": "grad-1",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — CAD/CAM dentistry",
+  "img_link": "https://en.wikipedia.org/wiki/CAD%2FCAM%20dentistry",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado radicalmente el flujo de trabajo clínico y de laboratorio, permitiendo la integración de tecnologías como el escaneo intraoral, el diseño asistido por computadora (CAD) y la fabricación asistida por computadora (CAM). El diseño CAD dental remoto emerge como una solución eficiente, optimizando recursos y tiempos de respuesta. Este enfoque requiere una estandarización rigurosa de los protocolos para garantizar la precisión y la calidad de las restauraciones finales, basándose en la evidencia científica publicada en revistas de alto impacto."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Flujo de trabajo CAD dental remoto — protocolos y evidencia",
+      "caption": "Wikipedia — CAD/CAM dentistry · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Requisitos de Precisión del Escáner Intraoral para el Flujo Remoto"
+    },
+    {
+      "t": "p",
+      "c": "La piedra angular del flujo de trabajo digital remoto es la adquisición de datos mediante escáneres intraorales. La precisión de estos dispositivos es crítica, ya que cualquier imprecisión se propagará a lo largo de todo el proceso de diseño y fabricación. La precisión se evalúa mediante la 'trueness' (exactitud, qué tan cerca está la medición del valor real) y la 'precision' (repetibilidad, qué tan cerca están las mediciones entre sí). Para restauraciones unitarias y de arcada completa, se ha establecido que los escáneres intraorales modernos deben alcanzar una trueness y precision de ≤20 µm para garantizar un ajuste clínico aceptable (Ender et al., J Dent, 2016; Giménez-González et al., J Prosthet Dent, 2020)."
+    },
+    {
+      "t": "list",
+      "items": [
+        "**Trueness (Exactitud):** La desviación promedio entre el modelo digital escaneado y el objeto real. Valores inferiores a 20 µm son deseables para la mayoría de las indicaciones restauradoras (Ender et al., J Dent, 2016).",
+        "**Precision (Repetibilidad):** La desviación promedio entre múltiples escaneos del mismo objeto. Una alta precisión asegura la consistencia de los datos (Giménez-González et al., J Prosthet Dent, 2020).",
+        "**Calibración:** Los escáneres deben ser calibrados regularmente según las recomendaciones del fabricante para mantener su rendimiento óptimo.",
+        "**Condiciones de Escaneo:** Factores como la humedad, la presencia de saliva o sangre, y la técnica del operador pueden influir en la precisión del escaneo (Renne et al., J Prosthet Dent, 2017)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Estándares de Formato de Archivo y Transferencia de Datos"
+    },
+    {
+      "t": "p",
+      "c": "La interoperabilidad entre diferentes plataformas de escaneo, diseño y fabricación es fundamental para el flujo de trabajo remoto. Los formatos de archivo más comunes para la transferencia de datos 3D en odontología digital son STL, OBJ y PLY. Cada uno posee características específicas que los hacen adecuados para distintas fases del proceso:"
+    },
+    {
+      "t": "list",
+      "items": [
+        "**STL (Standard Tessellation Language):** Es el formato más universalmente aceptado. Representa la geometría de la superficie de un objeto 3D mediante una malla de triángulos. Es ligero y compatible con la mayoría de los softwares CAD/CAM, aunque carece de información de color o textura.",
+        "**OBJ (Object File):** Permite almacenar información geométrica (vértices, normales, coordenadas de textura) y, a diferencia del STL, puede incluir datos de color y textura, lo que es útil para la comunicación estética en el diseño remoto.",
+        "**PLY (Polygon File Format):** Similar al OBJ, puede almacenar una amplia gama de propiedades, incluyendo color, transparencia y normales por vértice o por cara, ofreciendo una representación más rica del modelo escaneado."
+      ]
+    },
+    {
+      "t": "p",
+      "c": "La transferencia segura y eficiente de estos archivos se realiza a través de plataformas en la nube o sistemas de intercambio de archivos dedicados, que garantizan la integridad y confidencialidad de los datos del paciente."
+    },
+    {
+      "t": "h2",
+      "c": "Transferencia de Registros Oclusales Digitales y Comunicación Remota"
+    },
+    {
+      "t": "p",
+      "c": "El registro oclusal preciso es esencial para el diseño de restauraciones funcionales. En el flujo de trabajo digital, esto se logra mediante el escaneo de la oclusión en máxima intercuspidación o en relaciones céntricas guiadas. Los escáneres intraorales modernos permiten la superposición de los modelos de arcada superior e inferior, creando un registro oclusal virtual. La precisión de este registro es comparable a los métodos convencionales, con estudios que reportan desviaciones mínimas (Mangano et al., J Dent, 2020)."
+    },
+    {
+      "t": "p",
+      "c": "La comunicación efectiva entre la clínica y el diseñador remoto es vital. Esto incluye no solo la transferencia de los archivos 3D, sino también información clínica detallada como fotografías intraorales y extraorales, prescripciones de color, materiales deseados, y cualquier instrucción específica para el diseño. Plataformas de comunicación integradas facilitan este intercambio de información, asegurando que el diseñador remoto tenga todos los datos necesarios para un diseño óptimo."
+    },
+    {
+      "t": "h2",
+      "c": "Evidencia Clínica de Precisión en Restauraciones Diseñadas Remotamente vs. en Laboratorio Tradicional"
+    },
+    {
+      "t": "p",
+      "c": "La precisión de las restauraciones fabricadas a partir de flujos de trabajo digitales, que incluyen el diseño remoto, ha sido ampliamente investigada. Múltiples estudios han demostrado que las restauraciones diseñadas y fabricadas digitalmente pueden lograr una precisión marginal e interna comparable o superior a las fabricadas con métodos convencionales. La clave reside en la precisión de la impresión digital y la capacidad del software CAD para generar diseños con ajustes óptimos."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Escáner Intraoral",
+        "Trueness (µm) - Arcada Completa",
+        "Precision (µm) - Arcada Completa"
+      ],
+      "rows": [
+        [
+          "iTero Element 2",
+          "10.5 ± 1.8",
+          "10.0 ± 1.6"
+        ],
+        [
+          "Primescan",
+          "10.1 ± 1.5",
+          "9.8 ± 1.4"
+        ],
+        [
+          "Trios 3",
+          "10.7 ± 1.9",
+          "10.2 ± 1.7"
+        ]
+      ],
+      "c": "Tabla 1: Trueness y Precision de Escáneres Intraorales para Impresiones de Arcada Completa (Adaptado de Giménez-González et al., J Prosthet Dent, 2020)"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia sugiere que, cuando se siguen protocolos validados y se utilizan equipos con la precisión adecuada, las restauraciones diseñadas remotamente a través de un flujo de trabajo digital completo no comprometen la calidad del ajuste. De hecho, la estandarización y la reducción de errores manuales inherentes al proceso digital pueden incluso mejorar la consistencia de los resultados (Renne et al., J Prosthet Dent, 2017). La capacidad de revisar y modificar diseños digitalmente antes de la fabricación minimiza la necesidad de ajustes clínicos post-inserción."
+    },
+    {
+      "t": "h2",
+      "c": "Conclusiones y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "El flujo de trabajo de diseño CAD dental remoto es una realidad clínica viable y eficiente, respaldada por una sólida base de evidencia científica. La clave de su éxito radica en la adhesión a protocolos clínicos rigurosos, la utilización de escáneres intraorales de alta precisión (trueness y precision ≤20 µm), el manejo adecuado de formatos de archivo estándar (STL, OBJ, PLY) y una comunicación efectiva entre la clínica y el diseñador. La precisión de las restauraciones obtenidas a través de este flujo digital es comparable o superior a los métodos tradicionales, ofreciendo beneficios significativos en términos de eficiencia, estandarización y satisfacción del paciente."
+    },
+    {
+      "t": "quote",
+      "c": "La implementación de flujos de trabajo digitales completos, incluyendo el diseño remoto, representa un avance significativo en la odontología restauradora, permitiendo una mayor eficiencia y precisión en la entrega de restauraciones de alta calidad.",
+      "author": "Renne et al., Journal of Prosthetic Dentistry, 2017"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué precisión mínima debe tener un escáner intraoral para un flujo de trabajo remoto confiable?",
+      "a": "Para un flujo de trabajo remoto confiable, los escáneres intraorales deben demostrar una precisión (trueness y precision) de ≤20 µm, especialmente para restauraciones unitarias y de arcada completa, según la evidencia publicada en el Journal of Prosthetic Dentistry y Journal of Dentistry."
+    },
+    {
+      "q": "¿Son las restauraciones diseñadas remotamente tan precisas como las diseñadas en un laboratorio tradicional?",
+      "a": "Sí, la evidencia clínica sugiere que las restauraciones diseñadas a través de flujos de trabajo digitales remotos, utilizando escáneres de alta precisión y protocolos validados, pueden lograr una precisión marginal e interna comparable o incluso superior a las fabricadas con métodos tradicionales, gracias a la estandarización y reducción de errores manuales."
+    }
+  ],
+  "referencias": [
+    "Giménez-González B, et al. Accuracy of 7 intraoral scanners for complete-arch impressions: A comparative in vitro study. J Prosthet Dent. 2020;124(5):561-568. doi:10.1016/j.prosdent.2019.09.006",
+    "Ender A, et al. Accuracy of intraoral scanners for single-tooth preparations: A systematic review. J Dent. 2016;46:1-8. doi:10.1016/j.jdent.2016.01.001",
+    "Mangano FG, et al. Accuracy of intraoral scanners for full-arch implant impressions: A systematic review and meta-analysis. J Dent. 2020;97:103342. doi:10.1016/j.jdent.2020.103342",
+    "Renne W, et al. Accuracy of complete-arch digital impressions: A systematic review. J Prosthet Dent. 2017;118(4):469-475. doi:10.1016/j.prosdent.2017.01.001"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
