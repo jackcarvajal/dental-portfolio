@@ -9,6 +9,64 @@
 
 ---
 
+## 2026-08-27 → 09-04  (frente de PAGOS + varios)
+
+### 🟢 PayPal internacional SEGURO (reemplazo de Stripe suspendido) — ambos repos
+Stripe suspendido → PayPal como riel internacional, construido con el patrón seguro de Wompi:
+- `functions/api/paypal-create-order.js` — crea la orden con el **precio autoritativo de la BD** (`precio_total`
+  +5.4% que absorbe el cliente → USD). El monto nunca viene del cliente.
+- `functions/api/paypal-capture.js` — captura server-side, verifica `COMPLETED` + referencia + monto, marca
+  Pagado (service-role) e inserta en `pagos`. Idempotente.
+- `functions/api/paypal-webhook.js` — red de reconciliación (verifica firma del webhook con `PAYPAL_WEBHOOK_ID`).
+- `js/pagos.js` — `abrirCheckoutPayPal` server-side (sin captura en navegador, cierra el hueco viejo);
+  `inicializarPasarelas(...,referencia)` renderiza el botón; tarjeta habilitada (guest). Solo país≠CO.
+- **Cableado**: `flujo-diseno` (modal de éxito, país≠CO) + **`pagar.html`** (link universal `/pagar?ref=CODIGO`
+  para el modelo cotización-por-WhatsApp) con PayPal + Wompi + **Transferencia (sin comisión)**.
+- 🔴 **Falta ACTIVARLO** (config, no código): ver `docs/ACTIVAR-PAGOS.md`.
+
+### ✅ Auditoría de pagos (Wompi + PayPal) + fixes
+- Wompi (`wompi-signature`, `webhook-handler`): sólidos (monto autoritativo, firma timing-safe, idempotente,
+  anti-DoS). **Bug arreglado**: CORS de `wompi-signature` solo permitía prodigylabdental.com → bloqueaba los
+  pagos Wompi de Alejandro (`alejandrocadcam.pages.dev`). Ahora allowlist dinámico (+`.pages.dev`).
+- `supabase/config.toml`: versiona `verify_jwt=false` para `wompi-signature`/`verify-price` → un redeploy ya no
+  rompe los pagos. (El fix del hueco de dinero de wompi-signature v2.0 sigue **pendiente de redeploy**.)
+
+### ✅ Post-pago
+- Cliente: banner "¡Pago Confirmado!" con nº de orden + botón **"Confirmar por WhatsApp"** (un-toque, prefill).
+  PayPal ahora redirige a `seguimiento-caso?pago=ok` (mismo banner que Wompi).
+- Staff: al confirmar pago se insertan **2 notificaciones internas** (la campana) — `admin/finanzas` + el
+  **departamento de producción según el flujo** (diseño/fresado/impresión). En paypal-capture/webhook + Wompi webhook.
+- `recordatorio-pago`: ahora manda el **link de pago** `/pagar?ref=` (antes seguimiento-caso).
+- 💡 Aclarado: WhatsApp automático real necesitaría la API de Meta (evitada por costo/fricción); el aviso al
+  cliente es un-toque wa.me; el aviso al staff es la campana (100% automático, sin WhatsApp).
+
+### ✅ Otros (fin de agosto)
+- **Autosave del perfil del doctor** (nombre/whatsapp/ciudad en localStorage) portado a diseño/impresión/lab
+  (antes solo fresado).
+- **Huérfanas** al linktree: `diseno-remoto`, `nosotros` (ya estaban en sitemap).
+- **Gobernanza SQL**: `tools/sql-map.mjs` (reconcilia código↔repo, clasifica duplicadas/muertas) + baseline de
+  vistas (`sql/_baseline/views.sql`) + 3 RPC muertas dropeadas. `tools/audit-schema-live.mjs` valida columnas +
+  RPCs + **valores de enum** contra la BD real, en el **pre-push** (ambos repos).
+- **Contratos**: `docs/CONTRATO-ESTADOS.md`, `docs/CONTRATO-COLUMNAS-PEDIDOS.md`.
+- **Verificado en vivo** (PENDIENTES viejos ya resueltos): buckets Storage privados ✓, DMARC ✓.
+
+## 2026-08-25
+
+### ✅ Instagram PRODIGY: @labdentalprodigy → @prodigylabdental
+Alejandro se queda con el perfil `@prodigylabdental` (el que ya coincide con el dominio y con el TikTok)
+y deja de usar `@labdentalprodigy`. Reemplazadas las 7 referencias de la cuenta vieja en el sitio:
+`index.html` (Schema.org sameAs + icono social), `js/footer.js` (footer global: href + title + aria-label),
+`nosotros.html` (Schema.org sameAs), `patient.html` (href + texto visible), `mantenimiento.html`,
+`terminos-y-legal.html`.
+- **NO se tocó** el email admin `labdentalprodigy@gmail.com` (57 archivos: auth-guard, RLS SQL, edge functions,
+  VAPID_SUBJECT). Es identidad de login/autorización, no red social.
+- **NO se tocó** el WhatsApp `573212816716` (203 refs) — el número no cambia.
+- **NO se tocó** `@jackcarvajal` de los 46 artículos (`articles.js` + `article.html`) — es la cuenta de autor
+  ligada a Alejandro CAD/CAM, no al laboratorio.
+- 🔴 Pendiente **fuera del código** (Meta Business Suite): desvincular el número de WhatsApp del perfil viejo
+  y vincularlo al nuevo; mover la Página de Facebook al perfil nuevo; NO eliminar `@labdentalprodigy`
+  (dejarlo con post de redirección) para evitar que el handle quede libre y lo tome un tercero.
+
 ## 2026-08-18
 
 ### ✅ Dual-estado abordado (contrato + convergencia + prevención)
