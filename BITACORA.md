@@ -38,6 +38,16 @@ Corridas `tools/audit.mjs` (estático) y `tools/audit-schema-live.mjs` (contrato
   verifican firma, crons exigen `CRON_SECRET`.
 - **FIX** `app/anonimizar.html` → única `/app/` sin auth-guard; procesa fotos de pacientes → gateada a
   roles de staff. ✅ push. Alejandro no tiene esa página → sin paridad.
+- **client-panel.html** → SELECT principal usa whitelist `CAMPOS_CLIENTE` (sin notas_operador,
+  cotizacion_fab_monto, monto_base, operador_id). UI bien acotada. 🟡 *Recomendación (diseño, no exploit):*
+  RLS es por fila, no por columna → un doctor con su JWT podría `select=*` su propio pedido y ver campos
+  internos (p. ej. `cotizacion_fab_monto` = costo/margen del lab). Si importa esa confidencialidad,
+  exponer los pedidos al doctor vía vista/RPC security-definer con sólo columnas cliente. No verificable
+  sin cuenta de doctor.
+- **seguimiento-caso.html** (público) → `buscar_pedido_publico(p_codigo[,p_nonce])`: RPC anon devuelve
+  sólo campos operativos (servicio/material/estado/entrega), enmascara nombre del paciente ("Caso
+  Registrado"), `null` para código inexistente. Códigos ALEATORIOS (crypto hex / 36⁸) → no enumerables.
+  Bien diseñado, sin hallazgo.
 
 ### 🔴 CRÍTICO (RLS/GRANTS) — `anon` puede DELETE/UPDATE tablas sensibles [FALTA correr SQL]
 Auditoría RLS en vivo (anon key pública vía PostgREST): lectura anon bien tapada (pedidos/clientes/
