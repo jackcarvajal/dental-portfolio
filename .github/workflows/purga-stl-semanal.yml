@@ -24,15 +24,31 @@ jobs:
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" \
+          if [ -z "${CRON_SECRET}" ]; then
+            echo "::error::El secret CRON_SECRET de GitHub está VACÍO. Config → Secrets → Actions → CRON_SECRET (mismo valor que la env var de Cloudflare Pages)."
+            exit 1
+          fi
+          # UA de navegador + seguir redirects: reduce la probabilidad del Managed Challenge de Cloudflare
+          RESPONSE=$(curl -sL -w "\n%{http_code}" \
+            -A "Mozilla/5.0 (compatible; ProdigyCron/1.0)" \
             "https://prodigylabdental.com/api/purgar-stl-storage" \
             -H "Authorization: Bearer ${CRON_SECRET}")
           STATUS=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | sed '$d')
           echo "Status: $STATUS"
-          echo "Body: $BODY"
+          echo "Body: $(echo "$BODY" | head -c 300)"
           if [ "$STATUS" != "200" ]; then
-            echo "::error::Purga STL falló con status $STATUS — $BODY"
+            # Diagnóstico automático de la causa (ver docs/FIX-CRON-PURGA-STL.md)
+            case "$BODY" in
+              *"Just a moment"*|*"challenge"*)
+                echo "::error::CLOUDFLARE MANAGED CHALLENGE (403) — la IP del runner de GitHub es bloqueada antes de llegar a la Function. Fix: WAF → Custom Rule 'Skip' para la ruta /api/purgar-stl-storage. Ver docs/FIX-CRON-PURGA-STL.md";;
+              *"No configurado"*)
+                echo "::error::FALTAN ENV VARS EN CLOUDFLARE PAGES ('Prodigy App' → Settings → Environment Variables): SUPABASE_URL, SUPABASE_SERVICE_KEY, CRON_SECRET. Ver docs/FIX-CRON-PURGA-STL.md";;
+              *"No autorizado"*)
+                echo "::error::CRON_SECRET NO COINCIDE entre el secret de GitHub y la env var de Cloudflare. Deben ser idénticos. Ver docs/FIX-CRON-PURGA-STL.md";;
+              *)
+                echo "::error::Purga STL falló con status $STATUS — $BODY";;
+            esac
             exit 1
           fi
           echo "BODY=$BODY" >> $GITHUB_ENV
