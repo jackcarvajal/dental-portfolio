@@ -8,6 +8,10 @@
 <meta name="theme-color" content="#050505">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕶️</text></svg>">
 <title>Anonimizador de pacientes — PRODIGY</title>
+<!-- Auth: herramienta de staff (procesa fotos de pacientes) — sólo personal autenticado -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>ProdigyAuth.require(['admin','operator','mensajero','encargado_inventario','calidad','contabilidad','diseno','taller','fresado','impresion']);</script>
 <style>
 :root{
   --bg:#050505; --bg2:#0a0f16; --surface:#0d1520; --surface2:#111a26; --line:#1c2836;
