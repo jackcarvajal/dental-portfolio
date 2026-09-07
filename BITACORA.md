@@ -24,6 +24,21 @@ Diagnóstico en vivo (log run 34026824896 + curl directo): **3 causas independie
   usuario ejecuta los 3 pasos** y corre el workflow (workflow_dispatch) para verificar 200.
 - Alejandro CAD/CAM NO tiene esta función/workflow → sin paridad.
 
+### 🟢 Ronda de auditoría web/áreas — resultado: código SANO + 1 fix
+Corridas `tools/audit.mjs` (estático) y `tools/audit-schema-live.mjs` (contrato ↔ BD real): **0 críticos**
+(sólo aviso SEO trivial: `links.html` h1=0, página noindex). Barridos manuales de seguridad:
+- **noindex + auth-guard en `/app/*`** → todas las páginas reales protegidas. `admin-panel` (stub de
+  redirección), `success` (post-pago público) y `cambiar-contrasena` (guard inline vía getSession) = OK.
+- **XSS en paneles de staff** → limpio; `escH()`/`escF()`/`esc()` usados consistentemente (p. ej.
+  contabilidad facturas, panel-interno tablas). Los `${...}` sin escH que aparecen son strings de
+  WhatsApp/email/confirm o `p.codigo`/números, no `innerHTML`.
+- **Endpoints `/api/*` con service-role** → todos validan: `factura.js` (verificarAdmin→403),
+  `send-email.js` (endurecido: rate-limit IP+destinatario, plantillas server-side, `escMail` en
+  text/subject/temp_pass), `referido-reward.js` (revalida `pago_estado=pago_confirmado`), webhooks
+  verifican firma, crons exigen `CRON_SECRET`.
+- **FIX** `app/anonimizar.html` → única `/app/` sin auth-guard; procesa fotos de pacientes → gateada a
+  roles de staff. ✅ push. Alejandro no tiene esa página → sin paridad.
+
 ---
 
 ## 2026-08-27 → 09-04  (frente de PAGOS + varios)
