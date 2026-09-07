@@ -58,6 +58,18 @@ export async function onRequestPost(context) {
     }));
   }
 
+  // Cap de tamaño de entrada — evita abuso de costo con prompts gigantes en tu API key
+  // (el check de Origin solo frena navegadores de otros sitios, no un script con Origin falso).
+  const _bodyStr = JSON.stringify(body);
+  if (_bodyStr.length > 24000) {
+    return new Response(JSON.stringify({ error: 'Mensaje demasiado largo.' }), { status: 413, headers: corsHeaders(origin) });
+  }
+  // Cap de tokens de SALIDA — el cliente no puede pedir respuestas enormes (costo).
+  body.generationConfig = {
+    ...(body.generationConfig || {}),
+    maxOutputTokens: Math.min(Number(body.generationConfig?.maxOutputTokens) || 1024, 2048),
+  };
+
   // Modelos en orden de preferencia (fallback automático)
   const MODELS = [
     'gemini-2.5-flash',
