@@ -39,6 +39,19 @@ Corridas `tools/audit.mjs` (estático) y `tools/audit-schema-live.mjs` (contrato
 - **FIX** `app/anonimizar.html` → única `/app/` sin auth-guard; procesa fotos de pacientes → gateada a
   roles de staff. ✅ push. Alejandro no tiene esa página → sin paridad.
 
+### 🔴 CRÍTICO (RLS/GRANTS) — `anon` puede DELETE/UPDATE tablas sensibles [FALTA correr SQL]
+Auditoría RLS en vivo (anon key pública vía PostgREST): lectura anon bien tapada (pedidos/clientes/
+pagos/cotizaciones/perfiles → `[]`, count 0; INSERT pedidos → 401). **PERO** DELETE y PATCH devuelven
+**204** en pedidos, pagos, clientes, casos_portafolio, perfiles, reviews, cotizaciones → el rol `anon`
+tiene **GRANT de UPDATE/DELETE indebido**. Explotable con la anon key pública (va en el bundle JS):
+un anónimo podría borrar/alterar datos (p. ej. el portafolio con `FOR ALL USING(visible=true)`).
+- `sql/audit-anon-grants.sql` (read-only) → lista alcance exacto (grants + RLS + políticas).
+- `sql/fix-anon-write-grants.sql` → REVOKE DELETE de anon en todo (ningún flujo usa anon DELETE; los
+  "borrados" del front son soft-delete vía UPDATE) + REVOKE UPDATE en las 7 tablas sensibles.
+  Preserva escrituras anón legítimas (feedback_casos, referidos, leads, push_subscriptions,
+  doctores_perfil; INSERT de cotizaciones/leads/scanner/citas). BD compartida → 1 run cubre ambos.
+- 🟡 **PENDIENTE usuario: correr audit → luego fix en Supabase SQL Editor.** NO afecta a authenticated.
+
 ---
 
 ## 2026-08-27 → 09-04  (frente de PAGOS + varios)
