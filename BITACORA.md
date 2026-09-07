@@ -50,7 +50,19 @@ un anónimo podría borrar/alterar datos (p. ej. el portafolio con `FOR ALL USIN
   "borrados" del front son soft-delete vía UPDATE) + REVOKE UPDATE en las 7 tablas sensibles.
   Preserva escrituras anón legítimas (feedback_casos, referidos, leads, push_subscriptions,
   doctores_perfil; INSERT de cotizaciones/leads/scanner/citas). BD compartida → 1 run cubre ambos.
-- 🟡 **PENDIENTE usuario: correr audit → luego fix en Supabase SQL Editor.** NO afecta a authenticated.
+- ✅ **RESUELTO** (usuario corrió ambos SQL). Verificado en vivo post-fix: DELETE anón → 401 en todas
+  las tablas; UPDATE anón (payload real) → 401 en las 7 sensibles; SELECT portafolio → 200 (lecturas
+  intactas). Nota: un PATCH con body `{}` vacío da 204 aunque el permiso esté revocado (PostgREST
+  corta sin evaluar columnas) — usar siempre una columna real al verificar permisos de UPDATE.
+
+### 🟠 Catch derivado — `fix-bloat-pedidos-etapa2.sql` habría FALLADO (policy dependía de cliente_id)
+El dump de `pg_policies` reveló que la política `pedidos_update_own` usa `cliente_id IN (SELECT id FROM
+clientes WHERE user_id=auth.uid())` → depende de `pedidos.cliente_id`, la columna que E2 dropea.
+Postgres rechaza dropear una columna de la que depende una policy → E2 (como estaba) rollbackea.
+Mi verificación previa de E2 miró vistas/código pero NO políticas RLS. **Corregido**: E2 ahora hace
+`DROP POLICY pedidos_update_own` + recrea con `user_id = auth.uid()` (canónico, sin el join legacy)
+antes del DROP COLUMN. Sigue transaccional (si otra policy/vista aún referencia cliente_id, rollbackea
+nombrándola). Lección: al planear un DROP COLUMN, revisar TAMBIÉN `pg_policies`, no sólo vistas/código.
 
 ---
 

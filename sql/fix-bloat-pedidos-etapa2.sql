@@ -56,7 +56,18 @@ CREATE VIEW public.pedidos_reales AS
    FROM public.pedidos
   WHERE es_prueba = false;
 
+-- 2b) La política RLS `pedidos_update_own` referencia cliente_id (modelo viejo:
+--     cliente_id -> clientes.user_id). Bloquearía el DROP COLUMN. Se recrea con la
+--     columna canónica user_id (auth.uid() del doctor) — misma intención, sin el join legacy.
+DROP POLICY IF EXISTS pedidos_update_own ON public.pedidos;
+CREATE POLICY pedidos_update_own ON public.pedidos
+  FOR UPDATE TO authenticated
+  USING (user_id = auth.uid())
+  WITH CHECK (user_id = auth.uid());
+
 -- 3) Eliminar las columnas muertas (falla aquí si quedó alguna dependencia → ROLLBACK seguro)
+--    NOTA: si otra política/vista aún referencia cliente_id, este DROP falla y hace ROLLBACK
+--    nombrando al objeto dependiente → resolverlo y reintentar (es transaccional, no queda a medias).
 ALTER TABLE public.pedidos DROP COLUMN IF EXISTS cliente_id;
 ALTER TABLE public.pedidos DROP COLUMN IF EXISTS pieza;
 
