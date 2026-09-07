@@ -9,6 +9,23 @@
 
 ---
 
+## 2026-09-07  (auditoría web/áreas — GitHub Action rota)
+
+### 🔴→🟡 GitHub Action "Purga STL Storage Semanal" fallaba cada semana
+Diagnóstico en vivo (log run 34026824896 + curl directo): **3 causas independientes**.
+1. Faltan env vars en Cloudflare Pages ("Prodigy App") → la Function `purgar-stl-storage.js` da 500
+   `{"error":"No configurado"}` a cualquier request. 2. Secret `CRON_SECRET` de GitHub **vacío**
+   (`gh secret list` no lo lista). 3. Cloudflare **Managed Challenge** a las IPs de datacenter de
+   GitHub → 403 `Just a moment…` antes de llegar a la Function (desde IP residencial sí responde).
+- `.github/workflows/purga-stl-semanal.yml` → ahora **auto-diagnosticante**: el `::error::` dice cuál
+  de las 3 causas falló (challenge / env vars / secret), +UA de navegador, +guard de secret vacío. ✅ push.
+- `docs/FIX-CRON-PURGA-STL.md` → los 3 pasos de config (dashboard): env vars CF, secret GitHub, regla
+  WAF "Skip" para `/api/purgar-stl-storage` (seguridad la sigue dando el bearer). 🟡 **pendiente: el
+  usuario ejecuta los 3 pasos** y corre el workflow (workflow_dispatch) para verificar 200.
+- Alejandro CAD/CAM NO tiene esta función/workflow → sin paridad.
+
+---
+
 ## 2026-08-27 → 09-04  (frente de PAGOS + varios)
 
 ### 🟢 PayPal internacional SEGURO (reemplazo de Stripe suspendido) — ambos repos
