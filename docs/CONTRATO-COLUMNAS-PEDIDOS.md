@@ -29,10 +29,11 @@ referencian vistas legado (`historial_doctor`, `pedidos_reales`) y algunas RPC �
 `nombre_doctor`, `nombre_cliente`, `nombre_paciente` son **roles distintos** (el doctor que pide, el
 cliente/lab, el paciente final). No consolidar.
 
-## Etapa 2 (pendiente, requiere decisión) — plan de limpieza
-Cadena de dependencias a resolver ANTES de dropear `cliente_id`/`pieza`:
-1. Migrar/retirar la vista **`historial_doctor`** (no usada por código; apunta a `clientes` + `cliente_id`).
-2. Quitar `cliente_id`/`pieza` de **`pedidos_reales`** (vista no usada) — o retirar la vista.
-3. Revisar la tabla **`clientes`** (modelo viejo) y su uso en `panel-interno-operaciones.html`.
-4. Recién ahí `ALTER TABLE pedidos DROP COLUMN cliente_id, DROP COLUMN pieza` (por etapas, con backup).
-No se toca data viva sin este orden. Verificar con `tools/sql-map.mjs` y `tools/audit-schema-live.mjs`.
+## Etapa 2 — ✅ SQL LISTO: `sql/fix-bloat-pedidos-etapa2.sql` (falta ejecutar)
+Verificada la cadena de dependencias (código 0 usos; solo 2 vistas dependían; `clientes` no se toca).
+El SQL hace todo **transaccional** (BEGIN/COMMIT, ROLLBACK seguro si algo aún depende):
+1. `DROP VIEW historial_doctor` (legado, apunta al modelo viejo `clientes`).
+2. Recrea `pedidos_reales` **sin** `cliente_id`/`pieza` (DROP+CREATE; CREATE OR REPLACE no quita columnas).
+3. `ALTER TABLE pedidos DROP COLUMN cliente_id, pieza` (falla y hace rollback si quedó dependencia).
+4. Paso 0 opcional: backup de los datos viejos antes de borrar.
+⚠️ IRREVERSIBLE (borra los datos de esas columnas — son legado). Tras correrlo, regenerar `sql/_baseline/views.sql`.
