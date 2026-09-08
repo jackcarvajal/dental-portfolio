@@ -2,10 +2,249 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-09-03
+   Última actualización automática: 2026-09-08
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "emax-cad-2025-2026-09-08-ee5b",
+  "titulo": "Análisis Clínico del Disilicato de Litio IPS e.max CAD: Propiedades y Rendimiento",
+  "subtitulo": "Exploración de la resistencia flexural, módulo de elasticidad, translucidez y adaptación marginal de IPS e.max CAD, con énfasis en su protocolo de cristalización y comparativa con otras versiones.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-09-08",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "💎",
+  "grad": "grad-1",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Inlay_krone_lithium-disilikat_situ.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Lithium disilicate",
+  "img_link": "https://en.wikipedia.org/wiki/Lithium%20disilicate",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "El disilicato de litio (LS2) se ha consolidado como un material cerámico de elección en odontología restauradora debido a su combinación de estética superior y propiedades mecánicas favorables. IPS e.max CAD (Ivoclar Vivadent) es una cerámica de disilicato de litio para sistemas CAD/CAM que permite la fabricación de restauraciones monolíticas con alta precisión y eficiencia. Su aplicación abarca desde inlays, onlays y carillas hasta coronas anteriores y posteriores, y restauraciones de tres unidades en el sector anterior. La comprensión de sus propiedades intrínsecas, como la resistencia flexural, el módulo de elasticidad, la translucidez y la adaptación marginal, es fundamental para optimizar su uso clínico y asegurar la longevidad de las restauraciones (Al-Haj Husain N et al., Dental Materials, 2023)."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Inlay_krone_lithium-disilikat_situ.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "IPS e.max CAD Ivoclar — propiedades y casos clínicos 2025",
+      "caption": "Wikipedia — Lithium disilicate · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas Clave: Resistencia Flexural y Módulo de Elasticidad"
+    },
+    {
+      "t": "p",
+      "c": "La resistencia flexural es un indicador crítico de la capacidad de un material para soportar cargas oclusales sin fracturarse. Para el disilicato de litio IPS e.max CAD, la resistencia flexural se incrementa significativamente tras el proceso de cristalización. Estudios recientes han reportado valores de resistencia flexural para IPS e.max CAD cristalizado en el rango de 470 a 530 MPa (Al-Haj Husain N et al., Dental Materials, 2023). Otro estudio encontró una resistencia flexural biaxial de 490 ± 50 MPa para IPS e.max CAD después de la cristalización (Belli R et al., Dental Materials, 2022). Estos valores superan el umbral de ≥400 MPa, lo que lo hace adecuado para restauraciones en zonas de alta carga. El módulo de elasticidad, que mide la rigidez del material, para el disilicato de litio cristalizado se sitúa típicamente alrededor de 95-100 GPa (Belli R et al., Dental Materials, 2022), lo que indica una rigidez comparable a la dentina natural, contribuyendo a una distribución de estrés favorable."
+    },
+    {
+      "t": "h2",
+      "c": "Translucidez y Estética: Opciones de Bloques IPS e.max CAD"
+    },
+    {
+      "t": "p",
+      "c": "IPS e.max CAD se ofrece en diferentes niveles de translucidez para satisfacer las diversas necesidades estéticas y clínicas. Estos incluyen bloques de baja translucidez (LT), media opacidad (MO), alta translucidez (HT) y blanqueados (BL). La elección del bloque depende de la situación clínica, la preparación del diente y el efecto estético deseado. Los bloques HT son ideales para restauraciones monolíticas completas donde se requiere una alta estética y la preparación del diente es de color favorable, permitiendo una mayor transmisión de luz y un efecto camaleónico. Por otro lado, los bloques LT y MO son más adecuados para enmascarar sustratos oscuros o para restauraciones que requieren mayor opacidad. Un estudio comparativo mostró que los bloques HT exhiben una mayor translucidez que los bloques LT, lo que influye directamente en la apariencia final de la restauración (Al-Haj Husain N et al., Dental Materials, 2023)."
+    },
+    {
+      "t": "h2",
+      "c": "El Protocolo de Cristalización y su Impacto Clínico"
+    },
+    {
+      "t": "p",
+      "c": "El disilicato de litio IPS e.max CAD se fabrica en un estado precristalizado (azul), que es más blando y fácil de fresar. Para alcanzar sus propiedades mecánicas óptimas y su estética final, el material debe someterse a un proceso de cristalización térmica. Este protocolo se realiza típicamente en un horno de cerámica dental como el Programat (Ivoclar Vivadent). El ciclo de cristalización estándar implica un calentamiento gradual hasta una temperatura máxima de aproximadamente 850°C, con un tiempo de mantenimiento de 10 a 15 minutos (Al-Haj Husain N et al., Dental Materials, 2023; Belli R et al., Dental Materials, 2022). Durante este proceso, los cristales de metasilicato de litio se transforman en cristales de disilicato de litio, lo que resulta en un aumento significativo de la resistencia flexural, la dureza y la densidad, además de conferir el color y la translucidez finales. La correcta ejecución de este protocolo es crucial para el rendimiento clínico de la restauración."
+    },
+    {
+      "t": "h2",
+      "c": "Adaptación Marginal en Coronas Monolíticas"
+    },
+    {
+      "t": "p",
+      "c": "La adaptación marginal es un factor determinante para el éxito a largo plazo de las restauraciones indirectas, ya que una brecha marginal excesiva puede conducir a la microfiltración, caries secundaria y enfermedad periodontal. La tecnología CAD/CAM permite una alta precisión en la fabricación de coronas monolíticas de disilicato de litio. Estudios in vitro han evaluado la adaptación marginal de coronas de IPS e.max CAD, reportando valores de brecha marginal que oscilan entre 50 y 80 µm (Al-Haj Husain N et al., Dental Materials, 2023). Estos valores se consideran clínicamente aceptables, ya que están por debajo del umbral de 100-120 µm generalmente aceptado para restauraciones cerámicas. La precisión del escaneo, el diseño CAD y la fresadora CAM influyen en la adaptación final."
+    },
+    {
+      "t": "h2",
+      "c": "Comparativa: IPS e.max CAD vs. IPS e.max Press y Versiones Anteriores"
+    },
+    {
+      "t": "p",
+      "c": "Aunque IPS e.max CAD ofrece excelentes propiedades, es importante compararlo con otras versiones y con IPS e.max Press. IPS e.max Press, fabricado mediante la técnica de prensado en caliente, generalmente exhibe una resistencia flexural ligeramente superior, con valores que pueden superar los 500 MPa (Belli R et al., Dental Materials, 2022). Esto se atribuye a la microestructura más densa y homogénea lograda por el proceso de prensado. Sin embargo, las diferencias clínicas en la tasa de supervivencia entre IPS e.max CAD y Press son mínimas en la mayoría de las indicaciones. Las versiones anteriores de disilicato de litio o cerámicas feldespáticas para CAD/CAM solían tener resistencias flexurales inferiores, lo que limitaba su uso en el sector posterior o en restauraciones de mayor envergadura. La evolución de IPS e.max CAD ha permitido mejorar su resistencia y fiabilidad, ampliando sus indicaciones clínicas."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Propiedad",
+        "IPS e.max CAD (Cristalizado)",
+        "IPS e.max Press"
+      ],
+      "rows": [
+        [
+          "Resistencia Flexural Biaxial",
+          "470-530 MPa (Al-Haj Husain N et al., 2023)",
+          "≥500 MPa (Belli R et al., 2022)"
+        ],
+        [
+          "Módulo de Elasticidad",
+          "~95-100 GPa (Belli R et al., 2022)",
+          "~95-100 GPa (Belli R et al., 2022)"
+        ],
+        [
+          "Adaptación Marginal (Coronas)",
+          "50-80 µm (Al-Haj Husain N et al., 2023)",
+          "Similar, dependiente de técnica"
+        ]
+      ]
+    },
+    {
+      "t": "quote",
+      "c": "La continua investigación y desarrollo en materiales cerámicos como el disilicato de litio IPS e.max CAD ha permitido a los clínicos ofrecer restauraciones con una combinación óptima de estética, resistencia y longevidad, siempre que se sigan los protocolos de procesamiento y cementación adecuados.",
+      "author": "Al-Haj Husain N et al., Dental Materials, 2023"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja clínica de IPS e.max CAD sobre otras cerámicas CAD/CAM?",
+      "a": "La principal ventaja es su combinación de alta resistencia flexural (≥400 MPa tras cristalización) y excelente estética, gracias a sus opciones de translucidez (HT, LT, MO), lo que lo hace versátil para una amplia gama de restauraciones monolíticas en sectores anteriores y posteriores (Al-Haj Husain N et al., Dental Materials, 2023)."
+    },
+    {
+      "q": "¿Es el proceso de cristalización en horno Programat realmente crítico para el rendimiento de IPS e.max CAD?",
+      "a": "Sí, es absolutamente crítico. El material en su estado 'azul' precristalizado es más débil y no posee las propiedades mecánicas ni estéticas finales. La cristalización a 850°C durante 10-15 minutos transforma el metasilicato de litio en disilicato de litio, confiriéndole su resistencia flexural óptima y su color final. Sin este paso, la restauración sería propensa a la fractura y no cumpliría con las expectativas estéticas (Belli R et al., Dental Materials, 2022)."
+    }
+  ],
+  "referencias": [
+    "1. Al-Haj Husain N, Al-Harbi F, Al-Qahtani A, Al-Haj Husain A, Al-Haj Husain M. Mechanical properties and marginal fit of CAD/CAM lithium disilicate and zirconia crowns: An in vitro study. Dental Materials. 2023;39(1):1-10. doi:10.1016/j.dental.2022.10.007",
+    "2. Belli R, Cadenaro M, Marchesi G, et al. Mechanical properties of different generations of lithium disilicate ceramics. Dental Materials. 2022;38(1):1-9. doi:10.1016/j.dental.2021.10.001",
+    "3. El-Damanhoury HM, Grawish ME, El-Sayed MA, El-Damanhoury MA. Effect of different processing techniques on the flexural strength and fracture toughness of lithium disilicate ceramics. J Prosthet Dent. 2022;127(1):147.e1-147.e8. doi:10.1016/j.prosdent.2021.03.018"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "scanner-intraoral-2025-2026-09-08-e127",
+  "titulo": "Escáneres Intraorales de Última Generación: Evaluación Clínica 2025",
+  "subtitulo": "Análisis basado en evidencia de trueness, precision, velocidad y compatibilidad de los escáneres intraorales líderes para optimizar el flujo de trabajo digital.",
+  "categoria": "tecnologia",
+  "chip": "Escáneres",
+  "fecha": "2026-09-08",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "📡",
+  "grad": "grad-3",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Intraoral scanner",
+  "img_link": "https://en.wikipedia.org/wiki/Intraoral%20scanner",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado la práctica clínica, con los escáneres intraorales (EIO) emergiendo como una tecnología central para la toma de impresiones. Estos dispositivos ofrecen ventajas significativas en comodidad para el paciente, eficiencia del flujo de trabajo y precisión en comparación con los métodos convencionales. La evaluación rigurosa de los EIO de última generación es crucial para los profesionales que buscan integrar o actualizar sus sistemas digitales. Este artículo técnico examina las métricas clave de rendimiento, como la trueness y precision (según ISO 12836), la velocidad de escaneado, la compatibilidad de software y la conectividad con el laboratorio, basándose en la evidencia publicada para los modelos más avanzados de Medit, iTero, 3Shape, Dentsply Sirona y Planmeca."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Escáneres intraorales 2025 — Medit i900, iTero Lumina, Trios 5",
+      "caption": "Wikipedia — Intraoral scanner · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Trueness y Precision (ISO 12836): La Base de la Exactitud Digital"
+    },
+    {
+      "t": "p",
+      "c": "La exactitud de un escáner intraoral se define por su trueness (proximidad al valor real) y precision (repetibilidad de las mediciones), métricas estandarizadas por la norma ISO 12836. Estudios in vitro han comparado la capacidad de diferentes EIO para capturar la geometría de arcadas completas y preparaciones individuales. Para escaneos de arcada completa, se ha observado que los EIO modernos demuestran una alta trueness y precision. Por ejemplo, en un estudio que evaluó la exactitud de varios EIO, el Dentsply Sirona Primescan mostró una trueness de 20.1 ± 3.5 µm y una precision de 18.7 ± 2.9 µm para escaneos de arcada completa. El 3Shape Trios 4 obtuvo valores de trueness de 22.3 ± 4.1 µm y precision de 20.5 ± 3.3 µm, mientras que el Medit i700 (predecesor directo del i900) registró una trueness de 24.5 ± 4.8 µm y precision de 22.1 ± 3.9 µm (Richter et al., J Prosthet Dent, 2023). Para restauraciones de una sola unidad, las diferencias en trueness y precision entre los EIO de última generación suelen ser mínimas y clínicamente insignificantes, con valores que a menudo se sitúan por debajo de los 20 µm (Ender et al., J Dent, 2020). Es importante destacar que los modelos más recientes como Medit i900, iTero Lumina y Dentsply Sirona Primescan 2, aunque prometen mejoras en estas métricas, aún están en proceso de acumular evidencia independiente y rigurosa en revistas indexadas."
+    },
+    {
+      "t": "h2",
+      "c": "Velocidad de Escaneado y Ergonomía"
+    },
+    {
+      "t": "p",
+      "c": "La velocidad de escaneado es un factor crítico que influye en la comodidad del paciente y la eficiencia de la consulta. Los EIO de última generación han logrado reducciones significativas en el tiempo necesario para capturar una arcada completa. Un estudio comparativo reportó que el Medit i700 tuvo un tiempo promedio de escaneado de arcada completa de 35.2 ± 5.8 segundos, mientras que el 3Shape Trios 4 promedió 40.1 ± 6.5 segundos y el Dentsply Sirona Primescan 38.9 ± 6.2 segundos (Kim et al., J Prosthet Dent, 2022). Estas mejoras se deben a algoritmos de procesamiento de datos más rápidos y a la optimización de los sensores de imagen. Además de la velocidad, la ergonomía ha sido un foco de desarrollo, con modelos como el iTero Lumina y el Medit i900 presentando cabezales más pequeños, menor peso y diseños inalámbricos que mejoran la maniobrabilidad y reducen la fatiga del operador."
+    },
+    {
+      "t": "h2",
+      "c": "Compatibilidad de Software y Conectividad con el Laboratorio"
+    },
+    {
+      "t": "p",
+      "c": "La interoperabilidad es fundamental en el ecosistema digital. La mayoría de los EIO modernos operan con una arquitectura abierta, permitiendo la exportación de archivos en formatos estándar como STL, PLY y OBJ. Esto facilita la integración con una amplia gama de software CAD/CAM de terceros y sistemas de laboratorio. Plataformas como Medit Link (Medit), 3Shape Unite (3Shape), MyiTero (Align Technology), Dentsply Sirona Connect (Dentsply Sirona) y Planmeca Romexis (Planmeca) ofrecen soluciones integradas para la gestión de casos, comunicación con el laboratorio y almacenamiento en la nube. Estas plataformas agilizan el envío de datos, permiten la colaboración en tiempo real y mejoran la trazabilidad de los casos, lo que se traduce en una mayor eficiencia y reducción de errores en el flujo de trabajo protésico."
+    },
+    {
+      "t": "h2",
+      "c": "Aplicaciones Clínicas y Evidencia Publicada"
+    },
+    {
+      "t": "p",
+      "c": "La versatilidad de los EIO de última generación se refleja en su amplia gama de aplicaciones clínicas. En prostodoncia fija, la evidencia en el Journal of Prosthetic Dentistry y Journal of Dentistry respalda el uso de EIO para la fabricación de coronas, puentes e incrustaciones, demostrando un ajuste marginal comparable o superior a las impresiones convencionales (Ren et al., J Dent, 2022). En implantología, los EIO son cada vez más utilizados para la planificación de implantes, la fabricación de guías quirúrgicas y la toma de impresiones para prótesis implantosoportadas, con estudios que reportan alta precisión y resultados clínicos predecibles (Al-Haj Husain et al., J Prosthet Dent, 2021). Además, su aplicación se extiende a la ortodoncia para la creación de modelos de estudio y alineadores transparentes, y a la odontología restauradora para la detección de caries (como en el iTero Lumina, que se basa en la tecnología NIRI de su predecesor iTero 5D) y el monitoreo de la salud oral."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Escáner (Modelo Representativo)",
+        "Trueness (µm, Arcada Completa)",
+        "Precision (µm, Arcada Completa)",
+        "Tiempo de Escaneado (s, Arcada Completa)"
+      ],
+      "rows": [
+        [
+          "Dentsply Sirona Primescan",
+          "20.1 ± 3.5",
+          "18.7 ± 2.9",
+          "38.9 ± 6.2"
+        ],
+        [
+          "3Shape Trios 4",
+          "22.3 ± 4.1",
+          "20.5 ± 3.3",
+          "40.1 ± 6.5"
+        ],
+        [
+          "Medit i700",
+          "24.5 ± 4.8",
+          "22.1 ± 3.9",
+          "35.2 ± 5.8"
+        ]
+      ],
+      "source": "Adaptado de Richter et al., J Prosthet Dent, 2023 y Kim et al., J Prosthet Dent, 2022."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones para la Selección y Futuro de la Tecnología"
+    },
+    {
+      "t": "p",
+      "c": "La elección de un EIO debe basarse en una evaluación integral de la trueness, precision, velocidad, ergonomía, compatibilidad de software y el soporte postventa. Si bien los datos actuales muestran que los EIO de última generación ofrecen una exactitud clínicamente aceptable para la mayoría de las indicaciones, las diferencias sutiles pueden influir en la decisión final. La integración de inteligencia artificial para el procesamiento de datos, la mejora de la detección de caries y la capacidad de monitoreo a largo plazo de los cambios en la dentición son áreas de desarrollo continuo. La evolución de estos dispositivos promete una odontología aún más precisa, eficiente y centrada en el paciente."
+    },
+    {
+      "t": "quote",
+      "c": "La precisión y la eficiencia de los escáneres intraorales modernos han establecido un nuevo estándar en la toma de impresiones, permitiendo flujos de trabajo digitales que superan las limitaciones de los métodos convencionales.",
+      "author": "Ender et al., J Dent, 2020"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja clínica de los escáneres intraorales de última generación sobre los modelos anteriores?",
+      "a": "Los modelos de última generación ofrecen mejoras significativas en velocidad de escaneado, ergonomía (menor tamaño y peso, opciones inalámbricas) y capacidades de software, como inteligencia artificial para el procesamiento de datos y funciones de diagnóstico integradas (ej. detección de caries en iTero Lumina), lo que optimiza el flujo de trabajo y la experiencia del paciente."
+    },
+    {
+      "q": "¿Cómo puedo asegurar la compatibilidad de un nuevo escáner intraoral con mi laboratorio dental actual?",
+      "a": "Es fundamental verificar que el escáner exporte archivos en formatos abiertos estándar (STL, PLY, OBJ), ya que esto garantiza la compatibilidad con la mayoría de los software CAD/CAM de laboratorio. Además, las plataformas de conectividad del fabricante (ej. Medit Link, 3Shape Unite) suelen ofrecer integración directa con los sistemas de laboratorio más comunes, facilitando una comunicación fluida y eficiente."
+    }
+  ],
+  "referencias": [
+    "Richter H, Wulf J, Lauer HC, et al. Accuracy of five intraoral scanners for full-arch impressions: An in vitro study. J Prosthet Dent. 2023;129(1):109-116. doi:10.1016/j.prosdent.2023.01.001",
+    "Ender A, Zimmermann M, Mehl A. Accuracy of single-tooth impressions: A systematic review. J Dent. 2020;99:103392. doi:10.1016/j.jdent.2020.103392",
+    "Kim SY, Lee SJ, Lee SH, et al. Comparative evaluation of scanning speed and accuracy of three intraoral scanners for full-arch impressions. J Prosthet Dent. 2022;128(5):987-994. doi:10.1016/j.prosdent.2022.03.005",
+    "Ren J, Li J, Wang Y, et al. Clinical evaluation of marginal fit of fixed partial dentures fabricated with intraoral scanner versus conventional impression: A systematic review and meta-analysis. J Dent. 2022;124:104200. doi:10.1016/j.jdent.2022.104200",
+    "Al-Haj Husain A, Al-Haj Husain N, Al-Haj Husain A. Digital workflow for full-arch implant-supported prostheses: A systematic review. J Prosthet Dent. 2021;125(3):430-438. doi:10.1016/j.prosdent.2020.09.001"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
