@@ -6,8 +6,8 @@
 
 ## 🎯 EN TU CANCHA AHORA (resumen sesión 2026-09-07) — todo lo de código ya está pusheado
 **SQL para correr** (Supabase SQL Editor):
-- 🟢 `sql/fix-alertar-leads-scanner-domicilio.sql` — leads de scanner/domicilio HOY son invisibles
-  (ningún panel los lee). Este trigger los avisa por la campanita. **Correr pronto.** (BD compartida → cubre ambos.)
+- ✅ `sql/fix-alertar-leads-scanner-domicilio.sql` — CORRIDO 2026-09-07. Los leads de scanner/domicilio
+  ahora avisan al staff por la campanita del panel (trigger AFTER INSERT).
 - ⚪ `sql/fix-bloat-pedidos-etapa2.sql` — opcional, limpieza de columnas muertas (ya seguro, recrea la policy).
 
 **Config de dashboard:**
