@@ -1030,8 +1030,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.sb && window._myDepts !== undefined) {
       clearInterval(_waitSb);
       const _rol = window._currentRole || null;
-      const _dept = (window._myDepts && window._myDepts.length) ? window._myDepts[0] : null;
-      window._notifInit(window.sb, _dept, _rol).catch(()=>{});
+      // pasar TODOS los departamentos del operario (no solo el primero) para no perder notifs
+      const _depts = (window._myDepts && window._myDepts.length) ? window._myDepts : null;
+      window._notifInit(window.sb, _depts, _rol).catch(()=>{});
     }
   }, 500);
 });

@@ -49,6 +49,19 @@ Corridas `tools/audit.mjs` (estático) y `tools/audit-schema-live.mjs` (contrato
   Registrado"), `null` para código inexistente. Códigos ALEATORIOS (crypto hex / 36⁸) → no enumerables.
   Bien diseñado, sin hallazgo.
 
+### 🟢 Ruteo de notificaciones post-pago — auditado + 2 mejoras aplicadas (ambos repos)
+`_deptDePedido(flujo)` produce diseno/fresado/impresion (default diseno) → coinciden con `staff.departamentos`.
+Flujos reales: diseno/fresado/impresion/lab (lab→diseno). RPC `prodigy_mis_notifs` enruta por `p_dept`
+(escalar, del cliente) + `_rol_real` (del JWT, seguro). Correcto para staff de 1 depto. Mejoras:
+- **A) Notif de "pago recibido"** ahora va a `destinatario_rol='contabilidad'` (antes 'admin'). El admin
+  la SIGUE viendo (el RPC deja ver a admin/superadmin toda notif por rol) y ahora finanzas también.
+  Editado en paypal-capture, paypal-webhook (ambos repos) y webhook-handler (PRODIGY, shared).
+- **B) Staff multi-departamento**: `notif-panel.js` (ambos repos) ahora acepta `dept` como array y,
+  si hay varios, llama al RPC por cada uno y fusiona (dedupe por id) — sin cambiar la BD/RPC.
+  `operario.html` pasa `_myDepts` completo (antes sólo `[0]`). Un solo depto = 1 llamada (igual que antes).
+- 🟡 Requiere: redeploy de `webhook-handler` (lado Wompi) para que la parte A del pago Wompi tome efecto.
+  Lo demás (PayPal functions + notif-panel.js) auto-deploya al pushear.
+
 ### 🔴 CRÍTICO (RLS/GRANTS) — `anon` puede DELETE/UPDATE tablas sensibles [FALTA correr SQL]
 Auditoría RLS en vivo (anon key pública vía PostgREST): lectura anon bien tapada (pedidos/clientes/
 pagos/cotizaciones/perfiles → `[]`, count 0; INSERT pedidos → 401). **PERO** DELETE y PATCH devuelven

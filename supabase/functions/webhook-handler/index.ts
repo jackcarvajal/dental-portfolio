@@ -144,7 +144,7 @@ async function handleWompi(sb: any, payload: any) {
       const montoTxt = "$" + Math.round(montoReal).toLocaleString("es-CO") + " COP";
       const _base = { tipo: "pago", prioridad: "alta", pedido_id: existing?.id ?? null, pedido_codigo: referencia, accion_url: "/app/panel-interno-operaciones.html", leida_por: [] };
       await sb.from("notificaciones_internas").insert([
-        { ..._base, destinatario_rol: "admin", destinatario_dept: null, titulo: "💰 Pago recibido — " + referencia, mensaje: "Pago Wompi confirmado (" + montoTxt + ") del pedido " + referencia + "." },
+        { ..._base, destinatario_rol: "contabilidad", destinatario_dept: null, titulo: "💰 Pago recibido — " + referencia, mensaje: "Pago Wompi confirmado (" + montoTxt + ") del pedido " + referencia + "." },
         { ..._base, destinatario_rol: null, destinatario_dept: dept, titulo: "✅ Pedido pagado — " + referencia, mensaje: "El pedido " + referencia + " ya está pagado (" + montoTxt + "). Puede entrar a producción (" + dept + ")." },
       ]);
     } catch (_e) { /* no romper la confirmación por un fallo de notificación */ }

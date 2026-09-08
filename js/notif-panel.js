@@ -17,7 +17,8 @@ const TIPO_ICON  = {
 let _notifs  = [];
 let _unread  = 0;
 let _uid     = null;
-let _dept    = null;
+let _dept    = null;   // compat: primer departamento
+let _depts   = [];     // staff puede cubrir varios departamentos
 let _rol     = null;
 let _sb      = null;
 let _channel = null;
@@ -26,7 +27,9 @@ let _modoCliente = false;
 /* ── Init ── */
 window._notifInit = async function(sb, dept, rol, modoCliente) {
   _sb          = sb;
-  _dept        = dept || null;
+  // dept acepta string ('diseno') o array (['fresado','impresion']) para staff multi-área
+  _depts       = Array.isArray(dept) ? dept.filter(Boolean) : (dept ? [dept] : []);
+  _dept        = _depts[0] || null;
   _rol         = rol  || null;
   _modoCliente = !!modoCliente;
   const { data: { session } } = await sb.auth.getSession();
@@ -125,9 +128,20 @@ async function _loadNotifs() {
         .limit(15);
       data = (rows||[]).map(n => ({...n, es_nueva: !Array.isArray(n.leida_por) || !n.leida_por.includes(_uid)}));
     } else {
-      // Staff: RPC
-      const { data: rows } = await _sb.rpc('prodigy_mis_notifs', { p_dept:_dept, p_rol:_rol, p_limit:15 });
-      data = rows || [];
+      // Staff: RPC. Multi-departamento → una llamada por dept y se fusiona (dedupe por id),
+      // porque el RPC toma un p_dept escalar. Un solo dept (caso normal) = una sola llamada.
+      if (_depts.length > 1) {
+        const seen = new Set(); data = [];
+        for (const d of _depts) {
+          const { data: rows } = await _sb.rpc('prodigy_mis_notifs', { p_dept:d, p_rol:_rol, p_limit:15 });
+          for (const n of (rows||[])) { if (!seen.has(n.id)) { seen.add(n.id); data.push(n); } }
+        }
+        data.sort((a,b) => String(b.created_at||'').localeCompare(String(a.created_at||'')));
+        data = data.slice(0,15);
+      } else {
+        const { data: rows } = await _sb.rpc('prodigy_mis_notifs', { p_dept:_dept, p_rol:_rol, p_limit:15 });
+        data = rows || [];
+      }
     }
     _notifs = data || [];
     _unread = _notifs.filter(n => n.es_nueva).length;
@@ -225,7 +239,7 @@ function _subscribeRealtime() {
         meDirige = n.destinatario_user_id === _uid;
       } else {
         // staff: por dept, rol o broadcast
-        meDirige = (!n.destinatario_dept || n.destinatario_dept === _dept)
+        meDirige = (!n.destinatario_dept || _depts.includes(n.destinatario_dept))
                 && (!n.destinatario_rol  || n.destinatario_rol  === _rol || _rol === 'admin' || _rol === 'superadmin')
                 && !n.destinatario_user_id; // no son notifs de cliente
       }

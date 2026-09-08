@@ -50,8 +50,9 @@ async function notificarStaffPago(env, pedido, detalle) {
     accion_url: '/app/panel-interno-operaciones.html', leida_por: [],
   };
   const notifs = [
-    // 1) Admin / finanzas — entró un pago
-    { ...base, destinatario_rol: 'admin', destinatario_dept: null,
+    // 1) Contabilidad/finanzas — entró un pago (el admin también lo ve: el RPC
+    //    prodigy_mis_notifs deja ver a admin/superadmin toda notif por rol)
+    { ...base, destinatario_rol: 'contabilidad', destinatario_dept: null,
       titulo: '💰 Pago recibido — ' + pedido.codigo,
       mensaje: 'Pago confirmado (' + detalle + ') del pedido ' + pedido.codigo + '.' },
     // 2) Área de producción según el flujo — ya pagado, pueden empezar
