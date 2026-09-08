@@ -49,6 +49,17 @@ Corridas `tools/audit.mjs` (estático) y `tools/audit-schema-live.mjs` (contrato
   Registrado"), `null` para código inexistente. Códigos ALEATORIOS (crypto hex / 36⁸) → no enumerables.
   Bien diseñado, sin hallazgo.
 
+### 🔴→✅ BUG DE FLUJO — el operario no podía aprobar diseño ni QA (22P02 al escribir el enum)
+Auditoría del flujo interno: `operario.html` y `operario-diseno.html` escribían el enum `estado` con
+valores operativos que NO existen en el enum (`DISENO_FINALIZADO`, `QA_APROBADO`, `terminado`) → cada
+UPDATE reventaba con **22P02** → `toast('Error')` → **el pedido no avanzaba** (se atoraba al aprobar
+diseño, al aprobar QA, y en el handoff de entrega digital). Verificado en vivo: `estado=eq.DISENO_FINALIZADO`
+→ HTTP 400. El bug ya se había arreglado en UN punto (operario-diseno:534, con comentario) pero quedó
+vivo en 5 más. Fix: eliminadas las 5 escrituras inválidas al enum (operario.html ×3, operario-diseno ×2);
+la máquina real la lleva `estado_operativo` (texto). Alejandro no tiene estos paneles → sin paridad.
+⚠️ `audit-schema-live` NO lo cazó: valida valores de enum sólo en FILTROS (eq/in), no en escrituras
+(`updates.estado=`). Candidato a endurecer la herramienta.
+
 ### 🟢 Leads invisibles + WA roto en success — arreglados (audit "uno por uno")
 Los 3 callers doctor-facing que pegaban a la Edge notify-wa (401 silencioso):
 - **envia-tu-scanner / escaner-domicilio** (ambos repos): el lead se guardaba en `solicitudes_scanner`/

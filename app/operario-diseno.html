@@ -727,7 +727,7 @@ async function guardarQA(resultado) {
   // nunca le llegaban al doctor.
   if (htmlUrl) updates.html_diseno_url = htmlUrl;
   if (resultado === 'DISENO_APROBADO') {
-    updates.estado       = 'DISENO_FINALIZADO';
+    // NO tocar el enum `estado` (DISENO_FINALIZADO no existe → 22P02 rompía el update). estado_operativo manda.
     updates.stl_liberado = true;
   }
   if (resultado === 'REVISION_CLIENTE') {
@@ -786,7 +786,7 @@ async function confirmarHandoff(dept) {
   const updates = { flujo: dept, departamento_actual: dept };
   if (dept === 'entrega_digital') {
     updates.estado_operativo = 'ENTREGADO';
-    updates.estado = 'terminado';
+    // NO escribir estado='terminado' (no existe en el enum → 22P02 rompía el handoff). estado_operativo manda.
   }
   const { error } = await sb.from('pedidos').update(updates).eq('id', id);
   if (error) { toast('Error en handoff: ' + error.message, 'err'); return; }

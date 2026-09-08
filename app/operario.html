@@ -629,7 +629,8 @@ async function avanzar(id, nuevoEstado, dept) {
   const updates = { estado_operativo: nuevoEstado };
   if (nuevoEstado === 'EN_PRODUCCION')    updates.timestamp_validacion = new Date().toISOString();
   if (nuevoEstado === 'FRESADO_INICIADO') updates.timestamp_produccion  = new Date().toISOString();
-  if (nuevoEstado === 'DISENO_APROBADO')  updates.estado = 'DISENO_FINALIZADO';
+  // NO escribir el enum `estado` con valores operativos (DISENO_FINALIZADO no existe en el enum →
+  // 22P02 → fallaba TODO el update y el pedido no avanzaba). El pipeline lo lleva estado_operativo.
 
   const { error } = await sb.from('pedidos').update(updates).eq('id', id);
   if (error) { toast('Error: '+error.message,'err'); return; }
@@ -744,8 +745,8 @@ async function submitQA(accion) {
   const updates = { estado_operativo: nuevoEstado };
   if (link)  updates.link_diseno   = link;
   if (notes) updates.notas_cambios = notes;
-  if (nuevoEstado === 'DISENO_APROBADO') updates.estado = 'DISENO_FINALIZADO';
-  if (nuevoEstado === 'QA_APROBADO')     updates.estado = 'QA_APROBADO';
+  // NO escribir el enum `estado` con DISENO_FINALIZADO/QA_APROBADO (no existen en el enum → 22P02 →
+  // fallaba el update al aprobar diseño/QA y el pedido quedaba atorado). La verdad la lleva estado_operativo.
 
   const { error } = await sb.from('pedidos').update(updates).eq('id', id);
   if (error) { toast('Error: '+error.message,'err'); return; }
