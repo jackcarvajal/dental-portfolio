@@ -98,6 +98,7 @@ export async function onRequestPost(context) {
     const data = await r.json();
     return new Response(JSON.stringify({ ok: r.ok, recipients: data.recipients, id: data.id }), { headers: CORS });
   } catch(e) {
-    return new Response(JSON.stringify({ ok: false, error: e.message }), { headers: CORS });
+    console.error('[send-push]', e);
+    return new Response(JSON.stringify({ ok: false, error: 'Error enviando push' }), { headers: CORS });
   }
 }

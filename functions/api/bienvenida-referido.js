@@ -130,6 +130,7 @@ export async function onRequestPost(context) {
     const ok = r.ok;
     return new Response(JSON.stringify({ ok, status: r.status }), { headers: CORS });
   } catch(e) {
-    return new Response(JSON.stringify({ ok: false, error: e.message }), { headers: CORS });
+    console.error('[bienvenida-referido]', e);
+    return new Response(JSON.stringify({ ok: false, error: 'Error interno' }), { headers: CORS });
   }
 }

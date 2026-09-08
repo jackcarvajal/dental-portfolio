@@ -49,6 +49,14 @@ Corridas `tools/audit.mjs` (estático) y `tools/audit-schema-live.mjs` (contrato
   Registrado"), `null` para código inexistente. Códigos ALEATORIOS (crypto hex / 36⁸) → no enumerables.
   Bien diseñado, sin hallazgo.
 
+### 🟢 Hardening — Edge Functions filtraban `e.message` al cliente (backlog health-check)
+Ítem de PENDIENTES (fuga cosmética de detalles internos). Endurecidos los endpoints donde el caller
+NO es de confianza (mensaje genérico al cliente + `console.error` server-side para no perder depuración):
+- PRODIGY: `track-event` (anon/analytics), `csp-report` (anon), `send-push`, `bienvenida-referido`.
+- Alejandro (paridad): `send-email` (estaba menos endurecido que el de PRODIGY), `wa-auto`.
+- SE DEJARON intactos los de caller de confianza donde el mensaje es útil: `factura` (admin),
+  `purgar-stl` (cron), `churn-alert`/`resumen` (cron), `stripe-webhook` (suspendido). Auto-deploy al push.
+
 ### 🟢 Ruteo de notificaciones post-pago — auditado + 2 mejoras aplicadas (ambos repos)
 `_deptDePedido(flujo)` produce diseno/fresado/impresion (default diseno) → coinciden con `staff.departamentos`.
 Flujos reales: diseno/fresado/impresion/lab (lab→diseno). RPC `prodigy_mis_notifs` enruta por `p_dept`

@@ -95,7 +95,8 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ ok: resp.ok, stored: resp.ok }), { status: 200, headers: h });
   } catch (err) {
     // Silencioso — nunca bloquear el frontend por analytics
-    return new Response(JSON.stringify({ ok: true, stored: false, error: err.message }), { status: 200, headers: h });
+    console.error('[track-event]', err);
+    return new Response(JSON.stringify({ ok: true, stored: false }), { status: 200, headers: h });
   }
 }
 

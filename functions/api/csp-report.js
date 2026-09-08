@@ -73,7 +73,8 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ ok: true }), { status: 204, headers: CORS });
 
   } catch(e) {
-    return new Response(JSON.stringify({ ok: false, error: e.message }), { status: 400, headers: CORS });
+    console.error('[csp-report]', e);
+    return new Response(JSON.stringify({ ok: false }), { status: 400, headers: CORS });
   }
 }
 
