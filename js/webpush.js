@@ -9,7 +9,7 @@
  * 4. Reemplazar ONESIGNAL_APP_ID abajo
  */
 
-const ONESIGNAL_APP_ID = 'PENDIENTE'; // ← reemplazar con tu App ID de OneSignal
+const ONESIGNAL_APP_ID = 'a53347d5-9a1f-4739-8c6c-405f7cc401c6'; // OneSignal App ID (público)
 
 /* ── INICIALIZAR ── */
 (function initOneSignal() {
