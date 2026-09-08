@@ -49,6 +49,18 @@ Corridas `tools/audit.mjs` (estático) y `tools/audit-schema-live.mjs` (contrato
   Registrado"), `null` para código inexistente. Códigos ALEATORIOS (crypto hex / 36⁸) → no enumerables.
   Bien diseñado, sin hallazgo.
 
+### 🟢 Leads invisibles + WA roto en success — arreglados (audit "uno por uno")
+Los 3 callers doctor-facing que pegaban a la Edge notify-wa (401 silencioso):
+- **envia-tu-scanner / escaner-domicilio** (ambos repos): el lead se guardaba en `solicitudes_scanner`/
+  `citas_domicilio` pero **ningún panel las lee** → leads invisibles. Fix: `sql/fix-alertar-leads-scanner-
+  domicilio.sql` — trigger AFTER INSERT que crea notificación interna (campanita del panel, rol admin)
+  con los datos del lead en el mensaje. 🟡 falta correr el SQL (BD compartida → 1 run cubre ambos).
+  Limpiados los fetch muertos a la Edge.
+- **success.html**: tras pagar, el doctor veía un bloque de **ERROR de WhatsApp** (el endpoint daba 401)
+  y el mensaje "WhatsApp enviado" era falso (nunca auto-enviaba). Reemplazado por un **botón client-side**
+  que abre WhatsApp del lab con su número de orden (siempre funciona). Quitada la const `NOTIFY_WA_URL`
+  sin uso. ✅ push (auto-deploy).
+
 ### 🟢 Hardening — Edge Functions filtraban `e.message` al cliente (backlog health-check)
 Ítem de PENDIENTES (fuga cosmética de detalles internos). Endurecidos los endpoints donde el caller
 NO es de confianza (mensaje genérico al cliente + `console.error` server-side para no perder depuración):

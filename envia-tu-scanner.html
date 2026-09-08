@@ -936,16 +936,9 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
 
     setProg(100, 'Listo');
 
-    // 3. Notificar a PRODIGY (silencioso)
-    fetch(`${SUPABASE_URL}/functions/v1/notify-wa`, {
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_ANON}`},
-        body:JSON.stringify({
-            tipo:'scanner_nuevo', telefono:WA_PRODIGY,
-            nombre:doctor, caseId:clinica,
-            mensaje:`Nueva solicitud: ${servicio} — ${clinica} — WA: ${whatsapp}${email?' — Email: '+email:' — SIN EMAIL'}`
-        })
-    }).catch(()=>{});
+    // 3. El aviso al staff lo dispara un trigger AFTER INSERT en solicitudes_scanner
+    //    (sql/fix-alertar-leads-scanner-domicilio.sql) → campanita del panel. Antes se
+    //    llamaba a la Edge notify-wa con la anon key → 401 → el lead quedaba invisible.
 
     setTimeout(() => {
         hideProg();

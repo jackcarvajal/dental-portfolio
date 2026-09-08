@@ -882,18 +882,9 @@ document.getElementById('agendaForm').addEventListener('submit', async e => {
 
     setProg(100, 'Listo');
 
-    // Notificar a PRODIGY (silencioso)
-    fetch(`${SUPABASE_URL}/functions/v1/notify-wa`, {
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_ANON}`},
-        body: JSON.stringify({
-            tipo: 'cita_domicilio',
-            telefono: WA_PRODIGY,
-            nombre,
-            caseId: zona,
-            mensaje: `Nueva cita domicilio: ${servicio} — ${zona} — ${fecha} (${franja}) — WA: ${whatsapp} — ${direccion}`
-        })
-    }).catch(() => {});
+    // El aviso al staff lo dispara un trigger AFTER INSERT en citas_domicilio
+    // (sql/fix-alertar-leads-scanner-domicilio.sql) → campanita del panel. Antes se
+    // llamaba a la Edge notify-wa con la anon key → 401 → la cita quedaba invisible.
 
     setTimeout(() => {
         hideProg();

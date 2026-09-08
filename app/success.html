@@ -149,8 +149,11 @@
 
         <!-- Estado WA: enviado -->
         <div class="wa-status" id="wa-sent">
-            <span class="wa-icon">✅</span>
-            <strong>WhatsApp enviado.</strong> Revisa tu teléfono para la confirmación del caso.
+            <span class="wa-icon">💬</span>
+            <strong>¿Confirmar tu pago por WhatsApp?</strong>
+            <div style="margin-top:8px;">
+                <a id="wa-confirm-link" href="#" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#25D366;color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-weight:700;font-size:.82rem;">Enviar confirmación →</a>
+            </div>
         </div>
 
         <!-- Estado WA: error silencioso -->
@@ -210,8 +213,6 @@
 
         const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
         const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
-        const NOTIFY_WA_URL = `${SUPABASE_URL}/functions/v1/notify-wa`;
-
         // Capturar ?pedido= de la URL
         const params  = new URLSearchParams(window.location.search);
         const caseId  = params.get('pedido') || '';
@@ -273,27 +274,15 @@ window.sb = sb;
             }
 
             // Disparar Edge Function notify-wa
-            const resp = await fetch(NOTIFY_WA_URL, {
-                method:  'POST',
-                headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON },
-                body: JSON.stringify({
-                    tipo:     'pago_confirmado',
-                    telefono: caso.telefono || '',
-                    nombre:   caso.nombre_doctor || 'Cliente',
-                    caseId:   caso.codigo,
-                    moneda:   caso.moneda  || 'COP',
-                    monto:    caso.monto_total ? String(caso.monto_total) : '',
-                }),
-                signal: AbortSignal.timeout(8000)
-            });
-
+            // El pago YA quedó confirmado server-side. En vez de un "envío automático"
+            // (que no existía: la Edge notify-wa daba 401 → el doctor veía un error tras
+            // pagar), ofrecemos un botón client-side para confirmar por WhatsApp con su
+            // número de orden — siempre funciona, sin depender de ningún endpoint.
             document.getElementById('wa-loading').style.display = 'none';
-
-            if (resp.ok) {
-                document.getElementById('wa-sent').style.display = 'block';
-            } else {
-                throw new Error(`notify-wa HTTP ${resp.status}`);
-            }
+            const _waMsg  = `Hola, confirmo el pago de mi caso ${caso.codigo || caseId} a nombre de ${caso.nombre_doctor || ''}.`;
+            const _waLink = document.getElementById('wa-confirm-link');
+            if (_waLink) _waLink.href = `https://wa.me/573212816716?text=${encodeURIComponent(_waMsg)}`;
+            document.getElementById('wa-sent').style.display = 'block';
         } catch (e) {
             console.warn('notify-wa:', e.message);
             document.getElementById('wa-loading').style.display = 'none';
