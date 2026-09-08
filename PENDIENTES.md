@@ -1,6 +1,24 @@
 # PRODIGY — PENDIENTES MAESTRO
-> Solo tareas activas. Última revisión: 2026-07-14 (sesión autónoma continua)
+> Solo tareas activas. Última revisión: 2026-09-07 (sesión autónoma continua)
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
+
+---
+
+## 🎯 EN TU CANCHA AHORA (resumen sesión 2026-09-07) — todo lo de código ya está pusheado
+**SQL para correr** (Supabase SQL Editor):
+- 🟢 `sql/fix-alertar-leads-scanner-domicilio.sql` — leads de scanner/domicilio HOY son invisibles
+  (ningún panel los lee). Este trigger los avisa por la campanita. **Correr pronto.** (BD compartida → cubre ambos.)
+- ⚪ `sql/fix-bloat-pedidos-etapa2.sql` — opcional, limpieza de columnas muertas (ya seguro, recrea la policy).
+
+**Config de dashboard:**
+- 🔵 **Activar push (OneSignal)** — env vars en Cloudflare de cada proyecto (App IDs ya cableados en webpush.js):
+  PRODIGY `a53347d5-9a1f-4739-8c6c-405f7cc401c6` · Alejandro `fe1f81f4-2bea-4e38-9950-d447feb876da`
+  + `ONESIGNAL_REST_API_KEY` (secreta de cada app) + revisar Site URL. Ver bloque "ACTIVAR PUSH" abajo.
+- 🔵 **Cron purga STL** — 3 pasos: env vars Cloudflare + secret GitHub + regla WAF. Ver `docs/FIX-CRON-PURGA-STL.md`.
+
+**Ya RESUELTO esta sesión (código pusheado):** RLS anon-write cerrado (SQL corrido) · notif de pago a
+contabilidad + ruteo multi-depto (desplegado) · `e.message` endurecido · WA "diseño listo" desde panel ·
+leads/success WA · anonimizar auth-guard · cron STL auto-diagnosticante · gemini cost-cap.
 
 ---
 
