@@ -20,6 +20,16 @@ Red de seguridad: `functions/api/paypal-webhook.js` (reconciliación) — verifi
 4. **Registrar el webhook** en developer.paypal.com → tu app → Webhooks → Add: URL `https://<tu-dominio>/api/paypal-webhook`, evento `PAYMENT.CAPTURE.COMPLETED`. Copia el **Webhook ID** que te da → esa es la env var `PAYPAL_WEBHOOK_ID`.
 5. **Redesplegar `wompi-signature`** (`supabase functions deploy wompi-signature`) — cierra el hueco de dinero viejo (montos arbitrarios) **y** el CORS de Alejandro, de una.
 
+## 🟡 ACTIVAR PUSH (OneSignal) — falta config del usuario (2026-09-07)
+Código listo en ambos: `webpush.js` cableado (PRODIGY `a53347d5-9a1f-4739-8c6c-405f7cc401c6`;
+Alejandro `fe1f81f4-2bea-4e38-9950-d447feb876da`), botón de suscripción en `client-panel.html`.
+**Falta (dashboard, usuario):** en Cloudflare env de cada proyecto poner `ONESIGNAL_APP_ID` (el de arriba)
++ `ONESIGNAL_REST_API_KEY` (secreta, de la app OneSignal respectiva) → Retry deployment. Y revisar en
+OneSignal que el *Site URL* de la plataforma Web sea el dominio real (prodigylabdental.com /
+alejandrocadcam.pages.dev). Verificar: `/api/send-push` debe dejar de responder 'OneSignal no configurado'.
+NOTA: hoy `webpush.js` sólo se carga en `client-panel.html` → sólo doctores se suscriben. Para push al
+STAFF hay que cargar webpush.js en las páginas del panel (pendiente aparte, no bloquea el push al cliente).
+
 ## 🟡 BACKLOG del health-check (2026-08-26) — infra sólida, quedan estos
 
 Tras la sesión de hardening (schema drift, dual-estado, gobernanza SQL — todo cerrado y auto-verificable),
