@@ -122,6 +122,15 @@ Auditoría Sonnet de `meta-capi`, `notify-wa`, `send-push` (versiones Deno en `s
   - `send-push`: los llamadores Deno mandan `{ email, titulo, cuerpo }` (target = 1 doctor por email, campo `cuerpo`). Pero `/api/send-push` lee `{ titulo, mensaje, url, segmento }`: **ignora `email` y `cuerpo`**, y `segmento` sólo hace `'all'` vs default `'staff'` → **no targetea por usuario**. Un swap ciego → `cuerpo` se pierde (mensaje default) y el aviso al doctor **se transmitiría a TODO el staff** (regresión).
   - `notify-wa`: `/api/notify-wa` **genera un wa.me URL, NO auto-envía**; los llamadores Deno son fire-and-forget y no abren la respuesta → semántica distinta.
   - **Trabajo real (mini-proyecto con testing en vivo):** (1) agregar targeting por usuario (email/`include_external_user_ids`) a `/api/send-push`; (2) adaptar body de cada llamador (`cuerpo`→`mensaje`); (3) definir cómo entrega `notify-wa` al doctor (¿auto-envío server-side o abrir wa_url?); (4) probar entrega real de push+WA antes de borrar las Deno.
+  - **⚠️ BLOQUEANTE (audit 2026-09-07): el PUSH está apagado.** `js/webpush.js:12` tiene
+    `ONESIGNAL_APP_ID='PENDIENTE'` → OneSignal nunca se activó, ningún usuario se suscribe, cero
+    destinatarios. Todo el subsistema de push (Deno y CF) es inerte HOY. **Prerequisito = activar
+    OneSignal** (crear cuenta gratis, poner el App ID en webpush.js + `ONESIGNAL_APP_ID`/
+    `ONESIGNAL_REST_API_KEY` en env de Cloudflare). Hasta entonces, consolidar send-push no cambia nada.
+  - **WhatsApp SÍ opera** (manual): `/api/notify-wa` devuelve `wa_url`, el panel lo abre con
+    `window.open` (operator-panel, operario-diseno). Fix de los callers Deno de WA = apuntar a
+    `/api/notify-wa` + `window.open(data.wa_url)` en contexto staff (panel-interno). success.html y
+    scanners son doctor-facing → decidir UX aparte.
 
 ---
 
