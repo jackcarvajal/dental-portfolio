@@ -124,10 +124,15 @@ nunca reflejan el valor real. Requiere mapear todo el manejo de estado de Alejan
 - ✅ **RESUELTO (2026-09-10) la parte GRAVE:** `mis-casos.html:277` y `metricas.html:148` FILTRABAN el enum
   por `"cancelado"/"CANCELADO"` → 22P02 → **400 → "mis casos" del doctor no cargaba** y métricas rotas.
   Corregido a `estado_operativo='CANCELADO_DOCTOR'`. `audit-schema-live` endurecido (evListQ) para cazarlo.
-- 🟡 **Queda (cosmético/funcional, no 22P02):** `client-panel.html:684` compara `p.estado==='revision'||'en_diseno'`
-  (comparación JS, no filtro) → siempre FALSO → la **UI de subir fotos de feedback nunca aparece** (el doctor
-  no puede mandar feedback en revisión). Fix real = comparar `estado_operativo` (REVISION_CLIENTE/CAMBIOS_SOLICITADOS).
-  Idem badges de estado. Requiere probar el flujo de Alejandro en vivo.
+- ✅ **RESUELTO (2026-09-10) — migración completa a estado_operativo.** Además de mis-casos/metricas, se
+  encontró que **la ENTREGA de diseños estaba rota**: `admin-panel.html` (subir diseño línea 711 + modal de
+  edición 643) escribía `pedidos.estado` con valores ficticios (revision/en_diseno/aprobado/entregado/cancelado)
+  → 22P02 → el UPDATE fallaba → `link_diseno` no se guardaba → el doctor **nunca veía su diseño** ni el botón
+  "Revisar y Aprobar". Fix: el estado granular ahora va en `estado_operativo` (texto, valores canónicos:
+  VALIDACION_PENDIENTE/EN_DISENO/REVISION_CLIENTE/DISENO_APROBADO/ENTREGADO/CANCELADO_DOCTOR). El modal, el
+  badge (admin+cliente), la UI de feedback (por `link_diseno && !diseno_aprobado`) y los KPIs (por
+  link_diseno/diseno_aprobado) leen de las señales reales. `CAMPOS_CLIENTE` +estado_operativo. ⚠️ **Probar en
+  vivo**: subir un diseño desde el admin de Alejandro y confirmar que el doctor lo ve y puede aprobar.
 
 ## ✅ SQL ejecutado (2026-07-16) — doble gasto de cupón de referido
 

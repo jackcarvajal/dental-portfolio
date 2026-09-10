@@ -49,6 +49,15 @@ Corridas `tools/audit.mjs` (estático) y `tools/audit-schema-live.mjs` (contrato
   Registrado"), `null` para código inexistente. Códigos ALEATORIOS (crypto hex / 36⁸) → no enumerables.
   Bien diseñado, sin hallazgo.
 
+### 🔴→✅ Alejandro entregaba diseños ROTOS — enum ficticio en pedidos.estado (22P02)
+Auditoría flujo Alejandro: NO usa `estado_operativo`; todo su estado estaba en el enum `estado` con
+valores inventados (revision/en_diseno/aprobado/entregado/cancelado). `admin-panel` (subir diseño + modal
+de edición) los ESCRIBÍA a pedidos.estado → 22P02 → el UPDATE fallaba → `link_diseno` no se guardaba → el
+doctor NUNCA veía su diseño ni el botón Revisar/Aprobar. La aprobación del doctor ya se había arreglado
+(quitando su estado ficticio) pero la SUBIDA no. Fix: estado granular migrado a `estado_operativo` (texto,
+canónico); modal/badge/feedback-UI/KPIs leen estado_operativo + link_diseno/diseno_aprobado. Verificado:
+estado=eq.revision→400. Falta probar en vivo la entrega de un diseño.
+
 ### 🔴→✅ Mismatch CANCELADO — cancelados no se ocultaban / queries de Alejandro rotas (22P02)
 Auditoría flujo interno (cruce estados escritos↔leídos):
 - **PRODIGY** `panel-interno-operaciones.html:3419` (torre de control) excluía `"CANCELADO"` pero el estado
