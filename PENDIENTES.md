@@ -121,6 +121,13 @@ se atascaba en silencio):
 en `app/client-panel.html:684`, `app/admin-panel.html`, `calculadora-diseno.html`. Los badges de estado
 nunca reflejan el valor real. Requiere mapear todo el manejo de estado de Alejandro al enum real
 (Pendiente/En Diseño/En Revisión/En Producción/Pagado) y probar — o migrarlo a las RPCs que ya usa PRODIGY.
+- ✅ **RESUELTO (2026-09-10) la parte GRAVE:** `mis-casos.html:277` y `metricas.html:148` FILTRABAN el enum
+  por `"cancelado"/"CANCELADO"` → 22P02 → **400 → "mis casos" del doctor no cargaba** y métricas rotas.
+  Corregido a `estado_operativo='CANCELADO_DOCTOR'`. `audit-schema-live` endurecido (evListQ) para cazarlo.
+- 🟡 **Queda (cosmético/funcional, no 22P02):** `client-panel.html:684` compara `p.estado==='revision'||'en_diseno'`
+  (comparación JS, no filtro) → siempre FALSO → la **UI de subir fotos de feedback nunca aparece** (el doctor
+  no puede mandar feedback en revisión). Fix real = comparar `estado_operativo` (REVISION_CLIENTE/CAMBIOS_SOLICITADOS).
+  Idem badges de estado. Requiere probar el flujo de Alejandro en vivo.
 
 ## ✅ SQL ejecutado (2026-07-16) — doble gasto de cupón de referido
 
