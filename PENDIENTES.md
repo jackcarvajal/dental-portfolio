@@ -57,6 +57,14 @@ trabajo — son `count head:true`). Los estados reales de esos buckets serían: 
 distinto de "en producción" (`EN_PRODUCCION`/`FRESADO_INICIADO`/`EN_IMPRESION`). Falta que el equipo
 defina qué debe mostrar cada bucket antes de corregir (no adivinar la métrica). Ver `docs/CONTRATO-ESTADOS.md`.
 
+## 🟡 Alejandro `full-arch-cad.html` — contenido de wax-up (copia sin terminar) [audit SEO 2026-09-10]
+El archivo tiene nombre de full-arch pero TODO su contenido (title, description, og, h1, Schema Service,
+body: casos de uso, "Desde $15 USD por diente") es de **Wax-Up Digital** → duplicate content con
+`wax-up-digital.html`. Estaba en sitemap e indexable (huérfano, sin enlaces internos). **Ya mitigado:**
+noindex + sacado del sitemap (frena el daño SEO). **Falta (decisión del usuario):** escribir el contenido
+real de full-arch (precio/servicio propios — no los inventé) y volver a indexar, O borrar la página si
+no se ofrece ese servicio. Al resolver, quitar el noindex y re-agregar al sitemap.
+
 ## 🟡 BACKLOG del health-check (2026-08-26) — infra sólida, quedan estos
 
 Tras la sesión de hardening (schema drift, dual-estado, gobernanza SQL — todo cerrado y auto-verificable),
