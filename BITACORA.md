@@ -49,6 +49,17 @@ Corridas `tools/audit.mjs` (estático) y `tools/audit-schema-live.mjs` (contrato
   Registrado"), `null` para código inexistente. Códigos ALEATORIOS (crypto hex / 36⁸) → no enumerables.
   Bien diseñado, sin hallazgo.
 
+### 🔴→✅ Mismatch CANCELADO — cancelados no se ocultaban / queries de Alejandro rotas (22P02)
+Auditoría flujo interno (cruce estados escritos↔leídos):
+- **PRODIGY** `panel-interno-operaciones.html:3419` (torre de control) excluía `"CANCELADO"` pero el estado
+  real es `CANCELADO_DOCTOR` → los pedidos cancelados seguían apareciendo como trabajo activo. Fix: → `CANCELADO_DOCTOR`.
+- **Alejandro** `mis-casos.html:277` y `metricas.html:148` filtraban el **enum `estado`** (compartido) por
+  `"cancelado"/"CANCELADO"` (no existen en el enum) → **HTTP 400 → la lista "mis casos" del doctor NO
+  cargaba** y las métricas reventaban. Fix: → `.not('estado_operativo','eq','CANCELADO_DOCTOR')` (texto, válido).
+  Verificado en vivo: antes 400, ahora 200.
+- **Tool blind spot**: `audit-schema-live` no parseaba `.in('estado','("a","b")')` (valores entre comillas
+  dentro del paréntesis) → por eso no cazó el bug de Alejandro. Añadido `evListQ` en AMBOS repos → ahora lo caza.
+
 ### 🔴→✅ BUG DE FLUJO — el operario no podía aprobar diseño ni QA (22P02 al escribir el enum)
 Auditoría del flujo interno: `operario.html` y `operario-diseno.html` escribían el enum `estado` con
 valores operativos que NO existen en el enum (`DISENO_FINALIZADO`, `QA_APROBADO`, `terminado`) → cada

@@ -3416,7 +3416,7 @@ async function cargarTorre() {
     // Pedidos urgentes + flujo para desglose por departamento
     const { data: pedidos } = await sb.from('pedidos')
         .select('id, codigo, nombre_paciente, tipo_trabajo, estado_operativo, created_at, flujo')
-        .not('estado_operativo', 'in', '("ENTREGADO","CANCELADO","QA_APROBADO")')
+        .not('estado_operativo', 'in', '("ENTREGADO","CANCELADO_DOCTOR","QA_APROBADO")')
         .order('created_at', { ascending: true })
         .limit(200);
 

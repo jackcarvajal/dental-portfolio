@@ -48,7 +48,10 @@ for (const f of files) src += '\n' + readFileSync(f, 'utf8');
   while ((m = re.exec(s))) { const t = m[1]; let chain = m[2]; const nxt = chain.search(/\.from\(/); if (nxt > -1) chain = chain.slice(0, nxt); let c; const selRe = /\.select\(\s*['"`]([^'"`]*)['"`]/g; while ((c = selRe.exec(chain))) add(t, c[1]); const opRe = /\.(?:eq|neq|gt|gte|lt|lte|like|ilike|is|in|order|contains|match)\(\s*['"`]([a-z_][\w]*)['"`]/g; while ((c = opRe.exec(chain))) add(t, c[1]); const insRe = /\.(?:insert|update|upsert)\(\s*\{([^}]*)\}/g; while ((c = insRe.exec(chain))) { for (const k of c[1].match(/([a-z_][\w]*)\s*:/gi) || []) add(t, k.replace(':', '')); }
     // valores de filtro sobre `estado` (enum frágil) → validar 22P02
     let ev; const evEq = /\.(?:eq|neq)\(\s*['"`]estado['"`]\s*,\s*['"`]([^'"`]+)['"`]/g; while ((ev = evEq.exec(chain))) addEnum(t, ev[1]);
-    const evList = /\.(?:in|not)\(\s*['"`]estado['"`]\s*,(?:\s*['"`](?:in|eq)['"`]\s*,)?\s*['"`]\(?([^'"`]+?)\)?['"`]/g; while ((ev = evList.exec(chain))) ev[1].split(',').forEach(v => addEnum(t, v)); }
+    const evList = /\.(?:in|not)\(\s*['"`]estado['"`]\s*,(?:\s*['"`](?:in|eq)['"`]\s*,)?\s*['"`]\(?([^'"`]+?)\)?['"`]/g; while ((ev = evList.exec(chain))) ev[1].split(',').forEach(v => addEnum(t, v));
+    // .in/.not('estado','in','("a","b")') — valores ENTRE COMILLAS dentro del paréntesis (el evList de arriba
+    // no los parsea → así se coló el 22P02 de Alejandro mis-casos/metricas, sep-2026).
+    const evListQ = /\.(?:in|not)\(\s*['"`]estado['"`]\s*,\s*['"`](?:in|eq)['"`]\s*,\s*['"`]\(([^)]*)\)['"`]/g; while ((ev = evListQ.exec(chain))) ev[1].split(',').forEach(v => addEnum(t, v.replace(/["'`]/g, '').trim())); }
   const rest = /\/rest\/v1\/([a-z_][\w]*)\?([^'"`\s]*)/gi;
   while ((m = rest.exec(s))) { const t = m[1], q = m[2]; let c; const qcol = /([a-z_][\w]*)=(?:eq|neq|gt|gte|lt|lte|like|ilike|is|in|not)\./g; while ((c = qcol.exec(q))) add(t, c[1]); const sel = /select=([^&]+)/.exec(q); if (sel) add(t, decodeURIComponent(sel[1]).replace(/[()]/g, '')); let ev; const eq = /(?:^|&)estado=(?:eq|neq|in|not\.in)\.\(?([^&)]+)\)?/g; while ((ev = eq.exec(q))) ev[1].split(',').forEach(v => addEnum(t, decodeURIComponent(v))); }
   const rr = /\.rpc\(\s*['"`]([a-z_][\w]*)['"`]/gi; while ((m = rr.exec(s))) rpcs.add(m[1]);
