@@ -48,6 +48,15 @@ alejandrocadcam.pages.dev). Verificar: `/api/send-push` debe dejar de responder 
 NOTA: hoy `webpush.js` sólo se carga en `client-panel.html` → sólo doctores se suscriben. Para push al
 STAFF hay que cargar webpush.js en las páginas del panel (pendiente aparte, no bloquea el push al cliente).
 
+## 🟡 taller.html — 3 buckets del dashboard filtran por estados que no existen (audit flujo 2026-09-10)
+`app/taller.html` líneas ~528-530 cuentan `pedidos_operacion` por `estado_operativo` con valores
+**huérfanos** que ningún panel escribe: `EMPACADO`, `LISTO`, `CONTROL_CALIDAD`. `pedidos_operacion` es
+proyección directa (no remapea), así que esos conteos **siempre dan 0** (dashboard engañoso; no bloquea
+trabajo — son `count head:true`). Los estados reales de esos buckets serían: "listo/empacado" →
+`LISTO_DESPACHAR`/`POR_DESPACHAR`; "pasó QA" → `QA_APROBADO`; "en control de calidad" → no hay estado
+distinto de "en producción" (`EN_PRODUCCION`/`FRESADO_INICIADO`/`EN_IMPRESION`). Falta que el equipo
+defina qué debe mostrar cada bucket antes de corregir (no adivinar la métrica). Ver `docs/CONTRATO-ESTADOS.md`.
+
 ## 🟡 BACKLOG del health-check (2026-08-26) — infra sólida, quedan estos
 
 Tras la sesión de hardening (schema drift, dual-estado, gobernanza SQL — todo cerrado y auto-verificable),
