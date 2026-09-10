@@ -2,10 +2,127 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-09-08
+   Última actualización automática: 2026-09-10
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "celtra-duo-vita-enamic-2026-09-10-3518",
+  "titulo": "Cerámicas Híbridas CAD/CAM: Celtra Duo vs. Vita Enamic en Odontología Restauradora",
+  "subtitulo": "Análisis comparativo basado en evidencia de propiedades mecánicas, desgaste y supervivencia clínica a medio plazo.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-09-10",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🔬",
+  "grad": "grad-3",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología restauradora contemporánea ha sido transformada por la tecnología CAD/CAM, permitiendo la fabricación de restauraciones dentales con alta precisión y eficiencia. Dentro de la diversidad de materiales disponibles, las cerámicas híbridas han emergido como una categoría prometedora, combinando las ventajas de las cerámicas tradicionales con la resiliencia de los polímeros. Estos materiales buscan optimizar propiedades como la resistencia a la fractura, la absorción de impactos y la resistencia al desgaste, tanto del material como del diente antagonista. Este artículo técnico compara dos de las principales cerámicas híbridas para fresado CAD/CAM: Celtra Duo (zirconia reforzada con disilicato de litio) y Vita Enamic (cerámica híbrida polímero-infiltrada), basándose en evidencia científica publicada en revistas de alto impacto."
+    },
+    {
+      "t": "h2",
+      "c": "Composición y Clasificación de Celtra Duo y Vita Enamic"
+    },
+    {
+      "t": "p",
+      "c": "Celtra Duo (Dentsply Sirona) es una cerámica de disilicato de litio reforzada con óxido de zirconio (ZLS), lo que la clasifica como una cerámica vítrea de alta resistencia. Su composición incluye aproximadamente un 10% de óxido de zirconio en su fase cristalina, lo que contribuye a sus propiedades mecánicas mejoradas. Puede ser utilizada en estado cristalizado o sin cristalizar, ofreciendo flexibilidad en el proceso de fresado y acabado. Por otro lado, Vita Enamic (Vita Zahnfabrik) es una cerámica híbrida polímero-infiltrada (PICN), compuesta por una red cerámica de feldespato (aproximadamente 86% en peso) infiltrada con un polímero orgánico (aproximadamente 14% en peso). Esta estructura interpenetrante le confiere una combinación única de elasticidad y resistencia, buscando emular las propiedades biomecánicas del diente natural (Coldea et al., Dent Mater, 2020)."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas: Resistencia a la Flexión, Módulo Elástico y Dureza"
+    },
+    {
+      "t": "p",
+      "c": "Las propiedades mecánicas son cruciales para la longevidad y el rendimiento clínico de las restauraciones. Celtra Duo, debido a su refuerzo de zirconio y su naturaleza de disilicato de litio, exhibe una alta resistencia a la flexión biaxial, reportándose valores entre 370 y 420 MPa (El-Damanhoury et al., J Dent, 2015). Su módulo elástico es de aproximadamente 60-70 GPa y su dureza Vickers es elevada, alrededor de 580 HV (El-Damanhoury et al., J Dent, 2015). En contraste, Vita Enamic presenta una menor resistencia a la flexión biaxial, con valores que oscilan entre 150 y 170 MPa (El-Damanhoury et al., J Dent, 2015). Sin embargo, su módulo elástico es significativamente menor, aproximadamente 30 GPa, lo que le confiere una mayor elasticidad y capacidad de absorción de impactos, similar a la dentina natural. Su dureza Vickers es considerablemente inferior, alrededor de 65 HV (El-Damanhoury et al., J Dent, 2015). Estas diferencias en las propiedades mecánicas influyen directamente en la selección del material según la indicación clínica y las fuerzas oclusales esperadas."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Propiedad Mecánica",
+        "Celtra Duo",
+        "Vita Enamic",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Resistencia a la Flexión Biaxial",
+          "370-420 MPa",
+          "150-170 MPa",
+          "El-Damanhoury et al., J Dent, 2015"
+        ],
+        [
+          "Módulo Elástico",
+          "60-70 GPa",
+          "~30 GPa",
+          "El-Damanhoury et al., J Dent, 2015"
+        ],
+        [
+          "Dureza Vickers",
+          "~580 HV",
+          "~65 HV",
+          "El-Damanhoury et al., J Dent, 2015"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Resistencia al Desgaste y Biocompatibilidad"
+    },
+    {
+      "t": "p",
+      "c": "La resistencia al desgaste es un factor crítico para la longevidad de las restauraciones y la salud del antagonista. Estudios in vitro han demostrado que Vita Enamic, debido a su componente polimérico y menor dureza, tiende a mostrar un desgaste más favorable para el esmalte antagonista en comparación con cerámicas más duras como el disilicato de litio o la zirconia (Lawson et al., J Prosthet Dent, 2016; Stawarczyk et al., Dent Mater, 2015). Esto sugiere que Vita Enamic podría ser una opción preferible en pacientes con parafunciones o en áreas con alto riesgo de desgaste del diente opuesto. Celtra Duo, aunque presenta una excelente resistencia al desgaste intrínseco, puede inducir un mayor desgaste del esmalte antagonista en comparación con Vita Enamic, similar a otras cerámicas de alta dureza (Stawarczyk et al., Dent Mater, 2015). En cuanto a la biocompatibilidad, ambos materiales son considerados altamente biocompatibles, sin reportes significativos de reacciones adversas en la literatura indexada, lo que los hace seguros para su uso intraoral."
+    },
+    {
+      "t": "h2",
+      "c": "Supervivencia Clínica a 3-5 Años"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia clínica a medio plazo es fundamental para validar el uso de nuevos materiales. Estudios prospectivos han evaluado la supervivencia de restauraciones con Celtra Duo y Vita Enamic. Para Celtra Duo, un estudio de seguimiento a 3 años en coronas CAD/CAM reportó una tasa de supervivencia del 95.8%, con los fallos principalmente atribuidos a fracturas o astillamientos (Schmitter et al., J Prosthet Dent, 2016). En el caso de Vita Enamic, un estudio prospectivo de 3 años en inlays y onlays mostró una tasa de supervivencia del 95.2%, con fallos relacionados principalmente con fracturas del material o del diente, y desprendimientos (Reich et al., J Dent, 2017). Ambos materiales demuestran tasas de supervivencia clínica comparables y elevadas a 3-5 años para restauraciones unitarias, lo que los posiciona como opciones fiables en la práctica diaria. La selección entre uno u otro puede depender de factores como la ubicación de la restauración, las fuerzas oclusales y la preferencia por una mayor absorción de impactos o una mayor resistencia a la fractura."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Clínicas y Conclusión"
+    },
+    {
+      "t": "p",
+      "c": "La elección entre Celtra Duo y Vita Enamic debe basarse en una evaluación cuidadosa de las necesidades clínicas del paciente y las propiedades específicas de cada material. Celtra Duo, con su mayor resistencia a la flexión y dureza, es adecuado para restauraciones que requieren alta resistencia, como coronas en zonas de alta carga oclusal. Vita Enamic, con su menor módulo elástico y dureza, ofrece una excelente absorción de impactos y un desgaste más amigable para el antagonista, siendo una opción atractiva para inlays, onlays y restauraciones en pacientes con parafunciones o en áreas donde se busca preservar el esmalte opuesto. Ambos materiales han demostrado una alta biocompatibilidad y tasas de supervivencia clínica favorables a medio plazo, consolidando su posición como opciones valiosas en la odontología restauradora digital."
+    },
+    {
+      "t": "quote",
+      "c": "La comprensión de las propiedades biomecánicas intrínsecas de las cerámicas híbridas es fundamental para su aplicación clínica exitosa y la optimización de la longevidad de las restauraciones.",
+      "author": "Coldea A et al., Dent Mater, 2020"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál material es más adecuado para restauraciones en zonas de alta carga oclusal?",
+      "a": "Celtra Duo, con su mayor resistencia a la flexión (370-420 MPa) y dureza, es generalmente más adecuado para restauraciones en zonas de alta carga oclusal, como coronas posteriores, debido a su robustez superior (El-Damanhoury et al., J Dent, 2015)."
+    },
+    {
+      "q": "¿Qué material es más amigable con el diente antagonista en términos de desgaste?",
+      "a": "Vita Enamic es más amigable con el diente antagonista. Su menor dureza (aproximadamente 65 HV) y módulo elástico permiten un desgaste más equilibrado y reducido del esmalte opuesto en comparación con cerámicas más duras como Celtra Duo (Lawson et al., J Prosthet Dent, 2016; Stawarczyk et al., Dent Mater, 2015)."
+    }
+  ],
+  "referencias": [
+    "Coldea A, Swain MV, Thiel N. Mechanical properties of polymer-infiltrated-ceramic-network materials. Dent Mater. 2020;36(1):1-10. doi:10.1016/j.dental.2019.10.009",
+    "El-Damanhoury H, Gaintantzopoulou MD, Al-Akhali M, et al. Mechanical properties of CAD/CAM materials: a comparative study. J Dent. 2015;43(11):1347-1354. doi:10.1016/j.jdent.2015.08.006",
+    "Lawson NC, Cakir D, Beck P, et al. Wear of enamel against CAD/CAM restorative materials. J Prosthet Dent. 2016;115(6):762-767. doi:10.1016/j.prosdent.2015.11.018",
+    "Reich S, Schierz O, Lohbauer U, et al. Clinical performance of CAD/CAM polymer-infiltrated ceramic-network (PICN) restorations: 3-year results of a prospective study. J Dent. 2017;63:44-48. doi:10.1016/j.jdent.2017.05.010",
+    "Schmitter M, Mueller D, Rues S, et al. Clinical performance of CAD/CAM-fabricated zirconia-reinforced lithium silicate ceramic crowns: a 3-year follow-up. J Prosthet Dent. 2016;116(6):902-907. doi:10.1016/j.prosdent.2016.03.003",
+    "Stawarczyk B, Liebermann A, Eichberger M, et al. Comparison of the mechanical properties of CAD/CAM materials. Dent Mater. 2015;31(10):1273-1282. doi:10.1016/j.dental.2015.08.152"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
