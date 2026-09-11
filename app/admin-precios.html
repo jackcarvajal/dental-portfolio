@@ -235,13 +235,14 @@
                     <th>Categoría</th>
                     <th>Nombre del Ítem</th>
                     <th>Precio (COP)</th>
+                    <th>🔥 Oferta / Vence</th>
                     <th>Fast Ready</th>
                     <th>Activo</th>
                     <th>Acción</th>
                 </tr>
             </thead>
             <tbody id="tabla-body" aria-live="polite" aria-label="Tabla de precios">
-                <tr><td colspan="7" style="text-align:center;padding:28px;color:var(--muted);">
+                <tr><td colspan="8" style="text-align:center;padding:28px;color:var(--muted);">
                     <i class="fas fa-circle-notch fa-spin"></i> Cargando catálogo desde Supabase...
                 </td></tr>
             </tbody>
@@ -336,7 +337,7 @@
     // ── Cargar catálogo ───────────────────────────────────────
     async function cargarCatalogo() {
         const { data, error } = await supabase.from('catalogo').select('*');
-        if (error) { document.getElementById('tabla-body').innerHTML = `<tr><td colspan="7" style="color:#ef4444;padding:20px;text-align:center;">${escH(error.message)}</td></tr>`; return; }
+        if (error) { document.getElementById('tabla-body').innerHTML = `<tr><td colspan="8" style="color:#ef4444;padding:20px;text-align:center;">${escH(error.message)}</td></tr>`; return; }
         allItems = data;
         renderTabla(data);
     }
@@ -346,7 +347,7 @@
         document.getElementById('item-count').textContent = items.length + ' ítems';
 
         if (!items.length) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Sin resultados</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted);">Sin resultados</td></tr>';
             return;
         }
 
@@ -367,6 +368,13 @@
                                onchange="onPrecioChange('${item.id}', this)"
                                oninput="onPrecioChange('${item.id}', this)">
                         <span style="font-size:0.7rem;color:var(--muted);">${formatCOP(item.precio)}</span>
+                    </div>
+                </td>
+                <td>
+                    <div style="display:flex;flex-direction:column;gap:3px;min-width:120px;">
+                        <input type="number" class="precio-input" id="oferta-${item.id}" value="${item.precio_oferta ?? ''}" placeholder="sin oferta" min="0" step="1000" style="width:110px;font-size:.75rem;" oninput="onOfertaChange('${item.id}', this)">
+                        <input type="datetime-local" id="ofhasta-${item.id}" value="${dtLocal(item.oferta_hasta)}" style="width:100%;font-size:.66rem;background:#0d1520;color:#e2e8f0;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:2px 5px;" oninput="onOfertaChange('${item.id}', document.getElementById('oferta-'+'${item.id}'))" title="Fecha/hora en que termina la oferta">
+                        <span id="ofbadge-${item.id}" style="font-size:.64rem;font-weight:700;">${ofertaBadge(item)}</span>
                     </div>
                 </td>
                 <td style="text-align:center;">
@@ -430,6 +438,24 @@
         actualizarPendingBar();
     };
 
+    // ── Ofertas / promociones ────────────────────────────────
+    const pendingOfertas = new Map(); // id → { precio_oferta, oferta_hasta }
+    function dtLocal(ts){ if(!ts) return ''; const d=new Date(ts); if(isNaN(d)) return ''; const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+    function ofertaBadge(item){
+        const of=Number(item.precio_oferta)||0; if(!of) return '<span style="color:#475569;">—</span>';
+        const hasta=item.oferta_hasta?new Date(item.oferta_hasta).getTime():null;
+        const activa=of>0 && of<item.precio && (!hasta||hasta>Date.now());
+        const pct=item.precio>0?Math.round((1-of/item.precio)*100):0;
+        return activa?`<span style="color:#f97316;">🔥 activa −${pct}%</span>`:`<span style="color:#94a3b8;">${hasta&&hasta<=Date.now()?'vencida':'programada'}</span>`;
+    }
+    window.onOfertaChange = (id) => {
+        const of=parseInt(document.getElementById('oferta-'+id).value);
+        const hv=document.getElementById('ofhasta-'+id).value;
+        pendingOfertas.set(id,{ precio_oferta:(isNaN(of)||of<=0)?null:of, oferta_hasta:hv?new Date(hv).toISOString():null });
+        document.getElementById('btn-'+id)?.classList.add('visible');
+        actualizarPendingBar();
+    };
+
     window.onExtraChange = (id, input) => {
         const btn = document.getElementById('extra-btn-' + id);
         btn?.classList.add('visible');
@@ -455,25 +481,34 @@
 
     window.guardarUno = async (id) => {
         const nuevo = pendingChanges.get(id);
-        if (nuevo === undefined) return;
-        const { error } = await updatePrecio(id, nuevo);
-        if (!error) {
-            const item = allItems.find(x => x.id === id);
-            if (item) item.precio = nuevo;
+        const oferta = pendingOfertas.get(id);
+        if (nuevo === undefined && oferta === undefined) return;
+        // 1) Precio
+        if (nuevo !== undefined) {
+            const { error } = await updatePrecio(id, nuevo);
+            if (error) { showToast('Error al guardar precio: ' + (error.message || 'sin permiso')); console.error('[admin-precios] updatePrecio falló:', error); return; }
+            const item = allItems.find(x => x.id === id); if (item) item.precio = nuevo;
             pendingChanges.delete(id);
-            const input = document.getElementById('precio-' + id);
-            input.classList.remove('changed');
-            input.classList.add('saved');
-            document.getElementById('btn-' + id)?.classList.remove('visible');
-            actualizarPendingBar();
-            showToast('Precio actualizado: ' + formatCOP(nuevo));
-        } else {
-            // Antes este caso quedaba en silencio total — el admin no se
-            // enteraba de que el precio nunca se guardó (ver patch RLS
-            // 2026-07-03: la policy de escritura estaba rota para todos).
-            showToast('Error al guardar: ' + (error.message || 'sin permiso'));
-            console.error('[admin-precios] updatePrecio falló:', error);
+            const input = document.getElementById('precio-' + id); input.classList.remove('changed'); input.classList.add('saved');
         }
+        // 2) Oferta (precio_oferta + ventana). oferta_desde = ahora al crear; se limpia todo si se quita.
+        if (oferta !== undefined) {
+            const item = allItems.find(x => x.id === id);
+            const patch = {
+                precio_oferta: oferta.precio_oferta,
+                oferta_hasta:  oferta.precio_oferta ? oferta.oferta_hasta : null,
+                oferta_desde:  oferta.precio_oferta ? (item?.oferta_desde || new Date().toISOString()) : null,
+                updated_at: new Date().toISOString(),
+            };
+            const { error } = await supabase.from('catalogo').update(patch).eq('id', id);
+            if (error) { showToast('Error al guardar oferta: ' + (error.message || 'sin permiso')); console.error('[admin-precios] oferta falló:', error); return; }
+            if (item) { item.precio_oferta = patch.precio_oferta; item.oferta_hasta = patch.oferta_hasta; item.oferta_desde = patch.oferta_desde; }
+            pendingOfertas.delete(id);
+            const bd = document.getElementById('ofbadge-' + id); if (bd && item) bd.innerHTML = ofertaBadge(item);
+        }
+        document.getElementById('btn-' + id)?.classList.remove('visible');
+        actualizarPendingBar();
+        showToast('Guardado ✓');
     };
 
     window.guardarExtra = async (id) => {

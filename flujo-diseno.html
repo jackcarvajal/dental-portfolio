@@ -1176,15 +1176,21 @@ window.submitOrden     = window.submitOrden      || function(){};
             try {
                 /* Precios de servicios */
                 const { data: items } = await sb
-                    .from('catalogo').select('id,precio,activo').eq('flujo', 'diseno');
+                    .from('catalogo').select('id,precio,activo,precio_oferta,oferta_desde,oferta_hasta').eq('flujo', 'diseno');
                 if (items && items.length) {
                     const mapa = Object.fromEntries(items.map(i => [i.id, i]));
                     for (const cat of Object.values(MATERIAL_DATA_MUT)) {
                         for (const [sid, sub] of Object.entries(cat.subtipos)) {
                             const row = mapa[sid];
                             if (row) {
-                                sub.precio = row.precio;
-                                sub._inactivo = row.activo === false;
+                                // Promo: si hay oferta activa (en ventana), cobra el precio de oferta y guarda el normal para tacharlo.
+                                const info = window.Promo ? window.Promo.resolver(row) : { precio: row.precio, enOferta: false, precioNormal: row.precio, hasta: null };
+                                sub.precio       = info.precio;
+                                sub.precioNormal = info.precioNormal;
+                                sub.enOferta     = info.enOferta;
+                                sub.ofertaHasta  = info.hasta;
+                                sub.ahorroPct    = info.ahorroPct;
+                                sub._inactivo    = row.activo === false;
                             }
                         }
                     }
@@ -1229,6 +1235,11 @@ window.submitOrden     = window.submitOrden      || function(){};
 
         // ── HELPERS ───────────────────────────────────────────────────────────
         function fmtCLP(n)  { return '$' + Math.round(n).toLocaleString('es-CO') + ' COP'; }
+        /* Precio del chip: si el subtipo está en oferta, muestra el normal tachado + oferta + badge con countdown. */
+        function chipPrecioHTML(sub){
+          if (sub && sub.enOferta) return `<div class="chip-price"><span class="precio-tachado">${fmtCLP(sub.precioNormal)}</span> <span class="precio-oferta">${fmtCLP(sub.precio)}</span></div>${window.Promo ? Promo.badgeHTML(sub.ofertaHasta, sub.ahorroPct) : ''}`;
+          return `<div class="chip-price">${fmtCLP(sub.precio)}</div>`;
+        }
         function sanitizar(txt) { const d=document.createElement('div'); d.textContent=String(txt||''); return d.innerHTML; }
 
         function actualizarIndicativo(sel) {
@@ -1340,7 +1351,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                     chip.className = 'subtipo-chip';
                     chip.id = 'sub-' + id;
                     const escN = String(sub.nombre||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-                    chip.innerHTML = `<div class="chip-name">${escN}</div><div class="chip-price">${fmtCLP(sub.precio)}</div>`;
+                    chip.innerHTML = `<div class="chip-name">${escN}</div>${chipPrecioHTML(sub)}`;
                     chip.onclick = () => selectSubtipo(id, sub.nombre, sub.precio);
                     grid.appendChild(chip);
                 });
@@ -1350,7 +1361,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                     chip.className = 'subtipo-chip';
                     chip.id = 'sub-' + id;
                     const escN = String(sub.nombre||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-                    chip.innerHTML = `<div class="chip-name">${escN}</div><div class="chip-price">${fmtCLP(sub.precio)}</div>`;
+                    chip.innerHTML = `<div class="chip-name">${escN}</div>${chipPrecioHTML(sub)}`;
                     chip.onclick = () => selectSubtipo(id, sub.nombre, sub.precio);
                     grid.appendChild(chip);
                 });
@@ -2521,6 +2532,7 @@ const lineWompi = document.getElementById('line-wompi');
     <script src="js/fechas-habiles.js?v=20260719"></script>
     <script src="js/pagos.js?v=20260826"></script>
 <script src="js/formatos.js?v=20260718"></script>
+<script src="js/promo.js?v=20260910"></script>
 <script src="js/pedido-guard.js?v=20260719"></script>
 <script src="js/modo-prueba.js?v=20260719"></script>
     <script src="js/registro-archivos.js?v=20260718"></script>
