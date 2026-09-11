@@ -94,6 +94,7 @@ async function buscar() {
   const like = `%${term}%`;
   const { data, error } = await sb.from('pedidos')
     .select('id,codigo,nombre_doctor,nombre_paciente,created_at,estado,estado_operativo')
+    .eq('negocio', 'prodigy')
     .or(`codigo.ilike.${like},nombre_doctor.ilike.${like},nombre_paciente.ilike.${like}`)
     .order('created_at',{ascending:false}).limit(25);
 

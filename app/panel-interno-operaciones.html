@@ -1627,7 +1627,7 @@ async function cargarPedidos() {
     try {
         const { data, error } = await sb
             .from('pedidos')
-            .select('*')
+            .select('*').eq('negocio', 'prodigy')
             .order('created_at', { ascending: false });
 
         if (error) throw error;
@@ -3234,7 +3234,7 @@ async function cargarDespachos() {
     // 2. Pedidos TERMINADO sin despacho asignado
     const { data: pedSinAsignar } = await sb
         .from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,direccion,precio_total,estado_operativo')
+        .select('id,codigo,nombre_cliente,nombre_doctor,direccion,precio_total,estado_operativo').eq('negocio', 'prodigy')
         .eq('estado', 'TERMINADO');
     // (Antes había un .not('id','in','(SELECT ...)') — PostgREST NO soporta
     //  subqueries en filtros → devolvía 400 y la lista salía vacía. Se excluyen
@@ -3415,7 +3415,7 @@ let _resolverPendienteId = null;
 async function cargarTorre() {
     // Pedidos urgentes + flujo para desglose por departamento
     const { data: pedidos } = await sb.from('pedidos')
-        .select('id, codigo, nombre_paciente, tipo_trabajo, estado_operativo, created_at, flujo')
+        .select('id, codigo, nombre_paciente, tipo_trabajo, estado_operativo, created_at, flujo').eq('negocio', 'prodigy')
         .not('estado_operativo', 'in', '("ENTREGADO","CANCELADO_DOCTOR","QA_APROBADO")')
         .order('created_at', { ascending: true })
         .limit(200);
@@ -4044,7 +4044,7 @@ async function cargarMetricasFinanzas() {
 
     try {
         const { data: pedidos } = await sb.from('pedidos')
-            .select('id,estado,estado_operativo,pago_estado,precio_total,created_at,fecha_entrega,tipo_trabajo,nombre_doctor,timestamp_validacion')
+            .select('id,estado,estado_operativo,pago_estado,precio_total,created_at,fecha_entrega,tipo_trabajo,nombre_doctor,timestamp_validacion').eq('negocio', 'prodigy')
             .gte('created_at', desde);
             // (quitado filtro estado='cancelado': valor inexistente en el enum estado_pedido → 22P02/400)
 
@@ -4195,7 +4195,7 @@ const TIPO_LBL = {fresado:'Fresado / Lab', impresion:'Impresión 3D', fresado_in
 
 async function cargarFabricacion() {
   const { data: todos } = await sbFab.from('pedidos')
-    .select('id,codigo,nombre_paciente,tipo_trabajo,email,fabricacion_solicitada,fabricacion_pagada,fabricacion_tipo,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_at,cotizacion_fab_nota,pais,stl_urls,html_diseno_url,departamento_actual')
+    .select('id,codigo,nombre_paciente,tipo_trabajo,email,fabricacion_solicitada,fabricacion_pagada,fabricacion_tipo,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_at,cotizacion_fab_nota,pais,stl_urls,html_diseno_url,departamento_actual').eq('negocio', 'prodigy')
     .eq('fabricacion_solicitada', true)
     .order('created_at', {ascending: false})
     .limit(100);
@@ -4304,7 +4304,7 @@ async function enviarCotizacion() {
 
   /* Notificar al doctor */
   try {
-    const { data: p } = await sbFab.from('pedidos').select('codigo,email').eq('id',id).single();
+    const { data: p } = await sbFab.from('pedidos').select('codigo,email').eq('negocio', 'prodigy').eq('id',id).single();
     if (p?.email) {
       const link = location.origin+'/revision-diseno?id='+id;
       await fetch(SB_URL_FAB+'/functions/v1/send-push',{
@@ -4366,7 +4366,7 @@ async function _doEnrutar(id, tipo, tipoBase, lbl) {
 
   /* Avisar al operario del área que le asignaron un caso */
   try {
-    const { data: pn } = await sbFab.from('pedidos').select('codigo,tipo_trabajo').eq('id', id).single();
+    const { data: pn } = await sbFab.from('pedidos').select('codigo,tipo_trabajo').eq('negocio', 'prodigy').eq('id', id).single();
     await _notificarInterno({
       tipo: 'nuevo_caso',
       prioridad: 'alta',
@@ -4381,7 +4381,7 @@ async function _doEnrutar(id, tipo, tipoBase, lbl) {
 
   /* Notificar al doctor */
   try {
-    const { data: p } = await sbFab.from('pedidos').select('codigo,email').eq('id',id).single();
+    const { data: p } = await sbFab.from('pedidos').select('codigo,email').eq('negocio', 'prodigy').eq('id',id).single();
     if (p?.email) {
       await fetch(SB_URL_FAB+'/functions/v1/send-push',{
         method:'POST',

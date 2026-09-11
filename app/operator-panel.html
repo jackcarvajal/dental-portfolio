@@ -449,7 +449,7 @@ function filtrarOperator() {
 
 async function cargarPedidos() {
     const { data, error } = await sb.from('pedidos')
-        .select('id, codigo, nombre_paciente, nombre_doctor, tipo_trabajo, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo, pago_estado, precio_total, telefono, pais, fecha_entrega, slot_express')
+        .select('id, codigo, nombre_paciente, nombre_doctor, tipo_trabajo, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo, pago_estado, precio_total, telefono, pais, fecha_entrega, slot_express').eq('negocio', 'prodigy')
         /* (quitado filtro estado='cancelado': el enum estado_pedido no tiene ese valor → 22P02/400) */
         .in('flujo', ['fresado','lab','impresion',''])   /* Excluir flujo=diseno — tiene su propio panel */
         .order('created_at', { ascending: false })
@@ -579,7 +579,7 @@ async function notificarWA(pedido, nuevoEstado) {
 async function notificarCliente(pedidoId, mensaje) {
     try {
         // Obtener email del doctor para push personalizada
-        const { data: p } = await sb.from('pedidos').select('email,nombre_doctor,codigo').eq('id', pedidoId).single();
+        const { data: p } = await sb.from('pedidos').select('email,nombre_doctor,codigo').eq('negocio', 'prodigy').eq('id', pedidoId).single();
         if (!p?.email) return;
         await fetch(ADMIN_PUSH_URL, {
             method: 'POST',
@@ -1307,7 +1307,7 @@ async function bulkUploadAll() {
             const publicUrl = signedData?.signedUrl;
 
             // Actualizar stl_urls del pedido
-            const { data: ped } = await sb.from('pedidos').select('stl_urls').eq('id', item.pedido.id).single();
+            const { data: ped } = await sb.from('pedidos').select('stl_urls').eq('negocio', 'prodigy').eq('id', item.pedido.id).single();
             const urls = [...(ped?.stl_urls || []), publicUrl];
             await sb.from('pedidos').update({ stl_urls: urls }).eq('id', item.pedido.id);
 

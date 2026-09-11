@@ -442,7 +442,7 @@ async function recargar() {
     // Lee de `pedidos` (no de la vista pedidos_operacion, que no expone cotizacion_fab_*/nombre_paciente → 400).
     // La vista es security_invoker=true, así que la RLS de filas es idéntica leyendo la tabla base.
     const { data } = await sb.from('pedidos')
-      .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,html_diseno_url,stl_urls,construinfo_url,cambios_count,fabricacion_solicitada,fabricacion_pagada,servicios_pagados,departamento_actual,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_nota,pais,nombre_paciente')
+      .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,html_diseno_url,stl_urls,construinfo_url,cambios_count,fabricacion_solicitada,fabricacion_pagada,servicios_pagados,departamento_actual,cotizacion_fab_monto,cotizacion_fab_estado,cotizacion_fab_nota,pais,nombre_paciente').eq('negocio', 'prodigy')
       .in('flujo', cfg.flujos)
       // (sin filtro por estado='cancelado': el enum estado_pedido no tiene ese valor → daba 22P02/400.
       //  Los cancelados por el doctor se ocultan por estado_operativo='CANCELADO_DOCTOR' en el kanban)
@@ -462,7 +462,7 @@ async function recargar() {
     if (!_myDepts.includes(dept)) continue;
     const tiposFab = dept === 'fresado' ? ['fresado','fresado_internacional','lab'] : ['impresion','impresion_internacional'];
     const { data: comp } = await sb.from('pedidos')
-      .select('id,codigo,tipo_trabajo,cotizacion_fab_monto,cotizacion_fab_nota,html_diseno_url')
+      .select('id,codigo,tipo_trabajo,cotizacion_fab_monto,cotizacion_fab_nota,html_diseno_url').eq('negocio', 'prodigy')
       .eq('cotizacion_fab_estado','pago_enviado')
       .eq('fabricacion_pagada', false)
       .in('fabricacion_tipo', tiposFab)
@@ -609,7 +609,7 @@ async function avanzar(id, nuevoEstado, dept) {
   const ESTADOS_REQUIEREN_PAGO = ['EN_PRODUCCION','FRESADO_INICIADO','EN_IMPRESION'];
   if (ESTADOS_REQUIEREN_PAGO.includes(nuevoEstado)) {
       const { data: pedido } = await sb.from('pedidos')
-          .select('pago_estado,codigo,nombre_doctor')
+          .select('pago_estado,codigo,nombre_doctor').eq('negocio', 'prodigy')
           .eq('id', id).single();
       const pagoOk = pedido?.pago_estado === 'pago_confirmado';
       if (!pagoOk) {
@@ -637,7 +637,7 @@ async function avanzar(id, nuevoEstado, dept) {
 
   /* Notificaciones automáticas por hito */
   try {
-    const { data: p } = await sb.from('pedidos').select('codigo,tipo_trabajo,nombre_doctor,pais').eq('id',id).single();
+    const { data: p } = await sb.from('pedidos').select('codigo,tipo_trabajo,nombre_doctor,pais').eq('negocio', 'prodigy').eq('id',id).single();
     const pushUrl = SB_URL+'/functions/v1/send-push';
     const waUrl   = '/api/wa-auto';
     const heads   = {'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON};

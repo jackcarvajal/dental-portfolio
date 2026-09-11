@@ -807,7 +807,7 @@ function switchTab(id, el) {
 /* ── Por confirmar (pago_subido) ───────────────────────────────────── */
 async function cargarPorConfirmar() {
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,precio_total,pago_estado,comprobante_pago_url,created_at,email,telefono')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,precio_total,pago_estado,comprobante_pago_url,created_at,email,telefono').eq('negocio', 'prodigy')
         .eq('pago_estado', 'pago_subido')
         .order('created_at', { ascending: false });
 
@@ -844,7 +844,7 @@ async function cargarPorConfirmar() {
 /* ── Saldos contra entrega ─────────────────────────────────────────── */
 async function cargarSaldos() {
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,saldo_pendiente_monto,estado_operativo,nota_calidad,comprobante_saldo_url,pago_estado')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,saldo_pendiente_monto,estado_operativo,nota_calidad,comprobante_saldo_url,pago_estado').eq('negocio', 'prodigy')
         .gt('saldo_pendiente_monto', 0)
         .order('created_at', { ascending: false });
 
@@ -890,7 +890,7 @@ async function cargarHistorial() {
     const hastaISO = new Date(hasta + 'T23:59:59').toISOString();
 
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,precio_total,saldo_pendiente_monto,modalidad_cobro,pago_estado,updated_at')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,precio_total,saldo_pendiente_monto,modalidad_cobro,pago_estado,updated_at').eq('negocio', 'prodigy')
         .eq('pago_estado', 'pago_confirmado')
         .gte('updated_at', desdeISO)
         .lte('updated_at', hastaISO)
@@ -910,7 +910,7 @@ async function cargarHistorial() {
         const tasaEl = document.getElementById('kpi-tasa-cobro');
         const ticketEl = document.getElementById('kpi-ticket-prom');
         // Calcular tasa de cobro vs total pendiente
-        sb.from('pedidos').select('precio_total,pago_estado',{count:'exact',head:false}).gte('created_at',desde).then(({data:allData})=>{
+        sb.from('pedidos').select('precio_total,pago_estado',{count:'exact',head:false}).eq('negocio', 'prodigy').gte('created_at',desde).then(({data:allData})=>{
             if(allData&&allData.length>0){
                 const totalAll=allData.reduce((s,p)=>s+(Number(p.precio_total)||0),0);
                 const tasa=totalAll>0?Math.round(totalCobrado/totalAll*100):0;
@@ -960,7 +960,7 @@ async function cargarHistorial() {
 /* ── Modal comprobante ─────────────────────────────────────────────── */
 async function abrirModalComp(pedidoId) {
     const { data: p } = await sb.from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,precio_total,comprobante_pago_url,email,telefono')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,precio_total,comprobante_pago_url,email,telefono').eq('negocio', 'prodigy')
         .eq('id', pedidoId).single();
     if (!p) return;
 
@@ -1002,7 +1002,7 @@ async function confirmarPago() {
 
     // Verificar si requiere factura o si es cliente internacional
     const { data: pCheck } = await sb.from('pedidos')
-        .select('requiere_factura,factura_estado,pais,codigo,telefono')
+        .select('requiere_factura,factura_estado,pais,codigo,telefono').eq('negocio', 'prodigy')
         .eq('id', pedidoId).single();
     const esIntl         = pCheck?.pais && pCheck.pais !== 'CO';
     const activarFactura = !esIntl && pCheck?.requiere_factura && pCheck?.factura_estado === 'no_requerida';
@@ -1026,7 +1026,7 @@ async function confirmarPago() {
     } catch(_) {}
 
     // Notificar al doctor
-    const { data: p } = await sb.from('pedidos').select('email,codigo,telefono,precio_total').eq('id', pedidoId).single();
+    const { data: p } = await sb.from('pedidos').select('email,codigo,telefono,precio_total').eq('negocio', 'prodigy').eq('id', pedidoId).single();
     const wa = (p?.telefono || '').replace(/\D/g,'');
     if (wa) {
         const reciboUrl = `https://prodigylabdental.com/recibo-caso?id=${p?.codigo || pedidoId}`;
@@ -1074,7 +1074,7 @@ async function rechazarPago() {
 
     if (error) { toast('Error: ' + error.message, 'err'); return; }
 
-    const { data: p } = await sb.from('pedidos').select('codigo,telefono').eq('id', pedidoId).single();
+    const { data: p } = await sb.from('pedidos').select('codigo,telefono').eq('negocio', 'prodigy').eq('id', pedidoId).single();
     const wa = (p?.telefono || '').replace(/\D/g,'');
     if (wa) {
         const txt = encodeURIComponent(
@@ -1129,7 +1129,7 @@ function switchFTab(nombre) {
 
 async function cargarFacturasPendientes() {
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,tipo_trabajo,precio_total,billing_tipo,billing_nit,billing_razon,billing_email,pago_estado,factura_estado,factura_error')
+        .select('id,codigo,tipo_trabajo,precio_total,billing_tipo,billing_nit,billing_razon,billing_email,pago_estado,factura_estado,factura_error').eq('negocio', 'prodigy')
         .eq('requiere_factura', true)
         .eq('factura_estado', 'pendiente')
         .order('created_at', { ascending: false });
@@ -1178,7 +1178,7 @@ async function emitirFactura(pedidoId, btn) {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Emitiendo…';
 
     const { data: p } = await sb.from('pedidos')
-        .select('id,codigo,tipo_trabajo,precio_total,billing_tipo,billing_nit,billing_razon,billing_email')
+        .select('id,codigo,tipo_trabajo,precio_total,billing_tipo,billing_nit,billing_razon,billing_email').eq('negocio', 'prodigy')
         .eq('id', pedidoId).single();
 
     if (!p) { toast('Caso no encontrado', 'err'); btn.disabled = false; return; }
@@ -1239,7 +1239,7 @@ async function cargarFacturasEmitidas() {
     const hasta = document.getElementById('fact-hasta')?.value;
 
     let q = sb.from('pedidos')
-        .select('id,codigo,billing_razon,billing_nit,factura_numero,factura_cufe,factura_pdf_url,factura_emitida_at,precio_total')
+        .select('id,codigo,billing_razon,billing_nit,factura_numero,factura_cufe,factura_pdf_url,factura_emitida_at,precio_total').eq('negocio', 'prodigy')
         .eq('factura_estado', 'emitida')
         .order('factura_emitida_at', { ascending: false })
         .limit(200);
@@ -1278,7 +1278,7 @@ async function cargarFacturasEmitidas() {
 
 async function cargarFacturasError() {
     const { data } = await sb.from('pedidos')
-        .select('id,codigo,billing_razon,billing_nit,billing_tipo,billing_email,tipo_trabajo,precio_total,factura_error')
+        .select('id,codigo,billing_razon,billing_nit,billing_tipo,billing_email,tipo_trabajo,precio_total,factura_error').eq('negocio', 'prodigy')
         .eq('requiere_factura', true)
         .eq('factura_estado', 'error')
         .order('created_at', { ascending: false });
@@ -1371,7 +1371,7 @@ async function cargarPedidos() {
     const hastaISO = new Date(hasta + 'T23:59:59').toISOString();
 
     let q = sb.from('pedidos')
-        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,estado_operativo,precio_total,pago_estado,saldo_pendiente_monto,modalidad_cobro,created_at')
+        .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,estado_operativo,precio_total,pago_estado,saldo_pendiente_monto,modalidad_cobro,created_at').eq('negocio', 'prodigy')
         .gte('created_at', desdeISO)
         .lte('created_at', hastaISO)
         .order('created_at', { ascending: false });
@@ -1597,7 +1597,7 @@ async function cargarArchivosCaso() {
 
     const like = `%${term}%`;
     const { data, error } = await sb.from('pedidos')
-        .select('id,codigo,nombre_doctor,nombre_paciente,precio_total,pago_estado,estado,stl_ruta,stl_urls,html_diseno_url,fotos_feedback,created_at')
+        .select('id,codigo,nombre_doctor,nombre_paciente,precio_total,pago_estado,estado,stl_ruta,stl_urls,html_diseno_url,fotos_feedback,created_at').eq('negocio', 'prodigy')
         .or(`codigo.ilike.${like},nombre_doctor.ilike.${like},nombre_paciente.ilike.${like}`)
         .order('created_at', { ascending: false })
         .limit(20);

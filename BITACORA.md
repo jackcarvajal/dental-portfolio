@@ -49,6 +49,17 @@ Corridas `tools/audit.mjs` (estático) y `tools/audit-schema-live.mjs` (contrato
   Registrado"), `null` para código inexistente. Códigos ALEATORIOS (crypto hex / 36⁸) → no enumerables.
   Bien diseñado, sin hallazgo.
 
+### 🔴→✅ Fuga cross-negocio — paneles PRODIGY veían pedidos de Alejandro (2026-09-11)
+PRODIGY y Alejandro comparten la tabla `pedidos` (columna `negocio`). Las queries de `cotizaciones`/
+`analytics` SÍ filtraban `.eq('negocio','prodigy')`, pero **~33 queries de `pedidos`** en los paneles de
+staff (contabilidad, calidad, operario, operario-diseno, operator-panel, panel-interno, metricas,
+ficha-caso) **NO** → colas de producción mezclaban ambos negocios y los **financieros contaban la
+facturación de Alejandro** (RLS no aísla por negocio, comprobado). Fix: agregado `.eq('negocio','prodigy')`
+a todas las listas/agregados de pedidos de staff (script + manual). Alejandro ya filtraba (mis-casos/
+metricas/admin-panel con 'alejandrocadcam') → sin cambio. Pendiente: la vista `pedidos_operacion` NO
+expone `negocio` → los 3 buckets de taller.html no se pueden aislar client-side (ya estaban rotos por
+estados fantasma; requiere agregar negocio a la vista).
+
 ### 🔴→✅ Alejandro entregaba diseños ROTOS — enum ficticio en pedidos.estado (22P02)
 Auditoría flujo Alejandro: NO usa `estado_operativo`; todo su estado estaba en el enum `estado` con
 valores inventados (revision/en_diseno/aprobado/entregado/cancelado). `admin-panel` (subir diseño + modal
