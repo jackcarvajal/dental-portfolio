@@ -985,6 +985,9 @@
     if (sendBtn) sendBtn.disabled = true;
     _pgAppendMsg('user', text);
     _pgChatHistory.push({ role: 'user', parts: [{ text: text }] });
+    // Recorta a los últimos 12 turnos: mantiene contexto sin crecer sin límite (evita chocar
+    // el cap de 24KB del proxy /api/gemini en chats largos y baja el costo por request).
+    if (_pgChatHistory.length > 12) _pgChatHistory = _pgChatHistory.slice(-12);
     var typing = document.getElementById('pg-typing');
     if (typing) typing.classList.add('visible');
     var msgs = document.getElementById('pg-chat-msgs');
