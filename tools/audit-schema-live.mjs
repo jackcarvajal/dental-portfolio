@@ -30,6 +30,9 @@ const ALLOW = new Set([
   'analytics_events.props', 'analytics_events.event', 'cotizaciones.servicio', 'pedidos.servicio',
   'leads_doctores.html', 'leads_doctores.soporte', 'logs_incidencias.bajo', 'logs_incidencias.pago',
   'notificaciones_internas.arr',
+  // Columnas de promociones — existen tras correr sql/promos-y-restaurativos-catalogo.sql.
+  // El código degrada bien si aún no están (Promo cae al precio normal).
+  'catalogo.precio_oferta', 'catalogo.oferta_desde', 'catalogo.oferta_hasta',
 ]);
 
 // ── 1. extraer superficie (mismo motor que audit-schema.mjs) ──
