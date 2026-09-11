@@ -101,13 +101,13 @@
             try {
                 const { data: items, error } = await sb
                     .from('catalogo')
-                    .select('id,precio,activo')
+                    .select('id,precio,activo,precio_oferta,oferta_desde,oferta_hasta')
                     .eq('flujo', 'impresion');
                 if (error || !items || !items.length) return;
 
                 const mapa = Object.fromEntries(items.map(i => [i.id, i]));
 
-                // Reconstruir SUB_MATERIALES filtrando inactivos y actualizando precios
+                // Reconstruir SUB_MATERIALES filtrando inactivos y actualizando precios (con promo)
                 const nuevoSub = {};
                 for (const [cat, arr] of Object.entries(SUB_MATERIALES_FALLBACK)) {
                     nuevoSub[cat] = arr
@@ -117,7 +117,10 @@
                         })
                         .map(item => {
                             const row = mapa[item.id];
-                            return row ? { ...item, precio: row.precio } : item;
+                            if (!row) return item;
+                            // Promo: cobra el precio de oferta si está en ventana; guarda el normal para tacharlo.
+                            const info = window.Promo ? window.Promo.resolver(row) : { precio: row.precio, enOferta:false, precioNormal:row.precio, hasta:null, ahorroPct:0 };
+                            return { ...item, precio: info.precio, precioNormal: info.precioNormal, enOferta: info.enOferta, ofertaHasta: info.hasta, ahorroPct: info.ahorroPct };
                         });
                 }
                 SUB_MATERIALES = nuevoSub;
@@ -125,7 +128,7 @@
 
                 // Si el usuario ya eligió un material, actualizar el precio en STATE
                 if (STATE.submaterialId && mapa[STATE.submaterialId]) {
-                    STATE.submaterialPrecio = mapa[STATE.submaterialId].precio;
+                    STATE.submaterialPrecio = window.Promo ? window.Promo.precioEfectivo(mapa[STATE.submaterialId]) : mapa[STATE.submaterialId].precio;
                     calcularTotal();
                 }
 
@@ -571,7 +574,7 @@
                             <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 2px; line-height: 1.2; text-transform: uppercase;">${sub.nom}</div>
                             ${sub.subtitulo ? `<div style="font-size: 0.8rem; color: #aaa; margin-bottom: 8px; font-style: italic;">${sub.subtitulo}</div>` : ''}
                             ${sub.info ? `<div style="font-size: 0.75rem; color: #888; margin-bottom: 8px; line-height: 1.4;">${sub.info}</div>` : ''}
-                            <div style="color: var(--gold-primary); font-weight: bold; font-size: 1.1rem;">$${sub.precio.toLocaleString('es-CO')}</div>
+                            ${sub.enOferta ? `<div style="font-weight:bold;font-size:1.1rem;"><span class="precio-tachado">$${(sub.precioNormal||sub.precio).toLocaleString('es-CO')}</span> <span class="precio-oferta">$${sub.precio.toLocaleString('es-CO')}</span></div>${window.Promo?Promo.badgeHTML(sub.ofertaHasta,sub.ahorroPct):''}` : `<div style="color: var(--gold-primary); font-weight: bold; font-size: 1.1rem;">$${sub.precio.toLocaleString('es-CO')}</div>`}
                         </div>
                     `;
                 });
@@ -645,7 +648,7 @@
                             <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 2px; line-height: 1.2; text-transform: uppercase;">${sub.nom}</div>
                             ${sub.subtitulo ? `<div style="font-size: 0.8rem; color: #aaa; margin-bottom: 8px; font-style: italic;">(${sub.subtitulo})</div>` : ''}
                             ${sub.info ? `<div style="font-size: 0.75rem; color: #888; margin-bottom: 8px; line-height: 1.4;">${sub.info}</div>` : ''}
-                            <div style="color: var(--gold-primary); font-weight: bold; font-size: 1.1rem;">$${sub.precio.toLocaleString('es-CO')}</div>
+                            ${sub.enOferta ? `<div style="font-weight:bold;font-size:1.1rem;"><span class="precio-tachado">$${(sub.precioNormal||sub.precio).toLocaleString('es-CO')}</span> <span class="precio-oferta">$${sub.precio.toLocaleString('es-CO')}</span></div>${window.Promo?Promo.badgeHTML(sub.ofertaHasta,sub.ahorroPct):''}` : `<div style="color: var(--gold-primary); font-weight: bold; font-size: 1.1rem;">$${sub.precio.toLocaleString('es-CO')}</div>`}
                         </div>
                     `;
                 });
@@ -693,7 +696,7 @@
                         <div class="icon-neon-wrapper ${iD.cls}">${iD.icon}</div>
                         <div class="submaterial-name" style="font-weight:700;">${sub.nom}</div>
                         ${sub.info?`<div class="submaterial-info">${sub.info}</div>`:''}
-                        <div class="submaterial-price" style="margin-top:5px;color:var(--gold-primary);font-weight:bold;">$${sub.precio.toLocaleString('es-CO')}</div>
+                        ${sub.enOferta ? `<div class="submaterial-price" style="margin-top:5px;font-weight:bold;"><span class="precio-tachado">$${(sub.precioNormal||sub.precio).toLocaleString('es-CO')}</span> <span class="precio-oferta">$${sub.precio.toLocaleString('es-CO')}</span></div>${window.Promo?Promo.badgeHTML(sub.ofertaHasta,sub.ahorroPct):''}` : `<div class="submaterial-price" style="margin-top:5px;color:var(--gold-primary);font-weight:bold;">$${sub.precio.toLocaleString('es-CO')}</div>`}
                     </div>
                 `;
             });

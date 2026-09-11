@@ -2735,7 +2735,7 @@ if(window.ProdigyAuth){
             try {
                 const { data: items, error } = await sb
                     .from('catalogo')
-                    .select('id,precio,activo')
+                    .select('id,precio,activo,precio_oferta,oferta_desde,oferta_hasta')
                     .eq('flujo', 'fresado');
                 if (error || !items || !items.length) return;
 
@@ -2744,13 +2744,19 @@ if(window.ProdigyAuth){
                 for (const [cat, arr] of Object.entries(SUB_MATERIALES_FALLBACK)) {
                     nuevoSub[cat] = arr
                         .filter(item => { const r = mapa[item.id]; return !r || r.activo !== false; })
-                        .map(item => { const r = mapa[item.id]; return r ? { ...item, precio: r.precio } : item; });
+                        .map(item => {
+                            const r = mapa[item.id];
+                            if (!r) return item;
+                            // Promo: cobra el precio de oferta si está en ventana; guarda el normal para tacharlo.
+                            const info = window.Promo ? window.Promo.resolver(r) : { precio: r.precio, enOferta:false, precioNormal:r.precio, hasta:null, ahorroPct:0 };
+                            return { ...item, precio: info.precio, precioNormal: info.precioNormal, enOferta: info.enOferta, ofertaHasta: info.hasta, ahorroPct: info.ahorroPct };
+                        });
                 }
                 SUB_MATERIALES = nuevoSub;
                 deepFreeze(SUB_MATERIALES);
 
                 if (STATE.submaterialId && mapa[STATE.submaterialId]) {
-                    STATE.submaterialPrecio = mapa[STATE.submaterialId].precio;
+                    STATE.submaterialPrecio = window.Promo ? window.Promo.precioEfectivo(mapa[STATE.submaterialId]) : mapa[STATE.submaterialId].precio;
                     calcularTotal();
                 }
 
@@ -2942,7 +2948,9 @@ if(window.ProdigyAuth){
                         <div class="icon-neon-wrapper ${iD.cls}">${iD.icon}</div>
                         <div class="submaterial-name" style="font-weight:700;">${sub.nom}</div>
                         ${sub.info?`<div class="submaterial-info">${sub.info}</div>`:''}
-                        <div class="submaterial-price" style="margin-top:5px;color:var(--gold-primary);font-weight:bold;">$${sub.precio.toLocaleString('es-CO')}</div>
+                        ${sub.enOferta
+                          ? `<div class="submaterial-price" style="margin-top:5px;font-weight:bold;"><span class="precio-tachado">$${(sub.precioNormal||sub.precio).toLocaleString('es-CO')}</span> <span class="precio-oferta">$${sub.precio.toLocaleString('es-CO')}</span></div>${window.Promo?Promo.badgeHTML(sub.ofertaHasta,sub.ahorroPct):''}`
+                          : `<div class="submaterial-price" style="margin-top:5px;color:var(--gold-primary);font-weight:bold;">$${sub.precio.toLocaleString('es-CO')}</div>`}
                     </button>
                 `;
             });
@@ -4926,6 +4934,7 @@ if(window.ProdigyAuth){
     </script>
     <script src="js/supabase-client.js?v=20260528"></script>
     <script src="js/formatos.js?v=20260718"></script>
+<script src="js/promo.js?v=20260910"></script>
 <script src="js/pedido-guard.js?v=20260719"></script>
 <script src="js/modo-prueba.js?v=20260719"></script>
 <script src="js/registro-archivos.js?v=20260718"></script>
