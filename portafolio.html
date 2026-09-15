@@ -853,7 +853,7 @@ function filtrarMat(mat, btn) {
         const { data, error } = await sb
             .from('casos_portafolio')
             .select('id,name,type,date,description,cover_image,gallery_count,material')
-            .eq('negocio', 'prodigy')
+            .in('negocio', ['prodigy', 'ambos'])
             .eq('visible', true)
             .order('sort_order', { ascending: true, nullsFirst: false })
             .order('created_at', { ascending: false });
