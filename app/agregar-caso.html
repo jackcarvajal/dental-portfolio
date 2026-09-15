@@ -408,6 +408,16 @@
     <div class="card">
         <div class="card-title">📝 Paso 1 — Información del Caso</div>
 
+        <div class="form-row full">
+            <div class="form-group">
+                <label for="caseNegocio">Publicar en <span>*</span></label>
+                <select id="caseNegocio">
+                    <option value="prodigy">🔷 PRODIGY Lab Dental</option>
+                    <option value="alejandrocadcam">👑 Alejandro CAD/CAM</option>
+                </select>
+            </div>
+        </div>
+
         <div class="form-row">
             <div class="form-group">
                 <label for="caseName">Nombre del caso <span>*</span></label>
@@ -869,6 +879,7 @@ async function publicarCaso() {
         setProgress('Guardando en base de datos...');
         const { error: dbErr } = await sb.from('casos_portafolio').insert({
             id,
+            negocio: (document.getElementById('caseNegocio') && document.getElementById('caseNegocio').value) || 'prodigy',
             name,
             code: id.toUpperCase(),
             type,

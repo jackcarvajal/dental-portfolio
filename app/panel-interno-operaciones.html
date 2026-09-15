@@ -1990,6 +1990,7 @@ async function subirCaso(e) {
         prog.textContent = 'Guardando en base de datos…';
         const { error: dbErr } = await sb.from('casos_portafolio').insert({
             id,
+            negocio:       'prodigy',
             name:          nombre,
             code:          id.toUpperCase(),
             type:          document.getElementById('p-tipo').value,
@@ -2044,7 +2045,7 @@ async function subirCasoSimple(e){
       if(up.error) throw new Error('Imagen: '+up.error.message);
       coverUrl='https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/object/public/'+PORT_BUCKET+'/'+path;
     }
-    var row={ id:id, name:nombre, code:id.toUpperCase(),
+    var row={ id:id, negocio:'prodigy', name:nombre, code:id.toUpperCase(),
       type:document.getElementById('pf-tipo').value,
       date:document.getElementById('pf-fecha').value,
       description:document.getElementById('pf-desc').value,
