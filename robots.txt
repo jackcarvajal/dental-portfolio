@@ -37,8 +37,9 @@ User-agent: Google-Extended
 Allow: /
 
 # ── Bots solo de entrenamiento — BLOQUEAR ────────────────────────
+# Aparecer en las respuestas y citaciones de Claude (Anthropic)
 User-agent: ClaudeBot
-Disallow: /
+Allow: /
 
 User-agent: CCBot
 Disallow: /
