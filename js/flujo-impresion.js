@@ -574,7 +574,7 @@
                             <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 2px; line-height: 1.2; text-transform: uppercase;">${sub.nom}</div>
                             ${sub.subtitulo ? `<div style="font-size: 0.8rem; color: #aaa; margin-bottom: 8px; font-style: italic;">${sub.subtitulo}</div>` : ''}
                             ${sub.info ? `<div style="font-size: 0.75rem; color: #888; margin-bottom: 8px; line-height: 1.4;">${sub.info}</div>` : ''}
-                            ${sub.enOferta ? `<div style="font-weight:bold;font-size:1.1rem;"><span class="precio-tachado">$${(sub.precioNormal||sub.precio).toLocaleString('es-CO')}</span> <span class="precio-oferta">$${sub.precio.toLocaleString('es-CO')}</span></div>${window.Promo?Promo.badgeHTML(sub.ofertaHasta,sub.ahorroPct):''}` : `<div style="color: var(--gold-primary); font-weight: bold; font-size: 1.1rem;">$${sub.precio.toLocaleString('es-CO')}</div>`}
+                            ${sub.enOferta ? `<div style="font-weight:bold;font-size:1.1rem;"><span class="precio-tachado">$${(sub.precioNormal||sub.precio).toLocaleString('es-CO')}</span> <span class="precio-oferta">$${sub.precio.toLocaleString('es-CO')}</span></div>${window.Promo?window.Promo.badgeHTML(sub.ofertaHasta,sub.ahorroPct):''}` : `<div style="color: var(--gold-primary); font-weight: bold; font-size: 1.1rem;">$${sub.precio.toLocaleString('es-CO')}</div>`}
                         </div>
                     `;
                 });
@@ -648,7 +648,7 @@
                             <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 2px; line-height: 1.2; text-transform: uppercase;">${sub.nom}</div>
                             ${sub.subtitulo ? `<div style="font-size: 0.8rem; color: #aaa; margin-bottom: 8px; font-style: italic;">(${sub.subtitulo})</div>` : ''}
                             ${sub.info ? `<div style="font-size: 0.75rem; color: #888; margin-bottom: 8px; line-height: 1.4;">${sub.info}</div>` : ''}
-                            ${sub.enOferta ? `<div style="font-weight:bold;font-size:1.1rem;"><span class="precio-tachado">$${(sub.precioNormal||sub.precio).toLocaleString('es-CO')}</span> <span class="precio-oferta">$${sub.precio.toLocaleString('es-CO')}</span></div>${window.Promo?Promo.badgeHTML(sub.ofertaHasta,sub.ahorroPct):''}` : `<div style="color: var(--gold-primary); font-weight: bold; font-size: 1.1rem;">$${sub.precio.toLocaleString('es-CO')}</div>`}
+                            ${sub.enOferta ? `<div style="font-weight:bold;font-size:1.1rem;"><span class="precio-tachado">$${(sub.precioNormal||sub.precio).toLocaleString('es-CO')}</span> <span class="precio-oferta">$${sub.precio.toLocaleString('es-CO')}</span></div>${window.Promo?window.Promo.badgeHTML(sub.ofertaHasta,sub.ahorroPct):''}` : `<div style="color: var(--gold-primary); font-weight: bold; font-size: 1.1rem;">$${sub.precio.toLocaleString('es-CO')}</div>`}
                         </div>
                     `;
                 });
@@ -696,7 +696,7 @@
                         <div class="icon-neon-wrapper ${iD.cls}">${iD.icon}</div>
                         <div class="submaterial-name" style="font-weight:700;">${sub.nom}</div>
                         ${sub.info?`<div class="submaterial-info">${sub.info}</div>`:''}
-                        ${sub.enOferta ? `<div class="submaterial-price" style="margin-top:5px;font-weight:bold;"><span class="precio-tachado">$${(sub.precioNormal||sub.precio).toLocaleString('es-CO')}</span> <span class="precio-oferta">$${sub.precio.toLocaleString('es-CO')}</span></div>${window.Promo?Promo.badgeHTML(sub.ofertaHasta,sub.ahorroPct):''}` : `<div class="submaterial-price" style="margin-top:5px;color:var(--gold-primary);font-weight:bold;">$${sub.precio.toLocaleString('es-CO')}</div>`}
+                        ${sub.enOferta ? `<div class="submaterial-price" style="margin-top:5px;font-weight:bold;"><span class="precio-tachado">$${(sub.precioNormal||sub.precio).toLocaleString('es-CO')}</span> <span class="precio-oferta">$${sub.precio.toLocaleString('es-CO')}</span></div>${window.Promo?window.Promo.badgeHTML(sub.ofertaHasta,sub.ahorroPct):''}` : `<div class="submaterial-price" style="margin-top:5px;color:var(--gold-primary);font-weight:bold;">$${sub.precio.toLocaleString('es-CO')}</div>`}
                     </div>
                 `;
             });
