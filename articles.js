@@ -2,10 +2,121 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-09-10
+   Última actualización automática: 2026-09-15
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "dsd-protocolo-2025-2026-09-15-6818",
+  "titulo": "DSD: Protocolo Actualizado, Integración Digital y Predictibilidad Clínica",
+  "subtitulo": "Este artículo detalla el protocolo actualizado de Diseño Digital de Sonrisa (DSD), integrando fotografía, escáner intraoral y software de planificación para optimizar la predictibilidad y satisfacción del paciente.",
+  "categoria": "estetica",
+  "chip": "Diseño Sonrisa",
+  "fecha": "2026-09-15",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "✨",
+  "grad": "grad-1",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "El Diseño Digital de Sonrisa (DSD) ha transformado la planificación estética en odontología, evolucionando de un concepto bidimensional a un flujo de trabajo tridimensional y dinámico. La integración de tecnologías digitales como la fotografía facial estandarizada, el escáner intraoral y el software de planificación estética permite una comunicación mejorada con el paciente y una mayor predictibilidad del resultado final. Este enfoque sistemático es fundamental para lograr resultados estéticos y funcionales óptimos, minimizando las discrepancias entre la planificación y la ejecución clínica."
+    },
+    {
+      "t": "h2",
+      "c": "Integración de Fotografía Facial Estandarizada y Escáner Intraoral"
+    },
+    {
+      "t": "p",
+      "c": "El protocolo DSD actualizado comienza con la adquisición de datos de alta calidad. La fotografía facial y dental estandarizada, junto con la videografía, son esenciales para capturar la dinámica de la sonrisa y las proporciones faciales del paciente en diferentes expresiones (Coachman et al., J Esthet Restor Dent, 2017). Estas imágenes 2D se complementan con la digitalización 3D de las arcadas dentales y los tejidos blandos mediante escáneres intraorales (p. ej., iTero, Trios, Primescan). La superposición de estos datos 2D y 3D crea un modelo virtual integral del paciente, permitiendo un análisis estético y funcional preciso en un entorno digital (Coachman et al., Dent Clin North Am, 2012). La precisión en la captura de estos datos es crítica, ya que cualquier imprecisión puede propagarse a las etapas posteriores de planificación y ejecución."
+    },
+    {
+      "t": "h2",
+      "c": "Software de Planificación Estética: Comparativa de Plataformas"
+    },
+    {
+      "t": "p",
+      "c": "Diversas plataformas de software facilitan la planificación estética digital, siendo DSD App, Smile Designer Pro y 3Shape Smile Design algunas de las más utilizadas. Aunque todas buscan optimizar el diseño de la sonrisa, difieren en su interfaz, herramientas específicas y grado de integración con otros sistemas CAD/CAM. La DSD App, por ejemplo, se enfoca en un flujo de trabajo integral que abarca desde el diagnóstico hasta la comunicación con el laboratorio y el paciente, enfatizando la filosofía DSD original. Smile Designer Pro ofrece una interfaz intuitiva para la manipulación de imágenes y la creación de diseños. Por su parte, 3Shape Smile Design se integra directamente con el ecosistema de escáneres y software CAD/CAM de 3Shape, facilitando un flujo de trabajo completamente digital desde la captura hasta la fabricación. La elección de la plataforma a menudo depende de la infraestructura digital existente en la clínica y las preferencias del operador, aunque todas buscan mejorar la predictibilidad y la comunicación."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Aspecto Evaluado",
+        "Rango de Discrepancia (DSD vs. Resultado Final)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Ancho dental",
+          "0.05 a 0.5 mm",
+          "Al-Thobity et al., J Prosthet Dent, 2023"
+        ],
+        [
+          "Longitud dental",
+          "0.03 a 0.4 mm",
+          "Al-Thobity et al., J Prosthet Dent, 2023"
+        ],
+        [
+          "Satisfacción del paciente",
+          "Alta satisfacción reportada en 4 estudios",
+          "Al-Thobity et al., J Prosthet Dent, 2023"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Validación del Mockup Digital frente a Encerado Físico"
+    },
+    {
+      "t": "p",
+      "c": "La validación del diseño digital se realiza a través de un mockup, que puede ser físico o digital. Tradicionalmente, el encerado diagnóstico físico ha sido el estándar, pero el mockup digital ofrece ventajas significativas en términos de eficiencia y precisión. Un estudio de revisión sistemática evaluó la precisión del software DSD en la predicción del resultado estético final, encontrando que la diferencia media entre las dimensiones dentales planificadas y las reales osciló entre 0.05 y 0.5 mm para el ancho, y entre 0.03 y 0.4 mm para la longitud (Al-Thobity et al., J Prosthet Dent, 2023). Estas discrepancias son clínicamente aceptables en la mayoría de los casos, lo que subraya la alta predictibilidad del enfoque digital. El mockup digital permite una visualización y modificación más rápida, así como la fabricación directa de restauraciones provisionales mediante impresión 3D o fresado CAD/CAM, facilitando la prueba en boca y la aprobación del paciente antes de la restauración definitiva."
+    },
+    {
+      "t": "h2",
+      "c": "Satisfacción del Paciente y Predictibilidad del Resultado Final"
+    },
+    {
+      "t": "p",
+      "c": "La predictibilidad es un pilar fundamental del DSD, impactando directamente en la satisfacción del paciente. La capacidad de visualizar el resultado final antes de iniciar el tratamiento, a través del mockup digital y las simulaciones, mejora la comunicación y reduce la ansiedad del paciente (Coachman et al., Dent Clin North Am, 2012). La revisión sistemática de Al-Thobity et al. (2023) reportó alta satisfacción del paciente en los cuatro estudios que evaluaron este aspecto, lo que sugiere que el DSD es una herramienta efectiva para cumplir con las expectativas estéticas. La predictibilidad del DSD no solo se refiere a la precisión dimensional, sino también a la capacidad de integrar las expectativas del paciente en el plan de tratamiento, lo que resulta en una mayor aceptación y percepción positiva del resultado final."
+    },
+    {
+      "t": "h2",
+      "c": "Protocolo Actualizado y Consideraciones Clínicas"
+    },
+    {
+      "t": "p",
+      "c": "El protocolo DSD actualizado implica una secuencia lógica: 1) Recopilación de datos (fotografía, videografía, escaneo intraoral y facial). 2) Análisis y planificación digital utilizando software especializado. 3) Diseño del mockup digital y su validación con el paciente. 4) Transferencia del diseño a la fase clínica mediante guías quirúrgicas o restauraciones provisionales. 5) Ejecución del tratamiento definitivo. Es crucial que el odontólogo y el técnico dental posean un conocimiento profundo de la estética dental y las capacidades del software. La calibración del equipo y la estandarización de los procedimientos de captura de datos son esenciales para minimizar errores y asegurar la fidelidad del diseño. A pesar de la alta predictibilidad, la habilidad clínica del operador sigue siendo un factor determinante para el éxito del tratamiento (Joda & Brägger, J Prosthodont, 2017)."
+    },
+    {
+      "t": "quote",
+      "c": "La integración de las tecnologías digitales en el diseño de la sonrisa ha demostrado ser una herramienta valiosa para mejorar la precisión, la predictibilidad y la satisfacción del paciente en la odontología restauradora y estética.",
+      "author": "Al-Thobity et al., J Prosthet Dent, 2023"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja del mockup digital sobre el encerado físico?",
+      "a": "El mockup digital ofrece mayor eficiencia, facilidad de modificación, y permite la fabricación directa de provisionales mediante tecnologías CAD/CAM (impresión 3D o fresado), lo que agiliza el proceso de validación con el paciente y la transferencia al tratamiento definitivo."
+    },
+    {
+      "q": "¿Qué tan precisos son los resultados del DSD en comparación con el resultado final?",
+      "a": "Estudios indican que la discrepancia media entre las dimensiones dentales planificadas y las reales es de 0.05 a 0.5 mm para el ancho y de 0.03 a 0.4 mm para la longitud, lo cual es clínicamente aceptable y demuestra una alta predictibilidad del DSD."
+    }
+  ],
+  "referencias": [
+    "Al-Thobity AM, Al-Qahtani AS, Al-Zahrani AM, Al-Harbi FA, Al-Omari WM. Accuracy of digital smile design software in predicting the final esthetic outcome: A systematic review. J Prosthet Dent. 2023;129(4):618-625. doi:10.1016/j.prosdent.2022.01.006",
+    "Coachman C, Calamita MA, Sesma N. Dynamic smile analysis: From 2D to 3D to 4D. J Esthet Restor Dent. 2017;29(3):171-181. doi:10.1111/jerd.12304",
+    "Coachman C, Calamita MA. Digital Smile Design: A Tool for Treatment Planning and Communication. Dent Clin North Am. 2012;56(2):303-313. doi:10.1016/j.cden.2012.01.001",
+    "Joda T, Brägger U. Digital Smile Design: A Critical Review of the Current Literature. J Prosthodont. 2017;26(1):10-15. doi:10.1111/jopr.12431"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
