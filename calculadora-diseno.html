@@ -449,31 +449,31 @@
 
 <script>
 // Precios en USD y COP (COP = USD × 4000 aprox)
-const USD_COP = 4000;
+const USD_COP = 3400;
 const PRECIOS_USD = {
-  corona:      { base:14,  lbl:'Corona / Inlay',        fixedQty:false, time:'24h'    },
-  carilla:     { base:16,  lbl:'Carilla / Lámina',      fixedQty:false, time:'24h'    },
-  puente:      { base:32,  lbl:'Puente 3 piezas',       fixedQty:true,  time:'24–48h' },
-  abutment:    { base:35,  lbl:'Abutment CAD',          fixedQty:false, time:'24h'    },
-  guia:        { base:60,  lbl:'Guía Quirúrgica',       fixedQty:false, time:'48h'    },
+  corona:      { base:12,  lbl:'Corona / Inlay',        fixedQty:false, time:'24h'    },
+  carilla:     { base:12,  lbl:'Carilla / Lámina',      fixedQty:false, time:'24h'    },
+  puente:      { base:26,  lbl:'Puente 3 piezas',       fixedQty:true,  time:'24–48h' },
+  abutment:    { base:18,  lbl:'Abutment CAD',          fixedQty:false, time:'24h'    },
+  guia:        { base:49,  lbl:'Guía Quirúrgica',       fixedQty:false, time:'48h'    },
   fullarch:    { base:0,   lbl:'Full Arch Rehab',       fixedQty:true,  time:'48–72h' },
-  alineadores: { base:100, lbl:'Setup Alineadores',     fixedQty:true,  time:'48–72h' },
-  provisional: { base:12,  lbl:'Provisional CAD',       fixedQty:false, time:'24h'    },
-  dsd:         { base:80,  lbl:'DSD / Smile Design',    fixedQty:true,  time:'48h'    },
+  alineadores: { base:85,  lbl:'Setup Alineadores',     fixedQty:true,  time:'48–72h' },
+  provisional: { base:10,  lbl:'Provisional CAD',       fixedQty:false, time:'24h'    },
+  dsd:         { base:69,  lbl:'DSD / Smile Design',    fixedQty:true,  time:'48h'    },
   modelo:      { base:5,   lbl:'Modelo 3D Diagnóstico',  fixedQty:false, time:'24h'    },
-  endocrown:   { base:18,  lbl:'Endocrown',              fixedQty:false, time:'24h'    },
-  onlay:       { base:16,  lbl:'Onlay / Overlay',        fixedQty:false, time:'24h'    },
-  maryland:    { base:40,  lbl:'Maryland Bridge',        fixedQty:true,  time:'24–48h' },
-  mockup:      { base:50,  lbl:'Mock-up / Encerado',     fixedQty:true,  time:'48h'    },
-  guia_compleja:  { base:90,  lbl:'Guía Quirúrgica Compleja 4+', fixedQty:false, time:'48h' },
-  guia_apilable:  { base:80,  lbl:'Guía Apilable (por nivel)',   fixedQty:false, time:'48h' },
-  guia_reduccion: { base:70,  lbl:'Guía Reducción Ósea',         fixedQty:false, time:'48h' },
-  barra_implante: { base:150, lbl:'Barra sobre Implantes',       fixedQty:true,  time:'48–72h' },
-  supra:       { base:45,  lbl:'Supraestructura Atornillada', fixedQty:false, time:'24h' },
-  retenedor:   { base:18,  lbl:'Retenedor Hawley/Essix',    fixedQty:false, time:'24h'    },
-  ferula:      { base:35,  lbl:'Férula Michigan',           fixedQty:true,  time:'24h'    },
-  guia_desgaste: { base:25, lbl:'Guía de Desgaste',         fixedQty:false, time:'24h'    },
-  plano_mordida: { base:25, lbl:'Plano de Mordida',         fixedQty:false, time:'24h'    },
+  endocrown:   { base:15,  lbl:'Endocrown',              fixedQty:false, time:'24h'    },
+  onlay:       { base:13,  lbl:'Onlay / Overlay',        fixedQty:false, time:'24h'    },
+  maryland:    { base:33,  lbl:'Maryland Bridge',        fixedQty:true,  time:'24–48h' },
+  mockup:      { base:42,  lbl:'Mock-up / Encerado',     fixedQty:true,  time:'48h'    },
+  guia_compleja:  { base:74,  lbl:'Guía Quirúrgica Compleja 4+', fixedQty:false, time:'48h' },
+  guia_apilable:  { base:66,  lbl:'Guía Apilable (por nivel)',   fixedQty:false, time:'48h' },
+  guia_reduccion: { base:58,  lbl:'Guía Reducción Ósea',         fixedQty:false, time:'48h' },
+  barra_implante: { base:125, lbl:'Barra sobre Implantes',       fixedQty:true,  time:'48–72h' },
+  supra:       { base:36,  lbl:'Supraestructura Atornillada', fixedQty:false, time:'24h' },
+  retenedor:   { base:15,  lbl:'Retenedor Hawley/Essix',    fixedQty:false, time:'24h'    },
+  ferula:      { base:29,  lbl:'Férula Michigan',           fixedQty:true,  time:'24h'    },
+  guia_desgaste: { base:21, lbl:'Guía de Desgaste',         fixedQty:false, time:'24h'    },
+  plano_mordida: { base:21, lbl:'Plano de Mordida',         fixedQty:false, time:'24h'    },
 };
 const EXTRAS_USD = { urgente:8, revision:5 };
 let cur = 'USD';
