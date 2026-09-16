@@ -868,6 +868,7 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
 
     // 1. Guardar solicitud
     await sb.from('solicitudes_scanner').insert({
+        negocio: 'prodigy',
         doctor, clinica, whatsapp, email: email || null,
         escaner_marca: marca, servicio, piezas: piezas || null,
         notas: notas || null, archivo_url, archivo_nombre,
