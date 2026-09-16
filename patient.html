@@ -1042,6 +1042,7 @@
                     let { data, error } = await sb
                         .from('casos_portafolio')
                         .select('*')
+                        .in('negocio', ['prodigy', 'ambos'])
                         .eq('id', patientId)
                         .maybeSingle();
 
@@ -1050,6 +1051,7 @@
                         const res2 = await sb
                             .from('casos_portafolio')
                             .select('*')
+                            .in('negocio', ['prodigy', 'ambos'])
                             .eq('code', patientId)
                             .maybeSingle();
                         data  = res2.data;

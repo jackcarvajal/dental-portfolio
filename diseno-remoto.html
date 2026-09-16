@@ -882,13 +882,16 @@ function selPortafolio(tipo) {
     var sb = window.supabase.createClient(SB_URL, SB_ANON);
     sb.from('casos_portafolio')
       .select('id,name,type,description,cover_image,date')
+      .in('negocio', ['prodigy', 'ambos'])
       .eq('visible', true)
       .order('created_at', { ascending: false })
-      .limit(4)
+      .limit(12)
       .then(function(res) {
         var casos = (res.data || []);
         if (!casos.length) { renderPlaceholders(); return; }
-        renderCasos(casos);
+        var seen = {}, variados = [];
+        casos.forEach(function(c){ var k = c.type || 'x'; if (!seen[k]) { seen[k] = 1; variados.push(c); } });
+        renderCasos((variados.length >= 3 ? variados : casos).slice(0, 4));
       }).catch(function() { renderPlaceholders(); });
   }
 

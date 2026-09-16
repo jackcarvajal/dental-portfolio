@@ -379,6 +379,7 @@ async function cargarRelacionados(casoId, tipo) {
   try {
     const { data } = await sb.from('casos_portafolio')
       .select('id,name,type,cover_image,date')
+      .in('negocio', ['prodigy', 'ambos'])
       .eq('visible', true)
       .eq('type', tipo)
       .neq('id', casoId)
@@ -530,9 +531,9 @@ async function fijarNota(notaId, casoId, fijar) {
   } catch(e) {}
 
   try {
-    let { data, error } = await sb.from('casos_portafolio').select('*').eq('id', id).maybeSingle();
+    let { data, error } = await sb.from('casos_portafolio').select('*').in('negocio', ['prodigy', 'ambos']).eq('id', id).maybeSingle();
     if (!data && !error) {
-      const r2 = await sb.from('casos_portafolio').select('*').eq('code', id).maybeSingle();
+      const r2 = await sb.from('casos_portafolio').select('*').in('negocio', ['prodigy', 'ambos']).eq('code', id).maybeSingle();
       // pdf_url se incluye en * — columna opcional, puede no existir hasta SQL migration
       data = r2.data; error = r2.error;
     }
