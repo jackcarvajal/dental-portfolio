@@ -876,6 +876,10 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         acepta_habeas:    document.getElementById('checkHabeas').checked
     });
 
+    // Aviso al staff por WhatsApp (destinatarios en env; inerte si no está configurado)
+    fetch('/api/notify-staff', { method:'POST', headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ doctor, servicio, whatsapp }) }).catch(()=>{});
+
     // Suscribir al newsletter si acepta marketing y tiene email
     if (email && document.getElementById('checkMarketing')?.checked) {
         sb.rpc('newsletter_subscribe', {
