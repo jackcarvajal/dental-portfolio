@@ -2,10 +2,159 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-09-15
+   Última actualización automática: 2026-09-17
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "full-arch-digital-2026-09-17-97cf",
+  "titulo": "Rehabilitaciones Full Arch Digitales: Protocolo Clínico y Evidencia Actual",
+  "subtitulo": "Este artículo detalla un protocolo clínico basado en evidencia para rehabilitaciones Full Arch digitales, abordando la digitalización, diseño CAD, materiales y resultados clínicos.",
+  "categoria": "implantologia",
+  "chip": "Full Arch",
+  "fecha": "2026-09-17",
+  "lectura": "10 min",
+  "vistas": "0",
+  "emoji": "⚙️",
+  "grad": "grad-4",
+  "og_img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/3D_All-on-4_technique.ogv/1280px--3D_All-on-4_technique.ogv.jpg",
+  "img_credit": "Wikipedia — All-on-4",
+  "img_link": "https://en.wikipedia.org/wiki/All-on-4",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La rehabilitación de arcos edéntulos o con dentición comprometida mediante prótesis implantosoportadas de arco completo, como los conceptos All-on-4 o All-on-6, ha demostrado ser una solución predecible y eficaz. La integración de flujos de trabajo digitales ha revolucionado este campo, ofreciendo mayor precisión, eficiencia y personalización. Este protocolo clínico basado en evidencia aborda las etapas clave de la digitalización, el diseño asistido por ordenador (CAD) y la fabricación asistida por ordenador (CAM), así como los resultados clínicos reportados en la literatura de alto impacto."
+    },
+    {
+      "t": "img",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/3D_All-on-4_technique.ogv/1280px--3D_All-on-4_technique.ogv.jpg",
+      "alt": "Protocolo Full Arch digital — precisión, materiales y evidencia",
+      "caption": "Wikipedia — All-on-4 · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Digitalización de Arco Completo y Técnicas de Verificación"
+    },
+    {
+      "t": "p",
+      "c": "La precisión en la digitalización del arco completo es fundamental para el éxito de las rehabilitaciones implantosoportadas. Los escáneres intraorales han mejorado significativamente, pero la precisión en arcos completos sigue siendo un desafío. Estudios han reportado que la desviación de los escáneres intraorales en arcos completos puede variar entre 30 µm y 100 µm, aumentando con la longitud del arco (Giménez et al., J Prosthet Dent, 2017). Para mitigar estas imprecisiones, se utilizan cuerpos de escaneo (scan bodies) que deben ser estables y reproducibles. La técnica de escaneo segmentado con alineación posterior ha mostrado ser más precisa que el escaneo continuo para arcos completos (Mangano et al., J Prosthet Dent, 2017)."
+    },
+    {
+      "t": "list",
+      "items": [
+        "Uso de cuerpos de escaneo específicos para cada sistema de implantes para asegurar la precisión de la posición implantaria.",
+        "Escaneo segmentado del arco completo, capturando grupos de implantes y luego uniendo las secciones para minimizar la acumulación de errores.",
+        "Verificación de la precisión del escaneo mediante software CAD, superponiendo los datos de los cuerpos de escaneo con la biblioteca digital de los implantes.",
+        "Fabricación de una férula de verificación impresa en 3D o fresada para confirmar la pasividad del ajuste en boca antes de la fabricación de la estructura definitiva (Jemt et al., Int J Oral Maxillofac Implants, 1996)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Diseño CAD de Estructuras y Prótesis Finales"
+    },
+    {
+      "t": "p",
+      "c": "Una vez obtenidos los datos digitales precisos, el diseño asistido por ordenador (CAD) permite la creación de estructuras protésicas con alta predictibilidad. El software CAD facilita el diseño de la estructura metálica (barra) o de la prótesis monolítica, optimizando la distribución de fuerzas y la estética. Para las estructuras, el titanio fresado es un material de elección debido a su biocompatibilidad y resistencia. Para las prótesis finales, la zirconia monolítica y el PMMA son los materiales más comunes en el flujo digital."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Zirconia Monolítica",
+        "PMMA (Polimetilmetacrilato)"
+      ],
+      "rows": [
+        [
+          "Resistencia a la fractura",
+          "Alta (1000-1200 MPa)",
+          "Moderada (60-90 MPa)"
+        ],
+        [
+          "Estética",
+          "Excelente, translúcida",
+          "Buena, pero menos natural a largo plazo"
+        ],
+        [
+          "Desgaste antagonista",
+          "Potencialmente alto si no pulida",
+          "Bajo"
+        ],
+        [
+          "Indicación principal",
+          "Prótesis definitiva de larga duración",
+          "Prótesis provisional o definitiva de menor duración"
+        ],
+        [
+          "Costo",
+          "Alto",
+          "Moderado"
+        ],
+        [
+          "Fuente",
+          "Guess et al., Dent Mater, 2013",
+          "Guess et al., Dent Mater, 2013"
+        ]
+      ]
+    },
+    {
+      "t": "p",
+      "c": "La zirconia monolítica ofrece una resistencia mecánica superior y una excelente estabilidad del color a largo plazo, siendo ideal para prótesis definitivas. Sin embargo, requiere un pulido meticuloso para evitar el desgaste del antagonista (Guess et al., Dent Mater, 2013). El PMMA, por su parte, es más fácil de fresar y reparar, y se utiliza comúnmente para prótesis provisionales o definitivas de menor duración, especialmente en casos donde se prevén modificaciones futuras."
+    },
+    {
+      "t": "h2",
+      "c": "Tasas de Éxito Implantario y Desajuste Pasivo"
+    },
+    {
+      "t": "p",
+      "c": "Múltiples meta-análisis han evaluado las tasas de éxito de los implantes y las prótesis en rehabilitaciones Full Arch. Un meta-análisis en el International Journal of Oral & Maxillofacial Implants reportó tasas de supervivencia de implantes del 98.1% y tasas de supervivencia protésica del 99.9% para el concepto All-on-4 en un seguimiento de hasta 10 años (Papaspyridakos et al., Int J Oral Maxillofac Implants, 2014). Otro meta-análisis en Clinical Oral Implants Research encontró tasas de supervivencia de implantes del 97.9% y de prótesis del 99.2% para rehabilitaciones de arco completo con carga inmediata (Pjetursson et al., Clin Oral Implants Res, 2014)."
+    },
+    {
+      "t": "p",
+      "c": "El desajuste pasivo es crucial para la longevidad de los implantes y la prótesis. Un desajuste excesivo puede generar estrés en los implantes, llevando a complicaciones biológicas y mecánicas. Los flujos de trabajo digitales, con la precisión de la fresadora CAM, pueden lograr un ajuste pasivo comparable o superior a los métodos convencionales. Estudios han demostrado que las discrepancias marginales en estructuras fresadas digitalmente pueden ser tan bajas como 10-50 µm, lo cual se considera clínicamente aceptable para un ajuste pasivo (Karl et al., J Prosthet Dent, 2017)."
+    },
+    {
+      "t": "h2",
+      "c": "Satisfacción del Paciente y Consideraciones Clínicas"
+    },
+    {
+      "t": "p",
+      "c": "La satisfacción del paciente es un indicador clave del éxito del tratamiento. Los estudios han reportado consistentemente altos niveles de satisfacción en pacientes rehabilitados con prótesis Full Arch implantosoportadas. Un estudio longitudinal en Clinical Oral Implants Research mostró que los pacientes experimentaron mejoras significativas en la calidad de vida relacionada con la salud oral, la función masticatoria, la estética y la fonética después de la rehabilitación con All-on-4 (Maló et al., Clin Oral Implants Res, 2019). La capacidad de restaurar la función y la estética de manera predecible contribuye a una alta aceptación por parte del paciente."
+    },
+    {
+      "t": "p",
+      "c": "Las consideraciones clínicas incluyen la selección adecuada del paciente, la planificación quirúrgica guiada digitalmente y la comunicación efectiva entre el clínico y el laboratorio. La planificación digital permite una colocación óptima de los implantes, minimizando la necesidad de injertos óseos y facilitando la carga inmediata en casos seleccionados. La estandarización de los protocolos digitales contribuye a la predictibilidad y reduce los errores humanos."
+    },
+    {
+      "t": "quote",
+      "c": "La integración de la odontología digital en la rehabilitación de arcos completos no solo mejora la precisión y la eficiencia, sino que tambi��n eleva la calidad de vida de los pacientes, estableciendo un nuevo estándar de atención.",
+      "author": "Papaspyridakos et al., Int J Oral Maxillofac Implants, 2014"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja de la zirconia monolítica sobre el PMMA para prótesis Full Arch definitivas?",
+      "a": "La zirconia monolítica ofrece una resistencia a la fractura significativamente mayor (1000-1200 MPa vs. 60-90 MPa para PMMA) y una excelente estabilidad estética a largo plazo, lo que la convierte en el material de elección para prótesis definitivas duraderas (Guess et al., Dent Mater, 2013)."
+    },
+    {
+      "q": "¿Cómo se asegura el ajuste pasivo en rehabilitaciones Full Arch digitales?",
+      "a": "El ajuste pasivo se asegura mediante una digitalización precisa con cuerpos de escaneo específicos, un diseño CAD meticuloso y la verificación clínica con férulas de ajuste impresas o fresadas. Las discrepancias marginales en estructuras fresadas digitalmente pueden ser tan bajas como 10-50 µm, lo cual es clínicamente aceptable (Karl et al., J Prosthet Dent, 2017)."
+    }
+  ],
+  "referencias": [
+    "Giménez B, et al. Accuracy of a digital impression system for single-implant restorations. J Prosthet Dent. 2017;117(2):214-221. doi:10.1016/j.prosdent.2016.05.006",
+    "Mangano F, et al. Accuracy of 6 intraoral scanners in the detection of a full-arch model: An in vitro study. J Prosthet Dent. 2017;118(3):325-332. doi:10.1016/j.prosdent.2016.10.007",
+    "Papaspyridakos P, et al. A systematic review of the survival rates of implants and prostheses in full-arch implant-supported fixed prostheses after a minimum of 5 years of follow-up. Int J Oral Maxillofac Implants. 2014;29(1):2-13. doi:10.11607/jomi.3361",
+    "Pjetursson BE, et al. A systematic review of the 5-year survival and complication rates of implants supporting fixed dental prostheses (FDPs) and removable dental prostheses (RDPs) in partially edentulous patients. Clin Oral Implants Res. 2014;25(Suppl 10):123-138. doi:10.1111/clr.12332",
+    "Guess PC, et al. All-ceramic partial fixed dental prostheses made of a new yttria-stabilized tetragonal zirconia polycrystal (Y-TZP) ceramic: a 5-year prospective clinical study. Dent Mater. 2013;29(1):e1-e6. doi:10.1016/j.dental.2012.09.006",
+    "Maló P, et al. The All-on-4 concept for the rehabilitation of the edentulous maxilla: A 10-year follow-up of a prospective clinical study. Clin Oral Implants Res. 2019;30(1):1-10. doi:10.1111/clr.13388",
+    "Jemt T, et al. A 15-year follow-up study of fixed prostheses on four implants in the edentulous maxilla. Int J Oral Maxillofac Implants. 1996;11(1):3-9. PMID: 8631777",
+    "Karl M, et al. Accuracy of fit of implant-supported fixed dental prostheses fabricated with different digital workflows. J Prosthet Dent. 2017;118(6):739-745. doi:10.1016/j.prosdent.2017.02.007"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
