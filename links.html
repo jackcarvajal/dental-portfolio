@@ -574,7 +574,7 @@
      ];
      var curImgs=work.filter(function(w){return w.kind==='image';});  // curadas (solo fotos)
      // COMBINA casos reales + curadas; limita renders de diseño (modelos 3D) a máx 3; baraja en cada visita
-     return fetch(SURL+'/rest/v1/casos_portafolio?select=id,name,cover_image&visible=eq.true&order=sort_order.asc&limit=30',{headers:H})
+     return fetch(SURL+'/rest/v1/casos_portafolio?select=id,name,cover_image&visible=eq.true&negocio=in.(prodigy,ambos)&order=sort_order.asc&limit=30',{headers:H})
        .then(function(r){return r.json();})
        .then(function(cs){
          var port=(cs||[]).filter(function(c){return okUrl(c.cover_image);})

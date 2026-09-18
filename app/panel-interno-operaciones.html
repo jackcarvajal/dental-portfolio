@@ -2067,7 +2067,7 @@ async function cargarPortafolio() {
     const grid = document.getElementById('portafolio-grid');
     grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>';
     try {
-        const { data, error } = await sb.from('casos_portafolio').select('*').order('sort_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false });
+        const { data, error } = await sb.from('casos_portafolio').select('*').in('negocio', ['prodigy', 'ambos']).order('sort_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false });
         if (error) throw error;
         if (!data || !data.length) {
             grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><p><b>Aún no has publicado casos</b></p><span style="font-size:.8rem;color:#64748b;margin-top:6px;display:block;font-weight:400;">Llena el formulario de arriba (nombre + foto) y pulsa <b>Publicar en Portafolio</b>. El caso se verá al instante en la web pública.</span></div>';

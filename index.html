@@ -1878,7 +1878,7 @@
             '</div></a>';
         }).join('');
       }
-      fetch(SURL + '/rest/v1/casos_portafolio?select=id,name,type,description,cover_image&visible=eq.true&order=sort_order.asc.nullslast,created_at.desc&limit=3', {
+      fetch(SURL + '/rest/v1/casos_portafolio?select=id,name,type,description,cover_image&visible=eq.true&negocio=in.(prodigy,ambos)&order=sort_order.asc.nullslast,created_at.desc&limit=3', {
         headers: { 'apikey': SKEY, 'Authorization': 'Bearer ' + SKEY }
       }).then(function(r) { return r.json(); }).then(function(data) {
         if (data && data.length > 0) {

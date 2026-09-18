@@ -243,6 +243,7 @@ async function cargar() {
     const { data, error } = await sb
         .from('casos_portafolio')
         .select('id,name,code,type,date,description,cover_image,visible,created_at')
+        .in('negocio', ['prodigy', 'ambos'])
         .order('created_at', { ascending: false });
 
     if (error) {
