@@ -363,9 +363,9 @@ function render(pedido, revisiones){
 
   try{
     const _id=encodeURIComponent(id);
-    let{data,error}=await sb.from('pedidos').select('*,factura_pdf_url,factura_numero,factura_cufe,requiere_factura,factura_estado,pais,total_usd,precio_total').or(`id.eq.${_id},codigo.eq.${_id}`).maybeSingle();
+    let{data,error}=await sb.from('pedidos').select('*,factura_pdf_url,factura_numero,factura_cufe,requiere_factura,factura_estado,pais,total_usd,precio_total').eq('negocio','prodigy').or(`id.eq.${_id},codigo.eq.${_id}`).maybeSingle();
     if(!data){
-      const r2=await sb.from('pedidos').select('*').eq('codigo',id).maybeSingle();
+      const r2=await sb.from('pedidos').select('*').eq('negocio','prodigy').eq('codigo',id).maybeSingle();
       if(!r2.data){
         document.getElementById('recibo-wrap').innerHTML=`<div class="error-box"><i class="fas fa-exclamation-triangle"></i>Caso no encontrado: ${escH(id)}</div>`;
         return;
