@@ -975,3 +975,37 @@ por `' | '`, sin forma de saber si un pedido llegó completo.
 - **Backend Supabase:** operativo (env vars restauradas). Tabla `veneer_leads` capturando.
 - **Panel interno:** RENDERIZA pero la app está **en construcción + DB vacía**; tab Portafolio con bug abierto.
 - **dental-concierge (BSS):** repo SIN remoto git → se despliega por subida directa a Cloudflare.
+
+---
+
+## 🗓️ Sesión 14-18 sep 2026 — SEO alto ticket, aislamiento por negocio, WhatsApp leads
+
+### Alejandro CAD/CAM — SEO freelance alto ticket (Exocad/3Shape)
+- Cluster bilingüe EN+ES con pares hreflang: smile-design↔diseno-sonrisa, implant-esthetics↔estetica-implantes, surgical-guides↔guias-quirurgicas, all-on-x↔diseno-full-arch, clear-aligners↔alineadores. Schema Service+FAQPage+BreadcrumbList, geo Bogotá.
+- +4 FAQ long-tail en surgical-guides y all-on-x (freelance, all-on-4 vs 6, printer/resina) + cross-link mutuo.
+- Posicionamiento "calidad extrema + personalización, no producción masiva".
+- Testimonios reales (con permiso) en 6 landings + guias (15 en total). Estrellas decorativas, SIN AggregateRating (Google ignora reseñas propias).
+- **Fix noindex accidental** en diseno-remoto + guias-quirurgicas (estaban en sitemap 0.9 con canonical propio → bloqueadas de Google). GSC lo reportaba.
+- **Fix bug `">`** en tarjetas de casos (diseno-remoto onerror con `\"` → `&quot;`).
+- Link corto /wa y /wa-en (redirect WhatsApp para bio Instagram).
+
+### Precios (PROVISIONAL — pricing pendiente, no estudiado)
+- calculadora-diseno PRECIOS_USD bajado ~15% + USD_COP 4000→3400 (ambos repos, paridad).
+
+### Aislamiento por negocio (BD compartida) — SQL corridos
+- **casos_portafolio:** +columna `negocio`; filtros `.in([negocio,'ambos'])` en portafolio/caso/diseno-remoto/patient/admin; selector "Publicar en" (Ambos/Solo PRODIGY/Solo Alejandro) en agregar-caso + inserts (panel-interno); 21 casos existentes → 'ambos'. Grid destacado ahora muestra tipos variados (no 4 iguales).
+- **solicitudes_scanner:** +columna `negocio`; tag en insert (alejandrocadcam/prodigy); admin de Alejandro filtra su marca + legacy null. (Histórico: insertar `negocio` sin columna daba 400 → leads perdidos.)
+
+### WhatsApp leads (notify-staff)
+- `functions/api/notify-staff.js` (ambos repos): avisa al staff por WhatsApp (CallMeBot) al entrar lead. Destinatarios en env STAFF_n_PHONE/APIKEY. Llamado desde envia-tu-scanner. **INERTE hasta configurar env.**
+- Ruteo: alejandrocadcam → Alejandro (573219581949)+esposa(5212311034504); prodigy → PRODIGY(573212816716)+Alejandro.
+
+### Infra / IA / push (paridad ambos)
+- `OneSignalSDKWorker.js` en raíz — faltaba, push fallaba en silencio.
+- robots.txt: ClaudeBot **permitido** (aparecer en respuestas de Claude).
+
+### Artifacts entregados (herramientas de negocio)
+- Catálogo WhatsApp Alejandro + PRODIGY · Guión de cierre WhatsApp · Manual de anuncios Meta principiantes · Tablero de campaña compartido (db, Alejandro+esposa).
+
+### PENDIENTE usuario
+- CallMeBot + env STAFF_* (activar aviso leads) · vincular teléfono esposa a WhatsApp Business · lanzar Meta (prueba, carillas/estética) · sesión de pricing · GSC: solicitar indexación landings nuevas.
