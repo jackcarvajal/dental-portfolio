@@ -36,6 +36,7 @@
           c.style.transform = 'translate(-50%,-50%) translateX(' + (d * S * 1.25) + 'px) translateZ(-640px)';
           c.classList.remove('cf-active');
           c.setAttribute('aria-hidden', 'true');
+          c.setAttribute('tabindex', '-1');
           continue;
         }
         var x = d * S;
@@ -47,6 +48,7 @@
         c.style.zIndex = 100 - ad;
         c.style.pointerEvents = 'auto';
         c.setAttribute('aria-hidden', d === 0 ? 'false' : 'true');
+        c.setAttribute('tabindex', d === 0 ? '0' : '-1');
         c.classList.toggle('cf-active', d === 0);
       }
       if (prev) prev.disabled = active <= 0;
@@ -70,6 +72,7 @@
           c.style.pointerEvents = 'none';
           c.style.transform = 'translate(-50%,-50%) translateZ(-900px)';
           c.setAttribute('aria-hidden', 'true');
+          c.setAttribute('tabindex', '-1');
           c.classList.remove('cf-active');
         }
       });
@@ -113,7 +116,7 @@
     }
 
     stage.tabIndex = 0;
-    stage.setAttribute('role', 'listbox');
+    stage.setAttribute('role', 'group');
     stage.setAttribute('aria-label', 'Servicios de laboratorio digital');
     stage.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowLeft') { e.preventDefault(); setActive(active - 1); }
