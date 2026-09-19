@@ -10,8 +10,7 @@
       function tieneCookie(){return document.cookie.split(';').some(function(c){return c.trim().startsWith('pg_admin=1');});}
       function setCookie(){var d=new Date();d.setDate(d.getDate()+30);document.cookie='pg_admin=1;expires='+d.toUTCString()+';path=/;SameSite=Lax';}
       if(new URLSearchParams(location.search).get('preview')==='prodigy'){setCookie();history.replaceState({},'','/');}
-      /* MANTENIMIENTO DESACTIVADO TEMPORALMENTE para test PageSpeed (19-sep) — REACTIVAR descomentando la linea de abajo */
-      /* if(!tieneCookie()){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');} */
+      if(!tieneCookie()){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}
     })();
     </script>
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
