@@ -674,7 +674,7 @@ async function procesarConfirmacion(){
 
         // Notificación al doctor + recibo WA
         try {
-            const { data:ped } = await sb.from('pedidos_entrega').select('codigo').eq('id',_activePedidoId).single();
+            const { data:ped } = await sb.from('pedidos_entrega').select('codigo,email,telefono,precio_total').eq('id',_activePedidoId).single();
             if (ped?.email) {
                 await fetch(`${SUPABASE_URL}/functions/v1/send-push`, {
                     method:'POST',
@@ -694,6 +694,13 @@ async function procesarConfirmacion(){
                     `\nConsulta tu recibo aquí: ${reciboUrl}\n\n_PRODIGY Lab Dental_`
                 );
                 window.open(`https://wa.me/${waNum}?text=${txt}`, '_blank', 'noopener,noreferrer');
+            }
+            // Email de agradecimiento + reseña al entregar (automático, no bloquea)
+            if (ped?.email) {
+                fetch('/api/send-email', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ to: ped.email, subject: '¡Gracias por tu confianza! ⭐', text: `Tu caso #${ped?.codigo || _activeCodigo} fue entregado. Nos encantaría conocer tu experiencia.`, tipo: 'pedido_entregado' })
+                }).catch(()=>{});
             }
         } catch(_){}
     }

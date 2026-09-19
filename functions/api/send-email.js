@@ -197,9 +197,11 @@ function buildTemplate(tipo, { text, subject, temp_pass }) {
 
   if (tipo === 'pedido_entregado') return base(`
     <h1>🚀 Tu pedido fue entregado</h1>
-    <p>${text || 'Tu caso ha sido despachado y está en camino. Revisa el seguimiento en el portal.'}</p>
-    <a href="https://prodigylabdental.com/seguimiento-caso" class="btn">Ver seguimiento →</a>
-    <p style="font-size:.78rem;color:#475569;">Si tienes algún problema con la entrega, contáctanos de inmediato por WhatsApp +57 321 281 6716.</p>
+    <p>${text || 'Tu caso ha sido entregado. ¡Gracias por confiar en PRODIGY!'}</p>
+    <a href="https://prodigylabdental.com/recibo-caso" class="btn">Ver mi recibo →</a>
+    <p style="margin-top:20px;">¿Nos regalas 30 segundos? Tu opinión nos ayuda muchísimo a seguir creciendo 🙏</p>
+    <a href="https://prodigylabdental.com/resena" class="btn" style="background:#D4AF37;color:#000;">⭐ Dejar mi reseña</a>
+    <p style="font-size:.78rem;color:#475569;">Si tienes algún problema con la entrega, escríbenos por WhatsApp +57 321 281 6716.</p>
   `);
 
   if (tipo === 'stock_bajo') return base(`
