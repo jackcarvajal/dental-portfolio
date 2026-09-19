@@ -1,0 +1,30 @@
+# PRODIGY Lab Dental
+
+> Laboratorio dental digital CAD/CAM en Bogotá, Colombia. Diseño CAD (Exocad, 3Shape), fresado CAM, impresión 3D dental, guías quirúrgicas y escaneo intraoral. Atención a clínicas y laboratorios dentales en Colombia y México, con envío nacional. Cotización en tiempo real y entrega en flujo digital 24h.
+
+## Servicios
+- [Diseño CAD dental](https://prodigylabdental.com/diseno-cad): Diseño de coronas, puentes, carillas, incrustaciones e implantes en Exocad y 3Shape.
+- [Diseño CAD remoto](https://prodigylabdental.com/diseno-remoto): Servicio de diseño CAD a distancia con entrega de archivo STL listo para fresar.
+- [Fresado y manufactura CAM](https://prodigylabdental.com/fresado-cam): Fresado de zirconio, disilicato de litio (e.max) y PMMA.
+- [Impresión 3D dental](https://prodigylabdental.com/impresion-3d): Modelos de estudio, guías quirúrgicas, férulas oclusales y provisionales.
+- [Guías quirúrgicas](https://prodigylabdental.com/guias-quirurgicas): Guías para colocación de implantes dento, muco y óseo soportadas.
+- [Escaneo a domicilio](https://prodigylabdental.com/escaner-domicilio): Escaneo intraoral en clínica en Bogotá.
+- [Catálogo de materiales](https://prodigylabdental.com/catalogo): Zirconio multicapa, disilicato, PMMA y resinas 3D.
+
+## Herramientas
+- [Cotizador de precios](https://prodigylabdental.com/calculadora): Calcula el precio de tu pedido en tiempo real.
+- [Envía tu escaneo](https://prodigylabdental.com/envia-tu-scanner): Sube tu archivo STL o escaneo intraoral para iniciar un caso.
+
+## Para laboratorios
+- [Software para laboratorios](https://prodigylabdental.com/para-laboratorios): Plataforma de gestión integral para laboratorios dentales (pedidos, pagos, diseño y logística).
+
+## Recursos
+- [Portafolio de casos](https://prodigylabdental.com/portafolio): Casos reales diseñados en Exocad y 3Shape.
+- [PRODIGY Journal (blog)](https://prodigylabdental.com/journal): Artículos técnicos de flujo digital dental.
+- [Guía técnica de materiales](https://prodigylabdental.com/guia-tecnica): Referencia de materiales y grosores.
+- [Preguntas frecuentes](https://prodigylabdental.com/preguntas): Dudas sobre servicios, tiempos y envíos.
+
+## Contacto
+- WhatsApp: +57 321 281 6716
+- Email: gerencia@prodigylabdental.com
+- Ubicación: Bogotá, Colombia (envío nacional)
