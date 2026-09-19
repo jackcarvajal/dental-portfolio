@@ -22,7 +22,7 @@
     -webkit-font-smoothing:antialiased;padding:0 16px 60px}
   .wrap{max-width:460px;margin:0 auto;position:relative;z-index:1}
   /* ── fondo dinámico (aurora que se mueve) ── */
-  #pbg{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;opacity:.72}
+  #pbg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.72}
   /* oscurece el centro (donde va el contenido) para legibilidad; deja vibrantes los lados */
   #pbgdim{position:fixed;inset:0;z-index:0;pointer-events:none;
     background:radial-gradient(ellipse 820px 130% at 50% 50%,rgba(5,5,5,.9) 0,rgba(5,5,5,.88) 40%,rgba(5,5,5,.42) 64%,transparent 84%)}
@@ -293,7 +293,9 @@
       .social-btn{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#0d1525;border:1px solid rgba(255,255,255,.08);transition:.2s;text-decoration:none}
       .social-btn:hover{border-color:rgba(0,210,255,.35);transform:translateY(-2px)}
       .social-btn svg{width:22px;height:22px}
-    </style>
+    
+html,body{overflow-x:hidden;}
+</style>
     <div class="svc-label" data-i="svcLbl">Acceso rápido</div>
     <a class="lnk" href="https://prodigylabdental.com/escaner-domicilio" target="_blank" rel="noopener noreferrer">
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M3 12h18"/></svg></span>
