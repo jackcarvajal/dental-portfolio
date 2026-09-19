@@ -520,8 +520,8 @@
 <body oncontextmenu="return false;">
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <noscript><div style="text-align:center;padding:40px 20px;background:#0d1520;color:#94a3b8;font-family:sans-serif;">El portafolio de casos requiere JavaScript. Actívalo para ver los trabajos o <a href="https://wa.me/573212816716" style="color:#D946A6;">contáctanos por WhatsApp</a>.</div></noscript>
-<link rel="preload" href="js/header.js?v=20260810b" as="script">
-<script src="js/header.js?v=20260810b"></script>
+<link rel="preload" href="js/header.js?v=20260918" as="script">
+<script src="js/header.js?v=20260918"></script>
 
 <!-- ============================================================ -->
 <!-- HERO -->
@@ -868,7 +868,7 @@ function filtrarMat(mat, btn) {
             description: c.description,
             material:    c.material || '',
             coverImage:  c.cover_image
-                         ? c.cover_image + '?width=400&quality=80'
+                         ? c.cover_image.replace('/object/public/','/render/image/public/') + '?width=400&quality=80'
                          : c.cover_image,
             galleryCount: c.gallery_count
         }));
