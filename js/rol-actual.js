@@ -90,7 +90,7 @@
     function esAdmin() {
       if (window.PRODIGY_ROLE === 'admin') return true;
       var mail = (window.PRODIGY_EMAIL || '').toLowerCase();
-      return mail === 'jackalejandroc@gmail.com' || mail === 'labdentalprodigy@gmail.com';
+      return mail === 'jackalejandroc@gmail.com' || mail === 'labdentalprodigy@gmail.com' || mail === 'gerencia@prodigylabdental.com' || mail === 'casos@prodigylabdental.com';
     }
     function ponerSelector() {
       if (!esAdmin() || document.getElementById('rolsel')) return;

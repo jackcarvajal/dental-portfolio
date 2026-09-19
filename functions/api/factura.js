@@ -104,7 +104,7 @@ async function verificarAdmin(request, env) {
     });
     if (!res.ok) return false;
     const user = await res.json();
-    const ADMIN_EMAILS = ['jackalejandroc@gmail.com', 'prodigylab@gmail.com'];
+    const ADMIN_EMAILS = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com', 'gerencia@prodigylabdental.com', 'casos@prodigylabdental.com'];
     return ADMIN_EMAILS.includes(user.email) || user.app_metadata?.role === 'admin';
   } catch { return false; }
 }
