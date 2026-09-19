@@ -127,7 +127,7 @@
           '<a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp PRODIGY Lab">' +
             '<i class="fab fa-whatsapp"></i>' +
           '</a>' +
-          '<a href="https://www.instagram.com/labdentalprodigy/" target="_blank" rel="noopener noreferrer" title="Instagram @labdentalprodigy" aria-label="Instagram @labdentalprodigy">' +
+          '<a href="https://www.instagram.com/prodigylabdental/" target="_blank" rel="noopener noreferrer" title="Instagram @prodigylabdental" aria-label="Instagram @prodigylabdental">' +
             '<i class="fab fa-instagram"></i>' +
           '</a>' +
           '<a href="https://www.facebook.com/profile.php?id=61575383924264" target="_blank" rel="noopener noreferrer" title="Facebook ProDigy Lab Dental" aria-label="Facebook ProDigy Lab Dental">' +
@@ -174,6 +174,7 @@
         '<ul>' +
           '<li><a href="/nosotros">Nosotros · Equipo</a></li>' +
           '<li><a href="/nosotros#contacto">Contacto</a></li>' +
+          '<li><a href="/para-laboratorios">Software para Laboratorios</a></li>' +
           '<li><a href="/soporte">Centro de Soporte</a></li>' +
           '<li><a href="/instalar-app">Instalar App Móvil</a></li>' +
           '<li><a href="/referidos" style="color:#00FF41;font-weight:700;">🎁 Programa Referidos</a></li>' +
