@@ -10,7 +10,8 @@
       function tieneCookie(){return document.cookie.split(';').some(function(c){return c.trim().startsWith('pg_admin=1');});}
       function setCookie(){var d=new Date();d.setDate(d.getDate()+30);document.cookie='pg_admin=1;expires='+d.toUTCString()+';path=/;SameSite=Lax';}
       if(new URLSearchParams(location.search).get('preview')==='prodigy'){setCookie();history.replaceState({},'','/');}
-      if(!tieneCookie()){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');}
+      /* MANTENIMIENTO DESACTIVADO TEMPORALMENTE para test PageSpeed (19-sep) — REACTIVAR descomentando la linea de abajo */
+      /* if(!tieneCookie()){document.documentElement.style.visibility='hidden';window.location.replace('/mantenimiento');} */
     })();
     </script>
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -69,9 +70,15 @@
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
           "opens": "08:00",
           "closes": "18:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "08:00",
+          "closes": "12:00"
         }
       ],
       "priceRange": "$$",
@@ -1269,8 +1276,8 @@
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <script>window._headerConfig = { noCta: true };</script>
-<link rel="preload" href="js/header.js?v=20260810b" as="script">
-<script src="js/header.js?v=20260810b"></script>
+<link rel="preload" href="js/header.js?v=20260918" as="script">
+<script src="js/header.js?v=20260918"></script>
 <style>
 /* ── TOPBAR ── */
 /* ── TOPBAR ── barra superior con mini-login inline ── */
