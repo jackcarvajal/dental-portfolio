@@ -9,6 +9,21 @@
 
 ---
 
+## 2026-09-21  (Rastreo físico de casos + etiqueta QR + cadena de custodia — PRODIGY)
+
+### 🟡 Seguimiento físico interno con QR (falta configurar áreas/técnicos reales + probar)
+- **Problema:** no había forma de saber en qué área/estación está cada caso ni qué técnico lo tiene → riesgo de perder piezas (llave implante, tornillos, materiales) sin responsable.
+- **`app/etiqueta.html`**: etiqueta térmica **50×30mm** con QR (→ `mover.html?c=CÓDIGO`) + código + doctor. Se imprime y se pega en la orden física. QR vía api.qrserver.com (ya en CSP).
+- **`app/mover.html`**: lo que abre el QR. Rápido en celular: caso → área (botones) + técnico (dropdown) + **componentes que recibe** (checklist: llave implante, tornillos, análogos, modelo, antagonista, aditamentos, material, registro) + **estado** (completo/falta/obs) + **foto opcional** (bucket `caso-fotos`) + Guardar. Escribe `pedido_movimientos` + actualiza `pedidos.area_actual/tecnico_actual`.
+- **`app/rastreo.html`**: tablero admin — cada caso, área, técnico, hace cuánto (⚠️ si +48h quieto), filtro por área, historial completo por caso (quién/qué/porqué/cuándo + fotos).
+- **SQL** (idempotentes, YA corridos): `seguimiento-fisico-casos-2026.sql` (tabla `pedido_movimientos` [accion, area, tecnico, componentes, estado_recibo, fotos[], nota, por_email] + bucket privado `caso-fotos`) y `seguimiento-interno-privado-2026.sql`.
+- **PRIVACIDAD (crítico):** la ubicación interna (área/técnico actual) NO va en `pedidos` (el `client-panel` hace `select('*')` → fuga al doctor). Vive en tabla **solo-staff `pedido_seguimiento`** (RLS admin/operator + 4 admin). Notas de pérdida, custodia, técnicos e historial están en `pedido_movimientos` (también solo-staff). El doctor solo ve el seguimiento público (RPC `buscar_pedido_publico`, sin área/técnico). Se DROPearon `pedidos.area_actual/tecnico_actual/area_updated_at`.
+- Enlazado en panel-interno: "Rastreo de Casos" ✨.
+- 🔴 **PENDIENTE:** el usuario debe dar las **áreas / técnicos / componentes reales** (hoy hay listas de ejemplo en el JS de `mover.html`) + probar con impresora térmica. Posible mejora futura: auto-generar la etiqueta al crear el pedido.
+- 💡 Modelo elegido (para 100 casos/día): dispositivo logueado como staff escanea el QR; el técnico se elige de un dropdown (no requiere login por persona). El `mover.html` requiere sesión staff (auth-guard).
+
+---
+
 ## 2026-09-21  (Bandeja de Solicitudes + contexto al staff + registro del Dr)
 
 ### 🟡 Nueva pantalla admin `app/bandeja-solicitudes.html` (falta ver en vivo)
