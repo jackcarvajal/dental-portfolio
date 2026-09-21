@@ -626,7 +626,7 @@ if(window.ProdigyAuth){
 </section>
 <script src="js/supabase-client.js?v=20260609"></script>
 <script src="js/confetti.js?v=20260807d" defer></script>
-<script src="js/footer.js?v=20260609"></script>
+<script src="js/footer.js?v=20260919"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
 <script>
 /* ═══════════════════════════════════════════════════════
@@ -1019,6 +1019,9 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
       }]).then(function(r){
         if (window.PedidoGuard && !window.PedidoGuard.verificar(r.error, { codigo: ordenId, flujo: 'lab', sb: _sb })) return;
         if (r.error) { console.error('[PRODIGY] Pedido lab NO guardado:', r.error.message); return; }
+        // Aviso al staff por WhatsApp (destinatarios en env; inerte si no está configurado)
+        fetch('/api/notify-staff', { method:'POST', headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ doctor: doctor, servicio: 'Lab Full', whatsapp: tel, codigo: ordenId, tipo:'Nuevo pedido (lab)' }) }).catch(function(){});
         // Registrar archivos y fallos — deja rastro de lo que no llegó (id generado client-side)
         if (_pedId && window._labSubida && window.FlujoUploader && window.FlujoUploader.registrarEnPedido) {
           window.FlujoUploader.registrarEnPedido(_sb, _pedId, window._labSubida, { etapa: 'cliente_caso' });

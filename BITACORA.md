@@ -9,6 +9,49 @@
 
 ---
 
+## 2026-09-20  (Alertas de leads + Nº de caso rastreable — PRODIGY + Alejandro)
+
+### 🟡 Todo formulario de cliente ahora avisa al staff por WhatsApp + genera Nº de caso (falta ver en vivo)
+- **`functions/api/notify-staff.js`** (ambos repos): acepta `codigo` y `tipo` → el WhatsApp al staff ahora dice "Nº caso: SC-260920-A3F" y el tipo de flujo.
+- **`envia-tu-scanner.html`** (ambos): genera `codigo` (`SC-YYMMDD-XXXX`), lo guarda en `solicitudes_scanner.codigo`, lo muestra al doctor en pantalla de éxito y lo manda al staff.
+- **`escaner-domicilio.html`** (PRODIGY): antes NO avisaba al staff → ahora sí. Genera `codigo` (`DOM-YYMMDD-XXXX`), lo guarda en `citas_domicilio.codigo`, lo muestra en paso 2 y lo incluye en el WhatsApp del anticipo.
+- **`flujo-diseno` / `flujo-fresado` / `flujo-lab`** (PRODIGY) y **`flujo-diseno`** (Alejandro): al guardar el pedido con éxito (`!_e`) → `fetch('/api/notify-staff')` con el código real del pedido (`STATE.ordenId`).
+- **`calculadora.html`** (PRODIGY): al guardar cotización con contacto (nombre/tel) → avisa al staff. Las 3 calculadoras que NO piden contacto (fresado/diseño/impresión) NO avisan (no hay a quién responder).
+- **SQL**: `sql/add-codigo-casos-lead-2026.sql` (idempotente) agrega `codigo` a `solicitudes_scanner` y `citas_domicilio` (tablas compartidas → cubre ambos negocios). **Correr en Supabase.**
+- **SMTP Supabase**: activado custom SMTP (Resend, noreply@prodigylabdental.com, "PRODIGY Lab Dental") → los emails de auth (confirmación registro, reset clave) ya salen bien.
+- 💡 WhatsApp automático AL DOCTOR no es posible (CallMeBot solo números registrados); el doctor recibe: Nº de caso en pantalla + link WhatsApp + (scanner) email de portal.
+
+---
+
+## 2026-09-19  (Google Business Profile — PRODIGY)
+
+### 🟡 Ficha de Google enlazada (falta ver en vivo tras deploy)
+- Enlace de reseñas: `https://g.page/r/CXIbumfcmmh0EBM/review` (I mayúscula, verificado: la variante con l cae en google.com). Ficha: `maps.google.com/?cid=8388124577401281394`.
+- `js/footer.js`: ícono de Google en redes + "Déjanos tu reseña en Google" en Portal Profesional. Preview headless OK.
+- `index.html`: `hasMap` en el LocalBusiness (JSON-LD válido).
+- Cache-busters: footer.js → `v=20260919` (45 refs), SW `prodigy-v40`. `audit.mjs` OK.
+- 💡 Alejandro CAD/CAM NO se porta: es otra marca y necesita su propia ficha.
+- 🔴 Pendiente (manual, en business.google.com): poner el horario nuevo en la ficha (L-V 8–18, sáb 8–12).
+
+---
+
+## 2026-09-18  (horario real del laboratorio — PRODIGY)
+
+💡 **Regla de negocio:** L-V 8am–6pm (corte 5pm) · **sábado 8am–12m solo atención y pendientes de la semana** · domingos/festivos cerrado. **Lo que entra el sábado cuenta desde el lunes.** La web decía "L-S 8am–6pm" en todas partes y prometía producción el sábado.
+
+### 🟡 Textos + schema + widget (falta ver en vivo tras deploy)
+- **Textos:** diseno-remoto, flujo-lab, escaner-domicilio, terminos-y-legal, calculadora-fresado, nosotros, escaneo-fotogrametria, soporte-exocad, calculadora-diseno (FAQ), articles.js, en/* (4 landings).
+- **Schema.org:** index, nosotros, soporte → L-V 08–18 + Sáb 08–12; mantenimiento → `openingHours` array. JSON-LD validado.
+- **`js/header.js`:** widget de urgencia usa día de **producción L-V** (+festivos si `PFechas` está cargado). Antes un viernes 10am prometía envío lunes (contaba el sábado); ahora martes. Sábado ya no muestra countdown. Chatbot: horario nuevo en el prompt.
+- `js/fechas-habiles.js` ya tenía `sabadoHabil:false` → diseño/lab ya calculaban bien, no se tocó.
+- Cache-busters: header.js → `v=20260918` (87 refs), articles.js → `v=20260918`, SW `prodigy-v39`.
+- ✅ `node --check` + `tools/audit.mjs` OK · simulación del widget OK.
+
+### 🔴 Pendiente — requiere permiso (INTOCABLE)
+`calcularFechaEntrega()` de **flujo-fresado.html** (~3506) y **js/flujo-impresion.js** (~1094, ~1134, ~1264 `esSabadoHabil`) todavía tratan el **sábado en la mañana como día de producción** → un caso de sábado 10am promete entrega un día antes de lo real. No se tocó por la regla INTOCABLE de CLAUDE.md.
+
+---
+
 ## 2026-09-07  (auditoría web/áreas — GitHub Action rota)
 
 ### 🔴→🟡 GitHub Action "Purga STL Storage Semanal" fallaba cada semana

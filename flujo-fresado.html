@@ -4268,6 +4268,9 @@ if(window.ProdigyAuth){
 
                         if (!_e) {
                             if(window._trackEvent) _trackEvent('pedido_creado',{flujo:'fresado',total:STATE.total,material:STATE.materialTipo});
+                            // Aviso al staff por WhatsApp (destinatarios en env; inerte si no está configurado)
+                            fetch('/api/notify-staff', { method:'POST', headers:{ 'Content-Type':'application/json' },
+                                body: JSON.stringify({ doctor: STATE.nombreCliente, servicio: CONFIG.materiales[STATE.materialTipo]?.nom || STATE.materialTipo, whatsapp: STATE.whatsappCliente, codigo: STATE.ordenId, tipo:'Nuevo pedido (fresado)' }) }).catch(()=>{});
                             // Log de auditoría del pedido creado
                             const _pid = _pedId || null;
                             if (_pid) {
@@ -4910,7 +4913,7 @@ if(window.ProdigyAuth){
   </div>
 </section>
 <script src="js/confetti.js?v=20260807d" defer></script>
-<script src="js/footer.js?v=20260609"></script>
+<script src="js/footer.js?v=20260919"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
 
     <!-- FLOTANTES UX -->

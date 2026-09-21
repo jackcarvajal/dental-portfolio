@@ -662,7 +662,7 @@
     <a href="/app/client-panel.html" style="background:rgba(0,255,65,.12);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:8px;padding:7px 16px;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;">Obtener código →</a>
   </div>
 </section>
-<script src="js/footer.js?v=20260609"></script>
+<script src="js/footer.js?v=20260919"></script>
 
 <!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -865,9 +865,15 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
 
     setProg(80, 'Guardando solicitud…');
 
+    // Nº de caso único rastreable en el lab (ej. SC-260920-A3F)
+    const _d = new Date();
+    const _ymd = _d.getFullYear().toString().slice(2) + String(_d.getMonth()+1).padStart(2,'0') + String(_d.getDate()).padStart(2,'0');
+    const _hex = Array.from(crypto.getRandomValues(new Uint8Array(2))).map(b=>b.toString(16).padStart(2,'0')).join('').toUpperCase();
+    const codigo = 'SC-' + _ymd + '-' + _hex;
+
     // 1. Guardar solicitud
     await sb.from('solicitudes_scanner').insert({
-        negocio: 'prodigy',
+        negocio: 'prodigy', codigo,
         doctor, clinica, whatsapp, email: email || null,
         escaner_marca: marca, servicio, piezas: piezas || null,
         notas: notas || null, archivo_url, archivo_nombre,
@@ -877,7 +883,7 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
 
     // Aviso al staff por WhatsApp (destinatarios en env; inerte si no está configurado)
     fetch('/api/notify-staff', { method:'POST', headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ doctor, servicio, whatsapp }) }).catch(()=>{});
+        body: JSON.stringify({ doctor, servicio, whatsapp, codigo, tipo:'Solicitud de escáner' }) }).catch(()=>{});
 
     // Suscribir al newsletter si acepta marketing y tiene email
     if (email && document.getElementById('checkMarketing')?.checked) {
@@ -953,7 +959,9 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         const _nom = _esc(doctor.split(' ')[0]);
         const _wa  = _esc(whatsapp);
         document.getElementById('successMsg').innerHTML =
-            `Gracias, <strong>${_nom}</strong>. Recibimos tu caso de ${_esc(servicio.toLowerCase())}.<br><br>`+
+            `Gracias, <strong>${_nom}</strong>. Recibimos tu caso de ${_esc(servicio.toLowerCase())}.<br>`+
+            `<span style="display:inline-block;margin:12px 0;padding:8px 16px;border:1px solid rgba(212,175,55,.4);border-radius:10px;background:rgba(212,175,55,.08);color:#D4AF37;font-weight:800;letter-spacing:.5px;">Nº de caso: ${_esc(codigo)}</span><br>`+
+            `<span style="font-size:.85rem;color:#94a3b8;">Guarda este número para hacer seguimiento.</span><br><br>`+
             (email ? `✅ <strong>Hemos creado tu portal de seguimiento</strong>. Revisa tu WhatsApp (${_wa}) — te enviamos el link de acceso con tus datos de ingreso.` :
                      `Te contactamos al ${_wa} cuando tengamos el diseño listo.`);
         document.getElementById('waLink').href =

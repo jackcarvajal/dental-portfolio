@@ -2177,6 +2177,11 @@ const lineWompi = document.getElementById('line-wompi');
                             console.error('[PRODIGY] Pedido diseño NO guardado:', _e.message);
                         }
 
+                        // Aviso al staff por WhatsApp (destinatarios en env; inerte si no está configurado)
+                        if (!_e) {
+                            fetch('/api/notify-staff', { method:'POST', headers:{ 'Content-Type':'application/json' },
+                                body: JSON.stringify({ doctor: STATE.nombreCliente, servicio: STATE.subtipoNombre || STATE.categoriaNombre, whatsapp: STATE.whatsappCliente, codigo: STATE.ordenId, tipo:'Nuevo pedido (diseño)' }) }).catch(()=>{});
+                        }
                         // Registrar cada archivo (y cada fallo) en `pedido_archivos`.
                         // Es lo que permite saber si el caso llegó completo ANTES de
                         // mandarlo a producción — y deja rastro de lo que no subió.
@@ -2526,7 +2531,7 @@ const lineWompi = document.getElementById('line-wompi');
 </section>
 <script src="js/supabase-client.js?v=20260609"></script>
 <script src="js/confetti.js?v=20260807d" defer></script>
-<script src="js/footer.js?v=20260609"></script>
+<script src="js/footer.js?v=20260919"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
     <script src="js/fechas-habiles.js?v=20260719"></script>
     <script src="js/pagos.js?v=20260826"></script>
