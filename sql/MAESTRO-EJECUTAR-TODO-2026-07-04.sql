@@ -1474,6 +1474,7 @@ END;
 $$;
 
 DROP POLICY IF EXISTS "sistema_inserta_notifs" ON public.notificaciones_internas;
+DROP POLICY IF EXISTS "staff_inserta_notifs" ON public.notificaciones_internas;
 CREATE POLICY "staff_inserta_notifs" ON public.notificaciones_internas
   FOR INSERT TO authenticated
   WITH CHECK (
@@ -1897,6 +1898,7 @@ SELECT 'Patch 20/23 (mensajeros/despachos RLS) aplicado' AS status;
 -- # 21/23 (agregado 2026-07-05) — citas_escaneo abierta a anon sin sesion
 -- ############################################################
 DROP POLICY IF EXISTS "anon_upsert_citas" ON citas_escaneo;
+DROP POLICY IF EXISTS "admin_all_citas_escaneo" ON citas_escaneo;
 CREATE POLICY "admin_all_citas_escaneo" ON citas_escaneo
     FOR ALL TO authenticated
     USING (
