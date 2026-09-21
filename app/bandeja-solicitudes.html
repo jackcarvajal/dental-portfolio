@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#D946A6">
+<meta name="color-scheme" content="dark">
+<title>Bandeja de Solicitudes — PRODIGY Lab Dental</title>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<style>
+:root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--neon:#00FF41;--bg:#050505;--card:#0d1520;--card2:#111a28;--text:#e2e8f0;--muted:#94a3b8;--border:rgba(255,255,255,.08);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',sans-serif;min-height:100vh;overflow-x:hidden;visibility:hidden;}
+a{color:inherit;text-decoration:none;}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:0;z-index:50;}
+.topbar h1{font-size:1rem;font-weight:800;color:var(--gold);display:flex;align-items:center;gap:8px;}
+.topbar .sp{flex:1;}
+.topbar a,.topbar button{font-size:.78rem;color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;}
+.main{max-width:1100px;margin:0 auto;padding:18px 16px 60px;}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;}
+.kpi-val{font-size:1.7rem;font-weight:900;margin-bottom:2px;}
+.kpi-lbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;}
+.tabs{display:flex;gap:8px;margin-bottom:16px;}
+.tab{flex:1;padding:11px;border-radius:10px;font-weight:800;font-size:.82rem;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);text-align:center;transition:all .2s;}
+.tab.on{color:#fff;border-color:transparent;}
+.tab.on[data-t="scanner"]{background:linear-gradient(135deg,var(--mg),#a0107a);}
+.tab.on[data-t="domicilio"]{background:linear-gradient(135deg,var(--cyan),#0094b3);color:#052;}
+.ctx{background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.25);border-radius:10px;padding:11px 14px;font-size:.8rem;color:#e8d9a8;margin-bottom:16px;line-height:1.5;}
+.list{display:flex;flex-direction:column;gap:12px;}
+.item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;}
+.item.nuevo{border-left:3px solid var(--mg);}
+.item.pendiente{border-left:3px solid var(--cyan);}
+.item-top{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.codigo{font-weight:900;color:var(--gold);font-size:.9rem;letter-spacing:.5px;}
+.fecha{font-size:.72rem;color:var(--muted);}
+.item-top .sp{flex:1;}
+.badge{display:inline-block;padding:3px 11px;border-radius:100px;font-size:.65rem;font-weight:800;border:1px solid;white-space:nowrap;}
+.b-nuevo,.b-pendiente{color:var(--mg);border-color:var(--mg);background:rgba(217,70,166,.1);}
+.b-en_revision,.b-confirmada{color:var(--cyan);border-color:var(--cyan);background:rgba(0,210,255,.1);}
+.b-cotizado,.b-en_camino{color:var(--gold);border-color:var(--gold);background:rgba(212,175,55,.1);}
+.b-cerrado,.b-completada{color:var(--neon);border-color:var(--neon);background:rgba(0,255,65,.1);}
+.b-cancelada,.b-no_show{color:#f87171;border-color:#f87171;background:rgba(248,113,113,.1);}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 16px;margin-bottom:12px;}
+.f{font-size:.82rem;}
+.f b{display:block;font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:1px;font-weight:700;}
+.notas{background:rgba(255,255,255,.03);border-radius:8px;padding:9px 12px;font-size:.8rem;color:var(--text);margin-bottom:12px;white-space:pre-wrap;}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.a{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:9px;font-weight:800;font-size:.76rem;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);font-family:inherit;transition:opacity .2s;text-decoration:none;}
+.a:hover{opacity:.85;}
+.a-wa{background:rgba(37,211,102,.14);border-color:rgba(37,211,102,.4);color:#25D366;}
+.a-cobrar{background:linear-gradient(135deg,var(--gold),#b8901f);border-color:transparent;color:#050505;}
+.a-stl{background:rgba(0,210,255,.12);border-color:rgba(0,210,255,.35);color:var(--cyan);}
+.a select{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:14px;font-family:inherit;cursor:pointer;outline:none;}
+.empty,.spinner{text-align:center;padding:50px 16px;color:var(--muted);font-size:.9rem;}
+.spinner i{color:var(--gold);}
+@media(max-width:520px){.actions .a{flex:1;justify-content:center;}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1><i class="fas fa-inbox"></i> Bandeja de Solicitudes</h1>
+  <span class="sp"></span>
+  <span id="ultima-act" style="font-size:.7rem;color:var(--muted);"></span>
+  <button onclick="cargar()"><i class="fas fa-rotate"></i> Refrescar</button>
+  <a href="panel-interno-operaciones.html"><i class="fas fa-arrow-left"></i> Panel</a>
+</div>
+
+<div class="main">
+  <div class="ctx">
+    <i class="fas fa-circle-info" style="color:var(--gold)"></i>
+    Estos casos entraron por el <b>carril rápido</b> (Envía tu escáner / Escaneo a domicilio): llegan
+    <b>sin pago ni datos completos de protocolo</b>. Contacta al Dr para cotizar y pedirle lo que falta
+    (material, color VITA, antagonista, tipo de trabajo). Los pedidos que ya vienen configurados y con
+    abono 50/50 están en el <a href="panel-interno-operaciones.html" style="color:var(--gold);text-decoration:underline;">panel de operaciones</a>.
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val" id="k-scanner" style="color:var(--mg)">–</div><div class="kpi-lbl">Escáner nuevos</div></div>
+    <div class="kpi"><div class="kpi-val" id="k-domicilio" style="color:var(--cyan)">–</div><div class="kpi-lbl">Domicilio pendientes</div></div>
+    <div class="kpi"><div class="kpi-val" id="k-sincontacto" style="color:var(--gold)">–</div><div class="kpi-lbl">Sin contactar</div></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab on" data-t="scanner" onclick="verTab('scanner')"><i class="fas fa-file-import"></i> Escáner</div>
+    <div class="tab" data-t="domicilio" onclick="verTab('domicilio')"><i class="fas fa-house-medical"></i> Domicilio</div>
+  </div>
+
+  <div class="list" id="lista"><div class="spinner"><i class="fas fa-spinner fa-spin"></i> Cargando…</div></div>
+</div>
+
+<!-- supabase debe cargar ANTES de auth-guard -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>ProdigyAuth.require(['admin','operator']);</script>
+<script>
+const WA = '573212816716';
+const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmtD = d => d ? new Date(d).toLocaleString('es-CO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
+const fmtF = d => d ? new Date(d+'T00:00:00').toLocaleDateString('es-CO',{weekday:'short',day:'2-digit',month:'short'}) : '—';
+const fmtCOP = n => '$'+Number(n||0).toLocaleString('es-CO');
+const waNum = t => { const n=String(t||'').replace(/\D/g,''); return n.length===10 ? '57'+n : n; };
+
+const EST_SCANNER = ['nuevo','en_revision','cotizado','cerrado'];
+const EST_DOMICILIO = ['pendiente','confirmada','en_camino','completada','cancelada','no_show'];
+
+let sb, _scanner=[], _domicilio=[], _tab='scanner';
+
+async function init(){
+  sb = (window.ProdigyAuth && window.ProdigyAuth.getSb) ? window.ProdigyAuth.getSb() : window.supabase.createClient(
+    'https://zgihrwqfyvgyapbwzkvw.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634'
+  );
+  await cargar();
+}
+
+async function cargar(){
+  document.getElementById('lista').innerHTML = '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Cargando…</div>';
+  try{
+    const [rs, rd] = await Promise.all([
+      sb.from('solicitudes_scanner').select('id,codigo,created_at,doctor,clinica,whatsapp,email,servicio,escaner_marca,piezas,notas,archivo_url,archivo_nombre,estado,contactado').eq('negocio','prodigy').order('created_at',{ascending:false}).limit(200),
+      sb.from('citas_domicilio').select('id,codigo,created_at,nombre,clinica,whatsapp,email,zona,servicio,direccion,referencia,fecha_cita,franja_horaria,num_piezas,notas,anticipo_solicitado,anticipo_pagado,estado').order('created_at',{ascending:false}).limit(200)
+    ]);
+    if(rs.error) throw rs.error;
+    if(rd.error) throw rd.error;
+    _scanner = rs.data||[];
+    _domicilio = rd.data||[];
+    renderKPIs();
+    render();
+    document.getElementById('ultima-act').textContent = 'Actualizado '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){
+    document.getElementById('lista').innerHTML = `<div class="empty"><i class="fas fa-triangle-exclamation" style="color:#f87171"></i><br>${escH(e.message||e)}</div>`;
+  }
+}
+
+function renderKPIs(){
+  document.getElementById('k-scanner').textContent = _scanner.filter(s=>s.estado==='nuevo').length;
+  document.getElementById('k-domicilio').textContent = _domicilio.filter(d=>d.estado==='pendiente').length;
+  const sin = _scanner.filter(s=>!s.contactado).length + _domicilio.filter(d=>d.estado==='pendiente').length;
+  document.getElementById('k-sincontacto').textContent = sin;
+}
+
+function verTab(t){
+  _tab = t;
+  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('on', el.dataset.t===t));
+  render();
+}
+
+function render(){
+  const cont = document.getElementById('lista');
+  const arr = _tab==='scanner' ? _scanner : _domicilio;
+  if(!arr.length){ cont.innerHTML = '<div class="empty"><i class="fas fa-check-circle" style="color:var(--neon)"></i><br>Sin solicitudes por ahora.</div>'; return; }
+  cont.innerHTML = arr.map(_tab==='scanner' ? cardScanner : cardDomicilio).join('');
+}
+
+function cardScanner(s){
+  const est = s.estado||'nuevo';
+  const wa = waNum(s.whatsapp);
+  const cot = encodeURIComponent(`Hola Dr(a) ${s.doctor||''}, soy del laboratorio PRODIGY. Recibimos su caso *${s.codigo||''}* (${s.servicio||'escáner'}). Para cotizarlo necesito: material, color VITA, antagonista y fecha deseada. El trabajo se maneja 50% al iniciar y 50% contra entrega. ¿Me confirma esos datos?`);
+  const saludo = encodeURIComponent(`Hola Dr(a) ${s.doctor||''}, le escribo por su caso ${s.codigo||''} enviado a PRODIGY.`);
+  return `<div class="item ${escH(est)}">
+    <div class="item-top">
+      <div><div class="codigo">${escH(s.codigo||'SC-—')}</div><div class="fecha">${escH(fmtD(s.created_at))}${s.contactado?' · <span style="color:var(--neon)">contactado</span>':''}</div></div>
+      <span class="sp"></span>
+      <span class="badge b-${escH(est)}">${escH(est.replace('_',' '))}</span>
+    </div>
+    <div class="grid">
+      <div class="f"><b>Doctor</b>${escH(s.doctor||'—')}</div>
+      <div class="f"><b>Clínica</b>${escH(s.clinica||'—')}</div>
+      <div class="f"><b>WhatsApp</b>${escH(s.whatsapp||'—')}</div>
+      <div class="f"><b>Servicio</b>${escH(s.servicio||'—')}</div>
+      <div class="f"><b>Escáner</b>${escH(s.escaner_marca||'—')}</div>
+      <div class="f"><b>Piezas</b>${escH(s.piezas||'—')}</div>
+      <div class="f"><b>Email</b>${escH(s.email||'—')}</div>
+    </div>
+    ${s.notas?`<div class="notas">${escH(s.notas)}</div>`:''}
+    <div class="actions">
+      <a class="a a-wa" href="https://wa.me/${wa}?text=${saludo}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Escribir</a>
+      <a class="a a-cobrar" href="https://wa.me/${wa}?text=${cot}" target="_blank" rel="noopener"><i class="fas fa-file-invoice-dollar"></i> Cotizar y cobrar</a>
+      ${s.archivo_url?`<button class="a a-stl" onclick="bajarStl('${escH(s.archivo_url)}',this)"><i class="fas fa-download"></i> STL</button>`:''}
+      <span class="a" style="cursor:default"><i class="fas fa-flag"></i>
+        <select onchange="cambiarEstado('solicitudes_scanner','${escH(s.id)}',this.value,${s.contactado?'null':'true'})">
+          ${EST_SCANNER.map(e=>`<option value="${e}"${e===est?' selected':''}>${e.replace('_',' ')}</option>`).join('')}
+        </select>
+      </span>
+    </div>
+  </div>`;
+}
+
+function cardDomicilio(d){
+  const est = d.estado||'pendiente';
+  const wa = waNum(d.whatsapp);
+  const cot = encodeURIComponent(`Hola Dr(a) ${d.nombre||''}, soy de PRODIGY. Confirmamos su visita de escaneo a domicilio *${d.codigo||''}* en ${d.zona||''} para el ${fmtF(d.fecha_cita)}. El anticipo es ${fmtCOP(d.anticipo_solicitado)}. ¿Me confirma el comprobante para asegurar el cupo? Además, ¿qué trabajo necesita (material/piezas)?`);
+  const saludo = encodeURIComponent(`Hola Dr(a) ${d.nombre||''}, le escribo por su visita a domicilio ${d.codigo||''}.`);
+  const maps = encodeURIComponent(`${d.direccion||''} ${d.zona||''} Bogotá`);
+  return `<div class="item ${escH(est)}">
+    <div class="item-top">
+      <div><div class="codigo">${escH(d.codigo||'DOM-—')}</div><div class="fecha">${escH(fmtD(d.created_at))}${d.anticipo_pagado?' · <span style="color:var(--neon)">anticipo pagado</span>':' · <span style="color:#fbbf24">anticipo pendiente</span>'}</div></div>
+      <span class="sp"></span>
+      <span class="badge b-${escH(est)}">${escH(est.replace('_',' '))}</span>
+    </div>
+    <div class="grid">
+      <div class="f"><b>Solicitante</b>${escH(d.nombre||'—')}</div>
+      <div class="f"><b>Clínica</b>${escH(d.clinica||'—')}</div>
+      <div class="f"><b>WhatsApp</b>${escH(d.whatsapp||'—')}</div>
+      <div class="f"><b>Zona</b>${escH(d.zona||'—')}</div>
+      <div class="f"><b>Fecha cita</b>${escH(fmtF(d.fecha_cita))} · ${escH(d.franja_horaria||'')}</div>
+      <div class="f"><b>Servicio</b>${escH(d.servicio||'—')}</div>
+      <div class="f"><b>Piezas</b>${escH(d.num_piezas||'—')}</div>
+      <div class="f"><b>Anticipo</b>${escH(fmtCOP(d.anticipo_solicitado))}</div>
+      <div class="f" style="grid-column:1/-1"><b>Dirección</b>${escH(d.direccion||'—')}${d.referencia?' · '+escH(d.referencia):''}</div>
+    </div>
+    ${d.notas?`<div class="notas">${escH(d.notas)}</div>`:''}
+    <div class="actions">
+      <a class="a a-wa" href="https://wa.me/${wa}?text=${saludo}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Escribir</a>
+      <a class="a a-cobrar" href="https://wa.me/${wa}?text=${cot}" target="_blank" rel="noopener"><i class="fas fa-file-invoice-dollar"></i> Confirmar y cobrar</a>
+      <a class="a a-stl" href="https://www.google.com/maps/search/?api=1&query=${maps}" target="_blank" rel="noopener"><i class="fas fa-map-location-dot"></i> Mapa</a>
+      <span class="a" style="cursor:default"><i class="fas fa-flag"></i>
+        <select onchange="cambiarEstado('citas_domicilio','${escH(d.id)}',this.value,null)">
+          ${EST_DOMICILIO.map(e=>`<option value="${e}"${e===est?' selected':''}>${e.replace('_',' ')}</option>`).join('')}
+        </select>
+      </span>
+    </div>
+  </div>`;
+}
+
+async function cambiarEstado(tabla, id, estado, marcarContactado){
+  const upd = { estado };
+  if(marcarContactado === true) upd.contactado = true;
+  const { error } = await sb.from(tabla).update(upd).eq('id', id);
+  if(error){ alert('No se pudo actualizar: '+error.message); return; }
+  // Reflejar en memoria sin recargar todo
+  const arr = tabla==='solicitudes_scanner' ? _scanner : _domicilio;
+  const row = arr.find(x=>x.id===id);
+  if(row){ row.estado = estado; if(marcarContactado===true) row.contactado = true; }
+  renderKPIs(); render();
+}
+
+async function bajarStl(path, btn){
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+  try{
+    // archivo_url puede ser una ruta del bucket o una URL completa
+    if(/^https?:\/\//.test(path)){ window.open(path,'_blank','noopener'); }
+    else {
+      const { data, error } = await sb.storage.from('scanner-uploads').createSignedUrl(path, 3600);
+      if(error) throw error;
+      window.open(data.signedUrl,'_blank','noopener');
+    }
+  }catch(e){ alert('No se pudo abrir el archivo: '+(e.message||e)); }
+  btn.innerHTML = orig;
+}
+
+// auth-guard puede exponer getSupabase; arrancamos tras carga
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

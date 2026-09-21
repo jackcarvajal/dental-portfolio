@@ -661,6 +661,9 @@
             <a id="waAnticipo" href="https://wa.me/573212816716?text=Hola%2C%20quiero%20confirmar%20el%20anticipo%20del%20escáner%20a%20domicilio." target="_blank" rel="noopener noreferrer" class="btn-confirmar-pago">
                 <i class="fab fa-whatsapp"></i> Enviar comprobante por WhatsApp
             </a>
+            <a id="regLink" href="/app/login.html?nuevo=1" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:340px;margin:12px auto 0;padding:14px 24px;background:rgba(0,210,255,.12);border:1px solid rgba(0,210,255,.4);color:var(--cyan,#00d2ff);font-weight:800;font-size:.95rem;border-radius:14px;text-decoration:none;">
+                <i class="fas fa-user-plus"></i> Crear mi cuenta y seguir el caso
+            </a>
             <p style="font-size:1rem;color:#94a3b8;margin-top:12px">
                 Si tienes problemas con el pago o prefieres transferencia bancaria, escríbenos y te enviamos los datos.
             </p>
@@ -892,7 +895,8 @@ document.getElementById('agendaForm').addEventListener('submit', async e => {
     // Aviso al staff por WhatsApp (destinatarios en env; inerte si no está configurado).
     // Además del trigger AFTER INSERT que enciende la campanita del panel.
     fetch('/api/notify-staff', { method:'POST', headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ doctor: nombre, servicio: 'Escaneo a domicilio ('+zona+')', whatsapp, codigo, tipo:'Visita a domicilio' }) }).catch(()=>{});
+        body: JSON.stringify({ doctor: nombre, servicio: 'Escaneo a domicilio ('+zona+')', whatsapp, codigo, tipo:'Visita a domicilio',
+          contexto:'⚠️ Visita a domicilio con anticipo pendiente de confirmar. Verificar comprobante, agendar fecha/franja y llevar checklist de escaneo según el trabajo. Dirección: '+direccion+' ('+zona+').' }) }).catch(()=>{});
 
     setTimeout(() => {
         hideProg();
@@ -904,6 +908,8 @@ document.getElementById('agendaForm').addEventListener('submit', async e => {
         document.getElementById('montoAnticipo').textContent = anticipo.label;
         document.getElementById('casoNumVal').textContent = codigo;
         document.getElementById('casoNum').style.display = 'block';
+        const _reg = document.getElementById('regLink');
+        if (_reg) _reg.href = `/app/login.html?nuevo=1&caso=${encodeURIComponent(codigo)}${email ? '&email=' + encodeURIComponent(email) : ''}`;
 
         const msg = encodeURIComponent(
             `Hola PRODIGY, acabo de agendar una visita de escaneo a domicilio.\n` +

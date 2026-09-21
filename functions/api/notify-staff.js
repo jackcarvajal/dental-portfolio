@@ -44,22 +44,25 @@ export async function onRequestPost({ request, env }) {
   let body;
   try { body = await request.json(); } catch { return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: h }); }
 
-  const esc = s => String(s || '').replace(/[<>]/g, '').slice(0, 80);
+  const esc  = s => String(s || '').replace(/[<>]/g, '').slice(0, 80);
+  const escL = s => String(s || '').replace(/[<>]/g, '').slice(0, 240);
   const doctor   = esc(body.doctor) || 'Sin nombre';
   const servicio = esc(body.servicio) || 'trabajo';
   const waLead   = esc(body.whatsapp) || 's/n';
   const pais     = esc(body.pais) || '';
   const codigo   = esc(body.codigo) || '';
   const tipo     = esc(body.tipo) || 'Nuevo caso';
+  const contexto = escL(body.contexto) || '';
 
   const mensaje =
     `🔔 *${tipo} — PRODIGY Lab Dental*\n\n` +
     (codigo ? `Nº caso: *${codigo}*\n` : '') +
     `Servicio: ${servicio}\n` +
     `Dr(a): ${doctor}\n` +
-    `WhatsApp: ${waLead}${pais ? `\nPaís: ${pais}` : ''}\n\n` +
-    `Responde rápido 👉 wa.me/${waLead.replace(/\D/g, '')}\n` +
-    `Panel: prodigylabdental.com/app/panel-interno-operaciones.html`;
+    `WhatsApp: ${waLead}${pais ? `\nPaís: ${pais}` : ''}\n` +
+    (contexto ? `\n${contexto}\n` : '') +
+    `\nResponde rápido 👉 wa.me/${waLead.replace(/\D/g, '')}\n` +
+    `Panel: prodigylabdental.com/app/bandeja-solicitudes.html`;
 
   const resultados = await Promise.all(staff.map(async ({ phone, key }) => {
     try {

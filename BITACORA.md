@@ -9,6 +9,18 @@
 
 ---
 
+## 2026-09-21  (Bandeja de Solicitudes + contexto al staff + registro del Dr)
+
+### 🟡 Nueva pantalla admin `app/bandeja-solicitudes.html` (falta ver en vivo)
+- **Problema resuelto:** los leads de `solicitudes_scanner` y `citas_domicilio` NO se mostraban en NINGÚN panel → llegaban por WhatsApp/campanita pero no había dónde gestionarlos (cotizar, cobrar, descargar STL). Todo era manual.
+- **Bandeja** (responsive, móvil): 2 tabs (Escáner / Domicilio), KPIs (nuevos/pendientes/sin contactar), por caso muestra Nº, doctor, contacto, servicio, notas + botones: **Escribir** (WA), **Cotizar y cobrar** (WA con plantilla que pide protocolo + 50/50), **descargar STL** (signed URL de `scanner-uploads`) / **Mapa** (domicilio), y selector para cambiar `estado`. Gate: `ProdigyAuth.require(['admin','operator'])` + body oculto. Enlazada en el menú del panel-interno (junto a Pedidos Doctores).
+- **Contexto al staff (Pieza B):** `notify-staff.js` (ambos repos) ahora acepta `contexto`. El WhatsApp de escáner/domicilio explica: "⚠️ Carril rápido: SIN pago ni datos completos. Cotizar y pedir material/color/antagonista…". El link del panel en el mensaje ahora apunta a la Bandeja.
+- **Registro del Dr (Pieza C):** tras enviar, escáner (ambos) y domicilio muestran botón **"Crear mi cuenta y seguir el caso"** → `/app/login.html?nuevo=1&caso=<código>&email=<email>`. El WA del doctor ahora incluye su Nº de caso.
+- **SQL:** `sql/fix-rls-bandeja-admins-2026.sql` (idempotente) — amplía la RLS de scanner+domicilio a los 4 admin (antes solo 2 → gerencia@/casos@ verían la bandeja vacía). **Correr en Supabase.**
+- 💡 Los 2 embudos son a propósito: flujos = pedido configurado + abono; escáner/domicilio = carril rápido sin fricción → la Bandeja cierra el puente lead→pedido pagado.
+
+---
+
 ## 2026-09-20  (Alertas de leads + Nº de caso rastreable — PRODIGY + Alejandro)
 
 ### 🟡 Todo formulario de cliente ahora avisa al staff por WhatsApp + genera Nº de caso (falta ver en vivo)

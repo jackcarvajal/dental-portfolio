@@ -630,6 +630,9 @@
             <div class="sico"><i class="fas fa-check"></i></div>
             <h2>¡Solicitud recibida!</h2>
             <p id="successMsg">Recibimos tu caso. Te contactamos por WhatsApp para confirmar detalles y enviarte la previsualización del diseño.</p>
+            <a id="regLink" href="/app/login.html?nuevo=1" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:340px;margin:0 auto 12px;padding:15px 24px;background:linear-gradient(135deg,#D946A6,#B82F8B);color:#fff;font-weight:800;font-size:1rem;border-radius:14px;text-decoration:none;box-shadow:0 8px 24px rgba(217,70,166,.35);">
+                <i class="fas fa-user-plus"></i> Crear mi cuenta y seguir el caso
+            </a>
             <a class="btn-wa" id="waLink" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20enviar%20mi%20escáner." target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-whatsapp"></i> Escribirnos directamente
             </a>
@@ -883,7 +886,8 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
 
     // Aviso al staff por WhatsApp (destinatarios en env; inerte si no está configurado)
     fetch('/api/notify-staff', { method:'POST', headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ doctor, servicio, whatsapp, codigo, tipo:'Solicitud de escáner' }) }).catch(()=>{});
+        body: JSON.stringify({ doctor, servicio, whatsapp, codigo, tipo:'Solicitud de escáner',
+          contexto:'⚠️ Carril rápido (Envía tu escáner): SIN pago ni datos completos. Cotizar y pedir al Dr el protocolo del caso (material, color VITA, antagonista, tipo de trabajo).' }) }).catch(()=>{});
 
     // Suscribir al newsletter si acepta marketing y tiene email
     if (email && document.getElementById('checkMarketing')?.checked) {
@@ -965,7 +969,9 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
             (email ? `✅ <strong>Hemos creado tu portal de seguimiento</strong>. Revisa tu WhatsApp (${_wa}) — te enviamos el link de acceso con tus datos de ingreso.` :
                      `Te contactamos al ${_wa} cuando tengamos el diseño listo.`);
         document.getElementById('waLink').href =
-            `https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, acabo de enviar mi escáner. Soy ${doctor} de ${clinica}.`)}`;
+            `https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, acabo de enviar mi escáner. Soy ${doctor} de ${clinica}. Mi Nº de caso es ${codigo}.`)}`;
+        const _reg = document.getElementById('regLink');
+        if (_reg) _reg.href = `/app/login.html?nuevo=1&caso=${encodeURIComponent(codigo)}${email ? '&email=' + encodeURIComponent(email) : ''}`;
         sc.scrollIntoView({ behavior:'smooth', block:'center' });
         if (window.ProdigyConversions) {
           ProdigyConversions.trackSTLUpload(servicio, 0);
