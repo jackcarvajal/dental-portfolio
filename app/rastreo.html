@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗺️</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#D946A6">
+<meta name="color-scheme" content="dark">
+<title>Rastreo de Casos — PRODIGY</title>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<style>
+:root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--neon:#00FF41;--bg:#050505;--card:#0d1520;--card2:#131d2b;--text:#e2e8f0;--muted:#94a3b8;--border:rgba(255,255,255,.08);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',sans-serif;min-height:100vh;overflow-x:hidden;visibility:hidden;}
+a{color:inherit;text-decoration:none;}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50;}
+.topbar h1{font-size:1rem;font-weight:800;color:var(--gold);display:flex;align-items:center;gap:8px;}
+.topbar .sp{flex:1;}
+.topbar a,.topbar button{font-size:.78rem;color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;}
+.main{max-width:1100px;margin:0 auto;padding:16px;}
+.filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.fil{padding:8px 14px;border-radius:100px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.fil.on{border-color:var(--mg);background:rgba(217,70,166,.14);color:#fff;}
+.fil .n{opacity:.7;margin-left:5px;}
+.list{display:flex;flex-direction:column;gap:10px;}
+.item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.item-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.cod{font-weight:900;color:var(--gold);font-size:.92rem;}
+.doc{font-size:.82rem;color:var(--muted);}
+.item-top .sp{flex:1;}
+.badge{display:inline-block;padding:3px 11px;border-radius:100px;font-size:.68rem;font-weight:800;border:1px solid var(--cyan);color:var(--cyan);background:rgba(0,210,255,.1);white-space:nowrap;}
+.tec{font-size:.78rem;color:var(--text);}
+.stale{color:#fbbf24;}
+.acts{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
+.a{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:8px;font-weight:800;font-size:.74rem;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text);font-family:inherit;text-decoration:none;}
+.a-eti{background:rgba(217,70,166,.12);border-color:rgba(217,70,166,.35);color:var(--mg);}
+.a-mov{background:rgba(0,255,65,.1);border-color:rgba(0,255,65,.3);color:var(--neon);}
+.hist{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:none;}
+.hist.show{display:block;}
+.mov{display:flex;gap:9px;font-size:.78rem;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.mov .t{margin-left:auto;color:var(--muted);font-size:.7rem;white-space:nowrap;}
+.empty,.spinner{text-align:center;padding:50px 16px;color:var(--muted);font-size:.9rem;}
+.spinner i{color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1><i class="fas fa-map-location-dot"></i> Rastreo de Casos</h1>
+  <span class="sp"></span>
+  <span id="ultima-act" style="font-size:.7rem;color:var(--muted);"></span>
+  <button onclick="cargar()"><i class="fas fa-rotate"></i> Refrescar</button>
+  <a href="panel-interno-operaciones.html"><i class="fas fa-arrow-left"></i> Panel</a>
+</div>
+<div class="main">
+  <div class="filtros" id="filtros"></div>
+  <div class="list" id="lista"><div class="spinner"><i class="fas fa-spinner fa-spin"></i> Cargando…</div></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>ProdigyAuth.require(['admin','operator']);</script>
+<script>
+const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmtD = d => d ? new Date(d).toLocaleString('es-CO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
+const hace = d => { if(!d) return ''; const h=(Date.now()-new Date(d))/3600000; return h>24 ? Math.floor(h/24)+'d' : h>=1 ? Math.floor(h)+'h' : Math.floor(h*60)+'m'; };
+let sb, _all=[], _filtro='Todas';
+
+async function init(){
+  sb = (window.ProdigyAuth && window.ProdigyAuth.getSb) ? window.ProdigyAuth.getSb() : window.supabase.createClient(
+    'https://zgihrwqfyvgyapbwzkvw.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634'
+  );
+  await cargar();
+}
+
+async function cargar(){
+  document.getElementById('lista').innerHTML = '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Cargando…</div>';
+  try{
+    const { data, error } = await sb.from('pedidos')
+      .select('id,codigo,nombre_doctor,tipo_trabajo,estado,area_actual,tecnico_actual,area_updated_at,flujo,created_at')
+      .eq('negocio','prodigy').order('area_updated_at',{ascending:false,nullsFirst:false}).limit(300);
+    if(error) throw error;
+    // Casos activos: excluir los que ya se entregaron
+    _all = (data||[]).filter(p => (p.area_actual||'') !== 'Entregado');
+    renderFiltros(); render();
+    document.getElementById('ultima-act').textContent = 'Actualizado '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){
+    document.getElementById('lista').innerHTML = `<div class="empty"><i class="fas fa-triangle-exclamation" style="color:#f87171"></i><br>${escH(e.message||e)}</div>`;
+  }
+}
+
+function renderFiltros(){
+  const areas = {};
+  _all.forEach(p=>{ const a=p.area_actual||'Sin registrar'; areas[a]=(areas[a]||0)+1; });
+  const orden = ['Todas', ...Object.keys(areas).sort()];
+  document.getElementById('filtros').innerHTML = orden.map(a=>{
+    const n = a==='Todas' ? _all.length : areas[a];
+    return `<button class="fil${a===_filtro?' on':''}" onclick="setFiltro('${escH(a)}')">${escH(a)}<span class="n">${n}</span></button>`;
+  }).join('');
+}
+function setFiltro(a){ _filtro=a; renderFiltros(); render(); }
+
+function render(){
+  const cont = document.getElementById('lista');
+  const arr = _filtro==='Todas' ? _all : _all.filter(p=>(p.area_actual||'Sin registrar')===_filtro);
+  if(!arr.length){ cont.innerHTML='<div class="empty"><i class="fas fa-check-circle" style="color:var(--neon)"></i><br>Sin casos en seguimiento.</div>'; return; }
+  cont.innerHTML = arr.map(p=>{
+    const stale = p.area_updated_at && (Date.now()-new Date(p.area_updated_at))>48*3600000;
+    return `<div class="item">
+      <div class="item-top">
+        <span class="cod">${escH(p.codigo||'—')}</span>
+        <span class="doc">${escH(p.nombre_doctor||'—')} · ${escH(p.tipo_trabajo||p.flujo||'')}</span>
+        <span class="sp"></span>
+        <span class="badge">${escH(p.area_actual||'sin registrar')}</span>
+      </div>
+      <div style="margin-top:6px;font-size:.8rem;">
+        <span class="tec"><i class="fas fa-user-gear" style="color:var(--muted)"></i> ${escH(p.tecnico_actual||'sin asignar')}</span>
+        ${p.area_updated_at?`<span style="color:var(--muted);margin-left:10px;" class="${stale?'stale':''}"><i class="fas fa-clock"></i> hace ${hace(p.area_updated_at)}${stale?' ⚠️':''}</span>`:''}
+      </div>
+      <div class="acts">
+        <a class="a a-eti" href="etiqueta.html?c=${encodeURIComponent(p.codigo)}" target="_blank" rel="noopener"><i class="fas fa-tag"></i> Etiqueta</a>
+        <a class="a a-mov" href="mover.html?c=${encodeURIComponent(p.codigo)}"><i class="fas fa-arrows-turn-right"></i> Mover</a>
+        <button class="a" onclick="verHist('${escH(p.id)}','${escH(p.codigo)}',this)"><i class="fas fa-clock-rotate-left"></i> Historial</button>
+      </div>
+      <div class="hist" id="h-${escH(p.id)}"></div>
+    </div>`;
+  }).join('');
+}
+
+async function verHist(id, codigo, btn){
+  const box = document.getElementById('h-'+id);
+  if(box.classList.contains('show')){ box.classList.remove('show'); return; }
+  box.classList.add('show');
+  box.innerHTML = '<div style="color:var(--muted);font-size:.78rem;padding:6px 0;">Cargando…</div>';
+  const { data } = await sb.from('pedido_movimientos').select('area,tecnico,nota,componentes,estado_recibo,fotos,por_email,created_at').eq('pedido_id',id).order('created_at',{ascending:false}).limit(30);
+  if(!data || !data.length){ box.innerHTML='<div style="color:var(--muted);font-size:.78rem;padding:6px 0;">Sin movimientos registrados.</div>'; return; }
+  box.innerHTML = data.map(m=>`<div class="mov"><div>
+    <b style="color:var(--cyan)">${escH(m.area||'—')}</b>${m.tecnico?' · '+escH(m.tecnico):''}${m.estado_recibo?' · <span style="color:'+(m.estado_recibo==='completo'?'var(--neon)':m.estado_recibo==='incompleto'?'#f87171':'#fbbf24')+'">'+escH(m.estado_recibo.replace('_',' '))+'</span>':''}
+    ${m.componentes?'<br><span style="color:var(--muted)">🔑 '+escH(m.componentes)+'</span>':''}
+    ${m.nota?'<br><span style="color:var(--muted)">'+escH(m.nota)+'</span>':''}
+    ${m.fotos&&m.fotos.length?'<br><span style="color:var(--cyan);font-size:.72rem">📷 '+m.fotos.length+' foto(s)</span>':''}
+    ${m.por_email?'<br><span style="color:#475569;font-size:.68rem">por '+escH(m.por_email)+'</span>':''}
+  </div><span class="t">${escH(fmtD(m.created_at))}</span></div>`).join('');
+}
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

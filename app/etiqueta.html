@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏷️</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark light">
+<title>Etiqueta Caso — PRODIGY</title>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0d1520;color:#e2e8f0;font-family:-apple-system,'Segoe UI',sans-serif;min-height:100vh;visibility:hidden;padding:20px;display:flex;flex-direction:column;align-items:center;gap:18px;}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;border:none;font-weight:800;font-size:.9rem;cursor:pointer;font-family:inherit;}
+.btn-print{background:linear-gradient(135deg,#D946A6,#a0107a);color:#fff;}
+.btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;}
+.hint{font-size:.78rem;color:#94a3b8;max-width:340px;text-align:center;line-height:1.5;}
+
+/* ── LA ETIQUETA: 50 x 30 mm ── */
+.label{width:50mm;height:30mm;background:#fff;color:#000;border-radius:2mm;display:flex;padding:1.6mm 2mm;gap:1.6mm;align-items:center;box-shadow:0 6px 30px rgba(0,0,0,.4);}
+.label .qr{width:24mm;height:24mm;flex-shrink:0;}
+.label .qr img{width:100%;height:100%;display:block;}
+.label .info{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
+.label .brand{font-size:2mm;font-weight:900;letter-spacing:.2mm;color:#111;}
+.label .cod{font-size:3.1mm;font-weight:900;line-height:1.05;color:#000;word-break:break-all;margin:.4mm 0;}
+.label .meta{font-size:1.9mm;color:#333;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.label .scan{font-size:1.7mm;color:#666;margin-top:.5mm;}
+
+@media print{
+  @page{ size:50mm 30mm; margin:0; }
+  body{background:#fff;padding:0;visibility:visible!important;}
+  .toolbar,.hint{display:none!important;}
+  .label{box-shadow:none;border-radius:0;width:50mm;height:30mm;}
+}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button class="btn btn-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir etiqueta</button>
+  <a class="btn btn-ghost" id="lnkMover" href="#" target="_blank" rel="noopener"><i class="fas fa-location-dot"></i> Abrir seguimiento</a>
+  <a class="btn btn-ghost" href="bandeja-solicitudes.html"><i class="fas fa-arrow-left"></i> Volver</a>
+</div>
+
+<div class="label" id="label">
+  <div class="qr" id="qr"></div>
+  <div class="info">
+    <div class="brand">💎 PRODIGY</div>
+    <div class="cod" id="cod">—</div>
+    <div class="meta" id="doctor">—</div>
+    <div class="meta" id="servicio">—</div>
+    <div class="scan">Escanea para mover el caso</div>
+  </div>
+</div>
+<p class="hint" id="hint">Configura la impresora térmica a tamaño <b>50×30&nbsp;mm</b>. Si sale cortada, ajusta el tamaño de papel en el diálogo de impresión.</p>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>ProdigyAuth.require(['admin','operator']);</script>
+<script>
+const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const params = new URLSearchParams(location.search);
+const CODIGO = (params.get('c')||'').trim().toUpperCase();
+const MOVER_URL = 'https://prodigylabdental.com/app/mover.html?c=' + encodeURIComponent(CODIGO);
+
+async function init(){
+  if(!CODIGO){ document.getElementById('cod').textContent = 'SIN CÓDIGO'; return; }
+  // QR (api.qrserver.com ya está en el CSP img-src)
+  document.getElementById('qr').innerHTML = `<img alt="QR ${escH(CODIGO)}" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${encodeURIComponent(MOVER_URL)}">`;
+  document.getElementById('cod').textContent = CODIGO;
+  document.getElementById('lnkMover').href = MOVER_URL;
+  // Datos del caso (opcional, mejora la etiqueta)
+  try{
+    const sb = (window.ProdigyAuth && window.ProdigyAuth.getSb) ? window.ProdigyAuth.getSb() : null;
+    if(sb){
+      const { data } = await sb.from('pedidos').select('nombre_doctor,tipo_trabajo,flujo').eq('negocio','prodigy').eq('codigo',CODIGO).maybeSingle();
+      if(data){
+        document.getElementById('doctor').textContent = data.nombre_doctor || '—';
+        document.getElementById('servicio').textContent = data.tipo_trabajo || data.flujo || '—';
+      }
+    }
+  }catch(_){}
+}
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
