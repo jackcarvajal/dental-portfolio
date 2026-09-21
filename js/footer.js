@@ -136,6 +136,9 @@
           '<a href="https://www.tiktok.com/@prodigylabdental" target="_blank" rel="noopener noreferrer" title="TikTok @prodigylabdental" aria-label="TikTok @prodigylabdental">' +
             '<i class="fab fa-tiktok"></i>' +
           '</a>' +
+          '<a href="https://maps.google.com/?cid=8388124577401281394" target="_blank" rel="noopener noreferrer" title="PRODIGY Lab Dental en Google" aria-label="PRODIGY Lab Dental en Google Maps">' +
+            '<i class="fab fa-google"></i>' +
+          '</a>' +
         '</div>' +
       '</div>' +
 
@@ -190,6 +193,7 @@
           '<li><a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20soporte%20t%C3%A9cnico" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" style="color:#25D366;margin-right:6px"></i>Soporte Técnico</a></li>' +
           '<li><a href="mailto:gerencia@prodigylabdental.com"><i class="far fa-envelope" style="margin-right:6px"></i>gerencia@prodigylabdental.com</a></li>' +
           '<li><a href="tel:+573212816716"><i class="fas fa-phone" style="margin-right:6px"></i>+57 321 281 6716</a></li>' +
+          '<li><a href="https://g.page/r/CXIbumfcmmh0EBM/review" target="_blank" rel="noopener noreferrer"><i class="fas fa-star" style="color:#D4AF37;margin-right:6px"></i>Déjanos tu reseña en Google</a></li>' +
         '</ul>' +
       '</div>' +
     '</div>' +

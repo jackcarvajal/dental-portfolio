@@ -10736,7 +10736,7 @@ const ARTICLES = [
     },
     {
       "q": "¿En cuánto tiempo tengo el diseño listo?",
-      "a": "El tiempo estándar es 24 horas hábiles desde que recibimos el caso completo (STL de preparación + antagonista + mordida). Para coronas simples en horario L-S 8am–6pm, muchos casos se entregan en 4–8 horas. Para urgencias (2h) hay disponibilidad limitada — consultar por WhatsApp."
+      "a": "El tiempo estándar es 24 horas hábiles desde que recibimos el caso completo (STL de preparación + antagonista + mordida). Para coronas simples en horario L-V 8am–6pm, muchos casos se entregan en 4–8 horas. Para urgencias (2h) hay disponibilidad limitada — consultar por WhatsApp."
     },
     {
       "q": "¿El STL que entregan funciona con cualquier fresadora?",

@@ -731,17 +731,25 @@
     }
   }, { passive: true });
 
-  /* ── WIDGET DE URGENCIA — Horario hábil L-S 8am-5pm (corte) ─ */
+  /* ── WIDGET DE URGENCIA — Producción L-V 8am-5pm (corte) ─────
+     El sábado (8am-12m) solo se atiende y se terminan pendientes:
+     lo que entra el sábado cuenta desde el lunes.                */
   (function initUrgencia() {
     var widget = document.getElementById('urgencia-widget');
     var label  = document.getElementById('urgencia-text');
     if (!widget || !label) return;
 
-    // Retorna próximo día hábil (L-S, skip domingo)
+    // Día de producción: L-V y no festivo (festivos solo si PFechas está cargado)
+    function esDiaProduccion(d) {
+      if (window.PFechas) return window.PFechas.esHabil(d);
+      var dow = d.getDay();
+      return dow !== 0 && dow !== 6;
+    }
+
+    // Retorna próximo día de producción (salta sábado, domingo y festivos)
     function siguienteDiaHabil(d) {
       var sig = new Date(d);
-      sig.setDate(sig.getDate() + 1);
-      if (sig.getDay() === 0) sig.setDate(sig.getDate() + 1); // salta domingo
+      do { sig.setDate(sig.getDate() + 1); } while (!esDiaProduccion(sig));
       return sig;
     }
 
@@ -752,16 +760,14 @@
 
     function tick() {
       var ahora = new Date();
-      var dia   = ahora.getDay();   // 0=dom … 6=sáb
       var hora  = ahora.getHours();
       var min   = ahora.getMinutes();
       var seg   = ahora.getSeconds();
 
-      // Fuera de horario hábil: dom, o ≥17h (corte 5pm), o antes de 8am
-      var esDomingo   = dia === 0;
+      // Fuera de horario de producción: sáb/dom/festivo, o ≥17h (corte 5pm), o antes de 8am
       var antesDeApertura = hora < 8;
       var despuesDeCorte  = hora >= 17;
-      var enHorario       = !esDomingo && !antesDeApertura && !despuesDeCorte;
+      var enHorario       = esDiaProduccion(ahora) && !antesDeApertura && !despuesDeCorte;
 
       widget.style.display = 'flex';
 
@@ -776,13 +782,13 @@
                         ss + 's';
 
         // "pasado mañana" = 2 días hábiles desde hoy
-        var entrega1 = siguienteDiaHabil(ahora);       // mañana (o lunes si sábado)
+        var entrega1 = siguienteDiaHabil(ahora);       // mañana (o lunes si viernes)
         var entrega2 = siguienteDiaHabil(entrega1);    // pasado mañana hábil
         label.textContent = '⚡ Diseño 24h · Fabricación 24–48h · Envío ' + fmtDia(entrega2);
         widget.style.borderColor = 'rgba(217,70,166,.5)';
         widget.style.background  = 'rgba(217,70,166,.14)';
       } else {
-        label.textContent = '🦷 Diseño 24h · Fabricación 24–48h · Lun–Sáb';
+        label.textContent = '🦷 Diseño 24h · Fabricación 24–48h · Producción Lun–Vie';
         widget.style.borderColor = 'rgba(148,163,184,.25)';
         widget.style.background  = 'rgba(30,41,59,.4)';
       }
@@ -908,7 +914,7 @@
       'PAGOS: Stripe (internacional) · Wompi/PSE (Colombia) · PayPal · Transferencia.\n' +
       'POLÍTICA: Cliente nuevo 100% anticipado · Cliente existente 50% abono / 50% contra entrega.\n' +
       'CONTACTO: WhatsApp +57 321 281 6716 · gerencia@prodigylabdental.com\n' +
-      'HORARIO: L-S 8am-6pm Colombia · Corte pedidos urgentes 5pm.\n\n' +
+      'HORARIO: L-V 8am-6pm · Sábados 8am-12m (solo atención; lo recibido el sábado entra a producción el lunes) · Domingos y festivos cerrado · Corte de pedidos 5pm (hora Colombia).\n\n' +
       'PROGRAMA DE REFERIDOS: Si un doctor pregunta por descuentos o cómo referir colegas, menciona el programa en /referidos o desde el portal /app/client-panel.html → "Referir Colegas". El colega obtiene 5% descuento en su primer caso. El referidor recibe $30.000 COP de crédito (cupón CRED-XXXXXXXX) automáticamente cuando su colega paga.\n\n' +
       'PORTAL DEL DOCTOR (/app/client-panel.html): El doctor puede ver sus casos en tiempo real, aprobar diseños, descargar STL, cotizar, aplicar cupones CRED-, ver historial de gastos y referir colegas. El seguimiento usa Supabase Realtime — sin recargar la página.\n\n' +
       'REGISTRO: Cualquier doctor puede crear su cuenta enviando un escáner en /envia-tu-scanner — el sistema crea automáticamente su portal y le envía acceso por WA.\n\n' +

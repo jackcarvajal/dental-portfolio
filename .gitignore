@@ -17,6 +17,11 @@ qr nequi*.jpeg
 qr nequi*.jpg
 *.qr.*
 
+# ---- Casos legales / personales (creados por OTRO chat de Code que usa esta misma carpeta) ----
+# NO son de PRODIGY ni Alejandro. Nunca deben ir a GitHub.
+CONTEXTO-CASO-*.md
+CONTEXTO-LEGAL-*.md
+
 # ---- Base de datos / esquemas (mover a carpeta privada antes de producción) ----
 ESQUEMA_SUPABASE_PRODIGY.sql
 PRODIGY_SCHEMA_SUPABASE.sql
