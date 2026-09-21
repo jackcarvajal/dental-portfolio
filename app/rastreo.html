@@ -78,12 +78,17 @@ async function init(){
 async function cargar(){
   document.getElementById('lista').innerHTML = '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Cargando…</div>';
   try{
-    const { data, error } = await sb.from('pedidos')
-      .select('id,codigo,nombre_doctor,tipo_trabajo,estado,area_actual,tecnico_actual,area_updated_at,flujo,created_at')
-      .eq('negocio','prodigy').order('area_updated_at',{ascending:false,nullsFirst:false}).limit(300);
-    if(error) throw error;
-    // Casos activos: excluir los que ya se entregaron
-    _all = (data||[]).filter(p => (p.area_actual||'') !== 'Entregado');
+    const [rp, rs] = await Promise.all([
+      sb.from('pedidos').select('id,codigo,nombre_doctor,tipo_trabajo,estado,flujo,created_at').eq('negocio','prodigy').order('created_at',{ascending:false}).limit(300),
+      sb.from('pedido_seguimiento').select('pedido_id,area_actual,tecnico_actual,updated_at').eq('negocio','prodigy')
+    ]);
+    if(rp.error) throw rp.error;
+    if(rs.error) throw rs.error;
+    const segMap = {}; (rs.data||[]).forEach(s=>segMap[s.pedido_id]=s);
+    // Une pedido + su ubicación interna (tabla solo-staff)
+    _all = (rp.data||[]).map(p=>{ const s=segMap[p.id]||{}; return {...p, area_actual:s.area_actual||null, tecnico_actual:s.tecnico_actual||null, area_updated_at:s.updated_at||null}; })
+      .filter(p => (p.area_actual||'') !== 'Entregado')
+      .sort((a,b)=> (new Date(b.area_updated_at||b.created_at)) - (new Date(a.area_updated_at||a.created_at)));
     renderFiltros(); render();
     document.getElementById('ultima-act').textContent = 'Actualizado '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
   }catch(e){

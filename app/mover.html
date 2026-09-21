@@ -70,7 +70,7 @@ const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repla
 const fmtD = d => d ? new Date(d).toLocaleString('es-CO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
 const params = new URLSearchParams(location.search);
 const CODIGO = (params.get('c')||'').trim().toUpperCase();
-let sb, _ped, _area='', _tecnico=localStorage.getItem('pg_last_tecnico')||'', _estado='', _fotos=[];
+let sb, _ped, _seg={}, _area='', _tecnico=localStorage.getItem('pg_last_tecnico')||'', _estado='', _fotos=[];
 
 function pickEstado(btn, kind){
   _estado = btn.dataset.e;
@@ -94,13 +94,15 @@ async function init(){
 
 async function cargar(){
   const { data, error } = await sb.from('pedidos')
-    .select('id,codigo,nombre_doctor,tipo_trabajo,estado,area_actual,tecnico_actual,area_updated_at,flujo')
+    .select('id,codigo,nombre_doctor,tipo_trabajo,estado,flujo')
     .eq('negocio','prodigy').eq('codigo', CODIGO).maybeSingle();
   if(error || !data){
     document.getElementById('app').innerHTML = `<div class="empty"><i class="fas fa-circle-question" style="color:#f87171"></i><br>No se encontró el caso <b>${escH(CODIGO)}</b>.</div>`;
     return;
   }
   _ped = data;
+  const { data: seg } = await sb.from('pedido_seguimiento').select('area_actual,tecnico_actual').eq('pedido_id', _ped.id).maybeSingle();
+  _seg = seg || {};
   const { data: movs } = await sb.from('pedido_movimientos').select('area,tecnico,nota,componentes,estado_recibo,fotos,por_email,created_at').eq('pedido_id', _ped.id).order('created_at',{ascending:false}).limit(8);
   render(movs||[]);
 }
@@ -110,11 +112,11 @@ function render(movs){
     <div class="caso">
       <div class="cod">${escH(_ped.codigo)}</div>
       <div class="sub">${escH(_ped.nombre_doctor||'—')} · ${escH(_ped.tipo_trabajo||_ped.flujo||'—')}</div>
-      <div class="now">Ahora en: <b>${escH(_ped.area_actual||'sin registrar')}</b>${_ped.tecnico_actual?' · con <b>'+escH(_ped.tecnico_actual)+'</b>':''}</div>
+      <div class="now">Ahora en: <b>${escH(_seg.area_actual||'sin registrar')}</b>${_seg.tecnico_actual?' · con <b>'+escH(_seg.tecnico_actual)+'</b>':''}</div>
     </div>
     <div class="lbl">Mover a área</div>
     <div class="areas" id="areas">
-      ${AREAS.map(a=>`<button class="area${a===_ped.area_actual?' ':''}" data-a="${escH(a)}" onclick="pickArea(this)">${escH(a)}</button>`).join('')}
+      ${AREAS.map(a=>`<button class="area" data-a="${escH(a)}" onclick="pickArea(this)">${escH(a)}</button>`).join('')}
     </div>
     <div class="lbl">Técnico que lo recibe</div>
     <select id="tecnico" onchange="_tecnico=this.value">
@@ -178,7 +180,7 @@ async function guardar(){
       componentes, estado_recibo:_estado||null, fotos: fotoPaths.length?fotoPaths:null
     });
     if(e1) throw e1;
-    await sb.from('pedidos').update({ area_actual:_area, tecnico_actual:_tecnico||null, area_updated_at:new Date().toISOString() }).eq('id',_ped.id);
+    await sb.from('pedido_seguimiento').upsert({ pedido_id:_ped.id, codigo:_ped.codigo, negocio:'prodigy', area_actual:_area, tecnico_actual:_tecnico||null, updated_at:new Date().toISOString() }, { onConflict:'pedido_id' });
     toast('✓ Guardado: '+_area);
     _area=''; _estado=''; _fotos=[];
     await cargar();
