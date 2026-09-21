@@ -5,32 +5,32 @@
 # ─────────────────────────────────────────────────────────────
 # BLOQUEAR archivos sensibles → 404
 # ─────────────────────────────────────────────────────────────
-/MAPA_PROYECTO.json             /404.html  404
-/ESTANDARES-UX-TIPOGRAFIA.md   /404.html  404
-/ARCHITECTURE.md                /404.html  404
-/PENDIENTES-DNS-EMAIL.md        /404.html  404
-/ESTANDARES-TECNICOS.md         /404.html  404
-/sql/*                          /404.html  404
-/supabase/*                     /404.html  404
-/*.md                           /404.html  404
-/*.bat                          /404.html  404
-/MEMORY/*                       /404.html  404
-/scripts/*                      /404.html  404
-/marketing-social.txt           /404.html  404
-/.github/*                      /404.html  404
-/js/supabase-mock.js            /404.html  404
-/SESIONES.md                    /404.html  404
-/PENDIENTES.md                  /404.html  404
-/PRODIGY_LOG.md                 /404.html  404
-/CLAUDE.md                      /404.html  404
-/MAP.md                         /404.html  404
-/VERIFICAR.md                   /404.html  404
-/.env                           /404.html  404
-/.env.*                         /404.html  404
-/*.log                          /404.html  404
-/wp-login.php                   /404.html  404
-/wp-admin/*                     /404.html  404
-/xmlrpc.php                     /404.html  404
+/MAPA_PROYECTO.json             /404.html  302
+/ESTANDARES-UX-TIPOGRAFIA.md   /404.html  302
+/ARCHITECTURE.md                /404.html  302
+/PENDIENTES-DNS-EMAIL.md        /404.html  302
+/ESTANDARES-TECNICOS.md         /404.html  302
+/sql/*                          /404.html  302
+/supabase/*                     /404.html  302
+/*.md                           /404.html  302
+/*.bat                          /404.html  302
+/MEMORY/*                       /404.html  302
+/scripts/*                      /404.html  302
+/marketing-social.txt           /404.html  302
+/.github/*                      /404.html  302
+/js/supabase-mock.js            /404.html  302
+/SESIONES.md                    /404.html  302
+/PENDIENTES.md                  /404.html  302
+/PRODIGY_LOG.md                 /404.html  302
+/CLAUDE.md                      /404.html  302
+/MAP.md                         /404.html  302
+/VERIFICAR.md                   /404.html  302
+/.env                           /404.html  302
+/.env.*                         /404.html  302
+/*.log                          /404.html  302
+/wp-login.php                   /404.html  302
+/wp-admin/*                     /404.html  302
+/xmlrpc.php                     /404.html  302
 
 # ─────────────────────────────────────────────────────────────
 # CLEAN URLs — NO NECESITAN CONFIGURACIÓN
@@ -118,7 +118,7 @@
 /operario                      /app/operario.html           200
 /operario-diseno               /app/operario-diseno.html    200
 /agregar-caso.html              /app/login.html  302
-/portafolio-v2-ideas.html       /404.html  404
+/portafolio-v2-ideas.html       /404.html  302
 /enviar-produccion-drive.html   /app/login.html  302
 /enviar-produccion-wetransfer.html /app/login.html  302
 /acceso-staff.html              /app/login.html  302
