@@ -41,7 +41,7 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
 .odo{display:flex;justify-content:center;gap:6mm;padding:2.5mm 0;border-bottom:1px solid #bbb;}
 .odo .quad{text-align:center;}
 .odo .teeth{display:flex;gap:1.2mm;font-size:8pt;font-weight:700;}
-.odo .teeth span{width:5mm;text-align:center;border-bottom:1px solid #999;}
+.odo .teeth span{width:7mm;text-align:center;border-bottom:1px solid #999;font-size:8.5pt;}
 .odo .sep{width:1px;background:#333;}
 
 .checks{display:flex;flex-wrap:wrap;gap:2mm 5mm;padding:2mm;border-bottom:1px solid #bbb;}
@@ -58,6 +58,18 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
 .ruta .step:last-child{border-right:none;}
 .ruta .step .dot{width:3mm;height:3mm;border:1.2px solid #999;border-radius:50%;margin:0 auto 1mm;}
 
+.tiempos{width:100%;border-collapse:collapse;font-size:7.5pt;}
+.tiempos th,.tiempos td{border:1px solid #bbb;padding:1.2mm 1.5mm;text-align:left;}
+.tiempos th{background:#f1f1f1;font-size:6.5pt;text-transform:uppercase;letter-spacing:.3px;color:#444;}
+.tiempos td{height:6mm;}
+.tiempos td:first-child{font-weight:700;background:#fafafa;width:26mm;}
+.qrnote{display:flex;gap:3mm;align-items:flex-start;background:#f8f4ec;border:1px solid #e6d9b8;border-radius:1.5mm;padding:2mm;margin-top:2mm;font-size:7pt;line-height:1.35;color:#5a4a1a;}
+.qrnote b{color:#7a5c00;}
+.obs2{display:flex;gap:0;border-bottom:1px solid #bbb;}
+.obs2 .col{flex:1;padding:2mm;border-right:1px solid #ddd;}
+.obs2 .col:last-child{border-right:none;}
+.obs2 .k{font-size:6.5pt;font-weight:800;color:var(--soft);text-transform:uppercase;}
+.obs2 .lines{margin-top:1mm;background:repeating-linear-gradient(transparent,transparent 5.5mm,#ddd 5.5mm,#ddd 6mm);min-height:15mm;}
 .firmas{display:flex;gap:6mm;padding-top:4mm;}
 .firmas .f{flex:1;text-align:center;}
 .firmas .f .ln{border-top:1px solid #333;margin-top:8mm;padding-top:1mm;font-size:7pt;color:var(--soft);}
@@ -114,11 +126,11 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
     <div class="fld"><div class="k">Cantidad</div><div class="v" id="o-cantidad"></div></div>
   </div>
 
-  <div class="sec">Odontograma — marca las piezas</div>
+  <div class="sec">Odontograma (FDI) — marca las piezas</div>
   <div class="odo">
     <div class="quad">
-      <div class="teeth"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span><div class="sep"></div><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
-      <div class="teeth" style="margin-top:2mm;"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span><div class="sep"></div><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+      <div class="teeth"><span>18</span><span>17</span><span>16</span><span>15</span><span>14</span><span>13</span><span>12</span><span>11</span><div class="sep"></div><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span></div>
+      <div class="teeth" style="margin-top:2mm;"><span>48</span><span>47</span><span>46</span><span>45</span><span>44</span><span>43</span><span>42</span><span>41</span><div class="sep"></div><span>31</span><span>32</span><span>33</span><span>34</span><span>35</span><span>36</span><span>37</span><span>38</span></div>
     </div>
   </div>
 
@@ -137,27 +149,40 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
     <div class="chk"><span class="box"></span>Otro: __________</div>
   </div>
 
-  <div class="obs">
-    <div class="k">Observaciones</div>
-    <div class="lines" id="o-obs"></div>
+  <div class="obs2">
+    <div class="col">
+      <div class="k">Indicaciones del odontólogo</div>
+      <div class="lines" id="o-obs"></div>
+    </div>
+    <div class="col">
+      <div class="k">Notas internas / técnicas</div>
+      <div class="lines"></div>
+    </div>
   </div>
 
-  <div class="sec">Recorrido interno (marca al pasar de área)</div>
-  <div class="ruta">
-    <div class="step"><div class="dot"></div>Recepción</div>
-    <div class="step"><div class="dot"></div>Diseño CAD</div>
-    <div class="step"><div class="dot"></div>Fresado</div>
-    <div class="step"><div class="dot"></div>Impresión</div>
-    <div class="step"><div class="dot"></div>Sinterizado</div>
-    <div class="step"><div class="dot"></div>Acabado</div>
-    <div class="step"><div class="dot"></div>Calidad</div>
-    <div class="step"><div class="dot"></div>Despacho</div>
+  <div class="sec">Control de tiempos por área — anota fecha/hora al recibir y al terminar</div>
+  <table class="tiempos">
+    <tr><th>Área</th><th>Fecha</th><th>Hora entrada</th><th>Hora salida</th><th>Técnico</th></tr>
+    <tr><td>Recepción</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Yesos / modelos</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Diseño CAD</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Fresado</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Impresión 3D</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Sinterizado</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Acabado / maquillaje</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Control de calidad</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Empaque / despacho</td><td></td><td></td><td></td><td></td></tr>
+  </table>
+
+  <div class="qrnote">
+    <div style="font-size:11pt;">📱</div>
+    <div><b>Escaneo QR en cada etapa:</b> el técnico escanea el QR <b>al recibir</b> y <b>al terminar</b> su área, elige su nombre y confirma qué recibió (llave de implante, tornillos, modelo…). <b>Toma foto de esta orden</b> en cada escaneo → respaldo digital: si se pierde el papel, la foto y el historial quedan en el sistema.</div>
   </div>
 
   <div class="firmas">
-    <div class="f"><div class="ln">Firma odontólogo</div></div>
-    <div class="f"><div class="ln">Recibido por (lab)</div></div>
-    <div class="f"><div class="ln">Entregado al técnico · hora</div></div>
+    <div class="f"><div class="ln">Recibido por (recepción)</div></div>
+    <div class="f"><div class="ln">Revisado por (calidad)</div></div>
+    <div class="f"><div class="ln">Empacado por · fecha / hora</div></div>
   </div>
   <div class="foot">Documento interno de trazabilidad técnica · PRODIGY Digital Dentistry · No tiene validez tributaria (la factura DIAN con CUFE se emite aparte).</div>
 </div>

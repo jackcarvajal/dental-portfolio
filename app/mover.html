@@ -131,8 +131,8 @@ function render(movs){
       <button type="button" class="est" data-e="incompleto" onclick="pickEstado(this,'bad')">✖ Falta algo</button>
       <button type="button" class="est" data-e="con_observaciones" onclick="pickEstado(this,'warn')">⚠ Con obs.</button>
     </div>
-    <div class="lbl">Foto (opcional — evidencia de lo recibido)</div>
-    <label class="foto-btn"><i class="fas fa-camera"></i> Tomar / adjuntar foto
+    <div class="lbl">Foto — toma foto de la ORDEN (respaldo si se pierde el papel)</div>
+    <label class="foto-btn"><i class="fas fa-camera"></i> Tomar / adjuntar foto de la orden
       <input id="fotoInput" type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="previewFotos(this)">
     </label>
     <div class="fotos-prev" id="fotosPrev"></div>
