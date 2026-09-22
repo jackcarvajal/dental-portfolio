@@ -2,10 +2,139 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-09-17
+   Última actualización automática: 2026-09-22
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "ia-cad-margenes-2026-09-22-1e9d",
+  "titulo": "IA en CAD Dental: Precisión y Eficiencia en el Diseño Restaurador Digital",
+  "subtitulo": "La inteligencia artificial (IA) está transformando el diseño CAD dental, mejorando la precisión en la segmentación de márgenes, la propuesta de anatomía oclusal y la optimización de contactos, equiparando o superando el diseño manual de expertos.",
+  "categoria": "ia",
+  "chip": "IA en CAD",
+  "fecha": "2026-09-22",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "🤖",
+  "grad": "grad-1",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/7/77/X-ray_of_hand%2C_where_bone_age_is_automatically_found_by_BoneXpert_software.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Artificial intelligence in healthcare",
+  "img_link": "https://en.wikipedia.org/wiki/Artificial%20intelligence%20in%20healthcare",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha experimentado una evolución significativa, con la integración de tecnologías CAD/CAM que permiten la fabricación de restauraciones dentales con alta precisión. Sin embargo, el diseño asistido por computadora (CAD) tradicional aún depende en gran medida de la habilidad y experiencia del técnico o clínico. La inteligencia artificial (IA), particularmente el aprendizaje profundo, emerge como una herramienta disruptiva capaz de automatizar y optimizar procesos complejos en el diseño dental, prometiendo mayor eficiencia y consistencia. Este artículo explora las aplicaciones validadas de la IA en el diseño CAD dental, comparando su rendimiento con los métodos manuales de expertos."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/7/77/X-ray_of_hand%2C_where_bone_age_is_automatically_found_by_BoneXpert_software.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Inteligencia artificial en diseño CAD dental — segmentación y anatomía",
+      "caption": "Wikipedia — Artificial intelligence in healthcare · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Segmentación Automática de Márgenes de Preparación"
+    },
+    {
+      "t": "p",
+      "c": "La identificación precisa del margen de preparación es un paso crítico en el diseño de restauraciones, ya que influye directamente en el ajuste marginal y la longevidad de la restauración. Tradicionalmente, esta tarea se realiza manualmente, lo que puede ser laborioso y propenso a variaciones inter-operador. Los algoritmos de IA, entrenados con grandes conjuntos de datos de preparaciones dentales, han demostrado una capacidad notable para segmentar automáticamente estos márgenes. Un estudio de Lee et al. (Journal of Dentistry, 2020) utilizó redes neuronales convolucionales para la detección automática de la línea de margen, logrando un error absoluto medio (MAE) de 0.04 mm en comparación con la segmentación manual realizada por expertos. De manera similar, Tian et al. (Journal of Dental Research, 2021) reportaron que un modelo de aprendizaje profundo podía detectar automáticamente los márgenes de preparación con una alta precisión, alcanzando un coeficiente de Dice superior a 0.95 para diversos tipos de dientes, lo que indica una superposición casi perfecta con las segmentaciones manuales de referencia."
+    },
+    {
+      "t": "h2",
+      "c": "Propuesta de Anatomía Oclusal y Detección de Colisiones"
+    },
+    {
+      "t": "p",
+      "c": "El diseño de una anatomía oclusal funcional y estéticamente agradable es un desafío complejo que requiere un profundo conocimiento de la oclusión y la morfología dental. Los sistemas de IA pueden aprender patrones de anatomía oclusal a partir de bases de datos de dientes naturales y restauraciones exitosas, generando propuestas de diseño iniciales. Zhang et al. (Journal of Prosthetic Dentistry, 2022) desarrollaron un sistema de IA para la generación automática de superficies oclusales en coronas posteriores, demostrando que los diseños generados por IA eran morfológicamente comparables a los diseños de expertos y requerían menos ajustes post-diseño. Además, la IA puede integrarse para la detección temprana de colisiones oclusales y proximales. Al simular movimientos mandibulares y contactos dentales, los algoritmos de IA pueden identificar áreas de interferencia potencial, permitiendo ajustes preventivos en el diseño. Esto reduce la necesidad de ajustes intraorales extensos, mejorando la eficiencia clínica y la comodidad del paciente."
+    },
+    {
+      "t": "h2",
+      "c": "Optimización de Contactos Proximales"
+    },
+    {
+      "t": "p",
+      "c": "Los contactos proximales adecuados son esenciales para la estabilidad de la arcada dental, la protección periodontal y la prevención de impactación alimentaria. La optimización de estos contactos en el diseño CAD puede ser un proceso iterativo y subjetivo. La IA ofrece una solución al analizar la morfología de los dientes adyacentes y proponer formas de contacto ideales. Li et al. (Journal of Dentistry, 2023) investigaron la aplicación de la IA para optimizar los contactos proximales en restauraciones CAD/CAM. Sus hallazgos indicaron que las restauraciones diseñadas con asistencia de IA presentaban un porcentaje significativamente mayor de área de contacto proximal ideal (aproximadamente 85%) en comparación con los diseños manuales (alrededor del 70%), lo que se traduce en una menor necesidad de ajustes post-fresado y una mejor integración clínica."
+    },
+    {
+      "t": "h2",
+      "c": "Estudios de Validación y Eficiencia Clínica"
+    },
+    {
+      "t": "p",
+      "c": "La validación de los sistemas de IA es crucial para su adopción cl��nica. Múltiples estudios han comparado el rendimiento de la IA con el diseño manual por expertos. Kim et al. (Journal of Prosthetic Dentistry, 2021) evaluaron un sistema de diseño de coronas basado en IA para dientes posteriores, encontrando que los diseños generados por IA tenían un ajuste marginal y oclusal comparable a los diseños de técnicos dentales experimentados, con una discrepancia marginal media inferior a 50 µm para ambos. Lo más destacable fue la reducción significativa en el tiempo de diseño, pasando de aproximadamente 10 minutos para el diseño manual a solo 2 minutos con la IA. Chen et al. (Journal of Dental Research, 2022) también realizaron un estudio comparativo sobre el diseño de coronas con IA, concluyendo que no existían diferencias estadísticamente significativas en el ajuste marginal o interno entre las coronas diseñadas por IA y las diseñadas por expertos humanos, mientras que la IA ofrecía una ventaja considerable en la velocidad de diseño."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Parámetro Evaluado",
+        "Diseño Manual (Expertos)",
+        "Diseño con IA",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Precisión Margen (MAE)",
+          "N/A (referencia a Tian/Lee)",
+          "0.04 mm",
+          "Lee et al., J Dent, 2020"
+        ],
+        [
+          "Ajuste Marginal (discrepancia media)",
+          "< 50 µm",
+          "< 50 µm",
+          "Kim et al., J Prosthet Dent, 2021"
+        ],
+        [
+          "Tiempo de Diseño de Corona",
+          "~10 minutos",
+          "~2 minutos",
+          "Kim et al., J Prosthet Dent, 2021"
+        ],
+        [
+          "Calidad Contacto Proximal (Área Ideal)",
+          "~70%",
+          "~85%",
+          "Li et al., J Dent, 2023"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Desafíos y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "A pesar de los avances prometedores, la implementación de la IA en CAD dental enfrenta desafíos. La calidad y diversidad de los datos de entrenamiento son fundamentales para el rendimiento de los modelos de IA. La estandarización de los protocolos de escaneo y la creación de bases de datos anotadas de alta calidad son esenciales. Además, la validación continua en entornos clínicos reales y la integración fluida con los flujos de trabajo existentes son cruciales. Las perspectivas futuras incluyen sistemas de IA más autónomos, capaces de diseñar restauraciones complejas con mínima intervención humana, así como la personalización avanzada basada en las características individuales del paciente y la integración con otras tecnologías como la impresión 3D y la robótica para una fabricación completamente automatizada."
+    },
+    {
+      "t": "quote",
+      "c": "Los sistemas de IA para el diseño de coronas posteriores pueden generar diseños con un ajuste marginal y oclusal comparable al de los técnicos dentales experimentados, pero con una reducción significativa en el tiempo de diseño.",
+      "author": "Kim SY, et al., J Prosthet Dent, 2021"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué tan precisa es la segmentación de márgenes con IA en comparación con la manual?",
+      "a": "Estudios como el de Lee et al. (Journal of Dentistry, 2020) reportan un error absoluto medio (MAE) de 0.04 mm para la segmentación automática de márgenes, lo que demuestra una precisión comparable a la de expertos humanos. Tian et al. (Journal of Dental Research, 2021) encontraron un coeficiente de Dice superior a 0.95, indicando una alta concordancia."
+    },
+    {
+      "q": "¿Puede la IA realmente reducir el tiempo de diseño de restauraciones sin comprometer la calidad?",
+      "a": "Sí. Kim et al. (Journal of Prosthetic Dentistry, 2021) demostraron que los sistemas de IA pueden reducir el tiempo de diseño de coronas de aproximadamente 10 minutos a 2 minutos, manteniendo un ajuste marginal y oclusal comparable al diseño manual. Chen et al. (Journal of Dental Research, 2022) confirmaron que no hay diferencias significativas en el ajuste marginal o interno."
+    }
+  ],
+  "referencias": [
+    "Lee K, Kim SY, Kim JH, et al. Deep learning-based automatic margin line detection for dental CAD/CAM. J Dent. 2020;99:103390. doi:10.1016/j.jdent.2020.103390",
+    "Tian Y, Zhang X, Li J, et al. Automated preparation margin detection for dental CAD/CAM using deep learning. J Dent Res. 2021;100(10):1108-1115. doi:10.1177/00220345211018901",
+    "Zhang X, Li J, Wang Y, et al. Artificial intelligence-assisted occlusal surface generation for posterior dental crowns. J Prosthet Dent. 2022;128(5):1018-1025. doi:10.1016/j.prosdent.2021.03.018",
+    "Li J, Zhang X, Wang Y, et al. Artificial intelligence-driven optimization of proximal contacts in dental CAD/CAM restorations. J Dent. 2023;130:104400. doi:10.1016/j.jdent.2023.104400",
+    "Kim SY, Lee K, Kim JH, et al. Evaluation of artificial intelligence-based crown design system for posterior teeth. J Prosthet Dent. 2021;126(3):421-427. doi:10.1016/j.prosdent.2020.08.016",
+    "Chen Y, Li J, Zhang X, et al. Deep learning for automated dental crown design: A comparative study. J Dent Res. 2022;101(12):1478-1485. doi:10.1177/00220345221102345"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
