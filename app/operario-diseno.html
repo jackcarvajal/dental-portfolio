@@ -538,25 +538,28 @@ async function avanzar(id, nuevoEstado) {
   const { error } = await sb.from('pedidos').update(updates).eq('id', id);
   if (error) { toast('Error: ' + error.message, 'err'); return; }
 
-  /* Notificar al doctor cuando va a revisión */
-  if (nuevoEstado === 'REVISION_CLIENTE') {
+  /* Notificar al doctor (push + email) y a la secretaria en revisión / aprobación.
+     FIX: antes seleccionaba solo 'codigo' de pedidos_operacion pero usaba p.email
+     (undefined) → el aviso NUNCA disparaba. Ahora lee email/telefono de pedidos. */
+  if (['REVISION_CLIENTE','DISENO_APROBADO'].includes(nuevoEstado)) {
     try {
-      const { data: p } = await sb.from('pedidos_operacion').select('codigo').eq('id',id).single();
-      if (p?.email) await fetch(PUSH_URL,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
-        body: JSON.stringify({email:p.email,titulo:'Diseño listo para revisión',cuerpo:`Caso ${p.codigo} — Por favor revise y apruebe el diseño.`})
-      });
-    } catch(_) {}
-  }
-  if (nuevoEstado === 'DISENO_APROBADO') {
-    try {
-      const { data: p } = await sb.from('pedidos_operacion').select('codigo').eq('id',id).single();
-      if (p?.email) await fetch(PUSH_URL,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
-        body: JSON.stringify({email:p.email,titulo:'Diseño aprobado — En producción',cuerpo:`Caso ${p.codigo} aprobado. Pasamos a producción.`})
-      });
+      const { data: p } = await sb.from('pedidos').select('codigo,email,telefono,nombre_doctor').eq('negocio','prodigy').eq('id',id).single();
+      const esRev  = nuevoEstado === 'REVISION_CLIENTE';
+      const titulo = esRev ? 'Diseño listo para revisión' : 'Diseño aprobado — En producción';
+      const cuerpo = esRev ? `Caso ${p?.codigo} — Por favor revise y apruebe el diseño.` : `Caso ${p?.codigo} aprobado. Pasamos a producción.`;
+      if (p?.email) {
+        // Push web (existente) + Email (nuevo, más confiable — vía Resend)
+        fetch(PUSH_URL,{ method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
+          body: JSON.stringify({ email:p.email, titulo, cuerpo }) }).catch(()=>{});
+        if (esRev) fetch('/api/send-email',{ method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ to:p.email, subject:`Tu diseño está listo para revisión — Caso ${p.codigo}`,
+            text:`Hola Dr(a) ${p.nombre_doctor||''}, el diseño de su caso ${p.codigo} ya está listo. Ingrese a su portal para revisarlo y aprobarlo: https://prodigylabdental.com/app/client-panel.html`,
+            tipo:'diseno_revision' }) }).catch(()=>{});
+      }
+      // Aviso WhatsApp a la secretaria/staff (para que dé seguimiento si el Dr no responde)
+      if (esRev) fetch('/api/notify-staff',{ method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ doctor:p?.nombre_doctor||'—', servicio:'Diseño listo para revisión', whatsapp:p?.telefono||'', codigo:p?.codigo||'',
+          tipo:'Diseño enviado a revisión', contexto:'El diseño quedó listo y se avisó al Dr (email+push). Si no responde, la secretaria lo contacta.' }) }).catch(()=>{});
     } catch(_) {}
   }
 
