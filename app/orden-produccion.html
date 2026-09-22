@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
+<title>Orden de Producción — PRODIGY</title>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--mg:#D946A6;--gold:#B8901F;--ink:#111;--line:#333;--soft:#666;}
+body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Arial,sans-serif;padding:20px;visibility:hidden;}
+.bar{max-width:200mm;margin:0 auto 14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.bar button,.bar a{padding:11px 20px;border-radius:9px;border:none;font-weight:800;font-size:.85rem;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
+.print{background:var(--mg);color:#fff;}
+.ghost{background:#cbd5e1;color:#334155;}
+
+/* ── LA ORDEN (media carta ~216×140mm, cabe A4) ── */
+.orden{width:200mm;max-width:100%;margin:0 auto;background:#fff;color:#000;padding:8mm;font-size:9pt;line-height:1.25;box-shadow:0 8px 40px rgba(0,0,0,.25);}
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--ink);padding-bottom:3mm;gap:6mm;}
+.hdr .brand h1{font-size:15pt;font-weight:900;color:var(--mg);letter-spacing:.3px;}
+.hdr .brand .sub{font-size:7.5pt;color:var(--soft);}
+.hdr .center{text-align:center;flex:1;}
+.hdr .center .t{font-size:12pt;font-weight:900;letter-spacing:1px;}
+.hdr .center .n{font-size:13pt;font-weight:900;color:var(--mg);margin-top:1mm;border:1.5px solid var(--mg);border-radius:2mm;padding:1mm 3mm;display:inline-block;}
+.hdr .qrbox{text-align:center;}
+.hdr .qrbox .qr{width:24mm;height:24mm;border:1px solid #ccc;}
+.hdr .qrbox .qr img{width:100%;height:100%;display:block;}
+.hdr .qrbox .cap{font-size:6.5pt;color:var(--soft);margin-top:.5mm;}
+
+.row{display:flex;gap:0;border-bottom:1px solid #bbb;}
+.fld{flex:1;padding:1.6mm 2mm;border-right:1px solid #ddd;min-width:0;}
+.fld:last-child{border-right:none;}
+.fld .k{font-size:6.5pt;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.4px;}
+.fld .v{font-size:9.5pt;font-weight:700;min-height:4mm;border-bottom:1px dotted #999;}
+.sec{background:#111;color:#fff;font-size:7.5pt;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:1.4mm 2mm;margin-top:2mm;border-radius:1mm;}
+
+.odo{display:flex;justify-content:center;gap:6mm;padding:2.5mm 0;border-bottom:1px solid #bbb;}
+.odo .quad{text-align:center;}
+.odo .teeth{display:flex;gap:1.2mm;font-size:8pt;font-weight:700;}
+.odo .teeth span{width:5mm;text-align:center;border-bottom:1px solid #999;}
+.odo .sep{width:1px;background:#333;}
+
+.checks{display:flex;flex-wrap:wrap;gap:2mm 5mm;padding:2mm;border-bottom:1px solid #bbb;}
+.chk{display:flex;align-items:center;gap:1.5mm;font-size:8.5pt;}
+.chk .box{width:3.5mm;height:3.5mm;border:1.4px solid #333;border-radius:.6mm;}
+.chk .box.on{background:#333;}
+
+.obs{padding:2mm;min-height:16mm;border-bottom:1px solid #bbb;}
+.obs .k{font-size:6.5pt;font-weight:800;color:var(--soft);text-transform:uppercase;}
+.obs .lines{margin-top:1mm;background:repeating-linear-gradient(transparent,transparent 5.5mm,#ddd 5.5mm,#ddd 6mm);min-height:14mm;}
+
+.ruta{display:flex;gap:0;padding:2mm 0;border-bottom:1px solid #bbb;}
+.ruta .step{flex:1;text-align:center;font-size:6.8pt;font-weight:700;color:#444;border-right:1px dashed #ccc;padding:0 1mm;}
+.ruta .step:last-child{border-right:none;}
+.ruta .step .dot{width:3mm;height:3mm;border:1.2px solid #999;border-radius:50%;margin:0 auto 1mm;}
+
+.firmas{display:flex;gap:6mm;padding-top:4mm;}
+.firmas .f{flex:1;text-align:center;}
+.firmas .f .ln{border-top:1px solid #333;margin-top:8mm;padding-top:1mm;font-size:7pt;color:var(--soft);}
+.foot{margin-top:3mm;font-size:6pt;color:#999;text-align:center;border-top:1px solid #ddd;padding-top:1.5mm;}
+
+@media print{
+  @page{ size:A4; margin:8mm; }
+  body{background:#fff;padding:0;visibility:visible!important;}
+  .bar{display:none;}
+  .orden{box-shadow:none;width:100%;padding:0;}
+}
+</style>
+</head>
+<body>
+<div class="bar">
+  <button class="print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir orden</button>
+  <a class="ghost" href="rastreo.html"><i class="fas fa-arrow-left"></i> Volver</a>
+  <span id="modo" style="align-self:center;font-size:.78rem;color:#475569;"></span>
+</div>
+
+<div class="orden" id="orden">
+  <div class="hdr">
+    <div class="brand">
+      <h1>💎 PRODIGY <span style="color:#B8901F">Digital Dentistry</span></h1>
+      <div class="sub">prodigylabdental.com · +57 321 281 6716 · Medellín, Colombia</div>
+    </div>
+    <div class="center">
+      <div class="t">ORDEN DE PRODUCCIÓN</div>
+      <div class="n" id="o-num">Nº —</div>
+    </div>
+    <div class="qrbox">
+      <div class="qr" id="o-qr"></div>
+      <div class="cap">Escanea para seguir el caso</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="fld"><div class="k">Fecha recibido</div><div class="v" id="o-recibido"></div></div>
+    <div class="fld"><div class="k">Fecha entrega</div><div class="v" id="o-entrega"></div></div>
+    <div class="fld"><div class="k">Hora</div><div class="v"></div></div>
+    <div class="fld"><div class="k">Caja Nº</div><div class="v"></div></div>
+  </div>
+  <div class="row">
+    <div class="fld"><div class="k">Doctor(a)</div><div class="v" id="o-doctor"></div></div>
+    <div class="fld"><div class="k">Clínica</div><div class="v" id="o-clinica"></div></div>
+    <div class="fld"><div class="k">Paciente</div><div class="v" id="o-paciente"></div></div>
+  </div>
+
+  <div class="sec">Trabajo solicitado</div>
+  <div class="row">
+    <div class="fld"><div class="k">Tipo de trabajo</div><div class="v" id="o-tipo"></div></div>
+    <div class="fld"><div class="k">Material</div><div class="v" id="o-material"></div></div>
+    <div class="fld"><div class="k">Color / VITA</div><div class="v" id="o-color"></div></div>
+    <div class="fld"><div class="k">Cantidad</div><div class="v" id="o-cantidad"></div></div>
+  </div>
+
+  <div class="sec">Odontograma — marca las piezas</div>
+  <div class="odo">
+    <div class="quad">
+      <div class="teeth"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span><div class="sep"></div><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+      <div class="teeth" style="margin-top:2mm;"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span><div class="sep"></div><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+    </div>
+  </div>
+
+  <div class="sec">Elementos recibidos</div>
+  <div class="checks">
+    <div class="chk"><span class="box"></span>Impresión definitiva</div>
+    <div class="chk"><span class="box"></span>Antagonista</div>
+    <div class="chk"><span class="box"></span>Modelos preliminares</div>
+    <div class="chk"><span class="box"></span>Articulador</div>
+    <div class="chk"><span class="box"></span>Registro de mordida</div>
+    <div class="chk"><span class="box"></span>Cubetas</div>
+    <div class="chk"><span class="box"></span>Fotos / color</div>
+    <div class="chk"><span class="box"></span>Llave de implante</div>
+    <div class="chk"><span class="box"></span>Tornillos</div>
+    <div class="chk"><span class="box"></span>Mock-up</div>
+    <div class="chk"><span class="box"></span>Otro: __________</div>
+  </div>
+
+  <div class="obs">
+    <div class="k">Observaciones</div>
+    <div class="lines" id="o-obs"></div>
+  </div>
+
+  <div class="sec">Recorrido interno (marca al pasar de área)</div>
+  <div class="ruta">
+    <div class="step"><div class="dot"></div>Recepción</div>
+    <div class="step"><div class="dot"></div>Diseño CAD</div>
+    <div class="step"><div class="dot"></div>Fresado</div>
+    <div class="step"><div class="dot"></div>Impresión</div>
+    <div class="step"><div class="dot"></div>Sinterizado</div>
+    <div class="step"><div class="dot"></div>Acabado</div>
+    <div class="step"><div class="dot"></div>Calidad</div>
+    <div class="step"><div class="dot"></div>Despacho</div>
+  </div>
+
+  <div class="firmas">
+    <div class="f"><div class="ln">Firma odontólogo</div></div>
+    <div class="f"><div class="ln">Recibido por (lab)</div></div>
+    <div class="f"><div class="ln">Entregado al técnico · hora</div></div>
+  </div>
+  <div class="foot">Documento interno de trazabilidad técnica · PRODIGY Digital Dentistry · No tiene validez tributaria (la factura DIAN con CUFE se emite aparte).</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>ProdigyAuth.require(['admin','operator','encargado_inventario','calidad','diseno','taller','fresado','impresion','secretaria']);</script>
+<script>
+const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmtD = d => d ? new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'}) : '';
+const params = new URLSearchParams(location.search);
+const CODIGO = (params.get('c')||'').trim().toUpperCase();
+
+// Datos de EJEMPLO (se ven si no pasas ?c= o no se encuentra el caso)
+let caso = { codigo:'PRD-DIS-260922-A3F', nombre_doctor:'Dr. Martín Prato', clinica:'Clínica Norte', nombre_paciente:'Valentina Gómez',
+  tipo_trabajo:'Carillas cerámicas', material:'Zirconio Upcera White HT', color_vita:'A2', cantidad:12, created_at:new Date().toISOString(), fecha_entrega:null, hash_seguridad:'' };
+let esEjemplo = true;
+
+async function init(){
+  try{
+    const sb = (window.ProdigyAuth && window.ProdigyAuth.getSb) ? window.ProdigyAuth.getSb() : null;
+    if(sb && CODIGO){
+      const { data } = await sb.from('pedidos').select('codigo,nombre_doctor,clinica,nombre_paciente,tipo_trabajo,material,color_vita,cantidad,created_at,fecha_entrega,hash_seguridad,notas_cambios').eq('negocio','prodigy').eq('codigo',CODIGO).maybeSingle();
+      if(data){ caso = data; esEjemplo = false; }
+    }
+  }catch(_){}
+  pintar();
+}
+
+function pintar(){
+  document.getElementById('modo').textContent = esEjemplo ? 'Vista de EJEMPLO (borrador). Abre con ?c=CÓDIGO para datos reales.' : 'Caso real: '+caso.codigo;
+  document.getElementById('o-num').textContent = 'Nº ' + (caso.codigo||'—');
+  document.getElementById('o-recibido').textContent = fmtD(caso.created_at);
+  document.getElementById('o-entrega').textContent = fmtD(caso.fecha_entrega);
+  document.getElementById('o-doctor').textContent = caso.nombre_doctor||'';
+  document.getElementById('o-clinica').textContent = caso.clinica||'';
+  document.getElementById('o-paciente').textContent = caso.nombre_paciente||'';
+  document.getElementById('o-tipo').textContent = caso.tipo_trabajo||'';
+  document.getElementById('o-material').textContent = caso.material||'';
+  document.getElementById('o-color').textContent = caso.color_vita||'';
+  document.getElementById('o-cantidad').textContent = caso.cantidad||'';
+  document.getElementById('o-obs').textContent = caso.notas_cambios||'';
+  // QR → enrutador (staff a mover, público a seguimiento)
+  const qrUrl = 'https://prodigylabdental.com/app/caso-qr.html?c=' + encodeURIComponent(caso.codigo||'') + (caso.hash_seguridad?'&k='+encodeURIComponent(caso.hash_seguridad):'');
+  document.getElementById('o-qr').innerHTML = `<img alt="QR ${escH(caso.codigo||'')}" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=${encodeURIComponent(qrUrl)}">`;
+}
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
