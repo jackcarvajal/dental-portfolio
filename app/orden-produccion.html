@@ -180,7 +180,7 @@ async function init(){
   try{
     const sb = (window.ProdigyAuth && window.ProdigyAuth.getSb) ? window.ProdigyAuth.getSb() : null;
     if(sb && CODIGO){
-      const { data } = await sb.from('pedidos').select('codigo,nombre_doctor,clinica,nombre_paciente,tipo_trabajo,material,color_vita,cantidad,created_at,fecha_entrega,hash_seguridad,notas_cambios').eq('negocio','prodigy').eq('codigo',CODIGO).maybeSingle();
+      const { data } = await sb.from('pedidos').select('codigo,nombre_doctor,nombre_paciente,tipo_trabajo,material,color_vita,cantidad,created_at,fecha_entrega,hash_seguridad,notas_cambios').eq('negocio','prodigy').eq('codigo',CODIGO).maybeSingle();
       if(data){ caso = data; esEjemplo = false; }
     }
   }catch(_){}
