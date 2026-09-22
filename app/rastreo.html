@@ -185,12 +185,11 @@ async function verHist(id, codigo, btn){
   if(box.classList.contains('show')){ box.classList.remove('show'); return; }
   box.classList.add('show');
   box.innerHTML = '<div style="color:var(--muted);font-size:.78rem;padding:6px 0;">Cargando…</div>';
-  const verCosto = ['admin','encargado_inventario','contabilidad'].includes(window.PRODIGY_ROLE);
-  // Incidencias + movimientos (custodia) + material consumido
+  // Incidencias + movimientos (custodia) + material consumido (RPC sin costo, todo el staff)
   const [ri, rm, rmat] = await Promise.all([
     sb.from('pedido_incidencias').select('tipo,titulo,detalle,visible_cliente,por_email,created_at').eq('pedido_id',id).order('created_at',{ascending:false}).limit(30),
     sb.from('pedido_movimientos').select('area,tecnico,nota,componentes,estado_recibo,fotos,por_email,created_at').eq('pedido_id',id).order('created_at',{ascending:false}).limit(30),
-    sb.from('inventario_movimientos').select('cantidad,costo_unitario,created_at,inventario_items(nombre,unidad_medida)').eq('pedido_id',id).eq('tipo','SALIDA').order('created_at',{ascending:false}).limit(30)
+    sb.rpc('material_por_caso', { p_pedido_id: id })
   ]);
   const incs = ri.data||[];
   const movs = rm.data||[];
@@ -208,7 +207,7 @@ async function verHist(id, codigo, btn){
   }
   if(mats.length){
     html += '<div style="font-size:.68rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.6px;margin:4px 0 6px;">Material usado</div>';
-    html += mats.map(m=>{ const it=Array.isArray(m.inventario_items)?m.inventario_items[0]:m.inventario_items; return `<div class="mov"><div>🧪 <b>${escH((it&&it.nombre)||'material')}</b> · ${m.cantidad} ${escH((it&&it.unidad_medida)||'u')}${verCosto&&m.costo_unitario?' · <span style="color:var(--muted)">$'+Number(m.costo_unitario*m.cantidad).toLocaleString('es-CO')+'</span>':''}</div><span class="t">${escH(fmtD(m.created_at))}</span></div>`; }).join('');
+    html += mats.map(m=>`<div class="mov"><div>🧪 <b>${escH(m.nombre||'material')}</b> · ${m.cantidad} ${escH(m.unidad||'u')}</div><span class="t">${escH(fmtD(m.created_at))}</span></div>`).join('');
     html += '<div style="font-size:.68rem;font-weight:800;color:var(--cyan);text-transform:uppercase;letter-spacing:.6px;margin:10px 0 6px;">Recorrido</div>';
   }
   if(!incs.length && !movs.length && !mats.length){ box.innerHTML='<div style="color:var(--muted);font-size:.78rem;padding:6px 0;">Sin incidencias, movimientos ni material.</div>'; return; }
