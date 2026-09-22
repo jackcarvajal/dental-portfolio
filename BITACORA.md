@@ -9,6 +9,18 @@
 
 ---
 
+## 2026-09-22  (Sistema de gestión: código cliente + material + incidencias + QR unificado)
+
+### 🟡 Fases 1/2/4 + QR unificado (falta configurar/probar)
+- **Fase 1 — Código cliente `DR-####`**: `sql/codigo-cliente-doctor-2026.sql` (trigger+secuencia en `doctores_perfil`, ya corrido). Panel `app/clientes.html` (código, contacto WA directo, nº casos) para secretaria/admin/contabilidad. Rol `secretaria` incluido en permisos (crear el usuario con `app_metadata.role='secretaria'`).
+- **Fase 2 — Material por caso**: la registración YA existía en `inventario.html` (Salida Rápida por código, liga `pedido_id`+`usuario_id`). Se agregó la VISTA "Material usado" en el historial del rastreo (costo solo admin/contabilidad/inventario). Pendiente Fase 3: vista `v_material_caso` sin costo para técnicos.
+- **Fase 4 — Incidencias**: `sql/pedido-incidencias-2026.sql` (tabla `pedido_incidencias`, ya corrida). Staff registra desde rastreo (botón Incidencia + toggle "visible al Dr"); el Dr las ve en su timeline (`client-panel` verTimeline). RLS: Dr solo lee las de SU caso marcadas visibles. Lo interno (pérdida/reproceso) nunca se filtra.
+- **QR unificado** `app/caso-qr.html`: un solo QR rutea por rol → staff a `mover.html` (interno), doctor/público a `/seguimiento-caso` (seguro). `etiqueta.html` ahora genera el QR al enrutador + `hash_seguridad` para el fallback público.
+- **Impresora recomendada**: SVANTTO Y42BT (Amazon, USB+BT, 4x6, ~$40 USD, envío gratis CO). Papel: etiqueta térmica DIRECTA 10x15 (guías) + 50×30mm (casos). Las guías normalmente las da la transportadora.
+- Audit-schema-live: allowlisteado falso positivo `pedido_incidencias.show` (bleed de `.classList.contains`).
+
+---
+
 ## 2026-09-21  (Rastreo físico de casos + etiqueta QR + cadena de custodia — PRODIGY)
 
 ### 🟡 Seguimiento físico interno con QR (falta configurar áreas/técnicos reales + probar)

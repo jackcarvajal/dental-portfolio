@@ -33,6 +33,8 @@
 3. **WhatsApp Business API** (Meta Cloud API / Twilio / 360dialog) — ÚNICA forma de automatizar WA directo al Dr. Requiere cuenta + plantillas aprobadas (costo/setup). Fase futura.
 
 ## 📋 PENDIENTE — Plan por fases (orden recomendado)
+> **PROGRESO (22-sep):** ✅ Fase 1 (código DR-#### + panel clientes) · ✅ Fase 2 (material por caso en rastreo) · ✅ Fase 4 (incidencias visibles/internas) · ✅ QR unificado (caso-qr.html rutea por rol). Pendientes: Fase 3 (RBAC RLS) y Fase 5 (notificaciones).
+
 ### Fase 1 — Código de cliente del Dr (CRM) 🟢 pequeño, alto valor
 - Al registrarse el Dr → generar código secuencial (ej. `PRD-DR-0001`). Guardar en `doctores_perfil`.
 - Panel para la **secretaria**: lista de doctores con su código, contacto, nº de casos. "Manejo" de clientes.
