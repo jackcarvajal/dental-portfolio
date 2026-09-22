@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔀</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<title>Caso — PRODIGY</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#050505;color:#94a3b8;font-family:-apple-system,'Segoe UI',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.spin{width:34px;height:34px;border:3px solid rgba(212,175,55,.25);border-top-color:#D4AF37;border-radius:50%;animation:r .8s linear infinite;}
+@keyframes r{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="spin"></div>
+<div>Abriendo caso…</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>
+// Enrutador de un solo QR: staff → pantalla interna (mover); doctor/público → seguimiento seguro.
+// NO llama a require() a propósito: los no-staff deben poder pasar al seguimiento público.
+const p = new URLSearchParams(location.search);
+const c = (p.get('c') || '').trim();
+const k = (p.get('k') || '').trim();
+const STAFF = ['admin','operator','mensajero','encargado_inventario','calidad','contabilidad','diseno','taller','fresado','impresion','secretaria'];
+(async () => {
+  try {
+    const sb = (window.ProdigyAuth && window.ProdigyAuth.getSb) ? window.ProdigyAuth.getSb() : null;
+    if (sb) {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session && window.ProdigyAuth.getRole) {
+        const role = window.ProdigyAuth.getRole(session.user);
+        if (STAFF.includes(role)) { location.replace('/app/mover.html?c=' + encodeURIComponent(c)); return; }
+      }
+    }
+  } catch (_) {}
+  // Doctor / transportadora / público → seguimiento público (solo estado general)
+  location.replace('/seguimiento-caso?id=' + encodeURIComponent(c) + (k ? '&key=' + encodeURIComponent(k) : ''));
+})();
+</script>
+</body>
+</html>

@@ -62,25 +62,28 @@ body{background:#0d1520;color:#e2e8f0;font-family:-apple-system,'Segoe UI',sans-
 const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const params = new URLSearchParams(location.search);
 const CODIGO = (params.get('c')||'').trim().toUpperCase();
-const MOVER_URL = 'https://prodigylabdental.com/app/mover.html?c=' + encodeURIComponent(CODIGO);
+// El QR apunta al ENRUTADOR: staff → mover (interno); doctor/público → seguimiento seguro.
+const QR_BASE = 'https://prodigylabdental.com/app/caso-qr.html?c=' + encodeURIComponent(CODIGO);
 
 async function init(){
   if(!CODIGO){ document.getElementById('cod').textContent = 'SIN CÓDIGO'; return; }
-  // QR (api.qrserver.com ya está en el CSP img-src)
-  document.getElementById('qr').innerHTML = `<img alt="QR ${escH(CODIGO)}" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${encodeURIComponent(MOVER_URL)}">`;
   document.getElementById('cod').textContent = CODIGO;
-  document.getElementById('lnkMover').href = MOVER_URL;
-  // Datos del caso (opcional, mejora la etiqueta)
+  let qrUrl = QR_BASE;
+  // Datos del caso + clave de seguimiento (para el fallback público del QR)
   try{
     const sb = (window.ProdigyAuth && window.ProdigyAuth.getSb) ? window.ProdigyAuth.getSb() : null;
     if(sb){
-      const { data } = await sb.from('pedidos').select('nombre_doctor,tipo_trabajo,flujo').eq('negocio','prodigy').eq('codigo',CODIGO).maybeSingle();
+      const { data } = await sb.from('pedidos').select('nombre_doctor,tipo_trabajo,flujo,hash_seguridad').eq('negocio','prodigy').eq('codigo',CODIGO).maybeSingle();
       if(data){
         document.getElementById('doctor').textContent = data.nombre_doctor || '—';
         document.getElementById('servicio').textContent = data.tipo_trabajo || data.flujo || '—';
+        if(data.hash_seguridad) qrUrl = QR_BASE + '&k=' + encodeURIComponent(data.hash_seguridad);
       }
     }
   }catch(_){}
+  // QR (api.qrserver.com ya está en el CSP img-src)
+  document.getElementById('qr').innerHTML = `<img alt="QR ${escH(CODIGO)}" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${encodeURIComponent(qrUrl)}">`;
+  document.getElementById('lnkMover').href = qrUrl;
 }
 window.addEventListener('DOMContentLoaded', init);
 </script>
