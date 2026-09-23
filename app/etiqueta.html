@@ -28,17 +28,30 @@ body{background:#0d1520;color:#e2e8f0;font-family:-apple-system,'Segoe UI',sans-
 .label .meta{font-size:1.9mm;color:#333;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .label .scan{font-size:1.7mm;color:#666;margin-top:.5mm;}
 
+/* ── MODO REDONDO (30 o 40 mm de diámetro) ── */
+.label.redonda{border-radius:50%;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:.5mm;padding:2mm;}
+.label.redonda .qr{width:58%;height:auto;aspect-ratio:1;}
+.label.redonda .info{flex:none;align-items:center;text-align:center;width:100%;}
+.label.redonda .brand{font-size:1.7mm;}
+.label.redonda .cod{font-size:2.7mm;margin:.2mm 0;}
+.label.redonda .scan{display:none;}
+.label.redonda .meta{display:none;}            /* 30mm: solo QR + código */
+.label.redonda.g .meta{display:block;font-size:1.7mm;}  /* 40mm: cabe el doctor */
+.label.redonda.g .qr{width:52%;}
+
 @media print{
   @page{ size:50mm 30mm; margin:0; }
   body{background:#fff;padding:0;visibility:visible!important;}
   .toolbar,.hint{display:none!important;}
   .label{box-shadow:none;border-radius:0;width:50mm;height:30mm;}
+  .label.redonda{border-radius:50%!important;}
 }
 </style>
 </head>
 <body>
 <div class="toolbar">
-  <button class="btn btn-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir etiqueta</button>
+  <button class="btn btn-print" id="btnCopiar"><i class="fas fa-copy"></i> Copiar link (app SK58)</button>
+  <button class="btn btn-ghost" onclick="window.print()"><i class="fas fa-print"></i> Imprimir (USB)</button>
   <a class="btn btn-ghost" id="lnkMover" href="#" target="_blank" rel="noopener"><i class="fas fa-location-dot"></i> Abrir seguimiento</a>
   <a class="btn btn-ghost" href="bandeja-solicitudes.html"><i class="fas fa-arrow-left"></i> Volver</a>
 </div>
@@ -53,7 +66,7 @@ body{background:#0d1520;color:#e2e8f0;font-family:-apple-system,'Segoe UI',sans-
     <div class="scan">Escanea para mover el caso</div>
   </div>
 </div>
-<p class="hint" id="hint">Configura la impresora térmica a tamaño <b>50×30&nbsp;mm</b>. Si sale cortada, ajusta el tamaño de papel en el diálogo de impresión.</p>
+<p class="hint" id="hint">Impresora <b>SINMARK SK58</b> (Bluetooth): toca <b>Copiar link</b> y pégalo en la app del SK58 → la app genera el QR e imprime en el rollo redondo 30×30&nbsp;mm. El botón "Imprimir (USB)" solo aplica si conectas una térmica por cable.</p>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
 <script src="../js/auth-guard.js?v=20260717"></script>
@@ -62,11 +75,38 @@ body{background:#0d1520;color:#e2e8f0;font-family:-apple-system,'Segoe UI',sans-
 const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const params = new URLSearchParams(location.search);
 const CODIGO = (params.get('c')||'').trim().toUpperCase();
+// Forma. Setup actual: rollo REDONDO 30x30 del SK58 → default 30. ?redonda=40 (redondo grande) · ?redonda=0 (rectangular 50x30).
+const _rp = params.get('redonda');
+const RED = _rp===null ? 30 : parseInt(_rp||'0',10);  // sin parámetro = 30mm redondo (rollo del SK58); 0 = rectangular; 40 = redonda grande
 // Link CORTO → QR menos denso (fácil de imprimir chico). El enrutador manda staff→mover, público→seguimiento.
 const qrUrl = 'https://prodigylabdental.com/c/' + encodeURIComponent(CODIGO);
 
+// Copiar el link para pegarlo en la app del SK58 (Bluetooth → la app genera el QR e imprime)
+document.getElementById('btnCopiar').addEventListener('click', async ()=>{
+  const b = document.getElementById('btnCopiar');
+  const orig = b.innerHTML;
+  try{ await navigator.clipboard.writeText(qrUrl); }
+  catch(_){ window.prompt('Copia este link y pégalo en la app del SK58:', qrUrl); return; }
+  b.innerHTML = '<i class="fas fa-check"></i> ¡Copiado! Pégalo en la app';
+  setTimeout(()=>{ b.innerHTML = orig; }, 1800);
+});
+
+function aplicarForma(){
+  if(RED!==30 && RED!==40) return;               // solo redondas soportadas: 30 o 40
+  const lado = RED + 'mm';
+  const lbl = document.getElementById('label');
+  lbl.classList.add('redonda');
+  if(RED===40) lbl.classList.add('g');           // 40mm cabe el nombre del doctor
+  lbl.style.width = lado; lbl.style.height = lado;
+  // @page al lado del backing cuadrado (la troquelada redonda va centrada dentro)
+  const st = document.createElement('style');
+  st.textContent = '@media print{@page{size:'+lado+' '+lado+';margin:0}.label{width:'+lado+'!important;height:'+lado+'!important}}';
+  document.head.appendChild(st);
+}
+
 async function init(){
   if(!CODIGO){ document.getElementById('cod').textContent = 'SIN CÓDIGO'; return; }
+  aplicarForma();
   document.getElementById('cod').textContent = CODIGO;
   // Datos del caso (opcional, mejora la etiqueta)
   try{
