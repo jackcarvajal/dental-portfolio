@@ -30,18 +30,24 @@ CREATE POLICY "mayra_lee_sus_cargos" ON public.alineadores_cargos
   FOR SELECT TO authenticated
   USING ( parte='mayra' AND (auth.jwt() -> 'app_metadata' ->> 'role') IN ('diseno','alineadores') );
 
--- 4) alineadores_entregas — staff (agrega 'alineadores')
-DROP POLICY IF EXISTS "staff_all_aln_entregas" ON public.alineadores_entregas;
-CREATE POLICY "staff_all_aln_entregas" ON public.alineadores_entregas
-  FOR ALL TO authenticated
-  USING (
-    (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','contabilidad','diseno','alineadores','secretaria')
-    OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com','gerencia@prodigylabdental.com','casos@prodigylabdental.com')
-  )
-  WITH CHECK (
-    (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','contabilidad','diseno','alineadores','secretaria')
-    OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com','gerencia@prodigylabdental.com','casos@prodigylabdental.com')
-  );
+-- 4) alineadores_entregas — staff (SOLO si la tabla existe; se crea aparte con alineadores-entregas-2026.sql)
+DO $do$
+BEGIN
+  IF to_regclass('public.alineadores_entregas') IS NOT NULL THEN
+    EXECUTE 'DROP POLICY IF EXISTS "staff_all_aln_entregas" ON public.alineadores_entregas';
+    EXECUTE $p$CREATE POLICY "staff_all_aln_entregas" ON public.alineadores_entregas
+      FOR ALL TO authenticated
+      USING (
+        (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','contabilidad','diseno','alineadores','secretaria')
+        OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com','gerencia@prodigylabdental.com','casos@prodigylabdental.com')
+      )
+      WITH CHECK (
+        (auth.jwt() -> 'app_metadata' ->> 'role') IN ('admin','operator','contabilidad','diseno','alineadores','secretaria')
+        OR (auth.jwt() ->> 'email') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com','gerencia@prodigylabdental.com','casos@prodigylabdental.com')
+      )$p$;
+  END IF;
+END
+$do$;
 
 -- 5) alineadores_clientes — staff lee (agrega 'alineadores')
 DROP POLICY IF EXISTS "staff_lee_aln_clientes" ON public.alineadores_clientes;
