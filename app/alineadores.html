@@ -58,7 +58,8 @@ tr:hover td{background:rgba(255,255,255,.02);}
 @media(max-width:520px){.grid2{grid-template-columns:1fr;}}
 .chkline{display:flex;align-items:center;gap:8px;margin-bottom:11px;font-size:.85rem;color:var(--muted);}
 .mact{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;}
-.hidmoney .money{display:none!important;}
+.hid-cli .money-cli{display:none!important;}
+.hid-may .money-may{display:none!important;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 </style>
 </head>
@@ -68,14 +69,14 @@ tr:hover td{background:rgba(255,255,255,.02);}
 
 <div class="bar">
   <button class="btn btn-mg" onclick="abrirCaso()"><i class="fas fa-plus"></i> Nuevo caso</button>
-  <div class="fx money"><label>Dólar USD/COP</label><input type="number" id="fx" value="3180" step="10" oninput="guardarFx();render()"></div>
+  <div class="fx money-cli"><label>Dólar USD/COP</label><input type="number" id="fx" value="3180" step="10" oninput="guardarFx();render()"></div>
   <a class="btn btn-ghost" href="rastreo.html"><i class="fas fa-arrow-left"></i> Volver</a>
 </div>
 
-<div class="cards money" id="cards"></div>
+<div class="cards" id="cards"></div>
 
-<div class="sec-t money"><i class="fas fa-calendar-check" style="color:var(--gold)"></i> Corte mensual</div>
-<div class="tw money"><table id="corteTbl"><thead><tr><th>Mes</th><th>Por cobrar (cliente)</th><th>Por pagar (Mayra)</th><th>Margen est. (COP)</th></tr></thead><tbody></tbody></table></div>
+<div class="sec-t money-cli"><i class="fas fa-calendar-check" style="color:var(--gold)"></i> Corte mensual</div>
+<div class="tw money-cli"><table id="corteTbl"><thead><tr><th>Mes</th><th>Por cobrar (cliente)</th><th>Por pagar (Mayra)</th><th>Margen est. (COP)</th></tr></thead><tbody></tbody></table></div>
 
 <div class="sec-t"><i class="fas fa-teeth" style="color:var(--cyan)"></i> Casos</div>
 <div class="filters">
@@ -84,7 +85,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 </div>
 <div class="tw"><table id="casosTbl"><thead><tr>
   <th>Paciente</th><th>Cliente</th><th>Viabilidad</th><th>Plan</th><th>Mod.</th><th>Recep.</th><th>Envío</th><th>Estado</th>
-  <th class="money">Cobro</th><th class="money">Pago Mayra</th><th></th>
+  <th class="money-cli">Cobro</th><th class="money-may">Pago Mayra</th><th></th>
 </tr></thead><tbody></tbody></table></div>
 
 <!-- Modal nuevo/editar caso -->
@@ -109,14 +110,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
   </div>
   <label class="chkline"><input type="checkbox" id="cModelos"> Modelos entregados (SI)</label>
   <div class="fg"><label>Notas</label><textarea id="cNotas" rows="2"></textarea></div>
-  <div class="money" id="autoCargoWrap">
-    <label class="chkline"><input type="checkbox" id="cAutoCargo" checked> Crear cargos automáticos según tipo</label>
-    <div class="grid2">
-      <div class="fg"><label>Tipo de caso</label><select id="cTipoCargo"><option value="completo">Completo (planificación)</option><option value="valoracion">Solo valoración</option></select></div>
-      <div class="fg"><label>Mes de corte</label><input id="cMesCorte" placeholder="2026-09"></div>
-    </div>
-    <p class="sub" style="margin:0">Cobro cliente: <b id="pvCobro"></b> USD · Pago Mayra: <b id="pvPago"></b> COP</p>
-  </div>
+  <p class="sub" style="margin:0 0 6px">Al crear el caso, el sistema genera automáticamente el cargo de valoración (Mayra y cliente). Al completarlo con modelos, cobra solo la diferencia.</p>
   <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovCaso')">Cancelar</button><button class="btn btn-mg" id="cGuardar" onclick="guardarCaso()">Guardar</button></div>
 </div></div>
 
@@ -146,6 +140,13 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovCargo')">Cancelar</button><button class="btn btn-mg" onclick="guardarCargo()">Agregar</button></div>
 </div></div>
 
+<!-- Modal ver cargos / pagos -->
+<div class="ov" id="ovVerCargos"><div class="modal">
+  <h3><i class="fas fa-receipt"></i> Cargos y pagos</h3>
+  <div id="vcBody"></div>
+  <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovVerCargos')">Cerrar</button></div>
+</div></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
 <script src="../js/auth-guard.js?v=20260717"></script>
 <script>ProdigyAuth.require(['admin','operator','contabilidad','diseno','secretaria']);</script>
@@ -156,7 +157,7 @@ const nf=new Intl.NumberFormat('es-CO');
 // Precios oficiales (sep-2026)
 const PRECIOS={cliente:{completo:120,valoracion:40,replaneacion_en_tiempo:25,replaneacion_fuera_tiempo:50,refinamiento_sin_costo:0,refinamiento_con_costo:50,adicional:0},
                mayra:{completo:60000,valoracion:20000,replaneacion_en_tiempo:0,replaneacion_fuera_tiempo:0,refinamiento_sin_costo:0,refinamiento_con_costo:0,adicional:0}};
-let sb, ROLE, VE_DINERO=false, CASOS=[], CARGOS=[];
+let sb, ROLE, VE_CLI=false, VE_MAY=false, CASOS=[], CARGOS=[];
 
 function fx(){ return parseFloat(document.getElementById('fx').value)||3180; }
 function guardarFx(){ try{localStorage.setItem('aln_fx',document.getElementById('fx').value);}catch(_){}}
@@ -165,19 +166,24 @@ function usdToCop(u){ return u*fx(); }
 async function init(){
   sb=window.ProdigyAuth.getSb();
   ROLE=window.PRODIGY_ROLE;
-  VE_DINERO=['admin','operator','contabilidad'].includes(ROLE);
-  if(!VE_DINERO) document.body.classList.add('hidmoney');
+  VE_CLI=['admin','operator','contabilidad'].includes(ROLE);   // ve cobro al cliente (USD) y márgenes
+  VE_MAY=VE_CLI || ROLE==='diseno';                            // ve el pago a Mayra (COP)
+  if(!VE_CLI) document.body.classList.add('hid-cli');
+  if(!VE_MAY) document.body.classList.add('hid-may');
   try{ const f=localStorage.getItem('aln_fx'); if(f) document.getElementById('fx').value=f; }catch(_){}
-  document.getElementById('subtitle').textContent = VE_DINERO
+  document.getElementById('subtitle').textContent = VE_CLI
     ? 'Casos + cuentas (cobro cliente USD · pago Mayra COP). Ingresa la tasa del dólar para ver márgenes.'
-    : 'Casos de alineadores. (Los montos están reservados a administración.)';
+    : (ROLE==='diseno'
+       ? 'Tus casos y tus cuentas (pago a Mayra). Marca "Completar" cuando entregues los modelos.'
+       : 'Casos de alineadores.');
   await cargar();
 }
 
 async function cargar(){
   const { data:cs } = await sb.from('alineadores_casos').select('*').eq('negocio','prodigy').order('created_at',{ascending:false});
   CASOS = cs||[];
-  if(VE_DINERO){
+  if(VE_MAY){
+    // La RLS decide qué ve cada quien: admin/contab = todo; Mayra (diseno) = solo parte='mayra'.
     const { data:cg } = await sb.from('alineadores_cargos').select('*').eq('negocio','prodigy');
     CARGOS = cg||[];
   }
@@ -188,21 +194,24 @@ function cargosDe(casoId,parte){ return CARGOS.filter(x=>x.caso_id===casoId && (
 function sumaCaso(casoId,parte){ return cargosDe(casoId,parte).reduce((a,c)=>a+Number(c.monto||0),0); }
 
 function render(){
-  // Resumen
-  if(VE_DINERO){
-    let cobrarUsd=0, pagarCop=0;
+  // Resumen (tarjetas)
+  if(VE_MAY){
+    let cobrarUsd=0, mayraPend=0, mayraPag=0;
     for(const c of CARGOS){
-      if(c.estado_pago==='pagado') continue;
-      if(c.parte==='cliente') cobrarUsd += Number(c.monto||0);
-      else if(c.parte==='mayra') pagarCop += Number(c.monto||0);
+      if(c.parte==='cliente'){ if(c.estado_pago!=='pagado') cobrarUsd+=Number(c.monto||0); }
+      else if(c.parte==='mayra'){ if(c.estado_pago==='pagado') mayraPag+=Number(c.monto||0); else mayraPend+=Number(c.monto||0); }
     }
-    const cobrarCop=usdToCop(cobrarUsd);
-    const margen=cobrarCop - pagarCop;
-    document.getElementById('cards').innerHTML=`
-      <div class="kc cobrar"><div class="k">Por cobrar (cliente)</div><div class="v">$${nf.format(Math.round(cobrarUsd))} USD</div><div class="s">≈ ${nf.format(Math.round(cobrarCop))} COP</div></div>
-      <div class="kc pagar"><div class="k">Por pagar (Mayra)</div><div class="v">${nf.format(Math.round(pagarCop))} COP</div><div class="s">pendiente</div></div>
-      <div class="kc margen"><div class="k">Margen estimado</div><div class="v">${nf.format(Math.round(margen))} COP</div><div class="s">a ${nf.format(fx())} $/COP</div></div>`;
-    // Corte mensual
+    let html='';
+    if(VE_CLI){
+      const cobrarCop=usdToCop(cobrarUsd);
+      html+=`<div class="kc cobrar money-cli"><div class="k">Por cobrar (cliente)</div><div class="v">$${nf.format(Math.round(cobrarUsd))} USD</div><div class="s">≈ ${nf.format(Math.round(cobrarCop))} COP</div></div>`;
+      html+=`<div class="kc margen money-cli"><div class="k">Margen estimado</div><div class="v">${nf.format(Math.round(cobrarCop-mayraPend))} COP</div><div class="s">a ${nf.format(fx())} $/COP</div></div>`;
+    }
+    html+=`<div class="kc pagar money-may"><div class="k">${VE_CLI?'Por pagar (Mayra)':'Me deben (pendiente)'}</div><div class="v">${nf.format(Math.round(mayraPend))} COP</div><div class="s">${nf.format(Math.round(mayraPag))} ya pagado</div></div>`;
+    document.getElementById('cards').innerHTML=html;
+  }
+  // Corte mensual (solo quien ve al cliente)
+  if(VE_CLI){
     const meses={};
     for(const c of CARGOS){
       const m=c.mes_corte||'(sin mes)';
@@ -227,8 +236,8 @@ function render(){
   const tb=document.querySelector('#casosTbl tbody');
   if(!lista.length){ tb.innerHTML=`<tr><td colspan="11" class="empty">Sin casos. Crea el primero con “Nuevo caso”.</td></tr>`; return; }
   tb.innerHTML=lista.map(c=>{
-    const cobro=VE_DINERO?sumaCaso(c.id,'cliente'):0;
-    const pago=VE_DINERO?sumaCaso(c.id,'mayra'):0;
+    const cobro=VE_CLI?sumaCaso(c.id,'cliente'):0;
+    const pago=VE_MAY?sumaCaso(c.id,'mayra'):0;
     return `<tr>
       <td><b>${escH(c.paciente)}</b></td>
       <td>${escH(c.cliente||'—')}</td>
@@ -238,11 +247,13 @@ function render(){
       <td>${fmtD(c.fecha_recepcion)}</td>
       <td>${fmtD(c.fecha_envio)}</td>
       <td><span class="pill ${c.estado==='terminado'?'pagado':'factur'}">${escH(c.estado||'')}</span></td>
-      <td class="money">${cobro?('$'+nf.format(Math.round(cobro))):'—'}</td>
-      <td class="money">${pago?nf.format(Math.round(pago)):'—'}</td>
-      <td>
-        <button class="btn btn-ghost mini" onclick="editarCaso('${c.id}')"><i class="fas fa-pen"></i></button>
-        ${VE_DINERO?`<button class="btn btn-ghost mini" onclick="abrirCargo('${c.id}')"><i class="fas fa-dollar-sign"></i></button>`:''}
+      <td class="money-cli">${cobro?('$'+nf.format(Math.round(cobro))):'—'}</td>
+      <td class="money-may">${pago?nf.format(Math.round(pago)):'—'}</td>
+      <td style="display:flex;gap:4px;">
+        <button class="btn btn-ghost mini" onclick="editarCaso('${c.id}')" title="Editar"><i class="fas fa-pen"></i></button>
+        ${c.estado!=='terminado'?`<button class="btn btn-ghost mini" onclick="completarCaso('${c.id}')" title="Completar (requiere modelos)"><i class="fas fa-flag-checkered"></i></button>`:''}
+        ${VE_MAY?`<button class="btn btn-ghost mini" onclick="verCargos('${c.id}')" title="Cargos / pagos"><i class="fas fa-receipt"></i></button>`:''}
+        ${VE_CLI?`<button class="btn btn-ghost mini" onclick="abrirCargo('${c.id}')" title="Agregar cargo"><i class="fas fa-plus"></i></button>`:''}
       </td>
     </tr>`;
   }).join('');
@@ -251,14 +262,10 @@ function render(){
 /* ── Caso ── */
 function abrirCaso(){
   document.getElementById('ovCasoT').textContent='Nuevo caso';
-  ['cId','cPaciente','cCliente','cViab','cPlan','cRecep','cEnvio','cDur','cNotas','cMesCorte'].forEach(id=>document.getElementById(id).value='');
+  ['cId','cPaciente','cCliente','cViab','cPlan','cRecep','cEnvio','cDur','cNotas'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('cCliente').value='Panorámica Digital 3D';
   document.getElementById('cEstado').value='valoracion';
   document.getElementById('cModelos').checked=false;
-  document.getElementById('cAutoCargo').checked=true;
-  document.getElementById('cTipoCargo').value='completo';
-  document.getElementById('cMesCorte').value=new Date().toISOString().slice(0,7);
-  previewPrecios();
   document.getElementById('ovCaso').classList.add('show');
 }
 function editarCaso(id){
@@ -275,14 +282,7 @@ function editarCaso(id){
   document.getElementById('cEstado').value=c.estado||'valoracion';
   document.getElementById('cModelos').checked=!!c.modelos;
   document.getElementById('cNotas').value=c.notas||'';
-  document.getElementById('cAutoCargo').checked=false;  // al editar no duplicamos cargos
   document.getElementById('ovCaso').classList.add('show');
-}
-document.getElementById('cTipoCargo').addEventListener('change',previewPrecios);
-function previewPrecios(){
-  const t=document.getElementById('cTipoCargo').value;
-  document.getElementById('pvCobro').textContent=PRECIOS.cliente[t];
-  document.getElementById('pvPago').textContent=nf.format(PRECIOS.mayra[t]);
 }
 async function guardarCaso(){
   const paciente=document.getElementById('cPaciente').value.trim();
@@ -302,25 +302,26 @@ async function guardarCaso(){
     notas:document.getElementById('cNotas').value.trim()||null
   };
   const id=document.getElementById('cId').value;
-  let casoId=id;
   if(id){ await sb.from('alineadores_casos').update(row).eq('id',id); }
   else{
-    const { data,error }=await sb.from('alineadores_casos').insert(row).select('id').single();
+    const { error }=await sb.from('alineadores_casos').insert(row);
     if(error){ alert('Error: '+error.message); btn.disabled=false; return; }
-    casoId=data.id;
-    // Cargos automáticos (solo roles con dinero y si se marcó)
-    if(VE_DINERO && document.getElementById('cAutoCargo').checked){
-      const t=document.getElementById('cTipoCargo').value;
-      const mes=document.getElementById('cMesCorte').value.trim()||null;
-      const cargos=[
-        {negocio:'prodigy',caso_id:casoId,parte:'cliente',tipo:t,monto:PRECIOS.cliente[t],moneda:'USD',mes_corte:mes,estado_pago:'pendiente'},
-        {negocio:'prodigy',caso_id:casoId,parte:'mayra',tipo:t,monto:PRECIOS.mayra[t],moneda:'COP',mes_corte:mes,estado_pago:'pendiente'}
-      ];
-      await sb.from('alineadores_cargos').insert(cargos);
-    }
+    // Los cargos (valoración de Mayra + cliente) los crea el trigger aln_casos_auto_cargos.
   }
   btn.disabled=false;
   cerrar('ovCaso');
+  await cargar();
+}
+
+/* ── Completar caso (corrobora modelos, cobra solo la diferencia) ── */
+async function completarCaso(id){
+  const c=CASOS.find(x=>x.id===id); if(!c) return;
+  if(!c.modelos && !confirm('Este caso NO tiene los modelos marcados. El sistema no lo dejará completar. ¿Abrir el caso para marcarlos?')){ return; }
+  if(!c.modelos){ editarCaso(id); return; }
+  if(!confirm('¿Completar el caso de '+c.paciente+'?\nSe marca como terminado y se genera el pago de la diferencia (completo menos la valoración ya cargada).')) return;
+  const { data,error }=await sb.rpc('aln_completar_caso',{p_caso_id:id});
+  if(error){ alert('Error: '+error.message); return; }
+  if(data && data.ok===false){ alert('⚠️ '+data.error); return; }
   await cargar();
 }
 
@@ -356,6 +357,36 @@ async function guardarCargo(){
   if(error){ alert('Error: '+error.message); return; }
   cerrar('ovCargo');
   await cargar();
+}
+/* ── Ver cargos / marcar pagado ── */
+function tipoLbl(t){ return ({completo:'Completo',valoracion:'Valoración',diferencia_a_completo:'Diferencia a completo',replaneacion_en_tiempo:'Replaneación (en tiempo)',replaneacion_fuera_tiempo:'Replaneación (fuera de tiempo)',refinamiento_sin_costo:'Refinamiento (sin costo)',refinamiento_con_costo:'Refinamiento (con costo)',adicional:'Adicional'})[t]||t; }
+let _vcCaso=null;
+function verCargos(id){
+  _vcCaso=id;
+  const c=CASOS.find(x=>x.id===id);
+  const list=CARGOS.filter(x=>x.caso_id===id);
+  const body=document.getElementById('vcBody');
+  if(!list.length){ body.innerHTML='<p class="empty">Sin cargos aún. Se crean al guardar el caso (valoración) y al completarlo (diferencia).</p>'; }
+  else{
+    body.innerHTML=`<p class="sub" style="margin:0 0 8px">${escH(c?c.paciente:'')}</p>`+list.map(x=>{
+      const money = x.moneda==='USD'?('$'+nf.format(Math.round(x.monto))+' USD'):(nf.format(Math.round(x.monto))+' COP');
+      const stPill = x.estado_pago==='pagado'?'pagado':(x.estado_pago==='facturado'?'factur':'pend');
+      return `<div style="display:flex;align-items:center;gap:8px;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);padding:8px 0;font-size:.85rem;">
+        <div><b>${escH(tipoLbl(x.tipo))}</b> <span class="pill ${x.parte==='cliente'?'completo':'valoracion'}">${x.parte==='cliente'?'Cliente':'Mayra'}</span>
+          <br><span class="sub" style="margin:0">${escH(x.mes_corte||'')}${x.descripcion?(' · '+escH(x.descripcion)):''}</span></div>
+        <div style="text-align:right;white-space:nowrap;">${money}<br><span class="pill ${stPill}">${escH(x.estado_pago)}</span>
+          ${(VE_CLI && x.estado_pago!=='pagado')?` <button class="btn btn-ghost mini" onclick="marcarPagado('${x.id}')">Pagar</button>`:''}</div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('ovVerCargos').classList.add('show');
+}
+async function marcarPagado(cargoId){
+  if(!confirm('¿Marcar este cargo como PAGADO?')) return;
+  const { error }=await sb.from('alineadores_cargos').update({estado_pago:'pagado'}).eq('id',cargoId);
+  if(error){ alert('Error: '+error.message); return; }
+  await cargar();
+  if(_vcCaso) verCargos(_vcCaso);
 }
 function cerrar(id){ document.getElementById(id).classList.remove('show'); }
 window.addEventListener('DOMContentLoaded',init);
