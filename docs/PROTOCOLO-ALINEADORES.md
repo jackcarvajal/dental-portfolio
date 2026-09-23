@@ -33,11 +33,14 @@ Después de terminar todo el plan, si el ortodoncista lo ve necesario.
 Cada caso genera hasta 2 cargos: uno que **cobro al cliente** y otro que **pago a Mayra**.
 
 ### A) Lo que COBRO al cliente (Panorámica Digital 3D) — **USD** (paga por PayPal con comisión que cubre pérdidas; antes Global66)
-- **Valoración sola:** **$30 USD**
-- **Caso completo** (valoración + plan + modelos): **$90 USD**
-- Replaneación: **$20** (en tiempo) / **$40** (fuera de tiempo) USD.
-- Refinamiento: **$0** (≤6 meses, 1º incluido) / **$40** (>6 meses o adicional) USD.
-- Cobro: **PayPal** (comisión que cubre pérdidas) o Global66 **@JESSMEN1171** (Jessica Mendez Carmelo). ⚠️ **Ajustar por tipo de cambio USD/COP** (ver sección FX).
+**PRECIO OFICIAL (ajustado por tipo de cambio, sep-2026 — el dólar cayó de ~3.880 a ~3.180):**
+- **Valoración sola:** **$40 USD** (antes $30)
+- **Caso completo** (valoración + plan + modelos): **$120 USD** (antes $90)
+- Replaneación: **$25** (en tiempo) / **$50** (fuera de tiempo) USD.
+- Refinamiento: **$0** (≤6 meses, 1º incluido) / **$50** (>6 meses o adicional) USD.
+- Cobro: **PayPal** (comisión que cubre pérdidas) o Global66 **@JESSMEN1171** (Jessica Mendez Carmelo).
+- Historial de precio: empezó en **$60/$20** → subió a **$90/$30** → oficial **$120/$40** (sep-2026).
+- ⚠️ El precio $90 anterior no era sostenible más allá de nov-2026 con el dólar bajo. **Revisión trimestral + cláusula piso: si USD/COP < 3.300, recalcular** con `(margen_objetivo_COP + costo_Mayra_COP) ÷ tasa`. Ver sección FX.
 
 ### B) Lo que PAGO a Mayra (técnica) — **COP**
 - **Valoración sola:** **$20.000 COP** (se re-cobra si pasan +4 meses y hay que re-valorar).
@@ -47,6 +50,22 @@ Cada caso genera hasta 2 cargos: uno que **cobro al cliente** y otro que **pago 
 ### Corte mensual
 Se suman los cargos del mes **por cada cuenta por separado**: `TOTAL A COBRAR (cliente)` y `TOTAL A PAGAR (Mayra)`. Estado por cargo: pendiente / pagado / facturado.
 > ⚠️ Moneda por confirmar/registrar por cargo (`moneda`): la hoja del cliente está en miles (COP); el pago a Mayra es en USD. El sistema guarda `monto` + `moneda` en cada cargo.
+
+## Formato de entrega de Mayra (técnica) — trabaja con 3Shape
+Mayra planifica en **3Shape** (por ahora), así que **NO sube HTML** (no es el flujo de diseño de coronas). Sus entregables por caso son:
+- **Video** (recorrido del setup / simulación de movimientos).
+- **PDF** (plan de tratamiento, cantidad de alineadores, IPR, attachments).
+- **Imágenes** (capturas del setup, antes/después).
+El cliente revisa esos archivos y **aprueba o deja observaciones** (2 revisiones). Al aprobar, Mayra envía **modelos para impresión 3D** y el caso termina.
+
+## Qué debe enviar el CLIENTE (revisar en cada caso antes de dar viabilidad)
+- **STL** (escaneo intraoral o modelos).
+- **Radiografía panorámica y de perfil.**
+- **Fotos** del paciente (frontal, oclusales, laterales).
+- **Motivo de consulta** del paciente.
+- **Indicaciones** del ortodoncista.
+- **Confirmar** si está de acuerdo con **IPR** y con **attachments/aditamentos**.
+> Si falta algo (típico: panorámica, confirmación de implante/pieza, escaneo con distorsión/huecos) → **pedirlo antes de planificar**. Una valoración es viable **3–4 meses**; pasado ese tiempo se recobra y se piden archivos nuevos.
 
 ## Factores por los que un plan NO se da totalmente (no imputables al lab)
 - No cementar attachments.
