@@ -607,7 +607,7 @@
     const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
     const ADMIN_EMAILS  = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com', 'gerencia@prodigylabdental.com', 'casos@prodigylabdental.com'];
-    const DEST_MAP      = { admin: 'panel-interno-operaciones.html', operator: 'operator-panel.html', client: 'client-panel.html' };
+    const DEST_MAP      = { admin: 'panel-interno-operaciones.html', operator: 'operator-panel.html', mensajero:'mensajero.html', encargado_inventario:'inventario.html', calidad:'calidad.html', contabilidad:'contabilidad.html', diseno:'alineadores.html', taller:'taller.html', fresado:'operario.html', impresion:'operario.html', secretaria:'bandeja-solicitudes.html', client: 'client-panel.html' };
     if (!window.supabase) {
         document.getElementById('error-msg').textContent = 'Error de red: no se pudo cargar el módulo de autenticación. Recarga la página (Ctrl+Shift+R).';
         document.getElementById('error-box').style.display = 'block';
@@ -658,11 +658,12 @@
         setTimeout(function() { typeof switchMain === 'function' && switchMain('register'); }, 100);
     }
 
+    const STAFF_ROLES = ['operator','mensajero','encargado_inventario','calidad','contabilidad','diseno','taller','fresado','impresion','secretaria'];
     function getRole(user) {
         if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
         // Solo app_metadata para staff — user_metadata no es confiable para autorización
         const appRole = (user.app_metadata || {}).role || '';
-        if (appRole === 'operator' || appRole === 'mensajero' || appRole === 'encargado_inventario') return appRole;
+        if (STAFF_ROLES.includes(appRole)) return appRole;
         return 'client';
     }
 
@@ -671,6 +672,11 @@
         // Admins no necesitan onboarding
         if (role === 'admin') {
             window.location.href = DEST_MAP[role];
+            return;
+        }
+        // Staff (operarios/técnicos) NO usan el onboarding de doctor — van directo a su panel
+        if (role !== 'client') {
+            window.location.href = DEST_MAP[role] || 'operator-panel.html';
             return;
         }
         // Si viene con ?redirect= y es cliente, ir directo al destino

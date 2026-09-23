@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧑‍🔧</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<title>Crear Operario — PRODIGY</title>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<style>
+:root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--card:#0d1520;--input:#0a1628;--border:rgba(212,175,55,.18);--text:#f5f5f7;--muted:#94a3b8;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',sans-serif;padding:16px;visibility:hidden;max-width:560px;margin:0 auto;}
+h1{font-size:1.3rem;margin-bottom:2px;}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:18px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:13px;}
+.fg label{font-size:.76rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.4px;}
+.fg input,.fg select{background:var(--input);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:10px 12px;border-radius:8px;font-size:.95rem;font-family:inherit;width:100%;}
+.pwrow{display:flex;gap:8px;}
+.pwrow input{flex:1;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 16px;border-radius:9px;border:none;font-weight:800;font-size:.88rem;cursor:pointer;font-family:inherit;text-decoration:none;}
+.btn-mg{background:linear-gradient(135deg,var(--mg),#9c27b0);color:#fff;width:100%;margin-top:6px;}
+.btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--muted);}
+.hint{font-size:.72rem;color:var(--muted);margin-top:3px;}
+.res{display:none;margin-top:16px;background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.25);border-radius:12px;padding:16px;font-size:.9rem;line-height:1.7;}
+.res.show{display:block;}
+.res code{background:rgba(255,255,255,.08);padding:2px 7px;border-radius:6px;font-size:.85rem;}
+.err{display:none;margin-top:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px;color:#fca5a5;font-size:.85rem;}
+.err.show{display:block;}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div><h1>🧑‍🔧 Crear operario</h1></div>
+  <a class="btn btn-ghost" href="panel-interno-operaciones.html"><i class="fas fa-arrow-left"></i> Volver</a>
+</div>
+<p class="sub">Crea la cuenta de un miembro del equipo <b>ya con su rol</b>. Sin entrar a Supabase ni correr SQL. Solo administradores.</p>
+
+<div class="card">
+  <div class="fg"><label>Nombre completo *</label><input id="nombre" placeholder="Mayra Ramírez" autocomplete="off"></div>
+  <div class="fg"><label>Email *</label><input id="email" type="email" placeholder="persona@gmail.com" autocomplete="off"></div>
+  <div class="fg"><label>WhatsApp</label><input id="whatsapp" placeholder="+57 300 000 0000" autocomplete="off"></div>
+  <div class="fg"><label>Rol *</label><select id="role">
+    <option value="diseno">Diseño / Alineadores</option>
+    <option value="operator">Operador (general)</option>
+    <option value="taller">Taller</option>
+    <option value="fresado">Fresado</option>
+    <option value="impresion">Impresión 3D</option>
+    <option value="calidad">Calidad</option>
+    <option value="contabilidad">Contabilidad</option>
+    <option value="encargado_inventario">Encargado de inventario</option>
+    <option value="mensajero">Mensajero</option>
+    <option value="secretaria">Secretaria</option>
+  </select><span class="hint">El rol define qué ve en el sistema. Los administradores se manejan aparte (por email).</span></div>
+  <div class="fg"><label>Contraseña temporal *</label>
+    <div class="pwrow"><input id="password" value=""><button class="btn btn-ghost" type="button" onclick="genPass()" title="Generar"><i class="fas fa-rotate"></i></button></div>
+    <span class="hint">Se la pasas por WhatsApp. La puede cambiar cuando quiera.</span>
+  </div>
+  <button class="btn btn-mg" id="crear" onclick="crear()"><i class="fas fa-user-plus"></i> Crear cuenta</button>
+  <div class="err" id="err"></div>
+  <div class="res" id="res"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>ProdigyAuth.require(['admin']);</script>
+<script>
+const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function genPass(){
+  const base=Array.from(crypto.getRandomValues(new Uint8Array(6))).map(b=>'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789'[b%54]).join('');
+  const sym='!@#%&*?-'[Math.floor(Math.random()*8)];
+  const num=Math.floor(Math.random()*90)+10;
+  document.getElementById('password').value='Prodigy'+base+sym+num;
+}
+genPass();
+
+async function crear(){
+  const err=document.getElementById('err'), res=document.getElementById('res');
+  err.classList.remove('show'); res.classList.remove('show');
+  const nombre=document.getElementById('nombre').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const whatsapp=document.getElementById('whatsapp').value.trim();
+  const role=document.getElementById('role').value;
+  const password=document.getElementById('password').value;
+  if(!nombre||!email||!password){ err.textContent='Nombre, email y contraseña son obligatorios.'; err.classList.add('show'); return; }
+  const btn=document.getElementById('crear'); btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Creando…';
+  try{
+    const sb=window.ProdigyAuth.getSb();
+    const { data:{ session } } = await sb.auth.getSession();
+    const token = session && session.access_token;
+    const r = await fetch('/api/crear-operario',{
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', Authorization:'Bearer '+token },
+      body: JSON.stringify({ email, password, nombre, whatsapp, role })
+    });
+    const d = await r.json();
+    if(!r.ok || !d.ok){ err.textContent='⚠️ '+(d.error||'No se pudo crear'); err.classList.add('show'); }
+    else{
+      res.innerHTML=`✅ <b>Cuenta creada</b><br>
+        👤 ${escH(nombre)} — <b>${escH(role)}</b><br>
+        📧 <code>${escH(email)}</code><br>
+        🔑 <code>${escH(password)}</code><br>
+        <span class="hint">Pásale estos datos por WhatsApp. Que entre en prodigylabdental.com/app/login.html y cierre/abra sesión una vez si el rol no toma.</span>`;
+      res.classList.add('show');
+      document.getElementById('nombre').value=''; document.getElementById('email').value=''; document.getElementById('whatsapp').value=''; genPass();
+    }
+  }catch(e){ err.textContent='Error de red: '+e.message; err.classList.add('show'); }
+  btn.disabled=false; btn.innerHTML='<i class="fas fa-user-plus"></i> Crear cuenta';
+}
+</script>
+</body>
+</html>
