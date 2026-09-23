@@ -11,223 +11,168 @@
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--mg:#D946A6;--gold:#B8901F;--ink:#111;--line:#333;--soft:#666;}
-body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Arial,sans-serif;padding:20px;visibility:hidden;}
-.bar{max-width:200mm;margin:0 auto 14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+:root{--mg:#D946A6;--gold:#B8901F;--ink:#111;--soft:#666;}
+body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Arial,sans-serif;padding:16px;visibility:hidden;}
+.bar{max-width:275mm;margin:0 auto 12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;}
 .bar button,.bar a{padding:11px 20px;border-radius:9px;border:none;font-weight:800;font-size:.85rem;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
-.print{background:var(--mg);color:#fff;}
-.ghost{background:#cbd5e1;color:#334155;}
+.print{background:var(--mg);color:#fff;}.ghost{background:#cbd5e1;color:#334155;}
+.hint{font-size:.75rem;color:#475569;}
 
-/* ── LA ORDEN (media carta ~216×140mm, cabe A4) ── */
-.orden{width:200mm;max-width:100%;margin:0 auto;background:#fff;color:#000;padding:8mm;font-size:9pt;line-height:1.25;box-shadow:0 8px 40px rgba(0,0,0,.25);}
-.hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--ink);padding-bottom:3mm;gap:6mm;}
-.hdr .brand h1{font-size:15pt;font-weight:900;color:var(--mg);letter-spacing:.3px;}
-.hdr .brand .sub{font-size:7.5pt;color:var(--soft);}
-.hdr .center{text-align:center;flex:1;}
-.hdr .center .t{font-size:12pt;font-weight:900;letter-spacing:1px;}
-.hdr .center .n{font-size:13pt;font-weight:900;color:var(--mg);margin-top:1mm;border:1.5px solid var(--mg);border-radius:2mm;padding:1mm 3mm;display:inline-block;}
-.hdr .qrbox{text-align:center;}
-.hdr .qrbox .qr{width:24mm;height:24mm;border:1px solid #ccc;}
-.hdr .qrbox .qr img{width:100%;height:100%;display:block;}
-.hdr .qrbox .cap{font-size:6.5pt;color:var(--soft);margin-top:.5mm;}
-
-.row{display:flex;gap:0;border-bottom:1px solid #bbb;}
-.fld{flex:1;padding:1.6mm 2mm;border-right:1px solid #ddd;min-width:0;}
+/* ── HOJA: carta apaisada, 2 órdenes ── */
+.sheet{width:275mm;max-width:100%;margin:0 auto;background:#fff;display:flex;gap:0;box-shadow:0 8px 40px rgba(0,0,0,.25);}
+.cut{width:0;border-left:1px dashed #999;position:relative;}
+.orden{flex:1;width:135mm;padding:6mm;color:#000;font-size:7.5pt;line-height:1.2;}
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.5px solid var(--ink);padding-bottom:2mm;gap:3mm;}
+.hdr .brand h1{font-size:11pt;font-weight:900;color:var(--mg);}
+.hdr .brand .sub{font-size:6pt;color:var(--soft);}
+.hdr .center{text-align:center;}
+.hdr .center .t{font-size:8pt;font-weight:900;letter-spacing:.5px;}
+.hdr .center .n{font-size:10pt;font-weight:900;color:var(--mg);border:1.2px solid var(--mg);border-radius:1.5mm;padding:.5mm 2mm;display:inline-block;margin-top:.5mm;}
+.hdr .qr{width:19mm;height:19mm;border:1px solid #ccc;flex-shrink:0;}
+.hdr .qr img{width:100%;height:100%;display:block;}
+.row{display:flex;border-bottom:1px solid #ccc;}
+.fld{flex:1;padding:1mm 1.5mm;border-right:1px solid #e5e5e5;min-width:0;}
 .fld:last-child{border-right:none;}
-.fld .k{font-size:6.5pt;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.4px;}
-.fld .v{font-size:9.5pt;font-weight:700;min-height:4mm;border-bottom:1px dotted #999;}
-.sec{background:#111;color:#fff;font-size:7.5pt;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:1.4mm 2mm;margin-top:2mm;border-radius:1mm;}
-
-.odo{display:flex;justify-content:center;gap:6mm;padding:2.5mm 0;border-bottom:1px solid #bbb;}
-.odo .quad{text-align:center;}
-.odo .teeth{display:flex;gap:1.2mm;font-size:8pt;font-weight:700;}
-.odo .teeth span{width:7mm;text-align:center;border-bottom:1px solid #999;font-size:8.5pt;}
-.odo .sep{width:1px;background:#333;}
-
-.checks{display:flex;flex-wrap:wrap;gap:2mm 5mm;padding:2mm;border-bottom:1px solid #bbb;}
-.chk{display:flex;align-items:center;gap:1.5mm;font-size:8.5pt;}
-.chk .box{width:3.5mm;height:3.5mm;border:1.4px solid #333;border-radius:.6mm;}
-.chk .box.on{background:#333;}
-
-.obs{padding:2mm;min-height:16mm;border-bottom:1px solid #bbb;}
-.obs .k{font-size:6.5pt;font-weight:800;color:var(--soft);text-transform:uppercase;}
-.obs .lines{margin-top:1mm;background:repeating-linear-gradient(transparent,transparent 5.5mm,#ddd 5.5mm,#ddd 6mm);min-height:14mm;}
-
-.ruta{display:flex;gap:0;padding:2mm 0;border-bottom:1px solid #bbb;}
-.ruta .step{flex:1;text-align:center;font-size:6.8pt;font-weight:700;color:#444;border-right:1px dashed #ccc;padding:0 1mm;}
-.ruta .step:last-child{border-right:none;}
-.ruta .step .dot{width:3mm;height:3mm;border:1.2px solid #999;border-radius:50%;margin:0 auto 1mm;}
-
-.tiempos{width:100%;border-collapse:collapse;font-size:7.5pt;}
-.tiempos th,.tiempos td{border:1px solid #bbb;padding:1.2mm 1.5mm;text-align:left;}
-.tiempos th{background:#f1f1f1;font-size:6.5pt;text-transform:uppercase;letter-spacing:.3px;color:#444;}
-.tiempos td{height:6mm;}
-.tiempos td:first-child{font-weight:700;background:#fafafa;width:26mm;}
-.qrnote{display:flex;gap:3mm;align-items:flex-start;background:#f8f4ec;border:1px solid #e6d9b8;border-radius:1.5mm;padding:2mm;margin-top:2mm;font-size:7pt;line-height:1.35;color:#5a4a1a;}
-.qrnote b{color:#7a5c00;}
-.obs2{display:flex;gap:0;border-bottom:1px solid #bbb;}
-.obs2 .col{flex:1;padding:2mm;border-right:1px solid #ddd;}
+.fld .k{font-size:5.5pt;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.3px;}
+.fld .v{font-size:8.5pt;font-weight:700;min-height:3.5mm;}
+.sec{background:#111;color:#fff;font-size:6pt;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:1mm 1.5mm;margin-top:1.5mm;}
+.odo{display:flex;justify-content:center;padding:1.5mm 0;border-bottom:1px solid #ccc;}
+.teeth{display:flex;gap:.6mm;font-size:6.5pt;font-weight:700;}
+.teeth span{width:5mm;text-align:center;border-bottom:1px solid #999;}
+.teeth .sep{width:1px;background:#333;border:none;}
+.checks{display:flex;flex-wrap:wrap;gap:1mm 3mm;padding:1.5mm;border-bottom:1px solid #ccc;}
+.chk{display:flex;align-items:center;gap:1mm;font-size:6.5pt;}
+.chk .b{width:2.6mm;height:2.6mm;border:1px solid #333;border-radius:.4mm;}
+.tiempos{width:100%;border-collapse:collapse;font-size:6pt;}
+.tiempos th,.tiempos td{border:1px solid #bbb;padding:.6mm 1mm;text-align:left;}
+.tiempos th{background:#f1f1f1;font-size:5pt;text-transform:uppercase;color:#444;}
+.tiempos td{height:4.6mm;}
+.tiempos td:first-child{font-weight:700;background:#fafafa;}
+.obs2{display:flex;border-bottom:1px solid #ccc;}
+.obs2 .col{flex:1;padding:1.2mm;border-right:1px solid #e5e5e5;}
 .obs2 .col:last-child{border-right:none;}
-.obs2 .k{font-size:6.5pt;font-weight:800;color:var(--soft);text-transform:uppercase;}
-.obs2 .lines{margin-top:1mm;background:repeating-linear-gradient(transparent,transparent 5.5mm,#ddd 5.5mm,#ddd 6mm);min-height:15mm;}
-.firmas{display:flex;gap:6mm;padding-top:4mm;}
+.obs2 .k{font-size:5.5pt;font-weight:800;color:var(--soft);text-transform:uppercase;}
+.obs2 .ln{margin-top:.5mm;background:repeating-linear-gradient(transparent,transparent 4mm,#ddd 4mm,#ddd 4.4mm);min-height:12mm;font-size:7pt;}
+.qrnote{background:#f8f4ec;border:1px solid #e6d9b8;border-radius:1mm;padding:1.2mm;margin-top:1.5mm;font-size:5.6pt;line-height:1.3;color:#5a4a1a;}
+.firmas{display:flex;gap:3mm;padding-top:5mm;}
 .firmas .f{flex:1;text-align:center;}
-.firmas .f .ln{border-top:1px solid #333;margin-top:8mm;padding-top:1mm;font-size:7pt;color:var(--soft);}
-.foot{margin-top:3mm;font-size:6pt;color:#999;text-align:center;border-top:1px solid #ddd;padding-top:1.5mm;}
-
+.firmas .f .l{border-top:1px solid #333;padding-top:.6mm;font-size:5.5pt;color:var(--soft);}
+.foot{margin-top:2mm;font-size:5pt;color:#999;text-align:center;border-top:1px solid #eee;padding-top:1mm;}
+.blankmark{text-align:center;font-size:7pt;color:#aaa;padding:2mm;}
 @media print{
-  @page{ size:A4; margin:8mm; }
+  @page{ size:letter landscape; margin:6mm; }
   body{background:#fff;padding:0;visibility:visible!important;}
   .bar{display:none;}
-  .orden{box-shadow:none;width:100%;padding:0;}
+  .sheet{box-shadow:none;width:100%;}
 }
 </style>
 </head>
 <body>
 <div class="bar">
-  <button class="print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir orden</button>
+  <button class="print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
   <a class="ghost" href="rastreo.html"><i class="fas fa-arrow-left"></i> Volver</a>
-  <span id="modo" style="align-self:center;font-size:.78rem;color:#475569;"></span>
+  <span class="hint" id="modo"></span>
 </div>
-
-<div class="orden" id="orden">
-  <div class="hdr">
-    <div class="brand">
-      <h1>💎 PRODIGY <span style="color:#B8901F">Digital Dentistry</span></h1>
-      <div class="sub">prodigylabdental.com · +57 321 281 6716 · Medellín, Colombia</div>
-    </div>
-    <div class="center">
-      <div class="t">ORDEN DE PRODUCCIÓN</div>
-      <div class="n" id="o-num">Nº —</div>
-    </div>
-    <div class="qrbox">
-      <div class="qr" id="o-qr"></div>
-      <div class="cap">Escanea para seguir el caso</div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="fld"><div class="k">Fecha recibido</div><div class="v" id="o-recibido"></div></div>
-    <div class="fld"><div class="k">Fecha entrega</div><div class="v" id="o-entrega"></div></div>
-    <div class="fld"><div class="k">Hora</div><div class="v"></div></div>
-    <div class="fld"><div class="k">Caja Nº</div><div class="v"></div></div>
-  </div>
-  <div class="row">
-    <div class="fld"><div class="k">Doctor(a)</div><div class="v" id="o-doctor"></div></div>
-    <div class="fld"><div class="k">Clínica</div><div class="v" id="o-clinica"></div></div>
-    <div class="fld"><div class="k">Paciente</div><div class="v" id="o-paciente"></div></div>
-  </div>
-
-  <div class="sec">Trabajo solicitado</div>
-  <div class="row">
-    <div class="fld"><div class="k">Tipo de trabajo</div><div class="v" id="o-tipo"></div></div>
-    <div class="fld"><div class="k">Material</div><div class="v" id="o-material"></div></div>
-    <div class="fld"><div class="k">Color / VITA</div><div class="v" id="o-color"></div></div>
-    <div class="fld"><div class="k">Cantidad</div><div class="v" id="o-cantidad"></div></div>
-  </div>
-
-  <div class="sec">Odontograma (FDI) — marca las piezas</div>
-  <div class="odo">
-    <div class="quad">
-      <div class="teeth"><span>18</span><span>17</span><span>16</span><span>15</span><span>14</span><span>13</span><span>12</span><span>11</span><div class="sep"></div><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span></div>
-      <div class="teeth" style="margin-top:2mm;"><span>48</span><span>47</span><span>46</span><span>45</span><span>44</span><span>43</span><span>42</span><span>41</span><div class="sep"></div><span>31</span><span>32</span><span>33</span><span>34</span><span>35</span><span>36</span><span>37</span><span>38</span></div>
-    </div>
-  </div>
-
-  <div class="sec">Elementos recibidos</div>
-  <div class="checks">
-    <div class="chk"><span class="box"></span>Impresión definitiva</div>
-    <div class="chk"><span class="box"></span>Antagonista</div>
-    <div class="chk"><span class="box"></span>Modelos preliminares</div>
-    <div class="chk"><span class="box"></span>Articulador</div>
-    <div class="chk"><span class="box"></span>Registro de mordida</div>
-    <div class="chk"><span class="box"></span>Cubetas</div>
-    <div class="chk"><span class="box"></span>Fotos / color</div>
-    <div class="chk"><span class="box"></span>Llave de implante</div>
-    <div class="chk"><span class="box"></span>Tornillos</div>
-    <div class="chk"><span class="box"></span>Mock-up</div>
-    <div class="chk"><span class="box"></span>Otro: __________</div>
-  </div>
-
-  <div class="obs2">
-    <div class="col">
-      <div class="k">Indicaciones del odontólogo</div>
-      <div class="lines" id="o-obs"></div>
-    </div>
-    <div class="col">
-      <div class="k">Notas internas / técnicas</div>
-      <div class="lines"></div>
-    </div>
-  </div>
-
-  <div class="sec">Control de tiempos por área — anota fecha/hora al recibir y al terminar</div>
-  <table class="tiempos">
-    <tr><th>Área</th><th>Fecha</th><th>Hora entrada</th><th>Hora salida</th><th>Técnico</th></tr>
-    <tr><td>Recepción</td><td></td><td></td><td></td><td></td></tr>
-    <tr><td>Yesos / modelos</td><td></td><td></td><td></td><td></td></tr>
-    <tr><td>Diseño CAD</td><td></td><td></td><td></td><td></td></tr>
-    <tr><td>Fresado</td><td></td><td></td><td></td><td></td></tr>
-    <tr><td>Impresión 3D</td><td></td><td></td><td></td><td></td></tr>
-    <tr><td>Sinterizado</td><td></td><td></td><td></td><td></td></tr>
-    <tr><td>Acabado / maquillaje</td><td></td><td></td><td></td><td></td></tr>
-    <tr><td>Control de calidad</td><td></td><td></td><td></td><td></td></tr>
-    <tr><td>Empaque / despacho</td><td></td><td></td><td></td><td></td></tr>
-  </table>
-
-  <div class="qrnote">
-    <div style="font-size:11pt;">📱</div>
-    <div><b>Escaneo QR en cada etapa:</b> el técnico escanea el QR <b>al recibir</b> y <b>al terminar</b> su área, elige su nombre y confirma qué recibió (llave de implante, tornillos, modelo…). <b>Toma foto de esta orden</b> en cada escaneo → respaldo digital: si se pierde el papel, la foto y el historial quedan en el sistema.</div>
-  </div>
-
-  <div class="firmas">
-    <div class="f"><div class="ln">Recibido por (recepción)</div></div>
-    <div class="f"><div class="ln">Revisado por (calidad)</div></div>
-    <div class="f"><div class="ln">Empacado por · fecha / hora</div></div>
-  </div>
-  <div class="foot">Documento interno de trazabilidad técnica · PRODIGY Digital Dentistry · No tiene validez tributaria (la factura DIAN con CUFE se emite aparte).</div>
-</div>
+<div class="sheet" id="sheet"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
 <script src="../js/auth-guard.js?v=20260717"></script>
 <script>ProdigyAuth.require(['admin','operator','encargado_inventario','calidad','diseno','taller','fresado','impresion','secretaria']);</script>
 <script>
 const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-const fmtD = d => d ? new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'}) : '';
+const fmtD = d => d ? new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'}) : '';
 const params = new URLSearchParams(location.search);
-const CODIGO = (params.get('c')||'').trim().toUpperCase();
+const C1 = (params.get('c')||'').trim().toUpperCase();
+const C2 = (params.get('c2')||'').trim().toUpperCase();
+const AREAS = ['Recepción','Yesos / modelos','Diseño CAD','Fresado','Impresión 3D','Sinterizado','Acabado','Control calidad','Empaque'];
+const CHECKS = ['Impresión','Antagonista','Modelos','Articulador','Registro','Cubetas','Fotos/color','Llave implante','Tornillos','Mock-up'];
+const SAMPLE = { codigo:'PRD-DIS-260922-A3F', dr_code:'DR-0007', nombre_paciente:'Valentina Gómez', tipo_trabajo:'Carillas cerámicas', material:'Zirconio Upcera HT', color_vita:'A2', cantidad:12, created_at:new Date().toISOString(), fecha_entrega:null, hash_seguridad:'', notas_cambios:'Cervicales delgados' };
+let sb;
 
-// Datos de EJEMPLO (se ven si no pasas ?c= o no se encuentra el caso)
-let caso = { codigo:'PRD-DIS-260922-A3F', nombre_doctor:'Dr. Martín Prato', clinica:'Clínica Norte', nombre_paciente:'Valentina Gómez',
-  tipo_trabajo:'Carillas cerámicas', material:'Zirconio Upcera White HT', color_vita:'A2', cantidad:12, created_at:new Date().toISOString(), fecha_entrega:null, hash_seguridad:'' };
-let esEjemplo = true;
-
-async function init(){
-  try{
-    const sb = (window.ProdigyAuth && window.ProdigyAuth.getSb) ? window.ProdigyAuth.getSb() : null;
-    if(sb && CODIGO){
-      const { data } = await sb.from('pedidos').select('codigo,nombre_doctor,nombre_paciente,tipo_trabajo,material,color_vita,cantidad,created_at,fecha_entrega,hash_seguridad,notas_cambios').eq('negocio','prodigy').eq('codigo',CODIGO).maybeSingle();
-      if(data){ caso = data; esEjemplo = false; }
-    }
-  }catch(_){}
-  pintar();
+async function fetchCaso(codigo){
+  if(!codigo) return null;
+  const { data } = await sb.from('pedidos').select('codigo,nombre_paciente,tipo_trabajo,material,color_vita,cantidad,created_at,fecha_entrega,hash_seguridad,notas_cambios,user_id').eq('negocio','prodigy').eq('codigo',codigo).maybeSingle();
+  if(!data) return null;
+  data.dr_code = '—';
+  if(data.user_id){
+    try{ const { data: dp } = await sb.from('doctores_perfil').select('codigo_cliente').eq('id',data.user_id).maybeSingle(); if(dp&&dp.codigo_cliente) data.dr_code = dp.codigo_cliente; }catch(_){}
+  }
+  return data;
 }
 
-function pintar(){
-  document.getElementById('modo').textContent = esEjemplo ? 'Vista de EJEMPLO (borrador). Abre con ?c=CÓDIGO para datos reales.' : 'Caso real: '+caso.codigo;
-  document.getElementById('o-num').textContent = 'Nº ' + (caso.codigo||'—');
-  document.getElementById('o-recibido').textContent = fmtD(caso.created_at);
-  document.getElementById('o-entrega').textContent = fmtD(caso.fecha_entrega);
-  document.getElementById('o-doctor').textContent = caso.nombre_doctor||'';
-  document.getElementById('o-clinica').textContent = caso.clinica||'';
-  document.getElementById('o-paciente').textContent = caso.nombre_paciente||'';
-  document.getElementById('o-tipo').textContent = caso.tipo_trabajo||'';
-  document.getElementById('o-material').textContent = caso.material||'';
-  document.getElementById('o-color').textContent = caso.color_vita||'';
-  document.getElementById('o-cantidad').textContent = caso.cantidad||'';
-  document.getElementById('o-obs').textContent = caso.notas_cambios||'';
-  // QR → enrutador (staff a mover, público a seguimiento)
-  const qrUrl = 'https://prodigylabdental.com/app/caso-qr.html?c=' + encodeURIComponent(caso.codigo||'') + (caso.hash_seguridad?'&k='+encodeURIComponent(caso.hash_seguridad):'');
-  document.getElementById('o-qr').innerHTML = `<img alt="QR ${escH(caso.codigo||'')}" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=${encodeURIComponent(qrUrl)}">`;
+function renderOrden(c){
+  if(!c){
+    return `<div class="orden"><div class="hdr"><div class="brand"><h1>💎 PRODIGY</h1><div class="sub">Orden de producción — en blanco</div></div><div class="center"><div class="t">ORDEN DE PRODUCCIÓN</div><div class="n">Nº ______</div></div><div class="qr" style="display:flex;align-items:center;justify-content:center;font-size:5pt;color:#aaa;">sin QR</div></div>`
+      + camposVacios() + `</div>`;
+  }
+  const qrUrl = 'https://prodigylabdental.com/app/caso-qr.html?c=' + encodeURIComponent(c.codigo||'') + (c.hash_seguridad?'&k='+encodeURIComponent(c.hash_seguridad):'');
+  const qr = `<img alt="QR" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=0&data=${encodeURIComponent(qrUrl)}">`;
+  return `<div class="orden">
+    <div class="hdr">
+      <div class="brand"><h1>💎 PRODIGY</h1><div class="sub">prodigylabdental.com · +57 321 281 6716</div></div>
+      <div class="center"><div class="t">ORDEN DE PRODUCCIÓN</div><div class="n">Nº ${escH(c.codigo||'—')}</div></div>
+      <div class="qr">${qr}</div>
+    </div>
+    <div class="row">
+      <div class="fld"><div class="k">Doctor (código)</div><div class="v">${escH(c.dr_code||'—')}</div></div>
+      <div class="fld"><div class="k">Paciente</div><div class="v">${escH(c.nombre_paciente||'')}</div></div>
+      <div class="fld"><div class="k">Recibido</div><div class="v">${escH(fmtD(c.created_at))}</div></div>
+      <div class="fld"><div class="k">Entrega</div><div class="v">${escH(fmtD(c.fecha_entrega))}</div></div>
+    </div>
+    <div class="row">
+      <div class="fld"><div class="k">Trabajo</div><div class="v">${escH(c.tipo_trabajo||'')}</div></div>
+      <div class="fld"><div class="k">Material</div><div class="v">${escH(c.material||'')}</div></div>
+      <div class="fld"><div class="k">Color/VITA</div><div class="v">${escH(c.color_vita||'')}</div></div>
+      <div class="fld"><div class="k">Cantidad</div><div class="v">${escH(c.cantidad||'')}</div></div>
+    </div>
+    ${cuerpo(c)}
+  </div>`;
+}
+
+function odontograma(){
+  const arr = n => n.map(x=>`<span>${x}</span>`).join('');
+  return `<div class="sec">Odontograma (FDI)</div><div class="odo"><div>
+    <div class="teeth">${arr([18,17,16,15,14,13,12,11])}<span class="sep"></span>${arr([21,22,23,24,25,26,27,28])}</div>
+    <div class="teeth" style="margin-top:1.5mm;">${arr([48,47,46,45,44,43,42,41])}<span class="sep"></span>${arr([31,32,33,34,35,36,37,38])}</div>
+  </div></div>`;
+}
+function checklist(){
+  return `<div class="sec">Elementos recibidos</div><div class="checks">${CHECKS.map(x=>`<div class="chk"><span class="b"></span>${escH(x)}</div>`).join('')}<div class="chk"><span class="b"></span>Otro: ____</div></div>`;
+}
+function tiemposTabla(){
+  return `<div class="sec">Control de tiempos y supervisión por área</div>
+  <table class="tiempos"><tr><th>Área</th><th>Fecha</th><th>Entra</th><th>Sale</th><th>Técnico</th><th>V°B° Supervisor</th></tr>
+  ${AREAS.map(a=>`<tr><td>${escH(a)}</td><td></td><td></td><td></td><td></td><td></td></tr>`).join('')}</table>`;
+}
+function obs(c){
+  return `<div class="sec">Observaciones</div><div class="obs2">
+    <div class="col"><div class="k">Indicaciones del odontólogo</div><div class="ln">${escH((c&&c.notas_cambios)||'')}</div></div>
+    <div class="col"><div class="k">Notas internas / técnicas</div><div class="ln"></div></div>
+  </div>`;
+}
+function firmas(){
+  return `<div class="qrnote">📱 <b>Escaneo QR en cada etapa:</b> el técnico escanea al recibir y al terminar, elige su nombre, confirma qué recibió y <b>toma foto de esta orden</b> (respaldo si se pierde el papel).</div>
+  <div class="firmas"><div class="f"><div class="l">Recepción</div></div><div class="f"><div class="l">Control de calidad</div></div><div class="f"><div class="l">Supervisor (revisa cada proceso)</div></div></div>
+  <div class="foot">Documento interno de trazabilidad · PRODIGY Digital Dentistry · Sin validez tributaria (la factura DIAN se emite aparte).</div>`;
+}
+function cuerpo(c){ return odontograma()+checklist()+tiemposTabla()+obs(c)+firmas(); }
+function camposVacios(){
+  return `<div class="row"><div class="fld"><div class="k">Doctor (código)</div><div class="v"></div></div><div class="fld"><div class="k">Paciente</div><div class="v"></div></div><div class="fld"><div class="k">Recibido</div><div class="v"></div></div><div class="fld"><div class="k">Entrega</div><div class="v"></div></div></div>
+  <div class="row"><div class="fld"><div class="k">Trabajo</div><div class="v"></div></div><div class="fld"><div class="k">Material</div><div class="v"></div></div><div class="fld"><div class="k">Color/VITA</div><div class="v"></div></div><div class="fld"><div class="k">Cantidad</div><div class="v"></div></div></div>`
+  + cuerpo(null);
+}
+
+async function init(){
+  sb = (window.ProdigyAuth && window.ProdigyAuth.getSb) ? window.ProdigyAuth.getSb() : window.supabase.createClient(
+    'https://zgihrwqfyvgyapbwzkvw.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634'
+  );
+  let d1 = await fetchCaso(C1);
+  let d2 = await fetchCaso(C2);
+  let ejemplo = false;
+  if(!d1){ d1 = SAMPLE; ejemplo = true; }
+  document.getElementById('modo').textContent = ejemplo ? 'Vista de EJEMPLO. Abre con ?c=CÓDIGO (y &c2=OTRO para 2 casos por hoja).' : (C2 ? '2 casos por hoja' : '1 caso (la mitad derecha queda en blanco para un caso a mano)');
+  document.getElementById('sheet').innerHTML = renderOrden(d1) + '<div class="cut"></div>' + renderOrden(d2);
 }
 window.addEventListener('DOMContentLoaded', init);
 </script>
