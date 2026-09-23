@@ -65,6 +65,8 @@ const AREAS = ['Recepción','Diseño CAD','Fresado','Impresión 3D','Sinterizado
 const TECNICOS = ['Alejandro','Técnico 1','Técnico 2','Sin asignar'];
 // Piezas físicas que pueden ir con el caso (cadena de custodia)
 const COMPONENTES = ['Llave de implante','Tornillos','Análogos','Modelo/muñones','Antagonista','Aditamentos','Material (disco/resina)','Registro de mordida'];
+// Área que corresponde a cada rol → se pre-selecciona al escanear (el técnico recibe el caso EN su área)
+const ROL_AREA = { diseno:'Diseño CAD', fresado:'Fresado', impresion:'Impresión 3D', taller:'Acabado', calidad:'Control Calidad', mensajero:'Despacho', encargado_inventario:'Recepción' };
 // ────────────────────────────────────────────────────────────────
 const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD = d => d ? new Date(d).toLocaleString('es-CO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
@@ -104,16 +106,20 @@ async function cargar(){
   const { data: seg } = await sb.from('pedido_seguimiento').select('area_actual,tecnico_actual').eq('pedido_id', _ped.id).maybeSingle();
   _seg = seg || {};
   const { data: movs } = await sb.from('pedido_movimientos').select('area,tecnico,nota,componentes,estado_recibo,fotos,por_email,created_at').eq('pedido_id', _ped.id).order('created_at',{ascending:false}).limit(8);
-  render(movs||[]);
+  const { data: incs } = await sb.from('pedido_incidencias').select('titulo,detalle,created_at').eq('pedido_id', _ped.id).eq('tipo','incidencia').order('created_at',{ascending:false}).limit(3);
+  render(movs||[], incs||[]);
 }
 
-function render(movs){
-  document.getElementById('app').innerHTML = `
+function render(movs, incs){
+  incs = incs||[];
+  const incBanner = incs.length ? `<div style="background:rgba(248,113,113,.14);border:1.5px solid #f87171;border-radius:12px;padding:11px 13px;margin-bottom:12px;color:#fecaca;font-size:.82rem;line-height:1.4;"><b style="color:#f87171">⚠️ INCIDENCIA ABIERTA — revisa antes de iniciar</b>${incs.map(x=>'<br>• '+escH(x.titulo)+(x.detalle?': '+escH(x.detalle):'')).join('')}</div>` : '';
+  document.getElementById('app').innerHTML = incBanner + `
     <div class="caso">
       <div class="cod">${escH(_ped.codigo)}</div>
       <div class="sub">${escH(_ped.nombre_doctor||'—')} · ${escH(_ped.tipo_trabajo||_ped.flujo||'—')}</div>
       <div class="now">Ahora en: <b>${escH(_seg.area_actual||'sin registrar')}</b>${_seg.tecnico_actual?' · con <b>'+escH(_seg.tecnico_actual)+'</b>':''}</div>
-    </div>
+    </div>`;
+  document.getElementById('app').innerHTML += `
     <div style="font-size:.74rem;color:var(--muted);background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.22);border-radius:10px;padding:9px 12px;margin:6px 0 4px;line-height:1.45;">📋 Elige el <b style="color:var(--gold)">área</b> donde está el caso ahora + tu <b style="color:var(--gold)">nombre</b> + <b style="color:var(--gold)">qué recibiste</b> + una <b style="color:var(--gold)">foto de la orden</b>, y Guarda. Repite al terminar tu etapa.</div>
     <div class="lbl">Mover a área</div>
     <div class="areas" id="areas">
@@ -140,11 +146,43 @@ function render(movs){
     <div class="lbl">Nota (opcional)</div>
     <input id="nota" type="text" placeholder="Ej: falta tornillo, urgente, reproceso…" maxlength="120">
     <button class="save" id="btnSave" onclick="guardar()" disabled><i class="fas fa-check"></i> Guardar movimiento</button>
+
+    <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px;">
+      <button type="button" class="foto-btn" style="border-style:solid;border-color:rgba(248,113,113,.45);color:#f87171;background:rgba(248,113,113,.06);" onclick="toggleInc()"><i class="fas fa-triangle-exclamation"></i> Reportar problema / duda (no iniciar)</button>
+      <div id="incBox" style="display:none;margin-top:10px;">
+        <input id="incTxt" type="text" placeholder="Ej: no puedo iniciar, falta antagonista · duda de color…" maxlength="200">
+        <button class="save" style="margin-top:10px;background:linear-gradient(135deg,#f87171,#dc2626);color:#fff;" onclick="reportarInc()"><i class="fas fa-flag"></i> Reportar incidencia</button>
+      </div>
+    </div>
+
     <div class="hist">
       <h3>Últimos movimientos</h3>
       ${movs.length ? movs.map(m=>`<div class="mov"><span class="dot">●</span><div><b>${escH(m.area||'—')}</b>${m.tecnico?' · '+escH(m.tecnico):''}${m.estado_recibo?' · <span style="color:'+(m.estado_recibo==='completo'?'var(--neon)':m.estado_recibo==='incompleto'?'#f87171':'#fbbf24')+'">'+escH(m.estado_recibo.replace('_',' '))+'</span>':''}${m.componentes?'<br><span style="color:var(--muted)">🔑 '+escH(m.componentes)+'</span>':''}${m.nota?'<br><span style="color:var(--muted)">'+escH(m.nota)+'</span>':''}${m.fotos&&m.fotos.length?'<br><span style="color:var(--cyan);font-size:.72rem">📷 '+m.fotos.length+' foto(s)</span>':''}${m.por_email?'<br><span style="color:#475569;font-size:.68rem">por '+escH(m.por_email)+'</span>':''}</div><span class="t" style="margin-left:auto">${escH(fmtD(m.created_at))}</span></div>`).join('') : '<div style="color:var(--muted);font-size:.82rem">Sin movimientos aún.</div>'}
     </div>`;
   if(!_tecnico && TECNICOS.length){ _tecnico = document.getElementById('tecnico').value; }
+  // Pre-selecciona el área que corresponde al rol (el técnico recibe el caso EN su área)
+  const _ra = ROL_AREA[window.PRODIGY_ROLE];
+  if(_ra){ const b=[...document.querySelectorAll('.area')].find(x=>x.dataset.a===_ra); if(b) pickArea(b); }
+}
+
+function toggleInc(){ const b=document.getElementById('incBox'); b.style.display = b.style.display==='none'?'block':'none'; }
+async function reportarInc(){
+  const txt=(document.getElementById('incTxt').value||'').trim();
+  if(!txt){ alert('Escribe la incidencia o duda'); return; }
+  const area = _area || ROL_AREA[window.PRODIGY_ROLE] || '';
+  try{
+    const { error } = await sb.from('pedido_incidencias').insert({
+      pedido_id:_ped.id, codigo:_ped.codigo, negocio:'prodigy', tipo:'incidencia',
+      titulo:'Incidencia'+(area?' en '+area:''), detalle:txt, visible_cliente:false, por_email: window.PRODIGY_EMAIL||null
+    });
+    if(error) throw error;
+    // Avisa al supervisor/staff por WhatsApp (inerte si no está configurado)
+    fetch('/api/notify-staff',{ method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ doctor:_ped.nombre_doctor||'—', servicio:_ped.tipo_trabajo||'', whatsapp:'', codigo:_ped.codigo||'', tipo:'⚠️ Incidencia'+(area?' en '+area:''), contexto:txt }) }).catch(()=>{});
+    toast('⚠️ Incidencia reportada');
+    document.getElementById('incTxt').value=''; toggleInc();
+    await cargar();
+  }catch(e){ alert('No se pudo reportar: '+(e.message||e)); }
 }
 
 function pickArea(btn){
