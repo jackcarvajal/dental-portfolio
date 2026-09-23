@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#D946A6">
+<meta name="color-scheme" content="dark">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+<meta name="description" content="Envía tus casos de alineadores (ortodoncia) a PRODIGY Lab: STL, radiografías, indicación y fotos. Planificación digital y setup. Facturación mensual por corte para clínicas con convenio.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="PRODIGY Lab Dental">
+<link rel="canonical" href="https://prodigylabdental.com/envia-alineadores">
+<meta property="og:title" content="Envía tus casos de alineadores — PRODIGY Lab">
+<meta property="og:description" content="Sube STL, radiografías, indicación y fotos. Planificación de alineadores y setup digital. Clínicas con convenio: facturación mensual por corte.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PRODIGY Lab Dental">
+<meta property="og:url" content="https://prodigylabdental.com/envia-alineadores">
+<meta property="og:image" content="https://prodigylabdental.com/assets/og-envia-tu-scanner.jpg">
+<meta property="og:locale" content="es_CO">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😁</text></svg>">
+<title>Envía tus Alineadores — Planificación Digital | PRODIGY Lab</title>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"></noscript>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<style>
+:root{--gold:#D4AF37;--magenta:#D946A6;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--bg-card:#0d1520;--bg-input:#0a1628;--border:rgba(212,175,55,.18);--text:#f5f5f7;--muted:#94a3b8;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;}
+.hero{padding:130px 24px 40px;text-align:center;background:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(217,70,166,.1) 0%,transparent 70%);}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(217,70,166,.1);border:1px solid rgba(217,70,166,.28);padding:5px 16px;border-radius:20px;font-size:.85rem;color:var(--magenta);font-weight:700;letter-spacing:.8px;margin-bottom:20px;text-transform:uppercase;}
+.hero h1{font-size:clamp(1.9rem,5vw,3.4rem);font-weight:900;line-height:1.1;margin-bottom:14px;letter-spacing:-1px;}
+.hero h1 .hl{background:linear-gradient(135deg,var(--magenta),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:clamp(.95rem,2vw,1.1rem);color:var(--muted);max-width:620px;margin:0 auto 20px;}
+/* checklist de lo que se sube */
+.needs{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;padding:0 8px;}
+.need{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;display:flex;gap:11px;align-items:flex-start;}
+.need .n{font-size:20px;line-height:1;}
+.need h4{font-size:.92rem;font-weight:700;margin-bottom:2px;}
+.need p{font-size:.78rem;color:var(--muted);line-height:1.35;}
+/* FORM */
+.form-section{padding:48px 24px 60px;background:radial-gradient(ellipse 70% 50% at 50% 100%,rgba(0,210,255,.05) 0%,transparent 70%);}
+.form-wrap{max-width:720px;margin:0 auto;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:40px 36px;}
+@media(max-width:600px){.form-wrap{padding:26px 18px;}}
+.form-head h2{font-size:1.4rem;font-weight:900;margin-bottom:6px;}
+.form-head p{font-size:.92rem;color:var(--muted);margin-bottom:26px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:560px){.frow{grid-template-columns:1fr;}}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.fg label{font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.fg input,.fg select,.fg textarea{background:var(--bg-input);border:1px solid rgba(255,255,255,.09);color:var(--text);padding:11px 13px;border-radius:8px;font-size:1rem;font-family:'Inter',sans-serif;transition:border-color .2s;outline:none;width:100%;}
+.fg input::placeholder,.fg textarea::placeholder{color:#94a3b8;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--cyan);}
+.fg textarea{resize:vertical;min-height:88px;}
+.hintline{font-size:.7rem;color:#94a3b8;margin-top:3px;}
+.drop-zone{border:2px dashed rgba(0,210,255,.25);border-radius:12px;padding:30px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:rgba(0,210,255,.02);margin-bottom:12px;}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--cyan);background:rgba(0,210,255,.06);}
+.drop-zone i{font-size:30px;color:var(--cyan);margin-bottom:8px;display:block;}
+.drop-zone p{font-size:.95rem;color:var(--muted);}
+.drop-zone strong{color:var(--cyan);}
+.drop-zone small{font-size:.8rem;color:#94a3b8;display:block;margin-top:4px;}
+#fileInput{display:none;}
+.flist{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.fpill{display:flex;align-items:center;gap:10px;background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.18);border-radius:8px;padding:9px 13px;font-size:.9rem;color:var(--green);}
+.fpill .fn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fpill .fs{color:#94a3b8;white-space:nowrap;font-size:.85rem;}
+.fpill .fx{cursor:pointer;color:#ef4444;margin-left:4px;}
+.conv{display:flex;align-items:flex-start;gap:10px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.22);border-radius:10px;padding:13px 15px;margin-bottom:16px;cursor:pointer;font-size:.9rem;color:var(--text);}
+.conv input{margin-top:3px;accent-color:#D4AF37;flex-shrink:0;}
+.conv small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px;}
+.prog{display:none;margin-bottom:14px;}
+.prog.show{display:block;}
+.pbar-wrap{background:rgba(255,255,255,.06);border-radius:4px;height:5px;overflow:hidden;}
+.pbar{height:100%;background:linear-gradient(90deg,var(--magenta),var(--cyan));width:0%;transition:width .3s;}
+.prog-lbl{font-size:.9rem;color:var(--muted);margin-top:5px;}
+.btn-submit{width:100%;padding:15px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--magenta),#9c27b0);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;transition:opacity .2s,transform .18s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-submit:hover:not(:disabled){opacity:.9;transform:translateY(-1px);}
+.btn-submit:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+.form-note{font-size:.88rem;color:#94a3b8;text-align:center;margin-top:10px;}
+.habeas{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;cursor:pointer;font-size:.85rem;color:#94a3b8;line-height:1.4;}
+.habeas input{margin-top:2px;accent-color:#D946A6;flex-shrink:0;}
+.success{display:none;text-align:center;padding:16px;}
+.success.show{display:block;}
+.sico{width:66px;height:66px;border-radius:50%;background:rgba(0,255,65,.08);border:2px solid rgba(0,255,65,.25);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--green);margin:0 auto 16px;}
+.success h2{font-size:1.3rem;font-weight:900;margin-bottom:8px;}
+.success p{font-size:.95rem;color:var(--muted);margin-bottom:20px;}
+.btn-wa{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:12px 26px;border-radius:8px;text-decoration:none;font-weight:700;font-size:1rem;}
+footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;text-align:center;font-size:.9rem;color:#94a3b8;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+<a href="#form" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al formulario</a>
+<script src="js/header.js?v=20260918"></script>
+<main id="main-content">
+
+<section class="hero">
+  <div class="badge"><i class="fas fa-tooth"></i> Alineadores · Ortodoncia digital</div>
+  <h1>Envía tu caso de <span class="hl">alineadores</span>.<br>Nosotros planificamos.</h1>
+  <p class="hero-sub">Sube el STL, las radiografías, la indicación y las fotos. Te devolvemos la planificación / setup. Clínicas con convenio: <strong style="color:var(--text)">facturación mensual por corte de casos</strong>.</p>
+  <div class="needs">
+    <div class="need"><span class="n">🦷</span><div><h4>1. STL</h4><p>Escaneo intraoral o modelos (.stl / .zip).</p></div></div>
+    <div class="need"><span class="n">🩻</span><div><h4>2. Radiografías</h4><p>Panorámica y lateral de cráneo.</p></div></div>
+    <div class="need"><span class="n">📝</span><div><h4>3. Indicación</h4><p>Qué buscas lograr con el tratamiento.</p></div></div>
+    <div class="need"><span class="n">📸</span><div><h4>4. Fotografías</h4><p>Intraorales y de perfil del paciente.</p></div></div>
+  </div>
+</section>
+
+<section class="form-section" id="form">
+  <div class="form-wrap">
+    <div id="formContainer">
+      <div class="form-head">
+        <h2>Enviar caso de alineadores</h2>
+        <p>Completa los datos y adjunta los archivos. Lo ideal: <strong style="color:var(--text)">un solo ZIP</strong> con todo (STL + radiografías + fotos). Te confirmamos por WhatsApp.</p>
+      </div>
+
+      <form id="alnForm" novalidate>
+        <div class="frow">
+          <div class="fg">
+            <label for="doctor">Ortodoncista / Doctor *</label>
+            <input type="text" id="doctor" placeholder="Dr. Nombre Apellido" autocomplete="name" required>
+          </div>
+          <div class="fg">
+            <label for="clinica">Clínica / convenio *</label>
+            <input type="text" id="clinica" placeholder="Clínica / Distribuidor" autocomplete="organization" required>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg">
+            <label for="whatsapp">WhatsApp *</label>
+            <input type="tel" inputmode="tel" id="whatsapp" placeholder="+57 300 000 0000" autocomplete="tel" required>
+          </div>
+          <div class="fg">
+            <label for="email">Email <span style="font-size:.62rem;color:#00FF41;font-weight:700;">(portal de seguimiento)</span></label>
+            <input type="email" id="email" maxlength="254" placeholder="doctor@clinica.com" autocomplete="email">
+          </div>
+        </div>
+        <div class="fg">
+          <label for="paciente">Paciente *</label>
+          <input type="text" id="paciente" maxlength="120" placeholder="Nombre del paciente (ej: Tomás Ferreira)" required>
+        </div>
+        <div class="fg">
+          <label for="indicacion">Indicación clínica *</label>
+          <textarea id="indicacion" maxlength="1500" placeholder="Qué se busca lograr: apiñamiento, diastemas, mordida, expansión, movimientos prioritarios, restricciones… Entre más detalle, mejor la planificación."></textarea>
+          <span class="hintline">Es el punto 3 del caso. Puedes escribirla aquí aunque también venga dentro del ZIP.</span>
+        </div>
+
+        <div class="fg"><label for="fileInput">Archivos del caso (STL, radiografías, fotos — o un ZIP con todo)</label></div>
+        <button type="button" class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" aria-label="Seleccionar archivos del caso">
+          <i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
+          <p><strong>Arrastra aquí</strong> o haz clic — puedes seleccionar varios</p>
+          <small>ZIP, STL, OBJ, PLY, DCM, JPG, PNG, PDF — máx. 50 MB por archivo</small>
+        </button>
+        <input type="file" id="fileInput" accept=".zip,.stl,.obj,.ply,.dcm,.jpg,.jpeg,.png,.pdf" multiple>
+        <div class="flist" id="flist"></div>
+
+        <label class="conv">
+          <input type="checkbox" id="checkConvenio">
+          <span>Soy cliente con <strong>convenio mensual</strong> (facturación por corte de casos).
+          <small>Márcalo si tu clínica factura al final del mes. El staff suma este caso a tu corte.</small></span>
+        </label>
+
+        <div class="prog" id="prog"><div class="pbar-wrap"><div class="pbar" id="pbar"></div></div><p class="prog-lbl" id="prog-lbl">Subiendo…</p></div>
+
+        <label class="habeas">
+          <input type="checkbox" id="checkHabeas" required>
+          <span>Autorizo el tratamiento de mis datos y los del paciente para gestión y planificación del caso. <a href="terminos-y-legal" style="color:#00d2ff;text-decoration:none;" target="_blank" rel="noopener noreferrer">Ver política.</a></span>
+        </label>
+
+        <button type="submit" class="btn-submit" id="submitBtn"><i class="fas fa-paper-plane"></i> Enviar caso</button>
+        <p class="form-note">Te contactamos por WhatsApp. L–S 8am–6pm.</p>
+      </form>
+    </div>
+
+    <div class="success" id="successScreen">
+      <div class="sico"><i class="fas fa-check"></i></div>
+      <h2>¡Caso recibido!</h2>
+      <p id="successMsg"></p>
+      <a id="regLink" href="/app/login.html?nuevo=1" style="display:none;align-items:center;justify-content:center;gap:10px;width:100%;max-width:340px;margin:0 auto 12px;padding:15px 24px;background:linear-gradient(135deg,#D946A6,#B82F8B);color:#fff;font-weight:800;border-radius:14px;text-decoration:none;">
+        <i class="fas fa-user-plus"></i> Crear mi cuenta y seguir el caso
+      </a>
+      <a class="btn-wa" id="waLink" href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Escribirnos directamente</a>
+    </div>
+  </div>
+</section>
+</main>
+<script src="js/footer.js?v=20260919"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+const WA_PRODIGY='573212816716';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+/* ── Multi-archivo ── */
+let files=[];
+const dropZone=document.getElementById('dropZone');
+const fileInput=document.getElementById('fileInput');
+const OK_EXT=['zip','stl','obj','ply','dcm','jpg','jpeg','png','pdf'];
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-over');});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-over');addFiles(e.dataTransfer.files);});
+fileInput.addEventListener('change',()=>addFiles(fileInput.files));
+function addFiles(list){
+  for(const f of list){
+    const ext=(f.name.split('.').pop()||'').toLowerCase();
+    if(!OK_EXT.includes(ext)){ pubToast('Formato no permitido: '+f.name); continue; }
+    if(f.size>52428800){ pubToast('Supera 50 MB: '+f.name+'. Comprime en ZIP.'); continue; }
+    if(files.some(x=>x.name===f.name&&x.size===f.size)) continue;
+    files.push(f);
+  }
+  renderFiles();
+}
+function renderFiles(){
+  const box=document.getElementById('flist');
+  box.innerHTML=files.map((f,i)=>`<div class="fpill"><i class="fas fa-file-alt"></i><span class="fn">${escH(f.name)}</span><span class="fs">${(f.size/1048576).toFixed(1)} MB</span><i class="fas fa-times fx" onclick="quitarFile(${i})" title="Quitar"></i></div>`).join('');
+}
+window.quitarFile=i=>{files.splice(i,1);renderFiles();};
+
+function setProg(pct,lbl){document.getElementById('prog').classList.add('show');document.getElementById('pbar').style.width=pct+'%';document.getElementById('prog-lbl').textContent=lbl;}
+function hideProg(){document.getElementById('prog').classList.remove('show');}
+
+document.getElementById('alnForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const doctor=document.getElementById('doctor').value.trim();
+  const clinica=document.getElementById('clinica').value.trim();
+  const whatsapp=document.getElementById('whatsapp').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const paciente=document.getElementById('paciente').value.trim();
+  const indicacion=document.getElementById('indicacion').value.trim();
+  const convenio=document.getElementById('checkConvenio').checked;
+  if(!doctor||!clinica||!whatsapp||!paciente||!indicacion){ pubToast('Completa los campos obligatorios (*).'); return; }
+  if(!document.getElementById('checkHabeas').checked){ pubToast('Debes autorizar el tratamiento de datos.'); return; }
+  if(!files.length){ pubToast('Adjunta al menos el STL o un ZIP con el caso.'); return; }
+
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Enviando…';
+
+  // Nº de caso rastreable (ALN-YYMMDD-HEX)
+  const _d=new Date();
+  const _ymd=_d.getFullYear().toString().slice(2)+String(_d.getMonth()+1).padStart(2,'0')+String(_d.getDate()).padStart(2,'0');
+  const _hex=Array.from(crypto.getRandomValues(new Uint8Array(2))).map(b=>b.toString(16).padStart(2,'0')).join('').toUpperCase();
+  const codigo='ALN-'+_ymd+'-'+_hex;
+
+  // Subir archivos al bucket scanner-uploads bajo prefijo del caso
+  setProg(15,'Subiendo archivos…');
+  const subidos=[];
+  for(let i=0;i<files.length;i++){
+    const f=files[i];
+    const _ext=(f.name.split('.').pop()||'bin').replace(/[^a-zA-Z0-9]/g,'').slice(0,10);
+    const path=`alineadores/${codigo}/${i+1}_${f.name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,60)}.${_ext}`.replace('.'+_ext+'.'+_ext,'.'+_ext);
+    let ok=false;
+    for(let intento=1;intento<=3;intento++){
+      const {error}=await sb.storage.from('scanner-uploads').upload(path,f);
+      if(!error){ ok=true; break; }
+      if(intento<3) await new Promise(r=>setTimeout(r,800*intento));
+    }
+    if(ok) subidos.push({nombre:f.name,path});
+    setProg(15+Math.round((i+1)/files.length*55),`Subiendo (${i+1}/${files.length})…`);
+  }
+
+  setProg(78,'Guardando caso…');
+  const notasFull='INDICACIÓN: '+indicacion+
+    '\n\n📎 Archivos ('+subidos.length+'):\n'+subidos.map(s=>'• '+s.nombre+'  →  '+s.path).join('\n')+
+    (convenio?'\n\n💳 CLIENTE CONVENIO MENSUAL — sumar al corte del mes.':'');
+
+  await sb.from('solicitudes_scanner').insert({
+    negocio:'prodigy', codigo,
+    doctor, clinica, whatsapp, email:email||null,
+    escaner_marca:'N/A (alineadores)',
+    servicio:'Alineadores (ortodoncia)',
+    piezas:'Paciente: '+paciente,
+    notas:notasFull,
+    archivo_url: subidos[0]?subidos[0].path:null,
+    archivo_nombre: subidos.length?(subidos[0].nombre+(subidos.length>1?' +'+(subidos.length-1)+' más':'')):null,
+    acepta_marketing:false,
+    acepta_habeas:true
+  });
+
+  // Aviso al staff (además del trigger AFTER INSERT de la tabla)
+  fetch('/api/notify-staff',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({doctor,servicio:'Alineadores — '+paciente,whatsapp,codigo,tipo:'Solicitud de alineadores',
+      contexto:'😁 Caso de ALINEADORES (ortodoncia).'+(convenio?' 💳 CLIENTE CONVENIO MENSUAL — sumar al corte.':'')+' Incluye STL + radiografías + fotos + indicación. Revisar y planificar setup / cotizar.'})}).catch(()=>{});
+
+  // Portal opcional (registro implícito por email)
+  let portalLink='https://prodigylabdental.com/app/login.html?nuevo=1';
+  if(email){
+    try{
+      const tempPass='Prodigy@'+Math.random().toString(36).slice(2,8).toUpperCase();
+      const {data:su,error:se}=await sb.auth.signUp({email,password:tempPass,
+        options:{data:{nombre:doctor,clinica,whatsapp,rol_solicitado:'client',primera_vez:true},
+        emailRedirectTo:'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1'}});
+      if(!se&&su?.user){
+        await sb.from('doctores_perfil').upsert({id:su.user.id,nombre:doctor,clinica,whatsapp},{onConflict:'id',ignoreDuplicates:true}).catch(()=>{});
+        fetch('/api/wa-auto',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({whatsapp,mensaje:`😁 *PRODIGY Lab — Alineadores*\n\nHola ${doctor.split(' ')[0]}, recibimos el caso de ${paciente}.\n\n📁 Nº caso: *${codigo}*\n✅ Portal creado: ${portalLink}\n📧 ${email}\n🔐 Clave: ${tempPass} _(cámbiala al ingresar)_`})}).catch(()=>{});
+      }
+    }catch(_){}
+  }
+
+  setProg(100,'Listo');
+  setTimeout(()=>{
+    hideProg();
+    document.getElementById('formContainer').style.display='none';
+    const sc=document.getElementById('successScreen');
+    sc.classList.add('show');
+    const _nom=escH(doctor.split(' ')[0]);
+    document.getElementById('successMsg').innerHTML=
+      `Gracias, <strong>${_nom}</strong>. Recibimos el caso de <strong>${escH(paciente)}</strong>.<br>`+
+      `<span style="display:inline-block;margin:12px 0;padding:8px 16px;border:1px solid rgba(212,175,55,.4);border-radius:10px;background:rgba(212,175,55,.08);color:#D4AF37;font-weight:800;letter-spacing:.5px;">Nº de caso: ${escH(codigo)}</span><br>`+
+      `<span style="font-size:.85rem;color:#94a3b8;">Guarda este número para el seguimiento.</span><br><br>`+
+      (convenio?`💳 Registrado como <strong>convenio mensual</strong>: entra al corte del mes.<br>`:'')+
+      (email?`✅ Te creamos el portal — revisa tu WhatsApp (${escH(whatsapp)}) con el acceso.`:`Te contactamos al ${escH(whatsapp)} con la planificación.`);
+    document.getElementById('waLink').href=`https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, envié un caso de alineadores. Paciente ${paciente}. Nº ${codigo}.`)}`;
+    if(email){ const r=document.getElementById('regLink'); r.style.display='inline-flex'; r.href=`/app/login.html?nuevo=1&caso=${encodeURIComponent(codigo)}&email=${encodeURIComponent(email)}`; }
+    sc.scrollIntoView({behavior:'smooth',block:'center'});
+  },700);
+});
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+</script>
+<div id="_pub-toast" role="status" aria-live="polite" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2332;border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;padding:12px 22px;border-radius:10px;font-size:0.85rem;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px;text-align:center;"></div>
+<script>let _pubT;function pubToast(m){const e=document.getElementById('_pub-toast');e.textContent=m;e.style.opacity='1';clearTimeout(_pubT);_pubT=setTimeout(()=>{e.style.opacity='0';},3800);}</script>
+<noscript><p style="text-align:center;padding:2rem">Activa JavaScript o <a href="https://wa.me/573212816716" rel="noopener noreferrer">escríbenos por WhatsApp</a>.</p></noscript>
+</body>
+</html>
