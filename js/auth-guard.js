@@ -24,31 +24,36 @@
         contabilidad:         '/app/contabilidad.html',
         diseno:               '/app/operario-diseno.html',
         alineadores:          '/app/alineadores.html',
+        guias:                '/app/operario-diseno.html',
+        exocad:               '/app/operario-diseno.html',
+        blender:              '/app/operario-diseno.html',
         taller:               '/app/taller.html',
         fresado:              '/app/operario.html',
         impresion:            '/app/operario.html',
         client:               '/app/client-panel.html'
     };
+    const KNOWN_ROLES = ['operator','mensajero','encargado_inventario','calidad','contabilidad','diseno','alineadores','guias','exocad','blender','taller','fresado','impresion','secretaria'];
 
-    function getRole(user) {
-        // Admin: SOLO por email hardcodeado — inmutable desde el cliente
-        if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
-        // Staff roles: SOLO app_metadata (editable únicamente via service_role / admin)
-        // user_metadata es user-controlled y NO se usa para autorización de staff
-        const appRole = (user.app_metadata || {}).role || '';
-        if (appRole === 'operator')             return 'operator';
-        if (appRole === 'mensajero')            return 'mensajero';
-        if (appRole === 'encargado_inventario') return 'encargado_inventario';
-        if (appRole === 'calidad')              return 'calidad';
-        if (appRole === 'contabilidad')         return 'contabilidad';
-        if (appRole === 'diseno')               return 'diseno';
-        if (appRole === 'alineadores')          return 'alineadores';
-        if (appRole === 'taller')               return 'taller';
-        if (appRole === 'fresado')              return 'fresado';
-        if (appRole === 'impresion')            return 'impresion';
-        // Cualquier otro usuario autenticado = cliente
-        return 'client';
+    // Roles del usuario (soporta VARIOS: app_metadata.roles[] o el clásico app_metadata.role).
+    // Admin SOLO por email. user_metadata NUNCA para autorización de staff.
+    function getRoles(user) {
+        if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return ['admin'];
+        const am = user.app_metadata || {};
+        var list = [];
+        if (Array.isArray(am.roles)) list = am.roles.slice();
+        if (am.role) list.push(am.role);
+        list = list.filter(function(r){ return KNOWN_ROLES.indexOf(r) !== -1; });
+        // Set (dedup) sin depender de Array.from para navegadores viejos
+        var seen = {}, out = [];
+        list.forEach(function(r){ if(!seen[r]){ seen[r]=1; out.push(r); } });
+        return out.length ? out : ['client'];
     }
+    function isActive(user) {
+        if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return true;
+        var a = (user.app_metadata || {}).active;
+        return a !== false; // por defecto activo; solo false lo desactiva
+    }
+    function getRole(user) { return getRoles(user)[0]; }
 
     // Cliente Supabase ÚNICO (singleton). Crear múltiples instancias con la misma
     // storageKey provoca conflictos de GoTrue y carreras donde la sesión no está
@@ -88,14 +93,22 @@
             return null;
         }
 
-        const role = getRole(session.user);
+        // Cuenta desactivada por el admin → fuera
+        if (!isActive(session.user)) {
+            await getSb().auth.signOut();
+            window.location.href = (loginUrl || 'login.html') + '?desactivado=1';
+            return null;
+        }
+        const roles   = getRoles(session.user);
+        const primary = roles[0];
         const allowed = Array.isArray(neededRole) ? neededRole : (neededRole ? [neededRole] : null);
-        if (allowed && !allowed.includes(role)) {
-            window.location.href = DEST_MAP[role] || 'login.html';
+        if (allowed && !allowed.some(function(r){ return roles.indexOf(r) !== -1; })) {
+            window.location.href = DEST_MAP[primary] || 'login.html';
             return null;
         }
         // Solo exponer lo mínimo — NO el session completo (contiene access_token)
-        window.PRODIGY_ROLE    = role;
+        window.PRODIGY_ROLE    = primary;
+        window.PRODIGY_ROLES   = roles;
         window.PRODIGY_EMAIL   = session.user.email;
         window.PRODIGY_UID     = session.user.id;
         document.body.style.visibility = 'visible';
@@ -145,5 +158,5 @@
         _reset();
     })();
 
-    window.ProdigyAuth = { require, signOut, getRole, getSb };
+    window.ProdigyAuth = { require, signOut, getRole, getRoles, getSb };
 })();

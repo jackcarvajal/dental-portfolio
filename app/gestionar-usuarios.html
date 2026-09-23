@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👥</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<title>Gestión de Usuarios — PRODIGY</title>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<style>
+:root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--card:#0d1520;--input:#0a1628;--border:rgba(212,175,55,.18);--text:#f5f5f7;--muted:#94a3b8;--red:#ef4444;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',sans-serif;padding:16px;visibility:hidden;max-width:900px;margin:0 auto;}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+h1{font-size:1.3rem;}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:16px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 15px;border-radius:9px;border:none;font-weight:800;font-size:.85rem;cursor:pointer;font-family:inherit;text-decoration:none;}
+.btn-mg{background:linear-gradient(135deg,var(--mg),#9c27b0);color:#fff;}
+.btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--muted);}
+.btn.mini{padding:6px 10px;font-size:.75rem;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px;}
+.sec-t{font-size:1rem;font-weight:800;margin:6px 0 10px;display:flex;align-items:center;gap:8px;}
+.tw{overflow-x:auto;border:1px solid var(--border);border-radius:12px;}
+table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:640px;}
+th,td{text-align:left;padding:10px 11px;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:middle;}
+th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;color:var(--muted);letter-spacing:.4px;font-weight:800;}
+.chip{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.66rem;font-weight:800;background:rgba(0,210,255,.12);color:var(--cyan);margin:1px;}
+.pill{display:inline-block;padding:2px 9px;border-radius:100px;font-size:.68rem;font-weight:800;}
+.pill.on{background:rgba(0,255,65,.12);color:var(--green);}
+.pill.off{background:rgba(239,68,68,.12);color:var(--red);}
+.acts{display:flex;gap:5px;flex-wrap:wrap;}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.fg label{font-size:.74rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.4px;}
+.fg input{background:var(--input);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:9px 11px;border-radius:8px;font-size:.92rem;font-family:inherit;width:100%;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:560px){.grid2{grid-template-columns:1fr;}}
+.roles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin:6px 0 12px;}
+.rchk{display:flex;align-items:center;gap:7px;background:var(--input);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:.82rem;}
+.rchk input{accent-color:var(--cyan);}
+.pwrow{display:flex;gap:8px;}.pwrow input{flex:1;}
+.msg{display:none;margin-top:10px;border-radius:8px;padding:10px 12px;font-size:.85rem;}
+.msg.ok{display:block;background:rgba(0,255,65,.08);border:1px solid rgba(0,255,65,.25);color:#86efac;}
+.msg.err{display:block;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:flex-start;justify-content:center;padding:24px 14px;z-index:100;overflow:auto;}
+.ov.show{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;max-width:480px;width:100%;}
+.modal h3{font-size:1.05rem;margin-bottom:12px;}
+.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;}
+.empty{padding:22px;text-align:center;color:var(--muted);}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div><h1>👥 Gestión de Usuarios</h1></div>
+  <a class="btn btn-ghost" href="panel-interno-operaciones.html"><i class="fas fa-arrow-left"></i> Volver</a>
+</div>
+<p class="sub">Crea, edita roles (varios por persona), activa/desactiva o borra cuentas del equipo. Solo administradores.</p>
+
+<div class="card">
+  <div class="sec-t"><i class="fas fa-user-plus" style="color:var(--green)"></i> Crear usuario</div>
+  <div class="grid2">
+    <div class="fg"><label>Nombre *</label><input id="nNombre" placeholder="Nombre Apellido"></div>
+    <div class="fg"><label>Email *</label><input id="nEmail" type="email" placeholder="persona@gmail.com"></div>
+  </div>
+  <div class="fg"><label>WhatsApp</label><input id="nWa" placeholder="+57 300 000 0000"></div>
+  <label class="sub" style="display:block;margin:0 0 4px;">Roles (marca los que necesite)</label>
+  <div class="roles-grid" id="nRoles"></div>
+  <div class="fg"><label>Contraseña temporal *</label>
+    <div class="pwrow"><input id="nPass"><button class="btn btn-ghost" onclick="genPass()"><i class="fas fa-rotate"></i></button></div>
+  </div>
+  <button class="btn btn-mg" id="btnCrear" onclick="crear()"><i class="fas fa-user-plus"></i> Crear usuario</button>
+  <div class="msg" id="msgCrear"></div>
+</div>
+
+<div class="sec-t"><i class="fas fa-users" style="color:var(--cyan)"></i> Equipo <button class="btn btn-ghost mini" onclick="cargar()"><i class="fas fa-rotate"></i></button></div>
+<div class="tw"><table id="tbl"><thead><tr><th>Nombre</th><th>Email</th><th>Roles</th><th>Estado</th><th></th></tr></thead><tbody><tr><td colspan="5" class="empty">Cargando…</td></tr></tbody></table></div>
+
+<!-- Modal editar roles -->
+<div class="ov" id="ovEdit"><div class="modal">
+  <h3 id="ovT">Editar roles</h3>
+  <input type="hidden" id="eId">
+  <p class="sub" id="eEmail" style="margin:0 0 8px;"></p>
+  <div class="roles-grid" id="eRoles"></div>
+  <label class="rchk" style="max-width:200px;"><input type="checkbox" id="eActive"> Cuenta activa</label>
+  <div class="msg" id="msgEdit"></div>
+  <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovEdit')">Cancelar</button><button class="btn btn-mg" onclick="guardarRoles()">Guardar</button></div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>ProdigyAuth.require(['admin']);</script>
+<script>
+const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const ROLES=[['operator','Operador'],['diseno','Diseño coronas'],['alineadores','Alineadores'],['guias','Guías quirúrgicas'],['exocad','Exocad'],['blender','Blender'],['taller','Taller'],['fresado','Fresado'],['impresion','Impresión 3D'],['calidad','Calidad'],['contabilidad','Contabilidad'],['encargado_inventario','Inventario'],['mensajero','Mensajero'],['secretaria','Secretaria']];
+const lbl=r=>{const f=ROLES.find(x=>x[0]===r);return f?f[1]:r;};
+let sb, TOKEN='';
+
+function rolesGrid(el,checked){ el.innerHTML=ROLES.map(([v,t])=>`<label class="rchk"><input type="checkbox" value="${v}" ${checked&&checked.includes(v)?'checked':''}> ${escH(t)}</label>`).join(''); }
+function pick(el){ return Array.from(el.querySelectorAll('input:checked')).map(i=>i.value); }
+function genPass(){ const b=Array.from(crypto.getRandomValues(new Uint8Array(6))).map(x=>'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789'[x%54]).join(''); document.getElementById('nPass').value='Prodigy'+b+'!@#%&*?-'[Math.floor(Math.random()*8)]+(Math.floor(Math.random()*90)+10); }
+
+async function api(action,extra){
+  const r=await fetch('/api/gestion-usuarios',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+TOKEN},body:JSON.stringify(Object.assign({action},extra||{}))});
+  return r.json();
+}
+function msg(id,text,ok){ const e=document.getElementById(id); e.textContent=text; e.className='msg '+(ok?'ok':'err'); }
+
+async function init(){
+  sb=window.ProdigyAuth.getSb();
+  const { data:{ session } }=await sb.auth.getSession();
+  TOKEN=session&&session.access_token;
+  rolesGrid(document.getElementById('nRoles'),[]);
+  genPass();
+  cargar();
+}
+async function cargar(){
+  const d=await api('list');
+  const tb=document.querySelector('#tbl tbody');
+  if(!d.ok){ tb.innerHTML=`<tr><td colspan="5" class="empty">⚠️ ${escH(d.error||'Error')}${d.error&&d.error.includes('SERVICE')?' — agrega SUPABASE_SERVICE_ROLE_KEY en Cloudflare':''}</td></tr>`; return; }
+  const us=(d.users||[]).sort((a,b)=>(a.es_admin?-1:0)-(b.es_admin?-1:0));
+  tb.innerHTML=us.map(u=>`<tr>
+    <td>${escH(u.nombre||'—')}</td>
+    <td>${escH(u.email)}</td>
+    <td>${u.es_admin?'<span class="chip" style="background:rgba(212,175,55,.15);color:var(--gold)">admin</span>':(u.roles.map(r=>`<span class="chip">${escH(lbl(r))}</span>`).join('')||'—')}</td>
+    <td>${u.es_admin?'<span class="pill on">activo</span>':`<span class="pill ${u.active?'on':'off'}">${u.active?'activo':'inactivo'}</span>`}</td>
+    <td class="acts">${u.es_admin?'':`
+      <button class="btn btn-ghost mini" onclick='editar(${JSON.stringify(u).replace(/'/g,"&#39;")})'><i class="fas fa-user-gear"></i></button>
+      <button class="btn btn-ghost mini" onclick="borrar('${u.id}','${escH(u.email)}')" style="color:var(--red)"><i class="fas fa-trash"></i></button>`}</td>
+  </tr>`).join('')||`<tr><td colspan="5" class="empty">Sin usuarios de staff aún.</td></tr>`;
+}
+
+async function crear(){
+  const nombre=document.getElementById('nNombre').value.trim();
+  const email=document.getElementById('nEmail').value.trim();
+  const whatsapp=document.getElementById('nWa').value.trim();
+  const roles=pick(document.getElementById('nRoles'));
+  const password=document.getElementById('nPass').value;
+  if(!nombre||!email||!password){ msg('msgCrear','Nombre, email y contraseña son obligatorios.',false); return; }
+  if(!roles.length){ msg('msgCrear','Marca al menos un rol.',false); return; }
+  const b=document.getElementById('btnCrear'); b.disabled=true; b.innerHTML='<i class="fas fa-spinner fa-spin"></i> Creando…';
+  const d=await api('create',{email,password,nombre,whatsapp,roles});
+  b.disabled=false; b.innerHTML='<i class="fas fa-user-plus"></i> Crear usuario';
+  if(!d.ok){ msg('msgCrear','⚠️ '+d.error,false); return; }
+  msg('msgCrear','✅ Creado: '+email+' · clave: '+password+' (cópiala y pásasela)',true);
+  document.getElementById('nNombre').value='';document.getElementById('nEmail').value='';document.getElementById('nWa').value='';
+  rolesGrid(document.getElementById('nRoles'),[]); genPass(); cargar();
+}
+
+function editar(u){
+  document.getElementById('eId').value=u.id;
+  document.getElementById('eEmail').textContent=u.email;
+  rolesGrid(document.getElementById('eRoles'),u.roles);
+  document.getElementById('eActive').checked=u.active!==false;
+  document.getElementById('msgEdit').className='msg';
+  document.getElementById('ovEdit').classList.add('show');
+}
+async function guardarRoles(){
+  const id=document.getElementById('eId').value;
+  const roles=pick(document.getElementById('eRoles'));
+  const active=document.getElementById('eActive').checked;
+  if(!roles.length){ msg('msgEdit','Marca al menos un rol (o desactiva la cuenta).',false); return; }
+  const d=await api('set_roles',{id,roles,active});
+  if(!d.ok){ msg('msgEdit','⚠️ '+d.error,false); return; }
+  cerrar('ovEdit'); cargar();
+}
+async function borrar(id,email){
+  if(!confirm('¿Borrar la cuenta de '+email+'? Esto es permanente.')) return;
+  const d=await api('delete',{id});
+  if(!d.ok){ alert('⚠️ '+d.error); return; }
+  cargar();
+}
+function cerrar(id){ document.getElementById(id).classList.remove('show'); }
+window.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
