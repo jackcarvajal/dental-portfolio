@@ -337,6 +337,15 @@ function render(pedido, revisiones){
       </div>
     </div>
 
+    <!-- QR de contacto → todos los canales/WhatsApp -->
+    <div style="display:flex;align-items:center;gap:20px;background:rgba(37,211,102,.06);border:1px solid rgba(37,211,102,.2);border-radius:12px;padding:16px;margin-bottom:20px;">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=${encodeURIComponent('https://prodigylabdental.com/links')}&bgcolor=050505&color=25D366&format=png" alt="QR contacto PRODIGY" width="90" height="90" style="border-radius:6px;flex-shrink:0;" loading="lazy">
+      <div>
+        <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#25D366;margin-bottom:4px;">Contacto y WhatsApp</div>
+        <div style="font-size:.78rem;color:#94a3b8;line-height:1.5;">Escanea para todos nuestros canales<br><strong style="color:#fff;">WhatsApp · +57 321 281 6716 · prodigylabdental.com/links</strong></div>
+      </div>
+    </div>
+
     <div class="rec-footer">
       <p>${escH(L.lDoc)}: ${escH(docGen)}</p>
       <div>
