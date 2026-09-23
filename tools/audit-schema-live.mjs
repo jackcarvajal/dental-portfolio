@@ -31,6 +31,7 @@ const ALLOW = new Set([
   'leads_doctores.html', 'leads_doctores.soporte', 'logs_incidencias.bajo', 'logs_incidencias.pago',
   'notificaciones_internas.arr',
   'pedido_incidencias.show',   // bleed: .classList.contains('show') del modal, junto al insert (no es columna)
+  'solicitudes_scanner.ruta',  // bleed: clave del objeto JS {nombre,ruta} de archivos subidos en envia-alineadores (no es columna)
   // Columnas de promociones — existen tras correr sql/promos-y-restaurativos-catalogo.sql.
   // El código degrada bien si aún no están (Promo cae al precio normal).
   'catalogo.precio_oferta', 'catalogo.oferta_desde', 'catalogo.oferta_hasta',
