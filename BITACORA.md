@@ -9,15 +9,39 @@
 
 ---
 
-## 2026-09-22  (Sistema de gestión: código cliente + material + incidencias + QR unificado)
+## 2026-09-22  (SISTEMA DE GESTIÓN DE LAB COMPLETO — sesión larga)
 
-### 🟡 Fases 1/2/4 + QR unificado (falta configurar/probar)
-- **Fase 1 — Código cliente `DR-####`**: `sql/codigo-cliente-doctor-2026.sql` (trigger+secuencia en `doctores_perfil`, ya corrido). Panel `app/clientes.html` (código, contacto WA directo, nº casos) para secretaria/admin/contabilidad. Rol `secretaria` incluido en permisos (crear el usuario con `app_metadata.role='secretaria'`).
-- **Fase 2 — Material por caso**: la registración YA existía en `inventario.html` (Salida Rápida por código, liga `pedido_id`+`usuario_id`). Se agregó la VISTA "Material usado" en el historial del rastreo (costo solo admin/contabilidad/inventario). Pendiente Fase 3: vista `v_material_caso` sin costo para técnicos.
-- **Fase 4 — Incidencias**: `sql/pedido-incidencias-2026.sql` (tabla `pedido_incidencias`, ya corrida). Staff registra desde rastreo (botón Incidencia + toggle "visible al Dr"); el Dr las ve en su timeline (`client-panel` verTimeline). RLS: Dr solo lee las de SU caso marcadas visibles. Lo interno (pérdida/reproceso) nunca se filtra.
-- **QR unificado** `app/caso-qr.html`: un solo QR rutea por rol → staff a `mover.html` (interno), doctor/público a `/seguimiento-caso` (seguro). `etiqueta.html` ahora genera el QR al enrutador + `hash_seguridad` para el fallback público.
-- **Impresora recomendada**: SVANTTO Y42BT (Amazon, USB+BT, 4x6, ~$40 USD, envío gratis CO). Papel: etiqueta térmica DIRECTA 10x15 (guías) + 50×30mm (casos). Las guías normalmente las da la transportadora.
-- Audit-schema-live: allowlisteado falso positivo `pedido_incidencias.show` (bleed de `.classList.contains`).
+> Todo desplegado y en vivo (main). SQL de esta sesión YA CORRIDOS por el usuario. Ver también memoria [[project_sistema_gestion_lab]].
+
+### Fases del roadmap (docs/ROADMAP-GESTION-LAB.md)
+- **Fase 1 — Código cliente `DR-####`**: `sql/codigo-cliente-doctor-2026.sql` (trigger+secuencia en `doctores_perfil`). Panel `app/clientes.html` (código, WA directo, nº casos) para admin/operator/contabilidad/secretaria.
+- **Fase 2 — Material por caso**: registración ya existía en `inventario.html`. Vista "Material usado" en el historial del rastreo. `sql/fase3-material-sin-costo-2026.sql` = RPC `material_por_caso` (item+cantidad SIN costo, solo-staff) → técnicos ven material sin precio.
+- **Fase 3 — RBAC (dinero por rol)**: RPC `puede_producir` (`sql/fase3-puede-producir-2026.sql`) valida pago SIN exponer montos. `operario.html`, `operario-diseno.html`, `operator-panel.html` YA NO leen pago_estado/precio_total → usan el RPC. **DECISIÓN usuario:** mensajero/calidad SÍ ven el saldo (`saldo_pendiente_monto`) porque lo COBRAN en entrega (regla: no entregar sin cobrar). NO se ocultó. Pendiente Fase 3 fina: separar contacto del Dr por rol.
+- **Fase 4 — Incidencias**: `sql/pedido-incidencias-2026.sql` (tabla `pedido_incidencias`, RLS: Dr solo lee las de SU caso `visible_cliente=true`). Registrables desde rastreo (botón Incidencia) y desde el escaneo (mover: "Reportar problema/duda — no iniciar" → avisa staff + banner rojo al escanear).
+- **Fase 5 — Notif diseño→revisión**: `operario-diseno` al pasar a REVISION_CLIENTE manda email al Dr (Resend) + WhatsApp a secretaria. FIX: antes seleccionaba solo 'codigo' pero usaba p.email → nunca disparaba.
+
+### Piezas nuevas (todas en `/app/`, solo-staff, RLS por tablas separadas)
+- **`orden-produccion.html`**: orden imprimible **carta apaisada 2-up** (2 casos/hoja, `?c=CODE&c2=CODE2`), **doctor por CÓDIGO** (privacidad, paciente sí visible), **odontograma FDI 2 dígitos**, tabla de **tiempos por área + V°B° supervisor**, obs doble (odontólogo/interno), checklist elementos, instrucciones QR paso a paso, firmas recepción/calidad/supervisor. Botón "Orden" en rastreo.
+- **`papeleria.html`**: guía del sistema QR + protocolos por área (8) + por tipo de trabajo (4). Imprimir → plastificar → pegar en estaciones. Link en panel.
+- **`caso-qr.html`**: enrutador (staff→mover, público→seguimiento). **`qr-demo.html`**: prueba tamaños QR (12–30mm).
+- **`mover.html`** (escaneo): role-aware (pre-selecciona área del rol vía `ROL_AREA`), **prompts por área** (`AREA_TIPS`: qué revisar), cadena de custodia (componentes+estado), **foto de handoff** (constancia de responsabilidad; en diseño = captura del diseño), reportar incidencia, banner incidencia abierta.
+- **`rastreo.html`**: tablero con **duración por área** (métricas de tiempo), material (RPC), incidencias, historial. Botones Etiqueta(auto-print)/Orden/Mover/Incidencia.
+- **`pedido_seguimiento`** (tabla solo-staff): área/técnico actual FUERA de `pedidos` (evita fuga al Dr por select('*')). **`pedido_movimientos`** (custodia+fotos, bucket `caso-fotos`).
+
+### QR / impresión
+- **Link corto `/c/CÓDIGO`** (ruta en `_redirects` → caso-qr) → QR menos denso, imprime chico. etiqueta+orden lo usan.
+- **Auto-print**: `etiqueta.html?c=X&print=1` abre el diálogo de impresión solo. El botón "Etiqueta" del rastreo lo usa → 1 clic imprime.
+- **Impresora (decisión):** para 1-clic del sistema → **SVANTTO Y42BT USB (~$40)** + rollos 50×30mm térmica directa. Mini Bluetooth (SINMARK SK58/HZTZ Y50/ORICO ~$10-14) = solo desde su app (pegar `/c/CÓDIGO`), no del sistema salvo que sea "USB de datos + driver Windows". NO usan guías de mensajería (descartado). Órdenes → láser oficina + bond carta 75g.
+- **Recibo del Dr** (`recibo-caso.html`): + QR de contacto → `/links` (todos los WhatsApp).
+
+### Infra
+- **Vercel/deploy.yml ELIMINADOS** (21-sep): solo Cloudflare Pages despliega. deploy.yml borrado, remote `prodigio` y secret `PRODIGY_WEB_TOKEN` quitados.
+- Audit-schema-live: allowlisteados falsos positivos `pedido_incidencias.show` y `.area` (bleed de `.classList`/ternarios).
+
+### PENDIENTE (para la próxima)
+- **Mantenimiento por estación/máquina (QR por equipo)** — esperando lista/fotos de máquinas del usuario (fresadora, impresora 3D, horno sinterizado, etc.).
+- Campos de orden por flujo (diseño/fresado/lab) · recibo de entrega del Dr (mensajero, firma) · dashboard de métricas (tiempo promedio por área) · Fase 3 fina (contacto del Dr por rol).
+- **PROBLEMA DE CHAT:** la API rechazó leer imágenes nuevas (contexto saturado de imágenes). Para lo visual → chat nuevo (la memoria pone al día).
 
 ---
 
