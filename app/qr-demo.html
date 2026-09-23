@@ -47,19 +47,20 @@ h1{font-size:1.2rem;margin-bottom:4px;}
 <div class="ruler-lbl">Regla de referencia — cada marca = 10&nbsp;mm (verifica que salga a escala real; si no, revisa "ajustar a página" en el diálogo de impresión).</div>
 
 <div class="tip">
-  <b>Guía rápida (impresora térmica 203&nbsp;dpi):</b><br>
-  • En <b>papel/impresora normal</b>: desde ~12&nbsp;mm suele leer.<br>
-  • En <b>térmica 203&nbsp;dpi</b> (SVANTTO/Xprinter): lo seguro es <b>18–22&nbsp;mm</b> por la densidad del QR.<br>
-  • Para la <b>orden de trabajo interna</b> cabe perfecto un QR de <b>18–20&nbsp;mm</b> en una esquina.<br>
-  • Para <b>paquetes que se envían</b>, usa 22–25&nbsp;mm (se escanea de más lejos).<br>
-  <br>¿Quieres un QR aún más chico? El link actual es largo. Puedo crear un <b>link corto</b> (ej. <code>prodigylabdental.com/c/CÓDIGO</code>) → QR menos denso → escanea desde ~12&nbsp;mm. Dime y lo agrego.
+  <b>✅ Ya usamos link corto</b> (<code>prodigylabdental.com/c/CÓDIGO</code>) → el QR quedó poco denso y escanea chico.<br><br>
+  <b>Guía rápida (térmica 203&nbsp;dpi):</b><br>
+  • En <b>etiqueta 50×30&nbsp;mm</b> (tu rollo del SINMARK SK58): el QR sale a ~<b>24&nbsp;mm</b> → lectura sobrada.<br>
+  • En <b>redonda 30&nbsp;mm</b> (rollo alterno): ~<b>15&nbsp;mm</b> ya lee gracias al link corto.<br>
+  • Para la <b>orden de trabajo interna</b>: 18–20&nbsp;mm en la esquina.<br>
+  • Para <b>paquetes que se envían</b>: 22–25&nbsp;mm (se escanea de más lejos).<br><br>
+  <b>Recuerda:</b> el SK58 imprime desde su <b>app</b> (Bluetooth). En la etiqueta o el rastreo toca <b>Copiar link</b> y pégalo en la app; ella genera el QR con esta misma densidad.
 </div>
 
 <script>
-// URL realista (misma longitud que en producción: enrutador + código + clave) para que la densidad del QR sea fiel
-const SAMPLE = 'https://prodigylabdental.com/app/caso-qr.html?c=PRD-DIS-260922-A3F&k=a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4';
+// URL realista = link CORTO de producción (/c/CÓDIGO). Menos denso → escanea más chico.
+const SAMPLE = 'https://prodigylabdental.com/c/PRD-DIS-260922-A3F';
 const SIZES = [12,15,18,20,22,25,30];
-const REC = 20; // recomendado por defecto
+const REC = 15; // con link corto, 15mm suele leer al primer intento
 document.getElementById('grid').innerHTML = SIZES.map(mm=>`
   <div class="cell">
     <div class="qr${mm===REC?' recom':''}" style="width:${mm}mm;height:${mm}mm;">
