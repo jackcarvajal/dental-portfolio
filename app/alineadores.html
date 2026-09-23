@@ -68,7 +68,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <p class="sub" id="subtitle">Cargando…</p>
 
 <div class="bar">
-  <button class="btn btn-mg" onclick="abrirCaso()"><i class="fas fa-plus"></i> Nuevo caso</button>
+  <button class="btn btn-mg" id="btnNuevo" onclick="abrirCaso()"><i class="fas fa-plus"></i> Nuevo caso</button>
   <div class="fx money-cli"><label>Dólar USD/COP</label><input type="number" id="fx" value="3180" step="10" oninput="guardarFx();render()"></div>
   <a class="btn btn-ghost" href="rastreo.html"><i class="fas fa-arrow-left"></i> Volver</a>
 </div>
@@ -173,6 +173,8 @@ async function init(){
   VE_MAY=VE_CLI || ROLE==='diseno';                            // ve el pago a Mayra (COP)
   if(!VE_CLI) document.body.classList.add('hid-cli');
   if(!VE_MAY) document.body.classList.add('hid-may');
+  // Mayra (diseno) NO crea casos — el cliente los envía y ella los trabaja. Solo admin/operator/contabilidad crean.
+  if(!VE_CLI){ const b=document.getElementById('btnNuevo'); if(b) b.style.display='none'; }
   try{ const f=localStorage.getItem('aln_fx'); if(f) document.getElementById('fx').value=f; }catch(_){}
   document.getElementById('subtitle').textContent = VE_CLI
     ? 'Casos + cuentas (cobro cliente USD · pago Mayra COP). Ingresa la tasa del dólar para ver márgenes.'
