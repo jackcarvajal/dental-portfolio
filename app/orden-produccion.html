@@ -105,7 +105,7 @@ function renderOrden(c){
     return `<div class="orden"><div class="hdr"><div class="brand"><h1>💎 PRODIGY</h1><div class="sub">Orden de producción — en blanco</div></div><div class="center"><div class="t">ORDEN DE PRODUCCIÓN</div><div class="n">Nº ______</div></div><div class="qr" style="display:flex;align-items:center;justify-content:center;font-size:5pt;color:#aaa;">sin QR</div></div>`
       + camposVacios() + `</div>`;
   }
-  const qrUrl = 'https://prodigylabdental.com/app/caso-qr.html?c=' + encodeURIComponent(c.codigo||'') + (c.hash_seguridad?'&k='+encodeURIComponent(c.hash_seguridad):'');
+  const qrUrl = 'https://prodigylabdental.com/c/' + encodeURIComponent(c.codigo||'');
   const qr = `<img alt="QR" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=0&data=${encodeURIComponent(qrUrl)}">`;
   return `<div class="orden">
     <div class="hdr">
