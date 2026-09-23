@@ -86,6 +86,20 @@
 
 ---
 
+## 2026-09-23  (sábado fuera del cálculo de entregas — PRODIGY)
+
+### ✅ calcularFechaEntrega y turnos ya no cuentan el sábado (autorizado por Alejandro)
+Regla: el sábado (8am-12m) es solo atención y pendientes; **lo que entra el sábado cuenta desde el lunes**.
+La web ya lo decía desde el 18-sep, pero el cálculo seguía contando la mañana del sábado y prometía un día antes.
+
+- **`js/flujo-impresion.js`** (7 cambios): `calcularFecha24h` (el sábado completo empuja a lunes, antes solo desde las 12) · `calcularFechaEntrega` (arranque y avance de día saltan sábado; bloque "sábado después de 1 PM" eliminado por inalcanzable) · `construirFecha` de `calcularFechasTurno` · `sumarHorasHabiles` (fuera `esSabadoHabil` y la franja 8:00-12:30; `min` quedaba sin uso y se retiró → lint limpio).
+- **`flujo-fresado.html`**: `construirFecha` de `calcularFechasTurnoFresado`.
+- **Verificado con la función real extraída del archivo** (no una copia): vie 10:00 → vie 18:00 · vie 16:00 → lun 14:00 · **sáb 09:00 → lun 16:00** · lun 09:00 → lun 17:00. `node --check` + `npm run lint` + `audit.mjs` OK.
+- Cache-busters: `flujo-impresion.js?v=20260923`, SW `prodigy-v41` + `MAP.md SW_VERSION` igualado (lo exige el smoke test).
+- 💡 `js/fechas-habiles.js` ya tenía `sabadoHabil:false` → diseño y lab no se tocaron. Alejandro CAD/CAM no aplica (solo diseño, sin producción).
+
+---
+
 ## 2026-09-19  (Google Business Profile — PRODIGY)
 
 ### 🟡 Ficha de Google enlazada (falta ver en vivo tras deploy)

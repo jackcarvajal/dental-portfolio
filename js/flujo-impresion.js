@@ -986,7 +986,7 @@
         }
 
         // Lógica base para calcular entrega de 24h
-        function calcularFecha24h(hC){let f=new Date();let h=f.getHours();let d=f.getDay();if(d===0||(d===6&&h>=12)){f.setDate(f.getDate()+(d===0?1:2));d=1;h=8;}f.setDate(f.getDate()+(h>=hC?2:1));if(f.getDay()===6)f.setDate(f.getDate()+2);if(f.getDay()===0)f.setDate(f.getDate()+1);return f;}
+        function calcularFecha24h(hC){let f=new Date();let h=f.getHours();let d=f.getDay();if(d===0||d===6){f.setDate(f.getDate()+(d===0?1:2));d=1;h=8;}f.setDate(f.getDate()+(h>=hC?2:1));if(f.getDay()===6)f.setDate(f.getDate()+2);if(f.getDay()===0)f.setDate(f.getDate()+1);return f;}
 
         // ==========================================
         // FESTIVOS COLOMBIA - ETERNOS (calculados dinámicamente)
@@ -1038,7 +1038,7 @@
          * Calcula fecha de entrega respetando horario del laboratorio
          * Horario: 8 AM - 6 PM (10 horas laborables)
          * Corte: 5 PM (pedidos después arrancan 8 AM día siguiente)
-         * Días: Lunes a Sábado (domingo excluido)
+         * Días: Lunes a Viernes (sábado y domingo excluidos)
          */
         function calcularFechaEntrega(horasRequeridas) {
             const HORA_INICIO = 8;
@@ -1065,8 +1065,8 @@
             }
             // Si está en horario hábil (8 AM - 5 PM), continuar desde hora actual
 
-            // Saltar domingos y festivos
-            while (fechaActual.getDay() === 0 || esFestivo(fechaActual)) {
+            // Saltar sábados, domingos y festivos (el sábado no es día de producción)
+            while (fechaActual.getDay() === 0 || fechaActual.getDay() === 6 || esFestivo(fechaActual)) {
                 fechaActual.setDate(fechaActual.getDate() + 1);
                 fechaActual.setHours(HORA_INICIO, 0, 0, 0);
             }
@@ -1084,18 +1084,12 @@
                     horasRestantes -= horasDisponiblesHoy;
                     fechaActual.setDate(fechaActual.getDate() + 1);
                     fechaActual.setHours(HORA_INICIO, 0, 0, 0);
-                    while (fechaActual.getDay() === 0 || esFestivo(fechaActual)) {
+                    while (fechaActual.getDay() === 0 || fechaActual.getDay() === 6 || esFestivo(fechaActual)) {
                         fechaActual.setDate(fechaActual.getDate() + 1);
                     }
                 }
             }
 
-            // Sábado después de 1 PM → lunes 9 AM (saltar si festivo)
-            if (fechaActual.getDay() === 6 && fechaActual.getHours() >= 13) {
-                fechaActual.setDate(fechaActual.getDate() + 2);
-                fechaActual.setHours(9, 0, 0, 0);
-                while (esFestivo(fechaActual)) fechaActual.setDate(fechaActual.getDate() + 1);
-            }
             return fechaActual;
         }
 
@@ -1129,13 +1123,8 @@
                 const f = new Date(ahora);
                 f.setDate(f.getDate() + diasOffset);
                 f.setHours(hora, minutos || 0, 0, 0);
-                while (f.getDay() === 0 || esFestivo(f)) f.setDate(f.getDate() + 1);
-                // Sábado después de 1 PM → lunes 9 AM (saltar si festivo)
-                if (f.getDay() === 6 && f.getHours() >= 13) {
-                    f.setDate(f.getDate() + 2);
-                    f.setHours(9, 0, 0, 0);
-                    while (esFestivo(f)) f.setDate(f.getDate() + 1);
-                }
+                // Sábado, domingo y festivos no son días de producción
+                while (f.getDay() === 0 || f.getDay() === 6 || esFestivo(f)) f.setDate(f.getDate() + 1);
                 return f;
             }
 
@@ -1252,29 +1241,16 @@
                 fecha.setHours(fecha.getHours() + 1);
                 let dia = fecha.getDay();
                 let hora = fecha.getHours();
-                let min = fecha.getMinutes();
-
-                // Domingo (0) y festivos no se trabajan
-                if (dia === 0 || esFestivo(fecha)) continue;
+                // Sábado (6), domingo (0) y festivos no se trabajan
+                if (dia === 0 || dia === 6 || esFestivo(fecha)) continue;
 
                 // Lunes a Viernes: 8 AM a 6 PM (18:00)
-                let esDiaHabilNormal = (dia >= 1 && dia <= 5) && (hora >= 8 && hora < 18);
-                
-                // Sábado: 8 AM a 12:30 PM
-                let esSabadoHabil = (dia === 6) && (hora >= 8 && (hora < 12 || (hora === 12 && min <= 30)));
-
-                if (esDiaHabilNormal || esSabadoHabil) {
+                if (hora >= 8 && hora < 18) {
                     horasRestantes--;
-                } else {
-                    // Si llega al final del día hábil, salta al día siguiente a las 8:00 AM
-                    if (dia >= 1 && dia <= 5 && hora >= 18) {
-                        fecha.setDate(fecha.getDate() + 1);
-                        fecha.setHours(8, 0, 0, 0);
-                    } else if (dia === 6 && (hora > 12 || (hora === 12 && min > 30))) {
-                        // Si pasa del sábado a medio día, salta al Lunes
-                        fecha.setDate(fecha.getDate() + 2);
-                        fecha.setHours(8, 0, 0, 0);
-                    }
+                } else if (hora >= 18) {
+                    // Fin de jornada: salta al día siguiente a las 8:00 AM
+                    fecha.setDate(fecha.getDate() + 1);
+                    fecha.setHours(8, 0, 0, 0);
                 }
             }
             return fecha;

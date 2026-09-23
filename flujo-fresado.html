@@ -3501,12 +3501,8 @@ if(window.ProdigyAuth){
                 const f = new Date(ahora);
                 f.setDate(f.getDate() + diasOffset);
                 f.setHours(hora, 0, 0, 0);
-                while (f.getDay() === 0 || esFestivo(f)) f.setDate(f.getDate() + 1);
-                if (f.getDay() === 6 && f.getHours() >= 13) {
-                    f.setDate(f.getDate() + 2);
-                    f.setHours(9, 0, 0, 0);
-                    while (esFestivo(f)) f.setDate(f.getDate() + 1);
-                }
+                // Sábado, domingo y festivos no son días de producción
+                while (f.getDay() === 0 || f.getDay() === 6 || esFestivo(f)) f.setDate(f.getDate() + 1);
                 return f;
             }
             const c = MATRIZ_FRESADO[horaBoton];
