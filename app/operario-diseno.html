@@ -184,7 +184,7 @@ body.ready{visibility:visible;}
     <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;overflow:hidden;">
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--pink);"></div>
       <div style="font-size:1.6rem;font-weight:900;color:var(--pink);" id="kpi-pago-sub">—</div>
-      <div style="font-size:.68rem;color:var(--muted);margin-top:3px;">⚡ Comprobantes pendientes</div>
+      <div style="font-size:.68rem;color:var(--muted);margin-top:3px;">👁 En revisión del Dr</div>
     </div>
   </div>
 
@@ -397,7 +397,7 @@ async function cargarCasos() {
   const { data, error } = await sb.from('pedidos')
     // Operario NO ve: nombre_paciente, email, whatsapp real del cliente — solo código interno
     // wa_op: número enmascarado solo para notificaciones internas de operario
-    .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,pago_estado,precio_total,created_at,flujo,link_diseno,notas_cambios,revisiones_usadas,stl_ruta,operario_codigo,telefono,pais,nombre_doctor')
+    .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,revisiones_usadas,stl_ruta,operario_codigo,telefono,pais,nombre_doctor')
     .eq('negocio', 'prodigy')
     .eq('flujo','diseno')
     // (quitado filtro estado='cancelado': valor inexistente en el enum estado_pedido → 22P02/400)
@@ -430,7 +430,7 @@ function renderKanban() {
   document.getElementById('kpi-nuevos').textContent     = semCasos.length;
   document.getElementById('kpi-proceso').textContent    = (pend.length + diseno.length);
   document.getElementById('kpi-completados').textContent= done.filter(p => p.created_at >= semana).length;
-  document.getElementById('kpi-pago-sub').textContent   = _casos.filter(p => p.pago_estado === 'pago_subido').length;
+  document.getElementById('kpi-pago-sub').textContent   = rev.length;
 
   const empty = '<p style="color:var(--muted);font-size:.8rem;padding:10px;">Sin casos</p>';
   document.getElementById('col-pend').innerHTML   = pend.length   ? pend.map(p=>cardHTML(p,'pend')).join('')   : empty;
@@ -515,17 +515,12 @@ async function avanzar(id, nuevoEstado) {
   const caso = _casos.find(p => p.id === id);
   if (!caso) { toast('Caso no encontrado','err'); return; }
 
-  // Bloquear inicio de diseño si no hay abono confirmado
+  // Bloquear inicio de diseño si no hay abono confirmado — vía RPC (sin exponer montos ni estado de pago)
   if (nuevoEstado === 'EN_DISENO') {
-    const pagoOk = ['pago_confirmado','pago_subido','credito_autorizado'].includes(caso.pago_estado);
+    const { data: pagoOk } = await sb.rpc('puede_producir', { p_pedido_id: id });
     if (!pagoOk) {
-      const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '50%';
-      const abono  = caso.precio_total ? fmtCOP(Math.round(caso.precio_total / 2)) : '50%';
-      toast(`⛔ Pago pendiente — Se requiere abono (${abono}) para iniciar el diseño`, 'err');
+      toast('⛔ Pago pendiente — Se requiere abono para iniciar el diseño', 'err');
       return;
-    }
-    if (caso.pago_estado === 'pago_subido') {
-      toast('⚠️ Comprobante recibido pero no verificado aún. Confirma con admin si puedes continuar.', 'warn');
     }
   }
 
