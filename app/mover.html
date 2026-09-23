@@ -67,6 +67,19 @@ const TECNICOS = ['Alejandro','Técnico 1','Técnico 2','Sin asignar'];
 const COMPONENTES = ['Llave de implante','Tornillos','Análogos','Modelo/muñones','Antagonista','Aditamentos','Material (disco/resina)','Registro de mordida'];
 // Área que corresponde a cada rol → se pre-selecciona al escanear (el técnico recibe el caso EN su área)
 const ROL_AREA = { diseno:'Diseño CAD', fresado:'Fresado', impresion:'Impresión 3D', taller:'Acabado', calidad:'Control Calidad', mensajero:'Despacho', encargado_inventario:'Recepción' };
+// Recordatorio de qué revisar en cada área (se muestra al seleccionar el área)
+const AREA_TIPS = {
+  'Recepción':'Verifica que llegue completo: impresión, antagonista, modelos, registro, llave/tornillos.',
+  'Yesos / modelos':'Vaciar/limpiar modelos; verificar zócalos y muñones.',
+  'Diseño CAD':'Verifica el escaneo (márgenes, mordida). Al terminar: captura del diseño final.',
+  'Fresado':'¿Fresa partida o cambio de fresa? (regístralo en el QR de la máquina). Disco y color correctos + foto del disco.',
+  'Impresión 3D':'Resina correcta y nivel. Revisa calidad de capas; si hay fallo/daño, repórtalo (no entregues defectuoso).',
+  'Sinterizado':'Registra tiempo y temperatura del horno. Verifica que no haya fracturas.',
+  'Acabado':'Control de color contra la referencia VITA. Maquillaje/glaseado parejo.',
+  'Control Calidad':'Verifica ajuste, puntos de contacto, oclusión, color y acabado. Aprueba o devuelve.',
+  'Despacho':'Orden completa y firmada por calidad. Empaca protegiendo la pieza + foto.',
+  'Entregado':'Confirma entrega. Si hay saldo, cóbralo antes de entregar.'
+};
 // ────────────────────────────────────────────────────────────────
 const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD = d => d ? new Date(d).toLocaleString('es-CO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
@@ -125,6 +138,7 @@ function render(movs, incs){
     <div class="areas" id="areas">
       ${AREAS.map(a=>`<button class="area" data-a="${escH(a)}" onclick="pickArea(this)">${escH(a)}</button>`).join('')}
     </div>
+    <div id="areaTip" style="display:none;font-size:.76rem;color:var(--cyan);background:rgba(0,210,255,.07);border:1px solid rgba(0,210,255,.2);border-radius:10px;padding:9px 12px;margin-top:8px;line-height:1.45;"></div>
     <div class="lbl">Técnico que lo recibe</div>
     <select id="tecnico" onchange="_tecnico=this.value">
       ${TECNICOS.map(t=>`<option value="${escH(t)}"${t===_tecnico?' selected':''}>${escH(t)}</option>`).join('')}
@@ -190,6 +204,8 @@ function pickArea(btn){
   _area = btn.dataset.a;
   document.querySelectorAll('.area').forEach(b=>b.classList.toggle('on', b===btn));
   document.getElementById('btnSave').disabled = false;
+  const tip = document.getElementById('areaTip');
+  if(tip){ const t = AREA_TIPS[_area]; if(t){ tip.textContent = '📌 '+t; tip.style.display='block'; } else { tip.style.display='none'; } }
 }
 
 async function guardar(){
