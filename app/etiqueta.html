@@ -66,7 +66,7 @@ body{background:#0d1520;color:#e2e8f0;font-family:-apple-system,'Segoe UI',sans-
     <div class="scan">Escanea para mover el caso</div>
   </div>
 </div>
-<p class="hint" id="hint">Impresora <b>SINMARK SK58</b> (Bluetooth): toca <b>Copiar link</b> y pégalo en la app del SK58 → la app genera el QR e imprime en el rollo redondo 30×30&nbsp;mm. El botón "Imprimir (USB)" solo aplica si conectas una térmica por cable.</p>
+<p class="hint" id="hint">Impresora <b>SINMARK SK58</b> (Bluetooth): toca <b>Copiar link</b> y pégalo en la app del SK58 → la app genera el QR e imprime en el rollo <b>50×30&nbsp;mm</b>. El botón "Imprimir (USB)" solo aplica si conectas una térmica por cable.</p>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
 <script src="../js/auth-guard.js?v=20260717"></script>
@@ -75,9 +75,8 @@ body{background:#0d1520;color:#e2e8f0;font-family:-apple-system,'Segoe UI',sans-
 const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const params = new URLSearchParams(location.search);
 const CODIGO = (params.get('c')||'').trim().toUpperCase();
-// Forma. Setup actual: rollo REDONDO 30x30 del SK58 → default 30. ?redonda=40 (redondo grande) · ?redonda=0 (rectangular 50x30).
-const _rp = params.get('redonda');
-const RED = _rp===null ? 30 : parseInt(_rp||'0',10);  // sin parámetro = 30mm redondo (rollo del SK58); 0 = rectangular; 40 = redonda grande
+// Forma. Setup actual: rollo RECTANGULAR 50x30 del SK58 → default rectangular. ?redonda=30 o ?redonda=40 → redondo (para más adelante).
+const RED = parseInt(params.get('redonda')||'0',10);  // 0 = rectangular 50x30 (default); 30 o 40 = redonda
 // Link CORTO → QR menos denso (fácil de imprimir chico). El enrutador manda staff→mover, público→seguimiento.
 const qrUrl = 'https://prodigylabdental.com/c/' + encodeURIComponent(CODIGO);
 
