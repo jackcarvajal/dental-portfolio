@@ -97,7 +97,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <input type="hidden" id="cId">
   <div class="grid2">
     <div class="fg"><label>Paciente *</label><input id="cPaciente" placeholder="Nombre"></div>
-    <div class="fg"><label>Cliente</label><input id="cCliente" placeholder="Panorámica Digital 3D"></div>
+    <div class="fg"><label>Cliente</label><input id="cCliente" list="clientesDL" placeholder="Panorámica Digital 3D"><datalist id="clientesDL"></datalist></div>
   </div>
   <div class="grid2">
     <div class="fg"><label>Viabilidad (rango)</label><input id="cViab" placeholder="8 a 11 inf"></div>
@@ -194,6 +194,11 @@ async function cargar(){
     const { data:pg } = await sb.from('alineadores_pagos').select('*').eq('negocio','prodigy').order('created_at',{ascending:false});
     PAGOS = pg||[];
   }
+  try{
+    const { data:cl } = await sb.from('alineadores_clientes').select('nombre');
+    const dl=document.getElementById('clientesDL');
+    if(dl) dl.innerHTML=(cl||[]).map(x=>`<option value="${escH(x.nombre)}">`).join('');
+  }catch(_){}
   render();
 }
 
