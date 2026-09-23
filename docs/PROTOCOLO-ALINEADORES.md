@@ -33,14 +33,18 @@ Después de terminar todo el plan, si el ortodoncista lo ve necesario.
 Cada caso genera hasta 2 cargos: uno que **cobro al cliente** y otro que **pago a Mayra**.
 
 ### A) Lo que COBRO al cliente (Panorámica Digital 3D) — **USD** (paga por PayPal con comisión que cubre pérdidas; antes Global66)
-**PRECIO OFICIAL (ajustado por tipo de cambio, sep-2026 — el dólar cayó de ~3.880 a ~3.180):**
-- **Valoración sola:** **$40 USD** (antes $30)
-- **Caso completo** (valoración + plan + modelos): **$120 USD** (antes $90)
-- Replaneación: **$25** (en tiempo) / **$50** (fuera de tiempo) USD.
-- Refinamiento: **$0** (≤6 meses, 1º incluido) / **$50** (>6 meses o adicional) USD.
+**PRECIO VIGENTE (lo que el sistema cobra HOY — el alza AÚN NO aplica):**
+- **Valoración sola:** **$30 USD**
+- **Caso completo** (valoración + plan + modelos): **$90 USD**
+- Replaneación: **$20** (en tiempo) / **$40** (fuera de tiempo) USD.
+- Refinamiento: **$0** (≤6 meses, 1º incluido) / **$40** (>6 meses o adicional) USD.
 - Cobro: **PayPal** (comisión que cubre pérdidas) o Global66 **@JESSMEN1171** (Jessica Mendez Carmelo).
-- Historial de precio: empezó en **$60/$20** → subió a **$90/$30** → oficial **$120/$40** (sep-2026).
-- ⚠️ El precio $90 anterior no era sostenible más allá de nov-2026 con el dólar bajo. **Revisión trimestral + cláusula piso: si USD/COP < 3.300, recalcular** con `(margen_objetivo_COP + costo_Mayra_COP) ÷ tasa`. Ver sección FX.
+
+**PROPUESTA de alza (enviada al cliente, PENDIENTE de aprobación — NO aplicar hasta que confirmen):**
+- Valoración **$40** · Caso completo **$120** · Replaneación **$25/$50** · Refinamiento **$50**.
+- Motivo: el dólar cayó de ~3.880 a ~3.180 (sep-2026) → el margen se comprimió ~31%. El precio $90 no es sostenible más allá de **nov-2026**.
+- Al aprobarse: actualizar el trigger/RPC en `sql/alineadores-mayra-panel-2026.sql` y `PRECIOS` en `app/alineadores.html`. Revisión trimestral + cláusula piso: si USD/COP < 3.300, recalcular con `(margen_objetivo_COP + costo_Mayra_COP) ÷ tasa`.
+- Historial de precio: **$60/$20** → **$90/$30 (vigente)** → propuesta **$120/$40**.
 
 ### B) Lo que PAGO a Mayra (técnica) — **COP**
 - **Valoración sola:** **$20.000 COP** (se re-cobra si pasan +4 meses y hay que re-valorar).

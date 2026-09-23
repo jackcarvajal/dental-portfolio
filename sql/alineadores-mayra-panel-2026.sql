@@ -24,14 +24,15 @@ CREATE OR REPLACE FUNCTION public.aln_casos_auto_cargos()
 RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE _mes text := to_char(COALESCE(NEW.fecha_recepcion, now()::date), 'YYYY-MM');
 BEGIN
+  -- Precios VIGENTES del cliente: valoración $30 / completo $90 USD (el alza a $40/$120 aún NO aplica).
   IF NEW.estado = 'valoracion' THEN
     INSERT INTO public.alineadores_cargos(negocio,caso_id,parte,tipo,monto,moneda,mes_corte,estado_pago)
     VALUES (NEW.negocio,NEW.id,'mayra','valoracion',20000,'COP',_mes,'pendiente'),
-           (NEW.negocio,NEW.id,'cliente','valoracion',40,'USD',_mes,'pendiente');
+           (NEW.negocio,NEW.id,'cliente','valoracion',30,'USD',_mes,'pendiente');
   ELSE
     INSERT INTO public.alineadores_cargos(negocio,caso_id,parte,tipo,monto,moneda,mes_corte,estado_pago)
     VALUES (NEW.negocio,NEW.id,'mayra','completo',60000,'COP',_mes,'pendiente'),
-           (NEW.negocio,NEW.id,'cliente','completo',120,'USD',_mes,'pendiente');
+           (NEW.negocio,NEW.id,'cliente','completo',90,'USD',_mes,'pendiente');
   END IF;
   RETURN NEW;
 END;$$;
@@ -66,11 +67,12 @@ BEGIN
   SELECT COALESCE(sum(monto),0) INTO _vc FROM public.alineadores_cargos WHERE caso_id=p_caso_id AND parte='cliente' AND tipo='valoracion';
 
   -- Diferencia = completo (Mayra 60.000 / cliente 120) menos lo ya cargado como valoración.
+  -- Diferencia: completo VIGENTE (Mayra 60.000 / cliente 90) menos la valoración ya cargada.
   INSERT INTO public.alineadores_cargos(negocio,caso_id,parte,tipo,monto,moneda,mes_corte,estado_pago,descripcion)
   VALUES ('prodigy',p_caso_id,'mayra','diferencia_a_completo',60000 - _vm,'COP',_mes,'pendiente','Completo menos valoración ya cargada ('||_vm||')'),
-         ('prodigy',p_caso_id,'cliente','diferencia_a_completo',120 - _vc,'USD',_mes,'pendiente','Completo menos valoración ya cargada');
+         ('prodigy',p_caso_id,'cliente','diferencia_a_completo',90 - _vc,'USD',_mes,'pendiente','Completo menos valoración ya cargada');
 
-  RETURN json_build_object('ok',true,'mayra_diferencia',60000-_vm,'cliente_diferencia',120-_vc);
+  RETURN json_build_object('ok',true,'mayra_diferencia',60000-_vm,'cliente_diferencia',90-_vc);
 END;$$;
 REVOKE ALL ON FUNCTION public.aln_completar_caso(uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.aln_completar_caso(uuid) TO authenticated;
