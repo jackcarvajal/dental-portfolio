@@ -173,12 +173,12 @@ async function reportarInc(){
   try{
     const { error } = await sb.from('pedido_incidencias').insert({
       pedido_id:_ped.id, codigo:_ped.codigo, negocio:'prodigy', tipo:'incidencia',
-      titulo:'Incidencia'+(area?' en '+area:''), detalle:txt, visible_cliente:false, por_email: window.PRODIGY_EMAIL||null
+      titulo:'Incidencia'+(area?(' en '+area):''), detalle:txt, visible_cliente:false, por_email: window.PRODIGY_EMAIL||null
     });
     if(error) throw error;
     // Avisa al supervisor/staff por WhatsApp (inerte si no está configurado)
     fetch('/api/notify-staff',{ method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ doctor:_ped.nombre_doctor||'—', servicio:_ped.tipo_trabajo||'', whatsapp:'', codigo:_ped.codigo||'', tipo:'⚠️ Incidencia'+(area?' en '+area:''), contexto:txt }) }).catch(()=>{});
+      body: JSON.stringify({ doctor:_ped.nombre_doctor||'—', servicio:_ped.tipo_trabajo||'', whatsapp:'', codigo:_ped.codigo||'', tipo:'⚠️ Incidencia'+(area?(' en '+area):''), contexto:txt }) }).catch(()=>{});
     toast('⚠️ Incidencia reportada');
     document.getElementById('incTxt').value=''; toggleInc();
     await cargar();
