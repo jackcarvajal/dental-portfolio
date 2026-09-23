@@ -78,6 +78,9 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <div class="sec-t money-cli"><i class="fas fa-calendar-check" style="color:var(--gold)"></i> Corte mensual</div>
 <div class="tw money-cli"><table id="corteTbl"><thead><tr><th>Mes</th><th>Por cobrar (cliente)</th><th>Por pagar (Mayra)</th><th>Margen est. (COP)</th></tr></thead><tbody></tbody></table></div>
 
+<div class="sec-t money-cli"><i class="fas fa-hand-holding-dollar" style="color:var(--green)"></i> Pagos reportados por el cliente</div>
+<div class="tw money-cli"><table id="pagosTbl"><thead><tr><th>Fecha</th><th>Monto</th><th>Método</th><th>Mes</th><th>Ref</th><th>Comprob.</th><th>Estado</th><th></th></tr></thead><tbody></tbody></table></div>
+
 <div class="sec-t"><i class="fas fa-teeth" style="color:var(--cyan)"></i> Casos</div>
 <div class="filters">
   <input type="search" id="fBuscar" placeholder="Buscar paciente/cliente…" oninput="render()">
@@ -157,7 +160,7 @@ const nf=new Intl.NumberFormat('es-CO');
 // Precios VIGENTES (el alza a $120/$40 aún NO aplica — pendiente de aprobación del cliente)
 const PRECIOS={cliente:{completo:90,valoracion:30,replaneacion_en_tiempo:20,replaneacion_fuera_tiempo:40,refinamiento_sin_costo:0,refinamiento_con_costo:40,adicional:0},
                mayra:{completo:60000,valoracion:20000,replaneacion_en_tiempo:0,replaneacion_fuera_tiempo:0,refinamiento_sin_costo:0,refinamiento_con_costo:0,adicional:0}};
-let sb, ROLE, VE_CLI=false, VE_MAY=false, CASOS=[], CARGOS=[];
+let sb, ROLE, VE_CLI=false, VE_MAY=false, CASOS=[], CARGOS=[], PAGOS=[];
 
 function fx(){ return parseFloat(document.getElementById('fx').value)||3180; }
 function guardarFx(){ try{localStorage.setItem('aln_fx',document.getElementById('fx').value);}catch(_){}}
@@ -186,6 +189,10 @@ async function cargar(){
     // La RLS decide qué ve cada quien: admin/contab = todo; Mayra (diseno) = solo parte='mayra'.
     const { data:cg } = await sb.from('alineadores_cargos').select('*').eq('negocio','prodigy');
     CARGOS = cg||[];
+  }
+  if(VE_CLI){
+    const { data:pg } = await sb.from('alineadores_pagos').select('*').eq('negocio','prodigy').order('created_at',{ascending:false});
+    PAGOS = pg||[];
   }
   render();
 }
@@ -224,6 +231,15 @@ function render(){
       return `<tr><td>${escH(m)}</td><td>$${nf.format(Math.round(v.cobrar))} USD</td><td>${nf.format(Math.round(v.pagar))} COP</td><td>${nf.format(Math.round(marg))} COP</td></tr>`;
     }).join('');
     document.querySelector('#corteTbl tbody').innerHTML = rows || `<tr><td colspan="4" class="empty">Aún sin cargos.</td></tr>`;
+    // Pagos reportados por el cliente
+    const pr=PAGOS.map(p=>{
+      const money=p.moneda==='COP'?(nf.format(Math.round(p.monto))+' COP'):('$'+nf.format(Math.round(p.monto))+' USD');
+      const st=p.estado==='verificado'?'pagado':(p.estado==='rechazado'?'factur':'pend');
+      const comp=p.comprobante_url?`<button class="btn btn-ghost mini" onclick="verComprobante('${escH(p.comprobante_url)}')"><i class="fas fa-file"></i></button>`:'—';
+      const acc=p.estado==='reportado'?`<button class="btn btn-ghost mini" onclick="verificarPago('${p.id}','verificado')" title="Verificar">✅</button> <button class="btn btn-ghost mini" onclick="verificarPago('${p.id}','rechazado')" title="Rechazar">✖</button>`:'';
+      return `<tr><td>${fmtD(p.created_at)}</td><td>${money}</td><td>${escH(p.metodo||'—')}</td><td>${escH(p.mes_corte||'—')}</td><td>${escH(p.referencia||'—')}</td><td>${comp}</td><td><span class="pill ${st}">${escH(p.estado)}</span></td><td>${acc}</td></tr>`;
+    }).join('');
+    document.querySelector('#pagosTbl tbody').innerHTML = pr || `<tr><td colspan="8" class="empty">Sin pagos reportados aún.</td></tr>`;
   }
   // Casos
   const q=(document.getElementById('fBuscar').value||'').toLowerCase();
@@ -387,6 +403,19 @@ async function marcarPagado(cargoId){
   if(error){ alert('Error: '+error.message); return; }
   await cargar();
   if(_vcCaso) verCargos(_vcCaso);
+}
+async function verificarPago(id,estado){
+  if(!confirm(estado==='verificado'?'¿Marcar este pago como VERIFICADO? (recuerda luego marcar los cargos como pagados)':'¿RECHAZAR este pago reportado?')) return;
+  const { error }=await sb.from('alineadores_pagos').update({estado}).eq('id',id);
+  if(error){ alert('Error: '+error.message); return; }
+  await cargar();
+}
+async function verComprobante(path){
+  try{
+    const { data,error }=await sb.storage.from('alineadores-comprobantes').createSignedUrl(path,120);
+    if(error||!data){ alert('No se pudo abrir el comprobante (¿bucket creado?)'); return; }
+    window.open(data.signedUrl,'_blank','noopener');
+  }catch(_){ alert('No se pudo abrir el comprobante'); }
 }
 function cerrar(id){ document.getElementById(id).classList.remove('show'); }
 window.addEventListener('DOMContentLoaded',init);

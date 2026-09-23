@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧾</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<title>Mi Facturación — Alineadores</title>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<style>
+:root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--card:#0d1520;--input:#0a1628;--border:rgba(212,175,55,.18);--text:#f5f5f7;--muted:#94a3b8;--red:#ef4444;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',sans-serif;padding:16px;visibility:hidden;max-width:900px;margin:0 auto;}
+h1{font-size:1.3rem;margin-bottom:2px;}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:16px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px;}
+.kc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;}
+.kc .k{font-size:.72rem;color:var(--muted);text-transform:uppercase;font-weight:800;letter-spacing:.4px;}
+.kc .v{font-size:1.6rem;font-weight:900;margin-top:4px;}
+.kc.deuda{border-color:rgba(239,68,68,.35);}.kc.deuda .v{color:var(--red);}
+.kc.pagado{border-color:rgba(0,255,65,.3);}.kc.pagado .v{color:var(--green);}
+.sec-t{font-size:1rem;font-weight:800;margin:22px 0 10px;display:flex;align-items:center;gap:8px;}
+.tw{overflow-x:auto;border:1px solid var(--border);border-radius:12px;}
+table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:520px;}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap;}
+th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;color:var(--muted);letter-spacing:.4px;font-weight:800;}
+.pill{display:inline-block;padding:2px 9px;border-radius:100px;font-size:.68rem;font-weight:800;}
+.pill.pend{background:rgba(239,68,68,.12);color:var(--red);}
+.pill.pagado,.pill.verificado{background:rgba(0,255,65,.12);color:var(--green);}
+.pill.factur,.pill.reportado{background:rgba(212,175,55,.14);color:var(--gold);}
+.pill.rechazado{background:rgba(148,163,184,.15);color:var(--muted);}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 18px;border-radius:9px;border:none;font-weight:800;font-size:.88rem;cursor:pointer;font-family:inherit;text-decoration:none;}
+.btn-mg{background:linear-gradient(135deg,var(--mg),#9c27b0);color:#fff;}
+.btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--muted);}
+.pay{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:18px;font-size:.88rem;line-height:1.6;}
+.pay b{color:var(--gold);}
+.empty{padding:24px;text-align:center;color:var(--muted);font-size:.85rem;}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:flex-start;justify-content:center;padding:24px 14px;z-index:100;overflow:auto;}
+.ov.show{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;max-width:460px;width:100%;}
+.modal h3{font-size:1.05rem;margin-bottom:14px;}
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:11px;}
+.fg label{font-size:.74rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.4px;}
+.fg input,.fg select,.fg textarea{background:var(--input);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:9px 11px;border-radius:8px;font-size:.9rem;font-family:inherit;width:100%;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+<h1>🧾 Mi Facturación — Alineadores</h1>
+<p class="sub" id="subtitle">Cargando…</p>
+
+<div class="cards" id="cards"></div>
+
+<div class="pay">
+  <b>💳 Cómo pagar</b><br>
+  • <b>PayPal</b> (agrega la comisión que indica PayPal para que llegue el monto completo).<br>
+  • <b>Global66:</b> busca <b>@JESSMEN1171</b> (Jessica Mendez Carmelo) → “Enviar dinero” → “Entre contactos”.<br>
+  Luego pulsa <b>“Reportar pago”</b> y sube el comprobante 👇
+</div>
+
+<div style="margin-bottom:8px;"><button class="btn btn-mg" onclick="abrirPago()"><i class="fas fa-upload"></i> Reportar pago / subir comprobante</button></div>
+
+<div class="sec-t"><i class="fas fa-file-invoice-dollar" style="color:var(--gold)"></i> Estado de cuenta por mes</div>
+<div class="tw"><table id="corteTbl"><thead><tr><th>Mes</th><th>Casos</th><th>Total</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+
+<div class="sec-t"><i class="fas fa-list" style="color:var(--cyan)"></i> Detalle de cargos</div>
+<div class="tw"><table id="cargosTbl"><thead><tr><th>Paciente</th><th>Concepto</th><th>Mes</th><th>Monto</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+
+<div class="sec-t"><i class="fas fa-receipt" style="color:var(--green)"></i> Mis pagos reportados</div>
+<div class="tw"><table id="pagosTbl"><thead><tr><th>Fecha</th><th>Monto</th><th>Método</th><th>Referencia</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+
+<!-- Modal reportar pago -->
+<div class="ov" id="ovPago"><div class="modal">
+  <h3>Reportar pago</h3>
+  <div class="grid2">
+    <div class="fg"><label>Monto</label><input type="number" id="pMonto" step="0.01" placeholder="90"></div>
+    <div class="fg"><label>Moneda</label><select id="pMoneda"><option>USD</option><option>COP</option></select></div>
+  </div>
+  <div class="grid2">
+    <div class="fg"><label>Método</label><select id="pMetodo"><option>PayPal</option><option>Global66</option><option>Transferencia</option></select></div>
+    <div class="fg"><label>Mes que cubre</label><input id="pMes" placeholder="2026-07"></div>
+  </div>
+  <div class="fg"><label>Referencia / nº transacción</label><input id="pRef" placeholder="ID de PayPal, etc."></div>
+  <div class="fg"><label>Comprobante (imagen o PDF)</label><input type="file" id="pFile" accept="image/*,.pdf"></div>
+  <div class="fg"><label>Nota (opcional)</label><textarea id="pNota" rows="2"></textarea></div>
+  <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovPago')">Cancelar</button><button class="btn btn-mg" id="pGuardar" onclick="guardarPago()">Enviar</button></div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>ProdigyAuth.require(['client','admin','operator','contabilidad']);</script>
+<script>
+const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmtD=d=>d?new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'}):'—';
+const nf=new Intl.NumberFormat('es-CO');
+const tipoLbl=t=>({completo:'Caso completo',valoracion:'Valoración',diferencia_a_completo:'Diferencia a completo',replaneacion_en_tiempo:'Replaneación (en tiempo)',replaneacion_fuera_tiempo:'Replaneación (fuera de tiempo)',refinamiento_sin_costo:'Refinamiento',refinamiento_con_costo:'Refinamiento (con costo)',adicional:'Adicional'})[t]||t;
+let sb, CASOS={}, CARGOS=[], PAGOS=[];
+
+async function init(){
+  sb=window.ProdigyAuth.getSb();
+  const { data:cs } = await sb.from('alineadores_casos').select('id,paciente,cliente,estado').eq('negocio','prodigy');
+  (cs||[]).forEach(c=>CASOS[c.id]=c);
+  const { data:cg } = await sb.from('alineadores_cargos').select('*').eq('negocio','prodigy').eq('parte','cliente');
+  CARGOS = cg||[];
+  const { data:pg } = await sb.from('alineadores_pagos').select('*').order('created_at',{ascending:false});
+  PAGOS = pg||[];
+  document.getElementById('subtitle').textContent='Aquí ves lo que llevas facturado, pagas y subes tu comprobante. Los montos están en USD.';
+  render();
+}
+
+function money(m,mon){ return mon==='COP'?(nf.format(Math.round(m))+' COP'):('$'+nf.format(Math.round(m))+' USD'); }
+
+function render(){
+  const pend=CARGOS.filter(c=>c.estado_pago!=='pagado').reduce((a,c)=>a+Number(c.monto||0),0);
+  const pag =CARGOS.filter(c=>c.estado_pago==='pagado').reduce((a,c)=>a+Number(c.monto||0),0);
+  document.getElementById('cards').innerHTML=`
+    <div class="kc deuda"><div class="k">Pendiente por pagar</div><div class="v">$${nf.format(Math.round(pend))}</div><div class="sub" style="margin:0">USD</div></div>
+    <div class="kc pagado"><div class="k">Ya pagado</div><div class="v">$${nf.format(Math.round(pag))}</div><div class="sub" style="margin:0">USD</div></div>`;
+  // Corte por mes
+  const meses={};
+  for(const c of CARGOS){ const m=c.mes_corte||'(sin mes)'; meses[m]=meses[m]||{t:0,n:0,pend:0}; meses[m].t+=Number(c.monto||0); meses[m].n++; if(c.estado_pago!=='pagado') meses[m].pend+=Number(c.monto||0); }
+  const cr=Object.keys(meses).sort().reverse().map(m=>{const v=meses[m];const st=v.pend<=0?'<span class="pill pagado">pagado</span>':'<span class="pill pend">pendiente</span>';return `<tr><td>${escH(m)}</td><td>${v.n}</td><td>$${nf.format(Math.round(v.t))} USD</td><td>${st}</td></tr>`;}).join('');
+  document.querySelector('#corteTbl tbody').innerHTML=cr||`<tr><td colspan="4" class="empty">Aún no tienes cargos.</td></tr>`;
+  // Detalle
+  const dr=CARGOS.map(c=>{const st=c.estado_pago==='pagado'?'pagado':(c.estado_pago==='facturado'?'factur':'pend');return `<tr><td>${escH((CASOS[c.caso_id]||{}).paciente||'—')}</td><td>${escH(tipoLbl(c.tipo))}</td><td>${escH(c.mes_corte||'—')}</td><td>${money(c.monto,c.moneda)}</td><td><span class="pill ${st}">${escH(c.estado_pago)}</span></td></tr>`;}).join('');
+  document.querySelector('#cargosTbl tbody').innerHTML=dr||`<tr><td colspan="5" class="empty">Sin cargos.</td></tr>`;
+  // Pagos
+  const pr=PAGOS.map(p=>`<tr><td>${fmtD(p.created_at)}</td><td>${money(p.monto,p.moneda)}</td><td>${escH(p.metodo||'—')}</td><td>${escH(p.referencia||'—')}</td><td><span class="pill ${p.estado}">${escH(p.estado)}</span></td></tr>`).join('');
+  document.querySelector('#pagosTbl tbody').innerHTML=pr||`<tr><td colspan="5" class="empty">Aún no has reportado pagos.</td></tr>`;
+}
+
+function abrirPago(){
+  ['pMonto','pRef','pMes','pNota'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pFile').value='';
+  document.getElementById('pMoneda').value='USD';
+  document.getElementById('pMetodo').value='PayPal';
+  document.getElementById('ovPago').classList.add('show');
+}
+async function guardarPago(){
+  const monto=parseFloat(document.getElementById('pMonto').value)||0;
+  if(monto<=0){ alert('Ingresa el monto pagado'); return; }
+  const btn=document.getElementById('pGuardar'); btn.disabled=true; btn.textContent='Enviando…';
+  let comp=null;
+  const f=document.getElementById('pFile').files[0];
+  if(f){
+    try{
+      const ext=(f.name.split('.').pop()||'bin').replace(/[^a-zA-Z0-9]/g,'').slice(0,8);
+      const path=`${window.PRODIGY_UID}/${Date.now()}.${ext}`;
+      const { error:ue }=await sb.storage.from('alineadores-comprobantes').upload(path,f);
+      if(!ue) comp=path;
+    }catch(_){}
+  }
+  const { error }=await sb.from('alineadores_pagos').insert({
+    negocio:'prodigy', cliente_user_id:window.PRODIGY_UID,
+    monto, moneda:document.getElementById('pMoneda').value,
+    metodo:document.getElementById('pMetodo').value,
+    mes_corte:document.getElementById('pMes').value.trim()||null,
+    referencia:document.getElementById('pRef').value.trim()||null,
+    comprobante_url:comp, nota:document.getElementById('pNota').value.trim()||null,
+    estado:'reportado'
+  });
+  btn.disabled=false; btn.textContent='Enviar';
+  if(error){ alert('Error: '+error.message); return; }
+  cerrar('ovPago');
+  const { data:pg }=await sb.from('alineadores_pagos').select('*').order('created_at',{ascending:false});
+  PAGOS=pg||[]; render();
+  alert('✅ Pago reportado. Lo verificamos y actualizamos tu estado de cuenta.');
+}
+function cerrar(id){ document.getElementById(id).classList.remove('show'); }
+window.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
