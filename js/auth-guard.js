@@ -23,6 +23,7 @@
         calidad:              '/app/calidad.html',
         contabilidad:         '/app/contabilidad.html',
         diseno:               '/app/operario-diseno.html',
+        alineadores:          '/app/alineadores.html',
         taller:               '/app/taller.html',
         fresado:              '/app/operario.html',
         impresion:            '/app/operario.html',
@@ -41,6 +42,7 @@
         if (appRole === 'calidad')              return 'calidad';
         if (appRole === 'contabilidad')         return 'contabilidad';
         if (appRole === 'diseno')               return 'diseno';
+        if (appRole === 'alineadores')          return 'alineadores';
         if (appRole === 'taller')               return 'taller';
         if (appRole === 'fresado')              return 'fresado';
         if (appRole === 'impresion')            return 'impresion';

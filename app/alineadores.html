@@ -153,7 +153,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
 <script src="../js/auth-guard.js?v=20260717"></script>
-<script>ProdigyAuth.require(['admin','operator','contabilidad','diseno','secretaria']);</script>
+<script>ProdigyAuth.require(['admin','operator','contabilidad','diseno','alineadores','secretaria']);</script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD=d=>d?new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}):'—';
@@ -171,7 +171,7 @@ async function init(){
   sb=window.ProdigyAuth.getSb();
   ROLE=window.PRODIGY_ROLE;
   VE_CLI=['admin','operator','contabilidad'].includes(ROLE);   // ve cobro al cliente (USD) y márgenes
-  VE_MAY=VE_CLI || ROLE==='diseno';                            // ve el pago a Mayra (COP)
+  VE_MAY=VE_CLI || ROLE==='diseno' || ROLE==='alineadores';    // ve el pago a Mayra (COP)
   if(!VE_CLI) document.body.classList.add('hid-cli');
   if(!VE_MAY) document.body.classList.add('hid-may');
   // Mayra (diseno) NO crea casos — el cliente los envía y ella los trabaja. Solo admin/operator/contabilidad crean.
@@ -179,8 +179,8 @@ async function init(){
   try{ const f=localStorage.getItem('aln_fx'); if(f) document.getElementById('fx').value=f; }catch(_){}
   document.getElementById('subtitle').textContent = VE_CLI
     ? 'Casos + cuentas (cobro cliente USD · pago Mayra COP). Ingresa la tasa del dólar para ver márgenes.'
-    : (ROLE==='diseno'
-       ? 'Tus casos y tus cuentas (pago a Mayra). Marca "Completar" cuando entregues los modelos.'
+    : ((ROLE==='diseno'||ROLE==='alineadores')
+       ? 'Tus casos y tus cuentas. Marca "Completar" cuando entregues los modelos.'
        : 'Casos de alineadores.');
   await cargar();
 }
