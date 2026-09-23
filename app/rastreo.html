@@ -110,6 +110,7 @@ a{color:inherit;text-decoration:none;}
 const escH = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD = d => d ? new Date(d).toLocaleString('es-CO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
 const hace = d => { if(!d) return ''; const h=(Date.now()-new Date(d))/3600000; return h>24 ? Math.floor(h/24)+'d' : h>=1 ? Math.floor(h)+'h' : Math.floor(h*60)+'m'; };
+const dur = ms => { if(!isFinite(ms)||ms<0) return ''; const h=ms/3600000; if(h>=24) return (h/24).toFixed(1)+'d'; if(h>=1) return Math.floor(h)+'h '+Math.round((h%1)*60)+'m'; return Math.max(1,Math.round(h*60))+'m'; };
 let sb, _all=[], _filtro='Todas';
 
 async function init(){
@@ -212,13 +213,13 @@ async function verHist(id, codigo, btn){
     html += '<div style="font-size:.68rem;font-weight:800;color:var(--cyan);text-transform:uppercase;letter-spacing:.6px;margin:10px 0 6px;">Recorrido</div>';
   }
   if(!incs.length && !movs.length && !mats.length){ box.innerHTML='<div style="color:var(--muted);font-size:.78rem;padding:6px 0;">Sin incidencias, movimientos ni material.</div>'; return; }
-  html += movs.length ? movs.map(m=>`<div class="mov"><div>
-    <b style="color:var(--cyan)">${escH(m.area||'—')}</b>${m.tecnico?' · '+escH(m.tecnico):''}${m.estado_recibo?' · <span style="color:'+(m.estado_recibo==='completo'?'var(--neon)':m.estado_recibo==='incompleto'?'#f87171':'#fbbf24')+'">'+escH(m.estado_recibo.replace('_',' '))+'</span>':''}
+  html += movs.length ? movs.map((m,idx)=>{ const _fin = idx>0 ? new Date(movs[idx-1].created_at) : new Date(); const _d = dur(_fin - new Date(m.created_at)); return `<div class="mov"><div>
+    <b style="color:var(--cyan)">${escH(m.area||'—')}</b>${_d?' <span style="color:#64748b;font-size:.7rem;font-weight:700">('+_d+(idx===0?' aquí':'')+')</span>':''}${m.tecnico?' · '+escH(m.tecnico):''}${m.estado_recibo?' · <span style="color:'+(m.estado_recibo==='completo'?'var(--neon)':m.estado_recibo==='incompleto'?'#f87171':'#fbbf24')+'">'+escH(m.estado_recibo.replace('_',' '))+'</span>':''}
     ${m.componentes?'<br><span style="color:var(--muted)">🔑 '+escH(m.componentes)+'</span>':''}
     ${m.nota?'<br><span style="color:var(--muted)">'+escH(m.nota)+'</span>':''}
     ${m.fotos&&m.fotos.length?'<br><span style="color:var(--cyan);font-size:.72rem">📷 '+m.fotos.length+' foto(s)</span>':''}
     ${m.por_email?'<br><span style="color:#475569;font-size:.68rem">por '+escH(m.por_email)+'</span>':''}
-  </div><span class="t">${escH(fmtD(m.created_at))}</span></div>`).join('') : '<div style="color:var(--muted);font-size:.78rem;padding:4px 0;">Sin movimientos de custodia.</div>';
+  </div><span class="t">${escH(fmtD(m.created_at))}</span></div>`; }).join('') : '<div style="color:var(--muted);font-size:.78rem;padding:4px 0;">Sin movimientos de custodia.</div>';
   box.innerHTML = html;
 }
 
