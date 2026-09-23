@@ -173,18 +173,18 @@
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <div class="card">
     <div class="logo">
-        <div class="logo-icon">??</div>
+        <div class="logo-icon"><i class="fas fa-gem" style="color:#D4AF37;"></i></div>
         <h1>PRODIGY</h1>
         <p>Completa tu perfil profesional</p>
     </div>
 
     <div id="user-chip" class="user-chip" style="display:none;">
-        <div class="avatar-fallback" id="avatar-fallback">??</div>
+        <div class="avatar-fallback" id="avatar-fallback"><i class="fas fa-user"></i></div>
         <div class="chip-info">
             <div class="chip-name" id="chip-name"></div>
             <div class="chip-email" id="chip-email"></div>
         </div>
-        <span class="chip-badge">Google ?</span>
+        <span class="chip-badge">Verificado</span>
     </div>
 
     <div id="msg-box" aria-live="polite" aria-atomic="true" role="status"></div>
@@ -207,14 +207,14 @@
                     <div class="input-wrap">
                         <i class="fab fa-whatsapp" style="color:#25D366;"></i>
                         <select id="ob-prefijo">
-                            <option value="+57">???? +57</option>
-                            <option value="+52">???? +52</option>
-                            <option value="+1">???? +1</option>
-                            <option value="+34">???? +34</option>
-                            <option value="+54">???? +54</option>
-                            <option value="+56">???? +56</option>
-                            <option value="+51">???? +51</option>
-                            <option value="+58">???? +58</option>
+                            <option value="+57">CO +57</option>
+                            <option value="+52">MX +52</option>
+                            <option value="+1">US +1</option>
+                            <option value="+34">ES +34</option>
+                            <option value="+54">AR +54</option>
+                            <option value="+56">CL +56</option>
+                            <option value="+51">PE +51</option>
+                            <option value="+58">VE +58</option>
                         </select>
                     </div>
                 </div>
@@ -301,13 +301,17 @@
             <i class="fas fa-arrow-right"></i> &nbsp;Entrar a PRODIGY
         </button>
     </form>
+    <div style="text-align:center;margin-top:16px;">
+        <a href="#" onclick="window.ProdigyAuth&&window.ProdigyAuth.signOut();return false;" style="font-size:.76rem;color:#94a3b8;text-decoration:none;"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar sesión</a>
+    </div>
 </div>
 
 <script>
     const SUPABASE_URL  = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
     const ADMIN_EMAILS  = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com', 'gerencia@prodigylabdental.com', 'casos@prodigylabdental.com'];
-    const DEST_MAP      = { admin: 'panel-interno-operaciones.html', operator: 'operator-panel.html', client: 'client-panel.html' };
+    const DEST_MAP      = { admin: 'panel-interno-operaciones.html', operator: 'operator-panel.html', mensajero:'mensajero.html', encargado_inventario:'inventario.html', calidad:'calidad.html', contabilidad:'contabilidad.html', diseno:'alineadores.html', taller:'taller.html', fresado:'operario.html', impresion:'operario.html', secretaria:'bandeja-solicitudes.html', client: 'client-panel.html' };
+    const STAFF_ROLES   = ['operator','mensajero','encargado_inventario','calidad','contabilidad','diseno','taller','fresado','impresion','secretaria'];
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     window.sb = sb;
 
@@ -331,8 +335,13 @@
             window.location.href = 'login.html';
             return;
         }
-        document.body.style.visibility = 'visible';
         currentUser = session.user;
+
+        // Staff (operarios/técnicos) NO usan el onboarding de doctor — van directo a su panel
+        const _role = getRole(currentUser);
+        if (_role !== 'client') { window.location.replace('/app/' + (DEST_MAP[_role] || 'operator-panel.html')); return; }
+
+        document.body.style.visibility = 'visible';
 
         // Mostrar chip de usuario
         const chip = document.getElementById('user-chip');
