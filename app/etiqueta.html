@@ -82,6 +82,12 @@ async function init(){
   // QR (api.qrserver.com ya está en el CSP img-src)
   document.getElementById('qr').innerHTML = `<img alt="QR ${escH(CODIGO)}" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${encodeURIComponent(qrUrl)}">`;
   document.getElementById('lnkMover').href = qrUrl;
+  // Auto-print: abre el diálogo de impresión solo (1 clic desde el Rastreo)
+  if(params.get('print')==='1'){
+    const img = document.querySelector('#qr img');
+    const go = ()=>setTimeout(()=>window.print(), 300);
+    if(img && !img.complete){ img.onload = go; img.onerror = go; } else go();
+  }
 }
 window.addEventListener('DOMContentLoaded', init);
 </script>

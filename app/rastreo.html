@@ -171,7 +171,7 @@ function render(){
         ${p.area_updated_at?`<span style="color:var(--muted);margin-left:10px;" class="${stale?'stale':''}"><i class="fas fa-clock"></i> hace ${hace(p.area_updated_at)}${stale?' ⚠️':''}</span>`:''}
       </div>
       <div class="acts">
-        <a class="a a-eti" href="etiqueta.html?c=${encodeURIComponent(p.codigo)}" target="_blank" rel="noopener"><i class="fas fa-tag"></i> Etiqueta</a>
+        <a class="a a-eti" href="etiqueta.html?c=${encodeURIComponent(p.codigo)}&print=1" target="_blank" rel="noopener"><i class="fas fa-print"></i> Etiqueta</a>
         <a class="a" href="orden-produccion.html?c=${encodeURIComponent(p.codigo)}" target="_blank" rel="noopener"><i class="fas fa-file-lines"></i> Orden</a>
         <a class="a a-mov" href="mover.html?c=${encodeURIComponent(p.codigo)}"><i class="fas fa-arrows-turn-right"></i> Mover</a>
         <button class="a a-inc" onclick="abrirIncidencia('${escH(p.id)}','${escH(p.codigo)}')"><i class="fas fa-triangle-exclamation"></i> Incidencia</button>
