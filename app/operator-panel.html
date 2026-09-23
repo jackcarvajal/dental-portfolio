@@ -449,7 +449,7 @@ function filtrarOperator() {
 
 async function cargarPedidos() {
     const { data, error } = await sb.from('pedidos')
-        .select('id, codigo, nombre_paciente, nombre_doctor, tipo_trabajo, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo, pago_estado, precio_total, telefono, pais, fecha_entrega, slot_express').eq('negocio', 'prodigy')
+        .select('id, codigo, nombre_paciente, nombre_doctor, tipo_trabajo, estado, estado_operativo, created_at, timestamp_validacion, color_vita, material, flujo, telefono, pais, fecha_entrega, slot_express').eq('negocio', 'prodigy')
         /* (quitado filtro estado='cancelado': el enum estado_pedido no tiene ese valor → 22P02/400) */
         .in('flujo', ['fresado','lab','impresion',''])   /* Excluir flujo=diseno — tiene su propio panel */
         .order('created_at', { ascending: false })
@@ -928,17 +928,11 @@ avanzarEstado = async function(pedidoId, nuevoEstado) {
     if (nuevoEstado === 'EN_PRODUCCION') {
         const p = _pedidos.find(x => x.id === pedidoId);
 
-        // Bloquear si el abono no está confirmado
-        const pagoOk = ['pago_confirmado','pago_subido','credito_autorizado'].includes(p?.pago_estado);
+        // Bloquear si el abono no está confirmado — vía RPC (sin exponer montos ni estado de pago)
+        const { data: pagoOk } = await sb.rpc('puede_producir', { p_pedido_id: pedidoId });
         if (!pagoOk) {
-            const fmtCOP = n => n ? new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n) : '—';
-            const abono  = p?.precio_total ? fmtCOP(Math.round(p.precio_total / 2)) : '50%';
-            toast(`⛔ Pago pendiente — Se requiere abono (${abono}) antes de iniciar producción`, 'err');
+            toast('⛔ Pago pendiente — Se requiere abono antes de iniciar producción', 'err');
             return;
-        }
-        // Advertir si solo está subido pero no confirmado aún
-        if (p?.pago_estado === 'pago_subido') {
-            toast('⚠️ Comprobante recibido pero pendiente de verificar. Continúa solo si admin autorizó.', 'warn');
         }
         _produccionPendiente = { pedidoId };
         document.getElementById('modal-maq-codigo').textContent =
