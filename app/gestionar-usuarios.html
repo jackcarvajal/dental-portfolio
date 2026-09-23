@@ -20,6 +20,7 @@ h1{font-size:1.3rem;}
 .btn-mg{background:linear-gradient(135deg,var(--mg),#9c27b0);color:#fff;}
 .btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--muted);}
 .btn.mini{padding:6px 10px;font-size:.75rem;}
+.fbtn.on{background:rgba(0,210,255,.12);border-color:rgba(0,210,255,.35);color:var(--cyan);}
 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px;}
 .sec-t{font-size:1rem;font-weight:800;margin:6px 0 10px;display:flex;align-items:center;gap:8px;}
 .tw{overflow-x:auto;border:1px solid var(--border);border-radius:12px;}
@@ -75,8 +76,15 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
   <div class="msg" id="msgCrear"></div>
 </div>
 
-<div class="sec-t"><i class="fas fa-users" style="color:var(--cyan)"></i> Equipo <button class="btn btn-ghost mini" onclick="cargar()"><i class="fas fa-rotate"></i></button></div>
-<div class="tw"><table id="tbl"><thead><tr><th>Nombre</th><th>Email</th><th>Roles</th><th>Estado</th><th></th></tr></thead><tbody><tr><td colspan="5" class="empty">Cargando…</td></tr></tbody></table></div>
+<div class="sec-t"><i class="fas fa-users" style="color:var(--cyan)"></i> Usuarios <span id="cnt" class="sub" style="margin:0;font-weight:400"></span> <button class="btn btn-ghost mini" onclick="cargar()"><i class="fas fa-rotate"></i></button></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+  <button class="btn btn-ghost mini fbtn on" data-f="todos" onclick="setF(this)">Todos</button>
+  <button class="btn btn-ghost mini fbtn" data-f="staff" onclick="setF(this)">Equipo</button>
+  <button class="btn btn-ghost mini fbtn" data-f="cliente" onclick="setF(this)">Clientes</button>
+  <button class="btn btn-ghost mini fbtn" data-f="admin" onclick="setF(this)">Admins</button>
+  <input id="q" placeholder="Buscar email o nombre…" oninput="pintar()" style="flex:1;min-width:160px;background:var(--input);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:7px 10px;border-radius:8px;font-size:.82rem;font-family:inherit;">
+</div>
+<div class="tw"><table id="tbl"><thead><tr><th>Nombre</th><th>Email</th><th>Tipo</th><th>Roles</th><th>Estado</th><th></th></tr></thead><tbody><tr><td colspan="6" class="empty">Cargando…</td></tr></tbody></table></div>
 
 <!-- Modal editar roles -->
 <div class="ov" id="ovEdit"><div class="modal">
@@ -116,20 +124,37 @@ async function init(){
   genPass();
   cargar();
 }
+let USERS=[], FILTRO='todos';
+function setF(b){ document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on')); b.classList.add('on'); FILTRO=b.dataset.f; pintar(); }
 async function cargar(){
-  const d=await api('list');
   const tb=document.querySelector('#tbl tbody');
-  if(!d.ok){ tb.innerHTML=`<tr><td colspan="5" class="empty">⚠️ ${escH(d.error||'Error')}${d.error&&d.error.includes('SERVICE')?' — agrega SUPABASE_SERVICE_ROLE_KEY en Cloudflare':''}</td></tr>`; return; }
-  const us=(d.users||[]).sort((a,b)=>(a.es_admin?-1:0)-(b.es_admin?-1:0));
+  tb.innerHTML='<tr><td colspan="6" class="empty">Cargando…</td></tr>';
+  const d=await api('list');
+  if(!d.ok){
+    const falta=(d.error||'').includes('SERVICE');
+    tb.innerHTML=`<tr><td colspan="6" class="empty">⚠️ ${escH(d.error||'Error')}${falta?'<br><br><b style="color:var(--gold)">Agrega SUPABASE_SERVICE_ROLE_KEY en Cloudflare Pages → Settings → Environment variables (Production) y haz redeploy.</b>':''}</td></tr>`;
+    return;
+  }
+  USERS=d.users||[]; pintar();
+}
+function pintar(){
+  const q=(document.getElementById('q').value||'').toLowerCase();
+  let us=USERS.filter(u=>FILTRO==='todos'||u.tipo===FILTRO);
+  if(q) us=us.filter(u=>((u.email||'')+' '+(u.nombre||'')).toLowerCase().includes(q));
+  const ord={admin:0,staff:1,cliente:2};
+  us.sort((a,b)=>(ord[a.tipo]-ord[b.tipo])||((a.email||'')<(b.email||'')?-1:1));
+  document.getElementById('cnt').textContent=`(${us.length} de ${USERS.length})`;
+  const tb=document.querySelector('#tbl tbody');
   tb.innerHTML=us.map(u=>`<tr>
     <td>${escH(u.nombre||'—')}</td>
     <td>${escH(u.email)}</td>
-    <td>${u.es_admin?'<span class="chip" style="background:rgba(212,175,55,.15);color:var(--gold)">admin</span>':(u.roles.map(r=>`<span class="chip">${escH(lbl(r))}</span>`).join('')||'—')}</td>
+    <td><span class="chip" style="${u.tipo==='admin'?'background:rgba(212,175,55,.15);color:var(--gold)':(u.tipo==='cliente'?'background:rgba(217,70,166,.14);color:var(--mg)':'')}">${escH(u.tipo)}</span></td>
+    <td>${u.roles.map(r=>`<span class="chip">${escH(lbl(r))}</span>`).join('')||'—'}</td>
     <td>${u.es_admin?'<span class="pill on">activo</span>':`<span class="pill ${u.active?'on':'off'}">${u.active?'activo':'inactivo'}</span>`}</td>
-    <td class="acts">${u.es_admin?'':`
-      <button class="btn btn-ghost mini" onclick='editar(${JSON.stringify(u).replace(/'/g,"&#39;")})'><i class="fas fa-user-gear"></i></button>
-      <button class="btn btn-ghost mini" onclick="borrar('${u.id}','${escH(u.email)}')" style="color:var(--red)"><i class="fas fa-trash"></i></button>`}</td>
-  </tr>`).join('')||`<tr><td colspan="5" class="empty">Sin usuarios de staff aún.</td></tr>`;
+    <td class="acts">${u.es_admin?'<span class="sub" style="margin:0">protegido</span>':`
+      <button class="btn btn-ghost mini" onclick='editar(${JSON.stringify(u).replace(/'/g,"&#39;")})' title="Roles / activar"><i class="fas fa-user-gear"></i></button>
+      <button class="btn btn-ghost mini" onclick="borrar('${u.id}','${escH(u.email)}')" style="color:var(--red)" title="Borrar"><i class="fas fa-trash"></i></button>`}</td>
+  </tr>`).join('')||`<tr><td colspan="6" class="empty">Sin resultados.</td></tr>`;
 }
 
 async function crear(){
@@ -161,7 +186,7 @@ async function guardarRoles(){
   const id=document.getElementById('eId').value;
   const roles=pick(document.getElementById('eRoles'));
   const active=document.getElementById('eActive').checked;
-  if(!roles.length){ msg('msgEdit','Marca al menos un rol (o desactiva la cuenta).',false); return; }
+  if(!roles.length && !confirm('Sin roles marcados, esta cuenta queda como CLIENTE (sin acceso de equipo). ¿Continuar?')) return;
   const d=await api('set_roles',{id,roles,active});
   if(!d.ok){ msg('msgEdit','⚠️ '+d.error,false); return; }
   cerrar('ovEdit'); cargar();

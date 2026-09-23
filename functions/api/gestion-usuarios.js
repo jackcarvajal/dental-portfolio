@@ -40,15 +40,20 @@ export async function onRequestPost({ request, env }){
     if(action==='list'){
       const r = await fetch(`${URL}/auth/v1/admin/users?per_page=200`,{headers:admH});
       const d = await r.json();
-      const users = (d.users||[]).map(u=>({
-        id:u.id, email:u.email,
-        roles: rolesFrom(u.app_metadata),
-        active: (u.app_metadata&&u.app_metadata.active)!==false,
-        nombre: (u.user_metadata&&(u.user_metadata.nombre||u.user_metadata.full_name))||'',
-        es_admin: ADMIN_EMAILS.includes((u.email||'').toLowerCase()),
-        created_at:u.created_at
-      })).filter(u=>u.roles.length || u.es_admin); // solo staff/admin
-      return new Response(JSON.stringify({ok:true,users}),{status:200,headers:h});
+      const users = (d.users||[]).map(u=>{
+        const roles = rolesFrom(u.app_metadata);
+        const es_admin = ADMIN_EMAILS.includes((u.email||'').toLowerCase());
+        return {
+          id:u.id, email:u.email, roles,
+          active: (u.app_metadata&&u.app_metadata.active)!==false,
+          nombre: (u.user_metadata&&(u.user_metadata.nombre||u.user_metadata.full_name||u.user_metadata.clinica))||'',
+          es_admin,
+          tipo: es_admin ? 'admin' : (roles.length ? 'staff' : 'cliente'),
+          ultimo_acceso: u.last_sign_in_at || null,
+          created_at:u.created_at
+        };
+      });
+      return new Response(JSON.stringify({ok:true,users,total:users.length}),{status:200,headers:h});
     }
 
     if(action==='create'){
