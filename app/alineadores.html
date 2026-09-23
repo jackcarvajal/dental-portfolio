@@ -95,6 +95,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <div class="ov" id="ovCaso"><div class="modal">
   <h3 id="ovCasoT">Nuevo caso</h3>
   <input type="hidden" id="cId">
+  <div id="ordenCliente" style="display:none;background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.18);border-radius:10px;padding:12px;margin-bottom:12px;font-size:.82rem;line-height:1.55;"></div>
   <div class="grid2">
     <div class="fg"><label>Paciente *</label><input id="cPaciente" placeholder="Nombre"></div>
     <div class="fg"><label>Cliente</label><input id="cCliente" list="clientesDL" placeholder="Panorámica Digital 3D"><datalist id="clientesDL"></datalist></div>
@@ -289,12 +290,23 @@ function abrirCaso(){
   document.getElementById('cCliente').value='Panorámica Digital 3D';
   document.getElementById('cEstado').value='valoracion';
   document.getElementById('cModelos').checked=false;
+  document.getElementById('ordenCliente').style.display='none';
   document.getElementById('ovCaso').classList.add('show');
 }
 function editarCaso(id){
   const c=CASOS.find(x=>x.id===id); if(!c) return;
   document.getElementById('ovCasoT').textContent='Editar caso';
   document.getElementById('cId').value=c.id;
+  // Orden que envió el cliente (solo lectura)
+  const oc=document.getElementById('ordenCliente');
+  if(c.indicacion_cliente || (c.archivos&&c.archivos.length) || c.motivo_consulta){
+    oc.style.display='block';
+    oc.innerHTML='<b>📋 Orden del cliente</b><br>'+
+      (c.motivo_consulta?('Motivo: '+escH(c.motivo_consulta)+'<br>'):'')+
+      (c.indicacion_cliente?('Indicación: '+escH(c.indicacion_cliente)+'<br>'):'')+
+      'Arcada: '+escH(c.arcada||'—')+' · IPR: '+(c.requiere_ipr?'Sí':'No')+' · Attachments: '+(c.requiere_attachments?'Sí':'No')+'<br>'+
+      ((c.archivos&&c.archivos.length)?('Archivos: '+c.archivos.map((p,i)=>'<a href="#" onclick="verArchivo(\''+escH(p)+'\');return false;" style="color:var(--cyan)">#'+(i+1)+'</a>').join(' ')):'Sin archivos');
+  } else oc.style.display='none';
   document.getElementById('cPaciente').value=c.paciente||'';
   document.getElementById('cCliente').value=c.cliente||'';
   document.getElementById('cViab').value=c.viabilidad||'';
@@ -416,6 +428,9 @@ async function verificarPago(id,estado){
   const { error }=await sb.from('alineadores_pagos').update({estado}).eq('id',id);
   if(error){ alert('Error: '+error.message); return; }
   await cargar();
+}
+async function verArchivo(path){
+  try{ const {data,error}=await sb.storage.from('scanner-uploads').createSignedUrl(path,120); if(error||!data){alert('No se pudo abrir el archivo');return;} window.open(data.signedUrl,'_blank','noopener'); }catch(_){ alert('No se pudo abrir el archivo'); }
 }
 async function verComprobante(path){
   try{
