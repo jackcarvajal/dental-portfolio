@@ -62,6 +62,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
   Luego pulsa <b>“Reportar pago”</b> y sube el comprobante 👇
 </div>
 
+<div id="ppBtn" style="margin-bottom:10px;"></div>
 <div style="margin-bottom:8px;"><button class="btn btn-mg" onclick="abrirPago()"><i class="fas fa-upload"></i> Reportar pago / subir comprobante</button></div>
 
 <div class="sec-t"><i class="fas fa-file-invoice-dollar" style="color:var(--gold)"></i> Estado de cuenta por mes</div>
@@ -99,6 +100,10 @@ const fmtD=d=>d?new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'sho
 const nf=new Intl.NumberFormat('es-CO');
 const tipoLbl=t=>({completo:'Caso completo',valoracion:'Valoración',diferencia_a_completo:'Diferencia a completo',replaneacion_en_tiempo:'Replaneación (en tiempo)',replaneacion_fuera_tiempo:'Replaneación (fuera de tiempo)',refinamiento_sin_costo:'Refinamiento',refinamiento_con_costo:'Refinamiento (con costo)',adicional:'Adicional'})[t]||t;
 let sb, CASOS={}, CARGOS=[], PAGOS=[];
+// ── PayPal: pon tu handle de paypal.me (ej. 'alejandrocarvajal') para activar el botón ──
+const PAYPAL_HANDLE='';      // vacío = botón oculto hasta configurarlo
+const PAYPAL_FEE=0.054;      // comisión que se suma para que llegue el neto completo
+function grossUp(net){ return Math.ceil(net/(1-PAYPAL_FEE)*100)/100; }
 
 async function init(){
   sb=window.ProdigyAuth.getSb();
@@ -120,6 +125,14 @@ function render(){
   document.getElementById('cards').innerHTML=`
     <div class="kc deuda"><div class="k">Pendiente por pagar</div><div class="v">$${nf.format(Math.round(pend))}</div><div class="sub" style="margin:0">USD</div></div>
     <div class="kc pagado"><div class="k">Ya pagado</div><div class="v">$${nf.format(Math.round(pag))}</div><div class="sub" style="margin:0">USD</div></div>`;
+  // Botón PayPal (monto con comisión incluida para que llegue el neto completo)
+  const ppEl=document.getElementById('ppBtn');
+  if(ppEl){
+    if(PAYPAL_HANDLE && pend>0){
+      const g=grossUp(pend);
+      ppEl.innerHTML=`<a class="btn btn-mg" style="background:linear-gradient(135deg,#003087,#0070ba)" href="https://www.paypal.com/paypalme/${encodeURIComponent(PAYPAL_HANDLE)}/${g}USD" target="_blank" rel="noopener"><i class="fab fa-paypal"></i> Pagar $${nf.format(g)} con PayPal</a> <span class="sub">Incluye la comisión (~${Math.round(PAYPAL_FEE*100)}%) para que el laboratorio reciba $${nf.format(Math.round(pend))} completos. Luego sube tu comprobante 👇</span>`;
+    } else ppEl.innerHTML='';
+  }
   // Corte por mes
   const meses={};
   for(const c of CARGOS){ const m=c.mes_corte||'(sin mes)'; meses[m]=meses[m]||{t:0,n:0,pend:0}; meses[m].t+=Number(c.monto||0); meses[m].n++; if(c.estado_pago!=='pagado') meses[m].pend+=Number(c.monto||0); }
