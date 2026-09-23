@@ -138,10 +138,11 @@ function render(movs, incs){
       <button type="button" class="est" data-e="incompleto" onclick="pickEstado(this,'bad')">✖ Falta algo</button>
       <button type="button" class="est" data-e="con_observaciones" onclick="pickEstado(this,'warn')">⚠ Con obs.</button>
     </div>
-    <div class="lbl">${_ped.flujo==='diseno'?'Captura del DISEÑO FINAL (pantallazo)':'Foto de la ORDEN (respaldo si se pierde el papel)'}</div>
-    <label class="foto-btn"><i class="fas fa-camera"></i> ${_ped.flujo==='diseno'?'Adjuntar captura del diseño':'Tomar / adjuntar foto de la orden'}
+    <div class="lbl">${_ped.flujo==='diseno'?'Captura del DISEÑO FINAL (pantallazo)':'Foto del TRABAJO + orden — cómo lo entregas (completo, sin daños)'}</div>
+    <label class="foto-btn"><i class="fas fa-camera"></i> ${_ped.flujo==='diseno'?'Adjuntar captura del diseño':'Foto del trabajo y la orden'}
       <input id="fotoInput" type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="previewFotos(this)">
     </label>
+    <div style="font-size:.68rem;color:var(--muted);margin-top:5px;line-height:1.4;">📌 Constancia de entrega: si luego se daña o se pierde, la foto muestra <b>quién lo tenía</b> y <b>cómo estaba</b>. Puedes adjuntar varias.</div>
     <div class="fotos-prev" id="fotosPrev"></div>
     <div class="lbl">Nota (opcional)</div>
     <input id="nota" type="text" placeholder="Ej: falta tornillo, urgente, reproceso…" maxlength="120">

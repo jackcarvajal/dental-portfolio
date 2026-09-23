@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
+<title>Papelería y Protocolos — PRODIGY</title>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--mg:#D946A6;--gold:#B8901F;--cyan:#0891b2;--ink:#111;--soft:#555;--line:#ddd;}
+body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Arial,sans-serif;padding:16px;}
+.bar{max-width:210mm;margin:0 auto 14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;}
+.bar button,.bar a{padding:10px 16px;border-radius:9px;border:none;font-weight:800;font-size:.8rem;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.print{background:var(--mg);color:#fff;}.ghost{background:#cbd5e1;color:#334155;}
+.hint{font-size:.72rem;color:#475569;width:100%;text-align:center;}
+.doc{width:210mm;max-width:100%;margin:0 auto 16px;background:#fff;padding:14mm 12mm;box-shadow:0 8px 40px rgba(0,0,0,.2);page-break-after:always;}
+.dh{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--ink);padding-bottom:3mm;margin-bottom:5mm;}
+.dh h1{font-size:15pt;font-weight:900;color:var(--mg);}
+.dh .tag{font-size:8pt;font-weight:800;color:#fff;background:var(--ink);padding:1.5mm 3mm;border-radius:2mm;text-transform:uppercase;letter-spacing:.5px;}
+h2{font-size:12pt;color:var(--gold);margin:5mm 0 2mm;border-left:3px solid var(--gold);padding-left:3mm;}
+h3{font-size:10pt;margin:3mm 0 1mm;color:var(--ink);}
+p,li{font-size:9.5pt;line-height:1.5;color:#222;}
+ul,ol{margin:1mm 0 2mm 6mm;}
+li{margin-bottom:.8mm;}
+.step{display:flex;gap:3mm;margin-bottom:2mm;align-items:flex-start;}
+.step .n{flex-shrink:0;width:7mm;height:7mm;border-radius:50%;background:var(--mg);color:#fff;font-weight:900;font-size:9pt;display:flex;align-items:center;justify-content:center;}
+.step .tx{font-size:9.5pt;line-height:1.4;}
+.box{border:1px solid var(--line);border-radius:2mm;padding:3mm;margin:2mm 0;background:#fafafa;}
+.warn{background:#fef2f2;border-color:#fecaca;}
+.warn b{color:#dc2626;}
+.ok{background:#f0fdf4;border-color:#bbf7d0;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:3mm;}
+table{width:100%;border-collapse:collapse;font-size:8.5pt;margin:2mm 0;}
+th,td{border:1px solid #ccc;padding:1.5mm 2mm;text-align:left;vertical-align:top;}
+th{background:#f1f1f1;font-size:7.5pt;text-transform:uppercase;color:#444;}
+.foot{margin-top:5mm;font-size:7pt;color:#999;text-align:center;border-top:1px solid var(--line);padding-top:2mm;}
+.idx{max-width:210mm;margin:0 auto 16px;background:#fff;padding:10mm;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+.idx h1{color:var(--mg);font-size:14pt;margin-bottom:2mm;}
+.idx a{display:block;padding:3mm;border:1px solid var(--line);border-radius:2mm;margin-bottom:2mm;text-decoration:none;color:var(--ink);font-weight:700;font-size:9.5pt;}
+.idx a:hover{background:#faf5f9;border-color:var(--mg);}
+@media print{
+  @page{ size:A4; margin:0; }
+  body{background:#fff;padding:0;}
+  .bar,.idx{display:none;}
+  .doc{box-shadow:none;width:100%;margin:0;}
+}
+</style>
+</head>
+<body>
+<div class="bar">
+  <button class="print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir TODO</button>
+  <a class="ghost" href="rastreo.html"><i class="fas fa-arrow-left"></i> Volver</a>
+  <span class="hint">Consejo: imprime, <b>plastifica</b> las guías y protocolos, y pégalas en cada estación. Los formularios (orden) se imprimen por caso desde el Rastreo.</span>
+</div>
+
+<div class="idx">
+  <h1>📚 Papelería y Protocolos — PRODIGY Lab Dental</h1>
+  <p style="font-size:9pt;color:#555;margin-bottom:4mm;">Guías para pegar en las estaciones. Edita los textos según tu operación real.</p>
+  <a href="#qr">1 · Guía del sistema QR (poster por estación)</a>
+  <a href="#areas">2 · Protocolos por ÁREA (Recepción → Despacho)</a>
+  <a href="#trabajos">3 · Protocolos por TIPO DE TRABAJO (diseño, fresado, impresión, lab)</a>
+  <a href="orden-produccion.html" target="_blank">4 · Orden de Producción (se imprime por caso) →</a>
+</div>
+
+<!-- ═══════════ 1. GUÍA QR ═══════════ -->
+<div class="doc" id="qr">
+  <div class="dh"><h1>💎 PRODIGY · Sistema QR</h1><span class="tag">Pegar en cada estación</span></div>
+  <h2>¿Qué es?</h2>
+  <p>Cada caso tiene un <b>código y un QR</b> en su orden de trabajo. El QR es el rastro del caso: quién lo tuvo, en qué área, con qué material y en qué estado — todo queda guardado en el sistema.</p>
+
+  <h2>Cómo usarlo — en CADA área</h2>
+  <div class="step"><div class="n">1</div><div class="tx"><b>Al RECIBIR</b> el caso: escanea el QR con la cámara del celular.</div></div>
+  <div class="step"><div class="n">2</div><div class="tx">Elige tu <b>área</b> y tu <b>nombre</b>.</div></div>
+  <div class="step"><div class="n">3</div><div class="tx">Marca <b>qué recibiste</b> (llave de implante, tornillos, modelo, disco…) y el <b>estado</b> (completo / falta algo).</div></div>
+  <div class="step"><div class="n">4</div><div class="tx">Toma <b>foto del trabajo y la orden</b> — así queda constancia de cómo lo recibiste.</div></div>
+  <div class="step"><div class="n">5</div><div class="tx"><b>Guarda.</b> Al <b>TERMINAR</b> tu etapa, escanea de nuevo y toma <b>foto del trabajo terminado</b> antes de entregarlo.</div></div>
+
+  <div class="box warn">
+    <b>⚠️ Si algo falta o NO puedes iniciar</b> (falta antagonista, duda de color, pieza dañada): usa el botón <b>"Reportar problema / duda"</b> en la pantalla. Le llega al supervisor y a la secretaria. <b>No inicies</b> hasta que se resuelva.
+  </div>
+  <div class="box ok">
+    <b>✅ Regla de oro:</b> sin foto no hay entrega. Si un caso se daña o se pierde, la foto y el historial muestran <b>quién lo tenía y cómo estaba</b>. Protege tu trabajo: siempre escanea y fotografía.
+  </div>
+  <p style="margin-top:3mm;"><b>Nunca compartas</b> datos del doctor con nadie fuera del lab. El técnico trabaja por <b>código</b>, no por nombre.</p>
+  <div class="foot">PRODIGY Digital Dentistry · prodigylabdental.com · Guía interna del sistema de trazabilidad</div>
+</div>
+
+<!-- ═══════════ 2. PROTOCOLOS POR ÁREA ═══════════ -->
+<div class="doc" id="areas">
+  <div class="dh"><h1>💎 PRODIGY · Protocolos por Área</h1><span class="tag">Estaciones</span></div>
+
+  <h2>1 · Recepción</h2>
+  <ul>
+    <li>Recibe el caso (físico o digital). Verifica que llegue completo: impresión/escaneo, antagonista, modelos, registro, y elementos especiales (llave de implante, tornillos, análogos).</li>
+    <li>Registra/confirma los datos en el sistema e <b>imprime la Orden de Producción</b>. Pega la etiqueta QR.</li>
+    <li><b>Escanea → área "Recepción"</b> + foto del caso recibido. Marca qué llegó.</li>
+    <li>Si falta algo o el pago no está: <b>reporta incidencia</b> y avisa a la secretaria antes de pasar a producción.</li>
+  </ul>
+
+  <h2>2 · Diseño CAD</h2>
+  <ul>
+    <li>Recibe el STL/escaneo. Verifica calidad del escaneo (márgenes, antagonista, mordida).</li>
+    <li>Diseña según indicaciones del odontólogo. Respeta material, tipo y observaciones de la orden.</li>
+    <li>Al terminar: <b>captura del diseño final</b> (pantallazo) + escanea. Envía a revisión del Dr o a producción.</li>
+    <li>Duda de diseño → reporta incidencia; no adivines.</li>
+  </ul>
+
+  <h2>3 · Fresado</h2>
+  <ul>
+    <li>Recibe diseño aprobado. Verifica <b>material, color VITA y disco</b> correctos (foto del disco antes de fresar).</li>
+    <li>Revisa fresas: si hay <b>fresa partida o desgastada</b>, cámbiala y regístralo en el QR de mantenimiento de la máquina.</li>
+    <li>Fresa. Al terminar: foto de la pieza fresada + escanea. Entrega a sinterizado/acabado.</li>
+  </ul>
+
+  <h2>4 · Impresión 3D</h2>
+  <ul>
+    <li>Recibe archivo. Verifica <b>resina correcta</b> y nivel. Foto del material.</li>
+    <li>Imprime. Lava y post-cura según protocolo de la resina.</li>
+    <li>Revisa calidad (capas, soportes, fallos). Si hay <b>fallo o daño</b>: reporta y no entregues defectuoso. Foto + escanea.</li>
+  </ul>
+
+  <h2>5 · Sinterizado</h2>
+  <ul>
+    <li>Recibe pieza fresada. Programa horno según material. <b>Registra tiempo y temperatura</b> en la orden.</li>
+    <li>Al finalizar: verifica que no haya fracturas. Foto + escanea.</li>
+  </ul>
+
+  <h2>6 · Acabado / Maquillaje</h2>
+  <ul>
+    <li>Recibe pieza sinterizada. Maquilla/glasea según color solicitado.</li>
+    <li>Control de color contra la referencia VITA. Foto del acabado + escanea.</li>
+  </ul>
+
+  <h2>7 · Control de Calidad</h2>
+  <ul>
+    <li>Verifica: <b>ajuste, puntos de contacto, oclusión, color y acabado</b>. Compara con la orden.</li>
+    <li>Aprueba (V°B°) o <b>devuelve</b> al área con la incidencia. Foto + escanea. Firma la orden.</li>
+  </ul>
+
+  <h2>8 · Empaque / Despacho</h2>
+  <ul>
+    <li>Verifica que la orden esté <b>completa y firmada</b> por calidad. Empaca protegiendo la pieza.</li>
+    <li><b>Foto del caso terminado y empacado</b> + escanea → área "Despacho".</li>
+    <li>Genera la guía de la transportadora / entrega al mensajero. Adjunta el recibo del Dr.</li>
+  </ul>
+  <div class="foot">PRODIGY Digital Dentistry · Cada área escanea al recibir y al entregar, con foto. La responsabilidad queda registrada.</div>
+</div>
+
+<!-- ═══════════ 3. PROTOCOLOS POR TIPO DE TRABAJO ═══════════ -->
+<div class="doc" id="trabajos">
+  <div class="dh"><h1>💎 PRODIGY · Protocolos por Tipo de Trabajo</h1><span class="tag">Checklists</span></div>
+
+  <h2>Diseño CAD (remoto)</h2>
+  <table><tr><th>Paso</th><th>Control</th></tr>
+    <tr><td>1. Recibir STL / escaneo</td><td>Calidad del escaneo, márgenes visibles, antagonista</td></tr>
+    <tr><td>2. Diseñar</td><td>Material, tipo, indicaciones del odontólogo</td></tr>
+    <tr><td>3. Revisión</td><td>Enviar al Dr (hasta 2 revisiones sin costo) o a producción</td></tr>
+    <tr><td>4. Entregar</td><td>Captura del diseño final + escanear</td></tr>
+  </table>
+
+  <h2>Fresado (Zirconia / Emax)</h2>
+  <table><tr><th>Paso</th><th>Control</th></tr>
+    <tr><td>1. Verificar diseño aprobado</td><td>Material, color VITA, submaterial</td></tr>
+    <tr><td>2. Cargar disco</td><td>Disco correcto + foto (verificar uso correcto del material)</td></tr>
+    <tr><td>3. Fresar</td><td>Revisar fresas (cambio/rotura → QR mantenimiento)</td></tr>
+    <tr><td>4. Sinterizar</td><td>Tiempo y temperatura según material</td></tr>
+    <tr><td>5. Acabado + QA</td><td>Color, ajuste, contactos, oclusión</td></tr>
+  </table>
+
+  <h2>Impresión 3D</h2>
+  <table><tr><th>Paso</th><th>Control</th></tr>
+    <tr><td>1. Preparar archivo</td><td>Orientación, soportes</td></tr>
+    <tr><td>2. Cargar resina</td><td>Resina correcta + nivel + foto</td></tr>
+    <tr><td>3. Imprimir</td><td>Sin fallos de capa</td></tr>
+    <tr><td>4. Lavar + curar</td><td>Según protocolo de la resina</td></tr>
+    <tr><td>5. QA</td><td>Ajuste, integridad, acabado</td></tr>
+  </table>
+
+  <h2>Lab Full (arco completo / barra sobre implantes)</h2>
+  <table><tr><th>Paso</th><th>Control</th></tr>
+    <tr><td>1. Recibir</td><td>Modelos, análogos, llave de implante, tornillos, antagonista</td></tr>
+    <tr><td>2. Diseño</td><td>Verificar posiciones de implantes</td></tr>
+    <tr><td>3. Producción</td><td>Fresado / impresión según componentes</td></tr>
+    <tr><td>4. Acabado + QA</td><td>Pasividad, ajuste sobre modelo, torque</td></tr>
+    <tr><td>5. Empaque</td><td>Devolver TODOS los componentes recibidos (llave, tornillos)</td></tr>
+  </table>
+
+  <div class="box warn"><b>Cadena de custodia:</b> las piezas que llegan con el caso (llave de implante, tornillos, análogos) DEBEN devolverse. En cada escaneo confirma qué recibes y qué entregas. Si falta algo, reporta incidencia de inmediato.</div>
+  <div class="foot">PRODIGY Digital Dentistry · Protocolos base — ajústalos a tu operación. Tiempos objetivo se controlan en la tabla de la orden.</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>ProdigyAuth.require(['admin','operator','encargado_inventario','calidad','diseno','taller','fresado','impresion','secretaria','mensajero']);</script>
+</body>
+</html>
