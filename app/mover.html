@@ -114,6 +114,7 @@ function render(movs){
       <div class="sub">${escH(_ped.nombre_doctor||'—')} · ${escH(_ped.tipo_trabajo||_ped.flujo||'—')}</div>
       <div class="now">Ahora en: <b>${escH(_seg.area_actual||'sin registrar')}</b>${_seg.tecnico_actual?' · con <b>'+escH(_seg.tecnico_actual)+'</b>':''}</div>
     </div>
+    <div style="font-size:.74rem;color:var(--muted);background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.22);border-radius:10px;padding:9px 12px;margin:6px 0 4px;line-height:1.45;">📋 Elige el <b style="color:var(--gold)">área</b> donde está el caso ahora + tu <b style="color:var(--gold)">nombre</b> + <b style="color:var(--gold)">qué recibiste</b> + una <b style="color:var(--gold)">foto de la orden</b>, y Guarda. Repite al terminar tu etapa.</div>
     <div class="lbl">Mover a área</div>
     <div class="areas" id="areas">
       ${AREAS.map(a=>`<button class="area" data-a="${escH(a)}" onclick="pickArea(this)">${escH(a)}</button>`).join('')}
