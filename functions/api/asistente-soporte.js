@@ -41,7 +41,7 @@ function articulosTexto(data, soloIds){
   return arts.filter(a => !soloIds || soloIds.includes(a.id)).map(a =>
     `### ${esc(a.titulo)} (para: ${esc(a.para)})\n${esc(a.resumen)}\n`
     + (a.pasos || []).map((p, i) => `${i + 1}. ${esc(p)}`).join('\n')
-    + (a.notas ? `\nNota: ${esc(a.notas)}` : '')
+    + (a.notas ? `\nNota: ${esc([].concat(a.notas).join(' '))}` : '')
     + (a.link ? `\nPantalla: /app/${a.link.href}` : '')
   ).join('\n\n');
 }

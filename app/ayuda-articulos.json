@@ -1,12 +1,36 @@
 {
-  "version": "2026-09-24",
+  "version": "2026-09-24c",
   "categorias": [
-    { "id": "inicio", "nombre": "Primeros pasos", "icono": "fa-compass" },
-    { "id": "casos", "nombre": "Casos y producción", "icono": "fa-teeth" },
-    { "id": "equipo", "nombre": "Equipo y accesos", "icono": "fa-users-gear" },
-    { "id": "alineadores", "nombre": "Alineadores", "icono": "fa-tooth" },
-    { "id": "clientes", "nombre": "Clientes", "icono": "fa-address-book" },
-    { "id": "problemas", "nombre": "Problemas frecuentes", "icono": "fa-life-ring" }
+    {
+      "id": "inicio",
+      "nombre": "Primeros pasos",
+      "icono": "fa-compass"
+    },
+    {
+      "id": "casos",
+      "nombre": "Casos y producción",
+      "icono": "fa-teeth"
+    },
+    {
+      "id": "equipo",
+      "nombre": "Equipo y accesos",
+      "icono": "fa-users-gear"
+    },
+    {
+      "id": "alineadores",
+      "nombre": "Alineadores",
+      "icono": "fa-tooth"
+    },
+    {
+      "id": "clientes",
+      "nombre": "Clientes",
+      "icono": "fa-address-book"
+    },
+    {
+      "id": "problemas",
+      "nombre": "Problemas frecuentes",
+      "icono": "fa-life-ring"
+    }
   ],
   "articulos": [
     {
@@ -22,7 +46,10 @@
         "Si un número sale en **cero** no es un error: solo significa que todavía no hay datos de ese tipo."
       ],
       "kw": "menu inicio empezar donde esta navegar",
-      "rel": ["rutina-diaria", "roles"]
+      "rel": [
+        "rutina-diaria",
+        "roles"
+      ]
     },
     {
       "id": "rutina-diaria",
@@ -37,9 +64,16 @@
         "**Despachos**: asigna a un mensajero los casos que ya pasaron control de calidad.",
         "**Alineadores (cuentas)**: revisa si el cliente reportó pagos para verificar."
       ],
-      "link": { "href": "panel-interno-operaciones.html", "label": "Ir al panel" },
+      "link": {
+        "href": "panel-interno-operaciones.html",
+        "label": "Ir al panel"
+      },
       "kw": "mañana checklist que hago diario orden prioridades",
-      "rel": ["bandeja", "despachos", "aln-pagos"]
+      "rel": [
+        "bandeja",
+        "despachos",
+        "aln-pagos"
+      ]
     },
     {
       "id": "estados-caso",
@@ -59,7 +93,10 @@
         "Estados de excepción: **Cancelado por el doctor**, **No entregado**, **Error de STL**, **Incidencia del cliente**, **Pago no confirmado**."
       ],
       "kw": "estado estados significado flujo etapas qa despachar reparto",
-      "rel": ["rastreo-qr", "despachos"]
+      "rel": [
+        "rastreo-qr",
+        "despachos"
+      ]
     },
     {
       "id": "rastreo-qr",
@@ -74,9 +111,15 @@
         "Toma la **foto** (en diseño: captura del diseño final; en lo físico: foto de lo que entregas).",
         "Guarda. Queda en el historial quién tenía el caso y cuándo: así se sabe el responsable si algo se pierde o daña."
       ],
-      "link": { "href": "rastreo.html", "label": "Abrir Rastreo de casos" },
+      "link": {
+        "href": "rastreo.html",
+        "label": "Abrir Rastreo de casos"
+      },
       "kw": "qr escanear mover area custodia foto responsable etiqueta",
-      "rel": ["incidencias", "etiquetas"]
+      "rel": [
+        "incidencias",
+        "etiquetas"
+      ]
     },
     {
       "id": "incidencias",
@@ -90,9 +133,13 @@
         "Decide si el doctor **puede verla** (aparece en su portal) o si es **interna** (solo el equipo).",
         "Se avisa a administración y el caso muestra una alerta roja hasta resolverla."
       ],
-      "notas": ["Lo interno (pérdidas, reprocesos) **nunca** lo ve el doctor si no lo marcas como visible."],
+      "notas": [
+        "Lo interno (pérdidas, reprocesos) **nunca** lo ve el doctor si no lo marcas como visible."
+      ],
       "kw": "incidencia problema duda error reportar alerta",
-      "rel": ["rastreo-qr"]
+      "rel": [
+        "rastreo-qr"
+      ]
     },
     {
       "id": "etiquetas",
@@ -106,9 +153,14 @@
         "**Etiqueta**: se imprime en la mini impresora (rollo 50×30 mm). Con la SINMARK usa **\"Copiar link\"** y pégalo en la app de la impresora.",
         "Pega la etiqueta en la bolsa o caja del caso."
       ],
-      "link": { "href": "rastreo.html", "label": "Abrir Rastreo de casos" },
+      "link": {
+        "href": "rastreo.html",
+        "label": "Abrir Rastreo de casos"
+      },
       "kw": "imprimir orden etiqueta qr impresora sinmark papel",
-      "rel": ["rastreo-qr"]
+      "rel": [
+        "rastreo-qr"
+      ]
     },
     {
       "id": "bandeja",
@@ -122,10 +174,17 @@
         "Contacta al doctor por WhatsApp desde el botón, confirma el trabajo y **cotiza**.",
         "Cambia el estado de la solicitud a medida que avanzas (contactado, cotizado, cerrado)."
       ],
-      "notas": ["Las solicitudes rápidas de la web llegan **sin pago ni datos completos**: pide al doctor el protocolo del caso (material, color, antagonista)."],
-      "link": { "href": "bandeja-solicitudes.html", "label": "Abrir Bandeja" },
+      "notas": [
+        "Las solicitudes rápidas de la web llegan **sin pago ni datos completos**: pide al doctor el protocolo del caso (material, color, antagonista)."
+      ],
+      "link": {
+        "href": "bandeja-solicitudes.html",
+        "label": "Abrir Bandeja"
+      },
       "kw": "solicitud web escaner domicilio lead cotizar bandeja nueva",
-      "rel": ["aln-cliente-subir"]
+      "rel": [
+        "aln-cliente-subir"
+      ]
     },
     {
       "id": "despachos",
@@ -139,9 +198,13 @@
         "El mensajero ve el caso en su panel, lo marca **en reparto** y al entregar registra la entrega.",
         "Al entregar se avisa al doctor y se genera su recibo."
       ],
-      "notas": ["Regla: **no se entrega sin cobrar el saldo pendiente**. El mensajero sí ve el saldo por eso."],
+      "notas": [
+        "Regla: **no se entrega sin cobrar el saldo pendiente**. El mensajero sí ve el saldo por eso."
+      ],
       "kw": "despacho mensajero entrega reparto saldo cobrar asignar",
-      "rel": ["estados-caso"]
+      "rel": [
+        "estados-caso"
+      ]
     },
     {
       "id": "crear-usuario",
@@ -156,10 +219,19 @@
         "Copia la **contraseña temporal** que aparece y dale **Crear usuario**.",
         "Envíale por WhatsApp: el link **prodigylabdental.com/app/login.html**, su correo y la contraseña."
       ],
-      "notas": ["El equipo **no se registra solo** desde la web: el registro público siempre crea cuentas de **cliente**. Las cuentas del equipo las creas tú aquí."],
-      "link": { "href": "gestionar-usuarios.html", "label": "Abrir Equipo y roles" },
+      "notas": [
+        "El equipo **no se registra solo** desde la web: el registro público siempre crea cuentas de **cliente**. Las cuentas del equipo las creas tú aquí."
+      ],
+      "link": {
+        "href": "gestionar-usuarios.html",
+        "label": "Abrir Equipo y roles"
+      },
       "kw": "crear cuenta usuario operario tecnico nuevo acceso contraseña",
-      "rel": ["roles", "rol-no-toma", "email-en-uso"]
+      "rel": [
+        "roles",
+        "rol-no-toma",
+        "email-en-uso"
+      ]
     },
     {
       "id": "roles",
@@ -176,10 +248,17 @@
         "**Mensajero**: sus entregas (incluido el saldo a cobrar).",
         "**Cliente** (doctor o laboratorio): su portal, sus casos y su facturación."
       ],
-      "notas": ["Los técnicos **no ven dinero ni datos de contacto** de los doctores."],
-      "link": { "href": "gestionar-usuarios.html", "label": "Abrir Equipo y roles" },
+      "notas": [
+        "Los técnicos **no ven dinero ni datos de contacto** de los doctores."
+      ],
+      "link": {
+        "href": "gestionar-usuarios.html",
+        "label": "Abrir Equipo y roles"
+      },
       "kw": "roles permisos que ve acceso dinero tecnico diseno alineadores",
-      "rel": ["crear-usuario"]
+      "rel": [
+        "crear-usuario"
+      ]
     },
     {
       "id": "desactivar-borrar",
@@ -193,10 +272,17 @@
         "**Borrar** (papelera): elimina la cuenta de forma permanente.",
         "Las cuentas **admin** están protegidas y no se pueden borrar desde aquí."
       ],
-      "notas": ["Si alguien sale del equipo, **desactiva** en vez de borrar: así se conserva quién hizo qué."],
-      "link": { "href": "gestionar-usuarios.html", "label": "Abrir Equipo y roles" },
+      "notas": [
+        "Si alguien sale del equipo, **desactiva** en vez de borrar: así se conserva quién hizo qué."
+      ],
+      "link": {
+        "href": "gestionar-usuarios.html",
+        "label": "Abrir Equipo y roles"
+      },
       "kw": "desactivar borrar eliminar cuenta sospechosa bloquear",
-      "rel": ["crear-usuario"]
+      "rel": [
+        "crear-usuario"
+      ]
     },
     {
       "id": "rol-no-toma",
@@ -211,7 +297,10 @@
         "Si le sale el formulario de \"Completa tu perfil\" de doctor, es la misma causa: le falta el rol."
       ],
       "kw": "rol no funciona no ve panel cliente perfil doctor sesion",
-      "rel": ["roles", "crear-usuario"]
+      "rel": [
+        "roles",
+        "crear-usuario"
+      ]
     },
     {
       "id": "email-en-uso",
@@ -225,7 +314,9 @@
         "Si era una cuenta de cliente y ahora es del equipo, al marcarle un rol pasa a **staff**."
       ],
       "kw": "correo email en uso ya existe duplicado registrado",
-      "rel": ["crear-usuario"]
+      "rel": [
+        "crear-usuario"
+      ]
     },
     {
       "id": "aln-flujo",
@@ -234,16 +325,26 @@
       "resumen": "De la orden del cliente a los modelos impresos.",
       "para": "Administración y técnica de alineadores",
       "pasos": [
-        "El cliente sube el caso con su **orden de trabajo** (STL, radiografías, fotos e indicación).",
-        "La técnica revisa y responde la **viabilidad** (cantidad aproximada de alineadores, IPR, attachments).",
-        "Si el cliente aprueba, se hace la **planificación**. El cliente puede pedir **hasta 2 revisiones** incluidas.",
-        "Aprobada la planificación se envían los **modelos a impresión**.",
-        "Con los modelos entregados se marca **Completar** y el caso termina."
+        "El cliente sube el caso con su **orden de trabajo** (STL, radiografías, fotos e indicación). A la técnica le llega un aviso en la campana 🔔.",
+        "La técnica abre el caso y con el botón **✈️ (Entregar)** envía la **viabilidad**: texto (cantidad aproximada de alineadores, IPR, attachments) y, si quiere, fotos, PDF o video.",
+        "El cliente la ve en **Mi cuenta — Alineadores** y pulsa **Aprobar** o **Pedir cambios**. La técnica recibe el aviso.",
+        "Aprobada la viabilidad, la técnica entrega la **planificación** (video/PDF/enlace del visor). El cliente puede pedir **hasta 2 revisiones** incluidas; desde la tercera, el sistema le avisa que puede tener costo.",
+        "Aprobada la planificación, el caso pasa a **Planificación aprobada** y se envían los **modelos a impresión**.",
+        "Con los modelos entregados se marca **Completar** y el caso termina (cobra solo la diferencia)."
       ],
-      "notas": ["La valoración es válida **3 a 4 meses**; pasado ese tiempo hay que valorar de nuevo con archivos nuevos."],
-      "link": { "href": "alineadores.html", "label": "Abrir Alineadores" },
-      "kw": "alineadores ortodoncia flujo viabilidad planificacion revision modelos",
-      "rel": ["aln-completar", "aln-cliente-subir", "aln-pagos"]
+      "notas": [
+        "La valoración es válida **3 a 4 meses**; pasado ese tiempo hay que valorar de nuevo con archivos nuevos."
+      ],
+      "link": {
+        "href": "alineadores.html",
+        "label": "Abrir Alineadores"
+      },
+      "kw": "alineadores ortodoncia flujo viabilidad planificacion revision modelos entrega entregar aprobar cambios revision campana",
+      "rel": [
+        "aln-completar",
+        "aln-cliente-subir",
+        "aln-pagos"
+      ]
     },
     {
       "id": "aln-completar",
@@ -256,10 +357,17 @@
         "Dale al botón **Completar** (bandera).",
         "El sistema verifica los modelos y registra solo la **diferencia** entre caso completo y valoración: la valoración ya cobrada no se cobra dos veces."
       ],
-      "notas": ["Si no marcas los modelos, el sistema **no deja completar**."],
-      "link": { "href": "alineadores.html", "label": "Abrir Alineadores" },
+      "notas": [
+        "Si no marcas los modelos, el sistema **no deja completar**."
+      ],
+      "link": {
+        "href": "alineadores.html",
+        "label": "Abrir Alineadores"
+      },
       "kw": "completar terminar caso modelos diferencia doble cobro",
-      "rel": ["aln-flujo"]
+      "rel": [
+        "aln-flujo"
+      ]
     },
     {
       "id": "aln-pagos",
@@ -273,9 +381,14 @@
         "Dale **✅ Verificar** (o ✖ Rechazar si no corresponde).",
         "Luego marca como **pagados** los cargos que cubre ese pago (botón de recibo en cada caso)."
       ],
-      "link": { "href": "alineadores.html", "label": "Abrir Alineadores" },
+      "link": {
+        "href": "alineadores.html",
+        "label": "Abrir Alineadores"
+      },
       "kw": "pago comprobante verificar cliente paypal cobro cuenta",
-      "rel": ["aln-flujo"]
+      "rel": [
+        "aln-flujo"
+      ]
     },
     {
       "id": "aln-cliente-subir",
@@ -290,7 +403,10 @@
         "Si algún archivo no sube, la pantalla avisa cuántos fallaron para enviarlos por WhatsApp."
       ],
       "kw": "cliente subir caso orden portal archivos stl zip radiografia fotos",
-      "rel": ["aln-flujo", "bandeja"]
+      "rel": [
+        "aln-flujo",
+        "bandeja"
+      ]
     },
     {
       "id": "codigo-cliente",
@@ -303,9 +419,14 @@
         "Ese código aparece en la orden de producción en lugar del nombre del doctor.",
         "En **Clientes (Doctores)** ves el código, el contacto y cuántos casos lleva."
       ],
-      "link": { "href": "clientes.html", "label": "Abrir Clientes" },
+      "link": {
+        "href": "clientes.html",
+        "label": "Abrir Clientes"
+      },
       "kw": "codigo cliente doctor dr privacidad identificar",
-      "rel": ["seguimiento-doctor"]
+      "rel": [
+        "seguimiento-doctor"
+      ]
     },
     {
       "id": "seguimiento-doctor",
@@ -319,7 +440,9 @@
         "El QR de la orden, escaneado por el doctor, lo lleva a su seguimiento; escaneado por el equipo, abre la pantalla interna."
       ],
       "kw": "doctor seguimiento portal ver caso qr numero",
-      "rel": ["codigo-cliente"]
+      "rel": [
+        "codigo-cliente"
+      ]
     },
     {
       "id": "reportar-problema",
@@ -336,7 +459,9 @@
         "Toca **Enviar y buscar solución**: recibes un número **R-####** y un **asistente con inteligencia artificial** te responde al instante con pasos concretos. Puedes seguir escribiéndole.",
         "Si se arregló, toca **Se resolvió**. Si no, toca **Necesito al equipo**: el equipo recibe el aviso con la conversación. La respuesta del equipo aparece en el mismo botón, en «Tus reportes»."
       ],
-      "notas": "Si una subida de archivos falla, la web abre este formulario sola con el detalle del archivo que falló. Los errores técnicos de la página también se avisan solos al equipo, así que no hace falta reportar dos veces el mismo error.",
+      "notas": [
+        "Si una subida de archivos falla, la web abre este formulario sola con el detalle del archivo que falló. Los errores técnicos de la página también se avisan solos al equipo, así que no hace falta reportar dos veces el mismo error."
+      ],
       "kw": "reportar error falla bug problema no funciona soporte ayuda subir archivo no sube captura incidencia web retroalimentacion sugerencia",
       "rel": [
         "pantalla-vacia",
@@ -358,7 +483,9 @@
         "Toca **Analizar con IA**: te da el diagnóstico probable, qué revisar y una **respuesta sugerida** que puedes copiar con un clic.",
         "Escribe o ajusta la **respuesta** y márcalo **En revisión**, **Resuelto** o **Descartar**. Si la persona tenía sesión, verá la respuesta en su botón; si no, usa los botones de WhatsApp o correo."
       ],
-      "notas": "Un error automático que se repite no genera avisos nuevos: suma veces al mismo reporte hasta que lo marques resuelto.",
+      "notas": [
+        "Un error automático que se repite no genera avisos nuevos: suma veces al mismo reporte hasta que lo marques resuelto."
+      ],
       "link": {
         "href": "reportes-web.html",
         "label": "Abrir Reportes de la web"
@@ -382,7 +509,10 @@
         "Si sigue igual, usa el botón **¿Algo falla?** (el salvavidas de arriba a la derecha): describe qué hacías y pega una captura con Ctrl+V."
       ],
       "kw": "error vacio no carga pantalla blanca falla",
-      "rel": ["reportar-problema", "rol-no-toma"]
+      "rel": [
+        "reportar-problema",
+        "rol-no-toma"
+      ]
     },
     {
       "id": "mantenimiento",
@@ -396,7 +526,9 @@
         "Si necesitas revisar una página pública bloqueada, pídele el acceso de vista previa a administración."
       ],
       "kw": "mantenimiento bloqueado no entra pagina publica",
-      "rel": ["pantalla-vacia"]
+      "rel": [
+        "pantalla-vacia"
+      ]
     },
     {
       "id": "archivo-no-abre",
@@ -410,7 +542,9 @@
         "Pide a administración que lo abra o que revise tu rol."
       ],
       "kw": "archivo no abre stl descargar permiso privado",
-      "rel": ["roles"]
+      "rel": [
+        "roles"
+      ]
     }
   ]
 }

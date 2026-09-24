@@ -230,7 +230,7 @@ window.__authP = ProdigyAuth.require(['admin','operator','contabilidad','calidad
 
   $('waHelp').href = 'https://wa.me/573219581949?text=' + encodeURIComponent('Hola Alejandro, en el Centro de ayuda no encontré cómo hacer esto: ');
 
-  fetch('ayuda-articulos.json?v=20260924b', { cache:'no-cache' }).then(function(r){ return r.json(); }).then(function(d){
+  fetch('ayuda-articulos.json?v=20260924c', { cache:'no-cache' }).then(function(r){ return r.json(); }).then(function(d){
     DATA = d; render();
     var id = location.hash.slice(1); if (id) abrir(id, false);
   }).catch(function(){ $('list').innerHTML = '<div class="empty">No se pudieron cargar los artículos. Recarga la página (Ctrl + F5).</div>'; });
