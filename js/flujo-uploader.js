@@ -90,7 +90,7 @@
             }
 
             if (uploadError) {
-                console.warn('[FlujoUploader] Error definitivo subiendo', f.name, uploadError.message);
+                console.warn('[FlujoUploader] Error definitivo subiendo', f.name, uploadError.message); if (window.ProdigyReport) ProdigyReport.log('archivos', 'Falló ' + f.name + ' (' + (f.size / 1048576).toFixed(1) + ' MB): ' + (uploadError.message || 'sin detalle'));
                 fallidos.push({ name: f.name, error: `No se pudo subir "${f.name}" tras 3 intentos. Revisa tu conexión.` });
                 // Continuar con el siguiente archivo en lugar de abortar todo el pedido
                 continue;

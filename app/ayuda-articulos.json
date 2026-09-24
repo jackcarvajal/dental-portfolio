@@ -333,7 +333,8 @@
         "Escribe **qué estabas haciendo y qué pasó**. Ejemplo: «subí 2 STL, la barra llegó a 80% y salió un aviso rojo».",
         "Si puedes, adjunta una **captura**: en PC, Win + Shift + S y luego **Ctrl + V** dentro del formulario; en el celular, toma la captura y tócala para elegirla.",
         "Deja marcada la casilla de **información técnica**: envía la página, el navegador y los últimos errores (nunca contraseñas). Puedes ver qué se envía en «Ver qué se envía».",
-        "Al enviar recibes un número **R-####**. La respuesta del equipo aparece en el mismo botón, en «Tus reportes»."
+        "Toca **Enviar y buscar solución**: recibes un número **R-####** y un **asistente con inteligencia artificial** te responde al instante con pasos concretos. Puedes seguir escribiéndole.",
+        "Si se arregló, toca **Se resolvió**. Si no, toca **Necesito al equipo**: el equipo recibe el aviso con la conversación. La respuesta del equipo aparece en el mismo botón, en «Tus reportes»."
       ],
       "notas": "Si una subida de archivos falla, la web abre este formulario sola con el detalle del archivo que falló. Los errores técnicos de la página también se avisan solos al equipo, así que no hace falta reportar dos veces el mismo error.",
       "kw": "reportar error falla bug problema no funciona soporte ayuda subir archivo no sube captura incidencia web retroalimentacion sugerencia",
@@ -350,11 +351,12 @@
       "resumen": "Dónde llegan los reportes y cómo cerrarlos.",
       "para": "Administración, operaciones y secretaría",
       "pasos": [
-        "Cada reporte avisa por **WhatsApp** al equipo con su número R-#### y la página donde pasó.",
+        "Primero responde el **asistente IA**. Solo llega aviso por **WhatsApp** cuando la persona toca «Necesito al equipo» (o se va sin resolver), con su número R-#### y la página. Lo que la IA resuelve queda marcado **IA** y no molesta a nadie.",
         "Ábrelo en el menú **Hoy → Reportes de la web**. El número dorado junto a la opción son los reportes nuevos.",
         "Filtra por **Abiertos**, **Personas** (lo que escribió alguien) o **Automáticos** (errores que la web detectó sola; «×3» significa que pasó 3 veces).",
         "En el detalle ves la descripción, la captura, quién fue, su equipo y **lo que pasó antes** (subidas que fallaron, errores). Con eso se sabe si fue la conexión, el archivo o la web.",
-        "Escribe la **respuesta** y márcalo **En revisión**, **Resuelto** o **Descartar**. Si la persona tenía sesión, verá la respuesta en su botón; si no, usa los botones de WhatsApp o correo."
+        "Toca **Analizar con IA**: te da el diagnóstico probable, qué revisar y una **respuesta sugerida** que puedes copiar con un clic.",
+        "Escribe o ajusta la **respuesta** y márcalo **En revisión**, **Resuelto** o **Descartar**. Si la persona tenía sesión, verá la respuesta en su botón; si no, usa los botones de WhatsApp o correo."
       ],
       "notas": "Un error automático que se repite no genera avisos nuevos: suma veces al mismo reporte hasta que lo marques resuelto.",
       "link": {

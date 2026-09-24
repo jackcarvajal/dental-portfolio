@@ -192,7 +192,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
   <link rel="stylesheet" href="../css/admin-luxe.css?v=20260923b">
-<script src="../js/reportar-problema.js?v=20260924a"></script>
+<script src="../js/reportar-problema.js?v=20260924b"></script>
 </head>
 <body data-dock-safe>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -4572,7 +4572,7 @@ document.addEventListener('keydown', e => {
 <script src="../js/admin-hints.js?v=20260924" defer></script>
 <script>
 /* Badge "Reportes de la web": reportes nuevos (personas + errores automáticos) */
-setTimeout(function(){ try{ sb.from('reportes_web').select('id',{count:'exact',head:true}).eq('estado','nuevo').then(function(r){
+setTimeout(function(){ try{ sb.from('reportes_web').select('id',{count:'exact',head:true}).eq('negocio','prodigy').eq('estado','nuevo').then(function(r){
   var b=document.getElementById('badge-reportes'); if(!b||r.error||!r.count) return; b.textContent=r.count; b.style.display='inline';
 }); }catch(e){} }, 1500);
 </script>

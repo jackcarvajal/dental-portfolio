@@ -17,6 +17,7 @@
 - ✅ **Centro de ayuda** `app/ayuda.html` + `app/ayuda-articulos.json` (24 artículos).
 - 🟡 **"¿Algo no funciona?"** (24-sep): botón salvavidas en 39 páginas `/app/` + 9 formularios públicos (`js/reportar-problema.js`) → `/api/reportar-problema` → tabla `reportes_web` (+ bucket privado `reportes-capturas`) → aviso WhatsApp STAFF_1..3 → bandeja `app/reportes-web.html` (menú Hoy, badge de nuevos). Captura errores JS y subidas fallidas solos (agrupados por huella, máx 3/visita). **Requiere correr `sql/reportes-web-2026.sql`.**
 - 🔴→✅ `auth-guard.js` tenía 3 cambios (admins, rol alineadores, multi-rol/desactivar) sin subir `?v=` → navegadores con caché de 1 año corrían la versión vieja. Subido a `?v=20260924` en las 46 páginas.
+- 🟡 **Asistente IA (Claude) en "¿Algo no funciona?"** (24-sep, fase 2): tras enviar el reporte, `functions/api/asistente-soporte.js` responde en vivo (streaming); WhatsApp al equipo solo si la persona toca «Necesito al equipo» o se va sin resolver. Bandeja con «Analizar con IA» (diagnóstico + respuesta sugerida). Rediseño con paleta de marca completa + solo Inter (ESTANDARES-UX-TIPOGRAFIA.md). **Requiere** `sql/reportes-web-ia-2026.sql` y Secret `ANTHROPIC_API_KEY` en Cloudflare. Portado gemelo a Alejandro CAD/CAM.
 - ⏳ Pendiente: UI de entregas de Mayra (`sql/alineadores-entregas-2026.sql` sin correr), filtro por especialidad en operario-diseno, asistente IA sobre el JSON de ayuda, handle de PayPal.
 
 ## 2026-09-22  (SISTEMA DE GESTIÓN DE LAB COMPLETO — sesión larga)
