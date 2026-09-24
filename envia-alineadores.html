@@ -91,6 +91,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;text-align:center;font-size:.9rem;color:#94a3b8;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
+<script src="js/reportar-problema.js?v=20260924a"></script>
 </head>
 <body>
 <a href="#form" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al formulario</a>
@@ -259,6 +260,7 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
     for(let intento=1;intento<=3;intento++){
       const {error}=await sb.storage.from('alineadores-archivos').upload(path,f);
       if(!error){ ok=true; break; }
+      if(intento===3 && window.ProdigyReport) ProdigyReport.log('archivos','Falló '+f.name+' ('+(f.size/1048576).toFixed(1)+' MB): '+(error.message||error.error||'sin detalle'));
       if(intento<3) await new Promise(r=>setTimeout(r,800*intento));
     }
     if(ok) subidos.push({nombre:f.name,ruta:path});
@@ -269,6 +271,7 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
   if(!subidos.length){
     hideProg(); btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar caso';
     pubToast('No se pudo subir ningún archivo. Revisa tu conexión e intenta de nuevo.');
+    if(window.ProdigyReport) ProdigyReport.abrir({tipo:'archivos',descripcion:'No pude subir los archivos del caso de alineadores ('+files.length+' archivo(s)).'});
     return;
   }
   setProg(78,'Guardando caso…');
@@ -322,7 +325,7 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
       `<span style="display:inline-block;margin:12px 0;padding:8px 16px;border:1px solid rgba(212,175,55,.4);border-radius:10px;background:rgba(212,175,55,.08);color:#D4AF37;font-weight:800;letter-spacing:.5px;">Nº de caso: ${escH(codigo)}</span><br>`+
       `<span style="font-size:.85rem;color:#94a3b8;">Guarda este número para el seguimiento.</span><br><br>`+
       (convenio?`💳 Registrado como <strong>convenio mensual</strong>: entra al corte del mes.<br>`:'')+
-      (fallidos?`<b style="color:#fbbf24">⚠️ ${fallidos} archivo(s) no se pudieron subir — envíalos por WhatsApp.</b><br>`:'')+
+      (fallidos?`<b style="color:#fbbf24">⚠️ ${fallidos} archivo(s) no se pudieron subir — envíalos por WhatsApp.</b> <a href="#" onclick="window.ProdigyReport&&ProdigyReport.abrir({tipo:'archivos'});return false" style="color:#EADBAE">Reportar el problema</a><br>`:'')+
       (email?`✅ Te creamos el portal — revisa tu WhatsApp (${escH(whatsapp)}) con el acceso.`:`Te contactamos al ${escH(whatsapp)} con la planificación.`);
     document.getElementById('waLink').href=`https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, envié un caso de alineadores. Paciente ${paciente}. Nº ${codigo}.`)}`;
     if(email){ const r=document.getElementById('regLink'); r.style.display='inline-flex'; r.href=`/app/login.html?nuevo=1&caso=${encodeURIComponent(codigo)}&email=${encodeURIComponent(email)}`; }

@@ -9,6 +9,16 @@
 
 ---
 
+## 2026-09-23/24  (Alineadores piloto · usuarios multi-rol · admin luxe · Centro de ayuda · reportes web)
+
+- ✅ **Alineadores** (cliente Panorámica Digital 3D + técnica Mayra, rol exclusivo `alineadores`): `envia-alineadores.html` (pública), `app/nueva-orden-alineadores.html`, `app/alineadores.html` (cuentas cliente USD vs pago técnica COP; Mayra no ve precios del cliente), `app/facturacion-alineadores.html` (portal de cobro + comprobantes). Precios vigentes $90/$30 (alza $120/$40 = solo propuesta). Protocolo: `docs/PROTOCOLO-ALINEADORES.md`.
+- ✅ **Usuarios**: `app/gestionar-usuarios.html` + `functions/api/gestion-usuarios.js` (crear/roles múltiples/activar-desactivar/borrar; admins solo por email). `auth-guard.js` multi-rol (`roles[]`, `active`).
+- ✅ **Admin** tema "Obsidiana y Champán" (`css/admin-luxe.css`), menú reorganizado (Hoy + grupos), ayuda contextual (`js/admin-hints.js`), dock arriba-derecha sin choques (campana + rol).
+- ✅ **Centro de ayuda** `app/ayuda.html` + `app/ayuda-articulos.json` (24 artículos).
+- 🟡 **"¿Algo no funciona?"** (24-sep): botón salvavidas en 39 páginas `/app/` + 9 formularios públicos (`js/reportar-problema.js`) → `/api/reportar-problema` → tabla `reportes_web` (+ bucket privado `reportes-capturas`) → aviso WhatsApp STAFF_1..3 → bandeja `app/reportes-web.html` (menú Hoy, badge de nuevos). Captura errores JS y subidas fallidas solos (agrupados por huella, máx 3/visita). **Requiere correr `sql/reportes-web-2026.sql`.**
+- 🔴→✅ `auth-guard.js` tenía 3 cambios (admins, rol alineadores, multi-rol/desactivar) sin subir `?v=` → navegadores con caché de 1 año corrían la versión vieja. Subido a `?v=20260924` en las 46 páginas.
+- ⏳ Pendiente: UI de entregas de Mayra (`sql/alineadores-entregas-2026.sql` sin correr), filtro por especialidad en operario-diseno, asistente IA sobre el JSON de ayuda, handle de PayPal.
+
 ## 2026-09-22  (SISTEMA DE GESTIÓN DE LAB COMPLETO — sesión larga)
 
 > Todo desplegado y en vivo (main). SQL de esta sesión YA CORRIDOS por el usuario. Ver también memoria [[project_sistema_gestion_lab]].

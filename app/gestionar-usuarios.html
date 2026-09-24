@@ -52,6 +52,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 .empty{padding:22px;text-align:center;color:var(--muted);}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;}}
 </style>
+<script src="../js/reportar-problema.js?v=20260924a"></script>
 </head>
 <body>
 <div class="top">
@@ -99,7 +100,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 </div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
-<script src="../js/auth-guard.js?v=20260717"></script>
+<script src="../js/auth-guard.js?v=20260924"></script>
 <script>ProdigyAuth.require(['admin']);</script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');

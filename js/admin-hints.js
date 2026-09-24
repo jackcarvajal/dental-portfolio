@@ -7,6 +7,7 @@
     'bandeja-solicitudes.html': 'Solicitudes nuevas desde la web (escáner, domicilio, alineadores). Se cotizan y se convierten en caso.',
     'rastreo.html': 'Dónde está físicamente cada caso y quién lo tiene ahora. Historial de movimientos.',
     'tab:torre': 'Urgencias e incidencias abiertas. Si ves un número rojo, revísalo primero.',
+    'reportes-web.html': 'Problemas que reportan operarios, doctores y visitantes con «¿Algo falla?», y errores que la web detecta sola.',
     'tab:fabricacion': 'Solicitudes de fabricación y cotizaciones que esperan respuesta.',
     'tab:despachos': 'Asignar casos terminados a un mensajero y seguir la entrega.',
     'tab:rutador': 'Tablero por área (diseño, fresado, impresión, calidad): quién está haciendo qué.',
