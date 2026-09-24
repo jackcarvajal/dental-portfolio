@@ -60,8 +60,8 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 
 <div class="pay">
   <b>💳 Cómo pagar</b><br>
-  • <b>PayPal</b> (agrega la comisión que indica PayPal para que llegue el monto completo).<br>
-  • <b>Global66:</b> busca <b>@JESSMEN1171</b> (Jessica Mendez Carmelo) → “Enviar dinero” → “Entre contactos”.<br>
+  • <b>Global66 (recomendado, sin comisión):</b> busca <b>@JESSMEN1171</b> (Jessica Mendez Carmelo) → “Enviar dinero” → “Entre contactos” y envía el <b>monto exacto</b> del estado de cuenta.<br>
+  • <b>PayPal</b> solo si no puedes por Global66: ahí sí se suma la comisión de PayPal para que llegue el monto completo.<br>
   Luego pulsa <b>“Reportar pago”</b> y sube el comprobante 👇
 </div>
 
@@ -85,10 +85,10 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
     <div class="fg"><label>Moneda</label><select id="pMoneda"><option>USD</option><option>COP</option></select></div>
   </div>
   <div class="grid2">
-    <div class="fg"><label>Método</label><select id="pMetodo"><option>PayPal</option><option>Global66</option><option>Transferencia</option></select></div>
+    <div class="fg"><label>Método</label><select id="pMetodo"><option>Global66</option><option>PayPal</option><option>Transferencia</option></select></div>
     <div class="fg"><label>Mes que cubre</label><input id="pMes" placeholder="2026-07"></div>
   </div>
-  <div class="fg"><label>Referencia / nº transacción</label><input id="pRef" placeholder="ID de PayPal, etc."></div>
+  <div class="fg"><label>Referencia / nº transacción</label><input id="pRef" placeholder="Nº de la transferencia en Global66, PayPal…"></div>
   <div class="fg"><label>Comprobante (imagen o PDF)</label><input type="file" id="pFile" accept="image/*,.pdf"></div>
   <div class="fg"><label>Nota (opcional)</label><textarea id="pNota" rows="2"></textarea></div>
   <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovPago')">Cancelar</button><button class="btn btn-mg" id="pGuardar" onclick="guardarPago()">Enviar</button></div>
@@ -154,7 +154,7 @@ function abrirPago(){
   ['pMonto','pRef','pMes','pNota'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('pFile').value='';
   document.getElementById('pMoneda').value='USD';
-  document.getElementById('pMetodo').value='PayPal';
+  document.getElementById('pMetodo').value='Global66';   // Panorámica paga por Global66 (sin comisión de envío)
   document.getElementById('ovPago').classList.add('show');
 }
 async function guardarPago(){
