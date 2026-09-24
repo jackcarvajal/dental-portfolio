@@ -32,13 +32,13 @@ Después de terminar todo el plan, si el ortodoncista lo ve necesario.
 ## Tarifas — DOS cuentas separadas (¡no confundir!)
 Cada caso genera hasta 2 cargos: uno que **cobro al cliente** y otro que **pago a Mayra**.
 
-### A) Lo que COBRO al cliente (Panorámica Digital 3D) — **USD** (paga por **Global66, sin comisión de envío**, al corte mensual)
+### A) Lo que COBRO al cliente (Panorámica Digital 3D) — **USD** (paga por **PayPal + 12 % de comisión acordada**, al corte mensual)
 **PRECIO VIGENTE (lo que el sistema cobra HOY — el alza AÚN NO aplica):**
 - **Valoración sola:** **$30 USD**
 - **Caso completo** (valoración + plan + modelos): **$90 USD**
 - Replaneación: **$20** (en tiempo) / **$40** (fuera de tiempo) USD.
 - Refinamiento: **$0** (≤6 meses, 1º incluido) / **$40** (>6 meses o adicional) USD.
-- Cobro: **Global66 @JESSMEN1171** (Jessica Mendez Carmelo) → sin comisión: envían el monto exacto (instrucciones enviadas por WhatsApp el 8-jun-2026). **PayPal** solo como alternativa: el cliente suma **12 % de comisión** (acordado por Alejandro; no quedó por escrito en el texto del chat — confirmarlo por escrito).
+- Cobro: **PayPal**, sumando **12 % de comisión** acordado (ej. US$90 → US$100,80). Global66 se les ofreció (8-jun-2026) pero **no quisieron** → descartado. El 12 % no quedó en el texto del chat (quizá nota de voz): conviene confirmarlo por escrito.
 - Cómo pagan (historial de WhatsApp): el cliente arma el reporte desde el último paciente del reporte anterior; su departamento de pagos lo autoriza (tarda semanas). Pagado hasta **mayo 2026** (confirmado 7-ago). Una valoración de un caso NO viable se cobra igual (confirmado 12-ago, Naomi Severino).
 
 **PROPUESTA de alza (enviada al cliente, PENDIENTE de aprobación — NO aplicar hasta que confirmen):**
