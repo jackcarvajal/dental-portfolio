@@ -320,7 +320,7 @@ body::before{content:"";position:fixed;left:0;right:0;top:0;height:3px;backgroun
       return fetch('/api/asistente-soporte', { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:'Bearer ' + t }, body: JSON.stringify({ modo:'equipo', id:r.id }) });
     }).then(function(res){
       if (!res.ok || !res.body) return res.json().catch(function(){ return {}; }).then(function(j){
-        throw new Error(j.error === 'asistente_no_configurado' ? 'Falta la clave ANTHROPIC_API_KEY en Cloudflare.' : (j.error || 'Error ' + res.status));
+        throw new Error(j.error === 'asistente_no_configurado' ? 'Falta la clave de IA (GEMINI_API_KEY) en Cloudflare.' : (j.error || 'Error ' + res.status));
       });
       var rd = res.body.getReader(), dec = new TextDecoder();
       return (function leer(){ return rd.read().then(function(p){

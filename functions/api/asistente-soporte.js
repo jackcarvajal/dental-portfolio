@@ -1,5 +1,5 @@
 /**
- * Asistente IA de soporte (Claude) — /api/asistente-soporte
+ * Asistente IA de soporte — /api/asistente-soporte
  *   modo 'usuario': ayuda EN VIVO a quien acaba de reportar un problema (id + clave del reporte).
  *   modo 'equipo' : diagnóstico + respuesta sugerida para la bandeja (sesión de equipo).
  * Responde en streaming (text/plain) y guarda la conversación/análisis en reportes_web.
@@ -8,7 +8,8 @@
  * tiene herramientas (solo texto), no recibe precios/claves/correos internos, y la persona no-equipo
  * solo recibe conocimiento público. Límite por IP y por conversación.
  * Gemelo del archivo del otro repo: solo cambia el bloque CONFIG.
- * Env: ANTHROPIC_API_KEY (Secret), opcional ANTHROPIC_MODEL.
+ * IA: Google Gemini con la GEMINI_API_KEY que ya usa el chatbot (capa gratuita; si un modelo llega a su
+ * límite se prueba el siguiente). Opcional y de pago: IA_PROVEEDOR=claude + ANTHROPIC_API_KEY (+ ANTHROPIC_MODEL).
  */
 import { NEGOCIO, MARCA, SITIO, TIPOS, cors, cfg, adminH, claveValida, usuarioDe, esEquipo, limite, leerReporte } from './reportar-problema.js';
 
@@ -29,6 +30,7 @@ const CONOCIMIENTO_PUBLICO = `
 /* ─────────────────────────────────────────────── */
 
 const MAX_TURNOS = 6;
+const GEMINI_MODELOS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
 const esc = s => String(s == null ? '' : s).replace(/\*\*/g, '');
 
 function articulosTexto(data, soloIds){
@@ -128,7 +130,8 @@ export async function onRequestPost(ctx){
   const h = cors(request.headers.get('Origin') || '');
   const J = (o, s = 200) => new Response(JSON.stringify(o), { status:s, headers:h });
   const c = cfg(env);
-  if (!env.ANTHROPIC_API_KEY || !c.SERVICE) return J({ error:'asistente_no_configurado' }, 503);
+  const usarClaude = env.IA_PROVEEDOR === 'claude' && !!env.ANTHROPIC_API_KEY;
+  if ((!usarClaude && !env.GEMINI_API_KEY) || !c.SERVICE) return J({ error:'asistente_no_configurado' }, 503);
 
   let b; try { b = await request.json(); } catch { return J({ error:'JSON inválido' }, 400); }
   const modo = b.modo === 'equipo' ? 'equipo' : 'usuario';
@@ -164,20 +167,44 @@ export async function onRequestPost(ctx){
   const system = [{ type:'text', text: modo === 'equipo' ? sistemaEquipo(conocimiento) : sistemaUsuario(conocimiento, esStaff), cache_control:{ type:'ephemeral' } }];
   const messages = [{ role:'user', content: reporteTexto(fila, modo === 'equipo') + (modo === 'equipo' ? '\n\nAnaliza el reporte.' : '\n\nAyúdame a resolverlo.') }, ...mensajes];
 
-  const up = await fetch('https://api.anthropic.com/v1/messages', {
-    method:'POST',
-    headers:{ 'x-api-key':env.ANTHROPIC_API_KEY, 'anthropic-version':'2023-06-01', 'content-type':'application/json' },
-    body: JSON.stringify({ model: env.ANTHROPIC_MODEL || 'claude-sonnet-5', max_tokens: modo === 'equipo' ? 1200 : 600, system, messages, stream:true })
-  });
-  if (!up.ok || !up.body) { const t = await up.text().catch(() => ''); return J({ error:'La IA no respondió. Intenta de nuevo o toca «Necesito al equipo».', detalle:t.slice(0, 200) }, 502); }
+  const maxTok = modo === 'equipo' ? 1200 : 600;
+  let up = null, detalle = '';
+  if (usarClaude) {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{ 'x-api-key':env.ANTHROPIC_API_KEY, 'anthropic-version':'2023-06-01', 'content-type':'application/json' },
+      body: JSON.stringify({ model: env.ANTHROPIC_MODEL || 'claude-sonnet-5', max_tokens:maxTok, system, messages, stream:true })
+    }).catch(() => null);
+    if (r && r.ok && r.body) up = r; else detalle = r ? (await r.text().catch(() => '')).slice(0, 200) : 'red';
+  } else {
+    // Gemini: roles user/model; si un modelo está sin cupo (429) o falla, se prueba el siguiente
+    const contents = messages.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts:[{ text: m.content }] }));
+    for (const model of GEMINI_MODELOS) {
+      const gen = { maxOutputTokens:maxTok, temperature:0.3 };
+      if (model.startsWith('gemini-2.5')) gen.thinkingConfig = { thinkingBudget:0 };   // respuesta directa, sin "pensar" (más rápida)
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'x-goog-api-key':env.GEMINI_API_KEY },
+        body: JSON.stringify({ systemInstruction:{ parts:[{ text: system[0].text }] }, contents, generationConfig:gen })
+      }).catch(() => null);
+      if (r && r.ok && r.body) { up = r; break; }
+      detalle = r ? model + ': ' + (await r.text().catch(() => '')).slice(0, 160) : model + ': red';
+    }
+  }
+  if (!up) return J({ error:'La IA no respondió. Intenta de nuevo o toca «Necesito al equipo».', detalle }, 502);
 
-  // SSE de Anthropic → texto plano en vivo
+  // SSE (Gemini o Claude) → texto plano en vivo
   const dec = new TextDecoder(), enc = new TextEncoder();
   let buf = '', full = '', fin;
   const terminado = new Promise(r => { fin = r; });
+  const textoDe = j => {
+    if (usarClaude) return (j.type === 'content_block_delta' && j.delta && j.delta.type === 'text_delta') ? j.delta.text : '';
+    const parts = (j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts) || [];
+    return parts.filter(p => !p.thought).map(p => p.text || '').join('');
+  };
   const ts = new TransformStream({
     transform(chunk, ctl){
-      buf += dec.decode(chunk, { stream:true });
+      buf += dec.decode(chunk, { stream:true }).replace(/\r\n/g, '\n');
       let i;
       while ((i = buf.indexOf('\n\n')) >= 0) {
         const ev = buf.slice(0, i); buf = buf.slice(i + 2);
@@ -185,8 +212,9 @@ export async function onRequestPost(ctx){
         if (!line) continue;
         try {
           const j = JSON.parse(line.slice(5));
-          if (j.type === 'content_block_delta' && j.delta && j.delta.type === 'text_delta') { full += j.delta.text; ctl.enqueue(enc.encode(j.delta.text)); }
-          else if (j.type === 'error') ctl.enqueue(enc.encode('\n\n(La IA tuvo un problema. Toca «Necesito al equipo».)'));
+          if (j.error || j.type === 'error') { ctl.enqueue(enc.encode('\n\n(La IA tuvo un problema. Toca «Necesito al equipo».)')); continue; }
+          const t = textoDe(j);
+          if (t) { full += t; ctl.enqueue(enc.encode(t)); }
         } catch(_) {}
       }
     },

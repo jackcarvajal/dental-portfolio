@@ -1,7 +1,7 @@
 /* "¿Algo no funciona?" + asistente IA en vivo.
    Botón para que operarios, doctores y visitantes reporten fallas de la web (subir archivos, pagos,
    algo que no carga…) con captura opcional + detalle técnico automático. Tras enviar, un asistente IA
-   (Claude) intenta resolverlo en vivo; si no, la persona toca «Necesito al equipo» y se avisa por WhatsApp.
+   intenta resolverlo en vivo; si no, la persona toca «Necesito al equipo» y se avisa por WhatsApp.
    También registra en silencio los errores de la página (agrupados, máx. 3 por visita).
    API para las páginas:
      ProdigyReport.abrir({ tipo:'archivos', descripcion:'…', detalle:{…} })  → abre el formulario
@@ -586,7 +586,7 @@
     var bEq = el('button', { type: 'button', class: 'go eq' }, 'Necesito al equipo');
     acts.appendChild(bOk); acts.appendChild(bEq);
     cuerpo.appendChild(acts);
-    cuerpo.appendChild(el('p', { class: 'nota' }, 'Respuestas generadas por IA (Claude): pueden equivocarse. Nunca te pediremos contraseñas. Si no se resuelve, el equipo recibe tu reporte con esta conversación.'));
+    cuerpo.appendChild(el('p', { class: 'nota' }, 'Respuestas generadas por inteligencia artificial: pueden equivocarse. Nunca te pediremos contraseñas. Si no se resuelve, el equipo recibe tu reporte con esta conversación.'));
     cuerpo.appendChild(el('div', { class: 'msg', id: 'pr-msg', role: 'alert' }));
 
     function burbuja(quien, texto) {

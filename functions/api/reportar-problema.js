@@ -12,7 +12,7 @@
  * - `clave` = HMAC(id) → permite al asistente/cierre actuar sobre ESE reporte sin sesión.
  * Tabla compartida con Alejandro CAD/CAM (columna negocio). Este archivo es gemelo del de su repo:
  * solo cambia el bloque CONFIG.
- * Env: SUPABASE_SERVICE_ROLE_KEY (o SUPABASE_SERVICE_KEY), STAFF_n_PHONE/STAFF_n_APIKEY, ANTHROPIC_API_KEY.
+ * Env: SUPABASE_SERVICE_ROLE_KEY (o SUPABASE_SERVICE_KEY), STAFF_n_PHONE/STAFF_n_APIKEY, GEMINI_API_KEY (asistente).
  */
 
 /* ── CONFIG (único bloque que cambia entre repos) ── */
@@ -186,7 +186,7 @@ export async function onRequestPost({ request, env }){
   }
 
   // ¿Se retiene el aviso para que el asistente IA intente primero?
-  const ia = origen === 'usuario' && b.asistente === true && !!env.ANTHROPIC_API_KEY;
+  const ia = origen === 'usuario' && b.asistente === true && !!(env.GEMINI_API_KEY || (env.IA_PROVEEDOR === 'claude' && env.ANTHROPIC_API_KEY));
 
   const ua = request.headers.get('User-Agent') || '';
   const fila = {
