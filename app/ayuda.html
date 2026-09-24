@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<title>Centro de ayuda — PRODIGY</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<link rel="stylesheet" href="../css/admin-luxe.css?v=20260923b">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;visibility:hidden}
+.wrap{max-width:1180px;margin:0 auto;padding:30px 24px 60px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:26px}
+.back{display:inline-flex;align-items:center;gap:8px;color:var(--lx-muted);text-decoration:none;font-size:.82rem;padding:8px 12px;border:1px solid var(--lx-line);border-radius:10px}
+.back:hover{color:#fff;border-color:var(--lx-line-gold)}
+.brand{font-family:var(--lx-display);font-weight:600;letter-spacing:.34em;font-size:.8rem;background:linear-gradient(120deg,#fff,var(--lx-champ) 45%,var(--lx-gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.hero{text-align:center;padding:22px 0 26px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--lx-champ);border:1px solid var(--lx-line-gold);border-radius:100px;padding:5px 12px;background:rgba(212,175,55,.06)}
+.hero h1{font-family:var(--lx-display);font-weight:600;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.03em;margin:16px 0 8px;text-wrap:balance}
+.hero h1 span{background:linear-gradient(120deg,var(--lx-champ),var(--lx-gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--lx-muted);font-size:.95rem;max-width:560px;margin:0 auto}
+
+.search{position:relative;max-width:640px;margin:24px auto 0}
+.search i{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--lx-muted)}
+.search input{width:100%;padding:16px 56px 16px 48px;border-radius:16px;font-size:1rem;font-family:var(--lx-body);color:var(--lx-text);
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--lx-line);
+  box-shadow:0 18px 40px -26px rgba(0,0,0,.9);transition:border-color .18s,box-shadow .18s}
+.search input:focus{outline:none;border-color:rgba(212,175,55,.55);box-shadow:0 0 0 4px rgba(212,175,55,.12)}
+.search kbd{position:absolute;right:16px;top:50%;transform:translateY(-50%);font:600 .7rem var(--lx-body);color:var(--lx-muted);border:1px solid var(--lx-line);border-radius:6px;padding:3px 7px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0 28px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;
+  color:#b4b8c5;background:rgba(255,255,255,.03);border:1px solid var(--lx-line);font-family:var(--lx-body);transition:all .18s}
+.chip:hover{color:#fff;border-color:rgba(255,255,255,.18)}
+.chip.on{color:var(--lx-champ);border-color:var(--lx-line-gold);background:rgba(212,175,55,.1)}
+.chip .n{font-size:.66rem;color:var(--lx-muted);font-variant-numeric:tabular-nums}
+
+.grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:22px;align-items:start}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:block;text-align:left;width:100%;cursor:pointer;padding:14px 16px;border-radius:14px;font-family:var(--lx-body);
+  background:rgba(255,255,255,.025);border:1px solid var(--lx-line);color:var(--lx-text);transition:border-color .18s,background .18s}
+.item:hover{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.04)}
+.item.on{border-color:var(--lx-line-gold);background:linear-gradient(90deg,rgba(212,175,55,.1),rgba(255,255,255,.02))}
+.item .t{font-weight:600;font-size:.9rem;margin-bottom:3px}
+.item .r{font-size:.78rem;color:var(--lx-muted);line-height:1.4}
+.item .c{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:#6f7484;margin-bottom:6px}
+.empty{padding:28px;text-align:center;color:var(--lx-muted);border:1px dashed var(--lx-line);border-radius:14px}
+
+.read{position:sticky;top:20px;padding:30px 32px;border-radius:20px;min-height:300px;
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--lx-line);
+  box-shadow:0 24px 60px -34px rgba(0,0,0,.9)}
+.read::before{content:'';position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(234,219,174,.4),transparent)}
+.read .cat{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lx-champ)}
+.read h2{font-family:var(--lx-display);font-weight:600;font-size:1.55rem;letter-spacing:-.02em;margin:10px 0 6px;text-wrap:balance}
+.read .res{color:var(--lx-muted);font-size:.95rem;margin-bottom:14px;max-width:62ch}
+.para{display:inline-flex;align-items:center;gap:7px;font-size:.72rem;color:#b4b8c5;background:rgba(255,255,255,.04);border:1px solid var(--lx-line);border-radius:100px;padding:4px 11px;margin-bottom:20px}
+.steps{list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:12px;max-width:66ch}
+.steps li{counter-increment:s;position:relative;padding-left:44px;line-height:1.6;font-size:.93rem;color:#dcdfe6}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font:600 .8rem var(--lx-display);color:var(--lx-champ);background:rgba(212,175,55,.1);border:1px solid var(--lx-line-gold)}
+.steps b,.note b{color:#fff;font-weight:600}
+.note{margin-top:18px;padding:13px 16px;border-radius:12px;font-size:.87rem;line-height:1.55;color:#e8e2cf;max-width:66ch;
+  background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);display:flex;gap:10px}
+.note i{color:var(--lx-champ);margin-top:3px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.go{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:12px;font-weight:700;font-size:.85rem;text-decoration:none;color:#15110a;
+  background:linear-gradient(135deg,#F1E4BC,var(--lx-gold) 55%,#B38B25);box-shadow:0 8px 22px -10px rgba(212,175,55,.7)}
+.go:hover{filter:brightness(1.06)}
+.copy{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:12px;font-size:.82rem;cursor:pointer;color:var(--lx-muted);background:transparent;border:1px solid var(--lx-line);font-family:var(--lx-body)}
+.copy:hover{color:#fff;border-color:rgba(255,255,255,.2)}
+.rel{margin-top:26px;padding-top:18px;border-top:1px solid var(--lx-line)}
+.rel h4{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:#6f7484;margin-bottom:10px;font-weight:700}
+.rel a{display:inline-flex;margin:0 8px 8px 0;padding:7px 12px;border-radius:10px;font-size:.8rem;color:#cfd3dc;text-decoration:none;background:rgba(255,255,255,.03);border:1px solid var(--lx-line)}
+.rel a:hover{border-color:var(--lx-line-gold);color:var(--lx-champ)}
+.mback{display:none}
+
+.help{margin-top:40px;text-align:center;color:var(--lx-muted);font-size:.88rem}
+.help a{color:var(--lx-champ);text-decoration:none;border-bottom:1px solid rgba(234,219,174,.35)}
+
+:focus-visible{outline:2px solid var(--lx-champ);outline-offset:2px}
+@media(max-width:860px){
+  .grid{grid-template-columns:1fr}
+  .read{position:static;display:none;padding:24px 20px}
+  body.reading .read{display:block}
+  body.reading .list,body.reading .chips,body.reading .hero{display:none}
+  .mback{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;color:var(--lx-muted);background:none;border:1px solid var(--lx-line);border-radius:10px;padding:8px 12px;font-family:var(--lx-body);cursor:pointer}
+}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="panel-interno-operaciones.html" id="volver"><i class="fas fa-arrow-left"></i> Volver</a>
+    <span class="brand">PRODIGY</span>
+  </div>
+
+  <section class="hero">
+    <span class="eyebrow"><i class="fas fa-book-open"></i> Centro de ayuda</span>
+    <h1>¿Qué necesitas <span>hacer hoy?</span></h1>
+    <p>Todo lo del sistema explicado paso a paso, para cualquier persona del equipo.</p>
+    <div class="search">
+      <i class="fas fa-magnifying-glass"></i>
+      <input id="q" type="search" placeholder="Ej: crear un usuario, estados de un caso, pago del cliente…" autocomplete="off" aria-label="Buscar en el centro de ayuda">
+      <kbd>/</kbd>
+    </div>
+  </section>
+
+  <div class="chips" id="chips" role="tablist" aria-label="Categorías"></div>
+
+  <div class="grid">
+    <div class="list" id="list" aria-live="polite"></div>
+    <article class="read" id="read" aria-live="polite"></article>
+  </div>
+
+  <p class="help">¿No encontraste lo que buscabas? <a id="waHelp" href="#" target="_blank" rel="noopener noreferrer">Pregúntale a administración por WhatsApp</a></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/auth-guard.js?v=20260717"></script>
+<script>
+window.__authP = ProdigyAuth.require(['admin','operator','contabilidad','calidad','encargado_inventario','mensajero','diseno','alineadores','guias','exocad','blender','taller','fresado','impresion','secretaria']);
+</script>
+<script>
+(function(){
+  var DATA = { categorias: [], articulos: [] }, CAT = 'todas', CUR = null;
+  var $ = function(id){ return document.getElementById(id); };
+  var norm = function(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); };
+  var esc = function(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
+  var md = function(s){ return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>'); };   // solo **negrita**, todo lo demás escapado
+  var catNombre = function(id){ var c = DATA.categorias.find(function(x){ return x.id===id; }); return c ? c.nombre : ''; };
+
+  // "Volver" según el rol: admin al panel, el resto a su propio panel
+  (window.__authP || Promise.resolve()).then(function(){ try{
+    var r = window.PRODIGY_ROLE, dest = { operator:'operator-panel.html', mensajero:'mensajero.html', encargado_inventario:'inventario.html', calidad:'calidad.html', contabilidad:'contabilidad.html', diseno:'operario-diseno.html', guias:'operario-diseno.html', exocad:'operario-diseno.html', blender:'operario-diseno.html', alineadores:'alineadores.html', taller:'taller.html', fresado:'operario.html', impresion:'operario.html', secretaria:'bandeja-solicitudes.html' };
+    if (r && dest[r]) $('volver').href = dest[r];
+  }catch(e){} });
+
+  function score(a, q){
+    if(!q) return 1;
+    var hay = norm([a.titulo, a.resumen, a.kw, a.para, (a.pasos||[]).join(' '), (a.notas||[]).join(' ')].join(' '));
+    var t = norm(a.titulo), s = 0;
+    q.split(/\s+/).filter(Boolean).forEach(function(w){
+      if (t.indexOf(w) > -1) s += 5; else if (norm(a.kw).indexOf(w) > -1) s += 3; else if (hay.indexOf(w) > -1) s += 1; else s -= 3;
+    });
+    return s;
+  }
+
+  function lista(){
+    var q = norm($('q').value.trim());
+    var arr = DATA.articulos.filter(function(a){ return CAT==='todas' || a.cat===CAT; })
+      .map(function(a){ return { a:a, s:score(a,q) }; })
+      .filter(function(x){ return x.s > 0; })
+      .sort(function(x,y){ return y.s - x.s; });
+    var el = $('list');
+    if (!arr.length){
+      el.innerHTML = '<div class="empty"><i class="fas fa-magnifying-glass"></i> No hay artículos para “' + esc($('q').value) + '”.<br>Prueba con otra palabra o pregúntale a administración.</div>';
+      return arr;
+    }
+    el.innerHTML = arr.map(function(x){
+      var a = x.a;
+      return '<button type="button" class="item' + (CUR===a.id?' on':'') + '" data-id="' + esc(a.id) + '">'
+        + '<div class="c">' + esc(catNombre(a.cat)) + '</div><div class="t">' + esc(a.titulo) + '</div><div class="r">' + esc(a.resumen) + '</div></button>';
+    }).join('');
+    return arr;
+  }
+
+  function chips(){
+    var cnt = {}; DATA.articulos.forEach(function(a){ cnt[a.cat] = (cnt[a.cat]||0)+1; });
+    var html = '<button type="button" class="chip' + (CAT==='todas'?' on':'') + '" data-cat="todas"><i class="fas fa-layer-group"></i> Todo <span class="n">' + DATA.articulos.length + '</span></button>';
+    DATA.categorias.forEach(function(c){
+      html += '<button type="button" class="chip' + (CAT===c.id?' on':'') + '" data-cat="' + esc(c.id) + '"><i class="fas ' + esc(c.icono) + '"></i> ' + esc(c.nombre) + ' <span class="n">' + (cnt[c.id]||0) + '</span></button>';
+    });
+    $('chips').innerHTML = html;
+  }
+
+  function abrir(id, push){
+    var a = DATA.articulos.find(function(x){ return x.id===id; }); if(!a) return;
+    CUR = id;
+    var h = '<button type="button" class="mback" id="mback"><i class="fas fa-arrow-left"></i> Todos los artículos</button>'
+      + '<div class="cat">' + esc(catNombre(a.cat)) + '</div>'
+      + '<h2>' + esc(a.titulo) + '</h2><p class="res">' + esc(a.resumen) + '</p>'
+      + (a.para ? '<span class="para"><i class="fas fa-user-group"></i> Para: ' + esc(a.para) + '</span>' : '')
+      + '<ol class="steps">' + (a.pasos||[]).map(function(p){ return '<li>' + md(p) + '</li>'; }).join('') + '</ol>'
+      + (a.notas||[]).map(function(n){ return '<div class="note"><i class="fas fa-lightbulb"></i><div>' + md(n) + '</div></div>'; }).join('')
+      + '<div class="actions">'
+      + (a.link ? '<a class="go" href="' + esc(a.link.href) + '">' + esc(a.link.label) + ' <i class="fas fa-arrow-right"></i></a>' : '')
+      + '<button type="button" class="copy" id="copiar"><i class="fas fa-link"></i> Copiar enlace a este artículo</button></div>';
+    var rel = (a.rel||[]).map(function(r){ return DATA.articulos.find(function(x){ return x.id===r; }); }).filter(Boolean);
+    if (rel.length) h += '<div class="rel"><h4>También te puede servir</h4>' + rel.map(function(r){ return '<a href="#' + esc(r.id) + '" data-id="' + esc(r.id) + '">' + esc(r.titulo) + '</a>'; }).join('') + '</div>';
+    $('read').innerHTML = h;
+    document.body.classList.add('reading');
+    document.querySelectorAll('.item').forEach(function(b){ b.classList.toggle('on', b.dataset.id===id); });
+    if (push !== false && location.hash !== '#'+id) history.replaceState(null, '', '#'+id);
+    $('mback').onclick = function(){ document.body.classList.remove('reading'); window.scrollTo(0,0); };
+    $('copiar').onclick = function(){
+      var url = location.origin + location.pathname + '#' + id;
+      (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function(){ $('copiar').innerHTML = '<i class="fas fa-check"></i> Enlace copiado'; })
+        .catch(function(){ window.prompt('Copia este enlace:', url); });
+    };
+    if (window.innerWidth <= 860) window.scrollTo(0,0);
+  }
+
+  function pintarInicio(){
+    $('read').innerHTML = '<div class="cat">Empieza aquí</div><h2>Bienvenido al Centro de ayuda</h2>'
+      + '<p class="res">Busca arriba lo que necesitas hacer, o elige un artículo de la lista. Cada artículo trae los pasos y un botón que te lleva a la pantalla correcta.</p>'
+      + '<ol class="steps"><li>Escribe lo que quieres hacer, con tus palabras (ej. <b>“cobrar al cliente”</b>).</li><li>Abre el artículo y sigue los pasos en orden.</li><li>Usa <b>“Copiar enlace”</b> para mandarle un artículo a un compañero.</li></ol>';
+  }
+
+  function render(){ chips(); var arr = lista(); if (!CUR) pintarInicio(); return arr; }
+
+  document.addEventListener('click', function(e){
+    var it = e.target.closest('.item, .rel a'); if (it && it.dataset.id){ e.preventDefault(); abrir(it.dataset.id); return; }
+    var c = e.target.closest('.chip'); if (c){ CAT = c.dataset.cat; render(); }
+  });
+  $('q').addEventListener('input', function(){ var arr = lista(); if (arr.length && $('q').value.trim().length > 2 && window.innerWidth > 860) abrir(arr[0].a.id, false); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === '/' && document.activeElement !== $('q')){ e.preventDefault(); $('q').focus(); }
+    if (e.key === 'Escape' && document.activeElement === $('q')){ $('q').value = ''; lista(); }
+  });
+  window.addEventListener('hashchange', function(){ var id = location.hash.slice(1); if (id) abrir(id, false); });
+
+  $('waHelp').href = 'https://wa.me/573219581949?text=' + encodeURIComponent('Hola Alejandro, en el Centro de ayuda no encontré cómo hacer esto: ');
+
+  fetch('ayuda-articulos.json?v=20260923', { cache:'no-cache' }).then(function(r){ return r.json(); }).then(function(d){
+    DATA = d; render();
+    var id = location.hash.slice(1); if (id) abrir(id, false);
+  }).catch(function(){ $('list').innerHTML = '<div class="empty">No se pudieron cargar los artículos. Recarga la página (Ctrl + F5).</div>'; });
+})();
+</script>
+</body>
+</html>

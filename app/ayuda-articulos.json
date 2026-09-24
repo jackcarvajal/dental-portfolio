@@ -1,0 +1,368 @@
+{
+  "version": "2026-09-23",
+  "categorias": [
+    { "id": "inicio", "nombre": "Primeros pasos", "icono": "fa-compass" },
+    { "id": "casos", "nombre": "Casos y producción", "icono": "fa-teeth" },
+    { "id": "equipo", "nombre": "Equipo y accesos", "icono": "fa-users-gear" },
+    { "id": "alineadores", "nombre": "Alineadores", "icono": "fa-tooth" },
+    { "id": "clientes", "nombre": "Clientes", "icono": "fa-address-book" },
+    { "id": "problemas", "nombre": "Problemas frecuentes", "icono": "fa-life-ring" }
+  ],
+  "articulos": [
+    {
+      "id": "recorrido-panel",
+      "cat": "inicio",
+      "titulo": "Recorrido rápido del panel",
+      "resumen": "Cómo está organizado el menú y dónde está cada cosa.",
+      "para": "Todo el equipo",
+      "pasos": [
+        "Arriba del menú está **HOY**: lo que se usa todos los días (Pedidos, Bandeja, Rastreo, Torre de control, Fabricación, Despachos, Rutador, Ficha del caso).",
+        "Debajo hay **grupos plegables** (Clientes y ventas, Equipo y producción, Análisis, Marketing, Contenido web, Configuración). Haz clic en el título para abrirlos; el panel recuerda cuáles dejaste abiertos.",
+        "**Pasa el mouse por cualquier opción** del menú y aparece una tarjetita que explica qué hace.",
+        "Si un número sale en **cero** no es un error: solo significa que todavía no hay datos de ese tipo."
+      ],
+      "kw": "menu inicio empezar donde esta navegar",
+      "rel": ["rutina-diaria", "roles"]
+    },
+    {
+      "id": "rutina-diaria",
+      "cat": "inicio",
+      "titulo": "Rutina diaria del administrador",
+      "resumen": "Qué revisar cada mañana, en orden.",
+      "para": "Administración",
+      "pasos": [
+        "**Torre de control**: si tiene un número rojo hay urgencias o incidencias abiertas. Atiéndelas primero.",
+        "**Bandeja de solicitudes**: solicitudes nuevas que llegaron por la web (escáner, domicilio, alineadores). Cotiza y responde.",
+        "**Pedidos**: revisa pagos pendientes y casos en producción.",
+        "**Despachos**: asigna a un mensajero los casos que ya pasaron control de calidad.",
+        "**Alineadores (cuentas)**: revisa si el cliente reportó pagos para verificar."
+      ],
+      "link": { "href": "panel-interno-operaciones.html", "label": "Ir al panel" },
+      "kw": "mañana checklist que hago diario orden prioridades",
+      "rel": ["bandeja", "despachos", "aln-pagos"]
+    },
+    {
+      "id": "estados-caso",
+      "cat": "casos",
+      "titulo": "Qué significa cada estado de un caso",
+      "resumen": "El camino normal de un caso desde que entra hasta que se entrega.",
+      "para": "Todo el equipo",
+      "pasos": [
+        "**Validación pendiente** → el caso acaba de entrar y falta revisarlo.",
+        "**En diseño** → un diseñador lo está trabajando. **Diseño finalizado** → listo para mostrar.",
+        "**Revisión del cliente / Cambios solicitados** → el doctor está revisando o pidió ajustes. **Diseño aprobado** → el doctor lo aceptó.",
+        "**Fresado / En impresión / En producción** → se está fabricando.",
+        "**QA aprobado** → pasó control de calidad. **Listo para despachar** → espera mensajero.",
+        "**En reparto** → va en camino. **Entregado** → terminado."
+      ],
+      "notas": [
+        "Estados de excepción: **Cancelado por el doctor**, **No entregado**, **Error de STL**, **Incidencia del cliente**, **Pago no confirmado**."
+      ],
+      "kw": "estado estados significado flujo etapas qa despachar reparto",
+      "rel": ["rastreo-qr", "despachos"]
+    },
+    {
+      "id": "rastreo-qr",
+      "cat": "casos",
+      "titulo": "Mover un caso con el QR (rastreo)",
+      "resumen": "Registrar que un caso pasó de un área a otra, con foto y responsable.",
+      "para": "Técnicos, operarios y administración",
+      "pasos": [
+        "Escanea el **QR de la etiqueta** del caso con el celular (debes haber iniciado sesión).",
+        "Se abre la pantalla **Mover**: elige tu **área** (ya viene sugerida según tu rol) y tu nombre.",
+        "Marca los **componentes que recibes** (modelos, antagonista, llave, etc.) y su estado.",
+        "Toma la **foto** (en diseño: captura del diseño final; en lo físico: foto de lo que entregas).",
+        "Guarda. Queda en el historial quién tenía el caso y cuándo: así se sabe el responsable si algo se pierde o daña."
+      ],
+      "link": { "href": "rastreo.html", "label": "Abrir Rastreo de casos" },
+      "kw": "qr escanear mover area custodia foto responsable etiqueta",
+      "rel": ["incidencias", "etiquetas"]
+    },
+    {
+      "id": "incidencias",
+      "cat": "casos",
+      "titulo": "Reportar una incidencia o duda de un caso",
+      "resumen": "Cuando algo impide avanzar o hay una duda antes de empezar.",
+      "para": "Todo el equipo",
+      "pasos": [
+        "Desde **Mover** (el QR) usa **\"Reportar problema/duda (no iniciar)\"**, o desde **Rastreo** el botón de incidencia.",
+        "Describe qué pasa y, si aplica, adjunta foto.",
+        "Decide si el doctor **puede verla** (aparece en su portal) o si es **interna** (solo el equipo).",
+        "Se avisa a administración y el caso muestra una alerta roja hasta resolverla."
+      ],
+      "notas": ["Lo interno (pérdidas, reprocesos) **nunca** lo ve el doctor si no lo marcas como visible."],
+      "kw": "incidencia problema duda error reportar alerta",
+      "rel": ["rastreo-qr"]
+    },
+    {
+      "id": "etiquetas",
+      "cat": "casos",
+      "titulo": "Imprimir la orden de producción y la etiqueta QR",
+      "resumen": "La hoja que acompaña el caso y la etiqueta que se pega.",
+      "para": "Administración y recepción",
+      "pasos": [
+        "En **Rastreo de casos**, cada caso tiene botones **Orden** y **Etiqueta**.",
+        "**Orden**: hoja carta horizontal, dos órdenes por hoja. El doctor aparece por su **código** (privacidad); el paciente sí por nombre.",
+        "**Etiqueta**: se imprime en la mini impresora (rollo 50×30 mm). Con la SINMARK usa **\"Copiar link\"** y pégalo en la app de la impresora.",
+        "Pega la etiqueta en la bolsa o caja del caso."
+      ],
+      "link": { "href": "rastreo.html", "label": "Abrir Rastreo de casos" },
+      "kw": "imprimir orden etiqueta qr impresora sinmark papel",
+      "rel": ["rastreo-qr"]
+    },
+    {
+      "id": "bandeja",
+      "cat": "casos",
+      "titulo": "Atender una solicitud que llegó por la web",
+      "resumen": "Escáner, escaneo a domicilio o alineadores enviados desde la página.",
+      "para": "Administración y secretaría",
+      "pasos": [
+        "Abre **Bandeja de solicitudes**: cada solicitud tiene un número (SC-, DOM- o ALN-).",
+        "Abre los **archivos** del caso con el botón de archivo.",
+        "Contacta al doctor por WhatsApp desde el botón, confirma el trabajo y **cotiza**.",
+        "Cambia el estado de la solicitud a medida que avanzas (contactado, cotizado, cerrado)."
+      ],
+      "notas": ["Las solicitudes rápidas de la web llegan **sin pago ni datos completos**: pide al doctor el protocolo del caso (material, color, antagonista)."],
+      "link": { "href": "bandeja-solicitudes.html", "label": "Abrir Bandeja" },
+      "kw": "solicitud web escaner domicilio lead cotizar bandeja nueva",
+      "rel": ["aln-cliente-subir"]
+    },
+    {
+      "id": "despachos",
+      "cat": "casos",
+      "titulo": "Despachar un caso con el mensajero",
+      "resumen": "Asignar casos terminados y cobrar el saldo en la entrega.",
+      "para": "Administración y mensajería",
+      "pasos": [
+        "En **Despachos** aparecen los casos que ya pasaron control de calidad o están listos para despachar.",
+        "Asigna cada caso a un **mensajero**.",
+        "El mensajero ve el caso en su panel, lo marca **en reparto** y al entregar registra la entrega.",
+        "Al entregar se avisa al doctor y se genera su recibo."
+      ],
+      "notas": ["Regla: **no se entrega sin cobrar el saldo pendiente**. El mensajero sí ve el saldo por eso."],
+      "kw": "despacho mensajero entrega reparto saldo cobrar asignar",
+      "rel": ["estados-caso"]
+    },
+    {
+      "id": "crear-usuario",
+      "cat": "equipo",
+      "titulo": "Crear la cuenta de alguien del equipo",
+      "resumen": "Dar acceso a un técnico, diseñador, mensajero, etc.",
+      "para": "Administración",
+      "pasos": [
+        "Abre **Equipo y roles**.",
+        "En **Crear usuario** escribe nombre, correo y WhatsApp.",
+        "**Marca los roles** que necesita (puede tener varios, por ejemplo Blender + Exocad).",
+        "Copia la **contraseña temporal** que aparece y dale **Crear usuario**.",
+        "Envíale por WhatsApp: el link **prodigylabdental.com/app/login.html**, su correo y la contraseña."
+      ],
+      "notas": ["El equipo **no se registra solo** desde la web: el registro público siempre crea cuentas de **cliente**. Las cuentas del equipo las creas tú aquí."],
+      "link": { "href": "gestionar-usuarios.html", "label": "Abrir Equipo y roles" },
+      "kw": "crear cuenta usuario operario tecnico nuevo acceso contraseña",
+      "rel": ["roles", "rol-no-toma", "email-en-uso"]
+    },
+    {
+      "id": "roles",
+      "cat": "equipo",
+      "titulo": "Qué ve cada rol",
+      "resumen": "Cada persona ve solo lo que necesita para su trabajo.",
+      "para": "Todo el equipo",
+      "pasos": [
+        "**Admin**: todo. Se define por correo, no se puede asignar desde el panel.",
+        "**Operador**: operación general. **Contabilidad**: dinero y facturación. **Secretaría**: solicitudes y clientes.",
+        "**Diseño coronas / Guías / Exocad / Blender**: panel de diseño CAD.",
+        "**Alineadores**: solo su panel de alineadores y sus propios pagos (no ve lo que se cobra al cliente).",
+        "**Fresado, Impresión 3D, Taller, Calidad, Inventario**: su área de producción.",
+        "**Mensajero**: sus entregas (incluido el saldo a cobrar).",
+        "**Cliente** (doctor o laboratorio): su portal, sus casos y su facturación."
+      ],
+      "notas": ["Los técnicos **no ven dinero ni datos de contacto** de los doctores."],
+      "link": { "href": "gestionar-usuarios.html", "label": "Abrir Equipo y roles" },
+      "kw": "roles permisos que ve acceso dinero tecnico diseno alineadores",
+      "rel": ["crear-usuario"]
+    },
+    {
+      "id": "desactivar-borrar",
+      "cat": "equipo",
+      "titulo": "Desactivar o borrar una cuenta",
+      "resumen": "Cuando alguien deja de trabajar o hay una cuenta sospechosa.",
+      "para": "Administración",
+      "pasos": [
+        "En **Equipo y roles** busca a la persona (filtro Equipo o Clientes, o el buscador).",
+        "**Desactivar** (engranaje → quitar \"Cuenta activa\"): no puede entrar, pero su historial queda. Se puede reactivar.",
+        "**Borrar** (papelera): elimina la cuenta de forma permanente.",
+        "Las cuentas **admin** están protegidas y no se pueden borrar desde aquí."
+      ],
+      "notas": ["Si alguien sale del equipo, **desactiva** en vez de borrar: así se conserva quién hizo qué."],
+      "link": { "href": "gestionar-usuarios.html", "label": "Abrir Equipo y roles" },
+      "kw": "desactivar borrar eliminar cuenta sospechosa bloquear",
+      "rel": ["crear-usuario"]
+    },
+    {
+      "id": "rol-no-toma",
+      "cat": "equipo",
+      "titulo": "Alguien no ve lo que debería (el rol \"no toma\")",
+      "resumen": "Le cambiaste el rol pero sigue viendo lo mismo.",
+      "para": "Administración",
+      "pasos": [
+        "Pídele que **cierre sesión y vuelva a entrar**: el rol se carga al iniciar sesión.",
+        "Revisa en **Equipo y roles** que su columna **Tipo** diga **staff** y que tenga el rol correcto marcado.",
+        "Si sale como **cliente**, es que no tiene ningún rol: ábrelo con el engranaje y márcale su rol.",
+        "Si le sale el formulario de \"Completa tu perfil\" de doctor, es la misma causa: le falta el rol."
+      ],
+      "kw": "rol no funciona no ve panel cliente perfil doctor sesion",
+      "rel": ["roles", "crear-usuario"]
+    },
+    {
+      "id": "email-en-uso",
+      "cat": "equipo",
+      "titulo": "Dice \"este correo YA está en uso\"",
+      "resumen": "Ese correo ya tiene una cuenta.",
+      "para": "Administración",
+      "pasos": [
+        "No crees otra: búscalo en **Equipo y roles**.",
+        "Ábrelo con el engranaje y **dale o cambia los roles** que necesite.",
+        "Si era una cuenta de cliente y ahora es del equipo, al marcarle un rol pasa a **staff**."
+      ],
+      "kw": "correo email en uso ya existe duplicado registrado",
+      "rel": ["crear-usuario"]
+    },
+    {
+      "id": "aln-flujo",
+      "cat": "alineadores",
+      "titulo": "Flujo de un caso de alineadores",
+      "resumen": "De la orden del cliente a los modelos impresos.",
+      "para": "Administración y técnica de alineadores",
+      "pasos": [
+        "El cliente sube el caso con su **orden de trabajo** (STL, radiografías, fotos e indicación).",
+        "La técnica revisa y responde la **viabilidad** (cantidad aproximada de alineadores, IPR, attachments).",
+        "Si el cliente aprueba, se hace la **planificación**. El cliente puede pedir **hasta 2 revisiones** incluidas.",
+        "Aprobada la planificación se envían los **modelos a impresión**.",
+        "Con los modelos entregados se marca **Completar** y el caso termina."
+      ],
+      "notas": ["La valoración es válida **3 a 4 meses**; pasado ese tiempo hay que valorar de nuevo con archivos nuevos."],
+      "link": { "href": "alineadores.html", "label": "Abrir Alineadores" },
+      "kw": "alineadores ortodoncia flujo viabilidad planificacion revision modelos",
+      "rel": ["aln-completar", "aln-cliente-subir", "aln-pagos"]
+    },
+    {
+      "id": "aln-completar",
+      "cat": "alineadores",
+      "titulo": "Completar un caso de alineadores",
+      "resumen": "Por qué pide los modelos y cómo evita cobrar doble.",
+      "para": "Técnica de alineadores y administración",
+      "pasos": [
+        "Abre el caso (lápiz) y marca **Modelos entregados**. Guarda.",
+        "Dale al botón **Completar** (bandera).",
+        "El sistema verifica los modelos y registra solo la **diferencia** entre caso completo y valoración: la valoración ya cobrada no se cobra dos veces."
+      ],
+      "notas": ["Si no marcas los modelos, el sistema **no deja completar**."],
+      "link": { "href": "alineadores.html", "label": "Abrir Alineadores" },
+      "kw": "completar terminar caso modelos diferencia doble cobro",
+      "rel": ["aln-flujo"]
+    },
+    {
+      "id": "aln-pagos",
+      "cat": "alineadores",
+      "titulo": "Verificar un pago que reportó el cliente",
+      "resumen": "El cliente dice que pagó y subió comprobante.",
+      "para": "Administración y contabilidad",
+      "pasos": [
+        "Abre **Alineadores (cuentas)** → sección **Pagos reportados por el cliente**.",
+        "Abre el **comprobante** con el botón de archivo y confirma que el dinero llegó.",
+        "Dale **✅ Verificar** (o ✖ Rechazar si no corresponde).",
+        "Luego marca como **pagados** los cargos que cubre ese pago (botón de recibo en cada caso)."
+      ],
+      "link": { "href": "alineadores.html", "label": "Abrir Alineadores" },
+      "kw": "pago comprobante verificar cliente paypal cobro cuenta",
+      "rel": ["aln-flujo"]
+    },
+    {
+      "id": "aln-cliente-subir",
+      "cat": "alineadores",
+      "titulo": "Cómo sube un caso el cliente de alineadores",
+      "resumen": "Dos caminos: desde su portal o desde la página pública.",
+      "para": "Todo el equipo (para explicarle al cliente)",
+      "pasos": [
+        "**Desde su portal (recomendado)**: entra → **Mi cuenta Alineadores** → **Subir nuevo caso**. El caso le llega directo a la técnica.",
+        "**Desde la web pública**: prodigylabdental.com/envia-alineadores. Llega a la **Bandeja** como solicitud.",
+        "Archivos permitidos: **STL, ZIP, JPG, PNG, PDF, DCM** (máx. 50 MB cada uno). Lo ideal: un ZIP con todo.",
+        "Si algún archivo no sube, la pantalla avisa cuántos fallaron para enviarlos por WhatsApp."
+      ],
+      "kw": "cliente subir caso orden portal archivos stl zip radiografia fotos",
+      "rel": ["aln-flujo", "bandeja"]
+    },
+    {
+      "id": "codigo-cliente",
+      "cat": "clientes",
+      "titulo": "El código de cliente DR-####",
+      "resumen": "Cómo identificamos a cada doctor sin exponer sus datos.",
+      "para": "Todo el equipo",
+      "pasos": [
+        "Cuando un doctor se registra, el sistema le asigna automáticamente un código **DR-####**.",
+        "Ese código aparece en la orden de producción en lugar del nombre del doctor.",
+        "En **Clientes (Doctores)** ves el código, el contacto y cuántos casos lleva."
+      ],
+      "link": { "href": "clientes.html", "label": "Abrir Clientes" },
+      "kw": "codigo cliente doctor dr privacidad identificar",
+      "rel": ["seguimiento-doctor"]
+    },
+    {
+      "id": "seguimiento-doctor",
+      "cat": "clientes",
+      "titulo": "Cómo sigue el doctor su caso",
+      "resumen": "Qué ve el doctor y dónde.",
+      "para": "Todo el equipo (para explicarle al doctor)",
+      "pasos": [
+        "Con cuenta: entra a su **portal** y ve sus casos, su historial y sus facturas.",
+        "Sin cuenta: usa la página de **seguimiento** con su número de caso.",
+        "El QR de la orden, escaneado por el doctor, lo lleva a su seguimiento; escaneado por el equipo, abre la pantalla interna."
+      ],
+      "kw": "doctor seguimiento portal ver caso qr numero",
+      "rel": ["codigo-cliente"]
+    },
+    {
+      "id": "pantalla-vacia",
+      "cat": "problemas",
+      "titulo": "Una pantalla sale vacía o con error",
+      "resumen": "Pasos rápidos antes de avisar.",
+      "para": "Todo el equipo",
+      "pasos": [
+        "Recarga forzando: **Ctrl + F5**.",
+        "Si sale en cero, puede que simplemente **no haya datos** todavía.",
+        "Si te saca a otra pantalla o no te deja entrar, **cierra sesión y vuelve a entrar**.",
+        "Si sigue igual, toma una **captura** y envíala a administración diciendo qué estabas haciendo."
+      ],
+      "kw": "error vacio no carga pantalla blanca falla",
+      "rel": ["rol-no-toma"]
+    },
+    {
+      "id": "mantenimiento",
+      "cat": "problemas",
+      "titulo": "La web me manda a \"mantenimiento\"",
+      "resumen": "Algunas páginas públicas están en mantenimiento a propósito.",
+      "para": "Todo el equipo",
+      "pasos": [
+        "Es intencional: la portada está en mantenimiento mientras se renueva.",
+        "El equipo entra siempre por **prodigylabdental.com/app/login.html**, que no está bloqueado.",
+        "Si necesitas revisar una página pública bloqueada, pídele el acceso de vista previa a administración."
+      ],
+      "kw": "mantenimiento bloqueado no entra pagina publica",
+      "rel": ["pantalla-vacia"]
+    },
+    {
+      "id": "archivo-no-abre",
+      "cat": "problemas",
+      "titulo": "No se abre un archivo de un caso",
+      "resumen": "Los archivos son privados y cada rol ve solo los suyos.",
+      "para": "Todo el equipo",
+      "pasos": [
+        "Los archivos de los casos **no son públicos**: se abren con un enlace temporal desde el panel.",
+        "Si te dice que no se pudo abrir, puede que **tu rol no tenga acceso** a ese tipo de archivo.",
+        "Pide a administración que lo abra o que revise tu rol."
+      ],
+      "kw": "archivo no abre stl descargar permiso privado",
+      "rel": ["roles"]
+    }
+  ]
+}

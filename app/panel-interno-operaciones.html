@@ -274,6 +274,7 @@
     </details>
 
     <div class="sidebar-footer">
+        <a href="ayuda.html" class="nav-item"><i class="fas fa-circle-question" style="color:#EADBAE;"></i> Centro de ayuda</a>
         <a href="/" class="nav-item" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Ver sitio web</a>
         <a href="#" class="nav-item" onclick="cerrarSesion()"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar sesión</a>
     </div>
@@ -4531,7 +4532,7 @@ document.addEventListener('keydown', e => {
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <script src="../js/notif-panel.js?v=20260923"></script>
-<script src="../js/panel-tips.js?v=20260718e"></script>
+<script src="../js/panel-tips.js?v=20260923"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 <script>
 /* Detector de errores visible — evita "pantalla en blanco" sin pistas.
@@ -4564,6 +4565,6 @@ document.addEventListener('keydown', e => {
 <script src="../js/tour.js?v=20260721"></script>
 <script src="../js/imprimir.js?v=20260718e"></script>
 <script src="../js/rol-actual.js?v=20260923"></script>
-<script src="../js/admin-hints.js?v=20260923" defer></script>
+<script src="../js/admin-hints.js?v=20260923b" defer></script>
 </body>
 </html>

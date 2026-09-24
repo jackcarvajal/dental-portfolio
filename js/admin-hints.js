@@ -40,6 +40,7 @@
     'admin-precios.html': 'Precios de servicios y materiales que ven los clientes.',
     'configuracion.html': 'Ajustes generales del sistema. Cambiar solo si sabes qué haces.',
     'pruebas-carga.html': 'Herramienta técnica de pruebas. No es para el uso diario.',
+    'ayuda.html': 'Guías paso a paso de todo el sistema. Si no sabes cómo hacer algo, empieza aquí.',
     '/': 'Abre la página pública en una pestaña nueva.',
     'logout': 'Salir de tu cuenta.'
   };

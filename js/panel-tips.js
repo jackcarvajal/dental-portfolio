@@ -233,6 +233,13 @@
 
     var html = '<button id="phelp-close" type="button" aria-label="Cerrar guía">&times;</button>'
       + '<h3>Guía rápida</h3><p class="sub">Para qué sirve cada sección. Pasa el mouse sobre el menú o los botones para ver su ayuda.</p>';
+    /* Enlace al Centro de ayuda (solo paneles del equipo; los clientes no tienen acceso) */
+    var _f = (location.pathname.split('/').pop() || '').toLowerCase();
+    if (['client-panel.html', 'referidos-portal.html', 'cambiar-contrasena.html'].indexOf(_f) === -1) {
+      html += '<a href="/app/ayuda.html" style="display:flex;align-items:center;gap:8px;margin:4px 0 12px;padding:10px 12px;border-radius:10px;'
+        + 'background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:#EADBAE;font-weight:700;font-size:.8rem;text-decoration:none">'
+        + '📖 Centro de ayuda completo — paso a paso →</a>';
+    }
     if (hayTabs) {
       GUIA.forEach(function (g) {
         var items = g[1].filter(function (k) { return TIPS[k] && presentes[k]; });
