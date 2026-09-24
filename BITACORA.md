@@ -21,7 +21,7 @@
 - ✅ `soporte.html`: el panel de estado marcaba la base de datos caída siempre (raíz /rest/v1/ da 401 con anon) → /auth/v1/health.
 - ✅ `_headers` /app/* (antes solo *.html: la URL bonita /app/x quedaba sin no-store ni X-Robots) · `_redirects` bloquea /tools/* y /tests/* (se servían).
 - ⏳ **Correr `sql/alineadores-endurecer-2026.sql`**: rol diseno veía casos/archivos/pago de la técnica; técnica y secretaría podían crear/borrar casos (crear = cargos); **NULL NOT IN** dejaba a cuentas sin rol usar aln_vincular_cliente/aln_completar_caso; bucket 150→50 MB.
-- ✅ SQL `alineadores-endurecer-2026.sql` corrido (anon → 42501 en las RPC). Verificación completa de BD: `sql/verificar-seguridad-2026.sql` (solo lectura).
+- ✅ SQL `alineadores-endurecer-2026.sql` corrido (anon → 42501 en las RPC). Verificación de BD `sql/verificar-seguridad-2026.sql` (solo lectura) corrida 24-sep: **16/16 OK** (sin rol diseno, crear/borrar solo admin, COALESCE en RPCs, anon sin EXECUTE, buckets privados, RLS por negocio, cuentas sospechosas eliminadas, ningún admin fuera de los 4 correos).
 - ✅ Auditoría 2 (otros ángulos, ambos repos): foco atrapado en el diálogo de reporte (teclado); Inter solo al abrir el formulario; avisos «sin datos de pacientes» + aviso de IA externa; a la IA se le mandan los nombres de archivo como `archivo.stl` (suelen llevar el nombre del paciente); tope global de WhatsApp (>12 en 30 min de visitantes/errores automáticos → solo bandeja); `qr-demo.html` con auth-guard; PayPal +US$0,30 fijo en el cálculo de comisión.
 - 🟡 Pendiente de decisión: tema admin "Obsidiana y Champán" + ayuda.html usan Sora/champán (no siguen ESTANDARES-UX-TIPOGRAFIA.md).
 
