@@ -34,6 +34,13 @@ export async function onRequestPost({ request, env }){
   const action = String(body.action||'');
   const admH = { apikey:SERVICE, Authorization:`Bearer ${SERVICE}`, 'Content-Type':'application/json' };
 
+  // RLS lee UN solo rol (app_metadata.role). Elegimos el de mayor privilegio y
+  // mapeamos especialidades de diseño (guias/exocad/blender) → 'diseno'.
+  const DB_PRIORIDAD = ['operator','contabilidad','secretaria','calidad','encargado_inventario','diseno','alineadores','taller','fresado','impresion','mensajero'];
+  const dbRole = roles => {
+    const norm = roles.map(r => ['guias','exocad','blender'].includes(r) ? 'diseno' : r);
+    return DB_PRIORIDAD.find(r => norm.includes(r)) || null;
+  };
   const rolesFrom = am => Array.isArray(am&&am.roles)&&am.roles.length ? am.roles : (am&&am.role ? [am.role] : []);
 
   try{
@@ -65,7 +72,7 @@ export async function onRequestPost({ request, env }){
       if(!roles.length) return new Response(JSON.stringify({error:'Selecciona al menos un rol'}),{status:400,headers:h});
       const r = await fetch(`${URL}/auth/v1/admin/users`,{method:'POST',headers:admH,body:JSON.stringify({
         email,password,email_confirm:true,
-        app_metadata:{ roles, role:roles[0], active:true },
+        app_metadata:{ roles, role:dbRole(roles), active:true },
         user_metadata:{ nombre:String(body.nombre||'').slice(0,120), whatsapp:String(body.whatsapp||'').slice(0,30), es_staff:true }
       })});
       const d = await r.json();
@@ -85,7 +92,8 @@ export async function onRequestPost({ request, env }){
       const active=body.active!==false;
       if(!id) return new Response(JSON.stringify({error:'Falta id'}),{status:400,headers:h});
       const r = await fetch(`${URL}/auth/v1/admin/users/${id}`,{method:'PUT',headers:admH,body:JSON.stringify({
-        app_metadata:{ roles, role:roles[0]||null, active }
+        app_metadata:{ roles, role:dbRole(roles), active },
+        ...(typeof body.nombre==='string' && body.nombre.trim() ? { user_metadata:{ nombre:body.nombre.trim().slice(0,120) } } : {})
       })});
       const d = await r.json();
       if(!r.ok) return new Response(JSON.stringify({error:d.msg||d.error||'No se pudo actualizar',detalle:d}),{status:r.status,headers:h});

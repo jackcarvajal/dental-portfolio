@@ -88,9 +88,10 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 
 <!-- Modal editar roles -->
 <div class="ov" id="ovEdit"><div class="modal">
-  <h3 id="ovT">Editar roles</h3>
+  <h3 id="ovT">Editar usuario</h3>
   <input type="hidden" id="eId">
   <p class="sub" id="eEmail" style="margin:0 0 8px;"></p>
+  <div class="fg"><label>Nombre</label><input id="eNombre" placeholder="Nombre Apellido / Clínica"></div>
   <div class="roles-grid" id="eRoles"></div>
   <label class="rchk" style="max-width:200px;"><input type="checkbox" id="eActive"> Cuenta activa</label>
   <div class="msg" id="msgEdit"></div>
@@ -177,6 +178,7 @@ async function crear(){
 function editar(u){
   document.getElementById('eId').value=u.id;
   document.getElementById('eEmail').textContent=u.email;
+  document.getElementById('eNombre').value=u.nombre||'';
   rolesGrid(document.getElementById('eRoles'),u.roles);
   document.getElementById('eActive').checked=u.active!==false;
   document.getElementById('msgEdit').className='msg';
@@ -187,7 +189,8 @@ async function guardarRoles(){
   const roles=pick(document.getElementById('eRoles'));
   const active=document.getElementById('eActive').checked;
   if(!roles.length && !confirm('Sin roles marcados, esta cuenta queda como CLIENTE (sin acceso de equipo). ¿Continuar?')) return;
-  const d=await api('set_roles',{id,roles,active});
+  const nombre=document.getElementById('eNombre').value.trim();
+  const d=await api('set_roles',{id,roles,active,nombre});
   if(!d.ok){ msg('msgEdit','⚠️ '+d.error,false); return; }
   cerrar('ovEdit'); cargar();
 }
