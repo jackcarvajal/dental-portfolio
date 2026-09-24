@@ -61,7 +61,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <div class="pay">
   <b>💳 Cómo pagar</b><br>
   • <b>Global66 (recomendado, sin comisión):</b> busca <b>@JESSMEN1171</b> (Jessica Mendez Carmelo) → “Enviar dinero” → “Entre contactos” y envía el <b>monto exacto</b> del estado de cuenta.<br>
-  • <b>PayPal</b> solo si no puedes por Global66: ahí sí se suma la comisión de PayPal para que llegue el monto completo.<br>
+  • <b>PayPal</b> solo si no puedes por Global66: se suma el <b>12 % de comisión</b> acordado (ej. US$90 → US$100,80).<br>
   Luego pulsa <b>“Reportar pago”</b> y sube el comprobante 👇
 </div>
 
@@ -105,9 +105,10 @@ const tipoLbl=t=>({completo:'Caso completo',valoracion:'Valoración',diferencia_
 let sb, CASOS={}, CARGOS=[], PAGOS=[];
 // ── PayPal: pon tu handle de paypal.me (ej. 'alejandrocarvajal') para activar el botón ──
 const PAYPAL_HANDLE='';      // vacío = botón oculto hasta configurarlo
-const PAYPAL_FEE=0.054;      // comisión % que se suma para que llegue el neto completo
-const PAYPAL_FIJO=0.30;      // + cargo fijo por pago (USD). Confírmalo en tu cuenta PayPal → Comisiones; sin esto llegaban ~US$0,30 menos por pago
-function grossUp(net){ return Math.ceil((net+PAYPAL_FIJO)/(1-PAYPAL_FEE)*100)/100; }
+// Comisión ACORDADA con el cliente si paga por PayPal: +12 % sobre el monto (cubre la comisión de PayPal y el cambio).
+// Por Global66 no hay comisión: se envía el monto exacto.
+const PAYPAL_COMISION=0.12;
+function grossUp(net){ return Math.ceil(net*(1+PAYPAL_COMISION)*100)/100; }
 
 async function init(){
   sb=window.ProdigyAuth.getSb();
@@ -134,7 +135,7 @@ function render(){
   if(ppEl){
     if(PAYPAL_HANDLE && pend>0){
       const g=grossUp(pend);
-      ppEl.innerHTML=`<a class="btn btn-mg" style="background:linear-gradient(135deg,#003087,#0070ba)" href="https://www.paypal.com/paypalme/${encodeURIComponent(PAYPAL_HANDLE)}/${g}USD" target="_blank" rel="noopener"><i class="fab fa-paypal"></i> Pagar $${nf.format(g)} con PayPal</a> <span class="sub">Incluye la comisión de PayPal (~${(PAYPAL_FEE*100).toLocaleString('es-CO')}% + US$${PAYPAL_FIJO.toFixed(2)}) para que el laboratorio reciba $${nf.format(Math.round(pend))} completos. Luego sube tu comprobante 👇</span>`;
+      ppEl.innerHTML=`<a class="btn btn-mg" style="background:linear-gradient(135deg,#003087,#0070ba)" href="https://www.paypal.com/paypalme/${encodeURIComponent(PAYPAL_HANDLE)}/${g}USD" target="_blank" rel="noopener"><i class="fab fa-paypal"></i> Pagar $${nf.format(g)} con PayPal</a> <span class="sub">Incluye el ${Math.round(PAYPAL_COMISION*100)} % de comisión acordado por pagar con PayPal para que el laboratorio reciba $${nf.format(Math.round(pend))} completos. Luego sube tu comprobante 👇</span>`;
     } else ppEl.innerHTML='';
   }
   // Corte por mes

@@ -38,7 +38,7 @@ Cada caso genera hasta 2 cargos: uno que **cobro al cliente** y otro que **pago 
 - **Caso completo** (valoración + plan + modelos): **$90 USD**
 - Replaneación: **$20** (en tiempo) / **$40** (fuera de tiempo) USD.
 - Refinamiento: **$0** (≤6 meses, 1º incluido) / **$40** (>6 meses o adicional) USD.
-- Cobro: **Global66 @JESSMEN1171** (Jessica Mendez Carmelo) → sin comisión: envían el monto exacto (instrucciones enviadas por WhatsApp el 8-jun-2026). **PayPal** solo como alternativa, y en ese caso se suma su comisión (5,4 % + US$0,30).
+- Cobro: **Global66 @JESSMEN1171** (Jessica Mendez Carmelo) → sin comisión: envían el monto exacto (instrucciones enviadas por WhatsApp el 8-jun-2026). **PayPal** solo como alternativa: el cliente suma **12 % de comisión** (acordado por Alejandro; no quedó por escrito en el texto del chat — confirmarlo por escrito).
 - Cómo pagan (historial de WhatsApp): el cliente arma el reporte desde el último paciente del reporte anterior; su departamento de pagos lo autoriza (tarda semanas). Pagado hasta **mayo 2026** (confirmado 7-ago). Una valoración de un caso NO viable se cobra igual (confirmado 12-ago, Naomi Severino).
 
 **PROPUESTA de alza (enviada al cliente, PENDIENTE de aprobación — NO aplicar hasta que confirmen):**
