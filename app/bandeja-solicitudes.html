@@ -247,7 +247,8 @@ async function bajarStl(path, btn){
     // archivo_url puede ser una ruta del bucket o una URL completa
     if(/^https?:\/\//.test(path)){ window.open(path,'_blank','noopener'); }
     else {
-      const { data, error } = await sb.storage.from('scanner-uploads').createSignedUrl(path, 3600);
+      const bucket = String(path).startsWith('alineadores/') ? 'alineadores-archivos' : 'scanner-uploads';
+      const { data, error } = await sb.storage.from(bucket).createSignedUrl(path, 3600);
       if(error) throw error;
       window.open(data.signedUrl,'_blank','noopener');
     }

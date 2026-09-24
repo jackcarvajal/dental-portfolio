@@ -430,7 +430,7 @@ async function verificarPago(id,estado){
   await cargar();
 }
 async function verArchivo(path){
-  try{ const {data,error}=await sb.storage.from('scanner-uploads').createSignedUrl(path,120); if(error||!data){alert('No se pudo abrir el archivo');return;} window.open(data.signedUrl,'_blank','noopener'); }catch(_){ alert('No se pudo abrir el archivo'); }
+  try{ const {data,error}=await sb.storage.from(String(path).startsWith('alineadores/')?'alineadores-archivos':'scanner-uploads').createSignedUrl(path,120); if(error||!data){alert('No se pudo abrir el archivo');return;} window.open(data.signedUrl,'_blank','noopener'); }catch(_){ alert('No se pudo abrir el archivo'); }
 }
 async function verComprobante(path){
   try{
