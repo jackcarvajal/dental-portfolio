@@ -48,6 +48,12 @@
         .nav-item:hover { background:rgba(255,255,255,0.04); color:#fff; }
         .nav-item.active { background:rgba(212,175,55,0.1); color:var(--gold); border-color:rgba(212,175,55,0.25); }
         .nav-item i { width:16px; text-align:center; }
+        .nav-group > summary { list-style:none; cursor:pointer; user-select:none; font-size:0.62rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:1.5px; padding:14px 12px 6px; display:flex; align-items:center; justify-content:space-between; border-radius:6px; }
+        .nav-group > summary::-webkit-details-marker { display:none; }
+        .nav-group > summary::after { content:'\25B8'; font-size:.75rem; transition:transform .2s; }
+        .nav-group[open] > summary::after { transform:rotate(90deg); }
+        .nav-group > summary:hover, .nav-group > summary:focus-visible { color:#fff; }
+        .nav-group > .nav-item { padding:8px 12px 8px 16px; }
         .sidebar-footer { margin-top:auto; padding-top:20px; border-top:1px solid var(--border); }
 
         /* MAIN */
@@ -201,98 +207,86 @@
         <div class="sidebar-user" id="admin-email">—</div>
     </div>
 
-    <p class="nav-section">Operación</p>
-    <a href="#" class="nav-item active" onclick="switchTab('pedidos',this)" aria-current="page">
-        <i class="fas fa-inbox"></i> Pedidos
-    </a>
-    <a href="ficha-caso.html" class="nav-item"><i class="fas fa-magnifying-glass" style="color:#00d2ff;"></i> Ficha del caso</a>
-    <a href="editar-links.html" class="nav-item"><i class="fas fa-link" style="color:#D946A6;"></i> Editar página de enlaces</a>
-    <a href="anonimizar.html" class="nav-item"><i class="fas fa-user-secret" style="color:#00d2ff;"></i> Anonimizar fotos de pacientes</a>
-    <a href="#" class="nav-item" onclick="switchTab('rutador',this)">
-        <i class="fas fa-code-branch"></i> Rutador de Casos
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('despachos',this)"><i class="fas fa-truck-fast" style="color:#94a3b8;"></i> Despachos</a>
-    <a href="#" class="nav-item" onclick="switchTab('torre',this)"><i class="fas fa-tower-broadcast" style="color:#ef4444;"></i> Torre de Control
+    <p class="nav-section">Hoy</p>
+    <a href="#" class="nav-item active" onclick="switchTab('pedidos',this)" aria-current="page"><i class="fas fa-inbox"></i> Pedidos</a>
+    <a href="bandeja-solicitudes.html" class="nav-item"><i class="fas fa-file-import" style="color:#D946A6;"></i> Bandeja de solicitudes</a>
+    <a href="rastreo.html" class="nav-item"><i class="fas fa-map-location-dot" style="color:#00d2ff;"></i> Rastreo de casos</a>
+    <a href="#" class="nav-item" onclick="switchTab('torre',this)"><i class="fas fa-tower-broadcast" style="color:#ef4444;"></i> Torre de control
         <span id="badge-incidencias" style="display:none;background:#ef4444;color:#fff;border-radius:10px;padding:1px 6px;font-size:.62rem;margin-left:auto"></span>
     </a>
     <a href="#" class="nav-item" onclick="switchTab('fabricacion',this)" id="nav-fab">
         <i class="fas fa-industry" style="color:#fb923c;"></i> Fabricación
         <span id="fab-badge" style="display:none;background:#fb923c;color:#000;font-size:.65rem;font-weight:900;padding:1px 6px;border-radius:100px;margin-left:4px;">0</span>
     </a>
+    <a href="#" class="nav-item" onclick="switchTab('despachos',this)"><i class="fas fa-truck-fast" style="color:#94a3b8;"></i> Despachos</a>
+    <a href="#" class="nav-item" onclick="switchTab('rutador',this)"><i class="fas fa-code-branch"></i> Rutador de casos</a>
+    <a href="ficha-caso.html" class="nav-item"><i class="fas fa-magnifying-glass" style="color:#00d2ff;"></i> Ficha del caso</a>
 
-    <p class="nav-section">Clientes &amp; Equipo</p>
-    <a href="#" class="nav-item" onclick="switchTab('clientes',this)">
-        <i class="fas fa-users"></i> Clientes
-    </a>
-    <!-- Las pestañas viejas 'Equipo PRODIGY' (perfiles) y 'Operarios / Roles' (staff_departamentos)
-         NO controlaban el acceso real (auth usa app_metadata). Unificadas en gestionar-usuarios.html -->
-    <a href="gestionar-usuarios.html" class="nav-item"><i class="fas fa-users-gear" style="color:#00FF41;"></i> Equipo y roles ✨</a>
-    <a href="#" class="nav-item" onclick="switchTab('pedidos-doc',this)">
-        <i class="fas fa-inbox"></i> Pedidos Doctores
-    </a>
-    <a href="bandeja-solicitudes.html" class="nav-item"><i class="fas fa-file-import" style="color:#D946A6;"></i> Bandeja Solicitudes ✨</a>
-    <a href="rastreo.html" class="nav-item"><i class="fas fa-map-location-dot" style="color:#00d2ff;"></i> Rastreo de Casos ✨</a>
-    <a href="clientes.html" class="nav-item"><i class="fas fa-address-book" style="color:#D4AF37;"></i> Clientes (Doctores) ✨</a>
-    <a href="papeleria.html" class="nav-item"><i class="fas fa-book" style="color:#00FF41;"></i> Papelería y Protocolos ✨</a>
-    <a href="alineadores.html" class="nav-item"><i class="fas fa-tooth" style="color:#00d2ff;"></i> Alineadores (cuentas) ✨</a>
-    <a href="#" class="nav-item" onclick="switchTab('leads',this)">
-        <i class="fas fa-magnet"></i> Leads Journal
-    </a>
+    <details class="nav-group" data-g="clientes"><summary>Clientes y ventas</summary>
+        <a href="clientes.html" class="nav-item"><i class="fas fa-address-book" style="color:#D4AF37;"></i> Clientes (Doctores)</a>
+        <a href="#" class="nav-item" onclick="switchTab('pedidos-doc',this)"><i class="fas fa-laptop-medical"></i> Pedidos del portal (Dr)</a>
+        <a href="cotizaciones.html" class="nav-item"><i class="fas fa-file-invoice-dollar" style="color:#D4AF37;"></i> Cotizaciones</a>
+        <a href="alineadores.html" class="nav-item"><i class="fas fa-tooth" style="color:#00d2ff;"></i> Alineadores (cuentas)</a>
+        <a href="#" class="nav-item" onclick="switchTab('clientes',this)"><i class="fas fa-box-archive"></i> Base antigua de clientes</a>
+    </details>
 
-    <p class="nav-section">Portafolio</p>
-    <a href="#" class="nav-item" onclick="switchTab('portafolio',this)">
-        <i class="fas fa-images"></i> Portafolio
-    </a>
+    <details class="nav-group" data-g="equipo"><summary>Equipo y producción</summary>
+        <a href="gestionar-usuarios.html" class="nav-item"><i class="fas fa-users-gear" style="color:#00FF41;"></i> Equipo y roles</a>
+        <a href="papeleria.html" class="nav-item"><i class="fas fa-book" style="color:#00FF41;"></i> Papelería y protocolos</a>
+        <a href="inventario.html" class="nav-item"><i class="fas fa-boxes-stacked"></i> Inventario</a>
+        <a href="operario-diseno.html" class="nav-item"><i class="fas fa-drafting-compass" style="color:#00d2ff;"></i> Panel Diseño CAD</a>
+        <a href="operator-panel.html" class="nav-item"><i class="fas fa-cog" style="color:#D4AF37;"></i> Panel Fresado / Lab</a>
+        <a href="taller.html" class="nav-item"><i class="fas fa-tools" style="color:#D946A6;"></i> Panel Taller</a>
+    </details>
 
-    <p class="nav-section">Analytics &amp; Reportes</p>
-    <a href="#" class="nav-item" onclick="switchTab('metricas',this)">
-        <i class="fas fa-chart-line"></i> Métricas
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('metricas-fin',this)">
-        <i class="fas fa-sack-dollar" style="color:var(--gold);"></i> Métricas Financieras
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('analytics',this)">
-        <i class="fas fa-radar" style="color:#F44336;"></i> Radar de Ventas
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('reportes',this)">
-        <i class="fas fa-file-lines" style="color:var(--cyan);"></i> Reportes BI
-    </a>
-    <a href="metricas.html" class="nav-item"><i class="fas fa-chart-pie" style="color:#00d2ff;"></i> BI Dashboard ✨</a>
-    <a href="metricas-seo.html" class="nav-item"><i class="fas fa-magnifying-glass-chart"></i> SEO Dashboard</a>
+    <details class="nav-group" data-g="analisis"><summary>Análisis</summary>
+        <a href="metricas.html" class="nav-item"><i class="fas fa-chart-pie" style="color:#00d2ff;"></i> BI Dashboard</a>
+        <a href="#" class="nav-item" onclick="switchTab('metricas-fin',this)"><i class="fas fa-sack-dollar" style="color:var(--gold);"></i> Finanzas</a>
+        <a href="#" class="nav-item" onclick="switchTab('analytics',this)"><i class="fas fa-radar" style="color:#F44336;"></i> Radar de ventas</a>
+        <a href="#" class="nav-item" onclick="switchTab('reportes',this)"><i class="fas fa-file-lines" style="color:var(--cyan);"></i> Reportes BI</a>
+        <a href="#" class="nav-item" onclick="switchTab('metricas',this)"><i class="fas fa-chart-line"></i> Métricas del portal Dr</a>
+        <a href="metricas-seo.html" class="nav-item"><i class="fas fa-magnifying-glass-chart"></i> SEO</a>
+    </details>
 
-    <p class="nav-section">Marketing &amp; Crecimiento</p>
-    <a href="#" class="nav-item" onclick="switchTab('referidos',this)">
-        <i class="fas fa-gift" style="color:#00FF41;"></i> Referidos
-    </a>
-    <a href="metricas-referidos.html" class="nav-item"><i class="fas fa-chart-line" style="color:#00FF41;"></i> ROI Referidos ✨</a>
-    <a href="metricas-churn.html" class="nav-item"><i class="fas fa-user-clock"></i> Churn Prevention</a>
-    <a href="#" class="nav-item" onclick="switchTab('waitlist',this)">
-        <i class="fas fa-flask" style="color:var(--gold);"></i> Waitlist Labs
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('newsletter',this)">
-        <i class="fas fa-envelope-open-text" style="color:var(--cyan);"></i> Newsletter
-    </a>
+    <details class="nav-group" data-g="marketing"><summary>Marketing</summary>
+        <a href="#" class="nav-item" onclick="switchTab('referidos',this)"><i class="fas fa-gift" style="color:#00FF41;"></i> Referidos</a>
+        <a href="metricas-referidos.html" class="nav-item"><i class="fas fa-chart-line" style="color:#00FF41;"></i> ROI de referidos</a>
+        <a href="metricas-churn.html" class="nav-item"><i class="fas fa-user-clock"></i> Prevención de churn</a>
+        <a href="#" class="nav-item" onclick="switchTab('newsletter',this)"><i class="fas fa-envelope-open-text" style="color:var(--cyan);"></i> Newsletter</a>
+        <a href="#" class="nav-item" onclick="switchTab('leads',this)"><i class="fas fa-magnet"></i> Leads del Journal</a>
+        <a href="#" class="nav-item" onclick="switchTab('waitlist',this)"><i class="fas fa-flask" style="color:var(--gold);"></i> Waitlist labs</a>
+    </details>
 
-    <p class="nav-section">Configuración</p>
-    <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y Materiales</a>
-    <a href="configuracion.html" class="nav-item"><i class="fas fa-sliders"></i> Variables del Sistema</a>
-    <a href="cotizaciones.html" class="nav-item"><i class="fas fa-file-invoice-dollar" style="color:#D4AF37;"></i> Cotizaciones ✨</a>
-    <a href="inventario.html" class="nav-item"><i class="fas fa-boxes-stacked"></i> Inventario</a>
-    <a href="pruebas-carga.html" class="nav-item"><i class="fas fa-vial" style="color:#94a3b8;"></i> Pruebas Carga 🧪</a>
+    <details class="nav-group" data-g="web"><summary>Contenido web</summary>
+        <a href="#" class="nav-item" onclick="switchTab('portafolio',this)"><i class="fas fa-images"></i> Portafolio</a>
+        <a href="editar-links.html" class="nav-item"><i class="fas fa-link" style="color:#D946A6;"></i> Página de enlaces</a>
+        <a href="anonimizar.html" class="nav-item"><i class="fas fa-user-secret" style="color:#00d2ff;"></i> Anonimizar fotos</a>
+    </details>
 
-    <p class="nav-section">Paneles operarios</p>
-    <a href="operario-diseno.html" class="nav-item"><i class="fas fa-drafting-compass" style="color:#00d2ff;"></i> Diseño CAD</a>
-    <a href="operator-panel.html" class="nav-item"><i class="fas fa-cog" style="color:#D4AF37;"></i> Fresado / Lab</a>
-    <a href="taller.html" class="nav-item"><i class="fas fa-tools" style="color:#D946A6;"></i> Taller</a>
-    <a href="/" class="nav-item" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Ver Sitio</a>
+    <details class="nav-group" data-g="config"><summary>Configuración</summary>
+        <a href="admin-precios.html" class="nav-item"><i class="fas fa-tags"></i> Precios y materiales</a>
+        <a href="configuracion.html" class="nav-item"><i class="fas fa-sliders"></i> Variables del sistema</a>
+        <a href="pruebas-carga.html" class="nav-item"><i class="fas fa-vial" style="color:#94a3b8;"></i> Pruebas de carga</a>
+    </details>
 
     <div class="sidebar-footer">
-        <a href="/" class="nav-item"><i class="fas fa-home"></i> Página principal</a>
-        <a href="#" class="nav-item" onclick="cerrarSesion()">
-            <i class="fas fa-arrow-right-from-bracket"></i> Cerrar Sesión
-        </a>
+        <a href="/" class="nav-item" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Ver sitio web</a>
+        <a href="#" class="nav-item" onclick="cerrarSesion()"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar sesión</a>
     </div>
 </aside>
+<script>
+/* Menú: recordar qué grupos dejó abiertos el admin */
+(function(){try{
+  var KEY='prodigy_nav_open', abiertos=JSON.parse(localStorage.getItem(KEY)||'[]');
+  document.querySelectorAll('details.nav-group').forEach(function(d){
+    if(abiertos.indexOf(d.dataset.g)>-1) d.open=true;
+    d.addEventListener('toggle',function(){
+      var o=[].slice.call(document.querySelectorAll('details.nav-group[open]')).map(function(x){return x.dataset.g;});
+      try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){}
+    });
+  });
+}catch(e){}})();
+</script>
 
 <!-- MAIN -->
 <main class="main" id="main-content">
@@ -1578,6 +1572,7 @@ function switchTab(tab, el) {
     // Sidebar
     document.querySelectorAll('.nav-item').forEach(i => { i.classList.remove('active'); i.removeAttribute('aria-current'); });
     if (el) { el.classList.add('active'); el.setAttribute('aria-current', 'page'); }
+    const grp = el && el.closest ? el.closest('details.nav-group') : null; if (grp) grp.open = true;
 
     // Panels
     const panel = document.getElementById('tab-' + tab);
@@ -3236,11 +3231,13 @@ async function cargarDespachos() {
     const { data: mens } = await sb.from('mensajeros').select('id,nombre,zona_preferencial').eq('activo', true).order('nombre');
     _mensajerosList = mens || [];
 
-    // 2. Pedidos TERMINADO sin despacho asignado
+    // 2. Pedidos listos para despachar sin despacho asignado.
+    //    (Antes filtraba el enum estado por TERMINADO — ese valor NO existe → 22P02 y la lista salía
+    //     SIEMPRE vacía. La máquina real es estado_operativo: ver docs/CONTRATO-ESTADOS.md)
     const { data: pedSinAsignar } = await sb
         .from('pedidos')
         .select('id,codigo,nombre_cliente,nombre_doctor,direccion,precio_total,estado_operativo').eq('negocio', 'prodigy')
-        .eq('estado', 'TERMINADO');
+        .in('estado_operativo', ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR']);
     // (Antes había un .not('id','in','(SELECT ...)') — PostgREST NO soporta
     //  subqueries en filtros → devolvía 400 y la lista salía vacía. Se excluyen
     //  los ya asignados client-side con idsOcupados, abajo.)

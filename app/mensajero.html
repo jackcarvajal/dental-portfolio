@@ -674,7 +674,7 @@ async function procesarConfirmacion(){
 
         // Notificación al doctor + recibo WA
         try {
-            const { data:ped } = await sb.from('pedidos_entrega').select('codigo,email,telefono,precio_total').eq('id',_activePedidoId).single();
+            const { data:ped } = await sb.from('pedidos').select('codigo,email,telefono,precio_total')  /* antes: vista pedidos_entrega que nunca se creó → sin aviso al Dr */.eq('id',_activePedidoId).single();
             if (ped?.email) {
                 await fetch(`${SUPABASE_URL}/functions/v1/send-push`, {
                     method:'POST',

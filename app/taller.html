@@ -528,13 +528,13 @@ async function cargarKPIsTaller() {
             sb.from('pedidos_operacion').select('id',{count:'exact',head:true}).in('estado_operativo',['LISTO_DESPACHAR','EMPACADO']),
             sb.from('pedidos_operacion').select('id',{count:'exact',head:true}).in('estado_operativo',['QA_APROBADO','LISTO']),
             sb.from('pedidos_operacion').select('id',{count:'exact',head:true}).eq('estado_operativo','CONTROL_CALIDAD'),
-            sb.from('logs_mantenimiento').select('id',{count:'exact',head:true}).gte('created_at', new Date(Date.now()-30*86400000).toISOString()),
+            Promise.resolve({count:null}), // logs_mantenimiento aún no existe (módulo de mantenimiento por máquina pendiente)
         ]);
         const kpis=[
             {v:pendR.count||0,l:'Para despacho hoy',c:'#D4AF37'},
             {v:prodR.count||0,l:'Listos QA',c:'#00FF41'},
             {v:qaR.count||0,l:'En control calidad',c:'#00d2ff'},
-            {v:listR.count||0,l:'Mantenimientos (30d)',c:'#94a3b8'},
+            {v:(listR.count==null?'—':listR.count),l:'Mantenimientos (30d)',c:'#94a3b8'},
         ];
         el.innerHTML=kpis.map(k=>`<div style="background:#0d1520;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px;text-align:center;">
             <div style="font-size:1.8rem;font-weight:900;color:${k.c};">${k.v}</div>
