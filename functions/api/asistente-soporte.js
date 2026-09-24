@@ -168,7 +168,7 @@ export async function onRequestPost(ctx){
   const messages = [{ role:'user', content: reporteTexto(fila, modo === 'equipo') + (modo === 'equipo' ? '\n\nAnaliza el reporte.' : '\n\nAyúdame a resolverlo.') }, ...mensajes];
 
   const maxTok = modo === 'equipo' ? 1200 : 600;
-  let up = null, detalle = '';
+  let up = null, detalle = '', usado = usarClaude ? (env.ANTHROPIC_MODEL || 'claude-sonnet-5') : '';
   if (usarClaude) {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method:'POST',
@@ -187,7 +187,7 @@ export async function onRequestPost(ctx){
         headers:{ 'Content-Type':'application/json', 'x-goog-api-key':env.GEMINI_API_KEY },
         body: JSON.stringify({ systemInstruction:{ parts:[{ text: system[0].text }] }, contents, generationConfig:gen })
       }).catch(() => null);
-      if (r && r.ok && r.body) { up = r; break; }
+      if (r && r.ok && r.body) { up = r; usado = model; break; }
       detalle = r ? model + ': ' + (await r.text().catch(() => '')).slice(0, 160) : model + ': red';
     }
   }
@@ -231,5 +231,5 @@ export async function onRequestPost(ctx){
   }).catch(() => {});
   if (ctx.waitUntil) ctx.waitUntil(guardar);
 
-  return new Response(up.body.pipeThrough(ts), { headers:{ ...h, 'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'no-store' } });
+  return new Response(up.body.pipeThrough(ts), { headers:{ ...h, 'Content-Type':'text/plain; charset=utf-8', 'Cache-Control':'no-store', 'X-IA-Modelo':usado } });
 }
