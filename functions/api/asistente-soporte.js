@@ -189,7 +189,7 @@ export async function onRequestPost(ctx){
     const contents = messages.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts:[{ text: m.content }] }));
     const GEMINI_MODELOS = modo === 'equipo' ? GEMINI_EQUIPO : GEMINI_USUARIO;
     for (const model of GEMINI_MODELOS) {
-      const marca = new Request('https://rl.internal/ia-caido-' + model);
+      const marca = new Request('https://rl.internal/ia-caido2-' + model);
       const ultimo = model === GEMINI_MODELOS[GEMINI_MODELOS.length - 1];
       if (!ultimo && await caches.default.match(marca)) continue;          // falló hace poco: no esperar por él (el último siempre se intenta)
       const gen = { maxOutputTokens:maxTok, temperature:0.3 };
@@ -203,11 +203,30 @@ export async function onRequestPost(ctx){
       }).catch(() => null);
       clearTimeout(tm);
       if (r && r.ok && r.body) { up = r; usado = model; break; }
-      detalle = r ? model + ': ' + (await r.text().catch(() => '')).slice(0, 160) : model + ': sin respuesta en 7 s';
-      await caches.default.put(marca, new Response('1', { headers:{ 'Cache-Control':'max-age=600' } }));
+      detalle += (detalle ? ' | ' : '') + (r ? model + ' ' + r.status + ': ' + (await r.text().catch(() => '')).slice(0, 140) : model + ': sin respuesta en 7 s');
+      // Solo se "recuerda" como caído si fue cupo, error del servidor o se colgó (no por un 400 de configuración)
+      if (!r || r.status === 429 || r.status >= 500)
+        await caches.default.put(marca, new Response('1', { headers:{ 'Cache-Control':'max-age=300' } }));
+    }
+    // Respaldo: la misma llamada SIN streaming que usa el chatbot de la web (responde aunque el streaming falle).
+    // Se envuelve como un evento SSE para que el resto del flujo (mostrar + guardar) no cambie.
+    if (!up) {
+      for (const model of ['gemini-2.5-flash', 'gemini-2.5-flash-lite']) {
+        const gen = { maxOutputTokens:maxTok, temperature:0.3 };
+        if (model.startsWith('gemini-2.5')) gen.thinkingConfig = { thinkingBudget:0 };
+        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json', 'x-goog-api-key':env.GEMINI_API_KEY },
+          body: JSON.stringify({ systemInstruction:{ parts:[{ text: system[0].text }] }, contents, generationConfig:gen })
+        }).catch(() => null);
+        const j = r && r.ok ? await r.json().catch(() => null) : null;
+        if (j && j.candidates) { up = new Response('data: ' + JSON.stringify(j) + '\n\n'); usado = model + ' (sin streaming)'; break; }
+        detalle += ' | respaldo ' + model + ' ' + (r ? r.status : 'red');
+      }
     }
   }
-  if (!up) return J({ error:'La IA no respondió. Intenta de nuevo o toca «Necesito al equipo».', detalle }, 502);
+  // 503 (no 502): Cloudflare reemplaza los 502 por su propia página de error y se pierde el detalle
+  if (!up) return J({ error:'La IA no respondió. Intenta de nuevo o toca «Necesito al equipo».', detalle: detalle.slice(0, 600) }, 503);
 
   // SSE (Gemini o Claude) → texto plano en vivo
   const dec = new TextDecoder(), enc = new TextEncoder();
