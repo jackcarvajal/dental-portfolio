@@ -1,3 +1,39 @@
+/* Dock compartido arriba-derecha: campana + distintivo de rol se acomodan lado a lado
+   sin importar qué script cargue primero (antes el distintivo tapaba la campana). */
+function prodigyDock(){
+  var d=document.getElementById('prodigy-dock');
+  if(!d){
+    d=document.createElement('div'); d.id='prodigy-dock'; document.body.appendChild(d);
+    if(!document.getElementById('prodigy-dock-css')){
+      var s=document.createElement('style'); s.id='prodigy-dock-css';
+      s.textContent='#prodigy-dock{position:fixed;top:10px;right:14px;z-index:99991;display:flex;align-items:center;gap:10px;pointer-events:none}'
+        +'#prodigy-dock>*{pointer-events:auto;position:relative!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important}'
+        +'#prodigy-dock>#_notif-btn{order:1}#prodigy-dock>#rolchip{order:2}'
+        +'@media print{#prodigy-dock{display:none}}';
+      document.head.appendChild(s);
+    }
+    prodigyDockReserve();
+  }
+  return d;
+}
+/* Reserva espacio para el dock: empuja el contenido y baja las barras fijas/pegajosas superiores,
+   para que el dock NUNCA tape botones de la página. Una página que ya deja su propio hueco
+   puede excluirse con <body data-dock-safe>. */
+function prodigyDockReserve(){
+  var b=document.body; if(!b || b.hasAttribute('data-dock-safe') || b.getAttribute('data-dock-reserved')) return;
+  b.setAttribute('data-dock-reserved','1');
+  var H=56;
+  b.style.paddingTop=((parseFloat(getComputedStyle(b).paddingTop)||0)+H)+'px';
+  var vh=window.innerHeight||800;
+  document.querySelectorAll('body>*,body>*>*,header,nav,.navbar,.topbar,.header,.top-bar').forEach(function(el){
+    if(el.id==='prodigy-dock'||el.id==='rolbar'||el.closest('#prodigy-dock')) return;
+    var cs=getComputedStyle(el);
+    if((cs.position==='fixed'||cs.position==='sticky') && (parseFloat(cs.top)||0)<=12){
+      var r=el.getBoundingClientRect();
+      if(r.height>0 && r.height<vh*0.45 && r.width>window.innerWidth*0.4) el.style.top=((parseFloat(cs.top)||0)+H)+'px';
+    }
+  });
+}
 /**
  * PRODIGY — Notificaciones internas por rol + cliente
  * Uso staff:   _notifInit(sb, 'diseno', 'operario')
@@ -81,7 +117,7 @@ function _injectUI() {
   btn.innerHTML = `<i class="fas fa-bell" style="color:#94a3b8;font-size:.9rem;" aria-hidden="true"></i>
     <span id="_notif-badge" aria-live="polite" aria-atomic="true"></span>`;
   btn.onclick = _togglePanel;
-  document.body.appendChild(btn);
+  prodigyDock().appendChild(btn);
 
   const panel = document.createElement('div');
   panel.id = '_notif-panel';
@@ -255,7 +291,7 @@ function _notifToast(n) {
   const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const color = PRIO_COLOR[n.prioridad] || '#94a3b8';
   const toast = document.createElement('div');
-  toast.style.cssText = `position:fixed;bottom:24px;right:16px;z-index:9999;background:rgba(13,21,32,.97);border:1px solid ${color};border-left:4px solid ${color};border-radius:10px;padding:12px 16px;max-width:300px;box-shadow:0 10px 40px rgba(0,0,0,.5);backdrop-filter:blur(12px);animation:_notifSlide .3s ease;`;
+  toast.style.cssText = `position:fixed;top:62px;right:14px;z-index:99992;background:rgba(13,21,32,.97);border:1px solid ${color};border-left:4px solid ${color};border-radius:10px;padding:12px 16px;max-width:300px;box-shadow:0 10px 40px rgba(0,0,0,.5);backdrop-filter:blur(12px);animation:_notifSlide .3s ease;`;
   toast.innerHTML = `<div style="font-size:.78rem;font-weight:800;color:#fff;margin-bottom:3px;"><i class="fas ${TIPO_ICON[n.tipo]||'fa-bell'}" style="margin-right:6px;color:${color}" aria-hidden="true"></i>${esc(n.titulo)}</div><div style="font-size:.7rem;color:#94a3b8;">${esc((n.mensaje||'').slice(0,80))}</div>`;
   if (!document.getElementById('_notif-slide-css')) {
     const s=document.createElement('style');s.id='_notif-slide-css';

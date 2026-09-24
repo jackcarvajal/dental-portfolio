@@ -1,3 +1,39 @@
+/* Dock compartido arriba-derecha: campana + distintivo de rol se acomodan lado a lado
+   sin importar qué script cargue primero (antes el distintivo tapaba la campana). */
+function prodigyDock(){
+  var d=document.getElementById('prodigy-dock');
+  if(!d){
+    d=document.createElement('div'); d.id='prodigy-dock'; document.body.appendChild(d);
+    if(!document.getElementById('prodigy-dock-css')){
+      var s=document.createElement('style'); s.id='prodigy-dock-css';
+      s.textContent='#prodigy-dock{position:fixed;top:10px;right:14px;z-index:99991;display:flex;align-items:center;gap:10px;pointer-events:none}'
+        +'#prodigy-dock>*{pointer-events:auto;position:relative!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important}'
+        +'#prodigy-dock>#_notif-btn{order:1}#prodigy-dock>#rolchip{order:2}'
+        +'@media print{#prodigy-dock{display:none}}';
+      document.head.appendChild(s);
+    }
+    prodigyDockReserve();
+  }
+  return d;
+}
+/* Reserva espacio para el dock: empuja el contenido y baja las barras fijas/pegajosas superiores,
+   para que el dock NUNCA tape botones de la página. Una página que ya deja su propio hueco
+   puede excluirse con <body data-dock-safe>. */
+function prodigyDockReserve(){
+  var b=document.body; if(!b || b.hasAttribute('data-dock-safe') || b.getAttribute('data-dock-reserved')) return;
+  b.setAttribute('data-dock-reserved','1');
+  var H=56;
+  b.style.paddingTop=((parseFloat(getComputedStyle(b).paddingTop)||0)+H)+'px';
+  var vh=window.innerHeight||800;
+  document.querySelectorAll('body>*,body>*>*,header,nav,.navbar,.topbar,.header,.top-bar').forEach(function(el){
+    if(el.id==='prodigy-dock'||el.id==='rolbar'||el.closest('#prodigy-dock')) return;
+    var cs=getComputedStyle(el);
+    if((cs.position==='fixed'||cs.position==='sticky') && (parseFloat(cs.top)||0)<=12){
+      var r=el.getBoundingClientRect();
+      if(r.height>0 && r.height<vh*0.45 && r.width>window.innerWidth*0.4) el.style.top=((parseFloat(cs.top)||0)+H)+'px';
+    }
+  });
+}
 /**
  * PRODIGY — "¿Dónde estoy?" — identificador de panel y rol
  * v1.0 · 2026-07-18
@@ -74,7 +110,7 @@
       + '#rolsel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#e6e9ee;'
       + 'border-radius:7px;padding:4px 7px;font-size:.7rem;font-family:inherit;cursor:pointer;color-scheme:dark;}'
       + '#rolsel option{background:#14100a;color:#f5f5f7;}'
-      + '@media(max-width:640px){#rolchip{top:auto;bottom:8px;right:8px;left:8px;justify-content:center;}}'
+      + '@media(max-width:640px){#rolchip{padding:5px 8px;gap:6px}#rolchip .r{display:none}#rolchip .p{font-size:.62rem;letter-spacing:.3px}#rolsel{max-width:84px;padding:3px 5px}}'
       + '@media print{#rolbar,#rolchip{display:none;}}';
     var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -84,7 +120,7 @@
     chip.id = 'rolchip';
     chip.setAttribute('data-tip', 'Te indica en qué panel estás y con qué rol. Sirve para no confundirte de pantalla.');
     chip.innerHTML = '<span class="p">' + nombre + '</span><span class="r">rol: ' + rol + '</span>';
-    document.body.appendChild(chip);
+    prodigyDock().appendChild(chip);
 
     /* Selector de panel — solo para quien es admin */
     function esAdmin() {

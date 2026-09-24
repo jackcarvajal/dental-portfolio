@@ -92,7 +92,7 @@ body{
 #lx-hint b{display:block;font-family:var(--lx-display);font-weight:600;color:var(--lx-champ);margin-bottom:3px;font-size:.78rem;}
 
 /* ── Área principal ── */
-.main{padding:38px 46px 60px;}
+.main{padding:68px 46px 60px;min-width:0;}   /* min-width:0 → las tablas anchas hacen scroll propio en vez de ensanchar la página */   /* 68px arriba: espacio para el dock (campana + rol) */
 .page-header{margin-bottom:30px;}
 .page-header h1{
   font-family:var(--lx-display); font-weight:600; font-size:1.85rem; letter-spacing:-.025em; line-height:1.15;
@@ -180,5 +180,9 @@ tbody tr:hover td{background:rgba(212,175,55,.045) !important;}
 .nav-item:focus-visible,.btn-primary:focus-visible,.btn-xs:focus-visible,.nav-group>summary:focus-visible{
   outline:2px solid var(--lx-champ);outline-offset:2px;
 }
-@media(max-width:768px){.main{padding:20px 16px;}}
+@media(max-width:768px){
+  .main{padding:64px 16px 24px;}                       /* bajo el dock */
+  .kpi-grid{grid-template-columns:repeat(2,1fr) !important;}  /* antes se desbordaba en 5 columnas */
+  .page-header h1{font-size:1.45rem;}
+}
 @media(prefers-reduced-motion:reduce){.kpi-card:hover,.btn-primary:hover{transform:none;}}

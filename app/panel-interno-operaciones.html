@@ -191,9 +191,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
-  <link rel="stylesheet" href="../css/admin-luxe.css?v=20260923">
+  <link rel="stylesheet" href="../css/admin-luxe.css?v=20260923b">
 </head>
-<body>
+<body data-dock-safe>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 
 <!-- Auth overlay mientras verifica sesión -->
@@ -4530,7 +4530,7 @@ document.addEventListener('keydown', e => {
 });
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
-<script src="../js/notif-panel.js?v=20260601"></script>
+<script src="../js/notif-panel.js?v=20260923"></script>
 <script src="../js/panel-tips.js?v=20260718e"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 <script>
@@ -4563,7 +4563,7 @@ document.addEventListener('keydown', e => {
 <script src="../js/historial.js?v=20260718e"></script>
 <script src="../js/tour.js?v=20260721"></script>
 <script src="../js/imprimir.js?v=20260718e"></script>
-<script src="../js/rol-actual.js?v=20260718e"></script>
+<script src="../js/rol-actual.js?v=20260923"></script>
 <script src="../js/admin-hints.js?v=20260923" defer></script>
 </body>
 </html>
