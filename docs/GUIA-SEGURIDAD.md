@@ -10,6 +10,11 @@ function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 ```
 Aplica a: campos Supabase, respuestas de API externa (ipapi.co, etc.), `file.name`, `error.message`.
 
+**Dentro de `onclick="fn('…')"` escH NO basta** (no escapa `'` y el navegador decodifica el atributo
+antes de ejecutar el JS). Usar `escJ` (escape JS + HTML), definido global en el `<head>` de la página:
+`onclick="fn('${escJ(x)}')"`. Para objetos: `onclick="fn(${escH(JSON.stringify(obj))})"`.
+Mejor aún: `data-*` + `addEventListener`. (Auditoría 24-sep-2026: 130 lugares corregidos en ambos repos.)
+
 ## CORS — Edge functions (Cloudflare Pages Functions)
 ```javascript
 // ✅ validar origin contra allowlist
