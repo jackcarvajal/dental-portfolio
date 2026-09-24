@@ -394,6 +394,27 @@ let _userId = null;
     .subscribe();
 })();
 
+/* ── Especialidades: cada técnico ve SOLO su tipo de trabajo ──
+   guias   → guías quirúrgicas y planeación de implantes
+   blender → diseño de sonrisa / mockup / encerado (trabajo estético visual)
+   exocad  → todo lo demás (coronas, puentes, carillas, implantes, férulas, PPR…)
+   'diseno', admin, operator e inventario ven todo. Ajusta las palabras si cambia el reparto.
+   (Es un filtro de la pantalla: la base de datos sigue dejando leer los casos de diseño al rol 'diseno'.) */
+const ESPECIALIDAD = {
+  guias:   /gu[ií]a|planeaci[oó]n preliminar|planificaci[oó]n quir[uú]rgica|implantolog/i,
+  blender: /sonrisa|mock ?up|encerado/i
+};
+function esDeMiEspecialidad(p){
+  const roles = window.PRODIGY_ROLES || [window.PRODIGY_ROLE];
+  if (roles.some(r => ['admin','operator','encargado_inventario','diseno'].includes(r))) return true;
+  const t = String(p.tipo_trabajo || '');
+  const esGuia = ESPECIALIDAD.guias.test(t), esBlender = !esGuia && ESPECIALIDAD.blender.test(t);
+  if (roles.includes('guias') && esGuia) return true;
+  if (roles.includes('blender') && esBlender) return true;
+  if (roles.includes('exocad') && !esGuia && !esBlender) return true;
+  return false;
+}
+
 /* ── Cargar casos de diseño ── */
 async function cargarCasos() {
   const { data, error } = await sb.from('pedidos')
@@ -409,7 +430,7 @@ async function cargarCasos() {
   if (error) { toast('Error: ' + error.message, 'err'); return; }
   _casos = (data||[]).map(p => ({
     ...p, estado_operativo: p.estado_operativo || 'VALIDACION_PENDIENTE'
-  }));
+  })).filter(esDeMiEspecialidad);
   renderKanban();
   actualizarTimer();
 }
