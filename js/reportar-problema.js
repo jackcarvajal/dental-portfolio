@@ -155,14 +155,16 @@
   }
 
   /* ── Estilos (marca: magenta · oro · cian · neón sobre #050505; Inter) ── */
+  // La fuente Inter solo se pide al ABRIR el formulario (antes se descargaba en cada página, aunque nadie reportara)
+  function fuente() {
+    if (document.querySelector('link[href*="family=Inter"]')) return;
+    var f = document.createElement('link');
+    f.rel = 'stylesheet';
+    f.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap';
+    document.head.appendChild(f);
+  }
   function css() {
     if (document.getElementById('pr-css')) return;
-    if (!document.querySelector('link[href*="family=Inter"]')) {
-      var f = document.createElement('link');
-      f.rel = 'stylesheet';
-      f.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap';
-      document.head.appendChild(f);
-    }
     var s = document.createElement('style');
     s.id = 'pr-css';
     s.textContent = [
@@ -358,7 +360,18 @@
     var b = document.getElementById('pr-btn');
     if (b) b.focus();
   }
-  function esc(e) { if (e.key === 'Escape') cerrar(); }
+  function esc(e) {
+    if (e.key === 'Escape') { cerrar(); return; }
+    if (e.key !== 'Tab') return;
+    // Foco atrapado dentro del diálogo (teclado / lector de pantalla)
+    var m = document.getElementById('pr-m');
+    if (!m) return;
+    var f = [].filter.call(m.querySelectorAll('button,a[href],textarea,input:not([hidden]),[tabindex="0"]'), function (x) { return !x.disabled && x.offsetParent !== null; });
+    if (!f.length) return;
+    var a = f[0], z = f[f.length - 1];
+    if (e.shiftKey && (document.activeElement === a || !m.contains(document.activeElement))) { e.preventDefault(); z.focus(); }
+    else if (!e.shiftKey && (document.activeElement === z || !m.contains(document.activeElement))) { e.preventDefault(); a.focus(); }
+  }
   function pegar(e) {
     var it = e.clipboardData && e.clipboardData.items;
     if (!it || !document.getElementById('pr-drop')) return;
@@ -404,6 +417,7 @@
     pre = pre || {};
     cerrar();
     css();
+    fuente();
     st = { tipo: pre.tipo && TIPOS.some(function (t) { return t[0] === pre.tipo; }) ? pre.tipo : 'otro', img: null, detalle: pre.detalle || null };
     if (pre.detalle) miga(pre.tipo || 'detalle', typeof pre.detalle === 'string' ? pre.detalle : JSON.stringify(pre.detalle).slice(0, 300));
 
@@ -438,12 +452,13 @@
     cuerpo.appendChild(chips);
 
     cuerpo.appendChild(el('label', { class: 'lb', for: 'pr-desc' }, '¿Qué pasó?'));
-    var ta = el('textarea', { id: 'pr-desc', maxlength: '2000' });
+    cuerpo.appendChild(el('p', { class: 'nota', id: 'pr-desc-nota', style: 'margin:-4px 0 8px' }, 'No escribas nombres ni datos de pacientes: con el número de caso basta.'));
+    var ta = el('textarea', { id: 'pr-desc', maxlength: '2000', 'aria-describedby': 'pr-desc-nota' });
     ta.placeholder = TIPOS.filter(function (t) { return t[0] === st.tipo; })[0][2];
     if (pre.descripcion) ta.value = pre.descripcion;
     cuerpo.appendChild(ta);
 
-    cuerpo.appendChild(el('span', { class: 'lb' }, 'Captura de pantalla'));
+    cuerpo.appendChild(el('span', { class: 'lb' }, 'Captura de pantalla · tapa o recorta datos de pacientes'));
     var drop = el('div', { id: 'pr-drop', class: 'drop', role: 'button', tabindex: '0', 'aria-label': 'Adjuntar captura de pantalla' });
     var fi = el('input', { type: 'file', accept: 'image/*', id: 'pr-file', hidden: '' });
     fi.addEventListener('change', function () { if (fi.files[0]) ponerImg(fi.files[0]); fi.value = ''; });
@@ -586,7 +601,7 @@
     var bEq = el('button', { type: 'button', class: 'go eq' }, 'Necesito al equipo');
     acts.appendChild(bOk); acts.appendChild(bEq);
     cuerpo.appendChild(acts);
-    cuerpo.appendChild(el('p', { class: 'nota' }, 'Respuestas generadas por inteligencia artificial: pueden equivocarse. Nunca te pediremos contraseñas. Si no se resuelve, el equipo recibe tu reporte con esta conversación.'));
+    cuerpo.appendChild(el('p', { class: 'nota' }, 'Responde una inteligencia artificial de un proveedor externo: puede equivocarse. No le escribas datos de pacientes ni contraseñas. Si no se resuelve, el equipo recibe tu reporte con esta conversación.'));
     cuerpo.appendChild(el('div', { class: 'msg', id: 'pr-msg', role: 'alert' }));
 
     function burbuja(quien, texto) {

@@ -56,6 +56,9 @@ h1{font-size:1.2rem;margin-bottom:4px;}
   <b>Recuerda:</b> el SK58 imprime desde su <b>app</b> (Bluetooth). En la etiqueta o el rastreo toca <b>Copiar link</b> y pégalo en la app; ella genera el QR con esta misma densidad.
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
+<script src="../js/auth-guard.js?v=20260924"></script>
+<script>ProdigyAuth.require(['admin','operator','secretaria','calidad','taller','encargado_inventario','mensajero']);</script>
 <script>
 // URL realista = link CORTO de producción (/c/CÓDIGO). Menos denso → escanea más chico.
 const SAMPLE = 'https://prodigylabdental.com/c/PRD-DIS-260922-A3F';

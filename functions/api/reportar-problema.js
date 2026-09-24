@@ -82,6 +82,19 @@ export async function avisarEquipo(env, fila, extra){
   const staff = [];
   for (let i = 1; i <= 3; i++) { const p = env['STAFF_' + i + '_PHONE'], k = env['STAFF_' + i + '_APIKEY']; if (p && k) staff.push({ p:String(p).replace(/\D/g,''), k }); }
   if (!staff.length) return;
+  // Tope global (el límite por IP no frena a un bot con muchas IP): si en 30 min ya entraron más de
+  // 12 reportes de visitantes sin sesión (o 12 errores automáticos), estos quedan SOLO en la bandeja.
+  if (fila.rol === 'anonimo' || fila.origen === 'automatico') {
+    try {
+      const c = cfg(env);
+      const desde = new Date(Date.now() - 30 * 60000).toISOString();
+      const filtro = fila.origen === 'automatico' ? 'origen=eq.automatico' : 'origen=eq.usuario&rol=eq.anonimo';
+      const r = await fetch(`${c.URL}/rest/v1/reportes_web?select=id&negocio=eq.${NEGOCIO}&${filtro}&created_at=gte.${encodeURIComponent(desde)}`,
+        { headers:{ ...adminH(c.SERVICE), Prefer:'count=exact', Range:'0-0' } });
+      const total = parseInt((r.headers.get('content-range') || '').split('/')[1], 10) || 0;
+      if (total > 12) return;
+    } catch(_) {}
+  }
   const quien = fila.email || fila.contacto || 'sin sesión';
   const msg = (fila.origen === 'usuario' ? '🛟 *Reporte de la web*' : '⚠️ *Error automático en la web*') + ` — R-${fila.folio}\n\n`
     + `Tipo: ${TIPOS[fila.tipo] || fila.tipo}\nPágina: ${String(fila.pagina || '').split('?')[0]}\nQuién: ${quien} (${fila.rol})\nEquipo: ${fila.dispositivo || '—'}\n`
