@@ -224,12 +224,9 @@
     <a href="#" class="nav-item" onclick="switchTab('clientes',this)">
         <i class="fas fa-users"></i> Clientes
     </a>
-    <a href="#" class="nav-item" onclick="switchTab('equipo',this)">
-        <i class="fas fa-user-shield"></i> Equipo PRODIGY
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('staff',this)">
-        <i class="fas fa-users-cog" style="color:#a78bfa;"></i> Operarios / Roles
-    </a>
+    <!-- Las pestañas viejas 'Equipo PRODIGY' (perfiles) y 'Operarios / Roles' (staff_departamentos)
+         NO controlaban el acceso real (auth usa app_metadata). Unificadas en gestionar-usuarios.html -->
+    <a href="gestionar-usuarios.html" class="nav-item"><i class="fas fa-users-gear" style="color:#00FF41;"></i> Equipo y roles ✨</a>
     <a href="#" class="nav-item" onclick="switchTab('pedidos-doc',this)">
         <i class="fas fa-inbox"></i> Pedidos Doctores
     </a>
@@ -237,7 +234,6 @@
     <a href="rastreo.html" class="nav-item"><i class="fas fa-map-location-dot" style="color:#00d2ff;"></i> Rastreo de Casos ✨</a>
     <a href="clientes.html" class="nav-item"><i class="fas fa-address-book" style="color:#D4AF37;"></i> Clientes (Doctores) ✨</a>
     <a href="papeleria.html" class="nav-item"><i class="fas fa-book" style="color:#00FF41;"></i> Papelería y Protocolos ✨</a>
-    <a href="gestionar-usuarios.html" class="nav-item"><i class="fas fa-users-gear" style="color:#00FF41;"></i> Gestión de usuarios ✨</a>
     <a href="alineadores.html" class="nav-item"><i class="fas fa-tooth" style="color:#00d2ff;"></i> Alineadores (cuentas) ✨</a>
     <a href="#" class="nav-item" onclick="switchTab('leads',this)">
         <i class="fas fa-magnet"></i> Leads Journal
