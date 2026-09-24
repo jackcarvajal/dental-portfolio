@@ -30,7 +30,10 @@ const CONOCIMIENTO_PUBLICO = `
 /* ─────────────────────────────────────────────── */
 
 const MAX_TURNOS = 6;
-const GEMINI_MODELOS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
+// Chat en vivo: flash-lite primero (rápido y con más cupo gratis; deja el cupo de 2.5-flash al chatbot de la web).
+// Análisis del equipo: 2.5-flash primero (mejor razonamiento). Si uno falla o se cuelga, pasa al siguiente.
+const GEMINI_USUARIO = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-2.0-flash'];
+const GEMINI_EQUIPO  = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
 const esc = s => String(s == null ? '' : s).replace(/\*\*/g, '');
 
 function articulosTexto(data, soloIds){
@@ -184,6 +187,7 @@ export async function onRequestPost(ctx){
   } else {
     // Gemini: roles user/model; si un modelo está sin cupo (429) o falla, se prueba el siguiente
     const contents = messages.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts:[{ text: m.content }] }));
+    const GEMINI_MODELOS = modo === 'equipo' ? GEMINI_EQUIPO : GEMINI_USUARIO;
     for (const model of GEMINI_MODELOS) {
       const marca = new Request('https://rl.internal/ia-caido-' + model);
       const ultimo = model === GEMINI_MODELOS[GEMINI_MODELOS.length - 1];
