@@ -31,6 +31,8 @@ const ALLOW = new Set([
   'leads_doctores.html', 'leads_doctores.soporte', 'logs_incidencias.bajo', 'logs_incidencias.pago',
   'notificaciones_internas.arr',
   'pedido_incidencias.show',   // bleed: .classList.contains('show') del modal, junto al insert (no es columna)
+  // bleed: texto dentro de descripciones ('Bulk upload: X', 'Diseño subido:', 'enviada:', 'cargando casos:', {fecha:…} de un snapshot)
+  'historial_diseno.upload', 'historial_diseno.subido', 'historial_diseno.enviada', 'logs_incidencias.casos', 'pedidos.fecha',
   'solicitudes_scanner.ruta',  // bleed: clave del objeto JS {nombre,ruta} de archivos subidos en envia-alineadores (no es columna)
   // Columnas de promociones — existen tras correr sql/promos-y-restaurativos-catalogo.sql.
   // El código degrada bien si aún no están (Promo cae al precio normal).
@@ -50,7 +52,7 @@ for (const f of files) src += '\n' + readFileSync(f, 'utf8');
 {
   let m; const s = src;
   let re = /\.from\(\s*['"`]([a-z_][\w]*)['"`]\s*\)([\s\S]{0,600})/gi;
-  while ((m = re.exec(s))) { const t = m[1]; let chain = m[2]; const nxt = chain.search(/\.from\(/); if (nxt > -1) chain = chain.slice(0, nxt); let c; const selRe = /\.select\(\s*['"`]([^'"`]*)['"`]/g; while ((c = selRe.exec(chain))) add(t, c[1]); const opRe = /\.(?:eq|neq|gt|gte|lt|lte|like|ilike|is|in|order|contains|match)\(\s*['"`]([a-z_][\w]*)['"`]/g; while ((c = opRe.exec(chain))) add(t, c[1]); const insRe = /\.(?:insert|update|upsert)\(\s*\{([^}]*)\}/g; while ((c = insRe.exec(chain))) { for (const k of c[1].match(/([a-z_][\w]*)\s*:/gi) || []) add(t, k.replace(':', '')); }
+  while ((m = re.exec(s))) { re.lastIndex = m.index + 6; /* no saltarse .from() dentro de la ventana anterior (punto ciego sep-2026) */ const t = m[1]; let chain = m[2]; const nxt = chain.search(/\.from\(/); if (nxt > -1) chain = chain.slice(0, nxt); let c; const selRe = /\.select\(\s*['"`]([^'"`]*)['"`]/g; while ((c = selRe.exec(chain))) add(t, c[1]); const opRe = /\.(?:eq|neq|gt|gte|lt|lte|like|ilike|is|in|order|contains|match)\(\s*['"`]([a-z_][\w]*)['"`]/g; while ((c = opRe.exec(chain))) add(t, c[1]); const insRe = /\.(?:insert|update|upsert)\(\s*\{([^}]*)\}/g; while ((c = insRe.exec(chain))) { for (const k of c[1].match(/([a-z_][\w]*)\s*:/gi) || []) add(t, k.replace(':', '')); }
     // valores de filtro sobre `estado` (enum frágil) → validar 22P02
     let ev; const evEq = /\.(?:eq|neq)\(\s*['"`]estado['"`]\s*,\s*['"`]([^'"`]+)['"`]/g; while ((ev = evEq.exec(chain))) addEnum(t, ev[1]);
     const evList = /\.(?:in|not)\(\s*['"`]estado['"`]\s*,(?:\s*['"`](?:in|eq)['"`]\s*,)?\s*['"`]\(?([^'"`]+?)\)?['"`]/g; while ((ev = evList.exec(chain))) ev[1].split(',').forEach(v => addEnum(t, v));
@@ -88,6 +90,9 @@ for (const t of Object.keys(tables).sort()) {
   const cols = [...tables[t]]; if (!cols.length) continue;
   const batch = await probe(`/rest/v1/${t}?select=${cols.join(',')}&limit=0`);
   if (batch.net) { offline = true; break; }
+  if (batch.code === 'PGRST205' || batch.status === 404) {         // tabla inexistente (PostgREST no usa 42P01)
+    ghosts++; console.log(`  [31m✗ ${t}[0m → la TABLA no existe (¿falta correr su SQL?)`); continue;
+  }
   if (batch.status === 200 || !GHOST.test(batch.code)) continue;   // tabla ok (o error no-relacionado a columnas)
   // algo falta: aislar columna a columna
   const bad = [];
