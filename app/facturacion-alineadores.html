@@ -45,22 +45,37 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 .fg label{font-size:.74rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.4px;}
 .fg input,.fg select,.fg textarea{background:var(--input);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:9px 11px;border-radius:8px;font-size:.9rem;font-family:inherit;width:100%;}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;}
+.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap;}
+.pill.enviado{background:rgba(0,210,255,.12);color:var(--cyan);}
+.pill.aprobado{background:rgba(0,255,65,.12);color:var(--green);}
+.pill.cambios{background:rgba(217,70,166,.14);color:var(--mg);}
+.pill.accion{background:rgba(0,210,255,.18);color:#fff;border:1px solid var(--cyan);}
+.ent{border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:rgba(255,255,255,.02);font-size:.9rem;line-height:1.6;}
+.ent .top{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px;}
+.ent .nota{white-space:pre-wrap;margin:6px 0;}
+.ent .obs{white-space:pre-wrap;background:rgba(217,70,166,.08);border:1px solid rgba(217,70,166,.25);border-radius:8px;padding:8px 10px;margin-top:6px;}
+.files{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.btn.mini{padding:6px 10px;font-size:.78rem;}
+.btn-ok{background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.45);color:var(--green);}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 </style>
 <script src="../js/reportar-problema.js?v=20260924c"></script>
 </head>
 <body>
-<h1>🧾 Mi Facturación — Alineadores</h1>
+<h1>😁 Mi cuenta — Alineadores</h1>
 <p class="sub" id="subtitle">Cargando…</p>
 
 <div class="cards" id="cards"></div>
 
 <div style="margin-bottom:16px;"><a class="btn btn-mg" href="nueva-orden-alineadores.html" style="width:100%"><i class="fas fa-plus"></i> Subir nuevo caso (orden de trabajo)</a></div>
 
-<div class="pay">
+<div class="sec-t" id="casos"><i class="fas fa-teeth" style="color:var(--cyan)"></i> Mis casos — viabilidad y planificación</div>
+<p class="sub" style="margin:-4px 0 10px">Cuando la técnica te envía una viabilidad o una planificación aparece aquí y en la campana 🔔. Revísala y pulsa <b>Aprobar</b> o <b>Pedir cambios</b>. La planificación incluye 2 revisiones.</p>
+<div class="tw"><table id="casosTbl"><thead><tr><th>Paciente</th><th>Estado</th><th>Última entrega</th><th></th></tr></thead><tbody></tbody></table></div>
+
+<div class="pay" style="margin-top:18px">
   <b>💳 Cómo pagar</b><br>
-  • <b>PayPal:</b> al monto del estado de cuenta se le suma el <b>12 % de comisión</b> acordado (ej. US$90 → US$100,80).<br>
+  <span id="payTxt">• <b>PayPal:</b> al monto del estado de cuenta se le suma la comisión de PayPal.</span><br>
   Luego pulsa <b>“Reportar pago”</b> y sube el comprobante 👇
 </div>
 
@@ -75,6 +90,13 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 
 <div class="sec-t"><i class="fas fa-receipt" style="color:var(--green)"></i> Mis pagos reportados</div>
 <div class="tw"><table id="pagosTbl"><thead><tr><th>Fecha</th><th>Monto</th><th>Método</th><th>Referencia</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+
+<!-- Modal entregas de un caso -->
+<div class="ov" id="ovEnt"><div class="modal" style="max-width:620px">
+  <h3><i class="fas fa-teeth" style="color:var(--cyan)"></i> <span id="entPac"></span></h3>
+  <div id="entLista"></div>
+  <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovEnt')">Cerrar</button></div>
+</div></div>
 
 <!-- Modal reportar pago -->
 <div class="ov" id="ovPago"><div class="modal">
@@ -96,28 +118,42 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
 <script src="../js/auth-guard.js?v=20260924"></script>
 <script>ProdigyAuth.require(['client','admin','operator','contabilidad']);</script>
+<script src="../js/notif-panel.js?v=20260924"></script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const escJ=s=>escH(String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n'));   // texto dentro de '…' en onclick
 const fmtD=d=>d?new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'}):'—';
 const nf=new Intl.NumberFormat('es-CO');
 const tipoLbl=t=>({completo:'Caso completo',valoracion:'Valoración',diferencia_a_completo:'Diferencia a completo',replaneacion_en_tiempo:'Replaneación (en tiempo)',replaneacion_fuera_tiempo:'Replaneación (fuera de tiempo)',refinamiento_sin_costo:'Refinamiento',refinamiento_con_costo:'Refinamiento (con costo)',adicional:'Adicional'})[t]||t;
-let sb, CASOS={}, CARGOS=[], PAGOS=[];
+let sb, CASOS={}, CARGOS=[], PAGOS=[], ENTREGAS=[];
 // ── PayPal: pon tu handle de paypal.me (ej. 'alejandrocarvajal') para activar el botón ──
-const PAYPAL_HANDLE='';      // vacío = botón oculto hasta configurarlo
-// Comisión ACORDADA con el cliente por pagar con PayPal: +12 % sobre el monto (cubre la comisión de PayPal y el cambio).
-// (Global66 se descartó: el cliente no quiso pagar por ahí.)
-const PAYPAL_COMISION=0.12;
-function grossUp(net){ return Math.round(net*(100+PAYPAL_COMISION*100))/100; }   // entero → sin errores de decimales (90 → 100,80)
+const PAYPAL_HANDLE='';      // vacío = en su lugar se ofrece pedir el enlace de pago por WhatsApp
+const WA_LAB='573212816716';
+// Comisión por pagar con PayPal: la ACORDADA con cada cliente (alineadores_clientes.comision_paypal,
+// ej. Panorámica = 12 %). Si el cliente no tiene una acordada: la comisión normal de PayPal (5,4 % + US$0,30).
+let COMISION_ACORDADA=null;
+function grossUp(net){
+  if(COMISION_ACORDADA!=null) return Math.round(net*(100+COMISION_ACORDADA*100))/100;   // entero → sin errores de decimales (90 → 100,80)
+  return Math.ceil((net+0.30)/(1-0.054)*100)/100;
+}
+function textoComision(){
+  return COMISION_ACORDADA!=null
+    ? 'se suma el <b>'+(COMISION_ACORDADA*100).toLocaleString('es-CO')+' % de comisión</b> acordado (ej. US$90 → US$'+grossUp(90).toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2})+')'
+    : 'se suma la <b>comisión de PayPal</b> (5,4 % + US$0,30) para que llegue el monto completo';
+}
 
 async function init(){
   sb=window.ProdigyAuth.getSb();
-  const { data:cs } = await sb.from('alineadores_casos').select('id,paciente,cliente,estado').eq('negocio','prodigy');
+  const { data:cs } = await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at').eq('negocio','prodigy').order('created_at',{ascending:false});
   (cs||[]).forEach(c=>CASOS[c.id]=c);
+  { const { data:en, error:ee } = await sb.from('alineadores_entregas').select('*').order('created_at',{ascending:false}); ENTREGAS = ee ? [] : (en||[]); }
+  try{ const { data:cf } = await sb.from('alineadores_clientes').select('comision_paypal').eq('user_id',window.PRODIGY_UID).maybeSingle(); if(cf && cf.comision_paypal!=null) COMISION_ACORDADA=Number(cf.comision_paypal); }catch(_){}
+  try{ if(window._notifInit) window._notifInit(sb, null, null, true); }catch(_){}
   const { data:cg } = await sb.from('alineadores_cargos').select('*').eq('negocio','prodigy').eq('parte','cliente');
   CARGOS = cg||[];
   const { data:pg } = await sb.from('alineadores_pagos').select('*').order('created_at',{ascending:false});
   PAGOS = pg||[];
-  document.getElementById('subtitle').textContent='Aquí ves lo que llevas facturado, pagas y subes tu comprobante. Los montos están en USD.';
+  document.getElementById('subtitle').textContent='Tus casos (viabilidad y planificación para aprobar), lo facturado y tus pagos. Los montos están en USD.';
   render();
 }
 
@@ -129,12 +165,18 @@ function render(){
   document.getElementById('cards').innerHTML=`
     <div class="kc deuda"><div class="k">Pendiente por pagar</div><div class="v">$${nf.format(Math.round(pend))}</div><div class="sub" style="margin:0">USD</div></div>
     <div class="kc pagado"><div class="k">Ya pagado</div><div class="v">$${nf.format(Math.round(pag))}</div><div class="sub" style="margin:0">USD</div></div>`;
+  renderCasos();
+  document.getElementById('payTxt').innerHTML='• <b>PayPal:</b> al monto del estado de cuenta '+textoComision()+'.';
   // Botón PayPal (monto con comisión incluida para que llegue el neto completo)
   const ppEl=document.getElementById('ppBtn');
   if(ppEl){
+    const g=grossUp(pend);
     if(PAYPAL_HANDLE && pend>0){
-      const g=grossUp(pend);
-      ppEl.innerHTML=`<a class="btn btn-mg" style="background:linear-gradient(135deg,#003087,#0070ba)" href="https://www.paypal.com/paypalme/${encodeURIComponent(PAYPAL_HANDLE)}/${g}USD" target="_blank" rel="noopener"><i class="fab fa-paypal"></i> Pagar $${nf.format(g)} con PayPal</a> <span class="sub">Incluye el ${Math.round(PAYPAL_COMISION*100)} % de comisión acordado por pagar con PayPal para que el laboratorio reciba $${nf.format(Math.round(pend))} completos. Luego sube tu comprobante 👇</span>`;
+      ppEl.innerHTML=`<a class="btn btn-mg" style="background:linear-gradient(135deg,#003087,#0070ba)" href="https://www.paypal.com/paypalme/${encodeURIComponent(PAYPAL_HANDLE)}/${g}USD" target="_blank" rel="noopener"><i class="fab fa-paypal"></i> Pagar $${nf.format(g)} con PayPal</a> <span class="sub">Incluye la comisión para que el laboratorio reciba $${nf.format(Math.round(pend))} completos. Luego sube tu comprobante 👇</span>`;
+    } else if(pend>0){
+      // Sin enlace de PayPal configurado: pedirlo por WhatsApp con el monto ya calculado
+      const txt=`Hola PRODIGY, quiero pagar mi estado de cuenta de alineadores: $${pend} USD (con comisión de PayPal: $${g} USD). ¿Me envían el enlace de pago?`;
+      ppEl.innerHTML=`<a class="btn btn-mg" style="background:#25D366" href="https://wa.me/${WA_LAB}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Pedir enlace de pago PayPal ($${nf.format(g)} USD)</a>`;
     } else ppEl.innerHTML='';
   }
   // Corte por mes
@@ -148,6 +190,63 @@ function render(){
   // Pagos
   const pr=PAGOS.map(p=>`<tr><td>${fmtD(p.created_at)}</td><td>${money(p.monto,p.moneda)}</td><td>${escH(p.metodo||'—')}</td><td>${escH(p.referencia||'—')}</td><td><span class="pill ${p.estado}">${escH(p.estado)}</span></td></tr>`).join('');
   document.querySelector('#pagosTbl tbody').innerHTML=pr||`<tr><td colspan="5" class="empty">Aún no has reportado pagos.</td></tr>`;
+}
+
+/* ── Mis casos: entregas de la técnica para aprobar ── */
+const ETAPA={viabilidad:'Viabilidad',planificacion:'Planificación'};
+const EST_CASO={valoracion:'En valoración',planificacion:'En planificación',en_tratamiento:'Planificación aprobada',terminado:'Terminado'};
+const EST_ENT={enviado:'Por revisar',aprobado:'Aprobada',cambios:'Pediste cambios'};
+function entregasDe(id){ return ENTREGAS.filter(e=>e.caso_id===id); }
+function renderCasos(){
+  const lista=Object.values(CASOS);
+  const tb=document.querySelector('#casosTbl tbody');
+  if(!lista.length){ tb.innerHTML='<tr><td colspan="4" class="empty">Aún no tienes casos. Súbelo con “Subir nuevo caso”.</td></tr>'; return; }
+  tb.innerHTML=lista.map(c=>{
+    const e=entregasDe(c.id)[0];
+    const ult=e?`<span class="pill ${e.estado==='enviado'?'accion':escH(e.estado)}">${escH(ETAPA[e.etapa]||e.etapa)}${e.revision_num?(' r'+e.revision_num):''} · ${escH(EST_ENT[e.estado]||e.estado)}</span>`:'<span class="sub" style="margin:0">La técnica aún no envía nada</span>';
+    return `<tr><td><b>${escH(c.paciente)}</b><br><span class="sub" style="margin:0">${escH(c.codigo||'')} · ${fmtD(c.created_at)}</span></td>
+      <td>${escH(EST_CASO[c.estado]||c.estado||'')}</td><td>${ult}</td>
+      <td>${e?`<button class="btn ${e.estado==='enviado'?'btn-mg':'btn-ghost'} mini" onclick="verCaso('${c.id}')">${e.estado==='enviado'?'Revisar':'Ver'}</button>`:''}</td></tr>`;
+  }).join('');
+  // Abrir directo desde el aviso (#casos)
+  if(location.hash==='#casos' && !renderCasos._hecho){ renderCasos._hecho=true; const pend=ENTREGAS.find(e=>e.estado==='enviado'); if(pend) setTimeout(()=>verCaso(pend.caso_id),300); }
+}
+function verCaso(id){
+  const c=CASOS[id]||{};
+  document.getElementById('entPac').textContent=(c.paciente||'')+' · '+(EST_CASO[c.estado]||'');
+  const lista=entregasDe(id);
+  document.getElementById('entLista').innerHTML=lista.map((e,i)=>`<div class="ent">
+    <div class="top"><b>${escH(ETAPA[e.etapa]||e.etapa)}${e.revision_num?(' · revisión '+e.revision_num):''}</b>
+      <span><span class="pill ${escH(e.estado)}">${escH(EST_ENT[e.estado]||e.estado)}</span> <span class="sub" style="margin:0">${fmtD(e.created_at)}</span></span></div>
+    ${e.nota_mayra?`<div class="nota">${escH(e.nota_mayra)}</div>`:''}
+    ${e.enlace&&/^https:\/\//i.test(e.enlace)?`<a href="${escH(e.enlace)}" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)"><i class="fas fa-link"></i> Abrir enlace</a>`:''}
+    <div class="files">${(e.archivos||[]).map(a=>`<button class="btn btn-ghost mini" onclick="verArchivoEntrega('${escJ(a)}')"><i class="fas fa-file"></i> ${escH(String(a).split('/').pop().replace(/^\d+_\d+_/,''))}</button>`).join('')}</div>
+    ${e.observacion_cliente?`<div class="obs"><b>Tu respuesta:</b> ${escH(e.observacion_cliente)}</div>`:''}
+    ${e.estado==='enviado'?`<div class="fg" style="margin-top:10px"><label>Observaciones (obligatorio si pides cambios)</label><textarea id="obs_${e.id}" rows="3" placeholder="Ej: mover más el canino 13, menos IPR en inferior…"></textarea></div>
+      ${e.etapa==='planificacion'&&e.revision_num>=2?'<p class="sub" style="margin:0 0 6px;color:var(--gold)">Ya usaste las 2 revisiones incluidas: otro cambio puede tener costo adicional (replaneación).</p>':''}
+      <div class="mact"><button class="btn btn-ghost mini" onclick="responder('${e.id}',false)">✏️ Pedir cambios</button><button class="btn btn-ok mini" onclick="responder('${e.id}',true)">✅ Aprobar</button></div>`:''}
+  </div>`).join('')||'<p class="empty">Sin entregas todavía.</p>';
+  document.getElementById('ovEnt').classList.add('show');
+}
+async function verArchivoEntrega(path){
+  try{ const { data,error }=await sb.storage.from('alineadores-entregas').createSignedUrl(path,600); if(error||!data){ alert('No se pudo abrir el archivo'); return; } window.open(data.signedUrl,'_blank','noopener'); }
+  catch(_){ alert('No se pudo abrir el archivo'); }
+}
+async function responder(id,aprobar){
+  const e=ENTREGAS.find(x=>x.id===id); if(!e) return;
+  const obs=(document.getElementById('obs_'+id)||{}).value||'';
+  if(!aprobar && obs.trim().length<3){ alert('Escribe qué cambios necesitas.'); return; }
+  if(aprobar && !confirm('¿Aprobar esta '+(ETAPA[e.etapa]||'entrega').toLowerCase()+'?')) return;
+  const { data,error }=await sb.rpc('aln_entrega_responder',{ p_entrega_id:id, p_aprobar:aprobar, p_observacion:obs.trim()||null });
+  if(error || (data && data.ok===false)){ alert('No se pudo guardar: '+((data&&data.error)||(error&&error.message)||'')); return; }
+  // Aviso por WhatsApp al laboratorio
+  const c=CASOS[e.caso_id]||{};
+  fetch('/api/notify-staff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({doctor:c.cliente||'Cliente alineadores',servicio:'Alineadores — '+(c.paciente||''),whatsapp:'',codigo:c.codigo||'',tipo:aprobar?'Aprobó '+(ETAPA[e.etapa]||''):'Pidió cambios en '+(ETAPA[e.etapa]||''),contexto:(aprobar?'✅ ':'✏️ ')+(c.paciente||'')+(obs.trim()?(': '+obs.trim()):'')})}).catch(()=>{});
+  alert(aprobar?'✅ Aprobada. La técnica ya fue avisada.':('✏️ Cambios enviados a la técnica.'+(data&&data.aviso?('\n\n'+data.aviso):'')));
+  cerrar('ovEnt');
+  const { data:en }=await sb.from('alineadores_entregas').select('*').order('created_at',{ascending:false}); ENTREGAS=en||[];
+  const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
+  render();
 }
 
 function abrirPago(){
