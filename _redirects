@@ -3,9 +3,6 @@
 # MODO MANTENIMIENTO: controlado por bypass en index.html (JavaScript)
 # El public ve /mantenimiento si no tiene la llave prodigy_admin en localStorage
 # ─────────────────────────────────────────────────────────────
-# Alias cortos
-/alineadores    /envia-alineadores  302
-# ─────────────────────────────────────────────────────────────
 # BLOQUEAR archivos sensibles → 404
 # ─────────────────────────────────────────────────────────────
 /MAPA_PROYECTO.json             /404.html  302

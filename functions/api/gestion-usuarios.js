@@ -19,7 +19,7 @@ export async function onRequestOptions({request}){ return new Response(null,{sta
 
 export async function onRequestPost({ request, env }){
   const h = cors(request.headers.get('Origin')||'');
-  const SERVICE = env.SUPABASE_SERVICE_ROLE_KEY, URL = env.SUPABASE_URL || SUPABASE_URL;
+  const SERVICE = env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_KEY, URL = env.SUPABASE_URL || SUPABASE_URL;
   if(!SERVICE) return new Response(JSON.stringify({error:'Falta SUPABASE_SERVICE_ROLE_KEY en el entorno'}),{status:503,headers:h});
 
   // Verificar admin
