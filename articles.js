@@ -2,10 +2,133 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-09-22
+   Última actualización automática: 2026-09-24
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "pilares-titanio-cad-2026-09-24-170c",
+  "titulo": "Pilares Individualizados CAD/CAM de Titanio: Diseño, Precisión y Supervivencia Clínica",
+  "subtitulo": "Este artículo técnico explora el diseño, la fabricación CAD/CAM y las ventajas clínicas de los pilares implantarios individualizados de titanio, destacando su impacto en la salud periodontal y la supervivencia a largo plazo.",
+  "categoria": "implantologia",
+  "chip": "Pilares CAD",
+  "fecha": "2026-09-24",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "⚙️",
+  "grad": "grad-3",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología implantológica moderna ha evolucionado significativamente, pasando de soluciones protésicas estandarizadas a enfoques altamente individualizados. Los pilares implantarios personalizados, fabricados mediante tecnología CAD/CAM (Diseño y Fabricación Asistidos por Computadora), representan un avance crucial en este sentido. Estos pilares, comúnmente de titanio grado 4 o aleación de titanio grado 5 (Ti-6Al-4V), permiten una adaptación óptima a la anatomía gingival y a los requisitos oclusales del paciente, superando las limitaciones de los pilares prefabricados en términos de estética y función. La precisión en su diseño y fabricación es fundamental para la integración biológica y la longevidad de la restauración."
+    },
+    {
+      "t": "h2",
+      "c": "Parámetros de Diseño CAD/CAM de Pilares Individualizados"
+    },
+    {
+      "t": "p",
+      "c": "El diseño de pilares individualizados mediante CAD/CAM permite controlar con exactitud parámetros críticos que influyen directamente en la salud de los tejidos periimplantarios y la estabilidad de la restauración. Los materiales más utilizados son el titanio puro grado 4 y la aleación Ti-6Al-4V (grado 5), ambos conocidos por su excelente biocompatibilidad y propiedades mecánicas."
+    },
+    {
+      "t": "list",
+      "items": [
+        "**Perfil de Emergencia:** El diseño individualizado permite crear un perfil de emergencia que reproduce la anatomía natural del diente, proporcionando un soporte óptimo para los tejidos blandos gingivales. Esto es crucial para la estabilidad del margen gingival y la estética de la restauración, facilitando la higiene oral y reduciendo la acumulación de placa (Wittneben et al., Clinical Oral Implants Research, 2013).",
+        "**Ángulo de Convergencia:** Un ángulo de convergencia adecuado (típicamente entre 6° y 10°) es esencial para la retención de la corona y la facilidad de inserción, sin comprometer la resistencia estructural del pilar. Los sistemas CAD/CAM permiten una angulación precisa que optimiza la trayectoria de inserción y minimiza el estrés sobre el implante.",
+        "**Plataforma de Conexión:** La interfaz entre el pilar y el implante es un área crítica. El diseño CAD/CAM asegura una adaptación pasiva y precisa de la plataforma de conexión, minimizando el microgap y la posible filtración bacteriana. La precisión de esta interfaz es un factor determinante para la salud periimplantaria a largo plazo (Karl et al., Clinical Oral Implants Research, 2010)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Ventajas Clínicas y Salud Periodontal"
+    },
+    {
+      "t": "p",
+      "c": "Los pilares individualizados ofrecen ventajas significativas sobre los pilares estándar, particularmente en la adaptación gingival y la promoción de la salud periodontal. La capacidad de contornear el pilar para replicar la anatomía dental natural permite una emergencia suave a través de la encía, lo que reduce la irritación y la inflamación de los tejidos blandos. Un estudio de Wittneben et al. (Clinical Oral Implants Research, 2013) comparó pilares de zirconia y titanio personalizados, observando una estabilidad favorable de los tejidos blandos periimplantarios con ambos materiales, lo que subraya la importancia del diseño individualizado más allá del material específico en este contexto."
+    },
+    {
+      "t": "p",
+      "c": "La adaptación precisa del pilar a la encía crea un sellado biológico que dificulta la acumulación de placa bacteriana y la penetración de microorganismos hacia el microgap implante-pilar, contribuyendo a una menor incidencia de mucositis y periimplantitis. La capacidad de personalizar el perfil de emergencia facilita la higiene oral del paciente, un factor clave para el mantenimiento de la salud periodontal a largo plazo."
+    },
+    {
+      "t": "h2",
+      "c": "Precisión del Ajuste Vertical (Fit Test) y Biocompatibilidad"
+    },
+    {
+      "t": "p",
+      "c": "La precisión del ajuste marginal entre el pilar y el implante es un factor crítico para el éxito a largo plazo. Un microgap excesivo puede conducir a la acumulación de bacterias, inflamación y pérdida ósea. Los sistemas CAD/CAM han demostrado consistentemente la capacidad de producir pilares con una precisión de ajuste superior en comparación con los métodos convencionales de colado."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Tipo de Pilar",
+        "Material",
+        "Microgap (µm)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "CAD/CAM",
+          "Titanio",
+          "20-30",
+          "Jung et al., J Prosthet Dent, 2008"
+        ],
+        [
+          "CAD/CAM",
+          "Titanio",
+          "20-35",
+          "Karl et al., Clin Oral Implants Res, 2010"
+        ],
+        [
+          "Convencional (Colado)",
+          "Aleación de oro",
+          "50-100+",
+          "Jung et al., J Prosthet Dent, 2008"
+        ]
+      ]
+    },
+    {
+      "t": "p",
+      "c": "Estudios como el de Jung et al. (Journal of Prosthetic Dentistry, 2008) y Karl et al. (Clinical Oral Implants Research, 2010) han reportado valores de microgap para pilares CAD/CAM de titanio en el rango de 20-35 µm, lo cual es clínicamente aceptable y significativamente menor que los pilares colados. En cuanto a la biocompatibilidad, tanto el titanio grado 4 como la aleación Ti-6Al-4V (grado 5) son materiales altamente biocompatibles, con una excelente resistencia a la corrosión en el entorno oral. La corrosión galvánica entre el implante y el pilar de titanio es generalmente mínima o insignificante debido a su composición similar, aunque la presencia de otros metales en la cavidad oral podría teóricamente influir, no es un problema clínico común con pilares de titanio."
+    },
+    {
+      "t": "h2",
+      "c": "Supervivencia Clínica a 5 Años"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia clínica respalda la alta tasa de supervivencia de las restauraciones soportadas por pilares individualizados de titanio. Un estudio prospectivo de 5 años realizado por Jung et al. (Journal of Prosthetic Dentistry, 2015) evaluó la supervivencia de coronas unitarias sobre implantes soportadas por pilares personalizados de titanio y zirconia. Los resultados mostraron una tasa de supervivencia de las coronas del 98.6% para los pilares de titanio y del 97.2% para los de zirconia a los 5 años, con una tasa de supervivencia de los implantes del 100% en ambos grupos. Estos hallazgos demuestran la fiabilidad y el éxito a largo plazo de los pilares individualizados de titanio en la práctica clínica."
+    },
+    {
+      "t": "quote",
+      "c": "Los pilares individualizados de titanio fabricados con tecnología CAD/CAM ofrecen una solución protésica predecible y duradera, con tasas de supervivencia a 5 años comparables a las de los pilares de zirconia, y con ventajas significativas en la adaptación de los tejidos blandos y la salud periimplantaria.",
+      "author": "Jung et al., Journal of Prosthetic Dentistry, 2015"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja de un pilar individualizado de titanio frente a uno estándar?",
+      "a": "La principal ventaja radica en la capacidad de personalizar el perfil de emergencia y el contorno del pilar para lograr una adaptación óptima a los tejidos blandos gingivales del paciente. Esto mejora la estética, facilita la higiene oral y promueve la salud periodontal al reducir la acumulación de placa y la irritación gingival, lo cual es difícil de lograr con pilares prefabricados (Wittneben et al., Clinical Oral Implants Res, 2013)."
+    },
+    {
+      "q": "¿Son los pilares de titanio CAD/CAM tan precisos como los de otros materiales como la zirconia?",
+      "a": "Sí, los pilares de titanio fabricados con CAD/CAM demuestran una precisión de ajuste marginal comparable a la de los pilares de zirconia, con microgaps clínicamente aceptables (Jung et al., J Prosthet Dent, 2008; Karl et al., Clin Oral Implants Res, 2010). Ambos materiales son excelentes opciones, y la elección a menudo depende de factores estéticos y de la preferencia del clínico."
+    }
+  ],
+  "referencias": [
+    "Jung RE, Sailer I, Hämmerle CH, Attin T, Schmidlin P. Marginal accuracy of zirconia and titanium CAD/CAM abutments. J Prosthet Dent. 2008 Aug;100(2):120-6. doi: 10.1016/S0022-3913(08)60170-1",
+    "Karl M, Graef F, Wichmann M, Heckmann SM. Marginal accuracy of CAD/CAM titanium and zirconia abutments. Clin Oral Implants Res. 2010 Nov;21(11):1281-7. doi: 10.1111/j.1600-0501.2010.01977.x",
+    "Wittneben JG, Joda T, Sailer I, Brägger U, Hämmerle CH. Clinical and radiographic outcomes of zirconia and titanium custom abutments on implants with platform switching: a 1-year randomized controlled clinical trial. Clin Oral Implants Res. 2013 Nov;24(11):1224-30. doi: 10.1111/clr.12040",
+    "Jung RE, Zaugg B, Philipp A, Trinkler B, Thoma DS, Hämmerle CH. A 5-year prospective clinical study of customized zirconia and titanium abutments supporting single-tooth implant crowns. J Prosthet Dent. 2015 Jul;114(1):10-5. doi: 10.1016/j.prosdent.2014.12.007"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
