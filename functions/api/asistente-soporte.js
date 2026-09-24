@@ -180,15 +180,22 @@ export async function onRequestPost(ctx){
     // Gemini: roles user/model; si un modelo está sin cupo (429) o falla, se prueba el siguiente
     const contents = messages.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts:[{ text: m.content }] }));
     for (const model of GEMINI_MODELOS) {
+      const marca = new Request('https://rl.internal/ia-caido-' + model);
+      const ultimo = model === GEMINI_MODELOS[GEMINI_MODELOS.length - 1];
+      if (!ultimo && await caches.default.match(marca)) continue;          // falló hace poco: no esperar por él (el último siempre se intenta)
       const gen = { maxOutputTokens:maxTok, temperature:0.3 };
       if (model.startsWith('gemini-2.5')) gen.thinkingConfig = { thinkingBudget:0 };   // respuesta directa, sin "pensar" (más rápida)
+      const corte = new AbortController();
+      const tm = setTimeout(() => corte.abort(), 7000);                      // solo hasta que empiece a responder
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`, {
-        method:'POST',
+        method:'POST', signal: corte.signal,
         headers:{ 'Content-Type':'application/json', 'x-goog-api-key':env.GEMINI_API_KEY },
         body: JSON.stringify({ systemInstruction:{ parts:[{ text: system[0].text }] }, contents, generationConfig:gen })
       }).catch(() => null);
+      clearTimeout(tm);
       if (r && r.ok && r.body) { up = r; usado = model; break; }
-      detalle = r ? model + ': ' + (await r.text().catch(() => '')).slice(0, 160) : model + ': red';
+      detalle = r ? model + ': ' + (await r.text().catch(() => '')).slice(0, 160) : model + ': sin respuesta en 7 s';
+      await caches.default.put(marca, new Response('1', { headers:{ 'Cache-Control':'max-age=600' } }));
     }
   }
   if (!up) return J({ error:'La IA no respondió. Intenta de nuevo o toca «Necesito al equipo».', detalle }, 502);
