@@ -187,7 +187,11 @@
         @keyframes blink-rt { 0%,100%{opacity:1} 50%{opacity:0.3} }
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
+    <!-- Tema visual Obsidiana & Champán (solo estilo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
+  <link rel="stylesheet" href="../css/admin-luxe.css?v=20260923">
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -4560,5 +4564,6 @@ document.addEventListener('keydown', e => {
 <script src="../js/tour.js?v=20260721"></script>
 <script src="../js/imprimir.js?v=20260718e"></script>
 <script src="../js/rol-actual.js?v=20260718e"></script>
+<script src="../js/admin-hints.js?v=20260923" defer></script>
 </body>
 </html>

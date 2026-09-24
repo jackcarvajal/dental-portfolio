@@ -1,0 +1,184 @@
+/* ════════════════════════════════════════════════════════════════
+   PRODIGY — Admin "Obsidiana & Champán"
+   Capa visual SOBRE los estilos existentes (no toca lógica ni IDs).
+   Se carga después del <style> de la página → gana por orden.
+   ════════════════════════════════════════════════════════════════ */
+:root{
+  --lx-bg:#07080c;
+  --lx-glass:rgba(255,255,255,.028);
+  --lx-glass-2:rgba(255,255,255,.05);
+  --lx-line:rgba(255,255,255,.075);
+  --lx-line-gold:rgba(212,175,55,.26);
+  --lx-gold:#D4AF37;
+  --lx-champ:#EADBAE;
+  --lx-text:#F3F1EA;
+  --lx-muted:#8E93A3;
+  --lx-mint:#5DF0A6;
+  --lx-radius:18px;
+  --lx-display:'Sora','Inter',system-ui,sans-serif;
+  --lx-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --bg:var(--lx-bg); --card:var(--lx-glass); --border:var(--lx-line);
+  --text:var(--lx-text); --muted:var(--lx-muted); --sidebar:rgba(10,11,16,.78);
+}
+
+body{
+  font-family:var(--lx-body); color:var(--lx-text); letter-spacing:-.005em;
+  -webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(900px 520px at 12% -8%, rgba(212,175,55,.085), transparent 62%),
+    radial-gradient(760px 520px at 100% 108%, rgba(120,90,255,.07), transparent 60%),
+    radial-gradient(600px 400px at 70% 40%, rgba(0,210,255,.03), transparent 70%),
+    var(--lx-bg);
+  background-attachment:fixed;
+}
+::selection{background:rgba(212,175,55,.3);color:#fff;}
+*{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.14) transparent;}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:8px}
+
+/* ── Sidebar de vidrio ── */
+.sidebar{
+  width:256px; padding:22px 14px; gap:2px;
+  background:linear-gradient(180deg,rgba(14,15,21,.86),rgba(9,10,14,.9));
+  backdrop-filter:blur(18px) saturate(1.2); -webkit-backdrop-filter:blur(18px) saturate(1.2);
+  border-right:1px solid var(--lx-line);
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+.sidebar-logo{padding:10px 0 22px;border-bottom:1px solid var(--lx-line);margin-bottom:10px;}
+.sidebar-logo h1{
+  font-family:var(--lx-display); font-weight:600; font-size:1.02rem; letter-spacing:.36em; padding-left:.36em;
+  background:linear-gradient(120deg,#fff 0%,var(--lx-champ) 45%,var(--lx-gold) 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.sidebar-logo p{letter-spacing:.22em;text-transform:uppercase;font-size:.56rem;color:var(--lx-muted);margin-top:6px;}
+.role-badge{background:rgba(212,175,55,.08);border-color:var(--lx-line-gold);color:var(--lx-champ);letter-spacing:.08em;margin-top:12px;}
+.sidebar-user{color:var(--lx-muted);font-size:.7rem;margin-top:8px;}
+
+.nav-section,.nav-group>summary{
+  font-family:var(--lx-body); font-size:.6rem; font-weight:700; letter-spacing:.2em; color:#6f7484; padding:16px 12px 7px;
+}
+.nav-group>summary:hover{color:var(--lx-champ);}
+.nav-item{
+  position:relative; gap:11px; padding:8px 10px; border-radius:11px; font-size:.8rem; font-weight:500;
+  color:#b4b8c5; border:1px solid transparent; transition:background .18s,color .18s,border-color .18s;
+}
+.nav-item i{
+  width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+  border-radius:8px;background:rgba(255,255,255,.035);font-size:.74rem;
+}
+.nav-group>.nav-item{padding:7px 10px 7px 12px;}
+.nav-item:hover{background:var(--lx-glass-2);color:#fff;}
+.nav-item.active{
+  color:var(--lx-champ); border-color:rgba(212,175,55,.2);
+  background:linear-gradient(90deg,rgba(212,175,55,.14),rgba(212,175,55,.03) 70%,transparent);
+}
+.nav-item.active::before{
+  content:'';position:absolute;left:-14px;top:22%;bottom:22%;width:3px;border-radius:0 3px 3px 0;
+  background:linear-gradient(180deg,var(--lx-champ),var(--lx-gold));box-shadow:0 0 12px rgba(212,175,55,.6);
+}
+.nav-item.active i{background:rgba(212,175,55,.14);}
+.sidebar-footer{border-top:1px solid var(--lx-line);}
+
+/* ── Ayuda contextual del menú: qué hace cada opción (la llena js/admin-hints.js) ── */
+#lx-hint{
+  position:fixed; z-index:60; pointer-events:none; opacity:0; transform:translateX(-4px);
+  transition:opacity .15s,transform .15s;
+  max-width:270px; line-height:1.45; padding:10px 13px; border-radius:11px;
+  font-size:.75rem; font-weight:500; color:#e9e7df;
+  background:rgba(18,19,26,.97); border:1px solid var(--lx-line-gold);
+  box-shadow:0 14px 34px rgba(0,0,0,.55);
+}
+#lx-hint.on{opacity:1;transform:none;}
+#lx-hint b{display:block;font-family:var(--lx-display);font-weight:600;color:var(--lx-champ);margin-bottom:3px;font-size:.78rem;}
+
+/* ── Área principal ── */
+.main{padding:38px 46px 60px;}
+.page-header{margin-bottom:30px;}
+.page-header h1{
+  font-family:var(--lx-display); font-weight:600; font-size:1.85rem; letter-spacing:-.025em; line-height:1.15;
+}
+.page-header h1 span{
+  background:linear-gradient(120deg,var(--lx-champ),var(--lx-gold)); -webkit-background-clip:text; background-clip:text; color:transparent !important;
+}
+.page-header p{color:var(--lx-muted);font-size:.9rem;margin-top:6px;}
+
+/* ── Tarjetas KPI de vidrio ── */
+.kpi-grid{gap:14px;}
+.kpi-card{
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));
+  border:1px solid var(--lx-line); border-radius:var(--lx-radius); padding:20px 20px 18px;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 18px 40px -24px rgba(0,0,0,.8);
+  transition:transform .25s ease,border-color .25s ease;
+}
+.kpi-card::before{
+  content:'';position:absolute;inset:0 0 auto 0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(234,219,174,.35),transparent);
+}
+.kpi-card:hover{transform:translateY(-2px);border-color:var(--lx-line-gold);}
+.kpi-card::after{width:120px;height:120px;opacity:.7;filter:blur(6px);}
+.kpi-icon{
+  width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:10px;background:rgba(255,255,255,.04);font-size:.95rem;margin-bottom:14px;
+}
+.kpi-value{font-family:var(--lx-display);font-weight:600;font-size:2rem;letter-spacing:-.03em;font-variant-numeric:tabular-nums;}
+.kpi-label{font-size:.64rem;letter-spacing:.14em;color:var(--lx-muted);}
+/* verde neón → menta (más elegante) solo en KPIs */
+.kpi-card [style*="00FF41"]{color:var(--lx-mint) !important;}
+
+/* ── Secciones / tablas ── */
+.section-card,.lane{
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
+  border:1px solid var(--lx-line); border-radius:var(--lx-radius);
+  box-shadow:0 18px 44px -28px rgba(0,0,0,.85);
+}
+.section-header{padding:16px 22px;border-bottom:1px solid var(--lx-line);}
+.section-header h2,.lane-head h3{font-family:var(--lx-display);font-weight:600;letter-spacing:-.01em;}
+table{font-size:.8rem;}
+th{padding:12px 18px;font-size:.62rem;letter-spacing:.14em;color:#7c8192;font-weight:600;border-bottom:1px solid var(--lx-line);background:rgba(255,255,255,.012);}
+td{padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.04);color:#dcdfe6;}
+tr:hover td{background:linear-gradient(90deg,rgba(212,175,55,.035),transparent);}
+.status-badge{border:1px solid rgba(255,255,255,.08);letter-spacing:.02em;}
+
+/* Armonía con css/panel-ui.css (encabezado fijo opaco + barra activa propia) */
+.section-card table thead th,.tab-panel table thead th{background:#0e0f15;color:#7c8192;}
+.nav-item.active{box-shadow:none;}
+tbody tr:hover td{background:rgba(212,175,55,.045) !important;}
+
+/* ── Botones ── */
+.btn-primary{
+  background:linear-gradient(135deg,#F1E4BC 0%,var(--lx-gold) 55%,#B38B25 100%);
+  color:#15110a; border-radius:11px; font-weight:700; letter-spacing:.01em; padding:10px 18px;
+  box-shadow:0 1px 0 rgba(255,255,255,.4) inset, 0 8px 22px -10px rgba(212,175,55,.7);
+  transition:transform .18s,box-shadow .18s,filter .18s;
+}
+.btn-primary:hover{opacity:1;filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 12px 28px -10px rgba(212,175,55,.8);}
+.btn-xs,.kcase-btn,.rut-reload{border-radius:8px;transition:background .18s,border-color .18s,color .18s;}
+.btn-gold{color:var(--lx-champ);border-color:var(--lx-line-gold);}
+
+/* ── Formularios ── */
+.form-group input,.form-group select,.form-group textarea,
+.main input[type=text],.main input[type=search],.main input[type=email],.main input[type=number],.main select,.main textarea{
+  background:rgba(255,255,255,.035); border:1px solid var(--lx-line); border-radius:11px; color:var(--lx-text);
+  transition:border-color .18s,box-shadow .18s;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus,
+.main input:focus,.main select:focus,.main textarea:focus{
+  outline:none;border-color:rgba(212,175,55,.55);box-shadow:0 0 0 3px rgba(212,175,55,.14);
+}
+.form-group label{letter-spacing:.12em;font-size:.66rem;font-weight:600;}
+
+/* ── Rutador / kanban ── */
+.kcase{background:rgba(255,255,255,.025);border:1px solid var(--lx-line);border-radius:13px;}
+.kcase:hover{border-color:var(--lx-line-gold);}
+
+/* ── Toast y overlay ── */
+#toast{background:rgba(18,19,26,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--lx-line-gold);border-radius:14px;}
+#auth-overlay{background:var(--lx-bg);}
+.spinner{border-color:rgba(212,175,55,.15);border-top-color:var(--lx-champ);}
+
+/* ── Accesibilidad ── */
+.nav-item:focus-visible,.btn-primary:focus-visible,.btn-xs:focus-visible,.nav-group>summary:focus-visible{
+  outline:2px solid var(--lx-champ);outline-offset:2px;
+}
+@media(max-width:768px){.main{padding:20px 16px;}}
+@media(prefers-reduced-motion:reduce){.kpi-card:hover,.btn-primary:hover{transform:none;}}
