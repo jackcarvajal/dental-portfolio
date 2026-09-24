@@ -159,6 +159,7 @@ tbody td { padding: 10px 14px; color: var(--txt2); }
 </style>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -1033,7 +1034,7 @@ async function cargarSolicitudes() {
                   : '<span style="color:#f97316;font-size:.78rem;">⏳ Pendiente</span>'}
               </td>
               <td style="padding:10px 8px;">
-                <button type="button" onclick="abrirEntregaMaterial('${escH(p.id)}','${escH(p.codigo||'')}','${escH(p.material||'')}','${escH(p.flujo||'')}')"
+                <button type="button" onclick="abrirEntregaMaterial('${escJ(p.id)}','${escJ(p.codigo||'')}','${escJ(p.material||'')}','${escJ(p.flujo||'')}')"
                   style="padding:5px 12px;border-radius:6px;border:1px solid rgba(0,210,255,.35);background:transparent;color:#00d2ff;font-size:.75rem;cursor:pointer;font-weight:700;">
                   📦 Entregar
                 </button>
@@ -1157,7 +1158,7 @@ function toast(msg, type = 'ok') {
 </script>
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});</script>
 
-<script src="../js/notif-panel.js?v=20260923"></script>
+<script src="../js/notif-panel.js?v=20260924"></script>
 <script>(async()=>{try{if(!window.sb)return;const{data:{session}}=await window.sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(window.sb,null,rol);}catch(_){}})();</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
 <script src="../js/mi-dia.js?v=20260718e"></script>

@@ -161,6 +161,7 @@ body.ready { visibility: visible; }
 </style>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -507,7 +508,7 @@ function cardHTML(p, col) {
         : col === 'prod'
         ? `<button type="button" class="btn-xs btn-cyan"  onclick="avanzarEstado('${p.id}','DISENO_FINALIZADO')">Diseño OK</button>
            <button type="button" class="btn-xs btn-gold"  onclick="avanzarEstado('${p.id}','FRESADO_INICIADO')">Fresado</button>
-           <button type="button" class="btn-xs btn-yellow" onclick="abrirQA('${p.id}','${escH(p.codigo||'')}')">QA</button>`
+           <button type="button" class="btn-xs btn-yellow" onclick="abrirQA('${p.id}','${escJ(p.codigo||'')}')">QA</button>`
         : `<span style="font-size:.68rem;color:var(--green)">✓ ${escH(p.estado_operativo)}</span>`;
 
     return `
@@ -1334,7 +1335,7 @@ function cerrarBulk() { document.getElementById('modal-bulk').style.display = 'n
 </script>
 
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});</script>
-<script src="../js/notif-panel.js?v=20260923"></script>
+<script src="../js/notif-panel.js?v=20260924"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
 <script src="../js/buscador.js?v=20260718e"></script>

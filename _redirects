@@ -16,6 +16,8 @@
 /*.bat                          /404.html  302
 /MEMORY/*                       /404.html  302
 /scripts/*                      /404.html  302
+/tools/*                        /404.html  302
+/tests/*                        /404.html  302
 /marketing-social.txt           /404.html  302
 /.github/*                      /404.html  302
 /js/supabase-mock.js            /404.html  302

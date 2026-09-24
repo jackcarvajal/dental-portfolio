@@ -9,6 +9,20 @@
 
 ---
 
+## 2026-09-24  (AUDITORÍA de todo lo hecho 23-24 sep — ambos repos)
+
+- ✅ Pruebas: audit.mjs, audit-schema-live, smoke (227), audit-live (runtime), sondeos de seguridad en producción (RLS anon, buckets, funciones sin sesión) → OK.
+- ✅ **XSS en onclick** (111 lugares, 23 páginas, ambos repos): `'${escH(x)}'` no escapaba la comilla simple → un dato con `'` (comprobante del cliente, archivo de formulario público, código de pedido anónimo) ejecutaba JS al hacer clic el equipo. Nuevo `window.escJ` (escape JS + HTML) en `<head>`. `editar(JSON)` de gestionar-usuarios también.
+- ✅ `js/notif-panel.js` (ambos): `esc` sin comillas dobles + onclick → escJ; ?v=20260924.
+- ✅ `js/header.js` cambió el 23-sep (allowlist /envia-alineadores) sin subir ?v= → navegadores con caché seguían mandando a mantenimiento. ?v=20260924 en 44 páginas.
+- ✅ `app/alineadores.html`: los precios al CLIENTE ($90/$30…) estaban en el código que carga la técnica → quitados (se sugiere el último monto usado). Rol `diseno` fuera de la página.
+- ✅ `gestion-usuarios.js`: no deja editar cuentas admin (pisar su app_metadata.role les quitaba permisos en BD).
+- ✅ `flujo-diseno.html`: `TASA_COP_USD` duplicada tumbaba **todo js/pagos.js** → botón «Pagar con Wompi» roto (desde abril).
+- ✅ `soporte.html`: el panel de estado marcaba la base de datos caída siempre (raíz /rest/v1/ da 401 con anon) → /auth/v1/health.
+- ✅ `_headers` /app/* (antes solo *.html: la URL bonita /app/x quedaba sin no-store ni X-Robots) · `_redirects` bloquea /tools/* y /tests/* (se servían).
+- ⏳ **Correr `sql/alineadores-endurecer-2026.sql`**: rol diseno veía casos/archivos/pago de la técnica; técnica y secretaría podían crear/borrar casos (crear = cargos); **NULL NOT IN** dejaba a cuentas sin rol usar aln_vincular_cliente/aln_completar_caso; bucket 150→50 MB.
+- 🟡 Pendiente de decisión: tema admin "Obsidiana y Champán" + ayuda.html usan Sora/champán (no siguen ESTANDARES-UX-TIPOGRAFIA.md).
+
 ## 2026-09-23/24  (Alineadores piloto · usuarios multi-rol · admin luxe · Centro de ayuda · reportes web)
 
 - ✅ **Alineadores** (cliente Panorámica Digital 3D + técnica Mayra, rol exclusivo `alineadores`): `envia-alineadores.html` (pública), `app/nueva-orden-alineadores.html`, `app/alineadores.html` (cuentas cliente USD vs pago técnica COP; Mayra no ve precios del cliente), `app/facturacion-alineadores.html` (portal de cobro + comprobantes). Precios vigentes $90/$30 (alza $120/$40 = solo propuesta). Protocolo: `docs/PROTOCOLO-ALINEADORES.md`.

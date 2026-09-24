@@ -171,6 +171,7 @@
 </style>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -562,7 +563,7 @@ function renderHistorial(lista) {
             <td style="color:var(--muted);">${r.duracion_min ?? '—'}</td>
             <td style="font-size:.75rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escH(r.notas || '')}">${escH(r.notas || '—')}</td>
             <td>${r.foto_url && r.foto_url.startsWith('https://')
-                ? `<img class="foto-thumb" src="${escH(r.foto_url)}" onclick="abrirFoto('${escH(r.foto_url)}')" alt="foto" loading="lazy">`
+                ? `<img class="foto-thumb" src="${escH(r.foto_url)}" onclick="abrirFoto('${escJ(r.foto_url)}')" alt="foto" loading="lazy">`
                 : '—'}</td>
             <td style="font-size:.72rem;color:var(--muted);white-space:nowrap;">${new Date(r.created_at).toLocaleString('es-CO',{dateStyle:'short',timeStyle:'short'})}</td>
         </tr>`).join('')}
@@ -655,7 +656,7 @@ async function enviarPanicoFab() {
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 
-<script src="../js/notif-panel.js?v=20260923"></script>
+<script src="../js/notif-panel.js?v=20260924"></script>
 <script>(async()=>{try{if(!window.sb)return;const{data:{session}}=await window.sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(window.sb,null,rol);}catch(_){}})();</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
 <script src="../js/mi-dia.js?v=20260718e"></script>

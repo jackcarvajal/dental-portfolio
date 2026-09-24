@@ -270,6 +270,7 @@ textarea.modal-input{min-height:100px;}
 html,body{overflow-x:clip;}
 </style>
 <script src="js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <noscript><div style="text-align:center;padding:40px 20px;background:#050505;color:#94a3b8;font-family:sans-serif;">El visor de diseño requiere JavaScript. <a href="https://wa.me/573212816716" style="color:#D946A6">Contactar por WhatsApp →</a></div></noscript>
@@ -766,7 +767,7 @@ function renderPage() {
         <i class="fas fa-cube"></i><span class="dl-name">Archivo STL ${i+1}</span>
         <span class="dl-ext">STL</span>
         <div style="display:flex;gap:6px;margin-left:auto;">
-          <button type="button" class="btn btn-gold btn-sm" onclick="ProdigyAR&&ProdigyAR.launch('${esc(u)}','STL ${i+1}')" title="Ver en Realidad Aumentada" style="font-size:.65rem;padding:4px 9px;">
+          <button type="button" class="btn btn-gold btn-sm" onclick="ProdigyAR&&ProdigyAR.launch('${escJ(u)}','STL ${i+1}')" title="Ver en Realidad Aumentada" style="font-size:.65rem;padding:4px 9px;">
             <i class="fas fa-cube"></i> AR
           </button>
           <a href="${esc(u)}" download onclick="onDownload('STL ${i+1}')" class="btn btn-dis btn-sm">
@@ -915,7 +916,7 @@ function buildHistorial() {
   return `<div class="timeline">${_hist.map(h => {
     const cfg = TIPO_CFG[h.tipo] || {ic:'fas fa-circle',col:'var(--muted)',label:esc(h.tipo)};
     const fotos = (h.fotos_urls||[]).map((u,i)=>
-      `<button type="button" class="tl-foto" onclick="openLbExtra('${esc(u)}')" aria-label="Ver foto ${i+1}"><img src="${esc(u)}" alt="Foto de referencia ${i+1}" loading="lazy"></button>`).join('');
+      `<button type="button" class="tl-foto" onclick="openLbExtra('${escJ(u)}')" aria-label="Ver foto ${i+1}"><img src="${esc(u)}" alt="Foto de referencia ${i+1}" loading="lazy"></button>`).join('');
     return `<div class="tl-item">
       <div class="tl-dot" style="border-color:${cfg.col};color:${cfg.col};"><i class="${cfg.ic}" style="font-size:.55rem;"></i></div>
       <div class="tl-card">

@@ -67,6 +67,7 @@ textarea{resize:vertical;min-height:80px;}
 </style>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <!-- supabase debe cargar ANTES de auth-guard (usa window.supabase.createClient al arrancar) -->
@@ -259,10 +260,10 @@ function renderTabla(rows) {
         <td>${diasLbl}</td>
         <td style="color:var(--muted);max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escH(c.notas||'')}"> ${escH((c.notas||'').slice(0,40))}</td>
         <td style="white-space:nowrap;">
-          <button class="action-btn" onclick="editarCotizacion('${escH(c.id)}')" title="Editar"><i class="fas fa-pen"></i></button>
-          <button class="action-btn" onclick="cambiarEstado('${escH(c.id)}','aceptada')" title="Aceptar"><i class="fas fa-check" style="color:var(--neon);"></i></button>
-          <button class="action-btn" onclick="enviarWA('${escH(c.id)}')" title="Enviar WA"><i class="fab fa-whatsapp" style="color:#25D366;"></i></button>
-          <button class="action-btn" onclick="eliminarCotizacion('${escH(c.id)}')" title="Eliminar"><i class="fas fa-trash" style="color:#f87171;"></i></button>
+          <button class="action-btn" onclick="editarCotizacion('${escJ(c.id)}')" title="Editar"><i class="fas fa-pen"></i></button>
+          <button class="action-btn" onclick="cambiarEstado('${escJ(c.id)}','aceptada')" title="Aceptar"><i class="fas fa-check" style="color:var(--neon);"></i></button>
+          <button class="action-btn" onclick="enviarWA('${escJ(c.id)}')" title="Enviar WA"><i class="fab fa-whatsapp" style="color:#25D366;"></i></button>
+          <button class="action-btn" onclick="eliminarCotizacion('${escJ(c.id)}')" title="Eliminar"><i class="fas fa-trash" style="color:#f87171;"></i></button>
         </td>
       </tr>`;
     }).join('')}</tbody>

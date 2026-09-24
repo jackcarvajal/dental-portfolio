@@ -121,6 +121,7 @@
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -437,12 +438,12 @@ async function cargarRuta(){
             </div>
             <div class="card-actions">
                 ${!enRuta
-                    ? `<button type="button" class="btn-action btn-iniciar" onclick="iniciarEntrega(_dMap['${escH(d.id)}'])">
+                    ? `<button type="button" class="btn-action btn-iniciar" onclick="iniciarEntrega(_dMap['${escJ(d.id)}'])">
                         <i class="fas fa-play"></i> Iniciar</button>`
-                    : `<button type="button" class="btn-action btn-confirmar" onclick="abrirModalConfirmar(_dMap['${escH(d.id)}'])">
+                    : `<button type="button" class="btn-action btn-confirmar" onclick="abrirModalConfirmar(_dMap['${escJ(d.id)}'])">
                         <i class="fas fa-check"></i> Confirmar Entrega${saldo?' 💰':''}</button>`
                 }
-                <button type="button" class="btn-action btn-novedad" onclick="abrirModalNovedad('${escH(d.id)}')" aria-label="Reportar novedad"><i class="fas fa-flag"></i></button>
+                <button type="button" class="btn-action btn-novedad" onclick="abrirModalNovedad('${escJ(d.id)}')" aria-label="Reportar novedad"><i class="fas fa-flag"></i></button>
             </div>
         </div>`;
     }).join('');
@@ -981,7 +982,7 @@ window.MensajeroSync = (function() {
     return { guardar, registrarSync, contarPendientes, actualizarIndicador };
 })();
 </script>
-<script src="../js/notif-panel.js?v=20260923"></script>
+<script src="../js/notif-panel.js?v=20260924"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
 <script src="../js/mi-dia.js?v=20260718e"></script>

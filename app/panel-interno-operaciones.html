@@ -193,6 +193,7 @@
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
   <link rel="stylesheet" href="../css/admin-luxe.css?v=20260923b">
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body data-dock-safe>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -1539,7 +1540,7 @@ async function cargarStaff() {
         ${Object.entries(DEPT_CONFIG).map(([key,cfg]) => {
           const tiene = (s.departamentos||[]).includes(key);
           return `<label style="display:flex;align-items:center;gap:5px;cursor:pointer;padding:4px 10px;border-radius:20px;border:1px solid ${tiene?cfg.color:'rgba(255,255,255,.1)'};background:${tiene?cfg.color+'18':'transparent'};font-size:.72rem;font-weight:700;color:${tiene?cfg.color:'#64748b'};">
-            <input type="checkbox" ${tiene?'checked':''} style="display:none;" onchange="toggleDept('${s.id}','${key}',this.checked,'${esc(s.email)}')">
+            <input type="checkbox" ${tiene?'checked':''} style="display:none;" onchange="toggleDept('${s.id}','${key}',this.checked,'${escJ(s.email)}')">
             <i class="fas ${cfg.icon}" style="font-size:.65rem;"></i> ${cfg.label}
           </label>`;
         }).join('')}
@@ -1676,7 +1677,7 @@ function renderPedidos(lista) {
         </td>
         <td style="font-size:0.75rem;">${fmtFecha(p.created_at)}</td>
         <td style="white-space:nowrap;">
-            ${p.stl_ruta ? `<button type="button" class="btn-xs btn-gold" onclick="abrirSTL('${esc(p.stl_ruta)}')"><i class="fas fa-download"></i> STL</button>` : ''}
+            ${p.stl_ruta ? `<button type="button" class="btn-xs btn-gold" onclick="abrirSTL('${escJ(p.stl_ruta)}')"><i class="fas fa-download"></i> STL</button>` : ''}
             <a href="../recibo-caso?id=${esc(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
             <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Pago confirmado" onclick="prodigyNotifPago(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Pago</button>
             <button type="button" class="btn-xs" style="color:#25D366;border-color:rgba(37,211,102,.35);" title="Diseño listo" onclick="prodigyNotifDiseno(_pioMap['${p.id}'])"><i class="fab fa-whatsapp"></i> Diseño</button>
@@ -3284,7 +3285,7 @@ async function cargarDespachos() {
             <td><select id="sel-mens-${esc(p.id)}" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:6px;padding:4px 8px;font-size:16px;min-width:140px;">
                 <option value="">— Seleccionar —</option>${opsMens}
             </select></td>
-            <td><button type="button" onclick="asignarDespacho('${esc(p.id)}','${esc(p.codigo || '')}')" class="btn-xs btn-gold"><i class="fas fa-motorcycle"></i> Asignar</button></td>
+            <td><button type="button" onclick="asignarDespacho('${escJ(p.id)}','${escJ(p.codigo || '')}')" class="btn-xs btn-gold"><i class="fas fa-motorcycle"></i> Asignar</button></td>
         </tr>`;}).join('');
     }
 
@@ -3664,12 +3665,12 @@ async function cargarWaitlist() {
               <td style="padding:10px;">${esc(w.ciudad||'—')}</td>
               <td style="padding:10px;">${esc(PEDIDOS_LABEL[w.pedidos_mes]||w.pedidos_mes||'—')}</td>
               <td style="padding:10px;text-align:center;">
-                <select onchange="actualizarEstadoWaitlist('${esc(w.id)}',this.value)" style="background:rgba(0,0,0,.4);border:1px solid ${color};color:${color};border-radius:6px;padding:4px 8px;font-size:16px;cursor:pointer;font-weight:700;">
+                <select onchange="actualizarEstadoWaitlist('${escJ(w.id)}',this.value)" style="background:rgba(0,0,0,.4);border:1px solid ${color};color:${color};border-radius:6px;padding:4px 8px;font-size:16px;cursor:pointer;font-weight:700;">
                   ${['pendiente','contactado','demo_agendada','convertido','descartado'].map(s=>`<option value="${s}"${w.estado===s?' selected':''}>${s.replace('_',' ')}</option>`).join('')}
                 </select>
               </td>
               <td style="padding:10px;text-align:center;">
-                <button type="button" onclick="eliminarWaitlist('${esc(w.id)}')" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;padding:5px 8px;font-size:.7rem;cursor:pointer;" title="Eliminar"><i class="fas fa-trash"></i></button>
+                <button type="button" onclick="eliminarWaitlist('${escJ(w.id)}')" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;padding:5px 8px;font-size:.7rem;cursor:pointer;" title="Eliminar"><i class="fas fa-trash"></i></button>
               </td>
             </tr>`;
           }).join('')}</tbody>
@@ -3793,13 +3794,13 @@ async function cargarReferidosAdmin() {
                     <td style="padding:8px;font-weight:800;color:#D4AF37;letter-spacing:1px;">${esc(r.codigo)}</td>
                     <td style="padding:8px;">${r.referido_email ? esc(r.referido_nombre||r.referido_email) : '<span style="color:#475569;">Sin usar</span>'}</td>
                     <td style="padding:8px;text-align:center;">
-                        <select onchange="cambiarEstadoRef('${esc(r.id)}',this.value)" style="background:rgba(0,0,0,.4);border:1px solid ${color};color:${color};border-radius:6px;padding:3px 8px;font-size:16px;cursor:pointer;font-weight:700;">
+                        <select onchange="cambiarEstadoRef('${escJ(r.id)}',this.value)" style="background:rgba(0,0,0,.4);border:1px solid ${color};color:${color};border-radius:6px;padding:3px 8px;font-size:16px;cursor:pointer;font-weight:700;">
                             ${['pendiente','registrado','primer_pedido','recompensado'].map(s=>`<option value="${s}"${r.estado===s?' selected':''}>${s.replace('_',' ')}</option>`).join('')}
                         </select>
                     </td>
                     <td style="padding:8px;text-align:center;font-weight:700;color:#00FF41;">${esc(String(r.descuento_pct||10))}%</td>
                     <td style="padding:8px;text-align:center;">
-                        <button type="button" onclick="eliminarRef('${esc(r.id)}')" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;padding:4px 8px;font-size:.7rem;cursor:pointer;"><i class="fas fa-trash"></i></button>
+                        <button type="button" onclick="eliminarRef('${escJ(r.id)}')" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;padding:4px 8px;font-size:.7rem;cursor:pointer;"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>`;
             }).join('')}</tbody></table></div>`;
@@ -4239,7 +4240,7 @@ async function cargarFabricacion() {
         </div>
       </div>
       ${modo === 'cotizar' ? `
-        <button type="button" onclick="abrirModalCotizar('${escF(p.id)}','${escF(p.codigo||'')}','${escF(p.fabricacion_tipo||'')}')"
+        <button type="button" onclick="abrirModalCotizar('${escJ(p.id)}','${escJ(p.codigo||'')}','${escJ(p.fabricacion_tipo||'')}')"
           style="padding:8px 16px;border-radius:8px;background:#fb923c;color:#000;font-size:.78rem;font-weight:800;border:none;cursor:pointer;">
           <i class="fas fa-calculator" style="margin-right:5px;"></i>Establecer cotización
         </button>` : ''}
@@ -4248,7 +4249,7 @@ async function cargarFabricacion() {
           Cotización enviada: <strong>${fmtCOPFab(p.cotizacion_fab_monto)}</strong> · ${fmtFab(p.cotizacion_fab_at)}
         </div>
         ${p.cotizacion_fab_nota ? `<div style="font-size:.75rem;color:var(--muted);margin-bottom:8px;">${escF(p.cotizacion_fab_nota)}</div>` : ''}
-        <button type="button" onclick="marcarPagoRecibido('${escF(p.id)}','${escF(p.fabricacion_tipo||'')}')"
+        <button type="button" onclick="marcarPagoRecibido('${escJ(p.id)}','${escJ(p.fabricacion_tipo||'')}')"
           style="padding:7px 14px;border-radius:8px;background:rgba(0,255,65,.1);color:#00FF41;border:1px solid rgba(0,255,65,.3);font-size:.75rem;cursor:pointer;">
           <i class="fas fa-check-circle"></i> Confirmar pago recibido
         </button>` : ''}
@@ -4256,7 +4257,7 @@ async function cargarFabricacion() {
         <div style="font-size:.82rem;color:#00FF41;margin-bottom:8px;">
           ✅ Pago confirmado por el cliente · <strong>${fmtCOPFab(p.cotizacion_fab_monto)}</strong>
         </div>
-        <button type="button" onclick="enrutarAFabricacion('${escF(p.id)}','${escF(p.fabricacion_tipo||'')}')"
+        <button type="button" onclick="enrutarAFabricacion('${escJ(p.id)}','${escJ(p.fabricacion_tipo||'')}')"
           style="padding:8px 16px;border-radius:8px;background:#D946A6;color:#fff;font-size:.78rem;font-weight:800;border:none;cursor:pointer;">
           <i class="fas fa-arrow-right"></i> Enrutar a producción → ${escF(TIPO_LBL[p.fabricacion_tipo]||'Fabricación')}
         </button>` : ''}
@@ -4535,7 +4536,7 @@ document.addEventListener('keydown', e => {
 });
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
-<script src="../js/notif-panel.js?v=20260923"></script>
+<script src="../js/notif-panel.js?v=20260924"></script>
 <script src="../js/panel-tips.js?v=20260923"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 <script>

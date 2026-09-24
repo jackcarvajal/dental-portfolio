@@ -209,7 +209,8 @@ function _renderList() {
     el.innerHTML = '<div class="_np-empty"><i class="fas fa-check-circle" style="color:#00FF41;font-size:1.5rem;display:block;margin-bottom:8px;" aria-hidden="true"></i>Sin notificaciones pendientes</div>';
     return;
   }
-  const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const escJ = s => esc(String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n'));   // texto dentro de '…' en onclick
   const fmtT = d => {
     const diff = Date.now()-new Date(d).getTime();
     if (diff<60000) return 'Ahora';
@@ -218,7 +219,7 @@ function _renderList() {
     return Math.floor(diff/86400000)+'d';
   };
   el.innerHTML = _notifs.map(n => `
-    <div class="_np-item${n.es_nueva?' nueva':''}" onclick="_notifIr('${esc(n.accion_url||'')}','${esc(n.id)}')" role="button" tabindex="0">
+    <div class="_np-item${n.es_nueva?' nueva':''}" onclick="_notifIr('${escJ(n.accion_url||'')}','${escJ(n.id)}')" role="button" tabindex="0">
       <div class="_np-dot" style="background:${PRIO_COLOR[n.prioridad]||'#475569'};"></div>
       <div class="_np-body">
         <div class="_np-titulo"><i class="fas ${TIPO_ICON[n.tipo]||'fa-bell'}" style="margin-right:5px;color:${PRIO_COLOR[n.prioridad]||'#475569'}" aria-hidden="true"></i>${esc(n.titulo)}</div>
@@ -288,7 +289,7 @@ function _subscribeRealtime() {
 
 /* ── Toast de notificación ── */
 function _notifToast(n) {
-  const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   const color = PRIO_COLOR[n.prioridad] || '#94a3b8';
   const toast = document.createElement('div');
   toast.style.cssText = `position:fixed;top:62px;right:14px;z-index:99992;background:rgba(13,21,32,.97);border:1px solid ${color};border-left:4px solid ${color};border-radius:10px;padding:12px 16px;max-width:300px;box-shadow:0 10px 40px rgba(0,0,0,.5);backdrop-filter:blur(12px);animation:_notifSlide .3s ease;`;

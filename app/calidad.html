@@ -140,6 +140,7 @@ body.ready { visibility: visible; }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -432,7 +433,7 @@ function renderCard(p, done) {
     const nombre    = p.nombre_cliente || p.nombre_doctor || '—';
     const fotos     = (Array.isArray(p.fotos_empaque) ? p.fotos_empaque : []).filter(u => /^https?:\/\//.test(u));
     const fotosHtml = fotos.length
-        ? fotos.map(u => `<img src="${escH(u)}" loading="lazy" onclick="abrirLightbox('${escH(u)}')" alt="Foto empaque">`).join('')
+        ? fotos.map(u => `<img src="${escH(u)}" loading="lazy" onclick="abrirLightbox('${escJ(u)}')" alt="Foto empaque">`).join('')
         : '<span class="no-foto">Sin fotos del operario</span>';
 
     const estLabel = {
@@ -444,7 +445,7 @@ function renderCard(p, done) {
 
     const accion = done
         ? `<div class="btn-done"><i class="fas fa-check" style="margin-right:6px;"></i>Confirmado${p.nota_calidad ? ' — ' + escH(p.nota_calidad.slice(0,40)) : ''}</div>`
-        : `<button type="button" class="btn-primary" onclick="abrirModalCalidad('${escH(p.id)}')"><i class="fas fa-shield-check" style="margin-right:6px;"></i>Confirmar empaque &amp; despacho</button>`;
+        : `<button type="button" class="btn-primary" onclick="abrirModalCalidad('${escJ(p.id)}')"><i class="fas fa-shield-check" style="margin-right:6px;"></i>Confirmar empaque &amp; despacho</button>`;
 
     return `
     <div class="case-card">
@@ -511,7 +512,7 @@ function abrirModalCalidad(pedidoId) {
     const fotos = (Array.isArray(p.fotos_empaque) ? p.fotos_empaque : []).filter(u => /^https?:\/\//.test(u));
     const fGrid  = document.getElementById('cal-fotos-qa');
     fGrid.innerHTML = fotos.length
-        ? fotos.map(u => `<img src="${escH(u)}" loading="lazy" onclick="abrirLightbox('${escH(u)}')" alt="Foto QA operario">`).join('')
+        ? fotos.map(u => `<img src="${escH(u)}" loading="lazy" onclick="abrirLightbox('${escJ(u)}')" alt="Foto QA operario">`).join('')
         : '<span style="font-size:.74rem;color:var(--muted);font-style:italic;">El operario no subió fotos</span>';
 
     // Reset checklist y previews
@@ -784,7 +785,7 @@ document.addEventListener('keydown', e => {
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 
-<script src="../js/notif-panel.js?v=20260923"></script>
+<script src="../js/notif-panel.js?v=20260924"></script>
 <script>(async()=>{try{if(!window.sb)return;const{data:{session}}=await window.sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(window.sb,null,rol);}catch(_){}})();</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
 <script src="../js/mi-dia.js?v=20260718e"></script>

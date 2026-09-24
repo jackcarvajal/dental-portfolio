@@ -125,6 +125,7 @@ body.ready{visibility:visible;}
 </style>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -460,11 +461,11 @@ function cardHTML(p, col) {
     actions = `<button type="button" class="btn-xs btn-cyan"   onclick="avanzar('${p.id}','EN_DISENO')"><i class="fas fa-play"></i> Iniciar diseño</button>
                <button type="button" class="btn-xs btn-red"    onclick="avanzar('${p.id}','INCIDENCIA_CLIENTE')"><i class="fas fa-exclamation"></i> Incidencia</button>`;
   } else if (col === 'diseno') {
-    actions = `${p.link_diseno?`<button type="button" class="btn-xs btn-cyan" onclick="previsualizarDiseno('${escH(p.link_diseno)}','${p.id}')"><i class="fas fa-eye"></i> Preview</button>`:''}
+    actions = `${p.link_diseno?`<button type="button" class="btn-xs btn-cyan" onclick="previsualizarDiseno('${escJ(p.link_diseno)}','${p.id}')"><i class="fas fa-eye"></i> Preview</button>`:''}
                <button type="button" class="btn-xs btn-gold"   onclick="avanzar('${p.id}','REVISION_CLIENTE')"><i class="fas fa-eye"></i> Enviar revisión</button>
-               <button type="button" class="btn-xs btn-cyan"   onclick="abrirQA('${p.id}','${escH(p.codigo)||''}')"><i class="fas fa-check-double"></i> QA</button>`;
+               <button type="button" class="btn-xs btn-cyan"   onclick="abrirQA('${p.id}','${escJ(p.codigo)||''}')"><i class="fas fa-check-double"></i> QA</button>`;
   } else if (col === 'rev') {
-    actions = `<button type="button" class="btn-xs btn-green"  onclick="abrirQA('${p.id}','${escH(p.codigo)||''}')"><i class="fas fa-check"></i> Aprobar</button>
+    actions = `<button type="button" class="btn-xs btn-green"  onclick="abrirQA('${p.id}','${escJ(p.codigo)||''}')"><i class="fas fa-check"></i> Aprobar</button>
                <button type="button" class="btn-xs btn-yellow" onclick="avanzar('${p.id}','CAMBIOS_SOLICITADOS')"><i class="fas fa-redo"></i> Cambios</button>`;
   } else {
     actions = p.link_diseno
@@ -1091,7 +1092,7 @@ async function bulkDisenoUploadAll() {
   await cargarCasos();
 }
 </script>
-<script src="../js/notif-panel.js?v=20260923"></script>
+<script src="../js/notif-panel.js?v=20260924"></script>
 <script>
 (async()=>{
   try {

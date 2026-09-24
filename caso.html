@@ -140,11 +140,12 @@ a{color:inherit;text-decoration:none;}
   <link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com/caso">
 
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Caso","item":"https://prodigylabdental.com/caso"}]}</script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
-<link rel="preload" href="js/header.js?v=20260918" as="script">
-<script src="js/header.js?v=20260918"></script>
+<link rel="preload" href="js/header.js?v=20260924" as="script">
+<script src="js/header.js?v=20260924"></script>
 
 <!-- BREADCRUMB -->
 <div style="background:rgba(5,5,5,.9);border-bottom:1px solid rgba(255,255,255,.06);padding:10px 24px;font-size:.78rem;color:#64748b;">
@@ -362,7 +363,7 @@ async function render(c) {
           <button type="button" class="reaction-btn" onclick="selReaction(this,'Perfección')"><span class="emoji">💎</span><span>Perfección</span></button>
         </div>
         <textarea class="nota-area" id="nota-text" placeholder="Escribe tu opinión técnica: proporción, anatomía, estética, material… Comentarios respetuosos y en español."></textarea>
-        <button type="button" class="btn-publicar" onclick="publicarNota('${escHtml(String(c.id||''))}')"><i class="fas fa-paper-plane"></i> Publicar comentario</button>
+        <button type="button" class="btn-publicar" onclick="publicarNota('${escJ(String(c.id||''))}')"><i class="fas fa-paper-plane"></i> Publicar comentario</button>
         <div class="notas-list" id="notas-list" aria-live="polite" aria-label="Comentarios técnicos"></div>
       </div>
     </div>`;
@@ -474,10 +475,10 @@ async function cargarNotas(casoId) {
         <div class="nota-date">${n.created_at ? new Date(n.created_at).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'}) : ''}</div>
         ${isAdmin ? `
         <div class="nota-admin">
-          <button type="button" class="btn-admin" onclick="fijarNota('${escHtml(String(n.id||''))}','${escHtml(String(casoId||''))}',${!n.pinned})">
+          <button type="button" class="btn-admin" onclick="fijarNota('${escJ(String(n.id||''))}','${escJ(String(casoId||''))}',${!n.pinned})">
             <i class="fas fa-thumbtack"></i>${n.pinned ? 'Quitar destaque' : 'Destacar'}
           </button>
-          <button type="button" class="btn-admin del" onclick="eliminarNota('${escHtml(String(n.id||''))}','${escHtml(String(casoId||''))}')">
+          <button type="button" class="btn-admin del" onclick="eliminarNota('${escJ(String(n.id||''))}','${escJ(String(casoId||''))}')">
             <i class="fas fa-trash"></i> Eliminar
           </button>
         </div>` : ''}

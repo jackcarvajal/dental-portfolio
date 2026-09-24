@@ -53,6 +53,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;}}
 </style>
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <div class="top">
@@ -154,8 +155,8 @@ function pintar(){
     <td>${u.roles.map(r=>`<span class="chip">${escH(lbl(r))}</span>`).join('')||'—'}</td>
     <td>${u.es_admin?'<span class="pill on">activo</span>':`<span class="pill ${u.active?'on':'off'}">${u.active?'activo':'inactivo'}</span>`}</td>
     <td class="acts">${u.es_admin?'<span class="sub" style="margin:0">protegido</span>':`
-      <button class="btn btn-ghost mini" onclick='editar(${JSON.stringify(u).replace(/'/g,"&#39;")})' title="Roles / activar"><i class="fas fa-user-gear"></i></button>
-      <button class="btn btn-ghost mini" onclick="borrar('${u.id}','${escH(u.email)}')" style="color:var(--red)" title="Borrar"><i class="fas fa-trash"></i></button>`}</td>
+      <button class="btn btn-ghost mini" onclick="editar(${escH(JSON.stringify(u))})" title="Roles / activar"><i class="fas fa-user-gear"></i></button>
+      <button class="btn btn-ghost mini" onclick="borrar('${u.id}','${escJ(u.email)}')" style="color:var(--red)" title="Borrar"><i class="fas fa-trash"></i></button>`}</td>
   </tr>`).join('')||`<tr><td colspan="6" class="empty">Sin resultados.</td></tr>`;
 }
 

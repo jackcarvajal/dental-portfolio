@@ -91,6 +91,10 @@ export async function onRequestPost({ request, env }){
       const roles=(Array.isArray(body.roles)?body.roles:[]).filter(r=>ROLES_OK.includes(r));
       const active=body.active!==false;
       if(!id) return new Response(JSON.stringify({error:'Falta id'}),{status:400,headers:h});
+      // Las cuentas admin (por correo) no se tocan desde aquí: pisar su app_metadata.role les quitaría permisos en la BD
+      const objetivo = await (await fetch(`${URL}/auth/v1/admin/users/${id}`,{headers:admH})).json().catch(()=>({}));
+      if(objetivo && ADMIN_EMAILS.includes((objetivo.email||'').toLowerCase()))
+        return new Response(JSON.stringify({error:'Las cuentas admin no se editan desde aquí'}),{status:400,headers:h});
       const r = await fetch(`${URL}/auth/v1/admin/users/${id}`,{method:'PUT',headers:admH,body:JSON.stringify({
         app_metadata:{ roles, role:dbRole(roles), active },
         ...(typeof body.nombre==='string' && body.nombre.trim() ? { user_metadata:{ nombre:body.nombre.trim().slice(0,120) } } : {})

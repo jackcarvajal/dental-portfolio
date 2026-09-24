@@ -63,6 +63,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 </style>
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <h1>😁 Alineadores — Casos y Cuentas</h1>
@@ -154,14 +155,15 @@ tr:hover td{background:rgba(255,255,255,.02);}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
 <script src="../js/auth-guard.js?v=20260924"></script>
-<script>ProdigyAuth.require(['admin','operator','contabilidad','diseno','alineadores','secretaria']);</script>
+<script>ProdigyAuth.require(['admin','operator','contabilidad','alineadores','secretaria']);</script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD=d=>d?new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}):'—';
 const nf=new Intl.NumberFormat('es-CO');
-// Precios VIGENTES (el alza a $120/$40 aún NO aplica — pendiente de aprobación del cliente)
-const PRECIOS={cliente:{completo:90,valoracion:30,replaneacion_en_tiempo:20,replaneacion_fuera_tiempo:40,refinamiento_sin_costo:0,refinamiento_con_costo:40,adicional:0},
-               mayra:{completo:60000,valoracion:20000,replaneacion_en_tiempo:0,replaneacion_fuera_tiempo:0,refinamiento_sin_costo:0,refinamiento_con_costo:0,adicional:0}};
+// Pago a la técnica (COP). El COBRO AL CLIENTE no va en el código: la técnica carga esta página y podría
+// verlo en el código fuente. Al agregar un cargo al cliente se sugiere el último monto usado para ese tipo
+// (lo leen solo admin/operator/contabilidad por RLS); los cargos automáticos los pone el trigger en la BD.
+const PRECIOS={mayra:{completo:60000,valoracion:20000,replaneacion_en_tiempo:0,replaneacion_fuera_tiempo:0,refinamiento_sin_costo:0,refinamiento_con_costo:0,adicional:0}};
 let sb, ROLE, VE_CLI=false, VE_MAY=false, CASOS=[], CARGOS=[], PAGOS=[];
 
 function fx(){ return parseFloat(document.getElementById('fx').value)||3180; }
@@ -172,15 +174,16 @@ async function init(){
   sb=window.ProdigyAuth.getSb();
   ROLE=window.PRODIGY_ROLE;
   VE_CLI=['admin','operator','contabilidad'].includes(ROLE);   // ve cobro al cliente (USD) y márgenes
-  VE_MAY=VE_CLI || ROLE==='diseno' || ROLE==='alineadores';    // ve el pago a Mayra (COP)
+  const ES_ALN=(window.PRODIGY_ROLES||[ROLE]).includes('alineadores');
+  VE_MAY=VE_CLI || ES_ALN;    // ve el pago a la técnica (COP). Los diseñadores CAD ('diseno') ya NO entran aquí.
   if(!VE_CLI) document.body.classList.add('hid-cli');
   if(!VE_MAY) document.body.classList.add('hid-may');
-  // Mayra (diseno) NO crea casos — el cliente los envía y ella los trabaja. Solo admin/operator/contabilidad crean.
+  // La técnica (alineadores) NO crea casos — el cliente los envía y ella los trabaja. Solo admin/operator/contabilidad crean.
   if(!VE_CLI){ const b=document.getElementById('btnNuevo'); if(b) b.style.display='none'; }
   try{ const f=localStorage.getItem('aln_fx'); if(f) document.getElementById('fx').value=f; }catch(_){}
   document.getElementById('subtitle').textContent = VE_CLI
     ? 'Casos + cuentas (cobro cliente USD · pago Mayra COP). Ingresa la tasa del dólar para ver márgenes.'
-    : ((ROLE==='diseno'||ROLE==='alineadores')
+    : (ES_ALN
        ? 'Tus casos y tus cuentas. Marca "Completar" cuando entregues los modelos.'
        : 'Casos de alineadores.');
   await cargar();
@@ -190,7 +193,7 @@ async function cargar(){
   const { data:cs } = await sb.from('alineadores_casos').select('*').eq('negocio','prodigy').order('created_at',{ascending:false});
   CASOS = cs||[];
   if(VE_MAY){
-    // La RLS decide qué ve cada quien: admin/contab = todo; Mayra (diseno) = solo parte='mayra'.
+    // La RLS decide qué ve cada quien: admin/contab = todo; la técnica (alineadores) = solo parte='mayra'.
     const { data:cg } = await sb.from('alineadores_cargos').select('*').eq('negocio','prodigy');
     CARGOS = cg||[];
   }
@@ -244,7 +247,7 @@ function render(){
     const pr=PAGOS.map(p=>{
       const money=p.moneda==='COP'?(nf.format(Math.round(p.monto))+' COP'):('$'+nf.format(Math.round(p.monto))+' USD');
       const st=p.estado==='verificado'?'pagado':(p.estado==='rechazado'?'factur':'pend');
-      const comp=p.comprobante_url?`<button class="btn btn-ghost mini" onclick="verComprobante('${escH(p.comprobante_url)}')"><i class="fas fa-file"></i></button>`:'—';
+      const comp=p.comprobante_url?`<button class="btn btn-ghost mini" onclick="verComprobante('${escJ(p.comprobante_url)}')"><i class="fas fa-file"></i></button>`:'—';
       const acc=p.estado==='reportado'?`<button class="btn btn-ghost mini" onclick="verificarPago('${p.id}','verificado')" title="Verificar">✅</button> <button class="btn btn-ghost mini" onclick="verificarPago('${p.id}','rechazado')" title="Rechazar">✖</button>`:'';
       return `<tr><td>${fmtD(p.created_at)}</td><td>${money}</td><td>${escH(p.metodo||'—')}</td><td>${escH(p.mes_corte||'—')}</td><td>${escH(p.referencia||'—')}</td><td>${comp}</td><td><span class="pill ${st}">${escH(p.estado)}</span></td><td>${acc}</td></tr>`;
     }).join('');
@@ -374,7 +377,10 @@ function abrirCargo(casoId){
 }
 function preciosCargo(){
   const parte=document.getElementById('gParte').value, t=document.getElementById('gTipo').value;
-  document.getElementById('gMonto').value=PRECIOS[parte][t]!=null?PRECIOS[parte][t]:0;
+  let v=0;
+  if(parte==='cliente'){ const u=CARGOS.filter(c=>c.parte==='cliente'&&c.tipo===t).sort((x,y)=>String(y.fecha||y.created_at).localeCompare(String(x.fecha||x.created_at)))[0]; v=u?Number(u.monto):0; }
+  else if(PRECIOS.mayra[t]!=null) v=PRECIOS.mayra[t];
+  document.getElementById('gMonto').value=v;
   document.getElementById('gMoneda').value=parte==='cliente'?'USD':'COP';
 }
 async function guardarCargo(){

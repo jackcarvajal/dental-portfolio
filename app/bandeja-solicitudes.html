@@ -61,6 +61,7 @@ a{color:inherit;text-decoration:none;}
 @media(max-width:520px){.actions .a{flex:1;justify-content:center;}}
 </style>
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <div class="topbar">
@@ -182,9 +183,9 @@ function cardScanner(s){
     <div class="actions">
       <a class="a a-wa" href="https://wa.me/${wa}?text=${saludo}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Escribir</a>
       <a class="a a-cobrar" href="https://wa.me/${wa}?text=${cot}" target="_blank" rel="noopener"><i class="fas fa-file-invoice-dollar"></i> Cotizar y cobrar</a>
-      ${s.archivo_url?`<button class="a a-stl" onclick="bajarStl('${escH(s.archivo_url)}',this)"><i class="fas fa-download"></i> STL</button>`:''}
+      ${s.archivo_url?`<button class="a a-stl" onclick="bajarStl('${escJ(s.archivo_url)}',this)"><i class="fas fa-download"></i> STL</button>`:''}
       <span class="a" style="cursor:default"><i class="fas fa-flag"></i>
-        <select onchange="cambiarEstado('solicitudes_scanner','${escH(s.id)}',this.value,${s.contactado?'null':'true'})">
+        <select onchange="cambiarEstado('solicitudes_scanner','${escJ(s.id)}',this.value,${s.contactado?'null':'true'})">
           ${EST_SCANNER.map(e=>`<option value="${e}"${e===est?' selected':''}>${e.replace('_',' ')}</option>`).join('')}
         </select>
       </span>
@@ -221,7 +222,7 @@ function cardDomicilio(d){
       <a class="a a-cobrar" href="https://wa.me/${wa}?text=${cot}" target="_blank" rel="noopener"><i class="fas fa-file-invoice-dollar"></i> Confirmar y cobrar</a>
       <a class="a a-stl" href="https://www.google.com/maps/search/?api=1&query=${maps}" target="_blank" rel="noopener"><i class="fas fa-map-location-dot"></i> Mapa</a>
       <span class="a" style="cursor:default"><i class="fas fa-flag"></i>
-        <select onchange="cambiarEstado('citas_domicilio','${escH(d.id)}',this.value,null)">
+        <select onchange="cambiarEstado('citas_domicilio','${escJ(d.id)}',this.value,null)">
           ${EST_DOMICILIO.map(e=>`<option value="${e}"${e===est?' selected':''}>${e.replace('_',' ')}</option>`).join('')}
         </select>
       </span>

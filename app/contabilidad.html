@@ -128,6 +128,7 @@ tbody td{padding:11px 14px;vertical-align:middle;}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -832,10 +833,10 @@ async function cargarPorConfirmar() {
             <td class="td-abono">${abono ? fmtCOP(abono) : '—'}</td>
             <td><span class="badge-subido">⏳ Comprobante enviado</span></td>
             <td>${p.comprobante_pago_url
-                ? `<button type="button" class="btn-xs btn-ver" onclick="verComprobante('${escH(p.id)}')"><i class="fas fa-eye"></i> Ver</button>`
+                ? `<button type="button" class="btn-xs btn-ver" onclick="verComprobante('${escJ(p.id)}')"><i class="fas fa-eye"></i> Ver</button>`
                 : '<span style="font-size:.72rem;color:var(--muted);">Sin archivo</span>'
             }</td>
-            <td><button type="button" class="btn-xs btn-confirm" onclick="abrirModalComp('${escH(p.id)}')">
+            <td><button type="button" class="btn-xs btn-confirm" onclick="abrirModalComp('${escJ(p.id)}')">
                 <i class="fas fa-check"></i> Confirmar
             </button></td>
         </tr>`;
@@ -1158,10 +1159,10 @@ async function cargarFacturasPendientes() {
             <td style="font-size:.74rem;color:var(--muted);">${escH(p.billing_email || '—')}</td>
             <td>
                 <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                    <button type="button" class="btn-xs btn-gold" onclick="emitirFactura('${escH(p.id)}',this)">
+                    <button type="button" class="btn-xs btn-gold" onclick="emitirFactura('${escJ(p.id)}',this)">
                         <i class="fas fa-paper-plane"></i> Emitir
                     </button>
-                    <button type="button" class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN(_factMap['${escH(p.id)}'])">
+                    <button type="button" class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN(_factMap['${escJ(p.id)}'])">
                         <i class="fas fa-pen"></i> Manual
                     </button>
                 </div>
@@ -1297,10 +1298,10 @@ async function cargarFacturasError() {
         <td style="font-size:.74rem;color:var(--red);max-width:260px;">${escH(p.factura_error || 'Error desconocido')}</td>
         <td>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button type="button" class="btn-xs btn-gold" onclick="reintentarFactura('${escH(p.id)}',this)">
+                <button type="button" class="btn-xs btn-gold" onclick="reintentarFactura('${escJ(p.id)}',this)">
                     <i class="fas fa-redo"></i> Reintentar
                 </button>
-                <button type="button" class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN(_factMap['${escH(p.id)}'])">
+                <button type="button" class="btn-xs" style="background:rgba(0,210,255,.1);color:var(--cyan);border:1px solid rgba(0,210,255,.25);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="abrirManualDIAN(_factMap['${escJ(p.id)}'])">
                     <i class="fas fa-pen"></i> Manual
                 </button>
             </div>
@@ -1642,7 +1643,7 @@ async function cargarArchivosCaso() {
 
         const botones = arch.length ? arch.map(a => a.u
             ? `<a href="${escH(a.u)}" target="_blank" rel="noopener noreferrer" class="btn-xs" style="color:${a.c};border-color:${a.c}55;"><i class="fas ${a.i}"></i> ${escH(a.t)}</a>`
-            : `<button type="button" class="btn-xs" style="color:${a.c};border-color:${a.c}55;" onclick="abrirArchivoContab('${escH(a.bucket)}','${escH(a.ruta)}')"><i class="fas ${a.i}"></i> ${escH(a.t)}</button>`
+            : `<button type="button" class="btn-xs" style="color:${a.c};border-color:${a.c}55;" onclick="abrirArchivoContab('${escJ(a.bucket)}','${escJ(a.ruta)}')"><i class="fas ${a.i}"></i> ${escH(a.t)}</button>`
         ).join(' ') : '<span style="color:var(--muted);font-size:.75rem;">Sin archivos registrados</span>';
 
         return `<div class="section-card" style="margin-bottom:12px;padding:14px;">
@@ -1764,7 +1765,7 @@ async function cargarReferidosContab() {
                 <td style="display:flex;gap:6px;">
                     ${r.estado === 'primer_pedido' ? `
                     <a href="https://wa.me/${waRef}?text=${waMsg}" target="_blank" rel="noopener noreferrer" style="padding:4px 10px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25D366;border-radius:6px;font-size:.7rem;font-weight:700;text-decoration:none;"><i class="fab fa-whatsapp"></i> Notificar</a>
-                    <button type="button" onclick="marcarRecompensado('${escH(r.id)}')" style="padding:4px 10px;background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:6px;font-size:.7rem;cursor:pointer;font-weight:700;">✓ Crédito aplicado</button>
+                    <button type="button" onclick="marcarRecompensado('${escJ(r.id)}')" style="padding:4px 10px;background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:6px;font-size:.7rem;cursor:pointer;font-weight:700;">✓ Crédito aplicado</button>
                     ` : '<span style="color:#475569;font-size:.7rem;">Completado</span>'}
                 </td>
             </tr>`;
@@ -1885,7 +1886,7 @@ async function cargarCotizacionesCont() {
                 <td>${tel ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" style="color:#25D366;"><i class="fab fa-whatsapp"></i> ${escH(c.doctor_tel)}</a>` : '—'}</td>
                 <td style="font-weight:700;color:var(--gold);">${escH(total)}</td>
                 <td>
-                    <select onchange="cambiarEstadoCot('${escH(c.id)}',this.value)" style="background:rgba(0,0,0,.3);border:1px solid ${color};color:${color};border-radius:6px;padding:3px 8px;font-size:16px;cursor:pointer;font-weight:700;">
+                    <select onchange="cambiarEstadoCot('${escJ(c.id)}',this.value)" style="background:rgba(0,0,0,.3);border:1px solid ${color};color:${color};border-radius:6px;padding:3px 8px;font-size:16px;cursor:pointer;font-weight:700;">
                         ${['borrador','enviada','aceptada','rechazada','expirada'].map(s=>`<option value="${s}"${c.estado===s?' selected':''}>${s}</option>`).join('')}
                     </select>
                 </td>
@@ -1904,7 +1905,7 @@ async function cambiarEstadoCot(id, estado) {
 }
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
-<script src="../js/notif-panel.js?v=20260923"></script>
+<script src="../js/notif-panel.js?v=20260924"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
 <script src="../js/buscador.js?v=20260718e"></script>

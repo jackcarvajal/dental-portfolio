@@ -64,6 +64,7 @@ a{color:inherit;text-decoration:none;}
 .mb-cancel{background:rgba(255,255,255,.06);border:1px solid var(--border)!important;color:var(--muted);}
 </style>
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <div class="topbar">
@@ -149,7 +150,7 @@ function renderFiltros(){
   const orden = ['Todas', ...Object.keys(areas).sort()];
   document.getElementById('filtros').innerHTML = orden.map(a=>{
     const n = a==='Todas' ? _all.length : areas[a];
-    return `<button class="fil${a===_filtro?' on':''}" onclick="setFiltro('${escH(a)}')">${escH(a)}<span class="n">${n}</span></button>`;
+    return `<button class="fil${a===_filtro?' on':''}" onclick="setFiltro('${escJ(a)}')">${escH(a)}<span class="n">${n}</span></button>`;
   }).join('');
 }
 function setFiltro(a){ _filtro=a; renderFiltros(); render(); }
@@ -173,11 +174,11 @@ function render(){
       </div>
       <div class="acts">
         <a class="a a-eti" href="etiqueta.html?c=${encodeURIComponent(p.codigo)}" target="_blank" rel="noopener"><i class="fas fa-tag"></i> Etiqueta</a>
-        <button class="a" onclick="copiarLink('${escH(p.codigo)}',this)"><i class="fas fa-copy"></i> Copiar link</button>
+        <button class="a" onclick="copiarLink('${escJ(p.codigo)}',this)"><i class="fas fa-copy"></i> Copiar link</button>
         <a class="a" href="orden-produccion.html?c=${encodeURIComponent(p.codigo)}" target="_blank" rel="noopener"><i class="fas fa-file-lines"></i> Orden</a>
         <a class="a a-mov" href="mover.html?c=${encodeURIComponent(p.codigo)}"><i class="fas fa-arrows-turn-right"></i> Mover</a>
-        <button class="a a-inc" onclick="abrirIncidencia('${escH(p.id)}','${escH(p.codigo)}')"><i class="fas fa-triangle-exclamation"></i> Incidencia</button>
-        <button class="a" onclick="verHist('${escH(p.id)}','${escH(p.codigo)}',this)"><i class="fas fa-clock-rotate-left"></i> Historial</button>
+        <button class="a a-inc" onclick="abrirIncidencia('${escJ(p.id)}','${escJ(p.codigo)}')"><i class="fas fa-triangle-exclamation"></i> Incidencia</button>
+        <button class="a" onclick="verHist('${escJ(p.id)}','${escJ(p.codigo)}',this)"><i class="fas fa-clock-rotate-left"></i> Historial</button>
       </div>
       <div class="hist" id="h-${escH(p.id)}"></div>
     </div>`;

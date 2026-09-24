@@ -230,6 +230,7 @@
 </style>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
 <script src="../js/reportar-problema.js?v=20260924b"></script>
+<script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -936,10 +937,10 @@ function renderTablas(pedidos) {
                     <td>${renderProgress(p)}</td>
                     <td>
                         <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold" style="margin-right:4px;">Ver</a>
-                        ${puedeSTL?`<button type="button" onclick="verArchivos('${escH(p.id)}')" class="btn-sm" style="color:#D946A6;border-color:rgba(217,70,166,.35);" title="Ver diseño, modelo 3D y fotos"><i class="fas fa-eye"></i> Visor</button>
-                        <button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
+                        ${puedeSTL?`<button type="button" onclick="verArchivos('${escJ(p.id)}')" class="btn-sm" style="color:#D946A6;border-color:rgba(217,70,166,.35);" title="Ver diseño, modelo 3D y fotos"><i class="fas fa-eye"></i> Visor</button>
+                        <button type="button" onclick="descargarSTL('${escJ(p.id)}','${escJ(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
                         <a href="../recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
-                        ${cancelable?`<button type="button" onclick="cancelarPedido('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#ff6b6b;border-color:rgba(255,107,107,.35);" title="Cancelar este pedido antes de que entre a producción"><i class="fas fa-ban"></i> Cancelar</button>`:''}
+                        ${cancelable?`<button type="button" onclick="cancelarPedido('${escJ(p.id)}','${escJ(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#ff6b6b;border-color:rgba(255,107,107,.35);" title="Cancelar este pedido antes de que entre a producción"><i class="fas fa-ban"></i> Cancelar</button>`:''}
                     </td>
                 </tr>`;
             }).join('')}</tbody></table>`;
@@ -962,11 +963,11 @@ function renderTablas(pedidos) {
                 <td>${estadoBadge(p)}</td>
                 <td style="display:flex;gap:5px;flex-wrap:wrap;">
                     <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold">Ver</a>
-                    <button type="button" onclick="verTimeline('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#00d2ff;border-color:rgba(0,210,255,.3);" title="Historial de cambios"><i class="fas fa-history"></i></button>
-                    ${puedeSTL?`<button type="button" onclick="verArchivos('${escH(p.id)}')" class="btn-sm" style="color:#D946A6;border-color:rgba(217,70,166,.35);" title="Ver diseño, modelo 3D y fotos"><i class="fas fa-eye"></i> Visor</button>
-                        <button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
+                    <button type="button" onclick="verTimeline('${escJ(p.id)}','${escJ(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#00d2ff;border-color:rgba(0,210,255,.3);" title="Historial de cambios"><i class="fas fa-history"></i></button>
+                    ${puedeSTL?`<button type="button" onclick="verArchivos('${escJ(p.id)}')" class="btn-sm" style="color:#D946A6;border-color:rgba(217,70,166,.35);" title="Ver diseño, modelo 3D y fotos"><i class="fas fa-eye"></i> Visor</button>
+                        <button type="button" onclick="descargarSTL('${escJ(p.id)}','${escJ(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> STL</button>`:''}
                     <a href="../recibo-caso?id=${escH(p.codigo||p.id)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-file-pdf"></i> PDF</a>
-                    ${esEntregado&&!yaCalif?`<button type="button" onclick="abrirNPS('${escH(p.id)}','${escH(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#D4AF37;border-color:rgba(212,175,55,.3);">⭐ Calificar</button>`:''}
+                    ${esEntregado&&!yaCalif?`<button type="button" onclick="abrirNPS('${escJ(p.id)}','${escJ(p.codigo||p.id?.slice(0,8))}')" class="btn-sm" style="color:#D4AF37;border-color:rgba(212,175,55,.3);">⭐ Calificar</button>`:''}
                     ${yaCalif?`<span style="font-size:.7rem;color:#D4AF37;">${'★'.repeat(p.calificacion)}</span>`:''}
                 </td>
             </tr>`;
@@ -1100,7 +1101,7 @@ function renderFacturacion(pedidos) {
             <p class="inst">Transfiere al Nequi <strong style="color:#D4AF37">3212816716</strong> con referencia: <strong style="color:var(--cyan)">${cod}</strong></p>
             <div class="upload-area">
                 <input type="file" accept="image/*,application/pdf" id="comp-${escH(p.id)}">
-                <button type="button" class="btn-subir-comp" onclick="subirComprobante('${escH(p.id)}')"><i class="fas fa-upload"></i> Subir comprobante</button>
+                <button type="button" class="btn-subir-comp" onclick="subirComprobante('${escJ(p.id)}')"><i class="fas fa-upload"></i> Subir comprobante</button>
                 <span class="comp-status pendiente">Pendiente de pago</span>
             </div>
         </div>`;
@@ -1161,7 +1162,7 @@ async function cargarBibliotecas(userId) {
                 <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
                     ${b.archivo_url&&/^https?:\/\//.test(b.archivo_url)?`<a href="${escH(b.archivo_url)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-cyan"><i class="fas fa-download"></i> Descargar</a>`:''}
                     ${b.link_externo&&/^https?:\/\//.test(b.link_externo)?`<a href="${escH(b.link_externo)}" target="_blank" rel="noopener noreferrer" class="btn-sm btn-gold"><i class="fas fa-external-link-alt"></i> Abrir link</a>`:''}
-                    <button type="button" onclick="eliminarBiblioteca('${escH(b.id)}')" class="btn-sm" aria-label="Eliminar biblioteca" style="color:#f87171;border-color:rgba(248,113,113,.3)"><i class="fas fa-trash"></i></button>
+                    <button type="button" onclick="eliminarBiblioteca('${escJ(b.id)}')" class="btn-sm" aria-label="Eliminar biblioteca" style="color:#f87171;border-color:rgba(248,113,113,.3)"><i class="fas fa-trash"></i></button>
                 </div>
             </div>`).join('');
     } catch(e) {
@@ -1589,7 +1590,7 @@ async function cargarPedidosDoc_cliente(uid) {
                       <span style="font-size:.68rem;color:var(--muted);margin-left:8px">${new Date(r.creado_en).toLocaleDateString('es',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</span>
                       ${r.notas_cliente?`<div style="font-size:.7rem;color:#f59e0b;margin-top:3px"><i class="fas fa-comment-dots"></i> "${escH(r.notas_cliente)}"</div>`:''}
                     </div>
-                    ${r.link_html?`<button type="button" onclick="verRevisionPD('${escH(r.link_html)}',${parseInt(r.revision_num)||0})" class="btn-sm btn-gold"><i class="fas fa-eye"></i> Ver</button>`:''}
+                    ${r.link_html?`<button type="button" onclick="verRevisionPD('${escJ(r.link_html)}',${parseInt(r.revision_num)||0})" class="btn-sm btn-gold"><i class="fas fa-eye"></i> Ver</button>`:''}
                   </div>`).join('')}
               </div>
             </div>` : revs.length===1 ? `<div style="width:100%;margin-top:6px;font-size:.68rem;color:var(--muted)"><i class="fas fa-history"></i> Primera versión del diseño</div>` : '';
@@ -1604,15 +1605,15 @@ async function cargarPedidosDoc_cliente(uid) {
             </div>
             <span class="pd-online-est ${escH(p.estado)}">${escH(estLbl)}</span>
             ${necesitaAprobacion
-                ?`<button type="button" class="btn-revisar" onclick="abrirAprobacion('${escH(p.id)}','${escH(p.link_diseno)}')"><i class="fas fa-eye"></i> Revisar y Aprobar</button>`
+                ?`<button type="button" class="btn-revisar" onclick="abrirAprobacion('${escJ(p.id)}','${escJ(p.link_diseno)}')"><i class="fas fa-eye"></i> Revisar y Aprobar</button>`
                 :yaAprobado?`<span style="font-size:.7rem;color:var(--neon);font-weight:700"><i class="fas fa-check-circle"></i> Aprobado</span>`:''}
-            ${puedeDescargar?`<button type="button" onclick="descargarSTL('${escH(p.id)}','${escH(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> Descargar STL</button>`:''}
+            ${puedeDescargar?`<button type="button" onclick="descargarSTL('${escJ(p.id)}','${escJ(p.stl_ruta)}')" class="btn-sm btn-cyan"><i class="fas fa-download"></i> Descargar STL</button>`:''}
             ${p.notas_cambios?`<div style="width:100%;margin-top:6px;font-size:.72rem;color:#f59e0b;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);border-radius:6px;padding:6px 10px"><i class="fas fa-comment-dots"></i> Cambios solicitados: "${escH(p.notas_cambios)}"</div>`:''}
             ${(p.estado==='revision'||p.estado==='en_diseno')?`
             <div class="feedback-upload" style="width:100%;margin-top:10px;">
                 <label for="fotos-${escH(p.id)}"><i class="fas fa-camera" aria-hidden="true"></i> Fotos de feedback (opcional)</label>
                 <input type="file" accept="image/*" multiple id="fotos-${escH(p.id)}">
-                <button type="button" class="btn-feedback" onclick="subirFotos('${escH(p.id)}')"><i class="fas fa-upload"></i> Subir fotos</button>
+                <button type="button" class="btn-feedback" onclick="subirFotos('${escJ(p.id)}')"><i class="fas fa-upload"></i> Subir fotos</button>
             </div>`:''}
             ${historialHTML}
         </div>`;
@@ -1836,7 +1837,7 @@ async function cargarCotizaciones() {
                     <td style="padding:10px;text-align:center;display:flex;gap:6px;justify-content:center;">
                         <a href="../flujo-diseno?cotizacion=${escH(c.id)}" style="padding:5px 10px;background:rgba(217,70,166,.1);border:1px solid rgba(217,70,166,.3);color:#D946A6;border-radius:6px;font-size:.7rem;font-weight:700;text-decoration:none;" title="Convertir en pedido"><i class="fas fa-paper-plane"></i></a>
                         <a href="https://wa.me/573212816716?text=${waLink}" target="_blank" rel="noopener noreferrer" style="padding:5px 10px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25D366;border-radius:6px;font-size:.7rem;font-weight:700;text-decoration:none;" title="Enviar por WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <button type="button" onclick="eliminarCotizacion('${escH(c.id)}')" style="padding:5px 10px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;font-size:.7rem;cursor:pointer;" title="Eliminar cotización"><i class="fas fa-trash"></i></button>
+                        <button type="button" onclick="eliminarCotizacion('${escJ(c.id)}')" style="padding:5px 10px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;font-size:.7rem;cursor:pointer;" title="Eliminar cotización"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>`;
             }).join('')}</tbody>
@@ -1881,7 +1882,7 @@ async function cargarReferidos() {
                         <div style="font-size:1.1rem;font-weight:900;color:#fff;letter-spacing:2px;">${escH(r.cupon_credito)}</div>
                         <div style="font-size:.72rem;color:#94a3b8;margin-top:3px;">Crédito de $30.000 COP · Un solo uso · Úsalo en tu próximo pedido</div>
                     </div>
-                    <button type="button" onclick="navigator.clipboard?.writeText('${escH(r.cupon_credito)}').then(()=>this.textContent='✓ Copiado')" style="background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:8px;padding:6px 14px;font-size:.75rem;font-weight:700;cursor:pointer;"><i class="fas fa-copy"></i> Copiar</button>
+                    <button type="button" onclick="navigator.clipboard?.writeText('${escJ(r.cupon_credito)}').then(()=>this.textContent='✓ Copiado')" style="background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:8px;padding:6px 14px;font-size:.75rem;font-weight:700;cursor:pointer;"><i class="fas fa-copy"></i> Copiar</button>
                 </div>`).join('');
         }
         const referidos = (data||[]).filter(r => r.referido_email);
@@ -2130,7 +2131,7 @@ function _generarSugerencia(pedidos) {
 }
 </script>
 
-<script src="../js/notif-panel.js?v=20260923"></script>
+<script src="../js/notif-panel.js?v=20260924"></script>
 <script>
 // Notificaciones para cliente — modo cliente = true
 (async()=>{
