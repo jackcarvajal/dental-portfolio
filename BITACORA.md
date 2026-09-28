@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-09-28  (Alineadores fase 2 · respaldo por email · bitácora automática · lista de pendientes)
+
+- 🟡 **Entregas de alineadores** (`sql/alineadores-fase2-2026.sql`, PENDIENTE de correr): la técnica entrega viabilidad/planificación (texto, archivos, enlace) desde `app/alineadores.html` (✈️); el cliente aprueba o pide cambios en `app/facturacion-alineadores.html` → «Mis casos» (2 revisiones incluidas, aviso de costo desde la 3ª). Campana: caso nuevo → técnica, entrega → cliente, respuesta → técnica. Comisión PayPal por cliente (`alineadores_clientes.comision_paypal`: Panorámica 12 %, resto comisión normal). Sin enlace PayPal → botón «Pedir enlace de pago» por WhatsApp. Global66 descartado por el cliente.
+- 🟡 **Correo de respaldo** al admin (`functions/api/respaldo-alineadores.js`): caso del cliente, caso por la página pública, entrega de la técnica, respuesta del cliente y pago reportado, con enlaces firmados de 7 días. Requiere Resend con dominio verificado.
+- 🟡 **Bitácora automática + alarmas** (`sql/bitacora-alarmas-2026.sql`, PENDIENTE de correr): trigger en pedidos y pedidos_doctor → `pedido_bitacora` (se ve en ficha-caso «Quién hizo qué»); aviso admin en 2ª y 3ª+ modificación. `prodigy_pedidos_sla_vencido` estaba ROTA (42804) y 3 RPC de SLA eran ejecutables sin sesión → arreglado; `.github/workflows/alerta-sla.yml` cada 4 h (lun-sáb).
+- ✅ Panel de diseño por especialidad (guías / blender / exocad) · Bandeja: convertir solicitud en caso (alineadores) o pedir la orden al doctor · Panel admin y Centro de ayuda con identidad de marca (solo Inter) · Legal: sub-procesadores Gemini y Resend · Guía `docs/GUIA-RESET-CONTRASENA.md`.
+- ✅ Arreglado: Centro de ayuda caía por 2 artículos con `notas` como texto (desde el 24-sep).
+
 ## 2026-09-24  (AUDITORÍA de todo lo hecho 23-24 sep — ambos repos)
 
 - ✅ Pruebas: audit.mjs, audit-schema-live, smoke (227), audit-live (runtime), sondeos de seguridad en producción (RLS anon, buckets, funciones sin sesión) → OK.
