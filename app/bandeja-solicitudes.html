@@ -264,15 +264,17 @@ async function crearCasoAlineadores(id, btn){
   const archivos = [...notas.matchAll(/→\s*(alineadores\/\S+)/g)].map(m=>m[1]);
   if(!confirm(`¿Crear el caso de alineadores de ${paciente} (${s.clinica||s.doctor||''})?\n\nSe cobra la valoración y se avisa a la técnica.`)) return;
   btn.disabled = true;
-  const { error } = await sb.from('alineadores_casos').insert({
+  const { data:nuevo, error } = await sb.from('alineadores_casos').insert({
     negocio:'prodigy', codigo:s.codigo||null, solicitud_id:s.id, paciente,
     cliente: s.clinica || s.doctor || null, estado:'valoracion',
     fecha_recepcion: new Date().toISOString().slice(0,10),
     indicacion_cliente: indicacion, archivos,
     notas: 'Creado desde la bandeja (solicitud '+(s.codigo||'')+'). Doctor: '+(s.doctor||'—')+' · WhatsApp: '+(s.whatsapp||'—')+(s.email?(' · '+s.email):'')
-  });
+  }).select('id').single();
   btn.disabled = false;
   if(error){ alert(/row-level|policy|permission/i.test(error.message) ? 'Solo administración, operaciones o contabilidad pueden crear el caso.' : 'No se pudo crear: '+error.message); return; }
+  // WhatsApp a la técnica (el correo de respaldo ya salió cuando llegó la solicitud)
+  try{ const { data:{ session } }=await sb.auth.getSession(); if(nuevo&&nuevo.id&&session) fetch('/api/respaldo-alineadores',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token},body:JSON.stringify({tipo:'caso',id:nuevo.id,sin_email:true})}).catch(()=>{}); }catch(_){}
   await cambiarEstado('solicitudes_scanner', s.id, 'cerrado', s.contactado?null:true);
   _convertidas[s.id] = true; render();
   alert('✅ Caso creado en Alineadores. La técnica ya tiene el aviso.');

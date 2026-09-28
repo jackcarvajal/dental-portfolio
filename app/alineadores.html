@@ -80,6 +80,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <div class="bar">
   <button class="btn btn-mg" id="btnNuevo" onclick="abrirCaso()"><i class="fas fa-plus"></i> Nuevo caso</button>
   <div class="fx money-cli"><label>Dólar USD/COP</label><input type="number" id="fx" value="3180" step="10" oninput="guardarFx();render()"></div>
+  <button class="btn btn-ghost money-cli" onclick="abrirAvisos()" title="Avisos por WhatsApp (CallMeBot) a la técnica y a los clientes"><i class="fab fa-whatsapp" style="color:#25D366"></i> Avisos WhatsApp</button>
   <a class="btn btn-ghost" href="rastreo.html"><i class="fas fa-arrow-left"></i> Volver</a>
 </div>
 
@@ -94,7 +95,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <div class="sec-t"><i class="fas fa-teeth" style="color:var(--cyan)"></i> Casos</div>
 <div class="filters">
   <input type="search" id="fBuscar" placeholder="Buscar paciente/cliente…" oninput="render()">
-  <select id="fEstado" onchange="render()"><option value="">Todos los estados</option><option>valoracion</option><option>planificacion</option><option>en_tratamiento</option><option>terminado</option></select>
+  <select id="fEstado" onchange="render()"><option value="">Todos los estados</option><option>valoracion</option><option>planificacion</option><option>en_tratamiento</option><option>terminado</option><option>cancelado</option></select>
 </div>
 <div class="tw"><table id="casosTbl"><thead><tr>
   <th>Paciente</th><th>Cliente</th><th>Viabilidad</th><th>Plan</th><th>Mod.</th><th>Recep.</th><th>Envío</th><th>Estado</th><th>Entrega al cliente</th>
@@ -170,6 +171,24 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <div class="sec-t" style="margin-top:10px"><i class="fas fa-clock-rotate-left"></i> Historial</div>
   <div id="entLista"></div>
   <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovEnt')">Cerrar</button></div>
+</div></div>
+
+<!-- Modal avisos por WhatsApp (CallMeBot) -->
+<div class="ov" id="ovAvisos"><div class="modal" style="max-width:620px">
+  <h3><i class="fab fa-whatsapp" style="color:#25D366"></i> Avisos por WhatsApp</h3>
+  <p class="sub" style="margin:0 0 10px">A la <b>técnica</b>: caso nuevo, respuesta del cliente y cancelaciones. Al <b>cliente</b>: cuando la técnica le envía viabilidad o planificación. Cada persona activa CallMeBot una vez y te pasa su API key.</p>
+  <div id="avLista"></div>
+  <div class="sec-t" style="margin-top:10px"><i class="fas fa-plus"></i> Agregar</div>
+  <div class="grid2">
+    <div class="fg"><label>Quién</label><select id="avRol" onchange="avRolCambio()"><option value="tecnica">Técnica (Mayra)</option><option value="cliente">Cliente</option></select></div>
+    <div class="fg"><label>Nombre</label><input id="avNombre" placeholder="Mayra / Panorámica Digital 3D"></div>
+  </div>
+  <div class="fg" id="avClienteFg" style="display:none"><label>Cuenta del cliente</label><select id="avCliente"></select></div>
+  <div class="grid2">
+    <div class="fg"><label>WhatsApp (con indicativo)</label><input id="avWa" placeholder="573001234567 · RD: 1809…"></div>
+    <div class="fg"><label>API key de CallMeBot</label><input id="avKey" placeholder="1234567"></div>
+  </div>
+  <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovAvisos')">Cerrar</button><button class="btn btn-mg" onclick="guardarAviso()">Guardar</button></div>
 </div></div>
 
 <!-- Modal ver cargos / pagos -->
@@ -310,14 +329,14 @@ function render(){
       <td>${c.modelos?'✅':'—'}</td>
       <td>${fmtD(c.fecha_recepcion)}</td>
       <td>${fmtD(c.fecha_envio)}</td>
-      <td><span class="pill ${c.estado==='terminado'?'pagado':'factur'}">${escH(c.estado||'')}</span></td>
+      <td><span class="pill ${c.estado==='terminado'?'pagado':(c.estado==='cancelado'?'':'factur')}">${escH(c.estado||'')}</span></td>
       <td>${badgeEntrega(c.id)}</td>
       <td class="money-cli">${cobro?('$'+nf.format(Math.round(cobro))):'—'}</td>
       <td class="money-may">${pago?nf.format(Math.round(pago)):'—'}</td>
       <td style="display:flex;gap:4px;">
         <button class="btn btn-ghost mini" onclick="editarCaso('${c.id}')" title="Editar"><i class="fas fa-pen"></i></button>
-        ${PUEDE_ENTREGAR?`<button class="btn btn-ghost mini" onclick="abrirEntregas('${c.id}')" title="Entregar viabilidad / planificación al cliente" style="color:var(--cyan)"><i class="fas fa-paper-plane"></i></button>`:''}
-        ${c.estado!=='terminado'?`<button class="btn btn-ghost mini" onclick="completarCaso('${c.id}')" title="Completar (requiere modelos)"><i class="fas fa-flag-checkered"></i></button>`:''}
+        ${PUEDE_ENTREGAR&&c.estado!=='cancelado'?`<button class="btn btn-ghost mini" onclick="abrirEntregas('${c.id}')" title="Entregar viabilidad / planificación al cliente" style="color:var(--cyan)"><i class="fas fa-paper-plane"></i></button>`:''}
+        ${c.estado!=='terminado'&&c.estado!=='cancelado'?`<button class="btn btn-ghost mini" onclick="completarCaso('${c.id}')" title="Completar (requiere modelos)"><i class="fas fa-flag-checkered"></i></button>`:''}
         ${VE_MAY?`<button class="btn btn-ghost mini" onclick="verCargos('${c.id}')" title="Cargos / pagos"><i class="fas fa-receipt"></i></button>`:''}
         ${VE_CLI?`<button class="btn btn-ghost mini" onclick="abrirCargo('${c.id}')" title="Agregar cargo"><i class="fas fa-plus"></i></button>`:''}
       </td>
@@ -526,6 +545,45 @@ async function borrarEntrega(id){
   const { error }=await sb.from('alineadores_entregas').delete().eq('id',id);
   if(error){ alert('Error: '+error.message); return; }
   await cargar(); abrirEntregas(e.caso_id);
+}
+
+/* ── Avisos por WhatsApp (solo admin: las API keys son privadas) ── */
+let AVISOS=[];
+async function abrirAvisos(){
+  const { data, error }=await sb.from('alineadores_avisos_wa').select('*').order('created_at');
+  if(error){ alert('Falta correr el SQL de alineadores fase 2 (o no tienes permiso).'); return; }
+  AVISOS=data||[];
+  // Clientes con cuenta (del mapa de clientes)
+  const { data:cl }=await sb.from('alineadores_clientes').select('nombre,user_id');
+  document.getElementById('avCliente').innerHTML=(cl||[]).filter(x=>x.user_id).map(x=>`<option value="${escH(x.user_id)}">${escH(x.nombre)}</option>`).join('')||'<option value="">(sin clientes vinculados)</option>';
+  pintarAvisos(); avRolCambio();
+  document.getElementById('ovAvisos').classList.add('show');
+}
+function avRolCambio(){ document.getElementById('avClienteFg').style.display=document.getElementById('avRol').value==='cliente'?'':'none'; }
+function pintarAvisos(){
+  document.getElementById('avLista').innerHTML=AVISOS.length?AVISOS.map(a=>`<div class="ent" style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+    <div><b>${escH(a.nombre)}</b> <span class="pill ${a.rol==='tecnica'?'valoracion':'completo'}">${a.rol==='tecnica'?'Técnica':'Cliente'}</span><br><span class="sub" style="margin:0">+${escH(a.whatsapp)} · key ••••${escH(String(a.apikey).slice(-2))}${a.activo?'':' · pausado'}</span></div>
+    <div style="display:flex;gap:6px"><button class="btn btn-ghost mini" onclick="probarAviso('${a.id}')">Probar</button><button class="btn btn-ghost mini" onclick="pausarAviso('${a.id}')">${a.activo?'Pausar':'Activar'}</button><button class="btn btn-ghost mini" style="color:var(--red)" onclick="borrarAviso('${a.id}')"><i class="fas fa-trash"></i></button></div>
+  </div>`).join(''):'<p class="empty">Aún no hay nadie con avisos por WhatsApp.</p>';
+}
+async function guardarAviso(){
+  const rol=document.getElementById('avRol').value;
+  const row={ rol, nombre:document.getElementById('avNombre').value.trim(), whatsapp:document.getElementById('avWa').value.replace(/\D/g,''), apikey:document.getElementById('avKey').value.trim(),
+    user_id: rol==='cliente'?(document.getElementById('avCliente').value||null):null };
+  if(!row.nombre||row.whatsapp.length<8||!row.apikey){ alert('Completa nombre, WhatsApp con indicativo y la API key.'); return; }
+  if(rol==='cliente'&&!row.user_id){ alert('Elige la cuenta del cliente.'); return; }
+  const { error }=await sb.from('alineadores_avisos_wa').insert(row);
+  if(error){ alert('Error: '+error.message); return; }
+  ['avNombre','avWa','avKey'].forEach(id=>document.getElementById(id).value='');
+  await abrirAvisos();
+}
+async function pausarAviso(id){ const a=AVISOS.find(x=>x.id===id); if(!a) return; await sb.from('alineadores_avisos_wa').update({activo:!a.activo}).eq('id',id); await abrirAvisos(); }
+async function borrarAviso(id){ if(!confirm('¿Quitar este aviso?')) return; await sb.from('alineadores_avisos_wa').delete().eq('id',id); await abrirAvisos(); }
+async function probarAviso(id){
+  const a=AVISOS.find(x=>x.id===id); if(!a) return;
+  // Prueba directa desde el navegador del admin (la key ya la tiene quien la ve aquí)
+  const txt='✅ PRODIGY: los avisos por WhatsApp de alineadores quedaron activos para '+a.nombre+'.';
+  window.open('https://api.callmebot.com/whatsapp.php?phone='+encodeURIComponent(a.whatsapp)+'&text='+encodeURIComponent(txt)+'&apikey='+encodeURIComponent(a.apikey),'_blank','noopener');
 }
 
 /* ── Ver cargos / marcar pagado ── */

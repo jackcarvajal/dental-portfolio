@@ -196,7 +196,24 @@ function render(){
 async function respaldoEmail(tipo, extra){ try{ const s=(window.ProdigyAuth&&window.ProdigyAuth.getSb?window.ProdigyAuth.getSb():sb); const { data:{ session } }=await s.auth.getSession(); fetch('/api/respaldo-alineadores',{method:'POST',keepalive:true,headers:Object.assign({'Content-Type':'application/json'},session?{Authorization:'Bearer '+session.access_token}:{}),body:JSON.stringify(Object.assign({tipo},extra||{}))}).catch(()=>{}); }catch(_){} }
 /* ── Mis casos: entregas de la técnica para aprobar ── */
 const ETAPA={viabilidad:'Viabilidad',planificacion:'Planificación'};
-const EST_CASO={valoracion:'En valoración',planificacion:'En planificación',en_tratamiento:'Planificación aprobada',terminado:'Terminado'};
+const EST_CASO={valoracion:'En valoración',planificacion:'En planificación',en_tratamiento:'Planificación aprobada',terminado:'Terminado',cancelado:'Cancelado'};
+// Cancelar: máximo 1 hora después de subirlo y sin entregas (después la técnica pudo empezar y se cobra)
+function minutosParaCancelar(c){
+  if(c.estado!=='valoracion' || entregasDe(c.id).length) return 0;
+  const min=60-Math.floor((Date.now()-new Date(c.created_at).getTime())/60000);
+  return min>0?min:0;
+}
+async function cancelarCaso(id){
+  const c=CASOS[id]||{};
+  if(!confirm('¿Cancelar el caso de '+(c.paciente||'')+'?\n\nSolo se puede durante la primera hora. No se cobra la valoración.')) return;
+  const { data,error }=await sb.rpc('aln_cancelar_caso',{ p_caso_id:id });
+  if(error || (data && data.ok===false)){ alert((data&&data.error)||(error&&error.message)||'No se pudo cancelar'); return; }
+  respaldoEmail('cancelado',{id});
+  const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
+  const { data:cg }=await sb.from('alineadores_cargos').select('*').eq('negocio','prodigy').eq('parte','cliente'); CARGOS=cg||[];
+  render();
+  alert('🛑 Caso cancelado. No se cobra la valoración y la técnica ya fue avisada.');
+}
 const EST_ENT={enviado:'Por revisar',aprobado:'Aprobada',cambios:'Pediste cambios'};
 function entregasDe(id){ return ENTREGAS.filter(e=>e.caso_id===id); }
 function renderCasos(){
@@ -208,7 +225,8 @@ function renderCasos(){
     const ult=e?`<span class="pill ${e.estado==='enviado'?'accion':escH(e.estado)}">${escH(ETAPA[e.etapa]||e.etapa)}${e.revision_num?(' r'+e.revision_num):''} · ${escH(EST_ENT[e.estado]||e.estado)}</span>`:'<span class="sub" style="margin:0">La técnica aún no envía nada</span>';
     return `<tr><td><b>${escH(c.paciente)}</b><br><span class="sub" style="margin:0">${escH(c.codigo||'')} · ${fmtD(c.created_at)}</span></td>
       <td>${escH(EST_CASO[c.estado]||c.estado||'')}</td><td>${ult}</td>
-      <td>${e?`<button class="btn ${e.estado==='enviado'?'btn-mg':'btn-ghost'} mini" onclick="verCaso('${c.id}')">${e.estado==='enviado'?'Revisar':'Ver'}</button>`:''}</td></tr>`;
+      <td>${e?`<button class="btn ${e.estado==='enviado'?'btn-mg':'btn-ghost'} mini" onclick="verCaso('${c.id}')">${e.estado==='enviado'?'Revisar':'Ver'}</button>`:''}
+        ${minutosParaCancelar(c)?`<button class="btn btn-ghost mini" style="color:var(--red)" onclick="cancelarCaso('${c.id}')" title="Solo durante la primera hora">Cancelar (${minutosParaCancelar(c)} min)</button>`:''}</td></tr>`;
   }).join('');
   // Abrir directo desde el aviso (#casos)
   if(location.hash==='#casos' && !renderCasos._hecho){ renderCasos._hecho=true; const pend=ENTREGAS.find(e=>e.estado==='enviado'); if(pend) setTimeout(()=>verCaso(pend.caso_id),300); }

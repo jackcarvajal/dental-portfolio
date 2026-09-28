@@ -178,7 +178,7 @@ async function enviar(){
   prog(100,'Listo');
   document.getElementById('formCard').style.display='none';
   const ok=document.getElementById('okCard'); ok.classList.add('show');
-  document.getElementById('okMsg').innerHTML='Paciente <b>'+escH(paciente)+'</b> · Nº <b>'+escH(codigo)+'</b>.<br>El equipo valora el caso y te responde en tu cuenta.'+(fallidos?'<br><br><b style="color:#fbbf24">⚠️ '+fallidos+' archivo(s) no se pudieron subir.</b> Envíalos por WhatsApp o vuelve a subir el caso. <a href="#" onclick="window.ProdigyReport&&ProdigyReport.abrir({tipo:\'archivos\'});return false" style="color:#EADBAE">Reportar el problema</a>':'');
+  document.getElementById('okMsg').innerHTML='Paciente <b>'+escH(paciente)+'</b> · Nº <b>'+escH(codigo)+'</b>.<br>El equipo valora el caso y te responde en tu cuenta.<br><span style="font-size:.85rem;color:#94a3b8">¿Te equivocaste? Puedes cancelarlo en <b>Mi cuenta</b> durante la <b>primera hora</b>; después la técnica ya pudo iniciar y se cobra la valoración.</span>'+(fallidos?'<br><br><b style="color:#fbbf24">⚠️ '+fallidos+' archivo(s) no se pudieron subir.</b> Envíalos por WhatsApp o vuelve a subir el caso. <a href="#" onclick="window.ProdigyReport&&ProdigyReport.abrir({tipo:\'archivos\'});return false" style="color:#EADBAE">Reportar el problema</a>':'');
   ok.scrollIntoView({behavior:'smooth',block:'center'});
 }
 window.addEventListener('DOMContentLoaded',init);

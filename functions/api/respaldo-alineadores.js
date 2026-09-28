@@ -1,11 +1,14 @@
 /**
- * PRODIGY — Correo de RESPALDO de alineadores (como cuando todo llegaba al email)
+ * PRODIGY — Correo de RESPALDO + avisos por WhatsApp de alineadores
  * POST /api/respaldo-alineadores  { tipo, id?, codigo? }
  *   tipo 'caso'       → el cliente subió un caso (orden de trabajo)            id = alineadores_casos.id
  *   tipo 'solicitud'  → llegó un caso por la página pública envia-alineadores codigo = ALN-…
  *   tipo 'entrega'    → la técnica envió viabilidad / planificación          id = alineadores_entregas.id
  *   tipo 'respuesta'  → el cliente aprobó o pidió cambios                     id = alineadores_entregas.id
  *   tipo 'pago'       → el cliente reportó un pago                            id = alineadores_pagos.id
+ *   tipo 'cancelado'  → el cliente canceló su caso (dentro de la primera hora)  id = alineadores_casos.id
+ * WhatsApp (CallMeBot, tabla alineadores_avisos_wa): caso nuevo / respuesta / cancelado → técnica;
+ * entrega → el cliente dueño del caso. { sin_email:true } = solo WhatsApp (p. ej. caso creado desde la bandeja).
  * El registro se lee en el SERVIDOR (no se confía en lo que manda el navegador) y se verifica que
  * quien llama sea el dueño o del equipo. Los archivos van como enlaces firmados de 7 días.
  * Env: RESEND_API_KEY, FROM_EMAIL (opcional), RESPALDO_EMAIL (opcional, por defecto el admin),
@@ -71,10 +74,11 @@ export async function onRequestPost({ request, env }) {
 
   let asunto = '', cuerpo = '';
 
-  if (tipo === 'caso' || tipo === 'entrega' || tipo === 'respuesta') {
+  let waTecnica = '', waCliente = '', clienteUid = null;
+  if (tipo === 'caso' || tipo === 'entrega' || tipo === 'respuesta' || tipo === 'cancelado') {
     if (!UUID.test(String(b.id || ''))) return J({ error: 'id inválido' }, 400);
     let entrega = null, casoId = b.id;
-    if (tipo !== 'caso') {
+    if (tipo === 'entrega' || tipo === 'respuesta') {
       [entrega] = await get(`alineadores_entregas?id=eq.${b.id}&select=*`);
       if (!entrega) return J({ error: 'No existe' }, 404);
       casoId = entrega.caso_id;
@@ -82,10 +86,16 @@ export async function onRequestPost({ request, env }) {
     const [c] = await get(`alineadores_casos?id=eq.${casoId}&select=*`);
     if (!c) return J({ error: 'No existe' }, 404);
     const dueno = user && c.cliente_user_id === user.id;
+    clienteUid = c.cliente_user_id;
     if (tipo === 'entrega' ? !esEquipo : !(dueno || esEquipo)) return J({ error: 'No autorizado' }, 403);
 
     const cab = `<table style="font-size:14px">${fila('Paciente', c.paciente)}${fila('Cliente', c.cliente)}${fila('Código', c.codigo)}${fila('Estado del caso', c.estado)}</table>`;
-    if (tipo === 'caso') {
+    if (tipo === 'cancelado') {
+      asunto = `🛑 Caso cancelado por el cliente — ${c.paciente}`;
+      cuerpo = `<h2>El cliente canceló el caso (dentro de la primera hora)</h2>${cab}<p>Se borraron los cargos pendientes de valoración.</p>`;
+      waTecnica = `🛑 *PRODIGY — Caso cancelado*\n\nPaciente ${c.paciente}${c.cliente ? ' (' + c.cliente + ')' : ''}: el cliente lo canceló. No lo trabajes.`;
+    } else if (tipo === 'caso') {
+      waTecnica = `😁 *PRODIGY — Caso nuevo de alineadores*\n\nPaciente ${c.paciente}${c.cliente ? ' · ' + c.cliente : ''}.\nRevisa los archivos y envía la viabilidad:\nhttps://prodigylabdental.com/app/alineadores.html`;
       asunto = `😁 Nuevo caso de alineadores — ${c.paciente} (${c.cliente || 'cliente'})`;
       cuerpo = `<h2>Nuevo caso de alineadores</h2>${cab}<table style="font-size:14px;margin-top:8px">
         ${fila('Motivo de consulta', c.motivo_consulta)}${fila('Indicación del cliente', c.indicacion_cliente)}
@@ -95,6 +105,7 @@ export async function onRequestPost({ request, env }) {
     } else if (tipo === 'entrega') {
       const etapa = entrega.etapa === 'viabilidad' ? 'Viabilidad' : 'Planificación';
       asunto = `✈️ ${etapa}${entrega.revision_num ? ' (revisión ' + entrega.revision_num + ')' : ''} enviada — ${c.paciente}`;
+      waCliente = `😁 *PRODIGY — ${etapa} lista*${entrega.revision_num ? ' (revisión ' + entrega.revision_num + ')' : ''}\n\nPaciente ${c.paciente}. Revísala y apruébala o pide cambios:\nhttps://prodigylabdental.com/app/facturacion-alineadores.html#casos`;
       cuerpo = `<h2>${esc(etapa)} enviada al cliente</h2>${cab}<table style="font-size:14px;margin-top:8px">
         ${fila('Enviada por', email)}${fila('Revisión', String(entrega.revision_num || 0))}${fila('Texto para el cliente', entrega.nota_mayra)}${fila('Enlace', entrega.enlace)}</table>
         ${await listaArchivos('alineadores-entregas', entrega.archivos)}`;
@@ -102,6 +113,7 @@ export async function onRequestPost({ request, env }) {
       const etapa = entrega.etapa === 'viabilidad' ? 'viabilidad' : 'planificación';
       const ok = entrega.estado === 'aprobado';
       asunto = `${ok ? '✅ Aprobó' : '✏️ Pidió cambios en'} la ${etapa} — ${c.paciente}`;
+      waTecnica = `${ok ? '✅' : '✏️'} *PRODIGY — ${ok ? 'Aprobada' : 'Cambios pedidos'}: ${etapa}*\n\nPaciente ${c.paciente}.${entrega.observacion_cliente ? '\n\n"' + String(entrega.observacion_cliente).slice(0, 400) + '"' : ''}\n\nhttps://prodigylabdental.com/app/alineadores.html`;
       cuerpo = `<h2>El cliente ${ok ? 'aprobó' : 'pidió cambios en'} la ${esc(etapa)}</h2>${cab}<table style="font-size:14px;margin-top:8px">
         ${fila('Respuesta', ok ? 'Aprobada' : 'Pidió cambios')}${fila('Observaciones', entrega.observacion_cliente)}${fila('Revisión', String(entrega.revision_num || 0))}</table>`;
     }
@@ -135,16 +147,33 @@ export async function onRequestPost({ request, env }) {
   const from = env.FROM_EMAIL || 'PRODIGY Lab Dental <noreply@prodigylabdental.com>';
   const html = `<div style="font-family:Arial,sans-serif;color:#0f172a;max-width:640px">${cuerpo}
     <hr style="border:none;border-top:1px solid #e2e8f0;margin:18px 0"><p style="color:#64748b;font-size:12px">Respaldo automático de la web de PRODIGY (alineadores).</p></div>`;
-  const r = await fetch('https://api.resend.com/emails', {
-    method: 'POST', headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from, to: [para], subject: asunto.slice(0, 180), html })
-  }).catch(() => null);
-  if (!r || !r.ok) {
-    const det = r ? (await r.text().catch(() => '')).slice(0, 300) : 'sin respuesta';
-    await fetch(`${SURL}/rest/v1/logs_incidencias`, { method: 'POST', headers: H,
-      body: JSON.stringify({ tipo: 'RESPALDO_EMAIL_ERROR', severidad: 'WARN', descripcion: `[respaldo-alineadores] ${tipo}: ${det}`, resuelta: false }) }).catch(() => {});
-    return J({ error: 'No se pudo enviar el correo', detalle: det }, 502);
+  let emailOk = true, det = '';
+  if (!b.sin_email) {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST', headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from, to: [para], subject: asunto.slice(0, 180), html })
+    }).catch(() => null);
+    if (!r || !r.ok) {
+      emailOk = false;
+      det = r ? (await r.text().catch(() => '')).slice(0, 300) : 'sin respuesta';
+      await fetch(`${SURL}/rest/v1/logs_incidencias`, { method: 'POST', headers: H,
+        body: JSON.stringify({ tipo: 'RESPALDO_EMAIL_ERROR', severidad: 'WARN', descripcion: `[respaldo-alineadores] ${tipo}: ${det}`, resuelta: false }) }).catch(() => {});
+    }
   }
+
+  // WhatsApp (CallMeBot) a la técnica o al cliente, si tienen el aviso activado
+  let wa = 0;
+  try {
+    const destinos = [];
+    if (waTecnica) destinos.push(...(await get('alineadores_avisos_wa?rol=eq.tecnica&activo=eq.true&select=whatsapp,apikey')).map(d => ({ ...d, txt: waTecnica })));
+    if (waCliente && clienteUid) destinos.push(...(await get(`alineadores_avisos_wa?rol=eq.cliente&activo=eq.true&user_id=eq.${clienteUid}&select=whatsapp,apikey`)).map(d => ({ ...d, txt: waCliente })));
+    const res = await Promise.all(destinos.map(d =>
+      fetch(`https://api.callmebot.com/whatsapp.php?phone=${String(d.whatsapp).replace(/\D/g, '')}&text=${encodeURIComponent(d.txt)}&apikey=${encodeURIComponent(d.apikey)}`)
+        .then(x => x.text()).catch(() => '')));
+    wa = res.filter(t => /queued|sent/i.test(t)).length;
+  } catch (_) {}
+
   await caches.default.put(unico, new Response('1', { headers: { 'Cache-Control': 'max-age=86400' } }));
-  return J({ ok: true });
+  if (!emailOk && !wa) return J({ error: 'No se pudo enviar el correo', detalle: det }, 502);
+  return J({ ok: true, email: !b.sin_email && emailOk, whatsapp: wa });
 }
