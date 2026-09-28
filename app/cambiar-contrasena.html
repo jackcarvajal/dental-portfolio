@@ -92,10 +92,11 @@ const sb = window.supabase.createClient(SURL, SANON);
 
 const params = new URLSearchParams(location.search);
 const esPrimerAcceso = params.get('primera_vez') === '1';
-// "next" solo puede apuntar a una página de ESTE sitio (evita redirección abierta a otro dominio)
+// "next" solo puede apuntar a una página de ESTE sitio (evita redirección abierta a otro dominio).
+// Se navega a la URL absoluta ya validada (sin volver a decodificar: /%2F%2Fotro.com pasaría a ///otro.com).
 const nextUrl = (function(n){
-  try{ const u = new URL(n || '/app/client-panel.html', location.origin); if(u.origin === location.origin) return u.pathname + u.search + u.hash; }catch(_){}
-  return '/app/client-panel.html';
+  try{ const u = new URL(n || '/app/client-panel.html', location.origin); if(u.origin === location.origin) return u.href; }catch(_){}
+  return location.origin + '/app/client-panel.html';
 })(params.get('next'));
 
 if (esPrimerAcceso) {
@@ -177,7 +178,7 @@ document.getElementById('form-cambiar').addEventListener('submit', async functio
     msg.className = 'msg ok';
 
     setTimeout(() => {
-      window.location.href = decodeURIComponent(nextUrl);
+      window.location.href = nextUrl;
     }, 1500);
 
   } catch(err) {
