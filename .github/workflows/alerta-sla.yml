@@ -1,0 +1,48 @@
+# ============================================================
+# PRODIGY — Alerta de casos fuera de tiempo (SLA)
+# Llama functions/api/alerta-sla.js: avisa en la campana del admin
+# y por WhatsApp de los casos que superaron su tiempo de entrega
+# (una sola vez por caso).
+# ============================================================
+
+name: Alerta SLA (casos fuera de tiempo)
+
+on:
+  schedule:
+    - cron: '0 12,16,20 * * 1-6'   # Lun-Sáb 7am, 11am y 3pm Bogotá
+  workflow_dispatch:                 # Ejecución manual desde GitHub Actions
+
+permissions:
+  contents: read
+
+jobs:
+  alerta:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Llamar alerta SLA
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "${CRON_SECRET}" ]; then
+            echo "::error::El secret CRON_SECRET de GitHub está VACÍO (Settings → Secrets → Actions)."
+            exit 1
+          fi
+          RESPONSE=$(curl -sL -w "\n%{http_code}" \
+            -A "Mozilla/5.0 (compatible; ProdigyCron/1.0)" \
+            "https://prodigylabdental.com/api/alerta-sla" \
+            -H "Authorization: Bearer ${CRON_SECRET}")
+          STATUS=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "Status: $STATUS"
+          echo "Body: $(echo "$BODY" | head -c 300)"
+          if [ "$STATUS" != "200" ]; then
+            case "$BODY" in
+              *"Just a moment"*|*"challenge"*)
+                echo "::error::Cloudflare bloqueó al robot de GitHub (Managed Challenge). Fix: WAF → regla 'Skip' para /api/alerta-sla (igual que /api/purgar-stl-storage).";;
+              *"Unauthorized"*)
+                echo "::error::CRON_SECRET no coincide entre GitHub y Cloudflare.";;
+              *)
+                echo "::error::Alerta SLA falló con status $STATUS — $BODY";;
+            esac
+            exit 1
+          fi

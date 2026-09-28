@@ -123,15 +123,23 @@ async function verFicha(id) {
   out.innerHTML = '<p class="vacio"><i class="fas fa-circle-notch fa-spin"></i> Cargando ficha…</p>';
 
   /* Todo en paralelo: el caso, sus archivos, su historial y su despacho */
-  const [ped, arch, hist, desp] = await Promise.all([
+  const [ped, arch, hist, desp, bita] = await Promise.all([
     sb.from('pedidos').select('*').eq('id',id).single(),
     sb.from('pedido_archivos').select('*').eq('pedido_id',id).order('created_at'),
     sb.from('historial_diseno').select('*').eq('pedido_id',id).order('created_at',{ascending:false}).limit(40),
-    sb.from('despachos').select('*').eq('pedido_id',id).order('created_at',{ascending:false}).limit(1)
+    sb.from('despachos').select('*').eq('pedido_id',id).order('created_at',{ascending:false}).limit(1),
+    sb.from('pedido_bitacora').select('created_at,evento,detalle,actor_email,actor_rol').eq('pedido_id',id).order('created_at',{ascending:false}).limit(80)
   ]);
 
   if (ped.error || !ped.data) { out.innerHTML = `<div class="alerta">No se pudo cargar el caso: ${esc(ped.error?.message||'')}</div>`; return; }
-  const p = ped.data, A = arch.data || [], H = hist.data || [], D = (desp.data||[])[0];
+  const p = ped.data, A = arch.data || [], D = (desp.data||[])[0];
+  /* Bitácora: lo que registra el sistema SOLO (pedido_bitacora) + lo que anotan los técnicos (historial_diseno) */
+  const EVT = { creado:'Caso creado', etapa:'Cambio de etapa', estado:'Cambio de estado', pago:'Pago', diseno_subido:'Diseño subido',
+                cambios:'Cambios pedidos', aprobado:'Diseño aprobado', archivo:'Archivo', asignado:'Asignación', fecha_entrega:'Fecha de entrega' };
+  const H = [
+    ...(bita.data || []).map(b => ({ tipo: EVT[b.evento] || b.evento, actor: b.actor_email || b.actor_rol || 'sistema', descripcion: b.detalle, created_at: b.created_at, auto: true })),
+    ...(hist.data || [])
+  ].sort((x, y) => String(y.created_at).localeCompare(String(x.created_at)));
 
   /* Archivos registrados en pedido_archivos, separados por tramo */
   const entrada = A.filter(a => a.etapa && a.etapa.startsWith('cliente'));
@@ -232,7 +240,7 @@ async function verFicha(id) {
   <div class="card">
     <h2><i class="fas fa-clock-rotate-left"></i> Quién hizo qué</h2>
     ${H.length ? `<div class="hist">${H.map(h => `<div class="it">
-        <div class="t">${esc(h.tipo||'—')} · <span style="color:var(--cyan);">${esc(h.actor||'—')}</span></div>
+        <div class="t">${h.auto?'<i class="fas fa-robot" title="Registrado automáticamente" style="color:var(--muted);margin-right:4px;"></i>':''}${esc(h.tipo||'—')} · <span style="color:var(--cyan);">${esc(h.actor||'—')}</span></div>
         <div class="m">${esc(h.descripcion||'')} — ${fech(h.created_at)}</div>
       </div>`).join('')}</div>` : '<p class="vacio">Sin historial.</p>'}
   </div>`;
