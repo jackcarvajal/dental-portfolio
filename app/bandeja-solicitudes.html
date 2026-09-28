@@ -131,6 +131,7 @@ async function cargar(){
     if(rd.error) throw rd.error;
     _scanner = rs.data||[];
     _domicilio = rd.data||[];
+    await cargarConvertidas();
     renderKPIs();
     render();
     document.getElementById('ultima-act').textContent = 'Actualizado '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
@@ -184,6 +185,11 @@ function cardScanner(s){
       <a class="a a-wa" href="https://wa.me/${wa}?text=${saludo}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Escribir</a>
       <a class="a a-cobrar" href="https://wa.me/${wa}?text=${cot}" target="_blank" rel="noopener"><i class="fas fa-file-invoice-dollar"></i> Cotizar y cobrar</a>
       ${s.archivo_url?`<button class="a a-stl" onclick="bajarStl('${escJ(s.archivo_url)}',this)"><i class="fas fa-download"></i> STL</button>`:''}
+      ${esAlineadores(s)
+        ? (_convertidas[s.id]
+            ? `<a class="a" href="alineadores.html" style="color:var(--neon)"><i class="fas fa-check"></i> Caso creado</a>`
+            : `<button class="a a-cobrar" onclick="crearCasoAlineadores('${escJ(s.id)}',this)"><i class="fas fa-teeth"></i> Crear caso de alineadores</button>`)
+        : `<a class="a" href="https://wa.me/${wa}?text=${pedirOrden(s)}" target="_blank" rel="noopener"><i class="fas fa-file-signature"></i> Pedirle la orden</a>`}
       <span class="a" style="cursor:default"><i class="fas fa-flag"></i>
         <select onchange="cambiarEstado('solicitudes_scanner','${escJ(s.id)}',this.value,${s.contactado?'null':'true'})">
           ${EST_SCANNER.map(e=>`<option value="${e}"${e===est?' selected':''}>${e.replace('_',' ')}</option>`).join('')}
@@ -228,6 +234,48 @@ function cardDomicilio(d){
       </span>
     </div>
   </div>`;
+}
+
+/* ── Convertir una solicitud en caso con un clic ──
+   · Alineadores: se crea el caso (valoración) en el tablero de alineadores con paciente, indicación y
+     archivos; se generan solos los cargos de valoración y el aviso a la técnica; la solicitud se cierra.
+   · Resto (escáner/diseño/fresado/impresión): el caso lo crea el doctor al llenar la orden (ahí
+     quedan precio, material y pago) → WhatsApp con el enlace del flujo correcto y su código. */
+let _convertidas = {};
+function esAlineadores(s){ return /alineador/i.test(s.servicio||''); }
+function pedirOrden(s){
+  const sv = String(s.servicio||'').toLowerCase();
+  const flujo = /fres/.test(sv) ? 'flujo-fresado' : /impres/.test(sv) ? 'flujo-impresion' : /termin|corona|laborat|lab/.test(sv) ? 'flujo-lab' : 'flujo-diseno';
+  return encodeURIComponent(`Hola Dr(a) ${s.doctor||''}, recibimos su escáner (${s.codigo||''}). Para empezar el trabajo complete la orden aquí (material, color y entrega): https://prodigylabdental.com/${flujo} — en notas escriba el código ${s.codigo||''} y así lo unimos a su escáner.`);
+}
+async function cargarConvertidas(){
+  try{
+    const ids = _scanner.filter(esAlineadores).map(x=>x.id);
+    if(!ids.length) return;
+    const { data } = await sb.from('alineadores_casos').select('solicitud_id').in('solicitud_id', ids);
+    _convertidas = {}; (data||[]).forEach(r => { if(r.solicitud_id) _convertidas[r.solicitud_id] = true; });
+  }catch(_){}
+}
+async function crearCasoAlineadores(id, btn){
+  const s = _scanner.find(x=>x.id===id); if(!s) return;
+  const notas = String(s.notas||'');
+  const paciente = (String(s.piezas||'').replace(/^Paciente:\s*/i,'').trim()) || 'Sin nombre';
+  const indicacion = ((notas.match(/INDICACI[ÓO]N:\s*([\s\S]*?)(\n\n|$)/i)||[])[1]||'').trim() || null;
+  const archivos = [...notas.matchAll(/→\s*(alineadores\/\S+)/g)].map(m=>m[1]);
+  if(!confirm(`¿Crear el caso de alineadores de ${paciente} (${s.clinica||s.doctor||''})?\n\nSe cobra la valoración y se avisa a la técnica.`)) return;
+  btn.disabled = true;
+  const { error } = await sb.from('alineadores_casos').insert({
+    negocio:'prodigy', codigo:s.codigo||null, solicitud_id:s.id, paciente,
+    cliente: s.clinica || s.doctor || null, estado:'valoracion',
+    fecha_recepcion: new Date().toISOString().slice(0,10),
+    indicacion_cliente: indicacion, archivos,
+    notas: 'Creado desde la bandeja (solicitud '+(s.codigo||'')+'). Doctor: '+(s.doctor||'—')+' · WhatsApp: '+(s.whatsapp||'—')+(s.email?(' · '+s.email):'')
+  });
+  btn.disabled = false;
+  if(error){ alert(/row-level|policy|permission/i.test(error.message) ? 'Solo administración, operaciones o contabilidad pueden crear el caso.' : 'No se pudo crear: '+error.message); return; }
+  await cambiarEstado('solicitudes_scanner', s.id, 'cerrado', s.contactado?null:true);
+  _convertidas[s.id] = true; render();
+  alert('✅ Caso creado en Alineadores. La técnica ya tiene el aviso.');
 }
 
 async function cambiarEstado(tabla, id, estado, marcarContactado){
