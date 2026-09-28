@@ -135,7 +135,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const escJ=s=>escH(String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n'));   // texto dentro de '…' en onclick
-const fmtD=d=>d?new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'}):'—';
+const fmtD=d=>d?new Date(/^\d{4}-\d{2}-\d{2}$/.test(d)?d+'T12:00:00':d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'}):'—';
 const nf=new Intl.NumberFormat('es-CO');
 const tipoLbl=t=>({completo:'Caso completo',valoracion:'Valoración',diferencia_a_completo:'Diferencia a completo',replaneacion_en_tiempo:'Replaneación (en tiempo)',replaneacion_fuera_tiempo:'Replaneación (fuera de tiempo)',refinamiento_sin_costo:'Refinamiento',refinamiento_con_costo:'Refinamiento (con costo)',adicional:'Adicional'})[t]||t;
 let sb, CASOS={}, CARGOS=[], PAGOS=[], ENTREGAS=[];
@@ -235,7 +235,7 @@ function renderCasos(){
   if(!lista.length){ tb.innerHTML='<tr><td colspan="4" class="empty">Aún no tienes casos. Súbelo con “Subir nuevo caso”.</td></tr>'; return; }
   tb.innerHTML=lista.map(c=>{
     const e=entregasDe(c.id)[0];
-    const ult=e?`<span class="pill ${e.estado==='enviado'?'accion':escH(e.estado)}">${escH(ETAPA[e.etapa]||e.etapa)}${e.revision_num?(' r'+e.revision_num):''} · ${escH(EST_ENT[e.estado]||e.estado)}</span>`:'<span class="sub" style="margin:0">La técnica aún no envía nada</span>';
+    const ult=e?`<span class="pill ${e.estado==='enviado'?'accion':escH(e.estado)}">${escH(ETAPA[e.etapa]||e.etapa)}${e.revision_num?(' r'+e.revision_num):''} · ${escH(EST_ENT[e.estado]||e.estado)}</span>`:(/^HIST-/.test(c.codigo||'')?'<span class="sub" style="margin:0">Entregado por correo/WhatsApp (antes del portal)</span>':'<span class="sub" style="margin:0">La técnica aún no envía nada</span>');
     return `<tr><td><b>${escH(c.paciente)}</b><br><span class="sub" style="margin:0">${escH(c.codigo||'')} · ${fmtD(c.created_at)}</span></td>
       <td>${escH(EST_CASO[c.estado]||c.estado||'')}</td><td>${ult}</td>
       <td>${e?`<button class="btn ${e.estado==='enviado'?'btn-mg':'btn-ghost'} mini" onclick="verCaso('${c.id}')">${e.estado==='enviado'?'Revisar':'Ver'}</button>`:''}
