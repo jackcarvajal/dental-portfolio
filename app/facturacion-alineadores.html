@@ -45,6 +45,11 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 .fg label{font-size:.74rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.4px;}
 .fg input,.fg select,.fg textarea{background:var(--input);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:9px 11px;border-radius:8px;font-size:.9rem;font-family:inherit;width:100%;}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;}
+.topnav .tn{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:50px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#c0c4cf;font-family:inherit;font-weight:600;font-size:.85rem;line-height:1;text-decoration:none;cursor:pointer;}
+.topnav .tn:hover{border-color:rgba(217,70,166,.5);color:#fff;}
+.topnav .tn.on{background:rgba(217,70,166,.16);border-color:#D946A6;color:#fff;}
+.topnav .tn.salir{margin-left:auto;color:#fca5a5;border-color:rgba(239,68,68,.35);}
 .mact{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap;}
 .pill.enviado{background:rgba(0,210,255,.12);color:var(--cyan);}
 .pill.aprobado{background:rgba(0,255,65,.12);color:var(--green);}
@@ -64,6 +69,14 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <body>
 <h1>😁 Mi cuenta — Alineadores</h1>
 <p class="sub" id="subtitle">Cargando…</p>
+<nav class="topnav" aria-label="Mi menú">
+  <a class="tn on" href="facturacion-alineadores.html" aria-current="page"><i class="fas fa-teeth"></i> Mis casos y cuenta</a>
+  <a class="tn" href="nueva-orden-alineadores.html"><i class="fas fa-plus"></i> Subir caso</a>
+  <a class="tn" href="client-panel.html"><i class="fas fa-house"></i> Portal principal</a>
+  <a class="tn" href="/terminos-y-legal#politica-alineadores" target="_blank" rel="noopener"><i class="fas fa-file-contract"></i> Políticas</a>
+  <a class="tn" href="cambiar-contrasena.html?next=/app/facturacion-alineadores.html"><i class="fas fa-key"></i> Cambiar contraseña</a>
+  <button type="button" class="tn salir" onclick="ProdigyAuth.signOut()"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</button>
+</nav>
 
 <div class="cards" id="cards"></div>
 

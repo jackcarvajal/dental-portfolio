@@ -92,7 +92,11 @@ const sb = window.supabase.createClient(SURL, SANON);
 
 const params = new URLSearchParams(location.search);
 const esPrimerAcceso = params.get('primera_vez') === '1';
-const nextUrl = params.get('next') || '/app/client-panel.html';
+// "next" solo puede apuntar a una página de ESTE sitio (evita redirección abierta a otro dominio)
+const nextUrl = (function(n){
+  try{ const u = new URL(n || '/app/client-panel.html', location.origin); if(u.origin === location.origin) return u.pathname + u.search + u.hash; }catch(_){}
+  return '/app/client-panel.html';
+})(params.get('next'));
 
 if (esPrimerAcceso) {
   document.getElementById('subtitle-msg').innerHTML =

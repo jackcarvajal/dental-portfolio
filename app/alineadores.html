@@ -59,6 +59,11 @@ tr:hover td{background:rgba(255,255,255,.02);}
 .chkline{display:flex;align-items:center;gap:8px;margin-bottom:11px;font-size:.85rem;color:var(--muted);}
 .mact{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;}
 .hid-cli .money-cli{display:none!important;}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;}
+.topnav .tn{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:50px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#c0c4cf;font-family:inherit;font-weight:600;font-size:.85rem;line-height:1;text-decoration:none;cursor:pointer;}
+.topnav .tn:hover{border-color:rgba(217,70,166,.5);color:#fff;}
+.topnav .tn.on{background:rgba(217,70,166,.16);border-color:#D946A6;color:#fff;}
+.topnav .tn.salir{margin-left:auto;color:#fca5a5;border-color:rgba(239,68,68,.35);}
 .hid-may .money-may{display:none!important;}
 .ent{border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:rgba(255,255,255,.02);font-size:.86rem;line-height:1.55;}
 .ent .top{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px;}
@@ -76,6 +81,13 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <body>
 <h1>😁 Alineadores — Casos y Cuentas</h1>
 <p class="sub" id="subtitle">Cargando…</p>
+<nav class="topnav" aria-label="Mi menú">
+  <a class="tn on" href="alineadores.html" aria-current="page"><i class="fas fa-teeth"></i> Mis casos</a>
+  <a class="tn money-cli" href="panel-interno-operaciones.html"><i class="fas fa-gauge"></i> Panel admin</a>
+  <a class="tn" href="ayuda.html#aln-flujo"><i class="fas fa-circle-question"></i> Centro de ayuda</a>
+  <a class="tn" href="cambiar-contrasena.html?next=/app/alineadores.html"><i class="fas fa-key"></i> Cambiar contraseña</a>
+  <button type="button" class="tn salir" onclick="ProdigyAuth.signOut()"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</button>
+</nav>
 
 <div class="bar">
   <button class="btn btn-mg" id="btnNuevo" onclick="abrirCaso()"><i class="fas fa-plus"></i> Nuevo caso</button>
@@ -202,6 +214,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <script src="../js/auth-guard.js?v=20260924"></script>
 <script>ProdigyAuth.require(['admin','operator','contabilidad','alineadores','secretaria']);</script>
 <script src="../js/notif-panel.js?v=20260924"></script>
+<script src="../js/rol-actual.js?v=20260923"></script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD=d=>d?new Date(d).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}):'—';
