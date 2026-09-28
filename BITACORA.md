@@ -16,6 +16,7 @@
 - 🟡 **Bitácora automática + alarmas** (`sql/bitacora-alarmas-2026.sql`, PENDIENTE de correr): trigger en pedidos y pedidos_doctor → `pedido_bitacora` (se ve en ficha-caso «Quién hizo qué»); aviso admin en 2ª y 3ª+ modificación. `prodigy_pedidos_sla_vencido` estaba ROTA (42804) y 3 RPC de SLA eran ejecutables sin sesión → arreglado; `.github/workflows/alerta-sla.yml` cada 4 h (lun-sáb).
 - ✅ Panel de diseño por especialidad (guías / blender / exocad) · Bandeja: convertir solicitud en caso (alineadores) o pedir la orden al doctor · Panel admin y Centro de ayuda con identidad de marca (solo Inter) · Legal: sub-procesadores Gemini y Resend · Guía `docs/GUIA-RESET-CONTRASENA.md`.
 - ✅ Arreglado: Centro de ayuda caía por 2 artículos con `notas` como texto (desde el 24-sep).
+- 🟡 Cancelación del cliente **máx. 1 hora** y sin entregas (RPC `aln_cancelar_caso`) · avisos WhatsApp CallMeBot por persona (`alineadores_avisos_wa`, tablero → «Avisos WhatsApp») · **aceptación explícita de políticas** al subir un caso (checkbox + versión; trigger rechaza sin aceptación; sección `terminos-y-legal#politica-alineadores`). SQL `sql/alineadores-cancelar-avisos-2026.sql` PENDIENTE.
 
 ## 2026-09-24  (AUDITORÍA de todo lo hecho 23-24 sep — ambos repos)
 

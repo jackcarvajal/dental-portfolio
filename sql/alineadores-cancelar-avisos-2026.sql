@@ -1,5 +1,6 @@
 -- ================================================================
 -- PRODIGY — Alineadores: CANCELAR en la primera hora + AVISOS por WhatsApp (CallMeBot)
+--           + ACEPTACIÓN EXPLÍCITA de las políticas al subir un caso
 -- Requiere: sql/alineadores-fase2-2026.sql ya corrido. 100% IDEMPOTENTE.
 -- Copiar TODO → Supabase SQL Editor → Run.
 -- ================================================================
@@ -61,4 +62,28 @@ CREATE POLICY "admin_avisos_wa" ON public.alineadores_avisos_wa
     COALESCE(auth.jwt() -> 'app_metadata' ->> 'role','') IN ('admin','operator')
     OR COALESCE(auth.jwt() ->> 'email','') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com','gerencia@prodigylabdental.com','casos@prodigylabdental.com'));
 
-SELECT 'Cancelación 1 h + avisos WhatsApp listos' AS status;
+-- ── 3) Aceptación explícita de las políticas al subir un caso ──
+--    El cliente manda la versión aceptada; la HORA la pone el servidor (no se puede falsear).
+--    Si un cliente intenta crear un caso sin aceptarlas, la base de datos lo rechaza.
+ALTER TABLE public.alineadores_casos
+  ADD COLUMN IF NOT EXISTS politicas_version     text,
+  ADD COLUMN IF NOT EXISTS politicas_aceptadas_at timestamptz;
+
+CREATE OR REPLACE FUNCTION public.aln_casos_politicas()
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE _equipo boolean;
+BEGIN
+  _equipo := COALESCE(auth.jwt() -> 'app_metadata' ->> 'role','') IN ('admin','operator','contabilidad','secretaria','alineadores')
+          OR COALESCE(auth.jwt() ->> 'email','') IN ('jackalejandroc@gmail.com','labdentalprodigy@gmail.com','gerencia@prodigylabdental.com','casos@prodigylabdental.com');
+  IF NEW.politicas_version IS NOT NULL THEN
+    NEW.politicas_aceptadas_at := now();
+  ELSIF auth.uid() IS NOT NULL AND NOT _equipo THEN
+    RAISE EXCEPTION 'Debes aceptar las políticas de alineadores para enviar el caso.';
+  END IF;
+  RETURN NEW;
+END;$$;
+DROP TRIGGER IF EXISTS trg_aln_casos_politicas ON public.alineadores_casos;
+CREATE TRIGGER trg_aln_casos_politicas BEFORE INSERT ON public.alineadores_casos
+  FOR EACH ROW EXECUTE FUNCTION public.aln_casos_politicas();
+
+SELECT 'Cancelación 1 h + avisos WhatsApp + aceptación de políticas listos' AS status;

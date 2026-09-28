@@ -166,6 +166,25 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;text-align:c
 
         <div class="prog" id="prog"><div class="pbar-wrap"><div class="pbar" id="pbar"></div></div><p class="prog-lbl" id="prog-lbl">Subiendo…</p></div>
 
+<details class="pol-aln" style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:12px 14px;margin:14px 0 10px;font-size:.9rem;color:#e2e8f0">
+          <summary style="cursor:pointer;font-weight:800;color:#D4AF37">📋 Políticas de alineadores (léelas antes de enviar)</summary>
+          <ul style="margin:8px 0 0 18px;padding:0;line-height:1.6">
+            <li><b>Valoración:</b> se cobra cada vez que la técnica revisa el caso, aunque el resultado sea «no viable». Tiene vigencia de 3 a 4 meses.</li>
+            <li><b>Cancelación:</b> solo durante la <b>primera hora</b> después de subir el caso y si aún no se ha enviado nada. Después se cobra la valoración.</li>
+            <li><b>Trabajo realizado:</b> todo lo entregado (valoración, planificación, replaneaciones y refinamientos con costo) se cobra aunque el tratamiento no continúe o el paciente desista.</li>
+            <li><b>Revisiones:</b> la planificación incluye 2 revisiones; desde la tercera se cobra como replaneación según la tarifa vigente.</li>
+            <li><b>Refinamiento:</b> uno sin costo dentro de los 6 meses del tratamiento; después, con costo.</li>
+            <li><b>Pagos:</b> corte mensual. Si pagas con PayPal se suma la comisión acordada.</li>
+            <li><b>Tiempos:</b> días hábiles en horario de Colombia (los festivos de Colombia no cuentan).</li>
+            <li><b>Resultados:</b> dependen de la calidad de los archivos (escaneo, radiografías, fotos) y de la colaboración del paciente.</li>
+            <li><b>Datos:</b> declaras tener la autorización del paciente para compartir sus datos (Ley 1581 de 2012).</li>
+          </ul>
+          <p style="margin:8px 0 0;font-size:.82rem;color:#94a3b8">Texto completo: <a href="/terminos-y-legal#politica-alineadores" target="_blank" rel="noopener" style="color:#00d2ff">Términos — Política de alineadores</a></p>
+        </details>
+        <label style="display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;font-size:.9rem;line-height:1.5;color:#e2e8f0;cursor:pointer">
+          <input type="checkbox" id="chkPoliticas" style="margin-top:3px;accent-color:#D946A6;width:17px;height:17px;flex-shrink:0">
+          <span>Leí y <b>acepto las políticas de alineadores</b>: cobro por trabajo realizado, valoración, cancelación (máx. 1 hora), revisiones, refinamientos y pagos.</span>
+        </label>
         <label class="habeas">
           <input type="checkbox" id="checkHabeas" required>
           <span>Autorizo el tratamiento de mis datos y los del paciente para gestión y planificación del caso. <a href="terminos-y-legal" style="color:#00d2ff;text-decoration:none;" target="_blank" rel="noopener noreferrer">Ver política.</a></span>
@@ -237,6 +256,7 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
   const convenio=document.getElementById('checkConvenio').checked;
   if(!doctor||!clinica||!whatsapp||!paciente||!indicacion){ pubToast('Completa los campos obligatorios (*).'); return; }
   if(!document.getElementById('checkHabeas').checked){ pubToast('Debes autorizar el tratamiento de datos.'); return; }
+  if(!document.getElementById('chkPoliticas').checked){ pubToast('Debes aceptar las políticas de alineadores.'); document.querySelector('.pol-aln').open=true; return; }
   if(!files.length){ pubToast('Adjunta al menos el STL o un ZIP con el caso.'); return; }
 
   const btn=document.getElementById('submitBtn');
@@ -277,7 +297,8 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
   setProg(78,'Guardando caso…');
   const notasFull='INDICACIÓN: '+indicacion+
     '\n\n📎 Archivos ('+subidos.length+'):\n'+subidos.map(s=>'• '+s.nombre+'  →  '+s.ruta).join('\n')+
-    (convenio?'\n\n💳 CLIENTE CONVENIO MENSUAL — sumar al corte del mes.':'');
+    (convenio?'\n\n💳 CLIENTE CONVENIO MENSUAL — sumar al corte del mes.':'')+
+    '\n\n✅ Aceptó las políticas de alineadores (alineadores-2026-09-28) el '+new Date().toLocaleString('es-CO');
 
   await sb.from('solicitudes_scanner').insert({
     negocio:'prodigy', codigo,
