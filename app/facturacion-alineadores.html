@@ -192,6 +192,8 @@ function render(){
   document.querySelector('#pagosTbl tbody').innerHTML=pr||`<tr><td colspan="5" class="empty">Aún no has reportado pagos.</td></tr>`;
 }
 
+// Correo de respaldo al admin (como cuando todo llegaba al email). Nunca bloquea.
+async function respaldoEmail(tipo, extra){ try{ const s=(window.ProdigyAuth&&window.ProdigyAuth.getSb?window.ProdigyAuth.getSb():sb); const { data:{ session } }=await s.auth.getSession(); fetch('/api/respaldo-alineadores',{method:'POST',keepalive:true,headers:Object.assign({'Content-Type':'application/json'},session?{Authorization:'Bearer '+session.access_token}:{}),body:JSON.stringify(Object.assign({tipo},extra||{}))}).catch(()=>{}); }catch(_){} }
 /* ── Mis casos: entregas de la técnica para aprobar ── */
 const ETAPA={viabilidad:'Viabilidad',planificacion:'Planificación'};
 const EST_CASO={valoracion:'En valoración',planificacion:'En planificación',en_tratamiento:'Planificación aprobada',terminado:'Terminado'};
@@ -239,6 +241,7 @@ async function responder(id,aprobar){
   if(aprobar && !confirm('¿Aprobar esta '+(ETAPA[e.etapa]||'entrega').toLowerCase()+'?')) return;
   const { data,error }=await sb.rpc('aln_entrega_responder',{ p_entrega_id:id, p_aprobar:aprobar, p_observacion:obs.trim()||null });
   if(error || (data && data.ok===false)){ alert('No se pudo guardar: '+((data&&data.error)||(error&&error.message)||'')); return; }
+  respaldoEmail('respuesta',{id});
   // Aviso por WhatsApp al laboratorio
   const c=CASOS[e.caso_id]||{};
   fetch('/api/notify-staff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({doctor:c.cliente||'Cliente alineadores',servicio:'Alineadores — '+(c.paciente||''),whatsapp:'',codigo:c.codigo||'',tipo:aprobar?'Aprobó '+(ETAPA[e.etapa]||''):'Pidió cambios en '+(ETAPA[e.etapa]||''),contexto:(aprobar?'✅ ':'✏️ ')+(c.paciente||'')+(obs.trim()?(': '+obs.trim()):'')})}).catch(()=>{});
@@ -271,7 +274,7 @@ async function guardarPago(){
       else if(window.ProdigyReport) ProdigyReport.log('pagos','Falló el comprobante '+f.name+' ('+(f.size/1048576).toFixed(1)+' MB): '+(ue.message||'sin detalle'));
     }catch(_){}
   }
-  const { error }=await sb.from('alineadores_pagos').insert({
+  const { data:pago, error }=await sb.from('alineadores_pagos').insert({
     negocio:'prodigy', cliente_user_id:window.PRODIGY_UID,
     monto, moneda:document.getElementById('pMoneda').value,
     metodo:document.getElementById('pMetodo').value,
@@ -279,9 +282,10 @@ async function guardarPago(){
     referencia:document.getElementById('pRef').value.trim()||null,
     comprobante_url:comp, nota:document.getElementById('pNota').value.trim()||null,
     estado:'reportado'
-  });
+  }).select('id').single();
   btn.disabled=false; btn.textContent='Enviar';
   if(error){ alert('Error: '+error.message); return; }
+  if(pago&&pago.id) respaldoEmail('pago',{id:pago.id});
   cerrar('ovPago');
   const { data:pg }=await sb.from('alineadores_pagos').select('*').order('created_at',{ascending:false});
   PAGOS=pg||[]; render();

@@ -100,6 +100,8 @@ h1{font-size:1.25rem;}
 <script src="../js/auth-guard.js?v=20260924"></script>
 <script>ProdigyAuth.require(['client','admin','operator','contabilidad']);</script>
 <script>
+// Correo de respaldo al admin (como cuando todo llegaba al email). Nunca bloquea.
+async function respaldoEmail(tipo, extra){ try{ const s=(window.ProdigyAuth&&window.ProdigyAuth.getSb?window.ProdigyAuth.getSb():sb); const { data:{ session } }=await s.auth.getSession(); fetch('/api/respaldo-alineadores',{method:'POST',keepalive:true,headers:Object.assign({'Content-Type':'application/json'},session?{Authorization:'Bearer '+session.access_token}:{}),body:JSON.stringify(Object.assign({tipo},extra||{}))}).catch(()=>{}); }catch(_){} }
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 let sb, files=[];
 document.querySelectorAll('.chips').forEach(g=>g.addEventListener('click',e=>{
@@ -153,7 +155,7 @@ async function enviar(){
   let cliente='Cliente';
   try{ const { data:p }=await sb.from('doctores_perfil').select('clinica,nombre').eq('id',window.PRODIGY_UID).maybeSingle(); if(p) cliente=p.clinica||p.nombre||cliente; }catch(_){}
 
-  const { error }=await sb.from('alineadores_casos').insert({
+  const { data:nuevo, error }=await sb.from('alineadores_casos').insert({
     negocio:'prodigy', codigo, cliente_user_id:window.PRODIGY_UID, cliente,
     paciente, estado:'valoracion',
     motivo_consulta:document.getElementById('motivo').value.trim()||null,
@@ -163,10 +165,11 @@ async function enviar(){
     arcada: sel('arcada'),
     archivos: rutas,
     notas: 'Orden del cliente. Archivos: '+rutas.length
-  });
+  }).select('id').single();
   btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar caso';
   if(error){ document.getElementById('prog').classList.remove('show'); alert('Error: '+error.message); return; }
 
+  if(nuevo&&nuevo.id) respaldoEmail('caso',{id:nuevo.id});
   // Aviso al staff (Mayra/equipo)
   fetch('/api/notify-staff',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({doctor:cliente,servicio:'Alineadores — '+paciente,whatsapp:'',codigo,tipo:'Nueva orden de alineadores',

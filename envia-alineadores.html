@@ -292,6 +292,8 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
     acepta_habeas:true
   });
 
+  // Correo de respaldo al admin con los enlaces de los archivos
+  fetch('/api/respaldo-alineadores',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({tipo:'solicitud',codigo})}).catch(()=>{});
   // Aviso al staff (además del trigger AFTER INSERT de la tabla)
   fetch('/api/notify-staff',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({doctor,servicio:'Alineadores — '+paciente,whatsapp,codigo,tipo:'Solicitud de alineadores',

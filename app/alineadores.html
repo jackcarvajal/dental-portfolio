@@ -438,6 +438,8 @@ async function guardarCargo(){
   cerrar('ovCargo');
   await cargar();
 }
+// Correo de respaldo al admin (como cuando todo llegaba al email). Nunca bloquea.
+async function respaldoEmail(tipo, extra){ try{ const s=(window.ProdigyAuth&&window.ProdigyAuth.getSb?window.ProdigyAuth.getSb():sb); const { data:{ session } }=await s.auth.getSession(); fetch('/api/respaldo-alineadores',{method:'POST',keepalive:true,headers:Object.assign({'Content-Type':'application/json'},session?{Authorization:'Bearer '+session.access_token}:{}),body:JSON.stringify(Object.assign({tipo},extra||{}))}).catch(()=>{}); }catch(_){} }
 /* ── Entregas al cliente (viabilidad / planificación) ── */
 const ETAPA={viabilidad:'Viabilidad',planificacion:'Planificación'};
 const EST_ENT={enviado:'Esperando al cliente',aprobado:'Aprobada',cambios:'Pidió cambios'};
@@ -503,9 +505,10 @@ async function guardarEntrega(){
   }
   if(files.length && !rutas.length && !nota && !enlace){ btn.disabled=false; prog.textContent=''; alert('No se pudo subir ningún archivo. Intenta de nuevo o comparte un enlace.'); return; }
   prog.textContent='Enviando al cliente…';
-  const { error }=await sb.from('alineadores_entregas').insert({ caso_id:casoId, etapa, nota_mayra:nota||null, enlace:enlace||null, archivos:rutas });
+  const { data:ent, error }=await sb.from('alineadores_entregas').insert({ caso_id:casoId, etapa, nota_mayra:nota||null, enlace:enlace||null, archivos:rutas }).select('id').single();
   btn.disabled=false; prog.textContent='';
   if(error){ alert('Error: '+error.message); return; }
+  if(ent&&ent.id) respaldoEmail('entrega',{id:ent.id});
   // Guardar también el texto como viabilidad del caso (lo que ya se usaba en la tabla)
   if(etapa==='viabilidad' && nota){ await sb.from('alineadores_casos').update({ viabilidad: nota.slice(0,120) }).eq('id',casoId); }
   if(fallidos.length) alert('Enviado, pero no subieron: '+fallidos.join(', ')+'. Súbelos en otra entrega o como enlace.');
