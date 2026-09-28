@@ -17,6 +17,16 @@ Para estimar la cantidad de alineadores se requiere: **STL + fotos del paciente 
 - Indicaciones del ortodoncista.
 - Indicar si está de acuerdo con **IPR** y con el uso de **attachments** o posibles aditamentos.
 
+## Cancelación de un caso subido por error
+- El cliente puede cancelarlo **solo durante la primera hora** después de subirlo y si la técnica **aún no envió nada** (botón «Cancelar» en Mi cuenta — Alineadores).
+- Pasada la hora, la técnica ya pudo iniciar el trabajo: **se cobra la valoración**.
+- Al cancelar se borran los cargos pendientes (cliente y técnica) y la técnica recibe aviso (campana y WhatsApp).
+
+## Avisos
+- Campana 🔔 en la web: caso nuevo → técnica · entrega → cliente · respuesta/cancelación → técnica.
+- WhatsApp (CallMeBot, se configura en el tablero → «Avisos WhatsApp»): los mismos avisos para la técnica y el cliente que lo activen.
+- Correo de respaldo al admin de todo (casos, entregas, respuestas, pagos) con enlaces a los archivos por 7 días.
+
 ## 2. Replaneación
 Solicitada por el ortodoncista si el paciente no va acorde al plan diseñado. Revisar aprox. **a mitad de tratamiento**.
 - Si va **acorde** con el tiempo del plan → cobro adicional **($20)**.

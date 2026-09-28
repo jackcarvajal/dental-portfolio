@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-24c",
+  "version": "2026-09-28",
   "categorias": [
     {
       "id": "inicio",
@@ -330,7 +330,8 @@
         "El cliente la ve en **Mi cuenta — Alineadores** y pulsa **Aprobar** o **Pedir cambios**. La técnica recibe el aviso.",
         "Aprobada la viabilidad, la técnica entrega la **planificación** (video/PDF/enlace del visor). El cliente puede pedir **hasta 2 revisiones** incluidas; desde la tercera, el sistema le avisa que puede tener costo.",
         "Aprobada la planificación, el caso pasa a **Planificación aprobada** y se envían los **modelos a impresión**.",
-        "Con los modelos entregados se marca **Completar** y el caso termina (cobra solo la diferencia)."
+        "Con los modelos entregados se marca **Completar** y el caso termina (cobra solo la diferencia).",
+        "Avisos: la campana 🔔 siempre; por **WhatsApp** a quien lo tenga activado (tablero → «Avisos WhatsApp»), y un **correo de respaldo** al admin de todo."
       ],
       "notas": [
         "La valoración es válida **3 a 4 meses**; pasado ese tiempo hay que valorar de nuevo con archivos nuevos."
@@ -400,7 +401,8 @@
         "**Desde su portal (recomendado)**: entra → **Mi cuenta Alineadores** → **Subir nuevo caso**. El caso le llega directo a la técnica.",
         "**Desde la web pública**: prodigylabdental.com/envia-alineadores. Llega a la **Bandeja** como solicitud.",
         "Archivos permitidos: **STL, ZIP, JPG, PNG, PDF, DCM** (máx. 50 MB cada uno). Lo ideal: un ZIP con todo.",
-        "Si algún archivo no sube, la pantalla avisa cuántos fallaron para enviarlos por WhatsApp."
+        "Si algún archivo no sube, la pantalla avisa cuántos fallaron para enviarlos por WhatsApp.",
+        "Si el cliente subió un caso por error, puede **cancelarlo solo durante la primera hora** (y si la técnica aún no envió nada). Después se cobra la valoración."
       ],
       "kw": "cliente subir caso orden portal archivos stl zip radiografia fotos",
       "rel": [
