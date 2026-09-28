@@ -12,10 +12,10 @@
 <style>
 :root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--card:#0d1520;--input:#0a1628;--border:rgba(212,175,55,.18);--text:#f5f5f7;--muted:#94a3b8;--red:#ef4444;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',sans-serif;padding:16px;visibility:hidden;max-width:900px;margin:0 auto;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',sans-serif;padding:16px;visibility:hidden;max-width:1000px;margin:0 auto;}
 h1{font-size:1.3rem;margin-bottom:2px;}
 .sub{color:var(--muted);font-size:.85rem;margin-bottom:16px;}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px;}
 .kc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;}
 .kc .k{font-size:.72rem;color:var(--muted);text-transform:uppercase;font-weight:800;letter-spacing:.4px;}
 .kc .v{font-size:1.6rem;font-weight:900;margin-top:4px;}
@@ -64,6 +64,10 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 .btn-ok{background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.45);color:var(--green);}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<link rel="stylesheet" href="../css/aln.css?v=20260928">
 <script src="../js/reportar-problema.js?v=20260924c"></script>
 </head>
 <body>
@@ -79,30 +83,54 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 </nav>
 
 <div class="cards" id="cards"></div>
+<p class="guia" id="guia"></p>
 
-<div style="margin-bottom:16px;"><a class="btn btn-mg" href="nueva-orden-alineadores.html" style="width:100%"><i class="fas fa-plus"></i> Subir nuevo caso (orden de trabajo)</a></div>
-
-<div class="sec-t" id="casos"><i class="fas fa-teeth" style="color:var(--cyan)"></i> Mis casos — viabilidad y planificación</div>
-<p class="sub" style="margin:-4px 0 10px"><a href="/terminos-y-legal#politica-alineadores" target="_blank" rel="noopener" style="color:var(--cyan)">📋 Políticas de alineadores</a> · Cuando la técnica te envía una viabilidad o una planificación aparece aquí y en la campana 🔔. Revísala y pulsa <b>Aprobar</b> o <b>Pedir cambios</b>. La planificación incluye 2 revisiones.</p>
-<div class="tw"><table id="casosTbl"><thead><tr><th>Paciente</th><th>Estado</th><th>Última entrega</th><th></th></tr></thead><tbody></tbody></table></div>
-
-<div class="pay" style="margin-top:18px">
-  <b>💳 Cómo pagar</b><br>
-  <span id="payTxt">• <b>PayPal:</b> al monto del estado de cuenta se le suma la comisión de PayPal.</span><br>
-  Luego pulsa <b>“Reportar pago”</b> y sube el comprobante 👇
+<div class="acciones">
+  <a class="btn btn-mg" href="nueva-orden-alineadores.html"><i class="fas fa-plus"></i> Subir nuevo caso</a>
+  <span id="ppBtn"></span>
+  <button type="button" class="btn btn-ghost" onclick="abrirPago()"><i class="fas fa-upload"></i> Reportar pago</button>
 </div>
 
-<div id="ppBtn" style="margin-bottom:10px;"></div>
-<div style="margin-bottom:8px;"><button class="btn btn-mg" onclick="abrirPago()"><i class="fas fa-upload"></i> Reportar pago / subir comprobante</button></div>
+<div class="tabs" role="tablist" aria-label="Secciones">
+  <button type="button" class="tab on" role="tab" data-tab="casos" onclick="verTab('casos')"><i class="fas fa-teeth"></i> Mis casos <span class="n" id="nRev" title="Por revisar"></span></button>
+  <button type="button" class="tab" role="tab" data-tab="cuenta" onclick="verTab('cuenta')"><i class="fas fa-file-invoice-dollar"></i> Estado de cuenta</button>
+  <button type="button" class="tab" role="tab" data-tab="pagos" onclick="verTab('pagos')"><i class="fas fa-receipt"></i> Mis pagos</button>
+</div>
 
-<div class="sec-t"><i class="fas fa-file-invoice-dollar" style="color:var(--gold)"></i> Estado de cuenta por mes</div>
-<div class="tw"><table id="corteTbl"><thead><tr><th>Mes</th><th>Casos</th><th>Total</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+<section class="panel on" id="p-casos" role="tabpanel">
+  <div class="chips" id="chips" aria-label="Filtrar casos"></div>
+  <div class="filters"><input type="search" id="fBuscar" placeholder="Buscar paciente o código…" oninput="renderCasos()" aria-label="Buscar"></div>
+  <div class="tw"><table id="casosTbl" class="rtable"><thead><tr><th>Paciente</th><th>Estado</th><th>Tratamiento</th><th>Última entrega</th><th></th></tr></thead><tbody></tbody></table></div>
+  <details class="como">
+    <summary>¿Cómo funciona?</summary>
+    <ul>
+      <li>Cuando la técnica te envía una <b>viabilidad</b> o una <b>planificación</b> aparece como <b>Por revisar</b> (y en la campana 🔔). Pulsa <b>Revisar</b> y elige <b>Aprobar</b> o <b>Pedir cambios</b>. La planificación incluye 2 revisiones.</li>
+      <li><b>Tratamiento</b>: con la fecha de envío del plan y la duración se estima el fin. Hasta 6 meses después del fin tienes un <b>refinamiento sin costo</b>; después el término está vencido y el refinamiento tiene costo.</li>
+      <li>Puedes cancelar un caso solo durante la primera hora después de subirlo. <a href="/terminos-y-legal#politica-alineadores" target="_blank" rel="noopener" style="color:var(--cyan)">Políticas de alineadores</a>.</li>
+    </ul>
+  </details>
+</section>
 
-<div class="sec-t"><i class="fas fa-list" style="color:var(--cyan)"></i> Detalle de cargos</div>
-<div class="tw"><table id="cargosTbl"><thead><tr><th>Paciente</th><th>Concepto</th><th>Mes</th><th>Monto</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+<section class="panel" id="p-cuenta" role="tabpanel">
+  <div class="charts">
+    <div class="chart"><h4>Tu estado de cuenta por mes</h4><p class="sub">USD, por mes de corte</p><div id="chCuenta"></div></div>
+    <div class="pay" style="margin:0">
+      <b>💳 Cómo pagar</b><br>
+      <span id="payTxt">• <b>PayPal:</b> al monto del estado de cuenta se le suma la comisión de PayPal.</span><br>
+      Luego pulsa <b>«Reportar pago»</b> y sube el comprobante.
+    </div>
+  </div>
+  <div class="sec-t"><i class="fas fa-calendar-check" style="color:var(--gold)"></i> Resumen por mes</div>
+  <div class="tw"><table id="corteTbl"><thead><tr><th>Mes</th><th>Casos</th><th>Total</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+  <details class="como">
+    <summary>Ver el detalle de cada cargo</summary>
+    <div class="tw" style="margin-top:10px"><table id="cargosTbl" class="rtable"><thead><tr><th>Paciente</th><th>Concepto</th><th>Mes</th><th>Monto</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+  </details>
+</section>
 
-<div class="sec-t"><i class="fas fa-receipt" style="color:var(--green)"></i> Mis pagos reportados</div>
-<div class="tw"><table id="pagosTbl"><thead><tr><th>Fecha</th><th>Monto</th><th>Método</th><th>Referencia</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+<section class="panel" id="p-pagos" role="tabpanel">
+  <div class="tw"><table id="pagosTbl" class="rtable"><thead><tr><th>Fecha</th><th>Monto</th><th>Método</th><th>Referencia</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+</section>
 
 <!-- Modal entregas de un caso -->
 <div class="ov" id="ovEnt"><div class="modal" style="max-width:620px">
@@ -132,6 +160,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <script src="../js/auth-guard.js?v=20260924"></script>
 <script>ProdigyAuth.require(['client','admin','operator','contabilidad']);</script>
 <script src="../js/notif-panel.js?v=20260924"></script>
+<script src="../js/aln-comun.js?v=20260928"></script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const escJ=s=>escH(String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n'));   // texto dentro de '…' en onclick
@@ -157,7 +186,7 @@ function textoComision(){
 
 async function init(){
   sb=window.ProdigyAuth.getSb();
-  const { data:cs } = await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at').eq('negocio','prodigy').order('created_at',{ascending:false});
+  const { data:cs } = await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento').eq('negocio','prodigy').order('created_at',{ascending:false});
   (cs||[]).forEach(c=>CASOS[c.id]=c);
   { const { data:en, error:ee } = await sb.from('alineadores_entregas').select('*').order('created_at',{ascending:false}); ENTREGAS = ee ? [] : (en||[]); }
   try{ const { data:cf } = await sb.from('alineadores_clientes').select('comision_paypal').eq('user_id',window.PRODIGY_UID).maybeSingle(); if(cf && cf.comision_paypal!=null) COMISION_ACORDADA=Number(cf.comision_paypal); }catch(_){}
@@ -166,7 +195,10 @@ async function init(){
   CARGOS = cg||[];
   const { data:pg } = await sb.from('alineadores_pagos').select('*').order('created_at',{ascending:false});
   PAGOS = pg||[];
-  document.getElementById('subtitle').textContent='Tus casos (viabilidad y planificación para aprobar), lo facturado y tus pagos. Los montos están en USD.';
+  document.getElementById('subtitle').textContent='Tus casos, tu estado de cuenta y tus pagos. Los montos están en USD.';
+  try{ FIL=localStorage.getItem('alnc_fil')||'todos'; }catch(_){}
+  let tab='casos'; try{ tab=localStorage.getItem('alnc_tab')||'casos'; }catch(_){}
+  verTab(location.hash==='#casos'?'casos':tab);
   render();
 }
 
@@ -175,9 +207,17 @@ function money(m,mon){ return mon==='COP'?(nf.format(Math.round(m))+' COP'):('$'
 function render(){
   const pend=CARGOS.filter(c=>c.estado_pago!=='pagado').reduce((a,c)=>a+Number(c.monto||0),0);
   const pag =CARGOS.filter(c=>c.estado_pago==='pagado').reduce((a,c)=>a+Number(c.monto||0),0);
+  const lista=Object.values(CASOS);
+  const nRev=lista.filter(c=>etapaCli(c)==='revisar').length;
+  const nTrat=lista.filter(c=>(ALN.trat(c)||{}).k==='curso').length;
+  const nRef=lista.filter(c=>(ALN.trat(c)||{}).k==='refina').length;
   document.getElementById('cards').innerHTML=`
     <div class="kc deuda"><div class="k">Pendiente por pagar</div><div class="v">$${nf.format(Math.round(pend))}</div><div class="sub" style="margin:0">USD</div></div>
-    <div class="kc pagado"><div class="k">Ya pagado</div><div class="v">$${nf.format(Math.round(pag))}</div><div class="sub" style="margin:0">USD</div></div>`;
+    <div class="kc pagado"><div class="k">Ya pagado</div><div class="v">$${nf.format(Math.round(pag))}</div><div class="sub" style="margin:0">USD</div></div>
+    <div class="kc info"><div class="k">Por revisar</div><div class="v">${nRev}</div><div class="sub" style="margin:0">viabilidad o plan</div></div>
+    <div class="kc mg"><div class="k">En tratamiento</div><div class="v">${nTrat}</div><div class="sub" style="margin:0">${nRef} con refinamiento sin costo</div></div>`;
+  document.getElementById('guia').innerHTML = nRev ? `👉 Tienes <b>${nRev}</b> entrega${nRev===1?'':'s'} por revisar: pulsa <b>Revisar</b> para aprobar o pedir cambios.` : '';
+  document.getElementById('nRev').textContent = nRev||'';
   renderCasos();
   document.getElementById('payTxt').innerHTML='• <b>PayPal:</b> al monto del estado de cuenta '+textoComision()+'.';
   // Botón PayPal (monto con comisión incluida para que llegue el neto completo)
@@ -185,25 +225,58 @@ function render(){
   if(ppEl){
     const g=grossUp(pend);
     if(PAYPAL_HANDLE && pend>0){
-      ppEl.innerHTML=`<a class="btn btn-mg" style="background:linear-gradient(135deg,#003087,#0070ba)" href="https://www.paypal.com/paypalme/${encodeURIComponent(PAYPAL_HANDLE)}/${g}USD" target="_blank" rel="noopener"><i class="fab fa-paypal"></i> Pagar $${nf.format(g)} con PayPal</a> <span class="sub">Incluye la comisión para que el laboratorio reciba $${nf.format(Math.round(pend))} completos. Luego sube tu comprobante 👇</span>`;
+      ppEl.innerHTML=`<a class="btn btn-mg" style="background:linear-gradient(135deg,#003087,#0070ba)" href="https://www.paypal.com/paypalme/${encodeURIComponent(PAYPAL_HANDLE)}/${g}USD" target="_blank" rel="noopener" title="Incluye la comisión para que el laboratorio reciba $${nf.format(Math.round(pend))} completos"><i class="fab fa-paypal"></i> Pagar $${nf.format(g)} con PayPal</a>`;
     } else if(pend>0){
       // Sin enlace de PayPal configurado: pedirlo por WhatsApp con el monto ya calculado
       const txt=`Hola PRODIGY, quiero pagar mi estado de cuenta de alineadores: $${pend} USD (con comisión de PayPal: $${g} USD). ¿Me envían el enlace de pago?`;
-      ppEl.innerHTML=`<a class="btn btn-mg" style="background:#25D366" href="https://wa.me/${WA_LAB}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Pedir enlace de pago PayPal ($${nf.format(g)} USD)</a>`;
+      ppEl.innerHTML=`<a class="btn btn-mg" style="background:#1fa855" href="https://wa.me/${WA_LAB}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Pedir enlace de pago ($${nf.format(g)} USD con PayPal)</a>`;
     } else ppEl.innerHTML='';
   }
-  // Corte por mes
+  // Corte por mes (tabla + gráfico)
   const meses={};
   for(const c of CARGOS){ const m=c.mes_corte||'(sin mes)'; meses[m]=meses[m]||{t:0,n:0,pend:0}; meses[m].t+=Number(c.monto||0); meses[m].n++; if(c.estado_pago!=='pagado') meses[m].pend+=Number(c.monto||0); }
-  const cr=Object.keys(meses).sort().reverse().map(m=>{const v=meses[m];const st=v.pend<=0?'<span class="pill pagado">pagado</span>':'<span class="pill pend">pendiente</span>';return `<tr><td>${escH(m)}</td><td>${v.n}</td><td>$${nf.format(Math.round(v.t))} USD</td><td>${st}</td></tr>`;}).join('');
+  const cr=Object.keys(meses).sort().reverse().map(m=>{const v=meses[m];const st=v.pend<=0?'<span class="pill pagado">pagado</span>':(v.pend<v.t?'<span class="pill factur">pago parcial</span>':'<span class="pill pend">pendiente</span>');return `<tr><td>${escH(ALN.mesLbl(m))}</td><td>${v.n}</td><td>$${nf.format(Math.round(v.t))} USD</td><td>${st}</td></tr>`;}).join('');
   document.querySelector('#corteTbl tbody').innerHTML=cr||`<tr><td colspan="4" class="empty">Aún no tienes cargos.</td></tr>`;
+  ALN.barras(document.getElementById('chCuenta'),
+    ALN.mesesDe(CARGOS.map(x=>x.mes_corte),9).map(m=>{ const v={}; CARGOS.filter(x=>x.mes_corte===m).forEach(x=>{ const k=x.estado_pago==='pagado'?'pag':(x.estado_pago==='facturado'?'fac':'pen'); v[k]=(v[k]||0)+Number(x.monto||0); }); return {lab:ALN.mesLbl(m), vals:v}; }),
+    [{k:'pag',lbl:'Pagado',color:'#00FF41'},{k:'fac',lbl:'Facturado',color:'#D4AF37'},{k:'pen',lbl:'Por facturar',color:'#D946A6'}], x=>'$'+nf.format(Math.round(x)));
   // Detalle
-  const dr=CARGOS.map(c=>{const st=c.estado_pago==='pagado'?'pagado':(c.estado_pago==='facturado'?'factur':'pend');return `<tr><td>${escH((CASOS[c.caso_id]||{}).paciente||'—')}</td><td>${escH(tipoLbl(c.tipo))}</td><td>${escH(c.mes_corte||'—')}</td><td>${money(c.monto,c.moneda)}</td><td><span class="pill ${st}">${escH(c.estado_pago)}</span></td></tr>`;}).join('');
+  const dr=CARGOS.slice().sort((a,b)=>String(b.mes_corte||'').localeCompare(String(a.mes_corte||''))).map(c=>{const st=c.estado_pago==='pagado'?'pagado':(c.estado_pago==='facturado'?'factur':'pend');return `<tr><td class="pac" data-l="Paciente"><div><b>${escH((CASOS[c.caso_id]||{}).paciente||'—')}</b></div></td><td data-l="Concepto"><div>${escH(tipoLbl(c.tipo))}</div></td><td data-l="Mes"><div>${escH(ALN.mesLbl(c.mes_corte))}</div></td><td data-l="Monto"><div>${money(c.monto,c.moneda)}</div></td><td data-l="Estado"><div><span class="pill ${st}">${escH(c.estado_pago)}</span></div></td></tr>`;}).join('');
   document.querySelector('#cargosTbl tbody').innerHTML=dr||`<tr><td colspan="5" class="empty">Sin cargos.</td></tr>`;
   // Pagos
-  const pr=PAGOS.map(p=>`<tr><td>${fmtD(p.created_at)}</td><td>${money(p.monto,p.moneda)}</td><td>${escH(p.metodo||'—')}</td><td>${escH(p.referencia||'—')}</td><td><span class="pill ${p.estado}">${escH(p.estado)}</span></td></tr>`).join('');
+  const pr=PAGOS.map(p=>`<tr><td data-l="Fecha"><div>${fmtD(p.created_at)}</div></td><td data-l="Monto"><div>${money(p.monto,p.moneda)}</div></td><td data-l="Método"><div>${escH(p.metodo||'—')}</div></td><td data-l="Referencia"><div>${escH(p.referencia||'—')}</div></td><td data-l="Estado"><div><span class="pill ${escH(p.estado)}">${escH(p.estado)}</span></div></td></tr>`).join('');
   document.querySelector('#pagosTbl tbody').innerHTML=pr||`<tr><td colspan="5" class="empty">Aún no has reportado pagos.</td></tr>`;
 }
+
+/* ── Pestañas y filtros ── */
+let FIL='todos';
+function verTab(t){
+  if(!document.getElementById('p-'+t)) t='casos';
+  document.querySelectorAll('.tab').forEach(b=>{ const on=b.dataset.tab===t; b.classList.toggle('on',on); b.setAttribute('aria-selected',on?'true':'false'); });
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));
+  try{ localStorage.setItem('alnc_tab',t); }catch(_){}
+}
+function setFil(k){ FIL=k; try{ localStorage.setItem('alnc_fil',k); }catch(_){} renderCasos(); }
+// revisar (hay una entrega esperando tu respuesta) · proceso (la técnica trabaja) · entregado · soloval · cancelado
+function etapaCli(c){
+  if(c.estado==='cancelado') return 'cancelado';
+  if(ALN.soloVal(c)) return 'soloval';
+  const e=entregasDe(c.id)[0];
+  if(e && e.estado==='enviado') return 'revisar';
+  if(c.estado==='terminado') return 'entregado';
+  return 'proceso';
+}
+const faseC=c=>(ALN.trat(c)||{}).k;
+const FILTROS=[
+  {k:'todos',   lbl:'Todos', f:()=>true},
+  {k:'revisar', lbl:'Por revisar', dot:'var(--cyan)', f:c=>etapaCli(c)==='revisar'},
+  {k:'proceso', lbl:'En proceso', dot:'var(--mg)', f:c=>etapaCli(c)==='proceso'},
+  {k:'curso',   lbl:'En tratamiento', dot:'#00d2ff', f:c=>faseC(c)==='curso'},
+  {k:'refina',  lbl:'Refinamiento sin costo', dot:'var(--green)', f:c=>faseC(c)==='refina'},
+  {k:'vencido', lbl:'Término vencido', dot:'#64748b', f:c=>faseC(c)==='vencido'},
+  {k:'soloval', lbl:'Solo valoración', dot:'#94a3b8', f:c=>etapaCli(c)==='soloval'},
+  {k:'cancelado', lbl:'Cancelados', dot:'#475569', f:c=>c.estado==='cancelado', ocultarSiCero:true}
+];
 
 // Correo de respaldo al admin (como cuando todo llegaba al email). Nunca bloquea.
 async function respaldoEmail(tipo, extra){ try{ const s=(window.ProdigyAuth&&window.ProdigyAuth.getSb?window.ProdigyAuth.getSb():sb); const { data:{ session } }=await s.auth.getSession(); fetch('/api/respaldo-alineadores',{method:'POST',keepalive:true,headers:Object.assign({'Content-Type':'application/json'},session?{Authorization:'Bearer '+session.access_token}:{}),body:JSON.stringify(Object.assign({tipo},extra||{}))}).catch(()=>{}); }catch(_){} }
@@ -222,7 +295,7 @@ async function cancelarCaso(id){
   const { data,error }=await sb.rpc('aln_cancelar_caso',{ p_caso_id:id });
   if(error || (data && data.ok===false)){ alert((data&&data.error)||(error&&error.message)||'No se pudo cancelar'); return; }
   respaldoEmail('cancelado',{id});
-  const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
+  const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
   const { data:cg }=await sb.from('alineadores_cargos').select('*').eq('negocio','prodigy').eq('parte','cliente'); CARGOS=cg||[];
   render();
   alert('🛑 Caso cancelado. No se cobra la valoración y la técnica ya fue avisada.');
@@ -230,16 +303,32 @@ async function cancelarCaso(id){
 const EST_ENT={enviado:'Por revisar',aprobado:'Aprobada',cambios:'Pediste cambios'};
 function entregasDe(id){ return ENTREGAS.filter(e=>e.caso_id===id); }
 function renderCasos(){
-  const lista=Object.values(CASOS);
+  const q=((document.getElementById('fBuscar')||{}).value||'').toLowerCase().trim();
+  const base=Object.values(CASOS).sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)))
+    .filter(c=>!q || ((c.paciente||'')+' '+(c.codigo||'')).toLowerCase().includes(q));
+  if(!FILTROS.some(x=>x.k===FIL)) FIL='todos';
+  document.getElementById('chips').innerHTML=FILTROS.map(x=>{
+    const n=base.filter(x.f).length;
+    if(x.ocultarSiCero && !n && FIL!==x.k) return '';
+    return `<button type="button" class="chip ${FIL===x.k?'on':''} ${n?'':'cero'}" aria-pressed="${FIL===x.k}" onclick="setFil('${x.k}')">${x.dot?`<span class="dot" style="background:${x.dot}"></span>`:''}${x.lbl} <b>${n}</b></button>`;
+  }).join('');
+  const lista=base.filter(FILTROS.find(x=>x.k===FIL).f);
   const tb=document.querySelector('#casosTbl tbody');
-  if(!lista.length){ tb.innerHTML='<tr><td colspan="4" class="empty">Aún no tienes casos. Súbelo con “Subir nuevo caso”.</td></tr>'; return; }
+  if(!Object.keys(CASOS).length){ tb.innerHTML='<tr><td colspan="5" class="empty">Aún no tienes casos. Súbelo con «Subir nuevo caso».</td></tr>'; return; }
+  if(!lista.length){ tb.innerHTML='<tr><td colspan="5" class="empty">Ningún caso coincide con este filtro.</td></tr>'; return; }
   tb.innerHTML=lista.map(c=>{
-    const e=entregasDe(c.id)[0];
-    const ult=e?`<span class="pill ${e.estado==='enviado'?'accion':escH(e.estado)}">${escH(ETAPA[e.etapa]||e.etapa)}${e.revision_num?(' r'+e.revision_num):''} · ${escH(EST_ENT[e.estado]||e.estado)}</span>`:(/^HIST-/.test(c.codigo||'')?'<span class="sub" style="margin:0">Entregado por correo/WhatsApp (antes del portal)</span>':'<span class="sub" style="margin:0">La técnica aún no envía nada</span>');
-    return `<tr><td><b>${escH(c.paciente)}</b><br><span class="sub" style="margin:0">${escH(c.codigo||'')} · ${fmtD(c.created_at)}</span></td>
-      <td>${escH(EST_CASO[c.estado]||c.estado||'')}</td><td>${ult}</td>
-      <td>${e?`<button class="btn ${e.estado==='enviado'?'btn-mg':'btn-ghost'} mini" onclick="verCaso('${c.id}')">${e.estado==='enviado'?'Revisar':'Ver'}</button>`:''}
-        ${minutosParaCancelar(c)?`<button class="btn btn-ghost mini" style="color:var(--red)" onclick="cancelarCaso('${c.id}')" title="Solo durante la primera hora">Cancelar (${minutosParaCancelar(c)} min)</button>`:''}</td></tr>`;
+    const e=entregasDe(c.id)[0], et=etapaCli(c);
+    const ult=e?`<span class="pill ${e.estado==='enviado'?'accion':escH(e.estado)}">${escH(ETAPA[e.etapa]||e.etapa)}${e.revision_num?(' r'+e.revision_num):''} · ${escH(EST_ENT[e.estado]||e.estado)}</span><span class="l2">${fmtD(e.created_at)}</span>`
+      :(/^HIST-/.test(c.codigo||'')?'<span class="l2" style="margin:0" title="Entregado antes de que existiera el portal">Por correo/WhatsApp</span>':'<span class="l2" style="margin:0">La técnica aún no envía nada</span>');
+    const estado = et==='soloval' ? 'Solo valoración' : (et==='entregado' ? 'Diseño entregado' : (EST_CASO[c.estado]||c.estado||''));
+    const min=minutosParaCancelar(c);
+    return `<tr>
+      <td class="pac" data-l="Paciente"><div><b>${escH(c.paciente)}</b><span class="l2">${escH(c.codigo||'')} · ${fmtD(c.created_at)}</span></div></td>
+      <td data-l="Estado"><div>${escH(estado)}${c.plan_tratamiento?`<span class="l2">${escH(c.plan_tratamiento)}</span>`:''}</div></td>
+      <td data-l="Tratamiento"><div>${ALN.celdaTrat(c)}</div></td>
+      <td data-l="Última entrega"><div>${ult}</div></td>
+      <td data-l=""><div class="acts">${e?`<button class="btn ${e.estado==='enviado'?'btn-mg':'btn-ghost'} mini" onclick="verCaso('${c.id}')">${e.estado==='enviado'?'Revisar':'Ver'}</button>`:''}
+        ${min?`<button class="btn btn-ghost mini" style="color:var(--red)" onclick="cancelarCaso('${c.id}')" title="Solo durante la primera hora">Cancelar (${min} min)</button>`:''}</div></td></tr>`;
   }).join('');
   // Abrir directo desde el aviso (#casos)
   if(location.hash==='#casos' && !renderCasos._hecho){ renderCasos._hecho=true; const pend=ENTREGAS.find(e=>e.estado==='enviado'); if(pend) setTimeout(()=>verCaso(pend.caso_id),300); }
@@ -279,7 +368,7 @@ async function responder(id,aprobar){
   alert(aprobar?'✅ Aprobada. La técnica ya fue avisada.':('✏️ Cambios enviados a la técnica.'+(data&&data.aviso?('\n\n'+data.aviso):'')));
   cerrar('ovEnt');
   const { data:en }=await sb.from('alineadores_entregas').select('*').order('created_at',{ascending:false}); ENTREGAS=en||[];
-  const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
+  const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
   render();
 }
 

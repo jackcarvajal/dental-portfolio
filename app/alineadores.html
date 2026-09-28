@@ -22,7 +22,7 @@ h1{font-size:1.3rem;margin-bottom:2px;}
 .fx{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:8px 12px;}
 .fx label{font-size:.72rem;color:var(--muted);text-transform:uppercase;font-weight:800;letter-spacing:.4px;}
 .fx input{width:90px;background:var(--input);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:7px 9px;border-radius:7px;font-size:.95rem;font-weight:700;font-family:inherit;}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:18px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px;}
 .kc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;}
 .kc .k{font-size:.72rem;color:var(--muted);text-transform:uppercase;font-weight:800;letter-spacing:.4px;}
 .kc .v{font-size:1.5rem;font-weight:900;margin-top:4px;}
@@ -75,6 +75,10 @@ tr:hover td{background:rgba(255,255,255,.02);}
 .files{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<link rel="stylesheet" href="../css/aln.css?v=20260928">
 <script src="../js/reportar-problema.js?v=20260924c"></script>
 <script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
@@ -89,35 +93,66 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <button type="button" class="tn salir" onclick="ProdigyAuth.signOut()"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</button>
 </nav>
 
-<div class="bar">
+<div class="bar money-cli">
   <button class="btn btn-mg" id="btnNuevo" onclick="abrirCaso()"><i class="fas fa-plus"></i> Nuevo caso</button>
-  <div class="fx money-cli"><label>Dólar USD/COP</label><input type="number" id="fx" value="3180" step="10" oninput="guardarFx();render()"></div>
-  <button class="btn btn-ghost money-cli" onclick="abrirAvisos()" title="Avisos por WhatsApp (CallMeBot) a la técnica y a los clientes"><i class="fab fa-whatsapp" style="color:#25D366"></i> Avisos WhatsApp</button>
+  <div class="fx"><label>Dólar USD/COP</label><input type="number" id="fx" value="3180" step="10" oninput="guardarFx();render()"></div>
+  <button class="btn btn-ghost" onclick="abrirAvisos()" title="Avisos por WhatsApp (CallMeBot) a la técnica y a los clientes"><i class="fab fa-whatsapp" style="color:#25D366"></i> Avisos WhatsApp</button>
   <a class="btn btn-ghost" href="rastreo.html"><i class="fas fa-arrow-left"></i> Volver</a>
 </div>
 
 <div class="cards" id="cards"></div>
+<p class="guia" id="guia"></p>
 
-<div id="misCuentas" style="display:none">
-  <div class="sec-t"><i class="fas fa-wallet" style="color:var(--gold)"></i> Mis cuentas</div>
-  <div class="tw"><table id="misCuentasTbl"><thead><tr><th>Mes</th><th>Paciente</th><th>Concepto</th><th>Valor</th><th>Estado</th><th>Nota</th></tr></thead><tbody></tbody></table></div>
+<div class="tabs" role="tablist" aria-label="Secciones">
+  <button type="button" class="tab on" role="tab" data-tab="casos" onclick="verTab('casos')"><i class="fas fa-teeth"></i> Casos <span class="n" id="nCasos" title="Por hacer"></span></button>
+  <button type="button" class="tab money-may" role="tab" data-tab="cuentas" onclick="verTab('cuentas')"><i class="fas fa-wallet"></i> Cuentas</button>
+  <button type="button" class="tab" role="tab" data-tab="resumen" onclick="verTab('resumen')"><i class="fas fa-chart-column"></i> Resumen</button>
 </div>
 
-<div class="sec-t money-cli"><i class="fas fa-calendar-check" style="color:var(--gold)"></i> Corte mensual</div>
-<div class="tw money-cli"><table id="corteTbl"><thead><tr><th>Mes</th><th>Por cobrar (cliente)</th><th>Por pagar (Mayra)</th><th>Margen est. (COP)</th></tr></thead><tbody></tbody></table></div>
+<section class="panel on" id="p-casos" role="tabpanel">
+  <div class="chips" id="chips" aria-label="Filtrar casos"></div>
+  <div class="filters">
+    <input type="search" id="fBuscar" placeholder="Buscar paciente o código…" oninput="render()" aria-label="Buscar">
+    <select id="fMes" onchange="render()" aria-label="Mes de recepción"><option value="">Todos los meses</option></select>
+    <select id="fCliente" onchange="render()" aria-label="Cliente" style="display:none"><option value="">Todos los clientes</option></select>
+  </div>
+  <div class="tw"><table id="casosTbl" class="rtable"><thead><tr>
+    <th>Paciente</th><th>Viabilidad · Plan</th><th>Fechas</th><th>Diseño</th><th>Tratamiento</th>
+    <th class="money-cli">Cobro</th><th class="money-may">Pago</th><th></th>
+  </tr></thead><tbody></tbody></table></div>
+  <details class="como">
+    <summary>¿Cómo se lee este tablero?</summary>
+    <ul>
+      <li><b>Diseño</b> — <b>Por hacer</b>: te toca a ti (viabilidad, planificación, corrección o modelos; debajo dice qué sigue) · <b>Esperando al cliente</b>: ya lo enviaste y falta que apruebe · <b>Diseño entregado</b>: terminado con modelos · <b>Solo valoración</b>: se cerró sin planificar.</li>
+      <li><b>Tratamiento</b> — se calcula con el <b>fin estimado</b> (fecha de envío del plan + meses de la duración; lo puedes corregir con ✏️). Hasta el fin: <b>En tratamiento</b> (la barra muestra el avance; a la mitad conviene revisar si hace falta replaneación). Luego <b>Refinamiento sin costo</b> durante 6 meses. Después: <b>Término vencido</b> (el refinamiento tiene costo).</li>
+      <li><b>Faltan datos</b> — el aviso ⚠ dice qué falta. Llénalo con ✏️ para que los plazos y los cobros salgan bien.</li>
+      <li>Botones: ✏️ datos del caso · ✈️ entregar al cliente · 🏁 completar (con modelos) · 🧾 cargos y pagos.</li>
+    </ul>
+  </details>
+</section>
 
-<div class="sec-t money-cli"><i class="fas fa-hand-holding-dollar" style="color:var(--green)"></i> Pagos reportados por el cliente</div>
-<div class="tw money-cli"><table id="pagosTbl"><thead><tr><th>Fecha</th><th>Monto</th><th>Método</th><th>Mes</th><th>Ref</th><th>Comprob.</th><th>Estado</th><th></th></tr></thead><tbody></tbody></table></div>
+<section class="panel" id="p-cuentas" role="tabpanel">
+  <div id="misCuentas" style="display:none">
+    <div class="sec-t" style="margin-top:0"><i class="fas fa-wallet" style="color:var(--gold)"></i> Mis cuentas</div>
+    <p class="sub" style="margin:-4px 0 10px">Arriba lo que está pendiente, caso por caso; abajo lo ya pagado, agrupado por mes.</p>
+    <div class="tw"><table id="misCuentasTbl" class="rtable"><thead><tr><th>Mes</th><th>Paciente</th><th>Concepto</th><th>Valor</th><th>Estado</th><th>Nota</th></tr></thead><tbody></tbody></table></div>
+  </div>
+  <div class="money-cli">
+    <div class="sec-t" style="margin-top:0"><i class="fas fa-calendar-check" style="color:var(--gold)"></i> Corte mensual</div>
+    <div class="tw"><table id="corteTbl"><thead><tr><th>Mes</th><th>Por cobrar (cliente)</th><th>Por pagar (Mayra)</th><th>Margen est. (COP)</th></tr></thead><tbody></tbody></table></div>
+    <div class="sec-t"><i class="fas fa-hand-holding-dollar" style="color:var(--green)"></i> Pagos reportados por el cliente</div>
+    <div class="tw"><table id="pagosTbl"><thead><tr><th>Fecha</th><th>Monto</th><th>Método</th><th>Mes</th><th>Ref</th><th>Comprob.</th><th>Estado</th><th></th></tr></thead><tbody></tbody></table></div>
+  </div>
+</section>
 
-<div class="sec-t"><i class="fas fa-teeth" style="color:var(--cyan)"></i> Casos</div>
-<div class="filters">
-  <input type="search" id="fBuscar" placeholder="Buscar paciente/cliente…" oninput="render()">
-  <select id="fEstado" onchange="render()"><option value="">Todos los estados</option><option>valoracion</option><option>planificacion</option><option>en_tratamiento</option><option>terminado</option><option>cancelado</option></select>
-</div>
-<div class="tw"><table id="casosTbl"><thead><tr>
-  <th>Paciente</th><th>Cliente</th><th>Viabilidad</th><th>Plan</th><th>Mod.</th><th>Recep.</th><th>Envío</th><th>Estado</th><th>Entrega al cliente</th>
-  <th class="money-cli">Cobro</th><th class="money-may">Pago Mayra</th><th></th>
-</tr></thead><tbody></tbody></table></div>
+<section class="panel" id="p-resumen" role="tabpanel">
+  <div class="charts">
+    <div class="chart"><h4>¿Dónde está cada caso?</h4><p class="sub">Diseño y fase del tratamiento, hoy</p><div id="chDona"></div></div>
+    <div class="chart"><h4>Casos recibidos por mes</h4><p class="sub">Según la fecha de recepción (últimos 9 meses)</p><div id="chCasos"></div></div>
+    <div class="chart money-cli"><h4>Cobro al cliente por mes (USD)</h4><p class="sub">Por mes de corte</p><div id="chCli"></div></div>
+    <div class="chart money-may"><h4><span id="chMayT">Pago a la técnica por mes</span></h4><p class="sub">Por mes de corte (COP)</p><div id="chMay"></div></div>
+  </div>
+</section>
 
 <!-- Modal nuevo/editar caso -->
 <div class="ov" id="ovCaso"><div class="modal">
@@ -134,12 +169,14 @@ tr:hover td{background:rgba(255,255,255,.02);}
   </div>
   <div class="grid2">
     <div class="fg"><label>Fecha recepción</label><input type="date" id="cRecep"></div>
-    <div class="fg"><label>Fecha envío</label><input type="date" id="cEnvio"></div>
+    <div class="fg"><label>Fecha envío</label><input type="date" id="cEnvio" oninput="autoFin()"></div>
   </div>
   <div class="grid2">
-    <div class="fg"><label>Duración tratamiento</label><input id="cDur" placeholder="6 meses / nov-dic 2026"></div>
-    <div class="fg"><label>Estado</label><select id="cEstado"><option>valoracion</option><option>planificacion</option><option>en_tratamiento</option><option>terminado</option></select></div>
+    <div class="fg"><label>Duración tratamiento</label><input id="cDur" placeholder="6 meses / nov-dic 2026" oninput="autoFin()"></div>
+    <div class="fg"><label>Fin estimado del tratamiento</label><input type="date" id="cFin" oninput="this.dataset.auto='0'"></div>
   </div>
+  <p class="sub" style="margin:-4px 0 10px">El fin se calcula solo (fecha de envío + meses de la duración) y lo puedes corregir. Con él se sabe si el caso está en tratamiento, en refinamiento sin costo (6 meses después) o con el término vencido.</p>
+  <div class="fg"><label>Estado del diseño</label><select id="cEstado"><option value="valoracion">En valoración</option><option value="planificacion">En planificación</option><option value="en_tratamiento">Plan aprobado (faltan modelos)</option><option value="terminado">Terminado (modelos entregados)</option><option value="cancelado">Cancelado</option></select></div>
   <label class="chkline"><input type="checkbox" id="cModelos"> Modelos entregados (SI)</label>
   <div class="fg"><label>Notas</label><textarea id="cNotas" rows="2"></textarea></div>
   <p class="sub" style="margin:0 0 6px">Al crear el caso, el sistema genera automáticamente el cargo de valoración (Mayra y cliente). Al completarlo con modelos, cobra solo la diferencia.</p>
@@ -220,6 +257,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <script>ProdigyAuth.require(['admin','operator','contabilidad','alineadores','secretaria']);</script>
 <script src="../js/notif-panel.js?v=20260924"></script>
 <script src="../js/rol-actual.js?v=20260923"></script>
+<script src="../js/aln-comun.js?v=20260928"></script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD=d=>d?new Date(/^\d{4}-\d{2}-\d{2}$/.test(d)?d+'T12:00:00':d).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}):'—';
@@ -253,8 +291,11 @@ async function init(){
   document.getElementById('subtitle').textContent = VE_CLI
     ? 'Casos + cuentas (cobro cliente USD · pago Mayra COP). Ingresa la tasa del dólar para ver márgenes.'
     : (ES_ALN
-       ? 'Tus casos y tus cuentas. Con ✈️ entregas la viabilidad o la planificación al cliente; marca "Completar" cuando entregues los modelos.'
+       ? 'Tus casos y tus cuentas. ✏️ completa los datos · ✈️ entrega al cliente · 🏁 completa cuando envíes los modelos.'
        : 'Casos de alineadores.');
+  try{ FIL=localStorage.getItem('aln_fil')||'todos'; }catch(_){}
+  let tab='casos'; try{ tab=localStorage.getItem('aln_tab')||'casos'; }catch(_){}
+  verTab(tab);
   await cargar();
 }
 
@@ -285,33 +326,111 @@ async function cargar(){
 function cargosDe(casoId,parte){ return CARGOS.filter(x=>x.caso_id===casoId && (!parte||x.parte===parte)); }
 function sumaCaso(casoId,parte){ return cargosDe(casoId,parte).reduce((a,c)=>a+Number(c.monto||0),0); }
 
+/* ── Vista: pestañas, filtros y etapas ── */
+let FIL='todos';
+function verTab(t){
+  if(!document.getElementById('p-'+t) || (t==='cuentas' && !VE_MAY)) t='casos';
+  document.querySelectorAll('.tab').forEach(b=>{ const on=b.dataset.tab===t; b.classList.toggle('on',on); b.setAttribute('aria-selected',on?'true':'false'); });
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));
+  try{ localStorage.setItem('aln_tab',t); }catch(_){}
+}
+function setFil(k){ FIL=k; try{ localStorage.setItem('aln_fil',k); }catch(_){} render(); }
+// Etapa del DISEÑO: cancelado · soloval (cerrado sin plan) · entregado · cliente (esperando su respuesta) · tecnica (por hacer)
+function etapa(c){
+  if(c.estado==='cancelado') return 'cancelado';
+  if(ALN.soloVal(c)) return 'soloval';
+  if(c.estado==='terminado') return 'entregado';
+  const e=entregasDe(c.id)[0];
+  if(e && e.estado==='enviado') return 'cliente';
+  return 'tecnica';
+}
+function siguiente(c){
+  const e=entregasDe(c.id)[0];
+  if(c.estado==='en_tratamiento') return 'Enviar los modelos y completar 🏁';
+  if(!e) return c.estado==='valoracion'?'Enviar la viabilidad ✈️':'Enviar la planificación ✈️';
+  if(e.estado==='cambios') return 'Corregir: el cliente pidió cambios';
+  if(e.etapa==='viabilidad') return 'Enviar la planificación ✈️';
+  return 'Enviar los modelos y completar 🏁';
+}
+// Datos que faltan según la etapa (para que la técnica los llene)
+function faltan(c){
+  if(c.estado==='cancelado' || ALN.soloVal(c)) return [];
+  const f=[];
+  if(!c.fecha_recepcion) f.push('fecha de recepción');
+  if((entregasDe(c.id).length || c.estado!=='valoracion') && !c.viabilidad) f.push('viabilidad');
+  if(ALN.planificado(c)){
+    if(!c.plan_tratamiento) f.push('plan');
+    if(!c.fecha_envio) f.push('fecha de envío');
+    if(!ALN.finTrat(c)) f.push('duración o fin');
+    if(c.estado==='terminado' && !c.modelos) f.push('modelos');
+  }
+  return f;
+}
+const faseT=c=>(ALN.trat(c)||{}).k;
+const FILTROS=[
+  {k:'todos',   lbl:'Todos', f:()=>true},
+  {k:'hacer',   lbl:'Por hacer', dot:'var(--mg)', f:c=>etapa(c)==='tecnica'},
+  {k:'cliente', lbl:'Esperando al cliente', dot:'var(--gold)', f:c=>etapa(c)==='cliente'},
+  {k:'curso',   lbl:'En tratamiento', dot:'var(--cyan)', f:c=>faseT(c)==='curso'},
+  {k:'refina',  lbl:'Refinamiento sin costo', dot:'var(--green)', f:c=>faseT(c)==='refina'},
+  {k:'vencido', lbl:'Término vencido', dot:'#64748b', f:c=>faseT(c)==='vencido'},
+  {k:'faltan',  lbl:'Faltan datos', dot:'#f59e0b', f:c=>faltan(c).length>0},
+  {k:'soloval', lbl:'Solo valoración', dot:'#94a3b8', f:c=>etapa(c)==='soloval'},
+  {k:'cancelado', lbl:'Cancelados', dot:'#475569', f:c=>c.estado==='cancelado', ocultarSiCero:true}
+];
+const mesDe=c=>(c.fecha_recepcion||c.created_at||'').slice(0,7);
+
 function render(){
-  // Resumen (tarjetas)
+  renderCards();
+  renderCuentas();
+  renderCasos();
+  renderResumen();
+}
+
+function renderCards(){
+  const nHacer=CASOS.filter(c=>etapa(c)==='tecnica').length;
+  const nCli=CASOS.filter(c=>etapa(c)==='cliente').length;
+  const nTrat=CASOS.filter(c=>faseT(c)==='curso').length;
+  const nRef=CASOS.filter(c=>faseT(c)==='refina').length;
+  const nFal=CASOS.filter(c=>faltan(c).length).length;
+  let html='';
   if(VE_MAY){
     let cobrarUsd=0, mayraPend=0, mayraPag=0;
     for(const c of CARGOS){
       if(c.parte==='cliente'){ if(c.estado_pago!=='pagado') cobrarUsd+=Number(c.monto||0); }
       else if(c.parte==='mayra'){ if(c.estado_pago==='pagado') mayraPag+=Number(c.monto||0); else mayraPend+=Number(c.monto||0); }
     }
-    let html='';
     if(VE_CLI){
       const cobrarCop=usdToCop(cobrarUsd);
       html+=`<div class="kc cobrar money-cli"><div class="k">Por cobrar (cliente)</div><div class="v">$${nf.format(Math.round(cobrarUsd))} USD</div><div class="s">≈ ${nf.format(Math.round(cobrarCop))} COP</div></div>`;
-      html+=`<div class="kc margen money-cli"><div class="k">Margen estimado</div><div class="v">${nf.format(Math.round(cobrarCop-mayraPend))} COP</div><div class="s">a ${nf.format(fx())} $/COP</div></div>`;
+      html+=`<div class="kc margen money-cli"><div class="k">Margen estimado</div><div class="v">${nf.format(Math.round(cobrarCop-mayraPend))}</div><div class="s">COP a ${nf.format(fx())} $/USD</div></div>`;
     }
-    html+=`<div class="kc pagar money-may"><div class="k">${VE_CLI?'Por pagar (Mayra)':'Me deben (pendiente)'}</div><div class="v">${nf.format(Math.round(mayraPend))} COP</div><div class="s">${nf.format(Math.round(mayraPag))} ya pagado</div></div>`;
-    document.getElementById('cards').innerHTML=html;
+    html+=`<div class="kc pagar money-may"><div class="k">${VE_CLI?'Por pagar (técnica)':'Me deben'}</div><div class="v">${nf.format(Math.round(mayraPend))}</div><div class="s">COP · ${nf.format(Math.round(mayraPag))} ya pagado</div></div>`;
   }
+  html+=`<div class="kc mg"><div class="k">Por hacer</div><div class="v">${nHacer}</div><div class="s">${VE_CLI?'le toca a la técnica':'te toca a ti'}</div></div>`;
+  html+=`<div class="kc espera"><div class="k">Esperando al cliente</div><div class="v">${nCli}</div><div class="s">viabilidad o plan por aprobar</div></div>`;
+  html+=`<div class="kc info"><div class="k">En tratamiento</div><div class="v">${nTrat}</div><div class="s">${nRef} en refinamiento sin costo</div></div>`;
+  document.getElementById('cards').innerHTML=html;
+  const g=[];
+  if(nHacer) g.push(`<b>${nHacer}</b> caso${nHacer===1?'':'s'} por hacer`);
+  if(nCli) g.push(`<b>${nCli}</b> esperando respuesta del cliente`);
+  if(nFal) g.push(`<b>${nFal}</b> con datos incompletos: complétalos con ✏️ (filtro «Faltan datos»)`);
+  document.getElementById('guia').innerHTML = g.length ? '💡 '+g.join(' · ')+'.' : (CASOS.length?'✅ Todo al día.':'');
+  document.getElementById('nCasos').textContent = nHacer||'';
+}
+
+function renderCuentas(){
   // Mis cuentas (solo la técnica): lo pendiente caso por caso y lo pagado agrupado por mes
   if(VE_MAY && !VE_CLI){
     const mias=CARGOS.filter(c=>c.parte==='mayra');
     const pac=id=>(CASOS.find(x=>x.id===id)||{}).paciente||'—';
     const pend=mias.filter(c=>c.estado_pago!=='pagado').sort((a,b)=>String(b.mes_corte||'').localeCompare(String(a.mes_corte||'')));
     const pag={}; mias.filter(c=>c.estado_pago==='pagado').forEach(c=>{ const m=c.mes_corte||'(sin mes)'; pag[m]=pag[m]||{n:0,t:0}; pag[m].n++; pag[m].t+=Number(c.monto||0); });
-    const filas=pend.map(c=>`<tr><td>${escH(c.mes_corte||'—')}</td><td><b>${escH(pac(c.caso_id))}</b></td><td>${escH(tipoLbl(c.tipo))}</td><td>${nf.format(Math.round(c.monto))} COP</td><td><span class="pill pend">${escH(c.estado_pago)}</span></td><td class="sub" style="margin:0">${escH(c.descripcion||'')}</td></tr>`)
-      .concat(Object.keys(pag).sort().reverse().map(m=>`<tr><td>${escH(m)}</td><td colspan="2" class="sub" style="margin:0">${pag[m].n} trabajo${pag[m].n===1?'':'s'}</td><td>${nf.format(Math.round(pag[m].t))} COP</td><td><span class="pill pagado">pagado</span></td><td></td></tr>`));
+    const filas=pend.map(c=>`<tr><td data-l="Mes"><div>${escH(ALN.mesLbl(c.mes_corte))}</div></td><td data-l="Paciente"><div><b>${escH(pac(c.caso_id))}</b></div></td><td data-l="Concepto"><div>${escH(tipoLbl(c.tipo))}</div></td><td data-l="Valor"><div>${nf.format(Math.round(c.monto))} COP</div></td><td data-l="Estado"><div><span class="pill pend">${escH(c.estado_pago)}</span></div></td><td data-l="Nota"><div class="l2" style="margin:0">${escH(c.descripcion||'')}</div></td></tr>`)
+      .concat(Object.keys(pag).sort().reverse().map(m=>`<tr><td data-l="Mes"><div>${escH(ALN.mesLbl(m))}</div></td><td data-l="Trabajos" colspan="2"><div class="l2" style="margin:0">${pag[m].n} trabajo${pag[m].n===1?'':'s'}</div></td><td data-l="Valor"><div>${nf.format(Math.round(pag[m].t))} COP</div></td><td data-l="Estado"><div><span class="pill pagado">pagado</span></div></td><td data-l=""></td></tr>`));
     document.querySelector('#misCuentasTbl tbody').innerHTML = filas.join('') || `<tr><td colspan="6" class="empty">Aún sin cuentas.</td></tr>`;
     document.getElementById('misCuentas').style.display='';
+    const t=document.getElementById('chMayT'); if(t) t.textContent='Mis pagos por mes';
   }
   // Corte mensual (solo quien ve al cliente)
   if(VE_CLI){
@@ -324,7 +443,7 @@ function render(){
     }
     const rows=Object.keys(meses).sort().reverse().map(m=>{
       const v=meses[m]; const marg=usdToCop(v.cobrar)-v.pagar;
-      return `<tr><td>${escH(m)}</td><td>$${nf.format(Math.round(v.cobrar))} USD</td><td>${nf.format(Math.round(v.pagar))} COP</td><td>${nf.format(Math.round(marg))} COP</td></tr>`;
+      return `<tr><td>${escH(ALN.mesLbl(m))}</td><td>$${nf.format(Math.round(v.cobrar))} USD</td><td>${nf.format(Math.round(v.pagar))} COP</td><td>${nf.format(Math.round(marg))} COP</td></tr>`;
     }).join('');
     document.querySelector('#corteTbl tbody').innerHTML = rows || `<tr><td colspan="4" class="empty">Aún sin cargos.</td></tr>`;
     // Pagos reportados por el cliente
@@ -337,46 +456,105 @@ function render(){
     }).join('');
     document.querySelector('#pagosTbl tbody').innerHTML = pr || `<tr><td colspan="8" class="empty">Sin pagos reportados aún.</td></tr>`;
   }
-  // Casos
-  const q=(document.getElementById('fBuscar').value||'').toLowerCase();
-  const fe=document.getElementById('fEstado').value;
-  const lista=CASOS.filter(c=>{
-    if(fe && c.estado!==fe) return false;
-    if(q && !((c.paciente||'')+' '+(c.cliente||'')).toLowerCase().includes(q)) return false;
+}
+
+function renderCasos(){
+  // Opciones de mes y cliente (conservan la selección)
+  const selM=document.getElementById('fMes'), vm=selM.value;
+  const meses=[...new Set(CASOS.map(mesDe).filter(Boolean))].sort().reverse();
+  selM.innerHTML='<option value="">Todos los meses</option>'+meses.map(m=>`<option value="${escH(m)}">${escH(ALN.mesLbl(m))}</option>`).join('');
+  selM.value=meses.includes(vm)?vm:'';
+  const selC=document.getElementById('fCliente'), vc=selC.value;
+  const clis=[...new Set(CASOS.map(c=>c.cliente).filter(Boolean))].sort();
+  selC.innerHTML='<option value="">Todos los clientes</option>'+clis.map(x=>`<option value="${escH(x)}">${escH(x)}</option>`).join('');
+  selC.value=clis.includes(vc)?vc:'';
+  selC.style.display=(VE_CLI && clis.length>1)?'':'none';
+  const q=(document.getElementById('fBuscar').value||'').toLowerCase().trim();
+  const base=CASOS.filter(c=>{
+    if(selM.value && mesDe(c)!==selM.value) return false;
+    if(selC.value && c.cliente!==selC.value) return false;
+    if(q && !((c.paciente||'')+' '+(c.cliente||'')+' '+(c.codigo||'')).toLowerCase().includes(q)) return false;
     return true;
   });
-  const tb=document.querySelector('#casosTbl tbody');
-  if(!lista.length){ tb.innerHTML=`<tr><td colspan="12" class="empty">${ES_ALN?'Aún no tienes casos asignados. Cuando llegue uno nuevo te avisamos en la campana.':'Sin casos. Crea el primero con “Nuevo caso”.'}</td></tr>`; return; }
-  tb.innerHTML=lista.map(c=>{
-    const cobro=VE_CLI?sumaCaso(c.id,'cliente'):0;
-    const pago=VE_MAY?sumaCaso(c.id,'mayra'):0;
-    return `<tr>
-      <td><b>${escH(c.paciente)}</b></td>
-      <td>${escH(c.cliente||'—')}</td>
-      <td>${escH(c.viabilidad||'—')}</td>
-      <td>${escH(c.plan_tratamiento||'—')}</td>
-      <td>${c.modelos?'✅':'—'}</td>
-      <td>${fmtD(c.fecha_recepcion)}</td>
-      <td>${fmtD(c.fecha_envio)}</td>
-      <td><span class="pill ${c.estado==='terminado'?'pagado':(c.estado==='cancelado'?'':'factur')}">${escH(c.estado||'')}</span></td>
-      <td>${badgeEntrega(c.id)}</td>
-      <td class="money-cli">${cobro?('$'+nf.format(Math.round(cobro))):'—'}</td>
-      <td class="money-may">${pago?nf.format(Math.round(pago)):'—'}</td>
-      <td style="display:flex;gap:4px;">
-        <button class="btn btn-ghost mini" onclick="editarCaso('${c.id}')" title="Editar"><i class="fas fa-pen"></i></button>
-        ${PUEDE_ENTREGAR&&c.estado!=='cancelado'?`<button class="btn btn-ghost mini" onclick="abrirEntregas('${c.id}')" title="Entregar viabilidad / planificación al cliente" style="color:var(--cyan)"><i class="fas fa-paper-plane"></i></button>`:''}
-        ${c.estado!=='terminado'&&c.estado!=='cancelado'?`<button class="btn btn-ghost mini" onclick="completarCaso('${c.id}')" title="Completar (requiere modelos)"><i class="fas fa-flag-checkered"></i></button>`:''}
-        ${VE_MAY?`<button class="btn btn-ghost mini" onclick="verCargos('${c.id}')" title="Cargos / pagos"><i class="fas fa-receipt"></i></button>`:''}
-        ${VE_CLI?`<button class="btn btn-ghost mini" onclick="abrirCargo('${c.id}')" title="Agregar cargo"><i class="fas fa-plus"></i></button>`:''}
-      </td>
-    </tr>`;
+  if(!FILTROS.some(x=>x.k===FIL)) FIL='todos';
+  document.getElementById('chips').innerHTML=FILTROS.map(x=>{
+    const n=base.filter(x.f).length;
+    if(x.ocultarSiCero && !n && FIL!==x.k) return '';
+    return `<button type="button" class="chip ${FIL===x.k?'on':''} ${n?'':'cero'}" aria-pressed="${FIL===x.k}" onclick="setFil('${x.k}')">${x.dot?`<span class="dot" style="background:${x.dot}"></span>`:''}${x.lbl} <b>${n}</b></button>`;
   }).join('');
+  const lista=base.filter(FILTROS.find(x=>x.k===FIL).f);
+  const tb=document.querySelector('#casosTbl tbody');
+  if(!lista.length){
+    tb.innerHTML=`<tr><td colspan="8" class="empty">${CASOS.length?'Ningún caso coincide con este filtro.':(ES_ALN?'Aún no tienes casos asignados. Cuando llegue uno nuevo te avisamos en la campana.':'Sin casos. Crea el primero con “Nuevo caso”.')}</td></tr>`;
+    return;
+  }
+  tb.innerHTML=lista.map(filaCaso).join('');
+}
+function celdaDiseno(c){
+  const et=etapa(c), e=entregasDe(c.id)[0];
+  if(et==='cancelado') return '<span class="pill gris">Cancelado</span>';
+  if(et==='soloval') return /^consulta/i.test(c.viabilidad||'')
+    ? '<span class="pill valoracion">Consulta</span><span class="l2">No se hizo el caso</span>'
+    : '<span class="pill valoracion">Solo valoración</span><span class="l2">Cerrado sin planificación</span>';
+  if(et==='entregado') return '<span class="pill pagado">Diseño entregado</span>'+(!e && /^HIST-/.test(c.codigo||'')?'<span class="l2">Por correo/WhatsApp</span>':'');
+  if(et==='cliente') return `<span class="pill valoracion">Esperando al cliente</span><span class="l2">${escH(ETAPA[e.etapa]||e.etapa)}${e.revision_num?(' r'+e.revision_num):''} enviada ${fmtD(e.created_at)}</span>`;
+  return `<span class="pill cambios">Por hacer</span><span class="l2">${escH(siguiente(c))}</span>`;
+}
+function filaCaso(c){
+  const cobro=VE_CLI?sumaCaso(c.id,'cliente'):0, pago=VE_MAY?sumaCaso(c.id,'mayra'):0;
+  const fal=faltan(c);
+  return `<tr>
+    <td class="pac" data-l="Paciente"><div><b>${escH(c.paciente)}</b><span class="l2">${escH(c.cliente||'—')}${c.codigo?(' · '+escH(c.codigo)):''}</span>${fal.length?`<span class="falta">⚠ Falta: ${escH(fal.join(', '))}</span>`:''}</div></td>
+    <td data-l="Viabilidad · Plan"><div>${escH(c.viabilidad||'—')}<span class="l2">${c.plan_tratamiento?escH(c.plan_tratamiento):'Sin plan'}${c.modelos?' · <i class="fas fa-cube" style="color:var(--green)" aria-hidden="true"></i> modelos':''}</span></div></td>
+    <td data-l="Fechas"><div>Recibido ${fmtD(c.fecha_recepcion)}<span class="l2">${c.fecha_envio?('Plan enviado '+fmtD(c.fecha_envio)):'Plan sin enviar'}${c.duracion_tratamiento?(' · '+escH(c.duracion_tratamiento)):''}</span></div></td>
+    <td data-l="Diseño"><div>${celdaDiseno(c)}</div></td>
+    <td data-l="Tratamiento"><div>${ALN.celdaTrat(c)}</div></td>
+    <td class="money-cli" data-l="Cobro"><div>${cobro?('$'+nf.format(Math.round(cobro))):'—'}</div></td>
+    <td class="money-may" data-l="Pago"><div>${pago?nf.format(Math.round(pago)):'—'}</div></td>
+    <td data-l=""><div class="acts">
+      <button class="btn btn-ghost mini" onclick="editarCaso('${c.id}')" title="Completar / editar los datos del caso" aria-label="Editar"><i class="fas fa-pen"></i></button>
+      ${PUEDE_ENTREGAR&&c.estado!=='cancelado'&&!ALN.soloVal(c)?`<button class="btn btn-ghost mini" onclick="abrirEntregas('${c.id}')" title="Entregar viabilidad / planificación al cliente" aria-label="Entregar" style="color:var(--cyan)"><i class="fas fa-paper-plane"></i></button>`:''}
+      ${c.estado!=='terminado'&&c.estado!=='cancelado'?`<button class="btn btn-ghost mini" onclick="completarCaso('${c.id}')" title="Completar (requiere modelos)" aria-label="Completar"><i class="fas fa-flag-checkered"></i></button>`:''}
+      ${VE_MAY?`<button class="btn btn-ghost mini" onclick="verCargos('${c.id}')" title="Cargos / pagos" aria-label="Cargos"><i class="fas fa-receipt"></i></button>`:''}
+      ${VE_CLI?`<button class="btn btn-ghost mini" onclick="abrirCargo('${c.id}')" title="Agregar cargo" aria-label="Agregar cargo"><i class="fas fa-plus"></i></button>`:''}
+    </div></td>
+  </tr>`;
+}
+
+function renderResumen(){
+  // Dona: dónde está cada caso (una sola categoría por caso)
+  const fase=c=>{ const et=etapa(c); if(['cancelado','soloval','tecnica','cliente'].includes(et)) return et; return faseT(c)||'sindatos'; };
+  const n=k=>CASOS.filter(c=>fase(c)===k).length;
+  ALN.dona(document.getElementById('chDona'),[
+    {lbl:'Por hacer', n:n('tecnica'), color:'#D946A6'},
+    {lbl:'Esperando al cliente', n:n('cliente'), color:'#D4AF37'},
+    {lbl:'En tratamiento', n:n('curso'), color:'#00d2ff'},
+    {lbl:'Refinamiento sin costo', n:n('refina'), color:'#00FF41'},
+    {lbl:'Término vencido', n:n('vencido'), color:'#64748b'},
+    {lbl:'Faltan fechas', n:n('sindatos'), color:'#f59e0b'},
+    {lbl:'Solo valoración', n:n('soloval'), color:'#94a3b8'},
+    {lbl:'Cancelados', n:n('cancelado'), color:'#334155'}
+  ],'casos');
+  // Barras: casos recibidos por mes
+  const cat=c=>{ const et=etapa(c); return et==='cancelado'?'can':(et==='soloval'?'val':(ALN.planificado(c)?'plan':'dis')); };
+  ALN.barras(document.getElementById('chCasos'),
+    ALN.mesesDe(CASOS.map(mesDe),9).map(m=>{ const v={}; CASOS.filter(c=>mesDe(c)===m).forEach(c=>{ const k=cat(c); v[k]=(v[k]||0)+1; }); return {lab:ALN.mesLbl(m), vals:v}; }),
+    [{k:'plan',lbl:'Planificados',color:'#00d2ff'},{k:'dis',lbl:'En diseño',color:'#D946A6'},{k:'val',lbl:'Solo valoración',color:'#D4AF37'},{k:'can',lbl:'Cancelados',color:'#475569'}],
+    x=>String(x));
+  // Dinero por mes de corte
+  const porMes=(parte,conFact)=>{ const cs=CARGOS.filter(x=>x.parte===parte);
+    return ALN.mesesDe(cs.map(x=>x.mes_corte),9).map(m=>{ const v={}; cs.filter(x=>x.mes_corte===m).forEach(x=>{ const k=x.estado_pago==='pagado'?'pag':((conFact&&x.estado_pago==='facturado')?'fac':'pen'); v[k]=(v[k]||0)+Number(x.monto||0); }); return {lab:ALN.mesLbl(m), vals:v}; }); };
+  if(VE_CLI) ALN.barras(document.getElementById('chCli'), porMes('cliente',true),
+    [{k:'pag',lbl:'Pagado',color:'#00FF41'},{k:'fac',lbl:'Facturado',color:'#D4AF37'},{k:'pen',lbl:'Sin facturar',color:'#D946A6'}], x=>'$'+nf.format(Math.round(x)));
+  if(VE_MAY) ALN.barras(document.getElementById('chMay'), porMes('mayra',false),
+    [{k:'pag',lbl:'Pagado',color:'#00FF41'},{k:'pen',lbl:'Pendiente',color:'#D946A6'}], x=>ALN.compacto(x));
 }
 
 /* ── Caso ── */
 function abrirCaso(){
   document.getElementById('ovCasoT').textContent='Nuevo caso';
-  ['cId','cPaciente','cCliente','cViab','cPlan','cRecep','cEnvio','cDur','cNotas'].forEach(id=>document.getElementById(id).value='');
+  ['cId','cPaciente','cCliente','cViab','cPlan','cRecep','cEnvio','cDur','cFin','cNotas'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('cFin').dataset.auto='1';
   document.getElementById('cCliente').value='Panorámica Digital 3D';
   document.getElementById('cEstado').value='valoracion';
   document.getElementById('cModelos').checked=false;
@@ -395,7 +573,7 @@ function editarCaso(id){
       (c.motivo_consulta?('Motivo: '+escH(c.motivo_consulta)+'<br>'):'')+
       (c.indicacion_cliente?('Indicación: '+escH(c.indicacion_cliente)+'<br>'):'')+
       'Arcada: '+escH(c.arcada||'—')+' · IPR: '+(c.requiere_ipr?'Sí':'No')+' · Attachments: '+(c.requiere_attachments?'Sí':'No')+'<br>'+
-      ((c.archivos&&c.archivos.length)?('Archivos: '+c.archivos.map((p,i)=>'<a href="#" onclick="verArchivo(\''+escH(p)+'\');return false;" style="color:var(--cyan)">#'+(i+1)+'</a>').join(' ')):'Sin archivos');
+      ((c.archivos&&c.archivos.length)?('Archivos: '+c.archivos.map((p,i)=>'<a href="#" onclick="verArchivo(\''+escJ(p)+'\');return false;" style="color:var(--cyan)">#'+(i+1)+'</a>').join(' ')):'Sin archivos');
   } else oc.style.display='none';
   document.getElementById('cPaciente').value=c.paciente||'';
   document.getElementById('cCliente').value=c.cliente||'';
@@ -404,10 +582,17 @@ function editarCaso(id){
   document.getElementById('cRecep').value=c.fecha_recepcion||'';
   document.getElementById('cEnvio').value=c.fecha_envio||'';
   document.getElementById('cDur').value=c.duracion_tratamiento||'';
+  const cf=document.getElementById('cFin'); cf.value=c.fecha_fin_tratamiento||''; cf.dataset.auto=c.fecha_fin_tratamiento?'0':'1'; autoFin();
   document.getElementById('cEstado').value=c.estado||'valoracion';
   document.getElementById('cModelos').checked=!!c.modelos;
   document.getElementById('cNotas').value=c.notas||'';
   document.getElementById('ovCaso').classList.add('show');
+}
+// Fin estimado = fecha de envío + «N meses» de la duración (si no lo escribieron a mano)
+function autoFin(){
+  const cf=document.getElementById('cFin'); if(cf.value && cf.dataset.auto==='0') return;
+  const env=document.getElementById('cEnvio').value, m=/(\d+)\s*mes/i.exec(document.getElementById('cDur').value||'');
+  if(env && m){ const d=ALN.masMeses(ALN.dt(env), Number(m[1])); cf.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); cf.dataset.auto='1'; }
 }
 async function guardarCaso(){
   const paciente=document.getElementById('cPaciente').value.trim();
@@ -423,11 +608,15 @@ async function guardarCaso(){
     fecha_recepcion:document.getElementById('cRecep').value||null,
     fecha_envio:document.getElementById('cEnvio').value||null,
     duracion_tratamiento:document.getElementById('cDur').value.trim()||null,
+    fecha_fin_tratamiento:document.getElementById('cFin').value||null,
     estado:document.getElementById('cEstado').value,
     notas:document.getElementById('cNotas').value.trim()||null
   };
   const id=document.getElementById('cId').value;
-  if(id){ await sb.from('alineadores_casos').update(row).eq('id',id); }
+  if(id){
+    const { error }=await sb.from('alineadores_casos').update(row).eq('id',id);
+    if(error){ alert('Error: '+error.message); btn.disabled=false; return; }
+  }
   else{
     const { error }=await sb.from('alineadores_casos').insert(row);
     if(error){ alert('Error: '+error.message); btn.disabled=false; return; }

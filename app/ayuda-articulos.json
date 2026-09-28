@@ -344,7 +344,36 @@
       "rel": [
         "aln-completar",
         "aln-cliente-subir",
-        "aln-pagos"
+        "aln-pagos",
+        "aln-tablero"
+      ]
+    },
+    {
+      "id": "aln-tablero",
+      "cat": "alineadores",
+      "titulo": "Tablero de alineadores: filtros, plazos y datos que faltan",
+      "resumen": "Cómo leer las pestañas, los filtros y la fase del tratamiento de cada caso.",
+      "para": "Técnica de alineadores y administración",
+      "pasos": [
+        "Arriba ves los números del día: **Por hacer** (te toca a ti), **Esperando al cliente** y **En tratamiento**. Debajo, un aviso te dice qué conviene hacer.",
+        "Pestañas: **Casos** (la lista), **Cuentas** (lo que te deben caso por caso y lo pagado por mes) y **Resumen** (gráficos).",
+        "Filtra con los botones de colores: **Por hacer**, **Esperando al cliente**, **En tratamiento**, **Refinamiento sin costo**, **Término vencido**, **Faltan datos** y **Solo valoración**. También puedes buscar por paciente o código y elegir el mes.",
+        "En **Diseño** aparece qué sigue en cada caso (enviar viabilidad, planificar, corregir, enviar modelos).",
+        "En **Tratamiento** el sistema usa el **fin estimado** = fecha de envío del plan + meses de la duración. Hasta esa fecha: **En tratamiento** (la barra muestra el avance; a la mitad conviene revisar si hace falta replaneación). Luego, 6 meses de **Refinamiento sin costo**. Después: **Término vencido** (el refinamiento tiene costo).",
+        "Si un caso muestra **⚠ Falta: …**, ábrelo con ✏️ y llena ese dato (viabilidad, plan, fecha de envío, duración o fin, modelos). El fin se calcula solo y lo puedes corregir."
+      ],
+      "notas": [
+        "Una **consulta** (se revisó pero no se hizo el caso) aparece como **Solo valoración**: no genera pago a la técnica.",
+        "Los casos con código **HIST-** son el histórico de 2026 que se entregó por correo o WhatsApp antes del portal."
+      ],
+      "link": {
+        "href": "alineadores.html",
+        "label": "Abrir Alineadores"
+      },
+      "kw": "tablero filtros pestañas cuentas resumen graficos tratamiento fin estimado refinamiento vencido replaneacion faltan datos consulta",
+      "rel": [
+        "aln-flujo",
+        "aln-completar"
       ]
     },
     {
