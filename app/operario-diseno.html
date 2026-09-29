@@ -137,19 +137,19 @@ body.ready{visibility:visible;}
     <p>Operario Diseño CAD</p>
     <div class="role-badge"><i class="fas fa-drafting-compass" style="font-size:.6rem;"></i> Diseño</div>
   </div>
-  <a href="panel-interno-operaciones.html" class="nav-item" style="margin-bottom:8px;border-bottom:1px solid var(--border);padding-bottom:13px;"><i class="fas fa-arrow-left" style="width:16px;"></i> Volver al Panel</a>
+  <a href="panel-interno-operaciones.html" class="nav-item solo-admin" style="margin-bottom:8px;border-bottom:1px solid var(--border);padding-bottom:13px;"><i class="fas fa-arrow-left" style="width:16px;"></i> Volver al Panel</a>
   <a href="#" class="nav-item active" aria-current="page"><i class="fas fa-columns" style="width:16px;"></i> Mis casos</a>
   <button type="button" onclick="abrirBulkDiseno()" class="nav-item" style="width:100%;text-align:left;background:rgba(0,255,65,.07);border:1px solid rgba(0,255,65,.2);color:#00FF41;border-radius:8px;cursor:pointer;margin-bottom:4px;">
       <i class="fas fa-bolt" style="width:16px;"></i> ⚡ Carga Masiva
   </button>
-  <a href="panel-interno-operaciones.html" class="nav-item"><i class="fas fa-layer-group" style="width:16px;"></i> Panel completo</a>
-  <a href="/seguimiento-caso" target="_blank" rel="noopener noreferrer" class="nav-item"><i class="fas fa-search" style="width:16px;"></i> Seguimiento</a>
+  <a href="panel-interno-operaciones.html" class="nav-item solo-admin"><i class="fas fa-layer-group" style="width:16px;"></i> Panel completo</a>
+  <a href="/seguimiento-caso" target="_blank" rel="noopener noreferrer" class="nav-item solo-admin"><i class="fas fa-search" style="width:16px;"></i> Seguimiento</a>
   <div class="sidebar-footer">
     <div id="hdr-sub" style="font-size:.68rem;color:var(--muted);line-height:1.6;margin-bottom:10px;"></div>
     <button type="button" class="btn-xs btn-cyan" style="width:100%;justify-content:center;" onclick="cargarCasos()">
       <i class="fas fa-rotate-right"></i> Actualizar
     </button>
-    <a href="/" class="nav-item" style="margin-top:8px;"><i class="fas fa-home"></i> Página principal</a>
+    <a href="#" class="nav-item" style="margin-top:8px;" onclick="ProdigyAuth.signOut();return false;"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</a>
   </div>
 </div>
 
@@ -383,6 +383,8 @@ let _userId = null;
   const session = await ProdigyAuth.require(['admin','operator','encargado_inventario','diseno','guias','exocad','blender']);
   if (!session) return;
   _userId = session.user.id;
+  // El técnico no tiene panel de administración: se quitan los enlaces que llevan allá
+  if (!(window.PRODIGY_ROLES || []).includes('admin')) document.querySelectorAll('.solo-admin').forEach(e => e.remove());
   document.body.classList.add('ready');
   document.getElementById('hdr-sub').textContent =
     session.user.email + '\n' + new Date().toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'});
