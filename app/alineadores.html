@@ -132,6 +132,12 @@ tr:hover td{background:rgba(255,255,255,.02);}
 </section>
 
 <section class="panel" id="p-cuentas" role="tabpanel">
+  <div id="abonosBox" class="money-may" style="margin-bottom:20px">
+    <div class="sec-t" style="margin-top:0"><i class="fas fa-hand-holding-dollar" style="color:var(--green)"></i> <span id="abonosT">Mis abonos</span>
+      <button type="button" class="btn btn-mg mini money-cli" style="margin-left:auto" onclick="abrirAbono()"><i class="fas fa-plus"></i> Registrar abono</button></div>
+    <div class="cards" id="abonosRes" style="margin-bottom:12px"></div>
+    <div class="tw"><table id="abonosTbl" class="rtable"><thead><tr><th>Fecha</th><th>Valor</th><th>Medio</th><th>Nº de aprobación</th><th>Nota</th></tr></thead><tbody></tbody></table></div>
+  </div>
   <div id="misCuentas" style="display:none">
     <div class="sec-t" style="margin-top:0"><i class="fas fa-wallet" style="color:var(--gold)"></i> Mis cuentas</div>
     <p class="sub" style="margin:-4px 0 10px">Arriba lo que está pendiente, caso por caso; abajo lo ya pagado, agrupado por mes.</p>
@@ -153,6 +159,22 @@ tr:hover td{background:rgba(255,255,255,.02);}
     <div class="chart money-may"><h4><span id="chMayT">Pago a la técnica por mes</span></h4><p class="sub">Por mes de corte (COP)</p><div id="chMay"></div></div>
   </div>
 </section>
+
+<!-- Modal registrar abono a la técnica (admin) -->
+<div class="ov" id="ovAbono"><div class="modal">
+  <h3><i class="fas fa-hand-holding-dollar" style="color:var(--green)"></i> Registrar abono a la técnica</h3>
+  <div class="grid2">
+    <div class="fg"><label for="aMonto">Valor (COP) *</label><input type="number" id="aMonto" min="1000" step="1000" placeholder="400000"></div>
+    <div class="fg"><label for="aFecha">Fecha</label><input type="date" id="aFecha"></div>
+  </div>
+  <div class="grid2">
+    <div class="fg"><label for="aMetodo">Medio</label><input id="aMetodo" placeholder="Bancolombia · llave"></div>
+    <div class="fg"><label for="aRef">Nº de aprobación</label><input id="aRef" placeholder="178777…"></div>
+  </div>
+  <div class="fg"><label for="aNota">Nota</label><input id="aNota" placeholder="Abono septiembre"></div>
+  <p class="sub" style="margin:0 0 6px">Se aplica a los cargos pendientes más antiguos. Si no alcanza para uno, se divide: la parte pagada y el saldo.</p>
+  <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovAbono')">Cancelar</button><button class="btn btn-mg" id="aGuardar" onclick="guardarAbono()">Registrar</button></div>
+</div></div>
 
 <!-- Modal nuevo/editar caso -->
 <div class="ov" id="ovCaso"><div class="modal">
@@ -266,7 +288,7 @@ const nf=new Intl.NumberFormat('es-CO');
 // verlo en el código fuente. Al agregar un cargo al cliente se sugiere el último monto usado para ese tipo
 // (lo leen solo admin/operator/contabilidad por RLS); los cargos automáticos los pone el trigger en la BD.
 const PRECIOS={mayra:{completo:60000,valoracion:20000,replaneacion_en_tiempo:0,replaneacion_fuera_tiempo:0,refinamiento_sin_costo:0,refinamiento_con_costo:0,adicional:0}};
-let sb, ROLE, VE_CLI=false, VE_MAY=false, ES_ALN=false, PUEDE_ENTREGAR=false, CASOS=[], CARGOS=[], PAGOS=[], ENTREGAS=[];
+let sb, ROLE, VE_CLI=false, VE_MAY=false, ES_ALN=false, PUEDE_ENTREGAR=false, CASOS=[], CARGOS=[], PAGOS=[], ABONOS=[], ENTREGAS=[];
 
 function fx(){ return parseFloat(document.getElementById('fx').value)||3180; }
 function guardarFx(){ try{localStorage.setItem('aln_fx',document.getElementById('fx').value);}catch(_){}}
@@ -311,9 +333,13 @@ async function cargar(){
     const { data:en, error:ee } = await sb.from('alineadores_entregas').select('*').order('created_at',{ascending:false});
     ENTREGAS = ee ? [] : (en||[]);
   }
-  if(VE_CLI){
-    const { data:pg } = await sb.from('alineadores_pagos').select('*').eq('negocio','prodigy').order('created_at',{ascending:false});
-    PAGOS = pg||[];
+  if(VE_MAY){
+    // Pagos del cliente (parte='cliente', solo quien ve al cliente) y abonos a la técnica (parte='mayra'). La RLS filtra por rol.
+    let qp=sb.from('alineadores_pagos').select('*').eq('negocio','prodigy').order('created_at',{ascending:false});
+    if(!VE_CLI) qp=qp.eq('parte','mayra');
+    const { data:pg } = await qp;
+    PAGOS=(pg||[]).filter(p=>(p.parte||'cliente')==='cliente');
+    ABONOS=(pg||[]).filter(p=>p.parte==='mayra');
   }
   try{
     const { data:cl } = await sb.from('alineadores_clientes').select('nombre');
@@ -420,6 +446,26 @@ function renderCards(){
 }
 
 function renderCuentas(){
+  // Abonos a la técnica: resumen (trabajos · abonado · saldo) + lista
+  if(VE_MAY){
+    const mias=CARGOS.filter(c=>c.parte==='mayra');
+    const total=mias.reduce((a,c)=>a+Number(c.monto||0),0);
+    const pend=mias.filter(c=>c.estado_pago!=='pagado').reduce((a,c)=>a+Number(c.monto||0),0);
+    const abon=ABONOS.reduce((a,p)=>a+Number(p.monto||0),0);
+    const favor=abon-(total-pend);
+    document.getElementById('abonosT').textContent = VE_CLI ? 'Pagos a la técnica (abonos)' : 'Mis abonos';
+    document.getElementById('abonosRes').innerHTML=`
+      <div class="kc"><div class="k">Trabajos</div><div class="v">${nf.format(Math.round(total))}</div><div class="s">COP en total</div></div>
+      <div class="kc ok"><div class="k">Abonado</div><div class="v">${nf.format(Math.round(abon))}</div><div class="s">${ABONOS.length} abono${ABONOS.length===1?'':'s'}</div></div>
+      <div class="kc mg"><div class="k">Saldo</div><div class="v">${nf.format(Math.round(pend))}</div><div class="s">${favor>0?('COP · '+nf.format(Math.round(favor))+' a favor'):'COP pendiente'}</div></div>`;
+    document.querySelector('#abonosTbl tbody').innerHTML = ABONOS.map(p=>`<tr>
+      <td data-l="Fecha"><div>${ALN.fmtDY(new Date(p.created_at))}</div></td>
+      <td data-l="Valor"><div><b>${nf.format(Math.round(p.monto))}</b> COP</div></td>
+      <td data-l="Medio"><div>${escH(p.metodo||'—')}</div></td>
+      <td data-l="Nº de aprobación"><div>${escH(p.referencia||'—')}</div></td>
+      <td data-l="Nota"><div class="l2" style="margin:0">${escH(p.nota||'')}</div></td></tr>`).join('')
+      || `<tr><td colspan="5" class="empty">Aún no hay abonos registrados.</td></tr>`;
+  }
   // Mis cuentas (solo la técnica): lo pendiente caso por caso y lo pagado agrupado por mes
   if(VE_MAY && !VE_CLI){
     const mias=CARGOS.filter(c=>c.parte==='mayra');
@@ -548,6 +594,25 @@ function renderResumen(){
     [{k:'pag',lbl:'Pagado',color:'#00FF41'},{k:'fac',lbl:'Facturado',color:'#D4AF37'},{k:'pen',lbl:'Sin facturar',color:'#D946A6'}], x=>'$'+nf.format(Math.round(x)));
   if(VE_MAY) ALN.barras(document.getElementById('chMay'), porMes('mayra',false),
     [{k:'pag',lbl:'Pagado',color:'#00FF41'},{k:'pen',lbl:'Pendiente',color:'#D946A6'}], x=>ALN.compacto(x));
+}
+
+/* ── Abono a la técnica (admin): se aplica a lo más antiguo en la BD ── */
+function abrirAbono(){
+  ['aMonto','aMetodo','aRef','aNota'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('aFecha').value=new Date().toISOString().slice(0,10);
+  document.getElementById('ovAbono').classList.add('show');
+}
+async function guardarAbono(){
+  const monto=Number(document.getElementById('aMonto').value)||0;
+  if(monto<=0){ alert('Escribe el valor del abono.'); return; }
+  const btn=document.getElementById('aGuardar'); btn.disabled=true;
+  const v=id=>document.getElementById(id).value.trim()||null;
+  const { data, error }=await sb.rpc('aln_registrar_abono_tecnica',{ p_monto:monto, p_fecha:v('aFecha'), p_metodo:v('aMetodo'), p_referencia:v('aRef'), p_nota:v('aNota') });
+  btn.disabled=false;
+  if(error || (data && data.ok===false)){ alert('No se pudo registrar: '+((data&&data.error)||(error&&error.message)||'')); return; }
+  cerrar('ovAbono');
+  await cargar();
+  alert('✅ Abono registrado: cubrió '+nf.format(Math.round(data.aplicado))+' COP en '+data.cargos+' cargo'+(data.cargos===1?'':'s')+'.'+(data.a_favor>0?('\nQuedan '+nf.format(Math.round(data.a_favor))+' COP a favor de la técnica.'):''));
 }
 
 /* ── Caso ── */

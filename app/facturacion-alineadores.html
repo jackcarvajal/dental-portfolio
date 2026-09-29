@@ -201,7 +201,7 @@ async function init(){
   try{ if(window._notifInit) window._notifInit(sb, null, null, true); }catch(_){}
   const { data:cg } = await sb.from('alineadores_cargos').select('*').eq('negocio','prodigy').eq('parte','cliente');
   CARGOS = cg||[];
-  const { data:pg } = await sb.from('alineadores_pagos').select('*').order('created_at',{ascending:false});
+  const { data:pg } = await sb.from('alineadores_pagos').select('*').eq('parte','cliente').order('created_at',{ascending:false});
   PAGOS = pg||[];
   document.getElementById('subtitle').textContent='Tus casos, tu estado de cuenta y tus pagos. Los montos están en USD.';
   try{ FIL=localStorage.getItem('alnc_fil')||'todos'; }catch(_){}
@@ -415,7 +415,7 @@ async function guardarPago(){
   if(error){ alert('Error: '+error.message); return; }
   if(pago&&pago.id) respaldoEmail('pago',{id:pago.id});
   cerrar('ovPago');
-  const { data:pg }=await sb.from('alineadores_pagos').select('*').order('created_at',{ascending:false});
+  const { data:pg }=await sb.from('alineadores_pagos').select('*').eq('parte','cliente').order('created_at',{ascending:false});
   PAGOS=pg||[]; render();
   alert('✅ Pago reportado. Lo verificamos y actualizamos tu estado de cuenta.');
 }
