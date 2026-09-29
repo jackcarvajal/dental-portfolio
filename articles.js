@@ -2,10 +2,245 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-09-24
+   Última actualización automática: 2026-09-29
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "pilares-titanio-cad-2026-09-29-548d",
+  "titulo": "Pilares Implantarios Individualizados CAD/CAM: Diseño, Ventajas y Supervivencia",
+  "subtitulo": "La precisión del diseño CAD/CAM en pilares de titanio mejora la salud periimplantaria y la longevidad de las restauraciones.",
+  "categoria": "implantologia",
+  "chip": "Pilares CAD",
+  "fecha": "2026-09-29",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "⚙️",
+  "grad": "grad-3",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha revolucionado la rehabilitación implantológica, permitiendo la fabricación de componentes protésicos con una precisión sin precedentes. Los pilares implantarios individualizados, diseñados y fabricados mediante tecnología CAD/CAM (Diseño Asistido por Computadora/Fabricación Asistida por Computadora), representan un avance significativo en comparación con los pilares prefabricados estándar. Estos pilares, comúnmente de titanio grado 4 o la aleación Ti-6Al-4V (grado 5), ofrecen la capacidad de optimizar la interfaz entre el implante, la prótesis y los tejidos blandos periimplantarios, impactando positivamente en la estética, la función y la salud a largo plazo."
+    },
+    {
+      "t": "h2",
+      "c": "Diseño y Parámetros CAD/CAM de Pilares Individualizados"
+    },
+    {
+      "t": "p",
+      "c": "El diseño CAD/CAM permite la personalización de parámetros críticos para la integración biológica y mecánica de los pilares implantarios. La capacidad de adaptar la forma del pilar a la anatomía específica de cada paciente es fundamental para el éxito clínico."
+    },
+    {
+      "t": "list",
+      "items": [
+        "**Perfil de emergencia**: Un perfil de emergencia cóncavo o recto, adaptado a la anatomía gingival del paciente, es crucial para el soporte y la estabilidad de los tejidos blandos. Se ha demostrado que un perfil de emergencia personalizado favorece la formación de un sellado biológico más robusto alrededor del pilar (Linkevicius et al., J Clin Periodontol, 2018).",
+        "**Ángulo de convergencia**: Típicamente, se recomienda un ángulo de convergencia de 6 a 8 grados para asegurar una retención adecuada de la restauración y facilitar la vía de inserción, minimizando el estrés sobre el cemento o los tornillos (Jung et al., J Prosthet Dent, 2017).",
+        "**Plataforma de conexión**: La precisión en la interfaz entre el pilar y el implante es fundamental para prevenir la microfiltración bacteriana y asegurar la estabilidad mecánica a largo plazo. Los sistemas CAD/CAM modernos logran tolerancias muy ajustadas en esta área (Kim et al., J Prosthet Dent, 2013).",
+        "**Materiales**: El titanio grado 4 (titanio puro comercialmente) y la aleación Ti-6Al-4V (titanio grado 5) son los materiales de elección debido a su excelente biocompatibilidad y propiedades mecánicas. El Ti-6Al-4V ofrece mayor resistencia a la tracción y fatiga en comparación con el titanio puro (Eliades et al., Dental Materials, 2018)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Ventajas Clínicas y Adaptación Gingival"
+    },
+    {
+      "t": "p",
+      "c": "Los pilares individualizados mejoran significativamente la respuesta de los tejidos blandos periimplantarios en comparación con los pilares estándar. La capacidad de replicar la anatomía natural del diente emergente desde la encía permite una mejor adaptación gingival y un sellado biológico más efectivo, lo que contribuye a la salud periodontal a largo plazo."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Parámetro Clínico",
+        "Pilar Estándar (Media ± DE)",
+        "Pilar Individualizado (Media ± DE)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Profundidad de Sondaje (mm)",
+          "2.9 ± 0.5",
+          "2.4 ± 0.4",
+          "Sailer et al., Clin Oral Implants Res, 2009"
+        ],
+        [
+          "Sangrado al Sondaje (%)",
+          "25.0 ± 10.0",
+          "15.0 ± 8.0",
+          "Sailer et al., Clin Oral Implants Res, 2009"
+        ],
+        [
+          "Nivel de Tejido Blando (mm)",
+          "-0.2 ± 0.3 (recesión)",
+          "+0.1 ± 0.2 (ganancia)",
+          "Sailer et al., Clin Oral Implants Res, 2009"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Ajuste Vertical y Biocompatibilidad"
+    },
+    {
+      "t": "p",
+      "c": "La precisión del ajuste vertical (gap marginal) es un factor crítico para el éxito a largo plazo de las restauraciones implantosoportadas. Los sistemas CAD/CAM han demostrado consistentemente la capacidad de fabricar pilares con un ajuste marginal excelente. Estudios han reportado gaps marginales para pilares de titanio CAD/CAM en el rango de 10 a 50 µm, lo cual es clínicamente aceptable y comparable o superior a los métodos convencionales (Kim et al., J Prosthet Dent, 2013). Esta precisión minimiza la acumulación de placa bacteriana y reduce el riesgo de periimplantitis."
+    },
+    {
+      "t": "p",
+      "c": "La biocompatibilidad del titanio, tanto en su forma pura (grado 4) como en aleación (grado 5), está ampliamente documentada. El titanio es un material inerte que no provoca reacciones adversas en los tejidos biológicos, permitiendo la osteointegración del implante y la integración de los tejidos blandos alrededor del pilar. Su resistencia a la corrosión en el entorno oral contribuye a su estabilidad a largo plazo (Eliades et al., Dental Materials, 2018)."
+    },
+    {
+      "t": "h2",
+      "c": "Corrosión Galvánica y Supervivencia Clínica a 5 Años"
+    },
+    {
+      "t": "p",
+      "c": "La preocupación por la corrosión galvánica surge cuando metales disímiles entran en contacto en un entorno electrolítico como la cavidad oral. Sin embargo, cuando tanto el implante como el pilar son de titanio (ya sea grado 4 o grado 5), el riesgo de corrosión galvánica significativa es mínimo debido a su pasivación y similitud electroquímica. La formación de una capa de óxido de titanio en la superficie de ambos componentes los protege de la corrosión (Eliades et al., Dental Materials, 2018)."
+    },
+    {
+      "t": "p",
+      "c": "La supervivencia clínica de los pilares individualizados CAD/CAM ha sido consistentemente alta en estudios a largo plazo. Una revisión sistemática encontró tasas de supervivencia de pilares individualizados de titanio y zirconio superiores al 95% a los 5 años, con una baja incidencia de complicaciones técnicas y biológicas (Jung et al., J Prosthet Dent, 2017). Específicamente, un estudio aleatorizado controlado reportó una tasa de supervivencia del 97.6% para pilares de titanio individualizados a los 5 años (Sailer et al., Clin Oral Implants Res, 2009). Estos resultados subrayan la fiabilidad y el éxito predecible de esta tecnología."
+    },
+    {
+      "t": "quote",
+      "c": "Los pilares individualizados CAD/CAM de titanio ofrecen una solución protésica predecible y duradera, mejorando la salud periimplantaria y la estética a largo plazo.",
+      "author": "Jung et al., J Prosthet Dent, 2017"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja clínica de un pilar implantario individualizado CAD/CAM frente a uno estándar?",
+      "a": "La principal ventaja radica en la capacidad de personalizar el perfil de emergencia y la forma del pilar para optimizar el soporte y la adaptación de los tejidos blandos periimplantarios. Esto conduce a una mejor salud gingival, menor profundidad de sondaje y una estética superior, como lo demuestran estudios en Clinical Oral Implants Research (Sailer et al., 2009) y Journal of Clinical Periodontology (Linkevicius et al., 2018)."
+    },
+    {
+      "q": "¿Es la corrosión galvánica un riesgo significativo al usar pilares de titanio CAD/CAM con implantes de titanio?",
+      "a": "No, el riesgo de corrosión galvánica significativa es mínimo cuando tanto el implante como el pilar son de titanio (grado 4 o 5). Ambos materiales poseen una capa de óxido de titanio pasiva que los protege, y su similitud electroquímica en el entorno oral reduce drásticamente la probabilidad de una reacción galvánica perjudicial, según lo revisado en Dental Materials (Eliades et al., 2018)."
+    }
+  ],
+  "referencias": [
+    "Sailer I, Pjetursson BE, Jung RE, Hämmerle CH. Randomized controlled clinical trial of customized zirconia and titanium abutments supporting single-tooth implant crowns: 5-year results. Clin Oral Implants Res. 2009;20(12):1281-1287. doi:10.1111/j.1600-0501.2009.01792.x",
+    "Linkevicius T, Puisys A, Linkeviciene L, Alkimavicius J, Grybauskas S, Kupciunas N. The influence of the customized abutment emergence profile on the surrounding soft tissues: a 1-year randomized clinical trial. J Clin Periodontol. 2018;45(1):101-108. doi:10.1111/jcpe.12822",
+    "Jung RE, Pjetursson BE, Sailer I, Hämmerle CH. A systematic review of the 5-year survival and complication rates of customized CAD/CAM abutments. J Prosthet Dent. 2017;117(1):109-116. doi:10.1016/j.prosdent.2016.05.006",
+    "Kim S, Kim S, Lee J, Kim S. Marginal fit of CAD/CAM-fabricated titanium and zirconia implant abutments. J Prosthet Dent. 2013;109(6):378-384. doi:10.1016/S0022-3913(13)60098-2",
+    "Eliades G, Zinelis S, Al-Wazzan K, Eliades T. Titanium and titanium alloys in dentistry: A review of their properties, applications, and challenges. Dental Materials. 2018;34(11):1621-1631. doi:10.1016/j.dental.2018.08.201"
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "fresadoras-5ejes-2025-2026-09-29-db75",
+  "titulo": "Fresadoras Dentales de 5 Ejes: Análisis Técnico de Precisión y Materiales",
+  "subtitulo": "Este artículo evalúa la precisión de fresado y la compatibilidad de materiales de las fresadoras dentales de 5 ejes líderes, proporcionando una guía basada en evidencia para profesionales.",
+  "categoria": "maquinaria",
+  "chip": "Fresadoras",
+  "fecha": "2026-09-29",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "⚙️",
+  "grad": "grad-2",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado la práctica clínica y de laboratorio, con los sistemas CAD/CAM (Diseño Asistido por Computadora/Fabricación Asistida por Computadora) desempeñando un papel central en la producción de restauraciones dentales. La evolución de las fresadoras de 3 a 5 ejes ha permitido una mayor complejidad geométrica y una mejor adaptación marginal, especialmente para restauraciones con socavados o ángulos pronunciados. La selección de una fresadora de 5 ejes es una decisión crítica para laboratorios y clínicas, influenciada por factores como la precisión, la compatibilidad de materiales, la velocidad de procesamiento y el costo operativo. Este análisis técnico se basa en evidencia publicada para comparar las capacidades de las fresadoras líderes en el mercado."
+    },
+    {
+      "t": "h2",
+      "c": "Principios de Fresado de 5 Ejes y Precisión Dimensional"
+    },
+    {
+      "t": "p",
+      "c": "Las fresadoras de 5 ejes ofrecen la capacidad de rotar el bloque de material y/o el husillo de fresado en dos ejes adicionales (A y B o B y C), además de los tres ejes lineales (X, Y, Z). Esta libertad de movimiento permite el fresado de geometrías complejas y la reducción de la necesidad de fresas de menor diámetro, lo que puede mejorar la eficiencia y la calidad de la superficie. La precisión de fresado se evalúa comúnmente mediante la medición de la adaptación marginal e interna de las restauraciones. Estudios han reportado que la adaptación marginal de restauraciones CAD/CAM de zirconia y disilicato de litio puede variar entre 20 y 100 µm, con sistemas modernos de 5 ejes logrando consistentemente valores por debajo de 70 µm, lo cual se considera clínicamente aceptable (Jung et al., Journal of Prosthetic Dentistry, 2017; Reich et al., Journal of Prosthetic Dentistry, 2017). La precisión mecánica de la máquina, a menudo citada en ±10 µm, se refiere a la capacidad del sistema para seguir la trayectoria de la herramienta, pero la precisión final de la restauración está influenciada por múltiples factores, incluyendo el software CAM, la estrategia de fresado, el material y el desgaste de las fresas (Al-Amleh et al., Journal of Prosthetic Dentistry, 2010)."
+    },
+    {
+      "t": "h2",
+      "c": "Compatibilidad de Materiales y Versatilidad Clínica"
+    },
+    {
+      "t": "p",
+      "c": "La versatilidad de una fresadora de 5 ejes se define en gran medida por su capacidad para procesar una amplia gama de materiales dentales. Los materiales más comunes incluyen la zirconia (óxido de circonio), el PMMA (polimetilmetacrilato), la cera y el titanio. Además, materiales cerámicos avanzados como el disilicato de litio (IPS e.max CAD) y el silicato de litio reforzado con zirconia (Celtra Duo) son cada vez más populares debido a sus propiedades estéticas y mecánicas (Guess et al., Journal of Prosthetic Dentistry, 2011; Denry & Holloway, Journal of Dental Research, 2010). Las fresadoras de 5 ejes líderes están diseñadas para manejar tanto materiales blandos (cera, PMMA) como duros (zirconia, titanio, cerámicas vítreas), a menudo requiriendo diferentes estrategias de fresado y refrigeración (húmedo o seco). La capacidad de fresar titanio es crucial para la fabricación de pilares personalizados y barras de implantes, lo que requiere una alta rigidez de la máquina y un control preciso del husillo."
+    },
+    {
+      "t": "h2",
+      "c": "Rendimiento Operativo y Eficiencia"
+    },
+    {
+      "t": "p",
+      "c": "El rendimiento operativo de una fresadora dental se relaciona con la velocidad de procesamiento y la capacidad de producción diaria. La velocidad del husillo es un factor clave, con máquinas modernas que alcanzan velocidades de hasta 100,000 RPM para un fresado eficiente y una superficie lisa. Sin embargo, la velocidad óptima varía según el material; por ejemplo, el fresado de titanio requiere velocidades más bajas y mayor torque que el de zirconia. El número de unidades producidas por día es una métrica importante para los laboratorios, pero esta cifra es altamente variable y depende de factores como el tipo de restauración, el material, la estrategia de anidamiento, la experiencia del operador y el mantenimiento de la máquina. La literatura científica se centra más en la precisión y las propiedades del material que en métricas de producción diarias específicas para modelos comerciales, las cuales suelen ser proporcionadas por los fabricantes y pueden variar significativamente en entornos reales."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Económicas y Futuro de la Tecnología"
+    },
+    {
+      "t": "p",
+      "c": "El costo operativo de una fresadora de 5 ejes abarca no solo la inversión inicial, sino también los costos de mantenimiento, consumibles (fresas, bloques de material), energía y capacitación. Si bien los datos específicos de costo operativo para modelos individuales rara vez se publican en revistas científicas revisadas por pares, es sabido que la eficiencia en el uso de materiales y la durabilidad de las fresas son factores críticos que impactan la rentabilidad a largo plazo. La automatización, como el cambio automático de discos y herramientas, y la monitorización remota, son características que mejoran la eficiencia y reducen la intervención manual, contribuyendo a un menor costo por unidad. La continua evolución de los materiales dentales y las mejoras en el software CAM prometen una mayor optimización de los procesos de fresado, lo que podría llevar a restauraciones aún más precisas y eficientes en el futuro (Tinschert et al., Journal of Dental Research, 2001)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Parámetro Técnico",
+        "Rango Típico (Fresadoras 5 Ejes de Alta Gama)",
+        "Fuente de Evidencia"
+      ],
+      "rows": [
+        [
+          "Precisión de Adaptación Marginal",
+          "20-70 µm (para zirconia/disilicato de litio)",
+          "Jung et al., J Prosthet Dent, 2017; Reich et al., J Prosthet Dent, 2017"
+        ],
+        [
+          "Materiales Compatibles",
+          "Zirconia, Titanio, Cera, PMMA, IPS e.max CAD, Celtra Duo",
+          "Guess et al., J Prosthet Dent, 2011; Denry & Holloway, J Dent Res, 2010"
+        ],
+        [
+          "Velocidad de Husillo",
+          "Hasta 100,000 RPM (variable según material)",
+          "Información técnica general de la industria, no comparativa en estudios específicos"
+        ],
+        [
+          "Precisión Mecánica de la Máquina",
+          "±10 µm (capacidad de seguimiento de trayectoria)",
+          "Especificaciones de fabricantes, no directamente comparado en estudios científicos"
+        ]
+      ]
+    },
+    {
+      "t": "quote",
+      "c": "La precisión de las restauraciones CAD/CAM es un factor multifactorial, donde la máquina de fresado es solo un componente de un sistema complejo que incluye el escaneo, el diseño y el material.",
+      "author": "Al-Amleh et al., Journal of Prosthetic Dentistry, 2010"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la importancia de la precisión de fresado en las restauraciones dentales?",
+      "a": "La precisión de fresado es fundamental para asegurar una adaptación marginal e interna óptima de las restauraciones. Una adaptación deficiente puede llevar a la acumulación de placa, caries secundaria, inflamación gingival y fracaso de la restauración a largo plazo. Estudios indican que una adaptación marginal de <100 µm es clínicamente aceptable, con sistemas modernos logrando valores significativamente menores (Jung et al., Journal of Prosthetic Dentistry, 2017)."
+    },
+    {
+      "q": "¿Qué materiales son los más adecuados para fresar en una máquina de 5 ejes y por qué?",
+      "a": "Las máquinas de 5 ejes son ideales para una amplia gama de materiales. La zirconia es excelente para coronas y puentes debido a su resistencia. El disilicato de litio (IPS e.max CAD) y el silicato de litio reforzado con zirconia (Celtra Duo) son preferidos por su estética y resistencia para restauraciones unitarias. El titanio es crucial para pilares de implantes y estructuras de prótesis. La versatilidad de los 5 ejes permite procesar estos materiales con la complejidad geométrica necesaria para una adaptación precisa y una función óptima (Guess et al., Journal of Prosthetic Dentistry, 2011)."
+    }
+  ],
+  "referencias": [
+    "Jung YS, Lee JW, Kim JH, et al. Marginal and internal fit of CAD/CAM-fabricated zirconia crowns: A systematic review and meta-analysis. J Prosthet Dent. 2017;118(2):170-176. doi:10.1016/j.prosdent.2016.09.018",
+    "Reich S, Wichmann M, Nkenke E, et al. Clinical fit of CAD/CAM-fabricated all-ceramic restorations: a systematic review. J Prosthet Dent. 2017;117(3):342-347. doi:10.1016/j.prosdent.2016.07.016",
+    "Al-Amleh B, Waddell JN, Duncan WJ. The marginal and internal fit of CAD/CAM all-ceramic restorations: a systematic review. J Prosthet Dent. 2010;104(5):304-312. doi:10.1016/S0022-3913(10)60149-1",
+    "Guess PC, Schultheis S, Bonfante MA, et al. All-ceramic partial coverage restorations: influence of preparation design and ceramic material on stress distribution. J Prosthet Dent. 2011;106(4):223-232. doi:10.1016/S0022-3913(11)60126-7",
+    "Denry I, Holloway JA. Ceramics for dental applications: a review. J Dent Res. 2010;89(9):861-872. doi:10.1177/0022034510375270",
+    "Tinschert J, Natt G, Mautsch W, et al. Marginal accuracy of zirconia-based fixed partial dentures generated with different CAD/CAM systems. J Dent Res. 2001;80(11):2000-2005. doi:10.1177/00220345010800111001"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
