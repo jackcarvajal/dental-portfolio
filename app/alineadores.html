@@ -138,7 +138,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
     <div class="sec-t" style="margin-top:0"><i class="fas fa-hand-holding-dollar" style="color:var(--green)"></i> <span id="abonosT">Mis abonos</span>
       <button type="button" class="btn btn-mg mini money-cli" style="margin-left:auto" onclick="abrirAbono()"><i class="fas fa-plus"></i> Registrar abono</button></div>
     <div class="cards" id="abonosRes" style="margin-bottom:12px"></div>
-    <div class="tw"><table id="abonosTbl" class="rtable"><thead><tr><th>Fecha</th><th>Valor</th><th>Medio</th><th>Nº de aprobación</th><th>Nota</th></tr></thead><tbody></tbody></table></div>
+    <div class="tw"><table id="abonosTbl" class="rtable"><thead><tr><th>Fecha</th><th>Valor</th><th>Medio</th><th>Nº de aprobación</th><th>Nota</th><th>Comprobante</th></tr></thead><tbody></tbody></table></div>
   </div>
   <div id="misCuentas" style="display:none">
     <div class="sec-t" style="margin-top:0"><i class="fas fa-wallet" style="color:var(--gold)"></i> Mis cuentas</div>
@@ -174,6 +174,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
     <div class="fg"><label for="aRef">Nº de aprobación</label><input id="aRef" placeholder="178777…"></div>
   </div>
   <div class="fg"><label for="aNota">Nota</label><input id="aNota" placeholder="Abono septiembre"></div>
+  <div class="fg"><label for="aComp">Comprobante (captura del banco o PDF)</label><input type="file" id="aComp" accept="image/*,.pdf"></div>
   <p class="sub" style="margin:0 0 6px">Se aplica a los cargos pendientes más antiguos. Si no alcanza para uno, se divide: la parte pagada y el saldo.</p>
   <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovAbono')">Cancelar</button><button class="btn btn-mg" id="aGuardar" onclick="guardarAbono()">Registrar</button></div>
 </div></div>
@@ -497,8 +498,9 @@ function renderCuentas(){
       <td data-l="Valor"><div><b>${nf.format(Math.round(p.monto))}</b> COP</div></td>
       <td data-l="Medio"><div>${escH(p.metodo||'—')}</div></td>
       <td data-l="Nº de aprobación"><div>${escH(p.referencia||'—')}</div></td>
-      <td data-l="Nota"><div class="l2" style="margin:0">${escH(p.nota||'')}</div></td></tr>`).join('')
-      || `<tr><td colspan="5" class="empty">Aún no hay abonos registrados.</td></tr>`;
+      <td data-l="Nota"><div class="l2" style="margin:0">${escH(p.nota||'')}</div></td>
+      <td data-l="Comprobante"><div>${p.comprobante_url?`<button class="btn btn-ghost mini" onclick="verComprobante('${escJ(p.comprobante_url)}')"><i class="fas fa-file-invoice"></i> Ver</button>`:'—'}</div></td></tr>`).join('')
+      || `<tr><td colspan="6" class="empty">Aún no hay abonos registrados.</td></tr>`;
   }
   // Mis cuentas (solo la técnica): lo pendiente caso por caso y lo pagado agrupado por mes
   if(VE_MAY && !VE_CLI){
@@ -633,7 +635,7 @@ function renderResumen(){
 
 /* ── Abono a la técnica (admin): se aplica a lo más antiguo en la BD ── */
 function abrirAbono(){
-  ['aMonto','aMetodo','aRef','aNota'].forEach(id=>document.getElementById(id).value='');
+  ['aMonto','aMetodo','aRef','aNota','aComp'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('aFecha').value=new Date().toISOString().slice(0,10);
   document.getElementById('ovAbono').classList.add('show');
 }
@@ -645,9 +647,19 @@ async function guardarAbono(){
   const { data, error }=await sb.rpc('aln_registrar_abono_tecnica',{ p_monto:monto, p_fecha:v('aFecha'), p_metodo:v('aMetodo'), p_referencia:v('aRef'), p_nota:v('aNota') });
   btn.disabled=false;
   if(error || (data && data.ok===false)){ alert('No se pudo registrar: '+((data&&data.error)||(error&&error.message)||'')); return; }
+  // Comprobante: la técnica lo ve en «Mis abonos»
+  let avisoComp='';
+  const f=document.getElementById('aComp').files[0];
+  if(f && data && data.pago_id){
+    const ext=(f.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
+    const ruta='tecnica/'+data.pago_id+'.'+ext;
+    const up=await sb.storage.from('alineadores-comprobantes').upload(ruta,f,{upsert:true});
+    if(up.error) avisoComp='\n⚠️ No se pudo subir el comprobante ('+up.error.message+').';
+    else await sb.from('alineadores_pagos').update({comprobante_url:ruta}).eq('id',data.pago_id);
+  }
   cerrar('ovAbono');
   await cargar();
-  alert('✅ Abono registrado: cubrió '+nf.format(Math.round(data.aplicado))+' COP en '+data.cargos+' cargo'+(data.cargos===1?'':'s')+'.'+(data.a_favor>0?('\nQuedan '+nf.format(Math.round(data.a_favor))+' COP a favor de la técnica.'):''));
+  alert('✅ Abono registrado: cubrió '+nf.format(Math.round(data.aplicado))+' COP en '+data.cargos+' cargo'+(data.cargos===1?'':'s')+'.'+(data.a_favor>0?('\nQuedan '+nf.format(Math.round(data.a_favor))+' COP a favor de la técnica.'):'')+avisoComp);
 }
 
 /* ── Caso ── */
