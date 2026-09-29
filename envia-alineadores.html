@@ -177,7 +177,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;text-align:c
             <li><b>Refinamiento:</b> solo aplica cuando el tratamiento <b>terminó</b>. Uno sin costo si se solicita dentro de los 6 meses siguientes al fin del tratamiento; después, con costo.</li>
             <li><b>Modificación de la planeación:</b> si antes de terminar el tratamiento hay que cambiar el plan porque el paciente no usó los alineadores como se indicó o no asistió a sus controles (causas ajenas a PRODIGY), no es un refinamiento: es una modificación de la planeación y tiene costo.</li>
             <li><b>Pagos:</b> corte mensual. Si pagas con PayPal se suma la comisión acordada.</li>
-            <li><b>Tiempos:</b> días hábiles en horario de Colombia (los festivos de Colombia no cuentan).</li>
+            <li><b>Tiempos:</b> se cuentan en días hábiles de Colombia (lunes a viernes). Sábados, domingos y festivos no son hábiles: puedes subir casos esos días, pero se empiezan a trabajar el siguiente día hábil.</li>
             <li><b>Resultados:</b> dependen de la calidad de los archivos (escaneo, radiografías, fotos) y de la colaboración del paciente.</li>
             <li><b>Datos:</b> declaras tener la autorización del paciente para compartir sus datos (Ley 1581 de 2012).</li>
           </ul>
@@ -301,7 +301,7 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
   const notasFull='INDICACIÓN: '+indicacion+
     '\n\n📎 Archivos ('+subidos.length+'):\n'+subidos.map(s=>'• '+s.nombre+'  →  '+s.ruta).join('\n')+
     (convenio?'\n\n💳 CLIENTE CONVENIO MENSUAL — sumar al corte del mes.':'')+
-    '\n\n✅ Aceptó las políticas de alineadores (alineadores-2026-09-28b) el '+new Date().toLocaleString('es-CO');
+    '\n\n✅ Aceptó las políticas de alineadores (alineadores-2026-09-28c) el '+new Date().toLocaleString('es-CO');
 
   await sb.from('solicitudes_scanner').insert({
     negocio:'prodigy', codigo,

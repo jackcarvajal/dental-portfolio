@@ -107,7 +107,8 @@ h1{font-size:1.25rem;}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
 <script src="../js/auth-guard.js?v=20260924"></script>
-<script src="../js/aln-comun.js?v=20260928b"></script>
+<script src="../js/aln-comun.js?v=20260928c"></script>
+<script src="../js/fechas-habiles.js?v=20260719"></script>
 <script src="../js/protocolo-alineadores.js?v=20260928"></script>
 <script>document.addEventListener('DOMContentLoaded',function(){var d=document.getElementById('polLista');if(d&&window.ALN)d.innerHTML=ALN.POLITICAS_HTML;});</script>
 <script>ProdigyAuth.require(['client','admin','operator','contabilidad']);</script>
@@ -192,7 +193,10 @@ async function enviar(){
   prog(100,'Listo');
   document.getElementById('formCard').style.display='none';
   const ok=document.getElementById('okCard'); ok.classList.add('show');
-  document.getElementById('okMsg').innerHTML='Paciente <b>'+escH(paciente)+'</b> · Nº <b>'+escH(codigo)+'</b>.<br>El equipo valora el caso y te responde en tu cuenta.<br><span style="font-size:.85rem;color:#94a3b8">¿Te equivocaste? Puedes cancelarlo en <b>Mi cuenta</b> durante la <b>primera hora</b>; después PRODIGY ya pudo iniciar y se cobra la viabilidad y valoración.</span>'+(fallidos?'<br><br><b style="color:#fbbf24">⚠️ '+fallidos+' archivo(s) no se pudieron subir.</b> Envíalos por WhatsApp o vuelve a subir el caso. <a href="#" onclick="window.ProdigyReport&&ProdigyReport.abrir({tipo:\'archivos\'});return false" style="color:#EADBAE">Reportar el problema</a>':'');
+  // Sábado, domingo, festivo o después del corte: el caso queda recibido y se empieza el siguiente día hábil
+  let inicioTxt='';
+  try{ const ini=window.PFechas&&PFechas.inicioProduccion(new Date()); if(ini && ini.toDateString()!==new Date().toDateString()) inicioTxt='<br>🗓️ Hoy no es día hábil (o ya pasó la hora de corte): tu caso se empieza a trabajar el <b>'+escH(ini.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'}))+'</b>.'; }catch(_){}
+  document.getElementById('okMsg').innerHTML='Paciente <b>'+escH(paciente)+'</b> · Nº <b>'+escH(codigo)+'</b>.<br>El equipo valora el caso y te responde en tu cuenta.'+inicioTxt+'<br><span style="font-size:.85rem;color:#94a3b8">¿Te equivocaste? Puedes cancelarlo en <b>Mi cuenta</b> durante la <b>primera hora</b>; después PRODIGY ya pudo iniciar y se cobra la viabilidad y valoración.</span>'+(fallidos?'<br><br><b style="color:#fbbf24">⚠️ '+fallidos+' archivo(s) no se pudieron subir.</b> Envíalos por WhatsApp o vuelve a subir el caso. <a href="#" onclick="window.ProdigyReport&&ProdigyReport.abrir({tipo:\'archivos\'});return false" style="color:#EADBAE">Reportar el problema</a>':'');
   ok.scrollIntoView({behavior:'smooth',block:'center'});
 }
 window.addEventListener('DOMContentLoaded',init);

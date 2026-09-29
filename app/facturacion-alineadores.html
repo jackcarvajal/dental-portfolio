@@ -107,6 +107,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
       <li>Cuando PRODIGY te envía la <b>viabilidad y valoración</b> o la <b>planificación</b> de un caso, aparece como <b>Por revisar</b> (y en la campana 🔔). Pulsa <b>Revisar</b> y elige <b>Aprobar</b> o <b>Pedir cambios</b>. La planificación incluye 2 revisiones.</li>
       <li><b>Tratamiento</b>: con la fecha de envío del plan y la duración se estima el fin. El <b>refinamiento</b> es después de terminar el tratamiento: uno sin costo si lo pides dentro de los 6 meses siguientes; después tiene costo.</li>
       <li>Si antes de terminar hay que cambiar el plan porque el paciente no usó los alineadores o no asistió a sus controles, no es un refinamiento: es una <b>modificación de la planeación</b> y tiene costo.</li>
+      <li>Los <b>sábados, domingos y festivos</b> de Colombia no son días hábiles: puedes subir casos, pero se empiezan a trabajar el siguiente día hábil.</li>
       <li>Puedes cancelar un caso solo durante la primera hora después de subirlo. <a href="#" onclick="verPoliticas();return false;" style="color:var(--cyan)">Ver las políticas de alineadores</a>.</li>
     </ul>
   </details>
@@ -168,7 +169,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <script src="../js/auth-guard.js?v=20260924"></script>
 <script>ProdigyAuth.require(['client','admin','operator','contabilidad']);</script>
 <script src="../js/notif-panel.js?v=20260924"></script>
-<script src="../js/aln-comun.js?v=20260928b"></script>
+<script src="../js/aln-comun.js?v=20260928c"></script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const escJ=s=>escH(String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n'));   // texto dentro de '…' en onclick
