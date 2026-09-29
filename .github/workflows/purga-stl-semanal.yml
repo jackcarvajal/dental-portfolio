@@ -8,8 +8,11 @@
 name: Purga STL Storage Semanal
 
 on:
-  schedule:
-    - cron: '0 6 * * 0'   # Domingo 1 AM Bogotá (6:00 UTC)
+  # PAUSADA (29-sep-2026): nunca había corrido (faltaba CRON_SECRET). Antes de activarla se avisa a los
+  # clientes en su portal que descarguen sus archivos (se conservan 30 días tras la entrega).
+  # Para activarla: quitar el comentario de las 2 líneas de abajo.
+  # schedule:
+  #   - cron: '0 6 * * 0'   # Domingo 1 AM Bogotá (6:00 UTC)
   workflow_dispatch:        # Ejecución manual desde GitHub Actions
 
 permissions:
