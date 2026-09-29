@@ -76,10 +76,17 @@ async function logIncidencia(env, tipo, severidad, descripcion) {
 }
 
 export async function onRequestGet(context) {
-  const { request, env } = context;
+  const { request } = context;
+  // Mismas claves que el resto de functions: basta con SUPABASE_SERVICE_ROLE_KEY + CRON_SECRET en Cloudflare
+  const env = {
+    ...context.env,
+    SUPABASE_URL: context.env.SUPABASE_URL || 'https://zgihrwqfyvgyapbwzkvw.supabase.co',
+    SUPABASE_SERVICE_KEY: context.env.SUPABASE_SERVICE_KEY || context.env.SUPABASE_SERVICE_ROLE_KEY,
+  };
 
-  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY || !env.CRON_SECRET) {
-    return new Response(JSON.stringify({ error: 'No configurado' }), { status: 500, headers: corsHeaders() });
+  if (!env.SUPABASE_SERVICE_KEY || !env.CRON_SECRET) {
+    const falta = [!env.SUPABASE_SERVICE_KEY && 'SUPABASE_SERVICE_ROLE_KEY', !env.CRON_SECRET && 'CRON_SECRET'].filter(Boolean);
+    return new Response(JSON.stringify({ error: 'No configurado: falta ' + falta.join(' y ') + ' en Cloudflare' }), { status: 500, headers: corsHeaders() });
   }
 
   const auth = request.headers.get('Authorization') || '';

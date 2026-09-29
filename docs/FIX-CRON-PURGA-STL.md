@@ -4,6 +4,10 @@
 > `https://prodigylabdental.com/api/purgar-stl-storage` (borra STL reales de Storage de pedidos
 > entregados hace +30 días). Fallaba con **exit 1** en ~4-9s desde su creación.
 
+> **Actualización 2026-09-29:** la Function ya usa `SUPABASE_SERVICE_ROLE_KEY` (la misma de las demás) y la URL fija
+> del proyecto → en Cloudflare solo falta **`CRON_SECRET`**. Causa actual del fallo (Purga STL y Alerta SLA): el secret
+> `CRON_SECRET` **no existe en GitHub** (`gh secret list` solo muestra `GEMINI_API_KEY`).
+
 ## Causa raíz — 3 fallos independientes (los 3 hay que arreglarlos)
 
 1. **Faltan env vars en Cloudflare Pages** → la Function responde `{"error":"No configurado"}` **500**
