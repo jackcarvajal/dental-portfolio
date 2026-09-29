@@ -79,6 +79,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
   <a class="tn" href="client-panel.html"><i class="fas fa-house"></i> Portal principal</a>
   <button type="button" class="tn" onclick="verPoliticas()"><i class="fas fa-file-contract"></i> Políticas</button>
   <a class="tn" href="cambiar-contrasena.html?next=/app/facturacion-alineadores.html"><i class="fas fa-key"></i> Cambiar contraseña</a>
+  <a class="tn" id="waNav" href="https://wa.me/573212816716" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp</a>
   <button type="button" class="tn salir" onclick="ProdigyAuth.signOut()"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</button>
 </nav>
 <div class="quien" id="quien" hidden aria-label="Tu cuenta"></div>
@@ -181,6 +182,8 @@ let sb, CASOS={}, CARGOS=[], PAGOS=[], ENTREGAS=[];
 // ── PayPal: pon tu handle de paypal.me (ej. 'alejandrocarvajal') para activar el botón ──
 const PAYPAL_HANDLE='alejandrocarvajalden';   // paypal.me/alejandrocarvajalden · vacío = pedir el enlace de pago por WhatsApp
 const WA_LAB='573212816716';
+let QUIEN='';   // «Panorámica Digital 3D (DR-0042)» para los mensajes de WhatsApp
+const waLab = txt => 'https://wa.me/'+WA_LAB+'?text='+encodeURIComponent(txt);
 // Comisión por pagar con PayPal: la ACORDADA con cada cliente (alineadores_clientes.comision_paypal,
 // ej. Panorámica = 12 %). Si el cliente no tiene una acordada: la comisión normal de PayPal (5,4 % + US$0,30).
 let COMISION_ACORDADA=null;
@@ -274,6 +277,8 @@ async function pintarQuien(){
       <div><div class="qn">${escH(nombre)}</div><div class="qs">${linea}</div></div>
       <div class="qtags">${pf&&pf.codigo_cliente?`<span class="qtag oro">Cliente ${escH(pf.codigo_cliente)}</span>`:''}<span class="qtag">Alineadores</span></div>`;
     document.getElementById('quien').hidden=false;
+    QUIEN=nombre+(pf&&pf.codigo_cliente?(' ('+pf.codigo_cliente+')'):'');
+    document.getElementById('waNav').href=waLab('Hola PRODIGY, soy '+QUIEN+'. ');
     document.querySelector('h1').textContent='😁 '+nombre+' — Alineadores';
     document.title=nombre+' — Alineadores · PRODIGY';
   }catch(_){}
@@ -359,7 +364,8 @@ function renderCasos(){
       <td data-l="Tratamiento"><div>${ALN.celdaTrat(c)}</div></td>
       <td data-l="Última entrega"><div>${ult}</div></td>
       <td data-l=""><div class="acts">${e?`<button class="btn ${e.estado==='enviado'?'btn-mg':'btn-ghost'} mini" onclick="verCaso('${c.id}')">${e.estado==='enviado'?'Revisar':'Ver'}</button>`:''}
-        ${min?`<button class="btn btn-ghost mini" style="color:var(--red)" onclick="cancelarCaso('${c.id}')" title="Solo durante la primera hora">Cancelar (${min} min)</button>`:''}</div></td></tr>`;
+        ${min?`<button class="btn btn-ghost mini" style="color:var(--red)" onclick="cancelarCaso('${c.id}')" title="Solo durante la primera hora">Cancelar (${min} min)</button>`:''}
+        <a class="btn btn-ghost mini" href="${escH(waLab('Hola PRODIGY'+(QUIEN?', soy '+QUIEN:'')+'. Tengo una duda sobre el caso de '+c.paciente+(c.codigo?' ('+c.codigo+')':'')+': '))}" target="_blank" rel="noopener" title="Preguntar por WhatsApp sobre este caso" aria-label="WhatsApp sobre este caso"><i class="fab fa-whatsapp" style="color:#25D366"></i></a></div></td></tr>`;
   }).join('');
   // Abrir directo desde el aviso (#casos)
   if(location.hash==='#casos' && !renderCasos._hecho){ renderCasos._hecho=true; const pend=ENTREGAS.find(e=>e.estado==='enviado'); if(pend) setTimeout(()=>verCaso(pend.caso_id),300); }

@@ -90,6 +90,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <a class="tn money-cli" href="panel-interno-operaciones.html"><i class="fas fa-gauge"></i> Panel admin</a>
   <a class="tn" href="ayuda.html#aln-flujo"><i class="fas fa-circle-question"></i> Centro de ayuda</a>
   <a class="tn" href="cambiar-contrasena.html?next=/app/alineadores.html"><i class="fas fa-key"></i> Cambiar contraseña</a>
+  <a class="tn" id="waNav" href="https://wa.me/573212816716" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp</a>
   <button type="button" class="tn salir" onclick="ProdigyAuth.signOut()"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</button>
 </nav>
 <div class="quien" id="quien" hidden aria-label="Tu cuenta"></div>
@@ -317,6 +318,7 @@ async function init(){
        ? 'Tus casos y tus cuentas. ✏️ completa los datos · ✈️ entrega al cliente · 🏁 completa cuando envíes los modelos.'
        : 'Casos de alineadores.');
   pintarQuien();
+  prepararWhatsApp().then(()=>{ if(CASOS.length) render(); });
   try{ FIL=localStorage.getItem('aln_fil')||'todos'; }catch(_){}
   let tab='casos'; try{ tab=localStorage.getItem('aln_tab')||'casos'; }catch(_){}
   verTab(tab);
@@ -353,6 +355,18 @@ async function cargar(){
 
 function cargosDe(casoId,parte){ return CARGOS.filter(x=>x.caso_id===casoId && (!parte||x.parte===parte)); }
 function sumaCaso(casoId,parte){ return cargosDe(casoId,parte).reduce((a,c)=>a+Number(c.monto||0),0); }
+
+/* ── WhatsApp: la técnica escribe al laboratorio; el admin escribe a la técnica (número de «Avisos WhatsApp») ── */
+const WA_LAB='573212816716';
+let WA_TEC='';
+function waHref(txt){ const n=VE_CLI?WA_TEC:WA_LAB; return n?('https://wa.me/'+n+'?text='+encodeURIComponent(txt)):''; }
+async function prepararWhatsApp(){
+  if(VE_CLI){
+    try{ const { data }=await sb.from('alineadores_avisos_wa').select('whatsapp').eq('rol','tecnica').order('created_at').limit(1); WA_TEC=String((data&&data[0]&&data[0].whatsapp)||'').replace(/\D/g,''); }catch(_){}
+  }
+  const a=document.getElementById('waNav'), h=waHref(VE_CLI?'Hola Mayra, ':'Hola Alejo, te escribo desde el tablero de alineadores: ');
+  if(h){ a.href=h; a.title=VE_CLI?'Escribir a la técnica':'Escribir al laboratorio'; } else a.style.display='none';
+}
 
 /* ── Tarjeta de identidad: cada persona ve que es SU panel (nombre de muestra, correo y sus permisos) ── */
 const ROL_LBL={admin:'Administración',operator:'Operaciones',contabilidad:'Contabilidad',secretaria:'Secretaría',alineadores:'Alineadores',guias:'Guías quirúrgicas',exocad:'Exocad (prostodoncia)',blender:'Blender (sonrisa)',diseno:'Diseño CAD'};
@@ -583,6 +597,7 @@ function filaCaso(c){
       ${c.estado!=='terminado'&&c.estado!=='cancelado'?`<button class="btn btn-ghost mini" onclick="completarCaso('${c.id}')" title="Completar (requiere modelos)" aria-label="Completar"><i class="fas fa-flag-checkered"></i></button>`:''}
       ${VE_MAY?`<button class="btn btn-ghost mini" onclick="verCargos('${c.id}')" title="Cargos / pagos" aria-label="Cargos"><i class="fas fa-receipt"></i></button>`:''}
       ${VE_CLI?`<button class="btn btn-ghost mini" onclick="abrirCargo('${c.id}')" title="Agregar cargo" aria-label="Agregar cargo"><i class="fas fa-plus"></i></button>`:''}
+      ${waHref('x')?`<a class="btn btn-ghost mini" href="${escH(waHref((VE_CLI?'Hola Mayra, sobre el caso de ':'Hola Alejo, sobre el caso de ')+c.paciente+(c.cliente?' ('+c.cliente+')':'')+': '))}" target="_blank" rel="noopener" title="${VE_CLI?'Escribir a la técnica sobre este caso':'Avisar o preguntar al laboratorio sobre este caso'}" aria-label="WhatsApp sobre este caso"><i class="fab fa-whatsapp" style="color:#25D366"></i></a>`:''}
     </div></td>
   </tr>`;
 }
