@@ -15,6 +15,12 @@ antes de ejecutar el JS). Usar `escJ` (escape JS + HTML), definido global en el 
 `onclick="fn('${escJ(x)}')"`. Para objetos: `onclick="fn(${escH(JSON.stringify(obj))})"`.
 Mejor aún: `data-*` + `addEventListener`. (Auditoría 24-sep-2026: 130 lugares corregidos en ambos repos.)
 
+## Supabase — los builders NO tienen `.catch` (sep 2026)
+`sb.from(...).insert/select/update…` y `sb.rpc(...)` son *thenables* (solo `.then`). `builder.catch(fn)` lanza
+TypeError ANTES de enviar la petición: la escritura nunca ocurre y el código que sigue no corre (así el onboarding
+guardaba pero no redirigía, y se perdían logs, historial e inventario). Usar `await Promise.resolve(builder).catch(fn)`
+o `builder.then(ok, fn)`. `builder.then(...).catch(...)` sí funciona (`.then` devuelve una Promise real).
+
 ## CORS — Edge functions (Cloudflare Pages Functions)
 ```javascript
 // ✅ validar origin contra allowlist
