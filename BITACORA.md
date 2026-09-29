@@ -18,7 +18,8 @@
 - ✅ Cuentas de alineadores conciliadas (WhatsApp + planillas de la técnica y del cliente); detalle con montos solo en `temporal/` (privado). Regla: a la técnica se le paga por **corte mensual** (viabilidades incluidas); si una viabilidad pasa a planificación se cruzan cuentas.
 - ✅ Políticas `alineadores-2026-09-29b`: pago en los primeros 10 días, saldo vencido; **sábados no laborables** (se puede subir el caso, el trabajo empieza el siguiente día hábil).
 - ✅ Purga de STL usa `SUPABASE_SERVICE_ROLE_KEY` y la URL del proyecto: en Cloudflare solo falta `CRON_SECRET`.
-- 💡 **R-14** (onboarding, `sb.rpc(...).catch is not a function`, 29-sep 16:27, cuenta de Panorámica): venía de una pestaña abierta ANTES del arreglo del 28-sep 22:31 (`e094218`); lo publicado ya está corregido. Lección: tras un arreglo, avisar que las pestañas viejas siguen fallando hasta recargar.
+- ✅ **R-14** (onboarding, `sb.rpc(...).catch is not a function`, cuenta de Panorámica): ocurrió el **28-sep 16:26**, ANTES del arreglo de las 22:31 (`e094218`, línea 446 de la versión vieja); lo publicado ya está corregido. Marcarlo como resuelto en reportes-web.
+- ✅ **Reportes de la web** (ambos repos): botón **Copiar reporte completo** (texto con todo: datos, lo que pasó antes, dónde falló, conversación e IA) y **Copiar los visibles**; el detalle va DEBAJO de la lista a lo ancho, en dos columnas (datos | técnico + respuesta).
 - 🔴 **Crons de GitHub fallan**: el secret `CRON_SECRET` no existe en GitHub (solo está `GEMINI_API_KEY`) → «Alerta SLA» (desde el 28-sep) y «Purga STL» fallan a los 3-8 s. Falta crear el mismo `CRON_SECRET` en Cloudflare Pages (Production) y en GitHub Secrets; si luego da 403 «Just a moment», regla WAF Skip (ver `docs/FIX-CRON-PURGA-STL.md`).
 
 ## 2026-09-28  (Alineadores fase 2 · respaldo por email · bitácora automática · lista de pendientes)

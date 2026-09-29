@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-29",
+  "version": "2026-09-29b",
   "categorias": [
     {
       "id": "inicio",
@@ -518,7 +518,8 @@
         "Escribe o ajusta la **respuesta** y márcalo **En revisión**, **Resuelto** o **Descartar**. Si la persona tenía sesión, verá la respuesta en su botón; si no, usa los botones de WhatsApp o correo."
       ],
       "notas": [
-        "Un error automático que se repite no genera avisos nuevos: suma veces al mismo reporte hasta que lo marques resuelto."
+        "Un error automático que se repite no genera avisos nuevos: suma veces al mismo reporte hasta que lo marques resuelto.",
+        "Botón **Copiar reporte completo** (o **Copiar los visibles**): copia todo el reporte en texto para pegarlo en el chat con Claude o en un correo."
       ],
       "link": {
         "href": "reportes-web.html",
