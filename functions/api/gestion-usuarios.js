@@ -13,6 +13,9 @@ const SUPABASE_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const ADMIN_EMAILS = ['jackalejandroc@gmail.com','labdentalprodigy@gmail.com','gerencia@prodigylabdental.com','casos@prodigylabdental.com'];
 const ROLES_OK = ['operator','mensajero','encargado_inventario','calidad','contabilidad','diseno','alineadores','guias','exocad','blender','taller','fresado','impresion','secretaria'];
 const CORS_OK = ['https://prodigylabdental.com'];
+// Vinculación del operario: 'nomina' (salario, no se le paga por caso) · 'prestador' (se le paga por caso)
+const VINC_OK = ['nomina','prestador'];
+const vincDe = v => VINC_OK.includes(v) ? v : null;
 
 function cors(o){ const ok=CORS_OK.includes(o)||(o||'').includes('.pages.dev')||!o; return {'Access-Control-Allow-Origin':ok?(o||'*'):CORS_OK[0],'Content-Type':'application/json'}; }
 export async function onRequestOptions({request}){ return new Response(null,{status:204,headers:{...cors(request.headers.get('Origin')||''),'Access-Control-Allow-Methods':'POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type,Authorization'}}); }
@@ -53,6 +56,7 @@ export async function onRequestPost({ request, env }){
         return {
           id:u.id, email:u.email, roles,
           active: (u.app_metadata&&u.app_metadata.active)!==false,
+          vinculacion: vincDe(u.app_metadata&&u.app_metadata.vinculacion),
           nombre: (u.user_metadata&&(u.user_metadata.nombre||u.user_metadata.full_name||u.user_metadata.clinica))||'',
           es_admin,
           tipo: es_admin ? 'admin' : (roles.length ? 'staff' : 'cliente'),
@@ -72,7 +76,7 @@ export async function onRequestPost({ request, env }){
       if(!roles.length) return new Response(JSON.stringify({error:'Selecciona al menos un rol'}),{status:400,headers:h});
       const r = await fetch(`${URL}/auth/v1/admin/users`,{method:'POST',headers:admH,body:JSON.stringify({
         email,password,email_confirm:true,
-        app_metadata:{ roles, role:dbRole(roles), active:true },
+        app_metadata:{ roles, role:dbRole(roles), active:true, vinculacion:vincDe(body.vinculacion) },
         user_metadata:{ nombre:String(body.nombre||'').slice(0,120), whatsapp:String(body.whatsapp||'').slice(0,30), es_staff:true }
       })});
       const d = await r.json();
@@ -96,7 +100,7 @@ export async function onRequestPost({ request, env }){
       if(objetivo && ADMIN_EMAILS.includes((objetivo.email||'').toLowerCase()))
         return new Response(JSON.stringify({error:'Las cuentas admin no se editan desde aquí'}),{status:400,headers:h});
       const r = await fetch(`${URL}/auth/v1/admin/users/${id}`,{method:'PUT',headers:admH,body:JSON.stringify({
-        app_metadata:{ roles, role:dbRole(roles), active },
+        app_metadata:{ roles, role:dbRole(roles), active, vinculacion:vincDe(body.vinculacion) },
         ...(typeof body.nombre==='string' && body.nombre.trim() ? { user_metadata:{ nombre:body.nombre.trim().slice(0,120) } } : {})
       })});
       const d = await r.json();

@@ -379,7 +379,8 @@ async function pintarQuien(){
     const nombre=md.nombre||md.full_name||email.split('@')[0];
     const ini=nombre.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
     const roles=(window.PRODIGY_ROLES||[ROLE]).filter(Boolean);
-    const cargo=VE_CLI?'Administración':(ES_ALN?'Técnica de alineadores · PRODIGY':'Equipo PRODIGY');
+    const vinc=(user&&user.app_metadata&&user.app_metadata.vinculacion)||'';
+    const cargo=VE_CLI?'Administración':((ES_ALN?'Técnica de alineadores · PRODIGY':'Equipo PRODIGY')+(vinc==='prestador'?' · Prestadora de servicio':(vinc==='nomina'?' · Nómina':'')));
     document.getElementById('quien').innerHTML=`<div class="av" aria-hidden="true">${escH(ini)}</div>
       <div><div class="qn">${escH(nombre)}</div><div class="qs">${escH(cargo)} · ${escH(email)}</div></div>
       <div class="qtags">${roles.map(r=>`<span class="qtag${r==='alineadores'?' oro':''}">${escH(ROL_LBL[r]||r)}</span>`).join('')}</div>`;
