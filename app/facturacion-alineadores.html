@@ -77,7 +77,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
   <a class="tn on" href="facturacion-alineadores.html" aria-current="page"><i class="fas fa-teeth"></i> Mis casos y cuenta</a>
   <a class="tn" href="nueva-orden-alineadores.html"><i class="fas fa-plus"></i> Subir caso</a>
   <a class="tn" href="client-panel.html"><i class="fas fa-house"></i> Portal principal</a>
-  <a class="tn" href="/terminos-y-legal#politica-alineadores" target="_blank" rel="noopener"><i class="fas fa-file-contract"></i> Políticas</a>
+  <button type="button" class="tn" onclick="verPoliticas()"><i class="fas fa-file-contract"></i> Políticas</button>
   <a class="tn" href="cambiar-contrasena.html?next=/app/facturacion-alineadores.html"><i class="fas fa-key"></i> Cambiar contraseña</a>
   <button type="button" class="tn salir" onclick="ProdigyAuth.signOut()"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</button>
 </nav>
@@ -104,9 +104,10 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
   <details class="como">
     <summary>¿Cómo funciona?</summary>
     <ul>
-      <li>Cuando la técnica te envía una <b>viabilidad</b> o una <b>planificación</b> aparece como <b>Por revisar</b> (y en la campana 🔔). Pulsa <b>Revisar</b> y elige <b>Aprobar</b> o <b>Pedir cambios</b>. La planificación incluye 2 revisiones.</li>
-      <li><b>Tratamiento</b>: con la fecha de envío del plan y la duración se estima el fin. Hasta 6 meses después del fin tienes un <b>refinamiento sin costo</b>; después el término está vencido y el refinamiento tiene costo.</li>
-      <li>Puedes cancelar un caso solo durante la primera hora después de subirlo. <a href="/terminos-y-legal#politica-alineadores" target="_blank" rel="noopener" style="color:var(--cyan)">Políticas de alineadores</a>.</li>
+      <li>Cuando PRODIGY te envía la <b>viabilidad y valoración</b> o la <b>planificación</b> de un caso, aparece como <b>Por revisar</b> (y en la campana 🔔). Pulsa <b>Revisar</b> y elige <b>Aprobar</b> o <b>Pedir cambios</b>. La planificación incluye 2 revisiones.</li>
+      <li><b>Tratamiento</b>: con la fecha de envío del plan y la duración se estima el fin. El <b>refinamiento</b> es después de terminar el tratamiento: uno sin costo si lo pides dentro de los 6 meses siguientes; después tiene costo.</li>
+      <li>Si antes de terminar hay que cambiar el plan porque el paciente no usó los alineadores o no asistió a sus controles, no es un refinamiento: es una <b>modificación de la planeación</b> y tiene costo.</li>
+      <li>Puedes cancelar un caso solo durante la primera hora después de subirlo. <a href="#" onclick="verPoliticas();return false;" style="color:var(--cyan)">Ver las políticas de alineadores</a>.</li>
     </ul>
   </details>
 </section>
@@ -131,6 +132,13 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <section class="panel" id="p-pagos" role="tabpanel">
   <div class="tw"><table id="pagosTbl" class="rtable"><thead><tr><th>Fecha</th><th>Monto</th><th>Método</th><th>Referencia</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
 </section>
+
+<!-- Modal políticas (dentro del portal: el cliente no sale al sitio público) -->
+<div class="ov" id="ovPol"><div class="modal" style="max-width:620px">
+  <h3><i class="fas fa-file-contract" style="color:var(--gold)"></i> Políticas de alineadores</h3>
+  <div id="polTxt" style="font-size:.9rem;line-height:1.6;color:#e2e8f0"></div>
+  <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovPol')">Cerrar</button></div>
+</div></div>
 
 <!-- Modal entregas de un caso -->
 <div class="ov" id="ovEnt"><div class="modal" style="max-width:620px">
@@ -160,13 +168,13 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <script src="../js/auth-guard.js?v=20260924"></script>
 <script>ProdigyAuth.require(['client','admin','operator','contabilidad']);</script>
 <script src="../js/notif-panel.js?v=20260924"></script>
-<script src="../js/aln-comun.js?v=20260928"></script>
+<script src="../js/aln-comun.js?v=20260928b"></script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const escJ=s=>escH(String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n'));   // texto dentro de '…' en onclick
 const fmtD=d=>d?new Date(/^\d{4}-\d{2}-\d{2}$/.test(d)?d+'T12:00:00':d).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'2-digit'}):'—';
 const nf=new Intl.NumberFormat('es-CO');
-const tipoLbl=t=>({completo:'Caso completo',valoracion:'Valoración',diferencia_a_completo:'Diferencia a completo',replaneacion_en_tiempo:'Replaneación (en tiempo)',replaneacion_fuera_tiempo:'Replaneación (fuera de tiempo)',refinamiento_sin_costo:'Refinamiento',refinamiento_con_costo:'Refinamiento (con costo)',adicional:'Adicional'})[t]||t;
+const tipoLbl=t=>({completo:'Caso completo',valoracion:'Viabilidad y valoración',diferencia_a_completo:'Diferencia a completo',replaneacion_en_tiempo:'Replaneación (en tiempo)',replaneacion_fuera_tiempo:'Replaneación (fuera de tiempo)',refinamiento_sin_costo:'Refinamiento',refinamiento_con_costo:'Refinamiento (con costo)',adicional:'Adicional'})[t]||t;
 let sb, CASOS={}, CARGOS=[], PAGOS=[], ENTREGAS=[];
 // ── PayPal: pon tu handle de paypal.me (ej. 'alejandrocarvajal') para activar el botón ──
 const PAYPAL_HANDLE='';      // vacío = en su lugar se ofrece pedir el enlace de pago por WhatsApp
@@ -274,15 +282,15 @@ const FILTROS=[
   {k:'curso',   lbl:'En tratamiento', dot:'#00d2ff', f:c=>faseC(c)==='curso'},
   {k:'refina',  lbl:'Refinamiento sin costo', dot:'var(--green)', f:c=>faseC(c)==='refina'},
   {k:'vencido', lbl:'Término vencido', dot:'#64748b', f:c=>faseC(c)==='vencido'},
-  {k:'soloval', lbl:'Solo valoración', dot:'#94a3b8', f:c=>etapaCli(c)==='soloval'},
+  {k:'soloval', lbl:'Solo viabilidad y valoración', dot:'#94a3b8', f:c=>etapaCli(c)==='soloval'},
   {k:'cancelado', lbl:'Cancelados', dot:'#475569', f:c=>c.estado==='cancelado', ocultarSiCero:true}
 ];
 
 // Correo de respaldo al admin (como cuando todo llegaba al email). Nunca bloquea.
 async function respaldoEmail(tipo, extra){ try{ const s=(window.ProdigyAuth&&window.ProdigyAuth.getSb?window.ProdigyAuth.getSb():sb); const { data:{ session } }=await s.auth.getSession(); fetch('/api/respaldo-alineadores',{method:'POST',keepalive:true,headers:Object.assign({'Content-Type':'application/json'},session?{Authorization:'Bearer '+session.access_token}:{}),body:JSON.stringify(Object.assign({tipo},extra||{}))}).catch(()=>{}); }catch(_){} }
 /* ── Mis casos: entregas de la técnica para aprobar ── */
-const ETAPA={viabilidad:'Viabilidad',planificacion:'Planificación'};
-const EST_CASO={valoracion:'En valoración',planificacion:'En planificación',en_tratamiento:'Planificación aprobada',terminado:'Terminado',cancelado:'Cancelado'};
+const ETAPA={viabilidad:'Viabilidad y valoración',planificacion:'Planificación'};
+const EST_CASO={valoracion:'En viabilidad y valoración',planificacion:'En planificación',en_tratamiento:'Planificación aprobada',terminado:'Terminado',cancelado:'Cancelado'};
 // Cancelar: máximo 1 hora después de subirlo y sin entregas (después la técnica pudo empezar y se cobra)
 function minutosParaCancelar(c){
   if(c.estado!=='valoracion' || entregasDe(c.id).length) return 0;
@@ -291,14 +299,14 @@ function minutosParaCancelar(c){
 }
 async function cancelarCaso(id){
   const c=CASOS[id]||{};
-  if(!confirm('¿Cancelar el caso de '+(c.paciente||'')+'?\n\nSolo se puede durante la primera hora. No se cobra la valoración.')) return;
+  if(!confirm('¿Cancelar el caso de '+(c.paciente||'')+'?\n\nSolo se puede durante la primera hora. No se cobra la viabilidad y valoración.')) return;
   const { data,error }=await sb.rpc('aln_cancelar_caso',{ p_caso_id:id });
   if(error || (data && data.ok===false)){ alert((data&&data.error)||(error&&error.message)||'No se pudo cancelar'); return; }
   respaldoEmail('cancelado',{id});
   const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
   const { data:cg }=await sb.from('alineadores_cargos').select('*').eq('negocio','prodigy').eq('parte','cliente'); CARGOS=cg||[];
   render();
-  alert('🛑 Caso cancelado. No se cobra la valoración y la técnica ya fue avisada.');
+  alert('🛑 Caso cancelado. No se cobra la viabilidad y valoración, y PRODIGY ya fue avisado.');
 }
 const EST_ENT={enviado:'Por revisar',aprobado:'Aprobada',cambios:'Pediste cambios'};
 function entregasDe(id){ return ENTREGAS.filter(e=>e.caso_id===id); }
@@ -319,8 +327,8 @@ function renderCasos(){
   tb.innerHTML=lista.map(c=>{
     const e=entregasDe(c.id)[0], et=etapaCli(c);
     const ult=e?`<span class="pill ${e.estado==='enviado'?'accion':escH(e.estado)}">${escH(ETAPA[e.etapa]||e.etapa)}${e.revision_num?(' r'+e.revision_num):''} · ${escH(EST_ENT[e.estado]||e.estado)}</span><span class="l2">${fmtD(e.created_at)}</span>`
-      :(/^HIST-/.test(c.codigo||'')?'<span class="l2" style="margin:0" title="Entregado antes de que existiera el portal">Por correo/WhatsApp</span>':'<span class="l2" style="margin:0">La técnica aún no envía nada</span>');
-    const estado = et==='soloval' ? 'Solo valoración' : (et==='entregado' ? 'Diseño entregado' : (EST_CASO[c.estado]||c.estado||''));
+      :(/^HIST-/.test(c.codigo||'')?'<span class="l2" style="margin:0" title="Entregado antes de que existiera el portal">Por correo/WhatsApp</span>':'<span class="l2" style="margin:0">Aún no te hemos enviado nada</span>');
+    const estado = et==='soloval' ? 'Solo viabilidad y valoración' : (et==='entregado' ? 'Diseño entregado' : (EST_CASO[c.estado]||c.estado||''));
     const min=minutosParaCancelar(c);
     return `<tr>
       <td class="pac" data-l="Paciente"><div><b>${escH(c.paciente)}</b><span class="l2">${escH(c.codigo||'')} · ${fmtD(c.created_at)}</span></div></td>
@@ -365,7 +373,7 @@ async function responder(id,aprobar){
   // Aviso por WhatsApp al laboratorio
   const c=CASOS[e.caso_id]||{};
   fetch('/api/notify-staff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({doctor:c.cliente||'Cliente alineadores',servicio:'Alineadores — '+(c.paciente||''),whatsapp:'',codigo:c.codigo||'',tipo:aprobar?'Aprobó '+(ETAPA[e.etapa]||''):'Pidió cambios en '+(ETAPA[e.etapa]||''),contexto:(aprobar?'✅ ':'✏️ ')+(c.paciente||'')+(obs.trim()?(': '+obs.trim()):'')})}).catch(()=>{});
-  alert(aprobar?'✅ Aprobada. La técnica ya fue avisada.':('✏️ Cambios enviados a la técnica.'+(data&&data.aviso?('\n\n'+data.aviso):'')));
+  alert(aprobar?'✅ Aprobada. PRODIGY ya fue avisado.':('✏️ Cambios enviados a PRODIGY.'+(data&&data.aviso?('\n\n'+data.aviso):'')));
   cerrar('ovEnt');
   const { data:en }=await sb.from('alineadores_entregas').select('*').order('created_at',{ascending:false}); ENTREGAS=en||[];
   const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
@@ -411,6 +419,7 @@ async function guardarPago(){
   PAGOS=pg||[]; render();
   alert('✅ Pago reportado. Lo verificamos y actualizamos tu estado de cuenta.');
 }
+function verPoliticas(){ document.getElementById('polTxt').innerHTML=ALN.POLITICAS_HTML+'<p class="sub" style="margin:10px 0 0">Versión '+escH(ALN.POL_VER)+'. Las tarifas vigentes constan en tu estado de cuenta.</p>'; document.getElementById('ovPol').classList.add('show'); }
 function cerrar(id){ document.getElementById(id).classList.remove('show'); }
 window.addEventListener('DOMContentLoaded',init);
 </script>

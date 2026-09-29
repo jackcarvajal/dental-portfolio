@@ -103,7 +103,7 @@ export async function onRequestPost({ request, env }) {
         ${fila('Requiere attachments', c.requiere_attachments == null ? '' : (c.requiere_attachments ? 'Sí' : 'No'))}
         ${fila('Arcada', c.arcada)}${fila('Notas', c.notas)}</table>${await listaArchivos('alineadores-archivos', c.archivos)}`;
     } else if (tipo === 'entrega') {
-      const etapa = entrega.etapa === 'viabilidad' ? 'Viabilidad' : 'Planificación';
+      const etapa = entrega.etapa === 'viabilidad' ? 'Viabilidad y valoración' : 'Planificación';
       asunto = `✈️ ${etapa}${entrega.revision_num ? ' (revisión ' + entrega.revision_num + ')' : ''} enviada — ${c.paciente}`;
       waCliente = `😁 *PRODIGY — ${etapa} lista*${entrega.revision_num ? ' (revisión ' + entrega.revision_num + ')' : ''}\n\nPaciente ${c.paciente}. Revísala y apruébala o pide cambios:\nhttps://prodigylabdental.com/app/facturacion-alineadores.html#casos`;
       cuerpo = `<h2>${esc(etapa)} enviada al cliente</h2>${cab}<table style="font-size:14px;margin-top:8px">

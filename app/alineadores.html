@@ -124,7 +124,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
     <summary>¿Cómo se lee este tablero?</summary>
     <ul>
       <li><b>Diseño</b> — <b>Por hacer</b>: te toca a ti (viabilidad, planificación, corrección o modelos; debajo dice qué sigue) · <b>Esperando al cliente</b>: ya lo enviaste y falta que apruebe · <b>Diseño entregado</b>: terminado con modelos · <b>Solo valoración</b>: se cerró sin planificar.</li>
-      <li><b>Tratamiento</b> — se calcula con el <b>fin estimado</b> (fecha de envío del plan + meses de la duración; lo puedes corregir con ✏️). Hasta el fin: <b>En tratamiento</b> (la barra muestra el avance; a la mitad conviene revisar si hace falta replaneación). Luego <b>Refinamiento sin costo</b> durante 6 meses. Después: <b>Término vencido</b> (el refinamiento tiene costo).</li>
+      <li><b>Tratamiento</b> — se calcula con el <b>fin estimado</b> (fecha de envío del plan + meses de la duración; lo puedes corregir con ✏️). Hasta el fin: <b>En tratamiento</b> (la barra muestra el avance; a la mitad conviene revisar si hace falta replaneación). Luego <b>Refinamiento sin costo</b> durante 6 meses. Después: <b>Término vencido</b> (el refinamiento tiene costo). Un cambio de plan <b>antes</b> del fin (el paciente no usó los alineadores o no asistió) no es refinamiento: es <b>modificación de la planeación</b> y tiene costo.</li>
       <li><b>Faltan datos</b> — el aviso ⚠ dice qué falta. Llénalo con ✏️ para que los plazos y los cobros salgan bien.</li>
       <li>Botones: ✏️ datos del caso · ✈️ entregar al cliente · 🏁 completar (con modelos) · 🧾 cargos y pagos.</li>
     </ul>
@@ -257,7 +257,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <script>ProdigyAuth.require(['admin','operator','contabilidad','alineadores','secretaria']);</script>
 <script src="../js/notif-panel.js?v=20260924"></script>
 <script src="../js/rol-actual.js?v=20260923"></script>
-<script src="../js/aln-comun.js?v=20260928"></script>
+<script src="../js/aln-comun.js?v=20260928b"></script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD=d=>d?new Date(/^\d{4}-\d{2}-\d{2}$/.test(d)?d+'T12:00:00':d).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}):'—';

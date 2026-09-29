@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#D946A6">
   <meta name="color-scheme" content="dark">
     <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png?v=20260928">
     <meta name="robots" content="noindex, nofollow">
     <title>PRODIGY · Completa tu perfil</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
@@ -112,10 +112,35 @@
         .input-wrap select option { background: #0d1525; }
 
         .wa-row { display: flex; gap: 8px; }
-        .wa-row .prefix-wrap { width: 120px; flex-shrink: 0; }
-        .wa-row .prefix-wrap select { padding-left: 36px; }
-        .wa-row .num-wrap { flex: 1; }
-        .wa-row .num-wrap input { padding-left: 14px; }
+        .wa-row .num-wrap { flex: 1; min-width: 0; }
+        .wa-row .num-wrap input {
+            width: 100%; padding: 11px 14px; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.09); border-radius: 10px; color: #fff; font-size: 16px; outline: none;
+        }
+        .wa-row .num-wrap input:focus { border-color: #D4AF37; box-shadow: 0 0 0 3px rgba(212,175,55,0.08); }
+        .wa-row .num-wrap input::placeholder { color: #94a3b8; }
+        .input-wrap select { cursor: pointer; padding-right: 34px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 12px center; }
+        /* Indicativo con búsqueda */
+        .ptel { position: relative; flex-shrink: 0; }
+        .ptel-btn { height: 100%; min-height: 46px; display: inline-flex; align-items: center; gap: 7px; padding: 0 12px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 10px;
+            color: #fff; font: 600 0.95rem Inter, sans-serif; cursor: pointer; white-space: nowrap; }
+        .ptel-btn:focus-visible, .ptel-btn[aria-expanded="true"] { border-color: #D4AF37; outline: none; box-shadow: 0 0 0 3px rgba(212,175,55,0.08); }
+        .ptel-btn .fa-chevron-down { font-size: 0.7rem; color: #94a3b8; }
+        .ptel-flag { font-size: 1.15rem; line-height: 1; }
+        .ptel-pop { position: absolute; z-index: 50; top: calc(100% + 6px); left: 0; width: min(330px, 86vw);
+            background: #0d1525; border: 1px solid rgba(212,175,55,0.35); border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,0.6); padding: 8px; }
+        .ptel-q { width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px; color: #fff; font-size: 16px; outline: none; margin-bottom: 6px; }
+        .ptel-q:focus { border-color: #D4AF37; }
+        .ptel-list { list-style: none; max-height: 260px; overflow-y: auto; margin: 0; padding: 0; }
+        .ptel-list li[data-iso] { display: flex; gap: 8px; align-items: center; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; color: #e2e8f0; }
+        .ptel-list li[data-iso] b { margin-left: auto; color: #D4AF37; font-weight: 700; }
+        .ptel-list li[data-iso]:hover, .ptel-list li[aria-selected="true"] { background: rgba(217,70,166,0.14); }
+        .ptel-sep { height: 1px; background: rgba(255,255,255,0.1); margin: 6px 4px; }
+        .ptel-vacio { padding: 10px; color: #94a3b8; font-size: 0.85rem; }
 
         .hint { font-size: 0.68rem; color: #94a3b8; margin-top: 4px; }
 
@@ -169,12 +194,13 @@
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
 <script src="../js/reportar-problema.js?v=20260924c"></script>
+<script src="../js/paises-tel.js?v=20260928"></script>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <div class="card">
     <div class="logo">
-        <div class="logo-icon" style="padding:0;overflow:hidden;"><img src="/assets/icons/icon-192.png" alt="PRODIGY" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"></div>
+        <div class="logo-icon"><svg viewBox="0 0 64 48" width="40" height="30" role="img" aria-label="PRODIGY"><defs><linearGradient id="obg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D4AF37"/><stop offset=".5" stop-color="#D946A6"/><stop offset="1" stop-color="#00d2ff"/></linearGradient></defs><polygon points="32,4 16,20 32,20" fill="url(#obg)" opacity=".9"/><polygon points="32,4 48,20 32,20" fill="#D4AF37" opacity=".75"/><polygon points="16,20 32,20 22,40" fill="#D946A6" opacity=".85"/><polygon points="48,20 32,20 42,40" fill="url(#obg)" opacity=".7"/><polygon points="22,40 32,20 42,40" fill="#D4AF37" opacity=".95"/></svg></div>
         <h1>PRODIGY</h1>
         <p>Completa tu perfil profesional</p>
     </div>
@@ -204,27 +230,14 @@
         <div class="form-group">
             <label for="ob-wa">WhatsApp profesional *</label>
             <div class="wa-row">
-                <div class="prefix-wrap">
-                    <div class="input-wrap">
-                        <i class="fab fa-whatsapp" style="color:#25D366;"></i>
-                        <select id="ob-prefijo">
-                            <option value="+57">CO +57</option>
-                            <option value="+52">MX +52</option>
-                            <option value="+1">US +1</option>
-                            <option value="+34">ES +34</option>
-                            <option value="+54">AR +54</option>
-                            <option value="+56">CL +56</option>
-                            <option value="+51">PE +51</option>
-                            <option value="+58">VE +58</option>
-                        </select>
-                    </div>
-                </div>
+                <div id="ob-pais"></div>
+                <input type="hidden" id="ob-prefijo" value="+57">
                 <div class="num-wrap">
-                    <input type="tel" inputmode="tel" id="ob-wa" autocomplete="tel" placeholder="3001234567" required maxlength="15"
+                    <input type="tel" inputmode="tel" id="ob-wa" autocomplete="tel" placeholder="Número sin el indicativo" required maxlength="15"
                         pattern="[0-9]{7,15}" title="Solo números, sin espacios">
                 </div>
             </div>
-            <p class="hint">Lo usamos para notificarte el estado de tus casos. Sin spam.</p>
+            <p class="hint">Elige tu país (puedes buscarlo por nombre o por indicativo). Lo usamos para avisarte del estado de tus casos. Sin spam.</p>
         </div>
 
         <div class="form-group">
@@ -249,7 +262,7 @@
                 <label for="ob-especialidad">Especialidad (opcional)</label>
                 <div class="input-wrap">
                     <i class="fas fa-tooth" aria-hidden="true"></i>
-                    <select id="ob-especialidad" style="background:transparent;border:none;color:inherit;width:100%;outline:none;font-family:inherit;font-size:16px;padding:0;">
+                    <select id="ob-especialidad">
                         <option value="">-- Seleccionar --</option>
                         <option value="prostodoncia">Prostodoncia / Rehabilitación</option>
                         <option value="implantologia">Implantología</option>
@@ -266,7 +279,7 @@
                 <label for="ob-volumen">Casos esperados / mes (opcional)</label>
                 <div class="input-wrap">
                     <i class="fas fa-chart-bar" aria-hidden="true"></i>
-                    <select id="ob-volumen" style="background:transparent;border:none;color:inherit;width:100%;outline:none;font-family:inherit;font-size:16px;padding:0;">
+                    <select id="ob-volumen">
                         <option value="">-- Seleccionar --</option>
                         <option value="1-5">1–5 casos/mes</option>
                         <option value="6-15">6–15 casos/mes</option>
@@ -317,6 +330,8 @@
     window.sb = sb;
 
     let currentUser = null;
+    // Indicativo: todos los países, con búsqueda (propone el país por la zona horaria del equipo)
+    const selPais = window.PaisesTel ? PaisesTel.montar(document.getElementById('ob-pais'), { input: document.getElementById('ob-prefijo') }) : null;
 
     function showMsg(text, type) {
         const el = document.getElementById('msg-box');
@@ -343,6 +358,9 @@
         // Staff (operarios/técnicos) NO usan el onboarding de doctor — van directo a su panel
         const _role = getRole(currentUser);
         if (_role !== 'client') { window.location.replace('/app/' + (DEST_MAP[_role] || 'operator-panel.html')); return; }
+        // Clientes de alineadores: solo usan su portal (no el perfil de doctor ni el portal general)
+        sb.from('alineadores_clientes').select('nombre').eq('user_id', currentUser.id).maybeSingle()
+          .then(({ data }) => { if (data) window.location.replace('/app/facturacion-alineadores.html'); }, () => {});
 
         document.body.style.visibility = 'visible';
 
@@ -379,8 +397,8 @@
         // Pre-fill WA desde metadatos si viene de registro implícito
         const waMeta = currentUser.user_metadata?.whatsapp || '';
         if (waMeta) {
-            const waEl = document.getElementById('ob-whatsapp');
-            if (waEl && !waEl.value) waEl.value = waMeta;
+            const waEl = document.getElementById('ob-wa');
+            if (waEl && !waEl.value) waEl.value = selPais ? selPais.desdeNumero(waMeta) : String(waMeta).replace(/\D/g, '');
         }
 
         // Si ya tiene perfil completo ? redirigir directo
@@ -443,7 +461,7 @@
         const _ref = sessionStorage.getItem('prodigy_ref');
         if (_ref) { sb.from('referidos').update({ referido_email: currentUser.email, referido_nombre: nombre, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',_ref).then(()=>sessionStorage.removeItem('prodigy_ref')).catch(()=>{}); }
         // Pre-generar codigo de referido propio
-        sb.rpc('obtener_mi_codigo_referido',{p_email:currentUser.email,p_nombre:nombre}).catch(()=>{});
+        sb.rpc('obtener_mi_codigo_referido',{p_email:currentUser.email,p_nombre:nombre}).then(()=>{},()=>{});
         const destRole = getRole(currentUser);
         const destUrl  = '/app/' + (DEST_MAP[destRole] || 'client-panel.html');
         setTimeout(() => { window.location.replace(destUrl); }, 800);

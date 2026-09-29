@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#D946A6">
   <meta name="color-scheme" content="dark">
     <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png?v=20260928">
 <meta name="robots" content="noindex, nofollow">
 <title>PRODIGY — Panel Operador</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
@@ -999,13 +999,13 @@ async function confirmarInicioProduccion() {
     await _avanzarEstadoOrig(pedidoId, 'EN_PRODUCCION');
 
     // 2. Registrar uso de máquina en equipo_mantenimiento
-    await sb.from('mantenimiento_log').insert({
+    await Promise.resolve(sb.from('mantenimiento_log').insert({
         equipo_id:    equipo,
         accion:       'USO_PRODUCCION',
         tecnico:      _userId,
         notas:        `Caso ${pedidoId}${nota ? ' — ' + nota : ''}`,
         duracion_min: 0,
-    }).catch(() => {});
+    })).catch(() => {});
 
     // 3. Consumir material del inventario si se seleccionó
     if (itemId) {
@@ -1014,22 +1014,22 @@ async function confirmarInicioProduccion() {
         if (it) {
             const nuevoStock = Math.max(0, it.stock_actual - cantidad);
             await sb.from('inventario_items').update({ stock_actual: nuevoStock }).eq('id', itemId);
-            await sb.from('inventario_movimientos').insert({
+            await Promise.resolve(sb.from('inventario_movimientos').insert({
                 item_id:   itemId,
                 tipo:      'SALIDA',
                 cantidad:  cantidad,
                 pedido_id: pedidoId,
                 notas:     `Consumo automático inicio producción — máquina ${equipo}`,
-            }).catch(() => {});
+            })).catch(() => {});
             if (nuevoStock <= it.stock_minimo) {
                 // Crear alerta de stock bajo en Torre de Control
-                await sb.from('logs_incidencias').insert({
+                await Promise.resolve(sb.from('logs_incidencias').insert({
                     tipo:        'STOCK_CRITICO',
                     descripcion: `Stock bajo: ${it.nombre} — ${nuevoStock} unidades restantes`,
                     severidad:   'ALTA',
                     pedido_id:   pedidoId,
                     emisor_id:   _userId,
-                }).catch(() => {});
+                })).catch(() => {});
                 toast(`⚠️ Stock bajo: ${it.nombre} → ${nuevoStock} u.`, 'err');
             } else {
                 toast(`Producción iniciada · Máquina: ${equipo} · Material descontado`, 'ok');
@@ -1078,13 +1078,13 @@ aprobarQA = async function() {
     ]);
 
     // Registrar en Torre de Control como handoff
-    await sb.from('logs_incidencias').insert({
+    await Promise.resolve(sb.from('logs_incidencias').insert({
         tipo:        'HANDOFF',
         descripcion: `Caso #${p?.codigo || pedidoId.slice(0,8)} aprobó QA — en espera de calidad/empaque`,
         severidad:   'BAJA',
         pedido_id:   pedidoId,
         emisor_id:   _userId,
-    }).catch(() => {});
+    })).catch(() => {});
 
     // Mostrar modal de éxito con acceso rápido a calidad
     document.getElementById('modal-qa-handoff-sub').textContent =

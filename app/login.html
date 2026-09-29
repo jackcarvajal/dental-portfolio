@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#D946A6">
   <meta name="color-scheme" content="dark">
     <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png?v=20260928">
     <meta name="robots" content="noindex, nofollow">
     <title>PRODIGY — Acceso Cliente</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
@@ -659,6 +659,9 @@
         setTimeout(function() { typeof switchMain === 'function' && switchMain('register'); }, 100);
     }
 
+    // Perfil de doctor obligatorio al entrar (onboarding). SUSPENDIDO mientras se valida el lanzamiento:
+    // poner en true para volver a pedirlo a los clientes nuevos.
+    const ONBOARDING_ACTIVO = false;
     const STAFF_ROLES = ['operator','mensajero','encargado_inventario','calidad','contabilidad','diseno','alineadores','guias','exocad','blender','taller','fresado','impresion','secretaria'];
     function getRole(user) {
         if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) return 'admin';
@@ -691,15 +694,22 @@
                 return;
             }
         }
-        // Verificar perfil completo (whatsapp requerido para operar)
-        const { data: perfil } = await sb
-            .from('doctores_perfil')
-            .select('whatsapp')
-            .eq('id', user.id)
-            .maybeSingle();
-        if (!perfil || !perfil.whatsapp) {
-            window.location.href = 'onboarding.html';
-            return;
+        // Clientes de alineadores: entran directo a su portal (no usan el perfil de doctor)
+        try {
+            const { data: aln } = await sb.from('alineadores_clientes').select('nombre').eq('user_id', user.id).maybeSingle();
+            if (aln) { window.location.href = 'facturacion-alineadores.html'; return; }
+        } catch (_) {}
+        // Verificar perfil completo (whatsapp requerido para operar) — solo si el onboarding está activo
+        if (ONBOARDING_ACTIVO) {
+            const { data: perfil } = await sb
+                .from('doctores_perfil')
+                .select('whatsapp')
+                .eq('id', user.id)
+                .maybeSingle();
+            if (!perfil || !perfil.whatsapp) {
+                window.location.href = 'onboarding.html';
+                return;
+            }
         }
         window.location.href = DEST_MAP[role] || 'client-panel.html';
     }

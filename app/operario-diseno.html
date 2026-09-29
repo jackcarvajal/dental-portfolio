@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#00d2ff">
   <meta name="color-scheme" content="dark">
 <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png?v=20260928">
 <meta name="robots" content="noindex, nofollow">
 <title>PRODIGY — Operario Diseño CAD</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✏️</text></svg>">
@@ -814,12 +814,12 @@ async function confirmarHandoff(dept) {
   if (error) { toast('Error en handoff: ' + error.message, 'err'); return; }
 
   // Registrar en historial
-  await sb.from('historial_diseno').insert({
+  await Promise.resolve(sb.from('historial_diseno').insert({
     pedido_id:   id,
     tipo:        'HANDOFF_DISENO',
     actor:       'operario-diseno',
     descripcion: `Diseño aprobado — caso enviado a ${lbl}. STL disponible en el panel de ${lbl}.`,
-  }).catch(() => {});
+  })).catch(() => {});
 
   // Notificar al operario de producción vía push interna
   if (dept !== 'entrega_digital') {
@@ -1096,7 +1096,7 @@ async function bulkDisenoUploadAll() {
       const publicUrl = signedData?.signedUrl;
       if (isHtml) {
         await sb.from('pedidos').update({html_diseno_url:publicUrl, estado_operativo:'REVISION_CLIENTE', updated_at:new Date().toISOString()}).eq('id',item.caso.id);
-        await sb.from('historial_diseno').insert({pedido_id:item.caso.id,tipo:'SUBIDA_DISENO',actor:'operario-diseno-bulk',descripcion:`Bulk upload: ${item.file.name}`,metadata:{html:publicUrl}}).catch(()=>{});
+        await Promise.resolve(sb.from('historial_diseno').insert({pedido_id:item.caso.id,tipo:'SUBIDA_DISENO',actor:'operario-diseno-bulk',descripcion:`Bulk upload: ${item.file.name}`,metadata:{html:publicUrl}})).catch(()=>{});
       } else {
         const {data:ped} = await sb.from('pedidos_operacion').select('stl_urls').eq('id',item.caso.id).single();
         await sb.from('pedidos').update({stl_urls:[...(ped?.stl_urls||[]),publicUrl]}).eq('id',item.caso.id);

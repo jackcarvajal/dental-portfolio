@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#D946A6">
 <meta name="color-scheme" content="dark">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192.png?v=20260928">
 <meta name="description" content="Envía tus casos de alineadores (ortodoncia) a PRODIGY Lab: STL, radiografías, indicación y fotos. Planificación digital y setup. Facturación mensual por corte para clínicas con convenio.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="PRODIGY Lab Dental">
@@ -149,6 +149,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;text-align:c
           <span class="hintline">Es el punto 3 del caso. Puedes escribirla aquí aunque también venga dentro del ZIP.</span>
         </div>
 
+        <div id="protocolo-aln"></div>
         <div class="fg"><label for="fileInput">Archivos del caso (STL, radiografías, fotos — o un ZIP con todo)</label></div>
         <button type="button" class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" aria-label="Seleccionar archivos del caso">
           <i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
@@ -169,11 +170,12 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;text-align:c
 <details class="pol-aln" style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:12px 14px;margin:14px 0 10px;font-size:.9rem;color:#e2e8f0">
           <summary style="cursor:pointer;font-weight:800;color:#D4AF37">📋 Políticas de alineadores (léelas antes de enviar)</summary>
           <ul style="margin:8px 0 0 18px;padding:0;line-height:1.6">
-            <li><b>Valoración:</b> se cobra cada vez que la técnica revisa el caso, aunque el resultado sea «no viable». Tiene vigencia de 3 a 4 meses.</li>
-            <li><b>Cancelación:</b> solo durante la <b>primera hora</b> después de subir el caso y si aún no se ha enviado nada. Después se cobra la valoración.</li>
-            <li><b>Trabajo realizado:</b> todo lo entregado (valoración, planificación, replaneaciones y refinamientos con costo) se cobra aunque el tratamiento no continúe o el paciente desista.</li>
-            <li><b>Revisiones:</b> la planificación incluye 2 revisiones; desde la tercera se cobra como replaneación según la tarifa vigente.</li>
-            <li><b>Refinamiento:</b> uno sin costo dentro de los 6 meses del tratamiento; después, con costo.</li>
+            <li><b>Viabilidad y valoración del caso:</b> se cobra cada vez que PRODIGY revisa el caso, aunque el resultado sea «no viable». Tiene vigencia de 3 a 4 meses.</li>
+            <li><b>Cancelación:</b> solo durante la <b>primera hora</b> después de subir el caso y si aún no se ha enviado nada. Después se cobra la viabilidad y valoración.</li>
+            <li><b>Trabajo realizado:</b> todo lo entregado (viabilidad y valoración, planificación, modificaciones de la planeación y refinamientos con costo) se cobra aunque el tratamiento no continúe o el paciente desista.</li>
+            <li><b>Revisiones:</b> la planificación incluye 2 revisiones; desde la tercera se cobra como modificación de la planeación según la tarifa vigente.</li>
+            <li><b>Refinamiento:</b> solo aplica cuando el tratamiento <b>terminó</b>. Uno sin costo si se solicita dentro de los 6 meses siguientes al fin del tratamiento; después, con costo.</li>
+            <li><b>Modificación de la planeación:</b> si antes de terminar el tratamiento hay que cambiar el plan porque el paciente no usó los alineadores como se indicó o no asistió a sus controles (causas ajenas a PRODIGY), no es un refinamiento: es una modificación de la planeación y tiene costo.</li>
             <li><b>Pagos:</b> corte mensual. Si pagas con PayPal se suma la comisión acordada.</li>
             <li><b>Tiempos:</b> días hábiles en horario de Colombia (los festivos de Colombia no cuentan).</li>
             <li><b>Resultados:</b> dependen de la calidad de los archivos (escaneo, radiografías, fotos) y de la colaboración del paciente.</li>
@@ -183,7 +185,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;text-align:c
         </details>
         <label style="display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;font-size:.9rem;line-height:1.5;color:#e2e8f0;cursor:pointer">
           <input type="checkbox" id="chkPoliticas" style="margin-top:3px;accent-color:#D946A6;width:17px;height:17px;flex-shrink:0">
-          <span>Leí y <b>acepto las políticas de alineadores</b>: cobro por trabajo realizado, valoración, cancelación (máx. 1 hora), revisiones, refinamientos y pagos.</span>
+          <span>Leí y <b>acepto las políticas de alineadores</b>: cobro por trabajo realizado, viabilidad y valoración, cancelación (máx. 1 hora), revisiones, refinamientos, modificaciones de la planeación y pagos.</span>
         </label>
         <label class="habeas">
           <input type="checkbox" id="checkHabeas" required>
@@ -191,7 +193,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;text-align:c
         </label>
 
         <button type="submit" class="btn-submit" id="submitBtn"><i class="fas fa-paper-plane"></i> Enviar caso</button>
-        <p class="form-note">Te contactamos por WhatsApp. L–S 8am–6pm.</p>
+        <p class="form-note">Te contactamos por WhatsApp. L–V 8am–6pm · Sáb 8am–12m.</p>
       </form>
     </div>
 
@@ -208,6 +210,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;text-align:c
 </section>
 </main>
 <script src="js/footer.js?v=20260919"></script>
+<script src="js/protocolo-alineadores.js?v=20260928"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -298,7 +301,7 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
   const notasFull='INDICACIÓN: '+indicacion+
     '\n\n📎 Archivos ('+subidos.length+'):\n'+subidos.map(s=>'• '+s.nombre+'  →  '+s.ruta).join('\n')+
     (convenio?'\n\n💳 CLIENTE CONVENIO MENSUAL — sumar al corte del mes.':'')+
-    '\n\n✅ Aceptó las políticas de alineadores (alineadores-2026-09-28) el '+new Date().toLocaleString('es-CO');
+    '\n\n✅ Aceptó las políticas de alineadores (alineadores-2026-09-28b) el '+new Date().toLocaleString('es-CO');
 
   await sb.from('solicitudes_scanner').insert({
     negocio:'prodigy', codigo,
@@ -329,7 +332,7 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
         options:{data:{nombre:doctor,clinica,whatsapp,rol_solicitado:'client',primera_vez:true},
         emailRedirectTo:'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1'}});
       if(!se&&su?.user){
-        await sb.from('doctores_perfil').upsert({id:su.user.id,nombre:doctor,clinica,whatsapp},{onConflict:'id',ignoreDuplicates:true}).catch(()=>{});
+        await Promise.resolve(sb.from('doctores_perfil').upsert({id:su.user.id,nombre:doctor,clinica,whatsapp},{onConflict:'id',ignoreDuplicates:true})).catch(()=>{});
         fetch('/api/wa-auto',{method:'POST',headers:{'Content-Type':'application/json'},
           body:JSON.stringify({whatsapp,mensaje:`😁 *PRODIGY Lab — Alineadores*\n\nHola ${doctor.split(' ')[0]}, recibimos el caso de ${paciente}.\n\n📁 Nº caso: *${codigo}*\n✅ Portal creado: ${portalLink}\n📧 ${email}\n🔐 Clave: ${tempPass} _(cámbiala al ingresar)_`})}).catch(()=>{});
       }

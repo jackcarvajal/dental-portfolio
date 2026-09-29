@@ -363,8 +363,10 @@
         "Si un caso muestra **⚠ Falta: …**, ábrelo con ✏️ y llena ese dato (viabilidad, plan, fecha de envío, duración o fin, modelos). El fin se calcula solo y lo puedes corregir."
       ],
       "notas": [
+        "El **refinamiento** es solo después de terminar el tratamiento. Si antes del fin hay que cambiar el plan porque el paciente no usó los alineadores o no asistió a controles, es una **modificación de la planeación** (tiene costo).",
         "Una **consulta** (se revisó pero no se hizo el caso) aparece como **Solo valoración**: no genera pago a la técnica.",
-        "Los casos con código **HIST-** son el histórico de 2026 que se entregó por correo o WhatsApp antes del portal."
+        "Los casos con código **HIST-** son el histórico de 2026 que se entregó por correo o WhatsApp antes del portal.",
+        "Hacia el cliente todo va **a nombre de PRODIGY** (no de la técnica) y el primer paso se llama **viabilidad y valoración del caso**."
       ],
       "link": {
         "href": "alineadores.html",

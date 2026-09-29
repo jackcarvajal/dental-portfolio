@@ -32,7 +32,7 @@
     <meta name="twitter:image:alt" content="PRODIGY Lab Dental — Laboratorio CAD/CAM dental digital en Bogotá, Colombia">
   <link rel="canonical" href="https://prodigylabdental.com/soporte">
   <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png?v=20260928">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -403,12 +403,12 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catc
     btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Enviando...';
     const sb=_getSb();
     if(sb){
-      await sb.from('leads_doctores').insert({
+      await Promise.resolve(sb.from('leads_doctores').insert({
         nombre:nombre+(wa?' — '+wa:''),
         whatsapp:wa||null,
         notas:'Ticket soporte: '+asunto+' — '+mensaje.slice(0,120),
         acepta_marketing:false
-      }).catch(()=>{});
+      })).catch(()=>{});
     }
     // Abrir WA con el ticket pre-cargado
     const texto=encodeURIComponent('🎫 *Ticket de soporte*\n\n*Nombre:* '+nombre+(wa?'\n*WA:* '+wa:'')+'\n*Asunto:* '+asunto+'\n*Mensaje:* '+mensaje);

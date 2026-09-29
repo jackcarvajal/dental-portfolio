@@ -76,6 +76,7 @@ h1{font-size:1.25rem;}
       <div class="chips" id="att"><div class="chip sel" data-v="1">Sí</div><div class="chip" data-v="0">No</div></div>
     </div>
   </div>
+  <div id="protocolo-aln"></div>
   <div class="fg"><label>Archivos (STL, panorámica y perfil, fotos — o un ZIP)</label></div>
   <div class="drop" id="drop" onclick="document.getElementById('file').click()">
     <i class="fas fa-cloud-upload-alt"></i>
@@ -87,22 +88,11 @@ h1{font-size:1.25rem;}
   <div class="prog" id="prog"><div class="pbar-wrap"><div class="pbar" id="pbar"></div></div><p class="hint" id="proglbl">Subiendo…</p></div>
 <details class="pol-aln" style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:12px 14px;margin:14px 0 10px;font-size:.9rem;color:#e2e8f0">
   <summary style="cursor:pointer;font-weight:800;color:#D4AF37">📋 Políticas de alineadores (léelas antes de enviar)</summary>
-  <ul style="margin:8px 0 0 18px;padding:0;line-height:1.6">
-    <li><b>Valoración:</b> se cobra cada vez que la técnica revisa el caso, aunque el resultado sea «no viable». Tiene vigencia de 3 a 4 meses.</li>
-    <li><b>Cancelación:</b> solo durante la <b>primera hora</b> después de subir el caso y si aún no se ha enviado nada. Después se cobra la valoración.</li>
-    <li><b>Trabajo realizado:</b> todo lo entregado (valoración, planificación, replaneaciones y refinamientos con costo) se cobra aunque el tratamiento no continúe o el paciente desista.</li>
-    <li><b>Revisiones:</b> la planificación incluye 2 revisiones; desde la tercera se cobra como replaneación según la tarifa vigente.</li>
-    <li><b>Refinamiento:</b> uno sin costo dentro de los 6 meses del tratamiento; después, con costo.</li>
-    <li><b>Pagos:</b> corte mensual. Si pagas con PayPal se suma la comisión acordada.</li>
-    <li><b>Tiempos:</b> días hábiles en horario de Colombia (los festivos de Colombia no cuentan).</li>
-    <li><b>Resultados:</b> dependen de la calidad de los archivos (escaneo, radiografías, fotos) y de la colaboración del paciente.</li>
-    <li><b>Datos:</b> declaras tener la autorización del paciente para compartir sus datos (Ley 1581 de 2012).</li>
-  </ul>
-  <p style="margin:8px 0 0;font-size:.82rem;color:#94a3b8">Texto completo: <a href="/terminos-y-legal#politica-alineadores" target="_blank" rel="noopener" style="color:#00d2ff">Términos — Política de alineadores</a></p>
+  <div id="polLista"></div>
 </details>
 <label style="display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;font-size:.9rem;line-height:1.5;color:#e2e8f0;cursor:pointer">
   <input type="checkbox" id="chkPoliticas" style="margin-top:3px;accent-color:#D946A6;width:17px;height:17px;flex-shrink:0">
-  <span>Leí y <b>acepto las políticas de alineadores</b>: cobro por trabajo realizado, valoración, cancelación (máx. 1 hora), revisiones, refinamientos y pagos.</span>
+  <span>Leí y <b>acepto las políticas de alineadores</b>: cobro por trabajo realizado, viabilidad y valoración, cancelación (máx. 1 hora), revisiones, refinamientos, modificaciones de la planeación y pagos.</span>
 </label>
   <button class="btn btn-mg" id="enviar" onclick="enviar()"><i class="fas fa-paper-plane"></i> Enviar caso</button>
   <p class="hint" style="text-align:center;margin-top:8px;">Al enviar, el equipo recibe tu orden y valora el caso.</p>
@@ -117,6 +107,9 @@ h1{font-size:1.25rem;}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
 <script src="../js/auth-guard.js?v=20260924"></script>
+<script src="../js/aln-comun.js?v=20260928b"></script>
+<script src="../js/protocolo-alineadores.js?v=20260928"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){var d=document.getElementById('polLista');if(d&&window.ALN)d.innerHTML=ALN.POLITICAS_HTML;});</script>
 <script>ProdigyAuth.require(['client','admin','operator','contabilidad']);</script>
 <script>
 // Correo de respaldo al admin (como cuando todo llegaba al email). Nunca bloquea.
@@ -184,7 +177,7 @@ async function enviar(){
     requiere_attachments: sel('att')==='1',
     arcada: sel('arcada'),
     archivos: rutas,
-    politicas_version: 'alineadores-2026-09-28',   // la hora de aceptación la pone el servidor
+    politicas_version: ALN.POL_VER,   // la hora de aceptación la pone el servidor
     notas: 'Orden del cliente. Archivos: '+rutas.length
   }).select('id').single();
   btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar caso';
@@ -199,7 +192,7 @@ async function enviar(){
   prog(100,'Listo');
   document.getElementById('formCard').style.display='none';
   const ok=document.getElementById('okCard'); ok.classList.add('show');
-  document.getElementById('okMsg').innerHTML='Paciente <b>'+escH(paciente)+'</b> · Nº <b>'+escH(codigo)+'</b>.<br>El equipo valora el caso y te responde en tu cuenta.<br><span style="font-size:.85rem;color:#94a3b8">¿Te equivocaste? Puedes cancelarlo en <b>Mi cuenta</b> durante la <b>primera hora</b>; después la técnica ya pudo iniciar y se cobra la valoración.</span>'+(fallidos?'<br><br><b style="color:#fbbf24">⚠️ '+fallidos+' archivo(s) no se pudieron subir.</b> Envíalos por WhatsApp o vuelve a subir el caso. <a href="#" onclick="window.ProdigyReport&&ProdigyReport.abrir({tipo:\'archivos\'});return false" style="color:#EADBAE">Reportar el problema</a>':'');
+  document.getElementById('okMsg').innerHTML='Paciente <b>'+escH(paciente)+'</b> · Nº <b>'+escH(codigo)+'</b>.<br>El equipo valora el caso y te responde en tu cuenta.<br><span style="font-size:.85rem;color:#94a3b8">¿Te equivocaste? Puedes cancelarlo en <b>Mi cuenta</b> durante la <b>primera hora</b>; después PRODIGY ya pudo iniciar y se cobra la viabilidad y valoración.</span>'+(fallidos?'<br><br><b style="color:#fbbf24">⚠️ '+fallidos+' archivo(s) no se pudieron subir.</b> Envíalos por WhatsApp o vuelve a subir el caso. <a href="#" onclick="window.ProdigyReport&&ProdigyReport.abrir({tipo:\'archivos\'});return false" style="color:#EADBAE">Reportar el problema</a>':'');
   ok.scrollIntoView({behavior:'smooth',block:'center'});
 }
 window.addEventListener('DOMContentLoaded',init);

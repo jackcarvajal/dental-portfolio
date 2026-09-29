@@ -2314,11 +2314,11 @@
                         if (!_e) {
                             const _pid = _pedId || null;
                             if (_pid) {
-                                _sb.from('logs_incidencias').insert({
+                                Promise.resolve(_sb.from('logs_incidencias').insert({
                                     pedido_id: _pid, tipo:'PEDIDO_CREADO', severidad:'INFO',
                                     descripcion:`Pedido impresión ${STATE.ordenId} creado por ${_email||STATE.whatsappCliente}. Material: ${STATE.materialTipo}. Total: ${STATE.total}.`,
                                     resuelta: true
-                                }).catch(()=>{});
+                                })).catch(()=>{});
                             }
                         }
                         // Registro implícito si hay email

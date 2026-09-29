@@ -32,8 +32,9 @@ Solicitada por el ortodoncista si el paciente no va acorde al plan diseñado. Re
 - Si va **acorde** con el tiempo del plan → cobro adicional **($20)**.
 - Si **NO** está dentro de los tiempos del plan → cobro adicional **($40)**.
 
-## 3. Refinamiento
+## 3. Refinamiento (solo con el tratamiento TERMINADO)
 Después de terminar todo el plan, si el ortodoncista lo ve necesario.
+- **Antes de terminar** el tratamiento NO es refinamiento: si hay que cambiar el plan porque el paciente no usó los alineadores o no asistió a controles (causas ajenas a PRODIGY), es una **modificación de la planeación** (replaneación) y tiene costo.
 - Solicitado **antes de 6 meses** de finalizado el tratamiento → **sin cobro**.
 - Cada tratamiento finalizado en los tiempos correctos → **un (1) refinamiento** incluido.
 - Cambios y solicitudes adicionales → **tienen costo** aparte de lo anterior.
