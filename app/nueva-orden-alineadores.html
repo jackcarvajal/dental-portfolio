@@ -57,6 +57,7 @@ h1{font-size:1.25rem;}
 </div>
 <p class="sub">Sube el caso con su orden de trabajo. Nuestro equipo valora la viabilidad y te responde.</p>
 
+<div id="estadoPago" hidden></div>
 <div class="card" id="formCard">
   <div class="fg"><label>Paciente *</label><input id="paciente" placeholder="Nombre del paciente"></div>
   <div class="fg"><label>Motivo de consulta</label><input id="motivo" placeholder="Ej: apiñamiento, diastemas, mordida…"></div>
@@ -107,7 +108,7 @@ h1{font-size:1.25rem;}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js"></script>
 <script src="../js/auth-guard.js?v=20260924"></script>
-<script src="../js/aln-comun.js?v=20260929"></script>
+<script src="../js/aln-comun.js?v=20260929b"></script>
 <script src="../js/fechas-habiles.js?v=20260719"></script>
 <script src="../js/protocolo-alineadores.js?v=20260928"></script>
 <script>document.addEventListener('DOMContentLoaded',function(){var d=document.getElementById('polLista');if(d&&window.ALN)d.innerHTML=ALN.POLITICAS_HTML;});</script>
@@ -133,7 +134,29 @@ function render(){ document.getElementById('flist').innerHTML=files.map((f,i)=>`
 window.quit=i=>{files.splice(i,1);render();};
 function prog(p,l){ document.getElementById('prog').classList.add('show'); document.getElementById('pbar').style.width=p+'%'; document.getElementById('proglbl').textContent=l; }
 
-async function init(){ sb=window.ProdigyAuth.getSb(); }
+async function init(){ sb=window.ProdigyAuth.getSb(); verEstadoPago(); }
+// Política de pago: hasta el 12 tolerancia · 13 y 14 el caso queda en espera · desde el 15 bloqueo (lo valida la base)
+async function verEstadoPago(){
+  try{
+    const { data:e, error }=await sb.rpc('aln_estado_pago'); if(error||!e) return;
+    const v='US$'+Number(e.vencido||0).toLocaleString('es-CO',{maximumFractionDigits:2});
+    let html='', rgb='';
+    if(e.estado==='bloqueado'){
+      rgb='239,68,68'; document.getElementById('enviar').disabled=true;
+      html='<b>🔒 Por ahora no puedes subir casos nuevos.</b><br>Tu cuenta tiene un saldo vencido de <b>'+v+'</b>. Desde el día 15 la carga de casos se bloquea hasta ponerse al día. <a href="facturacion-alineadores.html" style="color:#fff;font-weight:700">Ver mi cuenta y pagar</a>';
+    } else if(e.estado==='espera'){
+      rgb='212,175,55';
+      html='<b>⏸️ Tu caso quedará en espera de pago.</b><br>Tienes un saldo vencido de <b>'+v+'</b>'+(e.pago_en_verificacion?' (tu pago está en verificación)':'')+'. Puedes subirlo, pero lo empezamos a trabajar cuando recibamos el pago.';
+    } else if(Number(e.vencido)>0){
+      rgb='0,210,255';
+      html='<b>Recordatorio:</b> tienes un saldo de <b>'+v+'</b>. Págalo antes del día 12 para que tus casos nuevos no queden en espera.';
+    }
+    if(!html) return;
+    const box=document.getElementById('estadoPago');
+    box.innerHTML=html; box.hidden=false;
+    box.style.cssText='background:rgba('+rgb+',.08);border:1px solid rgba('+rgb+',.45);border-radius:12px;padding:12px 16px;margin:0 0 14px;line-height:1.6;font-size:.92rem';
+  }catch(_){}
+}
 async function enviar(){
   const paciente=document.getElementById('paciente').value.trim();
   const indicacion=document.getElementById('indicacion').value.trim();
@@ -180,7 +203,7 @@ async function enviar(){
     archivos: rutas,
     politicas_version: ALN.POL_VER,   // la hora de aceptación la pone el servidor
     notas: 'Orden del cliente. Archivos: '+rutas.length
-  }).select('id').single();
+  }).select('id,en_espera_pago').single();
   btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar caso';
   if(error){ document.getElementById('prog').classList.remove('show'); alert('Error: '+error.message); return; }
 
@@ -188,7 +211,7 @@ async function enviar(){
   // Aviso al staff (Mayra/equipo)
   fetch('/api/notify-staff',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({doctor:cliente,servicio:'Alineadores — '+paciente,whatsapp:'',codigo,tipo:'Nueva orden de alineadores',
-      contexto:'😁 Nueva orden del cliente. Paciente '+paciente+'. Revisar viabilidad (IPR/attachments/arcada) y responder.'})}).catch(()=>{});
+      contexto:(nuevo&&nuevo.en_espera_pago)?('⏸️ Nueva orden EN ESPERA DE PAGO (saldo vencido). Paciente '+paciente+'. No trabajar hasta que se libere.'):('😁 Nueva orden del cliente. Paciente '+paciente+'. Revisar viabilidad (IPR/attachments/arcada) y responder.')})}).catch(()=>{});
 
   prog(100,'Listo');
   document.getElementById('formCard').style.display='none';
@@ -196,6 +219,7 @@ async function enviar(){
   // Sábado, domingo, festivo o después del corte: el caso queda recibido y se empieza el siguiente día hábil
   let inicioTxt='';
   try{ const ini=window.PFechas&&PFechas.inicioProduccion(new Date()); if(ini && ini.toDateString()!==new Date().toDateString()) inicioTxt='<br>🗓️ Hoy no es día hábil (o ya pasó la hora de corte): tu caso se empieza a trabajar el <b>'+escH(ini.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'}))+'</b>.'; }catch(_){}
+  if(nuevo&&nuevo.en_espera_pago) inicioTxt+='<br>⏸️ <b>Tu caso quedó en espera de pago</b>: lo empezamos a trabajar cuando recibamos el pago de tu saldo vencido.';
   document.getElementById('okMsg').innerHTML='Paciente <b>'+escH(paciente)+'</b> · Nº <b>'+escH(codigo)+'</b>.<br>El equipo valora el caso y te responde en tu cuenta.'+inicioTxt+'<br><span style="font-size:.85rem;color:#94a3b8">¿Te equivocaste? Puedes cancelarlo en <b>Mi cuenta</b> durante la <b>primera hora</b>; después PRODIGY ya pudo iniciar y se cobra la viabilidad y valoración.</span>'+(fallidos?'<br><br><b style="color:#fbbf24">⚠️ '+fallidos+' archivo(s) no se pudieron subir.</b> Envíalos por WhatsApp o vuelve a subir el caso. <a href="#" onclick="window.ProdigyReport&&ProdigyReport.abrir({tipo:\'archivos\'});return false" style="color:#EADBAE">Reportar el problema</a>':'');
   ok.scrollIntoView({behavior:'smooth',block:'center'});
 }

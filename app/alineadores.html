@@ -147,7 +147,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
   </div>
   <div class="money-cli">
     <div class="sec-t" style="margin-top:0"><i class="fas fa-calendar-check" style="color:var(--gold)"></i> Corte mensual</div>
-    <div class="tw"><table id="corteTbl"><thead><tr><th>Mes</th><th>Por cobrar (cliente)</th><th>Por pagar (Mayra)</th><th>Margen est. (COP)</th></tr></thead><tbody></tbody></table></div>
+    <div class="tw"><table id="corteTbl"><thead><tr><th>Mes</th><th>Por cobrar (cliente)</th><th>Por pagar (Mayra)</th><th>Margen est. (COP)</th><th></th></tr></thead><tbody></tbody></table></div>
     <div class="sec-t"><i class="fas fa-hand-holding-dollar" style="color:var(--green)"></i> Pagos reportados por el cliente</div>
     <div class="tw"><table id="pagosTbl"><thead><tr><th>Fecha</th><th>Monto</th><th>Método</th><th>Mes</th><th>Ref</th><th>Comprob.</th><th>Estado</th><th></th></tr></thead><tbody></tbody></table></div>
   </div>
@@ -282,7 +282,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <script>ProdigyAuth.require(['admin','operator','contabilidad','alineadores','secretaria']);</script>
 <script src="../js/notif-panel.js?v=20260924"></script>
 <script src="../js/rol-actual.js?v=20260923"></script>
-<script src="../js/aln-comun.js?v=20260929"></script>
+<script src="../js/aln-comun.js?v=20260929b"></script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD=d=>d?new Date(/^\d{4}-\d{2}-\d{2}$/.test(d)?d+'T12:00:00':d).toLocaleDateString('es-CO',{day:'2-digit',month:'short'}):'—';
@@ -401,6 +401,7 @@ function etapa(c){
   if(c.estado==='cancelado') return 'cancelado';
   if(ALN.soloVal(c)) return 'soloval';
   if(c.estado==='terminado') return 'entregado';
+  if(c.en_espera_pago) return 'espera';
   const e=entregasDe(c.id)[0];
   if(e && e.estado==='enviado') return 'cliente';
   return 'tecnica';
@@ -432,6 +433,7 @@ const FILTROS=[
   {k:'todos',   lbl:'Todos', f:()=>true},
   {k:'hacer',   lbl:'Por hacer', dot:'var(--mg)', f:c=>etapa(c)==='tecnica'},
   {k:'cliente', lbl:'Esperando al cliente', dot:'var(--gold)', f:c=>etapa(c)==='cliente'},
+  {k:'espera',  lbl:'En espera de pago', dot:'#ef4444', f:c=>etapa(c)==='espera', ocultarSiCero:true},
   {k:'curso',   lbl:'En tratamiento', dot:'var(--cyan)', f:c=>faseT(c)==='curso'},
   {k:'refina',  lbl:'Refinamiento sin costo', dot:'var(--green)', f:c=>faseT(c)==='refina'},
   {k:'vencido', lbl:'Término vencido', dot:'#64748b', f:c=>faseT(c)==='vencido'},
@@ -525,9 +527,9 @@ function renderCuentas(){
     }
     const rows=Object.keys(meses).sort().reverse().map(m=>{
       const v=meses[m]; const marg=usdToCop(v.cobrar)-v.pagar;
-      return `<tr><td>${escH(ALN.mesLbl(m))}</td><td>$${nf.format(Math.round(v.cobrar))} USD</td><td>${nf.format(Math.round(v.pagar))} COP</td><td>${nf.format(Math.round(marg))} COP</td></tr>`;
+      return `<tr><td>${escH(ALN.mesLbl(m))}</td><td>$${nf.format(Math.round(v.cobrar))} USD</td><td>${nf.format(Math.round(v.pagar))} COP</td><td>${nf.format(Math.round(marg))} COP</td><td>${CARGOS.some(x=>x.parte==='cliente'&&x.mes_corte===m&&x.estado_pago!=='pagado')?`<button class="btn btn-ghost mini" onclick="marcarMesPagado('${escJ(m)}')" title="Marcar como pagado el cobro al cliente de este mes">✅ Pagado</button>`:'<span class="pill pagado">pagado</span>'}</td></tr>`;
     }).join('');
-    document.querySelector('#corteTbl tbody').innerHTML = rows || `<tr><td colspan="4" class="empty">Aún sin cargos.</td></tr>`;
+    document.querySelector('#corteTbl tbody').innerHTML = rows || `<tr><td colspan="5" class="empty">Aún sin cargos.</td></tr>`;
     // Pagos reportados por el cliente
     const pr=PAGOS.map(p=>{
       const money=p.moneda==='COP'?(nf.format(Math.round(p.monto))+' COP'):('$'+nf.format(Math.round(p.monto))+' USD');
@@ -575,6 +577,7 @@ function renderCasos(){
 function celdaDiseno(c){
   const et=etapa(c), e=entregasDe(c.id)[0];
   if(et==='cancelado') return '<span class="pill gris">Cancelado</span>';
+  if(et==='espera') return '<span class="pill pend">⏸️ En espera de pago</span><span class="l2">El cliente tiene saldo vencido: no trabajar hasta que se libere</span>';
   if(et==='soloval') return /^consulta/i.test(c.viabilidad||'')
     ? '<span class="pill valoracion">Consulta</span><span class="l2">No se hizo el caso</span>'
     : '<span class="pill valoracion">Solo valoración</span><span class="l2">Cerrado sin planificación</span>';
@@ -595,7 +598,8 @@ function filaCaso(c){
     <td class="money-may" data-l="Pago"><div>${pago?nf.format(Math.round(pago)):'—'}</div></td>
     <td data-l=""><div class="acts">
       <button class="btn btn-ghost mini" onclick="editarCaso('${c.id}')" title="Completar / editar los datos del caso" aria-label="Editar"><i class="fas fa-pen"></i></button>
-      ${PUEDE_ENTREGAR&&c.estado!=='cancelado'&&!ALN.soloVal(c)?`<button class="btn btn-ghost mini" onclick="abrirEntregas('${c.id}')" title="Entregar viabilidad / planificación al cliente" aria-label="Entregar" style="color:var(--cyan)"><i class="fas fa-paper-plane"></i></button>`:''}
+      ${VE_CLI&&c.en_espera_pago?`<button class="btn btn-ghost mini" onclick="liberarCaso('${c.id}')" title="Liberar: se puede trabajar aunque el cliente no haya pagado" aria-label="Liberar" style="color:var(--green)"><i class="fas fa-play"></i></button>`:''}
+      ${PUEDE_ENTREGAR&&c.estado!=='cancelado'&&!ALN.soloVal(c)&&(VE_CLI||!c.en_espera_pago)?`<button class="btn btn-ghost mini" onclick="abrirEntregas('${c.id}')" title="Entregar viabilidad / planificación al cliente" aria-label="Entregar" style="color:var(--cyan)"><i class="fas fa-paper-plane"></i></button>`:''}
       ${c.estado!=='terminado'&&c.estado!=='cancelado'?`<button class="btn btn-ghost mini" onclick="completarCaso('${c.id}')" title="Completar (requiere modelos)" aria-label="Completar"><i class="fas fa-flag-checkered"></i></button>`:''}
       ${VE_MAY?`<button class="btn btn-ghost mini" onclick="verCargos('${c.id}')" title="Cargos / pagos" aria-label="Cargos"><i class="fas fa-receipt"></i></button>`:''}
       ${VE_CLI?`<button class="btn btn-ghost mini" onclick="abrirCargo('${c.id}')" title="Agregar cargo" aria-label="Agregar cargo"><i class="fas fa-plus"></i></button>`:''}
@@ -606,11 +610,12 @@ function filaCaso(c){
 
 function renderResumen(){
   // Dona: dónde está cada caso (una sola categoría por caso)
-  const fase=c=>{ const et=etapa(c); if(['cancelado','soloval','tecnica','cliente'].includes(et)) return et; return faseT(c)||'sindatos'; };
+  const fase=c=>{ const et=etapa(c); if(['cancelado','soloval','tecnica','cliente','espera'].includes(et)) return et; return faseT(c)||'sindatos'; };
   const n=k=>CASOS.filter(c=>fase(c)===k).length;
   ALN.dona(document.getElementById('chDona'),[
     {lbl:'Por hacer', n:n('tecnica'), color:'#D946A6'},
     {lbl:'Esperando al cliente', n:n('cliente'), color:'#D4AF37'},
+    {lbl:'En espera de pago', n:n('espera'), color:'#ef4444'},
     {lbl:'En tratamiento', n:n('curso'), color:'#00d2ff'},
     {lbl:'Refinamiento sin costo', n:n('refina'), color:'#00FF41'},
     {lbl:'Término vencido', n:n('vencido'), color:'#64748b'},
@@ -660,6 +665,25 @@ async function guardarAbono(){
   cerrar('ovAbono');
   await cargar();
   alert('✅ Abono registrado: cubrió '+nf.format(Math.round(data.aplicado))+' COP en '+data.cargos+' cargo'+(data.cargos===1?'':'s')+'.'+(data.a_favor>0?('\nQuedan '+nf.format(Math.round(data.a_favor))+' COP a favor de la técnica.'):'')+avisoComp);
+}
+
+/* ── Política de pago: el admin libera un caso en espera, o marca pagado el mes del cliente (libera solo) ── */
+async function liberarCaso(id){
+  const c=CASOS.find(x=>x.id===id); if(!c) return;
+  if(!confirm('¿Liberar el caso de '+c.paciente+'?\nLa técnica lo podrá trabajar aunque el cliente aún no haya pagado.')) return;
+  const { error }=await sb.from('alineadores_casos').update({en_espera_pago:false}).eq('id',id);
+  if(error){ alert('Error: '+error.message); return; }
+  await cargar();
+}
+async function marcarMesPagado(m){
+  const pend=CARGOS.filter(x=>x.parte==='cliente'&&x.mes_corte===m&&x.estado_pago!=='pagado');
+  if(!pend.length) return;
+  const clis=[...new Set(pend.map(x=>(CASOS.find(c=>c.id===x.caso_id)||{}).cliente||'—'))].join(', ');
+  const tot=pend.reduce((a,x)=>a+Number(x.monto||0),0);
+  if(!confirm('¿Marcar como PAGADO el cobro de '+ALN.mesLbl(m)+'?\n'+pend.length+' cargo(s) · $'+nf.format(Math.round(tot))+' USD · '+clis+'\n\nSi el cliente queda al día, sus casos en espera se liberan solos.')) return;
+  const { error }=await sb.from('alineadores_cargos').update({estado_pago:'pagado'}).in('id',pend.map(x=>x.id));
+  if(error){ alert('Error: '+error.message); return; }
+  await cargar();
 }
 
 /* ── Caso ── */

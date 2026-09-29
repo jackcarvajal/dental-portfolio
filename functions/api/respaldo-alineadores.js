@@ -95,7 +95,9 @@ export async function onRequestPost({ request, env }) {
       cuerpo = `<h2>El cliente canceló el caso (dentro de la primera hora)</h2>${cab}<p>Se borraron los cargos pendientes de valoración.</p>`;
       waTecnica = `🛑 *PRODIGY — Caso cancelado*\n\nPaciente ${c.paciente}${c.cliente ? ' (' + c.cliente + ')' : ''}: el cliente lo canceló. No lo trabajes.`;
     } else if (tipo === 'caso') {
-      waTecnica = `😁 *PRODIGY — Caso nuevo de alineadores*\n\nPaciente ${c.paciente}${c.cliente ? ' · ' + c.cliente : ''}.\nRevisa los archivos y envía la viabilidad:\nhttps://prodigylabdental.com/app/alineadores.html`;
+      waTecnica = c.en_espera_pago
+        ? `⏸️ *PRODIGY — Caso nuevo EN ESPERA DE PAGO*\n\nPaciente ${c.paciente}${c.cliente ? ' · ' + c.cliente : ''}.\nEl cliente tiene saldo vencido: no lo trabajes hasta que se libere.`
+        : `😁 *PRODIGY — Caso nuevo de alineadores*\n\nPaciente ${c.paciente}${c.cliente ? ' · ' + c.cliente : ''}.\nRevisa los archivos y envía la viabilidad:\nhttps://prodigylabdental.com/app/alineadores.html`;
       asunto = `😁 Nuevo caso de alineadores — ${c.paciente} (${c.cliente || 'cliente'})`;
       cuerpo = `<h2>Nuevo caso de alineadores</h2>${cab}<table style="font-size:14px;margin-top:8px">
         ${fila('Motivo de consulta', c.motivo_consulta)}${fila('Indicación del cliente', c.indicacion_cliente)}

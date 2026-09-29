@@ -85,6 +85,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <div class="quien" id="quien" hidden aria-label="Tu cuenta"></div>
 
 <div class="cards" id="cards"></div>
+<p class="guia" id="avisoPago"></p>
 <p class="guia" id="guia"></p>
 
 <div class="acciones">
@@ -172,7 +173,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <script src="../js/auth-guard.js?v=20260924"></script>
 <script>ProdigyAuth.require(['client','admin','operator','contabilidad']);</script>
 <script src="../js/notif-panel.js?v=20260924"></script>
-<script src="../js/aln-comun.js?v=20260929"></script>
+<script src="../js/aln-comun.js?v=20260929b"></script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const escJ=s=>escH(String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n'));   // texto dentro de '…' en onclick
@@ -200,7 +201,7 @@ function textoComision(){
 
 async function init(){
   sb=window.ProdigyAuth.getSb();
-  const { data:cs } = await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento').eq('negocio','prodigy').order('created_at',{ascending:false});
+  const { data:cs } = await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento,en_espera_pago').eq('negocio','prodigy').order('created_at',{ascending:false});
   (cs||[]).forEach(c=>CASOS[c.id]=c);
   { const { data:en, error:ee } = await sb.from('alineadores_entregas').select('*').order('created_at',{ascending:false}); ENTREGAS = ee ? [] : (en||[]); }
   try{ const { data:cf } = await sb.from('alineadores_clientes').select('comision_paypal').eq('user_id',window.PRODIGY_UID).maybeSingle(); if(cf && cf.comision_paypal!=null) COMISION_ACORDADA=Number(cf.comision_paypal); }catch(_){}
@@ -211,6 +212,7 @@ async function init(){
   PAGOS = pg||[];
   document.getElementById('subtitle').textContent='Tus casos, tu estado de cuenta y tus pagos. Los montos están en USD.';
   pintarQuien();
+  avisoPago();
   try{ FIL=localStorage.getItem('alnc_fil')||'todos'; }catch(_){}
   let tab='casos'; try{ tab=localStorage.getItem('alnc_tab')||'casos'; }catch(_){}
   verTab(location.hash==='#casos'?'casos':tab);
@@ -285,6 +287,21 @@ async function pintarQuien(){
   }catch(_){}
 }
 
+/* ── Política de pago: aviso según el día y el saldo vencido ── */
+async function avisoPago(){
+  try{
+    const { data:e, error }=await sb.rpc('aln_estado_pago'); if(error||!e||!(Number(e.vencido)>0)) return;
+    const v='US$'+Number(e.vencido).toLocaleString('es-CO',{maximumFractionDigits:2});
+    const el=document.getElementById('avisoPago');
+    el.innerHTML = e.estado==='bloqueado'
+      ? '🔒 <b>Saldo vencido de '+v+'.</b> Desde el día 15 no se pueden subir casos nuevos hasta ponerse al día.'
+      : e.estado==='espera'
+        ? '⏸️ <b>Saldo vencido de '+v+'.</b> Los casos que subas quedan en espera hasta recibir el pago'+(e.pago_en_verificacion?' (tu pago está en verificación).':'.')
+        : '📅 Tienes un saldo de <b>'+v+'</b>. Págalo antes del día 12 para que tus casos nuevos no queden en espera.';
+    el.style.borderColor = e.estado==='bloqueado' ? 'rgba(239,68,68,.5)' : (e.estado==='espera' ? 'rgba(212,175,55,.5)' : '');
+  }catch(_){}
+}
+
 /* ── Pestañas y filtros ── */
 let FIL='todos';
 function verTab(t){
@@ -298,6 +315,7 @@ function setFil(k){ FIL=k; try{ localStorage.setItem('alnc_fil',k); }catch(_){} 
 function etapaCli(c){
   if(c.estado==='cancelado') return 'cancelado';
   if(ALN.soloVal(c)) return 'soloval';
+  if(c.en_espera_pago && c.estado!=='terminado') return 'espera';
   const e=entregasDe(c.id)[0];
   if(e && e.estado==='enviado') return 'revisar';
   if(c.estado==='terminado') return 'entregado';
@@ -308,6 +326,7 @@ const FILTROS=[
   {k:'todos',   lbl:'Todos', f:()=>true},
   {k:'revisar', lbl:'Por revisar', dot:'var(--cyan)', f:c=>etapaCli(c)==='revisar'},
   {k:'proceso', lbl:'En proceso', dot:'var(--mg)', f:c=>etapaCli(c)==='proceso'},
+  {k:'espera',  lbl:'En espera de pago', dot:'#ef4444', f:c=>etapaCli(c)==='espera', ocultarSiCero:true},
   {k:'curso',   lbl:'En tratamiento', dot:'#00d2ff', f:c=>faseC(c)==='curso'},
   {k:'refina',  lbl:'Refinamiento sin costo', dot:'var(--green)', f:c=>faseC(c)==='refina'},
   {k:'vencido', lbl:'Término vencido', dot:'#64748b', f:c=>faseC(c)==='vencido'},
@@ -332,7 +351,7 @@ async function cancelarCaso(id){
   const { data,error }=await sb.rpc('aln_cancelar_caso',{ p_caso_id:id });
   if(error || (data && data.ok===false)){ alert((data&&data.error)||(error&&error.message)||'No se pudo cancelar'); return; }
   respaldoEmail('cancelado',{id});
-  const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
+  const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento,en_espera_pago').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
   const { data:cg }=await sb.from('alineadores_cargos').select('*').eq('negocio','prodigy').eq('parte','cliente'); CARGOS=cg||[];
   render();
   alert('🛑 Caso cancelado. No se cobra la viabilidad y valoración, y PRODIGY ya fue avisado.');
@@ -357,7 +376,7 @@ function renderCasos(){
     const e=entregasDe(c.id)[0], et=etapaCli(c);
     const ult=e?`<span class="pill ${e.estado==='enviado'?'accion':escH(e.estado)}">${escH(ETAPA[e.etapa]||e.etapa)}${e.revision_num?(' r'+e.revision_num):''} · ${escH(EST_ENT[e.estado]||e.estado)}</span><span class="l2">${fmtD(e.created_at)}</span>`
       :(/^HIST-/.test(c.codigo||'')?'<span class="l2" style="margin:0" title="Entregado antes de que existiera el portal">Por correo/WhatsApp</span>':'<span class="l2" style="margin:0">Aún no te hemos enviado nada</span>');
-    const estado = et==='soloval' ? 'Solo viabilidad y valoración' : (et==='entregado' ? 'Diseño entregado' : (EST_CASO[c.estado]||c.estado||''));
+    const estado = et==='soloval' ? 'Solo viabilidad y valoración' : (et==='entregado' ? 'Diseño entregado' : (et==='espera' ? '⏸️ En espera de pago' : (EST_CASO[c.estado]||c.estado||'')));
     const min=minutosParaCancelar(c);
     return `<tr>
       <td class="pac" data-l="Paciente"><div><b>${escH(c.paciente)}</b><span class="l2">${escH(c.codigo||'')} · ${fmtD(c.created_at)}</span></div></td>
@@ -406,7 +425,7 @@ async function responder(id,aprobar){
   alert(aprobar?'✅ Aprobada. PRODIGY ya fue avisado.':('✏️ Cambios enviados a PRODIGY.'+(data&&data.aviso?('\n\n'+data.aviso):'')));
   cerrar('ovEnt');
   const { data:en }=await sb.from('alineadores_entregas').select('*').order('created_at',{ascending:false}); ENTREGAS=en||[];
-  const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
+  const { data:cs }=await sb.from('alineadores_casos').select('id,paciente,cliente,estado,codigo,created_at,plan_tratamiento,modelos,fecha_envio,duracion_tratamiento,fecha_fin_tratamiento,en_espera_pago').eq('negocio','prodigy'); (cs||[]).forEach(x=>CASOS[x.id]=x);
   render();
 }
 
