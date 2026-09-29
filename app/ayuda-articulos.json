@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-28",
+  "version": "2026-09-29",
   "categorias": [
     {
       "id": "inicio",
@@ -220,7 +220,8 @@
         "Envíale por WhatsApp: el link **prodigylabdental.com/app/login.html**, su correo y la contraseña."
       ],
       "notas": [
-        "El equipo **no se registra solo** desde la web: el registro público siempre crea cuentas de **cliente**. Las cuentas del equipo las creas tú aquí."
+        "El equipo **no se registra solo** desde la web: el registro público siempre crea cuentas de **cliente**. Las cuentas del equipo las creas tú aquí.",
+        "Técnicos de diseño: marca la **vinculación** (nómina = salario · prestador = se le paga por caso), el **nivel** (1 básico · 2 intermedio · 3 avanzado) y, si es prestador, sus **tarifas** al editarlo. Si sale a vacaciones, desmarca **Disponible**."
       ],
       "link": {
         "href": "gestionar-usuarios.html",

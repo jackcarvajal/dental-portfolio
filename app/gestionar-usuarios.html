@@ -34,7 +34,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 .acts{display:flex;gap:5px;flex-wrap:wrap;}
 .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
 .fg label{font-size:.74rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.4px;}
-.fg input{background:var(--input);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:9px 11px;border-radius:8px;font-size:.92rem;font-family:inherit;width:100%;}
+.fg input,.fg select{background:var(--input);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:9px 11px;border-radius:8px;font-size:.92rem;font-family:inherit;width:100%;}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 @media(max-width:560px){.grid2{grid-template-columns:1fr;}}
 .roles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin:6px 0 12px;}
@@ -50,6 +50,13 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 .modal h3{font-size:1.05rem;margin-bottom:12px;}
 .mact{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;}
 .empty{padding:22px;text-align:center;color:var(--muted);}
+.dz{border-top:1px solid var(--border);margin-top:4px;padding-top:12px;}
+.dz h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.4px;color:var(--cyan);margin-bottom:8px;}
+.tar{width:100%;min-width:0;font-size:.8rem;}
+.tar th,.tar td{padding:6px;}
+.tar input{width:100%;background:var(--input);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:6px 8px;border-radius:6px;font-family:inherit;font-variant-numeric:tabular-nums;}
+.rep{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;}
+.nota{font-size:.76rem;color:var(--muted);line-height:1.5;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;}}
 </style>
 <script src="../js/reportar-problema.js?v=20260924c"></script>
@@ -71,12 +78,25 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
   <div class="fg"><label>WhatsApp</label><input id="nWa" placeholder="+57 300 000 0000"></div>
   <label class="sub" style="display:block;margin:0 0 4px;">Roles (marca los que necesite)</label>
   <div class="roles-grid" id="nRoles"></div>
+  <div class="fg"><label>Nivel en diseño (1 casos simples · 3 complejos)</label><select id="nNivel"><option value="">— No aplica —</option><option value="1">1 · Básico</option><option value="2">2 · Intermedio</option><option value="3">3 · Avanzado</option></select></div>
   <div class="fg"><label>Vinculación</label><select id="nVinc"><option value="">— Sin definir —</option><option value="prestador">Prestador de servicio (se le paga por caso)</option><option value="nomina">Nómina (salario: no se le paga por caso)</option></select></div>
   <div class="fg"><label>Contraseña temporal *</label>
     <div class="pwrow"><input id="nPass"><button class="btn btn-ghost" onclick="genPass()"><i class="fas fa-rotate"></i></button></div>
   </div>
   <button class="btn btn-mg" id="btnCrear" onclick="crear()"><i class="fas fa-user-plus"></i> Crear usuario</button>
   <div class="msg" id="msgCrear"></div>
+</div>
+
+<div class="card" id="cardRep">
+  <div class="sec-t"><i class="fas fa-diagram-project" style="color:var(--gold)"></i> Reparto de casos de diseño <span class="pill off" id="repEstado" style="margin-left:auto">apagado</span></div>
+  <p class="nota" style="margin-bottom:12px;">Hoy todos los casos de diseño los haces tú. Cuando entre el primer técnico se activa: cada pedido se divide por especialidad (guías / exocad / blender) y se reparte según este modo. Los técnicos de nómina reciben primero (hasta su cupo), luego el que ya trabajó con ese cliente y después el de menos carga.</p>
+  <div class="rep">
+    <div class="fg"><label>Modo</label><select id="repModo"><option value="bolsa">Bolsa: el técnico toma el caso</option><option value="automatica">Automático: lo asigna el sistema</option><option value="manual">Manual: lo asignas tú</option></select></div>
+    <div class="fg"><label>Cupo por técnico de nómina</label><input id="repCupo" type="number" min="1" max="50"></div>
+    <div class="fg"><label>Alerta si nadie lo toma (horas)</label><input id="repHoras" type="number" min="1" max="48"></div>
+  </div>
+  <button class="btn btn-ghost mini" onclick="guardarReparto()"><i class="fas fa-floppy-disk"></i> Guardar ajustes</button>
+  <div class="msg" id="msgRep"></div>
 </div>
 
 <div class="sec-t"><i class="fas fa-users" style="color:var(--cyan)"></i> Usuarios <span id="cnt" class="sub" style="margin:0;font-weight:400"></span> <button class="btn btn-ghost mini" onclick="cargar()"><i class="fas fa-rotate"></i></button></div>
@@ -98,6 +118,17 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
   <div class="roles-grid" id="eRoles"></div>
   <div class="fg"><label>Vinculación</label><select id="eVinc"><option value="">— Sin definir —</option><option value="prestador">Prestador de servicio (se le paga por caso)</option><option value="nomina">Nómina (salario: no se le paga por caso)</option></select></div>
   <label class="rchk" style="max-width:200px;"><input type="checkbox" id="eActive"> Cuenta activa</label>
+  <div class="dz" id="eDz">
+    <h4>Técnico de diseño</h4>
+    <div class="grid2">
+      <div class="fg"><label>Nivel</label><select id="eNivel"><option value="">— No aplica —</option><option value="1">1 · Básico</option><option value="2">2 · Intermedio</option><option value="3">3 · Avanzado</option></select></div>
+      <div style="display:flex;align-items:flex-end;margin-bottom:12px;"><label class="rchk" style="width:100%;"><input type="checkbox" id="eDisp"> Disponible para recibir casos</label></div>
+    </div>
+    <div id="eTarWrap">
+      <p class="nota" style="margin-bottom:6px;">Tarifa por unidad (COP) que se le paga al <b>prestador</b> según la complejidad del caso. Nómina no lleva tarifa.</p>
+      <div class="tw"><table class="tar"><thead><tr><th>Especialidad</th><th>1 · Simple</th><th>2 · Media</th><th>3 · Compleja</th></tr></thead><tbody id="eTar"></tbody></table></div>
+    </div>
+  </div>
   <div class="msg" id="msgEdit"></div>
   <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovEdit')">Cancelar</button><button class="btn btn-mg" onclick="guardarRoles()">Guardar</button></div>
 </div></div>
@@ -128,6 +159,51 @@ async function init(){
   rolesGrid(document.getElementById('nRoles'),[]);
   genPass();
   cargar();
+  cargarReparto();
+}
+/* ── Técnicos de diseño: especialidades, tarifas y reparto (tablas de sql/diseno-tareas-asignacion-2026.sql) ── */
+const ESPS=[['guias','Guías quirúrgicas'],['exocad','Exocad'],['blender','Blender']];
+const esDiseno=roles=>(roles||[]).some(r=>['guias','exocad','blender','diseno'].includes(r));
+function fmtCop(n){ return n?Number(n).toLocaleString('es-CO'):''; }
+async function cargarReparto(){
+  const { data, error }=await sb.from('diseno_ajustes').select('tareas_activas,asignacion,max_abiertas,horas_alerta').eq('id',1).maybeSingle();
+  if(error||!data){ document.getElementById('cardRep').style.display='none'; return; }
+  document.getElementById('repModo').value=data.asignacion;
+  document.getElementById('repCupo').value=data.max_abiertas;
+  document.getElementById('repHoras').value=data.horas_alerta;
+  const p=document.getElementById('repEstado'); p.textContent=data.tareas_activas?'activo':'apagado'; p.className='pill '+(data.tareas_activas?'on':'off');
+}
+async function guardarReparto(){
+  const cupo=Math.max(1,Math.min(50,parseInt(document.getElementById('repCupo').value,10)||5));
+  const horas=Math.max(1,Math.min(48,parseInt(document.getElementById('repHoras').value,10)||2));
+  const { error }=await sb.from('diseno_ajustes').update({ asignacion:document.getElementById('repModo').value, max_abiertas:cupo, horas_alerta:horas, updated_at:new Date().toISOString() }).eq('id',1);
+  msg('msgRep', error?'⚠️ '+error.message:'✅ Ajustes guardados (el reparto sigue apagado hasta activarlo).', !error);
+}
+async function pintarTarifas(u){
+  const roles=pick(document.getElementById('eRoles'));
+  document.getElementById('eDz').style.display=esDiseno(roles)?'':'none';
+  const prest=document.getElementById('eVinc').value==='prestador';
+  const esps=ESPS.filter(([k])=>roles.includes(k)||roles.includes('diseno'));
+  document.getElementById('eTarWrap').style.display=(prest&&esps.length)?'':'none';
+  if(!prest||!esps.length) return;
+  const tb=document.getElementById('eTar');
+  if(!u){ // repintado por cambio de roles: conserva lo escrito
+    const prev={}; tb.querySelectorAll('input').forEach(i=>prev[i.dataset.k]=i.value);
+    tb.innerHTML=esps.map(([k,t])=>`<tr><td>${escH(t)}</td>${[1,2,3].map(c=>`<td><input inputmode="numeric" data-k="${k}-${c}" value="${escH(prev[k+'-'+c]||'')}" placeholder="0"></td>`).join('')}</tr>`).join('');
+    return;
+  }
+  tb.innerHTML='<tr><td colspan="4" class="empty">Cargando…</td></tr>';
+  const { data }=await sb.from('operarios_tarifas').select('especialidad,complejidad,valor_cop').eq('user_id',u.id);
+  const v={}; (data||[]).forEach(r=>v[r.especialidad+'-'+r.complejidad]=r.valor_cop);
+  tb.innerHTML=esps.map(([k,t])=>`<tr><td>${escH(t)}</td>${[1,2,3].map(c=>`<td><input inputmode="numeric" data-k="${k}-${c}" value="${escH(fmtCop(v[k+'-'+c]))}" placeholder="0"></td>`).join('')}</tr>`).join('');
+}
+async function guardarTarifas(id){
+  if(document.getElementById('eTarWrap').style.display==='none') return null;
+  const filas=Array.from(document.querySelectorAll('#eTar input')).map(i=>{ const [especialidad,c]=i.dataset.k.split('-');
+    return { user_id:id, especialidad, complejidad:Number(c), valor_cop:Number(String(i.value).replace(/[^\d]/g,''))||0, updated_at:new Date().toISOString() }; });
+  if(!filas.length) return null;
+  const { error }=await sb.from('operarios_tarifas').upsert(filas,{ onConflict:'user_id,especialidad,complejidad' });
+  return error;
 }
 let USERS=[], FILTRO='todos';
 function setF(b){ document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on')); b.classList.add('on'); FILTRO=b.dataset.f; pintar(); }
@@ -153,7 +229,7 @@ function pintar(){
   tb.innerHTML=us.map(u=>`<tr>
     <td>${escH(u.nombre||'—')}</td>
     <td>${escH(u.email)}</td>
-    <td><span class="chip" style="${u.tipo==='admin'?'background:rgba(212,175,55,.15);color:var(--gold)':(u.tipo==='cliente'?'background:rgba(217,70,166,.14);color:var(--mg)':'')}">${escH(u.tipo)}</span>${u.vinculacion?`<span class="chip" title="${u.vinculacion==='nomina'?'Salario: no se le paga por caso':'Se le paga por caso'}">${u.vinculacion==='nomina'?'Nómina':'Prestador'}</span>`:''}</td>
+    <td><span class="chip" style="${u.tipo==='admin'?'background:rgba(212,175,55,.15);color:var(--gold)':(u.tipo==='cliente'?'background:rgba(217,70,166,.14);color:var(--mg)':'')}">${escH(u.tipo)}</span>${u.vinculacion?`<span class="chip" title="${u.vinculacion==='nomina'?'Salario: no se le paga por caso':'Se le paga por caso'}">${u.vinculacion==='nomina'?'Nómina':'Prestador'}</span>`:''}${u.nivel&&esDiseno(u.roles)?`<span class="chip" title="Nivel en diseño">Nivel ${u.nivel}</span>`:''}${u.disponible===false&&esDiseno(u.roles)?'<span class="chip" style="background:rgba(239,68,68,.12);color:var(--red)">No disponible</span>':''}</td>
     <td>${u.roles.map(r=>`<span class="chip">${escH(lbl(r))}</span>`).join('')||'—'}</td>
     <td>${u.es_admin?'<span class="pill on">activo</span>':`<span class="pill ${u.active?'on':'off'}">${u.active?'activo':'inactivo'}</span>`}</td>
     <td class="acts">${u.es_admin?'<span class="sub" style="margin:0">protegido</span>':`
@@ -172,12 +248,13 @@ async function crear(){
   if(!roles.length){ msg('msgCrear','Marca al menos un rol.',false); return; }
   const b=document.getElementById('btnCrear'); b.disabled=true; b.innerHTML='<i class="fas fa-spinner fa-spin"></i> Creando…';
   const vinculacion=document.getElementById('nVinc').value||null;
-  const d=await api('create',{email,password,nombre,whatsapp,roles,vinculacion});
+  const nivel=document.getElementById('nNivel').value||null;
+  const d=await api('create',{email,password,nombre,whatsapp,roles,vinculacion,nivel,disponible:true});
   b.disabled=false; b.innerHTML='<i class="fas fa-user-plus"></i> Crear usuario';
   if(!d.ok){ msg('msgCrear','⚠️ '+d.error,false); return; }
   msg('msgCrear','✅ Creado: '+email+' · clave: '+password+' (cópiala y pásasela)',true);
   document.getElementById('nNombre').value='';document.getElementById('nEmail').value='';document.getElementById('nWa').value='';
-  rolesGrid(document.getElementById('nRoles'),[]); document.getElementById('nVinc').value=''; genPass(); cargar();
+  rolesGrid(document.getElementById('nRoles'),[]); document.getElementById('nVinc').value=''; document.getElementById('nNivel').value=''; genPass(); cargar();
 }
 
 function editar(u){
@@ -187,6 +264,11 @@ function editar(u){
   rolesGrid(document.getElementById('eRoles'),u.roles);
   document.getElementById('eActive').checked=u.active!==false;
   document.getElementById('eVinc').value=u.vinculacion||'';
+  document.getElementById('eNivel').value=u.nivel||'';
+  document.getElementById('eDisp').checked=u.disponible!==false;
+  document.getElementById('eRoles').onchange=()=>pintarTarifas();
+  document.getElementById('eVinc').onchange=()=>pintarTarifas();
+  pintarTarifas(u);
   document.getElementById('msgEdit').className='msg';
   document.getElementById('ovEdit').classList.add('show');
 }
@@ -197,8 +279,12 @@ async function guardarRoles(){
   if(!roles.length && !confirm('Sin roles marcados, esta cuenta queda como CLIENTE (sin acceso de equipo). ¿Continuar?')) return;
   const nombre=document.getElementById('eNombre').value.trim();
   const vinculacion=document.getElementById('eVinc').value||null;
-  const d=await api('set_roles',{id,roles,active,nombre,vinculacion});
+  const nivel=document.getElementById('eNivel').value||null;
+  const disponible=document.getElementById('eDisp').checked;
+  const d=await api('set_roles',{id,roles,active,nombre,vinculacion,nivel,disponible});
   if(!d.ok){ msg('msgEdit','⚠️ '+d.error,false); return; }
+  const et=await guardarTarifas(id);
+  if(et){ msg('msgEdit','Perfil guardado, pero las tarifas no: '+et.message,false); cargar(); return; }
   cerrar('ovEdit'); cargar();
 }
 async function borrar(id,email){

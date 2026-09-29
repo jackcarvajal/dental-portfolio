@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-09-29  (Alineadores: pago y bloqueo · equipo: vinculación y perfil de diseño · crons)
+
+- ✅ Alineadores: pago en los primeros 10 días; tolerancia hasta el 12, casos **en espera** el 13-14, **bloqueo** desde el 15 (`sql/alineadores-bloqueo-por-pago-2026.sql`, corrido); liberación automática al quedar al día; comprobante del abono a la técnica; WhatsApp de dudas en el menú y por caso.
+- ✅ Equipo: **vinculación** nómina / prestador en «Equipo y roles» (app_metadata.vinculacion).
+- ✅ Admin → «Mis casos de diseño» en la sección Hoy; en `operario-diseno.html` el técnico ya no ve enlaces al panel admin ni a la web pública y tiene **Cerrar sesión**.
+- 🟡 **Reparto de casos de diseño ARMADO y APAGADO** (`sql/diseno-tareas-asignacion-2026.sql`, PENDIENTE de correr): tareas por especialidad (guías / exocad / blender), modo bolsa / automático / manual, nómina primero → mismo cliente → menos carga; tarifas por prestador × complejidad (`operarios_tarifas`). En «Equipo y roles»: nivel 1-3, disponible, tarifas y tarjeta de reparto. La vista de tareas del técnico se hace al activarlo (hoy Alejandro diseña todo).
+- 🔴 **Crons de GitHub fallan**: el secret `CRON_SECRET` no existe en GitHub (solo está `GEMINI_API_KEY`) → «Alerta SLA» (desde el 28-sep) y «Purga STL» fallan a los 3-8 s. Falta crear el mismo `CRON_SECRET` en Cloudflare Pages (Production) y en GitHub Secrets; si luego da 403 «Just a moment», regla WAF Skip (ver `docs/FIX-CRON-PURGA-STL.md`).
+
 ## 2026-09-28  (Alineadores fase 2 · respaldo por email · bitácora automática · lista de pendientes)
 
 - 🟡 **Entregas de alineadores** (`sql/alineadores-fase2-2026.sql`, PENDIENTE de correr): la técnica entrega viabilidad/planificación (texto, archivos, enlace) desde `app/alineadores.html` (✈️); el cliente aprueba o pide cambios en `app/facturacion-alineadores.html` → «Mis casos» (2 revisiones incluidas, aviso de costo desde la 3ª). Campana: caso nuevo → técnica, entrega → cliente, respuesta → técnica. Comisión PayPal por cliente (`alineadores_clientes.comision_paypal`: Panorámica 12 %, resto comisión normal). Sin enlace PayPal → botón «Pedir enlace de pago» por WhatsApp. Global66 descartado por el cliente.
