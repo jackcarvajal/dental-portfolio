@@ -78,7 +78,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
-<link rel="stylesheet" href="../css/aln.css?v=20260928">
+<link rel="stylesheet" href="../css/aln.css?v=20260929">
 <script src="../js/reportar-problema.js?v=20260924c"></script>
 <script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
@@ -92,6 +92,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <a class="tn" href="cambiar-contrasena.html?next=/app/alineadores.html"><i class="fas fa-key"></i> Cambiar contraseña</a>
   <button type="button" class="tn salir" onclick="ProdigyAuth.signOut()"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</button>
 </nav>
+<div class="quien" id="quien" hidden aria-label="Tu cuenta"></div>
 
 <div class="bar money-cli">
   <button class="btn btn-mg" id="btnNuevo" onclick="abrirCaso()"><i class="fas fa-plus"></i> Nuevo caso</button>
@@ -315,6 +316,7 @@ async function init(){
     : (ES_ALN
        ? 'Tus casos y tus cuentas. ✏️ completa los datos · ✈️ entrega al cliente · 🏁 completa cuando envíes los modelos.'
        : 'Casos de alineadores.');
+  pintarQuien();
   try{ FIL=localStorage.getItem('aln_fil')||'todos'; }catch(_){}
   let tab='casos'; try{ tab=localStorage.getItem('aln_tab')||'casos'; }catch(_){}
   verTab(tab);
@@ -351,6 +353,24 @@ async function cargar(){
 
 function cargosDe(casoId,parte){ return CARGOS.filter(x=>x.caso_id===casoId && (!parte||x.parte===parte)); }
 function sumaCaso(casoId,parte){ return cargosDe(casoId,parte).reduce((a,c)=>a+Number(c.monto||0),0); }
+
+/* ── Tarjeta de identidad: cada persona ve que es SU panel (nombre de muestra, correo y sus permisos) ── */
+const ROL_LBL={admin:'Administración',operator:'Operaciones',contabilidad:'Contabilidad',secretaria:'Secretaría',alineadores:'Alineadores',guias:'Guías quirúrgicas',exocad:'Exocad (prostodoncia)',blender:'Blender (sonrisa)',diseno:'Diseño CAD'};
+async function pintarQuien(){
+  try{
+    const { data:{ user } }=await sb.auth.getUser();
+    const email=(user&&user.email)||window.PRODIGY_EMAIL||'';
+    const md=(user&&user.user_metadata)||{};   // solo para MOSTRAR el nombre; los permisos salen de app_metadata
+    const nombre=md.nombre||md.full_name||email.split('@')[0];
+    const ini=nombre.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+    const roles=(window.PRODIGY_ROLES||[ROLE]).filter(Boolean);
+    const cargo=VE_CLI?'Administración':(ES_ALN?'Técnica de alineadores · PRODIGY':'Equipo PRODIGY');
+    document.getElementById('quien').innerHTML=`<div class="av" aria-hidden="true">${escH(ini)}</div>
+      <div><div class="qn">${escH(nombre)}</div><div class="qs">${escH(cargo)} · ${escH(email)}</div></div>
+      <div class="qtags">${roles.map(r=>`<span class="qtag${r==='alineadores'?' oro':''}">${escH(ROL_LBL[r]||r)}</span>`).join('')}</div>`;
+    document.getElementById('quien').hidden=false;
+  }catch(_){}
+}
 
 /* ── Vista: pestañas, filtros y etapas ── */
 let FIL='todos';

@@ -67,7 +67,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
-<link rel="stylesheet" href="../css/aln.css?v=20260928">
+<link rel="stylesheet" href="../css/aln.css?v=20260929">
 <script src="../js/reportar-problema.js?v=20260924c"></script>
 </head>
 <body>
@@ -81,6 +81,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
   <a class="tn" href="cambiar-contrasena.html?next=/app/facturacion-alineadores.html"><i class="fas fa-key"></i> Cambiar contraseña</a>
   <button type="button" class="tn salir" onclick="ProdigyAuth.signOut()"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</button>
 </nav>
+<div class="quien" id="quien" hidden aria-label="Tu cuenta"></div>
 
 <div class="cards" id="cards"></div>
 <p class="guia" id="guia"></p>
@@ -178,7 +179,7 @@ const nf=new Intl.NumberFormat('es-CO');
 const tipoLbl=t=>({completo:'Caso completo',valoracion:'Viabilidad y valoración',diferencia_a_completo:'Diferencia a completo',replaneacion_en_tiempo:'Replaneación (en tiempo)',replaneacion_fuera_tiempo:'Replaneación (fuera de tiempo)',refinamiento_sin_costo:'Refinamiento',refinamiento_con_costo:'Refinamiento (con costo)',adicional:'Adicional'})[t]||t;
 let sb, CASOS={}, CARGOS=[], PAGOS=[], ENTREGAS=[];
 // ── PayPal: pon tu handle de paypal.me (ej. 'alejandrocarvajal') para activar el botón ──
-const PAYPAL_HANDLE='';      // vacío = en su lugar se ofrece pedir el enlace de pago por WhatsApp
+const PAYPAL_HANDLE='alejandrocarvajalden';   // paypal.me/alejandrocarvajalden · vacío = pedir el enlace de pago por WhatsApp
 const WA_LAB='573212816716';
 // Comisión por pagar con PayPal: la ACORDADA con cada cliente (alineadores_clientes.comision_paypal,
 // ej. Panorámica = 12 %). Si el cliente no tiene una acordada: la comisión normal de PayPal (5,4 % + US$0,30).
@@ -205,6 +206,7 @@ async function init(){
   const { data:pg } = await sb.from('alineadores_pagos').select('*').eq('parte','cliente').order('created_at',{ascending:false});
   PAGOS = pg||[];
   document.getElementById('subtitle').textContent='Tus casos, tu estado de cuenta y tus pagos. Los montos están en USD.';
+  pintarQuien();
   try{ FIL=localStorage.getItem('alnc_fil')||'todos'; }catch(_){}
   let tab='casos'; try{ tab=localStorage.getItem('alnc_tab')||'casos'; }catch(_){}
   verTab(location.hash==='#casos'?'casos':tab);
@@ -255,6 +257,26 @@ function render(){
   // Pagos
   const pr=PAGOS.map(p=>`<tr><td data-l="Fecha"><div>${fmtD(p.created_at)}</div></td><td data-l="Monto"><div>${money(p.monto,p.moneda)}</div></td><td data-l="Método"><div>${escH(p.metodo||'—')}</div></td><td data-l="Referencia"><div>${escH(p.referencia||'—')}</div></td><td data-l="Estado"><div><span class="pill ${escH(p.estado)}">${escH(p.estado)}</span></div></td></tr>`).join('');
   document.querySelector('#pagosTbl tbody').innerHTML=pr||`<tr><td colspan="5" class="empty">Aún no has reportado pagos.</td></tr>`;
+}
+
+/* ── Tarjeta de identidad: el cliente ve que es SU cuenta (nombre, código, correo, ciudad/país) ── */
+async function pintarQuien(){
+  try{
+    const uid=window.PRODIGY_UID, email=window.PRODIGY_EMAIL||'';
+    const [{ data:cl }, { data:pf }] = await Promise.all([
+      sb.from('alineadores_clientes').select('nombre').eq('user_id',uid).maybeSingle(),
+      sb.from('doctores_perfil').select('nombre,clinica,municipio,codigo_cliente').eq('id',uid).maybeSingle()
+    ]);
+    const nombre=(cl&&cl.nombre)||(pf&&(pf.clinica||pf.nombre))||email;
+    const ini=nombre.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+    const linea=[escH(email), pf&&pf.municipio?('📍 '+escH(pf.municipio)):''].filter(Boolean).join(' · ');
+    document.getElementById('quien').innerHTML=`<div class="av" aria-hidden="true">${escH(ini)}</div>
+      <div><div class="qn">${escH(nombre)}</div><div class="qs">${linea}</div></div>
+      <div class="qtags">${pf&&pf.codigo_cliente?`<span class="qtag oro">Cliente ${escH(pf.codigo_cliente)}</span>`:''}<span class="qtag">Alineadores</span></div>`;
+    document.getElementById('quien').hidden=false;
+    document.querySelector('h1').textContent='😁 '+nombre+' — Alineadores';
+    document.title=nombre+' — Alineadores · PRODIGY';
+  }catch(_){}
 }
 
 /* ── Pestañas y filtros ── */
