@@ -27,9 +27,11 @@ jobs:
             echo "::error::El secret CRON_SECRET de GitHub está VACÍO (Settings → Secrets → Actions)."
             exit 1
           fi
+          # Dirección pages.dev del proyecto: el dominio propio pone el reto "Just a moment" a los robots de GitHub.
+          # La función exige igual el Bearer CRON_SECRET.
           RESPONSE=$(curl -sL -w "\n%{http_code}" \
             -A "Mozilla/5.0 (compatible; ProdigyCron/1.0)" \
-            "https://prodigylabdental.com/api/alerta-sla" \
+            "https://dental-portfolio-em6.pages.dev/api/alerta-sla" \
             -H "Authorization: Bearer ${CRON_SECRET}")
           STATUS=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | sed '$d')
@@ -38,7 +40,7 @@ jobs:
           if [ "$STATUS" != "200" ]; then
             case "$BODY" in
               *"Just a moment"*|*"challenge"*)
-                echo "::error::Cloudflare bloqueó al robot de GitHub (Managed Challenge). Fix: WAF → regla 'Skip' para /api/alerta-sla (igual que /api/purgar-stl-storage).";;
+                echo "::error::Cloudflare bloqueó al robot de GitHub (Managed Challenge). Revisar que la URL sea la de pages.dev del proyecto (no el dominio propio).";;
               *"Unauthorized"*)
                 echo "::error::CRON_SECRET no coincide entre GitHub y Cloudflare.";;
               *)

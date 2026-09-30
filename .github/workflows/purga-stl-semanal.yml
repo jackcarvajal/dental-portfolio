@@ -32,9 +32,11 @@ jobs:
             exit 1
           fi
           # UA de navegador + seguir redirects: reduce la probabilidad del Managed Challenge de Cloudflare
+          # Dirección pages.dev del proyecto: el dominio propio pone el reto "Just a moment" a los robots de GitHub.
+          # La función exige igual el Bearer CRON_SECRET.
           RESPONSE=$(curl -sL -w "\n%{http_code}" \
             -A "Mozilla/5.0 (compatible; ProdigyCron/1.0)" \
-            "https://prodigylabdental.com/api/purgar-stl-storage" \
+            "https://dental-portfolio-em6.pages.dev/api/purgar-stl-storage" \
             -H "Authorization: Bearer ${CRON_SECRET}")
           STATUS=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | sed '$d')
