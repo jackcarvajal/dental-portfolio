@@ -30,6 +30,7 @@
         taller:               '/app/taller.html',
         fresado:              '/app/operario.html',
         impresion:            '/app/operario.html',
+        secretaria:           '/app/bandeja-solicitudes.html',
         client:               '/app/client-panel.html'
     };
     const KNOWN_ROLES = ['operator','mensajero','encargado_inventario','calidad','contabilidad','diseno','alineadores','guias','exocad','blender','taller','fresado','impresion','secretaria'];

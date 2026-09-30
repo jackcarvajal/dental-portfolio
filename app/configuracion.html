@@ -23,7 +23,7 @@
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
-    <script src="../js/auth-guard.js?v=20260924"></script>
+    <script src="../js/auth-guard.js?v=20260929"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
@@ -31,7 +31,7 @@
             --gold: #D4AF37; --gold2: #D946A6; --cyan: #00d2ff; --green: #00FF41;
             --text: #fff; --muted: #94a3b8; --border: rgba(212,175,55,0.15);
         }
-        body { overflow-x: hidden; background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; visibility: hidden; }
+        body { overflow-x: hidden; overflow-x: clip; background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; visibility: hidden; }
 
         .sidebar { width: 240px; min-height: 100vh; background: var(--sidebar); border-right: 1px solid var(--border); padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
         .sidebar-logo { text-align: center; padding: 12px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
@@ -490,6 +490,6 @@ async function cambiarPassConfig() {
 <script src="../js/notif-panel.js?v=20260924"></script>
 <script>(async()=>{try{if(!window.sb)return;const{data:{session}}=await window.sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(window.sb,null,rol);}catch(_){}})();</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
-<script src="../js/rol-actual.js?v=20260923"></script>
+<script src="../js/rol-actual.js?v=20260929b"></script>
 </body>
 </html>

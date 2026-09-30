@@ -73,7 +73,7 @@ textarea{resize:vertical;min-height:80px;}
 <!-- supabase debe cargar ANTES de auth-guard (usa window.supabase.createClient al arrancar) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
 <script src="../js/supabase-client.js?v=20260603"></script>
-<script src="../js/auth-guard.js?v=20260924"></script>
+<script src="../js/auth-guard.js?v=20260929"></script>
 <script>ProdigyAuth.require(['admin','operator']);</script>
 <div class="topbar">
   <a href="panel-interno-operaciones.html"><i class="fas fa-chevron-left"></i></a>
@@ -394,6 +394,6 @@ window.addEventListener('DOMContentLoaded', init);
 <script>if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
 <script src="../js/buscador.js?v=20260718e"></script>
-<script src="../js/rol-actual.js?v=20260923"></script>
+<script src="../js/rol-actual.js?v=20260929b"></script>
 </body>
 </html>

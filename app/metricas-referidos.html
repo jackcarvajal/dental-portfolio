@@ -81,7 +81,7 @@
   <div style="text-align:center;font-size:.7rem;color:#334155;padding:12px 0;" id="ultima-act">Cargando...</div>
 </main>
 
-<script src="../js/auth-guard.js?v=20260924"></script>
+<script src="../js/auth-guard.js?v=20260929"></script>
 <script>ProdigyAuth.require(['admin']);</script>
 <script>
 const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
@@ -198,6 +198,6 @@ async function cargarFunnelRef(){
 <script src="../js/notif-panel.js?v=20260924"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
-<script src="../js/rol-actual.js?v=20260923"></script>
+<script src="../js/rol-actual.js?v=20260929b"></script>
 </body>
 </html>
