@@ -1289,7 +1289,7 @@ async function loadByAuth(session) {
         _pedidos = pedidos || [];
         _nombreDoctor = user.user_metadata?.nombre || email.split('@')[0];
         document.getElementById('user-display').textContent = `, ${_nombreDoctor}`;
-        document.getElementById('sidebar-role').textContent = user.user_metadata?.rol || 'Cliente';
+        document.getElementById('sidebar-role').textContent = 'Cliente'; // (antes user_metadata.rol: lo edita el propio usuario)
         window.PRD_UID = user.id;
         window.PRD_EMAIL = email;
 
@@ -1818,7 +1818,7 @@ function avisoSoloColombia(servicio){
 <script defer src="../js/content-guard.js?v=20260528"></script>
 <script defer src="../js/callmebot.js?v=20260528"></script>
 <script defer src="../js/emailnotif.js?v=20260528"></script>
-<script defer src="../js/webpush.js?v=20260929"></script>
+<script defer src="../js/webpush.js?v=20260929b"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof mostrarBotonPush === 'function') mostrarBotonPush('push-container');
@@ -1838,7 +1838,7 @@ document.addEventListener('keydown', e => {
             .eq('cupon_usado', false)
             .not('cupon_credito', 'is', null)
             .limit(1)
-            .single();
+            .maybeSingle();
         if (data?.cupon_credito) {
             const banner = document.getElementById('banner-cupon');
             const codigoEl = document.getElementById('banner-cupon-codigo');

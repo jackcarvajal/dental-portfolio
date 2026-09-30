@@ -326,7 +326,7 @@ let _userId = null;
   const { data: staff } = await sb.from('staff_departamentos')
     .select('departamentos,nombre,activo')
     .eq('user_id', _userId)
-    .single();
+    .maybeSingle();
 
   /* Admin ve todos los departamentos */
   const role = session.user.app_metadata?.role;

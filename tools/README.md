@@ -42,6 +42,18 @@ node tools/audit-live.mjs
 node tools/audit-live.mjs "D:/proyectos-web/alejandro-carvajal-site"
 ```
 
+## Capa 2b — runtime CON SESIÓN (`audit-live-sesion.mjs`)
+
+`audit-live.mjs` no entra a `/app` (sin sesión todo va al login). Este inicia sesión con una cuenta dada por variables
+de entorno (nunca en el repo), recorre las páginas de `/app` en producción y reporta excepciones JS, `console.error`,
+respuestas 4xx/5xx de Supabase o `/api` y a qué página llevó cada una (redirecciones por rol).
+
+```sh
+AUD_EMAIL=cuenta@... AUD_PASS=... node tools/audit-live-sesion.mjs                 # todas las de /app
+AUD_EMAIL=... AUD_PASS=... node tools/audit-live-sesion.mjs client-panel,operario-diseno   # solo algunas
+```
+Usa una cuenta de prueba por rol (cliente, diseño, etc.): cada rol ve páginas distintas.
+
 ## Capa 3b — contrato front↔BD contra la base REAL (`audit-schema-live.mjs`)
 
 `audit-schema.mjs` valida contra un CSV que se desactualiza. `audit-schema-live.mjs` **prueba cada columna

@@ -22,6 +22,8 @@ const ONESIGNAL_APP_ID = 'a53347d5-9a1f-4739-8c6c-405f7cc401c6'; // OneSignal Ap
 
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
+    // Si OneSignal no está configurado para este dominio, init falla: se esconde el botón «Activar» (no serviría)
+    try {
     await OneSignal.init({
       appId: ONESIGNAL_APP_ID,
       notifyButton: { enable: false }, // Usamos nuestro propio botón
@@ -39,6 +41,11 @@ const ONESIGNAL_APP_ID = 'a53347d5-9a1f-4739-8c6c-405f7cc401c6'; // OneSignal Ap
         }
       }
     });
+    window._pushOk = true;
+    } catch (e) {
+      window._pushOk = false;
+      var c = document.getElementById('push-container'); if (c) c.innerHTML = '';
+    }
   });
 })();
 
@@ -46,7 +53,7 @@ const ONESIGNAL_APP_ID = 'a53347d5-9a1f-4739-8c6c-405f7cc401c6'; // OneSignal Ap
 function mostrarBotonPush(containerId) {
   if (!ONESIGNAL_APP_ID || ONESIGNAL_APP_ID === 'PENDIENTE') return;
   const el = document.getElementById(containerId);
-  if (!el) return;
+  if (!el || window._pushOk === false) return;
 
   el.innerHTML = `
     <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:12px;padding:12px;margin-top:12px;">
