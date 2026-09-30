@@ -422,7 +422,7 @@ async function cargarCasos() {
   const { data, error } = await sb.from('pedidos')
     // Operario NO ve: nombre_paciente, email, whatsapp real del cliente — solo código interno
     // wa_op: número enmascarado solo para notificaciones internas de operario
-    .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,revisiones_usadas,stl_ruta,operario_codigo,telefono,pais,nombre_doctor')
+    .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,revisiones_usadas,stl_ruta,stl_url,operario_codigo,telefono,pais,nombre_doctor')
     .eq('negocio', 'prodigy')
     .eq('flujo','diseno')
     // (quitado filtro estado='cancelado': valor inexistente en el enum estado_pedido → 22P02/400)
@@ -511,8 +511,54 @@ function cardHTML(p, col) {
       ${p.color_vita?'<br>Color: '+escH(p.color_vita):''}
       ${p.notas_cambios?'<br><span style="color:var(--gold)">📝 '+escH(p.notas_cambios.slice(0,60))+'</span>':''}
     </div>
-    <div class="caso-actions">${actions}</div>
+    <div class="caso-actions"><button type="button" class="btn-xs btn-gold" onclick="verArchivosDoctor('${p.id}')" title="Descargar lo que subió el doctor (escaneos, fotos, CBCT)"><i class="fas fa-download"></i> Archivos</button>${actions}</div>
   </div>`;
+}
+
+/* ── Archivos del doctor: lo que subió al abrir el caso o al responder una revisión (sin comprobantes de pago) ── */
+async function verArchivosDoctor(id) {
+  const caso = _casos.find(p => p.id === id);
+  if (!caso) { toast('Caso no encontrado','err'); return; }
+  let ov = document.getElementById('modal-arch');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.className = 'modal-overlay'; ov.id = 'modal-arch';
+    ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true'); ov.setAttribute('aria-labelledby','modal-arch-title');
+    ov.innerHTML = '<div class="modal"><div class="modal-title" id="modal-arch-title"><i class="fas fa-download" style="margin-right:8px;"></i>Archivos del doctor</div>'
+      + '<div class="modal-sub" id="arch-sub"></div><div id="arch-lista"></div>'
+      + '<button type="button" class="btn-xs" style="margin-top:14px;" data-cerrar>Cerrar</button></div>';
+    ov.addEventListener('click', e => { if (e.target === ov || e.target.hasAttribute('data-cerrar')) ov.classList.remove('open'); });
+    document.body.appendChild(ov);
+  }
+  document.getElementById('arch-sub').textContent = 'Caso #' + (caso.codigo || caso.id.slice(0,8)) + (caso.tipo_trabajo ? ' · ' + caso.tipo_trabajo : '');
+  const lista = document.getElementById('arch-lista');
+  lista.innerHTML = '<p style="color:var(--muted);font-size:.8rem;">Cargando…</p>';
+  ov.classList.add('open');
+
+  const { data } = await sb.from('pedido_archivos')
+    .select('nombre,bucket,ruta,tipo,peso_bytes,estado,etapa')
+    .eq('pedido_id', id).in('etapa', ['cliente_caso','cliente_revision']).order('created_at');
+  const filas = (data || []).filter(a => a.estado === 'ok');
+  // Casos anteriores al registro de archivos: enlaces firmados guardados en el pedido
+  const viejos = String(caso.stl_url || '').split(/\s*\|\s*/).filter(u => /^https:\/\//.test(u));
+  if (!filas.length && !viejos.length) {
+    lista.innerHTML = '<p style="color:var(--muted);font-size:.82rem;line-height:1.5;">El doctor no subió archivos por la web. Pueden haber llegado por WhatsApp o correo: pídelos al laboratorio.</p>';
+    return;
+  }
+  const mb = b => b ? ' · ' + (b / 1048576).toFixed(1) + ' MB' : '';
+  lista.innerHTML = filas.map((a, i) => `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);">
+      <i class="fas fa-file" style="color:var(--cyan);"></i>
+      <span style="flex:1;min-width:0;font-size:.82rem;word-break:break-all;">${escH(a.nombre)}<span style="color:var(--muted);font-size:.72rem;"> · ${escH(a.tipo||'otro')}${mb(a.peso_bytes)}</span></span>
+      <button type="button" class="btn-xs btn-cyan" data-i="${i}"><i class="fas fa-download"></i> Descargar</button></div>`).join('')
+    + viejos.map((u, i) => `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);">
+      <i class="fas fa-file" style="color:var(--cyan);"></i><span style="flex:1;font-size:.82rem;">Archivo ${i + 1}</span>
+      <a class="btn-xs btn-cyan" href="${escH(u)}" target="_blank" rel="noopener noreferrer"><i class="fas fa-download"></i> Descargar</a></div>`).join('');
+  lista.querySelectorAll('button[data-i]').forEach(b => b.onclick = async () => {
+    const a = filas[+b.dataset.i];
+    const { data: s, error } = await sb.storage.from(a.bucket).createSignedUrl(a.ruta, 600, { download: a.nombre });
+    if (error || !s) { toast('No se pudo descargar: ' + (error ? error.message : 'sin permiso'), 'err'); return; }
+    window.open(s.signedUrl, '_blank', 'noopener');
+  });
 }
 
 /* ── Timer global ── */
