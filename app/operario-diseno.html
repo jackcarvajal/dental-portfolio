@@ -485,8 +485,7 @@ function cardHTML(p, col) {
                <button type="button" class="btn-xs btn-red"    onclick="avanzar('${p.id}','INCIDENCIA_CLIENTE')"><i class="fas fa-exclamation"></i> Incidencia</button>`;
   } else if (col === 'diseno') {
     actions = `${p.link_diseno?`<button type="button" class="btn-xs btn-cyan" onclick="previsualizarDiseno('${escJ(p.link_diseno)}','${p.id}')"><i class="fas fa-eye"></i> Preview</button>`:''}
-               <button type="button" class="btn-xs btn-gold"   onclick="avanzar('${p.id}','REVISION_CLIENTE')"><i class="fas fa-eye"></i> Enviar revisión</button>
-               <button type="button" class="btn-xs btn-cyan"   onclick="abrirQA('${p.id}','${escJ(p.codigo)||''}')"><i class="fas fa-check-double"></i> QA</button>`;
+               <button type="button" class="btn-xs btn-cyan"   onclick="abrirQA('${p.id}','${escJ(p.codigo)||''}')"><i class="fas fa-paper-plane"></i> Subir y enviar al doctor</button>`;
   } else if (col === 'rev') {
     actions = `<button type="button" class="btn-xs btn-green"  onclick="abrirQA('${p.id}','${escJ(p.codigo)||''}')"><i class="fas fa-check"></i> Aprobar</button>
                <button type="button" class="btn-xs btn-yellow" onclick="avanzar('${p.id}','CAMBIOS_SOLICITADOS')"><i class="fas fa-redo"></i> Cambios</button>`;
@@ -585,6 +584,13 @@ function actualizarTimer() {
 async function avanzar(id, nuevoEstado) {
   const caso = _casos.find(p => p.id === id);
   if (!caso) { toast('Caso no encontrado','err'); return; }
+
+  // Enviar al doctor sin el visor lo deja sin nada que mirar: pasa por la ventana de subida (botón o arrastre)
+  if (nuevoEstado === 'REVISION_CLIENTE') {
+    abrirQA(id, caso.codigo || '');
+    toast('Sube el visor .html del diseño y toca «Enviar al doctor a revisar»');
+    return;
+  }
 
   // Bloquear inicio de diseño si no hay abono confirmado — vía RPC (sin exponer montos ni estado de pago)
   if (nuevoEstado === 'EN_DISENO') {

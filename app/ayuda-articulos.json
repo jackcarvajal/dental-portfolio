@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-29b",
+  "version": "2026-09-29c",
   "categorias": [
     {
       "id": "inicio",
@@ -579,6 +579,34 @@
       "kw": "archivo no abre stl descargar permiso privado",
       "rel": [
         "roles"
+      ]
+    },
+    {
+      "id": "disenar-caso",
+      "cat": "equipo",
+      "titulo": "Diseñar un caso y enviarlo al doctor",
+      "resumen": "Panel de diseño: descargar los archivos, diseñar, subir el visor y entregar el STL.",
+      "para": "Diseñadores (guías, exocad, blender) y administración",
+      "pasos": [
+        "Entra con tu cuenta de diseño por **prodigylabdental.com/app/login.html** (si eres admin: menú **Hoy → Mis casos de diseño**).",
+        "En **Por validar** toca **Archivos** en el caso para descargar lo que subió el doctor (escaneos, fotos, CBCT).",
+        "Toca **Iniciar diseño**. Si sale «Pago pendiente», el laboratorio aún no confirma el abono: avísale.",
+        "Diseña y exporta el **visor .html** (y el **STL**).",
+        "Toca **Subir y enviar al doctor**: sube el visor (obligatorio) y el STL, escribe notas y toca **Enviar al doctor a revisar**.",
+        "El doctor lo revisa en su portal. Si pide cambios, el caso vuelve con sus notas; corrige y repite el paso anterior.",
+        "Cuando lo apruebe, abre la misma ventana, marca los 7 puntos de calidad y toca **Aprobar y entregar**: el doctor ya puede descargar el STL."
+      ],
+      "notas": [
+        "Solo ves los casos de tu especialidad. No ves datos de contacto ni dinero del doctor."
+      ],
+      "link": {
+        "href": "operario-diseno.html",
+        "label": "Abrir el panel de diseño"
+      },
+      "kw": "diseñar diseño exocad blender guia descargar archivos stl visor html enviar doctor revision aprobar entregar",
+      "rel": [
+        "roles",
+        "crear-usuario"
       ]
     }
   ]
