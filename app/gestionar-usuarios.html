@@ -138,7 +138,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <script>ProdigyAuth.require(['admin']);</script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-const ROLES=[['operator','Operador'],['diseno','Diseño coronas'],['alineadores','Alineadores'],['guias','Guías quirúrgicas'],['exocad','Exocad'],['blender','Blender'],['taller','Taller'],['fresado','Fresado'],['impresion','Impresión 3D'],['calidad','Calidad'],['contabilidad','Contabilidad'],['encargado_inventario','Inventario'],['mensajero','Mensajero'],['secretaria','Secretaria']];
+const ROLES=[['operator','Operador'],['diseno','Diseño coronas'],['alineadores','Alineadores'],['guias','Guías quirúrgicas'],['exocad','Exocad'],['blender','Blender'],['taller','Taller'],['fresado','Fresado'],['impresion','Impresión 3D'],['calidad','Calidad'],['contabilidad','Contabilidad'],['encargado_inventario','Inventario'],['mensajero','Mensajero'],['secretaria','Secretaria'],['test','Pruebas (pedidos ficticios)']];
 const lbl=r=>{const f=ROLES.find(x=>x[0]===r);return f?f[1]:r;};
 let sb, TOKEN='';
 

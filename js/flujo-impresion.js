@@ -2262,7 +2262,7 @@
                     const _fechaElem = document.getElementById('fecha-entrega');
                     const _fechaTxt  = _fechaElem ? (_fechaElem.innerText||_fechaElem.textContent).replace('Entrega estimada: ','').trim() : null;
                     const _pedId = (crypto.randomUUID ? crypto.randomUUID() : (()=>{const b=crypto.getRandomValues(new Uint8Array(16));b[6]=(b[6]&0x0f)|0x40;b[8]=(b[8]&0x3f)|0x80;const h=[...b].map(x=>x.toString(16).padStart(2,'0'));return `${h[0]}${h[1]}${h[2]}${h[3]}-${h[4]}${h[5]}-${h[6]}${h[7]}-${h[8]}${h[9]}-${h[10]}${h[11]}${h[12]}${h[13]}${h[14]}${h[15]}`;})());
-                    _sb.from('pedidos').insert([{
+                    _sb.from('pedidos').insert([{ ...((window.ModoPrueba && ModoPrueba.camposPedido()) || {}),  /* modo prueba: es_prueba + pago ficticio (igual que diseño) */
                         id:               _pedId,
                         codigo:           STATE.ordenId,
                         user_id:          _uid,
@@ -2312,6 +2312,9 @@
                         }
 
                         if (!_e) {
+                            // Aviso al staff por WhatsApp (igual que diseño, fresado y lab; antes impresión no avisaba)
+                            fetch('/api/notify-staff', { method:'POST', headers:{ 'Content-Type':'application/json' },
+                                body: JSON.stringify({ doctor: STATE.nombreCliente, servicio: CONFIG.materiales[STATE.materialTipo]?.nom || STATE.materialTipo, whatsapp: STATE.whatsappCliente, codigo: STATE.ordenId, tipo:'Nuevo pedido (impresión 3D)' }) }).catch(()=>{});
                             const _pid = _pedId || null;
                             if (_pid) {
                                 Promise.resolve(_sb.from('logs_incidencias').insert({

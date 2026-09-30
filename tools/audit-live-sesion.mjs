@@ -70,11 +70,11 @@ await cmd('Runtime.evaluate', { expression: `localStorage.setItem('sb-${PROY}-au
 let malos = 0;
 for (const n of paginas) {
   errs = []; red = [];
-  await cmd('Page.navigate', { url: `${SITIO}/app/${n}.html` });
+  await cmd('Page.navigate', { url: n.startsWith('/') ? SITIO + n : `${SITIO}/app/${n}.html` });   // «/flujo-diseno» = página pública
   await dormir(6500);
   const fin = ((await cmd('Runtime.evaluate', { expression: 'location.pathname', returnByValue: true })).result || {}).value || '?';
   const destino = fin.replace(/^\/app\//, '').replace(/\.html$/, '');
-  const redir = destino !== n ? `  → llevó a ${destino}` : '';
+  const redir = destino !== n.replace(/\.html$/, '') && fin !== n ? `  → llevó a ${destino}` : '';
   const uniq = a => [...new Set(a)];
   if (errs.length || red.length) {
     malos++;

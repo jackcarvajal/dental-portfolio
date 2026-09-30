@@ -11,7 +11,8 @@
  */
 const SUPABASE_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 const ADMIN_EMAILS = ['jackalejandroc@gmail.com','labdentalprodigy@gmail.com','gerencia@prodigylabdental.com','casos@prodigylabdental.com'];
-const ROLES_OK = ['operator','mensajero','encargado_inventario','calidad','contabilidad','diseno','alineadores','guias','exocad','blender','taller','fresado','impresion','secretaria'];
+// 'test' = cuenta de pruebas: sus pedidos quedan marcados es_prueba (js/modo-prueba.js) y se borran con limpiar_pedidos_prueba()
+const ROLES_OK = ['operator','mensajero','encargado_inventario','calidad','contabilidad','diseno','alineadores','guias','exocad','blender','taller','fresado','impresion','secretaria','test'];
 const CORS_OK = ['https://prodigylabdental.com'];
 // Vinculación del operario: 'nomina' (salario, no se le paga por caso) · 'prestador' (se le paga por caso)
 const VINC_OK = ['nomina','prestador'];
@@ -42,7 +43,7 @@ export async function onRequestPost({ request, env }){
 
   // RLS lee UN solo rol (app_metadata.role). Elegimos el de mayor privilegio y
   // mapeamos especialidades de diseño (guias/exocad/blender) → 'diseno'.
-  const DB_PRIORIDAD = ['operator','contabilidad','secretaria','calidad','encargado_inventario','diseno','alineadores','taller','fresado','impresion','mensajero'];
+  const DB_PRIORIDAD = ['operator','contabilidad','secretaria','calidad','encargado_inventario','diseno','alineadores','taller','fresado','impresion','mensajero','test'];
   const dbRole = roles => {
     const norm = roles.map(r => ['guias','exocad','blender'].includes(r) ? 'diseno' : r);
     return DB_PRIORIDAD.find(r => norm.includes(r)) || null;
