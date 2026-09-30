@@ -24,17 +24,17 @@
     <script src="../js/upload-guard.js?v=20260718"></script>
     <script src="../js/visor-universal.js?v=20260718"></script>
     <style>
-        body { overflow-x: hidden; }
+        body { overflow-x: hidden; overflow-x: clip; }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
             --bg: #050505; --sidebar: #080e1a; --card: #0d1525;
             --gold: #D946A6; --mg: #D946A6; --cyan: #00d2ff; --neon: #00FF41;
             --text: #fff; --muted: #94a3b8; --border: rgba(217,70,166,0.15);
         }
-        body { overflow-x: hidden; background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; }
+        body { overflow-x: hidden; overflow-x: clip; background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; min-height: 100vh; }
 
         /* SIDEBAR */
-        .sidebar { width: 230px; min-height: 100vh; background: var(--sidebar); border-right: 1px solid var(--border); padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+        .sidebar { width: 230px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
         .sidebar-logo { text-align: center; padding: 12px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
         .sidebar-logo .logo-name { font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; color: var(--gold); }
         .sidebar-logo p  { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
@@ -227,6 +227,11 @@
         .pd-msg.ok{background:rgba(34,197,94,.1);color:#22c55e;border:1px solid rgba(34,197,94,.25);}
         .pd-msg.err{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.25);}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+
+        /* Menú lateral fijo con su propio scroll: «Cerrar sesión» y las notificaciones siempre a la vista.
+           Más específica que css/panel-ui.css; 56px = franja del dock (campana · rol). */
+        html body .sidebar { position: sticky; top: 56px; align-self: flex-start; height: calc(100vh - 56px); overflow-y: auto; }
+        html body .sidebar .sidebar-footer { position: sticky; bottom: -24px; margin-bottom: -24px; padding-bottom: 24px; background: #080c14; z-index: 1; }
 </style>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
 <script src="../js/reportar-problema.js?v=20260924c"></script>
@@ -1813,7 +1818,7 @@ function avisoSoloColombia(servicio){
 <script defer src="../js/content-guard.js?v=20260528"></script>
 <script defer src="../js/callmebot.js?v=20260528"></script>
 <script defer src="../js/emailnotif.js?v=20260528"></script>
-<script defer src="../js/webpush.js?v=20260907"></script>
+<script defer src="../js/webpush.js?v=20260929"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof mostrarBotonPush === 'function') mostrarBotonPush('push-container');

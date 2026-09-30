@@ -49,15 +49,10 @@ function mostrarBotonPush(containerId) {
   if (!el) return;
 
   el.innerHTML = `
-    <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin-top:16px;">
-      <i class="fas fa-bell" style="color:#00d2ff;font-size:1.2rem;flex-shrink:0"></i>
-      <div style="flex:1">
-        <div style="font-size:.78rem;font-weight:800;color:#e2e8f0;margin-bottom:2px">Notificaciones push</div>
-        <div style="font-size:.72rem;color:#94a3b8">Recibe alertas cuando tu caso avance</div>
-      </div>
-      <button type="button" id="btn-push-toggle" onclick="togglePush()" style="background:rgba(0,210,255,.15);border:1px solid rgba(0,210,255,.35);color:#00d2ff;padding:6px 14px;border-radius:6px;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap">
-        Activar
-      </button>
+    <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:12px;padding:12px;margin-top:12px;">
+      <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;font-weight:800;color:#e2e8f0;"><i class="fas fa-bell" style="color:#00d2ff" aria-hidden="true"></i> Notificaciones push</div>
+      <div style="font-size:.72rem;color:#94a3b8;margin:4px 0 10px;line-height:1.45;">Recibe alertas cuando tu caso avance.</div>
+      <button type="button" id="btn-push-toggle" onclick="togglePush()" style="width:100%;background:rgba(0,210,255,.15);border:1px solid rgba(0,210,255,.35);color:#00d2ff;padding:8px 12px;border-radius:50px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;">Activar</button>
     </div>`;
 
   if (window.OneSignalDeferred) {
