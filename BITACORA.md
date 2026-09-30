@@ -20,7 +20,7 @@
 - ✅ Purga de STL usa `SUPABASE_SERVICE_ROLE_KEY` y la URL del proyecto: en Cloudflare solo falta `CRON_SECRET`.
 - ✅ **R-14** (onboarding, `sb.rpc(...).catch is not a function`, cuenta de Panorámica): ocurrió el **28-sep 16:26**, ANTES del arreglo de las 22:31 (`e094218`, línea 446 de la versión vieja); lo publicado ya está corregido. Marcarlo como resuelto en reportes-web.
 - ✅ **Reportes de la web** (ambos repos): botón **Copiar reporte completo** (texto con todo: datos, lo que pasó antes, dónde falló, conversación e IA) y **Copiar los visibles**; el detalle va DEBAJO de la lista a lo ancho, en dos columnas (datos | técnico + respuesta).
-- 🔴 **Crons de GitHub fallan**: el secret `CRON_SECRET` no existe en GitHub (solo está `GEMINI_API_KEY`) → «Alerta SLA» (desde el 28-sep) y «Purga STL» fallan a los 3-8 s. Falta crear el mismo `CRON_SECRET` en Cloudflare Pages (Production) y en GitHub Secrets; si luego da 403 «Just a moment», regla WAF Skip (ver `docs/FIX-CRON-PURGA-STL.md`).
+- ✅ **Crons de GitHub arreglados** (29-sep): faltaba el secret `CRON_SECRET` (creado en GitHub y en Cloudflare) y el dominio propio le ponía el reto «Just a moment» (403) al robot de GitHub → los workflows ahora llaman a `https://dental-portfolio-em6.pages.dev/api/...` (la función exige igual el Bearer). Alerta SLA probada: 200 `{"ok":true,"alertas":0}`. **Purga STL PAUSADA** (solo manual) hasta avisar a los clientes: aviso ya en «Mis Casos» del portal; alineadores no se purgan (otros buckets), falta definir su retención.
 
 ## 2026-09-28  (Alineadores fase 2 · respaldo por email · bitácora automática · lista de pendientes)
 

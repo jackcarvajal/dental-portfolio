@@ -8,6 +8,9 @@
 > del proyecto → en Cloudflare solo falta **`CRON_SECRET`**. Causa actual del fallo (Purga STL y Alerta SLA): el secret
 > `CRON_SECRET` **no existe en GitHub** (`gh secret list` solo muestra `GEMINI_API_KEY`).
 
+> **Resuelto 2026-09-29:** `CRON_SECRET` creado en GitHub y Cloudflare; los workflows llaman a la dirección
+> `https://dental-portfolio-em6.pages.dev` (sin reto de Cloudflare). La purga quedó PAUSADA (solo manual) hasta avisar a clientes.
+
 ## Causa raíz — 3 fallos independientes (los 3 hay que arreglarlos)
 
 1. **Faltan env vars en Cloudflare Pages** → la Function responde `{"error":"No configurado"}` **500**
