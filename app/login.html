@@ -168,6 +168,12 @@
             border: 1px solid rgba(217,70,166,0.35);
         }
         .role-tab i { display: block; font-size: 1.1rem; margin-bottom: 4px; }
+        .rol-ayuda { font-size: .78rem; color: #94a3b8; text-align: center; margin: -6px 0 14px; line-height: 1.5; }
+        #aviso-rol { border: 1px solid rgba(212,175,55,.45); background: rgba(212,175,55,.08); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; font-size: .86rem; line-height: 1.55; color: #f0e6c8; }
+        #aviso-rol b { color: #D4AF37; }
+        #aviso-rol .acc { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+        #aviso-rol button { border-radius: 50px; padding: 9px 16px; font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: #fff; }
+        #aviso-rol button.pri { background: linear-gradient(135deg,#D946A6,#9c27b0); border: none; }
 
         /* FORM */
         .form-group { margin-bottom: 16px; }
@@ -461,16 +467,18 @@
     <div class="tab-panel active" id="panel-login">
         <!-- Selector de rol -->
         <div class="role-tabs" id="role-tabs">
-            <div class="role-tab active" onclick="setRole('client',this)">
+            <div class="role-tab active" role="button" tabindex="0" aria-pressed="true" onclick="setRole('client',this)">
                 <i class="fas fa-user"></i>Cliente
             </div>
-            <div class="role-tab" onclick="setRole('operator',this)">
+            <div class="role-tab" role="button" tabindex="0" aria-pressed="false" onclick="setRole('operator',this)">
                 <i class="fas fa-drafting-compass"></i>Operador
             </div>
-            <div class="role-tab" onclick="setRole('admin',this)">
+            <div class="role-tab" role="button" tabindex="0" aria-pressed="false" onclick="setRole('admin',this)">
                 <i class="fas fa-crown"></i>Admin
             </div>
         </div>
+        <p class="rol-ayuda" id="rol-ayuda">Doctores y laboratorios: tus casos, pedidos y facturación.</p>
+        <div id="aviso-rol" role="alert" hidden></div>
 
         <form onsubmit="handleLogin(event)" novalidate>
             <div class="form-group">
@@ -722,9 +730,44 @@
         clearMessages();
     }
 
+    // Pestañas Cliente / Operador / Admin: es lo que la persona QUIERE hacer. El acceso real lo define su cuenta
+    // (correos admin + app_metadata); si no coincide, se le explica en vez de mandarla a otro panel sin decir nada.
+    let ROL_ELEGIDO = 'client';
+    const AYUDA_ROL = {
+        client:   'Doctores y laboratorios: tus casos, pedidos y facturación.',
+        operator: 'Equipo PRODIGY: entra con la cuenta que te creó el administrador. No te registres como cliente.',
+        admin:    'Solo administración.'
+    };
+    const NOMBRE_ROL = { client: 'Cliente', operator: 'Operador', admin: 'Admin' };
     function setRole(role, el) {
-        document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
+        document.querySelectorAll('.role-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-pressed', 'false'); });
+        el.classList.add('active'); el.setAttribute('aria-pressed', 'true');
+        ROL_ELEGIDO = role;
+        document.getElementById('rol-ayuda').textContent = AYUDA_ROL[role] || '';
+        document.getElementById('aviso-rol').hidden = true;
+    }
+    document.querySelectorAll('.role-tab').forEach(t => t.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t.click(); }
+    }));
+    const grupoDe = role => role === 'admin' ? 'admin' : (role === 'client' ? 'client' : 'operator');
+    function entrarSegunEleccion(user) {
+        const role = getRole(user), grupo = grupoDe(role);
+        if (ROL_ELEGIDO === grupo) return redirectByRole(user);
+        // El administrador puede entrar «como operador»: va a su panel de casos de diseño
+        if (grupo === 'admin' && ROL_ELEGIDO === 'operator') { window.location.href = 'operario-diseno.html'; return; }
+        const quiso = NOMBRE_ROL[ROL_ELEGIDO];
+        const msg = grupo === 'client'
+            ? 'Tu cuenta es de <b>cliente</b> (doctor o laboratorio): no tiene acceso como <b>' + quiso + '</b>. Si eres del equipo, pide al administrador que te asigne tu rol.'
+            : grupo === 'operator'
+            ? 'Tu cuenta es del <b>equipo</b>: no tiene acceso como <b>' + quiso + '</b>. Tu entrada es «Operador».'
+            : 'Tu cuenta es de <b>administración</b>. Entra con «Admin», o con «Operador» para tus casos de diseño.';
+        const box = document.getElementById('aviso-rol');
+        box.innerHTML = '<i class="fas fa-circle-info" aria-hidden="true"></i> ' + msg
+            + '<div class="acc"><button type="button" class="pri" id="aviso-seguir">Entrar como ' + NOMBRE_ROL[grupo] + '</button>'
+            + '<button type="button" id="aviso-salir">Cerrar sesión</button></div>';
+        box.hidden = false;
+        document.getElementById('aviso-seguir').onclick = () => redirectByRole(user);
+        document.getElementById('aviso-salir').onclick = () => sb.auth.signOut().then(() => { box.hidden = true; });
     }
 
     function showError(msg) {
@@ -798,7 +841,7 @@
             }
 
             loginFailCount = 0;
-            redirectByRole(data.user);
+            entrarSegunEleccion(data.user);
 
         } catch (ex) {
             clearTimeout(timeout);
