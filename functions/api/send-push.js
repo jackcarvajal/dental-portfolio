@@ -12,7 +12,7 @@
 
 function corsHeaders(origin) {
   const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
-  const o = allowed.includes(origin) || (origin || '').endsWith('.pages.dev') ? origin : 'https://prodigylabdental.com';
+  const o = allowed.includes(origin) || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(origin || '') ? origin : 'https://prodigylabdental.com';
   return {
     'Access-Control-Allow-Origin':  o,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',

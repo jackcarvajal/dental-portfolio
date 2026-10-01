@@ -24,6 +24,14 @@
 - ✅ Instalados globales: `@playwright/cli` 0.1.22 (+ Chromium, Firefox, WebKit) y `@testsprite/testsprite-cli` 0.13.0.
 - 🟡 **TestSprite**: falta `testsprite setup` con la API key de Alejandro (servicio en la nube).
 - 🟡 **MCP Supabase** solo lectura agregado en local: falta autenticar en `/mcp`.
+- ✅ 🔴→✅ **Enlace ajeno en WhatsApp a clientes:** los mensajes "Diseño listo" y "Caso entregado" del panel
+  interno llevaban a `https://prodigy.pages.dev/app/client-panel` — un sitio de OTRA persona ("Typing Prodigy").
+  Corregido a `https://prodigylabdental.com/app/client-panel`.
+- ✅ **CORS laxo (ambos repos):** 26 chequeos en 18 functions de PRODIGY y 15 en 12 de Alejandro aceptaban
+  cualquier `*.pages.dev` (y `x.pages.dev.atacante.com`) y cualquier origen con "localhost". Ahora regex anclada
+  al proyecto propio. Guía de seguridad corregida (ella misma enseñaba el patrón malo). 🔴 BSS tiene el mismo
+  patrón en 7 functions: sin remoto git, queda pendiente.
+- ✅ `tools/audit-nucleo.mjs` (deriva del núcleo) y `audit.mjs` §5 (CORS por substring + dominios *.pages.dev ajenos).
 
 ---
 

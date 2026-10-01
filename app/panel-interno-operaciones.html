@@ -1758,14 +1758,14 @@ function prodigyNotifDiseno(p){
     const wa=getWAPedido(p);
     if(!wa){ toast('Sin WA del cliente','error'); return; }
     const cod=p.codigo||p.id?.slice(0,8)||'';
-    const msg=`🎨 *Diseño listo para revisar* — Caso #${cod}\n\nTu diseño está disponible en el portal. Por favor revísalo y aprueba o solicita cambios (hasta 2 revisiones sin costo).\n\n👉 https://prodigy.pages.dev/app/client-panel\n\n_PRODIGY Digital Dentistry_`;
+    const msg=`🎨 *Diseño listo para revisar* — Caso #${cod}\n\nTu diseño está disponible en el portal. Por favor revísalo y aprueba o solicita cambios (hasta 2 revisiones sin costo).\n\n👉 https://prodigylabdental.com/app/client-panel\n\n_PRODIGY Digital Dentistry_`;
     window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`,'_blank','noopener,noreferrer');
 }
 function prodigyNotifEntrega(p){
     const wa=getWAPedido(p);
     if(!wa){ toast('Sin WA del cliente','error'); return; }
     const cod=p.codigo||p.id?.slice(0,8)||'';
-    const msg=`📦 *Caso entregado* — #${cod}\n\nTu pedido está listo y ha sido despachado. Pronto lo recibirás.\n\n👉 https://prodigy.pages.dev/app/client-panel\n\n_PRODIGY Digital Dentistry_`;
+    const msg=`📦 *Caso entregado* — #${cod}\n\nTu pedido está listo y ha sido despachado. Pronto lo recibirás.\n\n👉 https://prodigylabdental.com/app/client-panel\n\n_PRODIGY Digital Dentistry_`;
     window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`,'_blank','noopener,noreferrer');
 }
 function prodigyNotifCambios(p){

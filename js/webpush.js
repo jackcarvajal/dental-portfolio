@@ -4,7 +4,7 @@
  *
  * ACTIVACIÓN (5 min):
  * 1. onesignal.com → crear cuenta → New App → "prodigylabdental"
- * 2. Platform: Web → Site URL: https://prodigylabdental.pages.dev
+ * 2. Platform: Web → Site URL: https://prodigylabdental.com
  * 3. Copiar App ID (ej: "abc123-def456-...")
  * 4. Reemplazar ONESIGNAL_APP_ID abajo
  */

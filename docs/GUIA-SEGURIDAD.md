@@ -25,7 +25,9 @@ o `builder.then(ok, fn)`. `builder.then(...).catch(...)` sí funciona (`.then` d
 ```javascript
 // ✅ validar origin contra allowlist
 const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
-const ok = allowed.includes(origin) || origin.includes('.pages.dev');
+// previews SOLO del proyecto propio (nunca `.includes('.pages.dev')`: cualquiera crea un sitio *.pages.dev gratis,
+// y `includes` también acepta `x.pages.dev.atacante.com`). Alejandro: alejandrocadcam.pages.dev
+const ok = allowed.includes(origin) || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(origin || '');
 return { 'Access-Control-Allow-Origin': ok ? origin : allowed[0] };
 // ❌ echo ciego del origin
 return { 'Access-Control-Allow-Origin': origin };

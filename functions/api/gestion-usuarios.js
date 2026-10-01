@@ -21,7 +21,7 @@ const vincDe = v => VINC_OK.includes(v) ? v : null;
 const nivelDe = v => [1,2,3].includes(Number(v)) ? Number(v) : null;
 const perfil = b => ({ vinculacion:vincDe(b.vinculacion), nivel:nivelDe(b.nivel), disponible:b.disponible!==false });
 
-function cors(o){ const ok=CORS_OK.includes(o)||(o||'').includes('.pages.dev')||!o; return {'Access-Control-Allow-Origin':ok?(o||'*'):CORS_OK[0],'Content-Type':'application/json'}; }
+function cors(o){ const ok=CORS_OK.includes(o)||/^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(o || '')||!o; return {'Access-Control-Allow-Origin':ok?(o||'*'):CORS_OK[0],'Content-Type':'application/json'}; }
 export async function onRequestOptions({request}){ return new Response(null,{status:204,headers:{...cors(request.headers.get('Origin')||''),'Access-Control-Allow-Methods':'POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type,Authorization'}}); }
 
 export async function onRequestPost({ request, env }){

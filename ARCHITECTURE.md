@@ -124,8 +124,8 @@ Cirugía sobre datos vivos: por etapas, cada una verificable y reversible.
 **Etapa 1 — bajo riesgo (siguiente):**
 1. **Registro de SQL aplicado.** Hoy no se sabe con certeza qué parche ya se corrió. Seguir
    `sql/_baseline/README.md`: migraciones con fecha, solo agregar, y una tabla que anote cada una aplicada.
-2. **Detector de deriva del núcleo.** Una herramienta en `tools/` que compare los archivos del §4 entre
-   repos y avise cuáles difieren en lógica (no solo en configuración).
+2. ✅ **Detector de deriva del núcleo:** `node tools/audit-nucleo.mjs` compara los archivos del §4 con
+   Alejandro y BSS y marca cuál repo los tocó último (si el otro es más nuevo, tiene un fix por traer).
 
 **Etapa 2 — medio:**
 3. **Acceso a datos por módulo**, empezando por `pedidos`: un archivo con las consultas y columnas del módulo

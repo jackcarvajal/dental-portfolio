@@ -11,7 +11,7 @@ const CORS_ALLOWED = ['https://prodigylabdental.com','https://www.prodigylabdent
 const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 
 function cors(origin) {
-  const ok = CORS_ALLOWED.includes(origin) || origin.includes('.pages.dev') || !origin;
+  const ok = CORS_ALLOWED.includes(origin) || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(origin || '') || !origin;
   return { 'Access-Control-Allow-Origin': ok ? origin || '*' : CORS_ALLOWED[0], 'Content-Type': 'application/json' };
 }
 

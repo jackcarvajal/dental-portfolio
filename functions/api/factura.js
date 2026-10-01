@@ -26,7 +26,7 @@ const FACTUS_BASE = 'https://api.factus.com.co';
 
 function corsHeaders(origin) {
   const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
-  const ok = allowed.includes(origin) || origin.includes('.pages.dev');
+  const ok = allowed.includes(origin) || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(origin || '');
   return {
     'Access-Control-Allow-Origin':  ok ? origin : 'https://prodigylabdental.com',
     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',

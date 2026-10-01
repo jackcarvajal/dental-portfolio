@@ -130,6 +130,24 @@ for (const f of htmlFiles) {
 }
 if (!seoIssues) console.log('   \x1b[32m✓ ok\x1b[0m');
 
+/* ── 5. CORS laxo y dominios *.pages.dev ajenos (crítico) ──── */
+// Cualquiera crea un sitio *.pages.dev gratis: un `.includes('.pages.dev')` en el CORS lo acepta, y un enlace a
+// un *.pages.dev que no es nuestro manda al cliente a un sitio ajeno (pasó con prodigy.pages.dev en WhatsApp).
+hdr('5) CORS laxo y dominios *.pages.dev ajenos');
+const PAGES_PROPIOS = new Set(['dental-portfolio-em6', 'alejandrocadcam']);
+let corsIssues = 0;
+for (const f of allFiles) {
+  const s = readFileSync(f, 'utf8');
+  if (/\.(includes|endsWith)\(\s*['"](\.pages\.dev|localhost)['"]\s*\)/.test(s)) {
+    corsIssues++; console.log(`   \x1b[31m✗ ${rel(f)}:\x1b[0m origen aceptado por substring — usar regex anclada al proyecto (docs/GUIA-SEGURIDAD.md)`);
+  }
+  for (const m of s.matchAll(/https?:\/\/([a-z0-9-]+)\.pages\.dev/gi)) {
+    if (!PAGES_PROPIOS.has(m[1].toLowerCase())) { corsIssues++; console.log(`   \x1b[31m✗ ${rel(f)}:\x1b[0m enlace a dominio ajeno ${m[0]}`); }
+  }
+}
+critical += corsIssues;
+if (!corsIssues) console.log('   \x1b[32m✓ sin CORS por substring ni dominios *.pages.dev ajenos\x1b[0m');
+
 /* ── RESUMEN ───────────────────────────────────────────────── */
 console.log('\n' + '─'.repeat(50));
 console.log(`Páginas: ${htmlFiles.length} · Hallazgos críticos: ${critical} · Avisos SEO: ${seoIssues}`);

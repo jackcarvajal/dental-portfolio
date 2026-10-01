@@ -31,7 +31,7 @@ export async function onRequestPost(context) {
   /* ── CORS ─────────────────────────────────────────── */
   const origin = request.headers.get('Origin') || '';
   const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
-  const isAllowed = allowed.includes(origin) || origin.includes('.pages.dev');
+  const isAllowed = allowed.includes(origin) || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(origin || '');
   const corsH = {
     'Access-Control-Allow-Origin':  isAllowed ? origin : 'https://prodigylabdental.com',
     'Access-Control-Allow-Methods': 'POST',
@@ -150,7 +150,7 @@ export async function onRequestPost(context) {
 
 function _corsHeaders(origin) {
   const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
-  const ok = allowed.includes(origin) || (origin||'').includes('.pages.dev') || (origin||'').includes('localhost');
+  const ok = allowed.includes(origin) || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(origin || '') || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin || '');
   return {
     'Access-Control-Allow-Origin':  ok ? origin : 'https://prodigylabdental.com',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',

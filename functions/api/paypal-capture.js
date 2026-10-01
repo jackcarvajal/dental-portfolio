@@ -18,7 +18,7 @@ const PP_BASE = (env) => (env.PAYPAL_ENV === 'sandbox')
 
 function cors(origin) {
   const ok = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'].includes(origin)
-    || (origin || '').includes('.pages.dev');
+    || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(origin || '');
   return {
     'Access-Control-Allow-Origin':  ok ? origin : 'https://prodigylabdental.com',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',

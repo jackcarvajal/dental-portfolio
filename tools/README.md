@@ -104,3 +104,11 @@ que mató el script (revisa consola).
   Reinstalar en otra máquina: `npx skills experimental_install` y `playwright-cli install --skills`
   (+ `--skills=agents`).
 - **MCP Supabase** (solo lectura, local): `claude mcp add --transport http -s local supabase "https://mcp.supabase.com/mcp?project_ref=zgihrwqfyvgyapbwzkvw&read_only=true&features=database,docs,debugging"` → autenticar en `/mcp`.
+
+## Deriva del núcleo compartido (`audit-nucleo.mjs`)
+
+`node tools/audit-nucleo.mjs` — compara los archivos del núcleo (`ARCHITECTURE.md` §4) con Alejandro y BSS:
+idéntico / N líneas distintas / qué repo lo tocó último. Si el otro repo es más nuevo, revisa y trae el fix a
+PRODIGY (canónico). Informativo: no falla ni modifica nada. `--repo <ruta>` para comparar con otro repo.
+`audit.mjs` §5 además falla si un origen CORS se acepta por substring (`.includes('.pages.dev')`) o si hay
+enlaces a un `*.pages.dev` que no es nuestro.

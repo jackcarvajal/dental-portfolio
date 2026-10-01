@@ -14,7 +14,7 @@
 const CORS_ALLOWED = ['https://prodigylabdental.com','https://www.prodigylabdental.com'];
 
 function corsHeaders(origin) {
-  const ok = CORS_ALLOWED.includes(origin) || origin.includes('.pages.dev') || origin.includes('localhost');
+  const ok = CORS_ALLOWED.includes(origin) || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(origin || '') || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin || '');
   return {
     'Access-Control-Allow-Origin': ok ? origin : CORS_ALLOWED[0],
     'Access-Control-Allow-Methods': 'POST, OPTIONS',

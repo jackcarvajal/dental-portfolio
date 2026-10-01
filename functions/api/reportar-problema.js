@@ -27,7 +27,7 @@ const SUPABASE_URL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 export const TIPOS = { archivos:'Subir archivos', pagos:'Pagos', no_carga:'Algo no carga', datos:'Datos incorrectos', sugerencia:'Sugerencia', otro:'Otro', error_js:'Error automático' };
 const ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export function cors(o){ const ok = !o || o === SITIO || o.endsWith('.pages.dev'); return { 'Access-Control-Allow-Origin': ok ? (o || SITIO) : SITIO, 'Content-Type':'application/json' }; }
+export function cors(o){ const ok = !o || o === SITIO || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(o || ''); return { 'Access-Control-Allow-Origin': ok ? (o || SITIO) : SITIO, 'Content-Type':'application/json' }; }
 export const cfg = env => ({ URL: env.SUPABASE_URL || SUPABASE_URL, SERVICE: env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_KEY });
 export const adminH = S => ({ apikey:S, Authorization:`Bearer ${S}`, 'Content-Type':'application/json' });
 const cut = (s, n) => String(s == null ? '' : s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').slice(0, n);
