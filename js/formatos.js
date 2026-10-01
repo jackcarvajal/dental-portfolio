@@ -94,6 +94,9 @@
     /* ═══════════════════════════════════════════════════════════════
        CONTEXTOS — quién sube qué, en qué momento, y si es obligatorio
        ═══════════════════════════════════════════════════════════════ */
+    // Supabase (plan gratis): ningún archivo puede pasar de 50 MB, diga lo que diga el bucket. Si se pasa a Pro, subir este número.
+    const LIMITE_PLAN_MB = 50;
+
     const CONTEXTOS = {
         // ── TRAMO 1 · El cliente abre el caso ──────────────────────
         cliente_caso: {
@@ -199,9 +202,9 @@
         if (!cfg.cats.includes(EXT[ext].cat)) {
             return { ok:false, error:`"${file.name}" (${EXT[ext].label}) no corresponde a ${cfg.label}. Súbelo en la sección adecuada.` };
         }
-        const mb = file.size / (1024 * 1024);
-        if (mb > cfg.maxMB) {
-            return { ok:false, error:`"${file.name}" pesa ${mb.toFixed(0)} MB y el máximo es ${cfg.maxMB} MB. Comprímelo en ZIP o mándalo por WeTransfer.` };
+        const mb = file.size / (1024 * 1024), max = Math.min(cfg.maxMB, LIMITE_PLAN_MB);
+        if (mb > max) {
+            return { ok:false, error:`"${file.name}" pesa ${mb.toFixed(0)} MB y el máximo por archivo es ${max} MB. Comprímelo en ZIP (suele quedar en la mitad) o compártelo por WeTransfer o Google Drive y pega el enlace en las notas del caso.` };
         }
         if (file.size === 0) {
             return { ok:false, error:`"${file.name}" está vacío (0 bytes). Vuelve a exportarlo.` };
@@ -240,6 +243,7 @@
     }
 
     window.PFormatos = {
+        LIMITE_PLAN_MB,
         permitidos, accept, validar, validarContenido, validarCompleto,
         meta, categoria, config, extDe,
         CATEGORIAS, CONTEXTOS, EXT

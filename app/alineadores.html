@@ -243,7 +243,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
       <div class="fg"><label>Enlace (opcional)</label><input id="eEnlace" placeholder="https://… visor 3Shape, Drive"></div>
     </div>
     <div class="fg"><label>Texto para el cliente</label><textarea id="eNota" rows="4" placeholder="Ej: El paciente requiere IPR y attachments. Aproximadamente 9 a 11 alineadores superiores y 10 a 12 inferiores."></textarea></div>
-    <div class="fg"><label>Archivos (video, PDF, imágenes · máx. 100 MB c/u)</label><input type="file" id="eFiles" multiple accept=".mp4,.mov,.webm,.m4v,.pdf,.jpg,.jpeg,.png,.webp,.gif,.zip,.stl,.ply"></div>
+    <div class="fg"><label>Archivos (video, PDF, imágenes · máx. 50 MB c/u)</label><input type="file" id="eFiles" multiple accept=".mp4,.mov,.webm,.m4v,.pdf,.jpg,.jpeg,.png,.webp,.gif,.zip,.stl,.ply"></div>
     <p class="sub" id="eProg" style="margin:0 0 6px"></p>
     <div class="mact"><button class="btn btn-mg" id="eEnviar" onclick="guardarEntrega()"><i class="fas fa-paper-plane"></i> Enviar al cliente</button></div>
   </div>
@@ -874,7 +874,7 @@ async function guardarEntrega(){
   const files=[...document.getElementById('eFiles').files];
   if(!nota && !files.length && !enlace){ alert('Escribe el texto, sube archivos o pega un enlace.'); return; }
   if(enlace && !/^https:\/\//i.test(enlace)){ alert('El enlace debe empezar por https://'); return; }
-  const grande=files.find(f=>f.size>104857600); if(grande){ alert('Supera 100 MB: '+grande.name+'. Compártelo como enlace.'); return; }
+  const grande=files.find(f=>f.size>52428800); if(grande){ alert('Supera 50 MB: '+grande.name+'. Compártelo como enlace (Drive o WeTransfer).'); return; }
   const btn=document.getElementById('eEnviar'); btn.disabled=true;
   const prog=document.getElementById('eProg');
   const rutas=[], fallidos=[];

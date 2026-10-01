@@ -62,11 +62,12 @@ function validateUpload(file, tipo = 'CAD') {
                  + `Formatos aceptados: ${cfg.allowed.join(', ').toUpperCase()}`
         };
     }
-    const sizeMB = file.size / (1024 * 1024);
-    if (sizeMB > cfg.maxMB) {
+    // Supabase (plan gratis): ningún archivo puede pasar de 50 MB. Si se pasa a Pro, subir este número.
+    const sizeMB = file.size / (1024 * 1024), maxMB = Math.min(cfg.maxMB, 50);
+    if (sizeMB > maxMB) {
         return {
             valid: false,
-            error: `❌ Archivo muy grande (${sizeMB.toFixed(1)} MB). Máximo: ${cfg.maxMB} MB.`
+            error: `❌ Archivo muy grande (${sizeMB.toFixed(1)} MB). Máximo por archivo: ${maxMB} MB. Comprímelo en ZIP o compártelo por WeTransfer o Google Drive.`
         };
     }
     return { valid: true };

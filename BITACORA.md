@@ -18,6 +18,10 @@
   botón del aviso abre la aprobación (antes llevaba a «caso no encontrado»).
 - 🟡 **Laboratorio 3D v6:** vuelve a mostrar todo el laboratorio (las estaciones fuera del recorrido quedan atenuadas),
   microscopio junto a la cámara en Calidad, botón «Revisar y aprobar en mi panel».
+- ✅ 💡 **Supabase en plan GRATIS → máximo 50 MB por archivo** (confirmado en Storage → Settings, 1-oct). Antes la web
+  dejaba elegir archivos de hasta 500 MB y fallaban al subir. Ahora `formatos.js` y `upload-guard.js` (ambos repos) avisan
+  ANTES de subir y sugieren ZIP o enlace de Drive/WeTransfer; alineadores 100→50 MB; preguntas frecuentes corregida.
+  Si se pasa a Pro: subir `LIMITE_PLAN_MB` en `js/formatos.js` y el 50 de `js/upload-guard.js`.
 - ✅ **Bandeja de WhatsApp fase 2** (🟡 falta correr `sql/avisos-whatsapp-fase2-2026.sql`): cola también para Alejandro
   CAD/CAM (su propia bandeja y su `notify-wa` de solo diseño); campana a secretaría cuando entra un aviso dorado;
   el seguimiento devuelve `foto_entrega` (foto del mensajero) y el 3D la muestra en «Entregado».
