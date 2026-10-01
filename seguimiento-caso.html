@@ -410,13 +410,32 @@
             }
         }
 
+        function mostrarAlineadores(num) {
+            document.getElementById('resultado').style.display = 'none';
+            let box = document.getElementById('res-aln');
+            if (!box) {
+                box = document.createElement('div'); box.id = 'res-aln'; box.setAttribute('aria-live', 'polite');
+                box.style.cssText = 'margin:18px auto 0;max-width:640px;background:rgba(13,21,37,.85);border:1px solid rgba(217,70,166,.4);border-radius:16px;padding:22px;text-align:left;color:#e2e8f0;line-height:1.6';
+                document.getElementById('resultado').insertAdjacentElement('afterend', box);
+            }
+            const dest = '/app/facturacion-alineadores.html#seg=' + encodeURIComponent(num);
+            box.innerHTML = '<div style="font-size:.75rem;font-weight:800;letter-spacing:.08em;color:#f0abfc;text-transform:uppercase">Caso de alineadores</div>'
+              + '<div style="font:900 1.4rem ui-monospace,Consolas,monospace;color:#D4AF37;margin:6px 0 8px">' + num.replace(/[<>&"]/g, '') + '</div>'
+              + '<p style="margin:0 0 14px;color:#94a3b8">El seguimiento de alineadores está en tu portal: ahí ves en qué etapa va el caso (viabilidad, planificación, tratamiento) y si el siguiente paso es tuyo o nuestro.</p>'
+              + '<a href="/app/login.html?redirect=' + encodeURIComponent(dest) + '" style="display:inline-flex;gap:8px;align-items:center;padding:12px 18px;border-radius:50px;background:linear-gradient(135deg,#D946A6,#9c27b0);color:#fff;font-weight:800;text-decoration:none">Ver mi caso en el portal →</a>';
+            box.style.display = 'block';
+        }
+
         async function buscarCaso() {
+            const _ra = document.getElementById('res-aln'); if (_ra) _ra.style.display = 'none';
             const orden = document.getElementById('searchOrden').value.trim().toUpperCase();
             if (!orden) {
                 document.getElementById('resultado').style.display = 'none';
                 abrirModalNoEncontrado();
                 return;
             }
+            // Casos de alineadores (HIST-… / ALN-…): se siguen dentro del portal, con sesión (llevan datos del paciente)
+            if (/^(HIST|ALN)-/.test(orden)) { mostrarAlineadores(orden); return; }
             // Leer nonce del URL (presente cuando viene desde link de WhatsApp)
             const _nonce = new URLSearchParams(window.location.search).get('key') || null;
             try {

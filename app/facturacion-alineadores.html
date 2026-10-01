@@ -93,6 +93,35 @@ body .cuenta-info .estados-ayuda,body .cuenta-info .pay{margin:0;padding:14px 16
 body .cuenta-info .ci-t{display:block;margin-bottom:4px;color:#fff;}
 body .bars{height:170px;}
 @media(max-width:760px){body .cuenta-info{grid-template-columns:1fr;}}
+body .num-ayuda{display:flex;gap:10px;align-items:flex-start;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:11px 14px;margin:0 0 12px;font-size:.88rem;line-height:1.55;color:#e2e8f0;}
+body .num-ayuda b{color:#fff;}
+body .cancha{display:flex;width:max-content;max-width:100%;align-items:center;gap:6px;margin-top:6px;font-size:.76rem;font-weight:800;padding:3px 10px;border-radius:100px;white-space:nowrap;}
+body .cancha.cli{background:rgba(217,70,166,.16);color:#f0abfc;border:1px solid rgba(217,70,166,.45);}
+body .cancha.lab{background:rgba(0,210,255,.10);color:#7dd3fc;border:1px solid rgba(0,210,255,.35);}
+body .cancha.ok{background:rgba(0,255,65,.08);color:#86efac;border:1px solid rgba(0,255,65,.3);}
+body .cancha.pausa{background:rgba(212,175,55,.12);color:#fcd34d;border:1px solid rgba(212,175,55,.4);}
+body .pac-btn{background:none;border:0;padding:0;color:inherit;font:inherit;text-align:left;cursor:pointer;}
+body .pac-btn:hover b{text-decoration:underline;text-decoration-color:var(--mg);}
+body .pac-btn .ver{display:inline-block;margin-left:6px;font-size:.72rem;color:var(--cyan);font-weight:700;}
+.seg-num{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 12px;}
+.seg-num code{font:900 1.35rem/1 ui-monospace,Consolas,monospace;color:var(--gold);letter-spacing:.04em;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.35);border-radius:10px;padding:8px 12px;}
+.seg-turno{border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:.92rem;line-height:1.55;}
+.seg-turno.cli{background:rgba(217,70,166,.10);border:1px solid rgba(217,70,166,.4);}
+.seg-turno.lab{background:rgba(0,210,255,.07);border:1px solid rgba(0,210,255,.3);}
+.seg-turno.ok{background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.25);}
+.seg-turno.pausa{background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.35);}
+.seg-turno b.t{display:block;font-size:1rem;margin-bottom:2px;color:#fff;}
+ol.seg-pasos{list-style:none;margin:0 0 14px;padding:0;position:relative;}
+ol.seg-pasos li{position:relative;padding:0 0 14px 34px;font-size:.9rem;color:var(--muted);}
+ol.seg-pasos li::before{content:'';position:absolute;left:9px;top:20px;bottom:-2px;width:2px;background:rgba(255,255,255,.1);}
+ol.seg-pasos li:last-child::before{display:none;}
+ol.seg-pasos li i.pt{position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.2);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-style:normal;}
+ol.seg-pasos li.hecho{color:#cbd5e1;}
+ol.seg-pasos li.hecho i.pt{background:#00FF41;border-color:#00FF41;color:#050505;}
+ol.seg-pasos li.hecho::before{background:rgba(0,255,65,.45);}
+ol.seg-pasos li.ahora{color:#fff;font-weight:700;}
+ol.seg-pasos li.ahora i.pt{border-color:var(--mg);background:rgba(217,70,166,.25);box-shadow:0 0 0 4px rgba(217,70,166,.18);}
+ol.seg-pasos li span.d{display:block;font-size:.8rem;color:var(--muted);font-weight:500;}
 @media(max-width:760px){body td.pac .l2{white-space:normal;}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -132,6 +161,7 @@ body .bars{height:170px;}
 </div>
 
 <section class="panel on" id="p-casos" role="tabpanel">
+  <p class="num-ayuda"><span aria-hidden="true">🔖</span><span>Cada caso tiene su <b>número</b> (por ejemplo <b>HIST-26-13</b>). <b>Toca el nombre del paciente</b> para ver en qué etapa va y si el siguiente paso es tuyo o nuestro. Usa el número cuando nos escribas por WhatsApp.</span></p>
   <div class="chips" id="chips" aria-label="Filtrar casos"></div>
   <div class="filters"><input type="search" id="fBuscar" placeholder="Buscar paciente o código…" oninput="renderCasos()" aria-label="Buscar"></div>
   <div class="tw"><table id="casosTbl" class="rtable"><thead><tr><th>Paciente</th><th>Estado</th><th>Tratamiento</th><th>Última entrega</th><th></th></tr></thead><tbody></tbody></table></div>
@@ -175,6 +205,7 @@ body .bars{height:170px;}
 </section>
 
 <!-- Modal políticas (dentro del portal: el cliente no sale al sitio público) -->
+<div class="ov" id="ovSeg" role="dialog" aria-modal="true" aria-labelledby="segT"><div class="modal" style="max-width:560px"><h3 id="segT" style="margin-bottom:6px">📍 Seguimiento del caso</h3><div id="segBody"></div></div></div>
 <div class="ov" id="ovPol"><div class="modal" style="max-width:620px">
   <h3><i class="fas fa-file-contract" style="color:var(--gold)"></i> Políticas de alineadores</h3>
   <div id="polTxt" style="font-size:.9rem;line-height:1.6;color:#e2e8f0"></div>
@@ -421,14 +452,17 @@ function renderCasos(){
     const estado = et==='soloval' ? 'Solo viabilidad y valoración' : (et==='entregado' ? 'Diseño entregado' : (et==='espera' ? '⏸️ En espera de pago' : (EST_CASO[c.estado]||c.estado||'')));
     const min=minutosParaCancelar(c);
     return `<tr>
-      <td class="pac" data-l="Paciente"><div><b>${escH(c.paciente)}</b><span class="l2">${escH(c.codigo||'')} · ${fmtD(c.created_at)}</span></div></td>
-      <td data-l="Estado"><div>${escH(estado)}${c.plan_tratamiento?`<span class="l2">${escH(c.plan_tratamiento)}</span>`:''}</div></td>
+      <td class="pac" data-l="Paciente"><div><button type="button" class="pac-btn" onclick="verSeguimiento('${c.id}')" title="Ver el seguimiento de este caso"><b>${escH(c.paciente)}</b><span class="ver">Seguimiento →</span><span class="l2">Nº ${escH(c.codigo||'')} · ${fmtD(c.created_at)}</span></button></div></td>
+      <td data-l="Estado"><div>${escH(estado)}${c.plan_tratamiento?`<span class="l2">${escH(c.plan_tratamiento)}</span>`:''}${chipTurno(c)}</div></td>
       <td data-l="Tratamiento"><div>${ALN.celdaTrat(c)}</div></td>
       <td data-l="Última entrega"><div>${ult}</div></td>
       <td data-l=""><div class="acts">${e?`<button class="btn ${e.estado==='enviado'?'btn-mg':'btn-ghost'} mini" onclick="verCaso('${c.id}')">${e.estado==='enviado'?'Revisar':'Ver'}</button>`:''}
         ${min?`<button class="btn btn-ghost mini" style="color:var(--red)" onclick="cancelarCaso('${c.id}')" title="Solo durante la primera hora">Cancelar (${min} min)</button>`:''}
         <a class="btn btn-ghost mini" href="${escH(waLab('Hola PRODIGY'+(QUIEN?', soy '+QUIEN:'')+'. Tengo una duda sobre el caso de '+c.paciente+(c.codigo?' ('+c.codigo+')':'')+': '))}" target="_blank" rel="noopener" title="Preguntar por WhatsApp sobre este caso" aria-label="WhatsApp sobre este caso"><i class="fab fa-whatsapp" style="color:#25D366"></i></a></div></td></tr>`;
   }).join('');
+  // Abrir el seguimiento directo si viene de /seguimiento-caso (#seg=NUMERO)
+  const mSeg=decodeURIComponent(location.hash||'').match(/^#seg=(.+)$/);
+  if(mSeg && !renderCasos._seg){ renderCasos._seg=true; const cs=Object.values(CASOS).find(x=>(x.codigo||'').toUpperCase()===mSeg[1].toUpperCase()); if(cs) setTimeout(()=>verSeguimiento(cs.id),300); }
   // Abrir directo desde el aviso (#casos)
   if(location.hash==='#casos' && !renderCasos._hecho){ renderCasos._hecho=true; const pend=ENTREGAS.find(e=>e.estado==='enviado'); if(pend) setTimeout(()=>verCaso(pend.caso_id),300); }
 }
@@ -511,6 +545,50 @@ async function guardarPago(){
   alert('✅ Pago reportado. Lo verificamos y actualizamos tu estado de cuenta.');
 }
 function verPoliticas(){ document.getElementById('polTxt').innerHTML=ALN.POLITICAS_HTML+'<p class="sub" style="margin:10px 0 0">Versión '+escH(ALN.POL_VER)+'. Las tarifas vigentes constan en tu estado de cuenta.</p>'; document.getElementById('ovPol').classList.add('show'); }
+/* ── Seguimiento del caso: en qué etapa va y de quién es el turno (cliente o PRODIGY) ── */
+const PASOS_ALN=['Caso recibido','Viabilidad y valoración','Planificación del tratamiento','Planificación aprobada','En tratamiento','Refinamiento sin costo'];
+function seguimiento(c){
+  const e=entregasDe(c.id)[0], t=ALN.trat(c);
+  const r={paso:1, turno:'lab', titulo:'', detalle:''};
+  if(c.estado==='cancelado') return {paso:0, turno:'ok', titulo:'Caso cancelado', detalle:'Este caso se canceló y no sigue en proceso.'};
+  if(c.en_espera_pago && c.estado!=='terminado') return {paso:1, turno:'pausa', titulo:'En espera de pago', detalle:'El caso está en pausa porque la cuenta tiene un saldo vencido. Apenas quede al día seguimos con el trabajo.'};
+  if(ALN.soloVal(c)) return {paso:1, turno:'ok', titulo:'Viabilidad y valoración entregada', detalle:'Se hizo solo la viabilidad y valoración; el caso no siguió a planificación. Si quieres continuar, escríbenos con el número de caso.', soloVal:true};
+  if(e && e.estado==='enviado'){
+    const pl=e.etapa==='planificacion';
+    return {paso:pl?2:1, turno:'cli', titulo:'En tu cancha: '+(pl?'revisar la planificación':'revisar la viabilidad')+(e.revision_num?' (revisión '+e.revision_num+')':''),
+      detalle:'Te la enviamos el '+fmtD(e.created_at)+'. Ábrela con «Revisar» y apruébala o pide cambios. Mientras no respondas, el caso queda en pausa.'};
+  }
+  if(e && e.estado==='cambios') return {paso:2, turno:'lab', titulo:'En nuestra cancha: ajustando la planificación', detalle:'Recibimos tus cambios y estamos preparando la siguiente revisión. Te avisamos cuando esté lista.'};
+  if(c.estado==='valoracion') return {paso:1, turno:'lab', titulo:'En nuestra cancha: viabilidad y valoración', detalle:'Estamos revisando los archivos para decirte si el caso es viable y cómo se plantea.'};
+  if(c.estado==='planificacion') return {paso:2, turno:'lab', titulo:'En nuestra cancha: planificación del tratamiento', detalle:'Estamos haciendo la planificación (movimientos y número de alineadores). Te la enviamos para que la revises.'};
+  if(t && t.k==='curso') return {paso:4, turno:'ok', titulo:'En tratamiento', detalle:'El paciente está usando sus alineadores. Fin estimado: '+ALN.fmtDY(t.fin)+'. Si necesitas ajustar algo antes de terminar, es una modificación de la planeación.'};
+  if(t && t.k==='refina') return {paso:5, turno:'ok', titulo:'Ventana de refinamiento sin costo', detalle:'El tratamiento terminó; puedes pedir refinamiento sin costo hasta el '+ALN.fmtDY(t.hasta)+'.'};
+  if(t && t.k==='vencido') return {paso:6, turno:'ok', titulo:'Tratamiento terminado', detalle:'Terminó el tratamiento y la ventana de refinamiento sin costo.'};
+  return {paso:3, turno:'ok', titulo:'Planificación aprobada', detalle:'La planificación está aprobada y los archivos fueron entregados.'};
+}
+const TURNO_TXT={cli:'En tu cancha', lab:'En PRODIGY', ok:'Sin pendientes', pausa:'En pausa'};
+function chipTurno(c){ const s=seguimiento(c); const donde=s.turno==='lab'?(': '+(PASOS_ALN[s.paso]||'')):''; return `<span class="cancha ${s.turno}">${s.turno==='cli'?'👉 ':''}${TURNO_TXT[s.turno]}${escH(donde)}</span>`; }
+function verSeguimiento(id){
+  const c=CASOS[id]; if(!c) return;
+  const s=seguimiento(c), e=entregasDe(c.id)[0];
+  const pasos=PASOS_ALN.map((n,i)=>{
+    const cls=s.paso===0?'':(i<s.paso?'hecho':(i===s.paso?'ahora':''));
+    const d=i===0?fmtD(c.created_at):(i===s.paso?'Aquí va tu caso':'');
+    return `<li class="${cls}"><i class="pt" aria-hidden="true">${i<s.paso?'✓':''}</i>${escH(n)}${d?`<span class="d">${escH(d)}</span>`:''}</li>`;
+  }).join('');
+  document.getElementById('segBody').innerHTML=`
+    <div class="seg-num"><code>${escH(c.codigo||'—')}</code><button type="button" class="btn btn-ghost mini" onclick="copiarNum('${escJ(c.codigo||'')}')"><i class="fas fa-copy"></i> Copiar número</button></div>
+    <p class="sub" style="margin:0 0 12px">Paciente <b style="color:#fff">${escH(c.paciente||'')}</b>. Este es el <b>número de tu caso</b>: dínoslo cuando escribas por WhatsApp y lo encontramos de inmediato.</p>
+    <div class="seg-turno ${s.turno}"><b class="t">${escH(s.titulo)}</b>${escH(s.detalle)}</div>
+    ${s.paso===0?'':`<ol class="seg-pasos">${pasos}</ol>`}
+    <div class="mact" style="justify-content:flex-start;flex-wrap:wrap">
+      ${e&&e.estado==='enviado'?`<button class="btn btn-mg" onclick="cerrar('ovSeg');verCaso('${c.id}')"><i class="fas fa-eye"></i> Revisar ahora</button>`:''}
+      <a class="btn btn-ghost" href="${escH(waLab('Hola PRODIGY'+(QUIEN?', soy '+QUIEN:'')+'. Pregunto por el caso '+(c.codigo||'')+' ('+c.paciente+'): '))}" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color:#25D366"></i> Preguntar por este caso</a>
+      <button class="btn btn-ghost" onclick="cerrar('ovSeg')">Cerrar</button>
+    </div>`;
+  document.getElementById('ovSeg').classList.add('show');
+}
+function copiarNum(n){ if(!n) return; (navigator.clipboard?navigator.clipboard.writeText(n):Promise.reject()).then(()=>alert('Número '+n+' copiado'),()=>prompt('Copia el número de tu caso:',n)); }
 function cerrar(id){ document.getElementById(id).classList.remove('show'); }
 window.addEventListener('DOMContentLoaded',init);
 </script>
