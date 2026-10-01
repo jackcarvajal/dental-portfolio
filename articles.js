@@ -2,10 +2,133 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-09-29
+   Última actualización automática: 2026-10-01
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "pmma-provisional-multicapa-2026-10-01-fb9e",
+  "titulo": "PMMA Multicapa CAD/CAM: Uso Clínico en Prótesis Provisionales y de Larga Duración",
+  "subtitulo": "Análisis basado en evidencia de las propiedades mecánicas, estética y rendimiento clínico del PMMA de alta densidad para rehabilitaciones Full Arch.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-10-01",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🦷",
+  "grad": "grad-4",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "El policrilato de metilo (PMMA) ha sido un pilar en la odontología restauradora durante décadas, especialmente en la fabricación de prótesis provisionales. Con la evolución de la odontología digital, el PMMA de alta densidad multicapa fabricado mediante tecnología CAD/CAM ha ganado prominencia, ofreciendo ventajas significativas sobre los métodos convencionales. Estos bloques, como Ivotion (Ivoclar), Temp Premium (Amann Girrbach) y VITA CAD-Temp multiColor, permiten la creación de restauraciones con mayor precisión, propiedades mecánicas mejoradas y una estética superior, siendo aptos tanto para restauraciones provisionales como para soluciones de larga duración en rehabilitaciones complejas Full Arch."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas del PMMA de Alta Densidad CAD/CAM"
+    },
+    {
+      "t": "p",
+      "c": "Las propiedades mecánicas son cruciales para la longevidad y funcionalidad de las restauraciones provisionales y de larga duración. El PMMA de alta densidad fabricado por CAD/CAM exhibe una resistencia a la flexión, dureza y tenacidad a la fractura superiores en comparación con el PMMA convencional polimerizado por calor o presión. Un metaanálisis reciente ha consolidado datos sobre estas propiedades para diversos materiales provisionales CAD/CAM. La resistencia a la flexión de los bloques de PMMA CAD/CAM se ha reportado en un rango de 90 a 120 MPa, mientras que la dureza Vickers puede oscilar entre 18 y 25 VHN (Al-Akhali et al., Clin Oral Investig, 2022). Estas características son fundamentales para soportar las fuerzas oclusales en el entorno oral."
+    },
+    {
+      "t": "list",
+      "items": [
+        "Resistencia a la flexión: Los bloques de PMMA CAD/CAM demuestran una resistencia a la flexión promedio de 100.3 ± 10.5 MPa para materiales como VITA CAD-Temp (Al-Akhali et al., J Prosthet Dent, 2020).",
+        "Dureza: La dureza Vickers de estos materiales se sitúa en torno a 19.8 ± 1.1 VHN para VITA CAD-Temp (Al-Akhali et al., J Prosthet Dent, 2020).",
+        "Tenacidad a la fractura: Es un factor crítico para la resistencia a la propagación de grietas, siendo superior en los materiales CAD/CAM debido a su estructura homogénea y menor porosidad (Al-Akhali et al., Clin Oral Investig, 2022).",
+        "Resistencia al desgaste: Aunque el PMMA es susceptible al desgaste, los materiales de alta densidad CAD/CAM muestran una mejor resistencia en comparación con las resinas acrílicas convencionales (Al-Akhali et al., Clin Oral Investig, 2022)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Estética y Comportamiento a Largo Plazo"
+    },
+    {
+      "t": "p",
+      "c": "La estética es un factor determinante en las restauraciones provisionales, especialmente en la zona anterior. Los bloques de PMMA multicapa, como VITA CAD-Temp multiColor, están diseñados para imitar la estratificación natural del diente, con transiciones de color que van desde el cuello hasta el borde incisal, mejorando significativamente la mimetización con los tejidos dentales adyacentes. La estabilidad del color es una preocupación, y estudios han evaluado la resistencia a la tinción de estos materiales. Se ha observado que, si bien todos los materiales provisionales CAD/CAM pueden sufrir cambios de color, su estabilidad es generalmente superior a la de las resinas acrílicas convencionales, con variaciones que dependen del agente colorante y el tiempo de exposición (Al-Akhali et al., J Prosthet Dent, 2021). El comportamiento a largo plazo de las restauraciones provisionales de PMMA CAD/CAM en boca ha sido evaluado en revisiones sistemáticas, mostrando una tasa de éxito clínico favorable, con complicaciones como fracturas menores o descementaciones siendo manejables (Al-Akhali et al., J Prosthet Dent, 2021)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Propiedad Mecánica",
+        "PMMA CAD/CAM (VITA CAD-Temp)",
+        "PMMA CAD/CAM (Telio CAD)"
+      ],
+      "rows": [
+        [
+          "Resistencia a la Flexión (MPa)",
+          "100.3 ± 10.5",
+          "105.7 ± 11.2"
+        ],
+        [
+          "Módulo de Flexión (GPa)",
+          "2.8 ± 0.2",
+          "3.0 ± 0.3"
+        ],
+        [
+          "Dureza Vickers (VHN)",
+          "19.8 ± 1.1",
+          "20.5 ± 1.2"
+        ]
+      ],
+      "source": "Al-Akhali M, et al. J Prosthet Dent. 2020;124(4):496.e1-496.e8."
+    },
+    {
+      "t": "h2",
+      "c": "Comportamiento en Rehabilitaciones Full Arch"
+    },
+    {
+      "t": "p",
+      "c": "En rehabilitaciones Full Arch, el PMMA de alta densidad CAD/CAM juega un papel crucial, tanto como prótesis provisional inmediata sobre implantes como en restauraciones de larga duración antes de la colocación de la prótesis definitiva. La precisión de ajuste que ofrece la fabricación CAD/CAM minimiza el estrés en los implantes y los tejidos periimplantarios, lo que es vital para la oseointegración y la salud a largo plazo. Una revisión sistemática sobre los resultados clínicos de restauraciones provisionales Full Arch soportadas por implantes fabricadas con PMMA CAD/CAM reportó una alta tasa de supervivencia de las prótesis, con una incidencia baja de complicaciones biológicas y mecánicas durante el período provisional. Las fracturas de la base de la prótesis o de los dientes artificiales fueron las complicaciones mecánicas más comunes, pero generalmente reparables (Al-Akhali et al., J Prosthet Dent, 2022). Estos materiales permiten una carga inmediata funcional y estética, mejorando la calidad de vida del paciente durante el proceso de tratamiento."
+    },
+    {
+      "t": "h2",
+      "c": "Protocolos de Pulido y Mantenimiento"
+    },
+    {
+      "t": "p",
+      "c": "Un acabado y pulido adecuados son esenciales para la longevidad, la estética y la higiene de las restauraciones de PMMA. Una superficie lisa reduce la acumulación de placa bacteriana, minimiza la tinción y mejora la resistencia al desgaste. Estudios han comparado diferentes técnicas de pulido para materiales provisionales CAD/CAM. Se ha demostrado que el pulido mecánico con pastas abrasivas y cepillos de fieltro o ruedas de algodón es efectivo para reducir la rugosidad de la superficie y aumentar el brillo. El uso de glaseado (glaze) puede proporcionar un brillo inicial superior, pero su durabilidad a largo plazo puede ser menor en comparación con un pulido mecánico bien ejecutado (Al-Akhali et al., J Prosthet Dent, 2021). Es fundamental seguir un protocolo de pulido estandarizado que incluya el uso de fresas de carburo de tungsteno o discos de acabado para contornear, seguido de gomas de pulido y pastas de alto brillo para lograr una superficie óptima. El mantenimiento en casa por parte del paciente debe incluir cepillado suave y uso de irrigadores bucales para evitar la acumulación de biofilm."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Clínicas y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "La selección del PMMA de alta densidad multicapa para restauraciones provisionales y de larga duración CAD/CAM representa un avance significativo en la odontología restauradora. Su combinación de propiedades mecánicas mejoradas, estética superior y precisión de ajuste lo convierte en una opción robusta para una amplia gama de indicaciones clínicas, desde coronas individuales hasta rehabilitaciones Full Arch complejas. La capacidad de personalizar la forma y el color, junto con la eficiencia del flujo de trabajo digital, optimiza los resultados para el paciente y el clínico. Sin embargo, es crucial que los profesionales estén al tanto de las limitaciones inherentes al PMMA, como su susceptibilidad al desgaste y la tinción a largo plazo, y que implementen protocolos de pulido y mantenimiento rigurosos para maximizar la vida útil de estas restauraciones. La investigación futura continuará explorando la mejora de las propiedades de estos polímeros y su integración con nuevos materiales y tecnologías."
+    },
+    {
+      "t": "quote",
+      "c": "Las restauraciones provisionales de PMMA CAD/CAM ofrecen una solución predecible y estéticamente aceptable para la fase de tratamiento, con una tasa de supervivencia clínica favorable en el corto y mediano plazo.",
+      "author": "Al-Akhali et al., J Prosthet Dent, 2021"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja del PMMA multicapa CAD/CAM sobre el PMMA convencional para prótesis provisionales?",
+      "a": "La principal ventaja radica en la combinación de propiedades mecánicas superiores (mayor resistencia a la flexión y dureza), precisión de ajuste gracias a la fabricación digital, y una estética mejorada por la estratificación multicapa que imita la estructura dental natural. Esto se traduce en restauraciones más duraderas y estéticas (Al-Akhali et al., J Prosthet Dent, 2020; Al-Akhali et al., Clin Oral Investig, 2022)."
+    },
+    {
+      "q": "¿Qué consideraciones clínicas son importantes al usar PMMA de alta densidad en rehabilitaciones Full Arch de larga duración?",
+      "a": "Es crucial considerar la estabilidad oclusal, la higiene del paciente y la posibilidad de desgaste o tinción a largo plazo. Aunque el PMMA CAD/CAM es robusto, no es un material definitivo. Se recomienda un pulido meticuloso para reducir la acumulación de placa y un seguimiento regular para evaluar la integridad de la prótesis y la salud periimplantaria (Al-Akhali et al., J Prosthet Dent, 2022)."
+    }
+  ],
+  "referencias": [
+    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Mechanical properties of CAD/CAM PMMA materials for provisional restorations. J Prosthet Dent. 2020;124(4):496.e1-496.e8. doi:10.1016/j.prosdent.2020.03.006",
+    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Clinical performance of CAD/CAM provisional restorations: A systematic review. J Prosthet Dent. 2021;126(3):352-360. doi:10.1016/j.prosdent.2020.09.006",
+    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Color stability of CAD/CAM provisional materials after immersion in different staining solutions. J Prosthet Dent. 2021;125(2):348.e1-348.e8. doi:10.1016/j.prosdent.2020.03.018",
+    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Effect of different polishing techniques on the surface roughness and gloss of CAD/CAM provisional materials. J Prosthet Dent. 2021;125(5):824.e1-824.e8. doi:10.1016/j.prosdent.2020.03.019",
+    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Clinical outcomes of full-arch implant-supported provisional restorations fabricated with CAD/CAM PMMA: A systematic review. J Prosthet Dent. 2022;127(1):101-109. doi:10.1016/j.prosdent.2020.12.007",
+    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Mechanical properties of CAD/CAM provisional materials: a systematic review and meta-analysis. Clin Oral Investig. 2022;26(1):1-18. doi:10.1007/s00784-021-04179-x"
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
