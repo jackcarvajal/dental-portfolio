@@ -81,13 +81,18 @@ body .tab{font-size:1rem;}
 body .chip{font-size:.88rem;}
 body .chart h4{font-size:1.15rem;}
 body .chart .sub{font-size:.9rem;}
-body .bars{height:220px;gap:10px;}
+body .bars{gap:10px;}
 body .bars .tot{font-size:.82rem;}
 body .xlab{gap:10px;}
 body .xlab span{font-size:.82rem;}
 body .leg{font-size:.9rem;}
 body .estados-ayuda{margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);font-size:.88rem;line-height:1.6;color:#cbd5e1;}
 body .estados-ayuda p+p{margin-top:6px;}
+body .cuenta-info{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0 6px;align-items:stretch;}
+body .cuenta-info .estados-ayuda,body .cuenta-info .pay{margin:0;padding:14px 16px;border-radius:14px;font-size:.88rem;line-height:1.6;background:var(--card);border:1px solid var(--border);}
+body .cuenta-info .ci-t{display:block;margin-bottom:4px;color:#fff;}
+body .bars{height:170px;}
+@media(max-width:760px){body .cuenta-info{grid-template-columns:1fr;}}
 @media(max-width:760px){body td.pac .l2{white-space:normal;}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -143,13 +148,14 @@ body .estados-ayuda p+p{margin-top:6px;}
 </section>
 
 <section class="panel" id="p-cuenta" role="tabpanel">
-  <div class="charts">
-    <div class="chart"><h4>Tu estado de cuenta por mes</h4><p class="sub">USD · cada cobro aparece en el mes en que se hizo el trabajo</p><div id="chCuenta"></div>
-      <div class="estados-ayuda">
+  <!-- Gráfico a lo ancho y debajo dos cajas parejas (qué significa cada estado · cómo pagar): menos scroll y sin huecos -->
+  <div class="chart"><h4>Tu estado de cuenta por mes</h4><p class="sub">USD · cada cobro aparece en el mes en que se hizo el trabajo</p><div id="chCuenta"></div></div>
+  <div class="cuenta-info">
+    <div class="estados-ayuda"><b class="ci-t">🎨 Qué significa cada color</b>
         <p><b style="color:#00FF41">Pagado</b>: ya lo recibimos. <b style="color:#D4AF37">Facturado</b>: está en el estado de cuenta que te enviamos y falta pagarlo. <b style="color:#D946A6">Por facturar</b>: trabajo ya hecho que se incluye en tu próximo estado de cuenta.</p>
         <p>Si ves un cobro pendiente de un mes antiguo (por ejemplo, una valoración), <b>no es un pago atrasado de ese mes</b>: quedó por fuera del estado de cuenta de entonces y se incluye en el actual. El estado de cuenta se paga dentro de los primeros 10 días del mes siguiente a su envío.</p>
-      </div></div>
-    <div class="pay" style="margin:0">
+      </div>
+    <div class="pay">
       <b>💳 Cómo pagar</b><br>
       • El estado de cuenta se envía cada mes y se paga dentro de los <b>primeros 10 días</b> del mes.<br>
       <span id="payTxt">• <b>PayPal:</b> al monto del estado de cuenta se le suma la comisión de PayPal.</span><br>
