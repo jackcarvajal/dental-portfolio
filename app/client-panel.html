@@ -905,10 +905,13 @@ function renderTablas(pedidos) {
     });
 
     // Banner de acción prioritaria — casos esperando respuesta del doctor
+    // Solo lo que espera al doctor (CAMBIOS_SOLICITADOS es turno del diseñador). Si llega desde el seguimiento con
+    // #aprobar=CODIGO, ese caso va primero y el aviso se muestra en pantalla.
+    const _aprobar = decodeURIComponent((location.hash.match(/aprobar=([^&]+)/) || [])[1] || '').toUpperCase();
     const esperandoDoctor = activos.filter(p => {
         const e = (p.estado_operativo || p.estado || '').toUpperCase();
-        return e.includes('REVISION_CLIENTE') || e.includes('CAMBIOS_SOLICITADOS') || e.includes('APROBACION');
-    });
+        return e.includes('REVISION_CLIENTE') || e.includes('APROBACION');
+    }).sort((a, b) => ((b.codigo || '').toUpperCase() === _aprobar) - ((a.codigo || '').toUpperCase() === _aprobar));
     const bannerEl = document.getElementById('banner-accion');
     if (bannerEl) {
         if (esperandoDoctor.length > 0) {
@@ -922,6 +925,7 @@ function renderTablas(pedidos) {
                 <a href="../revision-diseno?id=${escH(esperandoDoctor[0].id||'')}" style="background:rgba(217,70,166,.2);border:1px solid rgba(217,70,166,.4);color:#D946A6;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;text-decoration:none;white-space:nowrap;">Ver diseño →</a>
             </div>`;
             bannerEl.style.display = 'block';
+            if (_aprobar) bannerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
             bannerEl.style.display = 'none';
         }

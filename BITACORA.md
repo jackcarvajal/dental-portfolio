@@ -11,6 +11,13 @@
 
 ## 2026-10-01 (tarde)  (WhatsApp que sí llega · seguimiento con el estado real · laboratorio 3D v5)
 
+- ✅ **Turno del doctor en el seguimiento (ambos repos):** si el caso espera al doctor, aparece un recuadro dorado con qué hacer
+  y un botón: aprobar el diseño → su panel de cliente (`login?redirect=/app/client-panel.html#aprobar=COD`); archivo con
+  error o pregunta → WhatsApp. En el panel, `#aprobar=COD` pone ese caso primero en el aviso y lo muestra en pantalla.
+  El aviso «Tu revisión está pendiente» ya no sale con CAMBIOS_SOLICITADOS (ese turno es del diseñador). Alejandro: el
+  botón del aviso abre la aprobación (antes llevaba a «caso no encontrado»).
+- 🟡 **Laboratorio 3D v6:** vuelve a mostrar todo el laboratorio (las estaciones fuera del recorrido quedan atenuadas),
+  microscopio junto a la cámara en Calidad, botón «Revisar y aprobar en mi panel».
 - 💡 **BSS en pausa** (decisión de Alejandro): solo PRODIGY y Alejandro CAD/CAM. `audit-nucleo` ya no lo compara.
 - ✅ 🔴→✅ **WhatsApp "Tu diseño está listo" nunca salía desde el panel de diseño:** `notify-wa` no tenía mensaje para
   `REVISION_CLIENTE` (respondía «sin mensaje»). Agregados además EN_DISENO, CAMBIOS_SOLICITADOS, ERROR_STL, EN_IMPRESION.

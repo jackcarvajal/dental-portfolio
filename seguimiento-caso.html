@@ -486,6 +486,35 @@
             } catch (_) { return null; }
         }
 
+        const WA_LAB = '573212816716';
+        function pintarAccionDoctor(op, cod) {
+            let box = document.getElementById('accion-doctor');
+            if (!box) {
+                box = document.createElement('div'); box.id = 'accion-doctor';
+                const prog = document.getElementById('pasos').parentNode;
+                prog.parentNode.insertBefore(box, prog.nextSibling);
+            }
+            const panel = '/app/login.html?redirect=' + encodeURIComponent('/app/client-panel.html#aprobar=' + cod);
+            const wa = 'https://wa.me/' + WA_LAB + '?text=' + encodeURIComponent('Hola, escribo por mi caso ' + cod);
+            const A = {
+                REVISION_CLIENTE:   ['Tu diseño espera tu aprobación', 'Revísalo en tu panel de cliente: apruébalo o pide cambios (2 revisiones sin costo). El caso sigue apenas respondas.', 'Revisar y aprobar en mi panel', panel],
+                PAGO_NO_CONFIRMADO: ['Falta confirmar tu pago', 'Empezamos apenas confirmemos el pago. En tu panel ves el valor y cómo pagar.', 'Ir a mi panel', panel],
+                ERROR_STL:          ['Necesitamos que reenvíes tus archivos', 'Llegaron incompletos o con un problema. Escríbenos y te decimos qué falta.', 'Escribir por WhatsApp', wa],
+                INCIDENCIA_CLIENTE: ['Tenemos una pregunta sobre tu caso', 'Escríbenos por WhatsApp para resolverla y seguir.', 'Escribir por WhatsApp', wa],
+            }[op];
+            box.textContent = '';
+            if (!A) { box.style.display = 'none'; return; }
+            box.style.cssText = 'display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:rgba(212,175,55,.1);border:2px solid rgba(212,175,55,.55);border-radius:15px;padding:22px 26px;margin-bottom:30px;';
+            const txt = document.createElement('div'); txt.style.cssText = 'flex:1;min-width:220px;';
+            const t = document.createElement('p'); t.style.cssText = 'color:#FFD700;font-weight:800;font-size:1.1rem;margin-bottom:4px;'; t.textContent = '⏸ ' + A[0];
+            const d = document.createElement('p'); d.style.cssText = 'color:rgba(248,250,252,.85);font-size:.95rem;line-height:1.5;'; d.textContent = A[1];
+            txt.append(t, d);
+            const b = document.createElement('a'); b.href = A[3]; b.textContent = A[2];
+            if (A[3].startsWith('https://wa.me')) { b.target = '_blank'; b.rel = 'noopener noreferrer'; }
+            b.style.cssText = 'background:linear-gradient(135deg,#D4AF37,#b8962e);color:#1a1405;font-weight:800;border-radius:50px;padding:12px 22px;text-decoration:none;white-space:nowrap;';
+            box.append(txt, b);
+        }
+
         function mostrarCaso(caso) {
             cerrarModalNoEncontrado();
             document.getElementById('resultado').style.display = 'block';
@@ -510,6 +539,9 @@
             badge.style.color = estadoInfo.color;
             badge.style.border = `2px solid ${estadoInfo.color}`;
             badge.textContent = estado;
+
+            // Turno del doctor: qué le toca hacer y un botón que lo lleva directo (aprobar → su panel de cliente)
+            pintarAccionDoctor(op, caso.codigo || caso.numeroOrden || '');
             
             // Barra de progreso
             document.getElementById('barraProgreso').style.width = estadoInfo.progress + '%';
@@ -545,7 +577,7 @@
             addDet('Material',  caso.material   || '—');
             addDet('Submaterial', caso.submaterial || '');
             addDet('Color VITA',  caso.color_vita  || '');
-            addDet('Cantidad',  caso.cantidad ? `${caso.cantidad} unidades` : '');
+            addDet('Cantidad',  caso.cantidad ? `${caso.cantidad} ${caso.cantidad == 1 ? 'unidad' : 'unidades'}` : '');
             addDet('Detalle', estadoRaw);
             addDet('Entrega estimada', caso.fecha_entrega
                 ? new Date(caso.fecha_entrega).toLocaleDateString('es-CO', {day:'2-digit',month:'long',year:'numeric'})
