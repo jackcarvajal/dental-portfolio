@@ -611,6 +611,14 @@
     </div>
 
     <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Volver al sitio principal</a>
+    <script>
+    /* «Volver»: a la página del sitio de la que vino (no a la portada a ciegas). También queda arriba a la izquierda. */
+    (function(){ var a=document.querySelector('.back-link'); if(!a) return; var dest='/';
+      try{ var r=document.referrer&&new URL(document.referrer); if(r&&r.origin===location.origin&&r.pathname.indexOf('/app/')!==0){ dest=r.pathname+r.search; a.href=dest; a.innerHTML='<i class="fas fa-arrow-left"></i> Volver a la página anterior'; } }catch(e){}
+      var t=document.createElement('a'); t.href=dest; t.className='volver-top'; t.innerHTML='<i class="fas fa-arrow-left" aria-hidden="true"></i> Volver'; t.setAttribute('aria-label','Volver a la página anterior');
+      t.style.cssText='position:fixed;top:14px;left:14px;z-index:50;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:50px;background:rgba(13,21,32,.85);border:1px solid rgba(255,255,255,.14);color:#e2e8f0;font:700 .82rem Inter,-apple-system,sans-serif;text-decoration:none';
+      document.body.appendChild(t); })();
+    </script>
 </div>
 
 <script>

@@ -1131,8 +1131,12 @@
      y en claro quedaban textos sin contraste. Fotos, videos y mapas se vuelven a invertir para verse normales.
      Estado único: localStorage 'pg_theme'. El «light-mode» viejo de cada página se neutraliza. */
   var _CLARO_CSS = 'html.tema-claro{filter:invert(1) hue-rotate(180deg);background:#050505}'
-    + 'html.tema-claro img,html.tema-claro video,html.tema-claro iframe,html.tema-claro [style*="url("]{filter:invert(1) hue-rotate(180deg)}'
+    // Se vuelven a invertir (se ven con sus colores reales): fotos, videos, mapas y escenas 3D
+    // (el robot de Spline y los visores three.js — su <canvas> lleva data-engine). Las partículas 2D sí se invierten.
+    + 'html.tema-claro img,html.tema-claro video,html.tema-claro iframe,html.tema-claro [style*="url("],'
+    + 'html.tema-claro spline-viewer,html.tema-claro model-viewer,html.tema-claro canvas[data-engine],html.tema-claro [data-sin-invertir]{filter:invert(1) hue-rotate(180deg)}'
     + 'html.tema-claro [style*="url("] img{filter:none}'
+    + 'html.tema-claro spline-viewer{opacity:.38}'   // el robot de la portada detrás del título: suave para que el texto se lea
     + '@media print{html.tema-claro{filter:none}}';
   function _claroCss() {
     if (document.getElementById('tema-claro-css')) return;
