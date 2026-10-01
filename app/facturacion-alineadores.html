@@ -63,6 +63,32 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 .btn.mini{padding:6px 10px;font-size:.78rem;}
 .btn-ok{background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.45);color:var(--green);}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+/* Tamaños más cómodos de leer en el portal del cliente (letras y cuadros un poco más grandes y ordenados) */
+body{max-width:1080px;}
+body h1{font-size:1.55rem;}
+body .sub{font-size:.92rem;}
+body .kc{padding:18px 20px;}
+body .kc .k{font-size:.78rem;}
+body .kc .v{font-size:1.9rem;}
+body table{font-size:.94rem;}
+body th{font-size:.74rem;}
+body th,body td{padding:12px 14px;}
+body td .l2{font-size:.85rem;}
+body td.pac .l2{white-space:nowrap;}
+body .pill{font-size:.76rem;padding:4px 11px;}
+body .btn.mini{padding:8px 13px;font-size:.85rem;}
+body .tab{font-size:1rem;}
+body .chip{font-size:.88rem;}
+body .chart h4{font-size:1.15rem;}
+body .chart .sub{font-size:.9rem;}
+body .bars{height:220px;gap:10px;}
+body .bars .tot{font-size:.82rem;}
+body .xlab{gap:10px;}
+body .xlab span{font-size:.82rem;}
+body .leg{font-size:.9rem;}
+body .estados-ayuda{margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);font-size:.88rem;line-height:1.6;color:#cbd5e1;}
+body .estados-ayuda p+p{margin-top:6px;}
+@media(max-width:760px){body td.pac .l2{white-space:normal;}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -118,7 +144,11 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 
 <section class="panel" id="p-cuenta" role="tabpanel">
   <div class="charts">
-    <div class="chart"><h4>Tu estado de cuenta por mes</h4><p class="sub">USD, por mes de corte</p><div id="chCuenta"></div></div>
+    <div class="chart"><h4>Tu estado de cuenta por mes</h4><p class="sub">USD · cada cobro aparece en el mes en que se hizo el trabajo</p><div id="chCuenta"></div>
+      <div class="estados-ayuda">
+        <p><b style="color:#00FF41">Pagado</b>: ya lo recibimos. <b style="color:#D4AF37">Facturado</b>: está en el estado de cuenta que te enviamos y falta pagarlo. <b style="color:#D946A6">Por facturar</b>: trabajo ya hecho que se incluye en tu próximo estado de cuenta.</p>
+        <p>Si ves un cobro pendiente de un mes antiguo (por ejemplo, una valoración), <b>no es un pago atrasado de ese mes</b>: quedó por fuera del estado de cuenta de entonces y se incluye en el actual. El estado de cuenta se paga dentro de los primeros 10 días del mes siguiente a su envío.</p>
+      </div></div>
     <div class="pay" style="margin:0">
       <b>💳 Cómo pagar</b><br>
       • El estado de cuenta se envía cada mes y se paga dentro de los <b>primeros 10 días</b> del mes.<br>
@@ -252,13 +282,19 @@ function render(){
   // Corte por mes (tabla + gráfico)
   const meses={};
   for(const c of CARGOS){ const m=c.mes_corte||'(sin mes)'; meses[m]=meses[m]||{t:0,n:0,pend:0}; meses[m].t+=Number(c.monto||0); meses[m].n++; if(c.estado_pago!=='pagado') meses[m].pend+=Number(c.monto||0); }
-  const cr=Object.keys(meses).sort().reverse().map(m=>{const v=meses[m];const st=v.pend<=0?'<span class="pill pagado">pagado</span>':(v.pend<v.t?'<span class="pill factur">pago parcial</span>':'<span class="pill pend">pendiente</span>');return `<tr><td>${escH(ALN.mesLbl(m))}</td><td>${v.n}</td><td>$${nf.format(Math.round(v.t))} USD</td><td>${st}</td></tr>`;}).join('');
+  const cr=Object.keys(meses).sort().reverse().map(m=>{const v=meses[m];const sinPagar=CARGOS.filter(x=>(x.mes_corte||'(sin mes)')===m&&x.estado_pago!=='pagado'); const todoFact=sinPagar.length&&sinPagar.every(x=>x.estado_pago==='facturado');
+    const st=v.pend<=0?'<span class="pill pagado">pagado</span>':(todoFact?'<span class="pill factur">facturado · por pagar</span>':(v.pend<v.t?'<span class="pill factur">pago parcial</span>':'<span class="pill cambios">por facturar</span>'));return `<tr><td>${escH(ALN.mesLbl(m))}</td><td>${v.n}</td><td>$${nf.format(Math.round(v.t))} USD</td><td>${st}</td></tr>`;}).join('');
   document.querySelector('#corteTbl tbody').innerHTML=cr||`<tr><td colspan="4" class="empty">Aún no tienes cargos.</td></tr>`;
   ALN.barras(document.getElementById('chCuenta'),
     ALN.mesesDe(CARGOS.map(x=>x.mes_corte),9).map(m=>{ const v={}; CARGOS.filter(x=>x.mes_corte===m).forEach(x=>{ const k=x.estado_pago==='pagado'?'pag':(x.estado_pago==='facturado'?'fac':'pen'); v[k]=(v[k]||0)+Number(x.monto||0); }); return {lab:ALN.mesLbl(m), vals:v}; }),
     [{k:'pag',lbl:'Pagado',color:'#00FF41'},{k:'fac',lbl:'Facturado',color:'#D4AF37'},{k:'pen',lbl:'Por facturar',color:'#D946A6'}], x=>'$'+nf.format(Math.round(x)));
   // Detalle
-  const dr=CARGOS.slice().sort((a,b)=>String(b.mes_corte||'').localeCompare(String(a.mes_corte||''))).map(c=>{const st=c.estado_pago==='pagado'?'pagado':(c.estado_pago==='facturado'?'factur':'pend');return `<tr><td class="pac" data-l="Paciente"><div><b>${escH((CASOS[c.caso_id]||{}).paciente||'—')}</b></div></td><td data-l="Concepto"><div>${escH(tipoLbl(c.tipo))}</div></td><td data-l="Mes"><div>${escH(ALN.mesLbl(c.mes_corte))}</div></td><td data-l="Monto"><div>${money(c.monto,c.moneda)}</div></td><td data-l="Estado"><div><span class="pill ${st}">${escH(c.estado_pago)}</span></div></td></tr>`;}).join('');
+  // Cobros sin pagar de un mes anterior al último pagado: se aclara que no es un atraso de ese mes
+  const ultPagado=CARGOS.filter(x=>x.estado_pago==='pagado').map(x=>x.mes_corte||'').sort().pop()||'';
+  const EST_TXT={pagado:'pagado',facturado:'facturado · por pagar',pendiente:'por facturar'};
+  const notaViejo=c=> (c.estado_pago!=='pagado' && c.mes_corte && c.mes_corte<ultPagado)
+    ? `<span class="l2">${c.estado_pago==='facturado'?'Incluido en tu estado de cuenta actual':'Se suma a tu próximo estado de cuenta'}</span>` : '';
+  const dr=CARGOS.slice().sort((a,b)=>String(b.mes_corte||'').localeCompare(String(a.mes_corte||''))).map(c=>{const st=c.estado_pago==='pagado'?'pagado':(c.estado_pago==='facturado'?'factur':'cambios');return `<tr><td class="pac" data-l="Paciente"><div><b>${escH((CASOS[c.caso_id]||{}).paciente||'—')}</b></div></td><td data-l="Concepto"><div>${escH(tipoLbl(c.tipo))}</div></td><td data-l="Mes"><div>${escH(ALN.mesLbl(c.mes_corte))}</div></td><td data-l="Monto"><div>${money(c.monto,c.moneda)}</div></td><td data-l="Estado"><div><span class="pill ${st}">${escH(EST_TXT[c.estado_pago]||c.estado_pago)}</span>${notaViejo(c)}</div></td></tr>`;}).join('');
   document.querySelector('#cargosTbl tbody').innerHTML=dr||`<tr><td colspan="5" class="empty">Sin cargos.</td></tr>`;
   // Pagos
   const pr=PAGOS.map(p=>`<tr><td data-l="Fecha"><div>${fmtD(p.created_at)}</div></td><td data-l="Monto"><div>${money(p.monto,p.moneda)}</div></td><td data-l="Método"><div>${escH(p.metodo||'—')}</div></td><td data-l="Referencia"><div>${escH(p.referencia||'—')}</div></td><td data-l="Estado"><div><span class="pill ${escH(p.estado)}">${escH(p.estado)}</span></div></td></tr>`).join('');

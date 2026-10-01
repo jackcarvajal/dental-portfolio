@@ -528,7 +528,7 @@ function renderCuentas(){
     }
     const rows=Object.keys(meses).sort().reverse().map(m=>{
       const v=meses[m]; const marg=usdToCop(v.cobrar)-v.pagar;
-      return `<tr><td>${escH(ALN.mesLbl(m))}</td><td>$${nf.format(Math.round(v.cobrar))} USD</td><td>${nf.format(Math.round(v.pagar))} COP</td><td>${nf.format(Math.round(marg))} COP</td><td>${CARGOS.some(x=>x.parte==='cliente'&&x.mes_corte===m&&x.estado_pago!=='pagado')?`<button class="btn btn-ghost mini" onclick="marcarMesPagado('${escJ(m)}')" title="Marcar como pagado el cobro al cliente de este mes">✅ Pagado</button>`:'<span class="pill pagado">pagado</span>'}</td></tr>`;
+      return `<tr><td>${escH(ALN.mesLbl(m))}</td><td>$${nf.format(Math.round(v.cobrar))} USD</td><td>${nf.format(Math.round(v.pagar))} COP</td><td>${nf.format(Math.round(marg))} COP</td><td>${CARGOS.some(x=>x.parte==='cliente'&&x.mes_corte===m&&x.estado_pago==='pendiente')?`<button class="btn btn-ghost mini" onclick="marcarMesFacturado('${escJ(m)}')" title="Ya enviaste el estado de cuenta de este mes al cliente">📨 Facturado</button> `:''}${CARGOS.some(x=>x.parte==='cliente'&&x.mes_corte===m&&x.estado_pago!=='pagado')?`<button class="btn btn-ghost mini" onclick="marcarMesPagado('${escJ(m)}')" title="Marcar como pagado el cobro al cliente de este mes">✅ Pagado</button>`:'<span class="pill pagado">pagado</span>'}</td></tr>`;
     }).join('');
     document.querySelector('#corteTbl tbody').innerHTML = rows || `<tr><td colspan="5" class="empty">Aún sin cargos.</td></tr>`;
     // Pagos reportados por el cliente
@@ -676,6 +676,17 @@ async function liberarCaso(id){
   if(error){ alert('Error: '+error.message); return; }
   await cargar();
 }
+// Estado de cuenta ENVIADO al cliente: sus cobros pasan a «facturado» y desde el mes siguiente cuentan para la política de pago
+async function marcarMesFacturado(m){
+  const pend=CARGOS.filter(x=>x.parte==='cliente'&&x.mes_corte===m&&x.estado_pago==='pendiente');
+  if(!pend.length) return;
+  const tot=pend.reduce((a,x)=>a+Number(x.monto||0),0);
+  if(!confirm('¿Ya le enviaste al cliente el estado de cuenta de '+ALN.mesLbl(m)+'?\n'+pend.length+' cargo(s) · $'+nf.format(Math.round(tot))+' USD\n\nPasan a «facturado»: se pagan en los primeros 10 días del mes siguiente.')) return;
+  const { error }=await sb.from('alineadores_cargos').update({estado_pago:'facturado'}).in('id',pend.map(x=>x.id));
+  if(error){ alert('Error: '+error.message); return; }
+  await cargar();
+}
+
 async function marcarMesPagado(m){
   const pend=CARGOS.filter(x=>x.parte==='cliente'&&x.mes_corte===m&&x.estado_pago!=='pagado');
   if(!pend.length) return;
