@@ -76,7 +76,7 @@ medio de una RPC o vista del dueño, no tocando sus tablas directamente.
 | **Cobros** | `pagar`, `calculadora*`, `app/cotizaciones`, `contabilidad`, `admin-precios` | `cotizaciones`, `pagos`, `config_precios`, `catalogo` | `docs/ACTIVAR-PAGOS.md` · Ley 50/50 |
 | **Clientes y crecimiento** | `app/client-panel`, `referidos-portal`, `metricas*`, `clientes` | `doctores_perfil`, `referidos`, `leads_doctores`, `analytics_events` | — |
 | **Identidad y acceso** | `app/login`, `gestionar-usuarios`, `crear-operario`, `cambiar-contrasena` | `perfiles`, `staff_departamentos` (+ `app_metadata.roles`) | `docs/GUIA-SEGURIDAD.md` |
-| **Notificaciones y soporte** | `app/reportes-web`, `ayuda`, `soporte` | `notificaciones_internas`, `push_subscriptions`, `reportes_web`, `logs_incidencias` | `docs/PROTOCOLO-WHATSAPP.md`, `docs/WHATSAPP-OFICIAL.md` |
+| **Notificaciones y soporte** | `app/reportes-web`, `bandeja-whatsapp`, `ayuda`, `soporte` | `notificaciones_internas`, `avisos_whatsapp`, `push_subscriptions`, `reportes_web`, `logs_incidencias` | `docs/PROTOCOLO-WHATSAPP.md`, `docs/WHATSAPP-OFICIAL.md` |
 | **Contenido y SEO** | páginas públicas, `journal`, `portafolio`, `links` | `casos_portafolio`, `comentarios_portafolio`, `links_config` | `docs/GUIA-BOT-Y-ARTICULOS.md`, `docs/GUIA-AUDITORIA.md` |
 
 ---

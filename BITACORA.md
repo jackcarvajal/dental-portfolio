@@ -18,6 +18,18 @@
   botón del aviso abre la aprobación (antes llevaba a «caso no encontrado»).
 - 🟡 **Laboratorio 3D v6:** vuelve a mostrar todo el laboratorio (las estaciones fuera del recorrido quedan atenuadas),
   microscopio junto a la cámara en Calidad, botón «Revisar y aprobar en mi panel».
+- ✅ **Bandeja de WhatsApp** (`app/bandeja-whatsapp.html`, secretaría/admin/operación): cada cambio de etapa de un caso
+  de PRODIGY encola un aviso (`avisos_whatsapp` + trigger); la secretaria lo envía con el número de PRODIGY en dos clics.
+  Antes solo diseño y operación avisaban (fresado, calidad, despacho y reparto nunca). Los dorados (aprobar diseño,
+  reenviar archivos) van primero. Los paneles ya no abren WhatsApp si el aviso quedó en la bandeja. 🟡 Falta correr
+  `sql/avisos-whatsapp-2026.sql` (después de `sql/storage-permisos-2026.sql`).
+- ✅ 🔴 **Permisos de archivos** (`sql/storage-permisos-2026.sql`, 🟡 falta correr): `dental-cases` y `pedidos-archivos` se
+  podían listar y bajar sin sesión; portafolio se subía con `user_metadata`; evidencias abiertas a cualquier registrado;
+  una política sin bucket dejaba subir a cualquier bucket. Faltaban los buckets `diseno-archivos` y `prodigy-files`
+  (fallaban comprobante y fotos del portal, fotos de la revisión y la subida masiva). Buckets hoy casi vacíos (334 MB,
+  todo portafolio): se cierra antes de que haya archivos de pacientes.
+- 🟡 **Laboratorio 3D v8–v9:** estaciones Empaque → Reparto (moto, o camión si va por transportadora) → Entregado
+  (consultorio con sillón); microscopio y cámara en Calidad.
 - 💡 **BSS en pausa** (decisión de Alejandro): solo PRODIGY y Alejandro CAD/CAM. `audit-nucleo` ya no lo compara.
 - ✅ 🔴→✅ **WhatsApp "Tu diseño está listo" nunca salía desde el panel de diseño:** `notify-wa` no tenía mensaje para
   `REVISION_CLIENTE` (respondía «sin mensaje»). Agregados además EN_DISENO, CAMBIOS_SOLICITADOS, ERROR_STL, EN_IMPRESION.

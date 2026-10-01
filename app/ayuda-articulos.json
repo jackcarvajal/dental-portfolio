@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-29c",
+  "version": "2026-10-01",
   "categorias": [
     {
       "id": "inicio",
@@ -607,6 +607,27 @@
       "rel": [
         "roles",
         "crear-usuario"
+      ]
+    },
+    {
+      "id": "bandeja-whatsapp",
+      "cat": "clientes",
+      "titulo": "Enviar los avisos de WhatsApp a los doctores",
+      "resumen": "La Bandeja de WhatsApp junta todos los avisos de los casos para enviarlos desde el número de PRODIGY.",
+      "para": "Secretaría, administración y operaciones",
+      "pasos": [
+        "Abre **Bandeja de WhatsApp** (menú de Administración, o el botón verde desde la Bandeja de solicitudes).",
+        "Ten abierto **WhatsApp Web** con el número de PRODIGY en otra pestaña (solo la primera vez del día).",
+        "Cada vez que un caso cambia de etapa (diseño, revisión, producción, calidad, empaque, en camino, entregado) aparece un aviso con el mensaje ya escrito.",
+        "Envía primero los **dorados**: el doctor tiene que hacer algo (aprobar su diseño o reenviar archivos).",
+        "Toca **Enviar por WhatsApp**: se abre el chat del doctor con el texto. Envíalo y vuelve. El aviso pasa a **Enviados**.",
+        "Si al final no lo enviaste, en **Enviados** toca **Volver a por enviar**. Si un aviso ya no aplica, **Descartar**."
+      ],
+      "notas": [
+        "Si un caso cambia otra vez antes de que avises, el aviso viejo se reemplaza solo: al doctor le llega lo último.",
+        "Los que dicen **Falta el número** no tienen WhatsApp en el pedido: búscalo y corrígelo en el pedido.",
+        "El enlace del mensaje lleva al doctor a ver su caso y, si debe aprobar, a su panel de cliente.",
+        "Cuando se conecte la API oficial de WhatsApp, los avisos saldrán solos y aquí aparecerán como «Salió solo»."
       ]
     }
   ]

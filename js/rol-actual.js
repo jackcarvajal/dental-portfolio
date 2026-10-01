@@ -65,6 +65,7 @@ function prodigyDockReserve(){
     'client-panel.html':              ['PORTAL DEL DOCTOR', '#94a3b8', 'cliente'],
     'cotizaciones.html':              ['COTIZACIONES',   '#00d2ff', 'admin / operator'],
     'bandeja-solicitudes.html':       ['SOLICITUDES',    '#D946A6', 'secretaria / admin'],
+    'bandeja-whatsapp.html':          ['WHATSAPP',       '#25D366', 'secretaria / admin'],
     'gestionar-casos.html':           ['PORTAFOLIO',     '#D4AF37', 'admin'],
     'agregar-caso.html':              ['SUBIR CASO',     '#D4AF37', 'admin'],
     'admin-precios.html':             ['PRECIOS',        '#D4AF37', 'admin'],
@@ -86,6 +87,7 @@ function prodigyDockReserve(){
     ['inventario.html',                'Inventario'],
     ['contabilidad.html',              'Contabilidad'],
     ['cotizaciones.html',              'Cotizaciones'],
+    ['bandeja-whatsapp.html',          'WhatsApp'],
     ['pruebas-carga.html',             'Pruebas']
   ];
 

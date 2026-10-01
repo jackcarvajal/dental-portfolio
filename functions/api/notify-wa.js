@@ -103,14 +103,19 @@ export async function onRequestPost(context) {
   const origin = request.headers.get('Origin') || '';
   const cors   = corsHeaders(origin);
 
-  // Rate limit: 20 req / 5 min por IP
+  // Quién llama (sesión verificada; roles solo de app_metadata)
+  const c = cfg(env);
+  const yo = c.SERVICE ? await usuarioDe(request, c) : null;
+  const personal = esPersonal(yo);
+
+  // Rate limit por IP: 20 / 5 min sin sesión; 300 / 5 min para el equipo (Bandeja de WhatsApp)
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const cache = caches.default;
   const rlKey = new Request('https://rl.internal/notify-wa_' + ip);
   const rlHit = await cache.match(rlKey);
   if (rlHit) {
     const count = parseInt(await rlHit.text(), 10) || 0;
-    if (count >= 20) {
+    if (count >= (personal ? 300 : 20)) {
       return new Response(JSON.stringify({ error: 'Demasiadas solicitudes.' }), { status: 429, headers: cors });
     }
     await cache.put(rlKey, new Response(String(count + 1), { headers: { 'Cache-Control': 'max-age=300' } }));
@@ -151,14 +156,12 @@ export async function onRequestPost(context) {
   const recibo = (recibo_url && _propio.test(recibo_url)) ? recibo_url : `${SITIO}/recibo-caso?id=${encodeURIComponent(cod)}${esIntl ? '&lang=en' : ''}`;
 
   // Enlace de seguimiento: con la llave del caso solo si llama alguien del equipo
-  const c = cfg(env);
-  const yo = c.SERVICE ? await usuarioDe(request, c) : null;
-  const personal = esPersonal(yo);
-  let link = `${SITIO}/app/client-panel`;
+  let link = `${SITIO}/app/client-panel`, pedidoId = null;
   if (personal && codigo) {
     try {
-      const r = await fetch(`${c.URL}/rest/v1/pedidos?codigo=eq.${encodeURIComponent(codigo)}&select=hash_seguridad&limit=1`, { headers: adminH(c.SERVICE) });
+      const r = await fetch(`${c.URL}/rest/v1/pedidos?codigo=eq.${encodeURIComponent(codigo)}&select=id,hash_seguridad&limit=1`, { headers: adminH(c.SERVICE) });
       const [p] = r.ok ? await r.json() : [];
+      if (p) pedidoId = p.id;
       if (p) link = `${SITIO}/seguimiento-caso?id=${encodeURIComponent(codigo)}${p.hash_seguridad ? '&key=' + encodeURIComponent(p.hash_seguridad) : ''}`;
     } catch (_) { /* queda el portal */ }
   }
@@ -170,15 +173,31 @@ export async function onRequestPost(context) {
   const waUrl   = `https://wa.me/${wa}?text=${encodeURIComponent(mensaje)}`;
 
   // Envío automático por la API oficial (si está configurada y quien llama es del equipo)
-  if (personal && env.WA_TOKEN && env.WA_PHONE_ID) {
+  // `solo_texto`: la Bandeja pide el mensaje para mostrarlo, sin enviarlo
+  if (personal && env.WA_TOKEN && env.WA_PHONE_ID && !body.solo_texto) {
     const p = plantillaDe(nuevo_estado, d, esIntl);
     if (p) {
       const r = await enviarOficial(env, wa, p, esIntl).catch(() => ({ ok: false }));
-      if (r.ok) return new Response(JSON.stringify({ enviado: true, metodo: 'oficial', id: r.id, wa_url: waUrl, mensaje }), { status: 200, headers: cors });
+      if (r.ok) {
+        if (pedidoId) await fetch(`${c.URL}/rest/v1/avisos_whatsapp?pedido_id=eq.${pedidoId}&estado=eq.${encodeURIComponent(nuevo_estado)}&estado_envio=eq.pendiente`, {
+          method: 'PATCH', headers: { ...adminH(c.SERVICE), Prefer: 'return=minimal' },
+          body: JSON.stringify({ estado_envio: 'enviado', metodo: 'oficial', enviado_at: new Date().toISOString(), enviado_por: yo?.id || null }),
+        }).catch(() => {});
+        return new Response(JSON.stringify({ enviado: true, metodo: 'oficial', id: r.id, wa_url: waUrl, mensaje }), { status: 200, headers: cors });
+      }
     }
   }
 
-  return new Response(JSON.stringify({ enviado: false, metodo: 'wa_url', wa_url: waUrl, mensaje }), { status: 200, headers: cors });
+  // ¿Ya quedó en la Bandeja de WhatsApp? (lo encola el trigger al cambiar el estado). Si sí, el panel no abre
+  // WhatsApp: lo envía la secretaria desde la Bandeja y así nadie lo manda dos veces.
+  let en_bandeja = false;
+  if (personal && pedidoId && !body.solo_texto) {
+    try {
+      const r = await fetch(`${c.URL}/rest/v1/avisos_whatsapp?pedido_id=eq.${pedidoId}&estado=eq.${encodeURIComponent(nuevo_estado)}&estado_envio=eq.pendiente&select=id&limit=1`, { headers: adminH(c.SERVICE) });
+      en_bandeja = r.ok && (await r.json()).length > 0;
+    } catch (_) { /* sin bandeja: el panel abre WhatsApp como antes */ }
+  }
+  return new Response(JSON.stringify({ enviado: false, metodo: 'wa_url', en_bandeja, wa_url: waUrl, mensaje }), { status: 200, headers: cors });
 }
 
 export async function onRequestOptions(context) {

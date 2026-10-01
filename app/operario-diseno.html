@@ -688,6 +688,7 @@ async function notificarWADiseno(caso, estado) {
     });
     const data = await res.json();
     if (data.enviado) toast('WhatsApp enviado al doctor', 'ok');
+    else if (data.en_bandeja) toast('📨 Aviso al doctor listo en la Bandeja de WhatsApp', 'ok');
     else if (data.wa_url) window.open(data.wa_url, '_blank', 'noopener,noreferrer');
   } catch (_) {}
 }
@@ -1185,6 +1186,6 @@ async function bulkDisenoUploadAll() {
 <script src="../js/buscador.js?v=20260718e"></script>
 <script src="../js/tour.js?v=20260721"></script>
 <script src="../js/imprimir.js?v=20260718e"></script>
-<script src="../js/rol-actual.js?v=20260929b"></script>
+<script src="../js/rol-actual.js?v=20261001"></script>
 </body>
 </html>

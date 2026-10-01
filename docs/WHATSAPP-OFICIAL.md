@@ -19,6 +19,11 @@ de las 24 h después de que el doctor escribe es gratis.
 
 ## Cómo funciona en el sistema
 
+**Bandeja de WhatsApp** (`app/bandeja-whatsapp.html`, tabla `avisos_whatsapp`): cada cambio de etapa de un caso de
+PRODIGY deja un aviso en cola (trigger en `pedidos`, `sql/avisos-whatsapp-2026.sql`). La secretaria los envía desde ahí
+con el WhatsApp de PRODIGY; los paneles ya no abren WhatsApp por su cuenta cuando el aviso quedó en la bandeja
+(`notify-wa` responde `en_bandeja`). Con la API oficial, el mismo botón lo envía solo y el aviso queda «Salió solo».
+
 1. Alguien del equipo cambia el estado de un caso (panel de diseño, panel de operación, panel interno).
 2. El panel llama a `/api/notify-wa` **con su sesión**. La función verifica que sea del equipo
    (`app_metadata`, nunca `user_metadata`), busca la llave del caso y arma el enlace de seguimiento.
