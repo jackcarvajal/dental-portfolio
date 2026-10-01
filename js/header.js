@@ -1124,63 +1124,58 @@
     document.head.appendChild(_i18nS);
   }
 
-  /* ── THEME TOGGLE ── */
-  var _LIGHT_VARS = {
-    '--bg':'#f0f4f8','--card':'#ffffff','--muted':'#475569',
-    '--border':'rgba(0,0,0,0.1)','--txt':'#0f172a',
-    '--bg-darker':'#eef2f7','--bg-dark':'#f5f7fa','--bg-card':'#ffffff',
-    '--bg-card-hover':'#f8fafc','--text-primary':'#0f172a',
-    '--text-secondary':'#374151','--text-tertiary':'#6b7280',
-    '--text-muted':'#9ca3af','--border-subtle':'rgba(0,0,0,0.08)',
-    '--border-color':'rgba(0,0,0,0.12)',
-    '--neon':'#16a34a',
-    '--accent-neon':'#16a34a',
-    '--cyan':'#0284c7','--accent-cyan':'#0284c7',
-    '--mg':'#be185d','--accent-mg':'#be185d',
-    '--gold':'#b45309','--accent-gold':'#b45309',
-    '--surface':'rgba(0,0,0,0.04)',
-    '--overlay':'rgba(0,0,0,0.06)'
-  };
-
-  function _phdrApplyTheme(t) {
-    var root = document.documentElement;
+  /* ── THEME TOGGLE ──
+     Modo claro = el diseño oscuro con los colores invertidos, en UNA sola regla para toda la web.
+     Antes cada página tenía su propio «light-mode» a medias (variables sueltas + estilos fijos oscuros)
+     y en claro quedaban textos sin contraste. Fotos, videos y mapas se vuelven a invertir para verse normales.
+     Estado único: localStorage 'pg_theme'. El «light-mode» viejo de cada página se neutraliza. */
+  var _CLARO_CSS = 'html.tema-claro{filter:invert(1) hue-rotate(180deg);background:#050505}'
+    + 'html.tema-claro img,html.tema-claro video,html.tema-claro iframe,html.tema-claro [style*="url("]{filter:invert(1) hue-rotate(180deg)}'
+    + 'html.tema-claro [style*="url("] img{filter:none}'
+    + '@media print{html.tema-claro{filter:none}}';
+  function _claroCss() {
+    if (document.getElementById('tema-claro-css')) return;
+    var s = document.createElement('style'); s.id = 'tema-claro-css'; s.textContent = _CLARO_CSS;
+    (document.head || document.documentElement).appendChild(s);
+  }
+  function _phdrIconos(claro) {
     var btn  = document.getElementById('pnav2-theme-btn');
     var mob  = document.getElementById('pnav2-theme-mob');
     var ico  = document.getElementById('pnav2-theme-ico');
-    if (t === 'light') {
-      Object.keys(_LIGHT_VARS).forEach(function(k){ root.style.setProperty(k, _LIGHT_VARS[k]); });
-      document.body.classList.add('light-mode');
-      if (btn) btn.textContent = '☀️';
-      if (mob) mob.style.color = '#b45309';
-      if (ico) { ico.className = 'fas fa-sun'; ico.parentElement.lastChild.textContent = 'MODO OSCURO'; }
-    } else {
-      Object.keys(_LIGHT_VARS).forEach(function(k){ root.style.removeProperty(k); });
-      document.body.classList.remove('light-mode');
-      if (btn) btn.textContent = '🌙';
-      if (mob) mob.style.color = '#94a3b8';
-      if (ico) { ico.className = 'fas fa-moon'; ico.parentElement.lastChild.textContent = 'MODO CLARO'; }
-    }
-    localStorage.setItem('pg_theme', t);
+    if (btn) btn.textContent = claro ? '☀️' : '🌙';
+    if (mob) mob.style.color = claro ? '#b45309' : '#94a3b8';
+    if (ico) { ico.className = claro ? 'fas fa-sun' : 'fas fa-moon'; ico.parentElement.lastChild.textContent = claro ? 'MODO OSCURO' : 'MODO CLARO'; }
+  }
+  function _phdrApplyTheme(t) {
+    var claro = t === 'light';
+    _claroCss();
+    document.documentElement.classList.toggle('tema-claro', claro);
+    if (document.body) document.body.classList.remove('light-mode');
+    _phdrIconos(claro);
+    try { localStorage.setItem('pg_theme', claro ? 'light' : 'dark'); localStorage.setItem('theme', 'dark'); } catch (e) {}
   }
 
   window._phdrToggleTheme = function() {
-    _phdrApplyTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light');
+    _phdrApplyTheme(document.documentElement.classList.contains('tema-claro') ? 'dark' : 'light');
   };
 
-  /* Restaurar preferencia guardada */
+  /* Restaurar preferencia guardada (también la clave vieja 'theme' de algunas páginas) */
   (function(){
-    var saved = localStorage.getItem('pg_theme');
-    if (saved === 'light') {
-      var root = document.documentElement;
-      Object.keys(_LIGHT_VARS).forEach(function(k){ root.style.setProperty(k, _LIGHT_VARS[k]); });
-      document.body.classList.add('light-mode');
-      document.addEventListener('DOMContentLoaded', function(){
-        var btn = document.getElementById('pnav2-theme-btn');
-        var ico = document.getElementById('pnav2-theme-ico');
-        if (btn) btn.textContent = '☀️';
-        if (ico) { ico.className = 'fas fa-sun'; ico.parentElement.lastChild.textContent = 'MODO OSCURO'; }
-      });
+    var claro = false;
+    try { claro = localStorage.getItem('pg_theme') === 'light' || localStorage.getItem('theme') === 'light'; } catch (e) {}
+    if (claro) _phdrApplyTheme('light'); else { try { localStorage.setItem('theme', 'dark'); } catch (e) {} }
+    document.addEventListener('DOMContentLoaded', function(){ _phdrIconos(document.documentElement.classList.contains('tema-claro')); });
+    // Botones viejos de algunas páginas que ponen «light-mode» en el body: se traducen a este modo único
+    function vigilar() {
+      if (!document.body) return;
+      new MutationObserver(function(){
+        if (document.body.classList.contains('light-mode')) {
+          document.body.classList.remove('light-mode');
+          _phdrApplyTheme(document.documentElement.classList.contains('tema-claro') ? 'dark' : 'light');
+        }
+      }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
     }
+    if (document.body) vigilar(); else document.addEventListener('DOMContentLoaded', vigilar);
   })();
 
   // Marcar íconos FA decorativos como aria-hidden
