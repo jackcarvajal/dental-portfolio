@@ -239,9 +239,23 @@ oclusión y ajuste con el paciente.
 
 ### 5.10 Escáner a domicilio (solo Bogotá — servicio aparte)
 > Si no tienes escáner intraoral, vamos a tu consultorio: **servicio de escaneo a domicilio en Bogotá**
-> con Aidite Rapid 5 y fotogrametría para casos full arch.
-> Más información 👉 prodigylabdental.com/escaneo-fotogrametria
+> con Aidite Rapid 5.
+> Más información 👉 https://prodigylabdental.com/escaner-domicilio
 > ¿En qué zona de Bogotá estás?
+
+### 5.10b Fotogrametría full-arch — PRÓXIMAMENTE (no ofrecer como disponible)
+> ⚠️ **Todavía no se presta.** Está en certificación INVIMA de los scanbodies. Si un cliente la pide:
+
+> ¡Hola, [nombre]! Gracias por escribirnos a PRODIGY Lab Dental 🦷
+> El escaneo con **fotogrametría full-arch** todavía no está disponible: estamos terminando la
+> **certificación INVIMA de los scanbodies** y apenas la tengamos lo lanzamos oficialmente.
+> Gracias por tenernos en cuenta; si quieres, **te avisamos personalmente** cuando esté listo.
+> Guarda este número: publicaremos el lanzamiento en nuestros **estados de WhatsApp** y en redes
+> (Instagram y TikTok **@prodigylabdental**).
+> Y si tienes un caso All-on-X para ya, lo recibimos con **escaneo intraoral con scanbodies de
+> multi-unit** o con modelos. Cuéntame y te explico cómo enviarlo.
+
+> 🔎 **Interno:** anotar nombre y número de quien pregunte: es la lista de aviso para el lanzamiento.
 
 ### 5.11 Seguimiento de un caso en curso
 > Puedes ver el estado de tu caso en tiempo real en tu portal 👉 prodigylabdental.com/app/client-panel.html

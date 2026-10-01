@@ -905,7 +905,7 @@
       '• /diseno-cad — servicio diseño CAD\n' +
       '• /fresado-cam — servicio fresado\n' +
       '• /calculadora — cotizador online\n' +
-      '• /escaneo-fotogrametria — escaneo a domicilio Aidite Rapid 5 + fotogrametría full-arch\n' +
+      '• /escaneo-fotogrametria — escaneo a domicilio Aidite Rapid 5 (disponible). Fotogrametría full-arch: PRÓXIMAMENTE, en certificación INVIMA de los scanbodies. NO ofrecerla como disponible: invitar a pedir aviso por WhatsApp y recibir el caso All-on-X con escaneo intraoral con scanbodies de multi-unit\n' +
       '• /en/global-design — English landing for international clients\n' +
       '• /guia-tecnica — guías exportación STL por software\n' +
       '• /seguimiento-caso — tracking pedidos\n\n' +
