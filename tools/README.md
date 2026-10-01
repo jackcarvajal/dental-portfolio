@@ -107,7 +107,7 @@ que mató el script (revisa consola).
 
 ## Deriva del núcleo compartido (`audit-nucleo.mjs`)
 
-`node tools/audit-nucleo.mjs` — compara los archivos del núcleo (`ARCHITECTURE.md` §4) con Alejandro y BSS:
+`node tools/audit-nucleo.mjs` — compara los archivos del núcleo (`ARCHITECTURE.md` §4) con Alejandro (BSS en pausa):
 idéntico / N líneas distintas / qué repo lo tocó último. Si el otro repo es más nuevo, revisa y trae el fix a
 PRODIGY (canónico). Informativo: no falla ni modifica nada. `--repo <ruta>` para comparar con otro repo.
 `audit.mjs` §5 además falla si un origen CORS se acepta por substring (`.includes('.pages.dev')`) o si hay

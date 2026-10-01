@@ -76,7 +76,7 @@ medio de una RPC o vista del dueño, no tocando sus tablas directamente.
 | **Cobros** | `pagar`, `calculadora*`, `app/cotizaciones`, `contabilidad`, `admin-precios` | `cotizaciones`, `pagos`, `config_precios`, `catalogo` | `docs/ACTIVAR-PAGOS.md` · Ley 50/50 |
 | **Clientes y crecimiento** | `app/client-panel`, `referidos-portal`, `metricas*`, `clientes` | `doctores_perfil`, `referidos`, `leads_doctores`, `analytics_events` | — |
 | **Identidad y acceso** | `app/login`, `gestionar-usuarios`, `crear-operario`, `cambiar-contrasena` | `perfiles`, `staff_departamentos` (+ `app_metadata.roles`) | `docs/GUIA-SEGURIDAD.md` |
-| **Notificaciones y soporte** | `app/reportes-web`, `ayuda`, `soporte` | `notificaciones_internas`, `push_subscriptions`, `reportes_web`, `logs_incidencias` | `docs/PROTOCOLO-WHATSAPP.md` |
+| **Notificaciones y soporte** | `app/reportes-web`, `ayuda`, `soporte` | `notificaciones_internas`, `push_subscriptions`, `reportes_web`, `logs_incidencias` | `docs/PROTOCOLO-WHATSAPP.md`, `docs/WHATSAPP-OFICIAL.md` |
 | **Contenido y SEO** | páginas públicas, `journal`, `portafolio`, `links` | `casos_portafolio`, `comentarios_portafolio`, `links_config` | `docs/GUIA-BOT-Y-ARTICULOS.md`, `docs/GUIA-AUDITORIA.md` |
 
 ---
@@ -125,7 +125,7 @@ Cirugía sobre datos vivos: por etapas, cada una verificable y reversible.
 1. **Registro de SQL aplicado.** Hoy no se sabe con certeza qué parche ya se corrió. Seguir
    `sql/_baseline/README.md`: migraciones con fecha, solo agregar, y una tabla que anote cada una aplicada.
 2. ✅ **Detector de deriva del núcleo:** `node tools/audit-nucleo.mjs` compara los archivos del §4 con
-   Alejandro y BSS y marca cuál repo los tocó último (si el otro es más nuevo, tiene un fix por traer).
+   Alejandro (BSS en pausa: `--repo`) y marca cuál repo los tocó último (si el otro es más nuevo, tiene un fix por traer).
 
 **Etapa 2 — medio:**
 3. **Acceso a datos por módulo**, empezando por `pedidos`: un archivo con las consultas y columnas del módulo

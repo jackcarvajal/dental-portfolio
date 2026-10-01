@@ -9,6 +9,26 @@
 
 ---
 
+## 2026-10-01 (tarde)  (WhatsApp que sí llega · seguimiento con el estado real · laboratorio 3D v5)
+
+- 💡 **BSS en pausa** (decisión de Alejandro): solo PRODIGY y Alejandro CAD/CAM. `audit-nucleo` ya no lo compara.
+- ✅ 🔴→✅ **WhatsApp "Tu diseño está listo" nunca salía desde el panel de diseño:** `notify-wa` no tenía mensaje para
+  `REVISION_CLIENTE` (respondía «sin mensaje»). Agregados además EN_DISENO, CAMBIOS_SOLICITADOS, ERROR_STL, EN_IMPRESION.
+- ✅ 🔴→✅ **El enlace del WhatsApp decía "caso no encontrado":** iba a `seguimiento-caso?pedido=COD` sin la llave del caso.
+  Ahora, si llama alguien del equipo (sesión verificada, roles de `app_metadata`), el enlace lleva `&key=`; sin sesión, va al portal.
+  Los 3 paneles (diseño, operación, interno) mandan su sesión. Números de 10 dígitos colombianos → se antepone 57.
+- ✅ **WhatsApp oficial (Cloud API de Meta) listo e inerte:** `notify-wa` envía solo con plantillas aprobadas si existen
+  `WA_TOKEN` + `WA_PHONE_ID`; si no, abre wa.me como siempre. Pasos y textos de plantillas: `docs/WHATSAPP-OFICIAL.md`.
+- ✅ **Seguimiento público (ambos repos):** usaba el enum `estado` → casi todo salía «Recibido» (uno despachado también).
+  Ahora usa `estado_operativo` (en cuanto se corra el SQL) y el dueño con sesión ve su caso aunque el enlace no traiga
+  la llave (botón «Ver» del portal, que antes daba «no encontrado»). La actualización cada minuto ya manda la llave.
+- 🟡 **SQL pendiente de correr:** `sql/seguimiento-estado-operativo-2026.sql` (agrega `estado_operativo` a `buscar_pedido_publico`).
+- 🟡 **Laboratorio 3D v5 (vista previa, no integrado):** estaciones según el código (CAD- solo diseño · PROD- fresado o
+  impresión · LAB- completo), estación nueva Terminado (maquillaje, glaseado, ajuste), cámara de fotos en Calidad,
+  bandeja en dorado cuando el turno es del doctor. Propone el estado nuevo `EN_ACABADO`.
+
+---
+
 ## 2026-10-01  (Arquitectura · skills de agentes · herramientas de pruebas)
 
 - ✅ 💡 **ADR-001 — monolito modular por producto + núcleo compartido.** `ARCHITECTURE.md` reescrito

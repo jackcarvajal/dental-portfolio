@@ -374,7 +374,29 @@
             'En Producción':      'En Impresión/Fresado',
             'Listo para Entrega': 'Listo para Entrega',
             'Entregado':          'Listo para Entrega',
-            'Cancelado':          'Recibido'
+            'Cancelado':          'Recibido',
+            'Pendiente':          'Recibido',
+            'Pagado':             'Recibido',
+            'Despachado':         'Listo para Entrega'
+        };
+
+        // Estado REAL del caso (estado_operativo, docs/CONTRATO-ESTADOS.md) → paso que se muestra.
+        // `estado` (enum) es grueso y casi siempre salía «Recibido»; se usa solo si la función aún no devuelve el real.
+        const ETAPA_OP = {
+            VALIDACION_PENDIENTE:'Recibido', ERROR_STL:'Recibido', PAGO_NO_CONFIRMADO:'Recibido', INCIDENCIA_CLIENTE:'Recibido',
+            EN_DISENO:'En Diseño', DISENO_FINALIZADO:'En Diseño', REVISION_CLIENTE:'En Diseño', CAMBIOS_SOLICITADOS:'En Diseño', DISENO_APROBADO:'En Diseño',
+            FAB_CONFIRMADA:'En Impresión/Fresado', FRESADO_INICIADO:'En Impresión/Fresado', EN_IMPRESION:'En Impresión/Fresado', EN_PRODUCCION:'En Impresión/Fresado', EN_ACABADO:'En Impresión/Fresado',
+            QA_APROBADO:'Control de Calidad',
+            TERMINADO:'Listo para Entrega', LISTO_DESPACHAR:'Listo para Entrega', POR_DESPACHAR:'Listo para Entrega', EN_REPARTO:'Listo para Entrega', NO_ENTREGADO:'Listo para Entrega', ENTREGADO:'Listo para Entrega'
+        };
+        const TXT_OP = {
+            VALIDACION_PENDIENTE:'Validando tus archivos', ERROR_STL:'Tus archivos tienen un problema — reenvíalos', PAGO_NO_CONFIRMADO:'Pago por confirmar',
+            INCIDENCIA_CLIENTE:'Necesitamos un dato tuyo — revisa WhatsApp', EN_DISENO:'Diseñando tu caso', DISENO_FINALIZADO:'Revisión interna del diseño',
+            REVISION_CLIENTE:'Tu diseño está listo: revísalo y apruébalo', CAMBIOS_SOLICITADOS:'Aplicando tus cambios', DISENO_APROBADO:'Diseño aprobado',
+            FAB_COTIZACION:'Cotización de fabricación por aprobar', FAB_CONFIRMADA:'Fabricación confirmada', FRESADO_INICIADO:'Fresando tu restauración',
+            EN_IMPRESION:'Imprimiendo tu caso', EN_PRODUCCION:'En producción', EN_ACABADO:'Terminado y maquillaje', QA_APROBADO:'Control de calidad aprobado',
+            TERMINADO:'Listo para despacho', LISTO_DESPACHAR:'Listo para despacho', POR_DESPACHAR:'Listo para despacho', EN_REPARTO:'En camino a tu consultorio',
+            NO_ENTREGADO:'Reprogramando la entrega', ENTREGADO:'Entregado', CANCELADO_DOCTOR:'Caso cancelado'
         };
 
         /* ── MODAL: Caso No Encontrado ── */
@@ -442,13 +464,26 @@
                 const sb = getSbSeg();
                 const rpcParams = { p_codigo: orden };
                 if (_nonce) rpcParams.p_nonce = _nonce;
-                const { data, error } = await sb.rpc('buscar_pedido_publico', rpcParams);
-                if (error || !data) throw new Error('no data');
+                let { data, error } = await sb.rpc('buscar_pedido_publico', rpcParams);
+                // Sin la llave del enlace: si quien busca es el dueño del caso (sesión iniciada), se lee con su sesión (RLS)
+                if (error || !data) data = await casoConSesion(sb, orden);
+                if (!data) throw new Error('no data');
                 mostrarCaso(data);
             } catch(_) {
                 document.getElementById('resultado').style.display = 'none';
                 abrirModalNoEncontrado();
             }
+        }
+
+        async function casoConSesion(sb, codigo) {
+            try {
+                const { data: { session } } = await sb.auth.getSession();
+                if (!session) return null;
+                const { data: p } = await sb.from('pedidos')
+                    .select('codigo,tipo_trabajo,material,submaterial,color_vita,cantidad,estado,estado_operativo,fecha_entrega,flujo,created_at')
+                    .eq('codigo', codigo).maybeSingle();
+                return p ? { ...p, servicio: p.tipo_trabajo } : null;
+            } catch (_) { return null; }
         }
 
         function mostrarCaso(caso) {
@@ -463,8 +498,11 @@
             document.getElementById('ordenDisplay').textContent = caso.codigo || caso.numeroOrden || '—';
 
             // Estado actual — mapear estado del schema al estado de display
-            const estadoRaw  = caso.estado || 'Borrador';
-            const estado     = ESTADO_MAP[estadoRaw] || 'Recibido';
+            const op         = String(caso.estado_operativo || '').toUpperCase();
+            const soloDiseno = caso.flujo === 'diseno' || /^CAD-/.test(caso.codigo || '');
+            const estadoRaw  = op ? (TXT_OP[op] || op) : (caso.estado || 'Borrador');
+            const estado     = op ? ((soloDiseno && op === 'DISENO_APROBADO') ? 'Listo para Entrega' : (ETAPA_OP[op] || 'Recibido'))
+                                  : (ESTADO_MAP[caso.estado] || 'Recibido');
             const estadoInfo = ESTADOS[estado] || ESTADOS['Recibido'];
             
             const badge = document.getElementById('estadoBadge');
@@ -508,7 +546,7 @@
             addDet('Submaterial', caso.submaterial || '');
             addDet('Color VITA',  caso.color_vita  || '');
             addDet('Cantidad',  caso.cantidad ? `${caso.cantidad} unidades` : '');
-            addDet('Estado real', estadoRaw);
+            addDet('Detalle', estadoRaw);
             addDet('Entrega estimada', caso.fecha_entrega
                 ? new Date(caso.fecha_entrega).toLocaleDateString('es-CO', {day:'2-digit',month:'long',year:'numeric'})
                 : (caso.fechaEntrega ? new Date(caso.fechaEntrega).toLocaleDateString('es-CO') : '—'));
@@ -662,7 +700,7 @@
             _pollTimer = setInterval(async () => {
                 try {
                     const sb = getSbSeg();
-                    const { data } = await sb.rpc('buscar_pedido_publico', { p_codigo: codigo });
+                    const { data } = await sb.rpc('buscar_pedido_publico', (new URLSearchParams(location.search).get('key') ? { p_codigo: codigo, p_nonce: new URLSearchParams(location.search).get('key') } : { p_codigo: codigo }));
                     if (data) mostrarCaso(data);
                 } catch(_) {}
             }, 60000);

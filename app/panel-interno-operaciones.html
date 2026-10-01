@@ -3010,9 +3010,10 @@ async function guardarLinkDiseno(id) {
     if (caso?.doctor_whatsapp) {
         // Versión Cloudflare (/api/notify-wa): devuelve wa_url pre-rellenado que abrimos
         // para enviarlo (la versión Deno daba 401 con la anon key → no salía nada).
+        const _tk = (await sb.auth.getSession()).data?.session?.access_token;   // con sesión: enlace con la llave del caso y envío oficial
         fetch('/api/notify-wa', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', ...(_tk ? { Authorization: 'Bearer ' + _tk } : {}) },
             body: JSON.stringify({
                 nuevo_estado:  'DISENO_LISTO',
                 codigo:        caso.codigo || id,
@@ -3021,7 +3022,8 @@ async function guardarLinkDiseno(id) {
                 pais:          caso.pais || 'CO'
             })
         }).then(r => r.json()).then(r => {
-            if (r.wa_url) { window.open(r.wa_url, '_blank', 'noopener,noreferrer'); showToast('Abriendo WhatsApp para avisar al doctor…', 'success'); }
+            if (r.enviado) showToast('WhatsApp enviado al doctor', 'success');
+            else if (r.wa_url) { window.open(r.wa_url, '_blank', 'noopener,noreferrer'); showToast('Abriendo WhatsApp para avisar al doctor…', 'success'); }
         }).catch(() => {}); // WA no crítico
     }
 }

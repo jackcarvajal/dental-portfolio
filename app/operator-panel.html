@@ -559,9 +559,10 @@ function actualizarTimers() {
 // ── Avanzar estado ────────────────────────────────────────────────
 async function notificarWA(pedido, nuevoEstado) {
     try {
+        const _tk = (await sb.auth.getSession()).data?.session?.access_token;   // con sesión: enlace con la llave del caso y envío oficial
         const res  = await fetch('/api/notify-wa', {
             method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', ...(_tk ? { Authorization: 'Bearer ' + _tk } : {}) },
             body: JSON.stringify({
                 nuevo_estado:   nuevoEstado,
                 codigo:         pedido.codigo,
@@ -574,7 +575,8 @@ async function notificarWA(pedido, nuevoEstado) {
             }),
         });
         const data = await res.json();
-        if (data.wa_url) window.open(data.wa_url, '_blank', 'noopener,noreferrer');
+        if (data.enviado) toast('WhatsApp enviado al doctor', 'ok');
+        else if (data.wa_url) window.open(data.wa_url, '_blank', 'noopener,noreferrer');
     } catch (_) { /* WA no crítico */ }
 }
 

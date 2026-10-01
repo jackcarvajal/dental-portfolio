@@ -1,40 +1,91 @@
 /**
- * Cloudflare Pages Function — Notificación WhatsApp automática al doctor
+ * Cloudflare Pages Function — WhatsApp al doctor según el estado del caso
  * POST /api/notify-wa
  *
- * Construye el mensaje apropiado según estado_operativo y país del cliente,
- * devuelve la URL wa.me pre-rellenada. El front-end la abre con window.open().
- * Sin Meta API — funciona inmediatamente sin aprobación externa.
+ * Dos modos (el panel no cambia según cuál esté activo):
+ *  1. OFICIAL — WhatsApp Cloud API de Meta. Si existen WA_TOKEN y WA_PHONE_ID y quien llama es del
+ *     equipo, se envía solo con una plantilla aprobada (docs/WHATSAPP-OFICIAL.md) → { enviado:true }.
+ *  2. MANUAL (respaldo) — devuelve wa_url (wa.me con el texto listo) y el panel lo abre para enviarlo.
  *
- * Body: { pedido_id, nuevo_estado, codigo, nombre_doctor, whatsapp, pais,
- *         servicio, fecha_entrega, precio_total, recibo_url }
+ * El enlace de seguimiento lleva la llave del caso (hash_seguridad) SOLO si quien llama es del equipo
+ * (sesión verificada): /seguimiento-caso no muestra un caso sin su llave, y el enlace viejo
+ * `seguimiento-caso?pedido=COD` le decía al doctor "caso no encontrado".
+ *
+ * Body: { nuevo_estado, codigo, nombre_doctor, whatsapp, pais, servicio, fecha_entrega, recibo_url }
+ * Header opcional: Authorization: Bearer <sesión del equipo>
+ * Env: SUPABASE_SERVICE_ROLE_KEY | SUPABASE_SERVICE_KEY · WA_TOKEN, WA_PHONE_ID, WA_GRAPH_VERSION (opcionales)
  */
+import { cfg, adminH, usuarioDe, ADMIN_EMAILS } from './reportar-problema.js';
 
 const WA_PRODIGY = '573212816716';
+const SITIO = 'https://prodigylabdental.com';
 
 const MSGS_ES = {
   WAITLIST_LAB:            (d) => `🧪 *Nuevo lab en waitlist*\n\n*Lab:* ${d.dr}\n*Ciudad/Volumen:* ${d.srv}\n\nRevisa: prodigylabdental.com/app/panel-interno-operaciones.html`,
   REFERIDO_PRIMER_PEDIDO:  (d) => `🎁 *¡Tu referido hizo su primer pedido!*\n\nHola Dr. ${d.dr}, tu colega ${d.srv} acaba de pagar su primer caso en PRODIGY.\n\n🏷️ Tu cupón de crédito: *${d.cod}*\nÚsalo en tu próximo pedido para descontar *$30.000 COP* automáticamente. Es de un solo uso y no caduca.\n\n_PRODIGY Lab Dental_`,
-  DISENO_LISTO:     (d) => `✨ *Caso #${d.cod} — Tu diseño está listo*\n\nHola Dr. ${d.dr}, tu diseño ya está listo para tu revisión y aprobación.\n\n👉 Entra a verlo y aprobarlo: https://prodigylabdental.com/seguimiento-caso?pedido=${d.cod}\n\nTienes 2 ajustes incluidos.\n\n_PRODIGY Lab Dental_`,
-  EN_PRODUCCION:    (d) => `✅ *Caso #${d.cod} — Producción iniciada*\n\nHola Dr. ${d.dr}, tu caso ha superado la validación técnica y ya está en producción.\n\n📅 Entrega estimada: *${d.fecha}*\n🔬 Servicio: ${d.srv}\n\n_Cualquier novedad te notificamos. PRODIGY Lab Dental_`,
-  FRESADO_INICIADO: (d) => `⚙️ *Caso #${d.cod} — Fresado en curso*\n\nHola Dr. ${d.dr}, iniciamos el fresado de tu caso. Estamos en la recta final.\n\n📅 Entrega estimada: *${d.fecha}*\n\n_PRODIGY Lab Dental_`,
-  QA_APROBADO:      (d) => `🛡️ *Caso #${d.cod} — Control de calidad ✅*\n\nHola Dr. ${d.dr}, tu caso pasó el control de calidad exitosamente. Estamos programando el despacho.\n\n📅 Entrega estimada: *${d.fecha}*\n\n_PRODIGY Lab Dental_`,
+  ERROR_STL:        (d) => `⚠️ *Caso #${d.cod} — Necesitamos tus archivos*\n\nHola Dr. ${d.dr}, los archivos de tu caso llegaron incompletos o con un problema. Reenvíalos para continuar.\n\n📍 Tu caso: ${d.link}\n\n_PRODIGY Lab Dental_`,
+  EN_DISENO:        (d) => `🎨 *Caso #${d.cod} — Empezamos el diseño*\n\nHola Dr. ${d.dr}, tu caso ya está en manos del diseñador.\n\n📍 Síguelo aquí: ${d.link}\n\n_PRODIGY Lab Dental_`,
+  REVISION_CLIENTE: (d) => `✨ *Caso #${d.cod} — Tu diseño está listo*\n\nHola Dr. ${d.dr}, tu diseño está listo para revisar. Apruébalo o pide cambios (2 revisiones incluidas):\n\n👉 ${d.accion}\n\n_PRODIGY Lab Dental_`,
+  DISENO_LISTO:     (d) => `✨ *Caso #${d.cod} — Tu diseño está listo*\n\nHola Dr. ${d.dr}, tu diseño está listo para revisar. Apruébalo o pide cambios (2 revisiones incluidas):\n\n👉 ${d.accion}\n\n_PRODIGY Lab Dental_`,
+  CAMBIOS_SOLICITADOS: (d) => `🔄 *Caso #${d.cod} — Aplicando tus cambios*\n\nHola Dr. ${d.dr}, recibimos tus notas y el diseñador ya está haciendo los ajustes.\n\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
+  EN_PRODUCCION:    (d) => `✅ *Caso #${d.cod} — Producción iniciada*\n\nHola Dr. ${d.dr}, tu caso superó la validación técnica y ya está en producción.\n\n📅 Entrega estimada: *${d.fecha}*\n🔬 Servicio: ${d.srv}\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
+  FRESADO_INICIADO: (d) => `⚙️ *Caso #${d.cod} — Fresado en curso*\n\nHola Dr. ${d.dr}, iniciamos el fresado de tu caso. Estamos en la recta final.\n\n📅 Entrega estimada: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
+  EN_IMPRESION:     (d) => `🖨️ *Caso #${d.cod} — Impresión en curso*\n\nHola Dr. ${d.dr}, tu caso se está imprimiendo.\n\n📅 Entrega estimada: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
+  QA_APROBADO:      (d) => `🛡️ *Caso #${d.cod} — Control de calidad ✅*\n\nHola Dr. ${d.dr}, tu caso pasó el control de calidad. Estamos programando el despacho.\n\n📅 Entrega estimada: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   LISTO_DESPACHAR:  (d) => `📦 *Caso #${d.cod} — Empacado y listo*\n\nHola Dr. ${d.dr}, tu caso está empacado y listo para despacho. Nuestro mensajero saldrá pronto.\n\n_PRODIGY Lab Dental_`,
   EN_REPARTO:       (d) => `🏍️ *Caso #${d.cod} — En camino*\n\nHola Dr. ${d.dr}, nuestro mensajero ya va en camino con tu caso. Llegará hoy.\n\n📋 Recibo: ${d.recibo}\n\n_PRODIGY Lab Dental_`,
-  ENTREGADO:        (d) => `🎉 *Caso #${d.cod} — Entregado*\n\nHola Dr. ${d.dr}, tu caso fue entregado exitosamente. ¡Gracias por confiar en PRODIGY!\n\n📄 Tu recibo: ${d.recibo}\n\n_Si tienes algún comentario, escríbenos al ${WA_PRODIGY}_`,
+  ENTREGADO:        (d) => `🎉 *Caso #${d.cod} — Entregado*\n\nHola Dr. ${d.dr}, tu caso fue entregado exitosamente. ¡Gracias por confiar en PRODIGY!\n\n📄 Tu recibo: ${d.recibo}\n\n_Si tienes algún comentario, escríbenos al +${WA_PRODIGY}_`,
 };
 
 const MSGS_EN = {
   WAITLIST_LAB:            (d) => `🧪 *New lab on waitlist*\n\n*Lab:* ${d.dr}\n*City/Volume:* ${d.srv}\n\nReview: prodigylabdental.com/app/panel-interno-operaciones.html`,
   REFERIDO_PRIMER_PEDIDO:  (d) => `🎁 *Your referral made their first order!*\n\nHi Dr. ${d.dr}, your colleague ${d.srv} just paid their first case at PRODIGY.\n\n🏷️ Your credit coupon: *${d.cod}*\nApply it on your next order for an automatic *$30,000 COP* discount. Single use, no expiry.\n\n_PRODIGY Lab Dental_`,
-  DISENO_LISTO:     (d) => `✨ *Case #${d.cod} — Your design is ready*\n\nHello Dr. ${d.dr}, your design is ready for your review and approval.\n\n👉 View and approve it: https://prodigylabdental.com/seguimiento-caso?pedido=${d.cod}\n\n2 adjustments included.\n\n_PRODIGY Lab Dental_`,
-  EN_PRODUCCION:    (d) => `✅ *Case #${d.cod} — Production started*\n\nHello Dr. ${d.dr}, your case passed technical validation and is now in production.\n\n📅 Estimated delivery: *${d.fecha}*\n🔬 Service: ${d.srv}\n\n_PRODIGY Lab Dental_`,
-  FRESADO_INICIADO: (d) => `⚙️ *Case #${d.cod} — Milling in progress*\n\nHello Dr. ${d.dr}, we have started milling your case. Final stretch!\n\n📅 Estimated delivery: *${d.fecha}*\n\n_PRODIGY Lab Dental_`,
-  QA_APROBADO:      (d) => `🛡️ *Case #${d.cod} — Quality control passed ✅*\n\nHello Dr. ${d.dr}, your case passed our quality control. Scheduling shipment now.\n\n📅 Estimated delivery: *${d.fecha}*\n\n_PRODIGY Lab Dental_`,
+  ERROR_STL:        (d) => `⚠️ *Case #${d.cod} — We need your files*\n\nHello Dr. ${d.dr}, your case files arrived incomplete or with a problem. Please resend them to continue.\n\n📍 Your case: ${d.link}\n\n_PRODIGY Lab Dental_`,
+  EN_DISENO:        (d) => `🎨 *Case #${d.cod} — Design started*\n\nHello Dr. ${d.dr}, your case is now with our designer.\n\n📍 Track it: ${d.link}\n\n_PRODIGY Lab Dental_`,
+  REVISION_CLIENTE: (d) => `✨ *Case #${d.cod} — Your design is ready*\n\nHello Dr. ${d.dr}, your design is ready for review. Approve it or request changes (2 revisions included):\n\n👉 ${d.accion}\n\n_PRODIGY Lab Dental_`,
+  DISENO_LISTO:     (d) => `✨ *Case #${d.cod} — Your design is ready*\n\nHello Dr. ${d.dr}, your design is ready for review. Approve it or request changes (2 revisions included):\n\n👉 ${d.accion}\n\n_PRODIGY Lab Dental_`,
+  CAMBIOS_SOLICITADOS: (d) => `🔄 *Case #${d.cod} — Applying your changes*\n\nHello Dr. ${d.dr}, we received your notes and the designer is working on them.\n\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
+  EN_PRODUCCION:    (d) => `✅ *Case #${d.cod} — Production started*\n\nHello Dr. ${d.dr}, your case passed technical validation and is now in production.\n\n📅 Estimated delivery: *${d.fecha}*\n🔬 Service: ${d.srv}\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
+  FRESADO_INICIADO: (d) => `⚙️ *Case #${d.cod} — Milling in progress*\n\nHello Dr. ${d.dr}, we have started milling your case. Final stretch!\n\n📅 Estimated delivery: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
+  EN_IMPRESION:     (d) => `🖨️ *Case #${d.cod} — Printing in progress*\n\nHello Dr. ${d.dr}, your case is being printed.\n\n📅 Estimated delivery: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
+  QA_APROBADO:      (d) => `🛡️ *Case #${d.cod} — Quality control passed ✅*\n\nHello Dr. ${d.dr}, your case passed our quality control. Scheduling shipment now.\n\n📅 Estimated delivery: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   LISTO_DESPACHAR:  (d) => `📦 *Case #${d.cod} — Packed and ready*\n\nHello Dr. ${d.dr}, your case is packed and ready for dispatch.\n\n_PRODIGY Lab Dental_`,
   EN_REPARTO:       (d) => `🏍️ *Case #${d.cod} — On the way*\n\nHello Dr. ${d.dr}, our courier is on the way with your case. Arriving today.\n\n📋 Receipt: ${d.recibo}\n\n_PRODIGY Lab Dental_`,
   ENTREGADO:        (d) => `🎉 *Case #${d.cod} — Delivered*\n\nHello Dr. ${d.dr}, your case was successfully delivered. Thank you for trusting PRODIGY!\n\n📄 Your receipt: ${d.recibo}\n\n_For any questions, reach us at +${WA_PRODIGY}_`,
 };
+
+// Plantillas oficiales (deben existir y estar APROBADAS en WhatsApp Manager con estos nombres, en «es» y «en»).
+// Botón de cada plantilla: URL dinámica https://prodigylabdental.com/{{1}} → aquí va la ruta del enlace.
+const ETAPA_ES = { EN_DISENO: 'empezamos el diseño', CAMBIOS_SOLICITADOS: 'estamos aplicando sus cambios', EN_PRODUCCION: 'entró a producción',
+  FRESADO_INICIADO: 'empezó el fresado', EN_IMPRESION: 'empezó la impresión', QA_APROBADO: 'pasó el control de calidad', LISTO_DESPACHAR: 'está empacado y listo para despacho', EN_REPARTO: 'va en camino a su consultorio' };
+const ETAPA_EN = { EN_DISENO: 'design has started', CAMBIOS_SOLICITADOS: 'we are applying your changes', EN_PRODUCCION: 'is now in production',
+  FRESADO_INICIADO: 'milling has started', EN_IMPRESION: 'printing has started', QA_APROBADO: 'passed quality control', LISTO_DESPACHAR: 'is packed and ready to ship', EN_REPARTO: 'is on the way to your office' };
+function plantillaDe(estado, d, intl) {
+  const ruta = u => String(u || '').replace(/^https:\/\/(www\.)?prodigylabdental\.com\//, '');
+  if (estado === 'REVISION_CLIENTE' || estado === 'DISENO_LISTO') return { name: 'prodigy_diseno_listo', body: [d.dr, d.cod], url: ruta(d.accion) };
+  if (estado === 'ERROR_STL') return { name: 'prodigy_reenviar_archivos', body: [d.dr, d.cod], url: ruta(d.link) };
+  if (estado === 'ENTREGADO') return { name: 'prodigy_caso_entregado', body: [d.dr, d.cod], url: ruta(d.recibo) };
+  const etapa = (intl ? ETAPA_EN : ETAPA_ES)[estado];
+  return etapa ? { name: 'prodigy_avance_caso', body: [d.dr, d.cod, etapa], url: ruta(d.link) } : null;
+}
+async function enviarOficial(env, wa, p, intl) {
+  const components = [{ type: 'body', parameters: p.body.map(t => ({ type: 'text', text: String(t).slice(0, 120) })) }];
+  if (p.url) components.push({ type: 'button', sub_type: 'url', index: '0', parameters: [{ type: 'text', text: p.url }] });
+  const r = await fetch(`https://graph.facebook.com/${env.WA_GRAPH_VERSION || 'v23.0'}/${env.WA_PHONE_ID}/messages`, {
+    method: 'POST', headers: { Authorization: `Bearer ${env.WA_TOKEN}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messaging_product: 'whatsapp', to: wa, type: 'template', template: { name: p.name, language: { code: intl ? 'en' : 'es' }, components } }),
+  });
+  const j = await r.json().catch(() => ({}));
+  if (r.ok && j.messages?.[0]?.id) return { ok: true, id: j.messages[0].id };
+  console.error('[notify-wa] Cloud API:', r.status, j.error?.code, j.error?.message);   // detalle solo en el log
+  return { ok: false };
+}
+
+// Del equipo = admin por email o cualquier rol de staff (no cliente ni cuenta de pruebas). Roles solo de app_metadata.
+const esPersonal = u => !!u && (ADMIN_EMAILS.includes(String(u.email || '').toLowerCase())
+  || [].concat(u.app_metadata?.roles || [], u.app_metadata?.role || []).some(r => r && !['client', 'test'].includes(r)));
+// Colombia: 10 dígitos que empiezan por 3 → se antepone 57 (wa.me y Meta exigen el indicativo)
+const normalizarWA = n => { const d = String(n || '').replace(/\D/g, ''); return d.length === 10 && d.startsWith('3') ? '57' + d : d; };
 
 function corsHeaders(origin) {
   const allowed = ['https://prodigylabdental.com', 'https://www.prodigylabdental.com'];
@@ -42,13 +93,13 @@ function corsHeaders(origin) {
   return {
     'Access-Control-Allow-Origin':  ok ? origin : 'https://prodigylabdental.com',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Content-Type': 'application/json',
   };
 }
 
 export async function onRequestPost(context) {
-  const { request } = context;
+  const { request, env } = context;
   const origin = request.headers.get('Origin') || '';
   const cors   = corsHeaders(origin);
 
@@ -89,20 +140,45 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ skipped: true, reason: 'Estado sin mensaje definido' }), { status: 200, headers: cors });
   }
 
-  const wa    = whatsapp.replace(/\D/g, '');
+  const wa    = normalizarWA(whatsapp);
   const dr    = (nombre_doctor || '').split(' ')[0] || 'Doctor';
   const cod   = codigo || '—';
   const srv   = servicio || 'Servicio dental';
   const fecha = fecha_entrega
     ? new Date(fecha_entrega).toLocaleDateString(esIntl ? 'en-US' : 'es-CO', { day: '2-digit', month: 'short', year: 'numeric' })
     : (esIntl ? 'To be confirmed' : 'A confirmar');
-  const _ownRecibo = /^https:\/\/(www\.)?prodigylabdental\.com\//;
-  const recibo = (recibo_url && _ownRecibo.test(recibo_url)) ? recibo_url : `https://prodigylabdental.com/recibo-caso?id=${cod}${esIntl ? '&lang=en' : ''}`;
+  const _propio = /^https:\/\/(www\.)?prodigylabdental\.com\//;
+  const recibo = (recibo_url && _propio.test(recibo_url)) ? recibo_url : `${SITIO}/recibo-caso?id=${encodeURIComponent(cod)}${esIntl ? '&lang=en' : ''}`;
 
-  const mensaje = fn({ cod, dr, srv, fecha, recibo });
+  // Enlace de seguimiento: con la llave del caso solo si llama alguien del equipo
+  const c = cfg(env);
+  const yo = c.SERVICE ? await usuarioDe(request, c) : null;
+  const personal = esPersonal(yo);
+  let link = `${SITIO}/app/client-panel`;
+  if (personal && codigo) {
+    try {
+      const r = await fetch(`${c.URL}/rest/v1/pedidos?codigo=eq.${encodeURIComponent(codigo)}&select=hash_seguridad&limit=1`, { headers: adminH(c.SERVICE) });
+      const [p] = r.ok ? await r.json() : [];
+      if (p) link = `${SITIO}/seguimiento-caso?id=${encodeURIComponent(codigo)}${p.hash_seguridad ? '&key=' + encodeURIComponent(p.hash_seguridad) : ''}`;
+    } catch (_) { /* queda el portal */ }
+  }
+  // Acción del doctor en la revisión: el enlace de aprobación que manda el panel (revision-express) o el seguimiento
+  const accion = (recibo_url && _propio.test(recibo_url) && /revision-express/.test(recibo_url)) ? recibo_url : link;
+
+  const d = { cod, dr, srv, fecha, recibo, link, accion };
+  const mensaje = fn(d);
   const waUrl   = `https://wa.me/${wa}?text=${encodeURIComponent(mensaje)}`;
 
-  return new Response(JSON.stringify({ wa_url: waUrl, mensaje }), { status: 200, headers: cors });
+  // Envío automático por la API oficial (si está configurada y quien llama es del equipo)
+  if (personal && env.WA_TOKEN && env.WA_PHONE_ID) {
+    const p = plantillaDe(nuevo_estado, d, esIntl);
+    if (p) {
+      const r = await enviarOficial(env, wa, p, esIntl).catch(() => ({ ok: false }));
+      if (r.ok) return new Response(JSON.stringify({ enviado: true, metodo: 'oficial', id: r.id, wa_url: waUrl, mensaje }), { status: 200, headers: cors });
+    }
+  }
+
+  return new Response(JSON.stringify({ enviado: false, metodo: 'wa_url', wa_url: waUrl, mensaje }), { status: 200, headers: cors });
 }
 
 export async function onRequestOptions(context) {

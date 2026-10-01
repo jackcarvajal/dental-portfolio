@@ -21,10 +21,8 @@ const NUCLEO = [
 const PRODIGY = process.cwd();
 const args = process.argv.slice(2);
 const pedidos = args.flatMap((a, i) => (a === '--repo' ? [args[i + 1]] : []));
-const OTROS = (pedidos.length ? pedidos : [
-  resolve(PRODIGY, '../../alejandro-carvajal-site'),
-  resolve(PRODIGY, '../../dental-concierge'),
-]).filter((r) => existsSync(r));
+// BSS (dental-concierge) está en pausa desde 1-oct-2026: compararlo solo con --repo
+const OTROS = (pedidos.length ? pedidos : [resolve(PRODIGY, '../../alejandro-carvajal-site')]).filter((r) => existsSync(r));
 
 const ultimo = (repo, rel) => {
   try { return execFileSync('git', ['-C', repo, 'log', '-1', '--format=%cs', '--', rel], { encoding: 'utf8' }).trim() || '(sin commit)'; }
