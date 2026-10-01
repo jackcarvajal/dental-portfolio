@@ -12,6 +12,15 @@
 /ESTANDARES-TECNICOS.md         /404.html  302
 /sql/*                          /404.html  302
 /supabase/*                     /404.html  302
+# Páginas de trabajo interno (plantilla y vistas previas): no son para el público
+/_plantilla-publica             /404.html  302
+/_plantilla-publica.html        /404.html  302
+/carrusel-preview               /404.html  302
+/carrusel-preview.html          /404.html  302
+/spider-preview                 /404.html  302
+/spider-preview.html            /404.html  302
+/flujo-diseno-preview           /404.html  302
+/flujo-diseno-preview.html      /404.html  302
 /*.md                           /404.html  302
 /*.bat                          /404.html  302
 /MEMORY/*                       /404.html  302
