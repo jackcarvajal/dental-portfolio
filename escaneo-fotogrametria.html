@@ -114,7 +114,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--gold)
     <p style="max-width:620px;margin:0 auto 22px;padding:12px 16px;border:1px solid rgba(212,175,55,.4);background:rgba(212,175,55,.08);border-radius:12px;font-size:.88rem;line-height:1.6;color:#e2e8f0;"><strong style="color:var(--gold)">🕒 Próximamente.</strong> La fotogrametría full-arch está en proceso de <strong>certificación INVIMA de los scanbodies</strong>. Pide que te avisemos en el lanzamiento. Mientras tanto, recibimos tus casos All-on-X con escaneo intraoral con scanbodies de multi-unit.</p>
 
     <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;">
-      <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20avisen%20cuando%20est%C3%A9%20disponible%20la%20fotogrametr%C3%ADa%20full-arch%20para%20casos%20All-on-X%20%2F%20multi-unit." target="_blank" rel="noopener noreferrer" class="btn-wa">
+      <a href="#lista-espera" class="btn-wa">
         <span style="font-size:1.2rem;">🔔</span> Avísenme cuando esté disponible
       </a>
       <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20agendar%20un%20escaneo%20intraoral%20a%20domicilio%20con%20el%20Aidite%20Rapid%205." target="_blank" rel="noopener noreferrer" class="btn-wa" style="background:linear-gradient(135deg,#0284c7,#0369a1);">
@@ -124,6 +124,110 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--gold)
     <p style="font-size:.75rem;color:var(--muted);">Norte de Bogotá y área metropolitana · Archivo STL el mismo día · L-V 8am–6pm · Sáb 8am–12m</p>
   </div>
 </section>
+
+<!-- LISTA DE ESPERA — FOTOGRAMETRÍA (se guarda en solicitudes_scanner → bandeja de solicitudes) -->
+<style>
+#lista-espera{padding:44px 24px;scroll-margin-top:90px}
+#lista-espera .le-card{max-width:620px;margin:0 auto;background:var(--card);border:1px solid rgba(212,175,55,.35);border-radius:18px;padding:26px 24px;box-shadow:0 0 40px rgba(212,175,55,.06)}
+#lista-espera h2{font-size:clamp(1.15rem,3vw,1.5rem);font-weight:900;margin-bottom:6px}
+#lista-espera h2 span{color:var(--gold)}
+#lista-espera .le-sub{color:var(--muted);font-size:.88rem;margin-bottom:18px}
+#lista-espera .le-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#lista-espera .le-f{display:flex;flex-direction:column;gap:5px}
+#lista-espera .le-f.full{grid-column:1/-1}
+#lista-espera label.le-l{font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+#lista-espera input[type=text],#lista-espera input[type=tel],#lista-espera input[type=email]{background:#050a14;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 12px;color:var(--text);font:inherit;font-size:.92rem}
+#lista-espera input:focus{outline:2px solid var(--cyan);outline-offset:1px;border-color:transparent}
+#lista-espera .le-chk{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:#cbd5e1;margin-top:12px;line-height:1.5;cursor:pointer}
+#lista-espera .le-chk input{margin-top:3px;accent-color:var(--mg);width:16px;height:16px;flex-shrink:0}
+#lista-espera .le-chk a{color:var(--cyan)}
+#lista-espera .le-btn{margin-top:16px;width:100%;border:0;border-radius:12px;padding:14px;font:inherit;font-weight:900;font-size:.95rem;color:#050505;background:linear-gradient(135deg,var(--gold),#f5d76e);cursor:pointer}
+#lista-espera .le-btn:disabled{opacity:.6;cursor:wait}
+#lista-espera .le-err{color:#fca5a5;font-size:.82rem;margin-top:10px;min-height:1em}
+#lista-espera .le-ok{text-align:center}
+#lista-espera .le-ok .le-ico{font-size:2.2rem;margin-bottom:8px}
+#lista-espera .le-ok p{color:#cbd5e1;font-size:.9rem;margin:8px 0}
+#lista-espera .le-ok a{color:var(--cyan);font-weight:700}
+@media(max-width:560px){#lista-espera .le-grid{grid-template-columns:1fr}}
+</style>
+<section id="lista-espera">
+  <div class="le-card">
+    <div id="le-form-wrap">
+      <h2>🔔 Lista de espera <span>· Fotogrametría full-arch</span></h2>
+      <p class="le-sub">Déjanos tus datos y te avisamos personalmente apenas terminemos la certificación INVIMA de los scanbodies.</p>
+      <form id="le-form" novalidate>
+        <div class="le-grid">
+          <div class="le-f"><label class="le-l" for="le-nombre">Nombre *</label><input type="text" id="le-nombre" autocomplete="name" maxlength="80" required></div>
+          <div class="le-f"><label class="le-l" for="le-clinica">Clínica o laboratorio *</label><input type="text" id="le-clinica" autocomplete="organization" maxlength="100" required></div>
+          <div class="le-f"><label class="le-l" for="le-wa">WhatsApp *</label><input type="tel" id="le-wa" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="300 123 4567" required></div>
+          <div class="le-f"><label class="le-l" for="le-ciudad">Ciudad *</label><input type="text" id="le-ciudad" autocomplete="address-level2" maxlength="60" required></div>
+          <div class="le-f full"><label class="le-l" for="le-email">Email (opcional)</label><input type="email" id="le-email" autocomplete="email" maxlength="120"></div>
+        </div>
+        <label class="le-chk"><input type="checkbox" id="le-habeas"><span>Autorizo a PRODIGY a usar mis datos para avisarme del lanzamiento y contactarme sobre este servicio (Ley 1581 de 2012). <a href="/terminos-y-legal" target="_blank" rel="noopener">Ver política</a>.</span></label>
+        <label class="le-chk"><input type="checkbox" id="le-mkt"><span>También quiero recibir novedades y promociones de PRODIGY (opcional).</span></label>
+        <button type="submit" class="le-btn" id="le-btn">Avísenme cuando esté disponible</button>
+        <div class="le-err" id="le-err" role="alert"></div>
+      </form>
+    </div>
+    <div class="le-ok" id="le-ok" hidden>
+      <div class="le-ico">✅</div>
+      <h2>¡Listo, <span id="le-ok-nombre"></span>!</h2>
+      <p>Quedaste en la lista de espera. Te escribimos por WhatsApp apenas la fotogrametría esté disponible.</p>
+      <p>¿Tienes un caso All-on-X para ya? Lo recibimos con escaneo intraoral con scanbodies de multi-unit: <a href="/envia-tu-scanner">envía tu escaneo →</a></p>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var form=document.getElementById('le-form'); if(!form) return;
+  var $=function(id){return document.getElementById(id)};
+  var SUPABASE_URL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
+  var SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+  function cargarSupabase(){
+    return new Promise(function(ok,fail){
+      if(window.supabase&&window.supabase.createClient) return ok();
+      var s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js';
+      s.onload=ok; s.onerror=fail; document.head.appendChild(s);
+    });
+  }
+  function codigo(){
+    var d=new Date(), p=function(n){return String(n).padStart(2,'0')};
+    var hex=Math.floor(Math.random()*0xffff).toString(16).toUpperCase().padStart(4,'0');
+    return 'FOT-'+String(d.getFullYear()).slice(2)+p(d.getMonth()+1)+p(d.getDate())+'-'+hex;
+  }
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var err=$('le-err'); err.textContent='';
+    var nombre=$('le-nombre').value.trim(), clinica=$('le-clinica').value.trim(),
+        wa=$('le-wa').value.trim(), ciudad=$('le-ciudad').value.trim(), email=$('le-email').value.trim();
+    if(!nombre||!clinica||!ciudad){ err.textContent='Completa nombre, clínica y ciudad.'; return; }
+    if(wa.replace(/\D/g,'').length<7){ err.textContent='Escribe un número de WhatsApp válido.'; return; }
+    if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ err.textContent='Revisa el email o déjalo vacío.'; return; }
+    if(!$('le-habeas').checked){ err.textContent='Debes autorizar el uso de tus datos para que podamos avisarte.'; return; }
+    var btn=$('le-btn'); btn.disabled=true; btn.textContent='Guardando…';
+    var cod=codigo();
+    cargarSupabase().then(function(){
+      var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+      return sb.from('solicitudes_scanner').insert({
+        negocio:'prodigy', codigo:cod, doctor:nombre, clinica:clinica, whatsapp:wa, email:email||null,
+        servicio:'Fotogrametría — lista de espera',
+        notas:'Ciudad: '+ciudad+' · Pidió aviso del lanzamiento de la fotogrametría full-arch (en certificación INVIMA).',
+        acepta_habeas:true, acepta_marketing:$('le-mkt').checked
+      });
+    }).then(function(r){
+      if(r&&r.error) throw r.error;
+      $('le-ok-nombre').textContent=nombre.split(' ')[0];
+      $('le-form-wrap').hidden=true; $('le-ok').hidden=false;
+      if(window.gtag) gtag('event','generate_lead',{form:'lista_espera_fotogrametria'});
+    }).catch(function(){
+      btn.disabled=false; btn.textContent='Avísenme cuando esté disponible';
+      err.innerHTML='No pudimos guardar tus datos. Escríbenos por <a style="color:#00d2ff" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20avisen%20cuando%20est%C3%A9%20disponible%20la%20fotogrametr%C3%ADa%20full-arch." target="_blank" rel="noopener">WhatsApp</a> y te anotamos.';
+    });
+  });
+})();
+</script>
+
 
 <!-- AIDITE RAPID 5 -->
 <section class="sec">
@@ -271,7 +375,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--gold)
       <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20agendar%20un%20escaneo%20intraoral%20a%20domicilio%20con%20el%20Aidite%20Rapid%205." target="_blank" rel="noopener noreferrer" class="btn-wa">
         <span style="font-size:1.2rem;">🦷</span> Agendar escaneo
       </a>
-      <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20avisen%20cuando%20est%C3%A9%20disponible%20la%20fotogrametr%C3%ADa%20full-arch%20para%20casos%20All-on-X%20%2F%20multi-unit." target="_blank" rel="noopener noreferrer" class="btn-wa" style="background:linear-gradient(135deg,#0284c7,#0369a1);">
+      <a href="#lista-espera" class="btn-wa" style="background:linear-gradient(135deg,#0284c7,#0369a1);">
         <span style="font-size:1.2rem;">🔔</span> Avísenme: fotogrametría
       </a>
     </div>

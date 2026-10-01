@@ -165,9 +165,11 @@ function cardScanner(s){
   const wa = waNum(s.whatsapp);
   const cot = encodeURIComponent(`Hola Dr(a) ${s.doctor||''}, soy del laboratorio PRODIGY. Recibimos su caso *${s.codigo||''}* (${s.servicio||'escáner'}). Para cotizarlo necesito: material, color VITA, antagonista y fecha deseada. El trabajo se maneja 50% al iniciar y 50% contra entrega. ¿Me confirma esos datos?`);
   const saludo = encodeURIComponent(`Hola Dr(a) ${s.doctor||''}, le escribo por su caso ${s.codigo||''} enviado a PRODIGY.`);
+  const lista = esListaEspera(s);
+  const avisar = encodeURIComponent(`Hola Dr(a) ${s.doctor||''}, le escribimos de PRODIGY 🦷 Usted se anotó en nuestra lista de espera de la fotogrametría full-arch (${s.codigo||''}): ¡ya está disponible! ¿Le agendamos el registro para su próximo caso All-on-X?`);
   return `<div class="item ${escH(est)}">
     <div class="item-top">
-      <div><div class="codigo">${escH(s.codigo||'SC-—')}</div><div class="fecha">${escH(fmtD(s.created_at))}${s.contactado?' · <span style="color:var(--neon)">contactado</span>':''}</div></div>
+      <div><div class="codigo">${escH(s.codigo||'SC-—')}${lista?' <span style="font-size:.68rem;font-weight:800;color:var(--gold);border:1px solid rgba(212,175,55,.45);border-radius:999px;padding:1px 8px;margin-left:6px;letter-spacing:0">🔔 lista de espera</span>':''}</div><div class="fecha">${escH(fmtD(s.created_at))}${s.contactado?' · <span style="color:var(--neon)">contactado</span>':''}</div></div>
       <span class="sp"></span>
       <span class="badge b-${escH(est)}">${escH(est.replace('_',' '))}</span>
     </div>
@@ -183,9 +185,11 @@ function cardScanner(s){
     ${s.notas?`<div class="notas">${escH(s.notas)}</div>`:''}
     <div class="actions">
       <a class="a a-wa" href="https://wa.me/${wa}?text=${saludo}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Escribir</a>
-      <a class="a a-cobrar" href="https://wa.me/${wa}?text=${cot}" target="_blank" rel="noopener"><i class="fas fa-file-invoice-dollar"></i> Cotizar y cobrar</a>
+      ${lista
+        ? `<a class="a a-cobrar" href="https://wa.me/${wa}?text=${avisar}" target="_blank" rel="noopener"><i class="fas fa-bell"></i> Avisar lanzamiento</a>`
+        : `<a class="a a-cobrar" href="https://wa.me/${wa}?text=${cot}" target="_blank" rel="noopener"><i class="fas fa-file-invoice-dollar"></i> Cotizar y cobrar</a>`}
       ${s.archivo_url?`<button class="a a-stl" onclick="bajarStl('${escJ(s.archivo_url)}',this)"><i class="fas fa-download"></i> STL</button>`:''}
-      ${esAlineadores(s)
+      ${lista ? '' : esAlineadores(s)
         ? (_convertidas[s.id]
             ? `<a class="a" href="alineadores.html" style="color:var(--neon)"><i class="fas fa-check"></i> Caso creado</a>`
             : `<button class="a a-cobrar" onclick="crearCasoAlineadores('${escJ(s.id)}',this)"><i class="fas fa-teeth"></i> Crear caso de alineadores</button>`)
@@ -243,6 +247,8 @@ function cardDomicilio(d){
      quedan precio, material y pago) → WhatsApp con el enlace del flujo correcto y su código. */
 let _convertidas = {};
 function esAlineadores(s){ return /alineador/i.test(s.servicio||''); }
+// Lista de espera de servicios aún no lanzados (p. ej. fotogrametría): no se cotiza, se avisa en el lanzamiento
+function esListaEspera(s){ return /lista de espera/i.test(s.servicio||''); }
 function pedirOrden(s){
   const sv = String(s.servicio||'').toLowerCase();
   const flujo = /fres/.test(sv) ? 'flujo-fresado' : /impres/.test(sv) ? 'flujo-impresion' : /termin|corona|laborat|lab/.test(sv) ? 'flujo-lab' : 'flujo-diseno';

@@ -255,7 +255,10 @@ oclusión y ajuste con el paciente.
 > Y si tienes un caso All-on-X para ya, lo recibimos con **escaneo intraoral con scanbodies de
 > multi-unit** o con modelos. Cuéntame y te explico cómo enviarlo.
 
-> 🔎 **Interno:** anotar nombre y número de quien pregunte: es la lista de aviso para el lanzamiento.
+> 🔎 **Interno:** la lista de espera ya está en la web. Pásale al cliente este enlace para que se inscriba:
+> https://prodigylabdental.com/escaneo-fotogrametria#lista-espera
+> Las inscripciones llegan a la **bandeja de solicitudes** marcadas como "🔔 lista de espera", con el botón
+> **"Avisar lanzamiento"** que abre WhatsApp con el mensaje listo para el día que salga.
 
 ### 5.11 Seguimiento de un caso en curso
 > Puedes ver el estado de tu caso en tiempo real en tu portal 👉 prodigylabdental.com/app/client-panel.html
