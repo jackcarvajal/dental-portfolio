@@ -75,6 +75,9 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"PRODIGY Lab Dental","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"127","bestRating":"5"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Como hacer seguimiento de tu caso dental en PRODIGY","description":"Pasos para rastrear el estado de tu pedido de diseño CAD o fresado dental en PRODIGY Lab Dental.","step":[{"@type":"HowToStep","position":1,"name":"Ingresa tu codigo de caso","text":"Escribe el codigo de tu caso (ej: FRE-2026-001) en la caja de busqueda. Lo recibiste por WhatsApp al confirmar el pedido."},{"@type":"HowToStep","position":2,"name":"Ve el estado en tiempo real","text":"El sistema muestra la etapa actual: Recibido, En Diseño, Control de Calidad o Listo para Entrega. Se actualiza automaticamente."},{"@type":"HowToStep","position":3,"name":"Activa notificaciones push","text":"Haz click en el boton de notificaciones para recibir alertas automaticas cuando tu caso avance de etapa."},{"@type":"HowToStep","position":4,"name":"Descarga tu archivo STL","text":"Cuando el estado sea Entregado, el link de descarga aparece directamente en la pagina de seguimiento."}]}</script>
 <script src="js/reportar-problema.js?v=20260924c"></script>
+    <!-- Laboratorio 3D: three.js para js/laboratorio-3d.js (se carga solo al mostrar un caso) -->
+    <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}</script>
+    <script src="js/caso-etapas.js?v=20261001" defer></script>
 </head>
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -486,6 +489,37 @@
             } catch (_) { return null; }
         }
 
+        /* ── Laboratorio 3D: dónde está el caso, estación por estación (js/laboratorio-3d.js) ── */
+        let _lab3d = null;
+        function pintarLab3D(caso) {
+            const datos = { codigo: caso.codigo || caso.numeroOrden || '', flujo: caso.flujo, estado_operativo: caso.estado_operativo };
+            if (_lab3d) { _lab3d.actualizar(datos); return; }
+            const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (_) { return false; } })();
+            if (!gl || !window.CasoEtapas) return;   // sin WebGL queda la barra de pasos de siempre
+            let sec = document.getElementById('lab3d-sec');
+            if (!sec) {
+                sec = document.createElement('section'); sec.id = 'lab3d-sec';
+                sec.style.cssText = 'margin-bottom:30px;';
+                const h = document.createElement('h3'); h.style.cssText = 'color:#D946A6;margin-bottom:6px;';
+                h.innerHTML = '<i class="fas fa-flask" aria-hidden="true"></i> Así va tu caso en el laboratorio';
+                const p = document.createElement('p'); p.style.cssText = 'color:rgba(248,250,252,.7);font-size:.95rem;margin-bottom:14px;';
+                p.textContent = 'Las estaciones numeradas son las que recorre tu orden y la que brilla es donde está tu caso. Si la bandeja se detiene en dorado, el siguiente paso es tuyo.';
+                const host = document.createElement('div'); host.id = 'lab3d-host';
+                host.innerHTML = '<div style="height:200px;display:flex;align-items:center;justify-content:center;color:#94a3b8;"><i class="fas fa-spinner fa-spin" aria-hidden="true"></i>&nbsp; Cargando el laboratorio…</div>';
+                sec.append(h, p, host);
+                const ref = document.getElementById('accion-doctor') || document.getElementById('pasos').parentNode;
+                ref.parentNode.insertBefore(sec, ref.nextSibling);
+            }
+            const montar = () => { if (!_lab3d) _lab3d = window.ProdigyLab3D.montar(document.getElementById('lab3d-host'), datos); };
+            if (window.ProdigyLab3D) return montar();
+            window.addEventListener('prodigy-lab3d-listo', montar, { once: true });
+            if (!document.getElementById('lab3d-js')) {
+                const sc = document.createElement('script'); sc.type = 'module'; sc.id = 'lab3d-js'; sc.src = 'js/laboratorio-3d.js?v=20261001';
+                sc.onerror = () => { sec.remove(); };   // si no carga, no deja un hueco
+                document.body.appendChild(sc);
+            }
+        }
+
         const WA_LAB = '573212816716';
         function pintarAccionDoctor(op, cod) {
             let box = document.getElementById('accion-doctor');
@@ -542,6 +576,7 @@
 
             // Turno del doctor: qué le toca hacer y un botón que lo lleva directo (aprobar → su panel de cliente)
             pintarAccionDoctor(op, caso.codigo || caso.numeroOrden || '');
+            pintarLab3D(caso);
             
             // Barra de progreso
             document.getElementById('barraProgreso').style.width = estadoInfo.progress + '%';

@@ -18,6 +18,10 @@
   botón del aviso abre la aprobación (antes llevaba a «caso no encontrado»).
 - 🟡 **Laboratorio 3D v6:** vuelve a mostrar todo el laboratorio (las estaciones fuera del recorrido quedan atenuadas),
   microscopio junto a la cámara en Calidad, botón «Revisar y aprobar en mi panel».
+- ✅ **Laboratorio 3D en vivo** (aprobado v9): `/seguimiento-caso` muestra «Así va tu caso en el laboratorio» con la
+  estación real del caso (`js/laboratorio-3d.js`, se carga solo al mostrar un caso; sin WebGL queda la barra de pasos).
+  Reglas en UN archivo: `js/caso-etapas.js` (tipo de trabajo por `flujo` o prefijo CAD-/PROD-/LAB-, estado → estación y
+  turno). En celular el estado va debajo del lienzo. Portal del cliente: «Ver en el laboratorio».
 - ✅ **Bandeja de WhatsApp** (`app/bandeja-whatsapp.html`, secretaría/admin/operación): cada cambio de etapa de un caso
   de PRODIGY encola un aviso (`avisos_whatsapp` + trigger); la secretaria lo envía con el número de PRODIGY en dos clics.
   Antes solo diseño y operación avisaban (fresado, calidad, despacho y reparto nunca). Los dorados (aprobar diseño,
