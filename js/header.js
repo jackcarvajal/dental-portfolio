@@ -64,6 +64,7 @@
     '/para-laboratorios','/referidos','/flujo-diseno','/flujo-fresado',
     '/flujo-impresion','/flujo-lab','/caso','/patient',
     '/preguntas','/impresion-3d','/alineadores-cad',
+    '/en/dental-aligners','/en/surgical-guides','/en/zirconia-crowns',   // inglés: solo diseño
   ];
   var skip = path.startsWith('/mantenimiento') ||
              path.startsWith('/app/') ||
