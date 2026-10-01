@@ -13,7 +13,7 @@ import { join, basename, dirname, resolve as presolve } from 'path';
 
 const ROOT = presolve(process.argv[2] || process.cwd());
 const NROOT = ROOT.replace(/\\/g, '/');
-const IGNORE_DIRS = new Set(['node_modules', '.git', 'assets', 'patients', 'sql', 'docs', 'tools']);
+const IGNORE_DIRS = new Set(['node_modules', '.git', 'assets', 'patients', 'sql', 'docs', 'tools', '.claude', '.agents', '.playwright', '.playwright-cli']);
 let critical = 0;
 
 function walk(dir, out = []) {

@@ -12,7 +12,7 @@ const ROOT = process.cwd();
 
 // ── 1. RPCs que el CÓDIGO llama ──
 const codeFiles = [];
-(function walk(d) { for (const n of readdirSync(d)) { if (['node_modules', '.git', 'assets', 'patients', 'sql', 'docs'].includes(n)) continue; const p = join(d, n); const st = statSync(p); if (st.isDirectory()) walk(p); else if (/\.(html|js)$/.test(n)) codeFiles.push(p); } })(ROOT);
+(function walk(d) { for (const n of readdirSync(d)) { if (['node_modules', '.git', 'assets', 'patients', 'sql', 'docs', '.claude', '.agents', '.playwright', '.playwright-cli'].includes(n)) continue; const p = join(d, n); const st = statSync(p); if (st.isDirectory()) walk(p); else if (/\.(html|js)$/.test(n)) codeFiles.push(p); } })(ROOT);
 const called = new Set();
 for (const f of codeFiles) {
   const s = readFileSync(f, 'utf8');

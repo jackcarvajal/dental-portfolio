@@ -41,7 +41,7 @@ const ALLOW = new Set([
 
 // ── 1. extraer superficie (mismo motor que audit-schema.mjs) ──
 const files = [];
-(function walk(d) { for (const n of readdirSync(d)) { if (['node_modules', '.git', 'assets', 'patients', 'docs'].includes(n)) continue; const p = join(d, n); const st = statSync(p); if (st.isDirectory()) walk(p); else if (/\.(html|js)$/.test(n)) files.push(p); } })(ROOT);
+(function walk(d) { for (const n of readdirSync(d)) { if (['node_modules', '.git', 'assets', 'patients', 'docs', '.claude', '.agents', '.playwright', '.playwright-cli'].includes(n)) continue; const p = join(d, n); const st = statSync(p); if (st.isDirectory()) walk(p); else if (/\.(html|js)$/.test(n)) files.push(p); } })(ROOT);
 
 const tables = {}; const rpcs = new Set(); const enumVals = {};   // tabla -> Set(valores usados para filtrar `estado`)
 // solo tokens tipo columna real: snake_case en minúscula (rechaza VALORES de enum como RECHAZADO / Calculadora)

@@ -94,3 +94,13 @@ El de este repo ya corre ambas capas.)
 💡 **Regla aprendida**: un 401 en llamada anon = key inválida o RLS; decodifica el JWT (`iat`/`exp`) para
 ver si la key está vieja. Un 400 = columna que no existe. Una página en blanco bajo el hero = error JS
 que mató el script (revisa consola).
+
+## Skills de agentes (`.claude/skills/` y `.agents/skills/`)
+
+- **Propias (`prodigy-*`)** — se versionan. Se editan en `.claude/skills/` y se copian a `.agents/skills/`
+  con `node tools/sync-skills.mjs` (`--check` solo avisa si difieren). Arquitectura: `ARCHITECTURE.md`.
+- **De terceros** (skill-creator, find-skills, supabase, supabase-postgres-best-practices,
+  web-design-guidelines, playwright-cli) — NO se versionan; quedan registradas en `skills-lock.json`.
+  Reinstalar en otra máquina: `npx skills experimental_install` y `playwright-cli install --skills`
+  (+ `--skills=agents`).
+- **MCP Supabase** (solo lectura, local): `claude mcp add --transport http -s local supabase "https://mcp.supabase.com/mcp?project_ref=zgihrwqfyvgyapbwzkvw&read_only=true&features=database,docs,debugging"` → autenticar en `/mcp`.

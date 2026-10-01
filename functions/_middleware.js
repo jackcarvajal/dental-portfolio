@@ -9,6 +9,8 @@ const BLOCKED = [
   /^\/MAPA_PROYECTO\.json$/i,
   /^\/js\/supabase-mock\.js$/i,
   /^\/package(-lock)?\.json$/i,
+  /^\/\.(claude|agents)\//i,
+  /^\/skills-lock\.json$/i,
 ];
 
 export async function onRequest(context) {

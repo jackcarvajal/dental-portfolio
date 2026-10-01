@@ -67,6 +67,7 @@ Al final de sesión: `/clear` (todo commiteado) o `/compact` (trabajo en vuelo).
 - Separar: Transaccionales (siempre) vs. Promocionales (`acepta_marketing = true`).
 
 ## 8. REFERENCIAS RÁPIDAS
+- `ARCHITECTURE.md` — decisión de arquitectura (monolito modular + núcleo compartido), módulos y "¿dónde va esto?". Leer antes de crear página/tabla/endpoint. Skills propias: `.claude/skills/prodigy-*` (arquitectura, cambio-bd, publicar, preview-visual).
 - `MAP.md` — líneas exactas de funciones críticas. Leer antes de editar archivos grandes.
 - `PENDIENTES.md` — solo tareas ⏳/🔴/🟡. Orden: 0-SQL → 1-Home → 2-Portafolio → 3-Servicios → 4-Flujos → 5-Soporte → 6-Empresa → 7-Portal → 8-SEO.
 - `VERIFICAR.md` — protocolo que sigue Alejandro para reportar resultados.

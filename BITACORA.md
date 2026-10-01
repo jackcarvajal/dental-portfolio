@@ -9,6 +9,24 @@
 
 ---
 
+## 2026-10-01  (Arquitectura · skills de agentes · herramientas de pruebas)
+
+- ✅ 💡 **ADR-001 — monolito modular por producto + núcleo compartido.** `ARCHITECTURE.md` reescrito
+  (estaba en jun-2026): decisión vs monolítica / multi-repo / microservicios / hexagonal / por módulos,
+  9 módulos de negocio, tabla "¿dónde va esto?", deuda por etapas. Medido: 36 JS en común con Alejandro
+  (12 idénticos, 24 con diferencias) y 14 functions (13 con diferencias); push enviado desde 2 runtimes.
+- ✅ **Skills propias** (versionadas): `prodigy-arquitectura`, `prodigy-cambio-bd`, `prodigy-publicar`,
+  `prodigy-preview-visual` en `.claude/skills/` y `.agents/skills/` (`node tools/sync-skills.mjs`).
+- ✅ **Skills de terceros** (no versionadas, en `skills-lock.json`): skill-creator (Anthropic), find-skills
+  (Vercel), supabase + supabase-postgres-best-practices (Supabase), web-design-guidelines (Vercel),
+  playwright-cli. `.gitignore` solo deja pasar `prodigy-*`; `_middleware.js` bloquea `/.claude/`,
+  `/.agents/` y `/skills-lock.json`.
+- ✅ Instalados globales: `@playwright/cli` 0.1.22 (+ Chromium, Firefox, WebKit) y `@testsprite/testsprite-cli` 0.13.0.
+- 🟡 **TestSprite**: falta `testsprite setup` con la API key de Alejandro (servicio en la nube).
+- 🟡 **MCP Supabase** solo lectura agregado en local: falta autenticar en `/mcp`.
+
+---
+
 ## 2026-09-29  (Alineadores: pago y bloqueo · equipo: vinculación y perfil de diseño · crons)
 
 - ✅ Alineadores: pago en los primeros 10 días; tolerancia hasta el 12, casos **en espera** el 13-14, **bloqueo** desde el 15 (`sql/alineadores-bloqueo-por-pago-2026.sql`, corrido); liberación automática al quedar al día; comprobante del abono a la técnica; WhatsApp de dudas en el menú y por caso.

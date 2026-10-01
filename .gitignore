@@ -42,8 +42,18 @@ temporal/
 .tmp.driveupload/
 .tmp.drivedownload/
 
-# ---- Configuración local de Claude ----
-.claude/
+# ---- Configuración local de Claude / agentes ----
+# Solo se versionan las skills PROPIAS (prodigy-*). Las de terceros se reinstalan con
+# `npx skills experimental_install` (skills-lock.json) — ver tools/README.md
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/prodigy-*/
+.agents/*
+!.agents/skills/
+.agents/skills/*
+!.agents/skills/prodigy-*/
+.playwright/
 
 # ---- Node.js ----
 node_modules/
@@ -61,3 +71,5 @@ desktop.ini
 .vscode/settings.json
 *.suo
 *.user
+# ---- Playwright CLI (salidas; pueden tener credenciales) ----
+.playwright-cli/
