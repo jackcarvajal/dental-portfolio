@@ -492,7 +492,7 @@
         /* ── Laboratorio 3D: dónde está el caso, estación por estación (js/laboratorio-3d.js) ── */
         let _lab3d = null;
         function pintarLab3D(caso) {
-            const datos = { codigo: caso.codigo || caso.numeroOrden || '', flujo: caso.flujo, estado_operativo: caso.estado_operativo };
+            const datos = { codigo: caso.codigo || caso.numeroOrden || '', flujo: caso.flujo, estado_operativo: caso.estado_operativo, foto_entrega: caso.foto_entrega };
             if (_lab3d) { _lab3d.actualizar(datos); return; }
             const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (_) { return false; } })();
             if (!gl || !window.CasoEtapas) return;   // sin WebGL queda la barra de pasos de siempre
@@ -514,7 +514,7 @@
             if (window.ProdigyLab3D) return montar();
             window.addEventListener('prodigy-lab3d-listo', montar, { once: true });
             if (!document.getElementById('lab3d-js')) {
-                const sc = document.createElement('script'); sc.type = 'module'; sc.id = 'lab3d-js'; sc.src = 'js/laboratorio-3d.js?v=20261001';
+                const sc = document.createElement('script'); sc.type = 'module'; sc.id = 'lab3d-js'; sc.src = 'js/laboratorio-3d.js?v=20261001b';
                 sc.onerror = () => { sec.remove(); };   // si no carga, no deja un hueco
                 document.body.appendChild(sc);
             }

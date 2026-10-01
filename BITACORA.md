@@ -18,6 +18,9 @@
   botón del aviso abre la aprobación (antes llevaba a «caso no encontrado»).
 - 🟡 **Laboratorio 3D v6:** vuelve a mostrar todo el laboratorio (las estaciones fuera del recorrido quedan atenuadas),
   microscopio junto a la cámara en Calidad, botón «Revisar y aprobar en mi panel».
+- ✅ **Bandeja de WhatsApp fase 2** (🟡 falta correr `sql/avisos-whatsapp-fase2-2026.sql`): cola también para Alejandro
+  CAD/CAM (su propia bandeja y su `notify-wa` de solo diseño); campana a secretaría cuando entra un aviso dorado;
+  el seguimiento devuelve `foto_entrega` (foto del mensajero) y el 3D la muestra en «Entregado».
 - ✅ **Laboratorio 3D en vivo** (aprobado v9): `/seguimiento-caso` muestra «Así va tu caso en el laboratorio» con la
   estación real del caso (`js/laboratorio-3d.js`, se carga solo al mostrar un caso; sin WebGL queda la barra de pasos).
   Reglas en UN archivo: `js/caso-etapas.js` (tipo de trabajo por `flujo` o prefijo CAD-/PROD-/LAB-, estado → estación y

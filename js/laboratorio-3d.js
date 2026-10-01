@@ -34,6 +34,8 @@ const CSS = `
 .lab3d .turno.cancelado{background:rgba(148,163,184,.12);color:#cbd5e1;border:1px solid rgba(148,163,184,.35)}
 .lab3d .cta{display:none;text-decoration:none;margin-top:9px;background:#D4AF37;color:#1a1405;border-radius:50px;padding:7px 14px;font-weight:800;font-size:.76rem}
 .lab3d .cta.ver{display:inline-block}
+.lab3d .foto{display:flex;align-items:center;gap:9px;margin-top:9px;color:#7dff9e;font-size:.74rem;font-weight:800;text-decoration:none}.lab3d .foto[hidden]{display:none}
+.lab3d .foto img{width:54px;height:54px;object-fit:cover;border-radius:8px;border:1px solid rgba(0,255,65,.4)}
 .lab3d .barra{height:4px;border-radius:4px;background:rgba(255,255,255,.08);margin-top:10px;overflow:hidden}
 .lab3d .barra i{display:block;height:100%;background:linear-gradient(90deg,#D946A6,#D4AF37,#00d2ff);transition:width .5s}
 .lab3d .ayuda{position:absolute;right:14px;top:14px;font-size:.72rem;color:#94a3b8;background:rgba(10,15,24,.7);border-radius:50px;padding:6px 12px}
@@ -44,12 +46,12 @@ function montar(contenedor, caso0, opciones = {}) {
 if (!document.getElementById('lab3d-css')) { const st = document.createElement('style'); st.id = 'lab3d-css'; st.textContent = CSS; document.head.appendChild(st); }
 const caja = document.createElement('div'); caja.className = 'lab3d';
 caja.innerHTML = '<div class="lienzo" role="img" aria-label="Laboratorio PRODIGY en 3D: la estación iluminada es la etapa actual del caso."></div><div class="capa"><div class="etq-caso" hidden></div></div>'
-  + '<div class="estado" aria-live="polite"><small></small><strong></strong><span class="det"></span><span class="turno"></span><br><a class="cta" target="_blank" rel="noopener noreferrer"></a><div class="barra"><i></i></div></div>'
+  + '<div class="estado" aria-live="polite"><small></small><strong></strong><span class="det"></span><span class="turno"></span><br><a class="cta" target="_blank" rel="noopener noreferrer"></a><a class="foto" target="_blank" rel="noopener noreferrer" hidden><img alt="Foto de la entrega de tu caso" loading="lazy"><span>Ver la foto de la entrega</span></a><div class="barra"><i></i></div></div>'
   + '<div class="ayuda">Arrastra para girar · rueda para acercar</div>';
 contenedor.textContent = ''; contenedor.appendChild(caja);
 const lienzo = caja.querySelector('.lienzo'), capa = caja.querySelector('.capa'), etqCaso = caja.querySelector('.etq-caso');
 const ui = { orden: caja.querySelector('.estado small'), nombre: caja.querySelector('.estado strong'), detalle: caja.querySelector('.estado .det'),
-             turno: caja.querySelector('.estado .turno'), cta: caja.querySelector('.estado .cta'), barra: caja.querySelector('.estado .barra i') };
+             turno: caja.querySelector('.estado .turno'), cta: caja.querySelector('.estado .cta'), foto: caja.querySelector('.estado .foto'), barra: caja.querySelector('.estado .barra i') };
 const movil = matchMedia('(max-width: 700px)').matches;
 const CE = window.CasoEtapas;
 const ESTACIONES = CE.ESTACIONES;
@@ -358,6 +360,9 @@ function aplicar(datos, saltar) {
   ui.cta.classList.toggle('ver', mostrarCta); ui.cta.textContent = u.cta || '';
   ui.cta.href = u.ir === 'wa' ? 'https://wa.me/573212816716?text=' + encodeURIComponent('Hola, escribo por mi caso ' + cod)
                               : '/app/login.html?redirect=' + encodeURIComponent('/app/client-panel.html#aprobar=' + cod);
+  // Entregado: la foto que tomó el mensajero (enlace firmado de nuestro Supabase)
+  const foto = u.turno === 'fin' && /^https:\/\/[a-z0-9]+\.supabase\.co\//.test(datos.foto_entrega || '') ? datos.foto_entrega : '';
+  ui.foto.hidden = !foto; if (foto) { ui.foto.href = foto; ui.foto.querySelector('img').src = foto; }
   ui.barra.style.width = (u.turno === 'fin' ? 100 : u.turno === 'cancelado' ? 0 : (idx + .5) / F.pasos.length * 100) + '%';
 }
 aplicar(caso0, true); uCaso = uDestino;
