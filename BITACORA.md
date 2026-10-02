@@ -11,6 +11,13 @@
 
 ## 2026-10-01 (tarde)  (WhatsApp que sí llega · seguimiento con el estado real · laboratorio 3D v5)
 
+- 🟡 **Pulso del laboratorio (panel interno, pestaña Pedidos):** tarjeta «en vivo» inspirada en un componente React de
+  pipeline de agentes, rehecha en vanilla JS + SVG (`js/pulso-lab.js`, sin React/Tailwind — ADR-001). Datos reales:
+  casos por etapa (Recepción → Diseño → Producción → Por despachar / En camino / Entregados hoy), desglose fresado ·
+  impresión · maquillaje, cuántos esperan al doctor, teletipo con los últimos cambios de etapa (`pedido_bitacora`),
+  WhatsApp por enviar (→ bandeja) y atrasados (→ métricas). Los puntos solo corren por tramos con casos; quieto con
+  «reducir movimiento»; se pausa con la pestaña oculta; cada 60 s. En celular, fichas en vez del diagrama.
+
 - ✅ **Turno del doctor en el seguimiento (ambos repos):** si el caso espera al doctor, aparece un recuadro dorado con qué hacer
   y un botón: aprobar el diseño → su panel de cliente (`login?redirect=/app/client-panel.html#aprobar=COD`); archivo con
   error o pregunta → WhatsApp. En el panel, `#aprobar=COD` pone ese caso primero en el aviso y lo muestra en pantalla.
