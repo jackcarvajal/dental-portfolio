@@ -8,6 +8,8 @@
  * Env: SUPABASE_SERVICE_ROLE_KEY (o SUPABASE_SERVICE_KEY), CRON_SECRET, STAFF_n_PHONE/STAFF_n_APIKEY.
  */
 
+import { revisar } from './vigia.js';
+
 const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 
 export async function onRequestGet({ request, env }) {
@@ -41,12 +43,33 @@ export async function onRequestGet({ request, env }) {
     }
   } catch (_) { /* si la función aún no existe, sigue con el SLA */ }
 
+  // Vigía de seguridad (una vez al día): si un visitante sin sesión puede leer algo privado o falla un servicio
+  // externo, aviso en la campana del admin (functions/api/vigia.js; solo lee)
+  let vigia = null;
+  try {
+    const diaV = new Date(Date.now() - 5 * 3600000).toISOString().slice(0, 10);
+    const marcaV = new Request('https://rl.internal/vigia_' + diaV);
+    if (!(await caches.default.match(marcaV))) {
+      vigia = await revisar(env, request.url);
+      if (!vigia.ok) {
+        await fetch(`${SURL}/rest/v1/notificaciones_internas`, {
+          method: 'POST', headers: { ...h, Prefer: 'return=minimal' },
+          body: JSON.stringify({ tipo: 'urgente', prioridad: 'alta', destinatario_rol: 'admin',
+            titulo: `🛡️ Vigía: ${vigia.problemas.length} problema${vigia.problemas.length > 1 ? 's' : ''} de seguridad o servicios`,
+            mensaje: vigia.problemas.slice(0, 5).join(' · '), accion_url: '/app/pruebas-carga.html', leida_por: [] }),
+        }).catch(() => {});
+      }
+      await caches.default.put(marcaV, new Response('1', { headers: { 'Cache-Control': 'max-age=72000' } }));
+    }
+  } catch (_) { /* el vigía nunca frena el aviso de SLA */ }
+  const resumenVigia = vigia ? { ok: vigia.ok, problemas: vigia.problemas.length } : 'ya corrió hoy';
+
   try {
     const r = await fetch(`${SURL}/rest/v1/rpc/prodigy_pedidos_sla_vencido`, { method: 'POST', headers: h, body: '{}' });
     const pedidos = await r.json();
     if (!r.ok) return new Response(JSON.stringify({ error: 'La consulta de vencidos falló', detalle: pedidos }), { status: 502 });
     if (!Array.isArray(pedidos) || pedidos.length === 0) {
-      return new Response(JSON.stringify({ ok: true, alertas: 0, atrasados }), { status: 200 });
+      return new Response(JSON.stringify({ ok: true, alertas: 0, atrasados, vigia: resumenVigia }), { status: 200 });
     }
 
     // 1) Campana del admin: un aviso por caso
@@ -83,7 +106,7 @@ export async function onRequestGet({ request, env }) {
       fetch(`${SURL}/rest/v1/rpc/prodigy_marcar_sla_alerta`, { method: 'POST', headers: h, body: JSON.stringify({ p_id: p.id }) })
     ));
 
-    return new Response(JSON.stringify({ ok: true, alertas: pedidos.length, atrasados }), { status: 200 });
+    return new Response(JSON.stringify({ ok: true, alertas: pedidos.length, atrasados, vigia: resumenVigia }), { status: 200 });
   } catch (err) {
     console.error('[alerta-sla]', err);
     return new Response(JSON.stringify({ error: 'Error interno del servidor' }), { status: 500 });

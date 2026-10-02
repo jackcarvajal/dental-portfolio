@@ -180,7 +180,10 @@
   <div class="card">
     <div class="card-title"><i class="fas fa-shield-halved" style="color:#f87171;" aria-hidden="true"></i> Seguridad</div>
     <p class="card-desc">Un visitante SIN sesión no debe leer tablas, funciones privadas, archivos ni usar el servidor para mandar avisos.</p>
-    <button type="button" class="btn btn-red" onclick="testSeguridad()">Auditar fugas de datos</button>
+    <div class="btns">
+      <button type="button" class="btn btn-red" onclick="testSeguridad()">Auditar fugas de datos</button>
+      <button type="button" class="btn btn-cyan" onclick="testVigia()">Vigía del servidor</button>
+    </div>
     <div class="result" id="result-seg" aria-live="polite">—</div>
   </div>
 
@@ -487,6 +490,19 @@ async function testSeguridad(){
   return n;
 }
 
+/* 8b · Vigía del servidor (/api/vigia): la misma revisión anónima hecha desde Cloudflare + salud de servicios.
+   Corre sola una vez al día con el cron de SLA y avisa en la campana si algo falla. */
+async function testVigia(){
+  log('result-seg','⏳ El servidor está revisando como visitante sin sesión…');
+  try{
+    const r=await fetch('/api/vigia',{headers:{Authorization:'Bearer '+await token()},cache:'no-store'}); const j=await r.json().catch(()=>({}));
+    if(!r.ok) return pintar('result-seg',[`❌ Vigía (${r.status}): ${j.error||'sin detalle'}`]);
+    const L=[`✅ Vigía: ${j.revisados} cosas revisadas desde el servidor`].concat((j.problemas||[]).map(x=>'❌ '+x));
+    if((j.sin_datos||[]).length) L.push(`⚪ Vacías (no se puede comprobar aún): ${j.sin_datos.join(', ')}`);
+    return pintar('result-seg',L);
+  }catch(e){ return pintar('result-seg',['❌ Vigía: '+e.message]); }
+}
+
 /* 9 · Seguimiento público (como visitante) */
 async function testSeguimiento(){
   const cod=document.getElementById('seg-codigo').value.trim().toUpperCase();
@@ -555,7 +571,7 @@ async function revisarTodo(){
   btn.disabled=true; res.textContent='⏳ Revisando… (tarda unos 20 s)';
   const T0=performance.now();
   const pruebas=[['Tablas',testTablas],['Funciones de la BD',testRPCs],['Rendimiento',testQueryPerf],['Seguridad (como anónimo)',testSeguridad],
-    ['Módulos',testModulos],['Salud del servidor',testHealth],['WhatsApp (texto, sin enviar)',testWhatsApp]];
+    ['Módulos',testModulos],['Salud del servidor',testHealth],['WhatsApp (texto, sin enviar)',testWhatsApp],['Vigía del servidor',testVigia]];
   if(escribe){
     const stl=new File(['solid prueba\nendsolid prueba\n'.padEnd(1024,' ')],'prueba-1kb.stl',{type:'model/stl'});
     pruebas.push(['Subida de archivos (1 KB, se borra)',()=>testUploadSTL(stl)],['Correo de prueba',testCorreo],['IA de redes',testSocialCopy]);

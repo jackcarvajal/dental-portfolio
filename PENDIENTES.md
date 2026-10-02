@@ -9,6 +9,7 @@
    archivo de `casos`, token de revisión/aprobación creable sin sesión, CLV de doctores, borrados sin guardia y 7 vistas
    que se saltan el RLS. Al final todo debe dar 0. Luego «Revisar todo» en app/pruebas-carga (11 funciones nuevas).
    También `sql/fabricacion-pago-verificado-2026.sql` (el «ya pagué» del doctor enrutaba a producción sin verificar).
+   Opcional: `sql/funciones-search-path-2026.sql` (endurecimiento menor, sin cambio de comportamiento).
    ❓ Decidir si el MCP de Supabase pasa a escritura (hoy `read_only=true`; pasos en la conversación del 2-oct).
 1. 🔴 **Prueba real de un pedido de punta a punta** — `pedidos` sigue en 0 filas: nunca se ha guardado un caso
    real. Todo lo nuevo (Pulso, Bandeja WA, laboratorio 3D, métricas, atrasados) depende de esto. Ver bloque

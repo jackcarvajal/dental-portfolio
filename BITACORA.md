@@ -11,6 +11,15 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- ✅ **Vigía de seguridad diario** (`functions/api/vigia.js`): desde el servidor, con la anon key pública, revisa 19
+  tablas, 6 vistas, 19 funciones que leen y 8 carpetas privadas + la salud de servicios externos. Lo corre una vez al
+  día el cron de SLA (alerta-sla.js) y si algo falla deja «🛡️ Vigía: N problemas» en la campana del admin. También
+  en el panel de pruebas (botón «Vigía del servidor» y dentro de «Revisar todo»). Solo lee.
+- 🟡 `sql/funciones-search-path-2026.sql` (opcional, bajo riesgo): fija `search_path = public, extensions` en las 34
+  funciones que marca el asesor (mismo comportamiento que hoy).
+- ✅ Deriva del núcleo compartido revisada (audit-nucleo, 18 archivos): solo configuración por marca (CORS, nombres,
+  correos, rutas del panel) y estilo; ningún arreglo de seguridad faltante en Alejandro.
+
 - ✅ **Auditoría móvil completa (360 px, código actual): 97 públicas + 58 /app (sesión simulada) en las dos webs.**
   Arreglado: scroll lateral en flujo-impresion (mismo `1fr` que fresado; tarjetas de material de 36 px → 2 columnas;
   css/flujo-impresion v=20261002), flujo-lab, nosotros (grilla de 4 puntajes fija), inicio de Alejandro (pasos con
