@@ -18,6 +18,9 @@
   botón del aviso abre la aprobación (antes llevaba a «caso no encontrado»).
 - 🟡 **Laboratorio 3D v6:** vuelve a mostrar todo el laboratorio (las estaciones fuera del recorrido quedan atenuadas),
   microscopio junto a la cámara en Calidad, botón «Revisar y aprobar en mi panel».
+- ✅ **Resend en Cloudflare (PRODIGY):** `RESEND_API_KEY` (Secret, solo envío, dominio prodigylabdental.com) y `FROM_EMAIL`
+  agregadas el 1-oct. Botón «Enviarme un correo de prueba» en Configuración → Verificar edge functions.
+  🟡 Alejandro: falta verificar `alejandrocadcam.com` en Resend (no tiene sus DNS) y su clave aparte.
 - 🔴 **La web NO envía correos:** `cf pages get` confirma que en Cloudflare no existe `RESEND_API_KEY` (ni `FROM_EMAIL`).
   Pasos en `PENDIENTES-DNS-EMAIL.md` §4–5 (clave en Cloudflare + SMTP de Supabase para el reset).
 - ✅ **Casos atrasados:** `sql/casos-atrasados-2026.sql` (🟡 falta correr) → Métricas muestra «Atrasados ahora» (más del

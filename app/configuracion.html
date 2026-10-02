@@ -243,6 +243,7 @@
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
             <button type="button" onclick="verificarEdgeFns()" style="background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:#00d2ff;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-bolt" aria-hidden="true"></i> Verificar todas</button>
             <button type="button" onclick="window.open('/api/health-check','_blank','noopener')" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#94a3b8;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-external-link" aria-hidden="true"></i> Health Check JSON</button>
+            <button type="button" id="btn-correo-prueba" onclick="enviarCorreoPrueba()" style="background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.35);color:#D4AF37;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-envelope" aria-hidden="true"></i> Enviarme un correo de prueba</button>
         </div>
         <div id="edge-results" style="font-size:.76rem;font-family:monospace;background:rgba(0,0,0,.3);border-radius:8px;padding:12px;min-height:40px;color:#94a3b8;max-height:200px;overflow-y:auto;" aria-live="polite">Haz click en "Verificar todas" para comprobar el estado de cada edge function.</div>
     </div>
@@ -434,6 +435,27 @@ async function init() {
 init();
 </script>
 <script>
+// Prueba real de los correos de la web (Resend en Cloudflare): se envía a tu propio correo con tu sesión
+async function enviarCorreoPrueba() {
+    const el = document.getElementById('edge-results'), btn = document.getElementById('btn-correo-prueba');
+    btn.disabled = true; el.textContent = '⏳ Enviando correo de prueba...';
+    try {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) throw new Error('Sin sesión');
+        const r = await fetch('/api/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + session.access_token },
+            body: JSON.stringify({ to: session.user.email, tipo: 'pedido_confirmado',
+                subject: 'Prueba de correo — PRODIGY Lab Dental',
+                text: 'Si lees esto, los correos de la web (bienvenidas, diseño listo, entregado) ya funcionan.' }),
+        });
+        const j = await r.json().catch(() => ({}));
+        el.textContent = r.ok ? `✅ Enviado a ${session.user.email}. Revisa tu bandeja (y spam la primera vez).`
+                              : `⚠️ No salió (${r.status}): ${j.error || 'sin detalle'}`;
+    } catch (e) { el.textContent = '❌ ' + e.message; }
+    btn.disabled = false;
+}
+
 async function verificarEdgeFns() {
     const el = document.getElementById('edge-results');
     el.textContent = '⏳ Verificando...';
