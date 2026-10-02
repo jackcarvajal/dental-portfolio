@@ -69,10 +69,6 @@ export async function onRequestPost({ request, env }) {
     await caches.default.put(rlKey, new Response('1', { headers: { 'Cache-Control': 'max-age=3600' } }));
   }
 
-  if (!env.RESEND_API_KEY) {
-    return new Response(JSON.stringify({ error: 'RESEND_API_KEY no configurada' }), { status: 503, headers: cors });
-  }
-
   let body;
   try { body = await request.json(); } catch {
     return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: cors });
@@ -97,6 +93,11 @@ export async function onRequestPost({ request, env }) {
       subject = 'Bienvenido a PRODIGY Lab Dental — Tu portal está listo';
       text = 'Recibimos tu solicitud. Tu portal está listo en prodigylabdental.com/app/client-panel.html';
     }
+  }
+
+  // Primero quién pide (arriba); después si el servicio de correo está configurado
+  if (!env.RESEND_API_KEY) {
+    return new Response(JSON.stringify({ error: 'RESEND_API_KEY no configurada' }), { status: 503, headers: cors });
   }
 
   if (!to || !subject || !text) {
