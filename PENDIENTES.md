@@ -4,6 +4,17 @@
 
 ---
 
+## 🎯 EN TU CANCHA AHORA (2026-10-02) — panel de pruebas: 76 ✅ · 0 ❌
+1. 🔴 **Prueba real de un pedido de punta a punta** — `pedidos` sigue en 0 filas: nunca se ha guardado un caso
+   real. Todo lo nuevo (Pulso, Bandeja WA, laboratorio 3D, métricas, atrasados) depende de esto. Ver bloque
+   "PRUEBA EN VIVO PENDIENTE" abajo.
+2. 🟡 **Pegar plantillas de correos de acceso** en Supabase → `docs/correos-auth/LEEME.md` (5 min).
+3. 🟡 **Cuenta de auditoría** `AUD_EMAIL`/`AUD_PASS` (variables de usuario de Windows) → `tools/audit-live-sesion.mjs`.
+4. 🟡 **Prueba real de «Envía tu escáner»** (PRODIGY y Alejandro) con un correo sin cuenta: llega bienvenida con clave.
+5. ❓ **Decisiones:** métricas PRODIGY ¿solo `negocio=prodigy`? (hoy suman Alejandro) · ¿contabilidad ve ingresos?
+   (hoy sus métricas dan error) · buckets de `taller.html` (abajo).
+6. 💳 **Antes de cobrar en línea:** redesplegar `wompi-signature` + webhook de Stripe (`docs/ACTIVAR-PAGOS.md`).
+
 ## 🎯 EN TU CANCHA AHORA (resumen sesión 2026-09-07) — todo lo de código ya está pusheado
 **SQL para correr** (Supabase SQL Editor):
 - ✅ `sql/fix-alertar-leads-scanner-domicilio.sql` — CORRIDO 2026-09-07. Los leads de scanner/domicilio
@@ -572,7 +583,7 @@ Los siguientes hallazgos de la auditoría 2026-07-03 quedaron **todos ejecutados
 
 ---
 
-## 🟡 Riesgo residual documentado — send-email.js acepta `tipo`/`text` sin auth (bajo, no urgente)
+## ✅ RESUELTO 2026-10-01 — send-email.js sin sesión ya no acepta nada (la bienvenida sale de /api/cuenta-implicita)
 
 **Contexto:** a diferencia de Alejandro (que sí tenía el hueco grave de `html` arbitrario, ya corregido), `functions/api/send-email.js` de PRODIGY genera el HTML siempre server-side desde plantillas (`buildTemplate()`), y escapa `text`/`subject` — no permite inyectar HTML/links arbitrarios. Pero **no exige ninguna autenticación**, y tiene 3 llamadores legítimos anónimos reales (`envia-tu-scanner.html`, `operario.html`, `js/emailnotif.js`), así que no se le puede agregar un gate de auth sin romper ese flujo público.
 

@@ -11,6 +11,10 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- ✅ **Limpieza:** `diseno-remoto.html` mostraba siempre «— casos en producción» (style duplicado anulaba el
+  display:none) y el contador leía `pedidos` como anónimo (ya cerrado) → quitado. `/api/wa-auto` eliminado en ambos
+  repos (nadie lo llamaba; CallMeBot sin clave). PENDIENTES.md con el resumen del 2-oct arriba.
+
 - ✅ **Primer informe del panel de pruebas con sesión admin: 75 ✅, 0 ❌.** Lo que no podía ver (tablas vacías) lo
   revisé en las políticas y encontré:
   - 🔴→✅ **`pedidos`: política `anon_diseno_review_select`** (SQL corrido 2-oct: 0 políticas anon, funciones listas) — cualquiera sin sesión listaba TODOS los pedidos en

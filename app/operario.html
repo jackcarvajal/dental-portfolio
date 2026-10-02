@@ -645,7 +645,6 @@ async function avanzar(id, nuevoEstado, dept) {
     const { data: p } = await sb.from('pedidos').select('codigo,tipo_trabajo,nombre_doctor,pais,email').eq('negocio', 'prodigy').eq('id',id).single();
     const _tk = (await sb.auth.getSession()).data?.session?.access_token;   // correos: solo con sesión del equipo
     const pushUrl = SB_URL+'/functions/v1/send-push';
-    const waUrl   = '/api/wa-auto';
     const heads   = {'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON};
     const hCT     = {'Content-Type':'application/json'};
 

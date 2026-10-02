@@ -8,7 +8,7 @@
 
 | Hoy | Problema |
 |---|---|
-| CallMeBot (`wa-auto`, `notify-staff`) | No es oficial y **solo envía al número que lo activó**: sirve para avisos al equipo, nunca para doctores. Cambia de número seguido. |
+| CallMeBot (`notify-staff`; `wa-auto` se eliminó oct-2026) | No es oficial y **solo envía al número que lo activó**: sirve para avisos al equipo, nunca para doctores. Cambia de número seguido. |
 | `wa.me` (`notify-wa`) | Funciona, pero alguien tiene que tocar «Enviar» en cada caso. |
 | **Cloud API de Meta** | Oficial, gratis de montar, envía solo. Se paga por mensaje de plantilla entregado. |
 
