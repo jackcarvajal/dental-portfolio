@@ -11,6 +11,13 @@
 
 ## 2026-10-01 (tarde)  (WhatsApp que sí llega · seguimiento con el estado real · laboratorio 3D v5)
 
+- ✅ **Cuentas implícitas en el servidor (todos los flujos):** envia-alineadores, flujo-fresado y flujo-impresión ya no
+  hacen `auth.signUp` en el navegador con una clave que mandaban por WhatsApp al número que escribiera cualquiera;
+  llaman a `/api/cuenta-implicita` (origen `alineadores` → solicitudes_scanner; `pedido` → pedidos sin sesión, código
+  de los últimos 15 min). Clave aleatoria solo al correo. Correo validado estricto (va en filtro PostgREST).
+  `/api/send-email` sin sesión ya no acepta nada (la bienvenida sale solo desde el servidor con CRON_SECRET).
+  Alejandro: mismo endpoint propio (usaba una clave FIJA en el código; verificado: 0 cuentas con esa clave).
+
 - 🟡 **Pulso del laboratorio (panel interno, pestaña Pedidos):** tarjeta «en vivo» inspirada en un componente React de
   pipeline de agentes, rehecha en vanilla JS + SVG (`js/pulso-lab.js`, sin React/Tailwind — ADR-001). Datos reales:
   casos por etapa (Recepción → Diseño → Producción → Por despachar / En camino / Entregados hoy), desglose fresado ·

@@ -931,10 +931,11 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
             `Gracias, <strong>${_nom}</strong>. Recibimos tu caso de ${_esc(servicio.toLowerCase())}.<br>`+
             `<span style="display:inline-block;margin:12px 0;padding:8px 16px;border:1px solid rgba(212,175,55,.4);border-radius:10px;background:rgba(212,175,55,.08);color:#D4AF37;font-weight:800;letter-spacing:.5px;">Nº de caso: ${_esc(codigo)}</span><br>`+
             `<span style="font-size:.85rem;color:#94a3b8;">Guarda este número para hacer seguimiento.</span><br><br>`+
-            (email ? (_cuenta && _cuenta.existe
+            (_cuenta && _cuenta.existe
                 ? `✅ Ya tienes cuenta con <strong>${_esc(email)}</strong>: entra a tu portal con tu clave (o usa «Olvidé mi contraseña»).`
-                : `✅ <strong>Creamos tu portal de seguimiento.</strong> Te enviamos el acceso y tu clave temporal a <strong>${_esc(email)}</strong> (revisa también spam).`) :
-                     `Te contactamos al ${_wa} cuando tengamos el diseño listo.`);
+                : _cuenta && _cuenta.creada
+                ? `✅ <strong>Creamos tu portal de seguimiento.</strong> Te enviamos el acceso y tu clave temporal a <strong>${_esc(email)}</strong> (revisa también spam).`
+                : `Te contactamos al ${_wa} cuando tengamos el diseño listo.`);
         document.getElementById('waLink').href =
             `https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, acabo de enviar mi escáner. Soy ${doctor} de ${clinica}. Mi Nº de caso es ${codigo}.`)}`;
         const _reg = document.getElementById('regLink');

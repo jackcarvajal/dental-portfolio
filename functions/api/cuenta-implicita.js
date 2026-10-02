@@ -1,10 +1,12 @@
 /**
  * PRODIGY — Cuenta del doctor creada en el SERVIDOR al enviar una solicitud pública
- * POST /api/cuenta-implicita   Body: { origen:'escaner', email, codigo, nombre, clinica, whatsapp }
+ * POST /api/cuenta-implicita   Body: { origen, email, codigo, nombre, clinica, whatsapp }
+ *   origen 'escaner' | 'alineadores' → solicitudes_scanner (código + ese correo)
+ *   origen 'pedido' (flujo-fresado, flujo-impresión) → pedidos (código; el pedido anónimo guarda email vacío)
  *
  * Antes la página creaba la cuenta en el navegador (auth.signUp) con una clave que el navegador conocía: quien
  * escribiera el correo de OTRO doctor quedaba con sesión en una cuenta a nombre de ese correo. Ahora:
- *  · solo se crea si ese correo acaba de dejar una solicitud con ese código (últimos 15 min)
+ *  · solo se crea si acaba de entrar una solicitud/pedido con ese código (últimos 15 min)
  *  · la clave temporal la genera el servidor y SOLO viaja al correo del doctor (nunca al navegador)
  *  · si el correo ya tiene cuenta, no se toca: el doctor entra con su clave o usa «olvidé mi contraseña»
  * Env: SUPABASE_SERVICE_ROLE_KEY | SUPABASE_SERVICE_KEY · RESEND_API_KEY (vía /api/send-email)
@@ -31,11 +33,16 @@ export async function onRequestPost({ request, env }) {
   let b; try { b = await request.json(); } catch { return J({ error: 'JSON inválido' }, 400, h); }
   const email = String(b.email || '').trim().toLowerCase();
   const codigo = String(b.codigo || '').trim();
-  if (b.origen !== 'escaner' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254 || !codigo) return J({ error: 'Datos incompletos' }, 400, h);
+  // correo estricto: sin comas, paréntesis ni % (va dentro de un filtro de PostgREST)
+  if (!['escaner', 'alineadores', 'pedido'].includes(b.origen) || !/^[a-z0-9._+'-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/.test(email) || email.length > 254 || !codigo) return J({ error: 'Datos incompletos' }, 400, h);
 
-  // La solicitud tiene que existir, ser de ese correo y de hace menos de 15 minutos
-  const desde = new Date(Date.now() - 15 * 60000).toISOString();
-  const rs = await fetch(`${c.URL}/rest/v1/solicitudes_scanner?codigo=eq.${encodeURIComponent(codigo)}&email=ilike.${encodeURIComponent(email)}&created_at=gte.${encodeURIComponent(desde)}&select=id&limit=1`, { headers: adminH(c.SERVICE) });
+  // La solicitud/pedido tiene que existir y ser de hace menos de 15 minutos
+  const desde = encodeURIComponent(new Date(Date.now() - 15 * 60000).toISOString());
+  const cod = encodeURIComponent(codigo), mail = encodeURIComponent(email);
+  const ruta = b.origen === 'pedido'
+    ? `pedidos?codigo=eq.${cod}&negocio=eq.prodigy&or=(email.is.null,email.ilike.${mail})&created_at=gte.${desde}`
+    : `solicitudes_scanner?codigo=eq.${cod}&email=ilike.${mail}&created_at=gte.${desde}`;
+  const rs = await fetch(`${c.URL}/rest/v1/${ruta}&select=id&limit=1`, { headers: adminH(c.SERVICE) });
   if (!rs.ok || !(await rs.json()).length) return J({ error: 'No autorizado' }, 403, h);
 
   const nombre = String(b.nombre || '').slice(0, 120), clinica = String(b.clinica || '').slice(0, 120), whatsapp = String(b.whatsapp || '').slice(0, 30);

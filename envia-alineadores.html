@@ -324,19 +324,14 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
     body:JSON.stringify({doctor,servicio:'Alineadores — '+paciente,whatsapp,codigo,tipo:'Solicitud de alineadores',
       contexto:'😁 Caso de ALINEADORES (ortodoncia).'+(convenio?' 💳 CLIENTE CONVENIO MENSUAL — sumar al corte.':'')+' Incluye STL + radiografías + fotos + indicación. Revisar y planificar setup / cotizar.'})}).catch(()=>{});
 
-  // Portal opcional (registro implícito por email)
-  let portalLink='https://prodigylabdental.com/app/login.html?nuevo=1';
+  // Portal opcional: la cuenta la crea el SERVIDOR y la clave temporal llega SOLO al correo del doctor
+  // (antes auth.signUp aquí: el navegador conocía la clave y cualquiera podía abrir cuenta con el correo de otro)
+  let _cuenta=null;
   if(email){
     try{
-      const tempPass='Prodigy@'+Math.random().toString(36).slice(2,8).toUpperCase();
-      const {data:su,error:se}=await sb.auth.signUp({email,password:tempPass,
-        options:{data:{nombre:doctor,clinica,whatsapp,rol_solicitado:'client',primera_vez:true},
-        emailRedirectTo:'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1'}});
-      if(!se&&su?.user){
-        await Promise.resolve(sb.from('doctores_perfil').upsert({id:su.user.id,nombre:doctor,clinica,whatsapp},{onConflict:'id',ignoreDuplicates:true})).catch(()=>{});
-        fetch('/api/wa-auto',{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({whatsapp,mensaje:`😁 *PRODIGY Lab — Alineadores*\n\nHola ${doctor.split(' ')[0]}, recibimos el caso de ${paciente}.\n\n📁 Nº caso: *${codigo}*\n✅ Portal creado: ${portalLink}\n📧 ${email}\n🔐 Clave: ${tempPass} _(cámbiala al ingresar)_`})}).catch(()=>{});
-      }
+      const r=await fetch('/api/cuenta-implicita',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({origen:'alineadores',email,codigo,nombre:doctor,clinica,whatsapp})});
+      _cuenta=await r.json().catch(()=>null);
     }catch(_){}
   }
 
@@ -353,7 +348,11 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
       `<span style="font-size:.85rem;color:#94a3b8;">Guarda este número para el seguimiento.</span><br><br>`+
       (convenio?`💳 Registrado como <strong>convenio mensual</strong>: entra al corte del mes.<br>`:'')+
       (fallidos?`<b style="color:#fbbf24">⚠️ ${fallidos} archivo(s) no se pudieron subir — envíalos por WhatsApp.</b> <a href="#" onclick="window.ProdigyReport&&ProdigyReport.abrir({tipo:'archivos'});return false" style="color:#EADBAE">Reportar el problema</a><br>`:'')+
-      (email?`✅ Te creamos el portal — revisa tu WhatsApp (${escH(whatsapp)}) con el acceso.`:`Te contactamos al ${escH(whatsapp)} con la planificación.`);
+      (_cuenta&&_cuenta.existe
+        ?`✅ Ya tienes cuenta con <strong>${escH(email)}</strong>: entra a tu portal con tu clave (o usa «Olvidé mi contraseña»).`
+        :_cuenta&&_cuenta.creada
+        ?`✅ <strong>Creamos tu portal de seguimiento.</strong> Te enviamos el acceso y tu clave temporal a <strong>${escH(email)}</strong> (revisa también spam).`
+        :`Te contactamos al ${escH(whatsapp)} con la planificación.`);
     document.getElementById('waLink').href=`https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, envié un caso de alineadores. Paciente ${paciente}. Nº ${codigo}.`)}`;
     if(email){ const r=document.getElementById('regLink'); r.style.display='inline-flex'; r.href=`/app/login.html?nuevo=1&caso=${encodeURIComponent(codigo)}&email=${encodeURIComponent(email)}`; }
     sc.scrollIntoView({behavior:'smooth',block:'center'});

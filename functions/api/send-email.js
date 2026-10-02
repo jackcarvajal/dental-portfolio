@@ -14,10 +14,11 @@
  * de PRODIGY — un relevo de spam/phishing a nuestro nombre):
  *  · equipo (sesión verificada, roles de app_metadata) → a cualquier doctor
  *  · cliente con sesión → solo a su propio correo
- *  · sin sesión → solo la bienvenida de «Envía tu escáner», con el texto armado aquí y solo a un correo que
- *    acaba de dejar una solicitud (últimos 15 min)
+ *  · llamada interna con CRON_SECRET (crons, /api/cuenta-implicita) → como equipo
+ *  · sin sesión → nada (la bienvenida con clave la manda /api/cuenta-implicita desde el servidor; antes aquí se
+ *    aceptaba sin sesión y cualquiera podía meter una «clave temporal» falsa en el correo)
  */
-import { cfg, adminH, usuarioDe, ADMIN_EMAILS } from './reportar-problema.js';
+import { cfg, usuarioDe, ADMIN_EMAILS } from './reportar-problema.js';
 
 const CORS_ALLOWED = ['https://prodigylabdental.com','https://www.prodigylabdental.com'];
 
@@ -88,13 +89,7 @@ export async function onRequestPost({ request, env }) {
     if (yo) {
       if (String(to || '').toLowerCase() !== correoYo) return new Response(JSON.stringify({ error: 'Solo puedes enviarte correos a ti mismo.' }), { status: 403, headers: cors });
     } else {
-      if (tipo !== 'bienvenida' || !to || !c.SERVICE) return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401, headers: cors });
-      const desde = new Date(Date.now() - 15 * 60000).toISOString();
-      const r = await fetch(`${c.URL}/rest/v1/solicitudes_scanner?email=ilike.${encodeURIComponent(String(to).toLowerCase())}&created_at=gte.${encodeURIComponent(desde)}&select=id&limit=1`, { headers: adminH(c.SERVICE) }).catch(() => null);
-      const hay = r && r.ok ? (await r.json()).length > 0 : false;
-      if (!hay) return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 403, headers: cors });
-      subject = 'Bienvenido a PRODIGY Lab Dental — Tu portal está listo';
-      text = 'Recibimos tu solicitud. Tu portal está listo en prodigylabdental.com/app/client-panel.html';
+      return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401, headers: cors });
     }
   }
 

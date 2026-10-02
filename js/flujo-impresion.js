@@ -2324,20 +2324,11 @@
                                 })).catch(()=>{});
                             }
                         }
-                        // Registro implícito si hay email
-                        if (!_e && STATE.emailCliente) {
-                            const _tempPass = 'Prodigy@' + Math.random().toString(36).slice(2, 8).toUpperCase();
-                            _sb.auth.signUp({
-                                email: STATE.emailCliente, password:_tempPass,
-                                options:{ data:{ nombre:STATE.nombreCliente, whatsapp:STATE.whatsappCliente, primera_vez:true }, emailRedirectTo:'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1' }
-                            }).then(({error:_se})=>{
-                                if (!_se) {
-                                    fetch('/api/wa-auto',{method:'POST',headers:{'Content-Type':'application/json'},
-                                        body:JSON.stringify({whatsapp:STATE.whatsappCliente,
-                                            mensaje:'🦷 *PRODIGY Lab Dental*\n\nHola '+STATE.nombreCliente.split(' ')[0]+', recibimos tu pedido de impresión 3D.\n\n✅ Portal de seguimiento:\n👉 prodigylabdental.com/app/client-panel.html\n📧 '+STATE.emailCliente+'\n🔐 Clave: '+_tempPass+'\n_(Cámbiala al ingresar)_'
-                                        })
-                                    }).catch(()=>{});
-                                }
+                        // Portal del doctor (sin sesión): la cuenta la crea el SERVIDOR y la clave temporal llega SOLO a su correo
+                        // (antes auth.signUp aquí: el navegador conocía la clave y cualquiera podía abrir cuenta con el correo de otro)
+                        if (!_e && STATE.emailCliente && !_uid) {
+                            fetch('/api/cuenta-implicita', { method:'POST', headers:{ 'Content-Type':'application/json' },
+                                body: JSON.stringify({ origen:'pedido', email: STATE.emailCliente, codigo: STATE.ordenId, nombre: STATE.nombreCliente, whatsapp: STATE.whatsappCliente })
                             }).catch(()=>{});
                         }
                         const ref = sessionStorage.getItem('prodigy_ref');
