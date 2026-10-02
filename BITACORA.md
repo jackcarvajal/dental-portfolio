@@ -11,6 +11,11 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- ✅ **Panel de pruebas: «Revisar todo y generar informe»** → informe Markdown (primero lo que falla) para copiar o
+  descargar .md; opción de incluir las que escriben (STL de 1 KB que se borra, correo, IA). Listas desplegables con
+  contraste (salían blancas). SQL de métricas corrido: anon ya no puede (verificado).
+- ✅ **IA de redes:** `gemini-2.0-flash` ya no respondía (502) → modelos 2.5 con respaldo, sin "pensar".
+- ✅ **Salud del servidor:** 3 falsas alarmas (ipapi 429, Wikipedia sin User-Agent, Factus 403) ya cuentan como "responde".
 - ✅ **Panel de pruebas (`app/pruebas-carga.html`) rehecho:** 4 pruebas (seguridad, módulos, foto antes/después) NUNCA
   corrían: su código estaba dentro de `<script src="panel-tips.js">` (el navegador ignora el contenido). Nuevo botón
   «Revisar todo» (no escribe ni gasta cuota) con resumen ✅/⚠️/❌; subida con tope 50 MB, buckets reales (no existía

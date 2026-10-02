@@ -93,29 +93,27 @@ Reglas:
 - Idioma: español colombiano
 - Mencionar PRODIGY Lab Dental naturalmente en cada copy`;
 
-  const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`;
-
-  let attempts = 0;
-  let geminiData;
-  while (attempts < 2) {
-    attempts++;
+  // Modelos en orden (igual que gemini.js / asistente-soporte): gemini-2.0-flash ya no responde en el plan gratis
+  // (el botón daba 502). En 2.5 se apaga el "pensar" para que no se coma los tokens de la respuesta.
+  const MODELOS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-flash-lite-latest'];
+  let geminiData, ultimoError = '';
+  for (const modelo of MODELOS) {
     try {
-      const res = await fetch(GEMINI_URL, {
+      const gen = { temperature: 0.5, maxOutputTokens: 1200, responseMimeType: 'application/json' };
+      if (modelo.startsWith('gemini-2.5')) gen.thinkingConfig = { thinkingBudget: 0 };
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${env.GEMINI_API_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.5, maxOutputTokens: 1200, responseMimeType: 'application/json' },
-        }),
+        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig: gen }),
       });
-      if (!res.ok) throw new Error(`Gemini HTTP ${res.status}`);
+      if (!res.ok) { ultimoError = `${modelo} HTTP ${res.status}`; continue; }
       geminiData = await res.json();
-      break;
-    } catch(e) {
-      if (attempts >= 2) {
-        return new Response(JSON.stringify({ error: 'Gemini no disponible: ' + e.message }), { status: 502, headers: CORS });
-      }
-    }
+      if (geminiData?.candidates?.[0]?.content?.parts?.[0]?.text) break;
+      ultimoError = `${modelo} sin texto`;
+    } catch (e) { ultimoError = `${modelo}: ${e.message}`; }
+  }
+  if (!geminiData?.candidates?.[0]?.content?.parts?.[0]?.text) {
+    return new Response(JSON.stringify({ error: 'Gemini no disponible: ' + ultimoError }), { status: 502, headers: CORS });
   }
 
   const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || '{}';

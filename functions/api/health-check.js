@@ -58,6 +58,7 @@ const SERVICES = [
   {
     name: 'ipapi.co (geo-detect)',
     url: () => 'https://ipapi.co/json/',
+    expectStatus: [200, 429], // 429 = responde, pero limita la IP compartida de Cloudflare
     critical: false,
   },
   {
@@ -69,7 +70,7 @@ const SERVICES = [
   {
     name: 'Wikipedia REST API (artículos)',
     url: () => 'https://en.wikipedia.org/api/rest_v1/',
-    critical: false,
+    critical: false,          // pide User-Agent identificable (sin él da 403): ver _fetchOnce
   },
   {
     name: 'Wompi (pasarela CO)',
@@ -87,7 +88,7 @@ const SERVICES = [
     name: 'Factus DIAN',
     url: () => 'https://api.factus.com.co',
     method: 'HEAD',
-    expectStatus: [200, 301, 302, 404],
+    expectStatus: [200, 301, 302, 401, 403, 404, 405], // 401/403 = la API responde (pide credenciales)
     critical: false,
   },
   {
@@ -130,7 +131,7 @@ const SERVICES = [
 async function _fetchOnce(service, env) {
   const url     = service.url(env);
   const method  = service.method || 'GET';
-  const headers = service.headers ? service.headers(env) : {};
+  const headers = { 'User-Agent': 'PRODIGY-HealthCheck/1.0 (+https://prodigylabdental.com)', ...(service.headers ? service.headers(env) : {}) };
   const allowed = service.expectStatus || [200, 201, 204];
   const controller = new AbortController();
   const tid = setTimeout(() => controller.abort(), TIMEOUT_MS);

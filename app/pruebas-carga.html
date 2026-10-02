@@ -34,6 +34,15 @@
     .result{background:rgba(0,0,0,.3);border-radius:8px;padding:12px;margin-top:12px;font-size:.76rem;font-family:monospace;min-height:40px;max-height:260px;overflow-y:auto;white-space:pre-wrap;color:#94a3b8;border:1px solid rgba(255,255,255,.06);}
     .result.ok{color:#00FF41;}.result.err{color:#f87171;}.result.warn{color:#f59e0b;}
     input[type=file],input[type=text],select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:8px 12px;font-size:16px;width:100%;margin-bottom:8px;font-family:inherit;outline:none;}
+    /* la lista desplegable del select la pinta el sistema: sin esto salía blanca con letra blanca */
+    select{color-scheme:dark;background-color:#121a26;}
+    select option{background:#0d1520;color:#e2e8f0;}
+    input:focus-visible,select:focus-visible{border-color:var(--cyan);}
+    .informe{display:none;margin-top:14px;width:100%;}
+    .informe.on{display:block;}
+    .informe textarea{width:100%;min-height:260px;background:#070b11;color:#cbd5e1;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px;font:12px/1.5 ui-monospace,Consolas,monospace;resize:vertical;}
+    .chk{display:flex;align-items:center;gap:8px;font-size:.76rem;color:var(--muted);cursor:pointer;margin:0;}
+    .chk input{width:16px;height:16px;accent-color:var(--mg);}
     label{font-size:.72rem;color:var(--muted);display:block;margin-bottom:4px;}
     .progress{background:rgba(255,255,255,.05);border-radius:4px;height:6px;margin-top:8px;overflow:hidden;}
     .progress-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--mg),#9333ea);transition:width .3s ease;}
@@ -58,9 +67,19 @@
 
 <!-- Revisar todo: corre las pruebas que NO escriben nada ni gastan cuota -->
 <div class="todo">
-  <button type="button" class="btn btn-primary" id="btn-todo" onclick="revisarTodo()"><i class="fas fa-list-check" aria-hidden="true"></i> Revisar todo</button>
-  <p>Corre tablas, funciones de la BD, rendimiento, seguridad, módulos, salud del servidor y la bandeja de WhatsApp. No sube archivos, no manda correos ni usa la IA.</p>
+  <button type="button" class="btn btn-primary" id="btn-todo" onclick="revisarTodo()"><i class="fas fa-list-check" aria-hidden="true"></i> Revisar todo y generar informe</button>
+  <p>Corre todas las pruebas y arma un informe para copiármelo o descargarlo. Por defecto no escribe nada ni gasta cuota.</p>
+  <label class="chk" for="chk-escribe"><input type="checkbox" id="chk-escribe"> Incluir las que escriben: sube un archivo de 1 KB (y lo borra), te manda un correo y usa la IA</label>
   <div class="resumen" id="resumen" aria-live="polite"></div>
+  <div class="informe" id="informe">
+    <div class="btns" style="margin-bottom:10px;">
+      <button type="button" class="btn btn-cyan" onclick="copiarInforme()"><i class="fas fa-copy" aria-hidden="true"></i> Copiar informe</button>
+      <button type="button" class="btn btn-gold" onclick="descargarInforme()"><i class="fas fa-download" aria-hidden="true"></i> Descargar .md</button>
+      <span id="informe-msg" style="font-size:.76rem;color:var(--green);align-self:center;" aria-live="polite"></span>
+    </div>
+    <label for="informe-txt" style="margin-bottom:6px;">Informe (pégamelo en el chat tal cual)</label>
+    <textarea id="informe-txt" readonly></textarea>
+  </div>
 </div>
 
 <div class="grid">
@@ -242,6 +261,7 @@ function pintar(id,lineas){
   lineas.forEach(l=>{ if(l.startsWith('✅'))n.ok++; else if(l.startsWith('❌'))n.err++; else if(l.startsWith('⚠️'))n.warn++; });
   el.textContent=lineas.join('\n');
   el.className='result '+(n.err?'err':n.warn?'warn':'ok');
+  n.lineas=lineas;
   return n;
 }
 function log(id,msg,type=''){const el=document.getElementById(id);if(el){el.textContent=msg;el.className='result '+(type||'');}}
@@ -249,11 +269,11 @@ async function token(){ return (await sb.auth.getSession()).data?.session?.acces
 const ms=t0=>Math.round(performance.now()-t0);
 
 /* 1 · Subida (borra el archivo de prueba al terminar) */
-async function testUploadSTL(){
-  const file=document.getElementById('test-stl').files[0];
+async function testUploadSTL(archivo){
+  const file=archivo||document.getElementById('test-stl').files[0];
   if(!file){log('result-stl','Elige un archivo primero.','err');return;}
   const MB=file.size/1024/1024;
-  if(MB>50){log('result-stl',`❌ ${file.name} pesa ${MB.toFixed(1)} MB. El plan gratis de Supabase admite máximo 50 MB por archivo.\nComprímelo en .zip o envíalo por WeTransfer/Drive.`,'err');return;}
+  if(MB>50) return pintar('result-stl',[`❌ ${file.name} pesa ${MB.toFixed(1)} MB. El plan gratis de Supabase admite máximo 50 MB por archivo.`,'Comprímelo en .zip o envíalo por WeTransfer/Drive.']);
   const bucket=document.getElementById('test-bucket').value;
   const prog=document.getElementById('prog-stl'), bar=document.getElementById('prog-bar-stl');
   prog.style.display='block'; bar.style.width='15%';
@@ -266,9 +286,10 @@ async function testUploadSTL(){
     const t=ms(t0); bar.style.width='80%';
     const {error:eDel}=await sb.storage.from(bucket).remove([path]);
     bar.style.width='100%';
-    const vel=(MB/(t/1000)).toFixed(2);
-    log('result-stl',`✅ Subido en ${(t/1000).toFixed(2)} s (${vel} MB/s)\nCarpeta: ${bucket}\n${eDel?'⚠️ No se pudo borrar la prueba: '+eDel.message+'\nBórrala a mano: '+path:'🧹 Archivo de prueba borrado.'}`,eDel?'warn':'ok');
-  }catch(e){ bar.style.width='0%'; log('result-stl','❌ '+(e.message||e)+(/row-level|policy|Unauthorized/i.test(e.message||'')?'\n(Tu rol no puede subir a esta carpeta: es lo esperado si es solo para doctores.)':''),'err'); }
+    return pintar('result-stl',[`✅ Subido a ${bucket} en ${(t/1000).toFixed(2)} s (${(MB/(t/1000)).toFixed(2)} MB/s, ${file.size} bytes)`,
+      eDel?`⚠️ No se pudo borrar la prueba (${eDel.message}). Bórrala a mano: ${path}`:'✅ Archivo de prueba borrado']);
+  }catch(e){ bar.style.width='0%';
+    return pintar('result-stl',[`❌ Subida a ${bucket}: ${e.message||e}`].concat(/row-level|policy|Unauthorized/i.test(e.message||'')?['(Tu rol no puede subir a esta carpeta.)']:[])); }
 }
 
 /* 2 · Funciones de la BD */
@@ -348,8 +369,8 @@ async function testCorreo(){
     const r=await fetch('/api/send-email',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token},
       body:JSON.stringify({to:session.user.email,tipo:'pedido_confirmado',subject:'Prueba de correo — Panel de pruebas PRODIGY',text:'Si lees esto, los correos de la web salen bien (Resend).'})});
     const j=await r.json().catch(()=>({}));
-    pintar('result-edge',[r.ok?`✅ Correo enviado a ${session.user.email}. Revisa tu bandeja (y spam).`:`❌ No salió (${r.status}): ${j.error||'sin detalle'}`]);
-  }catch(e){ pintar('result-edge',['❌ '+e.message]); }
+    return pintar('result-edge',[r.ok?`✅ Correo enviado a ${session.user.email}. Revisa tu bandeja (y spam).`:`❌ Correo: no salió (${r.status}): ${j.error||'sin detalle'}`]);
+  }catch(e){ return pintar('result-edge',['❌ Correo: '+e.message]); }
 }
 async function testSocialCopy(){
   log('result-edge','⏳ Generando textos con la IA (Gemini)…');
@@ -358,8 +379,8 @@ async function testSocialCopy(){
       body:JSON.stringify({titulo:'Coronas de zirconio en 48 horas',descripcion:'Prueba del generador de textos para redes',url:'https://prodigylabdental.com/blog',categoria:'tecnologia'})});
     const d=await r.json().catch(()=>({}));
     if(!r.ok||d.error) throw new Error(d.error||('HTTP '+r.status));
-    pintar('result-edge',['✅ IA de redes OK','',(d.copies?.instagram||'').slice(0,300)+'…']);
-  }catch(e){ pintar('result-edge',['❌ IA de redes: '+e.message]); }
+    return pintar('result-edge',['✅ IA de redes OK','',(d.copies?.instagram||JSON.stringify(d.copies||{})).slice(0,300)+'…']);
+  }catch(e){ return pintar('result-edge',['❌ IA de redes: '+e.message]); }
 }
 
 /* 6 · WhatsApp */
@@ -377,11 +398,6 @@ async function testWhatsApp(){
     else L.push(`✅ Texto para «${est}» (no se envió):`,'',j.mensaje||'(sin texto para este estado)');
   }catch(e){ L.push('❌ notify-wa: '+e.message); }
   return pintar('result-wa',L);
-}
-async function bandejaResumen(){
-  try{ const {count,error}=await sb.from('avisos_whatsapp').select('id',{count:'exact',head:true}).eq('negocio','prodigy').eq('estado_envio','pendiente');
-    return pintar('result-wa',[error?`❌ Bandeja: ${error.message}`:`✅ Bandeja de WhatsApp: ${count} aviso(s) por enviar`]);
-  }catch(e){ return pintar('result-wa',['❌ Bandeja: '+e.message]); }
 }
 
 /* 7 · Rendimiento */
@@ -516,16 +532,60 @@ async function compararSnapshot(){
   log('result-snap',L.join('\n'),'ok');
 }
 
-/* Revisar todo: solo pruebas que no escriben ni gastan cuota */
+/* Revisar todo + informe para copiar/descargar (por defecto no escribe ni gasta cuota) */
+let _informe='';
 async function revisarTodo(){
   const btn=document.getElementById('btn-todo'), res=document.getElementById('resumen');
-  btn.disabled=true; res.textContent='⏳ Revisando…';
-  const tot={ok:0,err:0,warn:0};
-  for(const f of [testTablas,testRPCs,testQueryPerf,testSeguridad,testModulos,testHealth,bandejaResumen]){
-    try{ const n=await f(); if(n){ tot.ok+=n.ok; tot.err+=n.err; tot.warn+=n.warn; } }catch(e){ tot.err++; }
+  const escribe=document.getElementById('chk-escribe').checked;
+  btn.disabled=true; res.textContent='⏳ Revisando… (tarda unos 20 s)';
+  const T0=performance.now();
+  const pruebas=[['Tablas',testTablas],['Funciones de la BD',testRPCs],['Rendimiento',testQueryPerf],['Seguridad (como anónimo)',testSeguridad],
+    ['Módulos',testModulos],['Salud del servidor',testHealth],['WhatsApp (texto, sin enviar)',testWhatsApp]];
+  if(escribe){
+    const stl=new File(['solid prueba\nendsolid prueba\n'.padEnd(1024,' ')],'prueba-1kb.stl',{type:'model/stl'});
+    pruebas.push(['Subida de archivos (1 KB, se borra)',()=>testUploadSTL(stl)],['Correo de prueba',testCorreo],['IA de redes',testSocialCopy]);
+  }
+  const secciones=[], tot={ok:0,err:0,warn:0};
+  for(const [nombre,f] of pruebas){
+    const t0=performance.now(); let n;
+    try{ n=await f(); }catch(e){ n={ok:0,err:1,warn:0,lineas:['❌ La prueba se cayó: '+e.message]}; }
+    n=n||{ok:0,err:0,warn:0,lineas:['⚪ sin resultado']};
+    tot.ok+=n.ok; tot.err+=n.err; tot.warn+=n.warn;
+    secciones.push({nombre,ms:ms(t0),n});
   }
   res.innerHTML=`<span class="pill ok">✅ ${tot.ok} bien</span><span class="pill warn">⚠️ ${tot.warn} avisos</span><span class="pill err">❌ ${tot.err} fallas</span>`;
+  // Informe en Markdown: primero lo que falla, después el detalle completo
+  const {data:{session}}=await sb.auth.getSession();
+  const am=session?.user?.app_metadata||{};
+  const malas=secciones.flatMap(s=>(s.n.lineas||[]).filter(l=>/^(❌|⚠️)/.test(l)).map(l=>`- [${s.nombre}] ${l}`));
+  _informe=[
+    '# Informe del panel de pruebas — PRODIGY',
+    `- Fecha: ${new Date().toLocaleString('es-CO')}`,
+    `- Usuario: ${session?.user?.email||'—'} · rol: ${[].concat(am.roles||[],am.role||[]).join(',')||'—'}`,
+    `- Página: ${location.origin+location.pathname}`,
+    `- Navegador: ${navigator.userAgent}`,
+    `- Incluye pruebas que escriben: ${escribe?'sí':'no'} · Duración: ${(ms(T0)/1000).toFixed(1)} s`,
+    `- Resultado: ✅ ${tot.ok} · ⚠️ ${tot.warn} · ❌ ${tot.err}`,
+    '', '## Lo que falla o avisa', malas.length?malas.join('\n'):'- Nada 🎉',
+    '', '## Detalle por sección',
+    ...secciones.flatMap(s=>['',`### ${s.nombre} (${s.ms} ms) — ✅ ${s.n.ok} · ⚠️ ${s.n.warn} · ❌ ${s.n.err}`,...(s.n.lineas||[]).map(l=>l?'    '+l:'')]),
+  ].join('\n');
+  document.getElementById('informe-txt').value=_informe;
+  document.getElementById('informe').classList.add('on');
+  document.getElementById('informe-msg').textContent='';
   btn.disabled=false;
+}
+async function copiarInforme(){
+  const msg=document.getElementById('informe-msg'), ta=document.getElementById('informe-txt');
+  try{ await navigator.clipboard.writeText(_informe); msg.textContent='✓ Copiado. Pégalo en el chat.'; }
+  catch(_){ ta.focus(); ta.select(); msg.textContent='Selecciona el texto (ya está marcado) y copia con Ctrl+C.'; }
+}
+function descargarInforme(){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([_informe],{type:'text/markdown;charset=utf-8'}));
+  a.download=`informe-pruebas-prodigy-${new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')}.md`;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+  document.getElementById('informe-msg').textContent='✓ Descargado.';
 }
 </script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
