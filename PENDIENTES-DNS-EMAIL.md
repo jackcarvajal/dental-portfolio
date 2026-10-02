@@ -1,5 +1,7 @@
 # PRODIGY — Configuración DNS para Email Deliverability
 
+> **Ojo: hay DOS lugares que usan Resend.** (1) Supabase Auth (SMTP) → correos de registro y «olvidé mi contraseña»:
+> ✅ ya configurado. (2) Las funciones de la web en Cloudflare → todos los demás correos: ❌ falta la clave.
 > **Estado 2026-10-01 (verificado con `cf pages get`): en Cloudflare NO existe `RESEND_API_KEY` → la web NO envía
 > ningún correo** (bienvenidas, diseño listo, entregado, agradecimiento). `/api/send-email` responde 503. Hacer en
 > orden: pasos 1–3 de abajo (DNS + verificar dominio) → **paso 4 (clave en Cloudflare)** → **paso 5 (SMTP de
@@ -88,7 +90,7 @@ o rechazarse.
 4. **Save** → Deployments → *Retry deployment* del último (las variables entran en el siguiente despliegue).
 5. Alejandro CAD/CAM: lo mismo en su proyecto con su dominio y `FROM_EMAIL` = `Alejandro CAD/CAM <alejandro@alejandrocadcam.com>`.
 
-## 5. SMTP de Supabase con Resend (correo de «olvidé mi contraseña»)
+## 5. SMTP de Supabase con Resend (correo de «olvidé mi contraseña») — ✅ YA HECHO (ver BITACORA: «SMTP Supabase activado»)
 Supabase → Authentication → **Emails → SMTP Settings** → *Enable custom SMTP*:
 - Host `smtp.resend.com` · Puerto `465` · Usuario `resend` · Contraseña = una API key de Resend (puede ser otra solo para esto)
 - Remitente `noreply@prodigylabdental.com` · Nombre `PRODIGY Lab Dental`
