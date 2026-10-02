@@ -11,6 +11,15 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- 🔴→🟡 **Auditoría de funciones SECURITY DEFINER** (asesor de Supabase: 80 ejecutables por anónimo; revisadas con
+  código + prueba anónima en producción). Graves: `generar_url_firmada` (enlace firmado a CUALQUIER archivo del bucket
+  privado `casos`), `prodigy_crear_revision_token` (guardia rota → anónimo podía crear token y APROBAR diseños),
+  `prodigy_clv_doctores` (sin guardia: correos e ingresos por doctor), funciones que BORRAN/purgan sin guardia
+  (`limpiar_pedidos_prueba`, `prodigy_purgar_stl_vencidos`, expirar cotizaciones, limpiar campana). Además el dashboard
+  de Alejandro, embudo, top doctores, inventario… legibles sin sesión. `sql/funciones-definer-permisos-2026.sql`:
+  reescribe en la BD la guardia rota (mismo patrón NULL) en todas, guardia a 4 sin guardia, quita EXECUTE a anon (y a
+  authenticated en las de servidor). Pendiente de correr. Panel de pruebas: 11 funciones más en la prueba anónima.
+
 - ✅ **Decisiones de Alejandro (2-oct, SQL v2 corrido y verificado):** cada negocio independiente → las 5 métricas `prodigy_*` solo cuentan
   `negocio = prodigy` (antes sumaban Alejandro CAD/CAM); contabilidad SÍ las ve; calidad solo tiempos de entrega;
   Mayra (alineadores) NO. `sql/fix-guardia-metricas-2026.sql` v2 (archivo canónico, re-correr). `calidad.html`

@@ -445,8 +445,11 @@ async function testSeguridad(){
       L.push(`✅ Políticas revisadas: ${abiertas.length-raras.length} tablas públicas a propósito (portafolio, catálogo, precios…)${raras.length?'':', ninguna privada abierta'}`);
     }
   }catch(e){ L.push('⚠️ Revisión de políticas: '+e.message); }
-  // B) funciones privadas: el anónimo debe recibir error o nada
-  for(const [fn,p] of RPCS){
+  // B) funciones privadas: el anónimo debe recibir error o nada (solo las que LEEN; las que escriben no se llaman aquí)
+  const ANON_EXTRA=[['alejandro_dashboard',{}],['alejandro_dashboard_semana',{}],['alejandro_ingresos_semanas',{n_semanas:4}],['alejandro_top_servicios',{limite:5}],
+    ['prodigy_clv_doctores',{}],['prodigy_inventario_alertas',{}],['prodigy_funnel',{}],['prodigy_top_doctores',{}],['prodigy_ingresos_por_canal',{}],
+    ['prodigy_pedidos_por_material',{}],['prodigy_conversion_por_flujo',{}]];
+  for(const [fn,p] of RPCS.concat(ANON_EXTRA)){
     try{
       const r=await fetch(`${SURL}/rest/v1/rpc/${fn}`,{method:'POST',headers:{...ANON_H,'Content-Type':'application/json'},body:JSON.stringify(p)});
       const j=await r.json().catch(()=>null);
