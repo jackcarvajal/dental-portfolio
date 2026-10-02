@@ -11,8 +11,8 @@
 2. 🟡 **Pegar plantillas de correos de acceso** en Supabase → `docs/correos-auth/LEEME.md` (5 min).
 3. 🟡 **Cuenta de auditoría** `AUD_EMAIL`/`AUD_PASS` (variables de usuario de Windows) → `tools/audit-live-sesion.mjs`.
 4. 🟡 **Prueba real de «Envía tu escáner»** (PRODIGY y Alejandro) con un correo sin cuenta: llega bienvenida con clave.
-5. ❓ **Decisiones:** métricas PRODIGY ¿solo `negocio=prodigy`? (hoy suman Alejandro) · ¿contabilidad ve ingresos?
-   (hoy sus métricas dan error) · buckets de `taller.html` (abajo).
+5. ✅ **Decidido 2-oct:** cada negocio por separado (métricas solo PRODIGY) · contabilidad SÍ ve ingresos, Mayra NO ·
+   taller con estados reales. Falta re-correr `sql/fix-guardia-metricas-2026.sql` (v2).
 6. 💳 **Antes de cobrar en línea:** redesplegar `wompi-signature` + webhook de Stripe (`docs/ACTIVAR-PAGOS.md`).
 
 ## 🎯 EN TU CANCHA AHORA (resumen sesión 2026-09-07) — todo lo de código ya está pusheado
@@ -59,7 +59,7 @@ alejandrocadcam.pages.dev). Verificar: `/api/send-push` debe dejar de responder 
 NOTA: hoy `webpush.js` sólo se carga en `client-panel.html` → sólo doctores se suscriben. Para push al
 STAFF hay que cargar webpush.js en las páginas del panel (pendiente aparte, no bloquea el push al cliente).
 
-## 🟡 taller.html — 3 buckets del dashboard filtran por estados que no existen (audit flujo 2026-09-10)
+## ✅ RESUELTO 2026-10-02 — taller.html: buckets con estados reales (por despachar · QA_APROBADO · EN_ACABADO)
 `app/taller.html` líneas ~528-530 cuentan `pedidos_operacion` por `estado_operativo` con valores
 **huérfanos** que ningún panel escribe: `EMPACADO`, `LISTO`, `CONTROL_CALIDAD`. `pedidos_operacion` es
 proyección directa (no remapea), así que esos conteos **siempre dan 0** (dashboard engañoso; no bloquea

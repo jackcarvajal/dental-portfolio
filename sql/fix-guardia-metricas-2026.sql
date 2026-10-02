@@ -8,7 +8,9 @@
 --
 -- Arreglo: guardia a prueba de NULL (mismo grupo de antes: admin + operator + staff) usando
 -- public.es_admin_lab() (los 4 correos admin + rol admin), y el anónimo ya ni puede llamarlas.
--- El cuerpo de cada función queda IGUAL; solo cambia la guardia.
+-- v2 (2-oct, decisión de Alejandro): cada negocio por separado → solo pedidos con negocio = prodigy (antes sumaba
+-- Alejandro CAD/CAM); contabilidad SÍ ve estas métricas (ingresos); calidad solo tiempos de entrega; Mayra (rol
+-- alineadores) NO. La tasa de aprobación sale de pedidos_doctor, que no tiene columna negocio.
 -- ═══════════════════════════════════════════════════════════════════════════════════════════════
 
 CREATE OR REPLACE FUNCTION public.prodigy_dashboard_semana()
@@ -18,23 +20,23 @@ DECLARE
     resultado JSON;
 BEGIN
     IF NOT (public.es_admin_lab()
-            OR COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') IN ('operator','staff'), false)
-            OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ?| array['operator','staff']) THEN
+            OR COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') IN ('operator','staff','contabilidad'), false)
+            OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ?| array['operator','staff','contabilidad']) THEN
         RAISE EXCEPTION 'No autorizado' USING ERRCODE = '42501';
     END IF;
 
     SELECT json_build_object(
-        'pedidos_semana',    (SELECT COUNT(*) FROM pedidos WHERE created_at >= NOW() - INTERVAL '7 days'),
-        'pedidos_mes',       (SELECT COUNT(*) FROM pedidos WHERE created_at >= NOW() - INTERVAL '30 days'),
-        'pedidos_total',     (SELECT COUNT(*) FROM pedidos),
-        'ingresos_semana',   (SELECT COALESCE(SUM(precio_total),0) FROM pedidos WHERE pago_estado = 'pago_confirmado' AND created_at >= NOW() - INTERVAL '7 days'),
-        'ingresos_mes',      (SELECT COALESCE(SUM(precio_total),0) FROM pedidos WHERE pago_estado = 'pago_confirmado' AND created_at >= NOW() - INTERVAL '30 days'),
-        'por_validar',       (SELECT COUNT(*) FROM pedidos WHERE estado_operativo IN ('VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE')),
-        'en_produccion',     (SELECT COUNT(*) FROM pedidos WHERE estado_operativo IN ('EN_DISENO','FRESADO_INICIADO','EN_PRODUCCION')),
-        'en_revision',       (SELECT COUNT(*) FROM pedidos WHERE estado_operativo = 'REVISION_CLIENTE'),
-        'listos_despacho',   (SELECT COUNT(*) FROM pedidos WHERE estado_operativo IN ('QA_APROBADO','LISTO_DESPACHAR')),
-        'pagos_pendientes',  (SELECT COUNT(*) FROM pedidos WHERE pago_estado IN ('pendiente','pago_subido') AND estado::text NOT IN ('Cancelado','cancelado','CANCELADO')),
-        'saldos_pendientes', (SELECT COALESCE(SUM(saldo_pendiente_monto),0) FROM pedidos WHERE modalidad_cobro='50_50' AND pago_estado='pago_confirmado'),
+        'pedidos_semana',    (SELECT COUNT(*) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy' AND created_at >= NOW() - INTERVAL '7 days'),
+        'pedidos_mes',       (SELECT COUNT(*) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy' AND created_at >= NOW() - INTERVAL '30 days'),
+        'pedidos_total',     (SELECT COUNT(*) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy'),
+        'ingresos_semana',   (SELECT COALESCE(SUM(precio_total),0) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy' AND pago_estado = 'pago_confirmado' AND created_at >= NOW() - INTERVAL '7 days'),
+        'ingresos_mes',      (SELECT COALESCE(SUM(precio_total),0) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy' AND pago_estado = 'pago_confirmado' AND created_at >= NOW() - INTERVAL '30 days'),
+        'por_validar',       (SELECT COUNT(*) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy' AND estado_operativo IN ('VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE')),
+        'en_produccion',     (SELECT COUNT(*) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy' AND estado_operativo IN ('EN_DISENO','FRESADO_INICIADO','EN_PRODUCCION')),
+        'en_revision',       (SELECT COUNT(*) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy' AND estado_operativo = 'REVISION_CLIENTE'),
+        'listos_despacho',   (SELECT COUNT(*) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy' AND estado_operativo IN ('QA_APROBADO','LISTO_DESPACHAR')),
+        'pagos_pendientes',  (SELECT COUNT(*) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy' AND pago_estado IN ('pendiente','pago_subido') AND estado::text NOT IN ('Cancelado','cancelado','CANCELADO')),
+        'saldos_pendientes', (SELECT COALESCE(SUM(saldo_pendiente_monto),0) FROM pedidos WHERE COALESCE(negocio,'prodigy') = 'prodigy' AND modalidad_cobro='50_50' AND pago_estado='pago_confirmado'),
         'tasa_aprobacion_1a', (SELECT ROUND(100.0 * COUNT(*) FILTER(WHERE revisiones_usadas = 0 AND diseno_aprobado = true) / NULLIF(COUNT(*) FILTER(WHERE diseno_aprobado = true),0), 1) FROM pedidos_doctor WHERE created_at >= NOW() - INTERVAL '30 days'),
         'calculado_en',      NOW()
     ) INTO resultado;
@@ -49,8 +51,8 @@ AS $function$
 DECLARE resultado JSON;
 BEGIN
     IF NOT (public.es_admin_lab()
-            OR COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') IN ('operator','staff'), false)
-            OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ?| array['operator','staff']) THEN
+            OR COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') IN ('operator','staff','contabilidad'), false)
+            OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ?| array['operator','staff','contabilidad']) THEN
         RAISE EXCEPTION 'No autorizado' USING ERRCODE = '42501';
     END IF;
 
@@ -63,7 +65,8 @@ BEGIN
             SELECT DATE_TRUNC('day', created_at) AS dia, COUNT(*) AS cnt,
                    EXTRACT(DOW FROM created_at) AS dow
             FROM pedidos
-            WHERE created_at >= NOW() - INTERVAL '28 days'
+            WHERE COALESCE(negocio,'prodigy') = 'prodigy'
+              AND created_at >= NOW() - INTERVAL '28 days'
             GROUP BY 1, 3
         ) daily
         GROUP BY dia_semana, nombre_dia
@@ -79,8 +82,8 @@ AS $function$
 DECLARE resultado JSON;
 BEGIN
     IF NOT (public.es_admin_lab()
-            OR COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') IN ('operator','staff'), false)
-            OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ?| array['operator','staff']) THEN
+            OR COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') IN ('operator','staff','contabilidad'), false)
+            OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ?| array['operator','staff','contabilidad']) THEN
         RAISE EXCEPTION 'No autorizado' USING ERRCODE = '42501';
     END IF;
 
@@ -90,7 +93,8 @@ BEGIN
             COUNT(*) AS pedidos,
             COALESCE(SUM(precio_total) FILTER(WHERE pago_estado='pago_confirmado'), 0) AS ingresos
         FROM pedidos
-        WHERE created_at >= NOW() - (n_semanas || ' weeks')::INTERVAL
+        WHERE COALESCE(negocio,'prodigy') = 'prodigy'
+          AND created_at >= NOW() - (n_semanas || ' weeks')::INTERVAL
         GROUP BY 1
         ORDER BY 1 ASC
     ) t;
@@ -104,8 +108,8 @@ AS $function$
 DECLARE resultado JSON;
 BEGIN
     IF NOT (public.es_admin_lab()
-            OR COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') IN ('operator','staff'), false)
-            OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ?| array['operator','staff']) THEN
+            OR COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') IN ('operator','staff','contabilidad','calidad'), false)
+            OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ?| array['operator','staff','contabilidad','calidad']) THEN
         RAISE EXCEPTION 'No autorizado' USING ERRCODE = '42501';
     END IF;
 
@@ -115,7 +119,8 @@ BEGIN
             ROUND(AVG(EXTRACT(EPOCH FROM (timestamp_qa - created_at))/3600)) AS horas_promedio,
             COUNT(*) AS total
         FROM pedidos
-        WHERE timestamp_qa IS NOT NULL
+        WHERE COALESCE(negocio,'prodigy') = 'prodigy'
+          AND timestamp_qa IS NOT NULL
           AND created_at >= NOW() - INTERVAL '90 days'
           AND tipo_trabajo IS NOT NULL
         GROUP BY 1
@@ -133,8 +138,8 @@ AS $function$
 DECLARE resultado JSON;
 BEGIN
     IF NOT (public.es_admin_lab()
-            OR COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') IN ('operator','staff'), false)
-            OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ?| array['operator','staff']) THEN
+            OR COALESCE((auth.jwt() -> 'app_metadata' ->> 'role') IN ('operator','staff','contabilidad'), false)
+            OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ?| array['operator','staff','contabilidad']) THEN
         RAISE EXCEPTION 'No autorizado' USING ERRCODE = '42501';
     END IF;
 
@@ -144,7 +149,8 @@ BEGIN
             COUNT(*) AS total,
             ROUND(AVG(precio_total)) AS ticket_promedio
         FROM pedidos
-        WHERE created_at >= NOW() - INTERVAL '30 days'
+        WHERE COALESCE(negocio,'prodigy') = 'prodigy'
+          AND created_at >= NOW() - INTERVAL '30 days'
           AND tipo_trabajo IS NOT NULL
         GROUP BY 1
         ORDER BY total DESC
@@ -166,11 +172,13 @@ GRANT  EXECUTE ON FUNCTION public.prodigy_ingresos_semanas(integer) TO authentic
 GRANT  EXECUTE ON FUNCTION public.prodigy_tiempos_entrega()         TO authenticated;
 GRANT  EXECUTE ON FUNCTION public.prodigy_top_servicios(integer)    TO authenticated;
 
--- Verificación: anon = false en las 5
+-- Verificación: anon = false en las 5 · guardia_nueva = true · por_negocio = true
 SELECT p.proname,
        has_function_privilege('anon', p.oid, 'execute')          AS anon_puede,
        has_function_privilege('authenticated', p.oid, 'execute') AS con_sesion_puede,
-       (p.prosrc LIKE '%es_admin_lab()%')                         AS guardia_nueva
+       (p.prosrc LIKE '%es_admin_lab()%')                         AS guardia_nueva,
+       (p.prosrc LIKE '%negocio%')                                AS por_negocio,
+       (p.prosrc LIKE '%contabilidad%')                           AS contabilidad_ve
   FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
  WHERE n.nspname = 'public'
    AND p.proname IN ('prodigy_dashboard_semana','prodigy_forecast_semana','prodigy_ingresos_semanas','prodigy_tiempos_entrega','prodigy_top_servicios')

@@ -11,6 +11,12 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- 🟡 **Decisiones de Alejandro (2-oct):** cada negocio independiente → las 5 métricas `prodigy_*` solo cuentan
+  `negocio = prodigy` (antes sumaban Alejandro CAD/CAM); contabilidad SÍ las ve; calidad solo tiempos de entrega;
+  Mayra (alineadores) NO. `sql/fix-guardia-metricas-2026.sql` v2 (archivo canónico, re-correr). `calidad.html`
+  mostraba 4 tarjetas «—» (leía campos que la función nunca tuvo) → ahora días por servicio hasta calidad.
+  `taller.html`: contadores con estados reales (empacados/por despachar · aprobados en calidad · en terminado y maquillaje).
+
 - ✅ **Limpieza:** `diseno-remoto.html` mostraba siempre «— casos en producción» (style duplicado anulaba el
   display:none) y el contador leía `pedidos` como anónimo (ya cerrado) → quitado. `/api/wa-auto` eliminado en ambos
   repos (nadie lo llamaba; CallMeBot sin clave). PENDIENTES.md con el resumen del 2-oct arriba.

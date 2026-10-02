@@ -357,16 +357,14 @@ let _comprobanteFile = null; // comprobante de pago completo
     initRealtime();
     // Métricas de tiempos de entrega via RPC
     sb.rpc('prodigy_tiempos_entrega').then(({data})=>{
-        if(!data) return;
+        // Devuelve [{servicio, horas_promedio, total}]: de recibido a calidad, servicios con 3+ casos en 90 días.
+        // (Antes leía campos que la función nunca tuvo → 4 tarjetas con «—».)
+        if(!Array.isArray(data) || !data.length) return;
         const metricsEl = document.createElement('div');
         metricsEl.style.cssText='display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px;';
-        const items=[
-            {l:'Promedio diseño',v:data.promedio_diseno_dias||'—',u:'días',c:'#00d2ff'},
-            {l:'Promedio fresado',v:data.promedio_fresado_dias||'—',u:'días',c:'#D4AF37'},
-            {l:'Promedio total',v:data.promedio_total_dias||'—',u:'días',c:'#00FF41'},
-            {l:'Aprobación cliente',v:data.promedio_aprobacion_dias||'—',u:'días',c:'#D946A6'},
-        ];
-        metricsEl.innerHTML=items.map(i=>`<div style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:1.4rem;font-weight:900;color:${i.c};">${typeof i.v==='number'?i.v.toFixed(1):i.v}</div><div style="font-size:.65rem;color:#94a3b8;margin-top:3px;text-transform:uppercase;letter-spacing:.4px;">${i.l}</div></div>`).join('');
+        const colores=['#00d2ff','#D4AF37','#00FF41','#D946A6'];
+        const items=data.slice(0,4).map((d,k)=>({l:String(d.servicio||'—').trim(),v:Number(d.horas_promedio)/24,n:d.total,c:colores[k]}));
+        metricsEl.innerHTML=items.map(i=>`<div style="background:#0d1520;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:1.4rem;font-weight:900;color:${i.c};">${isFinite(i.v)?i.v.toFixed(1)+' d':'—'}</div><div style="font-size:.65rem;color:#94a3b8;margin-top:3px;text-transform:uppercase;letter-spacing:.4px;">${escH(i.l)} · hasta calidad (${escH(i.n)} casos)</div></div>`).join('');
         document.querySelector('.main,main')?.prepend(metricsEl);
     }).catch(()=>{});
     // KPI aprobaciones express hoy
