@@ -311,8 +311,9 @@
         /* ── PRUEBA SOCIAL ── */
         .social-proof {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 16px;
+            gap: 10px;
             margin-bottom: 20px;
         }
         .sp-item {
@@ -322,6 +323,7 @@
             border-radius: 10px;
             padding: 8px 12px;
             flex: 1;
+            min-width: 0;
         }
         .sp-num {
             display: block;
@@ -402,7 +404,7 @@
         }
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
-<script src="../js/reportar-problema.js?v=20260924c"></script>
+<script src="../js/reportar-problema.js?v=20261002"></script>
 </head>
 <body>
 <div data-dot-matrix data-accent="#D946A6,#D4AF37,#00d2ff"></div>

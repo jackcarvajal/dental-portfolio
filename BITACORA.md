@@ -11,6 +11,15 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- ✅ **Auditoría móvil completa (360 px, código actual): 97 públicas + 58 /app (sesión simulada) en las dos webs.**
+  Arreglado: scroll lateral en flujo-impresion (mismo `1fr` que fresado; tarjetas de material de 36 px → 2 columnas;
+  css/flujo-impresion v=20261002), flujo-lab, nosotros (grilla de 4 puntajes fija), inicio de Alejandro (pasos con
+  `repeat(4,1fr)` en línea), diseno-remoto ×2 (select que no encogía), app/agregar-caso, app/reportes-web ×2,
+  app/metricas ×2, login ×2 (cifras que no cabían). Campos <16 px (zoom del iPhone): regla común inyectada al inicio de
+  js/reportar-problema.js (carga en casi todas las páginas de ambos sitios; v=20261002) + reportes-web y
+  escaneo-fotogrametria. Quedan a propósito: mapa-sitio (diagrama desplazable), orden-produccion (hoja imprimible),
+  abanico de /links. Pendiente aparte: deriva del núcleo compartido (audit-nucleo: 18 archivos con diferencias).
+
 - ✅ **Revisión en celular (390 px, producción, 21 páginas de las dos webs):** la cabecera compartida dejaba SOPORTE,
   tema, IA y HAZ TU PEDIDO fuera de la pantalla (cortados) y el aviso «Diseño 24h…» cortado → ≤900 px se ocultan
   (están en el menú ☰ y el botón flotante), ≤640 px también el aviso. `flujo-fresado`: el formulario medía 446 px

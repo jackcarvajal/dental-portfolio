@@ -20,9 +20,9 @@
     :root{--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--green:#00FF41;--bg:#050505;--card:#0d1520;--muted:#94a3b8;}
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#e2e8f0;min-height:100vh;}
-    .topbar{background:rgba(5,5,5,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(212,175,55,.15);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:100;}
+    .topbar{background:rgba(5,5,5,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(212,175,55,.15);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:100;}
     .topbar h1{font-size:1rem;font-weight:900;letter-spacing:2px;color:var(--gold);}
-    .topbar-right{display:flex;align-items:center;gap:12px;}
+    .topbar-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
     .badge-live{background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:20px;padding:4px 12px;font-size:.7rem;font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:5px;}
     .badge-live::before{content:'';width:6px;height:6px;background:#00FF41;border-radius:50%;animation:pulse 1.5s infinite;}
     @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
@@ -36,7 +36,7 @@
     .kpi-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
     .kpi-sub{font-size:.72rem;color:#475569;margin-top:6px;}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
-    @media(max-width:720px){.grid-2{grid-template-columns:1fr;}}
+    @media(max-width:720px){.grid-2{grid-template-columns:minmax(0,1fr);}.grid-2b{grid-template-columns:minmax(0,1fr)!important;}}
     .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px;}
     .card-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
     .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
@@ -62,7 +62,7 @@
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
   </style>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
-<script src="../js/reportar-problema.js?v=20260924c"></script>
+<script src="../js/reportar-problema.js?v=20261002"></script>
 </head>
 <body>
 <div class="topbar">
@@ -145,7 +145,7 @@
   </div>
 
   <!-- Analytics propios — Funnel + Top Páginas -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+  <div class="grid-2b" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
     <div class="card">
       <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--mg);" aria-hidden="true"></i> Funnel propios (30d) <span style="font-size:.65rem;color:#475569;font-weight:400;">vía /api/track-event</span></div>
       <div id="analytics-funnel" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
@@ -164,7 +164,7 @@
 
   <!-- Inventario — alertas de stock bajo -->
   <!-- Top doctores + Pedidos por material -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+  <div class="grid-2b" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
     <div class="card">
       <div class="card-title"><i class="fas fa-user-doctor" style="color:var(--mg);" aria-hidden="true"></i> Top doctores (90d)</div>
       <div id="top-doctores" style="overflow-x:auto;" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>

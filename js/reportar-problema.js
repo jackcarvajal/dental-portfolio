@@ -9,6 +9,17 @@
    Backend: /api/reportar-problema + /api/asistente-soporte → tabla reportes_web (compartida, columna negocio).
    Gemelo del archivo del otro repo: solo cambia el bloque CONFIG. Colores y tipografía: CLAUDE.md §5 +
    ESTANDARES-UX-TIPOGRAFIA.md (Inter, magenta/oro/cian/neón, contraste AA). */
+/* UX móvil común (oct-2026): campos de 16 px en celular. Con menos, el iPhone hace zoom al tocar el campo y la
+   página queda corrida. Va aquí porque este script carga en casi todas las páginas (públicas y /app) de ambos
+   sitios; se inyecta al cargar (no espera al botón, que en /app espera al dock). */
+(function () {
+  if (document.getElementById('pr-movil-css')) return;
+  var s = document.createElement('style');
+  s.id = 'pr-movil-css';
+  s.textContent = '@media(max-width:768px){input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=color]),select,textarea{font-size:16px!important}}';
+  (document.head || document.documentElement).appendChild(s);
+})();
+
 (function () {
   'use strict';
   if (window.ProdigyReport) return;

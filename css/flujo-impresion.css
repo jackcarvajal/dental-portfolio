@@ -1178,7 +1178,7 @@
 
         @media (max-width: 900px) {
             .container {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);   /* 1fr se estiraba con el contenido → scroll lateral en celular */
             }
             .calculator {
                 position: relative;
@@ -1219,7 +1219,7 @@
                 grid-template-columns: 1fr;
             }
             .material-grid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;   /* el HTML trae repeat(6,1fr) en línea → tarjetas de 36 px */
             }
             .timeline-slots {
                 grid-template-columns: 1fr;
@@ -1236,7 +1236,7 @@
         /* Small Mobile */
         @media (max-width: 480px) {
             .material-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;   /* el HTML trae repeat(6,1fr) en línea → tarjetas de 36 px */
             }
             .submaterial-chips {
                 grid-template-columns: 1fr;
