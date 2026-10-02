@@ -12,7 +12,7 @@
 3. 🟡 **Cuenta de auditoría** `AUD_EMAIL`/`AUD_PASS` (variables de usuario de Windows) → `tools/audit-live-sesion.mjs`.
 4. 🟡 **Prueba real de «Envía tu escáner»** (PRODIGY y Alejandro) con un correo sin cuenta: llega bienvenida con clave.
 5. ✅ **Decidido 2-oct:** cada negocio por separado (métricas solo PRODIGY) · contabilidad SÍ ve ingresos, Mayra NO ·
-   taller con estados reales. Falta re-correr `sql/fix-guardia-metricas-2026.sql` (v2).
+   taller con estados reales. SQL v2 corrido.
 6. 💳 **Antes de cobrar en línea:** redesplegar `wompi-signature` + webhook de Stripe (`docs/ACTIVAR-PAGOS.md`).
 
 ## 🎯 EN TU CANCHA AHORA (resumen sesión 2026-09-07) — todo lo de código ya está pusheado

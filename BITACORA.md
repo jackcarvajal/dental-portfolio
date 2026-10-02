@@ -11,7 +11,7 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
-- 🟡 **Decisiones de Alejandro (2-oct):** cada negocio independiente → las 5 métricas `prodigy_*` solo cuentan
+- ✅ **Decisiones de Alejandro (2-oct, SQL v2 corrido y verificado):** cada negocio independiente → las 5 métricas `prodigy_*` solo cuentan
   `negocio = prodigy` (antes sumaban Alejandro CAD/CAM); contabilidad SÍ las ve; calidad solo tiempos de entrega;
   Mayra (alineadores) NO. `sql/fix-guardia-metricas-2026.sql` v2 (archivo canónico, re-correr). `calidad.html`
   mostraba 4 tarjetas «—» (leía campos que la función nunca tuvo) → ahora días por servicio hasta calidad.
