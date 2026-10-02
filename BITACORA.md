@@ -13,7 +13,7 @@
 
 - ✅ **Primer informe del panel de pruebas con sesión admin: 75 ✅, 0 ❌.** Lo que no podía ver (tablas vacías) lo
   revisé en las políticas y encontré:
-  - 🔴→🟡 **`pedidos`: política `anon_diseno_review_select`** — cualquiera sin sesión listaba TODOS los pedidos en
+  - 🔴→✅ **`pedidos`: política `anon_diseno_review_select`** (SQL corrido 2-oct: 0 políticas anon, funciones listas) — cualquiera sin sesión listaba TODOS los pedidos en
     revisión con todas sus columnas (paciente, correo, teléfono, precio, NIT). Hoy vacía. La usaba solo «fabricar
     desde el diseño» (flujo-fresado/impresión ?from_diseno). `sql/pedidos-acceso-anon-2026.sql`: RPC
     `pedido_para_fabricar(uuid)` (solo código, paciente y STL de ESE pedido) + DROP de la política + RPC admin
