@@ -14,7 +14,10 @@
 - ✅ **Vigía de seguridad diario** (`functions/api/vigia.js`): desde el servidor, con la anon key pública, revisa 19
   tablas, 6 vistas, 19 funciones que leen y 8 carpetas privadas + la salud de servicios externos. Lo corre una vez al
   día el cron de SLA (alerta-sla.js) y si algo falla deja «🛡️ Vigía: N problemas» en la campana del admin. También
-  en el panel de pruebas (botón «Vigía del servidor» y dentro de «Revisar todo»). Solo lee.
+  en el panel de pruebas (botón «Vigía del servidor» y dentro de «Revisar todo»). Solo lee. Va en 2 invocaciones
+  (`?parte=datos|funciones`): en una sola superaba el límite de 50 llamadas de Cloudflare y tumbó una corrida del
+  cron (500, ya corregido). Corrida manual verificada: `vigia: {ok:false, problemas:5}` → los que cierra el SQL
+  pendiente de funciones definer; quedó el aviso en la campana.
 - 🟡 `sql/funciones-search-path-2026.sql` (opcional, bajo riesgo): fija `search_path = public, extensions` en las 34
   funciones que marca el asesor (mismo comportamiento que hoy).
 - ✅ Deriva del núcleo compartido revisada (audit-nucleo, 18 archivos): solo configuración por marca (CORS, nombres,
