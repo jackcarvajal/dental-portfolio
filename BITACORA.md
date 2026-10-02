@@ -11,6 +11,14 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- ✅ **Revisión en celular (390 px, producción, 21 páginas de las dos webs):** la cabecera compartida dejaba SOPORTE,
+  tema, IA y HAZ TU PEDIDO fuera de la pantalla (cortados) y el aviso «Diseño 24h…» cortado → ≤900 px se ocultan
+  (están en el menú ☰ y el botón flotante), ≤640 px también el aviso. `flujo-fresado`: el formulario medía 446 px
+  (scroll lateral) porque `.container` usaba `1fr` y la grilla de materiales trae `repeat(6,1fr)` en línea → 6 tarjetas
+  de 48 px; ahora `minmax(0,1fr)` y 2 columnas en celular. header.js v=20261002 (PRODIGY) / 20261002b (Alejandro).
+- ✅ **Auditoría runtime de páginas** (audit-live): PRODIGY 97 páginas, Alejandro 60 → sin errores JS ni 4xx reales
+  (solo /api/health-check 404 en el servidor local, normal). audit-live ya no recorre las carpetas de agentes.
+
 - 🔴→🟡 **Fabricación cobrada sin verificar (auditoría de funciones públicas):** el «ya pagué» del doctor dejaba
   `cotizacion_fab_estado = pago_confirmado` y el trigger `enrutar_diseno_aprobado` lo toma como PAGADO → al aprobar,
   el caso iba solo a producción sin que nadie verificara. El comprobante además pisaba la cotización con el monto del
