@@ -23,6 +23,10 @@
   código/doctor/notas de la BD y avisa una sola vez por token. `revision-express.html` manda el token.
 - ✅ **`/api/social-copy`:** aceptaba solo `ADMIN_SECRET` (no existe) → el generador del panel siempre daba 401. Ahora
   admin con sesión o cron.
+- 🔴→🟡 **Fuga en métricas (la cazó el panel de pruebas):** las 5 funciones `prodigy_*` (semana, ingresos, top,
+  forecast, tiempos) tenían la guardia `IF NOT (rol IN … OR email IN …)`: sin sesión (o cliente sin rol) da NULL y NO
+  bloquea → un anónimo leía el dashboard con ingresos. `sql/fix-guardia-metricas-2026.sql` (guardia a prueba de NULL
+  con `es_admin_lab()` + quita EXECUTE a anon). Pendiente que Alejandro lo corra.
 - ✅ **`/api/health-check`:** las alertas (correo + WhatsApp) salen como máximo 1 vez por hora (soporte.html lo llama
   en cada visita).
 
