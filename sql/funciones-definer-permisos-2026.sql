@@ -95,9 +95,30 @@ BEGIN
   END LOOP;
 END $$;
 
+-- D: 7 VISTAS "SECURITY DEFINER" (el asesor las marca como ERROR): leen la tabla como su dueño, saltándose el RLS,
+--    y el anónimo podía consultarlas. pedidos_reales devuelve correo, teléfono, paciente y precios de TODOS los
+--    pedidos; doctors_inactivos, la lista de doctores. Hoy vacías porque no hay pedidos. Con security_invoker cada
+--    quien ve solo lo que su RLS le deja (el equipo sigue viendo lo suyo; churn-alert usa service_role).
+DO $$
+DECLARE v text;
+BEGIN
+  FOREACH v IN ARRAY ARRAY['doctors_inactivos','historial_doctor','pedidos_archivos_resumen','pedidos_proximos_a_purgar',
+                           'pedidos_reales','v_pedidos_urgentes','v_utm_performance'] LOOP
+    IF to_regclass('public.' || v) IS NOT NULL THEN
+      EXECUTE format('ALTER VIEW public.%I SET (security_invoker = true)', v);
+      EXECUTE format('REVOKE SELECT ON public.%I FROM anon', v);
+    END IF;
+  END LOOP;
+END $$;
+
 -- ── VERIFICACIÓN ─────────────────────────────────────────────────────────────────────────────────
--- Debe dar: guardias_rotas = 0 · sin_guardia = 0 · anon_en_paneles = 0 · abiertas_en_servidor = 0
+-- Debe dar: guardias_rotas = 0 · sin_guardia = 0 · anon_en_paneles = 0 · abiertas_en_servidor = 0 · vistas_definer = 0
 SELECT
+  (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+    WHERE n.nspname = 'public' AND c.relkind = 'v'
+      AND c.relname IN ('doctors_inactivos','historial_doctor','pedidos_archivos_resumen','pedidos_proximos_a_purgar',
+                        'pedidos_reales','v_pedidos_urgentes','v_utm_performance')
+      AND NOT COALESCE('security_invoker=true' = ANY (c.reloptions), false))                                AS vistas_definer,
   (SELECT count(*) FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
     WHERE n.nspname = 'public' AND p.prosecdef
       AND p.prosrc ~ 'IF NOT \(\s*\(auth\.jwt\(\) -> ''app_metadata'' ->> ''role''\) IN \([^)]*\)\s*OR \(auth\.jwt\(\) ->> ''email''\) IN') AS guardias_rotas,

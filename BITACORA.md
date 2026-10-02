@@ -18,7 +18,9 @@
   (`limpiar_pedidos_prueba`, `prodigy_purgar_stl_vencidos`, expirar cotizaciones, limpiar campana). Además el dashboard
   de Alejandro, embudo, top doctores, inventario… legibles sin sesión. `sql/funciones-definer-permisos-2026.sql`:
   reescribe en la BD la guardia rota (mismo patrón NULL) en todas, guardia a 4 sin guardia, quita EXECUTE a anon (y a
-  authenticated en las de servidor). Pendiente de correr. Panel de pruebas: 11 funciones más en la prueba anónima.
+  authenticated en las de servidor) y pasa a `security_invoker` las 7 vistas SECURITY DEFINER (pedidos_reales daba
+  correo/teléfono/paciente/precio de todos los pedidos al anónimo). Pendiente de correr. Panel de pruebas: 11 funciones
+  más en la prueba anónima.
 
 - ✅ **Decisiones de Alejandro (2-oct, SQL v2 corrido y verificado):** cada negocio independiente → las 5 métricas `prodigy_*` solo cuentan
   `negocio = prodigy` (antes sumaban Alejandro CAD/CAM); contabilidad SÍ las ve; calidad solo tiempos de entrega;
