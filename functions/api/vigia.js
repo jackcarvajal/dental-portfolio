@@ -7,6 +7,9 @@
  * leídas con la anon key pública; más la salud de los servicios externos. Solo LEE: nunca llama funciones que
  * escriben ni manda correos.
  * Lo corre una vez al día alerta-sla.js (cron de GitHub) y avisa en la campana del admin si algo falla.
+ * Cloudflare (plan gratis) permite 50 llamadas salientes por invocación: la revisión va en 2 partes
+ * (?parte=datos → tablas y vistas · ?parte=funciones → funciones, carpetas y servicios) y sin ?parte se llama a sí
+ * misma para las dos y une el resultado.
  * Env: SUPABASE_SERVICE_ROLE_KEY | SUPABASE_SERVICE_KEY (para saber si una tabla tiene filas), CRON_SECRET.
  */
 import { cfg, adminH, usuarioDe, ADMIN_EMAILS } from './reportar-problema.js';
@@ -27,13 +30,13 @@ const CARPETAS = ['pedidos-archivos', 'scanner-uploads', 'diseno-archivos', 'evi
 
 const conDatos = j => Array.isArray(j) ? j.length > 0 : (j && typeof j === 'object' && !j.code && !j.message && Object.keys(j).length > 0);
 
-export async function revisar(env, base) {
+export async function revisar(env, base, parte) {
   const c = cfg(env);
   const HA = { apikey: ANON, Authorization: 'Bearer ' + ANON, 'Content-Type': 'application/json' };
   const problemas = [], sin_datos = []; let revisados = 0;
   const leer = async (ruta, init) => { try { const r = await fetch(`${c.URL}${ruta}`, init); return { st: r.status, j: await r.json().catch(() => null) }; } catch (e) { return { st: 0, j: null }; } };
 
-  for (const t of TABLAS.concat(VISTAS)) {
+  if (parte === 'datos') for (const t of TABLAS.concat(VISTAS)) {
     revisados++;
     const a = await leer(`/rest/v1/${t}?select=*&limit=1`, { headers: HA });
     if (conDatos(a.j)) { problemas.push(`Un visitante sin sesión lee «${t}»`); continue; }
@@ -43,18 +46,18 @@ export async function revisar(env, base) {
       if (!total) sin_datos.push(t);
     }
   }
-  for (const [fn, p] of FUNCIONES) {
+  if (parte === 'funciones') for (const [fn, p] of FUNCIONES) {
     revisados++;
     const a = await leer(`/rest/v1/rpc/${fn}`, { method: 'POST', headers: HA, body: JSON.stringify(p) });
     if (a.st === 200 && conDatos(a.j)) problemas.push(`Un visitante sin sesión obtiene datos de la función «${fn}»`);
   }
-  for (const b of CARPETAS) {
+  if (parte === 'funciones') for (const b of CARPETAS) {
     revisados++;
     const a = await leer(`/storage/v1/object/list/${b}`, { method: 'POST', headers: HA, body: JSON.stringify({ prefix: '', limit: 1 }) });
     if (Array.isArray(a.j) && a.j.length) problemas.push(`Un visitante sin sesión lista archivos de la carpeta «${b}»`);
   }
   // Salud de los servicios externos (Supabase, Wompi, Resend…)
-  try {
+  if (parte === 'funciones') try {
     const r = await fetch(new URL('/api/health-check', base), { cache: 'no-store' });
     const j = await r.json().catch(() => ({}));
     revisados++;
@@ -75,5 +78,20 @@ export async function onRequestGet({ request, env }) {
     ok = !!yo && (ADMIN_EMAILS.includes(String(yo.email || '').toLowerCase()) || roles.includes('admin'));
   }
   if (!ok) return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401, headers: h });
-  return new Response(JSON.stringify(await revisar(env, request.url)), { status: 200, headers: h });
+  const parte = new URL(request.url).searchParams.get('parte');
+  if (parte === 'datos' || parte === 'funciones') return new Response(JSON.stringify(await revisar(env, request.url, parte)), { status: 200, headers: h });
+  return new Response(JSON.stringify(await vigiaCompleto(request.url, request.headers.get('Authorization') || '')), { status: 200, headers: h });
+}
+
+// Las dos partes, cada una en su propia invocación (su propio cupo de 50 llamadas)
+export async function vigiaCompleto(base, autorizacion) {
+  const partes = await Promise.all(['datos', 'funciones'].map(async parte => {
+    try {
+      const r = await fetch(new URL('/api/vigia?parte=' + parte, base), { headers: { Authorization: autorizacion }, cache: 'no-store' });
+      return r.ok ? await r.json() : { problemas: [`El vigía (${parte}) no respondió: ${r.status}`], revisados: 0, sin_datos: [] };
+    } catch (e) { return { problemas: [`El vigía (${parte}) falló: ${e.message}`], revisados: 0, sin_datos: [] }; }
+  }));
+  const problemas = partes.flatMap(x => x.problemas || []);
+  return { ok: problemas.length === 0, problemas, revisados: partes.reduce((n, x) => n + (x.revisados || 0), 0),
+    sin_datos: partes.flatMap(x => x.sin_datos || []), fecha: new Date().toISOString() };
 }

@@ -8,7 +8,7 @@
  * Env: SUPABASE_SERVICE_ROLE_KEY (o SUPABASE_SERVICE_KEY), CRON_SECRET, STAFF_n_PHONE/STAFF_n_APIKEY.
  */
 
-import { revisar } from './vigia.js';
+import { vigiaCompleto } from './vigia.js';
 
 const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
 
@@ -50,7 +50,7 @@ export async function onRequestGet({ request, env }) {
     const diaV = new Date(Date.now() - 5 * 3600000).toISOString().slice(0, 10);
     const marcaV = new Request('https://rl.internal/vigia_' + diaV);
     if (!(await caches.default.match(marcaV))) {
-      vigia = await revisar(env, request.url);
+      vigia = await vigiaCompleto(request.url, 'Bearer ' + env.CRON_SECRET);   // 1 llamada aquí; el vigía corre aparte
       if (!vigia.ok) {
         await fetch(`${SURL}/rest/v1/notificaciones_internas`, {
           method: 'POST', headers: { ...h, Prefer: 'return=minimal' },
