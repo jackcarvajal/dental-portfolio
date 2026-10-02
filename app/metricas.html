@@ -345,7 +345,19 @@ async function cargarTiempoPorEtapa() {
         <div class="bar-track"><div class="bar-fill" style="width:${Math.round((Number(f.horas_promedio) || 0) / max * 100)}%;background:linear-gradient(90deg,${f.etapa === 'EN_ACABADO' ? 'var(--mg),var(--gold)' : 'var(--cyan),var(--gold)'});"></div></div>
         <div class="bar-val">${escH(h(f.horas_promedio))}</div>
       </div>`).join('')
-      + '<p style="font-size:.72rem;color:var(--muted);margin-top:8px;">Promedio de horas que un caso se queda en cada etapa. Pasa el cursor por una barra para ver casos, mediana y máximo.</p>';
+      + '<p style="font-size:.72rem;color:var(--muted);margin-top:8px;">Promedio de horas que un caso se queda en cada etapa. Pasa el cursor por una barra para ver casos, mediana y máximo.</p>'
+      + '<div id="atrasados-ahora"></div>';
+    try {
+      const at = (await rpc('casos_atrasados', { p_factor: 2 })) || [];
+      document.getElementById('atrasados-ahora').innerHTML = at.length
+        ? `<div style="margin-top:12px;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;">
+             <div style="font-size:.74rem;font-weight:800;color:#f87171;margin-bottom:6px;">⚠ Atrasados ahora (más del doble de lo normal en su etapa)</div>
+             ${at.map(a => `<a href="ficha-caso.html?id=${encodeURIComponent(a.pedido_id)}" style="display:flex;gap:8px;flex-wrap:wrap;font-size:.78rem;padding:4px 0;color:inherit;text-decoration:none;">
+               <b style="color:var(--cyan);font-family:monospace;">${escH(a.codigo)}</b><span>${escH(a.doctor || '')}</span>
+               <span style="color:var(--muted);">${escH(NOMBRE_ETAPA[a.etapa] || a.etapa)} · ${escH(h(a.horas_en_etapa))} (lo normal ${escH(h(a.horas_mediana))})</span></a>`).join('')}
+           </div>`
+        : '<p style="font-size:.74rem;color:var(--green);margin-top:10px;">✓ Ningún caso lleva más del doble de lo normal en su etapa.</p>';
+    } catch (_) { /* falta sql/casos-atrasados-2026.sql */ }
   } catch (e) {
     el.innerHTML = /tiempos_por_etapa|does not exist|PGRST202/i.test(e.message + (e.code || ''))
       ? '<div class="error-msg">Falta correr <b>sql/rastreo-tiempos-2026.sql</b>.</div>'

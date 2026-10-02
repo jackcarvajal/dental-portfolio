@@ -19,12 +19,34 @@ export async function onRequestGet({ request, env }) {
   if (!SERVICE) return new Response(JSON.stringify({ error: 'Falta la clave de servicio de Supabase' }), { status: 503 });
   const h = { 'apikey': SERVICE, 'Authorization': `Bearer ${SERVICE}`, 'Content-Type': 'application/json' };
 
+  // Casos atrasados en su etapa (más del doble de lo normal): un solo resumen al día en la campana del admin
+  let atrasados = 0;
+  try {
+    const dia = new Date(Date.now() - 5 * 3600000).toISOString().slice(0, 10);          // día de Bogotá
+    const marca = new Request('https://rl.internal/atrasados-etapa_' + dia);
+    if (!(await caches.default.match(marca))) {
+      const ra = await fetch(`${SURL}/rest/v1/rpc/casos_atrasados`, { method: 'POST', headers: h, body: JSON.stringify({ p_factor: 2 }) });
+      const filas = ra.ok ? await ra.json() : [];
+      if (Array.isArray(filas) && filas.length) {
+        atrasados = filas.length;
+        const lista = filas.slice(0, 6).map(f => `${f.codigo} (${f.etapa}: ${f.horas_en_etapa} h, lo normal ${f.horas_mediana} h)`).join(' · ');
+        await fetch(`${SURL}/rest/v1/notificaciones_internas`, {
+          method: 'POST', headers: { ...h, Prefer: 'return=minimal' },
+          body: JSON.stringify({ tipo: 'urgente', prioridad: 'alta', destinatario_rol: 'admin',
+            titulo: `⏱️ ${filas.length} caso${filas.length > 1 ? 's' : ''} atrasado${filas.length > 1 ? 's' : ''} en producción`,
+            mensaje: lista, accion_url: '/app/metricas.html', leida_por: [] }),
+        }).catch(() => {});
+      }
+      await caches.default.put(marca, new Response('1', { headers: { 'Cache-Control': 'max-age=72000' } }));
+    }
+  } catch (_) { /* si la función aún no existe, sigue con el SLA */ }
+
   try {
     const r = await fetch(`${SURL}/rest/v1/rpc/prodigy_pedidos_sla_vencido`, { method: 'POST', headers: h, body: '{}' });
     const pedidos = await r.json();
     if (!r.ok) return new Response(JSON.stringify({ error: 'La consulta de vencidos falló', detalle: pedidos }), { status: 502 });
     if (!Array.isArray(pedidos) || pedidos.length === 0) {
-      return new Response(JSON.stringify({ ok: true, alertas: 0 }), { status: 200 });
+      return new Response(JSON.stringify({ ok: true, alertas: 0, atrasados }), { status: 200 });
     }
 
     // 1) Campana del admin: un aviso por caso
@@ -61,7 +83,7 @@ export async function onRequestGet({ request, env }) {
       fetch(`${SURL}/rest/v1/rpc/prodigy_marcar_sla_alerta`, { method: 'POST', headers: h, body: JSON.stringify({ p_id: p.id }) })
     ));
 
-    return new Response(JSON.stringify({ ok: true, alertas: pedidos.length }), { status: 200 });
+    return new Response(JSON.stringify({ ok: true, alertas: pedidos.length, atrasados }), { status: 200 });
   } catch (err) {
     console.error('[alerta-sla]', err);
     return new Response(JSON.stringify({ error: 'Error interno del servidor' }), { status: 500 });

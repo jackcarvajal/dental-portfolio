@@ -1,5 +1,10 @@
 # PRODIGY — Configuración DNS para Email Deliverability
 
+> **Estado 2026-10-01 (verificado con `cf pages get`): en Cloudflare NO existe `RESEND_API_KEY` → la web NO envía
+> ningún correo** (bienvenidas, diseño listo, entregado, agradecimiento). `/api/send-email` responde 503. Hacer en
+> orden: pasos 1–3 de abajo (DNS + verificar dominio) → **paso 4 (clave en Cloudflare)** → **paso 5 (SMTP de
+> Supabase para «olvidé mi contraseña»)** → verificación.
+
 ## ⚠️ EJECUTAR EN CLOUDFLARE DNS (no en código)
 
 ### Acceso: cloudflare.com → prodigylabdental.com → DNS
@@ -73,6 +78,21 @@ SPF/DKIM, con DMARC activo esos correos transaccionales podrían ir directo a sp
 o rechazarse.
 
 ---
+
+## 4. Clave de Resend en Cloudflare (sin esto no sale NINGÚN correo)
+1. resend.com → **API Keys** → *Create API Key* → permiso **Sending access** → dominio `prodigylabdental.com`.
+2. Copiar la clave (empieza por `re_`) — se muestra UNA vez. **No pegarla en el chat.**
+3. Cloudflare → Workers & Pages → proyecto de PRODIGY → **Settings → Variables and Secrets → Production → Add**:
+   - `RESEND_API_KEY` = la clave, tipo **Secret**
+   - `FROM_EMAIL` = `PRODIGY Lab Dental <noreply@prodigylabdental.com>` (tipo Text)
+4. **Save** → Deployments → *Retry deployment* del último (las variables entran en el siguiente despliegue).
+5. Alejandro CAD/CAM: lo mismo en su proyecto con su dominio y `FROM_EMAIL` = `Alejandro CAD/CAM <alejandro@alejandrocadcam.com>`.
+
+## 5. SMTP de Supabase con Resend (correo de «olvidé mi contraseña»)
+Supabase → Authentication → **Emails → SMTP Settings** → *Enable custom SMTP*:
+- Host `smtp.resend.com` · Puerto `465` · Usuario `resend` · Contraseña = una API key de Resend (puede ser otra solo para esto)
+- Remitente `noreply@prodigylabdental.com` · Nombre `PRODIGY Lab Dental`
+Sin esto, el reset de contraseña usa el correo de prueba de Supabase (límite muy bajo, suele caer en spam).
 
 ## Verificación (después de configurar todo)
 1. Ir a: https://mxtoolbox.com/SuperTool.aspx → ingresar `prodigylabdental.com` → SPF/DKIM/DMARC deben dar OK

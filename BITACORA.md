@@ -18,6 +18,13 @@
   botón del aviso abre la aprobación (antes llevaba a «caso no encontrado»).
 - 🟡 **Laboratorio 3D v6:** vuelve a mostrar todo el laboratorio (las estaciones fuera del recorrido quedan atenuadas),
   microscopio junto a la cámara en Calidad, botón «Revisar y aprobar en mi panel».
+- 🔴 **La web NO envía correos:** `cf pages get` confirma que en Cloudflare no existe `RESEND_API_KEY` (ni `FROM_EMAIL`).
+  Pasos en `PENDIENTES-DNS-EMAIL.md` §4–5 (clave en Cloudflare + SMTP de Supabase para el reset).
+- ✅ **Casos atrasados:** `sql/casos-atrasados-2026.sql` (🟡 falta correr) → Métricas muestra «Atrasados ahora» (más del
+  doble de la mediana de su etapa) y el cron de SLA deja UN resumen diario en la campana del admin.
+- ✅ **Alejandro: correos arreglados y cerrados** (paridad): su `send-email` exigía una clave secreta que el navegador
+  nunca manda → no salía ningún correo. Ahora: admin con sesión → a cualquiera; cliente → a sí mismo; sin sesión → solo
+  la confirmación de un pedido recién creado (texto del servidor, una vez por pedido).
 - ✅ 🔴 **Correo abierto cerrado:** `/api/send-email` dejaba a CUALQUIERA mandar correos a cualquier dirección con el
   remitente de PRODIGY (relevo de spam/phishing a nuestro nombre). Ahora: equipo con sesión → a cualquier doctor;
   cliente → solo a sí mismo; sin sesión → solo la bienvenida de «Envía tu escáner» a un correo con solicitud de los
