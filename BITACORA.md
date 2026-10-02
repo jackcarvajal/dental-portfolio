@@ -18,6 +18,17 @@
   botón del aviso abre la aprobación (antes llevaba a «caso no encontrado»).
 - 🟡 **Laboratorio 3D v6:** vuelve a mostrar todo el laboratorio (las estaciones fuera del recorrido quedan atenuadas),
   microscopio junto a la cámara en Calidad, botón «Revisar y aprobar en mi panel».
+- ✅ 🔴 **Correo abierto cerrado:** `/api/send-email` dejaba a CUALQUIERA mandar correos a cualquier dirección con el
+  remitente de PRODIGY (relevo de spam/phishing a nuestro nombre). Ahora: equipo con sesión → a cualquier doctor;
+  cliente → solo a sí mismo; sin sesión → solo la bienvenida de «Envía tu escáner» a un correo con solicitud de los
+  últimos 15 min y con el texto armado en el servidor. Paneles de diseño, producción y mensajero y `emailnotif.js`
+  mandan su sesión. (Alejandro ya exigía clave.)
+- ✅ **Rastreo de guía** (Servientrega, Coordinadora y TCC directo; otras → búsqueda) en el WhatsApp y en el 3D.
+- ✅ **Mensajero:** su ruta es solo lo que va en moto; arriba ve «Van por transportadora». **Métricas:** «Tiempo por
+  etapa» (bitácora de cambios) para ver dónde se atrasa la producción, incluido Terminado y maquillaje.
+- ✅ **Panel de producción:** el WhatsApp muerto (nunca tuvo el teléfono) queda en manos de la Bandeja; los correos
+  ahora sí leen el correo del pedido y van con la sesión del equipo.
+  🟡 Falta correr `sql/rastreo-tiempos-2026.sql` (dos funciones de solo lectura).
 - ✅ **Estado EN_ACABADO «Terminado y maquillaje»** (decisión: lo marca fresado): columna y botón en el panel de
   producción (fresado/lab) y en operación; agregado a las listas de producción (portal, contabilidad, inventario, panel
   interno, buscador), a la Bandeja y a los WhatsApp. `docs/CONTRATO-ESTADOS.md` actualizado.

@@ -35,7 +35,7 @@ const MSGS_ES = {
   QA_APROBADO:      (d) => `🛡️ *Caso #${d.cod} — Control de calidad ✅*\n\nHola Dr. ${d.dr}, tu caso pasó el control de calidad. Estamos programando el despacho.\n\n📅 Entrega estimada: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   LISTO_DESPACHAR:  (d) => `📦 *Caso #${d.cod} — Empacado y listo*\n\nHola Dr. ${d.dr}, tu caso está empacado y listo para despacho. Nuestro mensajero saldrá pronto.\n\n_PRODIGY Lab Dental_`,
   EN_REPARTO:       (d) => d.envio?.tipo_envio === 'transportadora'
-    ? `🚚 *Caso #${d.cod} — En camino*\n\nHola Dr. ${d.dr}, tu caso va por ${d.envio.transportadora || 'transportadora'}, guía *${d.envio.guia || '—'}*.\n\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`
+    ? `🚚 *Caso #${d.cod} — En camino*\n\nHola Dr. ${d.dr}, tu caso va por ${d.envio.transportadora || 'transportadora'}, guía *${d.envio.guia || '—'}*.\n\n🔎 Rastréalo: ${urlRastreo(d.envio.transportadora, d.envio.guia)}\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`
     : `🏍️ *Caso #${d.cod} — En camino*\n\nHola Dr. ${d.dr}, nuestro mensajero ya va en camino con tu caso. Llegará hoy.\n\n📋 Recibo: ${d.recibo}\n\n_PRODIGY Lab Dental_`,
   ENTREGADO:        (d) => `🎉 *Caso #${d.cod} — Entregado*\n\nHola Dr. ${d.dr}, tu caso fue entregado exitosamente. ¡Gracias por confiar en PRODIGY!\n\n📄 Tu recibo: ${d.recibo}\n\n_Si tienes algún comentario, escríbenos al +${WA_PRODIGY}_`,
 };
@@ -55,7 +55,7 @@ const MSGS_EN = {
   QA_APROBADO:      (d) => `🛡️ *Case #${d.cod} — Quality control passed ✅*\n\nHello Dr. ${d.dr}, your case passed our quality control. Scheduling shipment now.\n\n📅 Estimated delivery: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   LISTO_DESPACHAR:  (d) => `📦 *Case #${d.cod} — Packed and ready*\n\nHello Dr. ${d.dr}, your case is packed and ready for dispatch.\n\n_PRODIGY Lab Dental_`,
   EN_REPARTO:       (d) => d.envio?.tipo_envio === 'transportadora'
-    ? `🚚 *Case #${d.cod} — On the way*\n\nHello Dr. ${d.dr}, your case ships with ${d.envio.transportadora || 'a carrier'}, tracking *${d.envio.guia || '—'}*.\n\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`
+    ? `🚚 *Case #${d.cod} — On the way*\n\nHello Dr. ${d.dr}, your case ships with ${d.envio.transportadora || 'a carrier'}, tracking *${d.envio.guia || '—'}*.\n\n🔎 Track it: ${urlRastreo(d.envio.transportadora, d.envio.guia)}\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`
     : `🏍️ *Case #${d.cod} — On the way*\n\nHello Dr. ${d.dr}, our courier is on the way with your case. Arriving today.\n\n📋 Receipt: ${d.recibo}\n\n_PRODIGY Lab Dental_`,
   ENTREGADO:        (d) => `🎉 *Case #${d.cod} — Delivered*\n\nHello Dr. ${d.dr}, your case was successfully delivered. Thank you for trusting PRODIGY!\n\n📄 Your receipt: ${d.recibo}\n\n_For any questions, reach us at +${WA_PRODIGY}_`,
 };
@@ -94,6 +94,15 @@ async function enviarOficial(env, wa, p, intl) {
 const esPersonal = u => !!u && (ADMIN_EMAILS.includes(String(u.email || '').toLowerCase())
   || [].concat(u.app_metadata?.roles || [], u.app_metadata?.role || []).some(r => r && !['client', 'test'].includes(r)));
 // Colombia: 10 dígitos que empiezan por 3 → se antepone 57 (wa.me y Meta exigen el indicativo)
+// Rastreo de la guía en la web de la transportadora (mismo mapa en js/caso-etapas.js)
+const urlRastreo = (empresa, guia) => {
+  const e = String(empresa || '').toLowerCase(), g = encodeURIComponent(String(guia || '').trim());
+  if (!g) return '';
+  if (e.includes('servientrega')) return `https://www.servientrega.com/wps/portal/rastreo-envio/detalle?id=${g}`;
+  if (e.includes('coordinadora')) return `https://coordinadora.com/rastreo/rastreo-de-guia/detalle-de-rastreo-de-guia/?guia=${g}`;
+  if (e.includes('tcc')) return 'https://tcc.com.co/rastreo/';
+  return `https://www.google.com/search?q=${encodeURIComponent('rastrear guía ' + empresa + ' ' + guia)}`;
+};
 const normalizarWA = n => { const d = String(n || '').replace(/\D/g, ''); return d.length === 10 && d.startsWith('3') ? '57' + d : d; };
 
 function corsHeaders(origin) {

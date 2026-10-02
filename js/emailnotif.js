@@ -12,9 +12,10 @@
 async function enviarEmail(to, subject, text, tipo) {
   if (!to || !to.includes('@')) return false;
   try {
+    const ses = window.sb ? (await window.sb.auth.getSession()).data?.session : null;   // send-email exige sesión
     const res = await fetch('/api/send-email', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...(ses ? { Authorization: 'Bearer ' + ses.access_token } : {}) },
       body: JSON.stringify({ to, subject, text, tipo })
     });
     const d = await res.json();

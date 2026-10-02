@@ -623,10 +623,10 @@ async function avanzar(id, nuevoEstado) {
         // Push web (existente) + Email (nuevo, más confiable — vía Resend)
         fetch(PUSH_URL,{ method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
           body: JSON.stringify({ email:p.email, titulo, cuerpo }) }).catch(()=>{});
-        if (esRev) fetch('/api/send-email',{ method:'POST', headers:{'Content-Type':'application/json'},
+        if (esRev) sb.auth.getSession().then(({ data }) => fetch('/api/send-email',{ method:'POST', headers:{'Content-Type':'application/json', ...(data?.session ? { Authorization:'Bearer '+data.session.access_token } : {})},
           body: JSON.stringify({ to:p.email, subject:`Tu diseño está listo para revisión — Caso ${p.codigo}`,
             text:`Hola Dr(a) ${p.nombre_doctor||''}, el diseño de su caso ${p.codigo} ya está listo. Ingrese a su portal para revisarlo y aprobarlo: https://prodigylabdental.com/app/client-panel.html`,
-            tipo:'diseno_revision' }) }).catch(()=>{});
+            tipo:'diseno_revision' }) })).catch(()=>{});
       }
       // Aviso WhatsApp a la secretaria/staff (para que dé seguimiento si el Dr no responde)
       if (esRev) fetch('/api/notify-staff',{ method:'POST', headers:{'Content-Type':'application/json'},

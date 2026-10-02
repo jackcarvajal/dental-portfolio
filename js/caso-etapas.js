@@ -73,13 +73,26 @@
     }
   }
 
+  // Enlace de rastreo de la guía en la web de la transportadora (mismo mapa en functions/api/notify-wa.js)
+  function urlRastreo(empresa, guia) {
+    var e = String(empresa || '').toLowerCase(), g = encodeURIComponent(String(guia || '').trim());
+    if (!g) return '';
+    if (e.indexOf('servientrega') >= 0) return 'https://www.servientrega.com/wps/portal/rastreo-envio/detalle?id=' + g;
+    if (e.indexOf('coordinadora') >= 0) return 'https://coordinadora.com/rastreo/rastreo-de-guia/detalle-de-rastreo-de-guia/?guia=' + g;
+    if (e.indexOf('tcc') >= 0) return 'https://tcc.com.co/rastreo/';
+    return 'https://www.google.com/search?q=' + encodeURIComponent('rastrear guía ' + empresa + ' ' + guia);
+  }
+
   function leer(caso) {
     var flujo = flujoDe(caso), F = FLUJOS[flujo];
     var u = ubicar(flujo, caso && caso.estado_operativo, caso && caso.vehiculo);
-    if (u.vehiculo === 'camion' && caso.guia) u.d = 'Va con ' + (caso.transportadora || 'la transportadora') + ' · guía ' + caso.guia + '.';
+    if (u.vehiculo === 'camion' && caso.guia) {
+      u.d = 'Va con ' + (caso.transportadora || 'la transportadora') + ' · guía ' + caso.guia + '.';
+      u.cta = 'Rastrear la guía'; u.ir = 'rastreo'; u.rastreo = urlRastreo(caso.transportadora, caso.guia);
+    }
     u.flujo = flujo; u.F = F; u.idx = F.pasos.indexOf(u.paso);
     return u;
   }
 
-  window.CasoEtapas = { ESTACIONES: ESTACIONES, FLUJOS: FLUJOS, TURNO_TXT: TURNO_TXT, flujoDe: flujoDe, ubicar: ubicar, leer: leer };
+  window.CasoEtapas = { ESTACIONES: ESTACIONES, FLUJOS: FLUJOS, TURNO_TXT: TURNO_TXT, flujoDe: flujoDe, ubicar: ubicar, leer: leer, urlRastreo: urlRastreo };
 })();

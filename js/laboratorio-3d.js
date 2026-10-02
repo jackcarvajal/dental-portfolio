@@ -358,7 +358,7 @@ function aplicar(datos, saltar) {
   ui.turno.textContent = u.turno === 'lab' ? `${CE.TURNO_TXT.lab} · ${est[u.paso].n}` : CE.TURNO_TXT[u.turno];
   const mostrarCta = !!u.cta && !opciones.sinBoton;
   ui.cta.classList.toggle('ver', mostrarCta); ui.cta.textContent = u.cta || '';
-  ui.cta.href = u.ir === 'wa' ? 'https://wa.me/573212816716?text=' + encodeURIComponent('Hola, escribo por mi caso ' + cod)
+  ui.cta.href = u.ir === 'rastreo' ? u.rastreo : u.ir === 'wa' ? 'https://wa.me/573212816716?text=' + encodeURIComponent('Hola, escribo por mi caso ' + cod)
                               : '/app/login.html?redirect=' + encodeURIComponent('/app/client-panel.html#aprobar=' + cod);
   // Entregado: la foto que tomó el mensajero (enlace firmado de nuestro Supabase)
   const foto = u.turno === 'fin' && /^https:\/\/[a-z0-9]+\.supabase\.co\//.test(datos.foto_entrega || '') ? datos.foto_entrega : '';

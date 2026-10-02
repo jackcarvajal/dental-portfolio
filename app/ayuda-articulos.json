@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-01b",
+  "version": "2026-10-01c",
   "categorias": [
     {
       "id": "inicio",
@@ -201,7 +201,8 @@
       ],
       "notas": [
         "Regla: **no se entrega sin cobrar el saldo pendiente**. El mensajero sí ve el saldo por eso.",
-        "**Otra ciudad:** en el selector del mensajero elige **🚚 Transportadora**, escribe la empresa y el **número de guía**. El caso queda «en camino» y el doctor recibe la guía por WhatsApp. Cuando la transportadora confirme, en **Despachos de hoy** toca **Entregado**."
+        "**Otra ciudad:** en el selector del mensajero elige **🚚 Transportadora**, escribe la empresa y el **número de guía**. El caso queda «en camino» y el doctor recibe la guía por WhatsApp. Cuando la transportadora confirme, en **Despachos de hoy** toca **Entregado**.",
+        "El **mensajero** ve aparte, arriba de su ruta, los casos que salieron por transportadora (no los busca en la calle). El doctor recibe por WhatsApp un **enlace para rastrear la guía** (Servientrega, Coordinadora y TCC abren directo)."
       ],
       "kw": "despacho mensajero entrega reparto saldo cobrar asignar",
       "rel": [

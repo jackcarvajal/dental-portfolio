@@ -77,7 +77,7 @@
 <script src="js/reportar-problema.js?v=20260924c"></script>
     <!-- Laboratorio 3D: three.js para js/laboratorio-3d.js (se carga solo al mostrar un caso) -->
     <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}</script>
-    <script src="js/caso-etapas.js?v=20261001b" defer></script>
+    <script src="js/caso-etapas.js?v=20261001c" defer></script>
 </head>
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -514,7 +514,7 @@
             if (window.ProdigyLab3D) return montar();
             window.addEventListener('prodigy-lab3d-listo', montar, { once: true });
             if (!document.getElementById('lab3d-js')) {
-                const sc = document.createElement('script'); sc.type = 'module'; sc.id = 'lab3d-js'; sc.src = 'js/laboratorio-3d.js?v=20261001b';
+                const sc = document.createElement('script'); sc.type = 'module'; sc.id = 'lab3d-js'; sc.src = 'js/laboratorio-3d.js?v=20261001c';
                 sc.onerror = () => { sec.remove(); };   // si no carga, no deja un hueco
                 document.body.appendChild(sc);
             }

@@ -642,24 +642,19 @@ async function avanzar(id, nuevoEstado, dept) {
 
   /* Notificaciones automáticas por hito */
   try {
-    const { data: p } = await sb.from('pedidos').select('codigo,tipo_trabajo,nombre_doctor,pais').eq('negocio', 'prodigy').eq('id',id).single();
+    const { data: p } = await sb.from('pedidos').select('codigo,tipo_trabajo,nombre_doctor,pais,email').eq('negocio', 'prodigy').eq('id',id).single();
+    const _tk = (await sb.auth.getSession()).data?.session?.access_token;   // correos: solo con sesión del equipo
     const pushUrl = SB_URL+'/functions/v1/send-push';
     const waUrl   = '/api/wa-auto';
     const heads   = {'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON};
     const hCT     = {'Content-Type':'application/json'};
 
-    const _enviarWA = (estado) => {
-      if (!p?.telefono) return;
-      fetch(waUrl, { method:'POST', headers:hCT, body:JSON.stringify({
-        whatsapp:p.telefono, nuevo_estado:estado,
-        codigo:p.codigo, nombre_doctor:p.nombre_doctor,
-        pais:p.pais || 'CO', pedido_id: id
-      })}).catch(()=>{});
-    };
+    // WhatsApp al doctor: lo envía la secretaria desde la Bandeja de WhatsApp (el cambio de estado lo encola solo)
+    const _enviarWA = () => {};
 
     const _enviarEmail = (tipo, asunto, texto) => {
       if (!p?.email) return;
-      fetch('/api/send-email', { method:'POST', headers:hCT, body:JSON.stringify({
+      fetch('/api/send-email', { method:'POST', headers:{ ...hCT, ...(_tk ? { Authorization:'Bearer '+_tk } : {}) }, body:JSON.stringify({
         to: p.email, subject: asunto, tipo, text: texto
       })}).catch(()=>{});
     };

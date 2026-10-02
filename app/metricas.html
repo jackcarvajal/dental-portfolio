@@ -108,6 +108,12 @@
     </div>
   </div>
 
+  <!-- Tiempo por etapa: dónde se atrasa la producción (bitácora de cambios de etapa) -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title"><i class="fas fa-stopwatch" style="color:var(--mg);" aria-hidden="true"></i> Tiempo por etapa · últimos 30 días</div>
+    <div id="etapas-tiempo" style="overflow-x:auto;" aria-live="polite"><div class="spinner"><i class="fas fa-spinner fa-spin"></i></div></div>
+  </div>
+
   <!-- Tiempos de entrega + Forecast -->
   <div class="grid-2">
     <div class="card">
@@ -213,6 +219,7 @@ async function cargarTodo() {
       cargarServicios(),
       cargarIngresos(),
       cargarTiempos(),
+      cargarTiempoPorEtapa(),
       cargarForecast(),
       cargarFunnelProdigy(),
       cargarCotizRecientesProdigy(),
@@ -319,6 +326,31 @@ async function cargarIngresos() {
     }).join('')}</div>
     <div style="text-align:center;font-size:.65rem;color:#475569;margin-top:6px;">Números encima = pedidos · Barras = ingresos</div>`;
   } catch(e){ el.innerHTML=`<div class="error-msg"><i class="fas fa-triangle-exclamation"></i> ${escH(e.message)}</div>`; }
+}
+
+const NOMBRE_ETAPA = { VALIDACION_PENDIENTE:'Validación', EN_DISENO:'Diseño', DISENO_FINALIZADO:'Revisión interna', REVISION_CLIENTE:'Esperando al doctor',
+  CAMBIOS_SOLICITADOS:'Cambios', DISENO_APROBADO:'Cola de producción', EN_PRODUCCION:'Producción', FRESADO_INICIADO:'Fresado', EN_IMPRESION:'Impresión',
+  EN_ACABADO:'Terminado y maquillaje', QA_APROBADO:'Calidad aprobada', LISTO_DESPACHAR:'Empacado', POR_DESPACHAR:'Por despachar', EN_REPARTO:'En camino', ENTREGADO:'Entregado' };
+async function cargarTiempoPorEtapa() {
+  const el = document.getElementById('etapas-tiempo');
+  try {
+    const filas = (await rpc('tiempos_por_etapa', { p_dias: 30 })) || [];
+    const ok = filas.filter(f => f.etapa !== 'ENTREGADO' && f.casos > 0);
+    if (!ok.length) { el.innerHTML = '<div class="error-msg">Aún no hay cambios de etapa suficientes en 30 días.</div>'; return; }
+    const max = Math.max(...ok.map(f => Number(f.horas_promedio) || 0), 1);
+    const h = v => { const n = Number(v) || 0; return n >= 48 ? (n / 24).toFixed(1) + ' d' : n.toFixed(1) + ' h'; };
+    el.innerHTML = ok.map(f => `
+      <div class="bar-row" title="${escH(f.casos)} casos · mediana ${escH(h(f.horas_mediana))} · máximo ${escH(h(f.horas_max))}${f.siguen_ahi ? ' · ' + escH(f.siguen_ahi) + ' siguen ahí' : ''}">
+        <div class="bar-label">${escH(NOMBRE_ETAPA[f.etapa] || f.etapa)}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round((Number(f.horas_promedio) || 0) / max * 100)}%;background:linear-gradient(90deg,${f.etapa === 'EN_ACABADO' ? 'var(--mg),var(--gold)' : 'var(--cyan),var(--gold)'});"></div></div>
+        <div class="bar-val">${escH(h(f.horas_promedio))}</div>
+      </div>`).join('')
+      + '<p style="font-size:.72rem;color:var(--muted);margin-top:8px;">Promedio de horas que un caso se queda en cada etapa. Pasa el cursor por una barra para ver casos, mediana y máximo.</p>';
+  } catch (e) {
+    el.innerHTML = /tiempos_por_etapa|does not exist|PGRST202/i.test(e.message + (e.code || ''))
+      ? '<div class="error-msg">Falta correr <b>sql/rastreo-tiempos-2026.sql</b>.</div>'
+      : `<div class="error-msg"><i class="fas fa-triangle-exclamation"></i> ${escH(e.message)}</div>`;
+  }
 }
 
 async function cargarTiempos() {

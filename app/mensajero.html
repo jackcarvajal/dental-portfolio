@@ -156,6 +156,7 @@
 </div>
 
 <!-- LISTA -->
+<div id="lista-transportadora" aria-live="polite"></div>
 <div id="lista-despachos" aria-live="polite" aria-label="Lista de despachos"><div class="loading"><i class="fas fa-spinner fa-spin"></i><br>Cargando ruta...</div></div>
 
 <!-- MODAL CONFIRMAR ENTREGA -->
@@ -358,10 +359,29 @@ function resaltarPedido(codigo){
 }
 
 /* ── CARGAR RUTA ───────────────────────────────────────── */
+/* Casos que salieron por TRANSPORTADORA: no van en la ruta (para que nadie los busque en la calle) */
+async function pintarTransportadora(){
+    const box = document.getElementById('lista-transportadora'); if(!box) return;
+    try{
+        const { data, error } = await sb.rpc('envios_transportadora_recientes');
+        if(error || !(data||[]).length){ box.innerHTML=''; return; }
+        const esc = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        box.innerHTML = `<div style="margin:0 0 14px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.35);border-radius:12px;padding:12px 14px;">
+            <div style="font-weight:800;color:#D4AF37;font-size:.85rem;margin-bottom:6px;">🚚 Van por transportadora — no están en tu ruta</div>
+            ${data.map(d=>`<div style="display:flex;gap:8px;flex-wrap:wrap;font-size:.8rem;padding:4px 0;border-top:1px solid rgba(255,255,255,.06);">
+                <b style="color:#00d2ff;font-family:monospace;">${esc(d.codigo)}</b><span>${esc(d.doctor||'')}</span>
+                <span style="color:#94a3b8;">${esc(d.transportadora||'')} · guía ${esc(d.guia||'—')}</span>
+                <span style="color:${d.estado==='ENTREGADO'?'#00FF41':'#f97316'};">${d.estado==='ENTREGADO'?'Entregado':'En camino'}</span></div>`).join('')}
+        </div>`;
+    }catch(_){ box.innerHTML=''; }
+}
+
 async function cargarRuta(){
+    pintarTransportadora();
     let query = sb.from('despachos')
         .select('id,estado,fecha_entrega_estimada,novedades,pedidos(id,codigo,nombre_cliente,nombre_doctor,telefono,direccion,precio_total,saldo_pendiente_monto,nota_calidad,modalidad_cobro,pago_estado)')
         .in('estado',['PROGRAMADO','EN_REPARTO'])
+        .eq('tipo_envio','mensajero')                 // lo que va por transportadora no es parte de la ruta
         .order('created_at',{ ascending:true });
     if(_mensajeroId) query=query.eq('mensajero_id',_mensajeroId);
 
@@ -699,8 +719,9 @@ async function procesarConfirmacion(){
             }
             // Email de agradecimiento + reseña al entregar (automático, no bloquea)
             if (ped?.email) {
+                const _ses = (await sb.auth.getSession()).data?.session;
                 fetch('/api/send-email', {
-                    method:'POST', headers:{'Content-Type':'application/json'},
+                    method:'POST', headers:{'Content-Type':'application/json', ...(_ses ? { Authorization:'Bearer '+_ses.access_token } : {})},
                     body: JSON.stringify({ to: ped.email, subject: '¡Gracias por tu confianza! ⭐', text: `Tu caso #${ped?.codigo || _activeCodigo} fue entregado. Nos encantaría conocer tu experiencia.`, tipo: 'pedido_entregado' })
                 }).catch(()=>{});
             }
