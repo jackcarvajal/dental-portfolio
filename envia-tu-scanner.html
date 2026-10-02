@@ -901,52 +901,15 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
 
     setProg(85, 'Creando tu acceso al portal…');
 
-    // 2. Registro implícito: crear/vincular cuenta si tiene email
-    let portalLink = 'https://prodigylabdental.com/app/login.html?nuevo=1';
+    // 2. Cuenta del doctor: la crea el SERVIDOR (/api/cuenta-implicita) y la clave temporal llega SOLO a su correo.
+    //    Antes se creaba aquí con auth.signUp y el navegador conocía la clave (cualquiera podía abrir una cuenta a
+    //    nombre del correo de otro doctor y quedar con sesión).
+    let _cuenta = null;
     if (email) {
         try {
-            // signUp crea la cuenta si no existe, signIn si ya existe
-            const tempPass = 'Prodigy@' + Math.random().toString(36).slice(2, 8).toUpperCase();
-            const { data: signUpData, error: signUpErr } = await sb.auth.signUp({
-                email,
-                password: tempPass,  // contraseña temporal aleatoria — el usuario la cambiará
-                options: {
-                    data: { nombre: doctor, clinica, whatsapp, rol_solicitado: 'client', primera_vez: true },
-                    emailRedirectTo: 'https://prodigylabdental.com/app/cambiar-contrasena.html?primera_vez=1'
-                }
-            });
-            if (!signUpErr && signUpData?.user) {
-                // Insertar en tabla doctores_perfil si no existe (id = auth.users.id, sin columna user_id/email propia)
-                await Promise.resolve(sb.from('doctores_perfil').upsert({
-                    id: signUpData.user.id,
-                    nombre: doctor,
-                    clinica,
-                    whatsapp
-                }, { onConflict: 'id', ignoreDuplicates: true })).catch(()=>{});
-
-                // Enviar WA al doctor invitándolo al portal
-                // WA notification
-                fetch('/api/wa-auto', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        whatsapp,
-                        mensaje: `🦷 *PRODIGY Lab Dental*\n\nHola ${doctor.split(' ')[0]}, recibimos tu solicitud de ${servicio}.\n\n✅ Portal creado. Ingresa aquí:\n👉 ${portalLink}\n\n📧 ${email}\n🔐 Clave: ${tempPass}\n_(Cámbiala al ingresar)_\n\nwa.me/573212816716`
-                    })
-                }).catch(()=>{});
-                // Email de bienvenida (si Resend está configurado)
-                fetch('/api/send-email', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        to: email,
-                        subject: 'Bienvenido a PRODIGY Lab Dental — Tu portal está listo',
-                        tipo: 'bienvenida',
-                        temp_pass: tempPass,
-                        text: `Hola ${doctor.split(' ')[0]}, recibimos tu caso de ${servicio}. Tu portal está listo en prodigylabdental.com/app/client-panel.html`
-                    })
-                }).catch(()=>{});
-            }
+            const r = await fetch('/api/cuenta-implicita', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ origen: 'escaner', email, codigo, nombre: doctor, clinica, whatsapp }) });
+            _cuenta = await r.json().catch(() => null);
         } catch(_) {}
     }
 
@@ -968,7 +931,9 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
             `Gracias, <strong>${_nom}</strong>. Recibimos tu caso de ${_esc(servicio.toLowerCase())}.<br>`+
             `<span style="display:inline-block;margin:12px 0;padding:8px 16px;border:1px solid rgba(212,175,55,.4);border-radius:10px;background:rgba(212,175,55,.08);color:#D4AF37;font-weight:800;letter-spacing:.5px;">Nº de caso: ${_esc(codigo)}</span><br>`+
             `<span style="font-size:.85rem;color:#94a3b8;">Guarda este número para hacer seguimiento.</span><br><br>`+
-            (email ? `✅ <strong>Hemos creado tu portal de seguimiento</strong>. Revisa tu WhatsApp (${_wa}) — te enviamos el link de acceso con tus datos de ingreso.` :
+            (email ? (_cuenta && _cuenta.existe
+                ? `✅ Ya tienes cuenta con <strong>${_esc(email)}</strong>: entra a tu portal con tu clave (o usa «Olvidé mi contraseña»).`
+                : `✅ <strong>Creamos tu portal de seguimiento.</strong> Te enviamos el acceso y tu clave temporal a <strong>${_esc(email)}</strong> (revisa también spam).`) :
                      `Te contactamos al ${_wa} cuando tengamos el diseño listo.`);
         document.getElementById('waLink').href =
             `https://wa.me/${WA_PRODIGY}?text=${encodeURIComponent(`Hola PRODIGY, acabo de enviar mi escáner. Soy ${doctor} de ${clinica}. Mi Nº de caso es ${codigo}.`)}`;

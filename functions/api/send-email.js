@@ -57,11 +57,14 @@ export async function onRequestPost({ request, env }) {
   const origin = request.headers.get('Origin') || '';
   const cors = corsHeaders(origin);
 
+  // Llamada interna de otra función (p. ej. /api/cuenta-implicita): trae CRON_SECRET; no cuenta para el límite por IP
+  const interno = !!env.CRON_SECRET && request.headers.get('x-cron-secret') === env.CRON_SECRET;
+
   // Rate limit: 10 emails/hora por IP
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const rlKey = new Request('https://rl.internal/send-email_' + ip);
-  const rlHit = await caches.default.match(rlKey);
-  if (rlHit) {
+  const rlHit = interno ? null : await caches.default.match(rlKey);
+  if (interno) { /* sin límite por IP */ } else if (rlHit) {
     const count = parseInt(await rlHit.text(), 10) || 0;
     if (count >= 10) return new Response(JSON.stringify({ error: 'Límite de emails alcanzado.' }), { status: 429, headers: cors });
     await caches.default.put(rlKey, new Response(String(count + 1), { headers: { 'Cache-Control': 'max-age=3600' } }));
@@ -80,14 +83,14 @@ export async function onRequestPost({ request, env }) {
   const yo = c.SERVICE ? await usuarioDe(request, c) : null;
   const roles = [].concat(yo?.app_metadata?.roles || [], yo?.app_metadata?.role || []);
   const correoYo = String(yo?.email || '').toLowerCase();
-  const personal = !!yo && (ADMIN_EMAILS.includes(correoYo) || roles.some(r => r && !['client', 'test'].includes(r)));
+  const personal = interno || (!!yo && (ADMIN_EMAILS.includes(correoYo) || roles.some(r => r && !['client', 'test'].includes(r))));
   if (!personal) {
     if (yo) {
       if (String(to || '').toLowerCase() !== correoYo) return new Response(JSON.stringify({ error: 'Solo puedes enviarte correos a ti mismo.' }), { status: 403, headers: cors });
     } else {
       if (tipo !== 'bienvenida' || !to || !c.SERVICE) return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401, headers: cors });
       const desde = new Date(Date.now() - 15 * 60000).toISOString();
-      const r = await fetch(`${c.URL}/rest/v1/solicitudes_scanner?email=eq.${encodeURIComponent(String(to).toLowerCase())}&created_at=gte.${encodeURIComponent(desde)}&select=id&limit=1`, { headers: adminH(c.SERVICE) }).catch(() => null);
+      const r = await fetch(`${c.URL}/rest/v1/solicitudes_scanner?email=ilike.${encodeURIComponent(String(to).toLowerCase())}&created_at=gte.${encodeURIComponent(desde)}&select=id&limit=1`, { headers: adminH(c.SERVICE) }).catch(() => null);
       const hay = r && r.ok ? (await r.json()).length > 0 : false;
       if (!hay) return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 403, headers: cors });
       subject = 'Bienvenido a PRODIGY Lab Dental — Tu portal está listo';
@@ -200,33 +203,33 @@ function buildTemplate(tipo, { text, subject, temp_pass }) {
   if (tipo === 'bienvenida') return base(`
     <h1>¡Bienvenido a PRODIGY! 🎉</h1>
     <p>Tu cuenta ha sido creada exitosamente. Ya puedes acceder al portal para hacer seguimiento de tus casos en tiempo real.</p>
-    <a href="https://prodigylabdental.com/app/client-panel.html" class="btn">Ir a mi portal →</a>
+    <a href="https://prodigylabdental.com/app/client-panel.html" class="btn" style="color:#ffffff;text-decoration:none;">Ir a mi portal →</a>
     <p style="font-size:.78rem;color:#475569;">${temp_pass ? `Tu clave temporal es <strong style="color:#fbbf24;">${temp_pass}</strong> — Cámbiala al ingresar por seguridad.` : 'Revisa el mensaje de WhatsApp que te enviamos con tu clave temporal de acceso.'}</p>
   `);
 
   if (tipo === 'pedido_confirmado') return base(`
     <h1>✅ Pedido confirmado</h1>
     <p>${text || 'Tu pedido ha sido recibido y está en proceso. Te notificamos cuando el diseño esté listo.'}</p>
-    <a href="https://prodigylabdental.com/seguimiento-caso" class="btn">Ver seguimiento →</a>
+    <a href="https://prodigylabdental.com/seguimiento-caso" class="btn" style="color:#ffffff;text-decoration:none;">Ver seguimiento →</a>
   `);
 
   if (tipo === 'diseno_listo') return base(`
     <h1>🎨 Tu diseño está listo</h1>
     <p>${text || 'El diseño CAD de tu caso está completo y listo para revisar. Apruébalo o solicita ajustes desde el portal.'}</p>
-    <a href="https://prodigylabdental.com/app/client-panel.html" class="btn">Revisar diseño →</a>
+    <a href="https://prodigylabdental.com/app/client-panel.html" class="btn" style="color:#ffffff;text-decoration:none;">Revisar diseño →</a>
   `);
 
   if (tipo === 'cotizacion_enviada') return base(`
     <h1>📋 Tu cotización está lista</h1>
     <p>${text || 'Hemos preparado una cotización para tu caso. Revísala y conviértela en pedido cuando estés listo.'}</p>
-    <a href="https://prodigylabdental.com/app/cotizaciones.html" class="btn">Ver cotización →</a>
+    <a href="https://prodigylabdental.com/app/cotizaciones.html" class="btn" style="color:#ffffff;text-decoration:none;">Ver cotización →</a>
     <p style="font-size:.78rem;color:#475569;">La cotización tiene una vigencia de 30 días. Si tienes preguntas, responde este correo o escríbenos por WhatsApp.</p>
   `);
 
   if (tipo === 'pedido_entregado') return base(`
     <h1>🚀 Tu pedido fue entregado</h1>
     <p>${text || 'Tu caso ha sido entregado. ¡Gracias por confiar en PRODIGY!'}</p>
-    <a href="https://prodigylabdental.com/recibo-caso" class="btn">Ver mi recibo →</a>
+    <a href="https://prodigylabdental.com/recibo-caso" class="btn" style="color:#ffffff;text-decoration:none;">Ver mi recibo →</a>
     <p style="margin-top:20px;">¿Nos regalas 30 segundos? Tu opinión nos ayuda muchísimo a seguir creciendo 🙏</p>
     <a href="https://prodigylabdental.com/resena" class="btn" style="background:#D4AF37;color:#000;">⭐ Dejar mi reseña</a>
     <p style="font-size:.78rem;color:#475569;">Si tienes algún problema con la entrega, escríbenos por WhatsApp +57 321 281 6716.</p>
@@ -235,7 +238,7 @@ function buildTemplate(tipo, { text, subject, temp_pass }) {
   if (tipo === 'stock_bajo') return base(`
     <h1>⚠️ Alerta de inventario</h1>
     <p>${text || 'Uno o más materiales del inventario están por debajo del mínimo establecido.'}</p>
-    <a href="https://prodigylabdental.com/app/inventario.html" class="btn">Ver inventario →</a>
+    <a href="https://prodigylabdental.com/app/inventario.html" class="btn" style="color:#ffffff;text-decoration:none;">Ver inventario →</a>
   `);
 
   // Default genérico

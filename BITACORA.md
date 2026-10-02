@@ -18,6 +18,14 @@
   botón del aviso abre la aprobación (antes llevaba a «caso no encontrado»).
 - 🟡 **Laboratorio 3D v6:** vuelve a mostrar todo el laboratorio (las estaciones fuera del recorrido quedan atenuadas),
   microscopio junto a la cámara en Calidad, botón «Revisar y aprobar en mi panel».
+- ✅ 🔴 **Cuenta del doctor en «Envía tu escáner» creada en el SERVIDOR** (`/api/cuenta-implicita`): antes la página la
+  creaba con `auth.signUp` y el navegador conocía la clave (cualquiera podía abrir una cuenta a nombre del correo de otro
+  doctor y quedar con sesión). Ahora solo si ese correo acaba de dejar la solicitud (15 min), la clave temporal la genera
+  el servidor y SOLO va al correo; si ya tenía cuenta no se toca. Pendiente igual en envia-alineadores, flujo-fresado,
+  flujo-impresion y el escáner de Alejandro.
+- ✅ Correos: botones con texto blanco en Gmail; llamadas internas entre funciones con CRON_SECRET (sin límite por IP).
+- ✅ Cloudflare (vía la conexión MCP, a pedido de Alejandro): `STAFF_n_APIKEY/PHONE` pasadas a **Secret** en los dos
+  proyectos, mismos valores; verificadas las 13 y 7 variables después del cambio.
 - ✅ **Resend en Cloudflare (PRODIGY):** `RESEND_API_KEY` (Secret, solo envío, dominio prodigylabdental.com) y `FROM_EMAIL`
   agregadas el 1-oct. Botón «Enviarme un correo de prueba» en Configuración → Verificar edge functions.
   🟡 Alejandro: falta verificar `alejandrocadcam.com` en Resend (no tiene sus DNS) y su clave aparte.
