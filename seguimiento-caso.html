@@ -1073,13 +1073,15 @@ async function suscribirNotificaciones(caseId) {
         // Guardar suscripción en Supabase
         const sb = typeof getSbSeg === 'function' ? getSbSeg() : null;
         if (sb) {
-            await sb.from('push_subscriptions').upsert({
+            // insert (no upsert): sin sesión no se puede leer la tabla; si ya estaba suscrito, el duplicado se ignora
+            const { error: ePush } = await sb.from('push_subscriptions').insert({
                 case_id:      caseId,
                 endpoint:     sub.endpoint,
                 p256dh:       btoa(String.fromCharCode(...new Uint8Array(sub.getKey('p256dh')))),
                 auth:         btoa(String.fromCharCode(...new Uint8Array(sub.getKey('auth')))),
                 created_at:   new Date().toISOString(),
             });
+            if (ePush && ePush.code !== '23505') console.warn('Suscripción push:', ePush.message);
         }
     } catch (e) {
         console.error('Error suscripción push:', e);
