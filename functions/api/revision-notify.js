@@ -6,7 +6,13 @@
  * Envía WA al operario + email al equipo con los detalles.
  *
  * Env vars: RESEND_API_KEY, CALLMEBOT_APIKEY, SUPABASE_URL, SUPABASE_SERVICE_KEY
+ *
+ * Seguridad (oct-2026): antes cualquiera podía llamarlo y mandar correo a gerencia + WhatsApp al lab con el
+ * doctor/caso/notas que quisiera. Ahora exige el `token` de revisión que el doctor acaba de usar (usado en los
+ * últimos 15 min, de ESE pedido), toma código, doctor y notas de la BD y avisa una sola vez por token.
  */
+import { cfg, adminH } from './reportar-problema.js';
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const CORS = {
   'Access-Control-Allow-Origin':  'https://prodigylabdental.com',
@@ -36,9 +42,24 @@ export async function onRequestPost(context) {
   let body;
   try { body = await request.json(); } catch { body = {}; }
 
-  const { tipo, pedido_id, codigo, doctor_nombre, notas, revision_num } = body;
+  const { tipo, pedido_id, token } = body;
   // tipo: 'aprobacion' | 'cambios'
-  if (!tipo || !pedido_id) return new Response(JSON.stringify({ ok: false }), { headers: CORS });
+  if (!['aprobacion', 'cambios'].includes(tipo) || !UUID.test(String(pedido_id || '')) || !token) {
+    return new Response(JSON.stringify({ ok: false, error: 'Datos incompletos' }), { status: 400, headers: CORS });
+  }
+  const c = cfg(env);
+  if (!c.SERVICE) return new Response(JSON.stringify({ ok: false }), { status: 503, headers: CORS });
+  // El token tiene que ser de ESE pedido y haberse usado hace menos de 15 min (lo marca la RPC de aprobar/cambios)
+  const desde = encodeURIComponent(new Date(Date.now() - 15 * 60000).toISOString());
+  const rt = await fetch(`${c.URL}/rest/v1/revision_tokens?token=eq.${encodeURIComponent(token)}&pedido_id=eq.${pedido_id}&usado=is.true&usado_at=gte.${desde}&select=id&limit=1`, { headers: adminH(c.SERVICE) }).catch(() => null);
+  if (!rt || !rt.ok || !(await rt.json()).length) return new Response(JSON.stringify({ ok: false, error: 'No autorizado' }), { status: 403, headers: CORS });
+  const una = new Request('https://rl.internal/revision-notify-token_' + encodeURIComponent(token));
+  if (await caches.default.match(una)) return new Response(JSON.stringify({ ok: true, repetido: true }), { headers: CORS });
+  await caches.default.put(una, new Response('1', { headers: { 'Cache-Control': 'max-age=86400' } }));
+  // Datos del caso desde la BD (no del navegador)
+  const rp = await fetch(`${c.URL}/rest/v1/pedidos?id=eq.${pedido_id}&select=codigo,nombre_doctor,notas_cambios,revisiones_usadas&limit=1`, { headers: adminH(c.SERVICE) }).catch(() => null);
+  const ped = (rp && rp.ok ? (await rp.json())[0] : null) || {};
+  const codigo = ped.codigo || '', doctor_nombre = ped.nombre_doctor || '', notas = ped.notas_cambios || '', revision_num = ped.revisiones_usadas || '';
 
   const esAprobacion = tipo === 'aprobacion';
   const results = {};

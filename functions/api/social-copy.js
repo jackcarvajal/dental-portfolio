@@ -9,11 +9,15 @@
  * - Copy para WhatsApp broadcast (bullet points cortos)
  *
  * Env vars: GEMINI_API_KEY, CRON_SECRET
+ * Quién: cron (x-cron-secret) o el admin con sesión (Authorization: Bearer). Antes pedía `x-admin-token` =
+ * ADMIN_SECRET, que no existe en Cloudflare ni debe estar en el navegador → el botón del panel siempre daba 401.
  */
+import { cfg, usuarioDe, ADMIN_EMAILS } from './reportar-problema.js';
 
 const CORS = {
   'Access-Control-Allow-Origin':  'https://prodigylabdental.com',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Content-Type':                  'application/json',
 };
 
@@ -41,10 +45,16 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'Demasiadas solicitudes. Intenta en 1 hora.' }), { status: 429, headers: CORS });
   }
 
-  // Auth — acepta tanto cron-secret como sesión admin (header x-admin)
+  // Auth — cron (secreto) o admin con sesión verificada
   const secret = request.headers.get('x-cron-secret');
-  const admin  = request.headers.get('x-admin-token');
-  if (secret !== env.CRON_SECRET && admin !== env.ADMIN_SECRET) {
+  let ok = !!env.CRON_SECRET && secret === env.CRON_SECRET;
+  if (!ok) {
+    const c = cfg(env);
+    const yo = c.SERVICE ? await usuarioDe(request, c) : null;
+    const roles = [].concat(yo?.app_metadata?.roles || [], yo?.app_metadata?.role || []);
+    ok = !!yo && (ADMIN_EMAILS.includes(String(yo.email || '').toLowerCase()) || roles.includes('admin'));
+  }
+  if (!ok) {
     return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401, headers: CORS });
   }
 

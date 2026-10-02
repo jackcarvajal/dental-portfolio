@@ -11,6 +11,21 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- ✅ **Panel de pruebas (`app/pruebas-carga.html`) rehecho:** 4 pruebas (seguridad, módulos, foto antes/después) NUNCA
+  corrían: su código estaba dentro de `<script src="panel-tips.js">` (el navegador ignora el contenido). Nuevo botón
+  «Revisar todo» (no escribe ni gasta cuota) con resumen ✅/⚠️/❌; subida con tope 50 MB, buckets reales (no existía
+  `disenos-cad`) y borra la prueba; funciones nuevas (atrasados, tiempo por etapa, transportadora); 19 tablas;
+  seguridad como anónimo (tablas comparando con lo que ve el admin, funciones, archivos, endpoints, vista);
+  WhatsApp (bandeja + texto por estado sin enviar); seguimiento público sin datos personales; correo de prueba;
+  guía de cobros honesta (antes marcaba ✅ cosas sin configurar).
+- ✅ **`/api/revision-notify` cerrado:** era abierto (cualquiera mandaba correo a gerencia + WhatsApp con el texto que
+  quisiera, y el botón de pruebas mandaba uno REAL). Ahora exige el token de revisión recién usado de ese pedido, toma
+  código/doctor/notas de la BD y avisa una sola vez por token. `revision-express.html` manda el token.
+- ✅ **`/api/social-copy`:** aceptaba solo `ADMIN_SECRET` (no existe) → el generador del panel siempre daba 401. Ahora
+  admin con sesión o cron.
+- ✅ **`/api/health-check`:** las alertas (correo + WhatsApp) salen como máximo 1 vez por hora (soporte.html lo llama
+  en cada visita).
+
 - ✅ **Pulso del laboratorio:** cada etapa (y «Esperan al doctor») es un botón que filtra la tabla de pedidos;
   «Quitar filtro» o tocarla otra vez la limpia; si el panel repinta la tabla (Actualizar/sus filtros) se suelta solo.
 - ✅ **envia-tu-scanner:** títulos de sección centrados; nueva «Así avanza tu caso dentro del laboratorio» (9 etapas,

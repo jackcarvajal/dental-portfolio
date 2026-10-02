@@ -233,6 +233,7 @@ async function confirmarAprobacion() {
             body: JSON.stringify({
                 tipo: 'aprobacion',
                 pedido_id: pedidoId,
+                token,
                 codigo: new URLSearchParams(location.search).get('codigo') || '',
                 doctor_nombre: new URLSearchParams(location.search).get('doctor') || '',
             })
@@ -275,6 +276,7 @@ async function confirmarCambios() {
             body: JSON.stringify({
                 tipo: 'cambios',
                 pedido_id: pedidoId,
+                token,
                 codigo: new URLSearchParams(location.search).get('codigo') || '',
                 doctor_nombre: new URLSearchParams(location.search).get('doctor') || '',
                 notas: notas.trim(),

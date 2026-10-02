@@ -4040,11 +4040,12 @@ async function generarSocialCopy() {
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
   res.innerHTML = '<div style="color:#475569;font-size:.82rem;padding:12px;"><i class="fas fa-spinner fa-spin"></i> Llamando a Gemini...</div>';
   try {
+    const _tok = (await sb.auth.getSession()).data?.session?.access_token || '';
     const r = await fetch('/api/social-copy', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-admin-token': (window.__ADMIN_SECRET||'')
+        'Authorization': 'Bearer ' + _tok
       },
       body: JSON.stringify({
         titulo,

@@ -215,8 +215,19 @@ export async function onRequestGet(context) {
   const critical = failed.filter(c => c.critical);
   const allOk    = failed.length === 0;
 
+  // Alertas: como máximo UNA por hora en total (la página pública de soporte también llama aquí; sin esto cada
+  // visitante disparaba un correo + WhatsApp mientras un servicio estuviera caído)
+  let alertar = critical.length > 0;
+  if (alertar) {
+    try {
+      const marca = new Request('https://rl.internal/health-check-alerta');
+      if (await caches.default.match(marca)) alertar = false;
+      else await caches.default.put(marca, new Response('1', { headers: { 'Cache-Control': 'max-age=3600' } }));
+    } catch (_) {}
+  }
+
   // Alerta email si hay fallos críticos y está configurado Resend
-  if (critical.length > 0 && env.RESEND_API_KEY) {
+  if (alertar && env.RESEND_API_KEY) {
     const emailBody = critical.map(s => `❌ ${s.name}: ${s.status} (${s.ms}ms)`).join('\n');
     fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -231,7 +242,7 @@ export async function onRequestGet(context) {
   }
 
   // Alerta WA solo si hay fallos críticos
-  if (critical.length > 0) {
+  if (alertar) {
     await sendWhatsAppAlert(critical, env);
   }
 
