@@ -19,9 +19,9 @@
     `pedido_para_fabricar(uuid)` (solo código, paciente y STL de ESE pedido) + DROP de la política + RPC admin
     `auditoria_acceso_anon()` para que el panel detecte políticas abiertas aunque la tabla esté vacía. El front
     (flujos + panel) queda en commit local hasta que se corra el SQL (lo exige audit-schema-live).
-  - 🟡 `push_subscriptions`: `push_select_own` (anon, true) dejaba leer todas las suscripciones y los INSERT con
+  - ✅ `push_subscriptions`: `push_select_own` (anon, true) dejaba leer todas las suscripciones y los INSERT con
     `true` dejaban registrarse con el user_id de otro (recibir sus notificaciones). `sql/push-suscripciones-2026.sql`
-    (pendiente de correr); seguimiento-caso (ambos repos) guarda con insert simple (no necesita leer la tabla).
+    (corrido 2-oct, verificado: anon no lee ni inserta con user_id ajeno); seguimiento-caso (ambos repos) guarda con insert simple.
 - ✅ **WhatsApp «Hola Dr. Dr.»:** si el nombre ya trae Dr./Dra./Doctor(a) ya no se repite (ambos repos).
 
 - ✅ **Panel de pruebas: «Revisar todo y generar informe»** → informe Markdown (primero lo que falla) para copiar o
