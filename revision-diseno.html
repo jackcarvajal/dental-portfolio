@@ -669,7 +669,7 @@ function renderPage() {
           </div>
         </div>`;
 
-      } else if (p.cotizacion_fab_estado === 'pago_confirmado') {
+      } else if (p.cotizacion_fab_estado === 'pago_confirmado' || p.cotizacion_fab_estado === 'pago_enviado') {
         /* Doctor confirmó, admin pendiente de verificar */
         nextHtml = `<div class="next-panel">
           <h3><i class="fas fa-hourglass-half" style="margin-right:7px;color:#fbbf24;"></i>Pago en verificación</h3>

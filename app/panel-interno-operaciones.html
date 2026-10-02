@@ -4256,10 +4256,13 @@ async function cargarFabricacion() {
 
   const pendientes  = todos.filter(p => !p.cotizacion_fab_estado || p.cotizacion_fab_estado === 'pendiente_cotizacion');
   const cotizadas   = todos.filter(p => p.cotizacion_fab_estado === 'cotizacion_enviada');
+  // 'pago_enviado' = el doctor avisa que pagó (o mandó comprobante) → el equipo verifica;
+  // 'pago_confirmado' = lo verificó el equipo → falta enrutar (sql/fabricacion-pago-verificado-2026.sql)
+  const porVerificar= todos.filter(p => p.cotizacion_fab_estado === 'pago_enviado' && !p.fabricacion_pagada);
   const porConfirmar= todos.filter(p => p.cotizacion_fab_estado === 'pago_confirmado' && !p.fabricacion_pagada);
 
   /* Badge en nav */
-  const total = pendientes.length + porConfirmar.length;
+  const total = pendientes.length + porVerificar.length + porConfirmar.length;
   const badge = document.getElementById('fab-badge');
   if (badge) { badge.textContent = total; badge.style.display = total > 0 ? 'inline' : 'none'; }
 
@@ -4293,9 +4296,17 @@ async function cargarFabricacion() {
           style="padding:7px 14px;border-radius:8px;background:rgba(0,255,65,.1);color:#00FF41;border:1px solid rgba(0,255,65,.3);font-size:.75rem;cursor:pointer;">
           <i class="fas fa-check-circle"></i> Confirmar pago recibido
         </button>` : ''}
+      ${modo === 'verificar' ? `
+        <div style="font-size:.82rem;color:#fbbf24;margin-bottom:8px;">
+          📩 El cliente avisa que pagó · cotización <strong>${fmtCOPFab(p.cotizacion_fab_monto)}</strong>. Revisa el comprobante en el historial antes de confirmar.
+        </div>
+        <button type="button" onclick="marcarPagoRecibido('${escJ(p.id)}','${escJ(p.fabricacion_tipo||'')}')"
+          style="padding:7px 14px;border-radius:8px;background:rgba(0,255,65,.1);color:#00FF41;border:1px solid rgba(0,255,65,.3);font-size:.75rem;cursor:pointer;">
+          <i class="fas fa-check-circle"></i> Confirmar pago recibido
+        </button>` : ''}
       ${modo === 'pagar' ? `
         <div style="font-size:.82rem;color:#00FF41;margin-bottom:8px;">
-          ✅ Pago confirmado por el cliente · <strong>${fmtCOPFab(p.cotizacion_fab_monto)}</strong>
+          ✅ Pago verificado por el equipo · <strong>${fmtCOPFab(p.cotizacion_fab_monto)}</strong>
         </div>
         <button type="button" onclick="enrutarAFabricacion('${escJ(p.id)}','${escJ(p.fabricacion_tipo||'')}')"
           style="padding:8px 16px;border-radius:8px;background:#D946A6;color:#fff;font-size:.78rem;font-weight:800;border:none;cursor:pointer;">
@@ -4312,8 +4323,8 @@ async function cargarFabricacion() {
     ? cotizadas.map(p => tarjeta(p,'cotizada')).join('')
     : '<p style="color:var(--muted);font-size:.82rem;padding:8px 0;">Sin cotizaciones en espera de pago.</p>';
 
-  document.getElementById('fab-pagados').innerHTML = porConfirmar.length
-    ? porConfirmar.map(p => tarjeta(p,'pagar')).join('')
+  document.getElementById('fab-pagados').innerHTML = (porVerificar.length + porConfirmar.length)
+    ? porVerificar.map(p => tarjeta(p,'verificar')).join('') + porConfirmar.map(p => tarjeta(p,'pagar')).join('')
     : '<p style="color:var(--muted);font-size:.82rem;padding:8px 0;">Sin pagos pendientes de enrutar.</p>';
 }
 

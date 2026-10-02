@@ -11,6 +11,17 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- 🔴→🟡 **Fabricación cobrada sin verificar (auditoría de funciones públicas):** el «ya pagué» del doctor dejaba
+  `cotizacion_fab_estado = pago_confirmado` y el trigger `enrutar_diseno_aprobado` lo toma como PAGADO → al aprobar,
+  el caso iba solo a producción sin que nadie verificara. El comprobante además pisaba la cotización con el monto del
+  doctor, y un doctor con sesión podía marcar `fabricacion_pagada` directo. `sql/fabricacion-pago-verificado-2026.sql`
+  (pendiente): «ya pagué» → `pago_enviado`, el trigger de protección bloquea esos campos a clientes, nace sin pagar.
+  Panel (Fabricación): nueva tarjeta «📩 El cliente avisa que pagó» para verificar; revision-diseno muestra
+  «Pago en verificación» también con `pago_enviado` (antes los comprobantes no aparecían en ninguna columna).
+- Menores anotados (sin arreglar): textos sin límite en prodigy_rd_log/_set_pais/_solicitar_fab_internacional, URL
+  de comprobante libre en el aviso al equipo, el cupón devuelve el correo del referidor, precio del pedido lo manda
+  el navegador (conocido: alerta de precio + verificación manual).
+
 - 🔴→🟡 **Auditoría de funciones SECURITY DEFINER** (asesor de Supabase: 80 ejecutables por anónimo; revisadas con
   código + prueba anónima en producción). Graves: `generar_url_firmada` (enlace firmado a CUALQUIER archivo del bucket
   privado `casos`), `prodigy_crear_revision_token` (guardia rota → anónimo podía crear token y APROBAR diseños),

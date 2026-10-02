@@ -25,7 +25,7 @@ if (!EDGE) { console.error('✗ No encontré msedge.exe'); process.exit(2); }
 const SKIP = /^(404|_plantilla|.*preview|mantenimiento)/;
 function pages(dir, base = '', out = []) {
   for (const n of readdirSync(dir)) {
-    if (['node_modules', '.git', 'assets', 'sql', 'docs', 'tools', 'patients'].includes(n)) continue;
+    if (['node_modules', '.git', 'assets', 'sql', 'docs', 'tools', 'patients', 'temporal', '.claude', '.agents', '.playwright', '.playwright-cli'].includes(n)) continue;   // carpetas de agentes: no son páginas del sitio
     const p = join(dir, n), st = statSync(p);
     if (st.isDirectory()) pages(p, base + n + '/', out);
     else if (n.endsWith('.html') && !SKIP.test(n)) out.push(base + n);
