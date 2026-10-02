@@ -1,0 +1,11 @@
+{{ $a := eq (printf "%v" .Data.negocio) "alejandrocadcam" }}{{ if ge (len .RedirectTo) 27 }}{{ if eq (slice .RedirectTo 0 27) "https://alejandrocadcam.com" }}{{ $a = true }}{{ end }}{{ end }}
+<div style="background:#050505;padding:28px 16px;font-family:Arial,Helvetica,sans-serif;color:#e2e8f0;">
+  <div style="max-width:520px;margin:0 auto;background:#0f1520;border:1px solid #1f2937;border-radius:14px;padding:28px;">
+    <p style="margin:0 0 18px;font-weight:900;letter-spacing:2px;font-size:13px;color:{{ if $a }}#D4AF37{{ else }}#D946A6{{ end }};">{{ if $a }}ALEJANDRO CAD/CAM{{ else }}PRODIGY LAB DENTAL{{ end }}</p>
+    <h2 style="margin:0 0 12px;font-size:20px;color:#ffffff;">Restablece tu contraseña</h2>
+    <p style="margin:0 0 22px;font-size:15px;line-height:1.5;">Recibimos una solicitud para cambiar la contraseña de <strong>{{ .Email }}</strong>. El enlace vence pronto y solo sirve una vez.</p>
+    <a href="{{ .ConfirmationURL }}" style="display:inline-block;background:{{ if $a }}#D4AF37{{ else }}#D946A6{{ end }};color:{{ if $a }}#050505{{ else }}#ffffff{{ end }};font-weight:700;text-decoration:none;padding:12px 22px;border-radius:8px;">Crear una contraseña nueva</a>
+    <p style="margin:22px 0 0;font-size:12px;color:#94a3b8;">Si no la pediste, ignora este correo: tu contraseña sigue igual.</p>
+  </div>
+  <p style="text-align:center;font-size:11px;color:#64748b;margin:14px 0 0;">{{ if $a }}alejandrocadcam.com{{ else }}prodigylabdental.com{{ end }}</p>
+</div>

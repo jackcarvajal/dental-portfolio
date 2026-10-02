@@ -47,22 +47,31 @@
     + '#pulso-lab .pl-f{border-top:1px solid rgba(255,255,255,.06);padding:10px 16px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}'
     + '#pulso-lab .pl-k{font-size:.58rem;letter-spacing:.09em;color:rgba(255,255,255,.3);margin-bottom:2px;text-transform:uppercase;font-weight:700}'
     + '#pulso-lab .pl-v{font:700 1rem ui-monospace,Consolas,monospace;color:rgba(255,255,255,.8);font-variant-numeric:tabular-nums}'
-    + '#pulso-lab a.pl-s{text-decoration:none;color:inherit}#pulso-lab a.pl-s:hover .pl-v{text-decoration:underline}'
+    + '#pulso-lab a.pl-s{text-decoration:none;color:inherit}#pulso-lab .pl-s:hover .pl-v{text-decoration:underline}'
+    + '#pulso-lab .pl-b{background:none;border:0;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer}'
+    + '#pulso-lab g[data-k]{cursor:pointer;outline:none}#pulso-lab g[data-k]:hover rect,#pulso-lab g[data-k]:focus-visible rect{stroke:#00d2ff;stroke-width:1.4}'
+    + '#pulso-lab g[data-k].on rect{stroke:#00d2ff;stroke-width:1.8}'
+    + '#pulso-lab .pl-fil{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 16px;background:rgba(0,210,255,.07);border-bottom:1px solid rgba(0,210,255,.18);font-size:.76rem;color:#bfefff}'
+    + '#pulso-lab .pl-fil[hidden]{display:none}#pulso-lab .pl-fil button{background:none;border:1px solid rgba(0,210,255,.35);color:#00d2ff;border-radius:999px;padding:3px 10px;font:600 .72rem Inter,system-ui;cursor:pointer}'
+    + '#pulso-lab button.pl-chip{cursor:pointer;font-family:inherit}#pulso-lab button.pl-chip.on{border-color:#00d2ff}'
+    + '#pulso-lab button:focus-visible{outline:2px solid #00d2ff;outline-offset:2px}'
     + '@media(prefers-reduced-motion:reduce){#pulso-lab .pl-vivo{animation:none}#pulso-lab .pl-msg{transition:none}}';
 
+  // cada etapa es un botón: filtra la tabla de pedidos de abajo (data-k = clave de la etapa)
+  function boton(id, etiqueta, svg) { return '<g data-k="' + id + '" role="button" tabindex="0" aria-label="Ver en la tabla los casos en ' + etiqueta + '">' + svg + '</g>'; }
   function nodo(x, y, w, h, etiqueta, id, borde, fondo) {
-    return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="9" fill="' + (fondo || '#121822') + '" stroke="' + (borde || 'rgba(255,255,255,.1)') + '" stroke-width="' + (borde ? 1 : .6) + '"/>'
+    return boton(id, etiqueta, '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="9" fill="' + (fondo || '#121822') + '" stroke="' + (borde || 'rgba(255,255,255,.1)') + '" stroke-width="' + (borde ? 1 : .6) + '"/>'
       + '<text x="' + (x + w / 2) + '" y="' + (y + 16) + '" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.4)" letter-spacing=".08em" font-family="Inter,system-ui">' + etiqueta + '</text>'
-      + '<text id="pl-' + id + '" x="' + (x + w / 2) + '" y="' + (y + h - (h > 50 ? 16 : 12)) + '" text-anchor="middle" font-size="' + (h > 50 ? 28 : 19) + '" font-weight="800" fill="#fff" font-family="ui-monospace,Consolas,monospace">—</text>';
+      + '<text id="pl-' + id + '" x="' + (x + w / 2) + '" y="' + (y + h - (h > 50 ? 16 : 12)) + '" text-anchor="middle" font-size="' + (h > 50 ? 28 : 19) + '" font-weight="800" fill="#fff" font-family="ui-monospace,Consolas,monospace">—</text>');
   }
   function salida(y, etiqueta, id, color) {
-    return '<rect x="450" y="' + y + '" width="156" height="34" rx="8" fill="#10151d" stroke="rgba(255,255,255,.08)" stroke-width=".6"/>'
+    return boton(id, etiqueta, '<rect x="450" y="' + y + '" width="156" height="34" rx="8" fill="#10151d" stroke="rgba(255,255,255,.08)" stroke-width=".6"/>'
       + '<circle cx="464" cy="' + (y + 17) + '" r="3.2" fill="' + color + '"/>'
       + '<text x="476" y="' + (y + 21) + '" font-size="11" fill="rgba(255,255,255,.7)" font-family="Inter,system-ui">' + etiqueta + '</text>'
-      + '<text id="pl-' + id + '" x="596" y="' + (y + 22) + '" text-anchor="end" font-size="14" font-weight="800" fill="#fff" font-family="ui-monospace,Consolas,monospace">—</text>';
+      + '<text id="pl-' + id + '" x="596" y="' + (y + 22) + '" text-anchor="end" font-size="14" font-weight="800" fill="#fff" font-family="ui-monospace,Consolas,monospace">—</text>');
   }
   function puntos(id, path, dur, color) {
-    var s = '<g id="pl-flujo-' + id + '">';
+    var s = '<g id="pl-flujo-' + id + '" aria-hidden="true">';
     [[0, 2.6, 1], [dur / 3, 1.9, .6], [dur * 2 / 3, 1.4, .35]].forEach(function (d) {
       s += '<circle r="' + d[1] + '" fill="' + color + '" opacity="' + d[2] + '"><animateMotion dur="' + dur + 's" begin="' + d[0].toFixed(2) + 's" repeatCount="indefinite" path="' + path + '"/></circle>';
     });
@@ -71,10 +80,11 @@
 
   function pintarEsqueleto(caja) {
     if (!document.getElementById('pulso-lab-css')) { var st = document.createElement('style'); st.id = 'pulso-lab-css'; st.textContent = CSS; document.head.appendChild(st); }
-    var tramo = function (d, op) { return '<path d="' + d + '" fill="none" stroke="rgba(0,210,255,' + op + ')" stroke-width="1.5" stroke-dasharray="3 5"/>'; };
+    var tramo = function (d, op) { return '<path aria-hidden="true" d="' + d + '" fill="none" stroke="rgba(0,210,255,' + op + ')" stroke-width="1.5" stroke-dasharray="3 5"/>'; };
     caja.innerHTML = '<div class="pl" role="region" aria-label="Pulso del laboratorio: casos por etapa en vivo">'
       + '<div class="pl-h"><div class="pl-t"><span class="pl-vivo" aria-hidden="true"></span>PULSO DEL LABORATORIO · EN VIVO</div><span class="pl-act" id="pl-act">cargando…</span></div>'
-      + '<div class="pl-svg"><svg viewBox="0 0 620 180" aria-hidden="true">'
+      + '<div class="pl-fil" id="pl-fil" hidden><span id="pl-fil-txt"></span><button type="button" data-k="">Quitar filtro ✕</button></div>'
+      + '<div class="pl-svg"><svg viewBox="0 0 620 180" role="group" aria-label="Casos por etapa. Toca una etapa para verla en la tabla.">'
       + tramo(P.p1, .28) + tramo(P.p2, .28) + tramo(P.p3, .18) + tramo(P.p4, .18) + tramo(P.p5, .18)
       + puntos('p1', P.p1, 1.05, '#00d2ff') + puntos('p2', P.p2, .9, '#00d2ff')
       + puntos('p3', P.p3, 1.3, '#D4AF37') + puntos('p4', P.p4, 1.15, '#D946A6') + puntos('p5', P.p5, 1.4, '#00FF41')
@@ -91,7 +101,7 @@
       + '<div class="pl-tk"><b aria-hidden="true">›</b><span class="pl-msg" id="pl-msg" aria-live="polite">Leyendo la bitácora…</span></div>'
       + '<div class="pl-f">'
       + '<div><div class="pl-k">Casos activos</div><div class="pl-v" id="pl-activos">—</div></div>'
-      + '<div><div class="pl-k">Esperan al doctor</div><div class="pl-v" id="pl-dr" style="color:#D4AF37">—</div></div>'
+      + '<button type="button" class="pl-s pl-b" data-k="dr"><div class="pl-k">Esperan al doctor</div><div class="pl-v" id="pl-dr" style="color:#D4AF37">—</div></button>'
       + '<a class="pl-s" href="bandeja-whatsapp.html"><div class="pl-k">WhatsApp por enviar</div><div class="pl-v" id="pl-wa" style="color:#25D366">—</div></a>'
       + '<a class="pl-s" href="metricas.html" style="margin-left:auto;text-align:right"><div class="pl-k">Atrasados</div><div class="pl-v" id="pl-atr">—</div></a>'
       + '</div></div>';
@@ -99,6 +109,40 @@
     if (menosMov && svg.pauseAnimations) svg.pauseAnimations();
     return svg;
   }
+
+  /* ── filtrar la tabla de pedidos del panel por etapa (usa window._pedidosAdmin + renderPedidos del panel) ── */
+  var ETQ = { recepcion: 'Recepción', diseno: 'Diseño', produccion: 'Producción', despacho: 'Por despachar', camino: 'En camino', hoy: 'Entregados hoy', dr: 'Esperan al doctor' };
+  var _filtro = '';
+  function enEtapa(p, k) {
+    var e = String(p.estado_operativo || '').toUpperCase();
+    if (k === 'hoy') { var h = new Date(); h.setHours(0, 0, 0, 0); return e === 'ENTREGADO' && new Date(p.updated_at) >= h; }
+    if (k === 'dr') return ESPERA_DR.indexOf(e) >= 0;
+    if (e === '') return k === 'recepcion' && Date.now() - new Date(p.created_at) < 90 * 864e5;   // igual que el conteo
+    return (BUCKET[k] || []).indexOf(e) >= 0;
+  }
+  function filtrar(k) {
+    var todos = window._pedidosAdmin;
+    if (!Array.isArray(todos) || typeof window.renderPedidos !== 'function') return;
+    _filtro = k === _filtro ? '' : k;                                     // tocar la misma etapa otra vez quita el filtro
+    var lista = _filtro ? todos.filter(function (p) { return !p.es_prueba && enEtapa(p, _filtro); }) : todos;
+    _propio = true; try { window.renderPedidos(lista); } finally { _propio = false; }
+    marcarFiltro(lista.length);
+    if (_filtro) { var t = document.getElementById('tbody-pedidos'); if (t) (t.closest('table') || t).scrollIntoView({ behavior: menosMov ? 'auto' : 'smooth', block: 'start' }); }
+  }
+  function marcarFiltro(n) {
+    var fil = document.getElementById('pl-fil');
+    if (fil) { fil.hidden = !_filtro; txt('pl-fil-txt', _filtro ? 'Tabla filtrada: ' + ETQ[_filtro] + ' (' + n + ' caso' + (n === 1 ? '' : 's') + ')' : ''); }
+    document.querySelectorAll('#pulso-lab [data-k]').forEach(function (el) { el.classList.toggle('on', !!_filtro && el.dataset.k === _filtro); });
+  }
+  // si el panel vuelve a pintar la tabla por su cuenta (Actualizar, sus filtros), el filtro del pulso ya no aplica
+  var _propio = false;
+  function vigilarTabla() {
+    var orig = window.renderPedidos;
+    if (typeof orig !== 'function' || orig._pulso) return;
+    var envuelta = function () { if (!_propio && _filtro) { _filtro = ''; marcarFiltro(0); } return orig.apply(this, arguments); };
+    envuelta._pulso = true; window.renderPedidos = envuelta;
+  }
+  window.PulsoLab = { filtrar: filtrar };
 
   var _msgs = [], _i = 0, _timer = null;
   function hace(f) { var m = Math.max(0, Math.round((Date.now() - new Date(f)) / 60000)); return m < 60 ? 'hace ' + m + ' min' : m < 1440 ? 'hace ' + Math.round(m / 60) + ' h' : 'hace ' + Math.round(m / 1440) + ' d'; }
@@ -137,9 +181,9 @@
     var chips = document.getElementById('pl-chips');
     if (chips) {
       chips.textContent = '';
-      [['Recepción', c.recepcion, '#00d2ff'], ['Diseño', c.diseno, '#00d2ff'], ['Producción', c.produccion, '#D946A6'],
-       ['Por despachar', c.despacho, '#D4AF37'], ['En camino', c.camino, '#D946A6'], ['Entregados hoy', r[1].count || 0, '#00FF41']].forEach(function (f) {
-        var s = document.createElement('span'); s.className = 'pl-chip';
+      [['Recepción', c.recepcion, '#00d2ff', 'recepcion'], ['Diseño', c.diseno, '#00d2ff', 'diseno'], ['Producción', c.produccion, '#D946A6', 'produccion'],
+       ['Por despachar', c.despacho, '#D4AF37', 'despacho'], ['En camino', c.camino, '#D946A6', 'camino'], ['Entregados hoy', r[1].count || 0, '#00FF41', 'hoy']].forEach(function (f) {
+        var s = document.createElement('button'); s.type = 'button'; s.className = 'pl-chip' + (f[3] === _filtro ? ' on' : ''); s.dataset.k = f[3];
         var d = document.createElement('i'); d.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:' + f[2];
         var b = document.createElement('b'); b.textContent = f[1];
         s.appendChild(d); s.appendChild(document.createTextNode(f[0] + ' ')); s.appendChild(b); chips.appendChild(s);
@@ -169,6 +213,12 @@
     (function esperarSb() {
       if (!window.sb) { if (++intentos < 40) setTimeout(esperarSb, 250); return; }
       var svg = pintarEsqueleto(caja);
+      vigilarTabla();
+      caja.addEventListener('click', function (e) { var n = e.target.closest('[data-k]'); if (n) filtrar(n.dataset.k); });
+      caja.addEventListener('keydown', function (e) {
+        var n = e.target.closest('g[data-k]'); if (!n || (e.key !== 'Enter' && e.key !== ' ')) return;
+        e.preventDefault(); filtrar(n.dataset.k);
+      });
       var correr = function () { cargar(window.sb, svg).catch(function () { txt('pl-act', 'sin conexión'); }); };
       correr();
       setInterval(function () { if (!document.hidden) correr(); }, 60000);

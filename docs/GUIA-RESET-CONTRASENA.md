@@ -29,17 +29,9 @@ https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/auth/smtp
 - Username: `resend` · Password: la clave `re_…` del paso 3
 - Guardar.
 
-## 5) Plantilla del correo en español (opcional pero recomendado)
-https://supabase.com/dashboard/project/zgihrwqfyvgyapbwzkvw/auth/templates → **Reset Password**
-- Subject: `Restablece tu contraseña`
-- Body:
-```html
-<h2>Restablece tu contraseña</h2>
-<p>Recibimos una solicitud para cambiar la contraseña de tu cuenta.</p>
-<p><a href="{{ .ConfirmationURL }}">Crear una contraseña nueva</a></p>
-<p>Si no la pediste, ignora este correo: tu contraseña sigue igual.</p>
-```
-(Sirve para las dos marcas: el enlace devuelve a la web desde la que se pidió.)
+## 5) Plantillas de los correos (con la marca de cada web)
+Ver **`docs/correos-auth/LEEME.md`**: 4 plantillas (recuperar, confirmar, enlace de acceso, invitación) que salen
+en dorado para Alejandro CAD/CAM y en magenta para PRODIGY, según la cuenta o la web desde la que se pidió.
 
 ## 6) Probar
 1. https://prodigylabdental.com/app/login.html → «¿Olvidaste tu contraseña?» → tu correo.

@@ -9,6 +9,18 @@
 
 ---
 
+## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
+
+- ✅ **Pulso del laboratorio:** cada etapa (y «Esperan al doctor») es un botón que filtra la tabla de pedidos;
+  «Quitar filtro» o tocarla otra vez la limpia; si el panel repinta la tabla (Actualizar/sus filtros) se suelta solo.
+- ✅ **envia-tu-scanner:** títulos de sección centrados; nueva «Así avanza tu caso dentro del laboratorio» (9 etapas,
+  la del doctor en dorado), pulso CSS solo visible en pantalla y arrancado en idle; en celular, lista vertical.
+- 🟡 **Correos de acceso por marca:** `docs/correos-auth/` (4 plantillas Go: dorado Alejandro / magenta PRODIGY según
+  `user_metadata.negocio` o el dominio de regreso). Falta pegarlas en Supabase (LEEME.md). Alejandro: login y header
+  ya mandan `negocio` + `emailRedirectTo` al registrarse.
+- ✅ **DMARC alejandrocadcam.com → `p=quarantine`** (sin buzones en el dominio; solo Resend envía, DKIM alineado).
+  Redeploy de Alejandro para tomar `RESEND_API_KEY`/`FROM_EMAIL`.
+
 ## 2026-10-01 (tarde)  (WhatsApp que sí llega · seguimiento con el estado real · laboratorio 3D v5)
 
 - ✅ **Cuentas implícitas en el servidor (todos los flujos):** envia-alineadores, flujo-fresado y flujo-impresión ya no
