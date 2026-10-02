@@ -4965,10 +4965,15 @@ if(window.ProdigyAuth){
             try {
                 const SBU = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
                 const SBA = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
-                const resp = await fetch(`${SBU}/rest/v1/pedidos?id=eq.${id}&select=codigo,nombre_paciente,servicio,stl_urls,material,color_vita,email`,
-                    { headers: { apikey: SBA, Authorization: 'Bearer '+SBA } });
-                const rows = await resp.json();
-                const p = rows?.[0];
+                // Solo código, paciente y STL de ESE diseño (sql/pedidos-acceso-anon-2026.sql); la tabla ya no se lee sin sesión
+                const H = { apikey: SBA, Authorization: 'Bearer '+SBA, 'Content-Type': 'application/json' };
+                let p = null;
+                const rr = await fetch(`${SBU}/rest/v1/rpc/pedido_para_fabricar`, { method: 'POST', headers: H, body: JSON.stringify({ p_id: id }) });
+                if (rr.ok) p = await rr.json();
+                else {   // la función aún no existe: lectura anterior
+                    const rows = await (await fetch(`${SBU}/rest/v1/pedidos?id=eq.${encodeURIComponent(id)}&select=codigo,nombre_paciente,stl_urls`, { headers: H })).json();
+                    p = Array.isArray(rows) ? rows[0] : null;
+                }
                 if (!p) return;
 
                 /* Pre-llenar nombre del paciente */

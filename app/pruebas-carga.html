@@ -433,6 +433,18 @@ async function testSeguridad(){
       L.push(count?`✅ ${t}: el anónimo no ve ninguna de ${count} filas`:`⚪ ${t}: vacía, no se puede comprobar`);
     }catch(e){ L.push(`⚠️ ${t}: ${e.message}`); }
   }
+  // A2) políticas: encuentra tablas abiertas aunque estén vacías (función de sql/pedidos-acceso-anon-2026.sql)
+  const PUBLICAS=['casos_portafolio','catalogo','comentarios_portafolio','config_plataformas','config_precios','equipo_mantenimiento','feedback_casos','links_config','portfolio','reviews'];
+  try{
+    const {data,error}=await sb.rpc('auditoria_acceso_anon');
+    if(error) L.push('⚠️ Revisión de políticas no disponible: falta correr sql/pedidos-acceso-anon-2026.sql');
+    else{
+      const abiertas=[...new Set((data||[]).map(r=>r.tabla))], raras=abiertas.filter(t=>!PUBLICAS.includes(t));
+      raras.forEach(t=>{ const r=data.find(x=>x.tabla===t);
+        L.push(`${PRIVADAS.includes(t)?'❌':'⚠️'} Política abierta al anónimo en ${t}: ${r.politica||'sin RLS'} → ${String(r.condicion).slice(0,90)}`); });
+      L.push(`✅ Políticas revisadas: ${abiertas.length-raras.length} tablas públicas a propósito (portafolio, catálogo, precios…)${raras.length?'':', ninguna privada abierta'}`);
+    }
+  }catch(e){ L.push('⚠️ Revisión de políticas: '+e.message); }
   // B) funciones privadas: el anónimo debe recibir error o nada
   for(const [fn,p] of RPCS){
     try{

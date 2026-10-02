@@ -1342,9 +1342,12 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catc
         try {
             const SBU='https://zgihrwqfyvgyapbwzkvw.supabase.co';
             const SBA='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
-            const r = await fetch(`${SBU}/rest/v1/pedidos?id=eq.${_fd}&select=codigo,nombre_paciente,stl_urls`,
-                {headers:{apikey:SBA,Authorization:'Bearer '+SBA}});
-            const p = (await r.json())?.[0];
+            // Solo código, paciente y STL de ESE diseño (sql/pedidos-acceso-anon-2026.sql); la tabla ya no se lee sin sesión
+            const H={apikey:SBA,Authorization:'Bearer '+SBA,'Content-Type':'application/json'};
+            let p=null;
+            const rr=await fetch(`${SBU}/rest/v1/rpc/pedido_para_fabricar`,{method:'POST',headers:H,body:JSON.stringify({p_id:_fd})});
+            if(rr.ok) p=await rr.json();
+            else { const rows=await (await fetch(`${SBU}/rest/v1/pedidos?id=eq.${encodeURIComponent(_fd)}&select=codigo,nombre_paciente,stl_urls`,{headers:H})).json(); p=Array.isArray(rows)?rows[0]:null; }
             if (!p) return;
             const npEl = document.getElementById('nombrePaciente');
             if (npEl && p.nombre_paciente) { npEl.value = p.nombre_paciente; }
