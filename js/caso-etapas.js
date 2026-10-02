@@ -76,6 +76,7 @@
   function leer(caso) {
     var flujo = flujoDe(caso), F = FLUJOS[flujo];
     var u = ubicar(flujo, caso && caso.estado_operativo, caso && caso.vehiculo);
+    if (u.vehiculo === 'camion' && caso.guia) u.d = 'Va con ' + (caso.transportadora || 'la transportadora') + ' · guía ' + caso.guia + '.';
     u.flujo = flujo; u.F = F; u.idx = F.pasos.indexOf(u.paso);
     return u;
   }

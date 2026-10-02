@@ -18,6 +18,12 @@
   botón del aviso abre la aprobación (antes llevaba a «caso no encontrado»).
 - 🟡 **Laboratorio 3D v6:** vuelve a mostrar todo el laboratorio (las estaciones fuera del recorrido quedan atenuadas),
   microscopio junto a la cámara en Calidad, botón «Revisar y aprobar en mi panel».
+- ✅ **Estado EN_ACABADO «Terminado y maquillaje»** (decisión: lo marca fresado): columna y botón en el panel de
+  producción (fresado/lab) y en operación; agregado a las listas de producción (portal, contabilidad, inventario, panel
+  interno, buscador), a la Bandeja y a los WhatsApp. `docs/CONTRATO-ESTADOS.md` actualizado.
+- ✅ **Despacho por transportadora** (otra ciudad): opción 🚚 en Despachos con empresa y guía; el caso queda en
+  camino, el WhatsApp lleva la guía, el 3D muestra el camión y se marca «Entregado» desde Despachos de hoy.
+  🟡 Falta correr `sql/envios-transportadora-acabado-2026.sql` (columnas en despachos + cola + seguimiento).
 - ✅ 💡 **Supabase en plan GRATIS → máximo 50 MB por archivo** (confirmado en Storage → Settings, 1-oct). Antes la web
   dejaba elegir archivos de hasta 500 MB y fallaban al subir. Ahora `formatos.js` y `upload-guard.js` (ambos repos) avisan
   ANTES de subir y sugieren ZIP o enlace de Drive/WeTransfer; alineadores 100→50 MB; preguntas frecuentes corregida.

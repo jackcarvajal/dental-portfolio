@@ -395,7 +395,7 @@ const escH = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 
 // Estados operativos por columna
 const PENDIENTES = ['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE'];
-const PRODUCCION = ['EN_PRODUCCION','DISENO_FINALIZADO','FRESADO_INICIADO'];
+const PRODUCCION = ['EN_PRODUCCION','DISENO_FINALIZADO','FRESADO_INICIADO','EN_ACABADO'];
 const COMPLETADOS = ['QA_APROBADO','LISTO_DESPACHAR','POR_DESPACHAR','EN_REPARTO','ENTREGADO'];
 
 // ── Init ──────────────────────────────────────────────────────────
@@ -424,7 +424,7 @@ function filtrarOperator() {
     const q = (document.getElementById('op-search')?.value || '').toLowerCase().trim();
     const est = document.getElementById('op-estado-fil')?.value || '';
     const PEND = ['VALIDACION_PENDIENTE','INCIDENCIA_CLIENTE'];
-    const PROD = ['EN_PRODUCCION','FRESADO_INICIADO','QA_APROBADO'];
+    const PROD = ['EN_PRODUCCION','FRESADO_INICIADO','EN_ACABADO','QA_APROBADO'];
     const COMP = ['LISTO_DESPACHAR','EN_REPARTO','ENTREGADO'];
 
     let filtrados = _pedidos;
@@ -508,6 +508,7 @@ function cardHTML(p, col) {
         : col === 'prod'
         ? `<button type="button" class="btn-xs btn-cyan"  onclick="avanzarEstado('${p.id}','DISENO_FINALIZADO')">Diseño OK</button>
            <button type="button" class="btn-xs btn-gold"  onclick="avanzarEstado('${p.id}','FRESADO_INICIADO')">Fresado</button>
+           <button type="button" class="btn-xs btn-gold"  onclick="avanzarEstado('${p.id}','EN_ACABADO')" title="Maquillaje, glaseado y ajuste">Terminado</button>
            <button type="button" class="btn-xs btn-yellow" onclick="abrirQA('${p.id}','${escJ(p.codigo||'')}')">QA</button>`
         : `<span style="font-size:.68rem;color:var(--green)">✓ ${escH(p.estado_operativo)}</span>`;
 
@@ -1341,7 +1342,7 @@ function cerrarBulk() { document.getElementById('modal-bulk').style.display = 'n
 <script src="../js/notif-panel.js?v=20260924"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
-<script src="../js/buscador.js?v=20260718e"></script>
+<script src="../js/buscador.js?v=20261001"></script>
 <script src="../js/historial.js?v=20260718e"></script>
 <script src="../js/tour.js?v=20260721"></script>
 <script src="../js/imprimir.js?v=20260718e"></script>

@@ -964,7 +964,7 @@ async function cargarRotacion() {
 async function contarSolicitudesPendientes() {
     const { count } = await sb.from('pedidos_operacion')
         .select('id', { count: 'exact', head: true })
-        .in('estado_operativo', ['EN_PRODUCCION', 'FRESADO_INICIADO']);
+        .in('estado_operativo', ['EN_PRODUCCION', 'FRESADO_INICIADO', 'EN_ACABADO']);
     const badge = document.getElementById('badge-sol');
     if (count > 0) { badge.textContent = count; badge.style.display = 'inline'; }
     else badge.style.display = 'none';
@@ -976,7 +976,7 @@ async function cargarSolicitudes() {
 
     const { data: pedidos, error } = await sb.from('pedidos_operacion')
         .select('id,codigo,tipo_trabajo,material,flujo,estado_operativo,departamento_actual,created_at,timestamp_produccion')
-        .in('estado_operativo', ['EN_PRODUCCION','FRESADO_INICIADO','VALIDACION_PENDIENTE'])
+        .in('estado_operativo', ['EN_PRODUCCION','FRESADO_INICIADO','EN_ACABADO','VALIDACION_PENDIENTE'])
         .in('flujo', ['fresado','lab','impresion'])
         .order('created_at', { ascending: true })
         .limit(80);
@@ -997,7 +997,7 @@ async function cargarSolicitudes() {
     const conMaterial = new Set((movs || []).map(m => m.pedido_id));
 
     const DEPT_ICON = { fresado:'🔩', lab:'🧪', impresion:'🖨️', '':'📦' };
-    const EST_COLOR = { EN_PRODUCCION:'#00d2ff', FRESADO_INICIADO:'#D4AF37', VALIDACION_PENDIENTE:'#f97316' };
+    const EST_COLOR = { EN_PRODUCCION:'#00d2ff', FRESADO_INICIADO:'#D4AF37', EN_ACABADO:'#D946A6', VALIDACION_PENDIENTE:'#f97316' };
 
     wrap.innerHTML = `
     <table style="width:100%;border-collapse:collapse;font-size:.84rem;">

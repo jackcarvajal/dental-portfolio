@@ -445,6 +445,7 @@ tbody td{padding:11px 14px;vertical-align:middle;}
                 <option value="VALIDACION_PENDIENTE">Validación pendiente</option>
                 <option value="EN_PRODUCCION">En producción</option>
                 <option value="FRESADO_INICIADO">Fresado</option>
+                <option value="EN_ACABADO">Terminado y maquillaje</option>
                 <option value="QA_APROBADO">QA aprobado</option>
                 <option value="LISTO_DESPACHAR">Listo para despachar</option>
                 <option value="POR_DESPACHAR">Por despachar</option>
@@ -1397,7 +1398,7 @@ async function cargarPedidos() {
     const ESTADO_COLORS = {
         ENTREGADO:'var(--green)', EN_REPARTO:'var(--cyan)', POR_DESPACHAR:'var(--cyan)',
         LISTO_DESPACHAR:'var(--cyan)', QA_APROBADO:'var(--gold)',
-        FRESADO_INICIADO:'var(--muted)', EN_PRODUCCION:'var(--muted)', VALIDACION_PENDIENTE:'var(--red)',
+        FRESADO_INICIADO:'var(--muted)', EN_ACABADO:'var(--muted)', EN_PRODUCCION:'var(--muted)', VALIDACION_PENDIENTE:'var(--red)',
     };
 
     const tbody = document.getElementById('tbody-pedidos');
@@ -1908,7 +1909,7 @@ async function cambiarEstadoCot(id, estado) {
 <script src="../js/notif-panel.js?v=20260924"></script>
 <script>(async()=>{try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const rol=session.user.app_metadata?.role||'admin';await window._notifInit(sb,null,rol);}catch(_){}})();</script>
 <script src="../js/panel-tips.js?v=20260923"></script>
-<script src="../js/buscador.js?v=20260718e"></script>
+<script src="../js/buscador.js?v=20261001"></script>
 <script src="../js/historial.js?v=20260718e"></script>
 <script src="../js/tour.js?v=20260721"></script>
 <script src="../js/imprimir.js?v=20260718e"></script>

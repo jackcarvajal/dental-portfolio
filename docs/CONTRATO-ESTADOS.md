@@ -24,6 +24,7 @@ Flujo feliz (aprox.):
 VALIDACION_PENDIENTE → EN_DISENO → DISENO_FINALIZADO
       → (REVISION_CLIENTE / CAMBIOS_SOLICITADOS) → DISENO_APROBADO
       → FRESADO_INICIADO | EN_IMPRESION | EN_PRODUCCION
+      → EN_ACABADO (terminado y maquillaje: horno de glaseado; lo marca fresado — oct-2026)
       → QA_APROBADO → LISTO_DESPACHAR | POR_DESPACHAR
       → EN_REPARTO → ENTREGADO
 ```

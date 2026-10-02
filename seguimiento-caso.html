@@ -77,7 +77,7 @@
 <script src="js/reportar-problema.js?v=20260924c"></script>
     <!-- Laboratorio 3D: three.js para js/laboratorio-3d.js (se carga solo al mostrar un caso) -->
     <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}</script>
-    <script src="js/caso-etapas.js?v=20261001" defer></script>
+    <script src="js/caso-etapas.js?v=20261001b" defer></script>
 </head>
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -492,7 +492,7 @@
         /* ── Laboratorio 3D: dónde está el caso, estación por estación (js/laboratorio-3d.js) ── */
         let _lab3d = null;
         function pintarLab3D(caso) {
-            const datos = { codigo: caso.codigo || caso.numeroOrden || '', flujo: caso.flujo, estado_operativo: caso.estado_operativo, foto_entrega: caso.foto_entrega };
+            const datos = { codigo: caso.codigo || caso.numeroOrden || '', flujo: caso.flujo, estado_operativo: caso.estado_operativo, foto_entrega: caso.foto_entrega, vehiculo: caso.vehiculo, transportadora: caso.transportadora, guia: caso.guia };
             if (_lab3d) { _lab3d.actualizar(datos); return; }
             const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (_) { return false; } })();
             if (!gl || !window.CasoEtapas) return;   // sin WebGL queda la barra de pasos de siempre

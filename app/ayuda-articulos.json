@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-01",
+  "version": "2026-10-01b",
   "categorias": [
     {
       "id": "inicio",
@@ -90,7 +90,8 @@
         "**En reparto** → va en camino. **Entregado** → terminado."
       ],
       "notas": [
-        "Estados de excepción: **Cancelado por el doctor**, **No entregado**, **Error de STL**, **Incidencia del cliente**, **Pago no confirmado**."
+        "Estados de excepción: **Cancelado por el doctor**, **No entregado**, **Error de STL**, **Incidencia del cliente**, **Pago no confirmado**.",
+        "**Terminado y maquillaje** (nuevo): el operario de fresado lo marca al pasar el caso al horno de glaseado (maquillaje, color final y ajuste de contactos), antes del **QA final**."
       ],
       "kw": "estado estados significado flujo etapas qa despachar reparto",
       "rel": [
@@ -199,7 +200,8 @@
         "Al entregar se avisa al doctor y se genera su recibo."
       ],
       "notas": [
-        "Regla: **no se entrega sin cobrar el saldo pendiente**. El mensajero sí ve el saldo por eso."
+        "Regla: **no se entrega sin cobrar el saldo pendiente**. El mensajero sí ve el saldo por eso.",
+        "**Otra ciudad:** en el selector del mensajero elige **🚚 Transportadora**, escribe la empresa y el **número de guía**. El caso queda «en camino» y el doctor recibe la guía por WhatsApp. Cuando la transportadora confirme, en **Despachos de hoy** toca **Entregado**."
       ],
       "kw": "despacho mensajero entrega reparto saldo cobrar asignar",
       "rel": [
@@ -476,6 +478,9 @@
       "kw": "doctor seguimiento portal ver caso qr numero",
       "rel": [
         "codigo-cliente"
+      ],
+      "notas": [
+        "El doctor ve su caso en un **laboratorio 3D** en la página de seguimiento: la estación que brilla es donde está; si la bandeja se detiene en dorado, le toca a él (aprobar o reenviar archivos). Si va por transportadora ve el camión y la guía; al entregarse, la foto del mensajero."
       ]
     },
     {

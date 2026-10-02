@@ -30,10 +30,13 @@ const MSGS_ES = {
   CAMBIOS_SOLICITADOS: (d) => `🔄 *Caso #${d.cod} — Aplicando tus cambios*\n\nHola Dr. ${d.dr}, recibimos tus notas y el diseñador ya está haciendo los ajustes.\n\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   EN_PRODUCCION:    (d) => `✅ *Caso #${d.cod} — Producción iniciada*\n\nHola Dr. ${d.dr}, tu caso superó la validación técnica y ya está en producción.\n\n📅 Entrega estimada: *${d.fecha}*\n🔬 Servicio: ${d.srv}\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   FRESADO_INICIADO: (d) => `⚙️ *Caso #${d.cod} — Fresado en curso*\n\nHola Dr. ${d.dr}, iniciamos el fresado de tu caso. Estamos en la recta final.\n\n📅 Entrega estimada: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
+  EN_ACABADO:       (d) => `🎨 *Caso #${d.cod} — Terminado y maquillaje*\n\nHola Dr. ${d.dr}, tu caso está en el horno de glaseado: maquillaje, color final y ajuste de contactos.\n\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   EN_IMPRESION:     (d) => `🖨️ *Caso #${d.cod} — Impresión en curso*\n\nHola Dr. ${d.dr}, tu caso se está imprimiendo.\n\n📅 Entrega estimada: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   QA_APROBADO:      (d) => `🛡️ *Caso #${d.cod} — Control de calidad ✅*\n\nHola Dr. ${d.dr}, tu caso pasó el control de calidad. Estamos programando el despacho.\n\n📅 Entrega estimada: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   LISTO_DESPACHAR:  (d) => `📦 *Caso #${d.cod} — Empacado y listo*\n\nHola Dr. ${d.dr}, tu caso está empacado y listo para despacho. Nuestro mensajero saldrá pronto.\n\n_PRODIGY Lab Dental_`,
-  EN_REPARTO:       (d) => `🏍️ *Caso #${d.cod} — En camino*\n\nHola Dr. ${d.dr}, nuestro mensajero ya va en camino con tu caso. Llegará hoy.\n\n📋 Recibo: ${d.recibo}\n\n_PRODIGY Lab Dental_`,
+  EN_REPARTO:       (d) => d.envio?.tipo_envio === 'transportadora'
+    ? `🚚 *Caso #${d.cod} — En camino*\n\nHola Dr. ${d.dr}, tu caso va por ${d.envio.transportadora || 'transportadora'}, guía *${d.envio.guia || '—'}*.\n\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`
+    : `🏍️ *Caso #${d.cod} — En camino*\n\nHola Dr. ${d.dr}, nuestro mensajero ya va en camino con tu caso. Llegará hoy.\n\n📋 Recibo: ${d.recibo}\n\n_PRODIGY Lab Dental_`,
   ENTREGADO:        (d) => `🎉 *Caso #${d.cod} — Entregado*\n\nHola Dr. ${d.dr}, tu caso fue entregado exitosamente. ¡Gracias por confiar en PRODIGY!\n\n📄 Tu recibo: ${d.recibo}\n\n_Si tienes algún comentario, escríbenos al +${WA_PRODIGY}_`,
 };
 
@@ -47,25 +50,31 @@ const MSGS_EN = {
   CAMBIOS_SOLICITADOS: (d) => `🔄 *Case #${d.cod} — Applying your changes*\n\nHello Dr. ${d.dr}, we received your notes and the designer is working on them.\n\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   EN_PRODUCCION:    (d) => `✅ *Case #${d.cod} — Production started*\n\nHello Dr. ${d.dr}, your case passed technical validation and is now in production.\n\n📅 Estimated delivery: *${d.fecha}*\n🔬 Service: ${d.srv}\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   FRESADO_INICIADO: (d) => `⚙️ *Case #${d.cod} — Milling in progress*\n\nHello Dr. ${d.dr}, we have started milling your case. Final stretch!\n\n📅 Estimated delivery: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
+  EN_ACABADO:       (d) => `🎨 *Case #${d.cod} — Finishing and staining*\n\nHello Dr. ${d.dr}, your case is in the glazing furnace: staining, final shade and contact adjustment.\n\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   EN_IMPRESION:     (d) => `🖨️ *Case #${d.cod} — Printing in progress*\n\nHello Dr. ${d.dr}, your case is being printed.\n\n📅 Estimated delivery: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   QA_APROBADO:      (d) => `🛡️ *Case #${d.cod} — Quality control passed ✅*\n\nHello Dr. ${d.dr}, your case passed our quality control. Scheduling shipment now.\n\n📅 Estimated delivery: *${d.fecha}*\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`,
   LISTO_DESPACHAR:  (d) => `📦 *Case #${d.cod} — Packed and ready*\n\nHello Dr. ${d.dr}, your case is packed and ready for dispatch.\n\n_PRODIGY Lab Dental_`,
-  EN_REPARTO:       (d) => `🏍️ *Case #${d.cod} — On the way*\n\nHello Dr. ${d.dr}, our courier is on the way with your case. Arriving today.\n\n📋 Receipt: ${d.recibo}\n\n_PRODIGY Lab Dental_`,
+  EN_REPARTO:       (d) => d.envio?.tipo_envio === 'transportadora'
+    ? `🚚 *Case #${d.cod} — On the way*\n\nHello Dr. ${d.dr}, your case ships with ${d.envio.transportadora || 'a carrier'}, tracking *${d.envio.guia || '—'}*.\n\n📍 ${d.link}\n\n_PRODIGY Lab Dental_`
+    : `🏍️ *Case #${d.cod} — On the way*\n\nHello Dr. ${d.dr}, our courier is on the way with your case. Arriving today.\n\n📋 Receipt: ${d.recibo}\n\n_PRODIGY Lab Dental_`,
   ENTREGADO:        (d) => `🎉 *Case #${d.cod} — Delivered*\n\nHello Dr. ${d.dr}, your case was successfully delivered. Thank you for trusting PRODIGY!\n\n📄 Your receipt: ${d.recibo}\n\n_For any questions, reach us at +${WA_PRODIGY}_`,
 };
 
 // Plantillas oficiales (deben existir y estar APROBADAS en WhatsApp Manager con estos nombres, en «es» y «en»).
 // Botón de cada plantilla: URL dinámica https://prodigylabdental.com/{{1}} → aquí va la ruta del enlace.
 const ETAPA_ES = { EN_DISENO: 'empezamos el diseño', CAMBIOS_SOLICITADOS: 'estamos aplicando sus cambios', EN_PRODUCCION: 'entró a producción',
-  FRESADO_INICIADO: 'empezó el fresado', EN_IMPRESION: 'empezó la impresión', QA_APROBADO: 'pasó el control de calidad', LISTO_DESPACHAR: 'está empacado y listo para despacho', EN_REPARTO: 'va en camino a su consultorio' };
+  FRESADO_INICIADO: 'empezó el fresado', EN_ACABADO: 'está en terminado y maquillaje', EN_IMPRESION: 'empezó la impresión', QA_APROBADO: 'pasó el control de calidad', LISTO_DESPACHAR: 'está empacado y listo para despacho', EN_REPARTO: 'va en camino a su consultorio' };
+const etapaReparto = (d, intl) => d.envio?.tipo_envio === 'transportadora'
+  ? (intl ? `ships with ${d.envio.transportadora || 'a carrier'}, tracking ${d.envio.guia || '—'}` : `va por ${d.envio.transportadora || 'transportadora'}, guía ${d.envio.guia || '—'}`)
+  : null;
 const ETAPA_EN = { EN_DISENO: 'design has started', CAMBIOS_SOLICITADOS: 'we are applying your changes', EN_PRODUCCION: 'is now in production',
-  FRESADO_INICIADO: 'milling has started', EN_IMPRESION: 'printing has started', QA_APROBADO: 'passed quality control', LISTO_DESPACHAR: 'is packed and ready to ship', EN_REPARTO: 'is on the way to your office' };
+  FRESADO_INICIADO: 'milling has started', EN_ACABADO: 'is in finishing and staining', EN_IMPRESION: 'printing has started', QA_APROBADO: 'passed quality control', LISTO_DESPACHAR: 'is packed and ready to ship', EN_REPARTO: 'is on the way to your office' };
 function plantillaDe(estado, d, intl) {
   const ruta = u => String(u || '').replace(/^https:\/\/(www\.)?prodigylabdental\.com\//, '');
   if (estado === 'REVISION_CLIENTE' || estado === 'DISENO_LISTO') return { name: 'prodigy_diseno_listo', body: [d.dr, d.cod], url: ruta(d.accion) };
   if (estado === 'ERROR_STL') return { name: 'prodigy_reenviar_archivos', body: [d.dr, d.cod], url: ruta(d.link) };
   if (estado === 'ENTREGADO') return { name: 'prodigy_caso_entregado', body: [d.dr, d.cod], url: ruta(d.recibo) };
-  const etapa = (intl ? ETAPA_EN : ETAPA_ES)[estado];
+  const etapa = (estado === 'EN_REPARTO' && etapaReparto(d, intl)) || (intl ? ETAPA_EN : ETAPA_ES)[estado];
   return etapa ? { name: 'prodigy_avance_caso', body: [d.dr, d.cod, etapa], url: ruta(d.link) } : null;
 }
 async function enviarOficial(env, wa, p, intl) {
@@ -168,7 +177,15 @@ export async function onRequestPost(context) {
   // Acción del doctor en la revisión: el enlace de aprobación que manda el panel (revision-express) o el seguimiento
   const accion = (recibo_url && _propio.test(recibo_url) && /revision-express/.test(recibo_url)) ? recibo_url : link;
 
-  const d = { cod, dr, srv, fecha, recibo, link, accion };
+  // En camino: ¿mensajero o transportadora? (último despacho del caso; solo para el equipo)
+  let envio = null;
+  if (personal && pedidoId && nuevo_estado === 'EN_REPARTO') {
+    try {
+      const r = await fetch(`${c.URL}/rest/v1/despachos?pedido_id=eq.${pedidoId}&select=tipo_envio,transportadora,guia&order=created_at.desc&limit=1`, { headers: adminH(c.SERVICE) });
+      [envio] = r.ok ? await r.json() : [];
+    } catch (_) { /* sin dato: mensaje de mensajero */ }
+  }
+  const d = { cod, dr, srv, fecha, recibo, link, accion, envio };
   const mensaje = fn(d);
   const waUrl   = `https://wa.me/${wa}?text=${encodeURIComponent(mensaje)}`;
 
