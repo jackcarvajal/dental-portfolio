@@ -164,7 +164,7 @@ export async function onRequestPost(context) {
   }
 
   const wa    = normalizarWA(whatsapp);
-  const dr    = (nombre_doctor || '').split(' ')[0] || 'Doctor';
+  const dr    = String(nombre_doctor || '').trim().replace(/^(dr|dra|doctor|doctora)(\.\s*|\s+)/i, '').split(/\s+/)[0] || 'Doctor';   // sin «Dr. Dr.» si el nombre ya trae el título
   const cod   = codigo || '—';
   const srv   = servicio || 'Servicio dental';
   const fecha = fecha_entrega

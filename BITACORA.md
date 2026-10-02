@@ -11,6 +11,18 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- ✅ **Primer informe del panel de pruebas con sesión admin: 75 ✅, 0 ❌.** Lo que no podía ver (tablas vacías) lo
+  revisé en las políticas y encontré:
+  - 🔴→🟡 **`pedidos`: política `anon_diseno_review_select`** — cualquiera sin sesión listaba TODOS los pedidos en
+    revisión con todas sus columnas (paciente, correo, teléfono, precio, NIT). Hoy vacía. La usaba solo «fabricar
+    desde el diseño» (flujo-fresado/impresión ?from_diseno). `sql/pedidos-acceso-anon-2026.sql`: RPC
+    `pedido_para_fabricar(uuid)` (solo código, paciente y STL de ESE pedido) + DROP de la política + RPC admin
+    `auditoria_acceso_anon()` para que el panel detecte políticas abiertas aunque la tabla esté vacía. El front
+    (flujos + panel) queda en commit local hasta que se corra el SQL (lo exige audit-schema-live).
+  - 🟡 `push_subscriptions`: política `push_select_own` con `true` (cualquiera lee endpoints de notificaciones).
+    Riesgo bajo (sin la clave VAPID no se pueden mandar), pero va en la siguiente ronda.
+- ✅ **WhatsApp «Hola Dr. Dr.»:** si el nombre ya trae Dr./Dra./Doctor(a) ya no se repite (ambos repos).
+
 - ✅ **Panel de pruebas: «Revisar todo y generar informe»** → informe Markdown (primero lo que falla) para copiar o
   descargar .md; opción de incluir las que escriben (STL de 1 KB que se borra, correo, IA). Listas desplegables con
   contraste (salían blancas). SQL de métricas corrido: anon ya no puede (verificado).
