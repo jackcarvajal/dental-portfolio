@@ -18,6 +18,8 @@
   (stl-multi-viewer v=20261002); respaldo de fuente con medidas de Inter en el inicio de Alejandro (CLS 0.16);
   `theme-color` en 22 páginas; 23 campos de datos de OTRA persona con `autocomplete="off"` (el navegador ponía el
   nombre del doctor como paciente) y 3 de WhatsApp con teclado numérico (`type=tel`).
+  Medido después: inicio de Alejandro CLS 0.16→0 (rend 66→71); «Envía tu escáner» LCP 5.6→4.2 s (rend 63→70);
+  flujo-diseño LCP 9.1→7.8 s. Fuente de respaldo también en «Envía tu escáner» (salto por carga de fuente).
 
 - ✅ **Accesibilidad para VER CASOS en el celular** (axe-core WCAG 2.2 AA a 375 px, con caso simulado): seguimiento,
   revisión del diseño, panel del cliente, portafolio y caso (ambas webs). Arreglado: «Estado de producción» (7 pasos

@@ -107,7 +107,9 @@
             --muted:   #94a3b8;
         }
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;}
+        /* Respaldo con las medidas de Inter: mientras carga la fuente el texto ocupa lo mismo y los botones no saltan */
+        @font-face{font-family:'Inter Respaldo';src:local('Arial'),local('Helvetica');size-adjust:107.12%;ascent-override:90.44%;descent-override:22.52%;line-gap-override:0%}
+        body{font-family:'Inter','Inter Respaldo',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;}
 
         /* ── NAV ── */
         .navbar{position:fixed;top:0;left:0;right:0;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);
