@@ -11,6 +11,17 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- ✅ **Accesibilidad para VER CASOS en el celular** (axe-core WCAG 2.2 AA a 375 px, con caso simulado): seguimiento,
+  revisión del diseño, panel del cliente, portafolio y caso (ambas webs). Arreglado: «Estado de producción» (7 pasos
+  en una fila → los últimos fuera de la pantalla) ahora en grilla de 4; sin «Haz tu pedido» flotante en el
+  seguimiento; «Consultar mi caso» solo ícono en celular + espacio abajo para no tapar; errata `1rem.` que anulaba su
+  estilo; ~25 páginas con los botones flotantes (subir/tema/WhatsApp) SIN estilos (3 botoncitos de 14 px al final) →
+  estilo común `:where()` en header.js y ocultos en celular; idioma más grande; textos legales con contraste AA
+  (footer.js + 6 páginas); nombres accesibles (inicio en revisión, WhatsApp en caso de Alejandro, comprobante en el
+  panel); «Aprobar diseño» con magenta más oscuro (4.5:1); cierre de modal y «Cerrar sesión» del dock con área de
+  toque ≥32 px; mover.html ya deja ampliar. Resultado: 0 fallas axe salvo los botones magenta con letra blanca
+  (3.9:1, decisión de marca). header.js v=20261002c · footer.js / rol-actual.js v=20261002.
+
 - ✅ **Vigía de seguridad diario** (`functions/api/vigia.js`): desde el servidor, con la anon key pública, revisa 19
   tablas, 6 vistas, 19 funciones que leen y 8 carpetas privadas + la salud de servicios externos. Lo corre una vez al
   día el cron de SLA (alerta-sla.js) y si algo falla deja «🛡️ Vigía: N problemas» en la campana del admin. También

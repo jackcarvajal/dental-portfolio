@@ -148,7 +148,7 @@ function prodigyDockReserve(){
       + 'border-radius:7px;padding:4px 7px;font-size:.7rem;font-family:inherit;cursor:pointer;color-scheme:dark;}'
       + '#rolsel option{background:#14100a;color:#f5f5f7;}'
       + '@media(max-width:640px){#rolchip{padding:5px 8px;gap:6px}#rolchip .r{display:none}#rolchip .p{font-size:.62rem;letter-spacing:.3px}#rolsel{max-width:84px;padding:3px 5px}}'
-      + '#rolsalir{background:none;border:none;color:#94a3b8;cursor:pointer;padding:2px 4px;font-size:.82rem;line-height:1}#rolsalir:hover,#rolsalir:focus-visible{color:#f87171}'
+      + '#rolsalir{background:none;border:none;color:#94a3b8;cursor:pointer;padding:2px 4px;font-size:.82rem;line-height:1;min-width:32px;min-height:32px;display:inline-flex;align-items:center;justify-content:center}#rolsalir:hover,#rolsalir:focus-visible{color:#f87171}'
       + '@media print{#rolbar,#rolchip{display:none;}}';
     var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 

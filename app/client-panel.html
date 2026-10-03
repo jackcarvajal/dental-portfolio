@@ -202,7 +202,7 @@
         .pd-modal{background:#111827;border-radius:16px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;border:1px solid rgba(217,70,166,.25);}
         .pd-head{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;}
         .pd-head h2{font-size:1.05rem;font-weight:800;}
-        .pd-close{background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;line-height:1;padding:0 4px;}
+        .pd-close{background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;line-height:1;padding:0 4px;min-width:40px;min-height:40px;}
         .pd-close:hover{color:#ef4444;}
         .pd-body{overflow-x:hidden;padding:22px;}
         .pd-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
@@ -372,7 +372,7 @@
         <span style="font-size:1.1rem;flex-shrink:0;">⚠️</span>
         <div>
             <p style="font-size:.78rem;font-weight:700;color:#fbbf24;margin-bottom:3px;">Manufactura física — solo entrega en Colombia</p>
-            <p style="font-size:.73rem;color:#94a3b8;line-height:1.5;">Los servicios de <strong style="color:#e2e8f0;">Fresado CAD/CAM</strong> e <strong style="color:#e2e8f0;">Impresión 3D</strong> requieren envío físico nacional. Clientes fuera de Colombia: <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20estoy%20fuera%20de%20Colombia%20y%20quiero%20coordinar%20un%20trabajo." target="_blank" rel="noopener noreferrer" style="color:#00d2ff;text-decoration:none;">coordina tu trabajo por WhatsApp</a>. El <strong style="color:#e2e8f0;">Diseño CAD</strong> se entrega digitalmente a cualquier país.</p>
+            <p style="font-size:.73rem;color:#94a3b8;line-height:1.5;">Los servicios de <strong style="color:#e2e8f0;">Fresado CAD/CAM</strong> e <strong style="color:#e2e8f0;">Impresión 3D</strong> requieren envío físico nacional. Clientes fuera de Colombia: <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20estoy%20fuera%20de%20Colombia%20y%20quiero%20coordinar%20un%20trabajo." target="_blank" rel="noopener noreferrer" style="color:#00d2ff;text-decoration:underline;">coordina tu trabajo por WhatsApp</a>. El <strong style="color:#e2e8f0;">Diseño CAD</strong> se entrega digitalmente a cualquier país.</p>
         </div>
     </div>
 
@@ -608,7 +608,7 @@
                 Enviar solicitud
             </button>
         </div>
-        <p class="dap-ext">Si el visor no carga: <a id="dap-link-ext" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Abrir en nueva pestaña</a></p>
+        <p class="dap-ext">Si el visor no carga: <a id="dap-link-ext" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);text-decoration:underline">Abrir en nueva pestaña</a></p>
     </div>
 </div>
 
@@ -1114,7 +1114,7 @@ function renderFacturacion(pedidos) {
             <h4>Caso #${cod} — ${fmtCOP(p.precio_total)}</h4>
             <p class="inst">Transfiere al Nequi <strong style="color:#D4AF37">3212816716</strong> con referencia: <strong style="color:var(--cyan)">${cod}</strong></p>
             <div class="upload-area">
-                <input type="file" accept="image/*,application/pdf" id="comp-${escH(p.id)}">
+                <input type="file" accept="image/*,application/pdf" id="comp-${escH(p.id)}" aria-label="Comprobante de pago del caso ${cod}">
                 <button type="button" class="btn-subir-comp" onclick="subirComprobante('${escJ(p.id)}')"><i class="fas fa-upload"></i> Subir comprobante</button>
                 <span class="comp-status pendiente">Pendiente de pago</span>
             </div>
@@ -2209,6 +2209,6 @@ function _generarSugerencia(pedidos) {
 </script>
 <script src="../js/panel-tips.js?v=20260923"></script>
 <script src="../js/tour.js?v=20260721"></script>
-<script src="../js/rol-actual.js?v=20261001"></script>
+<script src="../js/rol-actual.js?v=20261002"></script>
 </body>
 </html>

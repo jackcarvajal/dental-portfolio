@@ -305,6 +305,12 @@
        Antes, a 390 px SOPORTE, tema, IA y HAZ TU PEDIDO quedaban fuera de la pantalla (cortados). */
     '@media(max-width:900px){.pnav2-dd,.pnav2-theme-btn,.pnav2-ia-btn{display:none!important;}}',
     '@media(max-width:640px){.pnav2-ped-wrap,#urgencia-widget{display:none!important;}.pnav2-c{padding:0 12px;}.pnav2-logo{padding:0 8px;}}',
+    /* Botones flotantes de utilidad (subir / tema / WhatsApp): ~25 páginas los tienen sin estilos y quedaban como
+       3 botoncitos de 14 px al final de la página. :where() = sin peso, si la página trae los suyos ganan esos.
+       En celular se ocultan: tema y WhatsApp están en el menú ☰ y hay botón flotante propio (oct-2026). */
+    ':where(.ux-floaters){position:fixed;bottom:28px;right:24px;z-index:900;display:flex;flex-direction:column;gap:10px;}',
+    ':where(.ux-btn){width:44px;height:44px;border-radius:50%;background:rgba(13,21,32,.92);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;text-decoration:none;}',
+    '@media(max-width:640px){.ux-floaters{display:none!important;}.pheader-lang button{padding:6px 9px;}}',
 
     /* CTA FLOTANTE — se omite si noCta:true */
     '@keyframes _ppulse{0%{box-shadow:0 0 0 0 rgba(0,255,65,.7)}',

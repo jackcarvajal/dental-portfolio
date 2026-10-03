@@ -203,7 +203,7 @@
         '<a href="/terminos-y-legal">Términos</a> · ' +
         '<a href="/terminos-y-legal#privacidad">Privacidad</a>' +
       '</p>' +
-      '<p style="font-size:.68rem;color:#475569;margin-top:8px;line-height:1.6;">' +
+      '<p style="font-size:.72rem;color:#94a3b8;margin-top:8px;line-height:1.6;">' +
         'Las marcas registradas Exocad®, 3Shape®, Ivoclar®, Vita®, Amann Girrbach®, Dentsply Sirona®, Renfert®, ' +
         'Shining 3D®, NextDent®, SprintRay®, Anycubic®, Phrozen®, Creality®, Straumann®, Nobel Biocare®, BioHorizons®, ' +
         'XTCERA®, VHF®, CoDiagnostiX® y Blender® son propiedad de sus respectivos dueños y se mencionan exclusivamente ' +

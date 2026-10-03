@@ -166,7 +166,7 @@ a{color:inherit;text-decoration:none;}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
 .btn-gold{color:var(--gold);border-color:rgba(212,175,55,.4);}
 .btn-gold:hover{background:rgba(212,175,55,.1);}
-.btn-mg{background:var(--mg);color:#fff;border-color:var(--mg);}
+.btn-mg{background:#b0267f;color:#fff;border-color:#b0267f;}  /* magenta más oscuro: el blanco sobre #D946A6 no llegaba a 4.5:1 */
 .btn-mg:hover{background:#c4389a;}
 .btn-grn{color:var(--neon);border-color:rgba(0,255,65,.35);}
 .btn-grn:hover{background:rgba(0,255,65,.08);}
@@ -283,7 +283,7 @@ html,body{overflow-x:clip;}
   </div>
   <div style="display:flex;gap:8px;align-items:center;" class="no-print">
     <button type="button" class="btn btn-gold btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Informe PDF</button>
-    <a href="/" style="font-size:.75rem;color:var(--muted);padding:6px;"><i class="fas fa-home"></i></a>
+    <a href="/" aria-label="Ir al inicio" style="font-size:.75rem;color:var(--muted);padding:10px;min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;"><i class="fas fa-home" aria-hidden="true"></i></a>
   </div>
 </div>
 
@@ -1287,7 +1287,7 @@ async function generarLinkRevision() {
   }
 }
 </script>
-<script src="js/footer.js?v=20260919"></script>
+<script src="js/footer.js?v=20261002"></script>
 <script src="js/ar-viewer.js?v=20260528" defer></script>
 <script>
 (function(){
