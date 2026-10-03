@@ -11,6 +11,14 @@
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
+- ✅ **Lighthouse móvil (8 páginas en producción) + revisión estática de buenas prácticas móviles.** Antes: rendimiento
+  61-81 (LCP 3.5-9 s), accesibilidad 91-98, SEO 100 (seguimiento 66 = noindex a propósito), prácticas 54-57 en PRODIGY
+  (100 en Alejandro: la diferencia es Microsoft Clarity + Google signals). Arreglado: three.js (~250 KB) ya no se
+  descarga al abrir «Envía tu escáner» (solo al elegir un STL; verificado) ni se precarga en celular en los flujos
+  (stl-multi-viewer v=20261002); respaldo de fuente con medidas de Inter en el inicio de Alejandro (CLS 0.16);
+  `theme-color` en 22 páginas; 23 campos de datos de OTRA persona con `autocomplete="off"` (el navegador ponía el
+  nombre del doctor como paciente) y 3 de WhatsApp con teclado numérico (`type=tel`).
+
 - ✅ **Accesibilidad para VER CASOS en el celular** (axe-core WCAG 2.2 AA a 375 px, con caso simulado): seguimiento,
   revisión del diseño, panel del cliente, portafolio y caso (ambas webs). Arreglado: «Estado de producción» (7 pasos
   en una fila → los últimos fuera de la pantalla) ahora en grilla de 4; sin «Haz tu pedido» flotante en el

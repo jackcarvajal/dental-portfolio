@@ -510,8 +510,10 @@
             if (hasDental) addFiles(e.dataTransfer.files);
         });
 
-        // Pre-cargar Three.js en background
-        loadThree();
+        // Pre-cargar Three.js (~250 KB) en segundo plano SOLO en computador y con buena conexión; en celular se
+        // descarga al subir el primer STL (mountSTLViewer ya lo espera) → la página abre más rápido (oct-2026)
+        const _ahorro = navigator.connection && (navigator.connection.saveData || /2g|3g/.test(navigator.connection.effectiveType || ''));
+        if (window.innerWidth >= 900 && !_ahorro) (window.requestIdleCallback || setTimeout)(() => loadThree(), 3000);
     }
 
     /* ── API PÚBLICA ────────────────────────────────────── */

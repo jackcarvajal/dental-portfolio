@@ -713,13 +713,18 @@
 
 <!-- Visor STL con Three.js (módulo) -->
 <script type="module">
-import * as THREE from 'three';
-import { STLLoader } from 'three/addons/loaders/STLLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+// Three.js (~250 KB) se descarga SOLO cuando el doctor sube un STL, no al abrir la página (rendimiento en celular)
+let THREE, STLLoader, OrbitControls;
+async function cargar3D() {
+    if (THREE) return;
+    const [t, s, o] = await Promise.all([import('three'), import('three/addons/loaders/STLLoader.js'), import('three/addons/controls/OrbitControls.js')]);
+    THREE = t; STLLoader = s.STLLoader; OrbitControls = o.OrbitControls;
+}
 
 let renderer, scene, camera, controls, animId;
 
-window._initSTLViewer = function(buffer) {
+window._initSTLViewer = async function(buffer) {
+    await cargar3D();
     const wrap   = document.getElementById('stlViewerWrap');
     const canvas = document.getElementById('stlCanvas');
     wrap.classList.add('show');

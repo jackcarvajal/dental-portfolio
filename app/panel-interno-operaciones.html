@@ -753,7 +753,7 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
             <div>
                 <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Nombre completo</label>
-                <input id="ag-nombre" type="text" placeholder="Carlos López" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
+                <input autocomplete="off" id="ag-nombre" type="text" placeholder="Carlos López" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
             </div>
             <div>
                 <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Rol</label>
@@ -769,12 +769,12 @@
 
         <div style="margin-bottom:12px;">
             <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Correo corporativo</label>
-            <input id="ag-email" type="email" placeholder="operador@prodigy.com" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
+            <input autocomplete="off" id="ag-email" type="email" placeholder="operador@prodigy.com" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
         </div>
 
         <div style="margin-bottom:20px;">
             <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Teléfono (opcional)</label>
-            <input id="ag-tel" type="tel" inputmode="tel" placeholder="+57 300 000 0000" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
+            <input autocomplete="off" id="ag-tel" type="tel" inputmode="tel" placeholder="+57 300 000 0000" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
         </div>
 
         <div id="modal-msg" style="display:none;padding:10px 12px;border-radius:8px;font-size:0.8rem;margin-bottom:14px;"></div>
@@ -809,10 +809,10 @@
   <div style="background:#0a1525;border:1px solid rgba(0,210,255,.25);border-radius:14px;padding:24px;max-width:400px;width:100%;">
     <div id="modal-staff-title" style="font-size:.95rem;font-weight:800;color:var(--cyan,#00d2ff);margin-bottom:16px;"><i class="fas fa-user-plus" style="margin-right:6px;" aria-hidden="true"></i>Nuevo operario</div>
     <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Email (debe estar en Supabase Auth)</label>
-    <input id="staff-email" type="email" placeholder="correo@ejemplo.com"
+    <input autocomplete="off" id="staff-email" type="email" placeholder="correo@ejemplo.com"
       style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:16px;outline:none;margin-bottom:12px;">
     <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Nombre</label>
-    <input id="staff-nombre" type="text" placeholder="Nombre del operario"
+    <input autocomplete="off" id="staff-nombre" type="text" placeholder="Nombre del operario"
       style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:16px;outline:none;margin-bottom:18px;">
     <div style="display:flex;gap:10px;justify-content:flex-end;">
       <button type="button" onclick="cerrarModalNuevoStaff()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
@@ -2260,7 +2260,7 @@ function abrirEditar(id) {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
             <div style="grid-column:1/-1;">
                 <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">NOMBRE DEL CASO</label>
-                <input id="e-nombre" value="${esc(c.name||'')}" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:16px;">
+                <input autocomplete="off" id="e-nombre" value="${esc(c.name||'')}" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;color:#f8fafc;font-size:16px;">
             </div>
             <div>
                 <label style="font-size:.75rem;font-weight:700;color:#94a3b8;display:block;margin-bottom:4px;">TIPO</label>

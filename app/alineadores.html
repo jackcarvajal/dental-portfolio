@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😁</text></svg>">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#D946A6">
 <meta name="robots" content="noindex,nofollow">
 <meta name="color-scheme" content="dark">
 <title>Alineadores — Casos y Cuentas</title>
@@ -260,11 +261,11 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <div class="sec-t" style="margin-top:10px"><i class="fas fa-plus"></i> Agregar</div>
   <div class="grid2">
     <div class="fg"><label>Quién</label><select id="avRol" onchange="avRolCambio()"><option value="tecnica">Técnica (Mayra)</option><option value="cliente">Cliente</option></select></div>
-    <div class="fg"><label>Nombre</label><input id="avNombre" placeholder="Mayra / Panorámica Digital 3D"></div>
+    <div class="fg"><label>Nombre</label><input autocomplete="off" id="avNombre" placeholder="Mayra / Panorámica Digital 3D"></div>
   </div>
   <div class="fg" id="avClienteFg" style="display:none"><label>Cuenta del cliente</label><select id="avCliente"></select></div>
   <div class="grid2">
-    <div class="fg"><label>WhatsApp (con indicativo)</label><input id="avWa" placeholder="573001234567 · RD: 1809…"></div>
+    <div class="fg"><label>WhatsApp (con indicativo)</label><input type="tel" inputmode="tel" autocomplete="off" id="avWa" placeholder="573001234567 · RD: 1809…"></div>
     <div class="fg"><label>API key de CallMeBot</label><input id="avKey" placeholder="1234567"></div>
   </div>
   <div class="mact"><button class="btn btn-ghost" onclick="cerrar('ovAvisos')">Cerrar</button><button class="btn btn-mg" onclick="guardarAviso()">Guardar</button></div>

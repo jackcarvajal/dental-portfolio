@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👥</text></svg>">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#D946A6">
 <meta name="robots" content="noindex,nofollow">
 <meta name="color-scheme" content="dark">
 <title>Gestión de Usuarios — PRODIGY</title>
@@ -72,10 +73,10 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
 <div class="card">
   <div class="sec-t"><i class="fas fa-user-plus" style="color:var(--green)"></i> Crear usuario</div>
   <div class="grid2">
-    <div class="fg"><label>Nombre *</label><input id="nNombre" placeholder="Nombre Apellido"></div>
-    <div class="fg"><label>Email *</label><input id="nEmail" type="email" placeholder="persona@gmail.com"></div>
+    <div class="fg"><label>Nombre *</label><input autocomplete="off" id="nNombre" placeholder="Nombre Apellido"></div>
+    <div class="fg"><label>Email *</label><input autocomplete="off" id="nEmail" type="email" placeholder="persona@gmail.com"></div>
   </div>
-  <div class="fg"><label>WhatsApp</label><input id="nWa" placeholder="+57 300 000 0000"></div>
+  <div class="fg"><label>WhatsApp</label><input type="tel" inputmode="tel" autocomplete="off" id="nWa" placeholder="+57 300 000 0000"></div>
   <label class="sub" style="display:block;margin:0 0 4px;">Roles (marca los que necesite)</label>
   <div class="roles-grid" id="nRoles"></div>
   <div class="fg"><label>Nivel en diseño (1 casos simples · 3 complejos)</label><select id="nNivel"><option value="">— No aplica —</option><option value="1">1 · Básico</option><option value="2">2 · Intermedio</option><option value="3">3 · Avanzado</option></select></div>
@@ -114,7 +115,7 @@ th{background:rgba(255,255,255,.03);font-size:.68rem;text-transform:uppercase;co
   <h3 id="ovT">Editar usuario</h3>
   <input type="hidden" id="eId">
   <p class="sub" id="eEmail" style="margin:0 0 8px;"></p>
-  <div class="fg"><label>Nombre</label><input id="eNombre" placeholder="Nombre Apellido / Clínica"></div>
+  <div class="fg"><label>Nombre</label><input autocomplete="off" id="eNombre" placeholder="Nombre Apellido / Clínica"></div>
   <div class="roles-grid" id="eRoles"></div>
   <div class="fg"><label>Vinculación</label><select id="eVinc"><option value="">— Sin definir —</option><option value="prestador">Prestador de servicio (se le paga por caso)</option><option value="nomina">Nómina (salario: no se le paga por caso)</option></select></div>
   <label class="rchk" style="max-width:200px;"><input type="checkbox" id="eActive"> Cuenta activa</label>
