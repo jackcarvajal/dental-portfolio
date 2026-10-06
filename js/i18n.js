@@ -948,6 +948,7 @@
      NÚCLEO
   ───────────────────────────────────────────────────────── */
   function detectLang() {
+    if (window._phdrIdiomaPagina) return window._phdrIdiomaPagina();   // controlador de idioma de header.js (oct-2026)
     if (location.pathname.indexOf('/en/') === 0) return 'en';   // páginas en inglés: menú y pie en inglés
     var saved = localStorage.getItem('prd_lang');
     if (saved && LANGS.indexOf(saved) !== -1) return saved;
@@ -993,8 +994,9 @@
         el.placeholder = self.t(el.getAttribute('data-i18n-placeholder'));
       });
 
-      /* toggle buttons active state */
-      document.querySelectorAll('[data-lang-btn]').forEach(function (btn) {
+      /* botones de idioma: los marca header.js (PT no es un idioma de i18n: lo traduce Google) */
+      if (window._phdrMarcarIdioma) window._phdrMarcarIdioma();
+      else document.querySelectorAll('[data-lang-btn]').forEach(function (btn) {
         btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === self.lang);
       });
 

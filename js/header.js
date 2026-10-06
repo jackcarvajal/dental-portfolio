@@ -75,6 +75,114 @@
   window._loadClarity = function () { if (window._clarityPermitida()) _loadClarity(); };
 })();
 
+window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-scanner", "/preguntas", "/soporte", "/portafolio"], "mapaEn": {"/": "/en/global-design", "/diseno-remoto": "/en/global-design", "/diseno-cad": "/en/global-design", "/calculadora-diseno": "/en/global-design", "/alineadores-cad": "/en/dental-aligners", "/envia-alineadores": "/en/dental-aligners", "/guias-quirurgicas": "/en/surgical-guides", "/fresado-cam": "/en/zirconia-crowns", "/calculadora-fresado": "/en/zirconia-crowns", "/terminos-y-legal": "/en/veneer-terms"}, "esDe": {"/en/global-design": "/diseno-remoto", "/en/dental-aligners": "/alineadores-cad", "/en/surgical-guides": "/guias-quirurgicas", "/en/zirconia-crowns": "/fresado-cam", "/en/veneers": "/", "/en/veneer-terms": "/terminos-y-legal"}};
+/* ── IDIOMA: ES · EN · PT (oct-2026, igual en ambas webs; solo cambia _IDIOMA_CFG) ─────────────────────────
+   · ES: el sitio está escrito en español.
+   · EN: traducción TÉCNICA hecha a mano (odontología digital / CAD-CAM) de las páginas de /i18n/en.json → se
+     traducen en la misma página. En las demás, EN lleva a su versión en inglés (/en/…) o a la portada en inglés:
+     nunca una página mitad español, mitad inglés.
+   · PT: traducción automática de Google de la página completa (para el cliente que la quiera en cualquier página).
+   Estado: localStorage 'prd_lang' (es | en | pt). */
+(function () {
+  var C = window._IDIOMA_CFG;
+  function ruta() { return location.pathname.replace(/\.html$/, '').replace(/\/index$/, '').replace(/\/+$/, '') || '/'; }
+  function guardado() { try { return localStorage.getItem('prd_lang') || 'es'; } catch (e) { return 'es'; } }
+  function guardar(l) { try { localStorage.setItem('prd_lang', l); } catch (e) {} }
+  var enIngles = ruta().indexOf('/en/') === 0;
+  var enCompleta = C.paginasEn.indexOf(ruta()) >= 0;
+  // idioma del texto de ESTA página (lo usan el menú, el pie e i18n.js)
+  window._phdrIdiomaPagina = function () { return enIngles || (guardado() === 'en' && enCompleta) ? 'en' : 'es'; };
+
+  function cookieGT(v) {
+    var d = location.hostname.replace(/^www\./, ''), fin = v ? '' : ';expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'googtrans=' + (v || '') + ';path=/' + fin;
+    document.cookie = 'googtrans=' + (v || '') + ';path=/;domain=.' + d + fin;
+  }
+  // las marcas no se traducen («ALEJANDRO» → «ALEXANDRE», «PRODIGY» → «PRODÍGIO»)
+  function protegerMarcas() {
+    var re = /\b(PRODIGY|Prodigy|ProDigy|Alejandro Carvajal|ALEJANDRO CARVAJAL|ALEJANDRO|Alejandro|Exocad|exocad|3Shape|CoDiagnostiX|coDiagnostiX)\b/;
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), lista = [], n;
+    while ((n = w.nextNode())) if (re.test(n.nodeValue) && n.parentElement && !n.parentElement.closest('script,style,[translate=no]')) lista.push(n);
+    lista.forEach(function (t) {
+      var fr = document.createDocumentFragment();
+      t.nodeValue.split(new RegExp(re.source, 'g')).forEach(function (p, i) {
+        if (!p) return;
+        if (i % 2) { var s = document.createElement('span'); s.setAttribute('translate', 'no'); s.className = 'notranslate'; s.textContent = p; fr.appendChild(s); }
+        else fr.appendChild(document.createTextNode(p));
+      });
+      t.parentNode.replaceChild(fr, t);
+    });
+  }
+  function activarPT() {
+    cookieGT('/es/pt');
+    if (document.getElementById('gt-script')) return;
+    protegerMarcas();
+    var st = document.createElement('style');
+    st.textContent = 'iframe.skiptranslate,.goog-te-banner-frame,#goog-gt-tt,.goog-te-balloon-frame,.VIpgJd-ZVi9od-ORHb-OEVmcd{display:none!important}' +
+      'body{top:0!important;position:static!important}.goog-text-highlight{background:none!important;box-shadow:none!important}#gt-oculto{display:none}';
+    document.head.appendChild(st);
+    var h = document.createElement('div'); h.id = 'gt-oculto'; document.body.appendChild(h);
+    window._phdrGT = function () { new window.google.translate.TranslateElement({ pageLanguage: 'es', includedLanguages: 'pt', autoDisplay: false }, 'gt-oculto'); };
+    var s = document.createElement('script'); s.id = 'gt-script'; s.async = true;
+    s.src = 'https://translate.google.com/translate_a/element.js?cb=_phdrGT';
+    document.body.appendChild(s);
+  }
+
+  // EN en la misma página: diccionario técnico; sigue traduciendo lo que aparezca después (filtros, IA, paginador)
+  function traducirEN() {
+    fetch('/i18n/en.json').then(function (r) { return r.json(); }).then(function (D) {
+      var T = D.textos || {}, OMITIR = '[translate=no],.notranslate,script,style,textarea,#pg-msgs,.pg-chat-msgs,.oia-cuerpo,.oia-q,#casesGrid h3,#casesGrid .card-body p';
+      var traducir = function (raiz) {
+        if (!raiz || raiz.nodeType !== 1 || raiz.closest(OMITIR)) return;
+        var w = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT), n, k, m;
+        while ((n = w.nextNode())) {
+          if (!n.parentElement || n.parentElement.closest(OMITIR)) continue;
+          k = n.nodeValue.replace(/\s+/g, ' ').trim();
+          if (k && T[k]) { m = n.nodeValue.match(/^(\s*)[\s\S]*?(\s*)$/); n.nodeValue = m[1] + T[k] + m[2]; }
+        }
+        [raiz].concat([].slice.call(raiz.querySelectorAll('[placeholder],[aria-label],[title]'))).forEach(function (e) {
+          ['placeholder', 'aria-label', 'title'].forEach(function (a) { var v = e.getAttribute && e.getAttribute(a); if (v && T[v.trim()]) e.setAttribute(a, T[v.trim()]); });
+        });
+      };
+      traducir(document.body);
+      document.title = T[document.title] || document.title;
+      new MutationObserver(function (ms) {
+        ms.forEach(function (x) { [].forEach.call(x.addedNodes, function (nd) { traducir(nd.nodeType === 3 ? nd.parentElement : nd); }); });
+      }).observe(document.body, { childList: true, subtree: true });
+    }).catch(function () {});
+  }
+
+  function marcarBotones() {
+    var activo = guardado() === 'pt' && !enIngles ? 'pt' : window._phdrIdiomaPagina();
+    [].forEach.call(document.querySelectorAll('[data-lang-btn]'), function (b) {
+      var si = b.getAttribute('data-lang-btn') === activo;
+      b.classList.toggle('active', si); b.setAttribute('aria-pressed', si ? 'true' : 'false');
+    });
+  }
+  window._phdrMarcarIdioma = marcarBotones;
+
+  window._phdrIdioma = function (l) {
+    var antes = guardado();
+    guardar(l);
+    if (l !== 'pt' && antes === 'pt') cookieGT(null);
+    if (l === 'en') {
+      if (enIngles) return marcarBotones();
+      if (enCompleta) return location.reload();
+      location.href = C.mapaEn[ruta()] || C.hubEn; return;
+    }
+    // ES o PT: siempre desde la página en español (PT la traduce Google)
+    if (enIngles) { location.href = C.esDe[ruta()] || '/'; return; }
+    location.reload();
+  };
+
+  function alCargar() {
+    marcarBotones();
+    if (!enIngles && guardado() === 'pt') activarPT();
+    else if (!enIngles && window._phdrIdiomaPagina() === 'en') traducirEN();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', alCargar); else alCargar();
+})();
+
 /* ── GA4 (y Clarity) — DESPUÉS de cargar la página ─────────────────────────
    La cola de gtag (consentimiento + config) se crea YA, sin red, para que «Aceptar cookies» funcione
    aunque el script no haya bajado. gtag.js (190 KB) se pide tras el evento load y con el navegador libre:
@@ -432,6 +540,7 @@
     'border-radius:100px;cursor:pointer;transition:background .2s;white-space:nowrap;',
     'font-family:inherit;}',
     '.pg-sug-btn:hover{background:rgba(0,210,255,0.15);}',
+    '.pg-chat-aviso{padding:6px 14px 0;font-size:.7rem;line-height:1.4;color:#94a3b8;flex-shrink:0;}',
     '.pg-chat-input-area{padding:12px 14px;border-top:1px solid rgba(255,255,255,0.06);',
     'display:flex;gap:8px;align-items:flex-end;flex-shrink:0;}',
     '#pg-chat-input{flex:1;background:rgba(255,255,255,0.05);',
@@ -468,10 +577,10 @@
 
   /* ── LANG ────────────────────────────────────────────────── */
   var langHtml = showLang
-    ? '<div class="pheader-lang">' +
-        '<button type="button" data-lang-btn="es" onclick="window.i18n&&i18n.set(\'es\')">ES</button>' +
-        '<button type="button" data-lang-btn="en" onclick="window.i18n&&i18n.set(\'en\')">EN</button>' +
-        '<button type="button" data-lang-btn="pt" onclick="window.i18n&&i18n.set(\'pt\')">PT</button>' +
+    ? '<div class="pheader-lang" role="group" aria-label="Idioma" translate="no">' +
+        '<button type="button" data-lang-btn="es" onclick="_phdrIdioma(\'es\')">ES</button>' +
+        '<button type="button" data-lang-btn="en" onclick="_phdrIdioma(\'en\')">EN</button>' +
+        '<button type="button" data-lang-btn="pt" onclick="_phdrIdioma(\'pt\')">PT</button>' +
       '</div>'
     : '';
 
@@ -552,7 +661,7 @@
         '</div>' +
 
         /* Logo centrado */
-        '<a href="/" class="pnav2-logo">' +
+        '<a href="/" class="pnav2-logo" translate="no">' +
           '<strong>PRODIGY</strong>' +
           '<em>Digital Dentistry</em>' +
         '</a>' +
@@ -700,6 +809,7 @@
         '<div class="pg-msg-av">🤖</div>' +
         '<div class="pg-tdots"><span></span><span></span><span></span></div>' +
       '</div>' +
+      '<div class="pg-chat-aviso">🔒 No escribas datos de pacientes (nombres, documentos, fotos). Guardamos las preguntas sin datos personales para mejorar las respuestas.</div>' +
       '<div class="pg-chat-input-area">' +
         '<textarea id="pg-chat-input" placeholder="Escribe tu pregunta…" rows="1" onkeydown="_phdrHandleKey(event)" aria-label="Escribe tu mensaje al asistente IA"></textarea>' +
         '<button type="button" id="pg-chat-send" onclick="_phdrSendMsg()" aria-label="Enviar"><i class="fas fa-paper-plane"></i></button>' +
@@ -887,10 +997,10 @@
   var _pgGUrl = '/api/gemini';
 
   /* Una sola pregunta a la IA, con el mismo contexto que el chat (lo usa el orbe del Centro de Ayuda, js/orbe-ia.js) */
-  window._phdrPreguntaIA = function (texto) {
+  window._phdrPreguntaIA = function (texto, canal) {
     return fetch(_pgGUrl, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system_instruction: { parts: [{ text: _pgBuildPrompt() }] }, contents: [{ role: 'user', parts: [{ text: String(texto).slice(0, 300) }] }] })
+      body: JSON.stringify({ system_instruction: { parts: [{ text: _pgBuildPrompt() }] }, contents: [{ role: 'user', parts: [{ text: String(texto).slice(0, 300) }] }], canal: canal || 'orbe' })
     }).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (d) {
         var c = d && d.candidates && d.candidates[0] && d.candidates[0].content;
@@ -947,7 +1057,7 @@
   window._phdrBuscar = function () {
     var abrir = function () { window.Buscador.abrir({ wa: '573212816716' }); };
     if (window.Buscador) return abrir();
-    var s = document.createElement('script'); s.src = '/js/buscador-web.js?v=20261006'; s.onload = abrir;
+    var s = document.createElement('script'); s.src = '/js/buscador-web.js?v=20261007'; s.onload = abrir;
     document.head.appendChild(s);
   };
   if (window.location.pathname.indexOf('/app/') !== 0) {          // en /app el Ctrl+K es el buscador de casos
@@ -1148,7 +1258,7 @@
   /* Cargar i18n.js en todas las páginas si aún no está */
   if (!window.i18n) {
     var _i18nS = document.createElement('script');
-    _i18nS.src = '/js/i18n.js?v=20261006';
+    _i18nS.src = '/js/i18n.js?v=20261007';
     _i18nS.defer = true;
     document.head.appendChild(_i18nS);
   }
@@ -1209,10 +1319,7 @@
   _TXT['Las marcas registradas ' + _MARCAS + 'y Blender® son propiedad de sus respectivos dueños y se mencionan exclusivamente con fines informativos sobre la compatibilidad de nuestros flujos de trabajo.'] = [
     'The registered trademarks ' + _MARCAS + 'and Blender® belong to their respective owners and are mentioned for information only, regarding the compatibility of our workflows.',
     'As marcas registradas ' + _MARCAS + 'e Blender® pertencem aos seus respectivos donos e são mencionadas apenas para informar sobre a compatibilidade dos nossos fluxos de trabalho.'];
-  function _phdrLang() {
-    var l = String((window.i18n && window.i18n.lang) || document.documentElement.lang || 'es').slice(0, 2).toLowerCase();
-    return l === 'en' || l === 'pt' ? l : 'es';
-  }
+  function _phdrLang() { return window._phdrIdiomaPagina ? window._phdrIdiomaPagina() : 'es'; }
   window._phdrLang = _phdrLang;
   var _txtOrig = typeof WeakMap === 'function' ? new WeakMap() : null;
   function _phdrTraducir() {

@@ -9,6 +9,29 @@
 
 ---
 
+## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
+
+- ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):
+  · **EN = traducción técnica hecha a mano** (odontología digital/CAD-CAM) de Envía tu escáner, Preguntas, Soporte y
+    Portafolio (`/i18n/en.json`, ~450 textos PRODIGY / ~320 Alejandro). En las demás páginas EN lleva a su versión /en/
+    (o a la portada en inglés): nunca más páginas mitad y mitad. ES en una página /en/ vuelve a su par en español.
+  · **PT = traducción automática de Google** de la página completa (elemento de Google Translate + cookie googtrans;
+    CSP ampliada: gstatic, translate.googleapis). Las marcas (PRODIGY, ALEJANDRO, Exocad…) se protegen (`translate="no"`):
+    antes Google traducía ALEJANDRO → ALEXANDRE. El proxy translate.goog NO sirve: Cloudflare desafía al bot en PRODIGY.
+  · Idioma del menú y pie = idioma de la página (`_phdrIdiomaPagina`). i18n.js lo respeta.
+- ✅ Soporte: botón «Hablar con el asistente» centrado y con letra oscura (blanco sobre cian 1.9:1).
+- 🟡 **IA que crece con lo que preguntan** — SQL pendiente: `sql/ia-conocimiento-2026.sql` (tablas ia_preguntas e
+  ia_conocimiento, RLS solo admin, escribe solo el servidor). gemini.js (ambas, YA publicado y tolerante a que no
+  existan): agrega las «respuestas oficiales» relevantes a las instrucciones y guarda la pregunta ANÓNIMA (borra correos,
+  teléfonos, documentos, enlaces y «paciente Nombre»). Aviso «no escribas datos de pacientes» en chat y orbe + párrafo
+  en la política de privacidad. Página `app/ia-conocimiento.html` (convertir preguntas en respuestas oficiales):
+  **se publica cuando se corra el SQL** (el pre-push la bloquea antes, a propósito).
+- ✅ **Blog: el cron del 6-oct «falló»** porque la IA inventó 6 de 6 referencias (bien descartado) y Gemini dio 503 en
+  el otro tema. Ahora las fuentes salen de **PubMed** antes de escribir (artículos reales con resumen, de revistas de
+  odontología/biomateriales, consulta por tema `PUBMED_Q`); la IA escribe SOLO con esas fuentes y las cita. Si un día no
+  sale artículo, ya no es error (no llega correo de fallo).
+- Versiones: header.js `v=20261007`, footer.js `v=20261007`, i18n.js `v=20261007`, orbe-ia.js / buscador-web.js `v=20261007`.
+
 ## 2026-10-07  (Soporte · idiomas · etiquetas rotas · un solo aviso de cookies)
 
 - ✅ **Soporte: preguntas frecuentes rotas** — los botones se cerraban con `</div>`, así que cada pregunta quedaba

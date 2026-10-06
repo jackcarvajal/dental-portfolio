@@ -5,7 +5,7 @@
 (function () {
   'use strict';
   if (window.Buscador) return;
-  var V = '20261006b';
+  var V = '20261007';
   var indice = null, panel = null, orbe = null, ultimoFoco = null;
 
   function sinTildes(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
@@ -74,6 +74,7 @@
     cont.parentNode.insertBefore(res, cont.nextSibling);
     var o = window.OrbeIA.montar(cont, {
       wa: wa,
+      canal: 'buscador',
       placeholder: 'Busca en la web o pregúntale a la IA…',
       ayuda: 'Escribe para <b>buscar páginas y artículos</b> · Enter para <b>preguntarle a la IA</b>',
       alEscribir: function (t) { resultados(t, res); }

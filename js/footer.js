@@ -118,7 +118,7 @@
 
       /* Col 1 — Brand */
       '<div class="pfoot-col pfoot-brand">' +
-        '<div class="pfoot-logo">PRODIGY</div>' +
+        '<div class="pfoot-logo" translate="no">PRODIGY</div>' +
         '<div class="pfoot-tagline">Digital Dental Excellence</div>' +
         '<p class="pfoot-desc">Especialistas en diseño CAD avanzado y manufactura de alta precisión para clínicas y laboratorios dentales de Colombia y México.</p>' +
         '<div style="font-size:.72rem;font-style:italic;color:#94a3b8;margin:6px 0 10px;line-height:1.5;">🌎 Hecho en Colombia para el mundo<br>Con tecnología 🇩🇪 Alemana · 🇨🇳 China<br>y manos expertas de 🇨🇴 Colombia · 🇲🇽 México</div>' +

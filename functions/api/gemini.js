@@ -9,6 +9,53 @@
  *   Cloudflare Dashboard → Pages → dental-portfolio → Settings → Environment variables
  *   Añadir: GEMINI_API_KEY = AIzaSy... (Production + Preview)
  */
+import { NEGOCIO, cfg, adminH } from './reportar-problema.js';
+
+// ── IA que crece con lo que preguntan los doctores (oct-2026) ─────────────────────────────────────────
+// 1) Respuestas oficiales (tabla ia_conocimiento, las aprueba el equipo en app/ia-conocimiento.html): las más
+//    parecidas a la pregunta se agregan a las instrucciones, con prioridad. Caché 5 min.
+// 2) Registro ANÓNIMO (tabla ia_preguntas): sin IP ni usuario; correos, teléfonos, documentos y enlaces se borran
+//    del texto antes de guardar. Si las tablas aún no existen, todo sigue funcionando igual.
+const _sinTildes = t => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const _palabras = t => new Set(_sinTildes(t).split(/[^a-z0-9ñ]+/).filter(w => w.length > 3));
+function anonimizar(t, max) {
+  return String(t || '')
+    .replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g, '[correo]')
+    .replace(/https?:\/\/\S+/g, '[enlace]')
+    .replace(/\+?\d[\d\s().-]{6,}\d/g, '[número]')
+    .replace(/\b(paciente|pte\.?|sr\.?|sra\.?|señora?|don|doña)\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?/g, '$1 [nombre]')
+    .slice(0, max);
+}
+function ultimaPregunta(body) {
+  const c = Array.isArray(body.contents) ? body.contents : [];
+  for (let i = c.length - 1; i >= 0; i--) if (c[i] && c[i].role !== 'model') return (c[i].parts || []).map(p => p.text || '').join(' ').trim();
+  return '';
+}
+const textoDe = data => ((data.candidates || [])[0]?.content?.parts || []).map(p => p.text || '').join('').trim();
+async function conocimiento(c, cache) {
+  const k = new Request(`https://rl.internal/ia-kb-${NEGOCIO}`);
+  const hit = await cache.match(k);
+  if (hit) return hit.json();
+  const r = await fetch(`${c.URL}/rest/v1/ia_conocimiento?activo=eq.true&negocio=in.(${NEGOCIO},ambos)&select=id,pregunta,respuesta,palabras_clave&limit=300`, { headers: adminH(c.SERVICE) });
+  const lista = r.ok ? await r.json() : [];
+  await cache.put(k, new Response(JSON.stringify(lista), { headers: { 'Cache-Control': 'max-age=300' } }));
+  return lista;
+}
+function relevantes(lista, pregunta, max) {
+  const q = _palabras(pregunta);
+  return lista.map(e => {
+    const base = _palabras(e.pregunta), claves = _palabras(e.palabras_clave || '');
+    let p = 0; q.forEach(w => { if (base.has(w)) p += 1; if (claves.has(w)) p += 2; });
+    return { e, p };
+  }).filter(x => x.p >= 2).sort((a, b) => b.p - a.p).slice(0, max).map(x => x.e);
+}
+async function registrar(c, fila, usadas) {
+  try {
+    await fetch(`${c.URL}/rest/v1/ia_preguntas`, { method: 'POST', headers: { ...adminH(c.SERVICE), Prefer: 'return=minimal' }, body: JSON.stringify(fila) });
+    if (usadas.length) await fetch(`${c.URL}/rest/v1/rpc/ia_conocimiento_usada`, { method: 'POST', headers: adminH(c.SERVICE), body: JSON.stringify({ p_ids: usadas }) });
+  } catch (e) { /* el registro nunca debe romper la respuesta */ }
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
@@ -70,6 +117,28 @@ export async function onRequestPost(context) {
     maxOutputTokens: Math.min(Number(body.generationConfig?.maxOutputTokens) || 1024, 2048),
   };
 
+  // ── Conocimiento aprobado + privacidad ──
+  const canal = ['chat', 'orbe', 'buscador'].includes(body.canal) ? body.canal : 'chat';
+  delete body.canal;                                   // Gemini rechaza campos desconocidos
+  const c = cfg(env);
+  const pregunta = ultimaPregunta(body);
+  let usadas = [];
+  const extra = ['PRIVACIDAD: si el usuario escribe datos de un paciente (nombre, documento, teléfono, fotos), no los repitas y recuérdale con amabilidad que no los comparta en este chat.'];
+  if (c.SERVICE && pregunta) {
+    try {
+      const elegidas = relevantes(await conocimiento(c, cache), pregunta, 5);
+      if (elegidas.length) {
+        usadas = elegidas.map(e => e.id);
+        extra.push('RESPUESTAS OFICIALES DEL LABORATORIO (verificadas por el equipo: úsalas con prioridad y no las contradigas):\n' +
+          elegidas.map(e => `• P: ${e.pregunta}\n  R: ${e.respuesta}`).join('\n'));
+      }
+    } catch (e) { /* sin base de conocimiento: sigue con el texto base */ }
+  }
+  body.system_instruction = body.system_instruction && Array.isArray(body.system_instruction.parts) ? body.system_instruction : { parts: [{ text: '' }] };
+  body.system_instruction.parts[0].text = (body.system_instruction.parts[0].text || '') + '\n\n' + extra.join('\n\n');
+  let pagina = '';
+  try { pagina = new URL(request.headers.get('Referer') || '').pathname.slice(0, 200); } catch (e) {}
+
   // Modelos en orden de preferencia (fallback automático)
   const MODELS = [
     'gemini-2.5-flash',
@@ -96,6 +165,7 @@ export async function onRequestPost(context) {
     try { data = await geminiRes.json(); }
     catch { lastError = `HTTP ${geminiRes.status} (respuesta no-JSON)`; continue; }
     if (geminiRes.ok && data.candidates) {
+      if (c.SERVICE && pregunta) context.waitUntil(registrar(c, { negocio: NEGOCIO, pregunta: anonimizar(pregunta, 500), respuesta: anonimizar(textoDe(data), 4000), pagina, canal }, usadas));
       return new Response(JSON.stringify(data), {
         status: 200,
         headers: { ...corsHeaders(origin), 'Content-Type': 'application/json', 'X-Model-Used': model }

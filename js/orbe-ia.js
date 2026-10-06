@@ -33,6 +33,8 @@
         '@media(max-width:480px){.oia-env span{display:none}.oia-env{width:44px;padding:0;justify-content:center}.oia-pill{padding-left:14px}}' +
         '.oia-ayuda{margin:10px 6px 0;font-size:.78rem;color:#94a3b8;text-align:center}' +
         '.oia-ayuda b{color:#e2e8f0;font-weight:700}' +
+        '.oia-privado{margin:6px 6px 0;font-size:.72rem;color:#94a3b8;text-align:center}' +
+        '.oia[data-fase="pensando"] .oia-privado,.oia[data-fase="respuesta"] .oia-privado{display:none}' +
         '.oia[data-fase="pensando"] .oia-pill,.oia[data-fase="respuesta"] .oia-pill{opacity:0;transform:scale(.94);pointer-events:none;position:absolute;inset:0 0 auto 0}' +
         '.oia[data-fase="pensando"] .oia-ayuda,.oia[data-fase="respuesta"] .oia-ayuda{display:none}' +
         '.oia[data-agita] .oia-pill{animation:oia-agita .26s}' +
@@ -96,6 +98,7 @@
     raiz.appendChild(form);
     raiz.insertAdjacentHTML('beforeend',
       '<p class="oia-ayuda">' + (opts.ayuda || 'Escribe para <b>filtrar las preguntas</b> · Enter o el botón para <b>preguntarle a la IA</b>') + '</p>' +
+      '<p class="oia-privado">🔒 No incluyas datos de pacientes. Las preguntas se guardan sin datos personales para mejorar las respuestas.</p>' +
       '<div class="oia-escena"><canvas class="oia-orbe" aria-hidden="true"></canvas><div class="oia-estado" aria-hidden="true"></div><div class="oia-q"></div>' +
         '<div class="oia-resp" tabindex="-1" role="group" aria-label="Respuesta de la IA">' +
           '<div class="oia-cab"><b aria-hidden="true"></b>Respuesta de la IA<span>· orientativa, confírmala con el equipo</span></div>' +
@@ -227,7 +230,7 @@
     }
 
     function preguntar(texto) {
-      if (typeof window._phdrPreguntaIA === 'function') return window._phdrPreguntaIA(texto);
+      if (typeof window._phdrPreguntaIA === 'function') return window._phdrPreguntaIA(texto, opts.canal || 'orbe');
       return Promise.reject(new Error('sin asistente'));
     }
 

@@ -70,9 +70,9 @@
     /* Botón abrir chat */
     .hero-chat-btn {
       display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; max-width: 540px;
+      width: 100%; max-width: 540px; margin: 0 auto;   /* centrado (antes quedaba pegado a la izquierda) */
       background: linear-gradient(135deg, #00d2ff 0%, #0080aa 100%);
-      color: #fff; font-weight: 800; font-size: 1rem; letter-spacing: .5px;
+      color: #04121a;   /* letra oscura: blanco sobre cian no se lee (1.9:1) */ font-weight: 800; font-size: 1rem; letter-spacing: .5px;
       padding: 18px 28px; border-radius: 14px; border: none; cursor: pointer;
       box-shadow: 0 8px 32px rgba(0,210,255,0.35);
       transition: opacity .2s, transform .2s; text-decoration: none;
@@ -170,8 +170,8 @@
 </head>
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
-<link rel="preload" href="js/header.js?v=20261006d" as="script">
-<script src="js/header.js?v=20261006d"></script>
+<link rel="preload" href="js/header.js?v=20261007" as="script">
+<script src="js/header.js?v=20261007"></script>
 <main id="main-content">
 
 <!-- HERO -->
@@ -186,7 +186,7 @@
   <!-- Buscador de la web + IA (js/buscador-web.js) -->
   <div data-buscador-inline data-wa="573212816716" style="width:100%;max-width:640px;margin:28px auto 0;text-align:left"><input type="search" id="soporte-q" aria-label="Buscar en la web o preguntar a la IA"></div>
 </div>
-<script src="js/buscador-web.js?v=20261006" defer></script>
+<script src="js/buscador-web.js?v=20261007" defer></script>
 
 <!-- RECURSOS -->
 <section>
@@ -382,7 +382,7 @@
 })();
 </script>
 
-<script src="js/footer.js?v=20261006b"></script>
+<script src="js/footer.js?v=20261007"></script>
 <script>
 /* ── Scroll reveal ── */
 const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.08});
