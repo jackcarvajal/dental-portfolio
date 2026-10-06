@@ -999,8 +999,8 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
   /* Una sola pregunta a la IA, con el mismo contexto que el chat (lo usa el orbe del Centro de Ayuda, js/orbe-ia.js) */
   window._phdrPreguntaIA = function (texto, canal) {
     return fetch(_pgGUrl, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system_instruction: { parts: [{ text: _pgBuildPrompt() }] }, contents: [{ role: 'user', parts: [{ text: String(texto).slice(0, 300) }] }], canal: canal || 'orbe' })
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Canal': canal || 'orbe' },
+      body: JSON.stringify({ system_instruction: { parts: [{ text: _pgBuildPrompt() }] }, contents: [{ role: 'user', parts: [{ text: String(texto).slice(0, 300) }] }] })
     }).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (d) {
         var c = d && d.candidates && d.candidates[0] && d.candidates[0].content;

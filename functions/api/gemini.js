@@ -118,7 +118,8 @@ export async function onRequestPost(context) {
   };
 
   // ── Conocimiento aprobado + privacidad ──
-  const canal = ['chat', 'orbe', 'buscador'].includes(body.canal) ? body.canal : 'chat';
+  const _c = request.headers.get('X-Canal') || body.canal;
+  const canal = ['chat', 'orbe', 'buscador'].includes(_c) ? _c : 'chat';
   delete body.canal;                                   // Gemini rechaza campos desconocidos
   const c = cfg(env);
   const pregunta = ultimaPregunta(body);

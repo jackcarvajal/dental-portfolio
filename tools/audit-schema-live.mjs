@@ -39,6 +39,12 @@ const ALLOW = new Set([
   'catalogo.precio_oferta', 'catalogo.oferta_desde', 'catalogo.oferta_hasta',
 ]);
 
+// ── Tablas nuevas cuyo SQL aún no se ha corrido y cuyo código YA tolera que falten ──
+//   Solo avisan (no bloquean el push). Quitar de aquí en cuanto el SQL esté corrido.
+const TABLAS_PENDIENTES = new Set([
+  'ia_conocimiento', 'ia_preguntas',   // sql/ia-conocimiento-2026.sql — functions/api/gemini.js sigue igual sin ellas
+]);
+
 // ── 1. extraer superficie (mismo motor que audit-schema.mjs) ──
 const files = [];
 (function walk(d) { for (const n of readdirSync(d)) { if (['node_modules', '.git', 'assets', 'patients', 'docs', '.claude', '.agents', '.playwright', '.playwright-cli'].includes(n)) continue; const p = join(d, n); const st = statSync(p); if (st.isDirectory()) walk(p); else if (/\.(html|js)$/.test(n)) files.push(p); } })(ROOT);
@@ -91,6 +97,7 @@ for (const t of Object.keys(tables).sort()) {
   const batch = await probe(`/rest/v1/${t}?select=${cols.join(',')}&limit=0`);
   if (batch.net) { offline = true; break; }
   if (batch.code === 'PGRST205' || batch.status === 404) {         // tabla inexistente (PostgREST no usa 42P01)
+    if (TABLAS_PENDIENTES.has(t)) { console.log(`  [33m⚠ ${t}[0m → la tabla aún no existe (SQL pendiente; el código lo tolera)`); continue; }
     ghosts++; console.log(`  [31m✗ ${t}[0m → la TABLA no existe (¿falta correr su SQL?)`); continue;
   }
   if (batch.status === 200 || !GHOST.test(batch.code)) continue;   // tabla ok (o error no-relacionado a columnas)
