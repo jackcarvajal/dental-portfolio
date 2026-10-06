@@ -513,7 +513,7 @@
         // Pre-cargar Three.js (~250 KB) en segundo plano SOLO en computador y con buena conexión; en celular se
         // descarga al subir el primer STL (mountSTLViewer ya lo espera) → la página abre más rápido (oct-2026)
         const _ahorro = navigator.connection && (navigator.connection.saveData || /2g|3g/.test(navigator.connection.effectiveType || ''));
-        if (window.innerWidth >= 900 && !_ahorro) (window.requestIdleCallback || setTimeout)(() => loadThree(), 3000);
+        if (window.innerWidth >= 900 && !_ahorro) { if (window.requestIdleCallback) requestIdleCallback(() => loadThree(), { timeout: 3000 }); else setTimeout(loadThree, 3000); }   // (antes pasaba 3000 como opciones → error)
     }
 
     /* ── API PÚBLICA ────────────────────────────────────── */

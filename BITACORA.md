@@ -9,6 +9,28 @@
 
 ---
 
+## 2026-10-07  (Soporte · idiomas · etiquetas rotas · un solo aviso de cookies)
+
+- ✅ **Soporte: preguntas frecuentes rotas** — los botones se cerraban con `</div>`, así que cada pregunta quedaba
+  dentro de la anterior y se salían del ancho; además tenían el fondo gris de botón. Arreglado + estilo.
+  **Tarjetas de recursos compactas**: 3 por fila, ícono a la izquierda, texto en 2 líneas.
+- ✅ **Etiquetas mal cerradas en toda la web** (detector nuevo, en ambas webs): calculadora (4 `</div>` de más que
+  rompían la columna derecha), patient y revision-diseno (botones cerrados con `</div>`), index, seguimiento-caso.
+  Alejandro flujo-diseño: 4 tarjetas de categoría mal cerradas + acordeón sin cerrar → el resumen de precios caía
+  DEBAJO del formulario y solo 1 de 4 categorías quedaba en su grilla (página 3.275 px → 2.136 px). Ahora: 0 errores.
+- ✅ **Alejandro flujo-diseño, pagos**: `TASA_COP_USD` declarada dos veces hacía fallar `pagos.js` entero (mismo
+  error ya arreglado en PRODIGY, no portado); y las tasas de plataforma usaban `SUPABASE_ANON` inexistente.
+- ✅ `stl-multi-viewer.js` (ambas): `requestIdleCallback(fn, 3000)` lanzaba error (precarga 3D nunca ocurría).
+- ✅ **Idiomas** (auditoría por idioma de 43+40 páginas): en español solo quedaban frases en inglés de marca
+  («YOU SCAN · WE DESIGN…», «Made in Colombia for the world», «PRECISION BY DESIGN · WORLDWIDE») → en español
+  (con su versión EN/PT en i18n). Idioma por defecto: español (antes inglés si el navegador no era es/pt → páginas
+  mezcladas). Páginas /en/: menú, pie y aviso en inglés (Alejandro) y PRODIGY fuerza EN en /en/.
+  🔴 **Pendiente decisión**: en EN/PT, ~1.500 textos por idioma siguen en español en 41 páginas (las páginas solo
+  tienen traducidos encabezados sueltos). Opciones en el chat.
+- ✅ **Un solo aviso de cookies** por web (salían dos; el de header de Alejandro estaba en inglés). Queda el de
+  footer.js; se respeta la decisión tomada en el viejo.
+- Versiones: header.js `v=20261006d`, footer.js PRODIGY `v=20261006b` / Alejandro `v=20261006`, i18n.js `v=20261006`.
+
 ## 2026-10-06 (noche)  (SQL corrido · artículos sin fuentes borrados · buscador de la web + IA · Clarity con permiso)
 
 - ✅ **SQL corrido por Alejandro** (funciones-definer-permisos + fabricacion-pago-verificado). Verificado desde fuera:

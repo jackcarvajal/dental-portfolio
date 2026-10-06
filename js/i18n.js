@@ -12,12 +12,19 @@
   'use strict';
 
   var LANGS   = ['es', 'en', 'pt'];
-  var DEFAULT = 'en';
+  var DEFAULT = 'es';   // sitio en español: sin elección explícita, español (antes 'en' mezclaba idiomas)
 
   /* ─────────────────────────────────────────────────────────
      DICCIONARIO  (páginas pueden extender via window._i18nExtra)
   ───────────────────────────────────────────────────────── */
   var T = {
+
+    /* ── INICIO: flujo del hero y sello (oct-2026) ── */
+    'index.wf.scan':       { es: 'TÚ ESCANEAS', en: 'YOU SCAN', pt: 'VOCÊ ESCANEIA' },
+    'index.wf.design':     { es: 'NOSOTROS DISEÑAMOS', en: 'WE DESIGN', pt: 'NÓS PROJETAMOS' },
+    'index.wf.produce':    { es: 'NOSOTROS PRODUCIMOS', en: 'WE PRODUCE', pt: 'NÓS PRODUZIMOS' },
+    'index.wf.perfection': { es: 'PERFECCIÓN', en: 'PERFECTION', pt: 'PERFEIÇÃO' },
+    'index.made':          { es: 'Hecho en Colombia para el mundo', en: 'Made in Colombia for the world', pt: 'Feito na Colômbia para o mundo' },
 
     /* ── HERO ─────────────────────────────── */
     'hero.subtitle': {
@@ -941,6 +948,7 @@
      NÚCLEO
   ───────────────────────────────────────────────────────── */
   function detectLang() {
+    if (location.pathname.indexOf('/en/') === 0) return 'en';   // páginas en inglés: menú y pie en inglés
     var saved = localStorage.getItem('prd_lang');
     if (saved && LANGS.indexOf(saved) !== -1) return saved;
     var nav = ((navigator.language || navigator.userLanguage) || '').toLowerCase();

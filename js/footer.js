@@ -121,7 +121,7 @@
         '<div class="pfoot-logo">PRODIGY</div>' +
         '<div class="pfoot-tagline">Digital Dental Excellence</div>' +
         '<p class="pfoot-desc">Especialistas en diseño CAD avanzado y manufactura de alta precisión para clínicas y laboratorios dentales de Colombia y México.</p>' +
-        '<div style="font-size:.72rem;font-style:italic;color:#94a3b8;margin:6px 0 10px;line-height:1.5;">🌎 Made in Colombia for the world<br>Con tecnología 🇩🇪 Alemana · 🇨🇳 China<br>y manos expertas de 🇨🇴 Colombia · 🇲🇽 México</div>' +
+        '<div style="font-size:.72rem;font-style:italic;color:#94a3b8;margin:6px 0 10px;line-height:1.5;">🌎 Hecho en Colombia para el mundo<br>Con tecnología 🇩🇪 Alemana · 🇨🇳 China<br>y manos expertas de 🇨🇴 Colombia · 🇲🇽 México</div>' +
         '<div class="pfoot-geo"><span class="pfoot-geo-dot"></span>Sede Central: Bogotá, Colombia</div>' +
         '<div class="pfoot-social">' +
           '<a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp PRODIGY Lab">' +
@@ -275,6 +275,7 @@
 
   // ── Cookie consent (SIC Circular 002/2015 + GDPR + GA4 Consent Mode v2) ──
   var _pgConsentVal = localStorage.getItem('prodigy_cookies_ok');
+  if (!_pgConsentVal) { var _dec = localStorage.getItem('pg_cookies_decision'); if (_dec) _pgConsentVal = _dec === 'accepted' ? '1' : '0'; }   // aviso viejo de header.js
 
   // Aplicar consent state al cargar si ya hay decisión previa
   if (_pgConsentVal === '1' && window.gtag) {
@@ -340,6 +341,7 @@
         '</button>';
 
       document.body.appendChild(cb);
+      if (window._phdrTraducir) window._phdrTraducir();   // en EN/PT, el aviso también
       /* Slide up con animación */
       requestAnimationFrame(function(){ cb.style.transform = 'translateY(0)'; });
     }, 3000);
