@@ -43,16 +43,8 @@
       }).observe(portGrid, { childList: true });
     }
 
-    /* ── PORTAFOLIO página — stagger cuando JS inserta las tarjetas ── */
-    var casesGrid = document.getElementById('casesGrid');
-    if (casesGrid) {
-      new MutationObserver(function (_, obs) {
-        var cards = casesGrid.querySelectorAll('.case-card');
-        if (!cards.length) return;
-        obs.disconnect();
-        gsap.from(cards, { y: 28, opacity: 0, duration: 0.5, stagger: 0.07 });
-      }).observe(casesGrid, { childList: true });
-    }
+    /* PORTAFOLIO página: sus tarjetas ya tienen su propia entrada (clase .revealed en portafolio.html).
+       Aquí NO se animan: gsap.from() las dejaba fijas en opacity:0 al cambiar a la página 2 (quedaba en blanco). */
 
     /* ── FLUJOS DE PASOS (diseno-remoto, fresado-cam) ── */
     ['.vflow-step', '.mflow-step', '.proc-step'].forEach(function (sel) {

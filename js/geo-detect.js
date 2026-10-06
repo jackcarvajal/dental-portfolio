@@ -75,7 +75,7 @@ window.ProdigyGeo = (function () {
     banner.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:999;background:rgba(13,21,37,.97);border:1px solid rgba(0,210,255,.3);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:12px;font-family:-apple-system,sans-serif;font-size:.82rem;color:#e2e8f0;box-shadow:0 8px 32px rgba(0,0,0,.5);white-space:nowrap;';
     banner.innerHTML = '<span style="font-size:1.1rem;">🌍</span>' +
       '<span>We detected you\'re outside Colombia.</span>' +
-      '<a href="/en/global-design" style="background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;text-decoration:none;padding:6px 14px;border-radius:8px;font-weight:700;font-size:.78rem;">View in English →</a>' +
+      '<a href="/en/global-design" style="background:linear-gradient(135deg,#B0267F,#9333ea);color:#fff;text-decoration:none;padding:6px 14px;border-radius:8px;font-weight:700;font-size:.78rem;">View in English →</a>' +
       '<button type="button" onclick="document.getElementById(\'geo-lang-banner\').remove();sessionStorage.setItem(\'geo_dismissed\',\'1\')" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:1rem;padding:0 4px;">✕</button>';
 
     if (sessionStorage.getItem('geo_dismissed')) return;

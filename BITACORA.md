@@ -9,6 +9,39 @@
 
 ---
 
+## 2026-10-06  (Blog sin artículos en blanco ni repetidos · modo claro legible · cargas más rápidas · 50/50)
+
+- ✅ **Blog PRODIGY: los 82 artículos abrían EN BLANCO desde jun-2026** («getArticle is not defined»). El generador
+  automático reescribe `articles.js` completo y borró las funciones que vivían al final del archivo. Ahora viven en
+  `js/articulos-util.js` (cargado por journal.html y article.html), fuera del alcance del generador.
+- ✅ **Artículos repetidos** (mismo tema publicado 2-3 veces): PRODIGY 82→64, Alejandro 40→25 (queda la versión más
+  reciente de cada tema; respaldo en git). Los enlaces viejos redirigen a la versión vigente del mismo tema y salen del
+  sitemap. Causa: `pickTopics` buscaba un campo `slug` que no existe → nunca filtraba. Ahora (ambos generadores) un
+  tema no se repite antes de 120 días, primero van los nunca publicados, y si un tema vuelve a salir REEMPLAZA al
+  anterior (un artículo por tema). `readExistingArticles` evalúa el archivo completo (la regex cortaba en el primer `];`).
+  💡 Temas libres hoy: PRODIGY 11, Alejandro 4 → cuando se acaben, el cron no publica hasta que un tema cumpla 120 días
+  (o se agreguen temas a TOPIC_POOL).
+- ✅ **Portafolio: la página 2 quedaba en blanco** (ambas webs). `animations.js` animaba las tarjetas con
+  `gsap.from(opacity:0)` y al cambiar de página las nuevas quedaban invisibles. Quitado (las tarjetas ya tienen su
+  propia entrada). Paginador: el botón deshabilitado tenía dos `style` (no se veía apagado) y la página activa era
+  magenta claro con letra blanca.
+- ✅ **Listas desplegables blancas con letra blanca** (Windows/Chrome, p. ej. calculadora de ahorro en diseño remoto):
+  regla común para las opciones (`:where(select) option` fondo #121a26) en header.js y reportar-problema.js.
+- ✅ **Modo claro**: Alejandro tenía su modo claro viejo (variables sueltas → textos blancos sobre blanco); ahora usa el
+  mismo de PRODIGY (inversión única). Nuevo corrector de contraste solo en modo claro (header.js): los textos de acento
+  que quedaban en pastel (2-4:1) se ajustan hasta AA y se restauran al volver a oscuro. Medido por píxeles en 12 páginas
+  a 375 px: textos que fallaban SOLO en claro 143→43 (el resto son números decorativos con degradado).
+- ✅ **Menú, barra de acceso, «Haz tu pedido» y pie en inglés/portugués** (PRODIGY): antes quedaban en español al
+  elegir EN/PT. Diccionario en header.js; también el aviso «Diseño 24h · Fabricación…».
+- ✅ **Ley 50/50**: «Pagas solo cuando apruebas» (diseño remoto, ambas webs) → «50% para iniciar · 50% contra entrega».
+- ✅ **Soporte Alejandro**: los 4 canales en un renglón en escritorio (2 en tableta, 1 en celular) — menos scroll.
+- ✅ **Botones magenta con letra blanca** #D946A6 (3.9:1) → #B0267F (6.1:1) en 128 bloques / 90 archivos (ambas webs).
+- 🟡 **Carga**: Font Awesome sin bloquear (7 páginas + flujos), PayPal SDK fuera del `<head>` de flujo-diseño,
+  supabase/auth-guard/reportar con `defer` en flujos de PRODIGY (en Alejandro flujo-diseño NO: exige sesión inline),
+  ícono del hero en SVG (era la imagen LCP vía fuente de íconos). Medir en vivo con Lighthouse.
+- Versiones: header.js / footer.js / reportar-problema.js `v=20261002n`, animations.js `v=20261002`,
+  articles.js / articulos-util.js `v=20261002`, articles-ac.js `v=20261002`.
+
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
 
 - ✅ **Lighthouse móvil (8 páginas en producción) + revisión estática de buenas prácticas móviles.** Antes: rendimiento

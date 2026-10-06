@@ -517,10 +517,10 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"PRODIGY Lab Dental","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"127","bestRating":"5"}}</script>
 </head>
 <body oncontextmenu="return false;">
-<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
+<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <noscript><div style="text-align:center;padding:40px 20px;background:#0d1520;color:#94a3b8;font-family:sans-serif;">El portafolio de casos requiere JavaScript. Actívalo para ver los trabajos o <a href="https://wa.me/573212816716" style="color:#D946A6;">contáctanos por WhatsApp</a>.</div></noscript>
-<link rel="preload" href="js/header.js?v=20261002c" as="script">
-<script src="js/header.js?v=20261002c"></script>
+<link rel="preload" href="js/header.js?v=20261002n" as="script">
+<script src="js/header.js?v=20261002n"></script>
 
 <!-- ============================================================ -->
 <!-- HERO -->
@@ -663,7 +663,7 @@
 <!-- Constellation grid de fondo (malla reactiva al cursor) — solo desktop -->
 <style>#constellation-bg{z-index:0}main,header,footer,section,article,.wrap,[class*="hero"],[class*="container"],.ux-floaters{position:relative;z-index:1}</style>
 <script src="js/constellation-grid.js?v=20260806" defer></script>
-<script src="js/footer.js?v=20261002"></script>
+<script src="js/footer.js?v=20261002n"></script>
 
 <!-- ============================================================ -->
 <!-- JAVASCRIPT -->
@@ -794,16 +794,16 @@ function renderPage(page) {
     }
 
     paginador.style.display = 'flex';
-    const btnStyle = (active) =>
-        `type="button" style="padding:8px 18px;border-radius:8px;border:1px solid ${active ? '#D946A6' : '#333'};
-         background:${active ? '#D946A6' : 'transparent'};color:${active ? '#fff' : '#aaa'};
-         cursor:pointer;font-size:0.9rem;transition:all .2s"`;
+    const btnStyle = (active, off) =>
+        `style="padding:8px 18px;border-radius:8px;border:1px solid ${active ? '#B0267F' : '#333'};
+         background:${active ? '#B0267F' : 'transparent'};color:${active ? '#fff' : '#aaa'};
+         cursor:${off ? 'default' : 'pointer'};${off ? 'opacity:.3;' : ''}font-size:0.9rem;min-height:40px;transition:all .2s"`;
 
-    let html = `<button type="button" ${btnStyle(false)} onclick="goPage(${page-1})" aria-label="Página anterior" ${page===1?'disabled style="opacity:.3;cursor:default"':''}>← Ant</button>`;
+    let html = `<button type="button" ${btnStyle(false, page===1)} onclick="goPage(${page-1})" aria-label="Página anterior" ${page===1?'disabled':''}>← Ant</button>`;
     for (let p = 1; p <= totalPages; p++) {
         html += `<button type="button" ${btnStyle(p===page)} onclick="goPage(${p})" aria-label="Página ${p}" ${p===page?'aria-current="page"':''}>${p}</button>`;
     }
-    html += `<button type="button" ${btnStyle(false)} onclick="goPage(${page+1})" aria-label="Página siguiente" ${page===totalPages?'disabled style="opacity:.3;cursor:default"':''}>Sig →</button>`;
+    html += `<button type="button" ${btnStyle(false, page===totalPages)} onclick="goPage(${page+1})" aria-label="Página siguiente" ${page===totalPages?'disabled':''}>Sig →</button>`;
     paginador.innerHTML = html;
 }
 

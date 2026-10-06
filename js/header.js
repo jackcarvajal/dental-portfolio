@@ -22,7 +22,7 @@
       '<a href="/terminos-y-legal#privacidad" style="color:#D4AF37;text-decoration:none;">Política de privacidad</a> · ' +
       'Ley 1581/2012 Colombia.</span>' +
       '<div style="display:flex;gap:8px;flex-shrink:0;">' +
-        '<button type="button" id="pg-ck-accept" style="padding:8px 18px;background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.78rem;">Aceptar</button>' +
+        '<button type="button" id="pg-ck-accept" style="padding:8px 18px;background:linear-gradient(135deg,#B0267F,#9333ea);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.78rem;">Aceptar</button>' +
         '<button type="button" id="pg-ck-reject" style="padding:8px 18px;background:transparent;border:1px solid rgba(255,255,255,.15);color:#94a3b8;border-radius:8px;cursor:pointer;font-size:.78rem;">Solo esenciales</button>' +
       '</div>';
     document.body.appendChild(b);
@@ -256,7 +256,7 @@
 
     /* HAZ TU PEDIDO */
     '.pnav2-ped-wrap{position:relative;display:inline-block;}',
-    '.pnav2-ped-btn{background:linear-gradient(135deg,#D946A6 0%,#a0186e 100%);',
+    '.pnav2-ped-btn{background:linear-gradient(135deg,#B0267F 0%,#a0186e 100%);',
     'color:#fff;padding:10px 22px;border-radius:6px;font-size:12px;font-weight:800;',
     'letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;',
     'white-space:nowrap;display:inline-flex;align-items:center;gap:6px;',
@@ -308,6 +308,10 @@
     /* Botones flotantes de utilidad (subir / tema / WhatsApp): ~25 páginas los tienen sin estilos y quedaban como
        3 botoncitos de 14 px al final de la página. :where() = sin peso, si la página trae los suyos ganan esos.
        En celular se ocultan: tema y WhatsApp están en el menú ☰ y hay botón flotante propio (oct-2026). */
+    /* Imágenes con width/height (reservan su espacio al cargar): que sigan escalando bien. :where() = sin peso */
+    ':where(img[width][height]){height:auto;}',
+    // opciones de listas desplegables legibles (en Windows la lista nativa se abría blanca con letra blanca)
+    ':where(select) option,:where(select) optgroup{background-color:#121a26;color:#e5e7eb;}',
     ':where(.ux-floaters){position:fixed;bottom:28px;right:24px;z-index:900;display:flex;flex-direction:column;gap:10px;}',
     ':where(.ux-btn){width:44px;height:44px;border-radius:50%;background:rgba(13,21,32,.92);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;text-decoration:none;}',
     '@media(max-width:640px){.ux-floaters{display:none!important;}.pheader-lang button{padding:6px 9px;}}',
@@ -353,7 +357,7 @@
     'font-size:.65rem;font-weight:700;letter-spacing:2px;',
     'text-transform:uppercase;color:#94a3b8;margin-bottom:2px;}',
     '#pcta-btn{display:inline-flex;align-items:center;gap:10px;',
-    'background:linear-gradient(135deg,#D946A6 0%,#a0186e 100%);',
+    'background:linear-gradient(135deg,#B0267F 0%,#a0186e 100%);',
     'color:#fff;font-weight:800;font-size:.95rem;letter-spacing:1.5px;',
     'padding:14px 32px;border-radius:100px;',
     'border:1px solid rgba(255,255,255,0.15);',
@@ -765,9 +769,15 @@
     }
 
     // Formatea fecha legible "lunes 28 abr"
-    var DIAS  = ['dom','lun','mar','mié','jue','vie','sáb'];
-    var MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    function fmtDia(d) { return DIAS[d.getDay()] + ' ' + d.getDate() + ' ' + MESES[d.getMonth()]; }
+    var DIAS  = { es: ['dom','lun','mar','mié','jue','vie','sáb'], en: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], pt: ['dom','seg','ter','qua','qui','sex','sáb'] };
+    var MESES = { es: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'], en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], pt: ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'] };
+    var AVISO = {
+      es: ['Diseño 24h · Fabricación 24–48h · Envío ', 'Diseño 24h · Fabricación 24–48h · Producción Lun–Vie'],
+      en: ['Design 24h · Manufacturing 24–48h · Ships ', 'Design 24h · Manufacturing 24–48h · Production Mon–Fri'],
+      pt: ['Design 24h · Fabricação 24–48h · Envio ', 'Design 24h · Fabricação 24–48h · Produção Seg–Sex']
+    };
+    function idioma() { return window._phdrLang ? window._phdrLang() : 'es'; }
+    function fmtDia(d) { var l = idioma(); return DIAS[l][d.getDay()] + ' ' + d.getDate() + ' ' + MESES[l][d.getMonth()]; }
 
     function tick() {
       var ahora = new Date();
@@ -795,11 +805,11 @@
         // "pasado mañana" = 2 días hábiles desde hoy
         var entrega1 = siguienteDiaHabil(ahora);       // mañana (o lunes si viernes)
         var entrega2 = siguienteDiaHabil(entrega1);    // pasado mañana hábil
-        label.textContent = '⚡ Diseño 24h · Fabricación 24–48h · Envío ' + fmtDia(entrega2);
+        label.textContent = AVISO[idioma()][0] + fmtDia(entrega2);
         widget.style.borderColor = 'rgba(217,70,166,.5)';
         widget.style.background  = 'rgba(217,70,166,.14)';
       } else {
-        label.textContent = '🦷 Diseño 24h · Fabricación 24–48h · Producción Lun–Vie';
+        label.textContent = AVISO[idioma()][1];
         widget.style.borderColor = 'rgba(148,163,184,.25)';
         widget.style.background  = 'rgba(30,41,59,.4)';
       }
@@ -1135,6 +1145,91 @@
     document.head.appendChild(_i18nS);
   }
 
+  /* ── IDIOMA DEL MENÚ Y DEL PIE (EN / PT) ──
+     i18n.js solo traduce lo marcado con data-i18n en cada página: el menú, la barra de acceso, el botón
+     «Haz tu pedido» y el pie (generados aquí y en footer.js) se quedaban en español al elegir EN o PT.
+     Diccionario 'español': [inglés, portugués]. Se aplica al cargar y cada vez que cambia <html lang>. */
+  var _MARCAS = 'Exocad®, 3Shape®, Ivoclar®, Vita®, Amann Girrbach®, Dentsply Sirona®, Renfert®, Shining 3D®, NextDent®, SprintRay®, Anycubic®, Phrozen®, Creality®, Straumann®, Nobel Biocare®, BioHorizons®, XTCERA®, VHF®, CoDiagnostiX® ';
+  var _TXT = {
+    'Correo electrónico': ['Email', 'E-mail'], 'Contraseña': ['Password', 'Senha'],
+    'ACCESO': ['LOG IN', 'ENTRAR'], 'REGISTRO': ['SIGN UP', 'CADASTRO'],
+    'SERVICIOS': ['SERVICES', 'SERVIÇOS'], 'PORTAFOLIO': ['PORTFOLIO', 'PORTFÓLIO'],
+    'ENVÍA TU ESCANEO': ['SEND YOUR SCAN', 'ENVIE SEU ESCANEAMENTO'], 'SIGUE TU CASO': ['TRACK YOUR CASE', 'ACOMPANHE SEU CASO'],
+    'SOPORTE': ['SUPPORT', 'SUPORTE'], 'NOSOTROS': ['ABOUT US', 'SOBRE NÓS'], 'HAZ TU PEDIDO': ['PLACE AN ORDER', 'FAÇA SEU PEDIDO'],
+    'DISEÑO CAD REMOTO': ['REMOTE CAD DESIGN', 'DESIGN CAD REMOTO'], '🌍 Internacional · desde $14 USD · 24h': ['🌍 International · from $14 USD · 24h', '🌍 Internacional · a partir de $14 USD · 24h'],
+    'COTIZADOR DISEÑO': ['DESIGN QUOTE', 'ORÇAMENTO DE DESIGN'], 'Precio instantáneo · USD & COP': ['Instant price · USD & COP', 'Preço instantâneo · USD & COP'],
+    'DISEÑO CAD — INFO': ['CAD DESIGN — INFO', 'DESIGN CAD — INFO'], 'Exocad · 3Shape · Archivo STL': ['Exocad · 3Shape · STL file', 'Exocad · 3Shape · Arquivo STL'],
+    'FRESADO & IMPRESIÓN': ['MILLING & 3D PRINTING', 'FRESAGEM & IMPRESSÃO'], 'Zirconio · Disilicato · Resina': ['Zirconia · Lithium disilicate · Resin', 'Zircônia · Dissilicato · Resina'],
+    'ESCANEOS A DOMICILIO': ['ON-SITE SCANNING', 'ESCANEAMENTO A DOMICÍLIO'], 'Norte Bogotá · 2 h hábiles': ['North Bogotá · 2 business hours', 'Norte de Bogotá · 2 h úteis'],
+    'CIRUGÍA GUIADA': ['GUIDED SURGERY', 'CIRURGIA GUIADA'], '🎯 Planificación digital · guía impresa · desde 4h · $180.000': ['🎯 Digital planning · printed guide · from 4h · COP 180,000', '🎯 Planejamento digital · guia impresso · a partir de 4h · COP 180.000'],
+    'Centro de Soporte': ['Support Center', 'Central de Suporte'], 'FAQs · guías · materiales': ['FAQs · guides · materials', 'FAQs · guias · materiais'],
+    'Solución IA': ['AI Assistant', 'Assistente IA'], 'Gemini 2.0 · respuesta 24/7': ['Gemini · answers 24/7', 'Gemini · respostas 24/7'],
+    'Diseño CAD': ['CAD Design', 'Design CAD'], 'Exocad · 3Shape · archivo STL': ['Exocad · 3Shape · STL file', 'Exocad · 3Shape · arquivo STL'],
+    'Fabricación CAM': ['CAM Manufacturing', 'Fabricação CAM'], 'Zirconia · Disilicato · PMMA': ['Zirconia · Disilicate · PMMA', 'Zircônia · Dissilicato · PMMA'],
+    'Flujo Lab Full': ['Full Lab Workflow', 'Fluxo Lab Completo'], 'Modelo → diseño → acabado final': ['Model → design → final finish', 'Modelo → design → acabamento final'],
+    'Escaneos a Domicilio': ['On-site Scanning', 'Escaneamento a Domicílio'], 'Norte Bogotá · 2h hábiles': ['North Bogotá · 2 business hours', 'Norte de Bogotá · 2h úteis'],
+    'DISEÑO CAD': ['CAD DESIGN', 'DESIGN CAD'], 'HABLAR CON IA': ['TALK TO AI', 'FALAR COM IA'], 'CONTACTAR': ['CONTACT', 'CONTATO'],
+    'INGRESAR': ['LOG IN', 'ENTRAR'], 'MODO CLARO': ['LIGHT MODE', 'MODO CLARO'], 'MODO OSCURO': ['DARK MODE', 'MODO ESCURO'],
+    '¿Qué necesitas?': ['What do you need?', 'Do que você precisa?'], 'Completo → entrega': ['Complete → delivery', 'Completo → entrega'],
+    'Escáner': ['Scanner', 'Escâner'], 'Norte Bogotá': ['North Bogotá', 'Norte de Bogotá'],
+    'Especialistas en diseño CAD avanzado y manufactura de alta precisión para clínicas y laboratorios dentales de Colombia y México.': ['Specialists in advanced CAD design and high-precision manufacturing for dental clinics and labs in Colombia and Mexico.', 'Especialistas em design CAD avançado e manufatura de alta precisão para clínicas e laboratórios odontológicos da Colômbia e do México.'],
+    'Con tecnología 🇩🇪 Alemana · 🇨🇳 China': ['With 🇩🇪 German · 🇨🇳 Chinese technology', 'Com tecnologia 🇩🇪 Alemã · 🇨🇳 Chinesa'],
+    'y manos expertas de 🇨🇴 Colombia · 🇲🇽 México': ['and expert hands from 🇨🇴 Colombia · 🇲🇽 Mexico', 'e mãos especialistas da 🇨🇴 Colômbia · 🇲🇽 México'],
+    'Sede Central: Bogotá, Colombia': ['Headquarters: Bogotá, Colombia', 'Sede: Bogotá, Colômbia'],
+    'Servicios': ['Services', 'Serviços'], 'Diseño CAD — Exocad · 3Shape': ['CAD Design — Exocad · 3Shape', 'Design CAD — Exocad · 3Shape'],
+    '🌍 Diseño CAD Remoto': ['🌍 Remote CAD Design', '🌍 Design CAD Remoto'], 'Fresado & Manufactura CAM': ['Milling & CAM Manufacturing', 'Fresagem & Manufatura CAM'],
+    'Catálogo de Materiales': ['Materials Catalog', 'Catálogo de Materiais'], 'Cotizador de Precios': ['Price Quote', 'Orçamento de Preços'],
+    'Portafolio y Recursos': ['Portfolio & Resources', 'Portfólio e Recursos'], 'Portafolio de Casos': ['Case Portfolio', 'Portfólio de Casos'],
+    'Guía Técnica de Materiales': ['Materials Technical Guide', 'Guia Técnico de Materiais'], 'Envía tu Escaneo': ['Send your Scan', 'Envie seu Escaneamento'],
+    'Seguimiento en Vivo': ['Live Case Tracking', 'Acompanhamento ao Vivo'], 'Escaneo a domicilio & Fotogrametría': ['On-site Scanning & Photogrammetry', 'Escaneamento a domicílio & Fotogrametria'],
+    'Preguntas Frecuentes': ['FAQ', 'Perguntas Frequentes'], 'Impresión 3D Dental': ['Dental 3D Printing', 'Impressão 3D Odontológica'],
+    'Alineadores Invisibles CAD': ['CAD Clear Aligners', 'Alinhadores Invisíveis CAD'], 'Empresa': ['Company', 'Empresa'],
+    'Nosotros · Equipo': ['About · Team', 'Sobre nós · Equipe'], 'Contacto': ['Contact', 'Contato'],
+    'Software para Laboratorios': ['Software for Labs', 'Software para Laboratórios'], 'Instalar App Móvil': ['Install Mobile App', 'Instalar App'],
+    '🎁 Programa Referidos': ['🎁 Referral Program', '🎁 Programa de Indicação'], 'Términos y Privacidad': ['Terms & Privacy', 'Termos e Privacidade'],
+    'Portal Profesional': ['Professional Portal', 'Portal Profissional'], 'Acceso Doctores': ['Doctor Login', 'Acesso Dentistas'],
+    'Soporte Técnico': ['Technical Support', 'Suporte Técnico'], 'Déjanos tu reseña en Google': ['Leave us a Google review', 'Deixe sua avaliação no Google'],
+    '© 2026 PRODIGY Digital Dentistry · Bogotá, Colombia · Todos los derechos reservados ·': ['© 2026 PRODIGY Digital Dentistry · Bogotá, Colombia · All rights reserved ·', '© 2026 PRODIGY Digital Dentistry · Bogotá, Colômbia · Todos os direitos reservados ·'],
+    'Términos': ['Terms', 'Termos'], 'Privacidad': ['Privacy', 'Privacidade']
+  };
+  _TXT['Las marcas registradas ' + _MARCAS + 'y Blender® son propiedad de sus respectivos dueños y se mencionan exclusivamente con fines informativos sobre la compatibilidad de nuestros flujos de trabajo.'] = [
+    'The registered trademarks ' + _MARCAS + 'and Blender® belong to their respective owners and are mentioned for information only, regarding the compatibility of our workflows.',
+    'As marcas registradas ' + _MARCAS + 'e Blender® pertencem aos seus respectivos donos e são mencionadas apenas para informar sobre a compatibilidade dos nossos fluxos de trabalho.'];
+  function _phdrLang() {
+    var l = String((window.i18n && window.i18n.lang) || document.documentElement.lang || 'es').slice(0, 2).toLowerCase();
+    return l === 'en' || l === 'pt' ? l : 'es';
+  }
+  window._phdrLang = _phdrLang;
+  var _txtOrig = typeof WeakMap === 'function' ? new WeakMap() : null;
+  function _phdrTraducir() {
+    if (!_txtOrig) return;
+    var l = _phdrLang(), ix = l === 'en' ? 0 : l === 'pt' ? 1 : -1;
+    ['nav-topbar', 'pheader-v2', 'pnav2-mob', 'pcta-pedido', 'pfoot-root'].forEach(function (id) {
+      var raiz = document.getElementById(id), w, n, r, k, t, v;
+      if (!raiz) return;
+      w = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT);
+      while ((n = w.nextNode())) {
+        r = _txtOrig.get(n);
+        if (!r || n.nodeValue !== r.v) r = { es: n.nodeValue }; // texto nuevo o cambiado por otro código = original en español
+        k = r.es.trim(); t = _TXT[k];
+        v = (t && ix >= 0) ? r.es.replace(k, t[ix]) : r.es;
+        if (n.nodeValue !== v) n.nodeValue = v;
+        r.v = v; _txtOrig.set(n, r);
+      }
+      raiz.querySelectorAll('input[placeholder]').forEach(function (inp) {
+        var es = inp.getAttribute('data-ph-es') || inp.placeholder, tt = _TXT[es];
+        inp.setAttribute('data-ph-es', es);
+        inp.placeholder = (tt && ix >= 0) ? tt[ix] : es;
+      });
+    });
+  }
+  window._phdrTraducir = _phdrTraducir;
+  if (typeof MutationObserver === 'function') {
+    new MutationObserver(_phdrTraducir).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  }
+  _phdrTraducir();
+  document.addEventListener('DOMContentLoaded', _phdrTraducir);
+
   /* ── THEME TOGGLE ──
      Modo claro = el diseño oscuro con los colores invertidos, en UNA sola regla para toda la web.
      Antes cada página tenía su propio «light-mode» a medias (variables sueltas + estilos fijos oscuros)
@@ -1160,6 +1255,94 @@
     if (btn) btn.textContent = claro ? '☀️' : '🌙';
     if (mob) mob.style.color = claro ? '#b45309' : '#94a3b8';
     if (ico) { ico.className = claro ? 'fas fa-sun' : 'fas fa-moon'; ico.parentElement.lastChild.textContent = claro ? 'MODO OSCURO' : 'MODO CLARO'; }
+    if (window._phdrTraducir) window._phdrTraducir(); // en EN/PT, el texto recién puesto se traduce
+  }
+  /* Contraste en modo claro: al invertir, los textos de acento (magenta, neón, cian, dorado) quedan en tonos
+     pastel sobre fondo claro (2–4:1). Cada texto que quede bajo 4.5:1 (3:1 si es grande) se aclara ANTES de la
+     inversión —al invertir queda más oscuro, mismo tono— hasta pasar. Solo en modo claro; al volver a oscuro se
+     restaura el color original. Se salta lo dudoso (fondos con imagen o degradado, texto con degradado). */
+  var _HR = [[-0.574, 1.43, 0.144], [0.426, 0.43, 0.144], [0.426, 1.43, -0.856]]; // hue-rotate(180deg)
+  function _visto(c) { // color que ve el ojo con invert(1) hue-rotate(180deg)
+    return _HR.map(function (f) { return Math.min(1, Math.max(0, f[0] * (1 - c[0]) + f[1] * (1 - c[1]) + f[2] * (1 - c[2]))); });
+  }
+  function _lum(c) {
+    var k = [0.2126, 0.7152, 0.0722], s = 0;
+    for (var i = 0; i < 3; i++) s += k[i] * (c[i] <= 0.03928 ? c[i] / 12.92 : Math.pow((c[i] + 0.055) / 1.055, 2.4));
+    return s;
+  }
+  function _rgba(s) { var m = String(s).match(/[\d.]+/g); return m && m.length >= 3 ? { c: [m[0] / 255, m[1] / 255, m[2] / 255], a: m[3] === undefined ? 1 : +m[3] } : null; }
+  function _entorno(el) { // fondos posibles (antes de invertir: uno por color de cada degradado) y opacidad; null si hay imagen
+    var capas = [], op = 1, e, cs, b, g;
+    for (e = el; e && e.nodeType === 1; e = e.parentElement) {
+      cs = getComputedStyle(e); op *= +cs.opacity;
+      if (cs.backgroundImage !== 'none') {
+        if (/url\(/.test(cs.backgroundImage)) return null;
+        g = (cs.backgroundImage.match(/rgba?\([^)]*\)/g) || []).map(_rgba).filter(Boolean);
+        if (g.length) capas.push(g.slice(0, 4));
+      }
+      b = _rgba(cs.backgroundColor);
+      if (b && b.a > 0) capas.push([b]);
+      if (b && b.a >= 0.99) break;
+    }
+    var fondos = [[0.02, 0.02, 0.02]];
+    for (var i = capas.length - 1; i >= 0; i--) {
+      var sig = [];
+      fondos.forEach(function (f) { capas[i].forEach(function (l) { sig.push(f.map(function (v, k) { return l.c[k] * l.a + v * (1 - l.a); })); }); });
+      fondos = sig.slice(0, 16);
+    }
+    return { fondos: fondos, op: op };
+  }
+  function _contrasteClaro() {
+    if (!document.body || !document.documentElement.classList.contains('tema-claro')) return;
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n, vistos = new Set();
+    while ((n = w.nextNode())) {
+      var el = n.parentElement;
+      if (!el || vistos.has(el) || !n.textContent.trim()) continue;
+      vistos.add(el);
+      if (el.hasAttribute('data-claro-color') || el.closest('svg,script,style,[data-sin-invertir],[style*="url("]')) continue;
+      var cs = getComputedStyle(el), t = _rgba(cs.color), fill = _rgba(cs.webkitTextFillColor);
+      if (!t || t.a < 0.5 || (fill && fill.a === 0)) continue;
+      var en = _entorno(el);
+      if (!en || en.op < 0.5) continue;
+      var fs = parseFloat(cs.fontSize), meta = (fs >= 24 || (fs >= 18.66 && parseInt(cs.fontWeight, 10) >= 700)) ? 3 : 4.5;
+      var fvs = en.fondos.map(_visto), lfs = fvs.map(_lum);
+      var razon = function (c) { // el peor caso entre los colores del fondo
+        var vc = _visto(c);
+        return Math.min.apply(null, fvs.map(function (fv, j) {
+          var lt = _lum(vc.map(function (x, k) { return x * en.op + fv[k] * (1 - en.op); }));
+          return (Math.max(lt, lfs[j]) + 0.05) / (Math.min(lt, lfs[j]) + 0.05);
+        }));
+      };
+      if (razon(t.c) >= meta) continue;
+      var lf = lfs.reduce(function (a, v) { return a + v; }, 0) / lfs.length;
+      var hacia = lf > 0.4 ? 1 : 0; // fondo visto claro → letra vista más oscura → color de origen más claro
+      for (var k = 0.1; k <= 1.001; k += 0.1) {
+        var c = t.c.map(function (v) { return v + (hacia - v) * k; });
+        if (razon(c) >= meta) {
+          el.setAttribute('data-claro-color', (el.style.getPropertyValue('color') || '') + '|' + el.style.getPropertyPriority('color'));
+          el.style.setProperty('color', 'rgb(' + c.map(function (v) { return Math.round(v * 255); }).join(',') + ')', 'important');
+          break;
+        }
+      }
+    }
+  }
+  function _contrasteRestaurar() {
+    document.querySelectorAll('[data-claro-color]').forEach(function (el) {
+      var p = el.getAttribute('data-claro-color').split('|');
+      if (p[0]) el.style.setProperty('color', p[0], p[1]); else el.style.removeProperty('color');
+      el.removeAttribute('data-claro-color');
+    });
+  }
+  var _ccObs = null, _ccT = 0;
+  function _contrasteProgramar() {
+    clearTimeout(_ccT);
+    _ccT = setTimeout(function () { (window.requestIdleCallback || setTimeout)(_contrasteClaro); }, 300);
+  }
+  function _contrasteVigilar(claro) {
+    if (!claro) { if (_ccObs) { _ccObs.disconnect(); _ccObs = null; } _contrasteRestaurar(); return; }
+    if (!document.body) { document.addEventListener('DOMContentLoaded', function () { _contrasteVigilar(document.documentElement.classList.contains('tema-claro')); }); return; }
+    _contrasteProgramar();
+    if (!_ccObs) { _ccObs = new MutationObserver(_contrasteProgramar); _ccObs.observe(document.body, { childList: true, subtree: true }); }
   }
   function _phdrApplyTheme(t) {
     var claro = t === 'light';
@@ -1167,6 +1350,7 @@
     document.documentElement.classList.toggle('tema-claro', claro);
     if (document.body) document.body.classList.remove('light-mode');
     _phdrIconos(claro);
+    _contrasteVigilar(claro);
     try { localStorage.setItem('pg_theme', claro ? 'light' : 'dark'); localStorage.setItem('theme', 'dark'); } catch (e) {}
   }
 

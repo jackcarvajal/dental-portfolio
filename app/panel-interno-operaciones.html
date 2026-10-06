@@ -192,11 +192,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
   <link rel="stylesheet" href="../css/admin-luxe.css?v=20260928">
-<script src="../js/reportar-problema.js?v=20261002"></script>
+<script src="../js/reportar-problema.js?v=20261002n"></script>
 <script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body data-dock-safe>
-<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
+<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 
 <!-- Auth overlay mientras verifica sesión -->
 <div id="auth-overlay">
@@ -223,7 +223,7 @@
         <span id="badge-incidencias" style="display:none;background:#ef4444;color:#fff;border-radius:10px;padding:1px 6px;font-size:.62rem;margin-left:auto"></span>
     </a>
     <a href="reportes-web.html" class="nav-item"><i class="fas fa-life-ring" style="color:#D946A6;"></i> Reportes de la web
-        <span id="badge-reportes" style="display:none;background:#D946A6;color:#fff;border-radius:10px;padding:1px 6px;font-size:.62rem;font-weight:800;margin-left:auto"></span>
+        <span id="badge-reportes" style="display:none;background:#B0267F;color:#fff;border-radius:10px;padding:1px 6px;font-size:.62rem;font-weight:800;margin-left:auto"></span>
     </a>
     <a href="#" class="nav-item" onclick="switchTab('fabricacion',this)" id="nav-fab">
         <i class="fas fa-industry" style="color:#fb923c;"></i> Fabricación
@@ -4309,7 +4309,7 @@ async function cargarFabricacion() {
           ✅ Pago verificado por el equipo · <strong>${fmtCOPFab(p.cotizacion_fab_monto)}</strong>
         </div>
         <button type="button" onclick="enrutarAFabricacion('${escJ(p.id)}','${escJ(p.fabricacion_tipo||'')}')"
-          style="padding:8px 16px;border-radius:8px;background:#D946A6;color:#fff;font-size:.78rem;font-weight:800;border:none;cursor:pointer;">
+          style="padding:8px 16px;border-radius:8px;background:#B0267F;color:#fff;font-size:.78rem;font-weight:800;border:none;cursor:pointer;">
           <i class="fas fa-arrow-right"></i> Enrutar a producción → ${escF(TIPO_LBL[p.fabricacion_tipo]||'Fabricación')}
         </button>` : ''}
     </div>`;

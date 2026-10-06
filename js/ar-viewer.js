@@ -48,7 +48,7 @@ window.ProdigyAR = (function() {
           <div id="_par-canvas-wrap" style="width:100%;height:100%;position:relative;"></div>
           <div style="position:fixed;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(0,0,0,.8));display:flex;gap:12px;justify-content:center;z-index:10;">
             <div id="_par-status" style="position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);padding:8px 18px;border-radius:100px;font-size:.8rem;backdrop-filter:blur(4px);"></div>
-            <button type="button" id="_par-place-btn" style="display:none;background:#D946A6;border:none;color:#fff;padding:14px 28px;border-radius:100px;font-size:.9rem;font-weight:700;cursor:pointer;">📍 Colocar modelo</button>
+            <button type="button" id="_par-place-btn" style="display:none;background:#B0267F;border:none;color:#fff;padding:14px 28px;border-radius:100px;font-size:.9rem;font-weight:700;cursor:pointer;">📍 Colocar modelo</button>
             <button type="button" id="_par-close-btn" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:12px 24px;border-radius:100px;font-size:.85rem;cursor:pointer;" onclick="ProdigyAR.close()">✕ Cerrar</button>
           </div>
         `;

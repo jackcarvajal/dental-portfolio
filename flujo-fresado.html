@@ -49,7 +49,7 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     <link rel="preload" href="css/global-nav.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/global-nav.min.css"></noscript>
     <style>
@@ -1978,8 +1978,8 @@
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Cotizador y Pedido de Fresado CAM — PRODIGY","url":"https://prodigylabdental.com/flujo-fresado","provider":{"@type":"LocalBusiness","name":"PRODIGY Lab Dental","telephone":"+573212816716","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"}},"description":"Cotizador interactivo de fresado CAM dental. Zirconio multicapa, PMMA, disilicato de litio, titanio. Precios en tiempo real y pedido directo.","areaServed":"Colombia","offers":{"@type":"Offer","priceCurrency":"COP","price":"85000"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Fresado CAM","item":"https://prodigylabdental.com/fresado-cam"},{"@type":"ListItem","position":3,"name":"Hacer Pedido","item":"https://prodigylabdental.com/flujo-fresado"}]}</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
-<script src="js/auth-guard.js?v=20260924"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous" defer></script>
+<script src="js/auth-guard.js?v=20260924" defer></script>
 <script>
 // Auto-fill datos del profesional desde la sesión (mismo doctor; solo cambia el paciente).
 (function(){
@@ -2007,19 +2007,21 @@
 </script>
 <script>
 // Auto-fill si hay sesión activa (flujos son públicos)
+document.addEventListener('DOMContentLoaded', function(){
 if(window.ProdigyAuth){
   window.supabase && window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634').auth.getSession().then(function(r){
     if(r.data&&r.data.session){window.PRODIGY_ROLE=r.data.session.user.email==='jackalejandroc@gmail.com'||r.data.session.user.email==='labdentalprodigy@gmail.com'?'admin':'client';window.PRODIGY_EMAIL=r.data.session.user.email;window.PRODIGY_UID=r.data.session.user.id;}
   });
 }
+});
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Necesito tener el diseno CAD listo para pedir el fresado?","acceptedAnswer":{"@type":"Answer","text":"Puedes pedir el servicio combinado: diseno CAD + fresado. PRODIGY diseña y fresca en el mismo flujo. Si ya tienes el STL de diseno, solo pide el fresado."}},{"@type":"Question","name":"El precio del fresado incluye sinterizado y coloracion?","acceptedAnswer":{"@type":"Answer","text":"El sinterizado esta siempre incluido. La coloracion extrinseca (glaze) es un extra opcional. Todos los materiales se entregan con acabado superficial pulido."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo solicitar fresado CAM dental en PRODIGY Lab","description":"Proceso para solicitar fresado de zirconio, PMMA o e.max en PRODIGY Lab Dental Bogotá.","totalTime":"PT10M","step":[{"@type":"HowToStep","name":"Selecciona el material","text":"Elige el material: zirconio monolítico, multicapa, PMMA o disilicato de litio."},{"@type":"HowToStep","name":"Sube el STL de diseño","text":"Adjunta el archivo STL del diseño CAD aprobado para proceder al fresado."},{"@type":"HowToStep","name":"Confirma y paga el 50% de abono","text":"El caso inicia producción tras confirmación del abono del 50%."},{"@type":"HowToStep","name":"Recibe tu restauración en 24-48h","text":"La pieza fresada y sinterizada llega a tu clínica o puedes pasar a recogerla en Bogotá."}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"PRODIGY Lab Dental","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"127","bestRating":"5"}}</script>
-<script src="js/reportar-problema.js?v=20261002"></script>
+<script src="js/reportar-problema.js?v=20261002n" defer></script>
 </head>
 <body>
-<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
+<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
     <!-- Geo-gate: fresado es solo Colombia. Si internacional → overlay inmediato -->
     <script>
     (function() {
@@ -2044,8 +2046,8 @@ if(window.ProdigyAuth){
     })();
     </script>
     <script>window._headerConfig = { noCta: true };</script>
-    <link rel="preload" href="js/header.js?v=20261002c" as="script">
-<script src="js/header.js?v=20261002c"></script>
+    <link rel="preload" href="js/header.js?v=20261002n" as="script">
+<script src="js/header.js?v=20261002n"></script>
 <main id="main-content">
 <div style="background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.15);border-radius:10px;padding:10px 16px;margin:16px 0;display:flex;align-items:center;gap:10px;font-size:.78rem;">
   <i class="fas fa-circle-question" style="color:#00d2ff;" aria-hidden="true"></i>
@@ -4903,7 +4905,7 @@ if(window.ProdigyAuth){
   </div>
 </section>
 <script src="js/confetti.js?v=20260807d" defer></script>
-<script src="js/footer.js?v=20261002"></script>
+<script src="js/footer.js?v=20261002n"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
 
     <!-- FLOTANTES UX -->

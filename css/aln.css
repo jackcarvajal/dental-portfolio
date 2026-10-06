@@ -33,7 +33,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .tab:hover{color:#fff;}
 .tab.on{color:#fff;border-bottom-color:var(--mg);}
 .tab:focus-visible,.chip:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
-.tab .n{background:var(--mg);color:#fff;border-radius:100px;padding:2px 8px;font-size:.72rem;font-weight:800;}
+.tab .n{background:#B0267F;color:#fff;border-radius:100px;padding:2px 8px;font-size:.72rem;font-weight:800;}
 .tab .n:empty{display:none;}
 .panel{display:none;}
 .panel.on{display:block;}

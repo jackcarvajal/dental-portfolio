@@ -22,7 +22,7 @@
   <link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
   <title>Flujo Lab Full — Portal de Admisión | PRODIGY Lab Dental</title>
   <meta property="og:title" content="Portal de Admisión de Casos — PRODIGY Lab Dental">
   <meta property="og:description" content="Envía tu caso dental digital o análogo a PRODIGY Lab. Prótesis fija, alineadores, implantes, impresión 3D y más. Respuesta en minutos.">
@@ -285,7 +285,7 @@
     .nota-precio strong { color: var(--gold2); }
     .btn-generar {
       width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px;
-      background: linear-gradient(135deg, #D946A6, #a0186e);
+      background: linear-gradient(135deg, #B0267F, #a0186e);
       color: #fff; font-size: 1rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
       border: none; border-radius: 14px; padding: 18px 24px; cursor: pointer;
       box-shadow: 0 8px 32px rgba(217,70,166,0.4); transition: transform .2s, box-shadow .2s;
@@ -316,8 +316,8 @@
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Orden de Trabajo Laboratorio — PRODIGY","url":"https://prodigylabdental.com/flujo-lab","provider":{"@type":"LocalBusiness","name":"PRODIGY Lab Dental","telephone":"+573212816716","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"}},"description":"Plataforma de pedidos para laboratorios y clínicas. Envía tu caso de prótesis fija, fresado o impresión 3D directamente a PRODIGY Lab Dental desde tu portal.","areaServed":"Colombia"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Hacer Pedido — Lab","item":"https://prodigylabdental.com/flujo-lab"}]}</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
-<script src="js/auth-guard.js?v=20260924"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous" defer></script>
+<script src="js/auth-guard.js?v=20260924" defer></script>
 <script>
 // Auto-fill datos del profesional desde la sesión (mismo doctor; solo cambia el paciente).
 (function(){
@@ -341,16 +341,18 @@
 </script>
 <script>
 // Auto-fill si hay sesión activa (flujos son públicos)
+document.addEventListener('DOMContentLoaded', function(){
 if(window.ProdigyAuth){
   window.supabase && window.supabase.createClient('https://zgihrwqfyvgyapbwzkvw.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634').auth.getSession().then(function(r){
     if(r.data&&r.data.session){window.PRODIGY_ROLE=r.data.session.user.email==='jackalejandroc@gmail.com'||r.data.session.user.email==='labdentalprodigy@gmail.com'?'admin':'client';window.PRODIGY_EMAIL=r.data.session.user.email;window.PRODIGY_UID=r.data.session.user.id;}
   });
 }
+});
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Que tipo de trabajos acepta el portal de PRODIGY Lab Full?","acceptedAnswer":{"@type":"Answer","text":"Protesis fija (coronas, puentes), alineadores invisibles, estructuras metalicas, modelos de estudio, implantologia y guias quirurgicas. Tanto analogico como digital."}},{"@type":"Question","name":"Cual es el tiempo de entrega del laboratorio completo PRODIGY?","acceptedAnswer":{"@type":"Answer","text":"Trabajos simples 24-48h. Casos complejos (Full Arch, barra sobre implantes) 3-5 dias habiles. El portal muestra el tiempo estimado antes de confirmar."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo enviar un trabajo completo al laboratorio PRODIGY","totalTime":"PT15M","step":[{"@type":"HowToStep","name":"Selecciona el tipo de trabajo","text":"Elige entre trabajo digital (STL) o analógico (impresiones físicas)."},{"@type":"HowToStep","name":"Especifica los detalles clínicos","text":"Ingresa material, color, oclusión y indicaciones especiales para el técnico."},{"@type":"HowToStep","name":"Genera la orden de trabajo","text":"El sistema crea un PDF con QR de seguimiento y abre WhatsApp pre-cargado."},{"@type":"HowToStep","name":"Seguimiento en tiempo real","text":"Rastrea el estado del caso desde prodigylabdental.com/seguimiento-caso."}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"PRODIGY Lab Dental","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"127","bestRating":"5"}}</script>
-<script src="js/reportar-problema.js?v=20261002"></script>
+<script src="js/reportar-problema.js?v=20261002n" defer></script>
 </head>
 <body>
     <!-- Geo-gate: el laboratorio (fabricación) es solo Colombia. Si internacional → overlay inmediato -->
@@ -376,10 +378,10 @@ if(window.ProdigyAuth){
         }
     })();
     </script>
-<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
+<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <script>window._headerConfig = { noCta: true };</script>
-<link rel="preload" href="js/header.js?v=20261002c" as="script">
-<script src="js/header.js?v=20261002c"></script>
+<link rel="preload" href="js/header.js?v=20261002n" as="script">
+<script src="js/header.js?v=20261002n"></script>
 <main id="main-content">
 
 <!-- HERO -->
@@ -650,7 +652,7 @@ if(window.ProdigyAuth){
 </section>
 <script src="js/supabase-client.js?v=20260609"></script>
 <script src="js/confetti.js?v=20260807d" defer></script>
-<script src="js/footer.js?v=20261002"></script>
+<script src="js/footer.js?v=20261002n"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
 <script>
 /* ═══════════════════════════════════════════════════════
@@ -1113,7 +1115,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').cat
     <div style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:10px 14px;font-size:.78rem;color:#fca5a5;margin-bottom:20px;text-align:left;">
       ⚠️ <strong>Política de despacho:</strong> El caso no sale del laboratorio sin liquidación del 100% del saldo.
     </div>
-    <button type="button" onclick="document.getElementById('modal-exito-lab').classList.remove('active');document.getElementById('modal-exito-lab').style.display='none';" style="width:100%;padding:13px;background:linear-gradient(135deg,#D946A6,#a0186e);border:none;border-radius:10px;color:#fff;font-weight:800;font-size:.95rem;cursor:pointer;letter-spacing:.5px;">Entendido</button>
+    <button type="button" onclick="document.getElementById('modal-exito-lab').classList.remove('active');document.getElementById('modal-exito-lab').style.display='none';" style="width:100%;padding:13px;background:linear-gradient(135deg,#B0267F,#a0186e);border:none;border-radius:10px;color:#fff;font-weight:800;font-size:.95rem;cursor:pointer;letter-spacing:.5px;">Entendido</button>
   </div>
 </div>
 <script>

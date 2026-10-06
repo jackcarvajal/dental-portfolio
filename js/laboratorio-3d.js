@@ -22,7 +22,7 @@ const CSS = `
 .lab3d .et.espera .t{border-color:#D4AF37;box-shadow:0 0 0 3px rgba(212,175,55,.25)}
 .lab3d .et.fuera .t{opacity:.45}.lab3d .et.fuera .t b{color:#475569}
 .lab3d .etq-caso{position:absolute;transform:translate(-50%,-100%);background:#D4AF37;color:#1a1405;border-radius:50px;padding:5px 11px;font-size:.72rem;font-weight:900;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.4)}
-.lab3d .etq-caso[hidden]{display:none}.lab3d .etq-caso.transito{background:#D946A6;color:#fff}
+.lab3d .etq-caso[hidden]{display:none}.lab3d .etq-caso.transito{background:#B0267F;color:#fff}
 .lab3d .estado{position:absolute;left:14px;bottom:14px;background:rgba(10,15,24,.9);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px 16px;width:300px;max-width:calc(100% - 28px)}
 .lab3d .estado small{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;font-weight:800}
 .lab3d .estado strong{display:block;font-size:1.02rem;margin-top:4px}

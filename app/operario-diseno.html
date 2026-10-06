@@ -124,11 +124,11 @@ body.ready{visibility:visible;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
   <link rel="stylesheet" href="../css/panel-ui.css?v=20260718f">
-<script src="../js/reportar-problema.js?v=20261002"></script>
+<script src="../js/reportar-problema.js?v=20261002n"></script>
 <script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
 </head>
 <body>
-<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#D946A6;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
+<a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 
 <!-- Sidebar -->
 <div class="sidebar">
@@ -1019,7 +1019,7 @@ function toast(msg, tipo='ok') {
   <div style="background:#0d1520;border-bottom:1px solid rgba(255,255,255,.1);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
     <span style="font-size:.85rem;font-weight:800;color:#D4AF37">👁️ Previsualización — exactamente lo que verá el cliente</span>
     <div style="display:flex;gap:10px">
-      <button type="button" id="btn-preview-enviar" style="background:linear-gradient(135deg,#D946A6,#9333ea);color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem">Confirmar y enviar al cliente →</button>
+      <button type="button" id="btn-preview-enviar" style="background:linear-gradient(135deg,#B0267F,#9333ea);color:#fff;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem">Confirmar y enviar al cliente →</button>
       <button type="button" onclick="document.getElementById('modal-preview-op').style.display='none'" style="background:none;border:1px solid rgba(255,255,255,.2);color:#94a3b8;padding:8px 14px;border-radius:6px;cursor:pointer">✕ Cerrar</button>
     </div>
   </div>
@@ -1040,7 +1040,7 @@ function previsualizarDiseno(link, pedidoId) {
 }
 </script>
 <!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 
 <!-- BULK UPLOAD para Operario Diseño — reutiliza la misma lógica del operator-panel -->
