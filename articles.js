@@ -2,7 +2,7 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-10-03
+   Última actualización automática: 2026-10-06
    ============================================================ */
 
 const ARTICLES = [
@@ -120,14 +120,7 @@ const ARTICLES = [
       "a": "Es crucial considerar la estabilidad oclusal, la higiene del paciente y la posibilidad de desgaste o tinción a largo plazo. Aunque el PMMA CAD/CAM es robusto, no es un material definitivo. Se recomienda un pulido meticuloso para reducir la acumulación de placa y un seguimiento regular para evaluar la integridad de la prótesis y la salud periimplantaria (Al-Akhali et al., J Prosthet Dent, 2022)."
     }
   ],
-  "referencias": [
-    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Mechanical properties of CAD/CAM PMMA materials for provisional restorations. J Prosthet Dent. 2020;124(4):496.e1-496.e8. doi:10.1016/j.prosdent.2020.03.006",
-    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Clinical performance of CAD/CAM provisional restorations: A systematic review. J Prosthet Dent. 2021;126(3):352-360. doi:10.1016/j.prosdent.2020.09.006",
-    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Color stability of CAD/CAM provisional materials after immersion in different staining solutions. J Prosthet Dent. 2021;125(2):348.e1-348.e8. doi:10.1016/j.prosdent.2020.03.018",
-    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Effect of different polishing techniques on the surface roughness and gloss of CAD/CAM provisional materials. J Prosthet Dent. 2021;125(5):824.e1-824.e8. doi:10.1016/j.prosdent.2020.03.019",
-    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Clinical outcomes of full-arch implant-supported provisional restorations fabricated with CAD/CAM PMMA: A systematic review. J Prosthet Dent. 2022;127(1):101-109. doi:10.1016/j.prosdent.2020.12.007",
-    "Al-Akhali M, Al-Akhali A, Al-Wafi H, Al-Sanabani F, Al-Maweri S, Al-Qudami A. Mechanical properties of CAD/CAM provisional materials: a systematic review and meta-analysis. Clin Oral Investig. 2022;26(1):1-18. doi:10.1007/s00784-021-04179-x"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -247,11 +240,17 @@ const ARTICLES = [
     }
   ],
   "referencias": [
-    "Sailer I, Pjetursson BE, Jung RE, Hämmerle CH. Randomized controlled clinical trial of customized zirconia and titanium abutments supporting single-tooth implant crowns: 5-year results. Clin Oral Implants Res. 2009;20(12):1281-1287. doi:10.1111/j.1600-0501.2009.01792.x",
-    "Linkevicius T, Puisys A, Linkeviciene L, Alkimavicius J, Grybauskas S, Kupciunas N. The influence of the customized abutment emergence profile on the surrounding soft tissues: a 1-year randomized clinical trial. J Clin Periodontol. 2018;45(1):101-108. doi:10.1111/jcpe.12822",
-    "Jung RE, Pjetursson BE, Sailer I, Hämmerle CH. A systematic review of the 5-year survival and complication rates of customized CAD/CAM abutments. J Prosthet Dent. 2017;117(1):109-116. doi:10.1016/j.prosdent.2016.05.006",
-    "Kim S, Kim S, Lee J, Kim S. Marginal fit of CAD/CAM-fabricated titanium and zirconia implant abutments. J Prosthet Dent. 2013;109(6):378-384. doi:10.1016/S0022-3913(13)60098-2",
-    "Eliades G, Zinelis S, Al-Wazzan K, Eliades T. Titanium and titanium alloys in dentistry: A review of their properties, applications, and challenges. Dental Materials. 2018;34(11):1621-1631. doi:10.1016/j.dental.2018.08.201"
+    {
+      "autores": "Zembic A, Sailer I, Jung RE, Hämmerle CHF.",
+      "titulo": "Randomized‐controlled clinical trial of customized zirconia and titanium implant abutments for single‐tooth implants in canine and posterior regions: 3‐year results",
+      "revista": "Clinical Oral Implants Res",
+      "año": 2009,
+      "vol": "20",
+      "num": "8",
+      "pags": "802-808",
+      "doi": "10.1111/j.1600-0501.2009.01717.x",
+      "verificada": true
+    }
   ]
 },
 
@@ -356,12 +355,17 @@ const ARTICLES = [
     }
   ],
   "referencias": [
-    "Jung YS, Lee JW, Kim JH, et al. Marginal and internal fit of CAD/CAM-fabricated zirconia crowns: A systematic review and meta-analysis. J Prosthet Dent. 2017;118(2):170-176. doi:10.1016/j.prosdent.2016.09.018",
-    "Reich S, Wichmann M, Nkenke E, et al. Clinical fit of CAD/CAM-fabricated all-ceramic restorations: a systematic review. J Prosthet Dent. 2017;117(3):342-347. doi:10.1016/j.prosdent.2016.07.016",
-    "Al-Amleh B, Waddell JN, Duncan WJ. The marginal and internal fit of CAD/CAM all-ceramic restorations: a systematic review. J Prosthet Dent. 2010;104(5):304-312. doi:10.1016/S0022-3913(10)60149-1",
-    "Guess PC, Schultheis S, Bonfante MA, et al. All-ceramic partial coverage restorations: influence of preparation design and ceramic material on stress distribution. J Prosthet Dent. 2011;106(4):223-232. doi:10.1016/S0022-3913(11)60126-7",
-    "Denry I, Holloway JA. Ceramics for dental applications: a review. J Dent Res. 2010;89(9):861-872. doi:10.1177/0022034510375270",
-    "Tinschert J, Natt G, Mautsch W, et al. Marginal accuracy of zirconia-based fixed partial dentures generated with different CAD/CAM systems. J Dent Res. 2001;80(11):2000-2005. doi:10.1177/00220345010800111001"
+    {
+      "autores": "Denry I, Holloway JA.",
+      "titulo": "Ceramics for Dental Applications: A Review",
+      "revista": "Materials",
+      "año": 2010,
+      "vol": "3",
+      "num": "1",
+      "pags": "351-368",
+      "doi": "10.3390/ma3010351",
+      "verificada": true
+    }
   ]
 },
 
@@ -484,14 +488,7 @@ const ARTICLES = [
       "a": "Sí. Kim et al. (Journal of Prosthetic Dentistry, 2021) demostraron que los sistemas de IA pueden reducir el tiempo de diseño de coronas de aproximadamente 10 minutos a 2 minutos, manteniendo un ajuste marginal y oclusal comparable al diseño manual. Chen et al. (Journal of Dental Research, 2022) confirmaron que no hay diferencias significativas en el ajuste marginal o interno."
     }
   ],
-  "referencias": [
-    "Lee K, Kim SY, Kim JH, et al. Deep learning-based automatic margin line detection for dental CAD/CAM. J Dent. 2020;99:103390. doi:10.1016/j.jdent.2020.103390",
-    "Tian Y, Zhang X, Li J, et al. Automated preparation margin detection for dental CAD/CAM using deep learning. J Dent Res. 2021;100(10):1108-1115. doi:10.1177/00220345211018901",
-    "Zhang X, Li J, Wang Y, et al. Artificial intelligence-assisted occlusal surface generation for posterior dental crowns. J Prosthet Dent. 2022;128(5):1018-1025. doi:10.1016/j.prosdent.2021.03.018",
-    "Li J, Zhang X, Wang Y, et al. Artificial intelligence-driven optimization of proximal contacts in dental CAD/CAM restorations. J Dent. 2023;130:104400. doi:10.1016/j.jdent.2023.104400",
-    "Kim SY, Lee K, Kim JH, et al. Evaluation of artificial intelligence-based crown design system for posterior teeth. J Prosthet Dent. 2021;126(3):421-427. doi:10.1016/j.prosdent.2020.08.016",
-    "Chen Y, Li J, Zhang X, et al. Deep learning for automated dental crown design: A comparative study. J Dent Res. 2022;101(12):1478-1485. doi:10.1177/00220345221102345"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -632,14 +629,17 @@ const ARTICLES = [
     }
   ],
   "referencias": [
-    "Giménez B, et al. Accuracy of a digital impression system for single-implant restorations. J Prosthet Dent. 2017;117(2):214-221. doi:10.1016/j.prosdent.2016.05.006",
-    "Mangano F, et al. Accuracy of 6 intraoral scanners in the detection of a full-arch model: An in vitro study. J Prosthet Dent. 2017;118(3):325-332. doi:10.1016/j.prosdent.2016.10.007",
-    "Papaspyridakos P, et al. A systematic review of the survival rates of implants and prostheses in full-arch implant-supported fixed prostheses after a minimum of 5 years of follow-up. Int J Oral Maxillofac Implants. 2014;29(1):2-13. doi:10.11607/jomi.3361",
-    "Pjetursson BE, et al. A systematic review of the 5-year survival and complication rates of implants supporting fixed dental prostheses (FDPs) and removable dental prostheses (RDPs) in partially edentulous patients. Clin Oral Implants Res. 2014;25(Suppl 10):123-138. doi:10.1111/clr.12332",
-    "Guess PC, et al. All-ceramic partial fixed dental prostheses made of a new yttria-stabilized tetragonal zirconia polycrystal (Y-TZP) ceramic: a 5-year prospective clinical study. Dent Mater. 2013;29(1):e1-e6. doi:10.1016/j.dental.2012.09.006",
-    "Maló P, et al. The All-on-4 concept for the rehabilitation of the edentulous maxilla: A 10-year follow-up of a prospective clinical study. Clin Oral Implants Res. 2019;30(1):1-10. doi:10.1111/clr.13388",
-    "Jemt T, et al. A 15-year follow-up study of fixed prostheses on four implants in the edentulous maxilla. Int J Oral Maxillofac Implants. 1996;11(1):3-9. PMID: 8631777",
-    "Karl M, et al. Accuracy of fit of implant-supported fixed dental prostheses fabricated with different digital workflows. J Prosthet Dent. 2017;118(6):739-745. doi:10.1016/j.prosdent.2017.02.007"
+    {
+      "autores": "Jemt T.",
+      "titulo": "Fixed implant‐supported prostheses in the edentulous maxilla. A five‐year follow‐up report.",
+      "revista": "Clinical Oral Implants Res",
+      "año": 1994,
+      "vol": "5",
+      "num": "3",
+      "pags": "142-147",
+      "doi": "10.1034/j.1600-0501.1994.050304.x",
+      "verificada": true
+    }
   ]
 },
 
@@ -746,12 +746,7 @@ const ARTICLES = [
       "a": "Estudios indican que la discrepancia media entre las dimensiones dentales planificadas y las reales es de 0.05 a 0.5 mm para el ancho y de 0.03 a 0.4 mm para la longitud, lo cual es clínicamente aceptable y demuestra una alta predictibilidad del DSD."
     }
   ],
-  "referencias": [
-    "Al-Thobity AM, Al-Qahtani AS, Al-Zahrani AM, Al-Harbi FA, Al-Omari WM. Accuracy of digital smile design software in predicting the final esthetic outcome: A systematic review. J Prosthet Dent. 2023;129(4):618-625. doi:10.1016/j.prosdent.2022.01.006",
-    "Coachman C, Calamita MA, Sesma N. Dynamic smile analysis: From 2D to 3D to 4D. J Esthet Restor Dent. 2017;29(3):171-181. doi:10.1111/jerd.12304",
-    "Coachman C, Calamita MA. Digital Smile Design: A Tool for Treatment Planning and Communication. Dent Clin North Am. 2012;56(2):303-313. doi:10.1016/j.cden.2012.01.001",
-    "Joda T, Brägger U. Digital Smile Design: A Critical Review of the Current Literature. J Prosthodont. 2017;26(1):10-15. doi:10.1111/jopr.12431"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -861,14 +856,7 @@ const ARTICLES = [
       "a": "Vita Enamic es más amigable con el diente antagonista. Su menor dureza (aproximadamente 65 HV) y módulo elástico permiten un desgaste más equilibrado y reducido del esmalte opuesto en comparación con cerámicas más duras como Celtra Duo (Lawson et al., J Prosthet Dent, 2016; Stawarczyk et al., Dent Mater, 2015)."
     }
   ],
-  "referencias": [
-    "Coldea A, Swain MV, Thiel N. Mechanical properties of polymer-infiltrated-ceramic-network materials. Dent Mater. 2020;36(1):1-10. doi:10.1016/j.dental.2019.10.009",
-    "El-Damanhoury H, Gaintantzopoulou MD, Al-Akhali M, et al. Mechanical properties of CAD/CAM materials: a comparative study. J Dent. 2015;43(11):1347-1354. doi:10.1016/j.jdent.2015.08.006",
-    "Lawson NC, Cakir D, Beck P, et al. Wear of enamel against CAD/CAM restorative materials. J Prosthet Dent. 2016;115(6):762-767. doi:10.1016/j.prosdent.2015.11.018",
-    "Reich S, Schierz O, Lohbauer U, et al. Clinical performance of CAD/CAM polymer-infiltrated ceramic-network (PICN) restorations: 3-year results of a prospective study. J Dent. 2017;63:44-48. doi:10.1016/j.jdent.2017.05.010",
-    "Schmitter M, Mueller D, Rues S, et al. Clinical performance of CAD/CAM-fabricated zirconia-reinforced lithium silicate ceramic crowns: a 3-year follow-up. J Prosthet Dent. 2016;116(6):902-907. doi:10.1016/j.prosdent.2016.03.003",
-    "Stawarczyk B, Liebermann A, Eichberger M, et al. Comparison of the mechanical properties of CAD/CAM materials. Dent Mater. 2015;31(10):1273-1282. doi:10.1016/j.dental.2015.08.152"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -980,11 +968,7 @@ const ARTICLES = [
       "a": "Sí, es absolutamente crítico. El material en su estado 'azul' precristalizado es más débil y no posee las propiedades mecánicas ni estéticas finales. La cristalización a 850°C durante 10-15 minutos transforma el metasilicato de litio en disilicato de litio, confiriéndole su resistencia flexural óptima y su color final. Sin este paso, la restauración sería propensa a la fractura y no cumpliría con las expectativas estéticas (Belli R et al., Dental Materials, 2022)."
     }
   ],
-  "referencias": [
-    "1. Al-Haj Husain N, Al-Harbi F, Al-Qahtani A, Al-Haj Husain A, Al-Haj Husain M. Mechanical properties and marginal fit of CAD/CAM lithium disilicate and zirconia crowns: An in vitro study. Dental Materials. 2023;39(1):1-10. doi:10.1016/j.dental.2022.10.007",
-    "2. Belli R, Cadenaro M, Marchesi G, et al. Mechanical properties of different generations of lithium disilicate ceramics. Dental Materials. 2022;38(1):1-9. doi:10.1016/j.dental.2021.10.001",
-    "3. El-Damanhoury HM, Grawish ME, El-Sayed MA, El-Damanhoury MA. Effect of different processing techniques on the flexural strength and fracture toughness of lithium disilicate ceramics. J Prosthet Dent. 2022;127(1):147.e1-147.e8. doi:10.1016/j.prosdent.2021.03.018"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -1101,13 +1085,7 @@ const ARTICLES = [
       "a": "Es fundamental verificar que el escáner exporte archivos en formatos abiertos estándar (STL, PLY, OBJ), ya que esto garantiza la compatibilidad con la mayoría de los software CAD/CAM de laboratorio. Además, las plataformas de conectividad del fabricante (ej. Medit Link, 3Shape Unite) suelen ofrecer integración directa con los sistemas de laboratorio más comunes, facilitando una comunicación fluida y eficiente."
     }
   ],
-  "referencias": [
-    "Richter H, Wulf J, Lauer HC, et al. Accuracy of five intraoral scanners for full-arch impressions: An in vitro study. J Prosthet Dent. 2023;129(1):109-116. doi:10.1016/j.prosdent.2023.01.001",
-    "Ender A, Zimmermann M, Mehl A. Accuracy of single-tooth impressions: A systematic review. J Dent. 2020;99:103392. doi:10.1016/j.jdent.2020.103392",
-    "Kim SY, Lee SJ, Lee SH, et al. Comparative evaluation of scanning speed and accuracy of three intraoral scanners for full-arch impressions. J Prosthet Dent. 2022;128(5):987-994. doi:10.1016/j.prosdent.2022.03.005",
-    "Ren J, Li J, Wang Y, et al. Clinical evaluation of marginal fit of fixed partial dentures fabricated with intraoral scanner versus conventional impression: A systematic review and meta-analysis. J Dent. 2022;124:104200. doi:10.1016/j.jdent.2022.104200",
-    "Al-Haj Husain A, Al-Haj Husain N, Al-Haj Husain A. Digital workflow for full-arch implant-supported prostheses: A systematic review. J Prosthet Dent. 2021;125(3):430-438. doi:10.1016/j.prosdent.2020.09.001"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -1216,11 +1194,28 @@ const ARTICLES = [
     }
   ],
   "referencias": [
-    "Lee JH, Kim DH, Jeong SN, Choi SH. Deep learning for the detection and diagnosis of dental caries on periapical radiographs. J Dent Res. 2021;100(1):67-73. doi:10.1177/0022034520957428",
-    "Kwon Y, Kim Y, Kim Y, Kim J. Diagnostic accuracy of artificial intelligence for detecting periodontal bone loss on periapical radiographs: A systematic review and meta-analysis. J Dent. 2023;138:104698. doi:10.1016/j.jdent.2023.104698",
-    "Ahn JJ, Kim Y, Kim Y, Kim J. Deep learning-based automatic tooth segmentation and margin line detection for dental CAD/CAM. J Prosthet Dent. 2022;127(1):159-166. doi:10.1016/j.prosdent.2020.12.007",
-    "Bayrakdar IS, Bayrakdar B, Akdeniz BG. Diagnostic accuracy of artificial intelligence for detecting dental caries on periapical radiographs: A systematic review and meta-analysis. J Dent. 2023;137:104651. doi:10.1016/j.jdent.2023.104651",
-    "Schwendicke F, Chaurasia A, Denz C, et al. Deep learning for caries detection: a systematic review and meta-analysis. J Dent. 2022;121:104101. doi:10.1016/j.jdent.2022.104101"
+    {
+      "autores": "Lee S, Oh Si, Jo J, Kang S, Shin Y, Park Jw.",
+      "titulo": "Deep learning for early dental caries detection in bitewing radiographs",
+      "revista": "Sci Rep",
+      "año": 2021,
+      "vol": "11",
+      "num": "1",
+      "pags": "16807",
+      "doi": "10.1038/s41598-021-96368-7",
+      "verificada": true
+    },
+    {
+      "autores": "Schwendicke F, Chaurasia A, Arsiwala L, Lee JH, Elhennawy K, Jost-Brinkmann PG, et al.",
+      "titulo": "Deep learning for cephalometric landmark detection: systematic review and meta-analysis",
+      "revista": "Clin Oral Invest",
+      "año": 2021,
+      "vol": "25",
+      "num": "7",
+      "pags": "4299-4309",
+      "doi": "10.1007/s00784-021-03990-w",
+      "verificada": true
+    }
   ]
 },
 
@@ -1363,12 +1358,7 @@ const ARTICLES = [
       "a": "Sí, la evidencia clínica sugiere que las restauraciones diseñadas a través de flujos de trabajo digitales remotos, utilizando escáneres de alta precisión y protocolos validados, pueden lograr una precisión marginal e interna comparable o incluso superior a las fabricadas con métodos tradicionales, gracias a la estandarización y reducción de errores manuales."
     }
   ],
-  "referencias": [
-    "Giménez-González B, et al. Accuracy of 7 intraoral scanners for complete-arch impressions: A comparative in vitro study. J Prosthet Dent. 2020;124(5):561-568. doi:10.1016/j.prosdent.2019.09.006",
-    "Ender A, et al. Accuracy of intraoral scanners for single-tooth preparations: A systematic review. J Dent. 2016;46:1-8. doi:10.1016/j.jdent.2016.01.001",
-    "Mangano FG, et al. Accuracy of intraoral scanners for full-arch implant impressions: A systematic review and meta-analysis. J Dent. 2020;97:103342. doi:10.1016/j.jdent.2020.103342",
-    "Renne W, et al. Accuracy of complete-arch digital impressions: A systematic review. J Prosthet Dent. 2017;118(4):469-475. doi:10.1016/j.prosdent.2017.01.001"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -1480,12 +1470,7 @@ const ARTICLES = [
       "a": "Aunque la inversión inicial en equipos CAD/CAM es significativa, estudios indican que puede ser rentable a largo plazo debido a la reducción de costos de mano de obra, menor desperdicio de material, disminución de retrabajos y mayor eficiencia en el tiempo de producción (Al-Haj Husain et al., Journal of Dentistry, 2018)."
     }
   ],
-  "referencias": [
-    "Al-Haj Husain A, et al. Cost-effectiveness of CAD/CAM versus conventional fabrication of dental prostheses: A systematic review. J Dent. 2018;79:1-8. doi:10.1016/j.jdent.2018.10.002",
-    "Conti A, et al. Marginal and internal fit of zirconia crowns fabricated with different CAD/CAM systems: A systematic review and meta-analysis. J Prosthet Dent. 2017;118(2):162-168.e1. doi:10.1016/j.prosdent.2016.10.007",
-    "Denry I, et al. Zirconia in dentistry: A review. Dent Mater. 2019;35(1):1-16. doi:10.1016/j.dental.2018.08.201",
-    "Nedelcu R, et al. Accuracy of intraoral scanners: A systematic review. J Prosthet Dent. 2018;120(3):366-371.e1. doi:10.1016/j.prosdent.2017.11.001"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -1633,10 +1618,28 @@ const ARTICLES = [
     }
   ],
   "referencias": [
-    "Nakamura T, Ohyama T, Ishigaki S, et al. Mechanical properties and translucency of dental zirconia ceramics. J Prosthet Dent. 2019;121(2):324-330. doi:10.1016/j.prosdent.2018.04.004",
-    "Elsaka SE, Elnaggar RS. Mechanical properties of lithium disilicate and zirconia-reinforced lithium silicate glass-ceramics. J Prosthet Dent. 2016;115(5):601-608. doi:10.1016/j.prosdent.2015.10.006",
-    "Al-Dulaijan YA, Al-Qahtani FA, Al-Zahrani AM, et al. Mechanical properties of CAD/CAM resin-based composites and hybrid ceramics. J Prosthet Dent. 2020;123(1):159-165. doi:10.1016/j.prosdent.2019.03.007",
-    "Zhang Y, Lawn BR. Novel Zirconia Materials in Dentistry. J Dent Res. 2018;97(2):140-147. doi:10.1177/0022034517737483"
+    {
+      "autores": "Elsaka SE, Elnaghy AM.",
+      "titulo": "Mechanical properties of zirconia reinforced lithium silicate glass-ceramic",
+      "revista": "Dental Materials",
+      "año": 2016,
+      "vol": "32",
+      "num": "7",
+      "pags": "908-914",
+      "doi": "10.1016/j.dental.2016.03.013",
+      "verificada": true
+    },
+    {
+      "autores": "Zhang Y, Lawn B.",
+      "titulo": "Novel Zirconia Materials in Dentistry",
+      "revista": "J Dent Res",
+      "año": 2017,
+      "vol": "97",
+      "num": "2",
+      "pags": "140-147",
+      "doi": "10.1177/0022034517737483",
+      "verificada": true
+    }
   ]
 },
 
@@ -1770,11 +1773,17 @@ const ARTICLES = [
     }
   ],
   "referencias": [
-    "Ender A, Zimmermann M, Mehl A. In vitro accuracy of a new generation of dental laboratory scanners. J Prosthet Dent. 2018;120(5):782-789. doi:10.1016/j.prosdent.2017.12.007",
-    "Joda T, Brägger U, Gallucci GO. Clinical and laboratory workflow efficiency of digital versus conventional implant impressions: A randomized controlled trial. J Prosthet Dent. 2017;118(2):185-190. doi:10.1016/j.prosdent.2016.10.012",
-    "Mangano F, Gandolfi A, Luongo G, et al. Digital versus conventional workflow for the fabrication of single crowns: A randomized controlled clinical trial. J Prosthet Dent. 2019;121(2):242-250. doi:10.1016/j.prosdent.2018.04.020",
-    "Al-Haj Husain A, Al-Haj Husain N, Al-Haj Husain A, et al. Accuracy of CAD/CAM milled zirconia frameworks for fixed dental prostheses: A systematic review and meta-analysis. J Prosthet Dent. 2020;123(1):70-78. doi:10.1016/j.prosdent.2019.03.018",
-    "Gjelvold B, Chrcanovic BR, Korduner EK, et al. Accuracy of 3D-printed dental models: A systematic review. J Prosthet Dent. 2021;125(1):103-111. doi:10.1016/j.prosdent.2020.03.016"
+    {
+      "autores": "Joda T, Lenherr P, Dedem P, Kovaltschuk I, Bragger U, Zitzmann NU.",
+      "titulo": "Time efficiency, difficulty, and operator's preference comparing digital and conventional implant impressions: a randomized controlled trial",
+      "revista": "Clinical Oral Implants Res",
+      "año": 2016,
+      "vol": "28",
+      "num": "10",
+      "pags": "1318-1323",
+      "doi": "10.1111/clr.12982",
+      "verificada": true
+    }
   ]
 },
 
@@ -1906,10 +1915,17 @@ const ARTICLES = [
     }
   ],
   "referencias": [
-    "Al-Haj Husain A, et al. Accuracy of implant position in computer-aided design/computer-aided manufacturing surgical guides: A systematic review and meta-analysis. Dent Mater. 2020;36(1):1-12. doi:10.1016/j.dental.2019.10.006",
-    "Joda T, et al. The digital workflow in fixed prosthodontics: A systematic review. J Prosthet Dent. 2017;118(6):724-729. doi:10.1016/j.prosdent.2017.03.003",
-    "Kim J, et al. Evaluation of dental technicians' satisfaction with CAD software for fixed prosthodontics: A survey study. Int J Comput Dent. 2020;23(4):301-308. PMID: 33300899",
-    "Chen Y, et al. Digital workflow for implant-supported fixed prostheses: A systematic review. Dent Mater. 2019;35(10):1401-1410. doi:10.1016/j.dental.2019.07.001"
+    {
+      "autores": "Joda T, Zarone F, Ferrari M.",
+      "titulo": "The complete digital workflow in fixed prosthodontics: a systematic review",
+      "revista": "BMC Oral Health",
+      "año": 2017,
+      "vol": "17",
+      "num": "1",
+      "pags": "124",
+      "doi": "10.1186/s12903-017-0415-0",
+      "verificada": true
+    }
   ]
 },
 
@@ -2030,12 +2046,7 @@ const ARTICLES = [
       "a": "Aunque los ciclos rápidos son eficientes, si la máxima translucidez es un requisito estético primordial (por ejemplo, en restauraciones anteriores de alta demanda), un ciclo estándar podría ser preferible, ya que algunos estudios han reportado una ligera reducción en la translucidez con protocolos de alta velocidad (Al-Haddad et al., Dental Materials, 2018). Siempre se deben seguir las recomendaciones específicas del fabricante del material y del horno."
     }
   ],
-  "referencias": [
-    "Al-Haddad A, Labban N, Al-Nazawi A, et al. Effect of high-speed sintering on the mechanical properties and translucency of monolithic zirconia. Dent Mater. 2018;34(10):1487-1494. doi:10.1016/j.dental.2018.06.001",
-    "Kim MJ, Kim JH, Kim WC, et al. Effect of different sintering protocols on the mechanical properties and phase stability of 3Y-TZP zirconia. J Dent. 2019;80:1-6. doi:10.1016/j.jdent.2019.01.001",
-    "Monaco C, Ferrari M, Vichi A, et al. Effect of different sintering protocols on the marginal fit of zirconia crowns. J Prosthet Dent. 2019;121(1):127-132. doi:10.1016/j.prosdent.2018.07.003",
-    "Zhang Y, Lawn BR. Low-temperature degradation of Y-TZP zirconia: A review. J Dent. 2019;81:1-10. doi:10.1016/j.jdent.2019.03.003"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -2164,12 +2175,7 @@ const ARTICLES = [
       "a": "Sí, el grabado con ácido fluorhídrico (HF) es un paso crucial para lograr una adhesión óptima y duradera de Vita Suprinity PC. Crea una superficie microporosa que mejora la retención micromecánica y permite la acción efectiva del agente de acoplamiento de silano, fundamental para la unión química con el cemento de resina (Belli et al., Dental Materials, 2017)."
     }
   ],
-  "referencias": [
-    "Belli R, et al. The effect of different surface treatments on the bond strength of zirconia-reinforced lithium silicate ceramic. Dent Mater. 2017;33(1):35-43. doi:10.1016/j.dental.2016.10.007",
-    "Elsaka SE, et al. Effect of surface treatments on the flexural strength and bond strength of zirconia-reinforced lithium silicate glass-ceramic. J Dent. 2017;56:106-112. doi:10.1016/j.jdent.2016.11.002",
-    "Al-Akhali M, et al. Effect of different surface treatments on the flexural strength and fracture toughness of zirconia-reinforced lithium silicate glass-ceramic. Dent Mater. 2018;34(1):123-131. doi:10.1016/j.dental.2017.10.005",
-    "Ahn JS, et al. Comparison of the optical properties of zirconia-reinforced lithium silicate glass-ceramic and lithium disilicate glass-ceramic. J Prosthet Dent. 2018;119(3):470-475. doi:10.1016/j.prosdent.2017.05.003"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -2280,12 +2286,7 @@ const ARTICLES = [
       "a": "Una mayor dureza Vickers en las férulas CAD/CAM implica una mayor resistencia al desgaste y a la abrasión. Esto se traduce en una mayor durabilidad del dispositivo, lo que potencialmente prolonga su vida útil y reduce la necesidad de reemplazos frecuentes, manteniendo la superficie oclusal de la férula más estable a lo largo del tiempo."
     }
   ],
-  "referencias": [
-    "Al-Ani A, Al-Omari WM, Al-Qudah AA, Al-Zoubi IA. Marginal and internal fit of CAD/CAM-fabricated occlusal splints compared to conventional heat-polymerized splints. J Prosthet Dent. 2017;118(4):488-493. doi:10.1016/j.prosdent.2016.12.007",
-    "Stawarczyk B, Sener B, Trottmann A, Hämmerle CH, Sailer I. Mechanical properties of CAD/CAM and conventional PMMA materials for occlusal splints. Dent Mater. 2015;31(10):1242-1250. doi:10.1016/j.dental.2015.07.009",
-    "Kim JH, Lee JY, Kim YS, Kim MJ, Kim YJ. Clinical effectiveness of CAD/CAM-fabricated occlusal splints for temporomandibular disorders: A randomized controlled trial. J Oral Rehabil. 2019;46(11):1038-1046. doi:10.1111/joor.12840",
-    "Saito T, Kanno T, Ichinohe T, Nakajima K, Sasaki K. Accuracy of occlusal splints fabricated by CAD/CAM system: A systematic review. J Prosthet Dent. 2021;125(1):108-115. doi:10.1016/j.prosdent.2020.01.018"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -2395,13 +2396,7 @@ const ARTICLES = [
       "a": "La curva de aprendizaje para sistemas CAD/CAM como Exocad puede variar, pero la competencia para el diseño de restauraciones básicas se logra generalmente después de 10-20 casos. La interfaz intuitiva y los recursos de capacitación disponibles facilitan este proceso, aunque la maestría en diseños complejos requiere más experiencia (Al-Haj Husain et al., J Dent Educ, 2018)."
     }
   ],
-  "referencias": [
-    "Al-Rifaiy AA, Al-Haj Husain N, Al-Haj Husain A. Marginal and internal fit of zirconia crowns fabricated with different CAD/CAM systems: An in vitro study. J Prosthet Dent. 2020;123(1):127-133. doi:10.1016/j.prosdent.2019.02.007",
-    "Kim JH, Kim JH, Lee JH, Kim JH. Comparison of design time and accuracy of single crowns fabricated using two different CAD software programs. J Prosthet Dent. 2019;122(5):488-493. doi:10.1016/j.prosdent.2019.01.011",
-    "Al-Haj Husain N, Al-Haj Husain A, Al-Rifaiy AA. The learning curve of CAD/CAM systems in dentistry: A systematic review. J Dent Educ. 2018;82(11):1188-1195. doi:10.21815/JDE.018.109",
-    "Al-Rifaiy AA, Al-Haj Husain N, Al-Haj Husain A. Accuracy of fit of zirconia fixed dental prostheses fabricated with different CAD/CAM systems: A systematic review and meta-analysis. J Prosthet Dent. 2019;121(4):603-610. doi:10.1016/j.prosdent.2018.07.012",
-    "Wittneben JG, Joda T, Weber HP, Brägger U. Accuracy of fit of implant-supported frameworks fabricated by conventional and CAD/CAM techniques: A systematic review. Int J Oral Maxillofac Implants. 2013;28(5):1161-1172. doi:10.11607/jomi.3120"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -2511,10 +2506,17 @@ const ARTICLES = [
     }
   ],
   "referencias": [
-    "Al-Kheraif AA, Al-Qahtani SM, Al-Hamdan RS, Al-Shahrani AM, Al-Dossary AA, Al-Malki MA, Al-Malki FA. Mechanical properties and marginal accuracy of 3D-printed permanent restorative resin materials. J Prosthet Dent. 2023 Oct;130(4):594.e1-594.e8. doi: 10.1016/j.prosdent.2023.05.004",
-    "Aati S, Al-Qahtani SM, Al-Kheraif AA, Al-Hamdan RS, Al-Shahrani AM, Al-Dossary AA, Al-Malki MA, Al-Malki FA. Accuracy of 3D-printed surgical guides for dental implant placement: A systematic review and meta-analysis. J Dent. 2022 Oct;125:104279. doi: 10.1016/j.jdent.2022.104279",
-    "Shim JS, Lee JH, Maeng YJ, Kim JH, Kim YS, Lee SY. Flexural strength and modulus of 3D-printed dental resins for temporary restorations. Dent Mater. 2021 Apr;37(4):657-665. doi: 10.1016/j.dental.2021.01.009",
-    "Park J, Kim Y, Kim S, Lee J, Kim H. Evaluation of the mechanical properties and biocompatibility of 3D-printed dental splint resins. J Prosthet Dent. 2020 Nov;124(5):630-636. doi: 10.1016/j.prosdent.2019.10.009"
+    {
+      "autores": "Al-Hamdan K.",
+      "titulo": "Accuracy of Implant Placement Utilizing 3D Printed and Thermoplastic Surgical Guides: A CBCT-Analysis",
+      "revista": "Biosci. Biotech. Res. Comm",
+      "año": 2020,
+      "vol": "13",
+      "num": "3",
+      "pags": "1210-1213",
+      "doi": "10.21786/bbrc/13.3/34",
+      "verificada": true
+    }
   ]
 },
 
@@ -2658,13 +2660,7 @@ const ARTICLES = [
       "a": "El laboratorio debe invertir en un escáner de modelos de alta precisión, software de diseño ortodóntico y una impresora 3D de resina con capacidad de alta resolución. Es crucial seleccionar resinas biocompatibles con propiedades mecánicas adecuadas y establecer protocolos rigurosos para el post-procesamiento (lavado y curado) para asegurar la precisión y calidad de las cubetas (Kasparova et al., J Clin Orthod, 2020)."
     }
   ],
-  "referencias": [
-    "Grünheid T, et al. Accuracy of a new indirect bonding technique. Am J Orthod Dentofacial Orthop. 2014 Nov;146(5):670-7. doi: 10.1016/j.ajodo.2014.07.017",
-    "Koo BC, et al. Accuracy of bracket placement with a CAD/CAM indirect bonding technique. Angle Orthod. 2011 Nov;81(6):1017-22. doi: 10.2319/030911-168.1",
-    "Al-Anezi SA, et al. Accuracy of bracket placement in indirect bonding: a systematic review. J Orthod. 2018 Sep;45(3):177-185. doi: 10.1080/14656566.2018.1488109",
-    "Kasparova M, et al. Accuracy of digitally fabricated indirect bonding trays: an in vitro study. J Clin Orthod. 2020 Feb;54(2):101-107. PMID: 32160350",
-    "Sfondrini MF, et al. Digital indirect bonding: a systematic review. J Orthod. 2021 Mar;48(1):1-10. doi: 10.1177/1465656620970046"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -2797,12 +2793,7 @@ const ARTICLES = [
       "a": "Las desviaciones son inherentes a cualquier procedimiento quirúrgico. Es crucial ser consciente de las desviaciones medias (ej., 3.82° angular, 1.34 mm lateral en ápice) y planificar con un margen de seguridad adecuado, especialmente cerca de estructuras anatómicas vitales. La elección de una guía dentosoportada, cuando sea posible, puede ayudar a minimizar estas desviaciones (Jung et al., Clinical Oral Implants Research, 2023)."
     }
   ],
-  "referencias": [
-    "Jung RE, et al. Accuracy of static computer-assisted implant surgery: A systematic review and meta-analysis. Clin Oral Implants Res. 2023;34(1):1-20. doi:10.1111/clr.13999",
-    "Gao Y, et al. Accuracy of static computer-assisted implant surgery for single-tooth implants: A systematic review and meta-analysis. Clin Oral Implants Res. 2023;34(1):21-34. doi:10.1111/clr.13998",
-    "D'Amato S, et al. Accuracy of static computer-assisted implant surgery in partially edentulous patients: A systematic review and meta-analysis. Clin Oral Implants Res. 2023;34(1):35-48. doi:10.1111/clr.14000",
-    "Al-Haj Husain A, et al. Accuracy of static computer-assisted implant surgery in fully edentulous patients: A systematic review and meta-analysis. Clin Oral Implants Res. 2022;33(10):1043-1057. doi:10.1111/clr.13980"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -2951,12 +2942,7 @@ const ARTICLES = [
       "a": "Un meta-análisis reciente no encontró diferencias estadísticamente significativas en las tasas de supervivencia de implantes y prótesis, pérdida ósea marginal o incidencia de complicaciones biológicas y protésicas entre los protocolos All-on-4 y All-on-6. Ambos son opciones predecibles, y la elección debe basarse en la anatomía del paciente y la planificación individualizada (Mischkowski et al., J Prosthet Dent, 2021)."
     }
   ],
-  "referencias": [
-    "Pellicer-Chover H, et al. Survival rates of All-on-4 implants and prostheses: A systematic review and meta-analysis. J Clin Periodontol. 2023;50(1):101-115. doi:10.1111/jcpe.13725",
-    "Papageorgiou SN, et al. Survival and complication rates of All-on-4 implants and prostheses: A systematic review and meta-analysis. Clin Oral Implants Res. 2019;30(11):1093-1107. doi:10.1111/clr.13524",
-    "Mischkowski RA, et al. All-on-4 versus All-on-6 concept for fixed full-arch implant rehabilitation: A systematic review and meta-analysis. J Prosthet Dent. 2021;126(3):350-360. doi:10.1016/j.prosdent.2020.09.006",
-    "Chrcanovic BR, et al. Survival of implants and prostheses in All-on-4 treatment concept: A systematic review. J Prosthet Dent. 2016;116(4):493-502.e5. doi:10.1016/j.prosdent.2016.02.012"
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -2977,25 +2963,15 @@ const ARTICLES = [
   "img_credit": "",
   "referencias": [
     {
-      "autores": "Sailer I et al.",
-      "titulo": "All-ceramic or metal-ceramic tooth-supported fixed dental prostheses",
-      "revista": "J Prosthet Dent",
-      "año": 2015,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/26303460/"
-    },
-    {
-      "autores": "Brånemark PI et al.",
-      "titulo": "Intraosseous anchorage of dental prostheses",
-      "revista": "Scand J Plast Reconstr Surg",
-      "año": 1969,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/4924155/"
-    },
-    {
-      "autores": "Zembic A et al.",
-      "titulo": "Systematic review of implant-supported posterior single-tooth replacements",
-      "revista": "Int J Oral Maxillofac Implants",
-      "año": 2014,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/24660202/"
+      "autores": "Adell R, Hansson BO, Brånemark PI, Breine U.",
+      "titulo": "Intra-Osseous Anchorage of Dental Prostheses",
+      "revista": "Scandinavian Journal of Plastic and Reconstructive Surgery",
+      "año": 1970,
+      "vol": "4",
+      "num": "1",
+      "pags": "19-34",
+      "doi": "10.3109/02844317009038440",
+      "verificada": true
     }
   ],
   "faq": [
@@ -3123,22 +3099,7 @@ const ARTICLES = [
   "instagram": "jackcarvajal",
   "og_img": "",
   "img_credit": "",
-  "referencias": [
-    {
-      "autores": "Exocad GmbH",
-      "titulo": "DentalCAD Getting Started Guide",
-      "revista": "Exocad Wiki",
-      "año": 2024,
-      "url": "https://wiki.exocad.com"
-    },
-    {
-      "autores": "Renne W et al.",
-      "titulo": "Evaluation of a CAD/CAM workflow for complete-arch implant restorations",
-      "revista": "J Prosthet Dent",
-      "año": 2020,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/30929850/"
-    }
-  ],
+  "referencias": [],
   "faq": [
     {
       "q": "¿Cuánto tiempo tarda en aprender Exocad una persona sin experiencia CAD?",
@@ -3259,25 +3220,15 @@ const ARTICLES = [
   "img_credit": "",
   "referencias": [
     {
-      "autores": "Renne W et al.",
-      "titulo": "Evaluation of accuracy of 7 digital scanners: An in vitro analysis based on 3-dimensional comparisons",
-      "revista": "J Prosthet Dent",
+      "autores": "Renne W, Ludlow M, Fryml J, Schurch Z, Mennito A, Kessler R, et al.",
+      "titulo": "Evaluation of the accuracy of 7 digital scanners: An in vitro analysis based on 3-dimensional comparisons",
+      "revista": "The Journal of Prosthetic Dentistry",
       "año": 2017,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/28202281/"
-    },
-    {
-      "autores": "Ender A et al.",
-      "titulo": "Full arch scans: conventional versus digital impressions",
-      "revista": "Int J Comput Dent",
-      "año": 2011,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/22010025/"
-    },
-    {
-      "autores": "Medit Corp",
-      "titulo": "i700 Accuracy Report ISO 12836",
-      "revista": "Medit Technical",
-      "año": 2024,
-      "url": "https://medit.com"
+      "vol": "118",
+      "num": "1",
+      "pags": "36-42",
+      "doi": "10.1016/j.prosdent.2016.09.024",
+      "verificada": true
     }
   ],
   "faq": [
@@ -3415,25 +3366,15 @@ const ARTICLES = [
   "img_credit": "Wikimedia Commons",
   "referencias": [
     {
-      "autores": "Jung RE et al.",
-      "titulo": "Computer Technology Applications in Surgical Implant Dentistry: A Systematic Review",
-      "revista": "Int J Oral Maxillofac Implants",
-      "año": 2022,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/25830393/"
-    },
-    {
-      "autores": "Tahmaseb A et al.",
-      "titulo": "The accuracy of computer-guided implant surgery: A systematic review and meta-analysis of the literature between 2009 and 2016",
-      "revista": "Clin Oral Implants Res",
+      "autores": "Tahmaseb A, Wu V, Wismeijer D, Coucke W, Evans C.",
+      "titulo": "The accuracy of static computer‐aided implant surgery: A systematic review and meta‐analysis",
+      "revista": "Clinical Oral Implants Res",
       "año": 2018,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/29424444/"
-    },
-    {
-      "autores": "Dentsply Sirona",
-      "titulo": "CoDiagnostiX Clinical Documentation v10",
-      "revista": "Dentsply Technical",
-      "año": 2024,
-      "url": "https://www.dentsplysirona.com"
+      "vol": "29",
+      "num": "S16",
+      "pags": "416-435",
+      "doi": "10.1111/clr.13346",
+      "verificada": true
     }
   ],
   "faq": [
@@ -3563,29 +3504,7 @@ const ARTICLES = [
   "instagram": "jackcarvajal",
   "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Invisalign_aligner.jpg/800px-Invisalign_aligner.jpg",
   "img_credit": "Wikimedia Commons",
-  "referencias": [
-    {
-      "autores": "Ke Y et al.",
-      "titulo": "A comparison of treatment effectiveness between clear aligner and fixed appliance therapies",
-      "revista": "BMC Oral Health",
-      "año": 2019,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/31046712/"
-    },
-    {
-      "autores": "Exocad GmbH",
-      "titulo": "Exocad Ortho Module — Clinical Workflow Documentation",
-      "revista": "Exocad Technical",
-      "año": 2024,
-      "url": "https://exocad.com"
-    },
-    {
-      "autores": "Haouili N et al.",
-      "titulo": "Dental aligner accuracy: a systematic review",
-      "revista": "Angle Orthod",
-      "año": 2020,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/31985295/"
-    }
-  ],
+  "referencias": [],
   "faq": [
     {
       "q": "¿Necesito una licencia especial de Exocad para hacer setups de alineadores?",
@@ -3712,29 +3631,7 @@ const ARTICLES = [
   "instagram": "jackcarvajal",
   "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Full_mouth_restoration.jpg/800px-Full_mouth_restoration.jpg",
   "img_credit": "Wikimedia Commons",
-  "referencias": [
-    {
-      "autores": "Edelhoff D et al.",
-      "titulo": "Digital workflow for the fabrication of complete-arch implant restorations",
-      "revista": "Int J Prosthodont",
-      "año": 2019,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/30576420/"
-    },
-    {
-      "autores": "Rayyan MM et al.",
-      "titulo": "Accuracy and trueness of printed versus milled complete denture bases",
-      "revista": "J Prosthet Dent",
-      "año": 2020,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/31959355/"
-    },
-    {
-      "autores": "Ivoclar Vivadent",
-      "titulo": "IPS e.max ZirCAD Multi Full-Arch Protocol",
-      "revista": "Ivoclar Clinical",
-      "año": 2023,
-      "url": "https://www.ivoclar.com"
-    }
-  ],
+  "referencias": [],
   "faq": [
     {
       "q": "¿Por qué es tan difícil el escaneo de una arcada completa sin dientes?",
@@ -3863,25 +3760,26 @@ const ARTICLES = [
   "img_credit": "Wikimedia Commons — Materialscientist",
   "referencias": [
     {
-      "autores": "Chevalier J et al.",
-      "titulo": "Low-temperature degradation of zirconia and implications for biomedical implants",
-      "revista": "Annual Review of Materials Research",
+      "autores": "Chevalier J, Gremillard L, Deville S.",
+      "titulo": "Low-Temperature Degradation of Zirconia and Implications for Biomedical Implants",
+      "revista": "Annu. Rev. Mater. Res.",
       "año": 2007,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/17029522/"
+      "vol": "37",
+      "num": "1",
+      "pags": "1-32",
+      "doi": "10.1146/annurev.matsci.37.052506.084250",
+      "verificada": true
     },
     {
-      "autores": "Ivoclar Vivadent",
-      "titulo": "IPS e.max ZirCAD — Scientific Documentation",
-      "revista": "Ivoclar Technical",
-      "año": 2022,
-      "url": "https://www.ivoclar.com"
-    },
-    {
-      "autores": "Zhang Y & Kelly JR",
+      "autores": "Zhang Y, Kelly JR.",
       "titulo": "Dental Ceramics for Restoration and Metal Veneering",
-      "revista": "Dent Clin North Am",
+      "revista": "Dental Clinics of North America",
       "año": 2017,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/28317570/"
+      "vol": "61",
+      "num": "4",
+      "pags": "797-819",
+      "doi": "10.1016/j.cden.2017.06.005",
+      "verificada": true
     }
   ],
   "faq": [
@@ -4004,29 +3902,7 @@ const ARTICLES = [
   "instagram": "jackcarvajal",
   "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Dental_CAD_Software.jpg/800px-Dental_CAD_Software.jpg",
   "img_credit": "",
-  "referencias": [
-    {
-      "autores": "Zimmermann M et al.",
-      "titulo": "Accuracy of Dental CAD/CAM-Fabricated Restorations",
-      "revista": "J Dent Res",
-      "año": 2019,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/31161833/"
-    },
-    {
-      "autores": "Exocad GmbH",
-      "titulo": "DentalCAD 3.2 Elefsina Release Notes",
-      "revista": "Exocad Technical",
-      "año": 2023,
-      "url": "https://exocad.com"
-    },
-    {
-      "autores": "3Shape A/S",
-      "titulo": "3Shape Dental System 2024 — Feature Overview",
-      "revista": "3Shape Technical",
-      "año": 2024,
-      "url": "https://www.3shape.com"
-    }
-  ],
+  "referencias": [],
   "faq": [
     {
       "q": "¿Exocad o 3Shape para un laboratorio que empieza?",
@@ -4152,22 +4028,7 @@ const ARTICLES = [
   "instagram": "jackcarvajal",
   "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Intraoral_Scanner.jpg/800px-Intraoral_Scanner.jpg",
   "img_credit": "",
-  "referencias": [
-    {
-      "autores": "Align Technology",
-      "titulo": "iTero Element — STL Export Guide 2024",
-      "revista": "Align Technical",
-      "año": 2024,
-      "url": "https://www.itero.com"
-    },
-    {
-      "autores": "Revilla-León M et al.",
-      "titulo": "Digital Workflow in Dentistry: Clinical Protocol",
-      "revista": "J Prosthet Dent",
-      "año": 2021,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/33676721/"
-    }
-  ],
+  "referencias": [],
   "faq": [
     {
       "q": "¿El iTero deja exportar STL a cualquier laboratorio?",
@@ -4284,22 +4145,7 @@ const ARTICLES = [
   "instagram": "jackcarvajal",
   "og_img": "",
   "img_credit": "",
-  "referencias": [
-    {
-      "autores": "Exocad GmbH",
-      "titulo": "DentalCAD 3.2 Elefsina — Troubleshooting Guide",
-      "revista": "Exocad Wiki",
-      "año": 2024,
-      "url": "https://wiki.exocad.com"
-    },
-    {
-      "autores": "Exocad Community",
-      "titulo": "Common Issues & Solutions — Exocad Forum",
-      "revista": "Exocad Community",
-      "año": 2024,
-      "url": "https://community.exocad.com"
-    }
-  ],
+  "referencias": [],
   "faq": [
     {
       "q": "Exocad no importa el STL y da error de geometría. ¿Qué hago?",
@@ -4394,29 +4240,7 @@ const ARTICLES = [
   "instagram": "jackcarvajal",
   "og_img": "",
   "img_credit": "",
-  "referencias": [
-    {
-      "autores": "Alharbi N et al.",
-      "titulo": "Dimensional accuracy of dental models printed using 3D desktop printers",
-      "revista": "J Prosthodont Res",
-      "año": 2019,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/29945847/"
-    },
-    {
-      "autores": "NextDent",
-      "titulo": "NextDent 5100 Material Library v4",
-      "revista": "NextDent Technical",
-      "año": 2024,
-      "url": "https://nextdent.com"
-    },
-    {
-      "autores": "SprintRay",
-      "titulo": "SprintRay Pro 95S Resin Compatibility Guide",
-      "revista": "SprintRay Technical",
-      "año": 2024,
-      "url": "https://sprintray.com"
-    }
-  ],
+  "referencias": [],
   "faq": [
     {
       "q": "¿Qué resina uso para modelos de trabajo que van al articulador?",
@@ -4567,22 +4391,7 @@ const ARTICLES = [
   "instagram": "jackcarvajal",
   "og_img": "",
   "img_credit": "",
-  "referencias": [
-    {
-      "autores": "Baba NZ et al.",
-      "titulo": "CAD/CAM in Contemporary Fixed Prosthodontics",
-      "revista": "J Prosthodont",
-      "año": 2021,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/33372359/"
-    },
-    {
-      "autores": "Exocad GmbH",
-      "titulo": "Removable Module — Clinical Workflow Documentation",
-      "revista": "Exocad Technical",
-      "año": 2024,
-      "url": "https://wiki.exocad.com"
-    }
-  ],
+  "referencias": [],
   "faq": [
     {
       "q": "¿Puedo hacer el esqueleto metálico de una PPR completamente en CAD/CAM?",
@@ -4871,37 +4680,26 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 45 segundos\n[ESCENA 1 — 0-5s] Texto: \"¿Cuál escáner intraoral es el mejor en 2025?\"\n[ESCENA 2 — 5-20s] Split screen: 4 escáneres en uso clínico. Voz: \"Trios, iTero, Medit, Carestream — los probamos todos en laboratorio CAD/CAM real.\"\n[ESCENA 3 — 20-35s] Tabla de precisión animada. Voz: \"La precisión importa: para implantes, el Trios 5 gana. Para precio/performance, el Medit i700 revolucionó el mercado.\"\n[ESCENA 4 — 35-45s] Logo PRODIGY. Texto: \"Trabajamos con todos. ¿Tienes dudas sobre tu escáner? WhatsApp 3212816716\"\n📌 Música: electrónica suave. Subtítulos en todos los clips.",
   "referencias": [
     {
-      "autores": "Ender A, Attin T, Mehl A.",
-      "titulo": "In vivo precision of conventional and digital methods of obtaining complete-arch dental impressions.",
-      "revista": "Journal of Prosthetic Dentistry",
-      "año": 2023,
-      "vol": "109",
-      "num": "2",
-      "pags": "121–129",
-      "doi": "10.1016/j.prosdent.2013.06.001",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/24290076/"
-    },
-    {
-      "autores": "Mangano FG, Veronesi G, Hauschild U, et al.",
-      "titulo": "Trueness and precision of four intraoral scanners in oral implantology: a comparative in vitro study.",
-      "revista": "PLOS ONE",
+      "autores": "Mangano FG, Veronesi G, Hauschild U, Mijiritsky E, Mangano C.",
+      "titulo": "Trueness and Precision of Four Intraoral Scanners in Oral Implantology: A Comparative in Vitro Study",
+      "revista": "PLoS ONE",
       "año": 2016,
       "vol": "11",
       "num": "9",
       "pags": "e0163107",
       "doi": "10.1371/journal.pone.0163107",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/27648910/"
+      "verificada": true
     },
     {
       "autores": "Goracci C, Franchi L, Vichi A, Ferrari M.",
-      "titulo": "Accuracy, reliability, and efficiency of intraoral scanners for full-arch impressions: a systematic review of the clinical evidence.",
-      "revista": "European Journal of Orthodontics",
-      "año": 2016,
+      "titulo": "Accuracy, reliability, and efficiency of intraoral scanners for full-arch impressions: a systematic review of the clinical evidence",
+      "revista": "EORTHO",
+      "año": 2015,
       "vol": "38",
       "num": "4",
-      "pags": "422–428",
+      "pags": "422-428",
       "doi": "10.1093/ejo/cjv077",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/26508464/"
+      "verificada": true
     }
   ]
 },
@@ -5052,37 +4850,15 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 45 segundos\n[ESCENA 1 — 0-5s] Texto: \"¿Zirconia monocapa o multicapa? La diferencia que nadie te explica\"\n[ESCENA 2 — 5-20s] Comparativa visual de dos coronas: una monocapa opaca vs multicapa translúcida.\n[ESCENA 3 — 20-35s] Tabla en pantalla. Voz: \"Monocapa para molares de alto estrés. Multicapa para estética anterior. No hay un ganador — hay un caso.\"\n[ESCENA 4 — 35-45s] Logo PRODIGY. \"En PRODIGY seleccionamos el material según tu caso — no según el precio.\"\n📌 Música: ambient tech. Subtítulos obligatorios.",
   "referencias": [
     {
-      "autores": "Zhang Y, Lawn BR.",
-      "titulo": "Novel zirconia materials in dentistry.",
-      "revista": "Journal of Dental Research",
-      "año": 2018,
+      "autores": "Zhang Y, Lawn B.",
+      "titulo": "Novel Zirconia Materials in Dentistry",
+      "revista": "J Dent Res",
+      "año": 2017,
       "vol": "97",
       "num": "2",
-      "pags": "140–147",
+      "pags": "140-147",
       "doi": "10.1177/0022034517737483",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29035693/"
-    },
-    {
-      "autores": "Witter DJ, Spierings EL, et al.",
-      "titulo": "Clinical performance of monolithic zirconia crowns cemented with self-adhesive resin cement.",
-      "revista": "Journal of Prosthodontic Research",
-      "año": 2023,
-      "vol": "67",
-      "num": "1",
-      "pags": "98–105",
-      "doi": "10.2186/jpr.JPR_D_21_00215",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35466116/"
-    },
-    {
-      "autores": "Raza AA, Zahid S, et al.",
-      "titulo": "Evaluation of fracture resistance of monolithic versus layered zirconia crowns.",
-      "revista": "European Journal of Dentistry",
-      "año": 2022,
-      "vol": "16",
-      "num": "4",
-      "pags": "852–858",
-      "doi": "10.1055/s-0041-1740566",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35263811/"
+      "verificada": true
     }
   ]
 },
@@ -5224,26 +5000,15 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-5s] Texto: \"De la tomografía al quirófano en 24 horas\"\n[ESCENA 2 — 5-20s] Screen recording de software de planificación con implante en 3D. Voz: \"El doctor planifica dónde va el implante. Nosotros lo convertimos en una guía física exacta.\"\n[ESCENA 3 — 20-35s] Impresora BCN3D trabajando. Voz: \"Resina biocompatible ISO 10993. Precisión ±1.9°. Lista en 3 horas.\"\n[ESCENA 4 — 35-50s] Logo PRODIGY. \"Guías quirúrgicas desde $45 USD. WhatsApp 3212816716.\"\n📌 Subtítulos obligatorios. Música tech-ambient.",
   "referencias": [
     {
-      "autores": "Colombo M, Mangano C, Mijiritsky E, et al.",
-      "titulo": "Clinical applications and effectiveness of guided implant surgery: a critical review based on randomized controlled trials.",
+      "autores": "Colombo M, Mangano C, Mijiritsky E, Krebs M, Hauschild U, Fortin T.",
+      "titulo": "Clinical applications and effectiveness of guided implant surgery: a critical review based on randomized controlled trials",
       "revista": "BMC Oral Health",
       "año": 2017,
       "vol": "17",
       "num": "1",
       "pags": "150",
       "doi": "10.1186/s12903-017-0441-y",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29179730/"
-    },
-    {
-      "autores": "Younes F, Cosyn J, De Bruyckere T, et al.",
-      "titulo": "Accuracy of guided versus freehand implant surgery in the aesthetic zone.",
-      "revista": "Clinical Oral Implants Research",
-      "año": 2023,
-      "vol": "34",
-      "num": "3",
-      "pags": "201–212",
-      "doi": "10.1111/clr.14028",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/36527374/"
+      "verificada": true
     }
   ]
 },
@@ -5392,37 +5157,15 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 45 segundos\n[ESCENA 1 — 0-5s] Texto: \"¿Cuántas citas necesita una corona? Con flujo digital: una.\"\n[ESCENA 2 — 5-20s] Escaneo intraoral en tiempo real. Voz: \"3 minutos de escaneo reemplazan 15 minutos de impresión. El paciente no traga silicona. Tú no esperas el yeso.\"\n[ESCENA 3 — 20-35s] Pantalla de software CAD con corona diseñándose. Voz: \"Diseño en Exocad. Producción en 24h. Sin segunda cita de impresión.\"\n[ESCENA 4 — 35-45s] Logo PRODIGY. \"Laboratorio digital. Bogotá. 3212816716.\"\n📌 Música tech-ambient 110 BPM. Subtítulos.",
   "referencias": [
     {
-      "autores": "Alsharbaty MH, Alikhasi M, Zarrati S, et al.",
-      "titulo": "A clinical comparative study of the 3-dimensional accuracy between digital and conventional implant impression techniques.",
-      "revista": "Journal of Prosthodontics",
-      "año": 2021,
-      "vol": "30",
-      "num": "3",
-      "pags": "211–217",
-      "doi": "10.1111/jopr.13282",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/33002288/"
-    },
-    {
-      "autores": "Burhardt L, Livas C, Kerdijk W, et al.",
-      "titulo": "Treatment comfort, time efficiency and operator performance with intraoral scanning vs conventional impression.",
-      "revista": "Journal of Dentistry",
-      "año": 2016,
-      "vol": "53",
-      "num": "",
-      "pags": "1–6",
-      "doi": "10.1016/j.jdent.2016.06.003",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/27353448/"
-    },
-    {
       "autores": "Reich S, Wichmann M, Nkenke E, Proeschel P.",
-      "titulo": "Clinical fit of all-ceramic three-unit fixed partial dentures, generated with three different CAD/CAM systems.",
-      "revista": "European Journal of Oral Sciences",
+      "titulo": "Clinical fit of all‐ceramic three‐unit fixed partial dentures, generated with three different CAD/CAM systems",
+      "revista": "European J Oral Sciences",
       "año": 2005,
       "vol": "113",
       "num": "2",
-      "pags": "174–179",
+      "pags": "174-179",
       "doi": "10.1111/j.1600-0722.2004.00197.x",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/15762922/"
+      "verificada": true
     }
   ]
 },
@@ -5569,37 +5312,26 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 45 segundos\n[ESCENA 1 — 0-5s] Texto animado: \"¿Cómo hacemos una corona en 24 horas?\"\n[ESCENA 2 — 5-15s] Pantalla Exocad: diseño de corona girando. Voz: \"El doctor escanea. Nosotros diseñamos en Exocad con control de contactos y márgenes al milésimo.\"\n[ESCENA 3 — 15-25s] Fresadora en acción, chispas de zirconio. Voz: \"La fresadora trabaja mientras el doctor atiende. Zirconio o disilicato — el material que eliges.\"\n[ESCENA 4 — 25-35s] Mano con corona frente a cámara. Voz: \"Control de calidad en 7 puntos. Fotografía de verificación. Empaque individual.\"\n[ESCENA 5 — 35-45s] Logo PRODIGY + WhatsApp. Texto: \"Primera corona: sin costo de diseño. 📱 3212816716\"\n📌 Música: trap/lo-fi instrumental suave. Sin voz en off necesaria — puede funcionar solo con texto.",
   "referencias": [
     {
-      "autores": "Revilla-León M, Gómez-Polo M, Vyas S, et al.",
-      "titulo": "Artificial intelligence applications in restorative dentistry: A systematic review.",
-      "revista": "Journal of Prosthetic Dentistry",
-      "año": 2021,
-      "vol": "125",
-      "num": "2",
-      "pags": "189–196",
-      "doi": "10.1016/j.prosdent.2019.12.002",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31892451/"
+      "autores": "Revilla-León M, Gómez-Polo M, Vyas S, Barmak AB, Özcan M, Att W, et al.",
+      "titulo": "Artificial intelligence applications in restorative dentistry: A systematic review",
+      "revista": "The Journal of Prosthetic Dentistry",
+      "año": 2022,
+      "vol": "128",
+      "num": "5",
+      "pags": "867-875",
+      "doi": "10.1016/j.prosdent.2021.02.010",
+      "verificada": true
     },
     {
-      "autores": "Miyazaki T, Hotta Y, Kunii J, et al.",
-      "titulo": "A review of dental CAD/CAM: current status and future perspectives from 20 years of experience.",
-      "revista": "Dental Materials Journal",
+      "autores": "MIYAZAKI T, HOTTA Y, KUNII J, KURIYAMA S, TAMAKI Y.",
+      "titulo": "A review of dental CAD/CAM: current status and future perspectives from 20 years of experience",
+      "revista": "Dent. Mater. J.",
       "año": 2009,
       "vol": "28",
       "num": "1",
-      "pags": "44–56",
+      "pags": "44-56",
       "doi": "10.4012/dmj.28.44",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/19280967/"
-    },
-    {
-      "autores": "Fasbinder DJ.",
-      "titulo": "Digital dentistry: innovation for restorative treatment.",
-      "revista": "Compendium of Continuing Education in Dentistry",
-      "año": 2010,
-      "vol": "31",
-      "num": "Spec No 4",
-      "pags": "2–11",
-      "doi": "",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/20845888/"
+      "verificada": true
     }
   ]
 },
@@ -5740,37 +5472,37 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 60 segundos\n[ESCENA 1 — 0-8s] Dos coronas frente a cámara: una opaca (3Y), una translúcida (5Y). Texto: \"¿Cuál es cuál? 🤔\"\n[ESCENA 2 — 8-20s] Overlay tabla: Resistencia vs. Translucidez. Voz: \"El zirconio tradicional: superhéroe mecánico, estética básica. El 5Y multicapa: los dos mundos.\"\n[ESCENA 3 — 20-35s] Screen grab Exocad mostrando orientación de bloque. Texto: \"El secreto está en orientar el bloque correctamente en CAD. Un error aquí y adiós gradiente.\"\n[ESCENA 4 — 35-50s] Corona in situ en boca. Comparación foto antes/después. Texto: \"Resultado: indistinguible del diente natural para el ojo del paciente.\"\n[ESCENA 5 — 50-60s] Logo + CTA. Texto: \"¿Tu caso es candidato? Calcula tu restauración en prodigylabdental.com/calculadora\"\n📌 Formato: 9:16 vertical. Música: minimal techno suave.",
   "referencias": [
     {
-      "autores": "Zhang Y, Lawn BR.",
-      "titulo": "Novel Zirconia Materials in Dentistry.",
-      "revista": "Journal of Dental Research",
-      "año": 2018,
+      "autores": "Zhang Y, Lawn B.",
+      "titulo": "Novel Zirconia Materials in Dentistry",
+      "revista": "J Dent Res",
+      "año": 2017,
       "vol": "97",
       "num": "2",
-      "pags": "140–147",
+      "pags": "140-147",
       "doi": "10.1177/0022034517737483",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29035698/"
+      "verificada": true
     },
     {
       "autores": "Manicone PF, Rossi Iommetti P, Raffaelli L.",
-      "titulo": "An overview of zirconia ceramics: basic properties and clinical applications.",
+      "titulo": "An overview of zirconia ceramics: Basic properties and clinical applications",
       "revista": "Journal of Dentistry",
       "año": 2007,
       "vol": "35",
       "num": "11",
-      "pags": "819–826",
+      "pags": "819-826",
       "doi": "10.1016/j.jdent.2007.07.008",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/17825465/"
+      "verificada": true
     },
     {
-      "autores": "Guess PC, Schultheis S, Bonfante EA, et al.",
-      "titulo": "All-ceramic systems: laboratory and clinical performance.",
+      "autores": "Guess PC, Schultheis S, Bonfante EA, Coelho PG, Ferencz JL, Silva NR.",
+      "titulo": "All-Ceramic Systems: Laboratory and Clinical Performance",
       "revista": "Dental Clinics of North America",
       "año": 2011,
       "vol": "55",
       "num": "2",
-      "pags": "333–352",
+      "pags": "333-352",
       "doi": "10.1016/j.cden.2011.01.005",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/21478204/"
+      "verificada": true
     }
   ]
 },
@@ -5901,26 +5633,26 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 45 segundos\n[ESCENA 1 — 0-5s] Timelapse de Exocad: corona diseñada en segundos. Texto: \"Lo que antes tomaba 35 minutos...\"\n[ESCENA 2 — 5-15s] Zoom al marcado automático de margen. Texto: \"La IA propone el margen en 5 segundos. El experto verifica en 60.\"\n[ESCENA 3 — 15-30s] Comparativa: pantalla dividida manual vs. IA. Texto: \"40% menos tiempo de diseño. Mismo estándar de calidad.\"\n[ESCENA 4 — 30-40s] Corona fresada real. Texto: \"El ahorro se traslada al doctor: más casos, misma calidad, menos espera.\"\n[ESCENA 5 — 40-45s] Logo + \"3212816716\". Texto: \"Diseño CAD con IA — disponible desde hoy.\"\n📌 Captura real de pantalla Exocad + grabación de fresas = contenido de alto valor para dentistas.",
   "referencias": [
     {
-      "autores": "Revilla-León M, Gómez-Polo M, Vyas S, et al.",
-      "titulo": "Artificial intelligence applications in restorative dentistry: A systematic review.",
-      "revista": "Journal of Prosthetic Dentistry",
-      "año": 2021,
-      "vol": "125",
-      "num": "2",
-      "pags": "189–196",
-      "doi": "10.1016/j.prosdent.2019.12.002",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31892451/"
+      "autores": "Revilla-León M, Gómez-Polo M, Vyas S, Barmak AB, Özcan M, Att W, et al.",
+      "titulo": "Artificial intelligence applications in restorative dentistry: A systematic review",
+      "revista": "The Journal of Prosthetic Dentistry",
+      "año": 2022,
+      "vol": "128",
+      "num": "5",
+      "pags": "867-875",
+      "doi": "10.1016/j.prosdent.2021.02.010",
+      "verificada": true
     },
     {
       "autores": "Schwendicke F, Samek W, Krois J.",
-      "titulo": "Artificial Intelligence in Dentistry: Chances and Challenges.",
-      "revista": "Journal of Dental Research",
+      "titulo": "Artificial Intelligence in Dentistry: Chances and Challenges",
+      "revista": "J Dent Res",
       "año": 2020,
       "vol": "99",
       "num": "7",
-      "pags": "769–774",
+      "pags": "769-774",
       "doi": "10.1177/0022034520915714",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/32315260/"
+      "verificada": true
     }
   ]
 },
@@ -6050,26 +5782,26 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-6s] Dos provisionales frente a cámara: uno fresado, uno impreso. Texto: \"¿Cuál aguanta más? 🔬\"\n[ESCENA 2 — 6-18s] Gráfica: barra de resistencia a fractura. Texto: \"PMMA fresado: 1.200 N. Resina 3D: 720 N. (Fuente: Reymus et al., J Oral Rehab 2020)\"\n[ESCENA 3 — 18-30s] Microscopio electrónico (o foto macro) de superficies. Texto: \"Rugosidad superficial: más rugoso = más bacterias = más riesgo.\"\n[ESCENA 4 — 30-42s] Tabla rápida: cuándo usar cada uno. Texto: \"No son rivales — son herramientas distintas.\"\n[ESCENA 5 — 42-50s] Logo + CTA. Texto: \"Consulta qué material es el correcto para tu caso → calculadora en bio\"\n📌 Para mayor impacto: mostrar el provisional bajo carga real (morder sobre él) para demostrar resistencia.",
   "referencias": [
     {
-      "autores": "Reymus M, Fabritius R, Keßler A, et al.",
-      "titulo": "Fracture load of 3D-printed fixed dental prostheses compared with milled and conventionally fabricated ones: an in vitro study.",
-      "revista": "Clinical Oral Investigations",
-      "año": 2020,
+      "autores": "Reymus M, Fabritius R, Keßler A, Hickel R, Edelhoff D, Stawarczyk B.",
+      "titulo": "Fracture load of 3D-printed fixed dental prostheses compared with milled and conventionally fabricated ones: the impact of resin material, build direction, post-curing, and artificial aging—an in vitro study",
+      "revista": "Clin Oral Invest",
+      "año": 2019,
       "vol": "24",
-      "num": "7",
-      "pags": "2553–2562",
-      "doi": "10.1007/s00784-019-03114-3",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31768801/"
+      "num": "2",
+      "pags": "701-710",
+      "doi": "10.1007/s00784-019-02952-7",
+      "verificada": true
     },
     {
-      "autores": "Prpić V, Schauperl Z, Čatić A, et al.",
-      "titulo": "Comparison of mechanical properties of 3D-printed, CAD/CAM, and conventional denture base materials.",
+      "autores": "Prpić V, Schauperl Z, Ćatić A, Dulčić N, Čimić S.",
+      "titulo": "Comparison of Mechanical Properties of 3D‐Printed, CAD/CAM, and Conventional Denture Base Materials",
       "revista": "Journal of Prosthodontics",
       "año": 2020,
       "vol": "29",
       "num": "6",
-      "pags": "524–528",
+      "pags": "524-528",
       "doi": "10.1111/jopr.13175",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/32220043/"
+      "verificada": true
     }
   ]
 },
@@ -6247,37 +5979,26 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-6s] Escáner intraoral en boca. Texto: \"¿Tu escáner da archivos con errores?\"\n[ESCENA 2 — 6-18s] Pantalla con malla STL rota (agujero en el margen). Texto: \"Error #1: malla abierta en el margen cervical. Causa: movimiento durante el escaneo.\"\n[ESCENA 3 — 18-30s] Tabla rápida de los 5 errores. Texto: \"28% de los archivos que recibimos tienen al menos un error evitable.\"\n[ESCENA 4 — 30-42s] Pantalla Exocad importando un STL limpio. Texto: \"Así se ve un archivo correcto en Exocad. Margen nítido, antagonista completo, mordida incluida.\"\n[ESCENA 5 — 42-50s] Logo PRODIGY + link. Texto: \"Descarga nuestra guía de exportación → bio\"\n📌 Música: electrónica suave instrumental. Subtítulos en pantalla en todo momento.",
   "referencias": [
     {
-      "autores": "Hack GD, Patzelt SBM.",
-      "titulo": "Assessment of the accuracy of six intraoral scanners: an in vitro investigation.",
-      "revista": "Journal of the American Dental Association",
-      "año": 2022,
-      "vol": "153",
-      "num": "3",
-      "pags": "201–209",
-      "doi": "10.1016/j.adaj.2021.10.012",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35033310/"
-    },
-    {
       "autores": "Ender A, Mehl A.",
-      "titulo": "Accuracy of complete arch dental impressions: a new method of measuring trueness and precision.",
-      "revista": "Journal of Prosthetic Dentistry",
+      "titulo": "Accuracy of complete-arch dental impressions: A new method of measuring trueness and precision",
+      "revista": "The Journal of Prosthetic Dentistry",
       "año": 2013,
       "vol": "109",
       "num": "2",
-      "pags": "121–128",
-      "doi": "10.1016/S0022-3913(13)60028-1",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/23395218/"
+      "pags": "121-128",
+      "doi": "10.1016/s0022-3913(13)60028-1",
+      "verificada": true
     },
     {
       "autores": "Mangano F, Gandolfi A, Luongo G, Logozzo S.",
-      "titulo": "Intraoral scanners in dentistry: a review of the current literature.",
+      "titulo": "Intraoral scanners in dentistry: a review of the current literature",
       "revista": "BMC Oral Health",
       "año": 2017,
       "vol": "17",
       "num": "1",
       "pags": "149",
       "doi": "10.1186/s12903-017-0442-x",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29070028/"
+      "verificada": true
     }
   ]
 },
@@ -6435,37 +6156,15 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 55 segundos\n[ESCENA 1 — 0-6s] Texto en pantalla: \"¿La IA ya diseña coronas sola?\" + ícono de robot\n[ESCENA 2 — 6-20s] Pantalla 3Shape Automate generando una corona en 4 segundos. Texto: \"3Shape Automate: corona posterior en 4 min vs. 22 min manual. Real.\"\n[ESCENA 3 — 20-32s] Dos coronas lado a lado: una anterior (Automate — genérica) vs. una manual (con caracterización). Texto: \"Posterior ✅ Anterior anterior ❌ — no todo se puede automatizar.\"\n[ESCENA 4 — 32-45s] Diseñador editando el resultado de Automate. Texto: \"El futuro no es robot vs. humano. Es humano + robot > ambos solos.\"\n[ESCENA 5 — 45-55s] Logo PRODIGY. Texto: \"Diseño experto cuando más importa. → prodigylabdental.com\"\n📌 Música: synthwave moderado. Máximo 3 palabras por frame de texto para legibilidad en mobile.",
   "referencias": [
     {
-      "autores": "Mörmann WH, Bindl A, Lüthy H, Rathke A.",
-      "titulo": "Effects of preparation and luting system on all-ceramic computer-generated crowns.",
-      "revista": "International Journal of Prosthodontics",
-      "año": 2023,
-      "vol": "36",
-      "num": "1",
-      "pags": "45–54",
-      "doi": "10.11607/ijp.7842",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/36399579/"
-    },
-    {
-      "autores": "Revilla-León M, Gómez-Polo M, Vyas S, et al.",
-      "titulo": "Artificial intelligence applications in restorative dentistry: A systematic review.",
-      "revista": "Journal of Prosthetic Dentistry",
-      "año": 2021,
-      "vol": "125",
-      "num": "2",
-      "pags": "189–196",
-      "doi": "10.1016/j.prosdent.2019.12.002",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31892451/"
-    },
-    {
-      "autores": "Wang P, Dong Z, Bhatt DL.",
-      "titulo": "Artificial intelligence in dental clinical practice: a review.",
-      "revista": "Clinical Oral Investigations",
-      "año": 2024,
-      "vol": "28",
-      "num": "2",
-      "pags": "112",
-      "doi": "10.1007/s00784-024-05503-8",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38358499/"
+      "autores": "Revilla-León M, Gómez-Polo M, Vyas S, Barmak AB, Özcan M, Att W, et al.",
+      "titulo": "Artificial intelligence applications in restorative dentistry: A systematic review",
+      "revista": "The Journal of Prosthetic Dentistry",
+      "año": 2022,
+      "vol": "128",
+      "num": "5",
+      "pags": "867-875",
+      "doi": "10.1016/j.prosdent.2021.02.010",
+      "verificada": true
     }
   ]
 },
@@ -6659,26 +6358,15 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-5s] Texto: \"¿e.max o zirconia? La respuesta correcta depende de DÓNDE va.\"\n[ESCENA 2 — 5-20s] Animación: boca dividida. Sector anterior → e.max (luz pasando, translucidez). Sector posterior → zirconia (golpe, fuerza).\n[ESCENA 3 — 20-32s] Tabla rápida: \"Anterior + estética → e.max / Molar + bruxismo → Zirconia siempre.\"\n[ESCENA 4 — 32-45s] Close-up carilla e.max vs. corona zirconia posterior. Texto: \"Cada material tiene su zona. Confundirlos cuesta caro.\"\n[ESCENA 5 — 45-50s] Logo PRODIGY. \"Laboratorio CAD que entiende la clínica → prodigylabdental.com\"\n📌 Música: instrumental minimalista. Texto blanco sobre fondo negro con destellos dorados.",
   "referencias": [
     {
-      "autores": "Stawarczyk B, Frevert K, Ender A, et al.",
-      "titulo": "Comparison of four monolithic zirconia materials with conventional ones.",
-      "revista": "Journal of Prosthetic Dentistry",
-      "año": 2022,
-      "vol": "128",
-      "num": "3",
-      "pags": "461–471",
-      "doi": "10.1016/j.prosdent.2021.01.029",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/34776292/"
-    },
-    {
-      "autores": "Guess PC, Schultheis S, Bonfante EA, et al.",
-      "titulo": "All-ceramic systems: laboratory and clinical performance.",
+      "autores": "Guess PC, Schultheis S, Bonfante EA, Coelho PG, Ferencz JL, Silva NR.",
+      "titulo": "All-Ceramic Systems: Laboratory and Clinical Performance",
       "revista": "Dental Clinics of North America",
-      "año": 2022,
+      "año": 2011,
       "vol": "55",
       "num": "2",
-      "pags": "333–352",
+      "pags": "333-352",
       "doi": "10.1016/j.cden.2011.01.005",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/21726682/"
+      "verificada": true
     }
   ]
 },
@@ -6846,25 +6534,15 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 55 segundos\n[ESCENA 1 — 0-6s] Texto: \"Tu laboratorio todavía usa yeso en 2026?\"\n[ESCENA 2 — 6-18s] Time-lapse: odontólogo escanea → STL llega a laboratorio en 5 min. Texto: \"Flujo digital: 30 min desde el escáner al CAD.\"\n[ESCENA 3 — 18-32s] Pantalla Exocad con diseño CAD. Texto: \"Sin yeso. Sin vaciado. Sin espera. Solo datos.\"\n[ESCENA 4 — 32-45s] Comparativa: \"Flujo convencional: 24–36h hasta iniciar fresado. Digital: 30–60 min.\"\n[ESCENA 5 — 45-55s] Logo PRODIGY. \"Recibimos tu STL hoy, despachamos mañana → prodigylabdental.com\"\n📌 Música: electrónica limpia. Gráficos minimalistas con líneas doradas.",
   "referencias": [
     {
-      "autores": "Ender A, Attin T, Mehl A.",
-      "titulo": "In vivo precision of conventional and digital methods of obtaining complete-arch dental impressions.",
-      "revista": "Journal of Prosthetic Dentistry",
-      "año": 2022,
-      "vol": "109",
-      "num": "3",
-      "pags": "188–196",
-      "doi": "10.1016/j.prosdent.2012.11.009",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/23395196/"
-    },
-    {
-      "autores": "Richert R, Goujat A, Venet L, et al.",
-      "titulo": "Intraoral Scanner Technologies: A Review to Make a Successful Impression.",
+      "autores": "Richert R, Goujat A, Venet L, Viguie G, Viennot S, Robinson P, et al.",
+      "titulo": "Intraoral Scanner Technologies: A Review to Make a Successful Impression",
       "revista": "Journal of Healthcare Engineering",
-      "año": 2020,
+      "año": 2017,
       "vol": "2017",
-      "pags": "8427595",
+      "num": "",
+      "pags": "1-9",
       "doi": "10.1155/2017/8427595",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29065604/"
+      "verificada": true
     }
   ]
 },
@@ -7034,26 +6712,15 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-6s] Texto: \"Tu guía quirúrgica 3D no asienta bien? Puede ser esto.\"\n[ESCENA 2 — 6-18s] Animación: pieza impresa vs. pieza diseñada → diferencia exagerada visible. Texto: \"Las resinas encogen 2–5% al curar. Siempre.\"\n[ESCENA 3 — 18-32s] Pantalla slicer con ajuste de escala XYZ. Texto: \"Solución: calibrar factor de corrección por eje. Un cubo de 20mm te da el número exacto.\"\n[ESCENA 4 — 32-44s] Antes/después: guía que no asienta vs. guía calibrada que encaja perfectamente.\n[ESCENA 5 — 44-50s] Logo PRODIGY. \"Flujos CAD precisos desde el diseño hasta la entrega → prodigylabdental.com\"\n📌 Música: electrónica técnica. Gráficos científicos, fondo oscuro.",
   "referencias": [
     {
-      "autores": "Barazanchi A, Li KC, Al-Amleh B, et al.",
-      "titulo": "Additive technology: Update on current materials and applications in dentistry.",
+      "autores": "Barazanchi A, Li KC, Al‐Amleh B, Lyons K, Waddell JN.",
+      "titulo": "Additive Technology: Update on Current Materials and Applications in Dentistry",
       "revista": "Journal of Prosthodontics",
-      "año": 2020,
+      "año": 2016,
       "vol": "26",
       "num": "2",
-      "pags": "156–163",
+      "pags": "156-163",
       "doi": "10.1111/jopr.12510",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/26780652/"
-    },
-    {
-      "autores": "Alharbi N, Alharbi S, Cuijpers VMJI, et al.",
-      "titulo": "Three-dimensional evaluation of dimensional accuracy of 3D-printed dental models.",
-      "revista": "Journal of Prosthodontic Research",
-      "año": 2021,
-      "vol": "62",
-      "num": "4",
-      "pags": "400–408",
-      "doi": "10.1016/j.jpor.2018.01.003",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29475793/"
+      "verificada": true
     }
   ]
 },
@@ -7214,19 +6881,7 @@ const ARTICLES = [
     }
   ],
   "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-6s] Pantalla Exocad, STL de preparación. Texto: \"El margen es el 80% del resultado. Esto es cómo lo hacemos.\"\n[ESCENA 2 — 6-20s] Time-lapse trazando margen en Exocad punto a punto. Texto: \"Cada punto a 0.3 mm. Sin saltos. Sin adivinar.\"\n[ESCENA 3 — 20-32s] Corte transversal mostrando espacio de cemento. Texto: \"50 μm de ajuste. Así de preciso.\"\n[ESCENA 4 — 32-44s] Error común: margen saltado → corrección en vivo.\n[ESCENA 5 — 44-50s] Logo PRODIGY. \"Tu STL en nuestras manos → prodigylabdental.com\"",
-  "referencias": [
-    {
-      "autores": "Mörmann WH, Bindl A.",
-      "titulo": "All-ceramic, chair-side CAD/CAM restorations.",
-      "revista": "Dental Clinics of North America",
-      "año": 2022,
-      "vol": "46",
-      "num": "2",
-      "pags": "405–426",
-      "doi": "10.1016/s0011-8532(02)00007-0",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/12014041/"
-    }
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -7341,19 +6996,7 @@ const ARTICLES = [
     }
   ],
   "video_script": "🎬 GUIÓN REEL — 45 segundos\n[ESCENA 1 — 0-5s] Corona de zirconia cruda vs. corona glaseada vs. corona estratificada. Texto: \"No toda zirconia es igual.\"\n[ESCENA 2 — 5-18s] Close-up aplicando colorante con pincel. Texto: \"Pintura extrínseca: para el 70% de los casos.\"\n[ESCENA 3 — 18-30s] Comparativa en boca: corona pintada vs. estratificada bajo luz natural. Texto: \"La diferencia se ve.\"\n[ESCENA 4 — 30-40s] Tabla rápida: cuándo glasear / pintar / estratificar.\n[ESCENA 5 — 40-45s] Logo PRODIGY.",
-  "referencias": [
-    {
-      "autores": "Sailer I, Makarov NA, Thoma DS, et al.",
-      "titulo": "All-ceramic or metal-ceramic tooth-supported fixed dental prostheses (FDPs)?",
-      "revista": "Dental Materials",
-      "año": 2022,
-      "vol": "31",
-      "num": "6",
-      "pags": "603–623",
-      "doi": "10.1016/j.dental.2015.02.011",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/25726090/"
-    }
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -7527,19 +7170,7 @@ const ARTICLES = [
     }
   ],
   "video_script": "🎬 GUIÓN REEL — 40 segundos\n[ESCENA 1 — 0-5s] Pantalla Exocad con manos en teclado. Texto: \"¿Cuánto tardas en diseñar una corona?\"\n[ESCENA 2 — 5-20s] Time-lapse completo de corona en 12 min con overlay de teclas presionadas.\n[ESCENA 3 — 20-32s] Zoom en atajos: M para margen, G para grip, Enter para confirmar. Texto: \"Sin menús. Sin clicks. Solo teclado.\"\n[ESCENA 4 — 32-40s] Logo PRODIGY. \"Aprende el flujo → más casos por día.\"",
-  "referencias": [
-    {
-      "autores": "Exocad GmbH.",
-      "titulo": "DentalCAD 3.x Reference Manual — Keyboard Shortcuts and Workflow Guide.",
-      "revista": "Exocad Documentation",
-      "año": 2024,
-      "vol": "—",
-      "num": "—",
-      "pags": "—",
-      "doi": "",
-      "pubmed": "https://exocad.com/support"
-    }
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -7714,15 +7345,15 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-5s] Pieza recién impresa pegajosa. Texto: \"La impresión terminó. El trabajo no.\"\n[ESCENA 2 — 5-18s] Lavado en IPA con agitación → secado con aire → horno UV.\n[ESCENA 3 — 18-30s] Tabla rápida: \"Modelo → 15 min / Guía quirúrgica → 20 min / Provisional → 8 min con calor\"\n[ESCENA 4 — 30-42s] Error: pieza con lavado insuficiente (pegajosa) vs. pieza bien procesada.\n[ESCENA 5 — 42-50s] Logo PRODIGY.",
   "referencias": [
     {
-      "autores": "Alharbi N, Wismeijer D, Osman RB.",
-      "titulo": "Additive manufacturing techniques in prosthodontics: Where do we currently stand?",
-      "revista": "International Journal of Prosthodontics",
-      "año": 2021,
+      "autores": "Alharbi N, Wismeijer D, Osman R.",
+      "titulo": "Additive Manufacturing Techniques in Prosthodontics: Where Do We Currently Stand? A Critical Review",
+      "revista": "Int J Prosthodont",
+      "año": 2017,
       "vol": "30",
       "num": "5",
-      "pags": "474–484",
+      "pags": "474-484",
       "doi": "10.11607/ijp.5079",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/28906493/"
+      "verificada": true
     }
   ]
 },
@@ -7839,19 +7470,7 @@ const ARTICLES = [
     }
   ],
   "video_script": "🎬 GUIÓN REEL — 55 segundos\n[ESCENA 1 — 0-6s] Texto: \"All-on-4 digital: el caso que más paga... y más falla. ¿Por qué?\"\n[ESCENA 2 — 6-18s] Animación: error acumulativo de 30 μm → 200 μm en el último implante.\n[ESCENA 3 — 18-32s] Protocolo de escaneo: trayecto en U, 3 pasadas por scanbody.\n[ESCENA 4 — 32-45s] Llave de verificación: \"20 min extra que salvan una estructura de $800.\"\n[ESCENA 5 — 45-55s] Logo PRODIGY. \"Full Arch sin sorpresas → prodigylabdental.com\"",
-  "referencias": [
-    {
-      "autores": "Papaspyridakos P, Chen CJ, Crespo A, et al.",
-      "titulo": "Full-arch implant fixed prostheses: a comparative review of digital workflows and clinical outcomes.",
-      "revista": "International Journal of Oral & Maxillofacial Implants",
-      "año": 2022,
-      "vol": "37",
-      "num": "3",
-      "pags": "534–548",
-      "doi": "10.11607/jomi.9285",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35613484/"
-    }
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -7957,19 +7576,7 @@ const ARTICLES = [
     }
   ],
   "video_script": "🎬 GUIÓN REEL — 45 seg\n[0-5s] Texto: \"La caries bajo la corona no es mala suerte. Es un gap que se pudo evitar.\"\n[5-18s] Animación: sección transversal corona-preparación mostrando gap marginal → bacterias entrando.\n[18-32s] Pantalla Exocad: sección transversal con gap vs. sin gap. Texto: \"50 μm vs. 250 μm. La diferencia es el diseño.\"\n[32-40s] Tabla rápida: gap aceptable vs. inaceptable.\n[40-45s] Logo PRODIGY.",
-  "referencias": [
-    {
-      "autores": "Rinke S, Lattke A, Eickholz P, et al.",
-      "titulo": "Practice-based clinical evaluation of metal-ceramic and zirconia molar crowns: 3-year results.",
-      "revista": "Journal of Oral Rehabilitation",
-      "año": 2021,
-      "vol": "40",
-      "num": "3",
-      "pags": "228–237",
-      "doi": "10.1111/joor.12028",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/23398526/"
-    }
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -8099,19 +7706,7 @@ const ARTICLES = [
     }
   ],
   "video_script": "🎬 GUIÓN REEL — 50 seg\n[0-6s] Texto: \"¿Titanio o zirconia para el abutment? Depende de esto.\"\n[6-20s] Comparativa visual: biotipo grueso → titanio ✅ / biotipo delgado → zirconia ✅.\n[20-32s] Pantalla Exocad: diseñando perfil de emergencia. Texto: \"El perfil de emergencia determina la salud del tejido.\"\n[32-44s] Antes/después: abutment sin emergencia vs. con emergencia correcta.\n[44-50s] Logo PRODIGY.",
-  "referencias": [
-    {
-      "autores": "Lops D, Bressan E, Parpaiola A, et al.",
-      "titulo": "Soft tissues stability of cementless-retained, implant-supported single crowns: 10-year results.",
-      "revista": "Clinical Oral Implants Research",
-      "año": 2022,
-      "vol": "26",
-      "num": "12",
-      "pags": "1400–1405",
-      "doi": "10.1111/clr.12492",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/25382819/"
-    }
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -8224,19 +7819,7 @@ const ARTICLES = [
     }
   ],
   "video_script": "🎬 GUIÓN REEL — 45 seg\n[0-5s] Texto: \"¿Tu paciente siempre llega con la corona alta? Esto es lo que falta.\"\n[5-18s] Pantalla Exocad articulador virtual — movimiento de lateralidad mostrando interferencia en rojo.\n[18-30s] Corrección en tiempo real: reducir cúspide → verde en mapa de contactos.\n[30-40s] Comparativa: sin articulador → 20 min ajuste clínico. Con articulador → 2 min ajuste.\n[40-45s] Logo PRODIGY.",
-  "referencias": [
-    {
-      "autores": "Jemt T, Lie A.",
-      "titulo": "Accuracy of implant-supported prostheses in the edentulous jaw: analysis of prostheses at the level of the implant platform.",
-      "revista": "Clinical Oral Implants Research",
-      "año": 2021,
-      "vol": "6",
-      "num": "2",
-      "pags": "94–100",
-      "doi": "10.1034/j.1600-0501.1995.060204.x",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/7548381/"
-    }
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -8358,19 +7941,7 @@ const ARTICLES = [
     }
   ],
   "video_script": "🎬 GUIÓN REEL — 40 seg\n[0-5s] Texto: \"¿Todavía usas yeso? Depende para qué.\"\n[5-15s] Comparativa: modelo yeso vs. modelo 3D bajo microscopio — nivel de detalle.\n[15-28s] Tabla rápida: para alineadores → 3D ✅ / para prótesis removible → yeso ✅.\n[28-38s] Time-lapse: impresión 3D modelo en 45 minutos.\n[38-40s] Logo PRODIGY.",
-  "referencias": [
-    {
-      "autores": "Camardella LT, Vilella OV, van Hezel HB, et al.",
-      "titulo": "Accuracy of stereolithographically printed dental models assessed with the aid of a coordinate-measuring machine.",
-      "revista": "Journal of Orofacial Orthopedics",
-      "año": 2022,
-      "vol": "78",
-      "num": "6",
-      "pags": "471–481",
-      "doi": "10.1007/s00056-017-0105-2",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/28983606/"
-    }
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -8504,19 +8075,7 @@ const ARTICLES = [
     }
   ],
   "video_script": "🎬 GUIÓN REEL — 55 seg\n[0-6s] Texto: \"Esto no es suerte. Es protocolo.\" + close-up de carillas terminadas.\n[6-20s] Pantalla Exocad con carillas en diseño — lobulación incisal, textura, proporciones.\n[20-32s] Overlay DSD sobre fotografía + modelo 3D. Texto: \"Primero el diseño. Luego el fresado.\"\n[32-44s] Time-lapse completo: DSD → Exocad → STL → carilla fresada.\n[44-55s] Logo PRODIGY. \"Tu STL. Nuestro diseño. → prodigylabdental.com/calculadora-diseno\"",
-  "referencias": [
-    {
-      "autores": "Magne P, Belser UC.",
-      "titulo": "Novel porcelain laminate preparation approach driven by a diagnostic mock-up.",
-      "revista": "Journal of Esthetic and Restorative Dentistry",
-      "año": 2022,
-      "vol": "16",
-      "num": "1",
-      "pags": "7–18",
-      "doi": "10.1111/j.1708-8240.2004.tb00437.x",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/15259533/"
-    }
-  ]
+  "referencias": []
 },
 
 /* ─────────────────────────────────────────────────── */
@@ -8671,24 +8230,15 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 55 segundos\n[ESCENA 1 — 0-6s] Texto: \"¿Sabes cuántos tipos de guías quirúrgicas existen?\"\n[ESCENA 2 — 6-20s] Animación de 4 tipos de guías con etiquetas: básica, compleja, apilable, reducción ósea. Cada una con su indicación en 3 palabras.\n[ESCENA 3 — 20-35s] Pantalla CoDiagnostiX: plan de implantes fusionado con STL. Texto: \"Del CBCT al diseño CAD — en 48h.\"\n[ESCENA 4 — 35-48s] Cirugía guiada en tiempo real. Texto: \"Error ±2mm sin guía. Error <0.5mm con guía bien diseñada.\"\n[ESCENA 5 — 48-55s] Logo PRODIGY. \"Guías quirúrgicas desde $60 USD → prodigylabdental.com\"\n📌 Música: técnica y precisa. Fondo oscuro, destellos cyan.",
   "referencias": [
     {
-      "autores": "Schneider D, Marquardt P, Zwahlen M, Jung RE.",
-      "titulo": "A systematic review on the accuracy and the clinical outcome of computer-guided template-based implant dentistry.",
-      "revista": "Clinical Oral Implants Research",
-      "año": 2022,
-      "vol": "20 Suppl 4",
-      "pags": "73–86",
-      "doi": "10.1111/j.1600-0501.2009.01726.x",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/19663958/"
-    },
-    {
       "autores": "Hultin M, Svensson KG, Trulsson M.",
-      "titulo": "Clinical advantages of computer-guided implant placement: a systematic review.",
-      "revista": "Clinical Oral Implants Research",
-      "año": 2021,
-      "vol": "23 Suppl 6",
-      "pags": "124–135",
+      "titulo": "Clinical advantages of computer‐guided implant placement: a systematic review",
+      "revista": "Clinical Oral Implants Res",
+      "año": 2012,
+      "vol": "23",
+      "num": "s6",
+      "pags": "124-135",
       "doi": "10.1111/j.1600-0501.2012.02545.x",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/23062143/"
+      "verificada": true
     }
   ]
 },
@@ -8851,24 +8401,25 @@ const ARTICLES = [
   "referencias": [
     {
       "autores": "Stapelmann H, Türp JC.",
-      "titulo": "The NTI-tss device for the therapy of bruxism, temporomandibular disorders, and headache – where do we stand? A qualitative systematic review of the literature.",
+      "titulo": "The NTI-tss device for the therapy of bruxism, temporomandibular disorders, and headache – Where do we stand? A qualitative systematic review of the literature",
       "revista": "BMC Oral Health",
-      "año": 2020,
+      "año": 2008,
       "vol": "8",
+      "num": "1",
       "pags": "22",
       "doi": "10.1186/1472-6831-8-22",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/18986539/"
+      "verificada": true
     },
     {
-      "autores": "Koyano K, Tsukiyama Y, Ichiki R, Kuwata T.",
-      "titulo": "Assessment of bruxism in the clinic.",
-      "revista": "Journal of Oral Rehabilitation",
-      "año": 2021,
+      "autores": "KOYANO K, TSUKIYAMA Y, ICHIKI R, KUWATA T.",
+      "titulo": "Assessment of bruxism in the clinic*",
+      "revista": "J of Oral Rehabilitation",
+      "año": 2008,
       "vol": "35",
       "num": "7",
-      "pags": "495–508",
+      "pags": "495-508",
       "doi": "10.1111/j.1365-2842.2008.01880.x",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/18665913/"
+      "verificada": true
     }
   ]
 },
@@ -9030,25 +8581,15 @@ const ARTICLES = [
   "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-5s] Texto: \"¿Nunca has enviado un caso a un lab CAD remoto? Así funciona.\"\n[ESCENA 2 — 5-18s] Screen recording: odontólogo exporta STL desde Medit Link → lo arrastra al chat de WA → \"Enviado ✓\"\n[ESCENA 3 — 18-30s] Pantalla Exocad: diseñador trabajando el caso. Texto: \"Tu caso entra en producción en minutos.\"\n[ESCENA 4 — 30-42s] WhatsApp recibe el STL terminado. Texto: \"24h después: STL listo para tu fresadora.\"\n[ESCENA 5 — 42-50s] Logo PRODIGY. \"Primer caso gratis para nuevos clientes · prodigylabdental.com\"\n📌 Música: workflow moderno, ligero. Muy visual, poco texto.",
   "referencias": [
     {
-      "autores": "Birnbaum NS, Aaronson HB.",
-      "titulo": "Dental impressions using 3D digital scanners: virtual becomes reality.",
-      "revista": "Compendium of Continuing Education in Dentistry",
-      "año": 2020,
-      "vol": "29",
-      "num": "8",
-      "pags": "494–505",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/18975856/"
-    },
-    {
       "autores": "Mangano F, Gandolfi A, Luongo G, Logozzo S.",
-      "titulo": "Intraoral scanners in dentistry: a review of the current literature.",
+      "titulo": "Intraoral scanners in dentistry: a review of the current literature",
       "revista": "BMC Oral Health",
-      "año": 2020,
+      "año": 2017,
       "vol": "17",
       "num": "1",
       "pags": "149",
       "doi": "10.1186/s12903-017-0442-x",
-      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29017482/"
+      "verificada": true
     }
   ]
 },
@@ -9166,18 +8707,15 @@ const ARTICLES = [
   ],
   "referencias": [
     {
-      "autores": "Mangano F et al.",
-      "titulo": "Intraoral scanners in dentistry: a review of the current literature",
-      "revista": "BMC Oral Health",
-      "año": 2020,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/29017482/"
-    },
-    {
-      "autores": "Ting-Shu S, Jian S.",
-      "titulo": "Intraoral digital impressions — a review.",
-      "revista": "J Prosthodont",
-      "año": 2015,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/25833826/"
+      "autores": "Ting‐shu S, Jian S.",
+      "titulo": "Intraoral Digital Impression Technique: A Review",
+      "revista": "Journal of Prosthodontics",
+      "año": 2014,
+      "vol": "24",
+      "num": "4",
+      "pags": "313-321",
+      "doi": "10.1111/jopr.12218",
+      "verificada": true
     }
   ]
 },
@@ -9306,18 +8844,26 @@ const ARTICLES = [
   ],
   "referencias": [
     {
-      "autores": "Miyazaki T et al.",
+      "autores": "MIYAZAKI T, HOTTA Y, KUNII J, KURIYAMA S, TAMAKI Y.",
       "titulo": "A review of dental CAD/CAM: current status and future perspectives from 20 years of experience",
-      "revista": "Dent Mater J",
+      "revista": "Dent. Mater. J.",
       "año": 2009,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/19280967/"
+      "vol": "28",
+      "num": "1",
+      "pags": "44-56",
+      "doi": "10.4012/dmj.28.44",
+      "verificada": true
     },
     {
       "autores": "Rekow ED.",
-      "titulo": "Digital dentistry: the new state of the art — is it disruptive or destructive?",
-      "revista": "Dent Mater",
+      "titulo": "Digital dentistry: The new state of the art — Is it disruptive or destructive?",
+      "revista": "Dental Materials",
       "año": 2020,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/31677867/"
+      "vol": "36",
+      "num": "1",
+      "pags": "9-24",
+      "doi": "10.1016/j.dental.2019.08.103",
+      "verificada": true
     }
   ]
 },
@@ -9463,14 +9009,22 @@ const ARTICLES = [
       "titulo": "3D printing in dentistry",
       "revista": "Br Dent J",
       "año": 2015,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/26657435/"
+      "vol": "219",
+      "num": "11",
+      "pags": "521-529",
+      "doi": "10.1038/sj.bdj.2015.914",
+      "verificada": true
     },
     {
-      "autores": "Van Noort R.",
+      "autores": "van Noort R.",
       "titulo": "The future of dental devices is digital",
-      "revista": "Dent Mater",
+      "revista": "Dental Materials",
       "año": 2012,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/22177416/"
+      "vol": "28",
+      "num": "1",
+      "pags": "3-12",
+      "doi": "10.1016/j.dental.2011.10.014",
+      "verificada": true
     }
   ]
 }

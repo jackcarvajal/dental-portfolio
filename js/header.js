@@ -905,6 +905,20 @@
   // El bot llama al proxy /api/gemini — la clave nunca sale al cliente
   var _pgGUrl = '/api/gemini';
 
+  /* Una sola pregunta a la IA, con el mismo contexto que el chat (lo usa el orbe del Centro de Ayuda, js/orbe-ia.js) */
+  window._phdrPreguntaIA = function (texto) {
+    return fetch(_pgGUrl, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system_instruction: { parts: [{ text: _pgBuildPrompt() }] }, contents: [{ role: 'user', parts: [{ text: String(texto).slice(0, 300) }] }] })
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) {
+        var c = d && d.candidates && d.candidates[0] && d.candidates[0].content;
+        if (c && c.parts) return c.parts.map(function (p) { return p.text || ''; }).join('').trim();
+        var e = new Error((d && d.error) || ('HTTP ' + r.status)); e.status = r.status; throw e;
+      });
+    });
+  };
+
   function _pgBuildPrompt() {
     var title = document.title || 'PRODIGY Lab Dental';
     var path  = window.location.pathname;

@@ -139,11 +139,32 @@ a{color:inherit;text-decoration:none;}
 
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Caso","item":"https://prodigylabdental.com/caso"}]}</script>
 <script>/* escJ: texto dentro de 'string JS' en un atributo onclick/onchange (escapa \ ' y saltos + HTML) */window.escJ=function(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};</script>
+<style id="caso-v2">
+/* Caso v2 (oct-2026): portada grande, visor 3D bajo demanda, fotos 4:3 */
+.caso-portada{flex:none;width:min(300px,100%);aspect-ratio:4/3;padding:0;border:1px solid rgba(212,175,55,.35);border-radius:14px;overflow:hidden;cursor:zoom-in;background:#080808;box-shadow:0 14px 40px -16px rgba(212,175,55,.45)}
+.caso-portada img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.caso-portada:hover img{transform:scale(1.04)}
+.caso-portada:focus-visible{outline:3px solid #00d2ff;outline-offset:3px}
+@media(max-width:640px){.caso-portada{width:100%}}
+.viewer-wrap{position:relative;height:min(600px,72vh)!important;min-height:340px!important}
+.visor-portada{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;color:#fff;font:inherit;text-align:center;padding:20px;background:#0a0f1a center/cover no-repeat}
+.visor-portada::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(5,5,5,.5),rgba(5,5,5,.88));-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.visor-portada>*{position:relative}
+.vp-ico{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#0a0a0a;background:linear-gradient(135deg,#D4AF37,#00d2ff);box-shadow:0 0 40px rgba(0,210,255,.45);transition:transform .25s}
+.visor-portada:hover .vp-ico{transform:scale(1.07)}
+.vp-t{font-weight:800;font-size:1.05rem}
+.vp-s{font-size:.82rem;color:#cbd5e1;max-width:34ch}
+.visor-portada.cargando .vp-ico{animation:vp-gira 1.2s linear infinite}
+@keyframes vp-gira{to{transform:rotate(360deg)}}
+.visor-portada:focus-visible{outline:3px solid #00d2ff;outline-offset:-3px}
+.gallery-item{height:auto!important;aspect-ratio:4/3}
+@media(prefers-reduced-motion:reduce){.visor-portada.cargando .vp-ico{animation:none}}
+</style>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
-<link rel="preload" href="js/header.js?v=20261006" as="script">
-<script src="js/header.js?v=20261006"></script>
+<link rel="preload" href="js/header.js?v=20261006b" as="script">
+<script src="js/header.js?v=20261006b"></script>
 
 <!-- BREADCRUMB -->
 <div style="background:rgba(5,5,5,.9);border-bottom:1px solid rgba(255,255,255,.06);padding:10px 24px;font-size:.78rem;color:#94a3b8;">
@@ -301,9 +322,8 @@ async function render(c) {
     </div>` : '';
 
   /* Cover pequeña */
-  const coverThumb = c.cover_image
-    ? `<img src="${encodeURI(c.cover_image)}" alt="Portada" loading="lazy" decoding="async" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);flex-shrink:0;">`
-    : '';
+  window._casoPortada = c.cover_image ? String(c.cover_image).replace('/object/public/', '/render/image/public/') + '?width=900&quality=70' : '';
+  const coverThumb = c.cover_image ? `<button type="button" class="caso-portada" ${gallery.length ? 'onclick="openLB(0)"' : ''} aria-label="${gallery.length ? 'Ver las fotos del caso' : 'Portada del caso'}"><img src="${encodeURI(c.cover_image)}" alt="${escHtml(c.name || 'Portada del caso')}" decoding="async"></button>` : '';
 
   document.getElementById('caso-root').innerHTML = `
     <div class="caso-hero">
@@ -416,7 +436,7 @@ function openLBPool(idx) {
   document.getElementById('lightbox').classList.add('active');
 }
 
-async function loadExocadBlob(url, frameId) {
+async function _exocadCargar(url, frameId) {
   const fId = frameId || 'exocad-frame';
   try {
     const resp = await fetch(url);
@@ -425,6 +445,38 @@ async function loadExocadBlob(url, frameId) {
     if (frame) frame.srcdoc = html;
   } catch(e) { console.error('Exocad load error:', e); }
 }
+/* Visor 3D Exocad bajo demanda: ya no se descarga al abrir el caso (pesa varios MB y en celular atrapaba el
+   scroll). En computador carga al acercarse; en celular, al tocar «Ver diseño en 3D». */
+function loadExocadBlob(url, frameId) {
+  const frame = document.getElementById(frameId || 'exocad-frame');
+  if (!frame) return;
+  const wrap = frame.closest('.viewer-wrap') || frame.parentElement;
+  const btn = document.createElement('button');
+  btn.type = 'button'; btn.className = 'visor-portada';
+  if (window._casoPortada) btn.style.backgroundImage = 'url("' + String(window._casoPortada).replace(/"/g, '%22') + '")';
+  btn.innerHTML = '<span class="vp-ico"><i class="fas fa-cube" aria-hidden="true"></i></span><span class="vp-t">Ver diseño en 3D</span><span class="vp-s">Gira, acerca y revisa el diseño tal como sale de Exocad</span>';
+  wrap.appendChild(btn);
+  let cargado = false;
+  const cargar = () => {
+    if (cargado) return; cargado = true;
+    btn.classList.add('cargando'); btn.querySelector('.vp-t').textContent = 'Cargando visor 3D…';
+    Promise.resolve(_exocadCargar(url, frameId)).finally(() => btn.remove());
+  };
+  btn.addEventListener('click', cargar);
+  const ahorro = navigator.connection && (navigator.connection.saveData || /2g|3g/.test(navigator.connection.effectiveType || ''));
+  if (window.matchMedia('(min-width: 900px)').matches && !ahorro && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); cargar(); } }, { rootMargin: '200px 0px' });
+    io.observe(wrap);
+  }
+}
+/* Galería: deslizar con el dedo para pasar de foto */
+(function () {
+  const lb = document.getElementById('lightbox'); if (!lb) return;
+  let x0 = null;
+  lb.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 50) moveLB(dx < 0 ? 1 : -1); }, { passive: true });
+})();
+
 
 /* ── ADMIN ── */
 const ADMIN_EMAILS = ['jackalejandroc@gmail.com','labdentalprodigy@gmail.com'];

@@ -645,6 +645,58 @@ function repairJson(s) {
   }
   return out;
 }
+// ── Referencias REALES (Crossref) ─────────────────────────────────
+// La IA inventa referencias: en oct-2026 solo 60 de 323 existían (DOIs de otros artículos o inexistentes).
+// Cada referencia se busca en Crossref; solo se publica si el artículo existe (por su DOI, o encontrado por
+// título + autor) y se reescribe con los datos oficiales. Con menos de MIN_REFS_REALES, el artículo no sale.
+const MIN_REFS_REALES = 2;
+const CR_UA = { 'User-Agent': 'prodigy-verificador/1.0 (mailto:gerencia@prodigylabdental.com)' };
+const _norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/<[^>]+>/g, ' ').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+const _pal = s => new Set(_norm(s).split(' ').filter(w => w.length > 3));
+const _sim = (a, b) => { const A = _pal(a), B = _pal(b); if (!A.size || !B.size) return 0; const i = [...B].filter(w => A.has(w)).length; return Math.min(i / B.size, i / A.size); };
+const _simEn = (t, titulo) => { const A = _pal(t), B = _pal(titulo); return B.size ? [...B].filter(w => A.has(w)).length / B.size : 0; };
+const _texto = r => typeof r === 'string' ? r : [r.autores, r.titulo, r.revista, r.año].filter(Boolean).join('. ');
+const _titulo = r => typeof r === 'string' ? (r.split(/\.\s+/).slice(1).sort((a, b) => b.length - a.length)[0] || r) : (r.titulo || '');
+const _anio = r => { const m = String(_texto(r)).match(/\b(19|20)\d{2}\b/); return m ? +m[0] : null; };
+async function _crossref(url) {
+  for (let k = 0; k < 3; k++) {
+    try { const r = await fetch(url, { headers: CR_UA }); if (r.status === 404) return null; if (r.ok) return (await r.json()).message; } catch (e) {}
+    await new Promise(r => setTimeout(r, 1500 * (k + 1)));
+  }
+  return null;
+}
+function _cuadra(r, m, porBusqueda) {
+  const t = (m.title || [''])[0]; if (!t) return false;
+  const st = _sim(_titulo(r), t), en = _simEn(_texto(r), t), txt = _norm(_texto(r));
+  const autorOk = (m.author || []).slice(0, 3).some(a => a.family && _norm(a.family).length > 2 && txt.includes(_norm(a.family)));
+  const a = _anio(r), ma = m.issued && m.issued['date-parts'] && m.issued['date-parts'][0][0];
+  if (!porBusqueda) return (st >= 0.6 || en >= 0.85) && (autorOk || (a && ma && Math.abs(a - ma) <= 1));
+  return autorOk && (st >= 0.6 || en >= 0.85) && (!a || !ma || Math.abs(a - ma) <= 2);
+}
+function _armar(m) {
+  const au = (m.author || []).filter(a => a.family).map(a => a.family + (a.given ? ' ' + a.given.split(/[\s-]+/).map(x => x[0]).join('') : ''));
+  return {
+    autores: au.length > 6 ? au.slice(0, 6).join(', ') + ', et al.' : au.join(', ') + (au.length ? '.' : ''),
+    titulo: (m.title || [''])[0].replace(/\s+/g, ' ').trim(),
+    revista: (m['short-container-title'] || [])[0] || (m['container-title'] || [''])[0],
+    año: (m.issued && m.issued['date-parts'] && m.issued['date-parts'][0][0]) || '',
+    vol: m.volume || '', num: m.issue || '', pags: m.page || m['article-number'] || '',
+    doi: m.DOI, verificada: true
+  };
+}
+async function verificarReferencias(refs) {
+  const reales = [], vistos = new Set();
+  for (const r of refs || []) {
+    const t = typeof r === 'string' ? r : [r.doi, r.url].filter(Boolean).join(' ');
+    const d = String(t).match(/10\.\d{4,9}\/[^\s"<>]+/);
+    let m = null;
+    if (d) { const md = await _crossref('https://api.crossref.org/works/' + encodeURIComponent(d[0].replace(/[.,;)\]]+$/, ''))); if (md && _cuadra(r, md, false)) m = md; }
+    if (!m) { const lista = await _crossref('https://api.crossref.org/works?rows=5&query.bibliographic=' + encodeURIComponent(_texto(r).slice(0, 300))); m = ((lista && lista.items) || []).find(it => _cuadra(r, it, true)) || null; }
+    if (m && !vistos.has(m.DOI)) { vistos.add(m.DOI); reales.push(_armar(m)); }
+  }
+  return reales;
+}
+
 function parseGeminiResponse(raw) {
   let jsonStr = raw.trim();
 
@@ -794,6 +846,11 @@ async function main() {
       // 1. Texto con Gemini
       const raw    = await callGemini(buildPrompt(topic));
       const aiData = parseGeminiResponse(raw);
+      // Solo referencias que existen de verdad (Crossref); si quedan muy pocas, este artículo no se publica
+      const _total = (aiData.referencias || []).length;
+      aiData.referencias = await verificarReferencias(aiData.referencias);
+      console.log(`   🔎 Referencias reales: ${aiData.referencias.length} de ${_total}`);
+      if (aiData.referencias.length < MIN_REFS_REALES) throw new Error(`solo ${aiData.referencias.length} referencias reales (mínimo ${MIN_REFS_REALES}): no se publica`);
       console.log(`   ✅ Texto: "${aiData.titulo}"`);
       console.log(`   📚 Referencias: ${aiData.referencias.length}`);
 

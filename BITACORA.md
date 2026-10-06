@@ -9,6 +9,30 @@
 
 ---
 
+## 2026-10-06 (tarde)  (Referencias reales · orbe IA en el Centro de Ayuda · flujo en Envía tu escáner · portafolio v2)
+
+- 🔴→✅ **Referencias científicas inventadas por la IA.** Mostraban «undefined» (la IA las escribe como texto y la
+  página esperaba campos). Al verificarlas en Crossref: de 323, solo 60 existen (22 con su DOI correcto + 38 reales
+  con DOI equivocado, corregido por título + autor). El resto citaba DOIs de otros artículos o inexistentes →
+  quitadas. Las 60 quedan reconstruidas con los datos oficiales (autores, revista, año, DOI). 32 artículos de
+  PRODIGY y 15 de Alejandro quedan sin referencias (la sección se oculta). 💡 Su TEXTO también lo escribió la IA:
+  revisar o despublicar esos artículos.
+  Los generadores ahora verifican cada referencia en Crossref antes de publicar; con menos de 2 reales el artículo
+  NO sale (`verificarReferencias`, MIN_REFS_REALES). `renderRefs` acepta texto u objeto y escapa todo.
+- ✅ **Orbe IA** (js/orbe-ia.js, gemelo): el buscador de /preguntas filtra mientras escribes (ahora por todas las
+  palabras, sin tildes) y con Enter le pregunta a la IA: esfera de puntos que «piensa», luego la respuesta palabra
+  por palabra + «Hablar con una persona». Usa `window._phdrPreguntaIA` (header.js → /api/gemini, mismo contexto del
+  chat). Port en JS puro del componente React de 21st.dev (ADR-001: sin React/Tailwind/TS).
+- ✅ **Flujo de escaneos** (js/flujo-escaneos.js, gemelo) en el hero de Envía tu escáner: líneas que convergen al
+  laboratorio con «archivos» de colores; tocar abre una onda. Líneas en capa estática, solo visible, idle, reduce-motion.
+  En Alejandro reemplaza la cinta aether de esa página.
+- ✅ **Portafolio v2**: filtros justo bajo el menú (antes tapados), en celular una fila deslizable y no pegajosa;
+  fotos 4:3 con brillo de carga, contador de fotos, sin texto de relleno, 2 columnas en celular.
+  **Caso v2**: portada grande que abre la galería, visor 3D Exocad bajo demanda (computador: al acercarse; celular: al
+  tocar «Ver diseño en 3D» — antes bajaba varios MB al abrir y atrapaba el scroll), alto del visor según pantalla,
+  deslizar con el dedo en la galería.
+- Versiones: header.js `v=20261006b`, orbe-ia.js / flujo-escaneos.js `v=20261006`, articles.js `v=20261006`.
+
 ## 2026-10-06  (Blog sin artículos en blanco ni repetidos · modo claro legible · cargas más rápidas · 50/50)
 
 - ✅ **Blog PRODIGY: los 82 artículos abrían EN BLANCO desde jun-2026** («getArticle is not defined»). El generador
