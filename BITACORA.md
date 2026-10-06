@@ -9,6 +9,26 @@
 
 ---
 
+## 2026-10-06 (noche)  (SQL corrido · artículos sin fuentes borrados · buscador de la web + IA · Clarity con permiso)
+
+- ✅ **SQL corrido por Alejandro** (funciones-definer-permisos + fabricacion-pago-verificado). Verificado desde fuera:
+  las 7 vistas (pedidos_reales, doctors_inactivos…) dan «permission denied» al anónimo; las funciones de solo-servidor
+  las usan Functions con SUPABASE_SERVICE_KEY (sin impacto).
+- 💡 **Regla de Alejandro: solo artículos con referencias científicas reales** de revistas de odontología o fuentes de
+  investigación serias. Borrados los que no tenían ninguna: PRODIGY 64→30, Alejandro 25→10 (fuera del sitemap; su
+  enlace muestra «no encontrado» + noindex). Quitadas además referencias de revistas dudosas (Biosci Biotech Res
+  Comm, J Healthcare Eng, Applied Sciences). Generadores: filtro de revista (`_revistaValida`), piden 6 referencias de
+  estudios clásicos/revisiones con título exacto, y descartan el artículo con menos de 2 reales.
+- ✅ **Buscador de la web + IA en el menú** (lupa, también en celular; Ctrl+K o «/»; en /app sigue el de casos):
+  `js/buscador-web.js` muestra páginas y artículos mientras escribes (`buscar-indice.json`, generado por
+  `tools/indice-busqueda.mjs` y por el cron del blog) y con Enter pregunta a la IA con el orbe. También dentro de
+  /soporte. `orbe-ia.js` ahora es montable (`window.OrbeIA.montar`). Ojo: `js/buscador.js` es el buscador de CASOS
+  del panel (otro archivo).
+- ✅ **Portafolio**: filtro por material y orden (Destacados · Más recientes · Más fotos).
+- ✅ **Clarity se queda, pero solo con permiso**: carga únicamente con las cookies analíticas aceptadas (o al pulsar
+  «Aceptar»); antes grababa a todos aunque el aviso dice que se puede rechazar.
+- Versiones: header.js `v=20261006c`, footer.js `v=20261006`, orbe-ia.js `v=20261006b`, buscador-web.js `v=20261006`.
+
 ## 2026-10-06 (tarde)  (Referencias reales · orbe IA en el Centro de Ayuda · flujo en Envía tu escáner · portafolio v2)
 
 - 🔴→✅ **Referencias científicas inventadas por la IA.** Mostraban «undefined» (la IA las escribe como texto y la

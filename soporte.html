@@ -155,8 +155,8 @@
 </head>
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
-<link rel="preload" href="js/header.js?v=20261006b" as="script">
-<script src="js/header.js?v=20261006b"></script>
+<link rel="preload" href="js/header.js?v=20261006c" as="script">
+<script src="js/header.js?v=20261006c"></script>
 <main id="main-content">
 
 <!-- HERO -->
@@ -168,7 +168,10 @@
     <i class="fas fa-robot"></i> <span data-i18n="soporte.hero.btn">Hablar con el Asistente IA</span>
     <span class="ai-badge">Gemini IA</span>
   </button>
+  <!-- Buscador de la web + IA (js/buscador-web.js) -->
+  <div data-buscador-inline data-wa="573212816716" style="width:100%;max-width:640px;margin:28px auto 0;text-align:left"><input type="search" id="soporte-q" aria-label="Buscar en la web o preguntar a la IA"></div>
 </div>
+<script src="js/buscador-web.js?v=20261006" defer></script>
 
 <!-- RECURSOS -->
 <section>
@@ -364,7 +367,7 @@
 })();
 </script>
 
-<script src="js/footer.js?v=20261002n"></script>
+<script src="js/footer.js?v=20261006"></script>
 <script>
 /* ── Scroll reveal ── */
 const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.08});

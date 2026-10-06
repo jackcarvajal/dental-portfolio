@@ -285,6 +285,7 @@
 
   if (!_pgConsentVal) {
     function _pgAccept() {
+      setTimeout(function(){ if (window._loadClarity) window._loadClarity(); }, 0);   // Clarity solo con permiso
       localStorage.setItem('prodigy_cookies_ok','1');
       if(window.gtag) window.gtag('consent','update',{analytics_storage:'granted',ad_storage:'denied'});
       var b = document.getElementById('pfoot-cookie-banner');

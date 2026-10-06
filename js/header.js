@@ -30,6 +30,7 @@
     function dismiss(accept) {
       localStorage.setItem('pg_cookies_decision', accept ? 'accepted' : 'rejected');
       if (accept && window.gtag) window.gtag('consent','update',{analytics_storage:'granted',ad_storage:'granted'});
+      if (accept && window._loadClarity) window._loadClarity();   // Clarity solo con permiso
       b.style.transition = 'opacity .3s'; b.style.opacity = '0';
       setTimeout(function(){ b.remove(); }, 300);
     }
@@ -98,7 +99,12 @@
       y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window,document,'clarity','script',CLARITY_ID);
   }
-  window._loadClarity = _loadClarity; // la llama el cargador de GA, tras el evento load
+  // Clarity graba la sesión y pone cookies: solo con las cookies analíticas aceptadas (Ley 1581 / el aviso lo promete).
+  // La llama el cargador de GA tras el evento load (si ya aceptó) o el botón «Aceptar» del aviso.
+  window._clarityPermitida = function () {
+    try { return localStorage.getItem('pg_cookies_decision') === 'accepted' || localStorage.getItem('prodigy_cookies_ok') === '1'; } catch (e) { return false; }
+  };
+  window._loadClarity = function () { if (window._clarityPermitida()) _loadClarity(); };
 })();
 
 /* ── GA4 (y Clarity) — DESPUÉS de cargar la página ─────────────────────────
@@ -480,6 +486,10 @@
     'display:flex;align-items:center;justify-content:center;font-size:1rem;',
     'flex-shrink:0;transition:all .2s;font-family:inherit;}',
     '.pnav2-theme-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);}',
+    /* Lupa: buscador de la web + IA (js/buscador-web.js). Visible también en celular (a la derecha). */
+    '.pnav2-buscar-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);color:#e2e8f0;width:44px;height:44px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;transition:all .2s;font-family:inherit;}',
+    '.pnav2-buscar-btn:hover{background:rgba(0,210,255,.12);border-color:rgba(0,210,255,.5);color:#fff;}',
+    '@media(max-width:1024px){.pnav2-right{justify-content:flex-end!important;}}',
     ':focus-visible{outline:2px solid #D946A6;outline-offset:2px;border-radius:3px;}',
   ].join('');
 
@@ -598,6 +608,9 @@
               '</button>' +
             '</div>' +
           '</div>' +
+          '<button type="button" class="pnav2-buscar-btn" id="pnav2-buscar-btn" onclick="_phdrBuscar()" aria-label="Buscar en la web o preguntar a la IA" title="Buscar (Ctrl+K)">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' +
+          '</button>' +
           '<button type="button" class="pnav2-theme-btn" id="pnav2-theme-btn" onclick="_phdrToggleTheme()" aria-label="Cambiar tema" title="Modo claro / oscuro">🌙</button>' +
           '<button type="button" class="pnav2-ia-btn" id="pnav2-ia-btn" onclick="_phdrToggleIA()" aria-label="Asistente IA" aria-expanded="false" aria-controls="pg-chat-window">' +
             '<i class="fas fa-robot"></i>' +
@@ -960,6 +973,20 @@
       'No inventes datos — di "confirma con el equipo técnico vía WhatsApp". ' +
       'Para clientes internacionales que escriben en inglés, responde en inglés. ' +
       'Usa emojis técnicos con moderación (🦷 ⚙️ 📐 💎).';
+  }
+
+  /* ── BUSCADOR DE LA WEB + IA ── se carga la primera vez que se usa (lupa del menú, Ctrl+K o «/») */
+  window._phdrBuscar = function () {
+    var abrir = function () { window.Buscador.abrir({ wa: '573212816716' }); };
+    if (window.Buscador) return abrir();
+    var s = document.createElement('script'); s.src = '/js/buscador-web.js?v=20261006'; s.onload = abrir;
+    document.head.appendChild(s);
+  };
+  if (window.location.pathname.indexOf('/app/') !== 0) {          // en /app el Ctrl+K es el buscador de casos
+    document.addEventListener('keydown', function (e) {
+      var k = (e.key || '').toLowerCase(), t = e.target, escribiendo = t && (t.isContentEditable || /^(input|textarea|select)$/i.test(t.tagName));
+      if (((e.ctrlKey || e.metaKey) && k === 'k') || (k === '/' && !escribiendo && !e.ctrlKey && !e.metaKey && !e.altKey)) { e.preventDefault(); window._phdrBuscar(); }
+    });
   }
 
   window._phdrToggleIA = function () {

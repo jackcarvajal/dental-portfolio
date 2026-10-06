@@ -589,7 +589,10 @@ REGLAS ABSOLUTAS — VIOLACIÓN = ARTÍCULO RECHAZADO:
 3. JAMÁS uses frases vagas como "estudios muestran" o "se ha demostrado" sin citar la fuente exacta
 4. Cada afirmación técnica numérica DEBE tener referencia (Apellido et al., Revista, Año)
 5. Referencias en formato Vancouver completo: Apellido AI, et al. Título. Revista. Año;Vol(N):pp. doi:10.XXXX/XXXXX
-6. Mínimo 4 referencias con DOI verificable de PubMed o ScienceDirect
+6. Da 6 referencias. Cada referencia se VERIFICA AUTOMÁTICAMENTE en Crossref: las que no existan se eliminan y, si
+   quedan menos de 2 reales, el artículo se descarta. Por eso cita SOLO estudios que conozcas con certeza: revisiones
+   sistemáticas, metaanálisis y estudios clásicos muy citados de las revistas de odontología listadas arriba, con el
+   TÍTULO EXACTO y los autores reales. Nada de revistas que no sean de odontología o biomateriales.
 7. Nivel técnico para odontólogos generales y técnicos dentales especializados
 8. Mínimo 5 secciones temáticas (h2)
 9. Mínimo una tabla comparativa con datos de estudios reales (citar fuente en la tabla)
@@ -684,6 +687,10 @@ function _armar(m) {
     doi: m.DOI, verificada: true
   };
 }
+// Regla de Alejandro (oct-2026): solo revistas de odontología o fuentes de investigación serias (no revistas dudosas)
+const _REV_DENTAL = /dent|oral|odont|orthod|ortho\b|eortho|prosth|periodont|endod|implant|maxillofac|stomat|craniofac|orofac|esthetic/i;
+const _REV_SERIAS = /^(materials|sci(entific)? rep(orts)?|plos one|annu(al)?\.? rev(iew)?\.? (of )?mater(ials)?\.? res(earch)?\.?|scandinavian journal of plastic|cochrane|biomaterials|acta biomater|j(ournal of)? biomed(ical)? mater|j(ournal of the)? mech(anical)? behav|nature|lancet|bmj|jama)/i;
+const _revistaValida = rev => _REV_DENTAL.test(rev || '') || _REV_SERIAS.test(String(rev || '').trim());
 async function verificarReferencias(refs) {
   const reales = [], vistos = new Set();
   for (const r of refs || []) {
@@ -692,6 +699,7 @@ async function verificarReferencias(refs) {
     let m = null;
     if (d) { const md = await _crossref('https://api.crossref.org/works/' + encodeURIComponent(d[0].replace(/[.,;)\]]+$/, ''))); if (md && _cuadra(r, md, false)) m = md; }
     if (!m) { const lista = await _crossref('https://api.crossref.org/works?rows=5&query.bibliographic=' + encodeURIComponent(_texto(r).slice(0, 300))); m = ((lista && lista.items) || []).find(it => _cuadra(r, it, true)) || null; }
+    if (m && !_revistaValida(_armar(m).revista)) m = null;   // revista que no es de odontología ni de investigación seria
     if (m && !vistos.has(m.DOI)) { vistos.add(m.DOI); reales.push(_armar(m)); }
   }
   return reales;

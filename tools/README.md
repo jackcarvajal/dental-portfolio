@@ -112,3 +112,7 @@ idéntico / N líneas distintas / qué repo lo tocó último. Si el otro repo es
 PRODIGY (canónico). Informativo: no falla ni modifica nada. `--repo <ruta>` para comparar con otro repo.
 `audit.mjs` §5 además falla si un origen CORS se acepta por substring (`.includes('.pages.dev')`) o si hay
 enlaces a un `*.pages.dev` que no es nuestro.
+
+## indice-busqueda.mjs
+Genera `buscar-indice.json` (raíz) para la lupa del menú (`js/buscador-web.js`): páginas públicas + artículos del blog.
+Lo corre solo el cron del blog; a mano al crear o quitar una página: `node tools/indice-busqueda.mjs`.

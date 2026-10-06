@@ -37,6 +37,9 @@ jobs:
           ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/auto-journal.js
 
+      - name: Índice del buscador de la web (páginas + artículos)
+        run: node tools/indice-busqueda.mjs
+
       - name: Verificar cambios en articles.js
         id: changes
         run: |
@@ -47,7 +50,7 @@ jobs:
         run: |
           git config user.name  "ProDigy Journal Bot"
           git config user.email "bot@prodigylabdental.com"
-          git add articles.js sitemap.xml
+          git add articles.js sitemap.xml buscar-indice.json
           git commit -m "feat(journal): $(date +'%Y-%m-%d') — 2 artículos técnicos auto-generados [skip ci]"
           # Reintento con rebase: evita 'fetch first' si otro push llegó mientras corría el cron
           for i in 1 2 3; do
