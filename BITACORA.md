@@ -24,8 +24,10 @@
   ia_conocimiento, RLS solo admin, escribe solo el servidor). gemini.js (ambas, YA publicado y tolerante a que no
   existan): agrega las «respuestas oficiales» relevantes a las instrucciones y guarda la pregunta ANÓNIMA (borra correos,
   teléfonos, documentos, enlaces y «paciente Nombre»). Aviso «no escribas datos de pacientes» en chat y orbe + párrafo
-  en la política de privacidad. Página `app/ia-conocimiento.html` (convertir preguntas en respuestas oficiales):
-  **se publica cuando se corra el SQL** (el pre-push la bloquea antes, a propósito).
+  en la política de privacidad. Página `app/ia-conocimiento.html` (convertir preguntas en respuestas oficiales)
+  YA publicada: si las tablas no existen muestra «falta correr sql/ia-conocimiento-2026.sql». El pre-push
+  (audit-schema-live) tiene `TABLAS_PENDIENTES` = ia_conocimiento, ia_preguntas → solo avisa; **quitarlas de ahí
+  cuando el SQL esté corrido**. El canal (chat/orbe/buscador) viaja en la cabecera `X-Canal`.
 - ✅ **Blog: el cron del 6-oct «falló»** porque la IA inventó 6 de 6 referencias (bien descartado) y Gemini dio 503 en
   el otro tema. Ahora las fuentes salen de **PubMed** antes de escribir (artículos reales con resumen, de revistas de
   odontología/biomateriales, consulta por tema `PUBMED_Q`); la IA escribe SOLO con esas fuentes y las cita. Si un día no

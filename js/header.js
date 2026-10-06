@@ -842,6 +842,7 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
   (function initUrgencia() {
     var widget = document.getElementById('urgencia-widget');
     var label  = document.getElementById('urgencia-text');
+    if (label) label.setAttribute('translate', 'no');
     if (!widget || !label) return;
 
     // Día de producción: L-V y no festivo (festivos solo si PFechas está cargado)
@@ -866,7 +867,8 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
       en: ['Design 24h · Manufacturing 24–48h · Ships ', 'Design 24h · Manufacturing 24–48h · Production Mon–Fri'],
       pt: ['Design 24h · Fabricação 24–48h · Envio ', 'Design 24h · Fabricação 24–48h · Produção Seg–Sex']
     };
-    function idioma() { return window._phdrLang ? window._phdrLang() : 'es'; }
+    // PT lo traduce Google, pero este texto cambia cada segundo: se escribe ya en portugués y Google no lo toca
+    function idioma() { var l = window._phdrLang ? window._phdrLang() : 'es'; try { if (l === 'es' && localStorage.getItem('prd_lang') === 'pt' && location.pathname.indexOf('/en/') !== 0) l = 'pt'; } catch (e) {} return l; }
     function fmtDia(d) { var l = idioma(); return DIAS[l][d.getDay()] + ' ' + d.getDate() + ' ' + MESES[l][d.getMonth()]; }
 
     function tick() {
