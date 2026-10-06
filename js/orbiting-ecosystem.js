@@ -3,7 +3,7 @@
    Sin CDNs externos. Uso:
      <div id="orb-eco" data-logo="diamond"></div>
      <script src="js/orbiting-ecosystem.js" defer></script>
-   Respeta prefers-reduced-motion (queda estático). */
+   Respeta prefers-reduced-motion (queda estático). Se arma al acercarse y gira solo mientras se ve. */
 (function(){
   "use strict";
   if (window.__orbEco) return; window.__orbEco = 1;
@@ -26,6 +26,8 @@
     "@keyframes orb-ccw{from{transform:rotate(var(--a))}to{transform:rotate(calc(var(--a) - 360deg))}}"+
     "@keyframes orb-ncw{from{transform:rotate(var(--c))}to{transform:rotate(calc(var(--c) - 360deg))}}"+
     "@keyframes orb-nccw{from{transform:rotate(var(--c))}to{transform:rotate(calc(var(--c) + 360deg))}}"+
+    ".orb-pausa .orb-arm,.orb-pausa .orb-badge{animation-play-state:paused!important}"+
+    "#orb-eco{min-height:26rem}@media(min-width:768px){#orb-eco{min-height:34rem}}"+
     "@media(prefers-reduced-motion:reduce){.orb-arm,.orb-badge{animation:none!important}}";
 
   var DIAMOND = '<svg viewBox="0 0 100 100" width="100%" height="100%"><polygon points="38,29 62,29 62,44 38,44" fill="#9fecff"/><polygon points="38,29 17,44 38,44" fill="#56cef5"/><polygon points="62,29 83,44 62,44" fill="#34ace2"/><polygon points="17,44 50,44 50,77" fill="#0f6fb0"/><polygon points="50,44 83,44 50,77" fill="#0d68a8"/><polygon points="38,29 62,29 83,44 50,77 17,44" fill="none" stroke="#d4f2ff" stroke-width="2" stroke-linejoin="round"/></svg>';
@@ -48,18 +50,17 @@
     ]
   };
 
-  function particleSphere(canvas){
+  function particleSphere(canvas, stage){
     var ctx=canvas.getContext('2d'), N=170, pts=[], dpr=Math.min(window.devicePixelRatio||1,2);
-    function size(){ var w=canvas.clientWidth, h=canvas.clientHeight; canvas.width=w*dpr; canvas.height=h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); }
+    var w=0, h=0;
+    // El tamaño se fija solo al crear y al cambiar (antes se hacía en cada cuadro: 60 veces por segundo)
+    function size(){ w=canvas.clientWidth; h=canvas.clientHeight; canvas.width=w*dpr; canvas.height=h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); }
     for(var i=0;i<N;i++){ var y=1-(i/(N-1))*2, r=Math.sqrt(1-y*y), th=i*2.399963; pts.push([Math.cos(th)*r, y, Math.sin(th)*r]); }
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-    var ang=0, running=true;
-    function frame(){
-      if(!running) return;
-      size();
-      var w=canvas.clientWidth, h=canvas.clientHeight, cx=w/2, cy=h/2, R=Math.min(w,h)*0.42;
+    var ang=0, running=false, visible=false;
+    function draw(){
+      var cx=w/2, cy=h/2, R=Math.min(w,h)*0.42;
       ctx.clearRect(0,0,w,h);
-      ang += reduce?0:0.0035;
       var ca=Math.cos(ang), sa=Math.sin(ang);
       for(var i=0;i<pts.length;i++){
         var x=pts[i][0], y=pts[i][1], z=pts[i][2];
@@ -70,10 +71,21 @@
         ctx.fillStyle='rgba('+(120+depth*135|0)+','+(200+depth*55|0)+',255,'+alpha.toFixed(2)+')';
         ctx.beginPath(); ctx.arc(sx,sy,rad,0,Math.PI*2); ctx.fill();
       }
-      if(!reduce) requestAnimationFrame(frame);
     }
-    document.addEventListener('visibilitychange',function(){ if(document.hidden){running=false;} else if(!running&&!reduce){running=true;requestAnimationFrame(frame);} });
-    requestAnimationFrame(frame);
+    function frame(){
+      if(!running) return;
+      ang += 0.0035; draw();
+      requestAnimationFrame(frame);
+    }
+    // Gira solo mientras se ve (fuera de la pantalla o con la pestaña oculta, se detiene; los anillos también)
+    function arrancar(){ stage.classList.toggle('orb-pausa', !visible || document.hidden); if(reduce || running || !visible || document.hidden) return; running=true; requestAnimationFrame(frame); }
+    function parar(){ running=false; stage.classList.add('orb-pausa'); }
+    size(); draw();
+    if('ResizeObserver' in window) new ResizeObserver(function(){ size(); draw(); }).observe(canvas);
+    else window.addEventListener('resize', function(){ size(); draw(); });
+    document.addEventListener('visibilitychange', function(){ if(document.hidden) parar(); else arrancar(); });
+    if('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible=es[0].isIntersecting; if(visible) arrancar(); else parar(); }).observe(stage);
+    else { visible=true; arrancar(); }
   }
 
   function build(mount){
@@ -106,12 +118,16 @@
     var logo=document.createElement('div'); logo.className='orb-logo'; logo.innerHTML=(LOGOS[logoKind]||DIAMOND);
     stage.appendChild(logo);
     mount.innerHTML=''; mount.appendChild(stage);
-    particleSphere(cv);
+    particleSphere(cv, stage);
   }
 
   function init(){
     if(!document.getElementById('orb-eco-css')){ var s=document.createElement('style'); s.id='orb-eco-css'; s.textContent=CSS; document.head.appendChild(s); }
-    var m=document.getElementById('orb-eco'); if(m) build(m);
+    var m=document.getElementById('orb-eco'); if(!m) return;
+    // Se arma cuando el visitante se acerca (no compite con la carga del inicio); el espacio ya está reservado
+    if(!('IntersectionObserver' in window)) return build(m);
+    var io=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ io.disconnect(); build(m); } }, { rootMargin:'400px 0px' });
+    io.observe(m);
   }
   if(document.readyState!=='loading') init(); else document.addEventListener('DOMContentLoaded', init);
 })();

@@ -84,7 +84,7 @@
   }
 })();
 
-/* ── MICROSOFT CLARITY — diferido con requestIdleCallback ────────────
+/* ── MICROSOFT CLARITY — se carga junto con GA, después del evento load ──
    Mapas de calor + grabaciones de sesión. No es crítico para el render.
 ─────────────────────────────────────────────────────────────────────── */
 (function(){
@@ -98,38 +98,37 @@
       y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window,document,'clarity','script',CLARITY_ID);
   }
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(_loadClarity, { timeout: 5000 });
-  } else {
-    setTimeout(_loadClarity, 2000);
-  }
+  window._loadClarity = _loadClarity; // la llama el cargador de GA, tras el evento load
 })();
 
-/* ── GA4 GLOBAL — carga diferida con requestIdleCallback ─────────────
-   Se inyecta aquí para no tener que tocarlo en cada HTML individualmente.
-   Respeta Consent Mode v2: analytics_storage denied hasta que el usuario acepte cookies.
-   Usa requestIdleCallback para no bloquear el hilo principal en la carga inicial.
+/* ── GA4 (y Clarity) — DESPUÉS de cargar la página ─────────────────────────
+   La cola de gtag (consentimiento + config) se crea YA, sin red, para que «Aceptar cookies» funcione
+   aunque el script no haya bajado. gtag.js (190 KB) se pide tras el evento load y con el navegador libre:
+   antes competía con el contenido. Es el ÚNICO cargador de GA: las páginas no deben traer su propio
+   <script> de GA (con los dos, cada visita contaba dos page_view). Respeta Consent Mode v2 y reaplica
+   el consentimiento ya dado (antes volvía a quedar «denied» en cada página).
 ─────────────────────────────────────────────────────────────────────── */
 (function(){
-  function _loadGA4() {
-    if (document.getElementById('prodigy-ga4-script')) return;
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    window.gtag = window.gtag || gtag;
+  var GA_ID = 'G-3N0ZZE5V10';
+  window.dataLayer = window.dataLayer || [];
+  if (!window.gtag) {
+    window.gtag = function(){ window.dataLayer.push(arguments); };
     gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
+    try { if (localStorage.getItem('pg_cookies_decision') === 'accepted' || localStorage.getItem('prodigy_cookies_ok') === '1') gtag('consent','update',{analytics_storage:'granted'}); } catch (e) {}
     gtag('js', new Date());
-    gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});
-    var s = document.createElement('script');
-    s.id  = 'prodigy-ga4-script';
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10';
-    document.head.appendChild(s);
+    gtag('config', GA_ID, {anonymize_ip:true});
   }
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(_loadGA4, { timeout: 3000 });
-  } else {
-    setTimeout(_loadGA4, 1000);
+  function _cargar() {
+    if (!document.getElementById('prodigy-ga4-script')) {
+      var s = document.createElement('script');
+      s.id = 'prodigy-ga4-script'; s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(s);
+    }
+    if (window._loadClarity) window._loadClarity();
   }
+  function _luego() { if (window.requestIdleCallback) requestIdleCallback(_cargar, { timeout: 4000 }); else setTimeout(_cargar, 1500); }
+  if (document.readyState === 'complete') _luego(); else window.addEventListener('load', _luego);
 })();
 
 (function () {

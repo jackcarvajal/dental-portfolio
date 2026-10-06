@@ -39,7 +39,18 @@
 - 🟡 **Carga**: Font Awesome sin bloquear (7 páginas + flujos), PayPal SDK fuera del `<head>` de flujo-diseño,
   supabase/auth-guard/reportar con `defer` en flujos de PRODIGY (en Alejandro flujo-diseño NO: exige sesión inline),
   ícono del hero en SVG (era la imagen LCP vía fuente de íconos). Medir en vivo con Lighthouse.
-- Versiones: header.js / footer.js / reportar-problema.js `v=20261002n`, animations.js `v=20261002`,
+- ✅ **Google Analytics contaba DOS visitas por página** en 30 páginas de PRODIGY y 14 de Alejandro (cada página traía
+  su propio `<script>` de GA y header.js lo volvía a configurar). Ahora header.js es el único cargador: crea la cola
+  de gtag al instante (el botón «Aceptar cookies» funciona aunque GA no haya bajado), reaplica el consentimiento ya
+  dado (antes volvía a quedar «denied» en cada página) y pide gtag.js (190 KB) + Clarity DESPUÉS del evento load.
+  💡 Desde hoy las visitas en GA bajan ~a la mitad: no es menos tráfico, es el conteo real.
+- ✅ **Globo de marcas del inicio** (orbiting-ecosystem.js, ambas webs): redimensionaba el canvas 60 veces por
+  segundo y giraba aunque no se viera (2 s de CPU en Lighthouse). Ahora se arma al acercarse, gira solo visible.
+- ✅ supabase-js fijado a 2.110.2 con integridad (SRI) en envía-tu-escáner (ambas), envía-alineadores y
+  escáner a domicilio (antes `@2` sin versión: más lento y sin verificación).
+- 📏 **Lighthouse móvil (simula 4G lento + CPU ×4)**: flujo-diseño LCP 9.1→6.2 s. En una conexión normal
+  (medido sin simulación) todas las páginas pintan el contenido en 0.7-0.9 s.
+- Versiones: header.js `v=20261006`, orbiting-ecosystem.js `v=20261006`, footer.js / reportar-problema.js `v=20261002n`, animations.js `v=20261002`,
   articles.js / articulos-util.js `v=20261002`, articles-ac.js `v=20261002`.
 
 ## 2026-10-02  (Pulso clicable · ruta del caso pública · correos de acceso por marca · DMARC Alejandro)
