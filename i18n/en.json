@@ -1029,7 +1029,9 @@
 "Aún no has asignado indicaciones a los dientes.": "No indications assigned yet: tap a tooth on the chart.",
 "Íconos de indicaciones y materiales: exocad DentalDB® — se usan solo para que la orden hable el mismo idioma que el software de diseño.": "Indication and material icons: exocad DentalDB® — used only so the order speaks the same language as the design software.",
 "¿Tu caso no es por diente? Alineadores, sonrisa 3D, cubeta, guía quirúrgica…": "Not a per-tooth case? Aligners, 3D smile design, custom tray, surgical guide…",
-"Ver otros servicios": "See other services"
+"Ver otros servicios": "See other services",
+"Nomenclatura dental": "Tooth numbering",
+"exocad® y DentalDB® son marcas registradas de exocad GmbH. Los íconos de indicaciones y materiales se usan solo para que tu orden coincida con el software de diseño (interoperabilidad). PRODIGY Lab Dental no está afiliado, patrocinado ni respaldado por exocad.": "exocad® and DentalDB® are registered trademarks of exocad GmbH. The indication and material icons are used only so your order matches the design software (interoperability). PRODIGY Lab Dental is not affiliated with, sponsored or endorsed by exocad."
 },
 "patrones": [
 [
@@ -1061,7 +1063,7 @@
 "Approx. $1"
 ],
 [
-"^Diente (\\d+)$",
+"^Diente (\\S+)$",
 "Tooth $1"
 ],
 [

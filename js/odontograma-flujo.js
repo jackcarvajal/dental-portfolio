@@ -11,7 +11,8 @@
   var fr = document.getElementById('odo-frame');
   if (!fr) return;
   var EN = !!(window._phdrIdiomaPagina && window._phdrIdiomaPagina() === 'en');
-  fr.src = '/odontograma.html?v=' + (C.v || '1') + '&lang=' + (EN ? 'en' : 'es') + (C.sitio ? '&sitio=' + C.sitio : '');
+  var nota = window.Dientes ? Dientes.preferido() : (EN ? 'universal' : 'fdi');   // FDI (ISO) · Universal (EE. UU.) · Palmer (R. Unido)
+  fr.src = '/odontograma.html?v=' + (C.v || '1') + '&lang=' + (EN ? 'en' : 'es') + '&nota=' + nota + (C.sitio ? '&sitio=' + C.sitio : '');
   var T = EN
     ? { nada: 'No indications assigned yet: tap a tooth on the chart.', unid: function (n) { return n + (n === 1 ? ' tooth' : ' teeth'); }, cot: 'to be quoted', guia: 'Surgical guide', otro: 'Selected service: ' }
     : { nada: 'Aún no has asignado indicaciones a los dientes.', unid: function (n) { return n + (n === 1 ? ' pieza' : ' piezas'); }, cot: 'a cotizar', guia: 'Guía quirúrgica', otro: 'Servicio elegido: ' };
@@ -24,7 +25,7 @@
   function fdiLista(items) { return items.map(function (i) { return String(i.d); }).filter(function (x, i, a) { return a.indexOf(x) === i; }).sort(function (a, b) { return a - b; }); }
   function mostrar(lista) { return window.Dientes ? (Dientes.mostrar(lista) || lista.join(', ')) : lista.join(', '); }
 
-  var activo = false, piezasFDI = [];
+  var activo = false, piezasFDI = [], ultimo = null;
   function aplicar(x) {
     var items = (x.items || []).filter(function (it) { return it && it.ind; });
     var cobrables = items.filter(function (it) { return !INFO[it.ind]; });
@@ -77,7 +78,9 @@
   window.addEventListener('message', function (ev) {
     if (ev.origin !== location.origin) return;
     var x = ev.data;
+    if (x && x.__odoNota) { if (ultimo && typeof STATE !== 'undefined') aplicar(ultimo); return; }   // cambió la nomenclatura
     if (!x || x.__odo !== 1) return;
+    ultimo = x;
     if (typeof x.height === 'number' && x.height > 300) fr.style.height = (x.height + 8) + 'px';
     if (typeof STATE === 'undefined') return;
     aplicar(x);

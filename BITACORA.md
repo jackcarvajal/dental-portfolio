@@ -66,6 +66,11 @@
   Embebido a 2 columnas (≥760 px) → alto ~1.950 px; la sección 2 ya no se recorta (`max-height:none`).
   `flujo-diseno-preview.html` borrado (301 → /flujo-diseno). Tour y centro de ayuda actualizados.
 - 🟡 Pendiente de decisión: el flujo en inglés de PRODIGY sigue en COP (su catálogo es COP; USD exige la lista USD de /en/).
+- ✅ **Odontograma en la nomenclatura del doctor** (pedido de Alejandro: «para mercado USA no es correcta»): selector FDI · Universal ·
+  Palmer arriba del diagrama; en Universal/Palmer cada diente lleva su número encima (la imagen trae FDI dibujado). En inglés
+  arranca en Universal. El título, el resumen y el WhatsApp usan esa nomenclatura con el FDI al lado; el laboratorio, FDI.
+- ✅ **Aviso de marcas**: «exocad® y DentalDB® son marcas registradas de exocad GmbH… no está afiliado, patrocinado ni
+  respaldado por exocad» en el flujo y debajo del odontograma, y sección «Marcas de terceros» en Términos.
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
 - ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):
