@@ -17,6 +17,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
 <script src="../js/auth-guard.js?v=20260929"></script>
     <script src="../js/upload-guard.js?v=20261001"></script>
+    <script src="../js/odonto-dibujo.js?v=20261008"></script>
 <style>
 :root {
   --bg:#050505; --card:#050e1a; --cyan:#00d2ff; --gold:#D4AF37;
@@ -422,7 +423,7 @@ async function cargarCasos() {
   const { data, error } = await sb.from('pedidos')
     // Operario NO ve: nombre_paciente, email, whatsapp real del cliente — solo código interno
     // wa_op: número enmascarado solo para notificaciones internas de operario
-    .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,revisiones_usadas,stl_ruta,stl_url,operario_codigo,telefono,pais,nombre_doctor')
+    .select('id,codigo,tipo_trabajo,material,color_vita,estado,estado_operativo,created_at,flujo,link_diseno,notas_cambios,revisiones_usadas,stl_ruta,stl_url,operario_codigo,telefono,pais,nombre_doctor,odontograma')
     .eq('negocio', 'prodigy')
     .eq('flujo','diseno')
     // (quitado filtro estado='cancelado': valor inexistente en el enum estado_pedido → 22P02/400)
@@ -510,8 +511,30 @@ function cardHTML(p, col) {
       ${p.color_vita?'<br>Color: '+escH(p.color_vita):''}
       ${p.notas_cambios?'<br><span style="color:var(--gold)">📝 '+escH(p.notas_cambios.slice(0,60))+'</span>':''}
     </div>
-    <div class="caso-actions"><button type="button" class="btn-xs btn-gold" onclick="verArchivosDoctor('${p.id}')" title="Descargar lo que subió el doctor (escaneos, fotos, CBCT)"><i class="fas fa-download"></i> Archivos</button>${actions}</div>
+    <div class="caso-actions"><button type="button" class="btn-xs btn-gold" onclick="verArchivosDoctor('${p.id}')" title="Descargar lo que subió el doctor (escaneos, fotos, CBCT)"><i class="fas fa-download"></i> Archivos</button>${window.OdontoDibujo && OdontoDibujo.tiene(p.odontograma) ? `<button type="button" class="btn-xs" onclick="verOrdenDiente('${p.id}')" title="Orden por diente (indicación y material, como en DentalDB)"><i class="fas fa-tooth"></i> Orden</button>` : ''}${actions}</div>
   </div>`;
+}
+
+/* ── Orden por diente (pedidos.odontograma): el arco con los colores de cada indicación + la tabla, en FDI ── */
+function verOrdenDiente(id) {
+  const caso = _casos.find(p => p.id === id);
+  if (!caso || !window.OdontoDibujo) return;
+  let ov = document.getElementById('modal-orden');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.className = 'modal-overlay'; ov.id = 'modal-orden';
+    ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true'); ov.setAttribute('aria-labelledby','modal-orden-title');
+    ov.innerHTML = '<div class="modal" style="max-width:640px"><div class="modal-title" id="modal-orden-title"><i class="fas fa-tooth" style="margin-right:8px;"></i>Orden por diente (FDI)</div>'
+      + '<div class="modal-sub" id="orden-sub"></div><div id="orden-cuerpo"></div>'
+      + '<button type="button" class="btn-xs" style="margin-top:14px;" data-cerrar>Cerrar</button></div>';
+    ov.addEventListener('click', e => { if (e.target === ov || e.target.hasAttribute('data-cerrar')) ov.classList.remove('open'); });
+    document.body.appendChild(ov);
+  }
+  document.getElementById('orden-sub').textContent = 'Caso #' + (caso.codigo || caso.id.slice(0,8)) + ' · repítela en DentalDB con estas indicaciones y materiales';
+  document.getElementById('orden-cuerpo').innerHTML =
+    '<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin:10px 0"><div style="flex:0 1 230px;min-width:180px">' + OdontoDibujo.svg(caso.odontograma) + '</div>'
+    + '<div style="flex:1 1 200px;min-width:0">' + OdontoDibujo.leyenda(caso.odontograma) + '</div></div>' + OdontoDibujo.tabla(caso.odontograma);
+  ov.classList.add('open');
 }
 
 /* ── Archivos del doctor: lo que subió al abrir el caso o al responder una revisión (sin comprobantes de pago) ── */

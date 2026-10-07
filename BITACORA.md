@@ -79,6 +79,11 @@
   3.300 → ~2.400 px en celular, 1.950 en escritorio). (3) Numeración Universal/Palmer sobre el diagrama (hecho antes).
   (4) Archivo de exocad: **no se puede generar** un .dentalProject válido — exocad guarda los parámetros comprimidos (LZMA) y
   firmados (WorkParamsSHA); en su lugar, la ficha da la orden en el mismo orden que DentalDB + JSON.
+- ✅ **SQL `pedidos-odontograma-2026.sql` corrido** (8-oct; la columna responde 200) → fuera del ALLOW de audit-schema-live
+  (ambas). **Dibujo de la orden** (`js/odonto-dibujo.js`): arco dental SVG con cada diente en el color de su indicación +
+  leyenda + tabla. Se ve en la Ficha del caso y en el panel de diseño (botón «Orden» en la tarjeta → modal), que ahora
+  también lee `odontograma`.
+
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
 - ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):

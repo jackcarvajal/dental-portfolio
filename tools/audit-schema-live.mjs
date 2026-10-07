@@ -37,8 +37,6 @@ const ALLOW = new Set([
   // Columnas de promociones — existen tras correr sql/promos-y-restaurativos-catalogo.sql.
   // El código degrada bien si aún no están (Promo cae al precio normal).
   'catalogo.precio_oferta', 'catalogo.oferta_desde', 'catalogo.oferta_hasta',
-  // Orden por diente (jsonb) — existe tras correr sql/pedidos-odontograma-2026.sql; el flujo prueba la columna antes de enviarla.
-  'pedidos.odontograma',
 ]);
 
 // ── Tablas nuevas cuyo SQL aún no se ha corrido y cuyo código YA tolera que falten ──

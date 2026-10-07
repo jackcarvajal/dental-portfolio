@@ -19,6 +19,7 @@
 <script src="../js/auth-guard.js?v=20260929"></script>
 <script src="../js/formatos.js?v=20261001"></script>
 <script src="../js/visor-universal.js?v=20260718"></script>
+<script src="../js/odonto-dibujo.js?v=20261008"></script>
 <style>
 :root{--bg:#050505;--card:#0d1520;--gold:#D4AF37;--pink:#D946A6;--cyan:#00d2ff;--neon:#00FF41;--muted:#94a3b8;--txt:#e2e8f0;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -195,11 +196,10 @@ async function verFicha(id) {
 
   ${p.odontograma && Array.isArray(p.odontograma.piezas) && (p.odontograma.piezas.length || p.odontograma.guia) ? `<div class="card">
     <h2><i class="fas fa-tooth"></i> Orden por diente (FDI)</h2>
-    <table style="width:100%;border-collapse:collapse;font-size:.88rem">
-      <thead><tr style="text-align:left;color:var(--muted,#94a3b8)"><th style="padding:6px 8px">Diente</th><th style="padding:6px 8px">Indicación</th><th style="padding:6px 8px">Material</th><th style="padding:6px 8px">Tono</th><th style="padding:6px 8px">Implante</th></tr></thead>
-      <tbody>${p.odontograma.piezas.slice().sort((a, b) => a.fdi - b.fdi).map(x => `<tr style="border-top:1px solid rgba(255,255,255,.08)"><td style="padding:6px 8px;font-weight:800">${esc(x.fdi)}</td><td style="padding:6px 8px">${esc(x.indicacion || '—')}</td><td style="padding:6px 8px">${esc(x.material || '—')}</td><td style="padding:6px 8px">${esc(x.tono || '—')}</td><td style="padding:6px 8px">${esc(x.implante || '—')}</td></tr>`).join('')}</tbody>
-    </table>
-    ${p.odontograma.guia ? `<p style="margin-top:10px;font-size:.88rem"><strong>Guía quirúrgica:</strong> ${esc(p.odontograma.guia.nombre || p.odontograma.guia.tipo)} · ${esc([p.odontograma.guia.sistema, p.odontograma.guia.soporte, p.odontograma.guia.guiado, p.odontograma.guia.manga].filter(Boolean).join(' · '))}</p>` : ''}
+    ${window.OdontoDibujo ? `<div style="display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-bottom:12px">
+      <div style="flex:0 1 260px;min-width:200px">${OdontoDibujo.svg(p.odontograma)}</div>
+      <div style="flex:1 1 220px;min-width:0">${OdontoDibujo.leyenda(p.odontograma)}</div>
+    </div>${OdontoDibujo.tabla(p.odontograma)}` : ''}
     <p style="margin-top:8px;font-size:.78rem;color:var(--muted,#94a3b8)">El doctor la marcó en ${esc(({fdi:'FDI',universal:'Universal (EE. UU.)',palmer:'Palmer (R. Unido)'})[p.odontograma.nomenclatura] || 'FDI')}; aquí siempre en FDI. Repítela en DentalDB con estas indicaciones y materiales.</p>
     <button type="button" class="btn btn-sec" id="odo-json" style="margin-top:8px"><i class="fas fa-download"></i> Descargar orden (JSON)</button>
   </div>` : ''}
