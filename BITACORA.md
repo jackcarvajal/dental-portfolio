@@ -45,6 +45,9 @@
   **«Más repetidas»** (agrupa preguntas parecidas de 30 días → crear respuesta oficial / marcar revisadas). **Resumen
   semanal** los lunes dentro de `alerta-sla.js` (campana del admin + WhatsApp STAFF_1), sin cron ni secretos nuevos.
 - ✅ Centro de ayuda: artículos «Piezas del caso: FDI, Universal y Palmer» e «IA de la web».
+- ✅ **Error en flujo-diseno** (`requestIdleCallback … IdleRequestOptions`): el borde de Cloudflare seguía sirviendo el
+  `stl-multi-viewer.js?v=20261002` viejo (el arreglo se publicó sin subir `?v=`). Subido a v=20261008 en ambas.
+  Herramienta: `stale-js.mjs` (scratchpad) compara cada /js?v= de producción con el repo.
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
 - ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):
