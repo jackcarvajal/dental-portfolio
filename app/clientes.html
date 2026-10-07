@@ -40,6 +40,31 @@ a{color:inherit;text-decoration:none;}
 .empty,.spinner{text-align:center;padding:50px 16px;color:var(--muted);font-size:.9rem;}
 .spinner i{color:var(--gold);}
 @media(max-width:560px){.item{gap:10px;}.info{min-width:130px;}}
+.acts{flex-wrap:wrap;}
+.a-mg{background:rgba(217,70,166,.12);border-color:rgba(217,70,166,.35);color:#f0abd6;}
+.a-cy{background:rgba(0,210,255,.1);border-color:rgba(0,210,255,.3);color:#7fe3ff;}
+.a-go{background:rgba(212,175,55,.1);border-color:rgba(212,175,55,.35);color:var(--gold);}
+/* Ventana: estado de cuenta y enlaces privados (oct-2026) */
+dialog.dlg{width:min(760px,calc(100% - 24px));max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--border);border-radius:14px;background:var(--card);color:var(--text);}
+dialog.dlg::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(3px);}
+.dlg-cab{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--card);z-index:1;}
+.dlg-cab h2{font-size:.95rem;font-weight:800;}
+.dlg-cab button{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:8px;cursor:pointer;flex-shrink:0;}
+.dlg-cu{padding:16px;display:flex;flex-direction:column;gap:14px;}
+.tot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+.tot div{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
+.tot b{display:block;font-size:1.05rem;font-variant-numeric:tabular-nums;}
+.tot span{font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;}
+.tbw{overflow-x:auto;}
+.tb{width:100%;border-collapse:collapse;font-size:.8rem;}
+.tb th{text-align:left;color:var(--muted);font-weight:700;padding:6px 8px;border-bottom:1px solid var(--border);white-space:nowrap;}
+.tb td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.05);font-variant-numeric:tabular-nums;}
+.tb .n{text-align:right;white-space:nowrap;}
+.enl{display:flex;gap:8px;align-items:center;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;flex-wrap:wrap;}
+.enl code{flex:1;min-width:0;overflow-wrap:anywhere;font-size:.78rem;color:var(--cyan);}
+.nota{font-size:.78rem;color:var(--muted);line-height:1.5;}
+.fila-acts{display:flex;gap:8px;flex-wrap:wrap;}
+@media(max-width:560px){.tot{grid-template-columns:1fr;}}
 </style>
 <script src="../js/reportar-problema.js?v=20261002n"></script>
 </head>
@@ -57,6 +82,10 @@ a{color:inherit;text-decoration:none;}
   </div>
   <div class="list" id="lista"><div class="spinner"><i class="fas fa-spinner fa-spin"></i> Cargando…</div></div>
 </div>
+<dialog class="dlg" id="dlg" aria-labelledby="dlg-t">
+  <div class="dlg-cab"><h2 id="dlg-t"></h2><button type="button" onclick="document.getElementById('dlg').close()" aria-label="Cerrar"><i class="fas fa-xmark"></i></button></div>
+  <div class="dlg-cu" id="dlg-c"></div>
+</dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
 <script src="../js/auth-guard.js?v=20260929"></script>
@@ -109,10 +138,93 @@ function render(){
       </div>
       <div class="casos"><b>${d.casos}</b>casos</div>
       <div class="acts">
+        <button type="button" class="a a-go" onclick="estadoCuenta('${escH(d.id)}')"><i class="fas fa-file-invoice-dollar"></i> Estado de cuenta</button>
+        <button type="button" class="a a-mg" onclick="enlace('${escH(d.id)}','precios')"><i class="fas fa-tags"></i> Lista de precios</button>
+        <button type="button" class="a a-cy" onclick="enlace('${escH(d.id)}','pedido')"><i class="fas fa-link"></i> Enlace de pedido</button>
         ${wa?`<a class="a a-wa" href="https://wa.me/${wa}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Contactar</a>`:''}
       </div>
     </div>`;
   }).join('');
+}
+
+/* ── Estado de cuenta y enlaces privados por doctor (oct-2026, ideas tomadas de Soluciones FE) ──────────────
+   Estado de cuenta: casos con saldo (Total · Abonado · Saldo, Ley 50/50) y el resumen listo para WhatsApp.
+   Enlaces: lista de precios privada (/lista-precios) y pedido sin cuenta (/envia-tu-scanner), con token
+   aleatorio por doctor — RPC crear_enlace_cliente (sql/enlaces-cliente-2026.sql). */
+const fmtCOP = n => '$' + Math.round(Number(n)||0).toLocaleString('es-CO');
+function dlg(titulo, html){ document.getElementById('dlg-t').textContent = titulo; document.getElementById('dlg-c').innerHTML = html; const d = document.getElementById('dlg'); if(!d.open) d.showModal(); }
+function saludo(d){ const n = String(d.nombre||'').trim(); return n ? (/^dr/i.test(n) ? n : 'Dr(a). ' + n) : 'Doctor(a)'; }
+
+async function estadoCuenta(id){
+  const d = _all.find(x => x.id === id); if(!d) return;
+  dlg('Estado de cuenta — ' + (d.nombre || d.codigo_cliente || ''), '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Cargando casos…</div>');
+  const { data, error } = await sb.from('pedidos')
+    .select('id,codigo,tipo_trabajo,estado,estado_operativo,precio_total,pago_estado,saldo_pendiente_monto,created_at')
+    .eq('negocio','prodigy').eq('user_id', id).order('created_at', { ascending:false }).limit(300);
+  if(error){ document.getElementById('dlg-c').innerHTML = `<div class="empty">${escH(error.message)}</div>`; return; }
+  const filas = (data||[]).filter(p => String(p.estado||'').toLowerCase() !== 'cancelado' && p.estado_operativo !== 'CANCELADO').map(p => {
+    const total = Number(p.precio_total)||0, saldo = Number(p.saldo_pendiente_monto)||0;
+    const pend = saldo > 0 ? saldo : (p.pago_estado === 'pago_confirmado' ? 0 : total);
+    return { ...p, total, pend, abonado: Math.max(0, total - pend) };
+  });
+  const conSaldo = filas.filter(p => p.pend > 0);
+  const tTot = conSaldo.reduce((s,p)=>s+p.total,0), tAbo = conSaldo.reduce((s,p)=>s+p.abonado,0), tPend = conSaldo.reduce((s,p)=>s+p.pend,0);
+  const ETQ = { pago_confirmado:'Pagado', pago_subido:'Comprobante subido', pendiente:'Pendiente', credito_autorizado:'Crédito' };
+  const wa = waNum(d.whatsapp);
+  const hoy = new Date().toLocaleDateString('es-CO', { day:'numeric', month:'long', year:'numeric' });
+  const txt = conSaldo.length
+    ? `Hola ${saludo(d)} 👋\nEste es su estado de cuenta con PRODIGY Lab Dental (${hoy}):\n\n` +
+      conSaldo.map(p => `• #${p.codigo||p.id.slice(0,8)} — ${p.tipo_trabajo||'Caso'}: Total ${fmtCOP(p.total)} · Abonado ${fmtCOP(p.abonado)} · Saldo ${fmtCOP(p.pend)}`).join('\n') +
+      `\n\nTotal: ${fmtCOP(tTot)}\nAbonado: ${fmtCOP(tAbo)}\n*Saldo por pagar: ${fmtCOP(tPend)}*\n\nRecuerde: 50% de abono al iniciar y 50% de saldo contra entrega. Cualquier duda, por aquí le ayudamos. ¡Gracias!`
+    : `Hola ${saludo(d)} 👋\nLe confirmamos que su cuenta con PRODIGY Lab Dental está al día (${hoy}). ¡Gracias por su confianza!`;
+  document.getElementById('dlg-c').innerHTML = `
+    <div class="tot"><div><b>${fmtCOP(tTot)}</b><span>Total con saldo</span></div><div><b style="color:var(--neon)">${fmtCOP(tAbo)}</b><span>Abonado</span></div><div><b style="color:#f87171">${fmtCOP(tPend)}</b><span>Saldo por pagar</span></div></div>
+    ${filas.length ? `<div class="tbw"><table class="tb"><thead><tr><th>Caso</th><th>Trabajo</th><th>Fecha</th><th>Pago</th><th class="n">Total</th><th class="n">Abonado</th><th class="n">Saldo</th></tr></thead><tbody>
+      ${filas.map(p => `<tr${p.pend>0?'':' style="opacity:.55"'}><td>#${escH(p.codigo||p.id.slice(0,8))}</td><td>${escH(p.tipo_trabajo||'—')}</td><td>${escH(fmtD(p.created_at))}</td><td>${escH(ETQ[p.pago_estado]||p.pago_estado||'—')}</td><td class="n">${fmtCOP(p.total)}</td><td class="n">${fmtCOP(p.abonado)}</td><td class="n" style="color:${p.pend>0?'#f87171':'var(--muted)'}">${p.pend>0?fmtCOP(p.pend):'—'}</td></tr>`).join('')}
+    </tbody></table></div>` : '<div class="empty">Este doctor no tiene casos registrados.</div>'}
+    <p class="nota">El mensaje lista solo los casos con saldo. Los casos cancelados no cuentan.</p>
+    <div class="fila-acts">
+      ${wa ? `<a class="a a-wa" href="https://wa.me/${wa}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Enviar resumen por WhatsApp</a>` : '<span class="nota">El doctor no tiene WhatsApp registrado.</span>'}
+      <button type="button" class="a" onclick="navigator.clipboard.writeText(${escH(JSON.stringify(txt))}).then(()=>{this.innerHTML='<i class=\\'fas fa-check\\'></i> Copiado'})"><i class="fas fa-copy"></i> Copiar texto</button>
+    </div>`;
+}
+
+async function enlace(id, tipo){
+  const d = _all.find(x => x.id === id); if(!d) return;
+  const titulo = tipo === 'precios' ? 'Lista de precios privada' : 'Enlace de pedido sin cuenta';
+  dlg(titulo + ' — ' + (d.nombre || d.codigo_cliente || ''), '<div class="spinner"><i class="fas fa-spinner fa-spin"></i> Generando enlace…</div>');
+  const { data, error } = await sb.rpc('crear_enlace_cliente', { p_doctor: id, p_tipo: tipo, p_dias: 60 });
+  if(error){
+    const falta = /PGRST202|crear_enlace_cliente|does not exist/i.test((error.code||'') + ' ' + (error.message||''));
+    document.getElementById('dlg-c').innerHTML = `<div class="empty"><i class="fas fa-triangle-exclamation" style="color:#f87171"></i><br>${falta ? 'Falta activar los enlaces privados: correr <b>sql/enlaces-cliente-2026.sql</b> en Supabase.' : escH(error.message)}</div>`;
+    return;
+  }
+  const url = location.origin + (tipo === 'precios' ? '/lista-precios#e=' : '/envia-tu-scanner#e=') + data.token;
+  const vence = new Date(data.expira_at).toLocaleDateString('es-CO', { day:'numeric', month:'long', year:'numeric' });
+  const wa = waNum(d.whatsapp);
+  const txt = tipo === 'precios'
+    ? `Hola ${saludo(d)} 👋\nLe comparto su lista de precios de PRODIGY Lab Dental. Es un enlace personal (vence el ${vence}):\n${url}\n\nPago 50% al iniciar y 50% contra entrega. Cualquier duda, por aquí le ayudamos.`
+    : `Hola ${saludo(d)} 👋\nEste es su enlace personal para enviarnos casos sin crear cuenta: sube el escáner y nos llega con sus datos (vence el ${vence}):\n${url}`;
+  document.getElementById('dlg-c').innerHTML = `
+    <p class="nota">${tipo === 'precios'
+      ? 'El doctor ve la lista de precios con su nombre. Las páginas públicas siguen sin precios.'
+      : 'Abre «Envía tu escáner» ya identificado con el nombre, la clínica y el código del doctor.'}
+      Es personal: no se puede adivinar, vence el <b>${escH(vence)}</b> y se puede anular.</p>
+    <div class="enl"><code>${escH(url)}</code>
+      <button type="button" class="a" onclick="navigator.clipboard.writeText(${escH(JSON.stringify(url))}).then(()=>{this.innerHTML='<i class=\\'fas fa-check\\'></i> Copiado'})"><i class="fas fa-copy"></i> Copiar</button></div>
+    <p class="nota"><i class="fas fa-eye"></i> Abierto <b>${Number(data.aperturas)||0}</b> ${Number(data.aperturas)===1?'vez':'veces'}${data.ultima_apertura ? ' · última: ' + escH(new Date(data.ultima_apertura).toLocaleString('es-CO')) : ''}</p>
+    <div class="fila-acts">
+      ${wa ? `<a class="a a-wa" href="https://wa.me/${wa}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Enviar por WhatsApp</a>` : ''}
+      <a class="a" href="${escH(url)}" target="_blank" rel="noopener"><i class="fas fa-up-right-from-square"></i> Ver como el doctor</a>
+      <button type="button" class="a" style="color:#f87171" onclick="anularEnlace(${escH(JSON.stringify(data.token))}, this)"><i class="fas fa-ban"></i> Anular enlace</button>
+    </div>`;
+}
+
+async function anularEnlace(token, btn){
+  if(!confirm('¿Anular este enlace? El doctor ya no podrá abrirlo.')) return;
+  const { error } = await sb.rpc('revocar_enlace_cliente', { p_token: token });
+  btn.innerHTML = error ? '<i class="fas fa-xmark"></i> ' + escH(error.message) : '<i class="fas fa-check"></i> Anulado';
+  btn.disabled = true;
 }
 
 window.addEventListener('DOMContentLoaded', init);

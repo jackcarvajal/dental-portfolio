@@ -104,6 +104,16 @@
   intro», teclado, ES/EN/PT, sin bloqueo con «reducir movimiento» ni en la segunda vez de la visita; si el video no carga en
   6 s se suelta sola. Video vertical: panel central en computador, pantalla completa en celular.
 - ✅ Menú: el botón «Solución IA» del desplegable SOPORTE se veía pegado («Solución IAGemini…»); ahora igual que los enlaces.
+- ✅ **La intro con video sale de /mantenimiento** (a Alejandro no le gustó ahí y el video, buscado cuadro a cuadro, mostraba
+  imágenes rotas: tiene un cuadro clave cada ~4 s). En su lugar, **puertas de tren** en `fresado-cam` (`js/puertas-video.js`):
+  la sección se queda fija, las puertas se abren con el scroll (luz roja → ámbar → verde, letrero LED) y el video de la
+  barra de zirconio se **reproduce** al abrirse (fluido). Textos a los lados en computador; encima del video en celular.
+  Sin bloquear la página; con «reducir movimiento», puertas abiertas y video con controles. `js/intro-video.js` borrado.
+- ✅ **Ideas de Soluciones FE implementadas** (clientes.html): **Estado de cuenta** por doctor (Total · Abonado · Saldo,
+  resumen listo para WhatsApp, Ley 50/50), **Lista de precios privada** (`/lista-precios#e=TOKEN`, noindex, con su nombre,
+  «Guardar PDF») y **Enlace de pedido** (`/envia-tu-scanner#e=TOKEN` llega identificado y marcado en las notas).
+  SQL `sql/enlaces-cliente-2026.sql` **pendiente de correr** (tabla `enlaces_cliente` + RPC crear/abrir/anular; anon solo
+  abre y solo recibe nombre, clínica y código). Sin el SQL, los botones avisan qué falta. Artículo nuevo en el Centro de ayuda.
 
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 

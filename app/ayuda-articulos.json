@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-08b",
+  "version": "2026-10-09",
   "categorias": [
     {
       "id": "inicio",
@@ -662,6 +662,21 @@
         "Toca **Crear respuesta oficial**: se llena la pregunta y las palabras clave; escribe la respuesta correcta y guarda. La IA la usa en máximo 5 minutos.",
         "**Marcar revisadas** limpia el grupo de la lista de pendientes.",
         "Cada lunes llega un resumen (campana del panel y WhatsApp del laboratorio) con cuántas preguntas hubo y las más repetidas."
+      ]
+    },
+    {
+      "id": "estado-cuenta-enlaces",
+      "cat": "clientes",
+      "titulo": "Estado de cuenta, lista de precios y enlace de pedido",
+      "resumen": "Cobrar saldos por WhatsApp y enviar al doctor sus precios o un enlace para pedir sin crear cuenta.",
+      "para": "Administración, secretaría, contabilidad y operadores",
+      "pasos": [
+        "En **Clientes (Doctores)** cada doctor tiene tres botones nuevos: **Estado de cuenta**, **Lista de precios** y **Enlace de pedido**.",
+        "**Estado de cuenta** muestra sus casos con Total · Abonado · Saldo (los cancelados no cuentan) y arma el mensaje para WhatsApp con solo los casos que deben. Revisa los números antes de enviarlo.",
+        "**Lista de precios** crea un enlace personal (vence en 60 días) que muestra la lista de precios con el nombre del doctor. Las páginas públicas siguen sin precios: esta es la forma de dárselos.",
+        "**Enlace de pedido** abre «Envía tu escáner» ya identificado con su nombre, clínica y código: la solicitud llega marcada como «Enlace personal · cliente DR-…».",
+        "En la ventana del enlace ves **cuántas veces lo abrió** y cuándo. Si se filtró o el doctor ya no es cliente, usa **Anular enlace**.",
+        "Si al crear un enlace sale «Falta activar los enlaces privados», hay que correr una vez el SQL **sql/enlaces-cliente-2026.sql** en Supabase."
       ]
     }
   ]
