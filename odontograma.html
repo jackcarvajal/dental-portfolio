@@ -267,7 +267,9 @@
   function imgMat(n){return (window.MATIMG_B64&&MATIMG_B64[n])||('/assets/exocad-materiales/'+n);}
   function procDe(c){if(!c)return '';if(/_3ax$/.test(c))return 'Fresadora 3 ejes';if(/_L$/.test(c))return 'Sinterizado láser';if(/^PINKPMMA/.test(c))return 'Fresado';
     if(c==='PINK_AD_TEETH_MILL')return 'Impresión + fresado';if(/_AD$|^PINK_AD|^PARTIAL_AD/.test(c))return 'Impresión 3D';if(/^PD_/.test(c))return 'Esquelético';if(c==='PRODIGY')return 'Material PRODIGY';return 'Fresadora 5 ejes';}
-  function matsDeInd(ind){return ind?(WT_MATS[INDWT[ind]]||[]):[];}
+  // En Alejandro CAD/CAM (?sitio=ac) no se ofrece el material propio de PRODIGY
+  var SIN_PRODIGY=/[?&]sitio=ac/.test(location.search);
+  function matsDeInd(ind){var l=ind?(WT_MATS[INDWT[ind]]||[]):[];return SIN_PRODIGY?l.filter(function(c){return c!=="PRODIGY";}):l;}
   function primerMat(lista){var b=lista.filter(function(c){return !/_3ax$/.test(c);})[0]||lista[0];return b||null;}
 
   // Materiales REALES de PRODIGY por flujo
