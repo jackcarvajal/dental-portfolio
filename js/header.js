@@ -352,13 +352,13 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     'opacity:0;visibility:hidden;transform:translateY(-6px);',
     'transition:opacity .22s,visibility .22s,transform .22s;}',
     '.pnav2-dd:hover .pnav2-dd-menu,.pnav2-dd.open .pnav2-dd-menu{opacity:1;visibility:visible;transform:translateY(0);}',
-    '.pnav2-dd-menu a{display:flex;align-items:center;gap:10px;',
-    'padding:11px 18px;color:#cbd5e1;text-decoration:none;',
+    '.pnav2-dd-menu a,.pnav2-dd-menu>button{display:flex;align-items:center;gap:10px;width:100%;',
+    'padding:11px 18px;background:none;border:0;cursor:pointer;text-align:left;font-family:inherit;color:#cbd5e1;text-decoration:none;',
     'font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;',
     'transition:background .2s,color .2s;}',
-    '.pnav2-dd-menu a:hover{background:rgba(212,175,55,0.08);color:#D4AF37;}',
-    '.pnav2-dd-menu a i{color:#D946A6;width:16px;text-align:center;flex-shrink:0;}',
-    '.pnav2-dd-menu a span.dd-sub{display:block;font-size:12px;font-weight:400;',
+    '.pnav2-dd-menu a:hover,.pnav2-dd-menu>button:hover{background:rgba(212,175,55,0.08);color:#D4AF37;}',
+    '.pnav2-dd-menu a i,.pnav2-dd-menu>button i{color:#D946A6;width:16px;text-align:center;flex-shrink:0;}',
+    '.pnav2-dd-menu span.dd-sub{display:block;font-size:12px;font-weight:400;',
     'letter-spacing:.3px;color:rgba(203,213,225,.5);text-transform:none;margin-top:2px;}',
 
     /* HAZ TU PEDIDO */
@@ -716,7 +716,7 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
                 '<i class="fas fa-headset"></i>' +
                 '<span>Centro de Soporte<span class="dd-sub">FAQs · guías · materiales</span></span>' +
               '</a>' +
-              '<button type="button" onclick="_phdrToggleIA()" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 16px;width:100%;text-align:left;color:inherit;font:inherit;" aria-label="Abrir asistente IA">' +
+              '<button type="button" onclick="_phdrToggleIA()" aria-label="Abrir asistente IA">' +
                 '<i class="fas fa-robot" style="color:#00FF41"></i>' +
                 '<span>Solución IA<span class="dd-sub">Gemini 2.0 · respuesta 24/7</span></span>' +
               '</button>' +
@@ -1394,7 +1394,8 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
      Modo claro = el diseño oscuro con los colores invertidos, en UNA sola regla para toda la web.
      Antes cada página tenía su propio «light-mode» a medias (variables sueltas + estilos fijos oscuros)
      y en claro quedaban textos sin contraste. Fotos, videos y mapas se vuelven a invertir para verse normales.
-     Estado único: localStorage 'pg_theme'. El «light-mode» viejo de cada página se neutraliza. */
+     Estado único: sessionStorage 'pg_theme' → la web SIEMPRE abre en oscuro y el claro dura solo la visita (decisión
+     7-oct-2026: «deben cargarse en oscuro a menos que decidan cambiarle»). El «light-mode» viejo de cada página se neutraliza. */
   var _CLARO_CSS = 'html.tema-claro{filter:invert(1) hue-rotate(180deg);background:#050505}'
     // Se vuelven a invertir (se ven con sus colores reales): fotos, videos, mapas y escenas 3D
     // (el robot de Spline y los visores three.js — su <canvas> lleva data-engine). Las partículas 2D sí se invierten.
@@ -1511,7 +1512,7 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     if (document.body) document.body.classList.remove('light-mode');
     _phdrIconos(claro);
     _contrasteVigilar(claro);
-    try { localStorage.setItem('pg_theme', claro ? 'light' : 'dark'); localStorage.setItem('theme', 'dark'); } catch (e) {}
+    try { sessionStorage.setItem('pg_theme', claro ? 'light' : 'dark'); localStorage.removeItem('pg_theme'); localStorage.setItem('theme', 'dark'); } catch (e) {}
   }
 
   window._phdrToggleTheme = function() {
@@ -1521,7 +1522,8 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
   /* Restaurar preferencia guardada (también la clave vieja 'theme' de algunas páginas) */
   (function(){
     var claro = false;
-    try { claro = localStorage.getItem('pg_theme') === 'light' || localStorage.getItem('theme') === 'light'; } catch (e) {}
+    // Antes se guardaba para siempre (localStorage) y quien probó el claro una vez lo veía en todas las visitas: se borra
+    try { claro = sessionStorage.getItem('pg_theme') === 'light'; localStorage.removeItem('pg_theme'); } catch (e) {}
     if (claro) _phdrApplyTheme('light'); else { try { localStorage.setItem('theme', 'dark'); } catch (e) {} }
     document.addEventListener('DOMContentLoaded', function(){ _phdrIconos(document.documentElement.classList.contains('tema-claro')); });
     // Botones viejos de algunas páginas que ponen «light-mode» en el body: se traducen a este modo único

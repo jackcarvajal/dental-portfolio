@@ -1031,8 +1031,8 @@ const ARTICLES = [
       "a": "Sí, completamente. De hecho esta es la combinación más usada: pilar de titanio (conexión al implante) + corona de zirconia (la parte visible). El pilar de titanio garantiza la resistencia mecánica en la conexión y la zirconia aporta la estética en la corona. Se cementan con cementos de resina de baja viscosidad o cemento de vidrio ionómero modificado."
     },
     {
-      "q": "¿Cuánto cuesta más un pilar de zirconia vs titanio en PRODIGY?",
-      "a": "En PRODIGY, el diseño de un pilar de titanio estándar parte desde $35 USD. Un pilar de zirconia personalizado parte desde $45 USD por la mayor complejidad del diseño. El costo del mecanizado físico depende del laboratorio que lo produzca — el archivo de diseño que entregamos es universal."
+      "q": "¿El diseño de un pilar de zirconia es más complejo que uno de titanio?",
+      "a": "Sí. El pilar de zirconia personalizado exige más trabajo de diseño (perfil de emergencia y grosores mínimos del material) que un pilar de titanio estándar; en PRODIGY cotizamos cada caso según su complejidad. El costo del mecanizado físico depende del laboratorio que lo produzca — el archivo de diseño que entregamos es universal."
     }
   ],
   "contenido": [
@@ -1104,12 +1104,6 @@ const ARTICLES = [
           "Aceptable",
           "Primera elección",
           "Zirconia"
-        ],
-        [
-          "Costo mecanizado",
-          "$35–60 USD",
-          "$45–80 USD",
-          "Titanio"
         ],
         [
           "Vida útil clínica",
@@ -1192,12 +1186,6 @@ const ARTICLES = [
       ],
       "filas": [
         [
-          "Precio Colombia (aprox)",
-          "$12.000–15.000 USD",
-          "$22.000–28.000 USD",
-          "$25.000–35.000 USD"
-        ],
-        [
           "Precisión arcada completa",
           "±80µm",
           "±90µm",
@@ -1247,7 +1235,7 @@ const ARTICLES = [
     },
     {
       "tipo": "p",
-      "texto": "El Medit i700 llegó en 2021 y cambió el mercado con una premisa simple: precisión de escáner de gama alta a precio de gama media. A $12.000 USD es el escáner más vendido en Latinoamérica en 2024–2025. Su software Medit Link es gratuito y se actualiza constantemente. La desventaja es que no tiene integración nativa con Invisalign."
+      "texto": "El Medit i700 llegó en 2021 y cambió el mercado con una premisa simple: precisión de escáner de gama alta a precio de gama media. Por esa relación precisión/precio es uno de los escáneres más vendidos en Latinoamérica en 2024–2025. Su software Medit Link es gratuito y se actualiza constantemente. La desventaja es que no tiene integración nativa con Invisalign."
     },
     {
       "tipo": "h2",
@@ -1315,8 +1303,8 @@ const ARTICLES = [
       "a": "Estudios comparativos (Jung et al., 2022) muestran desviaciones angulares similares: 2.1° promedio para guías impresas en resina biocompatible vs 1.8° para mecanizadas. La diferencia clínica es irrelevante para la mayoría de casos. Lo crítico es usar resina Clase II certificada y validar la guía antes de la cirugía."
     },
     {
-      "q": "¿Cuánto cuesta una guía quirúrgica en PRODIGY?",
-      "a": "La planificación con CoDiagnostiX + guía quirúrgica impresa parte desde $60 USD (aproximadamente $250.000 COP). Incluye revisión por implantólogo, archivo de planificación y guía impresa en resina biocompatible lista para esterilizar. Tiempo de entrega: 24–48 horas hábiles."
+      "q": "¿Qué incluye una guía quirúrgica en PRODIGY?",
+      "a": "La planificación con CoDiagnostiX + guía quirúrgica impresa incluye revisión por implantólogo, archivo de planificación y guía impresa en resina biocompatible lista para esterilizar. Tiempo de entrega: 24–48 horas hábiles. El valor depende del número de implantes y del tipo de soporte: cotiza tu caso en /guias-quirurgicas."
     }
   ],
   "contenido": [
@@ -1580,7 +1568,7 @@ const ARTICLES = [
   "contenido": [
     {
       "t": "p",
-      "c": "Elegir un escáner intraoral es una de las decisiones de mayor impacto clínico y económico en la transformación digital de una clínica dental. En 2025, el mercado colombiano está dominado por cuatro plataformas: iTero Element 7 (Align Technology), 3Shape Trios 5, Medit i700 y Carestream CS 3800. El precio varía de 8 000 USD (Medit) a 28 000 USD (Trios 5), pero el precio de compra es solo un factor. Lo que realmente determina el retorno de inversión es la precisión clínica del archivo que llega al laboratorio."
+      "c": "Elegir un escáner intraoral es una de las decisiones de mayor impacto clínico y económico en la transformación digital de una clínica dental. En 2025, el mercado colombiano está dominado por cuatro plataformas: iTero Element 7 (Align Technology), 3Shape Trios 5, Medit i700 y Carestream CS 3800. El precio de compra varía mucho entre ellos, pero es solo un factor. Lo que realmente determina el retorno de inversión es la precisión clínica del archivo que llega al laboratorio."
     },
     {
       "t": "img",
@@ -2030,7 +2018,7 @@ const ARTICLES = [
         "Desviación angular promedio: 1.9° (SLA) vs 1.7° (fresado PMMA) — sin diferencia estadísticamente significativa (p=0.31).",
         "Desviación en el cuello del implante: 0.8 mm (SLA) vs 0.7 mm (PMMA).",
         "Tiempo de fabricación: 3.2 h (SLA) vs 18 h (PMMA fresado).",
-        "Costo de fabricación: $8-12 USD (SLA resina) vs $45-70 USD (PMMA bloque + fresado).",
+        "Costo de fabricación: varias veces menor en resina SLA que en PMMA (bloque + fresado).",
         "Tasa de rotura intraoperatoria: 0% en ambos grupos (n=240 implantes)."
       ]
     },
@@ -2062,7 +2050,7 @@ const ARTICLES = [
       "a": "No es posible. La guía quirúrgica requiere obligatoriamente la fusión del CBCT (tomografía) con el escáner intraoral para planificar la posición del implante respecto a la anatomía ósea real. Sin CBCT, cualquier guía es una estimación, no una planificación."
     }
   ],
-  "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-5s] Texto: \"De la tomografía al quirófano en 24 horas\"\n[ESCENA 2 — 5-20s] Screen recording de software de planificación con implante en 3D. Voz: \"El doctor planifica dónde va el implante. Nosotros lo convertimos en una guía física exacta.\"\n[ESCENA 3 — 20-35s] Impresora BCN3D trabajando. Voz: \"Resina biocompatible ISO 10993. Precisión ±1.9°. Lista en 3 horas.\"\n[ESCENA 4 — 35-50s] Logo PRODIGY. \"Guías quirúrgicas desde $45 USD. WhatsApp 3212816716.\"\n📌 Subtítulos obligatorios. Música tech-ambient.",
+  "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-5s] Texto: \"De la tomografía al quirófano en 24 horas\"\n[ESCENA 2 — 5-20s] Screen recording de software de planificación con implante en 3D. Voz: \"El doctor planifica dónde va el implante. Nosotros lo convertimos en una guía física exacta.\"\n[ESCENA 3 — 20-35s] Impresora BCN3D trabajando. Voz: \"Resina biocompatible ISO 10993. Precisión ±1.9°. Lista en 3 horas.\"\n[ESCENA 4 — 35-50s] Logo PRODIGY. \"Guías quirúrgicas: cotiza tu caso. WhatsApp 3212816716.\"\n📌 Subtítulos obligatorios. Música tech-ambient.",
   "referencias": [
     {
       "autores": "Colombo M, Mangano C, Mijiritsky E, Krebs M, Hauschild U, Fortin T.",
@@ -2177,7 +2165,7 @@ const ARTICLES = [
     },
     {
       "t": "p",
-      "c": "Cada cita de paciente tiene un costo fijo de apertura: esterilización del instrumental, preparación del gabinete, tiempo de la asistente dental. Eliminar la segunda cita de cementación de una corona ahorra aproximadamente 25-40 minutos de tiempo clínico productivo. Si el doctor realiza 8 coronas por semana, la eliminación de la segunda cita libera 3.3-5.3 horas semanales que pueden convertirse en 2-3 nuevas primeras consultas. A tarifa colombiana promedio de $150,000 COP por consulta, el flujo digital genera un ingreso adicional de $300,000-450,000 COP semanales — solo por la eficiencia del tiempo."
+      "c": "Cada cita de paciente tiene un costo fijo de apertura: esterilización del instrumental, preparación del gabinete, tiempo de la asistente dental. Eliminar la segunda cita de cementación de una corona ahorra aproximadamente 25-40 minutos de tiempo clínico productivo. Si el doctor realiza 8 coronas por semana, la eliminación de la segunda cita libera 3.3-5.3 horas semanales que pueden convertirse en 2-3 nuevas primeras consultas. Cada una de esas consultas es ingreso nuevo cada semana — solo por la eficiencia del tiempo."
     },
     {
       "t": "h2",
@@ -2185,7 +2173,7 @@ const ARTICLES = [
     },
     {
       "t": "p",
-      "c": "La inversión inicial en un escáner intraoral (Medit i700 desde $8,000 USD, Trios 5 hasta $28,000 USD) suele recuperarse en 8-14 meses en clínicas con volumen de 4+ coronas por semana. El cálculo no incluye el ahorro en materiales de impresión (silicona de adición: $15-25 USD por impresión, zócalos de yeso: $5-8 USD) ni en el tiempo del personal para hacer y enviar impresiones físicas."
+      "c": "La inversión inicial en un escáner intraoral suele recuperarse en 8-14 meses en clínicas con volumen de 4+ coronas por semana. El cálculo no incluye el ahorro en materiales de impresión (silicona de adición en cada impresión, zócalos de yeso) ni en el tiempo del personal para hacer y enviar impresiones físicas."
     },
     {
       "t": "p",
@@ -2212,7 +2200,7 @@ const ARTICLES = [
     },
     {
       "q": "¿Qué escáner intraoral me recomienda para empezar?",
-      "a": "Para clínicas que están iniciando el flujo digital, el Medit i700 ofrece la mejor relación precisión/costo del mercado (desde $8,000 USD). Para clínicas con volumen de implantes, el 3Shape Trios 5 es el estándar de oro en precisión de arco completo."
+      "a": "Para clínicas que están iniciando el flujo digital, el Medit i700 ofrece la mejor relación precisión/costo del mercado. Para clínicas con volumen de implantes, el 3Shape Trios 5 es el estándar de oro en precisión de arco completo."
     },
     {
       "q": "¿El paciente nota diferencia entre una corona con flujo digital y una convencional?",
@@ -2887,7 +2875,7 @@ const ARTICLES = [
   "contenido": [
     {
       "t": "p",
-      "c": "El mercado de escáneres intraorales creció un 34% entre 2022 y 2025 (MarketsandMarkets, 2025). Hoy cualquier clínica moderna tiene acceso a un escáner de precisión submilimétrica. El problema no es el hardware — es el protocolo. Un archivo STL mal exportado, un escáner sin calibrar o un flujo de trabajo incorrecto pueden convertir un equipo de $40.000 USD en una fuente de errores sistemáticos."
+      "c": "El mercado de escáneres intraorales creció un 34% entre 2022 y 2025 (MarketsandMarkets, 2025). Hoy cualquier clínica moderna tiene acceso a un escáner de precisión submilimétrica. El problema no es el hardware — es el protocolo. Un archivo STL mal exportado, un escáner sin calibrar o un flujo de trabajo incorrecto pueden convertir un equipo de gama alta en una fuente de errores sistemáticos."
     },
     {
       "t": "h2",
@@ -2941,12 +2929,6 @@ const ARTICLES = [
           "STL/OBJ directo",
           "STL/OBJ/PLY directo",
           "STL/DCM directo"
-        ],
-        [
-          "Precio aprox. USD",
-          "$24.000–35.000",
-          "$14.000–20.000",
-          "$30.000–45.000"
         ],
         [
           "Exportación abierta",
@@ -3019,7 +3001,7 @@ const ARTICLES = [
     },
     {
       "t": "quote",
-      "c": "El escáner es tan bueno como el protocolo que lo rodea. El equipo de $40.000 con mal protocolo pierde ante el de $15.000 bien calibrado y bien exportado.",
+      "c": "El escáner es tan bueno como el protocolo que lo rodea. El equipo más caro con mal protocolo pierde ante uno de gama media bien calibrado y bien exportado.",
       "author": "Alejandro Carvajal — PRODIGY Lab Dental"
     }
   ],
@@ -3826,45 +3808,38 @@ const ARTICLES = [
       "headers": [
         "Tipo de guía",
         "Indicación clínica",
-        "Complejidad CAD",
-        "Precio referencia"
+        "Complejidad CAD"
       ],
       "rows": [
         [
           "Guía básica mucosoportada (1–3 implantes)",
           "Cirugías simples con hueso disponible suficiente",
-          "Baja",
-          "$60 USD"
+          "Baja"
         ],
         [
           "Guía compleja (4+ implantes)",
           "Restauraciones múltiples, arcos completos",
-          "Media-alta",
-          "$90–$120 USD"
+          "Media-alta"
         ],
         [
           "Guía apilable (stackable)",
           "Cuando se necesita guiar la mufla + el implante en fases distintas",
-          "Alta",
-          "$80 USD/nivel"
+          "Alta"
         ],
         [
           "Guía de reducción ósea (bone reduction guide)",
           "Pacientes con cresta alveolar irregular, protocolos All-on-4/6",
-          "Alta",
-          "$70 USD"
+          "Alta"
         ],
         [
           "Guía dentosoportada (tooth-supported)",
           "Implante adyacente a dientes presentes — anclaje en dientes vecinos",
-          "Media",
-          "$65 USD"
+          "Media"
         ],
         [
           "Guía para extracción e implante inmediato",
           "Post-extracción en mismo tiempo quirúrgico",
-          "Alta",
-          "$80 USD"
+          "Alta"
         ]
       ]
     },
@@ -3948,7 +3923,7 @@ const ARTICLES = [
       "a": "En resina quirúrgica biocompatible certificada (ISO 10993) para contacto intraoral. En nuestro laboratorio usamos Surgical Guide Resin de NextDent o Formlabs Surgical Guide. Transparente para visibilidad, rigidez suficiente para transmitir el eje de perforación con precisión."
     }
   ],
-  "video_script": "🎬 GUIÓN REEL — 55 segundos\n[ESCENA 1 — 0-6s] Texto: \"¿Sabes cuántos tipos de guías quirúrgicas existen?\"\n[ESCENA 2 — 6-20s] Animación de 4 tipos de guías con etiquetas: básica, compleja, apilable, reducción ósea. Cada una con su indicación en 3 palabras.\n[ESCENA 3 — 20-35s] Pantalla CoDiagnostiX: plan de implantes fusionado con STL. Texto: \"Del CBCT al diseño CAD — en 48h.\"\n[ESCENA 4 — 35-48s] Cirugía guiada en tiempo real. Texto: \"Error ±2mm sin guía. Error <0.5mm con guía bien diseñada.\"\n[ESCENA 5 — 48-55s] Logo PRODIGY. \"Guías quirúrgicas desde $60 USD → prodigylabdental.com\"\n📌 Música: técnica y precisa. Fondo oscuro, destellos cyan.",
+  "video_script": "🎬 GUIÓN REEL — 55 segundos\n[ESCENA 1 — 0-6s] Texto: \"¿Sabes cuántos tipos de guías quirúrgicas existen?\"\n[ESCENA 2 — 6-20s] Animación de 4 tipos de guías con etiquetas: básica, compleja, apilable, reducción ósea. Cada una con su indicación en 3 palabras.\n[ESCENA 3 — 20-35s] Pantalla CoDiagnostiX: plan de implantes fusionado con STL. Texto: \"Del CBCT al diseño CAD — en 48h.\"\n[ESCENA 4 — 35-48s] Cirugía guiada en tiempo real. Texto: \"Error ±2mm sin guía. Error <0.5mm con guía bien diseñada.\"\n[ESCENA 5 — 48-55s] Logo PRODIGY. \"Guías quirúrgicas: cotiza tu caso → prodigylabdental.com\"\n📌 Música: técnica y precisa. Fondo oscuro, destellos cyan.",
   "referencias": [
     {
       "autores": "Hultin M, Svensson KG, Trulsson M.",
@@ -4075,12 +4050,6 @@ const ARTICLES = [
           "45–60 min",
           "25–35 min",
           "35–45 min"
-        ],
-        [
-          "Precio referencia",
-          "$35 USD",
-          "Cotizar",
-          "$25 USD"
         ]
       ]
     },
@@ -4118,7 +4087,7 @@ const ARTICLES = [
       "a": "Entre 30 y 60 minutos según el tipo y la complejidad. Una vez aprobado el diseño, el tiempo de fresado o impresión es de 45–90 minutos adicionales. Para las férulas que incluimos en nuestro servicio de diseño remoto, el archivo STL se entrega en 24 horas desde que recibimos los archivos completos."
     }
   ],
-  "video_script": "🎬 GUIÓN REEL — 45 segundos\n[ESCENA 1 — 0-5s] Texto: \"¿Tu paciente bruxista empeora con la férula? Puede ser la férlua equivocada.\"\n[ESCENA 2 — 5-18s] Split screen: Michigan (cobertura total) vs NTI (solo incisivos). Texto: \"No son intercambiables.\"\n[ESCENA 3 — 18-32s] Pantalla CAD: diseño de férula Michigan con contactos oclusales. Texto: \"Diseño CAD: 45 min. Fresado PMMA: 90 min. Resultado: duradero.\"\n[ESCENA 4 — 32-40s] Paciente con bruxismo → férula → relajación muscular. Texto: \"60-70% menos actividad maseterina con el dispositivo correcto.\"\n[ESCENA 5 — 40-45s] Logo PRODIGY. \"Férulas CAD desde $35 USD → prodigylabdental.com\"\n📌 Música: calma, minimalista.",
+  "video_script": "🎬 GUIÓN REEL — 45 segundos\n[ESCENA 1 — 0-5s] Texto: \"¿Tu paciente bruxista empeora con la férula? Puede ser la férlua equivocada.\"\n[ESCENA 2 — 5-18s] Split screen: Michigan (cobertura total) vs NTI (solo incisivos). Texto: \"No son intercambiables.\"\n[ESCENA 3 — 18-32s] Pantalla CAD: diseño de férula Michigan con contactos oclusales. Texto: \"Diseño CAD: 45 min. Fresado PMMA: 90 min. Resultado: duradero.\"\n[ESCENA 4 — 32-40s] Paciente con bruxismo → férula → relajación muscular. Texto: \"60-70% menos actividad maseterina con el dispositivo correcto.\"\n[ESCENA 5 — 40-45s] Logo PRODIGY. \"Férulas CAD: cotiza tu caso → prodigylabdental.com\"\n📌 Música: calma, minimalista.",
   "referencias": [
     {
       "autores": "Stapelmann H, Türp JC.",
@@ -4400,7 +4369,7 @@ const ARTICLES = [
     },
     {
       "tipo": "p",
-      "texto": "El costo del escaneo a domicilio en Bogotá es de $60.000 COP por visita (sin límite de piezas en esa sesión). Si el diseño se encarga a PRODIGY, el costo del escaneo se descuenta del valor total del diseño. Es decir, si pides el escaneo + diseño CAD de una corona, pagas diseño + diferencia del escaneo."
+      "texto": "El escaneo a domicilio en Bogotá se cobra por visita, sin límite de piezas en esa sesión. Si el diseño se encarga a PRODIGY, el valor del escaneo se descuenta del diseño. El valor exacto lo ves al reservar en /escaner-domicilio."
     },
     {
       "tipo": "quote",
@@ -4469,39 +4438,32 @@ const ARTICLES = [
       "tipo": "tabla",
       "cabeceras": [
         "Material",
-        "Aplicación principal",
-        "Precio mínimo referencial (Colombia)"
+        "Aplicación principal"
       ],
       "filas": [
         [
           "Zirconia 3Y-TZP",
-          "Coronas posteriores de alta resistencia",
-          "$180.000–$250.000 COP/unidad"
+          "Coronas posteriores de alta resistencia"
         ],
         [
           "Zirconia 5Y-TZP multicapa",
-          "Coronas estéticas anteriores",
-          "$220.000–$350.000 COP/unidad"
+          "Coronas estéticas anteriores"
         ],
         [
           "Disilicato de litio (e.max)",
-          "Carillas, coronas anteriores",
-          "$250.000–$400.000 COP/unidad"
+          "Carillas, coronas anteriores"
         ],
         [
           "PMMA (acrílico mecanizado)",
-          "Provisionales, dentaduras",
-          "$80.000–$150.000 COP/unidad"
+          "Provisionales, dentaduras"
         ],
         [
           "Titanio CNC",
-          "Pilares de implante, estructuras",
-          "$300.000–$600.000 COP/unidad"
+          "Pilares de implante, estructuras"
         ],
         [
           "Resina 3D (fotopolimerizable)",
-          "Biomodelos, guías, modelos de trabajo",
-          "$20.000–$60.000 COP/unidad"
+          "Biomodelos, guías, modelos de trabajo"
         ]
       ]
     },
@@ -4593,7 +4555,7 @@ const ARTICLES = [
 {
   "id": "impresion-3d-dental-colombia-resinas-biomodelos",
   "titulo": "Impresión 3D dental en Colombia: tipos de resina, biomodelos y guías quirúrgicas",
-  "subtitulo": "Todo lo que necesitas saber sobre impresión 3D dental en Colombia: qué resinas usar, cómo encargar biomodelos, qué son las guías quirúrgicas impresas y cuánto cuestan realmente.",
+  "subtitulo": "Todo lo que necesitas saber sobre impresión 3D dental en Colombia: qué resinas usar, cómo encargar biomodelos, qué son las guías quirúrgicas impresas y cómo cotizarlas.",
   "categoria": "tecnologia",
   "chip": "Impresión 3D",
   "emoji": "🖨️",
@@ -4618,45 +4580,38 @@ const ARTICLES = [
       "cabeceras": [
         "Aplicación",
         "Resina recomendada",
-        "Clase CE/FDA",
-        "Precio referencial en PRODIGY"
+        "Clase CE/FDA"
       ],
       "filas": [
         [
           "Biomodelo de estudio",
           "Resina modelo (fotopolimerizable)",
-          "Clase I",
-          "$20.000 COP/arco"
+          "Clase I"
         ],
         [
           "Modelo de trabajo para prótesis",
           "Resina modelo de alta precisión",
-          "Clase I",
-          "$35.000 COP/arco"
+          "Clase I"
         ],
         [
           "Provisional CAD (provisional de resina)",
           "Resina bis-acril grado dental",
-          "Clase IIa",
-          "$90.000–$150.000 COP/corona"
+          "Clase IIa"
         ],
         [
           "Guía quirúrgica para implantes",
           "Resina biocompatible Clase IIa",
-          "Clase IIa",
-          "Cotizar según tipo"
+          "Clase IIa"
         ],
         [
           "Férula oclusal vacuoformada base",
           "Resina dura tipo Clear",
-          "Clase I",
-          "$80.000–$120.000 COP"
+          "Clase I"
         ],
         [
           "Cubeta individual",
           "Resina de cubeta",
-          "Clase I",
-          "$30.000 COP"
+          "Clase I"
         ]
       ]
     },
@@ -4666,7 +4621,7 @@ const ARTICLES = [
     },
     {
       "tipo": "p",
-      "texto": "Un biomodelo dental es una réplica tridimensional impresa en resina del escáner intraoral o del CBCT del paciente. Sus usos más comunes son: diagnóstico y presentación de plan de tratamiento al paciente, montaje en articulador virtual, fabricación de cubetas individuales, y como referencia para el técnico dental durante la confección de prótesis removible. En PRODIGY producimos biomodelos de arco completo desde $20.000 COP con precisión ±100 µm."
+      "texto": "Un biomodelo dental es una réplica tridimensional impresa en resina del escáner intraoral o del CBCT del paciente. Sus usos más comunes son: diagnóstico y presentación de plan de tratamiento al paciente, montaje en articulador virtual, fabricación de cubetas individuales, y como referencia para el técnico dental durante la confección de prótesis removible. En PRODIGY producimos biomodelos de arco completo con precisión ±100 µm."
     },
     {
       "tipo": "h2",

@@ -148,6 +148,19 @@ for (const f of allFiles) {
 critical += corsIssues;
 if (!corsIssues) console.log('   \x1b[32m✓ sin CORS por substring ni dominios *.pages.dev ajenos\x1b[0m');
 
+/* ── 6. _headers: líneas de más de 2.000 caracteres (crítico) ──── */
+// Cloudflare Pages ignora EN SILENCIO cualquier línea de _headers de más de 2.000 caracteres: la CSP de PRODIGY
+// pasó de 1.939 a 2.206 (6-oct-2026, dominios de Google Translate) y estuvo días sin servirse.
+hdr('6) _headers: líneas dentro del límite de Cloudflare (2.000 caracteres)');
+let hdrIssues = 0;
+const hf = join(ROOT, '_headers');
+if (existsSync(hf)) readFileSync(hf, 'utf8').split(/\r?\n/).forEach((l, i) => {
+  if (l.length > 2000) { hdrIssues++; console.log(`   \x1b[31m✗ _headers:${i + 1}\x1b[0m ${l.length} caracteres — Cloudflare la descarta (${l.trim().split(':')[0]})`); }
+  else if (l.length > 1900) console.log(`   \x1b[33m⚠ _headers:${i + 1}\x1b[0m ${l.length}/2000 caracteres — casi al límite`);
+});
+critical += hdrIssues;
+if (!hdrIssues) console.log('   \x1b[32m✓ todas las líneas caben (≤ 2.000)\x1b[0m');
+
 /* ── RESUMEN ───────────────────────────────────────────────── */
 console.log('\n' + '─'.repeat(50));
 console.log(`Páginas: ${htmlFiles.length} · Hallazgos críticos: ${critical} · Avisos SEO: ${seoIssues}`);

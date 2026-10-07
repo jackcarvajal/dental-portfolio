@@ -87,6 +87,23 @@
   «RobotHero». Cabeza y cuerpo siguen el cursor, parpadea; al tocarlo pone ojos de corazón y abre el chat IA. 3D solo en
   computador, cargado cuando se ve y el navegador está libre (mismo three@0.165.0 de los visores); celular y «reducir
   movimiento» → figura fija SVG. Colores: pantalla cian, antena magenta (PRODIGY) / oro (Alejandro).
+- ✅ **CSP de PRODIGY no se estaba sirviendo** (hallado al comparar con Soluciones FE): Cloudflare Pages descarta en silencio
+  las líneas de `_headers` de más de 2.000 caracteres; la CSP pasó de 1.939 a 2.206 el 6-oct (dominios de Google Translate)
+  y desde entonces el sitio iba sin CSP. Acortada a 1.781 sin cambiar lo que permite (en `script-src` ya estaba `https:`,
+  la lista de dominios sobraba; `*.supabase.co`/`*.wikimedia.org`/`*.paypal.com` cubrían a los específicos). Alejandro
+  (1.794) igual de acortada (1.499) para tener margen. `tools/audit.mjs` (ambas) ahora falla si una línea pasa de 2.000.
+- ✅ **Tema: siempre abre en oscuro** (pedido de Alejandro: «se cargan en modo claro y deben cargarse en oscuro a menos que
+  decidan cambiarle»). El claro se guardaba para siempre (localStorage) y quien lo probó una vez lo veía en todas las visitas;
+  ahora dura solo la visita (sessionStorage) y la preferencia vieja se borra. header.js v=20261009 (ambas).
+- ✅ **Sin precios en los artículos del blog** (articles.js): 44 cambios — tablas de precios de materiales, guías, resinas,
+  escáneres y pilares sin su columna/fila de precio; FAQ «¿Cuánto cuesta…?» → «¿Qué incluye…?» + cotizar; guiones de video
+  sin «desde $X». Quedan 0 montos en COP/USD. Tablas verificadas (33, ninguna descuadrada).
+- ✅ **Intro de lanzamiento en /mantenimiento** (`js/intro-video.js`, port del componente React «MetroHero»): el video de la
+  barra de zirconio avanza y retrocede al deslizar con la página bloqueada; «PRODIGY» se desenfoca y al final aparece
+  «Escaneas. Diseñamos. Fresamos. Muy pronto, en línea». Al terminar y seguir bajando, baja al contenido. Botón «Saltar
+  intro», teclado, ES/EN/PT, sin bloqueo con «reducir movimiento» ni en la segunda vez de la visita; si el video no carga en
+  6 s se suelta sola. Video vertical: panel central en computador, pantalla completa en celular.
+- ✅ Menú: el botón «Solución IA» del desplegable SOPORTE se veía pegado («Solución IAGemini…»); ahora igual que los enlaces.
 
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 

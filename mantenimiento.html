@@ -589,6 +589,34 @@
     }
     .lang-switcher button.active { background: rgba(212,175,55,0.18); color: #D4AF37; }
     .lang-switcher button:hover:not(.active) { color: #94a3b8; }
+
+    /* ── Intro de lanzamiento (video al deslizar, js/intro-video.js) ── */
+    /* El body tiene padding 56px 20px: la intro lo anula para ir de borde a borde */
+    .lanz{position:relative;z-index:5;flex-shrink:0;align-self:stretch;width:auto;margin:-56px -20px 56px;height:100vh;height:100dvh;overflow:hidden;background:#050505;touch-action:none;isolation:isolate}
+    .lanz-fondo{position:absolute;inset:0;background:radial-gradient(60% 70% at 28% 40%,rgba(217,70,166,.22),transparent 62%),radial-gradient(55% 65% at 74% 62%,rgba(0,210,255,.18),transparent 62%),#050505}
+    /* Video vertical: en pantalla ancha va como panel central a toda la altura; en pantalla vertical la llena */
+    .lanz-video{position:absolute;inset:0;margin:auto;height:100%;width:auto;max-width:100%;object-fit:cover;opacity:0;transition:opacity .6s ease;pointer-events:none;will-change:transform;box-shadow:0 0 140px rgba(0,210,255,.16)}
+    @media (max-aspect-ratio:4/5){.lanz-video{width:100%;box-shadow:none}}
+    .lanz.listo .lanz-video{opacity:1}
+    .lanz.sin-video .lanz-video{display:none}
+    /* Velo: arriba/abajo oscuros y una sombra suave detrás del texto (el video tiene fondo claro) */
+    .lanz-velo{position:absolute;inset:0;background:radial-gradient(46% 26% at 50% 50%,rgba(5,5,5,.62),rgba(5,5,5,0) 72%),linear-gradient(180deg,rgba(5,5,5,.55),rgba(5,5,5,0) 32%,rgba(5,5,5,.1) 68%,rgba(5,5,5,.78));pointer-events:none}
+    @media (max-width:500px){.lanz-velo{background:radial-gradient(80% 22% at 50% 50%,rgba(5,5,5,.66),rgba(5,5,5,0) 75%),linear-gradient(180deg,rgba(5,5,5,.55),rgba(5,5,5,0) 32%,rgba(5,5,5,.1) 68%,rgba(5,5,5,.78))}.lanz-ceja{letter-spacing:.18em}}
+    .lanz-capa{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 6%;text-align:center;pointer-events:none}
+    .lanz-ceja{font-size:clamp(.72rem,1.3vw,.92rem);font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:#00d2ff;margin-bottom:14px;text-shadow:0 2px 14px rgba(0,0,0,.7)}
+    .lanz-titulo{font-weight:900;font-size:clamp(3.2rem,11vw,9rem);line-height:.95;letter-spacing:.05em;background:linear-gradient(135deg,#D4AF37,#f5e6b8 45%,#D4AF37);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 30px rgba(0,0,0,.65))}
+    .lanz-frase{opacity:0}
+    .lanz-frase p{font-weight:800;font-size:clamp(1.5rem,3.8vw,3rem);line-height:1.15;color:#f2f4f8;text-shadow:0 4px 24px rgba(0,0,0,.65);text-wrap:balance}
+    .lanz-frase p span{display:block;margin-top:14px;font-size:.42em;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#D946A6}
+    .lanz-pista{position:absolute;left:50%;bottom:clamp(30px,7vh,58px);transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(240,244,248,.78);font-size:.72rem;font-weight:700;letter-spacing:.3em;transition:opacity .4s ease;pointer-events:none}
+    .lanz-pista svg{animation:lanzRebote 1.6s ease-in-out infinite}
+    @keyframes lanzRebote{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(5px);opacity:1}}
+    .lanz-saltar{position:absolute;right:clamp(14px,2.5vw,28px);bottom:clamp(16px,3vh,28px);z-index:2;background:rgba(13,21,32,.72);border:1px solid rgba(255,255,255,.18);color:#e2e8f0;font:inherit;font-size:.78rem;font-weight:700;letter-spacing:.06em;padding:9px 16px;border-radius:999px;cursor:pointer;backdrop-filter:blur(6px)}
+    .lanz-saltar:hover{border-color:#D4AF37;color:#D4AF37}
+    .lanz-saltar:focus-visible{outline:2px solid #00d2ff;outline-offset:3px}
+    .lanz:not(.activa) .lanz-saltar{display:none}
+    .lanz-progreso{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.1)}
+    .lanz-progreso div{height:100%;background:linear-gradient(90deg,#D946A6,#D4AF37,#00d2ff);transform:scaleX(0);transform-origin:left center}
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
   <link rel="canonical" href="https://prodigylabdental.com/mantenimiento">
@@ -602,6 +630,28 @@
     <button type="button" data-lang-btn="en" onclick="i18n.set('en')" aria-label="English">EN</button>
     <button type="button" data-lang-btn="pt" onclick="i18n.set('pt')" aria-label="Português">PT</button>
   </div>
+
+  <!-- ── Intro de lanzamiento: el video avanza al deslizar (js/intro-video.js) ── -->
+  <section class="lanz" data-intro-video data-scrub="2400" aria-label="Presentación de PRODIGY">
+    <div class="lanz-fondo" aria-hidden="true"></div>
+    <video class="lanz-video" src="assets/links-gallery/barra-zircona.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+    <div class="lanz-velo" aria-hidden="true"></div>
+    <div class="lanz-capa" data-intro-titulo>
+      <div>
+        <p class="lanz-ceja" data-i18n="lanz.ceja">Laboratorio dental digital · Bogotá</p>
+        <p class="lanz-titulo" translate="no">PRODIGY</p>
+      </div>
+    </div>
+    <div class="lanz-capa lanz-frase" data-intro-frase>
+      <p data-i18n="lanz.frase">Escaneas. Diseñamos. Fresamos.<span>Muy pronto, en línea</span></p>
+    </div>
+    <div class="lanz-pista" data-intro-pista aria-hidden="true">
+      <span data-i18n="lanz.pista">DESLIZA</span>
+      <svg width="14" height="18" viewBox="0 0 14 18"><path d="M7 1 L7 17 M2 12 L7 17 L12 12" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <button type="button" class="lanz-saltar" data-intro-saltar data-i18n="lanz.saltar">Saltar intro</button>
+    <div class="lanz-progreso" aria-hidden="true"><div data-intro-barra></div></div>
+  </section>
 
   <div class="bg-glow"></div>
 
@@ -954,7 +1004,16 @@
 
   </div>
 
+  <script>
+    window._i18nExtra = {
+      'lanz.ceja':   { es: 'Laboratorio dental digital · Bogotá', en: 'Digital dental lab · Bogotá', pt: 'Laboratório dental digital · Bogotá' },
+      'lanz.frase':  { es: 'Escaneas. Diseñamos. Fresamos.<span>Muy pronto, en línea</span>', en: 'You scan. We design. We mill.<span>Coming online very soon</span>', pt: 'Você escaneia. Nós projetamos. Nós fresamos.<span>Em breve, online</span>' },
+      'lanz.pista':  { es: 'DESLIZA', en: 'SCROLL', pt: 'ROLE' },
+      'lanz.saltar': { es: 'Saltar intro', en: 'Skip intro', pt: 'Pular intro' }
+    };
+  </script>
   <script src="js/i18n.js?v=20261008"></script>
+  <script src="js/intro-video.js?v=20261009" defer></script>
   <script>
     if (new URLSearchParams(location.search).get('bypass') === '1') {
       document.getElementById('staff-link').style.display = 'inline';
