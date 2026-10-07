@@ -137,6 +137,16 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
 .hover-card-mg:hover{transform:translateY(-4px);border-color:rgba(217,70,166,.5)!important;box-shadow:0 12px 30px rgba(0,0,0,.4)}
 .hover-card-mg i{transition:transform .25s ease}
 .hover-card-mg:hover i{transform:scale(1.18)}
+/* Opciones «¿Qué necesitas?» (oct-2026): cada una con su color de marca, ícono en cuadro y texto alineado a la izquierda */
+.opt{--c:#D946A6;text-align:left;color:#e2e8f0;font-size:.95rem}
+.opt:nth-child(1){--c:#D4AF37}.opt:nth-child(2){--c:#00d2ff}.opt:nth-child(3){--c:#D946A6}
+.opt:nth-child(4){--c:#4ade80}.opt:nth-child(5){--c:#00d2ff}.opt:nth-child(6){--c:#D4AF37}
+.opt .ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--c);background:rgba(255,255,255,.05);background:color-mix(in srgb,var(--c) 14%,transparent);border:1px solid color-mix(in srgb,var(--c) 35%,transparent);transition:.18s}
+.opt .sub2{font-size:.8rem;font-weight:500}
+.opt:hover,.opt.sel{color:#fff;background:color-mix(in srgb,var(--c) 9%,transparent);border-color:color-mix(in srgb,var(--c) 55%,transparent)}
+.opt.sel .ico{background:var(--c);color:#04121a}
+.opt:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.filtro-label{font-size:.8rem}
 @media(max-width:480px){.opts{grid-template-columns:1fr}}
 .sec,.section-inner,.container{content-visibility:auto;contain-intrinsic-size:0 400px;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
@@ -146,8 +156,8 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","url":"https://prodigylabdental.com/diseno-remoto","name":"Diseño CAD Dental Remoto — PRODIGY","description":"Diseño CAD remoto de coronas, carillas, Full Arch y guías quirúrgicas. Exocad y 3Shape. Entrega 24h. Bogotá, Colombia.","isPartOf":{"@type":"WebSite","url":"https://prodigylabdental.com","name":"PRODIGY Lab Dental"}}</script>
 </head>
 <body>
-<link rel="preload" href="js/header.js?v=20261008b" as="script">
-<script src="js/header.js?v=20261008b"></script>
+<link rel="preload" href="js/header.js?v=20261008c" as="script">
+<script src="js/header.js?v=20261008c"></script>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <main id="main-content">
 
@@ -990,7 +1000,7 @@ function selPortafolio(tipo) {
   </div>
 </section>
 
-<script src="js/footer.js?v=20261007"></script>
+<script src="js/footer.js?v=20261008"></script>
 <script>
 /* PRODIGY Analytics — track-event */
 (function(){

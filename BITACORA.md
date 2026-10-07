@@ -48,6 +48,11 @@
 - ✅ **Error en flujo-diseno** (`requestIdleCallback … IdleRequestOptions`): el borde de Cloudflare seguía sirviendo el
   `stl-multi-viewer.js?v=20261002` viejo (el arreglo se publicó sin subir `?v=`). Subido a v=20261008 en ambas.
   Herramienta: `stale-js.mjs` (scratchpad) compara cada /js?v= de producción con el repo.
+- ✅ **Simetría en todas las páginas** (`js/simetria.js`, lo cargan header.js y footer.js en páginas públicas): rejillas de
+  tarjetas iguales sin huérfanas (6 → una fila o 3+3, 4 → 2+2, 8 → 4+4, 9 → 3×3) y, si no hay reparto exacto, última
+  fila centrada; bloques corridos se centran. Recalcula al cambiar el ancho y cuando se agregan tarjetas. Excluir:
+  `data-no-simetria`. Auditoría (scratchpad `audit-simetria.mjs`, 1440/1024/768): Alejandro 85 → 0, PRODIGY → 0.
+- ✅ «¿Qué necesitas?» de diseno-remoto (ambas): cada opción con su color de marca, ícono en cuadro y texto alineado.
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
 - ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):
