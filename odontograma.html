@@ -22,7 +22,12 @@
   .disabled{opacity:.42;pointer-events:none}
   .seclbl{font-size:.8rem;color:var(--ink-soft);font-weight:600;margin:10px 0 6px}
   .grp{margin-bottom:12px}
-  .grp .gt{font-size:.82rem;color:var(--ink-soft);margin-bottom:7px;font-weight:600;margin-top:8px}
+  .grp .gt{font-size:.82rem;color:var(--ink-soft);margin-bottom:7px;font-weight:600;margin-top:8px;background:none;border:0;padding:4px 0;font-family:inherit;cursor:pointer;display:flex;width:100%;justify-content:space-between;align-items:center;text-align:left}
+.grp .gt::after{content:'▾';font-size:.8rem;color:var(--ink-dim);transition:transform .15s}
+.grp.cerrado .gt::after{transform:rotate(-90deg)}
+.grp.cerrado .indgrid{display:none}
+@media (max-width:600px){.matband .msgrid{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.matband .msc .cap{font-size:.56rem;padding:3px 4px}.matband .msc .chk{font-size:.8rem}}
+.grp .gt:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
   .indgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
   @media(max-width:1340px){.indgrid{grid-template-columns:1fr 1fr}}
   .ind{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:8px 9px;cursor:pointer;text-align:left;color:var(--ink);font-size:.76rem;font-weight:600;min-height:46px;line-height:1.15}
@@ -199,13 +204,15 @@
   "use strict";
   var EMBED=(window.self!==window.top);
   if(EMBED){document.documentElement.classList.add('odo-embed');}
+  // Alto real del contenido (el del documento nunca baja del alto del marco y solo crecía)
+  function altoContenido(){var m=0;[].forEach.call(document.body.children,function(e){if(/^(SCRIPT|STYLE|TITLE)$/.test(e.tagName))return;var cs=getComputedStyle(e);if(cs.position==='fixed'||cs.display==='none')return;m=Math.max(m,e.getBoundingClientRect().bottom+window.scrollY+(parseFloat(cs.marginBottom)||0));});return Math.ceil(m);}
   function emit(){
     if(!EMBED)return;
     var items=[],sub=0;
     Object.keys(POS).forEach(function(f){var a=estado[f];if(a&&a.ind){items.push({d:+f,ind:a.ind,mat:a.mat,tono:a.tono||null,impl:a.implante||null});sub+=(PRECIO_DIS[a.ind]||0);}});
     var resumen=items.map(function(i){return i.d+' '+i.ind+' ('+i.mat+(i.tono?(' '+i.tono):'')+(i.impl?(' · '+i.impl):'')+')';}).join('; ');
     var G=(typeof guia!=='undefined')?guia:null;
-    try{parent.postMessage({__odo:1,total:sub,piezas:items.length,resumen:resumen,items:items,guia:(G&&G.tipo)?G:null,height:document.documentElement.scrollHeight},'*');}catch(e){}
+    try{parent.postMessage({__odo:1,total:sub,piezas:items.length,resumen:resumen,items:items,guia:(G&&G.tipo)?G:null,height:altoContenido()},'*');}catch(e){}
   }
   var POS={18:[29.6,45.1],17:[29.5,37.2],16:[30.2,28.6],15:[32.0,22.3],14:[33.8,17.1],13:[37.4,12.3],12:[42.2,8.8],11:[48.2,7.2],
     21:[55.0,7.2],22:[61.0,8.8],23:[65.7,12.3],24:[69.3,17.1],25:[71.3,22.3],26:[72.4,28.6],27:[72.4,37.2],28:[72.4,45.1],
@@ -308,6 +315,9 @@
   function setInd(ind){var arr=selArr();if(!arr.length)return;var off=commonInd()===ind;arr.forEach(function(f){if(!estado[f])estado[f]=defTooth();estado[f].ind=off?null:ind;});pintaAll();renderLeft();}
   function toggleImpl(n){var arr=selArr();if(!arr.length)return;arr.forEach(function(f){if(!estado[f])estado[f]=defTooth();estado[f].implante=(estado[f].implante===n)?null:n;});renderLeft();}
 
+  // Grupos plegables: en pantallas angostas solo queda abierto el grupo de la indicación del diente (o el primero)
+  var ABRE={};
+  function grpAbierto(gr){if(Object.prototype.hasOwnProperty.call(ABRE,gr.g))return ABRE[gr.g];if(window.innerWidth>=600)return true;var ci=commonInd();return gr.items.some(function(it){return it[0]===ci;})||(!ci&&gr===GRUPOS[0]);}
   function renderLeft(){
     var arr=selArr(),a=arr.length?estado[arr[0]]:null,ci=commonInd();
     document.getElementById('proc-meta').textContent=proceso;
@@ -315,7 +325,7 @@
     document.getElementById('d-title').textContent=!arr.length?'Indicación y materiales':(arr.length===1?('Diente '+_lbl(arr[0])):('Dientes '+arr.map(_lbl).join(', ')+' · '+arr.length));
     // estado visual de los botones-imagen (indicaciones)
     var iw=document.getElementById('indwrap');iw.innerHTML='';
-    GRUPOS.forEach(function(gr){var dd=document.createElement('div');dd.className='grp';dd.innerHTML='<div class="gt">'+gr.g+'</div>';
+    GRUPOS.forEach(function(gr){var dd=document.createElement('div');var ab=grpAbierto(gr);dd.className='grp'+(ab?'':' cerrado');dd.innerHTML='<button type="button" class="gt" aria-expanded="'+ab+'">'+gr.g+'</button>';dd.firstChild.onclick=function(){ABRE[gr.g]=!grpAbierto(gr);renderLeft();};
       var grid=document.createElement('div');grid.className='indgrid';
       gr.items.forEach(function(it){var pr=ci===it[0]?'true':(ci==='__mixed__'&&anyHas(it[0])?'mixed':'false');
         var b=document.createElement('button');b.className='ind';b.setAttribute('aria-pressed',pr);

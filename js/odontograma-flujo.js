@@ -25,7 +25,7 @@
   function fdiLista(items) { return items.map(function (i) { return String(i.d); }).filter(function (x, i, a) { return a.indexOf(x) === i; }).sort(function (a, b) { return a - b; }); }
   function mostrar(lista) { return window.Dientes ? (Dientes.mostrar(lista) || lista.join(', ')) : lista.join(', '); }
 
-  var activo = false, piezasFDI = [], ultimo = null;
+  var activo = false, piezasFDI = [], ultimo = null, orden = null;
   function aplicar(x) {
     var items = (x.items || []).filter(function (it) { return it && it.ind; });
     var cobrables = items.filter(function (it) { return !INFO[it.ind]; });
@@ -56,6 +56,9 @@
     STATE.subtipoNombre = hay ? partes.join(' · ') : null;
     STATE.subtipoPrecio = total;
     STATE.odontograma = items; STATE.guia = g;
+    orden = hay ? { v: 1, nomenclatura: window.Dientes ? Dientes.preferido() : 'fdi', proceso: 'Diseño CAD',
+      piezas: items.map(function (it) { return { fdi: +it.d, indicacion: it.ind, material: it.mat || null, tono: it.tono || null, implante: it.impl || null }; }),
+      guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null } : null } : null;
     activo = !!hay;
     var cc = document.getElementById('cantidad'); if (cc) cc.value = 1;
     // Archivos requeridos según lo marcado (implantes → scan body; férula/dentadura → mordida; si no, corona)
@@ -91,11 +94,20 @@
     var orig = window.selectSubtipo;
     window.selectSubtipo = function () {
       var r = orig.apply(this, arguments);
-      activo = false; piezasFDI = [];
+      activo = false; piezasFDI = []; orden = null;
       var rp = resumenEl(); if (rp && STATE.subtipoNombre) rp.textContent = T.otro + STATE.subtipoNombre;
       return r;
     };
   }
+
+  // Orden estructurada (pedidos.odontograma, jsonb). Solo se envía si la columna existe (sql/pedidos-odontograma-2026.sql):
+  // si no, el insert completo fallaría por una columna desconocida.
+  window._odoColumna = false;
+  window.addEventListener('load', function () {
+    try { var sb = (typeof getSupabase === 'function') ? getSupabase() : null;
+      if (sb) sb.from('pedidos').select('odontograma').limit(0).then(function (r) { window._odoColumna = !r.error; }); } catch (e) {}
+  });
+  window._odoOrden = function () { return activo && orden ? orden : null; };
 
   // Lo que usan la confirmación, el WhatsApp y el pedido (pedidos.piezas en FDI)
   window._piezasFDI = function () { return activo && piezasFDI.length ? piezasFDI.slice() : null; };

@@ -71,6 +71,14 @@
   arranca en Universal. El título, el resumen y el WhatsApp usan esa nomenclatura con el FDI al lado; el laboratorio, FDI.
 - ✅ **Aviso de marcas**: «exocad® y DentalDB® son marcas registradas de exocad GmbH… no está afiliado, patrocinado ni
   respaldado por exocad» en el flujo y debajo del odontograma, y sección «Marcas de terceros» en Términos.
+- ✅ **Ideas implementadas (odontograma)**: (1) orden estructurada `pedidos.odontograma` (jsonb) — SQL
+  `sql/pedidos-odontograma-2026.sql` **pendiente de correr**; el flujo prueba la columna y solo la envía si existe; la Ficha del
+  caso muestra la tabla por diente (FDI · indicación · material · tono · implante · guía) y «Descargar orden (JSON)».
+  audit-schema-live: `pedidos.odontograma` en ALLOW hasta correr el SQL. (2) Celular: grupos de indicaciones plegables (solo
+  queda abierto el del diente), materiales en 5 columnas y el marco se ajusta al alto real del contenido (antes solo crecía:
+  3.300 → ~2.400 px en celular, 1.950 en escritorio). (3) Numeración Universal/Palmer sobre el diagrama (hecho antes).
+  (4) Archivo de exocad: **no se puede generar** un .dentalProject válido — exocad guarda los parámetros comprimidos (LZMA) y
+  firmados (WorkParamsSHA); en su lugar, la ficha da la orden en el mismo orden que DentalDB + JSON.
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
 - ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):
