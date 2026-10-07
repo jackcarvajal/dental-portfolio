@@ -83,6 +83,10 @@
   (ambas). **Dibujo de la orden** (`js/odonto-dibujo.js`): arco dental SVG con cada diente en el color de su indicación +
   leyenda + tabla. Se ve en la Ficha del caso y en el panel de diseño (botón «Orden» en la tarjeta → modal), que ahora
   también lee `odontograma`.
+- ✅ **Robot del asistente IA en Soporte** (ambas; `js/robot-ia.js`): port a three.js simple del componente React
+  «RobotHero». Cabeza y cuerpo siguen el cursor, parpadea; al tocarlo pone ojos de corazón y abre el chat IA. 3D solo en
+  computador, cargado cuando se ve y el navegador está libre (mismo three@0.165.0 de los visores); celular y «reducir
+  movimiento» → figura fija SVG. Colores: pantalla cian, antena magenta (PRODIGY) / oro (Alejandro).
 
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 

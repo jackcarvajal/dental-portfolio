@@ -62,7 +62,7 @@
     body { overflow-x: hidden; background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
 
     /* ── HERO ── */
-    .hero { padding: 72px 24px 64px; background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(0,210,255,0.08) 0%, transparent 60%), var(--bg); text-align: center; }
+    .hero { padding: 36px 24px 64px; background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(0,210,255,0.08) 0%, transparent 60%), var(--bg); text-align: center; }
     .hero .tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,210,255,0.1); border: 1px solid var(--border-c); color: var(--cyan); font-size: .9rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 24px; }
     .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; margin-bottom: 16px; }
     .hero h1 em { font-style: normal; color: var(--cyan); }
@@ -184,6 +184,9 @@
 
 <!-- HERO -->
 <div class="hero sr">
+  <!-- Robot del asistente IA (js/robot-ia.js): sigue el cursor; al tocarlo abre el chat -->
+  <button type="button" class="robot-ia" data-robot-ia data-pantalla="#00d2ff" data-antena="#D946A6" data-corazon="#D946A6" aria-label="Abrir asistente IA" title="Hola, soy el asistente IA · tócame"></button>
+  <script src="js/robot-ia.js?v=20261008" defer></script>
   <div class="tag"><i class="fas fa-robot"></i> <span data-i18n="soporte.hero.tag">IA + Soporte humano</span></div>
   <h1 data-i18n="soporte.hero.h1">Centro de soporte <em>técnico</em></h1>
   <p data-i18n="soporte.hero.sub">Guías de escaneo, fichas de materiales, seguimiento de casos y un asistente IA entrenado en odontología digital. Respuesta inmediata, 24/7.</p>
