@@ -66,8 +66,8 @@
           texto: 'Arrastra aquí el escaneo (STL, PLY, OBJ), el CBCT en ZIP si es guía quirúrgica, y las fotos clínicas. Los STL se ven en 3D al soltarlos.' },
         { sel: '#especialidad', titulo: '2· Datos del caso',
           texto: 'Tu especialidad, el paciente y el tipo de diseño. Con eso calculamos precio y fecha de entrega.' },
-        { sel: '#cantidad', titulo: '3· Cantidad de unidades',
-          texto: 'Cuántas piezas lleva el caso. El total se recalcula al instante.' },
+        { sel: '#odo-embed-wrap', titulo: '3· Marca los dientes',
+          texto: 'Toca cada diente del odontograma y elige su indicación y material, como en exocad. El total se suma por diente al instante. ¿No es por diente? Abre «Otros servicios».' },
         { sel: '#btn-wa', titulo: '4· Envía el caso',
           texto: 'Al enviarlo se suben tus archivos, recibes el código del pedido y se abre WhatsApp con el resumen. Guarda ese código para seguir tu caso.' }
       ]

@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-08",
+  "version": "2026-10-08b",
   "categorias": [
     {
       "id": "inicio",
@@ -639,15 +639,15 @@
     {
       "id": "piezas-fdi",
       "cat": "casos",
-      "titulo": "Piezas del caso: FDI, Universal y Palmer",
-      "resumen": "El doctor marca las piezas en su nomenclatura; el laboratorio siempre las ve en FDI.",
+      "titulo": "Orden por diente (estilo exocad) y nomenclatura FDI",
+      "resumen": "El doctor marca cada diente con su indicación y material; el laboratorio lo recibe en FDI.",
       "para": "Todo el equipo",
       "pasos": [
-        "En el flujo de diseño el doctor marca las piezas en un odontograma y elige su nomenclatura: **FDI** (Colombia/Latinoamérica), **Universal** (EE. UU., 1–32) o **Palmer** (Reino Unido, UR1…).",
-        "El pedido se guarda **siempre en FDI** (campo *piezas*). En **Ficha del caso** y en la **Orden de producción** aparece «Piezas (FDI)».",
-        "El WhatsApp del pedido trae las dos: por ejemplo «#8, #9 (Universal) = FDI 11, 21». Trabaja siempre con el número FDI.",
-        "El doctor ve sus piezas en su propia nomenclatura en *Sigue tu caso* y en el recibo, con el FDI al lado.",
-        "Equivalencias rápidas: **Soporte → Conversor de nomenclatura dental** (prodigylabdental.com/soporte)."
+        "En el flujo de diseño (sección 2) el doctor ve un **odontograma estilo exocad DentalDB**: toca cada diente y le asigna **indicación** (corona, póntico, carilla, pilar, férula…) y **material**. El precio se suma por diente; férulas, dentaduras y barras se cobran una vez por arcada.",
+        "Las guías quirúrgicas (exoPlan) se eligen abajo del odontograma: tipo, sistema de implante, soporte, guiado y manga.",
+        "Lo que no es por diente (alineadores, sonrisa 3D, cubeta…) está en **«Otros servicios»**, debajo. Gana la última elección del doctor.",
+        "El pedido llega con el detalle en *Trabajo* (ej. «11 Corona anatómica (Zirconio); 21 …») y las piezas en **FDI** (campo *piezas*): así se ven en **Ficha del caso** y **Orden de producción**. Trabaja siempre con el número FDI.",
+        "Si el doctor usa Universal (EE. UU.) o Palmer, en su pantalla y en el WhatsApp ve las dos: «#8, #9 (Universal) = FDI 11, 21». Equivalencias: **Soporte → Conversor de nomenclatura dental**."
       ]
     },
     {

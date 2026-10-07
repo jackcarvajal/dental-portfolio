@@ -355,6 +355,13 @@
     body{ overflow-x: hidden;}.hamburger-menu,.theme-toggle{display:none!important}
     .sec,.section,.form-section,.step-section{content-visibility:auto;contain-intrinsic-size:0 350px;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+        /* Orden por diente (oct-2026) */
+        #acc-diseno.active .accordion-content{max-height:none}
+        .otros-servicios{margin-top:18px;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:0 14px;background:rgba(255,255,255,.02)}
+        .otros-servicios>summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding:14px 0;font-size:.9rem;font-weight:700;color:#e2e8f0}
+        .otros-servicios>summary::-webkit-details-marker{display:none}
+        .otros-servicios>summary span{color:#00d2ff;font-size:.82rem}
+        .otros-servicios[open]{padding-bottom:14px}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Cotizador y Pedido de Diseño CAD — PRODIGY","url":"https://prodigylabdental.com/flujo-diseno","provider":{"@type":"LocalBusiness","name":"PRODIGY Lab Dental","telephone":"+573212816716","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"}},"description":"Cotizador interactivo de diseño CAD dental. Coronas, puentes, carillas, Full Arch, alineadores. Entrega STL en 24-48h. Precios desde $58.000 COP.","areaServed":"Colombia","offers":{"@type":"Offer","priceCurrency":"COP","price":"58000"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Diseño CAD","item":"https://prodigylabdental.com/diseno-cad"},{"@type":"ListItem","position":3,"name":"Hacer Pedido","item":"https://prodigylabdental.com/flujo-diseno"}]}</script>
@@ -583,6 +590,16 @@ window.submitOrden     = window.submitOrden      || function(){};
                 <div class="accordion-content">
                     <div class="accordion-inner">
 
+                        <!-- ORDEN POR DIENTE estilo exocad DentalDB (odontograma.html + js/odontograma-flujo.js) -->
+                        <p style="font-size:.9rem;color:var(--text-secondary);margin-bottom:14px;">Marca cada diente en el odontograma y asígnale su <strong>indicación</strong> (tipo de trabajo) y <strong>material</strong>, igual que en exocad DentalDB. El precio se calcula por diente en tiempo real.</p>
+                        <div id="odo-embed-wrap" style="border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden;background:#0b1017">
+                            <iframe id="odo-frame" title="Odontograma — orden por diente" style="width:100%;border:0;display:block;min-height:720px" loading="lazy"></iframe>
+                        </div>
+                        <p id="odo-resumen" style="font-size:.88rem;color:var(--text-secondary);margin-top:10px">Aún no has asignado indicaciones a los dientes.</p>
+                        <p style="font-size:.72rem;color:var(--text-secondary);opacity:.8;margin-top:6px;line-height:1.45">Íconos de indicaciones y materiales: exocad DentalDB® — se usan solo para que la orden hable el mismo idioma que el software de diseño.</p>
+
+                        <details class="otros-servicios" id="otros-servicios">
+                            <summary>¿Tu caso no es por diente? Alineadores, sonrisa 3D, cubeta, guía quirúrgica… <span>Ver otros servicios</span></summary>
                         <div style="display:grid;grid-template-columns:1fr 130px;gap:16px;margin-bottom:20px;align-items:end;">
                             <p style="font-size:.85rem;color:var(--text-secondary);">Selecciona la categoría y luego el servicio específico. El precio se actualiza en tiempo real.</p>
                             <div class="form-group">
@@ -623,9 +640,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <div class="subtipo-grid" id="subtipo-grid"></div>
                         </div>
                         <div id="protocolo-servicio-pg"></div>
-
-                        <!-- PIEZAS: odontograma FDI · Universal · Palmer (js/dientes.js) -->
-                        <div id="dientes-flujo" style="margin-top:20px;"></div>
+                        </details>
 
                         <!-- EXPRESS -->
                         <div style="margin-top:20px;padding:15px;background:var(--bg-dark);border:1px solid rgba(239,68,68,.2);border-radius:var(--radius-md);">
@@ -2530,27 +2545,8 @@ const lineWompi = document.getElementById('line-wompi');
     <script>ProdigyMultiViewer.init('pmv-diseno');</script>
     <script src="js/flujo-uploader.js?v=20260924"></script>
     <script src="js/dientes.js?v=20261008b"></script>
-    <script>
-    /* Piezas del caso (js/dientes.js, oct-2026): el doctor las marca en SU nomenclatura (FDI · Universal · Palmer) y el
-       pedido, el WhatsApp y el laboratorio las reciben en FDI (pedidos.piezas). En servicios que se cobran por pieza
-       sugiere ajustar «Unidades»; no toca precios (solo dispara el change del campo, que recalcula la página). */
-    (function () {
-      function montar() {
-        var el = document.getElementById('dientes-flujo');
-        if (!el || !window.Dientes || window._dientesFlujo) return;
-        window._dientesFlujo = Dientes.montar(el, { cantidad: '#cantidad', porPieza: function () {
-          return typeof STATE !== 'undefined' && (STATE.categoriaKey === 'cad_fija' || STATE.subtipoId === 'corona_ator' || STATE.subtipoId === 'pilar_pers');
-        } });
-      }
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', montar); else montar();
-      function resumen() { var r = window._dientesFlujo ? window._dientesFlujo.resumen() : null; return r && r.fdi.length ? r : null; }
-      window._piezasFDI = function () { var r = resumen(); return r ? r.fdi : null; };
-      window._piezasTexto = function () {
-        var r = resumen(); if (!r) return '';
-        return r.sistema === 'fdi' ? r.textoFDI + ' (FDI)' : r.texto + ' (' + r.nombreSistema + ') = FDI ' + r.textoFDI;
-      };
-    })();
-    </script>
+    <script>window.ODO_CFG = {"v": "20261008", "mapa": {"Corona anatómica": ["cad_fija", "corona"], "Cofia anatómica": ["cad_fija", "corona"], "Corona prensada": ["cad_fija", "corona"], "Cofia": ["cad_fija", "corona"], "Corona cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Overlay": ["cad_fija", "inlay"], "Incrustación/Onlay": ["cad_fija", "inlay"], "Inlay de grosor mínimo": ["cad_fija", "inlay"], "Carilla": ["cad_fija", "carilla"], "Póntico anatómico": ["cad_fija", "puente"], "Póntico reducido": ["cad_fija", "puente"], "Póntico prensado": ["cad_fija", "puente"], "Mockup": ["cad_fija", "waxup"], "Encerado anatómico": ["cad_fija", "encerado"], "Encerado reducido": ["cad_fija", "encerado"], "Encerado póntico": ["cad_fija", "encerado"], "Dentadura completa": ["cad_removible", "sobredentadura"], "Esqueléticas parciales": ["cad_removible", "esqueleto"], "Férula de descarga": ["cad_removible", "ferula"], "Corona telescópica primaria": ["cad_fija", "corona"], "Corona telescópica secundaria": ["cad_fija", "corona"], "Atache": ["cad_implantes", "pilar_pers"], "Pilar de barra": ["cad_implantes", "barra"], "Segmento de barra": ["cad_implantes", "barra"], "Subestructura Offset": ["cad_implantes", "pilar_pers"], "Pilar personalizado (abutment)": ["cad_implantes", "pilar_pers"], "Pilar de aditamiento": ["cad_implantes", "pilar_pers"]}, "porArcada": {"Férula de descarga": 1, "Dentadura completa": 1, "Esqueléticas parciales": 1, "Pilar de barra": 1, "Segmento de barra": 1}, "porCaso": {}, "guias": {"guia_1": ["cad_quirurgica", "guia_1"], "guia_sobredent": ["cad_quirurgica", "guia_sobredent"], "guia_hibrida": ["cad_quirurgica", "guia_hibrida"], "guia_reborde": ["cad_quirurgica", "guia_reborde"], "planif_unit": ["cad_quirurgica", "planif_unit"], "planif_fullarch": ["cad_quirurgica", "planif_fullarch"], "sonrisa_3d": ["cad_quirurgica", "sonrisa_3d"], "guia_1_impresa": ["cad_quirurgica", "guia_1_impresa"], "guia_sobredent_impresa": ["cad_quirurgica", "guia_sobredent_impresa"], "guia_hibrida_impresa": ["cad_quirurgica", "guia_hibrida_impresa"], "guia_reborde_impresa": ["cad_quirurgica", "guia_reborde_impresa"]}};</script>
+    <script src="js/odontograma-flujo.js?v=20261008"></script>
 <div id="fd-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:13px 22px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;opacity:0;transition:all .35s;pointer-events:none;max-width:400px;text-align:left;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);backdrop-filter:blur(8px);"></div>
 <script>
 let _fdToastT;
@@ -2578,7 +2574,7 @@ document.addEventListener('keydown', function(e) {
     var nav = document.getElementById('nav-overlay'); if (nav) { nav.style.display = 'none'; document.getElementById('mobile-nav')?.classList.remove('open'); }
 });
 </script>
-<script src="js/tour.js?v=20260721"></script>
+<script src="js/tour.js?v=20261008"></script>
 <script>(function(){function go(){var s=window.sb||(window.ProdigyAuth&&window.ProdigyAuth.getSb&&window.ProdigyAuth.getSb());if(s&&window.ModoPrueba){ModoPrueba.init(s);}else{setTimeout(go,400);}}if(document.readyState!=="loading")go();else document.addEventListener("DOMContentLoaded",go);})();</script>
 <script>
 /* Autosave del perfil del doctor (nombre/whatsapp/ciudad) en localStorage — como en flujo-fresado.

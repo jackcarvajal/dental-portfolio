@@ -57,6 +57,15 @@
   sus precios en USD (restauradas de aee2c71). Español sigue sin precios (solo cotizador).
 - ✅ **Botón 🌐 (Google Translate viejo) eliminado** de index y flujo-fresado, y su función muerta en flujo-diseno(-preview):
   competía con el selector ES/EN/PT del menú y dejaba un recuadro vacío.
+- ✅ **Orden por diente estilo exocad DentalDB en el flujo de diseño real** (retomado del preview de jul/ago y del artefacto
+  «PRODIGY DentalDB — Creador de órdenes»). `odontograma.html` (iframe del mismo origen, noindex; CSP `frame-src 'self'`)
+  + `js/odontograma-flujo.js` (precio por diente con el catálogo del flujo vía `ODO_CFG`; férula/dentadura/barra una vez
+  por arcada; guías exoPlan a nivel de caso; no toca `calcularTotal`). «Otros servicios» (alineadores, sonrisa 3D,
+  cubeta…) queda en un desplegable debajo; gana la última elección. Pedido: detalle en `tipo_trabajo`, piezas FDI en
+  `pedidos.piezas`; el doctor ve su nomenclatura. Inglés técnico dentro del odontograma (`?lang=en` + `en.json`).
+  Embebido a 2 columnas (≥760 px) → alto ~1.950 px; la sección 2 ya no se recorta (`max-height:none`).
+  `flujo-diseno-preview.html` borrado (301 → /flujo-diseno). Tour y centro de ayuda actualizados.
+- 🟡 Pendiente de decisión: el flujo en inglés de PRODIGY sigue en COP (su catálogo es COP; USD exige la lista USD de /en/).
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
 - ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):

@@ -19,8 +19,8 @@
 /carrusel-preview.html          /404.html  302
 /spider-preview                 /404.html  302
 /spider-preview.html            /404.html  302
-/flujo-diseno-preview           /404.html  302
-/flujo-diseno-preview.html      /404.html  302
+/flujo-diseno-preview           /flujo-diseno  301
+/flujo-diseno-preview.html      /flujo-diseno  301
 /*.md                           /404.html  302
 /*.bat                          /404.html  302
 /MEMORY/*                       /404.html  302
