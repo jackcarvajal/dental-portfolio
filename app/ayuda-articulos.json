@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-09",
+  "version": "2026-10-09b",
   "categorias": [
     {
       "id": "inicio",
@@ -647,7 +647,8 @@
         "Las guías quirúrgicas (exoPlan) se eligen abajo del odontograma: tipo, sistema de implante, soporte, guiado y manga.",
         "Lo que no es por diente (alineadores, sonrisa 3D, cubeta…) está en **«Otros servicios»**, debajo. Gana la última elección del doctor.",
         "El pedido llega con el detalle en *Trabajo* (ej. «11 Corona anatómica (Zirconio); 21 …») y las piezas en **FDI** (campo *piezas*): así se ven en **Ficha del caso** y **Orden de producción**. Trabaja siempre con el número FDI.",
-        "Si el doctor usa Universal (EE. UU.) o Palmer, en su pantalla y en el WhatsApp ve las dos: «#8, #9 (Universal) = FDI 11, 21». Equivalencias: **Soporte → Conversor de nomenclatura dental**."
+        "Si el doctor usa Universal (EE. UU.) o Palmer, en su pantalla y en el WhatsApp ve las dos: «#8, #9 (Universal) = FDI 11, 21». Equivalencias: **Soporte → Conversor de nomenclatura dental**.",
+        "El odontograma del flujo de diseño es el de **exocad DentalDB 3.3**: cada indicación muestra solo los materiales que exocad permite (con sus imágenes) y el **proceso de fabricación** (fresadora 5 o 3 ejes, láser, impresión 3D). La ficha del caso muestra el material con su proceso."
       ]
     },
     {
@@ -677,6 +678,20 @@
         "**Enlace de pedido** abre «Envía tu escáner» ya identificado con su nombre, clínica y código: la solicitud llega marcada como «Enlace personal · cliente DR-…».",
         "En la ventana del enlace ves **cuántas veces lo abrió** y cuándo. Si se filtró o el doctor ya no es cliente, usa **Anular enlace**.",
         "Si al crear un enlace sale «Falta activar los enlaces privados», hay que correr una vez el SQL **sql/enlaces-cliente-2026.sql** en Supabase."
+      ]
+    },
+    {
+      "id": "comprobante-ia",
+      "cat": "clientes",
+      "titulo": "Leer un comprobante de pago con IA",
+      "resumen": "La IA lee monto, fecha, banco y referencia del comprobante y lo compara con el abono esperado.",
+      "para": "Contabilidad y administración",
+      "pasos": [
+        "En **Contabilidad → Comprobantes**, abre el comprobante del caso.",
+        "Toca **Leer comprobante con IA**: en unos segundos aparecen el monto, la fecha, el medio (Nequi, Bancolombia…), la referencia y quién recibió.",
+        "Arriba sale en verde si el monto **coincide** con el abono esperado (50%) o con el total, y en rojo si no.",
+        "**Usar en la nota de confirmación** copia lo leído a la nota.",
+        "La IA puede equivocarse: confirma siempre con el extracto del banco antes de aprobar el pago."
       ]
     }
   ]

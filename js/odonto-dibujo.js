@@ -14,7 +14,7 @@
     31: [54.6, 93.5], 32: [59.2, 92.2], 33: [63, 89.8], 34: [66.5, 85.3], 35: [68.7, 79.7], 36: [71.3, 71.8], 37: [72, 63.5], 38: [72.8, 55.5],
     41: [49.4, 93.5], 42: [44.6, 92.2], 43: [40.5, 89.8], 44: [36.8, 85.3], 45: [34.6, 79.7], 46: [33.5, 71.8], 47: [31.3, 63.5], 48: [30.5, 55.5] };
   var COLOR = { 'Corona anatómica': '#D946A6', 'Cofia anatómica': '#00b3a4', 'Corona prensada': '#e0b23a', 'Corona cáscara de huevo (prov.)': '#a855f7', 'Overlay': '#8a95a3', 'Cofia': '#4fb477',
-    'Póntico anatómico': '#e05252', 'Póntico reducido': '#e07a52', 'Póntico prensado': '#4aa3df', 'Mockup': '#e08a8a', 'Incrustación/Onlay': '#4fb477', 'Inlay de grosor mínimo': '#4aa3df',
+    'Póntico anatómico': '#e05252', 'Póntico cáscara de huevo (prov.)': '#c084fc', 'Póntico reducido': '#e07a52', 'Póntico prensado': '#4aa3df', 'Mockup': '#e08a8a', 'Incrustación/Onlay': '#4fb477', 'Inlay de grosor mínimo': '#4aa3df',
     'Carilla': '#2f7fd0', 'Encerado anatómico': '#4fb477', 'Encerado reducido': '#5fbf86', 'Encerado póntico': '#6f6fc9', 'Dentadura completa': '#c0c7d0', 'Esqueléticas parciales': '#8a95a3',
     'Férula de descarga': '#00b8dd', 'Corona telescópica primaria': '#e07a52', 'Corona telescópica secundaria': '#c98a5a', 'Atache': '#00b8dd', 'Pilar de barra': '#e0b23a',
     'Segmento de barra': '#a855f7', 'Subestructura Offset': '#c0c7d0', 'Pilar personalizado (abutment)': '#00b8dd', 'Pilar de aditamiento': '#e07a52', 'Antagonista': '#e0894a',
@@ -49,7 +49,7 @@
   function tabla(orden) {
     var filas = piezas(orden).slice().sort(function (a, b) { return a.fdi - b.fdi; }).map(function (x) {
       return '<tr style="border-top:1px solid rgba(255,255,255,.08)"><td style="padding:6px 8px;font-weight:800">' + esc(x.fdi) + '</td><td style="padding:6px 8px">' + esc(x.indicacion || '—') +
-        '</td><td style="padding:6px 8px">' + esc(x.material || '—') + '</td><td style="padding:6px 8px">' + esc(x.tono || '—') + '</td><td style="padding:6px 8px">' + esc(x.implante || '—') + '</td></tr>';
+        '</td><td style="padding:6px 8px">' + esc((x.material || '—') + (x.proceso ? ' · ' + x.proceso : '')) + '</td><td style="padding:6px 8px">' + esc(x.tono || '—') + '</td><td style="padding:6px 8px">' + esc(x.implante || '—') + '</td></tr>';
     }).join('');
     var g = orden && orden.guia;
     return '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.86rem"><thead><tr style="text-align:left;color:#94a3b8">' +

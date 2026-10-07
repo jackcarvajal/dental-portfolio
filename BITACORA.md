@@ -126,6 +126,15 @@
     (`i18n/pt-odontograma.json`, 136 textos, nombres de exocad PT); el flujo pasa `lang=pt` si la web está en PT.
   · Los nombres en español (lo que se guarda en el pedido y fija precios) no cambian.
 
+- ✅ **Odontograma = interfaz de exocad DentalDB 3.3** (pedido de Alejandro: «el mismo de exocad pero no en imagen, igual al de DentalDB… con todos los materiales y procesos actualizados»):
+  · Diagrama: el de DentalDB, vectorial (contornos y surcos trazados de la vista oclusal; `trazar-arco.mjs` en scratchpad).
+  · Indicaciones en el orden y grupos de exocad (+ «Póntico cáscara de huevo (prov.)», precio = corona provisional).
+  · **Materiales por indicación** tal como los permite exocad 3.3 con la config PRODIGY (`WorkParamsDB-ProDigy.xml`): 54
+    materiales, incluido el material PRODIGY, resinas de impresión, dentaduras y esqueléticos; imágenes REALES de exocad
+    (venían en base64 dentro del XML) → `assets/exocad-materiales/*.webp` (37, 168 KB).
+  · **Proceso de fabricación**: fresadora 5 ejes / 3 ejes (variantes _3ax), sinterizado láser, impresión 3D. La orden guarda
+    `codigo_exocad` y `proceso` por diente (se ven en la ficha del caso). Nombres EN/PT oficiales de exocad.
+
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
 - ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):
