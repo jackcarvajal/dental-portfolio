@@ -332,6 +332,40 @@
   </div>
 </div>
 
+<!-- ── PUERTAS DEL TREN: al deslizar se abren y se ve el video de una barra de zirconio (js/puertas-video.js) ── -->
+<section class="tren" data-puertas-video data-no-simetria aria-labelledby="tren-titulo">
+  <div class="tren-fijo">
+    <div class="tren-txt izq">
+      <div class="tren-ceja">Del bloque a tu mano</div>
+      <h2 id="tren-titulo">Así sale una <em>barra de zirconio</em> de PRODIGY</h2>
+      <p>Fresada en 5 ejes, sinterizada y revisada pieza por pieza antes de salir del laboratorio. Tú solo la instalas.</p>
+    </div>
+    <div class="tren-puerta">
+      <div class="tren-letrero" aria-hidden="true">LÍNEA PRODIGY ▸ FRESADO CAM · 24–72 h</div>
+      <div class="tren-luz" aria-hidden="true"><span></span><span></span></div>
+      <div class="tren-marco">
+        <div class="tren-vano">
+          <video src="assets/links-gallery/barra-zircona.mp4" muted loop playsinline preload="none" aria-label="Video: barra de zirconio sobre implantes fresada en PRODIGY"></video>
+          <div class="tren-brillo" aria-hidden="true"></div>
+          <div class="tren-hoja izq" aria-hidden="true"><div class="tren-sello">💎<b>PRODIGY</b></div></div>
+          <div class="tren-hoja der" aria-hidden="true"><div class="tren-sello">FRESADO<b>CAM</b></div></div>
+          <div class="tren-pista" aria-hidden="true">Desliza para abrir<svg width="14" height="18" viewBox="0 0 14 18"><path d="M7 1 L7 17 M2 12 L7 17 L12 12" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+    <div class="tren-txt der">
+      <p class="tren-movil">Así sale una <em>barra de zirconio</em> de PRODIGY</p>
+      <ul class="tren-lista">
+        <li><i class="fas fa-cube" aria-hidden="true"></i><span>Zirconio, PMMA, e.max y titanio en fresadora de 5 ejes</span></li>
+        <li><i class="fas fa-ruler-combined" aria-hidden="true"></i><span>Ajuste verificado sobre el modelo antes del envío</span></li>
+        <li><i class="fas fa-truck-fast" aria-hidden="true"></i><span>Entrega en 24–72 h con seguimiento en vivo</span></li>
+      </ul>
+      <a class="tren-cta" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20vi%20la%20barra%20de%20zirconio%20y%20quiero%20cotizar%20mi%20caso." target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" aria-hidden="true"></i>Cotizar mi caso</a>
+    </div>
+  </div>
+</section>
+<script src="js/puertas-video.js?v=20261009" defer></script>
+
 <script>(function(){var ns=document.querySelectorAll('.fst');if(!ns.length)return;var done=false;function go(){if(done)return;done=true;ns.forEach(function(el){var t=parseInt(el.dataset.target),p=el.dataset.prefix||'',s=el.dataset.suffix||'',t0=performance.now();function tick(now){var r=Math.min((now-t0)/1200,1),e=1-Math.pow(1-r,3);el.textContent=p+Math.round(e*t)+s;if(r<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);});}var bar=document.getElementById('fresado-stats');if(!bar){go();return;}new IntersectionObserver(function(e){if(e[0].isIntersecting){go();}},{threshold:0.4}).observe(bar);})();</script>
 
 <!-- ── MATERIALES ── -->
