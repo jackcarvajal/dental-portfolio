@@ -30,6 +30,21 @@
 - ✅ **Soporte: 6.ª tarjeta «Conversor de nomenclatura dental»** (FDI · Universal · Palmer, `js/dientes.js`) → rejilla
   3×2 simétrica con colores en damero.
 
+- ✅ **Flujo de diseño en inglés técnico** (ambas): `/flujo-diseno` entra a la traducción técnica (`i18n/en.json`, +450
+  textos: catálogo, archivos requeridos, protocolos, pagos, errores). Nuevo en `en.json`: **«patrones»** (regex → texto)
+  para lo que cambia (precio, fecha, «Paso 2 de 5»). Las `<option>` sin `value` ahora llevan valor en español: la base y
+  el WhatsApp no cambian aunque la página se vea en inglés.
+- ✅ **Nomenclatura dental FDI · Universal · Palmer** (`js/dientes.js`): odontograma en el flujo de diseño (ambas). El
+  doctor marca en SU sistema (EN → Universal por defecto); `pedidos.piezas` (text[]) y el laboratorio reciben **FDI**;
+  el WhatsApp trae ambas («#8, #9 (Universal) = FDI 11, 21»). En servicios por pieza sugiere «Usar N como unidades»
+  (solo dispara el change del campo: no toca `calcularTotal`). Se ve en ficha-caso y orden-produccion (FDI) y en
+  seguimiento/recibo/panel del cliente en su nomenclatura. Panel del cliente: odontograma opcional para «Pieza(s)».
+- ✅ **Aviso «This page is only available in Spanish · English version →»** cuando se eligió EN y la página no tiene
+  traducción técnica (se cierra y no vuelve en la sesión).
+- ✅ **IA que crece**: SQL corrido (8-oct, verificado 2/2/false/false/4) → `TABLAS_PENDIENTES` vacío. Panel IA: filtro
+  **«Más repetidas»** (agrupa preguntas parecidas de 30 días → crear respuesta oficial / marcar revisadas). **Resumen
+  semanal** los lunes dentro de `alerta-sla.js` (campana del admin + WhatsApp STAFF_1), sin cron ni secretos nuevos.
+- ✅ Centro de ayuda: artículos «Piezas del caso: FDI, Universal y Palmer» e «IA de la web».
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
 - ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):

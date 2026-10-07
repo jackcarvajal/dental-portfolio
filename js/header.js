@@ -75,7 +75,7 @@
   window._loadClarity = function () { if (window._clarityPermitida()) _loadClarity(); };
 })();
 
-window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-scanner", "/preguntas", "/soporte", "/portafolio"], "mapaEn": {"/": "/en/global-design", "/diseno-remoto": "/en/global-design", "/diseno-cad": "/en/global-design", "/calculadora-diseno": "/en/global-design", "/alineadores-cad": "/en/dental-aligners", "/envia-alineadores": "/en/dental-aligners", "/guias-quirurgicas": "/en/surgical-guides", "/fresado-cam": "/en/zirconia-crowns", "/calculadora-fresado": "/en/zirconia-crowns", "/terminos-y-legal": "/en/veneer-terms"}, "esDe": {"/en/global-design": "/diseno-remoto", "/en/dental-aligners": "/alineadores-cad", "/en/surgical-guides": "/guias-quirurgicas", "/en/zirconia-crowns": "/fresado-cam", "/en/veneers": "/", "/en/veneer-terms": "/terminos-y-legal"}};
+window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-scanner", "/preguntas", "/soporte", "/portafolio", "/flujo-diseno"], "mapaEn": {"/": "/en/global-design", "/diseno-remoto": "/en/global-design", "/diseno-cad": "/en/global-design", "/calculadora-diseno": "/en/global-design", "/alineadores-cad": "/en/dental-aligners", "/envia-alineadores": "/en/dental-aligners", "/guias-quirurgicas": "/en/surgical-guides", "/fresado-cam": "/en/zirconia-crowns", "/calculadora-fresado": "/en/zirconia-crowns", "/terminos-y-legal": "/en/veneer-terms"}, "esDe": {"/en/global-design": "/diseno-remoto", "/en/dental-aligners": "/alineadores-cad", "/en/surgical-guides": "/guias-quirurgicas", "/en/zirconia-crowns": "/fresado-cam", "/en/veneers": "/", "/en/veneer-terms": "/terminos-y-legal"}};
 /* ── IDIOMA: ES · EN · PT (oct-2026, igual en ambas webs; solo cambia _IDIOMA_CFG) ─────────────────────────
    · ES: el sitio está escrito en español.
    · EN: traducción TÉCNICA hecha a mano (odontología digital / CAD-CAM) de las páginas de /i18n/en.json → se
@@ -131,6 +131,7 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
   // EN en la misma página: diccionario técnico; sigue traduciendo lo que aparezca después (filtros, IA, paginador)
   function traducirEN() {
     fetch('/i18n/en.json').then(function (r) { return r.json(); }).then(function (D) {
+      var PAT = (D.patrones || []).map(function (p) { return [new RegExp(p[0]), p[1]]; });   // textos que cambian (precio, fecha, paso)
       var T = D.textos || {}, OMITIR = '[translate=no],.notranslate,script,style,textarea,#pg-msgs,.pg-chat-msgs,.oia-cuerpo,.oia-q,#casesGrid h3,#casesGrid .card-body p';
       var traducir = function (raiz) {
         if (!raiz || raiz.nodeType !== 1 || raiz.closest(OMITIR)) return;
@@ -139,6 +140,7 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
           if (!n.parentElement || n.parentElement.closest(OMITIR)) continue;
           k = n.nodeValue.replace(/\s+/g, ' ').trim();
           if (k && T[k]) { m = n.nodeValue.match(/^(\s*)[\s\S]*?(\s*)$/); n.nodeValue = m[1] + T[k] + m[2]; }
+          else if (k) for (var pi = 0; pi < PAT.length; pi++) if (PAT[pi][0].test(k)) { m = n.nodeValue.match(/^(\s*)[\s\S]*?(\s*)$/); n.nodeValue = m[1] + k.replace(PAT[pi][0], PAT[pi][1]) + m[2]; break; }
         }
         [raiz].concat([].slice.call(raiz.querySelectorAll('[placeholder],[aria-label],[title]'))).forEach(function (e) {
           ['placeholder', 'aria-label', 'title'].forEach(function (a) { var v = e.getAttribute && e.getAttribute(a); if (v && T[v.trim()]) e.setAttribute(a, T[v.trim()]); });
@@ -175,10 +177,31 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
     location.reload();
   };
 
+  // EN elegido en una página que solo existe en español: aviso discreto con enlace a su versión en inglés
+  function avisoSoloEs() {
+    var clave = 'prd_aviso_es' + ruta();
+    try { if (sessionStorage.getItem(clave)) return; } catch (e) {}
+    var a = document.createElement('div');
+    a.id = 'idioma-aviso'; a.setAttribute('role', 'status'); a.setAttribute('translate', 'no');
+    a.innerHTML = '<span>This page is only available in Spanish.</span> <a href="' + (C.mapaEn[ruta()] || C.hubEn) + '">English version →</a>' +
+      '<button type="button" aria-label="Close">×</button>';
+    var st = document.createElement('style');
+    st.textContent = '#idioma-aviso{position:fixed;top:calc(var(--alto-menu,130px) + 10px);left:50%;transform:translateX(-50%);z-index:998;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;max-width:calc(100% - 32px);background:#0d1520;border:1px solid rgba(0,210,255,.35);color:#e2e8f0;font:600 13px/1.4 Inter,system-ui,sans-serif;padding:8px 10px 8px 16px;border-radius:999px;box-shadow:0 8px 30px rgba(0,0,0,.45)}' +
+      '#idioma-aviso a{color:#00d2ff;text-decoration:none}#idioma-aviso a:hover{text-decoration:underline}' +
+      '#idioma-aviso button{background:rgba(255,255,255,.08);border:0;color:#cbd5e1;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:15px;line-height:1}' +
+      '@media(max-width:520px){#idioma-aviso{border-radius:14px;top:auto;bottom:86px}}';
+    document.head.appendChild(st);
+    a.querySelector('button').addEventListener('click', function () { a.remove(); try { sessionStorage.setItem(clave, '1'); } catch (e) {} });
+    var hd = document.getElementById('pheader-v2');   // justo debajo del menú (su alto cambia por página)
+    if (hd && window.innerWidth > 520) a.style.top = Math.round(hd.getBoundingClientRect().bottom + 10) + 'px';
+    document.body.appendChild(a);
+  }
+
   function alCargar() {
     marcarBotones();
     if (!enIngles && guardado() === 'pt') activarPT();
     else if (!enIngles && window._phdrIdiomaPagina() === 'en') traducirEN();
+    else if (!enIngles && guardado() === 'en' && ruta().indexOf('/app/') !== 0) avisoSoloEs();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', alCargar); else alCargar();
 })();

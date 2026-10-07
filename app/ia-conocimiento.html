@@ -39,6 +39,7 @@ body::before{content:"";position:fixed;left:0;right:0;top:0;height:3px;backgroun
 .it{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
 .it.off{opacity:.55}
 .it .q{font-weight:700}
+.veces{display:inline-block;margin-left:6px;font-size:.72rem;font-weight:800;color:#04121a;background:#00d2ff;border-radius:999px;padding:1px 8px;vertical-align:2px}
 .it .a{color:var(--mu);font-size:.9rem;margin-top:6px;white-space:pre-wrap;max-height:7.5em;overflow:hidden}
 .it .m{font-size:.76rem;color:var(--mu2);margin-top:8px;display:flex;gap:10px;flex-wrap:wrap}
 .it .acc{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
@@ -79,6 +80,7 @@ body::before{content:"";position:fixed;left:0;right:0;top:0;height:3px;backgroun
         <span class="seg" id="fPreg" role="group" aria-label="Filtrar preguntas">
           <button type="button" data-v="pend" aria-pressed="true">Sin revisar</button>
           <button type="button" data-v="todas" aria-pressed="false">Todas</button>
+          <button type="button" data-v="top" aria-pressed="false">Más repetidas</button>
         </span>
       </h2>
       <div class="lista" id="lPreg" aria-live="polite"></div>
@@ -115,7 +117,41 @@ body::before{content:"";position:fixed;left:0;right:0;top:0;height:3px;backgroun
   $('volver').href = VOLVER;
   $('fNegocio').innerHTML = '<option value="' + NEGOCIO + '">Solo ' + esc(NOMBRE) + '</option><option value="ambos">Ambas webs (PRODIGY y Alejandro)</option>';
 
+  /* «Más repetidas»: agrupa preguntas parecidas de los últimos 30 días (palabras en común ≥ 50 %). Lo más preguntado
+     es lo primero que conviene convertir en respuesta oficial. */
+  var STOP = ' para como cual cuanto cuesta cuestan tiene tienen hacer puedo pueden donde este esta esto estos estas sobre entre desde hasta tambien pero porque quiero necesito ustedes usted precio favor hola buenas ';
+  function palabras(t){ return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(/[^a-z0-9ñ]+/).filter(function(w){ return w.length > 3 && STOP.indexOf(' ' + w + ' ') < 0; }); }
+  var GR = [];
+  function agrupar(){
+    var hace30 = Date.now() - 30 * 864e5, G = [];
+    PREG.filter(function(p){ return Date.parse(p.created_at) > hace30; }).forEach(function(p){
+      var set = {}; palabras(p.pregunta).forEach(function(x){ set[x] = 1; });
+      var ks = Object.keys(set); if (!ks.length) return;
+      var mejor = null, mj = 0;
+      G.forEach(function(g){
+        var inter = 0, union = Object.keys(g.set).length;
+        ks.forEach(function(x){ if (g.set[x]) inter++; else union++; });
+        if (inter / union > mj) { mj = inter / union; mejor = g; }
+      });
+      if (mejor && mj >= 0.5) { mejor.items.push(p); ks.forEach(function(x){ mejor.cuenta[x] = (mejor.cuenta[x] || 0) + 1; }); }
+      else { var c = {}; ks.forEach(function(x){ c[x] = 1; }); G.push({ set: set, items: [p], cuenta: c }); }
+    });
+    G.forEach(function(g){ g.claves = Object.keys(g.cuenta).sort(function(a, b){ return g.cuenta[b] - g.cuenta[a]; }).slice(0, 5).join(', '); });
+    return G.sort(function(a, b){ return b.items.length - a.items.length; }).slice(0, 40);
+  }
+  function pintarGrupos(){
+    GR = agrupar();
+    $('lPreg').innerHTML = GR.length ? GR.map(function(g, i){
+      var rep = g.items[0], pend = g.items.filter(function(p){ return !p.revisada; }).length;
+      return '<div class="it" data-g="' + i + '"><div class="q">' + esc(rep.pregunta) + ' <span class="veces">× ' + g.items.length + '</span></div>' +
+        (g.items.length > 1 ? '<div class="a">También preguntaron: ' + g.items.slice(1, 3).map(function(p){ return '«' + esc(p.pregunta) + '»'; }).join(' · ') + '</div>' : '') +
+        '<div class="m"><span>🔑 ' + esc(g.claves) + '</span><span>' + pend + ' sin revisar</span></div>' +
+        '<div class="acc"><button type="button" class="b pri" data-a="g-oficial">Crear respuesta oficial</button>' +
+        (pend ? '<button type="button" class="b" data-a="g-revisar">Marcar ' + pend + ' revisada' + (pend > 1 ? 's' : '') + '</button>' : '') + '</div></div>';
+    }).join('') : '<div class="vacio">Aún no hay preguntas en los últimos 30 días.</div>';
+  }
   function pintarPreg(){
+    if (F === 'top') return pintarGrupos();
     var L = PREG.filter(function(p){ return F === 'todas' || !p.revisada; });
     $('lPreg').innerHTML = L.length ? L.map(function(p){
       return '<div class="it" data-id="' + p.id + '"><div class="q">' + esc(p.pregunta) + '</div>' +
@@ -177,7 +213,17 @@ body::before{content:"";position:fixed;left:0;right:0;top:0;height:3px;backgroun
   });
   $('lPreg').addEventListener('click', function(e){
     var b = e.target.closest('button[data-a]'); if (!b) return;
-    var id = b.closest('.it').getAttribute('data-id'), p = PREG.find(function(x){ return String(x.id) === id; }); if (!p) return;
+    var it = b.closest('.it');
+    if (it.hasAttribute('data-g')) {                         // grupo de «Más repetidas»
+      var g = GR[+it.getAttribute('data-g')]; if (!g) return;
+      if (b.getAttribute('data-a') === 'g-oficial') abrirForm({ pregunta: g.items[0].pregunta, respuesta: g.items[0].respuesta || '', palabras_clave: g.claves, origen: g.items[0].id });
+      if (b.getAttribute('data-a') === 'g-revisar') {
+        var ids = g.items.filter(function(x){ return !x.revisada; }).map(function(x){ return x.id; });
+        sb.from('ia_preguntas').update({ revisada:true }).in('id', ids).then(function(r){ if (r.error) toast(r.error.message); else { g.items.forEach(function(x){ x.revisada = true; }); pintarPreg(); stats(); toast(ids.length + ' marcada' + (ids.length > 1 ? 's' : '') + ' como revisada' + (ids.length > 1 ? 's' : '')); } });
+      }
+      return;
+    }
+    var id = it.getAttribute('data-id'), p = PREG.find(function(x){ return String(x.id) === id; }); if (!p) return;
     var a = b.getAttribute('data-a');
     if (a === 'oficial') abrirForm({ pregunta: p.pregunta, respuesta: p.respuesta || '', origen: p.id });
     if (a === 'revisar') sb.from('ia_preguntas').update({ revisada:true }).eq('id', id).then(function(r){ if (r.error) toast(r.error.message); else { p.revisada = true; pintarPreg(); stats(); } });

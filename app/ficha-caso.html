@@ -187,6 +187,7 @@ async function verFicha(id) {
       <div class="f"><span class="k">Paciente</span><span class="v">${esc(p.nombre_paciente||'—')}</span></div>
       <div class="f"><span class="k">Trabajo</span><span class="v">${esc(p.tipo_trabajo||p.material||'—')}</span></div>
       <div class="f"><span class="k">Cantidad</span><span class="v">${esc(p.cantidad||'—')}</span></div>
+      ${Array.isArray(p.piezas) && p.piezas.length ? `<div class="f"><span class="k">Piezas (FDI)</span><span class="v">${esc(p.piezas.join(', '))}</span></div>` : ''}
       <div class="f"><span class="k">Creado</span><span class="v">${fech(p.created_at)}</span></div>
       <div class="f"><span class="k">Flujo</span><span class="v">${esc(p.flujo||'—')}</span></div>
     </div>

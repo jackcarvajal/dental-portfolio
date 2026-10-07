@@ -427,8 +427,8 @@ window.submitOrden     = window.submitOrden      || function(){};
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 
     <script>window._headerConfig = { noCta: true };</script>
-    <link rel="preload" href="js/header.js?v=20261008" as="script">
-<script src="js/header.js?v=20261008"></script>
+    <link rel="preload" href="js/header.js?v=20261008b" as="script">
+<script src="js/header.js?v=20261008b"></script>
 <main id="main-content">
 <div style="background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.15);border-radius:10px;padding:10px 16px;margin:16px 0;display:flex;align-items:center;gap:10px;font-size:.78rem;">
   <i class="fas fa-circle-question" style="color:#00d2ff;" aria-hidden="true"></i>
@@ -547,14 +547,14 @@ window.submitOrden     = window.submitOrden      || function(){};
                                 <label for="especialidad">Especialidad *</label>
                                 <select id="especialidad">
                                     <option value="">Seleccionar...</option>
-                                    <option>Odontología General</option>
-                                    <option>Prostodoncia</option>
-                                    <option>Implantología</option>
-                                    <option>Ortodoncia</option>
-                                    <option>Cirugía Maxilofacial</option>
-                                    <option>Técnico de Laboratorio</option>
-                                    <option>Estudiante</option>
-                                    <option>Otra</option>
+                                    <option value="Odontología General">Odontología General</option>
+                                    <option value="Prostodoncia">Prostodoncia</option>
+                                    <option value="Implantología">Implantología</option>
+                                    <option value="Ortodoncia">Ortodoncia</option>
+                                    <option value="Cirugía Maxilofacial">Cirugía Maxilofacial</option>
+                                    <option value="Técnico de Laboratorio">Técnico de Laboratorio</option>
+                                    <option value="Estudiante">Estudiante</option>
+                                    <option value="Otra">Otra</option>
                                 </select>
                                 <span class="tooltip-error" id="error-especialidad" style="display:none"></span>
                             </div>
@@ -562,11 +562,11 @@ window.submitOrden     = window.submitOrden      || function(){};
                                 <label for="origen">¿Cómo nos conociste?</label>
                                 <select id="origen">
                                     <option value="">Seleccionar...</option>
-                                    <option>Recomendación</option>
-                                    <option>Redes Sociales</option>
-                                    <option>Google</option>
-                                    <option>Congreso / Evento</option>
-                                    <option>Otro</option>
+                                    <option value="Recomendación">Recomendación</option>
+                                    <option value="Redes Sociales">Redes Sociales</option>
+                                    <option value="Google">Google</option>
+                                    <option value="Congreso / Evento">Congreso / Evento</option>
+                                    <option value="Otro">Otro</option>
                                 </select>
                             </div>
                         </div>
@@ -623,6 +623,9 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <div class="subtipo-grid" id="subtipo-grid"></div>
                         </div>
                         <div id="protocolo-servicio-pg"></div>
+
+                        <!-- PIEZAS: odontograma FDI · Universal · Palmer (js/dientes.js) -->
+                        <div id="dientes-flujo" style="margin-top:20px;"></div>
 
                         <!-- EXPRESS -->
                         <div style="margin-top:20px;padding:15px;background:var(--bg-dark);border:1px solid rgba(239,68,68,.2);border-radius:var(--radius-md);">
@@ -940,10 +943,10 @@ window.submitOrden     = window.submitOrden      || function(){};
                         <label for="pago_metodo" style="font-size:.7rem;color:var(--text-secondary);display:block;margin-bottom:4px;">Método de pago</label>
                         <select id="pago_metodo" style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:16px;">
                             <option value="">¿Por dónde pagaste?</option>
-                            <option>Nequi</option><option>Daviplata</option>
-                            <option>Nu</option><option>Breb</option>
-                            <option>PSE / Tarjeta</option>
-                            <option>PayPal</option><option>Otro</option>
+                            <option value="Nequi">Nequi</option><option value="Daviplata">Daviplata</option>
+                            <option value="Nu">Nu</option><option value="Breb">Breb</option>
+                            <option value="PSE / Tarjeta">PSE / Tarjeta</option>
+                            <option value="PayPal">PayPal</option><option value="Otro">Otro</option>
                         </select>
                         <input type="text" id="pago_titular" placeholder="Nombre del titular" maxlength="50" autocomplete="name"
                                style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:16px;" aria-label="Nombre del titular">
@@ -2016,6 +2019,7 @@ const lineWompi = document.getElementById('line-wompi');
                 <p><strong>Paciente:</strong> ${STATE.nombrePaciente}</p>
                 <p><strong>Diseño:</strong> ${STATE.subtipoNombre}</p>
                 <p><strong>Cantidad:</strong> ${cantidad} unidades</p>
+                ${window._piezasTexto && _piezasTexto() ? '<p><strong>Piezas:</strong> ' + _piezasTexto() + '</p>' : ''}
                 <p><strong>Entrega:</strong> ${slotLabel}</p>
                 ${STATE.express ? '<p><strong>Express 24h:</strong> ⚡ SÍ</p>' : ''}
                 <p><strong>Total:</strong> ${total}</p>
@@ -2070,6 +2074,7 @@ const lineWompi = document.getElementById('line-wompi');
             msg += `🖥️ ${_esIntl ? '*Category:*' : '*Categoría:*'} ${STATE.categoriaNombre}\n`;
             msg += `📐 ${_esIntl ? '*Design:*' : '*Diseño:*'} ${STATE.subtipoNombre}\n`;
             msg += `🔢 ${_esIntl ? '*Qty:*' : '*Cantidad:*'} ${cantidad} ${_esIntl ? 'units' : 'unidades'}\n`;
+            if (window._piezasTexto && _piezasTexto()) msg += `🦷 ${_esIntl ? '*Teeth:*' : '*Piezas:*'} ${_piezasTexto()}\n`;
             msg += `⏱️ ${_esIntl ? '*Delivery:*' : '*Entrega:*'} ${slotNombre}\n`;
             if (STATE.express) msg += `⚡ *Express 24h:* ${_esIntl ? 'YES' : 'SÍ'} (+$20.000)\n`;
             msg += `\n💰 ${_esIntl ? '*PAYMENT CONFIRMATION*' : '*CONFIRMACIÓN DE PAGO*'}\n`;
@@ -2137,6 +2142,7 @@ const lineWompi = document.getElementById('line-wompi');
                         material:              STATE.categoriaKey,
                         submaterial:           STATE.subtipoId,
                         cantidad:              cantidad,
+                        ...(window._piezasFDI && _piezasFDI() ? { piezas: _piezasFDI() } : {}),   // FDI (text[])
                         // Aplica el descuento del cupón de crédito (ya validado server-side
                         // vía RPC prodigy_usar_cupon_credito) — antes el total guardado en BD
                         // no reflejaba el cupón, solo aparecía en el texto de WhatsApp, y
@@ -2540,6 +2546,28 @@ const lineWompi = document.getElementById('line-wompi');
     <script src="js/stl-multi-viewer.js?v=20261002"></script>
     <script>ProdigyMultiViewer.init('pmv-diseno');</script>
     <script src="js/flujo-uploader.js?v=20260924"></script>
+    <script src="js/dientes.js?v=20261008b"></script>
+    <script>
+    /* Piezas del caso (js/dientes.js, oct-2026): el doctor las marca en SU nomenclatura (FDI · Universal · Palmer) y el
+       pedido, el WhatsApp y el laboratorio las reciben en FDI (pedidos.piezas). En servicios que se cobran por pieza
+       sugiere ajustar «Unidades»; no toca precios (solo dispara el change del campo, que recalcula la página). */
+    (function () {
+      function montar() {
+        var el = document.getElementById('dientes-flujo');
+        if (!el || !window.Dientes || window._dientesFlujo) return;
+        window._dientesFlujo = Dientes.montar(el, { cantidad: '#cantidad', porPieza: function () {
+          return typeof STATE !== 'undefined' && (STATE.categoriaKey === 'cad_fija' || STATE.subtipoId === 'corona_ator' || STATE.subtipoId === 'pilar_pers');
+        } });
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', montar); else montar();
+      function resumen() { var r = window._dientesFlujo ? window._dientesFlujo.resumen() : null; return r && r.fdi.length ? r : null; }
+      window._piezasFDI = function () { var r = resumen(); return r ? r.fdi : null; };
+      window._piezasTexto = function () {
+        var r = resumen(); if (!r) return '';
+        return r.sistema === 'fdi' ? r.textoFDI + ' (FDI)' : r.texto + ' (' + r.nombreSistema + ') = FDI ' + r.textoFDI;
+      };
+    })();
+    </script>
 <div id="fd-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:13px 22px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;opacity:0;transition:all .35s;pointer-events:none;max-width:400px;text-align:left;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);backdrop-filter:blur(8px);"></div>
 <script>
 let _fdToastT;

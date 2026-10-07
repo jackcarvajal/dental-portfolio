@@ -92,7 +92,7 @@ let sb;
 
 async function fetchCaso(codigo){
   if(!codigo) return null;
-  const { data } = await sb.from('pedidos').select('codigo,nombre_paciente,tipo_trabajo,material,color_vita,cantidad,created_at,fecha_entrega,hash_seguridad,notas_cambios,user_id').eq('negocio','prodigy').eq('codigo',codigo).maybeSingle();
+  const { data } = await sb.from('pedidos').select('codigo,nombre_paciente,tipo_trabajo,material,color_vita,cantidad,piezas,created_at,fecha_entrega,hash_seguridad,notas_cambios,user_id').eq('negocio','prodigy').eq('codigo',codigo).maybeSingle();
   if(!data) return null;
   data.dr_code = '—';
   if(data.user_id){
@@ -125,6 +125,7 @@ function renderOrden(c){
       <div class="fld"><div class="k">Material</div><div class="v">${escH(c.material||'')}</div></div>
       <div class="fld"><div class="k">Color/VITA</div><div class="v">${escH(c.color_vita||'')}</div></div>
       <div class="fld"><div class="k">Cantidad</div><div class="v">${escH(c.cantidad||'')}</div></div>
+      ${Array.isArray(c.piezas) && c.piezas.length ? `<div class="fld"><div class="k">Piezas (FDI)</div><div class="v">${escH(c.piezas.join(', '))}</div></div>` : ''}
     </div>
     ${cuerpo(c)}
   </div>`;

@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-01c",
+  "version": "2026-10-08",
   "categorias": [
     {
       "id": "inicio",
@@ -634,6 +634,34 @@
         "Los que dicen **Falta el número** no tienen WhatsApp en el pedido: búscalo y corrígelo en el pedido.",
         "El enlace del mensaje lleva al doctor a ver su caso y, si debe aprobar, a su panel de cliente.",
         "Cuando se conecte la API oficial de WhatsApp, los avisos saldrán solos y aquí aparecerán como «Salió solo»."
+      ]
+    },
+    {
+      "id": "piezas-fdi",
+      "cat": "casos",
+      "titulo": "Piezas del caso: FDI, Universal y Palmer",
+      "resumen": "El doctor marca las piezas en su nomenclatura; el laboratorio siempre las ve en FDI.",
+      "para": "Todo el equipo",
+      "pasos": [
+        "En el flujo de diseño el doctor marca las piezas en un odontograma y elige su nomenclatura: **FDI** (Colombia/Latinoamérica), **Universal** (EE. UU., 1–32) o **Palmer** (Reino Unido, UR1…).",
+        "El pedido se guarda **siempre en FDI** (campo *piezas*). En **Ficha del caso** y en la **Orden de producción** aparece «Piezas (FDI)».",
+        "El WhatsApp del pedido trae las dos: por ejemplo «#8, #9 (Universal) = FDI 11, 21». Trabaja siempre con el número FDI.",
+        "El doctor ve sus piezas en su propia nomenclatura en *Sigue tu caso* y en el recibo, con el FDI al lado.",
+        "Equivalencias rápidas: **Soporte → Conversor de nomenclatura dental** (prodigylabdental.com/soporte)."
+      ]
+    },
+    {
+      "id": "ia-respuestas",
+      "cat": "inicio",
+      "titulo": "IA de la web: revisar preguntas y crear respuestas oficiales",
+      "resumen": "Lo que preguntan los doctores al chat y al buscador, y cómo volverlo respuesta oficial.",
+      "para": "Administración",
+      "pasos": [
+        "Menú del panel → **IA de la web** (app/ia-conocimiento.html). Las preguntas llegan sin datos personales.",
+        "Usa el filtro **Más repetidas**: agrupa las preguntas parecidas de los últimos 30 días y las ordena por cuántas veces se hicieron.",
+        "Toca **Crear respuesta oficial**: se llena la pregunta y las palabras clave; escribe la respuesta correcta y guarda. La IA la usa en máximo 5 minutos.",
+        "**Marcar revisadas** limpia el grupo de la lista de pendientes.",
+        "Cada lunes llega un resumen (campana del panel y WhatsApp del laboratorio) con cuántas preguntas hubo y las más repetidas."
       ]
     }
   ]

@@ -2,7 +2,8 @@
  * PRODIGY — Alerta de tiempos de entrega (casos que superaron su SLA)
  * GET /api/alerta-sla   (Authorization: Bearer CRON_SECRET  ·  o ?key=CRON_SECRET)
  *
- * La llama .github/workflows/alerta-sla.yml cada 4 horas. Por cada caso vencido (una sola vez):
+ * La llama .github/workflows/alerta-sla.yml cada 4 horas. Los lunes, además, el resumen semanal de la IA de las webs.
+ * Por cada caso vencido (una sola vez):
  *  - aviso en la campana del admin (notificaciones_internas)
  *  - WhatsApp al equipo (STAFF_n de CallMeBot, los mismos de notify-staff; o CALLMEBOT_APIKEY + WA_ADMIN)
  * Env: SUPABASE_SERVICE_ROLE_KEY (o SUPABASE_SERVICE_KEY), CRON_SECRET, STAFF_n_PHONE/STAFF_n_APIKEY.
@@ -64,12 +65,53 @@ export async function onRequestGet({ request, env }) {
   } catch (_) { /* el vigía nunca frena el aviso de SLA */ }
   const resumenVigia = vigia ? { ok: vigia.ok, problemas: vigia.problemas.length } : 'ya corrió hoy';
 
+  // Resumen semanal de la IA de las webs (lunes, una sola vez): preguntas de la semana en PRODIGY y Alejandro (tabla
+  // compartida ia_preguntas, ya anónimas) → campana del admin + WhatsApp al número del laboratorio (STAFF_1).
+  // Lo más preguntado es lo primero que conviene volver «respuesta oficial» en /app/ia-conocimiento.
+  let iaResumen = 'no toca';
+  try {
+    const ahoraCo = new Date(Date.now() - 5 * 3600000);
+    if (ahoraCo.getUTCDay() === 1) {
+      const marcaIA = new Request('https://rl.internal/ia-resumen_' + ahoraCo.toISOString().slice(0, 10));
+      if (!(await caches.default.match(marcaIA))) {
+        const desde = new Date(Date.now() - 7 * 864e5).toISOString();
+        const rq = await fetch(`${SURL}/rest/v1/ia_preguntas?select=negocio,pregunta,revisada&created_at=gte.${desde}&limit=2000`, { headers: h });
+        const filas = rq.ok ? await rq.json() : [];
+        iaResumen = Array.isArray(filas) ? filas.length : 0;
+        if (Array.isArray(filas) && filas.length) {
+          const por = { prodigy: { n: 0, pend: 0 }, alejandrocadcam: { n: 0, pend: 0 } }, veces = {};
+          filas.forEach(f => {
+            const b = por[f.negocio]; if (b) { b.n++; if (!f.revisada) b.pend++; }
+            const k = String(f.pregunta || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9ñ ]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+            if (k) veces[k] = (veces[k] || 0) + 1;
+          });
+          const top = Object.entries(veces).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, n]) => `«${k}»${n > 1 ? ' ×' + n : ''}`).join(' · ');
+          const pend = por.prodigy.pend + por.alejandrocadcam.pend;
+          const linea = `PRODIGY ${por.prodigy.n} (${por.prodigy.pend} sin revisar) · Alejandro ${por.alejandrocadcam.n} (${por.alejandrocadcam.pend} sin revisar)`;
+          await fetch(`${SURL}/rest/v1/notificaciones_internas`, {
+            method: 'POST', headers: { ...h, Prefer: 'return=minimal' },
+            body: JSON.stringify({ tipo: 'ia', prioridad: pend ? 'media' : 'baja', destinatario_rol: 'admin',
+              titulo: `🤖 IA de las webs: ${filas.length} pregunta${filas.length > 1 ? 's' : ''} esta semana`,
+              mensaje: linea + (top ? ' · Lo más preguntado: ' + top : ''), accion_url: '/app/ia-conocimiento.html', leida_por: [] }),
+          }).catch(() => {});
+          const ph = env.STAFF_1_PHONE, k = env.STAFF_1_APIKEY;
+          if (pend && ph && k) {
+            const msg = `🤖 *IA de las webs — resumen semanal*\n\n${linea}\n${top ? '\nLo más preguntado: ' + top + '\n' : ''}\nRevísalas y vuelve las repetidas «respuesta oficial»:\nprodigylabdental.com/app/ia-conocimiento.html\nalejandrocadcam.com/app/ia-conocimiento.html`;
+            await fetch(`https://api.callmebot.com/whatsapp.php?phone=${String(ph).replace(/\D/g, '')}&text=${encodeURIComponent(msg)}&apikey=${k}`).catch(() => {});
+          }
+        }
+        await caches.default.put(marcaIA, new Response('1', { headers: { 'Cache-Control': 'max-age=172800' } }));
+      }
+    }
+  } catch (_) { /* el resumen nunca frena el aviso de SLA */ }
+
+
   try {
     const r = await fetch(`${SURL}/rest/v1/rpc/prodigy_pedidos_sla_vencido`, { method: 'POST', headers: h, body: '{}' });
     const pedidos = await r.json();
     if (!r.ok) return new Response(JSON.stringify({ error: 'La consulta de vencidos falló', detalle: pedidos }), { status: 502 });
     if (!Array.isArray(pedidos) || pedidos.length === 0) {
-      return new Response(JSON.stringify({ ok: true, alertas: 0, atrasados, vigia: resumenVigia }), { status: 200 });
+      return new Response(JSON.stringify({ ok: true, alertas: 0, atrasados, vigia: resumenVigia, ia: iaResumen }), { status: 200 });
     }
 
     // 1) Campana del admin: un aviso por caso
@@ -106,7 +148,7 @@ export async function onRequestGet({ request, env }) {
       fetch(`${SURL}/rest/v1/rpc/prodigy_marcar_sla_alerta`, { method: 'POST', headers: h, body: JSON.stringify({ p_id: p.id }) })
     ));
 
-    return new Response(JSON.stringify({ ok: true, alertas: pedidos.length, atrasados, vigia: resumenVigia }), { status: 200 });
+    return new Response(JSON.stringify({ ok: true, alertas: pedidos.length, atrasados, vigia: resumenVigia, ia: iaResumen }), { status: 200 });
   } catch (err) {
     console.error('[alerta-sla]', err);
     return new Response(JSON.stringify({ error: 'Error interno del servidor' }), { status: 500 });

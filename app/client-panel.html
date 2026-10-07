@@ -686,6 +686,10 @@
           <input type="text" id="pd-dientes" placeholder='Ej: "11, 21, 22"'>
         </div>
       </div>
+      <details class="pd-odonto" id="pd-odonto">
+        <summary>🦷 Marcar en el odontograma (FDI · Universal · Palmer)</summary>
+        <div id="pd-dientes-chart"></div>
+      </details>
       <div class="pd-row full">
         <div class="pd-fg">
           <label for="pd-link">Link archivos STL (Drive / WeTransfer)</label>
@@ -1613,7 +1617,7 @@ async function cargarPedidosDoc_cliente(uid) {
 
         return `<div class="pd-online-item" style="flex-wrap:wrap;">
             <div class="pd-online-svc" style="flex:1;min-width:200px">
-                ${escH(svc)}${p.dientes?' · piezas '+escH(p.dientes):''}
+                ${escH(svc)}${p.dientes?' · piezas '+escH(window.Dientes ? (Dientes.mostrar(p.dientes) || p.dientes) : p.dientes):''}
                 <small>${escH(mat)} · ${p.unidades} ud${p.unidades>1?'s':''}${p.urgente?' · ⚡ Urgente':''}${p.incluye_dsd?' · 🎨 DSD':''}</small>
                 <small style="color:#94a3b8">${fecha}</small>
             </div>
@@ -2196,6 +2200,14 @@ function _generarSugerencia(pedidos) {
 }
 </script>
 
+<script src="../js/dientes.js?v=20261008b"></script>
+<script>
+/* Odontograma del pedido online: el doctor marca en su nomenclatura y el campo «Pieza(s)» queda en FDI (laboratorio). */
+(function(){ var d=document.getElementById('pd-odonto'), ok=false;
+  if(d) d.addEventListener('toggle', function(){ if(d.open && !ok && window.Dientes){ Dientes.montar(document.getElementById('pd-dientes-chart'), { input: '#pd-dientes', cantidad: '#pd-uds' }); ok=true; } });
+})();
+</script>
+<style>.pd-odonto{margin:4px 0 12px}.pd-odonto>summary{cursor:pointer;font-size:.78rem;color:#00d2ff;font-weight:700;padding:6px 0}.pd-odonto .dt{margin-top:8px}</style>
 <script src="../js/notif-panel.js?v=20260924"></script>
 <script>
 // Notificaciones para cliente — modo cliente = true
