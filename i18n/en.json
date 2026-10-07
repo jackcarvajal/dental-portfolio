@@ -1080,7 +1080,13 @@
 "Proceso de fabricación": "Manufacturing process",
 "Selecciona un diente.": "Select a tooth.",
 "Elige primero la indicación del diente.": "Choose the tooth's indication first.",
-"Esta indicación no lleva material.": "This indication has no material."
+"Esta indicación no lleva material.": "This indication has no material.",
+"Datos de exocad": "exocad parameters",
+"Grosor mínimo": "Minimum thickness",
+"oclusal": "occlusal",
+"Espacio para cemento": "Cement gap",
+"Conector mínimo": "Minimum connector",
+"Fresa": "Milling tool"
 },
 "patrones": [
 [

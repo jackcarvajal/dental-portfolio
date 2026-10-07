@@ -180,7 +180,13 @@
   "Proceso de fabricación": "Processo de fabricação",
   "Selecciona un diente.": "Selecione um dente.",
   "Elige primero la indicación del diente.": "Escolha primeiro a indicação do dente.",
-  "Esta indicación no lleva material.": "Esta indicação não leva material."
+  "Esta indicación no lleva material.": "Esta indicação não leva material.",
+  "Datos de exocad": "Parâmetros do exocad",
+  "Grosor mínimo": "Espessura mínima",
+  "oclusal": "oclusal",
+  "Espacio para cemento": "Espaço para cimento",
+  "Conector mínimo": "Conector mínimo",
+  "Fresa": "Fresa"
  },
  "patrones": [
   [

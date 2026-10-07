@@ -604,6 +604,15 @@ tbody td{padding:11px 14px;vertical-align:middle;}
     </div>
 </main>
 
+<!-- Ventana: comprobante del saldo contra entrega leído con IA -->
+<dialog id="dlg-saldo-ia" aria-labelledby="dlg-saldo-ia-t" style="width:min(460px,calc(100% - 24px));padding:16px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:#0d1520;color:#e2e8f0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;">
+        <b id="dlg-saldo-ia-t" style="font-size:.9rem;">Saldo</b>
+        <button type="button" onclick="document.getElementById('dlg-saldo-ia').close()" aria-label="Cerrar" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#e2e8f0;width:32px;height:32px;border-radius:8px;cursor:pointer;">✕</button>
+    </div>
+    <div id="dlg-saldo-ia-c"></div>
+</dialog>
+
 <!-- Modal: Ver comprobante + confirmar -->
 <div id="modal-comp" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-comp-title">
   <div class="modal-box">
@@ -847,6 +856,15 @@ async function cargarPorConfirmar() {
 }
 
 /* ── Saldos contra entrega ─────────────────────────────────────────── */
+let _saldosIA = {};
+/* Comprobante del saldo contra entrega leído con IA (compara con el saldo pendiente del caso) */
+function leerSaldoIA(id) {
+    const p = _saldosIA[id]; if (!p) return;
+    const dlg = document.getElementById('dlg-saldo-ia');
+    document.getElementById('dlg-saldo-ia-t').textContent = `Saldo del caso #${p.codigo || String(p.id).slice(0, 8)} · ${p.nombre_cliente || p.nombre_doctor || ''}`;
+    if (!dlg.open) dlg.showModal();
+    leerComprobanteIA(p.comprobante_saldo_url, [['el saldo pendiente', Number(p.saldo_pendiente_monto) || 0]], 'dlg-saldo-ia-c', null);
+}
 async function cargarSaldos() {
     const { data } = await sb.from('pedidos')
         .select('id,codigo,nombre_cliente,nombre_doctor,tipo_trabajo,saldo_pendiente_monto,estado_operativo,nota_calidad,comprobante_saldo_url,pago_estado').eq('negocio', 'prodigy')
@@ -854,6 +872,7 @@ async function cargarSaldos() {
         .order('created_at', { ascending: false });
 
     const rows = data || [];
+    _saldosIA = Object.fromEntries(rows.map(p => [p.id, p]));
     const pendientes = rows.filter(p => !['ENTREGADO'].includes(p.estado_operativo));
     document.getElementById('badge-sald').textContent   = pendientes.length;
     document.getElementById('kpi-saldos-pend').textContent = rows.reduce((s, p) => s + (Number(p.saldo_pendiente_monto) || 0), 0)
@@ -879,6 +898,7 @@ async function cargarSaldos() {
             <td style="font-size:.76rem;color:var(--muted);max-width:180px;">${escH(p.nota_calidad || '—')}</td>
             <td>${p.comprobante_saldo_url && /^https?:\/\//.test(p.comprobante_saldo_url)
                 ? `<a href="${escH(p.comprobante_saldo_url)}" target="_blank" rel="noopener noreferrer" class="btn-xs btn-ver"><i class="fas fa-receipt"></i> Ver</a>`
+                  + (/^https:\/\/[a-z0-9.-]+\.supabase\.co\//i.test(p.comprobante_saldo_url) ? ` <button type="button" class="btn-xs btn-ver" onclick="leerSaldoIA('${escH(p.id)}')" title="Leer el comprobante con IA"><i class="fas fa-robot"></i> IA</button>` : '')
                 : '<span style="font-size:.72rem;color:var(--muted);">Sin comprobante</span>'
             }</td>
         </tr>`;
@@ -994,35 +1014,38 @@ async function abrirModalComp(pedidoId) {
         ? `<button type="button" class="btn-outline" id="btn-leer-ia" style="width:100%;"><i class="fas fa-robot" style="margin-right:6px;"></i>Leer comprobante con IA</button>`
         : '';
     const btnIa = document.getElementById('btn-leer-ia');
-    if (btnIa) btnIa.onclick = () => leerComprobanteIA(iaUrl, Number(p.precio_total) || 0);
+    const totalCaso = Number(p.precio_total) || 0;
+    if (btnIa) btnIa.onclick = () => leerComprobanteIA(iaUrl, [['el abono esperado', Math.round(totalCaso / 2)], ['el total del caso', totalCaso]]);
 
     document.getElementById('modal-comp').style.display = 'flex';
 }
 
-/* Lee el comprobante con IA y lo compara con el abono esperado (50%) y el total. La IA solo ayuda: se confirma a mano. */
-async function leerComprobanteIA(url, total) {
-    const caja = document.getElementById('comp-ia');
+/* Lee el comprobante con IA y lo compara con los montos esperados (abono 50% / total, o el saldo contra entrega).
+   La IA solo ayuda: se confirma a mano. esperados = [[etiqueta, monto], …]; notaId = campo donde copiar lo leído (opcional). */
+async function leerComprobanteIA(url, esperados, cajaId = 'comp-ia', notaId = 'comp-nota') {
+    const caja = document.getElementById(cajaId);
     caja.innerHTML = '<div style="font-size:.8rem;color:var(--muted);"><i class="fas fa-spinner fa-spin"></i> Leyendo el comprobante…</div>';
     try {
         const { data: { session } } = await sb.auth.getSession();
         const r = await fetch('/api/leer-comprobante', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token || ''}` }, body: JSON.stringify({ url }) });
         const d = await r.json().catch(() => ({}));
         if (!r.ok || d.error) throw new Error(d.error || ('HTTP ' + r.status));
-        const abono = Math.round(total / 2), monto = Number(d.monto) || 0;
+        const monto = Number(d.monto) || 0;
         const casi = (a, b) => b > 0 && Math.abs(a - b) <= Math.max(1000, b * 0.01);
+        const igual = esperados.find(e => casi(monto, e[1]));
         const veredicto = !monto ? ['var(--yellow)', 'No se leyó un monto: revisa la imagen a mano.']
-            : casi(monto, abono) ? ['var(--green)', `Coincide con el abono esperado (${fmtCOP(abono)}).`]
-            : casi(monto, total) ? ['var(--green)', `Coincide con el total del caso (${fmtCOP(total)}).`]
-            : ['var(--red)', `No coincide: abono esperado ${fmtCOP(abono)} · total ${fmtCOP(total)}.`];
+            : igual ? ['var(--green)', `Coincide con ${igual[0]} (${fmtCOP(igual[1])}).`]
+            : ['var(--red)', 'No coincide: ' + esperados.filter(e => e[1] > 0).map(e => `${e[0]} ${fmtCOP(e[1])}`).join(' · ') + '.'];
         const filas = [['Monto', monto ? fmtCOP(monto) + (d.moneda && d.moneda !== 'COP' ? ' ' + d.moneda : '') : '—'], ['Fecha', [d.fecha, d.hora].filter(Boolean).join(' ') || '—'],
             ['Medio', d.medio || '—'], ['Referencia', d.referencia || '—'], ['Recibió', d.destinatario || '—'], ['Estado', d.estado || '—'], ['Legibilidad', Math.round((d.confianza || 0) * 100) + ' %']];
         const nota = ['Leído con IA', d.medio, d.referencia ? 'Ref ' + d.referencia : '', monto ? fmtCOP(monto) : '', d.fecha].filter(Boolean).join(' · ');
         caja.innerHTML = `<div style="border:1px solid var(--border,rgba(255,255,255,.1));border-radius:10px;padding:10px 12px;font-size:.8rem;">
             <div style="font-weight:800;color:${veredicto[0]};margin-bottom:6px;"><i class="fas fa-robot"></i> ${escH(veredicto[1])}</div>
             ${filas.map(f => `<div style="display:flex;justify-content:space-between;gap:10px;"><span style="color:var(--muted)">${escH(f[0])}</span><b>${escH(f[1])}</b></div>`).join('')}
-            <button type="button" class="btn-outline" id="btn-ia-nota" style="margin-top:8px;width:100%;">Usar en la nota de confirmación</button>
+            ${notaId ? '<button type="button" class="btn-outline btn-ia-nota" style="margin-top:8px;width:100%;">Usar en la nota de confirmación</button>' : ''}
             <div style="font-size:.7rem;color:var(--muted);margin-top:6px;">La IA puede equivocarse: confirma con el extracto del banco antes de aprobar.</div></div>`;
-        document.getElementById('btn-ia-nota').onclick = () => { document.getElementById('comp-nota').value = nota; };
+        const bn = caja.querySelector('.btn-ia-nota');
+        if (bn) bn.onclick = () => { document.getElementById(notaId).value = nota; };
     } catch (e) {
         caja.innerHTML = `<div style="font-size:.8rem;color:var(--red);"><i class="fas fa-triangle-exclamation"></i> ${escH(e.message)}</div>`;
     }

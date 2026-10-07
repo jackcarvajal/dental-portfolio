@@ -134,6 +134,12 @@
     (venían en base64 dentro del XML) → `assets/exocad-materiales/*.webp` (37, 168 KB).
   · **Proceso de fabricación**: fresadora 5 ejes / 3 ejes (variantes _3ax), sinterizado láser, impresión 3D. La orden guarda
     `codigo_exocad` y `proceso` por diente (se ven en la ficha del caso). Nombres EN/PT oficiales de exocad.
+  · **Datos de exocad** bajo el material elegido: grosor mínimo (y oclusal), espacio para cemento, conector mínimo en
+    pónticos y diámetro de fresa, tal como los guarda tu exocad 3.3 para esa indicación y material.
+- ✅ **Lector de comprobantes con IA** (`/api/leer-comprobante`): en el abono (compara con 50% y total) y ahora también en
+  **Saldos contra entrega** (botón «IA» → compara con el saldo pendiente). La IA lee; contabilidad confirma.
+- 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
+  pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
