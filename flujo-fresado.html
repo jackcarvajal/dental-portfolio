@@ -4700,9 +4700,6 @@ if(window.ProdigyAuth){
 
     <!-- Botones Flotantes -->
     <div class="floating-buttons">
-        <button type="button" class="floating-btn translate-btn" onclick="translatePage()" title="Traducir página">
-            <i class="fas fa-language"></i>
-        </button>
         <button type="button" class="floating-btn help-btn" onclick="showHelp()" title="Ayuda">
             <i class="fas fa-question"></i>
         </button>
@@ -4723,38 +4720,6 @@ if(window.ProdigyAuth){
                 document.querySelectorAll('.theme-btn').forEach(b => b.textContent = '☀️');
             }
         });
-
-        // FUNCIÓN TRADUCCIÓN GOOGLE
-        function translatePage() {
-            if (!window.googleTranslateElementInit) {
-                // Cargar script de Google Translate
-                const script = document.createElement('script');
-                script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-                document.head.appendChild(script);
-                
-                window.googleTranslateElementInit = function() {
-                    new google.translate.TranslateElement({
-                        pageLanguage: 'es',
-                        autoDisplay: false
-                    }, 'google_translate_element');
-                };
-                
-                // Crear contenedor oculto
-                const div = document.createElement('div');
-                div.id = 'google_translate_element';
-                div.style.display = 'none';
-                document.body.appendChild(div);
-                
-                setTimeout(() => {
-                    const select = document.querySelector('.goog-te-combo');
-                    if (select) {
-                        select.dispatchEvent(new Event('change'));
-                    }
-                }, 1000);
-            } else {
-                showProdigyAlert('🌐 Google Translate', 'El traductor ya está activo. Usa el <strong>selector de idioma</strong> en la parte superior de la página para cambiar el idioma del contenido.', 'Entendido');
-            }
-        }
 
         // FUNCIÓN AYUDA
         // FUNCIÓN MENÚ HAMBURGUESA

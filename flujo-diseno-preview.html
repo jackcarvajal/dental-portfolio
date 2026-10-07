@@ -2347,23 +2347,6 @@ const lineWompi = document.getElementById('line-wompi');
             if (btn) btn.classList.toggle('visible', window.scrollY > 350);
         });
         // ── GOOGLE TRANSLATE ──────────────────────────────────────────────────
-        let _tlLoaded = false;
-        function toggleTranslate() {
-            const el = document.getElementById('google_translate_element');
-            if (!el) return;
-            if (el.style.display === 'none' || !el.style.display) {
-                el.style.display = 'block';
-                if (!_tlLoaded) {
-                    _tlLoaded = true;
-                    const s = document.createElement('script');
-                    s.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-                    document.head.appendChild(s);
-                }
-            } else { el.style.display = 'none'; }
-        }
-        window.googleTranslateElementInit = function() {
-            new google.translate.TranslateElement({pageLanguage:'es',includedLanguages:'en,pt,fr'}, 'google_translate_element');
-        };
         function toggleTheme() {
             const light = document.body.classList.toggle('light-theme');
             document.querySelectorAll('[id="theme-btn"]').forEach(b => b.textContent = light ? '☀️' : '🌙');

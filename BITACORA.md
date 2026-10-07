@@ -53,6 +53,10 @@
   fila centrada; bloques corridos se centran. Recalcula al cambiar el ancho y cuando se agregan tarjetas. Excluir:
   `data-no-simetria`. Auditoría (scratchpad `audit-simetria.mjs`, 1440/1024/768): Alejandro 85 → 0, PRODIGY → 0.
 - ✅ «¿Qué necesitas?» de diseno-remoto (ambas): cada opción con su color de marca, ícono en cuadro y texto alineado.
+- ✅ **Decisión de precios (8-oct, Alejandro): USD en inglés, nada en español.** PRODIGY: las 4 páginas /en/ vuelven a mostrar
+  sus precios en USD (restauradas de aee2c71). Español sigue sin precios (solo cotizador).
+- ✅ **Botón 🌐 (Google Translate viejo) eliminado** de index y flujo-fresado, y su función muerta en flujo-diseno(-preview):
+  competía con el selector ES/EN/PT del menú y dejaba un recuadro vacío.
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
 - ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):

@@ -2693,19 +2693,12 @@
         <!-- Modo claro/oscuro -->
         <button type="button" class="ux-btn" id="theme-btn" onclick="toggleTheme()" title="Modo claro/oscuro" aria-label="Cambiar tema">🌙</button>
 
-        <!-- Google Translate -->
-        <button type="button" class="ux-btn" id="translate-btn" onclick="toggleTranslate()" title="Traducir página" aria-label="Traducir página">
-            🌐
-        </button>
-
         <!-- WhatsApp Soporte Rápido -->
         <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20necesito%20soporte%20rápido." class="ux-btn" target="_blank" rel="noopener noreferrer" title="Soporte WhatsApp" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.4);">
             <i class="fab fa-whatsapp" style="color:#25D366;"></i>
         </a>
     </div>
 
-    <!-- Google Translate (oculto) -->
-    <div id="google_translate_element" style="position:fixed;bottom:90px;right:80px;z-index:9999;display:none;background:rgba(0,0,0,0.92);border:1px solid rgba(212,175,55,0.3);border-radius:12px;padding:10px 14px;"></div>
 
     <!-- SCRIPTS -->
     <script src="js/main.js?v=20260601" defer></script>
@@ -2923,30 +2916,6 @@
             }
         });
 
-        // =============================================
-        // GOOGLE TRANSLATE TOGGLE
-        // =============================================
-        let translateLoaded = false;
-        function toggleTranslate() {
-            const el = document.getElementById('google_translate_element');
-            if (el.style.display === 'none' || !el.style.display) {
-                el.style.display = 'block';
-                if (!translateLoaded) {
-                    translateLoaded = true;
-                    const s = document.createElement('script');
-                    s.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-                    document.body.appendChild(s);
-                    window.googleTranslateElementInit = function() {
-                        new google.translate.TranslateElement(
-                            { pageLanguage: 'es', layout: google.translate.TranslateElement.InlineLayout.SIMPLE },
-                            'google_translate_element'
-                        );
-                    };
-                }
-            } else {
-                el.style.display = 'none';
-            }
-        }
         function toggleTheme() {
             const light = document.body.classList.toggle('light-mode');
             const btn = document.getElementById('theme-btn');
