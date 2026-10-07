@@ -4592,7 +4592,7 @@ const ARTICLES = [
 /* ─────────────────────────────────────────────────── */
 {
   "id": "impresion-3d-dental-colombia-resinas-biomodelos",
-  "titulo": "Impresión 3D dental en Colombia: tipos de resina, biomodelos y guías quirúrgicas desde $20.000 COP",
+  "titulo": "Impresión 3D dental en Colombia: tipos de resina, biomodelos y guías quirúrgicas",
   "subtitulo": "Todo lo que necesitas saber sobre impresión 3D dental en Colombia: qué resinas usar, cómo encargar biomodelos, qué son las guías quirúrgicas impresas y cuánto cuestan realmente.",
   "categoria": "tecnologia",
   "chip": "Impresión 3D",

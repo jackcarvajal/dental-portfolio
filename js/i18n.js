@@ -326,9 +326,9 @@
       pt: '24–48 h · Revisões inclusas'
     },
     'cad.pr.ey': {
-      es: 'Precios',
-      en: 'Pricing',
-      pt: 'Preços'
+      es: 'Servicios',
+      en: 'Services',
+      pt: 'Serviços'
     },
     'cad.pr.h2': {
       es: 'Claros. <em>Sin sorpresas.</em>',
@@ -336,9 +336,9 @@
       pt: 'Claros. <em>Sem surpresas.</em>'
     },
     'cad.pr.sub': {
-      es: 'En USD. Sin suscripción ni mínimos. Pagas solo por lo que diseñas.',
-      en: 'In USD. No subscription or minimums. Pay only for what you design.',
-      pt: 'Em USD. Sem assinatura ou mínimos. Pague apenas pelo que você projeta.'
+      es: 'Sin suscripción ni mínimos. Pagas solo por lo que diseñas: cotiza tu caso y recibe el precio exacto.',
+      en: 'No subscription or minimums. Pay only for what you design — quote your case and get the exact price.',
+      pt: 'Sem assinatura ou mínimos. Pague apenas pelo que você projeta: orce seu caso e receba o preço exato.'
     },
     'cad.p1.name': {
       es: 'Modelo Diagnóstico',

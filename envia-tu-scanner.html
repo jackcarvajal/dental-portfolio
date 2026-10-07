@@ -40,25 +40,34 @@
 
     <!-- JSON-LD para Google -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Escáner dental a domicilio y en clínica — Bogotá y Colombia",
-      "provider": {
-        "@type": "LocalBusiness",
-        "name": "PRODIGY Digital Dentistry",
-        "url": "https://prodigylabdental.com",
-        "telephone": "+573212816716",
-        "address": { "@type": "PostalAddress", "addressLocality": "Bogotá", "addressCountry": "CO" }
-      },
-      "description": "Servicio de escáner intraoral a domicilio y en clínica en Bogotá. Diseño CAD con Exocad y producción CAM (fresado/impresión 3D). Envío de restauraciones a toda Colombia en 24–48 h. Compatible con iTero, Medit, 3Shape Trios.",
-      "areaServed": [
-        { "@type": "City", "name": "Bogotá" },
-        { "@type": "Country", "name": "Colombia" }
-      ],
-      "offers": { "@type": "Offer", "priceCurrency": "COP", "price": "60000", "description": "Desde 60.000 COP por unidad" }
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Escáner dental a domicilio y en clínica — Bogotá y Colombia",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "PRODIGY Digital Dentistry",
+    "url": "https://prodigylabdental.com",
+    "telephone": "+573212816716",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Bogotá",
+      "addressCountry": "CO"
     }
-    </script>
+  },
+  "description": "Servicio de escáner intraoral a domicilio y en clínica en Bogotá. Diseño CAD con Exocad y producción CAM (fresado/impresión 3D). Envío de restauraciones a toda Colombia en 24–48 h. Compatible con iTero, Medit, 3Shape Trios.",
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Bogotá"
+    },
+    {
+      "@type": "Country",
+      "name": "Colombia"
+    }
+  ]
+}
+</script>
 
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
@@ -229,6 +238,7 @@
         .pchip{background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);
             padding:8px 16px;border-radius:8px;font-size:1rem;font-weight:600;}
         .pchip strong{color:var(--gold);}
+        .pchip i{color:var(--gold);margin-right:4px;}
 
         /* ── FORMULARIO ── */
         .form-section{
@@ -334,7 +344,7 @@
     .sec,.section,.container,.card-grid{content-visibility:auto;contain-intrinsic-size:0 350px;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Envío de Escáner STL para Diseño Dental","description":"Envía tu archivo STL o escáner intraoral a PRODIGY Lab. Recibe diseño CAD o prótesis terminada en 24–48h. Pago 50% inicio, 50% entrega.","provider":{"@type":"LocalBusiness","name":"PRODIGY Lab Dental","telephone":"+573212816716","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"}},"areaServed":"Colombia","serviceType":"Digital Dental Lab Services","offers":{"@type":"Offer","priceCurrency":"COP","price":"45000"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Envío de Escáner STL para Diseño Dental","description":"Envía tu archivo STL o escáner intraoral a PRODIGY Lab. Recibe diseño CAD o prótesis terminada en 24–48h. Pago 50% inicio, 50% entrega.","provider":{"@type":"LocalBusiness","name":"PRODIGY Lab Dental","telephone":"+573212816716","address":{"@type":"PostalAddress","addressLocality":"Bogotá","addressCountry":"CO"}},"areaServed":"Colombia","serviceType":"Digital Dental Lab Services"}</script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Envía tu Escáner","item":"https://prodigylabdental.com/envia-tu-scanner"}]}
   </script>
@@ -347,8 +357,8 @@
 </head>
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
-<link rel="preload" href="js/header.js?v=20261007b" as="script">
-<script src="js/header.js?v=20261007b"></script>
+<link rel="preload" href="js/header.js?v=20261008" as="script">
+<script src="js/header.js?v=20261008"></script>
 <main id="main-content">
 <!-- ── HERO ── -->
 <section class="hero" data-flujo data-colors="#D946A6,#00d2ff,#D4AF37,#00FF41">
@@ -449,23 +459,23 @@
     </div>
 </section>
 
-<!-- ── PRECIOS ── -->
+<!-- ── COTIZACIÓN (oct-2026: sin precios publicados — el precio exacto sale del cotizador o de la confirmación) ── -->
 <section class="sec" style="padding-top:0">
     <div class="sec-inner">
-        <p class="sec-label">Tarifas</p>
-        <h2 class="sec-title">Precios directos, sin sorpresas</h2>
+        <p class="sec-label">Cotización</p>
+        <h2 class="sec-title">Precio exacto para tu caso, sin sorpresas</h2>
         <div class="precios-strip">
             <div>
-                <h3>Desde $60.000 COP por unidad</h3>
+                <h3>Cotiza en línea en 1 minuto</h3>
                 <p>Pagas solo lo que produces. Sin membresías, sin licencias de software.</p>
             </div>
             <div class="precio-chips">
-                <div class="pchip">Corona zirconio <strong>desde $180K</strong></div>
-                <div class="pchip">Carilla <strong>desde $220K</strong></div>
-                <div class="pchip">Provisional CAD <strong>desde $90K</strong></div>
-                <div class="pchip">Inlay / Onlay <strong>desde $160K</strong></div>
-                <div class="pchip">Modelo 3D <strong>desde $20K</strong></div>
-                <div class="pchip">Puente 3 pzas <strong>desde $480K</strong></div>
+                <div class="pchip"><i class="fas fa-clock"></i> Precio exacto en menos de 2 h</div>
+                <div class="pchip"><i class="fas fa-eye"></i> Apruebas el diseño antes de producir</div>
+                <div class="pchip"><i class="fas fa-file-import"></i> <span translate="no">STL · OBJ · Exocad</span></div>
+                <div class="pchip"><i class="fas fa-chart-line"></i> Seguimiento del caso en vivo</div>
+                <div class="pchip"><i class="fas fa-truck"></i> Envíos a toda Colombia</div>
+                <div class="pchip"><i class="fas fa-file-invoice"></i> Factura electrónica</div>
             </div>
             <a href="/calculadora-diseno" class="btn-outline" style="flex-shrink:0">
                 <i class="fas fa-calculator"></i> Cotizar en línea
@@ -565,32 +575,26 @@
                     <button type="button" class="svc-btn sel" data-val="Corona unitaria" onclick="selSvc(this)" aria-pressed="true">
                         <span class="ico">👑</span>
                         <div class="lbl">Corona unitaria</div>
-                        <div class="prc">desde $180K</div>
                     </button>
                     <button type="button" class="svc-btn" data-val="Carilla" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">✨</span>
                         <div class="lbl">Carilla</div>
-                        <div class="prc">desde $220K</div>
                     </button>
                     <button type="button" class="svc-btn" data-val="Inlay / Onlay" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">🔷</span>
                         <div class="lbl">Inlay / Onlay</div>
-                        <div class="prc">desde $160K</div>
                     </button>
                     <button type="button" class="svc-btn" data-val="Puente" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">🌉</span>
                         <div class="lbl">Puente</div>
-                        <div class="prc">desde $480K</div>
                     </button>
                     <button type="button" class="svc-btn" data-val="Provisional CAD" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">🏗️</span>
                         <div class="lbl">Provisional CAD</div>
-                        <div class="prc">desde $90K</div>
                     </button>
                     <button type="button" class="svc-btn" data-val="Modelo 3D impreso" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">🖨️</span>
                         <div class="lbl">Modelo 3D</div>
-                        <div class="prc">desde $60K</div>
                     </button>
                     <button type="button" class="svc-btn" data-val="Otro" onclick="selSvc(this)" aria-pressed="false">
                         <span class="ico">📋</span>

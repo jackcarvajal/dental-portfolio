@@ -567,6 +567,13 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
     '.pnav2-buscar-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);color:#e2e8f0;width:44px;height:44px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;transition:all .2s;font-family:inherit;}',
     '.pnav2-buscar-btn:hover{background:rgba(0,210,255,.12);border-color:rgba(0,210,255,.5);color:#fff;}',
     '@media(max-width:1024px){.pnav2-right{justify-content:flex-end!important;}}',
+    /* Simetría (oct-2026): el logo queda en el eje central exacto y la barra de arriba se alinea con él.
+       Izquierda (de afuera hacia el logo): tema · IA · SERVICIOS · … · BLOG  ·  Derecha: SIGUE TU CASO · SOPORTE · … · lupa · HAZ TU PEDIDO.
+       Entre 1025 y 1260 px no cabía todo (se salía de la pantalla): ese rango pasa al menú ☰. La barra de arriba ya
+       va centrada como grupo (flex). */
+    '@media(min-width:1261px){.pnav2-c{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);}}',
+    '@media(min-width:1261px) and (max-width:1340px){.pnav2-theme-btn,.pnav2-ia-btn{display:none!important;}.pnav2-left,.pnav2-right{gap:10px;}.pnav2-logo{padding:0 14px;}.pnav2-left>a,.pnav2-right>a,.pnav2-dd-btn{font-size:12.5px;letter-spacing:.5px;}.pnav2-ped-btn{padding-left:16px;padding-right:16px;}}',
+    '@media(max-width:1260px){.pnav2-left>a:not(.pnav2-dd *){display:none;}.pnav2-right>a{display:none;}.pnav2-ham{display:block!important;}.pnav2-right{justify-content:flex-end!important;}}',
     ':focus-visible{outline:2px solid #D946A6;outline-offset:2px;border-radius:3px;}',
   ].join('');
 
@@ -625,6 +632,10 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
 
         /* Izquierda */
         '<div class="pnav2-left">' +
+          '<button type="button" class="pnav2-theme-btn" id="pnav2-theme-btn" onclick="_phdrToggleTheme()" aria-label="Cambiar tema" title="Modo claro / oscuro">🌙</button>' +
+          '<button type="button" class="pnav2-ia-btn" id="pnav2-ia-btn" onclick="_phdrToggleIA()" aria-label="Asistente IA" aria-expanded="false" aria-controls="pg-chat-window">' +
+            '<i class="fas fa-robot"></i>' +
+          '</button>' +
           '<div class="pnav2-dd" id="pnav2-dd">' +
             '<button type="button" class="pnav2-dd-btn" aria-haspopup="true" aria-expanded="false">' +
               'SERVICIOS <i class="fas fa-chevron-down pnav2-dd-arrow"></i>' +
@@ -632,11 +643,11 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
             '<div class="pnav2-dd-menu">' +
               '<a href="/diseno-remoto" style="background:rgba(217,70,166,.08);border-left:2px solid #D946A6;">' +
                 '<i class="fas fa-globe" style="color:#D946A6"></i>' +
-                '<span>DISEÑO CAD REMOTO<span class="dd-sub">🌍 Internacional · desde $14 USD · 24h</span></span>' +
+                '<span>DISEÑO CAD REMOTO<span class="dd-sub">🌍 Internacional · Exocad · entrega 24h</span></span>' +
               '</a>' +
               '<a href="/calculadora-diseno">' +
                 '<i class="fas fa-calculator"></i>' +
-                '<span>COTIZADOR DISEÑO<span class="dd-sub">Precio instantáneo · USD &amp; COP</span></span>' +
+                '<span>COTIZADOR DISEÑO<span class="dd-sub">Cotiza tu caso en 1 minuto</span></span>' +
               '</a>' +
               '<a href="/diseno-cad">' +
                 '<i class="fas fa-drafting-compass"></i>' +
@@ -652,12 +663,13 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
               '</a>' +
               '<a href="/guias-quirurgicas" style="background:rgba(0,210,255,.06);border-left:2px solid #00d2ff;">' +
                 '<i class="fas fa-crosshairs" style="color:#00d2ff"></i>' +
-                '<span>CIRUGÍA GUIADA<span class="dd-sub">🎯 Planificación digital · guía impresa · desde 4h · $180.000</span></span>' +
+                '<span>CIRUGÍA GUIADA<span class="dd-sub">🎯 Planificación digital · guía impresa · desde 4h</span></span>' +
               '</a>' +
             '</div>' +
           '</div>' +
           '<a href="/portafolio"' + ac('/portafolio') + '>PORTAFOLIO</a>' +
           '<a href="/envia-tu-scanner"' + ac('/envia-tu-scanner') + '>ENVÍA TU ESCANEO</a>' +
+          '<a href="/journal"' + ac('/journal') + '>BLOG</a>' +
         '</div>' +
 
         /* Logo centrado */
@@ -668,7 +680,6 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
 
         /* Derecha */
         '<div class="pnav2-right">' +
-          '<a href="/journal"' + ac('/journal') + '>BLOG</a>' +
           '<a href="/seguimiento-caso"' + ac('/seguimiento-caso') + '>SIGUE TU CASO</a>' +
           '<div class="pnav2-dd" id="pnav2-dd-sop">' +
             '<button type="button" class="pnav2-dd-btn" aria-haspopup="true" aria-expanded="false">' +
@@ -685,14 +696,10 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
               '</button>' +
             '</div>' +
           '</div>' +
+          '<a href="/nosotros"' + ac('/nosotros') + '>NOSOTROS</a>' +
           '<button type="button" class="pnav2-buscar-btn" id="pnav2-buscar-btn" onclick="_phdrBuscar()" aria-label="Buscar en la web o preguntar a la IA" title="Buscar (Ctrl+K)">' +
             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' +
           '</button>' +
-          '<button type="button" class="pnav2-theme-btn" id="pnav2-theme-btn" onclick="_phdrToggleTheme()" aria-label="Cambiar tema" title="Modo claro / oscuro">🌙</button>' +
-          '<button type="button" class="pnav2-ia-btn" id="pnav2-ia-btn" onclick="_phdrToggleIA()" aria-label="Asistente IA" aria-expanded="false" aria-controls="pg-chat-window">' +
-            '<i class="fas fa-robot"></i>' +
-          '</button>' +
-          '<a href="/nosotros"' + ac('/nosotros') + '>NOSOTROS</a>' +
           '<div class="pnav2-ped-wrap" id="pnav2-ped-wrap" onmouseenter="_phdrPedHover(true)" onmouseleave="_phdrPedHover(false)">' +
             '<button type="button" class="pnav2-ped-btn">' +
               'HAZ TU PEDIDO <i class="fas fa-chevron-down" style="font-size:9px;margin-left:4px;transition:transform .2s;" id="pnav2-ped-arrow"></i>' +
@@ -1199,6 +1206,7 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
         if(!u||!u.email) return;
         var tb = document.getElementById('nav-topbar');
         if(!tb) return;
+        var _langSesion = tb.querySelector('.pheader-lang');   // el selector de idioma se queda también con sesión abierta
         var isAdmin = u.email===_ADMIN_PG || u.email==='labdentalprodigy@gmail.com';
         var panelUrl = isAdmin ? '/app/panel-interno-operaciones' : '/app/client-panel';
         tb.innerHTML =
@@ -1207,6 +1215,8 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
             '<a href="'+panelUrl+'" style="background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);color:#D4AF37;padding:5px 14px;border-radius:6px;font-size:.72rem;font-weight:800;text-decoration:none"><i class="fas fa-th-large" style="margin-right:4px"></i>Mi Panel</a>'+
             '<button type="button" onclick="_phdrLogoutPG()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:5px 12px;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer"><i class="fas fa-sign-out-alt" style="margin-right:4px"></i>Salir</button>'+
           '</div>';
+        if (_langSesion) { tb.firstChild.appendChild(_langSesion); _langSesion.style.marginLeft = '4px'; if (window._phdrMarcarIdioma) window._phdrMarcarIdioma(); }
+        if (window._phdrTraducir) window._phdrTraducir();
       }).catch(function(){});
   })();
 
@@ -1260,7 +1270,7 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
   /* Cargar i18n.js en todas las páginas si aún no está */
   if (!window.i18n) {
     var _i18nS = document.createElement('script');
-    _i18nS.src = '/js/i18n.js?v=20261007';
+    _i18nS.src = '/js/i18n.js?v=20261008';
     _i18nS.defer = true;
     document.head.appendChild(_i18nS);
   }
@@ -1276,12 +1286,13 @@ window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-sca
     'SERVICIOS': ['SERVICES', 'SERVIÇOS'], 'PORTAFOLIO': ['PORTFOLIO', 'PORTFÓLIO'],
     'ENVÍA TU ESCANEO': ['SEND YOUR SCAN', 'ENVIE SEU ESCANEAMENTO'], 'SIGUE TU CASO': ['TRACK YOUR CASE', 'ACOMPANHE SEU CASO'],
     'SOPORTE': ['SUPPORT', 'SUPORTE'], 'NOSOTROS': ['ABOUT US', 'SOBRE NÓS'], 'HAZ TU PEDIDO': ['PLACE AN ORDER', 'FAÇA SEU PEDIDO'],
-    'DISEÑO CAD REMOTO': ['REMOTE CAD DESIGN', 'DESIGN CAD REMOTO'], '🌍 Internacional · desde $14 USD · 24h': ['🌍 International · from $14 USD · 24h', '🌍 Internacional · a partir de $14 USD · 24h'],
-    'COTIZADOR DISEÑO': ['DESIGN QUOTE', 'ORÇAMENTO DE DESIGN'], 'Precio instantáneo · USD & COP': ['Instant price · USD & COP', 'Preço instantâneo · USD & COP'],
+    'Mi Panel': ['My dashboard', 'Meu painel'], 'Salir': ['Sign out', 'Sair'],
+    'DISEÑO CAD REMOTO': ['REMOTE CAD DESIGN', 'DESIGN CAD REMOTO'], '🌍 Internacional · Exocad · entrega 24h': ['🌍 International · Exocad · 24h delivery', '🌍 Internacional · Exocad · entrega 24h'],
+    'COTIZADOR DISEÑO': ['DESIGN QUOTE', 'ORÇAMENTO DE DESIGN'], 'Cotiza tu caso en 1 minuto': ['Quote your case in 1 minute', 'Orce seu caso em 1 minuto'],
     'DISEÑO CAD — INFO': ['CAD DESIGN — INFO', 'DESIGN CAD — INFO'], 'Exocad · 3Shape · Archivo STL': ['Exocad · 3Shape · STL file', 'Exocad · 3Shape · Arquivo STL'],
     'FRESADO & IMPRESIÓN': ['MILLING & 3D PRINTING', 'FRESAGEM & IMPRESSÃO'], 'Zirconio · Disilicato · Resina': ['Zirconia · Lithium disilicate · Resin', 'Zircônia · Dissilicato · Resina'],
     'ESCANEOS A DOMICILIO': ['ON-SITE SCANNING', 'ESCANEAMENTO A DOMICÍLIO'], 'Norte Bogotá · 2 h hábiles': ['North Bogotá · 2 business hours', 'Norte de Bogotá · 2 h úteis'],
-    'CIRUGÍA GUIADA': ['GUIDED SURGERY', 'CIRURGIA GUIADA'], '🎯 Planificación digital · guía impresa · desde 4h · $180.000': ['🎯 Digital planning · printed guide · from 4h · COP 180,000', '🎯 Planejamento digital · guia impresso · a partir de 4h · COP 180.000'],
+    'CIRUGÍA GUIADA': ['GUIDED SURGERY', 'CIRURGIA GUIADA'], '🎯 Planificación digital · guía impresa · desde 4h': ['🎯 Digital planning · printed guide · from 4h', '🎯 Planejamento digital · guia impresso · a partir de 4h'],
     'Centro de Soporte': ['Support Center', 'Central de Suporte'], 'FAQs · guías · materiales': ['FAQs · guides · materials', 'FAQs · guias · materiais'],
     'Solución IA': ['AI Assistant', 'Assistente IA'], 'Gemini 2.0 · respuesta 24/7': ['Gemini · answers 24/7', 'Gemini · respostas 24/7'],
     'Diseño CAD': ['CAD Design', 'Design CAD'], 'Exocad · 3Shape · archivo STL': ['Exocad · 3Shape · STL file', 'Exocad · 3Shape · arquivo STL'],

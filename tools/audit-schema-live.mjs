@@ -42,7 +42,6 @@ const ALLOW = new Set([
 // ── Tablas nuevas cuyo SQL aún no se ha corrido y cuyo código YA tolera que falten ──
 //   Solo avisan (no bloquean el push). Quitar de aquí en cuanto el SQL esté corrido.
 const TABLAS_PENDIENTES = new Set([
-  'ia_conocimiento', 'ia_preguntas',   // sql/ia-conocimiento-2026.sql — functions/api/gemini.js sigue igual sin ellas
 ]);
 
 // ── 1. extraer superficie (mismo motor que audit-schema.mjs) ──

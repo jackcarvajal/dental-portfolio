@@ -121,6 +121,14 @@
     .scard p { font-size: .86rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     @media(max-width:640px) { .scard-tags { display: none; } .scard { padding: 14px 16px; } }
     h2.st { margin-bottom: 26px; }
+    button.scard { font: inherit; text-align: left; width: 100%; cursor: pointer; }
+    /* Conversor de nomenclatura (js/dientes.js) */
+    .dlg-dientes { width: min(720px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 22px; border: 1px solid var(--border-c); border-radius: 16px; background: #0d1520; color: var(--text); }
+    .dlg-dientes::backdrop { background: rgba(0,0,0,.72); backdrop-filter: blur(4px); }
+    .dlg-cab { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 6px; }
+    .dlg-cab h3 { font-size: 1.05rem; }
+    .dlg-cab button { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); color: var(--text); width: 36px; height: 36px; border-radius: 8px; cursor: pointer; flex-shrink: 0; }
+    .dlg-dientes > p { color: var(--muted); font-size: .86rem; line-height: 1.5; margin-bottom: 14px; }
 
     /* ── PREGUNTAS FRECUENTES ── */
     .faq-list { display: flex; flex-direction: column; gap: 10px; }
@@ -170,8 +178,8 @@
 </head>
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
-<link rel="preload" href="js/header.js?v=20261007b" as="script">
-<script src="js/header.js?v=20261007b"></script>
+<link rel="preload" href="js/header.js?v=20261008" as="script">
+<script src="js/header.js?v=20261008"></script>
 <main id="main-content">
 
 <!-- HERO -->
@@ -206,13 +214,13 @@
         <p>Especificaciones de zirconia monolítica, multicapa, ultra-traslúcida 5Y-TZP, PMMA, disilicato de litio, resinas 3D y titanio grado 5.</p>
         <div class="scard-tags"><span class="stag">Zirconia</span><span class="stag">PMMA</span><span class="stag">e.max</span><span class="stag">Titanio</span></div>
       </a>
-      <a href="/seguimiento-caso" class="scard cyan sr">
+      <a href="/seguimiento-caso" class="scard sr">
         <div class="scard-top"><div class="scard-icon"><i class="fas fa-chart-line"></i></div><div class="scard-arrow"><i class="fas fa-arrow-right"></i></div></div>
         <h3>Estado de Casos en Vivo</h3>
         <p>Consulta en tiempo real la etapa de producción: diseño, manufactura, terminado, en camino. Sin necesidad de llamar ni esperar.</p>
         <div class="scard-tags"><span class="stag">Tiempo real</span><span class="stag">Sin login</span></div>
       </a>
-      <a href="https://wa.me/573212816716?text=Hola%2C%20necesito%20ayuda%20con%20Exocad" class="scard sr" target="_blank" rel="noopener noreferrer">
+      <a href="https://wa.me/573212816716?text=Hola%2C%20necesito%20ayuda%20con%20Exocad" class="scard cyan sr" target="_blank" rel="noopener noreferrer">
         <div class="scard-top"><div class="scard-icon"><i class="fas fa-cube"></i></div><div class="scard-arrow"><i class="fas fa-arrow-right"></i></div></div>
         <h3>Ayuda Exocad / 3Shape</h3>
         <p>Soporte directo para compartir archivos de diseño, visualizar tu caso en el visor 3D y revisar el proyecto antes de fresar.</p>
@@ -224,6 +232,12 @@
         <p>Escaneo intraoral a domicilio con Aidite Rapid 5. Fotogrametría full-arch para multi-unit y All-on-X: próximamente. Vamos a tu consultorio en Bogotá.</p>
         <div class="scard-tags"><span class="stag">Aidite Rapid 5</span><span class="stag">Fotogrametría · pronto</span><span class="stag">Domicilio</span></div>
       </a>
+      <button type="button" class="scard cyan sr" id="btn-nomenclatura" aria-haspopup="dialog" aria-controls="dlg-dientes">
+        <div class="scard-top"><div class="scard-icon"><i class="fas fa-tooth"></i></div><div class="scard-arrow"><i class="fas fa-arrow-right"></i></div></div>
+        <h3>Conversor de Nomenclatura Dental</h3>
+        <p>Convierte la numeración de piezas entre FDI, Universal (EE. UU.) y Palmer (Reino Unido). El laboratorio trabaja en FDI.</p>
+        <div class="scard-tags"><span class="stag" translate="no">FDI</span><span class="stag" translate="no">Universal</span><span class="stag" translate="no">Palmer</span></div>
+      </button>
     </div>
   </div>
 </section>
@@ -383,6 +397,25 @@
 </script>
 
 <script src="js/footer.js?v=20261007"></script>
+<dialog id="dlg-dientes" class="dlg-dientes" aria-labelledby="dlg-dientes-tit">
+  <div class="dlg-cab"><h3 id="dlg-dientes-tit">Conversor de nomenclatura dental</h3><button type="button" id="dlg-dientes-x" aria-label="Cerrar"><i class="fas fa-times"></i></button></div>
+  <p>Marca las piezas en el odontograma y mira su número en los tres sistemas: FDI (ISO 3950), Universal (EE. UU.) y Palmer (Reino Unido).</p>
+  <div id="conv-dientes"></div>
+</dialog>
+<script src="js/dientes.js?v=20261008" defer></script>
+<script>
+/* Conversor de nomenclatura: abre el odontograma de js/dientes.js en modo conversor (sin precios ni pedido) */
+(function(){
+  var dlg=document.getElementById('dlg-dientes'), btn=document.getElementById('btn-nomenclatura'), montado=false;
+  if(!dlg||!btn||typeof dlg.showModal!=='function') { if(btn) btn.style.display='none'; return; }
+  btn.addEventListener('click',function(){
+    if(!montado && window.Dientes){ Dientes.montar(document.getElementById('conv-dientes'),{conversor:true}); montado=true; }
+    dlg.showModal();
+  });
+  document.getElementById('dlg-dientes-x').addEventListener('click',function(){ dlg.close(); });
+  dlg.addEventListener('click',function(e){ if(e.target===dlg) dlg.close(); });
+})();
+</script>
 <script>
 /* ── Scroll reveal ── */
 const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.08});

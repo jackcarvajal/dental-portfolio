@@ -9,6 +9,27 @@
 
 ---
 
+## 2026-10-08  (menú simétrico · idioma con sesión · sin precios en páginas públicas · conversor de nomenclatura)
+
+- ✅ **Selector ES/EN/PT con sesión abierta** (ambas): la barra de «Admin · Mi Panel · Salir» reemplazaba la barra de
+  arriba y se llevaba el selector de idioma → ya no se podía volver a español. Ahora se conserva (y «Mi Panel/Salir»
+  se traducen).
+- ✅ **Menú simétrico** (ambas): logo en el eje central exacto (grid 1fr · logo · 1fr). Izquierda: tema · IA ·
+  SERVICIOS · PORTAFOLIO · ENVÍA · BLOG; derecha: SIGUE TU CASO · SOPORTE · NOSOTROS/SOBRE MÍ · lupa · HAZ TU PEDIDO.
+  1261–1340 px: compacto (sin tema/IA, que están en los flotantes). ≤1260 px: menú ☰ (entre 1025 y 1260 se salía de
+  la pantalla).
+- ✅ **Sin precios en páginas públicas de PRODIGY** (decisión de Alejandro 8-oct: precios en validación → «cotizador
+  sí, precios no; poner ofertas de valor»). Cambiados por valor + botón de cotizar: diseno-remoto (3 tarjetas →
+  «Incluye», rejilla → tiempos, fuera la «calculadora de ahorro vs mercado»), envia-tu-scanner (caja de precios →
+  6 ofertas de valor; botones del formulario sin precio), guias-quirurgicas (tarjetas → «Cotizar este caso», fuera la
+  comparativa de precios), impresion-3d, alineadores-cad, diseno-cad, soporte-exocad, preguntas (respuestas + JSON-LD),
+  /en/* (4 landings), menú SERVICIOS, links, título de un artículo, meta descriptions y `offers` de JSON-LD.
+  **Se dejaron**: cotizadores (calculadora*), flujos de pedido, escaner-domicilio (reserva con anticipo),
+  en/veneers (formulario de cotización), créditos de referidos ($30.000 = beneficio), términos legales.
+  En Alejandro solo envia-tu-scanner (caja copiada de PRODIGY); sus landings en USD quedan a decisión.
+- ✅ **Soporte: 6.ª tarjeta «Conversor de nomenclatura dental»** (FDI · Universal · Palmer, `js/dientes.js`) → rejilla
+  3×2 simétrica con colores en damero.
+
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
 - ✅ **Selector de idioma ES · EN · PT (ambas webs; Alejandro no tenía)** — controlador en header.js (`_IDIOMA_CFG`):
