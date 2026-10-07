@@ -12,7 +12,9 @@
   if (!fr) return;
   var EN = !!(window._phdrIdiomaPagina && window._phdrIdiomaPagina() === 'en');
   var nota = window.Dientes ? Dientes.preferido() : (EN ? 'universal' : 'fdi');   // FDI (ISO) · Universal (EE. UU.) · Palmer (R. Unido)
-  fr.src = '/odontograma.html?v=' + (C.v || '1') + '&lang=' + (EN ? 'en' : 'es') + '&nota=' + nota + (C.sitio ? '&sitio=' + C.sitio : '');
+  // Idioma del odontograma: EN técnico, PT con los nombres oficiales de exocad (la página en PT la traduce Google; el marco no)
+  var PT = !EN && (function () { try { return localStorage.getItem('prd_lang') === 'pt'; } catch (e) { return false; } })();
+  fr.src = '/odontograma.html?v=' + (C.v || '1') + '&lang=' + (EN ? 'en' : (PT ? 'pt' : 'es')) + '&nota=' + nota + (C.sitio ? '&sitio=' + C.sitio : '');
   var T = EN
     ? { nada: 'No indications assigned yet: tap a tooth on the chart.', unid: function (n) { return n + (n === 1 ? ' tooth' : ' teeth'); }, cot: 'to be quoted', guia: 'Surgical guide', otro: 'Selected service: ' }
     : { nada: 'Aún no has asignado indicaciones a los dientes.', unid: function (n) { return n + (n === 1 ? ' pieza' : ' piezas'); }, cot: 'a cotizar', guia: 'Guía quirúrgica', otro: 'Servicio elegido: ' };

@@ -114,6 +114,17 @@
   «Guardar PDF») y **Enlace de pedido** (`/envia-tu-scanner#e=TOKEN` llega identificado y marcado en las notas).
   SQL `sql/enlaces-cliente-2026.sql` **pendiente de correr** (tabla `enlaces_cliente` + RPC crear/abrir/anular; anon solo
   abre y solo recibe nombre, clínica y código). Sin el SQL, los botones avisan qué falta. Artículo nuevo en el Centro de ayuda.
+  ✅ SQL corrido (verificado: `abrir_enlace_cliente` responde null a tokens falsos; crear/anular y la tabla dan 42501 a anon).
+- ✅ **Odontograma sin capturas** (ambas webs, `odontograma.html` 441 → 260 KB):
+  · El **diagrama dental** ya no es la captura PNG de exocad: cada diente se dibuja en SVG (vista oclusal, girado según la
+    curva del arco, con surcos) y el número sale nativo en FDI · Universal · Palmer (antes se tapaba el FDI pintado).
+    Rótulos Derecha/Izquierda del paciente. Se colorea el diente con el color de su indicación.
+  · **Tipo de implante**: la captura con zonas para tocar pasa a 5 botones con íconos vectoriales convertidos de los XAML de
+    exocad 3.3 con el motor WPF (scratchpad `xaml-a-svg.ps1`: resuelve transformaciones, Canvas.Left/Top y Stretch).
+  · **Nombres oficiales de exocad**: inglés corregido en `i18n/en.json` (Coping, Offset coping, Pressed crown, Offset inlay,
+    Partial denture, Omit in bridge, grupos, implantes: Screw-retained, Post and core, Stock abutment…). **Portugués nuevo**
+    (`i18n/pt-odontograma.json`, 136 textos, nombres de exocad PT); el flujo pasa `lang=pt` si la web está en PT.
+  · Los nombres en español (lo que se guarda en el pedido y fija precios) no cambian.
 
 ## 2026-10-07 (tarde)  (ES · EN técnico · PT Google · IA que crece · blog con fuentes de PubMed)
 
