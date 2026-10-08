@@ -152,7 +152,13 @@
 .modelopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
 .modelopts[hidden]{display:none}
 .modelopts .ff{min-width:0}
+.modelopts .ff[hidden]{display:none}
 .modelopts .matfinal{grid-column:1/-1;font-size:.78rem}
+.mchk{margin:0;min-width:0;border:1px solid var(--line);border-radius:8px;padding:6px 10px 8px;display:flex;flex-direction:column;gap:5px}
+.mchk legend{font-size:.72rem;color:var(--ink-dim);padding:0 4px}
+.mchk label{display:flex;align-items:center;gap:8px;font-size:.84rem;cursor:pointer}
+.mchk input{width:16px;height:16px;flex:none;accent-color:#D946A6}
+.mchk small{font-size:.68rem;color:var(--ink-dim);line-height:1.35}
 </style>
 
 <div class="pghead">
@@ -187,9 +193,16 @@
     <div class="modelopts" id="modelopts" hidden>
       <div class="ff"><label for="m-tipo">Modelo</label><select class="fsel" id="m-tipo"></select></div>
       <div class="ff"><label for="m-zoc">Zócalo</label><select class="fsel" id="m-zoc"></select></div>
-      <div class="ff"><label for="m-troq">Troqueles</label><select class="fsel" id="m-troq"></select></div>
+      <fieldset class="mchk"><legend>Para dientes</legend>
+        <label><input type="checkbox" id="m-zan"> Troqueles zanahoria</label>
+        <label><input type="checkbox" id="m-adi"> Troqueles adicionales</label>
+        <small>Zanahoria: el muñón sale del modelo. Adicionales: copias del muñón impresas aparte; el modelo queda entero.</small></fieldset>
+      <fieldset class="mchk"><legend>Para implantes</legend>
+        <label><input type="checkbox" id="m-ana"> Análogos de implante</label>
+        <label><input type="checkbox" id="m-enc"> Encía removible</label>
+        <small>Se marcan solos si el caso lleva implantes; puedes cambiarlos.</small></fieldset>
       <div class="ff"><label for="m-art">Articulador</label><select class="fsel" id="m-art"></select></div>
-      <div class="ff" id="m-var-ff" hidden><label for="m-var">Versión</label><select class="fsel" id="m-var"></select></div>
+      <div class="ff" id="m-var-ff" hidden><label for="m-var">Referencia (opcional)</label><select class="fsel" id="m-var"></select></div>
       <p class="matfinal" id="m-resumen"></p>
     </div>
   </div>
@@ -242,6 +255,7 @@
   // Alto real del contenido (el del documento nunca baja del alto del marco y solo crecía)
   function altoContenido(){var m=0;[].forEach.call(document.body.children,function(e){if(/^(SCRIPT|STYLE|TITLE)$/.test(e.tagName))return;var cs=getComputedStyle(e);if(cs.position==='fixed'||cs.display==='none')return;m=Math.max(m,e.getBoundingClientRect().bottom+window.scrollY+(parseFloat(cs.marginBottom)||0));});return Math.ceil(m);}
   function emit(){
+    if(window._modeloAuto)window._modeloAuto();
     if(!EMBED)return;
     var items=[],sub=0;
     Object.keys(POS).forEach(function(f){var a=estado[f];if(a&&a.ind){items.push({d:+f,ind:a.ind,mat:a.mat,cod:a.cod||null,proc:a.cod?procDe(a.cod):null,tono:a.tono||null,impl:a.implante||null});sub+=(PRECIO_DIS[a.ind]||0);}});
@@ -454,33 +468,46 @@
   var AIC={copiar:'#c0c7d0',pegar:'#4fb477',limpiar:'#e5342e',orden:'#4aa3df',guardar:'#D946A6'};
   document.querySelectorAll('.act').forEach(function(el){var c=AIC[el.dataset.act]||'#9aa2ab';el.querySelector('.ic').innerHTML='<svg viewBox="0 0 24 24" width="26" height="26"><rect x="4" y="5" width="16" height="14" rx="3" fill="'+c+'"/></svg>';});
   document.getElementById('colores').innerHTML='<option>—</option>'+TONOS.map(function(t){return '<option>'+t+'</option>';}).join('');
-  // ── Modelo: tipo + articulación (articuladores de exocad 3.3: impresos con el modelo o montaje) ──────────────
-  var ART_MODELO={"impreso":[["xSNAP",["GEN2 · 40 mm","GEN2 · 50 mm","GEN2 · 60 mm","GEN2 · individual","Basic · 40 mm","Basic · 50 mm","Basic · 60 mm","Lite · ajuste estándar","Lite · ajuste holgado","Lite · ajuste firme","TDM · ajuste estándar","TDM · ajuste holgado"]],["Vsevolod Snapculator",["V5.0","V5.0.1 · medio arco","V4.20","V3.6.1","V2.1","V2"]],["Amann Girrbach Artex print-click",["40 mm","60 mm"]],["Dentag rotoclick",["Estándar","Paralelo"]],["Dematec OkkluFixator",["Arco completo","Medio arco"]],["Die Modellmacher",["Arco completo","Medio arco"]],["RYS Universal D2A",["40 mm","60 mm"]],["Articulador iTero",["Arco completo","Arco completo con tope oclusal","Cuadrante"]],["Invent Dental Twister Ball",["Arco completo","Medio arco"]],["DentCare",[]],["Articulador de 4 pines",["Arco completo largo","Arco completo corto","Cuadrante"]]],"montaje":[["Amann Girrbach Artex CR",["Standard","Average","Individual","Adjustable","Flat Table","Ceramic","Gold"]],["Bio-Art A7 Plus",["Estándar","Ajustable"]],["SAM",["SAM3","SAM3 ajustable","SAM3 +15 ajustable","SAM 2P","SAM 2PX","SAM SE","SAM NEO"]],["KaVo PROTARevo",["5B","7","9"]],["Ivoclar Stratos 300",["Estándar","Ajustable","Guía incisal individual"]],["Denar Mark 330",[]],["Panadent",["PCH","PCH Kois Platform","PSH"]],["Gamma Dental Reference SL",["Estándar","Mesa azul","Mesa verde","Mesa naranja","Mesa blanca","Guía anterior individual"]],["Gerber Condylator 6",[]],["Zirkonzahn Arti PS1",[]],["FAG QuickMaster",[]],["Kranio CR ZFX",[]],["Art Daniel",["Completo G","Completo M","Completo P","Parcial G","Parcial M","Parcial P"]],["Harman OSH",["Batman","Occludator"]],["Futugama",[]],["Song Young Labo Mate 500",[]],["Maelzer CORSOART",[]],["Digital Variator",[]],["Otro (indicar en notas)",[]]]},TIPOS_MODELO=["Sólido","Hueco"],ZOCALOS=["Con zócalo","Sin zócalo"],TROQUELES=["Sin troqueles","Troqueles removibles","Con análogos de implante","Con encía removible"];
-  var modelo={disenar:false,relleno:TIPOS_MODELO[0],zocalo:ZOCALOS[0],troqueles:TROQUELES[0],articulador:'',grupo:'',version:''};
-  function modeloBase(){return [modelo.relleno,modelo.zocalo,modelo.troqueles===TROQUELES[0]?'':modelo.troqueles].filter(Boolean);}
-  function modeloPartes(){return modeloBase().concat([modelo.articulador||'sin articulador',modelo.articulador?modelo.version:'']).filter(Boolean);}
+  // ── Modelos impresos: hueco/sólido, zócalo, troqueles (dientes), análogos/encía (implantes) y articulador de exocad 3.3 ──
+  var ART_MODELO={"impreso":[["xSNAP",["GEN2 · 40 mm","GEN2 · 50 mm","GEN2 · 60 mm","GEN2 · individual","Basic · 40 mm","Basic · 50 mm","Basic · 60 mm","Lite · ajuste estándar","Lite · ajuste holgado","Lite · ajuste firme","TDM · ajuste estándar","TDM · ajuste holgado"]],["Vsevolod Snapculator",["V5.0","V5.0.1 · medio arco","V4.20","V3.6.1","V2.1","V2"]],["Amann Girrbach Artex print-click",["40 mm","60 mm"]],["Dentag rotoclick",["Estándar","Paralelo"]],["Dematec OkkluFixator",["Arco completo","Medio arco"]],["Die Modellmacher",["Arco completo","Medio arco"]],["RYS Universal D2A",["40 mm","60 mm"]],["Articulador iTero",["Arco completo","Arco completo con tope oclusal","Cuadrante"]],["Invent Dental Twister Ball",["Arco completo","Medio arco"]],["DentCare",[]],["Articulador de 4 pines",["Arco completo largo","Arco completo corto","Cuadrante"]]],"montaje":[["Amann Girrbach Artex CR",["Standard","Average","Individual","Adjustable","Flat Table","Ceramic","Gold"]],["Bio-Art A7 Plus",["Estándar","Ajustable"]],["SAM",["SAM3","SAM3 ajustable","SAM3 +15 ajustable","SAM 2P","SAM 2PX","SAM SE","SAM NEO"]],["KaVo PROTARevo",["5B","7","9"]],["Ivoclar Stratos 300",["Estándar","Ajustable","Guía incisal individual"]],["Denar Mark 330",[]],["Panadent",["PCH","PCH Kois Platform","PSH"]],["Gamma Dental Reference SL",["Estándar","Mesa azul","Mesa verde","Mesa naranja","Mesa blanca","Guía anterior individual"]],["Gerber Condylator 6",[]],["Zirkonzahn Arti PS1",[]],["FAG QuickMaster",[]],["Kranio CR ZFX",[]],["Art Daniel",["Completo G","Completo M","Completo P","Parcial G","Parcial M","Parcial P"]],["Harman OSH",["Batman","Occludator"]],["Futugama",[]],["Song Young Labo Mate 500",[]],["Maelzer CORSOART",[]],["Digital Variator",[]],["Otro (indicar en notas)",[]]]},TIPOS_MODELO=["Hueco","Sólido"],ZOCALOS=["Con zócalo","Sin zócalo"];
+  var modelo={disenar:false,relleno:TIPOS_MODELO[0],zocalo:ZOCALOS[0],zanahoria:false,adicionales:false,analogos:false,encia:false,articulador:'',grupo:'',version:'',conRef:false};
+  function modeloBase(){return [modelo.relleno,modelo.zocalo,modelo.zanahoria?'Troqueles zanahoria':'',modelo.adicionales?'Troqueles adicionales':'',modelo.analogos?'Análogos de implante':'',modelo.encia?'Encía removible':''].filter(Boolean);}
+  function modeloPartes(){return modeloBase().concat([modelo.articulador||'sin articulador',modelo.articulador?(modelo.version||(modelo.conRef?'referencia según el caso':'')):'']).filter(Boolean);}
   function modeloTexto(){var D=window._odoT||{};return modeloPartes().map(function(x){return D[x]||x;}).join(' · ');}
-  function modeloDatos(){return modelo.disenar?{impreso:true,tipo:modeloBase().join(' · '),relleno:modelo.relleno,zocalo:modelo.zocalo,troqueles:modelo.troqueles,articulador:modelo.articulador||null,grupo:modelo.grupo||null,version:modelo.version||null,texto:modeloTexto()}:null;}
+  function modeloDatos(){return modelo.disenar?{impreso:true,tipo:modeloBase().join(' · '),relleno:modelo.relleno,zocalo:modelo.zocalo,troqueles:{zanahoria:modelo.zanahoria,adicionales:modelo.adicionales},implantes:{analogos:modelo.analogos,encia:modelo.encia},articulador:modelo.articulador||null,grupo:modelo.grupo||null,version:modelo.version||null,resumen:modeloPartes().join(' · '),texto:modeloTexto()}:null;}
   (function(){
     var yn=document.getElementById('modelq'),box=document.getElementById('modelopts');if(!yn||!box)return;
-    var st=document.getElementById('m-tipo'),sa=document.getElementById('m-art'),sv=document.getElementById('m-var'),fv=document.getElementById('m-var-ff'),rs=document.getElementById('m-resumen');
+    var st=document.getElementById('m-tipo'),sz=document.getElementById('m-zoc'),sa=document.getElementById('m-art'),sv=document.getElementById('m-var'),fv=document.getElementById('m-var-ff'),rs=document.getElementById('m-resumen');
+    var cz=document.getElementById('m-zan'),cd=document.getElementById('m-adi'),ca=document.getElementById('m-ana'),ce=document.getElementById('m-enc');
     function op(v,t){return '<option value="'+v.replace(/"/g,'&quot;')+'">'+(t||v)+'</option>';}
-    var sz=document.getElementById('m-zoc'),sq=document.getElementById('m-troq');
-    st.innerHTML=TIPOS_MODELO.map(function(t){return op(t);}).join('');sz.innerHTML=ZOCALOS.map(function(t){return op(t);}).join('');sq.innerHTML=TROQUELES.map(function(t){return op(t);}).join('');
+    st.innerHTML=TIPOS_MODELO.map(function(t){return op(t);}).join('');sz.innerHTML=ZOCALOS.map(function(t){return op(t);}).join('');
     sa.innerHTML=op('','Sin articulador (solo el modelo)')+
       '<optgroup label="Articulador impreso (se imprime con el modelo)">'+ART_MODELO.impreso.map(function(a){return op('impreso|'+a[0],a[0]);}).join('')+'</optgroup>'+
       '<optgroup label="Montaje en articulador (virtual o físico)">'+ART_MODELO.montaje.map(function(a){return op('montaje|'+a[0],a[0]);}).join('')+'</optgroup>';
-    function sync(){
-      modelo.relleno=st.value;modelo.zocalo=sz.value;modelo.troqueles=sq.value;var v=sa.value.split('|');modelo.grupo=v[1]?v[0]:'';modelo.articulador=v[1]||'';
+    function leer(){
+      modelo.relleno=st.value;modelo.zocalo=sz.value;modelo.zanahoria=cz.checked;modelo.adicionales=cd.checked;modelo.analogos=ca.checked;modelo.encia=ce.checked;
+      var v=sa.value.split('|');modelo.grupo=v[1]?v[0]:'';modelo.articulador=v[1]||'';
       var lista=modelo.grupo?((ART_MODELO[modelo.grupo].filter(function(a){return a[0]===modelo.articulador;})[0]||[0,[]])[1]):[];
-      if(lista.length){if(fv.hidden||sv.getAttribute('data-de')!==modelo.articulador){sv.innerHTML=lista.map(function(x){return op(x);}).join('');sv.setAttribute('data-de',modelo.articulador);}fv.hidden=false;modelo.version=sv.value;}
+      modelo.conRef=lista.length>0;
+      // Referencia opcional: por defecto la elige el laboratorio según el caso
+      if(lista.length){if(fv.hidden||sv.getAttribute('data-de')!==modelo.articulador){sv.innerHTML=op('','La más adecuada para el caso')+lista.map(function(x){return op(x);}).join('');sv.setAttribute('data-de',modelo.articulador);}fv.hidden=false;modelo.version=sv.value;}
       else{fv.hidden=true;modelo.version='';}
-      rs.textContent=modelo.disenar?('Modelo impreso: '+modeloPartes().join(' · ')+' — se cotiza con el caso'):'';
-      emit();
     }
-    [st,sz,sq,sa,sv].forEach(function(s){s.addEventListener('change',sync);});
+    function pinta(){rs.textContent=modelo.disenar?('Modelo impreso: '+modeloPartes().join(' · ')+' — se cotiza con el caso'):'';}
+    // Implantes en la orden → análogos y encía removible marcados (hasta que el doctor los toque). Lo llama emit().
+    window._modeloAuto=function(){if(!modelo.disenar)return;var hay=Object.keys(estado).some(function(f){return estado[f]&&estado[f].implante;});
+      [ca,ce].forEach(function(c){if(c.getAttribute('data-toc')!=='1')c.checked=hay;});leer();pinta();};
+    // Lo que el doctor pide siempre queda por defecto (solo en su navegador)
+    var PK='odo_modelo_pref',restaurado=false;
+    function guardar(){if(!modelo.disenar)return;try{localStorage.setItem(PK,JSON.stringify({r:st.value,z:sz.value,zan:cz.checked,adi:cd.checked,a:sa.value,v:sv.value}));}catch(e){}}
+    function restaurar(){var p=null;try{p=JSON.parse(localStorage.getItem(PK)||'null');}catch(e){}if(!p)return;
+      function pon(s,v){if(v!=null&&[].some.call(s.options,function(o){return o.value===v;}))s.value=v;}
+      pon(st,p.r);pon(sz,p.z);pon(sa,p.a);cz.checked=!!p.zan;cd.checked=!!p.adi;leer();pon(sv,p.v);}
+    function sync(){leer();pinta();guardar();emit();}
+    [st,sz,sa,sv,cz,cd].forEach(function(s){s.addEventListener('change',sync);});
+    [ca,ce].forEach(function(c){c.addEventListener('change',function(){c.setAttribute('data-toc','1');sync();});});
     yn.querySelectorAll('button').forEach(function(b){b.onclick=function(){yn.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed','false');});b.setAttribute('aria-pressed','true');
-      modelo.disenar=b.getAttribute('data-m')==='si';box.hidden=!modelo.disenar;sync();};});
+      modelo.disenar=b.getAttribute('data-m')==='si';box.hidden=!modelo.disenar;if(modelo.disenar&&!restaurado){restaurado=true;restaurar();}sync();};});
   })();
 
   (function(){var ns=document.getElementById('nota-sel');if(!ns)return;
@@ -511,7 +538,7 @@
   var L = (/[?&]lang=(en|pt)\b/.exec(q) || [])[1];
   if (!L) return;
   document.documentElement.lang = L;
-  fetch(L === 'en' ? '/i18n/en.json' : '/i18n/pt-odontograma.json?v=20261009c').then(function (r) { return r.json(); }).then(function (D) {
+  fetch(L === 'en' ? '/i18n/en.json' : '/i18n/pt-odontograma.json?v=20261009d').then(function (r) { return r.json(); }).then(function (D) {
     var T = D.textos || {}, P = (D.patrones || []).map(function (p) { return [new RegExp(p[0]), p[1]]; });
     window._odoT = T;
     // Lo que captura un patrón se traduce por trozos « · » (el más largo que exista en el diccionario: «GEN2 · individual»)

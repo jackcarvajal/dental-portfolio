@@ -32,7 +32,7 @@
     var items = (x.items || []).filter(function (it) { return it && it.ind; });
     var cobrables = items.filter(function (it) { return !INFO[it.ind]; });
     var g = (x.guia && x.guia.tipo) ? x.guia : null;
-    var m = x.modelo || null;                                       // modelos impresos (sólido/hueco, zócalo, troqueles, articulador); se cotiza con el caso
+    var m = x.modelo || null;                                       // modelos impresos (hueco/sólido, zócalo, troqueles, implantes, articulador); se cotiza con el caso
     var hay = cobrables.length || g || m;
     if (!hay && !activo) return;                                    // aún no se usa: no pisa un servicio ya elegido
     var total = 0, vistos = {}, cotizar = [];
@@ -53,7 +53,7 @@
     var partes = [];
     if (cobrables.length) partes.push('Diseño CAD por diente (' + cobrables.length + ' pieza' + (cobrables.length > 1 ? 's' : '') + ', FDI): ' + x.resumen);
     if (g) partes.push('Guía quirúrgica: ' + gNom + ' (' + [g.sistema, g.soporte, g.guiado, g.manga].filter(Boolean).join(' · ') + ')');
-    var mNom = m ? 'Modelo impreso: ' + [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ') : '';
+    var mNom = m ? 'Modelo impreso: ' + (m.resumen || [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ')) : '';
     if (m) { partes.push(mNom); cotizar.push('modelo impreso'); }
     if (cotizar.length) partes.push('A cotizar: ' + cotizar.join(', '));
     STATE.categoriaId = 'cad_diseno'; STATE.categoriaKey = 'cad_diseno_odontograma'; STATE.categoriaNombre = 'Diseño CAD (por diente)';

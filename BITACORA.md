@@ -148,6 +148,12 @@
   impresión 3D. Se quitó **«Escaneado de la oclusión»** (un modelo / dos en oclusión / intraoral): en exocad solo dice qué
   archivos cargar y aquí todos envían escaneo intraoral. El resumen sale completo en el idioma del doctor (EN/PT); la orden al
   laboratorio sigue en español. En celular/tablet (≤1080 px) el odontograma ya no tiene scroll interno por columna.
+- ✅ **Modelos impresos v3** (Alejandro): **hueco por defecto**; casillas independientes en dos grupos — **para dientes**
+  (troqueles zanahoria / adicionales) y **para implantes** (análogos / encía removible) → cualquier combinación (p. ej. sólido +
+  adicionales sin zanahoria, encía sin troqueles). Con implantes en la orden, análogos y encía se marcan solos hasta que el
+  doctor los toque. Referencia del articulador opcional: por defecto «la más adecuada para el caso» (la elige el lab). La
+  última elección del doctor queda por defecto (localStorage). La orden lleva `modelo.resumen` (español, para el lab).
+  Arreglado: la lista de versión seguía visible en articuladores sin versiones (`.ff[hidden]`).
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 
