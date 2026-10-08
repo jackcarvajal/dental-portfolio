@@ -18,7 +18,7 @@
     'Póntico anatómico': '#e05252', 'Póntico cáscara de huevo (prov.)': '#c084fc', 'Póntico reducido': '#e07a52', 'Póntico prensado': '#4aa3df', 'Mockup': '#e08a8a', 'Incrustación/Onlay': '#4fb477', 'Inlay de grosor mínimo': '#4aa3df',
     'Carilla': '#2f7fd0', 'Encerado anatómico': '#4fb477', 'Encerado reducido': '#5fbf86', 'Encerado póntico': '#6f6fc9', 'Dentadura completa': '#c0c7d0', 'Esqueléticas parciales': '#8a95a3',
     'Férula de descarga': '#00b8dd', 'Corona telescópica primaria': '#e07a52', 'Corona telescópica secundaria': '#c98a5a', 'Atache': '#00b8dd', 'Pilar de barra': '#e0b23a',
-    'Segmento de barra': '#a855f7', 'Subestructura Offset': '#c0c7d0', 'Pilar personalizado (abutment)': '#00b8dd', 'Pilar de aditamiento': '#e07a52', 'Antagonista': '#e0894a',
+    'Segmento de barra': '#a855f7', 'Subestructura Offset': '#c0c7d0', 'Pilar personalizado (abutment)': '#00b8dd', 'Pilar personalizado (solo pilar)': '#00b8dd', 'Pilar de aditamiento': '#e07a52', 'Antagonista': '#e0894a',
     'Diente adyacente': '#d4af37', 'Omitir en el puente': '#e5342e' };
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function piezas(orden) { return (orden && Array.isArray(orden.piezas)) ? orden.piezas : []; }

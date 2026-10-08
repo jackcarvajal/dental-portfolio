@@ -195,6 +195,11 @@
   denture de 3.3: la barra se diseña dentro de la prótesis final.
 - ✅ «Plan de restauración» (Smile Creator de DentalDB) confundía en Planificación: pasa a «Pónticos y mockup» como **«Diseño de
   sonrisa 3D»** (mismo precio sonrisa 3D, una vez por caso). En Planificación (exoplan) queda solo «Planificación de implantes».
+- ✅ **Odontograma reorganizado** (Alejandro): un solo grupo **«Prótesis sobre implantes»** (tipo de implante de exocad para la
+  corona o el póntico + barras y pilares que se diseñan solos; fuera la indicación falsa «Pilar de aditamiento», que usaba el
+  tipo de trabajo de planificación); **«Guías y planificación (exoplan)»** después de toda la prótesis; fuera la caja «Diseño
+  CAD · proceso de la orden»; «Copiar / Pegar / Limpiar» como opciones dentro del diagrama; guía sin «Ctrl/⌘» (texto claro);
+  opciones en una sola línea con columnas automáticas según el ancho (menos scroll; en celular 2 columnas).
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 
