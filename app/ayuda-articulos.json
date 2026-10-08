@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-09b",
+  "version": "2026-10-09c",
   "categorias": [
     {
       "id": "inicio",
@@ -648,7 +648,8 @@
         "Lo que no es por diente (alineadores, sonrisa 3D, cubeta…) está en **«Otros servicios»**, debajo. Gana la última elección del doctor.",
         "El pedido llega con el detalle en *Trabajo* (ej. «11 Corona anatómica (Zirconio); 21 …») y las piezas en **FDI** (campo *piezas*): así se ven en **Ficha del caso** y **Orden de producción**. Trabaja siempre con el número FDI.",
         "Si el doctor usa Universal (EE. UU.) o Palmer, en su pantalla y en el WhatsApp ve las dos: «#8, #9 (Universal) = FDI 11, 21». Equivalencias: **Soporte → Conversor de nomenclatura dental**.",
-        "El odontograma del flujo de diseño es el de **exocad DentalDB 3.3**: cada indicación muestra solo los materiales que exocad permite (con sus imágenes) y el **proceso de fabricación** (fresadora 5 o 3 ejes, láser, impresión 3D). La ficha del caso muestra el material con su proceso."
+        "El odontograma del flujo de diseño es el de **exocad DentalDB 3.3**: cada indicación muestra solo los materiales que exocad permite (con sus imágenes) y el **proceso de fabricación** (fresadora 5 o 3 ejes, láser, impresión 3D). La ficha del caso muestra el material con su proceso.",
+        "Si el doctor marca **«¿Desea que diseñemos el modelo?» → Sí**, elige el tipo de modelo y la articulación: articulador impreso con el modelo (xSNAP, Snapculator, Artex print-click…) o montaje en su articulador (Artex CR, Bio-Art, SAM, KaVo…), con su versión. Llega en la orden y se cotiza con el caso."
       ]
     },
     {

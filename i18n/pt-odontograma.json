@@ -186,7 +186,52 @@
   "oclusal": "oclusal",
   "Espacio para cemento": "Espaço para cimento",
   "Conector mínimo": "Conector mínimo",
-  "Fresa": "Fresa"
+  "Fresa": "Fresa",
+  "Tipo de modelo": "Tipo de modelo",
+  "Articulación": "Articulação",
+  "Versión": "Versão",
+  "Sin articulador (solo el modelo)": "Sem articulador (só o modelo)",
+  "Articulador impreso (se imprime con el modelo)": "Articulador impresso (impresso com o modelo)",
+  "Montaje en articulador (virtual o físico)": "Montagem em articulador (virtual ou físico)",
+  "Modelo de estudio (sólido)": "Modelo de estudo (sólido)",
+  "Modelo con troqueles removibles": "Modelo com troquéis removíveis",
+  "Modelo sin troqueles (dieless)": "Modelo sem troquéis (dieless)",
+  "Modelo con análogos de implante": "Modelo com análogos de implante",
+  "Modelo con encía removible o flexible": "Modelo com gengiva removível ou flexível",
+  "Modelo Geller (carillas)": "Modelo Geller (facetas)",
+  "GEN2 · individual": "GEN2 · individual",
+  "Lite · ajuste estándar": "Lite · ajuste padrão",
+  "Lite · ajuste holgado": "Lite · ajuste folgado",
+  "Lite · ajuste firme": "Lite · ajuste firme",
+  "TDM · ajuste estándar": "TDM · ajuste padrão",
+  "TDM · ajuste holgado": "TDM · ajuste folgado",
+  "V5.0.1 · medio arco": "V5.0.1 · meio arco",
+  "Estándar": "Padrão",
+  "Paralelo": "Paralelo",
+  "Arco completo": "Arco completo",
+  "Medio arco": "Meio arco",
+  "Arco completo con tope oclusal": "Arco completo com batente oclusal",
+  "Cuadrante": "Quadrante",
+  "Articulador iTero": "Articulador iTero",
+  "Articulador de 4 pines": "Articulador de 4 pinos",
+  "Arco completo largo": "Arco completo longo",
+  "Arco completo corto": "Arco completo curto",
+  "Ajustable": "Ajustável",
+  "SAM3 ajustable": "SAM3 ajustável",
+  "SAM3 +15 ajustable": "SAM3 +15 ajustável",
+  "Guía incisal individual": "Guia incisal individual",
+  "Mesa azul": "Mesa azul",
+  "Mesa verde": "Mesa verde",
+  "Mesa naranja": "Mesa laranja",
+  "Mesa blanca": "Mesa branca",
+  "Guía anterior individual": "Guia anterior individual",
+  "Completo G": "Completo G",
+  "Completo M": "Completo M",
+  "Completo P": "Completo P",
+  "Parcial G": "Parcial G",
+  "Parcial M": "Parcial M",
+  "Parcial P": "Parcial P",
+  "Otro (indicar en notas)": "Outro (indicar nas observações)"
  },
  "patrones": [
   [
@@ -200,6 +245,10 @@
   [
    "^Subtotal · (\\d+) pieza\\(s\\)$",
    "Subtotal · $1 elemento(s)"
+  ],
+  [
+   "^Modelo: (.+) — se cotiza con el caso$",
+   "Modelo: $1 — orçado com o caso"
   ]
  ]
 }

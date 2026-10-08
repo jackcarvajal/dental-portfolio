@@ -149,6 +149,10 @@
 .msc .disc{object-fit:contain}
 .exodatos{font-size:.76rem;color:var(--ink-soft);margin-top:8px;line-height:1.6}
 .exodatos .exot{color:var(--cyan);font-weight:700;margin-right:4px}
+.modelopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.modelopts[hidden]{display:none}
+.modelopts .ff{min-width:0}
+.modelopts .matfinal{grid-column:1/-1;font-size:.78rem}
 </style>
 
 <div class="pghead">
@@ -181,6 +185,13 @@
         <select class="fsel"><option>Un solo modelo</option><option>Dos modelos en oclusión</option><option>Escaneo intraoral</option></select></div>
     </div>
     <div class="modelq"><span>¿Desea que diseñemos el modelo?</span><div class="yn" id="modelq"><button type="button" data-m="no" aria-pressed="true">No</button><button type="button" data-m="si">Sí</button></div></div>
+    <!-- Modelo (oct-2026): tipo + articulación, con los articuladores del Model Creator de exocad 3.3 -->
+    <div class="modelopts" id="modelopts" hidden>
+      <div class="ff"><label for="m-tipo">Tipo de modelo</label><select class="fsel" id="m-tipo"></select></div>
+      <div class="ff"><label for="m-art">Articulación</label><select class="fsel" id="m-art"></select></div>
+      <div class="ff" id="m-var-ff" hidden><label for="m-var">Versión</label><select class="fsel" id="m-var"></select></div>
+      <p class="matfinal" id="m-resumen"></p>
+    </div>
   </div>
 
   <div class="col r">
@@ -236,7 +247,7 @@
     Object.keys(POS).forEach(function(f){var a=estado[f];if(a&&a.ind){items.push({d:+f,ind:a.ind,mat:a.mat,cod:a.cod||null,proc:a.cod?procDe(a.cod):null,tono:a.tono||null,impl:a.implante||null});sub+=(PRECIO_DIS[a.ind]||0);}});
     var resumen=items.map(function(i){return i.d+' '+i.ind+' ('+(i.mat||'sin material')+(i.proc?(' · '+i.proc):'')+(i.tono?(' '+i.tono):'')+(i.impl?(' · '+i.impl):'')+')';}).join('; ');
     var G=(typeof guia!=='undefined')?guia:null;
-    try{parent.postMessage({__odo:1,total:sub,piezas:items.length,resumen:resumen,items:items,guia:(G&&G.tipo)?G:null,height:altoContenido()},'*');}catch(e){}
+    try{parent.postMessage({__odo:1,total:sub,piezas:items.length,resumen:resumen,items:items,guia:(G&&G.tipo)?G:null,modelo:(typeof modeloDatos==='function'?modeloDatos():null),height:altoContenido()},'*');}catch(e){}
   }
   var POS={18:[29.6,45.1],17:[29.5,37.2],16:[30.2,28.6],15:[32.0,22.3],14:[33.8,17.1],13:[37.4,12.3],12:[42.2,8.8],11:[48.2,7.2],
     21:[55.0,7.2],22:[61.0,8.8],23:[65.7,12.3],24:[69.3,17.1],25:[71.3,22.3],26:[72.4,28.6],27:[72.4,37.2],28:[72.4,45.1],
@@ -443,7 +454,31 @@
   var AIC={copiar:'#c0c7d0',pegar:'#4fb477',limpiar:'#e5342e',orden:'#4aa3df',guardar:'#D946A6'};
   document.querySelectorAll('.act').forEach(function(el){var c=AIC[el.dataset.act]||'#9aa2ab';el.querySelector('.ic').innerHTML='<svg viewBox="0 0 24 24" width="26" height="26"><rect x="4" y="5" width="16" height="14" rx="3" fill="'+c+'"/></svg>';});
   document.getElementById('colores').innerHTML='<option>—</option>'+TONOS.map(function(t){return '<option>'+t+'</option>';}).join('');
-  var yn=document.getElementById('modelq');if(yn)yn.querySelectorAll('button').forEach(function(b){b.onclick=function(){yn.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed','false');});b.setAttribute('aria-pressed','true');};});
+  // ── Modelo: tipo + articulación (articuladores de exocad 3.3: impresos con el modelo o montaje) ──────────────
+  var ART_MODELO={"impreso":[["xSNAP",["GEN2 · 40 mm","GEN2 · 50 mm","GEN2 · 60 mm","GEN2 · individual","Basic · 40 mm","Basic · 50 mm","Basic · 60 mm","Lite · ajuste estándar","Lite · ajuste holgado","Lite · ajuste firme","TDM · ajuste estándar","TDM · ajuste holgado"]],["Vsevolod Snapculator",["V5.0","V5.0.1 · medio arco","V4.20","V3.6.1","V2.1","V2"]],["Amann Girrbach Artex print-click",["40 mm","60 mm"]],["Dentag rotoclick",["Estándar","Paralelo"]],["Dematec OkkluFixator",["Arco completo","Medio arco"]],["Die Modellmacher",["Arco completo","Medio arco"]],["RYS Universal D2A",["40 mm","60 mm"]],["Articulador iTero",["Arco completo","Arco completo con tope oclusal","Cuadrante"]],["Invent Dental Twister Ball",["Arco completo","Medio arco"]],["DentCare",[]],["Articulador de 4 pines",["Arco completo largo","Arco completo corto","Cuadrante"]]],"montaje":[["Amann Girrbach Artex CR",["Standard","Average","Individual","Adjustable","Flat Table","Ceramic","Gold"]],["Bio-Art A7 Plus",["Estándar","Ajustable"]],["SAM",["SAM3","SAM3 ajustable","SAM3 +15 ajustable","SAM 2P","SAM 2PX","SAM SE","SAM NEO"]],["KaVo PROTARevo",["5B","7","9"]],["Ivoclar Stratos 300",["Estándar","Ajustable","Guía incisal individual"]],["Denar Mark 330",[]],["Panadent",["PCH","PCH Kois Platform","PSH"]],["Gamma Dental Reference SL",["Estándar","Mesa azul","Mesa verde","Mesa naranja","Mesa blanca","Guía anterior individual"]],["Gerber Condylator 6",[]],["Zirkonzahn Arti PS1",[]],["FAG QuickMaster",[]],["Kranio CR ZFX",[]],["Art Daniel",["Completo G","Completo M","Completo P","Parcial G","Parcial M","Parcial P"]],["Harman OSH",["Batman","Occludator"]],["Futugama",[]],["Song Young Labo Mate 500",[]],["Maelzer CORSOART",[]],["Digital Variator",[]],["Otro (indicar en notas)",[]]]},TIPOS_MODELO=["Modelo de estudio (sólido)","Modelo con troqueles removibles","Modelo sin troqueles (dieless)","Modelo con análogos de implante","Modelo con encía removible o flexible","Modelo Geller (carillas)"];
+  var modelo={disenar:false,tipo:TIPOS_MODELO[0],articulador:'',grupo:'',version:''};
+  function modeloDatos(){return modelo.disenar?{tipo:modelo.tipo,articulador:modelo.articulador||null,grupo:modelo.grupo||null,version:modelo.version||null}:null;}
+  (function(){
+    var yn=document.getElementById('modelq'),box=document.getElementById('modelopts');if(!yn||!box)return;
+    var st=document.getElementById('m-tipo'),sa=document.getElementById('m-art'),sv=document.getElementById('m-var'),fv=document.getElementById('m-var-ff'),rs=document.getElementById('m-resumen');
+    function op(v,t){return '<option value="'+v.replace(/"/g,'&quot;')+'">'+(t||v)+'</option>';}
+    st.innerHTML=TIPOS_MODELO.map(function(t){return op(t);}).join('');
+    sa.innerHTML=op('','Sin articulador (solo el modelo)')+
+      '<optgroup label="Articulador impreso (se imprime con el modelo)">'+ART_MODELO.impreso.map(function(a){return op('impreso|'+a[0],a[0]);}).join('')+'</optgroup>'+
+      '<optgroup label="Montaje en articulador (virtual o físico)">'+ART_MODELO.montaje.map(function(a){return op('montaje|'+a[0],a[0]);}).join('')+'</optgroup>';
+    function sync(){
+      modelo.tipo=st.value;var v=sa.value.split('|');modelo.grupo=v[1]?v[0]:'';modelo.articulador=v[1]||'';
+      var lista=modelo.grupo?((ART_MODELO[modelo.grupo].filter(function(a){return a[0]===modelo.articulador;})[0]||[0,[]])[1]):[];
+      if(lista.length){if(fv.hidden||sv.getAttribute('data-de')!==modelo.articulador){sv.innerHTML=lista.map(function(x){return op(x);}).join('');sv.setAttribute('data-de',modelo.articulador);}fv.hidden=false;modelo.version=sv.value;}
+      else{fv.hidden=true;modelo.version='';}
+      rs.textContent=modelo.disenar?('Modelo: '+modelo.tipo+(modelo.articulador?' · '+modelo.articulador+(modelo.version?' '+modelo.version:''):' · sin articulador')+' — se cotiza con el caso'):'';
+      emit();
+    }
+    [st,sa,sv].forEach(function(s){s.addEventListener('change',sync);});
+    yn.querySelectorAll('button').forEach(function(b){b.onclick=function(){yn.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed','false');});b.setAttribute('aria-pressed','true');
+      modelo.disenar=b.getAttribute('data-m')==='si';box.hidden=!modelo.disenar;sync();};});
+  })();
+
   (function(){var ns=document.getElementById('nota-sel');if(!ns)return;
     var OPS=[['fdi','FDI','ISO'],['universal','Universal','US'],['palmer','Palmer','UK']];
     function pintaNota(){document.documentElement.classList.toggle('nota-on',NOTA!=='fdi');
@@ -479,8 +514,8 @@
       if (!raiz || raiz.nodeType !== 1) return;
       var w = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT), n, k, v;
       while ((n = w.nextNode())) { k = n.nodeValue.replace(/\s+/g, ' ').trim(); if (k && (v = uno(k))) n.nodeValue = n.nodeValue.replace(n.nodeValue.trim(), v); }
-      [raiz].concat([].slice.call(raiz.querySelectorAll('[aria-label],[title],option'))).forEach(function (e) {
-        ['aria-label', 'title'].forEach(function (a) { var x = e.getAttribute && e.getAttribute(a); if (x && (v = uno(x.trim()))) e.setAttribute(a, v); });
+      [raiz].concat([].slice.call(raiz.querySelectorAll('[aria-label],[title],option,optgroup'))).forEach(function (e) {
+        ['aria-label', 'title', 'label'].forEach(function (a) { var x = e.getAttribute && e.getAttribute(a); if (x && (v = uno(x.trim()))) e.setAttribute(a, v); });
       });
     }
     tr(document.body);

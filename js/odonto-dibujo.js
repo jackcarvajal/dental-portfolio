@@ -51,11 +51,12 @@
       return '<tr style="border-top:1px solid rgba(255,255,255,.08)"><td style="padding:6px 8px;font-weight:800">' + esc(x.fdi) + '</td><td style="padding:6px 8px">' + esc(x.indicacion || '—') +
         '</td><td style="padding:6px 8px">' + esc((x.material || '—') + (x.proceso ? ' · ' + x.proceso : '')) + '</td><td style="padding:6px 8px">' + esc(x.tono || '—') + '</td><td style="padding:6px 8px">' + esc(x.implante || '—') + '</td></tr>';
     }).join('');
-    var g = orden && orden.guia;
+    var g = orden && orden.guia, mo = orden && orden.modelo;
     return '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.86rem"><thead><tr style="text-align:left;color:#94a3b8">' +
       '<th style="padding:6px 8px">Diente</th><th style="padding:6px 8px">Indicación</th><th style="padding:6px 8px">Material</th><th style="padding:6px 8px">Tono</th><th style="padding:6px 8px">Implante</th></tr></thead><tbody>' +
       filas + '</tbody></table></div>' +
-      (g ? '<p style="margin-top:10px;font-size:.86rem"><strong>Guía quirúrgica:</strong> ' + esc(g.nombre || g.tipo) + ' · ' + esc([g.sistema, g.soporte, g.guiado, g.manga].filter(Boolean).join(' · ')) + '</p>' : '');
+      (g ? '<p style="margin-top:10px;font-size:.86rem"><strong>Guía quirúrgica:</strong> ' + esc(g.nombre || g.tipo) + ' · ' + esc([g.sistema, g.soporte, g.guiado, g.manga].filter(Boolean).join(' · ')) + '</p>' : '') +
+      (mo ? '<p style="margin-top:6px;font-size:.86rem"><strong>Modelo:</strong> ' + esc([mo.tipo, mo.articulador ? mo.articulador + (mo.version ? ' ' + mo.version : '') : 'sin articulador'].filter(Boolean).join(' · ')) + '</p>' : '');
   }
-  window.OdontoDibujo = { svg: svg, leyenda: leyenda, tabla: tabla, tiene: function (o) { return !!(o && (piezas(o).length || o.guia)); } };
+  window.OdontoDibujo = { svg: svg, leyenda: leyenda, tabla: tabla, tiene: function (o) { return !!(o && (piezas(o).length || o.guia || o.modelo)); } };
 })();

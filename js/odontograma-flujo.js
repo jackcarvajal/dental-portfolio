@@ -32,7 +32,8 @@
     var items = (x.items || []).filter(function (it) { return it && it.ind; });
     var cobrables = items.filter(function (it) { return !INFO[it.ind]; });
     var g = (x.guia && x.guia.tipo) ? x.guia : null;
-    var hay = cobrables.length || g;
+    var m = x.modelo || null;                                       // modelo pedido (tipo + articulación); se cotiza con el caso
+    var hay = cobrables.length || g || m;
     if (!hay && !activo) return;                                    // aún no se usa: no pisa un servicio ya elegido
     var total = 0, vistos = {}, cotizar = [];
     cobrables.forEach(function (it) {
@@ -52,6 +53,8 @@
     var partes = [];
     if (cobrables.length) partes.push('Diseño CAD por diente (' + cobrables.length + ' pieza' + (cobrables.length > 1 ? 's' : '') + ', FDI): ' + x.resumen);
     if (g) partes.push('Guía quirúrgica: ' + gNom + ' (' + [g.sistema, g.soporte, g.guiado, g.manga].filter(Boolean).join(' · ') + ')');
+    var mNom = m ? 'Modelo: ' + m.tipo + (m.articulador ? ' · ' + m.articulador + (m.version ? ' ' + m.version : '') : ' · sin articulador') : '';
+    if (m) { partes.push(mNom); cotizar.push('diseño del modelo'); }
     if (cotizar.length) partes.push('A cotizar: ' + cotizar.join(', '));
     STATE.categoriaId = 'cad_diseno'; STATE.categoriaKey = 'cad_diseno_odontograma'; STATE.categoriaNombre = 'Diseño CAD (por diente)';
     STATE.subtipoId = hay ? 'odontograma' : null;
@@ -60,7 +63,8 @@
     STATE.odontograma = items; STATE.guia = g;
     orden = hay ? { v: 1, nomenclatura: window.Dientes ? Dientes.preferido() : 'fdi', proceso: 'Diseño CAD',
       piezas: items.map(function (it) { return { fdi: +it.d, indicacion: it.ind, material: it.mat || null, codigo_exocad: it.cod || null, proceso: it.proc || null, tono: it.tono || null, implante: it.impl || null }; }),
-      guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null } : null } : null;
+      guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null } : null,
+      modelo: m } : null;
     activo = !!hay;
     var cc = document.getElementById('cantidad'); if (cc) cc.value = 1;
     // Archivos requeridos según lo marcado (implantes → scan body; férula/dentadura → mordida; si no, corona)
@@ -74,6 +78,7 @@
       var txt = [];
       if (cobrables.length) txt.push(T.unid(cobrables.length) + ': ' + mostrar(piezasFDI));
       if (g) txt.push(T.guia + ': ' + gNom);
+      if (m) txt.push(mNom);
       if (cotizar.length) txt.push(T.cot + ': ' + cotizar.join(', '));
       rp.textContent = hay ? txt.join(' · ') : T.nada;
     }
