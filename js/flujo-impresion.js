@@ -2192,7 +2192,7 @@
             // Construir mensaje de WhatsApp con datos de pago
             let texto = `*🖨️ ORDEN DE IMPRESIÓN 3D - PRODIGY*\n\n`;
             texto += `📋 *ID:* ${STATE.ordenId}\n`;
-            texto += `👤 *Cliente:* ${STATE.nombreCliente}\n`;
+            texto += `👤 *Cliente:* ${STATE.nombreCliente}${window.PRODIGY_CODIGO ? ' (' + window.PRODIGY_CODIGO + ')' : ''}\n`;
             texto += `📱 *WhatsApp:* ${STATE.whatsappCliente}\n`;
             texto += `🏙️ *Ciudad:* ${document.getElementById('ciudad').value}\n`;
             texto += `👤 *Paciente:* ${STATE.nombrePaciente}\n`;

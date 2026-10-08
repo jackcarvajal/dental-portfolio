@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-10c",
+  "version": "2026-10-10d",
   "categorias": [
     {
       "id": "inicio",
@@ -459,7 +459,9 @@
       "pasos": [
         "Cuando un doctor se registra, el sistema le asigna automáticamente un código **DR-####**.",
         "Ese código aparece en la orden de producción en lugar del nombre del doctor.",
-        "En **Clientes (Doctores)** ves el código, el contacto y cuántos casos lleva."
+        "En **Clientes (Doctores)** ves el código, el contacto y cuántos casos lleva.",
+        "**En los pedidos:** el doctor con sesión ve su código (DR-####) arriba de sus datos en los flujos de diseño, fresado e impresión, y el código va en el WhatsApp del pedido («Profesional: … (DR-0042)»). Así se relaciona con su número.",
+        "**Datos siempre al día:** los datos del doctor se llenan solos desde su cuenta. Si cambia su WhatsApp, ciudad o especialidad en un pedido, el flujo le pregunta si quiere guardarlos como predeterminados; si dice que sí, se actualiza su perfil (doctores_perfil)."
       ],
       "link": {
         "href": "clientes.html",

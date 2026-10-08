@@ -200,6 +200,10 @@
   tipo de trabajo de planificación); **«Guías y planificación (exoplan)»** después de toda la prótesis; fuera la caja «Diseño
   CAD · proceso de la orden»; «Copiar / Pegar / Limpiar» como opciones dentro del diagrama; guía sin «Ctrl/⌘» (texto claro);
   opciones en una sola línea con columnas automáticas según el ancho (menos scroll; en celular 2 columnas).
+- ✅ **Datos del doctor al día + código de cliente** (`js/datos-doctor.js`, flujos de diseño, fresado e impresión): con sesión,
+  el doctor ve su **código DR-####** arriba de sus datos y el código va en el WhatsApp del pedido. Si cambia WhatsApp, ciudad o
+  especialidad, se le pregunta si quiere guardarlos como predeterminados («Sí» actualiza su propio `doctores_perfil`, RLS
+  doctor_own_profile; «No» los usa solo en ese pedido y no vuelve a preguntar por ese valor). El equipo sin perfil no ve nada.
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 
