@@ -13,7 +13,8 @@
     21: [55, 7.2], 22: [61, 8.8], 23: [65.7, 12.3], 24: [69.3, 17.1], 25: [71.3, 22.3], 26: [72.4, 28.6], 27: [72.4, 37.2], 28: [72.4, 45.1],
     31: [54.6, 93.5], 32: [59.2, 92.2], 33: [63, 89.8], 34: [66.5, 85.3], 35: [68.7, 79.7], 36: [71.3, 71.8], 37: [72, 63.5], 38: [72.8, 55.5],
     41: [49.4, 93.5], 42: [44.6, 92.2], 43: [40.5, 89.8], 44: [36.8, 85.3], 45: [34.6, 79.7], 46: [33.5, 71.8], 47: [31.3, 63.5], 48: [30.5, 55.5] };
-  var COLOR = { 'Corona anatómica': '#D946A6', 'Cofia anatómica': '#00b3a4', 'Corona prensada': '#e0b23a', 'Corona cáscara de huevo (prov.)': '#a855f7', 'Overlay': '#8a95a3', 'Cofia': '#4fb477',
+  var COLOR = { 'Planificación de implantes': '#00d2ff', 'Plan de restauración': '#f0abfc', 'Diente ausente - plan de sustitución': '#c4b5fd', 'Diente de soporte para guía quirúrgica': '#5eead4',
+    'Corona anatómica': '#D946A6', 'Cofia anatómica': '#00b3a4', 'Corona prensada': '#e0b23a', 'Corona cáscara de huevo (prov.)': '#a855f7', 'Overlay': '#8a95a3', 'Cofia': '#4fb477',
     'Póntico anatómico': '#e05252', 'Póntico cáscara de huevo (prov.)': '#c084fc', 'Póntico reducido': '#e07a52', 'Póntico prensado': '#4aa3df', 'Mockup': '#e08a8a', 'Incrustación/Onlay': '#4fb477', 'Inlay de grosor mínimo': '#4aa3df',
     'Carilla': '#2f7fd0', 'Encerado anatómico': '#4fb477', 'Encerado reducido': '#5fbf86', 'Encerado póntico': '#6f6fc9', 'Dentadura completa': '#c0c7d0', 'Esqueléticas parciales': '#8a95a3',
     'Férula de descarga': '#00b8dd', 'Corona telescópica primaria': '#e07a52', 'Corona telescópica secundaria': '#c98a5a', 'Atache': '#00b8dd', 'Pilar de barra': '#e0b23a',
@@ -55,7 +56,7 @@
     return '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.86rem"><thead><tr style="text-align:left;color:#94a3b8">' +
       '<th style="padding:6px 8px">Diente</th><th style="padding:6px 8px">Indicación</th><th style="padding:6px 8px">Material</th><th style="padding:6px 8px">Tono</th><th style="padding:6px 8px">Implante</th></tr></thead><tbody>' +
       filas + '</tbody></table></div>' +
-      (g ? '<p style="margin-top:10px;font-size:.86rem"><strong>Guía quirúrgica:</strong> ' + esc(g.nombre || g.tipo) + ' · ' + esc([g.sistema, g.soporte, g.guiado, g.manga].filter(Boolean).join(' · ')) + '</p>' : '') +
+      (g ? '<p style="margin-top:10px;font-size:.86rem"><strong>' + (g.pide === 'plan' ? 'Planificación de implantes' : 'Guía quirúrgica') + ':</strong> ' + esc(g.nombre || g.tipo) + ' · ' + esc([g.sistema, g.soporte, g.guiado, g.manga].filter(Boolean).join(' · ')) + (g.dientes && g.dientes.length ? ' · dientes ' + esc(g.dientes.join(', ')) : '') + '</p>' : '') +
       (mo ? '<p style="margin-top:6px;font-size:.86rem"><strong>Modelo impreso:</strong> ' + esc(mo.resumen || [mo.tipo, mo.articulador || 'sin articulador', mo.articulador ? mo.version : ''].filter(Boolean).join(' · ')) + '</p>' : '');
   }
   window.OdontoDibujo = { svg: svg, leyenda: leyenda, tabla: tabla, tiene: function (o) { return !!(o && (piezas(o).length || o.guia || o.modelo)); } };

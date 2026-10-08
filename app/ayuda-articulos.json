@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-09e",
+  "version": "2026-10-09f",
   "categorias": [
     {
       "id": "inicio",
@@ -649,7 +649,8 @@
         "El pedido llega con el detalle en *Trabajo* (ej. «11 Corona anatómica (Zirconio); 21 …») y las piezas en **FDI** (campo *piezas*): así se ven en **Ficha del caso** y **Orden de producción**. Trabaja siempre con el número FDI.",
         "Si el doctor usa Universal (EE. UU.) o Palmer, en su pantalla y en el WhatsApp ve las dos: «#8, #9 (Universal) = FDI 11, 21». Equivalencias: **Soporte → Conversor de nomenclatura dental**.",
         "El odontograma del flujo de diseño es el de **exocad DentalDB 3.3**: cada indicación muestra solo los materiales que exocad permite (con sus imágenes) y el **proceso de fabricación** (fresadora 5 o 3 ejes, láser, impresión 3D). La ficha del caso muestra el material con su proceso.",
-        "Si el doctor marca **«¿Desea modelos impresos?» → Sí**, elige hueco (por defecto) o sólido, con o sin zócalo; **para dientes** troqueles zanahoria y/o adicionales; **para implantes** análogos y/o encía removible (se marcan solos si la orden lleva implantes); y articulador: impreso con el modelo (xSNAP, Snapculator, Artex print-click…) o montaje (Artex CR, Bio-Art, SAM, KaVo…). La referencia es opcional: si no la pone, el laboratorio usa la más adecuada para el caso. Su última elección queda por defecto. Llega en la orden y se cotiza con el caso."
+        "Si el doctor marca **«¿Desea modelos impresos?» → Sí**, elige hueco (por defecto) o sólido, con o sin zócalo; **para dientes** troqueles zanahoria y/o adicionales; **para implantes** análogos y/o encía removible (se marcan solos si la orden lleva implantes); y articulador: impreso con el modelo (xSNAP, Snapculator, Artex print-click…) o montaje (Artex CR, Bio-Art, SAM, KaVo…). La referencia es opcional: si no la pone, el laboratorio usa la más adecuada para el caso. Su última elección queda por defecto. Llega en la orden y se cotiza con el caso.",
+        "Guías quirúrgicas y planificación (exoplan): marca cada sitio con **Planificación de implantes** (grupo «Planificación (exoplan)», como en DentalDB 3.3). Abajo aparece la configuración del caso: **planificación + guía quirúrgica** o **solo planificación (sin guía)**, tipo (se sugiere por número de implantes), sistema, soporte, guiado, manga e impresión. Los dientes de apoyo se marcan con **Diente de soporte para guía quirúrgica**. **Plan de restauración** y **Diente ausente - plan de sustitución** son el diseño de sonrisa 3D (se cobra una vez por caso). Ya no están en «Otros servicios»."
       ]
     },
     {

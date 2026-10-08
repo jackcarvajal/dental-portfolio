@@ -154,6 +154,15 @@
   doctor los toque. Referencia del articulador opcional: por defecto «la más adecuada para el caso» (la elige el lab). La
   última elección del doctor queda por defecto (localStorage). La orden lleva `modelo.resumen` (español, para el lab).
   Arreglado: la lista de versión seguía visible en articuladores sin versiones (`.ff[hidden]`).
+- ✅ **Guías unificadas con el odontograma (exoplan, DentalDB 3.3)** (pedido de Alejandro, 8-oct): grupo «Planificación
+  (exoplan)» (RestoPlanning.Group) con los íconos reales de exocad: Planificación de implantes · Plan de restauración ·
+  Diente ausente - plan de sustitución · Diente de soporte para guía quirúrgica (nota de exocad). La banda de guías solo
+  aparece si hay dientes con «Planificación de implantes» y pregunta lo de exocad: **guía quirúrgica o solo planificación**;
+  tipo sugerido por nº de implantes (1 → guía 1 impl., 2–3 → sobredentadura, 4+ → híbrida / full arch), impresión solo en
+  PRODIGY. Flujo: la planificación se cobra con la guía (`cad_quirurgica`), el plan de restauración = sonrisa 3D una vez por
+  caso (`porCaso` con nombre), archivos requeridos = los de guía. «Planificación Quirúrgica» oculta en «Otros servicios»
+  (queda para cotizaciones viejas). Orden: `guia.pide`, `guia.dientes`, `guia.nota`. Arreglado: en EN/PT los valores de la
+  guía llegaban traducidos al lab (opciones sin `value`); ícono roto de «Diente adyacente».
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 

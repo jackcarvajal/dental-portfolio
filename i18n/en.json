@@ -8,6 +8,21 @@
 "/flujo-diseno"
 ],
 "textos": {
+"Planificación (exoplan)": "Planning (exoplan)",
+"Planificación de implantes": "Implant planning",
+"Plan de restauración": "Restorative plan",
+"Diente ausente - plan de sustitución": "Missing tooth - Replacement plan",
+"Diente de soporte para guía quirúrgica": "Supporting tooth for surgical guide",
+"— exoplan · se configura una vez para todo el caso": "— exoplan · set once for the whole case",
+"¿Qué necesita?": "What do you need?",
+"Planificación + guía quirúrgica": "Planning + surgical guide",
+"Solo planificación (sin guía)": "Planning only (no guide)",
+"Tipo": "Type",
+"Impresión de la guía": "Guide printing",
+"Solo diseño (STL)": "Design only (STL)",
+"Diseño + impresa (resina biocompatible)": "Design + printed (biocompatible resin)",
+"Configura la planificación y la guía abajo (exoplan).": "Set up the planning and the guide below (exoplan).",
+"¿Tu caso no es por diente? Alineadores, cubeta, férulas…": "Not a per-tooth case? Aligners, custom tray, splints…",
 "Para dientes": "For teeth",
 "Para implantes": "For implants",
 "Troqueles zanahoria": "Removable (carrot) dies",
@@ -1045,7 +1060,6 @@
 ", igual que en exocad DentalDB. El precio se calcula por diente en tiempo real.": ", just like in exocad DentalDB. The price is calculated per tooth in real time.",
 "Aún no has asignado indicaciones a los dientes.": "No indications assigned yet: tap a tooth on the chart.",
 "Íconos de indicaciones y materiales: exocad DentalDB® — se usan solo para que la orden hable el mismo idioma que el software de diseño.": "Indication and material icons: exocad DentalDB® — used only so the order speaks the same language as the design software.",
-"¿Tu caso no es por diente? Alineadores, sonrisa 3D, cubeta, guía quirúrgica…": "Not a per-tooth case? Aligners, 3D smile design, custom tray, surgical guide…",
 "Ver otros servicios": "See other services",
 "Nomenclatura dental": "Tooth numbering",
 "exocad® y DentalDB® son marcas registradas de exocad GmbH. Los íconos de indicaciones y materiales se usan solo para que tu orden coincida con el software de diseño (interoperabilidad). PRODIGY Lab Dental no está afiliado, patrocinado ni respaldado por exocad.": "exocad® and DentalDB® are registered trademarks of exocad GmbH. The indication and material icons are used only so your order matches the design software (interoperability). PRODIGY Lab Dental is not affiliated with, sponsored or endorsed by exocad.",
@@ -1182,6 +1196,14 @@
 [
 "^Subtotal · (\\d+) pieza\\(s\\)$",
 "Subtotal · $1 unit(s)"
+],
+[
+"^Guía: (.+) — dientes (.+)$",
+"Guide: $1 — teeth $2"
+],
+[
+"^Planificación: (.+) — dientes (.+)$",
+"Planning: $1 — teeth $2"
 ],
 [
 "^Modelo impreso: (.+) — se cotiza con el caso$",

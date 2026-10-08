@@ -16,9 +16,10 @@
   var PT = !EN && (function () { try { return localStorage.getItem('prd_lang') === 'pt'; } catch (e) { return false; } })();
   fr.src = '/odontograma.html?v=' + (C.v || '1') + '&lang=' + (EN ? 'en' : (PT ? 'pt' : 'es')) + '&nota=' + nota + (C.sitio ? '&sitio=' + C.sitio : '');
   var T = EN
-    ? { nada: 'No indications assigned yet: tap a tooth on the chart.', unid: function (n) { return n + (n === 1 ? ' tooth' : ' teeth'); }, cot: 'to be quoted', guia: 'Surgical guide', modelo: 'Printed model', mDis: 'printed model', otro: 'Selected service: ' }
-    : { nada: 'Aún no has asignado indicaciones a los dientes.', unid: function (n) { return n + (n === 1 ? ' pieza' : ' piezas'); }, cot: 'a cotizar', guia: 'Guía quirúrgica', modelo: 'Modelo impreso', mDis: 'modelo impreso', otro: 'Servicio elegido: ' };
-  var INFO = { 'Antagonista': 1, 'Diente adyacente': 1, 'Omitir en el puente': 1 };   // informativas: no se cobran
+    ? { nada: 'No indications assigned yet: tap a tooth on the chart.', unid: function (n) { return n + (n === 1 ? ' tooth' : ' teeth'); }, cot: 'to be quoted', guia: 'Surgical guide', plan: 'Implant planning', modelo: 'Printed model', mDis: 'printed model', otro: 'Selected service: ' }
+    : { nada: 'Aún no has asignado indicaciones a los dientes.', unid: function (n) { return n + (n === 1 ? ' pieza' : ' piezas'); }, cot: 'a cotizar', guia: 'Guía quirúrgica', plan: 'Planificación de implantes', modelo: 'Modelo impreso', mDis: 'modelo impreso', otro: 'Servicio elegido: ' };
+  // Informativas: no se cobran por diente (la planificación de implantes se cobra con la guía o la planificación del caso)
+  var INFO = { 'Antagonista': 1, 'Diente adyacente': 1, 'Omitir en el puente': 1, 'Planificación de implantes': 1, 'Diente de soporte para guía quirúrgica': 1 };
   var porArcada = C.porArcada || {}, porCaso = C.porCaso || {}, mapa = C.mapa || {}, guias = C.guias || {};
 
   function cat() { return (typeof MATERIAL_DATA_MUT !== 'undefined') ? MATERIAL_DATA_MUT : ((typeof MATERIAL_DATA !== 'undefined') ? MATERIAL_DATA : null); }
@@ -39,7 +40,7 @@
     cobrables.forEach(function (it) {
       var s = sub(mapa[it.ind]);
       if (!s) { if (cotizar.indexOf(it.ind) < 0) cotizar.push(it.ind); return; }
-      var clave = porArcada[it.ind] ? it.ind + (it.d < 30 ? '·sup' : '·inf') : (porCaso[it.ind] ? it.ind : it.d + '·' + it.ind);
+      var clave = porArcada[it.ind] ? it.ind + (it.d < 30 ? '·sup' : '·inf') : (porCaso[it.ind] ? (typeof porCaso[it.ind] === 'string' ? porCaso[it.ind] : it.ind) : it.d + '·' + it.ind);   // porCaso con nombre: varias indicaciones, un solo cobro
       if (vistos[clave]) return;
       vistos[clave] = 1; total += s.precio || 0;
     });
@@ -52,7 +53,7 @@
     piezasFDI = fdiLista(cobrables);
     var partes = [];
     if (cobrables.length) partes.push('Diseño CAD por diente (' + cobrables.length + ' pieza' + (cobrables.length > 1 ? 's' : '') + ', FDI): ' + x.resumen);
-    if (g) partes.push('Guía quirúrgica: ' + gNom + ' (' + [g.sistema, g.soporte, g.guiado, g.manga].filter(Boolean).join(' · ') + ')');
+    if (g) partes.push((g.pide === 'plan' ? 'Planificación de implantes: ' : 'Guía quirúrgica: ') + gNom + ' (' + [g.sistema, g.soporte, g.guiado, g.manga].filter(Boolean).join(' · ') + ')' + (g.dientes && g.dientes.length ? ' · dientes ' + g.dientes.join(', ') + ' (FDI)' : ''));
     var mNom = m ? 'Modelo impreso: ' + (m.resumen || [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ')) : '';
     if (m) { partes.push(mNom); cotizar.push('modelo impreso'); }
     if (cotizar.length) partes.push('A cotizar: ' + cotizar.join(', '));
@@ -63,21 +64,21 @@
     STATE.odontograma = items; STATE.guia = g;
     orden = hay ? { v: 1, nomenclatura: window.Dientes ? Dientes.preferido() : 'fdi', proceso: 'Diseño CAD',
       piezas: items.map(function (it) { return { fdi: +it.d, indicacion: it.ind, material: it.mat || null, codigo_exocad: it.cod || null, proceso: it.proc || null, tono: it.tono || null, implante: it.impl || null }; }),
-      guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null } : null,
+      guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null, pide: g.pide || 'guia', dientes: g.dientes || [], nota: g.nota || null } : null,
       modelo: m } : null;
     activo = !!hay;
     var cc = document.getElementById('cantidad'); if (cc) cc.value = 1;
     // Archivos requeridos según lo marcado (implantes → scan body; férula/dentadura → mordida; si no, corona)
     if (hay && typeof renderArchivosRequeridos === 'function') {
       var tiene = function (re) { return cobrables.some(function (it) { return re.test(it.ind) || (it.impl && re.test(it.impl)); }); };
-      var base = tiene(/Pilar|barra|Atache|Offset|aditamiento|Atornillado/i) ? 'corona_ator' : tiene(/Férula/) ? 'ferula' : tiene(/Carilla|Mockup|Encerado/) ? 'carilla' : 'corona';
+      var base = g ? 'guia_1' : tiene(/Pilar|barra|Atache|Offset|aditamiento|Atornillado/i) ? 'corona_ator' : tiene(/Férula/) ? 'ferula' : tiene(/Carilla|Mockup|Encerado/) ? 'carilla' : 'corona';
       try { renderArchivosRequeridos(base); } catch (e) {}
     }
     var rp = resumenEl();
     if (rp) {
       var txt = [];
       if (cobrables.length) txt.push(T.unid(cobrables.length) + ': ' + mostrar(piezasFDI));
-      if (g) txt.push(T.guia + ': ' + gNom);
+      if (g) txt.push((g.pide === 'plan' ? T.plan : T.guia) + ': ' + gNom + (g.dientes && g.dientes.length ? ' (' + mostrar(g.dientes.map(String)) + ')' : ''));
       if (m) txt.push(T.modelo + ': ' + (m.texto || mNom.replace(/^Modelo impreso: /, '')));
       if (cotizar.length) txt.push(T.cot + ': ' + cotizar.map(function (c) { return c === 'modelo impreso' ? T.mDis : c; }).join(', '));
       rp.textContent = hay ? txt.join(' · ') : T.nada;

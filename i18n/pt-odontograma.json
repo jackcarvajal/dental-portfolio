@@ -1,6 +1,20 @@
 {
  "_nota": "Portugués del odontograma (oct-2026). Indicaciones, grupos, implantes y materiales: nombres oficiales de exocad 3.3 (materialparameters-portuguese.xml).",
  "textos": {
+  "Planificación (exoplan)": "Planejamento (exoplan)",
+  "Planificación de implantes": "Planejamento de implante",
+  "Plan de restauración": "Plano de restauração",
+  "Diente ausente - plan de sustitución": "Dente ausente - Plano de substituição",
+  "Diente de soporte para guía quirúrgica": "Dente de suporte para guia cirúrgico",
+  "— exoplan · se configura una vez para todo el caso": "— exoplan · configura-se uma vez para todo o caso",
+  "¿Qué necesita?": "Do que precisa?",
+  "Planificación + guía quirúrgica": "Planejamento + guia cirúrgico",
+  "Solo planificación (sin guía)": "Só planejamento (sem guia)",
+  "Tipo": "Tipo",
+  "Impresión de la guía": "Impressão do guia",
+  "Solo diseño (STL)": "Só desenho (STL)",
+  "Diseño + impresa (resina biocompatible)": "Desenho + impresso (resina biocompatível)",
+  "Configura la planificación y la guía abajo (exoplan).": "Configure o planejamento e o guia abaixo (exoplan).",
   "Para dientes": "Para dentes",
   "Para implantes": "Para implantes",
   "Troqueles zanahoria": "Troquéis removíveis (cenoura)",
@@ -255,6 +269,14 @@
   [
    "^Subtotal · (\\d+) pieza\\(s\\)$",
    "Subtotal · $1 elemento(s)"
+  ],
+  [
+   "^Guía: (.+) — dientes (.+)$",
+   "Guia: $1 — dentes $2"
+  ],
+  [
+   "^Planificación: (.+) — dientes (.+)$",
+   "Planejamento: $1 — dentes $2"
   ],
   [
    "^Modelo impreso: (.+) — se cotiza con el caso$",
