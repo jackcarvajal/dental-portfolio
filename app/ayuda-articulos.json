@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-10b",
+  "version": "2026-10-10c",
   "categorias": [
     {
       "id": "inicio",
@@ -654,7 +654,8 @@
         "Si el doctor usa Universal (EE. UU.) o Palmer, en su pantalla y en el WhatsApp ve las dos: «#8, #9 (Universal) = FDI 11, 21». Equivalencias: **Soporte → Conversor de nomenclatura dental**.",
         "El odontograma del flujo de diseño es el de **exocad DentalDB 3.3**: cada indicación muestra solo los materiales que exocad permite (con sus imágenes) y el **proceso de fabricación** (fresadora 5 o 3 ejes, láser, impresión 3D). La ficha del caso muestra el material con su proceso.",
         "Si el doctor marca **«¿Desea modelos impresos?» → Sí**, elige hueco (por defecto) o sólido, con o sin zócalo; **para dientes** troqueles zanahoria y/o adicionales; **para implantes** análogos y/o encía removible (se marcan solos si la orden lleva implantes); y articulador: impreso con el modelo (xSNAP, Snapculator, Artex print-click…) o montaje (Artex CR, Bio-Art, SAM, KaVo…). La referencia es opcional: si no la pone, el laboratorio usa la más adecuada para el caso. Su última elección queda por defecto. Llega en la orden y se cotiza con el caso.",
-        "Guías y planificación de implantes: el doctor elige la indicación **Planificación de implantes** y justo debajo, en el mismo grupo, se abre la configuración (implante por sitio, sistema, arcada, abordaje) y la **Guía Quirúrgica**. Ver **Protocolos → Protocolo: planificación de implantes y guías quirúrgicas**."
+        "Guías y planificación de implantes: el doctor elige la indicación **Planificación de implantes** y justo debajo, en el mismo grupo, se abre la configuración (implante por sitio, sistema, arcada, abordaje) y la **Guía Quirúrgica**. Ver **Protocolos → Protocolo: planificación de implantes y guías quirúrgicas**.",
+        "**Barra interna (prótesis híbrida sobre implantes):** en Corona anatómica, Cofia anatómica, Póntico anatómico o reducido y Encerados aparece, bajo el material, «Barra interna» con los materiales que permite exocad 3.3 (Titanio, Titanio láser, Metal sinterizado, Metal sinterizado láser, Zirconio, PEEK). La barra se diseña dentro de la prótesis final (flujo split denture de exocad 3.3, como el iBar de Blender for Dental). **Diseño de sonrisa 3D** está junto a Mockup y se cobra una vez por caso."
       ]
     },
     {

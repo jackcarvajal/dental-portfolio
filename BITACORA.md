@@ -188,6 +188,13 @@
 - ✅ Fuera del grupo «Planificación (exoplan)» las indicaciones «Diente ausente - plan de sustitución» y «Diente de soporte para
   guía quirúrgica» (Alejandro: «sobran»). Quedan Planificación de implantes y Plan de restauración. La ficha del caso conserva
   sus colores para pedidos viejos.
+- ✅ **Barra interna** (Alejandro: «faltan opciones para hacer barra como la iBar de Blender», validado con exocad 3.3): en
+  WorkParamsDB 3.3 la pregunta «¿Barra de diseño?» + «¿Material para barra?» (TI, TI_L, NP, NP_L, ZI, PEEK) está en Corona
+  anatómica, Cofia anatómica, Póntico anatómico/reducido y Encerados. Ahí, bajo el material, «Barra interna» con esos materiales
+  (sin copiar la opción asistente/experto de exocad). Va en la orden (`barra_interna` por diente) y en la ficha. Flujo split
+  denture de 3.3: la barra se diseña dentro de la prótesis final.
+- ✅ «Plan de restauración» (Smile Creator de DentalDB) confundía en Planificación: pasa a «Pónticos y mockup» como **«Diseño de
+  sonrisa 3D»** (mismo precio sonrisa 3D, una vez por caso). En Planificación (exoplan) queda solo «Planificación de implantes».
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 

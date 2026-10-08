@@ -1,6 +1,10 @@
 {
  "_nota": "Portugués del odontograma (oct-2026). Indicaciones, grupos, implantes y materiales: nombres oficiales de exocad 3.3 (materialparameters-portuguese.xml).",
  "textos": {
+  "Diseño de sonrisa 3D": "Desenho de sorriso 3D",
+  "Barra interna": "Barra interna",
+  "Sin barra": "Sem barra",
+  "Prótesis híbrida sobre implantes: la barra se diseña dentro de la prótesis final.": "Prótese híbrida sobre implantes: a barra é desenhada dentro da prótese final.",
   "Configura la planificación": "Configure o planejamento",
   "Guía Quirúrgica — varios implantes": "Guia Cirúrgico — vários implantes",
   "Planeación preliminar — varios implantes": "Planejamento preliminar — vários implantes",
@@ -32,7 +36,6 @@
   "1 sitio": "1 local",
   "Planificación (exoplan)": "Planejamento (exoplan)",
   "Planificación de implantes": "Planejamento de implante",
-  "Plan de restauración": "Plano de restauração",
   "Tipo": "Tipo",
   "Impresión de la guía": "Impressão do guia",
   "Solo diseño (STL)": "Só desenho (STL)",

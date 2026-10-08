@@ -63,7 +63,7 @@
     STATE.subtipoPrecio = total;
     STATE.odontograma = items; STATE.guia = g;
     orden = hay ? { v: 1, nomenclatura: window.Dientes ? Dientes.preferido() : 'fdi', proceso: 'Diseño CAD',
-      piezas: items.map(function (it) { return { fdi: +it.d, indicacion: it.ind, material: it.mat || null, codigo_exocad: it.cod || null, proceso: it.proc || null, tono: it.tono || null, implante: it.impl || null }; }),
+      piezas: items.map(function (it) { return { fdi: +it.d, indicacion: it.ind, material: it.mat || null, codigo_exocad: it.cod || null, proceso: it.proc || null, tono: it.tono || null, implante: it.impl || null, barra_interna: it.barra || null }; }),
       guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null, pide: g.pide || 'guia', dientes: g.dientes || [], nota: g.nota || null, implantes: g.implantes || {}, arcada: g.arcada || null, abordaje: g.abordaje || null } : null,
       modelo: m } : null;
     activo = !!hay;

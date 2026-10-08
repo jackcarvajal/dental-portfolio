@@ -8,6 +8,10 @@
 "/flujo-diseno"
 ],
 "textos": {
+"Diseño de sonrisa 3D": "3D smile design",
+"Barra interna": "Inner bar",
+"Sin barra": "No bar",
+"Prótesis híbrida sobre implantes: la barra se diseña dentro de la prótesis final.": "Implant hybrid prosthesis: the bar is designed inside the final prosthesis.",
 "Configura la planificación": "Set up the planning",
 "Guía Quirúrgica — varios implantes": "Surgical Guide — multiple implants",
 "Planeación preliminar — varios implantes": "Preliminary planning — multiple implants",
@@ -38,7 +42,6 @@
 "1 sitio": "1 site",
 "Planificación (exoplan)": "Planning (exoplan)",
 "Planificación de implantes": "Implant planning",
-"Plan de restauración": "Restorative plan",
 "Tipo": "Type",
 "Impresión de la guía": "Guide printing",
 "Solo diseño (STL)": "Design only (STL)",
