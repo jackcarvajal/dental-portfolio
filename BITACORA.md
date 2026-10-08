@@ -207,6 +207,8 @@
 - ✅ Fuera **Corona prensada** y **Póntico prensado** (técnica de sobreinyección que no se trabaja; Alejandro: «quítala»). Guía del
   odontograma con el paso **Copiar, Pegar y Limpiar** (copiar un diente configurado y pegarlo en otro, o en varios con Ctrl).
   Desde aquí ya no se actualiza el artefacto del creador de órdenes: se valida en la web real.
+- ✅ **Espacio aprovechado:** con dos columnas, «Material» va debajo del diagrama (antes quedaba un hueco grande y el material
+  abajo de todo); en celular vuelve después de las indicaciones. «Diseño de sonrisa 3D» con el ícono de dentadura completa.
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 
