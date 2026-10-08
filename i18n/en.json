@@ -8,6 +8,19 @@
 "/flujo-diseno"
 ],
 "textos": {
+"¿Desea modelos impresos?": "Do you want printed models?",
+"Modelo": "Model",
+"Sólido": "Solid",
+"Hueco": "Hollow",
+"Zócalo": "Plinth",
+"Con zócalo": "With plinth",
+"Sin zócalo": "No plinth",
+"Troqueles": "Dies",
+"Sin troqueles": "No dies",
+"Troqueles removibles": "Removable dies",
+"Con análogos de implante": "With implant analogs",
+"Con encía removible": "With removable gingiva",
+"Articulador": "Articulator",
 "sin articulador": "no articulator",
 "Saltar al contenido": "Skip to content",
 "¿Ya escaneaste? Envíanos el archivo — nosotros diseñamos": "Already scanned? Send us the file — we do the design",
@@ -972,11 +985,7 @@
 "precio se suma": "price adds up",
 "en tu resumen.": "in your summary.",
 "Colores": "Shades",
-"Escaneado de la oclusión": "Occlusion scan",
-"Un solo modelo": "Single model",
-"Dos modelos en oclusión": "Two models in occlusion",
 "Escaneo intraoral": "Intraoral scan",
-"¿Desea que diseñemos el modelo?": "Should we design the model?",
 "Sí": "Yes",
 "· Material final:": "· Final material:",
 "— elige uno": "— choose one",
@@ -1088,18 +1097,11 @@
 "Espacio para cemento": "Cement gap",
 "Conector mínimo": "Minimum connector",
 "Fresa": "Milling tool",
-"Tipo de modelo": "Model type",
 "Articulación": "Articulation",
 "Versión": "Version",
 "Sin articulador (solo el modelo)": "No articulator (model only)",
 "Articulador impreso (se imprime con el modelo)": "Printed articulator (printed with the model)",
 "Montaje en articulador (virtual o físico)": "Articulator mounting (virtual or physical)",
-"Modelo de estudio (sólido)": "Study model (solid)",
-"Modelo con troqueles removibles": "Model with removable dies",
-"Modelo sin troqueles (dieless)": "Dieless model",
-"Modelo con análogos de implante": "Model with implant analogs",
-"Modelo con encía removible o flexible": "Model with removable or flexible gingiva",
-"Modelo Geller (carillas)": "Geller model (veneers)",
 "GEN2 · individual": "GEN2 · single",
 "Lite · ajuste estándar": "Lite · standard fit",
 "Lite · ajuste holgado": "Lite · loose fit",
@@ -1175,8 +1177,8 @@
 "Subtotal · $1 unit(s)"
 ],
 [
-"^Modelo: (.+) — se cotiza con el caso$",
-"Model: $1 — quoted with the case"
+"^Modelo impreso: (.+) — se cotiza con el caso$",
+"Printed model: $1 — quoted with the case"
 ]
 ]
 }

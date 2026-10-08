@@ -1,6 +1,19 @@
 {
  "_nota": "Portugués del odontograma (oct-2026). Indicaciones, grupos, implantes y materiales: nombres oficiales de exocad 3.3 (materialparameters-portuguese.xml).",
  "textos": {
+  "¿Desea modelos impresos?": "Deseja modelos impressos?",
+  "Modelo": "Modelo",
+  "Sólido": "Sólido",
+  "Hueco": "Oco",
+  "Zócalo": "Base",
+  "Con zócalo": "Com base",
+  "Sin zócalo": "Sem base",
+  "Troqueles": "Troquéis",
+  "Sin troqueles": "Sem troquéis",
+  "Troqueles removibles": "Troquéis removíveis",
+  "Con análogos de implante": "Com análogos de implante",
+  "Con encía removible": "Com gengiva removível",
+  "Articulador": "Articulador",
   "sin articulador": "sem articulador",
   "Corona anatómica": "Coroa anatômica",
   "Cofia anatómica": "Coroa reduzida",
@@ -84,11 +97,7 @@
   "precio se suma": "preço é somado",
   "en tu resumen.": "no seu resumo.",
   "Colores": "Cores",
-  "Escaneado de la oclusión": "Escaneamento da oclusão",
-  "Un solo modelo": "Um único modelo",
-  "Dos modelos en oclusión": "Dois modelos em oclusão",
   "Escaneo intraoral": "Escaneamento intraoral",
-  "¿Desea que diseñemos el modelo?": "Deseja que desenhemos o modelo?",
   "No": "Não",
   "Sí": "Sim",
   "· Material final:": "· Material final:",
@@ -188,18 +197,11 @@
   "Espacio para cemento": "Espaço para cimento",
   "Conector mínimo": "Conector mínimo",
   "Fresa": "Fresa",
-  "Tipo de modelo": "Tipo de modelo",
   "Articulación": "Articulação",
   "Versión": "Versão",
   "Sin articulador (solo el modelo)": "Sem articulador (só o modelo)",
   "Articulador impreso (se imprime con el modelo)": "Articulador impresso (impresso com o modelo)",
   "Montaje en articulador (virtual o físico)": "Montagem em articulador (virtual ou físico)",
-  "Modelo de estudio (sólido)": "Modelo de estudo (sólido)",
-  "Modelo con troqueles removibles": "Modelo com troquéis removíveis",
-  "Modelo sin troqueles (dieless)": "Modelo sem troquéis (dieless)",
-  "Modelo con análogos de implante": "Modelo com análogos de implante",
-  "Modelo con encía removible o flexible": "Modelo com gengiva removível ou flexível",
-  "Modelo Geller (carillas)": "Modelo Geller (facetas)",
   "GEN2 · individual": "GEN2 · individual",
   "Lite · ajuste estándar": "Lite · ajuste padrão",
   "Lite · ajuste holgado": "Lite · ajuste folgado",
@@ -248,8 +250,8 @@
    "Subtotal · $1 elemento(s)"
   ],
   [
-   "^Modelo: (.+) — se cotiza con el caso$",
-   "Modelo: $1 — orçado com o caso"
+   "^Modelo impreso: (.+) — se cotiza con el caso$",
+   "Modelo impresso: $1 — orçado com o caso"
   ]
  ]
 }

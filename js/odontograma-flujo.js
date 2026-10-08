@@ -16,8 +16,8 @@
   var PT = !EN && (function () { try { return localStorage.getItem('prd_lang') === 'pt'; } catch (e) { return false; } })();
   fr.src = '/odontograma.html?v=' + (C.v || '1') + '&lang=' + (EN ? 'en' : (PT ? 'pt' : 'es')) + '&nota=' + nota + (C.sitio ? '&sitio=' + C.sitio : '');
   var T = EN
-    ? { nada: 'No indications assigned yet: tap a tooth on the chart.', unid: function (n) { return n + (n === 1 ? ' tooth' : ' teeth'); }, cot: 'to be quoted', guia: 'Surgical guide', modelo: 'Model', mDis: 'model design', otro: 'Selected service: ' }
-    : { nada: 'Aún no has asignado indicaciones a los dientes.', unid: function (n) { return n + (n === 1 ? ' pieza' : ' piezas'); }, cot: 'a cotizar', guia: 'Guía quirúrgica', modelo: 'Modelo', mDis: 'diseño del modelo', otro: 'Servicio elegido: ' };
+    ? { nada: 'No indications assigned yet: tap a tooth on the chart.', unid: function (n) { return n + (n === 1 ? ' tooth' : ' teeth'); }, cot: 'to be quoted', guia: 'Surgical guide', modelo: 'Printed model', mDis: 'printed model', otro: 'Selected service: ' }
+    : { nada: 'Aún no has asignado indicaciones a los dientes.', unid: function (n) { return n + (n === 1 ? ' pieza' : ' piezas'); }, cot: 'a cotizar', guia: 'Guía quirúrgica', modelo: 'Modelo impreso', mDis: 'modelo impreso', otro: 'Servicio elegido: ' };
   var INFO = { 'Antagonista': 1, 'Diente adyacente': 1, 'Omitir en el puente': 1 };   // informativas: no se cobran
   var porArcada = C.porArcada || {}, porCaso = C.porCaso || {}, mapa = C.mapa || {}, guias = C.guias || {};
 
@@ -32,7 +32,7 @@
     var items = (x.items || []).filter(function (it) { return it && it.ind; });
     var cobrables = items.filter(function (it) { return !INFO[it.ind]; });
     var g = (x.guia && x.guia.tipo) ? x.guia : null;
-    var m = x.modelo || null;                                       // modelo pedido (tipo + articulación); se cotiza con el caso
+    var m = x.modelo || null;                                       // modelos impresos (sólido/hueco, zócalo, troqueles, articulador); se cotiza con el caso
     var hay = cobrables.length || g || m;
     if (!hay && !activo) return;                                    // aún no se usa: no pisa un servicio ya elegido
     var total = 0, vistos = {}, cotizar = [];
@@ -53,8 +53,8 @@
     var partes = [];
     if (cobrables.length) partes.push('Diseño CAD por diente (' + cobrables.length + ' pieza' + (cobrables.length > 1 ? 's' : '') + ', FDI): ' + x.resumen);
     if (g) partes.push('Guía quirúrgica: ' + gNom + ' (' + [g.sistema, g.soporte, g.guiado, g.manga].filter(Boolean).join(' · ') + ')');
-    var mNom = m ? 'Modelo: ' + [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ') : '';
-    if (m) { partes.push(mNom); cotizar.push('diseño del modelo'); }
+    var mNom = m ? 'Modelo impreso: ' + [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ') : '';
+    if (m) { partes.push(mNom); cotizar.push('modelo impreso'); }
     if (cotizar.length) partes.push('A cotizar: ' + cotizar.join(', '));
     STATE.categoriaId = 'cad_diseno'; STATE.categoriaKey = 'cad_diseno_odontograma'; STATE.categoriaNombre = 'Diseño CAD (por diente)';
     STATE.subtipoId = hay ? 'odontograma' : null;
@@ -78,8 +78,8 @@
       var txt = [];
       if (cobrables.length) txt.push(T.unid(cobrables.length) + ': ' + mostrar(piezasFDI));
       if (g) txt.push(T.guia + ': ' + gNom);
-      if (m) txt.push(T.modelo + ': ' + (m.texto || mNom.replace(/^Modelo: /, '')));
-      if (cotizar.length) txt.push(T.cot + ': ' + cotizar.map(function (c) { return c === 'diseño del modelo' ? T.mDis : c; }).join(', '));
+      if (m) txt.push(T.modelo + ': ' + (m.texto || mNom.replace(/^Modelo impreso: /, '')));
+      if (cotizar.length) txt.push(T.cot + ': ' + cotizar.map(function (c) { return c === 'modelo impreso' ? T.mDis : c; }).join(', '));
       rp.textContent = hay ? txt.join(' · ') : T.nada;
     }
     if (typeof calcularTotal === 'function') calcularTotal();

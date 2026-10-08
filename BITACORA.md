@@ -143,6 +143,11 @@
   Artex print-click, Dentag rotoclick, Dematec, Die Modellmacher, RYS D2A, iTero, Twister Ball, 4 pines) o montaje (Artex CR,
   Bio-Art A7 Plus, SAM, KaVo PROTARevo, Stratos 300, Denar, Panadent, Gamma, Gerber, Zirkonzahn…) con su versión. Va en la
   orden (`modelo`), en el resumen y en «A cotizar: diseño del modelo»; la ficha del caso lo muestra.
+- ✅ **Corrección de Alejandro:** la pregunta es **«¿Desea modelos impresos?»** → Sí → sólido/hueco · con/sin zócalo · troqueles
+  (removibles, análogos de implante, encía removible) · articulador (impreso o montaje) + versión. Mismos términos que el flujo de
+  impresión 3D. Se quitó **«Escaneado de la oclusión»** (un modelo / dos en oclusión / intraoral): en exocad solo dice qué
+  archivos cargar y aquí todos envían escaneo intraoral. El resumen sale completo en el idioma del doctor (EN/PT); la orden al
+  laboratorio sigue en español. En celular/tablet (≤1080 px) el odontograma ya no tiene scroll interno por columna.
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 
