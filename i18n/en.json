@@ -8,20 +8,31 @@
 "/flujo-diseno"
 ],
 "textos": {
+"Acciones": "Actions",
+"Planificación de Implantes": "Implant Planning",
+"Planificación": "Planning",
+"Tipo de guía": "Guide type",
+"¿Sobre qué se apoya la guía? *": "What does the guide rest on? *",
+"Sobre dientes": "On teeth",
+"Sobre la encía (sin dientes)": "On the gingiva (edentulous)",
+"Sobre el hueso (con colgajo)": "On bone (flap raised)",
+"Marca los dientes de apoyo con «Diente de soporte para guía quirúrgica».": "Mark the supporting teeth with «Supporting tooth for surgical guide».",
+"Toca en el odontograma los sitios de los implantes y elige la indicación «Planificación de implantes».": "Tap the implant sites on the chart and choose the «Implant planning» indication.",
+"Toca en el odontograma los sitios de los implantes": "Tap the implant sites on the chart",
+"La planificación se configura en «Acciones», junto al odontograma.": "Planning is set up under «Actions», next to the chart.",
+"marca los sitios": "mark the sites",
+"1 sitio": "1 site",
+"falta el soporte": "support missing",
+"Elige sobre qué se apoya la guía: dento, muco u óseo-soportada.": "Choose what the guide rests on: tooth-, mucosa- or bone-supported.",
 "Planificación (exoplan)": "Planning (exoplan)",
 "Planificación de implantes": "Implant planning",
 "Plan de restauración": "Restorative plan",
 "Diente ausente - plan de sustitución": "Missing tooth - Replacement plan",
 "Diente de soporte para guía quirúrgica": "Supporting tooth for surgical guide",
-"— exoplan · se configura una vez para todo el caso": "— exoplan · set once for the whole case",
-"¿Qué necesita?": "What do you need?",
-"Planificación + guía quirúrgica": "Planning + surgical guide",
-"Solo planificación (sin guía)": "Planning only (no guide)",
 "Tipo": "Type",
 "Impresión de la guía": "Guide printing",
 "Solo diseño (STL)": "Design only (STL)",
 "Diseño + impresa (resina biocompatible)": "Design + printed (biocompatible resin)",
-"Configura la planificación y la guía abajo (exoplan).": "Set up the planning and the guide below (exoplan).",
 "¿Tu caso no es por diente? Alineadores, cubeta, férulas…": "Not a per-tooth case? Aligners, custom tray, splints…",
 "Para dientes": "For teeth",
 "Para implantes": "For implants",
@@ -1204,6 +1215,14 @@
 [
 "^Planificación: (.+) — dientes (.+)$",
 "Planning: $1 — teeth $2"
+],
+[
+"^Sitios de implante: (.+)$",
+"Implant sites: $1"
+],
+[
+"^(\\d+) sitios$",
+"$1 sites"
 ],
 [
 "^Modelo impreso: (.+) — se cotiza con el caso$",

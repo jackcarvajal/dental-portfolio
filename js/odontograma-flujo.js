@@ -53,7 +53,7 @@
     piezasFDI = fdiLista(cobrables);
     var partes = [];
     if (cobrables.length) partes.push('Diseño CAD por diente (' + cobrables.length + ' pieza' + (cobrables.length > 1 ? 's' : '') + ', FDI): ' + x.resumen);
-    if (g) partes.push((g.pide === 'plan' ? 'Planificación de implantes: ' : 'Guía quirúrgica: ') + gNom + ' (' + [g.sistema, g.soporte, g.guiado, g.manga].filter(Boolean).join(' · ') + ')' + (g.dientes && g.dientes.length ? ' · dientes ' + g.dientes.join(', ') + ' (FDI)' : ''));
+    if (g) partes.push((g.pide === 'plan' ? 'Planificación de implantes: ' : 'Guía quirúrgica: ') + gNom + ' (' + [g.sistema, g.pide !== 'plan' ? (g.soporte || 'SOPORTE POR DEFINIR') : '', g.pines ? 'con pines de anclaje' : '', g.guiado, g.manga].filter(Boolean).join(' · ') + ')' + (g.dientes && g.dientes.length ? ' · dientes ' + g.dientes.join(', ') + ' (FDI)' : ''));
     var mNom = m ? 'Modelo impreso: ' + (m.resumen || [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ')) : '';
     if (m) { partes.push(mNom); cotizar.push('modelo impreso'); }
     if (cotizar.length) partes.push('A cotizar: ' + cotizar.join(', '));
@@ -64,7 +64,7 @@
     STATE.odontograma = items; STATE.guia = g;
     orden = hay ? { v: 1, nomenclatura: window.Dientes ? Dientes.preferido() : 'fdi', proceso: 'Diseño CAD',
       piezas: items.map(function (it) { return { fdi: +it.d, indicacion: it.ind, material: it.mat || null, codigo_exocad: it.cod || null, proceso: it.proc || null, tono: it.tono || null, implante: it.impl || null }; }),
-      guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null, pide: g.pide || 'guia', dientes: g.dientes || [], nota: g.nota || null } : null,
+      guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null, pide: g.pide || 'guia', dientes: g.dientes || [], nota: g.nota || null, pines: !!g.pines } : null,
       modelo: m } : null;
     activo = !!hay;
     var cc = document.getElementById('cantidad'); if (cc) cc.value = 1;

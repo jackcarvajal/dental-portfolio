@@ -163,6 +163,12 @@
   caso (`porCaso` con nombre), archivos requeridos = los de guía. «Planificación Quirúrgica» oculta en «Otros servicios»
   (queda para cotizaciones viejas). Orden: `guia.pide`, `guia.dientes`, `guia.nota`. Arreglado: en EN/PT los valores de la
   guía llegaban traducidos al lab (opciones sin `value`); ícono roto de «Diente adyacente».
+- ✅ **«Acciones» como DentalDB 3.3** (Alejandro: «abajo y aparte no se ve consecuente»): la banda de guías de abajo se
+  eliminó. Junto al odontograma (antes de «¿Desea modelos impresos?», mismo estilo) está **Acciones → Planificación de
+  Implantes · Guía Quirúrgica** con los íconos de DentalDB (ExoplanIcon / SurgicalGuide.xaml). La acción marca los dientes
+  seleccionados; quitarla limpia los sitios. **Soporte de la guía obligatorio** con botones (dento / muco / óseo-soportada +
+  pines de anclaje); dientes de apoyo marcados → dento. Sin soporte, la orden lleva «SOPORTE POR DEFINIR» (`guia.pines`).
+  exoplan 3.3 Chemnitz aún no es público (diapositiva «Confidential – Prototype»); lo público es exoplan 3.1 Rijeka.
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 

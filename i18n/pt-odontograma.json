@@ -1,20 +1,32 @@
 {
  "_nota": "Portugués del odontograma (oct-2026). Indicaciones, grupos, implantes y materiales: nombres oficiales de exocad 3.3 (materialparameters-portuguese.xml).",
  "textos": {
+  "Acciones": "Ações",
+  "Planificación de Implantes": "Planejamento de Implantes",
+  "Guía Quirúrgica": "Guia Cirúrgico",
+  "Planificación": "Planejamento",
+  "Tipo de guía": "Tipo de guia",
+  "¿Sobre qué se apoya la guía? *": "Sobre o que o guia se apoia? *",
+  "Sobre dientes": "Sobre dentes",
+  "Sobre la encía (sin dientes)": "Sobre a gengiva (desdentado)",
+  "Sobre el hueso (con colgajo)": "Sobre o osso (com retalho)",
+  "Marca los dientes de apoyo con «Diente de soporte para guía quirúrgica».": "Marque os dentes de apoio com «Dente de suporte para guia cirúrgico».",
+  "Toca en el odontograma los sitios de los implantes y elige la indicación «Planificación de implantes».": "Toque no odontograma os locais dos implantes e escolha a indicação «Planejamento de implante».",
+  "Toca en el odontograma los sitios de los implantes": "Toque no odontograma os locais dos implantes",
+  "La planificación se configura en «Acciones», junto al odontograma.": "O planejamento é configurado em «Ações», junto ao odontograma.",
+  "marca los sitios": "marque os locais",
+  "1 sitio": "1 local",
+  "falta el soporte": "falta o suporte",
+  "Elige sobre qué se apoya la guía: dento, muco u óseo-soportada.": "Escolha onde o guia se apoia: dento, muco ou ósseo-suportado.",
   "Planificación (exoplan)": "Planejamento (exoplan)",
   "Planificación de implantes": "Planejamento de implante",
   "Plan de restauración": "Plano de restauração",
   "Diente ausente - plan de sustitución": "Dente ausente - Plano de substituição",
   "Diente de soporte para guía quirúrgica": "Dente de suporte para guia cirúrgico",
-  "— exoplan · se configura una vez para todo el caso": "— exoplan · configura-se uma vez para todo o caso",
-  "¿Qué necesita?": "Do que precisa?",
-  "Planificación + guía quirúrgica": "Planejamento + guia cirúrgico",
-  "Solo planificación (sin guía)": "Só planejamento (sem guia)",
   "Tipo": "Tipo",
   "Impresión de la guía": "Impressão do guia",
   "Solo diseño (STL)": "Só desenho (STL)",
   "Diseño + impresa (resina biocompatible)": "Desenho + impresso (resina biocompatível)",
-  "Configura la planificación y la guía abajo (exoplan).": "Configure o planejamento e o guia abaixo (exoplan).",
   "Para dientes": "Para dentes",
   "Para implantes": "Para implantes",
   "Troqueles zanahoria": "Troquéis removíveis (cenoura)",
@@ -277,6 +289,14 @@
   [
    "^Planificación: (.+) — dientes (.+)$",
    "Planejamento: $1 — dentes $2"
+  ],
+  [
+   "^Sitios de implante: (.+)$",
+   "Locais de implante: $1"
+  ],
+  [
+   "^(\\d+) sitios$",
+   "$1 locais"
   ],
   [
    "^Modelo impreso: (.+) — se cotiza con el caso$",
