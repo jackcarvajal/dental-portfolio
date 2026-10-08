@@ -457,7 +457,8 @@
   // ── Modelo: tipo + articulación (articuladores de exocad 3.3: impresos con el modelo o montaje) ──────────────
   var ART_MODELO={"impreso":[["xSNAP",["GEN2 · 40 mm","GEN2 · 50 mm","GEN2 · 60 mm","GEN2 · individual","Basic · 40 mm","Basic · 50 mm","Basic · 60 mm","Lite · ajuste estándar","Lite · ajuste holgado","Lite · ajuste firme","TDM · ajuste estándar","TDM · ajuste holgado"]],["Vsevolod Snapculator",["V5.0","V5.0.1 · medio arco","V4.20","V3.6.1","V2.1","V2"]],["Amann Girrbach Artex print-click",["40 mm","60 mm"]],["Dentag rotoclick",["Estándar","Paralelo"]],["Dematec OkkluFixator",["Arco completo","Medio arco"]],["Die Modellmacher",["Arco completo","Medio arco"]],["RYS Universal D2A",["40 mm","60 mm"]],["Articulador iTero",["Arco completo","Arco completo con tope oclusal","Cuadrante"]],["Invent Dental Twister Ball",["Arco completo","Medio arco"]],["DentCare",[]],["Articulador de 4 pines",["Arco completo largo","Arco completo corto","Cuadrante"]]],"montaje":[["Amann Girrbach Artex CR",["Standard","Average","Individual","Adjustable","Flat Table","Ceramic","Gold"]],["Bio-Art A7 Plus",["Estándar","Ajustable"]],["SAM",["SAM3","SAM3 ajustable","SAM3 +15 ajustable","SAM 2P","SAM 2PX","SAM SE","SAM NEO"]],["KaVo PROTARevo",["5B","7","9"]],["Ivoclar Stratos 300",["Estándar","Ajustable","Guía incisal individual"]],["Denar Mark 330",[]],["Panadent",["PCH","PCH Kois Platform","PSH"]],["Gamma Dental Reference SL",["Estándar","Mesa azul","Mesa verde","Mesa naranja","Mesa blanca","Guía anterior individual"]],["Gerber Condylator 6",[]],["Zirkonzahn Arti PS1",[]],["FAG QuickMaster",[]],["Kranio CR ZFX",[]],["Art Daniel",["Completo G","Completo M","Completo P","Parcial G","Parcial M","Parcial P"]],["Harman OSH",["Batman","Occludator"]],["Futugama",[]],["Song Young Labo Mate 500",[]],["Maelzer CORSOART",[]],["Digital Variator",[]],["Otro (indicar en notas)",[]]]},TIPOS_MODELO=["Modelo de estudio (sólido)","Modelo con troqueles removibles","Modelo sin troqueles (dieless)","Modelo con análogos de implante","Modelo con encía removible o flexible","Modelo Geller (carillas)"];
   var modelo={disenar:false,tipo:TIPOS_MODELO[0],articulador:'',grupo:'',version:''};
-  function modeloDatos(){return modelo.disenar?{tipo:modelo.tipo,articulador:modelo.articulador||null,grupo:modelo.grupo||null,version:modelo.version||null}:null;}
+  function modeloTexto(){var D=window._odoT||{};return [modelo.tipo,modelo.articulador||'sin articulador',modelo.articulador?modelo.version:''].filter(Boolean).map(function(x){return D[x]||x;}).join(' · ');}
+  function modeloDatos(){return modelo.disenar?{tipo:modelo.tipo,articulador:modelo.articulador||null,grupo:modelo.grupo||null,version:modelo.version||null,texto:modeloTexto()}:null;}
   (function(){
     var yn=document.getElementById('modelq'),box=document.getElementById('modelopts');if(!yn||!box)return;
     var st=document.getElementById('m-tipo'),sa=document.getElementById('m-art'),sv=document.getElementById('m-var'),fv=document.getElementById('m-var-ff'),rs=document.getElementById('m-resumen');
@@ -471,7 +472,7 @@
       var lista=modelo.grupo?((ART_MODELO[modelo.grupo].filter(function(a){return a[0]===modelo.articulador;})[0]||[0,[]])[1]):[];
       if(lista.length){if(fv.hidden||sv.getAttribute('data-de')!==modelo.articulador){sv.innerHTML=lista.map(function(x){return op(x);}).join('');sv.setAttribute('data-de',modelo.articulador);}fv.hidden=false;modelo.version=sv.value;}
       else{fv.hidden=true;modelo.version='';}
-      rs.textContent=modelo.disenar?('Modelo: '+modelo.tipo+(modelo.articulador?' · '+modelo.articulador+(modelo.version?' '+modelo.version:''):' · sin articulador')+' — se cotiza con el caso'):'';
+      rs.textContent=modelo.disenar?('Modelo: '+[modelo.tipo,modelo.articulador||'sin articulador',modelo.articulador?modelo.version:''].filter(Boolean).join(' · ')+' — se cotiza con el caso'):'';
       emit();
     }
     [st,sa,sv].forEach(function(s){s.addEventListener('change',sync);});
@@ -507,9 +508,12 @@
   var L = (/[?&]lang=(en|pt)\b/.exec(q) || [])[1];
   if (!L) return;
   document.documentElement.lang = L;
-  fetch(L === 'en' ? '/i18n/en.json' : '/i18n/pt-odontograma.json?v=20261009').then(function (r) { return r.json(); }).then(function (D) {
+  fetch(L === 'en' ? '/i18n/en.json' : '/i18n/pt-odontograma.json?v=20261009b').then(function (r) { return r.json(); }).then(function (D) {
     var T = D.textos || {}, P = (D.patrones || []).map(function (p) { return [new RegExp(p[0]), p[1]]; });
-    function uno(k) { if (T[k]) return T[k]; for (var i = 0; i < P.length; i++) if (P[i][0].test(k)) return k.replace(P[i][0], P[i][1]); return null; }
+    window._odoT = T;
+    // Lo que captura un patrón se traduce por trozos « · » (el más largo que exista en el diccionario: «GEN2 · individual»)
+    function trozos(s) { var p = String(s || '').split(' · '), o = [], i = 0, j, k; while (i < p.length) { for (j = p.length; j > i; j--) { k = p.slice(i, j).join(' · '); if (T[k] || j === i + 1) { o.push(T[k] || k); i = j; break; } } } return o.join(' · '); }
+    function uno(k) { if (T[k]) return T[k]; for (var i = 0; i < P.length; i++) if (P[i][0].test(k)) { var r = P[i][1]; return k.replace(P[i][0], function () { var a = arguments; return r.replace(/\$(\d)/g, function (_, n) { return trozos(a[+n]); }); }); } return null; }
     function tr(raiz) {
       if (!raiz || raiz.nodeType !== 1) return;
       var w = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT), n, k, v;
