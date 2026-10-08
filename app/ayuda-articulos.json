@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-09g",
+  "version": "2026-10-10a",
   "categorias": [
     {
       "id": "inicio",
@@ -10,6 +10,11 @@
       "id": "casos",
       "nombre": "Casos y producción",
       "icono": "fa-teeth"
+    },
+    {
+      "id": "protocolos",
+      "nombre": "Protocolos",
+      "icono": "fa-book-medical"
     },
     {
       "id": "equipo",
@@ -644,13 +649,12 @@
       "para": "Todo el equipo",
       "pasos": [
         "En el flujo de diseño (sección 2) el doctor ve un **odontograma estilo exocad DentalDB**: toca cada diente y le asigna **indicación** (corona, póntico, carilla, pilar, férula…) y **material**. El precio se suma por diente; férulas, dentaduras y barras se cobran una vez por arcada.",
-        "Las guías quirúrgicas (exoPlan) se eligen abajo del odontograma: tipo, sistema de implante, soporte, guiado y manga.",
         "Lo que no es por diente (alineadores, sonrisa 3D, cubeta…) está en **«Otros servicios»**, debajo. Gana la última elección del doctor.",
         "El pedido llega con el detalle en *Trabajo* (ej. «11 Corona anatómica (Zirconio); 21 …») y las piezas en **FDI** (campo *piezas*): así se ven en **Ficha del caso** y **Orden de producción**. Trabaja siempre con el número FDI.",
         "Si el doctor usa Universal (EE. UU.) o Palmer, en su pantalla y en el WhatsApp ve las dos: «#8, #9 (Universal) = FDI 11, 21». Equivalencias: **Soporte → Conversor de nomenclatura dental**.",
         "El odontograma del flujo de diseño es el de **exocad DentalDB 3.3**: cada indicación muestra solo los materiales que exocad permite (con sus imágenes) y el **proceso de fabricación** (fresadora 5 o 3 ejes, láser, impresión 3D). La ficha del caso muestra el material con su proceso.",
         "Si el doctor marca **«¿Desea modelos impresos?» → Sí**, elige hueco (por defecto) o sólido, con o sin zócalo; **para dientes** troqueles zanahoria y/o adicionales; **para implantes** análogos y/o encía removible (se marcan solos si la orden lleva implantes); y articulador: impreso con el modelo (xSNAP, Snapculator, Artex print-click…) o montaje (Artex CR, Bio-Art, SAM, KaVo…). La referencia es opcional: si no la pone, el laboratorio usa la más adecuada para el caso. Su última elección queda por defecto. Llega en la orden y se cotiza con el caso.",
-        "Guías quirúrgicas y planificación (exoplan): como en DentalDB, junto al odontograma está **Acciones** → **Planificación de Implantes** y **Guía Quirúrgica**. Selecciona los sitios y pulsa «Planificación de Implantes» (o marca cada diente con la indicación «Planificación de implantes»). Con «Guía Quirúrgica» se elige **sobre qué se apoya (dento, muco u óseo-soportada) — obligatorio**, pines de anclaje, tipo (sugerido por número de implantes), guiado, manga e impresión. Si se marcan dientes con «Diente de soporte para guía quirúrgica», queda dento-soportada. Si falta el soporte, la orden llega con «SOPORTE POR DEFINIR». «Plan de restauración» y «Diente ausente - plan de sustitución» son el diseño de sonrisa 3D (una vez por caso)."
+        "Guías y planificación de implantes: **Acciones → Planificación de Implantes / Guía Quirúrgica** junto al odontograma (como DentalDB). Ver **Protocolos → Protocolo: planificación de implantes y guías quirúrgicas**."
       ]
     },
     {
@@ -694,6 +698,87 @@
         "Arriba sale en verde si el monto **coincide** con el abono esperado (50%) o con el total, y en rojo si no.",
         "**Usar en la nota de confirmación** copia lo leído a la nota.",
         "La IA puede equivocarse: confirma siempre con el extracto del banco antes de aprobar el pago."
+      ]
+    },
+    {
+      "id": "prot-guias",
+      "cat": "protocolos",
+      "titulo": "Protocolo: planificación de implantes y guías quirúrgicas",
+      "resumen": "Del pedido a la guía: qué le pedimos al doctor, qué se decide en la planificación y qué aprueba él. Basado en consensos ITI y EAO y en estudios clínicos.",
+      "para": "Diseño y planificación",
+      "kw": "guia quirurgica exoplan codiagnostix cbct dicom planificacion implante aprobacion soporte anillas",
+      "pasos": [
+        "**Qué le pedimos al doctor (pedido):** los sitios de implante en el odontograma (Acciones → Planificación de Implantes), el sistema de implante y, si ya lo tiene, Ø × largo por sitio; si la arcada tiene dientes o es edéntula total, y el abordaje si ya lo decidió. **No se le pide** el apoyo de la guía, las anillas ni el tipo de guiado: eso lo decide la planificación y él lo aprueba.",
+        "**Archivos (revisar antes de planificar):** CBCT en DICOM de la arcada completa, con separador de carrillo y sin contacto oclusal (cortes de 0,5 mm, ~150 µm), más escaneo intraoral de las dos arcadas y la mordida. **Edéntulo total:** doble CBCT. Primero el paciente con la prótesis puesta y marcada (mínimo 4 marcadores vestibulares y 4 palatinos de ~3 mm), luego la prótesis sola. La prótesis debe asentar bien; si no, se rebasa. El CBCT se pide solo cuando aporta a la decisión (guías EAO 2012 y AAOMR 2012).",
+        "**Viabilidad (hasta 24 h):** revisar la calidad del CBCT (movimiento, artefactos de metal), el hueso disponible y las estructuras: nervio dentario inferior, agujero mentoniano, seno maxilar y raíces vecinas. Si falta algo o el CBCT no sirve, se le dice al doctor antes de planificar.",
+        "**Unir CBCT y escaneo:** alinear por superficies dentales y revisar el ajuste en varios cortes. Este paso es crítico para la guía (Flügge 2017). Si hay mucho metal o pocos dientes, usar marcadores radiopacos. El flujo totalmente digital es tan preciso como el convencional en pacientes parcialmente edéntulos (Lin 2020).",
+        "**Planificar desde la prótesis:** primero la restauración (encerado o diseño) y después el implante. Por sitio se define el implante (marca, Ø y largo), la posición 3D, la profundidad respecto al hueso y al tejido blando, y el eje según la salida del tornillo o la corona.",
+        "**Margen de seguridad:** en promedio, la cirugía guiada estática se desvía 1,2 mm en la entrada, 1,5 mm en el ápice y 3,5° de ángulo. Se deja **al menos 2 mm** a nervios y estructuras críticas (Tahmaseb 2018, consenso ITI). En edéntulos totales el desvío es mayor que en parcialmente edéntulos.",
+        "**Apoyo de la guía (lo decide la planificación):** sobre dientes siempre que haya dientes suficientes, porque es el apoyo más preciso. Sobre mucosa en edéntulos sin reducción ósea, siempre con pines de fijación. Sobre hueso cuando hay colgajo o reducción ósea (Raico Gallardo 2017).",
+        "**Tipo de guiado:** por defecto, guía de guiado completo, más precisa que la guía piloto o la mano alzada (Younes 2018; De Santis 2019). Guía piloto solo si el cirujano la pide o la anatomía lo exige.",
+        "**Anillas y llaves:** según el kit guiado del cirujano (en PRODIGY las anillas Neodent están incluidas). Menos holgura entre fresa y anilla es menos desvío: llave más alta y fresa más corta (Schneider 2015). Las guías impresas sin anilla metálica también permiten una colocación precisa con guiado completo (Oh 2021).",
+        "**Reporte para aprobación:** por cada sitio, corte transversal y panorámico, implante y medidas, distancia a estructuras, apoyo de la guía, anillas, fresas y secuencia.",
+        "**Aprobación del doctor:** no se diseña ni se fabrica nada sin su aprobación escrita (WhatsApp o portal). Incluye hasta 2 rondas de cambios. La planificación aprobada es una decisión clínica del doctor.",
+        "**Después de aprobar:** diseño de la guía (ventanas de inspección, grosor, fijación) y luego el **Protocolo de fabricación de guías y modelos impresos**."
+      ],
+      "notas": [
+        "**Referencias:** Tahmaseb A, et al. Clin Oral Implants Res. 2018;29(Suppl 16):416-435 (doi 10.1111/clr.13346) · Tahmaseb A, et al. Int J Oral Maxillofac Implants. 2014;29(Suppl):25-42 (doi 10.11607/jomi.2014suppl.g1.2) · Harris D, et al. Clin Oral Implants Res. 2012;23(11):1243-1253 (doi 10.1111/j.1600-0501.2012.02441.x) · Tyndall DA, et al. Oral Surg Oral Med Oral Pathol Oral Radiol. 2012;113(6):817-826 (doi 10.1016/j.oooo.2012.03.005) · Raico Gallardo YN, et al. Clin Oral Implants Res. 2017;28(5):602-612 (doi 10.1111/clr.12841) · Younes F, et al. J Clin Periodontol. 2018;45(6):721-732 (doi 10.1111/jcpe.12897) · De Santis D, et al. Biomed Res Int. 2019:9023548 (doi 10.1155/2019/9023548) · Flügge T, et al. Clin Oral Implants Res. 2017;28(9):1113-1118 (doi 10.1111/clr.12925) · Lin CC, et al. J Clin Med. 2020;9(4):980 (doi 10.3390/jcm9040980) · Schneider D, et al. Clin Oral Implants Res. 2015;26(3):320-325 (doi 10.1111/clr.12327) · Oh KC, et al. Materials. 2021;14(3):615 (doi 10.3390/ma14030615)."
+      ]
+    },
+    {
+      "id": "prot-fabricacion",
+      "cat": "protocolos",
+      "titulo": "Protocolo: fabricación de guías quirúrgicas y modelos impresos",
+      "resumen": "Impresión, lavado, poscurado, anillas, verificación, esterilización y empaque de guías; grosor de pared en modelos huecos.",
+      "para": "Producción (impresión 3D)",
+      "kw": "impresion 3d guia quirurgica resina poscurado lavado esterilizacion autoclave anillas modelo hueco solido",
+      "pasos": [
+        "**Material:** solo resina para guías quirúrgicas biocompatible (clase IIa según su fabricante), dentro de su vida útil. Seguir las instrucciones del fabricante (IFU) para imprimir, lavar, poscurar y esterilizar.",
+        "**Impresión:** soportes lejos de las superficies de apoyo y de los orificios de las anillas, con la capa que indique la IFU. En un estudio, la impresión DLP fue más precisa que la SLA y el fresado en el alojamiento de la anilla, y el grosor de capa (50 o 100 µm) no influyó (Seidel 2025).",
+        "**Lavado y poscurado:** alcohol isopropílico y luz UV con los tiempos de la IFU. En un estudio in vitro, 10 min de poscurado rindieron igual que tiempos mayores, 5 min dieron menos dureza, y esperar hasta 72 h para el posproceso no empeoró el resultado (Packaeser 2025).",
+        "**Anillas:** las del kit del cirujano (en PRODIGY, Neodent incluidas), al ras y firmes. Comprobar que la llave o fresa entra sin juego.",
+        "**Verificación:** asentar la guía en el modelo impreso. No debe balancearse, las ventanas de inspección deben hacer contacto y los orificios deben estar limpios. Si no asienta, no se despacha.",
+        "**Esterilización:** solo con el método que permita la resina. El autoclave (134 °C, 4 min) deformó 4 de 5 resinas evaluadas (González-Barnadas 2025) y aumentó la desviación del alojamiento de la anilla (Seidel 2025). Hay que verificar el ajuste después y decirle al doctor qué método usar.",
+        "**Modelos impresos:** huecos o sólidos según el pedido. La precisión de un modelo hueco depende de la impresora y del grosor de pared (Yurdakurban 2024). Regla interna: usar el grosor de pared validado en nuestra impresora; si un modelo con troqueles o análogos no queda estable hueco, hacerlo sólido y avisar.",
+        "**Rotulado y empaque:** bolsa sellada con paciente, número de caso, sitios FDI, sistema de implante, anillas y método de esterilización indicado, junto con el reporte de la planificación aprobada."
+      ],
+      "notas": [
+        "**Referencias:** Seidel A, et al. Bioengineering. 2025;12(8):799 (doi 10.3390/bioengineering12080799) · Packaeser MG, et al. J Compos Sci. 2025;9(10):553 (doi 10.3390/jcs9100553) · González-Barnadas A, et al. J Funct Biomater. 2025;16(8):284 (doi 10.3390/jfb16080284) · Yurdakurban E, et al. Australas Orthod J. 2024;40:51-62 (doi 10.2478/aoj-2024-0023)."
+      ]
+    },
+    {
+      "id": "prot-diseno-cad",
+      "cat": "protocolos",
+      "titulo": "Protocolo: diseño CAD de restauraciones (exocad)",
+      "resumen": "Recepción, parámetros por material, espacio de cemento, revisión antes de enviar y aprobación del doctor.",
+      "para": "Diseño",
+      "kw": "diseño cad exocad parametros cemento grosor minimo conector margen oclusion contactos",
+      "pasos": [
+        "**Recepción:** confirmar que estén completos los escaneos (preparación, antagonista y mordida), que los márgenes se vean, y la indicación y el material del odontograma. Si falta algo, pedirlo antes de diseñar.",
+        "**Parámetros:** los de exocad para cada indicación y material, que el doctor ve bajo el material (grosor mínimo, espacio para cemento, conector, fresa). Nunca bajar los mínimos del fabricante del material.",
+        "**Espacio de cemento:** el valor programado cambia el ajuste marginal (Kale 2016). Usar el de la configuración PRODIGY validada con nuestra fresadora y material; no cambiarlo caso a caso.",
+        "**Revisión antes de enviar:** margen cerrado, contactos proximales, oclusión con el antagonista sin interferencias, grosores y conectores por encima del mínimo, eje de inserción y perfil de emergencia en implantes.",
+        "**Aprobación:** si el doctor pidió ver el diseño (o es carilla, sonrisa o full arch), mandarle capturas y esperar su aprobación antes de fabricar.",
+        "**Entrega:** archivo para CAM o STL con el nombre del caso, registrado en la ficha."
+      ],
+      "notas": [
+        "**Referencia:** Kale E, et al. Effect of cement space on the marginal fit of CAD-CAM-fabricated monolithic zirconia crowns. J Prosthet Dent. 2016;116(6):890-895 (doi 10.1016/j.prosdent.2016.05.006)."
+      ]
+    },
+    {
+      "id": "pedir-guia",
+      "cat": "clientes",
+      "titulo": "Cómo pedir una guía quirúrgica o una planificación de implantes",
+      "resumen": "Qué marcar en el odontograma, qué archivos enviar y cómo se aprueba la planificación.",
+      "para": "Doctores (clientes)",
+      "kw": "guia quirurgica planificacion implantes pedir cbct dicom edentulo aprobar",
+      "pasos": [
+        "En el flujo de diseño, toca en el odontograma los sitios de los implantes y pulsa **Acciones → Planificación de Implantes**. Si también quieres la guía, pulsa **Guía Quirúrgica**.",
+        "Indica el **sistema de implante** y, si ya lo tienes, el **Ø × largo** de cada sitio. Si no, te lo sugerimos en la planificación.",
+        "Indica si la arcada **tiene dientes** o es **edéntula total**, porque cambia lo que hay que enviar.",
+        "**Archivos:** CBCT (DICOM) sin contacto oclusal, con separador de carrillo y cortes de 0,5 mm (~150 µm), más escaneo intraoral de las dos arcadas con la mordida. **Edéntulo total:** dos CBCT, uno con la prótesis marcada puesta y otro de la prótesis sola.",
+        "Revisamos el CBCT (viabilidad) y planificamos la posición, la profundidad y el implante según la prótesis. Te enviamos la planificación para que la **apruebes o pidas cambios**. No se fabrica nada sin tu aprobación.",
+        "Con tu aprobación diseñamos la guía, con el apoyo, las anillas y la fijación adecuados a tu caso, y la fabricamos."
       ]
     }
   ]

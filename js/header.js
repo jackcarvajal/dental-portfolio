@@ -1056,7 +1056,7 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
       '• Fresado 5 ejes: Amann Girrbach 🇩🇪 + XTCERA + VHF (zirconia Ivoclar/Vita, PMMA, titanio ±10µm)\n' +
       '• Impresión 3D resina biocompatible: NextDent, SprintRay, Anycubic, Phrozen\n' +
       '• Alineadores invisibles: setup Exocad Ortho, STLs por etapa\n' +
-      '• Guías quirúrgicas: CoDiagnostiX, todas las marcas de implantes\n' +
+      '• Guías quirúrgicas y planificación de implantes (CoDiagnostiX, exoplan, RealGuide, BlueSkyPlan), todas las marcas de implantes. PROTOCOLO: el doctor marca los sitios en el odontograma del flujo de diseño (Acciones → Planificación de Implantes / Guía Quirúrgica) y envía CBCT en DICOM (sin contacto oclusal, separador de carrillo, cortes 0,5 mm ~150 micras) + escaneo intraoral de ambas arcadas con mordida; edéntulo total: doble CBCT (prótesis marcada en boca y prótesis sola). Indica el sistema de implante y, si lo tiene, Ø × largo; si no, se sugiere en la planificación. Revisamos viabilidad del CBCT, planificamos posición, profundidad e implante según la prótesis (margen de seguridad de 2 mm a estructuras) y el doctor APRUEBA o pide cambios antes de diseñar y fabricar. El apoyo de la guía (dientes, mucosa o hueso), las anillas y el guiado se definen en la planificación, no los elige el doctor al pedir.\n' +
       '• Soporte técnico XTCERA y escáner Alistar Sensa\n' +
       '• Escaneo intraoral a domicilio: zona norte Bogotá\n' +
       '• Hornos sinterizado: Dentsply Sirona, Vita, Ivoclar Programat\n\n' +

@@ -15,7 +15,7 @@ import { NEGOCIO, MARCA, SITIO, TIPOS, cors, cfg, adminH, claveValida, usuarioDe
 
 /* ── CONFIG (único bloque que cambia entre repos) ── */
 const ARTICULOS_URL = '/app/ayuda-articulos.json';                        // null si el sitio no tiene Centro de ayuda
-const ARTICULOS_CLIENTE = ['reportar-problema', 'aln-cliente-subir', 'seguimiento-doctor'];
+const ARTICULOS_CLIENTE = ['reportar-problema', 'aln-cliente-subir', 'seguimiento-doctor', 'pedir-guia'];
 const NEGOCIO_DESC = 'laboratorio dental digital en Bogotá, Colombia (diseño CAD, fresado, impresión 3D y alineadores)';
 const WA_TEXTO = '+57 321 281 6716 (https://wa.me/573212816716)';
 const CONOCIMIENTO_PUBLICO = `

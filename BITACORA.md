@@ -169,6 +169,17 @@
   seleccionados; quitarla limpia los sitios. **Soporte de la guía obligatorio** con botones (dento / muco / óseo-soportada +
   pines de anclaje); dientes de apoyo marcados → dento. Sin soporte, la orden lleva «SOPORTE POR DEFINIR» (`guia.pines`).
   exoplan 3.3 Chemnitz aún no es público (diapositiva «Confidential – Prototype»); lo público es exoplan 3.1 Rijeka.
+- ✅ **Pedido de guía alineado al protocolo** (Alejandro: «el soporte se evalúa en el diseño; importa el implante, el lugar,
+  la profundidad y lo sugerido; todo se evalúa en la planificación y él aprueba»): fuera del pedido el apoyo, pines, guiado y
+  manga. Se pide: sitios, sistema de implante, **Ø × largo por sitio (opcional, si no lo sugerimos)**, **¿arcada con dientes
+  o edéntula?** (cambia archivos: 1 CBCT + escaneo / doble CBCT — `ODO_CFG.archivosGuia`, nueva lista `guia_edentulo`) y
+  abordaje opcional; se muestra el flujo viabilidad → planificación → aprobación → diseño/fabricación. Orden: `guia.implantes`,
+  `guia.arcada`, `guia.abordaje`. El traductor ahora traduce `placeholder`.
+- ✅ **Protocolos en el Centro de ayuda** (categoría nueva «Protocolos»): planificación de implantes y guías (ITI/EAO/AAOMR,
+  margen 2 mm, apoyo por precisión, guiado completo, anillas, registro CBCT–escaneo, aprobación), fabricación de guías y
+  modelos (DLP, poscurado, esterilización, grosor de pared) y diseño CAD (parámetros, cemento, revisión). 15 referencias
+  verificadas en Crossref (DOI). Artículo para doctores «Cómo pedir una guía…» visible para el asistente de soporte
+  (`ARTICULOS_CLIENTE`). La IA de la web (header.js, `?v=20261010` en todas las páginas) explica el mismo protocolo.
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 

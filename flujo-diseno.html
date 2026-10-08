@@ -434,8 +434,8 @@ window.submitOrden     = window.submitOrden      || function(){};
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 
     <script>window._headerConfig = { noCta: true };</script>
-    <link rel="preload" href="js/header.js?v=20261009" as="script">
-<script src="js/header.js?v=20261009"></script>
+    <link rel="preload" href="js/header.js?v=20261010" as="script">
+<script src="js/header.js?v=20261010"></script>
 <main id="main-content">
 <div style="background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.15);border-radius:10px;padding:10px 16px;margin:16px 0;display:flex;align-items:center;gap:10px;font-size:.78rem;">
   <i class="fas fa-circle-question" style="color:#00d2ff;" aria-hidden="true"></i>
@@ -1569,7 +1569,7 @@ window.submitOrden     = window.submitOrden      || function(){};
             guia_1: [
                 {id:'dicom-1',       label:'DICOM / TAC — Sin contacto oclusal · cortes 0.5mm · 150μ', ext:'ZIP', req:true, tip:'Para 5+ implantes con prótesis removible se requieren 2 TAC — consulta por WhatsApp'},
                 {id:'stl-intraoral', label:'STL intraoral — 2 maxilares',                               ext:'PLY/STL', req:true},
-                {id:'datos-impl',    label:'Sistema implante a usar: fabricante + Ø + longitud + conexión (todos los implantes)', ext:'Texto en Notas', req:true, tip:'Si no tienes definido el implante, podemos recomendar uno según el caso'}
+                {id:'datos-impl',    label:'Sistema implante a usar: fabricante + Ø + longitud + conexión (todos los implantes)', ext:'Texto en Notas', req:true, tip:'Indícalo en el odontograma (Acciones → Planificación de Implantes) o en Notas. Si no lo tienes definido, lo sugerimos en la planificación'}
             ],
             // ── FÉRULAS ──
             ferula: [
@@ -1590,6 +1590,14 @@ window.submitOrden     = window.submitOrden      || function(){};
             ]
         };
         ARCHIVOS_REQUERIDOS.guia_1_impresa = ARCHIVOS_REQUERIDOS.guia_1;
+        // Edéntulo total: protocolo de doble CBCT (el mismo de /guias-quirurgicas)
+        ARCHIVOS_REQUERIDOS.guia_edentulo = [
+            {id:'dicom-1',       label:'CBCT 1 — Paciente con la prótesis y marcadores (sentado · cortes 0.5mm · 150μ)', ext:'ZIP', req:true, tip:'Mín. 4 marcadores vestibulares + 4 palatinos (~3 mm, gutapercha o resina); la prótesis debe asentar bien (rebasar si no)'},
+            {id:'dicom-2',       label:'CBCT 2 — Solo la prótesis marcada (exposición baja)', ext:'ZIP', req:true},
+            {id:'stl-intraoral', label:'STL — maxilares y prótesis escaneada', ext:'PLY/STL', req:true},
+            {id:'datos-impl',    label:'Sistema implante a usar: fabricante + Ø + longitud + conexión (todos los implantes)', ext:'Texto en Notas', req:true, tip:'Indícalo en el odontograma (Acciones → Planificación de Implantes) o en Notas. Si no lo tienes definido, lo sugerimos en la planificación'},
+            {id:'foto-prot',     label:'Foto de la prótesis con los marcadores', ext:'JPG', req:false}
+        ];
 
         function renderArchivosRequeridos(subtipoId) {
             const cont = document.getElementById('archivos-requeridos-servicio');
@@ -1597,7 +1605,7 @@ window.submitOrden     = window.submitOrden      || function(){};
             const archivos = ARCHIVOS_REQUERIDOS[subtipoId];
             if (!archivos || !archivos.length) { cont.innerHTML = ''; return; }
 
-            const esGuiaImplante  = ['guia_1','guia_1_impresa'].includes(subtipoId);
+            const esGuiaImplante  = ['guia_1','guia_1_impresa','guia_edentulo'].includes(subtipoId);
             const esAbutmentBarra = ['corona_ator','pilar_pers','barra','all_on_4'].includes(subtipoId);
 
             cont.innerHTML = `
@@ -2547,8 +2555,8 @@ const lineWompi = document.getElementById('line-wompi');
     <script>ProdigyMultiViewer.init('pmv-diseno');</script>
     <script src="js/flujo-uploader.js?v=20260924"></script>
     <script src="js/dientes.js?v=20261008b"></script>
-    <script>window.ODO_CFG = {"v": "20261009j", "mapa": {"Plan de restauración": ["cad_quirurgica", "sonrisa_3d"], "Diente ausente - plan de sustitución": ["cad_quirurgica", "sonrisa_3d"], "Corona anatómica": ["cad_fija", "corona"], "Cofia anatómica": ["cad_fija", "corona"], "Corona prensada": ["cad_fija", "corona"], "Cofia": ["cad_fija", "corona"], "Corona cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Póntico cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Overlay": ["cad_fija", "inlay"], "Incrustación/Onlay": ["cad_fija", "inlay"], "Inlay de grosor mínimo": ["cad_fija", "inlay"], "Carilla": ["cad_fija", "carilla"], "Póntico anatómico": ["cad_fija", "puente"], "Póntico reducido": ["cad_fija", "puente"], "Póntico prensado": ["cad_fija", "puente"], "Mockup": ["cad_fija", "waxup"], "Encerado anatómico": ["cad_fija", "encerado"], "Encerado reducido": ["cad_fija", "encerado"], "Encerado póntico": ["cad_fija", "encerado"], "Dentadura completa": ["cad_removible", "sobredentadura"], "Esqueléticas parciales": ["cad_removible", "esqueleto"], "Férula de descarga": ["cad_removible", "ferula"], "Corona telescópica primaria": ["cad_fija", "corona"], "Corona telescópica secundaria": ["cad_fija", "corona"], "Atache": ["cad_implantes", "pilar_pers"], "Pilar de barra": ["cad_implantes", "barra"], "Segmento de barra": ["cad_implantes", "barra"], "Subestructura Offset": ["cad_implantes", "pilar_pers"], "Pilar personalizado (abutment)": ["cad_implantes", "pilar_pers"], "Pilar de aditamiento": ["cad_implantes", "pilar_pers"]}, "porArcada": {"Férula de descarga": 1, "Dentadura completa": 1, "Esqueléticas parciales": 1, "Pilar de barra": 1, "Segmento de barra": 1}, "porCaso": {"Plan de restauración": "plan_sonrisa", "Diente ausente - plan de sustitución": "plan_sonrisa"}, "guias": {"guia_1": ["cad_quirurgica", "guia_1"], "guia_sobredent": ["cad_quirurgica", "guia_sobredent"], "guia_hibrida": ["cad_quirurgica", "guia_hibrida"], "guia_reborde": ["cad_quirurgica", "guia_reborde"], "planif_unit": ["cad_quirurgica", "planif_unit"], "planif_fullarch": ["cad_quirurgica", "planif_fullarch"], "sonrisa_3d": ["cad_quirurgica", "sonrisa_3d"], "guia_1_impresa": ["cad_quirurgica", "guia_1_impresa"], "guia_sobredent_impresa": ["cad_quirurgica", "guia_sobredent_impresa"], "guia_hibrida_impresa": ["cad_quirurgica", "guia_hibrida_impresa"], "guia_reborde_impresa": ["cad_quirurgica", "guia_reborde_impresa"]}};</script>
-    <script src="js/odontograma-flujo.js?v=20261009j"></script>
+    <script>window.ODO_CFG = {"v": "20261009k", "archivosGuia": {"dientes": "guia_1", "edentulo": "guia_edentulo"}, "mapa": {"Plan de restauración": ["cad_quirurgica", "sonrisa_3d"], "Diente ausente - plan de sustitución": ["cad_quirurgica", "sonrisa_3d"], "Corona anatómica": ["cad_fija", "corona"], "Cofia anatómica": ["cad_fija", "corona"], "Corona prensada": ["cad_fija", "corona"], "Cofia": ["cad_fija", "corona"], "Corona cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Póntico cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Overlay": ["cad_fija", "inlay"], "Incrustación/Onlay": ["cad_fija", "inlay"], "Inlay de grosor mínimo": ["cad_fija", "inlay"], "Carilla": ["cad_fija", "carilla"], "Póntico anatómico": ["cad_fija", "puente"], "Póntico reducido": ["cad_fija", "puente"], "Póntico prensado": ["cad_fija", "puente"], "Mockup": ["cad_fija", "waxup"], "Encerado anatómico": ["cad_fija", "encerado"], "Encerado reducido": ["cad_fija", "encerado"], "Encerado póntico": ["cad_fija", "encerado"], "Dentadura completa": ["cad_removible", "sobredentadura"], "Esqueléticas parciales": ["cad_removible", "esqueleto"], "Férula de descarga": ["cad_removible", "ferula"], "Corona telescópica primaria": ["cad_fija", "corona"], "Corona telescópica secundaria": ["cad_fija", "corona"], "Atache": ["cad_implantes", "pilar_pers"], "Pilar de barra": ["cad_implantes", "barra"], "Segmento de barra": ["cad_implantes", "barra"], "Subestructura Offset": ["cad_implantes", "pilar_pers"], "Pilar personalizado (abutment)": ["cad_implantes", "pilar_pers"], "Pilar de aditamiento": ["cad_implantes", "pilar_pers"]}, "porArcada": {"Férula de descarga": 1, "Dentadura completa": 1, "Esqueléticas parciales": 1, "Pilar de barra": 1, "Segmento de barra": 1}, "porCaso": {"Plan de restauración": "plan_sonrisa", "Diente ausente - plan de sustitución": "plan_sonrisa"}, "guias": {"guia_1": ["cad_quirurgica", "guia_1"], "guia_sobredent": ["cad_quirurgica", "guia_sobredent"], "guia_hibrida": ["cad_quirurgica", "guia_hibrida"], "guia_reborde": ["cad_quirurgica", "guia_reborde"], "planif_unit": ["cad_quirurgica", "planif_unit"], "planif_fullarch": ["cad_quirurgica", "planif_fullarch"], "sonrisa_3d": ["cad_quirurgica", "sonrisa_3d"], "guia_1_impresa": ["cad_quirurgica", "guia_1_impresa"], "guia_sobredent_impresa": ["cad_quirurgica", "guia_sobredent_impresa"], "guia_hibrida_impresa": ["cad_quirurgica", "guia_hibrida_impresa"], "guia_reborde_impresa": ["cad_quirurgica", "guia_reborde_impresa"]}};</script>
+    <script src="js/odontograma-flujo.js?v=20261009k"></script>
 <div id="fd-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:13px 22px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;opacity:0;transition:all .35s;pointer-events:none;max-width:400px;text-align:left;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);backdrop-filter:blur(8px);"></div>
 <script>
 let _fdToastT;

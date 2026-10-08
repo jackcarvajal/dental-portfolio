@@ -132,10 +132,15 @@
   .sopgrid button b{font-size:.84rem;color:var(--ink)}
   .sopgrid button small{font-size:.7rem;color:var(--ink-dim)}
   .sopgrid button[aria-checked="true"]{border-color:var(--green);background:var(--panel-hi);box-shadow:inset 0 0 0 1px var(--green)}
-  .gchk{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--ink-soft);cursor:pointer}
-  .gchk input{width:16px;height:16px;flex:none;accent-color:#D946A6}
+  .sopgrid.sop2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gimpl{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+  .gimpl:empty{display:none}
+  .gimp-r{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--ink-soft)}
+  .gimp-r span{min-width:2.4em;font-weight:700;color:var(--ink)}
+  .gimp-r input{flex:1;min-width:0}
+  .accflujo{margin:0;padding:8px 12px 8px 30px;border:1px dashed var(--line);border-radius:10px;font-size:.76rem;line-height:1.6;color:var(--ink-soft)}
+  .accflujo[hidden]{display:none}
   .acciones .matfinal{font-size:.78rem}
-  .acciones .matfinal.falta{color:#f5a524;font-weight:600}
   #g-resumen{margin-top:8px}
   /* MODO EMBED (dentro de iframe en flujo-diseno): oculta header + columna derecha propia */
   .odo-embed .pghead,.odo-embed .col.r{display:none!important}
@@ -213,25 +218,25 @@
       <button type="button" class="accbtn" id="acc-plan" aria-pressed="false" aria-controls="acc-plan-opts"><span class="ic" id="acc-plan-ic"></span><span>Planificación de Implantes</span><span class="accs" id="acc-plan-s"></span></button>
       <div class="modelopts accopts" id="acc-plan-opts" hidden>
         <p class="accnota" id="g-sitios"></p>
+        <div class="gimpl" id="g-impl"></div>
         <div class="ff"><label for="g-sistema">Sistema de implante</label><select class="fsel" id="g-sistema"></select></div>
+        <div class="ff"><label for="g-abordaje">Abordaje</label><select class="fsel" id="g-abordaje"><option value="">Lo define la planificación</option><option value="Sin colgajo (flapless)">Sin colgajo (flapless)</option><option value="Con colgajo">Con colgajo</option></select></div>
+        <div class="gsop"><span class="gsop-t" id="g-arc-t">¿La arcada a operar tiene dientes?</span>
+          <div class="sopgrid sop2" id="g-arcada" role="radiogroup" aria-labelledby="g-arc-t">
+            <button type="button" role="radio" aria-checked="false" data-a="con_dientes"><b>Con dientes</b><small>1 CBCT + escaneo intraoral</small></button>
+            <button type="button" role="radio" aria-checked="false" data-a="edentulo"><b>Edéntulo total</b><small>2 CBCT con la prótesis marcada</small></button>
+          </div>
+        </div>
         <div class="ff" id="g-plan-ff"><label for="g-plantipo">Planificación</label><select class="fsel" id="g-plantipo"></select></div>
       </div>
       <button type="button" class="accbtn" id="acc-guia" aria-pressed="false" aria-controls="acc-guia-opts"><span class="ic" id="acc-guia-ic"></span><span>Guía Quirúrgica</span><span class="accs" id="acc-guia-s"></span></button>
       <div class="modelopts accopts" id="acc-guia-opts" hidden>
-        <div class="gsop"><span class="gsop-t" id="g-sop-t">¿Sobre qué se apoya la guía? *</span>
-          <div class="sopgrid" id="g-soporte" role="radiogroup" aria-labelledby="g-sop-t">
-            <button type="button" role="radio" aria-checked="false" data-s="Dento-soportada"><b>Dento-soportada</b><small>Sobre dientes</small></button>
-            <button type="button" role="radio" aria-checked="false" data-s="Muco-soportada"><b>Muco-soportada</b><small>Sobre la encía (sin dientes)</small></button>
-            <button type="button" role="radio" aria-checked="false" data-s="Óseo-soportada"><b>Óseo-soportada</b><small>Sobre el hueso (con colgajo)</small></button>
-          </div>
-          <label class="gchk"><input type="checkbox" id="g-pines"> Con pines de anclaje</label>
-          <p class="accnota" id="g-apoyo" hidden>Marca los dientes de apoyo con «Diente de soporte para guía quirúrgica».</p>
-        </div>
         <div class="ff"><label for="g-tipo">Tipo de guía</label><select class="fsel" id="g-tipo"></select></div>
-        <div class="ff"><label for="g-guiado">Guiado</label><select class="fsel" id="g-guiado"><option value="Totalmente guiada">Totalmente guiada</option><option value="Piloto">Piloto</option><option value="Semi-guiada">Semi-guiada</option></select></div>
-        <div class="ff"><label for="g-manga">Manga / Sleeve</label><select class="fsel" id="g-manga"><option value="Con manga metálica">Con manga metálica</option><option value="Sin manga (llaves de fresado)">Sin manga (llaves de fresado)</option></select></div>
         <div class="ff" id="g-imp-ff"><label for="g-imp">Impresión de la guía</label><select class="fsel" id="g-imp"><option value="">Solo diseño (STL)</option><option value="_impresa">Diseño + impresa (resina biocompatible)</option></select></div>
+        <p class="accnota">El apoyo de la guía (dientes, mucosa o hueso), las anillas y la fijación se definen en la planificación según tu caso, y tú los apruebas antes de fabricar.</p>
+        <p class="accnota" id="g-anillas">Anillas Neodent incluidas; para otras casas, envía tus anillas.</p>
       </div>
+      <ol class="accflujo" id="g-flujo" hidden><li>Revisamos el CBCT (viabilidad)</li><li>Planificamos posición, profundidad e implante según la prótesis</li><li>Apruebas o pides cambios</li><li id="g-flujo-4"></li></ol>
       <p class="matfinal" id="g-resumen"></p>
     </div>
     <div class="modelq"><span>¿Desea modelos impresos?</span><div class="yn" id="modelq"><button type="button" data-m="no" aria-pressed="true">No</button><button type="button" data-m="si">Sí</button></div></div>
@@ -374,50 +379,57 @@
     tb.innerHTML='<div class="totrow"><span>Subtotal · '+n+' pieza(s)</span><b>'+cop(sub)+'</b></div><div class="totrow small"><span>Abono 50% (inicio)</span><span>'+cop(Math.round(sub/2))+'</span></div><div class="totrow small"><span>Saldo (contra entrega)</span><span>'+cop(sub-Math.round(sub/2))+'</span></div>';}
 
   var estado={},seleccion=new Set(),clip=null,proceso="Diseño CAD";
-  // Acciones de exoplan, como en DentalDB 3.3: «Planificación de Implantes» y «Guía Quirúrgica». Los sitios se marcan en el
-  // odontograma con la indicación «Planificación de implantes» (la acción marca los dientes seleccionados). El tipo se sugiere
-  // por número de implantes. El soporte (dento / muco / óseo) es obligatorio para la guía: el laboratorio lo necesita.
-  // Precio: MATERIAL_DATA.cad_quirurgica (lo resuelve el flujo).
+  // Acciones de exoplan, como en DentalDB 3.3: «Planificación de Implantes» y «Guía Quirúrgica». Al pedir solo se indica lo
+  // que el laboratorio necesita (sitios, sistema e implante sugerido, arcada con dientes o edéntula, abordaje opcional).
+  // El apoyo de la guía, las anillas, la fijación y el guiado se deciden en la planificación y el doctor los aprueba
+  // (protocolo: app/ayuda → Protocolos). El tipo de guía/planificación se sugiere por número de implantes (precio).
   var GUIA_TIPOS={guia:[["guia_1","Guía Quirúrgica — 1 implante"],["guia_sobredent","Guía Sobredentadura (2 impl.)"],["guia_hibrida","Guía Híbrida 4 impl."],["guia_reborde","Regularización de reborde"]],
     plan:[["planif_unit","Planeación preliminar — unitario"],["planif_fullarch","Planeación preliminar — Full Arch"]]};
   var SISTEMAS=["— A definir con el doctor —","Nobel Biocare","Straumann","MegaGen AnyOne/AnyRidge","Neodent","Zimmer Biomet","Dentium","Osstem","BioHorizons","BEGO","Zimvie","Otro"];
-  var PLAN_IND='Planificación de implantes',SOP_IND='Diente de soporte para guía quirúrgica';
-  var guia={tipo:"",tipoNom:"",pide:"",sistema:"",soporte:null,pines:false,guiado:null,manga:null,dientes:[],nota:""};
+  var PLAN_IND='Planificación de implantes';
+  var guia={tipo:"",tipoNom:"",pide:"",sistema:"",implantes:{},arcada:"",abordaje:"",dientes:[],nota:"",soporte:null,guiado:null,manga:null};
   function setupGuia(){
     function $(id){return document.getElementById(id);}
     var box=$('acciones');if(!box)return;
-    var bP=$('acc-plan'),bG=$('acc-guia'),oP=$('acc-plan-opts'),oG=$('acc-guia-opts'),gt=$('g-tipo'),pt=$('g-plantipo'),gi=$('g-imp'),gs=$('g-soporte'),gp=$('g-pines');
-    var AC=/[?&]sitio=ac\b/.test(location.search),plan=false,conGuia=false,sop=null,tocG=false,tocP=false,tocS=false;
-    if(AC){var fi=$('g-imp-ff');if(fi)fi.parentNode.removeChild(fi);gi=null;}   // Alejandro CAD/CAM: solo diseño, sin reborde
+    var bP=$('acc-plan'),bG=$('acc-guia'),oP=$('acc-plan-opts'),oG=$('acc-guia-opts'),gt=$('g-tipo'),pt=$('g-plantipo'),gi=$('g-imp'),ga=$('g-arcada'),gl=$('g-impl');
+    var AC=/[?&]sitio=ac\b/.test(location.search),plan=false,conGuia=false,tocG=false,tocP=false,tocA=false,pintados=null;
+    if(AC){['g-imp-ff','g-anillas'].forEach(function(id){var e=$(id);if(e)e.parentNode.removeChild(e);});gi=null;}   // Alejandro CAD/CAM: solo diseño
     function ico(ic,c){return ic?'<svg viewBox="'+ic.vb+'" width="26" height="26" fill="'+c+'" aria-hidden="true">'+ic.p+'</svg>':'';}
     $('acc-plan-ic').innerHTML=ico(INDICON.ImplantPlanningTooth,'#f2836b');$('acc-guia-ic').innerHTML=ico(INDICON.SurgicalGuide,'#4fc77a');
     function ops(l){return l.map(function(t){return '<option value="'+t[0]+'">'+t[1]+'</option>';}).join('');}
     gt.innerHTML=ops(GUIA_TIPOS.guia.filter(function(t){return !(AC&&t[0]==='guia_reborde');}));pt.innerHTML=ops(GUIA_TIPOS.plan);
     $('g-sistema').innerHTML=SISTEMAS.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');
     function nom(l,v){return (GUIA_TIPOS[l].filter(function(t){return t[0]===v;})[0]||['',''])[1];}
-    function con(ind){return Object.keys(estado).filter(function(f){return estado[f]&&estado[f].ind===ind;}).map(Number).sort(function(a,b){return a-b;});}
+    function sitios(){return Object.keys(estado).filter(function(f){return estado[f]&&estado[f].ind===PLAN_IND;}).map(Number).sort(function(a,b){return a-b;});}
+    // Una fila por sitio para el implante sugerido (Ø × largo); se conserva lo escrito
+    function filas(d){var k=d.join(',');if(k===pintados)return;pintados=k;
+      gl.innerHTML=d.map(function(f){return '<label class="gimp-r"><span>'+_lbl(f)+'</span><input type="text" class="fsel" data-f="'+f+'" maxlength="40" placeholder="Ø × largo (ej. 4.3 × 11.5)" aria-label="Implante sugerido '+_lbl(f)+'"></label>';}).join('');
+      [].forEach.call(gl.querySelectorAll('input'),function(i){var f=i.getAttribute('data-f');i.value=guia.implantes[f]||'';
+        i.addEventListener('input',function(){if(i.value.trim())guia.implantes[f]=i.value.trim();else delete guia.implantes[f];});i.addEventListener('change',sync);});}
     function leer(){
-      var d=con(PLAN_IND),apoyo=con(SOP_IND),n=d.length;guia.dientes=d;
+      var d=sitios(),n=d.length;guia.dientes=d;
       if(n)plan=true;if(!plan)conGuia=false;
-      bP.setAttribute('aria-pressed',plan);bG.setAttribute('aria-pressed',conGuia);oP.hidden=!plan;oG.hidden=!conGuia;$('g-plan-ff').hidden=conGuia;
+      bP.setAttribute('aria-pressed',plan);bG.setAttribute('aria-pressed',conGuia);oP.hidden=!plan;oG.hidden=!conGuia;$('g-plan-ff').hidden=conGuia;$('g-flujo').hidden=!plan;
+      filas(d);Object.keys(guia.implantes).forEach(function(f){if(d.indexOf(+f)<0)delete guia.implantes[f];});
+      // Si hay otros dientes trabajados en la misma arcada, la arcada tiene dientes
+      if(!tocA&&n){var arc=function(f){return +f<30?1:2;},ar=d.map(arc);
+        if(Object.keys(estado).some(function(f){var e=estado[f];return e&&e.ind&&e.ind!==PLAN_IND&&ar.indexOf(arc(f))>=0;}))guia.arcada='con_dientes';}
+      [].forEach.call(ga.querySelectorAll('button'),function(b){b.setAttribute('aria-checked',b.getAttribute('data-a')===guia.arcada?'true':'false');});
       if(!tocG)gt.value=n>=4?'guia_hibrida':(n>=2?'guia_sobredent':'guia_1');
       if(!tocP)pt.value=n>=4?'planif_fullarch':'planif_unit';
-      if(!tocS&&apoyo.length)sop='Dento-soportada';   // dientes de apoyo marcados → dento-soportada
-      [].forEach.call(gs.querySelectorAll('button'),function(b){b.setAttribute('aria-checked',b.getAttribute('data-s')===sop?'true':'false');});
-      $('g-sitios').textContent=n?('Sitios de implante: '+d.map(_lbl).join(', ')):'Toca en el odontograma los sitios de los implantes y elige la indicación «Planificación de implantes».';
-      $('g-apoyo').hidden=!(sop==='Dento-soportada'&&!apoyo.length);
-      guia.pide=plan?(conGuia?'guia':'plan'):'';guia.soporte=conGuia?sop:null;guia.pines=conGuia&&gp.checked;
-      guia.guiado=conGuia?$('g-guiado').value:null;guia.manga=conGuia?$('g-manga').value:null;guia.sistema=$('g-sistema').value;
+      $('g-sitios').textContent=n?'Implante sugerido por sitio (opcional: si no lo indicas, lo sugerimos en la planificación)':'Toca en el odontograma los sitios de los implantes y elige la indicación «Planificación de implantes».';
+      $('g-flujo-4').textContent=conGuia?(AC?'Diseñamos la guía (STL para imprimir)':'Diseñamos y fabricamos la guía'):'Te entregamos la planificación aprobada';
+      guia.pide=plan?(conGuia?'guia':'plan'):'';guia.sistema=$('g-sistema').value;guia.abordaje=$('g-abordaje').value;
       if(!plan||!n){guia.tipo='';guia.tipoNom='';guia.nota='';return;}
       var imp=(conGuia&&gi&&gi.value)?gi.value:'';
       guia.tipo=(conGuia?gt.value:pt.value)+imp;guia.tipoNom=(conGuia?nom('guia',gt.value):nom('plan',pt.value))+(imp?' — diseño + impresa':'');
       guia.nota=conGuia?'Se solicitó una guía quirúrgica.':'Sólo se ordenó la planificación quirúrgica. SIN GUÍA QUIRÚRGICA';
     }
-    function pinta(){var n=guia.dientes.length,r=$('g-resumen'),falta=!!(conGuia&&n&&!guia.soporte);
+    function pinta(){var n=guia.dientes.length;
       $('acc-plan-s').textContent=plan?(n?(n===1?'1 sitio':n+' sitios'):'marca los sitios'):'';
-      $('acc-guia-s').textContent=conGuia?(guia.soporte||'falta el soporte'):'';
-      r.classList.toggle('falta',falta);
-      r.textContent=!guia.tipo?'':falta?'Elige sobre qué se apoya la guía: dento, muco u óseo-soportada.':((conGuia?'Guía: ':'Planificación: ')+[guia.tipoNom,guia.sistema,guia.soporte,guia.pines?'Con pines de anclaje':'',guia.guiado,guia.manga].filter(Boolean).join(' · ')+' — dientes '+guia.dientes.map(_lbl).join(', '));}
+      $('acc-guia-s').textContent=conGuia&&gt.selectedIndex>=0?gt.options[gt.selectedIndex].text:'';
+      $('g-resumen').textContent=!guia.tipo?'':((conGuia?'Guía: ':'Planificación: ')+[guia.tipoNom,guia.sistema,guia.arcada==='edentulo'?'Edéntulo total':(guia.arcada==='con_dientes'?'Con dientes':''),guia.abordaje].filter(Boolean).join(' · ')
+        +' — dientes '+guia.dientes.map(function(f){return _lbl(f)+(guia.implantes[f]?' '+guia.implantes[f]:'');}).join(', '));}
     window._guiaAuto=function(){leer();pinta();};   // lo llama emit(): los dientes marcados cambian el tipo sugerido
     function sync(){leer();pinta();emit();}
     function marcar(){var arr=selArr();if(!arr.length){toast('Toca en el odontograma los sitios de los implantes');return false;}
@@ -425,9 +437,9 @@
     function quitar(){Object.keys(estado).forEach(function(f){var e=estado[f];if(e&&e.ind===PLAN_IND){e.ind=null;ajustarMat(f);}});pintaAll();renderLeft();}
     bP.onclick=function(){if(plan){plan=false;conGuia=false;quitar();return;}plan=true;if(!marcar())sync();};
     bG.onclick=function(){conGuia=!conGuia;if(conGuia&&!plan){plan=true;if(marcar())return;}sync();};
-    [].forEach.call(gs.querySelectorAll('button'),function(b){b.onclick=function(){sop=b.getAttribute('data-s');tocS=true;sync();};});
+    [].forEach.call(ga.querySelectorAll('button'),function(b){b.onclick=function(){guia.arcada=b.getAttribute('data-a');tocA=true;sync();};});
     gt.addEventListener('change',function(){tocG=true;sync();});pt.addEventListener('change',function(){tocP=true;sync();});
-    ['g-sistema','g-guiado','g-manga','g-imp','g-pines'].forEach(function(id){var e=$(id);if(e)e.addEventListener('change',sync);});
+    ['g-sistema','g-abordaje','g-imp'].forEach(function(id){var e=$(id);if(e)e.addEventListener('change',sync);});
     leer();pinta();
   }
   function matsDe(){return MATERIALES_PROC[proceso];}
@@ -616,7 +628,7 @@
   var L = (/[?&]lang=(en|pt)\b/.exec(q) || [])[1];
   if (!L) return;
   document.documentElement.lang = L;
-  fetch(L === 'en' ? '/i18n/en.json' : '/i18n/pt-odontograma.json?v=20261009f').then(function (r) { return r.json(); }).then(function (D) {
+  fetch(L === 'en' ? '/i18n/en.json' : '/i18n/pt-odontograma.json?v=20261009g').then(function (r) { return r.json(); }).then(function (D) {
     var T = D.textos || {}, P = (D.patrones || []).map(function (p) { return [new RegExp(p[0]), p[1]]; });
     window._odoT = T;
     // Lo que captura un patrón se traduce por trozos « · » (el más largo que exista en el diccionario: «GEN2 · individual»)
@@ -626,8 +638,8 @@
       if (!raiz || raiz.nodeType !== 1) return;
       var w = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT), n, k, v;
       while ((n = w.nextNode())) { k = n.nodeValue.replace(/\s+/g, ' ').trim(); if (k && (v = uno(k))) n.nodeValue = n.nodeValue.replace(n.nodeValue.trim(), v); }
-      [raiz].concat([].slice.call(raiz.querySelectorAll('[aria-label],[title],option,optgroup'))).forEach(function (e) {
-        ['aria-label', 'title', 'label'].forEach(function (a) { var x = e.getAttribute && e.getAttribute(a); if (x && (v = uno(x.trim()))) e.setAttribute(a, v); });
+      [raiz].concat([].slice.call(raiz.querySelectorAll('[aria-label],[title],[placeholder],option,optgroup'))).forEach(function (e) {
+        ['aria-label', 'title', 'label', 'placeholder'].forEach(function (a) { var x = e.getAttribute && e.getAttribute(a); if (x && (v = uno(x.trim()))) e.setAttribute(a, v); });
       });
     }
     tr(document.body);

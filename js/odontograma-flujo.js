@@ -53,7 +53,7 @@
     piezasFDI = fdiLista(cobrables);
     var partes = [];
     if (cobrables.length) partes.push('Diseño CAD por diente (' + cobrables.length + ' pieza' + (cobrables.length > 1 ? 's' : '') + ', FDI): ' + x.resumen);
-    if (g) partes.push((g.pide === 'plan' ? 'Planificación de implantes: ' : 'Guía quirúrgica: ') + gNom + ' (' + [g.sistema, g.pide !== 'plan' ? (g.soporte || 'SOPORTE POR DEFINIR') : '', g.pines ? 'con pines de anclaje' : '', g.guiado, g.manga].filter(Boolean).join(' · ') + ')' + (g.dientes && g.dientes.length ? ' · dientes ' + g.dientes.join(', ') + ' (FDI)' : ''));
+    if (g) partes.push((g.pide === 'plan' ? 'Planificación de implantes: ' : 'Guía quirúrgica: ') + gNom + ' (' + [g.sistema, g.arcada === 'edentulo' ? 'edéntulo total (doble CBCT)' : (g.arcada === 'con_dientes' ? 'arcada con dientes' : ''), g.abordaje].filter(Boolean).join(' · ') + ')' + (g.dientes && g.dientes.length ? ' · implantes (FDI): ' + g.dientes.map(function (f) { return f + ((g.implantes || {})[f] ? ' ' + g.implantes[f] : ' (a sugerir)'); }).join(', ') : ''));
     var mNom = m ? 'Modelo impreso: ' + (m.resumen || [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ')) : '';
     if (m) { partes.push(mNom); cotizar.push('modelo impreso'); }
     if (cotizar.length) partes.push('A cotizar: ' + cotizar.join(', '));
@@ -64,14 +64,14 @@
     STATE.odontograma = items; STATE.guia = g;
     orden = hay ? { v: 1, nomenclatura: window.Dientes ? Dientes.preferido() : 'fdi', proceso: 'Diseño CAD',
       piezas: items.map(function (it) { return { fdi: +it.d, indicacion: it.ind, material: it.mat || null, codigo_exocad: it.cod || null, proceso: it.proc || null, tono: it.tono || null, implante: it.impl || null }; }),
-      guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null, pide: g.pide || 'guia', dientes: g.dientes || [], nota: g.nota || null, pines: !!g.pines } : null,
+      guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null, pide: g.pide || 'guia', dientes: g.dientes || [], nota: g.nota || null, implantes: g.implantes || {}, arcada: g.arcada || null, abordaje: g.abordaje || null } : null,
       modelo: m } : null;
     activo = !!hay;
     var cc = document.getElementById('cantidad'); if (cc) cc.value = 1;
     // Archivos requeridos según lo marcado (implantes → scan body; férula/dentadura → mordida; si no, corona)
     if (hay && typeof renderArchivosRequeridos === 'function') {
       var tiene = function (re) { return cobrables.some(function (it) { return re.test(it.ind) || (it.impl && re.test(it.impl)); }); };
-      var base = g ? 'guia_1' : tiene(/Pilar|barra|Atache|Offset|aditamiento|Atornillado/i) ? 'corona_ator' : tiene(/Férula/) ? 'ferula' : tiene(/Carilla|Mockup|Encerado/) ? 'carilla' : 'corona';
+      var base = g ? ((C.archivosGuia || {})[g.arcada === 'edentulo' ? 'edentulo' : 'dientes'] || 'guia_1') : tiene(/Pilar|barra|Atache|Offset|aditamiento|Atornillado/i) ? 'corona_ator' : tiene(/Férula/) ? 'ferula' : tiene(/Carilla|Mockup|Encerado/) ? 'carilla' : 'corona';
       try { renderArchivosRequeridos(base); } catch (e) {}
     }
     var rp = resumenEl();
