@@ -142,7 +142,7 @@
   los articuladores del Model Creator de exocad 3.3: impresos con el modelo (xSNAP GEN2/Basic/Lite/TDM, Vsevolod Snapculator,
   Artex print-click, Dentag rotoclick, Dematec, Die Modellmacher, RYS D2A, iTero, Twister Ball, 4 pines) o montaje (Artex CR,
   Bio-Art A7 Plus, SAM, KaVo PROTARevo, Stratos 300, Denar, Panadent, Gamma, Gerber, Zirkonzahn…) con su versión. Va en la
-  orden (), en el resumen y en «A cotizar: diseño del modelo»; la ficha del caso lo muestra.
+  orden (`modelo`), en el resumen y en «A cotizar: diseño del modelo»; la ficha del caso lo muestra.
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 
