@@ -115,7 +115,10 @@
   /* Banda de guías quirúrgicas */
   /* Acciones de exoplan (como DentalDB 3.3): planificación de implantes y guía quirúrgica, junto al odontograma */
   .acciones{margin-top:14px;display:flex;flex-direction:column;gap:8px}
-  .acc-t{font-size:.9rem;font-weight:700;color:var(--ink)}
+  .acciones[hidden]{display:none}
+  .grp .acciones{margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--col-c)}
+  .acc-t{display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:700;color:var(--ink)}
+  .acc-t .ic{display:flex;flex:none}
   .accbtn{display:flex;align-items:center;gap:12px;width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink-soft);font:inherit;font-size:.9rem;font-weight:600;text-align:left;cursor:pointer}
   .accbtn .ic{display:flex;width:26px;height:26px;flex:none}
   .accbtn[aria-pressed="true"]{border-color:var(--green);background:var(--panel-hi);color:var(--ink);box-shadow:inset 0 0 0 1px var(--green)}
@@ -214,8 +217,7 @@
     </div>
     <!-- Acciones de exoplan, como en DentalDB 3.3: planificación de implantes y guía quirúrgica del caso -->
     <div class="acciones" id="acciones">
-      <div class="acc-t">Acciones <span class="mattag">— exoplan</span></div>
-      <button type="button" class="accbtn" id="acc-plan" aria-pressed="false" aria-controls="acc-plan-opts"><span class="ic" id="acc-plan-ic"></span><span>Planificación de Implantes</span><span class="accs" id="acc-plan-s"></span></button>
+      <div class="acc-t"><span class="ic" id="acc-plan-ic"></span><span>Configura la planificación</span><span class="accs" id="acc-plan-s"></span></div>
       <div class="modelopts accopts" id="acc-plan-opts" hidden>
         <p class="accnota" id="g-sitios"></p>
         <div class="gimpl" id="g-impl"></div>
@@ -383,15 +385,15 @@
   // que el laboratorio necesita (sitios, sistema e implante sugerido, arcada con dientes o edéntula, abordaje opcional).
   // El apoyo de la guía, las anillas, la fijación y el guiado se deciden en la planificación y el doctor los aprueba
   // (protocolo: app/ayuda → Protocolos). El tipo de guía/planificación se sugiere por número de implantes (precio).
-  var GUIA_TIPOS={guia:[["guia_1","Guía Quirúrgica — 1 implante"],["guia_sobredent","Guía Sobredentadura (2 impl.)"],["guia_hibrida","Guía Híbrida 4 impl."],["guia_reborde","Regularización de reborde"]],
-    plan:[["planif_unit","Planeación preliminar — unitario"],["planif_fullarch","Planeación preliminar — Full Arch"]]};
+  var GUIA_TIPOS={guia:[["guia_1","Guía Quirúrgica — 1 implante"],["guia_varios","Guía Quirúrgica — varios implantes"],["guia_sobredent","Guía Sobredentadura (2 impl.)"],["guia_hibrida","Guía Híbrida 4 impl."],["guia_reborde","Regularización de reborde"]],
+    plan:[["planif_unit","Planeación preliminar — unitario"],["planif_varios","Planeación preliminar — varios implantes"],["planif_fullarch","Planeación preliminar — Full Arch"]]};
   var SISTEMAS=["— A definir con el doctor —","Nobel Biocare","Straumann","MegaGen AnyOne/AnyRidge","Neodent","Zimmer Biomet","Dentium","Osstem","BioHorizons","BEGO","Zimvie","Otro"];
   var PLAN_IND='Planificación de implantes';
   var guia={tipo:"",tipoNom:"",pide:"",sistema:"",implantes:{},arcada:"",abordaje:"",dientes:[],nota:"",soporte:null,guiado:null,manga:null};
   function setupGuia(){
     function $(id){return document.getElementById(id);}
     var box=$('acciones');if(!box)return;
-    var bP=$('acc-plan'),bG=$('acc-guia'),oP=$('acc-plan-opts'),oG=$('acc-guia-opts'),gt=$('g-tipo'),pt=$('g-plantipo'),gi=$('g-imp'),ga=$('g-arcada'),gl=$('g-impl');
+    var bG=$('acc-guia'),oP=$('acc-plan-opts'),oG=$('acc-guia-opts'),gt=$('g-tipo'),pt=$('g-plantipo'),gi=$('g-imp'),ga=$('g-arcada'),gl=$('g-impl');
     var AC=/[?&]sitio=ac\b/.test(location.search),plan=false,conGuia=false,tocG=false,tocP=false,tocA=false,pintados=null;
     if(AC){['g-imp-ff','g-anillas'].forEach(function(id){var e=$(id);if(e)e.parentNode.removeChild(e);});gi=null;}   // Alejandro CAD/CAM: solo diseño
     function ico(ic,c){return ic?'<svg viewBox="'+ic.vb+'" width="26" height="26" fill="'+c+'" aria-hidden="true">'+ic.p+'</svg>':'';}
@@ -408,15 +410,17 @@
         i.addEventListener('input',function(){if(i.value.trim())guia.implantes[f]=i.value.trim();else delete guia.implantes[f];});i.addEventListener('change',sync);});}
     function leer(){
       var d=sitios(),n=d.length;guia.dientes=d;
-      if(n)plan=true;if(!plan)conGuia=false;
-      bP.setAttribute('aria-pressed',plan);bG.setAttribute('aria-pressed',conGuia);oP.hidden=!plan;oG.hidden=!conGuia;$('g-plan-ff').hidden=conGuia;$('g-flujo').hidden=!plan;
+      plan=n>0;if(!plan)conGuia=false;
+      box.hidden=!plan;bG.setAttribute('aria-pressed',conGuia);oP.hidden=!plan;oG.hidden=!conGuia;$('g-plan-ff').hidden=conGuia;$('g-flujo').hidden=!plan;
       filas(d);Object.keys(guia.implantes).forEach(function(f){if(d.indexOf(+f)<0)delete guia.implantes[f];});
       // Si hay otros dientes trabajados en la misma arcada, la arcada tiene dientes
       if(!tocA&&n){var arc=function(f){return +f<30?1:2;},ar=d.map(arc);
         if(Object.keys(estado).some(function(f){var e=estado[f];return e&&e.ind&&e.ind!==PLAN_IND&&ar.indexOf(arc(f))>=0;}))guia.arcada='con_dientes';}
       [].forEach.call(ga.querySelectorAll('button'),function(b){b.setAttribute('aria-checked',b.getAttribute('data-a')===guia.arcada?'true':'false');});
-      if(!tocG)gt.value=n>=4?'guia_hibrida':(n>=2?'guia_sobredent':'guia_1');
-      if(!tocP)pt.value=n>=4?'planif_fullarch':'planif_unit';
+      // Sugerencia por número de implantes y arcada (el doctor la puede cambiar): «varios» se cotiza
+      var ed=guia.arcada==='edentulo';
+      if(!tocG)gt.value=n<=1?'guia_1':(ed?(n>=4?'guia_hibrida':'guia_sobredent'):'guia_varios');
+      if(!tocP)pt.value=n<=1?'planif_unit':(ed?'planif_fullarch':'planif_varios');
       $('g-sitios').textContent=n?'Implante sugerido por sitio (opcional: si no lo indicas, lo sugerimos en la planificación)':'Toca en el odontograma los sitios de los implantes y elige la indicación «Planificación de implantes».';
       $('g-flujo-4').textContent=conGuia?(AC?'Diseñamos la guía (STL para imprimir)':'Diseñamos y fabricamos la guía'):'Te entregamos la planificación aprobada';
       guia.pide=plan?(conGuia?'guia':'plan'):'';guia.sistema=$('g-sistema').value;guia.abordaje=$('g-abordaje').value;
@@ -426,17 +430,13 @@
       guia.nota=conGuia?'Se solicitó una guía quirúrgica.':'Sólo se ordenó la planificación quirúrgica. SIN GUÍA QUIRÚRGICA';
     }
     function pinta(){var n=guia.dientes.length;
-      $('acc-plan-s').textContent=plan?(n?(n===1?'1 sitio':n+' sitios'):'marca los sitios'):'';
+      $('acc-plan-s').textContent=n===1?'1 sitio':n+' sitios';
       $('acc-guia-s').textContent=conGuia&&gt.selectedIndex>=0?gt.options[gt.selectedIndex].text:'';
       $('g-resumen').textContent=!guia.tipo?'':((conGuia?'Guía: ':'Planificación: ')+[guia.tipoNom,guia.sistema,guia.arcada==='edentulo'?'Edéntulo total':(guia.arcada==='con_dientes'?'Con dientes':''),guia.abordaje].filter(Boolean).join(' · ')
         +' — dientes '+guia.dientes.map(function(f){return _lbl(f)+(guia.implantes[f]?' '+guia.implantes[f]:'');}).join(', '));}
     window._guiaAuto=function(){leer();pinta();};   // lo llama emit(): los dientes marcados cambian el tipo sugerido
     function sync(){leer();pinta();emit();}
-    function marcar(){var arr=selArr();if(!arr.length){toast('Toca en el odontograma los sitios de los implantes');return false;}
-      arr.forEach(function(f){if(!estado[f])estado[f]=defTooth();estado[f].ind=PLAN_IND;ajustarMat(f);});pintaAll();renderLeft();return true;}
-    function quitar(){Object.keys(estado).forEach(function(f){var e=estado[f];if(e&&e.ind===PLAN_IND){e.ind=null;ajustarMat(f);}});pintaAll();renderLeft();}
-    bP.onclick=function(){if(plan){plan=false;conGuia=false;quitar();return;}plan=true;if(!marcar())sync();};
-    bG.onclick=function(){conGuia=!conGuia;if(conGuia&&!plan){plan=true;if(marcar())return;}sync();};
+    bG.onclick=function(){conGuia=!conGuia;sync();};
     [].forEach.call(ga.querySelectorAll('button'),function(b){b.onclick=function(){guia.arcada=b.getAttribute('data-a');tocA=true;sync();};});
     gt.addEventListener('change',function(){tocG=true;sync();});pt.addEventListener('change',function(){tocP=true;sync();});
     ['g-sistema','g-abordaje','g-imp'].forEach(function(id){var e=$(id);if(e)e.addEventListener('change',sync);});
@@ -520,14 +520,14 @@
         var ic=INDICON[it[1]]||{vb:"0 0 32 32",p:""};
         b.innerHTML='<span class="ic"><svg viewBox="'+ic.vb+'" width="27" height="27" fill="'+it[2]+'" preserveAspectRatio="xMidYMid meet">'+ic.p+'</svg></span>'+it[0];
         b.onclick=function(){setInd(it[0]);};grid.appendChild(b);});
-      dd.appendChild(grid);iw.appendChild(dd);});
+      dd.appendChild(grid);if(gr.g==='Planificación (exoplan)'&&ACCIONES)dd.appendChild(ACCIONES);iw.appendChild(dd);});
     document.querySelectorAll('#ovimpl .impl').forEach(function(b){b.setAttribute('aria-pressed', a&&a.implante===b.dataset.name?'true':'false');});
     // material — tarjetas estilo exocad
     var mg=document.getElementById('msgrid');mg.innerHTML='';
     var selMat=a&&a.mat,selCod=a&&a.cod,selBase=selCod&&selCod.replace(/_3ax$/,'');
     var permit=ci&&ci!=='__mixed__'?matsDeInd(ci):(ci==='__mixed__'?arr.map(function(f){return matsDeInd(estado[f].ind);}).reduce(function(x,y){return x.filter(function(c){return y.indexOf(c)>=0;});}):[]);
     var bases=[];permit.forEach(function(c){var b=c.replace(/_3ax$/,'');if(bases.indexOf(b)<0)bases.push(b);});
-    if(!bases.length){mg.innerHTML='<div class="matvacio">'+(!arr.length?'Selecciona un diente.':(ci?(ci==='Planificación de implantes'?'La planificación se configura en «Acciones», junto al odontograma.':'Esta indicación no lleva material.'):'Elige primero la indicación del diente.'))+'</div>';}
+    if(!bases.length){mg.innerHTML='<div class="matvacio">'+(!arr.length?'Selecciona un diente.':(ci?(ci==='Planificación de implantes'?'La planificación se configura justo debajo de «Planificación de implantes».':'Esta indicación no lleva material.'):'Elige primero la indicación del diente.'))+'</div>';}
     bases.forEach(function(bc){var m=MATS[bc]||MATS[bc+'_3ax']||[bc,'SingleUnit.webp'];var b=document.createElement('button');b.type='button';b.className='msc';b.setAttribute('aria-pressed',selBase===bc?'true':'false');b.setAttribute('aria-label',m[0]);
       b.innerHTML='<img class="disc" src="'+imgMat(m[1])+'" alt="" loading="lazy"><div class="cap">'+m[0]+'</div><span class="chk">✓</span>';
       b.onclick=function(){setMat(bc);};mg.appendChild(b);});
@@ -611,6 +611,7 @@
     ns.addEventListener('click',function(e){var b=e.target.closest('button[data-n]');if(!b)return;NOTA=b.dataset.n;try{localStorage.setItem('prd_notacion',NOTA);}catch(_){}
       pintaNota();renderLeft();try{parent.postMessage({__odoNota:NOTA},'*');}catch(_){}});
     pintaNota();})();
+  var ACCIONES=document.getElementById('acciones');   // acordeón de exoplan: vive dentro del grupo «Planificación (exoplan)»
   setupGuia();renderLeft();pintaAll();
 })();
 </script>
@@ -628,7 +629,7 @@
   var L = (/[?&]lang=(en|pt)\b/.exec(q) || [])[1];
   if (!L) return;
   document.documentElement.lang = L;
-  fetch(L === 'en' ? '/i18n/en.json' : '/i18n/pt-odontograma.json?v=20261009g').then(function (r) { return r.json(); }).then(function (D) {
+  fetch(L === 'en' ? '/i18n/en.json' : '/i18n/pt-odontograma.json?v=20261009j').then(function (r) { return r.json(); }).then(function (D) {
     var T = D.textos || {}, P = (D.patrones || []).map(function (p) { return [new RegExp(p[0]), p[1]]; });
     window._odoT = T;
     // Lo que captura un patrón se traduce por trozos « · » (el más largo que exista en el diccionario: «GEN2 · individual»)

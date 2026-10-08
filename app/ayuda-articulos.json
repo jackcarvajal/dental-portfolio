@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-10a",
+  "version": "2026-10-10b",
   "categorias": [
     {
       "id": "inicio",
@@ -654,7 +654,7 @@
         "Si el doctor usa Universal (EE. UU.) o Palmer, en su pantalla y en el WhatsApp ve las dos: «#8, #9 (Universal) = FDI 11, 21». Equivalencias: **Soporte → Conversor de nomenclatura dental**.",
         "El odontograma del flujo de diseño es el de **exocad DentalDB 3.3**: cada indicación muestra solo los materiales que exocad permite (con sus imágenes) y el **proceso de fabricación** (fresadora 5 o 3 ejes, láser, impresión 3D). La ficha del caso muestra el material con su proceso.",
         "Si el doctor marca **«¿Desea modelos impresos?» → Sí**, elige hueco (por defecto) o sólido, con o sin zócalo; **para dientes** troqueles zanahoria y/o adicionales; **para implantes** análogos y/o encía removible (se marcan solos si la orden lleva implantes); y articulador: impreso con el modelo (xSNAP, Snapculator, Artex print-click…) o montaje (Artex CR, Bio-Art, SAM, KaVo…). La referencia es opcional: si no la pone, el laboratorio usa la más adecuada para el caso. Su última elección queda por defecto. Llega en la orden y se cotiza con el caso.",
-        "Guías y planificación de implantes: **Acciones → Planificación de Implantes / Guía Quirúrgica** junto al odontograma (como DentalDB). Ver **Protocolos → Protocolo: planificación de implantes y guías quirúrgicas**."
+        "Guías y planificación de implantes: el doctor elige la indicación **Planificación de implantes** y justo debajo, en el mismo grupo, se abre la configuración (implante por sitio, sistema, arcada, abordaje) y la **Guía Quirúrgica**. Ver **Protocolos → Protocolo: planificación de implantes y guías quirúrgicas**."
       ]
     },
     {
@@ -708,7 +708,7 @@
       "para": "Diseño y planificación",
       "kw": "guia quirurgica exoplan codiagnostix cbct dicom planificacion implante aprobacion soporte anillas",
       "pasos": [
-        "**Qué le pedimos al doctor (pedido):** los sitios de implante en el odontograma (Acciones → Planificación de Implantes), el sistema de implante y, si ya lo tiene, Ø × largo por sitio; si la arcada tiene dientes o es edéntula total, y el abordaje si ya lo decidió. **No se le pide** el apoyo de la guía, las anillas ni el tipo de guiado: eso lo decide la planificación y él lo aprueba.",
+        "**Qué le pedimos al doctor (pedido):** los sitios de implante en el odontograma (indicación «Planificación de implantes»; la configuración se abre justo debajo), el sistema de implante y, si ya lo tiene, Ø × largo por sitio; si la arcada tiene dientes o es edéntula total, y el abordaje si ya lo decidió. **No se le pide** el apoyo de la guía, las anillas ni el tipo de guiado: eso lo decide la planificación y él lo aprueba.",
         "**Archivos (revisar antes de planificar):** CBCT en DICOM de la arcada completa, con separador de carrillo y sin contacto oclusal (cortes de 0,5 mm, ~150 µm), más escaneo intraoral de las dos arcadas y la mordida. **Edéntulo total:** doble CBCT. Primero el paciente con la prótesis puesta y marcada (mínimo 4 marcadores vestibulares y 4 palatinos de ~3 mm), luego la prótesis sola. La prótesis debe asentar bien; si no, se rebasa. El CBCT se pide solo cuando aporta a la decisión (guías EAO 2012 y AAOMR 2012).",
         "**Viabilidad (hasta 24 h):** revisar la calidad del CBCT (movimiento, artefactos de metal), el hueso disponible y las estructuras: nervio dentario inferior, agujero mentoniano, seno maxilar y raíces vecinas. Si falta algo o el CBCT no sirve, se le dice al doctor antes de planificar.",
         "**Unir CBCT y escaneo:** alinear por superficies dentales y revisar el ajuste en varios cortes. Este paso es crítico para la guía (Flügge 2017). Si hay mucho metal o pocos dientes, usar marcadores radiopacos. El flujo totalmente digital es tan preciso como el convencional en pacientes parcialmente edéntulos (Lin 2020).",
@@ -773,7 +773,7 @@
       "para": "Doctores (clientes)",
       "kw": "guia quirurgica planificacion implantes pedir cbct dicom edentulo aprobar",
       "pasos": [
-        "En el flujo de diseño, toca en el odontograma los sitios de los implantes y pulsa **Acciones → Planificación de Implantes**. Si también quieres la guía, pulsa **Guía Quirúrgica**.",
+        "En el flujo de diseño, toca en el odontograma los sitios de los implantes y elige la indicación **Planificación de implantes** (grupo «Planificación (exoplan)»). Justo debajo se abre la configuración; si también quieres la guía, pulsa **Guía Quirúrgica**.",
         "Indica el **sistema de implante** y, si ya lo tienes, el **Ø × largo** de cada sitio. Si no, te lo sugerimos en la planificación.",
         "Indica si la arcada **tiene dientes** o es **edéntula total**, porque cambia lo que hay que enviar.",
         "**Archivos:** CBCT (DICOM) sin contacto oclusal, con separador de carrillo y cortes de 0,5 mm (~150 µm), más escaneo intraoral de las dos arcadas con la mordida. **Edéntulo total:** dos CBCT, uno con la prótesis marcada puesta y otro de la prótesis sola.",

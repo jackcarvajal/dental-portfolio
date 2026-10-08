@@ -180,6 +180,11 @@
   modelos (DLP, poscurado, esterilización, grosor de pared) y diseño CAD (parámetros, cemento, revisión). 15 referencias
   verificadas en Crossref (DOI). Artículo para doctores «Cómo pedir una guía…» visible para el asistente de soporte
   (`ARTICULOS_CLIENTE`). La IA de la web (header.js, `?v=20261010` en todas las páginas) explica el mismo protocolo.
+- ✅ **Acordeón bajo la indicación** (Alejandro: «aparece abajo sin verse; que sea acordeón debajo de su opción principal» y
+  «¿no es lo mismo?»): el bloque de exoplan vive dentro del grupo «Planificación (exoplan)», justo debajo de sus botones, y
+  solo se abre cuando hay sitios con «Planificación de implantes» (se quitó el botón repetido). **Varios implantes** (parcial):
+  opción nueva en planificación y guía, se cotiza; sugerencia por número y arcada (1 → unitario; edéntulo → full arch /
+  sobredentadura / híbrida; con dientes y 2 o más → varios). header.js `?v=20261010b`.
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 
