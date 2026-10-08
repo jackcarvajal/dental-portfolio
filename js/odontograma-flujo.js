@@ -19,7 +19,7 @@
     ? { nada: 'No indications assigned yet: tap a tooth on the chart.', unid: function (n) { return n + (n === 1 ? ' tooth' : ' teeth'); }, cot: 'to be quoted', guia: 'Surgical guide', plan: 'Implant planning', modelo: 'Printed model', mDis: 'printed model', otro: 'Selected service: ' }
     : { nada: 'Aún no has asignado indicaciones a los dientes.', unid: function (n) { return n + (n === 1 ? ' pieza' : ' piezas'); }, cot: 'a cotizar', guia: 'Guía quirúrgica', plan: 'Planificación de implantes', modelo: 'Modelo impreso', mDis: 'modelo impreso', otro: 'Servicio elegido: ' };
   // Informativas: no se cobran por diente (la planificación de implantes se cobra con la guía o la planificación del caso)
-  var INFO = { 'Antagonista': 1, 'Diente adyacente': 1, 'Omitir en el puente': 1, 'Planificación de implantes': 1, 'Diente de soporte para guía quirúrgica': 1 };
+  var INFO = { 'Antagonista': 1, 'Diente adyacente': 1, 'Omitir en el puente': 1, 'Planificación de implantes': 1 };
   var porArcada = C.porArcada || {}, porCaso = C.porCaso || {}, mapa = C.mapa || {}, guias = C.guias || {};
 
   function cat() { return (typeof MATERIAL_DATA_MUT !== 'undefined') ? MATERIAL_DATA_MUT : ((typeof MATERIAL_DATA !== 'undefined') ? MATERIAL_DATA : null); }

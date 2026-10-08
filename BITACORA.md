@@ -185,6 +185,9 @@
   solo se abre cuando hay sitios con «Planificación de implantes» (se quitó el botón repetido). **Varios implantes** (parcial):
   opción nueva en planificación y guía, se cotiza; sugerencia por número y arcada (1 → unitario; edéntulo → full arch /
   sobredentadura / híbrida; con dientes y 2 o más → varios). header.js `?v=20261010b`.
+- ✅ Fuera del grupo «Planificación (exoplan)» las indicaciones «Diente ausente - plan de sustitución» y «Diente de soporte para
+  guía quirúrgica» (Alejandro: «sobran»). Quedan Planificación de implantes y Plan de restauración. La ficha del caso conserva
+  sus colores para pedidos viejos.
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 
