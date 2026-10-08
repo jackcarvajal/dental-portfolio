@@ -1,6 +1,8 @@
 {
  "_nota": "Portugués del odontograma (oct-2026). Indicaciones, grupos, implantes y materiales: nombres oficiales de exocad 3.3 (materialparameters-portuguese.xml).",
  "textos": {
+  "Copiar, Pegar y Limpiar": "Copiar, Colar e Limpar",
+  "(en la esquina del diagrama): toca un diente ya configurado y pulsa «Copiar»; luego toca el diente donde lo quieres repetir (o varios con Ctrl) y pulsa «Pegar». «Limpiar» borra lo marcado en los dientes seleccionados.": "(no canto do diagrama): toque em um dente já configurado e pressione «Copiar»; depois toque no dente onde quer repetir (ou em vários com Ctrl) e pressione «Colar». «Limpar» apaga o que está marcado nos dentes selecionados.",
   "Prótesis sobre implantes": "Prótese sobre implantes",
   "Guías y planificación (exoplan)": "Guias e planejamento (exoplan)",
   "Tipo de implante — para la corona o el póntico de ese diente": "Tipo de implante — para a coroa ou o pôntico desse dente",
@@ -77,13 +79,11 @@
   "sin articulador": "sem articulador",
   "Corona anatómica": "Coroa anatômica",
   "Cofia anatómica": "Coroa reduzida",
-  "Corona prensada": "Coroa de cerâmica injetada",
   "Corona cáscara de huevo (prov.)": "Coroa casca de ovo (provisória)",
   "Overlay": "Overlay",
   "Cofia": "Coping simples",
   "Póntico anatómico": "Pôntico anatômico",
   "Póntico reducido": "Pôntico reduzido",
-  "Póntico prensado": "Pôntico para injeção",
   "Mockup": "Mockup",
   "Incrustación/Onlay": "Inlay/Onlay",
   "Inlay de grosor mínimo": "Inlay simples",

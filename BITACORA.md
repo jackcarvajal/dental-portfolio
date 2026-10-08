@@ -204,6 +204,9 @@
   el doctor ve su **código DR-####** arriba de sus datos y el código va en el WhatsApp del pedido. Si cambia WhatsApp, ciudad o
   especialidad, se le pregunta si quiere guardarlos como predeterminados («Sí» actualiza su propio `doctores_perfil`, RLS
   doctor_own_profile; «No» los usa solo en ese pedido y no vuelve a preguntar por ese valor). El equipo sin perfil no ve nada.
+- ✅ Fuera **Corona prensada** y **Póntico prensado** (técnica de sobreinyección que no se trabaja; Alejandro: «quítala»). Guía del
+  odontograma con el paso **Copiar, Pegar y Limpiar** (copiar un diente configurado y pegarlo en otro, o en varios con Ctrl).
+  Desde aquí ya no se actualiza el artefacto del creador de órdenes: se valida en la web real.
 - 💡 **Decisión (7-oct):** primero perfeccionar el sistema propio; el SaaS para otros labs es después, pero se diseña
   pensando en eso (`docs/SAAS-MULTILAB-ETAPA1.md` queda como propuesta, sin SQL).
 

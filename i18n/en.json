@@ -8,6 +8,8 @@
 "/flujo-diseno"
 ],
 "textos": {
+"Copiar, Pegar y Limpiar": "Copy, Paste and Clear",
+"(en la esquina del diagrama): toca un diente ya configurado y pulsa «Copiar»; luego toca el diente donde lo quieres repetir (o varios con Ctrl) y pulsa «Pegar». «Limpiar» borra lo marcado en los dientes seleccionados.": "(in the corner of the chart): tap a tooth you already set up and press «Copy»; then tap the tooth where you want to repeat it (or several with Ctrl) and press «Paste». «Clear» removes what is marked on the selected teeth.",
 "Prótesis sobre implantes": "Implant prosthetics",
 "Guías y planificación (exoplan)": "Guides & planning (exoplan)",
 "Tipo de implante — para la corona o el póntico de ese diente": "Implant type — for the crown or pontic on that tooth",
@@ -995,14 +997,12 @@
 "Coronas y cofias": "Crowns and copings",
 "Corona anatómica": "Anatomic crown",
 "Cofia anatómica": "Coping",
-"Corona prensada": "Pressed crown",
 "Corona cáscara de huevo (prov.)": "Eggshell crown (provisional)",
 "Overlay": "Overlay",
 "Cofia": "Offset coping",
 "Pónticos": "Pontics and mockup",
 "Póntico anatómico": "Anatomic pontic",
 "Póntico reducido": "Reduced pontic",
-"Póntico prensado": "Pressed pontic",
 "Mockup": "Mockup",
 "Incrustaciones y carillas": "Inlays, onlays and veneers",
 "Incrustación/Onlay": "Inlay/Onlay",
