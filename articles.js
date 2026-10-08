@@ -2,10 +2,368 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-10-06
+   Última actualización automática: 2026-10-08
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "impresoras-3d-dentales-2025-2026-10-08-da63",
+  "titulo": "Impresión 3D de Resina en Odontología: Tecnologías y Aplicaciones Clínicas",
+  "subtitulo": "Análisis basado en evidencia de las tecnologías de polimerización en cuba para la fabricación de dispositivos dentales.",
+  "categoria": "fabricacion",
+  "chip": "Impresión 3D",
+  "fecha": "2026-10-08",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🖨️",
+  "grad": "grad-4",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La impresión 3D, o fabricación aditiva, ha transformado la odontología, permitiendo la creación de objetos tridimensionales con precisión (Katkar et al., 2018). Esta tecnología es fundamental para el diagnóstico, la planificación quirúrgica y la fabricación directa de dispositivos implantables (Katkar et al., 2018). La polimerización en cuba, que incluye la estereolitografía (SLA) y el procesamiento digital de luz (DLP), es una de las tecnologías más frecuentes en aplicaciones dentales, especialmente para fines quirúrgicos (Shujaat et al., 2026)."
+    },
+    {
+      "t": "h2",
+      "c": "Tecnologías de Impresión 3D de Resina en Odontología"
+    },
+    {
+      "t": "p",
+      "c": "La impresión 3D en odontología utiliza diversas tecnologías, siendo la polimerización en cuba (vat polymerization) una de las más prevalentes (Shujaat et al., 2026). Dentro de esta categoría, la estereolitografía (SLA) y el procesamiento digital de luz (DLP) son ampliamente descritas para aplicaciones dentales, particularmente en el ámbito quirúrgico (Shujaat et al., 2026). Una variante avanzada es la Producción Continua de Interfaz Líquida (CLIP), que ha sido evaluada por su precisión en la fabricación de modelos dentales (Rungrojwittayakul et al., 2020). Estas tecnologías permiten la fabricación de materiales restauradores y dispositivos con aplicabilidad clínica (Della Bona et al., 2021)."
+    },
+    {
+      "t": "h2",
+      "c": "Precisión Dimensional y Factores Influyentes"
+    },
+    {
+      "t": "p",
+      "c": "La precisión dimensional es un factor crítico en la impresión 3D dental. Se ha demostrado que el tipo de impresora, el material utilizado y el grosor de la capa de construcción influyen en la precisión de los modelos impresos (Katkar et al., 2018). Un estudio evaluó la precisión de modelos impresos utilizando tecnologías CLIP y DLP, comparando diseños de base sólida y hueca (Rungrojwittayakul et al., 2020). La optimización de estos factores es esencial para asegurar la calidad y el ajuste clínico de los dispositivos impresos."
+    },
+    {
+      "t": "h2",
+      "c": "Aplicaciones Clínicas de la Impresión 3D de Resina"
+    },
+    {
+      "t": "p",
+      "c": "La impresión 3D ha encontrado una amplia gama de aplicaciones clínicas en odontología. Es fuertemente recomendada para la fabricación de guías quirúrgicas, facilitando la planificación y reduciendo el riesgo de complicaciones operatorias en implantología (Katkar et al., 2018). Además, se utiliza para la creación de modelos diagnósticos y de planificación (Katkar et al., 2018). La fabricación aditiva también es aplicable a materiales restauradores (Della Bona et al., 2021) y ha sido evaluada para la producción de prótesis completas, ofreciendo ventajas como la reducción de costos en comparación con el fresado, menor desperdicio de material y la capacidad de imprimir múltiples prótesis simultáneamente (Goodacre & Goodacre, 2022)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Aplicación",
+        "Ventaja/Característica",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Diagnóstico y Planificación Quirúrgica",
+          "Permite una visión 3D de la anatomía",
+          "(Katkar et al., 2018)"
+        ],
+        [
+          "Guías Quirúrgicas",
+          "Facilita la planificación, reduce el riesgo de complicaciones",
+          "(Katkar et al., 2018)"
+        ],
+        [
+          "Materiales Restauradores",
+          "Aplicabilidad clínica de diversos materiales",
+          "(Della Bona et al., 2021)"
+        ],
+        [
+          "Prótesis Completas",
+          "Costo reducido (vs. fresado), menos desperdicio, impresión múltiple",
+          "(Goodacre & Goodacre, 2022)"
+        ],
+        [
+          "Modelos Dentales",
+          "Evaluación de precisión con tecnologías CLIP y DLP",
+          "(Rungrojwittayakul et al., 2020)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones sobre Costo y Eficiencia"
+    },
+    {
+      "t": "p",
+      "c": "Aunque la impresión 3D ofrece numerosas ventajas, las limitaciones principales históricamente han incluido el tiempo y el costo asociados con la generación de objetos 3D (Katkar et al., 2018). Sin embargo, en el contexto de la fabricación de prótesis completas, la impresión 3D puede ofrecer un costo reducido en comparación con las máquinas de fresado y generar menos desperdicio de material (Goodacre & Goodacre, 2022). La capacidad de imprimir múltiples dispositivos simultáneamente también contribuye a la eficiencia (Goodacre & Goodacre, 2022)."
+    },
+    {
+      "t": "h2",
+      "c": "Perspectivas Futuras y Desafíos"
+    },
+    {
+      "t": "p",
+      "c": "La impresión 3D continúa evolucionando en odontología, con un número significativo de sistemas de fabricación aditiva identificados en la literatura (Shujaat et al., 2026). A pesar de los avances, aún existen preguntas que deben ser respondidas por la investigación, especialmente en la comparación de propiedades físicas, resistencia de la unión de dientes protésicos y adaptación de la base de la prótesis en el contexto de la fabricación de prótesis completas (Goodacre & Goodacre, 2022). La madurez de uso y la aplicabilidad clínica de los materiales restauradores impresos en 3D siguen siendo áreas activas de estudio (Della Bona et al., 2021)."
+    },
+    {
+      "t": "quote",
+      "c": "La impresión 3D es fuertemente recomendada para la fabricación de guías quirúrgicas para facilitar la planificación y reducir el riesgo de complicaciones operatorias.",
+      "author": "Katkar et al., Dent Clin North Am, 2018"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué ventajas ofrece la impresión 3D de resina frente a los métodos tradicionales para la fabricación de prótesis?",
+      "a": "La impresión 3D de resina para prótesis completas ofrece ventajas como la reducción de costos en comparación con el fresado, menor desperdicio de material y la capacidad de imprimir múltiples prótesis simultáneamente (Goodacre & Goodacre, 2022)."
+    },
+    {
+      "q": "¿Es la precisión dimensional un factor crítico en la impresión 3D dental y qué la afecta?",
+      "a": "Sí, la precisión dimensional es crucial. El tipo de impresora, el material utilizado y el grosor de la capa de construcción son factores conocidos que influyen en la precisión de los modelos impresos (Katkar et al., 2018)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Della Bona A, Cantelli V, Britto VT, Collares KF, Stansbury JW.",
+      "titulo": "3D printing restorative materials using a stereolithographic technique: a systematic review",
+      "revista": "Dent Mater",
+      "año": "2021",
+      "vol": "37",
+      "num": "2",
+      "pags": "336-350",
+      "doi": "10.1016/j.dental.2020.11.030",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/33353734/",
+      "verificada": true
+    },
+    {
+      "autores": "Katkar RA, Taft RM, Grant GT.",
+      "titulo": "3D Volume Rendering and 3D Printing (Additive Manufacturing)",
+      "revista": "Dent Clin North Am",
+      "año": "2018",
+      "vol": "62",
+      "num": "3",
+      "pags": "393-402",
+      "doi": "10.1016/j.cden.2018.03.003",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29903557/",
+      "verificada": true
+    },
+    {
+      "autores": "Rungrojwittayakul O, Kan JY, Shiozaki K, Swamidass RS, Goodacre BJ, Goodacre CJ, et al.",
+      "titulo": "Accuracy of 3D Printed Models Created by Two Technologies of Printers with Different Designs of Model Base",
+      "revista": "J Prosthodont",
+      "año": "2020",
+      "vol": "29",
+      "num": "2",
+      "pags": "124-128",
+      "doi": "10.1111/jopr.13107",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31498957/",
+      "verificada": true
+    },
+    {
+      "autores": "Shujaat S, Jacobs R.",
+      "titulo": "From blueprints to reality: A narrative review of evidence-based 3D printers in dentistry",
+      "revista": "J Dent",
+      "año": "2026",
+      "vol": "164",
+      "num": "",
+      "pags": "106174",
+      "doi": "10.1016/j.jdent.2025.106174",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/41077110/",
+      "verificada": true
+    },
+    {
+      "autores": "Goodacre BJ, Goodacre CJ.",
+      "titulo": "Additive Manufacturing for Complete Denture Fabrication: A Narrative Review",
+      "revista": "J Prosthodont",
+      "año": "2022",
+      "vol": "31",
+      "num": "S1",
+      "pags": "47-51",
+      "doi": "10.1111/jopr.13426",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35313025/",
+      "verificada": true
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "endocrown-laboratorio-2025-2026-10-08-0b17",
+  "titulo": "Endocoronas CAD/CAM: Protocolo, Materiales y Resistencia en Dientes Endodonciados",
+  "subtitulo": "Este artículo técnico explora la fabricación de endocoronas mediante CAD/CAM, analizando su rendimiento biomecánico y supervivencia como alternativa a restauraciones convencionales en dientes tratados endodónticamente.",
+  "categoria": "clinica",
+  "chip": "Endocorona Lab",
+  "fecha": "2026-10-08",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🦷",
+  "grad": "grad-3",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La restauración de dientes tratados endodónticamente (DTE) con pérdida extensa de estructura coronal representa un desafío clínico significativo (Govare & Contrepois, 2020). Los DTE presentan un mayor riesgo de falla biomecánica en comparación con los dientes vitales (Sevimli et al., 2015). Tradicionalmente, las restauraciones con poste y muñón han sido una opción, pero su uso ha sido cuestionado debido al potencial debilitamiento dental (Govare & Contrepois, 2020). La preservación de la estructura dental sana es esencial para la estabilización mecánica y el éxito a largo plazo de la restauración (Sevimli et al., 2015; Carvalho et al., 2018). Con el avance de los sistemas adhesivos, la necesidad de restauraciones con poste y muñón se ha reducido, dando paso a enfoques sin poste (Sevimli et al., 2015; Carvalho et al., 2018). Las endocoronas han emergido como una alternativa prometedora para la restauración de DTE severamente dañados, ofreciendo ventajas como mejor estética, rendimiento mecánico superior y menor tiempo clínico y costo en comparación con los métodos convencionales (Sevimli et al., 2015)."
+    },
+    {
+      "t": "h2",
+      "c": "Endocoronas como Alternativa Restauradora Adhesiva"
+    },
+    {
+      "t": "p",
+      "c": "Las endocoronas son un tipo de restauración monobloque que utiliza la cámara pulpar y la estructura coronal remanente como medio de retención (Al-Dabbagh, 2021). Este enfoque sin poste busca mejorar las posibilidades de reparación y reducir las fallas catastróficas asociadas con los postes de fibra (Carvalho et al., 2018). Una revisión sistemática evaluó las endocoronas como una alternativa fiable a las restauraciones con poste para DTE extensamente dañados, incluyendo 8 estudios clínicos y 33 estudios in vitro (Govare & Contrepois, 2020). Otra revisión sistemática y metaanálisis comparó las endocoronas con tratamientos convencionales como postes intraradiculares, resina compuesta directa e incrustaciones/onlays, incluyendo 8 estudios (3 clínicos y 5 in vitro) en su análisis cualitativo (Sedrez-Porto et al., 2016)."
+    },
+    {
+      "t": "h2",
+      "c": "Criterios de Diseño y Selección de Materiales"
+    },
+    {
+      "t": "p",
+      "c": "La selección del diseño de preparación y los materiales más adecuados es crucial para la fabricación de endocoronas (Govare & Contrepois, 2020). Aunque las fuentes revisadas no especifican dimensiones exactas como una profundidad de caja pulpar de 3-4 mm o paredes remanentes mínimas de 2 mm, enfatizan la importancia de la preservación de la estructura dental (Sevimli et al., 2015; Carvalho et al., 2018). Las endocoronas aprovechan la cámara pulpar para la retención, lo que subraya la necesidad de una preparación que maximice el tejido dental remanente (Al-Dabbagh, 2021). En cuanto a los materiales, las revisiones sistemáticas buscan determinar cuáles son los mejor adaptados para la fabricación de endocoronas (Govare & Contrepois, 2020). Sin embargo, las fuentes proporcionadas no ofrecen una comparativa directa o datos específicos sobre el disilicato de litio IPS e.max CAD frente a la zirconia Katana, ni detallan parámetros de glaseado y caracterización para estos materiales específicos."
+    },
+    {
+      "t": "h2",
+      "c": "Rendimiento Biomecánico y Resistencia a la Fractura"
+    },
+    {
+      "t": "p",
+      "c": "El rendimiento biomecánico de las endocoronas ha sido objeto de comparación con las restauraciones tradicionales de núcleo y corona (con y sin poste intracanal) para la rehabilitación de DTE con daño coronal severo (Lenz et al., 2024). Una revisión sistemática incluyó 31 estudios in vitro, de los cuales 9 evaluaron restauraciones en molares y 14 en premolares (Lenz et al., 2024). Un metaanálisis de 5 estudios in vitro evaluó la resistencia a la fractura de las endocoronas en comparación con tratamientos convencionales (Sedrez-Porto et al., 2016). La evidencia sugiere que las endocoronas pueden ofrecer un rendimiento mecánico superior en comparación con los métodos convencionales (Sevimli et al., 2015). La preservación de la estructura dental es fundamental para la estabilidad mecánica y el éxito a largo plazo (Sevimli et al., 2015)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Aspecto Comparado",
+        "Endocoronas",
+        "Restauraciones Convencionales (Poste/Núcleo)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Rendimiento Biomecánico",
+          "Mejor rendimiento mecánico (Sevimli et al., 2015); Evaluado en 31 estudios (Lenz et al., 2024)",
+          "Evaluado en comparación con endocoronas (Lenz et al., 2024)",
+          "Sevimli et al., 2015; Lenz et al., 2024"
+        ],
+        [
+          "Resistencia a la Fractura",
+          "Evaluada en metaanálisis de 5 estudios in vitro (Sedrez-Porto et al., 2016)",
+          "Evaluada en comparación con endocoronas (Sedrez-Porto et al., 2016)",
+          "Sedrez-Porto et al., 2016"
+        ],
+        [
+          "Supervivencia y Éxito",
+          "Tasas de supervivencia y éxito comparadas en metaanálisis (Al-Dabbagh, 2021)",
+          "Tasas de supervivencia y éxito comparadas en metaanálisis (Al-Dabbagh, 2021)",
+          "Al-Dabbagh, 2021"
+        ],
+        [
+          "Preservación Estructura Dental",
+          "Preservación de estructura dental sana es esencial (Sevimli et al., 2015; Carvalho et al., 2018)",
+          "Potencial debilitamiento dental por restauraciones con poste (Govare & Contrepois, 2020)",
+          "Sevimli et al., 2015; Govare & Contrepois, 2020; Carvalho et al., 2018"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Supervivencia y Éxito Clínico"
+    },
+    {
+      "t": "p",
+      "c": "La supervivencia y el éxito de las endocoronas han sido evaluados en revisiones sistemáticas y metaanálisis. Una revisión sistemática y metaanálisis comparó las tasas de supervivencia y éxito de las endocoronas con las coronas convencionales, aunque señaló la falta de datos a largo plazo (Al-Dabbagh, 2021). Otra revisión sistemática incluyó 3 estudios clínicos que evaluaron la supervivencia de las endocoronas (Sedrez-Porto et al., 2016). Las endocoronas han sido consideradas una opción restauradora con un resultado predecible para DTE extensamente dañados (Al-Dabbagh, 2021). Las ventajas incluyen una buena estética, un mejor rendimiento mecánico y un menor costo y tiempo clínico en comparación con los métodos convencionales (Sevimli et al., 2015)."
+    },
+    {
+      "t": "quote",
+      "c": "La preservación de la estructura dental de los dientes tratados endodónticamente es primordial, y los enfoques sin poste como las endocoronas han sido propuestos para mejorar las posibilidades de reparación y el rendimiento biomecánico.",
+      "author": "Carvalho et al., Braz Oral Res, 2018; Sevimli et al., J Istanb Univ Fac Dent, 2015"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Son las endocoronas una alternativa viable a las restauraciones con poste y muñón?",
+      "a": "Sí, las endocoronas son consideradas una alternativa fiable a las restauraciones con poste para dientes tratados endodónticamente con daño extenso, ofreciendo ventajas como mejor estética y rendimiento mecánico (Govare & Contrepois, 2020; Sevimli et al., 2015)."
+    },
+    {
+      "q": "¿Qué ventajas ofrecen las endocoronas en comparación con los métodos convencionales?",
+      "a": "Las endocoronas ofrecen buena estética, mejor rendimiento mecánico, menor costo y menor tiempo clínico en comparación con los métodos convencionales de restauración de dientes tratados endodónticamente (Sevimli et al., 2015)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Sevimli G, Cengiz S, Oruc MS.",
+      "titulo": "Endocrowns: review",
+      "revista": "J Istanb Univ Fac Dent",
+      "año": "2015",
+      "vol": "49",
+      "num": "2",
+      "pags": "57-63",
+      "doi": "10.17096/jiufd.71363",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/28955538/",
+      "verificada": true
+    },
+    {
+      "autores": "Govare N, Contrepois M.",
+      "titulo": "Endocrowns: A systematic review",
+      "revista": "J Prosthet Dent",
+      "año": "2020",
+      "vol": "123",
+      "num": "3",
+      "pags": "411-418.e9",
+      "doi": "10.1016/j.prosdent.2019.04.009",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31353111/",
+      "verificada": true
+    },
+    {
+      "autores": "Sedrez-Porto JA, Rosa WL, da Silva AF, Münchow EA, Pereira-Cenci T.",
+      "titulo": "Endocrown restorations: A systematic review and meta-analysis",
+      "revista": "J Dent",
+      "año": "2016",
+      "vol": "52",
+      "num": "",
+      "pags": "8-14",
+      "doi": "10.1016/j.jdent.2016.07.005",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/27421989/",
+      "verificada": true
+    },
+    {
+      "autores": "Al-Dabbagh RA.",
+      "titulo": "Survival and success of endocrowns: A systematic review and meta-analysis",
+      "revista": "J Prosthet Dent",
+      "año": "2021",
+      "vol": "125",
+      "num": "3",
+      "pags": "415.e1-415.e9",
+      "doi": "10.1016/j.prosdent.2020.01.011",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/32197821/",
+      "verificada": true
+    },
+    {
+      "autores": "Lenz U, Bacchi A, Della Bona A.",
+      "titulo": "Biomechanical performance of endocrown and core-crown restorations: A systematic review",
+      "revista": "J Esthet Restor Dent",
+      "año": "2024",
+      "vol": "36",
+      "num": "2",
+      "pags": "303-323",
+      "doi": "10.1111/jerd.13119",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37571973/",
+      "verificada": true
+    },
+    {
+      "autores": "Carvalho MA, Lazari PC, Gresnigt M, Del Bel Cury AA, Magne P.",
+      "titulo": "Current options concerning the endodontically-treated teeth restoration with the adhesive approach",
+      "revista": "Braz Oral Res",
+      "año": "2018",
+      "vol": "32",
+      "num": "suppl 1",
+      "pags": "e74",
+      "doi": "10.1590/1807-3107bor-2018.vol32.0074",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/30365615/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
