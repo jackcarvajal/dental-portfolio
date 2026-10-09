@@ -9,6 +9,27 @@
 
 ---
 
+## 2026-10-09  (auditoría Laboratorio Dies · «Diseña con nosotros» a futuro · reseñas falsas fuera del schema · geo propio)
+
+- 💡 **«Diseña con nosotros» NO es público todavía** (Alejandro: aún no hay clientes ni casos en la web, es a futuro). Todo el
+  programa (página, panel app/disenadores.html, /api/postulacion-disenador, SQL diseno-postulaciones-2026.sql, enlace del pie,
+  sitemap, destellos.js) vive en la rama **local** `futuro/disenadores` (no subida: el repo es público y el pre-push la bloquea
+  hasta correr el SQL). Para retomarlo: `git checkout futuro/disenadores`, correr el SQL, rebase sobre main.
+- ✅ **Para laboratorios**: ondas de luz WebGL de fondo en el hero (js/ondas-shader.js) + botón de vidrio en WhatsApp.
+- ✅ **Schema de reseñas inventado eliminado** (ambas): AggregateRating 4.9★/127 en 34 páginas y reseñas propias (Review) en
+  index. Venía del commit 226fbca (jun-2026) «mejora CTR»; Google no muestra reseñas propias desde 2019 y datos
+  estructurados no verificables = riesgo de acción manual. Estrellas reales = solo Google Business Profile.
+- ✅ **/api/geo propio** (functions/api/geo.js, ambas): país desde Cloudflare (request.cf). Reemplaza ipapi.co en 8 sitios
+  (calculadora, flujos, index, geo-detect.js, pagos.js): la IP del visitante ya no sale a un tercero, sin tope de 1.000/día
+  ni 429. Quitado ipapi.co del connect-src del CSP; health-check vigila /api/geo.
+- ✅ **GA4 contaba doble** cada evento de conversions.js (whatsapp_click, generate_lead…): `_gtag` empujaba a dataLayer dos
+  veces. Corregido (ambas) + try/catch al leer localStorage. conversions.js ahora con ?v=.
+- 🔴 **Google Ads sin medir**: GADS_ID existe pero ninguna página hace `gtag('config','AW-…')` y los labels siguen en
+  placeholder → cero conversiones a Ads. Dies tiene 6 conversiones activas (clic WhatsApp, formulario, correo).
+- 🔴 **Pixel de Meta**: en PRODIGY solo carga en 5 páginas y desde la visita siguiente a «Aceptar»; en Alejandro NUNCA carga
+  (clave 'Alejandro Carvajal_cookies_ok' mal reemplazada). No se tocó: activarlo contradice «Sin anuncios» del banner
+  (decisión ad_storage pendiente).
+
 ## 2026-10-08  (menú simétrico · idioma con sesión · sin precios en páginas públicas · conversor de nomenclatura)
 
 - ✅ **Selector ES/EN/PT con sesión abierta** (ambas): la barra de «Admin · Mi Panel · Salir» reemplazaba la barra de

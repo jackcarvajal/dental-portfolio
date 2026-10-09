@@ -2018,7 +2018,6 @@ if(window.ProdigyAuth){
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Necesito tener el diseno CAD listo para pedir el fresado?","acceptedAnswer":{"@type":"Answer","text":"Puedes pedir el servicio combinado: diseno CAD + fresado. PRODIGY diseña y fresca en el mismo flujo. Si ya tienes el STL de diseno, solo pide el fresado."}},{"@type":"Question","name":"El precio del fresado incluye sinterizado y coloracion?","acceptedAnswer":{"@type":"Answer","text":"El sinterizado esta siempre incluido. La coloracion extrinseca (glaze) es un extra opcional. Todos los materiales se entregan con acabado superficial pulido."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo solicitar fresado CAM dental en PRODIGY Lab","description":"Proceso para solicitar fresado de zirconio, PMMA o e.max en PRODIGY Lab Dental Bogotá.","totalTime":"PT10M","step":[{"@type":"HowToStep","name":"Selecciona el material","text":"Elige el material: zirconio monolítico, multicapa, PMMA o disilicato de litio."},{"@type":"HowToStep","name":"Sube el STL de diseño","text":"Adjunta el archivo STL del diseño CAD aprobado para proceder al fresado."},{"@type":"HowToStep","name":"Confirma y paga el 50% de abono","text":"El caso inicia producción tras confirmación del abono del 50%."},{"@type":"HowToStep","name":"Recibe tu restauración en 24-48h","text":"La pieza fresada y sinterizada llega a tu clínica o puedes pasar a recogerla en Bogotá."}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"PRODIGY Lab Dental","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"127","bestRating":"5"}}</script>
 <script src="js/reportar-problema.js?v=20261002n" defer></script>
 </head>
 <body>
@@ -2029,7 +2028,7 @@ if(window.ProdigyAuth){
         const pais = sessionStorage.getItem('prodigy_pais');
         if (pais && pais !== 'CO') { mostrarGeoGate('fresado'); return; }
         if (!pais) {
-            fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) })
+            fetch('/api/geo', { signal: AbortSignal.timeout(3000) })
                 .then(r => r.json()).then(d => {
                     const p = d.country_code || 'CO';
                     sessionStorage.setItem('prodigy_pais', p);
@@ -4899,7 +4898,7 @@ if(window.ProdigyAuth){
 <script src="js/modo-prueba.js?v=20260719"></script>
 <script src="js/registro-archivos.js?v=20260718"></script>
     <script src="js/upload-guard.js?v=20261001"></script>
-    <script src="js/pagos.js?v=20260826"></script>
+    <script src="js/pagos.js?v=20261011a"></script>
     <script>
     // Detección geográfica: Colombia → pagos locales / Otro país → WA
     (async function() {

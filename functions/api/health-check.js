@@ -56,9 +56,8 @@ const SERVICES = [
     critical: false,
   },
   {
-    name: 'ipapi.co (geo-detect)',
-    url: () => 'https://ipapi.co/json/',
-    expectStatus: [200, 429], // 429 = responde, pero limita la IP compartida de Cloudflare
+    name: 'Geo propio (/api/geo, reemplaza a ipapi.co)',
+    url: () => 'https://prodigylabdental.com/api/geo',
     critical: false,
   },
   {

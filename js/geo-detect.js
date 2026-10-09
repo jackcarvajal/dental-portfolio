@@ -30,7 +30,7 @@ window.ProdigyGeo = (function () {
     _cbs = [];
   }
 
-  /* Intenta ipapi.co (gratis, sin key para <1000 req/día) */
+  /* País desde Cloudflare (/api/geo): la IP no sale a terceros y no hay tope diario (antes ipapi.co) */
   function _detect() {
     // Primero revisa sessionStorage para no hacer dos requests
     try {
@@ -38,7 +38,7 @@ window.ProdigyGeo = (function () {
       if (cached) { _resolve(JSON.parse(cached)); return; }
     } catch(_) {}
 
-    fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4000) })
+    fetch('/api/geo', { signal: AbortSignal.timeout(4000) })
       .then(function(r){ return r.json(); })
       .then(function(d) {
         var result = {

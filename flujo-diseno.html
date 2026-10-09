@@ -417,7 +417,6 @@ function _pgAplicarAutofill(){
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Como pago mi pedido de diseno CAD en PRODIGY?","acceptedAnswer":{"@type":"Answer","text":"Aceptamos Wompi (PSE, tarjetas Colombia), Stripe (tarjetas internacionales), PayPal, transferencia bancaria y pago en efectivo. Politica 50% abono inicio, 50% saldo contra entrega."}},{"@type":"Question","name":"Que pasa si no me gusta el diseno CAD?","acceptedAnswer":{"@type":"Answer","text":"Tienes 1 revision gratuita incluida. Puedes solicitar cambios directamente desde el visor 3D antes de que inicie la produccion. El laboratorio no produce sin tu aprobacion."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo solicitar diseño CAD dental en PRODIGY Lab","description":"Proceso para solicitar diseño CAD de corona, carilla, puente o guía quirúrgica en PRODIGY Lab Dental Bogotá.","totalTime":"PT10M","step":[{"@type":"HowToStep","name":"Selecciona el servicio","text":"Elige el tipo de diseño: corona, carilla, puente, Full Arch o guía quirúrgica."},{"@type":"HowToStep","name":"Sube el archivo STL","text":"Adjunta el archivo STL de tu escáner intraoral. Formatos: STL, OBJ, PLY, Exocad, 3Shape."},{"@type":"HowToStep","name":"Confirma por WhatsApp","text":"El sistema genera el mensaje con todos los detalles. Envíalo para iniciar el caso."},{"@type":"HowToStep","name":"Recibe el diseño en 24-48h","text":"El equipo de diseño procesa el caso y envía el STL del diseño para tu aprobación."}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"PRODIGY Lab Dental","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"127","bestRating":"5"}}</script>
 <script src="js/reportar-problema.js?v=20261002n" defer></script>
 </head>
 <body>
@@ -2423,7 +2422,7 @@ const lineWompi = document.getElementById('line-wompi');
             .catch(() => { /* Falla silenciosa → usa defaults del objeto PLATFORM_FEES */ });
 
             // ── GEOBLOCKING: sección internacional solo fuera de Colombia ────────
-            fetch('https://ipapi.co/json/')
+            fetch('/api/geo')
                 .then(r => r.json())
                 .then(d => {
                     if (d.country_code && d.country_code !== 'CO') {
@@ -2545,7 +2544,7 @@ const lineWompi = document.getElementById('line-wompi');
 <script src="js/footer.js?v=20261008"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
     <script src="js/fechas-habiles.js?v=20260719"></script>
-    <script src="js/pagos.js?v=20260826"></script>
+    <script src="js/pagos.js?v=20261011a"></script>
 <script src="js/formatos.js?v=20261001"></script>
 <script src="js/promo.js?v=20260910"></script>
 <script src="js/pedido-guard.js?v=20260719"></script>

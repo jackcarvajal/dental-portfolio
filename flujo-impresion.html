@@ -99,7 +99,6 @@ if(window.ProdigyAuth){
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Como entrego el diseno para impresion 3D dental?","acceptedAnswer":{"@type":"Answer","text":"Sube el archivo STL del modelo, guia o provisional. Lo imprimimos, hacemos post-curado UV y te lo enviamos fisicamente o de forma digital si es solo el STL."}},{"@type":"Question","name":"Las guias quirurgicas impresas son esterilizables?","acceptedAnswer":{"@type":"Answer","text":"Si, con glutaraldehido al 2% durante 20 minutos seguido de enjuague con agua esteril. No usar autoclave ni agua caliente — desnaturaliza la resina."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo solicitar impresión 3D dental en PRODIGY Lab","totalTime":"PT10M","step":[{"@type":"HowToStep","name":"Selecciona el tipo de impresión","text":"Elige entre modelo diagnóstico, guía quirúrgica, provisional o férula oclusal."},{"@type":"HowToStep","name":"Sube el archivo STL","text":"Adjunta el STL del modelo o diseño. El sistema valida el archivo automáticamente."},{"@type":"HowToStep","name":"Confirma el pedido","text":"Revisa el resumen y confirma por WhatsApp para iniciar la impresión."},{"@type":"HowToStep","name":"Recibe en 24-48h","text":"La pieza impresa con post-curado UV llega a tu clínica en Bogotá o envío nacional."}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"PRODIGY Lab Dental","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"127","bestRating":"5"}}</script>
 <script src="js/reportar-problema.js?v=20261002n" defer></script>
 </head>
 <body>
@@ -110,7 +109,7 @@ if(window.ProdigyAuth){
         const pais = sessionStorage.getItem('prodigy_pais');
         if (pais && pais !== 'CO') { mostrarGeoGate(); return; }
         if (!pais) {
-            fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) })
+            fetch('/api/geo', { signal: AbortSignal.timeout(3000) })
                 .then(r => r.json()).then(d => {
                     const p = d.country_code || 'CO';
                     sessionStorage.setItem('prodigy_pais', p);
@@ -1266,7 +1265,7 @@ if(window.ProdigyAuth){
 <script src="js/modo-prueba.js?v=20260719"></script>
 <script src="js/registro-archivos.js?v=20260718"></script>
     <script src="js/upload-guard.js?v=20261001"></script>
-    <script src="js/pagos.js?v=20260826"></script>
+    <script src="js/pagos.js?v=20261011a"></script>
     <script>
     // Detección geográfica: Colombia → pagos locales / Otro país → WA
     (async function() {

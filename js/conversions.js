@@ -39,9 +39,9 @@ window.ProdigyConversions = (function () {
 
   /* ── GA4 + GADS EVENT ───────────────────────────────────────── */
   function _gtag() {
+    // Una sola vez: window.gtag (header.js) ya empuja a dataLayer; antes se empujaba otra vez aquí y GA4 contaba cada evento doble.
     if (window.gtag) window.gtag.apply(window, arguments);
-    if (!window.dataLayer) window.dataLayer = [];
-    window.dataLayer.push(arguments);
+    else (window.dataLayer = window.dataLayer || []).push(arguments);
   }
 
   function _sendGA4(eventName, params) {
@@ -201,7 +201,7 @@ window.ProdigyConversions = (function () {
   });
 
   /* ── CARGAR META PIXEL CUANDO HAY CONSENTIMIENTO ────────────── */
-  if (localStorage.getItem('prodigy_cookies_ok') === '1') _loadMetaPixel();
+  try { if (localStorage.getItem('prodigy_cookies_ok') === '1') _loadMetaPixel(); } catch (e) {}
   document.addEventListener('prodigy_consent_granted', _loadMetaPixel);
 
   function trackFormSubmitOk() {

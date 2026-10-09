@@ -329,7 +329,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
   var w=document.getElementById('urgencia-bar');
   function tick(){var n=new Date(),d=n.getDay(),h=n.getHours(),m=n.getMinutes(),s=n.getSeconds();if(d===0||h<8||h>=17){w.style.display='none';return;}var secs=(17-h)*3600-m*60-s,hh=Math.floor(secs/3600),mm=Math.floor((secs%3600)/60),ss=secs%60;w.style.display='block';w.textContent='⚡ Order in '+(hh>0?hh+'h ':'')+mm+'min '+ss+'s and receive today';}tick();setInterval(tick,1000);
 })();
-['js/utm-tracker.js','js/conversions.js'].forEach(function(s){var t=document.createElement('script');t.src='/'+s;t.defer=true;document.head.appendChild(t);});
+['js/utm-tracker.js','js/conversions.js?v=20261011a'].forEach(function(s){var t=document.createElement('script');t.src='/'+s;t.defer=true;document.head.appendChild(t);});
 </script>
 <script src="../js/footer.js?v=20261008"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});</script>

@@ -63,6 +63,14 @@
     .cta-group{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
     .btn-primary{background:linear-gradient(135deg,var(--mg),#9333ea);color:#fff;border:none;border-radius:14px;padding:15px 32px;font-size:1rem;font-weight:800;cursor:pointer;transition:transform .2s,box-shadow .2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;}
     .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(217,70,166,.4);}
+    /* Ondas de luz WebGL de fondo (versión del «WebGLShader») y botón de vidrio (versión del «LiquidButton») */
+    .hero{overflow:hidden}
+    .hero-ondas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1.2s;z-index:0}
+    .hero > :not(.hero-ondas){position:relative;z-index:1}
+    .btn-liquido{position:relative;display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:15px 30px;color:#fff;font-weight:700;font-size:1rem;text-decoration:none;background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(6px) saturate(140%);backdrop-filter:blur(6px) saturate(140%);
+      box-shadow:inset 3px 3px .5px -3.5px rgba(255,255,255,.09),inset -3px -3px .5px -3.5px rgba(255,255,255,.85),inset 1px 1px 1px -.5px rgba(255,255,255,.6),inset -1px -1px 1px -.5px rgba(255,255,255,.6),inset 0 0 6px 6px rgba(255,255,255,.12),inset 0 0 2px 2px rgba(255,255,255,.06),0 0 12px rgba(0,0,0,.15);transition:transform .3s}
+    .btn-liquido:hover{transform:scale(1.05)}
+    .btn-liquido:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
     .btn-secondary{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#e2e8f0;border-radius:14px;padding:15px 32px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;}
     .btn-secondary:hover{background:rgba(255,255,255,.1);}
     /* Stats bar */
@@ -125,7 +133,6 @@
     .sec,.section,.container,.card-grid{content-visibility:auto;contain-intrinsic-size:0 350px;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
   </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"PRODIGY Lab Dental","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"127","bestRating":"5"}}</script>
 </head>
 <body>
 <link rel="preload" href="js/header.js?v=20261010b" as="script">
@@ -133,12 +140,13 @@
 
 <!-- HERO -->
 <section class="hero">
+  <canvas class="hero-ondas" data-ondas data-desplazar="0.78" aria-hidden="true"></canvas>
   <div class="badge"><i class="fas fa-flask-vial" aria-hidden="true"></i> Para laboratorios dentales</div>
   <h1>El software que tu lab dental<br><span>ya necesitaba</span></h1>
   <p>Gestiona pedidos, diseños CAD, pagos y entregas desde un solo panel. Lo que construimos para PRODIGY, ahora disponible para tu laboratorio.</p>
   <div class="cta-group">
     <a href="#waitlist" class="btn-primary"><i class="fas fa-flask" aria-hidden="true"></i> Quiero unirme a la lista</a>
-    <a href="https://wa.me/573212816716?text=Hola,%20me%20interesa%20PRODIGY%20para%20mi%20laboratorio" target="_blank" rel="noopener noreferrer" class="btn-secondary"><i class="fab fa-whatsapp" aria-hidden="true"></i> Hablar con el equipo</a>
+    <a href="https://wa.me/573212816716?text=Hola,%20me%20interesa%20PRODIGY%20para%20mi%20laboratorio" target="_blank" rel="noopener noreferrer" class="btn-liquido"><i class="fab fa-whatsapp" aria-hidden="true"></i> Hablar con el equipo</a>
   </div>
 </section>
 
@@ -401,6 +409,7 @@
     <a href="/app/client-panel.html" style="background:rgba(0,255,65,.12);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:8px;padding:7px 16px;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;">Obtener mi código →</a>
   </div>
 </section>
+<script src="js/ondas-shader.js?v=20261010" defer></script>
 <script src="js/footer.js?v=20261008"></script>
 <script>
 const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';

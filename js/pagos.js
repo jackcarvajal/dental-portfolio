@@ -266,7 +266,7 @@ function renderSelectorPasarelas(containerId, precioBase, onSelect) {
 ═══════════════════════════════════════ */
 
 /**
- * Detecta el país del visitante vía ipapi.co (gratis, 1000 req/día).
+ * Detecta el país del visitante con /api/geo (Cloudflare, sin terceros ni tope diario).
  * Cachea el resultado en sessionStorage para no repetir la llamada.
  * @returns {Promise<string>} código ISO del país, ej: 'CO', 'US', 'MX'
  */
@@ -274,7 +274,7 @@ async function detectarPais() {
     const cached = sessionStorage.getItem('prodigy_pais');
     if (cached) return cached;
     try {
-        const resp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
+        const resp = await fetch('/api/geo', { signal: AbortSignal.timeout(3000) });
         const data = await resp.json();
         const pais = data.country_code || 'CO';
         sessionStorage.setItem('prodigy_pais', pais);
