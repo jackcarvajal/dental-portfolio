@@ -9,6 +9,7 @@
 
 ---
 
+- ✅ **envía-tu-scanner · plantilla opcional** (13-oct, ambas): bloque plegable bajo «Enviar» que arma el texto del caso con lo ya tecleado (doctor, clínica, trabajo, piezas, escáner) y deja Material/Color/pilar para completar — como la «receta» de un lab tradicional (idea tomada de la auditoría de Laboratorio Dies). Botones Copiar · WhatsApp · Correo (casos@ / hola@). Subir el STL directo sigue siendo lo recomendado.
 ## 2026-10-09  (auditoría Laboratorio Dies · «Diseña con nosotros» a futuro · reseñas falsas fuera del schema · geo propio)
 
 - 💡 **«Diseña con nosotros» NO es público todavía** (Alejandro: aún no hay clientes ni casos en la web, es a futuro). Todo el
