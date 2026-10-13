@@ -125,7 +125,7 @@ async function verFicha(id) {
 
   /* Todo en paralelo: el caso, sus archivos, su historial y su despacho */
   const [ped, arch, hist, desp, bita] = await Promise.all([
-    sb.from('pedidos').select('*').eq('id',id).single(),
+    sb.from('pedidos').select('*').eq('id',id).eq('negocio','prodigy').single(),   // separación por negocio: el detalle no debe abrir una orden de otro negocio por id directo
     sb.from('pedido_archivos').select('*').eq('pedido_id',id).order('created_at'),
     sb.from('historial_diseno').select('*').eq('pedido_id',id).order('created_at',{ascending:false}).limit(40),
     sb.from('despachos').select('*').eq('pedido_id',id).order('created_at',{ascending:false}).limit(1),
