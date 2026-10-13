@@ -225,6 +225,12 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     try { if (localStorage.getItem('pg_cookies_decision') === 'accepted' || localStorage.getItem('prodigy_cookies_ok') === '1') gtag('consent','update',{analytics_storage:'granted'}); } catch (e) {}
     gtag('js', new Date());
     gtag('config', GA_ID, {anonymize_ip:true});
+    // Medición de Google Ads (AW-18130335500): SOLO conversiones. ad_storage sigue denegado por defecto
+    // (footer.js nunca lo concede) → sin cookies de anuncio y sin remarketing, consistente con «Sin anuncios».
+    // allow_ad_personalization_signals:false refuerza que es medición, no publicidad dirigida. El conversion
+    // linker captura el gclid para atribuir en GA4/Ads; las conversiones de _sendGAds() empiezan a contar en
+    // cuanto existan los labels reales (hoy placeholders «_LABEL», ver js/conversions.js).
+    gtag('config', 'AW-18130335500', {allow_ad_personalization_signals:false});
   }
   function _cargar() {
     if (!document.getElementById('prodigy-ga4-script')) {
