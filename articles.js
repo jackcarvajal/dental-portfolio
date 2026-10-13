@@ -2,10 +2,378 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-10-08
+   Última actualización automática: 2026-10-13
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "brackets-guias-posicionamiento-2026-10-13-7e74",
+  "titulo": "IBT Digital: Precisión en el Posicionamiento de Brackets con Guías Impresas 3D",
+  "subtitulo": "Análisis basado en evidencia de la digitalización, planificación virtual y fabricación de cubetas de IBT, y su precisión comparada con el bonding directo.",
+  "categoria": "ortodoncia",
+  "chip": "Ortodoncia Lab",
+  "fecha": "2026-10-13",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "📐",
+  "grad": "grad-2",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La ortodoncia contemporánea ha experimentado una transformación significativa con la integración de flujos de trabajo digitales, buscando optimizar la precisión y eficiencia de los tratamientos. La técnica de bonding indirecto (IBT) se ha consolidado como una alternativa al bonding directo, ofreciendo ventajas potenciales en la colocación de brackets. La digitalización de modelos de estudio, la planificación virtual de la posición del bracket y la fabricación aditiva de cubetas de transferencia son pilares de la IBT digital, cuyo impacto en la precisión y resultados clínicos es objeto de rigurosa investigación."
+    },
+    {
+      "t": "h2",
+      "c": "Digitalización y Planificación Virtual de Brackets"
+    },
+    {
+      "t": "p",
+      "c": "El punto de partida de la IBT digital es la obtención de modelos de estudio de alta fidelidad. Esto se logra mediante el escaneo de modelos de yeso con escáneres intraorales, como el Trios (3Shape), para generar representaciones digitales precisas de la dentición del paciente (Koch et al., 2022; Hofmann et al., 2022). Estos modelos digitales sirven como base para la planificación virtual de la posición ideal de los brackets. Software de simulación, como OnyxCeph, permite al clínico posicionar virtualmente cada bracket con exactitud tridimensional, definiendo su angulación, torque y altura antes de cualquier intervención física (Koch et al., 2022). Esta fase virtual es crucial para la personalización del tratamiento y la optimización de los resultados."
+    },
+    {
+      "t": "h2",
+      "c": "Fabricación de Cubetas de Transferencia Impresas en 3D"
+    },
+    {
+      "t": "p",
+      "c": "Una vez completada la planificación virtual, el siguiente paso es la fabricación de las cubetas de transferencia, también conocidas como guías de posicionamiento indirecto. Estas cubetas se diseñan digitalmente sobre las posiciones virtuales de los brackets y se producen mediante tecnologías de impresión 3D (Campobasso et al., 2023; Bakdach et al., 2022). Se ha investigado el uso de impresoras Polyjet para la fabricación de cubetas de IBT, como las empleadas en el sistema SureSmile (Hofmann et al., 2022). Estas cubetas CAD/CAM permiten la transferencia precisa de los brackets desde el modelo de trabajo a la superficie dental del paciente, asegurando que la posición final del bracket replique la planificación virtual (Koch et al., 2022)."
+    },
+    {
+      "t": "h2",
+      "c": "Precisión de Posicionamiento de Brackets con IBT Digital"
+    },
+    {
+      "t": "p",
+      "c": "La precisión de la técnica de IBT digital ha sido extensamente evaluada en la literatura científica. Revisiones sistemáticas y metaanálisis han examinado la exactitud de los dispositivos de transferencia impresos en 3D (Campobasso et al., 2023; Bakdach et al., 2022). En cuanto a los errores de transferencia lineal, un metaanálisis encontró que el error promedio al utilizar cubetas impresas en 3D fue de 0.095 mm en dirección mesiodistal, 0.114 mm en dirección bucolingual y 0.111 mm en dirección vertical (Bakdach et al., 2022). Estos valores representan la desviación entre la posición planificada y la posición real del bracket tras la transferencia."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Dirección",
+        "Error de Transferencia Lineal (mm)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Mesiodistal",
+          "0.095 (IC 95%: 0.035, 0.155)",
+          "(Bakdach et al., 2022)"
+        ],
+        [
+          "Bucolingual",
+          "0.114 (IC 95%: 0.067, 0.160)",
+          "(Bakdach et al., 2022)"
+        ],
+        [
+          "Vertical",
+          "0.111 (IC 95%: -0.033, 0.255)",
+          "(Bakdach et al., 2022)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Comparación con el Bonding Directo y Eficiencia Clínica"
+    },
+    {
+      "t": "p",
+      "c": "La comparación entre la IBT y la técnica de bonding directo es crucial para determinar sus ventajas clínicas. Una revisión sistemática y metaanálisis no encontró diferencias significativas en la precisión de la colocación de brackets entre ambas técnicas (Li et al., 2019). Sin embargo, la IBT digital puede ofrecer beneficios en términos de eficiencia clínica. Se ha asociado con una reducción del tiempo de sillón y una mejora en la ergonomía para el ortodoncista (Alhafi et al., 2025). Un estudio publicado en *Angle Orthodontist* comparó la precisión de cubetas impresas con Polyjet frente a cubetas de silicona convencionales, evaluando las desviaciones lineales y angulares (Hofmann et al., 2022)."
+    },
+    {
+      "t": "h2",
+      "c": "Desviaciones Angulares y Torque en IBT"
+    },
+    {
+      "t": "p",
+      "c": "Más allá de las desviaciones lineales, las desviaciones angulares son de suma importancia, ya que afectan directamente el control del torque y la angulación del bracket, factores críticos para el movimiento dental deseado y la finalización del caso. Un metaanálisis que evaluó la precisión de las cubetas impresas en 3D también consideró las dimensiones angulares de los errores de transferencia (Bakdach et al., 2022). La evaluación de la precisión de transferencia de las cubetas de IBT se realiza mediante algoritmos de medición de procesamiento de imágenes, comparando las posiciones virtuales planificadas con las posiciones reales de los brackets después de la transferencia (Koch et al., 2022; Hofmann et al., 2022). Estos análisis detallados son fundamentales para asegurar que la IBT digital cumpla con los estándares de precisión requeridos para un tratamiento ortodóntico exitoso."
+    },
+    {
+      "t": "quote",
+      "c": "No se encontraron diferencias significativas en la precisión de la colocación de brackets entre las técnicas de bonding directo e indirecto.",
+      "author": "Li et al., BMC Oral Health, 2019"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja de la IBT digital sobre el bonding directo?",
+      "a": "La IBT digital permite una planificación virtual precisa de la posición del bracket, lo que puede mejorar la eficiencia clínica y reducir el tiempo de sillón, aunque la precisión final de la colocación no muestra diferencias significativas con el bonding directo (Li et al., 2019; Alhafi et al., 2025)."
+    },
+    {
+      "q": "¿Qué tan precisas son las cubetas de transferencia impresas en 3D?",
+      "a": "Estudios indican que las cubetas impresas en 3D tienen errores de transferencia lineal promedio de aproximadamente 0.095 mm en mesiodistal, 0.114 mm en bucolingual y 0.111 mm en vertical (Bakdach et al., 2022)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Campobasso A, Battista G, Fiorillo G, Caldara G, Lo Muzio E, Ciavarella D, et al.",
+      "titulo": "Transfer Accuracy of 3D-Printed Customized Devices in Digital Indirect Bonding: A Systematic Review and Meta-Analysis",
+      "revista": "Int J Dent",
+      "año": "2023",
+      "vol": "2023",
+      "num": "",
+      "pags": "5103991",
+      "doi": "10.1155/2023/5103991",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39263628/",
+      "verificada": true
+    },
+    {
+      "autores": "Bakdach WMM, Hadad R.",
+      "titulo": "Linear and angular transfer accuracy of labial brackets using three dimensional-printed indirect bonding trays: A systematic review and meta-analysis",
+      "revista": "Int Orthod",
+      "año": "2022",
+      "vol": "20",
+      "num": "1",
+      "pags": "100612",
+      "doi": "10.1016/j.ortho.2022.100612",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35144909/",
+      "verificada": true
+    },
+    {
+      "autores": "Li Y, Mei L, Wei J, Yan X, Zhang X, Zheng W, et al.",
+      "titulo": "Effectiveness, efficiency and adverse effects of using direct or indirect bonding technique in orthodontic patients: a systematic review and meta-analysis",
+      "revista": "BMC Oral Health",
+      "año": "2019",
+      "vol": "19",
+      "num": "1",
+      "pags": "137",
+      "doi": "10.1186/s12903-019-0831-4",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31286897/",
+      "verificada": true
+    },
+    {
+      "autores": "Alhafi ZM, Hajeer MY, Alam MK, Jaber S, Jaber ST.",
+      "titulo": "Effectiveness and efficiency of indirect bonding techniques: An umbrella review with meta-analysis of the pooled findings",
+      "revista": "Int Orthod",
+      "año": "2025",
+      "vol": "23",
+      "num": "4",
+      "pags": "101036",
+      "doi": "10.1016/j.ortho.2025.101036",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/40592029/",
+      "verificada": true
+    },
+    {
+      "autores": "Koch PJ, Albrecht M, Lin WC, Jost-Brinkmann PG.",
+      "titulo": "Accuracy of indirect bonding trays - a measurement algorithm",
+      "revista": "Int J Comput Dent",
+      "año": "2022",
+      "vol": "25",
+      "num": "3",
+      "pags": "295-302",
+      "doi": "10.3290/j.ijcd.b2599775",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35072417/",
+      "verificada": true
+    },
+    {
+      "autores": "Hofmann EC, Süpple J, von Glasenapp J, Jost-Brinkmann PG, Koch PJ.",
+      "titulo": "Indirect bonding: an in-vitro comparison of a Polyjet printed versus a conventional silicone transfer tray",
+      "revista": "Angle Orthod",
+      "año": "2022",
+      "vol": "92",
+      "num": "6",
+      "pags": "728-737",
+      "doi": "10.2319/122021-925.1",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35834817/",
+      "verificada": true
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "dsd-protocolo-2025-2026-10-13-9178",
+  "titulo": "DSD: Protocolo Actualizado, Integración Digital y Predictibilidad Estética",
+  "subtitulo": "Este artículo detalla la evolución del Diseño Digital de Sonrisa (DSD), su integración tecnológica y el impacto en la predictibilidad y satisfacción del paciente.",
+  "categoria": "estetica",
+  "chip": "Diseño Sonrisa",
+  "fecha": "2026-10-13",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "✨",
+  "grad": "grad-1",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "El diseño de sonrisa, definido como el proceso de crear una sonrisa estética basada en directrices científicas y artísticas, ha evolucionado significativamente. Tradicionalmente, se centraba en el complejo orodental, pero los diseñadores modernos deben tener una comprensión global del paciente, incluyendo la estética facial, la dinámica labial, la estética rosa y blanca, y la personalidad (Sabbah, 2022). La tecnología ha revolucionado las técnicas dentales, y el Diseño Digital de Sonrisa (DSD) emerge como una herramienta técnica que permite el diseño y la modificación digital de la sonrisa del paciente (Alharkan, 2024; Cervino et al., 2019)."
+    },
+    {
+      "t": "h2",
+      "c": "Fundamentos y Objetivos del Diseño Digital de Sonrisa (DSD)"
+    },
+    {
+      "t": "p",
+      "c": "El objetivo principal del tratamiento estético es asegurar la satisfacción del paciente y cumplir sus expectativas de mejorar la estética facial y la sonrisa (Alharkan, 2024). El DSD es una herramienta técnica que permite a los pacientes visualizar los resultados potenciales antes de que comience el tratamiento real, lo que facilita la comunicación visual y la participación del paciente en el proceso de diseño de la sonrisa. Esto conduce a resultados de tratamiento predecibles y mayores tasas de aceptación (Alharkan, 2024). Además, el DSD ofrece una alternativa estandarizada a los métodos tradicionales, que a menudo dependen en gran medida del juicio del clínico, introduciendo subjetividad y variabilidad (Reviansyah et al., 2025)."
+    },
+    {
+      "t": "h2",
+      "c": "Integración de Tecnologías Digitales en el Flujo de Trabajo DSD"
+    },
+    {
+      "t": "p",
+      "c": "Los avances tecnológicos han influido profundamente en las ciencias médicas, y la odontología ha adoptado plenamente la evolución tecnológica y de la información (Cervino et al., 2019). El DSD se basa en la integración de diversas técnicas y software digitales para la planificación del tratamiento. Aunque los resúmenes proporcionados no detallan específicamente la integración de la fotografía facial estandarizada o el escáner intraoral, se enfatiza que el DSD es un proceso de diseño y modificación digital (Alharkan, 2024). Esta digitalización permite una mayor velocidad en la planificación del tratamiento y una fiabilidad en el resultado (Cervino et al., 2019)."
+    },
+    {
+      "t": "h2",
+      "c": "Plataformas de Planificación Estética y el Rol de la Inteligencia Artificial"
+    },
+    {
+      "t": "p",
+      "c": "Las aplicaciones de inteligencia artificial (IA) están creciendo en el diseño de sonrisa y los procedimientos estéticos (Baaj et al., 2025). La IA puede evaluar el rendimiento de los modelos en el diseño de sonrisa y los criterios de los puntos de referencia utilizando análisis de IA (Baaj et al., 2025). Si bien los resúmenes disponibles no proporcionan una comparativa directa entre plataformas específicas como DSD App, Smile Designer Pro o 3Shape Smile Design, la expansión y el rendimiento de los modelos de IA en las aplicaciones de diseño digital de sonrisa están siendo sistemáticamente documentados y analizados (Baaj et al., 2025). Esto sugiere un futuro donde la IA optimizará aún más la precisión y eficiencia de estas plataformas."
+    },
+    {
+      "t": "h2",
+      "c": "Validación, Satisfacción del Paciente y Predictibilidad del Resultado"
+    },
+    {
+      "t": "p",
+      "c": "El DSD es fundamental para lograr resultados estéticos mejorados y una mayor satisfacción del paciente, promoviendo la armonía entre las características faciales y dentales (Reviansyah et al., 2025). La capacidad del DSD para permitir la visualización de los resultados potenciales antes del tratamiento contribuye directamente a la predictibilidad y a una mayor aceptación por parte del paciente (Alharkan, 2024). La fiabilidad del resultado es una de las ventajas destacadas de las técnicas digitales en odontología (Cervino et al., 2019). A continuación, se presenta una comparativa de las características clave entre los enfoques tradicionales y el DSD:"
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Enfoque Tradicional",
+        "Diseño Digital de Sonrisa (DSD)"
+      ],
+      "rows": [
+        [
+          "Subjetividad/Estandarización",
+          "Depende del juicio clínico, introduce subjetividad y variabilidad (Reviansyah et al., 2025)",
+          "Ofrece una alternativa estandarizada (Reviansyah et al., 2025)"
+        ],
+        [
+          "Visualización para el Paciente",
+          "Limitada o inexistente antes del tratamiento",
+          "Permite visualizar resultados potenciales antes del tratamiento (Alharkan, 2024)"
+        ],
+        [
+          "Predictibilidad del Resultado",
+          "Menor debido a la subjetividad inherente",
+          "Conduce a resultados predecibles y fiables (Alharkan, 2024; Cervino et al., 2019)"
+        ],
+        [
+          "Comunicación Interdisciplinar",
+          "Desafío para la comunicación efectiva entre proveedores (Whiteman, 2020)",
+          "Herramienta visual para optimizar el resultado y comunicación efectiva (Whiteman, 2020; Alharkan, 2024)"
+        ],
+        [
+          "Satisfacción del Paciente",
+          "Puede variar si las expectativas no se cumplen",
+          "Mayor aceptación y mejora de la satisfacción (Alharkan, 2024; Reviansyah et al., 2025)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Comunicación y Colaboración Multidisciplinar con DSD"
+    },
+    {
+      "t": "p",
+      "c": "La comunicación efectiva entre los proveedores es un desafío en el tratamiento multidisciplinario, especialmente en colaboraciones ortodóntico-restauradoras (Whiteman, 2020). El DSD, a través de su herramienta de esquema digital, sirve como una ayuda visual crucial para optimizar el resultado del tratamiento. Facilita una comunicación rápida y efectiva sobre el progreso del tratamiento y las recomendaciones, lo que es vital en fases críticas como la evaluación estética al final de la fase ortodóntica (Whiteman, 2020). Esta capacidad de comunicación visual también se extiende a la interacción con el paciente, fomentando su participación activa (Alharkan, 2024)."
+    },
+    {
+      "t": "quote",
+      "c": "El diseño de sonrisa es un campo dinámico con tendencias en evolución que toman en consideración la estética facial, la dinámica labial, la estética rosa y blanca, y la personalidad.",
+      "author": "Sabbah, Dent Clin North Am, 2022"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo mejora el DSD la comunicación con el paciente?",
+      "a": "El DSD permite a los pacientes visualizar digitalmente los resultados potenciales de su tratamiento antes de que comience, facilitando la comunicación visual y su participación activa en el proceso de diseño, lo que aumenta la aceptación (Alharkan, 2024)."
+    },
+    {
+      "q": "¿Es el DSD más predecible que los métodos tradicionales?",
+      "a": "Sí, el DSD ofrece una alternativa estandarizada que reduce la subjetividad inherente a los métodos tradicionales, lo que conduce a resultados de tratamiento más predecibles y fiables, mejorando la estética y la satisfacción del paciente (Alharkan, 2024; Reviansyah et al., 2025)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Sabbah A.",
+      "titulo": "Smile Analysis: Diagnosis and Treatment Planning",
+      "revista": "Dent Clin North Am",
+      "año": "2022",
+      "vol": "66",
+      "num": "3",
+      "pags": "307-341",
+      "doi": "10.1016/j.cden.2022.03.001",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35738730/",
+      "verificada": true
+    },
+    {
+      "autores": "Baaj RE, Alangari TA.",
+      "titulo": "Artificial intelligence applications in smile design dentistry: A scoping review",
+      "revista": "J Prosthodont",
+      "año": "2025",
+      "vol": "34",
+      "num": "4",
+      "pags": "341-349",
+      "doi": "10.1111/jopr.14000",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39654301/",
+      "verificada": true
+    },
+    {
+      "autores": "Alharkan HM.",
+      "titulo": "Integrating digital smile design into restorative Dentistry: A narrative review of the applications and benefits",
+      "revista": "Saudi Dent J",
+      "año": "2024",
+      "vol": "36",
+      "num": "4",
+      "pags": "561-567",
+      "doi": "10.1016/j.sdentj.2023.12.014",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38690398/",
+      "verificada": true
+    },
+    {
+      "autores": "Cervino G, Fiorillo L, Arzukanyan AV, Spagnuolo G, Cicciù M.",
+      "titulo": "Dental Restorative Digital Workflow: Digital Smile Design from Aesthetic to Function",
+      "revista": "Dent J (Basel)",
+      "año": "2019",
+      "vol": "7",
+      "num": "2",
+      "pags": "",
+      "doi": "10.3390/dj7020030",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/30925698/",
+      "verificada": true
+    },
+    {
+      "autores": "Reviansyah FH, Ristin AD, Almughni WH, Yolanda Y, Takarini V, Susilawati S, et al.",
+      "titulo": "Eco-Friendly Approaches to Enhance Dental Aesthetics and Patient Satisfactions Using Digital Smile Design: A Systematic Review",
+      "revista": "Clin Cosmet Investig Dent",
+      "año": "2025",
+      "vol": "17",
+      "num": "",
+      "pags": "391-404",
+      "doi": "10.2147/CCIDE.S535436",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/40895222/",
+      "verificada": true
+    },
+    {
+      "autores": "Whiteman YY.",
+      "titulo": "A Communication Guide for Orthodontic-Restorative Collaborations: Digital Smile Design Outline Tool",
+      "revista": "Dent Clin North Am",
+      "año": "2020",
+      "vol": "64",
+      "num": "4",
+      "pags": "719-730",
+      "doi": "10.1016/j.cden.2020.06.002",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/32888519/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
