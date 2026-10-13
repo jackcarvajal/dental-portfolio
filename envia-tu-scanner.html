@@ -337,6 +337,20 @@
             background:#25D366;color:#fff;padding:12px 26px;
             border-radius:8px;text-decoration:none;font-weight:700;font-size:1rem;}
 
+        /* Alternativa opcional: enviar por WhatsApp/correo con plantilla (el método de laboratorio de toda la vida) */
+        .plantilla-alt{border:1px dashed rgba(0,210,255,.3);border-radius:14px;background:rgba(0,210,255,.04);margin-bottom:18px;overflow:hidden;}
+        .plantilla-alt>summary{list-style:none;cursor:pointer;padding:14px 16px;font-size:.9rem;font-weight:700;color:var(--cyan);display:flex;align-items:center;gap:9px;}
+        .plantilla-alt>summary::-webkit-details-marker{display:none;}
+        .plantilla-alt>summary::after{content:'\f078';font-family:'Font Awesome 6 Free';font-weight:900;margin-left:auto;font-size:.75rem;transition:transform .2s;color:#64748b;}
+        .plantilla-alt[open]>summary::after{transform:rotate(180deg);}
+        .plantilla-body{padding:0 16px 16px;}
+        .pa-hint{font-size:.82rem;color:#94a3b8;margin:0 0 10px;line-height:1.45;}
+        #plantillaTxt{width:100%;background:#0b1220;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#e2e8f0;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:12px;resize:vertical;}
+        .pa-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+        .pa-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#e2e8f0;}
+        .pa-btn:hover{background:rgba(255,255,255,.09);}
+        .pa-btn.pa-wa{background:#25D366;border-color:#25D366;color:#fff;}
+
         /* footer */
         footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;
             text-align:center;font-size:1rem;color:#94a3b8;}
@@ -661,6 +675,22 @@
                 </button>
                 <p class="form-note">Te contactamos por WhatsApp. Horario hábil: L–S 8am–6pm.</p>
 
+                <!-- Alternativa OPCIONAL: enviar por WhatsApp/correo con plantilla (como lo pide un lab tradicional).
+                     Lo recomendado sigue siendo subir el STL arriba; esto es para quien prefiere adjuntarlo a mano. -->
+                <details class="plantilla-alt" id="plantillaAlt" ontoggle="if(this.open)generarPlantilla()">
+                    <summary><i class="fab fa-whatsapp" aria-hidden="true"></i> ¿Prefieres enviarlo por WhatsApp o correo? Copia la plantilla</summary>
+                    <div class="plantilla-body">
+                        <p class="pa-hint">Completa los datos de arriba y pulsa <strong>Generar</strong>. Luego adjunta el escaneo de <strong>ambas arcadas</strong> (STL/OBJ) en WhatsApp o al correo. Lo más rápido sigue siendo subir el archivo aquí mismo.</p>
+                        <textarea id="plantillaTxt" readonly rows="11" aria-label="Plantilla del caso"></textarea>
+                        <div class="pa-acts">
+                            <button type="button" class="pa-btn" onclick="generarPlantilla()"><i class="fas fa-rotate" aria-hidden="true"></i> Generar / actualizar</button>
+                            <button type="button" class="pa-btn" onclick="copiarPlantilla()"><i class="fas fa-copy" aria-hidden="true"></i> Copiar</button>
+                            <a class="pa-btn pa-wa" id="plantillaWa" href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" aria-hidden="true"></i> Enviar por WhatsApp</a>
+                            <a class="pa-btn" id="plantillaMail" href="#"><i class="fas fa-envelope" aria-hidden="true"></i> Por correo</a>
+                        </div>
+                    </div>
+                </details>
+
             </form>
         </div>
 
@@ -857,6 +887,43 @@ function setProg(pct, lbl) {
     document.getElementById('prog-lbl').textContent = lbl;
 }
 function hideProg() { document.getElementById('prog').classList.remove('show'); }
+
+/* ── Plantilla opcional para WhatsApp / correo (método de lab tradicional, con los datos ya tecleados) ── */
+const WA_CASOS = '573212816716';
+const MAIL_CASOS = 'casos@prodigylabdental.com';
+function _v(id){ return (document.getElementById(id)?.value || '').trim(); }
+function textoPlantilla() {
+    const doctor = _v('doctor'), clinica = _v('clinica');
+    const quien = [doctor, clinica].filter(Boolean).join(' — ') || '____';
+    return (
+`Hola PRODIGY, quiero enviar un caso para diseño CAD:
+
+• Doctor / clínica: ${quien}
+• Trabajo: ${_v('svcHidden') || '____'}
+• Piezas / dientes (FDI): ${_v('piezas') || '____'}
+• Material: ____
+• Color: ____
+• Si es sobre implante → pilar / sistema: ____
+• Provisorio de referencia: Sí / No
+• Escáner: ${_v('escaner_marca') || '____'}
+• Notas: ${_v('notas') || '—'}
+
+Adjunto la impresión digital de ambas arcadas (STL/OBJ).`);
+}
+function generarPlantilla() {
+    const t = textoPlantilla();
+    const ta = document.getElementById('plantillaTxt'); if (ta) ta.value = t;
+    const wa = document.getElementById('plantillaWa'); if (wa) wa.href = 'https://wa.me/' + WA_CASOS + '?text=' + encodeURIComponent(t);
+    const mail = document.getElementById('plantillaMail');
+    if (mail) mail.href = 'mailto:' + MAIL_CASOS + '?subject=' + encodeURIComponent('Caso para diseño CAD') + '&body=' + encodeURIComponent(t);
+}
+async function copiarPlantilla() {
+    generarPlantilla();
+    const t = document.getElementById('plantillaTxt').value;
+    try { await navigator.clipboard.writeText(t); }
+    catch(_) { const ta = document.getElementById('plantillaTxt'); ta.focus(); ta.select(); try { document.execCommand('copy'); } catch(e){} }
+    if (window.pubToast) pubToast('Plantilla copiada. Pégala en WhatsApp o el correo y adjunta el escaneo.');
+}
 
 /* ── Submit ── */
 document.getElementById('scannerForm').addEventListener('submit', async e => {
