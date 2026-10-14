@@ -25,6 +25,6 @@ export function onRequestGet({ request }) {
     currency: pais ? (MONEDA[pais] || (EURO.includes(pais) ? 'EUR' : 'USD')) : null,
   };
   return new Response(JSON.stringify(cuerpo), {
-    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'private, no-store' },
+    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'private, max-age=86400' },
   });
 }
