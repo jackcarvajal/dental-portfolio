@@ -1,7 +1,8 @@
 # PRODIGY — PENDIENTES MAESTRO
 > Solo tareas activas. Última revisión: 2026-09-07 (sesión autónoma continua)
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
-
+
+- 🟡 **Agente de research propio** (idea 13-oct, aplazada): montar un agente que vigile X/Reddit/YouTube/Instagram buscando tendencias de odontología digital, quejas de labs y movidas de la competencia, y lo resuma solo. Herramientas candidatas (vetar antes de instalar — cadena de suministro): Scrapling, Patchright Enhanced, Agent-Reach. NO prioritario (primero PRODIGY + Ads/marketing).
 ---
 
 ## 🎯 EN TU CANCHA AHORA (2026-10-06)
