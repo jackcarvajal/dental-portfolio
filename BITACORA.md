@@ -10,6 +10,11 @@
 ---
 
 - ✅ **envía-tu-scanner · plantilla opcional** (13-oct, ambas): bloque plegable bajo «Enviar» que arma el texto del caso con lo ya tecleado (doctor, clínica, trabajo, piezas, escáner) y deja Material/Color/pilar para completar — como la «receta» de un lab tradicional (idea tomada de la auditoría de Laboratorio Dies). Botones Copiar · WhatsApp · Correo (casos@ / hola@). Subir el STL directo sigue siendo lo recomendado.
+## 2026-10-13  (serverless: _routes.json — se corta la invocación del Worker en cada visita)
+
+- ✅ **_routes.json** (ambas webs): antes NO existía y, al haber functions/_middleware.js en la raíz, Cloudflare Pages enrutaba CADA request (cada página, /js, /css, imagen) por el Worker solo para correr el middleware → cada visita = 1 invocación serverless. Ahora solo /api/* y los archivos internos que el middleware 404-ea (sql, supabase, scripts, docs, tools, tests, .claude, package*.json, *.md de raíz incl. casos legales) pasan por Functions; el resto lo sirve el CDN estático. Verificado en producción: páginas 200, URLs limpias OK, /api/geo 200, /CLAUDE.md y /sql/ → 404. Seguridad idéntica. ⚠️ Al agregar una Function nueva fuera de /api/ o un path nuevo al BLOCKED del middleware, hay que añadirlo a include de _routes.json o no se bloqueará / no se invocará.
+
+
 ## 2026-10-09  (auditoría Laboratorio Dies · «Diseña con nosotros» a futuro · reseñas falsas fuera del schema · geo propio)
 
 - 💡 **«Diseña con nosotros» NO es público todavía** (Alejandro: aún no hay clientes ni casos en la web, es a futuro). Todo el
