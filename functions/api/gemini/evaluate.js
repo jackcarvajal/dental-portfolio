@@ -119,6 +119,10 @@ export async function onRequestPost(context) {
     image = { data: String(body.image.data), mimeType: String(body.image.mimeType) };
   }
 
+  if (image && new URL(request.url).searchParams.get('dbg') === '1') {
+    return new Response(JSON.stringify({ critique: 'DEBUG: imagen recibida — mime=' + image.mimeType + ' base64_len=' + image.data.length }), { status: 200, headers: H });
+  }
+
   const zona = SONA[planning.toothZone] || planning.toothZone || 'no indicada';
   const notaImg = image ? '\n\nSe adjunta una IMAGEN 2D del caso (radiografía panorámica/periapical o un corte de CBCT). Analízala SOLO como apoyo: una imagen 2D sin calibración NO permite mediciones exactas, así que no des milímetros exactos a partir de ella. Comenta lo relevante que observes (relación con el nervio dentario o el seno, altura/volumen óseo aparente, densidad, y cualquier hallazgo o patología visible) y correlaciónalo con los parámetros. Si la imagen NO es una radiografía/corte dental legible, dilo con claridad y no la interpretes.' : '';
   const userText = `Evalúa esta planificación de implante:\n\n${describir(planning)}${notaImg}\n\nZona: ${zona}. Entrega la crítica clínica estructurada.`;
