@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#050505" />
     <title>Evaluador de implantes · PRODIGY Lab Dental</title>
     <meta name="description" content="Evalúa tu planificación de implante (tipo de hueso D1–D5, angulación, distancias al nervio y seno, mucosa, diseño protésico) con apoyo clínico basado en consensos ITI. Herramienta de PRODIGY Lab Dental." />
     <link rel="canonical" href="https://prodigylabdental.com/evaluador-implantes/" />
@@ -11,20 +12,81 @@
     <meta property="og:description" content="Pon los parámetros de tu caso y recibe una crítica clínica de respaldo. Apoyo a la planificación digital de PRODIGY Lab Dental." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://prodigylabdental.com/evaluador-implantes/" />
-    <script type="module" crossorigin src="/evaluador-implantes/assets/index-OGigT1wo.js"></script>
+
+    <!-- CSS del app (Tailwind v4) PRIMERO, para que el tema PRODIGY lo pueda overridear -->
     <link rel="stylesheet" crossorigin href="/evaluador-implantes/assets/index-CrotF1Cb.css">
+    <!-- Inter + tema de marca (gana porque va después) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="/evaluador-implantes/theme-prodigy.css?v=20261013a">
+
+    <script type="module" crossorigin src="/evaluador-implantes/assets/index-OGigT1wo.js"></script>
     <style>
-      #pg-disclaimer{font:12px/1.5 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#64748b;background:#0d1520;border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:12px 16px;max-width:900px;margin:0 auto}
+      #pg-disclaimer{font:12px/1.5 "Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#94a3b8;background:#0d1117;border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:14px 16px}
       #pg-disclaimer a{color:#00d2ff;text-decoration:none}
-      @media (prefers-color-scheme:light){#pg-disclaimer{background:#f3f4f6;color:#5a6473;border-top-color:#e2e5ea}}
     </style>
   </head>
   <body>
+    <!-- Barra superior PRODIGY -->
+    <nav id="pg-topbar">
+      <a class="brand" href="https://prodigylabdental.com">◆ PRODIGY</a>
+      <span style="color:#64748b;font-size:.8rem;font-weight:700" class="hide-m">· Evaluador de implantes</span>
+      <span class="sep"></span>
+      <a class="lnk hide-m" href="https://prodigylabdental.com/guias-quirurgicas">Guías quirúrgicas</a>
+      <a class="lnk hide-m" href="https://prodigylabdental.com/portafolio">Portafolio</a>
+      <a class="cta" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20diseñen%20una%20guía%20quirúrgica" target="_blank" rel="noopener noreferrer"><i></i> WhatsApp</a>
+    </nav>
+
     <div id="root"></div>
+
     <footer id="pg-disclaimer">
       Herramienta de apoyo a la planificación digital de <strong>PRODIGY Lab Dental</strong>. No sustituye el juicio clínico ni el examen del profesional tratante.
       · <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20diseñen%20una%20guía%20quirúrgica" target="_blank" rel="noopener noreferrer">¿Diseñamos tu guía quirúrgica?</a>
       · <a href="https://prodigylabdental.com/guias-quirurgicas">Guías quirúrgicas</a>
     </footer>
+
+    <!-- Paso guiado -->
+    <button id="pg-ayuda-btn" type="button" hidden>¿Cómo funciona?</button>
+    <div id="pg-guia" hidden role="dialog" aria-modal="true" aria-label="Cómo usar el evaluador">
+      <div class="box">
+        <h2>Evaluador de implantes</h2>
+        <p class="sub">Pon los parámetros de tu caso y recibe una crítica clínica de respaldo en segundos. Así de fácil:</p>
+        <ol>
+          <li><span><b>Elige el caso:</b> maxilar o mandíbula, y la calidad de hueso (D1–D5).</span></li>
+          <li><span><b>Ajusta el implante:</b> zona del diente, diámetro, angulación y profundidad.</span></li>
+          <li><span><b>Distancias de seguridad:</b> al nervio, al seno, a los dientes vecinos y la tabla ósea.</span></li>
+          <li><span><b>Lee la evaluación:</b> a la derecha ves la puntuación y cada parámetro; abajo, la crítica clínica de la IA.</span></li>
+          <li><span><b>Pregunta o descarga:</b> usa <b>“Mentor IA”</b> para dudas, o <b>“Descargar Reporte”</b> en PDF.</span></li>
+        </ol>
+        <div class="acts">
+          <button type="button" class="ok" id="pg-guia-ok">Empezar</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        "use strict";
+        var guia=document.getElementById("pg-guia"), btn=document.getElementById("pg-ayuda-btn"), ok=document.getElementById("pg-guia-ok");
+        function abrir(){ guia.hidden=false; } function cerrar(){ guia.hidden=true; try{localStorage.setItem("pg_eval_guia","1");}catch(e){} }
+        var visto=false; try{ visto=localStorage.getItem("pg_eval_guia")==="1"; }catch(e){}
+        if(!visto) setTimeout(abrir, 900);   // primera visita: muestra la guía
+        btn.hidden=false;
+        ok.addEventListener("click", cerrar);
+        guia.addEventListener("click", function(e){ if(e.target===guia) cerrar(); });
+        btn.addEventListener("click", abrir);
+      })();
+    </script>
+    <!-- GA de PRODIGY (ligero, sin el header.js completo para no arrastrar auth/gate de mantenimiento) -->
+    <script>
+      (function(){ if(location.hostname!=="prodigylabdental.com")return;
+        window.dataLayer=window.dataLayer||[]; window.gtag=function(){dataLayer.push(arguments);};
+        gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
+        try{ if(localStorage.getItem('prodigy_cookies_ok')==='1'||localStorage.getItem('pg_cookies_decision')==='accepted') gtag('consent','update',{analytics_storage:'granted'}); }catch(e){}
+        gtag('js',new Date()); gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});
+        var s=document.createElement('script'); s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10'; document.head.appendChild(s);
+      })();
+    </script>
   </body>
 </html>
