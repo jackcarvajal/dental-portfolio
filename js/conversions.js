@@ -16,7 +16,7 @@
  */
 'use strict';
 
-window.ProdigyConversions = (function () {
+window.ProdigyConversions = window.ProdigyConversions || (function () {   // guarda: si ya se cargó (footer.js + <script> directo), no re-adjunta listeners → evita contar doble
 
   /* ── CONFIG — completar con IDs reales ─────────────────────── */
   var GA4_ID     = 'G-3N0ZZE5V10';
