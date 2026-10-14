@@ -32,7 +32,7 @@
     '/instalar-app','/terminos-y-legal','/seguimiento-caso','/mapa-sitio',
     '/para-laboratorios','/referidos','/flujo-diseno','/flujo-fresado',
     '/flujo-impresion','/flujo-lab','/caso','/patient',
-    '/preguntas','/impresion-3d','/alineadores-cad',
+    '/preguntas','/impresion-3d','/alineadores-cad','/evaluador-implantes',
     '/en/dental-aligners','/en/surgical-guides','/en/zirconia-crowns',   // inglés: solo diseño
   ];
   var skip = path.startsWith('/mantenimiento') ||
@@ -42,7 +42,7 @@
              path.startsWith('/revision-express') ||
              path.startsWith('/recibo-caso') ||
              path.startsWith('/offline') ||
-             publicPages.some(function(p){ return path === p || path.startsWith(p+'.') || path.startsWith(p+'?'); });
+             publicPages.some(function(p){ return path === p || path === p+'/' || path.startsWith(p+'.') || path.startsWith(p+'?'); });
   if (skip) return;
   var hasCookie = document.cookie.split(';').some(function(c){
     return c.trim().startsWith('pg_admin=1');
