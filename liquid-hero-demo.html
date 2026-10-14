@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#050505">
+<meta name="robots" content="noindex,nofollow">
+<title>Liquid Hero · demo PRODIGY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Instrument+Serif:ital@1&display=swap">
+<style>
+  :root{ --bg:#050505; --fg:#e8edf5; --muted:#94a3b8; --mg:#D946A6; --gold:#D4AF37; --cyan:#00d2ff; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--fg);font-family:"Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .hero{position:relative;width:100%;height:100svh;min-height:560px;overflow:hidden;display:flex;flex-direction:column;isolation:isolate}
+  .topbar{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:22px clamp(18px,4vw,48px)}
+  .brand{font-weight:900;letter-spacing:3px;font-size:17px;background:linear-gradient(135deg,var(--mg),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tag{color:#64748b;font-size:.75rem;font-weight:700;letter-spacing:1px}
+  /* el escenario del líquido ocupa todo el hero y recibe el cursor */
+  #sculpture{position:absolute;inset:0;z-index:1}
+  .backdrop{position:absolute;left:50%;top:46%;z-index:0;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;user-select:none;
+    font-weight:900;letter-spacing:-.05em;line-height:.8;font-size:clamp(90px,26vw,360px);color:rgba(255,255,255,.035)}
+  .copy{position:relative;z-index:2;margin-top:auto;padding:0 clamp(18px,4vw,48px) clamp(26px,5vw,56px);pointer-events:none;max-width:760px}
+  .eyebrow{display:flex;align-items:center;gap:12px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--cyan);opacity:.7}
+  h1{font-weight:800;font-size:clamp(38px,7vw,88px);line-height:.98;letter-spacing:-.03em;text-wrap:balance}
+  h1 em{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;background:linear-gradient(135deg,var(--mg),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+  p.sub{margin-top:18px;color:var(--muted);font-size:clamp(14px,1.4vw,17px);line-height:1.6;max-width:520px}
+  .hint{position:absolute;z-index:2;left:50%;bottom:16px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;
+    font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);opacity:.6;pointer-events:none}
+  .hint::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;animation:p 2.4s ease-in-out infinite}
+  .cred{position:absolute;z-index:3;right:14px;bottom:10px;font-size:.62rem;letter-spacing:.04em;color:#64748b;opacity:.5;text-decoration:none}
+  .cred:hover{opacity:.9}
+  @keyframes p{0%,100%{transform:scale(.6);opacity:.4}50%{transform:scale(1);opacity:1}}
+  @media(prefers-reduced-motion:reduce){ *,*::before{animation-duration:.01ms!important;animation-iteration-count:1!important} }
+</style>
+</head>
+<body>
+  <section class="hero">
+    <div class="topbar"><span class="brand">PRODIGY</span><span class="tag">DEMO · Liquid Hero</span></div>
+    <div class="backdrop" aria-hidden="true">FORMA</div>
+    <div id="sculpture"></div>
+    <div class="copy">
+      <div class="eyebrow">Diseño dental digital · Bogotá</div>
+      <h1>Diseño que <em>responde</em> al detalle</h1>
+      <p class="sub">Mueve el cursor sobre la escultura: el material se vuelve líquido y vuelve a su forma. Efecto WebGL2, vanilla, con imagen estática de respaldo y apagado en móvil.</p>
+    </div>
+    <div class="hint" aria-hidden="true">Mueve el cursor sobre la forma</div>
+    <a class="cred" href="https://guglielmogiannattasio.it" target="_blank" rel="noopener noreferrer">Efecto original · guglielmogiannattasio.it</a>
+  </section>
+
+  <script src="js/liquid-hero.js"></script>
+  <script>
+    LiquidHero.mount({
+      container: "#sculpture",
+      src: "https://cdn.21st.dev/assets/mirror/a1/a1fa387b6e417b26a25f317559c87cce4d241c1052c52a2b3bc2966b2aaf9b65.webp",
+      imageAlt: "Escultura abstracta de filamentos metálicos",
+      background: "#050505",
+      scale: 1.05,
+      y: -6,
+      mobile: "static"   // en móvil: solo imagen estática (batería/rendimiento)
+    });
+  </script>
+</body>
+</html>
