@@ -730,7 +730,9 @@
     }
 
     var img = new Image();
-    img.crossOrigin = "anonymous";
+    // crossOrigin solo si la imagen es de OTRO dominio; en el mismo origen estorba (doble fetch) y no hace falta
+    var isCross = /^https?:\/\//i.test(opts.src) && opts.src.indexOf(location.origin + "/") !== 0;
+    if (isCross) img.crossOrigin = "anonymous";
     img.onload = function () {
       if (failed || !engine) return;
       try { doResize(); engine.setImage(img); doResize(); }
