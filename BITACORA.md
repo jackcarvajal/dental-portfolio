@@ -12,6 +12,8 @@
 - ✅ **envía-tu-scanner · plantilla opcional** (13-oct, ambas): bloque plegable bajo «Enviar» que arma el texto del caso con lo ya tecleado (doctor, clínica, trabajo, piezas, escáner) y deja Material/Color/pilar para completar — como la «receta» de un lab tradicional (idea tomada de la auditoría de Laboratorio Dies). Botones Copiar · WhatsApp · Correo (casos@ / hola@). Subir el STL directo sigue siendo lo recomendado.
 ## 2026-10-14  (evaluador de implantes: reconstrucción NATIVA)
 
+- ✅ **Embudo del evaluador conectado** (14-oct): el evaluador dejó de ser una isla. Entradas nuevas → (1) CTA «Evalúa tu caso gratis» en el hero de `guias-quirurgicas.html`, (2) franja propia «Evalúa tu planificación de implante en 3D» en el home (`index.html`, tras CONTACTO WHATSAPP, acento cian→magenta), (3) `sitemap.xml` (prioridad 0.8). Ruta del embudo: evaluador → «siguiente paso: guía» → WhatsApp (whatsapp_click = conversión Ads). Pendiente opcional: ítem en el menú Servicios (header.js, bump de versión global).
+
 - ✅ **Evaluador reconstruido nativo** (/evaluador-implantes/): se descartó el app React compilado de AI Studio (sin fuente, no se podía reestructurar) y se rehízo como UNA página vanilla de PRODIGY: asistente PASO A PASO (4 pasos), 3D interactivo (Three.js: implante dentro de hueso/mucosa semi-transparentes, nervio/seno, reacciona a diámetro/angulación/profundidad), crítica IA vía /api/gemini/evaluate renderizada con mini-markdown, puntuación por reglas, imprimir/PDF, diseño de marca + responsive. Crédito visible al autor original (LupitaBelenvj_). Público. Verificado en vivo (paso 1 + paso 4 con 3D + IA). Para mejorar: prompts, modelo 3D, puntuación.
 
 ## 2026-10-13  (evaluador de implantes propio + serverless + Ads)
