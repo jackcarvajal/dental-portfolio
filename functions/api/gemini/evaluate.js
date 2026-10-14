@@ -137,10 +137,18 @@ export async function onRequestPost(context) {
   const zona = SONA[planning.toothZone] || planning.toothZone || 'no indicada';
   const notaImg = image ? '\n\nSe adjunta una IMAGEN 2D del caso (radiografía panorámica/periapical o un corte de CBCT). Analízala SOLO como apoyo: una imagen 2D sin calibración NO permite mediciones exactas, así que no des milímetros exactos a partir de ella. Comenta lo relevante que observes (relación con el nervio dentario o el seno, altura/volumen óseo aparente, densidad, y cualquier hallazgo o patología visible) y correlaciónalo con los parámetros. Si la imagen NO es una radiografía/corte dental legible, dilo con claridad y no la interpretes.' : '';
   const userText = `Evalúa esta planificación de implante:\n\n${describir(planning)}${notaImg}\n\nZona: ${zona}. Entrega la crítica clínica estructurada.`;
+  // IMPORTANTE: los errores van con status 200 + {error}. Si devolviéramos 5xx, Cloudflare reemplaza
+  // el cuerpo por su propia página "error code: 502" y el front nunca ve el mensaje real.
   let r;
   try { r = await llamarGemini(env.GEMINI_API_KEY, SISTEMA.replace('{zona}', zona), userText, image); }
-  catch (e) { return new Response(JSON.stringify({ error: 'Fallo interno: ' + (e && e.message || e) }), { status: 500, headers: H }); }
-  if (!r || !r.text) return new Response(JSON.stringify({ error: 'El evaluador no está disponible ahora.' + (r && r.err ? ' (' + String(r.err).slice(0, 160) + ')' : '') }), { status: 502, headers: H });
+  catch (e) { return new Response(JSON.stringify({ error: 'Fallo interno: ' + (e && e.message || e) }), { status: 200, headers: H }); }
+  if (!r || !r.text) {
+    var msg = String(r && r.err || '');
+    var amable = /process input image|INVALID_ARGUMENT/i.test(msg)
+      ? 'No pude leer la imagen. Sube una radiografía o foto clara (JPG/PNG), o evalúa sin imagen.'
+      : 'El evaluador no está disponible ahora. Intenta de nuevo.';
+    return new Response(JSON.stringify({ error: amable }), { status: 200, headers: H });
+  }
   return new Response(JSON.stringify({ critique: r.text }), { status: 200, headers: H });
 }
 
