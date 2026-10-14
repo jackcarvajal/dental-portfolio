@@ -1,92 +1,426 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#050505" />
-    <title>Evaluador de implantes · PRODIGY Lab Dental</title>
-    <meta name="description" content="Evalúa tu planificación de implante (tipo de hueso D1–D5, angulación, distancias al nervio y seno, mucosa, diseño protésico) con apoyo clínico basado en consensos ITI. Herramienta de PRODIGY Lab Dental." />
-    <link rel="canonical" href="https://prodigylabdental.com/evaluador-implantes/" />
-    <meta property="og:title" content="Evaluador de planificación de implantes · PRODIGY" />
-    <meta property="og:description" content="Pon los parámetros de tu caso y recibe una crítica clínica de respaldo. Apoyo a la planificación digital de PRODIGY Lab Dental." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://prodigylabdental.com/evaluador-implantes/" />
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#050505">
+<title>Evaluador de implantes · PRODIGY Lab Dental</title>
+<meta name="description" content="Asistente paso a paso para evaluar tu planificación de implante: hueso, angulación, distancias al nervio y seno, mucosa y diseño protésico, con visualizador 3D y crítica clínica por IA basada en consensos ITI. PRODIGY Lab Dental.">
+<link rel="canonical" href="https://prodigylabdental.com/evaluador-implantes/">
+<meta property="og:title" content="Evaluador de implantes 3D · PRODIGY">
+<meta property="og:description" content="Pon los parámetros de tu caso, míralo en 3D y recibe una crítica clínica de respaldo con IA.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://prodigylabdental.com/evaluador-implantes/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root{
+    --bg:#050505; --bg2:#0a0e14; --card:#0d1117; --card2:#111826; --line:rgba(255,255,255,.09);
+    --fg:#e8edf5; --muted:#94a3b8; --faint:#64748b;
+    --mg:#D946A6; --mg-d:#B82F8B; --gold:#D4AF37; --cyan:#00d2ff; --neon:#00FF41;
+    --ok:#22c55e; --warn:#fbbf24; --bad:#f87171;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--cyan);text-decoration:none}
 
-    <!-- CSS del app (Tailwind v4) PRIMERO, para que el tema PRODIGY lo pueda overridear -->
-    <link rel="stylesheet" crossorigin href="/evaluador-implantes/assets/index-CrotF1Cb.css">
-    <!-- Inter + tema de marca (gana porque va después) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
-    <link rel="stylesheet" href="/evaluador-implantes/theme-prodigy.css?v=20261013c">
+  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:16px;padding:12px 20px;
+    background:rgba(5,5,5,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(217,70,166,.22)}
+  .topbar .brand{font-weight:900;letter-spacing:2px;font-size:16px;background:linear-gradient(135deg,var(--mg),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .topbar .tag{color:var(--faint);font-size:.8rem;font-weight:700}
+  .topbar .sp{flex:1}
+  .topbar a.nav{color:var(--muted);font-size:.84rem;font-weight:700}
+  .topbar a.nav:hover{color:var(--cyan)}
+  .topbar a.wa{display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;border-radius:999px;padding:8px 16px;font-size:.82rem;font-weight:800}
+  @media(max-width:720px){.topbar .hide-m{display:none}}
 
-    <script type="module" crossorigin src="/evaluador-implantes/assets/index-OGigT1wo.js"></script>
-    <style>
-      #pg-disclaimer{font:12px/1.5 "Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#94a3b8;background:#0d1117;border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:14px 16px}
-      #pg-disclaimer a{color:#00d2ff;text-decoration:none}
-    </style>
-  </head>
-  <body>
-    <!-- Barra superior PRODIGY -->
-    <nav id="pg-topbar">
-      <a class="brand" href="https://prodigylabdental.com">◆ PRODIGY</a>
-      <span style="color:#64748b;font-size:.8rem;font-weight:700" class="hide-m">· Evaluador de implantes</span>
-      <span class="sep"></span>
-      <a class="lnk hide-m" href="https://prodigylabdental.com/guias-quirurgicas">Guías quirúrgicas</a>
-      <a class="lnk hide-m" href="https://prodigylabdental.com/portafolio">Portafolio</a>
-      <a class="cta" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20diseñen%20una%20guía%20quirúrgica" target="_blank" rel="noopener noreferrer"><i></i> WhatsApp</a>
-    </nav>
+  .wrap{max-width:1040px;margin:0 auto;padding:0 18px 60px}
+  .hero{text-align:center;padding:40px 0 10px}
+  .hero .ey{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--mg);background:rgba(217,70,166,.1);border:1px solid rgba(217,70,166,.25);padding:6px 14px;border-radius:999px}
+  .hero h1{font-size:clamp(1.9rem,5vw,2.7rem);line-height:1.1;letter-spacing:-.02em;margin:.5em 0 .2em;font-weight:900;text-wrap:balance}
+  .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--mg),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--muted);max-width:60ch;margin:0 auto;font-size:1.05rem}
 
-    <div id="root"></div>
+  .steps{display:flex;gap:8px;margin:28px 0 22px;flex-wrap:wrap}
+  .steps .st{flex:1 1 0;min-width:120px;display:flex;flex-direction:column;gap:7px;border-top:3px solid var(--line);padding-top:9px;cursor:default}
+  .steps .st .n{font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+  .steps .st .t{font-size:.9rem;font-weight:700;color:var(--muted)}
+  .steps .st.on{border-top-color:var(--mg)} .steps .st.on .n{color:var(--mg)} .steps .st.on .t{color:var(--fg)}
+  .steps .st.done{border-top-color:var(--cyan);cursor:pointer} .steps .st.done .n{color:var(--cyan)}
 
-    <footer id="pg-disclaimer">
-      Herramienta de apoyo a la planificación digital de <strong>PRODIGY Lab Dental</strong>. No sustituye el juicio clínico ni el examen del profesional tratante.
-      · <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20diseñen%20una%20guía%20quirúrgica" target="_blank" rel="noopener noreferrer">¿Diseñamos tu guía quirúrgica?</a>
-      · <a href="https://prodigylabdental.com/guias-quirurgicas">Guías quirúrgicas</a>
-    </footer>
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 22px;box-shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35)}
+  .panel[hidden]{display:none}
+  .panel > h2{margin:0 0 3px;font-size:1.35rem;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+  .panel > h2 .ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(217,70,166,.14);color:var(--mg);font-size:1rem}
+  .panel > .sub{color:var(--muted);margin:0 0 20px;font-size:.95rem}
 
-    <!-- Paso guiado -->
-    <button id="pg-ayuda-btn" type="button" hidden>¿Cómo funciona?</button>
-    <div id="pg-guia" hidden role="dialog" aria-modal="true" aria-label="Cómo usar el evaluador">
-      <div class="box">
-        <h2>Evaluador de implantes</h2>
-        <p class="sub">Pon los parámetros de tu caso y recibe una crítica clínica de respaldo en segundos. Así de fácil:</p>
-        <ol>
-          <li><span><b>Elige el caso:</b> maxilar o mandíbula, y la calidad de hueso (D1–D5).</span></li>
-          <li><span><b>Ajusta el implante:</b> zona del diente, diámetro, angulación y profundidad.</span></li>
-          <li><span><b>Distancias de seguridad:</b> al nervio, al seno, a los dientes vecinos y la tabla ósea.</span></li>
-          <li><span><b>Lee la evaluación:</b> a la derecha ves la puntuación y cada parámetro; abajo, la crítica clínica de la IA.</span></li>
-          <li><span><b>Pregunta o descarga:</b> usa <b>“Mentor IA”</b> para dudas, o <b>“Descargar Reporte”</b> en PDF.</span></li>
-        </ol>
-        <div class="acts">
-          <button type="button" class="ok" id="pg-guia-ok">Empezar</button>
+  .field{margin:18px 0}
+  .field > label{display:block;font-weight:700;font-size:.92rem;margin-bottom:9px}
+  .field .help{font-weight:400;color:var(--faint);font-size:.82rem}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{flex:1 1 auto;border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:11px;
+    padding:11px 14px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;text-align:center}
+  .chip:hover{border-color:rgba(255,255,255,.2);color:var(--fg)}
+  .chip.sel{border-color:var(--mg);background:rgba(217,70,166,.14);color:#fff}
+  .chip small{display:block;font-weight:500;font-size:.72rem;color:var(--faint);margin-top:2px}
+  .chip.sel small{color:rgba(255,255,255,.75)}
+
+  .rng{display:flex;align-items:center;gap:14px}
+  .rng input[type=range]{flex:1;accent-color:var(--mg);height:4px}
+  .rng .val{min-width:70px;text-align:right;font-variant-numeric:tabular-nums;font-weight:800;color:var(--cyan);font-size:1.05rem}
+  .rngmeta{display:flex;justify-content:space-between;font-size:.74rem;color:var(--faint);margin-top:5px}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:560px){.two{grid-template-columns:1fr}.steps .st{min-width:calc(50% - 8px)}}
+
+  .nav-row{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+  .btn{border:0;border-radius:12px;padding:14px 22px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+  .btn.prim{background:linear-gradient(135deg,var(--mg),var(--mg-d));color:#fff;flex:1}
+  .btn.ghost{background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+
+  .result{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:860px){.result{grid-template-columns:1fr}}
+  .v3d{background:linear-gradient(180deg,#0b1018,#060a10);border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative;min-height:340px}
+  #c3d{display:block;width:100%;height:380px;cursor:grab;touch-action:none}
+  #c3d:active{cursor:grabbing}
+  .v3d .hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:.74rem;color:var(--faint);pointer-events:none}
+  .v3d .legend{position:absolute;top:10px;left:12px;font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+  .v3d .legend b{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:middle}
+  .crit{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:18px;min-height:340px;max-height:560px;overflow:auto}
+  .crit h3{font-size:1.02rem;margin:14px 0 6px;color:var(--fg)} .crit h4{font-size:.92rem;margin:14px 0 5px;color:var(--cyan)}
+  .crit p{margin:7px 0;font-size:.92rem;color:#dbe3ee} .crit ul{margin:6px 0;padding-left:4px;list-style:none;display:flex;flex-direction:column;gap:6px}
+  .crit li{font-size:.9rem;color:#dbe3ee;padding-left:4px} .crit strong{color:#fff}
+  .crit .placeholder{color:var(--muted);text-align:center;padding:40px 10px}
+  .spin{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+
+  .score-row{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+  .score{flex:1 1 140px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .score .k{font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+  .score .v{font-size:1.5rem;font-weight:900;line-height:1.1;margin-top:3px}
+
+  .cta-box{margin-top:18px;background:linear-gradient(135deg,rgba(217,70,166,.12),rgba(0,210,255,.08));border:1px solid rgba(217,70,166,.3);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .cta-box p{margin:0;flex:1 1 220px;font-size:.92rem;color:#dde4ee}
+  .cta-box .btn{padding:11px 18px;font-size:.9rem;flex:0 0 auto}
+
+  footer{border-top:1px solid var(--line);margin-top:40px;padding:26px 18px;text-align:center;color:var(--faint);font-size:.82rem}
+  footer .cred{color:var(--muted);margin-top:6px}
+  footer a{color:var(--cyan)}
+
+  @media print{ .topbar,.steps,.nav-row,.cta-box,#pg-ayuda,.v3d .hint{display:none!important} .panel{box-shadow:none;border:none} body{background:#fff;color:#000} }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="https://prodigylabdental.com" class="brand">◆ PRODIGY</a>
+  <span class="tag hide-m">Evaluador de implantes</span>
+  <span class="sp"></span>
+  <a href="https://prodigylabdental.com/guias-quirurgicas" class="nav hide-m">Guías quirúrgicas</a>
+  <a href="https://prodigylabdental.com/portafolio" class="nav hide-m">Portafolio</a>
+  <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20dise%C3%B1en%20una%20gu%C3%ADa%20quir%C3%BArgica" target="_blank" rel="noopener noreferrer" class="wa">WhatsApp</a>
+</nav>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="ey">★ Apoyo a la planificación digital</span>
+    <h1>Evalúa tu implante, <em>paso a paso</em></h1>
+    <p>Configura tu caso en 3 pasos simples, míralo en 3D y recibe una crítica clínica de respaldo con IA, basada en consensos de la ITI.</p>
+  </header>
+
+  <div class="steps" id="steps">
+    <div class="st on" data-s="0"><span class="n">Paso 1</span><span class="t">El caso</span></div>
+    <div class="st" data-s="1"><span class="n">Paso 2</span><span class="t">El implante</span></div>
+    <div class="st" data-s="2"><span class="n">Paso 3</span><span class="t">Seguridad</span></div>
+    <div class="st" data-s="3"><span class="n">Paso 4</span><span class="t">Resultado 3D + IA</span></div>
+  </div>
+
+  <section class="panel" data-panel="0">
+    <h2><span class="ico">🦷</span> El caso</h2>
+    <p class="sub">¿Dónde va el implante y cómo es el hueso?</p>
+    <div class="field">
+      <label>Arcada</label>
+      <div class="chips" data-group="arcada">
+        <button class="chip sel" data-v="maxilar">Maxilar superior <small>cuida el seno / fosa</small></button>
+        <button class="chip" data-v="mandibula">Mandíbula <small>cuida el nervio dentario</small></button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Calidad / densidad del hueso <span class="help">(Lekholm &amp; Zarb)</span></label>
+      <div class="chips" data-group="boneType">
+        <button class="chip" data-v="D1">D1 <small>cortical muy densa</small></button>
+        <button class="chip sel" data-v="D2">D2 <small>ideal</small></button>
+        <button class="chip" data-v="D3">D3 <small>cortical fina</small></button>
+        <button class="chip" data-v="D4">D4 <small>blando</small></button>
+        <button class="chip" data-v="D5">D5 <small>muy blando</small></button>
+      </div>
+    </div>
+    <div class="nav-row"><button class="btn prim" data-next>Siguiente: el implante →</button></div>
+  </section>
+
+  <section class="panel" data-panel="1" hidden>
+    <h2><span class="ico">⚙️</span> El implante</h2>
+    <p class="sub">Posición y tipo del implante.</p>
+    <div class="field">
+      <label>Zona del diente</label>
+      <div class="chips" data-group="toothZone">
+        <button class="chip sel" data-v="anterior">Anterior <small>sector estético</small></button>
+        <button class="chip" data-v="premolar">Premolar</button>
+        <button class="chip" data-v="molar">Molar / posterior</button>
+      </div>
+    </div>
+    <div class="two">
+      <div class="field">
+        <label>Sistema</label>
+        <div class="chips" data-group="implantSystem">
+          <button class="chip sel" data-v="bone_level">Bone Level</button>
+          <button class="chip" data-v="tissue_level">Tissue Level</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Diámetro</label>
+        <div class="chips" data-group="implantDiameter">
+          <button class="chip" data-v="narrow">Narrow</button>
+          <button class="chip sel" data-v="regular">Regular</button>
+          <button class="chip" data-v="wide">Wide</button>
         </div>
       </div>
     </div>
+    <div class="field">
+      <label>Angulación buco-lingual <span class="help">(ideal: −5° a +5°)</span></label>
+      <div class="rng"><input type="range" id="angulationBL" min="-20" max="20" step="1" value="0"><span class="val"><span id="angulationBL-v">0</span>°</span></div>
+      <div class="rngmeta"><span>Lingual (−)</span><span>Recto</span><span>Vestibular (+)</span></div>
+    </div>
+    <div class="field">
+      <label>Profundidad de plataforma <span class="help">(ideal: 2–4 mm subcrestal)</span></label>
+      <div class="rng"><input type="range" id="platformDepth" min="0" max="6" step="0.5" value="3"><span class="val"><span id="platformDepth-v">3</span> mm</span></div>
+      <div class="rngmeta"><span>Epicrestal (0)</span><span>Sumergido (6)</span></div>
+    </div>
+    <div class="nav-row"><button class="btn ghost" data-prev>← Atrás</button><button class="btn prim" data-next>Siguiente: seguridad →</button></div>
+  </section>
 
-    <script>
-      (function(){
-        "use strict";
-        var guia=document.getElementById("pg-guia"), btn=document.getElementById("pg-ayuda-btn"), ok=document.getElementById("pg-guia-ok");
-        function abrir(){ guia.hidden=false; } function cerrar(){ guia.hidden=true; try{localStorage.setItem("pg_eval_guia","1");}catch(e){} }
-        var visto=false; try{ visto=localStorage.getItem("pg_eval_guia")==="1"; }catch(e){}
-        if(!visto) setTimeout(abrir, 900);   // primera visita: muestra la guía
-        btn.hidden=false;
-        ok.addEventListener("click", cerrar);
-        guia.addEventListener("click", function(e){ if(e.target===guia) cerrar(); });
-        btn.addEventListener("click", abrir);
-      })();
-    </script>
-    <!-- GA de PRODIGY (ligero, sin el header.js completo para no arrastrar auth/gate de mantenimiento) -->
-    <script>
-      (function(){ if(location.hostname!=="prodigylabdental.com")return;
-        window.dataLayer=window.dataLayer||[]; window.gtag=function(){dataLayer.push(arguments);};
-        gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
-        try{ if(localStorage.getItem('prodigy_cookies_ok')==='1'||localStorage.getItem('pg_cookies_decision')==='accepted') gtag('consent','update',{analytics_storage:'granted'}); }catch(e){}
-        gtag('js',new Date()); gtag('config','G-3N0ZZE5V10',{anonymize_ip:true});
-        var s=document.createElement('script'); s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id=G-3N0ZZE5V10'; document.head.appendChild(s);
-      })();
-    </script>
-  </body>
+  <section class="panel" data-panel="2" hidden>
+    <h2><span class="ico">🛡️</span> Distancias de seguridad</h2>
+    <p class="sub">Lo que evita complicaciones: anatomía y tejidos.</p>
+    <div class="two">
+      <div class="field">
+        <label>Ancho óseo (vestíbulo-palatino) <span class="help">mm</span></label>
+        <div class="rng"><input type="range" id="boneWidth" min="3" max="12" step="0.5" value="7"><span class="val"><span id="boneWidth-v">7</span> mm</span></div>
+      </div>
+      <div class="field">
+        <label>Altura ósea disponible <span class="help">mm</span></label>
+        <div class="rng"><input type="range" id="boneHeight" min="5" max="20" step="0.5" value="13"><span class="val"><span id="boneHeight-v">13</span> mm</span></div>
+      </div>
+    </div>
+    <div class="field" id="f-nerve" hidden>
+      <label>Distancia al nervio dentario <span class="help">(seguro ≥2 mm)</span></label>
+      <div class="rng"><input type="range" id="distanceNerve" min="0" max="15" step="0.5" value="4"><span class="val"><span id="distanceNerve-v">4</span> mm</span></div>
+    </div>
+    <div class="field" id="f-sinus">
+      <label>Distancia al seno maxilar <span class="help">(seguro ≥1.5 mm)</span></label>
+      <div class="rng"><input type="range" id="distanceSinus" min="0" max="15" step="0.5" value="6"><span class="val"><span id="distanceSinus-v">6</span> mm</span></div>
+    </div>
+    <div class="two">
+      <div class="field">
+        <label>Biotipo de mucosa</label>
+        <div class="chips" data-group="mucosaLevel">
+          <button class="chip sel" data-v="grueso">Grueso</button>
+          <button class="chip" data-v="fino">Fino</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Diseño protésico</label>
+        <div class="chips" data-group="prostheticType">
+          <button class="chip sel" data-v="screw">Atornillado</button>
+          <button class="chip" data-v="cement">Cementado</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row"><button class="btn ghost" data-prev>← Atrás</button><button class="btn prim" data-next>Ver resultado 3D + IA →</button></div>
+  </section>
+
+  <section class="panel" data-panel="3" hidden>
+    <h2><span class="ico">🩺</span> Resultado</h2>
+    <p class="sub">Tu caso en 3D y la crítica clínica de respaldo con IA.</p>
+    <div class="score-row" id="scoreRow"></div>
+    <div class="result">
+      <div>
+        <div class="v3d">
+          <canvas id="c3d"></canvas>
+          <div class="legend" id="legend"></div>
+          <div class="hint">Arrastra para rotar · rueda para acercar</div>
+        </div>
+      </div>
+      <div class="crit" id="crit">
+        <div class="placeholder">Pulsa <b>“Evaluar con IA”</b> para recibir la crítica clínica de tu caso.</div>
+      </div>
+    </div>
+    <div class="cta-box">
+      <p><strong>¿Quieres llevarlo a boca con precisión?</strong> En PRODIGY diseñamos la guía quirúrgica y la planificación digital de tu caso.</p>
+      <a class="btn prim" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20evalu%C3%A9%20un%20caso%20de%20implante%20y%20quiero%20una%20gu%C3%ADa%20quir%C3%BArgica" target="_blank" rel="noopener noreferrer">Diseñar mi guía</a>
+    </div>
+    <div class="nav-row">
+      <button class="btn ghost" data-prev>← Atrás</button>
+      <button class="btn prim" id="btnEval">Evaluar con IA</button>
+      <button class="btn ghost" id="btnPrint">Imprimir / PDF</button>
+    </div>
+  </section>
+
+  <footer>
+    Herramienta de apoyo a la planificación digital de <strong>PRODIGY Lab Dental</strong>. No sustituye el juicio clínico ni el examen del profesional tratante.
+    <div class="cred">Reconstruida por PRODIGY a partir del evaluador original de <strong>LupitaBelenvj_</strong> (Google AI Studio). Crédito al concepto original.</div>
+  </footer>
+</div>
+
+<button id="pg-ayuda" style="position:fixed;bottom:16px;left:16px;z-index:40;background:#0d1117;border:1px solid rgba(0,210,255,.3);color:#00d2ff;border-radius:999px;padding:9px 16px;font:800 .8rem Inter,sans-serif;cursor:pointer">¿Cómo funciona?</button>
+
+<script>
+(function(){
+  "use strict";
+  var P = { arcada:"maxilar", boneType:"D2", toothZone:"anterior", implantSystem:"bone_level", implantDiameter:"regular",
+            angulationBL:0, platformDepth:3, boneWidth:7, boneHeight:13, distanceNerve:4, distanceSinus:6, mucosaLevel:"grueso", prostheticType:"screw" };
+  var step=0, TOTAL=4;
+
+  document.querySelectorAll('.chips').forEach(function(g){
+    var key=g.dataset.group;
+    g.addEventListener('click',function(e){
+      var b=e.target.closest('.chip'); if(!b)return;
+      g.querySelectorAll('.chip').forEach(function(c){c.classList.remove('sel');});
+      b.classList.add('sel'); P[key]=b.dataset.v;
+      if(key==='arcada') toggleArcada();
+    });
+  });
+  function toggleArcada(){
+    document.getElementById('f-nerve').hidden = P.arcada!=='mandibula';
+    document.getElementById('f-sinus').hidden = P.arcada!=='maxilar';
+  }
+  toggleArcada();
+
+  ['angulationBL','platformDepth','boneWidth','boneHeight','distanceNerve','distanceSinus'].forEach(function(id){
+    var el=document.getElementById(id), out=document.getElementById(id+'-v');
+    el.addEventListener('input',function(){ P[id]=parseFloat(el.value); if(out)out.textContent=el.value; if(step===3)draw3D(); });
+  });
+
+  function show(n){
+    step=Math.max(0,Math.min(TOTAL-1,n));
+    document.querySelectorAll('[data-panel]').forEach(function(p){ p.hidden = +p.dataset.panel!==step; });
+    document.querySelectorAll('#steps .st').forEach(function(s){ var i=+s.dataset.s; s.classList.toggle('on',i===step); s.classList.toggle('done',i<step); });
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(step===3){ computeScore(); setTimeout(init3D,30); }
+  }
+  document.querySelectorAll('[data-next]').forEach(function(b){ b.addEventListener('click',function(){ show(step+1); }); });
+  document.querySelectorAll('[data-prev]').forEach(function(b){ b.addEventListener('click',function(){ show(step-1); }); });
+  document.querySelectorAll('#steps .st').forEach(function(s){ s.addEventListener('click',function(){ var i=+s.dataset.s; if(i<=step)show(i); }); });
+
+  function computeScore(){
+    var flags=[];
+    if(P.boneWidth<6) flags.push('ancho');
+    if(Math.abs(P.angulationBL)>10) flags.push('ang');
+    if(P.arcada==='mandibula' && P.distanceNerve<2) flags.push('nervio');
+    if(P.arcada==='maxilar' && P.distanceSinus<1.5) flags.push('seno');
+    if(P.platformDepth>4) flags.push('prof');
+    if(P.boneType==='D4'||P.boneType==='D5') flags.push('dens');
+    var score=Math.max(40,100-flags.length*12);
+    var estado = score>=85?['Óptimo','var(--ok)']:score>=65?['Aceptable','var(--warn)']:['Revisar','var(--bad)'];
+    document.getElementById('scoreRow').innerHTML =
+      '<div class="score"><div class="k">Puntuación orientativa</div><div class="v" style="color:'+estado[1]+'">'+score+'<span style="font-size:.9rem;color:var(--faint)">/100</span></div></div>'+
+      '<div class="score"><div class="k">Estado</div><div class="v" style="font-size:1.1rem;color:'+estado[1]+'">'+estado[0]+'</div></div>'+
+      '<div class="score"><div class="k">Alertas</div><div class="v" style="color:'+(flags.length?'var(--bad)':'var(--ok)')+'">'+flags.length+'</div></div>';
+  }
+
+  var renderer,scene,camera,model,raf,dragging=false,px=0,py=0,rotY=0.5,rotX=-0.1,dist=16;
+  function init3D(){
+    if(renderer){ draw3D(); return; }
+    if(typeof THREE==='undefined'){ return; }
+    var cv=document.getElementById('c3d'); var w=cv.clientWidth||cv.parentNode.clientWidth||400, h=380;
+    renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.setSize(w,h,false);
+    scene=new THREE.Scene();
+    camera=new THREE.PerspectiveCamera(42,w/h,0.1,100); camera.position.set(0,0,dist);
+    scene.add(new THREE.AmbientLight(0xffffff,0.55));
+    var d1=new THREE.DirectionalLight(0xffffff,0.9); d1.position.set(6,10,8); scene.add(d1);
+    var d2=new THREE.DirectionalLight(0x88bbff,0.4); d2.position.set(-8,-4,4); scene.add(d2);
+    model=new THREE.Group(); scene.add(model);
+    cv.addEventListener('pointerdown',function(e){dragging=true;px=e.clientX;py=e.clientY;try{cv.setPointerCapture(e.pointerId);}catch(_){}} );
+    cv.addEventListener('pointermove',function(e){ if(!dragging)return; rotY+=(e.clientX-px)*0.01; rotX+=(e.clientY-py)*0.01; rotX=Math.max(-1.2,Math.min(1.2,rotX)); px=e.clientX;py=e.clientY; });
+    cv.addEventListener('pointerup',function(){dragging=false;});
+    cv.addEventListener('pointerleave',function(){dragging=false;});
+    cv.addEventListener('wheel',function(e){ e.preventDefault(); dist=Math.max(9,Math.min(28,dist+(e.deltaY>0?1:-1))); camera.position.z=dist; },{passive:false});
+    window.addEventListener('resize',function(){ if(!renderer)return; var w2=cv.clientWidth||cv.parentNode.clientWidth||400; renderer.setSize(w2,h,false); camera.aspect=w2/h; camera.updateProjectionMatrix(); });
+    draw3D(); loop();
+  }
+  function mat(c,metal,rough){ return new THREE.MeshStandardMaterial({color:c,metalness:metal||0,roughness:rough==null?0.6:rough}); }
+  function draw3D(){
+    if(!model)return;
+    while(model.children.length) model.remove(model.children[0]);
+    var rMap={narrow:0.7,regular:0.95,wide:1.25}, R=rMap[P.implantDiameter]||0.95;
+    var bone=new THREE.Mesh(new THREE.BoxGeometry(7,7.5,4.2), mat(0xe8dcc0,0,0.9)); bone.position.y=-2.2; model.add(bone);
+    var muc=new THREE.Mesh(new THREE.BoxGeometry(7.05,0.7,4.25), mat(0xd98a8a,0,0.8)); muc.position.y=1.6; model.add(muc);
+    var ig=new THREE.Group();
+    ig.position.y=1.6 - P.platformDepth*0.35;
+    ig.rotation.z = -P.angulationBL*Math.PI/180;
+    var body=new THREE.Mesh(new THREE.CylinderGeometry(R,R*0.8,5,24), mat(0x9aa6b2,0.85,0.35)); body.position.y=-2.5; ig.add(body);
+    var apex=new THREE.Mesh(new THREE.ConeGeometry(R*0.8,1.1,24), mat(0x9aa6b2,0.85,0.35)); apex.position.y=-5.3; apex.rotation.x=Math.PI; ig.add(apex);
+    for(var i=0;i<7;i++){ var th=new THREE.Mesh(new THREE.TorusGeometry(R+0.04,0.07,6,20), mat(0x7f8b98,0.85,0.4)); th.rotation.x=Math.PI/2; th.position.y=-0.6-i*0.62; ig.add(th); }
+    var abut=new THREE.Mesh(new THREE.CylinderGeometry(R*0.6,R*0.75,1.4,20), mat(0xb8c0c8,0.8,0.35)); abut.position.y=0.6; ig.add(abut);
+    var crown=new THREE.Mesh(new THREE.SphereGeometry(R*1.25,20,16), mat(0xf2f0ea,0.05,0.25)); crown.scale.y=1.4; crown.position.y=1.9; ig.add(crown);
+    model.add(ig);
+    var legend='<span><b style="background:#9aa6b2"></b>Implante</span><span><b style="background:#e8dcc0"></b>Hueso</span><span><b style="background:#d98a8a"></b>Mucosa</span>';
+    if(P.arcada==='mandibula'){
+      var nerve=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.18,7,12), mat(0xef4444,0.1,0.5));
+      nerve.rotation.z=Math.PI/2; nerve.position.set(0,-2.2 - Math.min(3,P.distanceNerve*0.3),1.6); model.add(nerve);
+      legend+='<span><b style="background:#ef4444"></b>Nervio dentario</span>';
+    } else {
+      var sinus=new THREE.Mesh(new THREE.SphereGeometry(3.2,20,16,0,Math.PI*2,0,Math.PI/2), new THREE.MeshStandardMaterial({color:0x5fc8ff,transparent:true,opacity:0.22,roughness:1}));
+      sinus.position.set(0, 1.6 + Math.min(4,P.distanceSinus*0.35) + 1.2, -0.6); model.add(sinus);
+      legend+='<span><b style="background:#5fc8ff"></b>Seno maxilar</span>';
+    }
+    document.getElementById('legend').innerHTML=legend;
+  }
+  function loop(){ raf=requestAnimationFrame(loop); if(!renderer)return; if(!dragging) rotY+=0.0025; model.rotation.y=rotY; model.rotation.x=rotX; renderer.render(scene,camera); }
+
+  function escp(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function md(t){
+    var lines=escp(t).split(/\r?\n/), out=[], inUl=false;
+    function closeUl(){ if(inUl){out.push('</ul>');inUl=false;} }
+    lines.forEach(function(l){
+      l=l.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/_(.+?)_/g,'<em>$1</em>');
+      if(/^####\s+/.test(l)){ closeUl(); out.push('<h4>'+l.replace(/^####\s+/,'')+'</h4>'); }
+      else if(/^###\s+/.test(l)){ closeUl(); out.push('<h3>'+l.replace(/^###\s+/,'')+'</h3>'); }
+      else if(/^(-|\*|•)\s+/.test(l)){ if(!inUl){out.push('<ul>');inUl=true;} out.push('<li>'+l.replace(/^(-|\*|•)\s+/,'')+'</li>'); }
+      else if(l.trim()===''){ closeUl(); }
+      else { closeUl(); out.push('<p>'+l+'</p>'); }
+    });
+    closeUl(); return out.join('');
+  }
+
+  var btn=document.getElementById('btnEval');
+  btn.addEventListener('click',function(){
+    var box=document.getElementById('crit');
+    btn.disabled=true; var old=btn.innerHTML; btn.innerHTML='<span class="spin"></span> Evaluando…';
+    box.innerHTML='<div class="placeholder"><span class="spin"></span><br><br>Analizando biomecánica del lecho quirúrgico…</div>';
+    var planning={ toothZone:P.toothZone, implantSystem:P.implantSystem, implantDiameter:P.implantDiameter,
+      angulationBL:P.angulationBL, platformDepth:P.platformDepth, boneType:P.boneType, boneWidth:P.boneWidth, boneHeight:P.boneHeight,
+      mucosaLevel:P.mucosaLevel, prostheticType:P.prostheticType };
+    if(P.arcada==='mandibula') planning.distanceNerve=P.distanceNerve; else planning.distanceSinus=P.distanceSinus;
+    fetch('/api/gemini/evaluate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planning:planning})})
+      .then(function(r){return r.json();})
+      .then(function(d){ box.innerHTML = d.critique ? md(d.critique) : '<div class="placeholder">'+escp(d.error||'No se pudo evaluar. Intenta de nuevo.')+'</div>'; })
+      .catch(function(){ box.innerHTML='<div class="placeholder">Error de conexión. Intenta de nuevo.</div>'; })
+      .finally(function(){ btn.disabled=false; btn.innerHTML=old; });
+  });
+  document.getElementById('btnPrint').addEventListener('click',function(){ window.print(); });
+  document.getElementById('pg-ayuda').addEventListener('click',function(){ show(0); });
+
+  show(0);
+})();
+</script>
+</body>
 </html>
