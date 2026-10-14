@@ -357,6 +357,33 @@
     draw3D(); loop();
   }
   function mat(c,metal,rough){ return new THREE.MeshStandardMaterial({color:c,metalness:metal||0,roughness:rough==null?0.6:rough}); }
+  function ceramic(){ return new THREE.MeshStandardMaterial({color:0xf3efe6,metalness:0.02,roughness:0.28}); }
+  function makeCrown(zone, R){
+    var g=new THREE.Group();
+    if(zone==='molar'){
+      // Molar: cuerpo cuboide redondeado + 4 cúspides
+      var body=new THREE.Mesh(new THREE.BoxGeometry(R*2.3,R*1.7,R*2.1), ceramic()); body.position.y=0; g.add(body);
+      var cp=[[1,1],[1,-1],[-1,1],[-1,-1]];
+      cp.forEach(function(p){ var cu=new THREE.Mesh(new THREE.SphereGeometry(R*0.6,14,12), ceramic()); cu.position.set(p[0]*R*0.62, R*0.85, p[1]*R*0.55); cu.scale.y=0.8; g.add(cu); });
+      g.position.y=2.0;
+      return g;
+    }
+    // Incisivo / premolar: silueta extruida con borde incisal
+    var hw=R*1.1, h=R*2.0, sh=new THREE.Shape();
+    sh.moveTo(-hw*0.5,0);
+    sh.bezierCurveTo(-hw, h*0.22, -hw, h*0.72, -hw*0.72, h*0.92);
+    sh.quadraticCurveTo(0, h*1.0, hw*0.72, h*0.92);
+    sh.bezierCurveTo(hw, h*0.72, hw, h*0.22, hw*0.5, 0);
+    sh.quadraticCurveTo(0, -h*0.1, -hw*0.5, 0);
+    var depth = zone==='premolar' ? R*1.15 : R*0.8;
+    var geo=new THREE.ExtrudeGeometry(sh,{depth:depth,bevelEnabled:true,bevelThickness:R*0.26,bevelSize:R*0.22,bevelSegments:4,steps:1});
+    geo.center();
+    var m=new THREE.Mesh(geo, ceramic()); m.position.y=1.9; g.add(m);
+    if(zone==='premolar'){ // 2 cúspides suaves
+      [-1,1].forEach(function(s){ var cu=new THREE.Mesh(new THREE.SphereGeometry(R*0.5,12,10), ceramic()); cu.position.set(0, 2.9, s*R*0.4); cu.scale.y=0.7; g.add(cu); });
+    }
+    return g;
+  }
   function draw3D(){
     if(!model)return;
     while(model.children.length) model.remove(model.children[0]);
@@ -370,7 +397,7 @@
     var apex=new THREE.Mesh(new THREE.ConeGeometry(R*0.8,1.1,24), mat(0x9aa6b2,0.85,0.35)); apex.position.y=-5.3; apex.rotation.x=Math.PI; ig.add(apex);
     for(var i=0;i<7;i++){ var th=new THREE.Mesh(new THREE.TorusGeometry(R+0.04,0.07,6,20), mat(0x7f8b98,0.85,0.4)); th.rotation.x=Math.PI/2; th.position.y=-0.6-i*0.62; ig.add(th); }
     var abut=new THREE.Mesh(new THREE.CylinderGeometry(R*0.6,R*0.75,1.4,20), mat(0xb8c0c8,0.8,0.35)); abut.position.y=0.6; ig.add(abut);
-    var crown=new THREE.Mesh(new THREE.SphereGeometry(R*1.25,20,16), mat(0xf2f0ea,0.05,0.25)); crown.scale.y=1.4; crown.position.y=1.9; ig.add(crown);
+    ig.add(makeCrown(P.toothZone, R));
     model.add(ig);
     var legend='<span><b style="background:#9aa6b2"></b>Implante</span><span><b style="background:#e8dcc0"></b>Hueso</span><span><b style="background:#d98a8a"></b>Mucosa</span>';
     if(P.arcada==='mandibula'){
