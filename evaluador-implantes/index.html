@@ -361,8 +361,8 @@
     if(!model)return;
     while(model.children.length) model.remove(model.children[0]);
     var rMap={narrow:0.7,regular:0.95,wide:1.25}, R=rMap[P.implantDiameter]||0.95;
-    var bone=new THREE.Mesh(new THREE.BoxGeometry(7,7.5,4.2), mat(0xe8dcc0,0,0.9)); bone.position.y=-2.2; model.add(bone);
-    var muc=new THREE.Mesh(new THREE.BoxGeometry(7.05,0.7,4.25), mat(0xd98a8a,0,0.8)); muc.position.y=1.6; model.add(muc);
+    var bone=new THREE.Mesh(new THREE.BoxGeometry(7,7.5,4.2), new THREE.MeshStandardMaterial({color:0xe8dcc0,roughness:0.95,transparent:true,opacity:0.34,depthWrite:false})); bone.position.y=-2.2; model.add(bone);
+    var muc=new THREE.Mesh(new THREE.BoxGeometry(7.05,0.7,4.25), new THREE.MeshStandardMaterial({color:0xd98a8a,roughness:0.8,transparent:true,opacity:0.55,depthWrite:false})); muc.position.y=1.6; model.add(muc);
     var ig=new THREE.Group();
     ig.position.y=1.6 - P.platformDepth*0.35;
     ig.rotation.z = -P.angulationBL*Math.PI/180;
