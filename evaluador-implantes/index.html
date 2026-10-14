@@ -29,8 +29,9 @@
   html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
   a{color:var(--cyan);text-decoration:none}
 
-  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:16px;padding:12px 20px;
+  .topbar{position:sticky;top:0;z-index:50;padding:12px 20px;
     background:rgba(5,5,5,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(217,70,166,.22)}
+  .topbar-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:16px}
   .topbar .brand{font-weight:900;letter-spacing:2px;font-size:16px;background:linear-gradient(135deg,var(--mg),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
   .topbar .tag{color:var(--faint);font-size:.8rem;font-weight:700}
   .topbar .sp{flex:1}
@@ -119,14 +120,14 @@
 </head>
 <body>
 
-<nav class="topbar">
+<nav class="topbar"><div class="topbar-in">
   <a href="https://prodigylabdental.com" class="brand">◆ PRODIGY</a>
   <span class="tag hide-m">Evaluador de implantes</span>
   <span class="sp"></span>
   <a href="https://prodigylabdental.com/guias-quirurgicas" class="nav hide-m">Guías quirúrgicas</a>
   <a href="https://prodigylabdental.com/portafolio" class="nav hide-m">Portafolio</a>
   <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20que%20me%20dise%C3%B1en%20una%20gu%C3%ADa%20quir%C3%BArgica" target="_blank" rel="noopener noreferrer" class="wa">WhatsApp</a>
-</nav>
+</div></nav>
 
 <div class="wrap">
   <header class="hero">
