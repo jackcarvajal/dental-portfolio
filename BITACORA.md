@@ -10,6 +10,10 @@
 ---
 
 - ✅ **envía-tu-scanner · plantilla opcional** (13-oct, ambas): bloque plegable bajo «Enviar» que arma el texto del caso con lo ya tecleado (doctor, clínica, trabajo, piezas, escáner) y deja Material/Color/pilar para completar — como la «receta» de un lab tradicional (idea tomada de la auditoría de Laboratorio Dies). Botones Copiar · WhatsApp · Correo (casos@ / hola@). Subir el STL directo sigue siendo lo recomendado.
+## 2026-10-14  (evaluador de implantes: reconstrucción NATIVA)
+
+- ✅ **Evaluador reconstruido nativo** (/evaluador-implantes/): se descartó el app React compilado de AI Studio (sin fuente, no se podía reestructurar) y se rehízo como UNA página vanilla de PRODIGY: asistente PASO A PASO (4 pasos), 3D interactivo (Three.js: implante dentro de hueso/mucosa semi-transparentes, nervio/seno, reacciona a diámetro/angulación/profundidad), crítica IA vía /api/gemini/evaluate renderizada con mini-markdown, puntuación por reglas, imprimir/PDF, diseño de marca + responsive. Crédito visible al autor original (LupitaBelenvj_). Público. Verificado en vivo (paso 1 + paso 4 con 3D + IA). Para mejorar: prompts, modelo 3D, puntuación.
+
 ## 2026-10-13  (evaluador de implantes propio + serverless + Ads)
 
 - ✅ **Evaluador de planificación de implantes** en /evaluador-implantes/ (nuevo). Se integró la app de AI Studio (de Cloud Run) al dominio de PRODIGY, haciéndola propia: front estático React/Vite rebrandeado (antes "CAD DESIGN MX" + autor "LupitaBelenvj_"), y BACKEND propio en Cloudflare Functions con la clave Gemini del lab: functions/api/gemini/evaluate.js ({planning}→{critique}) y functions/api/gemini/chat.js ({messages,currentPlanning}→{text}), persona "Mentor de implantología PRODIGY", prompts ITI, rate-limit (10 eval/15 chat por min/IP), cap de salida. Ya NO depende de Cloud Run. Aviso clínico + CTA a guías. Verificado en vivo: página 200, evaluate/chat devuelven análisis. ⚠️ consume Gemini (misma key del chatbot) — si preocupa el costo, dejar tras login o bajar el cap. Para mejorarlo: afinar los prompts en esos 2 archivos.
