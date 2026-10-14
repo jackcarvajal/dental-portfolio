@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dicomParser/1.8.21/dicomParser.min.js"></script>
 <style>
   :root{
     --bg:#050505; --bg2:#0a0e14; --card:#0d1117; --card2:#111826; --line:rgba(255,255,255,.09);
@@ -168,6 +169,13 @@
         <button class="chip" data-v="D5">D5 <small>muy blando</small></button>
       </div>
     </div>
+    <div class="field" id="imgField">
+      <label>Radiografía / DICOM <span class="help">opcional — súbela primero: la IA la analiza junto con tus parámetros</span></label>
+      <button type="button" id="imgDrop" class="imgdrop">📎 Sube o arrastra: imagen (JPG / PNG / WEBP) o DICOM (.dcm de un corte)</button>
+      <input type="file" id="imgInput" accept="image/*,.dcm,application/dicom" hidden>
+      <div id="imgPrev" class="imgprev" hidden><img id="imgThumb" alt="imagen adjunta"><button type="button" id="imgRemove">Quitar</button></div>
+      <p class="disc">⚠️ <b>Apoyo, no diagnóstico.</b> Una imagen 2D sin calibración no permite mediciones exactas; del DICOM se usa <b>un corte</b>, no el volumen 3D. <b>No subas datos del paciente</b> (nombre, documento, cédula). La imagen <b>no se almacena</b>: solo se usa para esta evaluación.</p>
+    </div>
     <div class="nav-row"><button class="btn prim" data-next>Siguiente: el implante →</button></div>
   </section>
 
@@ -268,13 +276,7 @@
         <div class="placeholder">Pulsa <b>“Evaluar con IA”</b> para recibir la crítica clínica de tu caso.</div>
       </div>
     </div>
-    <div class="field" id="imgField">
-      <label>Radiografía / imagen <span class="help">opcional — panorámica, periapical o un corte de CBCT; mejora el análisis</span></label>
-      <button type="button" id="imgDrop" class="imgdrop">📎 Toca para subir o arrastra una imagen · JPG / PNG / WEBP · máx 3.5 MB</button>
-      <input type="file" id="imgInput" accept="image/*" hidden>
-      <div id="imgPrev" class="imgprev" hidden><img id="imgThumb" alt="radiografía adjunta"><button type="button" id="imgRemove">Quitar</button></div>
-      <p class="disc">⚠️ <b>Apoyo, no diagnóstico.</b> Una imagen 2D sin calibración no permite mediciones exactas. <b>No subas datos del paciente</b> (nombre, documento, cédula). La imagen <b>no se almacena</b>: solo se usa para esta evaluación.</p>
-    </div>
+    <p id="imgBadge" class="help" hidden style="margin:0 0 6px;color:var(--cyan);font-weight:700">📎 Imagen/DICOM adjunto en el Paso 1 — se incluirá en el análisis.</p>
 
     <div class="cta-box">
       <p><strong>¿Quieres llevarlo a boca con precisión?</strong> En PRODIGY diseñamos la guía quirúrgica y la planificación digital de tu caso.</p>
@@ -327,7 +329,7 @@
     document.querySelectorAll('[data-panel]').forEach(function(p){ p.hidden = +p.dataset.panel!==step; });
     document.querySelectorAll('#steps .st').forEach(function(s){ var i=+s.dataset.s; s.classList.toggle('on',i===step); s.classList.toggle('done',i<step); });
     window.scrollTo({top:0,behavior:'smooth'});
-    if(step===3){ computeScore(); setTimeout(init3D,30); }
+    if(step===3){ computeScore(); setTimeout(init3D,30); var bg=document.getElementById('imgBadge'); if(bg) bg.hidden=!imgData; }
   }
   document.querySelectorAll('[data-next]').forEach(function(b){ b.addEventListener('click',function(){ show(step+1); }); });
   document.querySelectorAll('[data-prev]').forEach(function(b){ b.addEventListener('click',function(){ show(step-1); }); });
@@ -446,20 +448,45 @@
   var imgData=null, imgMime=null;
   var imgInput=document.getElementById('imgInput'), imgDrop=document.getElementById('imgDrop'),
       imgPrev=document.getElementById('imgPrev'), imgThumb=document.getElementById('imgThumb');
-  var DROP_TXT='📎 Toca para subir o arrastra una imagen · JPG / PNG / WEBP · máx 3.5 MB';
+  var DROP_TXT='📎 Sube o arrastra: imagen (JPG / PNG / WEBP) o DICOM (.dcm de un corte)';
+  function setImg(dataUrl, mime, etiqueta){ var i=dataUrl.indexOf(','); imgData=dataUrl.slice(i+1); imgMime=mime; imgThumb.src=dataUrl; imgPrev.hidden=false; imgDrop.textContent=etiqueta; }
   function leerImg(file){
-    if(!file) return;
     if(!/^image\//.test(file.type)){ alert('Sube una imagen (JPG, PNG o WEBP).'); return; }
     if(file.size > 3.6*1024*1024){ alert('La imagen supera 3.5 MB. Comprímela o usa una captura.'); return; }
     var fr=new FileReader();
-    fr.onload=function(){ var s=String(fr.result); imgData=s.slice(s.indexOf(',')+1); imgMime=s.slice(5,s.indexOf(';'))||file.type; imgThumb.src=s; imgPrev.hidden=false; imgDrop.textContent='📎 Imagen cargada — toca para cambiar'; };
+    fr.onload=function(){ var s=String(fr.result); setImg(s, (s.slice(5,s.indexOf(';'))||file.type), '📎 Imagen cargada — toca para cambiar'); };
     fr.readAsDataURL(file);
   }
+  function leerDicom(file){
+    if(file.size > 25*1024*1024){ alert('El DICOM supera 25 MB. Sube un solo corte o expórtalo como JPG.'); return; }
+    if(typeof dicomParser==='undefined'){ alert('No se pudo cargar el lector de DICOM. Exporta el corte como JPG/PNG desde tu visor.'); return; }
+    var fr=new FileReader();
+    fr.onload=function(){
+      try{
+        var ba=new Uint8Array(fr.result), ds=dicomParser.parseDicom(ba);
+        var ts=ds.string('x00020010')||'';
+        if(!(ts==='1.2.840.10008.1.2'||ts==='1.2.840.10008.1.2.1'||ts==='1.2.840.10008.1.2.2')){
+          alert('Este DICOM está comprimido y no lo puedo abrir aquí. Expórtalo como JPG/PNG desde tu visor de CBCT.'); return; }
+        var rows=ds.uint16('x00280010'), cols=ds.uint16('x00280011'), bits=ds.uint16('x00280100')||16;
+        var signed=(ds.uint16('x00280103')||0)===1, slope=parseFloat(ds.string('x00281053')||'1')||1, inter=parseFloat(ds.string('x00281052')||'0')||0;
+        var pde=ds.elements.x7fe00010; if(!rows||!cols||!pde){ alert('No pude leer los píxeles del DICOM. Expórtalo como JPG/PNG.'); return; }
+        var n=rows*cols, bpp=bits/8, buf=ba.buffer.slice(pde.dataOffset, pde.dataOffset+n*bpp);
+        var raw = bits===8 ? new Uint8Array(buf) : (signed? new Int16Array(buf): new Uint16Array(buf));
+        var mn=Infinity,mx=-Infinity,v; for(var i=0;i<n;i++){ v=raw[i]*slope+inter; if(v<mn)mn=v; if(v>mx)mx=v; } var rng=(mx-mn)||1;
+        var cv=document.createElement('canvas'); cv.width=cols; cv.height=rows; var cx=cv.getContext('2d'), im=cx.createImageData(cols,rows), d=im.data;
+        for(var j=0;j<n;j++){ var g=Math.round(((raw[j]*slope+inter)-mn)/rng*255); var k=j*4; d[k]=d[k+1]=d[k+2]=g; d[k+3]=255; }
+        cx.putImageData(im,0,0);
+        setImg(cv.toDataURL('image/jpeg',0.85), 'image/jpeg', '📎 DICOM cargado (corte renderizado) — toca para cambiar');
+      }catch(e){ alert('No pude leer este DICOM. Expórtalo como JPG/PNG desde tu visor. ('+(e&&e.message||e)+')'); }
+    };
+    fr.readAsArrayBuffer(file);
+  }
+  function leerArchivo(file){ if(!file) return; if(/\.dcm$/i.test(file.name)||file.type==='application/dicom'||(!file.type&&/\.dcm$/i.test(file.name))) leerDicom(file); else leerImg(file); }
   imgDrop.addEventListener('click',function(){ imgInput.click(); });
-  imgInput.addEventListener('change',function(){ leerImg(imgInput.files[0]); });
+  imgInput.addEventListener('change',function(){ leerArchivo(imgInput.files[0]); });
   ['dragover','dragenter'].forEach(function(e){ imgDrop.addEventListener(e,function(ev){ ev.preventDefault(); imgDrop.classList.add('drag'); }); });
   ['dragleave','drop'].forEach(function(e){ imgDrop.addEventListener(e,function(ev){ ev.preventDefault(); imgDrop.classList.remove('drag'); }); });
-  imgDrop.addEventListener('drop',function(ev){ if(ev.dataTransfer && ev.dataTransfer.files[0]) leerImg(ev.dataTransfer.files[0]); });
+  imgDrop.addEventListener('drop',function(ev){ if(ev.dataTransfer && ev.dataTransfer.files[0]) leerArchivo(ev.dataTransfer.files[0]); });
   document.getElementById('imgRemove').addEventListener('click',function(){ imgData=null; imgMime=null; imgPrev.hidden=true; imgInput.value=''; imgDrop.textContent=DROP_TXT; });
 
   var btn=document.getElementById('btnEval');
