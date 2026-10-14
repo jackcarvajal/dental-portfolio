@@ -71,24 +71,28 @@ _Herramienta de apoyo a la planificación digital de PRODIGY. No sustituye el ju
 
 async function llamarGemini(apiKey, system, userText, image) {
   const parts = [{ text: userText }];
-  if (image && image.data && image.mimeType) parts.push({ inline_data: { mime_type: image.mimeType, data: image.data } });
+  if (image && image.data && image.mimeType) parts.push({ inlineData: { mimeType: image.mimeType, data: image.data } });
   const body = {
     contents: [{ role: 'user', parts: parts }],
     system_instruction: { parts: [{ text: system }] },
     generationConfig: { temperature: 0.4, maxOutputTokens: image ? 1800 : 1400 },
   };
-  for (const model of MODELS) {
+  // Con imagen solo se usa el modelo con visión (evita el fallback a -lite que la rechaza y alarga la respuesta)
+  const models = image ? ['gemini-2.5-flash'] : MODELS;
+  let last = '';
+  for (const model of models) {
     try {
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
       });
       const data = await res.json().catch(() => null);
       if (res.ok && data && data.candidates && data.candidates[0]) {
-        return (data.candidates[0].content?.parts || []).map(p => p.text || '').join('');
+        return { text: (data.candidates[0].content?.parts || []).map(p => p.text || '').join('') };
       }
-    } catch (e) { /* intenta el siguiente modelo */ }
+      last = (data && data.error && data.error.message) || ('HTTP ' + res.status);
+    } catch (e) { last = 'Red: ' + (e && e.message || e); }
   }
-  return null;
+  return { text: null, err: last };
 }
 
 export async function onRequestPost(context) {
@@ -118,9 +122,11 @@ export async function onRequestPost(context) {
   const zona = SONA[planning.toothZone] || planning.toothZone || 'no indicada';
   const notaImg = image ? '\n\nSe adjunta una IMAGEN 2D del caso (radiografía panorámica/periapical o un corte de CBCT). Analízala SOLO como apoyo: una imagen 2D sin calibración NO permite mediciones exactas, así que no des milímetros exactos a partir de ella. Comenta lo relevante que observes (relación con el nervio dentario o el seno, altura/volumen óseo aparente, densidad, y cualquier hallazgo o patología visible) y correlaciónalo con los parámetros. Si la imagen NO es una radiografía/corte dental legible, dilo con claridad y no la interpretes.' : '';
   const userText = `Evalúa esta planificación de implante:\n\n${describir(planning)}${notaImg}\n\nZona: ${zona}. Entrega la crítica clínica estructurada.`;
-  const critique = await llamarGemini(env.GEMINI_API_KEY, SISTEMA.replace('{zona}', zona), userText, image);
-  if (!critique) return new Response(JSON.stringify({ error: 'El evaluador no está disponible en este momento. Intenta de nuevo.' }), { status: 502, headers: H });
-  return new Response(JSON.stringify({ critique }), { status: 200, headers: H });
+  let r;
+  try { r = await llamarGemini(env.GEMINI_API_KEY, SISTEMA.replace('{zona}', zona), userText, image); }
+  catch (e) { return new Response(JSON.stringify({ error: 'Fallo interno: ' + (e && e.message || e) }), { status: 500, headers: H }); }
+  if (!r || !r.text) return new Response(JSON.stringify({ error: 'El evaluador no está disponible ahora.' + (r && r.err ? ' (' + String(r.err).slice(0, 160) + ')' : '') }), { status: 502, headers: H });
+  return new Response(JSON.stringify({ critique: r.text }), { status: 200, headers: H });
 }
 
 export async function onRequestOptions(context) {
