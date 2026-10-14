@@ -12,6 +12,11 @@
 <meta property="og:description" content="Pon los parámetros de tu caso, míralo en 3D y recibe una crítica clínica de respaldo con IA.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://prodigylabdental.com/evaluador-implantes/">
+<link rel="alternate" hreflang="es" href="https://prodigylabdental.com/evaluador-implantes/">
+<link rel="alternate" hreflang="en" href="https://prodigylabdental.com/evaluador-implantes/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com/evaluador-implantes/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
@@ -132,8 +137,8 @@
 <body>
 
 <!-- Header real del sitio PRODIGY (mismo de todas las páginas) -->
-<link rel="preload" href="/js/header.js?v=20261014b" as="script">
-<script src="/js/header.js?v=20261014b"></script>
+<link rel="preload" href="/js/header.js?v=20261014c" as="script">
+<script src="/js/header.js?v=20261014c"></script>
 
 <div class="wrap">
   <header class="hero">
@@ -280,7 +285,7 @@
 
     <div class="cta-box">
       <p><strong>¿Quieres llevarlo a boca con precisión?</strong> En PRODIGY diseñamos la guía quirúrgica y la planificación digital de tu caso.</p>
-      <a class="btn prim" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20evalu%C3%A9%20un%20caso%20de%20implante%20y%20quiero%20una%20gu%C3%ADa%20quir%C3%BArgica" target="_blank" rel="noopener noreferrer">Diseñar mi guía</a>
+      <a class="btn prim" id="btnGuia" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20evalu%C3%A9%20un%20caso%20de%20implante%20y%20quiero%20una%20gu%C3%ADa%20quir%C3%BArgica" target="_blank" rel="noopener noreferrer">Diseñar mi guía</a>
     </div>
     <div class="nav-row">
       <button class="btn ghost" data-prev>← Atrás</button>
@@ -303,6 +308,75 @@
   var P = { arcada:"maxilar", boneType:"D2", toothZone:"anterior", implantSystem:"bone_level", implantDiameter:"regular",
             angulationBL:0, platformDepth:3, boneWidth:7, boneHeight:13, distanceNerve:4, distanceSinus:6, mucosaLevel:"grueso", prostheticType:"screw" };
   var step=0, TOTAL=4;
+
+  // ── Bilingüe en el mismo archivo (?lang=en). Una sola fuente de verdad. ──
+  var LANG = /[?&]lang=en/i.test(location.search);
+  var EN = {
+    "★ Apoyo a la planificación digital":"★ Digital planning support",
+    "Evalúa tu implante,":"Evaluate your implant,","paso a paso":"step by step",
+    "Configura tu caso en 3 pasos simples, míralo en 3D y recibe una crítica clínica de respaldo con IA, basada en consensos de la ITI.":"Set up your case in 3 simple steps, see it in 3D and get an AI clinical second-opinion based on ITI consensus.",
+    "Paso 1":"Step 1","Paso 2":"Step 2","Paso 3":"Step 3","Paso 4":"Step 4",
+    "El caso":"The case","El implante":"The implant","Seguridad":"Safety","Resultado 3D + IA":"3D + AI result",
+    "¿Dónde va el implante y cómo es el hueso?":"Where does the implant go and what is the bone like?",
+    "Arcada":"Arch","Maxilar superior":"Upper maxilla","cuida el seno / fosa":"mind the sinus / fossa",
+    "Mandíbula":"Mandible","cuida el nervio dentario":"mind the inferior alveolar nerve",
+    "Calidad / densidad del hueso":"Bone quality / density",
+    "cortical muy densa":"very dense cortical","cortical fina":"thin cortical","blando":"soft","muy blando":"very soft",
+    "Radiografía / DICOM":"X-ray / DICOM",
+    "opcional — súbela primero: la IA la analiza junto con tus parámetros":"optional — upload it first: the AI analyzes it with your parameters",
+    "📎 Sube o arrastra: imagen (JPG / PNG / WEBP) o DICOM (.dcm de un corte)":"📎 Upload or drag: image (JPG / PNG / WEBP) or DICOM (.dcm single slice)",
+    "Quitar":"Remove",
+    "Apoyo, no diagnóstico.":"Support, not a diagnosis.",
+    "Una imagen 2D sin calibración no permite mediciones exactas; del DICOM se usa":"A 2D image without calibration does not allow exact measurements; from the DICOM we use",
+    "un corte":"a single slice",", no el volumen 3D.":", not the 3D volume.",
+    "No subas datos del paciente":"Do not upload patient data",
+    "(nombre, documento, cédula). La imagen":"(name, ID, document). The image",
+    "no se almacena":"is not stored",": solo se usa para esta evaluación.":": it is only used for this evaluation.",
+    "Siguiente: el implante →":"Next: the implant →","Posición y tipo del implante.":"Implant position and type.",
+    "Zona del diente":"Tooth zone","sector estético":"esthetic zone",
+    "Sistema":"System","Diámetro":"Diameter",
+    "Angulación buco-lingual":"Bucco-lingual angulation","Recto":"Straight","Vestibular (+)":"Buccal (+)",
+    "Profundidad de plataforma":"Platform depth","Sumergido (6)":"Submerged (6)",
+    "← Atrás":"← Back","Siguiente: seguridad →":"Next: safety →",
+    "Distancias de seguridad":"Safety distances","Lo que evita complicaciones: anatomía y tejidos.":"What prevents complications: anatomy and tissues.",
+    "Ancho óseo (vestíbulo-palatino)":"Bone width (bucco-palatal)","Altura ósea disponible":"Available bone height",
+    "Distancia al nervio dentario":"Distance to the alveolar nerve","(seguro ≥2 mm)":"(safe ≥2 mm)",
+    "Distancia al seno maxilar":"Distance to the maxillary sinus","(seguro ≥1.5 mm)":"(safe ≥1.5 mm)",
+    "Biotipo de mucosa":"Mucosa biotype","Grueso":"Thick","Fino":"Thin",
+    "Diseño protésico":"Prosthetic design","Atornillado":"Screw-retained","Cementado":"Cemented",
+    "Ver resultado 3D + IA →":"See 3D + AI result →",
+    "Resultado":"Result","Tu caso en 3D y la crítica clínica de respaldo con IA.":"Your case in 3D and the AI clinical second-opinion.",
+    "Pulsa":"Press","“Evaluar con IA”":"“Evaluate with AI”","para recibir la crítica clínica de tu caso.":"to get the clinical second-opinion for your case.",
+    "Arrastra para rotar · rueda para acercar":"Drag to rotate · scroll to zoom",
+    "📎 Imagen/DICOM adjunto en el Paso 1 — se incluirá en el análisis.":"📎 Image/DICOM attached in Step 1 — it will be included in the analysis.",
+    "¿Quieres llevarlo a boca con precisión?":"Want to transfer it to the mouth precisely?",
+    "En PRODIGY diseñamos la guía quirúrgica y la planificación digital de tu caso.":"At PRODIGY we design the surgical guide and the digital planning of your case.",
+    "Diseñar mi guía":"Design my guide","Evaluar con IA":"Evaluate with AI","Imprimir / PDF":"Print / PDF","¿Cómo funciona?":"How does it work?",
+    "Herramienta de apoyo a la planificación digital de":"Decision-support tool for the digital planning of",
+    ". No sustituye el juicio clínico ni el examen del profesional tratante.":". It does not replace clinical judgment or the examination by the treating professional.",
+    "Reconstruida por PRODIGY a partir del evaluador original de":"Rebuilt by PRODIGY from the original evaluator by",
+    "(Google AI Studio). Crédito al concepto original.":"(Google AI Studio). Credit to the original concept.",
+    "Puntuación orientativa":"Indicative score","Estado":"Status","Alertas":"Alerts","Óptimo":"Optimal","Aceptable":"Acceptable","Revisar":"Review",
+    "Implante":"Implant","Hueso":"Bone","Nervio dentario":"Alveolar nerve","Seno maxilar":"Maxillary sinus",
+    "Evaluando…":"Evaluating…","Analizando biomecánica del lecho quirúrgico…":"Analyzing the biomechanics of the surgical site…",
+    "No se pudo evaluar. Intenta de nuevo.":"Could not evaluate. Please try again.","Error de conexión. Intenta de nuevo.":"Connection error. Please try again.",
+    "📎 Imagen cargada — toca para cambiar":"📎 Image loaded — tap to change",
+    "📎 DICOM cargado (corte renderizado) — toca para cambiar":"📎 DICOM loaded (slice rendered) — tap to change"
+  };
+  function T(es){ return (LANG && EN[es]) ? EN[es] : es; }
+  function applyLang(){
+    if(!LANG) return;
+    document.documentElement.lang='en';
+    try{
+      var wk=document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode:function(n){
+        var p=n.parentNode, tag=p&&p.nodeName;
+        if(tag==='SCRIPT'||tag==='STYLE') return NodeFilter.FILTER_REJECT;
+        return n.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+      }});
+      var nodes=[],n; while(n=wk.nextNode()) nodes.push(n);
+      nodes.forEach(function(node){ var raw=node.nodeValue, t=raw.trim(); if(EN[t]){ var i=raw.indexOf(t); node.nodeValue=raw.slice(0,i)+EN[t]+raw.slice(i+t.length); } });
+    }catch(e){}
+  }
 
   document.querySelectorAll('.chips').forEach(function(g){
     var key=g.dataset.group;
@@ -344,11 +418,11 @@
     if(P.platformDepth>4) flags.push('prof');
     if(P.boneType==='D4'||P.boneType==='D5') flags.push('dens');
     var score=Math.max(40,100-flags.length*12);
-    var estado = score>=85?['Óptimo','var(--ok)']:score>=65?['Aceptable','var(--warn)']:['Revisar','var(--bad)'];
+    var estado = score>=85?[T('Óptimo'),'var(--ok)']:score>=65?[T('Aceptable'),'var(--warn)']:[T('Revisar'),'var(--bad)'];
     document.getElementById('scoreRow').innerHTML =
-      '<div class="score"><div class="k">Puntuación orientativa</div><div class="v" style="color:'+estado[1]+'">'+score+'<span style="font-size:.9rem;color:var(--faint)">/100</span></div></div>'+
-      '<div class="score"><div class="k">Estado</div><div class="v" style="font-size:1.1rem;color:'+estado[1]+'">'+estado[0]+'</div></div>'+
-      '<div class="score"><div class="k">Alertas</div><div class="v" style="color:'+(flags.length?'var(--bad)':'var(--ok)')+'">'+flags.length+'</div></div>';
+      '<div class="score"><div class="k">'+T('Puntuación orientativa')+'</div><div class="v" style="color:'+estado[1]+'">'+score+'<span style="font-size:.9rem;color:var(--faint)">/100</span></div></div>'+
+      '<div class="score"><div class="k">'+T('Estado')+'</div><div class="v" style="font-size:1.1rem;color:'+estado[1]+'">'+estado[0]+'</div></div>'+
+      '<div class="score"><div class="k">'+T('Alertas')+'</div><div class="v" style="color:'+(flags.length?'var(--bad)':'var(--ok)')+'">'+flags.length+'</div></div>';
   }
 
   var renderer,scene,camera,model,raf,dragging=false,px=0,py=0,rotY=0.5,rotX=-0.1,dist=16;
@@ -415,15 +489,15 @@
     var abut=new THREE.Mesh(new THREE.CylinderGeometry(R*0.6,R*0.75,1.4,20), mat(0xb8c0c8,0.8,0.35)); abut.position.y=0.6; ig.add(abut);
     ig.add(makeCrown(P.toothZone, R));
     model.add(ig);
-    var legend='<span><b style="background:#9aa6b2"></b>Implante</span><span><b style="background:#e8dcc0"></b>Hueso</span><span><b style="background:#d98a8a"></b>Mucosa</span>';
+    var legend='<span><b style="background:#9aa6b2"></b>'+T('Implante')+'</span><span><b style="background:#e8dcc0"></b>'+T('Hueso')+'</span><span><b style="background:#d98a8a"></b>'+T('Mucosa')+'</span>';
     if(P.arcada==='mandibula'){
       var nerve=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.18,7,12), mat(0xef4444,0.1,0.5));
       nerve.rotation.z=Math.PI/2; nerve.position.set(0,-2.2 - Math.min(3,P.distanceNerve*0.3),1.6); model.add(nerve);
-      legend+='<span><b style="background:#ef4444"></b>Nervio dentario</span>';
+      legend+='<span><b style="background:#ef4444"></b>'+T('Nervio dentario')+'</span>';
     } else {
       var sinus=new THREE.Mesh(new THREE.SphereGeometry(3.2,20,16,0,Math.PI*2,0,Math.PI/2), new THREE.MeshStandardMaterial({color:0x5fc8ff,transparent:true,opacity:0.22,roughness:1}));
       sinus.position.set(0, 1.6 + Math.min(4,P.distanceSinus*0.35) + 1.2, -0.6); model.add(sinus);
-      legend+='<span><b style="background:#5fc8ff"></b>Seno maxilar</span>';
+      legend+='<span><b style="background:#5fc8ff"></b>'+T('Seno maxilar')+'</span>';
     }
     document.getElementById('legend').innerHTML=legend;
   }
@@ -448,13 +522,13 @@
   var imgData=null, imgMime=null;
   var imgInput=document.getElementById('imgInput'), imgDrop=document.getElementById('imgDrop'),
       imgPrev=document.getElementById('imgPrev'), imgThumb=document.getElementById('imgThumb');
-  var DROP_TXT='📎 Sube o arrastra: imagen (JPG / PNG / WEBP) o DICOM (.dcm de un corte)';
+  var DROP_TXT=T('📎 Sube o arrastra: imagen (JPG / PNG / WEBP) o DICOM (.dcm de un corte)');
   function setImg(dataUrl, mime, etiqueta){ var i=dataUrl.indexOf(','); imgData=dataUrl.slice(i+1); imgMime=mime; imgThumb.src=dataUrl; imgPrev.hidden=false; imgDrop.textContent=etiqueta; }
   function leerImg(file){
     if(!/^image\//.test(file.type)){ alert('Sube una imagen (JPG, PNG o WEBP).'); return; }
     if(file.size > 3.6*1024*1024){ alert('La imagen supera 3.5 MB. Comprímela o usa una captura.'); return; }
     var fr=new FileReader();
-    fr.onload=function(){ var s=String(fr.result); setImg(s, (s.slice(5,s.indexOf(';'))||file.type), '📎 Imagen cargada — toca para cambiar'); };
+    fr.onload=function(){ var s=String(fr.result); setImg(s, (s.slice(5,s.indexOf(';'))||file.type), T('📎 Imagen cargada — toca para cambiar')); };
     fr.readAsDataURL(file);
   }
   function leerDicom(file){
@@ -476,7 +550,7 @@
         var cv=document.createElement('canvas'); cv.width=cols; cv.height=rows; var cx=cv.getContext('2d'), im=cx.createImageData(cols,rows), d=im.data;
         for(var j=0;j<n;j++){ var g=Math.round(((raw[j]*slope+inter)-mn)/rng*255); var k=j*4; d[k]=d[k+1]=d[k+2]=g; d[k+3]=255; }
         cx.putImageData(im,0,0);
-        setImg(cv.toDataURL('image/jpeg',0.85), 'image/jpeg', '📎 DICOM cargado (corte renderizado) — toca para cambiar');
+        setImg(cv.toDataURL('image/jpeg',0.85), 'image/jpeg', T('📎 DICOM cargado (corte renderizado) — toca para cambiar'));
       }catch(e){ alert('No pude leer este DICOM. Expórtalo como JPG/PNG desde tu visor. ('+(e&&e.message||e)+')'); }
     };
     fr.readAsArrayBuffer(file);
@@ -489,25 +563,59 @@
   imgDrop.addEventListener('drop',function(ev){ if(ev.dataTransfer && ev.dataTransfer.files[0]) leerArchivo(ev.dataTransfer.files[0]); });
   document.getElementById('imgRemove').addEventListener('click',function(){ imgData=null; imgMime=null; imgPrev.hidden=true; imgInput.value=''; imgDrop.textContent=DROP_TXT; });
 
+  // Tras evaluar, prellena el WhatsApp del botón "Diseñar mi guía" con el resumen del caso (menos fricción para el lead)
+  function actualizarGuia(pl){
+    var LZ={anterior:'Anterior (estético)',premolar:'Premolar',molar:'Molar/posterior'};
+    var LS={bone_level:'Bone Level',tissue_level:'Tissue Level'};
+    var LD={narrow:'Narrow',regular:'Regular',wide:'Wide'};
+    var LP={screw:'Atornillado',cement:'Cementado'};
+    var LM={grueso:'Mucosa gruesa',fino:'Mucosa fina'};
+    var L;
+    if(LANG){
+      L=['Hi PRODIGY, I evaluated a case in the evaluator and I want to design the surgical guide.','','Case summary:'];
+      L.push('• Arch/zone: '+(P.arcada==='mandibula'?'Mandible':'Maxilla')+' · '+({anterior:'Anterior (esthetic)',premolar:'Premolar',molar:'Molar/posterior'}[pl.toothZone]||pl.toothZone));
+      L.push('• Implant: '+(LS[pl.implantSystem]||pl.implantSystem)+' · Ø '+(LD[pl.implantDiameter]||pl.implantDiameter));
+      L.push('• Angulation: '+pl.angulationBL+'° · Platform: '+pl.platformDepth+' mm');
+      L.push('• Bone: '+pl.boneType+' · width '+pl.boneWidth+' mm · height '+pl.boneHeight+' mm');
+      if(pl.distanceNerve!=null) L.push('• Distance to nerve: '+pl.distanceNerve+' mm');
+      if(pl.distanceSinus!=null) L.push('• Distance to sinus: '+pl.distanceSinus+' mm');
+      L.push('• '+(pl.mucosaLevel==='fino'?'Thin mucosa':'Thick mucosa')+' · '+(pl.prostheticType==='cement'?'Cemented':'Screw-retained'));
+      if(imgData) L.push('• I attached an image/DICOM of the case.');
+    } else {
+      L=['Hola PRODIGY, evalué un caso en el evaluador y quiero diseñar la guía quirúrgica.','','Resumen del caso:'];
+      L.push('• Arcada/zona: '+(P.arcada==='mandibula'?'Mandíbula':'Maxilar')+' · '+(LZ[pl.toothZone]||pl.toothZone));
+      L.push('• Implante: '+(LS[pl.implantSystem]||pl.implantSystem)+' · Ø '+(LD[pl.implantDiameter]||pl.implantDiameter));
+      L.push('• Angulación: '+pl.angulationBL+'° · Plataforma: '+pl.platformDepth+' mm');
+      L.push('• Hueso: '+pl.boneType+' · ancho '+pl.boneWidth+' mm · alto '+pl.boneHeight+' mm');
+      if(pl.distanceNerve!=null) L.push('• Distancia al nervio: '+pl.distanceNerve+' mm');
+      if(pl.distanceSinus!=null) L.push('• Distancia al seno: '+pl.distanceSinus+' mm');
+      L.push('• '+(LM[pl.mucosaLevel]||pl.mucosaLevel)+' · Prótesis '+(LP[pl.prostheticType]||pl.prostheticType));
+      if(imgData) L.push('• Adjunté una imagen/DICOM del caso.');
+    }
+    var el=document.getElementById('btnGuia');
+    if(el) el.href='https://wa.me/573212816716?text='+encodeURIComponent(L.join('\n'));
+  }
+
   var btn=document.getElementById('btnEval');
   btn.addEventListener('click',function(){
     var box=document.getElementById('crit');
-    btn.disabled=true; var old=btn.innerHTML; btn.innerHTML='<span class="spin"></span> Evaluando…';
-    box.innerHTML='<div class="placeholder"><span class="spin"></span><br><br>Analizando biomecánica del lecho quirúrgico…</div>';
+    btn.disabled=true; var old=btn.innerHTML; btn.innerHTML='<span class="spin"></span> '+T('Evaluando…');
+    box.innerHTML='<div class="placeholder"><span class="spin"></span><br><br>'+T('Analizando biomecánica del lecho quirúrgico…')+'</div>';
     var planning={ toothZone:P.toothZone, implantSystem:P.implantSystem, implantDiameter:P.implantDiameter,
       angulationBL:P.angulationBL, platformDepth:P.platformDepth, boneType:P.boneType, boneWidth:P.boneWidth, boneHeight:P.boneHeight,
       mucosaLevel:P.mucosaLevel, prostheticType:P.prostheticType };
     if(P.arcada==='mandibula') planning.distanceNerve=P.distanceNerve; else planning.distanceSinus=P.distanceSinus;
-    var payload={planning:planning}; if(imgData) payload.image={data:imgData,mimeType:imgMime};
+    var payload={planning:planning, lang:LANG?'en':'es'}; if(imgData) payload.image={data:imgData,mimeType:imgMime};
     fetch('/api/gemini/evaluate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
       .then(function(r){return r.json();})
-      .then(function(d){ box.innerHTML = d.critique ? md(d.critique) : '<div class="placeholder">'+escp(d.error||'No se pudo evaluar. Intenta de nuevo.')+'</div>'; })
-      .catch(function(){ box.innerHTML='<div class="placeholder">Error de conexión. Intenta de nuevo.</div>'; })
+      .then(function(d){ box.innerHTML = d.critique ? md(d.critique) : '<div class="placeholder">'+escp(d.error||T('No se pudo evaluar. Intenta de nuevo.'))+'</div>'; if(d.critique){ actualizarGuia(planning); } })
+      .catch(function(){ box.innerHTML='<div class="placeholder">'+T('Error de conexión. Intenta de nuevo.')+'</div>'; })
       .finally(function(){ btn.disabled=false; btn.innerHTML=old; });
   });
   document.getElementById('btnPrint').addEventListener('click',function(){ window.print(); });
   document.getElementById('pg-ayuda').addEventListener('click',function(){ show(0); });
 
+  applyLang();
   show(0);
 })();
 </script>

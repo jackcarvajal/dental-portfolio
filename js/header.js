@@ -697,6 +697,10 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
                 '<i class="fas fa-crosshairs" style="color:#00d2ff"></i>' +
                 '<span>CIRUGÍA GUIADA<span class="dd-sub">🎯 Planificación digital · guía impresa · desde 4h</span></span>' +
               '</a>' +
+              '<a href="/evaluador-implantes/" style="background:rgba(0,210,255,.04);border-left:2px solid #00d2ff;">' +
+                '<i class="fas fa-cube" style="color:#00d2ff"></i>' +
+                '<span>EVALUADOR DE IMPLANTES<span class="dd-sub">✨ Gratis · 3D + crítica clínica con IA</span></span>' +
+              '</a>' +
             '</div>' +
           '</div>' +
           '<a href="/portafolio"' + ac('/portafolio') + '>PORTAFOLIO</a>' +

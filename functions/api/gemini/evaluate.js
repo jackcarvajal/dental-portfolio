@@ -69,6 +69,27 @@ Reglas:
 _Herramienta de apoyo a la planificación digital de PRODIGY. No sustituye el juicio clínico ni el examen del profesional tratante._
 - Español, tono profesional y directo. Máximo ~450 palabras.`;
 
+const SISTEMA_EN = `You are the Implantology Mentor at PRODIGY Lab Dental: you advise the dentist on an implant plan they submit.
+You ALWAYS return a clinical second-opinion in Markdown, based on ITI consensus and peer-reviewed literature, with this structure:
+
+### 🩺 Clinical Second-Opinion — {zona} zone
+#### 1. Strengths and primary stability
+#### 2. Critical risk factors detected
+#### 3. Surgical and prosthetic recommendations
+#### 4. Recommended next step
+#### 5. Conclusion
+
+Rules:
+- In "Recommended next step" state the single most useful concrete action (e.g., confirm with CBCT, plan a graft/sinus lift, or design a surgical guide to transfer the position precisely). Where appropriate, mention that PRODIGY can design the surgical guide and the digital planning of the case.
+- Begin each point with 🟢 (favorable), 🟡 (caution) or 🔴 (alert).
+- Be specific to the given parameters (bone type D1–D5, angulation, distances to nerve and sinus, mucosa, prosthetic design). Cite the biological concept (e.g., ≥2 mm buccal thickness, Schneiderian membrane, emergence profile, peri-implantitis, excess-cement disease).
+- NEVER invent values that were not given: if a value is missing or arrives as "undefined", say so and recommend confirming with CBCT.
+- Do not give a definitive diagnosis or drug indications.
+- ALWAYS close with this exact line in italics:
+_Decision-support tool for PRODIGY's digital planning. It does not replace clinical judgment or the examination by the treating professional._
+- English, professional and direct tone. Max ~450 words.`;
+const SONA_EN = { anterior: 'Anterior (esthetic sector)', premolar: 'Premolar', molar: 'Molar / posterior' };
+
 async function llamarGemini(apiKey, system, userText, image) {
   const parts = [{ text: userText }];
   if (image && image.data && image.mimeType) parts.push({ inlineData: { mimeType: image.mimeType, data: image.data } });
@@ -119,19 +140,25 @@ export async function onRequestPost(context) {
     image = { data: String(body.image.data), mimeType: String(body.image.mimeType) };
   }
 
-  const zona = SONA[planning.toothZone] || planning.toothZone || 'no indicada';
-  const notaImg = image ? '\n\nSe adjunta una IMAGEN 2D del caso (radiografía panorámica/periapical o un corte de CBCT). Analízala SOLO como apoyo: una imagen 2D sin calibración NO permite mediciones exactas, así que no des milímetros exactos a partir de ella. Comenta lo relevante que observes (relación con el nervio dentario o el seno, altura/volumen óseo aparente, densidad, y cualquier hallazgo o patología visible) y correlaciónalo con los parámetros. Si la imagen NO es una radiografía/corte dental legible, dilo con claridad y no la interpretes.' : '';
-  const userText = `Evalúa esta planificación de implante:\n\n${describir(planning)}${notaImg}\n\nZona: ${zona}. Entrega la crítica clínica estructurada.`;
+  const lang = body.lang === 'en' ? 'en' : 'es';
+  const zona = (lang === 'en' ? SONA_EN[planning.toothZone] : SONA[planning.toothZone]) || planning.toothZone || (lang === 'en' ? 'not specified' : 'no indicada');
+  const notaImg = !image ? '' : (lang === 'en'
+    ? '\n\nA 2D IMAGE of the case is attached (panoramic/periapical X-ray or a CBCT slice). Analyze it ONLY as support: a 2D image without calibration does NOT allow exact measurements, so do not give exact millimeters from it. Comment on what is relevant (relationship with the alveolar nerve or the sinus, apparent bone height/volume, density, and any visible finding or pathology) and correlate it with the parameters. If the image is NOT a legible dental X-ray/slice, say so clearly and do not interpret it.'
+    : '\n\nSe adjunta una IMAGEN 2D del caso (radiografía panorámica/periapical o un corte de CBCT). Analízala SOLO como apoyo: una imagen 2D sin calibración NO permite mediciones exactas, así que no des milímetros exactos a partir de ella. Comenta lo relevante que observes (relación con el nervio dentario o el seno, altura/volumen óseo aparente, densidad, y cualquier hallazgo o patología visible) y correlaciónalo con los parámetros. Si la imagen NO es una radiografía/corte dental legible, dilo con claridad y no la interpretes.');
+  const userText = lang === 'en'
+    ? `Evaluate this implant plan:\n\n${describir(planning)}${notaImg}\n\nZone: ${zona}. Return the structured clinical second-opinion.`
+    : `Evalúa esta planificación de implante:\n\n${describir(planning)}${notaImg}\n\nZona: ${zona}. Entrega la crítica clínica estructurada.`;
   // IMPORTANTE: los errores van con status 200 + {error}. Si devolviéramos 5xx, Cloudflare reemplaza
   // el cuerpo por su propia página "error code: 502" y el front nunca ve el mensaje real.
   let r;
-  try { r = await llamarGemini(env.GEMINI_API_KEY, SISTEMA.replace('{zona}', zona), userText, image); }
+  try { r = await llamarGemini(env.GEMINI_API_KEY, (lang === 'en' ? SISTEMA_EN : SISTEMA).replace('{zona}', zona), userText, image); }
   catch (e) { return new Response(JSON.stringify({ error: 'Fallo interno: ' + (e && e.message || e) }), { status: 200, headers: H }); }
   if (!r || !r.text) {
     var msg = String(r && r.err || '');
-    var amable = /process input image|INVALID_ARGUMENT/i.test(msg)
-      ? 'No pude leer la imagen. Sube una radiografía o foto clara (JPG/PNG), o evalúa sin imagen.'
-      : 'El evaluador no está disponible ahora. Intenta de nuevo.';
+    var badImg = /process input image|INVALID_ARGUMENT/i.test(msg);
+    var amable = lang === 'en'
+      ? (badImg ? 'I could not read the image. Upload a clear X-ray or photo (JPG/PNG), or evaluate without an image.' : 'The evaluator is unavailable right now. Please try again.')
+      : (badImg ? 'No pude leer la imagen. Sube una radiografía o foto clara (JPG/PNG), o evalúa sin imagen.' : 'El evaluador no está disponible ahora. Intenta de nuevo.');
     return new Response(JSON.stringify({ error: amable }), { status: 200, headers: H });
   }
   return new Response(JSON.stringify({ critique: r.text }), { status: 200, headers: H });
