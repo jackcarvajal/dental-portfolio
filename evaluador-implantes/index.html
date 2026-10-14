@@ -111,6 +111,15 @@
   .cta-box p{margin:0;flex:1 1 220px;font-size:.92rem;color:#dde4ee}
   .cta-box .btn{padding:11px 18px;font-size:.9rem;flex:0 0 auto}
 
+  .imgdrop{width:100%;border:1.5px dashed var(--line);background:var(--card2);color:var(--muted);border-radius:12px;padding:16px;font:700 .9rem var(--sans);cursor:pointer;text-align:center}
+  .imgdrop:hover{border-color:var(--cyan);color:var(--fg)}
+  .imgdrop.drag{border-color:var(--mg);background:rgba(217,70,166,.08)}
+  .imgprev{display:flex;align-items:center;gap:12px;margin-top:10px}
+  .imgprev img{max-height:84px;border-radius:8px;border:1px solid var(--line)}
+  .imgprev button{background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 12px;font:700 .8rem var(--sans);cursor:pointer}
+  .disc{font-size:.76rem;color:#cbb78a;margin-top:9px;line-height:1.5;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:10px 13px}
+  .disc b{color:var(--warn)}
+
   footer{border-top:1px solid var(--line);margin-top:40px;padding:26px 18px;text-align:center;color:var(--faint);font-size:.82rem}
   footer .cred{color:var(--muted);margin-top:6px}
   footer a{color:var(--cyan)}
@@ -258,6 +267,14 @@
         <div class="placeholder">Pulsa <b>“Evaluar con IA”</b> para recibir la crítica clínica de tu caso.</div>
       </div>
     </div>
+    <div class="field" id="imgField">
+      <label>Radiografía / imagen <span class="help">opcional — panorámica, periapical o un corte de CBCT; mejora el análisis</span></label>
+      <button type="button" id="imgDrop" class="imgdrop">📎 Toca para subir o arrastra una imagen · JPG / PNG / WEBP · máx 3.5 MB</button>
+      <input type="file" id="imgInput" accept="image/*" hidden>
+      <div id="imgPrev" class="imgprev" hidden><img id="imgThumb" alt="radiografía adjunta"><button type="button" id="imgRemove">Quitar</button></div>
+      <p class="disc">⚠️ <b>Apoyo, no diagnóstico.</b> Una imagen 2D sin calibración no permite mediciones exactas. <b>No subas datos del paciente</b> (nombre, documento, cédula). La imagen <b>no se almacena</b>: solo se usa para esta evaluación.</p>
+    </div>
+
     <div class="cta-box">
       <p><strong>¿Quieres llevarlo a boca con precisión?</strong> En PRODIGY diseñamos la guía quirúrgica y la planificación digital de tu caso.</p>
       <a class="btn prim" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20evalu%C3%A9%20un%20caso%20de%20implante%20y%20quiero%20una%20gu%C3%ADa%20quir%C3%BArgica" target="_blank" rel="noopener noreferrer">Diseñar mi guía</a>
@@ -424,6 +441,26 @@
     closeUl(); return out.join('');
   }
 
+  // ── imagen opcional (radiografía / corte CBCT) ──
+  var imgData=null, imgMime=null;
+  var imgInput=document.getElementById('imgInput'), imgDrop=document.getElementById('imgDrop'),
+      imgPrev=document.getElementById('imgPrev'), imgThumb=document.getElementById('imgThumb');
+  var DROP_TXT='📎 Toca para subir o arrastra una imagen · JPG / PNG / WEBP · máx 3.5 MB';
+  function leerImg(file){
+    if(!file) return;
+    if(!/^image\//.test(file.type)){ alert('Sube una imagen (JPG, PNG o WEBP).'); return; }
+    if(file.size > 3.6*1024*1024){ alert('La imagen supera 3.5 MB. Comprímela o usa una captura.'); return; }
+    var fr=new FileReader();
+    fr.onload=function(){ var s=String(fr.result); imgData=s.slice(s.indexOf(',')+1); imgMime=s.slice(5,s.indexOf(';'))||file.type; imgThumb.src=s; imgPrev.hidden=false; imgDrop.textContent='📎 Imagen cargada — toca para cambiar'; };
+    fr.readAsDataURL(file);
+  }
+  imgDrop.addEventListener('click',function(){ imgInput.click(); });
+  imgInput.addEventListener('change',function(){ leerImg(imgInput.files[0]); });
+  ['dragover','dragenter'].forEach(function(e){ imgDrop.addEventListener(e,function(ev){ ev.preventDefault(); imgDrop.classList.add('drag'); }); });
+  ['dragleave','drop'].forEach(function(e){ imgDrop.addEventListener(e,function(ev){ ev.preventDefault(); imgDrop.classList.remove('drag'); }); });
+  imgDrop.addEventListener('drop',function(ev){ if(ev.dataTransfer && ev.dataTransfer.files[0]) leerImg(ev.dataTransfer.files[0]); });
+  document.getElementById('imgRemove').addEventListener('click',function(){ imgData=null; imgMime=null; imgPrev.hidden=true; imgInput.value=''; imgDrop.textContent=DROP_TXT; });
+
   var btn=document.getElementById('btnEval');
   btn.addEventListener('click',function(){
     var box=document.getElementById('crit');
@@ -433,7 +470,8 @@
       angulationBL:P.angulationBL, platformDepth:P.platformDepth, boneType:P.boneType, boneWidth:P.boneWidth, boneHeight:P.boneHeight,
       mucosaLevel:P.mucosaLevel, prostheticType:P.prostheticType };
     if(P.arcada==='mandibula') planning.distanceNerve=P.distanceNerve; else planning.distanceSinus=P.distanceSinus;
-    fetch('/api/gemini/evaluate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({planning:planning})})
+    var payload={planning:planning}; if(imgData) payload.image={data:imgData,mimeType:imgMime};
+    fetch('/api/gemini/evaluate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
       .then(function(r){return r.json();})
       .then(function(d){ box.innerHTML = d.critique ? md(d.critique) : '<div class="placeholder">'+escp(d.error||'No se pudo evaluar. Intenta de nuevo.')+'</div>'; })
       .catch(function(){ box.innerHTML='<div class="placeholder">Error de conexión. Intenta de nuevo.</div>'; })
