@@ -10,6 +10,10 @@
 ---
 
 - ✅ **envía-tu-scanner · plantilla opcional** (13-oct, ambas): bloque plegable bajo «Enviar» que arma el texto del caso con lo ya tecleado (doctor, clínica, trabajo, piezas, escáner) y deja Material/Color/pilar para completar — como la «receta» de un lab tradicional (idea tomada de la auditoría de Laboratorio Dies). Botones Copiar · WhatsApp · Correo (casos@ / hola@). Subir el STL directo sigue siendo lo recomendado.
+## 2026-10-15
+
+- ✅ **Versión EN de carillas: /en/veneers** (15-oct): página inglesa dedicada (patrón de la casa, como guías→/en/surgical-guides) con el mismo liquid hero + copy traducido. El toggle ES/EN del header ya NO saca a otra página: se cableó _IDIOMA_CFG (mapaEn /carillas→/en/veneers, esDe inverso) + /en/veneers en publicPages. carillas y veneers cargan header.js?v=20261015a. hreflang es↔en correctos, sitemap + _headers. Rutas absolutas (/js /images) por estar en subcarpeta. OG reusa og-carillas.jpg (pendiente: OG en inglés).
+
 ## 2026-10-14  (evaluador de implantes: reconstrucción NATIVA)
 
 - ✅ **Evaluador: medición del embudo + sitemap EN** (14-oct): el evaluador NO cargaba `conversions.js` → sus clics a WhatsApp no se medían. Se agregó `conversions.js?v=20261013c` a `evaluador-implantes/index.html` (header.js ya provee gtag/GA4) → el clic en «Diseñar mi guía» cuenta como `whatsapp_click` (conversión de Ads), segmentable por page_path. Y `sitemap.xml` ahora declara los alternates `xhtml:link` es/en/x-default del evaluador (además del hreflang en el `<head>`). Pendiente opcional: cablear el toggle ES/EN del header al evaluador (requiere bump global de header.js).

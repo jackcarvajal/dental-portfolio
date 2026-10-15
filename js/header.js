@@ -33,7 +33,7 @@
     '/para-laboratorios','/referidos','/flujo-diseno','/flujo-fresado',
     '/flujo-impresion','/flujo-lab','/caso','/patient',
     '/preguntas','/impresion-3d','/alineadores-cad','/evaluador-implantes','/carillas',
-    '/en/dental-aligners','/en/surgical-guides','/en/zirconia-crowns',   // inglés: solo diseño
+    '/en/dental-aligners','/en/surgical-guides','/en/zirconia-crowns','/en/veneers',   // inglés: solo diseño
   ];
   var skip = path.startsWith('/mantenimiento') ||
              path.startsWith('/app/') ||
@@ -75,7 +75,7 @@
   window._loadClarity = function () { if (window._clarityPermitida()) _loadClarity(); };
 })();
 
-window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-scanner", "/preguntas", "/soporte", "/portafolio", "/flujo-diseno"], "mapaEn": {"/": "/en/global-design", "/diseno-remoto": "/en/global-design", "/diseno-cad": "/en/global-design", "/calculadora-diseno": "/en/global-design", "/alineadores-cad": "/en/dental-aligners", "/envia-alineadores": "/en/dental-aligners", "/guias-quirurgicas": "/en/surgical-guides", "/fresado-cam": "/en/zirconia-crowns", "/calculadora-fresado": "/en/zirconia-crowns", "/terminos-y-legal": "/en/veneer-terms"}, "esDe": {"/en/global-design": "/diseno-remoto", "/en/dental-aligners": "/alineadores-cad", "/en/surgical-guides": "/guias-quirurgicas", "/en/zirconia-crowns": "/fresado-cam", "/en/veneers": "/", "/en/veneer-terms": "/terminos-y-legal"}};
+window._IDIOMA_CFG = {"hubEn": "/en/global-design", "paginasEn": ["/envia-tu-scanner", "/preguntas", "/soporte", "/portafolio", "/flujo-diseno"], "mapaEn": {"/": "/en/global-design", "/diseno-remoto": "/en/global-design", "/diseno-cad": "/en/global-design", "/calculadora-diseno": "/en/global-design", "/alineadores-cad": "/en/dental-aligners", "/envia-alineadores": "/en/dental-aligners", "/guias-quirurgicas": "/en/surgical-guides", "/carillas": "/en/veneers", "/fresado-cam": "/en/zirconia-crowns", "/calculadora-fresado": "/en/zirconia-crowns", "/terminos-y-legal": "/en/veneer-terms"}, "esDe": {"/en/global-design": "/diseno-remoto", "/en/dental-aligners": "/alineadores-cad", "/en/surgical-guides": "/guias-quirurgicas", "/en/veneers": "/carillas", "/en/zirconia-crowns": "/fresado-cam", "/en/veneers": "/", "/en/veneer-terms": "/terminos-y-legal"}};
 /* ── IDIOMA: ES · EN · PT (oct-2026, igual en ambas webs; solo cambia _IDIOMA_CFG) ─────────────────────────
    · ES: el sitio está escrito en español.
    · EN: traducción TÉCNICA hecha a mano (odontología digital / CAD-CAM) de las páginas de /i18n/en.json → se
