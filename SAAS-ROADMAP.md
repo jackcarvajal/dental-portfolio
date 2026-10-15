@@ -7,6 +7,31 @@ Software de gestión dental SaaS que reemplaza WhatsApp + Excel + Google Drive e
 
 ---
 
+## ⚠️ DECISIÓN DE MARCA (15-oct-2026) — NO es "PRODIGY SaaS"
+
+El producto es **marca, dominio y repo SEPARADOS, sin relación con PRODIGY.** Un laboratorio competidor
+no va a adoptar una herramienta con la marca de un rival. PRODIGY es **tenant #1** (lo usamos nosotros =
+dogfooding y mejor caso de venta), **no** la marca del producto.
+
+- **Marca neutra** (candidatos, verificar dominio/registro): **Labflow** (recomendado), **Protik**, **Arcada**, **Fresio**.
+- **Repo propio** (un repo por producto, ARCHITECTURE.md) + **Supabase propio** (no mezclar la data viva de PRODIGY).
+- **Whitelabel**: cada lab ve su logo; la marca del SaaS queda neutra ("powered by ___", y en plan alto ni eso).
+- Hoy NO es multi-tenant: `negocio` fijo a prodigy/alejandro (24+ lugares), sin tabla de tenants ni Stripe.
+  El SaaS **generaliza** la lógica/UX existente a `tenant_id` + RLS por tenant.
+
+### MVP para el primer test real (un lab amigo)
+Lo mínimo que resuelve el dolor de zircca ([[project-competidor-zircca]]) y se prueba en real:
+1. Tenant + login (el lab amigo como organización).
+2. Pedidos — el odontólogo pide desde su portal.
+3. Producción — estados del caso (recibido → diseño → fresado → entrega).
+4. Clientes — lista de odontólogos del lab.
+5. Estado de cuenta — abonos/saldos por cliente + corte mensual.
+
+Fuera del MVP (después): QR físico, incidencias, alineadores, métricas avanzadas, whitelabel, y el alta
+self-serve + Stripe (al lab amigo se le da de alta a mano primero). **Prioridad: background** — primero PRODIGY y Alejandro.
+
+---
+
 ## Modelo de negocio elegido: White-label + SaaS híbrido
 
 ### Planes propuestos
