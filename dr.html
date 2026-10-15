@@ -37,7 +37,9 @@
 
   /* ── cabecera ── */
   header{text-align:center;padding:18px 0 16px}
-  .logo{width:78px;height:78px;margin:0 auto 14px;display:block;filter:drop-shadow(0 6px 20px rgba(0,210,255,.35))}
+  .scanner{width:min(220px,72vw);height:auto;margin:2px auto 4px;display:block;filter:drop-shadow(0 10px 28px rgba(0,210,255,.28))}
+  .scanner .led{filter:drop-shadow(0 0 6px #00d2ff)}
+  .scanner .dots circle{transform-box:fill-box;transform-origin:center}
   .brand{font-size:3rem;font-weight:800;letter-spacing:.1em;line-height:1;
     background:linear-gradient(95deg,var(--gold) 6%,var(--magenta) 52%,var(--cyan) 96%);background-size:220% auto;
     -webkit-background-clip:text;background-clip:text;color:transparent}
@@ -82,8 +84,19 @@
     @keyframes dr1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(46px,64px) scale(1.18)}}
     @keyframes dr2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-54px,42px) scale(1.12)}}
     @keyframes dr3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(34px,-44px) scale(1.22)}}
-    .logo{animation:float 4.5s ease-in-out infinite}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+    .scanner{animation:float 5s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    .scanner .beam{animation:beamp 2.6s ease-in-out infinite}
+    @keyframes beamp{0%,100%{opacity:.45}50%{opacity:1}}
+    .scanner .scanlines{animation:scan 2s linear infinite}
+    @keyframes scan{0%{transform:translateY(-6px)}100%{transform:translateY(60px)}}
+    .scanner .led{animation:ledp 1.4s ease-in-out infinite}
+    @keyframes ledp{0%,100%{opacity:.45}50%{opacity:1}}
+    .scanner .dots circle{opacity:0;animation:dotp 2.4s ease-in-out infinite}
+    .scanner .dots circle:nth-child(2){animation-delay:.4s}
+    .scanner .dots circle:nth-child(3){animation-delay:.8s}
+    .scanner .dots circle:nth-child(4){animation-delay:1.2s}
+    @keyframes dotp{0%,70%,100%{opacity:0;transform:scale(.6)}20%,55%{opacity:1;transform:scale(1)}}
     .brand{animation:shimmer 6s linear infinite}
     @keyframes shimmer{to{background-position:220% center}}
   }
@@ -96,16 +109,30 @@
 
 <main class="wrap">
   <header>
-    <svg class="logo" viewBox="0 0 100 100" aria-label="PRODIGY">
-      <polygon points="38,29 62,29 62,44 38,44" fill="#9fecff"/>
-      <polygon points="38,29 17,44 38,44" fill="#56cef5"/>
-      <polygon points="62,29 83,44 62,44" fill="#34ace2"/>
-      <polygon points="17,44 38,44 50,77" fill="#0f6fb0"/>
-      <polygon points="38,44 50,44 50,77" fill="#1e90cc"/>
-      <polygon points="50,44 62,44 50,77" fill="#1587c4"/>
-      <polygon points="62,44 83,44 50,77" fill="#0d68a8"/>
-      <polygon points="38,29 62,29 83,44 50,77 17,44" fill="none" stroke="#d4f2ff" stroke-width="1.5" stroke-linejoin="round"/>
-      <line x1="17" y1="44" x2="83" y2="44" stroke="#d4f2ff" stroke-width="1"/>
+    <svg class="scanner" viewBox="0 0 232 150" aria-label="Escáner intraoral Aidite Rapid 5">
+      <defs>
+        <linearGradient id="sbody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4859"/><stop offset="1" stop-color="#0d1520"/></linearGradient>
+        <linearGradient id="sbeam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00d2ff" stop-opacity=".55"/><stop offset="1" stop-color="#00d2ff" stop-opacity="0"/></linearGradient>
+        <clipPath id="beamclip"><polygon points="156,75 228,38 228,112"/></clipPath>
+      </defs>
+      <!-- haz del escáner -->
+      <polygon class="beam" points="156,75 228,38 228,112" fill="url(#sbeam)"/>
+      <!-- líneas de escaneo (recortadas al haz) -->
+      <g clip-path="url(#beamclip)"><g class="scanlines" stroke="#9fecff" stroke-width="2" opacity=".85">
+        <line x1="150" y1="34" x2="232" y2="34"/><line x1="150" y1="56" x2="232" y2="56"/><line x1="150" y1="78" x2="232" y2="78"/><line x1="150" y1="100" x2="232" y2="100"/>
+      </g></g>
+      <!-- puntos capturando -->
+      <g class="dots" fill="#00d2ff">
+        <circle cx="198" cy="60" r="2.6"/><circle cx="210" cy="75" r="2.6"/><circle cx="198" cy="90" r="2.6"/><circle cx="186" cy="75" r="2.6"/>
+      </g>
+      <!-- cuerpo del escáner -->
+      <g>
+        <rect x="12" y="57" width="130" height="36" rx="18" fill="url(#sbody)" stroke="#50607a" stroke-width="1"/>
+        <rect x="24" y="66" width="62" height="4" rx="2" fill="#D946A6" opacity=".6"/>
+        <path d="M140,59 L165,51 L172,66 L172,84 L165,99 L140,91 Z" fill="url(#sbody)" stroke="#50607a" stroke-width="1"/>
+        <rect x="153" y="66" width="11" height="18" rx="3" fill="#081018"/>
+        <circle class="led" cx="158.5" cy="75" r="4" fill="#00d2ff"/>
+      </g>
     </svg>
     <h1 class="brand">PRODIGY</h1>
     <div class="sub">Digital Dentistry · Bogotá</div>
