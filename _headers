@@ -74,6 +74,8 @@
   Cache-Control: public, max-age=0, must-revalidate
 /carillas
   Cache-Control: public, max-age=0, must-revalidate
+/dr
+  Cache-Control: public, max-age=0, must-revalidate
 /en/veneers
   Cache-Control: public, max-age=0, must-revalidate
 /calculadora
