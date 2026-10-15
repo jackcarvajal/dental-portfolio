@@ -104,6 +104,22 @@
   .card p{color:var(--muted);font-size:.94rem;line-height:1.6}
   .mat-tag{display:inline-block;font-size:.72rem;font-weight:700;color:var(--gold);background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.25);border-radius:100px;padding:3px 12px;margin-top:12px}
 
+  /* problema -> solución */
+  .ps{display:grid;gap:14px;max-width:900px;margin:38px auto 0}
+  .ps-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ps-p,.ps-s{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:.95rem;line-height:1.5}
+  .ps-p{background:rgba(248,113,113,.05);border-color:rgba(248,113,113,.18);color:var(--muted)}
+  .ps-s{background:rgba(0,210,255,.05);border-color:rgba(0,210,255,.2);color:#e8edf5}
+  .ps-p i{color:#f87171;margin-top:3px}
+  .ps-s i{color:var(--cyan);margin-top:3px}
+  .ps-s b{color:#fff}
+  @media(max-width:620px){ .ps-row{grid-template-columns:1fr} }
+
+  /* garantía band */
+  .guarantee{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 34px;max-width:900px;margin:34px auto 0}
+  .guarantee div{display:flex;align-items:center;gap:10px;font-size:.95rem;font-weight:600;color:#e8edf5}
+  .guarantee i{color:var(--neon)}
+
   /* ── proceso ── */
   .steps{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));counter-reset:s}
   .step{position:relative;background:var(--card2);border:1px solid var(--line);border-radius:16px;padding:24px;padding-top:30px}
@@ -175,6 +191,38 @@
         <h3>Tú apruebas antes</h3>
         <p>Nada se fresa sin tu visto bueno. Ves el diseño, pides cambios y recién ahí producimos. Sin sorpresas en la entrega.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEMA → SOLUCIÓN ── -->
+<section>
+  <div class="wrap">
+    <div class="label"><span></span>Por qué te conviene</div>
+    <h2>Menos reprocesos,<br>más casos que te recomiendan</h2>
+    <p class="lead">La estética de tus carillas es tu carta de presentación. Cada detalle que sale bien, lo recuerdan; cada reproceso, también. Esto es lo que cambia:</p>
+    <div class="ps">
+      <div class="ps-row">
+        <div class="ps-p"><i class="fas fa-xmark"></i> Color que no coincide y toca repetir el caso.</div>
+        <div class="ps-s"><i class="fas fa-check"></i> <span><b>Mock-up y prueba de color</b> que apruebas antes de fresar. Ves el resultado, no lo adivinas.</span></div>
+      </div>
+      <div class="ps-row">
+        <div class="ps-p"><i class="fas fa-xmark"></i> Ajustes eternos en el sillón que te roban agenda.</div>
+        <div class="ps-s"><i class="fas fa-check"></i> <span><b>Adaptación marginal consistente</b> por fresado CAD/CAM. Menos silla, más pacientes.</span></div>
+      </div>
+      <div class="ps-row">
+        <div class="ps-p"><i class="fas fa-xmark"></i> Reprocesos que cuestan tiempo, plata y reputación.</div>
+        <div class="ps-s"><i class="fas fa-check"></i> <span>Nada se produce sin tu <b>visto bueno al diseño digital</b>. Si no convence, se rediseña.</span></div>
+      </div>
+      <div class="ps-row">
+        <div class="ps-p"><i class="fas fa-xmark"></i> Carillas que se ven "de laboratorio", opacas y planas.</div>
+        <div class="ps-s"><i class="fas fa-check"></i> <span><b>Estratificación y translucidez</b> que imitan el esmalte real, diente por diente.</span></div>
+      </div>
+    </div>
+    <div class="guarantee">
+      <div><i class="fas fa-circle-check"></i> Apruebas antes de fresar</div>
+      <div><i class="fas fa-circle-check"></i> Reproceso si el diseño no convence</div>
+      <div><i class="fas fa-circle-check"></i> Tu nombre en cada sonrisa</div>
     </div>
   </div>
 </section>
