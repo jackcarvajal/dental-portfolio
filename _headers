@@ -72,6 +72,8 @@
   Cache-Control: public, max-age=0, must-revalidate
 /portafolio
   Cache-Control: public, max-age=0, must-revalidate
+/carillas
+  Cache-Control: public, max-age=0, must-revalidate
 /calculadora
   Cache-Control: public, max-age=0, must-revalidate
 /journal
