@@ -68,9 +68,11 @@
   section .label{display:flex;justify-content:center}
   section h2{text-align:center}
   section .lead{text-align:center;margin-left:auto;margin-right:auto}
+  section .cta-row{justify-content:center}
 
   /* ── HERO con liquid ── */
-  .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate;padding-bottom:clamp(40px,7vw,80px)}
+  .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate;padding-bottom:clamp(40px,7vw,80px);
+    background:radial-gradient(62% 52% at 72% 26%,rgba(0,210,255,.12),transparent 72%),radial-gradient(54% 50% at 22% 68%,rgba(217,70,166,.11),transparent 72%),radial-gradient(40% 40% at 50% 8%,rgba(212,175,55,.06),transparent 70%),#050505}
   #hero-fx{position:absolute;inset:0;z-index:0}
   /* scrim: oscurece la mitad inferior para que el texto se lea sobre las partículas */
   .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -81,8 +83,9 @@
   .hero-in a,.hero-in button{pointer-events:auto}
   .hero .label{text-shadow:0 1px 10px rgba(5,5,5,.9)}
   .hero h1{font-size:clamp(2.2rem,6.6vw,4.6rem);font-weight:900;line-height:1;letter-spacing:-.03em;margin-bottom:22px;text-wrap:balance;max-width:16ch;text-shadow:0 2px 24px rgba(5,5,5,.85),0 1px 3px rgba(5,5,5,.6)}
-  .hero h1 em{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;background:linear-gradient(135deg,var(--mg),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero h1 em{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;background:linear-gradient(115deg,#e85bbf 0%,#c77dff 42%,#38d6ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
   .hero p{color:#cbd5e1;font-size:clamp(1rem,1.7vw,1.18rem);max-width:600px;margin-bottom:30px;line-height:1.7;text-shadow:0 1px 14px rgba(5,5,5,.95),0 1px 3px rgba(5,5,5,.8)}
+  .hero p strong{color:#fff;font-weight:700}
   .cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
   .btn-wa{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-weight:800;padding:15px 26px;border-radius:14px;font-size:1rem;box-shadow:0 8px 28px rgba(37,211,102,.28)}
   .btn-outline{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.18);color:var(--fg);font-weight:700;padding:14px 24px;border-radius:14px;font-size:.96rem;transition:border-color .2s,background .2s}
@@ -129,9 +132,9 @@
   <div id="hero-fx"></div>
   <div class="hero-backdrop" aria-hidden="true">CARILLAS</div>
   <div class="wrap hero-in">
-    <div class="label"><span></span>Carillas de alta estética · para clínicas</div>
-    <h1>Carillas que <em>enamoran</em> en boca</h1>
-    <p>Diseñamos y fresamos tus carillas con flujo 100% digital: mock-up previo, materiales premium y la precisión del CAD/CAM. Tú defines la sonrisa; nosotros la hacemos realidad — en Bogotá y para clínicas de cualquier país.</p>
+    <div class="label"><span></span>Alta estética · para clínicas exigentes</div>
+    <h1>Carillas que <em>definen</em> tu reputación</h1>
+    <p>El laboratorio que eligen los odontólogos cuando la estética no admite errores. Diseño de sonrisa digital que <strong>apruebas antes de fresar</strong>, materiales premium y una naturalidad que tus pacientes presumen — en Bogotá y para clínicas de todo el mundo.</p>
     <div class="cta-row">
       <a class="btn-wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20carillas%20para%20mi%20cl%C3%ADnica" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Cotizar por WhatsApp</a>
       <a class="btn-outline" href="/envia-tu-scanner"><i class="fas fa-upload"></i> Enviar mi caso</a>
@@ -220,9 +223,9 @@
   <div class="wrap">
     <div class="label"><span></span>Para clínicas de cualquier país</div>
     <h2>Tu laboratorio digital,<br>sin fronteras</h2>
-    <p class="lead">¿Fuera de Colombia? Envíanos el STL y diseñamos tu caso de forma remota. Coordinamos la producción y el envío internacional para que recibas tus carillas donde estés. We work with clinics worldwide — send your case in English.</p>
+    <p class="lead">¿Fuera de Colombia? Envíanos el STL y diseñamos tu caso de forma remota. Coordinamos la producción y el envío internacional para que recibas tus carillas donde estés.</p>
     <div class="cta-row" style="margin-top:26px">
-      <a class="btn-wa" href="https://wa.me/573212816716?text=Hi%20PRODIGY%2C%20I%27d%20like%20to%20send%20a%20veneers%20case" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Enviar caso / Send a case</a>
+      <a class="btn-wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20enviar%20un%20caso%20de%20carillas%20desde%20el%20exterior" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Enviar mi caso</a>
       <a class="btn-outline" href="/diseno-remoto"><i class="fas fa-globe"></i> Diseño remoto</a>
     </div>
   </div>
