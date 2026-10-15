@@ -86,7 +86,7 @@ Error recurrente: dejar los títulos de sección pegados a la **izquierda**. El 
 - El **hero** SÍ puede ir alineado a la izquierda (es la excepción).
 - Las **tarjetas, listas y pasos** internos mantienen su texto a la izquierda.
 ```css
-section .label{justify-content:center}
+section .label{display:flex;justify-content:center}  /* OJO: inline-flex se queda a la izquierda; usar display:flex */
 section h2{text-align:center}
 section .lead{text-align:center;margin-inline:auto}
 ```
