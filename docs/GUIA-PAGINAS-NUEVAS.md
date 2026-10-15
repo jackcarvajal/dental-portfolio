@@ -78,6 +78,19 @@ section:nth-child(even) { background: rgba(13,21,32,0.6); }  /* azul oscuro */
 .sec-cyan   { background: linear-gradient(135deg,rgba(0,210,255,.05),rgba(0,210,255,.02)); }
 ```
 
+## Alineación de encabezados de sección (OBLIGATORIO)
+Error recurrente: dejar los títulos de sección pegados a la **izquierda**. El estilo de la casa
+(index, guias-quirurgicas, etc.) lleva el **encabezado de cada sección CENTRADO**.
+- El **eyebrow/label + `<h2>` + intro/lead** de cada sección van `text-align:center` (el label es flex →
+  `justify-content:center`; el lead centrado con `margin-inline:auto`).
+- El **hero** SÍ puede ir alineado a la izquierda (es la excepción).
+- Las **tarjetas, listas y pasos** internos mantienen su texto a la izquierda.
+```css
+section .label{justify-content:center}
+section h2{text-align:center}
+section .lead{text-align:center;margin-inline:auto}
+```
+
 ## Login en header (usar fetch, NO SDK)
 ```javascript
 // ✅ fetch directo — funciona en cualquier página sin SDK

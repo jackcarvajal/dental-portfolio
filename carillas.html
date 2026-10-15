@@ -64,17 +64,25 @@
   h2{font-size:clamp(1.7rem,4.2vw,2.7rem);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:16px;text-wrap:balance}
   .lead{color:var(--muted);font-size:clamp(1rem,1.6vw,1.1rem);max-width:640px;margin-bottom:8px}
   .grad-mg{background:linear-gradient(135deg,var(--mg),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+  /* Encabezados de sección CENTRADOS — estilo de la casa (el hero sí va a la izquierda) */
+  section .label{justify-content:center}
+  section h2{text-align:center}
+  section .lead{text-align:center;margin-left:auto;margin-right:auto}
 
   /* ── HERO con liquid ── */
   .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate;padding-bottom:clamp(40px,7vw,80px)}
   #hero-fx{position:absolute;inset:0;z-index:0}
+  /* scrim: oscurece la mitad inferior para que el texto se lea sobre las partículas */
+  .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(to top, rgba(5,5,5,.99) 22%, rgba(5,5,5,.93) 40%, rgba(5,5,5,.6) 56%, rgba(5,5,5,.15) 74%, transparent 88%)}
   .hero-backdrop{position:absolute;left:50%;top:42%;z-index:0;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;user-select:none;
     font-weight:900;letter-spacing:-.05em;line-height:.8;font-size:clamp(100px,28vw,400px);color:rgba(255,255,255,.028)}
   .hero-in{position:relative;z-index:2;pointer-events:none}
   .hero-in a,.hero-in button{pointer-events:auto}
-  .hero h1{font-size:clamp(2.2rem,6.6vw,4.6rem);font-weight:900;line-height:1;letter-spacing:-.03em;margin-bottom:22px;text-wrap:balance;max-width:16ch}
+  .hero .label{text-shadow:0 1px 10px rgba(5,5,5,.9)}
+  .hero h1{font-size:clamp(2.2rem,6.6vw,4.6rem);font-weight:900;line-height:1;letter-spacing:-.03em;margin-bottom:22px;text-wrap:balance;max-width:16ch;text-shadow:0 2px 24px rgba(5,5,5,.85),0 1px 3px rgba(5,5,5,.6)}
   .hero h1 em{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;background:linear-gradient(135deg,var(--mg),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p{color:var(--muted);font-size:clamp(1rem,1.7vw,1.18rem);max-width:600px;margin-bottom:30px;line-height:1.7}
+  .hero p{color:#cbd5e1;font-size:clamp(1rem,1.7vw,1.18rem);max-width:600px;margin-bottom:30px;line-height:1.7;text-shadow:0 1px 14px rgba(5,5,5,.95),0 1px 3px rgba(5,5,5,.8)}
   .cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
   .btn-wa{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-weight:800;padding:15px 26px;border-radius:14px;font-size:1rem;box-shadow:0 8px 28px rgba(37,211,102,.28)}
   .btn-outline{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.18);color:var(--fg);font-weight:700;padding:14px 24px;border-radius:14px;font-size:.96rem;transition:border-color .2s,background .2s}
@@ -242,7 +250,7 @@
     src: "images/liquid-sculpture-prodigy.webp?v=2",
     imageAlt: "Escultura líquida en colores PRODIGY",
     background: "#050505",
-    scale: 1.05, y: -8,
+    scale: 0.88, y: -22,
     mobile: "static"   // en móvil: imagen estática (batería/rendimiento)
   });
   if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
