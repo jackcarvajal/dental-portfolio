@@ -2,10 +2,370 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-10-13
+   Última actualización automática: 2026-10-15
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "carillas-emax-laboratorio-2026-10-15-4b83",
+  "titulo": "Carillas de Disilicato de Litio: Rendimiento Clínico y Flujos Digitales",
+  "subtitulo": "Exploración de la evidencia sobre la supervivencia y el potencial estético de las carillas de disilicato de litio, y el rol de los flujos de trabajo digitales.",
+  "categoria": "estetica",
+  "chip": "Carillas Lab",
+  "fecha": "2026-10-15",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "✨",
+  "grad": "grad-5",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "Las carillas de porcelana representan una opción terapéutica consolidada para el tratamiento estético de los dientes anteriores, ofreciendo propiedades ópticas deseables y características de resistencia mejoradas gracias al desarrollo de nuevos materiales cerámicos de vidrio (El-Mowafy et al., 2018). La selección del material restaurador se ha vuelto cada vez más compleja debido a la rápida evolución en la ciencia de los materiales dentales (Strasding et al., 2024). Entre estos, el disilicato de litio (LDS), comercializado como IPS e.max, ha ganado prominencia por su equilibrio entre estética y resistencia."
+    },
+    {
+      "t": "h2",
+      "c": "El Disilicato de Litio (IPS e.max) en Odontología Estética"
+    },
+    {
+      "t": "p",
+      "c": "Los materiales cerámicos de vidrio de nueva generación, como el disilicato de litio, son ideales para la fabricación de carillas estéticas debido a sus características de resistencia mejoradas y propiedades ópticas deseables (El-Mowafy et al., 2018). Las carillas fabricadas con disilicato de litio han demostrado resultados clínicos satisfactorios en revisiones de la literatura (Komine et al., 2024). La importancia de mantener los límites de la preparación dentro del esmalte es un principio fundamental en el diseño de las preparaciones para carillas de porcelana (El-Mowafy et al., 2018)."
+    },
+    {
+      "t": "h2",
+      "c": "Flujos de Trabajo Digitales (CAD/CAM) para Restauraciones Fijas"
+    },
+    {
+      "t": "p",
+      "c": "El desarrollo continuo en el procesamiento dental ha abierto nuevas oportunidades en el campo de la prostodoncia fija, permitiendo un entorno virtual completo sin necesidad de modelos físicos (Joda et al., 2017). Los flujos de trabajo completamente digitalizados se comparan con los convencionales o mixtos analógico-digitales para el tratamiento con reconstrucciones fijas soportadas por dientes o implantes (Joda et al., 2017). Si bien la literatura proporcionada no detalla comparaciones específicas de resistencia o estética entre carillas de disilicato de litio con estructura CAD estratificada y carillas monolíticas prensadas, el flujo digital es una herramienta clave en la fabricación de restauraciones cerámicas modernas (Joda et al., 2017)."
+    },
+    {
+      "t": "h2",
+      "c": "Tasas de Supervivencia y Complicaciones de Carillas Cerámicas"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia clínica respalda la alta tasa de supervivencia de las carillas de disilicato de litio. Un metaanálisis reciente evaluó las tasas de supervivencia y complicaciones de carillas laminadas de diferentes materiales cerámicos. No se encontraron diferencias significativas en las tasas de supervivencia entre los materiales (Klein et al., 2025). Las carillas de disilicato de litio exhiben resultados clínicos satisfactorios a largo plazo (Komine et al., 2024)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Material de Carilla",
+        "Tasa de Supervivencia (10.4 años)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Feldespática",
+          "96.13%",
+          "Klein et al., 2025"
+        ],
+        [
+          "Cerámica de Vidrio Reforzada con Leucita (LRGC)",
+          "93.70%",
+          "Klein et al., 2025"
+        ],
+        [
+          "Disilicato de Litio (LDS)",
+          "96.81%",
+          "Klein et al., 2025"
+        ]
+      ]
+    },
+    {
+      "t": "p",
+      "c": "Es importante señalar que la literatura proporcionada no incluye datos específicos sobre el grosor mínimo de 0.2 mm para frameworks de e.max CAD, ni detalles sobre temperaturas y ciclos de cocción, o caracterización con pigmentos y glaseado final para las técnicas de estratificación o prensado de e.max. Tampoco se presenta una comparativa directa y cuantificada de estética y resistencia a la fractura entre carillas de disilicato de litio con estructura CAD estratificada y carillas monolíticas prensadas en los estudios revisados."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Estéticas y Mecánicas de las Cerámicas Avanzadas"
+    },
+    {
+      "t": "p",
+      "c": "Los materiales cerámicos, incluyendo el disilicato de litio, ofrecen un alto potencial estético (Strasding et al., 2024). La selección de materiales restauradores es crucial para combinar la estabilidad mecánica con el potencial estético de las cerámicas (Strasding et al., 2024). Las restauraciones totalmente cerámicas, como las coronas individuales, han demostrado tasas de supervivencia comparables a las metal-cerámicas a 5 años, destacando la fiabilidad de estos materiales (Sailer et al., 2015). La evolución de las cerámicas de vidrio ha permitido mejorar las características de resistencia sin comprometer las propiedades ópticas, haciéndolas ideales para restauraciones estéticas (El-Mowafy et al., 2018)."
+    },
+    {
+      "t": "quote",
+      "c": "El desarrollo continuo de nuevos materiales cerámicos de vidrio ha mejorado significativamente las características de resistencia y las propiedades ópticas, posicionándolos como ideales para la fabricación de coronas y carillas estéticas.",
+      "author": "El-Mowafy et al., Dent Med Probl, 2018"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la tasa de supervivencia a largo plazo de las carillas de disilicato de litio?",
+      "a": "Las carillas de disilicato de litio (LDS) presentan una tasa de supervivencia agrupada del 96.81% a 10.4 años, comparable a otros materiales cerámicos como las feldespáticas y las reforzadas con leucita (Klein et al., 2025)."
+    },
+    {
+      "q": "¿Qué ventajas ofrecen los flujos de trabajo digitales en la fabricación de carillas?",
+      "a": "Los flujos de trabajo digitales permiten la fabricación de restauraciones en un entorno virtual completo, eliminando la necesidad de modelos físicos y ofreciendo nuevas oportunidades en la prostodoncia fija (Joda et al., 2017). Esto puede optimizar la precisión y eficiencia del proceso."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "El-Mowafy O, El-Aawar N, El-Mowafy N.",
+      "titulo": "Porcelain veneers: An update",
+      "revista": "Dent Med Probl",
+      "año": "2018",
+      "vol": "55",
+      "num": "2",
+      "pags": "207-211",
+      "doi": "10.17219/dmp/90729",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/30152626/",
+      "verificada": true
+    },
+    {
+      "autores": "Klein P, Spitznagel FA, Zembic A, Prott LS, Pieralli S, Bongaerts B, et al.",
+      "titulo": "Survival and Complication Rates of Feldspathic, Leucite-Reinforced, Lithium Disilicate and Zirconia Ceramic Laminate Veneers: A Systematic Review and Meta-Analysis",
+      "revista": "J Esthet Restor Dent",
+      "año": "2025",
+      "vol": "37",
+      "num": "3",
+      "pags": "601-619",
+      "doi": "10.1111/jerd.13351",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39523553/",
+      "verificada": true
+    },
+    {
+      "autores": "Komine F, Furuchi M, Honda J, Kubochi K, Takata H.",
+      "titulo": "Clinical performance of laminate veneers: A review of the literature",
+      "revista": "J Prosthodont Res",
+      "año": "2024",
+      "vol": "68",
+      "num": "3",
+      "pags": "368-379",
+      "doi": "10.2186/jpr.JPR_D_23_00151",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38220160/",
+      "verificada": true
+    },
+    {
+      "autores": "Joda T, Zarone F, Ferrari M.",
+      "titulo": "The complete digital workflow in fixed prosthodontics: a systematic review",
+      "revista": "BMC Oral Health",
+      "año": "2017",
+      "vol": "17",
+      "num": "1",
+      "pags": "124",
+      "doi": "10.1186/s12903-017-0415-0",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/28927393/",
+      "verificada": true
+    },
+    {
+      "autores": "Sailer I, Makarov NA, Thoma DS, Zwahlen M, Pjetursson BE.",
+      "titulo": "All-ceramic or metal-ceramic tooth-supported fixed dental prostheses (FDPs)? A systematic review of the survival and complication rates. Part I: Single crowns (SCs)",
+      "revista": "Dent Mater",
+      "año": "2015",
+      "vol": "31",
+      "num": "6",
+      "pags": "603-23",
+      "doi": "10.1016/j.dental.2015.02.011",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/25842099/",
+      "verificada": true
+    },
+    {
+      "autores": "Strasding M, Marchand L, Merino E, Zarauz C, Pitta J.",
+      "titulo": "Material and abutment selection for CAD/CAM implant-supported fixed dental prostheses in partially edentulous patients - A narrative review",
+      "revista": "Clin Oral Implants Res",
+      "año": "2024",
+      "vol": "35",
+      "num": "8",
+      "pags": "984-999",
+      "doi": "10.1111/clr.14315",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38864592/",
+      "verificada": true
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "guia-quirurgica-precision-implante-2026-10-15-f676",
+  "titulo": "Precisión de Cirugía Guiada Estática para Implantes Dentales: Un Meta-análisis",
+  "subtitulo": "Este artículo técnico detalla la precisión de la cirugía guiada estática en implantología, analizando desviaciones medias y factores influyentes para optimizar resultados clínicos.",
+  "categoria": "implantologia",
+  "chip": "Guías Quirúrgicas",
+  "fecha": "2026-10-15",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "🦷",
+  "grad": "grad-4",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Dental-implant-illustration.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Dental implant",
+  "img_link": "https://en.wikipedia.org/wiki/Dental%20implant",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La implantología dental moderna ha experimentado una transformación significativa gracias a la integración de tecnologías digitales. La cirugía guiada estática (s-CAIS) representa un pilar fundamental en este avance, permitiendo la planificación virtual precisa de la posición del implante y su posterior transferencia al campo quirúrgico mediante guías fabricadas. Este enfoque busca mejorar la predictibilidad, reducir la morbilidad y optimizar los resultados protésicos. Sin embargo, la precisión inherente a estos sistemas es un tema de constante investigación y meta-análisis, crucial para comprender sus limitaciones y ventajas clínicas."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Dental-implant-illustration.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Precisión de guías quirúrgicas para implantes — meta-análisis 2025",
+      "caption": "Wikipedia — Dental implant · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Precisión Media en la Colocación de Implantes con Guías Estáticas"
+    },
+    {
+      "t": "p",
+      "c": "La evaluación de la precisión en la cirugía guiada estática se centra en cuantificar las desviaciones entre la posición planificada y la posición real del implante. Múltiples meta-análisis han consolidado datos sobre estas discrepancias. Un meta-análisis de 20 estudios clínicos que incluyó 2,238 implantes reveló una desviación media en el punto de entrada de 1.2 mm (rango de 1.04 mm a 1.44 mm), una desviación en el punto apical de 1.4 mm (rango de 1.28 mm a 1.58 mm) y una desviación angular de 3.5° (rango de 3.0° a 3.9°) (Tahmaseb et al., 2018)."
+    },
+    {
+      "t": "p",
+      "c": "Más recientemente, una revisión sistemática y meta-análisis que abarcó 67 artículos identificó una desviación media general en el punto de entrada de 1.11 mm (IC 95%: 1.02-1.19) y una desviación en el punto apical de 1.40 mm (IC 95%: 1.31-1.49) para la cirugía guiada estática (Khaohoen et al., 2024). Estos valores proporcionan una referencia clínica para la precisión esperada de los sistemas de cirugía guiada estática."
+    },
+    {
+      "t": "h2",
+      "c": "Factores que Influyen en la Precisión de las Guías Quirúrgicas"
+    },
+    {
+      "t": "p",
+      "c": "La precisión de la cirugía guiada estática es el resultado de la interacción de múltiples factores acumulativos a lo largo del flujo de trabajo digital. Uno de los elementos críticos es el ajuste de la plantilla quirúrgica, que está intrínsecamente relacionado con el proceso de fabricación (Elliott et al., 2022). Las guías fabricadas aditivamente (impresión 3D) son comunes, y la calidad de su ajuste puede influir directamente en la estabilidad y, por ende, en la precisión durante la cirugía."
+    },
+    {
+      "t": "p",
+      "c": "Otro factor fundamental es la precisión de la adquisición de datos iniciales. La exactitud de las mediciones lineales obtenidas mediante tomografía computarizada de haz cónico (CBCT) es crucial, ya que cualquier imprecisión en esta etapa se propagará a la planificación virtual y a la fabricación de la guía (Wismeijer et al., 2018). Aunque los resúmenes proporcionados no detallan el impacto específico de los sistemas de planificación o los tipos de soporte de la guía en la precisión numérica, es evidente que la calidad de los datos de entrada y la fidelidad de la guía son determinantes."
+    },
+    {
+      "t": "h2",
+      "c": "Comparativa de Desviaciones en Cirugía Guiada Estática"
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Parámetro de Desviación",
+        "Tahmaseb et al., 2018",
+        "Khaohoen et al., 2024"
+      ],
+      "rows": [
+        [
+          "Desviación en punto de entrada (mm)",
+          "1.2 (1.04-1.44)",
+          "1.11 (1.02-1.19)"
+        ],
+        [
+          "Desviación en punto apical (mm)",
+          "1.4 (1.28-1.58)",
+          "1.40 (1.31-1.49)"
+        ],
+        [
+          "Desviación angular (°)",
+          "3.5 (3.0-3.9)",
+          "No especificado para estática"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Ventajas y Consideraciones Clínicas de la Cirugía Guiada Estática"
+    },
+    {
+      "t": "p",
+      "c": "La cirugía guiada estática (s-CAIS) ofrece beneficios en comparación con la cirugía a mano alzada en términos de dolor, incomodidad, aspectos económicos y complicaciones intraoperatorias (Wismeijer et al., 2018). Aunque la precisión absoluta no es del 100%, las desviaciones medias reportadas son clínicamente aceptables en la mayoría de los casos, permitiendo una colocación de implantes más predecible y segura, especialmente en situaciones complejas o cuando se requiere una rehabilitación protésica inmediata."
+    },
+    {
+      "t": "p",
+      "c": "Es importante que el clínico comprenda que la precisión es un concepto multifactorial. La experiencia del operador, la calidad de la guía, la estabilidad durante la cirugía y la precisión de la planificación inicial son todos componentes que contribuyen al resultado final. La selección adecuada del caso y la adherencia estricta al protocolo digital son esenciales para maximizar los beneficios de esta tecnología."
+    },
+    {
+      "t": "h2",
+      "c": "Perspectivas Futuras y Comparación con Otras Modalidades"
+    },
+    {
+      "t": "p",
+      "c": "Si bien este artículo se centra en la cirugía guiada estática, es relevante mencionar que existen otras modalidades como la cirugía guiada dinámica (dCAIS) y la cirugía asistida por robot. La cirugía guiada dinámica, por ejemplo, permite al cirujano evaluar al paciente, escanear, planificar y realizar la cirugía el mismo día, sin la demora o el costo de fabricación de una guía quirúrgica estática (Panchal et al., 2019). Esta tecnología también busca mejorar la precisión y exactitud en la colocación de implantes dentales (Panchal et al., 2019)."
+    },
+    {
+      "t": "p",
+      "c": "La comparación de la precisión entre estas diferentes modalidades es un área activa de investigación. Un meta-análisis ha explorado la precisión de la cirugía guiada estática, dinámica y asistida por robot, revelando desviaciones medias globales en el punto de entrada y apical (Khaohoen et al., 2024). Aunque la cirugía guiada estática ha demostrado ser una herramienta valiosa y precisa, la evolución tecnológica continúa ofreciendo alternativas que podrían refinar aún más la exactitud y eficiencia de la colocación de implantes."
+    },
+    {
+      "t": "quote",
+      "c": "La precisión de la cirugía guiada estática es influenciada por muchos factores acumulativos, incluyendo el ajuste de la plantilla que está relacionado con el proceso de fabricación.",
+      "author": "Elliott et al., J Prosthodont, 2022"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la desviación angular promedio esperada con la cirugía guiada estática?",
+      "a": "Según un meta-análisis, la desviación angular media esperada es de 3.5°, con un rango que va de 3.0° a 3.9° (Tahmaseb et al., 2018)."
+    },
+    {
+      "q": "¿Qué factores son cruciales para asegurar la precisión de la guía quirúrgica estática?",
+      "a": "La precisión depende de la exactitud de las mediciones de CBCT para la planificación (Wismeijer et al., 2018) y del ajuste de la plantilla quirúrgica, que a su vez está relacionado con su proceso de fabricación (Elliott et al., 2022)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Tahmaseb A, Wu V, Wismeijer D, Coucke W, Evans C.",
+      "titulo": "The accuracy of static computer-aided implant surgery: A systematic review and meta-analysis",
+      "revista": "Clin Oral Implants Res",
+      "año": "2018",
+      "vol": "29 Suppl 16",
+      "num": "",
+      "pags": "416-435",
+      "doi": "10.1111/clr.13346",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/30328191/",
+      "verificada": true
+    },
+    {
+      "autores": "Khaohoen A, Powcharoen W, Sornsuwan T, Chaijareenont P, Rungsiyakull C, Rungsiyakull P.",
+      "titulo": "Accuracy of implant placement with computer-aided static, dynamic, and robot-assisted surgery: a systematic review and meta-analysis of clinical trials",
+      "revista": "BMC Oral Health",
+      "año": "2024",
+      "vol": "24",
+      "num": "1",
+      "pags": "359",
+      "doi": "10.1186/s12903-024-04033-y",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38509530/",
+      "verificada": true
+    },
+    {
+      "autores": "Panchal N, Mahmood L, Retana A, Emery R 3rd.",
+      "titulo": "Dynamic Navigation for Dental Implant Surgery",
+      "revista": "Oral Maxillofac Surg Clin North Am",
+      "año": "2019",
+      "vol": "31",
+      "num": "4",
+      "pags": "539-547",
+      "doi": "10.1016/j.coms.2019.08.001",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31563194/",
+      "verificada": true
+    },
+    {
+      "autores": "Wismeijer D, Joda T, Flügge T, Fokas G, Tahmaseb A, Bechelli D, et al.",
+      "titulo": "Group 5 ITI Consensus Report: Digital technologies",
+      "revista": "Clin Oral Implants Res",
+      "año": "2018",
+      "vol": "29 Suppl 16",
+      "num": "",
+      "pags": "436-442",
+      "doi": "10.1111/clr.13309",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/30328201/",
+      "verificada": true
+    },
+    {
+      "autores": "Elliott T, Hamilton A, Griseto N, Gallucci GO.",
+      "titulo": "Additively Manufactured Surgical Implant Guides: A Review",
+      "revista": "J Prosthodont",
+      "año": "2022",
+      "vol": "31",
+      "num": "S1",
+      "pags": "38-46",
+      "doi": "10.1111/jopr.13476",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35313020/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
