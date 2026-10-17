@@ -1005,9 +1005,10 @@
             const light = document.body.classList.toggle('light-mode');
             const btn = document.getElementById('theme-btn');
             if (btn) btn.textContent = light ? '☀️' : '🌙';
-            localStorage.setItem('prodigy_theme', light ? 'light' : 'dark');
+            sessionStorage.setItem('prodigy_theme', light ? 'light' : 'dark');
         }
-        if (localStorage.getItem('prodigy_theme') === 'light') {
+        try { localStorage.removeItem('prodigy_theme'); } catch (e) {}
+        if (sessionStorage.getItem('prodigy_theme') === 'light') {
             document.body.classList.add('light-mode');
             setTimeout(() => { const b = document.getElementById('theme-btn'); if (b) b.textContent = '☀️'; }, 0);
         }

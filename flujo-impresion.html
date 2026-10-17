@@ -1208,9 +1208,9 @@ if(window.ProdigyAuth){
         function toggleTheme() {
             const light = document.body.classList.toggle('light-theme');
             document.querySelectorAll('.theme-btn').forEach(b => b.textContent = light ? '☀️' : '🌙');
-            localStorage.setItem('theme', light ? 'light' : 'dark');
+            sessionStorage.setItem('theme', light ? 'light' : 'dark');
         }
-        if (localStorage.getItem('theme') === 'light') {
+        if (sessionStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-theme');
             setTimeout(() => { document.querySelectorAll('.theme-btn').forEach(b => b.textContent = '☀️'); }, 0);
         }
