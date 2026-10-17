@@ -9,6 +9,10 @@
 
 ---
 
+## 2026-10-16
+
+- ✅ **Tema SIEMPRE oscuro por defecto** (16-oct, ambas): el patrón legacy `.light-mode` persistía el claro en `localStorage` (`theme` y `prodigy_theme`), así que una vez puesto claro la página abría clara para siempre. Pasado a `sessionStorage` en **26 páginas PRODIGY** + **3 de Alejandro** (paridad) → abre oscuro, el claro dura solo la visita. header.js (sistema canónico `pg_theme`) ya estaba bien. Verificado en contexto fresco: `body` = `rgb(5,5,5)`, sin `light-mode`.
+- ✅ **/dr (mini-landing NFC del escáner) afinada** (16-oct): foto del escáner como fondo visible detrás de todo (se quitó `#pbgdim`, un radial negro 90% que tapaba el centro); contraste resuelto oscureciendo la foto + halo de texto (wordmark con gradiente intacto). Sin marca («tecnología de última generación»), sin «gratis». Checks reenfocados a valor digital (sin impresiones físicas · precisión · sin comprar escáner) + panel «Por qué pasar a escaneo digital». Enlaces reestructurados: escaneo arriba (foco) y grupo «También en el laboratorio» (portafolio, alineadores, guías, hacer pedido→/app/login?mode=register) — se quitaron «Nuestra web» (iba a la home en mantenimiento) y «Ver todo» por redundantes.
 - ✅ **envía-tu-scanner · plantilla opcional** (13-oct, ambas): bloque plegable bajo «Enviar» que arma el texto del caso con lo ya tecleado (doctor, clínica, trabajo, piezas, escáner) y deja Material/Color/pilar para completar — como la «receta» de un lab tradicional (idea tomada de la auditoría de Laboratorio Dies). Botones Copiar · WhatsApp · Correo (casos@ / hola@). Subir el STL directo sigue siendo lo recomendado.
 ## 2026-10-15
 
