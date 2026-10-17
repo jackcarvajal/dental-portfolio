@@ -9,6 +9,11 @@
 
 ---
 
+## 2026-10-17
+
+- ✅ **Top-3 ideas B2B adaptadas de Dento Align Studio** (17-oct): (1) **badge SLA** en el hero de `escaner-domicilio` (Diseño 24h · Fab 24–48h · apruebas antes); (2) **disclaimer clínico** (propuesta técnica, aprobación final del profesional) en `alineadores`/`guías`/`alineadores-cad` — y portado a Alejandro (`alineadores`, `guias-quirurgicas`, `guias-quirurgicas-cad`); (3) sección **"datos seguros + capacidad de desborde + seguimos tu protocolo"** en `/para-laboratorios` (diferenciador vs offshore). Además **fix**: template literal de JS crudo que se mostraba como texto en el stack técnico de `/para-laboratorios`.
+- 💡 **Portafolio de servicios+precios para doctores** (ya existía, confirmado 17-oct): `lista-precios.html` (brochure privada personalizada, token en el `#`) ← tabla `catalogo`; el enlace se genera en `app/clientes.html` (RPC `crear_enlace_cliente`, vence 60 días) con mensaje de WhatsApp armado. Pendiente: alinear precios del catálogo al brochure del usuario + limpiar duplicados.
+
 ## 2026-10-16
 
 - ✅ **Tema SIEMPRE oscuro por defecto** (16-oct, ambas): el patrón legacy `.light-mode` persistía el claro en `localStorage` (`theme` y `prodigy_theme`), así que una vez puesto claro la página abría clara para siempre. Pasado a `sessionStorage` en **26 páginas PRODIGY** + **3 de Alejandro** (paridad) → abre oscuro, el claro dura solo la visita. header.js (sistema canónico `pg_theme`) ya estaba bien. Verificado en contexto fresco: `body` = `rgb(5,5,5)`, sin `light-mode`.
