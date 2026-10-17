@@ -26,6 +26,11 @@
     color:var(--ink);font-family:var(--font);line-height:1.5;min-height:100svh;
     -webkit-font-smoothing:antialiased;padding:calc(10px + env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom))}
   .wrap{max-width:440px;margin:0 auto;position:relative;z-index:1}
+  /* ── fondo difuminado de toda la página (foto del escáner) ── */
+  .pagebg{position:fixed;inset:-28px;z-index:-3;pointer-events:none;
+    background:url(/assets/escaner-dr.webp?v=1) center 24%/cover no-repeat;
+    filter:blur(30px) brightness(.4) saturate(1.1);transform:scale(1.15)}
+  .pagebg::after{content:"";position:fixed;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.5),rgba(5,5,5,.82) 70%)}
   /* ── fondo aurora (igual que /links) ── */
   .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
   .aurora span{position:absolute;border-radius:50%;filter:blur(72px);opacity:.42;will-change:transform}
@@ -120,6 +125,7 @@
 </style>
 </head>
 <body>
+<div class="pagebg"></div>
 <div class="aurora"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
 <div id="pbgdim"></div>
 
