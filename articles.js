@@ -2,10 +2,394 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-10-15
+   Última actualización automática: 2026-10-20
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "hornos-sinterizacion-zirconia-2026-10-20-fa3b",
+  "titulo": "Impacto del Procesamiento en Propiedades de Zirconia Dental",
+  "subtitulo": "Comprender cómo los métodos de procesamiento influyen en la translucidez y resistencia de la zirconia es crucial para la longevidad de las restauraciones.",
+  "categoria": "maquinaria",
+  "chip": "Equipos Lab",
+  "fecha": "2026-10-20",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🔥",
+  "grad": "grad-5",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La zirconia (óxido de circonio) se ha consolidado como el material cerámico más resistente en odontología, siendo ampliamente utilizada en restauraciones monolíticas para diversas aplicaciones clínicas (Zhang & Lawn, 2018). La zirconia tetragonal policristalina estabilizada con itria (Y-TZP) es la variante más común (Zhang & Lawn, 2018). Sin embargo, las propiedades finales de las restauraciones de zirconia, incluyendo su estética y rendimiento mecánico, están intrínsecamente ligadas a su composición y a los métodos de procesamiento y sinterización empleados (Sulaiman et al., 2024). La evolución de estos materiales busca un equilibrio entre una mayor translucidez y la preservación de una resistencia y tenacidad adecuadas (Zhang & Lawn, 2018)."
+    },
+    {
+      "t": "h2",
+      "c": "Evolución de la Zirconia y sus Propiedades Intrínsecas"
+    },
+    {
+      "t": "p",
+      "c": "En los últimos 15 años, la investigación en zirconia dental ha avanzado significativamente, enfocándose en mejorar sus propiedades para aplicaciones clínicas (Cesar et al., 2024). La clasificación de las cerámicas de zirconia se determina por su contenido de itria (Sulaiman et al., 2024). La tendencia actual para mejorar la translucidez de la zirconia implica reducir el contenido de alúmina, que dispersa la luz, y aumentar el contenido de itria (Zhang & Lawn, 2018; Cesar et al., 2024). Materiales como las zirconias 4Y-PSZ y 5Y-PSZ (policristales de zirconia parcialmente estabilizada) pueden contener más del 50% de fase cúbica, lo que, si bien mejora la estética, conlleva una disminución en las propiedades mecánicas (Cesar et al., 2024). La zirconia 3Y-TZP es conocida por su mayor resistencia a la fractura, mientras que las 5Y-PSZ son más translúcidas (Cesar et al., 2024)."
+    },
+    {
+      "t": "h2",
+      "c": "El Impacto General del Procesamiento y Sinterización"
+    },
+    {
+      "t": "p",
+      "c": "Los métodos de procesamiento y sinterización tienen un impacto directo en las propiedades finales de la zirconia (Sulaiman et al., 2024). La fabricación de restauraciones de zirconia ha evolucionado desde técnicas sustractivas (fresado CAD/CAM) hasta técnicas aditivas (impresión 3D) (Alghauli et al., 2024; Katib et al., 2025). Independientemente del método de fabricación, el proceso de sinterización es fundamental para consolidar el material y determinar sus características finales. Se han revisado diversas técnicas de fabricación relevantes para aplicaciones dentales, como la sinterización por microondas y la sinterización por plasma de chispa, además de la fabricación aditiva (Denry & Kelly, 2014). La distorsión por sinterización de las prótesis de zirconia es un aspecto importante a considerar (Katib et al., 2025)."
+    },
+    {
+      "t": "h2",
+      "c": "Translucidez y Resistencia Flexural: Un Equilibrio Delicado"
+    },
+    {
+      "t": "p",
+      "c": "La búsqueda de una mayor translucidez en la zirconia dental ha sido un motor clave en su desarrollo (Zhang & Lawn, 2018). Esta mejora se logra principalmente mediante la reducción del contenido de alúmina y el aumento de la concentración de itria, lo que introduce una fase cúbica ópticamente isotrópica en la estructura tetragonal (Zhang & Lawn, 2018; Cesar et al., 2024). Sin embargo, este aumento de la fase cúbica, especialmente en zirconias con 4 mol% o 5 mol% de itria, puede resultar en una disminución de las propiedades mecánicas (Cesar et al., 2024). La elección del tipo de zirconia, influenciada por su contenido de itria, es crucial para equilibrar la estética y la resistencia requeridas para cada caso clínico (Sulaiman et al., 2024)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Tipo de Zirconia",
+        "Contenido de Itria (mol%)",
+        "Fase Predominante",
+        "Translucidez (Tendencia)",
+        "Resistencia Flexural (Tendencia)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "3Y-TZP",
+          "~3",
+          "Tetragonal",
+          "Baja",
+          "Alta",
+          "(Cesar et al., 2024; Sulaiman et al., 2024)"
+        ],
+        [
+          "4Y-PSZ",
+          "~4",
+          "Tetragonal/Cúbica",
+          "Media",
+          "Media-Alta",
+          "(Cesar et al., 2024; Sulaiman et al., 2024)"
+        ],
+        [
+          "5Y-PSZ",
+          "~5 o más",
+          "Cúbica",
+          "Alta",
+          "Media-Baja",
+          "(Cesar et al., 2024; Sulaiman et al., 2024)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Estabilidad de Fase y Adaptación Marginal"
+    },
+    {
+      "t": "p",
+      "c": "La estabilidad de fase tetragonal-monoclínica es una propiedad crítica de la zirconia, ya que la transformación de fase puede afectar la integridad y longevidad de la restauración. Aunque los detalles específicos de cómo los ciclos de sinterización influyen en esta estabilidad no se detallan en las fuentes proporcionadas, se sabe que la composición de la zirconia, particularmente el contenido de itria, juega un papel fundamental en la estabilización de la fase tetragonal (Zhang & Lawn, 2018; Cesar et al., 2024). La distorsión durante el proceso de sinterización es un factor que puede afectar la adaptación marginal de las restauraciones de zirconia (Katib et al., 2025). Una adaptación marginal precisa es esencial para el éxito clínico a largo plazo de las restauraciones."
+    },
+    {
+      "t": "h2",
+      "c": "Implicaciones Clínicas y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "La comprensión de cómo la composición y el procesamiento de la zirconia afectan sus propiedades es vital para los profesionales dentales (Sulaiman et al., 2024). La tendencia del mercado hacia discos CAD/CAM que combinan capas de 3Y-TZP (más resistente a la fractura) en la base y 5Y-PSZ (más translúcida) en la parte superior, refleja la necesidad de optimizar tanto la resistencia como la estética (Cesar et al., 2024). La selección adecuada del tipo de zirconia y la adherencia a protocolos de procesamiento validados son fundamentales para mejorar la longevidad y durabilidad de las restauraciones de zirconia (Sulaiman et al., 2024)."
+    },
+    {
+      "t": "quote",
+      "c": "La evolución progresiva de las zirconias disponibles y de próxima generación representa un esfuerzo concertado hacia una mayor translucidez, preservando al mismo tiempo una resistencia y tenacidad adecuadas.",
+      "author": "Zhang & Lawn, J Dent Res, 2018"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo afecta el contenido de itria a las propiedades de la zirconia dental?",
+      "a": "El contenido de itria determina la clasificación de la zirconia y tiene un impacto directo en sus propiedades mecánicas y ópticas. Un mayor contenido de itria (ej., 4Y-PSZ, 5Y-PSZ) aumenta la fase cúbica, mejorando la translucidez pero generalmente disminuyendo la resistencia mecánica (Sulaiman et al., 2024; Cesar et al., 2024)."
+    },
+    {
+      "q": "¿Es posible tener una zirconia altamente translúcida y altamente resistente al mismo tiempo?",
+      "a": "Existe un equilibrio. La tendencia actual es mejorar la translucidez reduciendo la alúmina y aumentando la itria, lo que puede disminuir las propiedades mecánicas. La industria busca soluciones como discos multicapa que combinan 3Y-TZP resistente con 5Y-PSZ translúcida para optimizar ambas características (Zhang & Lawn, 2018; Cesar et al., 2024)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Zhang Y, Lawn BR.",
+      "titulo": "Novel Zirconia Materials in Dentistry",
+      "revista": "J Dent Res",
+      "año": "2018",
+      "vol": "97",
+      "num": "2",
+      "pags": "140-147",
+      "doi": "10.1177/0022034517737483",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29035694/",
+      "verificada": true
+    },
+    {
+      "autores": "Sulaiman TA, Suliman AA, Abdulmajeed AA, Zhang Y.",
+      "titulo": "Zirconia restoration types, properties, tooth preparation design, and bonding. A narrative review",
+      "revista": "J Esthet Restor Dent",
+      "año": "2024",
+      "vol": "36",
+      "num": "1",
+      "pags": "78-84",
+      "doi": "10.1111/jerd.13151",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37840220/",
+      "verificada": true
+    },
+    {
+      "autores": "Cesar PF, Miranda RBP, Santos KF, Scherrer SS, Zhang Y.",
+      "titulo": "Recent advances in dental zirconia: 15 years of material and processing evolution",
+      "revista": "Dent Mater",
+      "año": "2024",
+      "vol": "40",
+      "num": "5",
+      "pags": "824-836",
+      "doi": "10.1016/j.dental.2024.02.026",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38521694/",
+      "verificada": true
+    },
+    {
+      "autores": "Denry I, Kelly JR.",
+      "titulo": "Emerging ceramic-based materials for dentistry",
+      "revista": "J Dent Res",
+      "año": "2014",
+      "vol": "93",
+      "num": "12",
+      "pags": "1235-42",
+      "doi": "10.1177/0022034514553627",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/25274751/",
+      "verificada": true
+    },
+    {
+      "autores": "Alghauli MA, Alqutaibi AY, Wille S, Kern M.",
+      "titulo": "The physical-mechanical properties of 3D-printed versus conventional milled zirconia for dental clinical applications: A systematic review with meta-analysis",
+      "revista": "J Mech Behav Biomed Mater",
+      "año": "2024",
+      "vol": "156",
+      "num": "",
+      "pags": "106601",
+      "doi": "10.1016/j.jmbbm.2024.106601",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38810545/",
+      "verificada": true
+    },
+    {
+      "autores": "Katib HS, Altoori AA, Al Balushi KO, Al-Ali YM, Al-Karboosh ARM, Al-Sharif KM, et al.",
+      "titulo": "Modern Dental Techniques: A Critical Analysis of Innovations in Implants and Cosmetic Dentistry",
+      "revista": "J Long Term Eff Med Implants",
+      "año": "2025",
+      "vol": "35",
+      "num": "4",
+      "pags": "43-50",
+      "doi": "10.1615/JLongTermEffMedImplants.2025059772",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/41213050/",
+      "verificada": true
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "scanner-intraoral-cad-2026-10-20-1869",
+  "titulo": "Precisión de Escáneres Intraorales y Adaptación Marginal en Restauraciones CAD/CAM",
+  "subtitulo": "Análisis basado en evidencia sobre el impacto de las técnicas de impresión digital en el ajuste de restauraciones protésicas fijas.",
+  "categoria": "diseno",
+  "chip": "Escáneres",
+  "fecha": "2026-10-20",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "📐",
+  "grad": "grad-2",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Intraoral scanner",
+  "img_link": "https://en.wikipedia.org/wiki/Intraoral%20scanner",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado significativamente la práctica restauradora, con la implementación de sistemas CAD/CAM que dependen de la precisión de las impresiones para la fabricación de restauraciones. La adaptación marginal y el ajuste interno son factores críticos para el éxito a largo plazo de las restauraciones protésicas, influyendo en la salud periodontal, la prevención de caries secundarias y la longevidad de la restauración (Memari et al., 2019). La transición de las técnicas de impresión convencionales a las digitales, mediante el uso de escáneres intraorales, busca optimizar estos parámetros, ofreciendo un flujo de trabajo más eficiente y potencialmente más preciso (Bandiaky et al., 2022)."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Escáneres intraorales para diseño CAD — impacto en adaptación marginal",
+      "caption": "Wikipedia — Intraoral scanner · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "La Evolución de la Impresión Digital y su Impacto General"
+    },
+    {
+      "t": "p",
+      "c": "La incorporación de la tecnología digital en la fabricación de prótesis parciales fijas (PPF) ha experimentado una aceleración notable en la última década (Saeed et al., 2023). Los escáneres intraorales han mejorado significativamente su rendimiento en los últimos diez años (Bandiaky et al., 2022). Esta evolución ha llevado a una adopción rápida de los avances tecnológicos digitales en la práctica dental, con el objetivo de mejorar la precisión del ajuste de diferentes tipos de prótesis dentales fijas (Sarafidou et al., 2022)."
+    },
+    {
+      "t": "h2",
+      "c": "Adaptación Marginal y Ajuste Interno en Restauraciones CAD/CAM"
+    },
+    {
+      "t": "p",
+      "c": "La adaptación marginal y el ajuste interno son parámetros fundamentales para el éxito clínico de las restauraciones. Múltiples estudios han evaluado el ajuste de coronas de cerámica sin metal fabricadas mediante sistemas CAD/CAM utilizando diferentes escáneres extraorales e intraorales en comparación con las impresiones convencionales (Memari et al., 2019). Un flujo de trabajo completamente digital ha demostrado ser comparable a las técnicas convencionales en términos de ajuste marginal clínicamente aceptable para prótesis dentales fijas (Sarafidou et al., 2022). Específicamente, se ha reportado un ajuste marginal clínicamente aceptable, generalmente inferior a 120 µm, para todos los materiales y técnicas de impresión evaluados en revisiones sistemáticas (Sarafidou et al., 2022)."
+    },
+    {
+      "t": "h2",
+      "c": "Comparación Directa: Impresiones Digitales vs. Convencionales"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia actual, a través de revisiones sistemáticas y metaanálisis, ha comparado consistentemente las técnicas de impresión digital con los métodos de impresión convencionales. Un metaanálisis reciente no encontró diferencias significativas en los valores de brecha marginal entre los escáneres intraorales y los grupos de impresión convencional para coronas de disilicato de litio (p>0.05) (Tabesh et al., 2022). De manera similar, para las prótesis parciales fijas (PPF) soportadas por dientes, las técnicas de impresión digital no han demostrado mejorar significativamente el ajuste marginal e interno en comparación con las fabricaciones utilizando métodos de impresión convencionales (Saeed et al., 2023). Sin embargo, es importante señalar que algunos estudios han presentado resultados contradictorios y una alta heterogeneidad en la comparación del ajuste de PPF de zirconia fabricadas con impresiones convencionales y escaneos digitales (Morsy et al., 2023)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Aspecto Evaluado",
+        "Técnica de Impresión Digital",
+        "Técnica de Impresión Convencional",
+        "Conclusión (Margen/Ajuste)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Adaptación Marginal de Coronas",
+          "Comparable",
+          "Estándar",
+          "Valores de brecha marginal similares (p>0.05)",
+          "(Tabesh et al., 2022)"
+        ],
+        [
+          "Adaptación Marginal e Interna de PPF",
+          "Comparable",
+          "Estándar",
+          "No mejora significativa en el ajuste",
+          "(Saeed et al., 2023)"
+        ],
+        [
+          "Ajuste Marginal de FDPs (general)",
+          "Clínicamente aceptable (<120 µm)",
+          "Clínicamente aceptable (<120 µm)",
+          "Flujo de trabajo digital comparable",
+          "(Sarafidou et al., 2022)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Implicaciones Clínicas en la Fabricación de Prótesis Fijas"
+    },
+    {
+      "t": "p",
+      "c": "La mejora en la tecnología de los escáneres intraorales ha llevado a una mayor confianza en los flujos de trabajo digitales para la fabricación de prótesis fijas. Para las prótesis soportadas por dientes de cobertura completa, las técnicas de escaneo digital han mostrado resultados comparables a las impresiones convencionales en términos de ajuste marginal (Bandiaky et al., 2022). Esto sugiere que, si bien la digitalización ofrece ventajas en tiempo clínico y comodidad del paciente, la precisión del ajuste marginal de las restauraciones fabricadas digitalmente es, al menos, equivalente a la obtenida con métodos convencionales (Bandiaky et al., 2022). La elección de la técnica de impresión, ya sea digital o convencional, puede resultar en un ajuste marginal clínicamente aceptable para coronas de cerámica sin metal (Memari et al., 2019)."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Finales y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia actual sugiere que las técnicas de impresión digital son una alternativa viable y comparable a las impresiones convencionales en términos de adaptación marginal y ajuste interno de restauraciones protésicas fijas. Aunque los estudios han sido heterogéneos, la tendencia general indica que un flujo de trabajo completamente digital puede lograr un ajuste clínicamente aceptable (Sarafidou et al., 2022). La continua evolución de los escáneres intraorales y los sistemas CAD/CAM promete mejoras adicionales en la precisión y eficiencia, consolidando el papel de la odontología digital en la práctica restauradora moderna."
+    },
+    {
+      "t": "quote",
+      "c": "Un metaanálisis reveló valores de brecha marginal similares en escáneres intraorales en comparación con los grupos convencionales (p>0.05) y en escáneres intraorales en comparación con escáneres extraorales (p>0.05).",
+      "author": "Tabesh et al., J Prosthodont, 2022"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Los escáneres intraorales son tan precisos como las impresiones convencionales para coronas y puentes?",
+      "a": "Sí, la evidencia actual sugiere que las técnicas de impresión digital con escáneres intraorales producen un ajuste marginal y un ajuste interno de restauraciones fijas que es comparable y clínicamente aceptable, similar a los métodos convencionales (Saeed et al., 2023; Tabesh et al., 2022)."
+    },
+    {
+      "q": "¿Cuál es el valor de ajuste marginal considerado clínicamente aceptable para restauraciones CAD/CAM?",
+      "a": "Generalmente, un ajuste marginal inferior a 120 µm se considera clínicamente aceptable para las prótesis dentales fijas, y este nivel se ha logrado tanto con técnicas digitales como convencionales (Sarafidou et al., 2022)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Memari Y, Mohajerfar M, Armin A, Kamalian F, Rezayani V, Beyabanaki E.",
+      "titulo": "Marginal Adaptation of CAD/CAM All-Ceramic Crowns Made by Different Impression Methods: A Literature Review",
+      "revista": "J Prosthodont",
+      "año": "2019",
+      "vol": "28",
+      "num": "2",
+      "pags": "e536-e544",
+      "doi": "10.1111/jopr.12800",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29679423/",
+      "verificada": true
+    },
+    {
+      "autores": "Saeed EAM, Alaghbari SS, Lin N.",
+      "titulo": "The impact of digitization and conventional techniques on the fit of fixed partial dentures FPDs: systematic review and Meta-analysis",
+      "revista": "BMC Oral Health",
+      "año": "2023",
+      "vol": "23",
+      "num": "1",
+      "pags": "965",
+      "doi": "10.1186/s12903-023-03628-1",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38049754/",
+      "verificada": true
+    },
+    {
+      "autores": "Morsy N, El Kateb M, Azer A, Fathalla S.",
+      "titulo": "Fit of zirconia fixed partial dentures fabricated from conventional impressions and digital scans: A systematic review and meta-analysis",
+      "revista": "J Prosthet Dent",
+      "año": "2023",
+      "vol": "130",
+      "num": "1",
+      "pags": "28-34",
+      "doi": "10.1016/j.prosdent.2021.08.025",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/34696907/",
+      "verificada": true
+    },
+    {
+      "autores": "Bandiaky ON, Le Bars P, Gaudin A, Hardouin JB, Cheraud-Carpentier M, Mbodj EB, et al.",
+      "titulo": "Comparative assessment of complete-coverage, fixed tooth-supported prostheses fabricated from digital scans or conventional impressions: A systematic review and meta-analysis",
+      "revista": "J Prosthet Dent",
+      "año": "2022",
+      "vol": "127",
+      "num": "1",
+      "pags": "71-79",
+      "doi": "10.1016/j.prosdent.2020.09.017",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/33143901/",
+      "verificada": true
+    },
+    {
+      "autores": "Sarafidou K, Chatziparaskeva M, Chatzikamagiannis D, Mpotskaris V, Tortopidis D, Bakopoulou A, et al.",
+      "titulo": "Evaluation of marginal/internal fit of fixed dental prostheses after digital, conventional, and combination impression techniques: A systematic review",
+      "revista": "Eur J Oral Sci",
+      "año": "2022",
+      "vol": "130",
+      "num": "6",
+      "pags": "e12902",
+      "doi": "10.1111/eos.12902",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/36346664/",
+      "verificada": true
+    },
+    {
+      "autores": "Tabesh M, Nejatidanesh F, Savabi G, Davoudi A, Savabi O.",
+      "titulo": "Marginal Accuracy of Lithium Disilicate Full-Coverage Single Crowns Made by Direct and Indirect Digital or Conventional Workflows: A Systematic Review and Meta-Analysis",
+      "revista": "J Prosthodont",
+      "año": "2022",
+      "vol": "31",
+      "num": "9",
+      "pags": "744-753",
+      "doi": "10.1111/jopr.13515",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35344238/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
