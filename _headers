@@ -94,6 +94,8 @@
   Cache-Control: public, max-age=0, must-revalidate
 /escaner-domicilio
   Cache-Control: public, max-age=0, must-revalidate
+/servicios
+  Cache-Control: public, max-age=0, must-revalidate
 /instalar-app
   Cache-Control: public, max-age=0, must-revalidate
 /terminos-y-legal
