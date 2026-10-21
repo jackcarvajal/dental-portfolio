@@ -6,6 +6,8 @@
 # BLOQUEAR archivos sensibles → 404
 # ─────────────────────────────────────────────────────────────
 /MAPA_PROYECTO.json             /404.html  302
+# /servicios en pausa — no pública por ahora
+/servicios                      /mantenimiento  302
 /ESTANDARES-UX-TIPOGRAFIA.md   /404.html  302
 /ARCHITECTURE.md                /404.html  302
 /PENDIENTES-DNS-EMAIL.md        /404.html  302
