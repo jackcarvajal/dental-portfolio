@@ -7,15 +7,15 @@
   <meta name="color-scheme" content="dark">
     <link rel="manifest" href="/manifest.json">
   <link rel="apple-touch-icon" href="/assets/icons/icon-192.png?v=20260928">
-    <meta name="description" content="Servicios y catálogo de PRODIGY Lab Dental: escaneo a domicilio, diseño CAD, fresado CAM, impresión 3D, guías quirúrgicas, alineadores y planificación digital. Prótesis fija, sobre implantes y materiales de marca con garantía.">
-    <meta name="keywords" content="servicios laboratorio dental Bogotá, catálogo prótesis dental, diseño CAD dental, fresado CAM, impresión 3D dental, guías quirúrgicas, alineadores, zirconio Katana, e.max, carillas, prótesis sobre implantes, laboratorio dental digital Colombia">
+    <meta name="description" content="Catálogo y portafolio de PRODIGY Lab Dental: diseño CAD, fresado CAM, impresión 3D, guías quirúrgicas, alineadores y planificación digital. Prótesis fija, sobre implantes y materiales de marca con garantía.">
+    <meta name="keywords" content="servicios laboratorio dental Bogotá, catálogo prótesis dental, diseño CAD dental, fresado CAM, impresión 3D dental, guías quirúrgicas, alineadores, exocad, 3Shape, zirconio Katana, e.max, carillas, prótesis sobre implantes, All-on-X, laboratorio dental digital Colombia">
     <meta property="og:title" content="Servicios y catálogo — PRODIGY Lab Dental">
-    <meta property="og:description" content="Del escaneo a la prótesis terminada: servicios digitales, catálogo de prótesis y materiales de marca con garantía. Pídenos tu lista de precios.">
+    <meta property="og:description" content="Usted escanea, nosotros diseñamos y fabricamos, y usted aprueba cada caso antes de producirlo. Pídanos su lista de precios.">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="PRODIGY Lab Dental">
     <meta property="og:url" content="https://prodigylabdental.com/servicios">
-    <meta property="og:image" content="https://prodigylabdental.com/assets/links-gallery/lentes-ceramicos.jpg">
-    <meta property="og:image:alt" content="Carillas de cerámica — PRODIGY Lab Dental, laboratorio CAD/CAM dental digital en Bogotá">
+    <meta property="og:image" content="https://prodigylabdental.com/assets/catalogo/carillas-lentes.jpg">
+    <meta property="og:image:alt" content="Carillas y lentes cerámicos — PRODIGY Lab Dental, laboratorio CAD/CAM dental digital en Bogotá">
   <meta property="og:locale" content="es_CO">
   <meta property="og:locale:alternate" content="en_US">
     <meta name="geo.region" content="CO-DC">
@@ -25,8 +25,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Servicios y catálogo — PRODIGY Lab Dental">
     <meta name="twitter:description" content="Servicios digitales, catálogo de prótesis y materiales de marca con garantía. Bogotá, Colombia.">
-    <meta name="twitter:image" content="https://prodigylabdental.com/assets/links-gallery/lentes-ceramicos.jpg">
-    <meta name="twitter:image:alt" content="Carillas de cerámica — PRODIGY Lab Dental">
+    <meta name="twitter:image" content="https://prodigylabdental.com/assets/catalogo/carillas-lentes.jpg">
+    <meta name="twitter:image:alt" content="Carillas y lentes cerámicos — PRODIGY Lab Dental">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="author" content="PRODIGY Lab Dental">
     <link rel="canonical" href="https://prodigylabdental.com/servicios">
@@ -56,11 +56,12 @@
 
         /* HERO */
         .hero{padding:72px 24px 48px;background:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(217,70,166,.10) 0%,transparent 70%);}
-        .hero-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;}
-        .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);padding:5px 16px;border-radius:20px;font-size:.82rem;color:var(--gold);font-weight:700;letter-spacing:.8px;margin-bottom:20px;text-transform:uppercase;}
-        .hero h1{font-size:clamp(2rem,5.5vw,3.4rem);font-weight:900;line-height:1.08;margin-bottom:16px;letter-spacing:-1.2px;}
+        .hero-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;}
+        .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);padding:5px 16px;border-radius:20px;font-size:.78rem;color:var(--gold);font-weight:700;letter-spacing:.8px;margin-bottom:20px;text-transform:uppercase;}
+        .hero h1{font-size:clamp(2.1rem,5.5vw,3.6rem);font-weight:900;line-height:1.08;margin-bottom:16px;letter-spacing:-1.2px;}
         .hero h1 .hl{background:linear-gradient(135deg,var(--gold),var(--magenta));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-        .hero-sub{font-size:clamp(.95rem,2vw,1.1rem);color:var(--muted);margin-bottom:28px;max-width:520px;}
+        .hero-sub{font-size:clamp(.95rem,2vw,1.1rem);color:var(--muted);margin-bottom:20px;max-width:520px;}
+        .hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px;}
         .hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
         .hero-img{border-radius:18px;overflow:hidden;border:1px solid var(--border);box-shadow:0 18px 50px rgba(217,70,166,.15);}
         .hero-img img{width:100%;height:auto;}
@@ -82,10 +83,27 @@
         .sec-title{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:900;letter-spacing:-.5px;text-align:center;margin-bottom:14px;}
         .sec-sub{color:var(--muted);text-align:center;max-width:680px;margin:0 auto 36px;}
 
+        /* PASOS */
+        .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px;}
+        .step{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:22px 16px;text-align:center;}
+        .step-n{font-size:2rem;font-weight:900;line-height:1;background:linear-gradient(135deg,var(--gold),var(--magenta));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+        .step h3{font-size:.98rem;font-weight:800;}
+        .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;}
+        .stat{background:linear-gradient(160deg,rgba(212,175,55,.07),var(--bg-card));border:1px solid var(--border);border-radius:14px;padding:24px 18px;text-align:center;}
+        .stat b{display:block;font-size:2.2rem;font-weight:900;color:var(--gold);line-height:1.1;margin-bottom:6px;}
+        .stat span{font-size:.9rem;color:var(--muted);}
+        .info2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+        .info{background:var(--bg-card);border:1px solid rgba(0,210,255,.22);border-radius:14px;padding:22px;}
+        .info h3{font-size:1.02rem;font-weight:800;color:var(--cyan);margin-bottom:6px;}
+        .info p{font-size:.93rem;color:var(--muted);}
+
         /* SERVICIOS */
         .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
-        .svc{display:block;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:24px 22px;transition:border-color .2s;color:inherit;text-decoration:none;}
+        .svc{display:block;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s;color:inherit;text-decoration:none;}
         .svc:hover{border-color:rgba(217,70,166,.45);}
+        .svc .ph{border-bottom:1px solid var(--border);}
+        .svc .ph img{width:100%;height:auto;}
+        .svc .bd{padding:22px;}
         .svc i{font-size:1.5rem;color:var(--cyan);margin-bottom:12px;display:block;}
         .svc h3{font-size:1.02rem;font-weight:800;margin-bottom:6px;}
         .svc p{font-size:.92rem;color:var(--muted);}
@@ -114,26 +132,40 @@
         .nota{max-width:860px;margin:18px auto 0;font-size:.92rem;color:var(--muted);background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.18);border-radius:10px;padding:14px 18px;}
         .nota strong{color:var(--text);}
 
-        /* ANTES / DESPUES */
-        .ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto;}
-        .ba{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--bg-card);}
-        .ba img{width:100%;height:auto;}
-        .ba figcaption{padding:10px 12px;font-size:.82rem;color:var(--muted);text-align:center;}
+        /* CASOS ANTES / DESPUES */
+        .cases{display:grid;gap:30px;max-width:980px;margin:0 auto;}
+        .case h3{font-size:1.05rem;font-weight:800;text-align:center;margin-bottom:12px;}
+        .case h3 span{color:var(--gold);}
+        .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+        .shot{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--bg-card);}
+        .shot img{width:100%;height:auto;}
+        .lbl{position:absolute;top:10px;left:10px;font-size:.72rem;font-weight:800;letter-spacing:1.5px;padding:4px 12px;border-radius:20px;background:rgba(0,0,0,.72);color:#fff;border:1px solid rgba(255,255,255,.25);}
+        .lbl.dp{background:rgba(217,70,166,.9);border-color:rgba(255,255,255,.3);}
+
+        /* CAD */
+        .cad-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:980px;margin:0 auto;}
+        .cad{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+        .cad img{width:100%;height:auto;}
+        .cad figcaption{padding:12px 14px;font-size:.88rem;color:var(--muted);text-align:center;}
 
         /* CTA */
         .cta-final{padding:72px 24px;text-align:center;background:radial-gradient(ellipse 70% 60% at 50% 100%,rgba(217,70,166,.10) 0%,transparent 70%);}
         .cta-final .hero-cta{justify-content:center;margin-top:24px;}
+        .contact{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;margin-top:26px;font-size:.95rem;color:var(--muted);}
+        .contact a{color:var(--text);text-decoration:none;font-weight:600;}
+        .contact i{color:var(--gold);margin-right:7px;}
 
-        @media(max-width:820px){.hero-grid{grid-template-columns:1fr;}.hero{padding-top:56px;}}
-        @media(max-width:620px){.ba-grid{grid-template-columns:1fr;max-width:340px;}.cat-grid,.mat-grid{grid-template-columns:1fr;}.sec{padding:52px 16px;}.hero{padding-left:16px;padding-right:16px;}.cred{padding:14px 16px;}.cta-final{padding-left:16px;padding-right:16px;}}
+        @media(max-width:900px){.steps{grid-template-columns:repeat(3,1fr);}}
+        @media(max-width:820px){.hero-grid{grid-template-columns:1fr;}.hero{padding-top:56px;}.stats,.info2{grid-template-columns:1fr;}}
+        @media(max-width:620px){.steps{grid-template-columns:repeat(2,1fr);}.cad-grid{grid-template-columns:1fr;}.cat-grid,.mat-grid{grid-template-columns:1fr;}.sec{padding:52px 16px;}.hero{padding-left:16px;padding-right:16px;}.cred{padding:14px 16px;}.cta-final{padding-left:16px;padding-right:16px;}.pair{gap:8px;}.lbl{font-size:.64rem;padding:3px 9px;top:6px;left:6px;}}
 
         /* TEMA CLARO */
         body.light-mode{--bg:#f5f6f8;--bg-card:#ffffff;--text:#0f172a;--muted:#475569;--border:rgba(15,23,42,.14);background:#f5f6f8;color:#0f172a;}
         body.light-mode .chip{background:rgba(15,23,42,.05);border-color:rgba(15,23,42,.14);}
         body.light-mode .cat li,body.light-mode .cred{border-color:rgba(15,23,42,.1);}
-        body.light-mode .btn-outline,body.light-mode .svc .tag,body.light-mode .cat h3,body.light-mode .badge,body.light-mode .cred-in span i{color:#8a6d0a;}
+        body.light-mode .btn-outline,body.light-mode .svc .tag,body.light-mode .cat h3,body.light-mode .badge,body.light-mode .cred-in span i,body.light-mode .stat b,body.light-mode .case h3 span,body.light-mode .contact i{color:#8a6d0a;}
         body.light-mode .hero h1 .hl{background:linear-gradient(135deg,#8a6d0a,#b0267f);-webkit-background-clip:text;background-clip:text;}
-        body.light-mode .mat h3,body.light-mode .svc i{color:#0369a1;}
+        body.light-mode .mat h3,body.light-mode .svc i,body.light-mode .info h3{color:#0369a1;}
 
         @media(prefers-reduced-motion:reduce){
           *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
@@ -147,20 +179,23 @@
 <script src="js/header.js?v=20261014c"></script>
 <main id="main-content">
 
-<!-- HERO -->
+<!-- 1. PORTADA -->
 <section class="hero">
   <div class="hero-grid">
     <div>
-      <div class="badge"><i class="fas fa-gem" aria-hidden="true"></i> Servicios y catálogo</div>
-      <h1>Del escaneo a la prótesis,<br><span class="hl">todo en un solo lab.</span></h1>
-      <p class="hero-sub">Servicios digitales, catálogo de prótesis y materiales de marca con garantía. Sin precios públicos: pídenos tu lista personalizada y te la enviamos por WhatsApp.</p>
+      <div class="badge"><i class="fas fa-gem" aria-hidden="true"></i> Laboratorio dental digital · Bogotá</div>
+      <h1><span class="hl">Catálogo</span> y portafolio</h1>
+      <p class="hero-sub">Diseño CAD, fresado e impresión 3D para clínicas y especialistas. Usted escanea, nosotros diseñamos y fabricamos, y usted aprueba cada caso antes de producirlo.</p>
+      <div class="hero-chips chips">
+        <span class="chip">Exocad</span><span class="chip">3Shape</span><span class="chip">Carillas y lentes cerámicos</span><span class="chip">Coronas y puentes</span><span class="chip">Full arch</span><span class="chip">All-on-X</span><span class="chip">Guías quirúrgicas</span>
+      </div>
       <div class="hero-cta">
-        <a class="btn-primary" href="/lista-precios"><i class="fas fa-list-check" aria-hidden="true"></i> Pídenos tu lista de precios</a>
-        <a class="btn-outline" href="/flujo-diseno"><i class="fas fa-paper-plane" aria-hidden="true"></i> Envía tu caso</a>
+        <a class="btn-primary" href="/lista-precios"><i class="fas fa-list-check" aria-hidden="true"></i> Pídanos su lista de precios</a>
+        <a class="btn-outline" href="/flujo-diseno"><i class="fas fa-paper-plane" aria-hidden="true"></i> Envíe su caso</a>
       </div>
     </div>
     <div class="hero-img">
-      <img src="assets/links-gallery/lentes-ceramicos.jpg" alt="Carillas de cerámica fabricadas por PRODIGY Lab Dental" fetchpriority="high">
+      <img src="assets/catalogo/carillas-lentes.jpg" alt="Carillas y lentes cerámicos fabricados por PRODIGY Lab Dental" fetchpriority="high">
     </div>
   </div>
 </section>
@@ -172,31 +207,56 @@
   <span><i class="fas fa-shield-halved" aria-hidden="true"></i>Materiales de marca con garantía</span>
 </div></div>
 
-<!-- SERVICIOS -->
+<!-- 2. COMO TRABAJAMOS -->
 <section class="sec">
   <div class="sec-inner">
-    <p class="sec-label">Lo que hacemos</p>
-    <h2 class="sec-title">8 servicios, un flujo digital</h2>
-    <p class="sec-sub">Desde la toma de datos hasta la entrega, con trazabilidad en cada etapa.</p>
-    <div class="svc-grid">
-      <a class="svc" href="/escaner-domicilio"><i class="fas fa-mobile-alt" aria-hidden="true"></i><h3>Escaneo a domicilio</h3><p>Llevamos el escáner intraoral a tu clínica.</p><span class="tag">Solo Bogotá</span></a>
-      <a class="svc" href="/diseno-cad"><i class="fas fa-drafting-compass" aria-hidden="true"></i><h3>Diseño CAD</h3><p>Restauraciones diseñadas con precisión y aprobación antes de producir.</p></a>
-      <a class="svc" href="/fresado-cam"><i class="fas fa-cog" aria-hidden="true"></i><h3>Fresado CAM</h3><p>Fresado de zirconio, disilicato, PMMA, titanio y más.</p></a>
-      <a class="svc" href="/fresado-cam"><i class="fas fa-cube" aria-hidden="true"></i><h3>Impresión 3D</h3><p>Modelos, prototipos y piezas en resinas biocompatibles certificadas.</p></a>
-      <a class="svc" href="/guias-quirurgicas"><i class="fas fa-crosshairs" aria-hidden="true"></i><h3>Guías quirúrgicas</h3><p>Cirugía guiada de implantes con planificación previa.</p></a>
-      <a class="svc" href="/envia-alineadores"><i class="fas fa-teeth" aria-hidden="true"></i><h3>Alineadores</h3><p>Ortodoncia con alineadores, sin franquicia ni mensualidad.</p></a>
-      <div class="svc"><i class="fas fa-map-location-dot" aria-hidden="true"></i><h3>Planificación digital</h3><p>Planificación de implantes, guías y alineadores.</p></div>
-      <div class="svc"><i class="fas fa-graduation-cap" aria-hidden="true"></i><h3>Educación en software de diseño</h3><p>Capacitación en exocad y flujo CAD.</p></div>
+    <p class="sec-label">Proceso</p>
+    <h2 class="sec-title">Cómo trabajamos</h2>
+    <p class="sec-sub">Cinco pasos claros, con su aprobación antes de fabricar.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div><h3>Escaneo</h3></div>
+      <div class="step"><div class="step-n">02</div><h3>Diseño CAD</h3></div>
+      <div class="step"><div class="step-n">03</div><h3>Aprobación</h3></div>
+      <div class="step"><div class="step-n">04</div><h3>Fabricación</h3></div>
+      <div class="step"><div class="step-n">05</div><h3>Entrega</h3></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>24 h</b><span>Stock permanente de materiales en Bogotá</span></div>
+      <div class="stat"><b>±50 µm</b><span>Tolerancia en guías quirúrgicas impresas</span></div>
+      <div class="stat"><b>2</b><span>Plataformas de diseño: Exocad y 3Shape</span></div>
+    </div>
+    <div class="info2">
+      <div class="info"><h3>¿No tiene escáner intraoral?</h3><p>Coordinamos el escaneo en su clínica o trabajamos con sus impresiones.</p></div>
+      <div class="info"><h3>Solo diseño, si lo prefiere</h3><p>Le entregamos solo el archivo listo para producir en su equipo.</p></div>
     </div>
   </div>
 </section>
 
-<!-- CATALOGO -->
+<!-- 3. SERVICIOS -->
+<section class="sec" style="padding-top:0">
+  <div class="sec-inner">
+    <p class="sec-label">Lo que hacemos</p>
+    <h2 class="sec-title">Nuestros servicios</h2>
+    <p class="sec-sub">Desde la toma de datos hasta la entrega, con trazabilidad en cada etapa.</p>
+    <div class="svc-grid">
+      <a class="svc" href="/escaner-domicilio"><div class="bd"><i class="fas fa-mobile-alt" aria-hidden="true"></i><h3>Escaneo a domicilio</h3><p>Llevamos el escáner intraoral a su clínica.</p><span class="tag">Solo Bogotá</span></div></a>
+      <a class="svc" href="/diseno-cad"><div class="ph"><img src="assets/catalogo/cad-1.jpg" alt="Diseño CAD full arch en exocad" loading="lazy" decoding="async"></div><div class="bd"><i class="fas fa-drafting-compass" aria-hidden="true"></i><h3>Diseño CAD</h3><p>Restauraciones y full arch diseñados con precisión, con su aprobación antes de producir.</p></div></a>
+      <a class="svc" href="/fresado-cam"><div class="ph"><img src="assets/catalogo/carillas-lentes.jpg" alt="Carillas y lentes cerámicos" loading="lazy" decoding="async"></div><div class="bd"><i class="fas fa-cog" aria-hidden="true"></i><h3>Fresado CAM</h3><p>Zirconio, disilicato, PMMA, titanio y más; carillas y lentes cerámicos.</p></div></a>
+      <a class="svc" href="/fresado-cam"><div class="bd"><i class="fas fa-cube" aria-hidden="true"></i><h3>Impresión 3D</h3><p>Modelos, prototipos y piezas en resinas biocompatibles certificadas.</p></div></a>
+      <a class="svc" href="/guias-quirurgicas"><div class="bd"><i class="fas fa-crosshairs" aria-hidden="true"></i><h3>Guías quirúrgicas</h3><p>Cirugía guiada de implantes con planificación previa.</p></div></a>
+      <a class="svc" href="/envia-alineadores"><div class="bd"><i class="fas fa-teeth" aria-hidden="true"></i><h3>Alineadores</h3><p>Ortodoncia con alineadores, sin franquicia ni mensualidad.</p></div></a>
+      <div class="svc"><div class="bd"><i class="fas fa-map-location-dot" aria-hidden="true"></i><h3>Planificación digital</h3><p>Planificación de implantes, guías y alineadores.</p></div></div>
+      <div class="svc"><div class="bd"><i class="fas fa-graduation-cap" aria-hidden="true"></i><h3>Educación en software de diseño</h3><p>Capacitación en exocad y flujo CAD.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. CATALOGO -->
 <section class="sec" style="padding-top:0">
   <div class="sec-inner">
     <p class="sec-label">Catálogo</p>
     <h2 class="sec-title">Catálogo de prótesis</h2>
-    <p class="sec-sub">Fija, sobre implantes y removible. Consulta disponibilidad y condiciones de cada trabajo.</p>
+    <p class="sec-sub">Fija, sobre implantes y removible. Consúltenos disponibilidad y condiciones de cada trabajo.</p>
     <div class="cat-grid">
       <div class="cat">
         <h3><i class="fas fa-tooth" aria-hidden="true"></i> Prótesis fija</h3>
@@ -221,7 +281,7 @@
       </div>
       <div class="cat warn">
         <h3><i class="fas fa-print" aria-hidden="true"></i> Prótesis removible</h3>
-        <div class="warn-box"><strong>Solo diseño e impresión 3D</strong>, bajo ciertas condiciones (consúltanos). No es fabricación terminada.</div>
+        <div class="warn-box"><strong>Solo diseño e impresión 3D</strong>, bajo ciertas condiciones (consúltenos) — no es fabricación terminada.</div>
         <ul>
           <li>Parcial flexible<small>Diseño + impresión de modelo/base</small></li>
           <li>Esquelético<small>Diseño + patrón calcinable impreso para colar</small></li>
@@ -232,21 +292,7 @@
   </div>
 </section>
 
-<!-- ANTES / DESPUES -->
-<section class="sec" style="padding-top:0">
-  <div class="sec-inner">
-    <p class="sec-label">Resultados</p>
-    <h2 class="sec-title">Antes / Después</h2>
-    <p class="sec-sub">Arriba el antes, abajo el después. Casos reales de nuestro laboratorio.</p>
-    <div class="ba-grid">
-      <figure class="ba"><img src="assets/links-gallery/antes-despues-1.webp" alt="Caso 1: comparación antes (arriba) y después (abajo)" loading="lazy" decoding="async"><figcaption>Caso 1 · antes / después</figcaption></figure>
-      <figure class="ba"><img src="assets/links-gallery/antes-despues-2.webp" alt="Caso 2: comparación antes (arriba) y después (abajo)" loading="lazy" decoding="async"><figcaption>Caso 2 · antes / después</figcaption></figure>
-      <figure class="ba"><img src="assets/links-gallery/antes-despues-3.webp" alt="Caso 3: comparación antes (arriba) y después (abajo)" loading="lazy" decoding="async"><figcaption>Caso 3 · antes / después</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<!-- MATERIALES -->
+<!-- 5. MATERIALES -->
 <section class="sec" style="padding-top:0">
   <div class="sec-inner">
     <p class="sec-label">Materiales</p>
@@ -267,24 +313,76 @@
         <div class="chips"><span class="chip">Phibo</span><span class="chip">Sindekar</span></div></div>
       <div class="mat"><h3>Resinas 3D</h3><p class="uso">Biocompatibles certificadas.</p>
         <div class="chips"><span class="chip">NextDent</span><span class="chip">SprintRay</span><span class="chip">Formlabs (BioMed)</span><span class="chip">Phrozen</span><span class="chip">Detax</span></div></div>
-      <div class="mat"><h3>Librerías de implantes</h3><p class="uso">+100 librerías. Si falta la tuya, envías las anillas.</p>
+      <div class="mat"><h3>Librerías de implantes</h3><p class="uso">+100 librerías. Si falta la suya, nos envía las anillas.</p>
         <div class="chips"><span class="chip">Neodent</span><span class="chip">Straumann</span><span class="chip">Nobel</span><span class="chip">Zimmer</span><span class="chip">Osstem</span><span class="chip">MIS</span><span class="chip">BioHorizons</span></div></div>
     </div>
     <p class="nota"><strong>Garantía:</strong> materiales de marcas reconocidas, con garantía del fabricante, biocompatibilidad certificada y trazabilidad por lote. Nada de bloques genéricos.</p>
-    <p class="nota"><strong>Disponibilidad:</strong> de marca, color y tamaño sujeta a rotación de inventario. Si algo puntual no está, te damos una solución equivalente — siempre resolvemos tu necesidad.</p>
+    <p class="nota"><strong>Disponibilidad:</strong> de marca, color y tamaño sujeta a rotación de inventario. Si algo puntual no está, le damos una solución equivalente — siempre resolvemos su necesidad.</p>
   </div>
 </section>
 
-<!-- CTA FINAL -->
+<!-- 6. RESULTADOS EN BOCA -->
+<section class="sec" style="padding-top:0">
+  <div class="sec-inner">
+    <p class="sec-label">Portafolio</p>
+    <h2 class="sec-title">Resultados en boca</h2>
+    <p class="sec-sub">Casos reales de nuestro laboratorio: antes y después.</p>
+    <div class="cases">
+      <div class="case">
+        <h3><span>Caso 1</span> · Carillas anteriores — Armonía de forma y color</h3>
+        <div class="pair">
+          <div class="shot"><img src="assets/catalogo/caso1-antes.jpg" alt="Caso 1, antes: carillas anteriores" loading="lazy" decoding="async"><span class="lbl">ANTES</span></div>
+          <div class="shot"><img src="assets/catalogo/caso1-despues.jpg" alt="Caso 1, después: carillas anteriores" loading="lazy" decoding="async"><span class="lbl dp">DESPUÉS</span></div>
+        </div>
+      </div>
+      <div class="case">
+        <h3><span>Caso 2</span> · Rehabilitación superior e inferior — Función y estética</h3>
+        <div class="pair">
+          <div class="shot"><img src="assets/catalogo/caso2-antes.jpg" alt="Caso 2, antes: rehabilitación superior e inferior" loading="lazy" decoding="async"><span class="lbl">ANTES</span></div>
+          <div class="shot"><img src="assets/catalogo/caso2-despues.jpg" alt="Caso 2, después: rehabilitación superior e inferior" loading="lazy" decoding="async"><span class="lbl dp">DESPUÉS</span></div>
+        </div>
+      </div>
+      <div class="case">
+        <h3><span>Caso 3</span> · Rehabilitación de arcada — Reposición de piezas ausentes</h3>
+        <div class="pair">
+          <div class="shot"><img src="assets/catalogo/caso3-antes.jpg" alt="Caso 3, antes: arcada con piezas ausentes" loading="lazy" decoding="async"><span class="lbl">ANTES</span></div>
+          <div class="shot"><img src="assets/catalogo/caso3-despues.jpg" alt="Caso 3, después: arcada rehabilitada" loading="lazy" decoding="async"><span class="lbl dp">DESPUÉS</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. DISENOS CAD -->
+<section class="sec" style="padding-top:0">
+  <div class="sec-inner">
+    <p class="sec-label">Diseño digital</p>
+    <h2 class="sec-title">Diseños CAD en exocad</h2>
+    <p class="sec-sub">Así se ve su caso antes de fabricarse.</p>
+    <div class="cad-grid">
+      <figure class="cad"><img src="assets/catalogo/cad-1.jpg" alt="Full arch superior, 14 unidades cerámicas sobre implantes" loading="lazy" decoding="async"><figcaption>Full arch superior · 14 unidades cerámicas sobre implantes</figcaption></figure>
+      <figure class="cad"><img src="assets/catalogo/cad-2.jpg" alt="Full arch con verificación de oclusión" loading="lazy" decoding="async"><figcaption>Full arch · verificación de oclusión con antagonista</figcaption></figure>
+      <figure class="cad"><img src="assets/catalogo/cad-3.jpg" alt="Carillas superiores, diseño de sonrisa" loading="lazy" decoding="async"><figcaption>Carillas superiores · diseño de sonrisa</figcaption></figure>
+      <figure class="cad"><img src="assets/catalogo/cad-4.jpg" alt="Carillas superiores e inferiores, relación oclusal" loading="lazy" decoding="async"><figcaption>Carillas superiores e inferiores · relación oclusal</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 8. CTA FINAL -->
 <section class="cta-final">
   <div class="sec-inner">
-    <p class="sec-label">¿Listo?</p>
-    <h2 class="sec-title">Pídenos tu lista de precios</h2>
-    <p class="sec-sub" style="margin-bottom:0">Te enviamos una lista personalizada según tu tipo de práctica, o envíanos tu caso y lo cotizamos.</p>
+    <p class="sec-label">Contacto</p>
+    <h2 class="sec-title">Empecemos con su próximo caso</h2>
+    <p class="sec-sub" style="margin-bottom:0">Le enviamos una lista de precios personalizada, o envíenos su caso y lo cotizamos.</p>
     <div class="hero-cta">
-      <a class="btn-wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20mi%20lista%20de%20precios." target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" aria-hidden="true"></i> Pídenos tu lista de precios</a>
+      <a class="btn-wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20mi%20lista%20de%20precios." target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" aria-hidden="true"></i> Pídanos su lista de precios</a>
       <a class="btn-primary" href="/lista-precios"><i class="fas fa-list-check" aria-hidden="true"></i> Lista personalizada</a>
-      <a class="btn-outline" href="/flujo-diseno"><i class="fas fa-paper-plane" aria-hidden="true"></i> Envía tu caso</a>
+      <a class="btn-outline" href="/flujo-diseno"><i class="fas fa-paper-plane" aria-hidden="true"></i> Envíe su caso</a>
+    </div>
+    <div class="contact">
+      <span><i class="fab fa-whatsapp" aria-hidden="true"></i><a href="https://wa.me/573212816716" target="_blank" rel="noopener noreferrer">+57 321 281 6716</a></span>
+      <span><i class="fas fa-globe" aria-hidden="true"></i><a href="https://prodigylabdental.com">prodigylabdental.com</a></span>
+      <span><i class="fab fa-instagram" aria-hidden="true"></i><a href="https://www.instagram.com/prodigylabdental" target="_blank" rel="noopener noreferrer">@prodigylabdental</a></span>
     </div>
   </div>
 </section>
