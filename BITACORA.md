@@ -9,6 +9,16 @@
 
 ---
 
+## 2026-10-21  (correos · cursos → Alejandro)
+
+- ✅ **Email Routing PRODIGY**: enrutados `contacto@` y `soporte@` → jackalejandroc@gmail.com (ya estaban
+  `gerencia@`/`casos@`). Los `noreply@/alertas@/sistema@/...` son remitentes de salida (Resend), no buzones.
+- ✅ **`_redirects`: /cursos (+ /curso, /cursos-exocad, /curso-exocad, /formacion) → https://alejandrocadcam.com/cursos (301)**.
+  Decisión 💡: los cursos de exocad se concentran en la marca Alejandro para NO canibalizar keywords entre
+  las dos webs propias. PRODIGY conserva su exocad distinto: `soporte-exocad` (soporte por hora).
+
+---
+
 ## 2026-10-17
 
 - ✅ **Top-3 ideas B2B adaptadas de Dento Align Studio** (17-oct): (1) **badge SLA** en el hero de `escaner-domicilio` (Diseño 24h · Fab 24–48h · apruebas antes); (2) **disclaimer clínico** (propuesta técnica, aprobación final del profesional) en `alineadores`/`guías`/`alineadores-cad` — y portado a Alejandro (`alineadores`, `guias-quirurgicas`, `guias-quirurgicas-cad`); (3) sección **"datos seguros + capacidad de desborde + seguimos tu protocolo"** en `/para-laboratorios` (diferenciador vs offshore). Además **fix**: template literal de JS crudo que se mostraba como texto en el stack técnico de `/para-laboratorios`.

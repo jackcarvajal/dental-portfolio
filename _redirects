@@ -98,6 +98,13 @@
 /impresion-dental       /impresion-3d.html          301
 /faq                    /preguntas.html             301
 /ayuda                  /preguntas.html             301
+# Cursos de exocad → concentrados en Alejandro CAD/CAM (evita canibalización SEO entre tus propias webs)
+/cursos                 https://alejandrocadcam.com/cursos  301
+/curso                  https://alejandrocadcam.com/cursos  301
+/cursos-exocad          https://alejandrocadcam.com/cursos  301
+/curso-exocad           https://alejandrocadcam.com/cursos  301
+/formacion              https://alejandrocadcam.com/cursos  301
+
 # Link corto de reseñas → Google Business Profile (ProDigy)
 /resena                 https://g.page/r/CXIbumfcmmh0EBM/review  302
 /review                 https://g.page/r/CXIbumfcmmh0EBM/review  302
