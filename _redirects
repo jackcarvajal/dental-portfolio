@@ -106,9 +106,9 @@
 /formacion              https://alejandrocadcam.com/cursos  301
 
 # Link corto de reseñas → Google Business Profile (ProDigy)
-/resena                 https://g.page/r/CXIbumfcmmh0EBM/review  302
-/review                 https://g.page/r/CXIbumfcmmh0EBM/review  302
-/opiniones              https://g.page/r/CXIbumfcmmh0EBM/review  302
+/resena                 https://g.page/r/CXIbumfcmmh0EAI/review  302
+/review                 https://g.page/r/CXIbumfcmmh0EAI/review  302
+/opiniones              https://g.page/r/CXIbumfcmmh0EAI/review  302
 # Link corto para el QR de casos (QR menos denso) → enrutador por rol
 /c/:code                /app/caso-qr.html?c=:code   302
 /mis-referidos          /app/referidos-portal.html  200
