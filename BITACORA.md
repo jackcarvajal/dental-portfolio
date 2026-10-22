@@ -9,6 +9,17 @@
 
 ---
 
+## 2026-10-22  (desambiguación de marca · entidad PRODIGY Lab Dental)
+
+- ✅ **Nombre de entidad unificado a "PRODIGY Lab Dental"** en páginas públicas (schema, `<title>`, og/twitter,
+  footer): index, nosotros, journal, calculadora, envia-tu-scanner, escaner-domicilio, catalogo, fresado-cam,
+  portafolio, seguimiento-caso, 404, mantenimiento, calidad + meta de terminos. El schema principal (nosotros)
+  ahora `"name":"PRODIGY Lab Dental","alternateName":"PRODIGY Digital Dentistry"`. Motivo: desambiguar del
+  "Prodigy Dental Studio" (EE.UU.) para búsquedas/IA. Todos los JSON-LD válidos.
+- ⏳ **Sin tocar (decisión de marca/legal):** `recibo-caso.html` (facturas, además dice **"Medellín"** ← debería
+  ser Bogotá), cuerpo legal de `terminos-y-legal`, docs internos `app/*` y firmas de WhatsApp. Siguen con
+  "PRODIGY Digital Dentistry". ¿Rebrand total o se quedan?
+
 ## 2026-10-21  (correos · cursos → Alejandro)
 
 - ✅ **Email Routing PRODIGY**: enrutados `contacto@` y `soporte@` → jackalejandroc@gmail.com (ya estaban
