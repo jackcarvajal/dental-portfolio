@@ -16,9 +16,10 @@
   portafolio, seguimiento-caso, 404, mantenimiento, calidad + meta de terminos. El schema principal (nosotros)
   ahora `"name":"PRODIGY Lab Dental","alternateName":"PRODIGY Digital Dentistry"`. Motivo: desambiguar del
   "Prodigy Dental Studio" (EE.UU.) para búsquedas/IA. Todos los JSON-LD válidos.
-- ⏳ **Sin tocar (decisión de marca/legal):** `recibo-caso.html` (facturas, además dice **"Medellín"** ← debería
-  ser Bogotá), cuerpo legal de `terminos-y-legal`, docs internos `app/*` y firmas de WhatsApp. Siguen con
-  "PRODIGY Digital Dentistry". ¿Rebrand total o se quedan?
+- ✅ **recibo-caso: "Medellín, Colombia" → "Bogotá, Colombia"** (3 sitios) — error de ubicación en los recibos
+  del cliente. (Los demás "Medellín" del sitio son legítimos: testimonios y ciudades de envío.)
+- 💡 **Decisión del usuario:** "PRODIGY Digital Dentistry" se DEJA en facturas/legal/docs internos/firmas WA
+  (combinar ambos nombres, sin problema). Solo lo público quedó como "PRODIGY Lab Dental".
 
 ## 2026-10-21  (correos · cursos → Alejandro)
 
