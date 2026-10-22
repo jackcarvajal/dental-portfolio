@@ -2,10 +2,412 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-10-20
+   Última actualización automática: 2026-10-22
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "rehabilitacion-oral-colombia-2026-10-22-19b4",
+  "titulo": "Análisis del Flujo Protésico CAD/CAM en Laboratorios Dentales: Evidencia Actual",
+  "subtitulo": "Análisis del flujo protésico CAD/CAM: precisión, eficiencia y predictibilidad.",
+  "categoria": "clinica",
+  "chip": "Rehab Colombia",
+  "fecha": "2026-10-22",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "🇨🇴",
+  "grad": "grad-4",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/4/45/Emax_crowns_on_model.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Dental laboratory",
+  "img_link": "https://en.wikipedia.org/wiki/Dental%20laboratory",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología contemporánea ha experimentado una transformación significativa con la adopción de tecnologías digitales, particularmente el flujo de trabajo CAD/CAM (Diseño Asistido por Computadora/Fabricación Asistida por Computadora). Este enfoque se ha consolidado como un estándar globalmente aceptado para la rehabilitación de la dentición, incluyendo reconstrucciones de boca completa y el tratamiento de pacientes con dentición terminal, ofreciendo resultados predecibles (Bedrossian et al., 2025). La integración de herramientas digitales facilita la planificación, la ejecución quirúrgica, la carga inmediata y la fabricación de prótesis definitivas (Bedrossian et al., 2025). Este artículo técnico explora los componentes clave del flujo de trabajo protésico digital, sus ventajas en términos de eficiencia y precisión, y las consideraciones clínicas relevantes, basándose estrictamente en la evidencia publicada en revistas de alto impacto."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/4/45/Emax_crowns_on_model.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Rehabilitación oral digital en Colombia — flujo CAD/CAM, costos y laboratorio",
+      "caption": "Wikipedia — Dental laboratory · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "El Flujo de Trabajo Digital y el Escaneo Intraoral"
+    },
+    {
+      "t": "p",
+      "c": "El núcleo del flujo de trabajo digital en la rehabilitación protésica es la integración de datos multimodales. Esto incluye el escaneo intraoral, el escaneo facial, la tomografía computarizada de haz cónico (CBCT) y el seguimiento del movimiento mandibular (Cheng, 2025). El escaneo intraoral es una herramienta fundamental que permite la captura de datos de la dimensión vertical existente, los cuales son utilizados para diseñar cubetas personalizadas en software como EXOCAD y para crear modelos virtuales (Handa et al., 2025). Esta tecnología no solo mejora la comodidad del paciente, sino que también acelera significativamente la fase de planificación del tratamiento (Handa et al., 2025). Los sistemas digitales permiten establecer flujos de trabajo híbridos o completamente digitales en prostodoncia (Benalcazar-Jalkh et al., 2025)."
+    },
+    {
+      "t": "list",
+      "items": [
+        "Integración de datos multimodales: escaneo intraoral, facial, CBCT y seguimiento mandibular (Cheng, 2025).",
+        "Captura de escaneos intraorales para diseño de cubetas y modelos virtuales (Handa et al., 2025).",
+        "Mejora de la comodidad del paciente durante la toma de impresiones (Handa et al., 2025).",
+        "Aceleración de la fase de planificación del tratamiento protésico (Handa et al., 2025).",
+        "Establecimiento de flujos de trabajo protésicos híbridos o totalmente digitales (Benalcazar-Jalkh et al., 2025)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Eficiencia y Predictibilidad en la Producción Protésica Digital"
+    },
+    {
+      "t": "p",
+      "c": "El flujo de trabajo digital se caracteriza por su alta precisión, eficiencia y predictibilidad, lo que representa una nueva era en la reconstrucción oclusal (Cheng, 2025). La utilización de plataformas de inteligencia artificial permite establecer un modelo de paciente virtual para la rehabilitación oral, abarcando etapas desde la preparación preliminar hasta la verificación de restauraciones transicionales y la restauración definitiva (Cheng, 2025). Este enfoque ha demostrado ser efectivo en la rehabilitación de denticiones severamente comprometidas y desgastadas, obteniendo buenos resultados estéticos y funcionales, mejora en la función masticatoria y satisfacción del paciente (Germano et al., 2017). En un seguimiento de dos años, los pacientes mantuvieron la condición obtenida con una tasa de supervivencia acumulada cercana al 100% (Germano et al., 2017). La planificación acelerada y la mayor precisión son ventajas clave de este enfoque (Handa et al., 2025)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica del Flujo",
+        "Descripción en Flujo Digital",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Planificación",
+          "Integración de datos multimodales (escaneo intraoral, facial, CBCT, seguimiento mandibular)",
+          "(Cheng, 2025)"
+        ],
+        [
+          "Ejecución",
+          "Alta precisión, eficiencia y predictibilidad",
+          "(Cheng, 2025)"
+        ],
+        [
+          "Comodidad del paciente",
+          "Mejorada durante el proceso",
+          "(Handa et al., 2025)"
+        ],
+        [
+          "Verificación",
+          "Permite la verificación de restauraciones transicionales",
+          "(Cheng, 2025)"
+        ],
+        [
+          "Rehabilitación",
+          "Facilita la rehabilitación de la dimensión vertical de oclusión",
+          "(Benalcazar-Jalkh et al., 2025)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Materiales y Soluciones Protésicas en el Entorno Digital"
+    },
+    {
+      "t": "p",
+      "c": "Los flujos de trabajo digitales facilitan la fabricación de diversas soluciones protésicas fijas. Las fuentes consultadas hacen referencia a la rehabilitación con prótesis fijas (Merli et al., 2024) y a la fabricación de restauraciones definitivas (Cheng, 2025). Sin embargo, los resúmenes de los estudios no especifican marcas comerciales de materiales como bloques cerámicos o discos de zirconia (Katana, Sagemax, GDT), ni detallan su disponibilidad en mercados específicos como el colombiano. La tecnología digital permite la creación de estas prótesis con alta precisión, pero la selección de materiales específicos dependerá de las indicaciones clínicas y la disponibilidad general de productos en el mercado, más allá de lo que se puede inferir de los resúmenes de estos estudios."
+    },
+    {
+      "t": "h2",
+      "c": "Calidad de Adaptación y Resultados Clínicos"
+    },
+    {
+      "t": "p",
+      "c": "La integración de la tecnología digital en prostodoncia permite resultados precisos y predecibles (Handa et al., 2025). La alta precisión es una de las ventajas fundamentales del flujo de trabajo digital (Cheng, 2025), lo cual es crucial para lograr una óptima adaptación marginal de las restauraciones. Aunque los resúmenes de los estudios no proporcionan datos numéricos comparativos directos sobre la calidad de adaptación marginal entre sistemas digitales y convencionales, el énfasis en la precisión y la exactitud en el enfoque digital sugiere una mejora inherente en este aspecto. Clínicamente, se ha observado una mejora significativa en la función masticatoria en pacientes con periodontitis estadio IV tratados con rehabilitaciones protésicas fijas utilizando un flujo de trabajo completamente digital (Merli et al., 2024). La evaluación de la rehabilitación de la dimensión vertical de oclusión mediante estereofotogrametría 3D también es posible con estos flujos (Benalcazar-Jalkh et al., 2025)."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones sobre la Cadena de Suministro y Costos"
+    },
+    {
+      "t": "p",
+      "c": "En cuanto a la cadena de suministro y los tiempos de entrega, el enfoque digital se asocia con una planificación acelerada (Handa et al., 2025) y una mayor eficiencia (Cheng, 2025). Estas características pueden influir positivamente en la reducción de los tiempos de entrega de las restauraciones protésicas. Germano et al. (2017) discuten las ventajas y limitaciones del flujo de trabajo digital en comparación con el protocolo protésico tradicional; sin embargo, los resúmenes de los estudios no proporcionan datos específicos sobre los costos de producción digital versus convencional, ni detalles sobre la cadena de suministro o los tiempos de entrega en un contexto geográfico particular como Colombia. La eficiencia inherente al proceso digital puede, no obstante, contribuir a una optimización de los recursos y, potencialmente, a una reducción de los costos operativos a largo plazo."
+    },
+    {
+      "t": "quote",
+      "c": "El flujo de trabajo digital ha transformado la odontología protésica, ofreciendo alta precisión, eficiencia y predictibilidad en la rehabilitación de denticiones complejas.",
+      "author": "Cheng, Zhonghua Kou Qiang Yi Xue Za Zhi, 2025"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué ventajas ofrece el escaneo intraoral en el flujo de trabajo digital?",
+      "a": "El escaneo intraoral permite la captura de datos para la integración multimodal, el diseño de cubetas personalizadas y modelos virtuales, mejorando la comodidad del paciente y acelerando la planificación del tratamiento (Cheng, 2025; Handa et al., 2025)."
+    },
+    {
+      "q": "¿Es el flujo digital más preciso que el convencional para la adaptación protésica?",
+      "a": "Los flujos de trabajo digitales se caracterizan por su alta precisión y exactitud, lo que es fundamental para una buena adaptación protésica. Aunque los resúmenes no proporcionan una comparativa numérica directa de la adaptación marginal, la tecnología digital busca resultados predecibles y de alta calidad (Cheng, 2025; Handa et al., 2025)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Bedrossian E, Bedrossian EA.",
+      "titulo": "Full Mouth Reconstruction with Dental Implants: Planning, Surgical, and Prosthetic Phase",
+      "revista": "Dent Clin North Am",
+      "año": "2025",
+      "vol": "69",
+      "num": "2",
+      "pags": "257-274",
+      "doi": "10.1016/j.cden.2024.11.007",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/40044289/",
+      "verificada": true
+    },
+    {
+      "autores": "Merli M, Aquilanti L, Pagliaro U, Mariotti G, Merli M, Nieri M, et al.",
+      "titulo": "Masticatory Function in Stage IV Periodontitis Patients Treated with Fixed Prosthetic Rehabilitations: A Case Series",
+      "revista": "Int J Periodontics Restorative Dent",
+      "año": "2024",
+      "vol": "44",
+      "num": "1",
+      "pags": "103-113",
+      "doi": "10.11607/prd.6670",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37552175/",
+      "verificada": true
+    },
+    {
+      "autores": "Germano F, Germano F, Piro M, Arcuri C, Ottria L.",
+      "titulo": "Clinical protocol with digital cad/cam chairside workflow for the rehabilitation of severely worn dentition patients",
+      "revista": "Oral Implantol (Rome)",
+      "año": "2017",
+      "vol": "10",
+      "num": "3",
+      "pags": "247-261",
+      "doi": "10.11138/orl/2017.10.3.247",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29285327/",
+      "verificada": true
+    },
+    {
+      "autores": "Cheng H.",
+      "titulo": "[Digital workflow for full mouth rehabilitation of natural dentition]",
+      "revista": "Zhonghua Kou Qiang Yi Xue Za Zhi",
+      "año": "2025",
+      "vol": "60",
+      "num": "8",
+      "pags": "829-837",
+      "doi": "10.3760/cma.j.cn112144-20250408-00125",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/40734394/",
+      "verificada": true
+    },
+    {
+      "autores": "Benalcazar-Jalkh EB, de Carvalho LF, Zahoui A, Pucciarelli MGR, Soares S, Celestrino M, et al.",
+      "titulo": "Digital Workflow for the Restoration of the Vertical Dimension of Occlusion Evaluated by 3D Stereophotogrammetry",
+      "revista": "J Esthet Restor Dent",
+      "año": "2025",
+      "vol": "37",
+      "num": "12",
+      "pags": "2493-2509",
+      "doi": "10.1111/jerd.70030",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/40948111/",
+      "verificada": true
+    },
+    {
+      "autores": "Handa D, Patil AA, Sabane A, Patil R.",
+      "titulo": "Immediate complete denture rehabilitation using combined digital-functional impression technique and three-dimensional-printed occlusal templates",
+      "revista": "J Indian Prosthodont Soc",
+      "año": "2025",
+      "vol": "25",
+      "num": "4",
+      "pags": "377-382",
+      "doi": "10.4103/jips.jips_353_25",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/41111225/",
+      "verificada": true
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "implantes-straumann-2025-2026-10-22-6a92",
+  "titulo": "Implantes BLX y BLT: Evidencia Clínica en Torque, Estabilidad y Supervivencia",
+  "subtitulo": "Análisis riguroso de la evidencia publicada sobre implantes cónicos a nivel óseo y de conexión cónica, sus tasas de éxito y protocolos de carga.",
+  "categoria": "implantologia",
+  "chip": "Implantología",
+  "fecha": "2026-10-22",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🦷",
+  "grad": "grad-1",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Dental-implant-illustration.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Dental implant",
+  "img_link": "https://en.wikipedia.org/wiki/Dental%20implant",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La implantología oral contemporánea se beneficia de la constante evolución en el diseño de implantes y las características de su superficie, buscando optimizar la osteointegración, la estabilidad primaria y las tasas de éxito a largo plazo. Los sistemas de implantes cónicos a nivel óseo (Bone Level Tapered, BLT) y aquellos con conexión cónica de bloqueo (Locking Taper, como los sistemas BLX), representan avances significativos en este campo. La comprensión de su rendimiento clínico, incluyendo el torque de inserción, la estabilidad, la osteointegración y los protocolos de carga, es fundamental para la toma de decisiones clínicas basadas en evidencia."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Dental-implant-illustration.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Implantes Straumann BLX y BLT — evidencia clínica 2025",
+      "caption": "Wikipedia — Dental implant · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Torque de Inserción y Estabilidad Primaria"
+    },
+    {
+      "t": "p",
+      "c": "El torque de inserción es un indicador crítico de la estabilidad primaria del implante, influenciando directamente la decisión sobre el protocolo de carga. En un estudio que comparó la carga inmediata versus temprana de implantes cónicos a nivel óseo con superficie hidrofílica en rehabilitaciones maxilares de arcada completa, se registraron valores de torque de inserción específicos. Para los implantes asignados al grupo de carga inmediata, los valores de torque de inserción fueron de 33.0 ± 4.87 Ncm. En contraste, para el grupo de carga temprana, los valores fueron de 29.26 ± 8.31 Ncm (Marković et al., 2024). Estos datos sugieren que la estabilidad inicial adecuada es un prerrequisito para la carga inmediata."
+    },
+    {
+      "t": "h2",
+      "c": "Tasas de Supervivencia y Pérdida Ósea Marginal a Largo Plazo"
+    },
+    {
+      "t": "p",
+      "c": "La evaluación a largo plazo de los implantes dentales es esencial para determinar su fiabilidad clínica. Los implantes de longitud corta y ultracorta con conexión cónica de bloqueo, que soportan coronas individuales en áreas posteriores, han demostrado altos porcentajes de supervivencia y niveles estables de hueso marginal a medio plazo. Un estudio retrospectivo a 5 años evaluó 333 de estos implantes en pacientes periodontalmente sanos y con antecedentes de periodontitis, confirmando su buen rendimiento (Lombardo et al., 2022). Otro estudio que evaluó la carga inmediata de implantes cónicos de longitud corta en maxilares edéntulos con baja cantidad ósea, utilizando un diseño All-on-4, reportó una tasa de supervivencia acumulada general del 95.7% para los implantes cortos y del 100% para los implantes regulares, con un seguimiento promedio de 3 años (Maló et al., 2015)."
+    },
+    {
+      "t": "p",
+      "c": "La modificación del diseño del cuello del implante, tanto macro- como microgeométrico, así como las modificaciones de la superficie, contribuyen a la mejora de las tasas de supervivencia y al mantenimiento de los niveles óseos marginales periimplantarios. Una revisión sistemática encontró que estas características son importantes para los resultados clínicos y radiográficos (Messias et al., 2019)."
+    },
+    {
+      "t": "h2",
+      "c": "Protocolo de Carga Inmediata"
+    },
+    {
+      "t": "p",
+      "c": "El protocolo de carga inmediata ha ganado popularidad debido a sus beneficios estéticos y funcionales. Un ensayo clínico aleatorizado piloto comparó la carga inmediata versus la carga temprana de implantes cónicos a nivel óseo colocados inmediatamente en rehabilitaciones maxilares de arcada completa. Los implantes del grupo de carga inmediata recibieron restauraciones temporales, mientras que el grupo de carga temprana no recibió temporización. Las prótesis definitivas atornilladas de porcelana fusionada a metal se entregaron a todos los pacientes en la séptima semana postoperatoria (Marković et al., 2024). Este enfoque subraya la viabilidad de la carga inmediata bajo condiciones clínicas adecuadas y con una estabilidad primaria suficiente."
+    },
+    {
+      "t": "h2",
+      "c": "Características del Diseño del Implante y Conexión Protésica"
+    },
+    {
+      "t": "p",
+      "c": "La conexión implante-pilar es un factor crítico para el éxito a largo plazo. Las coronas individuales soportadas por implantes son más propensas al aflojamiento del tornillo que las prótesis ferulizadas. En este contexto, el sistema de conexión cónica de bloqueo, que utiliza un pilar sin tornillo, puede ofrecer un mejor rendimiento. Una revisión sistemática evaluó el rendimiento clínico y las complicaciones de las coronas individuales retenidas por este sistema, analizando la supervivencia del implante, la tasa de éxito, las complicaciones y la pérdida ósea marginal (Ribeiro et al., 2024)."
+    },
+    {
+      "t": "p",
+      "c": "El diseño del cuello del implante y las modificaciones de la superficie también son cruciales. Se han comparado implantes de una y dos piezas, así como implantes de dos piezas con diferentes características de cuello (cuellos mecanizados y rugosos, microhilos, microestructuras láser) en términos de tasas de supervivencia y niveles óseos marginales (Messias et al., 2019). Además, el ángulo de conicidad de la conexión interna implante-pilar y el diseño de la rosca influyen en la probabilidad de supervivencia y la distribución del estrés en implantes de diámetro estrecho (Freitas et al., 2022)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Grupo de Carga",
+        "Torque de Inserción (Ncm)",
+        "Tasa de Supervivencia de Implantes Cortos",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Carga Inmediata (Implantes Cónicos Nivel Óseo)",
+          "33.0 ± 4.87",
+          "N/A",
+          "(Marković et al., 2024)"
+        ],
+        [
+          "Carga Temprana (Implantes Cónicos Nivel Óseo)",
+          "29.26 ± 8.31",
+          "N/A",
+          "(Marković et al., 2024)"
+        ],
+        [
+          "Carga Inmediata (Implantes Cónicos Cortos All-on-4)",
+          "N/A",
+          "95.7%",
+          "(Maló et al., 2015)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Conclusiones Clínicas y Consideraciones Finales"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia clínica actual respalda el uso de implantes cónicos a nivel óseo y de conexión cónica de bloqueo, demostrando altas tasas de supervivencia y estabilidad de los niveles óseos marginales. Los protocolos de carga inmediata son viables en casos seleccionados con estabilidad primaria adecuada, como lo demuestran los valores de torque de inserción y las tasas de éxito reportadas. Las características de diseño del implante, incluyendo la macro y microgeometría del cuello, la superficie hidrofílica y el diseño de la conexión implante-pilar, son factores determinantes para el éxito a largo plazo y la prevención de complicaciones periimplantarias."
+    },
+    {
+      "t": "quote",
+      "c": "Los implantes de longitud corta y ultracorta con conexión cónica de bloqueo parecen demostrar altos porcentajes de supervivencia y niveles estables de hueso marginal a medio plazo.",
+      "author": "Lombardo et al., Clin Implant Dent Relat Res, 2022"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es el torque de inserción recomendado para la carga inmediata de implantes cónicos a nivel óseo?",
+      "a": "Los estudios sugieren que valores de torque de inserción de aproximadamente 33.0 ± 4.87 Ncm para implantes cónicos a nivel óseo con superficie hidrofílica son adecuados para protocolos de carga inmediata en rehabilitaciones maxilares de arcada completa (Marković et al., 2024)."
+    },
+    {
+      "q": "¿Qué ventajas ofrecen los implantes con conexión cónica de bloqueo en comparación con otras conexiones?",
+      "a": "Los sistemas de conexión cónica de bloqueo, al ser sin tornillo, pueden ser menos propensos al aflojamiento del tornillo en coronas individuales soportadas por implantes, lo que contribuye a una mayor estabilidad protésica y menores complicaciones mecánicas (Ribeiro et al., 2024)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Ribeiro MCO, Vargas-Moreno VF, Gomes RS, Faot F, Del Bel Cury AA, Marcello-Machado RM.",
+      "titulo": "Implant-supported crowns with locking taper implant-abutment connection: A systematic review and meta-analysis",
+      "revista": "J Prosthet Dent",
+      "año": "2024",
+      "vol": "132",
+      "num": "2",
+      "pags": "369-380",
+      "doi": "10.1016/j.prosdent.2022.06.005",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35864024/",
+      "verificada": true
+    },
+    {
+      "autores": "Messias A, Nicolau P, Guerra F.",
+      "titulo": "Titanium dental implants with different collar design and surface modifications: A systematic review on survival rates and marginal bone levels",
+      "revista": "Clin Oral Implants Res",
+      "año": "2019",
+      "vol": "30",
+      "num": "1",
+      "pags": "20-48",
+      "doi": "10.1111/clr.13389",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/30466192/",
+      "verificada": true
+    },
+    {
+      "autores": "Marković A, Todorović A, Glišić M, Marković J, Ilić B, Janjić B, et al.",
+      "titulo": "Immediate versus early loading of immediately placed bone-level tapered dental implants with hydrophilic surface in full arch maxillary rehabilitation: A pilot randomized clinical trial with 2-year follow-up",
+      "revista": "Clin Implant Dent Relat Res",
+      "año": "2024",
+      "vol": "26",
+      "num": "4",
+      "pags": "688-703",
+      "doi": "10.1111/cid.13334",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38693759/",
+      "verificada": true
+    },
+    {
+      "autores": "Freitas MIM, Gomes RS, Ruggiero MM, Bergamo ETP, Bonfante EA, Marcello-Machado RM, et al.",
+      "titulo": "Probability of survival and stress distribution of narrow diameter implants with different implant-abutment taper angles",
+      "revista": "J Biomed Mater Res B Appl Biomater",
+      "año": "2022",
+      "vol": "110",
+      "num": "3",
+      "pags": "638-645",
+      "doi": "10.1002/jbm.b.34942",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/34559448/",
+      "verificada": true
+    },
+    {
+      "autores": "Lombardo G, Signoriello A, Pardo A, Serpa Romero XZ, Vila Sierra LA, Arévalo Tovar L, et al.",
+      "titulo": "Short and ultra-short (<6-mm) locking-taper implants supporting single crowns in posterior areas (part II): A 5-year retrospective study on periodontally healthy patients and patients with a history of periodontitis",
+      "revista": "Clin Implant Dent Relat Res",
+      "año": "2022",
+      "vol": "24",
+      "num": "4",
+      "pags": "455-467",
+      "doi": "10.1111/cid.13103",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35635514/",
+      "verificada": true
+    },
+    {
+      "autores": "Maló P, de Araújo Nobre MA, Lopes AV, Rodrigues R.",
+      "titulo": "Immediate loading short implants inserted on low bone quantity for the rehabilitation of the edentulous maxilla using an All-on-4 design",
+      "revista": "J Oral Rehabil",
+      "año": "2015",
+      "vol": "42",
+      "num": "8",
+      "pags": "615-23",
+      "doi": "10.1111/joor.12291",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/25757870/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
