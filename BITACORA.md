@@ -11,6 +11,10 @@
 
 ## 2026-10-22  (desambiguación de marca · entidad PRODIGY Lab Dental)
 
+- ✅ **HOME PÚBLICA** (fin del mantenimiento): se comentó el redirect inline a `/mantenimiento` en `index.html`
+  (home verificada completa y presentable por captura headless). Google ya puede indexarla y los anuncios ya
+  pueden apuntar a la home. Para re-activar: descomentar esa línea. (header.js ya tenía `/` en publicPages.)
+
 - ✅ **Nombre de entidad unificado a "PRODIGY Lab Dental"** en páginas públicas (schema, `<title>`, og/twitter,
   footer): index, nosotros, journal, calculadora, envia-tu-scanner, escaner-domicilio, catalogo, fresado-cam,
   portafolio, seguimiento-caso, 404, mantenimiento, calidad + meta de terminos. El schema principal (nosotros)
