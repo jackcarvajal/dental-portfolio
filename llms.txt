@@ -9,6 +9,7 @@
 - [Impresión 3D dental](https://prodigylabdental.com/impresion-3d): Modelos de estudio, guías quirúrgicas, férulas oclusales y provisionales.
 - [Guías quirúrgicas](https://prodigylabdental.com/guias-quirurgicas): Guías para colocación de implantes dento, muco y óseo soportadas.
 - [Escaneo a domicilio](https://prodigylabdental.com/escaner-domicilio): Escaneo intraoral en clínica en Bogotá.
+- [Soporte técnico Exocad](https://prodigylabdental.com/soporte-exocad): Soporte de Exocad por hora — errores, licencia, instalación y configuración de DentalCAD.
 - [Catálogo de materiales](https://prodigylabdental.com/catalogo): Zirconio multicapa, disilicato, PMMA y resinas 3D.
 
 ## Herramientas
