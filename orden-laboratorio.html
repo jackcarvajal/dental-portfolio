@@ -12,56 +12,56 @@
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--mg:#D946A6;--mg2:#B0267F;--gold:#B8901F;--ink:#111;--soft:#666;--line:#d0d0d0;}
+:root{--mg:#D946A6;--mg2:#B0267F;--gold:#B8901F;--ink:#111;--soft:#666;}
 body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Arial,sans-serif;padding:16px;}
-.bar{max-width:210mm;margin:0 auto 12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;}
+.bar{max-width:275mm;margin:0 auto 12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;}
 .bar button,.bar a{padding:11px 20px;border-radius:9px;border:none;font-weight:800;font-size:.85rem;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
 .print{background:var(--mg2);color:#fff;}
 .ghost{background:#cbd5e1;color:#334155;}
 .hint{font-size:.75rem;color:#475569;flex-basis:100%;text-align:center;}
 
-/* ── HOJA carta vertical ── */
-.sheet{width:210mm;max-width:100%;margin:0 auto;background:#fff;box-shadow:0 8px 40px rgba(0,0,0,.25);padding:13mm 13mm 10mm;color:#000;font-size:9.5pt;line-height:1.3;}
-.hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--mg);padding-bottom:3mm;gap:4mm;}
-.hdr .brand h1{font-size:15pt;font-weight:900;color:var(--mg);line-height:1;}
-.hdr .brand .sub{font-size:7.5pt;color:var(--soft);margin-top:1mm;}
-.hdr .center{text-align:right;}
-.hdr .center .t{font-size:10pt;font-weight:900;letter-spacing:.5px;}
-.hdr .center .meta{font-size:8pt;color:var(--soft);margin-top:1.5mm;display:flex;gap:4mm;justify-content:flex-end;}
-.hdr .center .meta b{color:#000;}
-.sec{background:var(--mg);color:#fff;font-size:8pt;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:1.3mm 2mm;margin-top:3mm;border-radius:1mm;}
-.grid{display:flex;flex-wrap:wrap;border:1px solid var(--line);border-top:none;}
-.fld{flex:1;min-width:33%;padding:1.5mm 2mm;border-right:1px solid #eee;border-bottom:1px solid #eee;}
-.fld.w50{min-width:50%;flex-basis:50%;}
-.fld.w100{min-width:100%;flex-basis:100%;border-right:none;}
-.fld .k{font-size:6.5pt;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.3px;margin-bottom:.8mm;}
-.fld input,.fld .wline{width:100%;border:none;border-bottom:1px solid #bbb;font-size:10pt;font-family:inherit;padding:.4mm 0;background:transparent;min-height:5mm;color:#000;}
+/* ── HOJA: carta apaisada, 2 órdenes ── */
+.sheet{width:275mm;max-width:100%;margin:0 auto;background:#fff;display:flex;gap:0;box-shadow:0 8px 40px rgba(0,0,0,.25);}
+.cut{width:0;border-left:1px dashed #999;}
+.orden{flex:1;width:135mm;padding:6mm;color:#000;font-size:8pt;line-height:1.25;}
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.6px solid var(--mg);padding-bottom:2mm;gap:3mm;}
+.hdr .brand h1{font-size:12pt;font-weight:900;color:var(--mg);line-height:1;}
+.hdr .brand .sub{font-size:6pt;color:var(--soft);margin-top:.6mm;}
+.hdr .center{text-align:right;flex-shrink:0;}
+.hdr .center .t{font-size:8.5pt;font-weight:900;letter-spacing:.4px;}
+.hdr .center .meta{font-size:6.5pt;color:var(--soft);margin-top:1mm;}
+.hdr .center .meta input{border:none;border-bottom:1px solid #bbb;font-size:7.5pt;font-family:inherit;width:17mm;}
+.sec{background:var(--mg);color:#fff;font-size:6.5pt;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:1mm 1.6mm;margin-top:1.8mm;border-radius:.8mm;}
+.row{display:flex;border:1px solid #e3e3e3;border-top:none;}
+.fld{flex:1;padding:1mm 1.4mm;border-right:1px solid #eee;min-width:0;}
+.fld:last-child{border-right:none;}
+.fld .k{font-size:5.4pt;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.2px;}
+.fld input{width:100%;border:none;border-bottom:1px solid #ccc;font-size:8.5pt;font-family:inherit;padding:.3mm 0;background:transparent;min-height:4mm;color:#000;}
 .fld input:focus{outline:none;border-bottom-color:var(--mg);}
-.checks{display:flex;flex-wrap:wrap;gap:1.5mm 4mm;padding:2mm;border:1px solid var(--line);border-top:none;}
-.chk{display:flex;align-items:center;gap:1.5mm;font-size:9pt;cursor:pointer;}
-.chk input{width:3mm;height:3mm;accent-color:var(--mg);margin:0;flex-shrink:0;}
-.chk .other{border:none;border-bottom:1px solid #bbb;font-size:9pt;width:22mm;font-family:inherit;}
-/* odontograma */
-.odo{padding:2mm;border:1px solid var(--line);border-top:none;}
-.teeth{display:flex;gap:.5mm;font-size:8pt;font-weight:700;justify-content:center;}
-.teeth span{width:6.2mm;text-align:center;border:1px solid #ddd;border-radius:.6mm;padding:.4mm 0;cursor:pointer;user-select:none;}
+.checks{display:flex;flex-wrap:wrap;gap:.8mm 2.4mm;padding:1.4mm;border:1px solid #e3e3e3;border-top:none;}
+.chk{display:flex;align-items:center;gap:1mm;font-size:6.8pt;cursor:pointer;}
+.chk input[type=checkbox]{width:2.5mm;height:2.5mm;accent-color:var(--mg);margin:0;flex-shrink:0;}
+.chk .other{border:none;border-bottom:1px solid #bbb;font-size:6.8pt;width:13mm;font-family:inherit;}
+.odo{padding:1.4mm;border:1px solid #e3e3e3;border-top:none;}
+.teeth{display:flex;gap:.4mm;font-size:6pt;font-weight:700;justify-content:center;}
+.teeth span{width:4.9mm;text-align:center;border:1px solid #ddd;border-radius:.4mm;padding:.3mm 0;cursor:pointer;user-select:none;}
 .teeth span.on{background:var(--mg);color:#fff;border-color:var(--mg);}
-.teeth .sep{width:1.5px;background:#333;border:none;border-radius:0;cursor:default;}
-.odo .hint2{text-align:center;font-size:6.5pt;color:var(--soft);margin-top:1mm;}
-.lines{border:1px solid var(--line);border-top:none;padding:2mm;}
-.lines .wl{min-height:8mm;background:repeating-linear-gradient(transparent,transparent 5mm,#e2e2e2 5mm,#e2e2e2 5.3mm);font-size:10pt;outline:none;}
-.firmas{display:flex;gap:6mm;padding-top:9mm;}
+.teeth .sep{width:1.4px;background:#333;border:none;border-radius:0;cursor:default;}
+.odo .h2{text-align:center;font-size:5.4pt;color:var(--soft);margin-top:.8mm;}
+.lines{border:1px solid #e3e3e3;border-top:none;padding:1.4mm;}
+.lines .wl{min-height:9mm;background:repeating-linear-gradient(transparent,transparent 4.3mm,#e2e2e2 4.3mm,#e2e2e2 4.6mm);font-size:8.5pt;outline:none;}
+.firmas{display:flex;gap:4mm;padding-top:7mm;}
 .firmas .f{flex:1;text-align:center;}
-.firmas .f .l{border-top:1px solid #333;padding-top:1mm;font-size:7.5pt;color:var(--soft);}
-.foot{margin-top:4mm;background:#faf1f8;border:1px solid #f0d4e9;border-radius:1.5mm;padding:2.5mm 3mm;font-size:8pt;color:#6a2056;line-height:1.5;}
+.firmas .f .l{border-top:1px solid #333;padding-top:.6mm;font-size:5.4pt;color:var(--soft);}
+.foot{margin-top:2mm;background:#faf1f8;border:1px solid #f0d4e9;border-radius:1mm;padding:1.4mm 2mm;font-size:5.8pt;color:#6a2056;line-height:1.4;}
 .foot b{color:var(--mg2);}
-.foot i{color:var(--mg);width:4mm;}
+.blankmark{text-align:center;font-size:6pt;color:#bbb;}
 @media print{
-  @page{size:letter portrait;margin:0;}
+  @page{size:letter landscape;margin:6mm;}
   body{background:#fff;padding:0;}
   .bar{display:none;}
-  .sheet{box-shadow:none;width:100%;margin:0;padding:12mm;}
-  .fld input:focus{border-bottom-color:#bbb;}
+  .sheet{box-shadow:none;width:100%;}
+  .fld input:focus{border-bottom-color:#ccc;}
 }
 </style>
 </head>
@@ -69,104 +69,86 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
 <div class="bar">
   <button class="print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir / Guardar PDF</button>
   <button class="ghost" onclick="limpiar()"><i class="fas fa-eraser"></i> Limpiar</button>
-  <span class="hint">Llénala en pantalla o imprímela en blanco y escribe a mano. Luego envíala por WhatsApp o súbela en el portal de casos.</span>
+  <span class="hint">Dos órdenes por hoja (corta por la línea del centro). Llénala en pantalla o imprímela en blanco y escribe a mano · luego envíala por WhatsApp o súbela al portal.</span>
 </div>
 
-<div class="sheet">
-  <div class="hdr">
-    <div class="brand"><h1>💎 PRODIGY</h1><div class="sub">Lab Dental · prodigylabdental.com · +57 321 281 6716</div></div>
-    <div class="center">
-      <div class="t">ORDEN DE TRABAJO</div>
-      <div class="meta"><span>Nº <input style="width:26mm;border:none;border-bottom:1px solid #bbb;font-size:9pt;"></span><span>Fecha <input style="width:26mm;border:none;border-bottom:1px solid #bbb;font-size:9pt;"></span></div>
+<div class="sheet" id="sheet"></div>
+
+<template id="ord">
+  <div class="orden">
+    <div class="hdr">
+      <div class="brand"><h1>💎 PRODIGY</h1><div class="sub">Lab Dental · prodigylabdental.com · +57 321 281 6716</div></div>
+      <div class="center"><div class="t">ORDEN DE TRABAJO</div><div class="meta">Nº <input> · Fecha <input></div></div>
     </div>
-  </div>
 
-  <div class="sec">Clínica / Odontólogo</div>
-  <div class="grid">
-    <div class="fld w50"><div class="k">Clínica / Doctor(a)</div><input></div>
-    <div class="fld"><div class="k">Código DR (si tienes)</div><input placeholder="DR-____"></div>
-    <div class="fld"><div class="k">WhatsApp</div><input></div>
-    <div class="fld"><div class="k">Correo</div><input></div>
-    <div class="fld"><div class="k">Ciudad / País</div><input></div>
-  </div>
+    <div class="sec">Clínica / odontólogo</div>
+    <div class="row"><div class="fld"><div class="k">Clínica / Doctor(a)</div><input></div><div class="fld"><div class="k">Código DR</div><input placeholder="DR-____"></div></div>
+    <div class="row"><div class="fld"><div class="k">WhatsApp</div><input></div><div class="fld"><div class="k">Correo</div><input></div><div class="fld"><div class="k">Ciudad / País</div><input></div></div>
 
-  <div class="sec">Paciente</div>
-  <div class="grid">
-    <div class="fld w50"><div class="k">Paciente (nombre o iniciales)</div><input></div>
-    <div class="fld"><div class="k">Edad</div><input></div>
-    <div class="fld"><div class="k">Sexo</div><input></div>
-  </div>
+    <div class="sec">Paciente</div>
+    <div class="row"><div class="fld"><div class="k">Paciente (nombre o iniciales)</div><input></div><div class="fld"><div class="k">Edad</div><input></div></div>
 
-  <div class="sec">Trabajo solicitado</div>
-  <div class="checks">
-    <label class="chk"><input type="checkbox"> Corona</label>
-    <label class="chk"><input type="checkbox"> Puente</label>
-    <label class="chk"><input type="checkbox"> Carilla</label>
-    <label class="chk"><input type="checkbox"> Incrustación (inlay/onlay)</label>
-    <label class="chk"><input type="checkbox"> Full-arch / híbrida</label>
-    <label class="chk"><input type="checkbox"> Corona sobre implante</label>
-    <label class="chk"><input type="checkbox"> Guía quirúrgica</label>
-    <label class="chk"><input type="checkbox"> Férula / placa</label>
-    <label class="chk"><input type="checkbox"> Provisional</label>
-    <label class="chk"><input type="checkbox"> Otro: <input class="other"></label>
-  </div>
+    <div class="sec">Trabajo solicitado</div>
+    <div class="checks">
+      <label class="chk"><input type="checkbox"> Corona</label>
+      <label class="chk"><input type="checkbox"> Puente</label>
+      <label class="chk"><input type="checkbox"> Carilla</label>
+      <label class="chk"><input type="checkbox"> Incrustación</label>
+      <label class="chk"><input type="checkbox"> Full-arch / híbrida</label>
+      <label class="chk"><input type="checkbox"> Sobre implante</label>
+      <label class="chk"><input type="checkbox"> Guía quirúrgica</label>
+      <label class="chk"><input type="checkbox"> Férula</label>
+      <label class="chk"><input type="checkbox"> Provisional</label>
+      <label class="chk"><input type="checkbox"> Otro: <input class="other"></label>
+    </div>
 
-  <div class="sec">Material · color · cantidad</div>
-  <div class="checks">
-    <label class="chk"><input type="checkbox"> Disilicato (e.max)</label>
-    <label class="chk"><input type="checkbox"> Zirconio</label>
-    <label class="chk"><input type="checkbox"> Feldespático</label>
-    <label class="chk"><input type="checkbox"> PMMA / provisional</label>
-    <label class="chk"><input type="checkbox"> Otro: <input class="other"></label>
-  </div>
-  <div class="grid">
-    <div class="fld"><div class="k">Color / VITA</div><input placeholder="ej. A2, BL2"></div>
-    <div class="fld"><div class="k">Cantidad (unidades)</div><input></div>
-    <div class="fld"><div class="k">Estética</div><input placeholder="Hollywood / Natural"></div>
-  </div>
+    <div class="sec">Material · color · cantidad</div>
+    <div class="checks">
+      <label class="chk"><input type="checkbox"> Disilicato (e.max)</label>
+      <label class="chk"><input type="checkbox"> Zirconio</label>
+      <label class="chk"><input type="checkbox"> Feldespático</label>
+      <label class="chk"><input type="checkbox"> PMMA</label>
+      <label class="chk"><input type="checkbox"> Otro: <input class="other"></label>
+    </div>
+    <div class="row"><div class="fld"><div class="k">Color / VITA</div><input placeholder="A2, BL2…"></div><div class="fld"><div class="k">Cantidad</div><input></div><div class="fld"><div class="k">Estética</div><input placeholder="Hollywood / Natural"></div></div>
 
-  <div class="sec">Piezas — odontograma (FDI)</div>
-  <div class="odo">
-    <div class="teeth" id="t1"></div>
-    <div class="teeth" id="t2" style="margin-top:1.5mm;"></div>
-    <div class="hint2">Toca los dientes a trabajar (en pantalla) o enciérralos a mano.</div>
-  </div>
+    <div class="sec">Piezas — odontograma (FDI)</div>
+    <div class="odo">
+      <div class="teeth" data-arc="up"></div>
+      <div class="teeth" data-arc="low" style="margin-top:1mm;"></div>
+      <div class="h2">Toca los dientes a trabajar (en pantalla) o enciérralos a mano.</div>
+    </div>
 
-  <div class="sec">Qué envío con el caso</div>
-  <div class="checks">
-    <label class="chk"><input type="checkbox"> Escaneo STL</label>
-    <label class="chk"><input type="checkbox"> Impresión</label>
-    <label class="chk"><input type="checkbox"> Modelo</label>
-    <label class="chk"><input type="checkbox"> Antagonista</label>
-    <label class="chk"><input type="checkbox"> Registro de mordida</label>
-    <label class="chk"><input type="checkbox"> Fotos / color</label>
-    <label class="chk"><input type="checkbox"> Llave de implante</label>
-    <label class="chk"><input type="checkbox"> Tornillos</label>
-  </div>
+    <div class="sec">Qué envío con el caso</div>
+    <div class="checks">
+      <label class="chk"><input type="checkbox"> Escaneo STL</label>
+      <label class="chk"><input type="checkbox"> Impresión</label>
+      <label class="chk"><input type="checkbox"> Modelo</label>
+      <label class="chk"><input type="checkbox"> Antagonista</label>
+      <label class="chk"><input type="checkbox"> Registro mordida</label>
+      <label class="chk"><input type="checkbox"> Fotos / color</label>
+      <label class="chk"><input type="checkbox"> Llave implante</label>
+      <label class="chk"><input type="checkbox"> Tornillos</label>
+    </div>
 
-  <div class="sec">Indicaciones y oclusión</div>
-  <div class="lines"><div class="wl" contenteditable="true"></div></div>
+    <div class="sec">Indicaciones y oclusión</div>
+    <div class="lines"><div class="wl" contenteditable="true"></div></div>
 
-  <div class="grid">
-    <div class="fld w50"><div class="k">Fecha deseada de entrega</div><input></div>
-    <div class="fld w50"><div class="k">Sistema de implante (si aplica)</div><input></div>
-  </div>
+    <div class="row"><div class="fld"><div class="k">Fecha deseada de entrega</div><input></div><div class="fld"><div class="k">Sistema de implante (si aplica)</div><input></div></div>
 
-  <div class="firmas">
-    <div class="f"><div class="l">Firma del odontólogo</div></div>
-    <div class="f"><div class="l">Registro / tarjeta profesional</div></div>
-  </div>
+    <div class="firmas"><div class="f"><div class="l">Firma del odontólogo</div></div><div class="f"><div class="l">Registro / tarjeta profesional</div></div></div>
 
-  <div class="foot">
-    <div><i class="fab fa-whatsapp"></i> <b>Enviar el caso:</b> escríbenos a WhatsApp <b>+57 321 281 6716</b> o súbelo en <b>prodigylabdental.com/flujo-diseno</b> adjuntando esta orden y los archivos (STL / fotos).</div>
-    <div style="margin-top:1.5mm;"><i class="fas fa-circle-info"></i> Diseñamos la sonrisa y la apruebas <b>antes de fresar</b>. Documento de prescripción para el laboratorio · sin validez tributaria (la factura se emite aparte).</div>
+    <div class="foot"><b>Enviar el caso:</b> WhatsApp <b>+57 321 281 6716</b> o súbelo en <b>prodigylabdental.com/flujo-diseno</b> con esta orden y los archivos (STL / fotos). Diseñamos y apruebas <b>antes de fresar</b>. Prescripción para el laboratorio · sin validez tributaria.</div>
   </div>
-</div>
+</template>
 
 <script>
-// Odontograma: construir y permitir marcar
 (function(){
-  function fila(el,nums){
+  const tpl = document.getElementById('ord');
+  const sheet = document.getElementById('sheet');
+  const UP = [18,17,16,15,14,13,12,11,'|',21,22,23,24,25,26,27,28];
+  const LOW = [48,47,46,45,44,43,42,41,'|',31,32,33,34,35,36,37,38];
+  function fillTeeth(el,nums){
     nums.forEach(function(n){
       if(n==='|'){ var s=document.createElement('span'); s.className='sep'; el.appendChild(s); return; }
       var sp=document.createElement('span'); sp.textContent=n;
@@ -174,8 +156,13 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
       el.appendChild(sp);
     });
   }
-  fila(document.getElementById('t1'),[18,17,16,15,14,13,12,11,'|',21,22,23,24,25,26,27,28]);
-  fila(document.getElementById('t2'),[48,47,46,45,44,43,42,41,'|',31,32,33,34,35,36,37,38]);
+  // dos órdenes por hoja
+  sheet.appendChild(tpl.content.cloneNode(true));
+  var cut=document.createElement('div'); cut.className='cut'; sheet.appendChild(cut);
+  sheet.appendChild(tpl.content.cloneNode(true));
+  document.querySelectorAll('.teeth').forEach(function(t){
+    fillTeeth(t, t.getAttribute('data-arc')==='up' ? UP : LOW);
+  });
 })();
 function limpiar(){
   if(!confirm('¿Borrar todo lo que escribiste en la orden?')) return;
