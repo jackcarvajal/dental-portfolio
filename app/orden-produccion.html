@@ -71,6 +71,7 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
 <body>
 <div class="bar">
   <button class="print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
+  <a class="ghost" href="?blank=1"><i class="fas fa-file"></i> En blanco</a>
   <a class="ghost" href="rastreo.html"><i class="fas fa-arrow-left"></i> Volver</a>
   <span class="hint" id="modo"></span>
 </div>
@@ -165,6 +166,11 @@ function camposVacios(){
 }
 
 async function init(){
+  if(params.get('blank')==='1'){
+    document.getElementById('sheet').innerHTML = renderOrden(null) + '<div class="cut"></div>' + renderOrden(null);
+    const m=document.getElementById('modo'); if(m) m.textContent='Orden EN BLANCO (2 por hoja) — para llenar a mano';
+    return;
+  }
   sb = (window.ProdigyAuth && window.ProdigyAuth.getSb) ? window.ProdigyAuth.getSb() : window.supabase.createClient(
     'https://zgihrwqfyvgyapbwzkvw.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634'
