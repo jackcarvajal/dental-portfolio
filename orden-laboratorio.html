@@ -18,11 +18,16 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
 .bar button,.bar a{padding:11px 20px;border-radius:9px;border:none;font-weight:800;font-size:.85rem;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
 .print{background:var(--mg2);color:#fff;}
 .ghost{background:#cbd5e1;color:#334155;}
+.modo{display:inline-flex;border:1px solid #cbd5e1;border-radius:9px;overflow:hidden}
+.modo .mb{padding:11px 16px;border:none;background:#fff;color:#334155;font-weight:800;font-size:.8rem;cursor:pointer;font-family:inherit}
+.modo .mb.active{background:var(--mg2);color:#fff}
 .hint{font-size:.75rem;color:#475569;flex-basis:100%;text-align:center;}
 
 /* ── HOJA: carta apaisada, 2 órdenes ── */
 .sheet{width:275mm;max-width:100%;margin:0 auto;background:#fff;display:flex;gap:0;box-shadow:0 8px 40px rgba(0,0,0,.25);}
 .cut{width:0;border-left:1px dashed #999;}
+.sheet.one{justify-content:center}
+.sheet.one .orden{width:190mm;max-width:100%;flex:none}
 .orden{flex:1;width:135mm;padding:6mm;color:#000;font-size:8pt;line-height:1.25;}
 .hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.6px solid var(--mg);padding-bottom:2mm;gap:3mm;}
 .hdr .brand h1{font-size:12pt;font-weight:900;color:var(--mg);line-height:1;}
@@ -57,19 +62,24 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
 .foot b{color:var(--mg2);}
 .blankmark{text-align:center;font-size:6pt;color:#bbb;}
 @media print{
-  @page{size:letter landscape;margin:6mm;}
   body{background:#fff;padding:0;}
   .bar{display:none;}
-  .sheet{box-shadow:none;width:100%;}
+  .sheet{box-shadow:none;}
+  .sheet.two{width:100%;}
   .fld input:focus{border-bottom-color:#ccc;}
 }
 </style>
+<style id="pgstyle">@page{size:letter portrait;margin:10mm}</style>
 </head>
 <body>
 <div class="bar">
+  <div class="modo" role="group" aria-label="Formato de la orden">
+    <button type="button" class="mb active" id="mb1" onclick="setMode(1)">1 por hoja · llenar</button>
+    <button type="button" class="mb" id="mb2" onclick="setMode(2)">2 por hoja · imprimir</button>
+  </div>
   <button class="print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir / Guardar PDF</button>
   <button class="ghost" onclick="limpiar()"><i class="fas fa-eraser"></i> Limpiar</button>
-  <span class="hint">Dos órdenes por hoja (corta por la línea del centro). Llénala en pantalla o imprímela en blanco y escribe a mano · luego envíala por WhatsApp o súbela al portal.</span>
+  <span class="hint" id="hint">Para llenar en pantalla usa <b>1 por hoja</b>. Para imprimir en blanco y llenar a mano, <b>2 por hoja</b>. Luego envíala por WhatsApp o súbela al portal.</span>
 </div>
 
 <div class="sheet" id="sheet"></div>
@@ -143,27 +153,34 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
 </template>
 
 <script>
-(function(){
-  const tpl = document.getElementById('ord');
-  const sheet = document.getElementById('sheet');
-  const UP = [18,17,16,15,14,13,12,11,'|',21,22,23,24,25,26,27,28];
-  const LOW = [48,47,46,45,44,43,42,41,'|',31,32,33,34,35,36,37,38];
-  function fillTeeth(el,nums){
-    nums.forEach(function(n){
-      if(n==='|'){ var s=document.createElement('span'); s.className='sep'; el.appendChild(s); return; }
-      var sp=document.createElement('span'); sp.textContent=n;
-      sp.addEventListener('click',function(){ sp.classList.toggle('on'); });
-      el.appendChild(sp);
-    });
-  }
-  // dos órdenes por hoja
-  sheet.appendChild(tpl.content.cloneNode(true));
-  var cut=document.createElement('div'); cut.className='cut'; sheet.appendChild(cut);
-  sheet.appendChild(tpl.content.cloneNode(true));
-  document.querySelectorAll('.teeth').forEach(function(t){
-    fillTeeth(t, t.getAttribute('data-arc')==='up' ? UP : LOW);
+var tpl = document.getElementById('ord');
+var sheet = document.getElementById('sheet');
+var pg = document.getElementById('pgstyle');
+var UP = [18,17,16,15,14,13,12,11,'|',21,22,23,24,25,26,27,28];
+var LOW = [48,47,46,45,44,43,42,41,'|',31,32,33,34,35,36,37,38];
+function fillTeeth(el,nums){
+  nums.forEach(function(n){
+    if(n==='|'){ var s=document.createElement('span'); s.className='sep'; el.appendChild(s); return; }
+    var sp=document.createElement('span'); sp.textContent=n;
+    sp.addEventListener('click',function(){ sp.classList.toggle('on'); });
+    el.appendChild(sp);
   });
-})();
+}
+function render(n){
+  sheet.className = 'sheet ' + (n===2 ? 'two' : 'one');
+  sheet.innerHTML = '';
+  sheet.appendChild(tpl.content.cloneNode(true));
+  if(n===2){ var cut=document.createElement('div'); cut.className='cut'; sheet.appendChild(cut); sheet.appendChild(tpl.content.cloneNode(true)); }
+  document.querySelectorAll('#sheet .teeth').forEach(function(t){ fillTeeth(t, t.getAttribute('data-arc')==='up' ? UP : LOW); });
+}
+function setMode(n){
+  render(n);
+  pg.textContent = n===2 ? '@page{size:letter landscape;margin:6mm}' : '@page{size:letter portrait;margin:10mm}';
+  var b1=document.getElementById('mb1'), b2=document.getElementById('mb2');
+  if(b1) b1.classList.toggle('active', n===1);
+  if(b2) b2.classList.toggle('active', n===2);
+}
+setMode(1);
 function limpiar(){
   if(!confirm('¿Borrar todo lo que escribiste en la orden?')) return;
   document.querySelectorAll('.sheet input').forEach(function(i){ if(i.type==='checkbox') i.checked=false; else i.value=''; });
