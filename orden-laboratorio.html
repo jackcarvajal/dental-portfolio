@@ -17,6 +17,7 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
 .bar{max-width:275mm;margin:0 auto 12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;}
 .bar button,.bar a{padding:11px 20px;border-radius:9px;border:none;font-weight:800;font-size:.85rem;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
 .print{background:var(--mg2);color:#fff;}
+.wa{background:#25D366;color:#fff;}
 .ghost{background:#cbd5e1;color:#334155;}
 .modo{display:inline-flex;border:1px solid #cbd5e1;border-radius:9px;overflow:hidden}
 .modo .mb{padding:11px 16px;border:none;background:#fff;color:#334155;font-weight:800;font-size:.8rem;cursor:pointer;font-family:inherit}
@@ -77,6 +78,7 @@ body{background:#e2e8f0;color:var(--ink);font-family:-apple-system,'Segoe UI',Ar
     <button type="button" class="mb active" id="mb1" onclick="setMode(1)">1 por hoja · llenar</button>
     <button type="button" class="mb" id="mb2" onclick="setMode(2)">2 por hoja · imprimir</button>
   </div>
+  <button class="wa" onclick="enviarWA()"><i class="fab fa-whatsapp"></i> Enviar por WhatsApp</button>
   <button class="print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir / Guardar PDF</button>
   <button class="ghost" onclick="limpiar()"><i class="fas fa-eraser"></i> Limpiar</button>
   <span class="hint" id="hint">Para llenar en pantalla usa <b>1 por hoja</b>. Para imprimir en blanco y llenar a mano, <b>2 por hoja</b>. Luego envíala por WhatsApp o súbela al portal.</span>
@@ -181,6 +183,30 @@ function setMode(n){
   if(b2) b2.classList.toggle('active', n===2);
 }
 setMode(1);
+function enviarWA(){
+  var o = document.querySelector('#sheet .orden');
+  if(!o){ return; }
+  var L = ['Hola PRODIGY, orden de trabajo:'];
+  o.querySelectorAll('.fld').forEach(function(f){
+    var k=f.querySelector('.k'), inp=f.querySelector('input');
+    if(k&&inp&&inp.value.trim()) L.push('• '+k.textContent.trim()+': '+inp.value.trim());
+  });
+  o.querySelectorAll('.checks').forEach(function(c){
+    var sec=c.previousElementSibling, title=(sec&&sec.classList.contains('sec'))?sec.textContent.trim():'';
+    var m=[];
+    c.querySelectorAll('.chk').forEach(function(l){
+      var cb=l.querySelector('input[type=checkbox]'); if(!cb||!cb.checked) return;
+      var other=l.querySelector('.other');
+      m.push(other ? (other.value.trim()?('Otro: '+other.value.trim()):'Otro') : l.textContent.replace(/\s+/g,' ').trim());
+    });
+    if(m.length) L.push('• '+title+': '+m.join(', '));
+  });
+  var teeth=[]; o.querySelectorAll('.teeth span.on').forEach(function(s){ teeth.push(s.textContent); });
+  if(teeth.length) L.push('• Piezas (FDI): '+teeth.join(', '));
+  var wl=o.querySelector('.wl'); if(wl&&wl.textContent.trim()) L.push('• Indicaciones: '+wl.textContent.trim());
+  if(L.length===1) L.push('(Te adjunto los datos del caso)');
+  window.open('https://wa.me/573212816716?text='+encodeURIComponent(L.join('\n')),'_blank','noopener');
+}
 function limpiar(){
   if(!confirm('¿Borrar todo lo que escribiste en la orden?')) return;
   document.querySelectorAll('.sheet input').forEach(function(i){ if(i.type==='checkbox') i.checked=false; else i.value=''; });
