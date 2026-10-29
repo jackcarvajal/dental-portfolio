@@ -2,10 +2,395 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-10-22
+   Última actualización automática: 2026-10-29
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "exocad-dentalcad-funciones-2026-10-29-cf08",
+  "titulo": "Evaluación de la Precisión y Eficiencia en el Diseño Digital de Restauraciones Dentales",
+  "subtitulo": "Análisis basado en evidencia sobre la adaptación marginal, trueness y precisión de flujos de trabajo CAD/CAM en prostodoncia.",
+  "categoria": "software",
+  "chip": "Software CAD",
+  "fecha": "2026-10-29",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🖥️",
+  "grad": "grad-5",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — CAD/CAM dentistry",
+  "img_link": "https://en.wikipedia.org/wiki/CAD%2FCAM%20dentistry",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado el flujo de trabajo en la prostodoncia, ofreciendo herramientas CAD/CAM para el diseño y la fabricación de restauraciones. La precisión y la eficiencia son factores críticos para el éxito clínico y la longevidad de las restauraciones fijas. La salud periodontal, por ejemplo, está intrínsecamente ligada a la calidad de la adaptación marginal de las restauraciones protésicas (Srimaneepong et al., 2022). Este artículo técnico explora la evidencia actual sobre la precisión, la adaptación marginal y las propiedades de los materiales en los flujos de trabajo digitales, comparando diferentes técnicas y materiales."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/14/Disc_with_dental_implants_made_with_WorkNC.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Exocad DentalCAD — funciones avanzadas y adaptación marginal",
+      "caption": "Wikipedia — CAD/CAM dentistry · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Precisión y Adaptación Marginal en Restauraciones Digitales"
+    },
+    {
+      "t": "p",
+      "c": "La adaptación marginal de las restauraciones es un factor determinante para su éxito a largo plazo y la salud de los tejidos periodontales circundantes (Srimaneepong et al., 2022). Los sistemas digitales, que incluyen la toma de impresiones y el diseño CAD/CAM, han demostrado ofrecer resultados prometedores en este aspecto. Un análisis sistemático encontró que las coronas obtenidas de impresiones digitales presentaban una adaptación marginal comparable o incluso superior en comparación con las obtenidas de impresiones convencionales (Ahmed et al., 2020). Además, la preparación del margen con hombro mostró una adaptación marginal ligeramente mejor en comparación con los márgenes tipo chaflán (Ahmed et al., 2020). La precisión de los escaneos digitales, en términos de trueness y precision, ha sido objeto de múltiples revisiones sistemáticas, destacando su relevancia en la fase inicial del flujo de trabajo digital (Kaitatzidou et al., 2025)."
+    },
+    {
+      "t": "list",
+      "items": [
+        "Las coronas de zirconia obtenidas de impresiones digitales tienen una adaptación marginal comparable o superior a las de impresiones convencionales (Ahmed et al., 2020).",
+        "Las preparaciones con margen tipo hombro pueden ofrecer una adaptación marginal ligeramente mejor que las de chaflán (Ahmed et al., 2020).",
+        "El aumento del espacio para el cemento puede mejorar la adaptación de las coronas de zirconia (Ahmed et al., 2020).",
+        "La salud periodontal es fundamental para la longevidad de las restauraciones protésicas fijas (Srimaneepong et al., 2022).",
+        "La precisión de los escaneos digitales es un factor clave en la exactitud de las restauraciones finales (Kaitatzidou et al., 2025)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Tecnologías de Fabricación Digital: Fresado vs. Impresión 3D"
+    },
+    {
+      "t": "p",
+      "c": "La fabricación de restauraciones dentales ha evolucionado significativamente con la introducción de tecnologías aditivas (impresión 3D) como alternativa a las sustractivas (fresado). Un estudio comparativo sistemático sobre zirconia reveló que las coronas de zirconia impresas en 3D mostraron un gap interno estadísticamente significativo menor en comparación con las fresadas convencionalmente (Alghauli et al., 2024). En cuanto a las propiedades mecánicas, una revisión sistemática y metaanálisis evaluó materiales protésicos impresos en 3D frente a los fresados y convencionales, destacando la importancia de estas propiedades para la durabilidad clínica (Valenti et al., 2024). La durabilidad de los composites a base de resina impresos en 3D también ha sido objeto de análisis, considerando su comportamiento mecánico, dimensional, óptico y químico (Dascanio et al., 2026)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Impresiones Digitales",
+        "Impresiones Convencionales",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Adaptación Marginal",
+          "Comparable a superior",
+          "Inferior a comparable",
+          "(Ahmed et al., 2020)"
+        ],
+        [
+          "Precisión (Trueness/Precision)",
+          "Evaluada como alta",
+          "Evaluada como variable",
+          "(Kaitatzidou et al., 2025)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Eficiencia y Flujo de Trabajo Digital"
+    },
+    {
+      "t": "p",
+      "c": "La implementación de flujos de trabajo digitales en prostodoncia, desde la toma de impresiones hasta la fabricación, busca optimizar la eficiencia y reducir los tiempos de procesamiento. La precisión de los escaneos digitales en comparación con las impresiones convencionales es un factor clave que contribuye a la eficiencia general del proceso, al minimizar la necesidad de ajustes y repeticiones (Kaitatzidou et al., 2025). Aunque los datos específicos sobre el tiempo de diseño para softwares individuales no se detallan en la literatura revisada, la mejora en la precisión y la reducción de pasos manuales inherentes a los sistemas CAD/CAM sugieren una mayor eficiencia global en la producción de restauraciones."
+    },
+    {
+      "t": "h2",
+      "c": "Implicaciones Clínicas y Longevidad de Restauraciones Digitales"
+    },
+    {
+      "t": "p",
+      "c": "La longevidad de las restauraciones protésicas fijas está directamente relacionada con la salud periodontal, la cual se ve influenciada por la adaptación marginal de la prótesis (Srimaneepong et al., 2022). Las restauraciones de zirconia fabricadas digitalmente han mostrado resultados clínicos prometedores. Por ejemplo, en observaciones a corto plazo, las coronas de zirconia impresas en 3D exhibieron una tasa de supervivencia del 100% sin signos de complicaciones periodontales (Alghauli et al., 2024). Esto subraya el potencial de las tecnologías digitales para producir restauraciones duraderas y biocompatibles, siempre que se mantengan los estándares de precisión y adaptación."
+    },
+    {
+      "t": "quote",
+      "c": "La salud periodontal juega un papel importante en la longevidad de las restauraciones prostodónticas.",
+      "author": "Srimaneepong et al., J Funct Biomater, 2022"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo influye la precisión de las restauraciones digitales en la salud periodontal?",
+      "a": "La adaptación marginal precisa de las restauraciones es crucial para la salud periodontal, ya que reduce la acumulación de placa y la inflamación gingival, contribuyendo a la longevidad de la prótesis (Srimaneepong et al., 2022)."
+    },
+    {
+      "q": "¿Son las coronas de zirconia fabricadas digitalmente superiores en ajuste a las convencionales?",
+      "a": "Los estudios indican que las coronas obtenidas de impresiones digitales pueden tener una adaptación marginal comparable o incluso superior en comparación con las obtenidas de impresiones convencionales (Ahmed et al., 2020). Además, las coronas de zirconia impresas en 3D han mostrado un gap interno significativamente menor que las fresadas (Alghauli et al., 2024)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Srimaneepong V, Heboyan A, Zafar MS, Khurshid Z, Marya A, Fernandes GVO, et al.",
+      "titulo": "Fixed Prosthetic Restorations and Periodontal Health: A Narrative Review",
+      "revista": "J Funct Biomater",
+      "año": "2022",
+      "vol": "13",
+      "num": "1",
+      "pags": "",
+      "doi": "10.3390/jfb13010015",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35225978/",
+      "verificada": true
+    },
+    {
+      "autores": "Alghauli M, Alqutaibi AY, Wille S, Kern M.",
+      "titulo": "3D-printed versus conventionally milled zirconia for dental clinical applications: Trueness, precision, accuracy, biological and esthetic aspects",
+      "revista": "J Dent",
+      "año": "2024",
+      "vol": "144",
+      "num": "",
+      "pags": "104925",
+      "doi": "10.1016/j.jdent.2024.104925",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38471580/",
+      "verificada": true
+    },
+    {
+      "autores": "Valenti C, Isabella Federici M, Masciotti F, Marinucci L, Xhimitiku I, Cianetti S, et al.",
+      "titulo": "Mechanical properties of 3D printed prosthetic materials compared with milled and conventional processing: A systematic review and meta-analysis of in vitro studies",
+      "revista": "J Prosthet Dent",
+      "año": "2024",
+      "vol": "132",
+      "num": "2",
+      "pags": "381-391",
+      "doi": "10.1016/j.prosdent.2022.06.008",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35934576/",
+      "verificada": true
+    },
+    {
+      "autores": "Dascanio R, Kury M, Özcan M, Cavalli V.",
+      "titulo": "How durable are 3D-printed dental resin-based composites? An umbrella review",
+      "revista": "J Dent",
+      "año": "2026",
+      "vol": "168",
+      "num": "",
+      "pags": "106626",
+      "doi": "10.1016/j.jdent.2026.106626",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/41819275/",
+      "verificada": true
+    },
+    {
+      "autores": "Kaitatzidou A, Chalazoniti A, Faggion CM, Bakopoulou A, Barbosa-Liz DM, Giannakopoulos NN.",
+      "titulo": "Digital scans versus conventional impressions in fixed prosthodontics: An overview of systematic reviews",
+      "revista": "J Prosthet Dent",
+      "año": "2025",
+      "vol": "134",
+      "num": "6",
+      "pags": "2156-2164",
+      "doi": "10.1016/j.prosdent.2024.11.002",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39627077/",
+      "verificada": true
+    },
+    {
+      "autores": "Ahmed WM, Shariati B, Gazzaz AZ, Sayed ME, Carvalho RM.",
+      "titulo": "Fit of tooth-supported zirconia single crowns-A systematic review of the literature",
+      "revista": "Clin Exp Dent Res",
+      "año": "2020",
+      "vol": "6",
+      "num": "6",
+      "pags": "700-716",
+      "doi": "10.1002/cre2.323",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/32885613/",
+      "verificada": true
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "ia-cad-margenes-2026-10-29-172e",
+  "titulo": "Inteligencia Artificial en Diseño CAD Dental: Avances y Validación Clínica",
+  "subtitulo": "La IA optimiza el diseño de restauraciones dentales, mejorando la eficiencia y precisión en flujos de trabajo CAD/CAM.",
+  "categoria": "ia",
+  "chip": "IA en CAD",
+  "fecha": "2026-10-29",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "🤖",
+  "grad": "grad-1",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/7/77/X-ray_of_hand%2C_where_bone_age_is_automatically_found_by_BoneXpert_software.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Artificial intelligence in healthcare",
+  "img_link": "https://en.wikipedia.org/wiki/Artificial%20intelligence%20in%20healthcare",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La inteligencia artificial (IA) está transformando rápidamente el campo de la odontología, ofreciendo nuevas perspectivas para la práctica clínica y la educación (Ma et al., 2026). En prostodoncia, los sistemas de IA (AIS) han demostrado un desarrollo acelerado, abordando la complejidad y el tiempo que tradicionalmente requiere el diseño de prótesis dentales mediante software CAD (Faure et al., 2026; Ladia et al., 2026). La integración de la IA en el diseño de restauraciones de un solo diente representa una alternativa prometedora a los flujos de trabajo convencionales, incluyendo el diseño digital asistido por técnicos y las técnicas tradicionales de encerado (Vigroux et al., 2026)."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/7/77/X-ray_of_hand%2C_where_bone_age_is_automatically_found_by_BoneXpert_software.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Inteligencia artificial en diseño CAD dental — segmentación y anatomía",
+      "caption": "Wikipedia — Artificial intelligence in healthcare · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Aplicaciones Clave de la IA en Prostodoncia Digital"
+    },
+    {
+      "t": "p",
+      "c": "Los sistemas de IA en prostodoncia se clasifican en diversas categorías que abarcan desde el manejo de datos hasta la optimización del diseño. Estas capacidades son fundamentales para mejorar la eficiencia y la precisión en el entorno digital (Faure et al., 2026). La IA generativa (GenAI) en particular, ha mostrado un gran potencial en áreas como el diseño de coronas y el diagnóstico radiográfico (Ma et al., 2026)."
+    },
+    {
+      "t": "list",
+      "items": [
+        "Manejo y anotación automatizada de imágenes (Faure et al., 2026)",
+        "Clasificación y soporte a la decisión clínica (Faure et al., 2026)",
+        "Visualización y modelado de estructuras dentales (Faure et al., 2026)",
+        "Optimización y simulación de diseños protésicos (Faure et al., 2026)",
+        "Registro y comunicación de datos del paciente (Faure et al., 2026)"
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Segmentación Automática de Márgenes Restaurativos"
+    },
+    {
+      "t": "p",
+      "c": "Una de las aplicaciones más relevantes de la IA en el diseño CAD/CAM es la capacidad de delinear automáticamente los márgenes restaurativos. Esta función es crucial para la precisión del ajuste de las restauraciones y representa un avance significativo en los flujos de trabajo digitales, reduciendo la necesidad de intervención manual y el tiempo asociado (Faure et al., 2026)."
+    },
+    {
+      "t": "h2",
+      "c": "Diseño de Anatomía Oclusal y Morfología de Coronas"
+    },
+    {
+      "t": "p",
+      "c": "La IA ha demostrado ser prometedora en la generación de propuestas de diseño de coronas a partir de datos de escaneo intraoral (Faure et al., 2026; Ma et al., 2026). Esta capacidad se extiende al diseño de coronas para restauraciones fijas, tanto soportadas por dientes como por implantes (Khaohoen et al., 2025). Revisiones sistemáticas han evaluado el impacto de las aplicaciones basadas en IA en el diseño de restauraciones de un solo diente, destacando su potencial como alternativa a las técnicas convencionales (Ladia et al., 2026; Vigroux et al., 2026)."
+    },
+    {
+      "t": "h2",
+      "c": "Eficiencia y Precisión del Diseño Asistido por IA"
+    },
+    {
+      "t": "p",
+      "c": "La evaluación del diseño de coronas dentales asistido por IA se centra en aspectos como la eficiencia de tiempo, el ajuste marginal, el ajuste interno y la precisión morfológica. Aunque se han realizado meta-análisis para investigar las diferencias entre las coronas diseñadas por IA y las diseñadas mediante procesos CAD tradicionales, aún no existe un consenso claro sobre su rendimiento comparativo en todos los aspectos (Vigroux et al., 2026; Hu et al., 2026)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Aspecto Evaluado",
+        "Conclusión General (Diseño AI vs. CAD Tradicional)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Eficiencia de tiempo",
+          "No existe consenso claro sobre el rendimiento comparativo",
+          "(Vigroux et al., 2026)"
+        ],
+        [
+          "Ajuste (marginal e interno)",
+          "No existe consenso claro sobre el rendimiento comparativo",
+          "(Vigroux et al., 2026)"
+        ],
+        [
+          "Precisión morfológica",
+          "No existe consenso claro sobre el rendimiento comparativo",
+          "(Vigroux et al., 2026)"
+        ],
+        [
+          "Diferencias generales en diseño",
+          "Se investigaron y clarificaron diferencias entre ambos métodos",
+          "(Hu et al., 2026)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Desafíos y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "A pesar de los avances, la implementación de la IA en odontología digital enfrenta limitaciones significativas. Estas incluyen la validación clínica insuficiente, la falta de estandarización en los conjuntos de datos, flujos de trabajo fragmentados y preocupaciones éticas relacionadas con la privacidad de los datos y la transparencia (Ma et al., 2026). Sin embargo, la IA representa una tecnología transformadora con un gran potencial para mejorar la planificación del tratamiento y los resultados clínicos en prostodoncia (Ma et al., 2026; Faure et al., 2026; Khaohoen et al., 2025)."
+    },
+    {
+      "t": "quote",
+      "c": "En general, la IA generativa representa una tecnología transformadora con potencial para mejorar la odontología.",
+      "author": "Ma et al., Int Dent J, 2026"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué ventajas ofrece la IA en el diseño de coronas dentales?",
+      "a": "La IA puede automatizar la segmentación de márgenes restaurativos y generar propuestas de diseño de coronas a partir de escaneos intraorales, lo que mejora la eficiencia y la precisión en los flujos de trabajo CAD/CAM (Faure et al., 2026; Ma et al., 2026)."
+    },
+    {
+      "q": "¿Cuáles son los principales desafíos de la implementación de la IA en odontología digital?",
+      "a": "Los desafíos incluyen la necesidad de mayor validación clínica, la estandarización de los conjuntos de datos, la integración de flujos de trabajo y la gestión de preocupaciones éticas como la privacidad de los datos y la transparencia (Ma et al., 2026)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Ma Z, Du C, Lao Q, Xie X.",
+      "titulo": "Generative Artificial Intelligence: Applications and Future Prospects in Dentistry",
+      "revista": "Int Dent J",
+      "año": "2026",
+      "vol": "76",
+      "num": "1",
+      "pags": "108276",
+      "doi": "10.1016/j.identj.2025.108276",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/41259905/",
+      "verificada": true
+    },
+    {
+      "autores": "Faure M, Millet C, Richert R, Rokhshad R, Tamimi F, Ducret M.",
+      "titulo": "Artificial Intelligence Systems in Prosthodontics: Current Applications and Challenges",
+      "revista": "Aust Dent J",
+      "año": "2026",
+      "vol": "",
+      "num": "",
+      "pags": "",
+      "doi": "10.1111/adj.70065",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/42687376/",
+      "verificada": true
+    },
+    {
+      "autores": "Ladia O, Sarafianou A, Revilla-León M, Fehmer V, Sailer I, Ntovas P.",
+      "titulo": "Application of artificial intelligence in the design of single tooth-supported restorations: A systematic review",
+      "revista": "J Prosthet Dent",
+      "año": "2026",
+      "vol": "136",
+      "num": "2",
+      "pags": "355-378",
+      "doi": "10.1016/j.prosdent.2026.05.014",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/42225535/",
+      "verificada": true
+    },
+    {
+      "autores": "Khaohoen A, Yoda N, Rungsiyakull P, Rungsiyakull C, Taichi T.",
+      "titulo": "Can artificial intelligence optimize treatment planning and outcome prediction in fixed tooth- and implant-supported prosthodontics? A scoping review",
+      "revista": "BMC Oral Health",
+      "año": "2025",
+      "vol": "26",
+      "num": "1",
+      "pags": "104",
+      "doi": "10.1186/s12903-025-07300-8",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/41372901/",
+      "verificada": true
+    },
+    {
+      "autores": "Vigroux E, Mendes JM, Mendes J, Aroso C, Cardoso M, Coelho L.",
+      "titulo": "Fully Automated Artificial Intelligence-Based Design Single Tooth-Supported Dental Crowns: A Systematic Review of Efficiency, Fit, and Morphological Accuracy",
+      "revista": "Eur J Dent",
+      "año": "2026",
+      "vol": "",
+      "num": "",
+      "pags": "",
+      "doi": "10.1055/s-0046-1829082",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/42849515/",
+      "verificada": true
+    },
+    {
+      "autores": "Hu J, Bai B, Wang Y, Hu B, Fu X.",
+      "titulo": "The application of artificial intelligence in the field of dental restoration for designing dental crowns: a meta-analysis",
+      "revista": "BMC Oral Health",
+      "año": "2026",
+      "vol": "26",
+      "num": "1",
+      "pags": "",
+      "doi": "10.1186/s12903-026-08680-1",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/42271364/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
